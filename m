@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-12509-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12510-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94D39D636E
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:42:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 420279D6394
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:52:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69EC2161648
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:42:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E39DB256A6
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282771DEFC6;
-	Fri, 22 Nov 2024 17:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649531DF99D;
+	Fri, 22 Nov 2024 17:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pXDiWM6V"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="l9Td/uRz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B706A14C588
-	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 17:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032571DF983
+	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 17:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732297217; cv=none; b=iOz620lj9SoK4M5UI7P9fHEyzoTdYra+EtqRMD/12/uNeVtRqqSG1GhoHmOLjEC73tZqjTGbazPvdCHHkfYOxCru7ikJccipOrhXUnL8JrissVq5k0M06TvdA063Np1DkaBEFhLw/HpJIaYeFeTzJb6NOUPeA0rQoUL+j1ZEJVg=
+	t=1732297221; cv=none; b=BZ7NbBrfxGFNPDdKK/CthR+U4S/3x2wvZeSQubRVlyHq+dcBVX8h3zYxBynZU2kVW1+oVzNmW4pv1/GI46hmY/62sKWJi5/U7KNGU99oUFolgdj9gIgV5xaJbqL5rfplrGBbxEJC9qxjkgHrc0MO5YO2UpAk4tuc+aMjx9AsRhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732297217; c=relaxed/simple;
-	bh=oM9nEJRyR7kSPK0cowKnY+9Z/23OHvdNcGF4YvLmkxY=;
+	s=arc-20240116; t=1732297221; c=relaxed/simple;
+	bh=SCfy0dApgGX+lpHvDT1/XuRFRQohNG3DK0neA2CKyeM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=MUsqKLLC7cvGwD2CD16U211AxVv0ykCidEq+D3USd4Ul3h4wBu160frzh3nffosA/DoCHNtIi0t+PVCtrE7htMk4uooL2RMLDSmVQvbt5J25VLRlKs30NAI7njHyT/QHaPfWpfWkEkmLAT0ydpZAbSdvxKLgyxfLugFMZCXYpDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pXDiWM6V; arc=none smtp.client-ip=209.85.210.48
+	 In-Reply-To:To:Cc; b=a/cqReos2kG/WGKyYNgwxBFNlYDmJqTmzT/RnQq4SvCV17eFhVN0dpr6l7b4nl4/nmvR44+/n5q9OLdqy9trWfLv53NVfYSmc7mgLcHmCg7m1xZ9Bw9Y5ORmD8i1vWVIjYO4qMc3Va8paBkkpPYN2PPm3p5xdPZ64rQWGkaEmqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=l9Td/uRz; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7180a5ba498so1125588a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 09:40:14 -0800 (PST)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7180f2f5fb0so1294121a34.1
+        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 09:40:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732297213; x=1732902013; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732297216; x=1732902016; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=P0y/MRzmtB9fib4YsJewrbfWoKaOo42y7/AnIHQhdUQ=;
-        b=pXDiWM6Vb0U0tqxKqgjd9b7ujFcagpnpFQvMnk1NumKxhKV7+jkdzlTYYC+RuQrJcZ
-         mbkYILXKalwLVGwzBIBH5taqW8OLUcBAEL9LbL4F+WssGqkLjSBdLTjCFePu9XWSaL4C
-         Zly0g/FR10ecpnpT5/cKbi2w/atdn2mtcMAQK81nqnC0VCb4v5Q5PFh83cBwU47fIEXh
-         8UNzLci+Ot8s0wNStGpssqRXWgtFUI2R6b66u4/V80m3DAUi2VJjpxSmZK/koiW6Vnq6
-         qkRoVtyYttlTu0B1B62F2s+byONVT/qkSIAsQT5Vp9I5i5pMpR+OPtYnKt0R+dQv4/Uo
-         r1mg==
+        bh=8g2971JtnzakT9wizgzatOYjfeGd7svZ1JYymTP3R20=;
+        b=l9Td/uRz/GlbOeClCnMwJS/mtRFzhaqMHBnvLahsoJj6mBJMu0ffUaB6vNUaP/pp3y
+         lN0tGyUtY2SmGUsg9+dH9z4ixTK+ZSify21SSCOjRemor+hlXtAZUZUKRvGyeDZZ5TOa
+         KGTKmJLf8eYDemIpX8Rf5rE5aYOQgH8Wtkp6y0QTBEnjxP70ZTDYhv5qIHzaRVDmDX5w
+         dY9c8N2NS5ZDZJeH89sWVkwfN7mA7/J+mb+AM3+ASh3r6MgqoWaKJSQkT6Le2bh3ekC6
+         peGjUbb4MBxJ25/nIRyPt1utlHyLYY1hUaIpuS5HyA+r0cn2HUrv4bud4/H6629pzSJ6
+         mi9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732297213; x=1732902013;
+        d=1e100.net; s=20230601; t=1732297216; x=1732902016;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P0y/MRzmtB9fib4YsJewrbfWoKaOo42y7/AnIHQhdUQ=;
-        b=V2/lA7g9ckewadqikjpqk/KOm/j6cWRxDIxO4H8ss9oUg09KL1WUMk1Gq/Dy6wrZap
-         yXY7ZjAjuxQrVD1DKOhhj5XKizyt5QQBgIcCsfxP81KlH6L8dA6n3l92CE+NuqV/cN6i
-         OasxfhBOV1UH84ck9gghbuF+QWJnZBbfbMj/dJ6X6WZQbWgGGFuJrxc+KRFo6/rdXwKx
-         7Kqcp8DD/dTs+1I009E+b6twpyVXfsixqNvQeQjYG6hzTbD2viKRuS8f7pGCX3fUn/uy
-         64WL+gVSl0KERuBDIWlwf5xGuRs2FFL6QsyMwWtgoj/jrnSHLbzo+y6LlQA/CP3ql2V2
-         Mg2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWm087Wuc+Un8ywkOQRQtPWj4qGgkAIJLlwkPDrPFfuZPgDrcyDhMt7EcEHOBbP+1thSLgvsMa8W/k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB/JoudMUqjvLPTkMYVAv6s8UTZZMzroJAycF+HOWu1V6rKYH5
-	mXll5NMj6+v7qbTYx1S44MOcKqyynAG+0yGDrmjo5iVX+Hgp2Lr8+s8ZY6sbBKw=
-X-Gm-Gg: ASbGncs3wjV9T4QBeC11TXYJtS2RFPZ17bh4VNuNa6nzTuyL/1kBX1SEmL5NKAMFEvg
-	B1Mz+/w8N3LbPShhlV2Xz01AMlp2R8itEJ1GtaaaQQflW8WuPWaSXftVKwGkZMlEq8T35yFmr9k
-	ZRfEWKVUZWF867chhOKXJgVmknCHoXHgxLZJot4REEhRLDH/uH0d5N/KeBEArcshmoyIBWaPIWQ
-	AkDTueW9K4d4YABHcK8/okTTkiZIeQA8jSksQXdi4AKI+PWdM7MWV0br0ZE5UZu3lxx0MC5z7en
-	ugaRbg==
-X-Google-Smtp-Source: AGHT+IHtTo35JtlZ8/m29TZlsI0b/ssf/ysVqUpaaxETWJ8XCyGnCmdxyzua/2cCppL2whUqVfCbSA==
-X-Received: by 2002:a05:6830:6a15:b0:70f:3720:16bb with SMTP id 46e09a7af769-71c04ce7411mr4405440a34.19.1732297213655;
-        Fri, 22 Nov 2024 09:40:13 -0800 (PST)
+        bh=8g2971JtnzakT9wizgzatOYjfeGd7svZ1JYymTP3R20=;
+        b=wEUOBeuqz9b1VIioUbNZtS2NPNUYf/01hyY78ccygnfARQNr3uXrrAhsIlPQ8K7Liz
+         4tt2elQ24v15RDa7ksdYTu8MqKJh/ynTpeVrOVq6NKYoMU+klY6wzK2cY35DK9n+PQn5
+         Df3HNlhdVY+w4hxmKtrK16CZuDLHELXE7tr6QQ7H5+j0bZIdFD3Di+7y7SCo3HVoa4vi
+         NqJ+PK3dn71S3B3rGlHB4mBzEpnsREYVCoHe4ETaPaK9c8+Ptg0Tmpr7GPRT+jQZQDKS
+         Qejop5PzYWd/M+yl4K4/uE2lcyA2PecLdNH/tvkTVM5ixIAXg1nLSohUbF/+tYZYLxgJ
+         uWwA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+DsDOt9IIc2iH6mMUXBo7itIBQwbMUe98kgk+NTXZsNy2Mw/kql7K3WUXnW3j+O05AYytnX+9Amg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwANNqL4JYXZ/mg13CW7PYlsYfPifDOlQy85Dxb40MnXH3fgxzR
+	X0G7RdOUO7x4kX7Zt+Kqv5s7NR/onXFmj/lwIff+Z48mWjAgSJhCSWhGpWMyt14=
+X-Gm-Gg: ASbGnctQjm2tJsugYbAdJAAfsDpPVuwFlV1c8L5SaMkwhpAUNbeNQfI+lXZ2vWzTWGR
+	Htlvan7hIvAtBV9i890xtOxrGC1xr/7lp0Kvm1/wRqI5Fjy52WxiG2KB2aNGQBWiCHUPGmMlBDy
+	VdKxfRLbul75ErIwV3u1pHmEYxxaYrT0Ij7vzLlXFarvzJv1UYsALqMcE3Tf50lTZs46ftWrUhV
+	Ec7nHA/2W5/+Tn7aRyaz+G97aDJm6/ZN22pSISLCDS8pomrJ9sivtxkDLoYp0SDQHwDGThjsb9W
+	ZEd7CA==
+X-Google-Smtp-Source: AGHT+IH5I32inTVM2hFsmDF4gYIw+2BugAKmtZa29eyRhS+bMhKLQsivsxU2d1tSVp0EUGffei4JHg==
+X-Received: by 2002:a05:6830:1110:b0:718:b83:8f7e with SMTP id 46e09a7af769-71c04cea89dmr3455090a34.24.1732297214492;
+        Fri, 22 Nov 2024 09:40:14 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71c0381c976sm494572a34.50.2024.11.22.09.40.12
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71c0381c976sm494572a34.50.2024.11.22.09.40.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 09:40:13 -0800 (PST)
+        Fri, 22 Nov 2024 09:40:14 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 22 Nov 2024 11:39:52 -0600
-Subject: [PATCH 1/2] iio: adc: ad7313: fix irq number stored in static info
- struct
+Date: Fri, 22 Nov 2024 11:39:53 -0600
+Subject: [PATCH 2/2] iio: adc: ad7173: make struct ad_sigma_delta_info
+ ad7173_sigma_delta_info const
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,8 +83,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-1-d05c02324b73@baylibre.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-2-d05c02324b73@baylibre.com>
 References: <20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-0-d05c02324b73@baylibre.com>
 In-Reply-To: <20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-0-d05c02324b73@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -97,131 +97,532 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.1
 
-Replace the int irq_line field in struct ad_sigma_delta_info with a
-bool get_irq_by_name flag. (The field is reordered for better struct
-packing.)
+Make struct ad_sigma_delta_info ad7173_sigma_delta_info static const.
+This structure is shared by all instances of the driver, so it can't be
+safely modified by one instance without affecting all other instances.
 
-This struct is intended to be used as static const data. Currently, in
-the ad7173 driver it is static, but not const and so each driver probe
-will write over the struct, which is a problem if there is more than
-one driver instance probing at the same time.
+The num_slots field was being modified, so we need to make two copies of
+the structure, one for each possible value of num_slots. Then we add a
+field to the chip-specific info struct to point to the correct copy of
+the struct ad_sigma_delta_info depending on the chip's capabilities.
 
-Instead of storing the actual IRQ number in the struct, a flag is added
-to indicate that we need to get the IRQ number by name. Then the code
-is modified to check this flag when setting sigma_delta->irq_line in
-ad_sd_init().
-
-fwnode_irq_get_byname() is moved to ad_sd_init() to be able to handle
-this change with the bonus that it can be shared with other drivers in
-the future.
-
-static struct ad_sigma_delta_info ad7173_sigma_delta_info can't be
-changed to const yet in this patch because there is still another bug
-where another field is being written to in the probe function.
+In order to do this, all of the chip-specific info structs have to be
+moved after the struct ad_sigma_delta_info definitions.
 
 Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad7173.c               |  7 +------
- drivers/iio/adc/ad_sigma_delta.c       | 14 +++++++++++---
- include/linux/iio/adc/ad_sigma_delta.h |  5 +++--
- 3 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/iio/adc/ad7173.c | 469 +++++++++++++++++++++++++----------------------
+ 1 file changed, 249 insertions(+), 220 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 29ff9c7036c0..5215584438bf 100644
+index 5215584438bf..ab2a7a16c477 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -758,6 +758,7 @@ static struct ad_sigma_delta_info ad7173_sigma_delta_info = {
- 	.disable_all = ad7173_disable_all,
- 	.disable_one = ad7173_disable_one,
- 	.set_mode = ad7173_set_mode,
-+	.get_irq_by_name = true,
- 	.has_registers = true,
- 	.addr_shift = 0,
- 	.read_mask = BIT(6),
-@@ -1397,12 +1398,6 @@ static int ad7173_fw_parse_device_config(struct iio_dev *indio_dev)
- 			return ret;
- 	}
- 
--	ret = fwnode_irq_get_byname(dev_fwnode(dev), "rdy");
--	if (ret < 0)
--		return dev_err_probe(dev, ret, "Interrupt 'rdy' is required\n");
--
--	ad7173_sigma_delta_info.irq_line = ret;
--
- 	return ad7173_fw_parse_channel_config(indio_dev);
- }
- 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 2f3b61765055..af982f21adfa 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -653,6 +653,8 @@ EXPORT_SYMBOL_NS_GPL(devm_ad_sd_setup_buffer_and_trigger, IIO_AD_SIGMA_DELTA);
- int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
- 	struct spi_device *spi, const struct ad_sigma_delta_info *info)
- {
-+	int ret;
-+
- 	sigma_delta->spi = spi;
- 	sigma_delta->info = info;
- 
-@@ -674,10 +676,16 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
- 		}
- 	}
- 
--	if (info->irq_line)
--		sigma_delta->irq_line = info->irq_line;
--	else
-+	if (info->get_irq_by_name) {
-+		ret = fwnode_irq_get_byname(dev_fwnode(&spi->dev), "rdy");
-+		if (ret < 0)
-+			return dev_err_probe(&spi->dev, ret,
-+					     "Interrupt 'rdy' is required\n");
-+
-+		sigma_delta->irq_line = ret;
-+	} else {
- 		sigma_delta->irq_line = spi->irq;
-+	}
- 
- 	iio_device_set_drvdata(indio_dev, sigma_delta);
- 
-diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
-index f8c1d2505940..2d8bc5de8332 100644
---- a/include/linux/iio/adc/ad_sigma_delta.h
-+++ b/include/linux/iio/adc/ad_sigma_delta.h
-@@ -43,6 +43,8 @@ struct iio_dev;
-  *		the value required for the driver to identify the channel.
-  * @postprocess_sample: Is called for each sampled data word, can be used to
-  *		modify or drop the sample data, it, may be NULL.
-+ * @get_irq_by_name: Usually, the RDY IRQ is the first one and therefore ==
-+ *		spi->irq. If not, set this to true to get the IRQ by name.
-  * @has_registers: true if the device has writable and readable registers, false
-  *		if there is just one read-only sample data shift register.
-  * @addr_shift: Shift of the register address in the communications register.
-@@ -52,7 +54,6 @@ struct iio_dev;
-  *   be used.
-  * @irq_flags: flags for the interrupt used by the triggered buffer
-  * @num_slots: Number of sequencer slots
-- * @irq_line: IRQ for reading conversions. If 0, spi->irq will be used
-  */
- struct ad_sigma_delta_info {
- 	int (*set_channel)(struct ad_sigma_delta *, unsigned int channel);
-@@ -61,6 +62,7 @@ struct ad_sigma_delta_info {
- 	int (*disable_all)(struct ad_sigma_delta *);
- 	int (*disable_one)(struct ad_sigma_delta *, unsigned int chan);
- 	int (*postprocess_sample)(struct ad_sigma_delta *, unsigned int raw_sample);
-+	bool get_irq_by_name;
- 	bool has_registers;
- 	unsigned int addr_shift;
- 	unsigned int read_mask;
-@@ -68,7 +70,6 @@ struct ad_sigma_delta_info {
- 	unsigned int data_reg;
- 	unsigned long irq_flags;
- 	unsigned int num_slots;
--	int irq_line;
+@@ -166,6 +166,7 @@ struct ad7173_device_info {
+ 	unsigned int clock;
+ 	unsigned int id;
+ 	char *name;
++	const struct ad_sigma_delta_info *sd_info;
+ 	bool has_current_inputs;
+ 	bool has_vincom_input;
+ 	bool has_temp;
+@@ -257,223 +258,6 @@ static unsigned int ad4111_current_channel_config[] = {
+ 	0x18B, /* 12:IIN3+   11:IIN3− */
  };
  
- /**
+-static const struct ad7173_device_info ad4111_device_info = {
+-	.name = "ad4111",
+-	.id = AD4111_ID,
+-	.num_voltage_in_div = 8,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 8,
+-	.num_gpios = 2,
+-	.higher_gpio_bits = true,
+-	.has_temp = true,
+-	.has_vincom_input = true,
+-	.has_input_buf = true,
+-	.has_current_inputs = true,
+-	.has_int_ref = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad4112_device_info = {
+-	.name = "ad4112",
+-	.id = AD4112_ID,
+-	.num_voltage_in_div = 8,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 8,
+-	.num_gpios = 2,
+-	.higher_gpio_bits = true,
+-	.has_vincom_input = true,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_current_inputs = true,
+-	.has_int_ref = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad4113_device_info = {
+-	.name = "ad4113",
+-	.id = AD4113_ID,
+-	.num_voltage_in_div = 8,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 8,
+-	.num_gpios = 2,
+-	.data_reg_only_16bit = true,
+-	.higher_gpio_bits = true,
+-	.has_vincom_input = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad4114_device_info = {
+-	.name = "ad4114",
+-	.id = AD4114_ID,
+-	.num_voltage_in_div = 16,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 16,
+-	.num_gpios = 4,
+-	.has_vincom_input = true,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad4115_device_info = {
+-	.name = "ad4115",
+-	.id = AD4115_ID,
+-	.num_voltage_in_div = 16,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 16,
+-	.num_gpios = 4,
+-	.has_vincom_input = true,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.clock = 8 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad4115_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad4115_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad4116_device_info = {
+-	.name = "ad4116",
+-	.id = AD4116_ID,
+-	.num_voltage_in_div = 11,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_voltage_in = 16,
+-	.num_gpios = 4,
+-	.has_vincom_input = true,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.clock = 4 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad4116_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad4116_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7172_2_device_info = {
+-	.name = "ad7172-2",
+-	.id = AD7172_2_ID,
+-	.num_voltage_in = 5,
+-	.num_channels = 4,
+-	.num_configs = 4,
+-	.num_gpios = 2,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.has_pow_supply_monitoring = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7172_4_device_info = {
+-	.name = "ad7172-4",
+-	.id = AD7172_4_ID,
+-	.num_voltage_in = 9,
+-	.num_channels = 8,
+-	.num_configs = 8,
+-	.num_gpios = 4,
+-	.has_input_buf = true,
+-	.has_ref2 = true,
+-	.has_pow_supply_monitoring = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7173_8_device_info = {
+-	.name = "ad7173-8",
+-	.id = AD7173_ID,
+-	.num_voltage_in = 17,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_gpios = 4,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.has_ref2 = true,
+-	.clock = 2 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7173_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7175_2_device_info = {
+-	.name = "ad7175-2",
+-	.id = AD7175_2_ID,
+-	.num_voltage_in = 5,
+-	.num_channels = 4,
+-	.num_configs = 4,
+-	.num_gpios = 2,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.has_pow_supply_monitoring = true,
+-	.clock = 16 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7175_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7175_8_device_info = {
+-	.name = "ad7175-8",
+-	.id = AD7175_8_ID,
+-	.num_voltage_in = 17,
+-	.num_channels = 16,
+-	.num_configs = 8,
+-	.num_gpios = 4,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.has_ref2 = true,
+-	.has_pow_supply_monitoring = true,
+-	.clock = 16 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7175_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7176_2_device_info = {
+-	.name = "ad7176-2",
+-	.id = AD7176_ID,
+-	.num_voltage_in = 5,
+-	.num_channels = 4,
+-	.num_configs = 4,
+-	.num_gpios = 2,
+-	.has_int_ref = true,
+-	.clock = 16 * HZ_PER_MHZ,
+-	.sinc5_data_rates = ad7175_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+-};
+-
+-static const struct ad7173_device_info ad7177_2_device_info = {
+-	.name = "ad7177-2",
+-	.id = AD7177_ID,
+-	.num_voltage_in = 5,
+-	.num_channels = 4,
+-	.num_configs = 4,
+-	.num_gpios = 2,
+-	.has_temp = true,
+-	.has_input_buf = true,
+-	.has_int_ref = true,
+-	.has_pow_supply_monitoring = true,
+-	.clock = 16 * HZ_PER_MHZ,
+-	.odr_start_value = AD7177_ODR_START_VALUE,
+-	.sinc5_data_rates = ad7175_sinc5_data_rates,
+-	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+-};
+-
+ static const char *const ad7173_ref_sel_str[] = {
+ 	[AD7173_SETUP_REF_SEL_EXT_REF]    = "vref",
+ 	[AD7173_SETUP_REF_SEL_EXT_REF2]   = "vref2",
+@@ -752,7 +536,7 @@ static int ad7173_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
+ 	return ad_sd_write_reg(sd, AD7173_REG_CH(chan), 2, 0);
+ }
+ 
+-static struct ad_sigma_delta_info ad7173_sigma_delta_info = {
++static const struct ad_sigma_delta_info ad7173_sigma_delta_info_4_slots = {
+ 	.set_channel = ad7173_set_channel,
+ 	.append_status = ad7173_append_status,
+ 	.disable_all = ad7173_disable_all,
+@@ -764,6 +548,252 @@ static struct ad_sigma_delta_info ad7173_sigma_delta_info = {
+ 	.read_mask = BIT(6),
+ 	.status_ch_mask = GENMASK(3, 0),
+ 	.data_reg = AD7173_REG_DATA,
++	.num_slots = 4,
++};
++
++static const struct ad_sigma_delta_info ad7173_sigma_delta_info_8_slots = {
++	.set_channel = ad7173_set_channel,
++	.append_status = ad7173_append_status,
++	.disable_all = ad7173_disable_all,
++	.disable_one = ad7173_disable_one,
++	.set_mode = ad7173_set_mode,
++	.get_irq_by_name = true,
++	.has_registers = true,
++	.addr_shift = 0,
++	.read_mask = BIT(6),
++	.status_ch_mask = GENMASK(3, 0),
++	.data_reg = AD7173_REG_DATA,
++	.num_slots = 8,
++};
++
++static const struct ad7173_device_info ad4111_device_info = {
++	.name = "ad4111",
++	.id = AD4111_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 8,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 8,
++	.num_gpios = 2,
++	.higher_gpio_bits = true,
++	.has_temp = true,
++	.has_vincom_input = true,
++	.has_input_buf = true,
++	.has_current_inputs = true,
++	.has_int_ref = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad4112_device_info = {
++	.name = "ad4112",
++	.id = AD4112_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 8,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 8,
++	.num_gpios = 2,
++	.higher_gpio_bits = true,
++	.has_vincom_input = true,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_current_inputs = true,
++	.has_int_ref = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad4113_device_info = {
++	.name = "ad4113",
++	.id = AD4113_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 8,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 8,
++	.num_gpios = 2,
++	.data_reg_only_16bit = true,
++	.higher_gpio_bits = true,
++	.has_vincom_input = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad4114_device_info = {
++	.name = "ad4114",
++	.id = AD4114_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 16,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 16,
++	.num_gpios = 4,
++	.has_vincom_input = true,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad4115_device_info = {
++	.name = "ad4115",
++	.id = AD4115_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 16,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 16,
++	.num_gpios = 4,
++	.has_vincom_input = true,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.clock = 8 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad4115_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad4115_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad4116_device_info = {
++	.name = "ad4116",
++	.id = AD4116_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in_div = 11,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_voltage_in = 16,
++	.num_gpios = 4,
++	.has_vincom_input = true,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.clock = 4 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad4116_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad4116_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7172_2_device_info = {
++	.name = "ad7172-2",
++	.id = AD7172_2_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in = 5,
++	.num_channels = 4,
++	.num_configs = 4,
++	.num_gpios = 2,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.has_pow_supply_monitoring = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7172_4_device_info = {
++	.name = "ad7172-4",
++	.id = AD7172_4_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in = 9,
++	.num_channels = 8,
++	.num_configs = 8,
++	.num_gpios = 4,
++	.has_input_buf = true,
++	.has_ref2 = true,
++	.has_pow_supply_monitoring = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7173_8_device_info = {
++	.name = "ad7173-8",
++	.id = AD7173_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in = 17,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_gpios = 4,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.has_ref2 = true,
++	.clock = 2 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7173_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7175_2_device_info = {
++	.name = "ad7175-2",
++	.id = AD7175_2_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in = 5,
++	.num_channels = 4,
++	.num_configs = 4,
++	.num_gpios = 2,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.has_pow_supply_monitoring = true,
++	.clock = 16 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7175_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7175_8_device_info = {
++	.name = "ad7175-8",
++	.id = AD7175_8_ID,
++	.sd_info = &ad7173_sigma_delta_info_8_slots,
++	.num_voltage_in = 17,
++	.num_channels = 16,
++	.num_configs = 8,
++	.num_gpios = 4,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.has_ref2 = true,
++	.has_pow_supply_monitoring = true,
++	.clock = 16 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7175_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7176_2_device_info = {
++	.name = "ad7176-2",
++	.id = AD7176_ID,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
++	.num_voltage_in = 5,
++	.num_channels = 4,
++	.num_configs = 4,
++	.num_gpios = 2,
++	.has_int_ref = true,
++	.clock = 16 * HZ_PER_MHZ,
++	.sinc5_data_rates = ad7175_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
++};
++
++static const struct ad7173_device_info ad7177_2_device_info = {
++	.name = "ad7177-2",
++	.id = AD7177_ID,
++	.sd_info = &ad7173_sigma_delta_info_4_slots,
++	.num_voltage_in = 5,
++	.num_channels = 4,
++	.num_configs = 4,
++	.num_gpios = 2,
++	.has_temp = true,
++	.has_input_buf = true,
++	.has_int_ref = true,
++	.has_pow_supply_monitoring = true,
++	.clock = 16 * HZ_PER_MHZ,
++	.odr_start_value = AD7177_ODR_START_VALUE,
++	.sinc5_data_rates = ad7175_sinc5_data_rates,
++	.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+ };
+ 
+ static int ad7173_setup(struct iio_dev *indio_dev)
+@@ -1429,8 +1459,7 @@ static int ad7173_probe(struct spi_device *spi)
+ 	spi->mode = SPI_MODE_3;
+ 	spi_setup(spi);
+ 
+-	ad7173_sigma_delta_info.num_slots = st->info->num_configs;
+-	ret = ad_sd_init(&st->sd, indio_dev, spi, &ad7173_sigma_delta_info);
++	ret = ad_sd_init(&st->sd, indio_dev, spi, st->info->sd_info);
+ 	if (ret)
+ 		return ret;
+ 
 
 -- 
 2.43.0

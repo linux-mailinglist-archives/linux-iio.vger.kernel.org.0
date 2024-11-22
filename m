@@ -1,223 +1,167 @@
-Return-Path: <linux-iio+bounces-12514-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12515-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F799D642D
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 19:29:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2CA9D6482
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:17:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DB8283509
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 18:29:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55527160E92
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 19:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D611DF97E;
-	Fri, 22 Nov 2024 18:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895B91DDC24;
+	Fri, 22 Nov 2024 19:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oiK+1IHj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kM1SaagZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8591315CD60;
-	Fri, 22 Nov 2024 18:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F82D64A8F;
+	Fri, 22 Nov 2024 19:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732300152; cv=none; b=pvga5JImNUYDpvsc+yE3I811rHCOtJlWFQS12u7I7byeCnvSiqAPmhOTkfQujpthasp6k8fyDV0WybSZJVvxBEIZn1Kes0BgiI0lbMTAR1LmqONWFk9mo8oqnj88I1nwqA4TuNSB20SIXxlvdyPcr72F13yKTuzjLyTCw4RFgWY=
+	t=1732303024; cv=none; b=T/5lgPDlcWIAGgJz0qE7/r+OH8Jamw2m3IwDn15xxQoOuCiauY33BD0Q9vmmZpqKir8AHaLOZx49tJpln9/z14aAxzwFMtW94P1MIDuGLe73f/3YEaB2yfVmfJdLwOrnRO9RpRJ+aeGXA920aLpVi2s/Vud5ZrNMa2igLuRPPmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732300152; c=relaxed/simple;
-	bh=cpCYLUptjUavyLM1gGDWmsWt7dvqaaPy8JYrWmWGODw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P/Z1u+SOqU/c54/dT260oXkn5s9DhD7KKuN+pOym+9mxhY93K9pD+5jG1ucpzmDadtKSYastrdnkLMhcCVJ9JKEcsUKIhbaAF7hdHAJswgZR4d9pr6WVcM55WvBIFE4izwNHYhoUSwllf+m3KfqkSeR7VNfG1AzK0ZUo01N1xBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oiK+1IHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE507C4CECE;
-	Fri, 22 Nov 2024 18:29:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732300152;
-	bh=cpCYLUptjUavyLM1gGDWmsWt7dvqaaPy8JYrWmWGODw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oiK+1IHjEVmPx3ggwiGLPVPX4CkYYfW0BijKUkvCxeJ2Z8GJV9v190rn2ahBuPBTR
-	 phYCLMnAPu2MDGKS/HVHvspsGs3Is60lDksCbPOZI1M4BpUApAboyJ7wa3hcI5riMo
-	 KgiD53PxrJzJDKFHb6Vdq2TjEXCpIqJweKS9SCYBG10lw9PcNPHWxikDdGcKjmNIDc
-	 MyB9vfeCaW+51v1Naks4tbJoF10yaBGDBFdyL7/YjrFWvd6Y+OtKzhIF1PdodoyjPv
-	 2agjAygAdSSj0TYMbD8iD4WEpJbnkP2Z7r7MJtiFpl0fK7EK148jUhg+DtBO6yyys8
-	 6nADVm7HsNgEw==
-Message-ID: <a311de1b-cd59-4f67-9bd1-61596a54c8cd@kernel.org>
-Date: Fri, 22 Nov 2024 19:29:06 +0100
+	s=arc-20240116; t=1732303024; c=relaxed/simple;
+	bh=E2l7Qz9NMNUP8iHIFfm+hdSYRDgZXHIgLyEPPMG3uR8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=n8oicaemIP0BdMkNMt96jlvhm4NXZCQlECrGA4l+lNX9L6TanKmAYASoyESCa/mRL0oosPLdERHMGeRfvIU2DB3Ddh3qJenSr7OF0JBbvetC54gWjsNpPVghk3p18ri9yzr3qu2a7lGylCpU0dl967lfsqg9HH4994Lh3BzG0QY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kM1SaagZ; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2fb5fa911aaso45696421fa.2;
+        Fri, 22 Nov 2024 11:17:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732303021; x=1732907821; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DA5BQinA+K8E3Rs6rAmQsutDEAzcqPbYmFB2ne6yyRM=;
+        b=kM1SaagZSrLZbnCoI1C4ZSitB+SyLfB3u0xE0zSP4EkqxUzrm7f3IJWhrMAdx+xBfR
+         Vfe5W0EJUakJ8ez5FWehMy3XQG6+GJHhB9RNU0x1xX6eTUBf6mbzTKuMc1E6xWuV/Ki1
+         0faJkRO9424Zf8laYIiJzOmbaNa/5FR30YEBrTTL2dVdpCdosrnY1Zz1WV92FRgKl7h8
+         Wll/uZcYWdTDRoJKoK6AQegF40CL9TaKHjE28lSqiT9Igj+qzNVGFY/eK7P/pSEtmdiI
+         fQB0DEhuZuhYQu5Ij7BHR/uJuV/IA5YI2WL4GqCIvqUDryp3u9jK3GY0s4BaeTDAaejO
+         8DkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732303021; x=1732907821;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DA5BQinA+K8E3Rs6rAmQsutDEAzcqPbYmFB2ne6yyRM=;
+        b=wRenklOeVbubJXbBNN/VK/sSzG0YJVzZsE+axklSDAvqkJHPHtu+ClNyi5V7iG0A5C
+         Ud+fvQqtJ7SwRMc/ei73EIXYguO0J8E8M8e90RKTSxL+OVo3klh+iGlFLlzK3eMHKCaY
+         PJaMzhYJI+ZY+hmDjgqqfbusQ2hoDfQrp+qUUzsryjUd5JQbx8WFsZf0MnZppC3Bujin
+         YA8t+Eqa5hKJ20AGvzgsfSuiIMRvf8lrbx01T08YSLBwyX7JJeKxxhxmmk9NDHtPGxIk
+         L7RJdILlvk/v5ReMcnVrXRPOf41lpy+sav26KxZqyqOfkjdm8wTilW/jH882FxN+PQZm
+         qyNw==
+X-Forwarded-Encrypted: i=1; AJvYcCW39a+jq/wygKDhKVyTWpHgaRX06RvCpYZuTpl9PNsLiu/rBstUKfDCgNeinLtdsqdnjfwPf3vVBSHM@vger.kernel.org, AJvYcCWJQGu/dDyhIF2iq6fo83hv3K3zHjUmB5vAtRoZ3W0mNFjsv98SdCYgr71qRqKINTQ+SOa9LnR1Javc@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/ZKAtlP4hSk4DtPEmD9AGyET8iIp4B5dlBghbkPFRR9UWJrJA
+	Yd/pPSJ8wydnv9hTDQ+ty6lpWHL7ulO9ph0R4cRxJHjs4R101skkNpp46kFWu0D37Zf3fgQeNuZ
+	aWj5aVJx1DmbufM1zEMcsrFyACRY=
+X-Gm-Gg: ASbGncu1KIN/lwpczasoDgcSCI+PH9CgloLswhHX1oTB7Sd46lZZK/3tdeavQTy+4rU
+	Z4omagLwvijuWWNaRXNCqxBMYIGsdDb8=
+X-Google-Smtp-Source: AGHT+IETHPVbTdLJgmSiRZ3qgENUPco3qGAB3fAKFgzhDoEjDadpU4p0bTj95k6oRnjTurPFJFNUX5xx1/X+yc0bRTQ=
+X-Received: by 2002:a05:6512:4016:b0:53d:d60e:fc2e with SMTP id
+ 2adb3069b0e04-53dd60efc32mr2762642e87.5.1732303020416; Fri, 22 Nov 2024
+ 11:17:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] dt-bindings: iio: adc: adi,ad4000: Add PulSAR
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1732020224.git.marcelo.schmitt@analog.com>
- <dd7fd54585e1230d2da86b5e3d4ed770256b0af2.1732020224.git.marcelo.schmitt@analog.com>
- <5kz6ghe56yiprlvhyduv7olcrajvejyvulcpjav6doiyvr6dcl@6qlt4nebp4gb>
- <Z0CkOTGhGhfV18OG@debian-BULLSEYE-live-builder-AMD64>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Z0CkOTGhGhfV18OG@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-16-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20241122113322.242875-16-u.kleine-koenig@baylibre.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 22 Nov 2024 21:16:24 +0200
+Message-ID: <CAHp75VewsWJ-R+7Uf7hVdj5B4LsfGwR+NDPCFW4=FQF1dJwwbA@mail.gmail.com>
+Subject: Re: [PATCH v3 04/10] iio: adc: ad_sigma_delta: Add support for
+ reading irq status using a GPIO
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean <aardelean@baylibre.com>, 
+	Alisa-Dariana Roman <alisa.roman@analog.com>, Conor Dooley <conor+dt@kernel.org>, 
+	David Lechner <dlechner@baylibre.com>, Dumitru Ceclan <dumitru.ceclan@analog.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, 
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 22/11/2024 16:33, Marcelo Schmitt wrote:
->>
->>> +      - items:
->>> +          - enum:
->>> +              - adi,ad7942
->>> +          - const: adi,ad7946
->>> +
->>> +      - const: adi,ad7983
->>> +      - items:
->>> +          - enum:
->>> +              - adi,ad7980
->>> +              - adi,ad7988-5
->>> +              - adi,ad7686
->>> +              - adi,ad7685
->>
->> Keep alphabetical order.
-> 
-> Do the fallbacks declared here have any impact on the match try order or on how
-> the compatible list should be ordered?
+On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
+>
+> Some of the ADCs by Analog signal their irq condition on the MISO line.
+> So typically that line is connected to an SPI controller and a GPIO. The
+> GPIO is used as input and the respective interrupt is enabled when the
+> last SPI transfer is completed.
+>
+> Depending on the GPIO controller the toggling MISO line might make the
+> interrupt pending even while it's masked. In that case the irq handler
+> is called immediately after irq_enable() and so before the device
+> actually pulls that line low which results in non-sense values being
+> reported to the upper layers.
+>
+> The only way to find out if the line was actually pulled low is to read
+> the GPIO. (There is a flag in AD7124's status register that also signals
+> if an interrupt was asserted, but reading that register toggles the MISO
+> line and so might trigger another spurious interrupt.)
+>
+> Add the possibility to specify an interrupt GPIO in the machine
+> description in addition to the plain interrupt. This GPIO is used then
+> to check if the irq line is actually active in the irq handler.
 
-I don't understand, we do not talk about fallbacks. I also do not
-understand at all how this relates to my comment.
+...
 
-> The only significant difference between each group of devices is the sample rate.
-> A faster device can read at slower sample rates so if somebody knows to have
-> a 16-bit pseudo-differential PulSAR but doesn't know about the exact model they
-> could have a compatible like
->       compatible = "adi,ad7980", "adi,ad7988-5", "adi,ad7686", "adi,ad7685",
->                    "adi,ad7988-1", "adi,ad7983";
+> +       if (!sigma_delta->rdy_gpiod || gpiod_get_value(sigma_delta->rdy_g=
+piod)) {
+> +               complete(&sigma_delta->completion);
+> +               disable_irq_nosync(irq);
+> +               sigma_delta->irq_dis =3D true;
+> +               iio_trigger_poll(sigma_delta->trig);
+> +
+> +               return IRQ_HANDLED;
 
-Can't you autodetect this?
+> +       } else {
 
-> 
-> to try from fastest to slowest device.
-> The dt doc would indicate that order in the fallback list?
->       - items:
->           - enum:
->               - adi,ad7980    # Fastest 16-bit pseudo-differential ADC
->               - adi,ad7988-5  # 2nd fastest 16-bit pseudo-differential ADC
->               - adi,ad7686    # 3rd fastest 16-bit pseudo-differential ADC
->               - adi,ad7685    # 4th fastest 16-bit pseudo-differential ADC
->               - adi,ad7988-1  # 5th fastest 16-bit pseudo-differential ADC
->           - const: adi,ad7983 # Slowest 16-bit pseudo-differential ADC
+Redundant 'else'.
 
-Again, only one fallback here, not sure what are you asking about. BTW,
-DT spec explains compatibles...
+> +               return IRQ_NONE;
+> +       }
 
-> 
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ad7691.pdf
-> has a nice table with the different devices and sample rates.
-> 
-> writing-bindings.rst says "DO use fallback compatibles when devices are the same
-> as or a subset of prior implementations."
-> But, how can we use fallbacks properly?
+Can we actually invert the conditional?
 
-How DT spec and tutorials like elinux ask... What is exactly the problem
-or question?
+>  }
 
-> From Documentation/devicetree/bindings/display/bridge/lvds-codec.yaml I'm
+...
 
-How LVDS bridge is related to this one here?
+> +       if (sigma_delta->rdy_gpiod && !sigma_delta->irq_line)
 
-> inferring only one fallback should be provided per group of devices.
-> 
->>
->>> +              - adi,ad7988-1
->>> +          - const: adi,ad7983
->>> +
->>> +      - const: adi,ad7688
->>> +      - items:
->>> +          - enum:
->>> +              - adi,ad7693
->>> +              - adi,ad7687
->>> +          - const: adi,ad7688
->>> +
->>> +      - const: adi,ad7984
->>> +      - items:
->>> +          - enum:
->>> +              - adi,ad7982
->>> +              - adi,ad7690
->>> +              - adi,ad7691
->>> +          - const: adi,ad7984
->>> +
->>>    reg:
->>>      maxItems: 1
->>>  
->>> @@ -133,6 +178,32 @@ required:
->>>    - ref-supply
->>>  
->>>  allOf:
->>> +  # Single-channel PulSAR devices have SDI either tied to VIO, GND, or host CS.
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            enum:
->>> +              - adi,ad7685
->>
->> Why do you need this? It's fallback is already here.
-> 
-> So dtbs_check can provide an error message if for example compatible = "adi,ad7687";
-> and adi,sdi-pin = "sdi";
+Do you need the first check? (I haven't remember what gpiod_to_irq()
+will return on NULL, though)
+
+> +               sigma_delta->irq_line =3D gpiod_to_irq(sigma_delta->rdy_g=
+piod);
+
+...
+
+> --- a/include/linux/iio/adc/ad_sigma_delta.h
+> +++ b/include/linux/iio/adc/ad_sigma_delta.h
+> @@ -96,6 +96,7 @@ struct ad_sigma_delta {
+>         unsigned int            active_slots;
+>         unsigned int            current_slot;
+>         unsigned int            num_slots;
+> +       struct gpio_desc        *rdy_gpiod;
+
+Do you need a type forward declaration?
+
+>         int             irq_line;
+>         bool                    status_appended;
 
 
-I mean this compatible, not if clause.
-
-
-
-
-Best regards,
-Krzysztof
+--=20
+With Best Regards,
+Andy Shevchenko
 

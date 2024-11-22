@@ -1,85 +1,84 @@
-Return-Path: <linux-iio+bounces-12518-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12519-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AEE39D64D0
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 21:18:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846579D64DB
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 21:26:28 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CBCEB21D27
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FA616188D
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBEF175D38;
-	Fri, 22 Nov 2024 20:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BAE18593A;
+	Fri, 22 Nov 2024 20:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SuBT+1UU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AfNUTFx0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEBD158DA3;
-	Fri, 22 Nov 2024 20:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C1315F40B;
+	Fri, 22 Nov 2024 20:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732306711; cv=none; b=BCTEq204Hw1sDgX8BjLSyj80xZX0/fzau7lU39sVFQ7PUWYGxZ7B/M7HUZFeGHsEcnlrkPM1SF2mtjOOmgU+Uz0c1mJPrjjOfnFP5qhWSAG9DoAPXGSoy5kfOHoyVf7FRXioiF3VxHX9TMFchZMam8UwdlJ1VL3D3VYdYDRn7Bw=
+	t=1732307182; cv=none; b=JZVS+F7d84h26eKQcIUeKk2j8BmQBJzIJUf6+FJeMHhnjdRffJljaiOynRk3tTlSC090poAE0SuaiX5iGr1FJaSnaac6pTVRToOsR/6HtdzjFeDsiKK30PjSo8Meo6RTgx7GGp/CS4TtNJy5y7k9Qig2A37L6VhcB7EM3+hxc2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732306711; c=relaxed/simple;
-	bh=NH8Cib549nRPR2nrH+duRUcPRtLmJCXGYFg5JPI8qO8=;
+	s=arc-20240116; t=1732307182; c=relaxed/simple;
+	bh=E6JvsfuOWkytg/BL08NLWlZySnogq/hNZzUST5r/6io=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r2G7epg2MHUZOW1Vq1wH/Z2LkS6tWCZ0M3t9KBi88eZ96ikXYRvu1Q2N1A1/02sxmQUoUBKO7KKmcS5TxWgMncRAuaUh5XtKF/JuHyMVj4uWOTjQ3fvekKJpXb76h0huJrqrRhNWgi21XzaQSxniLwsy+vYEud3DPyjVT2zEeXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SuBT+1UU; arc=none smtp.client-ip=209.85.208.51
+	 To:Cc:Content-Type; b=eEPSlZz1/YQoTE/hGjdtMlQCyrIJTmQzRpPzOxRkAtJD5HgGOfHGPCtD008lJ2OuovRfuSzR1G0/Dkg2ymENaJ4CIk6AecK88oF38r6X4OvUxZE2XUEZ3DR1EphkvSNe9mxD39UKIxJux8C+WIU+9onWAzGdlRJfjG3REHphWWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AfNUTFx0; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5ceca0ec4e7so2860654a12.0;
-        Fri, 22 Nov 2024 12:18:29 -0800 (PST)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aa51bf95ce1so134698066b.3;
+        Fri, 22 Nov 2024 12:26:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732306708; x=1732911508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732307179; x=1732911979; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iGhwe6p04v718Aq3l1QkLKkVuBpxdX/SdfLZdji1gxA=;
-        b=SuBT+1UU3RNxuTQyHlJ/GifQ3Ty0s0DYxvkatoGZgk9HZ4HJ25+CgfbePAeZ0wnyvz
-         L2jfB4pu/gmPWzgE9PyI0V99HNa4pCRXEjceye5vMn202t6gke9cyJf8oVxmGiod5HCN
-         Va7DF7IpgcokgY+mLBKZ7WWsNIv8yJu33BSH7M0JYrjWpqD6o+v8XspKO3fJxeWlHQVp
-         yYuys1xw51DGzhmHdAGAob29uja4TnSwasVuur/Uytx1woMV4NGTOjMEY+CahVjw4ZGL
-         haCr84hG3A+On/i73RSRVjYQ08ts52cvb9nXuMfzV+lAdQrxZsTjFAr7I67lnWiz1CCM
-         6ihA==
+        bh=b6N793zfeIiA128rzFaW0HjuK8FkQ04wBcEMgsJfh9Y=;
+        b=AfNUTFx02vrJfOXk3G6TLxC7byLuKdGDqs0U+7aIKRW5NhSIvNJ5CtOupxIFCb+F5n
+         JZnYgq2uZKJ5mk/rER9ByuvluVNEnX8tNZZheOlE0aPgeYQaUXe+wt/I9Rgxj+n4Vb12
+         cfsA9pr+3eTle90j8I3YGp/pVrYWJJeOaRigkw2d8Bl6WTdFJB7XbJkANRY4/Ax95d0y
+         IAXUZPgVZ7TTyMrdXTcBnzxV+T6y51pnd1bpkKWhxiaLkUSPo3fRY64OSiOBZBCeSCNi
+         ayVrGZy4BCQ+BhqneFVx/7lZmVwnMv5goOxWkAsFHaUJBUQML+nI7PGECvYVeU3GKF7v
+         2s0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732306708; x=1732911508;
+        d=1e100.net; s=20230601; t=1732307179; x=1732911979;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iGhwe6p04v718Aq3l1QkLKkVuBpxdX/SdfLZdji1gxA=;
-        b=cT9lzTJdS+ztqPyRc+cXtY1PaWYhFnDsjr0GTkoTubNiJcRrhJDsRZG8EFeBKBkFqC
-         A4VulasMZqoiIRPYYEUN5pptI/gwf+qj3MO1ELUEZmZI0McdNEEU23vg88v54dVyC/3L
-         gRgLCoj+No5RGtvZI/+8ANnQoGL46YK7kvJXcmpX41L7YTKwIwb3zytFrmlvnTCdZ9Cr
-         nvsaQKopSvLVt5j4qaSP5k3C+kJ6Zv3nivEuJOYcUiM7L7t/gqb4zryYTXbZAtD5Wf7W
-         GrdH1wfnc/a9p7LxVy7+fazEFwdiwqJXP5q6jfsnVVRPXW5Kz/8Mg+ZyVgACOCazGGKF
-         wv9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVWD5cWxhNTF2GC/pvceBvkZPnQO2258u90CUFwWiRPQkkVJVVb0CNr/nub//OZdZBSA65RSee9+Uvn@vger.kernel.org, AJvYcCVZPh8qdZfTCuon1n0FWETSDB0Msfw/tlqlQ1L1IZhQbsTPWHdEcp5/ZHTIx1kOYFmWEooLBMBDphqL@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSwbSIXU8q1ocrEgSOcOBi7YlLGXdbnJP1LnhBmwbLwe6LS2C7
-	5u6lQEph32NpPV7fJwzlbjGhQm2JkapDafVZJO7JkdCtXkxVXgljcLGsl69zEyFoljmR2be4P0f
-	ztIAPMjkd5HLNcQbLmt6wQRiLQs5VnivK
-X-Gm-Gg: ASbGnctDDpAYdAMBvFiXryxIx3IBro8JM4vHjlBEjVe/7DSANUBYKvECNAaqBK/x2Zq
-	fv1go6zWgkc7L3F8BZVV10AsBBy5u/kk=
-X-Google-Smtp-Source: AGHT+IEg2mZ+11txTOaInr89UFwymZ8VqCrxPYZItS5nQDCe9hACEozC1DZEdZjPGmjBmJWEqHsUhHonYIGHh7MbPb0=
-X-Received: by 2002:a05:6402:278e:b0:5ce:bdd8:18ca with SMTP id
- 4fb4d7f45d1cf-5d0206240femr3278212a12.14.1732306707975; Fri, 22 Nov 2024
- 12:18:27 -0800 (PST)
+        bh=b6N793zfeIiA128rzFaW0HjuK8FkQ04wBcEMgsJfh9Y=;
+        b=R6ydSEgC9vEfKhNkWN6mwgy5FHSy4rsuyo0e874W2HFLC6dlLYrT5hY4Cvuo+nWHc5
+         OMXD3EJGV/8RxnApnmSfa6NVKwDRRc6z/MgbIoPrxXTQVsSY0ZmS7GHMP21+qgnT4f4d
+         RvRbSLbqkzlRmf826qP+p2lSIzZfhcD/FaQTmcNzMM2UOq4tG1IY5ycoI9nn+1EpeC56
+         9Ry79FH2+YOWadaMt8tZvazKjgj0eVYeur15Xtqe3xGDghaQvSx0M9fbTIw3aw1fZf0u
+         QhjdlVdY1FQosPhKxFFneb596eXlPph2i5Tso2QRLm+WFifQ++0m80vOn07n+slSW95u
+         u4aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX61aNAWVsfatl4TPHtfByj/w8+Z9FnHAebCo7fAohFih/vRuETwR0hyFSmWOx7iIiqkqZKqk6jybTw@vger.kernel.org, AJvYcCXttuG6KbUXeKVQXh6sL/uGbTukAxJcVyvb/BJAKe0NncbvcUg7MeyxY2EtRsd4z78MlJkiCWd1mQYi@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9bWB+NeYnHvdcFv2/hIN/DNtFGvN+Kz2RVTw5PMkw02PCnlGj
+	/6psTvZq/osHnTHx3rorqm9X4XBLzbthWm7l9OeR3J9zqdmZz+YTEJH+36r72ADCXm03G8sgLtE
+	ObZUKoF8vMvIIuKHFrliHiCKLZN8=
+X-Gm-Gg: ASbGncuRzVpaJDDBwLDbvDAl9k2jl8lKwkVUjgTYxsUBVSVC6q6fL3opDOx82U1pP25
+	mEwp5fg//DTqSDdF1phdzfTtdLk47MYs=
+X-Google-Smtp-Source: AGHT+IHNoLErVCnXFDgdXxpjT8Hxew2lejnSXOBqbPpbfeiwp1CBgaKlS8lgj8UOA07IbqTW+Z+quKbnMqhgQiIx19k=
+X-Received: by 2002:a17:906:d511:b0:a9a:76d:e86c with SMTP id
+ a640c23a62f3a-aa509d79295mr307958266b.49.1732307179582; Fri, 22 Nov 2024
+ 12:26:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-20-u.kleine-koenig@baylibre.com>
-In-Reply-To: <20241122113322.242875-20-u.kleine-koenig@baylibre.com>
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-21-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20241122113322.242875-21-u.kleine-koenig@baylibre.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 22 Nov 2024 22:17:51 +0200
-Message-ID: <CAHp75Vd_jVnf+oY7Y19pFiRVNUNT24J9i9spRRag-e0bw73pSw@mail.gmail.com>
-Subject: Re: [PATCH v3 08/10] iio: adc: ad_sigma_delta: Check for previous
- ready signals
+Date: Fri, 22 Nov 2024 22:25:43 +0200
+Message-ID: <CAHp75VfX7Rtx96mY8V_9M+m1y_zwuoz+VGcmoF75YTjoT9NF8g@mail.gmail.com>
+Subject: Re: [PATCH v3 09/10] iio: adc: ad7124: Add error reporting during probe
 To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
 	Michael Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean <aardelean@baylibre.com>, 
@@ -93,146 +92,124 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
 <u.kleine-koenig@baylibre.com> wrote:
 >
-> It can happen if a previous conversion was aborted the ADC pulls down
-> the =CC=85R=CC=85D=CC=85Y line but the event wasn't handled before. In th=
-at case enabling
-> the irq might immediatly fire (depending on the irq controller's
-
-immediately
-
-> capabilities) and even with a rdy-gpio isn't identified as an unrelated
-> one.
->
-> To cure that problem check for a pending event before the measurement is
-> started and clear it if needed.
+> A driver that silently fails to probe is annoying and hard to debug. So
+> add messages in the error paths of the probe function.
 
 ...
 
-> +static int ad_sigma_delta_clear_pending_event(struct ad_sigma_delta *sig=
-ma_delta)
-> +{
-> +       int ret =3D 0;
+> +/* Only called during probe, so dev_err_probe() can be used */
 
-Unneeded assignment, see below.
+It's a harmless comment, but I think dev_err_probe() name is good
+enough to give such a hint.
 
-> +       bool pending_event;
-> +
-> +       /*
-> +        * read RDY pin (if possible) or status register to check if ther=
-e is an
-> +        * old event.
-> +        */
-> +       if (sigma_delta->rdy_gpiod) {
-> +               pending_event =3D gpiod_get_value(sigma_delta->rdy_gpiod)=
-;
-> +       } else {
-> +               unsigned status_reg;
-> +
-> +               ret =3D ad_sd_read_reg(sigma_delta, AD_SD_REG_STATUS, 1, =
-&status_reg);
-> +               if (ret)
-> +                       return ret;
+...
 
-Side note: in the initial logic the 0 assigned above is overwritten by
-0 here. While it's not a technical problem, it might affect the
-workflow in the future.
+> +/* Only called during probe, so dev_err_probe() can be used */
 
-> +               pending_event =3D !(status_reg & AD_SD_REG_STATUS_RDY);
-> +       }
-> +
-> +       if (pending_event) {
+Ditto.
 
-So, check for the error condition first pattern?
+...
 
-  if (!pending_event)
-    return 0;
+>         do {
+>                 ret =3D ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readva=
+l);
+>                 if (ret < 0)
+> -                       return ret;
+> +                       return dev_err_probe(&st->sd.spi->dev, ret, "Erro=
+r reading status register\n");
+>
+>                 if (!(readval & AD7124_STATUS_POR_FLAG_MSK))
+>                         return 0;
 
-This among other benefits makes the below code less indented and hence
-less LoCs to be occupied.
+>                 usleep_range(100, 2000);
 
-> +               /*
-> +                * In general the size of the data register is unknown. I=
-t
-> +                * varies from device to device, might be one byte longer=
- if
-> +                * CONTROL.DATA_STATUS is set and even varies on some dev=
-ices
-> +                * depending on which input is selected. So send one byte=
- to
-> +                * start reading the data register and then just clock fo=
-r some
-> +                * bytes with DIN (aka MOSI) high to not confuse the regi=
-ster
-> +                * access state machine after the data register was compl=
-etely
-> +                * read. Note however that the sequence length must be sh=
-orter
-> +                * than the reset procedure.
-> +                */
-> +               unsigned int data_read_len =3D DIV_ROUND_UP(sigma_delta->=
-info->num_resetclks, 8);
+Side note 1: fsleep() ?
 
-BITS_TO_BYTES()
+>         } while (--timeout);
 
-> +               uint8_t data[9];
+Side note 2: maybe using read_poll_timeout() from iopoll.h makes this
+better looking?
 
-Why not u8?
+...
 
-> +               struct spi_transfer t[] =3D {
-> +                       {
-> +                               .tx_buf =3D data,
-> +                               .len =3D 1,
-> +                       }, {
-> +                               .tx_buf =3D data + 1,
-> +                               .len =3D data_read_len,
-> +                       }
-> +               };
-> +               struct spi_message m;
-> +
-> +               /* Oh, back out instead of overflowing data[] */
-> +               if (data_read_len > sizeof(data) - 1)
-> +                       return -EINVAL;
-> +
-> +               spi_message_init(&m);
-> +               if (sigma_delta->info->has_registers) {
-> +                       unsigned int data_reg =3D sigma_delta->info->data=
-_reg ?: AD_SD_REG_DATA;
-> +
-> +                       data[0] =3D data_reg << sigma_delta->info->addr_s=
-hift;
-> +                       data[0] |=3D sigma_delta->info->read_mask;
-> +                       data[0] |=3D sigma_delta->comm;
-> +                       spi_message_add_tail(&t[0], &m);
-> +               }
-> +
-> +               /*
-> +                * The first transferred byte is part of the real data re=
-gister,
-> +                * so this doesn't need to be 0xff. In the remaining
-> +                * `data_read_len - 1` bytes are less than $num_resetclks=
- ones.
-> +                */
-> +               data[1] =3D 0x00;
-> +               memset(data + 2, 0xff, data_read_len - 1);
+>  static int ad7124_check_chip_id(struct ad7124_state *st)
 
-> +               spi_message_add_tail(&t[1], &m);
+>         ret =3D ad_sd_read_reg(&st->sd, AD7124_ID, 1, &readval);
+>         if (ret < 0)
+> -               return ret;
+> +               return dev_err_probe(&st->sd.spi->dev, ret,
+> +                                    "Failure to read ID register\n");
 
-Instead you can also use
+Why not temporary for the struct device, will be the same LoCs now,
+but might help in the future if more callers will need this parameter.
 
-  if (...)
-    spi_message_init_with_transfers(..., 2);
-  else
-    spi_message_init_with_transfers(..., 1);
+>
+>         chip_id =3D AD7124_DEVICE_ID_GET(readval);
+>         silicon_rev =3D AD7124_SILICON_REV_GET(readval);
+>
+> -       if (chip_id !=3D st->chip_info->chip_id) {
+> -               dev_err(&st->sd.spi->dev,
+> -                       "Chip ID mismatch: expected %u, got %u\n",
+> -                       st->chip_info->chip_id, chip_id);
+> -               return -ENODEV;
+> -       }
+> +       if (chip_id !=3D st->chip_info->chip_id)
+> +               return dev_err_probe(&st->sd.spi->dev, -ENODEV,
+> +                                    "Chip ID mismatch: expected %u, got =
+%u\n",
+> +                                    st->chip_info->chip_id, chip_id);
+>
+> -       if (silicon_rev =3D=3D 0) {
+> -               dev_err(&st->sd.spi->dev,
+> -                       "Silicon revision empty. Chip may not be present\=
+n");
+> -               return -ENODEV;
+> -       }
+> +       if (silicon_rev =3D=3D 0)
+> +               return dev_err_probe(&st->sd.spi->dev, -ENODEV,
+> +                                    "Silicon revision empty. Chip may no=
+t be present\n");
+>
+>         return 0;
+>  }
 
+...
 
-> +               ret =3D spi_sync_locked(sigma_delta->spi, &m);
-> +       }
-> +
-> +       return ret;
+>         ret =3D ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_c=
+ontrol);
+>         if (ret < 0)
+> -               return ret;
+> +               return dev_err_probe(dev, ret, "Failed to setup CONTROL r=
+egister\n");
+>
+>         return ret;
 
-return spi_sync_locked(...);
+Side note 3: return 0;
 
-> +}
+...
+
+>         ret =3D ad7124_soft_reset(st);
+>         if (ret < 0)
+
+> +               /* ad7124_soft_reset() already emitted an error message *=
+/
+
+To me it looks like an almost useless comment.
+
+>                 return ret;
+>
+>         ret =3D ad7124_check_chip_id(st);
+>         if (ret)
+> +               /* ad7124_check_chip_id() already emitted an error messag=
+e */
+>                 return ret;
+>
+>         ret =3D ad7124_setup(st);
+>         if (ret < 0)
+> +               /* ad7124_setup() already emitted an error message */
+>                 return ret;
+
+Ditto.
 
 --=20
 With Best Regards,

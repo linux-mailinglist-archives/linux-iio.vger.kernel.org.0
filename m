@@ -1,84 +1,85 @@
-Return-Path: <linux-iio+bounces-12516-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12517-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847F49D6489
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:22:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBE49D64C3
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 21:07:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A116281ADE
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 19:22:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C881161730
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 20:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E8F1DF24D;
-	Fri, 22 Nov 2024 19:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42CF183CBE;
+	Fri, 22 Nov 2024 20:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVyUzqkE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ipqy7qiE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86DA64A8F;
-	Fri, 22 Nov 2024 19:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9933E158DA3;
+	Fri, 22 Nov 2024 20:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732303329; cv=none; b=ZUSoSERIsHCZFG88KMgrG8ooZinFIRuiW4qJJPOlVJDAYBkMMpd5l09uJvfurdOTfHRbN/zk0CIH1bJLIRi5TnsdxdkudPvxUm370HBw8pOK6swFg7yD2p4tJMGgBwoOspBWYZ2d/mAv1MDrH+mcvvd1High80z+uCFR/hDv+O8=
+	t=1732306074; cv=none; b=tPYjwpl2ThzsUBXafuMMXzMtLHxyaDF6TxHazhP+bccX/kVPW3hE/wXP5UlC0F2YYTendre0iiPOkzI0jQvpyupIpVqc5enP2La3kAoYvbx6FFYGFM72fIYc6gUlZOrx6zb6K4aA67+p4o/SofoQYQgqOOMhTXwGdwWYhTvm4Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732303329; c=relaxed/simple;
-	bh=C/7BTv6rS81MdecBY7aqMXyw80A0kORais1KOM8G0PQ=;
+	s=arc-20240116; t=1732306074; c=relaxed/simple;
+	bh=jng9m8Z6ojcV7u+/PqNBbvwK9kj8LnBfjcBNdAmtkB4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g4gQ0oBdbytFOhBUJ/XSfD137y2ZA9XsZ64w13EI7wNsKjwO7T9NVm5uhfPWSuhkqo9oglUI3dyLJv4rfjeliD8ehIJOwxjakWXXv/uukg+1Mwp6jVOhzljg0ctr1mkdmg8O0LICZWAdOPkC1+Leiq5smmj94fALinR/z82Fe4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVyUzqkE; arc=none smtp.client-ip=209.85.167.41
+	 To:Cc:Content-Type; b=oGPDvNpPXtTYs0ur2iaq3TsgJqLr0mcqPZ9wVKYsnIhfFl4Ks+yjVgU8jy3tk3ss/J08Ub5sWQZb/CEslqkpuDZSBtCuUCxVLcEV7OomJlOFm//mT0KYOiz8qR5HG71+ibtAUmV5qG3NG89AOAKiq2pKQe6nz0SW3UFuC8/2SFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ipqy7qiE; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53da353eb2eso4264779e87.3;
-        Fri, 22 Nov 2024 11:22:07 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9a0ef5179dso388282166b.1;
+        Fri, 22 Nov 2024 12:07:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732303326; x=1732908126; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732306071; x=1732910871; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MnMdI/o12MiHxPUZ0FBSwd/17EDwf71M1mCtNry1PU8=;
-        b=QVyUzqkELhWg3MoDglcWZ9a9ZymXHQgClkoKsjKis94ih6S56KOIYttNs3TNXyS7xz
-         F5KFkh5VEBgJTGTuHaiTN9zMC/+WLTtvCIbOGmKH6ZPnevKYe5qHUk9oThX/iXFdfhYO
-         F3mPww3RCalLuCKbrHSKvLJyaM5dZDgvZTR9/8gS9OGVRou8Rx3nWpljaHbsCWR/TE+6
-         TjYqEoBrBg4LYybU56Nmxa5OS3WRydeY4vxDQbHZLzL5oPm2XdLRVWNxZO2YmwsBNp8G
-         CD8HB0JJjizw9PgqbvvECmNh+eDsu/7V33Z6Kn9Dwmf33nSZ7WhT31CblPhgE3OFkHVo
-         BVEA==
+        bh=jPTkfiGJ7AaYlZP6rIOF08Mqd1nmcw/G8AMr/XE4/Mw=;
+        b=Ipqy7qiEgW7xD0nQXNgRuvwrCbBu+sD0EMJA1h1/ZfAZkwmb9KsMXbvjJKQ7OYxDFe
+         reehBb4zf4rcwSavWiFgvADXkbMZF9TdwYx8wufY0e2r6jfNUctlWZCeE/Sx4l714Pgv
+         RJ3X3LLSye8Op/kRFg8/4Vxz+/SF+ywMEbOobhHEJXcq2HbSCCGoWhuJWXzkbLvb6MRQ
+         y0BeVZ6FYB6JPjxPENYgr07RLtdK0UMNGSBGEqtP0s6wkldYfEDivZyVNgaChjPcexbL
+         lBUSVWPRECg2F/6DCtcTPogvQPUtYQXq+t1kmKf1uwWXQ1dPZvZiKWqu6G8/LKmD4/6R
+         RSbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732303326; x=1732908126;
+        d=1e100.net; s=20230601; t=1732306071; x=1732910871;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MnMdI/o12MiHxPUZ0FBSwd/17EDwf71M1mCtNry1PU8=;
-        b=t/ugjLa8R/L1qjQn8fi9t74nHlL2Q4HWo8o9uFHCTQIkXPZbRyB2/dTu0E03vwvdeE
-         rHhtaG4d55237SDP3gKZE6n3pomaqVAdXUqV2wixxvG3Pm+tEkrXaTK4Se6sj64lossK
-         odJXtX5AhhfCt3nCNz4SalL9oTtvSYycQ0qTnpV+2u+GNDoT1MhTLlYRe2iXl4cqbfdH
-         Mr9jqNIWYBu7IrmPkbD4UOz7EbbUdokAzVkER08x49laASdoqr3RGASttn0vsqfqt010
-         jmwq4b7gALZyizDUiqJ10NM2dzgCtNyON+v3tOFLiWmu4eNEktmbP5rbwebq7+1uE3C0
-         l8mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVwX8wjZIIDouEtM7GVIi6pIsbbozeppW2P6gRkvq/OmyHC2twEoJuUhDuXKuxmEGPJux3K4Q3BxaLe@vger.kernel.org, AJvYcCWZWDValb4gfASvhY3Qtnge0XIxWwYGwOlaLSeTZOwOmYoPN21012ZnSvHunNXsaqFIpAlLbkE4OP0H@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUifdlhxf+yX6umBYsJpTf+LLYC2oFxXGw7qav2sHc8bWv4euh
-	2G5YW6IFvsYJ7GF1Wu9RCL79qe1o16NWc1hMjRaRYZmC+z+rk4Y6wRwTcWo6hZwGC/Y9v066h0h
-	IFw/y2u7u7Szvda1DbmTpELXsCrc=
-X-Gm-Gg: ASbGnctOUeHZd0PETYxVfYhDwzSDLstbTpd851EbKWaXhffFPtMtdAamsWq+GXwwv8D
-	VbL6aKTtjwsG8DnD53+z+doGEz1PaIdk=
-X-Google-Smtp-Source: AGHT+IHvRbpGmFfp3zz3bE9+EGCw+FzjrQP4g9kfZ+8R47hxgVOY1KSrLEttboGpl5SizgKh2wKRPORFXSLKJ2zox5Q=
-X-Received: by 2002:a05:6512:230b:b0:539:f10b:ff97 with SMTP id
- 2adb3069b0e04-53dd39b4c39mr3240832e87.49.1732303325675; Fri, 22 Nov 2024
- 11:22:05 -0800 (PST)
+        bh=jPTkfiGJ7AaYlZP6rIOF08Mqd1nmcw/G8AMr/XE4/Mw=;
+        b=ZbRTHTMz4sAKlVI5RTZeGBQBGtN115bFxFMqOxz7QfhhoMzIq+6gUZhbFCc/6XUrkC
+         HwtEcYTwkjj66kJbtfIOq8ZM5NGNRJbK7NkXo3KlK/cU0mQMGKL9luE4FMrmGhw2zECp
+         KGinb2OKyEhwvmMu0eEXBzq9OMerPQh+cUGx46AcC00IT9Cnj5kk2YJs6vSh5uIjr+qo
+         Az/8kaZ3cftsjSSdwdKXaAy9iqhX0pHU1KJnNkO/NheSVYbw/75Upe764Ey2T+9+fwg7
+         fpuxlsAIhquNzSW0008XYBUj0LADIIw8JHAVMZ4hhE/cQnzZCcIkCRzEKj4zy0THA4ha
+         OIDA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYbyEQq6sffh2HjTCvWH+LqTtbsGWDzSDn+0QBegw5G71o/WHgqYgeO6CiOwQdSuzoNFPSKgx2owRg@vger.kernel.org, AJvYcCXjAKJKMGV4UBNrTDRTs8LhIpg+bzDCkTEDrc4uZ1LtG7QrNZD5gfGg7b8OvRhiL8iMaJ55mw38g99M@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmfGdkFmTiSusAluwOTbMwR8oU8BdF0k4+pXKMesZU9/dWg5GN
+	ZN/zMVg2Aoa5mSMzjUldBjWHgNd5gSamDBwfxyWBx4TF70qn5erOgCE1bD4a6Typ5KRuEzCMVQq
+	v7iMUq6D/UAUYx5oilqc1vuy+UNc=
+X-Gm-Gg: ASbGncto0gO9V1CYtwIiEh8bDO4eDD5RPrjqEDDZyOkoxGlAsuYAdm8DkufHDXHYxzU
+	rlVp2RJyLIh1/J7ynS76PoTB/YwaR3gE=
+X-Google-Smtp-Source: AGHT+IG8/1nWwe70NWCRMKSCsj+YFoTPMYv0izZCAojy60ozffLpRP2VMkCK08taF+3/7YTlmbESsmF1Hs+LYmlDy4A=
+X-Received: by 2002:a17:906:3108:b0:aa1:e51d:cf83 with SMTP id
+ a640c23a62f3a-aa50996620cmr374345266b.11.1732306070941; Fri, 22 Nov 2024
+ 12:07:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-18-u.kleine-koenig@baylibre.com>
-In-Reply-To: <20241122113322.242875-18-u.kleine-koenig@baylibre.com>
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com> <20241122113322.242875-19-u.kleine-koenig@baylibre.com>
+In-Reply-To: <20241122113322.242875-19-u.kleine-koenig@baylibre.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 22 Nov 2024 21:21:29 +0200
-Message-ID: <CAHp75VfCV28o_69VB3EXQZJks34Z7er0v2q4=qPp2=KjWVo7Sw@mail.gmail.com>
-Subject: Re: [PATCH v3 06/10] iio: adc: ad_sigma_delta: Fix a race condition
+Date: Fri, 22 Nov 2024 22:07:14 +0200
+Message-ID: <CAHp75Ve68F5YJ+C+UyL0QK4xEyS-TMErtP9PPouBc8o+uN9=yg@mail.gmail.com>
+Subject: Re: [PATCH v3 07/10] iio: adc: ad_sigma_delta: Store information
+ about reset sequence length
 To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
 	Michael Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean <aardelean@baylibre.com>, 
@@ -92,54 +93,47 @@ Content-Transfer-Encoding: quoted-printable
 On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
 <u.kleine-koenig@baylibre.com> wrote:
 >
-> The ad_sigma_delta driver helper uses irq_disable_nosync(). With that
-> one it is possible that the irq handler still runs after the
-> irq_disable_nosync() function call returns. Also to properly synchronize
-> irq disabling in the different threads proper locking is needed and
-> because it's unclear if the irq handler's irq_disable_nosync() call
-> comes first or the one in the enabler's error path, all code locations
-> that disable the irq must check for .irq_dis first to ensure there is
-> exactly one disable per enable.
-
-"...exactly one disable call per one enable call."
-
-> So add a spinlock to the struct ad_sigma_delta and use it to synchronize
-> irq enabling and disabling. Also only act in the irq handler if the irq
-> is still enabled.
+> The various chips can be reset using a sequence of SPI transfers with
+> MOSI =3D 1. The length of such a sequence varies from chip to chip. Store
+> that length in struct ad_sigma_delta_info and replace the respective
+> parameter to ad_sd_reset() with it.
+>
+> Note the ad7192 used to pass 48 as length but the documentation
+> specifies 40 as the required length. Assuming the latter is right.
+> (Using a too long sequence doesn't hurt apart from using a longer spi
+> transfer than necessary, so this is no relevant fix.)
+>
+> The motivation for storing this information is that this is useful to
+> clear a pending RDY signal in the next change.
 
 ...
 
-> +static bool ad_sd_disable_irq(struct ad_sigma_delta *sigma_delta)
-> +{
-> +       guard(spinlock_irqsave)(&sigma_delta->irq_lock);
-> +
-> +       if (!sigma_delta->irq_dis) {
+> @@ -182,14 +182,13 @@ EXPORT_SYMBOL_NS_GPL(ad_sd_read_reg, IIO_AD_SIGMA_D=
+ELTA);
+>   *
+>   * Returns 0 on success, an error code otherwise.
 
-Why not positive conditional?
+>   **/
 
-  if (->irq_dis)
-    return false;
-  ...
-  return true;
-
-> +               sigma_delta->irq_dis =3D true;
-> +               disable_irq_nosync(sigma_delta->irq_line);
-> +               return true;
-> +       } else {
-> +               return false;
-> +       }
-> +}
+JFYI: unneeded asterisk.
 
 ...
 
->  /* private: */
+> +       unsigned int size =3D DIV_ROUND_UP(reset_length, 8);
+>         uint8_t *buf;
+> -       unsigned int size;
+>         int ret;
+>
+> -       size =3D DIV_ROUND_UP(reset_length, 8);
+>         buf =3D kcalloc(size, sizeof(*buf), GFP_KERNEL);
+>         if (!buf)
+>                 return -ENOMEM;
 
-Consider at some point marking the below members with __private.
+This is somewhat like unrelated refactoring.
 
->         struct completion       completion;
-> +       spinlock_t              irq_lock; /* protects .irq_dis and irq en=
-/disable state */
->         bool                    irq_dis;
+I would suggest avoiding doing it here and instead add a change that
+either uses BITS_TO_BYTES() or even bitmap_zalloc(), whoever the
+latter might require more changes in the code.
 
 --=20
 With Best Regards,

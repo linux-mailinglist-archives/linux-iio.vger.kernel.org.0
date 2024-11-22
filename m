@@ -1,166 +1,129 @@
-Return-Path: <linux-iio+bounces-12478-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12480-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515B89D5A2F
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 08:46:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6103E9D5E20
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 12:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C24031F228E9
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 07:46:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26DE7281089
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 11:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991B917333D;
-	Fri, 22 Nov 2024 07:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A121DED47;
+	Fri, 22 Nov 2024 11:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NHY0JiJ4"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="SJ5aoE3o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4746165EE3
-	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 07:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B3A1DE2D2;
+	Fri, 22 Nov 2024 11:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732261597; cv=none; b=FD2aybaezgMfZRr2VxsKq+lsr+smt+hFOauygzmjGX8PPiYM3dxUQdp4dNMYdxjthWP2x9Fqi8LfzHlzVYRNCuPnkHEZ+34bTylhLMzFgipUQxsOiYLfteQMul2dMqlPKmbhBGJc3km2lTjTkEvfs38DM39mmG/XJc8jRbM5x4U=
+	t=1732275191; cv=none; b=B8laCzP2o3fyKtzdfkqiGoDK2Paf5F3HHqHwqfx9t9rGHdS/ZA/akRA7NCljpGtP9zfYpfNIVw8cNjQ9vwLFVFDN3LEo2Yhw5D40T6kaakv31fslaURE4XpcTprwPRtNiSj0cruZ1ktLwtUujjxPg/U3u1aNbKCx5W7i7Htro+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732261597; c=relaxed/simple;
-	bh=ZEt3yoR0cr5/kASiXDyIBRVJ5cVFZ2AeNaZON5w/kHs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P4Zba9NS5YE35nuxNyiDRk865oXSeY1HjyMj7RYx0aES7HPamYL4J3WzhQNocRPIdWxQYzXtdklSL11cjcTzdKAFFaISIbNp7XGgiBotpOowfAiCL7A0rXSdUrXD9083B20v3wLkel0MzBwVPgC0nSl0z1edvIcTsVf9VsgIZik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NHY0JiJ4; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3e600ae1664so1021735b6e.2
-        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 23:46:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732261595; x=1732866395; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=rV7OUDMMlgxjwFF1dF4a3L3rrV3TIom9pYtmVzZiP3c=;
-        b=NHY0JiJ47UMbw2PSNSi5E91lwAY0+okVpjr1MQsq2a0Dl0vFF90frptAE+QOE+YOZa
-         HhXlmFBk9cAjnSkU3pkgk/Hvm/1K/JTpyq40w7sqbcdKwWkHCrhwTTTsGxxY6P84SywQ
-         Q3jxnbtvLOmlZbAHbl86Z3chjD/IhA4SmWOBY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732261595; x=1732866395;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rV7OUDMMlgxjwFF1dF4a3L3rrV3TIom9pYtmVzZiP3c=;
-        b=WmshkElZCnrYf0BpBOj6W4fnok33sQc4eIaL8+L7ng+/JePqJe/LltCwKmLX1MjP6H
-         y5ZpmklVznlWz33PrgqtNDGu9vxKlGaltfPTxyBqnUoKr2MoAxMN5WBamt/lbeg90fnK
-         isU4S9lCmWxJWiItL777JE+ststeKeA0eo81pzvT0STMLLsXpQfFTvHusNhhLoxc6jjz
-         rI3BExL83yh9EAWr2rYBb0ctJi3mtMvo9tL1m3kR4zmYW8tkvjOf27OXbdvnShPHAwhJ
-         R56Gjt1ig6xWRtMBVRPKKb3r73JJAVPgb2aeLJ7OPu0vDcZfWNPFvC2zMqbCJcDZRgAI
-         53lQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXPODM9N2JeQ8vVGrOuYYaVHks1sexYFEw+NLJBz6BRvvfFy//Cx8o/ueu6l8wFk0BAd9H4RXrCqs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhnUlV77PakmEYcR8HHGptMfclrRk4awcQVxkwSY+Df1JSl2Ba
-	U05YOLMlSDiSXaJXQqNwJVukBNrkaeH8E0UYhFt3UWM7YzX1CKb4h6xLvKteo9aPZ7hzIdagX2s
-	=
-X-Gm-Gg: ASbGncvITu2I4Lvh1cEAY0NVGiWtXrinXIDoP0qsfceMRhKviwlflyfSzDqadKtfwfb
-	MlnSAz8SIC6B4dn0nQWZJw46SVhSi2/uoIL4RFsTMyzw/4A3BpedBfUvlIXOi3knMI6hJwZ6+bO
-	soshSGt2wBWtBksKZ2CxQxshqHNrhLMlrDwKuYmpDevS5Z6Ca+UP04v0URAw7Sjr8BNffkZQlpe
-	E7NcUzHziDzmiCIVB6nKmdtglIjaIGysw4n/aCkWeSmnUEo0XUbVZbMh/Q2sDHN57kJKXELpuWh
-	9Z7euOo95XbzW7vW
-X-Google-Smtp-Source: AGHT+IEDXwnXc2cTK5VaDrgTdOtq1p0oCzT71M5jOd/F7lIJx36WarZ7fOlWbqZyQRLCCzvWD2kK2w==
-X-Received: by 2002:a05:6808:244d:b0:3e7:6199:3caa with SMTP id 5614622812f47-3e9157a352fmr2714756b6e.2.1732261594792;
-        Thu, 21 Nov 2024 23:46:34 -0800 (PST)
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com. [209.85.210.169])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de531315sm1030877b3a.100.2024.11.21.23.46.33
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 23:46:33 -0800 (PST)
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-720c2db824eso1805038b3a.0
-        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 23:46:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU0kEXtaJ8mxZtJhdWzlBh4hegdKouPDXBXRBSxRFFW8hl8nfYa/ijHby7/LO845BDLPag42uF68ks=@vger.kernel.org
-X-Received: by 2002:a05:6a20:3949:b0:1dc:2365:a114 with SMTP id
- adf61e73a8af0-1e09e4b19b9mr2861897637.24.1732261593103; Thu, 21 Nov 2024
- 23:46:33 -0800 (PST)
+	s=arc-20240116; t=1732275191; c=relaxed/simple;
+	bh=TeNwswg1hkcm5NrYEE4/qOtpl/kIp4I7ZBECogJ/1o8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MUh43XmofAUneTAQWHJxm6UMoQAySqBKR8AEhVD6jroAnyPCsX8sWJSTplhKKg92DvBJz6yBkta7JdURnW7W9FjiutTHdpjdctbBrM/rpIhnlsVa6Gk/Lmk+Mh1MW+mueh/OinMxZ9w6Ok750+Yj85E7x3L8ccn1PcMFhmLh+1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=SJ5aoE3o; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AM6e4rO015518;
+	Fri, 22 Nov 2024 06:32:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=SFHUr+0ffpzpCmFD4QpoGc4xgUW
+	Bwn015YdQhBOwfMw=; b=SJ5aoE3oYPvgVAWUzZAgDdHrKJUSAM7SKLoBdEbfvtk
+	65C4HAP2wrfRkcF+dHK/F1KwfbIs6DWTKeY7bd5GfYksn2H0JzYLjX6wZDqfGDaQ
+	5BAs+1vWtS9PkIgt4/OZOCKMzlRjVT5BguOxeqMozpxm5eaKd6V6UsAnKKFB7TIq
+	OxA9cKM6vbVI6I4mtbyqMjHWp11pftz1WZ7BVuoNoaCvHilOxBBM+7K+dt5LJ1+c
+	WwIuSL75lJpY0LoN8ehfDZ3AaJ32ym5yTxIazm/HEntr8mFFhm+rEChtFKa0c/Ev
+	7h10PNoi/QDP7KbrVpLrvuCpNcKQmBe+RaftG1MpFxw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 43170g56ug-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 06:32:54 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4AMBWr3J054996
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 22 Nov 2024 06:32:53 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 22 Nov 2024 06:32:53 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 22 Nov 2024 06:32:53 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 22 Nov 2024 06:32:53 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.168])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AMBWhjH011707;
+	Fri, 22 Nov 2024 06:32:45 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 1/2] dt-bindings: iio: adf4371: add rdiv2 and doubler
+Date: Fri, 22 Nov 2024 13:32:13 +0200
+Message-ID: <20241122113226.49346-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241121-fix-processed-v1-1-4fae6770db30@chromium.org> <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
-In-Reply-To: <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 22 Nov 2024 08:46:21 +0100
-X-Gmail-Original-Message-ID: <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
-Message-ID: <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: hid-sensor-prox: Fix invalid read_raw for attention
-To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: llMGW39BNZAMSCuCIOeJsupQEczoVbLt
+X-Proofpoint-ORIG-GUID: llMGW39BNZAMSCuCIOeJsupQEczoVbLt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ mlxlogscore=999 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ bulkscore=0 malwarescore=0 mlxscore=0 suspectscore=0 spamscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411220098
 
-On Thu, 21 Nov 2024 at 17:44, srinivas pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> On Thu, 2024-11-21 at 09:16 +0000, Ricardo Ribalda wrote:
-> > The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
-> > IIO_CHAN_INFO_RAW.
-> >
-> > Modify prox_read_raw() to support it.
-> >
-> What is the sysfs entry to trigger this IIO_CHAN_INFO_PROCESSED read?
-> Don't you have an entry *_raw?
+Add support for reference doubler enable and reference divide by 2
+clock.
 
-/sys/.../iio:deviceX/in_attention_input
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ .../devicetree/bindings/iio/frequency/adf4371.yaml    | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-There is no _raw device for it.
-
->
->
-> Thanks,
-> Srinivas
->
-> > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
-> > channels")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
-> >  drivers/iio/light/hid-sensor-prox.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/iio/light/hid-sensor-prox.c
-> > b/drivers/iio/light/hid-sensor-prox.c
-> > index e8e7b2999b4c..8e5d0ad13a5f 100644
-> > --- a/drivers/iio/light/hid-sensor-prox.c
-> > +++ b/drivers/iio/light/hid-sensor-prox.c
-> > @@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
-> >       *val2 = 0;
-> >       switch (mask) {
-> >       case IIO_CHAN_INFO_RAW:
-> > +     case IIO_CHAN_INFO_PROCESSED:
-> >               if (chan->scan_index >= prox_state->num_channels)
-> >                       return -EINVAL;
-> >               address = prox_state->channel2usage[chan-
-> > >scan_index];
-> > @@ -107,8 +108,7 @@ static int prox_read_raw(struct iio_dev
-> > *indio_dev,
-> >
-> > report_id,
-> >
-> > SENSOR_HUB_SYNC,
-> >                                                          min < 0);
-> > -             if (prox_state->channel2usage[chan->scan_index] ==
-> > -                 HID_USAGE_SENSOR_HUMAN_ATTENTION)
-> > +             if (mask == IIO_CHAN_INFO_PROCESSED)
-> >                       *val *= 100;
-> >               hid_sensor_power_state(&prox_state-
-> > >common_attributes, false);
-> >               ret_type = IIO_VAL_INT;
-> >
-> > ---
-> > base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
-> > change-id: 20241121-fix-processed-ed1a95641e64
-> >
-> > Best regards,
->
-
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+index 1cb2adaf66f9..ef241c38520c 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+@@ -40,6 +40,17 @@ properties:
+       output stage will shut down until the ADF4371/ADF4372 achieves lock as
+       measured by the digital lock detect circuitry.
+ 
++  adi,reference-doubler-enable:
++    type: boolean
++    description:
++      If this property is present, the reference doubler block is enabled.
++
++  adi,adi,reference-div2-enable:
++    type: boolean
++    description:
++      If this property is present, the reference divide by 2 clock is enabled.
++      This feature can be used to provide a 50% duty cycle signal to the PFD.
++
+ required:
+   - compatible
+   - reg
 -- 
-Ricardo Ribalda
+2.47.0
+
 

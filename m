@@ -1,113 +1,166 @@
-Return-Path: <linux-iio+bounces-12477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12478-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256409D5974
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 07:41:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515B89D5A2F
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 08:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3D391F21D6F
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 06:41:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C24031F228E9
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 07:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76E1916BE14;
-	Fri, 22 Nov 2024 06:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991B917333D;
+	Fri, 22 Nov 2024 07:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RS3EArA5"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="NHY0JiJ4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF861632D5;
-	Fri, 22 Nov 2024 06:41:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4746165EE3
+	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 07:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732257677; cv=none; b=mAXEjxl6bIwIVywL/N/bCVXp2xr1RPjUYtsbzC38tBM8rhN9hux2BlPfzn8hc1qYn7WT8G/rmTKww6d5URjQ5syQuMSDMH3p5LinV0zF4ZTFIDG4KWXB5wrm4jYvy9bA3Rhhpds4AHT/Pd24vz58zjPBxO8je4bSvkWhXMCORlo=
+	t=1732261597; cv=none; b=FD2aybaezgMfZRr2VxsKq+lsr+smt+hFOauygzmjGX8PPiYM3dxUQdp4dNMYdxjthWP2x9Fqi8LfzHlzVYRNCuPnkHEZ+34bTylhLMzFgipUQxsOiYLfteQMul2dMqlPKmbhBGJc3km2lTjTkEvfs38DM39mmG/XJc8jRbM5x4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732257677; c=relaxed/simple;
-	bh=qT67HFU+pJWSoX2UoORQ/o4FlFr0iWQDHlUBdbxNq4M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YkcavWvJBj3T3pgd3Fp04ZZX7AIw/lSTOG66hxrDSaumE/Rf16nYsfuVR8/E3MFdtScv6h6FwxJFfSRscuqVYLObmgdGoJn/3/HrJ9rRjksKBytwhduWJlXGm8fd1+se4GWpcEwhOUvG+UIe3paS1xsi3KfCe1dBjIaa/sXVq+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RS3EArA5; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43155abaf0bso15584865e9.0;
-        Thu, 21 Nov 2024 22:41:15 -0800 (PST)
+	s=arc-20240116; t=1732261597; c=relaxed/simple;
+	bh=ZEt3yoR0cr5/kASiXDyIBRVJ5cVFZ2AeNaZON5w/kHs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P4Zba9NS5YE35nuxNyiDRk865oXSeY1HjyMj7RYx0aES7HPamYL4J3WzhQNocRPIdWxQYzXtdklSL11cjcTzdKAFFaISIbNp7XGgiBotpOowfAiCL7A0rXSdUrXD9083B20v3wLkel0MzBwVPgC0nSl0z1edvIcTsVf9VsgIZik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=NHY0JiJ4; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3e600ae1664so1021735b6e.2
+        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 23:46:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732257674; x=1732862474; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pcddFwAK1YNeu0WgzYzncUvMDhmlBQjxzfSz1BY/lRs=;
-        b=RS3EArA5TGNWHR9r5GZ1z+rWweLT2TuUR8Rkgj9lDwIUmHKn6H8kkeyeEyGkgabkbV
-         F34JTZUIntgwgCKyzmMCtRQ2TGvlJqQ7fxqVS2m9H3VLCUoHLpABCF8H3qr83yEhu/4j
-         B4CXrVTvn6woadLEUuB/8OgmuXKQ/tzyVE/3e4TslcGceseN2qwa/wm/7Yzb+8b+ux5T
-         DvvGU8Wekn4AFJDhKPvQ3Pa7gBvZLAaHoNydzq1aZGsh9tJbtCoESDPgatKMS67lJE48
-         eTdgBVD0ZLj/0svVziOVtxZAXe2ms91vkYXBpTuGuHGN58NPy9IsnXYsIhmsG89LqFg0
-         DKAw==
+        d=chromium.org; s=google; t=1732261595; x=1732866395; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=rV7OUDMMlgxjwFF1dF4a3L3rrV3TIom9pYtmVzZiP3c=;
+        b=NHY0JiJ47UMbw2PSNSi5E91lwAY0+okVpjr1MQsq2a0Dl0vFF90frptAE+QOE+YOZa
+         HhXlmFBk9cAjnSkU3pkgk/Hvm/1K/JTpyq40w7sqbcdKwWkHCrhwTTTsGxxY6P84SywQ
+         Q3jxnbtvLOmlZbAHbl86Z3chjD/IhA4SmWOBY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732257674; x=1732862474;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pcddFwAK1YNeu0WgzYzncUvMDhmlBQjxzfSz1BY/lRs=;
-        b=lEo87qyAzlZ3qgIUvwAoPU9HlKP4vD83VpjvVGmgn1NeYTYlVtMHOwjrIB2KdrzIpL
-         ZN4Auinc/CE5y2K8/dwqdKpDZTmUnOHnwOhU2OaUpVVjGU5x5YLZfMlESH0fhKgHPwS6
-         4MYMUseSpiJ1OCl7wBNrPRWwA06Voq38cw9mHgtRa1fvuvy/bG574+kFhu9pMHZV0Yhu
-         E+3o1cY0un3b+YrWHWBZSDaPdQKDj8W+yO9rmy2Pu14PKTPdgRPyyJ03NaUIz2M6enRK
-         xKfDXvFEOAaVw08aHf4hCoInqNfP5w9L7JH1ZuVO65YwJmhHF684JezRvYsFiTnBEEmu
-         WSGA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhZbbmR3pz6H/X2czV4moYWz3xog+PQBL/fUC0a2RhIj7RwCgIYwDJAk+2qjthiurflG5Bq6myYJVPxQQ3@vger.kernel.org, AJvYcCWohdSFwo2wqYDbSHpk8XdwAs2msDgxVmZXe0iWnSVWdTUjST37spOj612Yv0jduRh0k0tHJr5rPpU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOX/HHoS5xUNcXUPyXQxHKb8QqhByoPxIUHCbaGtt4Lrt9C/5/
-	O3xbyOoAV+QETDyznUXXZqzy7IrnsqoTrEvnvrpc2na31IW737j8a0TFtA==
-X-Gm-Gg: ASbGnctbehaVMgh7c2A7Rl8rE2Utw4GyG9jzQFgKVFafax6CSGq53Z9uO0uMxkPYV2/
-	vVZ2ujHwuFBKf/Csz3NoJJCS4idJQNHiEeRSRqU1DM42Hw4LC8p11/JB6q2/IBHmuPMcHKBIiYg
-	C2CT5vdC21Aw5JGcYRvYB97CjCerkpvDbha8DVwfZW7nCboKQiNTYyiIWyqX4S0G0pWMb0Ua3zH
-	HOY7MjzvxCsdVsL+I5KDoV2XlYhewck4uVKRzubtd7VIDQ8h0FQwDvTBf0qyc51IUlfRKpUMWcg
-	A4WXk1UNRPbexxgv+Av058Hu9MsTfOdVqQd+Kx0ZBVREbW5/lIIVpP6yLSUKqO21d1mgf1hksdN
-	g0r5h5yTCDfQ9YqRtHZjSxU/ygyDslLjYHW/54aurS+o=
-X-Google-Smtp-Source: AGHT+IEm1gNUblkdNOHfWlt9CjFBKocgwoXIVt1MTuEfZKG6whS1fDcjjyLGJ2ZGAyifUFzufrZ1bQ==
-X-Received: by 2002:a5d:47a3:0:b0:382:48ef:b41e with SMTP id ffacd0b85a97d-38260b6b168mr1349644f8f.24.1732257673717;
-        Thu, 21 Nov 2024 22:41:13 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:182b:b217:1455:c275? (2a02-8389-41cf-e200-182b-b217-1455-c275.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:182b:b217:1455:c275])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fb36612sm1516126f8f.59.2024.11.21.22.41.12
+        d=1e100.net; s=20230601; t=1732261595; x=1732866395;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rV7OUDMMlgxjwFF1dF4a3L3rrV3TIom9pYtmVzZiP3c=;
+        b=WmshkElZCnrYf0BpBOj6W4fnok33sQc4eIaL8+L7ng+/JePqJe/LltCwKmLX1MjP6H
+         y5ZpmklVznlWz33PrgqtNDGu9vxKlGaltfPTxyBqnUoKr2MoAxMN5WBamt/lbeg90fnK
+         isU4S9lCmWxJWiItL777JE+ststeKeA0eo81pzvT0STMLLsXpQfFTvHusNhhLoxc6jjz
+         rI3BExL83yh9EAWr2rYBb0ctJi3mtMvo9tL1m3kR4zmYW8tkvjOf27OXbdvnShPHAwhJ
+         R56Gjt1ig6xWRtMBVRPKKb3r73JJAVPgb2aeLJ7OPu0vDcZfWNPFvC2zMqbCJcDZRgAI
+         53lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXPODM9N2JeQ8vVGrOuYYaVHks1sexYFEw+NLJBz6BRvvfFy//Cx8o/ueu6l8wFk0BAd9H4RXrCqs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhnUlV77PakmEYcR8HHGptMfclrRk4awcQVxkwSY+Df1JSl2Ba
+	U05YOLMlSDiSXaJXQqNwJVukBNrkaeH8E0UYhFt3UWM7YzX1CKb4h6xLvKteo9aPZ7hzIdagX2s
+	=
+X-Gm-Gg: ASbGncvITu2I4Lvh1cEAY0NVGiWtXrinXIDoP0qsfceMRhKviwlflyfSzDqadKtfwfb
+	MlnSAz8SIC6B4dn0nQWZJw46SVhSi2/uoIL4RFsTMyzw/4A3BpedBfUvlIXOi3knMI6hJwZ6+bO
+	soshSGt2wBWtBksKZ2CxQxshqHNrhLMlrDwKuYmpDevS5Z6Ca+UP04v0URAw7Sjr8BNffkZQlpe
+	E7NcUzHziDzmiCIVB6nKmdtglIjaIGysw4n/aCkWeSmnUEo0XUbVZbMh/Q2sDHN57kJKXELpuWh
+	9Z7euOo95XbzW7vW
+X-Google-Smtp-Source: AGHT+IEDXwnXc2cTK5VaDrgTdOtq1p0oCzT71M5jOd/F7lIJx36WarZ7fOlWbqZyQRLCCzvWD2kK2w==
+X-Received: by 2002:a05:6808:244d:b0:3e7:6199:3caa with SMTP id 5614622812f47-3e9157a352fmr2714756b6e.2.1732261594792;
+        Thu, 21 Nov 2024 23:46:34 -0800 (PST)
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com. [209.85.210.169])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de531315sm1030877b3a.100.2024.11.21.23.46.33
+        for <linux-iio@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Nov 2024 22:41:13 -0800 (PST)
-Message-ID: <60096b9b-37ce-4b08-a519-3c607de71c0d@gmail.com>
-Date: Fri, 22 Nov 2024 07:41:12 +0100
+        Thu, 21 Nov 2024 23:46:33 -0800 (PST)
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-720c2db824eso1805038b3a.0
+        for <linux-iio@vger.kernel.org>; Thu, 21 Nov 2024 23:46:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU0kEXtaJ8mxZtJhdWzlBh4hegdKouPDXBXRBSxRFFW8hl8nfYa/ijHby7/LO845BDLPag42uF68ks=@vger.kernel.org
+X-Received: by 2002:a05:6a20:3949:b0:1dc:2365:a114 with SMTP id
+ adf61e73a8af0-1e09e4b19b9mr2861897637.24.1732261593103; Thu, 21 Nov 2024
+ 23:46:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: bm1390: simplify using guard(mutex)
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1732193263.git.mazziesaccount@gmail.com>
- <a4c2f21189964132d245531b77fb0865562443a1.1732193263.git.mazziesaccount@gmail.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <a4c2f21189964132d245531b77fb0865562443a1.1732193263.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241121-fix-processed-v1-1-4fae6770db30@chromium.org> <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
+In-Reply-To: <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Fri, 22 Nov 2024 08:46:21 +0100
+X-Gmail-Original-Message-ID: <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
+Message-ID: <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: hid-sensor-prox: Fix invalid read_raw for attention
+To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 21/11/2024 14:05, Matti Vaittinen wrote:
-> The BM1390 uses mutex for protecting the fifo read sequence. The clean-up
-> for a few of the functions can be slightly simplified by removing the
-> goto-based error handling/unlocking and by utilizing the guard(mutex)
-> scoped mutex handling instead.
-> 
-> Simplify driver by using the scoped mutexes.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> ---
->  drivers/iio/pressure/rohm-bm1390.c | 78 ++++++++++++------------------
->  1 file changed, 30 insertions(+), 48 deletions(-)
-> 
+On Thu, 21 Nov 2024 at 17:44, srinivas pandruvada
+<srinivas.pandruvada@linux.intel.com> wrote:
+>
+> On Thu, 2024-11-21 at 09:16 +0000, Ricardo Ribalda wrote:
+> > The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
+> > IIO_CHAN_INFO_RAW.
+> >
+> > Modify prox_read_raw() to support it.
+> >
+> What is the sysfs entry to trigger this IIO_CHAN_INFO_PROCESSED read?
+> Don't you have an entry *_raw?
 
-Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+/sys/.../iio:deviceX/in_attention_input
+
+There is no _raw device for it.
+
+>
+>
+> Thanks,
+> Srinivas
+>
+> > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
+> > channels")
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+> >  drivers/iio/light/hid-sensor-prox.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/iio/light/hid-sensor-prox.c
+> > b/drivers/iio/light/hid-sensor-prox.c
+> > index e8e7b2999b4c..8e5d0ad13a5f 100644
+> > --- a/drivers/iio/light/hid-sensor-prox.c
+> > +++ b/drivers/iio/light/hid-sensor-prox.c
+> > @@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev *indio_dev,
+> >       *val2 = 0;
+> >       switch (mask) {
+> >       case IIO_CHAN_INFO_RAW:
+> > +     case IIO_CHAN_INFO_PROCESSED:
+> >               if (chan->scan_index >= prox_state->num_channels)
+> >                       return -EINVAL;
+> >               address = prox_state->channel2usage[chan-
+> > >scan_index];
+> > @@ -107,8 +108,7 @@ static int prox_read_raw(struct iio_dev
+> > *indio_dev,
+> >
+> > report_id,
+> >
+> > SENSOR_HUB_SYNC,
+> >                                                          min < 0);
+> > -             if (prox_state->channel2usage[chan->scan_index] ==
+> > -                 HID_USAGE_SENSOR_HUMAN_ATTENTION)
+> > +             if (mask == IIO_CHAN_INFO_PROCESSED)
+> >                       *val *= 100;
+> >               hid_sensor_power_state(&prox_state-
+> > >common_attributes, false);
+> >               ret_type = IIO_VAL_INT;
+> >
+> > ---
+> > base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
+> > change-id: 20241121-fix-processed-ed1a95641e64
+> >
+> > Best regards,
+>
+
+
+-- 
+Ricardo Ribalda
 

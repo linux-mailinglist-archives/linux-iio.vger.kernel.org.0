@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-12489-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12490-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01DC9D5E35
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 12:34:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 513DE9D5E37
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 12:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E411F22884
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 11:34:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7C7E1F22723
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 11:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBF11DEFE0;
-	Fri, 22 Nov 2024 11:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E165F1DE8B5;
+	Fri, 22 Nov 2024 11:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ueVN1zcI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mkqtbUyp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4684F1DE2D2
-	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 11:34:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4E61DE3DF
+	for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 11:34:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732275252; cv=none; b=U+zojFqrrO/MrLFyC6iVmObfCtZVbDd6TQ6PuQlceWQpuuXNCQGTVzdzG+Zyp7Ix8VGT3WQuQNhwKSyzbJcbBdiFAmHlf9WM6r50hQGUM/o4Cz6FgQvzYKURsHJQ+u2jDYClt7W7uokjFV6VE870HOa+O8Jk1ykd2BwqCVhbHtw=
+	t=1732275254; cv=none; b=ozkMoIrToPt79IqzVl5MnFjIihYm6zpoppKnPe8svlZNVFkSb+aWd0hm/ShBaNHvpnLbFuXwPNwHVQn5zh4ctK6E1qWVK28sYG1WR7JoWDcsOAjWRZwlikeis756lXe0yoFkEhaWXoOI/8uxHw5Jsk9uuyhp1YHv3p7DWgGFASk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732275252; c=relaxed/simple;
-	bh=SBgp/ABTYxk+qV+nwz/VSGkPh5JOuikR+B/LV0eJ0E8=;
+	s=arc-20240116; t=1732275254; c=relaxed/simple;
+	bh=qCxgBxDixx+y8W8lK/MrUMri31nDKcjFNuZWUz++lzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AvNt3/XOD/EV+welsu6OER+bPkFdjr5jnZm4C/aULTywzDWFBxrbBDVwTWMe8WtNqh6olyeDsuqTr0B5HiQThaOcjyVAKb65bWl9CqH5ugu6iYqc+pEpBQckre+GZ3gXaWo6rVqdwFde1Bh5cywYsmCc+4RBoN3HXdw0zFMxENU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ueVN1zcI; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version:Content-Type; b=sW8RQIWPdrYLQ6yaEmmBPJnGPQfNkGsCT6PuWAzFfNlOHWceYGmTVsRWC721WJCJ+uvyGTL+GaGx8FaagVbKbwdhxlFwGyhVDmMOffZABskonBtDSdMbbyiKjA1HVH5cArRsexUnxRrTZ6dDvzEDfMT7p6gMtZqHqreaZ+NRY+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mkqtbUyp; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3823cf963f1so1195069f8f.1
-        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 03:34:10 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-432d86a3085so17711595e9.2
+        for <linux-iio@vger.kernel.org>; Fri, 22 Nov 2024 03:34:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732275248; x=1732880048; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732275250; x=1732880050; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rPMi+9tgXxLof1o1SgxfdNx0aQiFAp3/iUhEKOQFEfY=;
-        b=ueVN1zcI8nWduJNUajwFPI2UhBRxzO6c6ZBO4D6v86jormBwQlDcQb9TR4SH/P3Zv+
-         rZ7yACpghMoy47Qen7dvcP2eL/SNUuiB0SpSI8gf2vakgpPLodi4UNGTxlT0whe2vvqB
-         gI8Adr7UXwfHKmzzgfPzM77X8yIH5xQb0Jxgk5p27s/3EqEGvtrlA0yXc9mMTrR9G/Hq
-         pq/c8l6xavjIhJt5H/xbO3YXtjcxX8KsPmMkdtyQ58MQZ1ppSe6oidR3bUsK74CoaQ/Y
-         pX5vYAw7/2231kyEhsQGM8aTYzlWryD0kU+YDCQiGINPpMKQISb6Pp/5bV6RuZsHle5j
-         1J7A==
+        bh=/tuSFNPk2cB5aapm6IULPvIIFlRmzQ+hDSbD7xiuHLo=;
+        b=mkqtbUyp23TyjZUxDfIHINaTHHjO4/EFH4p+bNt9gCVOLd7NGzgWBSm4UNL39/2zRP
+         VSa4xRcMFEWgwgGDm+mGagR2+uQsR8Mm5HsV46T8ne51iYrIdV9wbHHF9p9/Vd+MejAe
+         ud29kjSDXQMbqDIyQFDxtudimhq7ow9RQfFp3FRHWtxQkirKKsxOjUZWE8RVDEzV7Gnc
+         R5eF8ceftMC7OPJKonRSBUwktY28GXsHIriwcD5/XrNpvtncSL0l347KyfotdoY2YjFQ
+         amVlltOglGJ8COeBmvQNEI2TKz3/4N9Iz2mwOl09+MaSwD2dLR4wXWxDqd6pL4gRocgX
+         hERA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732275248; x=1732880048;
+        d=1e100.net; s=20230601; t=1732275250; x=1732880050;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rPMi+9tgXxLof1o1SgxfdNx0aQiFAp3/iUhEKOQFEfY=;
-        b=lqEFuP0F7aT39ALtj6bUedIGXOFIPnNjPFJ3vmXcRH4iePuadUJsDiy/3nJ0pBQ8k+
-         IosSqdUTZLMSU22oc5m0WS7y0Ekvw7616WwIbsvirHgQFg7JdYBBSlDnx0WNfEOARnrm
-         89xhVvoftMhpQuLpnNkXDprO7ENcgrFvjOr2uJzRyh0/A/FFIThmKgqPBEAm0rhEHBJ9
-         3S3UpbCkVtWu1r9v37Y0nqphZeys8MJvUxn9RgmcH59jhzCLa4DV/Iz4JnMkH36WjRz5
-         Cfd/DSwHk2MIyRJVm7iBu3sM9OCNOYZXaOE4J6QgNWN4MmqQzm2WTFRE+E/NcCjwjv/O
-         ivhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUW/lMG0dqoPonC+BVMBsmNFbwjlgKCrLE4sd3vFOjgLd7xR8l1zIpZwj7IMLIq7zCANNzuZ/q8UvQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwlBR21ubovGpZYmUDqnWZQ76Y+mJLMPwX6fpTrlSSk+bIwYtOi
-	ulnKyLX4MQ1npEJK2ADLxiZr4M3worfYcUtlfYZc78YVN1hg11yiESE9acs5/I0=
-X-Gm-Gg: ASbGncs/9fWW2jfg3XsStznH55Jz07EwQF9eD/hh0ivY+PwNuXLf+jON5Wmx/Ebh9YJ
-	sQ2vE5LnDA+foGn3m/ocmBjuu3t2/gS0ghSP2t363JqHfRB4aXZUSRp/CSjbkdJvKWC72A4ORNb
-	Fe9aR43i2mgDOu5ysYqp3Sw8+diqd7DnM77c3Nt5NrdKdvGCrBixjKybYH0kRDh8jymyFyJb6pC
-	o6+iHEVav7/+wazo7E8LPtyVhmF7tpbZ1PYm9TuoC2p6JWAnMRBDQOabY2lpgk/GgXnfoeTPKs3
-	x7c=
-X-Google-Smtp-Source: AGHT+IFxoHZHZMl48K+u3YOsQKV6ZrXJG6+RtyQoe48KJlLp9mnvEHw+4H6bx9CP4fOKzkRIAbvhbA==
-X-Received: by 2002:a5d:5985:0:b0:382:5010:c8cd with SMTP id ffacd0b85a97d-38260bcc640mr2048501f8f.44.1732275248594;
-        Fri, 22 Nov 2024 03:34:08 -0800 (PST)
+        bh=/tuSFNPk2cB5aapm6IULPvIIFlRmzQ+hDSbD7xiuHLo=;
+        b=Hes02n1QRx1g7cpwS25uLU3QLzs1DwQwcNaaUfKTj6HvkY0iB9HnfxlnS/N+94rcgB
+         t7USgcTDyPdpvXx3w1h1c406zc4VwhLCT+cUpEwoa3IJfFK7IvzLCR821cPgUWriaSw/
+         REXUttRJPVnCYjjv75uBbuUU4uI1zP3xjJi3ca0DeldeYXqqbBoPQUSr9MyCwEHF1jeY
+         r4q1xVpnjK/GDO0J0kcyorWdPe+Xpkw/XSYubLv+N5hG4oeWLBrjdT88IW9ZzX8MLKmn
+         XYwoo0ABvaaaIxLCeahb/hhPUdgQ/i2hbq16Epg4jmFquFOCzLmk919uPej/u+Ypqinc
+         Q3Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVrLe0oWeMO5chXm9qH3EiFRHO4iC02+MVQDQsmPjFiJb8v07eG/bLGjdBuUG3hlE2QUW/lI3F3nL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4xeADW+A7pOusMuTzicvDKAHllgsqmKTSlW4CGRrfB6oaWXBH
+	se6uBaQZxaEs0QFWsajNd742Z3yiB2ugMTd32zNwO6vpHx45Ng4zeRIH53o8kBA=
+X-Gm-Gg: ASbGncs+NwTPbDN3FQ7DL2e3QXK0wWu9bWPj5bEOZ7yGviZUyPzW7jiLkrQ42WYZEI4
+	9c8a42YooZsKH/IQvFIpkRpk4LYy6tWDaqr/Ayeskqn2rSabYzEOFOtyyasF28H69p4jpomJlmi
+	MnXE6JJzdtDCMDzjIvVsXMBVLmknlBNJ6NuAkJuAcgS4ipZVS4MoUemkBueTnD20Iu3QrieNTO/
+	kyXg60p33f9tfdjTX2lADys2Dcee83iK51ZYkqP6Oets+gdqOloVRMGLYK/gMNHYh+Fo2+Lut/S
+	9cE=
+X-Google-Smtp-Source: AGHT+IG0xSQQczfw1MBYfP1IbOz9h1rNpki04/dVS/jrGKj3U4UCN3FQRWAtELh+V92EjbTtaCiTUw==
+X-Received: by 2002:a5d:47a7:0:b0:382:4f9e:7133 with SMTP id ffacd0b85a97d-38260b6b368mr1942027f8f.29.1732275250063;
+        Fri, 22 Nov 2024 03:34:10 -0800 (PST)
 Received: from localhost (p509159f1.dip0.t-ipconnect.de. [80.145.89.241])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fbed99dsm2111241f8f.94.2024.11.22.03.34.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fb264cdsm2175392f8f.49.2024.11.22.03.34.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 03:34:08 -0800 (PST)
+        Fri, 22 Nov 2024 03:34:09 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -87,9 +87,9 @@ Cc: Alexandru Ardelean <aardelean@baylibre.com>,
 	Rob Herring <robh@kernel.org>,
 	devicetree@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH v3 08/10] iio: adc: ad_sigma_delta: Check for previous ready signals
-Date: Fri, 22 Nov 2024 12:33:27 +0100
-Message-ID: <20241122113322.242875-20-u.kleine-koenig@baylibre.com>
+Subject: [PATCH v3 09/10] iio: adc: ad7124: Add error reporting during probe
+Date: Fri, 22 Nov 2024 12:33:28 +0100
+Message-ID: <20241122113322.242875-21-u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241122113322.242875-12-u.kleine-koenig@baylibre.com>
 References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com>
@@ -100,156 +100,237 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4698; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=SBgp/ABTYxk+qV+nwz/VSGkPh5JOuikR+B/LV0eJ0E8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnQGwWTMKLY4vNh0+ORZ+7HMixLfb6SjqViRpX4 zllCNwdf7OJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ0BsFgAKCRCPgPtYfRL+ TtHeCACeSvHzlotmyz7yTcDdyUfB0wDhMWapQsRukaKDm/ZyUuzc+BfW2iIjlNM9ZEu6Q0lLOYV Lm0vbuFYbJvmPC1CVpagU1/tRXUdgx0e2iTPrLq8bn2edVqyBICTrZmy84yrjte08txX2MK9Ywf G3S5uLv0TrVSsLng2H257ncRXOsofkTTCCjGodPTLhvd4MLZE4LxRw2atlUzHwuIxz8b2cv3NVf Pu9xRxbp2o52TPmDOcR8wCsUBQA01yZocsjHgPGcqA/9XrhI4fsd4+gSLC7LzFO7JC3W0zWQeZ9 ofeOFDXymM2ovJFVe43684ufVV1Rx8tDWVHB529Z8WbUfWAL
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7778; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=qCxgBxDixx+y8W8lK/MrUMri31nDKcjFNuZWUz++lzg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnQGwZNAPzt5O6mPx4+5+TJ79e1jLHjpFwPDOiu WZ2FuooQX6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ0BsGQAKCRCPgPtYfRL+ ToacCACuSFXKAh8doGeDRWHNZrj2ioMYJI1vneDBabW3J8IRRG/UsVFzZg+nDRFjmSHfVkA2qB1 zhyXskkUdoQD1cLeVCyWlKBHfj48GdRYLfCVI+JZyArqaZzg4OetkwGWuzDK32uQsgJG89Wo1cM XXMFyajf3dX4m0fFVTux7OBPEuSUv2DKbN9Ty80gvyDfYISUL77oIEYCE8LoRHuHFoWvreqlh+B g6qbcV/hxMk6nnn8t3s81FY4y0vzLvNUJvJduEAJXWlWN7aqUM0Y1O0TOiw6840xhRkAVbdL/lq NATT3oTJt4zpFvlg8t+zHd/osf3WADkDO8DcHSctoEMHjU60
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-It can happen if a previous conversion was aborted the ADC pulls down
-the ̅R̅D̅Y line but the event wasn't handled before. In that case enabling
-the irq might immediatly fire (depending on the irq controller's
-capabilities) and even with a rdy-gpio isn't identified as an unrelated
-one.
-
-To cure that problem check for a pending event before the measurement is
-started and clear it if needed.
+A driver that silently fails to probe is annoying and hard to debug. So
+add messages in the error paths of the probe function.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 91 ++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+ drivers/iio/adc/ad7124.c | 78 +++++++++++++++++++++-------------------
+ 1 file changed, 42 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 19cb9b7b62c6..8bc652b71019 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -29,8 +29,11 @@
- #define AD_SD_COMM_CHAN_MASK	0x3
- 
- #define AD_SD_REG_COMM		0x00
-+#define AD_SD_REG_STATUS	0x00
- #define AD_SD_REG_DATA		0x03
- 
-+#define AD_SD_REG_STATUS_RDY	0x80
-+
- /**
-  * ad_sd_set_comm() - Set communications register
-  *
-@@ -222,6 +225,82 @@ static void ad_sd_enable_irq(struct ad_sigma_delta *sigma_delta)
- 	enable_irq(sigma_delta->irq_line);
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index b17c3dbeaeba..fdbe2806bf11 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -360,20 +360,21 @@ static int ad7124_find_free_config_slot(struct ad7124_state *st)
+ 	return free_cfg_slot;
  }
  
-+/* Called with `sigma_delta->bus_locked == true` only.  */
-+static int ad_sigma_delta_clear_pending_event(struct ad_sigma_delta *sigma_delta)
-+{
-+	int ret = 0;
-+	bool pending_event;
-+
-+	/*
-+	 * read RDY pin (if possible) or status register to check if there is an
-+	 * old event.
-+	 */
-+	if (sigma_delta->rdy_gpiod) {
-+		pending_event = gpiod_get_value(sigma_delta->rdy_gpiod);
-+	} else {
-+		unsigned status_reg;
-+
-+		ret = ad_sd_read_reg(sigma_delta, AD_SD_REG_STATUS, 1, &status_reg);
-+		if (ret)
-+			return ret;
-+
-+		pending_event = !(status_reg & AD_SD_REG_STATUS_RDY);
-+	}
-+
-+	if (pending_event) {
-+		/*
-+		 * In general the size of the data register is unknown. It
-+		 * varies from device to device, might be one byte longer if
-+		 * CONTROL.DATA_STATUS is set and even varies on some devices
-+		 * depending on which input is selected. So send one byte to
-+		 * start reading the data register and then just clock for some
-+		 * bytes with DIN (aka MOSI) high to not confuse the register
-+		 * access state machine after the data register was completely
-+		 * read. Note however that the sequence length must be shorter
-+		 * than the reset procedure.
-+		 */
-+		unsigned int data_read_len = DIV_ROUND_UP(sigma_delta->info->num_resetclks, 8);
-+		uint8_t data[9];
-+		struct spi_transfer t[] = {
-+			{
-+				.tx_buf = data,
-+				.len = 1,
-+			}, {
-+				.tx_buf = data + 1,
-+				.len = data_read_len,
-+			}
-+		};
-+		struct spi_message m;
-+
-+		/* Oh, back out instead of overflowing data[] */
-+		if (data_read_len > sizeof(data) - 1)
-+			return -EINVAL;
-+
-+		spi_message_init(&m);
-+		if (sigma_delta->info->has_registers) {
-+			unsigned int data_reg = sigma_delta->info->data_reg ?: AD_SD_REG_DATA;
-+
-+			data[0] = data_reg << sigma_delta->info->addr_shift;
-+			data[0] |= sigma_delta->info->read_mask;
-+			data[0] |= sigma_delta->comm;
-+			spi_message_add_tail(&t[0], &m);
-+		}
-+
-+		/*
-+		 * The first transferred byte is part of the real data register,
-+		 * so this doesn't need to be 0xff. In the remaining
-+		 * `data_read_len - 1` bytes are less than $num_resetclks ones.
-+		 */
-+		data[1] = 0x00;
-+		memset(data + 2, 0xff, data_read_len - 1);
-+		spi_message_add_tail(&t[1], &m);
-+
-+		ret = spi_sync_locked(sigma_delta->spi, &m);
-+	}
-+
-+	return ret;
-+}
-+
- int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	unsigned int mode, unsigned int channel)
++/* Only called during probe, so dev_err_probe() can be used */
+ static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channel_config *cfg)
  {
-@@ -237,6 +316,10 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
+ 	unsigned int refsel = cfg->refsel;
++	struct device *dev = &st->sd.spi->dev;
  
-+	ret = ad_sigma_delta_clear_pending_event(sigma_delta);
-+	if (ret)
-+		return ret;
+ 	switch (refsel) {
+ 	case AD7124_REFIN1:
+ 	case AD7124_REFIN2:
+ 	case AD7124_AVDD_REF:
+-		if (IS_ERR(st->vref[refsel])) {
+-			dev_err(&st->sd.spi->dev,
+-				"Error, trying to use external voltage reference without a %s regulator.\n",
+-				ad7124_ref_names[refsel]);
+-			return PTR_ERR(st->vref[refsel]);
+-		}
++		if (IS_ERR(st->vref[refsel]))
++			return dev_err_probe(dev, PTR_ERR(st->vref[refsel]),
++					     "Error, trying to use external voltage reference without a %s regulator.\n",
++					     ad7124_ref_names[refsel]);
 +
- 	ret = ad_sigma_delta_set_mode(sigma_delta, mode);
+ 		cfg->vref_mv = regulator_get_voltage(st->vref[refsel]);
+ 		/* Conversion from uV to mV */
+ 		cfg->vref_mv /= 1000;
+@@ -384,8 +385,7 @@ static int ad7124_init_config_vref(struct ad7124_state *st, struct ad7124_channe
+ 		st->adc_control |= AD7124_ADC_CTRL_REF_EN(1);
+ 		return 0;
+ 	default:
+-		dev_err(&st->sd.spi->dev, "Invalid reference %d\n", refsel);
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL, "Invalid reference %d\n", refsel);
+ 	}
+ }
+ 
+@@ -752,6 +752,7 @@ static const struct iio_info ad7124_info = {
+ 	.attrs = &ad7124_attrs_group,
+ };
+ 
++/* Only called during probe, so dev_err_probe() can be used */
+ static int ad7124_soft_reset(struct ad7124_state *st)
+ {
+ 	unsigned int readval, timeout;
+@@ -766,7 +767,7 @@ static int ad7124_soft_reset(struct ad7124_state *st)
+ 	do {
+ 		ret = ad_sd_read_reg(&st->sd, AD7124_STATUS, 1, &readval);
+ 		if (ret < 0)
+-			return ret;
++			return dev_err_probe(&st->sd.spi->dev, ret, "Error reading status register\n");
+ 
+ 		if (!(readval & AD7124_STATUS_POR_FLAG_MSK))
+ 			return 0;
+@@ -775,9 +776,7 @@ static int ad7124_soft_reset(struct ad7124_state *st)
+ 		usleep_range(100, 2000);
+ 	} while (--timeout);
+ 
+-	dev_err(&st->sd.spi->dev, "Soft reset failed\n");
+-
+-	return -EIO;
++	return dev_err_probe(&st->sd.spi->dev, -EIO, "Soft reset failed\n");
+ }
+ 
+ static int ad7124_check_chip_id(struct ad7124_state *st)
+@@ -787,23 +786,20 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
+ 
+ 	ret = ad_sd_read_reg(&st->sd, AD7124_ID, 1, &readval);
  	if (ret < 0)
- 		goto out;
-@@ -310,6 +393,10 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
- 	sigma_delta->keep_cs_asserted = true;
- 	reinit_completion(&sigma_delta->completion);
+-		return ret;
++		return dev_err_probe(&st->sd.spi->dev, ret,
++				     "Failure to read ID register\n");
  
-+	ret = ad_sigma_delta_clear_pending_event(sigma_delta);
-+	if (ret)
-+		return ret;
-+
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_SINGLE);
+ 	chip_id = AD7124_DEVICE_ID_GET(readval);
+ 	silicon_rev = AD7124_SILICON_REV_GET(readval);
  
- 	ad_sd_enable_irq(sigma_delta);
-@@ -406,6 +493,10 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
- 	sigma_delta->bus_locked = true;
- 	sigma_delta->keep_cs_asserted = true;
+-	if (chip_id != st->chip_info->chip_id) {
+-		dev_err(&st->sd.spi->dev,
+-			"Chip ID mismatch: expected %u, got %u\n",
+-			st->chip_info->chip_id, chip_id);
+-		return -ENODEV;
+-	}
++	if (chip_id != st->chip_info->chip_id)
++		return dev_err_probe(&st->sd.spi->dev, -ENODEV,
++				     "Chip ID mismatch: expected %u, got %u\n",
++				     st->chip_info->chip_id, chip_id);
  
-+	ret = ad_sigma_delta_clear_pending_event(sigma_delta);
-+	if (ret)
-+		return ret;
-+
- 	ret = ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_CONTINUOUS);
+-	if (silicon_rev == 0) {
+-		dev_err(&st->sd.spi->dev,
+-			"Silicon revision empty. Chip may not be present\n");
+-		return -ENODEV;
+-	}
++	if (silicon_rev == 0)
++		return dev_err_probe(&st->sd.spi->dev, -ENODEV,
++				     "Silicon revision empty. Chip may not be present\n");
+ 
+ 	return 0;
+ }
+@@ -862,16 +858,18 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+ 	device_for_each_child_node_scoped(dev, child) {
+ 		ret = fwnode_property_read_u32(child, "reg", &channel);
+ 		if (ret)
+-			return ret;
++			return dev_err_probe(dev, ret,
++					     "Failed to parse reg property of %pfwP\n", child);
+ 
+ 		if (channel >= indio_dev->num_channels)
+ 			return dev_err_probe(dev, -EINVAL,
+-				"Channel index >= number of channels\n");
++					     "Channel index >= number of channels in %pfwP\n", child);
+ 
+ 		ret = fwnode_property_read_u32_array(child, "diff-channels",
+ 						     ain, 2);
+ 		if (ret)
+-			return ret;
++			return dev_err_probe(dev, ret,
++					     "Failed to parse diff-channels property of %pfwP\n", child);
+ 
+ 		if (!ad7124_valid_input_select(ain[0], st->chip_info) ||
+ 		    !ad7124_valid_input_select(ain[1], st->chip_info))
+@@ -909,11 +907,12 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+ static int ad7124_setup(struct ad7124_state *st)
+ {
+ 	unsigned int fclk, power_mode;
++	struct device *dev = &st->sd.spi->dev;
+ 	int i, ret;
+ 
+ 	fclk = clk_get_rate(st->mclk);
+ 	if (!fclk)
+-		return -EINVAL;
++		return dev_err_probe(dev, -EINVAL, "Failed to get mclk rate\n");
+ 
+ 	/* The power mode changes the master clock frequency */
+ 	power_mode = ad7124_find_closest_match(ad7124_master_clk_freq_hz,
+@@ -922,7 +921,7 @@ static int ad7124_setup(struct ad7124_state *st)
+ 	if (fclk != ad7124_master_clk_freq_hz[power_mode]) {
+ 		ret = clk_set_rate(st->mclk, fclk);
+ 		if (ret)
+-			return ret;
++			return dev_err_probe(dev, ret, "Failed to set mclk rate\n");
+ 	}
+ 
+ 	/* Set the power mode */
+@@ -953,7 +952,7 @@ static int ad7124_setup(struct ad7124_state *st)
+ 
+ 	ret = ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
+ 	if (ret < 0)
+-		return ret;
++		return dev_err_probe(dev, ret, "Failed to setup CONTROL register\n");
+ 
+ 	return ret;
+ }
+@@ -968,11 +967,12 @@ static int ad7124_probe(struct spi_device *spi)
+ 	const struct ad7124_chip_info *info;
+ 	struct ad7124_state *st;
+ 	struct iio_dev *indio_dev;
++	struct device *dev = &spi->dev;
+ 	int i, ret;
+ 
+ 	info = spi_get_device_match_data(spi);
+ 	if (!info)
+-		return -ENODEV;
++		return dev_err_probe(dev, -ENODEV, "Failed to get match data\n");
+ 
+ 	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+ 	if (!indio_dev)
+@@ -1007,36 +1007,42 @@ static int ad7124_probe(struct spi_device *spi)
+ 
+ 		ret = regulator_enable(st->vref[i]);
+ 		if (ret)
+-			return ret;
++			return dev_err_probe(dev, ret, "Failed to enable regulator #%d\n", i);
+ 
+ 		ret = devm_add_action_or_reset(&spi->dev, ad7124_reg_disable,
+ 					       st->vref[i]);
+ 		if (ret)
+-			return ret;
++			return dev_err_probe(dev, ret, "Failed to register disable handler for regulator #%d\n", i);
+ 	}
+ 
+ 	st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
+ 	if (IS_ERR(st->mclk))
+-		return PTR_ERR(st->mclk);
++		return dev_err_probe(dev, PTR_ERR(st->mclk), "Failed to get mclk\n");
+ 
+ 	ret = ad7124_soft_reset(st);
+ 	if (ret < 0)
++		/* ad7124_soft_reset() already emitted an error message */
+ 		return ret;
+ 
+ 	ret = ad7124_check_chip_id(st);
  	if (ret)
- 		goto err_unlock;
++		/* ad7124_check_chip_id() already emitted an error message */
+ 		return ret;
+ 
+ 	ret = ad7124_setup(st);
+ 	if (ret < 0)
++		/* ad7124_setup() already emitted an error message */
+ 		return ret;
+ 
+ 	ret = devm_ad_sd_setup_buffer_and_trigger(&spi->dev, indio_dev);
+ 	if (ret < 0)
+-		return ret;
++		return dev_err_probe(dev, ret, "Failed to setup triggers\n");
+ 
+-	return devm_iio_device_register(&spi->dev, indio_dev);
++	ret = devm_iio_device_register(&spi->dev, indio_dev);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to register iio device\n");
+ 
++	return 0;
+ }
+ 
+ static const struct of_device_id ad7124_of_match[] = {
 -- 
 2.45.2
 

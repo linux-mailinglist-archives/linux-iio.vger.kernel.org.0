@@ -1,191 +1,124 @@
-Return-Path: <linux-iio+bounces-12503-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12504-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5599D6251
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:31:45 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3434E9D6270
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 17:39:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 290B2B23369
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:31:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BCAF160EAD
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Nov 2024 16:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB6813C80C;
-	Fri, 22 Nov 2024 16:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5957B1DED76;
+	Fri, 22 Nov 2024 16:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V9hytVXs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXlH+ds6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15515BA20;
-	Fri, 22 Nov 2024 16:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF35D7E792;
+	Fri, 22 Nov 2024 16:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732293098; cv=none; b=YhPY2ziVa8VhOCzeTT07LiKQ2n5f1WMm9wiqJsISOpxG+XEdxAcO2ajkDgjxSBK4hfAOjSm2fXOuvd6ME1HcD86Fqc4IvL3ClcnKKdc3k0ktBnX//IqN2sJgLNecrhpo9+thdgV2eHXJX+/llTj9fadUK36pt/txwWym6qoVQyI=
+	t=1732293574; cv=none; b=DC3rE9Dw5BuwWUJCGfjIr9SZu63RlfxrsPAIlZ/2zB0TRTfUNPK69t0+joTyntWbhp13FWAB0ZUCkeZg5HaKclxwi/TJYMxsrUpFicLeX0x6pFf7OjBvpQ2xs7+F1cevbrci+/DIquyRBSaiU4I2SPqMKB/ngf0KHLBtbm0TgpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732293098; c=relaxed/simple;
-	bh=5tLotF7QIpddNYPZIFxLjnodQOu60ssXf96rQ3eKJcM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bguz8Xm4krEkkHXPLEODCSFDRdeZm7t8DVU6IMXtR0CvPUH123LjaMsIlb/6qBXSlvcl2dq8ntlRjSoZ+dvuJz7u3IFGUvVWyWeJo+PwH0jjT77OCx/hHKuPiSmgZCxm2wHm3neHlcida7ItsDzKh0dLa+W1Q5cqVZrYzZbW8tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V9hytVXs; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732293096; x=1763829096;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=5tLotF7QIpddNYPZIFxLjnodQOu60ssXf96rQ3eKJcM=;
-  b=V9hytVXshbo5ot12teoA8i3lnGgX38QeY7out3/CYNybjU/OcJyRALyv
-   dJ4XIwC8xwmrT5Z1ri4TGKvQWjx7UrAhzPs+qKC4jqdCVEiBFJXbWn5nt
-   UZhO4LiLHCWhS8nSTcSnkRvo9GQLkqcNT2MWSFlXgdiTVFXVf1+Osc352
-   trAdEI8q5wcj28SJ8vmEEHJimCt7gd0+4VZnmxdduz7H8gwixBH361hmM
-   66ydXSmOKT1gKdiZCURsfTTPdAvv9zJM3AGf3dj3WyPvSDD88UcJNxKW8
-   MhLvJygGqDM51ctu6zOz5XcSG0TrxOrEbUyud5cZ47LD0eNSqqUSChbmf
-   Q==;
-X-CSE-ConnectionGUID: i2UZGUFaS/aQ6giuFkKBLw==
-X-CSE-MsgGUID: 4KXLP9V1SiCUBrE+LsaFyQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11264"; a="32510776"
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="32510776"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 08:31:35 -0800
-X-CSE-ConnectionGUID: 9ocBxZz0RROlIvDRi8NJMQ==
-X-CSE-MsgGUID: oEuoMTQqT/e/DcW0PX2GRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,176,1728975600"; 
-   d="scan'208";a="90784962"
-Received: from spandruv-desk1.amr.corp.intel.com ([10.125.110.49])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2024 08:31:35 -0800
-Message-ID: <f0a07dfddd690e1d7d62abf1f9c6e799331e4a8c.camel@linux.intel.com>
-Subject: Re: [PATCH] iio: hid-sensor-prox: Fix invalid read_raw for attention
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen
-	 <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Fri, 22 Nov 2024 08:31:34 -0800
-In-Reply-To: <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
-References: <20241121-fix-processed-v1-1-4fae6770db30@chromium.org>
-	 <853def565622848427e6e5df8f073465fa52e76c.camel@linux.intel.com>
-	 <CANiDSCuV1zo0=wGLir26Bn0np+BbVj9aj-JK3ZMreOT78c73UQ@mail.gmail.com>
-Autocrypt: addr=srinivas.pandruvada@linux.intel.com; prefer-encrypt=mutual;
- keydata=mQGNBGYHNAsBDAC7tv5u9cIsSDvdgBBEDG0/a/nTaC1GXOx5MFNEDL0LWia2p8Asl7igx
- YrB68fyfPNLSIgtCmps0EbRUkPtoN5/HTbAEZeJUTL8Xdoe6sTywf8/6/DMheEUzprE4Qyjt0HheW
- y1JGvdOA0f1lkxCnPXeiiDY4FUqQHr3U6X4FPqfrfGlrMmGvntpKzOTutlQl8eSAprtgZ+zm0Jiwq
- NSiSBOt2SlbkGu9bBYx7mTsrGv+x7x4Ca6/BO9o5dIvwJOcfK/cXC/yxEkr1ajbIUYZFEzQyZQXrT
- GUGn8j3/cXQgVvMYxrh3pGCq9Q0Q6PAwQYhm97ipXa86GcTpP5B2ip9xclPtDW99sihiL8euTWRfS
- TUsEI+1YzCyz5DU32w3WiXr3ITicaMV090tMg9phIZsjfFbnR8hY03n0kRNWWFXi/ch2MsZCCqXIB
- oY/SruNH9Y6mnFKW8HSH762C7On8GXBYJzH6giLGeSsbvis2ZmV/r+LmswwZ6ACcOKLlvvIukAEQE
- AAbQ5U3Jpbml2YXMgUGFuZHJ1dmFkYSA8c3Jpbml2YXMucGFuZHJ1dmFkYUBsaW51eC5pbnRlbC5j
- b20+iQHRBBMBCAA7FiEEdki2SeUi0wlk2xcjOqtdDMJyisMFAmYHNAsCGwMFCwkIBwICIgIGFQoJC
- AsCBBYCAwECHgcCF4AACgkQOqtdDMJyisMobAv+LLYUSKNuWhRN3wS7WocRPCi3tWeBml+qivCwyv
- oZbmE2LcxYFnkcj6YNoS4N1CHJCr7vwefWTzoKTTDYqz3Ma0D0SbR1p/dH0nDgN34y41HpIHf0tx0
- UxGMgOWJAInq3A7/mNkoLQQ3D5siG39X3bh9Ecg0LhMpYwP/AYsd8X1ypCWgo8SE0J/6XX/HXop2a
- ivimve15VklMhyuu2dNWDIyF2cWz6urHV4jmxT/wUGBdq5j87vrJhLXeosueRjGJb8/xzl34iYv08
- wOB0fP+Ox5m0t9N5yZCbcaQug3hSlgp9hittYRgIK4GwZtNO11bOzeCEMk+xFYUoa5V8JWK9/vxrx
- NZEn58vMJ/nxoJzkb++iV7KBtsqErbs5iDwFln/TRJAQDYrtHJKLLFB9BGUDuaBOmFummR70Rbo55
- J9fvUHc2O70qteKOt5A0zv7G8uUdIaaUHrT+VOS7o+MrbPQcSk+bl81L2R7TfWViCmKQ60sD3M90Y
- oOfCQxricddC
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1732293574; c=relaxed/simple;
+	bh=bVfmMZd++g9VWmMX2EizjlOyv67G/BQQFuNfEa0NLiE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lxyLvIDBWwGNTVVCmjotk45B6BevuNnRiYotr1SS3e8nMclnJYsqx0kqmKrBeHFWViuXHrdvGEiwhGPr6nTXfpMCuJ6sCil1u5SRUXAqvCu2jrM94S+9GZwWcTP//iKBmDMVe2+hp28PeZ4TFPFyG//EML41bzaaV0NK66KrFFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXlH+ds6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1623C4CECE;
+	Fri, 22 Nov 2024 16:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732293573;
+	bh=bVfmMZd++g9VWmMX2EizjlOyv67G/BQQFuNfEa0NLiE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JXlH+ds6Bu4vcaxouVy9GHIJMQYhksn+5FEcsZbKwO1qG5QNztSK6Ejo6PzyTPdbl
+	 xPzR6GS/0CyoCC+O6m9Iq0iQl/W+6OHNKSUaxTMFB4aGA6OzTukQDHqlflA0NXysPe
+	 PAQI/8kjW+/XtNdbjEipZhEbBzuK3JoBGhZnOU3C+jWNHonND/cgmJunlqLeXnsaxT
+	 U7+onLtWXO9aMMcX3wJkkj+AmPt5zYAO3b3b0SW9M4rvHHlBs+DsBCC8erIs3gTlTJ
+	 oPI0TPO6JtfDzyFKtoMtWVESP9iQRt5PMh4J+3eHluJnyXJqyLhyAHHNQdwpwUWKWb
+	 na+zzTSqnxuKA==
+Date: Fri, 22 Nov 2024 17:39:30 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Guillaume Stols <gstols@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, linux-pwm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org, aardelean@baylibre.com, 
+	dlechner@baylibre.com, jstephan@baylibre.com, nuno.sa@analog.com, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
+Message-ID: <gmv5tncy7xwgbc64na7ib42hdthojsfrusauk4hez5zmc6hh2k@4jfk74vt2gcb>
+References: <20241015-ad7606_add_iio_backend_support-v5-0-654faf1ae08c@baylibre.com>
+ <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="g6qhxoz5xykc4ajk"
+Content-Disposition: inline
+In-Reply-To: <20241015-ad7606_add_iio_backend_support-v5-7-654faf1ae08c@baylibre.com>
 
-On Fri, 2024-11-22 at 08:46 +0100, Ricardo Ribalda wrote:
-> On Thu, 21 Nov 2024 at 17:44, srinivas pandruvada
-> <srinivas.pandruvada@linux.intel.com> wrote:
-> >=20
-> > On Thu, 2024-11-21 at 09:16 +0000, Ricardo Ribalda wrote:
-> > > The attention channel is a IIO_CHAN_INFO_PROCESSED, not a
-> > > IIO_CHAN_INFO_RAW.
-> > >=20
-> > > Modify prox_read_raw() to support it.
-> > >=20
-> > What is the sysfs entry to trigger this IIO_CHAN_INFO_PROCESSED
-> > read?
-> > Don't you have an entry *_raw?
->=20
-> /sys/.../iio:deviceX/in_attention_input
->=20
-> There is no _raw device for it.
->=20
-OK.
 
-> >=20
-> > > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
-> > > channels")
-> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > ---
-> > > =C2=A0drivers/iio/light/hid-sensor-prox.c | 4 ++--
-> > > =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/light/hid-sensor-prox.c
-> > > b/drivers/iio/light/hid-sensor-prox.c
-> > > index e8e7b2999b4c..8e5d0ad13a5f 100644
-> > > --- a/drivers/iio/light/hid-sensor-prox.c
-> > > +++ b/drivers/iio/light/hid-sensor-prox.c
-> > > @@ -94,6 +94,7 @@ static int prox_read_raw(struct iio_dev
-> > > *indio_dev,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val2 =3D 0;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 switch (mask) {
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_RAW:
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0 case IIO_CHAN_INFO_PROCESSED:
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 if (chan->scan_index >=3D prox_state->num_channels)
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 address =3D prox_state->channel2usage[chan-
-> > > > scan_index];
-> > > @@ -107,8 +108,7 @@ static int prox_read_raw(struct iio_dev
-> > > *indio_dev,
-> > >=20
-> > > report_id,
-> > >=20
-> > > SENSOR_HUB_SYNC,
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 min <
-> > > 0);
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 if (prox_state->channel2usage[chan->scan_index] =3D=3D
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 HID_USAGE_SENSOR_HUMAN_ATTENTION)
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 if (mask =3D=3D IIO_CHAN_INFO_PROCESSED)
-Your original change is better. If someone adds a new channel which
-also requires IIO_CHAN_INFO_PROCESSED, then they need to change this
-line. So I don't think you need this change.
+--g6qhxoz5xykc4ajk
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v5 7/8] iio: adc: ad7606: Add iio-backend support
+MIME-Version: 1.0
 
-Thanks,
-Srinivas
+On Tue, Oct 15, 2024 at 01:56:20PM +0000, Guillaume Stols wrote:
+> @@ -640,6 +665,14 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>  		*val =3D st->oversampling;
+>  		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		/*
+> +		 * TODO: return the real frequency intead of the requested one once
+> +		 * pwm_get_state_hw comes upstream.
+> +		 */
+> +		pwm_get_state(st->cnvst_pwm, &cnvst_pwm_state);
+> +		*val =3D DIV_ROUND_CLOSEST_ULL(NSEC_PER_SEC, cnvst_pwm_state.period);
+> +		return IIO_VAL_INT;
+>  	}
+>  	return -EINVAL;
+>  }
 
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *val *=3D 100;
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 hid_sensor_power_state(&prox_state-
-> > > > common_attributes, false);
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 ret_type =3D IIO_VAL_INT;
-> > >=20
-> > > ---
-> > > base-commit: decc701f41d07481893fdea942c0ac6b226e84cd
-> > > change-id: 20241121-fix-processed-ed1a95641e64
-> > >=20
-> > > Best regards,
-> >=20
->=20
->=20
+Being late to the party as the patch is already applied:
 
+ad7606_set_sampling_freq() uses DIV_ROUND_UP_ULL to determine the period
+=66rom freq. So I guess you should a down-rounding div here to calculate
+freq from period.
+
+Having said that, pwm_get_state_hw() is in mainline and will be included
+in v6.13-rc1.
+
+Best regards
+Uwe
+
+--g6qhxoz5xykc4ajk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdAs78ACgkQj4D7WH0S
+/k5jlAgAirnhx9PpmZaNqFxVmISvdk94dasdcSLa7jDqkiXnNJ0oxpyUVc8lm0N6
+NNMqQZbz66q+mmza4KXN1Oz+TPgQqZApnnp58F6ECUpurA6vgB4anXwBqiN0v8PZ
+/zklo+JiCsfLuu3fkM9raKXBxRQh4xJm7PM7WTK15vzsfJCeMANwixBroV6qYtij
+qj2TqzB1yhXmvt7jk4Wk6saLFPB03OHxEbY1QFFOorBXvx6vatRfTaRKTRf2HT9i
+FAjJsluo4KiVaHYhHJwNebI0BiVzIeYKGcda4qTKoDabKW9Xu6Ikt/v2nOcAvuC9
+z5qCVuQ/q08owpk8L41RdCHFLS5W1g==
+=Cj6w
+-----END PGP SIGNATURE-----
+
+--g6qhxoz5xykc4ajk--
 

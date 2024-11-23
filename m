@@ -1,217 +1,267 @@
-Return-Path: <linux-iio+bounces-12562-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12563-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382AD9D6B8B
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 22:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540149D6BB2
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 23:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A526B21B4E
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 21:15:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB9FBB2265B
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 22:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939C81A3047;
-	Sat, 23 Nov 2024 21:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CE319F42F;
+	Sat, 23 Nov 2024 22:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kw22ZbTb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0KD3cLd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4EE1494CC;
-	Sat, 23 Nov 2024 21:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A66F1862A;
+	Sat, 23 Nov 2024 22:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732396524; cv=none; b=WiR4/L+Huz9GBuMAiWzXG+dNs9MWnhDq1oMt3VhovCD9jvAXzK/c78zoTQXlw8zBxA9cw63lcVKSTu6KivWLsY6Qly/XgOxEP+Qv7CftyPbxDS8HXC/5krL64JaqKO3tpgDo0GYN1tQ4m7fH0zyPQtpvxxfem0z9Mm65ZFhdHbU=
+	t=1732399314; cv=none; b=h4q5Hg6KKZACu+Uhfg2i2sUoOuvuY5wjjac97uv8qtkhps0aiZl6sqtmp4MHVxNElnKro+eG/Qbc0ZtsNwHN6Yeeq7OgyZ1DLgB44ktT47WC6N2vzDm8Tsj3uBWPuoz6nWjxS7E2H5wn+fmb9aZvorVqMeV36Zp9Tho4q+Dy1j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732396524; c=relaxed/simple;
-	bh=ZiZ5QC7LM3xk1NI/6UUKdrVPEJ7thc91R0QDslL4haI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lbvY9g0Itfp56odXOrQT7jzW/wcYHuExEhIC1hv8+Vbl1T6T3I73eBW5Kq3eueRZoiPVF1Ah6EZj85kEm/k6WZ/NEBsUHyFtNJNk02aDO/mPCHZQYuisMFAH0KAElt94YbGruo0jxI66ne2OgB5OSjHa/IC14J40+CyY/mOqR/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kw22ZbTb; arc=none smtp.client-ip=209.85.221.50
+	s=arc-20240116; t=1732399314; c=relaxed/simple;
+	bh=Qc7GgOVJTlNUqM4hrJsCVFiJ6WrhgFo+UtOX/oNgwZw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gr/cBbyPmDRbyJV8OU/ns362gm3cL4GXXMZcvRfPJ/Jacd2tuGLBAmVe+FgYUz4BKWA9ohCw7cqnwTeB5/SYGKSzAJw391FEE2w4zv8bld5nX3I/gqnaZddoEshOt8xf3y5jtuw4JYqRtp6BaS9QWXph3msMbKuLpNL90UUK1u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0KD3cLd; arc=none smtp.client-ip=209.85.219.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3825c05cc90so2031022f8f.1;
-        Sat, 23 Nov 2024 13:15:20 -0800 (PST)
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d413def36cso25705026d6.3;
+        Sat, 23 Nov 2024 14:01:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732396519; x=1733001319; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6CXVJLyOxJhLtqu1XjgB0j6s1+0c14IZn1U3KJhAAHY=;
-        b=Kw22ZbTb7Xd/RIz2SXgYmLYv5u7IEJMUzZEr+1bzM//4BsRM6TNcu2cpygx2+HU6us
-         0s63fg2lzasbIGMJ0kEdUZGrFeAkLQcI9LGhwSjWlejzwKPZIKxUdfc4v66Cns8JtZLr
-         Ayz6NYb609qgIBhY3/Iq+ONA2uFnb+bKI6sKxoft4CHqhlRdj9DJ1AiwibX66mWWXZ+K
-         KTqR+A1RW3itC0kkBWbFiVhkk0PYzLYjKS5rlxEaze0+62bjpC0tDczYMsuFC7l/FxAD
-         MicH/zZ4SzCllErABbGyBeSxH5oezLLcPuhE5UmENAyAAxnmhPuJGhJs6dFXdUQ5XuaS
-         3g1Q==
+        d=gmail.com; s=20230601; t=1732399312; x=1733004112; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sTXm56p8RBq1M4ykDPiGEs2Y+aiYwh8JuLxWApDmdM4=;
+        b=k0KD3cLdF4cohcm0OQtvVxE4DQPRyHBApIxzTqUGbrq9FrHZtdZhiLFsCU/sYc/J3W
+         MMm5bvycKqWTyaGD73bQzFEdK5zIPV76hbAHsoTMN0NNmE8y9zKNZhZoMcw/cwGmbBzB
+         7DDJYN8w9dEQkA9da6GRnKZ8brAFW2AKqn+75tfK+CCsHZ0fYO/LOgt0CoDJDQrMP4fv
+         QUNNa1qnz4GF0aVWxj+18i/vTa2CXk1zjOF5unSqJ8tLBJ84vgrwqrsHL/Wc2CTuXRA4
+         A1IEoOXnOgdmMHmetaBlW8FnTCxEvctHH0nZa/3lwsqxVV6ep4C94+XpCzY9EISwh2cX
+         tR/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732396519; x=1733001319;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6CXVJLyOxJhLtqu1XjgB0j6s1+0c14IZn1U3KJhAAHY=;
-        b=myBs7EkcKi5/E52TXN4wZe1BXNiO+NePOgjeX8vq7nGdBcFj2Px1iDeak11F5924ug
-         jVk6gjXjnoqyf0QdRk0tSVhDvxDA0p1Xphtth1P8o82OBvzGAtVGrm1oQMPFhL4wqSYE
-         YPdyuMNjNXiNLZiUA7zJcJVV4VCcsMJDtBwbAS/gJUyaYGZp88ph8nIqNA24DwFdQW5O
-         dMePQo0bp0fAwa0gU6+3oHEVRloijX5qCiHmJ8+Kr7HoJ1gegOce1g+CtdV9DhhOyJGo
-         5Sd225df3fVWwEavKVwXgsMqKmcfOO72mekGtEsL0Hp89ABBerRC10e/boeQKuaAeIoQ
-         G+kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1d7U+V78/Iu/jZJuKCtefT0z7pvDZ+9C72En9UPNCMTySYDR4IZ/YkJdeIdX3Iky7dRmS8x+DsJs=@vger.kernel.org, AJvYcCXoy7wUxv86c/yUsw/sDvUnkQjRTYIUoAtQmBXTLh8y/nOHhrWmT0k8M4Ie1ri7eCVsKeaYIB9TQgRfKLU5@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOXNIX5radjwuCWn8d0FjqwWjm9rH1ZpzAqRUiGuj4Ty79EpIV
-	Mmwt6yNhZoszQy/RMlslINIuVAvR/aE9unScUz3qH8S2nEr7kk/C
-X-Gm-Gg: ASbGncsOP1ls4xQ2MWiAcSPTOyzftwxLiWe2t5oVXmTNe4nfWnXjlGHmQgk6UJbfJUR
-	rpzN6AMQ5gpkzJVZil32xTutXsHOSvCVlKkd3i+8zcPbWtEURp2rm6lNMT+i70hvO6PLqQ2lVXg
-	/mKx50PDavx18sIt5d1EaS2niq/V0Zf5/iXycfVhlLP3uUuFDf696d5LBRWmpg+9tdjetE69WGq
-	NgJ2Pr96WXuEZwJw8PPfzNBRiBuyCKdhr/bUXQyBDeiioNYOXKWZq4IR3OGvSlCTRaengT1cVfu
-	UysV4bozS3BYQ6BjtD6eFr0iTArW7WKl3/DQ1OylWZyOJ7RJGPzZIX/RUoqJBoQbG8gfIo5J/px
-	xyblaYC3Fq6AmaDoerR98H3sx4VpBrhnXXuWjFaFpP2U=
-X-Google-Smtp-Source: AGHT+IGi/Aoi8pQi3uPAzc2gRdaQ0dkdhgpFdz5ZM28/5PH0rfDIYyv6oyBUKzTdrQUugJgYzacPyg==
-X-Received: by 2002:a05:6000:2802:b0:382:51ae:754f with SMTP id ffacd0b85a97d-38260b486c1mr4080524f8f.8.1732396519004;
-        Sat, 23 Nov 2024 13:15:19 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:81b7:86b5:dd8f:cb89? (2a02-8389-41cf-e200-81b7-86b5-dd8f-cb89.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:81b7:86b5:dd8f:cb89])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fbed99dsm6093822f8f.94.2024.11.23.13.15.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Nov 2024 13:15:18 -0800 (PST)
-Message-ID: <1f5d62d0-42af-4eda-846d-cd0d57b5c6d5@gmail.com>
-Date: Sat, 23 Nov 2024 22:15:11 +0100
+        d=1e100.net; s=20230601; t=1732399312; x=1733004112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sTXm56p8RBq1M4ykDPiGEs2Y+aiYwh8JuLxWApDmdM4=;
+        b=tz8JT5jvpyz2tVBYBrtLlv5Hjel4yUBYv7WJL5AYtEQl2z+SISL6OC3qSuhWPRSBmU
+         Jfh7pXahZ1bx8BfWbBg/zhUkew80gtrmw6bjeNZC/hsv9mS3G+laOgCpLtzhz5oXs6Vu
+         4I2jrQWyE3jXmutZdEHAKWejVKJ0im//prZ2pv/tc5jS1IxF7KwHKQVX5wtH5pDEDVu2
+         HPHNcQujetdN78G7+82Dvt2ey/zJLebWZuS8p5FdSWK26LXO75T5Pxvi3nhHcyR1xRuq
+         oGEM+BKCeO+Gon2cl7dZe5D0UgP4CZmnTxH2KMmgJN1sk2w8xyPFiM5iP9lT3hmcGTcn
+         PSnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUIoyq5TcGFnKnb5qfRyVASk+VOxJaJYnftB+37z8EIgwutgCs/ougecpziZgx2zqVWDy/B3lA0fTc=@vger.kernel.org, AJvYcCVK696mjJ01FLJIft+r2pRMLN2uWMBekW9xadeFW4gkteP0E9eHpeDoJev3e6RaRs7+SJxUI6PZy4LPuKds@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGWpg4T5BHzL5t10Fjo6KLW47x7PTrY31dAS7tVVcVqixjN3BO
+	XpKcZHLC79wwh594BiB71xHJN5vWI5IuWQkDJHTX02/oakDHvvkv
+X-Gm-Gg: ASbGncuL4Z8uhu+0XUi2Gx8bNwPIh6aUjE3sJzcbF3zUKc7Jhli53YVG5AN7KdapLtY
+	Pb9YLSIywk+6/4rYrGRtJDbKFtGGfQAmXfs4Zgh4KxMy/v3AXq7QpjZPgmGbieJI4Kwc+k/MDDx
+	HZtuVGyuDsZqr+auh8eakB6MsVyKy/hiuxUlQQW56/FjDmbe2jqbOh35o6Y3E5ng3rM/96VJp6w
+	rFDeVmK9Gn23+sJn2dtVFnywo9MOaJXLsMUgSHVFS+VqtXIDIPm4CMfvLyVhJX7XyWEzBBo
+X-Google-Smtp-Source: AGHT+IHwaDfV1oVZjshMQqgput4KO/RhIrIMFQsBtq4zu1BHrnOtGbjeB/uPQuJ2P/Cp8Ar7T0Qjug==
+X-Received: by 2002:a05:6214:19ef:b0:6d4:20fa:83f1 with SMTP id 6a1803df08f44-6d45134d114mr137061356d6.37.1732399312180;
+        Sat, 23 Nov 2024 14:01:52 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b4a0a5sm25789426d6.106.2024.11.23.14.01.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Nov 2024 14:01:51 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: jic23@kernel.org
+Cc: dlechner@baylibre.com,
+	lars@metafoo.de,
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	u.kleine-koenig@baylibre.com,
+	tgamblin@baylibre.com,
+	fabrice.gasnier@st.com,
+	benjamin.gaignard@linaro.org,
+	lee@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: [PATCH v5] iio: trigger: stm32-timer-trigger: Add check for clk_enable()
+Date: Sat, 23 Nov 2024 22:01:49 +0000
+Message-Id: <20241123220149.30655-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] iio: light: veml6030: add support for triggered buffer
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
- <20241123151634.303aa860@jic23-huawei>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20241123151634.303aa860@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 23/11/2024 16:16, Jonathan Cameron wrote:
-> On Sun, 10 Nov 2024 18:49:05 +0100
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> 
->> All devices supported by this driver (currently veml6030, veml6035
->> and veml7700) have two 16-bit channels, and can profit for the same
->> configuration to support data access via triggered buffers.
->>
->> The measurements are stored in two 16-bit consecutive registers
->> (addresses 0x04 and 0x05) as little endian, unsigned data.
->>
->> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> Hi Javier,
-> 
-> We have to be a little careful with pushing data from the stack.
-> Need to makes sure holes are zero filled.
-> 
-> Jonathan
-> 
->> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
->> index ccb43dfd5cf7..ce9af9a0e933 100644
->> --- a/drivers/iio/light/veml6030.c
->> +++ b/drivers/iio/light/veml6030.c
-> 
->>  
->>  static const struct regmap_config veml6030_regmap_config = {
->> @@ -889,6 +928,35 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
->>  	return IRQ_HANDLED;
->>  }
->>  
->> +static irqreturn_t veml6030_trigger_handler(int irq, void *p)
->> +{
->> +	struct iio_poll_func *pf = p;
->> +	struct iio_dev *iio = pf->indio_dev;
->> +	struct veml6030_data *data = iio_priv(iio);
->> +	unsigned int reg;
->> +	int ch, ret, i = 0;
->> +	struct {
->> +		u16 chans[2];
-> There is a hole here... 
->> +		aligned_s64 timestamp;
->> +	} scan;
->> +
->> +	iio_for_each_active_channel(iio, ch) {
->> +		ret = regmap_read(data->regmap, VEML6030_REG_DATA(ch),
->> +				  &reg);
->> +		if (ret)
->> +			goto done;
->> +
->> +		scan.chans[i++] = reg;
-> This fills in at least 1 channel, but maybe not the second.
->> +	}
->> +
-> So this leaks random stack data I think.
-> 
-> Upshot, when holes are involved or not all the channels are set, need
-> memset(&scan, 0, sizeof(scan));
-> for the structure on the stack which will zero the holes as well as
-> both channels.
-> 
-> Ancient article on this: https://lwn.net/Articles/417989/
-> 
-> We get away with it when they are in the iio_priv space because they are
-> kzalloc + if we do leak data due to changes in configured channels it's
-> just old sensor data which is (I think) never a security problem!
-> 
->> +	iio_push_to_buffers_with_timestamp(iio, &scan, pf->timestamp);
->> +
->> +done:
->> +	iio_trigger_notify_done(iio->trig);
->> +
->> +	return IRQ_HANDLED;
->> +}
->> +
->>  static int veml6030_set_info(struct iio_dev *indio_dev)
->>  {
->>  	struct veml6030_data *data = iio_priv(indio_dev);
->> @@ -1077,6 +1145,12 @@ static int veml6030_probe(struct i2c_client *client)
->>  	if (ret < 0)
->>  		return ret;
->>  
->> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
->> +					      veml6030_trigger_handler, NULL);
->> +	if (ret)
->> +		return dev_err_probe(&client->dev, ret,
->> +				     "Failed to register triggered buffer");
->> +
->>  	return devm_iio_device_register(&client->dev, indio_dev);
->>  }
->>  
->>
->> ---
->> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
->> change-id: 20241106-veml6030_triggered_buffer-a38886ca4cce
->>
->> Best regards,
-> 
+Add check for the return value of clk_enable() in order to catch the
+potential exception.
 
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+Changelog:
 
-Hi Jonathan,
+v4 -> v5:
 
-thanks a lot for your explanation and the link, it makes perfect sense.
-By the way, when I moved this struct from the iio_priv to the function,
-I took a look at some existing code, and a couple of them might have the
-same issue:
+1. Add a default in the switch.
 
-- temperature/tmp006.c: it also has a hole between the two 16-bit
-channels and the timestamp (aligned(8)), but it is not set to zero.
+v3 -> v4:
 
-- adc/ti-ads1119.c: the scan consists of an unsigned int and the
-timestamp (aligned(8)). I believe there is a hole there as well.
+1. Place braces around the case body.
 
-I did not go over all drivers (most of them store the scan struct in the
-iio_priv space anyway), but at least those two look suspicious.
+v2 -> v3:
 
-Should I fix (e.g. memset) those two I mentioned?
+1. Use guard() to simplify the resulting code.
 
-Best regards,
-Javier Carrasco
+v1 -> v2:
+
+1. Remove unsuitable dev_err_probe().
+---
+ drivers/iio/trigger/stm32-timer-trigger.c | 49 ++++++++++++++---------
+ 1 file changed, 29 insertions(+), 20 deletions(-)
+
+diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/trigger/stm32-timer-trigger.c
+index 0684329956d9..67528ec7d0a5 100644
+--- a/drivers/iio/trigger/stm32-timer-trigger.c
++++ b/drivers/iio/trigger/stm32-timer-trigger.c
+@@ -119,7 +119,7 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 			     unsigned int frequency)
+ {
+ 	unsigned long long prd, div;
+-	int prescaler = 0;
++	int prescaler = 0, ret;
+ 	u32 ccer;
+ 
+ 	/* Period and prescaler values depends of clock rate */
+@@ -150,10 +150,12 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 	if (ccer & TIM_CCER_CCXE)
+ 		return -EBUSY;
+ 
+-	mutex_lock(&priv->lock);
++	guard(mutex)(&priv->lock);
+ 	if (!priv->enabled) {
+ 		priv->enabled = true;
+-		clk_enable(priv->clk);
++		ret = clk_enable(priv->clk);
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	regmap_write(priv->regmap, TIM_PSC, prescaler);
+@@ -173,7 +175,6 @@ static int stm32_timer_start(struct stm32_timer_trigger *priv,
+ 
+ 	/* Enable controller */
+ 	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+-	mutex_unlock(&priv->lock);
+ 
+ 	return 0;
+ }
+@@ -307,7 +308,7 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
+ 	struct stm32_timer_trigger *priv = dev_get_drvdata(dev);
+ 	struct iio_trigger *trig = to_iio_trigger(dev);
+ 	u32 mask, shift, master_mode_max;
+-	int i;
++	int i, ret;
+ 
+ 	if (stm32_timer_is_trgo2_name(trig->name)) {
+ 		mask = TIM_CR2_MMS2;
+@@ -322,15 +323,16 @@ static ssize_t stm32_tt_store_master_mode(struct device *dev,
+ 	for (i = 0; i <= master_mode_max; i++) {
+ 		if (!strncmp(master_mode_table[i], buf,
+ 			     strlen(master_mode_table[i]))) {
+-			mutex_lock(&priv->lock);
++			guard(mutex)(&priv->lock);
+ 			if (!priv->enabled) {
+ 				/* Clock should be enabled first */
+ 				priv->enabled = true;
+-				clk_enable(priv->clk);
++				ret = clk_enable(priv->clk);
++				if (ret)
++					return ret;
+ 			}
+ 			regmap_update_bits(priv->regmap, TIM_CR2, mask,
+ 					   i << shift);
+-			mutex_unlock(&priv->lock);
+ 			return len;
+ 		}
+ 	}
+@@ -482,6 +484,7 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 				   int val, int val2, long mask)
+ {
+ 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
++	int ret;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+@@ -491,12 +494,14 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 		/* fixed scale */
+ 		return -EINVAL;
+ 
+-	case IIO_CHAN_INFO_ENABLE:
+-		mutex_lock(&priv->lock);
++	case IIO_CHAN_INFO_ENABLE: {
++		guard(mutex)(&priv->lock);
+ 		if (val) {
+ 			if (!priv->enabled) {
+ 				priv->enabled = true;
+-				clk_enable(priv->clk);
++				ret = clk_enable(priv->clk);
++				if (ret)
++					return ret;
+ 			}
+ 			regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 		} else {
+@@ -506,11 +511,12 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
+ 				clk_disable(priv->clk);
+ 			}
+ 		}
+-		mutex_unlock(&priv->lock);
++
+ 		return 0;
+ 	}
+-
+-	return -EINVAL;
++	default:
++		return -EINVAL;
++	}
+ }
+ 
+ static int stm32_counter_validate_trigger(struct iio_dev *indio_dev,
+@@ -601,7 +607,7 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+ 				 unsigned int mode)
+ {
+ 	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
+-	int sms = stm32_enable_mode2sms(mode);
++	int sms = stm32_enable_mode2sms(mode), ret;
+ 
+ 	if (sms < 0)
+ 		return sms;
+@@ -609,12 +615,15 @@ static int stm32_set_enable_mode(struct iio_dev *indio_dev,
+ 	 * Triggered mode sets CEN bit automatically by hardware. So, first
+ 	 * enable counter clock, so it can use it. Keeps it in sync with CEN.
+ 	 */
+-	mutex_lock(&priv->lock);
+-	if (sms == 6 && !priv->enabled) {
+-		clk_enable(priv->clk);
+-		priv->enabled = true;
++	scoped_guard(mutex, &priv->lock) {
++		if (sms == 6 && !priv->enabled) {
++			ret = clk_enable(priv->clk);
++			if (ret)
++				return ret;
++
++			priv->enabled = true;
++		}
+ 	}
+-	mutex_unlock(&priv->lock);
+ 
+ 	regmap_update_bits(priv->regmap, TIM_SMCR, TIM_SMCR_SMS, sms);
+ 
+-- 
+2.25.1
 
 

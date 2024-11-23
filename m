@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-12543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12544-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04819D69C9
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:54:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870B39D69CB
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:55:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6486B161794
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:54:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B3A6161736
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE13E381C4;
-	Sat, 23 Nov 2024 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D0136AF5;
+	Sat, 23 Nov 2024 15:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nj6C/kdI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3PfvCFm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8DF2943F;
-	Sat, 23 Nov 2024 15:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D32943F;
+	Sat, 23 Nov 2024 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732377294; cv=none; b=oEJKcr64jFDdRzCwtYRGqQnF/LW/my+gRhfJBqcRA7wVR6egrea3EByWFSVznSuU+lHT8Qme6Dyj4q+P/8QRQGNeNAcBtHaLVVojK2B9RHgLNa9FjskevZ3+o2wuzb20E2rOyUZrToa6dQ7zy7mLk9ZRPFOCfVtsileDn9FMmBw=
+	t=1732377342; cv=none; b=NDcxgCrXWmi7jbx6fXAjkVYOXmyOWrmzmux2l87cZ0gDOD6oPgb1kxvisw1b4Aat73KJn0LYHooLZZ0Dq4Ibd5Pf7hvPGi8lpztaj0PvyPQ+y4KcjWXfo9q6rQbhMf9hZZbedZa5s6x+K225kS8JaYQ40ZcYdVkIsk5zWhXMJW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732377294; c=relaxed/simple;
-	bh=WVS4FAzJTzrxMbZG08ziSv2JQyBqkO+aCqwbAOyQnBk=;
+	s=arc-20240116; t=1732377342; c=relaxed/simple;
+	bh=UrZuEOQCxY11R79LlaiwgT6UhJd61HWvfGh38DuH1tQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MVzQ0QrpUsOQV1eoaPrKr5ZF97OtC3zEOP7O2XSLuKORHWijEBQV1igRQHkFsqBgOSq74MXsnZg8WrGx8+UiLYEOnG6HzvFtSR6Ib7pYQeI2OT+jGqJFOvf7ZkdelssghE+tgTjoxqmha6glIp/xRimzf6mH0D9Or6Khanhn/sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nj6C/kdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A02C4CECD;
-	Sat, 23 Nov 2024 15:54:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NzB1/YZVipXxjKZX0OkDRUaQX2CELkjf5ecg9rfpl3vy71SGmn+8hJ5t3MAYJZYzCuEW/mwD0/e4XG/mPQtHL7F8gFY/zGodNx8Fa7421RwdQXEmMrLBMt4NpYni+rzEN2Zo0aTNcI5TebGdj0bATtIgL09uKqxejpvr9E+ZEDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3PfvCFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF9DC4CECD;
+	Sat, 23 Nov 2024 15:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732377294;
-	bh=WVS4FAzJTzrxMbZG08ziSv2JQyBqkO+aCqwbAOyQnBk=;
+	s=k20201202; t=1732377340;
+	bh=UrZuEOQCxY11R79LlaiwgT6UhJd61HWvfGh38DuH1tQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nj6C/kdI5zsz2L18o0PgWzSmSYcPjkEsnr4/M2LVJaDk67rdCCtmiVCoNKvLwsNa6
-	 2KY1G+LSNsmrDvJQAKgOclIXaoygZR8zyKvFdTXkYRRCQSIRdQrGcqzLCCbaC0AlrB
-	 SgklTxryp1QgXAAww1rwdUoTDfbYh2IuCciIsCXoKVaFrDV7o5eOX2ENo7XjMbYB8x
-	 KlVwh/0Jm1LeH10YV2oIIQ3H8SiLGFJzkVdh4PEod4LX+LafBZ/x5w2lANcPWWjuBN
-	 bhR3eTgCCZvFzWL1uW4SqbU/57DwRNcpMVti/jZuX4rTtBKFBAbH7/bMT7kxfiY/KA
-	 i0AmWt9cJ60uQ==
-Date: Sat, 23 Nov 2024 15:54:45 +0000
+	b=u3PfvCFma1p7Z2538nnn0VjQU6xXsXXtxEKPseooy65lPiWpYw3dibs1yWyPY+0tx
+	 Ghb8coGnQZggEqZnzch+xKoLxS6Qn6i7if3PV9E3XN0B6XVvj2kf0ZxCC0JHp2p14+
+	 AXpoV4i9BlUlbGkp0vTTHoRND9Xq3wIbTQAwRNGnm/ZxjTmOiD+z3T3CfTcx08WYI9
+	 PKJb7mEenIXiEwHFf1MsZet8ODNFH0YKKMIyRDKiYXHR86vDIGCdDQe/ljMyWby3a0
+	 kVJF2LXhV7PuCE3r5agQtp2aTHypXLxYrknbYXYcS/PcxlXLw15f36bhQg7W8UWZ5a
+	 8LA277eZkCrTA==
+Date: Sat, 23 Nov 2024 15:55:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Liam Girdwood
  <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Antoniu Miclaus
  <antoniu.miclaus@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 09/11] iio: dac ltc2632: drop driver remove function
-Message-ID: <20241123155445.126bc8e1@jic23-huawei>
-In-Reply-To: <20241120-iio-regulator-cleanup-round-6-v1-9-d5a5360f7ec3@baylibre.com>
+Subject: Re: [PATCH 10/11] iio: dac: ltc2688: use
+ devm_regulator_get_enable_read_voltage()
+Message-ID: <20241123155532.597beb71@jic23-huawei>
+In-Reply-To: <20241120-iio-regulator-cleanup-round-6-v1-10-d5a5360f7ec3@baylibre.com>
 References: <20241120-iio-regulator-cleanup-round-6-v1-0-d5a5360f7ec3@baylibre.com>
-	<20241120-iio-regulator-cleanup-round-6-v1-9-d5a5360f7ec3@baylibre.com>
+	<20241120-iio-regulator-cleanup-round-6-v1-10-d5a5360f7ec3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,15 +64,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 20 Nov 2024 15:33:32 -0600
+On Wed, 20 Nov 2024 15:33:33 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Remove driver remove callback for the ltc2632 driver.
-> 
-> By making use of devm_iio_device_register(), we no longer need a driver
-> remove callback. Also since this was the last user of spi_get_drvdata(),
-> we can drop the call to spi_set_drvdata().
+> Simplify the code by using devm_regulator_get_enable_read_voltage().
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Applied.
+Applied
 

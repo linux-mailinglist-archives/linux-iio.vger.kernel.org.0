@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-12555-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12556-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F8E9D6A31
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:34:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11119D6A39
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:37:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2CC1618F6
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:34:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E4EAB20EAB
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889DF44C81;
-	Sat, 23 Nov 2024 16:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C9C55887;
+	Sat, 23 Nov 2024 16:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7kGgkPT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9wRfaeE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3783A17C2;
-	Sat, 23 Nov 2024 16:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696DB17C2;
+	Sat, 23 Nov 2024 16:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732379691; cv=none; b=E7w9ojHdy7Lr+kSbZ0F+Uc9oPQZka7WIou8PpvyZSWQ05Augz0o6AevtR5O5FL2x1Il7OL107LOcHtnQK5RxQSZHLkvT4zdLHLInrpsHe/NEGxWBlvahlR9gI4HE8u0VGAecgelcd/rGCCn5NFnUOa2Jwquw7G3hZrgza3TEqiU=
+	t=1732379842; cv=none; b=AzWPnlC/+Wv0DCX/pbDIg4hn5bzA8d+L6USLe145XgBw0l5v6MkG2CMrB/tqG9bT8q97sRk38yVAglikox5kg3kAnKTpywj95Umn36I+2C/EHy6ZCrevUVAU8xXIBR7YQ6enrf4EMlL34leASMi//6H3bwnEbw/dZGiFDUiNaBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732379691; c=relaxed/simple;
-	bh=AsE66LL4+AK/T4uAPGuhO5g8vpZ/H7AHuXd/Ehn4p2c=;
+	s=arc-20240116; t=1732379842; c=relaxed/simple;
+	bh=kqH1w9Z8UduwiuIpADpEHdaVEmAdD805XjHs5FU9NaM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PDIM8ne6F/+DboobqtkR7jzUXS7jvciSpU2+poXAv5lKgpbGNd4exjOqPuKweUMr9IKo7HkmMsV+XUhZQRemz/Ij/x/VZSMVzBWM4/EF15o4+ZEJPbDL6RQ7vxd5p0biw8dI6aN283oeGt5kPfBC93YN+fbP5tglxhU+eU1ESOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7kGgkPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5A4C4CECD;
-	Sat, 23 Nov 2024 16:34:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=civpOxEK4nDPUVTCenSkxlrckpzCdUnqmDYsxFm13qZOSsArnETfujBDhjL0baen7jLun87yBA0Wbo4t8BIYGjD0o6kNAh6ituteoiCLG5s6GeaEzxLKjdVWegzXZgpyKRoytkJwliWlmQE2bcKKwNBGyWID+5BIYDkBFMNjNX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9wRfaeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F215C4CECD;
+	Sat, 23 Nov 2024 16:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732379691;
-	bh=AsE66LL4+AK/T4uAPGuhO5g8vpZ/H7AHuXd/Ehn4p2c=;
+	s=k20201202; t=1732379841;
+	bh=kqH1w9Z8UduwiuIpADpEHdaVEmAdD805XjHs5FU9NaM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=I7kGgkPTc9grvBM+XnFLqnApq68sroCpy5qzpsWyH0WEqG8845d1WuwxgAHWx55ix
-	 bljm6LUxxAcD9xhJTe6gmvdPQVmQ59uc4Zv/5t5qUssdm4iO8eSRfvhsvRz+G1HLP6
-	 vah45PbB0poyg4omy3b2X5IUPJpcnAqwJrVwoWUmLWfRQW0LhlZdl7Sup8cYBQ8NBh
-	 5UjcQ3C3iH53OKquw6+RfaNe0hE9iFc+jnmEyCjGhd/vMiiRhA4sK3J9Z2EciQ+Wu8
-	 +uW2eIRuss4xWVb2VBVwfSsGR7Mwoz0N8iwRNoSV8Toi8olIrYIGf92KVsGN3RBx03
-	 2l46Pk5Lk7hfA==
-Date: Sat, 23 Nov 2024 16:34:43 +0000
+	b=m9wRfaeE70vgISBrAllJAY+9XEF/fzB+HC+QeB65cO9E+ZOxBE4mmvjG3IiiB4P1W
+	 zLkLqLajo5MwtEJMdeBLg6ISLO0832b14DkAFwH9VUneZVsdmgduN/yq/jIRfpcImN
+	 Gbqyrj7xtr9HNt1CwKDBRmV9WU8CNNpcyagjopDv0iBWMvRhgPckKrvv6XT4XPq+li
+	 G+Lb4hdMSm+ehvCCD+pCPKvBXg+yuUrXNfSlsWwCx3TYt0uVcJVZSnSwMhOWEIqf6e
+	 d4Qie96zoWn5pTcJUlBnWubVathEvsPWsuv2t9E+9xzX7lJb//1M+GT2E1imkguVGv
+	 bRKuMRVZkHlVA==
+Date: Sat, 23 Nov 2024 16:37:13 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -49,11 +49,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/8] iio: accel: kx022a: Improve reset delay
-Message-ID: <20241123163443.678f063c@jic23-huawei>
-In-Reply-To: <ac1b6705945cded0e79593d64e55522681e00f9a.1732105157.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 2/8] iio: gts: Simplify using __free
+Message-ID: <20241123163713.2ec03a37@jic23-huawei>
+In-Reply-To: <5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
 References: <cover.1732105157.git.mazziesaccount@gmail.com>
-	<ac1b6705945cded0e79593d64e55522681e00f9a.1732105157.git.mazziesaccount@gmail.com>
+	<5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,33 +64,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 21 Nov 2024 10:19:50 +0200
+On Thu, 21 Nov 2024 10:20:07 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> All the sensors supported by kx022a driver seemed to require some delay
-> after software reset to be operational again. More or less a random
-> msleep(1) was added to cause the driver to go to sleep so the sensor has
-> time to become operational again.
+> The error path in the gain_to_scaletables() uses goto for unwinding an
+> allocation on failure. This can be slightly simplified by using the
+> automated free when exiting the scope.
 > 
-> Now we have official docuumentation available:
-> https://fscdn.rohm.com/kionix/en/document/AN010_KX022ACR-Z_Power-on_Procedure_E.pdf
-> https://fscdn.rohm.com/kionix/en/document/TN027-Power-On-Procedure.pdf
-> https://fscdn.rohm.com/kionix/en/document/AN011_KX134ACR-LBZ_Power-on_Procedure_E.pdf
-> 
-> stating the required time is 2 ms.
-> 
-> Due to the nature of the current msleep implementation, the msleep(1) is
-> likely to be sleeping more than 2ms already - but the value "1" is
-> misleading in case someone needs to optimize the start time and change
-> the msleep to a more accurate delay. Hence it is better for
-> "documentation" purposes to use value which actually reflects the
-> specified 2ms wait time.
-> 
-> Change the value of delay after software reset to match the
-> specifications and add links to the power-on procedure specifications.
+> Use __free(kfree) and drop the goto based error handling.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Stands fine on it's own so applied (before I've even read the rest of the series).
+> 
+> ---
+> 
+> Revision history:
+>   v1 => v2:
+>   - patch number changed because a change was added to the series.
+>   - rebased on iio/testing to avoid conflicts with queued fixes
+> ---
+>  drivers/iio/industrialio-gts-helper.c | 19 ++++++++-----------
+>  1 file changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> index 291c0fc332c9..602d3d338e66 100644
+> --- a/drivers/iio/industrialio-gts-helper.c
+> +++ b/drivers/iio/industrialio-gts-helper.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
+>   */
+>  
+> +#include <linux/cleanup.h>
+>  #include <linux/device.h>
+>  #include <linux/errno.h>
+>  #include <linux/export.h>
+> @@ -167,8 +168,8 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
+>  
+>  static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>  {
+> -	int i, j, new_idx, time_idx, ret = 0;
+> -	int *all_gains;
+> +	int ret, i, j, new_idx, time_idx;
+> +	int *all_gains __free(kfree) = NULL;
+See the docs in cleanup.h (added recently).
 
-Jonathan
+Constructor and destructor should go together.   Dan wrote good docs on this
+(which are now in cleanup.h) so I'll not go into why!
+
+Upshot is this goes where you do the kcalloc, not up here.
+
+>  	size_t gain_bytes;
+>  
+>  	for (i = 0; i < gts->num_itime; i++) {
+> @@ -232,10 +233,9 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>  
+>  	gts->avail_all_scales_table = kcalloc(new_idx, 2 * sizeof(int),
+>  					      GFP_KERNEL);
+> -	if (!gts->avail_all_scales_table) {
+> -		ret = -ENOMEM;
+> -		goto free_out;
+> -	}
+> +	if (!gts->avail_all_scales_table)
+> +		return -ENOMEM;
+> +
+>  	gts->num_avail_all_scales = new_idx;
+>  
+>  	for (i = 0; i < gts->num_avail_all_scales; i++) {
+> @@ -246,14 +246,11 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>  		if (ret) {
+>  			kfree(gts->avail_all_scales_table);
+>  			gts->num_avail_all_scales = 0;
+> -			goto free_out;
+> +			return ret;
+>  		}
+>  	}
+>  
+> -free_out:
+> -	kfree(all_gains);
+> -
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  /**
+
 

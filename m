@@ -1,100 +1,94 @@
-Return-Path: <linux-iio+bounces-12559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45539D6A4B
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 874CD9D6A5A
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67BBA16184F
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:47:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163EE16186C
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E402770B;
-	Sat, 23 Nov 2024 16:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF5B12FF70;
+	Sat, 23 Nov 2024 16:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDhvzgFm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmloS9vL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3300566A;
-	Sat, 23 Nov 2024 16:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D485672;
+	Sat, 23 Nov 2024 16:51:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732380420; cv=none; b=bVibc8oND5mKKyXa864zJg9Ljb2TtG9gSobdkbfcd+JV3BaJ1sl7sRwFnRKLh1HOeW63x3+JbsLLs4peqhGdoVDyDGdA0rk+fv0RNP05WPx8y/2BTepXX6ApG7B5RKIVN4raniJhQPUNonellhVB5/nc9wwIHvn8MxNpGBzBTiM=
+	t=1732380705; cv=none; b=b1nye2wwNlIrOLxiSM2Y+EjZxiwQDTNb81oomutXgyX+/ukhyf+k8q4RhZWY+5B6SoqvtM+wZbpRy9DhxAxdVyRRVWgL94T2qKwm/PdGoZOi2D2HoVr1OmIpKmn5smgWvj2B1VszFBcbW8K6QimvlR9wZ93tNr0sklhViC2/W0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732380420; c=relaxed/simple;
-	bh=/mSPk4KVeH16EC5A2b6+i4e8AjUGk1JqjsAQAxsQFrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EHstTLLI+xwgXfqnOUBAHuDqrRCnSo6QcEaG0ZNBbEhgXfbI7GQnW35LUz23axJZU+viBVhTr64lLrqRcVJSlzxzWQuZbQgGSqPf7p7KIk1w/5nsp+omWxb29WtbzLgjQmTIFZzXiGT10OxpnqaCYQvGB7z8v9/rVxyPU1kWMGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDhvzgFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23751C4CECD;
-	Sat, 23 Nov 2024 16:46:58 +0000 (UTC)
+	s=arc-20240116; t=1732380705; c=relaxed/simple;
+	bh=49bxM1M0YNTedM1bfDSypl9sDtlO8xeu9g6EsaDITm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L4nhK9Ly9rc5QRUs6kinInpDy6+uXEcvwyIdgovMvtF9oQhHnCs5giYlqq3klLLe9XwsaZfLSjfht9DFS2xpRJUtrzefc+k6h2PXiJhXRhkY5S46mo+76I1c8qLNzM5qWO6aPGxdj0aHVEAPsd2dhLrg8DBkdeoD+v/IvW9F0II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmloS9vL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DCDC4CECD;
+	Sat, 23 Nov 2024 16:51:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732380420;
-	bh=/mSPk4KVeH16EC5A2b6+i4e8AjUGk1JqjsAQAxsQFrA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SDhvzgFmV/BjkWTbVUiW86e8VpdDZlzMMwCCG0JaZAot9CVG8t5Uh9HYSABOHOh4/
-	 jnzQVCSIKHdb7lUH1mgWAav9cdyz/AZTcHP5RzRzLQDzi29+8W05P08etGc9FPv7CS
-	 uHBvWXNsE3N2dKQUwScATNBP2/qfhluj8Ek0pZqr87HcVrcEry0g806XsdHmvteMLz
-	 Ay18wRyJuqYB9dOKrQg9F6BLozhEDDesm64mCaZb9a5qU37VeF9jnBNDms41Ng2Ujm
-	 j3qFSYIId2P27LhjoaMsv7U1qi9YpEzIfFnY+AZ1ZU+sYyrR1ZT9aDPlaBauf7N3CG
-	 IPybnMq5iUjUg==
-Date: Sat, 23 Nov 2024 16:46:54 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] iio: Use __cleanup for a few ROHM sensors
-Message-ID: <20241123164654.72e309d3@jic23-huawei>
-In-Reply-To: <cover.1732193263.git.mazziesaccount@gmail.com>
-References: <cover.1732193263.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1732380704;
+	bh=49bxM1M0YNTedM1bfDSypl9sDtlO8xeu9g6EsaDITm8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NmloS9vLgTFdZyybaTDudIxxTZwf9JWrGpx7TWx3VQxiwSbjQpI+hDC1FcAm34HU6
+	 tMT+MFyCSVP9mmGW+801aGlPHSfIrsg29qQWSH0mrtZdNMAxTpL7f3JSIjAii+5zWf
+	 K4QOoyJE1kXz4VzOvioNMG3fzXlrwL+typTzqAa/4Mkl2Osm+sRe2BhIHCQtRWh7IR
+	 Wr5D9ODOzaeZ8eyWK1EHRzxHkfDrNpcdMJnBYeubstxCZZkPyVgwRkZWgHEDvXiB5S
+	 gpGGaaigfLkcI2wqSForZXJpzFo7T6Qki8yMfQ24ww1Qw0hmBsVpM7FZHcjZoWh7qy
+	 6l4wdvKMfFiUg==
+Date: Sat, 23 Nov 2024 17:51:41 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Tobias Sperling <tobias.sperling@softing.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Support for TI ADS7128 and ADS7138 ADCs
+Message-ID: <lk2ewurvwav4e7ydblnuhojle7oke62442r6zzny2tyc3fofho@kujlkfywbrdu>
+References: <20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com>
 
-On Thu, 21 Nov 2024 15:04:53 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Fri, Nov 22, 2024 at 04:15:35PM +0100, Tobias Sperling wrote:
+> This patch series adds support for Texas Instruments ADS7128 and
+> ADS7138, which are 12-bit, 8 channel analog-to-digital converters (ADCs)
+> with build-in digital window comparator (DWC), using the I2C interface.
+> 
+> The driver exposes the interfaces to read the raw values, as well as the
+> minimum and maximum value for each channel. In addition several settings
+> can be configured, like the DWC, sampling frequency or an averaging
+> filter/oversampling. Interrupts triggered by the DWC, if configured, are
+> then exposed as IIO events.
+> 
+> ADS7128 differs in the addition of further hardware features, like a
+> root-mean-square (RMS) and a zero-crossing-detect (ZCD) module, which
+> are not yet supported by the driver.
+> 
+> Regarding the I2C interface the chips using opcodes to define the way
+> how the registeres are accessed, like single or multiple register(s)
+> read/write or setting/clearing only bits. 
+> 
+> Changes in v1:
+> - dt-bindings: Extended description
 
-> Use __cleanup.
-> 
-> The series converts the rest of the ROHM sensors (maintained by me) to
-> use guard(mutex). This simplifies the error paths.
-> 
-> As a note, kx022a accelerometer driver is handled in another series,
-> which also adds support for two new accelerometers. I did also patch the
-> driver for the BU27008 and BU27010 - but when I was testing the changes
-> I found that the BU27008 status is set to "obsolete". I'll try to dig
-> some information about the BU27010 and decide if having the driver
-> in-tree is still worth the effort, or if I should just send out patches
-> to drop it all. Hence patch to rohm-bu27008.c is not included in the
-> series. If someone is actually using the BU27008 or BU27010 and wants
-> to patch it - feel free to pick
-> 131315de97ff ("iio: bu27008: simplify using guard(mutex)")
-> from
-> https://github.com/M-Vaittinen/linux/tree/bu27008-cleanup
-> 
-Applied. Thanks,
+Hm? Everything starts from v1.
 
-J
-> ---
-> 
-> Matti Vaittinen (2):
->   iio: bu27034: simplify using guard(mutex)
->   iio: bm1390: simplify using guard(mutex)
-> 
->  drivers/iio/light/rohm-bu27034.c   | 73 ++++++++++------------------
->  drivers/iio/pressure/rohm-bm1390.c | 78 ++++++++++++------------------
->  2 files changed, 55 insertions(+), 96 deletions(-)
-> 
-> 
-> base-commit: adc218676eef25575469234709c2d87185ca223a
+Try - run:
+b4 diff 20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com
+
+Best regards,
+Krzysztof
 
 

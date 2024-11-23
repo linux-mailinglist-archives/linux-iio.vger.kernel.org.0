@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-12533-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12534-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED76E9D6997
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:16:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8FF9D699C
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:26:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C5D5B20EB6
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21915161694
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B659822EED;
-	Sat, 23 Nov 2024 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC38B33080;
+	Sat, 23 Nov 2024 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+o6cKu4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCReMoGz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A817583;
-	Sat, 23 Nov 2024 15:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C96F17583;
+	Sat, 23 Nov 2024 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732375000; cv=none; b=rRjfIQudWSBmHYeBlxn1BJhZrJer5S4s12mN3pJtEY5FMwBdnH/JwRMbfiy9sNYvXu3gXcHD3I91dqt6+ahw3B1IgBXRSrxl3Q3HO823ZO7q+0NGhKTzocKP+W1AfZSjqpfAPuqPdbAc6WbniEjYIynEtWznTRN6HnLch3kFHts=
+	t=1732375605; cv=none; b=s+1piSOfey+4nwt5GD5uK8nhFsB0zBiOKOOh8nz6pOmd6cDnOeK+Xmf4UjAH7p2WYmPSBYDoz/B8h0RcJMysFN+IpSP3jkQ8clGhQmuaNZl2EBBgHnM+yCTZom1BAvktB0GbVX5n/2JqQTC1AjiVq6VtJ0JZnHIqANqZZXSm1kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732375000; c=relaxed/simple;
-	bh=Rs1AyLMmMT+EhiO+wBM0jD2Ma7zXw65IWJOajmuwmsg=;
+	s=arc-20240116; t=1732375605; c=relaxed/simple;
+	bh=0biYwIyVyr55triR7b1k2CW4N58okSMISG73ctLz4FA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y1XPxllDyIuBbqXj5zR6ySSQFnU0WlUuh3jgrqdthS2yG9AikRMMpL3/p3Iq4uVcnc+b6oRtWGym5k2G1bh+TQ23nHltmzJtXrRDVnP5JUmaGm0mau9JCO3w/VG9ciMnGxiP6O7jFQzdu/2konRBLPMAus7FQU6PkPtrfI8ZH+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+o6cKu4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D208C4CECD;
-	Sat, 23 Nov 2024 15:16:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cQMaMRr61GQy2zQTxyEPDGz5p+T24H3N+B9fWLQItRaSiqv8+zVlaEO9BK/Jqshb1Q2p72UH5S792ekt0MBRi79EwMmHmev8T8tGx4dYaZBsJhMXF2SkbaDkYPQE44QGuBBIxgtgMHkK0tKNjhnjAMlEsKwpra5WiGkWcEp0+l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCReMoGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFC2C4CECD;
+	Sat, 23 Nov 2024 15:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732374999;
-	bh=Rs1AyLMmMT+EhiO+wBM0jD2Ma7zXw65IWJOajmuwmsg=;
+	s=k20201202; t=1732375605;
+	bh=0biYwIyVyr55triR7b1k2CW4N58okSMISG73ctLz4FA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z+o6cKu4jljn5oc2TMKqxEXy10E4zXZqii7XsKCQHFcrzw5KjWbBCuFI1B3PVGc6k
-	 57AN+wfXPDCTfIIY/j3WZlut5dejnVs5YlmdNWujftrF+UTepSxiBX3NreqdOHtAab
-	 gKq84SywNcbJ7lF6Tu/4m8tbDAQ9ycjvf7NhvpdcZtAb3nShKmE7WJFC22CN+Wl/4y
-	 +sKnXe1OE4IrHgDCn2wf0/cOdHyIOy/iyZcTICLMrKhIuYsJ0yiohbhGIj30rr7/PV
-	 kjaG62cjuBBfGmxCPamXAOMiJIN2Yph40CjY4Tv9+aFTcn/dk4MoJ1qk1CkJjPwlK0
-	 Mgw8Q2mQpyzGg==
-Date: Sat, 23 Nov 2024 15:16:34 +0000
+	b=jCReMoGzFC5wM2iT8hR4xtzRTfcOillkxMhFV8vaHGlrlaM8yje9cyBVlxEfqDc+f
+	 2tSZk0+tU1rMBMoWAegOaIk3gGSjrMIdHqWCnNaM+9U09tVCUhEKMDSWYxJCH8ZKHG
+	 fnF8SgwsqoAHJXfQSGXzG7MTAGjby5pmOA5ZyNfSlKvKE165dPV51Pq9fji9+pVDd6
+	 wmR7zdu3rF96aMxerpBicoTqg/vv03Utmjmcm0+nQu1I442ZQxF6pH0c48Rh73yW89
+	 Me6NgkvkbLWH/AiJsKKlDYdBLhpXrSvcY+0ErrtV/5N6xOCTJhBVPYB0AK6M7N0a1w
+	 QT9hpjrhZBxHA==
+Date: Sat, 23 Nov 2024 15:26:37 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: light: veml6030: add support for triggered
- buffer
-Message-ID: <20241123151634.303aa860@jic23-huawei>
-In-Reply-To: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
-References: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Haibo Chen <haibo.chen@nxp.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610 ADC
+ DRIVER), imx@lists.linux.dev (open list:NXP i.MX 7D/6SX/6UL/93 AND VF610
+ ADC DRIVER), linux-kernel@vger.kernel.org (open list)
+Subject: Re: [PATCH v4 1/2] iio: adc: vf610_adc: use devm_* and
+ dev_err_probe() to simple code
+Message-ID: <20241123152637.27a66403@jic23-huawei>
+In-Reply-To: <20241111213859.3317909-1-Frank.Li@nxp.com>
+References: <20241111213859.3317909-1-Frank.Li@nxp.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,100 +63,182 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 10 Nov 2024 18:49:05 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Mon, 11 Nov 2024 16:38:58 -0500
+Frank Li <Frank.Li@nxp.com> wrote:
 
-> All devices supported by this driver (currently veml6030, veml6035
-> and veml7700) have two 16-bit channels, and can profit for the same
-> configuration to support data access via triggered buffers.
+> Use devm_* and dev_err_probe() simplify probe function and remove
+> vf610_adc_remove().
 > 
-> The measurements are stored in two 16-bit consecutive registers
-> (addresses 0x04 and 0x05) as little endian, unsigned data.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Hi Javier,
+> Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Hi Frank,
 
-We have to be a little careful with pushing data from the stack.
-Need to makes sure holes are zero filled.
+One (hopefully final) question inline.
 
 Jonathan
 
-> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index ccb43dfd5cf7..ce9af9a0e933 100644
-> --- a/drivers/iio/light/veml6030.c
-> +++ b/drivers/iio/light/veml6030.c
-
+> ---
+> Change from v3 to v4
+> - keep vref_uv as u32
+> - keep original regulator part and only add
+> devm_add_action_or_reset(&pdev->dev, vf610_adc_remove, info)
+> 
+> Change from v2 to v3
+> - change vref_uv to int from u32 to fix below warning
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202411070633.NIrO7Ert-lkp@intel.com/
+> smatch warnings:
+> drivers/iio/adc/vf610_adc.c:857 vf610_adc_probe() warn: unsigned 'info->vref_uv' is never less than zero.
+> 
+> vim +857 drivers/iio/adc/vf610_adc.c
+> 
+> Change from v1 to v2
+> - add Haibo's review tag
+> ---
+>  drivers/iio/adc/vf610_adc.c | 79 ++++++++++++-------------------------
+>  1 file changed, 26 insertions(+), 53 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/vf610_adc.c b/drivers/iio/adc/vf610_adc.c
+> index 4d83c12975c53..d4b778799755b 100644
+> --- a/drivers/iio/adc/vf610_adc.c
+> +++ b/drivers/iio/adc/vf610_adc.c
+> @@ -814,6 +814,14 @@ static const struct of_device_id vf610_adc_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, vf610_adc_match);
 >  
->  static const struct regmap_config veml6030_regmap_config = {
-> @@ -889,6 +928,35 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
->  	return IRQ_HANDLED;
->  }
->  
-> +static irqreturn_t veml6030_trigger_handler(int irq, void *p)
+> +static void vf610_adc_action_remove(void *d)
 > +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *iio = pf->indio_dev;
-> +	struct veml6030_data *data = iio_priv(iio);
-> +	unsigned int reg;
-> +	int ch, ret, i = 0;
-> +	struct {
-> +		u16 chans[2];
-There is a hole here... 
-> +		aligned_s64 timestamp;
-> +	} scan;
+> +	struct vf610_adc *info = d;
 > +
-> +	iio_for_each_active_channel(iio, ch) {
-> +		ret = regmap_read(data->regmap, VEML6030_REG_DATA(ch),
-> +				  &reg);
-> +		if (ret)
-> +			goto done;
-> +
-> +		scan.chans[i++] = reg;
-This fills in at least 1 channel, but maybe not the second.
-> +	}
-> +
-So this leaks random stack data I think.
+> +	if (info->vref)
+> +		regulator_disable(info->vref);
 
-Upshot, when holes are involved or not all the channels are set, need
-memset(&scan, 0, sizeof(scan));
-for the structure on the stack which will zero the holes as well as
-both channels.
+Why is the check on info->vref needed?
+vref is required to reach the point where this callback is registered.
 
-Ancient article on this: https://lwn.net/Articles/417989/
-
-We get away with it when they are in the iio_priv space because they are
-kzalloc + if we do leak data due to changes in configured channels it's
-just old sensor data which is (I think) never a security problem!
-
-> +	iio_push_to_buffers_with_timestamp(iio, &scan, pf->timestamp);
-> +
-> +done:
-> +	iio_trigger_notify_done(iio->trig);
-> +
-> +	return IRQ_HANDLED;
 > +}
 > +
->  static int veml6030_set_info(struct iio_dev *indio_dev)
+>  static int vf610_adc_probe(struct platform_device *pdev)
 >  {
->  	struct veml6030_data *data = iio_priv(indio_dev);
-> @@ -1077,6 +1145,12 @@ static int veml6030_probe(struct i2c_client *client)
->  	if (ret < 0)
+>  	struct device *dev = &pdev->dev;
+> @@ -823,10 +831,8 @@ static int vf610_adc_probe(struct platform_device *pdev)
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(struct vf610_adc));
+> -	if (!indio_dev) {
+> -		dev_err(&pdev->dev, "Failed allocating iio device\n");
+> -		return -ENOMEM;
+> -	}
+> +	if (!indio_dev)
+> +		return dev_err_probe(&pdev->dev, -ENOMEM, "Failed allocating iio device\n");
+>  
+>  	info = iio_priv(indio_dev);
+>  	info->dev = &pdev->dev;
+> @@ -842,17 +848,12 @@ static int vf610_adc_probe(struct platform_device *pdev)
+>  	ret = devm_request_irq(info->dev, irq,
+>  				vf610_adc_isr, 0,
+>  				dev_name(&pdev->dev), indio_dev);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev, "failed requesting irq, irq = %d\n", irq);
+> -		return ret;
+> -	}
+> +	if (ret < 0)
+> +		return dev_err_probe(&pdev->dev, ret, "failed requesting irq, irq = %d\n", irq);
+>  
+> -	info->clk = devm_clk_get(&pdev->dev, "adc");
+> -	if (IS_ERR(info->clk)) {
+> -		dev_err(&pdev->dev, "failed getting clock, err = %ld\n",
+> -						PTR_ERR(info->clk));
+> -		return PTR_ERR(info->clk);
+> -	}
+> +	info->clk = devm_clk_get_enabled(&pdev->dev, "adc");
+> +	if (IS_ERR(info->clk))
+> +		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk), "failed getting clock\n");
+>  
+>  	info->vref = devm_regulator_get(&pdev->dev, "vref");
+>  	if (IS_ERR(info->vref))
+> @@ -862,6 +863,10 @@ static int vf610_adc_probe(struct platform_device *pdev)
+>  	if (ret)
 >  		return ret;
 >  
-> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
-> +					      veml6030_trigger_handler, NULL);
+> +	ret = devm_add_action_or_reset(&pdev->dev, vf610_adc_action_remove, info);
+
+As above, but this time if info->vref is not set, we have already returned so it 
+must be set and doesn't need checking the callback.
+
 > +	if (ret)
-> +		return dev_err_probe(&client->dev, ret,
-> +				     "Failed to register triggered buffer");
+> +		return ret;
 > +
->  	return devm_iio_device_register(&client->dev, indio_dev);
+>  	info->vref_uv = regulator_get_voltage(info->vref);
+>  
+>  	device_property_read_u32_array(dev, "fsl,adck-max-frequency", info->max_adck_rate, 3);
+> @@ -879,52 +884,21 @@ static int vf610_adc_probe(struct platform_device *pdev)
+>  	indio_dev->channels = vf610_adc_iio_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(vf610_adc_iio_channels);
+>  
+> -	ret = clk_prepare_enable(info->clk);
+> -	if (ret) {
+> -		dev_err(&pdev->dev,
+> -			"Could not prepare or enable the clock.\n");
+> -		goto error_adc_clk_enable;
+> -	}
+> -
+>  	vf610_adc_cfg_init(info);
+>  	vf610_adc_hw_init(info);
+>  
+> -	ret = iio_triggered_buffer_setup(indio_dev, &iio_pollfunc_store_time,
+> -					NULL, &iio_triggered_buffer_setup_ops);
+> -	if (ret < 0) {
+> -		dev_err(&pdev->dev, "Couldn't initialise the buffer\n");
+> -		goto error_iio_device_register;
+> -	}
+> +	ret = devm_iio_triggered_buffer_setup(&pdev->dev, indio_dev, &iio_pollfunc_store_time,
+> +					      NULL, &iio_triggered_buffer_setup_ops);
+> +	if (ret < 0)
+> +		return dev_err_probe(&pdev->dev, ret, "Couldn't initialise the buffer\n");
+>  
+>  	mutex_init(&info->lock);
+>  
+> -	ret = iio_device_register(indio_dev);
+> -	if (ret) {
+> -		dev_err(&pdev->dev, "Couldn't register the device.\n");
+> -		goto error_adc_buffer_init;
+> -	}
+> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(&pdev->dev, ret, "Couldn't register the device.\n");
+>  
+>  	return 0;
+> -
+> -error_adc_buffer_init:
+> -	iio_triggered_buffer_cleanup(indio_dev);
+> -error_iio_device_register:
+> -	clk_disable_unprepare(info->clk);
+> -error_adc_clk_enable:
+> -	regulator_disable(info->vref);
+> -
+> -	return ret;
+> -}
+> -
+> -static void vf610_adc_remove(struct platform_device *pdev)
+> -{
+> -	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> -	struct vf610_adc *info = iio_priv(indio_dev);
+> -
+> -	iio_device_unregister(indio_dev);
+> -	iio_triggered_buffer_cleanup(indio_dev);
+> -	regulator_disable(info->vref);
+> -	clk_disable_unprepare(info->clk);
 >  }
 >  
-> 
-> ---
-> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
-> change-id: 20241106-veml6030_triggered_buffer-a38886ca4cce
-> 
-> Best regards,
+>  static int vf610_adc_suspend(struct device *dev)
+> @@ -972,7 +946,6 @@ static DEFINE_SIMPLE_DEV_PM_OPS(vf610_adc_pm_ops, vf610_adc_suspend,
+>  
+>  static struct platform_driver vf610_adc_driver = {
+>  	.probe          = vf610_adc_probe,
+> -	.remove         = vf610_adc_remove,
+>  	.driver         = {
+>  		.name   = DRIVER_NAME,
+>  		.of_match_table = vf610_adc_match,
 
 

@@ -1,62 +1,62 @@
-Return-Path: <linux-iio+bounces-12530-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12531-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D9E9D6986
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:01:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF839D6987
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E87D5B21BE1
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09237281BB7
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC56D1CAA4;
-	Sat, 23 Nov 2024 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9AA1BC49;
+	Sat, 23 Nov 2024 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l5mwk7yU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a2i9jlGp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6324A29;
-	Sat, 23 Nov 2024 15:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75A929CEB;
+	Sat, 23 Nov 2024 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732374069; cv=none; b=sv+FbP1W/Jf1luu7ijJX/CKMkUSwItXG0oAeyhXVK5IKDI8UOmSPOx2PXjhGlVRofeSlyU/fU/6UT8WyEL3sZo7qXnDhApH2KNpktjsDPVgEWNObnwOytn/ctPzEv1eBD6/CISXvhA1fa2vF+0NHBvWLHXpz2OQrz0ooRYJqBVg=
+	t=1732374177; cv=none; b=QYQlNwyZ+l8wt2o66RXQJ0qRyhTFpuTQ8M50MXLiqU+o8+vFlAZc9/6f1iuZOY6GS8ePGOQDsdyx5F9DCDgBW1igbyRAGgVkHu4fkgpaaN8dMdKQO+vxl/uzpHrkT+d2q2nnYNIuQxjCmQAEux8MhWsqr0RIWRzGK/s7kfaPp8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732374069; c=relaxed/simple;
-	bh=FouD3aP6VTMBEwM4/qIP1Tvlz7WDkmNFex4b7huGuh0=;
+	s=arc-20240116; t=1732374177; c=relaxed/simple;
+	bh=P157WcS5ohYQAn6edzPl90GuO3alev9bLB/aKLVAonA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mMHEGtpOYz8722qdZAgPmFcr3BAwIOIfdzKEFq1FNgiTaXaFepBa6t4WOoppjBEK0wmF4lZlZD4i/0AW4p0+V0qs+pbnvE6SO1j8wEfvBFmlNhNlnhgYlchhmWPd3yf8mnNPwWdGGtc5y8tWPxelcPL/+h5MbuetU3eCcid2hlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l5mwk7yU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56DBFC4CECD;
-	Sat, 23 Nov 2024 15:01:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZkCz/K7/bSyF+I7I9pcdKoeW/VoCfJCb1DgX8ayEuM1WmEoD21U1uL1dRpttwsXMeykghmcSkhqV9DqahuoSvgsUN4wTlTgdlWTxnbI7q3hFHEWqg2gYO7E7xzjiIN3YrpUHQTENa63cqbucr7WfEKZDPF0ajSEjv94pMPnarro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a2i9jlGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D12C4CECD;
+	Sat, 23 Nov 2024 15:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732374069;
-	bh=FouD3aP6VTMBEwM4/qIP1Tvlz7WDkmNFex4b7huGuh0=;
+	s=k20201202; t=1732374176;
+	bh=P157WcS5ohYQAn6edzPl90GuO3alev9bLB/aKLVAonA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=l5mwk7yUtswNNSZuZOk94o80Aruj4yqJbHNPj2GtYCY5Fsm4UD6KQRVhXV7U8H+wf
-	 /ZyVX80VgjPotIcnWRBI+B62R7ugskvFzbMYXDtO6RKsFp4zjd8BU4TNdGVvMc8bIV
-	 SWrWDKnMT0uEu3vxG9Lsp+n6K3qWRukXDbSH1MvC3rimUj5XCLc3KESst9jpr7rPyY
-	 M0QRzeft7jSkMvBjnDheTs30BLZXMuViSuqp+2rPpbOr3zkOoJE7vD8oDir9RTbIKc
-	 S8IDSwA0Z9+DxvkfZCmgwSXWLTc9g4caGBdsQoaOyK5M+EjK/pV3Yjem+LQr0+YKF5
-	 MaC5d9dVZVh2w==
-Date: Sat, 23 Nov 2024 15:01:01 +0000
+	b=a2i9jlGpP4BY6M3sO6UvZGtTn48iTlYRswftLo6T216t08sIJe8jGSigKCHnMe0LP
+	 /DCUGBZ4MPSDbU/CS9GdyV1H+/prcZ+6O/6jrvC1YGrL0bHHcSF/vONpdWnZPC4Z70
+	 lQItjByFZ+PXk96ckzl6Nd2+ghTQQFeCZHJOKM/l0JKqmvnbnS2AHAk5gtOw77FGOk
+	 qYGE+/yHOTQjHX523ydlcgUTBD3L2156BZP9Glret02gBGijXBajFBY9ms9c5YIQeE
+	 ZcFlgRH4L8968l7+vzPNW5vlWIgf426zAhTWzlV+hiimoLcMnmEcZFEA8JX9peP0Mk
+	 +hDck6GqSJF7Q==
+Date: Sat, 23 Nov 2024 15:02:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: ad7124: Don't create more channels than
- the hardware is capable of
-Message-ID: <20241123150101.1c5ce5c8@jic23-huawei>
-In-Reply-To: <8636a00f-81e6-4439-9778-abce6e0c931b@baylibre.com>
-References: <20241108181813.272593-4-u.kleine-koenig@baylibre.com>
-	<20241108181813.272593-5-u.kleine-koenig@baylibre.com>
-	<c94271b1-924b-4de6-b3bb-77e16265bb0d@baylibre.com>
-	<c2mdg4pn5rgjdlwet2gmgqvmym36ttlyg5ag2u62a3qtkdwqce@p45gyz5ghgel>
-	<8636a00f-81e6-4439-9778-abce6e0c931b@baylibre.com>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: lars@metafoo.de, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, u.kleine-koenig@baylibre.com,
+ tgamblin@baylibre.com, fabrice.gasnier@st.com,
+ benjamin.gaignard@linaro.org, lee@kernel.org, linux-iio@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: trigger: stm32-timer-trigger: Add check for
+ clk_enable()
+Message-ID: <20241123150247.718ee116@jic23-huawei>
+In-Reply-To: <CANeGvZVxte61_FgrrYEt_oTRXXzCESrvq4q90xSWz4JqpMAtYg@mail.gmail.com>
+References: <20241108200900.44727-1-jiashengjiangcool@gmail.com>
+	<20241109133846.53d7ef06@jic23-huawei>
+	<CANeGvZVxte61_FgrrYEt_oTRXXzCESrvq4q90xSWz4JqpMAtYg@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,48 +67,178 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 11 Nov 2024 08:21:45 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 11 Nov 2024 14:15:43 -0500
+Jiasheng Jiang <jiashengjiangcool@gmail.com> wrote:
 
-> On 11/11/24 6:08 AM, Uwe Kleine-K=C3=B6nig wrote:
-> > [dropped Mircea Caprioru from Cc: as their address bounces.]
-> >=20
-> > Hello David,
-> >=20
-> > On Fri, Nov 08, 2024 at 12:52:35PM -0600, David Lechner wrote: =20
-> >> On 11/8/24 12:18 PM, Uwe Kleine-K=C3=B6nig wrote: =20
-> >>> The ad7124-4 and ad7124-8 both support 16 channel registers. Don't
-> >>> accept more (logical) channels from dt than that. =20
-> >>
-> >> Why should the devicetree be limited by the number of channel
-> >> registers? Channel registers are a resource than can be
-> >> dynamically assigned, so it doesn't seem like the devicetree
-> >> should be specifying that assignment. =20
-> >=20
-> > Note the device tree isn't limited as I didn't adapt the binding. It's
-> > just that the driver doesn't bind if too many channels are specified.
-> > And while your statement about the channels being a dynamic resource is
-> > right, currently the driver doesn't cope and allocates resources
-> > statically, and happily assumes there is a CHANNEL_16 register if the
-> > device tree specifies 17 (or more) logical channels and writes to
-> > CONFIG_0 then which very likely results in strange effects.
-> >=20
-> > So as long as the driver doesn't implement this (possible) dynamic
-> > mapping to the CHANNEL registers, it's IMHO right to refuse to bind (or
-> > alternatively only use the 16 first logical channels).
-> >=20
-> > Best regards
-> > Uwe =20
+> On Sat, Nov 9, 2024 at 8:38=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+> >
+> > On Fri,  8 Nov 2024 20:09:00 +0000
+> > Jiasheng Jiang <jiashengjiangcool@gmail.com> wrote:
+> > =20
+> > > Add check for the return value of clk_enable() in order to catch the
+> > > potential exception.
+> > >
+> > > Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com> =20
+> > Hi,
+> >
+> > In principle this is fine, but I'd rather we made use of guard()
+> > / scoped_guard() rather than adding the explicit unlocks.
+> >
+> > If you do that as a precursor patch in appropriate places
+> > in the driver then this will be a little cleaner.
+> >
+> > Note I'll not be taking this until next cycle now anyway.
+> >
+> > Jonathan
+> > =20
+> > > ---
+> > > Changelog:
+> > >
+> > > v1 -> v2:
+> > >
+> > > 1. Remove unsuitable dev_err_probe().
+> > > ---
+> > >  drivers/iio/trigger/stm32-timer-trigger.c | 32 ++++++++++++++++++---=
+--
+> > >  1 file changed, 25 insertions(+), 7 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/trigger/stm32-timer-trigger.c b/drivers/iio/=
+trigger/stm32-timer-trigger.c
+> > > index 0684329956d9..e1e077122f73 100644
+> > > --- a/drivers/iio/trigger/stm32-timer-trigger.c
+> > > +++ b/drivers/iio/trigger/stm32-timer-trigger.c
+> > > @@ -119,7 +119,7 @@ static int stm32_timer_start(struct stm32_timer_t=
+rigger *priv,
+> > >                            unsigned int frequency)
+> > >  {
+> > >       unsigned long long prd, div;
+> > > -     int prescaler =3D 0;
+> > > +     int prescaler =3D 0, ret;
+> > >       u32 ccer;
+> > >
+> > >       /* Period and prescaler values depends of clock rate */
+> > > @@ -153,7 +153,11 @@ static int stm32_timer_start(struct stm32_timer_=
+trigger *priv,
+> > >       mutex_lock(&priv->lock);
+> > >       if (!priv->enabled) {
+> > >               priv->enabled =3D true;
+> > > -             clk_enable(priv->clk);
+> > > +             ret =3D clk_enable(priv->clk);
+> > > +             if (ret) {
+> > > +                     mutex_unlock(&priv->lock); =20
+> >
+> > as below guard() for when the mutex is locked is cleaner.
+> > =20
+> > > +                     return ret;
+> > > +             }
+> > >       }
+> > >
+> > >       regmap_write(priv->regmap, TIM_PSC, prescaler);
+> > > @@ -307,7 +311,7 @@ static ssize_t stm32_tt_store_master_mode(struct =
+device *dev,
+> > >       struct stm32_timer_trigger *priv =3D dev_get_drvdata(dev);
+> > >       struct iio_trigger *trig =3D to_iio_trigger(dev);
+> > >       u32 mask, shift, master_mode_max;
+> > > -     int i;
+> > > +     int i, ret;
+> > >
+> > >       if (stm32_timer_is_trgo2_name(trig->name)) {
+> > >               mask =3D TIM_CR2_MMS2;
+> > > @@ -326,7 +330,11 @@ static ssize_t stm32_tt_store_master_mode(struct=
+ device *dev,
+> > >                       if (!priv->enabled) {
+> > >                               /* Clock should be enabled first */
+> > >                               priv->enabled =3D true;
+> > > -                             clk_enable(priv->clk);
+> > > +                             ret =3D clk_enable(priv->clk);
+> > > +                             if (ret) {
+> > > +                                     mutex_unlock(&priv->lock); =20
+> > As below. Prefer use of guard() so we don't have to handle the unlock m=
+anually. =20
+> > > +                                     return ret;
+> > > +                             }
+> > >                       }
+> > >                       regmap_update_bits(priv->regmap, TIM_CR2, mask,
+> > >                                          i << shift);
+> > > @@ -482,6 +490,7 @@ static int stm32_counter_write_raw(struct iio_dev=
+ *indio_dev,
+> > >                                  int val, int val2, long mask)
+> > >  {
+> > >       struct stm32_timer_trigger *priv =3D iio_priv(indio_dev);
+> > > +     int ret;
+> > >
+> > >       switch (mask) {
+> > >       case IIO_CHAN_INFO_RAW:
+> > > @@ -496,7 +505,11 @@ static int stm32_counter_write_raw(struct iio_de=
+v *indio_dev,
+> > >               if (val) {
+> > >                       if (!priv->enabled) {
+> > >                               priv->enabled =3D true;
+> > > -                             clk_enable(priv->clk);
+> > > +                             ret =3D clk_enable(priv->clk);
+> > > +                             if (ret) {
+> > > +                                     mutex_unlock(&priv->lock); =20
+> > Add include of cleanup.h and swithch the place where the mutex is locke=
+d to
+> > guard(mutex)(&priv->lock);
+> > then remember to drop the explicit unlocks. =20
 >=20
-> Understood. It would be nice to implement such dynamic allocation
-> in the future but as a fix to backport to stable kernels, this makes
-> sense.
+> I found that cleanup.h is already included.
+>=20
+> Moreover, since labels cannot be followed by declarations,
+> I encountered a compilation error when using guard().
+> Therefore, I switched to using scoped_guard().
+Sometimes it is better to just add scope for blocks in switch statement
+with=20
+case XXX: {
+	guard()
+}
+because then we don't get the extra indent a scoped_guard() requires.
 
-Agreed.  We do have other drivers that have internal allocators
-for constrained sequencer resources, but they are complex so not
-fix material!
+I'll take a look at the result in this case though!
 
 Jonathan
 
+> > =20
+> > > +                                     return ret;
+> > > +                             }
+> > >                       }
+> > >                       regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_=
+CEN);
+> > >               } else {
+> > > @@ -601,7 +614,7 @@ static int stm32_set_enable_mode(struct iio_dev *=
+indio_dev,
+> > >                                unsigned int mode)
+> > >  {
+> > >       struct stm32_timer_trigger *priv =3D iio_priv(indio_dev);
+> > > -     int sms =3D stm32_enable_mode2sms(mode);
+> > > +     int sms =3D stm32_enable_mode2sms(mode), ret;
+> > >
+> > >       if (sms < 0)
+> > >               return sms;
+> > > @@ -611,7 +624,12 @@ static int stm32_set_enable_mode(struct iio_dev =
+*indio_dev,
+> > >        */
+> > >       mutex_lock(&priv->lock); =20
+> >
+> > Perhaps scoped_guard() is  appropriate here.
+> > =20
+> > >       if (sms =3D=3D 6 && !priv->enabled) {
+> > > -             clk_enable(priv->clk);
+> > > +             ret =3D clk_enable(priv->clk);
+> > > +             if (ret) {
+> > > +                     mutex_unlock(&priv->lock);
+> > > +                     return ret;
+> > > +             }
+> > > +
+> > >               priv->enabled =3D true;
+> > >       }
+> > >       mutex_unlock(&priv->lock); =20
+> > =20
+>=20
+> Thanks, I will submit a v2 to simplify code with cleanup helpers.
+>=20
+> -Jiasheng
 
 

@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-12558-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12559-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BECE9D6A44
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:43:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45539D6A4B
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:47:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3B00161872
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67BBA16184F
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3AB13CFA8;
-	Sat, 23 Nov 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E402770B;
+	Sat, 23 Nov 2024 16:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNJ5KCdX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDhvzgFm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0882F17C2;
-	Sat, 23 Nov 2024 16:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3300566A;
+	Sat, 23 Nov 2024 16:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732380220; cv=none; b=Zm0f1LM5koIpW9irmun5c6K6R0cSQaGdPQWYmF/cIpfPtLllFvs86utA4f94AIRvIHDKSdDDXErCsmXVUkw/zWNwSbHpn/v3ikdHT5rGFkZ+3PELGLN4bDQcPQttGTxg5sCY1BWJxjqT9r9nBgfzSope7QdiO8FmlIl9Z9bUM74=
+	t=1732380420; cv=none; b=bVibc8oND5mKKyXa864zJg9Ljb2TtG9gSobdkbfcd+JV3BaJ1sl7sRwFnRKLh1HOeW63x3+JbsLLs4peqhGdoVDyDGdA0rk+fv0RNP05WPx8y/2BTepXX6ApG7B5RKIVN4raniJhQPUNonellhVB5/nc9wwIHvn8MxNpGBzBTiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732380220; c=relaxed/simple;
-	bh=gEN+6UlC6bDyYXGMy02g0HVZ3kyIwQPnNjkS0Ttjsy0=;
+	s=arc-20240116; t=1732380420; c=relaxed/simple;
+	bh=/mSPk4KVeH16EC5A2b6+i4e8AjUGk1JqjsAQAxsQFrA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YiqbWuFKULpCHnOA5bU6K7EKwQ6K1rCmr8VlkudqqDcuf7jmieSy25ouNiJOFw0AJRlgI+qGm4xsnCSXQ84byuiu/N8HqcgWF+nPSAeGXMP+bAkddnjSwtMllrtXznNB3+Su0RVIxJQvtmIWFYyrfFZGpo10sCIgnpCElnKG/kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNJ5KCdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E93C4CECD;
-	Sat, 23 Nov 2024 16:43:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EHstTLLI+xwgXfqnOUBAHuDqrRCnSo6QcEaG0ZNBbEhgXfbI7GQnW35LUz23axJZU+viBVhTr64lLrqRcVJSlzxzWQuZbQgGSqPf7p7KIk1w/5nsp+omWxb29WtbzLgjQmTIFZzXiGT10OxpnqaCYQvGB7z8v9/rVxyPU1kWMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDhvzgFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23751C4CECD;
+	Sat, 23 Nov 2024 16:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732380219;
-	bh=gEN+6UlC6bDyYXGMy02g0HVZ3kyIwQPnNjkS0Ttjsy0=;
+	s=k20201202; t=1732380420;
+	bh=/mSPk4KVeH16EC5A2b6+i4e8AjUGk1JqjsAQAxsQFrA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lNJ5KCdXWgpGQf8DMXPPeGtZ8JTM8VmHeO5bQIVm5VPrWIUWL4Aw3yTvuW2HbpFEn
-	 XGC71PcfPYCsHj4f3i6zsMg6N6LeLzeGuL0cP8Pv6/+EyhjfGt9D0hkbP+VEw4k7QR
-	 C2tLLqsds3cqx3aNGXtzUEmhFVNDtM+9sLxhCOUd2HEwAUp/npxn08xP7jM2Jddee0
-	 zXN5vp9J94kVO+ilhnr+qw1vEwMQN+11EfdINwoAtFvkUlP7LrzABQPKWnp/D62qPf
-	 XacSdW7M0CKwmG8HD1iCKgsoou1Z3/z61OrukP2Gw0zJrmEgKTW4lcnquHuAcczE6j
-	 oo6mR4oe7ASWA==
-Date: Sat, 23 Nov 2024 16:43:33 +0000
+	b=SDhvzgFmV/BjkWTbVUiW86e8VpdDZlzMMwCCG0JaZAot9CVG8t5Uh9HYSABOHOh4/
+	 jnzQVCSIKHdb7lUH1mgWAav9cdyz/AZTcHP5RzRzLQDzi29+8W05P08etGc9FPv7CS
+	 uHBvWXNsE3N2dKQUwScATNBP2/qfhluj8Ek0pZqr87HcVrcEry0g806XsdHmvteMLz
+	 Ay18wRyJuqYB9dOKrQg9F6BLozhEDDesm64mCaZb9a5qU37VeF9jnBNDms41Ng2Ujm
+	 j3qFSYIId2P27LhjoaMsv7U1qi9YpEzIfFnY+AZ1ZU+sYyrR1ZT9aDPlaBauf7N3CG
+	 IPybnMq5iUjUg==
+Date: Sat, 23 Nov 2024 16:46:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 8/8] iio: accel: kx022a: Support KX134-1211
-Message-ID: <20241123164333.66cf89aa@jic23-huawei>
-In-Reply-To: <833f2f066e12021bfbca25d84f9c4673b902a8bc.1732105157.git.mazziesaccount@gmail.com>
-References: <cover.1732105157.git.mazziesaccount@gmail.com>
-	<833f2f066e12021bfbca25d84f9c4673b902a8bc.1732105157.git.mazziesaccount@gmail.com>
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] iio: Use __cleanup for a few ROHM sensors
+Message-ID: <20241123164654.72e309d3@jic23-huawei>
+In-Reply-To: <cover.1732193263.git.mazziesaccount@gmail.com>
+References: <cover.1732193263.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,18 +60,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 21 Nov 2024 10:21:46 +0200
+On Thu, 21 Nov 2024 15:04:53 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The ROHM KX134-1211 has very similar register interface as KX132-1211
-> does. The main differencies are the content of the "Who am I"
-> identification register and different g-ranges. The KX132-1211 can
-> measure ranges from +/- 2g to +/-16g where the KX134-1211 supports
-> measuring ranges +/- 8g to +/- 64g.
+> Use __cleanup.
 > 
-> Support the ROHM KX134-1211.
+> The series converts the rest of the ROHM sensors (maintained by me) to
+> use guard(mutex). This simplifies the error paths.
 > 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> As a note, kx022a accelerometer driver is handled in another series,
+> which also adds support for two new accelerometers. I did also patch the
+> driver for the BU27008 and BU27010 - but when I was testing the changes
+> I found that the BU27008 status is set to "obsolete". I'll try to dig
+> some information about the BU27010 and decide if having the driver
+> in-tree is still worth the effort, or if I should just send out patches
+> to drop it all. Hence patch to rohm-bu27008.c is not included in the
+> series. If someone is actually using the BU27008 or BU27010 and wants
+> to patch it - feel free to pick
+> 131315de97ff ("iio: bu27008: simplify using guard(mutex)")
+> from
+> https://github.com/M-Vaittinen/linux/tree/bu27008-cleanup
 > 
-Reset of the series looks fine to me.
+Applied. Thanks,
+
+J
+> ---
+> 
+> Matti Vaittinen (2):
+>   iio: bu27034: simplify using guard(mutex)
+>   iio: bm1390: simplify using guard(mutex)
+> 
+>  drivers/iio/light/rohm-bu27034.c   | 73 ++++++++++------------------
+>  drivers/iio/pressure/rohm-bm1390.c | 78 ++++++++++++------------------
+>  2 files changed, 55 insertions(+), 96 deletions(-)
+> 
+> 
+> base-commit: adc218676eef25575469234709c2d87185ca223a
+
 

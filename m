@@ -1,60 +1,56 @@
-Return-Path: <linux-iio+bounces-12532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE4C9D698E
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:08:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED76E9D6997
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 171ED281B65
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:08:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C5D5B20EB6
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 15:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80041F957;
-	Sat, 23 Nov 2024 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B659822EED;
+	Sat, 23 Nov 2024 15:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kbSj3ip+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+o6cKu4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DE5BA42;
-	Sat, 23 Nov 2024 15:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A817583;
+	Sat, 23 Nov 2024 15:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732374500; cv=none; b=tj3EbCqlJf+SrnFzrQsSBPmxP5JgjT8FlgCIyeQniCJ5u57uOMBiV4FDpfPXzEERhPcyoP1sKQamuTpEPojnUmgmBpOUnsBvjJJvKLi/vsGqU3DHC1vGPxWpOGtnhzMNT7597f1l+/jAcXgf4zIEjuORIwFnZ+tposiURiaATE0=
+	t=1732375000; cv=none; b=rRjfIQudWSBmHYeBlxn1BJhZrJer5S4s12mN3pJtEY5FMwBdnH/JwRMbfiy9sNYvXu3gXcHD3I91dqt6+ahw3B1IgBXRSrxl3Q3HO823ZO7q+0NGhKTzocKP+W1AfZSjqpfAPuqPdbAc6WbniEjYIynEtWznTRN6HnLch3kFHts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732374500; c=relaxed/simple;
-	bh=mV0DYgkf1CnqnfVd7iq3ygJgMJskcY+V1ypQ6J1wbnU=;
+	s=arc-20240116; t=1732375000; c=relaxed/simple;
+	bh=Rs1AyLMmMT+EhiO+wBM0jD2Ma7zXw65IWJOajmuwmsg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=faORcVus7d4yPIQypssh9mLR1x5+bxuaIhAiZ97BZjFg9Qzjacl28H7pOyQrBSqiKYsnOYd9MMemw1f6x/uu4MiJAMC25v9nXKhr64b0VbFmBOdf/pJrq6HGAaipWb3592lsbs0uoLuRqku3ZuVW/RP3Y1nRFpq6tJ3UFszYQ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kbSj3ip+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548DFC4CECD;
-	Sat, 23 Nov 2024 15:08:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y1XPxllDyIuBbqXj5zR6ySSQFnU0WlUuh3jgrqdthS2yG9AikRMMpL3/p3Iq4uVcnc+b6oRtWGym5k2G1bh+TQ23nHltmzJtXrRDVnP5JUmaGm0mau9JCO3w/VG9ciMnGxiP6O7jFQzdu/2konRBLPMAus7FQU6PkPtrfI8ZH+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+o6cKu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D208C4CECD;
+	Sat, 23 Nov 2024 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732374496;
-	bh=mV0DYgkf1CnqnfVd7iq3ygJgMJskcY+V1ypQ6J1wbnU=;
+	s=k20201202; t=1732374999;
+	bh=Rs1AyLMmMT+EhiO+wBM0jD2Ma7zXw65IWJOajmuwmsg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kbSj3ip+kaRWJybPm0YerFXgRKWPbUxyNOlWqPF9hZucBq4TIwJ1pJODwn42DZBAQ
-	 kTUbAWtjGmM3e270KmKubkZ0b4a9JH6G+OEp8AKzbxeszA/zdjM4BKNqhALK5EzhUp
-	 /SpKx9XRX3e7ll2dFaIbyzx91/fs2BBy5u5p8MPR2ANlYnAvyljVsHP91nAYoAZOKK
-	 0SzQEYwyUKxMXGPMtzLtfMclJ+MYQcKh58QSZYfVOLthrvFWdahA2+eCXLpZOuJt8K
-	 3oSOkbKWFsoWWnpyteSqBaajD7mI9SFOC1GhoodDzggAsqQLG6hOoys32PtkqI3eJr
-	 gNCxUFVt5qjSA==
-Date: Sat, 23 Nov 2024 15:08:08 +0000
+	b=Z+o6cKu4jljn5oc2TMKqxEXy10E4zXZqii7XsKCQHFcrzw5KjWbBCuFI1B3PVGc6k
+	 57AN+wfXPDCTfIIY/j3WZlut5dejnVs5YlmdNWujftrF+UTepSxiBX3NreqdOHtAab
+	 gKq84SywNcbJ7lF6Tu/4m8tbDAQ9ycjvf7NhvpdcZtAb3nShKmE7WJFC22CN+Wl/4y
+	 +sKnXe1OE4IrHgDCn2wf0/cOdHyIOy/iyZcTICLMrKhIuYsJ0yiohbhGIj30rr7/PV
+	 kjaG62cjuBBfGmxCPamXAOMiJIN2Yph40CjY4Tv9+aFTcn/dk4MoJ1qk1CkJjPwlK0
+	 Mgw8Q2mQpyzGg==
+Date: Sat, 23 Nov 2024 15:16:34 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: dlechner@baylibre.com, lars@metafoo.de, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, u.kleine-koenig@baylibre.com,
- tgamblin@baylibre.com, fabrice.gasnier@st.com,
- benjamin.gaignard@linaro.org, lee@kernel.org, linux-iio@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] iio: trigger: stm32-timer-trigger: Add check for
- clk_enable()
-Message-ID: <20241123150808.1426c6f8@jic23-huawei>
-In-Reply-To: <20241111222310.12339-1-jiashengjiangcool@gmail.com>
-References: <20241111222310.12339-1-jiashengjiangcool@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: light: veml6030: add support for triggered
+ buffer
+Message-ID: <20241123151634.303aa860@jic23-huawei>
+In-Reply-To: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
+References: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,82 +61,100 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 11 Nov 2024 22:23:10 +0000
-Jiasheng Jiang <jiashengjiangcool@gmail.com> wrote:
+On Sun, 10 Nov 2024 18:49:05 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> Add check for the return value of clk_enable() in order to catch the
-> potential exception.
+> All devices supported by this driver (currently veml6030, veml6035
+> and veml7700) have two 16-bit channels, and can profit for the same
+> configuration to support data access via triggered buffers.
 > 
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Hi Jiasheng,
+> The measurements are stored in two 16-bit consecutive registers
+> (addresses 0x04 and 0x05) as little endian, unsigned data.
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi Javier,
 
-
-Should definitely mention the changes to use guard() to simplify
-the resulting code.
-
-One minor comment on the code inline. Otherwise looks good to me.
-
-Thanks,
+We have to be a little careful with pushing data from the stack.
+Need to makes sure holes are zero filled.
 
 Jonathan
 
-> ---
-> Changelog:
-> 
-> v3 -> v4:
-> 
-> 1. Place braces around the case body.
-> 
-> v2 -> v3:
-> 
-> 1. Simplify code with cleanup helpers.
-> 
-> v1 -> v2:
-> 
-> 1. Remove unsuitable dev_err_probe().
+> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> index ccb43dfd5cf7..ce9af9a0e933 100644
+> --- a/drivers/iio/light/veml6030.c
+> +++ b/drivers/iio/light/veml6030.c
 
-> @@ -482,6 +484,7 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
->  				   int val, int val2, long mask)
->  {
->  	struct stm32_timer_trigger *priv = iio_priv(indio_dev);
-> +	int ret;
 >  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> @@ -491,12 +494,14 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
->  		/* fixed scale */
->  		return -EINVAL;
->  
-> -	case IIO_CHAN_INFO_ENABLE:
-> -		mutex_lock(&priv->lock);
-> +	case IIO_CHAN_INFO_ENABLE: {
-> +		guard(mutex)(&priv->lock);
->  		if (val) {
->  			if (!priv->enabled) {
->  				priv->enabled = true;
-> -				clk_enable(priv->clk);
-> +				ret = clk_enable(priv->clk);
-> +				if (ret)
-> +					return ret;
->  			}
->  			regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
->  		} else {
-> @@ -506,9 +511,10 @@ static int stm32_counter_write_raw(struct iio_dev *indio_dev,
->  				clk_disable(priv->clk);
->  			}
->  		}
-> -		mutex_unlock(&priv->lock);
-> +
->  		return 0;
->  	}
-Add a default for reasons David mentioned and it also makes it visually clear
-that we expect to get in here for other cases but they are all errors.
-	default:
-		return -EINVAL;
-> +	}
->  
-And drop this return as unreachable.
-
->  	return -EINVAL;
+>  static const struct regmap_config veml6030_regmap_config = {
+> @@ -889,6 +928,35 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
+>  	return IRQ_HANDLED;
 >  }
+>  
+> +static irqreturn_t veml6030_trigger_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *iio = pf->indio_dev;
+> +	struct veml6030_data *data = iio_priv(iio);
+> +	unsigned int reg;
+> +	int ch, ret, i = 0;
+> +	struct {
+> +		u16 chans[2];
+There is a hole here... 
+> +		aligned_s64 timestamp;
+> +	} scan;
+> +
+> +	iio_for_each_active_channel(iio, ch) {
+> +		ret = regmap_read(data->regmap, VEML6030_REG_DATA(ch),
+> +				  &reg);
+> +		if (ret)
+> +			goto done;
+> +
+> +		scan.chans[i++] = reg;
+This fills in at least 1 channel, but maybe not the second.
+> +	}
+> +
+So this leaks random stack data I think.
+
+Upshot, when holes are involved or not all the channels are set, need
+memset(&scan, 0, sizeof(scan));
+for the structure on the stack which will zero the holes as well as
+both channels.
+
+Ancient article on this: https://lwn.net/Articles/417989/
+
+We get away with it when they are in the iio_priv space because they are
+kzalloc + if we do leak data due to changes in configured channels it's
+just old sensor data which is (I think) never a security problem!
+
+> +	iio_push_to_buffers_with_timestamp(iio, &scan, pf->timestamp);
+> +
+> +done:
+> +	iio_trigger_notify_done(iio->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+>  static int veml6030_set_info(struct iio_dev *indio_dev)
+>  {
+>  	struct veml6030_data *data = iio_priv(indio_dev);
+> @@ -1077,6 +1145,12 @@ static int veml6030_probe(struct i2c_client *client)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
+> +					      veml6030_trigger_handler, NULL);
+> +	if (ret)
+> +		return dev_err_probe(&client->dev, ret,
+> +				     "Failed to register triggered buffer");
+> +
+>  	return devm_iio_device_register(&client->dev, indio_dev);
+>  }
+>  
+> 
+> ---
+> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
+> change-id: 20241106-veml6030_triggered_buffer-a38886ca4cce
+> 
+> Best regards,
+
 

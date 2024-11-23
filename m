@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-12556-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12557-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11119D6A39
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:37:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8766E9D6A42
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 17:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E4EAB20EAB
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:37:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4757C28197B
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Nov 2024 16:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C9C55887;
-	Sat, 23 Nov 2024 16:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082DB13CFBD;
+	Sat, 23 Nov 2024 16:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m9wRfaeE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeBM6OwB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696DB17C2;
-	Sat, 23 Nov 2024 16:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBC712FF70;
+	Sat, 23 Nov 2024 16:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732379842; cv=none; b=AzWPnlC/+Wv0DCX/pbDIg4hn5bzA8d+L6USLe145XgBw0l5v6MkG2CMrB/tqG9bT8q97sRk38yVAglikox5kg3kAnKTpywj95Umn36I+2C/EHy6ZCrevUVAU8xXIBR7YQ6enrf4EMlL34leASMi//6H3bwnEbw/dZGiFDUiNaBU=
+	t=1732380152; cv=none; b=Cb8zJiX380Eyir0+3x0yp/d+E2Fcwwu94QQ72ovwd1gE2E/6tQWqQescNmZhxbm/jYxa4ceZft3JOn4tNaTNf1630WUDEYYqxjEjgtWdggAnrrI3sQIGy+eFtVXGIRsTDaZuKx93GuqMZ6OdibxdgY73dqw/E8OgE3TCkbPyFuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732379842; c=relaxed/simple;
-	bh=kqH1w9Z8UduwiuIpADpEHdaVEmAdD805XjHs5FU9NaM=;
+	s=arc-20240116; t=1732380152; c=relaxed/simple;
+	bh=MO1KYulozHKhO5Y78u67HXAWx12VemXEAhNdobLx5NY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=civpOxEK4nDPUVTCenSkxlrckpzCdUnqmDYsxFm13qZOSsArnETfujBDhjL0baen7jLun87yBA0Wbo4t8BIYGjD0o6kNAh6ituteoiCLG5s6GeaEzxLKjdVWegzXZgpyKRoytkJwliWlmQE2bcKKwNBGyWID+5BIYDkBFMNjNX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m9wRfaeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F215C4CECD;
-	Sat, 23 Nov 2024 16:37:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HgMKLwTpJvaiC0LK2A8ZwL/kTa+4FG5LnYVaMnIvXF9LuPF8HzF510AxPyxJoD9KVK9L3k/nJy3lE4qSK2dTD/oqya+SRQAPzaqplmIcOMRLnZ5dqYJLDFg9LIyaJY3FXSaRR/3P6/mP+ITxCJveysNskWz2FSsradmGKayVpVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KeBM6OwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE58C4CECD;
+	Sat, 23 Nov 2024 16:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732379841;
-	bh=kqH1w9Z8UduwiuIpADpEHdaVEmAdD805XjHs5FU9NaM=;
+	s=k20201202; t=1732380152;
+	bh=MO1KYulozHKhO5Y78u67HXAWx12VemXEAhNdobLx5NY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=m9wRfaeE70vgISBrAllJAY+9XEF/fzB+HC+QeB65cO9E+ZOxBE4mmvjG3IiiB4P1W
-	 zLkLqLajo5MwtEJMdeBLg6ISLO0832b14DkAFwH9VUneZVsdmgduN/yq/jIRfpcImN
-	 Gbqyrj7xtr9HNt1CwKDBRmV9WU8CNNpcyagjopDv0iBWMvRhgPckKrvv6XT4XPq+li
-	 G+Lb4hdMSm+ehvCCD+pCPKvBXg+yuUrXNfSlsWwCx3TYt0uVcJVZSnSwMhOWEIqf6e
-	 d4Qie96zoWn5pTcJUlBnWubVathEvsPWsuv2t9E+9xzX7lJb//1M+GT2E1imkguVGv
-	 bRKuMRVZkHlVA==
-Date: Sat, 23 Nov 2024 16:37:13 +0000
+	b=KeBM6OwBAEk4cX1z+VZKX+bfrYqtFeERekYG8wnxlgAVd4orJaCs+oveUvojiu6Sl
+	 OQAJe8rkaywKN9a4Qxyzoc9q/a9zg5TnbdyfemQeLXPAibTxP7ooxVT8es4HheRSF9
+	 3CZAY7l+jK1ZHGikyrknQbMjJuGntiMrTFCachK2GAIQnMync3QYyNvo6KHeZ7d+vx
+	 RW/es7JjfJC7AvPXrkGmA9ZFawwSy43ZKDi2o0BDD0kmrOPIlJQW1xvHDaqXZMpIDe
+	 VMhbcKZ5PhTa+8HhmccanUmlcidD6GJZDJ0vfubPK298u1iqz99TrglXv9+I/08B4+
+	 v/qy5vR60RbEg==
+Date: Sat, 23 Nov 2024 16:42:23 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -49,11 +49,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] iio: gts: Simplify using __free
-Message-ID: <20241123163713.2ec03a37@jic23-huawei>
-In-Reply-To: <5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 3/8] iio: accel: kx022a: Use cleanup.h helpers
+Message-ID: <20241123164223.25656985@jic23-huawei>
+In-Reply-To: <037985fe50fe79c79b9df95fa7b4e577378f9a60.1732105157.git.mazziesaccount@gmail.com>
 References: <cover.1732105157.git.mazziesaccount@gmail.com>
-	<5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
+	<037985fe50fe79c79b9df95fa7b4e577378f9a60.1732105157.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,17 +64,31 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 21 Nov 2024 10:20:07 +0200
+On Thu, 21 Nov 2024 10:20:23 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The error path in the gain_to_scaletables() uses goto for unwinding an
-> allocation on failure. This can be slightly simplified by using the
-> automated free when exiting the scope.
+> A few functions in KX022A need to use mutex for protecting the
+> enabling/disabling of the measurement while configurations are being
+> made. Some of the functions can be slightly simplified by using the
+> __cleanup based scoped mutexes, which allows dropping the goto based
+> unlocking at error path.
 > 
-> Use __free(kfree) and drop the goto based error handling.
+> Simplify error paths using guard(mutex).
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
+Now we have guard(), the main reason (I think) for the
+combined on + lock and off + unlock paths is gone. So can
+we just flatten those and do the locking at caller.
+
+After this patch there are only 4 more users anyway and the
+ones in the switch statement can be easily done with {}
+and guard.
+
+The ones in probe() can be done with a scoped_guard()
+
+Jonathan
+
+
 > ---
 > 
 > Revision history:
@@ -82,69 +96,182 @@ Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 >   - patch number changed because a change was added to the series.
 >   - rebased on iio/testing to avoid conflicts with queued fixes
 > ---
->  drivers/iio/industrialio-gts-helper.c | 19 ++++++++-----------
->  1 file changed, 8 insertions(+), 11 deletions(-)
+>  drivers/iio/accel/kionix-kx022a.c | 61 ++++++++++++-------------------
+>  1 file changed, 23 insertions(+), 38 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> index 291c0fc332c9..602d3d338e66 100644
-> --- a/drivers/iio/industrialio-gts-helper.c
-> +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -4,6 +4,7 @@
->   * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
+> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+> index b6664299e0d5..98953178a580 100644
+> --- a/drivers/iio/accel/kionix-kx022a.c
+> +++ b/drivers/iio/accel/kionix-kx022a.c
+> @@ -5,6 +5,7 @@
+>   * ROHM/KIONIX accelerometer driver
 >   */
 >  
 > +#include <linux/cleanup.h>
+>  #include <linux/delay.h>
 >  #include <linux/device.h>
->  #include <linux/errno.h>
->  #include <linux/export.h>
-> @@ -167,8 +168,8 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
->  
->  static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->  {
-> -	int i, j, new_idx, time_idx, ret = 0;
-> -	int *all_gains;
-> +	int ret, i, j, new_idx, time_idx;
-> +	int *all_gains __free(kfree) = NULL;
-See the docs in cleanup.h (added recently).
-
-Constructor and destructor should go together.   Dan wrote good docs on this
-(which are now in cleanup.h) so I'll not go into why!
-
-Upshot is this goes where you do the kcalloc, not up here.
-
->  	size_t gain_bytes;
->  
->  	for (i = 0; i < gts->num_itime; i++) {
-> @@ -232,10 +233,9 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->  
->  	gts->avail_all_scales_table = kcalloc(new_idx, 2 * sizeof(int),
->  					      GFP_KERNEL);
-> -	if (!gts->avail_all_scales_table) {
-> -		ret = -ENOMEM;
-> -		goto free_out;
-> -	}
-> +	if (!gts->avail_all_scales_table)
-> +		return -ENOMEM;
-> +
->  	gts->num_avail_all_scales = new_idx;
->  
->  	for (i = 0; i < gts->num_avail_all_scales; i++) {
-> @@ -246,14 +246,11 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->  		if (ret) {
->  			kfree(gts->avail_all_scales_table);
->  			gts->num_avail_all_scales = 0;
-> -			goto free_out;
-> +			return ret;
->  		}
->  	}
->  
-> -free_out:
-> -	kfree(all_gains);
-> -
-> -	return ret;
-> +	return 0;
+>  #include <linux/interrupt.h>
+> @@ -448,7 +449,7 @@ static void kx022a_reg2scale(unsigned int val, unsigned int *val1,
+>  	*val2 = kx022a_scale_table[val][1];
 >  }
 >  
->  /**
+> -static int kx022a_turn_on_off_unlocked(struct kx022a_data *data, bool on)
+> +static int __kx022a_turn_on_off(struct kx022a_data *data, bool on)
+>  {
+>  	int ret;
+>  
+> @@ -469,7 +470,7 @@ static int kx022a_turn_off_lock(struct kx022a_data *data)
+>  	int ret;
+>  
+>  	mutex_lock(&data->mutex);
+> -	ret = kx022a_turn_on_off_unlocked(data, false);
+> +	ret = __kx022a_turn_on_off(data, false);
+>  	if (ret)
+>  		mutex_unlock(&data->mutex);
+>  
+> @@ -480,7 +481,7 @@ static int kx022a_turn_on_unlock(struct kx022a_data *data)
+>  {
+>  	int ret;
+>  
+> -	ret = kx022a_turn_on_off_unlocked(data, true);
+> +	ret = __kx022a_turn_on_off(data, true);
+>  	mutex_unlock(&data->mutex);
+>  
+>  	return ret;
+> @@ -912,18 +913,19 @@ static int kx022a_fifo_disable(struct kx022a_data *data)
+>  {
+>  	int ret = 0;
+>  
+> -	ret = kx022a_turn_off_lock(data);
+> +	guard(mutex)(&data->mutex);
+> +	ret = __kx022a_turn_on_off(data, false);
+>  	if (ret)
+>  		return ret;
+>  
+>  	ret = regmap_clear_bits(data->regmap, data->ien_reg, KX022A_MASK_WMI);
+>  	if (ret)
+> -		goto unlock_out;
+> +		return ret;
+>  
+>  	ret = regmap_clear_bits(data->regmap, data->chip_info->buf_cntl2,
+>  				KX022A_MASK_BUF_EN);
+>  	if (ret)
+> -		goto unlock_out;
+> +		return ret;
+>  
+>  	data->state &= ~KX022A_STATE_FIFO;
+>  
+> @@ -931,12 +933,7 @@ static int kx022a_fifo_disable(struct kx022a_data *data)
+>  
+>  	kfree(data->fifo_buffer);
+>  
+> -	return kx022a_turn_on_unlock(data);
+> -
+> -unlock_out:
+> -	mutex_unlock(&data->mutex);
+> -
+> -	return ret;
+> +	return __kx022a_turn_on_off(data, true);
+>  }
+>  
+>  static int kx022a_buffer_predisable(struct iio_dev *idev)
+> @@ -959,33 +956,29 @@ static int kx022a_fifo_enable(struct kx022a_data *data)
+>  	if (!data->fifo_buffer)
+>  		return -ENOMEM;
+>  
+> -	ret = kx022a_turn_off_lock(data);
+> +	guard(mutex)(&data->mutex);
+> +	ret = __kx022a_turn_on_off(data, false);
+>  	if (ret)
+>  		return ret;
+>  
+>  	/* Update watermark to HW */
+>  	ret = kx022a_fifo_set_wmi(data);
+>  	if (ret)
+> -		goto unlock_out;
+> +		return ret;
+>  
+>  	/* Enable buffer */
+>  	ret = regmap_set_bits(data->regmap, data->chip_info->buf_cntl2,
+>  			      KX022A_MASK_BUF_EN);
+>  	if (ret)
+> -		goto unlock_out;
+> +		return ret;
+>  
+>  	data->state |= KX022A_STATE_FIFO;
+>  	ret = regmap_set_bits(data->regmap, data->ien_reg,
+>  			      KX022A_MASK_WMI);
+>  	if (ret)
+> -		goto unlock_out;
+> -
+> -	return kx022a_turn_on_unlock(data);
+> -
+> -unlock_out:
+> -	mutex_unlock(&data->mutex);
+> +		return ret;
+>  
+> -	return ret;
+> +	return __kx022a_turn_on_off(data, true);
+>  }
+>  
+>  static int kx022a_buffer_postenable(struct iio_dev *idev)
+> @@ -1053,7 +1046,7 @@ static irqreturn_t kx022a_irq_thread_handler(int irq, void *private)
+>  	struct kx022a_data *data = iio_priv(idev);
+>  	irqreturn_t ret = IRQ_NONE;
+>  
+> -	mutex_lock(&data->mutex);
+> +	guard(mutex)(&data->mutex);
+>  
+>  	if (data->trigger_enabled) {
+>  		iio_trigger_poll_nested(data->trig);
+> @@ -1068,8 +1061,6 @@ static irqreturn_t kx022a_irq_thread_handler(int irq, void *private)
+>  			ret = IRQ_HANDLED;
+>  	}
+>  
+> -	mutex_unlock(&data->mutex);
+> -
+>  	return ret;
+>  }
+>  
+> @@ -1079,32 +1070,26 @@ static int kx022a_trigger_set_state(struct iio_trigger *trig,
+>  	struct kx022a_data *data = iio_trigger_get_drvdata(trig);
+>  	int ret = 0;
+>  
+> -	mutex_lock(&data->mutex);
+> +	guard(mutex)(&data->mutex);
+>  
+>  	if (data->trigger_enabled == state)
+> -		goto unlock_out;
+> +		return 0;
+>  
+>  	if (data->state & KX022A_STATE_FIFO) {
+>  		dev_warn(data->dev, "Can't set trigger when FIFO enabled\n");
+> -		ret = -EBUSY;
+> -		goto unlock_out;
+> +		return -EBUSY;
+>  	}
+>  
+> -	ret = kx022a_turn_on_off_unlocked(data, false);
+> +	ret = __kx022a_turn_on_off(data, false);
+>  	if (ret)
+> -		goto unlock_out;
+> +		return ret;
+>  
+>  	data->trigger_enabled = state;
+>  	ret = kx022a_set_drdy_irq(data, state);
+>  	if (ret)
+> -		goto unlock_out;
+> -
+> -	ret = kx022a_turn_on_off_unlocked(data, true);
+> -
+> -unlock_out:
+> -	mutex_unlock(&data->mutex);
+> +		return ret;
+>  
+> -	return ret;
+> +	return __kx022a_turn_on_off(data, true);
+>  }
+>  
+>  static const struct iio_trigger_ops kx022a_trigger_ops = {
 
 

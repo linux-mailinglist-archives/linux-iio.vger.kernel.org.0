@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-12595-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12596-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A209D7716
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:03:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F0A9D7721
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:07:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E598284013
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:03:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC71632C9
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720F113A86C;
-	Sun, 24 Nov 2024 18:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599AE13A409;
+	Sun, 24 Nov 2024 18:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVf3kTTA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATYnq+5V"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2ED6F2F3;
-	Sun, 24 Nov 2024 18:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1213B136658;
+	Sun, 24 Nov 2024 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732471388; cv=none; b=UWVwb0ZZc6u8kVaJQP3qCNyr8txjMofxyD7E+emLslaQKE6aLNZJoCRrcKzpUiYpzqi5WyS7gXwxboLDaXHL0OvSQh8VsDDNqKyzzhPwsf7UuRk5V1ezZKjKaEl9pcxM4yxYO7pezuzlg+vdbQ+OFkGTiz4jbl2XjVCpXf+2q1Y=
+	t=1732471660; cv=none; b=tvrA+OWAcXSdnu0KsL/uW8hj+414Md69Kdtw4y0PjqExMzheYHvv46WlTv7u8HFHoPxXAqncVcUCSY/ctb5rq/IXgkGqWR1M8A0Fn4L1oH6j1X7XBG26Yd2+S4iV/ZimBGUefeapInLcprwYr+SBOCKj4lFcbyZayetKlnfz+EQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732471388; c=relaxed/simple;
-	bh=fpsp84DIbTHppGuF3tLazQJegTXjuHnZfXtdUJcG7Kw=;
+	s=arc-20240116; t=1732471660; c=relaxed/simple;
+	bh=LzngBWXfS6selD1cbz9f2MMFyXKr906AXg9ONfInK44=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ilbi72CAhFni5E0IuKKf2a2LpSA9Rk0mdH2nWf4pbAXKy6+HS2N0qj1brBVVCGS18tMKlj/59fJNhFIRcHHezBfvx55dijdFo/GbaOj5UxYolHFgMOHeqrCNTwJdKKbX4bB2aHVRtjSImVj/Da73ZC1uL/vnQVS/+CqzqCgB5mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVf3kTTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09965C4CECC;
-	Sun, 24 Nov 2024 18:03:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AouzUCzayPKBWolQa43IaKgTm5CnztaDtYxZGHV5t/FfyjJ03lZfkg7Me9gqCuGYKcsOkJBfqlDIt0Rc9SQmxXKnMPPDvErRM67heGRljwm8TIZQGtzD1/F4LVFl5SLrItlDqh5UfsdC9ag6t/K6x4c6jlvVmyPshCA/B9JyteU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATYnq+5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37A6C4CECC;
+	Sun, 24 Nov 2024 18:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732471387;
-	bh=fpsp84DIbTHppGuF3tLazQJegTXjuHnZfXtdUJcG7Kw=;
+	s=k20201202; t=1732471659;
+	bh=LzngBWXfS6selD1cbz9f2MMFyXKr906AXg9ONfInK44=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gVf3kTTAHX8jOZxFe2FMHIoAeafYFih8ze5oOGZtl3H4eyUj1WdyIlRZHBNaQcs2k
-	 6Eb4pJVl5xUIybrZ3ud824ZptrF1Ws7R/D8Gp9A2341Ak4OZTsl1rE12wdyH/2Upu2
-	 +Sb3U6R5oARrPytbe6rI/JG1WG9uMF5n5Nw+exp51xZ0tGkmFL2fPfanYPIBGv3wxf
-	 e2ezjwxhRxzR3LVrJEYdrrFTSiWQEsqWyQCL/5uef7p4MPDfSZxazYnW+k19cfHfHy
-	 Z0ED2UbJiXrt17VTAkkDz0XztjTiS9tCol9u4y95jS0QGdNTi8xiInFIjHblzUNbx9
-	 oJWzJYtt9BRqw==
-Date: Sun, 24 Nov 2024 18:02:59 +0000
+	b=ATYnq+5Vqx+O/LLklRtBawrpAjJvatiUQcKWMuoboFm6ovq8e9Ggp8AYO3na1Grir
+	 Yh6YPB28Cr9jQxPaePpP1vfQjdIEW2xCQOrQgNhweMk+kRZy+G3VVdLPtaM79reYAC
+	 TypTimxscnSNJcafzdMQIDjgjnqu6PPJeOD9VfmoxIWAEut622Z8Eif7yk5ZxTAA1E
+	 9dbsVzV3bvu+iE+0j4acwdiAAUSC71xZEuwTifJrLTnJUms1GgprGP3gKK+SbSunEq
+	 qLYXePyf3bD4M3Y8AIvOImUaKtb/IVuuUUWQr1/we5FsL/i9a2EG2gWN6mHbGz3ojl
+	 H8paKGka5epfg==
+Date: Sun, 24 Nov 2024 18:07:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 04/22] iio: accel: adxl345: rename to
- adxl34x_channels
-Message-ID: <20241124180259.1178f22e@jic23-huawei>
-In-Reply-To: <20241117182651.115056-5-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 05/22] iio: accel: adxl345: measure right-justified
+Message-ID: <20241124180733.2925eaa7@jic23-huawei>
+In-Reply-To: <20241117182651.115056-6-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
-	<20241117182651.115056-5-l.rubusch@gmail.com>
+	<20241117182651.115056-6-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,51 +62,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 17 Nov 2024 18:26:33 +0000
+On Sun, 17 Nov 2024 18:26:34 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Rename the "adxl345_channels" to "adxl34x_channels". The driver
-> supports several Analog accelerometers equally, e.g. adxl346 and
-> adxl375.
-As with previous a no to this.
+> Make measurements right-justified, since it is the default for the
+> driver and sensor. By not setting the ADXL345_DATA_FORMAT_JUSTIFY bit,
+> the data becomes right-judstified. This was the original setting, there
+> is no reason to change it to left-justified, where right-justified
+> simplifies working on the registers.
 
-We have a few drivers doing wild cards, but most are from before
-I realised how often this goes wrong and started pretty strongly
-insisting on naming after a single support part. It seems
-so attractive, but ends up hurting us more than the confusion of
-a single name applying to other parts as well.
+Surely this can't be changed independent of other changes as it will
+change the format of the data we are processing?
+
+Each change must stand on it's own so that I can apply up to any
+point in your patch set and have everything continue to work.
+
 
 Jonathan
 
-> 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 > ---
->  drivers/iio/accel/adxl345_core.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/iio/accel/adxl345_core.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 30896555a4..2b62e79248 100644
+> index 2b62e79248..926e397678 100644
 > --- a/drivers/iio/accel/adxl345_core.c
 > +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -33,7 +33,7 @@ struct adxl34x_state {
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
->  }
->  
-> -static const struct iio_chan_spec adxl345_channels[] = {
-> +static const struct iio_chan_spec adxl34x_channels[] = {
->  	ADXL345_CHANNEL(0, X),
->  	ADXL345_CHANNEL(1, Y),
->  	ADXL345_CHANNEL(2, Z),
-> @@ -203,8 +203,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	indio_dev->name = st->info->name;
->  	indio_dev->info = &adxl345_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> -	indio_dev->channels = adxl345_channels;
-> -	indio_dev->num_channels = ARRAY_SIZE(adxl345_channels);
-> +	indio_dev->channels = adxl34x_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(adxl34x_channels);
->  
->  	if (setup) {
->  		/* Perform optional initial bus specific configuration */
+> @@ -184,8 +184,13 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>  	struct adxl34x_state *st;
+>  	struct iio_dev *indio_dev;
+>  	u32 regval;
+> +
+> +	/* NB: ADXL345_DATA_FORMAT_JUSTIFY or 0:
+	/*
+	 * NB: AD...
+
+is the multiline comment style all IIO drivers use (and most of the kernel
+except for networking.
+
+> +	 * do right-justified: 0, then adjust resolution according to 10-bit
+> +	 * through 13-bit in channel - this is the default behavior, and can
+> +	 * be modified here by oring ADXL345_DATA_FORMAT_JUSTIFY
+> +	 */
+>  	unsigned int data_format_mask = (ADXL345_DATA_FORMAT_RANGE |
+> -					 ADXL345_DATA_FORMAT_JUSTIFY |
+>  					 ADXL345_DATA_FORMAT_FULL_RES |
+>  					 ADXL345_DATA_FORMAT_SELF_TEST);
+>  	int ret;
 
 

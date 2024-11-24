@@ -1,133 +1,164 @@
-Return-Path: <linux-iio+bounces-12593-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12594-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA8C9D770C
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:01:32 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373DA163C1E
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:01:29 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5642113A244;
-	Sun, 24 Nov 2024 18:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hTLqCFp/"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 449149D7712
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:01:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6C6130A54;
-	Sun, 24 Nov 2024 18:01:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 060E2283A23
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:01:50 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8AF14B06C;
+	Sun, 24 Nov 2024 18:01:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RvuYdECE"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BC26F06D
+	for <linux-iio@vger.kernel.org>; Sun, 24 Nov 2024 18:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732471288; cv=none; b=e1Vg27eGUZLChudq4EsIPutvciHlLElWbgMKnVIQT8m8iaSebhYVsuaYkjKvS889So2TBllV55SyPObw2du0+omfL9+Um8C3fa0LgmOArzM5U5QRuAbvy/MXrVTSgWHZU8twBZO6FPJsxBHhir0/aNCmk7pIGcY9VGM19qjzUHQ=
+	t=1732471291; cv=none; b=PFdWkTjzwavXB2uxsX7OvBejRBopnh/c4O/66ShF+B5sZhOC/Dc1NLzVu7dhiPih4m+0qiy4ywYqrZzd7Ky6+25q1XWG0kJt10VaZkyM5pxIxyuIeDKmrMXGLIsslA7pA3osi+stn7aKR/r9B3lYjCEa1TAhkFJYu45JUjOXVug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732471288; c=relaxed/simple;
-	bh=vVFfqmCJuVV2rIhUhVNKznqiST37KbTK0iu+yyTqwkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CR6QaEPqVKRpccMzTqyoUB/cp+TMd6zd5PocXnWxsToIfPLlhLkWwBeF/s2i11E0mWTBnkvCGYpC+lcK5BA6JlIvXalu9+BODBZL53otwCkhGYB7FwPtcT4YLK8dPRBK38Au4nb+3Vb4uTeHeHgaQB4oPgeZ+TJiTdbDJVjA9hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hTLqCFp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4334C4CECC;
-	Sun, 24 Nov 2024 18:01:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732471287;
-	bh=vVFfqmCJuVV2rIhUhVNKznqiST37KbTK0iu+yyTqwkg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hTLqCFp/MIl6bIDjjTQfPurnaIep1lGMs5V5VR4T6S8IgGHIZ2ULBIxqqu3fjCjtV
-	 bHThZxbl5EE8rkaNankmaQT5B4cV2WaePKeH8i4xQbTg6yzj8XWViACwo7u2yxDgRI
-	 jtVYw68HbGh0/KlavoHhSBWx3jfDkW6VAo48DlJQdmz3Jr7/ZaSS3TqS1De1lsdBEO
-	 Kemy+HEPVl9r8Fwp+vXOc5ak2BJpE4F/4+Ihtnk6erFsBZuH1Kryx+w5hVInAPf8WE
-	 v+o+5dGS8EZtzfOoHi2HZgBN7DNYZL0FaGJoNPDu3uKHCs4BXIAp/D4w2o1O8Mgrk0
-	 D0XdGUDmDdLPQ==
-Date: Sun, 24 Nov 2024 18:01:20 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v2 03/22] iio: accel: adxl345: rename struct
- adxl34x_state
-Message-ID: <20241124180120.5528e84c@jic23-huawei>
-In-Reply-To: <20241117182651.115056-4-l.rubusch@gmail.com>
-References: <20241117182651.115056-1-l.rubusch@gmail.com>
-	<20241117182651.115056-4-l.rubusch@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732471291; c=relaxed/simple;
+	bh=OQHYaEGK/MoxESKfRrNIDMATBe/YMo0NdUaLUPjFGl4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PewMyCuYBnAubvNT2ji82nKfRMfwUyNlVWAqTLCvVvG02VpQcajPI18ondaupwMuBS7HoeLN+vRtW1DLQ0fHK5zNnzE6G6xEm4HBHzhSj7UnYECkLmMdxtcKxqI+KCvcuuJmd7hSG/fHypjBZY7QOl11tSfBhFYSkeijm6Lp/9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RvuYdECE; arc=none smtp.client-ip=209.85.160.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2689e7a941fso2232174fac.3
+        for <linux-iio@vger.kernel.org>; Sun, 24 Nov 2024 10:01:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732471286; x=1733076086; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D36DzTxorADSkSUVJgapxuTWO26Thyjrj4okdQAgDkQ=;
+        b=RvuYdECEnMYurSSb5+RqqhdTw51LDm8knXJal6SdxIP6woFJPoyBRPBEEhzkqteco2
+         AASd3Ds/iPD3SnFoERXVWWaX8uCmnsby9cdz3BGYvsSvT2JYwBWmtiVykVzHXyU1WxCT
+         d7zWD1LRUuGRq6tO2tEvLTdwt0FIa1HT9/sRVSAYZRG4TTIAHyaSoAJgBAmOSNq7SpCM
+         S+dlv1235fmFE67hTtBJeYqJxwXR5emeadOGxtT8+hxsPJf0cifPUVQ5hmekcKIGHcdj
+         bF9Ojyz5wKLcwLS0ks8syEczRweormROG1GMupMkaUZY/N9d4f2FDhdcHTTvjPFr6DFg
+         Vu5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732471286; x=1733076086;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=D36DzTxorADSkSUVJgapxuTWO26Thyjrj4okdQAgDkQ=;
+        b=NlBpmCS9l+7w96uUtYqTEwDyXrZJN/oxVVSzPbwNmpxABAYFTrdChUnabtRKvvIBba
+         l56UM3tVF078G2FNurGZtNIFElQN+3ycv28hf1WvhH7tS9acRlew1BTt9SHLWlJ3UmiS
+         cN9xvvMRQAVAaaWHFN8N2HIrtkKwpFIYkOXMY4QLkhjGDRj5lP7bRlEMrYleWrIh34b2
+         0fwIsoK76rePpVsXJiaFE1lM/SdlycJff/hmMjuDGqJ7bT0SuHCxTEJ0NHWtmavhWfZ+
+         bqIYlzeJhzMJUM9cZMux95ch5Pf9njh8lha2KFsMdq+zJbNJ17DJJMOMGSTsvL5yenoR
+         oTkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzc27g1ZImObvrAp7Lmt2RECsJ9WFDf8M4dNvElM5hXPtQc8dBTIHyqPEdmU7W93F8c9QycvOUS94=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzS8OiG/8HUqHkOG+2Baz/AXeLe2IyHEZRSPRSTSL/JN9o8VQ4
+	VUojX/j8tYjWVi2ul7qG/JKrlQu7PPGdyekdnWz2kQYW/FC9CoqfvQXdKOskuBM=
+X-Gm-Gg: ASbGncsSydO94wbkI+NyQPObDtrvXx46S6F0YRliZdbZkAWVnNzKcmTBQ5+Seixn6Hu
+	7oqVxmKzGOi+wOpqC5a3lFROrS6OAvmMpkiLUJgYGf7pKXyx/GIuJ1D3+wjhZXbp93PDfpy4yqB
+	mDW7KIPc1ZZi5YmcUWTYCZPjhhhFsQWRy/YavOcla2PnvexnPFj7cUfWY49Fa1eLqWwKJnVXa8G
+	m4NK+s8nBCmHky3ClCog5uPQbjx7yU/oHO58KM8vijzGWOLHDPjr7v1jf80cpJo+cj0Dq/xUnjl
+	vA2k8z1ACTU=
+X-Google-Smtp-Source: AGHT+IFqrJucfpOTPI7q0bEc9jBm0hS0kXQuiS/iMtoAArPnMeQPf5AM8u1ip+GVY/H8ytVpgKSYVw==
+X-Received: by 2002:a05:6871:3147:b0:296:9625:3357 with SMTP id 586e51a60fabf-29720adae7fmr7346877fac.1.1732471286146;
+        Sun, 24 Nov 2024 10:01:26 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2971d5e2fa6sm2314970fac.20.2024.11.24.10.01.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Nov 2024 10:01:24 -0800 (PST)
+Message-ID: <22bc45a0-9d14-480a-bcce-bae394166967@baylibre.com>
+Date: Sun, 24 Nov 2024 12:01:23 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 01/16] spi: add basic support for SPI offloading
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org
+References: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
+ <20241115-dlech-mainline-spi-engine-offload-2-v5-1-bea815bd5ea5@baylibre.com>
+ <20241124163241.4699161f@jic23-huawei>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241124163241.4699161f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Sun, 17 Nov 2024 18:26:32 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On 11/24/24 10:32 AM, Jonathan Cameron wrote:
+> On Fri, 15 Nov 2024 14:18:40 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
+> 
+>> Add the basic infrastructure to support SPI offload providers and
+>> consumers.
+>>
 
-> Rename the struct "adxl345_data" to "adxl34x_state". First, the
-> data structure is supposed to be extended to represent state rather than
-> only hold sensor data. The data will be a separate member pointer.
-> Second, the driver not only covers the adxl345 accelerometer, it also
-> supports the adxl345, adxl346 and adxl375. Thus "adxl34x_" is a choice
-> for a common prefix.
-No to the wild card x.  Long experience has shown that manufacturers
-almost never respect naming sequences so we simply name everything after
-one supported part number.  It seems like a good idea, but we've been
-bitten before.  
+...
 
-I'm fine with the _data to _state change but please combine with the previous
-patch to void unnecessary churn where the same line gets updated twice.
+>> +	resource = kzalloc(sizeof(*resource), GFP_KERNEL);
+>> +	if (!resource)
+>> +		return ERR_PTR(-ENOMEM);
+>> +
+>> +	resource->controller = spi->controller;
+>> +	resource->offload = spi->controller->get_offload(spi, config);
+>> +	ret = PTR_ERR_OR_ZERO(resource->offload);
+>> +	if (ret) {
+> Why not simply
+> 	if (IS_ERR(resource->offload) {
+> 		kfree(resource);
+> 		return resource->offload;
+> 	}
+>> +		kfree(resource);
+>> +		return ERR_PTR(ret);
+>> +	}
 
-These two changes are very closely related so fine to do them in one patch
-in my opinion.
+Hmm... maybe somewhere along the way ret was being checked again
+after this, but doesn't to be the case anymore.
+
+>> +
+>> +	ret = devm_add_action_or_reset(dev, spi_offload_put, resource);
+>> +	if (ret)
+>> +		return ERR_PTR(ret);
+>> +
+>> +	return resource->offload;
+>> +}
+>> +EXPORT_SYMBOL_GPL(devm_spi_offload_get);
+> 
+>> diff --git a/include/linux/spi/spi-offload.h b/include/linux/spi/spi-offload.h
+>> new file mode 100644
+>> index 000000000000..81b115fc89bf
+>> --- /dev/null
+>> +++ b/include/linux/spi/spi-offload.h
+> 
+>> +
+>> +MODULE_IMPORT_NS(SPI_OFFLOAD);
+> 
+> This is rarely done in headers. (only pwm.h does it I think)
+> I'd push it down into code that uses this.
+
+Yes, it was Uwe that suggested that I put it in the header. :-)
+
+Are there any unwanted side effects of having it in the header?
 
 > 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  drivers/iio/accel/adxl345_core.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+> It might be worth splitting the header into a spi-offload-provider.h
+> and spi-offload-consumer.h with a common spi-offload-types.h included
+> by both.
 > 
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 3fb7a7b1b7..30896555a4 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -17,7 +17,7 @@
->  
->  #include "adxl345.h"
->  
-> -struct adxl345_data {
-> +struct adxl34x_state {
->  	const struct adxl345_chip_info *info;
->  	struct regmap *regmap;
->  };
-> @@ -43,7 +43,7 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
->  			    struct iio_chan_spec const *chan,
->  			    int *val, int *val2, long mask)
->  {
-> -	struct adxl345_data *st = iio_priv(indio_dev);
-> +	struct adxl34x_state *st = iio_priv(indio_dev);
->  	__le16 accel;
->  	long long samp_freq_nhz;
->  	unsigned int regval;
-> @@ -99,7 +99,7 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
->  			     struct iio_chan_spec const *chan,
->  			     int val, int val2, long mask)
->  {
-> -	struct adxl345_data *st = iio_priv(indio_dev);
-> +	struct adxl34x_state *st = iio_priv(indio_dev);
->  	s64 n;
->  
->  	switch (mask) {
-> @@ -181,7 +181,7 @@ static void adxl345_powerdown(void *regmap)
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  		       int (*setup)(struct device*, struct regmap*))
->  {
-> -	struct adxl345_data *st;
-> +	struct adxl34x_state *st;
->  	struct iio_dev *indio_dev;
->  	u32 regval;
->  	unsigned int data_format_mask = (ADXL345_DATA_FORMAT_RANGE |
-
 

@@ -1,55 +1,60 @@
-Return-Path: <linux-iio+bounces-12571-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12572-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8079D7353
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 15:35:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9CF9D7029
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 14:29:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83F7AB39BC8
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 13:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6591621A8
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 13:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B4C1BFE03;
-	Sun, 24 Nov 2024 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F015D1922E6;
+	Sun, 24 Nov 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="btUWidhC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvgsWMVF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FA2191F83;
-	Sun, 24 Nov 2024 13:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A772D166F29;
+	Sun, 24 Nov 2024 13:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732453200; cv=none; b=TS740LLUxn10T2KwLm+44pZc4/geGtvCsfnFwrbOOabfUvWoVIWmYDZpeP35nqxnWroQE1zOUkYPP7Zgyjy+V+QUQA4aGDhI2GE6RhlxTR6N3bsBFxW/OWUeQKXCdnpX+n+DmJ568W8dfM6OrNeNlLsZmYLkNAz5oYpaIeMMkUA=
+	t=1732453370; cv=none; b=PgolANyi9rBFoyxkdqJ3LN/EMF9jEsevSUxWjNT1zXACpTPaq2n/wR76j32QqtQ/PZib1wNV3Bzh+GlysNuK61pHOiwRtcprU8uCYMlVo4m/lHQjoK61DC7yKTYSFiDhaoH69pBYGoMO9Q7MSB3ubWaVLNjusKyiI0XzikASJTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732453200; c=relaxed/simple;
-	bh=UfgeGn4y2cFVozdHktQuVc/TCDzh8P9uvUWprzDl0Fo=;
+	s=arc-20240116; t=1732453370; c=relaxed/simple;
+	bh=V0Bs0Zy6s73HavYwwymncXPcs1ZrjCVcI3abEBI8kTo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fZJTsgD5/170qSNtagEgjS5WWSwzViZ9b91q9agu5NpbEMxlNNi58LS2FaBhrOVwyWnm6gckZKWlZCpPUPFfpKJncVVScMSPHso62W/tWyovGMIQLQA6YXPtbt4WhTaVAE4vLjVd7WdTvRQ87s9ogHnl8BoaIlWgd/3GYJa9+fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=btUWidhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97A4C4CECC;
-	Sun, 24 Nov 2024 12:59:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=to86x1rKLSPGFXfYm3nLhy8zSS3TsYSnwXPTooreVM9bnAcPZD8Hsg9kCPNWNwm7AcETgrlnzCoyKLuOV8ThZzwRCponNjZQvkemVIIL/ZWxQC8z58thGSLUm4qsBWXSMSK3MJSGh6/sVWbile5BBxknZ07Tj6ELLP3rVbMayik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvgsWMVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B6DC4CECC;
+	Sun, 24 Nov 2024 13:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732453200;
-	bh=UfgeGn4y2cFVozdHktQuVc/TCDzh8P9uvUWprzDl0Fo=;
+	s=k20201202; t=1732453370;
+	bh=V0Bs0Zy6s73HavYwwymncXPcs1ZrjCVcI3abEBI8kTo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=btUWidhCVDT32/7FYK4cU/r7tcrjFXGeaTd9Y8TVQyNjC93xpqbH7QJgczB+s75m3
-	 t1pwlrtbX7mvJmLprJgFjffvQ3/yf1qFk0j+RtxSUAgSinM80ilNfJLBhhxA3l7H5I
-	 /DE1Ou/4ZQcMHe0xrAH0qAD9oc+xPDaxcHtVupixUM2IOmyGEc1dwoSG/iw0lYGQje
-	 PDPX5fXfD0QhWrw07J+LLRRlP/xS4s5Dtds6b/PJktfQe2e9bSQM4FJDT29b+3guBh
-	 oWPLLwyvTsjwbNbO/QChIJDM0Cth97KFaFxMcLs3d6OyOZJyw8FqCR7N5ERZAqH4/z
-	 GJkN0/NY8iXbQ==
-Date: Sun, 24 Nov 2024 12:59:53 +0000
+	b=kvgsWMVFDc8l3JAe/gPaphm8u9pGpy8kBrXIHOyFRUMmn6TtyoMF6OCneBCQSdacj
+	 KsOz6wtjYSXlCCWByw1JHoT6gYN4b7nMm9eqnmYjV0Fs/A1T/1TnHU/oKnoimBro1o
+	 b66ii7FId/S2qyMAlFrgv75ppIOA9xULNGtQFbDvWPCB9K4Wh4PsjIpsBk1M5XxYeA
+	 oVYt2IYlIVlJNqnYIqF0Xvo5hUvGr1+9rQb2XrXncfUBrlJws11bdcxHg+rb8x7mXh
+	 yKF3kL+GqsXuWto+2Es8l38TQKx9RLFtZMNAznpgglzFk6rvQqdUTi26hNL+EAuF/a
+	 UkHh1s6pS05Sg==
+Date: Sun, 24 Nov 2024 13:02:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Cibil <cibil.pankiras@aerq.com>
-Cc: ktsai@capellamicro.com, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: cm3232: Reset before reading HW ID
-Message-ID: <20241124125953.75d241b2@jic23-huawei>
-In-Reply-To: <20241114131656.1707358-1-cibil.pankiras@aerq.com>
-References: <20241114131656.1707358-1-cibil.pankiras@aerq.com>
+To: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: adc: stm32-dfsdm: handle label as an optional
+ property
+Message-ID: <20241124130241.60e922ff@jic23-huawei>
+In-Reply-To: <20241114102459.2497178-1-olivier.moysan@foss.st.com>
+References: <20241114102459.2497178-1-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,68 +65,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Nov 2024 14:16:56 +0100
-Cibil <cibil.pankiras@aerq.com> wrote:
+On Thu, 14 Nov 2024 11:24:59 +0100
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> From: Cibil Pankiras <cibil.pankiras@aerq.com>
+> The label property is defined as optional in the DFSDM binding.
+> Parse the label property only when it is defined in the device tree.
 > 
-> According to the datasheet, the chip requires a reset before any data
-> can be read. This commit moves the device identification logic to
-> occur after the reset to ensure proper initialization.
-> 
-> Cc: Kevin Tsai <ktsai@capellamicro.com>
-> Signed-off-by: Cibil Pankiras <cibil.pankiras@aerq.com>
-Hi Cibil,
+> Fixes: 3208fa0cd919 ("iio: adc: stm32-dfsdm: adopt generic channels bindings")
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+This could be done by just ignoring the return of fw_node_property_read_string()
+but your fix will do a little more such as report an error if the property is
+the wrong type etc, so I'll take it.
 
-If you are resending for any reason make sure you add
-[RESEND to the patch title and say why under the ---
-
-That let's people know it is the same code if they have multiple
-copies.
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/light/cm3232.c | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
+>  drivers/iio/adc/stm32-dfsdm-adc.c | 13 ++++++++-----
+>  1 file changed, 8 insertions(+), 5 deletions(-)
 > 
-> diff --git a/drivers/iio/light/cm3232.c b/drivers/iio/light/cm3232.c
-> index 2c80a0535d2c..db33671c448c 100644
-> --- a/drivers/iio/light/cm3232.c
-> +++ b/drivers/iio/light/cm3232.c
-> @@ -89,6 +89,15 @@ static int cm3232_reg_init(struct cm3232_chip *chip)
+> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+> index 2037f73426d4..e304e3714020 100644
+> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> @@ -691,11 +691,14 @@ static int stm32_dfsdm_generic_channel_parse_of(struct stm32_dfsdm *dfsdm,
+>  		return -EINVAL;
+>  	}
 >  
->  	chip->als_info = &cm3232_als_info_default;
->  
-> +	/* Disable and reset device */
-> +	chip->regs_cmd = CM3232_CMD_ALS_DISABLE | CM3232_CMD_ALS_RESET;
-> +	ret = i2c_smbus_write_byte_data(client, CM3232_REG_ADDR_CMD,
-> +					chip->regs_cmd);
-> +	if (ret < 0) {
-> +		dev_err(&chip->client->dev, "Error writing reg_cmd\n");
-> +		return ret;
-> +	}
-> +
->  	/* Identify device */
->  	ret = i2c_smbus_read_word_data(client, CM3232_REG_ADDR_ID);
->  	if (ret < 0) {
-> @@ -99,15 +108,6 @@ static int cm3232_reg_init(struct cm3232_chip *chip)
->  	if ((ret & 0xFF) != chip->als_info->hw_id)
->  		return -ENODEV;
->  
-> -	/* Disable and reset device */
-> -	chip->regs_cmd = CM3232_CMD_ALS_DISABLE | CM3232_CMD_ALS_RESET;
-> -	ret = i2c_smbus_write_byte_data(client, CM3232_REG_ADDR_CMD,
-> -					chip->regs_cmd);
+> -	ret = fwnode_property_read_string(node, "label", &ch->datasheet_name);
 > -	if (ret < 0) {
-> -		dev_err(&chip->client->dev, "Error writing reg_cmd\n");
+> -		dev_err(&indio_dev->dev,
+> -			" Error parsing 'label' for idx %d\n", ch->channel);
 > -		return ret;
-> -	}
-> -
->  	/* Register default value */
->  	chip->regs_cmd = chip->als_info->regs_cmd_default;
+> +	if (fwnode_property_present(node, "label")) {
+> +		/* label is optional */
+> +		ret = fwnode_property_read_string(node, "label", &ch->datasheet_name);
+> +		if (ret < 0) {
+> +			dev_err(&indio_dev->dev,
+> +				" Error parsing 'label' for idx %d\n", ch->channel);
+> +			return ret;
+> +		}
+>  	}
 >  
+>  	df_ch =  &dfsdm->ch_list[ch->channel];
 
 

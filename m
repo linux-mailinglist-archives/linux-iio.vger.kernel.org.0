@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-12606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A93E9D7779
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:49:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31EDD9D7784
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:55:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D87BF2824F4
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:49:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF97C2825FC
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2125142E86;
-	Sun, 24 Nov 2024 18:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBC213BC0C;
+	Sun, 24 Nov 2024 18:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MCLk+bOn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rC3DubQY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD9C13C67C;
-	Sun, 24 Nov 2024 18:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E7D2500DB;
+	Sun, 24 Nov 2024 18:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732474192; cv=none; b=lSmtd83EiqywY0EiNYkVtXMn772B7QZeJ6HxNd9PGevB6oKGY1otDDYTo1IM7kl1NLkXoWzlkDdggoiykiUT7M5SqdyqaQ3NOW1kkzQ22z5mb1aMMTQmxTxhr6/jr7rkkXmEBhg6w1YN+g4778gHpKHKqdP1I5qjAeInae6JsV4=
+	t=1732474496; cv=none; b=qJQHmNRSQOqxOwLJAt6vtGT1KIZkW99lisF+DNIgzQWEQG6kBVffefpCJlrF11SRukEY7sIGZvefvP1lCG/eYC3Ef+HNHkHK0ApJpwRioo10xZuMMxVRv6bbzMY3g6IfWKL43YTMzO+inMKKqzdYU9DdF3rXjwKu5HWNUCngAjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732474192; c=relaxed/simple;
-	bh=tpzQGGlunNRU4afz4XTgeaR3JxlnsELgP/tOf5UDoE4=;
+	s=arc-20240116; t=1732474496; c=relaxed/simple;
+	bh=XRcZ3HN46afrveF0JXF2TiFqNDTACellTF+3m1lwJn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kGTYAqIl6difghWw3Ei1s+9C4af+eL95Q+lRRT/by0ybSWhHgkGH5NA14pucRrJ2SCn7ArNBpxlB9Ay5zYS2U79/hbo5tHKQruKRTpBamsJKwsU2yIrx8mUciiQ16Pg7cyen70la8nN82hD0WQM/IgaYiYjjDP6geB5zejIFAL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MCLk+bOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD61DC4CECC;
-	Sun, 24 Nov 2024 18:49:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MxnBIGCUdTqwiwCyAsmOIihr2/yHf9C2oPL430XheUccW71JIZt7i0PMHx5fICtPfh6b39e5xXIlrTP02mkW89aSUISzONwHHcIGWy4IO+qLk3UCdGl3Ba3Nde+IRZ4f5L44e+9c+HtfEAwVnQx0IdJJT99BIECLg0cHU0CQ2Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rC3DubQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0804C4CECC;
+	Sun, 24 Nov 2024 18:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732474192;
-	bh=tpzQGGlunNRU4afz4XTgeaR3JxlnsELgP/tOf5UDoE4=;
+	s=k20201202; t=1732474495;
+	bh=XRcZ3HN46afrveF0JXF2TiFqNDTACellTF+3m1lwJn8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MCLk+bOneYspae2wesZrkdjEBBmuelMDQlFQLXuZc4QZPpk03pG8dYzpbGqtDukvf
-	 cKQxjY5gkTiulLEIf4sakE0jPzoBtygYu4JIeXXvu4dC4uWJMFjULVaXprtk1HPlsW
-	 L+Dq9OutpKu76ezTWtCSqbXJJSDgMCwkQQPb5eO/LzGEu8DXA29YXq+f8mscuiLQvJ
-	 EG4hReY1tEsJG4Xfee3+0l92F/buRbduT0wwubYnpcvAFo9J7FLmI50mh+4r58UFek
-	 xOEVo5S9gVrTHcCicO70DNpzUW6WvhVruE/+QOE9LB8V3yHj8oT5zVGK1OCiVvLACT
-	 aJmxhpDup94hA==
-Date: Sun, 24 Nov 2024 18:49:44 +0000
+	b=rC3DubQY5QSyIMlHql8TyLQBOs+Bnp221fRDXATkQpUO2a0eb93xaq3LmT+v/no5K
+	 maLjKmLve2xihg2vxDOCc9qMpRW2Iz4/ZLzCqZiB9iGpnEBzC3Ficf0kaETlMFxXjk
+	 /ww/T1PNmGIipmop0mqmL8vr+d2jEHHXmnL6DOpDwxTTRrkTStPyOQ98uzWn9lxcFz
+	 5ZUChdvAawnyJj17xzdtFiURHiXWbg2LIFrXTN5Hm3Hy6teD7FyhU+dmFea5AWFdz3
+	 uKPHjcx6ZdJ2yMH+M6dH7b2RX0tBij7dQAF1AbYxL2kWzE7NYfQpcIeA+Z0xPfv/4L
+	 LfFD/J/wkZFHA==
+Date: Sun, 24 Nov 2024 18:54:49 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 14/22] iio: accel: adxl345: read FIFO entries
-Message-ID: <20241124184944.53499c29@jic23-huawei>
-In-Reply-To: <20241117182651.115056-15-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 15/22] iio: accel: adxl345: reset the FIFO on error
+Message-ID: <20241124185449.6f81ade1@jic23-huawei>
+In-Reply-To: <20241117182651.115056-16-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
-	<20241117182651.115056-15-l.rubusch@gmail.com>
+	<20241117182651.115056-16-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,109 +62,146 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 17 Nov 2024 18:26:43 +0000
+On Sun, 17 Nov 2024 18:26:44 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Add a function to read the elements of the adxl345 FIFO. This will
-> flush the FIFO, and brings it into a ready state. The read out
-> is used to read the elemnts and to reset the fifo again. The cleanup
-> equally needs a read on the INT_SOURCE register.
+> Add a function to empty the FIFO and reset the INT_SOURCE register.
+> Reading out is used to reset the fifo again. For cleanup also a read
+> on the INT_SOURCE register is needed to allow the adxl345 to issue
+> interrupts again. Without clearing the fields no further interrupts
+> will happen.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 > ---
->  drivers/iio/accel/adxl345_core.c | 40 ++++++++++++++++++++++++++++++--
->  1 file changed, 38 insertions(+), 2 deletions(-)
+>  drivers/iio/accel/adxl345_core.c | 75 ++++++++++++++++++++++++++++----
+>  1 file changed, 67 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 508de81bb9..40e78dbdb0 100644
+> index 40e78dbdb0..82bd5c2b78 100644
 > --- a/drivers/iio/accel/adxl345_core.c
 > +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -140,6 +140,8 @@ struct adxl34x_state {
->  	const struct adxl345_chip_info *info;
->  	struct regmap *regmap;
->  	struct adxl34x_platform_data data;  /* watermark, fifo_mode, etc */
-> +
-> +	__le16 fifo_buf[3 * ADXL34x_FIFO_SIZE] __aligned(IIO_DMA_MINALIGN);
-That doesn't work.  Look at why we have IIO_DMA_MINALIGN().
-Hint is that the buffer needs to end up in a cacheline with nothing that might
-be written by software in the same line.  int_map and below will be so this
-is not doing it's job.
-
-Also not used in this patch.
-
->  	u8 int_map;
->  	bool fifo_delay; /* delay: delay is needed for SPI */
->  	u8 intio;
-> @@ -323,6 +325,37 @@ static const struct attribute_group adxl345_attrs_group = {
->  	.attrs = adxl345_attrs,
->  };
+> @@ -356,6 +356,61 @@ static int adxl345_get_fifo_entries(struct adxl34x_state *st, int *fifo_entries)
+>  	return 0;
+>  }
 >  
 > +/**
-> + * adxl345_get_fifo_entries() - Read number of FIFO entries into *fifo_entries.
-> + * @st: The initialized state instance of this driver.
-> + * @fifo_entries: A field to be initialized by this function with the number of
-> + * FIFO entries.
+> + * adxl345_read_fifo_elements() - Read fifo_entries number of elements.
+> + * @st: The instance of the state object of this sensor.
+> + * @fifo_entries: The number of lines in the FIFO referred to as fifo_entry,
+> + * a fifo_entry has 3 elements for X, Y and Z direction of 2 bytes each.
 > + *
-> + * Since one read on the FIFO is reading all three axis, X, Y and Z in one, the
-> + * number of FIFO entries corresponds to the number of triples of those values.
-> + * Note, this sensor does not support treating any axis individually, or
-> + * exclude them from measuring.
+> + * The FIFO of the sensor is read linewise. The read measurement values are
+> + * queued in the corresponding data structure in *st.
+> + *
+> + * It is recommended that a multiple-byte read of all registers be performed to
+> + * prevent a change in data between reads of sequential registers. That is to
+> + * read out the data registers X0, X1, Y0, Y1, Z0, Z1 at once.
+
+To ensure this, set avail_scan_modes.
+Then if the user requests a subset, the IIO core code will extract what is necessary
+from the read of everythign.
+
+
 > + *
 > + * Return: 0 or error value.
 > + */
-> +static int adxl345_get_fifo_entries(struct adxl34x_state *st, int *fifo_entries)
+> +static int adxl345_read_fifo_elements(struct adxl34x_state *st, int fifo_entries)
 > +{
-> +	unsigned int regval = 0;
-> +	int ret;
+> +	size_t count, ndirs = 3;
+> +	int i, ret;
 > +
-> +	ret = regmap_read(st->regmap, ADXL345_REG_FIFO_STATUS, &regval);
-> +	if (ret) {
-> +		pr_warn("%s(): Failed to read FIFO_STATUS register\n", __func__);
-As before, seems overkill to warn int his path but not really anywhere else.
-dev_err() if you do want to.
-> +		*fifo_entries = 0;
-> +		return ret;
+> +	count = 2 * ndirs; /* 2 byte per direction */
+sizeof(st->fifo_buf[0] * ndirs);
+
+> +	for (i = 0; i < fifo_entries; i++) {
+> +		ret = regmap_noinc_read(st->regmap, ADXL345_REG_XYZ_BASE,
+> +				st->fifo_buf + (i * count / 2), count);
+> +		if (ret) {
+> +			pr_warn("%s(): regmap_noinc_read() failed\n", __func__);
+> +			return -EFAULT;
+> +		}
 > +	}
 > +
-> +	*fifo_entries = 0x3f & regval;
-> +	pr_debug("%s(): fifo_entries %d\n", __func__, *fifo_entries);
-> +
 > +	return 0;
-return the value (similar comment to previous patch review.)
+> +}
+> +
+> +/**
+> + * adxl345_empty_fifo() - Empty the FIFO.
+> + * @st: The instance to the state object of the sensor.
+> + *
+> + * Reading all elements of the FIFO linewise empties the FIFO. Reading th
+> + * interrupt source register resets the sensor. This is needed also in case of
+> + * overflow or error handling to reenable the sensor to issue interrupts.
+> + */
+> +static void adxl345_empty_fifo(struct adxl34x_state *st)
+> +{
+> +	int regval;
+> +	int fifo_entries;
+> +
+> +	/* In case the HW is not "clean" just read out remaining elements */
+> +	adxl345_get_fifo_entries(st, &fifo_entries);
+> +	if (fifo_entries > 0)
+> +		adxl345_read_fifo_elements(st, fifo_entries);
+> +
+> +	/* Reset the INT_SOURCE register by reading the register */
+> +	regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
 > +}
 > +
 >  static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
 >  };
 >  
-> @@ -363,6 +396,7 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
->  	struct iio_dev *indio_dev = ((struct iio_poll_func *) p)->indio_dev;
->  	struct adxl34x_state *st = iio_priv(indio_dev);
->  	u8 int_stat;
-> +	int fifo_entries;
->  	int ret;
+> @@ -401,30 +456,34 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
 >  
 >  	ret = adxl345_get_status(st, &int_stat);
-> @@ -380,9 +414,11 @@ static irqreturn_t adxl345_trigger_handler(int irq, void *p)
->  		goto done;
+>  	if (ret < 0)
+> -		goto done;
+> +		goto err;
+All this churn just makes things less readable.  Better to have the bulk
+of the addition of fifo handling in one patch. It won't be too large
+for review.
+>  
+>  	/* Ignore already read event by reissued too fast */
+>  	if (int_stat == 0x0)
+> -		goto done;
+> +		goto err;
+>  
+>  	/* evaluation */
+>  
+>  	if (int_stat & ADXL345_INT_OVERRUN) {
+>  		pr_debug("%s(): OVERRUN event detected\n", __func__);
+> -		goto done;
+> +		goto err;
 >  	}
 >  
-> -	if (int_stat & (ADXL345_INT_DATA_READY | ADXL345_INT_WATERMARK))
-> +	if (int_stat & (ADXL345_INT_DATA_READY | ADXL345_INT_WATERMARK)) {
+>  	if (int_stat & (ADXL345_INT_DATA_READY | ADXL345_INT_WATERMARK)) {
 >  		pr_debug("%s(): WATERMARK or DATA_READY event detected\n", __func__);
-> -
-> +		if (adxl345_get_fifo_entries(st, &fifo_entries) < 0)
-Do it all in one go. I want to see interrupt through to data hitting the kfifo +
-registration of that kfifo all in one patch.
-
-It is not complicated enough to need to jump through this very slow introduction
-of code.
-
-Jonathan
-
-> +			goto done;
+>  		if (adxl345_get_fifo_entries(st, &fifo_entries) < 0)
+> -			goto done;
+> -	}
+> -	goto done;
+> -done:
+> +			goto err;
+>  
+> -	if (indio_dev)
+>  		iio_trigger_notify_done(indio_dev->trig);
 > +	}
->  	goto done;
->  done:
+>  
+> +	goto done;
+> +err:
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +	adxl345_empty_fifo(st);
+> +	return IRQ_NONE;
+NONE is probably a bad idea. Something went wrong but that doesn't
+mean it wasn't our interrupt.  In most cases it is better to just
+return that we handled it.  IRQ_NONE might be valid if the status
+said it wasn't ours.
+
+> +
+> +done:
+>  	return IRQ_HANDLED;
+return where you have goto done and get rid of this.
+
+>  }
 >  
 
 

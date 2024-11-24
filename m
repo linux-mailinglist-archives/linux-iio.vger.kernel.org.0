@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-12566-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12567-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51179D6EDE
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 13:55:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1A69D6EF3
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 13:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C966162CC1
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 12:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B4C160EE4
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7259918C93C;
-	Sun, 24 Nov 2024 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2211B3927;
+	Sun, 24 Nov 2024 12:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bhCWp8+Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JEez3j6n"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C9B18C92F;
-	Sun, 24 Nov 2024 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B591B2EEB;
+	Sun, 24 Nov 2024 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732452207; cv=none; b=WA/aMa+XY+2mDC/IOrQsxwttiAns4y8JRRehasADFHghLw0UQ4oKzS/pHscFoiuht6Pthg0m20Wdaf1jxtqs8MJhutNbKpDfmxZX7zveYKa31be7p3LAvUxaxe/O1tfXC7IHXPMOZhB1N+DjJKRcKEW04jWacXsj4BLfGsD3Ha4=
+	t=1732452332; cv=none; b=Yg4G/0+qELFH4FMSWm21IEzQKMIGMysl60wr5w+QN0x/6Vh2ZFGFCtz2EKCNiKXesk0zjxMfKliFBb201tlzKAVivic2U9E8V9tK565ZS74iRp8O8dcw6drLyJ/jWa1WVx0JFZ0UxkQUSL5GZcyKgtbbCXhTv9JABXUxoYdhmgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732452207; c=relaxed/simple;
-	bh=/Q111bk9ppM7RAlVGQNEPtozwwO/NImA489FG/ufEWE=;
+	s=arc-20240116; t=1732452332; c=relaxed/simple;
+	bh=/ViGX/4oytF2SXmn/VCG/JCUqKVhfDc6T+Z+kJC0y4o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=az1UKvto4NP71UV5zgHtvOQR07cWd5P022oFaZ5swqNAg+fWMQhWzm9566cPez0EtsfsEK4EA6SNPHZ6SZG7AEQS89MHyrHGrSoUiayMjioJO+LmHIp09J9EyXUvV2HYi6hho0SlIIHYB2UMVSzwg1T3hfjbcmi9RN7n7R8OXJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bhCWp8+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36628C4CECC;
-	Sun, 24 Nov 2024 12:43:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lkV3BIBh1J2yNYxNLlFckIAzP8Muftf9UX6T8YWhzn+8j5e6ppH05djVNLByYhZsAnJIXFALmspxe6FepfXY99TQon/FMznCKbY4PqaZzojoTGGy5veJ169XlYBKFq20n2MKqSKJ7p1ceufXi9jZze/kFUPCOEXRp2LmA70f0og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JEez3j6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677D9C4CED6;
+	Sun, 24 Nov 2024 12:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732452207;
-	bh=/Q111bk9ppM7RAlVGQNEPtozwwO/NImA489FG/ufEWE=;
+	s=k20201202; t=1732452331;
+	bh=/ViGX/4oytF2SXmn/VCG/JCUqKVhfDc6T+Z+kJC0y4o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bhCWp8+YLKtwoDZkzIoFCPk08DgXl16+QzWcAb/eM2vwBdvW5qqVFA9TcpFxgaIqp
-	 bpxuJuewT851JU4AUA7kKfeWdzpTM6ZQyBnwYC6pUzTNsKXEgqVvgML/bg7i1cAsMM
-	 PQFZBBHSgL4maMbQ/h6txERjVKwdBWYwUXbb/fajWCOI31iOYoPq/tRXCUPwVKgJlE
-	 LFv6lJMeMTIPSg08jiybBKARY6EKssf0u+9OKRh+7MxIugU7gg3PaebIbanpoa6cWd
-	 z2McDjaTGcyoE5YDgtJ/YKOvoZ80W2xT5Um4RcMEivQR85tIRJNm50eJVdgTGDXz6M
-	 FshTsbKBKWRtw==
-Date: Sun, 24 Nov 2024 12:43:20 +0000
+	b=JEez3j6njmdaBl0gG9HCt2UseKMzc8HPxV7QN/bMJ+8OGp+FsxHwlp5A0Gvb9d4ls
+	 2c8IHgHXZS6TlufKWBJPzuEi67qvuPoOsmQHE8UGyeAPcaWRPUBav2TuKiMbf3Tb4S
+	 5X2PLBAdxrJBFF/3OBu4oNE8AUl8W42z8lyloV5caOYypFkMJhw+cUr2zksWzPbgzO
+	 cFdbWKRsSgse4l8TDMMZUYrgCDXaTOZx+bqUnwtUPNVTPMjyw0B7kn1fBj32IaDO1P
+	 VoL6MaWeK09ZqLJXk2LBHJ6BTjMNRYii+Nne7FLgZZxm7w6A1oj14wdmQvu0WEIdoj
+	 AzHMbEIxF6djg==
+Date: Sun, 24 Nov 2024 12:45:22 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: light: veml6030: add support for triggered
- buffer
-Message-ID: <20241124124320.4237c67e@jic23-huawei>
-In-Reply-To: <1f5d62d0-42af-4eda-846d-cd0d57b5c6d5@gmail.com>
-References: <20241110-veml6030_triggered_buffer-v2-1-ecda3b6ed77f@gmail.com>
-	<20241123151634.303aa860@jic23-huawei>
-	<1f5d62d0-42af-4eda-846d-cd0d57b5c6d5@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Hennerich
+ <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH 0/2] iio: adc: ad4695: move dt-bindings header
+Message-ID: <20241124124522.3c1570e0@jic23-huawei>
+In-Reply-To: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-0-aba1f0f9b628@baylibre.com>
+References: <20241113-iio-adc-ad4695-move-dt-bindings-header-v1-0-aba1f0f9b628@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,134 +64,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 23 Nov 2024 22:15:11 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Wed, 13 Nov 2024 10:55:18 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 23/11/2024 16:16, Jonathan Cameron wrote:
-> > On Sun, 10 Nov 2024 18:49:05 +0100
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> >   
-> >> All devices supported by this driver (currently veml6030, veml6035
-> >> and veml7700) have two 16-bit channels, and can profit for the same
-> >> configuration to support data access via triggered buffers.
-> >>
-> >> The measurements are stored in two 16-bit consecutive registers
-> >> (addresses 0x04 and 0x05) as little endian, unsigned data.
-> >>
-> >> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
-> > Hi Javier,
-> > 
-> > We have to be a little careful with pushing data from the stack.
-> > Need to makes sure holes are zero filled.
-> > 
-> > Jonathan
-> >   
-> >> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> >> index ccb43dfd5cf7..ce9af9a0e933 100644
-> >> --- a/drivers/iio/light/veml6030.c
-> >> +++ b/drivers/iio/light/veml6030.c  
-> >   
-> >>  
-> >>  static const struct regmap_config veml6030_regmap_config = {
-> >> @@ -889,6 +928,35 @@ static irqreturn_t veml6030_event_handler(int irq, void *private)
-> >>  	return IRQ_HANDLED;
-> >>  }
-> >>  
-> >> +static irqreturn_t veml6030_trigger_handler(int irq, void *p)
-> >> +{
-> >> +	struct iio_poll_func *pf = p;
-> >> +	struct iio_dev *iio = pf->indio_dev;
-> >> +	struct veml6030_data *data = iio_priv(iio);
-> >> +	unsigned int reg;
-> >> +	int ch, ret, i = 0;
-> >> +	struct {
-> >> +		u16 chans[2];  
-> > There is a hole here...   
-> >> +		aligned_s64 timestamp;
-> >> +	} scan;
-> >> +
-> >> +	iio_for_each_active_channel(iio, ch) {
-> >> +		ret = regmap_read(data->regmap, VEML6030_REG_DATA(ch),
-> >> +				  &reg);
-> >> +		if (ret)
-> >> +			goto done;
-> >> +
-> >> +		scan.chans[i++] = reg;  
-> > This fills in at least 1 channel, but maybe not the second.  
-> >> +	}
-> >> +  
-> > So this leaks random stack data I think.
-> > 
-> > Upshot, when holes are involved or not all the channels are set, need
-> > memset(&scan, 0, sizeof(scan));
-> > for the structure on the stack which will zero the holes as well as
-> > both channels.
-> > 
-> > Ancient article on this: https://lwn.net/Articles/417989/
-> > 
-> > We get away with it when they are in the iio_priv space because they are
-> > kzalloc + if we do leak data due to changes in configured channels it's
-> > just old sensor data which is (I think) never a security problem!
-> >   
-> >> +	iio_push_to_buffers_with_timestamp(iio, &scan, pf->timestamp);
-> >> +
-> >> +done:
-> >> +	iio_trigger_notify_done(iio->trig);
-> >> +
-> >> +	return IRQ_HANDLED;
-> >> +}
-> >> +
-> >>  static int veml6030_set_info(struct iio_dev *indio_dev)
-> >>  {
-> >>  	struct veml6030_data *data = iio_priv(indio_dev);
-> >> @@ -1077,6 +1145,12 @@ static int veml6030_probe(struct i2c_client *client)
-> >>  	if (ret < 0)
-> >>  		return ret;
-> >>  
-> >> +	ret = devm_iio_triggered_buffer_setup(&client->dev, indio_dev, NULL,
-> >> +					      veml6030_trigger_handler, NULL);
-> >> +	if (ret)
-> >> +		return dev_err_probe(&client->dev, ret,
-> >> +				     "Failed to register triggered buffer");
-> >> +
-> >>  	return devm_iio_device_register(&client->dev, indio_dev);
-> >>  }
-> >>  
-> >>
-> >> ---
-> >> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
-> >> change-id: 20241106-veml6030_triggered_buffer-a38886ca4cce
-> >>
-> >> Best regards,  
-> >   
+> During review, no one caught that the dt-bindings header was not in the
+> preferred location when the bindings were created. Move the header to
+> the correct location.
 > 
-> 
-> Hi Jonathan,
-> 
-> thanks a lot for your explanation and the link, it makes perfect sense.
-> By the way, when I moved this struct from the iio_priv to the function,
-> I took a look at some existing code, and a couple of them might have the
-> same issue:
-> 
-> - temperature/tmp006.c: it also has a hole between the two 16-bit
-> channels and the timestamp (aligned(8)), but it is not set to zero.
-> 
-> - adc/ti-ads1119.c: the scan consists of an unsigned int and the
-> timestamp (aligned(8)). I believe there is a hole there as well.
-> 
-> I did not go over all drivers (most of them store the scan struct in the
-> iio_priv space anyway), but at least those two look suspicious.
-> 
-> Should I fix (e.g. memset) those two I mentioned?
+Applied to the togreg branch of iio.git which will get rebased on rc1
+when available .
 
-Please do.  Thanks!
+Thanks,
 
 Jonathan
 
-
+> ---
+> David Lechner (2):
+>       iio: adc: ad4695: move dt-bindings header
+>       dt-bindings: iio: adc: adi,ad4695: change include path
+> 
+>  Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml | 7 ++++---
+>  Documentation/iio/ad4695.rst                              | 2 +-
+>  MAINTAINERS                                               | 2 +-
+>  drivers/iio/adc/ad4695.c                                  | 2 +-
+>  include/dt-bindings/iio/{ => adc}/adi,ad4695.h            | 0
+>  5 files changed, 7 insertions(+), 6 deletions(-)
+> ---
+> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
+> change-id: 20241113-iio-adc-ad4695-move-dt-bindings-header-d6922ef7d134
 > 
 > Best regards,
-> Javier Carrasco
-> 
 
 

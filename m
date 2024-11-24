@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-12600-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12601-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F499D7781
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6524A9D777F
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 761EFB2B817
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B4AB2399E
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D9A126BEE;
-	Sun, 24 Nov 2024 18:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9B8127E18;
+	Sun, 24 Nov 2024 18:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTDk3Zvj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhdXzYTe"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF9A224FA;
-	Sun, 24 Nov 2024 18:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A9A2500BD;
+	Sun, 24 Nov 2024 18:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732472189; cv=none; b=g6oFbySKHztvKvSasE71UuKQz9gHB11luBT7ij+w7y0VHzMBeKg+TcxYDPDipAvsV9kb2/57FSyiQPqgz6CnOjRqe89fUi68Ni+b5hJ7dBthfQfOXpUpACa1xaoEXNmHBmhGCmcKDV7rTaF7iuFyyodiuCA5NBbW35y3yTOa1XI=
+	t=1732472530; cv=none; b=fzMq8ku9wwbmeNjuD6xBe1jeoci795ygB6Jm0Jr7fWEswd35JTLjmfUIFeRyJ/3gSns+0+Vrdgz+Cj6PJOS46boD78NC3Bh9S3WiXVqyfURZsdRLgAY7k3AUsvIlvJ68tEkeNqrfzI9H+22H7t+mTKhcXEQolrErGI1kahRsu6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732472189; c=relaxed/simple;
-	bh=FXsuG6lDU1uWF4iyfoWnk1dMCf5iIc4lUECmwOYM7NI=;
+	s=arc-20240116; t=1732472530; c=relaxed/simple;
+	bh=RPvOw357BKcstkrazraC2MqzvydeGkaWCEENraR6VDE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Njvj9+YjxlD+36/v/tHdZwUi0+SsN/7XRGvi1yJ2YWb0NFa5raswckYPtQ8hX5Mfzaim40MGH8mpVN+Xxc9g7CCtuPPqsm6ckbG00KzF2DL16JtA5X4yh9cS5QYgZr7n4dkKwUKZGjRL//oTYHlP7Krbv+0lXK8CMafQTEK80VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTDk3Zvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B58C4CECC;
-	Sun, 24 Nov 2024 18:16:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Isa1VADP721sJ/phc4yIeNgAjeO1a91piw+kJ97ivjrMeuoDTB3EZJ6kfscUy6qsXfB0FrUWM4ZHVh8qIfI5ZLkyLn30+OpCLTC4jTwuAGYozl3ugHAj8a5l+piBzlUzTTm6bkGfyOCN3osOO5MKlLEu88jemDicfK1H6yFSHq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhdXzYTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AF2C4CECC;
+	Sun, 24 Nov 2024 18:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732472189;
-	bh=FXsuG6lDU1uWF4iyfoWnk1dMCf5iIc4lUECmwOYM7NI=;
+	s=k20201202; t=1732472529;
+	bh=RPvOw357BKcstkrazraC2MqzvydeGkaWCEENraR6VDE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MTDk3Zvj5ymz6fVnlE+/RNU3sFjfxXMQD3YKBM9SWCCGQBH1axe6GglrIBT4Xl4La
-	 jVhLsjbCZNDOX5ratGwNf+hOzHc6BdmWj9ezDWuC8gVPicoU+XjYblGvmoNDrg63H+
-	 IbQ2578o8YNjhiU7xqcxqHejin/I2000YsZD+EjduSvqw7Rx7uOrnw3dDsL48X/nML
-	 bt6u4fIOcztBeSFZpB+nzzX5m0IQiTGx8br3W12eduMOm5ONdDkpUt9RDgW3xjBVoU
-	 bOpFaevOAe85TvRCYCW0DcSfyhgWgBICxavtJ00k3feA+WEm8EHUHu9Tu0NXISlWuG
-	 W+CMYU9Jh1KLg==
-Date: Sun, 24 Nov 2024 18:16:22 +0000
+	b=nhdXzYTewY7Zup0kapE8lE1wt3ozx/+qYudPOvLB9E7kcgIENttsafIySj9PNfh1y
+	 sLT3lvTQyAoamzksSX+jmsyeAPEZzNlTn118w7MCDjqUIn0EzFnUcpf3IJrSRXIVT8
+	 MHqMph4Y3rV4iX6I1473KJ/hhuUwpqdyl0yqS91h9kj0Ys+RKSBHPnrH0Bptsn8021
+	 A3Wefx7o+su9slhAZ81qhXX5YzfPqVgP9LliZEaMp6kH4u9JFT93dOlOC/qer47xAh
+	 UIJh93Ak1vcYM5IyL+2StgU7MAlel/H8fKlflLbV9vAZ11KzAV85veYsWpOj9pcMMX
+	 vqvOZjJgu0Qhw==
+Date: Sun, 24 Nov 2024 18:22:05 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 08/22] iio: accel: adxl345: initialize FIFO delay
- value for SPI
-Message-ID: <20241124181622.6df37d30@jic23-huawei>
-In-Reply-To: <20241117182651.115056-9-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 09/22] iio: accel: adxl345: unexpose private defines
+Message-ID: <20241124182205.42a9a378@jic23-huawei>
+In-Reply-To: <20241117182651.115056-10-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
-	<20241117182651.115056-9-l.rubusch@gmail.com>
+	<20241117182651.115056-10-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,117 +62,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 17 Nov 2024 18:26:37 +0000
+On Sun, 17 Nov 2024 18:26:38 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Add the possibility to delay FIFO access when SPI is used. According to
-> the datasheet this is needed for the adxl345. When initialization
-> happens over SPI the need for delay is to be signalized, and the delay
-> will be used.
-A specific reference to a section of the specification might be useful
-here.
+> For the implementation of features like FIFO-usage, watermark, single
+> tap, double tap, freefall, etc. most of the constants do not need to be
+> exposed in the header file, but are rather of private nature. Reduce
+> namespace pollution by moving them to the core source file.
+Whilst I get where you are coming from with this, breaking up
+where these are between some in the header and some in the main code
+tends to hurt readability and ease of checking the definitions.
 
-One trivial comment inline, but otherwise looks fine to me.
+So I would prefer these remain in the header.
 
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  drivers/iio/accel/adxl345.h      | 2 +-
->  drivers/iio/accel/adxl345_core.c | 6 +++++-
->  drivers/iio/accel/adxl345_i2c.c  | 2 +-
->  drivers/iio/accel/adxl345_spi.c  | 3 +++
->  4 files changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> index cf4132715c..4ba493f636 100644
-> --- a/drivers/iio/accel/adxl345.h
-> +++ b/drivers/iio/accel/adxl345.h
-> @@ -62,7 +62,7 @@ struct adxl345_chip_info {
->  };
->  
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-> -		       int irq,
-> +		       int irq, bool fifo_delay_default,
->  		       int (*setup)(struct device*, struct regmap*));
->  
->  #endif /* _ADXL345_H_ */
+Jonathan
+
 > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 902bd3568b..51b229cc44 100644
+> index 51b229cc44..c8d9e1f9e0 100644
 > --- a/drivers/iio/accel/adxl345_core.c
 > +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -22,6 +22,7 @@ struct adxl34x_state {
+> @@ -18,6 +18,114 @@
+>  
+>  #include "adxl345.h"
+
+> +/* POWER_CTL bits */
+Drop all the extra comments unless they add something not obvious
+for the naming.
+> +#define ADXL345_POWER_CTL_STANDBY	0x00
+> +
+> +/* NB:
+> + * BIT(0), BIT(1) for explicit wakeup (not implemented)
+> + * BIT(2) for explicit sleep (not implemented)
+Define them and don't use them and the comment isn't needed.
+
+> + */
+> +#define ADXL345_POWER_CTL_MEASURE	BIT(3)
+> +#define ADXL345_POWER_CTL_AUTO_SLEEP	BIT(4)
+> +#define ADXL345_POWER_CTL_LINK	BIT(5)
+> +
+> +/* DATA_FORMAT bits */
+
+The naming of the defines makes that clear. So the comment doesn't
+add much.
+
+> +#define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)	/* Set the g range */
+> +#define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)	/* 1: left-justified (MSB) mode, 0: right-just'd */
+If the comment is needed move it to the line above.
+better yet, use a name that means the comment isn't needed.
+ADXL345_DATA_FORMAT_LEFT_JUSTIFY
+for example where a value of 0 means left and 1 doesn't (hence right)
+
+You are just moving it though, so perhaps not worth improving.
+
+> +#define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)	/* Up to 13-bits resolution */
+> +/* NB: BIT(6): 3-wire SPI mode (defined in header) */
+This is the sort of comment that indicates the problem with splitting
+things between header and here. I'd prefer to just keep it all in the header.
+
+> +
+> +#define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)	/* Enable a self test */
+> +#define ADXL345_DATA_FORMAT_2G		0
+> +#define ADXL345_DATA_FORMAT_4G		1
+> +#define ADXL345_DATA_FORMAT_8G		2
+> +#define ADXL345_DATA_FORMAT_16G		3
+> +
+> +#define ADXL345_REG_OFS_AXIS(index)	(ADXL345_REG_OFSX + (index))
+> +
+> +/* The ADXL345 include a 32 sample FIFO
+Comment syntax 
+/*
+ * The ADXL345 includes a 32 sample FIFO.
+> + *
+> + * FIFO stores a maximum of 32 entries, which equates to a maximum of 33
+> + * entries available at any given time because an additional entry is available
+> + * at the output filter of the device.
+> + * (see datasheet FIFO_STATUS description on "Entries Bits")
+> + */
+> +#define ADXL34x_FIFO_SIZE  33
+> +
+>  struct adxl34x_state {
 >  	int irq;
 >  	const struct adxl345_chip_info *info;
->  	struct regmap *regmap;
-> +	bool fifo_delay; /* delay: delay is needed for SPI */
->  };
->  
->  #define ADXL345_CHANNEL(index, axis) {					\
-> @@ -199,13 +200,14 @@ static const struct iio_info adxl345_info = {
->   * @dev:	Driver model representation of the device
->   * @regmap:	Regmap instance for the device
->   * @irq:	Interrupt handling for async usage
-> + * @fifo_delay_default: Using FIFO with SPI needs delay
->   * @setup:	Setup routine to be executed right before the standard device
->   *		setup
->   *
->   * Return: 0 on success, negative errno on error
->   */
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-> -		       int irq,
-> +		       int irq, bool fifo_delay_default,
->  		       int (*setup)(struct device*, struct regmap*))
->  {
->  	struct adxl34x_state *st;
-> @@ -234,6 +236,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	if (!st->info)
->  		return -ENODEV;
->  
-> +	st->fifo_delay = fifo_delay_default;
-> +
->  	indio_dev->name = st->info->name;
->  	indio_dev->info = &adxl345_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
-> index 604b706c29..fa1b7e7026 100644
-> --- a/drivers/iio/accel/adxl345_i2c.c
-> +++ b/drivers/iio/accel/adxl345_i2c.c
-> @@ -27,7 +27,7 @@ static int adxl345_i2c_probe(struct i2c_client *client)
->  	if (IS_ERR(regmap))
->  		return dev_err_probe(&client->dev, PTR_ERR(regmap), "Error initializing regmap\n");
->  
-> -	return adxl345_core_probe(&client->dev, regmap, client->irq, NULL);
-> +	return adxl345_core_probe(&client->dev, regmap, client->irq, false, NULL);
->  }
->  
->  static const struct adxl345_chip_info adxl345_i2c_info = {
-> diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-> index 39e7d71e1d..75940d9c1c 100644
-> --- a/drivers/iio/accel/adxl345_spi.c
-> +++ b/drivers/iio/accel/adxl345_spi.c
-> @@ -12,6 +12,7 @@
->  #include "adxl345.h"
->  
->  #define ADXL345_MAX_SPI_FREQ_HZ		5000000
-> +#define ADXL345_MAX_FREQ_NO_FIFO_DELAY	1500000
->  
->  static const struct regmap_config adxl345_spi_regmap_config = {
->  	.reg_bits = 8,
-> @@ -41,10 +42,12 @@ static int adxl345_spi_probe(struct spi_device *spi)
->  	if (spi->mode & SPI_3WIRE)
->  		return adxl345_core_probe(&spi->dev, regmap,
->  					  spi->irq,
-> +					  spi->max_speed_hz > ADXL345_MAX_FREQ_NO_FIFO_DELAY,
->  					  adxl345_spi_setup);
->  	else
->  		return adxl345_core_probe(&spi->dev, regmap,
->  					  spi->irq,
-> +					  spi->max_speed_hz > ADXL345_MAX_FREQ_NO_FIFO_DELAY,
-
-use a local variable to establish this without the very long line.
-
->  					  NULL);
->  }
->  
 
 

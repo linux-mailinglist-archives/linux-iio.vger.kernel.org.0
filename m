@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-12608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87AF9D77EC
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 20:29:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8079D7789
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 19:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7A8EB2387A
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4A10282592
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Nov 2024 18:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81CE913B2B8;
-	Sun, 24 Nov 2024 18:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F128B13C918;
+	Sun, 24 Nov 2024 18:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hysluavZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTCx9tP4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDD5B660;
-	Sun, 24 Nov 2024 18:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3CD2500C3;
+	Sun, 24 Nov 2024 18:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732474571; cv=none; b=AribncSS6+8A7Hf1KgzqHVKsh4jXvSu5IncIQzxOGDaVd2n3CIkL7eX8cV2XnFhiAbGo0BrdUWpapMAou3al7pEYfl4oJ+R2hinYSapLVEdAYIR7ZNau2/8OXc6vpsM1mmJZ3nn9q3ztnhroU2W+uZvjhG6aR2lz62Kq0SuiL7s=
+	t=1732474702; cv=none; b=le6m1x8zjKmM1yp+aqo9bEQ5yNexCTmthUZF0cIJmVhG10mhEdbqujAzOm/832rAOfrObMiUoIEyVQZVtpNY3/3K3xVmTwQxoXZL1M1fljHKl0dPC3dCxWHPzXlfrFby1x0HsEXwKUkaiTlOAoph8JjYuiU/ilFUmWMqc+ZKdZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732474571; c=relaxed/simple;
-	bh=w07KLfPCx7uI9Y41dk6gTGNAzsBTKPGGWOxPzhYY+t4=;
+	s=arc-20240116; t=1732474702; c=relaxed/simple;
+	bh=EReRqPnaarxfCp3xRMb80SHm6sQAbVAsHfXhvODNuk8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ORBKqXqhPDjXU3V6EvEBCzptPwnHX4jroJPhLFa460n56PrBqO+BEcPsUgNT3VInFSuuwYaYuCoVv3iS1zzZLo/gzbnKbpoPsqmEok/kGM3l3rF0RddV+Ua0I8PPnzCuhPAhE7Szmo6Ik/EeHdco0Izex3blIOFjMGTQiaa/1qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hysluavZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F5BC4CECC;
-	Sun, 24 Nov 2024 18:56:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ntAd15N9+rT4H1Oj9g7C31AyL20Zu3fwUE8SPbjW7lbFdE0eKsSVKhg+v7yPz+GEQuAEmlwFmVsLRaklDMKQpbJjCo/mtSH9bN9yRraeH5AHfO/JDFKFm3NvmTOHEN0jihlUiNvRev+fJs0Tw0h2L4EP1+nhf1kPA8Ro6u4FUxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTCx9tP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1240C4CECC;
+	Sun, 24 Nov 2024 18:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732474570;
-	bh=w07KLfPCx7uI9Y41dk6gTGNAzsBTKPGGWOxPzhYY+t4=;
+	s=k20201202; t=1732474702;
+	bh=EReRqPnaarxfCp3xRMb80SHm6sQAbVAsHfXhvODNuk8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hysluavZQZqgZTp8OBxa1U15v5M3gKVJWysstAxSkRVPMGCHgvt/0QYvWDsAEa4qf
-	 o5Yu2uzrPDRPDNFSm6MwXwHcbfn5UJxWTOP5WWVaYj2V4W50hi/eEic+F7THG8Ii+E
-	 ae6cHUYZS4H/CPdJlYs17Q4EyVq1oAbSYM6Wk8D6lmSgXz2PUB09N+OLWSt1Tz6+Fe
-	 R+PS04WcK+VnQbUS97C+H+0QdMWw9786E+VA3IDcfyUzyzq2b64dHiw1LieAJ7jJNL
-	 5xqMnjwlRWR2IgtHdnV8RQfmciy0jxJRI7Tz+O5FFTZl83HD+ZLlXaDju3x6ML/fL8
-	 TUWhatYqzlZiA==
-Date: Sun, 24 Nov 2024 18:56:02 +0000
+	b=cTCx9tP4S7AMnXb4AfCjHnmyi/8ms52+MQV5BjI8NISuZ+yF3FkSdS5Vl8kyGkU35
+	 jYtiKkvxHCZgyUTptXpahJEQZ08ISS8JMDJkPjzE55kvlSZ3hg71dFCgFuqbyQwVi3
+	 qil+HN/DLnyw3Xina7Bz6cFjnwQ+aBAfw8T8MQKyInwF2k28QaCg/z8EYrEFVNeNqD
+	 TjXvXjiwbQB8bRCwYn3gbNxRpPaqTpiO/wBolILhj6okPdxT1w8aLjpMtFSDVK2Nan
+	 lDJfHhtbRymi7nE0xGu+zr+88OjtKx0pqbJHQyo/3tC3oTHBdWlRB3dWY7/9Qy9+S8
+	 4MWRBTe31sHYQ==
+Date: Sun, 24 Nov 2024 18:58:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 16/22] iio: accel: adxl345: register trigger ops
-Message-ID: <20241124185602.10cb3721@jic23-huawei>
-In-Reply-To: <20241117182651.115056-17-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 17/22] iio: accel: adxl345: push FIFO data to iio
+Message-ID: <20241124185815.7e9c6fad@jic23-huawei>
+In-Reply-To: <20241117182651.115056-18-l.rubusch@gmail.com>
 References: <20241117182651.115056-1-l.rubusch@gmail.com>
-	<20241117182651.115056-17-l.rubusch@gmail.com>
+	<20241117182651.115056-18-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,86 +62,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 17 Nov 2024 18:26:45 +0000
+On Sun, 17 Nov 2024 18:26:46 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Add trigger options to the sensor driver. Reacting to the sensor events
-> communicated by IRQ, the FIFO handling and the trigger will be core
-> events for further feature implementation.
+> Add FIFO and hwfifo handling. Add some functions to deal with FIFO
+> entries and configuration. This feature will be needed for e.g.
+> watermark setting.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 > ---
->  drivers/iio/accel/adxl345_core.c | 34 ++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
+>  drivers/iio/accel/adxl345_core.c | 38 ++++++++++++++++++++++++++++++++
+>  1 file changed, 38 insertions(+)
 > 
 > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 82bd5c2b78..d58e1994ff 100644
+> index d58e1994ff..a653774db8 100644
 > --- a/drivers/iio/accel/adxl345_core.c
 > +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -15,6 +15,9 @@
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/kfifo_buf.h>
->  #include <linux/iio/trigger.h>
->  #include <linux/iio/trigger_consumer.h>
->  #include <linux/iio/triggered_buffer.h>
-> @@ -140,11 +143,13 @@ struct adxl34x_state {
->  	const struct adxl345_chip_info *info;
->  	struct regmap *regmap;
->  	struct adxl34x_platform_data data;  /* watermark, fifo_mode, etc */
-> +	struct iio_trigger *trig_dready;
->  
->  	__le16 fifo_buf[3 * ADXL34x_FIFO_SIZE] __aligned(IIO_DMA_MINALIGN);
->  	u8 int_map;
->  	bool fifo_delay; /* delay: delay is needed for SPI */
->  	u8 intio;
-> +	bool watermark_en;
->  };
->  
->  #define ADXL34x_CHANNEL(index, reg, axis) {				\
-> @@ -432,6 +437,35 @@ static int adxl345_get_status(struct adxl34x_state *st, u8 *int_stat)
+> @@ -437,6 +437,41 @@ static int adxl345_get_status(struct adxl34x_state *st, u8 *int_stat)
 >  	return 0;
 >  }
 >  
-> +/* data ready trigger */
-
-Data ready is a term used for a single sample being ready. 
-Rename this as watermark.
-
-However, as before I'd just get rid of the trigger entirely as it's not useful.
-> +
-> +static int adxl345_trig_dready(struct iio_trigger *trig, bool state)
+> +static int adxl345_push_fifo_data(struct iio_dev *indio_dev,
+> +				  u8 status,
+> +				  int fifo_entries)
 > +{
-> +	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
 > +	struct adxl34x_state *st = iio_priv(indio_dev);
+> +	int ndirs = 3; /* 3 directions */
+It's const. Maybe a define is appropriate instead?
+> +	int i, ret;
 > +
-> +	st->int_map = 0x00;
-> +	if (state) {
-> +		/* Setting also ADXL345_INT_DATA_READY results in just a single
-> +		 * generated interrupt, and no continuously re-generation. NB that the
-> +		 * INT_DATA_READY as well as the INT_OVERRUN are managed automatically,
-> +		 * setting their bits here is not needed.
+> +	if (fifo_entries <= 0)
+> +		return true;
+It returns an int. Also how did you get in here with negative fifo
+entries?  That rather suggests something went wrong at the caller.
+
+> +
+> +	ret = adxl345_read_fifo_elements(st, fifo_entries);
+> +	if (ret)
+> +		return false;
+> +
+> +	for (i = 0; i < ndirs * fifo_entries; i += ndirs) {
+> +		/* To ensure that the FIFO has completely popped, there must be at least 5
+Comment format.
+
+> +		 * us between the end of reading the data registers, signified by the
+> +		 * transition to register 0x38 from 0x37 or the CS pin going high, and the
+> +		 * start of new reads of the FIFO or reading the FIFO_STATUS register. For
+> +		 * SPI operation at 1.5 MHz or lower, the register addressing portion of the
+> +		 * transmission is sufficient delay to ensure the FIFO has completely
+> +		 * popped. It is necessary for SPI operation greater than 1.5 MHz to
+> +		 * de-assert the CS pin to ensure a total of 5 us, which is at most 3.4 us
+> +		 * at 5 MHz operation.
 > +		 */
-> +		if (st->watermark_en)
-> +			st->int_map |= ADXL345_INT_WATERMARK;
+> +		if (st->fifo_delay && (fifo_entries > 1))
+> +			udelay(3);
 > +
-> +		pr_debug("%s(): preparing st->int_map 0x%02X\n",
-> +			 __func__, st->int_map);
+> +		iio_push_to_buffers(indio_dev, &st->fifo_buf[i]);
 > +	}
 > +
-> +	return 0;
+> +	return true;
 > +}
 > +
-> +static const struct iio_trigger_ops adxl34x_trig_dready_ops = {
-> +	.validate_device = &iio_trigger_validate_own_device,
-> +	.set_trigger_state = adxl345_trig_dready,
-> +};
-> +
->  /**
->   * irqreturn_t adxl345_trigger_handler() - Interrupt handler used for several
->   *                                         features of the ADXL345.
+
 
 

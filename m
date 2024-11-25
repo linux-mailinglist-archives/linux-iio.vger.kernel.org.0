@@ -1,268 +1,133 @@
-Return-Path: <linux-iio+bounces-12651-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12652-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB7B9D8D42
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 21:08:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE039D8D69
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 21:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A11BB24895
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 20:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35163286B03
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 20:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5793D1C07FA;
-	Mon, 25 Nov 2024 20:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5992E1B983F;
+	Mon, 25 Nov 2024 20:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCYukZYB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Op8YMp9L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A43A1552FC;
-	Mon, 25 Nov 2024 20:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A78181CE1
+	for <linux-iio@vger.kernel.org>; Mon, 25 Nov 2024 20:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732565056; cv=none; b=h/8rc+mKOHAIAzZLY/rg24TcIMLfpov0+h5q2xQemxtX66yt+ZpkjAPR5K2tjP6Vn99k1SkcbIkJuYhOWTY+7LuCOQyNXWq/Q0uuDzHFDCaTWiSiocqn6BTnau9xfJrhFADGweu0m5cWtab9zJot/RqC15w4ad3Xc29Tp+koCE8=
+	t=1732566779; cv=none; b=sLNaeSb7CKtfqXW0iWUMXCeYM13TKJAJQ3IN4PyB6ilzbGKU+GjdsaqTbkYodFcJpQPgelgGE90uUrXXcS7b5+RJqNLq/ecv7Pifo8RJ4sR7aROjHRbCadx0OEAbkxMVRmflD2fAq5jNrdKDctFKhcVi0+8ITwFM0C44+cO+qh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732565056; c=relaxed/simple;
-	bh=0jeOnmsSROXYZ+myVdKpJjRbTdKaje8IhFLtxe2XRM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o06bqscMbWJiLQ4TtgapXUtEG/bLdjasqfMHmV/a2g6UnBXmFkTs+x9s5Zc1vrobfO/YlpG6RbEn6y+0GdkKGiZYM9KJWqpmeUjf6E3urpeFVM4WRPu08N88BJ4YKHeSL0L2E37B0dra98rl8Qj7x0OQq+aaIskiC6YvDlEqT+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCYukZYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9047C4CECE;
-	Mon, 25 Nov 2024 20:04:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732565055;
-	bh=0jeOnmsSROXYZ+myVdKpJjRbTdKaje8IhFLtxe2XRM8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LCYukZYBsEixjABFBhgWYAdY3agpkay4QRtX+/WBJU67Z1CyyTibXrnEVrvZKLKvG
-	 wcKl5TA9/btkpyjfVaeSDSIXH5H8ixp5KZcUDKB93qUozFLdduDWU5yk/vY0uXpahP
-	 BqocKb3e5u+jNmsekfyV4pLBRBj130Bm5sAFTgCAXBfBGx5oKVgYqvgXFm9fIDJgj9
-	 LPNIQ2UQjVYWFXRbkPI5yRRkiU2T3Bbye5r2K8b4nmuUVByHMBN2ppCM/R5DR+6J+E
-	 izBq3L3Kf/N+7/beFyRIpry03XQPLw5HcZ0xQ3T9oS0L3rPhRFd3NiXtpfOLIo0TZI
-	 7gp/mQ81MFuuA==
-Date: Mon, 25 Nov 2024 20:04:05 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, Kim Seer Paller
- <kimseer.paller@analog.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: frequency: Add ADF4382
-Message-ID: <20241125200405.1d5dd495@jic23-huawei>
-In-Reply-To: <20241114130340.7354-2-ciprian.hegbeli@analog.com>
-References: <20241114130340.7354-1-ciprian.hegbeli@analog.com>
-	<20241114130340.7354-2-ciprian.hegbeli@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1732566779; c=relaxed/simple;
+	bh=WjY+Fq28smnHxNVgx2xkhej5EXhlkMnIB/YCuVo3TqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DSpwBYjeACR7oQzK1O4exwomvzEez0yMsKwYFkPZQa53+CrUURXgWyrE5zkVsZeR48JHm4Vl57bTwSqtT/ot8bmdvzWT5GvIiK0JGrzIoE4m84YB7sTkw8M9HaLs4FOifO6889bmGol7QBBB43tLNckSQzwMqSrNU1700iU3CQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Op8YMp9L; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-4669eecd88dso5697831cf.0
+        for <linux-iio@vger.kernel.org>; Mon, 25 Nov 2024 12:32:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732566775; x=1733171575; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WjY+Fq28smnHxNVgx2xkhej5EXhlkMnIB/YCuVo3TqU=;
+        b=Op8YMp9LvZkvQ331y4bCyUoMgneAK4i5u+jBCunnzEJlJtW7xclLb5OohO9SumbGuH
+         4fzagqywBItP63EQEvhmEan7XlTD5/JleLrJRmTaipMburMKxgd/YCJCMM9/L2QEziD4
+         HpOESiJdHYHgYEXEH/kBHz/lU0l52b9JAspQISBhmCNIKHWwXvoMMqQk/DicZHoejCO5
+         zQXsb2cRo2wenRwFqtlgKSG3rep6fHGdD1vCpHNf8gPmWmVWyDyeN2BwPaq4dXAlmODk
+         nF0UE/M1NPDRwd0oySNSQRelrxTjCRJLsMjSVAg0dONu1dA4RW6vchF8OyK6zA0iEuk8
+         hCsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732566775; x=1733171575;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjY+Fq28smnHxNVgx2xkhej5EXhlkMnIB/YCuVo3TqU=;
+        b=tWAeCb2sLwqdZgFT4DnK0Qls6rhUGEF7dwakBTevltJIE6QxKqj+U1KBj6AG3t6XoL
+         pV4aKFWFpKoXe2olX45HEGqTiQaRcfETw0qeTVKBer1Jb3xUrmehKC7e45/PQkQgeG6Z
+         +FABrjY4lGKLZLwlAXxu8OUXWlp9orukSUUVhuN+QBpWAGF0HohY5kVvHq9nSWx/NRlQ
+         3wf+JRI3FFocB3WKqyHiQhZw7RWkCKdAOy2NZ0LtoH7wf3kXc7dO77QwCM6L18y4cgdA
+         QMVOkQXjC2EJsh+wfSvl8SMy4nsZOFtTNuVmLNQ2oPxbEiNXCY4JZhNcyWpCBTCIR0S7
+         io8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXvxrCA+Vta/lu1OmkIkxu4g8+eciJsW+iVwGoOSSVho7h+pOaNUXGJyH4w9WBcNC4zQ+WlVCNvJ3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW2IGSUywC+LOxvNGoZtN8w3Nf3RIizn1nA4jiCwOl9X59vqVJ
+	qinMQHqKrQtXfN2RZWSQ8I/ZjuSffijy8+bGOo8vo14SJScFJSpiXnx7eN1Gat4=
+X-Gm-Gg: ASbGnctj8wm/DJ2l7xAlXvxQHO9PHV1O+tw4MotN9eK3u4nf0EBkzDLWHZRAAhYj+Wm
+	ElstVNh6xZ9eQfD2zMXS1SxJWtFDKsBg/9mAuO10DLvCXZbG1BZ2Ymhco5QIkHoGUlv1Ki76Cfm
+	5kdneZfgbenmsCJ9McdeKqaY7osZQ5B2IxfAoOsfqT53u0ttBop0PBkylPAxojXrUaqd7MyVTDY
+	8CMBkjvJt9yNvkvyFRBZPOIIEvOsQqnBuOQ2Q/IprDQey11r9IoQL5rnNhTXjTNtP9BBH8t54Lq
+	HhvHAVw8yqoFAVyuuQ==
+X-Google-Smtp-Source: AGHT+IEW9gv2vT6TO3UrG3Mp0xF4g8i0ni2R6v2YWMJWAyLYNClNECvhkPWXuRBlO5lRIOzWoGjeVw==
+X-Received: by 2002:a05:622a:190a:b0:461:3653:54f with SMTP id d75a77b69052e-4653d538d6fmr215091451cf.11.1732566775491;
+        Mon, 25 Nov 2024 12:32:55 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-466a43545besm1887821cf.83.2024.11.25.12.32.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Nov 2024 12:32:54 -0800 (PST)
+Message-ID: <23038c4b-9f9d-4a47-8c28-89893027322f@baylibre.com>
+Date: Mon, 25 Nov 2024 15:32:53 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] iio: adc: ad4695: fix buffered read, single sample
+ timings
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241113-tgamblin-ad4695_improvements-v2-0-b6bb7c758fc4@baylibre.com>
+ <20241113-tgamblin-ad4695_improvements-v2-1-b6bb7c758fc4@baylibre.com>
+ <20241124125206.1ffd6e6c@jic23-huawei>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <20241124125206.1ffd6e6c@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Nov 2024 15:03:10 +0200
-Ciprian Hegbeli <ciprian.hegbeli@analog.com> wrote:
 
-Hi Ciprian,
-
-> The ADF4382A is a high performance, ultralow jitter, Frac-N PLL
-> with integrated VCO ideally suited for LO generation for 5G applications
-> or data converter clock applications. The high performance
-
-5G or data converter clock applications.
-(no need to say applications twice)
-
-> PLL has a figure of merit of -239 dBc/Hz, low 1/f Noise and
-> high PFD frequency of 625MHz in integer mode that can achieve
-> ultralow in-band noise and integrated jitter. The ADF4382A can
-> generate frequencies in a fundamental octave range of 11.5 GHz to
-> 21 GHz, thereby eliminating the need for sub-harmonic filters. The
-> divide by 2 and 4 output dividers on the part allow frequencies to
-> be generated from 5.75GHz to 10.5GHz and 2.875GHz to 5.25GHz
-> respectively.
-Wrap this lot to 75 chars otherwise that's fine if more detail than
-many bother with! :)
-
-> 
-> Signed-off-by: Ciprian Hegbeli <ciprian.hegbeli@analog.com>
-
-A few additional comments from me inline.
-
-> ---
->  .../bindings/iio/frequency/adi,adf4382.yaml   | 141 ++++++++++++++++++
->  1 file changed, 141 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> new file mode 100644
-> index 000000000000..44a29ac7a2e8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4382.yaml
-> @@ -0,0 +1,141 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/frequency/adi,adf4382.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ADF4382 Microwave Wideband Synthesizer with Integrated VCO
-> +
-> +maintainers:
-> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> +  - Ciprian Hegbeli <ciprian.hegbeli@analog.com>
-> +
-> +description: The ADF4382 is a high performance, ultralow jitter, Frac-N PLL with
-> +   integrated VCO ideally suited for LO generation for 5G applications
-> +   or data converter clock applications.
-
-> +
-> +   https://www.analog.com/en/products/adf4382a.html
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,adf4382
-> +      - adi,adf4382a
-Description only talks about the a variant. Why is the one without the a?
-
-
-> +  adi,charge-pump-microamp:
-> +    description:
-> +      The charge pump current that the external loop filter was designed for.
-> +      If this property is not specified, then the charge pump current is set to the
-> +      default 11100uA. The valid values are listed below. However, if the set value is
-> +      not supported, the driver will look for the closest valid charge pump current.
-
-Don't talk about the driver in a dt-binding. So delete last two sentences.
-
-> +    anyOf:
-> +      - enum: [790, 990, 1190, 1380, 1590, 1980, 2390, 2790, 3180, 3970, 4770, 5570, 6330, 7910, 9510, 11100]
-> +
-> +  adi,ref-divider:
-> +    description:
-> +      Input divider of the reference frequency, cannot be lower then 1 or
-> +      higher then 63.
-Why can this not be derived by the required settings in the driver?
-That is, why is this a characteristic of the board design?
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 1
-> +      - maximum: 63
-> +      - default: 1
-> +    maxItems: 1
-Don't think the maxItems is needed.
-> +
-> +  adi,ref-doubler-enable:
-As above. We should be able to figure out if this is necessary to meet
-a particular requested output.
-
-> +    description:
-> +      Enables the doubling of the reference clock.
-> +    type: boolean
-> +    maxItems: 1
-> +
-> +  adi,bleed-word:
-> +    description:
-> +      A small programmable constant charge pump current, known as bleed current,
-> +      can be used to optimize the phase noise and fractional spurious signals
-> +      in fractional mode.
-Can we express this in standard units for current?
-Also call it bleed-current.
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 4095
-> +      - default: 0
-> +    maxItems: 1
-As above, do we need maxItems?
-
-> +
-> +  adi,power-up-frequency:
-> +    description:
-> +      PLL tunes to the set frequency on probe or defaults to 2,305 GHz.
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint64
-> +      - minimum: 687500000
-> +      - maximum: 22000000000
-> +      - default: 2305000000
-Why does a default power up frequency make sense?
-I'd kind of expect the device to not put anything out until software
-has configured it.
-
-> +    maxItems: 1
-> +
-> +  adi,output-power-value:
-> +    description:
-> +      The output power amplitude level which will be applied for both channels
-> +      at startup.
-As above. Feels like this should be configured by userspace before anything is
-enabled.  I'd be happy with limits if those make sense (as might reflect what
-the circuitry can cope with).
-
-> +    allOf:
-> +      - $ref: /schemas/types.yaml#/definitions/uint32
-> +      - minimum: 0
-> +      - maximum: 15
-> +      - default: 11
-> +    maxItems: 1
-> +
-> +  adi,spi-3wire-enable:
-> +    description:
-> +      Uses SPI in 3 wire mode, by default is uses 4 wire mode.
-Is this standard SPI 3 wire, or an ADI variant?
-Is spi-3wire from main spi binding appropriate?
-
-> +    type: boolean
-> +    maxItems: 1
-> +
-> +  adi,cmos-3v3:
-> +    description:
-> +      Sets the SPI logic to 3.3V, by defautl it uses 1,8V.
-spell check.
-
-How do you configure it given with the wrong voltage is the
-SPI bus reliable?
-
-
-> +    type: boolean
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - clock-names
-supplies usually required.
-
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        frequency@0 {
-Indentation is a bit random.
-Stick to 4 spaces throughout.
-
-> +          compatible = "adi,adf4382";
-> +          reg = <0>;
-> +          spi-max-frequency = <1000000>;
-> +          clocks = <&adf4382_clkin>;
-> +          clock-names = "ref_clk";
-> +          adi,charge-pump-current = <15>;
-> +          adi,ref-divider = <1>;
-> +        };
-> +    };
-> +...
-
+On 2024-11-24 07:52, Jonathan Cameron wrote:
+> On Wed, 13 Nov 2024 15:52:58 -0500
+> Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>
+>> Modify ad4695_buffer_preenable() by adding an extra SPI transfer after
+>> each data read to help ensure that the timing requirement between the
+>> last SCLK rising edge and the next CNV rising edge is met. This requires
+>> a restructure of the buf_read_xfer array in ad4695_state. Also define
+>> AD4695_T_SCK_CNV_DELAY_NS to use for each added transfer. Without this
+>> change it is possible for the data to become corrupted on sequential
+>> buffered reads due to the device not properly exiting conversion mode.
+>>
+>> Similarly, make adjustments to ad4695_read_one_sample() so that timings
+>> are respected, and clean up the function slightly in the process.
+>>
+>> Fixes: 6cc7e4bf2e08 ("iio: adc: ad4695: implement triggered buffer")
+>> Co-developed-by: David Lechner <dlechner@baylibre.com>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+>> ---
+> Applied to the fixes-togreg branch of iio.git. I'll rebase that
+> and send out a pull shortly after rc1.
+>
+> The other two will have to wait for that to cycle around to be
+> in the upstream for my togreg branch later in the cycle.
+>
+> Thanks,
+>
+> Jonathan
+Thank you!
 

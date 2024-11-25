@@ -1,187 +1,151 @@
-Return-Path: <linux-iio+bounces-12644-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12645-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEC59D8997
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 16:44:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307FA9D8881
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 15:52:19 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 112D3B3AC50
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 14:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1CF716744F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 14:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD71A184520;
-	Mon, 25 Nov 2024 14:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B001B218B;
+	Mon, 25 Nov 2024 14:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="ePzmS8iw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EgbsIIUp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43CCEAF6;
-	Mon, 25 Nov 2024 14:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874B31B0F30
+	for <linux-iio@vger.kernel.org>; Mon, 25 Nov 2024 14:52:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732544579; cv=none; b=XA7fSBFF5OCc1w8tFj4F3UVPHxi2tfs0Rc3iRgOI+XJhCNXMRkYpiGGcSUF5R78/LZZVDA+rDId91gwcXq6p1kIilrRLBSWBoakNQ9rEfGXK5iyRJpycQYcJC329JMf5HCSlfsmG2lDKM36kNDNMvzf0/6UyCrom7hcK66n4W1E=
+	t=1732546333; cv=none; b=D4IZ0BplMVi33MBJHSelVvU62znxGWtlpQ491WxsWFq98iWnehlK6ROCnuB82q9FTBiPspsdHQQ0+ZU3Z7BSyn0VkJJfrSx4gaeei9xcNKfhYrbZRN2lrD+b+c4R1+bfiMDZbe/b3mulLsJfh/5VgUOa87TOaJ3iHwFnObxJhV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732544579; c=relaxed/simple;
-	bh=SG0jvqLVog//QTlMMQhzLqPOC5yAbeI7oA5YQ850jqw=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=biSEZD2dTWOD5L5jLYgqgmNgHOYv4OneYIGyjHAKvB8ywJuj+sKHnGoG2GejMAfCkHprYuP8eR8SxXDzCb+gGyxnavj3k+dNeKF2HMj0ckF8BbltkdBds4MlGq3pr96mHrMKYnD9NyLoKLMPSgpP45c+MIBTt3KaCX/gUy+tMh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=ePzmS8iw; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4APDrtju014880;
-	Mon, 25 Nov 2024 09:22:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=ofJdo
-	U+dIwUs841cv12FL6guNefCzeKBMVmj1OZwFts=; b=ePzmS8iwfJ1z1XjF6Asqq
-	YNlqcC7PaOil1JVefILKO2oCHdRtEfVFKqxKhWi4Lo381oxE1fuOO7BQtWB1OjCs
-	r7Te26TBoV8NLUBrpjulpFBzskWHcE8B4ZVTKhMLyDaA5uRgRtF8OtzFfamceOQ8
-	39z+6mToeeBzlP4DzPb9yDhaRSy1So9JtmJ3djwFSvT4NiS8aBE7YoMPyBwn2HSb
-	ERpk+MfNKLgGVOdcGmX+8g2nQPkUqWFE+zPWLyWQNGrQFYzs+NxkY2ueDoCZLhoC
-	t1yqXDeEQbdjSzUwDPd/3dZhN/xWDi5PWPDUXWSJVDH211ZXT+g0zoUVKZOv2UgQ
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 434pbd1813-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 25 Nov 2024 09:22:43 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4APEMgTb032092
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 25 Nov 2024 09:22:42 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 25 Nov
- 2024 09:22:42 -0500
-Received: from ASHBMBX9.ad.analog.com ([fe80::e370:92d6:3366:81e5]) by
- ASHBMBX9.ad.analog.com ([fe80::e370:92d6:3366:81e5%20]) with mapi id
- 15.02.0986.014; Mon, 25 Nov 2024 09:22:42 -0500
-From: "Budai, Robert" <Robert.Budai@analog.com>
-To: "Budai, Robert" <Robert.Budai@analog.com>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "Sa,
- Nuno" <Nuno.Sa@analog.com>,
-        "Gradinariu, Ramona"
-	<Ramona.Gradinariu@analog.com>,
-        "Miclaus, Antoniu"
-	<Antoniu.Miclaus@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, "Rob
- Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
-Subject: RE: [PATCH 0/7] adis16550-v2
-Thread-Topic: [PATCH 0/7] adis16550-v2
-Thread-Index: AQHbPz7pSPeUMR9QEk6zMP7RDy8im7LH6pGg
-Date: Mon, 25 Nov 2024 14:22:41 +0000
-Message-ID: <7f065b32ec8043b5bf6d902184f39d96@analog.com>
-References: <20241125133520.24328-1-robert.budai@analog.com>
-In-Reply-To: <20241125133520.24328-1-robert.budai@analog.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-dg-ref: =?us-ascii?Q?PG1ldGE+PGF0IGFpPSIwIiBubT0iYm9keS50eHQiIHA9ImM6XHVzZXJzXHJi?=
- =?us-ascii?Q?dWRhaVxhcHBkYXRhXHJvYW1pbmdcMDlkODQ5YjYtMzJkMy00YTQwLTg1ZWUt?=
- =?us-ascii?Q?NmI4NGJhMjllMzViXG1zZ3NcbXNnLWY1ZjA3Y2QzLWFiMjctMTFlZi1iYWU1?=
- =?us-ascii?Q?LWRjMWJhMTgxMTNjZVxhbWUtdGVzdFxmNWYwN2NkNC1hYjI3LTExZWYtYmFl?=
- =?us-ascii?Q?NS1kYzFiYTE4MTEzY2Vib2R5LnR4dCIgc3o9IjQyODIiIHQ9IjEzMzc3MDEw?=
- =?us-ascii?Q?OTYwMjE4NzkxNCIgaD0iRDREYzZIQ0ZhdHNEWDJLaWtYc2YzOE9TdDMwPSIg?=
- =?us-ascii?Q?aWQ9IiIgYmw9IjAiIGJvPSIxIiBjaT0iY0FBQUFFUkhVMVJTUlVGTkNnVUFB?=
- =?us-ascii?Q?RW9DQUFDS1NtZTRORC9iQWJMcTNkNkczRWtVc3VyZDNvYmNTUlFEQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUhBQUFBRGFBUUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUVBQVFBQkFBQUFmcHljV2dBQUFBQUFBQUFBQUFBQUFKNEFBQUJo?=
- =?us-ascii?Q?QUdRQWFRQmZBSE1BWlFCakFIVUFjZ0JsQUY4QWNBQnlBRzhBYWdCbEFHTUFk?=
- =?us-ascii?Q?QUJ6QUY4QVpnQmhBR3dBY3dCbEFGOEFaZ0J2QUhNQWFRQjBBR2tBZGdCbEFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBRUFBQUFBQUFBQUFnQUFBQUFBbmdBQUFHRUFaQUJwQUY4QWN3QmxB?=
- =?us-ascii?Q?R01BZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0IwQUdrQVpR?=
- =?us-ascii?Q?QnlBREVBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVFBQUFBQUFB?=
- =?us-ascii?Q?QUFDQUFBQUFBQ2VBQUFBWVFCa0FHa0FYd0J6QUdVQVl3QjFBSElBWlFCZkFI?=
- =?us-ascii?Q?QUFjZ0J2QUdvQVpRQmpBSFFBY3dCZkFIUUFhUUJsQUhJQU1nQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUJBQUFBQUFBQUFBSUFBQUFBQUE9PSIv?=
- =?us-ascii?Q?PjwvbWV0YT4=3D?=
-x-dg-rorf: true
-x-dg-refone: QmxBR01BZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0JtQUdFQWJBQnpBR1VBWHdCbUFHOEFjd0JwQUhRQWFRQjJBR1VBQUFBOEFBQUFBQUFBQUdFQVpBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFERUFBQUE4QUFBQUFBQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURJQUFBQT0iLz48L21ldGE+
-x-adiruleop-newscl: Rule Triggered
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1732546333; c=relaxed/simple;
+	bh=mcaXyxMdWZLn3MXtKNNPp4INKgCVqab5N062XJCig+Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fgCBg0WxwZWgD7iMjJwVxuOMdacFr5EN0wzzqwMRoU4JFReM9oSuV0ekt4jBQsc5GkhdOtk3FmjlbIMzkBcb96mZg6ESibckfpflg/p0ksqUeMFqZXv11YhK13wJrF7oRQKqQaAJ4rnfrdaxCzAL9u6p+sYAfUfleshYSyEhKzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EgbsIIUp; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-434a45f05feso792395e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 25 Nov 2024 06:52:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732546330; x=1733151130; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zj0ySm1eVLom/XQBUYIyIHTjpZPsoK3zD44zXCBV3zk=;
+        b=EgbsIIUpJ0MXeXVuWiABfmUcwtGNkma/tQZruP43PZ8L16rm9QrrEr7rSUcC2b6vAH
+         mbKzMy4osO4Q7CD7OPwp4BD6GFs2I2LILujKidQ74voK4PTpypyAnRCa2BhRD/dFuqTo
+         NXoEopwvYoxLwIo/9NcTz8Lhctc/YXKRoqJOFhZ1DWoKLbPEJhlTKsY/Qak/mNp1Afbk
+         Z7S3NGyKdG2rOJQcsRoZAoyC7Be+hTD7u6Syphz5obgteY38wKdXG03UXAfHsKPJUgRN
+         xx8hYZQEUZczqnIHNZbtkJRX89cGdKKUjqX30Dk1LUsGwdkYfa3RbTbH+Yn75bMiaRCF
+         eTBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732546330; x=1733151130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zj0ySm1eVLom/XQBUYIyIHTjpZPsoK3zD44zXCBV3zk=;
+        b=uGlq8SOBEH7kM6Rw7I15+8pWu++09N9TBZ+aiaJ5EA4sJTTBSlIMLxySa+JM9mIw0v
+         6dN9W/8AltcaaVJ+4XJJyt9S04VXHjkM2NYmbSaBnKcEGjkhBwc1QhY4oUXR/64R3SEQ
+         N2NdCYdCzHET6Ovop3JUaa90GSxp9BfEhO3pu+ctmtPhWfVWaevQb6QJHrkSR/MEAsjY
+         fU3Uw7emvEOwyJ95HYtJT/mAX7p4tXjZx6mBrGP9zBuFDivW1F10ABCeBFen0X7kaIMQ
+         E8iZzTuu9JMyQPwAKa8PH4OnSBTC5ivPgFupxdZie+pcvx11eaUtoFmv5unot/4S5HG3
+         cXxw==
+X-Forwarded-Encrypted: i=1; AJvYcCXp4U0rFz5u7WuX69ec/HRswmYG8rKBRvEtutoVfFz4eiz6eKNxm7puCwPEYfvdoEOaJfsPyklGTT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoGRM/llBU5aUiBq2BiZz12whTXtbxNqE+k303tAj3g1XSZTjT
+	OwldwYisBBciFBmEfU8j7pLfU3/OH+8Y7wUAB58ygJDSNnqJtQVs3Oaz4kCkjJs=
+X-Gm-Gg: ASbGncuoqfTS1P9qP6bYlUffSgo5KVywBTSs8fR3EZvI4rqt+TQLzde47ixgpfVHJ7n
+	gLdP7GQmkLxVa/Q9BJFXD800Gx0fMUWGk9oYGm8BwrdaPdghCUvG7/yVt1PqorvYs+B243t0fn1
+	GY3BUsBrfYjEhuGRStA1i3u4GiyUv5m9iPLZqQowffljGyKflIb55TESGvLUF1+NJ0ZSlWtlDfc
+	U46awNz2RkyYjWOUBHMQXrR1PgEyxikSTdAkqCngkwKHzgXFoj5WRWF+oU7MDoApQg970OG5Kx1
+	mlOy
+X-Google-Smtp-Source: AGHT+IFSUthIKS8ekfmSJA1KfGblZ57MugAXfoVqvzP0IxiMc+MhSwJOH6AB1E6cvI+PV+YXRsqYUg==
+X-Received: by 2002:a05:600c:1d19:b0:431:b264:bad9 with SMTP id 5b1f17b1804b1-433ce420ae5mr140205095e9.14.1732546329928;
+        Mon, 25 Nov 2024 06:52:09 -0800 (PST)
+Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-433b45d4288sm194703205e9.23.2024.11.25.06.52.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Nov 2024 06:52:09 -0800 (PST)
+Date: Mon, 25 Nov 2024 15:52:08 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman <alisa.roman@analog.com>, 
+	Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Dumitru Ceclan <dumitru.ceclan@analog.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+Message-ID: <2tsxyxmfh3ozolsziu3bps7liagzl4gmvy4oykvyeapziagvy4@tfa2lcxmdsmf>
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com>
+ <20241122113322.242875-22-u.kleine-koenig@baylibre.com>
+ <CAHp75Ve_sD-a-m4pYmKrT=LhajO=F7TG7KM7AsM47J0=ksVgNw@mail.gmail.com>
+ <eghe47rkwxmcfkamayemvwfksonrwbysaadakbdm4lvzcsy4ee@7gftiif7ka6i>
+ <CAHp75Ve3hBhCMFkjA4-hiLfGQLeeGt_74e=PwTH_nF1NCYiyOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-GUID: Dnl2RKIYo1XTGXrJZpK0YK9yXPBWsfTu
-X-Proofpoint-ORIG-GUID: Dnl2RKIYo1XTGXrJZpK0YK9yXPBWsfTu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411250122
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2um65a2ynonrj3ko"
+Content-Disposition: inline
+In-Reply-To: <CAHp75Ve3hBhCMFkjA4-hiLfGQLeeGt_74e=PwTH_nF1NCYiyOA@mail.gmail.com>
 
-Missed -v2 flag at format-patch command. Should I resend them?
 
-> -----Original Message-----
-> From: Robert Budai <robert.budai@analog.com>
-> Sent: Monday, November 25, 2024 3:35 PM
-> To: Lars-Peter Clausen <lars@metafoo.de>; Hennerich, Michael
-> <Michael.Hennerich@analog.com>; Sa, Nuno <Nuno.Sa@analog.com>;
-> Gradinariu, Ramona <Ramona.Gradinariu@analog.com>; Miclaus, Antoniu
-> <Antoniu.Miclaus@analog.com>; Jonathan Cameron <jic23@kernel.org>; Rob
-> Herring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Cono=
-r
-> Dooley <conor+dt@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Budai,
-> Robert <Robert.Budai@analog.com>; linux-iio@vger.kernel.org;
-> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
-> doc@vger.kernel.org
-> Subject: [PATCH 0/7] adis16550-v2
->=20
-> Version 2 of adding adis16550 and adis16550w device driver for iio.
->=20
-> Robert Budai (7):
->   iio: imu: adis: Remove documented not used elements
->   iio: imu: adis: Add custom ops struct
->   iio: imu: adis: Add reset to custom ops
->   iio: imu: adis: Add DIAG_STAT register size
->   dt-bindings: iio: Add adis16550 bindings
->   iio: imu: adis16550: add adis16550 support
->   docs: iio: add documentation for adis16550 driver
->=20
->  .../bindings/iio/imu/adi,adis16550.yaml       |   97 ++
->  Documentation/iio/adis16550.rst               |  389 ++++++
->  Documentation/iio/index.rst                   |    1 +
->  MAINTAINERS                                   |    9 +
->  drivers/iio/imu/Kconfig                       |   13 +
->  drivers/iio/imu/Makefile                      |    1 +
->  drivers/iio/imu/adis.c                        |   31 +-
->  drivers/iio/imu/adis16550.c                   | 1203 +++++++++++++++++
->  include/linux/iio/imu/adis.h                  |   34 +-
->  9 files changed, 1762 insertions(+), 16 deletions(-)
->  create mode 100644
-> Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
->  create mode 100644 Documentation/iio/adis16550.rst
->  create mode 100644 drivers/iio/imu/adis16550.c
->=20
-> --
-> 2.34.1
+--2um65a2ynonrj3ko
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+MIME-Version: 1.0
 
+On Mon, Nov 25, 2024 at 03:47:25PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 25, 2024 at 1:27=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@baylibre.com> wrote:
+> > On Fri, Nov 22, 2024 at 10:31:07PM +0200, Andy Shevchenko wrote:
+> > > On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> > > <u.kleine-koenig@baylibre.com> wrote:
+> > > > +       /* Add one for temperature */
+> > > > +       st->num_channels =3D min(num_channels + 1, AD7124_MAX_CHANN=
+ELS);
+> > >
+> > > Is the type of both arguments the same?
+> >
+> > Hmm, my compiler is happy with it at least. I don't understand why
+> > though. I'll do a few more tests ...
+>=20
+> If num_channels is signed int or shorter than (independently on the
+> sign) int, then it's obvious why. + 1 makes it int.
+
+Ah indeed, I should have understood that without that explanation.
+Thanks!
+
+Uwe
+
+--2um65a2ynonrj3ko
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdEjxUACgkQj4D7WH0S
+/k6osAf/ci1W6Mpo35uI0PIBP0mTcGjj1mx3bdQKXn06SADIusdM/uWfhOqa4LoK
+AR+eHureevn3btm5UYBrMGlofjy68IErMTOoPZkehmAyAnD0RQiHfuhCp92ahJsF
+1B8msKQeFvRuzbkNtXt+Xs802BMgMdFuiXYAHvj8KSia9lZpqbgcsZcK0z9n7+In
+dpha9HPxOl513Eo02hy8gAiJ8YFd5ijN4zALUwg/TiKG4oEWjBC2mA403CefRam2
+v8lIx3rh7EDGMDYVG1sVuo8VtKJi8y2VH3e7YF4BNpd7DuTJiMawdNuz8NiO/V6p
+kt6g89+aVrOKswY3/zdvF/Bd2bUCHg==
+=F7pA
+-----END PGP SIGNATURE-----
+
+--2um65a2ynonrj3ko--
 

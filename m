@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-12661-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12662-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A942C9D8DD3
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 22:18:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491309D8DD5
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 22:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B02F28AE6A
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 21:18:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E00A28655F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 21:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF231D1730;
-	Mon, 25 Nov 2024 21:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51AB41D4341;
+	Mon, 25 Nov 2024 21:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GVbCIC1h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mK/RSSWn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9F51BDAAF;
-	Mon, 25 Nov 2024 21:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780111D4169;
+	Mon, 25 Nov 2024 21:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732569400; cv=none; b=JRkP+c7uMIIq1AJx0+4Al/1CVx7rA8gdApoU8ei1994M88yVphnleYFggiUeW7mjSqo7PvaKfnrzrPWLyrmcpCr5FstovAtfvgbc+YGgx5XmgmHoCyGByTsztvw8oA5qxweXoZfxfOPHJJl95GKdld7nIvEdoPZ44W34xt3XVEU=
+	t=1732569404; cv=none; b=AZ8/TkIZhan4VeK8e5B2rDCpm4v//KHJSEaJ3Y2yWhy7vnZ0KtQBIyg9hhu573hKcrJkfxzGFvSodcb/M9OKFhOZ6PiFrHFaq+kXtS2uVQNLmYwLyvpSn+7l/jm49ahzg6P8kTocgetcnQlQueIfM/+T9U3IQLbyJxUg+DnPOgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732569400; c=relaxed/simple;
-	bh=MnJLJRBd7l+61UU+1kkKssT/cMDRYTwrBfUB9O2sPzs=;
+	s=arc-20240116; t=1732569404; c=relaxed/simple;
+	bh=A5f+hgxSFBau/J9wGch0+bL5gusNzvwM80QyMwDLN+4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dUeQ6Qbw6C2hsCs9fcRVAiDdVqrk3qZGaWe0oexP2KQJalkSmSh4xBbFMYh13dInMmbZjI4XGmonkZxmnEk7UueBmxH1aeB18e9n8i3DaWE3JGxcMmJnIy7F3yzizykMdD+6l1KKH1owCqWm4+sf5t0F0aTmFEFf4e5YG0yYnno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GVbCIC1h; arc=none smtp.client-ip=209.85.128.45
+	 In-Reply-To:To:Cc; b=hwY05tneMkOio7VW2g8TCq1jLQOQ7MfXhVawhhPAU69qdYsuB6xStF+meoDBNZ4azF6/tEO3pBDidvNb7jWQd6u3p0BafDIb7DokRRCIPLWsJts4dnMV9sFkudwB7Q3rTLbZp6137EvFhjoasRpuNJ/Ay22yihuuOc00E9iKRc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mK/RSSWn; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-434a2033562so7358045e9.1;
-        Mon, 25 Nov 2024 13:16:38 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4349e1467fbso13700335e9.1;
+        Mon, 25 Nov 2024 13:16:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732569396; x=1733174196; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732569398; x=1733174198; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=P9X4xpOgGPYzYDpEftMUld8E8Sy48bF/slktKFCfPG0=;
-        b=GVbCIC1hcZG9GoM02tG2WGbCtIOpLMjOLX7nDKwpI643vU2KHFa/NRdNTD4W0KDONo
-         i+h6dbgzD0JFQMSyZvi5uCDZs8tpcYk/I2msIlpibGPVYKgsVQYt5p/4Gy4tEBy7WeDo
-         6dNoP5O9DoqCugsDR7T5dpTpj3qNZtLYBNagWEt7S7Vgclhwx0/2/hfSVNaFCF1u5MbH
-         zHykYrbPcrXCcRPoBBRImffElUgX95UNlX1FabOR+vrewpKeAWkJ3gEposkKr00zcs5R
-         IPUQ3kojjyQaI6PzpFb1eK7a1ebppkxtdlwQXxSdJWXV1258c8agK1a4tLE5h4aUTdMC
-         9uLw==
+        bh=L5uJPBz6TeglXeo554KOh/VAk2n4YGIIimy93nEytGY=;
+        b=mK/RSSWnuYm/b+MUwkqrvicvFYnKDDgQi+IKG9GN2H4EsAxEBnq/nvwhSxhrOucSDN
+         pqlWS23INW18FwRNZMF/1Td5pbAFovFXFyzAePk0NJANGxux8FEKu/6buWJlOMF9C/DE
+         U4hleaBS3Q7kD08JLL10CozpvUROB3uKc40rpvYwjdvgNf+mEa5rc/dEzsZJt7kJR0s9
+         jai2xi/0P+TcquIHorJxKX4IoQXnhpWpNzAaA28PAb/7suFENypE0X5g+Z9+gllopD83
+         NNFvGq33AuKJCMCQpPA5QJBS6b6zuNDBVNZWrp3XHsyCgy3P5lPeb08Btz52LFNj0ExS
+         BaKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732569396; x=1733174196;
+        d=1e100.net; s=20230601; t=1732569398; x=1733174198;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P9X4xpOgGPYzYDpEftMUld8E8Sy48bF/slktKFCfPG0=;
-        b=DOzJ+kuCmf4UGdYit79+Mf6YlzH1+lM5dLFF9K+zHmS0CfvaDVqxn4Ra7ii1dJUbIz
-         c4J5Sz3ssioxGmVe0uWEZkxVTHQf9XUDP88jbuWIkUkj848pJyXbSppBbXNIjSB0a6by
-         xXHNAJVApPeqWJDRZa+iCJd2hMhBSUYrhqXB8z0Pw4gKnd0gIEYjZXrHlkP63RfVlnLC
-         WwpWhKnKK76q3Or+SuCbUIlrQWuc8Qr1IHLgyvRy5KzWNU4dY2WKXaQ+/IxeagEum8mL
-         6QGIDyjoRcdzIJ65VYUENjg8O+arwbFxxTnsksJa6mcqIFrbBe8YSBCj4gQ+MU72Ulf2
-         klaA==
-X-Forwarded-Encrypted: i=1; AJvYcCU5aeXD9+ksn0qR+sjHi66cff+SnIX682I0on45ApbK1PqqBmBUu9fOfoiXqBj9fnc8+L6JebK3aOE=@vger.kernel.org, AJvYcCWXCdJ8l4Z17tngBTiDdHx74r/+b22mZc3Yh4EWwqWUoNvrny4VQH9b2nUY/TgVwfMOt29mE1Tl@vger.kernel.org, AJvYcCXKErpO4clzw6KxZfuJA30sjQHTOaSs3fMpcqDU2X8hwHOU9IL/NX0W8Yct5dWZLwjp7855F/kRz1GqPa9n@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDdp+9bF/Ce3pZd35UPJx0lpFCIa2OWdU0ilpfQs0wGC9HZYYh
-	kE06g4QPQX2Tx/vQ7Cj7wE7vL7vuxPfrMB7cTN/YjnhP4qa9YOE01UmhBA==
-X-Gm-Gg: ASbGnct5ztuCk+9K94jNEFwV82DwznT+YdauOeKzxeMcJh1OpxhNrdjXg4X0VZVSGQK
-	RTTzc4W4pVbuZFJ+ef04E8o95NGv08mVbPdhg70V7Iha6mIQin9mGSBVxvojqZf9ee6EJ7p607a
-	u3/ftV4yuHAQla/93a9qrlvx3zSefecif3yYQapC/UHDidnXqmWeV4H9GKpM/LfZmZv8DNZWQLf
-	JOolrrqXmVjEc+YlEISLWV1e1ct+HgEiGBnQ34nUEezUnqPiOHRMu4VoFhe/clquBKmbultmIai
-	6ys4LDn2jbx2ggI9kur2EOJCGWxWkt+IpJdnq6+7z2ZMV4LsmK+5FRwHGolQnCiJwt5RE6ua
-X-Google-Smtp-Source: AGHT+IH85+4cYeAFSxcCPnqfbJZBrM3ZYDfEucQPDUQs50gVlOcqLQZaVbU1W0WwOcF9LJ8T9tu8dg==
-X-Received: by 2002:a05:6000:18ab:b0:382:5066:6f38 with SMTP id ffacd0b85a97d-38260b67c52mr11652339f8f.23.1732569396450;
-        Mon, 25 Nov 2024 13:16:36 -0800 (PST)
+        bh=L5uJPBz6TeglXeo554KOh/VAk2n4YGIIimy93nEytGY=;
+        b=TGZAXgix0xhzW5DPvFubkR5Tza5U/BDkx8ZVsMHGjG8409dKlptcHIXOGmb7tPGIJO
+         TcpOkD9qkCnZ1okcuLfcsOjqGeBmzdhIOWbpBe4QQog8Z/Ra8MKuCnzFSzG1LUy8dSgQ
+         S4/THAeXPUjj9Jn3hsUAh/5H69+Atzf7BggILb1dvnWmaEcvKleQzKdz9bKYUZmWuQTq
+         moxyTCoJVqNUjs8OHHla+YLeSc978Z+NSpyvF3ZX3/uB+0Ae3+kWbc7mPtMuqWGssSYI
+         aFe/KJ7D+pRoTodjFeZeJ7BgyBuWuj38Jwu7L5s6++b783FRceRAkCirY/i37luDYr+X
+         5JJA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7iGmTcSpQh3OYYRreVQPu7WdmvmZw7/H61cJpiidsNtLLnjagycutUeuwFNszXNeb56FoNJITyXfzQUjl@vger.kernel.org, AJvYcCXY/6qlvzIoq9j89MD2hxe17M21uAC6ZVgEr+tILn5yTc8WHRHIgkCiYWOs9kWj9RfTphwMf3o6H/M=@vger.kernel.org, AJvYcCXuXKeYpFqxHhgqp0tkYZPNY2X2CtoBxv4ELj7iSNa9DOznmLGTq10gtAlRSmjNbQKIWqFRPNH5@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywdzo47m/Lz2SJpmqpvVW/Ml2mFOFN93ej75gnEZ2K4/Z77kvfz
+	ZPEt43UW3aEv1U1ZVOxhgJXNITP3SYtAsFfonL4aGOezT0ldtkrDrEJgOw==
+X-Gm-Gg: ASbGncuHq/kh8pKvzD8ZiSoy4l0M14c0qRDWgAY0cI9lM3KNW78395c2x6DndlPN+Bs
+	qfhjgF1YWg3rhkbcuRzH3qc9CitMzHog06xkWwtO+7B5jvJuJsK4dLVaxU/gOhK4BgxyzfEzsjt
+	KK/svxB9Ct2p7YJVcSnoau5930ka6NS9MdwirK9cfWBvIp7e2Eq9L4PSsja6gdR/v1swL8YEZl5
+	B0fj6MXQLkQQf7iVzc6Z6S4lVWHLn66RFKzBRc9VRT9FDUDbhEz6Us/FVwJZQSY9pPT/iyn2YXC
+	2V/VogWGYH+A4QYPON9kKHQSJdQQsAfCIvDR+eWtt0yextSvGQXUHkF3KsBRfQDqLVWPYgXO
+X-Google-Smtp-Source: AGHT+IHyL+p8dJwHNZ6pwWMnP9g4uOpLQJodr/tba4IA/05FdQxOb+l1atdGAnpia/bOa9lKxfUeEw==
+X-Received: by 2002:a05:600c:3b12:b0:432:d875:c298 with SMTP id 5b1f17b1804b1-433ce426968mr126557785e9.14.1732569397764;
+        Mon, 25 Nov 2024 13:16:37 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-eff8-ad65-1bf6-3f21.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:eff8:ad65:1bf6:3f21])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4349ca82957sm75236295e9.33.2024.11.25.13.16.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4349ca82957sm75236295e9.33.2024.11.25.13.16.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2024 13:16:35 -0800 (PST)
+        Mon, 25 Nov 2024 13:16:37 -0800 (PST)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 25 Nov 2024 22:16:16 +0100
-Subject: [PATCH 08/11] iio: adc: ti-ads8688: fix information leak in
- triggered buffer
+Date: Mon, 25 Nov 2024 22:16:17 +0100
+Subject: [PATCH 09/11] iio: dummy: iio_simply_dummy_buffer: fix information
+ leak in triggered buffer
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241125-iio_memset_scan_holes-v1-8-0cb6e98d895c@gmail.com>
+Message-Id: <20241125-iio_memset_scan_holes-v1-9-0cb6e98d895c@gmail.com>
 References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
 In-Reply-To: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -99,41 +99,42 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Francesco Dolcini <francesco.dolcini@toradex.com>, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1732569377; l=1243;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1732569377; l=1121;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=MnJLJRBd7l+61UU+1kkKssT/cMDRYTwrBfUB9O2sPzs=;
- b=pda3qacHR7U9b1xq5j3B+4bQ2bjGN+KtxMv99FQdm+9RGDI1Y+iwu0yTQSiK2uoysb+2PmA8E
- HNWWhVm0oF7CQ8Ng3ZvtiG8ytIklVGNvT2MORfpxAZCMamnbqjfqcfv
+ bh=A5f+hgxSFBau/J9wGch0+bL5gusNzvwM80QyMwDLN+4=;
+ b=60Af4gaoutFmm+7Nqj9Vb5rRrQGetXcnTt7LgdWxF5fQVaLWcwqZTvuRCYIrnmYjM3hVHgnzq
+ 2jqtOmCyWUXATrBeCgv5wUP+LkrMvtMdhCIg4KF4lPqLvdp2zuwzCUX
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The 'buffer' local array is used to push data to user space from a
-triggered buffer, but it does not set values for inactive channels, as
-it only uses iio_for_each_active_channel() to assign new values.
+The 'data' array is allocated via kmalloc() and it is used to push data
+to user space from a triggered buffer, but it does not set values for
+inactive channels, as it only uses iio_for_each_active_channel()
+to assign new values.
 
-Initialize the array to zero before using it to avoid pushing
-uninitialized information to userspace.
+Use kzalloc for the memory allocation to avoid pushing uninitialized
+information to userspace.
 
 Cc: stable@vger.kernel.org
-Fixes: 61fa5dfa5f52 ("iio: adc: ti-ads8688: Fix alignment of buffer in iio_push_to_buffers_with_timestamp()")
+Fixes: 415f79244757 ("iio: Move IIO Dummy Driver out of staging")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/adc/ti-ads8688.c | 2 +-
+ drivers/iio/dummy/iio_simple_dummy_buffer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ti-ads8688.c b/drivers/iio/adc/ti-ads8688.c
-index 9b1814f1965a..a31658b760a4 100644
---- a/drivers/iio/adc/ti-ads8688.c
-+++ b/drivers/iio/adc/ti-ads8688.c
-@@ -381,7 +381,7 @@ static irqreturn_t ads8688_trigger_handler(int irq, void *p)
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	/* Ensure naturally aligned timestamp */
--	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8);
-+	u16 buffer[ADS8688_MAX_CHANNELS + sizeof(s64)/sizeof(u16)] __aligned(8) = { };
- 	int i, j = 0;
+diff --git a/drivers/iio/dummy/iio_simple_dummy_buffer.c b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+index 4ca3f1aaff99..288880346707 100644
+--- a/drivers/iio/dummy/iio_simple_dummy_buffer.c
++++ b/drivers/iio/dummy/iio_simple_dummy_buffer.c
+@@ -48,7 +48,7 @@ static irqreturn_t iio_simple_dummy_trigger_h(int irq, void *p)
+ 	int i = 0, j;
+ 	u16 *data;
  
- 	iio_for_each_active_channel(indio_dev, i) {
+-	data = kmalloc(indio_dev->scan_bytes, GFP_KERNEL);
++	data = kzalloc(indio_dev->scan_bytes, GFP_KERNEL);
+ 	if (!data)
+ 		goto done;
+ 
 
 -- 
 2.43.0

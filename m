@@ -1,136 +1,603 @@
-Return-Path: <linux-iio+bounces-12621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D70A29D8280
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 10:36:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD899D82FE
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 11:05:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B043161DEA
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 09:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30243283F08
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 10:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F801990DB;
-	Mon, 25 Nov 2024 09:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8668C1917D8;
+	Mon, 25 Nov 2024 10:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DVD1zrZG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wzjg79Sj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4687198A25;
-	Mon, 25 Nov 2024 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA192191499;
+	Mon, 25 Nov 2024 10:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732527284; cv=none; b=a4HqiAn5hbQ3ZTEq0SHxutleM+Sx0N9Sf5aEFqb70Exbuxp0grW0akjjHnsyFdEtn+cY166I95hLZwUmZgg7s8lQqX5xBGtLaKGRQQlI105vJ+eslXd0PAfp6Vm/H2DWJr5s/KZyu2cEP9kbtaTmrBFnZg+wC+uYxEg9H9reDlU=
+	t=1732529137; cv=none; b=j02VmoPBK1PJqg+vZAtNv1PiJEJsJSTjrF+WoZZgE2wW/Zz9hDoI/4C1EWvoHXpzqxQom8TSdgV0mmCaAXYd6amwbPWKmhshLubZrYfU75Cm81W9DrDDOXuMYXETRizWU7k739BI3IlQkdddjWNsQ2C4qTmKxEP1nLojFYxOGtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732527284; c=relaxed/simple;
-	bh=aEd8JicAIhvbCPxzPqoHzg82D93ao+tgZQjfIKhBIxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LjHTXI/Sa5zvyCvSIIeCdG06Pqshv/WS6azpmlZ6vLhuYc4QHA+c1/IE+c8Y9MkTTuWXkGtrjd8wFSzwEpgTrc1ZNs1zuEveJkq4tJw87Mp7EQdMX7FKPtY+EhUYomaXE4PrWc7Mlurw4LK0LSeHDEtKZ8CH6JGKMDcpZB2cUVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DVD1zrZG; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53dd9e853ccso2188163e87.1;
-        Mon, 25 Nov 2024 01:34:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732527281; x=1733132081; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=X9wuvld3OUKP0Z53IhY2KuPlXHoSpFVfKj48/VMdmqw=;
-        b=DVD1zrZGpRln2BD90M4ZhzMvcKz0Sm0S1KDSkbxIxDXUQhyzBa/mX/vqcFeXEXrPeK
-         khXRc1xmV23NXtYsRtNpFY/hZX8sHvqT2kci3g5jGnynGWGF+Xijubt3zSNimqpegKmo
-         fple0XxMuFR7TQP4eNsqhSIDLYb3ByDLkVVXiwBaucevf1wE0RAJmplpjxEkQ3quV9Cn
-         7wnZEqnQcVhvGSwBsJb07ILR1o5hDH8TMWfShl1VazQ1lGDAJfivrqBGv8X7hO5tOF9Z
-         QjPHituBsouzrVH+hCRGct4ph5vt/QT203z7mHjMbQEHaInMr/tE4Rn51zbUx8fXXA+G
-         E/Tg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732527281; x=1733132081;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9wuvld3OUKP0Z53IhY2KuPlXHoSpFVfKj48/VMdmqw=;
-        b=PlHHf0GCdilAzNsKEwklL+W/0Qs6GbfjH0fnLjO+XU+8qTr+tiEfE7VfIgx8o0PZGk
-         qGZrzHpPjHxWOgJBaiSK2qgc8PnDWlR9g9eLP2Mdw49zYmFNxzNlqofsYWKgi9nQE7rn
-         KdDVWkt8pBQXfLPNKwXbF7ivwu+oWi12iCs6TfocVk6widf9sw0uglnx06RyZHO43bH0
-         EjiabUOMvUT6KEO5JYWDLhFhuDGkaduLoUWOvwImhe2tuwueLQsTjVPb3ShAUuVisaSS
-         rXkqz9w+etsA1/J92s1Y2oY67cNHXp1xytOy8Scza6Dm6ACDXR4oZ2Y+gFDRrbQ9GQQQ
-         aZXw==
-X-Forwarded-Encrypted: i=1; AJvYcCV+tZIHLqcY2o6GIacCwpBNZrTVA1lL+g/6AJIKYsgyKMM+6+1TI8EN6ROdJg3fQkmLdDgDa9+5wAcJoJ9D@vger.kernel.org, AJvYcCWhAc2MRBOma4yZi2Od/yQ4hecC/M2v+Rg1p7nFtb4DYE+lVTYadT/EkTcIx58Hp1qn4RayRXTZ6aTB@vger.kernel.org, AJvYcCXkzKCJSobccBFROeEulLEUoE5rMVFwB4HKdFZCYoRh91xN3j8Woh2fEtXI/UDsXF3uDHzOHK9+DS8O@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWlw9uOnpgaUfROdm0mwDCUYZHCubOFgYxuxUjiLnipSEzil5w
-	4XIZgz2S2c1A7gvF6ZaM5PBGvEggKojG2dQqCoak2o5cQl1UYudI
-X-Gm-Gg: ASbGncuThXzJdqZRxfhXAVzHag20FlZ47iR5IP/QI5LUdASgKocznWXkDMi/MFd15az
-	b4kHJovXoJPsTOmYjw4ij5ux1WlFa5moHnU5OJsSvB7RPPIzzrRJ3j6+NpD5hatK8VXTaotW/o3
-	Nz38LvvbkRbHQTqDOJb7t2GHuGdHTe1EwKvIXWB9nAamKWS6GsJzyNOeiEVKF6oqosEY2g4ZzPQ
-	eZaP35oBZ2nH6vSRP/MVVhDA+zMpPlzdco65LT2qWrZKu9lSlZ7AR6VjTwCRS0=
-X-Google-Smtp-Source: AGHT+IH2bSfrof1H1g/If9fx94RrbmySHIGMr5WYjh6HzkcR7IBfZjdkbF15PwCGVeWGPT9q5mdpMw==
-X-Received: by 2002:ac2:5688:0:b0:536:741a:6bad with SMTP id 2adb3069b0e04-53dd35a4cc1mr5876768e87.12.1732527280572;
-        Mon, 25 Nov 2024 01:34:40 -0800 (PST)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53ddab93a2esm1218463e87.257.2024.11.25.01.34.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2024 01:34:38 -0800 (PST)
-Message-ID: <bda7eaff-1315-46d0-83b4-a14060c2af1c@gmail.com>
-Date: Mon, 25 Nov 2024 11:34:36 +0200
+	s=arc-20240116; t=1732529137; c=relaxed/simple;
+	bh=LTAjZ6uMM3IbOv/mgoV9R5kGRqtEp8z3NsCQffCm4OQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=by7zWbEnL/IEoXgnqMvb5POS4conAXwQe4O/8ocPK7a0WmOBR3NtF9Td56HKBXEl0DlaMLxEFhDjW3H7yCZCkg4gULBU5boYUA5+WL53U4yq0e9LOkvzYxkUOiALwmPHCcOWKvXpK9ILBL87RkD61cD6KBlCxl/qLRkLMzMy2rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wzjg79Sj; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732529134; x=1764065134;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LTAjZ6uMM3IbOv/mgoV9R5kGRqtEp8z3NsCQffCm4OQ=;
+  b=Wzjg79SjTm9pxgHKMclIdWPnTEpv0vTgTV/ry3E22IrFAVw62ZnSGUrw
+   14J54iygmuTbiU4jtC/TRwwBM0R6MPRCqtkZytvbuFl76Egejr2CxZyX9
+   EyLPSkOqASeacb6EfZZGZbjBf20JoF99/Zz9/1Is1aouS11gGXy1oUgO+
+   9n94afueuIQnfVIFj8h7ApZULcbF2/8LqALfZ4Q5Wv8duAdighIOna3vU
+   wPBwcXU917et2XYoDoZjg9xQXoobGgM+RbfAPIWcujKYM3GHlbouYLBCY
+   YRiAkvwBuq2SfQYS5dZxhKLkp5z6Z6wcr6NecGf02+fIDpujX2Zg2opth
+   g==;
+X-CSE-ConnectionGUID: /r/wWTkwRQ+R6aVzLkCYmA==
+X-CSE-MsgGUID: OIWcu2RyQmq8f24nYWr7uw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11266"; a="36407037"
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
+   d="scan'208";a="36407037"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 02:05:34 -0800
+X-CSE-ConnectionGUID: 4vR28scMQZ+qY4EVvW8Mlg==
+X-CSE-MsgGUID: WVxkVgYyTFq27olgrDw+5w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="96277963"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 02:05:31 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1tFVyB-00000000hqe-1LN2;
+	Mon, 25 Nov 2024 12:05:27 +0200
+Date: Mon, 25 Nov 2024 12:05:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matteo Martelli <matteomartelli3@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Christian Eggers <ceggers@arri.de>, Peter Rosin <peda@axentia.se>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Sebastian Reichel <sre@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from
+ producer to fix race
+Message-ID: <Z0RL53de4XrQof-5@smile.fi.intel.com>
+References: <173037398492.12348.265826723028347056@njaxe.localdomain>
+ <20241031143129.0000014e@Huawei.com>
+ <173039799203.1353.4404042832923090619@njaxe.localdomain>
+ <b56ba6a0db195ad44158509f3adb157b@gmail.com>
+ <ZzsVOGvzgNTvuEtD@smile.fi.intel.com>
+ <e56a8f3c81429c465e87a3abcccec1b4@gmail.com>
+ <Zztlz08Wm-mGdy7p@smile.fi.intel.com>
+ <65e16f628245a78da5c9d870d6c5c5a9@gmail.com>
+ <Zzx_C60W48ujpis9@smile.fi.intel.com>
+ <20241123141320.326b3340@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/8] iio: accel: kx022a: Use cleanup.h helpers
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1732105157.git.mazziesaccount@gmail.com>
- <037985fe50fe79c79b9df95fa7b4e577378f9a60.1732105157.git.mazziesaccount@gmail.com>
- <20241123164223.25656985@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241123164223.25656985@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241123141320.326b3340@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hello Jonathan,
-
-Thanks again!
-
-On 23/11/2024 18:42, Jonathan Cameron wrote:
-> On Thu, 21 Nov 2024 10:20:23 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sat, Nov 23, 2024 at 02:13:20PM +0000, Jonathan Cameron wrote:
+> On Tue, 19 Nov 2024 14:05:31 +0200
+> Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > On Tue, Nov 19, 2024 at 12:25:18PM +0100, Matteo Martelli wrote:
+> > > On Mon, 18 Nov 2024 18:05:35 +0200, Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
+> > > > On Mon, Nov 18, 2024 at 03:45:25PM +0100, Matteo Martelli wrote:  
+> > > > > On Mon, 18 Nov 2024 12:21:44 +0200, Andy Shevchenko <andriy.shevchenko@intel.com> wrote:  
+> > > > > > On Fri, Nov 15, 2024 at 03:25:06PM +0100, Matteo Martelli wrote:  
+> > > > > > > On Thu, 31 Oct 2024 19:06:32 +0100, Matteo Martelli <matteomartelli3@gmail.com> wrote:  
+> > > > > > > > Quoting Jonathan Cameron (2024-10-31 15:31:29)  
+> > > > > > > > > On Thu, 31 Oct 2024 12:26:24 +0100
+> > > > > > > > > Matteo Martelli <matteomartelli3@gmail.com> wrote:  
+> > > > > > > > > > Quoting Jonathan Cameron (2024-10-30 21:30:50)  
+> > > > > > > > > > > On Wed, 30 Oct 2024 19:23:21 +0100
+> > > > > > > > > > > Matteo Martelli <matteomartelli3@gmail.com> wrote:  
+> > > > > > > > > > > > Quoting Andy Shevchenko (2024-10-30 15:47:50)    
+> > > > > > > > > > > > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:      
+> > 
+> > > > > > > > > > > > > > Consumers need to call the producer's read_avail_release_resource()
+> > > > > > > > > > > > > > callback after reading producer's available info. To avoid a race
+> > > > > > > > > > > > > > condition with the producer unregistration, change inkern
+> > > > > > > > > > > > > > iio_channel_read_avail() so that it copies the available info from the
+> > > > > > > > > > > > > > producer and immediately calls its release callback with info_exists
+> > > > > > > > > > > > > > locked.
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > Also, modify the users of iio_read_avail_channel_raw() and
+> > > > > > > > > > > > > > iio_read_avail_channel_attribute() to free the copied available buffers
+> > > > > > > > > > > > > > after calling these functions. To let users free the copied buffer with
+> > > > > > > > > > > > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
+> > > > > > > > > > > > > > consumer helper that is equivalent to iio_read_avail_channel_attribute()
+> > > > > > > > > > > > > > but stores the available values in the returned variable.      
+> > 
+> > ...
+> > 
+> > > > > > > > > > > > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > > +                                         struct iio_chan_spec const *chan,
+> > > > > > > > > > > > > > +                                         const int *vals, long mask)
+> > > > > > > > > > > > > > +{
+> > > > > > > > > > > > > > +     kfree(vals);
+> > > > > > > > > > > > > > +}
+> > > > > > > > > > > > > > +
+> > > > > > > > > > > > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > >                             struct iio_chan_spec const *chan,
+> > > > > > > > > > > > > >                             int val, int val2, long mask)
+> > > > > > > > > > > > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > >  static const struct iio_info dpot_dac_info = {
+> > > > > > > > > > > > > >       .read_raw = dpot_dac_read_raw,
+> > > > > > > > > > > > > >       .read_avail = dpot_dac_read_avail,
+> > > > > > > > > > > > > > +     .read_avail_release_resource = dpot_dac_read_avail_release_res,
+> > > > > > > > > > > > > >       .write_raw = dpot_dac_write_raw,
+> > > > > > > > > > > > > >  };      
+> > > > > > > > > > > > > 
+> > > > > > > > > > > > > I have a problem with this approach. The issue is that we allocate
+> > > > > > > > > > > > > memory in one place and must clear it in another. This is not well
+> > > > > > > > > > > > > designed thingy in my opinion. I was thinking a bit of the solution and
+> > > > > > > > > > > > > at least these two comes to my mind:
+> > > > > > > > > > > > > 
+> > > > > > > > > > > > > 1) having a special callback for .read_avail_with_copy (choose better
+> > > > > > > > > > > > > name) that will dump the data to the intermediate buffer and clean it
+> > > > > > > > > > > > > after all;
+> > > > > > > > > > > > > 
+> > > > > > > > > > > > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.      
+> > > > > > > > > > > > 
+> > > > > > > > > > > > Could you elaborate more about these potential solutions? Maybe with some
+> > > > > > > > > > > > usage examples?
+> > > > > > > > > > > > 
+> > > > > > > > > > > > If I get it correctly, in both cases you are suggesting to pass ownership
+> > > > > > > > > > > > of the vals buffer to the caller, iio_read_channel_info_avail() in this
+> > > > > > > > > > > > case, so that it would take care of freeing the buffer after calling
+> > > > > > > > > > > > iio_format_after_*(). We considered this approach during an initial
+> > > > > > > > > > > > discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
+> > > > > > > > > > > > to let the driver keep the release control through a callback for two
+> > > > > > > > > > > > reasons:
+> > > > > > > > > > > > 
+> > > > > > > > > > > > 1) Apparently it's a bad pattern to pass the buffer ownership to the core,
+> > > > > > > > > > > >    maybe Jonathan can elaborate why? The risk I can think of is that the driver
+> > > > > > > > > > > >    could still keep the buffer copy in its private data after giving it away,
+> > > > > > > > > > > >    resulting in fact in a double ownership. However I think it would be clear
+> > > > > > > > > > > >    enough in this case that the copy should be handled by the caller, or maybe
+> > > > > > > > > > > >    not?    
+> > > > > > > > > > > Mostly the lack of desire to have to copy for the 95% of cases where it's
+> > > > > > > > > > > not needed and that it prevents any optimization like you mention.    
+> > > > > > > > > > 
+> > > > > > > > > > I think the suggestion here is to add an additional .read_avail_with_copy()
+> > > > > > > > > > without replacing the original .read_avail(), so all the current drivers that
+> > > > > > > > > > use a constant avail list would not be affected.  
+> > 
+> > > > > > Yes.  
+> > 
+> > > > > > > > > > And I think this was the same
+> > > > > > > > > > idea for the additional read_avail_ext() or the additional argument for the
+> > > > > > > > > > read_avail() we were considering in [1]. So I would think that
+> > > > > > > > > > iio_read_channel_info_avail() would do something like the following:
+> > > > > > > > > > 
+> > > > > > > > > >     if (indio_dev->info->read_avail_with_copy)
+> > > > > > > > > >         indio_dev->info->read_avail_with_copy(vals);
+> > > > > > > > > >     else
+> > > > > > > > > >         indio_dev->info->read_avail(vals);
+> > > > > > > > > > 
+> > > > > > > > > >     ...
+> > > > > > > > > >     iio_format_avail_list(vals);
+> > > > > > > > > >     ...
+> > > > > > > > > > 
+> > > > > > > > > >     if (indio_dev->info->read_avail_with_copy)
+> > > > > > > > > >         kfree(vals);  
+> > > > > > 
+> > > > > > Right. At least that's what I see can be done with the existing users.
+> > > > > >   
+> > > > > > > > > Ok, sure that would work, but...
+> > > > > > > > > 
+> > > > > > > > > I don't really see this as being much less fragile than
+> > > > > > > > > the existing solution + in cases that we do have where
+> > > > > > > > > only some available are not const we will have to copy them
+> > > > > > > > > all.
+> > > > > > > > > 
+> > > > > > > > > If anything it's more complex than making it a driver problem
+> > > > > > > > > to provide the release call however it wants to do it.  
+> > > > > > 
+> > > > > > ...but make a driver to allocate what's needed as well then.
+> > > > > >   
+> > > > > > > > > > And the drivers would choose whether to define the read_avail or the
+> > > > > > > > > > read_avail_with_copy.  
+> > > > > > 
+> > > > > > Either way drivers should know what to do with a data supplied to read_aval().
+> > > > > > In one case we assume the [simple] workflow in the core, in the other we all
+> > > > > > rely on the driver. Current approach makes a mix of these two. And that's what
+> > > > > > I don't like.  
+> > > > > 
+> > > > > If I understand your concern correctly, you are referring to the inkern
+> > > > > iio_channel_read_avail() that makes the allocation for the consumer's
+> > > > > buffer copy and you are suggesting that such copy should be done by the
+> > > > > consumer driver code itself, this to be consistent with the producer
+> > > > > drivers which directly handle the allocation of the copy.  
+> > > > 
+> > > > One of the options, yes.
+> > > >   
+> > > > > One thing to notice is that the inkern iio_channel_read_avail() does
+> > > > > together producer->read_avail() + copy + producer->read_avail_release()
+> > > > > with info_exists locked. Also, the consumer driver would need to know
+> > > > > the avail buffer size to allocate the buffer copy prior the
+> > > > > iio_channel_read_avail() call, but such size is unknown before calling
+> > > > > the actual producer's read_avail(). This would mean calling the
+> > > > > producer's read_avail() and read_avail_release() callbacks separately
+> > > > > without the lock held, with the risk of a memleak if the producer is
+> > > > > unregistered between those calls.  
+> > > > 
+> > > > Thanks for explaining this, but it even more makes me think that the design
+> > > > is broken and your approach is rather a hack. So, what's the problem to
+> > > > make IIO core to take care of the allocating and cleaning then without driver
+> > > > being involved? Yes, this might require a hint from the driver on what to copy
+> > > > if we want to avoid copying everything.  
+> > > 
+> > > I am not particularly against it, other than the concerns that have
+> > > emerged during this (and previous) discussion. Let me summarize them:  
+> > 
+> > Thank you for a very good summary and fix-N proposals. I think I have nothing
+> > to add and we should wait for Jonathan to finally choose (or propose a fix-N+1)
+> > here.
+> Agreed. This is very useful enumeration of various options with plenty
+> of details!
 > 
->> A few functions in KX022A need to use mutex for protecting the
->> enabling/disabling of the measurement while configurations are being
->> made. Some of the functions can be slightly simplified by using the
->> __cleanup based scoped mutexes, which allows dropping the goto based
->> unlocking at error path.
->>
->> Simplify error paths using guard(mutex).
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Now we have guard(), the main reason (I think) for the
-> combined on + lock and off + unlock paths is gone. So can
-> we just flatten those and do the locking at caller.
+> One absolute key thing to note here is we should not care at all what
+> inkern does for it's handling internally of the available lists.  The big
+> ABI question is all about consumers drivers directly using the resulting list of
+> available values.  The use in the IIO core and the inkern helpers should
+> naturally follow.
+> 
+> 
+> > 
+> > > fix-1) the current one. Your concerns are:
+> > >     * for consumers the copy allocation is taken care by the inkern API
+> > >       but the release is handled by the consumer driver code, making it
+> > >       a fragile design.
+> 
+> So this was something I'm not sure I agree with.  There are plenty
+> of get / release patterns out there. This is just another one of those
+> but perhaps it doesn't 'smell' enough like that.
+> 
+> Perhaps think of it as
+> 
+> int *iio_channel_avail_get()
+> void iio_channel_avail_release()
+> 
+> We could perhaps make it look more standard using a cookie rather than
+> reconstructing the equivalent data at the release call.
+> 
+> struct iio_avail_cookie {
+> 	const int *avail;
+> 	void *provider_priv;
+> // see later for a maybe...
+> 	struct iio_dev *indio_dev;
+> };
+> 
+> const int *iio_avail_from_cookie(struct iio_avail_cookie *cookie)
+> {
+> 	return cookie->avail;
+> }
+> 
+> struct iio_avail_cookie *iio_channel_avail_get(struct iio_dev, struct iio_chan_spec)
+> {
+> 	allocate a cookie and fill it in.
+> }
+> 
+> and code would always explicitly release after it is done with the cookie.
+> 
+> Something like
+> 
+> void iio_channel_avail_release(struct iio_dev *iio_dev, struct iio_avail_cookie *cookie)
+> // could even move the iio_dev pointer into the cookie, so it becomes
+> // iio_channel_avail_release(struct iio_avail_cookie *cookie) and suitable for __free magic.
+> {
+> 	if (iio_dev->info->avail_release)
+> 		iio_dev->info->avail_release(cookie);
+> 	kfree(cookie);
+> 	/*
+> 	 * Could add optimizations around cookie handling to avoid alloc + free in most cases
+> 	 * or use an object pool.
+> 	 */
+> }
+> 
+> The current proposal just avoid the need for a cookie as for all known cases so far
+> provider_priv could == the channel requested.
+> 
+> 
+> > >     * consumers and producers manage the allocation differently, the
+> > >       first handles it via the inkern API, the second one in the
+> > >       producer driver code, making it inconsistent.
+> 
+> The inkern API changes are mostly an attempt to reduce boiler plate. The only
+> case we really should be worrying about to my mind is the consumer wanting
+> to access the full available list. 
+> 
+> > > 
+> > > fix-2) adding a read_avail_with_copy(): a driver with both const avail
+> > > lists and mutable avail lists would always return a copy for all of
+> > > them, including the const ones. Example above.
+> 
+> Hmm. So this could work but with the firm rule that a provider must never
+> provide both options and a core check on drivers to enforce that probe.
+> Any existing consumers must be modified to try both paths
+> (read_avail_with_copy then read_avail) to avoid regressions.
+> 
+> For future code, if we miss a case that doesn't do this then the upshot
+> is that the call will fail and the consumer needs fixing but at least
+> it is not a regression because it will never have worked for that
+> particular consumer + producer pair.  Not too horrible, but I'm not
+> really seeing it as better than option 1.
+> 
+> > > 
+> > > fix-3) adding a release_avail return param to read_avail(): this would
+> > > require a change to all the drivers using it. Also it
+> > > looks to me an unusual pattern, are there other similar patterns around
+> > > the codebase? Example below.
+> 
+> No advantage that I can see vs an explicit get / release where the
+> release may do nothing if there was no allocation.
+> 
+> > > 
+> > > fix-4) adding a new enum variant to the avail type like
+> > > IIO_AVAIL_LIST_ALLOC: to me this looks hacky as it mixes the logic type
+> > > of the data structure and how it is handled in memory. I think the
+> > > latter should better fit in a different field, however this modification
+> > > would have little impact in the current code. Example below.
+> 
+> This one I really don't like. Needs non obvious / subtle handling in the
+> consumer drivers.
+> 
+> > > 
+> > > So far these alternatives only consider moving the release of the copy
+> > > buffer in the IIO core but not its allocation.
+> 
+> I'm confused.  Moving it in, or out of the core?  What does this mean
+> for a consumer driver after the avail list?
+> 
+> > You also suggest to make
+> > > the IIO core take care of the copy allocation. The problem I see with
+> > > this is that if the copy is handled outside the driver it could take
+> > > place concurrently with the modification of the original buffer since it
+> > > would not be locked by driver private mutex, thus making the copy
+> > > useless. This might be worked around by adding an additional optional
+> > > callback (e.g. read_avail_will_copy/read_avail_is_mutable) to just take
+> > > the size and check if a copy will be provided, so maybe something like:
+> > > 
+> > > fix-5) iio_read_channel_info_avail():
+> 
+> This is picking on the wrong code for this discussion.  Use
+> iio_read_avail_channel_attribute() for example because that's the one
+> where ABI matters.  Anything within the IIO core is just a question of
+> 'niceness' it isn't important like a function called by a consumer driver.
+> 
+> Code of a consumer driver will be similar to this however.  A few things
+> would be needed to make this pattern work.
+>  
+> > > {
+> > >     ...
+> > >     int *vals;
+> > >     bool copy = false;
+> > >     if (indio_dev->info->read_avail_will_copy) {
+> > >         copy = indio_dev->info->read_avail_will_copy(..., &length, ...);
+> 
+> return length as 0 can reasonably mean we don't need to allocate.
+> That value must be the maximum possible size that can ever be needed, not the
+> current one.
+> 
+> > >         if (copy) {
+> > >             vals = kcalloc(length, sizeof(int), GFP_KERNEL);
+> > >         }
+> > >     }
+> > > 
+> > >     indio_dev->info->read_avail(&vals, ...);
+> 
+> For iio_read_avail_channel_attribute it will a little fiddlier but end result
+> is the same but done under the exist lock. If the device went away before this
+> call then we will get an error, otherwise this will fill vals and provide
+> the right length. 
+> 
+> > > 
+> > >     if (ret < 0)
+> > >             return ret;
+> > >     switch (ret) {
+> > >     case IIO_AVAIL_LIST:
+> > >             ret = iio_format_avail_list(buf, vals, type, length);
+> > >     case IIO_AVAIL_RANGE:
+> > >             ret = iio_format_avail_range(buf, vals, type);
+> > >     default:
+> > >             ret = -EINVAL;
+> > >     }
+> > > 
+> > >     if (copy)
+> > >         kfree(vals);
+> > > }
+> > > 
+> > > If I am not missing anything this could work and maybe it could also
+> > > avoid the double copy on the consumers but would require all of them to
+> > > wrap the read_avail_will_copy(). Also, I find it quite a weird pattern
+> > > that in some cases vals would be an input buffer to be filled and in
+> > > other cases it would be a return argument pointing to the const buffer
+> > > stored inside the driver. At least I wouldn't say it's more robust than
+> > > the current fix-1.
+> Agreed. It works, but I'm not seeing the advantage and the multiple use
+> of the vals parameter is too subtle to be maintainable.
+> 
+> > > 
+> > > All these alternatives also prevents some potential optimization already
+> > > mentioned before. Reporting it again as it is now lost in the mess below:
+> > >     Some driver might want to avoid allocating a new copy of a big table if
+> > >     the race does not occur (e.g. with additional checks on buffer access
+> > >     code) and thus wouldn't call a free() in the release callback.
+> > > 
+> > > In the end I don't find any of the above alternatives to provide an
+> > > obvious better solution.
+> 
+> Agreed.  My only question vs just taking the existing solution is whether
+> it makes sense to use a more explicit struct iio_avail_cookie
+> to hold all the info that we pass to release.  I don't particularly like
+> that we'll end up allocating that cookie structure but it would make it more
+> like a typical get / release and perhaps closer to what readers would
+> expect to see?
+> 
+> What do you think?
 
-I did consider this too :)
+Naming problem can at least cure the current perception of the APIs, so
+if it gets clear get/put (alloc/release) semantics, I will be fine with it.
+I don't care much about parameters, but from experience the cookie approach
+is more scalable / maintainable in case we need to extend it anyhow
+(esp. with any optional parameters).
 
-Why I decided to keep it as it is, (even though we need the extra 
-mutex_unlock() at certain error path) is because I kind of like the 
-lock+off and unlock+on functions. This locking does not protect data, 
-but really a sequence of operations that needs to be done while sensor 
-is OFF state. It's almost like a doc saying that "please, ensure the 
-sensor is OFF for the following operations" :)
+> > > > > > > > > > What I was referring to is that, back then, you mentioned you would have
+> > > > > > > > > > preferred to avoid passing ownership of the buffer around:
+> > > > > > > > > >   
+> > > > > > > > > > > That's a corner case we should think about closing. Would require an indicator
+> > > > > > > > > > > to read_avail that the buffer it has been passed is a snapshot that it should
+> > > > > > > > > > > free on completion of the string building.  I don't like passing ownership
+> > > > > > > > > > > of data around like that, but it is fiddly to do anything else given
+> > > > > > > > > > > any simple double buffering is subject to race conditions.    
+> > > > > > > > > > 
+> > > > > > > > > > I guess there is some other reason other than avoiding the copy when not
+> > > > > > > > > > necessary, since by introducing an additional function or argument or return
+> > > > > > > > > > type, most of the unnecessary copies would already be avoided right?  
+> > > > > > > > > 
+> > > > > > > > > It's not a strong reason beyond limiting scope of clever design +
+> > > > > > > > > the key bit my mind is that the above is not substantially simpler and
+> > > > > > > > > reduces our flexibility.
+> > > > > > > > >   
+> > > > > > > > > > Anyway any of this solutions would still prevent the potential optimizations of
+> > > > > > > > > > point 2). It's worth mentioning that those kind of optimizations are currently
+> > > > > > > > > > not adopted by any driver.  
+> > > > > > > > > 
+> > > > > > > > > That one indeed not, but mixing dynamic and non dynamic is something
+> > > > > > > > > you do in your pac1921 patch.  
+> > > > > > > > 
+> > > > > > > > Good point! I didn't think about it, or more likely I forgot, that with an
+> > > > > > > > additional read_avail_with_copy() used as in the example you cannot mix dynamic
+> > > > > > > > and non dynamic available lists, thus those drivers that need at least one
+> > > > > > > > dynamic available list would always copy all of them as they need to rely to
+> > > > > > > > the read_avail_with_copy(). I guess this could be worked around with an
+> > > > > > > > additional return argument for the read_avail() or an additional type like the
+> > > > > > > > IIO_AVAIL_LIST_ALLOC suggested by Andy to signal the caller it needs to free
+> > > > > > > > the list after use. However, I think they would introduce a more invasive
+> > > > > > > > change in the current API compared to an additional optional callback,  
+> > > > > > 
+> > > > > > It even sounds originally that it should be more invasive, so I don't think it's
+> > > > > > a problem here.  
+> > > > > 
+> > > > > In the hope it helps the discussion let me provide examples for the
+> > > > > additional two options we have other than the current
+> > > > > read_avail_release_resource() (fix-1) and the read_avail_with_copy()
+> > > > > (fix-2) already shown above:  
+> > > > 
+> > > > Thanks!
+> > > >   
+> > > > > fix-3) iio_read_channel_info_avail():
+> > > > > {
+> > > > >     ...
+> > > > >     bool release_avail = false;
+> > > > > 
+> > > > >     ret = indio_dev->info->read_avail(vals, ..., &release_avail);
+> > > > > 
+> > > > >     ...
+> > > > >     ret = iio_format_avail_list(vals, ...);
+> > > > >     ...
+> > > > > 
+> > > > >     if (release_avail)
+> > > > >         kfree(vals);
+> > > > > 
+> > > > >     return ret;
+> > > > > }
+> > > > > 
+> > > > > 
+> > > > > fix-4) iio_read_channel_info_avail():
+> > > > > {
+> > > > >     ...
+> > > > >     indio_dev->info->read_avail(vals, ...);
+> > > > > 
+> > > > >     if (ret < 0)
+> > > > >             return ret;
+> > > > >     switch (ret) {
+> > > > >     case IIO_AVAIL_LIST_ALLOC:
+> > > > >             ret = iio_format_avail_list(buf, vals, type, length);
+> > > > >             kfree(vals);
+> > > > >             return ret;
+> > > > >     case IIO_AVAIL_LIST:
+> > > > >             return iio_format_avail_list(buf, vals, type, length);
+> > > > >     case IIO_AVAIL_RANGE:
+> > > > >             return iio_format_avail_range(buf, vals, type);
+> > > > >     default:
+> > > > >             return -EINVAL;
+> > > > >     }
+> > > > > }
+> > > > >   
+> > > > > > > > so I agree that the current release callback is still a better option.  
+> > > > > > 
+> > > > > > I disagree on this as I pointed above why.
+> > > > > >   
+> > > > > > > > > > > > 2) Some driver might want to avoid allocating a new copy of a big table if
+> > > > > > > > > > > >    the race does not occur (e.g. with additional checks on buffer access
+> > > > > > > > > > > >    code) and thus wouldn't call a free() in the release callback.
+> > > > > > > > > > > >     
+> > > > > > > > > > > > > In any case it looks fragile and not scalable. I propose to drop this
+> > > > > > > > > > > > > and think again.      
+> > > > > > > > > > > > 
+> > > > > > > > > > > > I see your concerns, I am open to reconsider this in case we come up with
+> > > > > > > > > > > > better solution after addressing the points above.
+> > > > > > > > > > > >     
+> > > > > > > > > > > > > Yes, yes, I'm fully aware about the problem you are trying to solve and
+> > > > > > > > > > > > > agree on the report, I think this solution is not good enough.  
+> > > > > > > > > > > > 
+> > > > > > > > > > > > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/  
+> > > > > > > > > > 
+> > > > > > > > > > I hope I've brought a little more clarity to the discussion by providing some
+> > > > > > > > > > history instead of making it more confusing.  
+> > > > > > > > > 
+> > > > > > > > > Sure, the code example in particular is useful.  
+> > > > > > > 
+> > > > > > > Just a friendly reminder this has been sitting for a while, any news or
+> > > > > > > additional considerations?  
+> > > > > > 
+> > > > > > Moving the allocation control to the drivers will satisfy me as well, however
+> > > > > > it makes even more duplication of the code, but at least it will be cleaner
+> > > > > > design-wise in my opinion.  
+> > > > > 
+> > > > > Would it work with the constraints on the info_exists lock mentioned
+> > > > > above?  
+> > > > 
+> > > > None of the given examples (fix-N) provides a lock, so I have no clue how it's
+> > > > involved here. May be you can elaborate more?  
+> > > 
+> > > I thought that with "Moving the allocation control to the drivers" you
+> > > were referring to the option (not included among fix-N) to move the
+> > > allocation of the consumer copy from the inkern iio_channel_read_avail()
+> > > to the consumer drivers themselves. You elaborated this point above
+> > > where I answered with the concerns about the info_exists lock that
+> > > should be addressed.
+> > >   
+> > > > > > In any case the last word is on Jonathan.  
 
-(Another thing is that we do claim the direct mode in write_raw, and 
-goto is still handy for releasing it. Scoped guards won't play nicely 
-with goto. Yes, we could probably use the __cleanup for direct mode, but 
-I still like the lock+off, unlock+on for the reason above)
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Yours,
-	-- Matti
+
 

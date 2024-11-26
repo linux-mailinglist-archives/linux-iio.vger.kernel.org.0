@@ -1,124 +1,87 @@
-Return-Path: <linux-iio+bounces-12669-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12670-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6A49D8EE0
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 00:04:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2A59D926D
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 08:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E94D3B2854E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Nov 2024 23:03:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F35572837A9
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 07:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395BF1925AD;
-	Mon, 25 Nov 2024 23:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550B9192B96;
+	Tue, 26 Nov 2024 07:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TmLwbmiG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ge8MXz1b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99F1E1E480;
-	Mon, 25 Nov 2024 23:03:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0964E187FE0;
+	Tue, 26 Nov 2024 07:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732575810; cv=none; b=Gvm+LQ2ShWlJ0lsq6pBn9qdIuDU+PnG6jeR5nPaIHp/6xtfDAU8BVA+sLNokfBRQ1PNWUoxUSKPFaca+F3nVdBQMuUZhwfieSdpEFcba0+Jmr1otQRtxNcjB9C435u4KK9aeRruQCZEJlfnFTAyqyIzTA1rpS0moPblTwTsF2YQ=
+	t=1732606039; cv=none; b=J5cf78lFQjti35Qm7Wt/zKmOpT+5BLhCBySxiGnXDQfGz1uY2/FjUulvkCWgb59d3mmp7EU6ayLSDTHLkJF2jLXbEGIhMm1YVEsJmPQaqVBTzTxcA0UkV0apFsBc6kLSEMhUySQ867BJZAQhn6qR50zG+ZCi3cjiT/EjXt0fHEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732575810; c=relaxed/simple;
-	bh=BTgCLY4gPo5YU7+/1T0opHXi45vHwObPtguryl+EQn8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pJp62v83hCw+G4RF0lprVZmKHz+CqwrY/YOkBTYj7TYw3Ebf8xuy1Yi/Yl0FvHqvbp+KT4UNt3HSpqq2Ftzlp6FfFfC7FKqqvMOB3km27cZv0U5MuoEhODVEXbxRZTV1tv/S/xlHiq2gUjoOSIa7JOLXxnOfA08efcQFr36/zlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TmLwbmiG; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-724fc1aaa91so2040435b3a.3;
-        Mon, 25 Nov 2024 15:03:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732575808; x=1733180608; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xuBQyBjyiv7huPo6jrNQOgiInPpnVquxsBmCx5xtbh4=;
-        b=TmLwbmiGZC3A1iN9tV0HUEGBY83mEffWUuxWXXElheJwTSluPrLcrpZAHbc0yiOK+5
-         GEi5xfCr0lLKNM+qj0agWNCoj3XaWwXvzaW5UTqzAhDFUxE2GT5rfTDb7gvcRZDC5jVH
-         6+bpYOyOgC7U3fH1IbQ5EoA1QBmVTVPuyVFPMlgCV5sf84wRbd4eX6W1dJyJSlvQwEtE
-         PhiBh1InU9uLVImX/SjWGewOoKUgAfRT6eU7S5y2bOrFYHsFoO6YxJR89bsV5gK5XYsh
-         XsN+RZTnT9UWdNPzIKeyLrQp7YRwuvwDXEjyTS65zCeYnWO0BztJCIOgiGJBIrkW7sFi
-         aBig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732575808; x=1733180608;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xuBQyBjyiv7huPo6jrNQOgiInPpnVquxsBmCx5xtbh4=;
-        b=lqbP7m9BQuA7eC4Rzvi7j8TxjjIq9TG6Xo6ueYXJ30xy1+NGl50G/IT7Zll8zgRkLv
-         XFsp20+LyKLvkU3OavJqjFf07qDw3NgNT+GepKDYXX1+zvYlUfOLepR5WjK7RKiRXxJI
-         I5F8vgSahtA9wlfoZnfGYPnjuUdeYsT2cMh8WaTyT7CMm2RxfXIhNIexD7IttlKQP+HT
-         PcVIU4U4SPRnmicoVW1j4QGoIE8ZedmYb3guuTVyXJwT+PQTnkf5lp8ylgOarD3hqp3v
-         27GOpkGqiYuL7eZSwg8icDS6YOrvNvewG3esfcc5D5zfbX284ffdLqv26dd4sxEbWdwi
-         3hYw==
-X-Forwarded-Encrypted: i=1; AJvYcCUWEvRJjAT8xMJkazsVazVTgd619gQpH1jrKHZjW3FvCDAY8mCnNmetzjcQhejd5f7pmbi15L1PNbo=@vger.kernel.org, AJvYcCXIYX6R94B0c+IolssxRYeYXDYdqR1oSTQZksAwnzA+w3Ac4EZB5V4kIEOBRjs1+f+rKf30xD30lqGJ1h78@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2Zu/YynrVTYNLcO38WEb3LgLekt/kF0Pf/60q6lHQLfCiv1Gj
-	1hy9AaS6UYgVnSinFJ5u2nQV4SeQPqiImZNUBCONRG7vI2vFWYsS3YjlICHA
-X-Gm-Gg: ASbGnct9OY7Kq7j6jpxN0y6L4r1oOss7avPSz8ff8Y1kb8g9bviv0XKAdJVLddnKlmu
-	5+hkfObdz/20f/Vg3HuJX4gDst4mGQ9nHNJZCGdY5oRhBuLtMLvp2DQaqEwh2DdDzCvmUuTdHRy
-	W822xpRATIDv5A0dJMVDfQRmopXvDgcwHE5tMG7lEKkw+Yln/nIhBfuWsSAHrPka2E07UJ+PsEa
-	OUlZHyDjw7W6zlw+o/Elyl3WOVwQp/e0EwFLmAAvUiAEvDlBURVAGWnQnX8dANAYeHs5g==
-X-Google-Smtp-Source: AGHT+IG6AXPDCYJGJA9eS6z8KHwouPg9F8SAnH5vC/g4EXpThiKCm0nwTPWcfl5V9ZtwDkBTENhzhQ==
-X-Received: by 2002:a17:90b:3889:b0:2ea:735d:91e1 with SMTP id 98e67ed59e1d1-2eb0e3314e8mr18190853a91.19.1732575807722;
-        Mon, 25 Nov 2024 15:03:27 -0800 (PST)
-Received: from localhost.localdomain ([177.10.12.67])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eb0cff70c1sm7392871a91.15.2024.11.25.15.03.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Nov 2024 15:03:27 -0800 (PST)
-From: "Rafael V. Volkmer" <rafael.v.volkmer@gmail.com>
-To: wbg@kernel.org
-Cc: david@lechnology.com,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	"Rafael V. Volkmer" <rafael.v.volkmer@gmail.com>
-Subject: [PATCH] counter: add COUNTER_FUNCTION_DISABLE for energy saving
-Date: Mon, 25 Nov 2024 20:02:20 -0300
-Message-Id: <20241125230220.9994-1-rafael.v.volkmer@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1732606039; c=relaxed/simple;
+	bh=QNmXRH6+/lQlC0NI0i2Ghsp+4+OK+Z276BhLzqpOViY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SCf/V2jxwEyVdEJEhlNbm9/oJVKbQlgtDxpdxFAv4+NOppwTH2il/NiNalZXKGofd/KwO5Qf3PZbnoyRoM0JA7vNuHMcrHuqaIQ03ZvkxG0WlBgvm+kW53cMv+gq0XrffHNukAhrPs1YEvH8U5UG6VE2vD4ScxoBnJuSKtGpY8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ge8MXz1b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC28C4CECF;
+	Tue, 26 Nov 2024 07:27:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732606038;
+	bh=QNmXRH6+/lQlC0NI0i2Ghsp+4+OK+Z276BhLzqpOViY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ge8MXz1bQMwwxgouGxmFm6I9hG2wMDiFQ5WvBKunH76I4sZfo/ZbnCNsm+xnvDmUf
+	 L1mMW4r0dfKWGNY096+LVYr7qxWLaAfY9Y14kNhM9Cb5c8h7FPFF+35XB2puUOes0/
+	 14IbvacloF7s02mg3zSWPxDlpC9o2wodKnq2e00O6laDGJd4A9Ix6UpO+HTN6J2dtd
+	 Llxtt6DDgx9QYxYpZrqmotin+Gw4uxbqAG8SuoGMGEyKWGu9FypBEqrXKmsdMjuwz7
+	 IYWK2H00ktYTrGBbnjmJEJ+UCMGToJRZ35P7BeGgV9+2ICZ2R39W9gKU00pK/6IjOA
+	 sI8LKSh6O8IAg==
+Date: Tue, 26 Nov 2024 08:27:15 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Tobias Sperling <tobias.sperling@softing.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Introduce ADS7138
+Message-ID: <eudovs2ahymft4esojrxvj4dtsbfvwks4huq3sz6rc4tzjmeii@jdlyq4vxzywj>
+References: <20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com>
+ <20241122-adc_ml-v1-1-0769f2e1bbc1@softing.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241122-adc_ml-v1-1-0769f2e1bbc1@softing.com>
 
-Add `COUNTER_FUNCTION_DISABLE` to the `counter_function` enum in the
-counter API. This allows file operations to signal other drivers to
-disable hardware resources, reducing energy consumption in
-power-sensitive scenarios.
+On Fri, Nov 22, 2024 at 04:15:36PM +0100, Tobias Sperling wrote:
+> +description: |
+> +  The ADS7128 and ADS7138 chips are 12-bit, 8 channel analog-to-digital
+> +  converters (ADC) with build-in digital window comparator (DWC), using the
+> +  I2C interface.
+> +  ADS7128 differs in the addition of further hardware features, like a
+> +  root-mean-square (RMS) and a zero-crossing-detect (ZCD) module, which are
+> +  not yet supported by the driver.
 
-Previously, tests with Texas Instruments' eQEP modules revealed that
-hardware resources remained active unless the driver was removed,
-offering no user command to stop the count. This approach exposed the
-fragility of these resources.
+driver in which operating system? If FreeBSD supports them, but Linux
+not, are you going to udpate this text?
 
-To address this, introduce a new enum option in the counter API to
-receive commands for disabling the hardware. This ensures the hardware
-enters an idle, power-saving state when not in use.
+Please drop all references to operating system and describe the
+hardware.
 
-Signed-off-by: Rafael V. Volkmer <rafael.v.volkmer@gmail.com>
----
- include/uapi/linux/counter.h | 1 +
- 1 file changed, 1 insertion(+)
+With fixed description:
 
-diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
-index 008a691c254b..6f9a6ef878cf 100644
---- a/include/uapi/linux/counter.h
-+++ b/include/uapi/linux/counter.h
-@@ -145,6 +145,7 @@ enum counter_function {
- 	COUNTER_FUNCTION_QUADRATURE_X2_A,
- 	COUNTER_FUNCTION_QUADRATURE_X2_B,
- 	COUNTER_FUNCTION_QUADRATURE_X4,
-+	COUNTER_FUNCTION_DISABLE,
- };
- 
- /* Signal values */
--- 
-2.25.1
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
 
 

@@ -1,162 +1,136 @@
-Return-Path: <linux-iio+bounces-12698-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12699-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2259D9D27
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 19:12:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC489D9D39
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 19:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A603CB223BF
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 18:12:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07570B23F0F
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 18:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2AA1DD543;
-	Tue, 26 Nov 2024 18:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F5E1DD884;
+	Tue, 26 Nov 2024 18:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YFnY6pgS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B924f5Lp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D655C11187;
-	Tue, 26 Nov 2024 18:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F591D63C1;
+	Tue, 26 Nov 2024 18:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732644755; cv=none; b=n6qKhM/9E6xJXuqKC9xGBl7fBXKkjzziz1ScBFAjnWvlxSPGX1myPxFRs5CjftMHdYLT0sri0+IvPVM6ecBT+OEGNv71luI5HJD8900ZklXgZp7rfJFC7l3nDGgkf5rcBauzVRCs7i8NGP4RFP70gsaRFc739H7XE7Kb6L+3uFA=
+	t=1732644936; cv=none; b=eHZwqIRGZMzVTF3Q0r2UA5mJVWNjHC+zPvtJDHIfuCmrfL3T0jhmLMQ5YFtaC3N6mU2Yz+5uPMOKj9vQ23ZIDIhbbHg7FN6NzaySvTWnbRcojNs8iv5zd1EgIye9b4m/cz2pivgHkGaZOKQkcm3oB8ThfF312dOETHJhTIubVTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732644755; c=relaxed/simple;
-	bh=JpFz0akJMPNHum+sk0nTfJd76Mo2Hn9b+Le2jMIwLko=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h4Fmj1z8Bgm4wOrkoOcFRq5ghDiu2sYo375iMTc7YVINzR1PFS7DCAvMgeSDpC+kJe3HJmEkksBewwM2ZMEjkgAB8OjXXAudnAzWgQw8LVV5a1AyE7wiqJ54fhM0t3VX5z/d21g9oGY3p4EKFYd0dqeqRo0rZz/UzDWxGqZJ4Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YFnY6pgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96788C4CECF;
-	Tue, 26 Nov 2024 18:12:31 +0000 (UTC)
+	s=arc-20240116; t=1732644936; c=relaxed/simple;
+	bh=J6qEmLV3tQU3xvocNaz4LckyMw+R0S0PCZzSGp+8HVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lLIoSFhLiCQdFxx2xFxeZyFub1DUXrHdoqUY8ekigyDa5jLW2EHh5iyy4a1wuweGtUROmCBaykkxU24GOr9GvaCUxnmomuKZFTAJD7OJvA9bLse3mC+HDrErNekXCTd33rmAJVCh5aFeM4PWtA5ZVWGYlhJ+oj636rdhUED3xo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B924f5Lp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED937C4CECF;
+	Tue, 26 Nov 2024 18:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732644754;
-	bh=JpFz0akJMPNHum+sk0nTfJd76Mo2Hn9b+Le2jMIwLko=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YFnY6pgSUcJClHffVaQg1C0FaOeog58eqj37DHSrJBrnNYrBVqi5fkErlh5avzuA0
-	 +ZS6hmzWcQ4i1IvhJTmnpeN1iSX/8cQquSnMj6nyb4OI60XusHiJ4/Wirruyp+obPW
-	 tPRQYrNbxL53BOqIBJ1e+L77DYCyr9Gs0elrlweMQQn3wRq8VMyQOdNtq667+/HP+M
-	 Embx/xJQnznlpb9ne391nh+c80e7HyJLJiaETuXO7G8ddvmsZYKs15WthzbXTO1UuR
-	 jN+sT/oFoR3C3EWTVrUZwASpLSpyuHU1xkCLhbGTpCl+6F3NhfF0S5BJ8iB4CEJBb5
-	 UnPxKXOfDibIw==
-Date: Tue, 26 Nov 2024 18:12:29 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org, jstephan@baylibre.com,
-	aardelean@baylibre.com, adureghello@baylibre.com
-Subject: Re: [PATCH 2/9] dt-bindings: iio: dac: adi-axi-adc: Add ad7606
- variant
-Message-ID: <20241126-tiptoeing-humiliate-8c88f185942f@spud>
+	s=k20201202; t=1732644935;
+	bh=J6qEmLV3tQU3xvocNaz4LckyMw+R0S0PCZzSGp+8HVA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=B924f5Lpx66IYeU0d/f94FZ9uhaCj83BitziesdMvZkQzOqTc85WcAo+YZF8sL7G2
+	 4jyL1weCaF28cz/Ln8qWq3GOx5Uy725W02gJcyq3ePwRbZYTV3I5zoMZfY9+E/b/KV
+	 Tyjk8zCnpJMWiwdhpszQXkOUJQUc5PCm+qoRRCCiSmuMFDs6rID+ztLeOriQ/DgK3V
+	 aGIeE4/DMB7bRlcAynU+aVlIZpJmmq7M5wBd5Lz1UmSFvjg94Tc6UKP782xZMUnD9K
+	 /Ztbm06P4XzT5qGfpIqzUFSFtJe1acazfPmCkp81EyzfceAxKdOC7xCkuEZCOOXonK
+	 fAQ+CZjuPWWNg==
+Date: Tue, 26 Nov 2024 18:15:22 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Guillaume Stols <gstols@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, dlechner@baylibre.com, jstephan@baylibre.com,
+ aardelean@baylibre.com, adureghello@baylibre.com
+Subject: Re: [PATCH 1/9] iio: adc: ad7606: Fix hardcoded offset in the ADC
+ channels
+Message-ID: <20241126181522.12be94f6@jic23-huawei>
+In-Reply-To: <20241121-ad7606_add_iio_backend_software_mode-v1-1-8a693a5e3fa9@baylibre.com>
 References: <20241121-ad7606_add_iio_backend_software_mode-v1-0-8a693a5e3fa9@baylibre.com>
- <20241121-ad7606_add_iio_backend_software_mode-v1-2-8a693a5e3fa9@baylibre.com>
- <49bc9ec4-f252-4903-b5be-1d35ee8d48be@baylibre.com>
- <20241121-wackiness-threaten-b53d2a27fbd9@spud>
- <20241126175931.4645dbe3@jic23-huawei>
+	<20241121-ad7606_add_iio_backend_software_mode-v1-1-8a693a5e3fa9@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="mtIRv2w5CtHuPvfM"
-Content-Disposition: inline
-In-Reply-To: <20241126175931.4645dbe3@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 21 Nov 2024 10:18:23 +0000
+Guillaume Stols <gstols@baylibre.com> wrote:
 
---mtIRv2w5CtHuPvfM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> When introducing num_adc_channels, I overlooked some new functions
+> created in a meanwhile that had also the hardcoded offset. This commit
+> adds the new logic to these functions.
+> 
+> Fixes: 7a671afeb592 ("iio: adc: ad7606: Introduce num_adc_channels")
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Hi Guillaume,
 
-On Tue, Nov 26, 2024 at 05:59:31PM +0000, Jonathan Cameron wrote:
-> On Thu, 21 Nov 2024 19:53:53 +0000
-> Conor Dooley <conor@kernel.org> wrote:
->=20
-> > On Thu, Nov 21, 2024 at 10:57:44AM -0600, David Lechner wrote:
-> > > On 11/21/24 4:18 AM, Guillaume Stols wrote: =20
-> > > > A new compatible is added to reflect the specialized version of the=
- HDL
-> > > > that is not covered by the IIO backend paradigm: We use the paralle=
-l =20
-> > >=20
-> > > It still is being used as an IIO backend, so I would leave out the
-> > > phrase "that is not covered by the IIO backend paradigm".
-> > >  =20
-> > > > interface to write the ADC's registers, and accessing this interface
-> > > > requires to use ADI_AXI_REG_CONFIG_RD,ADI_AXI_REG_CONFIG_WR and
-> > > > ADI_AXI_REG_CONFIG_CTRL in a custom fashion.
-> > > >=20
-> > > > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> > > > ---
-> > > >  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 7 +++=
-++++
-> > > >  1 file changed, 7 insertions(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.=
-yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > > > index e1f450b80db2..43bc0440c678 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> > > > @@ -17,13 +17,20 @@ description: |
-> > > >    interface for the actual ADC, while this IP core will interface
-> > > >    to the data-lines of the ADC and handle the streaming of data in=
-to
-> > > >    memory via DMA.
-> > > > +  In some cases, the AXI ADC interface is used to perform speciali=
-zed
-> > > > +  operation to a particular ADC, e.g access the physical bus throu=
-gh
-> > > > +  some special register to write ADC registers.
-> > > > +  In this case, a different compatible is used, and the driver beh=
-aves =20
-> > >=20
-> > > Quick, delete the word "driver" before Krzysztof sees it. :-p =20
-> >=20
-> > And also perhaps worth mentioning under the --- line that the x in the
-> > compatible is not a wildcard, for similar reasons ;)
->=20
-> Well it is, just one that is used for the IP naming to cover all
-> the different ADCs it works with.
+Trivial thing inline.
 
-In "our" terms, when talking about bindings, is not a wildcard.
-As you say below, the x refers to a specific IP that works with several
-different ADCs, rather than attempting to use a single compatible for
-multiple different IPs.
+I can't pick this up quite yet as need to wait to rebase my fixes on rc1 sometime
+next week.
 
-> "The AXI AD7606x IP core can be used to interface the AD7606B, AD7606C-16,
-> AD7606C-18, AD7605-4, AD7606, AD7606-6, AD7606-4, AD7607, AD7608 and AD76=
-09 devices using an FPGA."
->=20
-> Given that's what ADI calls the IP though we are stuck with it - however
-> 'wrong' they may be :)
->=20
-> But agreed, something to call out to keep me away from the x as well!
->=20
-> Jonathan
->=20
+Jonathan
 
---mtIRv2w5CtHuPvfM
-Content-Type: application/pgp-signature; name="signature.asc"
+> ---
+>  drivers/iio/adc/ad7606.c | 48 ++++++++++++++++++++++++++++--------------------
+>  drivers/iio/adc/ad7606.h |  2 +-
+>  2 files changed, 29 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index 8b2046baaa3e..893b93b86aa7 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -175,17 +175,17 @@ static const struct iio_chan_spec ad7616_channels[] = {
+> -static int ad7606_16bit_chan_scale_setup(struct ad7606_state *st,
+> +static int ad7606_16bit_chan_scale_setup(struct iio_dev *indio_dev,
+>  					 struct iio_chan_spec *chan, int ch)
+>  {
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+>  	struct ad7606_chan_scale *cs = &st->chan_scales[ch];
+>  
+>  	if (!st->sw_mode_en) {
+> @@ -345,10 +346,12 @@ static int ad7606_16bit_chan_scale_setup(struct ad7606_state *st,
+>  	return 0;
+>  }
+>  
+> -static int ad7606_get_chan_config(struct ad7606_state *st, int ch,
+> +static int ad7606_get_chan_config(struct iio_dev *indio_dev, int ch,
+>  				  bool *bipolar, bool *differential)
+>  {
+> -	unsigned int num_channels = st->chip_info->num_channels - 1;
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	unsigned int num_channels = st->chip_info->num_adc_channels;
+> +	unsigned int offset = indio_dev->num_channels - st->chip_info->num_adc_channels;
+>  	struct device *dev = st->dev;
+>  	int ret;
+>  
+> @@ -364,7 +367,7 @@ static int ad7606_get_chan_config(struct ad7606_state *st, int ch,
+>  			continue;
+>  
+>  		/* channel number (here) is from 1 to num_channels */
+> -		if (reg == 0 || reg > num_channels) {
+> +		if (reg < offset  || reg > num_channels) {
 
------BEGIN PGP SIGNATURE-----
+Unwanted bonus space before ||
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ0YPjQAKCRB4tDGHoIJi
-0o0mAP9eMQn+s7a+nwThGQcGXUZk3MxtSyhd97ETN+/FCdpAnwD/TjydttMpZlx7
-H0cHGADUZ/iWOgOCSL15f0/lAuASKQE=
-=+O5v
------END PGP SIGNATURE-----
-
---mtIRv2w5CtHuPvfM--
+>  			dev_warn(dev,
+>  				 "Invalid channel number (ignoring): %d\n", reg);
+>  			continue;
+> @@ -399,9 +402,10 @@ static int ad7606_get_chan_config(struct ad7606_state *st, int ch,
+>  	return 0;
+>  }
 

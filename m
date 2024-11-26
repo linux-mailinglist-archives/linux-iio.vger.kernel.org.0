@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-12693-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12694-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F14C9D9CE8
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 18:52:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F509D9CF5
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 18:56:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33C712846C4
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 17:52:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710C2168E22
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 17:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDC01DBB3A;
-	Tue, 26 Nov 2024 17:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B251DC05F;
+	Tue, 26 Nov 2024 17:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRD1dSon"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9tP9kc4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF47E182BC;
-	Tue, 26 Nov 2024 17:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE39D299;
+	Tue, 26 Nov 2024 17:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732643543; cv=none; b=lAthDVjtR7WqBPeWiWp4YlNoRgf9E6bLohUQtUV8N4BxDRztMVqU9v0a1+xQW0bZOhWqctDopkBDzpISak5Ns2k+hyIVXjy87HzxxvyDnqVAorV/baTW1TToBA72g07wDwiEZMZYaxikaajJjSWhuZhXqPR7NgPHZBq4OyKO+F4=
+	t=1732643759; cv=none; b=VupR/XvGGAJPbH6oxqwEtpE7yMCWlN8mv4l/dZWHxXEkI04eFPcIljk/XaoHbqL0aQAoPZNcecc43nuFq6pP1x2HunwcocQTSgaI4rkMekkJTiBTbYdVMI+2VhXUo+jW0JnE4N4RGk7TCE1E/DKqrcsIYqaPJmnZdvAfEBobg7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732643543; c=relaxed/simple;
-	bh=2OlL0GsjxaKsdejys6yGzAHyzOBtwoE5UhPw64LeQTI=;
+	s=arc-20240116; t=1732643759; c=relaxed/simple;
+	bh=sTKoC9YKhu+oFp76F51sgmnd3VaGGAems4jRqoVjgJ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UEIEAmom4Tnn95ZmU7SlCuhse7olE1FV69RIIz1k70msK26F8IutiM9u5LyG8RKQL74pjGoxvv1wg3+mdWw1ZQRj2wy7UfkXPKSozRAww9wKrSgjDbUSrsrtoaAJK+muZ3Faf/tBY2KmkaFfrHjqepwpRNIA2/vEjnCrIR1i0IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRD1dSon; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51F28C4CECF;
-	Tue, 26 Nov 2024 17:52:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AIcCIsLioQ30NnaFjY9NO6kZyXtWeqxEkVgqyJlOtS/VB89NwGrkj0CLm9OiJMKx+/HY5dc09P/aA3JTM1m2NRv05HpTrDCKEqTbJvA5MXcGt5J4U4IQm5ld3bd5SPC93vXfbEgK+FX7iBsrXmKtZ3xZxQbp8LynCCfHYbVpczM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9tP9kc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C682BC4CECF;
+	Tue, 26 Nov 2024 17:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732643543;
-	bh=2OlL0GsjxaKsdejys6yGzAHyzOBtwoE5UhPw64LeQTI=;
+	s=k20201202; t=1732643758;
+	bh=sTKoC9YKhu+oFp76F51sgmnd3VaGGAems4jRqoVjgJ0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uRD1dSonxcxCzafOhwLWHrsnUfqvFtGBfYuwmHBBxTcWXCsNW2yFCWaprM6iai/Za
-	 z8jconqnO9bm3xzHXJWtuznKRMTOruscBm080Cc133OwJj5fIAgTmqKrggvqPIg4X3
-	 0q98ZdxG028OTGVrdRKaE0c1+yjHbiUBnExjU89m2Qix/tpzTPpT1fqWoW2SdlnWcN
-	 V1vNLZyAl3McXHsOumSQqZPXCyX3R72kuyg/wR4XunWfKZL4KKPx5ryVDYgX0+/av6
-	 F1k7hl5vAyNcvtEEH+j+/grD+/Z8Logk+Axxwz+doHNTRX8+6r4PmFUnl7gwiAfiY0
-	 nuO/oStPs5VIQ==
-Date: Tue, 26 Nov 2024 17:52:14 +0000
+	b=P9tP9kc45VwSR3Kgvb34ekHuEUF2+b0X76qO1aHly2FoCCy7OVJHDPjMBGzTEMWYy
+	 aZsMhw9IpPtsV/d2IhBeqLlVdjyUREVMCR7nX24UKdaY0eiWh8DPNYtng7hfcWzm4G
+	 jmCbGe96AiwD/4FFm66CE6avYG+Xgrsh1NHpvQi+tXFbBWvQG4riFUQ/ioJVTa8dkD
+	 9mCWmOzXCM+QiBanfcmnfVY6sS+44M7lD3rf/hwc6VX1hkph/J9/JZrO94/gw3hHdX
+	 fUqgk+2NpgZykIBFb5N0rfb3tdHuxSMeHJ+ilRqX9i1DUuZZEUZJJ3HCVqrV+ivP03
+	 mjkNcl+SSoqDw==
+Date: Tue, 26 Nov 2024 17:55:50 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -49,13 +49,13 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/8] iio: gts: Simplify using __free
-Message-ID: <20241126175214.76609ba9@jic23-huawei>
-In-Reply-To: <964035d9-cccd-4e12-af71-00ca39cc3596@gmail.com>
+Subject: Re: [PATCH v2 3/8] iio: accel: kx022a: Use cleanup.h helpers
+Message-ID: <20241126175550.4a8bedf3@jic23-huawei>
+In-Reply-To: <bda7eaff-1315-46d0-83b4-a14060c2af1c@gmail.com>
 References: <cover.1732105157.git.mazziesaccount@gmail.com>
-	<5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
-	<20241123163713.2ec03a37@jic23-huawei>
-	<964035d9-cccd-4e12-af71-00ca39cc3596@gmail.com>
+	<037985fe50fe79c79b9df95fa7b4e577378f9a60.1732105157.git.mazziesaccount@gmail.com>
+	<20241123164223.25656985@jic23-huawei>
+	<bda7eaff-1315-46d0-83b4-a14060c2af1c@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,109 +66,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Nov 2024 11:16:22 +0200
+On Mon, 25 Nov 2024 11:34:36 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Jonathan,
+> Hello Jonathan,
 > 
-> Thanks once again for the review :)
+> Thanks again!
 > 
-> On 23/11/2024 18:37, Jonathan Cameron wrote:
-> > On Thu, 21 Nov 2024 10:20:07 +0200
+> On 23/11/2024 18:42, Jonathan Cameron wrote:
+> > On Thu, 21 Nov 2024 10:20:23 +0200
 > > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   
-> >> The error path in the gain_to_scaletables() uses goto for unwinding an
-> >> allocation on failure. This can be slightly simplified by using the
-> >> automated free when exiting the scope.
+> >> A few functions in KX022A need to use mutex for protecting the
+> >> enabling/disabling of the measurement while configurations are being
+> >> made. Some of the functions can be slightly simplified by using the
+> >> __cleanup based scoped mutexes, which allows dropping the goto based
+> >> unlocking at error path.
 > >>
-> >> Use __free(kfree) and drop the goto based error handling.
+> >> Simplify error paths using guard(mutex).
 > >>
-> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> >>
-> >> ---
-> >>
-> >> Revision history:
-> >>    v1 => v2:
-> >>    - patch number changed because a change was added to the series.
-> >>    - rebased on iio/testing to avoid conflicts with queued fixes
-> >> ---
-> >>   drivers/iio/industrialio-gts-helper.c | 19 ++++++++-----------
-> >>   1 file changed, 8 insertions(+), 11 deletions(-)
-> >>
-> >> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> >> index 291c0fc332c9..602d3d338e66 100644
-> >> --- a/drivers/iio/industrialio-gts-helper.c
-> >> +++ b/drivers/iio/industrialio-gts-helper.c
-> >> @@ -4,6 +4,7 @@
-> >>    * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
-> >>    */
-> >>   
-> >> +#include <linux/cleanup.h>
-> >>   #include <linux/device.h>
-> >>   #include <linux/errno.h>
-> >>   #include <linux/export.h>
-> >> @@ -167,8 +168,8 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
-> >>   
-> >>   static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
-> >>   {
-> >> -	int i, j, new_idx, time_idx, ret = 0;
-> >> -	int *all_gains;
-> >> +	int ret, i, j, new_idx, time_idx;
-> >> +	int *all_gains __free(kfree) = NULL;  
-> > See the docs in cleanup.h (added recently).
-> > 
-> > Constructor and destructor should go together.   Dan wrote good docs on this
-> > (which are now in cleanup.h) so I'll not go into why!  
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> > Now we have guard(), the main reason (I think) for the
+> > combined on + lock and off + unlock paths is gone. So can
+> > we just flatten those and do the locking at caller.  
 > 
-> I went through the cleanup.h, and noticed the nice explanation for the 
-> pitfall where we have multiple "scoped operations" with specific 
-> ordering required. I didn't see other reasoning beyond that - I do hope 
-> I didn't miss anything.
+> I did consider this too :)
 > 
-> I find introducing variables mid-function very confusing. Only exception 
-> for this has been introducing temporary variables at the start of a 
-> block, to reduce the scope. I would still like to avoid this when it 
-> isn't absolutely necessary, as it bleeds my eyes :)
-> 
-> I really don't see why we would have other cleanups which required 
-> specific ordering with the allocated "all_gains".
-> 
-> Anyways, if you think we really have a problem here, would it then 
-> suffice if I moved the:
-> 
->          gain_bytes = array_size(gts->num_hwgain, sizeof(int));
->          all_gains = kcalloc(gts->num_itime, gain_bytes, GFP_KERNEL);
->          if (!all_gains)
->                  return -ENOMEM;
-> 
-> to the beginning of the function, and the "int *all_gains __free(kfree) 
-> = NULL;" as last variable declaration?
-> 
+> Why I decided to keep it as it is, (even though we need the extra 
+> mutex_unlock() at certain error path) is because I kind of like the 
+> lock+off and unlock+on functions. This locking does not protect data, 
+> but really a sequence of operations that needs to be done while sensor 
+> is OFF state. It's almost like a doc saying that "please, ensure the 
+> sensor is OFF for the following operations" :)
 
-No.  You need to follow the standard way. It is something we are
-all getting used to, but all use of cleanup.h needs to follow same rules
-so that reviewers find it easy to review once they are seeing lots of
-instances of it.
+hmm.  I really don't like them because they are 'unusual'  :)
 
-Many indeed find this ugly but reality is it's happening all over the place
-just usually hidden in a macro.  From cleanup.h look at how
-guard() works for instance.
+I'd argue they just ensure a sequence of writes go in as an atomic thing.
+Two of those writes happen to be turn it off and turn it on.
+
+So the data the are protecting is the device internal state data.
+
+> 
+> (Another thing is that we do claim the direct mode in write_raw, and 
+> goto is still handy for releasing it. Scoped guards won't play nicely 
+> with goto. Yes, we could probably use the __cleanup for direct mode, but 
+> I still like the lock+off, unlock+on for the reason above)
+There is a nice new cleanup that David did to make the direct mode
+handling much cleaner.
+
+	if_not_cond_guard(iio_claim_direct_try, indio_dev)
+		return -EBUSY;
 
 
-Jonathan
-
-> (This is not optimal as we will then do the allocation even if 
-> converting gains to scales failed - but I don't think this is a real 
-> problem as this should never happen after the driver is proven working 
-> for the first time).
-> 
-> > Upshot is this goes where you do the kcalloc, not up here.  
-> 
-> *whining* "but, but, but ... it is ugly..." :)
-
-:)  It won't look ugly after a few years!
 > 
 > Yours,
 > 	-- Matti
+> 
 
 

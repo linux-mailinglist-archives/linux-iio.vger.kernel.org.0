@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-12682-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12683-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBF99D9966
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 15:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22379D996D
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 15:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 064121626FD
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 14:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A252F16721A
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 14:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87EB51D63E8;
-	Tue, 26 Nov 2024 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B403C1D5AD3;
+	Tue, 26 Nov 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKC1m2el"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YPstQx2Y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6F7168B1;
-	Tue, 26 Nov 2024 14:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C822EAE6;
+	Tue, 26 Nov 2024 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732630505; cv=none; b=EMqIoR3Bl+37upP9/e8I4ylYqdNCtK1e8gi1wH8WUnv66ZXxNIW+GosMdCh2LA41AsADfCN0qjhKRL1WuPLa7JdLO24D5L7FudD7Uoa/0aUiDBFgZzRUyzaMuRAEQrhIi+6C7EHnOlTqFOcoWy6JjDF1vkSdxislyVEVQ59v/hk=
+	t=1732630572; cv=none; b=Lekjc0OTdHQzuweXJpPdew8wn4teQjFLYXXcFr8D/t9hAfD+FW3gezfbp1so1p5v77HPI0R3/YoO2BmY9IHfd4OlcIoQCzaPSINor9JeQN2kZZy5eUA1fWFz681L5wB+RlYZumG+BZeNDT2U6ZzJ8va4JcbCeHNM1zzo/F/lb98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732630505; c=relaxed/simple;
-	bh=H9zJ275NOohexzkWShV69p1m/fjJ/1cYjKsZnXgrn34=;
+	s=arc-20240116; t=1732630572; c=relaxed/simple;
+	bh=I0z5NGCjDqT2SS9cQr4ENYsZ84Bi4HR8cOZurH91D8w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MNRhOd/mlqlGoiPSdcIXHgIrvT0FuZ5iByd7nHhTrfFLaqWYIdVkFoiEOz0SGmWvKYaNCgEo5WRKAGtJnh394SX+ANUSfDvghvhT27h+YHAoWQG+kLxgajc0RF5ybMA1NbM0mt4Jdmp0OnsKiDxqmfUaSoK8Q6wNfIlMGRXIsPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKC1m2el; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8A8C4CED0;
-	Tue, 26 Nov 2024 14:15:01 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=pu8gWnoOnsTzC1iFxqhIp7XTdwgMy9YPqVnxuz+/80DjVvbgbq98QmgM8y9skQNp/HEUws/UPr4/OL6HiezDKpz/w55PCrTpUhc0Zm5i/ejcdbg78sd1/sf1E2m+l2JIFc6fFZZJp4EI9kdHiOU1rdcbIUfdpoQaNoNuQxCR4p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YPstQx2Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C0BC4CECF;
+	Tue, 26 Nov 2024 14:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732630504;
-	bh=H9zJ275NOohexzkWShV69p1m/fjJ/1cYjKsZnXgrn34=;
+	s=k20201202; t=1732630572;
+	bh=I0z5NGCjDqT2SS9cQr4ENYsZ84Bi4HR8cOZurH91D8w=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dKC1m2elZfCk2tGhN4zFvUJzc+W2I40kBJ/KiUPJ6sIQlIrarJTwWVDSkUVLJYTyj
-	 UPnAD3TofL7hpX+MRJWVK5WeIVe04QaGrSq6pkN7o5LjEgvWK1FEpXB1zmA89nBNVG
-	 IpfDZzOMh0qOFTNzfCESFH++Vi+G5pSyKhhkXATu2FH9BL6RMdXig/h2tXSn7Q1vtP
-	 GUfvxFmnlx/BAzDqZOChbxwAQ4w5uKmCQ1GBKQLNiqvHPcqU0cYCvNQwU5ykYyhDZy
-	 oJxymIhBjHSMwb7lRpsP7/eFHTkPUrU1jOGDRqaF8Gsm4YnPrYGijLZ8zRUl+KzQXn
-	 pW/XZrLDAHrOA==
-Message-ID: <0c5929f6-6210-4b36-95ef-79bc7028b351@kernel.org>
-Date: Tue, 26 Nov 2024 15:15:00 +0100
+	b=YPstQx2Y6NnzTW34GYSyM4Lk5/XnRl6memiQi76BvdE/R9RDS5KfFOm4mQOK7Ajmh
+	 SQvpKeNZzg5Z6k03NlRq4UHh9kRLx8lt82tplaz6Q7gSFHT9G6jm8MviwEBOoyeMKT
+	 P6VzIZMMD0SbrgGYaO+YKXNmUapS9wsJUVokiWyxtZBbEyjUfSCdKYVdnZPhNL0X3D
+	 VCfixzPj+H7VOMv9Jgs3nHOoGwJO8pc/NwNR1OrKdZ0v2NJUEp/gxgSNck15gGsrql
+	 RKeedajGtVS2djvvPlLxdFVwF9DvhPBtMWuvKqH8gMhBwsa5Lo4UqkvWdvTG2XXS4g
+	 9zy7cu/15ZZXw==
+Message-ID: <efa8fd22-ca67-4cb1-a8b0-41c86ba58153@kernel.org>
+Date: Tue, 26 Nov 2024 15:16:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/2] Support for Texas Instruments OPT4060 RGBW Color
- sensor.
+Subject: Re: [PATCH v7 2/2] iio: light: Add support for TI OPT4060 color
+ sensor
 To: Per-Daniel Olsson <perdaniel.olsson@axis.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -60,6 +60,7 @@ To: Per-Daniel Olsson <perdaniel.olsson@axis.com>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, rickard.andersson@axis.com, kernel@axis.com
 References: <20241126140002.1564564-1-perdaniel.olsson@axis.com>
+ <20241126140002.1564564-3-perdaniel.olsson@axis.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,42 +106,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241126140002.1564564-1-perdaniel.olsson@axis.com>
+In-Reply-To: <20241126140002.1564564-3-perdaniel.olsson@axis.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 26/11/2024 15:00, Per-Daniel Olsson wrote:
-> This patch series adds support for Texas Instruments OPT4060 RGBW Color sensor
-> using the i2c interface.
-> 
-> The driver exposes raw adc values for red, green, blue and clear. The
-> illuminance is exposed as a calculated value in lux, the calculation uses the
-> wide spectrum green channel as base. The driver supports scaled values for red,
-> green and blue. The raw values are scaled so that for a particular test light
-> source, typically white, the measurement intensity is the same across the
-> different color channels. Integration time can be configured through sysfs as
-> well. The OPT4060 sensor supports both rising and falling threshold interrupts.
-> These interrupts are exposed as IIO events. The driver also implements an IIO
-> triggered buffer with a trigger for conversion ready interrupts.
-> 
-> Changes in v7:
-> - Calculation for scaled values changed to remove normalization.
-> - Fixed alignment in opt4060_write_ev_period(...).
-> - Fixed alignment in opt4060_read_ev_period(...).
-> - Updates state to bool in opt4060_write_event_config(...).
-> - dt-bindings: Define vdd-supply as required.
-> - dt-bindings: Removed description of vdd-supply.
-> - dt-bindings: Removed "Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>"
->   due to changes.
-This is a bug surprise. Because you dropped description of vdd-supply?
-No, that's not a reason to request a re-review.
+> +
+> +The driver supports scaled values for red, green and blue. The raw values are
+> +scaled so that for a particular test light source, typically white, the
+> +measurement intensity is the same across the different color channels. This is
+> +calculated in the following way:
+> +
+> +R = RED_RAW x 2.4
+> +G = GREEN_RAW x 1.0
+> +B = BLUE_RAW x 1.3
+> +
+> +The values are accessed from:
+> +/sys/bus/iio/devices/iio:deviceX/in_intensity_red_scale
+> +/sys/bus/iio/devices/iio:deviceX/in_intensity_green_scale
+> +/sys/bus/iio/devices/iio:deviceX/in_intensity_blue_scale
+> +
+> +The data sheet suggests using the scaled values to normalize the scaled R, G
+> +and B values. This is useful to get a value for the ratio between colors
+> +independent of light intensity. A userspace appliction can do this in the
+> +following way:
+> +
+> +R_NORMALIZED = R / (R + G + B)
+> +G_NORMALIZED = G / (R + G + B)
+> +B_NORMALIZED = B / (R + G + B)
+> +
+> +See section 8.4.5.2 in the data sheet for additional details.
+> \ No newline at end of file
 
-Please read submitting patches document.
 
-Keep the tag. I really do not expect more changes to the binding at
-point of v6 or v7, especially ones so serious that result in dropping tags.
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+You still have patch warnings.
 
 Best regards,
 Krzysztof

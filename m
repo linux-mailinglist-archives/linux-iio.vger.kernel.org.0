@@ -1,81 +1,77 @@
-Return-Path: <linux-iio+bounces-12716-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12717-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647139D9F78
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 00:15:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE6D0168A3C
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 23:15:39 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACD31DE2CE;
-	Tue, 26 Nov 2024 23:15:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="nIhXZ8Bn"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AB09D9F7C
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 00:16:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C44199935;
-	Tue, 26 Nov 2024 23:15:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34711282563
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Nov 2024 23:16:22 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE821DF971;
+	Tue, 26 Nov 2024 23:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="jlNYVX0c"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545AB199935;
+	Tue, 26 Nov 2024 23:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732662938; cv=none; b=c6OlFX9UK++pTmkD23pG2pFB6He/nxxugoBZabRnDA39FMnpUDvNjhtdTRMW26KLgzdwHOTCalWn9lS2eSLDtovl8KF3cPIlv0KIrLyawXydGbGmg52YfyVtMioCs7Kh6MHBTsk8Se78z2dfBhdL0tuPIELdJp6mHh7I28p/2vY=
+	t=1732662978; cv=none; b=GMetHZxGIiR/+b/r+pvdmw11rKF1WQ5tZ1tKNJShdd4lmVNe6WTfg2FxlzWS6lse8PFhaeyUjtyE8/OJ+15SfM/WAl92De/r80h3c4zWXbH0ATPuyzHKlkGWCklzoJ22lizNN3ffpCLBlUreEGze+LjXg0UuYx7/65VffX6y71Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732662938; c=relaxed/simple;
-	bh=iY/Knmgd+T9lZnFhfWMnieGLUHLgrGd9wTEcikePfHQ=;
+	s=arc-20240116; t=1732662978; c=relaxed/simple;
+	bh=LHfl5uf4OUxuRyZMtrgPR7+lm2rc4DSaGKM1rtAFcWE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t7QOh23NoSlDFUdwtE1KQXp9iaw/0ApbbNdFKG6McswplQrOmj27jT53Houd0FgUgHoAC+g9OVMAILiKeveIfobO5s7VfDzn0MOi1ahVQmaJ1SxpxZpnPNLN4OZtF7O1Cqgme2sE/6SFbkEYdfmQpWgioifqJSFAachze9j1fC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=nIhXZ8Bn; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=QykuUpXXgSbCtCzbImrSQ2d2IhEXWblk6BJlz9dFXBzfpJfd4X7JpR7zJm1q0gOs8dd0ZS68xgqHrwz6Bs61U1io5QYwMJN2GowcLkYXvq3LrVdyEcDYh/Nu3uD87xdri++TzUnKZ7pc1yIWtRitnYLPPVm93nDLEkj4/7Aw4KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=jlNYVX0c; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQJwUp4014757;
-	Tue, 26 Nov 2024 18:15:22 -0500
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQM7sAE007911;
+	Tue, 26 Nov 2024 18:15:54 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=09kVF
-	gi3vwjRzokajQMe1DYNd+SySHgePPAr9FZ4qz8=; b=nIhXZ8Bnycv4e/G9EwZsZ
-	JNMZ2t3bzRpcnG2ak1Bf8P7cSetjvGwHN7ir8PrJ0JIjdYjyLYbAYTw1EHGK60tz
-	GRNU16CIAV+SAp/h1pi6W8S3ORCeN4QwXsUH9rH8Vx0Tx+Oa/87fjLR1rmoJZ5kf
-	8FgpW7MrQ/K1G19mDqaoYvT+nEyWf8RjBQjbJqPIMeSAi0nR26P35QFOZenpaJT1
-	dDu3Qd0Ua+ScEMtQHIwwQ/CQogn/PUKQO8Q3rf3Jw2ezy+4nuVzD9/6JnvI//zja
-	zETx0H7KhXdnZqj/GEzC/2wVN1lQECiUYg8n15B/ztesSWokcDkrGev4DK/Pio0S
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=dWWsa
+	OTW4pk8/fGx3aVmoRzEo9LkdzNQxdEyeNyVyoE=; b=jlNYVX0c2uFiCfohbDvtM
+	s/WvacHEb7jHYN0fVVYuw1XhSolAJ9dePd9dr6FmCVb3RWb979Ol4pxJCU3HaQ93
+	1kvDuDFXjjvhty+8U1zbqeNCJn4Btf4wBSkUvmD/fxwp1L+ZRZ+vcmoPIfzE9BCS
+	AWTMLNz29JDg5zMCI3m2FHahohg+l87t+owRwBILce8FuKxZWllXTAW51WYVY3D9
+	4gkE9zxNqv7XkovdRRJKw+6sHpfYvPF3P75D803GTd1vu7p0QUqdRLg4DONqeu+F
+	r3FUy2bWUOVs+sBvwVOdM+fHAuRhCYWv04SlkhIzjiB2i5WIe9YrWon7XWvCi9hh
 	w==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 434pbd9gsv-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 435puwg7mc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 26 Nov 2024 18:15:22 -0500 (EST)
+	Tue, 26 Nov 2024 18:15:54 -0500 (EST)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4AQNFLnG037064
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4AQNFrqN037082
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 26 Nov 2024 18:15:21 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 26 Nov 2024 18:15:21 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 26 Nov 2024 18:15:20 -0500
+	Tue, 26 Nov 2024 18:15:53 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 26 Nov
+ 2024 18:15:53 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 26 Nov 2024 18:15:20 -0500
+ Transport; Tue, 26 Nov 2024 18:15:53 -0500
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AQNF73E017889;
-	Tue, 26 Nov 2024 18:15:10 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4AQNFTqJ017897;
+	Tue, 26 Nov 2024 18:15:33 -0500
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <marcelo.schmitt@analog.com>, <jic23@kernel.org>, <robh@kernel.org>,
         <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-        <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v4 1/4] dt-bindings: iio: adc: adi,ad4000: Add PulSAR
-Date: Tue, 26 Nov 2024 20:15:05 -0300
-Message-ID: <227873de1e9aa249504639da2241915541d089d5.1732660478.git.marcelo.schmitt@analog.com>
+        <marcelo.schmitt1@gmail.com>, David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v4 2/4] iio: adc: ad4000: Add timestamp channel
+Date: Tue, 26 Nov 2024 20:15:27 -0300
+Message-ID: <5ef3a87991ead98fe9469baac1cec098a4c7f928.1732660478.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1732660478.git.marcelo.schmitt@analog.com>
 References: <cover.1732660478.git.marcelo.schmitt@analog.com>
@@ -88,208 +84,272 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: B6svGxM2Yod5uezzcYFn0fPCXnxF31LF
-X-Proofpoint-ORIG-GUID: B6svGxM2Yod5uezzcYFn0fPCXnxF31LF
+X-Proofpoint-ORIG-GUID: yjAnKoMk2uOvevnbKnyucmBgU-lX6Kqh
+X-Proofpoint-GUID: yjAnKoMk2uOvevnbKnyucmBgU-lX6Kqh
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
- priorityscore=1501 suspectscore=0 lowpriorityscore=0 spamscore=0
- impostorscore=0 malwarescore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411260186
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411260187
 
-Extend the AD4000 series device tree documentation to also describe
-PulSAR devices.
+The ADC data is pushed to the IIO buffer along with timestamp but no
+timestamp channel was provided to retried the time data.
+Add a timestamp channel to provide sample capture time.
 
-The single-channel series of PulSAR devices is similar to the AD4000 series
-except PulSAR devices sample at slower rates and don't have a
-configuration register. Because PulSAR devices don't have a configuration
-register, they don't support all features of AD4000 devices and thus fewer
-interfaces are provided to user space. Also, while AD4000 may have their
-SDI pin connected to SPI host MOSI line, PulSAR SDI pin is never connected
-to MOSI.
-
-Some devices within the PulSAR series are just faster versions of others.
-From fastest to slowest, AD7980, AD7988-5, AD7686, AD7685, and AD7988-1 are
-all 16-bit pseudo-differential pin-for-pin compatible ADCs. Devices that
-only vary on the sample rate are documented with a common fallback
-compatible.
-
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
-Change log v3 -> v4
-- Sorted compatible strings in alphabetical order.
-- Left only fallback compatibles in allOf check list for adi,sdi-pin property.
-- Improved patch description with explanation about how the AD4000 and PulSAR
-  devices are different.
+ drivers/iio/adc/ad4000.c | 98 +++++++++++++++++++++++-----------------
+ 1 file changed, 56 insertions(+), 42 deletions(-)
 
-Well, I didn't manage to get a dtbs_check message for all the cases I was
-expecting to cover, yet. I trust the test done by maintainers while I don't
-figure out what's wrong with my setup.
-
-FWIW, here's what I tried:
-
-Cloned dt-binding tree from git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git
-Fetched and checked out dt/next branch.
-Applied AD4000/PulSAR patches.
-- <62dd96ac9cd> ("iio: adc: ad4000: fix reading unsigned data")
-- <8ebfd0925521> ("iio: adc: ad4000: Check for error code from devm_mutex_init() call")
-- the patches from this patch series
-
-Cloned dtc from git://git.kernel.org/pub/scm/utils/dtc/dtc.git into a directory
-at the same level of linux kernel source dir.
-
-Cloned dt-schema from https://github.com/devicetree-org/dt-schema.git into a
-directory at the same level of linux kernel source dir.
-Within dt-schema, 
-mkdir venv
-python3 -m venv venv/
-source venv/bin/activate
-python3 -m ensurepip --default-pip
-python3 -m pip install --upgrade pip setuptools wheel
-pip install yamllint
-pip install dtschema --upgrade
-pip install -e .
-
-export ARCH=arm; export CROSS_COMPILE=arm-linux-gnueabi-
-Ran `./scripts/dtc/update-dtc-source.sh` from the top level of Linux source tree.
-make defconfig
-Added zynq-coraz7s-ad7685.dts to arch/arm/boot/dts/xilinx/.
-Added zynq-coraz7s-ad7685.dtb to arch/arm/boot/dts/xilinx/Makefile.
-make -j4 dtbs_check # but it didn't print anything about adi,sdi-pin value.
-Changed the compatible from "adi,ad7685" to "adi,ad7687" and dtbs_check prints
-arch/arm/boot/dts/xilinx/zynq-coraz7s-ad7685.dtb: adc@0: adi,sdi-pin:0: 'sdi' is not one of ['high', 'low', 'cs']
-
--zynq-coraz7s-ad7685.dts file {
-// SPDX-License-Identifier: GPL-2.0
-
-/dts-v1/;
-#include "zynq-7000.dtsi"
-
-/ {
-	adc_vref: regulator-vref {
-		compatible = "regulator-fixed";
-		regulator-name = "EVAL 5V Vref";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		regulator-always-on;
-	};
-
-	adc_vdd: regulator-vdd {
-		compatible = "regulator-fixed";
-		regulator-name = "Eval VDD supply";
-		regulator-min-microvolt = <5000000>;
-		regulator-max-microvolt = <5000000>;
-		regulator-always-on;
-	};
-
-	adc_vio: regulator-vio {
-		compatible = "regulator-fixed";
-		regulator-name = "Eval VIO supply";
-		regulator-min-microvolt = <3300000>;
-		regulator-max-microvolt = <3300000>;
-		regulator-always-on;
-	};
-};
-
-&spi0 {
-	adc@0 {
-		compatible = "adi,ad7685";
-		reg = <0>;
-		spi-max-frequency = <40000000>;
-		vdd-supply = <&adc_vdd>;
-		vio-supply = <&adc_vio>;
-		ref-supply = <&adc_vref>;
-		adi,sdi-pin = "sdi";
-	};
-};
--} zynq-coraz7s-ad7685.dts file
-
- .../bindings/iio/adc/adi,ad4000.yaml          | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-index e413a9d8d2a2..3c1171c7f0e1 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-@@ -19,6 +19,20 @@ description: |
-     https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7685.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7686.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7687.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7688.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7690.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7691.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7693.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7942.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7946.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7980.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7982.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7983.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7984.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7988-1_7988-5.pdf
+diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
+index b3b82535f5c1..21731c4d31ee 100644
+--- a/drivers/iio/adc/ad4000.c
++++ b/drivers/iio/adc/ad4000.c
+@@ -49,6 +49,7 @@
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |				\
+ 			      BIT(IIO_CHAN_INFO_SCALE),				\
+ 	.info_mask_separate_available = _reg_access ? BIT(IIO_CHAN_INFO_SCALE) : 0,\
++	.scan_index = 0,							\
+ 	.scan_type = {								\
+ 		.sign = _sign,							\
+ 		.realbits = _real_bits,						\
+@@ -62,6 +63,12 @@
+ 	__AD4000_DIFF_CHANNEL((_sign), (_real_bits),				\
+ 				     ((_real_bits) > 16 ? 32 : 16), (_reg_access))
  
- $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
-@@ -63,6 +77,32 @@ properties:
- 
-       - const: adi,adaq4003
- 
-+      - items:
-+          - enum:
-+              - adi,ad7685
-+              - adi,ad7686
-+              - adi,ad7980
-+              - adi,ad7988-1
-+              - adi,ad7988-5
-+          - const: adi,ad7983
++#define AD4000_DIFF_CHANNELS(_sign, _real_bits, _reg_access)			\
++{										\
++	AD4000_DIFF_CHANNEL(_sign, _real_bits, _reg_access),			\
++	IIO_CHAN_SOFT_TIMESTAMP(1)						\
++}
 +
-+      - items:
-+          - enum:
-+              - adi,ad7688
-+              - adi,ad7693
-+          - const: adi,ad7687
-+
-+      - items:
-+          - enum:
-+              - adi,ad7690
-+              - adi,ad7982
-+              - adi,ad7984
-+          - const: adi,ad7691
-+
-+      - enum:
-+          - adi,ad7942
-+          - adi,ad7946
-+
-   reg:
-     maxItems: 1
+ #define __AD4000_PSEUDO_DIFF_CHANNEL(_sign, _real_bits, _storage_bits, _reg_access)\
+ {										\
+ 	.type = IIO_VOLTAGE,							\
+@@ -71,6 +78,7 @@
+ 			      BIT(IIO_CHAN_INFO_SCALE) |			\
+ 			      BIT(IIO_CHAN_INFO_OFFSET),			\
+ 	.info_mask_separate_available = _reg_access ? BIT(IIO_CHAN_INFO_SCALE) : 0,\
++	.scan_index = 0,							\
+ 	.scan_type = {								\
+ 		.sign = _sign,							\
+ 		.realbits = _real_bits,						\
+@@ -84,6 +92,12 @@
+ 	__AD4000_PSEUDO_DIFF_CHANNEL((_sign), (_real_bits),			\
+ 				     ((_real_bits) > 16 ? 32 : 16), (_reg_access))
  
-@@ -133,6 +173,22 @@ required:
-   - ref-supply
++#define AD4000_PSEUDO_DIFF_CHANNELS(_sign, _real_bits, _reg_access)		\
++{										\
++	AD4000_PSEUDO_DIFF_CHANNEL(_sign, _real_bits, _reg_access),		\
++	IIO_CHAN_SOFT_TIMESTAMP(1)						\
++}
++
+ static const char * const ad4000_power_supplies[] = {
+ 	"vdd", "vio"
+ };
+@@ -110,106 +124,106 @@ static const int ad4000_gains[] = {
  
- allOf:
-+  # Single-channel PulSAR devices have SDI either tied to VIO, GND, or host CS.
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad7687
-+              - adi,ad7691
-+              - adi,ad7942
-+              - adi,ad7946
-+              - adi,ad7983
-+    then:
-+      properties:
-+        adi,sdi-pin:
-+          enum: [ high, low, cs ]
-+          default: cs
-   # The configuration register can only be accessed if SDI is connected to MOSI
-   - if:
-       required:
+ struct ad4000_chip_info {
+ 	const char *dev_name;
+-	struct iio_chan_spec chan_spec;
+-	struct iio_chan_spec reg_access_chan_spec;
++	struct iio_chan_spec chan_spec[2];
++	struct iio_chan_spec reg_access_chan_spec[2];
+ 	bool has_hardware_gain;
+ };
+ 
+ static const struct ad4000_chip_info ad4000_chip_info = {
+ 	.dev_name = "ad4000",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4001_chip_info = {
+ 	.dev_name = "ad4001",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 16, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 16, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 16, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4002_chip_info = {
+ 	.dev_name = "ad4002",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4003_chip_info = {
+ 	.dev_name = "ad4003",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 18, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 18, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4004_chip_info = {
+ 	.dev_name = "ad4004",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4005_chip_info = {
+ 	.dev_name = "ad4005",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 16, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 16, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 16, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4006_chip_info = {
+ 	.dev_name = "ad4006",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4007_chip_info = {
+ 	.dev_name = "ad4007",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 18, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 18, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4008_chip_info = {
+ 	.dev_name = "ad4008",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 16, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 16, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4010_chip_info = {
+ 	.dev_name = "ad4010",
+-	.chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 0),
+-	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNEL('u', 18, 1),
++	.chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 0),
++	.reg_access_chan_spec = AD4000_PSEUDO_DIFF_CHANNELS('u', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4011_chip_info = {
+ 	.dev_name = "ad4011",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 18, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 18, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 18, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4020_chip_info = {
+ 	.dev_name = "ad4020",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 20, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 20, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 20, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 20, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4021_chip_info = {
+ 	.dev_name = "ad4021",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 20, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 20, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 20, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 20, 1),
+ };
+ 
+ static const struct ad4000_chip_info ad4022_chip_info = {
+ 	.dev_name = "ad4022",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 20, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 20, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 20, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 20, 1),
+ };
+ 
+ static const struct ad4000_chip_info adaq4001_chip_info = {
+ 	.dev_name = "adaq4001",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 16, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 16, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 16, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 16, 1),
+ 	.has_hardware_gain = true,
+ };
+ 
+ static const struct ad4000_chip_info adaq4003_chip_info = {
+ 	.dev_name = "adaq4003",
+-	.chan_spec = AD4000_DIFF_CHANNEL('s', 18, 0),
+-	.reg_access_chan_spec = AD4000_DIFF_CHANNEL('s', 18, 1),
++	.chan_spec = AD4000_DIFF_CHANNELS('s', 18, 0),
++	.reg_access_chan_spec = AD4000_DIFF_CHANNELS('s', 18, 1),
+ 	.has_hardware_gain = true,
+ };
+ 
+@@ -591,7 +605,7 @@ static int ad4000_probe(struct spi_device *spi)
+ 	switch (st->sdi_pin) {
+ 	case AD4000_SDI_MOSI:
+ 		indio_dev->info = &ad4000_reg_access_info;
+-		indio_dev->channels = &chip->reg_access_chan_spec;
++		indio_dev->channels = chip->reg_access_chan_spec;
+ 
+ 		/*
+ 		 * In "3-wire mode", the ADC SDI line must be kept high when
+@@ -603,7 +617,7 @@ static int ad4000_probe(struct spi_device *spi)
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		ret = ad4000_prepare_3wire_mode_message(st, indio_dev->channels);
++		ret = ad4000_prepare_3wire_mode_message(st, &indio_dev->channels[0]);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -614,16 +628,16 @@ static int ad4000_probe(struct spi_device *spi)
+ 		break;
+ 	case AD4000_SDI_VIO:
+ 		indio_dev->info = &ad4000_info;
+-		indio_dev->channels = &chip->chan_spec;
+-		ret = ad4000_prepare_3wire_mode_message(st, indio_dev->channels);
++		indio_dev->channels = chip->chan_spec;
++		ret = ad4000_prepare_3wire_mode_message(st, &indio_dev->channels[0]);
+ 		if (ret)
+ 			return ret;
+ 
+ 		break;
+ 	case AD4000_SDI_CS:
+ 		indio_dev->info = &ad4000_info;
+-		indio_dev->channels = &chip->chan_spec;
+-		ret = ad4000_prepare_4wire_mode_message(st, indio_dev->channels);
++		indio_dev->channels = chip->chan_spec;
++		ret = ad4000_prepare_4wire_mode_message(st, &indio_dev->channels[0]);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -637,7 +651,7 @@ static int ad4000_probe(struct spi_device *spi)
+ 	}
+ 
+ 	indio_dev->name = chip->dev_name;
+-	indio_dev->num_channels = 1;
++	indio_dev->num_channels = 2;
+ 
+ 	ret = devm_mutex_init(dev, &st->lock);
+ 	if (ret)
+@@ -658,7 +672,7 @@ static int ad4000_probe(struct spi_device *spi)
+ 		}
+ 	}
+ 
+-	ad4000_fill_scale_tbl(st, indio_dev->channels);
++	ad4000_fill_scale_tbl(st, &indio_dev->channels[0]);
+ 
+ 	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+ 					      &iio_pollfunc_store_time,
 -- 
 2.45.2
 

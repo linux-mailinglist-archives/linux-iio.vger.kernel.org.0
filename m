@@ -1,157 +1,192 @@
-Return-Path: <linux-iio+bounces-12720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12722-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4799D9FDF
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 01:01:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2109DA000
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 01:30:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDD58165A89
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 00:01:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A567284AD4
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 00:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC52A23;
-	Wed, 27 Nov 2024 00:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECC11C27;
+	Wed, 27 Nov 2024 00:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b="ETUKRSIe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LF6RzbQL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DBB322A
-	for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 00:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.176.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADE4A23;
+	Wed, 27 Nov 2024 00:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732665662; cv=none; b=it3NVUm51zGSbFcWNVoUIQiWt5OhJypjD207md9QRrUhPXKUoCStTygcGJFDeVNEDw/0uqft7fzjQ7HSNGyFNWqWP/f/6Xq0kHHY+FJvsJMXI2YZZgHit6mfbzsdR6awlCcG/J5k/r09V/7dykhBDcJAkUShEQeSXMv/g75wFkE=
+	t=1732667443; cv=none; b=QhG3CzrR6I1ZquzXod16R+WDRD9PHOgbyl8yE6NtWgmpGlnPLK3x4qlKeBnzpAAeQXoti1WO/z3FyDqnEemu12n2W7bVGCj5nd8CLdGDCdZl9wkmlzfaZgyjQ/DtEKcIW5vCnZdBClT0blcqg6KwZkOx5J4UHT8MVZi9v6Xx9jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732665662; c=relaxed/simple;
-	bh=wSnTftQjXX6IVevyMrORMn78ByIlh5J0F8vJt1MQnXk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:References; b=UroVwahQBygWeiQOfLkO56TzZwI0cimb4xyU/jkh6b21dcOCaZH/cBnNQmtYpkKsAsml5FkOVmicDad6i1ymhRGcipR7GYsasOdcTSB0OAEVSTb9LmgwmaWVGJT2elbbggrJbXfbl7i6on7HSbwXMrG7dd5eHm4/RGIeFm3fNOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com; spf=pass smtp.mailfrom=rocketmail.com; dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b=ETUKRSIe; arc=none smtp.client-ip=77.238.176.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rocketmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1732665658; bh=MgL+Y0R2nrnBm7+Isag/O8JP2FWkBIMIsTL0WZZiGH0=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=ETUKRSIeupNEVKjktPxYwY9EaMcEDSMNGMXKydJzTDQOQMbtRH68J2raVMjpSh99LBz8IPwqYczXMGNIF4jCU8wpeRuCO1IwaxaMnqVV8KDLRvcr+95v9RqYteg6s3CLqlybKC/90miL60cGlz7oS/5eYADtDBHjTxW8HwcEBMuz+WcMBnnM+BuQIICBxqECLHccEhbhoySiFsXe3dUpS3mUtwhJMTLImhg3SvFUry/k5oMBKEMGDHN4VTGOvYQLtzyTlXDnxzA0KiUpc0eaFxwzJlFRxHoqK72kGezvoM4VVfvJRt1bN2/qQcXuLE+Er0chyuGKmM7FSonzgC8qdg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1732665658; bh=P8frwMjJHijWeYSd8SvffR9oIrKOskb5WgXm/+dJ3s/=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=EKUg7TWguw3SKOvpcrxbW3ds0uanPDf7N9V/yvY4BRdwciO1MEJ18q9oBuLAsXBgZtMwUKsT6FRlupm9DhDTWUio+CHOSLBTOU1ndX7fSGGzyrbu/xpmhn1AQlRX//k1GNjAXVl5xoyvUhZanjUWuC6VxkeOk4yNrGYwX1b8AYRa+snymoyhYGMOtdIzNSnakMoWjRQUIgUhIL5Gx7eOGqHekzWt777XPasrQcIl30Y10xV4tvCsremA9tITB7eNNfiuvhHlriZDmyogIv9oe8NR+TMWV5fRj+HMG5EINgZGQUYVd5HlyGdHAnYiqm4uOQHxiTwdPUbavxEQ8r3t2g==
-X-YMail-OSG: 9rcZ73MVM1m1cw2dukGKTtFNYFlxJ03MMqfvacqEXKJIetLz2Dn4pzvbsaIJjr8
- diA1MEl3.gXJWdaFVtH.Nhi591wJG.Q8zZbMA2McImuPvQp0ChT78flK3tQf44d.lsm4i3ZIDwMr
- IBSzgEhFSZECZz7ainjEONQJX2Nlft6WPCAmnPMn5aHyULmtbNlskmxfRtuYqHK_p9VEwU_3Rti0
- F8wx5.bvWPgCS0q1HEJQoVi0X024gtkFRmL.Ts5g4Btg8k_sBoVsCXHU.n7gb4LRddd0kIZ6Z2b0
- WlpADe81f78d3huAkQw4e7vHhZHTbGIGHqwPZO9kPLEPtKx28gVggV6oawdPghvRd4aA9maZy19o
- q5LLN4IIbp9v4mVa96jPQ2uwAMZLi8r5VKQQv8e3ewckF_3JRbcyPMnDr4cHmSyMxbv97qqXtQXn
- P3gAts_jGn.SavlNgGN_9eh2U04.KUk9VgC1ooVywb1KZ4t7bBLa6d7G7Tf4zbD7e9u8c1RMN_H1
- Ma7FYhUCAQmMVpnhpAuCY45DTXGO7_40qO_iQxLeXvRJ_EJ2LQchMSP_orfse1OOtCNGtKxyw8As
- EiGN2EA2xSJY6FXHe10NLs_NWVXnexnrORdnVqpfkuLu_SLkZQBzRgZKGsmTZtoGQCvvyHcObKAB
- Cf6QTOzGIEDiRCfAbKxkgAPGuf0IXn5ooLsJetAs2oCN..5VfJJuwCMUHSBcEfxmoOk9jyU_cZQR
- gdDsjjU66EUny5HN9t3cxGOzYxKPrqFJ5Ash8ZU8B1ghS.e3i1._WO3.F.Fv.E1PmbGR9ECRSEId
- fNww4KyXYxf.iLUDkaR4CrVpnqJX.iSoeH6_U.V89vtUbE1akxFV92QZeAZXQibfMhHFkxCgbroo
- M0GTnvuXM6vqKXHbpkRwonHRDz7bdRPYZq0UWS5CK5fH4vj.ok7qq1wF.0hgSlSlFe402pnazfKu
- PWu6tOwMsP47JG1jkFyu4YdWQ6Tdg.97mKbDrWGvUeSF_qSLe6XkZoljkkFGHqtpugnRDbpoRuh7
- eW5U2M5BgRT65nyyAqSTxGjFmcUKoOExNYKkUUKZRP4IHN1wyCDemimcIGJXTzLOeyaSgx7VDUBU
- vvLgrS9a64dzx7.0JH6kNtHu6sszxGfFuKjW_L4fhVxKUSb6b053NK9ysKThp2OGnlNo0Z1aVJaH
- 19S5aOSHYHU7LOeZvws35G_Ek3_YBj6wCmrYST2NB.XtSkFchSOaizece1cKlmMri7nl_5jq2wS1
- 08EtjbZc7VczTyKkSRGXasBobNBaScwxJGuo7AdxTvuWB4fcgcE0uVfeWaodf7MY2DoVRBPzFmEF
- 72q9gYhiTS_x_HaKEsEHWTVGJVH2MEnE.vecZ_p0YMYX5Y2nphpVpv4sQbcQVyr6xwI0NEw6ZknF
- p.lvM3SPiUOv57UadyAZ_LM.G8qyfFHDj9Tl5yFskbhElgJikBWn2kNYCHNnSS3cvSXfWM5SuG67
- EZxxYbYuBT7Oosz3JoHqIFw4iSEAiIJCoz2baEu8GttIUg1nCrrWDJ36BK.rgQByTy7MRGve5YKD
- bktKfaGNiwXCa2Bu8KVW8D9bIpGgWK2KCUR8evrhmNbtKgUCs64GL48DrOWn5858ecPMP4gH08yY
- .qI3JlvuGNDWzpVQDo8rpSkMhDVKFhtju_KUkvcrx8456OWL_ga57I7wan1YpSwnzZ5XreAYj254
- hfrLlvCKUwdxdwzEznlwbLKQj8VmWeGWW3ddCOVCz3L3Y952GgEzyS6bOJtTEATqOWXLRl09w_vC
- GnIjCOQOzL654s4rnYpSSk_fUMZi0FxpJXquFwizRWin3yJm4o3MTkqEl.QHkRhIgbQfuaOtHuLz
- M6UMCP7gSSdg2s8gkblND_gmIXLPBhC14_o7NhvujQaR.Wtdr3StfwP_iF1Ot5qgzKwjrEsL7z0C
- x1ZGH3.BvUwJVu5UPv6PA6mJgwHr_nCVOALBrqrQeBa1Fpm.hd7q2CdVJuOYYDe2V1NBpbPh63Yz
- OrWOTuk1P7U9sg3wREOOOV2yVtTq.Uf3RAvLMcPd0YrQFsaRkmOEIvjLm5gbwCaR981m6hy1iHJn
- Pey6gumWXbzG7e5YVWziw9XR5.MCf5OFQByW.QlOZmsT7JfkLQJuT4VLqk_uJl9jcUSt2iPzHFkr
- angyWaHh5Wfr3qozEXz9Zehn9rAdzT1YPzywF62TsHgrl0ENeXNxnc5OlhOPqKrfNTYNmbzj.FdQ
- oK4XguY8PxzCtNnctAseOkxDK_CTDaBW1MgNrLHYVuB4pk.3Kg8ixtHiE9fpjTCfeTe5eypKcz7p
- DChlbRRJdFGCrnUh3Y4xUDu.XfvoQhQDCmWkctFRjVQ--
-X-Sonic-MF: <jahau@rocketmail.com>
-X-Sonic-ID: f08bebbc-9d09-4fe1-97ea-51ff3b275371
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Wed, 27 Nov 2024 00:00:58 +0000
-Received: by hermes--production-ir2-c694d79d9-qp6kn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID d91172f74165254868bee18e8bab607a;
-          Tue, 26 Nov 2024 23:40:38 +0000 (UTC)
-From: Jakob Hauser <jahau@rocketmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: David Laight <david.laight@aculab.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jakob Hauser <jahau@rocketmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] iio: magnetometer: yas530: Use signed integer type for clamp limits
-Date: Wed, 27 Nov 2024 00:40:21 +0100
-Message-Id: <20241126234021.19749-1-jahau@rocketmail.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1732667443; c=relaxed/simple;
+	bh=B/XP/5li46wEXl9jRgvnOXy0VBsDGFE+to1Hlxg9ikg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=L4NEZ0+qrA/RnU6BJ6zj2HF1Qh8aOxcPa+78lNfRQpTzczxd/sR+2LvH/KlpH59CcePgm6PBlikOnOh06pc3gpu3tM8U+Ru3rFpBqXqkE3lk0SSE9K4ONsGAl3siIKAUDZUFX1ZJr2o+AwA1orB+WabP/9Ox8a35pwhNKdtXoFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LF6RzbQL; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4315e9e9642so57253705e9.0;
+        Tue, 26 Nov 2024 16:30:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732667440; x=1733272240; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Ej8tv2A3HWZXC2wma35bhFGNWRxHqMQLJ4mpt4LT9Bk=;
+        b=LF6RzbQLCA+04o86SXHcLkQgWF+u4D3YnafKkE5gaYAOlc4G/YA5jaoKz3gsTpHb19
+         I/PYFRdwWQiSQ+k6Hi0wCXi/+NjmaO1qNto5JVBCOcuLt3hbT+gXjQS3689nlmvtObim
+         ag43KcMupEI/xMrCfyrKEV+kQDyLK9V+r/j4TDVW2/PRLoISMF4/bGd4FZ+fUVCl8xuW
+         FVFqalX6JSDF8EIatxIWwBrX9BWr4buEbAY21mxJo3XPtq6xFXHUwsjhEJpIOGAzTg23
+         fK7PxSqshTNr/N5klzZazVZhQ0eoPDpuEbo80jmYZyRXhsxNKkbTUmqcBQWOlR9cNhB6
+         247Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732667440; x=1733272240;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ej8tv2A3HWZXC2wma35bhFGNWRxHqMQLJ4mpt4LT9Bk=;
+        b=qxSu9dCY1gfj/uP0ceuuRWrL5O1zaZAqskhNGqQlGr1m09Iv5sG+u9gaX/VdeE2vCj
+         f7zuSh1M1U+MF1H7MojoniAHUfKPivGXjex2IeN0pocOh5O8TlOLI0FJtMK9NTFlqEJV
+         DgrMu+8m4p20QlQSkXoO0b5xQ3BbXbNybn7cujrwi30uHi5MtvWsYf6xcV1y4oskUw4A
+         xH6p67dRLvuYEIS26eupRE486P0lkvBfKLMKjZB3fZUql/LpyuX+2QY/newxJL7rEqJ1
+         uWF0LbevJH59J8u/k6B1RYLBlojs7URzEN4zjJ+L8H0PHXIHyYwA7tsZxvJm8Ek00ZCe
+         JxUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfEX8Cplxj4HbTd/QUpWM4Ne/NWGTfDaYFx4uYdsUgZGp62ewU5+JkWqrDQcswAawa08ksTTT4uSg=@vger.kernel.org, AJvYcCWgH3OJtwc2c24LW9URN0UIPsDcRhG60Popvvr75ni4ZLsKmx4VNo0jGIAwsfR0BA0bqYgVyiDQ@vger.kernel.org, AJvYcCX94igKltFjvOgBc03K+0NxwIyQWNTlGyFiJMuMxfkGIzT/4XZT6cGlcLwBoZ/AYsd9LHL51gmH/yJcIucS@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxj3wUCLFKpnELDRhlgnE6FwoJF8/qF4p2d5SB3rFa2LwX4hpwO
+	wDRiB9UGbfnqr6oRbP07yqX95FsOPIchEIE4l/1qkn+rsMyJfWit
+X-Gm-Gg: ASbGncvZXs+fU1jLXQOvyfBHmMH9Yz1TwNgnVZfAjsLPHcnu0oJHxM+TotV3XXEAbFj
+	OabZetLuu5PXP683vihTZXntHBr45ch0FLRDqIZlsL27IXbDHb74gZc58P3mW0gaaJctlbTVZCJ
+	psJ9/Lk4dsaUPGQG0jBvgiQMUQRKu2pQMbWZM8PthK8OyEytImUSRb5cicDYxzh1eDLwRQKyNMu
+	xwYND8uTAMw+kSmJEqtSmjhVQd6G2vs7sdLQ0ZoqntB0i2Xm2o9ksK7ExC7tys9V+IWuUso6hn+
+	sJv3f0lz3HexG/zhYQkxE2I/vIzuEUP/rV4T9KdQOirLrzyiHF/Kf/Ko7wm/xjxBN2thge9LIui
+	ksDLxChrTIFZ37P3A7er/arZXbsmYfjc8SmDNC3bRY74=
+X-Google-Smtp-Source: AGHT+IEPN/MJAsvPH/wHNl/SHEw0ZMIZ1SSH4y1SpB0BkcojvZudR4bbqDNjOWlU55rWqsIvScXncQ==
+X-Received: by 2002:a05:600c:5253:b0:434:9e1d:7629 with SMTP id 5b1f17b1804b1-434a9e07911mr8451625e9.33.1732667439604;
+        Tue, 26 Nov 2024 16:30:39 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:2880:ffb8:6aed:9f0d? (2a02-8389-41cf-e200-2880-ffb8-6aed-9f0d.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:2880:ffb8:6aed:9f0d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fbedf63sm14723779f8f.102.2024.11.26.16.30.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Nov 2024 16:30:38 -0800 (PST)
+Message-ID: <98feceae-2146-478b-8296-d3a41401dbf9@gmail.com>
+Date: Wed, 27 Nov 2024 01:30:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20241126234021.19749-1-jahau.ref@rocketmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/11] iio: adc: ti-ads1119: fix information leak in
+ triggered buffer
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Antoni Pokusinski <apokusinski01@gmail.com>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <jpaulo.silvagoncalves@gmail.com>, Gregor Boirie <gregor.boirie@parrot.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
+ <20241125-iio_memset_scan_holes-v1-2-0cb6e98d895c@gmail.com>
+ <20241126085958.GA13577@francesco-nb>
+ <59a4b096-101b-419d-8a19-1063d759b4e2@gmail.com>
+ <20241126185211.385f82c4@jic23-huawei> <D5WG58I3QIEL.7Y7EGKOC7AS8@gmail.com>
+Content-Language: en-US, de-AT
+In-Reply-To: <D5WG58I3QIEL.7Y7EGKOC7AS8@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-In the function yas537_measure() there is a clamp_val() with limits of
--BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The BIT()
-is of type unsigned long integer due to its define in include/vdso/bits.h.
-The lower limit -BIT(13) is recognized as -8192 but expressed as an unsigned
-long integer. The size of an unsigned long integer differs between 32-bit and
-64-bit architectures. Converting this to type s32 may lead to undesired
-behavior.
+On 26/11/2024 23:00, Javier Carrasco wrote:
+> On Tue Nov 26, 2024 at 7:52 PM CET, Jonathan Cameron wrote:
+>> On Tue, 26 Nov 2024 10:46:37 +0100
+>> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+>>
+>>> On 26/11/2024 09:59, Francesco Dolcini wrote:
+>>>> On Mon, Nov 25, 2024 at 10:16:10PM +0100, Javier Carrasco wrote:
+>>>>> The 'scan' local struct is used to push data to user space from a
+>>>>> triggered buffer, but it has a hole between the sample (unsigned int)
+>>>>> and the timestamp. This hole is never initialized.
+>>>>>
+>>>>> Initialize the struct to zero before using it to avoid pushing
+>>>>> uninitialized information to userspace.
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+>>>>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>>>>> ---
+>>>>>  drivers/iio/adc/ti-ads1119.c | 2 ++
+>>>>>  1 file changed, 2 insertions(+)
+>>>>>
+>>>>> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+>>>>> index e9d9d4d46d38..2615a275acb3 100644
+>>>>> --- a/drivers/iio/adc/ti-ads1119.c
+>>>>> +++ b/drivers/iio/adc/ti-ads1119.c
+>>>>> @@ -506,6 +506,8 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
+>>>>>  	unsigned int index;
+>>>>>  	int ret;
+>>>>>
+>>>>> +	memset(&scan, 0, sizeof(scan));
+>>>>
+>>>> Did you consider adding a reserved field after sample and just
+>>>> initializing that one to zero?
+>>>>
+>>>> It seems a trivial optimization not adding much value, but I thought about
+>>>> it, so I'd like to be sure you considered it.
+>>>>
+>>>> In any case, the change is fine.
+>>>>
+>>>> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+>>>>
+>>>> Thanks,
+>>>> Francesco
+>>>>
+>>>
+>>> Hi Francesco, thanks for your review.
+>>>
+>>> In this particular case where unsigned int is used for the sample, the
+>>> padding would _in theory_ depend on the architecture. The size of the
+>>> unsigned int is usually 4 bytes, but the standard only specifies that it
+>>> must be able to contain values in the [0, 65535] range i.e. 2 bytes.
+>>> That is indeed theory, and I don't know if there is a real case where a
+>>> new version of Linux is able to run on an architecture that uses 2 bytes
+>>> for an int. I guess there is not, but better safe than sorry.
+>> Using an unsigned int here is a bug as well as we should present consistent
+>> formatted data whatever the architecture.
+> 
+> Would you prefer that in the same patch as they are related issues? I
+> could switch to u32 in v2 along with anything else that might arise in
+> the reviews of the rest of the series.
+> If you prefer a separate patch, that's fine too.
+> 
 
-Declaring a signed integer with a value of BIT(13) allows to use it more
-specifically as a negative value on the lower clamp limit.
+Although now that I am looking into it, and according to the datasheet
+and defined scan_type, the right size should be s16.
 
-While at it, replace all BIT(13) in the function yas537_measure() by the signed
-integer.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@intel.com/
-Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
-Cc: David Laight <david.laight@aculab.com>
-Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
----
-The patch is based on torvalds/linux v6.12.
-
-The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characters per
-line. In terms of readability I would prefer to keep it that way.
----
- drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 65011a8598d3..938b35536e0d 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
- 	u8 data[8];
- 	u16 xy1y2[3];
- 	s32 h[3], s[3];
-+	int half_range = BIT(13);
- 	int i, ret;
- 
- 	mutex_lock(&yas5xx->lock);
-@@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
- 	/* The second version of YAS537 needs to include calibration coefficients */
- 	if (yas5xx->version == YAS537_VERSION_1) {
- 		for (i = 0; i < 3; i++)
--			s[i] = xy1y2[i] - BIT(13);
--		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / BIT(13);
--		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / BIT(13);
--		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / BIT(13);
-+			s[i] = xy1y2[i] - half_range;
-+		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / half_range;
-+		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / half_range;
-+		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / half_range;
- 		for (i = 0; i < 3; i++) {
--			clamp_val(h[i], -BIT(13), BIT(13) - 1);
--			xy1y2[i] = h[i] + BIT(13);
-+			clamp_val(h[i], -half_range, half_range - 1);
-+			xy1y2[i] = h[i] + half_range;
- 		}
- 	}
- 
--- 
-2.43.0
+>>>
+>>> We could be more specific with u32 for the sample and then add the
+>>> reserved field, but I would still prefer a memset() for this small
+>>> struct. Adding and initializing a reserved field looks a bit artificial
+>>> to me, especially for such marginal gains.
+>> Issue with reserved fields is we would have to be very very careful to spot them
+>> all.  A memset avoids that care being needed.
+>>
+>> Jonathan
+>>
+>>>
+>>> Moreover, the common practice (at least in IIO)is a plain memset() to
+>>> initialize struct holes, and such common patterns are easier to maintain :)
+>>>
+>>> Best regards,
+>>> Javier Carrasco
+> 
 
 

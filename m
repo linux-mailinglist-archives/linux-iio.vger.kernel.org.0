@@ -1,163 +1,164 @@
-Return-Path: <linux-iio+bounces-12735-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12734-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948AA9DAA32
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 15:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC719DA9FB
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 15:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B759B21ADB
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 14:56:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21100B219C7
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 14:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFF81FECB9;
-	Wed, 27 Nov 2024 14:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC031FF7B9;
+	Wed, 27 Nov 2024 14:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="uSkasu0o"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EDFz+eZL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2977B652;
-	Wed, 27 Nov 2024 14:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5231FF7B5
+	for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 14:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732719389; cv=none; b=MTkGRRH4iFg6XCPKrFPX2wxMacp/t0W1zOCAF7deVmaAOgLXjvRXFJyCkgBULP7Qy0LVs2epgZLdWjUpZpkl8jUUXxRDPcXPS5oP+AZunrjPTFeJ1padMIctjxrxtPAkPMtyNjpDHFqcsH95njCwkYotH0hQStNijPtXp1pMV7E=
+	t=1732718321; cv=none; b=V8u4jm29+Sax9z+lmINYLEPpzXIiDLAoZ7DWdx9uwM3iVnBVVgWD9nuV8SCtnHV2gVLBoWNW5vmJhLSxj8gNQci2BR6uW9jZpvVjiuk4Ow79IROy1hhCl3ysoCBUeOAHoRvPVjTiTAHzi2sBwChcxwEIcz+CqcGUSDYwmJ5iesM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732719389; c=relaxed/simple;
-	bh=M/NdxOAaNIL6CiYkw4VLeriip1/S8ODkeGJdPDxjnRg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IIPKiJwbFK5eZbRJi0Jgbkpsf36LBkg7Qrhja6bP3Trqty2gy1/SWrznuoua9bs7d640yU8250ZSHPIRjbma7poosnaGFMkTrPZIPacV+b59WSomiriyHosi178CmtARTyA+hne5D/+C7ZK1K5u2cAL3+rpRE9AONWzzaK1vJas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=uSkasu0o; arc=none smtp.client-ip=98.142.107.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QyQv9q7tFQjUjEckWcdCvz0tj1KbprG9ou3W0/0n1qI=; b=uSkasu0ocZCfQ7ZLj8TxNqJRUM
-	utnAz3HilSLQGZzqPigm13d1rH4p99yVxyn1RDD5Bn5IbCwXlZe7XLF3g9Deeiq2Gw9wMNwkx5Z6l
-	jg3JBCGvnHPGtSWUw8oF7Nj0gj/lgQMrbUCd3PP/RQvQwiC0cF304X7pq67OnmvR1FxSms99ivua5
-	XwN2teL+gwltNlBdw+/bSPx5GrQiu4ygIizjOHX1+oBETIv+glQKJZg9OAq7ZJOQ6A0GcD2rENrwp
-	hzSsU81SGmYMLz8vV7lTzkDq6kKDK8vKIRRFBkgXH0NpSJkBBBE6tZ+XTXU1ueVok0HBw3fq/tgTh
-	2IWkKxww==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:56192 helo=[192.168.0.142])
-	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <david@lechnology.com>)
-	id 1tGJBr-0001wg-1x;
-	Wed, 27 Nov 2024 09:36:40 -0500
-Message-ID: <c67e095c-3fba-44df-950f-b014ce27eb0f@lechnology.com>
-Date: Wed, 27 Nov 2024 08:36:39 -0600
+	s=arc-20240116; t=1732718321; c=relaxed/simple;
+	bh=lnsn699LpgnPbF0lMZ+d2fnNy1n5cw6ru66r6iKjaoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BnNE+V5tvU7uJfkVI6pUctZFoViqD7cehreByw2Dvo8keNfDQ9FLQJ/71/S3slHdc3FzjsMdF0KkgSsLxIx5/HdLIrKV7j0XG5dgmiunukB1V3XFRJvJltE442rXbJN4wbVrU+G/i9JafLkRx98FXwLTmHjDJ999Mjx0VFpxT0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EDFz+eZL; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38230ed9baeso4848081f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 06:38:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732718317; x=1733323117; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fjCD0qFxOqO5DReL54VpjPy3zOSRJFVTaycjBR40RnM=;
+        b=EDFz+eZL0XuPyRZ7u1u1anW4m01z0xRhbi6lEJZt+75GgOI7GLDD8xsIyJLIKzOi9s
+         qfRAilBKozz6e+7RN7YGmypW7+Ap9j8iUCao5cai6FZAxy9nb2QvkzJhNtvvk7BmCaqj
+         6hjrv59c4ZT+10J/Uv2GbY/p1uWmE1aVtbDev//in92KRgjxIUvUycBA0mUn+Ljywlos
+         qb96EBdfzVfYyg5o6bCOA7J6S4Q7gpBZCDz/jckU+2pFg2uLDMKlW9NyoKiJAjpNoFvc
+         7+VYs/rGwPDiVgkpvTmtMFI/hUY6c/+RLwJvnVCJzgm564zgYfVZecgVJ2Gi2gt0RTB8
+         Lmig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732718317; x=1733323117;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fjCD0qFxOqO5DReL54VpjPy3zOSRJFVTaycjBR40RnM=;
+        b=ILwoCTTqw/njSvQUuldF5pgt8WzKZOk14VRJHUCQ3mukfdmU0UevtuUGipFgUfVLZ8
+         HjMGj7XgXgGIVjsIqE573Ur6711PIWOAy+Cev+VqHTTg+ewlKnWAzOhNM9w+/EgzdowJ
+         X4vVGx/Abaihh0bnIMcpvtUYRp+LLKPvBPtQML4aXqpSMoXfk74EY98zJMoZ7qtFQbGh
+         Lu+/HYSgyfCwHUlKdOLfkz/p+xGNz9xMpn8D1lE6gbLuSYrmlgqO4yoeHeZ7P5x1VDCk
+         WXCTzKr92651ylObY1MrmZILznGFjGAq8PmWvfyYvb8vSZljf4e6dHanW/fNAYE/hiP2
+         lPzA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6Yc/gGQcwWI2ry6VSE4C7jsN44kNM6+7Gu/aBlYnZds02KEYHy0fSe45CnfZoHUA8oA+OofZSn8w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBQkvFMA53UE6e4UzfhmkPHt3vwCnzJHmgnIvGMoHmG6esU+mm
+	8HA/WanOMz7Azu5tQrW1Z/1FvEsNbbN2k4PSboysPHG7vgQhJCyFJxS3xqi0/sk=
+X-Gm-Gg: ASbGncs0IDMbCrt24Ja1Hx+shMMht5quzUQytt4A7yvxMtw29LLaKb8VzE3RBj43cPJ
+	89Sozbgv3cayoXxMnSe1ZzBDiMVBkQXQRlRC2SE45IW4t+i9vvnZNhUEKx5qWM7bmzzg2C+1gVY
+	sEvI18Wn46d/35cG1FY8bidKBhrm1qDkehvGBAxQclXtzSi5NgebaVc5EZhIUimQYuUkdleZfoo
+	wXOrxlvw2oDw85AP/zNpv4sjGE6AHmT6yPFqY90jmc3aAeqMU/eesQxvMu0ve99XWn9Xo1UFerX
+	rg9q
+X-Google-Smtp-Source: AGHT+IHMmEsMtbcC+5w4VmxGp70yBDULVWkU/ZbDtSTIP0A5u8I3KUEQg1ao763uGeZiDyE/hL1wcQ==
+X-Received: by 2002:a5d:6c6c:0:b0:382:30a5:c38e with SMTP id ffacd0b85a97d-385c6ec1158mr2425497f8f.31.1732718316694;
+        Wed, 27 Nov 2024 06:38:36 -0800 (PST)
+Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825fb2609csm16714496f8f.44.2024.11.27.06.38.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Nov 2024 06:38:36 -0800 (PST)
+Date: Wed, 27 Nov 2024 15:38:34 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman <alisa.roman@analog.com>, 
+	Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+	Dumitru Ceclan <dumitru.ceclan@analog.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Nuno Sa <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+Message-ID: <mg34sbu6agf7v4iupeaf47n5ubpq4igevhjacvurumf5sfpjs6@ioyyjm3zijdf>
+References: <20241122113322.242875-12-u.kleine-koenig@baylibre.com>
+ <20241122113322.242875-22-u.kleine-koenig@baylibre.com>
+ <CAHp75Ve_sD-a-m4pYmKrT=LhajO=F7TG7KM7AsM47J0=ksVgNw@mail.gmail.com>
+ <eghe47rkwxmcfkamayemvwfksonrwbysaadakbdm4lvzcsy4ee@7gftiif7ka6i>
+ <CAHp75Ve3hBhCMFkjA4-hiLfGQLeeGt_74e=PwTH_nF1NCYiyOA@mail.gmail.com>
+ <2tsxyxmfh3ozolsziu3bps7liagzl4gmvy4oykvyeapziagvy4@tfa2lcxmdsmf>
+ <CAHp75VcMHyqjsAVveRf58PhoiKyPJRsjBQiLkz+XVu+NDc+Wog@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] counter: add COUNTER_FUNCTION_DISABLE for energy saving
-To: "Rafael V. Volkmer" <rafael.v.volkmer@gmail.com>, wbg@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20241125230220.9994-1-rafael.v.volkmer@gmail.com>
-Content-Language: en-US
-From: David Lechner <david@lechnology.com>
-Autocrypt: addr=david@lechnology.com; keydata=
- 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
-In-Reply-To: <20241125230220.9994-1-rafael.v.volkmer@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kbmnltnu74luhggm"
+Content-Disposition: inline
+In-Reply-To: <CAHp75VcMHyqjsAVveRf58PhoiKyPJRsjBQiLkz+XVu+NDc+Wog@mail.gmail.com>
 
-On 11/25/24 5:02 PM, Rafael V. Volkmer wrote:
-> Add `COUNTER_FUNCTION_DISABLE` to the `counter_function` enum in the
-> counter API. This allows file operations to signal other drivers to
-> disable hardware resources, reducing energy consumption in
-> power-sensitive scenarios.
-> 
-> Previously, tests with Texas Instruments' eQEP modules revealed that
-> hardware resources remained active unless the driver was removed,
-> offering no user command to stop the count. This approach exposed the
-> fragility of these resources.
-> 
-> To address this, introduce a new enum option in the counter API to
-> receive commands for disabling the hardware. This ensures the hardware
-> enters an idle, power-saving state when not in use.
 
-How does this work without an additional patch to modify the TI eQEP
-counter driver to handle this new enum value? For example, I would
-expect that this enum value would be added to ti_eqep_position_functions
-and case statements added in ti_eqep_function_read(),
-ti_eqep_function_write() and ti_eqep_action_read() to handle the new
-option.
-> 
-> Signed-off-by: Rafael V. Volkmer <rafael.v.volkmer@gmail.com>
-> ---
->  include/uapi/linux/counter.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
-> index 008a691c254b..6f9a6ef878cf 100644
-> --- a/include/uapi/linux/counter.h
-> +++ b/include/uapi/linux/counter.h
-> @@ -145,6 +145,7 @@ enum counter_function {
->  	COUNTER_FUNCTION_QUADRATURE_X2_A,
->  	COUNTER_FUNCTION_QUADRATURE_X2_B,
->  	COUNTER_FUNCTION_QUADRATURE_X4,
-> +	COUNTER_FUNCTION_DISABLE,
->  };
->  
->  /* Signal values */
+--kbmnltnu74luhggm
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+MIME-Version: 1.0
 
+On Mon, Nov 25, 2024 at 09:33:12PM +0200, Andy Shevchenko wrote:
+> On Mon, Nov 25, 2024 at 4:52=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> <u.kleine-koenig@baylibre.com> wrote:
+> > On Mon, Nov 25, 2024 at 03:47:25PM +0200, Andy Shevchenko wrote:
+> > > On Mon, Nov 25, 2024 at 1:27=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> > > <u.kleine-koenig@baylibre.com> wrote:
+> > > > On Fri, Nov 22, 2024 at 10:31:07PM +0200, Andy Shevchenko wrote:
+> > > > > On Fri, Nov 22, 2024 at 1:34=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> > > > > <u.kleine-koenig@baylibre.com> wrote:
+> > > > > > +       /* Add one for temperature */
+> > > > > > +       st->num_channels =3D min(num_channels + 1, AD7124_MAX_C=
+HANNELS);
+> > > > >
+> > > > > Is the type of both arguments the same?
+> > > >
+> > > > Hmm, my compiler is happy with it at least. I don't understand why
+> > > > though. I'll do a few more tests ...
+> > >
+> > > If num_channels is signed int or shorter than (independently on the
+> > > sign) int, then it's obvious why. + 1 makes it int.
+> >
+> > Ah indeed, I should have understood that without that explanation.
+>=20
+> Yeah, but a closer look shows to me that num_channels is unsigned int
+> or did I look in the wrong place? If that's true, that should make a
+> warning appear since AD7124_MAX_CHANNELS is signed int...
+
+The ideas in the definition of min are a bit hard to follow, but IIUC it
+doesn't warn because AD7124_MAX_CHANNELS is non-negative and so there is
+no danger for misinterpretation.
+
+Best regards
+Uwe
+
+--kbmnltnu74luhggm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdHLucACgkQj4D7WH0S
+/k4/Lgf+I6KqOWJtmrxLTxrPIVrJqQgSbCiw6Z9kTouW4Od/YbS8hVskCFPkSTbl
+xo/Yh4jSUTLMpV5jE+erOQgrJxtqjSBUIDKP+V1tMCItEw+AEbDmrenRLRt6FYU9
+s7eTWma6O0O9tD/Lulh7n+1giTAg1Rcp/5NJCgwRllfWG88cFUOijwjf3N/BNNqf
+yS0SwO9WqLlNdpQifLBI2RmQWWWXbvIm5zidT1gizkd76zX93ENt2EiL15VGW1M3
+2IonL8Md+KAJVVSvhhui42mePHqx5qupFLRVTI4iLkAL0uYbWhKqcT6dwI3HYQsS
+mrL/aQBvmIIYPS2JrrCSO4Wtjxoe2w==
+=nfqX
+-----END PGP SIGNATURE-----
+
+--kbmnltnu74luhggm--
 

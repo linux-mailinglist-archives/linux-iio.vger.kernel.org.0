@@ -1,79 +1,56 @@
-Return-Path: <linux-iio+bounces-12733-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12735-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ED4D9DA9BE
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 15:14:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948AA9DAA32
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 15:56:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B19E3165448
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 14:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B759B21ADB
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 14:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F141FE45E;
-	Wed, 27 Nov 2024 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFF81FECB9;
+	Wed, 27 Nov 2024 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UIz+7dh3"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="uSkasu0o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FA91FE454;
-	Wed, 27 Nov 2024 14:14:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2977B652;
+	Wed, 27 Nov 2024 14:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732716887; cv=none; b=BmLuYnvUdlK1w5ciSJR4eKN1MKNT0Uv7T1BAzh7uXYK+dyBJpToC8LPRMaBzudAGqAff+Ft3giSWgSt3ay3q/ddPE3cL/4Rlt7zbmyJeZ57jUvs0/4kuchjRWk26HukuYw4yAkQ8PH28Fc41Q50u+IN1L6C/b2dgTmZff2U5Fjc=
+	t=1732719389; cv=none; b=MTkGRRH4iFg6XCPKrFPX2wxMacp/t0W1zOCAF7deVmaAOgLXjvRXFJyCkgBULP7Qy0LVs2epgZLdWjUpZpkl8jUUXxRDPcXPS5oP+AZunrjPTFeJ1padMIctjxrxtPAkPMtyNjpDHFqcsH95njCwkYotH0hQStNijPtXp1pMV7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732716887; c=relaxed/simple;
-	bh=paxZs3Cdlf93Q1+n3h1fBFQZMnc13IPiJrr77HuCbiw=;
+	s=arc-20240116; t=1732719389; c=relaxed/simple;
+	bh=M/NdxOAaNIL6CiYkw4VLeriip1/S8ODkeGJdPDxjnRg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HhdaUc1yrB74rEoG2/e9mlE3VPR+gBqcMew6Yph9zJzB/xTte/tvZ203bboJWrpnqu9XS3EzBBTpwElFXUIGyUz8PViAqE7uk9phtzGuaZtsR+822HDV3BKxLWOva08HWC+achNbGEsX0tBA9gfPT363C7zndlzVJMUprdIvAWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UIz+7dh3; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53dd2fdcebcso6867718e87.0;
-        Wed, 27 Nov 2024 06:14:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732716884; x=1733321684; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Um5TZq365fWOw0yCr9WfM9tBuVJrd4ZuD8M9A4DLXK0=;
-        b=UIz+7dh3vqw+bkETFF0lryBbhPebcZSFyuJEagxITuPXgQFeBDNl8bv1ORSQvihTiZ
-         sQxNnG7JQ2+50Z9jvkXiUsFuv/CbMbqgs8f+Nwuw3FqbMA2j+dEU0C4fos0aeMccMs9O
-         kjbqkNvDYf+dUx8B7KDYbpqsugOF71I8HFQKgVgoQCPYpg/ttMVTEZUOJqJfSeCcvYck
-         hKfGIN8CEEzAON4zEWTTYUt+VDJOs/Jt8Zg2XyWKt2/NGFEF71rknaB8vcSnMajHgn9P
-         mERxlqBIRXncyO2CSecSOLXjKbF5E0I7mvfh7XDr2eV7lew8AU/n1ffffp48WQfsrmzd
-         IqHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732716884; x=1733321684;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Um5TZq365fWOw0yCr9WfM9tBuVJrd4ZuD8M9A4DLXK0=;
-        b=vRD3LTwgO81wCWQqAcXnsGVigR8Qh5fBWiD6udj37eh/Zr7e4Fsap8XBlgR1GS1V22
-         7Y1Rn14wmsZ3kFbc5pQEuDuE/aGiVAAL65e9qoMYS+YCWkFlv5d47v8wfkUjf8LMm3zd
-         Gt+d3wRzOw0UF2388bTPezYW1aXr+IlOfnZuxIQx7VTIy773QYW5HFSL1TCentcO9eu7
-         I0TxsvJVD7u/OhFXlhlVCpbAKBCLWh557v0Jt8ZWyIOK/7UUpDeFHVCKD41AziWVRE2S
-         /5lICLWPgh9rKjBke0A92ArG9baIYa740/N6haOYb74pLfOS/Ot823cfG8GjENHUhgaO
-         bAGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUx50IdrWyzGG3w0ZJMPA8Xq72h/OdEFDOVoj3yT5V5+BJ8V9oXskJ0o2o3TZ4rxblWgS6OsnWW/eD8VpLo@vger.kernel.org, AJvYcCV0jeb3rfjT4iTrLYZ7f5bRUKijySIhQRuaYwbT0RGoi0Zx1CB9L1pDzjJ6zQmZHp3APKo8ciUrXjcY@vger.kernel.org, AJvYcCX0W6dCuwNkEYb7pQTO1BZPYiD3TxPVX/7/kibnRFOuTHWxd7TTkigDKLb3L9SJrjHLCBhj5mYvAoSh@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrkgvFTxLQWWq9wW/yISEkcT4ybB3eFuT0S9lZjVLZ9zOymmP/
-	0ToiAJ1Gixv8wF+b9y70/iTJCIbSt79lqsHUQpz3uAHeaIosyUEFNT1afw==
-X-Gm-Gg: ASbGncuMTjGWoD3IdUI7ys8cu73S27zzWwS2hfJdp4rJD7PZSBSeSQbP8bFQcY3Q+0G
-	/IZaNaxnG7pDDq9iSEFCifCBPUwsWzk47KJWor+IMY3qGWa8rbSeuMCLbgFmOZaK28b67SswkUF
-	l6taILkurXW5jzTEpaXTsyDnLalM0zK5/IhGhBLm7l6CVwjqfOdA8MntLjA2IMWXVbzxy+eeqvQ
-	pOkXpCBg29C2S4VbWWEqur+isAoV+XY5fQq06VdbkYangeCP7N7nSg1OBw2I4ehQBfm4T/1miAX
-	6f8y1XmMCLC7Pc55Aej8md/N4o0Fehk=
-X-Google-Smtp-Source: AGHT+IHmGIqaxMqackvlpmM5ajOcte2kcWyZ19LAd1LyiW8cxDqpxp6gMdyGjZJ5ScCnw/bZFnOq2Q==
-X-Received: by 2002:a05:6512:3da4:b0:53d:d0ed:9e06 with SMTP id 2adb3069b0e04-53df0117880mr2065080e87.56.1732716883660;
-        Wed, 27 Nov 2024 06:14:43 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd2499995sm2316610e87.261.2024.11.27.06.14.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Nov 2024 06:14:43 -0800 (PST)
-Message-ID: <2d16bf36-57d3-4c54-bbee-2e7d93399f29@gmail.com>
-Date: Wed, 27 Nov 2024 16:14:41 +0200
+	 In-Reply-To:Content-Type; b=IIPKiJwbFK5eZbRJi0Jgbkpsf36LBkg7Qrhja6bP3Trqty2gy1/SWrznuoua9bs7d640yU8250ZSHPIRjbma7poosnaGFMkTrPZIPacV+b59WSomiriyHosi178CmtARTyA+hne5D/+C7ZK1K5u2cAL3+rpRE9AONWzzaK1vJas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=uSkasu0o; arc=none smtp.client-ip=98.142.107.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QyQv9q7tFQjUjEckWcdCvz0tj1KbprG9ou3W0/0n1qI=; b=uSkasu0ocZCfQ7ZLj8TxNqJRUM
+	utnAz3HilSLQGZzqPigm13d1rH4p99yVxyn1RDD5Bn5IbCwXlZe7XLF3g9Deeiq2Gw9wMNwkx5Z6l
+	jg3JBCGvnHPGtSWUw8oF7Nj0gj/lgQMrbUCd3PP/RQvQwiC0cF304X7pq67OnmvR1FxSms99ivua5
+	XwN2teL+gwltNlBdw+/bSPx5GrQiu4ygIizjOHX1+oBETIv+glQKJZg9OAq7ZJOQ6A0GcD2rENrwp
+	hzSsU81SGmYMLz8vV7lTzkDq6kKDK8vKIRRFBkgXH0NpSJkBBBE6tZ+XTXU1ueVok0HBw3fq/tgTh
+	2IWkKxww==;
+Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:56192 helo=[192.168.0.142])
+	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <david@lechnology.com>)
+	id 1tGJBr-0001wg-1x;
+	Wed, 27 Nov 2024 09:36:40 -0500
+Message-ID: <c67e095c-3fba-44df-950f-b014ce27eb0f@lechnology.com>
+Date: Wed, 27 Nov 2024 08:36:39 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,144 +58,106 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] iio: gts: Simplify using __free
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1732105157.git.mazziesaccount@gmail.com>
- <5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com>
- <20241123163713.2ec03a37@jic23-huawei>
- <964035d9-cccd-4e12-af71-00ca39cc3596@gmail.com>
- <20241126175214.76609ba9@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241126175214.76609ba9@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] counter: add COUNTER_FUNCTION_DISABLE for energy saving
+To: "Rafael V. Volkmer" <rafael.v.volkmer@gmail.com>, wbg@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20241125230220.9994-1-rafael.v.volkmer@gmail.com>
+Content-Language: en-US
+From: David Lechner <david@lechnology.com>
+Autocrypt: addr=david@lechnology.com; keydata=
+ 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
+In-Reply-To: <20241125230220.9994-1-rafael.v.volkmer@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Hi & Thanks Jonathan,
-
-On 26/11/2024 19:52, Jonathan Cameron wrote:
-> On Mon, 25 Nov 2024 11:16:22 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 11/25/24 5:02 PM, Rafael V. Volkmer wrote:
+> Add `COUNTER_FUNCTION_DISABLE` to the `counter_function` enum in the
+> counter API. This allows file operations to signal other drivers to
+> disable hardware resources, reducing energy consumption in
+> power-sensitive scenarios.
 > 
->> Hi Jonathan,
->>
->> Thanks once again for the review :)
->>
->> On 23/11/2024 18:37, Jonathan Cameron wrote:
->>> On Thu, 21 Nov 2024 10:20:07 +0200
->>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
->>>    
->>>> The error path in the gain_to_scaletables() uses goto for unwinding an
->>>> allocation on failure. This can be slightly simplified by using the
->>>> automated free when exiting the scope.
->>>>
->>>> Use __free(kfree) and drop the goto based error handling.
->>>>
->>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>>>
->>>> ---
->>>>
->>>> Revision history:
->>>>     v1 => v2:
->>>>     - patch number changed because a change was added to the series.
->>>>     - rebased on iio/testing to avoid conflicts with queued fixes
->>>> ---
->>>>    drivers/iio/industrialio-gts-helper.c | 19 ++++++++-----------
->>>>    1 file changed, 8 insertions(+), 11 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->>>> index 291c0fc332c9..602d3d338e66 100644
->>>> --- a/drivers/iio/industrialio-gts-helper.c
->>>> +++ b/drivers/iio/industrialio-gts-helper.c
->>>> @@ -4,6 +4,7 @@
->>>>     * Copyright (c) 2023 Matti Vaittinen <mazziesaccount@gmail.com>
->>>>     */
->>>>    
->>>> +#include <linux/cleanup.h>
->>>>    #include <linux/device.h>
->>>>    #include <linux/errno.h>
->>>>    #include <linux/export.h>
->>>> @@ -167,8 +168,8 @@ static int iio_gts_gain_cmp(const void *a, const void *b)
->>>>    
->>>>    static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->>>>    {
->>>> -	int i, j, new_idx, time_idx, ret = 0;
->>>> -	int *all_gains;
->>>> +	int ret, i, j, new_idx, time_idx;
->>>> +	int *all_gains __free(kfree) = NULL;
->>> See the docs in cleanup.h (added recently).
->>>
->>> Constructor and destructor should go together.   Dan wrote good docs on this
->>> (which are now in cleanup.h) so I'll not go into why!
->>
->> I went through the cleanup.h, and noticed the nice explanation for the
->> pitfall where we have multiple "scoped operations" with specific
->> ordering required. I didn't see other reasoning beyond that - I do hope
->> I didn't miss anything.
->>
->> I find introducing variables mid-function very confusing. Only exception
->> for this has been introducing temporary variables at the start of a
->> block, to reduce the scope. I would still like to avoid this when it
->> isn't absolutely necessary, as it bleeds my eyes :)
->>
->> I really don't see why we would have other cleanups which required
->> specific ordering with the allocated "all_gains".
->>
->> Anyways, if you think we really have a problem here, would it then
->> suffice if I moved the:
->>
->>           gain_bytes = array_size(gts->num_hwgain, sizeof(int));
->>           all_gains = kcalloc(gts->num_itime, gain_bytes, GFP_KERNEL);
->>           if (!all_gains)
->>                   return -ENOMEM;
->>
->> to the beginning of the function, and the "int *all_gains __free(kfree)
->> = NULL;" as last variable declaration?
->>
+> Previously, tests with Texas Instruments' eQEP modules revealed that
+> hardware resources remained active unless the driver was removed,
+> offering no user command to stop the count. This approach exposed the
+> fragility of these resources.
 > 
-> No.  You need to follow the standard way. It is something we are
-> all getting used to, but all use of cleanup.h needs to follow same rules
-> so that reviewers find it easy to review once they are seeing lots of
-> instances of it.
+> To address this, introduce a new enum option in the counter API to
+> receive commands for disabling the hardware. This ensures the hardware
+> enters an idle, power-saving state when not in use.
+
+How does this work without an additional patch to modify the TI eQEP
+counter driver to handle this new enum value? For example, I would
+expect that this enum value would be added to ti_eqep_position_functions
+and case statements added in ti_eqep_function_read(),
+ti_eqep_function_write() and ti_eqep_action_read() to handle the new
+option.
 > 
-> Many indeed find this ugly but reality is it's happening all over the place
-> just usually hidden in a macro.  From cleanup.h look at how
-> guard() works for instance.
-
-Well, those macros are better in that the variables they internally 
-declare aren't visible in the outside code. The 'all_gains' pointer is 
-used throughout the function, and I really dislike having local 
-variables which aren't declared at the beginning of a function/block 
-emerge out of nowhere. Makes me think: "why this terribly named global?".
-
-Well, maybe I really just need to try to adapt these things but I will 
-drop this one out of the series for now. TBH, I don't really like how 
-this table building function looks like. It's too long and confusing. I 
-will see if there is a sane way to split it, and maybe get the __free() 
-pointers to the beginning of a function as well ;)
-
->> (This is not optimal as we will then do the allocation even if
->> converting gains to scales failed - but I don't think this is a real
->> problem as this should never happen after the driver is proven working
->> for the first time).
->>
->>> Upshot is this goes where you do the kcalloc, not up here.
->>
->> *whining* "but, but, but ... it is ugly..." :)
+> Signed-off-by: Rafael V. Volkmer <rafael.v.volkmer@gmail.com>
+> ---
+>  include/uapi/linux/counter.h | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> :)  It won't look ugly after a few years!
+> diff --git a/include/uapi/linux/counter.h b/include/uapi/linux/counter.h
+> index 008a691c254b..6f9a6ef878cf 100644
+> --- a/include/uapi/linux/counter.h
+> +++ b/include/uapi/linux/counter.h
+> @@ -145,6 +145,7 @@ enum counter_function {
+>  	COUNTER_FUNCTION_QUADRATURE_X2_A,
+>  	COUNTER_FUNCTION_QUADRATURE_X2_B,
+>  	COUNTER_FUNCTION_QUADRATURE_X4,
+> +	COUNTER_FUNCTION_DISABLE,
+>  };
+>  
+>  /* Signal values */
 
-Could be. But now I am in the middle of "everything used to be better in 
-the good old day" -crisis. Playing 8-bit NES games and wondering if I 
-could fix my old C64 ^_^;
-
-In any case, thanks for the guidance (and optimism!) XD
-
-Yours,
-	-- Matti
 

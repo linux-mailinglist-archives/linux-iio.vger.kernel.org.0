@@ -1,174 +1,92 @@
-Return-Path: <linux-iio+bounces-12725-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12726-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0879DA433
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 09:54:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DD4A9DA461
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 10:02:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 063E2B26B77
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 08:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47A26B25A00
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 09:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E5F1917E7;
-	Wed, 27 Nov 2024 08:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA5619004A;
+	Wed, 27 Nov 2024 09:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XZEMJQ0o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10F9154C12
-	for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 08:54:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61051272A6;
+	Wed, 27 Nov 2024 09:02:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732697643; cv=none; b=tmOkT1SElvcdxeGC2/UQSHoZYbo0WGeJrRBRNIlCC6KjyKWj1buSbok2zB2j+eT21yiZ55vEZdfhng66caEtXux2Yaa5ed3eeMASLdx0n9Csd4xsyStsTGfZ462PTLvKdoIoAp7SedIjU+s3X+9AMfOFiKMOwcpCg6epnCD33Ag=
+	t=1732698156; cv=none; b=i8VIfC60yucgW+1yOGLpKXQ8Wp4dgbZtVAjGg4WJTg99JMuyzfLnKprs6Lr+xwVnGl/BH+wad0CS+AofHGJpo8qFq+xyRTTXFsE+mdCXnDWc5n5FMJ56fNshG6jAVmc0JDgnf4LDUVVieSH4u1ARsgGboQp2KXk3SOS2qfBDq6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732697643; c=relaxed/simple;
-	bh=YfgpoTDd4KRWX9QYXR4+HGyPFUeAuWa72g0EH8fO3D4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=tbb3hVUcicX/B1ScFyNRzKBEJnPfgs99HGasQUg7BZvAJcyLN2SdH4oMBC4hOI1O7ydmHtKqwmJD4IMOVALW0QTD+/vCyZGlmv3YnJTqlC0mrELZdV2I/0+1ew4kmaLpPNd6g8z6wO4tVk6dHMF0GxcJAPLaq4KKIs+24kniGdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-320-eUu2RzI3O8WJKx3gHkW80w-1; Wed, 27 Nov 2024 08:53:58 +0000
-X-MC-Unique: eUu2RzI3O8WJKx3gHkW80w-1
-X-Mimecast-MFC-AGG-ID: eUu2RzI3O8WJKx3gHkW80w
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 27 Nov
- 2024 08:53:49 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Wed, 27 Nov 2024 08:53:49 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Jakob Hauser' <jahau@rocketmail.com>, Jonathan Cameron
-	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-CC: Linus Walleij <linus.walleij@linaro.org>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
-Subject: RE: [PATCH] iio: magnetometer: yas530: Use signed integer type for
- clamp limits
-Thread-Topic: [PATCH] iio: magnetometer: yas530: Use signed integer type for
- clamp limits
-Thread-Index: AQHbQFyZWpVb6JGTu0SOPl1PuO8j1LLK0lfw
-Date: Wed, 27 Nov 2024 08:53:49 +0000
-Message-ID: <a28168acf9374c60902cdb5aa7608dee@AcuMS.aculab.com>
-References: <20241126234021.19749-1-jahau.ref@rocketmail.com>
- <20241126234021.19749-1-jahau@rocketmail.com>
-In-Reply-To: <20241126234021.19749-1-jahau@rocketmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	s=arc-20240116; t=1732698156; c=relaxed/simple;
+	bh=zI3tcTtmLsGEF/ZYpgvlGONdju5QRp4hq4ERcnhankE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dv8QewJSazD17dmLLpNu9/vUtaAI1p5SuvcpzvYUw3e7L7wLqrX3XQPKQpylOlIbYENjD4PqVT+2WxHHdlNTkq3Xgg/FBqSzMBwRJJRVGLBZI4EKkefxvakZrkVELvRU63TVArtO5utxC0kTZsE8/gfcLN1CNz+/8YIo+eG0FoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XZEMJQ0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87425C4CECC;
+	Wed, 27 Nov 2024 09:02:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732698154;
+	bh=zI3tcTtmLsGEF/ZYpgvlGONdju5QRp4hq4ERcnhankE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XZEMJQ0ooWC+ju1FTjm99P/wWkSlZbFL+CKudDblrQ4YMnz8s/+DjUNUNaMWOY+IB
+	 d6ZPpgEtHYYelYHZh+Z6DfcrIObxTygcsUoohvWgA2ogjnhIhQXamO0e0p3HghaLXF
+	 EKpgPMnqPB/mNyn3+MFJEW8hLUDYOvglpjGz5d5ftws7Npfn5pWfYfrqqpGmho2UUS
+	 rP3rkZKQLMoewoIwKGh9IDurYe0APfIVeXgcPiXZhB2qq7gHbQnkr69gXuwa4cD/BH
+	 o1r0G2mvNbWb0NvMfDY7IQ1ENVQ8hDsdbn1XMmyBzu1VMeVpP7puwWWo4NIRke34ET
+	 pMf4l99Bd8t5A==
+Date: Wed, 27 Nov 2024 10:02:30 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Rishi Gupta <gupt21@gmail.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] dt-bindings: iio: light: veml6030: add veml6031x00
+ ALS series
+Message-ID: <dldrwflupel5j7jycxpcgml5is54xzdnu5gecwyuqydwak5sw3@j7ikkvs7erzo>
+References: <20241126-veml6031x00-v1-0-4affa62bfefd@gmail.com>
+ <20241126-veml6031x00-v1-1-4affa62bfefd@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: GCQIciNWIumsP9zKeUNSYboaflliYxO-Ec34kRekpmw_1732697637
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241126-veml6031x00-v1-1-4affa62bfefd@gmail.com>
 
-From: Jakob Hauser <jahau@rocketmail.com>
-> Sent: 26 November 2024 23:40
->=20
-> In the function yas537_measure() there is a clamp_val() with limits of
-> -BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The =
-BIT()
-> is of type unsigned long integer due to its define in include/vdso/bits.h=
-.
-> The lower limit -BIT(13) is recognized as -8192 but expressed as an unsig=
-ned
-> long integer. The size of an unsigned long integer differs between 32-bit=
- and
-> 64-bit architectures. Converting this to type s32 may lead to undesired
-> behavior.
-
-I think you also need to say that the unsigned divide generates erronous
-values on 32bit systems and that the clamp() call result is ignored.
-
->=20
-> Declaring a signed integer with a value of BIT(13) allows to use it more
-> specifically as a negative value on the lower clamp limit.
->=20
-> While at it, replace all BIT(13) in the function yas537_measure() by the =
-signed
-> integer.
->=20
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@i=
-ntel.com/
-> Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
-> Cc: David Laight <david.laight@aculab.com>
-> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+On Tue, Nov 26, 2024 at 10:51:54PM +0100, Javier Carrasco wrote:
+> These ambient light sensors share their properties with the ones
+> from the same manufacturer that are supported by this bindings.
+> 
+> Note that only two datasheets are provided as every one of them covers
+> two devices (veml6031x00/veml60311x00 and veml6031x01/veml60311x01).
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 > ---
-> The patch is based on torvalds/linux v6.12.
->=20
-> The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characte=
-rs per
-> line. In terms of readability I would prefer to keep it that way.
-> ---
->  drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
->=20
-> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magne=
-tometer/yamaha-yas530.c
-> index 65011a8598d3..938b35536e0d 100644
-> --- a/drivers/iio/magnetometer/yamaha-yas530.c
-> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-> @@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 =
-*t, u16 *x, u16 *y1, u16 *y
->  =09u8 data[8];
->  =09u16 xy1y2[3];
->  =09s32 h[3], s[3];
-> +=09int half_range =3D BIT(13);
->  =09int i, ret;
->=20
->  =09mutex_lock(&yas5xx->lock);
-> @@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u1=
-6 *t, u16 *x, u16 *y1, u16 *y
->  =09/* The second version of YAS537 needs to include calibration coeffici=
-ents */
->  =09if (yas5xx->version =3D=3D YAS537_VERSION_1) {
->  =09=09for (i =3D 0; i < 3; i++)
-> -=09=09=09s[i] =3D xy1y2[i] - BIT(13);
-> -=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / B=
-IT(13);
-> -=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / B=
-IT(13);
-> -=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / B=
-IT(13);
-> +=09=09=09s[i] =3D xy1y2[i] - half_range;
-> +=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / h=
-alf_range;
-> +=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / h=
-alf_range;
-> +=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / h=
-alf_range;
->  =09=09for (i =3D 0; i < 3; i++) {
-> -=09=09=09clamp_val(h[i], -BIT(13), BIT(13) - 1);
-> -=09=09=09xy1y2[i] =3D h[i] + BIT(13);
-> +=09=09=09clamp_val(h[i], -half_range, half_range - 1);
-> +=09=09=09xy1y2[i] =3D h[i] + half_range;
+>  .../bindings/iio/light/vishay,veml6030.yaml        | 23 +++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
+> index 4ea69f1fdd63..e01e8747e47c 100644
+> --- a/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
+> @@ -4,7 +4,9 @@
+>  $id: http://devicetree.org/schemas/iio/light/vishay,veml6030.yaml#
+>  $schema: http://devicetree.org/meta-schemas/core.yaml#
 
-NAK - that still ignores the result of clamp.
-and it should be clamp() not clamp_val().
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-=09David
-
->  =09=09}
->  =09}
->=20
-> --
-> 2.43.0
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+Best regards,
+Krzysztof
 
 

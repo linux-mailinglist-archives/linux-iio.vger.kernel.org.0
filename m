@@ -1,170 +1,174 @@
-Return-Path: <linux-iio+bounces-12724-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12725-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE399DA3D0
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 09:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0879DA433
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 09:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36A2BB262DB
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 08:21:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 063E2B26B77
+	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 08:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183291865E2;
-	Wed, 27 Nov 2024 08:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="np+L1VUS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E5F1917E7;
+	Wed, 27 Nov 2024 08:54:03 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBEA17BB21;
-	Wed, 27 Nov 2024 08:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10F9154C12
+	for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 08:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.85.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732695689; cv=none; b=U2mIxm9dsLK1e3YCBNR8nGLnS1sSFwyDwbG1MHRnPLbiyYVXna/psm8eICXERB2C9tYofU2H5dFOol4bUoDcbFWLj1NKMd6vvTguLiBwzYMfj8I9pE9r/nTmiFf7O46C5IdpkbuNuIdSrv8N4z8SWXfxGZXjblj+23FeiLrE/p0=
+	t=1732697643; cv=none; b=tmOkT1SElvcdxeGC2/UQSHoZYbo0WGeJrRBRNIlCC6KjyKWj1buSbok2zB2j+eT21yiZ55vEZdfhng66caEtXux2Yaa5ed3eeMASLdx0n9Csd4xsyStsTGfZ462PTLvKdoIoAp7SedIjU+s3X+9AMfOFiKMOwcpCg6epnCD33Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732695689; c=relaxed/simple;
-	bh=stSSnFTtoJHg8BqGvfNhevnOn2ndUoEebm8YWcO5spM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HutAv6IrS7jT/9mz7PlU74oo5L36J2Suo5nLYoD3tSz0KRvjE91GY5F7hEwXMnQyeSx5onXUw4NWFLc9XIy3eBxJjflsszXQoJ4swuHmfNBkIQGwxClN1qapZRgjnxBDrp4G/xiHZ+b+tRJmbgu/Rpxcw8/7ii7SLJZ5jG2cA5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=np+L1VUS; arc=none smtp.client-ip=209.85.219.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e38232fc4d8so5690763276.2;
-        Wed, 27 Nov 2024 00:21:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732695686; x=1733300486; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LXx+dVC/bMbMySJqkxvau2EzlELyuHvZH+PJDlKKiNk=;
-        b=np+L1VUSE9UJvfqeABBBElaJvQja+dmPswBsNsZhQhHZRXONRCR1oJD+N05NGiBHux
-         8VdWuIekERVtrJG2+Bw7llpoalgU7icyn2X0ZEBbaiRm0oHzf6bL6GYjzm5gIcAqsXQR
-         /U2MiW3qGoxxoRwP2ZP30dtjvPylRFKuh4EPi5RpYfXvy0bu6i6MOL3GmirHLBzzQbeQ
-         TR9XoiVyL32pnJABnSBnXc4/0r2TEGeQQLqc7fxU23gIhM5xYS1h1BVGddEIB+9f4Z46
-         2YyNPRo2GPRuv+SeVuo4eRUSGGFXYN1Rg8eDwjIIHw8tLpTw35r8KZUVhXaIdg1JmVf2
-         xNpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732695686; x=1733300486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LXx+dVC/bMbMySJqkxvau2EzlELyuHvZH+PJDlKKiNk=;
-        b=U120C/uAuuMnZ5tvFX0ayz9bz3N4hmC85YkKX/AWwxXQhJr3sbzYapMKNY5jQt5ja4
-         YvRQWMjMvWWvN6g6z5ZZBARJzJzv3RLMOISYNabZHI1TkZN9gQclNLjm6iP2YBLcYDiZ
-         hC0M4H8uVsro9rsXhgLhkV8b82ZlmMEoGuoE4rELNCsumGZtHhBcGeE/kd8auljVJz0V
-         UtKrDaWIwBv5X7bTPeir7w9TCA2U6Iu6mSfZQ8yvu9lNZ008u2wQtGsVdxNi6Prp+rj7
-         BocBcZOrht/00Ywj2mnrklA8fy2rGD7+1JMI77jHuX6AkDr8WN1ctUE+MCk7D1OZdfMD
-         22mg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0dqiXgXP16eYc+Scoc8EPEgpJOe3i39233Oqc7lSzad0lZsBhQ452YSmOu4yxA+kngpAocQ6oxRDE@vger.kernel.org, AJvYcCU2zoDzoxQBcKYYM9LSGyrDrRuuUyiuts41SjXFwNnuvNM63LhgkY7NUP8SuiBnio6hLSj4LtV4Og0C@vger.kernel.org, AJvYcCWKFE2eRA1Zqdl5vEeJsNYk/8iOL+xGF+G/0txjf9YyVyBQQObFC2eMBMjLvGk7FKKCgs3e1LO6BI5yJxFH@vger.kernel.org
-X-Gm-Message-State: AOJu0YxoqfsnraG4ZpUps0Cr8KKO60ycLfsXTHPXqoXbK/cBYPeee15o
-	vVQndHOPSN+42mdzrUzQnOV9kaV9BQlzKTsVMhOltDEYwHHHviLYWJHmAcybIkv8P5H21O4kPZy
-	fkscH/OowJ2zjXx2U7K/kK/H2gY4=
-X-Gm-Gg: ASbGnct75szYswTfn1Pf5M2M5g5ZRXR3BQnNy1pbXUqa9QEIl+l5A5PyTDHn7Fe8cSM
-	C4durrFYCFOopSmySdUB5MgvxbiWRcHupCmREjOklI8nuqD2+8SS8Tn6Y0MH6pIs=
-X-Google-Smtp-Source: AGHT+IEKPD8zeEXnQhDGjU08izfyjaPh9mW6eUsQmF+VL7kvEeC8+Cs3bH4LLV81hmpuN/ogXjymN3kPibAGVGCWNM8=
-X-Received: by 2002:a05:6902:210e:b0:e22:6a94:f22f with SMTP id
- 3f1490d57ef6-e395b8c1eb5mr2083679276.28.1732695686164; Wed, 27 Nov 2024
- 00:21:26 -0800 (PST)
+	s=arc-20240116; t=1732697643; c=relaxed/simple;
+	bh=YfgpoTDd4KRWX9QYXR4+HGyPFUeAuWa72g0EH8fO3D4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=tbb3hVUcicX/B1ScFyNRzKBEJnPfgs99HGasQUg7BZvAJcyLN2SdH4oMBC4hOI1O7ydmHtKqwmJD4IMOVALW0QTD+/vCyZGlmv3YnJTqlC0mrELZdV2I/0+1ew4kmaLpPNd6g8z6wO4tVk6dHMF0GxcJAPLaq4KKIs+24kniGdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.85.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-320-eUu2RzI3O8WJKx3gHkW80w-1; Wed, 27 Nov 2024 08:53:58 +0000
+X-MC-Unique: eUu2RzI3O8WJKx3gHkW80w-1
+X-Mimecast-MFC-AGG-ID: eUu2RzI3O8WJKx3gHkW80w
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 27 Nov
+ 2024 08:53:49 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Wed, 27 Nov 2024 08:53:49 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Jakob Hauser' <jahau@rocketmail.com>, Jonathan Cameron
+	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+CC: Linus Walleij <linus.walleij@linaro.org>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
+Subject: RE: [PATCH] iio: magnetometer: yas530: Use signed integer type for
+ clamp limits
+Thread-Topic: [PATCH] iio: magnetometer: yas530: Use signed integer type for
+ clamp limits
+Thread-Index: AQHbQFyZWpVb6JGTu0SOPl1PuO8j1LLK0lfw
+Date: Wed, 27 Nov 2024 08:53:49 +0000
+Message-ID: <a28168acf9374c60902cdb5aa7608dee@AcuMS.aculab.com>
+References: <20241126234021.19749-1-jahau.ref@rocketmail.com>
+ <20241126234021.19749-1-jahau@rocketmail.com>
+In-Reply-To: <20241126234021.19749-1-jahau@rocketmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126074005.546447-1-tmyu0@nuvoton.com> <20241126074005.546447-2-tmyu0@nuvoton.com>
- <20241126-shimmer-such-35cf44076981@spud>
-In-Reply-To: <20241126-shimmer-such-35cf44076981@spud>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Wed, 27 Nov 2024 16:21:14 +0800
-Message-ID: <CAOoeyxUXYU4rMxku62CnS6BPNZ4shm5t4R_it63JTVsT0-Nrnw@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: temperature: Add support for NCT7718W
-To: Conor Dooley <conor@kernel.org>
-Cc: tmyu0@nuvoton.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, cmo@melexis.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: GCQIciNWIumsP9zKeUNSYboaflliYxO-Ec34kRekpmw_1732697637
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Dear Conor,
+From: Jakob Hauser <jahau@rocketmail.com>
+> Sent: 26 November 2024 23:40
+>=20
+> In the function yas537_measure() there is a clamp_val() with limits of
+> -BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The =
+BIT()
+> is of type unsigned long integer due to its define in include/vdso/bits.h=
+.
+> The lower limit -BIT(13) is recognized as -8192 but expressed as an unsig=
+ned
+> long integer. The size of an unsigned long integer differs between 32-bit=
+ and
+> 64-bit architectures. Converting this to type s32 may lead to undesired
+> behavior.
 
-Thank you for your comments,
-I will make the modifications in the next patch.
+I think you also need to say that the unsigned divide generates erronous
+values on 32bit systems and that the clamp() call result is ignored.
 
-Best regards,
-Ming.
+>=20
+> Declaring a signed integer with a value of BIT(13) allows to use it more
+> specifically as a negative value on the lower clamp limit.
+>=20
+> While at it, replace all BIT(13) in the function yas537_measure() by the =
+signed
+> integer.
+>=20
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@i=
+ntel.com/
+> Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
+> Cc: David Laight <david.laight@aculab.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+> ---
+> The patch is based on torvalds/linux v6.12.
+>=20
+> The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characte=
+rs per
+> line. In terms of readability I would prefer to keep it that way.
+> ---
+>  drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magne=
+tometer/yamaha-yas530.c
+> index 65011a8598d3..938b35536e0d 100644
+> --- a/drivers/iio/magnetometer/yamaha-yas530.c
+> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
+> @@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 =
+*t, u16 *x, u16 *y1, u16 *y
+>  =09u8 data[8];
+>  =09u16 xy1y2[3];
+>  =09s32 h[3], s[3];
+> +=09int half_range =3D BIT(13);
+>  =09int i, ret;
+>=20
+>  =09mutex_lock(&yas5xx->lock);
+> @@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u1=
+6 *t, u16 *x, u16 *y1, u16 *y
+>  =09/* The second version of YAS537 needs to include calibration coeffici=
+ents */
+>  =09if (yas5xx->version =3D=3D YAS537_VERSION_1) {
+>  =09=09for (i =3D 0; i < 3; i++)
+> -=09=09=09s[i] =3D xy1y2[i] - BIT(13);
+> -=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / B=
+IT(13);
+> -=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / B=
+IT(13);
+> -=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / B=
+IT(13);
+> +=09=09=09s[i] =3D xy1y2[i] - half_range;
+> +=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / h=
+alf_range;
+> +=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / h=
+alf_range;
+> +=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / h=
+alf_range;
+>  =09=09for (i =3D 0; i < 3; i++) {
+> -=09=09=09clamp_val(h[i], -BIT(13), BIT(13) - 1);
+> -=09=09=09xy1y2[i] =3D h[i] + BIT(13);
+> +=09=09=09clamp_val(h[i], -half_range, half_range - 1);
+> +=09=09=09xy1y2[i] =3D h[i] + half_range;
 
-Conor Dooley <conor@kernel.org> =E6=96=BC 2024=E5=B9=B411=E6=9C=8827=E6=97=
-=A5 =E9=80=B1=E4=B8=89 =E4=B8=8A=E5=8D=881:58=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Tue, Nov 26, 2024 at 03:40:04PM +0800, Ming Yu wrote:
-> > Add devicetree binding document for Nuvoton NCT7718W thermal sensor.
-> >
-> > Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> > ---
-> >  .../iio/temperature/nuvoton,nct7718.yaml      | 44 +++++++++++++++++++
-> >  MAINTAINERS                                   |  6 +++
-> >  2 files changed, 50 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/temperature/n=
-uvoton,nct7718.yaml
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/temperature/nuvoton,=
-nct7718.yaml b/Documentation/devicetree/bindings/iio/temperature/nuvoton,nc=
-t7718.yaml
-> > new file mode 100644
-> > index 000000000000..a3573e3d454d
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/temperature/nuvoton,nct7718=
-.yaml
-> > @@ -0,0 +1,44 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/temperature/nuvoton,nct7718.yam=
-l#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Nuvoton NCT7718W Thermal Sensor IC
-> > +
-> > +maintainers:
-> > +  - Ming Yu <tmyu0@nuvoton.com>
-> > +
-> > +description:
-> > +  https://www.nuvoton.com/resource-files/Nuvoton_NCT7718W_Datasheet_V1=
-1.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: nuvoton,nct7718
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
->
-> Please add the vdd supply as a required property.
->
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/interrupt-controller/irq.h>
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        temp-sensor@4c {
->
-> The generic node name is actually temperature-sensor.
->
-> Thanks,
-> Conor.
+NAK - that still ignores the result of clamp.
+and it should be clamp() not clamp_val().
+
+=09David
+
+>  =09=09}
+>  =09}
+>=20
+> --
+> 2.43.0
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
 

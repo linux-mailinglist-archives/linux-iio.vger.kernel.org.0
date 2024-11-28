@@ -1,158 +1,341 @@
-Return-Path: <linux-iio+bounces-12758-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C402C9DAF54
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 23:50:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAC79DB168
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 03:14:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F25E8B21B12
-	for <lists+linux-iio@lfdr.de>; Wed, 27 Nov 2024 22:50:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02C66165A72
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 02:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32D4202F71;
-	Wed, 27 Nov 2024 22:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4211F45038;
+	Thu, 28 Nov 2024 02:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="vUI6BF/e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UVViUJ5v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3C813BC35;
-	Wed, 27 Nov 2024 22:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5E138DFC;
+	Thu, 28 Nov 2024 02:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732747797; cv=none; b=CzQt0twu6dYkkYsOXL1MD3gmxFgb2jZpHea+m1U/DSJ951MZe8Sn1c+fYkE+33ARCO/gfjvf3XEXbZZUCHSHY385Zk9sZe+dti/fKXn4ErLrAL14xEsv2izLhS2dUApwwxE9CAa+KvibbJSp7+67Hcsc/hgTtjetmbE/LCEcuSE=
+	t=1732760091; cv=none; b=DOqZ/Z7YxP9+vA6aZiEE65bluq429ypMnxujdbTO8EyNgcb/qJX5QngHWS67aN5hnqFWxQkfjgjPlLWg9UKuvPmuyPnjKx5grMBfI+Z9DyMGWnyPCr8FbMKv8tS9+Rf2BzEfJe3uyAHAY0AVQwoSm75844Zx8lVIXeJ/EtOdcn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732747797; c=relaxed/simple;
-	bh=yHbkOdGZ/gV2M9ZFCqKzSzTd7trIWrm0ZksrHnoNTCw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jHwhmgQIc+RfZyRZiKRF0nqxu6bxekEZycOADeQ2Cw1owGOSFC1gT9wYANgmCBzpx5+O0ALabp+aYHjeVY5HBTAbGNHr7KRrfvsgj1w/YtrPUcNfymr9wThPS26ZiPHyri9V9AZhqlo1efmiAG1jnMtR0Ri9nBLqeim4jngwvBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=vUI6BF/e; arc=none smtp.client-ip=98.142.107.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hMUtGkwU6OybnPoy+PNJ2R+Zfic/wvSyqAgr9APpV0M=; b=vUI6BF/e9AJPSf++3b/7UQ9iZN
-	YzejioM14d/K1H73DXnrh8A+0aY0g+4z3Uy/oeY0J6ZhDMEK/FqQczIBGMAwOnFxVHK8UIz2/ophO
-	eanHbgLltkjQ6j7S8w36DxmkhRekv0NUrb1pwcJnPnDwrcmNLs5ePkDA5t2NzVpEZkmSFRlx5QIyv
-	hp50OSz7WO/Lo9qhZUcnWBZOD7XXYEs7EAVtIXJViCBMv/eQypTT53seBbkdkwgLhEdlOYyvvSA5n
-	suF6MPl+28Wx2ml2xumwndO6bJlQwYmJOJW/Q2Eh1lYn+mas2HKt8o0j1JqrdXkUq5NcdsbkSnQtC
-	/FquCUjg==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:58976 helo=[192.168.0.142])
-	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <david@lechnology.com>)
-	id 1tGQtO-0005gm-1K;
-	Wed, 27 Nov 2024 17:49:53 -0500
-Message-ID: <538f5d83-1a16-4df5-8dbe-4c6d556e1058@lechnology.com>
-Date: Wed, 27 Nov 2024 16:49:52 -0600
+	s=arc-20240116; t=1732760091; c=relaxed/simple;
+	bh=iTXRTO5/t9b+SiHLQegmxfbBLD+ZJOd1KUvlydOJn1E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lTIVwXK+4QP+ZmtHxEiHb2gkF3r4gyMmE+AmvGREdT6SG8eILBg5WrqymY1gT3xAl2B6q2fNujb01szpW6us1KJc9WDN7BM08JOIu4eIWlPVS5I7VzIZ+cu0QYCxWz62eIZr3Frl/ovnPHVCLhxm5dIuY5tAvSwsAte+kp4UHxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UVViUJ5v; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa53ebdf3caso53854966b.2;
+        Wed, 27 Nov 2024 18:14:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732760087; x=1733364887; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RwS2jBVSzXTYuNe3+UBBZ+0Uj62YFOtE1/FiTJBmwPY=;
+        b=UVViUJ5vaiPixXRlnF0DrRZn4j49nlr3USpCGQF6vDR5aRDS9Jhk8u0ZCho3TmFnYQ
+         o32qo5VUWDkrv2oaof2fRYsDCFfrVovZByTlATMV7dVe6T0U3sRJs8Bj/ooVFL5qM9W9
+         I4LxO3zKGnHg4c3D9wJsKSfNYqWzr0im5j3c8zslpWV6HjC6CnYA3EJPQKB5g3sHc9kW
+         CcrmM0UBqnUxg3pAFCHq8cfZaUbYCsXqPHQlGq/+/gwHehO89vSrl3+uiOEA8ymRQRav
+         hZGmab1YY3IFf5WE2ullForrBJ7Qxu1VcLrvfvbPiy/0nnxFLBL44hPfP9uryPLoX7z4
+         YiPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732760087; x=1733364887;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RwS2jBVSzXTYuNe3+UBBZ+0Uj62YFOtE1/FiTJBmwPY=;
+        b=lukNzxlKvwJGetAucsqJcLsprk1Tgl0rvXSPfAG65ZwLFAIzACkdu9jnByq3rdi0AL
+         4ZfYVGgefrsHIKCnvM3DPxDC5oaaJA2thjMmplB4NVK7P8PK+jc6TEFQTdj7ct0MHpYV
+         sSDItdj0LYeNsbOQlRNUn6O/mWqKLUvuHtsNs8uhhdttUB8vmIie2M/Wkeo1Ip6Ndgaj
+         c3d7nkVDBnPb+iQBe1xCWXHbFfJUdR9TJcRKyPTAvfm9WHbUfkOA2kX3u+Eh3xZchTAA
+         m+qVET/SglfhFmz1KC5mmvKiCT9dxxX4gwXLVVsRA2S/yZReWUpYNZY3YG53VQDiJHtk
+         P9gA==
+X-Forwarded-Encrypted: i=1; AJvYcCUcktHfvR/GXO2pz5dRdQqHuM2oQ7IzLsHylehPqej3dkEZ/N7ynIxqyBTbV33e6zVg0Yt7o6SI0lI4JKro@vger.kernel.org, AJvYcCWck5/9zFsX2C2JwII9zgVSnto/abA5LzGDkggp+ufLbpDyoKRGxHC5QRQH9Re+LgcaPapG7F8aWHfX@vger.kernel.org, AJvYcCWyLrwUAZ4ynLOyextGOCuaJp89AeoWgyAmqupyAF1ozwxvIVyMGDjPcEVQUBdTpFHNzDJaryEpY84l@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6faL+14u0U0rlkZIKqIPZ5z/6KBUMZh84+nfCmKybeDgGd9Q2
+	kiryz8MvWUrSrpU/ANOLR/7qSKRbpYez+e1EaGcscTVxMCtmXPGOrrNmu6t6LKzMRzuDlF7Yf02
+	YcF+tLgC34VeHRZwFG+vqfrX9Bxg=
+X-Gm-Gg: ASbGnctU7EPvp8ebl/GxIiYquD9exBDw1iPzNRYg2CET9y4/dmsCUalVStj0j6C44u7
+	5LUZyDsvq0SNKByJczXJAzF8mzYdEZO0=
+X-Google-Smtp-Source: AGHT+IECqtEuypmzVzh5m3cSewtJm2cpzImTdgNCpfYYp6unJMDltC+JYpo5NvQqw++o54ZmQD/SObo2UGlhbvs4t3M=
+X-Received: by 2002:a17:906:18b1:b0:a99:89e9:a43d with SMTP id
+ a640c23a62f3a-aa58103ddcbmr462588866b.39.1732760087280; Wed, 27 Nov 2024
+ 18:14:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Add COUNTER_FUNCTION_DISABLE to the counter API
-To: "Rafael V. Volkmer" <rafael.v.volkmer@gmail.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, wbg@kernel.org
-References: <c67e095c-3fba-44df-950f-b014ce27eb0f@lechnology.com>
- <20241127215404.915-1-rafael.v.volkmer@gmail.com>
-Content-Language: en-US
-From: David Lechner <david@lechnology.com>
-Autocrypt: addr=david@lechnology.com; keydata=
- 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
-In-Reply-To: <20241127215404.915-1-rafael.v.volkmer@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20241106023916.440767-1-j2anfernee@gmail.com> <20241106023916.440767-2-j2anfernee@gmail.com>
+ <6c20875c-4145-4c91-b3b5-8f70ecb126f0@amperemail.onmicrosoft.com>
+ <CA+4VgcJD74ar9zQCj38M2w8FzGWpq+u5Z7ip9M7a1Lu7u8rojw@mail.gmail.com>
+ <20241109134228.4359d803@jic23-huawei> <20241109142943.3d960742@jic23-huawei>
+ <CA+4VgcJ=8wDWWnmgEt-UkEUfnfD8kGtHe44G5+dcRYt=KdwNfw@mail.gmail.com> <20241123144750.43eaa1c5@jic23-huawei>
+In-Reply-To: <20241123144750.43eaa1c5@jic23-huawei>
+From: Yu-Hsian Yang <j2anfernee@gmail.com>
+Date: Thu, 28 Nov 2024 10:14:10 +0800
+Message-ID: <CA+4Vgc+rqnxne6saUgUO_kR6chX9+HZcb40_9dpO6p6KuskSAg@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
+ NCT720x ADCs
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Chanh Nguyen <chanh@amperemail.onmicrosoft.com>, avifishman70@gmail.com, 
+	tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com, 
+	yuenn@google.com, benjaminfair@google.com, lars@metafoo.de, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com, 
+	dlechner@baylibre.com, javier.carrasco.cruz@gmail.com, andy@kernel.org, 
+	marcelo.schmitt@analog.com, olivier.moysan@foss.st.com, 
+	mitrutzceclan@gmail.com, matteomartelli3@gmail.com, alisadariana@gmail.com, 
+	joao.goncalves@toradex.com, marius.cristea@microchip.com, 
+	mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com, 
+	yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/27/24 3:54 PM, Rafael V. Volkmer wrote:
-> On 11/25/24 11:36 AM, David Lechner wrote:
->> How does this work without an additional patch to modify the TI eQEP
->> counter driver to handle this new enum value? For example, I would
->> expect that this enum value would be added to ti_eqep_position_functions
->> and case statements added in ti_eqep_function_read(),
->> ti_eqep_function_write() and ti_eqep_action_read() to handle the new
->> option.
-> 
-> Hi, David!
-> 
-> Yes, the intention is to have a second path where the eQEP driver handles 
-> this within these file operations functions.
-> 
-> Best regards
+Dear Jonathan Cameron,
 
-OK, so please send those patches too so that we can see the whole picture.
+Thank you for your advice.
 
-Based on your discussion with William, it sounds like there are 2 things
-that need to be resolved.
+I would remove the "nvuoton,read-vin-data-size" property.
 
-1. Should a power saving mode actually be a counter function or should it
-   be controlled by the counter enable attribute or something else, like
-   more general Linux power management stuff?
-2. If there are going to be in-kernel users calling these functions, then
-   we will likely want to introduce some new APIs in the kernel for this.
-   Using platform_get_drvdata() from one driver to another is a bit
-   fragile. Likely we will want some devicetree bindings for counter
-   consumers and providers and some kernel APIs like a counter_get() that
-   takes an index or string ID to get the counter provider assigned to a
-   counter consumer. Then we will probably want some wrappers around the
-   counter ops pointers so that consumer drivers don't have to depend on
-   the internal implementation of the counter subsystem.
+Read VIN info can use word read or byte read, and other registers
+should use byte read.
+If I use word read for VIN info and byte read for other registers,
+I encounter an issue when I use regmap instead of i2c smbus API.
 
+I need two regmap configs with val_bits 8/16.
+After I call devm_regmap_init_i2c these two configs,
+the error message:
+"debugfs: Directory '5-001d' with parent 'regmap' already present!"
+
+Do you have any suggestions?
+
+Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2024=E5=B9=B411=E6=9C=8823=E6=
+=97=A5 =E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=8810:48=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+>
+> On Mon, 11 Nov 2024 15:45:03 +0800
+> Yu-Hsian Yang <j2anfernee@gmail.com> wrote:
+>
+> > Dear Jonathan Cameron,
+> >
+> > For property read-vin-data-size, we have a internal discussion.
+> >
+> > For Nuvoton NCT7201/NCT7202 chip,
+> > Take an example as to Vin1:
+> > The VIN reading supports Byte read (One Byte) and Word read (Two Byte)
+> >
+> > For Byte read:
+> > First read Index 00h to get VIN1 MSB, then read Index 0Fh Bit 3~7 to
+> > get VIN1 LSB.
+> > Index 0Fh is a shared LSB for all VINs.
+> >
+> > For Word read:
+> > Read Index 00h and get 2 Byte (VIN1 MSB and VIN1 LSB).
+> >
+> > We would refer your suggestion,
+> > we  declare a property named "nvuoton,read-vin-data-size" with default =
+value 16
+> > for user to use.
+>
+> Thanks for the info.  If the i2c controller allows word read
+> then the right thing is to always use it.
+>
+> Just check for I2C_FUNC_SMBUS_READ_WORD_DATA with
+> i2c_check_functionality()
+>
+> If it's supported use i2c_smbus_read_word_swapped()
+> if not, do the i2c_smbus_read_byte() approach.
+>
+> We don't need to want this in DT as it is a property of the smbus
+> controller, not this device.
+>
+> Jonathan
+>
+>
+>
+>
+> >
+> > Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2024=E5=B9=B411=E6=9C=889=
+=E6=97=A5 =E9=80=B1=E5=85=AD =E4=B8=8B=E5=8D=8810:29=E5=AF=AB=E9=81=93=EF=
+=BC=9A
+> > >
+> > > On Sat, 9 Nov 2024 13:42:28 +0000
+> > > Jonathan Cameron <jic23@kernel.org> wrote:
+> > >
+> > > > On Wed, 6 Nov 2024 17:22:35 +0800
+> > > > Yu-Hsian Yang <j2anfernee@gmail.com> wrote:
+> > > >
+> > > > > Dear Chanh Nguyen,
+> > > > >
+> > > > > Thank you for your response.
+> > > > >
+> > > > > Chanh Nguyen <chanh@amperemail.onmicrosoft.com> =E6=96=BC 2024=E5=
+=B9=B411=E6=9C=886=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=8812:58=E5=
+=AF=AB=E9=81=93=EF=BC=9A
+> > > > > >
+> > > > > >
+> > > > > >
+> > > > > > On 06/11/2024 09:39, Eason Yang wrote:
+> > > > > > > This adds a binding specification for the Nuvoton NCT7201/NCT=
+7202
+> > > > > > > family of ADCs.
+> > > > > > >
+> > > > > > > Signed-off-by: Eason Yang <j2anfernee@gmail.com>
+> > > > > > > ---
+> > > > > > >   .../bindings/iio/adc/nuvoton,nct720x.yaml     | 47 ++++++++=
++++++++++++
+> > > > > > >   MAINTAINERS                                   |  1 +
+> > > > > > >   2 files changed, 48 insertions(+)
+> > > > > > >   create mode 100644 Documentation/devicetree/bindings/iio/ad=
+c/nuvoton,nct720x.yaml
+> > > > > > >
+> > > > > > > diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoto=
+n,nct720x.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct720x.=
+yaml
+> > > > > > > new file mode 100644
+> > > > > > > index 000000000000..3052039af10e
+> > > > > > > --- /dev/null
+> > > > > > > +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct72=
+0x.yaml
+> > > > > > > @@ -0,0 +1,47 @@
+> > > > > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > > > > +%YAML 1.2
+> > > > > > > +---
+> > > > > > > +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nct720x.y=
+aml#
+> > > > > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > > > > +
+> > > > > > > +title: Nuvoton nct7202 and similar ADCs
+> > > > > > > +
+> > > > > > > +maintainers:
+> > > > > > > +  - Eason Yang <yhyang2@nuvoton.com>
+> > > > > > > +
+> > > > > > > +description: |
+> > > > > > > +   Family of ADCs with i2c interface.
+> > > > > > > +
+> > > > > > > +properties:
+> > > > > > > +  compatible:
+> > > > > > > +    enum:
+> > > > > > > +      - nuvoton,nct7201
+> > > > > > > +      - nuvoton,nct7202
+> > > > > > > +
+> > > > > > > +  reg:
+> > > > > > > +    maxItems: 1
+> > > > > > > +
+> > > > > > > +  read-vin-data-size:
+> > > > > >
+> > > > > > Is it generic property or vendor property? I tried to find in t=
+he
+> > > > > > https://github.com/torvalds/linux/tree/master/Documentation/dev=
+icetree/bindings
+> > > > > > , but it seems this property hasn't been used on other devices.
+> > > > > >
+> > > > > > If it is vendor property, then I think it should include a vend=
+or
+> > > > > > prefix. For examples:
+> > > > > >
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/adi%2Cad7780.yaml#L50
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/fsl%2Cvf610-adc.yaml#L42
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/st%2Cstmpe-adc.yaml#L22
+> > > > > >
+> > > > > >
+> > > > >
+> > > > > I would add a vendor prefix for it.
+> > > >
+> > > > Why do we want this at all?  Is this device sufficiently high
+> > > > performance that Linux will ever want to trade of resolution agains=
+t
+> > > > sampling speed?
+> > > >
+> > > > If so that seems like a policy control that belongs in userspace. N=
+ote
+> > > > that to support that in IIO I would want a strong justification for=
+ why we dno't
+> > > > just set it to 16 always. We just go for maximum resolution in the =
+vast majority
+> > > > of drivers that support control of this.
+> > > I'd misunderstood what this is. It's a control no what the i2c word s=
+ize is.
+> > > Do we actually care about supporting rubbish i2c controllers?  How ma=
+ny
+> > > can't do a word access?
+> > >
+> > > If you do it should be detected from the controller rather than in DT=
+.
+> > >
+> > > >
+> > > >
+> > > > >
+> > > > > > > +    description: number of data bits per read vin
+> > > > > > > +    $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > > > +    enum: [8, 16]
+> > > > > > > +
+> > > > > > > +required:
+> > > > > > > +  - compatible
+> > > > > > > +  - reg
+> > > > > > > +  - read-vin-data-size
+> > > > > > > +
+> > > > > > > +additionalProperties: false
+> > > > > > > +
+> > > > > > > +examples:
+> > > > > > > +  - |
+> > > > > > > +    i2c {
+> > > > > > > +        #address-cells =3D <1>;
+> > > > > > > +        #size-cells =3D <0>;
+> > > > > > > +
+> > > > > > > +        nct7202@1d {
+> > > > > >
+> > > > > > I think the Node name should follow
+> > > > > > https://devicetree-specification.readthedocs.io/en/latest/chapt=
+er2-devicetree-basics.html#generic-names-recommendation
+> > > > > >
+> > > > > >
+> > > > > > For some examples that were merged before
+> > > > > >
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/adi%2Cad7091r5.yaml#L102
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/maxim%2Cmax1238.yaml#L73
+> > > > > > https://github.com/torvalds/linux/blob/master/Documentation/dev=
+icetree/bindings/iio/adc/ti%2Cadc081c.yaml#L49
+> > > > > >
+> > > > >
+> > > > > I would change it for the node naming.
+> > > > >
+> > > > > > > +            compatible =3D "nuvoton,nct7202";
+> > > > > > > +            reg =3D <0x1d>;
+> > > > > > > +            read-vin-data-size =3D <8>;
+> > > > > > > +        };
+> > > > > > > +    };
+> > > > > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > > > > index 91d0609db61b..68570c58e7aa 100644
+> > > > > > > --- a/MAINTAINERS
+> > > > > > > +++ b/MAINTAINERS
+> > > > > > > @@ -2746,6 +2746,7 @@ L:      openbmc@lists.ozlabs.org (moder=
+ated for non-subscribers)
+> > > > > > >   S:  Supported
+> > > > > > >   F:  Documentation/devicetree/bindings/*/*/*npcm*
+> > > > > > >   F:  Documentation/devicetree/bindings/*/*npcm*
+> > > > > > > +F:   Documentation/devicetree/bindings/iio/adc/nuvoton,nct72=
+0x.yaml
+> > > > > > >   F:  Documentation/devicetree/bindings/rtc/nuvoton,nct3018y.=
+yaml
+> > > > > > >   F:  arch/arm/boot/dts/nuvoton/nuvoton-npcm*
+> > > > > > >   F:  arch/arm/mach-npcm/
+> > > > > >
+> > > >
+> > > >
+> > >
+>
 

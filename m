@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-12769-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F869DB480
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 10:03:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACEE79DB482
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 10:03:27 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC89166D19
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 09:03:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017DEB22829
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 09:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE69156238;
-	Thu, 28 Nov 2024 09:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC9015443C;
+	Thu, 28 Nov 2024 09:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njdC85wN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LIBYsQPD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC6154C17;
-	Thu, 28 Nov 2024 09:02:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0901547EE;
+	Thu, 28 Nov 2024 09:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732784577; cv=none; b=VTKVM8GU1Y0FD8BzC+1bUgp8rqT4mVU0ksv7XdEGDvc1yWgyCVYPq2xg47xi6uZ39YEPO5t5rKr9RyYLfRO1p/8WEfMKnl9O2XMpWbDOVLo2xm4qx6/ITZ1+rdJR91ffpA1lRVlFdBBEwVdOrw3dtUluitgPh9u39cSnr6OhDSs=
+	t=1732784594; cv=none; b=fv/KWGHMrAa9QXyR5SwPZ57jmCc6/hqj79OXqDvVgsArwenKIUz/hynL5MGgi7jrDwIsqcmtSvl6cx36ThLoG5y8DgztcF6QCbmMF/eApkmZIyWM8CxVVfDFr9xY3f7/plTbmNdbEUuEuNu3jUSULQqeA5OqaeRaGuwZeGnXrso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732784577; c=relaxed/simple;
-	bh=fjW6D3iIw02hXTHuiiDDX2Yp1fZBRd7dCiCdiiPOwF4=;
+	s=arc-20240116; t=1732784594; c=relaxed/simple;
+	bh=iAQrajyZwAKlx0GJCBgLYQqerCJHLKdAJsNL5fRH1EU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PFo618fOB5pMMv0O7cMOdLKi33TcDWyMcUNBB6p1qHr1IiA2yP0RUhS4gx4f3TW9xT/jXD2MKy3kmdBhntnhw8vh5xV0BWgdIeFkycM3PBO75aPk+PJcXBe3yvsvWcIxcuiu9tjqtMDe7ZJnGsxmqkA5aPonHe2SkObfBwvv2Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njdC85wN; arc=none smtp.client-ip=209.85.167.49
+	 Content-Type:Content-Disposition:In-Reply-To; b=OAlGSo9v0CiPQiT82rWXdQ+5SpBJXVP5HoHQc38n0sKiyGiKZ0e9F/SeoYj8mJuhvFdYtdCRPPhD5HQ//K5HN6u9vq4epM/B9I888Ow8Xytb09bJWkL6AOyOTMMhNeqaOAKPOlNVptRw+IcFwEtusdBTK/vVsjmc/61XqHbMkVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LIBYsQPD; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-53ded167ae3so685665e87.0;
-        Thu, 28 Nov 2024 01:02:54 -0800 (PST)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53de79c2be4so563846e87.2;
+        Thu, 28 Nov 2024 01:03:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732784573; x=1733389373; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732784590; x=1733389390; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oF/+3kCu9KXAtvcNzSgI4p1+vhLomCHXaKzHdk+jh3g=;
-        b=njdC85wNgN9horKL3nIE/ItdKVWjF4akocO4DqJKjAB6fQXzr8vu4BZUVo4yAdsMMo
-         i/C9q+Li+cwc17wdh1Y7cfKfB5t/sW+uxBw6R8sKi9kcYRhISlZ0hHqSsa/u+ve5IkuM
-         lRNx+t6fQ5JQgnyErkixUmEwLgpgmNVvAdXBoCEuh2/F1Xk5HH3tX6QFNVCxNCQGyzZx
-         5V7uJ8E1ahtUEiRTbHa5VT2Egbeek2YemJdORiAs0QJKMYpLp8ng1NKUffgKySr1Ilz8
-         Hr+g63CtlGDraV46QlJ1Zdv0HN+gkzxXDGur3ez9kv+I+mSFEl0YYwW0RiOpljDRdn5W
-         0AeQ==
+        bh=lfhFYuYieXmvJXDGOA9mP/3xPmE5z5AUMkwtuYyYGmw=;
+        b=LIBYsQPDDH17CjkRxsPsmLv8OTg6QYYZy30POkMCO6YV+2PgD5GKfP9hJQ/LQWsAUZ
+         H9HIFyU87uKoZfZTMqa8WeCm+ksmb5Rbh5eIpcvo0r45NWTriBxN3gZQOvEptGD6AT1V
+         0PYY7p3oE395tManixYTH14dCh8ddjKhaX1BvrhsNiMiKJBoZxqwPhiSkH3pRo9eFLd7
+         NEIy1ZJYOOdbiDcwjCty4bgR1522BmZ/W3anInaRBM10if593ipTrVmU3owcfmc5kGih
+         v1XVL6dpV8Pum0JpcQF/Tv/qQjInG3CNBCqbV+AE0jotsQTql9fWDVvIBNaJkvFd6YJe
+         X97w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732784573; x=1733389373;
+        d=1e100.net; s=20230601; t=1732784590; x=1733389390;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oF/+3kCu9KXAtvcNzSgI4p1+vhLomCHXaKzHdk+jh3g=;
-        b=Ppf5Y1tdCBWhXIDIto3fI/N0eWDMWt5GX9rWNGh2QZsCBFGoYViiXoMc58S/dc8X/l
-         Mxum82rOUICww16tEQJ+qoCSSldBmKlsasCKYc9iB3wXqxL+CD++S2Vc9XERdOBTlDbs
-         a6qApV52SufBM1bGZtVcc0tbg9TSrIrm6bPjOlj+Bptn4ufHbGLtqpeR41q0U82yRiUx
-         PsdgoIOUX49CPI1z1+BsF5Ksuk4gn5y4zmy6AXmCKcx8d6nknpw3xAp2LI1gHkFlxOIP
-         88Javib2bBYczxHMxjexlaTnhRvLYbaFtiztwfZ5FnyVdWL6dl7o7cfotw8Iq8MbntQH
-         qAxg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuEuXmMEmT98LwjAIDP4G48UK+8nRD6FQv2H79AQKD40jy0EWCueYWpQqFoudQ09XeNMAskm7DX/3o@vger.kernel.org, AJvYcCW7cs7IexyeavvS0gTFhTGi+/kBUJvgkFCLLHF/+5iSt/Z8WGtfYK3U2/WTEU6mqlTpk6kb0BQsQr89m+wD@vger.kernel.org, AJvYcCWLPSGNUVWeAulKVvHrww9ODGzDzYwe7Tts134uGCL/u+AhIqzqX1cIBv9gNaBhwaqFdRYxdXLZ4ViD@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFHRQ53G7kwSU+FKdTfuk+cWorC9xQu2T8OkJFC7LklgHyUMOs
-	WfLE0eUmzjiKcY1jt6QNGGzRMqRtFZWj6usruuU5ttslFMtCzszI
-X-Gm-Gg: ASbGncvxWRuxuEYk4XU/a1yAeZHg/05b/bQGnIc+ab0i8VGXyZnHYg4/q5105PeZtrz
-	R2s/V9fEWOoaslCM6vo+ootRVRVyBCsVBXKgBj5nTz3KPu/J/M69ztZOyiSvouBmOL1bza5YjVJ
-	03bxlXOup0jqyk1KYYF8ZkvjKCyIaDp+pbnX9W62lo0IydRr/EnTzIsQlXHNN7AtCqC/5XGcMmX
-	g607PKnL39rala0pJYxWfvEfvSe4Pzhz0Izkh2DVEIiTr9scBff
-X-Google-Smtp-Source: AGHT+IErq4imRX3wLkkf5SH9n7pslkqAr9BpQxDOICuCh4OpJMn9bEk6NOCRZ3vHCt+KUJimkXQeKw==
-X-Received: by 2002:a05:6512:32a8:b0:53d:f09e:99d3 with SMTP id 2adb3069b0e04-53df09e9a97mr2590488e87.0.1732784572968;
-        Thu, 28 Nov 2024 01:02:52 -0800 (PST)
+        bh=lfhFYuYieXmvJXDGOA9mP/3xPmE5z5AUMkwtuYyYGmw=;
+        b=LECE/wova1hgnNWJYj6VIrH19MmEckhx/cKFyxjj/nKAuLfT2zeZBby3FJvPM5Ybaq
+         HKbcy4z9EImMET8+5PxKdsfTNJcsYa/dT86qkNqPm8hnYLtNLGGhANS6hCrM+PYW4vLY
+         DFtkdATKWIsugSRHoXNakRLtww9h/LQCCyN7Sst12j8xxwC6N35X4vkLqQNPwHXvhf//
+         pfIszbOugMR1ReAplGRbAsco2d1mTj75YCrSdVcYdLrR+rpmcF4h7QhZEy+rCEYD9Vz8
+         Q7dYhLTiRKUK44hVLvZhRHIHr+cfEYGue7zxyisIB5igOfLhBvKQawriFeAR0gIRFIL8
+         7L9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUkHHDqVWDU++VNl3YkRZ/HtPCalElhU+XFA8mi/UvUNex7TtzxEszhwwYbRqftZyIAXN/6E9xJtpbJ@vger.kernel.org, AJvYcCUtEWExq4ZyyL7K/NEFz8ktBeeQ3OoPQLNDzUf4XXk18R0C4TgIRB8h9CILBomTCC3BKSl2Ezhgf3F9GfyJ@vger.kernel.org, AJvYcCW4NTTPZ6Wap3BhadlTHJjZ1dyVeV/OLRGjwlm78TgovvnbX8aVIiBvIuRW4V4nvFpKk45qYgVMuv8F@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSRn+Kf6ihqpyPQcoRE6LZJacK76lY47WxPQ71TrgNjLnJY0w0
+	rdZSW+tvtcOGrkBE4CIe+x2tl4U3njI6470IQzVqHA/NiWXF9Psu1I1ewA==
+X-Gm-Gg: ASbGncvNsZ0sAfFlpJbOWMPGOTdnKxs+eMfk8VSTa8ac45qoXhOiq5b4/ZUz5Hdz1Ld
+	Q7pZcqcSt8/XdrPbVzNPUmr1NfsSKkJdvHk0vUWXUHpxc6W4JrGVZDh5mcWrTq61leYLcM5tgBF
+	ASmWd3GUiJYIKzLExs2BlJIWfw7T2vBsAyMlGhZxbbr5FptrErRT2b54pJ6BOAxV+llKaXrcm6g
+	tAGTw+s7lY/X+bnAyJckwE2d33T6N59loYpOpMzNp9GSU16dIfk
+X-Google-Smtp-Source: AGHT+IEWEZPLwI4fPFTskvYqirjFAckRCvq1D6tvPFe2z73gUpZu4Bod6skEOn+aYKVpRCH1gy7cpQ==
+X-Received: by 2002:a05:6512:690:b0:53d:eec1:a03b with SMTP id 2adb3069b0e04-53df00aa172mr3631254e87.3.1732784590213;
+        Thu, 28 Nov 2024 01:03:10 -0800 (PST)
 Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df6430e74sm118560e87.9.2024.11.28.01.02.49
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df644aa9dsm117739e87.110.2024.11.28.01.03.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 01:02:50 -0800 (PST)
-Date: Thu, 28 Nov 2024 11:02:45 +0200
+        Thu, 28 Nov 2024 01:03:08 -0800 (PST)
+Date: Thu, 28 Nov 2024 11:03:02 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -81,8 +81,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 4/7] iio: kx022a: Support ROHM KX134ACR-LBZ
-Message-ID: <27c43c595de1f3f698ace671922d4f5a48c3cd54.1732783834.git.mazziesaccount@gmail.com>
+Subject: [PATCH v3 5/7] dt-bindings: iio: kx022a: Support KX134-1211
+Message-ID: <48b50cbda3d6c3a58a7b7c9ff23ed4dc7f418a5e.1732783834.git.mazziesaccount@gmail.com>
 References: <cover.1732783834.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -91,24 +91,23 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="/MeALgLoBC5o0rp/"
+	protocol="application/pgp-signature"; boundary="2duNzWQ/96gyQot0"
 Content-Disposition: inline
 In-Reply-To: <cover.1732783834.git.mazziesaccount@gmail.com>
 
 
---/MeALgLoBC5o0rp/
+--2duNzWQ/96gyQot0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The register interface of the ROHM KX134ACR-LBZ accelerometer is
-almost identical to the KX132ACR-LBZ. The main difference between these
-accelerometers is that the KX134ACR-LBZ supports different G-ranges. The
-driver can model this by informing different scale to users. Also, the
-content of the "who_am_I" register is different.
+The ROHM KX134-1211 is very similar to KX132-1211. The main difference is
+supported g-ranges. The KX132-1211 can measure ranges from +/- 2g to
++/-16g where the KX134-1211 supports measuring ranges +/- 8g to +/- 64g.
 
-Add an ID and scales for the KX134ACR-LBZ.
+Support the ROHM KX134-1211.
 
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
@@ -116,161 +115,65 @@ Revision history:
   v2 =3D> v3:
   - patch number changed because patches were dropped.
   v1 =3D> v2:
-  - patch number changed because a change was added to the series.
-  - rebased on iio/testing to avoid conflicts with queued fixes.
+  - new patch.
 ---
- drivers/iio/accel/kionix-kx022a-i2c.c |  2 ++
- drivers/iio/accel/kionix-kx022a-spi.c |  2 ++
- drivers/iio/accel/kionix-kx022a.c     | 36 +++++++++++++++++++++++++++
- drivers/iio/accel/kionix-kx022a.h     |  2 ++
- 4 files changed, 42 insertions(+)
+ .../devicetree/bindings/iio/accel/kionix,kx022a.yaml  | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/accel/kionix-kx022a-i2c.c b/drivers/iio/accel/kion=
-ix-kx022a-i2c.c
-index 8a1d4fc28ddd..9fd049c2b62e 100644
---- a/drivers/iio/accel/kionix-kx022a-i2c.c
-+++ b/drivers/iio/accel/kionix-kx022a-i2c.c
-@@ -39,6 +39,7 @@ static const struct i2c_device_id kx022a_i2c_id[] =3D {
- 	{ .name =3D "kx022a", .driver_data =3D (kernel_ulong_t)&kx022a_chip_info =
-},
- 	{ .name =3D "kx132-1211", .driver_data =3D (kernel_ulong_t)&kx132_chip_in=
-fo },
- 	{ .name =3D "kx132acr-lbz", .driver_data =3D (kernel_ulong_t)&kx132acr_ch=
-ip_info },
-+	{ .name =3D "kx134acr-lbz", .driver_data =3D (kernel_ulong_t)&kx134acr_ch=
-ip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, kx022a_i2c_id);
-@@ -47,6 +48,7 @@ static const struct of_device_id kx022a_of_match[] =3D {
- 	{ .compatible =3D "kionix,kx022a", .data =3D &kx022a_chip_info },
- 	{ .compatible =3D "kionix,kx132-1211", .data =3D &kx132_chip_info },
- 	{ .compatible =3D "rohm,kx132acr-lbz", .data =3D &kx132acr_chip_info },
-+	{ .compatible =3D "rohm,kx134acr-lbz", .data =3D &kx134acr_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a-spi.c b/drivers/iio/accel/kion=
-ix-kx022a-spi.c
-index f798b964d0b5..b20978afc565 100644
---- a/drivers/iio/accel/kionix-kx022a-spi.c
-+++ b/drivers/iio/accel/kionix-kx022a-spi.c
-@@ -39,6 +39,7 @@ static const struct spi_device_id kx022a_id[] =3D {
- 	{ .name =3D "kx022a", .driver_data =3D (kernel_ulong_t)&kx022a_chip_info =
-},
- 	{ .name =3D "kx132-1211", .driver_data =3D (kernel_ulong_t)&kx132_chip_in=
-fo },
- 	{ .name =3D "kx132acr-lbz", .driver_data =3D (kernel_ulong_t)&kx132acr_ch=
-ip_info },
-+	{ .name =3D "kx134acr-lbz", .driver_data =3D (kernel_ulong_t)&kx134acr_ch=
-ip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, kx022a_id);
-@@ -47,6 +48,7 @@ static const struct of_device_id kx022a_of_match[] =3D {
- 	{ .compatible =3D "kionix,kx022a", .data =3D &kx022a_chip_info },
- 	{ .compatible =3D "kionix,kx132-1211", .data =3D &kx132_chip_info },
- 	{ .compatible =3D "rohm,kx132acr-lbz", .data =3D &kx132acr_chip_info },
-+	{ .compatible =3D "rohm,kx134acr-lbz", .data =3D &kx134acr_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, kx022a_of_match);
-diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-k=
-x022a.c
-index b23a27623a46..9fe16802c125 100644
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -408,6 +408,14 @@ static const int kx022a_scale_table[][2] =3D {
- 	{ 0, 4788403 },
- };
+diff --git a/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml=
+ b/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
+index c973f4941a6d..f07c70e51c45 100644
+--- a/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
++++ b/Documentation/devicetree/bindings/iio/accel/kionix,kx022a.yaml
+@@ -4,23 +4,24 @@
+ $id: http://devicetree.org/schemas/iio/accel/kionix,kx022a.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
 =20
-+/* KX134ACR-LBZ ranges are (+/-) 8, 16, 32, 64 G */
-+static const int kx134acr_lbz_scale_table[][2] =3D {
-+	{ 0, 2394202 },
-+	{ 0, 4788403 },
-+	{ 0, 9576807 },
-+	{ 0, 19153613 },
-+};
-+
- static int kx022a_read_avail(struct iio_dev *indio_dev,
- 			     struct iio_chan_spec const *chan,
- 			     const int **vals, int *type, int *length,
-@@ -1236,6 +1244,34 @@ const struct kx022a_chip_info kx132acr_chip_info =3D=
- {
- };
- EXPORT_SYMBOL_NS_GPL(kx132acr_chip_info, IIO_KX022A);
+-title: ROHM/Kionix KX022A, KX132-1211 and KX132ACR-LBZ Accelerometers
++title: ROHM/Kionix KX022A, KX132/134-1211 and KX132/134ACR-LBZ Acceleromet=
+ers
 =20
-+const struct kx022a_chip_info kx134acr_chip_info =3D {
-+	.name				=3D "kx134acr-lbz",
-+	.regmap_config			=3D &kx022a_regmap_config,
-+	.channels			=3D kx022a_channels,
-+	.num_channels			=3D ARRAY_SIZE(kx022a_channels),
-+	.scale_table			=3D kx134acr_lbz_scale_table,
-+	.scale_table_size		=3D ARRAY_SIZE(kx134acr_lbz_scale_table) *
-+					  ARRAY_SIZE(kx134acr_lbz_scale_table[0]),
-+	.fifo_length			=3D KX022A_FIFO_LENGTH,
-+	.who				=3D KX022A_REG_WHO,
-+	.id				=3D KX134ACR_LBZ_ID,
-+	.cntl				=3D KX022A_REG_CNTL,
-+	.cntl2				=3D KX022A_REG_CNTL2,
-+	.odcntl				=3D KX022A_REG_ODCNTL,
-+	.buf_cntl1			=3D KX022A_REG_BUF_CNTL1,
-+	.buf_cntl2			=3D KX022A_REG_BUF_CNTL2,
-+	.buf_clear			=3D KX022A_REG_BUF_CLEAR,
-+	.buf_status1			=3D KX022A_REG_BUF_STATUS_1,
-+	.buf_read			=3D KX022A_REG_BUF_READ,
-+	.inc1				=3D KX022A_REG_INC1,
-+	.inc4				=3D KX022A_REG_INC4,
-+	.inc5				=3D KX022A_REG_INC5,
-+	.inc6				=3D KX022A_REG_INC6,
-+	.xout_l				=3D KX022A_REG_XOUT_L,
-+	.get_fifo_bytes_available	=3D kx022a_get_fifo_bytes_available,
-+};
-+EXPORT_SYMBOL_NS_GPL(kx134acr_chip_info, IIO_KX022A);
-+
- int kx022a_probe_internal(struct device *dev, const struct kx022a_chip_inf=
-o *chip_info)
- {
- 	static const char * const regulator_names[] =3D {"io-vdd", "vdd"};
-diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-k=
-x022a.h
-index 36e9d9de8c13..ea32fd252a38 100644
---- a/drivers/iio/accel/kionix-kx022a.h
-+++ b/drivers/iio/accel/kionix-kx022a.h
-@@ -14,6 +14,7 @@
- #define KX022A_REG_WHO		0x0f
- #define KX022A_ID		0xc8
- #define KX132ACR_LBZ_ID		0xd8
-+#define KX134ACR_LBZ_ID		0xcc
+ maintainers:
+   - Matti Vaittinen <mazziesaccount@gmail.com>
 =20
- #define KX022A_REG_CNTL2	0x19
- #define KX022A_MASK_SRST	BIT(7)
-@@ -190,5 +191,6 @@ int kx022a_probe_internal(struct device *dev, const str=
-uct kx022a_chip_info *chi
- extern const struct kx022a_chip_info kx022a_chip_info;
- extern const struct kx022a_chip_info kx132_chip_info;
- extern const struct kx022a_chip_info kx132acr_chip_info;
-+extern const struct kx022a_chip_info kx134acr_chip_info;
+ description: |
+   KX022A, KX132ACR-LBZ and KX132-1211 are 3-axis accelerometers supporting
+-  +/- 2G, 4G, 8G and 16G ranges. The KX134ACR-LBZ supports +/- 8G, 16G,
+-  32G and 64G. All the sensors also have variable output data-rates and a
+-  hardware-fifo buffering. These accelerometers can be accessed either
+-  via I2C or SPI.
++  +/- 2G, 4G, 8G and 16G ranges. The KX134ACR-LBZ and KX134-1211 support
++  +/- 8G, 16G, 32G and 64G. All the sensors also have variable output
++  data-rates and a hardware-fifo buffering. These accelerometers can be
++  accessed either via I2C or SPI.
 =20
- #endif
+ properties:
+   compatible:
+     enum:
+       - kionix,kx022a
+       - kionix,kx132-1211
++      - kionix,kx134-1211
+       - rohm,kx132acr-lbz
+       - rohm,kx134acr-lbz
+=20
 --=20
 2.47.0
 
 
---/MeALgLoBC5o0rp/
+--2duNzWQ/96gyQot0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdIMbUACgkQeFA3/03a
-ocVHqggApB1SAUD15L2f8gb4nn3HXKqQJmIFKySgvyn7Y4nN6bBVXwgb3Q0iAfzw
-X3Ft+pGFaGgu4QFW3N9S9U2ua2pnUyQFAp+TbH2p+FMpcj9eyUv5XObXOWUOAY0x
-Tg2Pz2aU50N5Pz5Ilheyz2QYBZOcFOpEtO8aY0T4kpIbmx4GXAz6ffiNselTFov1
-pMayVfvhAljGan0tXvLlWskVkZZbTGJayZHwYACbJ5KrkO1MzvtOlBcW3vWJZD7H
-zMda8hpeh3wBwaJ9S8m98mD9uhm64LV/BVG1vZxy3veGUM826Mp30fLeZ2Rp21BO
-mxRPrXtgyDhibTysbVcMr3TZMH/YOA==
-=ljZl
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdIMcYACgkQeFA3/03a
+ocUplQgAuGxA2lMy6PjX4v5fQg1z4AFkvxc7b2ZTg0us3jd4Ixg7J2V1cwGc+Y0D
+S0enf207brxO+t5leAoV9Iix3CzjXdKeicAQb8HlFToNfH1AblG3BDO0U/EKh4Ug
+9QWs3iTMuVmBRwG+9D0e/9C6AHVO3ycw7Wo/SUCGLcKb59vlWOwhnv30mfHRusL1
+rgcJ/A114xazA95a5OK2DcnI5fgIe8yK6dBkcY2tXIFXagxicCuRQIGgNlqKF2xY
+uabl/s760SEYEk+PUn9Y8w5YUhDvCWFceKA0FLt9TZucZF/KMJCXfT3j4dxOSCFd
+vjazH2cyhHvJFioCA5yK8BckI+4VAg==
+=lZAw
 -----END PGP SIGNATURE-----
 
---/MeALgLoBC5o0rp/--
+--2duNzWQ/96gyQot0--
 

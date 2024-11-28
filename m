@@ -1,214 +1,220 @@
-Return-Path: <linux-iio+bounces-12789-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12790-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D229DBBFC
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 18:53:14 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39669DBC7F
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 20:32:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 098D1B212C9
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 17:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D53516462F
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 19:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5F41BE238;
-	Thu, 28 Nov 2024 17:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD4A1C1F15;
+	Thu, 28 Nov 2024 19:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FIYDLruT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="al3W15UQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58351BD9D3;
-	Thu, 28 Nov 2024 17:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1405AD4B;
+	Thu, 28 Nov 2024 19:32:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732816387; cv=none; b=q5SHKLv00tF6xMEW6zT2M7O3h/mdbz8M5gL0HcMBcICXU//hZ3J3OE6gn/gm+xRUD0j+5hnHThvyKvmIaEv3BAC4ofFkldrdRKhrspUzUtnb5xLh8niPHzcVewfzlqNE8gDYSRRqiIgpC+zh9R9Odc7cB7ZXCpmjOzIVvhMdzXI=
+	t=1732822374; cv=none; b=TATUHUNNBs5kF6nBV1DEsSWCE3/GktFlqa49dfqYMR0e9DYJ1x39WoGj9Xvx/Jb1v36v9NEqnLXXcdMp0bkXTsLBI6qTSDB54vyYg5Q+czuwmi2TGv2yxyXchA3PCjMNP8zj602ol1u5uYLu5hLRQ9AMviqzHN5gSTI5urTPPjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732816387; c=relaxed/simple;
-	bh=vxW7Z5afkbZb5LSyPQi39qpihdzP1HhdzvIhYuY98eQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o0MPZrXtSIuL8npUHrxh4lRaX3Oi2UUewbeCVTQp1DtfAlahPiqifBUH6Fc/v/FMsTKzQvkmwAWo15J3QflS7a3s69uHnrtboBg7DJ4967ZPRBRdokaDuQzjeD9l1e9ZxD9Rk0KYAM8uu5UZw6Dn0N+7xugPripaXiSAtVYvQQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FIYDLruT; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732816385; x=1764352385;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vxW7Z5afkbZb5LSyPQi39qpihdzP1HhdzvIhYuY98eQ=;
-  b=FIYDLruT76QSCNt8C3+1vRcUJQMxbyQepjP9+7r0Z3Hxhjq35vBealeG
-   TIlL9aEY3BZeRdctVsk/OFkGIABPf+XZd0TBjgo/R802VIjujcjZjVTB1
-   9Uv09Mk8+lzDffXMMTWb8kcJXQ74UiztOqN0IdHik/fcY0XMSlByZ46JX
-   JA2tkw+lIUov4AkPj6yU7VjAwjmRXp+a14SNj9iFv9jMHbYKyFYBKQWnd
-   esTujoqaaPK4rLiNqEfm1bwPUckbQgVswQ+cZVO57ki6SkQU+4u+iN1NV
-   rGcziGegqwbDRIwJoPsQbXLGo8g/7FvrnaBmN9NXl6NTJL2zu0pAhAYr9
-   A==;
-X-CSE-ConnectionGUID: Sa/ksreVRi+zna0ce852kw==
-X-CSE-MsgGUID: darzEyw8T3e9A8myh/gLSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11270"; a="33000481"
-X-IronPort-AV: E=Sophos;i="6.12,193,1728975600"; 
-   d="scan'208";a="33000481"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 09:53:04 -0800
-X-CSE-ConnectionGUID: nySdZo6WRg6VTu+9N5FJFg==
-X-CSE-MsgGUID: I4NFisygTFa8SyiNpH1d0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,193,1728975600"; 
-   d="scan'208";a="92474790"
-Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 28 Nov 2024 09:53:02 -0800
-Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tGihH-0009t5-1H;
-	Thu, 28 Nov 2024 17:52:59 +0000
-Date: Fri, 29 Nov 2024 01:52:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 7/7] iio: accel: kx022a: align with subsystem way
-Message-ID: <202411290148.Jdoj8IqZ-lkp@intel.com>
-References: <9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1732822374; c=relaxed/simple;
+	bh=r3/j2p657hi/STl1rDuuDNNqSCQQyvW/yEJ34GyKdwM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hErMQ+aChTB21MvK87C0fTtkXB43A8VITPxWkOKE0LwlIc0HUFbIXUFEfo2vvtzNv1ay4Bq2P2pLn8XhUikNZ/9tMAR3zpSK26E9l1cRspDTD9ETqhQ+O+KHhkndWzKxOLgYe0CNnPFL5DNoSH4iKIcKWoo+8/Gob/JISAgGBGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=al3W15UQ; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38248b810ffso918195f8f.0;
+        Thu, 28 Nov 2024 11:32:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732822371; x=1733427171; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MM3cPgigB7/ZIHb7sDZRIP3WiRholKgCPOgojtdr81k=;
+        b=al3W15UQaJEyUKiJgFaIe5MX0Ec9VQy3dPeBaBORWuKmat1KFOgacm1No+UkRj8fo3
+         b4dQxm8W3mDxqIG7kdpvcpKTzBKMNRvFYOtXJeQ37qMMkinxPomWWr7+XBjm8t4SiOr+
+         jSvg3kwRuAzYavbKp3vv6rIm/azUfnBv0Fj7LmPRz5Yl7iRHKPed3YhZqO7eg8SinlCQ
+         i5LnnIObmdp2c6aacmLR5XenH3OfaYe08QYnzP2ea4YUvQUtKaGSKATtNvwFr/474wel
+         Nx3nkZZQy41HnSo2RpNuO3gS5W89MShtH9K9zsVTM1fNeVVs0vUA0K9OnKoPXFzfsuRP
+         Bh+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732822371; x=1733427171;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MM3cPgigB7/ZIHb7sDZRIP3WiRholKgCPOgojtdr81k=;
+        b=UmT2Eg+ztHquv5EjcnXRZZQRNVIYykgKPlTFc1VrYuqUxo9roGVfMmDcmW1BqQpkZd
+         O/T/AdoN0wKSjgn8cuBe4OwU1dBuIu0deGvrhazYyPZ+yoRkUI5443W3DpWTLHhCUO5D
+         Sp+JcZFGc77g0pHyeO3MVM2dXDmG0yqbmRhUzAI4ElP6JIbaiV6JMMgdSZfuuQpacycu
+         5CW4jK/VxCT6aD2jDfzjtnpqGKF/FD8dHDXEw1NgIi0/e7KloJdreDfrvr5r/i+KDghY
+         sAIdqC4QV2Yfe62t+afGtjj6KLYRdGy/vykicOO3H1dZHDnRwPvGQ7DGhhgNPnzJQB8J
+         En4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUEPG3A48EXfkEnTBRfHcu/1oIkvT/OznJHFf2Apm5uec5ksNbdjD3dnUcATF4/NDX9jmUqW7l1+ORd@vger.kernel.org, AJvYcCW+E0M/29SWocWR6Lj7MZ6PkWlj2z/uh6c0WTUA2i3bWgDDQ5f1ePbY5d71X1FYwUcio5JGBurEhEqU@vger.kernel.org, AJvYcCWGWkhdgepBtA/U7L6Zl8NhjQANhkMOOBmoY8LWteomfYka5eMu0i3vi0Q+DHdn5hEIlWxYeT/MnaknhkAU@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOmSUp+Kd/d2PJYu95vuGUBElcLArbBiJXNivW9s8CrZRK+fPo
+	yNU84Lbv4BAZ33pKme2qQEe8Gpc5H4yRalQYbzkK4795L7IT+PX/pP1YD6BA
+X-Gm-Gg: ASbGnctyHteXycEfxvJA3w9PvYOSDpbRdn98qFATCbwv25QZc34ymlCBTSuy5ZhYSnl
+	7ZrDIMugwOuGkMmdh+a+ip2KHNlnAXWWMp8zY1k8kft/p31g+Ts1vj8nBrugnDh2napfefapDkz
+	wsQRfW4lZQ80aRG5rwRj73aWm4KXju0hc0CB4URb5wQhl34gi34AzYDGjd5X2+oH1gffhrsuYiw
+	ynF4NKdmCcmD2TIJKmtI9OFXf0pbUaUa7NzMwZfv1Pn4lYt9XrUQrTR579V57g=
+X-Google-Smtp-Source: AGHT+IHxR6EGzlWcELXhpkhHSxIj4C5OwW4QUHev8N4rIisy8ng/MLP2oihCOtpve+kdLsFvl27VAQ==
+X-Received: by 2002:a05:6000:1866:b0:382:4421:8123 with SMTP id ffacd0b85a97d-385c70e1b13mr8197154f8f.59.1732822371018;
+        Thu, 28 Nov 2024 11:32:51 -0800 (PST)
+Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:a8c6:c7bb:87d7:66dd])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-434b0dbe40csm30557855e9.10.2024.11.28.11.32.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Nov 2024 11:32:50 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: vassilisamir@gmail.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/3] iio: chemical bme680: 2nd round of cleanup
+Date: Thu, 28 Nov 2024 20:32:43 +0100
+Message-ID: <20241128193246.24572-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Matti,
+Changes in v4:
 
-kernel test robot noticed the following build errors:
+[PATCH v4 1/3]:
+	- Changed description to include the move out of trivial
+	  devices.
 
-[auto build test ERROR on a61ff7eac77e86de828fe28c4e42b8ae9ec2b195]
+---
+v3: https://lore.kernel.org/linux-iio/20241102131311.36210-1-vassilisamir@gmail.com/
+Changes in v3:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/iio-accel-kx022a-Use-cleanup-h-helpers/20241128-170626
-base:   a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
-patch link:    https://lore.kernel.org/r/9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount%40gmail.com
-patch subject: [PATCH v3 7/7] iio: accel: kx022a: align with subsystem way
-config: x86_64-buildonly-randconfig-004-20241128 (https://download.01.org/0day-ci/archive/20241129/202411290148.Jdoj8IqZ-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241129/202411290148.Jdoj8IqZ-lkp@intel.com/reproduce)
+Removed applied patches 1,2,3,5,6,7,8
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411290148.Jdoj8IqZ-lkp@intel.com/
+[PATCH v3 1/7]:
+	- v2 4/13
+	- Set mode of sensor with enum variable and remove macros
 
-All errors (new ones prefixed by >>):
+[PATCH v3 5/7]:
+	- v2 11/13
+	- removed regulators from being required, adjusted commit
+	  message
 
-   drivers/iio/accel/kionix-kx022a.c: In function 'kx022a_write_raw':
->> drivers/iio/accel/kionix-kx022a.c:507:9: error: implicit declaration of function 'if_not_cond_guard' [-Werror=implicit-function-declaration]
-     507 |         if_not_cond_guard(iio_claim_direct_try, idev)
-         |         ^~~~~~~~~~~~~~~~~
->> drivers/iio/accel/kionix-kx022a.c:507:27: error: 'iio_claim_direct_try' undeclared (first use in this function); did you mean 'class_iio_claim_direct_try_t'?
-     507 |         if_not_cond_guard(iio_claim_direct_try, idev)
-         |                           ^~~~~~~~~~~~~~~~~~~~
-         |                           class_iio_claim_direct_try_t
-   drivers/iio/accel/kionix-kx022a.c:507:27: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/iio/accel/kionix-kx022a.c:507:54: error: expected ';' before 'return'
-     507 |         if_not_cond_guard(iio_claim_direct_try, idev)
-         |                                                      ^
-         |                                                      ;
-     508 |                 return -EBUSY;
-         |                 ~~~~~~                                
-   In file included from drivers/iio/accel/kionix-kx022a.c:8:
-   include/linux/cleanup.h:308:9: warning: this statement may fall through [-Wimplicit-fallthrough=]
-     308 |         for (CLASS(_name, scope)(args),                                 \
-         |         ^~~
-   drivers/iio/accel/kionix-kx022a.c:521:17: note: in expansion of macro 'scoped_guard'
-     521 |                 scoped_guard(mutex, &data->mutex) {
-         |                 ^~~~~~~~~~~~
-   drivers/iio/accel/kionix-kx022a.c:532:9: note: here
-     532 |         case IIO_CHAN_INFO_SCALE:
-         |         ^~~~
-   cc1: some warnings being treated as errors
+[PATCH v3 7/7]:
+	- v2 13/13
+	- removed unecessary usage of runtime PM functions
+
+---
+v2: https://lore.kernel.org/linux-iio/20241021195316.58911-1-vassilisamir@gmail.com/
+Changes in v2:
+
+Generally, the patches were rearranged according to comments from Andy
+in previous version in order to be more consistent. The refactoring of
+the ambient temperature was dropped for now because it was a bit more
+complicated than I thought and this series is already heavy enough.
+
+[PATCH v2 01/13]:
+	- New patch
+
+[PATCH v2 02/13]:
+	- v1 1/13
+	- used "optimized" in commit message to not prompt for a fix.
+	- added documentation of where this sleep comes from
+
+[PATCH v2 03/13]:
+	- v1 2/13
+	- Fix indentation of array and removed extra whitespace.
+
+[PATCH v2 04/13]:
+	- v1 5/13
+	- removed extra check inside the set_mode() function.
+
+[PATCH v2 06/13]:
+	- v1 1/13
+	- removed indentation fixes which are fixed later since code is
+	  changed in those lines in later commits.
+
+[PATCH v2 09/13]:
+	- v1 12/13
+	- removed unnecessary debug messages
+	- Used struture instead of buffer to push data to userspace
+
+[PATCH v2 10/13]:
+	- v1 13/13
+	- used better naming
+	- made channel index to -1
+
+[PATCH v2 11/13]:
+	- v1 06/13
+	- removed device from trivial-devices
+
+[PATCH v2 12/13]:
+	- v1 07/13
+	- use devm_regulator_bulk_get_enable()
+
+[PATCH v2 13/13]:
+	- v1 08/13
+	- removed internal usage of dev structure
+	- added missing header in both bme680_core.c and bme680.h
+	- used devm_pm_runtime_enable
+
+---
+v1: https://lore.kernel.org/linux-iio/20241010210030.33309-1-vassilisamir@gmail.com
+
+This patch series is continuing the work that started on [1] by
+improving some small issues of the driver in the commits 1,2,3.
+
+Commits 4,5 are refactorizing existing code.
+
+Commits 6,7,8 are adding DT, regulator and PM support.
+
+Commit 9 is refactorizing one macro to attribute.
+
+Commit 10,11,12 are refactorizing the read/compensate functions
+to become generic and add triggered buffer support.
+
+Finally, commit 13 adds support for an *output* channel of type
+IIO_CURRENT in order to preheat the plate that is used to measure the
+quality of the air.
+
+This and the previous series [1] started with the idea to add support
+for the new bme688 device but due to the structure of the driver I
+decided that it is better to restructure and improve some things before
+adding extra funcitonalities.
+
+[1]: https://lore.kernel.org/linux-iio/20240609233826.330516-1-vassilisamir@gmail.com
+
+Vasileios Amoiridis (3):
+  dt-bindings: iio: bosch,bme680: Move from trivial-devices and add
+    supplies
+  iio: chemical: bme680: add regulators
+  iio: chemical: bme680: add power management
+
+ .../bindings/iio/chemical/bosch,bme680.yaml   |  62 ++++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |   2 -
+ drivers/iio/chemical/bme680.h                 |   2 +
+ drivers/iio/chemical/bme680_core.c            | 117 ++++++++++++++++--
+ drivers/iio/chemical/bme680_i2c.c             |   1 +
+ drivers/iio/chemical/bme680_spi.c             |   1 +
+ 6 files changed, 176 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
 
 
-vim +/if_not_cond_guard +507 drivers/iio/accel/kionix-kx022a.c
-
-   490	
-   491	static int kx022a_write_raw(struct iio_dev *idev,
-   492				    struct iio_chan_spec const *chan,
-   493				    int val, int val2, long mask)
-   494	{
-   495		struct kx022a_data *data = iio_priv(idev);
-   496		int ret, n;
-   497	
-   498		/*
-   499		 * We should not allow changing scale or frequency when FIFO is running
-   500		 * as it will mess the timestamp/scale for samples existing in the
-   501		 * buffer. If this turns out to be an issue we can later change logic
-   502		 * to internally flush the fifo before reconfiguring so the samples in
-   503		 * fifo keep matching the freq/scale settings. (Such setup could cause
-   504		 * issues if users trust the watermark to be reached within known
-   505		 * time-limit).
-   506		 */
- > 507		if_not_cond_guard(iio_claim_direct_try, idev)
-   508			return -EBUSY;
-   509	
-   510		switch (mask) {
-   511		case IIO_CHAN_INFO_SAMP_FREQ:
-   512			n = ARRAY_SIZE(kx022a_accel_samp_freq_table);
-   513	
-   514			while (n--)
-   515				if (val == kx022a_accel_samp_freq_table[n][0] &&
-   516				    val2 == kx022a_accel_samp_freq_table[n][1])
-   517					break;
-   518			if (n < 0)
-   519				return -EINVAL;
-   520	
-   521			scoped_guard(mutex, &data->mutex) {
-   522				ret = kx022a_turn_on_off(data, false);
-   523				if (ret)
-   524					return ret;
-   525	
-   526				ret = regmap_update_bits(data->regmap,
-   527							 data->chip_info->odcntl,
-   528							 KX022A_MASK_ODR, n);
-   529				data->odr_ns = kx022a_odrs[n];
-   530				return kx022a_turn_on_off(data, true);
-   531			}
-   532		case IIO_CHAN_INFO_SCALE:
-   533			n = data->chip_info->scale_table_size / 2;
-   534	
-   535			while (n-- > 0)
-   536				if (val == data->chip_info->scale_table[n][0] &&
-   537				    val2 == data->chip_info->scale_table[n][1])
-   538					break;
-   539			if (n < 0)
-   540				return -EINVAL;
-   541	
-   542			scoped_guard(mutex, &data->mutex) {
-   543				ret = kx022a_turn_on_off(data, false);
-   544				if (ret)
-   545					return ret;
-   546	
-   547				ret = regmap_update_bits(data->regmap,
-   548							 data->chip_info->cntl,
-   549							 KX022A_MASK_GSEL,
-   550							 n << KX022A_GSEL_SHIFT);
-   551				kx022a_turn_on_off(data, true);
-   552	
-   553				return ret;
-   554			}
-   555		default:
-   556			break;
-   557		}
-   558	
-   559		return -EINVAL;
-   560	}
-   561	
-
+base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 

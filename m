@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-12775-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12776-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298E19DB639
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 12:06:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA4D9DB783
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 13:27:03 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7CEDB24D5C
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 11:06:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D58F81631B4
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 12:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25B41946C8;
-	Thu, 28 Nov 2024 11:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC16419C54C;
+	Thu, 28 Nov 2024 12:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmObTLCw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7wA5sLc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A84F1925B3;
-	Thu, 28 Nov 2024 11:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06384F20C;
+	Thu, 28 Nov 2024 12:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732791996; cv=none; b=IL3kkDrD49HnF3EC4tWDbBiSpJtKc78b8eScQbeMxva9AhynefrqDNRvwx+aC9q1GfWmy4yL3QdDkB9UwYs+HPRk99+Nk9HoJl/sZmLzYYEam05TwCPE46VyB04TV9+u49be8eBxtUa5t9wO9wi57o/uBzyHc5wg0aG7lZsLmw0=
+	t=1732796817; cv=none; b=BRTx27mkpitVHabu59vhhlXD8t2h0djP1mQUrGSadUQzsjG6xTe5YybGDhHv2k1sUR71uX2pkvW5K9taZnGL9c8F0vEJ8s9zVW/8PM41Q/1ZErfFoBB9fXPeZ+17zn3cKKX0Y9/5eMCh38iJ54dCQJDKtjVkT17Zx1S/5AgUBWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732791996; c=relaxed/simple;
-	bh=6V422H3dv9Du3URUJSLpBRw4S2JgulSIk6Z4elejc8s=;
+	s=arc-20240116; t=1732796817; c=relaxed/simple;
+	bh=cdJQSF24okpmJp3OTyRFJYSdiudOmESvovIU9KWMCfw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MEz/PuD8HQVQxJB5KmM07PiPTf7xnR3L+scyHTCRXTmKkpizmp0ntQGyPFDbm5GBVRWTeDqcWz3zkTkZ+41NAS8kpJ4xlV2mr4KgFOOTXaz7DJELkJyIc+XtplxmvtZOeAZXAxXRynrSqDh6q+xsuLRcfYeJS063eRVVE5fcJ4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmObTLCw; arc=none smtp.client-ip=209.85.208.45
+	 In-Reply-To:Content-Type; b=XxRTWAV1JcvxVSuewYQOEkaVNzYHC6+/4lEz5nOMwZa6Busm1KVDonGn8QQQWWc8rbCwxINGY1QaTkfkOSFD0/GY1n5fq6LrIh2AsUbt1/t0TPdTtiuX9TFNoH+gxX/a7gMf/D4G1iZJCXDzdawHPZTZmAwiALYofAQDmi8is5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7wA5sLc; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5cfe5da1251so827343a12.1;
-        Thu, 28 Nov 2024 03:06:33 -0800 (PST)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa560a65fd6so143331966b.0;
+        Thu, 28 Nov 2024 04:26:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732791992; x=1733396792; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1732796814; x=1733401614; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=9kV/k8UgkB5xu8Vp6e9vyAiETa22BHIqam0AP21cVfk=;
-        b=BmObTLCwgUCBKjsgevZpZCO+dq4aE+8t/quClI+fI+JAdR6LW0x5QWbO9Rn4kXoBz0
-         UQvWDFVN4viOxaBNduu7oyz1LsOqMSMz8Nt3cpINUJnrhAScEg/8+TF5JCD4WcdYDcm7
-         BYF0+26goR2Nt/RHeaks4FXYszGSLJZaN5p7Tow1d4yUk6uzrX16PEphphLZz/ic2XwU
-         OjCV5NCpFAOox1402sz7YniwAORrsYSP1LwhMzVRQL1Hfta7q71pjK3WyYLWWCHIC9Py
-         FmrTfg1CId24vgRDQVr13BC++N18iJZxDQDLUUVD7yAjbbAFf6g+ktXTSKZfi+54IkOH
-         +hFg==
+        bh=VZ9WNpBlKtazde7jfmSDXXstDaTslJye7caY08L0qq8=;
+        b=M7wA5sLchjbkyH0UIW/N1pqITW6Y4T/9GkzMo2EZM/VUPay+MYRcjOUlb9Tt+dHNml
+         3tl5vg2Lhk4TphMXhp2qa8i5utLhoWQ/3RmAyWvqqLPPvxU7KCV2Bv4We6zphB6kWMUA
+         vC9DfPg8+zrybxyiGVw4qN+u6vxqlfgw/onWEliaUcREG+vI19b9sL67iI2UQPXnWKa8
+         kHSRlgifG/FOrhY5Rd37L4O7Igz8sZ7an23xHE7VBMk0aqJG8VuIj7K3M5zCUNMj5qXQ
+         iKY2O+W6J71z5HHx10ZvAsJfVVtd0BkCHBD1nPCJxgMl3z26TEjtKhmQCoDeD5OvLVH9
+         gb1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732791992; x=1733396792;
+        d=1e100.net; s=20230601; t=1732796814; x=1733401614;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9kV/k8UgkB5xu8Vp6e9vyAiETa22BHIqam0AP21cVfk=;
-        b=V0Omrz47qTZoxVHe6iUycHBPID8aJX/hq/OjtgFHNKWW3GciX+9Z8PfnMBuPyFbeqp
-         IkVHpXJEnVUC02IGsw6hdrUBcuXocgyBnT5CMrzXzAR9NL0fEN4O++Ru3OYzBGyZE/FF
-         vULws5dea/IZsvwCzueojNNdY9OLr6LkC9RvQ1GOn0ltApQFuu3mlkvKre0IPA0qhAr2
-         KkEmW9L8KH38nqr41EyUVcRMnNUOTU02DSPwOZiJZAMXnmeHK93xFM27RVieEcrc1kY/
-         OBNTM5dLyHIg4BadtMpH94QP0xMaXDROeg6nki18pMZvRFbZxRbLxtzxtRqleK75a45J
-         LXEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdDEwSByIOEkTsSLId9qdnXXkyARrj+RWgbZK23hbSnRUSeADDCPFcuZXVWvrhW6hHD4oiFeNMY8HZ@vger.kernel.org, AJvYcCUprJexEf8kikfPhrHNawYEOjqJVeOrcWT237q+mssDfVgf0yleO3SyEaNRC76c/0S1yJLgidkPAzr+@vger.kernel.org, AJvYcCWUpf/bye3VdvFOoDQ5IiOm6zSRzSs7bRYuk9iSUJ8E8J3MPQxgyRgzKoMXUJSgIiJTBvbrcZ2zTY3DTMtY@vger.kernel.org
-X-Gm-Message-State: AOJu0YziNJVr+NuiQ1omIHoEn0GDjNVFX8lywjf4QUCwg7EsIjOYkcGz
-	A9yD6rZlCvi91kuPFNPoBS43LXF0mJdIzOIla87nbrrWY/c85Hc1
-X-Gm-Gg: ASbGncsE7lsVds/wbqDRwzsgwAWW5sO+k6qGCORYq1v6ZgH0a4n2OOkKOIO7zdnZe0I
-	IBzBHu2IY6c0dkODFamPa9wM72p4EqQOOqpBmW2I7Gjuq2fQ8H7MgytzIhcsnA3zjJuB5RFxOhd
-	sV1jdgyrvw3rx8O6z7f00fYTG/wX325kDPWt09WvDn8PZgunNNkWHgFvK5egeeLvvB7RAgURkIC
-	cKN8Q6qV3B8dSIr5++rvuMeQU4jtVRU1r0CFSHtfRd5B1hSg1wgT5P3ezXx+bdHp28ZFuRiiLXU
-	DuCO9XRgowtfrMlhgWYmsBv6Y+ZN
-X-Google-Smtp-Source: AGHT+IEt+yji9PcxnQ+E0O8I0V88q//kI+oMuOkt2imlBetGr6zJPVZjJVQM8OabiGmvpeJjBAnoLQ==
-X-Received: by 2002:a05:6402:2353:b0:5cf:f1fd:c687 with SMTP id 4fb4d7f45d1cf-5d080c97f34mr5911678a12.24.1732791991802;
-        Thu, 28 Nov 2024 03:06:31 -0800 (PST)
+        bh=VZ9WNpBlKtazde7jfmSDXXstDaTslJye7caY08L0qq8=;
+        b=YXjw7hVCNgmydQd5VAOZl3z7LeMmxT+KWqse2G4QHlz68YK3VZcQn85dOMxuFQkV+y
+         0xAs10t2oaQo3PSP260TrkYyDq9H15h2tlfoGf9ssrrUJRffif0Fpxnuv6wdTF3+hGxs
+         Xqk1EIEP1ua82oKGJj/Xr30L8PmfACssl6VjpVJWmjzOuOS9Ic2f+lOVvEDQfJIbrhhk
+         GZcXdCZTIKPYRaj0EGlqxkKFsH7o6hO1uXvUeHqvEtUi30cV98LCnAjTTTLZ71GBCPa6
+         kr9/IU1HiDqbrtETFDzC6b1twftsQl9uZ6U/6JjOOJxRknUWDzTXsxOQp/2ebYLPLLXH
+         mh2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXhqgrLH+ufqCC3o4O/YVAF0oI0aFNE7SqQXuNS7M3AibfislMnk1GwrE7+DNoy887Lp3gc4agTdjLA@vger.kernel.org, AJvYcCXmtUQEEl1jygtMpWHZsxnjWb699KmLDhb0pX3rNWzp9ZVTZJ874kr3Rcyi/nW/ejEkYc3HZA8DGNcf4f7s@vger.kernel.org, AJvYcCXnmICxd2+bGxitR/ymPn+LjzR1NnLR5V7aFstmL5RP7im4xbXvvevzkeyFlAPyA7nGerhc8KaF7/ZU@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH3AF0IXWcEudmqg+VOoceif/80KyQJ09twMCZRFBNIKaUMbUQ
+	BEFnzPvBoyXimV+U/ZyCyKUnpNIAw8hEPjqYEbpx86WUxnW6o7T2
+X-Gm-Gg: ASbGnctSPLBMJMCorygbyN8h7zsvoGmoSRanVwxnnvE12dzBpfCtAg2zbeoDQDFwMmG
+	M1cPTKEv8IeFwYYVMAFA3U+mYMND+JeNSHhAjH8HisfyXJtWfGFO1c33wvqJ8oL8y7AWz09O3B5
+	3HFnyhn1fh45ykApx8TNMM4K4UhwHhILWxRjxAdZZY90pYX9Y7yHtv1JxXWA4ioFJWsgLLevpcq
+	USoMRfP01UA025dKxrkV8zYNUObE4a08KMX3zrE4l+uRQF/kL4GBimZjlXSVftdLwUlS+WqsH3X
+	rHRK6pwamOUpwBKIl4dbGgNylc4C
+X-Google-Smtp-Source: AGHT+IEBNEkepuyx2gsAoW/fXLnYQtrcq4HcBEGgeWPuDBUzCkSPR2feCwkXcaZgIXT3GzltKWwEtQ==
+X-Received: by 2002:a17:907:1c8c:b0:a9a:e0b8:5bac with SMTP id a640c23a62f3a-aa594708919mr210265566b.23.1732796813521;
+        Thu, 28 Nov 2024 04:26:53 -0800 (PST)
 Received: from [10.10.40.97] (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d098330dd2sm604660a12.14.2024.11.28.03.06.29
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa5999731d5sm60837966b.200.2024.11.28.04.26.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Nov 2024 03:06:30 -0800 (PST)
-Message-ID: <c07b7375-327e-44bd-907a-73771e9f938e@gmail.com>
-Date: Thu, 28 Nov 2024 12:06:28 +0100
+        Thu, 28 Nov 2024 04:26:52 -0800 (PST)
+Message-ID: <3af77b51-d254-4c97-8faf-1dea29a4f9b1@gmail.com>
+Date: Thu, 28 Nov 2024 13:26:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,99 +81,130 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: light: add support for veml6031x00 ALS series
-To: kernel test robot <lkp@intel.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Rishi Gupta <gupt21@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241126-veml6031x00-v1-2-4affa62bfefd@gmail.com>
- <202411281741.xz7mD4E2-lkp@intel.com>
+Subject: Re: [PATCH v2 2/2] iio: light: add support for veml3235
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241020-veml3235-v2-0-4bc7cfad7e0b@gmail.com>
+ <20241020-veml3235-v2-2-4bc7cfad7e0b@gmail.com>
+ <20241021193933.59c2d2b6@jic23-huawei>
+ <7323ca4f-2f79-4478-b2b0-2cfc350af7f8@gmail.com>
+ <20241022192807.2f83dfa1@jic23-huawei>
 Content-Language: en-US, de-AT
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <202411281741.xz7mD4E2-lkp@intel.com>
+In-Reply-To: <20241022192807.2f83dfa1@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 28/11/2024 10:55, kernel test robot wrote:
-> Hi Javier,
+On 22/10/2024 20:28, Jonathan Cameron wrote:
+> On Mon, 21 Oct 2024 22:21:22 +0200
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 > 
-> kernel test robot noticed the following build warnings:
+>> On 21/10/2024 20:39, Jonathan Cameron wrote:
+>>> On Sun, 20 Oct 2024 21:12:17 +0200
+>>> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+>>>   
+>>>> The Vishay veml3235 is a low-power ambient light sensor with I2C
+>>>> interface. It provides a minimum detectable intensity of
+>>>> 0.0021 lx/cnt, configurable integration time and gain, and an additional
+>>>> white channel to distinguish between different light sources.
+>>>>
+>>>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
+>>> Hi Javier,
+>>>
+>>> I missed one thing on previous review...
+>>> There is no obvious reason this driver needs to provide raw and processed
+>>> values.  Unless I'm missing something, just provide raw and let userspace
+>>> do the maths for us.
+>>>
+>>> Jonathan
+>>>   
+>> Sure, I will drop that for v3. I added it because this driver took the
+>> veml6030 as a reference, and that driver provides the processed value. I
+>> guess that the veml6030 should have not provided processed values
+>> either, but it's late to remove them after the driver was released.
+>>
+>> Now that we are at it, what is the rule (of thumb?) to provide processed
+>> values? Those that can't be obtained from the raw data and simple
+>> operations with the scale/offset/integration time/whatever userspace can
+>> see?
 > 
-> [auto build test WARNING on a61ff7eac77e86de828fe28c4e42b8ae9ec2b195]
+> Yes. If the conversion is linear, then leave it to userspace (with scale
+> and offset provided). If it's not linear then in kernel because currently
+> we have no other choice.
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Javier-Carrasco/dt-bindings-iio-light-veml6030-add-veml6031x00-ALS-series/20241128-104104
-> base:   a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
-> patch link:    https://lore.kernel.org/r/20241126-veml6031x00-v1-2-4affa62bfefd%40gmail.com
-> patch subject: [PATCH 2/2] iio: light: add support for veml6031x00 ALS series
-> config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20241128/202411281741.xz7mD4E2-lkp@intel.com/config)
-> compiler: loongarch64-linux-gcc (GCC) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241128/202411281741.xz7mD4E2-lkp@intel.com/reproduce)
+> There are some historical quirks where a processed only interface got in
+> then we had to add raw later (typically when we added buffered output
+> where scale and offset are important because processed values normally
+> don't pack well).
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202411281741.xz7mD4E2-lkp@intel.com/
+> Jonathan
 > 
-> All warnings (new ones prefixed by >>):
-> 
->    drivers/iio/light/veml6031x00.c: In function 'veml6031x00_set_scale':
->>> drivers/iio/light/veml6031x00.c:422:24: warning: variable 'gain_idx' set but not used [-Wunused-but-set-variable]
->      422 |         int new_scale, gain_idx;
->          |                        ^~~~~~~~
-> 
-> 
-> vim +/gain_idx +422 drivers/iio/light/veml6031x00.c
-> 
->    418	
->    419	static int veml6031x00_set_scale(struct iio_dev *iio, int val, int val2)
->    420	{
->    421		struct veml6031x00_data *data = iio_priv(iio);
->  > 422		int new_scale, gain_idx;
->    423	
->    424		if (val == 0 && val2 == 125000) {
->    425			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x03) |
->    426				VEML6031X00_CONF1_PD_D4;
->    427			gain_idx = 0;
->    428		} else if (val == 0 && val2 == 165000) {
->    429			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x02) |
->    430				VEML6031X00_CONF1_PD_D4;
->    431			gain_idx = 1;
->    432		} else if (val == 0 && val2 == 250000) {
->    433			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x00) |
->    434				VEML6031X00_CONF1_PD_D4;
->    435			gain_idx = 2;
->    436		} else if (val == 0 && val2 == 500000) {
->    437			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x03);
->    438			gain_idx = 3;
->    439		} else if (val == 0 && val2 == 660000) {
->    440			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x02);
->    441			gain_idx = 4;
->    442		} else if (val == 1 && val2 == 0) {
->    443			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x00);
->    444			gain_idx = 5;
->    445		} else if (val == 2 && val2 == 0) {
->    446			new_scale = FIELD_PREP(VEML6031X00_CONF1_GAIN, 0x01);
->    447			gain_idx = 6;
->    448		} else {
->    449			return -EINVAL;
->    450		}
->    451	
->    452		return regmap_update_bits(data->regmap, VEML6031X00_REG_CONF1,
->    453					 VEML6031X00_CONF1_GAIN |
->    454					 VEML6031X00_CONF1_PD_D4,
->    455					 new_scale);
->    456	}
->    457	
 > 
 
-The gain_idx variable is a leftover of a previous approach where
-processed values were also provided. But given that the conversion is
-linear (raw * scale), processed values were dropped. I will also drop
-this variable for v2 with the rest of the feedback I could get from this v1.
 
-Best regards,
+Hi Jonathan, I am bringing this back because I am not sure if dropping
+the processed values was the right approach here. I would like to
+clarify before propagating some approach that might not be accurate.
+
+This sensor is linear, and the processed value can be obtained by simple
+multiplications, but not just raw * scale as documented in the ABI.
+
+This driver is based on the veml6030, whose processed value is obtained
+as raw * resolution, where the resolution is completely linear and is
+obtained as sensor_resolution * integration_time / scale.
+
+That means that the scale is actually a gain, and the user needs to know
+the sensor resolution provided in the datasheet (see cur_resolution in
+veml6030.c) to get the processed value. There is a sensor resolution for
+every pair { gain, integration_time } in the datasheet, so there is no
+need to calculate anything, yet the resolution is not provided by the
+driver.
+
+Nevertheless, your comment on this matter was the following:
+
+> Why both raw + scale and processed?
+>
+> We normally only provide raw and processed for light sensors if:
+> 1) The conversion is non linear and hard to reverse.
+> 2) There are events that are thresholds on the raw value.
+>
+> Here it is linear so just provide _RAW.
+
+That is still true in this case, because it is a linear, easy to reverse
+conversion. Nevertheless, the user needs to look for the sensor
+resolution in the datasheet and then use the given integration_time and
+scale.
+
+Is that ok and desired for light sensors? I think that a more accurate
+approach would have been treating the gain as a HARDWAREGAIN, which
+would have been used to calculate the scale i.e. resolution to directly
+apply to the raw value. In its current form, the processed value is not
+what you get if you do raw * scale. But as you specifically mentioned
+light sensors in your comment, that might not apply here. Moreover,
+there are only two drivers (si1133.c and vl6180.c) that use HARDWAREGAIN
+for IIO_LIGHT, which makes me think I am over-complicating thing here.
+
+By the way, in_illuminance_hardwaregain is not documented in the ABI,
+only out_voltageY and in_intensity. But that is another topic.
+
+The veml6030 has been around for some time and there is no way around
+without breaking ABI, and the veml3235 has been only applied to your
+tree and maybe it could wait to be released.
+
+If everything is ok as it is, then that's the end of the story, but if
+the processed = raw * scale operation should apply, the veml3235 could
+still be fixed. And when it is too late for that one too, then I could
+follow a different approach for the veml6031x00 I recently sent to avoid
+propagating the issue.
+
+Thanks and best regards,
 Javier Carrasco
+
+
+
 
 

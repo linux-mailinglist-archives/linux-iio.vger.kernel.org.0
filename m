@@ -1,147 +1,145 @@
-Return-Path: <linux-iio+bounces-12763-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12764-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432C09DB323
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 08:27:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2589DB413
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 09:47:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FC71B21EFA
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 07:27:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3B11619D1
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 08:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F8E1487DD;
-	Thu, 28 Nov 2024 07:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4337814EC5B;
+	Thu, 28 Nov 2024 08:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KWde0fdU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WS2ncB3z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4290C146D45
-	for <linux-iio@vger.kernel.org>; Thu, 28 Nov 2024 07:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B3A7404E;
+	Thu, 28 Nov 2024 08:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732778817; cv=none; b=JqNNQgxF7fjDhcQsipC5YtYm0vTFf6hNz4AhOZuqX9VJWiMijQntt8Jhv7eQypYdbz/woL9hW/MTBU9yprDq4B1nMaIDoAwAQs4P9pVaJNHfnmvqI9JduqazoeIS98PlvM6P3j2SqivtIluUsSIegw8oGKvmCA2zUc16hcC8Dtc=
+	t=1732783619; cv=none; b=KOGcIUyyGWIVPh+/GwO64wBfNMEtqYDKXialaCVhhPVbXU+Ry0P+H3rBM4VNlxrGCKuGKjUCEt6KhEvYBQzsPIEiChJpeH9KQJLw6DIXEV/MjRjn7BEVrt3q1eB/XrOpxCnrxd0d+DEJbjraOn4kwG0sLpk4yXQQK0mBBwpQgtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732778817; c=relaxed/simple;
-	bh=pLOz2YuQx1sF3DfeE3uqwKBatiuvQk+YGAPg9txMgGM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hZ9hq38FOozQK0AaH5RnUwyHhC8dUxhuzT0HqLLrcF0o9Vc7tHwcUDdLD2Cn0XQa2cY3i9k0fL+cDq/786AW1aH/6kMd6IgnSnYDs2EtShmo3DjCj4Qo5D4S8qzThTiM3I9VGcJU5FR+Xo1WkOeDwPw1Cimg/t8eI54dyBrn2So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KWde0fdU; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4349fd77b33so4188755e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 27 Nov 2024 23:26:53 -0800 (PST)
+	s=arc-20240116; t=1732783619; c=relaxed/simple;
+	bh=frma48AJ0SUvSuy5UhykiEVuMb1wSYmkcDffGWoFnUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=aoZJGhVYLygWJkYdLhfkXiZuVaGylB1EJpfWbAsn2DZGAPRjBKLZLXrSgQm6rOmKzORTwzASvwDV+CiWHxtarirM2uZHcUrFyVeFwWWkJ6H0sZ+NICQThTR3xLBLUwns+3Ii2ZV4jg8HOfPN9J0EHWgmdOzcGGvPieXnIl/8zqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WS2ncB3z; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53da6801c6dso449254e87.0;
+        Thu, 28 Nov 2024 00:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1732778812; x=1733383612; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8kqh1KNqKnunsDJjpBDg96FW+lRvbuxgoy5i/G9dtrM=;
-        b=KWde0fdUCQLkW/ahLZU/ncTXf0/R9V5r9rtkEOJp5Kd3NwC3i6uNY/F7ubBdTqv9VD
-         +wLT7ZpgVPkqp54zt40mZDGkCtLiqarPCzHOMfKXVjgLp+ZlJLznjY4z7+14bE9bfFrL
-         4CHcV+SLkSdC+NXyeAz9U2tCCnURh9NuTHKpAVAIrBKSXOfPvwMxVUMJIh4xS98sqB3o
-         T851gWUIdGkbzVQdB1A72jD3iPezi//9yjgK2lfUN4++E88Gz7IGMarKZ2cKu/Wj1isa
-         uTnwP/g6mEvL5j6O3iJWvIbZ3yI8Bj4UKHDKn9k2/eA+9WC1uefM2SdSHsxRmtAXi4PH
-         9EGg==
+        d=gmail.com; s=20230601; t=1732783615; x=1733388415; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=azerENWgxXyHbhyynQt03n9Ftd/1tM45tjkSffbSXWU=;
+        b=WS2ncB3zKS22zk9NPs0KPbJkoUxZhzBXuw/ipSJhcJlNgDYiPWiLoo+s4j1UI5TeeB
+         PaUPlHX9+pQbXdLYRHbD2mQOfY8xrRJew5leTBV5+5GznXRYIv8UtzEcjNJO6/TKmNvt
+         51MajD/2EYv1BWcKUMTRKiwh1IU9LIg5tSKAD+PZKEbZP1LloTd7ofLsxDOCRWnivHvV
+         sQkuLTLyDKKv2mUVy3vL0XXfJzFRUWoUrxXbNF37+tpMfmIZRnxVBx0rOVDmMklt6OQ9
+         WPr7YGyFSMeNaKIog3jp1LreB3aOps8WJrrBrTDzPB4Avt0r57G8CpENXGtkjXZ71lzx
+         rrDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732778812; x=1733383612;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1732783615; x=1733388415;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kqh1KNqKnunsDJjpBDg96FW+lRvbuxgoy5i/G9dtrM=;
-        b=lFoo4yTSEQriDFQnJ/s31Eq/SQxf6laSuLdDqkJwwY3sKrtdo9yNHwlXMQm9Pr5CIr
-         iTUjkEuALm/imMzZbBiPepoNR/siUcoqzP03RzzVMl5DFDxvvCJZfG26YdEm1+ccSWQ5
-         CLy0E+wy1ok14gcqybJqr47M/dq3065ANa6UxeeF1Umo2XCXa6hpAm6Xexfu+lIuO+lk
-         0DnwuOUAYozXhrl9rxtaA3Ei2Bf5ZBMRJt/oXYlD9eQ0LDKPbglpk81OxfhxUKVEGMs1
-         ByUqo6TOeIkfFB1DK7517eLjz1ptewhu4WQOWU8LE/QnWWoom5iR0RVMrrh7aqcadnvB
-         up6w==
-X-Forwarded-Encrypted: i=1; AJvYcCUASk1hHd7OBdgJ4pGWB8AdtKYixQ1xCYDh84QuMiSPfYJZTbXyBGQdkfunQj/ddfbfwm2GT+MMD2M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxewx1qC2CPCBMhgeL2p9eEQ3UVYlKIALG3gunOjFavs2rmT+kh
-	XqMwnA6zsjxFIBQtpZ3ZkpoYms9FZ6eYWaOeZJvqhcVykSMrDU0+h/ptWSv+qhE=
-X-Gm-Gg: ASbGnct2wREsoOqJQxHafclZGShxsL59I8SXjhvkl7GRBamICw+/9afis3VFwTOp34m
-	pTXmG//RGgRAUnnES5x5moNFbFLLy2y6ElRWp3vPfemcNBNG4M2yxipaxSAQ1pQvvVR4uvwnj+I
-	oW3aFzK0yZYMJ8bUIrgpJoNe0wFqpCLz7m4cKJJ9gTfyr8Ioa7tX5MR+Fx4DCTjnRjeD15S1pNs
-	ahF4sN2U0TnhXb67rPQ5TRMao+1nrzUfZl+PzaAsE/oi9c7o70zTjYQsjI=
-X-Google-Smtp-Source: AGHT+IFLv++oJgv9Qwh3wkymj9ZOpRIqdb0ylXRtmM787YQXfSehzvlY/3Z1EYVe5oEXo8L0YnB7qg==
-X-Received: by 2002:a05:600c:458b:b0:434:a924:44e9 with SMTP id 5b1f17b1804b1-434a9dcfedfmr57606425e9.15.1732778812529;
-        Wed, 27 Nov 2024 23:26:52 -0800 (PST)
-Received: from [192.168.0.190] ([82.76.24.202])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7d26b5sm43808615e9.35.2024.11.27.23.26.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Nov 2024 23:26:52 -0800 (PST)
-Message-ID: <e9d6831a-d0ef-440c-b235-fec18048deed@linaro.org>
-Date: Thu, 28 Nov 2024 09:26:51 +0200
+        bh=azerENWgxXyHbhyynQt03n9Ftd/1tM45tjkSffbSXWU=;
+        b=EgavNYGr5a0GxfZMXDtI+tnNK7w/oHdbEFCheRpbn4v63ZJhxdRECTCllljK1ReuIr
+         1OQgg2maI1+7KCkaV0Q+KC4EUZNrlulDzqARpUyaotxDllP8Pfi3bzOn026gE+U1D+h8
+         nrv5kD6se6ysUUbQKl8DkFbKFTpRh4zGy1UYt5OZG6XP+TF6HLjKcPjfSZUnh0o7odKj
+         kwca9P4QE9qHHaXRwNJKC5jFQSoldVv+GRtFYlFKUiz5v4+JXv5gF+g3eggkikeIcGFE
+         mpIkuWgferJ0GV9UEs7PQI7WOYs3cfu5hx1GqjYH9QmAB1LjU+KLS4ncBN/ROKjPz8u3
+         yxZw==
+X-Forwarded-Encrypted: i=1; AJvYcCX7BQEAV0/jSvTqX4LLExnNqZQVjB96yM+RTjEneiyCNkCs9adKngiJoaPdwCDzNLuym6qwKWtnnBoRyK5t@vger.kernel.org, AJvYcCXeP0YoINdDNbN76ZlyfT2R8UXPdNcI22aRNvpcdmXm0aLTL4m+irP6lAorxtnBpVJUtV8U/dwzSjE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt+/xSCev3CjZxOIQvlagEDgCquKChTGuVeSqQPly1feXSsK77
+	Ka3kTgB/kEq0vS7ZNS0WTqcbFLmCtysJiIAV7+T6/CG1bQTJdOT7
+X-Gm-Gg: ASbGncsysYfutDvtEkgZhmcDkzJirh/RWApDEkfUTmAOBLAfW+xiFso6EIrkLR8TU0a
+	/mxLGZzIO+IzSy2xf/lAoydoZ0MpKOF0qs4TsJph/PhOMF5oRZPaAYlA69pTT5f04AA9Xf3BK4T
+	//l2bQQrw+xQqcUmXgJoxwgnFXZg95u3MNk7HPhDMcw3GmRiCA3tPKotNITIT6BIPHCVqgwuR0K
+	S4Wa6M0KJQ2ZT/pAbppCyRT7D4ltY67PYCoIxhbkc0aQ7DXCGAi
+X-Google-Smtp-Source: AGHT+IGly3n2VGAAg92jcqRfWaeHa+991E2ZJC4divBuKY94dlI3idhatNRwSohA/ctMs3DGRntw7A==
+X-Received: by 2002:a05:6512:1115:b0:53d:ecce:361f with SMTP id 2adb3069b0e04-53df00d9e74mr3715791e87.30.1732783615140;
+        Thu, 28 Nov 2024 00:46:55 -0800 (PST)
+Received: from mva-rohm ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df6443235sm112125e87.81.2024.11.28.00.46.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 Nov 2024 00:46:52 -0800 (PST)
+Date: Thu, 28 Nov 2024 10:46:29 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: test: Fix GTS test config
+Message-ID: <Z0gt5R86WdeK73u2@mva-rohm>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: at91-sama5d2_adc: Fix use-after-free in
- sama5d2_adc driver
-To: Pei Xiao <xiaopei01@kylinos.cn>, jic23@kernel.org, lars@metafoo.de,
- nicolas.ferre@microchip.com, linux-iio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- alexandre.belloni@bootlin.com
-References: <1c67249dbc78678c451a155c04ef908627da6d1a.1732776187.git.xiaopei01@kylinos.cn>
-Content-Language: en-US
-From: Eugen Hristev <eugen.hristev@linaro.org>
-In-Reply-To: <1c67249dbc78678c451a155c04ef908627da6d1a.1732776187.git.xiaopei01@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="PfNbdR7eKkIJPpt3"
+Content-Disposition: inline
 
-Hello,
 
-On 11/28/24 08:45, Pei Xiao wrote:
-> at91_adc_interrupt can call at91_adc_touch_data_handler function
-> to start the work by schedule_work(&st->touch_st.workq).
-> 
-> If we remove the module which will call at91_adc_remove to
-> make cleanup, it will free indio_dev through iio_device_unregister
-> while the work mentioned above will be used. The sequence of operations
-> that may lead to a UAF bug is as follows:
-> 
-> CPU0                                      CPU1
-> 
->                                      | at91_adc_workq_handler
-> at91_adc_remove                      |
-> iio_device_unregister(indio_dev)     |
-> device_release                       |
-> //free indio_dev                     |
->                                      | iio_push_to_buffers(indio_dev)
->                                      | //use indio_dev
-> 
-> Fix it by ensuring that the work is canceled before proceeding with
-> the cleanup in at91_adc_remove.
-> 
-> Fixes: 27e177190891 ("iio:adc:at91_adc8xx: introduce new atmel adc driver")
+--PfNbdR7eKkIJPpt3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I believe that the commit that introduced the workqueue is different
-than the one you tagged here.
+The test config contained a copy-paste error. The IIO GTS helper test
+was errorneously titled as "Test IIO formatting functions" in the
+menuconfig.
 
-With that changed,
+Change the title of the tests to reflect what is tested.
 
-Reviewed-by: Eugen Hristev <eugen.hristev@linaro.org>
+Fixes: cf996f039679 ("iio: test: test gain-time-scale helpers")
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+ drivers/iio/test/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-> ---
->  drivers/iio/adc/at91-sama5d2_adc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-> index 8e5aaf15a921..4ba52b500054 100644
-> --- a/drivers/iio/adc/at91-sama5d2_adc.c
-> +++ b/drivers/iio/adc/at91-sama5d2_adc.c
-> @@ -2491,6 +2491,7 @@ static void at91_adc_remove(struct platform_device *pdev)
->  	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
->  	struct at91_adc_state *st = iio_priv(indio_dev);
->  
-> +	cancel_work_sync(&st->touch_st.workq);
->  	iio_device_unregister(indio_dev);
->  
->  	at91_adc_dma_disable(st);
+diff --git a/drivers/iio/test/Kconfig b/drivers/iio/test/Kconfig
+index 33cca49c8058..7a181cac3cc9 100644
+--- a/drivers/iio/test/Kconfig
++++ b/drivers/iio/test/Kconfig
+@@ -5,7 +5,7 @@
+=20
+ # Keep in alphabetical order
+ config IIO_GTS_KUNIT_TEST
+-	tristate "Test IIO formatting functions" if !KUNIT_ALL_TESTS
++	tristate "Test IIO gain-time-scale helpers" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+ 	select IIO_GTS_HELPER
+ 	select TEST_KUNIT_DEVICE_HELPERS
 
+base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
+--=20
+2.47.0
+
+
+--PfNbdR7eKkIJPpt3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdILeEACgkQeFA3/03a
+ocXwugf8CPPTOxi5p3X1hzyy3yUF3B+qyYEXH1RPkkakZvTb+zmdioElfSfxbq7k
+hcHIAW//5d9O71P5xEFXH8nj0MbdXPEnO+o0mZpMb3qfUrzTJ59sMAhQFF+k5LdA
+x/V8ertSb9XbXX4ymO5dZ9ezpijCwC2mGxHAsX+rQEXBO3aNUz0bvtgDC5oLvoP5
+0N4Rxa016RcUDOT4MBqNGyNC0tzsuUfbAAV6zuTLmykyd9ZkPbJAvvfrO1TnUvit
+hK/5zsf47cOa8HRjwuRITgtntnjFbs+XtGNwaVxRjBiFQIn+3G1FQ1McsjJf4oTL
+d6ZWaddsOs/0OJN6eXIK7RUG4CaaYw==
+=IUNn
+-----END PGP SIGNATURE-----
+
+--PfNbdR7eKkIJPpt3--
 

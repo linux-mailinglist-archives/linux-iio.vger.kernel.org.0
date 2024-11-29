@@ -1,87 +1,77 @@
-Return-Path: <linux-iio+bounces-12810-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12811-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463D49DE863
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:25:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019099DE888
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5C3CB21D9B
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 14:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A139F2814E1
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 14:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9062557A;
-	Fri, 29 Nov 2024 14:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D5770827;
+	Fri, 29 Nov 2024 14:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cunP/LkB"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CKwAPGzY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB8F1EF1D;
-	Fri, 29 Nov 2024 14:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5085522F11;
+	Fri, 29 Nov 2024 14:33:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732890318; cv=none; b=Y5tbRSKgiqDpqw62CmXvgXdmQWiLuN1Ppa5flKV/laqioXXM7yi3YpImcP1gcyvsHrx8qS0brZ+4HSXUTke/qbcLwbVF3seAFhiMcoconSzFa05x4xAx/5kqKJHTJLuXvXc2iKmDzzLRP6oRCm9njHcKOG5ra2r56cSY8jll1GM=
+	t=1732890786; cv=none; b=Hp6i3R2pxF/JD3zieJLdJSRi4UHv6hbEP5P+qcbLoMzT/Vb6JaVaH1BX/16nA+ebo+HI57uksgg8nyGg5RNib6YzV29dPUowPYZOuE3AkRn7OyEW5y2nvgIcpMnvw/5vAmE7zS3xTv2AsWoYz2wIkuXokkzyqNtTfq6FGSD/tH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732890318; c=relaxed/simple;
-	bh=mFT6ar9zkgBbtQnta5Ao8zO4X9iU6Aq2Jw2N38M+ReY=;
+	s=arc-20240116; t=1732890786; c=relaxed/simple;
+	bh=aGePj3CE+a0I6TCzKfUqgDFGuS1dTrq84ngngdtKKng=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TH3QCsSG6dE2UbnjeYTKKsCOZDckkyaZZpKM4bOlGOR80FRvPVcZEdoX1Cl3wqiq3vxkXO1SZbrD/93I6gfKTDnB5A0cK7H3n8D7Kwa/fu1WylPaUeiw2FH4WrmsvCE3K1W0mdrF2wO8B2vcQJPeqwEjMIh1CNhTlssj3noTGFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cunP/LkB; arc=none smtp.client-ip=192.198.163.8
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z8npmOpU0ocjbVIzgwj9XJXKo9z981evGIhty4A/UvtR5uBodHvkM4HSk+acs1hLil7UIWGlM+Q0YoI2mo5gjjN8YCzs02DknEuYmK0YeX6Oey9jGep4lYnK+F1VCA6qqpCXYKyb7TLrSpB/w/dUJO+HVC6s4rzahBxiaBc+Jgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CKwAPGzY; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732890317; x=1764426317;
+  t=1732890785; x=1764426785;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=mFT6ar9zkgBbtQnta5Ao8zO4X9iU6Aq2Jw2N38M+ReY=;
-  b=cunP/LkB+sCcgc7XivZ/WQSV54eAPp4GV0GRB5++W2np4pmx7YaQK7ie
-   bTgveBRV411W8+zP3wZt0hIyVCncjhlkMODPfS7WUAWl517MGHPEYCsGk
-   rjZ58PgyliwOy2jc9+lG8I6+S/h4BV52u8CDFyY5tkNVIiprLickiWC/v
-   RGZf9K9WcorZSdrJDiliaVRVZx+itFCF12hkYkDP6qPOKGbK/ppD/QcpY
-   Jgbvm63SgE3v2fz26lUd7CONzOZKkwxYB6FbGdYOIFvPcWB4YBcV11FT5
-   tQfjQh3xWCSOiF4DjaHM9QRTfBJblZuHbz3PNkFUmN20OA3aNtFioXIBx
+  bh=aGePj3CE+a0I6TCzKfUqgDFGuS1dTrq84ngngdtKKng=;
+  b=CKwAPGzYQ9urewlwn3yvDBYEHPMaPvPdOhh3z22bn9dQv7TTJ0nzl/i6
+   bmns5m4L/uXewnaB47XHWpn2DXTpgDkqKAIdirnc8m3IJULL+VaYtLr76
+   7GUAcMjFDlAg49WXWZyvpsVZbtkTqrBN+xIDMZIe6oQGtoCGgimPnmNbA
+   /3GwZoVgWzZhJ+V9NS7LCUhT/GzablBEHRXs8hneczOUxZDzNUIox5WzT
+   Yq17f7hpIXxXL3p3N9z00Z516YsKVs12O0P92g7vHig6Vs8VZa8jrWh4O
+   UYg7h0IVI/qJhXaK5iWvjPCBXvTaSHcGWILyLcLatPikgVdroRlkxBoYB
    A==;
-X-CSE-ConnectionGUID: rC0C+IHoQ0egnywnCspx5w==
-X-CSE-MsgGUID: Pqv16MF/StKS0E8HmODPlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="50649009"
+X-CSE-ConnectionGUID: /OzmUocqTUiOeehIVSrnzw==
+X-CSE-MsgGUID: 4Tsj6pTNS3+IFGg/4XKoIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="58534629"
 X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="50649009"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:25:16 -0800
-X-CSE-ConnectionGUID: dk9HYf3TRuymKWvAe4pmkw==
-X-CSE-MsgGUID: wWjYr6TJR1WBkcaeWBGxdA==
+   d="scan'208";a="58534629"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:33:04 -0800
+X-CSE-ConnectionGUID: lz8MS0gdRke11032lSCs0w==
+X-CSE-MsgGUID: nciqehnjSKmlPK93kyF/pw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="92972808"
+   d="scan'208";a="97606207"
 Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:25:12 -0800
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:33:02 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tH1vh-00000002GC9-0Qfo;
-	Fri, 29 Nov 2024 16:25:09 +0200
-Date: Fri, 29 Nov 2024 16:25:08 +0200
+	id 1tH23H-00000002GLO-45X0;
+	Fri, 29 Nov 2024 16:32:59 +0200
+Date: Fri, 29 Nov 2024 16:32:59 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	0001-iio-light-Drop-BU27008-and-BU27010.patch@mva-rohm.smtp.subspace.kernel.org,
-	0002-dt-bindings-iio-light-Drop-BU27008-and-BU27010.patch@mva-rohm.smtp.subspace.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Arthur Becker <arthur.becker@sentec.com>,
-	Emil Gedenryd <emil.gedenryd@axis.com>, Marek Vasut <marex@denx.de>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] Drop BU27008 and BU27010
-Message-ID: <Z0nOxEtNk6APoNo0@smile.fi.intel.com>
-References: <cover.1732819203.git.mazziesaccount@gmail.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] iio: chemical: bme680: add power management
+Message-ID: <Z0nQm_HX326_xcSu@smile.fi.intel.com>
+References: <20241128193246.24572-1-vassilisamir@gmail.com>
+ <20241128193246.24572-4-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,35 +80,57 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1732819203.git.mazziesaccount@gmail.com>
+In-Reply-To: <20241128193246.24572-4-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Nov 28, 2024 at 09:34:54PM +0200, Matti Vaittinen wrote:
-> Drop the support for ROHM BD72008 and BD72010 RGB sensors
-> 
-> I accidentally hit a BU27008 data-sheet which had a big red text saying
-> "Obsolete". After a few queries I received a word that the ROHM BU27008
-> and BU27010 RGB sensors were cancelled and never entered mass production.
-> Supporting not existing hardware makes no sense, so it's probably best
-> to drop the drivers and dt-bindings.
-> 
-> There is still a RGB sensor from ROHM called BU27006.
-> https://www.rohm.com/products/sensors-mems/color-sensor-ics/bu27006muc-z-product
-> Based on a quick glance this should be very similar to the BU27010. If
-> someone wants to create a driver for this, then the bu27008.c might be
-> worth looking at.
-> 
-> As writing of this I don't have the BU27006 at my hands, and when I
-> asked about creating a driver for this IC from the HQ ... I got an
-> impression that at the moment ROHM rather pays me for doing something
-> else. So, currently I have no plan to add support for the BD27006.
-> We can always dig the bu27008.c from the depths of the git, if it later
-> appears such a driver would be a good idea.
+On Thu, Nov 28, 2024 at 08:32:46PM +0100, Vasileios Amoiridis wrote:
+> Add runtime power management to the device.
 
-The best series ever from you, Matti, on which I have
-not a tiny disagreement with!
+...
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +	struct device *dev = regmap_get_device(data->regmap);
+> +	int ret;
+> +
+> +	pm_runtime_get_sync(dev);
+> +	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
+
+Does it make sense to read something if previous call failed?
+Most likely you wanted to use
+
+
+	ret = pm_runtime_resume_and_get(dev)
+	if (ret)
+		return ret;
+
+	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
+
+> +	pm_runtime_mark_last_busy(dev);
+> +	pm_runtime_put_autosuspend(dev);
+> +
+> +	return ret;
+
+...
+
+> +static int bme680_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int val, int val2, long mask)
+
+Ditto.
+
+...
+
+> +{
+> +	struct bme680_data *data = iio_priv(indio_dev);
+> +	struct device *dev = regmap_get_device(data->regmap);
+> +
+> +	pm_runtime_get_sync(dev);
+
+No error check?
+
+> +	return 0;
+> +}
+
 
 -- 
 With Best Regards,

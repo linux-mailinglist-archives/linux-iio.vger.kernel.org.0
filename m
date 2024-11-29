@@ -1,1507 +1,1020 @@
-Return-Path: <linux-iio+bounces-12832-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12833-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B721A9DE9BF
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:38:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535F79DEA26
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 17:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8E51B2452D
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:37:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10281281323
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C33E1A3A8D;
-	Fri, 29 Nov 2024 15:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2648214831E;
+	Fri, 29 Nov 2024 16:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="MIawjqyF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EmZVgVHs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3315C1A303C;
-	Fri, 29 Nov 2024 15:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E72168DA;
+	Fri, 29 Nov 2024 16:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732894592; cv=none; b=NUlwNrSdFGjJ5OSSDCPeSMqZnQYDRCB2guFMkGeds4yNQ6xXiW7ppZzF2voPSqLJpc1b7CopudbjBBxQ0+3RUpmyewCbsRwIo7pZhAb9/pMo+vJVG2RlfelWFwzDmD9aZ1UMuBrgsKFsMrBpXSXEhA3tQ+QrOn8uUHg3BKBEq84=
+	t=1732896302; cv=none; b=JwEYqC5WaEgcsHf6b3Vm1r9gUh6gT4O+Q91FV36KT2IC72KJlcB8HN4ZJ+AYnBDy5AZZPjBvTeVhxRe+JGN13/7zFBryffi6UBLdSvP9aiNnDLfySDllR+QOgPscwPteGiFHe27E+7+XzxRsfcvgwPptGE5YXFUsFNnN3sTBi94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732894592; c=relaxed/simple;
-	bh=wx+0VTi2u/OFCG9JVhbaP7A8a7T5ghKhQAvoVlFunuk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lSbWCH3USDGgem0hBIWnXiiMc7SjM3s5Sbyr9yj+tmNs7cprvJRBRxr1/4RsbnlAGeduCra0E4OtGMOJibKF7eYvcMIrfDDc+nIZg5zcMsJxTY5C7hAQjrUX+GefP6PD+4LFD7Pt/jiDdHExwthljGoJLKbtRhn1IsC9ox74rvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=MIawjqyF; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ATBkQ13018141;
-	Fri, 29 Nov 2024 10:36:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=AtUcu
-	51GFu76fVDjFsrCXIbOLmWVN24WzbFbRHGmNVw=; b=MIawjqyFxVlzoMzudLSJb
-	wvUjfHR4rhhUulQRlZd32Kb7PNuC31nFhnSjqLsq07MxSifB6D+qLN/vmEcNDQm+
-	jMeZwqD95qibvSJAy4RyUmvbGIm+qWYazG8PI6oUsldXz/cPYHkoG/v10jd9LwlN
-	fOTX1dGS8+A4w1maSrYR8bcA/hWiFNDpnmlPzibFBrz8VE0Jd9rmK9+J+k5vgHP4
-	W/Z8YoklG3v5hPiAcq5nqPXGnPcSRUss7823ulORtqk7eM5O8GtUTVs4yvQXVpj7
-	k2vc6GYbLt7KdTSpE4/r4jD0t+NigtkUscGsMERCHIsLpOwb4sd6z8u+fT6uWbV7
-	A==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 436715tj5e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Nov 2024 10:36:23 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4ATFaMue008910
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 29 Nov 2024 10:36:22 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 29 Nov
- 2024 10:36:22 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 29 Nov 2024 10:36:22 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.161])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4ATFa0mB001167;
-	Fri, 29 Nov 2024 10:36:18 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <dlechner@baylibre.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pwm@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v7 8/8] iio: adc: ad4851: add ad485x driver
-Date: Fri, 29 Nov 2024 17:35:46 +0200
-Message-ID: <20241129153546.63584-9-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241129153546.63584-1-antoniu.miclaus@analog.com>
-References: <20241129153546.63584-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1732896302; c=relaxed/simple;
+	bh=fgCx/F9b2sG17pfZVPeRJqHzVTM6Eb/QTXG3jCyHlsI=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=SUuJqTF4JJGZ6G1V14J1Czwhd4neEq/A85BLWoLtD76G11zalVgPK1RjkvAR3s9GkqeiyopoVzY2T6/bMTb655ToccE6YeRaMwpgUO/vj9IyDh2md0ISR+1HBNJq/CC5wLsp8nWc3v9lz1NwWJVxAb904f0+Z5zNj6HeTj5B0jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EmZVgVHs; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385deda28b3so538208f8f.0;
+        Fri, 29 Nov 2024 08:04:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732896298; x=1733501098; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Hlm42xbOLl5RSGZmNVIWfcCUCTTDDQCwEyaunVKmBHI=;
+        b=EmZVgVHsaKlnTzXqIftahF7I5l0QD7HLof+ugQYO3e+nk0lUX2JWQmIq4VKY72udSf
+         STdVRxKkjjWcVB2+DNPorljSWmB4/MHnCwf+WD5ava8pghx9kMyz8uzYna0EqTWvvCRh
+         0jbGg2S+miCR1dhB9ZlYMQXaQWORPmPEPQgV9AoHC9CozGqDlZhd43Npggtq3RVmBHdC
+         0zLgJ/vTlQtIEpu8YmQ3BjfUMtGqIe/Px8kr6Qwe3thOUOI4N1WnmrIs3FFj8clUiDPV
+         00TQxWPTBRhr+yWOX4gTOZXLORN1l8Iv8fKHVq//IXTIiAhYwlvzHXHnSxEIrp9TPlZl
+         cMEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732896298; x=1733501098;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hlm42xbOLl5RSGZmNVIWfcCUCTTDDQCwEyaunVKmBHI=;
+        b=QQdzXbVZVO1U30/CYnrGpkJvfC9s3QHra678cay6o0+cjG/jDYMp2F9TnXL8Otv9Lz
+         AeNppO1G2diSvVnEKNDShKuv2+Kur78r4ijDB92T1258NUoo/IwzBu38361JvNDC0dAy
+         8QyDPT0OA+9uqWFIvfJwM+XdmfDxS0IfeZgv1HvGV3PO9CNFNVyctRZnYU4EKzupT6C8
+         TvSQx5Zp2SP0s59YU0toFcFHQ7c2KZ9/Aex28xY9sVZw9fBXFQtxvpblx6IvjxJb6CPM
+         wmr/eOywQKC9AXFszWROLqECwcXDR1+JJZN8nCcjFaAB6Unl49t2/1xJWLGhsGBzqNvA
+         eUUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUOfpPwFP2TUYdaX+koZiedyqRt7p4etzyS05VPNBVUPRfoq43nnKDifrXJjXF81Rneedc36dBaFrs=@vger.kernel.org, AJvYcCUfsc9tYnp8p2bzvZeOqtb38hbr6xuDNtDr8zCTQkMoON22/3inNoke7CevjHexG34sDDsIom/bTGBPMufN@vger.kernel.org, AJvYcCVbbjTTzRh95t9owHFoFuiWNYRjKPRdur3zJSfFUHyfqN9dKlKXFD4vxFUWB0a9RfyU4leAau1lQdo=@vger.kernel.org, AJvYcCWWjxSzx/EG+BLyPkJ8IOuocF//oEGFs5LE6ZAHcPukxWOGEgxBN73xGkv8H3PL2Jxtav4MvVlZum2rfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+erBVWXikT1TEgI9nIE2cAu+HjkJzqNGpASYTVqw5cAZLv/zg
+	Aak1TW4I2BGl2joXusO++6v9y5qAi/edWNWdwvlUPbNfZW1uLfb6lzD/COrC
+X-Gm-Gg: ASbGncvQXIK4Y7zQwp072WugKVeQthPGIkxlSfdsZU7ZnUhxpnRG5q8WqGQxIrxdP7X
+	UjsLhL87KnitEm/0dx7ctItWYxiQwRghKSn/nsr+W9hTQEjvT1Qi55/Qy83W3jXmgmoLKm0aQys
+	AiV80Vx/EjDbMuT4zxVrI4YJQQVmp0v5zNGyQqqh13oIT5AyrhZir+pnPIbXUk8xrB110Rct8yU
+	+pSFKK455MlmlE12TIUH+bK+3AWtfvnkP+7uovnZShLc5qvQO4aYKc4xjV1zyP2xGk03yf9vmou
+	TokFfh3FI5hWyRGabswu
+X-Google-Smtp-Source: AGHT+IEAGSjG9fLflRepAiRi27XRLBS7prgutgeR3eMzABlJPFweXyJrWOTIqxwyAXpBfFrbeZg43Q==
+X-Received: by 2002:a5d:5889:0:b0:382:4b9a:f510 with SMTP id ffacd0b85a97d-385c6eb83e3mr11837122f8f.11.1732896295574;
+        Fri, 29 Nov 2024 08:04:55 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0dbe4ccsm56430805e9.13.2024.11.29.08.04.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Nov 2024 08:04:55 -0800 (PST)
+Date: Fri, 29 Nov 2024 17:04:54 +0100
+Message-ID: <9db64d227f70f016b614a9cff5469f2d@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH v5 2/5] iio: consumers: copy/release available info from
+ producer to fix race
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>, Alisa-Dariana Roman
+	<alisa.roman@analog.com>, Christian Eggers <ceggers@arri.de>, Peter Rosin
+	<peda@axentia.se>, Paul Cercueil <paul@crapouillou.net>, Sebastian Reichel
+	<sre@kernel.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org, linux-pm@vger.kernel.org
+In-Reply-To: <20241126174147.23fed403@jic23-huawei>
+References: <173031260171.39393.109639772708550094@njaxe.localdomain>
+	<20241030203050.5cdf3450@jic23-huawei>
+	<173037398492.12348.265826723028347056@njaxe.localdomain>
+	<20241031143129.0000014e@Huawei.com>
+	<173039799203.1353.4404042832923090619@njaxe.localdomain>
+	<b56ba6a0db195ad44158509f3adb157b@gmail.com>
+	<ZzsVOGvzgNTvuEtD@smile.fi.intel.com>
+	<e56a8f3c81429c465e87a3abcccec1b4@gmail.com>
+	<Zztlz08Wm-mGdy7p@smile.fi.intel.com>
+	<65e16f628245a78da5c9d870d6c5c5a9@gmail.com>
+	<Zzx_C60W48ujpis9@smile.fi.intel.com> <20241123141320.326b3340@jic23-huawei>
+	<9b2f3557dc93c4b75752f812e2645262@gmail.com>
+	<20241126174147.23fed403@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: z0jd7CvOwBM0RsJs2eMSwrQtgiluOp42
-X-Proofpoint-GUID: z0jd7CvOwBM0RsJs2eMSwrQtgiluOp42
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- suspectscore=0 mlxscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1015 adultscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2411290127
 
-Add support for the AD485X a fully buffered, 8-channel simultaneous
-sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-differential, wide common-mode range inputs.
+On Tue, 26 Nov 2024 17:41:47 +0000, Jonathan Cameron <jic23@kernel.org> wrote:
+> On Tue, 26 Nov 2024 17:31:16 +0100
+> Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> 
+> > On Sat, 23 Nov 2024 14:13:20 +0000, Jonathan Cameron <jic23@kernel.org> wrote:
+> > > On Tue, 19 Nov 2024 14:05:31 +0200
+> > > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> > >   
+> > > > On Tue, Nov 19, 2024 at 12:25:18PM +0100, Matteo Martelli wrote:  
+> > > > > On Mon, 18 Nov 2024 18:05:35 +0200, Andy Shevchenko <andriy.shevchenko@intel.com> wrote:    
+> > > > > > On Mon, Nov 18, 2024 at 03:45:25PM +0100, Matteo Martelli wrote:    
+> > > > > > > On Mon, 18 Nov 2024 12:21:44 +0200, Andy Shevchenko <andriy.shevchenko@intel.com> wrote:    
+> > > > > > > > On Fri, Nov 15, 2024 at 03:25:06PM +0100, Matteo Martelli wrote:    
+> > > > > > > > > On Thu, 31 Oct 2024 19:06:32 +0100, Matteo Martelli <matteomartelli3@gmail.com> wrote:    
+> > > > > > > > > > Quoting Jonathan Cameron (2024-10-31 15:31:29)    
+> > > > > > > > > > > On Thu, 31 Oct 2024 12:26:24 +0100
+> > > > > > > > > > > Matteo Martelli <matteomartelli3@gmail.com> wrote:    
+> > > > > > > > > > > > Quoting Jonathan Cameron (2024-10-30 21:30:50)    
+> > > > > > > > > > > > > On Wed, 30 Oct 2024 19:23:21 +0100
+> > > > > > > > > > > > > Matteo Martelli <matteomartelli3@gmail.com> wrote:    
+> > > > > > > > > > > > > > Quoting Andy Shevchenko (2024-10-30 15:47:50)      
+> > > > > > > > > > > > > > > On Mon, Oct 21, 2024 at 02:54:15PM +0200, Matteo Martelli wrote:        
+> > > >   
+> > > > > > > > > > > > > > > > Consumers need to call the producer's read_avail_release_resource()
+> > > > > > > > > > > > > > > > callback after reading producer's available info. To avoid a race
+> > > > > > > > > > > > > > > > condition with the producer unregistration, change inkern
+> > > > > > > > > > > > > > > > iio_channel_read_avail() so that it copies the available info from the
+> > > > > > > > > > > > > > > > producer and immediately calls its release callback with info_exists
+> > > > > > > > > > > > > > > > locked.
+> > > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > > Also, modify the users of iio_read_avail_channel_raw() and
+> > > > > > > > > > > > > > > > iio_read_avail_channel_attribute() to free the copied available buffers
+> > > > > > > > > > > > > > > > after calling these functions. To let users free the copied buffer with
+> > > > > > > > > > > > > > > > a cleanup pattern, also add a iio_read_avail_channel_attr_retvals()
+> > > > > > > > > > > > > > > > consumer helper that is equivalent to iio_read_avail_channel_attribute()
+> > > > > > > > > > > > > > > > but stores the available values in the returned variable.        
+> > > > 
+> > > > ...
+> > > >   
+> > > > > > > > > > > > > > > > +static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > > > > +                                         struct iio_chan_spec const *chan,
+> > > > > > > > > > > > > > > > +                                         const int *vals, long mask)
+> > > > > > > > > > > > > > > > +{
+> > > > > > > > > > > > > > > > +     kfree(vals);
+> > > > > > > > > > > > > > > > +}
+> > > > > > > > > > > > > > > > +
+> > > > > > > > > > > > > > > >  static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > > > >                             struct iio_chan_spec const *chan,
+> > > > > > > > > > > > > > > >                             int val, int val2, long mask)
+> > > > > > > > > > > > > > > > @@ -125,6 +132,7 @@ static int dpot_dac_write_raw(struct iio_dev *indio_dev,
+> > > > > > > > > > > > > > > >  static const struct iio_info dpot_dac_info = {
+> > > > > > > > > > > > > > > >       .read_raw = dpot_dac_read_raw,
+> > > > > > > > > > > > > > > >       .read_avail = dpot_dac_read_avail,
+> > > > > > > > > > > > > > > > +     .read_avail_release_resource = dpot_dac_read_avail_release_res,
+> > > > > > > > > > > > > > > >       .write_raw = dpot_dac_write_raw,
+> > > > > > > > > > > > > > > >  };        
+> > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > I have a problem with this approach. The issue is that we allocate
+> > > > > > > > > > > > > > > memory in one place and must clear it in another. This is not well
+> > > > > > > > > > > > > > > designed thingy in my opinion. I was thinking a bit of the solution and
+> > > > > > > > > > > > > > > at least these two comes to my mind:
+> > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > 1) having a special callback for .read_avail_with_copy (choose better
+> > > > > > > > > > > > > > > name) that will dump the data to the intermediate buffer and clean it
+> > > > > > > > > > > > > > > after all;
+> > > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > > 2) introduce a new type (or bit there), like IIO_AVAIL_LIST_ALLOC.        
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > Could you elaborate more about these potential solutions? Maybe with some
+> > > > > > > > > > > > > > usage examples?
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > If I get it correctly, in both cases you are suggesting to pass ownership
+> > > > > > > > > > > > > > of the vals buffer to the caller, iio_read_channel_info_avail() in this
+> > > > > > > > > > > > > > case, so that it would take care of freeing the buffer after calling
+> > > > > > > > > > > > > > iio_format_after_*(). We considered this approach during an initial
+> > > > > > > > > > > > > > discussion with Jonathan (see read_avail_ext() in [1]), where he suggested
+> > > > > > > > > > > > > > to let the driver keep the release control through a callback for two
+> > > > > > > > > > > > > > reasons:
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > 1) Apparently it's a bad pattern to pass the buffer ownership to the core,
+> > > > > > > > > > > > > >    maybe Jonathan can elaborate why? The risk I can think of is that the driver
+> > > > > > > > > > > > > >    could still keep the buffer copy in its private data after giving it away,
+> > > > > > > > > > > > > >    resulting in fact in a double ownership. However I think it would be clear
+> > > > > > > > > > > > > >    enough in this case that the copy should be handled by the caller, or maybe
+> > > > > > > > > > > > > >    not?      
+> > > > > > > > > > > > > Mostly the lack of desire to have to copy for the 95% of cases where it's
+> > > > > > > > > > > > > not needed and that it prevents any optimization like you mention.      
+> > > > > > > > > > > > 
+> > > > > > > > > > > > I think the suggestion here is to add an additional .read_avail_with_copy()
+> > > > > > > > > > > > without replacing the original .read_avail(), so all the current drivers that
+> > > > > > > > > > > > use a constant avail list would not be affected.    
+> > > >   
+> > > > > > > > Yes.    
+> > > >   
+> > > > > > > > > > > > And I think this was the same
+> > > > > > > > > > > > idea for the additional read_avail_ext() or the additional argument for the
+> > > > > > > > > > > > read_avail() we were considering in [1]. So I would think that
+> > > > > > > > > > > > iio_read_channel_info_avail() would do something like the following:
+> > > > > > > > > > > > 
+> > > > > > > > > > > >     if (indio_dev->info->read_avail_with_copy)
+> > > > > > > > > > > >         indio_dev->info->read_avail_with_copy(vals);
+> > > > > > > > > > > >     else
+> > > > > > > > > > > >         indio_dev->info->read_avail(vals);
+> > > > > > > > > > > > 
+> > > > > > > > > > > >     ...
+> > > > > > > > > > > >     iio_format_avail_list(vals);
+> > > > > > > > > > > >     ...
+> > > > > > > > > > > > 
+> > > > > > > > > > > >     if (indio_dev->info->read_avail_with_copy)
+> > > > > > > > > > > >         kfree(vals);    
+> > > > > > > > 
+> > > > > > > > Right. At least that's what I see can be done with the existing users.
+> > > > > > > >     
+> > > > > > > > > > > Ok, sure that would work, but...
+> > > > > > > > > > > 
+> > > > > > > > > > > I don't really see this as being much less fragile than
+> > > > > > > > > > > the existing solution + in cases that we do have where
+> > > > > > > > > > > only some available are not const we will have to copy them
+> > > > > > > > > > > all.
+> > > > > > > > > > > 
+> > > > > > > > > > > If anything it's more complex than making it a driver problem
+> > > > > > > > > > > to provide the release call however it wants to do it.    
+> > > > > > > > 
+> > > > > > > > ...but make a driver to allocate what's needed as well then.
+> > > > > > > >     
+> > > > > > > > > > > > And the drivers would choose whether to define the read_avail or the
+> > > > > > > > > > > > read_avail_with_copy.    
+> > > > > > > > 
+> > > > > > > > Either way drivers should know what to do with a data supplied to read_aval().
+> > > > > > > > In one case we assume the [simple] workflow in the core, in the other we all
+> > > > > > > > rely on the driver. Current approach makes a mix of these two. And that's what
+> > > > > > > > I don't like.    
+> > > > > > > 
+> > > > > > > If I understand your concern correctly, you are referring to the inkern
+> > > > > > > iio_channel_read_avail() that makes the allocation for the consumer's
+> > > > > > > buffer copy and you are suggesting that such copy should be done by the
+> > > > > > > consumer driver code itself, this to be consistent with the producer
+> > > > > > > drivers which directly handle the allocation of the copy.    
+> > > > > > 
+> > > > > > One of the options, yes.
+> > > > > >     
+> > > > > > > One thing to notice is that the inkern iio_channel_read_avail() does
+> > > > > > > together producer->read_avail() + copy + producer->read_avail_release()
+> > > > > > > with info_exists locked. Also, the consumer driver would need to know
+> > > > > > > the avail buffer size to allocate the buffer copy prior the
+> > > > > > > iio_channel_read_avail() call, but such size is unknown before calling
+> > > > > > > the actual producer's read_avail(). This would mean calling the
+> > > > > > > producer's read_avail() and read_avail_release() callbacks separately
+> > > > > > > without the lock held, with the risk of a memleak if the producer is
+> > > > > > > unregistered between those calls.    
+> > > > > > 
+> > > > > > Thanks for explaining this, but it even more makes me think that the design
+> > > > > > is broken and your approach is rather a hack. So, what's the problem to
+> > > > > > make IIO core to take care of the allocating and cleaning then without driver
+> > > > > > being involved? Yes, this might require a hint from the driver on what to copy
+> > > > > > if we want to avoid copying everything.    
+> > > > > 
+> > > > > I am not particularly against it, other than the concerns that have
+> > > > > emerged during this (and previous) discussion. Let me summarize them:    
+> > > > 
+> > > > Thank you for a very good summary and fix-N proposals. I think I have nothing
+> > > > to add and we should wait for Jonathan to finally choose (or propose a fix-N+1)
+> > > > here.  
+> > > Agreed. This is very useful enumeration of various options with plenty
+> > > of details!
+> > > 
+> > > One absolute key thing to note here is we should not care at all what
+> > > inkern does for it's handling internally of the available lists.  The big
+> > > ABI question is all about consumers drivers directly using the resulting list of
+> > > available values.  The use in the IIO core and the inkern helpers should
+> > > naturally follow.
+> > > 
+> > >   
+> > > >   
+> > > > > fix-1) the current one. Your concerns are:
+> > > > >     * for consumers the copy allocation is taken care by the inkern API
+> > > > >       but the release is handled by the consumer driver code, making it
+> > > > >       a fragile design.  
+> > > 
+> > > So this was something I'm not sure I agree with.  There are plenty
+> > > of get / release patterns out there. This is just another one of those
+> > > but perhaps it doesn't 'smell' enough like that.
+> > > 
+> > > Perhaps think of it as
+> > > 
+> > > int *iio_channel_avail_get()
+> > > void iio_channel_avail_release()
+> > > 
+> > > We could perhaps make it look more standard using a cookie rather than
+> > > reconstructing the equivalent data at the release call.  
+> > 
+> > Would this imply that also the read_info callback provided by the
+> > iio_info struct should be replaced? Something like info->get_avail()
+> > returning a iio_avail_cookie instead of info->read_avail(const int **vals)?
+> > * If yes, that would be a big impact in the current code as all
+> > iio drivers defining read_avail would need to be changed (I am not
+> > against it but better consider it).
+> > * If no, then I find odd that iio_info->avail_release(cookie) gets a
+> > cookie that has been allocated outside the provider driver: the read
+> > functions gives something to the user and its corresponing release
+> > handle another type of object (even it's just a wrapper). Is this the
+> > usual pattern for cookies?
+> 
+> I think the trick here is that the provider drivers wouldn't be involved
+> in the cookie handling. We might have done it differently if we
+> were starting from scratch, but the legacy is a pain as normal!
+> Consumers can stay the same as you have here as all the information in
+> the cookie would be gathered from existing read_avail plus the parameters.
+> Tricky bit is the provider_priv, but we may not even need that.  If that
+> becomes a useful thing we'd need a new optional get_avail_with_priv()
+> or something like that.  Might need to stash the channel info in the
+> cookie as well.
+> 
+> Provider wouldn't see the cookie at release either as we'd just
+> pass parameters from the cookie into the release callback then free
+> the cookie in the core code.  Technically ownership of the cookie
+> would lie with the consumer not the provider but we'd hide all that
+> away from the consumer.
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v7:
- - use new iio backend os enable/disable functions
- - implement separate scan_type for both signed and unsigned.
- - drop ext_scan_type for 16-bit chips
- - rework scan_index ordering.
- - add separate scales for diff/single-ended channels
- - parse iio channels via dts properties.
- drivers/iio/adc/Kconfig  |   13 +
- drivers/iio/adc/Makefile |    1 +
- drivers/iio/adc/ad4851.c | 1346 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 1360 insertions(+)
- create mode 100644 drivers/iio/adc/ad4851.c
+I see now that your suggestion to use the cookie would only affect
+consumers. What confused me is your example below where the producer's
+release would use the cookie as well:
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 6c4e74420fd2..0d97cd760d90 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -61,6 +61,19 @@ config AD4695
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called ad4695.
- 
-+config AD4851
-+	tristate "Analog Device AD4851 DAS Driver"
-+	depends on SPI
-+	select REGMAP_SPI
-+	select IIO_BACKEND
-+	help
-+	  Say yes here to build support for Analog Devices AD4851, AD4852,
-+	  AD4853, AD4854, AD4855, AD4856, AD4857, AD4858, AD4858I high speed
-+	  data acquisition system (DAS).
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ad4851.
-+
- config AD7091R
- 	tristate
- 
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index 7b91cd98c0e0..d83df8b5925d 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
- obj-$(CONFIG_AD4000) += ad4000.o
- obj-$(CONFIG_AD4130) += ad4130.o
- obj-$(CONFIG_AD4695) += ad4695.o
-+obj-$(CONFIG_AD4851) += ad4851.o
- obj-$(CONFIG_AD7091R) += ad7091r-base.o
- obj-$(CONFIG_AD7091R5) += ad7091r5.o
- obj-$(CONFIG_AD7091R8) += ad7091r8.o
-diff --git a/drivers/iio/adc/ad4851.c b/drivers/iio/adc/ad4851.c
-new file mode 100644
-index 000000000000..e8e5c0def29e
---- /dev/null
-+++ b/drivers/iio/adc/ad4851.c
-@@ -0,0 +1,1346 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices AD4851 DAS driver
-+ *
-+ * Copyright 2024 Analog Devices Inc.
-+ */
-+
-+#include <linux/array_size.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/minmax.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/pwm.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/spi/spi.h>
-+#include <linux/types.h>
-+#include <linux/unaligned.h>
-+#include <linux/units.h>
-+
-+#include <linux/iio/backend.h>
-+#include <linux/iio/iio.h>
-+
-+#define AD4851_REG_INTERFACE_CONFIG_A	0x00
-+#define AD4851_REG_INTERFACE_CONFIG_B	0x01
-+#define AD4851_REG_PRODUCT_ID_L		0x04
-+#define AD4851_REG_PRODUCT_ID_H		0x05
-+#define AD4851_REG_DEVICE_CTRL		0x25
-+#define AD4851_REG_PACKET		0x26
-+#define AD4851_REG_OVERSAMPLE		0x27
-+
-+#define AD4851_REG_CH_CONFIG_BASE	0x2A
-+#define AD4851_REG_CHX_SOFTSPAN(ch)	((0x12 * (ch)) + AD4851_REG_CH_CONFIG_BASE)
-+#define AD4851_REG_CHX_OFFSET(ch)	(AD4851_REG_CHX_SOFTSPAN(ch) + 0x01)
-+#define AD4851_REG_CHX_OFFSET_LSB(ch)	AD4851_REG_CHX_OFFSET(ch)
-+#define AD4851_REG_CHX_OFFSET_MID(ch)	(AD4851_REG_CHX_OFFSET_LSB(ch) + 0x01)
-+#define AD4851_REG_CHX_OFFSET_MSB(ch)	(AD4851_REG_CHX_OFFSET_MID(ch) + 0x01)
-+#define AD4851_REG_CHX_GAIN(ch)		(AD4851_REG_CHX_OFFSET(ch) + 0x03)
-+#define AD4851_REG_CHX_GAIN_LSB(ch)	AD4851_REG_CHX_GAIN(ch)
-+#define AD4851_REG_CHX_GAIN_MSB(ch)	(AD4851_REG_CHX_GAIN(ch) + 0x01)
-+#define AD4851_REG_CHX_PHASE(ch)	(AD4851_REG_CHX_GAIN(ch) + 0x02)
-+#define AD4851_REG_CHX_PHASE_LSB(ch)	AD4851_REG_CHX_PHASE(ch)
-+#define AD4851_REG_CHX_PHASE_MSB(ch)	(AD4851_REG_CHX_PHASE_LSB(ch) + 0x01)
-+
-+#define AD4851_REG_TESTPAT_0(c)		(0x38 + (c) * 0x12)
-+#define AD4851_REG_TESTPAT_1(c)		(0x39 + (c) * 0x12)
-+#define AD4851_REG_TESTPAT_2(c)		(0x3A + (c) * 0x12)
-+#define AD4851_REG_TESTPAT_3(c)		(0x3B + (c) * 0x12)
-+
-+#define AD4851_SW_RESET			(BIT(7) | BIT(0))
-+#define AD4851_SDO_ENABLE		BIT(4)
-+#define AD4851_SINGLE_INSTRUCTION	BIT(7)
-+#define AD4851_REFBUF_PD		BIT(2)
-+#define AD4851_REFSEL_PD		BIT(1)
-+#define AD4851_ECHO_CLOCK_MODE		BIT(0)
-+
-+#define AD4851_PACKET_FORMAT_0		0
-+#define AD4851_PACKET_FORMAT_1		1
-+#define AD4851_PACKET_FORMAT_MASK	GENMASK(1, 0)
-+
-+#define AD4851_OS_EN_MSK		BIT(7)
-+#define AD4851_OS_RATIO_MSK		GENMASK(3, 0)
-+
-+#define AD4851_TEST_PAT			BIT(2)
-+
-+#define AD4858_PACKET_SIZE_20		0
-+#define AD4858_PACKET_SIZE_24		1
-+#define AD4858_PACKET_SIZE_32		2
-+
-+#define AD4857_PACKET_SIZE_16		0
-+#define AD4857_PACKET_SIZE_24		1
-+
-+#define AD4851_TESTPAT_0_DEFAULT	0x2A
-+#define AD4851_TESTPAT_1_DEFAULT	0x3C
-+#define AD4851_TESTPAT_2_DEFAULT	0xCE
-+#define AD4851_TESTPAT_3_DEFAULT(c)	(0x0A + (0x10 * (c)))
-+
-+#define AD4851_SOFTSPAN_0V_2V5		0
-+#define AD4851_SOFTSPAN_N2V5_2V5	1
-+#define AD4851_SOFTSPAN_0V_5V		2
-+#define AD4851_SOFTSPAN_N5V_5V		3
-+#define AD4851_SOFTSPAN_0V_6V25		4
-+#define AD4851_SOFTSPAN_N6V25_6V25	5
-+#define AD4851_SOFTSPAN_0V_10V		6
-+#define AD4851_SOFTSPAN_N10V_10V	7
-+#define AD4851_SOFTSPAN_0V_12V5		8
-+#define AD4851_SOFTSPAN_N12V5_12V5	9
-+#define AD4851_SOFTSPAN_0V_20V		10
-+#define AD4851_SOFTSPAN_N20V_20V	11
-+#define AD4851_SOFTSPAN_0V_25V		12
-+#define AD4851_SOFTSPAN_N25V_25V	13
-+#define AD4851_SOFTSPAN_0V_40V		14
-+#define AD4851_SOFTSPAN_N40V_40V	15
-+
-+#define AD4851_MAX_LANES		8
-+#define AD4851_MAX_IODELAY		32
-+
-+#define AD4851_T_CNVH_NS		40
-+
-+#define AD4841_MAX_SCALE_AVAIL		8
-+
-+#define AD4851_MAX_CH_NR		8
-+#define AD4851_CH_START			0
-+
-+struct ad4851_scale {
-+	unsigned int scale_val;
-+	u8 reg_val;
-+};
-+
-+static const struct ad4851_scale ad4851_scale_table_se[] = {
-+	{ 2500, 0x0 },
-+	{ 5000, 0x2 },
-+	{ 6250, 0x4 },
-+	{ 10000, 0x6 },
-+	{ 12500, 0x8 },
-+	{ 20000, 0xA },
-+	{ 25000, 0xC },
-+	{ 40000, 0xE },
-+};
-+
-+static const struct ad4851_scale ad4851_scale_table_diff[] = {
-+	{ 5000, 0x1 },
-+	{ 10000, 0x3 },
-+	{ 12500, 0x5 },
-+	{ 20000, 0x7 },
-+	{ 25000, 0x9 },
-+	{ 40000, 0xB },
-+	{ 50000, 0xD },
-+	{ 80000, 0xF },
-+};
-+
-+static const unsigned int ad4851_scale_avail_se[] = {
-+	2500,
-+	5000,
-+	6250,
-+	10000,
-+	12500,
-+	20000,
-+	25000,
-+	40000,
-+};
-+
-+static const unsigned int ad4851_scale_avail_diff[] = {
-+	5000,
-+	10000,
-+	12500,
-+	20000,
-+	25000,
-+	40000,
-+	50000,
-+	80000,
-+};
-+
-+struct ad4851_chip_info {
-+	const char *name;
-+	unsigned int product_id;
-+	int num_scales;
-+	const struct iio_chan_spec *channels;
-+	unsigned int num_channels;
-+	unsigned long max_sample_rate_hz;
-+	unsigned int resolution;
-+	int (*parse_channels)(struct iio_dev *indio_dev);
-+};
-+
-+enum {
-+	AD4851_SCAN_TYPE_NORMAL,
-+	AD4851_SCAN_TYPE_RESOLUTION_BOOST,
-+};
-+
-+struct ad4851_state {
-+	struct spi_device *spi;
-+	struct pwm_device *cnv;
-+	struct iio_backend *back;
-+	/*
-+	 * Synchronize access to members the of driver state, and ensure
-+	 * atomicity of consecutive regmap operations.
-+	 */
-+	struct mutex lock;
-+	struct regmap *regmap;
-+	struct regulator *vrefbuf;
-+	struct regulator *vrefio;
-+	const struct ad4851_chip_info *info;
-+	struct gpio_desc *pd_gpio;
-+	bool resolution_boost_enabled;
-+	unsigned long sampling_freq;
-+	unsigned int scales_se[AD4841_MAX_SCALE_AVAIL][2];
-+	unsigned int scales_diff[AD4841_MAX_SCALE_AVAIL][2];
-+};
-+
-+static int ad4851_reg_access(struct iio_dev *indio_dev,
-+			     unsigned int reg,
-+			     unsigned int writeval,
-+			     unsigned int *readval)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+
-+	guard(mutex)(&st->lock);
-+
-+	if (readval)
-+		return regmap_read(st->regmap, reg, readval);
-+
-+	return regmap_write(st->regmap, reg, writeval);
-+}
-+
-+static int ad4851_set_sampling_freq(struct ad4851_state *st, unsigned int freq)
-+{
-+	struct pwm_state cnv_state = {
-+		.duty_cycle = AD4851_T_CNVH_NS,
-+		.enabled = true,
-+	};
-+	int ret;
-+
-+	freq = clamp(freq, 1, st->info->max_sample_rate_hz);
-+
-+	cnv_state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, freq);
-+
-+	ret = pwm_apply_might_sleep(st->cnv, &cnv_state);
-+	if (ret)
-+		return ret;
-+
-+	st->sampling_freq = freq;
-+
-+	return 0;
-+}
-+
-+static const int ad4851_oversampling_ratios[] = {
-+	1, 2, 4, 8, 16,	32, 64, 128,
-+	256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
-+	65536,
-+};
-+
-+static int ad4851_osr_to_regval(int ratio)
-+{
-+	int i;
-+
-+	for (i = 1; i < ARRAY_SIZE(ad4851_oversampling_ratios); i++)
-+		if (ratio == ad4851_oversampling_ratios[i])
-+			return i - 1;
-+
-+	return -EINVAL;
-+}
-+
-+static int ad4851_set_oversampling_ratio(struct ad4851_state *st,
-+					 const struct iio_chan_spec *chan,
-+					 unsigned int osr)
-+{
-+	unsigned int val;
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	if (osr == 1) {
-+		ret = regmap_clear_bits(st->regmap, AD4851_REG_OVERSAMPLE,
-+					AD4851_OS_EN_MSK);
-+		if (ret)
-+			return ret;
-+
-+		ret = iio_backend_oversampling_disable(st->back);
-+		if (ret)
-+			return ret;
-+	} else {
-+		val = ad4851_osr_to_regval(osr);
-+		if (val < 0)
-+			return -EINVAL;
-+
-+		ret = regmap_set_bits(st->regmap, AD4851_REG_OVERSAMPLE,
-+				      AD4851_OS_EN_MSK);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_update_bits(st->regmap, AD4851_REG_OVERSAMPLE,
-+					 AD4851_OS_RATIO_MSK, val);
-+		if (ret)
-+			return ret;
-+
-+		ret = iio_backend_oversampling_enable(st->back);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	switch (chan->scan_type.realbits) {
-+	case 20:
-+		switch (osr) {
-+		case 0:
-+			return -EINVAL;
-+		case 1:
-+			val = 20;
-+			break;
-+		default:
-+			val = 24;
-+			break;
-+		}
-+		break;
-+	case 16:
-+		val = 16;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	ret = iio_backend_data_size_set(st->back, val);
-+	if (ret)
-+		return ret;
-+
-+	if (osr == 1 || chan->scan_type.realbits == 16) {
-+		ret = regmap_clear_bits(st->regmap, AD4851_REG_PACKET,
-+					AD4851_PACKET_FORMAT_MASK);
-+		if (ret)
-+			return ret;
-+
-+		st->resolution_boost_enabled = false;
-+	} else {
-+		ret = regmap_update_bits(st->regmap, AD4851_REG_PACKET,
-+					 AD4851_PACKET_FORMAT_MASK,
-+					 FIELD_PREP(AD4851_PACKET_FORMAT_MASK, 1));
-+		if (ret)
-+			return ret;
-+
-+		st->resolution_boost_enabled = true;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad4851_get_oversampling_ratio(struct ad4851_state *st, unsigned int *val)
-+{
-+	unsigned int osr;
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_OVERSAMPLE, &osr);
-+	if (ret)
-+		return ret;
-+
-+	if (!FIELD_GET(AD4851_OS_EN_MSK, osr))
-+		*val = 1;
-+	else
-+		*val = ad4851_oversampling_ratios[FIELD_GET(AD4851_OS_RATIO_MSK, osr)];
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static void ad4851_reg_disable(void *data)
-+{
-+	regulator_disable(data);
-+}
-+
-+static void ad4851_pwm_disable(void *data)
-+{
-+	pwm_disable(data);
-+}
-+
-+static int ad4851_setup(struct ad4851_state *st)
-+{
-+	unsigned int product_id;
-+	int ret;
-+
-+	if (!IS_ERR(st->vrefbuf)) {
-+		ret = regmap_set_bits(st->regmap, AD4851_REG_DEVICE_CTRL,
-+				      AD4851_REFBUF_PD);
-+		if (ret)
-+			return ret;
-+
-+		ret = regulator_enable(st->vrefbuf);
-+		if (ret)
-+			return ret;
-+
-+		ret = devm_add_action_or_reset(&st->spi->dev, ad4851_reg_disable,
-+					       st->vrefbuf);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (!IS_ERR(st->vrefio)) {
-+		ret = regmap_set_bits(st->regmap, AD4851_REG_DEVICE_CTRL,
-+				      AD4851_REFSEL_PD);
-+		if (ret)
-+			return ret;
-+
-+		ret = regulator_enable(st->vrefio);
-+		if (ret)
-+			return ret;
-+
-+		ret = devm_add_action_or_reset(&st->spi->dev, ad4851_reg_disable,
-+					       st->vrefio);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	if (st->pd_gpio) {
-+		/* To initiate a global reset, bring the PD pin high twice */
-+		gpiod_set_value(st->pd_gpio, 1);
-+		fsleep(1);
-+		gpiod_set_value(st->pd_gpio, 0);
-+		fsleep(1);
-+		gpiod_set_value(st->pd_gpio, 1);
-+		fsleep(1);
-+		gpiod_set_value(st->pd_gpio, 0);
-+		fsleep(1000);
-+	} else {
-+		ret = regmap_set_bits(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
-+				      AD4851_SW_RESET);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = regmap_write(st->regmap, AD4851_REG_INTERFACE_CONFIG_B,
-+			   AD4851_SINGLE_INSTRUCTION);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
-+			   AD4851_SDO_ENABLE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_PRODUCT_ID_L, &product_id);
-+	if (ret)
-+		return ret;
-+
-+	if (product_id != st->info->product_id)
-+		dev_info(&st->spi->dev, "Unknown product ID: 0x%02X\n",
-+			 product_id);
-+
-+	ret = regmap_set_bits(st->regmap, AD4851_REG_DEVICE_CTRL,
-+			      AD4851_ECHO_CLOCK_MODE);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(st->regmap, AD4851_REG_PACKET, 0);
-+}
-+
-+static int ad4851_find_opt(bool *field, u32 size, u32 *ret_start)
-+{
-+	unsigned int i, cnt = 0, max_cnt = 0, max_start = 0;
-+	int start;
-+
-+	for (i = 0, start = -1; i < size; i++) {
-+		if (field[i] == 0) {
-+			if (start == -1)
-+				start = i;
-+			cnt++;
-+		} else {
-+			if (cnt > max_cnt) {
-+				max_cnt = cnt;
-+				max_start = start;
-+			}
-+			start = -1;
-+			cnt = 0;
-+		}
-+	}
-+	/*
-+	 * Find the longest consecutive sequence of false values from field
-+	 * and return starting index.
-+	 */
-+	if (cnt > max_cnt) {
-+		max_cnt = cnt;
-+		max_start = start;
-+	}
-+
-+	if (!max_cnt)
-+		return -ENOENT;
-+
-+	*ret_start = max_start;
-+
-+	return max_cnt;
-+}
-+
-+static int ad4851_calibrate(struct ad4851_state *st)
-+{
-+	unsigned int opt_delay, num_lanes, delay, i, s, c;
-+	enum iio_backend_interface_type interface_type;
-+	DECLARE_BITMAP(pn_status, AD4851_MAX_LANES * AD4851_MAX_IODELAY);
-+	bool status;
-+	int ret;
-+
-+	ret = iio_backend_interface_type_get(st->back, &interface_type);
-+	if (ret)
-+		return ret;
-+
-+	switch (interface_type) {
-+	case IIO_BACKEND_INTERFACE_SERIAL_CMOS:
-+		num_lanes = st->info->num_channels / 2;
-+		break;
-+	case IIO_BACKEND_INTERFACE_SERIAL_LVDS:
-+		num_lanes = 1;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (st->info->resolution == 16) {
-+		ret = iio_backend_data_size_set(st->back, 24);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_write(st->regmap, AD4851_REG_PACKET,
-+				   AD4851_TEST_PAT | AD4857_PACKET_SIZE_24);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = iio_backend_data_size_set(st->back, 32);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_write(st->regmap, AD4851_REG_PACKET,
-+				   AD4851_TEST_PAT | AD4858_PACKET_SIZE_32);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	for (i = 0; i < st->info->num_channels / 2; i++) {
-+		ret = regmap_write(st->regmap, AD4851_REG_TESTPAT_0(i),
-+				   AD4851_TESTPAT_0_DEFAULT);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_write(st->regmap, AD4851_REG_TESTPAT_1(i),
-+				   AD4851_TESTPAT_1_DEFAULT);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_write(st->regmap, AD4851_REG_TESTPAT_2(i),
-+				   AD4851_TESTPAT_2_DEFAULT);
-+		if (ret)
-+			return ret;
-+
-+		ret = regmap_write(st->regmap, AD4851_REG_TESTPAT_3(i),
-+				   AD4851_TESTPAT_3_DEFAULT(i));
-+		if (ret)
-+			return ret;
-+
-+		ret = iio_backend_chan_enable(st->back, i);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	for (i = 0; i < num_lanes; i++) {
-+		for (delay = 0; delay < AD4851_MAX_IODELAY; delay++) {
-+			ret = iio_backend_iodelay_set(st->back, i, delay);
-+			if (ret)
-+				return ret;
-+
-+			ret = iio_backend_chan_status(st->back, i, &status);
-+			if (ret)
-+				return ret;
-+
-+			if (status)
-+				set_bit(i * AD4851_MAX_IODELAY + delay, pn_status);
-+			else
-+				clear_bit(i * AD4851_MAX_IODELAY + delay, pn_status);
-+		}
-+	}
-+
-+	for (i = 0; i < num_lanes; i++) {
-+		status = test_bit(i * AD4851_MAX_IODELAY, pn_status);
-+		c = ad4851_find_opt(&status, AD4851_MAX_IODELAY, &s);
-+		if (c < 0)
-+			return c;
-+
-+		opt_delay = s + c / 2;
-+		ret = iio_backend_iodelay_set(st->back, i, opt_delay);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	for (i = 0; i < st->info->num_channels / 2; i++) {
-+		ret = iio_backend_chan_disable(st->back, i);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = iio_backend_data_size_set(st->back, 20);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(st->regmap, AD4851_REG_PACKET, 0);
-+}
-+
-+static int ad4851_get_calibscale(struct ad4851_state *st, int ch, int *val, int *val2)
-+{
-+	unsigned int reg_val;
-+	int gain;
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_GAIN_MSB(ch), &reg_val);
-+	if (ret)
-+		return ret;
-+
-+	gain = reg_val << 8;
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_GAIN_LSB(ch), &reg_val);
-+	if (ret)
-+		return ret;
-+
-+	gain |= reg_val;
-+
-+	*val = gain;
-+	*val2 = 32768;
-+
-+	return IIO_VAL_FRACTIONAL;
-+}
-+
-+static int ad4851_set_calibscale(struct ad4851_state *st, int ch, int val,
-+				 int val2)
-+{
-+	u64 gain;
-+	u8 buf[2];
-+	int ret;
-+
-+	if (val < 0 || val2 < 0)
-+		return -EINVAL;
-+
-+	gain = val * MICRO + val2;
-+	gain = DIV_U64_ROUND_CLOSEST(gain * 32768, MICRO);
-+
-+	put_unaligned_be16(gain, buf);
-+
-+	guard(mutex)(&st->lock);
-+
-+	ret = regmap_write(st->regmap, AD4851_REG_CHX_GAIN_MSB(ch), buf[0]);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(st->regmap, AD4851_REG_CHX_GAIN_LSB(ch), buf[1]);
-+}
-+
-+static int ad4851_get_calibbias(struct ad4851_state *st, int ch, int *val)
-+{
-+	unsigned int lsb, mid, msb;
-+	int ret;
-+
-+	guard(mutex)(&st->lock);
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_OFFSET_MSB(ch),
-+			  &msb);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_OFFSET_MID(ch),
-+			  &mid);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_OFFSET_LSB(ch),
-+			  &lsb);
-+	if (ret)
-+		return ret;
-+
-+	if (st->info->resolution == 16) {
-+		*val = msb << 8;
-+		*val |= mid;
-+		*val = sign_extend32(*val, 15);
-+	} else {
-+		*val = msb << 12;
-+		*val |= mid << 4;
-+		*val |= lsb >> 4;
-+		*val = sign_extend32(*val, 19);
-+	}
-+
-+	return IIO_VAL_INT;
-+}
-+
-+static int ad4851_set_calibbias(struct ad4851_state *st, int ch, int val)
-+{
-+	u8 buf[3] = { 0 };
-+	int ret;
-+
-+	if (val < 0)
-+		return -EINVAL;
-+
-+	if (st->info->resolution == 16)
-+		put_unaligned_be16(val, buf);
-+	else
-+		put_unaligned_be24(val << 4, buf);
-+
-+	guard(mutex)(&st->lock);
-+
-+	ret = regmap_write(st->regmap, AD4851_REG_CHX_OFFSET_LSB(ch), buf[2]);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(st->regmap, AD4851_REG_CHX_OFFSET_MID(ch), buf[1]);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_write(st->regmap, AD4851_REG_CHX_OFFSET_MSB(ch), buf[0]);
-+}
-+
-+static void __ad4851_get_scale(struct ad4851_state *st, int scale_tbl,
-+			       unsigned int *val, unsigned int *val2)
-+{
-+	const struct ad4851_chip_info *info = st->info;
-+	const struct iio_chan_spec *chan = &info->channels[0];
-+	unsigned int tmp;
-+
-+	tmp = ((unsigned long long)scale_tbl * MICRO) >> chan->scan_type.realbits;
-+	*val = tmp / MICRO;
-+	*val2 = tmp % MICRO;
-+}
-+
-+static int ad4851_set_scale(struct ad4851_state *st,
-+			    const struct iio_chan_spec *chan, int val, int val2)
-+{
-+	unsigned int scale_val[2];
-+	unsigned int i;
-+	const struct ad4851_scale *scale_table;
-+	size_t table_size;
-+
-+	if (chan->differential) {
-+		scale_table = ad4851_scale_table_diff;
-+		table_size = ARRAY_SIZE(ad4851_scale_table_diff);
-+	} else {
-+		scale_table = ad4851_scale_table_se;
-+		table_size = ARRAY_SIZE(ad4851_scale_table_se);
-+	}
-+
-+	for (i = 0; i < table_size; i++) {
-+		__ad4851_get_scale(st, scale_table[i].scale_val,
-+				   &scale_val[0], &scale_val[1]);
-+		if (scale_val[0] != val || scale_val[1] != val2)
-+			continue;
-+
-+		return regmap_write(st->regmap,
-+				    AD4851_REG_CHX_SOFTSPAN(chan->channel),
-+				    scale_table[i].reg_val);
-+	}
-+
-+	return -EINVAL;
-+}
-+
-+static int ad4851_get_scale(struct ad4851_state *st,
-+			    const struct iio_chan_spec *chan, int *val,
-+			    int *val2)
-+{
-+	int i, softspan_val;
-+	int ret;
-+	const struct ad4851_scale *scale_table;
-+	size_t table_size;
-+
-+	if (chan->differential) {
-+		scale_table = ad4851_scale_table_diff;
-+		table_size = ARRAY_SIZE(ad4851_scale_table_diff);
-+	} else {
-+		scale_table = ad4851_scale_table_se;
-+		table_size = ARRAY_SIZE(ad4851_scale_table_se);
-+	}
-+
-+	ret = regmap_read(st->regmap, AD4851_REG_CHX_SOFTSPAN(chan->channel),
-+			  &softspan_val);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < table_size; i++) {
-+		if (softspan_val == scale_table[i].reg_val)
-+			break;
-+	}
-+
-+	if (i == table_size)
-+		return -EIO;
-+
-+	__ad4851_get_scale(st, scale_table[i].scale_val, val, val2);
-+
-+	return IIO_VAL_INT_PLUS_MICRO;
-+}
-+
-+static int ad4851_scale_fill(struct ad4851_state *st)
-+{
-+	unsigned int i, val1, val2;
-+
-+	for (i = 0; i < ARRAY_SIZE(ad4851_scale_avail_se); i++) {
-+		__ad4851_get_scale(st, ad4851_scale_avail_se[i], &val1, &val2);
-+		st->scales_se[i][0] = val1;
-+		st->scales_se[i][1] = val2;
-+	}
-+
-+	for (i = 0; i < ARRAY_SIZE(ad4851_scale_avail_diff); i++) {
-+		__ad4851_get_scale(st, ad4851_scale_avail_diff[i], &val1, &val2);
-+		st->scales_diff[i][0] = val1;
-+		st->scales_diff[i][1] = val2;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad4851_read_raw(struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan,
-+			   int *val, int *val2, long info)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = st->sampling_freq;
-+		return IIO_VAL_INT;
-+	case IIO_CHAN_INFO_CALIBSCALE:
-+		return ad4851_get_calibscale(st, chan->channel, val, val2);
-+	case IIO_CHAN_INFO_SCALE:
-+		return ad4851_get_scale(st, chan, val, val2);
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		return ad4851_get_calibbias(st, chan->channel, val);
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		return ad4851_get_oversampling_ratio(st, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad4851_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long info)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+
-+	switch (info) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return ad4851_set_sampling_freq(st, val);
-+	case IIO_CHAN_INFO_SCALE:
-+		return ad4851_set_scale(st, chan, val, val2);
-+	case IIO_CHAN_INFO_CALIBSCALE:
-+		return ad4851_set_calibscale(st, chan->channel, val, val2);
-+	case IIO_CHAN_INFO_CALIBBIAS:
-+		return ad4851_set_calibbias(st, chan->channel, val);
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		return ad4851_set_oversampling_ratio(st, chan, val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad4851_update_scan_mode(struct iio_dev *indio_dev,
-+				   const unsigned long *scan_mask)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+	unsigned int c;
-+	int ret;
-+
-+	for (c = 0; c < st->info->num_channels / 2; c++) {
-+		if (test_bit(c, scan_mask))
-+			ret = iio_backend_chan_enable(st->back, c);
-+		else
-+			ret = iio_backend_chan_disable(st->back, c);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad4851_read_avail(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     const int **vals, int *type, int *length,
-+			     long mask)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		if (chan->differential) {
-+			*vals = (const int *)st->scales_diff;
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			/* Values are stored in a 2D matrix */
-+			*length = ARRAY_SIZE(ad4851_scale_avail_diff) * 2;
-+		} else {
-+			*vals = (const int *)st->scales_se;
-+			*type = IIO_VAL_INT_PLUS_MICRO;
-+			/* Values are stored in a 2D matrix */
-+			*length = ARRAY_SIZE(ad4851_scale_avail_se) * 2;
-+		}
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-+		*vals = ad4851_oversampling_ratios;
-+		*length = ARRAY_SIZE(ad4851_oversampling_ratios);
-+		*type = IIO_VAL_INT;
-+		return IIO_AVAIL_LIST;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_scan_type ad4851_scan_type_16 = {
-+	.sign = 's',
-+	.realbits = 16,
-+	.storagebits = 16,
-+};
-+
-+static const struct iio_scan_type ad4851_scan_type_20_0[] = {
-+	[AD4851_SCAN_TYPE_NORMAL] = {
-+		.sign = 'u',
-+		.realbits = 20,
-+		.storagebits = 32,
-+	},
-+	[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
-+		.sign = 'u',
-+		.realbits = 24,
-+		.storagebits = 32,
-+	},
-+};
-+
-+static const struct iio_scan_type ad4851_scan_type_20_1[] = {
-+	[AD4851_SCAN_TYPE_NORMAL] = {
-+		.sign = 's',
-+		.realbits = 20,
-+		.storagebits = 32,
-+	},
-+	[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
-+		.sign = 's',
-+		.realbits = 24,
-+		.storagebits = 32,
-+	},
-+};
-+
-+static int ad4851_get_current_scan_type(const struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan)
-+{
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+
-+	return st->resolution_boost_enabled ? AD4851_SCAN_TYPE_RESOLUTION_BOOST
-+					    : AD4851_SCAN_TYPE_NORMAL;
-+}
-+
-+#define AD4851_IIO_CHANNEL(index, ch, diff)					\
-+	.type = IIO_VOLTAGE,							\
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBSCALE) |			\
-+		BIT(IIO_CHAN_INFO_CALIBBIAS) |					\
-+		BIT(IIO_CHAN_INFO_SCALE),					\
-+	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
-+	.info_mask_shared_by_all_available =					\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
-+	.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),		\
-+	.indexed = 1,								\
-+	.differential = diff,							\
-+	.channel = ch,								\
-+	.channel2 = ch + (diff * 8),						\
-+	.scan_index = index,							\
-+
-+#define AD4858_IIO_CHANNEL(index, ch, diff, bits)				\
-+{										\
-+	AD4851_IIO_CHANNEL(index, ch, diff)					\
-+	.ext_scan_type = ad4851_scan_type_##bits##_##diff,			\
-+	.num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_##bits##_##diff),	\
-+}
-+
-+#define AD4857_IIO_CHANNEL(index, ch, diff, bits)				\
-+{										\
-+	AD4851_IIO_CHANNEL(index, ch, diff)					\
-+	.scan_type = {								\
-+		.sign = 's',							\
-+		.realbits = bits,						\
-+		.storagebits = bits,						\
-+	},									\
-+}
-+
-+static const struct iio_chan_spec ad4858_channels[] = {
-+	AD4858_IIO_CHANNEL(0, 0, 0, 20),
-+	AD4858_IIO_CHANNEL(1, 0, 1, 20),
-+	AD4858_IIO_CHANNEL(2, 1, 0, 20),
-+	AD4858_IIO_CHANNEL(3, 1, 1, 20),
-+	AD4858_IIO_CHANNEL(4, 2, 0, 20),
-+	AD4858_IIO_CHANNEL(5, 2, 1, 20),
-+	AD4858_IIO_CHANNEL(6, 3, 0, 20),
-+	AD4858_IIO_CHANNEL(7, 3, 1, 20),
-+	AD4858_IIO_CHANNEL(8, 4, 0, 20),
-+	AD4858_IIO_CHANNEL(9, 4, 1, 20),
-+	AD4858_IIO_CHANNEL(10, 5, 0, 20),
-+	AD4858_IIO_CHANNEL(11, 5, 1, 20),
-+	AD4858_IIO_CHANNEL(12, 6, 0, 20),
-+	AD4858_IIO_CHANNEL(13, 6, 1, 20),
-+	AD4858_IIO_CHANNEL(14, 7, 0, 20),
-+	AD4858_IIO_CHANNEL(15, 7, 1, 20),
-+};
-+
-+static const struct iio_chan_spec ad4857_channels[] = {
-+	AD4857_IIO_CHANNEL(0, 0, 0, 16),
-+	AD4857_IIO_CHANNEL(1, 0, 1, 16),
-+	AD4857_IIO_CHANNEL(2, 1, 0, 16),
-+	AD4857_IIO_CHANNEL(3, 1, 1, 16),
-+	AD4857_IIO_CHANNEL(4, 2, 0, 16),
-+	AD4857_IIO_CHANNEL(5, 2, 1, 16),
-+	AD4857_IIO_CHANNEL(6, 3, 0, 16),
-+	AD4857_IIO_CHANNEL(7, 3, 1, 16),
-+	AD4857_IIO_CHANNEL(8, 4, 0, 16),
-+	AD4857_IIO_CHANNEL(9, 4, 1, 16),
-+	AD4857_IIO_CHANNEL(10, 5, 0, 16),
-+	AD4857_IIO_CHANNEL(11, 5, 1, 16),
-+	AD4857_IIO_CHANNEL(12, 6, 0, 16),
-+	AD4857_IIO_CHANNEL(13, 6, 1, 16),
-+	AD4857_IIO_CHANNEL(14, 7, 0, 16),
-+	AD4857_IIO_CHANNEL(15, 7, 1, 16),
-+};
-+
-+static int ad4857_parse_channels(struct iio_dev *indio_dev)
-+{
-+	struct device *dev = indio_dev->dev.parent;
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+	struct iio_chan_spec *ad4851_channels;
-+	const struct iio_chan_spec ad4851_chan = AD4857_IIO_CHANNEL(0, 0, 0, 16);
-+	const struct iio_chan_spec ad4851_chan_diff = AD4857_IIO_CHANNEL(0, 0, 1, 16);
-+	unsigned int num_channels, index = 0, reg;
-+	int ret;
-+
-+	num_channels = device_get_child_node_count(dev);
-+	if (num_channels > AD4851_MAX_CH_NR)
-+		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
-+				     num_channels);
-+
-+	ad4851_channels = devm_kcalloc(dev, num_channels,
-+				       sizeof(*ad4851_channels), GFP_KERNEL);
-+	if (!ad4851_channels)
-+		return -ENOMEM;
-+
-+	indio_dev->channels = ad4851_channels;
-+	indio_dev->num_channels = num_channels;
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Missing channel number\n");
-+		if (fwnode_property_present(child, "diff-channels")) {
-+			*ad4851_channels = ad4851_chan_diff;
-+			ad4851_channels->scan_index = index++;
-+			ad4851_channels->channel = reg;
-+			ad4851_channels->channel2 = reg + AD4851_MAX_CH_NR;
-+		} else {
-+			*ad4851_channels = ad4851_chan;
-+			ad4851_channels->scan_index = index++;
-+			ad4851_channels->channel = reg;
-+			ret = regmap_write(st->regmap, AD4851_REG_CHX_SOFTSPAN(reg),
-+					   AD4851_SOFTSPAN_0V_40V);
-+			if (ret)
-+				return ret;
-+		}
-+		ad4851_channels++;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad4858_parse_channels(struct iio_dev *indio_dev)
-+{
-+	struct device *dev = indio_dev->dev.parent;
-+	struct ad4851_state *st = iio_priv(indio_dev);
-+	struct iio_chan_spec *ad4851_channels;
-+	const struct iio_chan_spec ad4851_chan = AD4858_IIO_CHANNEL(0, 0, 0, 20);
-+	const struct iio_chan_spec ad4851_chan_diff = AD4858_IIO_CHANNEL(0, 0, 1, 20);
-+	unsigned int num_channels, index = 0, reg;
-+	int ret;
-+
-+	num_channels = device_get_child_node_count(dev);
-+	if (num_channels > AD4851_MAX_CH_NR)
-+		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
-+				     num_channels);
-+
-+	ad4851_channels = devm_kcalloc(dev, num_channels,
-+				       sizeof(*ad4851_channels), GFP_KERNEL);
-+	if (!ad4851_channels)
-+		return -ENOMEM;
-+
-+	indio_dev->channels = ad4851_channels;
-+	indio_dev->num_channels = num_channels;
-+
-+	device_for_each_child_node_scoped(dev, child) {
-+		ret = fwnode_property_read_u32(child, "reg", &reg);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Missing channel number\n");
-+		if (fwnode_property_present(child, "diff-channels")) {
-+			*ad4851_channels = ad4851_chan_diff;
-+			ad4851_channels->scan_index = index++;
-+			ad4851_channels->channel = reg;
-+			ad4851_channels->channel2 = reg + AD4851_MAX_CH_NR;
-+			ad4851_channels->ext_scan_type = ad4851_scan_type_20_1;
-+			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_1);
-+
-+		} else {
-+			*ad4851_channels = ad4851_chan;
-+			ad4851_channels->scan_index = index++;
-+			ad4851_channels->channel = reg;
-+			ad4851_channels->ext_scan_type = ad4851_scan_type_20_0;
-+			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_0);
-+			ret = regmap_write(st->regmap, AD4851_REG_CHX_SOFTSPAN(reg),
-+					   AD4851_SOFTSPAN_0V_40V);
-+			if (ret)
-+				return ret;
-+		}
-+		ad4851_channels++;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct ad4851_chip_info ad4851_info = {
-+	.name = "ad4851",
-+	.product_id = 0x67,
-+	.max_sample_rate_hz = 250 * KILO,
-+	.resolution = 16,
-+	.parse_channels = ad4857_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4852_info = {
-+	.name = "ad4852",
-+	.product_id = 0x66,
-+	.max_sample_rate_hz = 250 * KILO,
-+	.resolution = 20,
-+	.parse_channels = ad4858_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4853_info = {
-+	.name = "ad4853",
-+	.product_id = 0x65,
-+	.max_sample_rate_hz = 1 * MEGA,
-+	.resolution = 16,
-+	.parse_channels = ad4857_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4854_info = {
-+	.name = "ad4854",
-+	.product_id = 0x64,
-+	.max_sample_rate_hz = 1 * MEGA,
-+	.resolution = 20,
-+	.parse_channels = ad4858_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4855_info = {
-+	.name = "ad4855",
-+	.product_id = 0x63,
-+	.max_sample_rate_hz = 250 * KILO,
-+	.resolution = 16,
-+	.parse_channels = ad4857_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4856_info = {
-+	.name = "ad4856",
-+	.product_id = 0x62,
-+	.max_sample_rate_hz = 250 * KILO,
-+	.resolution = 20,
-+	.parse_channels = ad4858_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4857_info = {
-+	.name = "ad4857",
-+	.product_id = 0x61,
-+	.max_sample_rate_hz = 1 * MEGA,
-+	.resolution = 16,
-+	.channels = ad4857_channels,
-+	.num_channels = ARRAY_SIZE(ad4857_channels),
-+	.parse_channels = ad4857_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4858_info = {
-+	.name = "ad4858",
-+	.product_id = 0x60,
-+	.max_sample_rate_hz = 1 * MEGA,
-+	.resolution = 20,
-+	.parse_channels = ad4858_parse_channels,
-+};
-+
-+static const struct ad4851_chip_info ad4858i_info = {
-+	.name = "ad4858i",
-+	.product_id = 0x6F,
-+	.max_sample_rate_hz = 1 * MEGA,
-+	.resolution = 20,
-+	.parse_channels = ad4858_parse_channels,
-+};
-+
-+static const struct iio_info ad4851_iio_info = {
-+	.debugfs_reg_access = ad4851_reg_access,
-+	.read_raw = ad4851_read_raw,
-+	.write_raw = ad4851_write_raw,
-+	.update_scan_mode = ad4851_update_scan_mode,
-+	.get_current_scan_type = &ad4851_get_current_scan_type,
-+	.read_avail = ad4851_read_avail,
-+};
-+
-+static const struct regmap_config regmap_config = {
-+	.reg_bits = 16,
-+	.val_bits = 8,
-+	.read_flag_mask = BIT(7),
-+};
-+
-+static const char * const ad4851_power_supplies[] = {
-+	"vcc",	"vdd", "vee", "vio",
-+};
-+
-+static int ad4851_probe(struct spi_device *spi)
-+{
-+	struct iio_dev *indio_dev;
-+	struct device *dev = &spi->dev;
-+	struct ad4851_state *st;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+	st->spi = spi;
-+
-+	ret = devm_mutex_init(dev, &st->lock);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_regulator_bulk_get_enable(dev,
-+					     ARRAY_SIZE(ad4851_power_supplies),
-+					     ad4851_power_supplies);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to get and enable supplies\n");
-+
-+	ret = devm_regulator_get_enable_optional(dev, "vddh");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "failed to enable vddh voltage\n");
-+
-+	ret = devm_regulator_get_enable_optional(dev, "vddl");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "failed to enable vddl voltage\n");
-+
-+	st->vrefbuf = devm_regulator_get_optional(dev, "vrefbuf");
-+	if (IS_ERR(st->vrefbuf)) {
-+		if (PTR_ERR(st->vrefbuf) != -ENODEV)
-+			return dev_err_probe(dev, PTR_ERR(st->vrefbuf),
-+					     "Failed to get vrefbuf regulator\n");
-+	}
-+
-+	st->vrefio = devm_regulator_get_optional(dev, "vrefio");
-+	if (IS_ERR(st->vrefio)) {
-+		if (PTR_ERR(st->vrefio) != -ENODEV)
-+			return dev_err_probe(dev, PTR_ERR(st->vrefio),
-+					     "Failed to get vrefio regulator\n");
-+	}
-+
-+	st->pd_gpio = devm_gpiod_get_optional(dev, "pd", GPIOD_OUT_LOW);
-+	if (IS_ERR(st->pd_gpio))
-+		return dev_err_probe(dev, PTR_ERR(st->pd_gpio),
-+				     "Error on requesting pd GPIO\n");
-+
-+	st->cnv = devm_pwm_get(dev, NULL);
-+	if (IS_ERR(st->cnv))
-+		return dev_err_probe(dev, PTR_ERR(st->cnv),
-+				     "Error on requesting pwm\n");
-+
-+	ret = devm_add_action_or_reset(&st->spi->dev, ad4851_pwm_disable,
-+				       st->cnv);
-+	if (ret)
-+		return ret;
-+
-+	st->info = spi_get_device_match_data(spi);
-+	if (!st->info)
-+		return -ENODEV;
-+
-+	st->regmap = devm_regmap_init_spi(spi, &regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return PTR_ERR(st->regmap);
-+
-+	ret = ad4851_scale_fill(st);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad4851_set_sampling_freq(st, HZ_PER_MHZ);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad4851_setup(st);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->name = st->info->name;
-+	indio_dev->info = &ad4851_iio_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+
-+	ret = st->info->parse_channels(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	st->back = devm_iio_backend_get(dev, NULL);
-+	if (IS_ERR(st->back))
-+		return PTR_ERR(st->back);
-+
-+	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_enable(dev, st->back);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad4851_calibrate(st);
-+	if (ret)
-+		return ret;
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+
-+static const struct of_device_id ad4851_of_match[] = {
-+	{ .compatible = "adi,ad4851", .data = &ad4851_info, },
-+	{ .compatible = "adi,ad4852", .data = &ad4852_info, },
-+	{ .compatible = "adi,ad4853", .data = &ad4853_info, },
-+	{ .compatible = "adi,ad4854", .data = &ad4854_info, },
-+	{ .compatible = "adi,ad4855", .data = &ad4855_info, },
-+	{ .compatible = "adi,ad4856", .data = &ad4856_info, },
-+	{ .compatible = "adi,ad4857", .data = &ad4857_info, },
-+	{ .compatible = "adi,ad4858", .data = &ad4858_info, },
-+	{ .compatible = "adi,ad4858i", .data = &ad4858i_info, },
-+	{ }
-+};
-+
-+static const struct spi_device_id ad4851_spi_id[] = {
-+	{ "ad4851", (kernel_ulong_t)&ad4851_info },
-+	{ "ad4852", (kernel_ulong_t)&ad4852_info },
-+	{ "ad4853", (kernel_ulong_t)&ad4853_info },
-+	{ "ad4854", (kernel_ulong_t)&ad4854_info },
-+	{ "ad4855", (kernel_ulong_t)&ad4855_info },
-+	{ "ad4856", (kernel_ulong_t)&ad4856_info },
-+	{ "ad4857", (kernel_ulong_t)&ad4857_info },
-+	{ "ad4858", (kernel_ulong_t)&ad4858_info },
-+	{ "ad4858i", (kernel_ulong_t)&ad4858i_info },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ad4851_spi_id);
-+
-+static struct spi_driver ad4851_driver = {
-+	.probe = ad4851_probe,
-+	.driver = {
-+		.name = "ad4851",
-+		.of_match_table = ad4851_of_match,
-+	},
-+	.id_table = ad4851_spi_id,
-+};
-+module_spi_driver(ad4851_driver);
-+
-+MODULE_AUTHOR("Sergiu Cuciurean <sergiu.cuciurean@analog.com>");
-+MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
-+MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices AD4851 DAS driver");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_BACKEND);
--- 
-2.47.1
+            iio_dev->info->avail_release(cookie);
+
+Anyway, if iio_info->read_avail and
+iio_info->read_avail_release_resource are not going to be changed, how
+could we address the case where the consumers simply forwards their
+providers avail data back to the core for sysfs print, like as follows?
+
+static int dpot_dac_read_avail(struct iio_dev *indio_dev,
+			       struct iio_chan_spec const *chan,
+			       const int **vals, int *type, int *length,
+			       long mask)
+{
+	struct dpot_dac *dac = iio_priv(indio_dev);
+
+	switch (mask) {
+	case IIO_CHAN_INFO_RAW:
+		*type = IIO_VAL_INT;
+		return iio_read_avail_channel_raw(dac->dpot, vals, length);
+
+		/* NOTE: Here we could call the cookie = iio_channel_avail_get() and
+		  fill the return arguments with the content of the
+		  cookie, but wouldn't the cookie be lost? How to return
+		  it to caller? */
+	}
+
+	return -EINVAL;
+}
+
+static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+					    struct iio_chan_spec const *chan,
+					    const int *vals, long mask)
+{
+	kfree(vals);
+	/* NOTE: Here the consumer should access the cookie to call
+	 * iio_channel_avail_release(cookie), but how can it? */
+}
+...
+static const struct iio_info dpot_dac_info = {
+	.read_avail = dpot_dac_read_avail,
+	.read_avail_release_resource = dpot_dac_read_avail_release_res,
+};
+
+
+> 
+> Whether we would use the cookie magic in the inkern code other
+> than the getter itself would depend a bit on what it looks like
+> 
+> We might need to do a global rename of read_avail to get_avail
+> though to make the relationship to release_avail obvious.
+> 
+> 
+> > 
+> > > 
+> > > struct iio_avail_cookie {
+> > > 	const int *avail;
+> > > 	void *provider_priv;
+> > > // see later for a maybe...
+> > > 	struct iio_dev *indio_dev;
+> > > };
+> > > 
+> > > const int *iio_avail_from_cookie(struct iio_avail_cookie *cookie)
+> > > {
+> > > 	return cookie->avail;
+> > > }
+> > >  
+> > 
+> > I suppose that struct iio_avail_cookie and their access functions like
+> > iio_avail_from_cookie would be define in iio.h as they are required for
+> > producer drivers too. Correct?
+> 
+> Initially at least I'd try just making them visible to the consumer.
+> 
+> > 
+> > > 
+> > > struct iio_avail_cookie *iio_channel_avail_get(struct iio_dev, struct iio_chan_spec)
+> > > {
+> > > 	allocate a cookie and fill it in.
+> > > }
+> > > 
+> > > and code would always explicitly release after it is done with the cookie.
+> > > 
+> > > Something like
+> > > 
+> > > void iio_channel_avail_release(struct iio_dev *iio_dev, struct iio_avail_cookie *cookie)
+> > > // could even move the iio_dev pointer into the cookie, so it becomes
+> > > // iio_channel_avail_release(struct iio_avail_cookie *cookie) and suitable for __free magic.
+> > > {
+> > > 	if (iio_dev->info->avail_release)
+> > > 		iio_dev->info->avail_release(cookie);
+> > > 	kfree(cookie);
+> > > 	/*
+> > > 	 * Could add optimizations around cookie handling to avoid alloc + free in most cases
+> > > 	 * or use an object pool.
+> > > 	 */
+> > > }  
+> > 
+> > Do these two functions refer to inkern consumer APIs? Would
+> > iio_channel_avail_get() replace the current inkern
+> > iio_read_avail_channel_attribute()? 
+> 
+> Yes.
+> 
+> >In that case I think
+> > iio_channel_avail_get() would copy the cookie (and its inner avail
+> > buffer) from the provider driver, or allocate a new cookie with the
+> > copied avail buffer if info->read_avail() is kept unchanged, and
+> > immediately call the provider info->avail_release(cookie) to do
+> > copy+release with info_exist_lock locked.
+> 
+> I don't think the provider ever explicitly deals with the cookie,
+> just data read from it in the inkern code.
+> 
+> > At that point
+> > iio_channel_avail_release() would only need to call
+> > kfree(iio_avail_from_cookie(cookie)) and kfree(cookie).
+> 
+> 
+> Ah. I'm forgetting the issue with the provider device instance
+> going away. In that case it may well have to copy the avail data
+> to fill the cookie returned to the consumer driver much like we
+> copy it now.+ free it.  We could do something smarter with that
+> cookie though to avoid a free if it's static const stuff as the
+> provider module should be locked in place I think.
+> 
+> > 
+> > > 
+> > > The current proposal just avoid the need for a cookie as for all known cases so far
+> > > provider_priv could == the channel requested.
+> > > 
+> > >   
+> > > > >     * consumers and producers manage the allocation differently, the
+> > > > >       first handles it via the inkern API, the second one in the
+> > > > >       producer driver code, making it inconsistent.  
+> > > 
+> > > The inkern API changes are mostly an attempt to reduce boiler plate. The only
+> > > case we really should be worrying about to my mind is the consumer wanting
+> > > to access the full available list. 
+> > >   
+> > > > > 
+> > > > > fix-2) adding a read_avail_with_copy(): a driver with both const avail
+> > > > > lists and mutable avail lists would always return a copy for all of
+> > > > > them, including the const ones. Example above.  
+> > > 
+> > > Hmm. So this could work but with the firm rule that a provider must never
+> > > provide both options and a core check on drivers to enforce that probe.
+> > > Any existing consumers must be modified to try both paths
+> > > (read_avail_with_copy then read_avail) to avoid regressions.
+> > > 
+> > > For future code, if we miss a case that doesn't do this then the upshot
+> > > is that the call will fail and the consumer needs fixing but at least
+> > > it is not a regression because it will never have worked for that
+> > > particular consumer + producer pair.  Not too horrible, but I'm not
+> > > really seeing it as better than option 1.
+> > >   
+> > > > > 
+> > > > > fix-3) adding a release_avail return param to read_avail(): this would
+> > > > > require a change to all the drivers using it. Also it
+> > > > > looks to me an unusual pattern, are there other similar patterns around
+> > > > > the codebase? Example below.  
+> > > 
+> > > No advantage that I can see vs an explicit get / release where the
+> > > release may do nothing if there was no allocation.
+> > >   
+> > > > > 
+> > > > > fix-4) adding a new enum variant to the avail type like
+> > > > > IIO_AVAIL_LIST_ALLOC: to me this looks hacky as it mixes the logic type
+> > > > > of the data structure and how it is handled in memory. I think the
+> > > > > latter should better fit in a different field, however this modification
+> > > > > would have little impact in the current code. Example below.  
+> > > 
+> > > This one I really don't like. Needs non obvious / subtle handling in the
+> > > consumer drivers.
+> > >   
+> > > > > 
+> > > > > So far these alternatives only consider moving the release of the copy
+> > > > > buffer in the IIO core but not its allocation.  
+> > > 
+> > > I'm confused.  Moving it in, or out of the core?  What does this mean
+> > > for a consumer driver after the avail list?
+> > >   
+> > > > You also suggest to make  
+> > > > > the IIO core take care of the copy allocation. The problem I see with
+> > > > > this is that if the copy is handled outside the driver it could take
+> > > > > place concurrently with the modification of the original buffer since it
+> > > > > would not be locked by driver private mutex, thus making the copy
+> > > > > useless. This might be worked around by adding an additional optional
+> > > > > callback (e.g. read_avail_will_copy/read_avail_is_mutable) to just take
+> > > > > the size and check if a copy will be provided, so maybe something like:
+> > > > > 
+> > > > > fix-5) iio_read_channel_info_avail():  
+> > > 
+> > > This is picking on the wrong code for this discussion.  Use
+> > > iio_read_avail_channel_attribute() for example because that's the one
+> > > where ABI matters.  Anything within the IIO core is just a question of
+> > > 'niceness' it isn't important like a function called by a consumer driver.
+> > > 
+> > > Code of a consumer driver will be similar to this however.  A few things
+> > > would be needed to make this pattern work.
+> > >    
+> > > > > {
+> > > > >     ...
+> > > > >     int *vals;
+> > > > >     bool copy = false;
+> > > > >     if (indio_dev->info->read_avail_will_copy) {
+> > > > >         copy = indio_dev->info->read_avail_will_copy(..., &length, ...);  
+> > > 
+> > > return length as 0 can reasonably mean we don't need to allocate.
+> > > That value must be the maximum possible size that can ever be needed, not the
+> > > current one.
+> > >   
+> > > > >         if (copy) {
+> > > > >             vals = kcalloc(length, sizeof(int), GFP_KERNEL);
+> > > > >         }
+> > > > >     }
+> > > > > 
+> > > > >     indio_dev->info->read_avail(&vals, ...);  
+> > > 
+> > > For iio_read_avail_channel_attribute it will a little fiddlier but end result
+> > > is the same but done under the exist lock. If the device went away before this
+> > > call then we will get an error, otherwise this will fill vals and provide
+> > > the right length. 
+> > >   
+> > > > > 
+> > > > >     if (ret < 0)
+> > > > >             return ret;
+> > > > >     switch (ret) {
+> > > > >     case IIO_AVAIL_LIST:
+> > > > >             ret = iio_format_avail_list(buf, vals, type, length);
+> > > > >     case IIO_AVAIL_RANGE:
+> > > > >             ret = iio_format_avail_range(buf, vals, type);
+> > > > >     default:
+> > > > >             ret = -EINVAL;
+> > > > >     }
+> > > > > 
+> > > > >     if (copy)
+> > > > >         kfree(vals);
+> > > > > }
+> > > > > 
+> > > > > If I am not missing anything this could work and maybe it could also
+> > > > > avoid the double copy on the consumers but would require all of them to
+> > > > > wrap the read_avail_will_copy(). Also, I find it quite a weird pattern
+> > > > > that in some cases vals would be an input buffer to be filled and in
+> > > > > other cases it would be a return argument pointing to the const buffer
+> > > > > stored inside the driver. At least I wouldn't say it's more robust than
+> > > > > the current fix-1.  
+> > > Agreed. It works, but I'm not seeing the advantage and the multiple use
+> > > of the vals parameter is too subtle to be maintainable.
+> > >   
+> > > > > 
+> > > > > All these alternatives also prevents some potential optimization already
+> > > > > mentioned before. Reporting it again as it is now lost in the mess below:
+> > > > >     Some driver might want to avoid allocating a new copy of a big table if
+> > > > >     the race does not occur (e.g. with additional checks on buffer access
+> > > > >     code) and thus wouldn't call a free() in the release callback.
+> > > > > 
+> > > > > In the end I don't find any of the above alternatives to provide an
+> > > > > obvious better solution.  
+> > > 
+> > > Agreed.  My only question vs just taking the existing solution is whether
+> > > it makes sense to use a more explicit struct iio_avail_cookie
+> > > to hold all the info that we pass to release.  I don't particularly like
+> > > that we'll end up allocating that cookie structure but it would make it more
+> > > like a typical get / release and perhaps closer to what readers would
+> > > expect to see?
+> > > 
+> > > What do you think?  
+> > 
+> > I cannot answer about what readers would expect since I am quite new to
+> > kernel internals and I was not aware about the cookie pattern myself.
+> > However, I agree that it seems more clear than the current solution but
+> > only if it's going to replace the iio_info read_avail() callback,
+> > otherwise I think that only using the cookie on the release callback
+> > would make it even more confusing. It is worth noting that in that case
+> > all current provider drivers defining the read_avail callback should be
+> > changed.
+> Key I think is we really don't need to be careful with what happens in inkern.c
+> (though obviously good to use infrastructure we invent for other things),
+> only what is presented by consumer.h interfaces to consumer drivers.
+> Those get and release the cookie.
+> 
+> That's a much smaller set of drivers to modify.
+> 
+> Or as Andy suggested, maybe it's just a question of naming and we need
+> a get and release but otherwise don't bother with the complexity of the cookie.
+> Maybe just rename read_avail to make it obvious.
+> 
+> Right now I'm thinking the cookie wrappers around get_avail / release_avail
+> to wrap up basically the parameters passed to get_avail + the output so
+> that we have a neat package to pass to release_avail will end up the neatest
+> solution but I may be wrong :(
+
+If there is a way to address my issue above I can see some benefits in
+terms of clarity. In general I think it's more clear to return a struct
+instead of using return arguments, it would also simplify the __free()
+cleanup as we wouldn't need the additional *_retvals wrapper for that
+purpose. Also, I think using an inkern helper for the release adds more
+clarity to the consumer drivers even if it's just a wrapper to kfree(),
+but that could be achieved without the cookie too.
+
+What I am not sure about is what is the specific semantic of the cookie
+pattern. I mean that to me it's just a structure collecting all the
+avail info related fields. Is the _cookie suffix just to make it clear
+it's something that must be later released, or are there other
+implications? Also I see you are considering it as an opaque structure.
+To me it makes sense for the consumer driver to use getters (like
+iio_avail_from_cookie()) to access the fields, but maybe we could just
+access them directly from the inkern functions?
+
+I am trying to put this together, for now I am stuck with the issue
+mentioned above about the case when the consumer driver forwards the
+provider avail data to the core. However, for the sake of example, let
+me share my current draft (hoping not to make this conversation even
+more messy). Please take a look to the NOTE comments.
+
+fix-6) the cookie pattern for consumers
+
+/* inkern.c */
+...
+struct iio_avail_cookie { //NOTE: cookie suffix needed?
+	const int *avail;
+	int val_type; //NOTE: renamed from type to avoid confusion with former return type (SCALE|RANGE)
+	int length;
+	int type; //NOTE: former provider's return.
+	void *provider_priv; //NOTE: necessary? can't it be retrieved from indio_dev directly?
+	struct iio_dev *indio_dev; //NOTE: currently not used. Necessary?
+};
+
+inline const int *iio_avail_from_cookie(struct iio_avail_cookie *cookie)
+{
+	return cookie->avail;
+}
+EXPORT_SYMBOL_GPL(iio_avail_from_cookie);
+
+inline int iio_avail_val_type_from_cookie(struct iio_avail_cookie *cookie)
+{
+	return cookie->val_type;
+}
+EXPORT_SYMBOL_GPL(iio_avail_val_type_from_cookie);
+
+...
+
+// NOTE: this is the former iio_channel_read_avail(), suggesting __ prefix as
+// it is only used locally in inkern.c
+static struct iio_avail_cookie *
+__iio_channel_avail_get(struct iio_channel *chan, enum iio_chan_info_enum info)
+{
+	const struct iio_info *iio_info = chan->indio_dev->info;
+
+	if (!iio_channel_has_available(chan->channel, info))
+		return ERR_PTR(-EINVAL);
+
+	if (iio_info->read_avail) {
+		const int *vals_tmp;
+		const int *vals_copy;
+		int type;
+		int length;
+		int ret;
+
+		ret = iio_info->read_avail(chan->indio_dev, chan->channel,
+					   &vals_tmp, &type, &length, info);
+		if (ret < 0)
+			return ERR_PTR(ret);
+
+		/*
+		 * Copy the producer's avail buffer with lock_exists locked to
+		 * avoid possible race with producer unregistration.
+		 */
+		vals_copy = kmemdup_array(vals_tmp, length, sizeof(int),
+					  GFP_KERNEL);
+		if (!vals_copy)
+			return ERR_PTR(-ENOMEM);
+
+		if (iio_info->read_avail_release_resource)
+			iio_info->read_avail_release_resource(
+				chan->indio_dev, chan->channel, vals_tmp, info);
+
+		struct iio_avail_cookie *cookie =
+			kzalloc(sizeof(struct iio_avail_cookie), GFP_KERNEL);
+
+		cookie->avail = vals_copy;
+		cookie->val_type = type;
+		cookie->length = length;
+		cookie->type = ret;
+		cookie->provider_priv = chan->indio_dev->priv;
+		cookie->indio_dev = chan->indio_dev;
+
+		return cookie;
+	}
+	return ERR_PTR(-EINVAL);
+}
+
+// NOTE: this is the former iio_read_avail_channel_attribute()
+struct iio_avail_cookie *iio_channel_avail_get(struct iio_channel *chan,
+					       enum iio_chan_info_enum info)
+{
+	struct iio_dev_opaque *iio_dev_opaque =
+		to_iio_dev_opaque(chan->indio_dev);
+
+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+	if (!chan->indio_dev->info)
+		return ERR_PTR(-ENODEV);
+
+	return __iio_channel_avail_get(chan, info);
+}
+EXPORT_SYMBOL_GPL(iio_channel_avail_get);
+
+void iio_channel_avail_release(struct iio_avail_cookie *cookie)
+{
+	kfree(cookie->avail);
+	kfree(cookie);
+}
+EXPORT_SYMBOL_GPL(iio_channel_avail_release);
+
+//NOTE: this is the former iio_read_avail_channel_raw()
+struct iio_avail_cookie *iio_channel_avail_get_raw(struct iio_channel *chan)
+{
+	struct iio_avail_cookie *cookie;
+
+	cookie = iio_channel_avail_get(chan, IIO_CHAN_INFO_RAW);
+
+	if (cookie && cookie->val_type != IIO_VAL_INT) {
+		/* raw values are assumed to be IIO_VAL_INT */
+		iio_channel_avail_release(cookie);
+		return ERR_PTR(-EINVAL);
+	}
+
+	return cookie;
+}
+EXPORT_SYMBOL_GPL(iio_channel_avail_get_raw);
+
+//NOTE: a usage example inside inkern.c
+static int iio_channel_read_max(struct iio_channel *chan,
+				int *val, int *val2, int *type,
+				enum iio_chan_info_enum info)
+{
+	struct iio_avail_cookie *cookie __free(iio_avail_cookie) =
+		iio_channel_avail_get(chan, info);
+
+	if (IS_ERR(cookie))
+		return PTR_ERR(cookie);
+
+	*type = cookie->val_type;
+
+	switch (cookie->type) {
+	case IIO_AVAIL_RANGE:
+		switch (*type) {
+		case IIO_VAL_INT:
+			*val = cookie->avail[2];
+			break;
+		default:
+			*val = cookie->avail[4];
+			if (val2)
+				*val2 = cookie->avail[5];
+		}
+		return 0;
+	...
+}
+
+/* consumers.h */
+
+struct iio_avail_cookie;
+
+//TODO: docs
+
+struct iio_avail_cookie *iio_channel_avail_get(struct iio_channel *chan,
+					       enum iio_chan_info_enum info);
+struct iio_avail_cookie *iio_channel_avail_get_raw(struct iio_channel *chan);
+inline const int *iio_avail_from_cookie(struct iio_avail_cookie *cookie);
+inline int iio_avail_val_type_from_cookie(struct iio_avail_cookie *cookie);
+inline int iio_avail_length_from_cookie(struct iio_avail_cookie *cookie);
+inline int iio_avail_type_from_cookie(struct iio_avail_cookie *cookie);
+
+void iio_channel_avail_release(struct iio_avail_cookie *cookie);
+
+DEFINE_FREE(iio_avail_cookie, struct iio_avail_cookie *, iio_channel_avail_release(_T))
+
+/* ingenic-battery.c: a usage example for consumer drivers */
+
+static int ingenic_battery_set_scale(struct ingenic_battery *bat)
+{
+	const int *scale_vals;
+	...
+
+	struct iio_avail_cookie *scale __free(iio_avail_cookie) =
+		iio_channel_avail_get(bat->channel, IIO_CHAN_INFO_SCALE);
+
+	if (IS_ERR(scale)) {
+		dev_err(bat->dev, "Unable to read channel avail scale\n");
+		return PTR_ERR(scale);
+	}
+	if (iio_avail_type_from_cookie(scale) != IIO_AVAIL_LIST ||
+	    iio_avail_type_from_cookie(scale) != IIO_VAL_FRACTIONAL_LOG2)
+		return -EINVAL;
+
+	scale_vals = iio_avail_from_cookie(scale);
+	//NOTE: can later access scale_vals[i]
+	...
+	return 0;
+}
+
+/* dpto-dac.c: a problematic usage example for consumers forwarding
+ * providers data directly back to the core for sysfs exposure */
+
+static int dpot_dac_read_avail(struct iio_dev *indio_dev,
+			       struct iio_chan_spec const *chan,
+			       const int **vals, int *type, int *length,
+			       long mask)
+{
+	struct dpot_dac *dac = iio_priv(indio_dev);
+
+	switch (mask) {
+	case IIO_CHAN_INFO_RAW: {
+		struct iio_avail_cookie *avail;
+
+		avail = iio_channel_avail_get_raw(dac->dpot);
+		if (IS_ERR(avail))
+			return PTR_ERR(avail);
+
+		*vals = iio_avail_from_cookie(avail);
+		*type = iio_avail_val_type_from_cookie(avail);
+		*length = iio_avail_length_from_cookie(avail);
+		return iio_avail_type_from_cookie(avail);
+		//NOTE: cookie gets lost.
+	}
+	}
+
+	return -EINVAL;
+}
+
+static void dpot_dac_read_avail_release_res(struct iio_dev *indio_dev,
+					    struct iio_chan_spec const *chan,
+					    const int *vals, long mask)
+{
+	kfree(vals);
+	//NOTE: we can't call iio_channel_avail_release() without the cookie
+}
+
+...
+
+static const struct iio_info dpot_dac_info = {
+	.read_avail = dpot_dac_read_avail,
+	.read_avail_release_resource = dpot_dac_read_avail_release_res,
+};
+
+What do you think?
+
+Best regards,
+Matteo Martelli
+
+
+> 
+> Jonathan
+> 
+> > 
+> > > 
+> > > Jonathan
+> > >   
+> > > > >     
+> > > > > > > > > > > > What I was referring to is that, back then, you mentioned you would have
+> > > > > > > > > > > > preferred to avoid passing ownership of the buffer around:
+> > > > > > > > > > > >     
+> > > > > > > > > > > > > That's a corner case we should think about closing. Would require an indicator
+> > > > > > > > > > > > > to read_avail that the buffer it has been passed is a snapshot that it should
+> > > > > > > > > > > > > free on completion of the string building.  I don't like passing ownership
+> > > > > > > > > > > > > of data around like that, but it is fiddly to do anything else given
+> > > > > > > > > > > > > any simple double buffering is subject to race conditions.      
+> > > > > > > > > > > > 
+> > > > > > > > > > > > I guess there is some other reason other than avoiding the copy when not
+> > > > > > > > > > > > necessary, since by introducing an additional function or argument or return
+> > > > > > > > > > > > type, most of the unnecessary copies would already be avoided right?    
+> > > > > > > > > > > 
+> > > > > > > > > > > It's not a strong reason beyond limiting scope of clever design +
+> > > > > > > > > > > the key bit my mind is that the above is not substantially simpler and
+> > > > > > > > > > > reduces our flexibility.
+> > > > > > > > > > >     
+> > > > > > > > > > > > Anyway any of this solutions would still prevent the potential optimizations of
+> > > > > > > > > > > > point 2). It's worth mentioning that those kind of optimizations are currently
+> > > > > > > > > > > > not adopted by any driver.    
+> > > > > > > > > > > 
+> > > > > > > > > > > That one indeed not, but mixing dynamic and non dynamic is something
+> > > > > > > > > > > you do in your pac1921 patch.    
+> > > > > > > > > > 
+> > > > > > > > > > Good point! I didn't think about it, or more likely I forgot, that with an
+> > > > > > > > > > additional read_avail_with_copy() used as in the example you cannot mix dynamic
+> > > > > > > > > > and non dynamic available lists, thus those drivers that need at least one
+> > > > > > > > > > dynamic available list would always copy all of them as they need to rely to
+> > > > > > > > > > the read_avail_with_copy(). I guess this could be worked around with an
+> > > > > > > > > > additional return argument for the read_avail() or an additional type like the
+> > > > > > > > > > IIO_AVAIL_LIST_ALLOC suggested by Andy to signal the caller it needs to free
+> > > > > > > > > > the list after use. However, I think they would introduce a more invasive
+> > > > > > > > > > change in the current API compared to an additional optional callback,    
+> > > > > > > > 
+> > > > > > > > It even sounds originally that it should be more invasive, so I don't think it's
+> > > > > > > > a problem here.    
+> > > > > > > 
+> > > > > > > In the hope it helps the discussion let me provide examples for the
+> > > > > > > additional two options we have other than the current
+> > > > > > > read_avail_release_resource() (fix-1) and the read_avail_with_copy()
+> > > > > > > (fix-2) already shown above:    
+> > > > > > 
+> > > > > > Thanks!
+> > > > > >     
+> > > > > > > fix-3) iio_read_channel_info_avail():
+> > > > > > > {
+> > > > > > >     ...
+> > > > > > >     bool release_avail = false;
+> > > > > > > 
+> > > > > > >     ret = indio_dev->info->read_avail(vals, ..., &release_avail);
+> > > > > > > 
+> > > > > > >     ...
+> > > > > > >     ret = iio_format_avail_list(vals, ...);
+> > > > > > >     ...
+> > > > > > > 
+> > > > > > >     if (release_avail)
+> > > > > > >         kfree(vals);
+> > > > > > > 
+> > > > > > >     return ret;
+> > > > > > > }
+> > > > > > > 
+> > > > > > > 
+> > > > > > > fix-4) iio_read_channel_info_avail():
+> > > > > > > {
+> > > > > > >     ...
+> > > > > > >     indio_dev->info->read_avail(vals, ...);
+> > > > > > > 
+> > > > > > >     if (ret < 0)
+> > > > > > >             return ret;
+> > > > > > >     switch (ret) {
+> > > > > > >     case IIO_AVAIL_LIST_ALLOC:
+> > > > > > >             ret = iio_format_avail_list(buf, vals, type, length);
+> > > > > > >             kfree(vals);
+> > > > > > >             return ret;
+> > > > > > >     case IIO_AVAIL_LIST:
+> > > > > > >             return iio_format_avail_list(buf, vals, type, length);
+> > > > > > >     case IIO_AVAIL_RANGE:
+> > > > > > >             return iio_format_avail_range(buf, vals, type);
+> > > > > > >     default:
+> > > > > > >             return -EINVAL;
+> > > > > > >     }
+> > > > > > > }
+> > > > > > >     
+> > > > > > > > > > so I agree that the current release callback is still a better option.    
+> > > > > > > > 
+> > > > > > > > I disagree on this as I pointed above why.
+> > > > > > > >     
+> > > > > > > > > > > > > > 2) Some driver might want to avoid allocating a new copy of a big table if
+> > > > > > > > > > > > > >    the race does not occur (e.g. with additional checks on buffer access
+> > > > > > > > > > > > > >    code) and thus wouldn't call a free() in the release callback.
+> > > > > > > > > > > > > >       
+> > > > > > > > > > > > > > > In any case it looks fragile and not scalable. I propose to drop this
+> > > > > > > > > > > > > > > and think again.        
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > I see your concerns, I am open to reconsider this in case we come up with
+> > > > > > > > > > > > > > better solution after addressing the points above.
+> > > > > > > > > > > > > >       
+> > > > > > > > > > > > > > > Yes, yes, I'm fully aware about the problem you are trying to solve and
+> > > > > > > > > > > > > > > agree on the report, I think this solution is not good enough.    
+> > > > > > > > > > > > > > 
+> > > > > > > > > > > > > > [1]: https://lore.kernel.org/linux-iio/20240729211100.0d602d6e@jic23-huawei/    
+> > > > > > > > > > > > 
+> > > > > > > > > > > > I hope I've brought a little more clarity to the discussion by providing some
+> > > > > > > > > > > > history instead of making it more confusing.    
+> > > > > > > > > > > 
+> > > > > > > > > > > Sure, the code example in particular is useful.    
+> > > > > > > > > 
+> > > > > > > > > Just a friendly reminder this has been sitting for a while, any news or
+> > > > > > > > > additional considerations?    
+> > > > > > > > 
+> > > > > > > > Moving the allocation control to the drivers will satisfy me as well, however
+> > > > > > > > it makes even more duplication of the code, but at least it will be cleaner
+> > > > > > > > design-wise in my opinion.    
+> > > > > > > 
+> > > > > > > Would it work with the constraints on the info_exists lock mentioned
+> > > > > > > above?    
+> > > > > > 
+> > > > > > None of the given examples (fix-N) provides a lock, so I have no clue how it's
+> > > > > > involved here. May be you can elaborate more?    
+> > > > > 
+> > > > > I thought that with "Moving the allocation control to the drivers" you
+> > > > > were referring to the option (not included among fix-N) to move the
+> > > > > allocation of the consumer copy from the inkern iio_channel_read_avail()
+> > > > > to the consumer drivers themselves. You elaborated this point above
+> > > > > where I answered with the concerns about the info_exists lock that
+> > > > > should be addressed.
+> > > > >     
+> > > > > > > > In any case the last word is on Jonathan.    
+> > > >   
+> > >   
+> > Best regards,
+> > Matteo Martelli
+> 
 
 

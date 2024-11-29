@@ -1,97 +1,132 @@
-Return-Path: <linux-iio+bounces-12812-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12813-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F1E9DE88E
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:33:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DB59DE8EF
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:50:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17821B218CD
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 14:33:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21CB164091
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 14:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657A3137776;
-	Fri, 29 Nov 2024 14:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2219C13B5B3;
+	Fri, 29 Nov 2024 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JsJnw3O8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QS4CHvsr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D5528EC;
-	Fri, 29 Nov 2024 14:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E376EB7C
+	for <linux-iio@vger.kernel.org>; Fri, 29 Nov 2024 14:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732890812; cv=none; b=fnkCJIkCtYzh1Ig2zi607rt0djSeEEsxvdCjmP02R9a7jUXMa+fLaNKQZxRfd1kq1NRrRD0hVt07OjH+W1ISU1BTUE9Rqg2QooCpW2j77H9wvafFZNGTGRLXP47HwMAZf8Mqm5GUuXujZSV/Xj14OWWNP2bVyNfbJxtzpXF3LHI=
+	t=1732891834; cv=none; b=YnhYF9GxSVxIC1YTozcBBfdu1/izDv1zr93C/i7PqO86Ze36TxI5lMiqD7c+gdSgU3RXU4TRbAY51JUeF2Z7YYyTgWYT9XIRDczIqGQvDZjdl0bb4G/H5oirs7Y67oY9BuBvpP3NgDFXkEnDRN8InSjKEgVBOgX0KKli09mD7W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732890812; c=relaxed/simple;
-	bh=ggcFP2TpUDuJc85F0rS6rmNVHScKViGvL5eID60yB8U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J6iuNTwfKuyikWmugbjDBOqb5tfwhjumVqLYMzhA0ROI8R06GDLn0FxsAJ+wgJmeh2qhqcPsXQrmw6pJf0xZQ7QLUilvbj4nmaNsxRj6kmJMkNyUDAGO2mQir/WGgRb4SOG55PUCYJTxxOC/3IZkEDVpxikqIVmh8JTMRHC4PYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JsJnw3O8; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732890811; x=1764426811;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ggcFP2TpUDuJc85F0rS6rmNVHScKViGvL5eID60yB8U=;
-  b=JsJnw3O8JGFX7gkDnIF5LdvDQSl5vMX4pyqNU+IGBfVejtlahCzkniGd
-   WMdh8jsV7j90C/Ipd3q0vvPJPlD8SdhDG8dRpJPvhRZEkJDcz2rnZIoYU
-   hkYm2UumbuMFL199Vy1pM2FT4W5h1S2QY2W4s+tD60GQF3g42y7R+Dosi
-   DeOXYOIjk/W40aPeBIcT+Iz8iBviCxvN6uWzaAkPJByL9/iyvTJxU++2X
-   4plUUImeilmxHM3kD2SzRycvXZcKZuu8xfPpfZojbsZUlKRhazqlJt1bv
-   q6/g9YH3VrbYMuKxdr0ttYGYDxW51kGTB5s7UEDREaFntFXhCZkuHXu8/
-   Q==;
-X-CSE-ConnectionGUID: klrqiUcLStSywiqAAwHG/g==
-X-CSE-MsgGUID: kOJKjDO7Q9iW7mV4z0P/QA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="43798409"
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="43798409"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:33:30 -0800
-X-CSE-ConnectionGUID: vVsuKraCRxqWXr46l3A5gQ==
-X-CSE-MsgGUID: OOjSRwHmTe2M7TRTpTY39Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
-   d="scan'208";a="92385422"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 06:33:28 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tH23g-00000002GLo-44Eb;
-	Fri, 29 Nov 2024 16:33:24 +0200
-Date: Fri, 29 Nov 2024 16:33:24 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: chemical: bme680: add regulators
-Message-ID: <Z0nQtMfGbEzxq8q0@smile.fi.intel.com>
-References: <20241128193246.24572-1-vassilisamir@gmail.com>
- <20241128193246.24572-3-vassilisamir@gmail.com>
+	s=arc-20240116; t=1732891834; c=relaxed/simple;
+	bh=Bo6woF2epcvzrIAvE42iL8JvJkpEyyq5yxObhXlfH/o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AmggSVsJxa+dHiz7k4fY3Z4wetdKa/DHzqEa0cDJmN+JzTtdMGS2N77mDm6nKGeD41gZliTPpr7wBCl3lAWjHdxADUjpI0+cOPPEbkkZwc25csciqjX+ddBjo7Vl66oEe/R8vDdAHyP+2D95PQG+lfLXBQrkk+newDkaMadLWuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QS4CHvsr; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3ea49150430so910393b6e.1
+        for <linux-iio@vger.kernel.org>; Fri, 29 Nov 2024 06:50:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732891831; x=1733496631; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x6BUgFKMvWqnE3HjIPVzbYBbQhrG+0D/ZXL7z6iEv+Q=;
+        b=QS4CHvsrx134u/gUnpFR2ZPtGBuSGbYAhtWjWzqL+thS+xu6Ztd/fkBgtiB+3zoC3e
+         gLOUx8A+XaT4kioKjmY73BErfACkqpOUK269Yv1moihBsKNjdng+jpc3Mg6gnlGHKHJ5
+         JnxFb7/OBxmu/E4XkikliswFwT/5HQRd8x8MtZ7bhnsAgl4v9rmIr48UBnDBf6C0LFIU
+         95xfgGObqdnAKNBto7hXSuWFFL7qnu2AdAIdbUdjjCAGuMjCFtd0eIE5WJ1iFVCNk/2q
+         qp0KXANomNJgkbGCO89CV1s5Le8rFNNkD93UbJfYhWtnaW0FXiW4F/YLMQU8QqYzOd6r
+         T1xQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732891831; x=1733496631;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6BUgFKMvWqnE3HjIPVzbYBbQhrG+0D/ZXL7z6iEv+Q=;
+        b=Rzm33BIZh+FC14rGnZAzxWxH/CkOh7WT8Rff1/QJ0hmf5ye3f+e5ami8lyfr1/+A0u
+         lbPxzxr1CvM6XeRhHDu+PRmlNsQ0DGhFwo7dhrdaMcVeYDmw4rX1WAuOTZmw5umeL0rp
+         4fM7UQZeStKOgfuyJmqB6XL6vODvaqtOg5aheY7S9Ac/3pYqtrII5pChSphX1aalZS18
+         uq9hqLxjsaAjtWvX4ufYD0f2POSXvfYrLvx9oFVfp3Q5DqJCqAfGEENBrBgISmvtH0vW
+         qcd4lav0R3hVpwt+wuYF/r/wa7cXeQx3NBx9BqBRIS/oZEs50GRJzVBwX1NCrVCbJ2l2
+         NvAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGo8LS1uVVCQsfNteNytd4nn3aB0eEJ5iYlolYl8W2ErXGAqUFfih4YhWSkL1VfPFDwsGOk60ht5o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpZIUL/1THcTWUEtKc7cDcLTKqS+FLLObJHS1sUBpyu8hYEuu2
+	UqFCYE5dQQOqmkHngkbeQ0JhPJqY0E+jsadkRC03PYXD8mkgxWmIuFzjXsKVSMg=
+X-Gm-Gg: ASbGncsc8Qj5jCA3GJqlR6oieZ23QY2iMH+YsCIREcTeI59mJLHET/CVP5cXigKjTZ3
+	7HNeRV4Ub2eqU+MefbdSBoz8MgR2aa/Sg6pEd8nq7p78WWh1ujZQ8avJgA41S7Ecb61Z3/MQuMr
+	tQ/Qv3v8ff2XNUlScDDKVs/f0xpXU4tY5oHx8sm1JmHy86rclUzc5DgJUlaFBZGo9jjC98hlG4A
+	2zfGsBgaMq4Lll1Tq1tKKfBEhbaFa8bLoDttCQ7Hy9v4Gb76CPdArJSBjdDqctFUL2MP8azemZl
+	cI0qDU2z3iw=
+X-Google-Smtp-Source: AGHT+IGVek3mzhHMDzBdQxy7s1b0Zz14fviIHcadw7BkAuoKul+rfGZmueHuYf7hYyYauL0qiEX+qA==
+X-Received: by 2002:a05:6808:1829:b0:3ea:50a8:4559 with SMTP id 5614622812f47-3ea6dbb1d5cmr12276229b6e.11.1732891831338;
+        Fri, 29 Nov 2024 06:50:31 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3ea86036a2dsm743394b6e.9.2024.11.29.06.50.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Nov 2024 06:50:30 -0800 (PST)
+Message-ID: <6d8e9512-2be8-4337-9791-0d956b0968c5@baylibre.com>
+Date: Fri, 29 Nov 2024 08:50:28 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241128193246.24572-3-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
+ NCT720x ADCs
+To: Yu-Hsian Yang <j2anfernee@gmail.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: Chanh Nguyen <chanh@amperemail.onmicrosoft.com>, avifishman70@gmail.com,
+ tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
+ yuenn@google.com, benjaminfair@google.com, lars@metafoo.de, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
+ javier.carrasco.cruz@gmail.com, andy@kernel.org, marcelo.schmitt@analog.com,
+ olivier.moysan@foss.st.com, mitrutzceclan@gmail.com,
+ matteomartelli3@gmail.com, alisadariana@gmail.com,
+ joao.goncalves@toradex.com, marius.cristea@microchip.com,
+ mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
+ yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241106023916.440767-1-j2anfernee@gmail.com>
+ <20241106023916.440767-2-j2anfernee@gmail.com>
+ <6c20875c-4145-4c91-b3b5-8f70ecb126f0@amperemail.onmicrosoft.com>
+ <CA+4VgcJD74ar9zQCj38M2w8FzGWpq+u5Z7ip9M7a1Lu7u8rojw@mail.gmail.com>
+ <20241109134228.4359d803@jic23-huawei> <20241109142943.3d960742@jic23-huawei>
+ <CA+4VgcJ=8wDWWnmgEt-UkEUfnfD8kGtHe44G5+dcRYt=KdwNfw@mail.gmail.com>
+ <20241123144750.43eaa1c5@jic23-huawei>
+ <CA+4Vgc+rqnxne6saUgUO_kR6chX9+HZcb40_9dpO6p6KuskSAg@mail.gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <CA+4Vgc+rqnxne6saUgUO_kR6chX9+HZcb40_9dpO6p6KuskSAg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Nov 28, 2024 at 08:32:45PM +0100, Vasileios Amoiridis wrote:
-> Add support for the regulators described in the dt-binding.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+On 11/27/24 8:14 PM, Yu-Hsian Yang wrote:
+> Dear Jonathan Cameron,
+> 
+> Thank you for your advice.
+> 
+> I would remove the "nvuoton,read-vin-data-size" property.
+> 
+> Read VIN info can use word read or byte read, and other registers
+> should use byte read.
+> If I use word read for VIN info and byte read for other registers,
+> I encounter an issue when I use regmap instead of i2c smbus API.
+> 
+> I need two regmap configs with val_bits 8/16.
+> After I call devm_regmap_init_i2c these two configs,
+> the error message:
+> "debugfs: Directory '5-001d' with parent 'regmap' already present!"
+> 
+> Do you have any suggestions?
+> 
+Give each regmap a unique name, like "5-001d-8bit" and "5-001d-16bit".
 

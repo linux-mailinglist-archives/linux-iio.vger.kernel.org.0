@@ -1,122 +1,99 @@
-Return-Path: <linux-iio+bounces-12817-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12818-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B6B9DE90A
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:01:48 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEB3016370C
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:01:44 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9329D13BC39;
-	Fri, 29 Nov 2024 15:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="zqCLPsDo"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A04F79DE93C
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:20:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F4428EC;
-	Fri, 29 Nov 2024 15:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12B01B226B3
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:20:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6721448DC;
+	Fri, 29 Nov 2024 15:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CWMWmtWM"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A29013D8B4;
+	Fri, 29 Nov 2024 15:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732892502; cv=none; b=P2bRPCVP4irCT9KodhrKug17eKWmdg4+OBuCKEAfDCa7wKqDEeSy8eFaa+p14YIBJR6gm9KMvo8xi2rUMmX3GVTKPatlRwLIELdNSKtUYRLGaH9hUr67GQAXxr7004J+ab5gG8KF23LeVK0JJyPQJw1993hvDTzNRCc6rAPpkmw=
+	t=1732893630; cv=none; b=IMIiJIQMoge6cvtt4IvQxwGvPuHdHcDQNkuo3zqHpFXIRT0h9IFH8O8wjnHFbVP5asJfFFdPiojjyjESkoukXS5RI4hsIGM7cpdqMY6UzN6vCCeEZPuFJWPuEktQyLFwhRRXgjS++NTmgpVuni4yvKETlYPIYS2pwwUQlbh053M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732892502; c=relaxed/simple;
-	bh=RQfNdZisyJIMC3dzmKDXdUlXITuCgtVPLcmE52b1Gt4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ebrieJPPXDactq9mfS/UISY1+I+T/tB+H8d7N+eE8D6wAJCw9y4mhcKXT15Go5EmxAA41tpNXfu3xSq8bpfS97z5g9Qp3xpS18oq+j2jwL/hmmcZqzfrCcODIh7o91V1nRK9Ey4RSA6QnJYKBAijnEeRFe9pPj/vUebVxZ+7VVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=zqCLPsDo; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=dKoJgDZniSxpLiL/0A6gYr0rNSXYwQpxEjs8iGNoypU=; b=zq
-	CLPsDovPTMiIupUT9xZBM3pew7rTLAg3UhZWqvreSp7h9RcY+XSN5UgZtdjLIY4fhFsGdCkv4YKd0
-	6jWu7uOD07UcFO3FLEkK96qDbWN5FNJCfb51KGxiqKiOze0bVyffhgRpU/VzYtnbS+2nBGZlFCAS2
-	MMBrnjR35GVZWfEDqoW7r+H7lucL4q71cNcdjib+w01zPvMbebUVbxHsplBTvCxE5PZ2ZAmi9Ry2E
-	GbeynTGlGtPTFpDNyQ0vNFdblRF7hd98SYhnnsfLHA+SrbWt/u2sNF3Eed8GMInwVGMG7kdd2dbGy
-	7pXNFJ3ILujbyN2V/+fVHRB6BkTbwpEQ==;
-Received: from sslproxy04.your-server.de ([78.46.152.42])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1tH2Uz-0001kX-Q9; Fri, 29 Nov 2024 16:01:37 +0100
-Received: from [185.17.218.86] (helo=zen.localdomain)
-	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1tH2Uz-000B0A-13;
-	Fri, 29 Nov 2024 16:01:37 +0100
-From: Sean Nyekjaer <sean@geanix.com>
-Date: Fri, 29 Nov 2024 16:01:24 +0100
-Subject: [PATCH] dt-bindings: iio: accel: fxls8962af: add wakeup-source
- property
+	s=arc-20240116; t=1732893630; c=relaxed/simple;
+	bh=qXahpijGJKBH0HbN3Bqo3N9btobuZwZdWHQjVzlv1Ic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QR8qo0cg9ZFi5du5IEIi9lC0AcTPfSZbzCYiRtk1ICarK5x2lYaqYYA4O0/DTvVBCw0vL2MDZtKz6wpOMj18CTmVZqLl0xe26zOuHnY+jsL5+fQYaVeDSueFRwbiC8BE16/K5fxnfYWuHeHfmn8S5AyvrJFoD0HfG7aGQJzTGks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CWMWmtWM; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732893628; x=1764429628;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qXahpijGJKBH0HbN3Bqo3N9btobuZwZdWHQjVzlv1Ic=;
+  b=CWMWmtWMT4U9IKkUO+LnftE52Kb93QwerbOzSc5GS+UygJeyWAO2Y0LD
+   oQH9H84nSc1wnBQ6Kentg9+yrygpWtceiQ1tYrsFxss9uhUOK5ujeF7Dz
+   k8wrt1FprgE7pFk3zzv9N+KP36TMTVVlpWtOQGKOxc/4AtlVLJ4zX5K77
+   rSEaAEnV3eRvjSxF3ALaHdiVEwpPfseozlx4IkjLVLB6ks4HQyl6FuZ4V
+   2er+NK2LOoOGqbWHfm5XbV8NppEaw0xykypL1eF3eOKvdDD50NNKgiqG3
+   g8gCUyzNCM7Yux2/xWimkALAk4S/jiNYHLPiS14c/mzH5fi8HnjTexBSt
+   w==;
+X-CSE-ConnectionGUID: ZptXjBAZQAmpCdcTJdLB6g==
+X-CSE-MsgGUID: Wk+AEuLDT2eAisEjhmqD1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="35994222"
+X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
+   d="scan'208";a="35994222"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 07:20:27 -0800
+X-CSE-ConnectionGUID: CdVdRtR8Stix2buKHgq6Tw==
+X-CSE-MsgGUID: QC37+fmkT4md8164xOhxDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,195,1728975600"; 
+   d="scan'208";a="97616809"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2024 07:20:26 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tH2n8-00000002HDH-1Q4s;
+	Fri, 29 Nov 2024 17:20:22 +0200
+Date: Fri, 29 Nov 2024 17:20:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, ajarizzo@gmail.com, ak@it-klinger.de,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] iio: pressure: bmp280: Use sizeof() for
+ denominator
+Message-ID: <Z0nbtiVeKuTV5Amc@smile.fi.intel.com>
+References: <20241128232450.313862-1-vassilisamir@gmail.com>
+ <20241128232450.313862-3-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241129-fxlsdt-v1-1-ff7697a47cca@geanix.com>
-X-B4-Tracking: v=1; b=H4sIAEPXSWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDQyNL3bSKnOKUEl0jA0MjU2OD5EQDczMloOKCotS0zAqwQdGxtbUAPNR
- 3TFgAAAA=
-X-Change-ID: 20241129-fxlsdt-2012530ca076
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Sean Nyekjaer <sean@geanix.com>
-X-Mailer: b4 0.14.2
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27472/Fri Nov 29 10:38:16 2024)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241128232450.313862-3-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Add the wakeup-source to enable this device as a wakeup source if
-defined in DT.
+On Fri, Nov 29, 2024 at 12:24:49AM +0100, Vasileios Amoiridis wrote:
+> Instead of using magic number 2 as a denominator, make it intuitive by
+> using sizeof().
 
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
----
- Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml | 6 ++++++
- 1 file changed, 6 insertions(+)
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-index 2d99e3811da07ea0453feafbcf82a227185ecea2..c175f4c4cbdb8f8debb0fe64ed21157f3a878d59 100644
---- a/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/nxp,fxls8962af.yaml
-@@ -46,6 +46,11 @@ properties:
-   drive-open-drain:
-     type: boolean
- 
-+  wakeup-source:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      Enable wake on accelerometer event
-+
- required:
-   - compatible
-   - reg
-@@ -69,6 +74,7 @@ examples:
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-             interrupt-names = "INT1";
-+            wakeup-source;
-         };
-     };
-   - |
-
----
-base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
-change-id: 20241129-fxlsdt-2012530ca076
-
-Best regards,
 -- 
-Sean Nyekjaer <sean@geanix.com>
+With Best Regards,
+Andy Shevchenko
+
 
 

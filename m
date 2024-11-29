@@ -1,311 +1,188 @@
-Return-Path: <linux-iio+bounces-12800-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12801-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC40A9DBE1D
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 00:25:43 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E439DBE3E
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 01:30:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D51C282294
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Nov 2024 23:25:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0DB3164B48
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 00:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A407F1C760D;
-	Thu, 28 Nov 2024 23:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA30379CD;
+	Fri, 29 Nov 2024 00:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/BYAoHF"
+	dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b="Ms/C/r4v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from sonic306-21.consmr.mail.ir2.yahoo.com (sonic306-21.consmr.mail.ir2.yahoo.com [77.238.176.207])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CB71CB50E;
-	Thu, 28 Nov 2024 23:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFD81361
+	for <linux-iio@vger.kernel.org>; Fri, 29 Nov 2024 00:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.176.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732836312; cv=none; b=LEQaY0ZasVQku6jqzXJlIqEg6yZOzarWsTdrOZoC3Np+EffICbvDn53NbvISqZBrQIti9Z1f2e2/ouvv72VXW1TZSOk8cCp/fJMgu7PCUjJJe7sUeHjSpKJZTqa1MuB1RoZETeVR89ew44FwwDTYlp0iqqQ+8de2y1zdOZmSIF0=
+	t=1732840199; cv=none; b=jdDaMmg+j7E7hlD3Mw42Hu0ELBZasNJ2UKcVt9v4DkU3ik0Niv+s3mGI/08doWPOrkqcxCFc+sWeA7dprYx7X0geD2ezY17i3GTcmoUXDLswFoOnKguF3Y5AjXUGkuhiJOYOZMFvc4WXnDkdX3EI8UHMdFLJr5KO2oTJCv2Vm/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732836312; c=relaxed/simple;
-	bh=/dCE5jtTkrfmNN2qX5Te3n2ZNlxnl5+2YcieRX+C2vA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5AoweQGUjNPezv3+vVqzizPgGKIqq6dPhjADzGn/M8YMCr9L9LNG42zZPxsL+3fDSDleN/F+PpFzkWRKCyv0AKtp3kNvCDcqHFmQEqEEasAbotnpfOGSx+lWSyatLECSKRigYmYkVuvvXm8UyeCH+IxY6P9quBWNsBiNQnhOi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/BYAoHF; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3824709ee03so973235f8f.2;
-        Thu, 28 Nov 2024 15:25:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732836309; x=1733441109; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YjF5NHMyK7y7jg65uvCn9MXduypsA+uz1rOx/op7hXs=;
-        b=Q/BYAoHFWd3ZyLWhTizPr+7d4Q+BwUPGwJ+19ZtWDhviLD2gQLuO6tG4lI7KPrmKcg
-         lNdat5C1xKuNSYn/vudBPRu1WrHkooxZp6YQ2ukxig8F/LTBLKgudVGVIkXuEKngaz8R
-         QKe9UAMLbDZkkbJtxTnbvnCrVnD8jLnmMSq52rTGx1CKonC8u3o+L7JH0wtO8OxrcoNv
-         lDvTO8+hzlAyd9AW4gN/f5Ri+Cj/9jmPqNEp3jUc7lcPrVAinv+selenH0a+uP1DxATM
-         A/h1OvcnhN8bQdBbzUh7vTPtjOIjXKc587zxh04tb+a6r4RYNNeGhRD8LytXihWA2e7T
-         FNmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732836309; x=1733441109;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YjF5NHMyK7y7jg65uvCn9MXduypsA+uz1rOx/op7hXs=;
-        b=aJfltAdG4w2TDbt1eH/IGmL7pKUILLDKPtgFEkk6XtnbcWNeYZFjhBeg/X1fbJYpAR
-         Smwm1gRM534G5cUwKBvuOHZAayCLrYCWRooE4CX+LcDVLv0jpf3v8H6nJoGD9RxXtQQS
-         QzVcHgVuzk7m0rhUO1+5js9c2W1qpVSSvsaFGCFEwVXYfCs6zgfxjYJtC2phz+ndPzVD
-         IGFG2cdZSO/TYttLYEpkeZVy1jzWVwiL2/XswodMrrDtTqz0v6NK7kvGS99znL4pB8B2
-         hUFEjf2wookXHTLz2JCZF3vntQxplTXrdDdxUe246PJ5L14STCgJO2l9+BqWCmq4udQe
-         FZVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUm2jzrPgEpqZVnd2/XD+SfWJvyFlNDY1eo9N9lYl6bhwTT6kUwzPcSLZ52nVr297/ClA53cX0efS4vXDH@vger.kernel.org, AJvYcCW1dmmUu1zozZCdOBK/bKEMLXgexGSTvJyacc38qh3KjDibUnbPlYPBu0DvmOPvSfGfqIOCThjOsApO@vger.kernel.org, AJvYcCXkepjS1AjzwdNG43r9vN6Fbf+nWw5ay+zGkTod5IqQw72psab5oV6ecq4AFwwcroqmCN7pOVbZPiUl@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhxfJt20t8zT8mMhAL/NvNZnFjajWLsU80lrjJe8hYW5K/LUmi
-	+jrYfPymYTsgtbAEDGriH5LGUTdyBUCWFwTR1YPFosFoLgZD3Z8Y
-X-Gm-Gg: ASbGncuBfQDxXFvbbdt6XrmciFHD+6wixOZzFK+lk+OAdPDwhn5tylV0krTq3JY7M+l
-	GWed0Il3HxWo43ZrwDeVECnymrQKIuETBoiakR0kdSWoFvplQRZ/r9bcg//t+baXTaLpG2/gqaB
-	ocItwWRxuWUQ2/JPo1xcBu7evEc+D+GQdpaG2rQWkeuD+Cjn1jNxOfNShxH03F0StYRfaSs763R
-	0/318pA4/4PL1h/1nnHerbz4c5+5SG6qZasAfk/XeUwTp8HvVsggauhmyTvrq4=
-X-Google-Smtp-Source: AGHT+IF7PABYTFt/ac8JsqDV2vx86JPxSSJFTTicJkXfV2C4thQXeUmt7NvdeZKFM+6o1EDES/0xPg==
-X-Received: by 2002:a05:6000:280c:b0:382:420e:5cc0 with SMTP id ffacd0b85a97d-385c6eba973mr5376179f8f.30.1732836308952;
-        Thu, 28 Nov 2024 15:25:08 -0800 (PST)
-Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:a8c6:c7bb:87d7:66dd])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385ccd3690dsm2765594f8f.35.2024.11.28.15.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Nov 2024 15:25:07 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	andriy.shevchenko@linux.intel.com
-Cc: ajarizzo@gmail.com,
-	ak@it-klinger.de,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	vassilisamir@gmail.com
-Subject: [PATCH v1 3/3] iio: pressure: bmp280: Make time vars intuitive and move to fsleep
-Date: Fri, 29 Nov 2024 00:24:50 +0100
-Message-ID: <20241128232450.313862-4-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241128232450.313862-1-vassilisamir@gmail.com>
-References: <20241128232450.313862-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1732840199; c=relaxed/simple;
+	bh=c4Vuc+rZvDA6Fe6d7paNieEGinsYbVZphbFiascz20Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OWea1vcaWmF5lK0J3q6O0uKt8GQrDUuKDfnrvt3KtHVkNRYPo1qmiI6G7KIwpIMrIbZH2sOl+y3lSUL/8TnUNPZ1bE9asCiPG8bEI1JrxJoE9zKj424deYeywDjYZtJt68Jp7YZ6IMCxXx3VQYHEKg6NyGTUtF/rGYqZVAyAQvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com; spf=pass smtp.mailfrom=rocketmail.com; dkim=pass (2048-bit key) header.d=rocketmail.com header.i=@rocketmail.com header.b=Ms/C/r4v; arc=none smtp.client-ip=77.238.176.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rocketmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rocketmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rocketmail.com; s=s2048; t=1732840189; bh=rxSduJZx9rogduBx+cQJKkxDL7Rx1oRXXgPW3tAzkqw=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ms/C/r4vvutETXoLxapdE5AH8/IrNs0wc1chyWQV4ylH2JYFCpzkX6b5AZIv+jVDRWiXCEqjabD4Y6PTClCDMMPEDgQ4oORxCrxiSYHK5AsEb6zWIIYHDosOG3g7AZPB/iL4oIVSFxZU8CL9sxYgi6nchNXtKZRJrW9wBv7hLY2JyMb+1AtZokgH9qaiJSn+Sg6NAE7AiAeckJmTT6qvQcSZgx5bycu8RZeXvYhhpJaXwr/yQeV3FLx2zgra3OfZFxLfKiKX7t0FwhK+aUE46K9OEsIQotrNINvHy+vMr58iSNSk6KskcL1iC8NeHmKSlKmXBZdsnSf+0FObLOCUnA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1732840189; bh=go8VbWeE7aXYx/GPbiwBSBaWE3Oml6LX9kTePLUxtPs=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=PakUnEIHxjCfyxlUg0G2gccDoMXSVGO6z5OaalnwbC2zhqXe6Du9UQ1vnHWQN0XBb2fFUWDRCWCvrThjJYfG/V4RuHrZAoFY1MVytlxo3eynKJznIDgaOoRPFfYCS10UiofDdn4/IBO3VVxMnXkqp0fJOeoGXiFDXOLD5Z5eaCiHlyt2mOXooqGCubjVujVIP1pVN34BBdxfud+VaOrcgmYUE6itsK+2+znRMTQTjclVOO35VbwjlfkmVCEc43w2XcyO26Kqz12TaI04SAZNivCUX2PMTyRh3bMxynaogESNjQ5lhGFMkhsjaCZVDPy65w+4JSmD/pqNTtLJbHuhDA==
+X-YMail-OSG: jp6i37kVM1nAOO5PF.0i3BMY7J9Fa0hsP6MhKiIPUTjLk76mc0VYHm36q8fTBXh
+ 36a._8nENMPUyGM2xwPSX5FSdHXBhprcXhf5DaoXlASDCCBM9bRgIcusp2wSDPmbo7LVssI3dwss
+ B4J9H4SxwYeR5in4DI4mWR2A1yKMjcCJukEsaorpdWIckAolD5jYE0QksFx7xsvftPQWn2TnlcEU
+ DNISswOzbohGRmezAXfYLSPBMGna_AWT38c6RrE8JEThbc8lacRuDXA9Ux3rNTGrq1tI7.GHQA5v
+ LRcP2RyNxPuGDNtzBxqPerueKOdmrP.27Y.TG7Znc7vFgf_43CNXpR7.B3F3HVJcWxYLl9OlcJiv
+ PXCywKJ76XL0TyKHhB.deGMtd4Ui1Y2YLqMQ4bDBNkZpDemraZSEmVNOdUabIK88XQJTcvOJcEwe
+ Izu4y9WBacvicTME242XIZMAT18BIaQQH4D6SajgHLKAiM0P.gwhpUdnfQ_4y61Mkv31lTzzEP6N
+ aQIOjSwE47tZA8l_XifFq7U4LexLPBKmXrHBjUR1BrMf99_smb9_GnFl5HEFTMbzbJIBB4HSAfQs
+ qeEZgnr2X3G58NGm54oxgL6SNqft55ym1QGErh22wfWLh3rwgkJhKiY2pncg37.iQBtieBLs8n5L
+ iAth0q1SzXtEqaXL.py3QPtmieXO3ink8ZUbVtdxh_b6WyqWmJRb4yUQYqPB0kRpWTe3QMNLtshT
+ CmjGMeyOhR.IqN9A6R1iMaxioQDygisjwMFSq1IfYKEN7ua9ezil_5vqMexjw3AGcw6K.haIDrgY
+ kGz1ik72FjxzyXGdMPANLcOkCtfxo9PiL2Lf_47JffNexAJ0dU5UUy8VROhkJf6BHhs.3yGyNSGT
+ 6NAEkiZ8zXNHP7TaPq_CV_hiUfDKBQxzlKl1AG97w7OVmDDcWPml16RVygfW3Sx9oD7n4pzJ.CiT
+ S2mMzNz0BwKqbmlsx.pBmjHVl069pjjrXB0UzAv6DEebIWfcMGS0hb8nFqiYVLXfwEA.A8i03L94
+ 6BCebRSVC9aorRGEemrLxEUmL8CLyrCm.ElMVC7TFXf_D1A1N7h0Dp5XPIEpGABEO0ezpaAPdbPM
+ 4loiQ6sL3UO1mSiECdm1S.HwAlsSgVhLuYjFd7dRaAMWVo9.WAWmHnRrVI5FDXSMuwixwbiaV2tA
+ jUWgRuhOECHKRE8zGqXrpBY7zPdb._QqTkGchjBlJgNSQ3j5CD4MvZFd8o5V2_6KOgdwZMKFRWAa
+ SUxgJFYfhpgzDpa6CZyVORmkkL_fOWnd5Wqg8vEDIL6ysFNcvaVVjwUP6CCjd0VbxKXg5kZb2h72
+ yQcwHPFA79ooT5t6VbQW0mMzcDr5XXrLUnPeCJpMb8xi_VCmjzgb3YbH9g8Unp7yifiylPLUpTGg
+ 0wkkUiK3buDlZxv4_1_i_LpkuWuYhDtVpGykPndrRj17tPoYKS.OfnUDFwePUM1lZOHRKWLsasot
+ ITKQGWwpPUCqvL2U6ToEG2VzVb.rge8ueVxJKtHT3vou.Uhh1K1m52KFl4T1cv1tH06wxvQlFZnM
+ kwVyYwwkWkji9p5mPbSdTPjMiXR5KUATiAkgBlCTh0a_7taf0KPfuDAxF8VBlO3DXvaiUxTdUO4r
+ 9ALVytd5HyiIkdKzLnfrDgHXhXIMmpiDh9GkuNeRqTJGp1zpI1lnNrQfgWSqCo39vJGTDTy_GMYp
+ Ec3B_8qJ_bcNSUxSgHbUkPBKSnTVQu1WWNz38kKacFF3DTeLpyRfOk4aTi2HEUjUbN6uCtt17wv4
+ Ue3q3AyuadxjruRA58J9DH6oCr8i0PXE.w.mfvgT8l_4VQqiSHdivHLkfRAMdpt7ZfGmRReOEc2S
+ dRLoQXVoTD6hSRHef6lCGKJKiDujUMS_XrGULCcZuhG3W6rIpZfelJm_LdVsMnQFejbUPdXhQJ_1
+ OXn1bCKytsHy1FjD9_uy9ncJKksLdoH39w6rO_qwqYrT1H8kxukGRoeEQU7BRnNyh2CnxKUfwQEA
+ bzz1Y79RO5jpeLxGOkbwEV11l_TjLNWOK7lwMYX4RKu3Ejq50B4B80t7gHuwAnCx1Wtue6Up3ZtZ
+ hzJdI9i3LGDGp6rvzbSZEcsGI82ah9QiDdcNxq26EokTION.bupEW6JqKk1PMeetNQ_Kr1oskKbP
+ zeSplTtUXGUbxwz6812B8Wg5.qAW86VVdT0v1Z8ZKpjS2VsxEf8Eo2ZcJFeerBWsRLKDocL4_LTW
+ bv5khgDJsyRZl_FuLCv8BexrpYFkGpWHWXhNk1HdCJnr_4D.1ngzn6KpUPOJe0Eua1VXNKzWWO94
+ J1WDMe9r8g.dydFG3V7QJWZCbkOQs
+X-Sonic-MF: <jahau@rocketmail.com>
+X-Sonic-ID: 8e9ab39c-1cab-4e74-aecc-a803bef00087
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ir2.yahoo.com with HTTP; Fri, 29 Nov 2024 00:29:49 +0000
+Received: by hermes--production-ir2-c694d79d9-d879w (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0c72a3444980250393be571c7b9276c0;
+          Fri, 29 Nov 2024 00:19:39 +0000 (UTC)
+Message-ID: <2662b991-bd22-4ff8-b309-77f0e0f6dc86@rocketmail.com>
+Date: Fri, 29 Nov 2024 01:19:38 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: magnetometer: yas530: Use signed integer type for
+ clamp limits
+To: David Laight <David.Laight@ACULAB.COM>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Linus Walleij <linus.walleij@linaro.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ kernel test robot <lkp@intel.com>
+References: <20241126234021.19749-1-jahau.ref@rocketmail.com>
+ <20241126234021.19749-1-jahau@rocketmail.com>
+ <a28168acf9374c60902cdb5aa7608dee@AcuMS.aculab.com>
+Content-Language: en-US
+From: Jakob Hauser <jahau@rocketmail.com>
+In-Reply-To: <a28168acf9374c60902cdb5aa7608dee@AcuMS.aculab.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.22941 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Add time unit abbreviation in the end of the variables to make the names
-more intuitive. While at it, move to new fsleep().
+Hi David,
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/bmp280-core.c | 39 +++++++++++++++---------------
- drivers/iio/pressure/bmp280.h      |  4 +--
- 2 files changed, 22 insertions(+), 21 deletions(-)
+On 27.11.24 09:53, David Laight wrote:
+> From: Jakob Hauser <jahau@rocketmail.com>
+>> Sent: 26 November 2024 23:40
+>>
+>> In the function yas537_measure() there is a clamp_val() with limits of
+>> -BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The BIT()
+>> is of type unsigned long integer due to its define in include/vdso/bits.h.
+>> The lower limit -BIT(13) is recognized as -8192 but expressed as an unsigned
+>> long integer. The size of an unsigned long integer differs between 32-bit and
+>> 64-bit architectures. Converting this to type s32 may lead to undesired
+>> behavior.
+> 
+> I think you also need to say that the unsigned divide generates erronous
+> values on 32bit systems and that the clamp() call result is ignored.
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index e5ec8137961f..b39ef30f8eda 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1002,7 +1002,7 @@ static int bmp280_preinit(struct bmp280_data *data)
- 	 * after resetting, the device uses the complete power-on sequence so
- 	 * it needs to wait for the defined start-up time.
- 	 */
--	fsleep(data->start_up_time);
-+	fsleep(data->start_up_time_us);
- 
- 	ret = regmap_read(data->regmap, BMP280_REG_STATUS, &reg);
- 	if (ret)
-@@ -1161,7 +1161,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
- 	.chip_id = bmp280_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp280_chip_ids),
- 	.regmap_config = &bmp280_regmap_config,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bmp280_channels,
- 	.num_channels = ARRAY_SIZE(bmp280_channels),
- 	.avail_scan_masks = bmp280_avail_scan_masks,
-@@ -1347,7 +1347,7 @@ const struct bmp280_chip_info bme280_chip_info = {
- 	.chip_id = bme280_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bme280_chip_ids),
- 	.regmap_config = &bme280_regmap_config,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bme280_channels,
- 	.num_channels = ARRAY_SIZE(bme280_channels),
- 	.avail_scan_masks = bme280_avail_scan_masks,
-@@ -1414,7 +1414,7 @@ static int bmp380_cmd(struct bmp280_data *data, u8 cmd)
- 		return ret;
- 	}
- 	/* Wait for 2ms for command to be processed */
--	usleep_range(data->start_up_time, data->start_up_time + 100);
-+	fsleep(data->start_up_time_us);
- 	/* Check for command processing error */
- 	ret = regmap_read(data->regmap, BMP380_REG_ERROR, &reg);
- 	if (ret) {
-@@ -1806,7 +1806,7 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 		 * formula in datasheet section 3.9.2 with an offset of ~+15%
- 		 * as it seen as well in table 3.9.1.
- 		 */
--		msleep(150);
-+		fsleep(150 * USEC_PER_MSEC);
- 
- 		/* Check config error flag */
- 		ret = regmap_read(data->regmap, BMP380_REG_ERROR, &tmp);
-@@ -1957,7 +1957,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.num_chip_id = ARRAY_SIZE(bmp380_chip_ids),
- 	.regmap_config = &bmp380_regmap_config,
- 	.spi_read_extra_byte = true,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bmp380_channels,
- 	.num_channels = ARRAY_SIZE(bmp380_channels),
- 	.avail_scan_masks = bmp280_avail_scan_masks,
-@@ -2006,7 +2006,8 @@ static int bmp580_soft_reset(struct bmp280_data *data)
- 		dev_err(data->dev, "failed to send reset command to device\n");
- 		return ret;
- 	}
--	usleep_range(2000, 2500);
-+	/* From datasheet's table 4: electrical characteristics */
-+	fsleep(2000);
- 
- 	/* Dummy read of chip_id */
- 	ret = regmap_read(data->regmap, BMP580_REG_CHIP_ID, &reg);
-@@ -2208,7 +2209,7 @@ static int bmp580_nvmem_read_impl(void *priv, unsigned int offset, void *val,
- 		goto exit;
- 	}
- 	/* Wait standby transition time */
--	usleep_range(2500, 3000);
-+	fsleep(2500);
- 
- 	while (bytes >= sizeof(*dst)) {
- 		addr = bmp580_nvmem_addrs[offset / sizeof(*dst)];
-@@ -2274,7 +2275,7 @@ static int bmp580_nvmem_write_impl(void *priv, unsigned int offset, void *val,
- 		goto exit;
- 	}
- 	/* Wait standby transition time */
--	usleep_range(2500, 3000);
-+	fsleep(2500);
- 
- 	while (bytes >= sizeof(*buf)) {
- 		addr = bmp580_nvmem_addrs[offset / sizeof(*buf)];
-@@ -2458,7 +2459,7 @@ static int bmp580_chip_config(struct bmp280_data *data)
- 		return ret;
- 	}
- 	/* From datasheet's table 4: electrical characteristics */
--	usleep_range(2500, 3000);
-+	fsleep(2500);
- 
- 	/* Set default DSP mode settings */
- 	reg_val = FIELD_PREP(BMP580_DSP_COMP_MASK, BMP580_DSP_PRESS_TEMP_COMP_EN) |
-@@ -2649,7 +2650,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
- 	.chip_id = bmp580_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp580_chip_ids),
- 	.regmap_config = &bmp580_regmap_config,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bmp580_channels,
- 	.num_channels = ARRAY_SIZE(bmp580_channels),
- 	.avail_scan_masks = bmp280_avail_scan_masks,
-@@ -2720,7 +2721,7 @@ static int bmp180_wait_for_eoc(struct bmp280_data *data, u8 ctrl_meas)
- 			delay_us =
- 				conversion_time_max[data->oversampling_press];
- 
--		usleep_range(delay_us, delay_us + 1000);
-+		fsleep(delay_us);
- 	}
- 
- 	ret = regmap_read(data->regmap, BMP280_REG_CTRL_MEAS, &ctrl);
-@@ -2988,7 +2989,7 @@ const struct bmp280_chip_info bmp180_chip_info = {
- 	.chip_id = bmp180_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp180_chip_ids),
- 	.regmap_config = &bmp180_regmap_config,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bmp280_channels,
- 	.num_channels = ARRAY_SIZE(bmp280_channels),
- 	.avail_scan_masks = bmp280_avail_scan_masks,
-@@ -3066,7 +3067,7 @@ const struct bmp280_chip_info bmp085_chip_info = {
- 	.chip_id = bmp180_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp180_chip_ids),
- 	.regmap_config = &bmp180_regmap_config,
--	.start_up_time = 2000,
-+	.start_up_time_us = 2000,
- 	.channels = bmp280_channels,
- 	.num_channels = ARRAY_SIZE(bmp280_channels),
- 	.avail_scan_masks = bmp280_avail_scan_masks,
-@@ -3175,7 +3176,7 @@ int bmp280_common_probe(struct device *dev,
- 	data->oversampling_temp = chip_info->oversampling_temp_default;
- 	data->iir_filter_coeff = chip_info->iir_filter_coeff_default;
- 	data->sampling_freq = chip_info->sampling_freq_default;
--	data->start_up_time = chip_info->start_up_time;
-+	data->start_up_time_us = chip_info->start_up_time_us;
- 
- 	/* Bring up regulators */
- 	regulator_bulk_set_supply_names(data->supplies,
-@@ -3201,7 +3202,7 @@ int bmp280_common_probe(struct device *dev,
- 		return ret;
- 
- 	/* Wait to make sure we started up properly */
--	usleep_range(data->start_up_time, data->start_up_time + 100);
-+	fsleep(data->start_up_time_us);
- 
- 	/* Bring chip out of reset if there is an assigned GPIO line */
- 	gpiod = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-@@ -3287,7 +3288,7 @@ int bmp280_common_probe(struct device *dev,
- 	 * Set autosuspend to two orders of magnitude larger than the
- 	 * start-up time.
- 	 */
--	pm_runtime_set_autosuspend_delay(dev, data->start_up_time / 10);
-+	pm_runtime_set_autosuspend_delay(dev, data->start_up_time_us / 10);
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_put(dev);
- 
-@@ -3306,7 +3307,7 @@ static int bmp280_runtime_suspend(struct device *dev)
- 
- 	data->chip_info->set_mode(data, BMP280_SLEEP);
- 
--	fsleep(data->start_up_time);
-+	fsleep(data->start_up_time_us);
- 	return regulator_bulk_disable(BMP280_NUM_SUPPLIES, data->supplies);
- }
- 
-@@ -3320,7 +3321,7 @@ static int bmp280_runtime_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	usleep_range(data->start_up_time, data->start_up_time + 100);
-+	fsleep(data->start_up_time_us);
- 
- 	ret = data->chip_info->chip_config(data);
- 	if (ret)
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index a3631bc0e188..5b2ee1d0ee46 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -434,7 +434,7 @@ struct bmp280_data {
- 		struct bmp380_calib bmp380;
- 	} calib;
- 	struct regulator_bulk_data supplies[BMP280_NUM_SUPPLIES];
--	unsigned int start_up_time; /* in microseconds */
-+	unsigned int start_up_time_us;
- 
- 	/* log of base 2 of oversampling rate */
- 	u8 oversampling_press;
-@@ -490,7 +490,7 @@ struct bmp280_chip_info {
- 
- 	const struct iio_chan_spec *channels;
- 	int num_channels;
--	unsigned int start_up_time;
-+	unsigned int start_up_time_us;
- 	const unsigned long *avail_scan_masks;
- 
- 	const int *oversampling_temp_avail;
--- 
-2.43.0
+Ok, I'll expand the commit message in v2.
+
+>> Declaring a signed integer with a value of BIT(13) allows to use it more
+>> specifically as a negative value on the lower clamp limit.
+>>
+>> While at it, replace all BIT(13) in the function yas537_measure() by the signed
+>> integer.
+>>
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@intel.com/
+>> Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
+>> Cc: David Laight <david.laight@aculab.com>
+>> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
+>> ---
+>> The patch is based on torvalds/linux v6.12.
+>>
+>> The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characters per
+>> line. In terms of readability I would prefer to keep it that way.
+>> ---
+>>   drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
+>>   1 file changed, 7 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
+>> index 65011a8598d3..938b35536e0d 100644
+>> --- a/drivers/iio/magnetometer/yamaha-yas530.c
+>> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
+>> @@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
+>>   	u8 data[8];
+>>   	u16 xy1y2[3];
+>>   	s32 h[3], s[3];
+>> +	int half_range = BIT(13);
+>>   	int i, ret;
+>>
+>>   	mutex_lock(&yas5xx->lock);
+>> @@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
+>>   	/* The second version of YAS537 needs to include calibration coefficients */
+>>   	if (yas5xx->version == YAS537_VERSION_1) {
+>>   		for (i = 0; i < 3; i++)
+>> -			s[i] = xy1y2[i] - BIT(13);
+>> -		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / BIT(13);
+>> -		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / BIT(13);
+>> -		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / BIT(13);
+>> +			s[i] = xy1y2[i] - half_range;
+>> +		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / half_range;
+>> +		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / half_range;
+>> +		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / half_range;
+>>   		for (i = 0; i < 3; i++) {
+>> -			clamp_val(h[i], -BIT(13), BIT(13) - 1);
+>> -			xy1y2[i] = h[i] + BIT(13);
+>> +			clamp_val(h[i], -half_range, half_range - 1);
+>> +			xy1y2[i] = h[i] + half_range;
+> 
+> NAK - that still ignores the result of clamp.
+
+Ah, I didn't get that point! Now I realize that clamp_val() returns a 
+value and it's going nowhere here. I'll change that in v2.
+
+> and it should be clamp() not clamp_val().
+
+I assumed that clamp_val() is still needed because according to its 
+description in current mainline (6.12) include/linux/minmax.h, clamp() 
+does "strict typechecking". The input value h[] is of type s32 and the 
+limits derived from "half_range" are of type int. I had a try compiling 
+with clamp() and didn't get any warnings or errors. Does that mean that 
+clamp() isn't that strict in the current implementation (and considering 
+the patch being backported)? Does it just check signedness and is this 
+because in current __clamp_once() it uses __auto_type?
+
+Kind regards,
+Jakob
 
 

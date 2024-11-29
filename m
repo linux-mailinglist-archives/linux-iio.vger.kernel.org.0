@@ -1,104 +1,124 @@
-Return-Path: <linux-iio+bounces-12820-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12821-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FB19DE96F
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:32:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FBF9DE98E
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 16:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67587B231D6
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1896B282F4C
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Nov 2024 15:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7926E14658F;
-	Fri, 29 Nov 2024 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0F31474A7;
+	Fri, 29 Nov 2024 15:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NoG9mMV0"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CsXBu3NV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3335E82D66;
-	Fri, 29 Nov 2024 15:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F90E82D66;
+	Fri, 29 Nov 2024 15:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732894340; cv=none; b=TulH09QdFMVg5yHb8Q0NJ5tKDIezuVcxJzbcFKQbtasRjvYSELkhqn80zAtac7+0TGF+J+lPCXProqftxd7Pxxd49NUw8pbD/qhKS/JSB+fPOmpntypM8S5NhPzoY2skLghiYNSHCIM4FBdxiyXQxgy0FYaubj6chPxMPrIwog0=
+	t=1732894465; cv=none; b=UxZCmwNuHOxmE7fxQ+eooCgDNsuZHZJALQIojPmC84y3VuAAKNZQqZxtSre58g+saHiG8IMe6oyTU4eFkL+VUmwfmzMzLAG3O3OP957OoL+z4cedctJ7cOxlkknBCPmmhCx3/8x1A7aatJwOKKNqntZ6bFmleuL+nzlYc+romzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732894340; c=relaxed/simple;
-	bh=ean5uOlXU7YQbgBBWb9aZHQqsCwn5eYutohhiNlRqTo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QfoDv6dg2JwrWcbeFTKSMl1g4s8Se+PQEEFv4Mm9DaX06xSwtHBX6kqeULoVmW8artF7Age3LURFaZT4s5JUQexYRAxXnoPK3lcRPrSmyYJpGiZDPAXPtLd8qRU2eN9k1XIbTaE8WuuIt0zIeN+T9mJaNzEaBa3okfqBxw+frPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NoG9mMV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C25C4CED2;
-	Fri, 29 Nov 2024 15:32:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732894337;
-	bh=ean5uOlXU7YQbgBBWb9aZHQqsCwn5eYutohhiNlRqTo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NoG9mMV073BwdFpzgwm5oS2YIjkvCAmK2/Khxy7gYgPfFm5fi8CT+kXgVfF1W7DGD
-	 6a0dxAB2phRo3HDQGm59dm3LAElH9dw8c9R15sb1OU0L7qBzc96IJAt7aMruWRW9w/
-	 WD9DTScv0pQLTFmJMbgsAMOB3VmD1OobY83rJjc5PMojqJ8qCo7u7qHBDpITN45SvR
-	 5oMTrhz9Tiig1rzIicPmW8UIvvqP+XYip3eFUSHVWGWabsboX9EDzlWEogm48BaQxd
-	 GdjJLBHkzt4/PAvIUBX0l/qyJuBfxCMmha3PwWzD30YJXqWnv50A7YCSDR099zCkjC
-	 5SsPhf402dS6w==
-Date: Fri, 29 Nov 2024 15:32:12 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Arthur Becker <arthur.becker@sentec.com>,
-	Emil Gedenryd <emil.gedenryd@axis.com>, Marek Vasut <marex@denx.de>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: light: Drop BU27008 and BU27010
-Message-ID: <20241129-decency-haphazard-f121207c90cb@spud>
-References: <cover.1732819203.git.mazziesaccount@gmail.com>
- <3be66a8ec15fedd18ef13afae48ebb182196da13.1732819203.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1732894465; c=relaxed/simple;
+	bh=IJGxZkgoWTY7Wfw1SGyX0l4otEJwnl2iVbh8953L6i0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iDRbU/QSh/GczJyZDs7x8Q0/D4OoJXufbkKlL47Q75XpjFWGn/E4P6q9+7dYCC1nMasM3yn753Ao7c/5yr8k2oC0bwAbdgfC4CHvoo8SHeIAb1e/qN0iTmaIYM6xpsqXj60gk2sElEmywxf6Hi+1NPNZ2QdTyMpj6fE9ecwIoyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CsXBu3NV; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ATF3Xcm014486;
+	Fri, 29 Nov 2024 10:34:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=C4CHmsEhR6j8aMddpIlJLOsME+z
+	8+iYUlRZC9fGZI8M=; b=CsXBu3NVjr50hX/gjoaDQXU12ZdOQ6+s89wvqM2xVtd
+	7l9o71IC9cpG7Js13+/a54ocY8QMDnBQKW7JwR3HsmEXOgAvKAEbwgtnZMtW+Nua
+	lO42Pskn3qVGLX89Cg/Bf396IpifcJsR13AVnZzbkWS/0wCWing6Sv7rTtN4mXzG
+	AfPlSd5pHGELlSMB47D9Pb5oaZQ4UztDxKZpmfy4o6OSbyXl1KExmzgujjdshoxn
+	JUMD0zVVoVsmtBmHeyRjAqN21LfGVsLS1C7GRnQYFBlG+h76IU9ZOFs0NE4tsV5I
+	rZd/qJRAnRoK8cW7JkTflQFMPl/mfgc25nw4NiRRgHA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 436716tmn2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Nov 2024 10:34:21 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4ATFYKY4008695
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 29 Nov 2024 10:34:20 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 29 Nov 2024 10:34:20 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 29 Nov 2024 10:34:19 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 29 Nov 2024 10:34:19 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.161])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4ATFY6dj001089;
+	Fri, 29 Nov 2024 10:34:12 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v3 0/2] Add ADF4371 Reference Doubler and Reference Divider
+Date: Fri, 29 Nov 2024 17:33:51 +0200
+Message-ID: <20241129153356.63547-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="gIB4Jymb2ZQVY78O"
-Content-Disposition: inline
-In-Reply-To: <3be66a8ec15fedd18ef13afae48ebb182196da13.1732819203.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: Y9hiWc3R9eLnpeqdsTtZnybOsVLY16vT
+X-Proofpoint-ORIG-GUID: Y9hiWc3R9eLnpeqdsTtZnybOsVLY16vT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=915 adultscore=0 phishscore=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 spamscore=0 impostorscore=0 suspectscore=0 malwarescore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2411290127
 
+This patch series add support for for reference doubler block and reference
+divide by 2 clock block within the ADF4371.
 
---gIB4Jymb2ZQVY78O
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The doubler is useful for increasing the PFD comparison frequency which will
+result in a noise performance of the system.
 
-On Thu, Nov 28, 2024 at 09:35:35PM +0200, Matti Vaittinen wrote:
-> The ROHM BU27008 and BU27010 RGB sensors got cancelled. I was informed
-> they never reached mass production stage.
->=20
-> Keeping the bindings around is waste of maintenance resources. Drop the
-> bindings.
->=20
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+The reference divide by 2 divides the reference signal by 2,
+resulting in a 50% duty cycle PFD frequency.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Both features were requested from customers that purchased hundreds of adf4371
+parts to use in their project. They need a way to adjust these blocks either
+from userspace or devicetree.
 
---gIB4Jymb2ZQVY78O
-Content-Type: application/pgp-signature; name="signature.asc"
+The patch series aims to both satisfy the customer needs and be compliant with
+the current kernel. The devicetree approach was chosen since these kind of
+features are already present in the mainline kernel for parts such as adf4350.
 
------BEGIN PGP SIGNATURE-----
+Antoniu Miclaus (2):
+  dt-bindings: iio: adf4371: add rdiv2 and doubler
+  iio: frequency: adf4371: add ref doubler and div2
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ0nefAAKCRB4tDGHoIJi
-0lvDAQDShvcW9sCaieKogYV80HikoC61aNp5Aqv8B02YZxACQwD9GMVpciDmMUWI
-GJfDGfpK6cajesUxhn+0uds7tAKergc=
-=diSv
------END PGP SIGNATURE-----
+ .../bindings/iio/frequency/adf4371.yaml       | 11 ++++++
+ drivers/iio/frequency/adf4371.c               | 34 +++++++++++++++++--
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
---gIB4Jymb2ZQVY78O--
+-- 
+2.47.1
+
 

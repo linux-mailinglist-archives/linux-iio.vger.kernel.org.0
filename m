@@ -1,237 +1,201 @@
-Return-Path: <linux-iio+bounces-12849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F1F9DF013
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 12:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 471FD9DF03B
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 12:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FC39163932
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 11:19:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62704160F28
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 11:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154D213C695;
-	Sat, 30 Nov 2024 11:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f6oE0eaJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926621917FE;
+	Sat, 30 Nov 2024 11:41:12 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B234B1531E6;
-	Sat, 30 Nov 2024 11:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5211F148838
+	for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 11:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732965571; cv=none; b=ScktOlvL5nhLMMJdr70w3SDOkjcLYbuACOGw/ilDr0aITHQDnmCVmvJayZqL/VTBM5mYyD+R43iZ9QKkYZiIjD8G9EWFyQ0ftIrwlS4ztLiKXs3Ux8tF6XlTaO2tQ1yERCW/vmv90JDo90FDpaNqHKltDMJLgRADIlJjcwZDFf0=
+	t=1732966872; cv=none; b=UK2Wav3ByO+jj286tRzE6m2Te5rv8Edtd3cnmuU21gt3Rvlvbfhb0fKWvTe8bflA6/YDJh7zw8uj1gzfgFI35lQenPOdCZjCL7Uo7m2jENT/oFDU5B1fTgIvZhEsKp9DAhYTIcv0CgrGINx1jjhIBPp/J/9q/EWvELmAzYO3dKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732965571; c=relaxed/simple;
-	bh=vV0CrhY5ERivvorl59Qose3xGU8M3PP6bHFHeC//1Hk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f/j0efylhOYdBefcFwuoGP6bV66Rb3QP65GQuJ11Jqihc0c3cLXU/qKV6K/kOByMOUgLw5Kkx7DOh5eTIajY/mPUDTXimALmr4jwYpJ/ky95ex4Rea7x64mghk02z6o9MRKfwEtwaslIo2IK4t05QNLTyYWEYMSpuCoZbvUljV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f6oE0eaJ; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732965570; x=1764501570;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vV0CrhY5ERivvorl59Qose3xGU8M3PP6bHFHeC//1Hk=;
-  b=f6oE0eaJ0TZLNbo1sIvhdhgcybzdl62f3veYHRHDfwf4INTZi2XKTrhg
-   2Rina09VQijHmlkst3/gGiIRHbPsbUIM4MGFgHO6QbyCMnlErjMJ+uN5F
-   YY5dEKRT6NfdrA3RXkTHkzCCQvKZpc6BJe4V7oh2g9L0cu7EHMT1I8ZGJ
-   6L8Kkf//c8BwtQVq0ZEzc8EUi2ma4d8IjuUgK8xoJ6k3ei/gSFo1OgeLo
-   hK4oE/sKan6vcfnY3U9eewylv/WkeDgUo4v0+v6F3nIgtTl/oBRGmbRWE
-   Z/R6rR68lyPBSpP2MorJuTgzok82xHupxTSzJuVrIpQ5bxcUWtdG2d0xo
-   A==;
-X-CSE-ConnectionGUID: uPmm5Mp4SaC+J+AiE7PZ7Q==
-X-CSE-MsgGUID: /nC+mQCqT8GnULZnBAc+Cg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="36957647"
-X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
-   d="scan'208";a="36957647"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 03:19:29 -0800
-X-CSE-ConnectionGUID: S8wNgLXNTRijomJzQXxaPw==
-X-CSE-MsgGUID: yltgvo2jTCuoUfZ/24htxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
-   d="scan'208";a="123541833"
-Received: from lkp-server02.sh.intel.com (HELO 36a1563c48ff) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 30 Nov 2024 03:19:26 -0800
-Received: from kbuild by 36a1563c48ff with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tHLVT-0000bj-2x;
-	Sat, 30 Nov 2024 11:19:23 +0000
-Date: Sat, 30 Nov 2024 19:19:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
-	robh@kernel.org, conor+dt@kernel.org, dlechner@baylibre.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: Re: [PATCH v7 8/8] iio: adc: ad4851: add ad485x driver
-Message-ID: <202411301859.sT9xRNb1-lkp@intel.com>
-References: <20241129153546.63584-9-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1732966872; c=relaxed/simple;
+	bh=ZkgM0jh3bG1eg6LsqeL9J5DryQDqaeaGQHF+dekYHLg=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=ATpUEtqv6C5bFtQqqTTOjxCVzd/ZtlLrP6vblukyvG9Omgd3ZCQNBvg8VvmhpXHj6xXjaMKu6xSYis1RDQZEaNAcselhOe+Ccw1uuVtq/MMbOjV5ty08eWNDtcla0uOhotUyMRgoa7oCZ8TILdzYEV+VR7QMc2YtDinvdwWcgxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-275-FE_uBcOWMd6AjZiYwVeYLA-1; Sat, 30 Nov 2024 11:41:06 +0000
+X-MC-Unique: FE_uBcOWMd6AjZiYwVeYLA-1
+X-Mimecast-MFC-AGG-ID: FE_uBcOWMd6AjZiYwVeYLA
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sat, 30 Nov
+ 2024 11:40:45 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Sat, 30 Nov 2024 11:40:45 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Jakob Hauser' <jahau@rocketmail.com>, Jonathan Cameron
+	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Andrew Morton
+	<akpm@linux-foundation.org>
+CC: Linus Walleij <linus.walleij@linaro.org>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
+Subject: RE: [PATCH v2] iio: magnetometer: yas530: Use signed integer type for
+ clamp limits
+Thread-Topic: [PATCH v2] iio: magnetometer: yas530: Use signed integer type
+ for clamp limits
+Thread-Index: AQHbQqUs2JSj3AGLWkSCiQkgtAYVhLLPsp/w
+Date: Sat, 30 Nov 2024 11:40:45 +0000
+Message-ID: <9f5793f03c2440d2aa18630469df06df@AcuMS.aculab.com>
+References: <11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
+ <11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
+In-Reply-To: <11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241129153546.63584-9-antoniu.miclaus@analog.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: dWiqrudVhKPgNyTXvm-7D-nQUzXRxsWmnxKw8_UV4Uw_1732966866
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Antoniu,
+From: Jakob Hauser
 
-kernel test robot noticed the following build errors:
+Copying Andrew M - he might want to take this through his mm tree.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.12 next-20241128]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> Sent: 29 November 2024 21:25
+>=20
+> In the function yas537_measure() there is a clamp_val() with limits of
+> -BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The =
+BIT()
+> is of type unsigned long integer due to its define in include/vdso/bits.h=
+.
+> The lower limit -BIT(13) is recognized as -8192 but expressed as an unsig=
+ned
+> long integer. The size of an unsigned long integer differs between 32-bit=
+ and
+> 64-bit architectures. Converting this to type s32 may lead to undesired
+> behavior.
+>=20
+> Additionally, in the calculation lines h[0], h[1] and h[2] the unsigned l=
+ong
+> integer divisor BIT(13) causes an unsigned division, shifting the left-ha=
+nd
+> side of the equation back and forth, possibly ending up in large positive
+> values instead of negative values on 32-bit architectures.
+>=20
+> To solve those two issues, declare a signed integer with a value of BIT(1=
+3).
+>=20
+> There is another omission in the clamp line: clamp_val() returns a value =
+and
+> it's going nowhere here. Self-assign it to h[i] to make use of the clamp
+> macro.
+>=20
+> Finally, replace clamp_val() macro by clamp() because after changing the =
+limits
+> from type unsigned long integer to signed integer it's fine that way.
+>=20
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@i=
+ntel.com/
+> Closes: https://lore.kernel.org/oe-kbuild-all/202411282222.oF0B4110-lkp@i=
+ntel.com/
+> Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
+> Cc: David Laight <david.laight@aculab.com>
+> Signed-off-by: Jakob Hauser <jahau@rocketmail.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-backend-add-API-for-interface-get/20241129-233931
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20241129153546.63584-9-antoniu.miclaus%40analog.com
-patch subject: [PATCH v7 8/8] iio: adc: ad4851: add ad485x driver
-config: openrisc-allyesconfig (https://download.01.org/0day-ci/archive/20241130/202411301859.sT9xRNb1-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241130/202411301859.sT9xRNb1-lkp@intel.com/reproduce)
+Reviewed-by: David Laight <david.laight@aculab.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411301859.sT9xRNb1-lkp@intel.com/
+I THINK all the other BIT() and GENMASK() are ok.
+The code also rather heavily relies on u16 being promoted to 'signed int'.
 
-All error/warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad4851.c:963:35: warning: 'ad4858_channels' defined but not used [-Wunused-const-variable=]
-     963 | static const struct iio_chan_spec ad4858_channels[] = {
-         |                                   ^~~~~~~~~~~~~~~
->> drivers/iio/adc/ad4851.c:889:35: warning: 'ad4851_scan_type_16' defined but not used [-Wunused-const-variable=]
-     889 | static const struct iio_scan_type ad4851_scan_type_16 = {
-         |                                   ^~~~~~~~~~~~~~~~~~~
---
-   arch/openrisc/kernel/head.o: in function `_dispatch_do_ipage_fault':
->> (.text+0x900): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
-   (.text+0xa00): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
-   arch/openrisc/kernel/head.o: in function `exit_with_no_dtranslation':
->> (.head.text+0x21bc): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
-   arch/openrisc/kernel/head.o: in function `exit_with_no_itranslation':
-   (.head.text+0x2264): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
-   init/main.o: in function `trace_event_raw_event_initcall_level':
-   main.c:(.text+0x28c): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `strlen' defined in .text section in lib/string.o
-   init/main.o: in function `initcall_blacklisted':
-   main.c:(.text+0x6f4): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `strcmp' defined in .text section in lib/string.o
-   init/main.o: in function `trace_initcall_finish_cb':
-   main.c:(.text+0x814): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
-   main.c:(.text+0x864): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
-   main.c:(.text+0x894): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
-   main.c:(.text+0x8d0): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
-   main.c:(.text+0x934): additional relocation overflows omitted from the output
+=09David
 
 
-vim +/ad4858_channels +963 drivers/iio/adc/ad4851.c
+> ---
+> The patch is based on torvalds/linux v6.12.
+>=20
+> The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characte=
+rs per
+> line. In terms of readability I would prefer to keep it that way.
+>=20
+> Changes in v2:
+>  - Self-assigned the clamp macro to h[i].
+>  - Changed from clamp_val() macro to clamp().
+>  - In commit message added issues on divisor BIT(13) and missing clamp
+>    assignment.
+>  - In tags added another (duplicate) report by the kernel test robot.
+>=20
+> Link to v1: https://lore.kernel.org/linux-iio/20241126234021.19749-1-jaha=
+u@rocketmail.com/T/#t
+> ---
+>  drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
+>  1 file changed, 7 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magne=
+tometer/yamaha-yas530.c
+> index 65011a8598d3..c55a38650c0d 100644
+> --- a/drivers/iio/magnetometer/yamaha-yas530.c
+> +++ b/drivers/iio/magnetometer/yamaha-yas530.c
+> @@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 =
+*t, u16 *x, u16 *y1, u16 *y
+>  =09u8 data[8];
+>  =09u16 xy1y2[3];
+>  =09s32 h[3], s[3];
+> +=09int half_range =3D BIT(13);
+>  =09int i, ret;
+>=20
+>  =09mutex_lock(&yas5xx->lock);
+> @@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u1=
+6 *t, u16 *x, u16 *y1, u16 *y
+>  =09/* The second version of YAS537 needs to include calibration coeffici=
+ents */
+>  =09if (yas5xx->version =3D=3D YAS537_VERSION_1) {
+>  =09=09for (i =3D 0; i < 3; i++)
+> -=09=09=09s[i] =3D xy1y2[i] - BIT(13);
+> -=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / B=
+IT(13);
+> -=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / B=
+IT(13);
+> -=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / B=
+IT(13);
+> +=09=09=09s[i] =3D xy1y2[i] - half_range;
+> +=09=09h[0] =3D (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / h=
+alf_range;
+> +=09=09h[1] =3D (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / h=
+alf_range;
+> +=09=09h[2] =3D (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / h=
+alf_range;
+>  =09=09for (i =3D 0; i < 3; i++) {
+> -=09=09=09clamp_val(h[i], -BIT(13), BIT(13) - 1);
+> -=09=09=09xy1y2[i] =3D h[i] + BIT(13);
+> +=09=09=09h[i] =3D clamp(h[i], -half_range, half_range - 1);
+> +=09=09=09xy1y2[i] =3D h[i] + half_range;
+>  =09=09}
+>  =09}
+>=20
+> --
+> 2.43.0
 
-   888	
- > 889	static const struct iio_scan_type ad4851_scan_type_16 = {
-   890		.sign = 's',
-   891		.realbits = 16,
-   892		.storagebits = 16,
-   893	};
-   894	
-   895	static const struct iio_scan_type ad4851_scan_type_20_0[] = {
-   896		[AD4851_SCAN_TYPE_NORMAL] = {
-   897			.sign = 'u',
-   898			.realbits = 20,
-   899			.storagebits = 32,
-   900		},
-   901		[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
-   902			.sign = 'u',
-   903			.realbits = 24,
-   904			.storagebits = 32,
-   905		},
-   906	};
-   907	
-   908	static const struct iio_scan_type ad4851_scan_type_20_1[] = {
-   909		[AD4851_SCAN_TYPE_NORMAL] = {
-   910			.sign = 's',
-   911			.realbits = 20,
-   912			.storagebits = 32,
-   913		},
-   914		[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
-   915			.sign = 's',
-   916			.realbits = 24,
-   917			.storagebits = 32,
-   918		},
-   919	};
-   920	
-   921	static int ad4851_get_current_scan_type(const struct iio_dev *indio_dev,
-   922						const struct iio_chan_spec *chan)
-   923	{
-   924		struct ad4851_state *st = iio_priv(indio_dev);
-   925	
-   926		return st->resolution_boost_enabled ? AD4851_SCAN_TYPE_RESOLUTION_BOOST
-   927						    : AD4851_SCAN_TYPE_NORMAL;
-   928	}
-   929	
-   930	#define AD4851_IIO_CHANNEL(index, ch, diff)					\
-   931		.type = IIO_VOLTAGE,							\
-   932		.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBSCALE) |			\
-   933			BIT(IIO_CHAN_INFO_CALIBBIAS) |					\
-   934			BIT(IIO_CHAN_INFO_SCALE),					\
-   935		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
-   936			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
-   937		.info_mask_shared_by_all_available =					\
-   938			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
-   939		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),		\
-   940		.indexed = 1,								\
-   941		.differential = diff,							\
-   942		.channel = ch,								\
-   943		.channel2 = ch + (diff * 8),						\
-   944		.scan_index = index,							\
-   945	
-   946	#define AD4858_IIO_CHANNEL(index, ch, diff, bits)				\
-   947	{										\
-   948		AD4851_IIO_CHANNEL(index, ch, diff)					\
-   949		.ext_scan_type = ad4851_scan_type_##bits##_##diff,			\
-   950		.num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_##bits##_##diff),	\
-   951	}
-   952	
-   953	#define AD4857_IIO_CHANNEL(index, ch, diff, bits)				\
-   954	{										\
-   955		AD4851_IIO_CHANNEL(index, ch, diff)					\
-   956		.scan_type = {								\
-   957			.sign = 's',							\
-   958			.realbits = bits,						\
-   959			.storagebits = bits,						\
-   960		},									\
-   961	}
-   962	
- > 963	static const struct iio_chan_spec ad4858_channels[] = {
-   964		AD4858_IIO_CHANNEL(0, 0, 0, 20),
-   965		AD4858_IIO_CHANNEL(1, 0, 1, 20),
-   966		AD4858_IIO_CHANNEL(2, 1, 0, 20),
-   967		AD4858_IIO_CHANNEL(3, 1, 1, 20),
-   968		AD4858_IIO_CHANNEL(4, 2, 0, 20),
-   969		AD4858_IIO_CHANNEL(5, 2, 1, 20),
-   970		AD4858_IIO_CHANNEL(6, 3, 0, 20),
-   971		AD4858_IIO_CHANNEL(7, 3, 1, 20),
-   972		AD4858_IIO_CHANNEL(8, 4, 0, 20),
-   973		AD4858_IIO_CHANNEL(9, 4, 1, 20),
-   974		AD4858_IIO_CHANNEL(10, 5, 0, 20),
-   975		AD4858_IIO_CHANNEL(11, 5, 1, 20),
-   976		AD4858_IIO_CHANNEL(12, 6, 0, 20),
-   977		AD4858_IIO_CHANNEL(13, 6, 1, 20),
-   978		AD4858_IIO_CHANNEL(14, 7, 0, 20),
-   979		AD4858_IIO_CHANNEL(15, 7, 1, 20),
-   980	};
-   981	
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

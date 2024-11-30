@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-12886-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12887-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72AE9DF2B1
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:57:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19279DF2B6
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 20:00:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 758621627DE
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58A24281282
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9721A7259;
-	Sat, 30 Nov 2024 18:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131821A76B2;
+	Sat, 30 Nov 2024 18:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6Y4JVcn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYAffwYa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9DA17BD3
-	for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 18:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F6317BD3
+	for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 18:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732993018; cv=none; b=oHX+VDf94bJkDR6Hr3U6wKOZADV8vNhs0TgfEk2c+0UXaScxW6wL4RI6wZkfWvO1lnrknR5/Qfc9zgTA3JR4y7/cinxb/9YV+s9UX7LJwBBAbqQxHf6RYcO693eQdhAa8o0f8fyyhYydHqStlKFcErM1DrAOHYX7RFEtUz2tgqI=
+	t=1732993197; cv=none; b=chOdLvDSZDBIz/I0jJLw/FuVS5wUTV+6Y6pc/5qAcifNvABrHd6btMIx9EG9pjsE/mekmSd51Hmx1Xqroinp2zIhgjkacMGwwhGduRFGp/vl/CRD66D67WIDSjDOEXiVoAVvZAXUjbZJx7WWV/nze1y83dLy3WnusgefH1Ig08Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732993018; c=relaxed/simple;
-	bh=11NM9/N8IuCnrCC8SUwJK+nK4Isu2RmXLLzYjr0M9EA=;
+	s=arc-20240116; t=1732993197; c=relaxed/simple;
+	bh=Qs1UyRcrvBZ6H4ClHnUX2TJAJjFDdE0EhAij/LUYLWA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ULeg09MQDVxTPCHjrXm8/YVIuYwVaIUHh52f8JJEpXVv1/h5pjd4vTTKiHy6j6bQ87JOA3ijk6PkGYpPGdmt9eXouZp3HFPPLvRhPgSP2E6FBCZaaM4haOTyZQsnCbU0JY1OE5RKtcFThasEHyoL1/CGoCl6jr4Mq9DaN6nAEJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6Y4JVcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEE9C4CECC;
-	Sat, 30 Nov 2024 18:56:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OhGwBi3EO8N2TFuKXRDRUZ6/bj0PiEsOAKzYdWFbuX3yA2lAb7TqU2Ioizv4Km3q2CZPH/3cif2FEx0UzBCPlDH1UjpvJyZV7hLPmG0+1s2+DM6Wm2YWV535A9lHRYv1fayrUovQZTgx3aamrwcRhM2Viz6wtTtUQl179Q6rL2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYAffwYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14571C4CECC;
+	Sat, 30 Nov 2024 18:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732993018;
-	bh=11NM9/N8IuCnrCC8SUwJK+nK4Isu2RmXLLzYjr0M9EA=;
+	s=k20201202; t=1732993197;
+	bh=Qs1UyRcrvBZ6H4ClHnUX2TJAJjFDdE0EhAij/LUYLWA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O6Y4JVcnWLAA0hRIMLmhrD84P90oGKiy3iS84AYLGy7YsKkuGxtt9xfWz4HeQRk4M
-	 nYzgXZl0W2BvC13X9QrhruCEeS0GGZigMrfR5c0NqLarFRnvCawUzcmfSBEMBE8MKB
-	 uuNhnnfpHe8bxWlYzFVQGRBKnirrn1nxsw+EVdjPAv5GJbqhGe15uRyRqUxrzD2FmH
-	 C+itn8fozXAGATT1gwZYfkrmgRm/8E53OeKBt/2hKI1YX0cdBhW/M82vapih2qgW/U
-	 lf0OcCwdhMG16JTPYrsq14zasIlwjq8x+1XjiLLMK/+bH0TG1KM0e3Yywo1W/Dx5Ik
-	 to7Ok2fYif61Q==
-Date: Sat, 30 Nov 2024 18:56:49 +0000
+	b=bYAffwYaucKfFeIUCp63rJKrpV9S2PcaxrU4KiLIbfmhvnxw2NKyiF0yA/K4qV07Z
+	 ni17xdi/TDSiM9AM+v6cIhivMOhIXFrSTkrEw9K2TgHeR0Idvffis5tBJ/AM8jF72w
+	 7z5rboMzmCwI4RTcf2D4kcvPgv8PLeaq0lAPbHXaYugzqMWZ1SIdQGRssXYjqnFB7Z
+	 lpwJmd3XkSASsf5qDJ+fEVEBlMqIKBxUuoRrQl7/c+eoyqrBVf92XqiuTp7w15/OOj
+	 9bnFs6L3aaMVvnDp1Wtj8YykMkC+QWFkjKTAJL5NioJDA0LB6Af5M8/GkIO8uh79Kv
+	 S/Mg1NgnM7E3Q==
+Date: Sat, 30 Nov 2024 18:59:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Andy Shevchenko
  <andy.shevchenko@gmail.com>, David Lechner <dlechner@baylibre.com>, Trevor
  Gamblin <tgamblin@baylibre.com>, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v4 09/10] iio: adc: ad7124: Add error reporting during
- probe
-Message-ID: <20241130185649.2e2d68db@jic23-huawei>
-In-Reply-To: <20241127145929.679408-21-u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH v4 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+Message-ID: <20241130185948.300b94c4@jic23-huawei>
+In-Reply-To: <20241127145929.679408-22-u.kleine-koenig@baylibre.com>
 References: <20241127145929.679408-12-u.kleine-koenig@baylibre.com>
-	<20241127145929.679408-21-u.kleine-koenig@baylibre.com>
+	<20241127145929.679408-22-u.kleine-koenig@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,75 +64,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 27 Nov 2024 15:59:38 +0100
+On Wed, 27 Nov 2024 15:59:39 +0100
 Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-> A driver that silently fails to probe is annoying and hard to debug. So
-> add messages in the error paths of the probe function.
+> If the maximal count of channels the driver supports isn't fully
+> utilized, add an attribute providing the internal temperature.
 >=20
 > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+LGTM
 
-Probably worth calling out in this patch description that you also
-replace some dev_err() calls with dev_err_probe()
-
-One comment inline.
+For the whole series, I would ideally like an additional review from someon=
+e more
+familiar with these parts than I am.
 
 Thanks,
 
 Jonathan
 
-> @@ -1007,36 +1008,42 @@ static int ad7124_probe(struct spi_device *spi)
-> =20
->  		ret =3D regulator_enable(st->vref[i]);
->  		if (ret)
-> -			return ret;
-> +			return dev_err_probe(dev, ret, "Failed to enable regulator #%d\n", i);
-> =20
->  		ret =3D devm_add_action_or_reset(&spi->dev, ad7124_reg_disable,
->  					       st->vref[i]);
->  		if (ret)
-> -			return ret;
-> +			return dev_err_probe(dev, ret, "Failed to register disable handler fo=
-r regulator #%d\n", i);
+
+> @@ -902,6 +941,37 @@ static int ad7124_parse_channel_config(struct iio_de=
+v *indio_dev,
+>  		chan[channel].channel2 =3D ain[1];
 >  	}
 > =20
->  	st->mclk =3D devm_clk_get_enabled(&spi->dev, "mclk");
->  	if (IS_ERR(st->mclk))
-> -		return PTR_ERR(st->mclk);
-> +		return dev_err_probe(dev, PTR_ERR(st->mclk), "Failed to get mclk\n");
-> =20
->  	ret =3D ad7124_soft_reset(st);
->  	if (ret < 0)
-> +		/* ad7124_soft_reset() already emitted an error message */
-I'd not bother adding these already emitted comments.
-The only time we'd care is if someone else comes along and adds them. Hopef=
-ully we'd
-catch that anyway in review, but even if don't it wouldn't matter a lot.
->  		return ret;
-> =20
->  	ret =3D ad7124_check_chip_id(st);
->  	if (ret)
-> +		/* ad7124_check_chip_id() already emitted an error message */
->  		return ret;
-> =20
->  	ret =3D ad7124_setup(st);
->  	if (ret < 0)
-> +		/* ad7124_setup() already emitted an error message */
->  		return ret;
-> =20
->  	ret =3D devm_ad_sd_setup_buffer_and_trigger(&spi->dev, indio_dev);
->  	if (ret < 0)
-> -		return ret;
-> +		return dev_err_probe(dev, ret, "Failed to setup triggers\n");
-> =20
-> -	return devm_iio_device_register(&spi->dev, indio_dev);
-> +	ret =3D devm_iio_device_register(&spi->dev, indio_dev);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Failed to register iio device\n");
-> =20
-> +	return 0;
+> +	if (num_channels < AD7124_MAX_CHANNELS) {
+> +		st->channels[num_channels] =3D (struct ad7124_channel) {
+> +			.nr =3D num_channels,
+> +			.ain =3D AD7124_CHANNEL_AINP(AD7124_INPUT_TEMPSENSOR) |
+> +				AD7124_CHANNEL_AINM(AD7124_INPUT_AVSS),
+> +			.cfg =3D {
+> +				.bipolar =3D true,
+> +			},
+> +		};
+> +
+> +		chan[num_channels] =3D (struct iio_chan_spec) {
+> +			.type =3D IIO_TEMP,
+> +			.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> +				BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET) |
+> +				BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> +			.scan_type =3D {
+> +				/*
+> +				 * You might find it strange that a bipolar
+> +				 * measurement yields an unsigned value, but
+> +				 * this matches the device's manual.
+
+I did indeed ;)  So good comment.
+
+> +				 */
+> +				.sign =3D 'u',
+> +				.realbits =3D 24,
+> +				.storagebits =3D 32,
+> +				.endianness =3D IIO_BE,
+> +			},
+> +			.address =3D num_channels,
+> +			.scan_index =3D num_channels,
+> +		};
+> +	};
+> +
+>  	return 0;
 >  }
 > =20
->  static const struct of_device_id ad7124_of_match[] =3D {
 
 

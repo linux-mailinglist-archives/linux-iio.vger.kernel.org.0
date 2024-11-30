@@ -1,122 +1,247 @@
-Return-Path: <linux-iio+bounces-12884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12885-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF58D9DF2AD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:50:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D498F9DF2AF
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:54:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85404162CA8
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:53:58 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF91919CCEA;
+	Sat, 30 Nov 2024 18:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwAHP4Kh"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38D8628133B
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:50:49 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93E419E7D1;
-	Sat, 30 Nov 2024 18:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="l4USdOr0"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD78130E4A
-	for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 18:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E21B17BD3
+	for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 18:53:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732992644; cv=none; b=qyG9un+C0EatUcfSyCRq35Ojgo6IVrf++VJENmyGTCt55mezx/SSt/XKoRt2bpLACRTNJprNe2a5zJn5HzjtlRuOknXpSa9B4o14Bf6ocBqSDkWdLaJ985aLqGiNsrtZKhPCkxavqUDOk8XnK+oDN3gCplCdmv+VBwssZhtmgck=
+	t=1732992837; cv=none; b=dkV3e68JLkqpzGNMZLwLTfTDflOV/r5hspD1dvO16QKIHH/UkrYA/n2SeE3KDbwgZDARLZULs7kiErQCqKVMJCfYBIRCuoukU/cx75TtxSPhOQqOkPLG1ym5cc/AWO8giM6EZ9xmfi9PBn3Lz8DFB66/H5fTS4Z5S0OGazNMz9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732992644; c=relaxed/simple;
-	bh=QEwOBohegim/6DNi0o5P9p435b9KwpkcXOXYxL1//f8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eoRRzCi1zDKuE1TLPZkMVfP7Bx1htF8CDGSp8RgpEhVYaPJQkyDvD0uSLl0YWneHWSXieu3xk87cg+zPRUHCL9ZL42s7vsOkvVEmGtY19Fum1AzvpOv3eKzDsjML7ytjzvoI54yZOYDP34MRYToaal7Y5rm6xbnjFBywtc4vqqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=l4USdOr0; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-29687cd1924so1451699fac.2
-        for <linux-iio@vger.kernel.org>; Sat, 30 Nov 2024 10:50:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1732992642; x=1733597442; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I25x18j8ZN6wv+m57NL159iqLWMt9+yWlrxyycszO84=;
-        b=l4USdOr0/aWzNAy8FTgxXhc+oxrb2nTALkKkAfRrUUG50RuwkMoEBsTWiKWshpuCUK
-         YuC9oTdHLQ3EIOx+DbTmK5fEeOFi9nYnyTvtMCy6eBG942S89aU5KGVtchC+MQntYufe
-         mb22FKZYi8Gts9ufmf/zv5slR/CgSLyxtD3i7izpxYAMf0Arf2Q7sM0pMHTtyZU3H0a2
-         tiPRzBc+aZIHnRdPaOtiRzcoiyBRX9qwlKhCXECF4+hXPa9jY8iB7mJ3nKEH+DygqksM
-         DWDwF8VNo9FYEAGhdj0tTK3cQIWpTKAGomZiKcD5/uab3BvdWAdPD4Kah8AZt3N22b1Q
-         n7ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732992642; x=1733597442;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I25x18j8ZN6wv+m57NL159iqLWMt9+yWlrxyycszO84=;
-        b=cfUPOg6QhUbNm3ca/gF2m5qByko36x8tLIx9QPtLSCp2CSsY4oqhl2IXXBAqPNmM9h
-         wv90bNcv3xileK6jJf7hCZQHHCRrojGhPfuC8CG0R2A8J983F/0DG3GJlfqrIrw4IyAR
-         R+7A1htFImPJx0DPeBcq9BrCLCQqgO+ywFr9ROcO5NEW/zSStd1cLU8XOnZsyIs2hFHc
-         GYURvoXmzjGrg91TQg6AXx4FEAJ3qPfvBlu/PrcyOFp09Vju9ch7sJpdiBahsEa03Xyt
-         i+XYMVTCVYGuH+xPfh9v2/8QGbzUIjwqifWGb/ba+VPJYv+fjPjzxbdlXyIrPFt0a/vQ
-         h8Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCWtpFqn89zjsoRpVDXwekxhK4lZwx8gW86MsGsLaKDQGZF1sL3AJ61nEs9Jai3xzlEjWR2HvCsIHOs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLSegFBRF/1ZuQzqfUdxo5rMRp+bOleSbJbWaMhx7L1gDjik4g
-	f4Ku4/eu5LJPrN2BNSK4lWCVyPokExRHPAn/I0pzcxTnJaMwk4RTXN6AN0Jnn6M=
-X-Gm-Gg: ASbGncu1a7kS4CY+0iB9QIB1uXLclJI+Zb/utzeUahsWX8EyVT4EzH8JH4hrtwMgxXg
-	8+V/AeR+Ga8gLuXeHPvFxK0VKTBXGyZVdGbbOZmgO6J+L/bvLXwB+gGraH0zxDI+NNyeFKfa+8r
-	PBMcoQrRdfAh3yG3OCV1E9PKkeu4a5S6spvHOp5LaoNMkzUs1rsCaC2PeeQtvqoLo+9Sl/BH1+M
-	wC/4Niwi60Qvq1B10HfcJMWSEzsPYFtImXy8xCANNRyr23Tcsz+/ISS+ZFp+P2jKx0teNHXN5fB
-	0mWX/Hokd/I=
-X-Google-Smtp-Source: AGHT+IHMQHi+XSb10ft1yQND1yWWDCFYjk610SkV9fX/M2s2WKAmpH/Fd9zfkJK5BDgIWnYP03FRKw==
-X-Received: by 2002:a05:6871:5e06:b0:277:d8ee:6dda with SMTP id 586e51a60fabf-29dc4198fb1mr14233141fac.23.1732992641928;
-        Sat, 30 Nov 2024 10:50:41 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29de9945eb6sm1893519fac.34.2024.11.30.10.50.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Nov 2024 10:50:41 -0800 (PST)
-Message-ID: <2c6a435e-23aa-446c-bec6-6fc4d24e2d66@baylibre.com>
-Date: Sat, 30 Nov 2024 12:50:39 -0600
+	s=arc-20240116; t=1732992837; c=relaxed/simple;
+	bh=C9gQr/qrEmegparfJO7/rTF8Ib0zznPAnvuLJanjTPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AHfn77HNDaWcjeJQqZDEzbiMaC0v/DflvcIf6LhnUBQQAWkqWX8RdAVt+oYnkUghHy0GfXvZq2zfaCCEmhy6cvA/GKgxAAE2FTSB4oJ5jSPb+fJehihEU+mdfC2djAg6ORO0KaTYYKbxvVpaeBZXsEdw3ucb3w4Tbjd+VL92rSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwAHP4Kh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E58FC4CECC;
+	Sat, 30 Nov 2024 18:53:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732992836;
+	bh=C9gQr/qrEmegparfJO7/rTF8Ib0zznPAnvuLJanjTPY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BwAHP4Kh859z9kA6ulWkyrslsXVpp9U5JB1O0bR57qeOmErF1oGSw0wXddUmGJi16
+	 w7IOBP1o5XOhBp+CD1aU9RXTlxtNIXPJcQMn/6Gjk2IXzHL8MrhIv35EULmmwqxdfM
+	 700yNJpptdV1faYdXpBMZSvB1+l1N5+7cd8eEtqMGWGumMbTPhyAogSTQe6fxxza67
+	 lv38VNhCVjL+qbL8tTM2z+RFcsr4mLdeLJr1UuUw0RcuhYIvdSgjKScYxOReI/zxZj
+	 3+dnWq5dHz6DHxev9I9i2wEJqfOG5PK7Rd7kPcQyzSdL2Rq+pUX9o8H8tW6QS1Hte1
+	 VP9SiIDwh4Bkg==
+Date: Sat, 30 Nov 2024 18:53:48 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, David Lechner <dlechner@baylibre.com>, Trevor
+ Gamblin <tgamblin@baylibre.com>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v4 08/10] iio: adc: ad_sigma_delta: Check for previous
+ ready signals
+Message-ID: <20241130185348.5f9d0306@jic23-huawei>
+In-Reply-To: <20241127145929.679408-20-u.kleine-koenig@baylibre.com>
+References: <20241127145929.679408-12-u.kleine-koenig@baylibre.com>
+	<20241127145929.679408-20-u.kleine-koenig@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7173: fix non-const info struct
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Nuno Sa <nuno.sa@analog.com>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <u.kleine-koenig@baylibre.com>, Guillaume Ranquet <granquet@baylibre.com>
-References: <20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com>
- <20241130184306.51e5bb8c@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241130184306.51e5bb8c@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 11/30/24 12:43 PM, Jonathan Cameron wrote:
-> On Wed, 27 Nov 2024 14:01:52 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
-> 
->> While working ad7124, Uwe pointed out a bug in the ad7173 driver.
->> static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
->> and was being modified during driver probe, which could lead to race
->> conditions if two instances of the driver were probed at the same time.
->>
->> The actual fix part is fairly trivial but I have only compile tested it.
->> Guillaume has access to ad4111 hardware, so it would be good to get a
->> Tested-by from him to make sure this doesn't break anything.
->>
-> This is very big for a backport.  So I replied to previous version to suggest
-> instead duplicating the data before modifying.  That has much less code
-> movement and maybe a cleaner fix.  Perhaps we then cycle back to avoiding
-> that copy later.
-> 
-That is exactly what I did in v2. "iio: adc: ad7173: fix using shared
-static info struct" copies the struct before modifying it and is the
-only patch with a Fixes: tag.
+On Wed, 27 Nov 2024 15:59:37 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+
+> It can happen if a previous conversion was aborted the ADC pulls down
+> the =CC=85R=CC=85D=CC=85Y line but the event wasn't handled before. In th=
+at case enabling
+> the irq might immediately fire (depending on the irq controller's
+> capabilities) and even with a rdy-gpio isn't identified as an unrelated
+> one.
+>=20
+> To cure that problem check for a pending event before the measurement is
+> started and clear it if needed.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+Hi Uwe,
+
+I think there is a DMA buffer safety issue hiding in the new code. Other th=
+an
+that this looks good to me.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/ad_sigma_delta.c | 89 ++++++++++++++++++++++++++++++++
+>  1 file changed, 89 insertions(+)
+>=20
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_=
+delta.c
+> index 9891346c2d73..164a4d0b571d 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -29,8 +29,11 @@
+>  #define AD_SD_COMM_CHAN_MASK	0x3
+> =20
+>  #define AD_SD_REG_COMM		0x00
+> +#define AD_SD_REG_STATUS	0x00
+>  #define AD_SD_REG_DATA		0x03
+> =20
+> +#define AD_SD_REG_STATUS_RDY	0x80
+> +
+>  /**
+>   * ad_sd_set_comm() - Set communications register
+>   *
+> @@ -222,6 +225,80 @@ static void ad_sd_enable_irq(struct ad_sigma_delta *=
+sigma_delta)
+>  	enable_irq(sigma_delta->irq_line);
+>  }
+> =20
+> +/* Called with `sigma_delta->bus_locked =3D=3D true` only.  */
+
+Trivial but bonus space before */
+
+> +static int ad_sigma_delta_clear_pending_event(struct ad_sigma_delta *sig=
+ma_delta)
+> +{
+> +	bool pending_event;
+> +	unsigned int data_read_len =3D BITS_TO_BYTES(sigma_delta->info->num_res=
+etclks);
+> +	u8 data[9];
+
+SPI requires DMA safe buffers.  Either play games to get one in iio_priv via
+__aligned(IIO_DMA_MINALIGN) or just kzalloc() this here.
+Probably do that after the !pending_event check though so we only allocate
+when there is a need for it.
+
+
+> +	struct spi_transfer t[] =3D {
+> +		{
+> +			.tx_buf =3D data,
+> +			.len =3D 1,
+> +		}, {
+> +			.tx_buf =3D data + 1,
+> +			.len =3D data_read_len,
+> +		}
+> +	};
+> +	struct spi_message m;
+> +
+> +	/*
+> +	 * read RDY pin (if possible) or status register to check if there is an
+
+* Read RDY...
+
+> +	 * old event.
+> +	 */
+> +	if (sigma_delta->rdy_gpiod) {
+> +		pending_event =3D gpiod_get_value(sigma_delta->rdy_gpiod);
+> +	} else {
+> +		int ret;
+> +		unsigned status_reg;
+> +
+> +		ret =3D ad_sd_read_reg(sigma_delta, AD_SD_REG_STATUS, 1, &status_reg);
+> +		if (ret)
+> +			return ret;
+> +
+> +		pending_event =3D !(status_reg & AD_SD_REG_STATUS_RDY);
+> +	}
+> +
+> +	if (!pending_event)
+> +		return 0;
+> +
+> +	/*
+> +	 * In general the size of the data register is unknown. It varies from
+> +	 * device to device, might be one byte longer if CONTROL.DATA_STATUS is
+> +	 * set and even varies on some devices depending on which input is
+> +	 * selected. So send one byte to start reading the data register and
+> +	 * then just clock for some bytes with DIN (aka MOSI) high to not
+> +	 * confuse the register access state machine after the data register was
+> +	 * completely read. Note however that the sequence length must be
+> +	 * shorter than the reset procedure.
+> +	 */
+> +
+> +	/* Oh, back out instead of overflowing data[] */
+> +	if (data_read_len > sizeof(data) - 1)
+> +		return -EINVAL;
+> +
+> +	spi_message_init(&m);
+> +	if (sigma_delta->info->has_registers) {
+> +		unsigned int data_reg =3D sigma_delta->info->data_reg ?: AD_SD_REG_DAT=
+A;
+> +
+> +		data[0] =3D data_reg << sigma_delta->info->addr_shift;
+> +		data[0] |=3D sigma_delta->info->read_mask;
+> +		data[0] |=3D sigma_delta->comm;
+> +		spi_message_add_tail(&t[0], &m);
+> +	}
+> +
+> +	/*
+> +	 * The first transferred byte is part of the real data register,
+> +	 * so this doesn't need to be 0xff. In the remaining
+> +	 * `data_read_len - 1` bytes are less than $num_resetclks ones.
+> +	 */
+> +	data[1] =3D 0x00;
+> +	memset(data + 2, 0xff, data_read_len - 1);
+> +	spi_message_add_tail(&t[1], &m);
+> +
+> +	return spi_sync_locked(sigma_delta->spi, &m);
+> +}
+> +
+>  int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
+>  	unsigned int mode, unsigned int channel)
+>  {
+> @@ -237,6 +314,10 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_del=
+ta,
+>  	sigma_delta->keep_cs_asserted =3D true;
+>  	reinit_completion(&sigma_delta->completion);
+> =20
+> +	ret =3D ad_sigma_delta_clear_pending_event(sigma_delta);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret =3D ad_sigma_delta_set_mode(sigma_delta, mode);
+>  	if (ret < 0)
+>  		goto out;
+> @@ -310,6 +391,10 @@ int ad_sigma_delta_single_conversion(struct iio_dev =
+*indio_dev,
+>  	sigma_delta->keep_cs_asserted =3D true;
+>  	reinit_completion(&sigma_delta->completion);
+> =20
+> +	ret =3D ad_sigma_delta_clear_pending_event(sigma_delta);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_SINGLE);
+> =20
+>  	ad_sd_enable_irq(sigma_delta);
+> @@ -406,6 +491,10 @@ static int ad_sd_buffer_postenable(struct iio_dev *i=
+ndio_dev)
+>  	sigma_delta->bus_locked =3D true;
+>  	sigma_delta->keep_cs_asserted =3D true;
+> =20
+> +	ret =3D ad_sigma_delta_clear_pending_event(sigma_delta);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret =3D ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_CONTINUOUS);
+>  	if (ret)
+>  		goto err_unlock;
 
 

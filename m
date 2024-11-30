@@ -1,61 +1,67 @@
-Return-Path: <linux-iio+bounces-12857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD229DF12F
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 15:35:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB379DF139
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 15:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90D3EB210EC
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 14:35:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81D3BB2117C
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7613199244;
-	Sat, 30 Nov 2024 14:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BAC19CC24;
+	Sat, 30 Nov 2024 14:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQdPnfGW"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6xI8xhs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0B522066;
-	Sat, 30 Nov 2024 14:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DCA22066;
+	Sat, 30 Nov 2024 14:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732977315; cv=none; b=OFihX/Mi2mwJFdn9WS6rdS6JQsGKpl3FtIBfLgghJ9rsF8+U0aMcj1UxUbFHJ6sYOAKq+Y7iX9lQx0STuT2vfX7Z9Y011o1geI2fKCZgqFMmJcRo8J23eoLJyCTlKO81Yxj126huGtEl3gzLPpB/6MlJLe+E2s/KBfe6yPmEr/g=
+	t=1732977533; cv=none; b=ZpK2fPerZZ26ZLvlDr9cosCprteFcBlLuC5tzqntSV6ic4SwyIB7o5CDe/mOqCXZCxA3nahiLx7NZOQpkqU2RP3bqHpYEKZpZmGcbaQMeGTAqYaEXbXxKXkiSAf54RvvqcebyIXAjjCgdZitJQXzzowuyF0OP6n3Kroi8E5cX0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732977315; c=relaxed/simple;
-	bh=Qr9/VH+QjmMpO1LCTY0JC4VbxBw671YMA+63h+7HpBs=;
+	s=arc-20240116; t=1732977533; c=relaxed/simple;
+	bh=QCPo4jXBpcB4DpefDlo0VJK7XXro8x4Hb1AhIGZvSn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jeyNaOTo3vcmc5cUUM77Vl71exYjVCe1VGtuN6XG/BHtweQr7bndE7vOhuWE87PJsy3C8usXLU94zGoIx3ccMMMYnV38Rg8O7yDfrRs/3RI761qmiNGUMvBY8btU1Jx0LBgooqBo2PQHx+p/FFgwEYgkLdGAgcK4bQiSyg1MeH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQdPnfGW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1723BC4CECC;
-	Sat, 30 Nov 2024 14:35:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fFFzV3u9fmjW9qelufn5M5TZXaFIdW26n1C6nuoFHQOAFSOrJ9nW6DgsNFtJFNUSvsXB1CPJzitDCx6mnmc4Tkkcsqh2nBzvf97Ak9Me9MwhDrxS/6DfS4/BrJdo5Vz0vu0tmiln/CYeUAb3g69gJWs6mLqKgdbYSajcHTLM4sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6xI8xhs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C931AC4CECC;
+	Sat, 30 Nov 2024 14:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732977315;
-	bh=Qr9/VH+QjmMpO1LCTY0JC4VbxBw671YMA+63h+7HpBs=;
+	s=k20201202; t=1732977532;
+	bh=QCPo4jXBpcB4DpefDlo0VJK7XXro8x4Hb1AhIGZvSn8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fQdPnfGW5VbAn1OukMtk2xa8qLdZD1dcZi3VSgy269ui+i4sfzjHKomIxT7p4rcy3
-	 bOZ3nQfiHG2fna3tKZegUXax/QnYuFvHjmYFWcfXpUlwqmQMkuIFFaGDuETWgH4hsL
-	 NNF6P7WWUWNB5QcpSJfda4k7hz4kFLSkN8VjgORXoVs4cD6SYTpfmdkUctuiYSLCpQ
-	 CG7EqhnfeDLj933MM+b7kzHyQFOvxoqd4qqzOQbR/7FqnG84taCrmFM2uVbVsxR6LM
-	 VJ2Qyxyib1YUUJE5y/Sf3MXTWQxRm27tYrNSKkU48D+RVgP0yHxjgThzD70VjgSAls
-	 wVxXGnFaAzC+w==
-Date: Sat, 30 Nov 2024 14:35:06 +0000
+	b=C6xI8xhsgKziHqKNSSdgUD6emEOO36YBbx0jdInDo4jjIVOWHbzAvoF16R1hz/flH
+	 BG3fOlcCvdz55DXlEtkC0MOjyDPQNV/BOmqZEuBym/M+3bwXyPgsOHzVLgpVkjoENo
+	 n3QfE/+LXiCoIQ5bJLAmAKeuuyLsy4KbVrpyYdFKswVtixhRcqtpMblmxKctsgaAxD
+	 2RcItqG8NipNwiI/xt4RnQVODt2LkQTyj9zT15dLBNGu7wWbUVHpBeuwqjGZ/vekNV
+	 1tFL4bwwEe7kCaqYlmm8P10IF39F3MPCdRspEDkJOgBjt+4Y6LaQjBOQd1FnsbqPNd
+	 2bAktGe7BxKSw==
+Date: Sat, 30 Nov 2024 14:38:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Laight <David.Laight@ACULAB.COM>
-Cc: 'Jakob Hauser' <jahau@rocketmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Andrew Morton <akpm@linux-foundation.org>, Linus Walleij
- <linus.walleij@linaro.org>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v2] iio: magnetometer: yas530: Use signed integer type
- for clamp limits
-Message-ID: <20241130143506.53973e40@jic23-huawei>
-In-Reply-To: <9f5793f03c2440d2aa18630469df06df@AcuMS.aculab.com>
-References: <11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
-	<11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
-	<9f5793f03c2440d2aa18630469df06df@AcuMS.aculab.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	0001-iio-light-Drop-BU27008-and-BU27010.patch@mva-rohm.smtp.subspace.kernel.org,
+	0002-dt-bindings-iio-light-Drop-BU27008-and-BU27010.patch@mva-rohm.smtp.subspace.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>, Marek Vasut <marex@denx.de>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] Drop BU27008 and BU27010
+Message-ID: <20241130143842.34d29a51@jic23-huawei>
+In-Reply-To: <cover.1732819203.git.mazziesaccount@gmail.com>
+References: <cover.1732819203.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,113 +72,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 30 Nov 2024 11:40:45 +0000
-David Laight <David.Laight@ACULAB.COM> wrote:
+On Thu, 28 Nov 2024 21:34:54 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> From: Jakob Hauser
+> Drop the support for ROHM BD72008 and BD72010 RGB sensors
 > 
-> Copying Andrew M - he might want to take this through his mm tree.
+> I accidentally hit a BU27008 data-sheet which had a big red text saying
+> "Obsolete". After a few queries I received a word that the ROHM BU27008
+> and BU27010 RGB sensors were cancelled and never entered mass production.
+> Supporting not existing hardware makes no sense, so it's probably best
+> to drop the drivers and dt-bindings.
+> 
+> There is still a RGB sensor from ROHM called BU27006.
+> https://www.rohm.com/products/sensors-mems/color-sensor-ics/bu27006muc-z-product
+> Based on a quick glance this should be very similar to the BU27010. If
+> someone wants to create a driver for this, then the bu27008.c might be
+> worth looking at.
+> 
+> As writing of this I don't have the BU27006 at my hands, and when I
+> asked about creating a driver for this IC from the HQ ... I got an
+> impression that at the moment ROHM rather pays me for doing something
+> else. So, currently I have no plan to add support for the BD27006.
+> We can always dig the bu27008.c from the depths of the git, if it later
+> appears such a driver would be a good idea.
 
-I'm confused. Why?
+Applied.  I'm not going to rush it in because a driver for hardware
+that no one has is not really a problem as long as no one does any more
+work on it.  So queued up in my testing branch which will go upstream
+next merge cycle.
 
-Looks like a local bug in an IIO driver.  What am I missing?
+You have my sympathies wrt to wasted work!
+
+Jonathan
 
 > 
-> > Sent: 29 November 2024 21:25
-> > 
-> > In the function yas537_measure() there is a clamp_val() with limits of
-> > -BIT(13) and  BIT(13) - 1. The input clamp value h[] is of type s32. The BIT()
-> > is of type unsigned long integer due to its define in include/vdso/bits.h.
-> > The lower limit -BIT(13) is recognized as -8192 but expressed as an unsigned
-> > long integer. The size of an unsigned long integer differs between 32-bit and
-> > 64-bit architectures. Converting this to type s32 may lead to undesired
-> > behavior.
-> > 
-> > Additionally, in the calculation lines h[0], h[1] and h[2] the unsigned long
-> > integer divisor BIT(13) causes an unsigned division, shifting the left-hand
-> > side of the equation back and forth, possibly ending up in large positive
-> > values instead of negative values on 32-bit architectures.
-> > 
-> > To solve those two issues, declare a signed integer with a value of BIT(13).
-> > 
-> > There is another omission in the clamp line: clamp_val() returns a value and
-> > it's going nowhere here. Self-assign it to h[i] to make use of the clamp
-> > macro.
-> > 
-> > Finally, replace clamp_val() macro by clamp() because after changing the limits
-> > from type unsigned long integer to signed integer it's fine that way.
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202411230458.dhZwh3TT-lkp@intel.com/
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202411282222.oF0B4110-lkp@intel.com/
-> > Fixes: 65f79b501030 ("iio: magnetometer: yas530: Add YAS537 variant")
-> > Cc: David Laight <david.laight@aculab.com>
-> > Signed-off-by: Jakob Hauser <jahau@rocketmail.com>  
+> Matti Vaittinen (2):
+>   iio: light: Drop BU27008 and BU27010
+>   dt-bindings: iio: light: Drop BU27008 and BU27010
 > 
-> Reviewed-by: David Laight <david.laight@aculab.com>
-> 
-> I THINK all the other BIT() and GENMASK() are ok.
-> The code also rather heavily relies on u16 being promoted to 'signed int'.
-> 
-> 	David
+>  .../bindings/iio/light/rohm,bu27008.yaml      |   49 -
+>  .../bindings/iio/light/rohm,bu27010.yaml      |   50 -
+>  MAINTAINERS                                   |    1 -
+>  drivers/iio/light/Kconfig                     |   16 -
+>  drivers/iio/light/Makefile                    |    1 -
+>  drivers/iio/light/rohm-bu27008.c              | 1635 -----------------
+>  6 files changed, 1752 deletions(-)
+>  delete mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu27008.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bu27010.yaml
+>  delete mode 100644 drivers/iio/light/rohm-bu27008.c
 > 
 > 
-> > ---
-> > The patch is based on torvalds/linux v6.12.
-> > 
-> > The calculation lines h[0], h[1] and h[2] exceed the limit of 80 characters per
-> > line. In terms of readability I would prefer to keep it that way.
-> > 
-> > Changes in v2:
-> >  - Self-assigned the clamp macro to h[i].
-> >  - Changed from clamp_val() macro to clamp().
-> >  - In commit message added issues on divisor BIT(13) and missing clamp
-> >    assignment.
-> >  - In tags added another (duplicate) report by the kernel test robot.
-> > 
-> > Link to v1: https://lore.kernel.org/linux-iio/20241126234021.19749-1-jahau@rocketmail.com/T/#t
-> > ---
-> >  drivers/iio/magnetometer/yamaha-yas530.c | 13 +++++++------
-> >  1 file changed, 7 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-> > index 65011a8598d3..c55a38650c0d 100644
-> > --- a/drivers/iio/magnetometer/yamaha-yas530.c
-> > +++ b/drivers/iio/magnetometer/yamaha-yas530.c
-> > @@ -372,6 +372,7 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
-> >  	u8 data[8];
-> >  	u16 xy1y2[3];
-> >  	s32 h[3], s[3];
-> > +	int half_range = BIT(13);
-> >  	int i, ret;
-> > 
-> >  	mutex_lock(&yas5xx->lock);
-> > @@ -406,13 +407,13 @@ static int yas537_measure(struct yas5xx *yas5xx, u16 *t, u16 *x, u16 *y1, u16 *y
-> >  	/* The second version of YAS537 needs to include calibration coefficients */
-> >  	if (yas5xx->version == YAS537_VERSION_1) {
-> >  		for (i = 0; i < 3; i++)
-> > -			s[i] = xy1y2[i] - BIT(13);
-> > -		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / BIT(13);
-> > -		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / BIT(13);
-> > -		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / BIT(13);
-> > +			s[i] = xy1y2[i] - half_range;
-> > +		h[0] = (c->k *   (128 * s[0] + c->a2 * s[1] + c->a3 * s[2])) / half_range;
-> > +		h[1] = (c->k * (c->a4 * s[0] + c->a5 * s[1] + c->a6 * s[2])) / half_range;
-> > +		h[2] = (c->k * (c->a7 * s[0] + c->a8 * s[1] + c->a9 * s[2])) / half_range;
-> >  		for (i = 0; i < 3; i++) {
-> > -			clamp_val(h[i], -BIT(13), BIT(13) - 1);
-> > -			xy1y2[i] = h[i] + BIT(13);
-> > +			h[i] = clamp(h[i], -half_range, half_range - 1);
-> > +			xy1y2[i] = h[i] + half_range;
-> >  		}
-> >  	}
-> > 
-> > --
-> > 2.43.0  
-> 
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-> Registration No: 1397386 (Wales)
-> 
+> base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
 
 

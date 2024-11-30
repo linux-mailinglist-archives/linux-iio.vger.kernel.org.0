@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-12891-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12892-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4FB59DF2F6
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 21:22:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3DC9DF2FD
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 21:29:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 425F2B20FEA
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 20:22:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4D78162CE2
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 20:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250FC1AA1EF;
-	Sat, 30 Nov 2024 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36C71AAE05;
+	Sat, 30 Nov 2024 20:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uchqTNKX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THQQsrqH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7507132103;
-	Sat, 30 Nov 2024 20:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F96C1AA78A;
+	Sat, 30 Nov 2024 20:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732998121; cv=none; b=ON5G2KJWTj4XdyBrof9nu90AEybkedFzgUcDAv5eGUTmDm3V+fjw/3R5o72n9oT594mFxggugYOuntoxMoSDtaIYosIC2q6KzS0eBWLdW5CaYdpAZlI9zo6+YahN7o/mAQsMaZBmBaHw6H2lfS6goocxvQ4GeT+qI4JJ8ZLpEqc=
+	t=1732998539; cv=none; b=OhA3yvLtuISjCQiB4b/ddVqZIfG9AKZGPw/U87mFbmz5ICJDvA2Ue5nxt/aPSpOnHueFPoZDqSMYbv8ScUF2r0nKDX1GqIAlibkWCALafKl8Y2r7ybT2qquV/D17+BYG4iZYVeZ3kfMlok/HCkwa0o/LMhGDwVclzrv1E3arJNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732998121; c=relaxed/simple;
-	bh=2nE1h0yILU41OiOECNUhWVit38qRQPHqhrGDzevoGSg=;
+	s=arc-20240116; t=1732998539; c=relaxed/simple;
+	bh=SiY2Nq9QzSin2vjmXSMhAfeksH3aD0224fqxI9VqMSU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MdusPznxnurOqt2F8YYHbdm+iiJ3US0JCk0E5qO0wqNIq9DVV7vSqTRvC28DTEJORLKtVnoNHHaG1EhQXI9JPqZplhCplo0BT+IM0tZAz9SiDOa4xPxbKJ/9eqIm/Drz/dIi1r0vLRArD6pDKfFGJ5SM+Mi4MKmrPGYu/maEfW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uchqTNKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48620C4CECC;
-	Sat, 30 Nov 2024 20:21:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mCKe+198PnoxHUwVh0xoUb7jdfYZ7ifX/kltylCipcbPW7ipHaEQLdjYfuDUwUDSYDm+yuBzzYEL8hMHur8jY34SfYvaxKr8nKbAW4ZfShc6PnUVzesWTqJKa+Ji9QchAOPrb78vi3Mg9l5dn4E3U4UVdTGJiKxyulKbQJHhLD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THQQsrqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56089C4CECC;
+	Sat, 30 Nov 2024 20:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732998121;
-	bh=2nE1h0yILU41OiOECNUhWVit38qRQPHqhrGDzevoGSg=;
+	s=k20201202; t=1732998538;
+	bh=SiY2Nq9QzSin2vjmXSMhAfeksH3aD0224fqxI9VqMSU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uchqTNKXkdKkctS8LhLVbwuMNhtxMKvl7z9lY+sfzluvjlxV8asm/XCGFr3mkyx1C
-	 ZQ0jVL45SEpvkWtIcmmtc7BFjMDwQ3gKRNlDg17Ztl+JVHi0o8xUilnaMZZYjO3eDp
-	 +48Ei9/TJzslWT906vuqT0lM8NJlCob1rdSEicJFHLo0RTUcYkR2PQyY03TjZmB3KQ
-	 4oPnvtYzx6s0UAKZ/Ax7pQFO9mr2cWFknnx57zU5VcOwFmi3ujZKFxGqUJF39LdeGu
-	 sl4iTPL1X5ndWtk0NM0Ak/+P19NP0a3WId8DoAgagrkMX15UuY+TNylMV83gOS1vQ0
-	 m5ytC8IhAtLFA==
-Date: Sat, 30 Nov 2024 20:21:53 +0000
+	b=THQQsrqHLVL9bpqOb8h8nwY8dHsGur7AbcDZs3PJeFsc7ru2U4qfyFDktqvoXjGry
+	 Q8lNLqjiuV4aPq1uOx3A4QCxkueW7tBFkCXF1sgDqEddC1Zl9EmXXUAgwAGaaNO1bS
+	 qKan3lrqVwjoPfroskLWVASQNHSlU12VJjWoVg8fVmeoFhWTdDAWH3c6pypnFak+up
+	 pMiveP0yeP33GOzEWZrDlPqOuy28+9FaNlOrbo9tfSQcLQ8gjJGoU0h4djJCOslKbH
+	 XjhwGHiHQ5KChLWd6+88r7s2LPl2ybNFTAERShqtAhMH9fscgi9Mq0ymttTeismz5N
+	 0KYlOYrrQMYCg==
+Date: Sat, 30 Nov 2024 20:28:49 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: Frank Li <Frank.Li@nxp.com>, haibo.chen@nxp.com, imx@lists.linux.dev,
- lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] iio: adc: vf610_adc: limit i.MX6SX's channel
- number to 4
-Message-ID: <20241130202153.7909f86a@jic23-huawei>
-In-Reply-To: <CAOMZO5AVyubQUpEhm-oRb8bmAH=5w2TxTnuuvoY_+HLhpnBaTw@mail.gmail.com>
-References: <20241126195256.2441622-1-Frank.Li@nxp.com>
-	<20241126195256.2441622-2-Frank.Li@nxp.com>
-	<CAOMZO5AVyubQUpEhm-oRb8bmAH=5w2TxTnuuvoY_+HLhpnBaTw@mail.gmail.com>
+To: Ming Yu <a0282524688@gmail.com>
+Cc: tmyu0@nuvoton.com, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, cmo@melexis.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Jean Delvare
+ <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH v1 0/2] Add Nuvoton NCT7718W IIO driver
+Message-ID: <20241130202849.13eedb04@jic23-huawei>
+In-Reply-To: <20241126074005.546447-1-tmyu0@nuvoton.com>
+References: <20241126074005.546447-1-tmyu0@nuvoton.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,25 +59,52 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 26 Nov 2024 16:56:23 -0300
-Fabio Estevam <festevam@gmail.com> wrote:
+On Tue, 26 Nov 2024 15:40:03 +0800
+Ming Yu <a0282524688@gmail.com> wrote:
 
-> On Tue, Nov 26, 2024 at 4:53=E2=80=AFPM Frank Li <Frank.Li@nxp.com> wrote:
->=20
-> > +       chip_info =3D device_get_match_data(dev);
-> > +       if (!chip_info) =20
->=20
-> This NULL check is not needed.
->=20
-> If the code entered probe(), a compatible was matched.
+> NCT7718W is an I2C based thermal sensor chip from Nuvoton.
+Hi Ming Yu,
 
-Whilst I don't feel strongly either way on this check, I've dropped it
-and applied the patches to the testing branch of iio.git.
++CC Jean and Guenter,
+
+Why an IIO driver rather than a HWMON one?  Superficially this looks like a hwmon
+chip.  We do have the means to put a generic driver in IIO and bridge to hwmon, but
+when a device is very much intended for monitoring of hardware temperatures etc
+the IIO driver rarely has any purpose and a simpler hwmon only solution makes sense.
+
+For temperature sensors IIO normally makes sense if:
+1) They are part of a series of devices some of which have more functionality than temp
+2) Fast devices where hwmon sysfs interfaces become a bottleneck - note you have to have
+a usecase for reading them fast, not simply a device that is capable of it.
+3) 'Unusual' temperature sensors such as infrared thermometers or very high precision
+   thermocouple interfaces.
+
+Any of those apply here?
+
+Note that hwmon has better threshold and critical temperature handling than we can do
+in IIO and it seems your part has those as well.
 
 Thanks,
 
 Jonathan
+
+
+> 
+> Ming Yu (2):
+>   dt-bindings: iio: temperature: Add support for NCT7718W
+>   iio: temperature: Add Nuvoton NCT7718W support
+> 
+>  .../iio/temperature/nuvoton,nct7718.yaml      |  44 ++
+>  MAINTAINERS                                   |   7 +
+>  drivers/iio/temperature/Kconfig               |  10 +
+>  drivers/iio/temperature/Makefile              |   1 +
+>  drivers/iio/temperature/nct7718.c             | 505 ++++++++++++++++++
+>  5 files changed, 567 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/temperature/nuvoton,nct7718.yaml
+>  create mode 100644 drivers/iio/temperature/nct7718.c
+> 
+
 

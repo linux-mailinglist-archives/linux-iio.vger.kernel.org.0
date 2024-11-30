@@ -1,74 +1,76 @@
-Return-Path: <linux-iio+bounces-12839-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12840-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7204A9DEDC9
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 01:27:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571109DEDCB
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 01:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3443A28158B
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 00:27:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4EA1B21F57
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 00:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460A6DDBB;
-	Sat, 30 Nov 2024 00:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB639FCE;
+	Sat, 30 Nov 2024 00:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kGHBPj9p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m4oDmp7E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7608821;
-	Sat, 30 Nov 2024 00:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DB417BD3;
+	Sat, 30 Nov 2024 00:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732926446; cv=none; b=KoZyLM5sMoSENYSnjV8YzJGHIuaB6w7H5HlMdYLmZ5o3GShKoG7UqGlIugliogNfoLUPIwrejrVxBDJ9FQLCFELxuU8Cr5cDYGMbL6NePNNBciaIPTLJA8HWoCaWKO8fl5hQ0PCaOvzcA5FPjnyjQd6DDXVGX9Xl9U5JlT5+p0w=
+	t=1732926448; cv=none; b=RTbAmIuxx6njKnyGjY8ILAVL/9Tlo6WoMjBd9qjC+iEzgW6cttte7kDPck2A8IITbxu3YkKWYbb/lJN22HnSVfK9LB8aSs/hkmM94fZ5WUw4W7ddGl272Is8PMMUaz3b6IHv5TvSqsdebTd/Wz0BsEil9hyKXsxtoA5MhXkGMxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732926446; c=relaxed/simple;
-	bh=P6hWT0kcgMtgu1oQYVYn2k9rblTy6Bz6ABZJIRKT+eY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GJVcFuOnZuCl9PV0DeUTE9NWaLBN+59jefZykpYuxMBbJETFyc34akJLnQwqtJptXOP9PRw7yXk1FK2v+VIY+oPsJpziOA3hC1tUSb8tHfWzBKA45Am5FlWGJXhShmlkLpvBJmsnVFZScdpVfkYQMpG9ZBrf+iB28qyOphaF/4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kGHBPj9p; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1732926448; c=relaxed/simple;
+	bh=XiVGJVTbEUb40AQjcPLkdyA2iAGvpAfEWBgeZJmdZPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VI2JhhaslEuZjJ6RPm8+ZwySG/HWE/g2oWXa68NjczSaCuhtzjzK3YWauyPHmtSdKW/Zg+cVMQp+gWNtNm4pFjVH/2uB7lFpeIu8unOtHjkbHGoTDrQSwIaGaD2zhwNp03jFY1CQ3Y05osM2PFv+2wrIsaV5HERcTjLflDiF2+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m4oDmp7E; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-385e3621518so152389f8f.1;
-        Fri, 29 Nov 2024 16:27:24 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so238946f8f.2;
+        Fri, 29 Nov 2024 16:27:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732926443; x=1733531243; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtVBtdGJyciV8tL5BS6KSR2h7PyV6Ue0OUcK1A3bXLc=;
-        b=kGHBPj9p80chYpiuoxLHidWY9whXWlfmiZc6D3YE4O5Yhxcfah0w1q87sLzzqQpw/1
-         ycqodNXtg8Eg/usuwbGEX8J/J4TntfBSk6gXdWWcEzT97ZbBnJvRoasmmiUhSbbAtPAA
-         +JLOqdFfKCyyoL2QSvy/2UqllAdvnI8KFrtacpZZzw34osd6Mobr0G7fpKj4ZZX38YeW
-         ukOV+bHtJGR3jMHWPxqIyyVvbp85NebBp/l4RBCrcaMhstH2wI+d58z96qgQIpHg3W7n
-         seFjzCBXMp+jwS1LyzH2MJGoqx4YL24l4jig3+TLhhEUH0EVJZjf9/RN9po9WQUzfRpT
-         BkNw==
+        d=gmail.com; s=20230601; t=1732926445; x=1733531245; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+BuxdRBifStPjxxiawLv0rBImUatNjkAWFJkyPMMHhw=;
+        b=m4oDmp7E7bK6Rfz6n+LGj3DdJo3Oi3rk0hIfdPRmAQHgxoKoJdOlP6Z0LZxMhuevcr
+         z2GwGOKejgbNSzjppJRg98/0L7gWWdcZ5pY5JrjP2moKun3NfvWtI3jenUCjSnZk0oBC
+         m5Nzk31ISEa7MXG6P/wOCnSlw6ZaXYjgdTWBdFuvOg7XOlPgdPku+MPUnVL1pcNQ1yAb
+         8iPgH65OaoIbBJq9bX70mYcQ+P9xntrjHVJKJAUUBFUE37CBITXTSv9AVSqS1c0WaLcy
+         sz6L5pd0IkyswwK7VtiVcQT7nswYx4Bm/6vlrjI1t0kNKeoo4eHEhrqNVZIFPpm27JoT
+         OQ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732926443; x=1733531243;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PtVBtdGJyciV8tL5BS6KSR2h7PyV6Ue0OUcK1A3bXLc=;
-        b=jvhKjf4dbWdBOO11ivPSR2wO4QIdVcq2s6nMNY9vMyuN1qiMS+dpbEvqhanKmiOKQT
-         hXrgQO6HoHtn+r5GFp5rWjEVbGk1JARwN2yN+J1d+LGGoQd+SyHKrVNqAAH2mLyr5RZs
-         aCx8FGUmYi92GnOnQZ+fyKQmyzFBp0+Hge75hECnP0lX0aZJImA6XRMkycmguSH5Dcbr
-         7N46Z+CAbbAilqPWTxkgHVqauR/Zy21CSb3CHwqVJutagH5ikrL27mPhhAAq2XCXUKtf
-         t6TgeCe0CHFIPb2PB+K8r4LtmINBizO1fnLPcq1uAoh1YVB4KfeAcg9GKT7aE9meE1XQ
-         +M7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUDBC3KL2oD9OoGK0PwgeipkqXrCzDhZ98rXUdGU0UgiFOsHOO7T0hoUYpsd1Dfz/jgebo/paeq2mCivi/M@vger.kernel.org, AJvYcCUsCHkn+TmuIRjJYB+jlIZKTpnzLMP6Gw6N9dVIXBZVyj4v3uoDB65A0G6s2Fs9vHnOVB5UCtxlkBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFmO2YcWP0HmNwfv71mWVFlIx6ysbRHpGAUFuzDoDOOpVnEqc1
-	spDLHGWcwmoZ0YcwULXfRs/Eym7Ub4j1wDpmAjTKgTa8lsqMggNU
-X-Gm-Gg: ASbGncuj5R+mNFA/r7u3bNGp8QidCOpOJ6/l/SILWNOu1s9wFjp5g3cIo7CX7oANnld
-	yinVZH/TD41k7Mi6H5dycNxiJVtx+rqy+fR3idnUPPd7/apTT9v5WiCp7z03Mcyy5+m3rq3mpA1
-	5crxOKMVHeVhbm2xJoYBH3YruYa4pnvT6WOTvuxhzn4f15rtCsFpO/W+Dxjrk9dzB6ZMAtg/u7N
-	zBnwyWyOklBkFU+iyDu6VkH4FciLTimmO6s9IXRk2hubl6imXFNMIfq7HmF7A==
-X-Google-Smtp-Source: AGHT+IEsoSdhliUETdtE3akjnLXuhq0LGm32Pb5d2kr2eiBzY9ylY8Z9QemPyClKWUwJkMlMesWvaQ==
-X-Received: by 2002:a5d:64c6:0:b0:382:424b:d0a6 with SMTP id ffacd0b85a97d-385c6ee2285mr11467060f8f.55.1732926442519;
-        Fri, 29 Nov 2024 16:27:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732926445; x=1733531245;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+BuxdRBifStPjxxiawLv0rBImUatNjkAWFJkyPMMHhw=;
+        b=oMxFijn565agmoYBDYcyNoZamzZz4OHTYRYC19IRCpoaVwygCc3Lxd5eafna2LTm7A
+         dA72fsN/hnglho21CBIIpXfwJCBH3cSgr0hwfuLRUmUHZKtDFB16vAaPgT3NTwyww3fi
+         hPcP4m7DDUhnECwJXIDQ0kxBWXimXyGbwfLqgBGxR/tSVWyOBEDNGd4CRbB6BtTNBZ4M
+         3RUcTul0/akL60NI5LB9kTpbkkGDkfs9tqIeE1DvgKrh+EgVEi0b946xqDsyJWxWWwpL
+         X8L0vk4fEZQ1UfD3sL1tXePr6VnzgR4ftrMgIJ/5H+sv3nIHqszYaFjpuRG0AZumRNej
+         MC6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUw6fwth3vMVaCEGoMB2cpc1PvkrChBb4bAalKPzHhQgDwi+XcKm2oS4c2zolOzntnlt5eKj+Qfsc1enYUJ@vger.kernel.org, AJvYcCVRpHgOG0+a73a5SAbJopVk77tXmBzsGMWIZC5+O8x8hrRM8r6FQzZrYxhEBCk5jo/Deau3LaV3ZYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEYNRj0yvtjEouTyQqsqqqY0V6l8JeXfRlN2/7ERNWI63VuDJb
+	x/yhWXj7HaTG69RzItES8i01vpNfUyLV1i3UrwePg1W/shyrbian
+X-Gm-Gg: ASbGnctTaM+xsClFz9tpXv/KEPOve4t4DPuuTXewI2R83Q4NWIUXdQtKioX2uytOUIo
+	YuJuj1AWgIB34pI1odmMkHtUn+ECCl2OzABOo/So3KIlWAmNA+SE4IFePFKeUncIyPmpKR/Zopo
+	PedDil9j3ROyQEUDecK8LjEeanboI6H531fJIJUU2c/rpEYSFSVOFu8Cy/LZ29uPb7y7ugH5DSz
+	GW86ytqXvjKFa6R/1oTkFW5N98+0W8A4SMJhca+ryIqzzfqSmaN/yjE+qrvMA==
+X-Google-Smtp-Source: AGHT+IEs+5VvLSlKe0whACEqkhTWDMbXqlWWWZ7XNd+k2564ZKw0tU4PVAWWdqNVX9MmQ3cJHgbYMw==
+X-Received: by 2002:a05:6000:144c:b0:385:e303:8dc6 with SMTP id ffacd0b85a97d-385e3038ec8mr728270f8f.26.1732926444669;
+        Fri, 29 Nov 2024 16:27:24 -0800 (PST)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:2250:4c83:a8d5:547])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385ccd2db43sm5873345f8f.7.2024.11.29.16.27.21
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385ccd2db43sm5873345f8f.7.2024.11.29.16.27.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Nov 2024 16:27:22 -0800 (PST)
+        Fri, 29 Nov 2024 16:27:23 -0800 (PST)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de
@@ -81,10 +83,12 @@ Cc: krzysztof.kozlowski@linaro.org,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	vassilisamir@gmail.com
-Subject: [PATCH RFC 0/6] iio: mark scan_timestamp __private
-Date: Sat, 30 Nov 2024 01:27:04 +0100
-Message-ID: <20241130002710.18615-1-vassilisamir@gmail.com>
+Subject: [PATCH RFC 1/6] iio: create accessor for iio_dev->scan_timestamp
+Date: Sat, 30 Nov 2024 01:27:05 +0100
+Message-ID: <20241130002710.18615-2-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241130002710.18615-1-vassilisamir@gmail.com>
+References: <20241130002710.18615-1-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,33 +97,41 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The scan_timestamp value of the struct iio_dev, even though is an
-internal variable, it is being used in some drivers. To avoid any
-unwanted overwrites of this value, create a getter and when all the
-drivers are converted, mark the variable as __private.
+"scan_timestamp" is supposed to be an internal member of the iio device
+structure. However, there are some drivers that are using it directly.
 
-The patch is an RFC because the added value might not be considered
-high enough by someone to be implemented and/or it might need to be
-done in a different way since it touches multiple drivers.
+For that reason, the following accessor is created:
 
-Vasileios Amoiridis (6):
-  iio: create accessor for iio_dev->scan_timestamp
-  iio: make use of iio_is_soft_ts_enabled()
-  iio: adc: dln2-adc: make use of iio_is_soft_ts_enabled()
-  iio: adc: max1363: make use of iio_is_soft_ts_enabled()
-  iio: common: ssp_sensors: make use of iio_is_soft_ts_enabled()
-  iio: core: mark scan_timestamp as __private
+	iio_is_soft_ts_enabled()
 
- drivers/iio/adc/dln2-adc.c               |  2 +-
- drivers/iio/adc/max1363.c                |  2 +-
- drivers/iio/common/ssp_sensors/ssp_iio.c |  2 +-
- drivers/iio/industrialio-buffer.c        |  2 +-
- include/linux/iio/buffer.h               |  2 +-
- include/linux/iio/iio.h                  | 11 ++++++++++-
- 6 files changed, 15 insertions(+), 6 deletions(-)
+The goal of this accessor, is to ultimately mark "scan_timestamp" as
+a __private member of the struct iio_dev.
 
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+---
+ include/linux/iio/iio.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index ae65890d4567..5661794d1127 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -902,6 +902,15 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev);
+ 	for_each_set_bit((chan), (indio_dev)->active_scan_mask, \
+ 			 iio_get_masklength(indio_dev))
+ 
++/**
++ * iio_is_soft_ts_enabled - Check if the software timestamp is enabled
++ * @indio_dev: the IIO device
++ */
++static inline bool iio_is_soft_ts_enabled(const struct iio_dev *indio_dev)
++{
++	return indio_dev->scan_timestamp;
++}
++
+ ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
+ 
+ int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
 -- 
 2.43.0
 

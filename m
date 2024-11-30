@@ -1,150 +1,158 @@
-Return-Path: <linux-iio+bounces-12845-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12846-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98689DEDD5
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 01:28:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0AE9DEFA2
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 10:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CD88162C51
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 00:28:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C4A163081
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 09:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BD413C695;
-	Sat, 30 Nov 2024 00:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E55114BF87;
+	Sat, 30 Nov 2024 09:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MhHkhm1/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMMup1VW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B713E139579;
-	Sat, 30 Nov 2024 00:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3246729A0;
+	Sat, 30 Nov 2024 09:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732926458; cv=none; b=FdS8uFlY3W4TbH2+W80100JdiBS6Dzx8j5Wr9+LoI6yRjyM08FLV2vX6lUZcEPcYwWzg40liMsh51XamUfATRonG4TOpBZgKTff8WFSkUg/n2z2v7wxKnOb6V9MQK6xgxVt2VkicYuwhRBfsfoAgCPep93yl2FuqMHilYEsY6wc=
+	t=1732959748; cv=none; b=n02QkquIkzBUiCMDyHOcuFrDGCFpn0sGNY+wyB86FL+Pjghfd/HlE3w9AGjPLgwPk7hdxixS0hycDy18cKrCdeQuKKoqJxs6yCFypj42MpAGkgjfVINPl3YaLtjxhmqERbKyVisAFF8ONgk5FoPFx7RISagyZqMePGCsyoBYxGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732926458; c=relaxed/simple;
-	bh=z0HMc5U1PTtA2Nr14+pdfS1vr/bqIZLGz5vkPjd7Sjo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5ZQoptYWBvsbZKu08eUUC3P9jCtn6aRKnNlapN6DHzrql0EY4xS4A58Xfjx0N3zrxC4XJGO9Q2mEeBxNb7Zdn9UdFrhNzg7HHX5ZvZZ16X9ac3aFJjsn3lPdxVn5G0k7aUZpSujNK9DMuh8iFdjFtVqzMUa/fnE7CbDuJLBxWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MhHkhm1/; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385e1f12c82so394323f8f.2;
-        Fri, 29 Nov 2024 16:27:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732926455; x=1733531255; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VFnwIg1SlNfk7YCu4Dnn+679o1iR81Pc1C9n26emMmQ=;
-        b=MhHkhm1/eHSBtSAe/A3As4SHqbKSRNUaFfMd2Fi0WTnVYrerSN1axYl5V3IkzFgNpe
-         foBzryf+jWi4KZJ7YJmiEomi3KUvOR0i7hW/fBzP0O5mD73M+Nk+pf9WNZ+Ix5+tCYA4
-         ALW33Npf8n96LoND4oVH7fUkO4xeVNMZkmS02wiLfa674MziKzg+gfUg4HaupcrE0spT
-         yIxY2+L/c13Ks38emHQfggYLYaerSsheBkxAUgXOJFWCZZetZOUoix1O2zNwD/no3g3y
-         wpwS3di0OFcIqNeBwMnSrrx0Hr4V7E/p2XLCrus35NvqPmKuO444ZmZn34eeoshrYDl0
-         Y+xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732926455; x=1733531255;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VFnwIg1SlNfk7YCu4Dnn+679o1iR81Pc1C9n26emMmQ=;
-        b=jGdlr8p1vE25Da6WPYd049OvkuMcDDIG4SPZGjLj2E7h0HiLjjFFSPzoNJuwlUFA8v
-         hxisiCCCE3TsTdNP6Yw4bCQANtgaSR9jKu8Z+2iyFH++awEmgNh9ZY4mFx0cm85OgjiT
-         XuwrOOLlIagmOsNlMgHHgAkmbvgi6lCzz4tO5RppBbC3jKlxdHkiwavhrVQAyvoPpoRl
-         xp/IPqX+FbhWNsTs7RTmksIgsXxG7Q6q7G3I5nbaKtKIojHRoh8aL1fBiiLMQRP7ssmo
-         CfFh4xE3N7NQxX1/800np6UK9BMUzIX7ntVpMspGrpNxMynLVq0gzkrFtAgunoWOGzzW
-         wvsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQI7keuRZbwMn73pdrONHd1OWUEU/D1aIL/p4vzINoxyd6RtEM0m1scxzFUfRoAJkRM+yupLoCb0I=@vger.kernel.org, AJvYcCUxZyGlw++3CpP+FuuqIxl8QFX9tYa//KkC5r/Qo3ik81yKSQGmS1zaPWniHGwr/hQivtWv0gIIoDz0bKiB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtKB4fQ+GfIDhYvsVplLx9vbrA5wfhaTIM2FEfC0mgBbjwhNot
-	9Z36I+PeSt6hBuDbXiKLg7VHm/tUjPLO/uR+HMIbdAvDPuP3DPHjwhpLeJt5
-X-Gm-Gg: ASbGnctCsze2uo2UaEfYPZfgMNOa0Bg9HxkfutpCi5mwPjNQXzcTtOY8sCYU7QTesbR
-	vXCeqZPSZmwB7p4UU6HLh0xQsQaFZs1xBGhorrOgMOEmoG+n0mkzD6S21Vif1YrHVgZrK36G0+P
-	wIMs4ttpFy5fH6IFz0CSd62vx8ieJh6/JMVxxugcnTw+wOVNv/1+nnaY8Icl4S9XGiC4Lyomif8
-	NkuTPF4j1C9B9Ehpb+NFYmCjmtzEyajNaQQl+jgtWvz73qtR0gGClRPLbK9eA==
-X-Google-Smtp-Source: AGHT+IHQWr+IrxUNAk7zs1/xyAUn/MmlBN/UG2b3dr0rFp6iNWLgDNFXIcOKOxYIaKs4jXlkU/8F4g==
-X-Received: by 2002:a5d:59ac:0:b0:382:450c:25e9 with SMTP id ffacd0b85a97d-385c6ebb925mr15211897f8f.35.1732926454963;
-        Fri, 29 Nov 2024 16:27:34 -0800 (PST)
-Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:2250:4c83:a8d5:547])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385ccd2db43sm5873345f8f.7.2024.11.29.16.27.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Nov 2024 16:27:34 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: krzysztof.kozlowski@linaro.org,
-	nuno.sa@analog.com,
-	u.kleine-koenig@baylibre.com,
-	abhashkumarjha123@gmail.com,
-	jstephan@baylibre.com,
-	dlechner@baylibre.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	vassilisamir@gmail.com
-Subject: [PATCH RFC 6/6] iio: core: mark scan_timestamp as __private
-Date: Sat, 30 Nov 2024 01:27:10 +0100
-Message-ID: <20241130002710.18615-7-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241130002710.18615-1-vassilisamir@gmail.com>
-References: <20241130002710.18615-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1732959748; c=relaxed/simple;
+	bh=ChA8MaKv7FB791eaVmMD6k6drakoh/CD0dYxRF0wTpc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNFmDpvcIAZj6KmZup0Ms7NGwbcPy4ulYDNp1nD/FZwkA2FucoQDic0ssF/nTFn71qERyAwpRWeqVnYuO2fLGWF/Zf3mxLXKOv2At78csBykSiIIbsIYyf+Mm/UfgOE5apVNUQQekpsxMP9AWmTaievHFOboJqtGfAdC5rJuA4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMMup1VW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61D0C4CECC;
+	Sat, 30 Nov 2024 09:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732959746;
+	bh=ChA8MaKv7FB791eaVmMD6k6drakoh/CD0dYxRF0wTpc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tMMup1VWFBUr30C29DJm1UDQsxJnfz8Amx9ZLw35AzC0UQ7XmprGJyNT09G9cRRbS
+	 aqloYdIb6Wq54UyVp4/xJIgfIWIOQskytqb9940L4r5egzBFhd9hZNAnbYVr4T6Ztq
+	 pmiaI+4LVlje//sEQpZyOFl9tAtkLjlUjY09Sdf9AdwyHmBfVTaeJZ3xi9wTLoPcP5
+	 2JeuWOIXk76LtrTNVGipu42X7UBR/o7Fy9ndHVBCKztTZdQl8fejHcblA/oSoc772b
+	 1hrBi1278XCBCPdGawFyV+Y1zpCcAno+ryiLo96eA0gLJJUKSP8OOshhkJ7FaKIvGA
+	 nqM3Mk3viF4VA==
+Date: Sat, 30 Nov 2024 10:42:23 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v5 1/4] dt-bindings: iio: adc: adi,ad4000: Add PulSAR
+Message-ID: <vjdi3s5cvhg72hqodybrh4ydbh5lvol2rczn324cmqp3ehetnh@7fnvi66smqky>
+References: <cover.1732885470.git.marcelo.schmitt@analog.com>
+ <93f63a7b5973c8596cfc3216e833d0129d8c61a4.1732885470.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <93f63a7b5973c8596cfc3216e833d0129d8c61a4.1732885470.git.marcelo.schmitt@analog.com>
 
-Since there are no more direct accesses to the indio_dev->scan_timestamp
-value, it can be marked as __private and use the macro ACCESS_PRIVATE()
-in order to access it. Like this, static checkers will be able to inform
-in case someone tries to either write to the value, or read its value
-directly.
+On Fri, Nov 29, 2024 at 10:13:35AM -0300, Marcelo Schmitt wrote:
+> Extend the AD4000 series device tree documentation to also describe
+> PulSAR devices.
+> 
+> The single-channel series of PulSAR devices is similar to the AD4000 series
+> except PulSAR devices sample at slower rates and don't have a
+> configuration register. Because PulSAR devices don't have a configuration
+> register, they don't support all features of AD4000 devices and thus fewer
+> interfaces are provided to user space. Also, while AD4000 may have their
+> SDI pin connected to SPI host MOSI line, PulSAR SDI pin is never connected
+> to MOSI.
+> 
+> Some devices within the PulSAR series are just faster versions of others.
+> >From fastest to slowest, AD7980, AD7988-5, AD7686, AD7685, and AD7988-1 are
+> all 16-bit pseudo-differential pin-for-pin compatible ADCs. Devices that
+> only vary on the sample rate are documented with a common fallback
+> compatible.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> Change log v4 -> v5
+> - Added const items for fallback compatibles.
+> 
+>  .../bindings/iio/adc/adi,ad4000.yaml          | 59 +++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> index e413a9d8d2a2..5b6662f5f40f 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> @@ -19,6 +19,20 @@ description: |
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7685.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7686.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7687.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7688.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7690.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7691.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7693.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7942.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7946.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7980.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7982.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7983.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7984.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad7988-1_7988-5.pdf
+>  
+>  $ref: /schemas/spi/spi-peripheral-props.yaml#
+>  
+> @@ -63,6 +77,35 @@ properties:
+>  
+>        - const: adi,adaq4003
+>  
+> +      - const: adi,ad7983
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/industrialio-buffer.c | 2 +-
- include/linux/iio/iio.h           | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+Why this is here but not in enum?
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 8104696cd475..c332741f3cf4 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1137,7 +1137,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
- 	int ret;
- 
- 	indio_dev->active_scan_mask = config->scan_mask;
--	indio_dev->scan_timestamp = config->scan_timestamp;
-+	ACCESS_PRIVATE(indio_dev, scan_timestamp) = config->scan_timestamp;
- 	indio_dev->scan_bytes = config->scan_bytes;
- 	iio_dev_opaque->currentmode = config->mode;
- 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 5661794d1127..669b4ef1280d 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -611,7 +611,7 @@ struct iio_dev {
- 	const unsigned long		*available_scan_masks;
- 	unsigned int			__private masklength;
- 	const unsigned long		*active_scan_mask;
--	bool				scan_timestamp;
-+	bool				__private scan_timestamp;
- 	struct iio_trigger		*trig;
- 	struct iio_poll_func		*pollfunc;
- 	struct iio_poll_func		*pollfunc_event;
-@@ -908,7 +908,7 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev);
-  */
- static inline bool iio_is_soft_ts_enabled(const struct iio_dev *indio_dev)
- {
--	return indio_dev->scan_timestamp;
-+	return ACCESS_PRIVATE(indio_dev, scan_timestamp);
- }
- 
- ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
--- 
-2.43.0
+> +      - items:
+> +          - enum:
+> +              - adi,ad7685
+> +              - adi,ad7686
+> +              - adi,ad7980
+> +              - adi,ad7988-1
+> +              - adi,ad7988-5
+> +          - const: adi,ad7983
+> +
+> +      - const: adi,ad7687
+> +      - items:
+> +          - enum:
+> +              - adi,ad7688
+> +              - adi,ad7693
+> +          - const: adi,ad7687
+> +
+> +      - const: adi,ad7691
+> +      - items:
+> +          - enum:
+> +              - adi,ad7690
+> +              - adi,ad7982
+> +              - adi,ad7984
+> +          - const: adi,ad7691
+> +
+> +      - enum:
+> +          - adi,ad7942
+> +          - adi,ad7946
+
+Look, you have here enum for all single-compatible cases. Add all of
+other cases here as well. That's the convention in 99% of bindings.
+
+Best regards,
+Krzysztof
 
 

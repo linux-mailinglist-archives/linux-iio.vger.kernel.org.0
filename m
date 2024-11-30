@@ -1,97 +1,237 @@
-Return-Path: <linux-iio+bounces-12848-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12849-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912BB9DEFDD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 11:09:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F1F9DF013
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 12:19:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A4D281655
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 10:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FC39163932
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 11:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEE0156225;
-	Sat, 30 Nov 2024 10:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154D213C695;
+	Sat, 30 Nov 2024 11:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="LRkLS2ZW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f6oE0eaJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AC04087C;
-	Sat, 30 Nov 2024 10:09:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B234B1531E6;
+	Sat, 30 Nov 2024 11:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732961385; cv=none; b=fOBi3Kj6MyxrXX7tGcelRxdKcAGKXPTL8/VejlWu/kKEw/XbWDIMtJFOgf3U0/eS2rDtQEvrms7Dxk9sQXCNci2w0SguSCfKCnUexVDIyjORu9aUmzAmISKoRC9/smD92pQlVzmv+77OrEB8XIIDlIApdhgOrII+/B9ny+GLQV0=
+	t=1732965571; cv=none; b=ScktOlvL5nhLMMJdr70w3SDOkjcLYbuACOGw/ilDr0aITHQDnmCVmvJayZqL/VTBM5mYyD+R43iZ9QKkYZiIjD8G9EWFyQ0ftIrwlS4ztLiKXs3Ux8tF6XlTaO2tQ1yERCW/vmv90JDo90FDpaNqHKltDMJLgRADIlJjcwZDFf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732961385; c=relaxed/simple;
-	bh=uOiGLwvkvgoYoKv0QnGSMigngzpPHVBysTyZdrEIX6k=;
+	s=arc-20240116; t=1732965571; c=relaxed/simple;
+	bh=vV0CrhY5ERivvorl59Qose3xGU8M3PP6bHFHeC//1Hk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lW1gaHF+TucbtM9c+6YmvGMBvDUgPYgAT28qBJvJKwm3eOp57AuA7K4Gw1rKqPiHYvib6XJzb8C0kOzqkTJwTbwfYOVhhQqA94sWVfoRqvKz5arTvdTLhlWkXsBA/gQ2OXR1WCvASGuO6ya5AYVU1aVHy6pgW2UJ3maS0Cv3r/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=LRkLS2ZW; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=anpPqZ9rVCBNoVnKGwwdxppFy/WZWL2ek5ZsnhX4RRg=; b=LRkLS2
-	ZWQ0uu2swbqlRLoDGTnhX56HZOPj1p2H1VmQleCIdrUl7g2dlwK92pGn9UtNrJjxwGWAwdFsmeQNC
-	zJe3Inwc4xEVTzUjq++0oSSZngeiPanuTimQ82HJVGId2ABnZdIVzM72ZBji9vO4wBMCQE33IeWVm
-	bZGYLMDqlUG5juk/trmJXxF4oMgee9QFiQZCHgtVuecBtDNcXOKqem8swAIB/g8Y50U86Z++ihcq7
-	+emzm6s8GA7fM3iiP2s9o//rAv0/3ktEvVlL3fOjsLH7AzV1/Oe3bG3/sOSCU7zETc9uD/hMy5Cxe
-	K03YqfFS4guZBivhjRtFddX+JISA==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1tHKPz-000AXg-Ml; Sat, 30 Nov 2024 11:09:39 +0100
-Received: from [2a06:4004:10df:0:91b7:d12e:d581:184a] (helo=Seans-MBP.snzone.dk)
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1tHKPz-000DLt-0e;
-	Sat, 30 Nov 2024 11:09:39 +0100
-Date: Sat, 30 Nov 2024 11:09:38 +0100
-From: Sean Nyekjaer <sean@geanix.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: accel: fxls8962af: add wakeup-source
- property
-Message-ID: <3tbd7iku2uvogozd4nuqrdvsyxcuvjfsqia6d4uk7httcocfxl@hqgsarodnrct>
-References: <20241129-fxlsdt-v1-1-ff7697a47cca@geanix.com>
- <k4udl2se7swwlqcq763bwydifkfwdzwem2crwroo2ohmv5j33o@zr25gt2r2x6h>
+	 Content-Type:Content-Disposition:In-Reply-To; b=f/j0efylhOYdBefcFwuoGP6bV66Rb3QP65GQuJ11Jqihc0c3cLXU/qKV6K/kOByMOUgLw5Kkx7DOh5eTIajY/mPUDTXimALmr4jwYpJ/ky95ex4Rea7x64mghk02z6o9MRKfwEtwaslIo2IK4t05QNLTyYWEYMSpuCoZbvUljV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f6oE0eaJ; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732965570; x=1764501570;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vV0CrhY5ERivvorl59Qose3xGU8M3PP6bHFHeC//1Hk=;
+  b=f6oE0eaJ0TZLNbo1sIvhdhgcybzdl62f3veYHRHDfwf4INTZi2XKTrhg
+   2Rina09VQijHmlkst3/gGiIRHbPsbUIM4MGFgHO6QbyCMnlErjMJ+uN5F
+   YY5dEKRT6NfdrA3RXkTHkzCCQvKZpc6BJe4V7oh2g9L0cu7EHMT1I8ZGJ
+   6L8Kkf//c8BwtQVq0ZEzc8EUi2ma4d8IjuUgK8xoJ6k3ei/gSFo1OgeLo
+   hK4oE/sKan6vcfnY3U9eewylv/WkeDgUo4v0+v6F3nIgtTl/oBRGmbRWE
+   Z/R6rR68lyPBSpP2MorJuTgzok82xHupxTSzJuVrIpQ5bxcUWtdG2d0xo
+   A==;
+X-CSE-ConnectionGUID: uPmm5Mp4SaC+J+AiE7PZ7Q==
+X-CSE-MsgGUID: /nC+mQCqT8GnULZnBAc+Cg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11271"; a="36957647"
+X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
+   d="scan'208";a="36957647"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Nov 2024 03:19:29 -0800
+X-CSE-ConnectionGUID: S8wNgLXNTRijomJzQXxaPw==
+X-CSE-MsgGUID: yltgvo2jTCuoUfZ/24htxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,198,1728975600"; 
+   d="scan'208";a="123541833"
+Received: from lkp-server02.sh.intel.com (HELO 36a1563c48ff) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 30 Nov 2024 03:19:26 -0800
+Received: from kbuild by 36a1563c48ff with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tHLVT-0000bj-2x;
+	Sat, 30 Nov 2024 11:19:23 +0000
+Date: Sat, 30 Nov 2024 19:19:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+	robh@kernel.org, conor+dt@kernel.org, dlechner@baylibre.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v7 8/8] iio: adc: ad4851: add ad485x driver
+Message-ID: <202411301859.sT9xRNb1-lkp@intel.com>
+References: <20241129153546.63584-9-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <k4udl2se7swwlqcq763bwydifkfwdzwem2crwroo2ohmv5j33o@zr25gt2r2x6h>
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27472/Fri Nov 29 10:38:16 2024)
+In-Reply-To: <20241129153546.63584-9-antoniu.miclaus@analog.com>
 
-Thanks Krzysztof
+Hi Antoniu,
 
-On Sat, Nov 30, 2024 at 10:56:06AM +0100, Krzysztof Kozlowski wrote:
-> On Fri, Nov 29, 2024 at 04:01:24PM +0100, Sean Nyekjaer wrote:
-> > Add the wakeup-source to enable this device as a wakeup source if
-> > defined in DT.
-> 
-> That's a circular argument. Especially last part "if ...".
-> 
-> Explain the hardware aspects / reasoning.
+kernel test robot noticed the following build errors:
 
-Is something like this better?
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.12 next-20241128]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-    Add a wakeup-source property to the binding to describe whether the
-    wakeup interrupts from the accelerometer can wake the system from
-    suspend.
+url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-backend-add-API-for-interface-get/20241129-233931
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241129153546.63584-9-antoniu.miclaus%40analog.com
+patch subject: [PATCH v7 8/8] iio: adc: ad4851: add ad485x driver
+config: openrisc-allyesconfig (https://download.01.org/0day-ci/archive/20241130/202411301859.sT9xRNb1-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241130/202411301859.sT9xRNb1-lkp@intel.com/reproduce)
 
-/Sean
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411301859.sT9xRNb1-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+>> drivers/iio/adc/ad4851.c:963:35: warning: 'ad4858_channels' defined but not used [-Wunused-const-variable=]
+     963 | static const struct iio_chan_spec ad4858_channels[] = {
+         |                                   ^~~~~~~~~~~~~~~
+>> drivers/iio/adc/ad4851.c:889:35: warning: 'ad4851_scan_type_16' defined but not used [-Wunused-const-variable=]
+     889 | static const struct iio_scan_type ad4851_scan_type_16 = {
+         |                                   ^~~~~~~~~~~~~~~~~~~
+--
+   arch/openrisc/kernel/head.o: in function `_dispatch_do_ipage_fault':
+>> (.text+0x900): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
+   (.text+0xa00): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
+   arch/openrisc/kernel/head.o: in function `exit_with_no_dtranslation':
+>> (.head.text+0x21bc): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
+   arch/openrisc/kernel/head.o: in function `exit_with_no_itranslation':
+   (.head.text+0x2264): relocation truncated to fit: R_OR1K_INSN_REL_26 against `no symbol'
+   init/main.o: in function `trace_event_raw_event_initcall_level':
+   main.c:(.text+0x28c): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `strlen' defined in .text section in lib/string.o
+   init/main.o: in function `initcall_blacklisted':
+   main.c:(.text+0x6f4): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `strcmp' defined in .text section in lib/string.o
+   init/main.o: in function `trace_initcall_finish_cb':
+   main.c:(.text+0x814): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
+   main.c:(.text+0x864): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
+   main.c:(.text+0x894): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
+   main.c:(.text+0x8d0): relocation truncated to fit: R_OR1K_INSN_REL_26 against symbol `__muldi3' defined in .text section in ../lib/gcc/or1k-linux/14.2.0/libgcc.a(_muldi3.o)
+   main.c:(.text+0x934): additional relocation overflows omitted from the output
+
+
+vim +/ad4858_channels +963 drivers/iio/adc/ad4851.c
+
+   888	
+ > 889	static const struct iio_scan_type ad4851_scan_type_16 = {
+   890		.sign = 's',
+   891		.realbits = 16,
+   892		.storagebits = 16,
+   893	};
+   894	
+   895	static const struct iio_scan_type ad4851_scan_type_20_0[] = {
+   896		[AD4851_SCAN_TYPE_NORMAL] = {
+   897			.sign = 'u',
+   898			.realbits = 20,
+   899			.storagebits = 32,
+   900		},
+   901		[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
+   902			.sign = 'u',
+   903			.realbits = 24,
+   904			.storagebits = 32,
+   905		},
+   906	};
+   907	
+   908	static const struct iio_scan_type ad4851_scan_type_20_1[] = {
+   909		[AD4851_SCAN_TYPE_NORMAL] = {
+   910			.sign = 's',
+   911			.realbits = 20,
+   912			.storagebits = 32,
+   913		},
+   914		[AD4851_SCAN_TYPE_RESOLUTION_BOOST] = {
+   915			.sign = 's',
+   916			.realbits = 24,
+   917			.storagebits = 32,
+   918		},
+   919	};
+   920	
+   921	static int ad4851_get_current_scan_type(const struct iio_dev *indio_dev,
+   922						const struct iio_chan_spec *chan)
+   923	{
+   924		struct ad4851_state *st = iio_priv(indio_dev);
+   925	
+   926		return st->resolution_boost_enabled ? AD4851_SCAN_TYPE_RESOLUTION_BOOST
+   927						    : AD4851_SCAN_TYPE_NORMAL;
+   928	}
+   929	
+   930	#define AD4851_IIO_CHANNEL(index, ch, diff)					\
+   931		.type = IIO_VOLTAGE,							\
+   932		.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBSCALE) |			\
+   933			BIT(IIO_CHAN_INFO_CALIBBIAS) |					\
+   934			BIT(IIO_CHAN_INFO_SCALE),					\
+   935		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
+   936			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
+   937		.info_mask_shared_by_all_available =					\
+   938			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),				\
+   939		.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),		\
+   940		.indexed = 1,								\
+   941		.differential = diff,							\
+   942		.channel = ch,								\
+   943		.channel2 = ch + (diff * 8),						\
+   944		.scan_index = index,							\
+   945	
+   946	#define AD4858_IIO_CHANNEL(index, ch, diff, bits)				\
+   947	{										\
+   948		AD4851_IIO_CHANNEL(index, ch, diff)					\
+   949		.ext_scan_type = ad4851_scan_type_##bits##_##diff,			\
+   950		.num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_##bits##_##diff),	\
+   951	}
+   952	
+   953	#define AD4857_IIO_CHANNEL(index, ch, diff, bits)				\
+   954	{										\
+   955		AD4851_IIO_CHANNEL(index, ch, diff)					\
+   956		.scan_type = {								\
+   957			.sign = 's',							\
+   958			.realbits = bits,						\
+   959			.storagebits = bits,						\
+   960		},									\
+   961	}
+   962	
+ > 963	static const struct iio_chan_spec ad4858_channels[] = {
+   964		AD4858_IIO_CHANNEL(0, 0, 0, 20),
+   965		AD4858_IIO_CHANNEL(1, 0, 1, 20),
+   966		AD4858_IIO_CHANNEL(2, 1, 0, 20),
+   967		AD4858_IIO_CHANNEL(3, 1, 1, 20),
+   968		AD4858_IIO_CHANNEL(4, 2, 0, 20),
+   969		AD4858_IIO_CHANNEL(5, 2, 1, 20),
+   970		AD4858_IIO_CHANNEL(6, 3, 0, 20),
+   971		AD4858_IIO_CHANNEL(7, 3, 1, 20),
+   972		AD4858_IIO_CHANNEL(8, 4, 0, 20),
+   973		AD4858_IIO_CHANNEL(9, 4, 1, 20),
+   974		AD4858_IIO_CHANNEL(10, 5, 0, 20),
+   975		AD4858_IIO_CHANNEL(11, 5, 1, 20),
+   976		AD4858_IIO_CHANNEL(12, 6, 0, 20),
+   977		AD4858_IIO_CHANNEL(13, 6, 1, 20),
+   978		AD4858_IIO_CHANNEL(14, 7, 0, 20),
+   979		AD4858_IIO_CHANNEL(15, 7, 1, 20),
+   980	};
+   981	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

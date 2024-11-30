@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-12879-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12880-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AC69DF281
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:08:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199B69DF285
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:15:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46DB12813BD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:08:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FEE162EB6
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883511A9B37;
-	Sat, 30 Nov 2024 18:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4951A3AB8;
+	Sat, 30 Nov 2024 18:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVFURK4A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCla0k8E"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4012F192D6E;
-	Sat, 30 Nov 2024 18:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5181DFF7;
+	Sat, 30 Nov 2024 18:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732990134; cv=none; b=F58FRwiEyntCJXOqX/LltllXmFe2UdYFx0gTWHrpXS72dmpN9pTmcvmpPfWmaiFSpidcZ8CmEm/QN3xwY91ZO4E5JYXQcgccaCp/EGBjM3i+2aaaEmAp5IzYCDwlqzCEvZsq+GaO4JeEkuPYmqmRrkRmTPsUEF4LMSvCJ/0bEgs=
+	t=1732990516; cv=none; b=mH05y/TzSnb93uiis3tw5rLTS5MCdw9vn0RUpKKtLBnDwmYnKNdp6OJFfNVl9zfE8jCnD44N24+iyzTA4VmPRLBeV/9zPtRen4FmXnIu6uEe1NSX6NSHaFV4GTU0oj4koGMAeCq6uqVmcf6SneLsf9qXs5PL10SMKf+LY6u9Kcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732990134; c=relaxed/simple;
-	bh=OLFgKRmtTL1ozpXOhlhvYa/HZKHBwX8YzJP43LrcI4w=;
+	s=arc-20240116; t=1732990516; c=relaxed/simple;
+	bh=RszhouBknQd4hQJ6vbo42fXjNHDl2wVR05Hy3WJggj4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LvKpnDB/Rx+4leXLFChOzHvLSOpwbmfUHu7pJnpZknjXaq52AAo/maurSHhjvc6g94jT7owGLmlrXKcZiEtKewdkTLJViIpDMV5bKBK12ubR0UXmEnyuqPFrzOUN82OAXtkY1CKp2B50QTtj7rXwKu4Ub7SzB4m+hqFx36wOzb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVFURK4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDF0C4CECC;
-	Sat, 30 Nov 2024 18:08:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X6Hk5/d5JWAfOoD167eAW2J4BGDnRqgCJ7/K43IPHKvhE1rDsW4wgAeRy0+uYe0zPT6PRcgM/guC25BvQ45qSlBMWfOOSTPqdmNYg8MwQmeuDMWpILDXaCV8JZOBflZ3tZhjVc7q68wpkKGUXDbjkr1joEPGksW6DFGGJubbfOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCla0k8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18818C4CECC;
+	Sat, 30 Nov 2024 18:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732990133;
-	bh=OLFgKRmtTL1ozpXOhlhvYa/HZKHBwX8YzJP43LrcI4w=;
+	s=k20201202; t=1732990515;
+	bh=RszhouBknQd4hQJ6vbo42fXjNHDl2wVR05Hy3WJggj4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fVFURK4Ai4+7bpUYlItetom46Xh+kBXetWO2EbZljpJjjf/wG3Oj1I1yI3V8ytind
-	 OquEO07kyw1EILgkxz4VLAPLUp/mOMqE4DpAL7cpDL3lAOHfsEcebe6/nZZcAj6+DH
-	 qw32T/+lQIIz6NR7nUrarK0zXGZsnOfY2EpXerNgjzrg1fdP1A/6pJ5IBF7ro7z8YD
-	 LQgJmVu3cPVNLVR3U2UYkga37d19rCGAxnmx0aYic+mVoIf6Dkqkm94aoZENG7Qhu2
-	 sFFvxsUdTWyFq0YiyzWlBm2cELGtBRzg5x+1civwkzoQXHfLs0xgY8NJfUzjFqu7ep
-	 XuEgj0D0awQFA==
-Date: Sat, 30 Nov 2024 18:08:44 +0000
+	b=TCla0k8E8+6l3zgqTzNl5fQBhJro+F2XL2pSWW0l6atOWkrkYly1QU7Y/lbS7Sh/N
+	 qwksffAGQ0nC45oneB2S71nqrmXd/zC3qlQ4vKQRhtpMeTnv1mHwT5qdd+y+ohB5ne
+	 M+O9BjV/meh5obyDIc+WGuVKq5XX0+cEtKJpd5ijpDsUdn+iQJEuefSEV4kywAUWml
+	 SFn4iaW21axSBPN+7HnYsHpo+YXJvEdayXI851nvUn8ZiyR5WSdQyVoNoBoHksoUlR
+	 r1E+E60yJL/Akpib0YfXu/iijo3UMJv+8k4XZSRPXuPRkyHWkZpb22PnuHOgdcRZBt
+	 bXL+9Io7oNiQg==
+Date: Sat, 30 Nov 2024 18:15:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, oe-kbuild-all@lists.linux.dev, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 7/7] iio: accel: kx022a: align with subsystem way
-Message-ID: <20241130180844.27a5c8e0@jic23-huawei>
-In-Reply-To: <202411290107.KXHPQXRf-lkp@intel.com>
-References: <9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
-	<202411290107.KXHPQXRf-lkp@intel.com>
+Message-ID: <20241130181506.27d0c72a@jic23-huawei>
+In-Reply-To: <9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
+References: <cover.1732783834.git.mazziesaccount@gmail.com>
+	<9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,67 +64,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 29 Nov 2024 01:20:41 +0800
-kernel test robot <lkp@intel.com> wrote:
+On Thu, 28 Nov 2024 11:03:40 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Matti,
+> Many of the Kionix/ROHM accelerometers have a "PC1 - bit" which enables
+> the accelerometer. While a sensor configuration like ODR, g-range, FIFO
+> status etc. are changed, the PC1 bit must be cleared (sensor must be
+> disabled). (See the description for different CNTL registers [1])
 > 
-> kernel test robot noticed the following build warnings:
+> In order to ensure this the kx022a driver uses a mutex, which is locked
+> when the PC1 bit is cleared, and held for the duration of the
+> configuration, and released after PC1 bit is set again (enabling the
+> sensor).
 > 
-> [auto build test WARNING on a61ff7eac77e86de828fe28c4e42b8ae9ec2b195]
+> The locking and PC1 bit toggling was implemented using functions:
+> kx022a_turn_off_lock() and kx022a_turn_on_unlock().
 > 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/iio-accel-kx022a-Use-cleanup-h-helpers/20241128-170626
-> base:   a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
-> patch link:    https://lore.kernel.org/r/9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount%40gmail.com
-> patch subject: [PATCH v3 7/7] iio: accel: kx022a: align with subsystem way
-> config: loongarch-allyesconfig (https://download.01.org/0day-ci/archive/20241129/202411290107.KXHPQXRf-lkp@intel.com/config)
-> compiler: loongarch64-linux-gcc (GCC) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241129/202411290107.KXHPQXRf-lkp@intel.com/reproduce)
+> Based on a discussions [2], the IIO subsystem prefers open-coding the
+> locking with scoped_guard() over these functions.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202411290107.KXHPQXRf-lkp@intel.com/
+> Drop the kx022a_turn_off_lock() and kx022a_turn_on_unlock() and use
+> scoped_guard() instead.
 > 
-> All warnings (new ones prefixed by >>):
+> [1]: https://fscdn.rohm.com/kionix/en/datasheet/kx022acr-z-e.pdf
+> [2]: https://lore.kernel.org/all/20241126175550.4a8bedf3@jic23-huawei/
 > 
->    drivers/iio/accel/kionix-kx022a.c: In function 'kx022a_write_raw':
->    drivers/iio/accel/kionix-kx022a.c:507:9: error: implicit declaration of function 'if_not_cond_guard' [-Wimplicit-function-declaration]
->      507 |         if_not_cond_guard(iio_claim_direct_try, idev)
->          |         ^~~~~~~~~~~~~~~~~
->    drivers/iio/accel/kionix-kx022a.c:507:27: error: 'iio_claim_direct_try' undeclared (first use in this function); did you mean 'class_iio_claim_direct_try_t'?
->      507 |         if_not_cond_guard(iio_claim_direct_try, idev)
->          |                           ^~~~~~~~~~~~~~~~~~~~
->          |                           class_iio_claim_direct_try_t
->    drivers/iio/accel/kionix-kx022a.c:507:27: note: each undeclared identifier is reported only once for each function it appears in
->    drivers/iio/accel/kionix-kx022a.c:507:54: error: expected ';' before 'return'
->      507 |         if_not_cond_guard(iio_claim_direct_try, idev)
->          |                                                      ^
->          |                                                      ;
->      508 |                 return -EBUSY;
->          |                 ~~~~~~                                
->    In file included from drivers/iio/accel/kionix-kx022a.c:8:
-> >> include/linux/cleanup.h:308:9: warning: this statement may fall through [-Wimplicit-fallthrough=]  
->      308 |         for (CLASS(_name, scope)(args),                                 \
->          |         ^~~
->    drivers/iio/accel/kionix-kx022a.c:521:17: note: in expansion of macro 'scoped_guard'
->      521 |                 scoped_guard(mutex, &data->mutex) {
->          |                 ^~~~~~~~~~~~
->    drivers/iio/accel/kionix-kx022a.c:532:9: note: here
->      532 |         case IIO_CHAN_INFO_SCALE:
->          |         ^~~~
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-The precursor is coming through tip as I understand it.
+> ---
+> Revision history:
+> v2 => v3:
+>  - New patch
+> 
+> NOTE: This patch uses the if_not_cond_guard() which is currently missing
+> the iio_testing.
+> https://lore.kernel.org/all/20241001-cleanup-if_not_cond_guard-v1-1-7753810b0f7a@baylibre.com/T/#m69982b23da9f71e72d84855b34e9b142cb3a1920
 
-I'll have to hold off on applying this until after rc1.
-> 
-> vim +308 include/linux/cleanup.h
-> 
-> e4ab322fbaaaf8 Peter Zijlstra 2023-09-17  306  
-> 54da6a0924311c Peter Zijlstra 2023-05-26  307  #define scoped_guard(_name, args...)					\
-> 54da6a0924311c Peter Zijlstra 2023-05-26 @308  	for (CLASS(_name, scope)(args),					\
-> e4ab322fbaaaf8 Peter Zijlstra 2023-09-17  309  	     *done = NULL; __guard_ptr(_name)(&scope) && !done; done = (void *)1)
-> e4ab322fbaaaf8 Peter Zijlstra 2023-09-17  310  
-> 
+Looks good to me.  If no one else comments, I'll pick this up when
+I have the precursor available (so hopefully just after rc1)
+
+Thanks,
+
+Jonathan
 
 

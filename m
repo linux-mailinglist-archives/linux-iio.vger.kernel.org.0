@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-12882-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12883-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1386B9DF29C
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:39:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04AB49DF2A9
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 19:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4A802814BA
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8DE6282978
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 18:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D351AA1F4;
-	Sat, 30 Nov 2024 18:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A54D1A4F01;
+	Sat, 30 Nov 2024 18:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjSwTHqO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GC5Wm08D"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1D11AA1E2;
-	Sat, 30 Nov 2024 18:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1469A8468;
+	Sat, 30 Nov 2024 18:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732991930; cv=none; b=Y8zQlbgZ3uNueTELIuNuB2CA8rC7SJLeYZIn1tJQL/pAKCQ3uwLc9Aego0NiYQHthzoNvrdip0FFbs4Ep082BTsS8hlUgjZ/tuz6B1V+5GjDl+SQtr+SM6u42htLAWPt5KbJXrZVPvvRa0l/PiCo/TbBTxFnx4V83G3R+faXSfs=
+	t=1732992196; cv=none; b=j4r/gYbH0jRj3ndZrNnIeE5yUzz6Wfk/dnBFRg+qZzKGFItewr1ES4iLfedtHAHs+o7aa8AdI1sn2tod7kQ9gjRTupvUHnCWO9qAvIgBIdtvnC15pTt5Z/p1eaEycxAId2LaLhr3QKM0ukYedERebfYPrNLipnHnOwcxjD8gsWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732991930; c=relaxed/simple;
-	bh=DZpg1x2kzkyruGc7zDK9ya8CbERy6DEqz4wV7j57D6A=;
+	s=arc-20240116; t=1732992196; c=relaxed/simple;
+	bh=JXAlpQNvch5uNMaFgx0arbSf6AHB+S7Y7WlYNtmd5MM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J7/XRGi4XqYGWUST7efwp1sAMFk/W8+JUUZ70fQ2B4y3EJIll6B4W2AcLKAvZokz0H4p+6cQBAeD2L2DZcvLEkPRF81Lo1E7Kgl3BIm+bNfILMB63Ar5D8hxjMxJrbM1lc2la5Wqy9OfrcyFY9N9I3XgBwnooYhqOG5Dhmhejh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjSwTHqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAC3C4CECC;
-	Sat, 30 Nov 2024 18:38:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OYl/ZBUZ7xPbmPcCgLKYXRh1zajc4jM9law8yS49c1t93cdeQMEXD5VU2GSQR9GBAeR/lTP4i7QLOUOnHsUHMNNKBjaPMR6kyM6+qcc9ugZYiszboX33xJnXWrg1/Sdq3MXvBUpY4bfUOH7r19pJ0MmvjybvjLyJXa/uaZvjGZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GC5Wm08D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D1CC4CECC;
+	Sat, 30 Nov 2024 18:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732991929;
-	bh=DZpg1x2kzkyruGc7zDK9ya8CbERy6DEqz4wV7j57D6A=;
+	s=k20201202; t=1732992195;
+	bh=JXAlpQNvch5uNMaFgx0arbSf6AHB+S7Y7WlYNtmd5MM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gjSwTHqOe7D38RgDr6jKi75NHVLQiVS0ClfSAoI+iigmscVAD2K87xoYQPKlKAoW6
-	 LUh+unMzuxn0RSe4TY9tcwdK9RrV4EJumfI9VmKNIaqa16Yxttb4guxgLzHjf4ijUE
-	 1dKKvsPrY2tx6lQATc0T5VxtEL1t693wcunl6oTEYUWYWGAlgXAG6Vu7d3C9Pp8z//
-	 eguo8tRg9dlJ904U2gnuqXtXo2qV3+9qjbh4Fl8GQDCNGkNi0FNh6Vfw32AW7Qj0OI
-	 dUQwZU3u+x8eIKDU/l3yJOAVXUxr1sdy3XX+F0AhhR9AyKimlWL8MOAa27tcaNLgLe
-	 2yIwUQS5BEWGA==
-Date: Sat, 30 Nov 2024 18:38:39 +0000
+	b=GC5Wm08DWN0AiCGsNj4N0UpbZfNB4jok130V9YWi0IswJZ0WyyDLt49M5H/+tP7kl
+	 J7C6n97wd3elovKn/4X7QZG+ERAZaOeAbEGLepD7dgt4Uq+9A1OHcUtdP/167XehA/
+	 e/9YuPbLeBYdXNCw+U3064k0o4T1HqKs+J12LJIRLv4eFkptAx8UEK2nZY/XUwaNIN
+	 o5YztwcSKNEOco0+f7sahpIiUBdfBSBlEuftSpPuQ0xuP4neX15gT+3xYj1uglo1wj
+	 TONeDZ4Nygs7/n9tYTR/x8fRsgVALfVqvyCvpLGCx8h2yJHWX/rJqYdClVgPCRyrHk
+	 1CTJtlqbNZtxA==
+Date: Sat, 30 Nov 2024 18:43:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Michael Hennerich
- <michael.hennerich@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v1 3/3] iio: adc: ad7192: Add sync gpio
-Message-ID: <20241130183839.1fd5884f@jic23-huawei>
-In-Reply-To: <20241128125811.11913-4-alisa.roman@analog.com>
-References: <20241128125811.11913-1-alisa.roman@analog.com>
-	<20241128125811.11913-4-alisa.roman@analog.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Michael Walle
+ <michael@walle.cc>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Guillaume
+ Ranquet <granquet@baylibre.com>
+Subject: Re: [PATCH v2 0/3] iio: adc: ad7173: fix non-const info struct
+Message-ID: <20241130184306.51e5bb8c@jic23-huawei>
+In-Reply-To: <20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com>
+References: <20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,97 +64,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 28 Nov 2024 14:55:03 +0200
-Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
+On Wed, 27 Nov 2024 14:01:52 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Add support for the SYNC pin of AD719x devices. This pin is controlled
-> through a GPIO. The pin allows synchronization of digital filters and
-> analog modulators when using multiple devices.
+> While working ad7124, Uwe pointed out a bug in the ad7173 driver.
+> static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
+> and was being modified during driver probe, which could lead to race
+> conditions if two instances of the driver were probed at the same time.
 > 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-Hi.
-
-Like all userspace ABI, this needs documentation.
-
-It's an unusual feature, so some usecases would help.
-
-It is also cross multiple devices which makes this odd as only one device
-can presumably acquire the gpio?
-
-An alternative would be to look at how to do this with a 'wrapper' sort of device
-so that we have one instance to which this applies.
-
-I'm not sure that helps that much though as we'd still need some for of
-'I'm setup for all channels, now you can go' ABI.
+> The actual fix part is fairly trivial but I have only compile tested it.
+> Guillaume has access to ad4111 hardware, so it would be good to get a
+> Tested-by from him to make sure this doesn't break anything.
+> 
+This is very big for a backport.  So I replied to previous version to suggest
+instead duplicating the data before modifying.  That has much less code
+movement and maybe a cleaner fix.  Perhaps we then cycle back to avoiding
+that copy later.
 
 Jonathan
 
 > ---
->  drivers/iio/adc/ad7192.c | 112 ++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 111 insertions(+), 1 deletion(-)
+> Changes in v2:
+> - Fixed chip name in a few places.
+> - Add new simpler patch for "fix" that gets backported.
+> - Rebase other patches on this and incorporate feedback.
+> - Link to v1: https://lore.kernel.org/r/20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-0-d05c02324b73@baylibre.com
 > 
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 955e9eff0099..542db7280e99 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -10,6 +10,7 @@
->  #include <linux/clk.h>
->  #include <linux/clk-provider.h>
->  #include <linux/device.h>
-> +#include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
->  #include <linux/slab.h>
->  #include <linux/sysfs.h>
-> @@ -196,6 +197,7 @@ struct ad7192_chip_info {
->  	u8				num_channels;
->  	const struct ad_sigma_delta_info	*sigma_delta_info;
->  	const struct iio_info		*info;
-> +	const struct iio_info		*info_sync;
->  	int (*parse_channels)(struct iio_dev *indio_dev);
->  };
->  
-> @@ -216,6 +218,8 @@ struct ad7192_state {
->  	struct mutex			lock;	/* protect sensor state */
->  	u8				syscalib_mode[8];
->  
-> +	struct gpio_desc		*sync_gpio;
-> +
->  	struct ad_sigma_delta		sd;
->  };
->  
-> @@ -783,6 +787,36 @@ static void ad7192_update_filter_freq_avail(struct ad7192_state *st)
->  	st->filter_freq_avail[3][0] = DIV_ROUND_CLOSEST(fadc * 272, 1024);
->  }
->  
-> +static ssize_t sync_gpio_show(struct device *dev,
-> +			      struct device_attribute *attr,
-> +			      char *buf)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct ad7192_state *st = iio_priv(indio_dev);
-> +
-> +	return sysfs_emit(buf, "%d\n", gpiod_get_value(st->sync_gpio));
-> +}
-> +
-> +static ssize_t sync_gpio_store(struct device *dev,
-> +			       struct device_attribute *attr,
-> +			       const char *buf,
-> +			       size_t len)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct ad7192_state *st = iio_priv(indio_dev);
-> +	int val;
-> +	int ret;
-> +
-> +	ret = kstrtoint(buf, 0, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (st->sync_gpio)
-> +		gpiod_set_value(st->sync_gpio, val);
-> +
-> +	return len;
-> +}
-
+> ---
+> David Lechner (3):
+>       iio: adc: ad7173: fix using shared static info struct
+>       iio: adc: ad7173: remove special handling for irq number
+>       iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct
+> 
+>  drivers/iio/adc/ad7173.c               | 474 +++++++++++++++++----------------
+>  drivers/iio/adc/ad_sigma_delta.c       |   5 +-
+>  include/linux/iio/adc/ad_sigma_delta.h |   2 -
+>  3 files changed, 249 insertions(+), 232 deletions(-)
+> ---
+> base-commit: 9dd2270ca0b38ee16094817f4a53e7ba78e31567
+> change-id: 20241122-iio-adc-ad7313-fix-non-const-info-struct-92e59b91ee2e
+> 
+> Best regards,
 
 

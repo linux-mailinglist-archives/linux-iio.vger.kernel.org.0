@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-12854-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12855-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44329DF11F
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 15:20:09 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F39A9DF123
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 15:27:04 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7578C1619EB
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 14:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23225281315
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Nov 2024 14:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7A018CC15;
-	Sat, 30 Nov 2024 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E581F19C542;
+	Sat, 30 Nov 2024 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YHT5/OCq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O53JkXlJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BE522066;
-	Sat, 30 Nov 2024 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D1A22066;
+	Sat, 30 Nov 2024 14:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732976404; cv=none; b=T0QXQqVXZHIoENo3GTkQGMOe8rKnKEJPAw/K/mf7BAS+EsMpP+K6Tykcyrgq7H1LEbOzVigxiiS3F3vW//wf+ip9DOwuVC8IjwvSoIqI0t7WhOtdNouoo0wafX1ZODEm3Oqb64Wp0PXSRAFsl2xo3uALEUZYYzMi+8jXUgxfm/8=
+	t=1732976817; cv=none; b=BDhLARIODujmW9S7x/8Uk/sGxKzChz/YyuH/Ebf5vwMSLC4v4DQbaajhfAlFlY0dgePYcEK0KoLmirG3f83tdx40VAE9Hi4oB3Z3cTU+ajo6D35Cgn9xe+Xoy6WIQ9YBOJFZ+R+tEqiqvBBz+F+KkhN4XdSoLa46B7dpp+BGBWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732976404; c=relaxed/simple;
-	bh=HgZd1scOEwk7QysjmxPkMJUdRci6tSyTKVgBkXSDKjQ=;
+	s=arc-20240116; t=1732976817; c=relaxed/simple;
+	bh=1JfZBGt2E3X8qqsmgczArEGXlSVP0/Q35wYs6d/fGsA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VC/8EytFcYE0WMQjsQz2Uw8XIwK9XHKAtzf6eXN2K/GEvSQE77qEjZyAvQ20O5yGrNZDCBOiJChot4wNqSDS8yNwLwiJPJfyqOXqt1UbrQSZ02FJeS7PiQg+DVCYCvBKf+DiIi3K7c40ssaLY9OZbXHgoAS+sVs06T9XujNQzco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YHT5/OCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9426DC4CECC;
-	Sat, 30 Nov 2024 14:20:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hc0VEfYKvtOBaisMxngLFZYIxntueDK/eoKNtJpt3kcHFIy9qNkPFKFBwwbAqbfJ5w7skjeGwtSpJwqCfajqtSFXCsy7gkj5zC0HCJ/uNGgnp8YYuo1h2EKEm2FAD/4ZoRnk3rz/UpgBV9ojQapmU0ZS8p6AfUY49xnk61ZJDrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O53JkXlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA339C4CECC;
+	Sat, 30 Nov 2024 14:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732976404;
-	bh=HgZd1scOEwk7QysjmxPkMJUdRci6tSyTKVgBkXSDKjQ=;
+	s=k20201202; t=1732976817;
+	bh=1JfZBGt2E3X8qqsmgczArEGXlSVP0/Q35wYs6d/fGsA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YHT5/OCqUTAqWhh9zQsB87RkFBMWv9eMpODcujFTvwQHJ65XeIlT8eNRWvz7/ylhv
-	 qseGMsq7pabPERWjRfugK46/3mU9f9HrTICNEegHOmRkQl17YwcaUUBcdBGfHedBPw
-	 L39z9vwiUTTzq5DnNGzs0+0f+L3yVYPornTV9yi6DFHI9v/NRGDA5aJ2nHRvR5ptbT
-	 URb15jBroLtnjCxEUeq4DR8o2lao1KkSVvmdh1BwDWdysPBsNDx4HuA1M6Te5hOWt8
-	 ZFaWFrmGLQ06OW6vHXoxlRdK4Y2fQbVivmf1+Qv0GkJ5qQsv0OyeNsP1uBTqOf+DtQ
-	 Gd5LcIOnuIxCw==
-Date: Sat, 30 Nov 2024 14:19:54 +0000
+	b=O53JkXlJynh2OL1AY8XDIr+WPQ2QQ7LEameYwa7X9L/56q6E7eyx4hibKV/lkDmz8
+	 y4j59BnHz0H0k5Rw8A37ZAgc8bWWouAcWhDivyCCh3AIH1TOEFtrhM707YEptxtKR/
+	 +Z0bP8WMOKhg4I7GGWVrP6LamVRZshA4GIJ+5hxv70dH35W6dylqBQ+ya6CG0Nhsn9
+	 saWAIY54FegL0xYWgZ75XYnfD0TPLco8/kJUPb/ge2XWLkEBf2p4YhS7Cobhdw6yYP
+	 8ax3HswTO0zmat/bmYRofdLtg+I9FRPkx0lDvzYSiGW0z7MqmBymRxTUsbZDvoSYcW
+	 P4yWw9sN6v30A==
+Date: Sat, 30 Nov 2024 14:26:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
- u.kleine-koenig@baylibre.com, abhashkumarjha123@gmail.com,
- jstephan@baylibre.com, dlechner@baylibre.com, linux-iio@vger.kernel.org,
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, andriy.shevchenko@linux.intel.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 6/6] iio: core: mark scan_timestamp as __private
-Message-ID: <20241130141954.07423793@jic23-huawei>
-In-Reply-To: <20241130002710.18615-7-vassilisamir@gmail.com>
-References: <20241130002710.18615-1-vassilisamir@gmail.com>
-	<20241130002710.18615-7-vassilisamir@gmail.com>
+Subject: Re: [PATCH v4 2/3] iio: chemical: bme680: add regulators
+Message-ID: <20241130142648.62ead7fe@jic23-huawei>
+In-Reply-To: <20241128193246.24572-3-vassilisamir@gmail.com>
+References: <20241128193246.24572-1-vassilisamir@gmail.com>
+	<20241128193246.24572-3-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,65 +63,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 30 Nov 2024 01:27:10 +0100
+On Thu, 28 Nov 2024 20:32:45 +0100
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Since there are no more direct accesses to the indio_dev->scan_timestamp
-> value, it can be marked as __private and use the macro ACCESS_PRIVATE()
-> in order to access it. Like this, static checkers will be able to inform
-> in case someone tries to either write to the value, or read its value
-> directly.
+> Add support for the regulators described in the dt-binding.
 > 
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 > ---
->  drivers/iio/industrialio-buffer.c | 2 +-
->  include/linux/iio/iio.h           | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
+>  drivers/iio/chemical/bme680_core.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index 8104696cd475..c332741f3cf4 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -1137,7 +1137,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
->  	int ret;
+> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> index 9783953e64e0..186e0a6cc2d7 100644
+> --- a/drivers/iio/chemical/bme680_core.c
+> +++ b/drivers/iio/chemical/bme680_core.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/log2.h>
+>  #include <linux/module.h>
+>  #include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
 >  
->  	indio_dev->active_scan_mask = config->scan_mask;
-> -	indio_dev->scan_timestamp = config->scan_timestamp;
-> +	ACCESS_PRIVATE(indio_dev, scan_timestamp) = config->scan_timestamp;
->  	indio_dev->scan_bytes = config->scan_bytes;
->  	iio_dev_opaque->currentmode = config->mode;
+>  #include <linux/iio/buffer.h>
+>  #include <linux/iio/iio.h>
+> @@ -111,6 +112,10 @@ enum bme680_scan {
+>  	BME680_GAS,
+>  };
 >  
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 5661794d1127..669b4ef1280d 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -611,7 +611,7 @@ struct iio_dev {
->  	const unsigned long		*available_scan_masks;
->  	unsigned int			__private masklength;
->  	const unsigned long		*active_scan_mask;
-> -	bool				scan_timestamp;
-> +	bool				__private scan_timestamp;
->  	struct iio_trigger		*trig;
->  	struct iio_poll_func		*pollfunc;
->  	struct iio_poll_func		*pollfunc_event;
-> @@ -908,7 +908,7 @@ int iio_active_scan_mask_index(struct iio_dev *indio_dev);
->   */
->  static inline bool iio_is_soft_ts_enabled(const struct iio_dev *indio_dev)
->  {
-> -	return indio_dev->scan_timestamp;
-> +	return ACCESS_PRIVATE(indio_dev, scan_timestamp);
-If we only end up with one use of this (based on feedback on other drivers)
-I'd tempted to deliberately not provide this convenience function and instead
-just use ACCESS_PRIVATE() directly in iio_push_to_buffers_with_timestamp()
+> +static const char *const bme680_supply_names[] = { "vdd", "vddio" };
+> +
+> +#define BME680_NUM_SUPPLIES ARRAY_SIZE(bme680_supply_names)
+Trivial: What benefit do we get from this define that is used in one place?
 
-Nice work. Particularly by highlighting some 'odd corners' in drivers that
-probably make no real sense to keep ;)
-
-Jonathan
-
-
->  }
+> +
+>  struct bme680_data {
+>  	struct regmap *regmap;
+>  	struct bme680_calib bme680;
+> @@ -1114,6 +1119,14 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  	data->heater_dur = 150;  /* milliseconds */
+>  	data->preheat_curr_mA = 0;
 >  
->  ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
+> +	ret = devm_regulator_bulk_get_enable(dev, BME680_NUM_SUPPLIES,
+	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(bme680_supply_names),
+					     bme680_supply_names);
+
+And don't worry about slightly over 80 chars line.
+
+> +					     bme680_supply_names);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "failed to get and enable supplies.\n");
+> +
+> +	fsleep(BME680_STARTUP_TIME_US);
+> +
+>  	ret = regmap_write(regmap, BME680_REG_SOFT_RESET, BME680_CMD_SOFTRESET);
+>  	if (ret < 0)
+>  		return dev_err_probe(dev, ret, "Failed to reset chip\n");
 
 

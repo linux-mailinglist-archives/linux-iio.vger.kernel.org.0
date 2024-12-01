@@ -1,61 +1,64 @@
-Return-Path: <linux-iio+bounces-12921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE539DF5D0
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 14:33:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324CB9DF5D4
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 14:39:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7554A162F2F
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 13:33:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B9B5B213E6
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 13:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47D21CF5DB;
-	Sun,  1 Dec 2024 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB38D1D07BE;
+	Sun,  1 Dec 2024 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rQZUT1Gd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDQ7Az8O"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941F61CEEAD;
-	Sun,  1 Dec 2024 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950761D043F;
+	Sun,  1 Dec 2024 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733059992; cv=none; b=HXSJ5D/uVKemzIhp0JasC+G1JRu6iSyPg1/NFFg7YtNG/ZshC5tvGSD5zK5R3ahiqJZKbQ98eqLRFSXFbWuY/ZTUiTVZdbCp6n+VbHf2q2ZEQODh1+Rf7kjpRLFOB9l3ECkgrQZ+U83bDzIB2oNQ6YPZcHZi/pGiwJT7hznp+1I=
+	t=1733060343; cv=none; b=Q3o2KSIzhXkDDUOdQC4sDRoYNq+30kPQ+HYWzTw9iDGFm8D1lCesZoA3RBwj1qYdi0Huqe0hAjuGqsNJ0XchMPcAL9z/HurX1HR02EgmGaKfvzxLcwFqan9iUXQaAcThkAY7rgVfqlqEMcQcrkBhMASfx2RWXKe20dMhmhEMps0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733059992; c=relaxed/simple;
-	bh=nNskjfP3HTUO0q+xM778uzQKMG5EwFIqDXWEOhI91uo=;
+	s=arc-20240116; t=1733060343; c=relaxed/simple;
+	bh=QoutfndgNOo2iW6hFIXJ48WE+GMQKoPrnTPRsPW92S4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cjEZ+yfEvFd5eLqkdPdQWdnmB7BonHsF3/rZI4jgD+klMDuodc/yMeUFhZlZcGUvukAqzt3I+b3XCDaG3XIw/LUnPT+2yR2o/6NfBGIY/RvLwtjl7ZLlLkxWKnj3Q2fMHGONaFXB5s6KOoIH1FK97ZTk8cbOYyX7pHLjUPEkIIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rQZUT1Gd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D83C4CECF;
-	Sun,  1 Dec 2024 13:33:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fJnrIVV/AgzaSpoHG1OVROzVvoL9ngq4ZMRX3WzDjuFRnRy3TjjYWNM4M8cgMFLvuqNtWSkXD9XmMuQnYaRs28yFi7b4vylr3z06hMdVS36QvM+YF8OaxeiR1PXkpSKaMiBpgUgRzerS/PlHbEOWOHC06w+8CUiOSG1anZf8k4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDQ7Az8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D2EC4CEDB;
+	Sun,  1 Dec 2024 13:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733059992;
-	bh=nNskjfP3HTUO0q+xM778uzQKMG5EwFIqDXWEOhI91uo=;
+	s=k20201202; t=1733060343;
+	bh=QoutfndgNOo2iW6hFIXJ48WE+GMQKoPrnTPRsPW92S4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rQZUT1GdppSM32v/vVOikEy6zRYCdOZJzQk10fO2MIOeoMfm57BkfV5eNtGFg9T0B
-	 A4QMowdZZWynBJ744ctnQYszSoYlrl1VKi2u53rAW2orPbgX3IVEZ67Gu/sYY8YRvG
-	 pascCr8db/pzDkezwzIVYB0yhxMah+u2E9w1nDOwgIkrBGECwc4Xp59NwClbsXOA0g
-	 ptLhxZSSezo+Y+GnHQf82L9Psor1Gyht5zh5Cb1YSoK6SwXlxb0R2IHc5BIkhNSxbD
-	 rOm5qUC7cx50IdQ2/kdBuSTSiwZgV3xpMNkpPUCxZoyummVxABTs0KNr+5SsHkl6M9
-	 QD3sSYCuQEVgQ==
-Date: Sun, 1 Dec 2024 13:33:01 +0000
+	b=GDQ7Az8OdYnDvTJLqEwXyycACpZj3lsVaQKiKwGoDAGvmRonGNVaNsYjKOADUWKHk
+	 gTh9SHEFcwE+GOQ4VEn1CdhdRG2VmDxYsGZeSzN1ju4Wglc2eZpJu4p+D7fTuoiuNZ
+	 K8hnOzLfqe419PZD/VefPikyoCa+hQTZjWkB/OIHuSPW7DVqisjcGdsuSP2Ixa5KHK
+	 flxcI5Q5RSL4TjZWAUoefGlqJzvrkNSr8iWV0dbItIAkcUJioukL+Cdhw5PnpSQAHE
+	 nK5AkxyLZHS8ArKdhKMFmlPuKgAwa4iGu/8hSBL2sWGwoEwx3beEFoGyXkk5aA8CYr
+	 6qtpWETIWqnNQ==
+Date: Sun, 1 Dec 2024 13:38:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Michael Walle
- <michael@walle.cc>, Andy Shevchenko <andy@kernel.org>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Guillaume
- Ranquet <granquet@baylibre.com>
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7173: fix non-const info struct
-Message-ID: <20241201133301.34163b29@jic23-huawei>
-In-Reply-To: <2c6a435e-23aa-446c-bec6-6fc4d24e2d66@baylibre.com>
-References: <20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com>
-	<20241130184306.51e5bb8c@jic23-huawei>
-	<2c6a435e-23aa-446c-bec6-6fc4d24e2d66@baylibre.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Laight <David.Laight@ACULAB.COM>, 'Jakob Hauser'
+ <jahau@rocketmail.com>, Lars-Peter Clausen <lars@metafoo.de>, Linus Walleij
+ <linus.walleij@linaro.org>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v2] iio: magnetometer: yas530: Use signed integer type
+ for clamp limits
+Message-ID: <20241201133854.2e87400c@jic23-huawei>
+In-Reply-To: <20241130183222.ecf271abffcff61b93bbae22@linux-foundation.org>
+References: <11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
+	<11609b2243c295d65ab4d47e78c239d61ad6be75.1732914810.git.jahau@rocketmail.com>
+	<9f5793f03c2440d2aa18630469df06df@AcuMS.aculab.com>
+	<20241130143506.53973e40@jic23-huawei>
+	<6f2c9946a9fe4b40ac7dd5a66003c8c4@AcuMS.aculab.com>
+	<20241130183222.ecf271abffcff61b93bbae22@linux-foundation.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,37 +69,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 30 Nov 2024 12:50:39 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 30 Nov 2024 18:32:22 -0800
+Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On 11/30/24 12:43 PM, Jonathan Cameron wrote:
-> > On Wed, 27 Nov 2024 14:01:52 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> While working ad7124, Uwe pointed out a bug in the ad7173 driver.
-> >> static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
-> >> and was being modified during driver probe, which could lead to race
-> >> conditions if two instances of the driver were probed at the same time.
-> >>
-> >> The actual fix part is fairly trivial but I have only compile tested it.
-> >> Guillaume has access to ad4111 hardware, so it would be good to get a
-> >> Tested-by from him to make sure this doesn't break anything.
-> >>  
-> > This is very big for a backport.  So I replied to previous version to suggest
-> > instead duplicating the data before modifying.  That has much less code
-> > movement and maybe a cleaner fix.  Perhaps we then cycle back to avoiding
-> > that copy later.
-> >   
-> That is exactly what I did in v2. "iio: adc: ad7173: fix using shared
-> static info struct" copies the struct before modifying it and is the
-> only patch with a Fixes: tag.
+> On Sat, 30 Nov 2024 20:59:22 +0000 David Laight <David.Laight@ACULAB.COM> wrote:
 > 
+> > From: Jonathan Cameron  
+> > > Sent: 30 November 2024 14:35
+> > > 
+> > > On Sat, 30 Nov 2024 11:40:45 +0000
+> > > David Laight <David.Laight@ACULAB.COM> wrote:
+> > >   
+> > > > From: Jakob Hauser
+> > > >
+> > > > Copying Andrew M - he might want to take this through his mm tree.  
+> > > 
+> > > I'm confused. Why?
+> > > 
+> > > Looks like a local bug in an IIO driver.  What am I missing?  
+> > 
+> > The build test bot picked it up because a change to minmax.h that Andrew
+> > committed to the mm tree showed up the bug.
+> > To avoid W=1 builds failing Andrew had applied a temporary 'fix'.
+> > So he needs to be in the loop at least.
+> > I don't know the actual procedure :-)  
+> 
+> Jakob's minmax changes
+> (https://lkml.kernel.org/r/c50365d214e04f9ba256d417c8bebbc0@AcuMS.aculab.com)
+> are queued in mm.git for 6.14-rc1.  They require a yas530 fix to build.
+> 
+> So as I need to carry this yas530 fix in mm.git I'd like to merge it as
+> a hotfix for 6.13-rcX, sometime in the next week or two.  So please
+> send acks!
 
-Oops - brain fart. Applied patch 1 for now to the fixes-togreg branch of iio.git
-and marked it for stable.  I'll get the others once that's upstream.
+Thanks for the info - I'm fine with this going through mm.
 
-Thanks,
-
-Jonathan
-
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 

@@ -1,59 +1,61 @@
-Return-Path: <linux-iio+bounces-12920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793799DF5C5
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 14:23:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE539DF5D0
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 14:33:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39A2728182D
-	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 13:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7554A162F2F
+	for <lists+linux-iio@lfdr.de>; Sun,  1 Dec 2024 13:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2521CCECA;
-	Sun,  1 Dec 2024 13:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47D21CF5DB;
+	Sun,  1 Dec 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WhHDM0CJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rQZUT1Gd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D711CCB50
-	for <linux-iio@vger.kernel.org>; Sun,  1 Dec 2024 13:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941F61CEEAD;
+	Sun,  1 Dec 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733059429; cv=none; b=fYPTK19jaVO+L+NNxrdlwLZ6QDgKR5nu/gynvPAMRn9AFdI2Rh7H7XuVoaVgF4g+ut/dAu8TG+bh1GENRp/xfS4Z/66+NamlF/YsMBkds+aPtGQydU2vYzb5/3mRrEudfrYxHdQjkZJ1hNi1wT4gDT3ZwQXI+1Wk0hkJ3Y+v5mk=
+	t=1733059992; cv=none; b=HXSJ5D/uVKemzIhp0JasC+G1JRu6iSyPg1/NFFg7YtNG/ZshC5tvGSD5zK5R3ahiqJZKbQ98eqLRFSXFbWuY/ZTUiTVZdbCp6n+VbHf2q2ZEQODh1+Rf7kjpRLFOB9l3ECkgrQZ+U83bDzIB2oNQ6YPZcHZi/pGiwJT7hznp+1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733059429; c=relaxed/simple;
-	bh=N7xpxe8JWFhTEMu3h34iytTZs/wCIkRHPfZZhmZOMGQ=;
+	s=arc-20240116; t=1733059992; c=relaxed/simple;
+	bh=nNskjfP3HTUO0q+xM778uzQKMG5EwFIqDXWEOhI91uo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KhWPeSg3DQnqEUP5m7OwL2ALnRPTIOMK4oR3BOvHr4D4hg0PiORpW0vOP8K4UEtpV8g9hlMfuncSz3L0/umP9Kk6OKoJ9L53vjVRVuzAivXNhYKViSpkxSi8TVXyWgOO/rzPNlHgXC6ZUHVWjUzAHaLkJdfbOIYFdbe6h6oG4z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WhHDM0CJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5D1C4CECF;
-	Sun,  1 Dec 2024 13:23:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cjEZ+yfEvFd5eLqkdPdQWdnmB7BonHsF3/rZI4jgD+klMDuodc/yMeUFhZlZcGUvukAqzt3I+b3XCDaG3XIw/LUnPT+2yR2o/6NfBGIY/RvLwtjl7ZLlLkxWKnj3Q2fMHGONaFXB5s6KOoIH1FK97ZTk8cbOYyX7pHLjUPEkIIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rQZUT1Gd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D83C4CECF;
+	Sun,  1 Dec 2024 13:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733059429;
-	bh=N7xpxe8JWFhTEMu3h34iytTZs/wCIkRHPfZZhmZOMGQ=;
+	s=k20201202; t=1733059992;
+	bh=nNskjfP3HTUO0q+xM778uzQKMG5EwFIqDXWEOhI91uo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WhHDM0CJV7S4qFcketBmq93xD2qgxZG8oOzZ+YA6x5Ah3Zoc6WwYdAB4U84gODTJM
-	 8WMWOCHidU6nZH3SBbFeiL+XEJ0Cj66PAqKtAl2RuUSK6RWehoh9VQD92EfqxE91g2
-	 Mwr2CVfCWA+ysi1EqJ7sgg0Vk60RCEi+ff1CMndn8psPNwXeateSOrNBXRlODj5yCx
-	 jlGjWyCWeg0jMJrLcOnZ0hAg05tt8E+IxJxTCWtzjw8P+Hy6dXQ8hkPfCgqBKv6kym
-	 O1vDz37hG3JKloto3oK3SGHJ13Wew98oDZQdy0OzU7LmTP+MtZ7ANqhgh29I0YBLO3
-	 HzFQABz8FposQ==
-Date: Sun, 1 Dec 2024 13:23:43 +0000
+	b=rQZUT1GdppSM32v/vVOikEy6zRYCdOZJzQk10fO2MIOeoMfm57BkfV5eNtGFg9T0B
+	 A4QMowdZZWynBJ744ctnQYszSoYlrl1VKi2u53rAW2orPbgX3IVEZ67Gu/sYY8YRvG
+	 pascCr8db/pzDkezwzIVYB0yhxMah+u2E9w1nDOwgIkrBGECwc4Xp59NwClbsXOA0g
+	 ptLhxZSSezo+Y+GnHQf82L9Psor1Gyht5zh5Cb1YSoK6SwXlxb0R2IHc5BIkhNSxbD
+	 rOm5qUC7cx50IdQ2/kdBuSTSiwZgV3xpMNkpPUCxZoyummVxABTs0KNr+5SsHkl6M9
+	 QD3sSYCuQEVgQ==
+Date: Sun, 1 Dec 2024 13:33:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Trevor Gamblin <tgamblin@baylibre.com>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Alexandru Ardelean
- <aardelean@baylibre.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: ad_sigma_delta: Handle CS assertion as intended in
- ad_sd_read_reg_raw()
-Message-ID: <20241201132343.3878d7a5@jic23-huawei>
-In-Reply-To: <f4cb05ec-6b94-4c63-bf42-2fbd40dfd532@baylibre.com>
-References: <20241119183611.56820-2-u.kleine-koenig@baylibre.com>
-	<f4cb05ec-6b94-4c63-bf42-2fbd40dfd532@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Michael Walle
+ <michael@walle.cc>, Andy Shevchenko <andy@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>, Guillaume
+ Ranquet <granquet@baylibre.com>
+Subject: Re: [PATCH v2 0/3] iio: adc: ad7173: fix non-const info struct
+Message-ID: <20241201133301.34163b29@jic23-huawei>
+In-Reply-To: <2c6a435e-23aa-446c-bec6-6fc4d24e2d66@baylibre.com>
+References: <20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com>
+	<20241130184306.51e5bb8c@jic23-huawei>
+	<2c6a435e-23aa-446c-bec6-6fc4d24e2d66@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,33 +63,40 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 19 Nov 2024 14:09:45 -0500
-Trevor Gamblin <tgamblin@baylibre.com> wrote:
+On Sat, 30 Nov 2024 12:50:39 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On 2024-11-19 13:36, Uwe Kleine-K=C3=B6nig wrote:
-> > When struct ad_sigma_delta::keep_cs_asserted was introduced only
-> > register writing was adapted to honor this new flag. Also respect it
-> > when reading a register.
-> >
-> > Fixes: df1d80aee963 ("iio: ad_sigma_delta: Properly handle SPI bus lock=
-ing vs CS assertion")
-> > Signed-off-by: Uwe Kleine-K=C3=B6nig<u.kleine-koenig@baylibre.com> =20
-> Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+> On 11/30/24 12:43 PM, Jonathan Cameron wrote:
+> > On Wed, 27 Nov 2024 14:01:52 -0600
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >   
+> >> While working ad7124, Uwe pointed out a bug in the ad7173 driver.
+> >> static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
+> >> and was being modified during driver probe, which could lead to race
+> >> conditions if two instances of the driver were probed at the same time.
+> >>
+> >> The actual fix part is fairly trivial but I have only compile tested it.
+> >> Guillaume has access to ad4111 hardware, so it would be good to get a
+> >> Tested-by from him to make sure this doesn't break anything.
+> >>  
+> > This is very big for a backport.  So I replied to previous version to suggest
+> > instead duplicating the data before modifying.  That has much less code
+> > movement and maybe a cleaner fix.  Perhaps we then cycle back to avoiding
+> > that copy later.
+> >   
+> That is exactly what I did in v2. "iio: adc: ad7173: fix using shared
+> static info struct" copies the struct before modifying it and is the
+> only patch with a Fixes: tag.
+> 
 
-Hi Uwe,
-
-Thanks for all these cleanups.  Trivial request for future though.
-If like this time the maintainer is being slow / busy and take a while
-to come back so you roll up multiple fixes into a new series that's fine.
-However, please just drop a quick reply on the original threads to make
-it easier to notice that! Only needed if all the feedback like here has
-been positive and the patch might get picked up directly from the wrong
-version.
+Oops - brain fart. Applied patch 1 for now to the fixes-togreg branch of iio.git
+and marked it for stable.  I'll get the others once that's upstream.
 
 Thanks,
 
 Jonathan
+
 

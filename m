@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-12982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F589E0EE8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 23:27:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 862789E0F39
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 00:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44748B26E93
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 22:25:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47193281F44
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 23:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F231DF972;
-	Mon,  2 Dec 2024 22:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6FF1DFDB2;
+	Mon,  2 Dec 2024 23:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Hf0VthXL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VdnCDlVV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD18F1DED6E
-	for <linux-iio@vger.kernel.org>; Mon,  2 Dec 2024 22:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C34A1DED42
+	for <linux-iio@vger.kernel.org>; Mon,  2 Dec 2024 23:05:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733178337; cv=none; b=bsxLYvfJ4uU71fw7oQs8n6KuoywUSRFOu+vVxfJtpc1++wLYjL/u5DlJrnUWUNtKgPEBI8KtpV2SVBqURlTeuKQENI8IL+yUFmUIWOc6u61pC8KH0b8gtpPVcif4YJnmwPsaVCDHARUGwXiYPt14VmCtXtZhMKqcVIPvhm7EId8=
+	t=1733180732; cv=none; b=e15SHfqxCZlalEnmurVCFXtO6oQ2ej42kNH/HZP9BWAt3cdVmZx2G9wQKwbr4n3g4DLk94nlUmwbYkDdDDkS64DDzkzG/mSmNNdU0+Y6k8QRWfw4uFMqygyAgckZuYG+GwZhvyxBsF2wsbHig8GR072z17V+3FUuX6dhDFAG/Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733178337; c=relaxed/simple;
-	bh=5FeWdKTT/Kl2lGbJ06Y8tF42fvPEW7LRdGOqragRJJk=;
+	s=arc-20240116; t=1733180732; c=relaxed/simple;
+	bh=jPK3s7MvXUAv9tE+0zBLYxJdkSDpEVCvEn5z5oAuHKw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Et+5alcElzUW0odKS++INkViXpLdVxZT8aicdb83wg1rpBAHhG7f0bPli4+kejq0Z+4UojtpCNu25RaIav0HEroCNid9vWm88WJ1rsGSwuJ/YQawQPDlXYPnHJfWXQ6JcLWW0F51SZ+1ssUvtNUw+2jqC19vsViv+0ekLVzMq20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Hf0VthXL; arc=none smtp.client-ip=209.85.160.45
+	 In-Reply-To:Content-Type; b=UQ9ZIRvLcYDKpc101Wf905xBjcD3RLgLJpid2I4NcH1JaucrAKLq5z2QliDGkNdAdWcMXmcZiuiqE2FccbOHSQ7/U3NIHAJPFzytnCSKP7QFxKqwl7haXHJIDkLk/gMc8UlNoAb98nS8vKIc3e7wd/TKYLk7mtMB/Pzylmmitjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VdnCDlVV; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-29e7516ee77so772012fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2024 14:25:35 -0800 (PST)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-2965e10da1bso2424523fac.0
+        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2024 15:05:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733178335; x=1733783135; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733180727; x=1733785527; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=yhe+Y9KpnQcbiwEqC2RxmdyO+5PB6oqbLiwhpO9OfcI=;
-        b=Hf0VthXLc9QBN4a8b2b5I+YXjt/xP5FQSRDa5aBTtFS5fGHFIjAmMnn6Xjy2kvcFFC
-         XezjwoYA+DdTOoOeKj2RYA0dRLl72oicP8a5eLD49iNvO5OGCUblssg+INtMOYzxzVDa
-         JVtSRqzlKdo5L7cu/L1AHemMr2EiE5pP1qP45kkrt/QlifIAHx+KynzR62kuiX0RxVo8
-         DCVN5PBqFycFa8me0nP6Mme21Bht1UUl0mZnORdgY8GhpTQkkoqxfMogwuKgcmBsvRkB
-         koBEJtazWV9U5Ap1AIFFYFUgDFZXpE05RmqsmHGrMQQ4OLWfspmWXWZNDK6E4Jrj9EEW
-         npTA==
+        bh=jGCPVYRn5OSGT6f5dVv/ceurIa62iRGC5aQpQ1hOOnk=;
+        b=VdnCDlVVYedwyJdr0A1+c1E9refjiro0Eij3epn8cOxfhFpSCGms1e0Hbc10HjMm86
+         Qe6KTI4l32JTplyPFp3b0HZaGO8OQjrYRpJd3gcMdLWXOSG/hJkIxYCjIh/uc6je+PHS
+         3mYKndlbZc8krKZkapDybbbeiQ0n9EjpMe+7aLtdZ0BBVzmwvZU7lVMLbh1cO/ZmCXMQ
+         tHTtEjLI+BfXmZK8nylrvJMMrAnjYMLep+LMbQLld7r+o5hvRDTa90HFd25aaDEteq7c
+         McOdwVJmj0qqonZ+jhBsgmfD/pGJQcdz/jbX259DMEgBQEnF1lkD7iWqnjcVSg3PI9Fd
+         V1aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733178335; x=1733783135;
+        d=1e100.net; s=20230601; t=1733180727; x=1733785527;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yhe+Y9KpnQcbiwEqC2RxmdyO+5PB6oqbLiwhpO9OfcI=;
-        b=veXZIomryvDoYYs+IK6EzbWquruzKCHC7YZKv6SSLDX6UgaYHM9FHUU+/ssBEbopjw
-         WAP3lBdmPInkbeOYJhP4SofUdd3B7COA2F/rae7FJrV42GUhj1qbgbd7QPIoU/pSaomV
-         AICLTpdgJp4GHT+rXKoRvgenYj3q+yXLwv5gPbPTAkK6KOsLmHMVteUxHcZUYmbgbhY2
-         ChHUO2Sr0W4AV3AP47/lgU8IStehHzFX8c40Nc8Gg3dK9Q5fTRFWUdNEdPX0Hitk30zI
-         je5bVwDOvzoqnrVBiLa1ByYSWWonIlcWe/aNu1tPj5Dr51Ct+IyGyBvX+95wXWh46Cl8
-         prVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWz1YP7RwMovJRVqZT175UsCeWnd8TvJG0aFSvSrEfuW5MHjbHq73zvpWwozZdS24D1BBPR8krojS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCHNDJsQD0Q7jBX3DqTKHrK5Nf+cIrgZ25VishxPxGkn7+Hnvs
-	+03cFD+HDfu6deZgvqy1tjs8oVqY/mNSjK2DFXEhZRm3hWVhOY8aroHhOxrAX04=
-X-Gm-Gg: ASbGncu0ss0inXc4sGrULf7zwSjHvHk0sAhrrY311ldwU6dBWqSXOf8Xd0u0Jo3cOz5
-	cLag3ZQ34ccR8j4sAChzTObVgOTRFeK3XbpgXLS1yfiqGZPr2xb/9nHFUHNq+g8FuoWkP+jNC21
-	tQNNYP/eOzAi3yzcQHcM5JqD/K/LuMF1GeG9Zk1B2dVuSbKPt/W47mByFn1mUw4qRfTd+CwieEO
-	u+Rlxrsz/H8e/RW6l41kQF6URhBMN6fkd1N6byfrVzmQGnnhU6fjddJnwsfJnz1onuMaFJxrhjM
-	UhFvadY4+a0=
-X-Google-Smtp-Source: AGHT+IFeuI/nJ53p25gQt3SeEy0W9rm5s/8s0AHvHNdnQS3wcS/sGrQgMgYd4xQgK7v8g31Y3F8t5g==
-X-Received: by 2002:a05:6871:42ca:b0:29d:c624:7c3d with SMTP id 586e51a60fabf-29e88835d82mr88674fac.32.1733178334926;
-        Mon, 02 Dec 2024 14:25:34 -0800 (PST)
+        bh=jGCPVYRn5OSGT6f5dVv/ceurIa62iRGC5aQpQ1hOOnk=;
+        b=GdlGWffgsFYMu+kIkzflkMm/5C6sAebcO9HpGbN2TwxxQQK6lodK22eqO/3IKUM5JL
+         +D7XRdgtYMnOLO/HOUsIdISrFq1vSY6MLilpxX6ggR05UyzGj1kdUU6kvaIKWK3XbfGB
+         tRrY5HyWCg+qFKnvTc8pb7BEgoBhQKbGJUHv9/9ZTvapNrQF1AVGdrhOox2Hvmgub47Q
+         77CnFj8x1R2IKzVkBquP0yL6o4JRfKO+mnlfiwkj9KHVfi8sS3pxCLmrujhGr5rwWdlY
+         ai9CsRew4VdDlHGnoIFeW7lqEGdIYJXMpH6BNKPxAwwzJT9YaMnw3DLpDm/+4OB6cPnY
+         rmYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhbP+95kxFjObESV/jhAFEd7X9iReQO20AzaUmuHP8EoiaeTElQNFznb6ISev3UYpQDhujME51uHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRG0HK782uUVVj2Yz5B2oN5CKurhgmmugjTgZ035SqvFubZsIg
+	00yKonTrCv8cU4x+DqX8uZNmHvTw5pHIF5HbflUOejdSIkOSjtIvbWTdwlNyNeAZkUrWQIg0QoF
+	6
+X-Gm-Gg: ASbGncuu2Dc8EtTYsp4kLR0KlXIe7hr9OKcVI3DAG4bDxygEeietVt2RzcQUj6vz59p
+	kaWzdZelTXCb1qT9HpPl2LNlX8KgXoMwWJXaf66Ro6oXHKDiKvFhG2U9Nkb8xxJixYvq0w8VuDG
+	XNy3PRukr2Zn7SXb8aALkP8CZzDnxmvjo6V1MobJySpQ25H73gyy/2y4vv+4dnD6Ej9GPkw9Ea1
+	JUXV1pYzGjgQdbW23ciZSv+TH1aOrl6+RxrQWSTHFPj6jcuGDGSwXhaaCaWpAyYm03R85troGkq
+	dmK30GRhIlc=
+X-Google-Smtp-Source: AGHT+IGi4VfwgKHUVkydn6ADMuAuaO1y9v+fPGdB0tYX90iGwS+zN1xd6HcGdq43J7pH2hZET2mb7Q==
+X-Received: by 2002:a05:6870:d886:b0:29e:532d:8f3d with SMTP id 586e51a60fabf-29e8867f8b9mr256796fac.10.1733180727203;
+        Mon, 02 Dec 2024 15:05:27 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29e6b1a71e5sm708382fac.32.2024.12.02.14.25.32
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-29e3d3fb1c3sm2042449fac.8.2024.12.02.15.05.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 14:25:33 -0800 (PST)
-Message-ID: <72a86649-7a83-430f-a47d-39f71f2e5f2f@baylibre.com>
-Date: Mon, 2 Dec 2024 16:25:31 -0600
+        Mon, 02 Dec 2024 15:05:25 -0800 (PST)
+Message-ID: <52513d34-8484-4c4b-8f87-29cbbdcefc06@baylibre.com>
+Date: Mon, 2 Dec 2024 17:05:24 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,29 +82,96 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/4] iio: adc: ad4000: Use device specific timing for
- SPI transfers
+Subject: Re: [PATCH 1/1] Documentation: ABI: IIO: Re-add
+ filter_type/filter_mode
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marcelo.schmitt1@gmail.com
-References: <cover.1733147443.git.marcelo.schmitt@analog.com>
- <a36fcf44cc00b2a498170e2ae3f005829d516266.1733147444.git.marcelo.schmitt@analog.com>
+ linux-kernel@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, marcelo.schmitt1@gmail.com,
+ Guillaume Ranquet <granquet@baylibre.com>,
+ =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+References: <b2132bd3ca1d64cdd8d5afab1f1f33c574718b50.1732901318.git.marcelo.schmitt@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <a36fcf44cc00b2a498170e2ae3f005829d516266.1733147444.git.marcelo.schmitt@analog.com>
+In-Reply-To: <b2132bd3ca1d64cdd8d5afab1f1f33c574718b50.1732901318.git.marcelo.schmitt@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/2/24 8:08 AM, Marcelo Schmitt wrote:
-> The SPI transfers for AD4020, AD4021, and AD4022 have slightly different
-> timing specifications. Use device specific timing constraints to set SPI
-> transfer parameters. While tweaking time constraints, remove time related
-> defines including unused AD4000_TQUIET1_NS.
+On 12/2/24 12:22 PM, Marcelo Schmitt wrote:
+> The ad4130 driver exports in_voltageY-voltageZ_filter_mode and
+> in_voltage-voltage_filter_mode_available attributes to user space.
+> The ad7779 driver exports filter_type and filter_type_available.
+> Add (back again) documentation for filter_type/filter_mode attributes.
 > 
+> Fixes: 01bb12922b60 ("Documentation: ABI: added filter mode doc in sysfs-bus-iio")
 > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > ---
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Digressing a bit away from the specific ABI used by ad4130 and ad7779,
+> the sinc3/4/5 filters are called `filter_mode` in ad4130 driver while other
+> drivers (ad7779, ad7124, ad7768-1) call sinc3/4/5 filters a `filter_type`.
+> Datasheets use the term `filter type`.
+> 
+> Depending on the particular ADC chip/design, the sinc3/4/5 filter configuration
+> may have an impact on the output data rate (ODR) (which is equivalent to the
+> sampling frequency for SAR ADCs - `sampling_frequency` ABI), 3dB cutoff
+> frequency of the filter (`_low_pass_3db_frequency` attributes), or settling
+> time.
+> 
+> ad7768-1 sets sinc3/4/5 according to the sampling_frequency attribute. No
+> filter_type attribute.
+> 
+> ad7173 sets the filter_type according to sampling_frequency too, though it
+> looks like support for only one filter type is implemented.
+> 
+> ad7124 sets sinc3/4/5 filters according to a filter_low_pass_3db_frequency
+> attribute so it doesn't export filter type attributes to user space.
+> Missing `in_voltageY-voltageZ_filter_low_pass_3db_frequency` documentation?
+> follow up patch?
 
+cc: Guillaume and Uwe since they are working on these last two drivers
+currently. Maybe something they could address?
+
+> 
+>  Documentation/ABI/testing/sysfs-bus-iio | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index f83bd6829285..704c9033cb5b 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -2268,6 +2268,20 @@ Description:
+>  		An example format is 16-bytes, 2-digits-per-byte, HEX-string
+>  		representing the sensor unique ID number.
+>  
+> +What:		/sys/bus/iio/devices/iio:deviceX/filter_type
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_filter_mode
+> +voltageY_filter_type_available
+> +KernelVersion:	6.1
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Set the filter mode of the channel. When the filter mode
+> +		changes, the in_voltageY-voltageZ_sampling_frequency and
+> +		in_voltageY-voltageZ_sampling_frequency_available attributes
+> +		might also change to accommodate the new filter mode.
+> +		If the current sampling frequency is out of range for the new
+> +		filter mode, the sampling frequency will be changed to the
+> +		closest valid one.
+
+I think it can be safely assumed that changing any IIO attribute can
+cause any other to change, so we probably don't need to mention the
+sampling frequency interaction here, especially since it doesn't apply
+to every possible user of these attributes.
+
+Some other useful things to add instead:
+* Mention that the values are the same as the ones listed in the
+  "..._available" attribute docs.
+* We should deprecate one of the names and recommend the other for
+  future drivers to use. Since "type" is used more than once and
+  "mode" only once, it seems natural to keep using "type" going
+  forward.
+
+> +
+>  What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
+>  KernelVersion:	6.1
+> 
 

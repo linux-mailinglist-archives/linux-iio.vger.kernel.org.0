@@ -1,118 +1,149 @@
-Return-Path: <linux-iio+bounces-12951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94689E0897
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 17:32:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CA29E081B
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 17:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC5CABA1E64
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BC75BA7BBC
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF537205E1A;
-	Mon,  2 Dec 2024 14:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D348205AD0;
+	Mon,  2 Dec 2024 15:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDN0R1dT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iWmLskC+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18263205E18;
-	Mon,  2 Dec 2024 14:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103FD20E316;
+	Mon,  2 Dec 2024 15:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733151404; cv=none; b=s3LaMQLuqmbkCm5rgTwqSgIi8vZrfVhEIbQeNJ0+I43LyMcf0HUW0TV/+gm2dbuhCEmbd6LovuQ9gPYh4pJniQaCT3sb9MEUNCCzrbrdbbkO4zvDWK4rHPBBPg7QILZQvueGhWKk0S+RIlj8twGYpBbj1jhIeXXDt5SjBYUatb8=
+	t=1733152303; cv=none; b=dQlU9sSICJuZv7ev3sdGguFI9tb2DQiX5zhUUT3Rc+Mj0EMTUH7iosaNOfE9Ay+mPXus9MVRktffa+1jd0PNkDX1CA0TfBbTeNp92hm6NOU1l5wOQAPlIAU4ICRFa66J5/jNrc3DCwr/m3TmHI6WdxVPhfwsV5OXW/5Y3mZJv9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733151404; c=relaxed/simple;
-	bh=Rdwzy6vHNgihlRT5BPotf+BGfF/xjXHKGqMg9A3o3Cw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DtVfidXRBLUfXt0puKsL8n2LZFuMIB2fiQPRDEhX5/+Ik340GvE4WqLOZBTdTNm9v8NfiYhEfInxJvwKAqYFUY3ZRGOD/QnLuuxcLbauwXNAgq6T9zCYAt7lCgacrobWEotwj2YqwWrJ8w9faRPBnXy/r6QvK9U6Quvlugi36oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDN0R1dT; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1733152303; c=relaxed/simple;
+	bh=YxMgzNRRz3wVdrUzCGMfJ+jt/0auNaIGlNq72sywoXU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=koHfe+XbRLkqjxN8rgoyL7zkEV+hgbiUStg2Y1Wkl3ArF1R3X6o6bukFWwMFwABXTCMafKb1eClkvOuzOgdr8LLJ1Ny0PHNNOPBNiBo3HJEQbUCUOmjDYt8PfoCt528hEKK7BC6muyYO+32rLFYQeB5Kx1RYf/Mnx2khOQi20YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iWmLskC+; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-71d3e506981so1742282a34.1;
-        Mon, 02 Dec 2024 06:56:42 -0800 (PST)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43494a20379so35644775e9.0;
+        Mon, 02 Dec 2024 07:11:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733151402; x=1733756202; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vq812pWWGRQ3G1kkOSCyU4FgoSqNPDkfuDdYU6oqqPg=;
-        b=CDN0R1dT3G53uni9m7BLFp5vJNwo08we7WbCBHnUj71Ix7KlJqe1l9kkZlIcI/4s3b
-         EV2Zc3EU2yUE6QSuNAogQr9CA84twhUYBl4qKxc4MW3tagJpn1R8eGBHvPVn6AvwIqW9
-         21qgBeuINujkpKniXpxlVOG2aIxk6mnTFQc8V2jaM6na1f2AP+c3HjePjalgMAPNq+kr
-         m8O41xgJ0aAWM5x25hWm2QHMKWWHQ0x7WzVBv7+MLb5CFWx26ZuH6eru7ZZNn/4VPd9W
-         GhK6npM4VHK7xPelXdeilp1oF3Uv5V0SfPbFoMSS3ZkZqcn7sTsWwiltMhz+cv/ak/TC
-         njTQ==
+        d=gmail.com; s=20230601; t=1733152299; x=1733757099; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nV4l2lLVkQn7AKJu1TpC/+VW5wMnOQmxpRS243GTK9g=;
+        b=iWmLskC+oQl8GahOPvKc6e4v6AvLTJCQuRUmbBoBqrp/4/uR1uwfXy2aKSCgWz52A+
+         65m8fBO9Bw1BBfDJ/5lcOJxy9pLSq2ml2rrvwSyAzKkzJud3NNccYFfBl0wfP0T0cL4S
+         SbyeNvx7EGSRfkFm8coEEKrYH0b6bO2joWSMy0WrtbNfyD4lkEBSkNFLyal0IL2YeNWT
+         gn8Pi3boZDV8ZdMNlKvVqaBTd2hc+KN+uinx88TMAg1lYePsWS34jyV0h4gvlXXal9Xp
+         /BE56piiBkvRZAMK2iBKCHBVhE9bWtrSVfbj9h8q9ubQyoJ0n9Jpm6gYpZly1oMjaQtR
+         QZyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733151402; x=1733756202;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vq812pWWGRQ3G1kkOSCyU4FgoSqNPDkfuDdYU6oqqPg=;
-        b=Bo42bPW41J3VGGZmM6o03WWS9oMWyXeTZj0yCirH20aHtXlc8Nne7eBdlwfr3YINM4
-         SwC6TeYVGwAi5R4vQUWioAO+mAN4Q1ejLbrr6j345V0vb/Hea64O/pFVPzfWZ8zw7xql
-         2t4buENjupg+HpC9KGFdhvHFV2sBd+Yb67V+IhZlUbvr6UsHbuiWzCkGG5vsYzNZaoKh
-         WvnSgyvTFrulgJrGOkFjQnOU4A/N91wyvrVju3Ip5O7oTeDbL+0cG9rkAvKQ76KSa0xr
-         dLn7FfO1LFH47pEdSLtJXikCI8Km78NDDEr+x+lvfck1Z34HiyktIu4ZkVGWohRg1rS4
-         vW9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUU9tcWSB9nLCgCenPTKMmQTQG0tBwrm04IOyyvmDz0C4/2OWHEGIfPDCY6QEDjzo0vzWBLEN11f0hF@vger.kernel.org, AJvYcCWdkZuMqqQaYlA4wHi+mPqdV8wAy/hM1IpfzQRii1eiiSBWoNJrgHVg2tB28veMkAXTCYSHLLrCWKittNmE@vger.kernel.org, AJvYcCX9e+JarDQHj3iGI2k4KwwxFnwaT5SLXL/uPKo4MHTCS1lRqEtvKF92QxtRwObEg7SCt88hQghGDBA5@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSnc/qEnt6nO7nx8NPCYZjvBYWVV6UlGMXO/ouE1zOWqjd2HjI
-	qFNQFO/U4k9E8f+ldH+rSomhNjudWl72cAf5jr/ARLBafNynKmeR
-X-Gm-Gg: ASbGncviAJMQ5g51i3E2BhaHi08VieA2yCftIUFkhsXBFOrpIGlBrcNAyZJQxRAq31+
-	jF1hQn9M0e1GwwqP4xEKa7k4ucvufrjEtTlbT/i49AHTEQSbaLVCq9Pq6PIlFhg4AFgFeI4MTgF
-	2vhny/pM1z2vt+ONzp1VEDOULtyd8jAxLoZYAlayH1Yv3gztPfcTC17vimwVQkoVxa1aVNqgj6Z
-	c7/VzyXPayIuMCZUOtzBDNCN1sIAW9K/JlIRCm77MOJlUZRrBQXTumgtGdlWD8=
-X-Google-Smtp-Source: AGHT+IHXpSHOGKQ+h5TeoRVyNle86vfvvoWeT8dxmfjolFtZTKCjYhSttXDb+54xLUUhMLEHjkoz7w==
-X-Received: by 2002:a05:6830:6516:b0:71d:5b20:8f9a with SMTP id 46e09a7af769-71d65cfb504mr18227782a34.23.1733151402024;
-        Mon, 02 Dec 2024 06:56:42 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7fc9c3034c8sm7851560a12.31.2024.12.02.06.56.41
+        d=1e100.net; s=20230601; t=1733152299; x=1733757099;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nV4l2lLVkQn7AKJu1TpC/+VW5wMnOQmxpRS243GTK9g=;
+        b=pkOCI5cgjj0lAxJQBVYKTUnVO580QOuDnbM7/N35q2652nldFWYShz1kkUn8rDFqCA
+         D1PfmhVgkoRGfpCG0haT7HfDUh9lrTOyFGpvR217Wwkp7fJp0FefLapfaSZ8D3gToW99
+         7cq4C1wyxYeZIVtc+JB5kVw2tIbAFEGSocSg9nEqdjXJ9bLSZ+xd1usnf/J6QOVazkXz
+         Qdl6zyJoGNq0o6T2kDxrIdD49kJGdpcIRoqXY3PJDWXgdkV16qBb+0CuX/3dFCbhZcF4
+         2mg+IBq7lvJNRYZg7XCkH9ekognBGxjdtycZ1WKGwZSS1cK93twoBc5QSKa5cFaOBlO5
+         DgpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzAxS1dZWzRVk1zO19/Vjp/mc3n2iDX0mjGxCr70wfNqSTegG7/v1gQg9Fm+TIW8DSOBp5d21+rVWX8eM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9W9CT+JL+sV5ztSwWu4Dj5lK9KVgQ6tGYdo/pSfsxYc8pNx4S
+	iVJFI4/9x5ySbqUayOYKEDcH6n3Avcebmrk5THjB5ZfJLtl4+hut
+X-Gm-Gg: ASbGncu3QnJ7xvpBWJwSOGSSmZXTLVNzOnXmmvoh06XjkHHjeOg3RW+6kFu1TK028Dv
+	redO0Tp/FRi4PatKWW0xRvF1ghKmz/fXOiMKduEoXEbBHHyvtQkKyPguAJtqozCm77YQp7vMzYg
+	JlkEJR1xUDW7/Vno7DoXaFMleec13ZS0ps85t8nCoHqdUvq5dSnUG0dWOYp0pXbpxMDvPYhMGhX
+	RVMGeX8HSgvaxxMXOkgl6BXGUymL/rQZPj5fgTcANYEAU5sKUGGj/MavJE9CjOEJTRimGFn6c9p
+	anrPs7P9WCAAA796vaxM
+X-Google-Smtp-Source: AGHT+IFqsTbKUWf24PW7pFizyUZDs2575ldIjokvTIMOJTyNmWAWMxhDYbFZ+pC936i08xukQkI3wQ==
+X-Received: by 2002:a05:600c:5022:b0:434:a6af:d322 with SMTP id 5b1f17b1804b1-434a9e10ff0mr189046995e9.33.1733152298396;
+        Mon, 02 Dec 2024 07:11:38 -0800 (PST)
+Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7d264dsm186082535e9.33.2024.12.02.07.11.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 06:56:41 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Mon, 2 Dec 2024 06:56:40 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Ming Yu <a0282524688@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, tmyu0@nuvoton.com, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	cmo@melexis.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jean Delvare <jdelvare@suse.com>
-Subject: Re: [PATCH v1 0/2] Add Nuvoton NCT7718W IIO driver
-Message-ID: <6867cd67-9ab9-4a5c-902a-e2d14b846c51@roeck-us.net>
-References: <20241126074005.546447-1-tmyu0@nuvoton.com>
- <20241130202849.13eedb04@jic23-huawei>
- <CAOoeyxUyi_HKLH64Sokd9YU9vDnuizBaP2AOUYqQ8hTvJKo2-g@mail.gmail.com>
+        Mon, 02 Dec 2024 07:11:37 -0800 (PST)
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: [PATCH 0/2] iio: consumers: ensure read buffers for labels and
+ ext_info are page aligned
+Date: Mon, 02 Dec 2024 16:11:06 +0100
+Message-Id: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOoeyxUyi_HKLH64Sokd9YU9vDnuizBaP2AOUYqQ8hTvJKo2-g@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAArOTWcC/x3MQQqAIBBA0avIrBtIKYKuEi1sGmvINBQiCO+et
+ HyL/1/InIQzjOqFxLdkiaFCNwpot2FjlLUaTGs6rc2AIhGP03ofCa2XLaClYXHkuGdqoXZXYif
+ P/5zmUj5ilUSlYwAAAA==
+X-Change-ID: 20241127-iio-kmalloc-align-ac7bfcfe5ec0
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Peter Rosin <peda@axentia.se>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Matteo Martelli <matteomartelli3@gmail.com>
+X-Mailer: b4 0.14.2
 
-On Mon, Dec 02, 2024 at 05:22:52PM +0800, Ming Yu wrote:
-> Dear Jonathan,
-> 
-> Thank you for your reply, I'll move the driver to HWMON.
+This patch series is a follow up of [1], where I described an issue
+related to the fact that devm_k*alloc() functions do not provide
+alignment to the requested power of two size, leading to potential
+errors when used together with sysfs_emit* helpers which expect
+page-aligned buffers.
 
-AFAICS the chip is compatible to lm90, so please add support for
-it to the lm90 driver. Note that this also applies to NCT7717, which
-looks like an internal-sensor-only version of the same chip.
+From that discussion, it became clear that this issue currently only
+affects iio consumer drivers, as they can directly access providers
+attribute formatted using sysfs_emit* helpers. For instance, the iio-mux
+driver allocates a buffer with devm_kzalloc(PAGE_SIZE) to read provider
+ext_info attributes, which could be handled via sysfs_emit* helpers.
+This leads to an error in the provider ext_info read callback since the
+allocated buffer is not page-aligned.
 
-> Additionally, for conventional ADC, Thermal sensor, and tachometer
-> like chips, would it be more appropriate to implement them in HWMON?
-> 
+Summary:
+- Patch 1: harden the consumers APIs to ensure read buffers are page
+  aligned for attributes which could be formatted with sysfs_emit*
+  helpers by the providers. Currently labels and ext_info attributes.
 
-Thermal sensor and tachometer, yes. For ADC it depends on the use case.
-If the ADC is used for hardware monitoring (which is typically the case
-if it has limit and alert support), yes. If it is a pure ADC, IIO
-is a better place.
+- Patch 2: fix iio-mux consumer by switching from devm_kzalloc to
+  kzalloc for the ext_info buffer.
 
-Thanks,
-Guenter
+Tested with the iio-mux consumer driver alongside the pac1921 driver,
+which provides an ext_info attribute (the shunt resistor in this case).
+After applying patch-1, the error was detected during the iio-mux probe
+rather than in the pac1921 ext_info read callback. After applying
+patch-2, the error condition no longer occurred. Additionally, the extra
+check in iio_read_channel_label() was tested with the iio_hwmon consumer
+driver temporarily modified to allocate the buffer for retrieving
+provider labels using devm_kzalloc(PAGE_SIZE) instead of
+devm_get_free_pages(). The error was correctly detected during the
+iio_hwmon probe when attempting to retrieve pac1921 channel labels.
+
+[1]: https://lore.kernel.org/all/c486a1cf98a8b9ad093270543e8d2007@gmail.com
+
+Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+---
+Matteo Martelli (2):
+      iio: consumers: ensure read buffers for labels and ext_info are page aligned
+      iio: iio-mux: kzalloc instead of devm_kzalloc to ensure page alignment
+
+ drivers/iio/inkern.c              | 11 +++++
+ drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
+ include/linux/iio/consumer.h      |  4 +-
+ 3 files changed, 59 insertions(+), 40 deletions(-)
+---
+base-commit: 20fd1383cd616d61b2a79967da1221dc6cfb8430
+change-id: 20241127-iio-kmalloc-align-ac7bfcfe5ec0
+
+Best regards,
+-- 
+Matteo Martelli <matteomartelli3@gmail.com>
+
 

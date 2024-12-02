@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-12953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAE09E07C8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 16:59:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A93F9E07B2
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 16:56:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF251771A8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:18:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE8BEBA7DEF
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D58620B207;
-	Mon,  2 Dec 2024 15:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616F120FA95;
+	Mon,  2 Dec 2024 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CPvw9aPw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OAhxCH59"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A280B20E320;
-	Mon,  2 Dec 2024 15:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528C220E32E;
+	Mon,  2 Dec 2024 15:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733152304; cv=none; b=FU5hJCvtJxXTrYRcrtM41KUWnUt/I1ISH2Ofd6i0qeIxAm44xLduKxlO4ZoKZSloY3f5xz8FomYDjPbzznWSCB8OZ4dYiyFcNRRzB/sW2ULr/5yFTc/zKC4hc8GWaHj+T9En6tCiQ2qXhxzMOmIOkn4IlSHSBcnwSnQX8PoRwdQ=
+	t=1733152306; cv=none; b=eyLx3XXMuqoWCJa5zTVjf+iFv7zgPTe7Wow8OEuLCYalLRj6jL7p8YqfvdkQs8yg6Wf6sukO+hTNqtSHv/BZUYBJjdlPd37PM92GYO9e+ciO4N3ErxNbjpPSiMHnM+r0h9Ty+OUFxxJa8pxltLEDntZZmpweYpnOvZrVF/6Mce4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733152304; c=relaxed/simple;
-	bh=jOURbvIBqcaxRauahaNmGNs8QWjyLcPZWcsQoQf7Bnw=;
+	s=arc-20240116; t=1733152306; c=relaxed/simple;
+	bh=NfcZdUCLxpBvLjKg8gBIysrlCbsp7eHgSGw1ARszsJs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aQOyAT+gf0TVU8NhQKjTjI7RrwiLsnqvXOA16hA1PHdNKQNqmsP0rt33suddJLcbna0Mbvum/5gfz/ln8H6t12yAORnqLA9igFiNaKxXaG/krwGnwJLWo2ysYG7MV+oxbeJGMSdm2gLdVY0lEUX6QuSrtt1NUkITuCgu2rD4flc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CPvw9aPw; arc=none smtp.client-ip=209.85.221.50
+	 In-Reply-To:To:Cc; b=eVoGPuZSkxf/M8xJxDxgFRhQG3bCAcmowm8JEQfc4x4EHJuDL/4Yar/5BfPKFHnMUnLRcCPFYHW8wM2d96xqFK9nAqOWpk/Jj9YppwDR5KqCc5RSunTX5LcDfgXbHFrCIha9HeJrN725jeBbrgqP6qyBur8Q8j0rQpfE+ocwdmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OAhxCH59; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385df8815fcso1896355f8f.1;
-        Mon, 02 Dec 2024 07:11:42 -0800 (PST)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434a852bb6eso40384085e9.3;
+        Mon, 02 Dec 2024 07:11:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733152301; x=1733757101; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733152302; x=1733757102; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KUnUP56auFT1j9K/I596a3ZwowwD4uPA1BDcedJEb3M=;
-        b=CPvw9aPwG9CBLVaO2jF3qlWa2jXE+3yaGavVNxnLz9RFHKgkEmkHgVffrMeF3GNMy3
-         3vdRglASNl6+eiidRyfpE4pA3NIHkICLBLa5eESM8Y5mgEfVEh2lFiNFaXcYjvCkogx1
-         VV2Dv0klyTfQZm7htJofc2JVXlA8Zr0qDdALQue9tnkQ5bG5NMe9ggAK7QXweXFfh+j4
-         hIwtV0GJQ9CZMMyDkZFD3lKGaBLfpaRc2YEPavF7J5gttUHu5fhXIF6tJ8xCy0a9FkXH
-         sfycVADqMmOXeP69uEhIxdIlaVmvIQqKMhqsCAHI/ezbyibOGMNrLotNXI9y4+p3m+Aa
-         x1hw==
+        bh=QDEN2wA9x27SmjgM/ds1sGUcE8EH3J/NUqXM/kC7PUw=;
+        b=OAhxCH59dccroLZCIuLOdc9yCQZia1kv4k/AkhNew/r7abygtEEaHn/oYhqTWG9pof
+         5qthfc5GKMZLRC4pyyUw2ad08yNinkhQ2XB6KyB3rgMxpK7h298KV+igMAEfrYGaZth9
+         2yQFWZ8qtEmVrqZ5wJckbeWzo9kmYe6qVSgfoUX4P+kJxmYQsrp63kTwYMFeFy6yHKuK
+         iWU+kWPFnWDKyU6pXy0csHtgnUHhRuZpFuuDm/2bHFvyUN4jb1EotCmzmg2qJ37ecKLG
+         eAfdENyJ267wb9/0nap7MHm6zY5sHcCPzbYVXW3YR07cyGUMCIrxIYHKu9QAPH7W1EXw
+         r1fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733152301; x=1733757101;
+        d=1e100.net; s=20230601; t=1733152302; x=1733757102;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KUnUP56auFT1j9K/I596a3ZwowwD4uPA1BDcedJEb3M=;
-        b=LxOW6icdcZDWQzQ3C+RJAaitZMG7t0YQZunS3xnr6f774dCZqK3jFlbjZyphNes9zZ
-         n4MSPZmQhBGHG6WKcYVfL5wt9r3jOjbdmqhCa4EBd9S/I+DfovWgT/gFTYRF3IEk95lL
-         zFzOaK5IVfFgfrTGeIhcW6xZYABtNxRzkzJaBIpDNnd7XDrmwvEC9M/3olGlQ7pfznn6
-         493m5I7iQWEhe2BD7qwFQO2WbMwtxGvyWKkjTv1KSWsGTt1yXHaLd0O/351mckrwQGwM
-         uhh3SjAGMyVID34eB12M19Cq7bO+9dbU/BUmoZcAl51v+oTN5UCtDlIhxRBxvnTWzqhT
-         aXTA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQ3rLV3KurL/1NumNUFJTebS/j/OAyCZhZzekm0DfhWScA7qcqpyPVVojbcxzYnRud61+ov9qjNtmiUlw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+u8ptz4E0w/kXyVl+YV94hNHVnDu3ysiWRz8sCh/JlRJBedHy
-	xA6I82Fn4CWvH5x8t7+lsc3azomJlujPW82ximoJscXpMN/Vb0u2
-X-Gm-Gg: ASbGncvsQ1CQ79peB/7vKqn37eUZIy6gbD3zF+YyamFpoLEuxis0/ErwWiblg34i2ns
-	IeIPZeEVm39l3TxKnNgQYWJS6jmjT8uCok2PrDwKmM8yAa+Ys1QyNR4uXjkCuGZKHLFVzP6qa4D
-	uu4ITaka0V+pXcOcZuDJekYttvJeKIxS7bQ1qMrunqBNt7ioqKD17T1cv3HnN3g8Re2SS0QK+4G
-	KOv4065Uv+N3sHevH28Y8CFGOuLuKLPQvmnmqL30pZDwxTuLis+nAWG9sWvZnh/JKR6qMCNFAF6
-	rvEINageJu6PaAXTIaPW
-X-Google-Smtp-Source: AGHT+IGqq+9lgtk9pVBWPZO9WpNKI0QexYnW7pTyoCwXBNi+ps5n11meIyKK5EZjurfaMTmhuOLFHw==
-X-Received: by 2002:a5d:6f1d:0:b0:385:e88b:1a76 with SMTP id ffacd0b85a97d-385e88b1c33mr6688498f8f.30.1733152300434;
-        Mon, 02 Dec 2024 07:11:40 -0800 (PST)
+        bh=QDEN2wA9x27SmjgM/ds1sGUcE8EH3J/NUqXM/kC7PUw=;
+        b=RHRcnaoybqR7g64QtlbtIoL/jLqwQcUL89WVEvYsHgoT83rMOJF9i4B6067LBBCime
+         EihyoWT2uAgR23VAhP2h/sthPhsBR24SIN+dgQMAGM7Od5+uW+QaFPzes8z4NS78acd5
+         Eq1BbrBO7/YkvFbApMubkIUnW7l/SV2TneXQsBRf0Ck5SVJ3+Jf5hSztLkz5u+tiKVn4
+         jE9tjj8de2gdY0SCBG6QHh0RGmjYXRUxfoyks6EMUvv7fAUtcH9o1YXvpEjBtfE0IC8P
+         lcfalWbCUwvnASVkq4Y4UtElnNNJ+Z6ZSqJb+KDNtOO6SvCGbQw0xZ5rNTsBk2wb+yGM
+         yOvw==
+X-Forwarded-Encrypted: i=1; AJvYcCX8ZQmFIKUf7tNeJp73iRYhAlvTLekLKH17V+s5tstLIuBwg6AYRB8sFbXXjBpu4HNavctEwcz0Qf/EllY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCNnXNf6EClFMem3fpPAiolfrj+KvMMtiQ8mmOcoDy/n4d3cq7
+	s2ViLC7EOi+8W9f0sfN9djYJ8hGWH0acxmjuZOPbc/DHJSBhyFDn
+X-Gm-Gg: ASbGnculJHwT87G/BoaGzYrBJF5GnBzGjKE/34vLRGEyGumU6CVJQpbjUPLd7VJbNyl
+	u8T4BCluczklpHBt/6vG/pl7DKeZfJm+8b7yUFeE/YuSkcWGK6C8iQI47/5C8un4W4Asf9ltU2X
+	8lEyVWnAdp5MCwXuVBhWgrpD2RafUXUTDQv085ODIdOFiyY/wWYoF6+7KJh0ScBWoH/oyr77jX6
+	6NznuSn6jsC+B2GuqySVDAzLuwaZUfdzr1/rR7KZj7F7AH5qP4iNLV/WagwmL6LAzttgGwc4qWd
+	E/iIm+Ube0IHU8C3lRLe
+X-Google-Smtp-Source: AGHT+IFN2/NKX/DJ3ApNnyH1wsE//gFyKiHyCiweX7Gvdgtdk+l/BLKcIpAIQxHOJRXU6n0VbPbV9w==
+X-Received: by 2002:a05:600c:4e8a:b0:42c:b52b:4335 with SMTP id 5b1f17b1804b1-434a9dc3e80mr241845915e9.10.1733152301730;
+        Mon, 02 Dec 2024 07:11:41 -0800 (PST)
 Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7d26b5sm185585795e9.35.2024.12.02.07.11.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa74ea95sm187069505e9.5.2024.12.02.07.11.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 07:11:40 -0800 (PST)
+        Mon, 02 Dec 2024 07:11:41 -0800 (PST)
 From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Mon, 02 Dec 2024 16:11:07 +0100
-Subject: [PATCH 1/2] iio: consumers: ensure read buffers for labels and
- ext_info are page aligned
+Date: Mon, 02 Dec 2024 16:11:08 +0100
+Subject: [PATCH 2/2] iio: iio-mux: kzalloc instead of devm_kzalloc to
+ ensure page alignment
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-iio-kmalloc-align-v1-1-aa9568c03937@gmail.com>
+Message-Id: <20241202-iio-kmalloc-align-v1-2-aa9568c03937@gmail.com>
 References: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
 In-Reply-To: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -93,83 +93,141 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Matteo Martelli <matteomartelli3@gmail.com>
 X-Mailer: b4 0.14.2
 
-Attributes of iio providers are exposed via sysfs. Typically, providers
-pass attribute values to the iio core, which handles formatting and
-printing to sysfs. However, some attributes, such as labels or extended
-info, are directly formatted and printed to sysfs by provider drivers
-using sysfs_emit() and sysfs_emit_at(). These helpers assume the read
-buffer, allocated by sysfs fop, is page-aligned. When these attributes
-are accessed by consumer drivers, the read buffer is allocated by the
-consumer and may not be page-aligned, leading to failures in the
-provider's callback that utilizes sysfs_emit*.
+During channel configuration, the iio-mux driver allocates a page with
+devm_kzalloc(PAGE_SIZE) to read channel ext_info. However, the resulting
+buffer points to an offset of the page due to the devres header sitting
+at the beginning of the allocated area. This leads to failure in the
+provider driver when sysfs_emit* helpers are used to format the ext_info
+attributes.
 
-Add a check to ensure that read buffers for labels and external info
-attributes are page-aligned. Update the prototype documentation as well.
+Switch to plain kzalloc version. The devres version is not strictly
+necessary as the buffer is only accessed during the channel
+configuration phase. Rely on __free cleanup to deallocate the buffer.
+Also, move the ext_info handling into a new function to have the page
+buffer definition and assignment in one statement as suggested by
+cleanup documentation.
 
 Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
 ---
- drivers/iio/inkern.c         | 11 +++++++++++
- include/linux/iio/consumer.h |  4 ++--
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
+ 1 file changed, 46 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 7f325b3ed08fae6674245312cf8f57bb151006c0..63707ed98e1d7aca1e446122bbf69c85c0dd06a2 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
+diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
+index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..c309d991490c63ba4299f1cda7102f10dcf54982 100644
+--- a/drivers/iio/multiplexer/iio-mux.c
++++ b/drivers/iio/multiplexer/iio-mux.c
 @@ -7,6 +7,7 @@
- #include <linux/err.h>
- #include <linux/export.h>
- #include <linux/minmax.h>
-+#include <linux/mm.h>
- #include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/slab.h>
-@@ -989,6 +990,11 @@ ssize_t iio_read_channel_ext_info(struct iio_channel *chan,
- {
- 	const struct iio_chan_spec_ext_info *ext_info;
- 
-+	if (!buf || offset_in_page(buf)) {
-+		pr_err("iio: invalid ext_info read buffer\n");
-+		return -EINVAL;
-+	}
-+
- 	ext_info = iio_lookup_ext_info(chan, attr);
- 	if (!ext_info)
- 		return -EINVAL;
-@@ -1014,6 +1020,11 @@ EXPORT_SYMBOL_GPL(iio_write_channel_ext_info);
- 
- ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
- {
-+	if (!buf || offset_in_page(buf)) {
-+		pr_err("iio: invalid label read buffer\n");
-+		return -EINVAL;
-+	}
-+
- 	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_label);
-diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-index 333d1d8ccb37f387fe531577ac5e0bfc7f752cec..6a44796164792b2dd930f8168b14de327a80a6f7 100644
---- a/include/linux/iio/consumer.h
-+++ b/include/linux/iio/consumer.h
-@@ -418,7 +418,7 @@ unsigned int iio_get_channel_ext_info_count(struct iio_channel *chan);
-  * @chan:		The channel being queried.
-  * @attr:		The ext_info attribute to read.
-  * @buf:		Where to store the attribute value. Assumed to hold
-- *			at least PAGE_SIZE bytes.
-+ *			at least PAGE_SIZE bytes and to be aligned at PAGE_SIZE.
-  *
-  * Returns the number of bytes written to buf (perhaps w/o zero termination;
-  * it need not even be a string), or an error code.
-@@ -445,7 +445,7 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
-  * iio_read_channel_label() - read label for a given channel
-  * @chan:		The channel being queried.
-  * @buf:		Where to store the attribute value. Assumed to hold
-- *			at least PAGE_SIZE bytes.
-+ *			at least PAGE_SIZE bytes and to be aligned at PAGE_SIZE.
-  *
-  * Returns the number of bytes written to buf, or an error code.
+  * Author: Peter Rosin <peda@axentia.se>
   */
+ 
++#include <linux/cleanup.h>
+ #include <linux/err.h>
+ #include <linux/iio/consumer.h>
+ #include <linux/iio/iio.h>
+@@ -237,49 +238,18 @@ static ssize_t mux_write_ext_info(struct iio_dev *indio_dev, uintptr_t private,
+ 	return ret;
+ }
+ 
+-static int mux_configure_channel(struct device *dev, struct mux *mux,
+-				 u32 state, const char *label, int idx)
++static int mux_configure_chan_ext_info(struct device *dev, struct mux *mux,
++				       int idx, int num_ext_info)
+ {
+ 	struct mux_child *child = &mux->child[idx];
+-	struct iio_chan_spec *chan = &mux->chan[idx];
+ 	struct iio_chan_spec const *pchan = mux->parent->channel;
+-	char *page = NULL;
+-	int num_ext_info;
+ 	int i;
+ 	int ret;
+ 
+-	chan->indexed = 1;
+-	chan->output = pchan->output;
+-	chan->datasheet_name = label;
+-	chan->ext_info = mux->ext_info;
+-
+-	ret = iio_get_channel_type(mux->parent, &chan->type);
+-	if (ret < 0) {
+-		dev_err(dev, "failed to get parent channel type\n");
+-		return ret;
+-	}
+-
+-	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
+-		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+-	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
+-		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+-
+-	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
+-		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
+-
+-	if (state >= mux_control_states(mux->control)) {
+-		dev_err(dev, "too many channels\n");
+-		return -EINVAL;
+-	}
+-
+-	chan->channel = state;
++	char *page __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
++	if (!page)
++		return -ENOMEM;
+ 
+-	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
+-	if (num_ext_info) {
+-		page = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
+-		if (!page)
+-			return -ENOMEM;
+-	}
+ 	child->ext_info_cache = devm_kcalloc(dev,
+ 					     num_ext_info,
+ 					     sizeof(*child->ext_info_cache),
+@@ -318,8 +288,46 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
+ 		child->ext_info_cache[i].size = ret;
+ 	}
+ 
+-	if (page)
+-		devm_kfree(dev, page);
++	return 0;
++}
++
++static int mux_configure_channel(struct device *dev, struct mux *mux, u32 state,
++				 const char *label, int idx)
++{
++	struct iio_chan_spec *chan = &mux->chan[idx];
++	struct iio_chan_spec const *pchan = mux->parent->channel;
++	int num_ext_info;
++	int ret;
++
++	chan->indexed = 1;
++	chan->output = pchan->output;
++	chan->datasheet_name = label;
++	chan->ext_info = mux->ext_info;
++
++	ret = iio_get_channel_type(mux->parent, &chan->type);
++	if (ret < 0) {
++		dev_err(dev, "failed to get parent channel type\n");
++		return ret;
++	}
++
++	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
++		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
++	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
++		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
++
++	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
++		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
++
++	if (state >= mux_control_states(mux->control)) {
++		dev_err(dev, "too many channels\n");
++		return -EINVAL;
++	}
++
++	chan->channel = state;
++
++	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
++	if (num_ext_info)
++		return mux_configure_chan_ext_info(dev, mux, idx, num_ext_info);
+ 
+ 	return 0;
+ }
 
 -- 
 2.47.0

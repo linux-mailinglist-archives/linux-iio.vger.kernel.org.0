@@ -1,193 +1,143 @@
-Return-Path: <linux-iio+bounces-12966-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12967-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558E49E0BCE
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 20:15:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA769E0BE5
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 20:18:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 028F4161999
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 19:15:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A739282302
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 19:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475A91DE3BD;
-	Mon,  2 Dec 2024 19:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512D81DE3BC;
+	Mon,  2 Dec 2024 19:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jo8SSM4y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y96HLoHJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564AB1DA103;
-	Mon,  2 Dec 2024 19:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1191DACA7;
+	Mon,  2 Dec 2024 19:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733166899; cv=none; b=ryuRSPMglLcb4+VdtQURuxSdS+l28zz2+UjsVXUAJ86wS+Mu6Gurf4lOP/LFfSCY1eiFAGgAYV+Gz0MI4uzvlUxxB7JGNwygb3Eft5AYIAPj93eB382hGpCwbkHR/zllMPlzVO7/uQwRk1QNyR06upnoPCcLbT7c05gyrv1er3g=
+	t=1733167134; cv=none; b=cGghy1LHGYRT49KhweK8Y7JLXmNtTvAuaCAd/3ro26QG9uTOA/9mEYFPMMXmhIIML7Td0BOe17G04ZXCbUAUU7XWvwOuH8QHSs80vPCF0WB6nsJxaDbjQnjJ3mLUxWjc1mY2p9FkHJ7IpR1sxC5Zrlm86ka/cFqFFNoerK4WY1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733166899; c=relaxed/simple;
-	bh=2sxtv/y68ixCC2yd467bpPVnji8VQd77K8S22YQRQcc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ffHqqUSQhrnYM+lwNNsoJOiU/nAAlJBFDJBjtoL2HsePvpe1ofcawssv/4Kp12fIZBcNA3GRhDW68qhS2/JD4KJi07jTneAOb7kq3FAytg1XlbUY7R1NseYZT6fST8/Nid2BnDiRHzc1tXvFb4hiUsYsIveY+g2Iw6MYfomxIvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jo8SSM4y; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1733167134; c=relaxed/simple;
+	bh=UNYTQCQ4U0f5t75v+3oqKVreEsYoOkeElwGyOVTcyLY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JJPEZ8vSAmQnJIVnWTLSUI9NqVmO0GanjksIqLO4jKDGK1I5ZOUmA2KOFUnoHJPGrfaguL6hABmMupgu33SaDkTurvaCNwlJy02KFdbzmvHdTrMU9YKEGexWiqWYvxaODvJ6AQy95Yi+A8PfsK50VHloT+9RGxuQNQVt5Z1CpEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y96HLoHJ; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-434a95095efso33380045e9.0;
-        Mon, 02 Dec 2024 11:14:57 -0800 (PST)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434ab938e37so30263485e9.0;
+        Mon, 02 Dec 2024 11:18:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733166895; x=1733771695; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i7ZTXIXvVL7lx+KtLs1uQHgMBRSbrXmXN+OqvaN4WK0=;
-        b=jo8SSM4yZ5zLGNI4GpgbYdHAQQnHZ1yhTSOwYh6EmsXRslRLhEbEzV9pBtBgmjPwt2
-         mIr8O88PZMvLu91IehTBx8yHPwna8khmZp9HrF24rS+uEMaHlvowKDXpfIu/yX2MasJv
-         JqWBwX3MZm48kF11dVB6bXSWUwNtij4ny/YXN57Ioz7a9XpYlQXPe4fmAHyOexmBQo/C
-         KSSCPn92EH8agsV7rmlxNgp2cl5fGB4v9DGj+WtGb0N1V3Z9HUw/VEm6+c55/+hWSmlo
-         Zr5kMDvOkjEKP4CKCFuykO8tguhT65Xivk2loaGCQYoKG5rI52W9SWSbOAhZqylje4ST
-         UtYQ==
+        d=gmail.com; s=20230601; t=1733167131; x=1733771931; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b1M8QkqJkisY/ETmPRqXk3HD34EoSuZs2F99KPXzllo=;
+        b=Y96HLoHJkByYQyttJOP9ETJI6xOcm7D2aXkonklGeJ1XjFP/tGKYel6TF+oisD5S/4
+         pq1WLhK+3wqU2aFsCsD8vmNpVYg+c5DFR5YTeVwg4M20NH+KnoHlxnsFRZ/HxBR28Jhb
+         LzXcfDLyETjVmelqj6osXiIRtcGMfA3S/eQ/wivRs/ZQxZlukYkSMTT/bw8YebQBZr+p
+         G8stg/JHjCrzvR6l7OS3dosYvgAItP3atnEbmwQ6+O5tju7nwMj4zcYtlx3x9rc/l4ts
+         I2NWI7R7PtU1PhPAuaLkqdly9bRE5cV7aC/mMgcGDfWlRpBuFe6Yr1Xlk9cy/h1VGgAs
+         b1Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733166895; x=1733771695;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i7ZTXIXvVL7lx+KtLs1uQHgMBRSbrXmXN+OqvaN4WK0=;
-        b=CxlSrZKUlXDiXKpL76k8B7jOFlYanpA8K4CMKSerfPqaS/IdHpLAspXU+mIpu9VuhT
-         anRIZ56wnrx2xwHDI+8pm8NrCgy4jwJqM5NmiKD31CMaJeqXJwrPIYi+vbwEheow/evS
-         WiYgpaVrxEfrdgdy1lzkHAFIfEforRrXjgXfeZ1Rn5CEtainwk1UNJulUhZv8LaqK/09
-         Hq5dcdr6zDKKZs1N/tz6+Jf4+/GBAn9n67cvhQWZA9dbQcvFoFE4bgDBt5pmQ5XPFVyk
-         +hvpXLTu/ic4kR2CFfcwLDH7NDAhVcVSydpXUWwJuNhx5PSI/1WMKdZ5RSflAecPiXS2
-         dhBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUi9G495H0Us4eXtGkoTkqXNGx8dR+/oAw/6Hdqm/jG9RY+ZNu8lnFmJUeyH43yFIi0KcgUJQytK+pWVOU6@vger.kernel.org, AJvYcCUwrHxcuTzsmpgUUv03VP4KLjFJyr8ILR/V3qSXKOnqSxryydHWkyc6szgW1A+RmWsFbnG43K5p@vger.kernel.org, AJvYcCWpJMpmpXyiSX+bgYvBczVh9lqoUDxQMVfgcEQdGFgPp7qPbQQFQSPEjBMOxwG6fv6JBAtMqF2P1nk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIJHZxRgNKben0dfBRO8UVUiyPohWVvIrCZ84GWg8JNH6iZFDk
-	bqwMK8ev56KvpFf58+RAqRRgeSBnVw6BcFHukwcm66LocS+OjXsN
-X-Gm-Gg: ASbGncuK1zGRSkTX+ZyRD/t6hhLWSGZpydfLewh8vU4iA/UX+QFo41/fAb1tfNd5N/b
-	PAXzhazcQ1Z5LnZdmv7D9xrNrYRfSOfdVYO74107+1F/rAtyZBRWwSxj+5cuqPRaYftZRKF/oj4
-	aazpMmIlSjd3vVswD9WlioPFTcJFx8Id5QMU7L1nwzW30C7lho2SRTY4LnPe0utYOFrkZeLGP3W
-	XTVwlDTmRLA7oXUYed/b38cZe+iIpGYUj0gPTWYE/UXKNu598/o5uPXous0YvLLgPHqOEHjmkSW
-	9W9CAU3bfNfuG8276Q7s9JZM9mnocdkoDhJIS24ogrJKRKL6NP7dvGAO/psA4v19xgYhBQXf3Sw
-	huPm4OH73lGY//hsDdHt9u/Kv1DejfTuQI8033BWsaE4=
-X-Google-Smtp-Source: AGHT+IF/PTp+oicDfX4BGvsTJRQTihlQjk/D7b6q437NfHoVa3y7GK1LeAWAHScaawXCknIYt1C5Bg==
-X-Received: by 2002:a5d:59a8:0:b0:382:4b69:9ca4 with SMTP id ffacd0b85a97d-385cbd89accmr16498545f8f.26.1733166895267;
-        Mon, 02 Dec 2024 11:14:55 -0800 (PST)
-Received: from ?IPV6:2a02:8389:41cf:e200:d553:b993:925a:609c? (2a02-8389-41cf-e200-d553-b993-925a-609c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d553:b993:925a:609c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd36557sm13249601f8f.24.2024.12.02.11.14.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Dec 2024 11:14:54 -0800 (PST)
-Message-ID: <cce23b3b-aff6-4d3b-a55e-d0ce67a6a650@gmail.com>
-Date: Mon, 2 Dec 2024 20:14:53 +0100
+        d=1e100.net; s=20230601; t=1733167131; x=1733771931;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b1M8QkqJkisY/ETmPRqXk3HD34EoSuZs2F99KPXzllo=;
+        b=ISvyAEEKNILhKh4DMlnmP2jEG4bGUXwVktlyD+H+ZDvM6d6ntCYBxFDxzExoLR4c/M
+         SmmtY4njtgeZhIxQqemHUtzuaoLLWzUTVQ70+P9wAkJSNlZx0WVP8gdZHvBRt00XLbPn
+         j6aOAGp6APicv9u6u3pHtmwi/CEUfgKN6ChU+oJSqK/OImf4nTzXXz4FbJYwAHhNQFXy
+         B1Its5EYbnDpyrX6ms1lonWaurTZmiAsturZD06Iwo2ACsSWqgt2wa6Sv3UIgabt0IS0
+         hPYVGnSYHiVRtW2lTVkqEcW6IC2r6Utwo0cKcTipwUfI+6RkyHsJCjQdMkW3fkEY9Qpj
+         /60Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUSSnL6gy2+aqeszf3xIur8FAvSCNHI1dMIe4CDnmBfxWPMhnhYc0ucvjdueWMjSW2biQocdrLk7i0AIdR+@vger.kernel.org, AJvYcCXAd7lGs5A816Pemt4vQpTBqq86fLiqNsN1vdi0kZbiqo1/eOWOMibKbyhPbSJpqmPCDSoOAHoJ9JU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxw33pT6saPEsrvpRlOZFVscZDWJNqgERAs76ycrvUhbjB8sKl2
+	us3tRK7PlWvZJp1JXRFNCUvRYg9KZP89WoJfu46ZfqGrR2MtHFTr
+X-Gm-Gg: ASbGnctEgiIgXTNf5Cq8SGdFMzoZjLql6HmMSwflXOZMOF1wYkpNumBDYChdSzk3qnR
+	C7lnVyQLoIHHa7qY2PfhWrRBQ4dtvxYt14Kgn2U6stNJPKOi38DZYDJ/a27uVwKo4Fffc78kXtU
+	cre/NahZprIXsLWDuqJ2/KQX3lJVaJxJzPWpKEe2mmwdRuk4YqK+D5mTCEp/Jrs/idf5IryCguZ
+	FbYgu1Z0DmuVBCvRaHl9ocPLVvpVBhG83sicab9rFP+ZJMnnej+xRiQxKnZnaL1SQoaUzBeJAsv
+	K9172Nt229Emav5dditzYdmVpFhpo0It3PlJlp6uxPxfzZ1fahmkdkIUFt211W39CpQIw1m3
+X-Google-Smtp-Source: AGHT+IFT1C64b0Tm1Azea/Zf2eWohd4XOQWB+8j1jNvlxpO77F81dukY7Vw9Q+YU53eXBD1Zo5U5KA==
+X-Received: by 2002:a05:6000:4712:b0:385:f271:a22c with SMTP id ffacd0b85a97d-385f271a44cmr5002241f8f.59.1733167130494;
+        Mon, 02 Dec 2024 11:18:50 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-d553-b993-925a-609c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d553:b993:925a:609c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd36b80sm13198423f8f.29.2024.12.02.11.18.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 11:18:50 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Mon, 02 Dec 2024 20:18:44 +0100
+Subject: [PATCH] iio: adc: ti-ads1119: fix sample size in scan struct for
+ triggered buffer
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/11] iio: light: as73211: fix information leak in
- triggered buffer
-To: Christian Eggers <ceggers@arri.de>, Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
- <20241130204923.45d71fa4@jic23-huawei>
- <9e1310d8-bcd9-40f9-8d44-abddc595ae9b@gmail.com>
- <7089293.9J7NaK4W3v@n9w6sw14>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <7089293.9J7NaK4W3v@n9w6sw14>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20241202-ti-ads1119_s16_chan-v1-1-fafe3136dc90@gmail.com>
+X-B4-Tracking: v=1; b=H4sIABMITmcC/x2MSwqAMAwFryJZGzD1A3oVkVJt1GxUGhFBenerm
+ 4GBee8B5SCs0GUPBL5EZd+SUJ7BtLptYRSfHExhKkrAU9B5JaLWKjX2i9A4Jt/MNdNYQloegWe
+ 5/9d+iPEFYunm1mUAAAA=
+To: Francesco Dolcini <francesco@dolcini.it>, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733167129; l=1359;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=UNYTQCQ4U0f5t75v+3oqKVreEsYoOkeElwGyOVTcyLY=;
+ b=VpZJFmK3vOM2cCjPBIBU4i3shRgvvAyHUK3ZhesaFeokMS1oaiA+x1goyqgQ3EnBYNv7UMI+Q
+ EzCX1DcnvDDDa2lMs8+5bm4N8BO+BxtfoILcC4FUsmUOMxxspCbnlfH
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On 02/12/2024 19:00, Christian Eggers wrote:
-> Hi Jonathan, hi Javier,
-> 
-> On Monday, 2 December 2024, 16:38:50 CET, Javier Carrasco wrote:
->> On 30/11/2024 21:49, Jonathan Cameron wrote:
->>> On Mon, 25 Nov 2024 22:16:18 +0100
->>> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
->>>
->>>> The 'scan' local struct is used to push data to userspace from a
->>>> triggered buffer, but it leaves the first channel uninitialized if
->>>> AS73211_SCAN_MASK_ALL is not set. That is used to optimize color channel
->>>> readings.
->>>>
->>>> Set the temperature channel to zero if only color channels are
->>>> relevant to avoid pushing uninitialized information to userspace.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
->>>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->>> Huh.
->>>
->>> If the temperature channel is turned off the data should shift. So should be read
->>> into scan.chan[0] and [1] and [2], but not [3].
->>>
->>> Not skipping [0] as here.
->>>
->>> So this code path currently doesn't work as far as I can tell.
-> 
-> I've just tested and you are right! In our application we never had the case that
-> we didn't read the temperature channel. If I don't enable scan_elements/in_temp_en,
-> I need to put the data into scan.chan[0..2] in order to get correct values in my
-> application. This also means that the "Optimization for reading only color channel"
-> (and the following saturation block) isn't correct at all, especially if reading only
-> one or two of the available channels.
-> 
->>>
->>> Jonathan
->>>
->>>> ---
->>>>  drivers/iio/light/as73211.c | 3 +++
->>>>  1 file changed, 3 insertions(+)
->>>>
->>>> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
->>>> index be0068081ebb..99679b686146 100644
->>>> --- a/drivers/iio/light/as73211.c
->>>> +++ b/drivers/iio/light/as73211.c
->>>> @@ -675,6 +675,9 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->>>>  				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
->>>>  		if (ret < 0)
->>>>  			goto done;
->>>> +
->>>> +		/* Avoid leaking uninitialized data */
->>>> +		scan.chan[0] = 0;
->>>>  	}
->>>>  
->>>>  	if (data_result) {
->>>>
->>>
->>
->> Adding the driver maintainer (should have been added from the beginning)
->> to the conversation.
->>
->> @Christian, could you please confirm this?
->>
->> Apparently, the optimization to read the color channels without
->> temperature is not right. I don't have access to the AS7331 at the
->> moment, but I remember that you could test my patches on your hardware
->> with an AS73211, so maybe you can confirm whether wrong data is
->> delivered or not in that case.
-> 
-> Yes, the delivered data is wrong (as already stated above).
-> 
-> @Javier: If you like to rework this, I can test your patches (I have still
-> access to the hardware).  Otherwise I can also try to fix this on my own.
-> 
->>
->> Thanks and best regards,
->> Javier Carrasco
-> 
-> Thanks for reporting this!
-> Christian
->>
->>
->
+This device returns signed, 16-bit samples as stated in its datasheet
+(see 8.5.2 Data Format). That is in line with the scan_type definition
+for the IIO_VOLTAGE channel, but 'unsigned int' is being used to read
+and push the data to userspace.
 
-Thanks for your prompt reply. I will rework it for v2, as the current
-patch does not apply. For this path, scan.chan[0]..scan.chan[2] will be
-read from the sensor, and scan.chan[3] will be set to zero.
+Given that the size of that type depends on the architecture (at least
+2 bytes to store values up to 65535, but its actual size is often 4
+bytes), use the 's16' type to provide the same structure in all cases.
+
+Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+ drivers/iio/adc/ti-ads1119.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
+index 533610ac214e..6637cb6a6dda 100644
+--- a/drivers/iio/adc/ti-ads1119.c
++++ b/drivers/iio/adc/ti-ads1119.c
+@@ -500,7 +500,7 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ads1119_state *st = iio_priv(indio_dev);
+ 	struct {
+-		unsigned int sample;
++		s16 sample;
+ 		s64 timestamp __aligned(8);
+ 	} scan;
+ 	unsigned int index;
+
+---
+base-commit: a0d6ec6575fce400e976af1dd9223823251775e9
+change-id: 20241202-ti-ads1119_s16_chan-2ae1d6f5e1b3
 
 Best regards,
-Javier Carrasco
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

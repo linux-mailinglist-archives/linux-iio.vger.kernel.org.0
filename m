@@ -1,235 +1,167 @@
-Return-Path: <linux-iio+bounces-12954-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12955-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A93F9E07B2
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 16:56:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032F39E07F7
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 17:08:13 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE8BEBA7DEF
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:18:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A6121690A9
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 15:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616F120FA95;
-	Mon,  2 Dec 2024 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AA4209F43;
+	Mon,  2 Dec 2024 15:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OAhxCH59"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wf275xrI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528C220E32E;
-	Mon,  2 Dec 2024 15:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4B1209F33;
+	Mon,  2 Dec 2024 15:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733152306; cv=none; b=eyLx3XXMuqoWCJa5zTVjf+iFv7zgPTe7Wow8OEuLCYalLRj6jL7p8YqfvdkQs8yg6Wf6sukO+hTNqtSHv/BZUYBJjdlPd37PM92GYO9e+ciO4N3ErxNbjpPSiMHnM+r0h9Ty+OUFxxJa8pxltLEDntZZmpweYpnOvZrVF/6Mce4=
+	t=1733153937; cv=none; b=LRYGVBgglettKfITolFTRIcBvvVL+rUnOFLXZidO1nfi0Bu/zs+wpqBfJBdcZNJTZ0rjk3uQ+6TNzEpbiuZyE+BH3jV4/gr4a0f2NixB44+byOoWkDriO2Szc4MCVQ+v2M7SKWfU/4esdZ2Uu8j6sEBJbkqlmGEoHvKjsYhrsNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733152306; c=relaxed/simple;
-	bh=NfcZdUCLxpBvLjKg8gBIysrlCbsp7eHgSGw1ARszsJs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eVoGPuZSkxf/M8xJxDxgFRhQG3bCAcmowm8JEQfc4x4EHJuDL/4Yar/5BfPKFHnMUnLRcCPFYHW8wM2d96xqFK9nAqOWpk/Jj9YppwDR5KqCc5RSunTX5LcDfgXbHFrCIha9HeJrN725jeBbrgqP6qyBur8Q8j0rQpfE+ocwdmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OAhxCH59; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1733153937; c=relaxed/simple;
+	bh=6FMVUMuVmiKoknMUpwq7h0V6bMG4QeWN9obr8VkzD5o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W9VramS0B3HIH8nQPh/wg1U0dV9Hcl1U0xAUvaLbF34f2XhBhDA7F9aWh5rcENy1tVqj+HoLQ4a0Nzn5Z4jPF5lxLRMXuGgBDUdUJKJmkiQJubH7iYXr6pnmK08OXwjxX5xpon0w1qZTMeW4zYeLNXEeUu561iRedlMIAVTqcB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wf275xrI; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-434a852bb6eso40384085e9.3;
-        Mon, 02 Dec 2024 07:11:44 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-382610c7116so2941915f8f.0;
+        Mon, 02 Dec 2024 07:38:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733152302; x=1733757102; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QDEN2wA9x27SmjgM/ds1sGUcE8EH3J/NUqXM/kC7PUw=;
-        b=OAhxCH59dccroLZCIuLOdc9yCQZia1kv4k/AkhNew/r7abygtEEaHn/oYhqTWG9pof
-         5qthfc5GKMZLRC4pyyUw2ad08yNinkhQ2XB6KyB3rgMxpK7h298KV+igMAEfrYGaZth9
-         2yQFWZ8qtEmVrqZ5wJckbeWzo9kmYe6qVSgfoUX4P+kJxmYQsrp63kTwYMFeFy6yHKuK
-         iWU+kWPFnWDKyU6pXy0csHtgnUHhRuZpFuuDm/2bHFvyUN4jb1EotCmzmg2qJ37ecKLG
-         eAfdENyJ267wb9/0nap7MHm6zY5sHcCPzbYVXW3YR07cyGUMCIrxIYHKu9QAPH7W1EXw
-         r1fQ==
+        d=gmail.com; s=20230601; t=1733153934; x=1733758734; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BgMG9j17VIY/+uN0vXhoiOG0maPDfpV2MZAeVxSTQP8=;
+        b=Wf275xrIqEt3FSSFceo9CILdLZiXcCZH/GyrrfPdoFfdlSntN1O/HF9YoBFMCfY+xA
+         OBA5XRsQbbD+VHjE6OU6UN3Zga+xQcbvxTKPsGbe0ha8W9eaHWx8NI2ZJLZPZwyljzFm
+         TAjIOg3aL/46/akzL6YX+naL+g69RnzjKREpEz+2mLtW+gIxa+jB4vYzTQHhqXRzJxQK
+         4755AeeJ3ohKks4hdgqsUsmSLoL/XDK5BDYW0QnMabwoJmmZpann2aMKqO0ullQwzR/S
+         qIdM/WbszeV/VnkZxi4tsjAYlogy56T3TWlPqS5GDffSDOT/9sPOrD4XBwjcow0Ae4Md
+         hcWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733152302; x=1733757102;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QDEN2wA9x27SmjgM/ds1sGUcE8EH3J/NUqXM/kC7PUw=;
-        b=RHRcnaoybqR7g64QtlbtIoL/jLqwQcUL89WVEvYsHgoT83rMOJF9i4B6067LBBCime
-         EihyoWT2uAgR23VAhP2h/sthPhsBR24SIN+dgQMAGM7Od5+uW+QaFPzes8z4NS78acd5
-         Eq1BbrBO7/YkvFbApMubkIUnW7l/SV2TneXQsBRf0Ck5SVJ3+Jf5hSztLkz5u+tiKVn4
-         jE9tjj8de2gdY0SCBG6QHh0RGmjYXRUxfoyks6EMUvv7fAUtcH9o1YXvpEjBtfE0IC8P
-         lcfalWbCUwvnASVkq4Y4UtElnNNJ+Z6ZSqJb+KDNtOO6SvCGbQw0xZ5rNTsBk2wb+yGM
-         yOvw==
-X-Forwarded-Encrypted: i=1; AJvYcCX8ZQmFIKUf7tNeJp73iRYhAlvTLekLKH17V+s5tstLIuBwg6AYRB8sFbXXjBpu4HNavctEwcz0Qf/EllY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCNnXNf6EClFMem3fpPAiolfrj+KvMMtiQ8mmOcoDy/n4d3cq7
-	s2ViLC7EOi+8W9f0sfN9djYJ8hGWH0acxmjuZOPbc/DHJSBhyFDn
-X-Gm-Gg: ASbGnculJHwT87G/BoaGzYrBJF5GnBzGjKE/34vLRGEyGumU6CVJQpbjUPLd7VJbNyl
-	u8T4BCluczklpHBt/6vG/pl7DKeZfJm+8b7yUFeE/YuSkcWGK6C8iQI47/5C8un4W4Asf9ltU2X
-	8lEyVWnAdp5MCwXuVBhWgrpD2RafUXUTDQv085ODIdOFiyY/wWYoF6+7KJh0ScBWoH/oyr77jX6
-	6NznuSn6jsC+B2GuqySVDAzLuwaZUfdzr1/rR7KZj7F7AH5qP4iNLV/WagwmL6LAzttgGwc4qWd
-	E/iIm+Ube0IHU8C3lRLe
-X-Google-Smtp-Source: AGHT+IFN2/NKX/DJ3ApNnyH1wsE//gFyKiHyCiweX7Gvdgtdk+l/BLKcIpAIQxHOJRXU6n0VbPbV9w==
-X-Received: by 2002:a05:600c:4e8a:b0:42c:b52b:4335 with SMTP id 5b1f17b1804b1-434a9dc3e80mr241845915e9.10.1733152301730;
-        Mon, 02 Dec 2024 07:11:41 -0800 (PST)
-Received: from localhost (host-82-56-18-47.retail.telecomitalia.it. [82.56.18.47])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa74ea95sm187069505e9.5.2024.12.02.07.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 07:11:41 -0800 (PST)
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Date: Mon, 02 Dec 2024 16:11:08 +0100
-Subject: [PATCH 2/2] iio: iio-mux: kzalloc instead of devm_kzalloc to
- ensure page alignment
+        d=1e100.net; s=20230601; t=1733153934; x=1733758734;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgMG9j17VIY/+uN0vXhoiOG0maPDfpV2MZAeVxSTQP8=;
+        b=hZNq9LRpF6My/iIDI6R4H9dKhAtxQey+V8wtwEGEGq37yq9CRwnZDDqC+TWzkND3ln
+         FlI0mEPVRQbb1J90l9vVzCqtEIxZ8qHYLjsjpJ/+NttzgcGi9If9HWESzXnV6cdIAktO
+         HH59aANNSzhlitnuy6AfIY3CF7vjDzqA7b4wOnBG5BU/XQM3Yaer6BaXNilpFcoofvP8
+         egD5daMUYufjs47uTM2yrqPc8OTVouv71nRablqwHXij5eo1MsUUppMyQeMi68dKixwG
+         vz69LgOsz4zHzzirSg7hXfJSE69MZmWks6Sl1QRyDOYS1NcQlmUxmuUFRwC1Wh5zS0zH
+         OMrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFGp8BXE81YCAgf3bw0GAQ2VavXpcXVdXK7r8ygrP5TdDOYHXY8Bcd7/iVBvHH2QlRtgUP1tD/@vger.kernel.org, AJvYcCWxSqPjwTGNI5T5HNazfsTrPXZtEXVeeXPhqYUSiCLqmyJ0yEP1Mpj3RFHVa4PwVOdVK5tgMC+gd00=@vger.kernel.org, AJvYcCXYW6IzdhQkjf2kOOHfHZviPl+XZqjze9BS+HfEW6DwfrCwcNRLb94hhLUt3+0wzGvr/AedjbkdpVnLw0HS@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB4LE4USHhl94tYZhu+i/AcPqHQQOftCAoj7uSgTEiuVtEfAUV
+	/cu3oIhuQKoGa22LMAy8B6WOQldKOCKM4d9vynwAZmR4AgkIaJIkddByeA==
+X-Gm-Gg: ASbGncuKYwZmJqnQhmD5y5iwGUyoyrDLZdepyQBVsp7Lxpiy6YXIRGCLT+EJN5NDQmz
+	CddtSyWde8KhSpdlYqjXWqGHQMcVYIURwL/oTSVFtSUAe/qNIWOsGcJ54//rl3iw/8yi9PmCtLI
+	PSu4drC7T2zM6ua112ll9HW8mQsEZzF7vOLLqZ3fuYlWaWBuGMIHpqVDPwp3XRvxOOpMqyigBMA
+	EIBwIGfG7rpWiDMQiCqnx3Ry6XwPmXC8aNyooxWajZYcX9XvwnvTDs9oYvIRCJ0gcpW/CXsD0+w
+	ayPYEJ2IUyIV68N2UdYwup/CtRBihN0iI3MAugcZxDaOog4gteiIzLD9ofLOQYp3vGm9Dcil5n7
+	hA67qV131AUltFnGFdqis4B9wGK2qceG4xoNQX5XJ
+X-Google-Smtp-Source: AGHT+IHhYi7myBSgKxUDvKABHp7+6thL5rVSy5IQiw2xBG1LGFtHDCgslmsCFo7yTW1tKtZUpIBt1g==
+X-Received: by 2002:a5d:64e2:0:b0:385:f092:e1a with SMTP id ffacd0b85a97d-385f0a152e1mr4081697f8f.11.1733153933559;
+        Mon, 02 Dec 2024 07:38:53 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:f58:c447:145b:2b51? (2a02-8389-41cf-e200-0f58-c447-145b-2b51.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:f58:c447:145b:2b51])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385f0056637sm4071203f8f.15.2024.12.02.07.38.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 02 Dec 2024 07:38:52 -0800 (PST)
+Message-ID: <9e1310d8-bcd9-40f9-8d44-abddc595ae9b@gmail.com>
+Date: Mon, 2 Dec 2024 16:38:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/11] iio: light: as73211: fix information leak in
+ triggered buffer
+To: Jonathan Cameron <jic23@kernel.org>, Christian Eggers <ceggers@arri.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Antoni Pokusinski <apokusinski01@gmail.com>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
+ <jpaulo.silvagoncalves@gmail.com>, Gregor Boirie <gregor.boirie@parrot.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ Francesco Dolcini <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+References: <20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com>
+ <20241125-iio_memset_scan_holes-v1-10-0cb6e98d895c@gmail.com>
+ <20241130204923.45d71fa4@jic23-huawei>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20241130204923.45d71fa4@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-iio-kmalloc-align-v1-2-aa9568c03937@gmail.com>
-References: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
-In-Reply-To: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Peter Rosin <peda@axentia.se>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Matteo Martelli <matteomartelli3@gmail.com>
-X-Mailer: b4 0.14.2
 
-During channel configuration, the iio-mux driver allocates a page with
-devm_kzalloc(PAGE_SIZE) to read channel ext_info. However, the resulting
-buffer points to an offset of the page due to the devres header sitting
-at the beginning of the allocated area. This leads to failure in the
-provider driver when sysfs_emit* helpers are used to format the ext_info
-attributes.
+On 30/11/2024 21:49, Jonathan Cameron wrote:
+> On Mon, 25 Nov 2024 22:16:18 +0100
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+>> The 'scan' local struct is used to push data to userspace from a
+>> triggered buffer, but it leaves the first channel uninitialized if
+>> AS73211_SCAN_MASK_ALL is not set. That is used to optimize color channel
+>> readings.
+>>
+>> Set the temperature channel to zero if only color channels are
+>> relevant to avoid pushing uninitialized information to userspace.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Huh.
+> 
+> If the temperature channel is turned off the data should shift. So should be read
+> into scan.chan[0] and [1] and [2], but not [3].
+> 
+> Not skipping [0] as here.
+> 
+> So this code path currently doesn't work as far as I can tell.
+> 
+> Jonathan
+> 
+>> ---
+>>  drivers/iio/light/as73211.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+>> index be0068081ebb..99679b686146 100644
+>> --- a/drivers/iio/light/as73211.c
+>> +++ b/drivers/iio/light/as73211.c
+>> @@ -675,6 +675,9 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>>  				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+>>  		if (ret < 0)
+>>  			goto done;
+>> +
+>> +		/* Avoid leaking uninitialized data */
+>> +		scan.chan[0] = 0;
+>>  	}
+>>  
+>>  	if (data_result) {
+>>
+> 
 
-Switch to plain kzalloc version. The devres version is not strictly
-necessary as the buffer is only accessed during the channel
-configuration phase. Rely on __free cleanup to deallocate the buffer.
-Also, move the ext_info handling into a new function to have the page
-buffer definition and assignment in one statement as suggested by
-cleanup documentation.
+Adding the driver maintainer (should have been added from the beginning)
+to the conversation.
 
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
----
- drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
- 1 file changed, 46 insertions(+), 38 deletions(-)
+@Christian, could you please confirm this?
 
-diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
-index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..c309d991490c63ba4299f1cda7102f10dcf54982 100644
---- a/drivers/iio/multiplexer/iio-mux.c
-+++ b/drivers/iio/multiplexer/iio-mux.c
-@@ -7,6 +7,7 @@
-  * Author: Peter Rosin <peda@axentia.se>
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/err.h>
- #include <linux/iio/consumer.h>
- #include <linux/iio/iio.h>
-@@ -237,49 +238,18 @@ static ssize_t mux_write_ext_info(struct iio_dev *indio_dev, uintptr_t private,
- 	return ret;
- }
- 
--static int mux_configure_channel(struct device *dev, struct mux *mux,
--				 u32 state, const char *label, int idx)
-+static int mux_configure_chan_ext_info(struct device *dev, struct mux *mux,
-+				       int idx, int num_ext_info)
- {
- 	struct mux_child *child = &mux->child[idx];
--	struct iio_chan_spec *chan = &mux->chan[idx];
- 	struct iio_chan_spec const *pchan = mux->parent->channel;
--	char *page = NULL;
--	int num_ext_info;
- 	int i;
- 	int ret;
- 
--	chan->indexed = 1;
--	chan->output = pchan->output;
--	chan->datasheet_name = label;
--	chan->ext_info = mux->ext_info;
--
--	ret = iio_get_channel_type(mux->parent, &chan->type);
--	if (ret < 0) {
--		dev_err(dev, "failed to get parent channel type\n");
--		return ret;
--	}
--
--	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
--		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
--	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
--		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
--
--	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
--		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
--
--	if (state >= mux_control_states(mux->control)) {
--		dev_err(dev, "too many channels\n");
--		return -EINVAL;
--	}
--
--	chan->channel = state;
-+	char *page __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!page)
-+		return -ENOMEM;
- 
--	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
--	if (num_ext_info) {
--		page = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
--		if (!page)
--			return -ENOMEM;
--	}
- 	child->ext_info_cache = devm_kcalloc(dev,
- 					     num_ext_info,
- 					     sizeof(*child->ext_info_cache),
-@@ -318,8 +288,46 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
- 		child->ext_info_cache[i].size = ret;
- 	}
- 
--	if (page)
--		devm_kfree(dev, page);
-+	return 0;
-+}
-+
-+static int mux_configure_channel(struct device *dev, struct mux *mux, u32 state,
-+				 const char *label, int idx)
-+{
-+	struct iio_chan_spec *chan = &mux->chan[idx];
-+	struct iio_chan_spec const *pchan = mux->parent->channel;
-+	int num_ext_info;
-+	int ret;
-+
-+	chan->indexed = 1;
-+	chan->output = pchan->output;
-+	chan->datasheet_name = label;
-+	chan->ext_info = mux->ext_info;
-+
-+	ret = iio_get_channel_type(mux->parent, &chan->type);
-+	if (ret < 0) {
-+		dev_err(dev, "failed to get parent channel type\n");
-+		return ret;
-+	}
-+
-+	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
-+		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
-+	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
-+		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
-+
-+	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
-+		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
-+
-+	if (state >= mux_control_states(mux->control)) {
-+		dev_err(dev, "too many channels\n");
-+		return -EINVAL;
-+	}
-+
-+	chan->channel = state;
-+
-+	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
-+	if (num_ext_info)
-+		return mux_configure_chan_ext_info(dev, mux, idx, num_ext_info);
- 
- 	return 0;
- }
+Apparently, the optimization to read the color channels without
+temperature is not right. I don't have access to the AS7331 at the
+moment, but I remember that you could test my patches on your hardware
+with an AS73211, so maybe you can confirm whether wrong data is
+delivered or not in that case.
 
--- 
-2.47.0
+Thanks and best regards,
+Javier Carrasco
 
 

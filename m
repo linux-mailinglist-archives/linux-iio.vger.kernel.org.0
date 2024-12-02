@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-12927-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12928-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E1E9DFAD5
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 07:45:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FCF9DFADA
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 07:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE62B21866
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 06:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E83FD2818F2
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 06:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691731D63F9;
-	Mon,  2 Dec 2024 06:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E9D1F8EF0;
+	Mon,  2 Dec 2024 06:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtX8suNN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fzeHfWzk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B201F8EF0;
-	Mon,  2 Dec 2024 06:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E44C1D63FA;
+	Mon,  2 Dec 2024 06:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733121906; cv=none; b=t7rBxMYi93hE9c5qvSzTyOq/kT7gaGGdiO0eonMtvAbkDadXFSmz8k8lGsVAyZ3tT8dmUTDjB3BDl1MiCxsW6l0aI8livdh9pyD6nXrHxD1Z0vWNRmHSEsbIW6oGioIe4/N8SDUV2pRB/kLOJTwxoNeHRUZjgQYC+G2+8qtCtfA=
+	t=1733122016; cv=none; b=Un18Ym+H+DejhxUeIZ2x7GvycGtOHJotvIxAXQJqUUC+tMqW79HdqLpRi5P/fM10k7wnbTYI9q3Q/GUn/DG4neKuYXIlOgbQKvXGFiFHqEHC39vyNks4u38D9MKWNWcTXWynyNDbkGs35/JG2pnB7vP2/2QMKD+Ltm6kuaNFePE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733121906; c=relaxed/simple;
-	bh=NWyhNFwkROuQEWkO0srSA6N8NQM9TB3aC1fKVL5H4GA=;
+	s=arc-20240116; t=1733122016; c=relaxed/simple;
+	bh=BGKKT4M7B0mxH9LQy3CTxmDnpSGj6ANQv/xzPYnQNCo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b1d3WSjFVUMXyOTKwUdoghzYIzpyTWr6ZO71UfrCOE1G1rGPUGYWYFHGZeen+v7z5p60hwXqGguqeazeWsPOJgaQsT5XJyW3CDQV9hFB99PFux8bZuULs3y7U4WCo2gp+QVXXvV0ZZla/J0vqDJs31tVF4kj1P4lTWefLE3GsIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtX8suNN; arc=none smtp.client-ip=209.85.208.177
+	 In-Reply-To:Content-Type; b=DsVI2GkAS3Bn0lnW7dmUE/UdR7rBaHegg3YxRuzZNTb0V0sEK42ccUmr3uYrSDUvKcatsCn0UtBD0GKRrGaZbH9GhlpKfEq2s31PO3o06iR2Rd6fPrKzsJWeLxQAkDIcp98y3OlFP+MfumqmoLtqsRWVlbLDkHwS8z6qX7grT7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fzeHfWzk; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffbea0acc2so39575321fa.1;
-        Sun, 01 Dec 2024 22:45:03 -0800 (PST)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-53df1d1b726so4378762e87.0;
+        Sun, 01 Dec 2024 22:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733121902; x=1733726702; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733122012; x=1733726812; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dkvfc8rUC3zYH63ASpHPRmnBLTGKCK6yLd3NLu3Guzw=;
-        b=RtX8suNNxylEkxzYGMbMDZfWxZBbkkT51MDFlBPsK+JYjZeyClRxrJI/BA+Ak3aXJ+
-         e+uOQgJ1T1yosRTONHHwHRJXo/n8O8klwtessH26Sg8/ABl58W1p/7ndBOHH98BzPHzI
-         Zhj637DE0iZCfl8gynTb0ktTe4OUHKlp5M8QQkUA8Uxf1ebfCmJDd0l1mgGeNaqGrIoV
-         r5uuz3h7XKoKu9xg7e9/8tJvibAWx49WNprcFpIBe0ThjkX8nU2+sgBzo9ZjK2w5hJ5x
-         Zhjf1LipKlQL43U5W56bSSgLqfJo2GULp9m+XBGNwXjbnKR+3ZwBzBQ/26mnXUSUm8Ml
-         MdQg==
+        bh=mTzKZUoU+tSJjf2CzUJWcZUzAimmxO6c48VQPd9iPRY=;
+        b=fzeHfWzkmFmNod9eZj/ZhKe2nyPe0Nw4v2x+2RnjLBwyrUke1bjJy/6tODZ5kn03ue
+         4gkZqYla+2B67iHMiZbTfMIwYovOkAttbQF6U/5x851UOChI+N93fGLCidi8aVuzfSbR
+         eZdI9E4C0nHHoM7Fb5WUTm8iVlKD1BYLQgolJWMPmrjFfbpOwLEiTDqsuF9S8X/fQBc0
+         Wzak2pjOAMlukdbq55YeQ05VAgNaB8O5Iudpo7t7XLgrLg67Io8OTpXtG6/StwEt8MF4
+         e4AEVUaRh5VqCYQsuH4kxsfsIRVR2EmLGx1Ppv/rGweR2aCm6N4uqpM2CIoJWJv3kLkR
+         639A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733121902; x=1733726702;
+        d=1e100.net; s=20230601; t=1733122012; x=1733726812;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dkvfc8rUC3zYH63ASpHPRmnBLTGKCK6yLd3NLu3Guzw=;
-        b=lFcTaZAMZoP2p219hhRaUDqjJSXcG/tuZTGdUNbujDg63mEcD4hXcZETz2uOIwzYBr
-         r5aYpu2p/FOlI24lKgQ2gLHx3CEeefrXTyUA+Ljcuhep5JFABLE/5LSN1/fSlz78nNK+
-         XeGsw+X6FPmn7ZKKTQyqYYkjNWy9HitJzOlUt2KXQY6q/eMD9Tr8qGkKKZoXRWMawvED
-         mhDrfyIh0PsfHYADlkn4gqEYMWx5XYbU4BT9bvOUrJiQnVZRRphW/rAOD5GdhkHT34Ht
-         +XvfbdbgPdWOPL3RgCofSWx1VlPowFgq5EKlOA8eBVOCvmbtCSOv1np7oYACSf80xg01
-         dhMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUEAfpGvqoStqJJSw0whPU3spwKh7r825wJlJHORF0oRHHavmFRRn+sOvkZSJcxDWl5cpZoOaDMzWk=@vger.kernel.org, AJvYcCXUyVyjlEuD1rgTS3q4i6zuhEC6EbO1Ismym/W11lPSBpAbM65xDgr7EN0rs2RPpzO3DuIipKUOKHkpFtNb@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzf8BF87eI06XhPLa2WwgZYrqkstGhuMcYGRjbr8ovAROL1aVen
-	+VGCeIE/4smhT8AL1QdLA0ADrkpxDeln5Q8gScVhB/V2PPwVow1AboFtBg==
-X-Gm-Gg: ASbGncsS58XY8ZEhI8qE7GV6HgcsgN/Jsj/iE/yWytmNE4vlRiSDf6aEzdjmYh1Uqsq
-	D7ie12HBvwOj5SZ1tEVz7VzI6i7i1cw3usVC4+mcbTOqCXLm4I3tObDn0YKvvClaV0S5ShQvuLt
-	6OXBq9Go75/fmRoJiFUuvHVyunwRt3jxh3aA+s/S1+8tTJTBjnjaVjkpvBnLpKN9uyucFVKFknM
-	yvQyk4gSXES89LrFaMjPouiuZY9qfDWsEpR5/kcmxs02Z1x7Xe+oW24+Y6QGhafo02U36kzG98R
-	93vUvRShdqzWj69zO+Kbpp1V5zeMioY=
-X-Google-Smtp-Source: AGHT+IGaTieny3qw0MVJptpe5t5N20qahfFypOA6x/u1+MkXUji6aaCcXd2JoPkFxlDZChxNmvTeLg==
-X-Received: by 2002:a2e:a98a:0:b0:2ff:a7cd:ee7e with SMTP id 38308e7fff4ca-2ffd6040dc0mr94963181fa.6.1733121901858;
-        Sun, 01 Dec 2024 22:45:01 -0800 (PST)
+        bh=mTzKZUoU+tSJjf2CzUJWcZUzAimmxO6c48VQPd9iPRY=;
+        b=vLJf9Kj0e51IwJwPay1eTHO4ym+SHZ2hn0KbhbiOeN+YSn4WCfLOfnu06MrsXjuNqO
+         CUhfs1FxQkSUBU9HnKjpZBdDVwR6Q40jWschVw3TDztCql3vb0MV/eHAcJOXbTaGs5xi
+         yvfg2W4KMjb7VkEtSeSbCJVxosnIfK8SLX/3D9zhRxHfcKrQEVSofGa1Tf9g7Ll4Abat
+         WWshMEZw1jDdGbHLqBCY/H0RHDnc7/LYfQwXtCSeZLkTRHyyCZjhVHYZ5Ypu9+J4akQH
+         QFKv2Zjq8yTPyUxZr5NQMizfcL9LGPQfNrFg92/OVONUpItiZVxoGV/lD9K9OMLzQCb+
+         TrsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUzMekcGtCUcIUFY0JWCSJiH306/5PF6EB2A9Kf4gIbsJKYdUYlvR5b337m9uEUBmp2ziP6uPoMC98+@vger.kernel.org, AJvYcCWOsPApz3Y6rHY6liDmdgRukaTFFYEnZI3qtXJa8DsvUbI6KCHTVdIAqps6jrHo2BnfrH7chMbO8mQ7@vger.kernel.org, AJvYcCXPDLAmgel6WteSUFTCI/fbnbgVTJYImQpxIJV6BGnFM7ZV9V+wmrRK9j94TmfVwxAOMKOutr1WlYo7f7H+@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIddGfq+F/943MaZ92MO4Y+cIC9uZkwLUWb8pJu8s4dVKL4ucV
+	CY2w6ntvGIrhTbkzPGxxkXlpHvbmduE8q1v624otC19tLi84F26nUmi89Q==
+X-Gm-Gg: ASbGncv0kwBS3KjjSQlkJ3hM+Y6t3OqIiVXMeMAJ0VBopsvosjI8SPzzntDt25xSbwd
+	cdXgAYk4sYH0rgigDXaWmk03kLzfRDeG+JU6z6FOyRQ3+eiix9vQMuvAt5qmK7cJaRQ2IVOXW4m
+	wl55p6WRTGdrkU8kmj5V7ZdHDanCXJBw9ZIvi/nPfAK3wEuOfJtY/4CIKFM/sDK863WlEuw2n9O
+	CBw5oecrnba5L8V81mSdspAZ9uB4SVWcIS1Lm1oQJpZws9UzWyin5I47ot4HeotolGL8mTaBhcv
+	q5Br6Gj2Tg7Ww7dvWTX6mTUD2HeAAq8=
+X-Google-Smtp-Source: AGHT+IGT1CTRHEZ51DGMX9V+sWOuY45xKYqAVKYGhRYRSyCDmD7rrN0ZQiHjblIK8mLkO1bisFQHpw==
+X-Received: by 2002:a05:6512:3d93:b0:53d:e537:c780 with SMTP id 2adb3069b0e04-53df0104745mr11017388e87.35.1733122010882;
+        Sun, 01 Dec 2024 22:46:50 -0800 (PST)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfccad87sm12248851fa.121.2024.12.01.22.44.58
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df6443305sm1363510e87.79.2024.12.01.22.46.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Dec 2024 22:45:00 -0800 (PST)
-Message-ID: <670d860b-f6fc-4ef1-ba05-bbce24ed82fd@gmail.com>
-Date: Mon, 2 Dec 2024 08:44:57 +0200
+        Sun, 01 Dec 2024 22:46:49 -0800 (PST)
+Message-ID: <a52bce75-c1df-453a-b54e-2dfbeb9c285e@gmail.com>
+Date: Mon, 2 Dec 2024 08:46:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,199 +81,75 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] iio: gts: Simplify using __free
+Subject: Re: [PATCH v3 7/7] iio: accel: kx022a: align with subsystem way
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1732811829.git.mazziesaccount@gmail.com>
- <1f8e1388b69df8a5a1a87748e9c748d2a3aa0533.1732811829.git.mazziesaccount@gmail.com>
- <20241130175141.14d3589a@jic23-huawei>
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1732783834.git.mazziesaccount@gmail.com>
+ <9b63813ecf10b1cd0126cb950bc09514c4287b9a.1732783834.git.mazziesaccount@gmail.com>
+ <20241130181506.27d0c72a@jic23-huawei> <20241130182628.3d35817b@jic23-huawei>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241130175141.14d3589a@jic23-huawei>
+In-Reply-To: <20241130182628.3d35817b@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 30/11/2024 19:51, Jonathan Cameron wrote:
-> On Thu, 28 Nov 2024 18:50:24 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 30/11/2024 20:26, Jonathan Cameron wrote:
+> On Sat, 30 Nov 2024 18:15:06 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
->> The error path in the gain_to_scaletables() uses goto for unwinding an
->> allocation on failure. This can be slightly simplified by using the
->> automated free when exiting the scope.
+>> On Thu, 28 Nov 2024 11:03:40 +0200
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 >>
->> Use __free(kfree) and drop the goto based error handling.
+>>> Many of the Kionix/ROHM accelerometers have a "PC1 - bit" which enables
+>>> the accelerometer. While a sensor configuration like ODR, g-range, FIFO
+>>> status etc. are changed, the PC1 bit must be cleared (sensor must be
+>>> disabled). (See the description for different CNTL registers [1])
+>>>
+>>> In order to ensure this the kx022a driver uses a mutex, which is locked
+>>> when the PC1 bit is cleared, and held for the duration of the
+>>> configuration, and released after PC1 bit is set again (enabling the
+>>> sensor).
+>>>
+>>> The locking and PC1 bit toggling was implemented using functions:
+>>> kx022a_turn_off_lock() and kx022a_turn_on_unlock().
+>>>
+>>> Based on a discussions [2], the IIO subsystem prefers open-coding the
+>>> locking with scoped_guard() over these functions.
+>>>
+>>> Drop the kx022a_turn_off_lock() and kx022a_turn_on_unlock() and use
+>>> scoped_guard() instead.
+>>>
+>>> [1]: https://fscdn.rohm.com/kionix/en/datasheet/kx022acr-z-e.pdf
+>>> [2]: https://lore.kernel.org/all/20241126175550.4a8bedf3@jic23-huawei/
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>>
+>>> ---
+>>> Revision history:
+>>> v2 => v3:
+>>>   - New patch
+>>>
+>>> NOTE: This patch uses the if_not_cond_guard() which is currently missing
+>>> the iio_testing.
+>>> https://lore.kernel.org/all/20241001-cleanup-if_not_cond_guard-v1-1-7753810b0f7a@baylibre.com/T/#m69982b23da9f71e72d84855b34e9b142cb3a1920
 >>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->> This is derived from the:
->> https://lore.kernel.org/lkml/5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com/
+>> Looks good to me.  If no one else comments, I'll pick this up when
+>> I have the precursor available (so hopefully just after rc1)
+> or maybe not.
+> https://lore.kernel.org/all/CAHk-=whn07tnDosPfn+UcAtWHBcLg=KqA16SHVv0GV4t8P1fHw@mail.gmail.com/
 > 
-> Hi Matti
-> 
-> A few comments on specific parts of this below
-> 
-> Thanks,
-> 
-> Jonathan
-> 
->> +static int build_combined_table(struct iio_gts *gts, int **gains, size_t gain_bytes)
->> +{
->> +	int ret, i, j, new_idx, time_idx;
->> +	int *all_gains __free(kfree) = kcalloc(gts->num_itime, gain_bytes,
->> +					       GFP_KERNEL);
->> +
->>   	if (!all_gains)
->>   		return -ENOMEM;
->>   
->> @@ -232,10 +238,9 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->>   
->>   	gts->avail_all_scales_table = kcalloc(new_idx, 2 * sizeof(int),
->>   					      GFP_KERNEL);
-> 
-> I'm not particularly keen in a partial application of __free magic.
+> Seems Linus is unconvinced.
+> Hmmm. We might have to roll back the uses of cond_guard() entirely.
+> Which will be a pain.  Ah well. Sometimes an idea turns out to not be as useful
+> as it initially seemed.
+> 46 instances to get rid of in the tree today...
 
-I am starting to think the partial application of __free would actually 
-be what I preferred... (see below).
-
-> Perhaps you can use a local variable for this and a no_free_ptr() to assign it after we know
-> there can't be an error that requires it to be freed.
-
-I am having second thoughts of this whole series. I do love the idea of 
-__free() magic, when applied on a simple temporary allocations that are 
-intended to be freed at the end of a function. Eg, for cases where we 
-know the scope from the very beginning. With a consistent use of __free 
-in such cases could make it much more obvious for a reader that this 
-stuff is valid only for a duration of this block. I have a feeling that 
-mixing the no_free_ptr() is a violation, and will obfuscate this.
-
-I know I used it in this series while trying to simplify the flow - and 
-I am already regretting this.
-
-Additionally, I indeed am not okay with introducing variables in middle 
-of a function. I do really feel quite strongly about that.
-
-It seems that in many functions it makes sense to have some checks or 
-potentially failing operations done before doing memory allocations. So, 
-keeping the allocation at the start of a block can often require some 
-additional "check/do these things before calling an internal function 
-which does alloc + rest of the work" -wrappers.
-
-It will then also mean that the internal function (called from a wrapper 
-with checks) will lack of the aforementioned checks, and, is thus 
-somehow unsafe. I am not saying such wrappers are always wrong - 
-sometimes it may be ok - but it probably should be consistent approach 
-and not a mixture of conventions depending on allocations...
-
-Also, sometimes this would result some very strangely split functions 
-with no well defined purpose.
-
-As a result, I would definitely only use the "__free magic" in places 
-where it does fit well for freeing a memory which is known to be needed 
-only for a specific block. And, I would only use it where the alloc can 
-be done at the beginning of a function in a rather natural way. This, 
-however, is very likely to lead in mixed use of "__free magic" and 
-regular allocs.
-
->> -	if (!gts->avail_all_scales_table) {
->> -		ret = -ENOMEM;
->> -		goto free_out;
->> -	}
->> +	if (!gts->avail_all_scales_table)
->> +		return -ENOMEM;
->> +
->>   	gts->num_avail_all_scales = new_idx;
->>   
->>   	for (i = 0; i < gts->num_avail_all_scales; i++) {
->> @@ -246,14 +251,25 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->>   		if (ret) {
->>   			kfree(gts->avail_all_scales_table);
->>   			gts->num_avail_all_scales = 0;
->> -			goto free_out;
->> +			return ret;
->>   		}
->>   	}
->>   
->> -free_out:
->> -	kfree(all_gains);
->> +	return 0;
->> +}
->>   
->> -	return ret;
->> +static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
->> +{
->> +	int ret;
->> +	size_t gain_bytes;
->> +
->> +	ret = fill_and_sort_scaletables(gts, gains, scales);
->> +	if (ret)
->> +		return ret;
->> +
->> +	gain_bytes = array_size(gts->num_hwgain, sizeof(int));
-> 
-> array_size is documented as being for 2D arrays, not an array of a multi byte
-> type.  We should not use it for this purpose.
-
-Thanks for pointing this out. I was not familiar with that. I am 
-actually pretty sure that using the array_size() has been recommended to 
-me :)
-
-> I'd be tempted to not worry about overflow, but if you do want to be sure then
-> copy what kcalloc does and use a check_mul_overflow()
-> 
-> https://elixir.bootlin.com/linux/v6.12.1/source/include/linux/slab.h#L919
-
-Thanks for the direct pointer :) I'll take a look at it!
-
-> 
-> You don't have to tidy that up in this patch though.
-> 
->> +
->> +	return build_combined_table(gts, gains, gain_bytes);
->>   }
-> 
->>   
->> +/**
->> + * iio_gts_build_avail_time_table - build table of available integration times
->> + * @gts:	Gain time scale descriptor
->> + *
->> + * Build the table which can represent the available times to be returned
->> + * to users using the read_avail-callback.
->> + *
->> + * NOTE: Space allocated for the tables must be freed using
->> + * iio_gts_purge_avail_time_table() when the tables are no longer needed.
->> + *
->> + * Return: 0 on success.
->> + */
->> +static int iio_gts_build_avail_time_table(struct iio_gts *gts)
-> Hmm. I guess this wrapper exists because perhaps you aren't comfortable
-> yet with the __free() handling mid function.  It does not harm so I'm fine
-> having this.
-
-Yes. This was the reason for this wrapper. But I'm not really happy 
-about the wrappers either (even if I agree with you that it does not 
-really hurt here). Furthermore, if you're feeling strongly about not 
-mixing the __free and regular allocs, then I simply prefer not using the 
-magic one. I don't think using the __free with allocations intended to 
-last longer than the scope is clear. Ues, goto sequences may not always 
-be simple, but at least people are used to be wary with them.
-
->> +{
->> +	if (!gts->num_itime)
->> +		return 0;
->> +
->> +	return __iio_gts_build_avail_time_table(gts);
->> +}
->> +
->>   /**
->>    * iio_gts_purge_avail_time_table - free-up the available integration time table
->>    * @gts:	Gain time scale descriptor
-> 
-
-Thanks a ton for the review :) It helped me to clarify my thoughts on this!
+Ouch! :( Sorry to hear Jonathan.
 
 Yours,
 	-- Matti
-
 

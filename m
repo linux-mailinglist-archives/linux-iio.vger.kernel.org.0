@@ -1,134 +1,224 @@
-Return-Path: <linux-iio+bounces-12925-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12926-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07EC9DF9B8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 04:58:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 471F69DFA9A
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 07:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F0F2817D8
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 03:58:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDCDA2818E6
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 06:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513EE1F8AE9;
-	Mon,  2 Dec 2024 03:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDE41D63FB;
+	Mon,  2 Dec 2024 06:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DMu4JM5p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GV7VdaRU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C962A1D1;
-	Mon,  2 Dec 2024 03:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C52B17E;
+	Mon,  2 Dec 2024 06:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733111893; cv=none; b=a9VT/EUhszf54g9yv2LKHxSeyTGdmIL3plJ/mDYPBO3UGvw74gD9ZFLskab0udkMhmStVDUpc5ylGAwYypL5tpgutuT5EATldchb93yRn8aHeQ0cybioAGHPB5hjJ21Hd5aZGwEKL2CkgZrrhCk03twEUWtZ6umLFWi+6iNVYiU=
+	t=1733119598; cv=none; b=tFJtBT61piDMeLL23NdNYNa/TkuWt7EDNbJXv3E4Dloi2ze04P9lRcgCGtJ+kPvG5fu4+QHBO0vg8jDYsBcRyYTWxxVCl+y7gPypwKyPCxAvfJJpKXaPJRxKItoPhQxNMwgKBcMkMrLVy8Ksjl9ktH72xRYfgKgKGe4kGoWaxps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733111893; c=relaxed/simple;
-	bh=1WuQ9zhPdvb7aTUSsoeBXQfnvNcWDdKLXzd31oeSilY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fv1RX5zLp8jrxBLhretVdXx/pHZicI22pSzvIw8kit0+ZYlxVU9PHPYrsHAAcwg4gTC/D9AMumiWK89XwnFAt1XiWecDW6NGWmo1WkUVxUFk4ZJVSVsUBXgvN4tfgIwA9w1X8jAE2JguxA3nb9Pm/BcrKCTpoG5xsMkP9ZAlWac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DMu4JM5p; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1733119598; c=relaxed/simple;
+	bh=VcOStvxHj8Z+scSApM0IUCw33Ucgul5bnv0mWS086PI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=scxWOWJXjroWRr4/euVTtMbLNySof358TZ9pTwy9zhIp8SC7mnCnWsAjNqM1pRueFBcMSbi1oEWH8VcWg74clODZ3QnK4UQNB9Lx6yma+63kaU/eXh8u7FnocsM8FwfQVDNMZ91OFz0Z/VoMaEGFCTD+wi6tdWxHTYdwNndDZz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GV7VdaRU; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d0cd8a0e91so2272762a12.3;
-        Sun, 01 Dec 2024 19:58:11 -0800 (PST)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ffb5b131d0so38025051fa.2;
+        Sun, 01 Dec 2024 22:06:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733111890; x=1733716690; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1WuQ9zhPdvb7aTUSsoeBXQfnvNcWDdKLXzd31oeSilY=;
-        b=DMu4JM5paNbtOuxcNdTEa2HL7Br1nEwt2KPW5K3iB6O3qAxai6Gdr7LjW0qPYSVW4h
-         qo3plqC5n3i6pKK72XVi9FFcfGL4Avv8XPOdu6r0DuBc5uoDQNfxsbQS3NJ1dOcuBnqs
-         vFvKcyeHJyEeAzOtp6JszHV34bUoISXMzdOA1+gk00wTx5cyWa9marpm8Ivnntpo6K3r
-         UY3vhKSgDDtzHcDABbbcRTGq82gGtg1M5yWTpSjJtPdVe9CFnS7OsJ3i5S0EDDLlDIHO
-         YAoBFnSgGZNolNWgJJOEr/AlY0tzW+4RJK7/rxSiXdRQAIVNnB1uQ4NYbl5DbvAIKeTl
-         8UpQ==
+        d=gmail.com; s=20230601; t=1733119594; x=1733724394; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Py1+g6xpJxZI8cr6wr8SsaAw1VlWsqIN/NQfOIFnPCo=;
+        b=GV7VdaRULvZU9jFvSsPGe9g0huYtk5NCzW2EGXCxqxpGb0LBTs88DooX7qDY5isVpX
+         fvpz/eqHtn1d8XmTHIw5K1rtazig1QdsO3u1bKPqmJt718qeOrXMME4LZV6Kmxm+GqZe
+         BF03xSRAVmM4+ZdVTWaBWs7h3j1233BOjgfFf9JunEtz6izRp7evTaXmQdgw5FynuoSh
+         W2GY/NV3anCmJ4d1H7FARl29wXEQbPAjlYkJ9xUKwBD1V+SC7meyF9wQBfWkEpozZkE6
+         7Wme4K6Jtq75uQFy0SHCLi1KiJK9foSAAxYVhNiIVNVMkHW2LLJf403f6CGNvxvWDkkf
+         3GkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733111890; x=1733716690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1WuQ9zhPdvb7aTUSsoeBXQfnvNcWDdKLXzd31oeSilY=;
-        b=VQg6QcuRMWhZKpAGJtxzE0oHXgEd0uAjz8iEs0BIjoQEBSanLCLosOcKvxe0PIdKeE
-         fcze+619ZXQpET1L54bi1sBMdKyPH8F6yqBkh0Gu0W6aKCw5TJbDew4+cbZGNgQWhcdm
-         GdhEuE+3fgdHwULctLcnOCTaZdBx41gygDuXrvLpH7i4aP9VTedPHg9w54HysIUu5Toi
-         Q3wK/LqNWtQKFd504OiKf3qtoTi7UBVCwpdYAnfRAS9AvqEhtVGDzDcgRITlGpHBHzVY
-         Pf2qSbY+QsNnzToiekHp8bh8E4H0/HTXTH/cbqmDst32H+RThCagMja21t60xYsLqAQa
-         +QPw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4qdB3SbFYMh93d2ZHmU16jeU4m95Eu5T4VkE6U9gi6IkZTSewFbzbWm1c3LLwFgEa65/PidXm/m8EsFUk@vger.kernel.org, AJvYcCVQ+LC47uC2SBToBlUabruoIoKZlq9iTSOD7CxH/V+iYshJC+pzBkrS0ousyJNzoNmSEFtdcsO2S2Yu@vger.kernel.org, AJvYcCW2BMTnNbRPpm3VBuZH5t/prhnWSSV4o2OaAzggMmJlRxmeQTrFmnHbWN0fO5p7t1nZJ77Dmahup2fN@vger.kernel.org
-X-Gm-Message-State: AOJu0YytUkVJnIk4sJzoeNs13uGzDvAyMjn3TM3u4BZ+oJq6RIN0eNeS
-	ugVNc9fcWNpnDnCEEd5JCOajrKW4e1N8dByTJWR9hl+1qLiXPQ0EJS+pJZbpgXXXoTZCdcZUlJY
-	LDxY9HimisFQ2dPFEkaNyDc3UZfI=
-X-Gm-Gg: ASbGncuXWcRCwbhsUzlYGLOPZMTHPfA5mxrXQYimFScbwoP56/F4FS924+LGlpeH1Yo
-	zcEdtuNBjDIgeJXWfPt30/+znWFW+7gg=
-X-Google-Smtp-Source: AGHT+IGwzEMbiiJ13Ofd5itDTOGLOFeo7dgalvpfbhUuXY2tP9DPIIZUXyvTnCRrUzAM/6rxs2ljWo1mX+WoQmAepyI=
-X-Received: by 2002:a05:6402:280a:b0:5d0:cea1:931e with SMTP id
- 4fb4d7f45d1cf-5d0cea19806mr7075150a12.23.1733111889614; Sun, 01 Dec 2024
- 19:58:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733119594; x=1733724394;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Py1+g6xpJxZI8cr6wr8SsaAw1VlWsqIN/NQfOIFnPCo=;
+        b=Djss4jC7RoSvOfM8+xAnSPLpMaqBmu6u6fHNUNkjFZOhBjv6nYVTydXiKNG40yvtQF
+         uRZIRaobgRYYaILeivqSKJU9VLOvzpUWjH9F95cGkyj+Oqu7OjhIEB+t5dhEZo63K4cb
+         1+eZpaHFUgKFX9F7cu49sXtAdJJIDtmk5q5EJrraAhQzun388wSA+uvedMrW8czXQnZK
+         F3W2JQzxejfO9/RlP48FG9MmFDTjsRe6kVyK4GNaJ1yNKBUbwwLW1kEfwV0xzGwO1cj6
+         wBmJiYFDM7ZOYCAK1YzkKuh+7KJ9dQrcUTwZK1VPFVZbMWiMWl3W+ZQOvNGSjr+SpqvT
+         KWIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmRplmP/lDNH7zZH63fnAMemFVUApMytqR4PCnPA7iM3c/fBuyua1mqqj6EtQioWxOylD54wZVjEs=@vger.kernel.org, AJvYcCXtpyIJxKqzJDpGDaue5uXxTJpAWnQz8ksPg75pbR/4lkD6BMu8X2DDYKfOX/5aGvOw5XNyEXQYqHQIJXwf@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUbkJVQt11e2jIiudS+skNBZVxR7FXJe/2apyeWBEy/n1GRB+u
+	XGLEBM1AiJwKmAx9+eDq+HXipjsaCIR+rmeIsn32ktojNMZB/oq7Y18JIQ==
+X-Gm-Gg: ASbGncsUZGFO0oNOoXFDf+KoBo3qoEF/H75gKITSdxMK0XX1efHUCm0x0TOqwZmfUGm
+	uqM7SoxoDL/Brgqvdrp1/Kul+VtoUdd26fjUMlk+7EioSqJq3KY/zbH/aNgTB4qbkZdxEAuk9Ic
+	LaYnKNaCuUawiXlz6czN/YTvpUKXE+xzKh45ut6I1eV6dgS/nbmiY1ZncwPw/jFRqk2Uczgx5FY
+	fYSNs6ulCvk/IumGAUb4zVSJO4tXxY6vPO2mNJjNdQqspkikSdURdEi4P9Zr3e5JMD+da6aNuI8
+	X0zroeA7Tzv4AcNskCr2yc5fpw7duIA=
+X-Google-Smtp-Source: AGHT+IGo7ujBlAV0LYkJRc/7SS4Dttf3fy47ADg2rHlcf8yZ7+TUfQiiKt3dExCzE8UgY5LgsmFxxQ==
+X-Received: by 2002:a05:6512:3b90:b0:53d:d242:6bb0 with SMTP id 2adb3069b0e04-53df0112153mr7127049e87.49.1733119593953;
+        Sun, 01 Dec 2024 22:06:33 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df649f10esm1324677e87.227.2024.12.01.22.06.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 01 Dec 2024 22:06:33 -0800 (PST)
+Message-ID: <4a06a31f-1b3e-4ce3-a801-138d2d21bacd@gmail.com>
+Date: Mon, 2 Dec 2024 08:06:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241106023916.440767-1-j2anfernee@gmail.com> <20241106023916.440767-2-j2anfernee@gmail.com>
- <6c20875c-4145-4c91-b3b5-8f70ecb126f0@amperemail.onmicrosoft.com>
- <CA+4VgcJD74ar9zQCj38M2w8FzGWpq+u5Z7ip9M7a1Lu7u8rojw@mail.gmail.com>
- <20241109134228.4359d803@jic23-huawei> <20241109142943.3d960742@jic23-huawei>
- <CA+4VgcJ=8wDWWnmgEt-UkEUfnfD8kGtHe44G5+dcRYt=KdwNfw@mail.gmail.com>
- <20241123144750.43eaa1c5@jic23-huawei> <CA+4Vgc+rqnxne6saUgUO_kR6chX9+HZcb40_9dpO6p6KuskSAg@mail.gmail.com>
- <6d8e9512-2be8-4337-9791-0d956b0968c5@baylibre.com>
-In-Reply-To: <6d8e9512-2be8-4337-9791-0d956b0968c5@baylibre.com>
-From: Yu-Hsian Yang <j2anfernee@gmail.com>
-Date: Mon, 2 Dec 2024 11:57:33 +0800
-Message-ID: <CA+4Vgc+vXQYQubVs4eFJj+WuMKEJziZh44J_pXDxrmo_DXiWpg@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
- NCT720x ADCs
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Chanh Nguyen <chanh@amperemail.onmicrosoft.com>, 
-	avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, 
-	venture@google.com, yuenn@google.com, benjaminfair@google.com, 
-	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	nuno.sa@analog.com, javier.carrasco.cruz@gmail.com, andy@kernel.org, 
-	marcelo.schmitt@analog.com, olivier.moysan@foss.st.com, 
-	mitrutzceclan@gmail.com, matteomartelli3@gmail.com, alisadariana@gmail.com, 
-	joao.goncalves@toradex.com, marius.cristea@microchip.com, 
-	mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com, 
-	yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] iio: gts: simplify scale table build
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1732811829.git.mazziesaccount@gmail.com>
+ <4b05448b65969f9f433f7ac3aa234c33025ad262.1732811829.git.mazziesaccount@gmail.com>
+ <20241130180117.088352ce@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20241130180117.088352ce@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Dear David Lechner,
+On 30/11/2024 20:01, Jonathan Cameron wrote:
+> On Thu, 28 Nov 2024 18:51:00 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The GTS helpers offer two different set of "available scales" -tables.
+>> Drivers can choose to advertice the scales which are available on a
+>> currently selected integration time (by just changing the hwgain).
+>> Another option is to list all scales which can be supported using any of
+>> the integration times. This is useful for drivers which allow scale
+>> setting to also change the integration time to meet the scale user
+>> prefers.
+>>
+>> The helper function which build these tables for the GTS did firstbuild
+> The helper function which builds these tables for the GTS first builds the "time specific" ..
+> 
+>> the "time specific" scale arrays for all the times. This is done by
+>> calculating the scales based on the integration time specific "total
+>> gain" arrays (gain contributed by both the integration time and hw-gain).
+>>
+>> After this the helper code calculates an array for all available scales.
+>> This is done combining all the time specific total-gains into one sorted
+>> array, removing dublicate gains and finally converting the gains to
+>> scales as above.
+>>
+>> This can be somewhat simplified by changing the logic for calculating
+>> the 'all available scales' -array to directly use the time specific
+>> scale arrays instead of time specific total-gain arrays. Code can
+>> directly just add all the already computed time specific scales to one
+>> big 'all scales'-array, keep it sorted and remove duplicates.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+> Minor comments inline.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+>> ---
+>>
+>> This has been tested by IIO-gts kunit tests only. All testing is
+>> appreciated.
+>>
+>> Comparing the scales is not as pretty as comparing the gains was, as
+>> scales are in two ints where the gains were in one. This makes the code
+>> slightly more hairy. I however believe that the logic is now more
+>> obvious. This might be more important for one reading this later...
+>> ---
+>>   drivers/iio/industrialio-gts-helper.c | 109 ++++++++++----------------
+>>   1 file changed, 42 insertions(+), 67 deletions(-)
+>>
+>> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+>> index 7f900f578f1d..31101848b194 100644
+>> --- a/drivers/iio/industrialio-gts-helper.c
+>> +++ b/drivers/iio/industrialio-gts-helper.c
+>> @@ -191,86 +191,61 @@ static int fill_and_sort_scaletables(struct iio_gts *gts, int **gains, int **sca
+>>   	return 0;
+>>   }
+>>   
+>> -static int combine_gain_tables(struct iio_gts *gts, int **gains,
+>> -			       int *all_gains, size_t gain_bytes)
+>> +static int scale_eq(int *sc1, int *sc2)
+>>   {
+>> -	int i, new_idx, time_idx;
+>> +	return *sc1 == *sc2 && *(sc1 + 1) == *(sc2 + 1);
+> 	return sc1[0] == sc2[0] && sc1[1] == sc2[1];
+> 
+> Would be easier to read in my opinion.
 
-Thank you your comment.
+I agree. (As with the other (ptr + 1) cases you commented)
 
-David Lechner <dlechner@baylibre.com> =E6=96=BC 2024=E5=B9=B411=E6=9C=8829=
-=E6=97=A5 =E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=8810:50=E5=AF=AB=E9=81=93=EF=
-=BC=9A
->
-> On 11/27/24 8:14 PM, Yu-Hsian Yang wrote:
-> > Dear Jonathan Cameron,
-> >
-> > Thank you for your advice.
-> >
-> > I would remove the "nvuoton,read-vin-data-size" property.
-> >
-> > Read VIN info can use word read or byte read, and other registers
-> > should use byte read.
-> > If I use word read for VIN info and byte read for other registers,
-> > I encounter an issue when I use regmap instead of i2c smbus API.
-> >
-> > I need two regmap configs with val_bits 8/16.
-> > After I call devm_regmap_init_i2c these two configs,
-> > the error message:
-> > "debugfs: Directory '5-001d' with parent 'regmap' already present!"
-> >
-> > Do you have any suggestions?
-> >
-> Give each regmap a unique name, like "5-001d-8bit" and "5-001d-16bit".
+>> +}
+>>   
+>> -	/*
+>> -	 * We assume all the gains for same integration time were unique.
+>> -	 * It is likely the first time table had greatest time multiplier as
+>> -	 * the times are in the order of preference and greater times are
+>> -	 * usually preferred. Hence we start from the last table which is likely
+>> -	 * to have the smallest total gains.
+>> -	 */
+>> -	time_idx = gts->num_itime - 1;
+>> -	memcpy(all_gains, gains[time_idx], gain_bytes);
+>> -	new_idx = gts->num_hwgain;
+>> +static int scale_smaller(int *sc1, int *sc2)
+>> +{
+>> +	if (*sc1 != *sc2)
+>> +		return *sc1 < *sc2;
+>> +
+>> +	/* If integer parts are equal, fixp parts */
+>> +	return *(sc1 + 1) < *(sc2 + 1);
+>> +}
+>> +
+>> +static int do_combined_scaletable(struct iio_gts *gts, int **scales, size_t scale_bytes)
+>> +{
+>> +	int t_idx, i, new_idx;
+>> +	int *all_scales = kcalloc(gts->num_itime, scale_bytes, GFP_KERNEL);
+>>   
+>> -	while (time_idx-- > 0) {
+>> -		for (i = 0; i < gts->num_hwgain; i++) {
+>> -			int candidate = gains[time_idx][i];
+>> +	if (!all_scales)
+>> +		return -ENOMEM;
+>> +
+>> +	t_idx = gts->num_itime - 1;
+>> +	memcpy(all_scales, scales[t_idx], scale_bytes);
+>> +	new_idx = gts->num_hwgain * 2;
+>> +
+>> +	while (t_idx-- > 0) {
+> maybe a reverse for loop is clearer
+> 
+> 	for (tidx = t_idx; tidx; tidx--)
+> For me a for loop indicates bounds are known and we change the index
+> one per loop.
 
-It worked fine to add each regmap a unique name.
+I could've said that :)
+
+> While loop indicates either unknown bounds, or that we are
+> modifying the index other than than in the loop controls.
+
+I'm not entirely sure why I've used while here, could be a result of 
+some review discussion.
+
+I'll fix these for the next version.
+
+Yours,
+	-- Matti
 

@@ -1,167 +1,199 @@
-Return-Path: <linux-iio+bounces-12933-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12934-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67FC29DFD19
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 10:27:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843F39DFD22
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 10:28:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D37B281E92
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 09:27:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A5116258A
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 09:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D761FA829;
-	Mon,  2 Dec 2024 09:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078881FAC3D;
+	Mon,  2 Dec 2024 09:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QDAYzJSe"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jW5QDmOt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F1E1FA252;
-	Mon,  2 Dec 2024 09:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CB51F9EB4
+	for <linux-iio@vger.kernel.org>; Mon,  2 Dec 2024 09:28:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733131641; cv=none; b=ZsRcW2HSC5+S2vbkCZmwiLErfK3bsfzfv4F0/p0CSHY2Anx/Z7498HmIJr3aFuBnIIbe9AA7AQyaL5Qtk3mVA/T+y2f3ZKUM1tup7jGq5UHR4wgSLR2PqksbsyJyMxpUn3Fgc5MdSzm5K2o66lONkhKI/X+243gYyfPNhCIBVp0=
+	t=1733131717; cv=none; b=Iw0yWqbrFaFtk9ngx1lcwlwUQryi/EmO41IGluOXzSEAPc6vU1G3IpQ0KW19UtjPjAAhSJ7vDhyI9f5QGvdStV+Vt+mVOgwb0dKLQmlbMMdDdtHXc2IdgyLP36nRfQ7J73lLUL6aUf0lmtvAD0kVb+DBdJq/kwppI7bMr8TOen4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733131641; c=relaxed/simple;
-	bh=2HdQ79P7tEMpX4iY+ZlkpDA9tIbAwPcdYuX+GFXpRys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PW/QokP6G1gwo1FMhrF54o6ee+ILEwHL/fW0s4ZrhR8dPlunb9lreb/+S9nGqH0dvKi5x14QnXuGZn5vT9Yit8XRK2G2i1W0WP/3q5sCi1ul0u9MBQe1mjyGu/9HTuCCsyGG8MO2mvqAk075aMRoNQFpXOL8RUa/fpRfxFFsD0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QDAYzJSe; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6eeb31b10ceso32591697b3.1;
-        Mon, 02 Dec 2024 01:27:19 -0800 (PST)
+	s=arc-20240116; t=1733131717; c=relaxed/simple;
+	bh=rCZakYHRwI2gNpuFPFg1qN+AD8WP9HUtJZUnB9PZYe4=;
+	h=From:References:In-Reply-To:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WaKrJxLr2rk7JKlnJ8pP50lk1LMih5spJ5cL1YiYLdPx/vgNjeFsCrRBVoEjXcDmhPrnMgXTz7YH/pEY3uD4vvIoFIlJBogGueNbTYXo2xG5ukI4pp6LXMxMv3oSaL8uKGRoLYOpph8jkQvBpwOykf5y7ExNhrnAtttQlL8ufbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jW5QDmOt; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3ea4acd3ed2so1738630b6e.2
+        for <linux-iio@vger.kernel.org>; Mon, 02 Dec 2024 01:28:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733131639; x=1733736439; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GD/Z51a6lchMwVYFjuhQ3sJcF0heDeQ5X8C8r2Z+aFw=;
-        b=QDAYzJSeiBIJkoCUZza9SjrHB4OTAfEIFwkZLog2kqIruKm1TnQFUXuPldJAGBPNti
-         dpV0r3l/El5tZLfQT3vdWL7TJsDXn4vN81GyaX2Wjy7udwubOfn537rKzUybuDxF4a7U
-         v3E9G8CZL4JSIRzDj2NKuB7UwzmQOiTRrL/pxACPiw5jPxyEH1a/RfEtvOabNMHvIWXv
-         425Yl9J0PYqLe8uChhsgg79tIpYeh5LBWaNlnjYC6/xPliiSismuEaVLKJCpoOpISgUx
-         1iBek0ra07wTUs7/YDVYM7C02d+wpiB2A/mLhb/q/PRWZTai3hJ43xnW3Cn0Cg0fImlI
-         IFxw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733131714; x=1733736514; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:in-reply-to:references
+         :user-agent:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RV931aVv2htGElL/ZMwKdLdUqmXtd6/lhHmQtH8EMFk=;
+        b=jW5QDmOtAsJ9nMWQMXES1tZMqUNv5t7UAq+F267FS8gpfgAlGpuFfDDVDswBO/YkHW
+         HQUxhNBvCwgNQ1oRPuMiKHKnWhgjsA8goeasUrksfxhygIZqn02s6mEekBM2fX01UEEf
+         phdqNvbNlLsu9LmcRX3eHKyEzr/KXDuo0pnq4pPo0xAcxJIr47MS4WqLmPdbpHUlzrRS
+         rtLsTLgedDXh1J1+qnqFhTEqYi3jl4ZJ8knQwlG4IIh3P7n/LgaKjzfUHmJqiosv0pb+
+         1/u0Hk8DUbjbu5NXnAx1mXASQrL4WiI+Il9rC1vxJQveIYbfmsPYFrAc7eQbIj9E+hG6
+         iL5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733131639; x=1733736439;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GD/Z51a6lchMwVYFjuhQ3sJcF0heDeQ5X8C8r2Z+aFw=;
-        b=YrYICI4mPwWsSypLydRwG65oUsD8Cvhf5Rm4eFHQaVB4iQ3O5vnx0Ndt7hhYsgFiGc
-         j5zmnHb1yPLnKVTxI+3d624GY+afvjdIypVvxd0OLNkiXM6waGejIf7hu97v3Hk4f/lR
-         +baUXoBXFzua5ASn88CjOOabwlZ0iY1JprARw1J41M7Z8Huv7bi9e5Jt7eovP0MFw7Di
-         RKWTmlWx5e2RhFj0WcBpcuz8tIAir1KcWdVWAb+Q4M7ARkGyyCcTy+4B4++mqNajljLb
-         RXeXjRXHF4/52/Ktdnep1ACzLMv9u8ggL7Cjsn7R77d+u/62kCVarO/7QrVD2FhBnd7R
-         aMEw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXhC32RxoPyGY6l4l4PXp2M0KK+qpYLzdxvivHzpO5FSumQtcxzSl4R48wnis93F3lC3ggn8M1E8qw@vger.kernel.org, AJvYcCUaGyl3TX4iMRgTmH31wnGFreMVaxua7SXo7iKsSJNerMauJD+JSgiatfu2RiUIj9pievhqkJKJIsjS@vger.kernel.org, AJvYcCUsYcREIu2f//bdCsQwuq5tnceZgP6oIzr0FtzlD7iezMFnH+UOa04dZcuvKIIws34UsvzL9kOXgC+T+/SB@vger.kernel.org
-X-Gm-Message-State: AOJu0YwW97aczciXhZHd2KJj/x/gbgyYHP7XHXRQDCVo76iquxB2lXXg
-	z1oX/vtQl2uILNWCA4pFSenUMw+c522yD4BMtItxFxcgHKcL6lj895a77rvnoWxwCuNAhW58NaB
-	n3fRWuXDPnBT/RhyJnMi2mxSNtH5rdA==
-X-Gm-Gg: ASbGncspH82c7LGIj91SWK+dl8C2cYiExvGDPstgt7oEcRU0NyvhyRe+meDmewASVDI
-	lJowWmlU5axSui3wo88kakRbIHcsS9P5S6ji64wOlK0ffT1y1EUWEof5YEINMZOkb
-X-Google-Smtp-Source: AGHT+IEtxUVrNr5CD0x73k1QiBveCl8DG1RU5r3OTxhTUiUZMGNDcN5DybBQsyn/Z4eeB3jYqCrSdv6PcKXin0vphA0=
-X-Received: by 2002:a05:6902:dc9:b0:e30:7c38:668b with SMTP id
- 3f1490d57ef6-e395b94b0b1mr17381590276.37.1733131639101; Mon, 02 Dec 2024
- 01:27:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733131714; x=1733736514;
+        h=cc:to:subject:message-id:date:mime-version:in-reply-to:references
+         :user-agent:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RV931aVv2htGElL/ZMwKdLdUqmXtd6/lhHmQtH8EMFk=;
+        b=fAGPFsSwTW+MhtA2jlc8Rp7ri+IxuddbIQP4PwzDO80KZJZoMzXSLn0W5SL/ItNL+g
+         Q64mijV6pnAqC9wuGuQcDugjKTebjWzTLO439jVK3SPWBcyB76lApa87eJOlkN82sgUU
+         Mv8jZhPfuSX+ndC8VfA8L0GAyvXgrOJiGNG5MaDDL7T7qP1Zse26kuqmQ+y2m1HBDtE5
+         JU7HpPwmNA0/JKjEmWZG/D+IivA45EYuLQu1TN9YyrRYzupVz17tnIktnZN/kr+FLEjV
+         Xuw4/dGjqps8I1HJbjC9dMvyfcLUZqaXPDuXkex1qiatwHNI+tymYkmQEiWFDvXHl+Ao
+         dqyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZ4Zf8GpYT7NDDAgJDvqGnV2pbqjLXXOIjGWhnZmaCdVOPR6vtuCdclgtAujADbvnpvVzPtFbNevc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDSeUky1SXye46RfIub2U0HumHFSS/RG8wYit9Q8sSbd3oWXo3
+	Qq8voyVWoWwGBgKzA/aIt5nd3zrh4wyXJJprFIyFFJswuFRUZoccvqH8bnMHu93P8fXCQJ/q0tZ
+	fjyKeBEuEOguOluV5aCiWWK7CN/tdAIgG+ITWjw==
+X-Gm-Gg: ASbGnctlnpl0qe7KLgCsYnHnWyRMIw2z5YClM1MO27ua9pObotDS2q6hz//Mj4bkLpK
+	RnVfH6PKzXkpVIfu5TB0k3isZMz1BJA==
+X-Google-Smtp-Source: AGHT+IEGZkG4gnt3sT5I6vRt244jgAKsbU7HG/WXJSz43M0i5AD+X+shq/h2EvfLpQRvztAn/Ardkm+wY18lF+5QQO8=
+X-Received: by 2002:a05:6808:d50:b0:3ea:6a8d:c57d with SMTP id
+ 5614622812f47-3ea6dd9171amr13472475b6e.40.1733131714441; Mon, 02 Dec 2024
+ 01:28:34 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 2 Dec 2024 03:28:33 -0600
+From: Guillaume Ranquet <granquet@baylibre.com>
+User-Agent: meli 0.8.9
+References: <20241127-ad411x_calibration-v2-0-66412dac35aa@baylibre.com>
+ <20241127-ad411x_calibration-v2-2-66412dac35aa@baylibre.com> <20241130190633.34489853@jic23-huawei>
+In-Reply-To: <20241130190633.34489853@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126074005.546447-1-tmyu0@nuvoton.com> <20241130202849.13eedb04@jic23-huawei>
- <9174d169-6037-400e-8ec5-6e2653c07a1b@roeck-us.net>
-In-Reply-To: <9174d169-6037-400e-8ec5-6e2653c07a1b@roeck-us.net>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Mon, 2 Dec 2024 17:27:08 +0800
-Message-ID: <CAOoeyxVJr8p2RtxKOBGPW8J-DhOQUzHOC-05EDkh0UQ6+Pu_4w@mail.gmail.com>
-Subject: Re: [PATCH v1 0/2] Add Nuvoton NCT7718W IIO driver
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Jonathan Cameron <jic23@kernel.org>, tmyu0@nuvoton.com, lars@metafoo.de, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, cmo@melexis.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jean Delvare <jdelvare@suse.com>
+Date: Mon, 2 Dec 2024 03:28:33 -0600
+Message-ID: <CABnWg9spJfANirbMZX0gUSTP5i0eRnWXa=ixW0Q__ipc-jKHog@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ad-sigma-delta: Document ABI for sigma
+ delta adc
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Dear Guenter,
+On Sat, 30 Nov 2024 20:06, Jonathan Cameron <jic23@kernel.org> wrote:
+>On Wed, 27 Nov 2024 10:06:14 +0100
+>Guillaume Ranquet <granquet@baylibre.com> wrote:
+>
+>> Add common calibration nodes for sigma delta adc.
+>>
+>> Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
+>Hi Guillaume.
+>
+>I think there are some issues with the old docs that should be tidied up whilst
+>we are here :(
 
-Thank you for your reply. I will add a patch to the LM90 driver to
-support NCT7718W.
+Hi Jonathan,
+No problem, will do :)
 
-Best regards,
-Ming
+>
+>Just fix them up in this patch then mention it in the patch description.
+>Or if you prefer move and then fix in separate patches.
+>
+>
+>Jonathan
+>
+>> ---
+>>  .../ABI/testing/sysfs-bus-iio-adc-ad-sigma-delta   | 23 +++++++++++++++++++++
+>>  Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 | 24 ----------------------
+>>  2 files changed, 23 insertions(+), 24 deletions(-)
+>>
+>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad-sigma-delta b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad-sigma-delta
+>> new file mode 100644
+>> index 0000000000000000000000000000000000000000..c2c55a966163736aea8d46fc5089c08dac747b84
+>> --- /dev/null
+>> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad-sigma-delta
+>> @@ -0,0 +1,23 @@
+>> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration
+>in_voltageY_sys_calibration
+>
+>(as indices are capital letters and X is used earlier).
+>
+>
+>> +KernelVersion:
+>Make an estimate of this I'll never remember to fill them in whilst applying.
+>
+>It should make the next merge window I hope!
+>
+>> +Contact:	linux-iio@vger.kernel.org
+>> +Description:
+>> +		This attribute, if available, initiates the system calibration procedure. This is done on a
+>> +		single channel at a time. Write '1' to start the calibration.
+>> +
+>> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration_mode_available
+>> +KernelVersion:
+>> +Contact:	linux-iio@vger.kernel.org
+>> +Description:
+>> +		This attribute, if available, returns a list with the possible calibration modes.
+>> +		There are two available options:
+>> +		"zero_scale" - calibrate to zero scale
+>> +		"full_scale" - calibrate to full scale
+>> +
+>> +What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration_mode
+>> +KernelVersion:
+>> +Contact:	linux-iio@vger.kernel.org
+>> +Description:
+>> +		This attribute, if available, sets up the calibration mode used in the system calibration
+>> +		procedure. Reading returns the current calibration mode.
+>> +		Writing sets the system calibration mode.
+>> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+>> index f8315202c8f0df2bd4b7216f5cf8d3c2780fcf3f..28be1cabf1124ac7593392e17e4759ddfac829e8 100644
+>> --- a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+>> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7192
+>> @@ -19,33 +19,9 @@ Description:
+>>  		the bridge can be disconnected (when it is not being used
+>>  		using the bridge_switch_en attribute.
+>>
+>> -What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration
+>Huh.  That would explain the x above. I assume it is per channel?
+>
+Yes, calibration is per channel.
 
-Guenter Roeck <linux@roeck-us.net> =E6=96=BC 2024=E5=B9=B412=E6=9C=881=E6=
-=97=A5 =E9=80=B1=E6=97=A5 =E4=B8=8A=E5=8D=884:50=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On 11/30/24 12:28, Jonathan Cameron wrote:
-> > On Tue, 26 Nov 2024 15:40:03 +0800
-> > Ming Yu <a0282524688@gmail.com> wrote:
-> >
-> >> NCT7718W is an I2C based thermal sensor chip from Nuvoton.
-> > Hi Ming Yu,
-> >
-> > +CC Jean and Guenter,
-> >
-> > Why an IIO driver rather than a HWMON one?  Superficially this looks li=
-ke a hwmon
-> > chip.  We do have the means to put a generic driver in IIO and bridge t=
-o hwmon, but
-> > when a device is very much intended for monitoring of hardware temperat=
-ures etc
-> > the IIO driver rarely has any purpose and a simpler hwmon only solution=
- makes sense.
-> >
-> > For temperature sensors IIO normally makes sense if:
-> > 1) They are part of a series of devices some of which have more functio=
-nality than temp
-> > 2) Fast devices where hwmon sysfs interfaces become a bottleneck - note=
- you have to have
-> > a usecase for reading them fast, not simply a device that is capable of=
- it.
-> > 3) 'Unusual' temperature sensors such as infrared thermometers or very =
-high precision
-> >     thermocouple interfaces.
-> >
-> > Any of those apply here?
-> >
->
-> Also, it looks like this chip is compatible to LM90. It isn't entirely cl=
-ear to me
-> why this would require a new driver.
->
-> Guenter
->
-> > Note that hwmon has better threshold and critical temperature handling =
-than we can do
-> > in IIO and it seems your part has those as well.
-> >
-> > Thanks,
-> >
-> > Jonathan
-> >
-> >
-> >>
-> >> Ming Yu (2):
-> >>    dt-bindings: iio: temperature: Add support for NCT7718W
-> >>    iio: temperature: Add Nuvoton NCT7718W support
-> >>
-> >>   .../iio/temperature/nuvoton,nct7718.yaml      |  44 ++
-> >>   MAINTAINERS                                   |   7 +
-> >>   drivers/iio/temperature/Kconfig               |  10 +
-> >>   drivers/iio/temperature/Makefile              |   1 +
-> >>   drivers/iio/temperature/nct7718.c             | 505 ++++++++++++++++=
-++
-> >>   5 files changed, 567 insertions(+)
-> >>   create mode 100644 Documentation/devicetree/bindings/iio/temperature=
-/nuvoton,nct7718.yaml
-> >>   create mode 100644 drivers/iio/temperature/nct7718.c
-> >>
-> >
->
+>> -KernelVersion:
+>> -Contact:	linux-iio@vger.kernel.org
+>> -Description:
+>> -		Initiates the system calibration procedure. This is done on a
+>> -		single channel at a time. Write '1' to start the calibration.
+>> -
+>>  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage2-voltage2_shorted_raw
+>>  KernelVersion:
+>>  Contact:	linux-iio@vger.kernel.org
+>>  Description:
+>>  		Measure voltage from AIN2 pin connected to AIN(+)
+>>  		and AIN(-) shorted.
+>> -
+>> -What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration_mode_available
+>> -KernelVersion:
+>> -Contact:	linux-iio@vger.kernel.org
+>> -Description:
+>> -		Reading returns a list with the possible calibration modes.
+>> -		There are two available options:
+>> -		"zero_scale" - calibrate to zero scale
+>> -		"full_scale" - calibrate to full scale
+>> -
+>> -What:		/sys/bus/iio/devices/iio:deviceX/in_voltagex_sys_calibration_mode
+>> -KernelVersion:
+>> -Contact:	linux-iio@vger.kernel.org
+>> -Description:
+>> -		Sets up the calibration mode used in the system calibration
+>> -		procedure. Reading returns the current calibration mode.
+>> -		Writing sets the system calibration mode.
+>>
 

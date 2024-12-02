@@ -1,366 +1,321 @@
-Return-Path: <linux-iio+bounces-12935-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12936-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07139DFD2A
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 10:31:17 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5775F9DFD8A
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 10:47:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144861629D8
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 09:47:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF1D1FA84A;
+	Mon,  2 Dec 2024 09:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Sizx5wWP"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29A8EB2204A
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 09:31:15 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51DD81F9EBB;
-	Mon,  2 Dec 2024 09:31:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhNZNBGP"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BB63398B;
-	Mon,  2 Dec 2024 09:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733131870; cv=none; b=iww92jJJpSu3eieJZaj7f7hxSJMr6O/mMOyfwfva+az1ndPDjNxohCmIB/ZpQr+/DnyZKzKu3n3g3aH0RHi69FzHYBbB0ClfCUiylsW0aGVA8f/vLo66kFPF9lMf5/++hBtxB410QACen+BTrK+mNq5omg066jZ3jUixBlf0jpg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733131870; c=relaxed/simple;
-	bh=tF7gEWm2Zx5VzHOPv9iUoY44HiA9fpxBXMaVhvsyQtE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FWuacAWJAoqtGHtJCbF2J7Ofl6MS7SaEy57zGtEY2MNZbj+iKhZoEwr5Z0jLjkpfgapk3a6X9gxxSsHuHZqFe5dHQHFcLYn11s++N70GFa4ILp2dvBmA8MII0eDJQLr/NaYAcJbZwIgeH03AsqMT6OFVUPHcC9FZ8GQRe8nsq1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AhNZNBGP; arc=none smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6ef7f8acc33so9792837b3.1;
-        Mon, 02 Dec 2024 01:31:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733131866; x=1733736666; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Aoss/XkVgxtLxmwM1bSt0KorgawUhi01yNafo9R0a4=;
-        b=AhNZNBGPdwvoFU08FbHOaMLRviH3Z5ae94Wha/YznMXxjN8RutrFcsVqhGNqtq4jYD
-         xOhdmQhZlOCb4Ljt3tt7FezP2oHdzA1DWpjrePEktxqD9NGaBLefbuWB61Y8MHKRorqQ
-         MSxucyOe3PMJQ0VykzNU0Cu8joNmRCvmv/tDNzNa6Qw+ZLdySjFG9R7VbQOMsqAVo2vG
-         f5P/wTazIgZPUK8Df2Lu1md2meSDSxuL9fSasPW6nfeh/t+ZqXSCPKnk/5HG44LZxNPs
-         HKYG1QXJICnKEuFK1RbrMWg68gqU2793boSiSFQJ5Jx4LHdgk+IH9Br6Ahi5RbElCVi9
-         eLyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733131866; x=1733736666;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Aoss/XkVgxtLxmwM1bSt0KorgawUhi01yNafo9R0a4=;
-        b=ZjKidWQ0WMjWRhtWTREUC3Md92haj08ddLjjxb7/28erqUz9AeVB/WrH2rgUgGmbER
-         D2gzrO9ePxl8RHXfbPsCdv9477DejoDtQFm5MFE0tlady7m2oxDsinbihRo4YDrrB0r0
-         laYCJfaZBml4vpbdSp2D/hi0sI+TSArUzwk+b89t5qUv6YFUFAORBEWguuzFED8rfCf0
-         kxVTUo5eHgqC8mMfG9tRv4xqvdww261UFeI0TJESX87GaXpahG04wzCYxAZeoMUBLxhT
-         rQvfbESC60oAFVy50NMmJb+6RiskWgy1RKcgYl7/QlCWtaC19DZzV936EN060HUbAKkI
-         shOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfA9VV/JWAoputlLLL5rDARQfPZQmObRzUkJfHNAFjAPpOskJzw5aXMkaXppw1uPrHbjt9uT0n7fnVpBoo@vger.kernel.org, AJvYcCX1cmNFlL2mu02LoRIoUouwzL4HHr6GdMsigTd4rcVNKGptG+9XifzpkFrRsWILwUq2utEiJYk5LzLL@vger.kernel.org, AJvYcCXmxATsocoj8iUjfcPc5dg37qqvwGfKhJ+3iMP8EEK51V7R7W5UptcKVf3mTpcoDBBd4E1Bn7d4rFrB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI8wkwd9bPPxpHmZcad5rO9wYeTd1vBt0RWRsW2I61awKPmszj
-	wWn1qsdsILZZd/IXzEcFyXCc19edN9Zf+X3Z01+1e+BybkSeU8MI2Bhs0C7cbDrovMIGwzP5znt
-	xjyQe6s3XgIrwooNmcvUCgjeWM7g=
-X-Gm-Gg: ASbGncul6SzUJLqMf/ZOyv217GZe2fj/ho6Xdtt44r5NJYMxijwE6Gli5VJNlxYoXW1
-	C1aNrwG9rUmsIAXDKHXn5fG9o0+wHBtnPU635d3vYlTzK3x/Be/aFyxg9K9pdBxbc
-X-Google-Smtp-Source: AGHT+IEjdWzZ+SSQO7ixCc/QMQkkM2B0OurRLofzWsNFboTM/kVCFJcwpVVHxgN7WNTCiDhrzr35t06Qy+V8xjswDcU=
-X-Received: by 2002:a05:6902:2784:b0:e39:96af:53b7 with SMTP id
- 3f1490d57ef6-e3996af85e1mr7134013276.52.1733131866096; Mon, 02 Dec 2024
- 01:31:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0667F1F949;
+	Mon,  2 Dec 2024 09:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733132854; cv=fail; b=jENFTJW+hhubNMn+lHg1LIsL9CZnI7Lxesonu08PMX1icvNsG5A5XciLTAOJ2/Duc0vPmy8aXd7gZgOvDxmXUdvgQYNii4mou+mzlPbS4UC1Wvk0PlSy1NNlcRmEnS4DcvTE1aKO3tg29CUsHng50vnlJq4UHpyMRhCnuUWN5hc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733132854; c=relaxed/simple;
+	bh=/v6Nzi6s2XJE10/CgSZXcKO+Dca66B6HUFzX6/bjuhc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=NRH6Fk5NKfw7egz/fA8x077HEuWKV6BhBNm4d0wL+Pv1j7eRAMstQVeUapDbdKxqDUxomeXIcY/+SJ0tvK2MYXE2m+kIqHde6U/hGIJeoWhz1VbuWRPpqrqy3QmUt2M7Cf6stmMJ095rGUdHWlgx2jGpwNH/Rtc6rPVvFjNfu+4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Sizx5wWP; arc=fail smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B29OI4i026779;
+	Mon, 2 Dec 2024 04:47:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=LdaoV
+	0/2H2JpE38Ek+TrLvBdQHaxjQdlZEvaiC19a7I=; b=Sizx5wWP6lS0mcpoLLJKB
+	pwtLSN8UxQUoWtFfMPdtdiJGuh4CijJiLZmyzWILrmu6ZC7QrY0N3HnJYub7scE7
+	iZe/xolKEo0uJHXWNDUptX2WzjR+MbgWhYy4l2CXD7MXeJinUbi+pqPSqqbaX3DU
+	VnRU2jEh0TZLhkFEPj1XUneqsLo2ZZgl/Dkf8UsLQrNFqGOT4TeduGidDpjeGL9j
+	ojpX3OSk0IZjEfSiM+TNhgwAOk//u4/ThMRGevfZzPHZ42uUgCvpDQT3BvfvvNrv
+	wiPbx21f6FtFXSWBd8AVccFuBy19dmfsVzvcllK+w33f/a05baDT7ZajuA67bg+j
+	A==
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazlp17010003.outbound.protection.outlook.com [40.93.11.3])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4380g6f4d2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Dec 2024 04:47:23 -0500 (EST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ym9k/TrD8eJ905jf3LhUln5RHnW4HrCouJQNORcBhv9sU1SEi3QR1POnUymkmn0ZmNgpF9CUDmyHFSS2SGBJrm2DZOplsWbeD72cYljDz1+JiprPYDmezYzsWwj/eZuTaTguJPloocY6sUcm9WkZkUaqfpW/vU6XlDMIW4mCEjlh7pnP4hch3FD8/wOPG6MW3KWnU18UvNxJTfFLmE6B6AdTbpHJVwKeDn4JWJHJmmJschM6b/Z7UOEtAOYXSd8oTDigm22J7q7I9+WApW/INwF28Xhi4AnOZkk8PqquW4ptxFqNDf+lTxZzwbHyo7u3AU/42U1+RK0/a46eRNmYlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LdaoV0/2H2JpE38Ek+TrLvBdQHaxjQdlZEvaiC19a7I=;
+ b=X/46szweauA58JpInZnD3CvxYXX7CTzN+20FaF86i6I1aXHrdm/8PlnSf1CFQavNIu6uL9Y3Xz5mJL7+b2hRKMKSJs5ZzsZADSaI42Vd07l46zlI+ZPIozi+Z16GKaAG+q9DWKdVxzROWuztlgQko0KW1D8zuFb4AnyR58+rcOoiCFRzfQHy22725sDM97w7HhFuOlmnTRIMbQ2LSuwsyRTqVDUmouH3eJiH0tiGAFG7CJhFZ9dqaUy/6KGTFjvPUU7L+2fEyquZ12uLNXkzq2M3S6N29WEgj23j1+pnHzJhqJVXlqO5/Cw46HILO+Hxub1HxhQcxpPYCkp8T9P4nQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from CY4PR03MB3399.namprd03.prod.outlook.com (2603:10b6:910:57::13)
+ by CH0PR03MB6178.namprd03.prod.outlook.com (2603:10b6:610:d1::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Mon, 2 Dec
+ 2024 09:47:21 +0000
+Received: from CY4PR03MB3399.namprd03.prod.outlook.com
+ ([fe80::6504:9615:dbab:cc17]) by CY4PR03MB3399.namprd03.prod.outlook.com
+ ([fe80::6504:9615:dbab:cc17%6]) with mapi id 15.20.8137.018; Mon, 2 Dec 2024
+ 09:47:21 +0000
+From: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: "robh@kernel.org" <robh@kernel.org>,
+        "conor+dt@kernel.org"
+	<conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org"
+	<devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>,
+        "linux-pwm@vger.kernel.org"
+	<linux-pwm@vger.kernel.org>
+Subject: RE: [PATCH v3 1/2] dt-bindings: iio: adf4371: add rdiv2 and doubler
+Thread-Topic: [PATCH v3 1/2] dt-bindings: iio: adf4371: add rdiv2 and doubler
+Thread-Index: AQHbQnQq0niAj4s/T0yYjCevKGPL9LLQCAcAgAKv0CA=
+Date: Mon, 2 Dec 2024 09:47:21 +0000
+Message-ID:
+ <CY4PR03MB3399CB671D685BA8164E0F3B9B352@CY4PR03MB3399.namprd03.prod.outlook.com>
+References: <20241129153356.63547-1-antoniu.miclaus@analog.com>
+	<20241129153356.63547-2-antoniu.miclaus@analog.com>
+ <20241130163948.269289dc@jic23-huawei>
+In-Reply-To: <20241130163948.269289dc@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-ref:
+ =?iso-8859-2?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNcYW1pY2xhdX?=
+ =?iso-8859-2?Q?NcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
+ =?iso-8859-2?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy02ZDJiOGQ0ZC1iMDkyLTExZWYtYWZmOC?=
+ =?iso-8859-2?Q?00MTU2NDUwMDAwMzBcYW1lLXRlc3RcNmQyYjhkNGYtYjA5Mi0xMWVmLWFm?=
+ =?iso-8859-2?Q?ZjgtNDE1NjQ1MDAwMDMwYm9keS50eHQiIHN6PSIzNzcwIiB0PSIxMzM3Nz?=
+ =?iso-8859-2?Q?YwNjQ0MjUzMTk5NzAiIGg9Ii8vcDd6KzdlV1J5S2dhN0ZUQmp2WW9hV2F5?=
+ =?iso-8859-2?Q?Yz0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
+ =?iso-8859-2?Q?5DZ1VBQUVvQ0FBQWlYb1V2bjBUYkFVV3hPWGg4WkpSOFJiRTVlSHhrbEh3?=
+ =?iso-8859-2?Q?REFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBbWk3Sm1RQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
+ =?iso-8859-2?Q?c4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFh?=
+ =?iso-8859-2?Q?UUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQU?=
+ =?iso-8859-2?Q?FBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdV?=
+ =?iso-8859-2?Q?QVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtB?=
+ =?iso-8859-2?Q?R2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQW?=
+ =?iso-8859-2?Q?N3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
+ =?iso-8859-2?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
+ =?iso-8859-2?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
+x-dg-rorf:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CY4PR03MB3399:EE_|CH0PR03MB6178:EE_
+x-ms-office365-filtering-correlation-id: cd2c940b-0912-4f63-7c4b-08dd12b6512f
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-2?Q?ShrT7YJWTfoYvGClC8IUkKBAzbGqTVt44KzrO3akvvfZxqsuHgWcqgEdn+?=
+ =?iso-8859-2?Q?MkwpfzHc2rzIbeUVFfsiLAzgyfqf4WrYnf868XCqRAO1EnsoIHi+dJUKKd?=
+ =?iso-8859-2?Q?9GpGMVQ/6jZ6ovgknAK/Wd4uZtDNPbqJB7E24AoHoN6HWd8MhUigDyhA6Q?=
+ =?iso-8859-2?Q?Ri0Yxt2ev5moXs4Nc+f7TlKb+0oXOg00eO3AZriCjsYClDd7JedN3hvm+2?=
+ =?iso-8859-2?Q?IHuflUzLbtyiscbvsL3qhZxfiS+f2/viN+2k0F7+OFascREfL5MVzYt18d?=
+ =?iso-8859-2?Q?vsw+U6poMQFeS+II6REpmLhq+5h8Ck/kjJEjCXCfGSJNVyOCxvIWCMrTJm?=
+ =?iso-8859-2?Q?E8WM6XGBlprlD0b9D7RmZsrrDSvg6qq+bkM3E3p1p0ioYvGfyfNKzIO1b0?=
+ =?iso-8859-2?Q?ZFQ5BKEELSQZWFsjXbibaV87vdGv2m0hGM5aRoEkNlHoPzsguVqHfmPUyh?=
+ =?iso-8859-2?Q?zkQ/RP10RybVgIfXJGLP1RoPLfy4KY9pmRzWk8+RJBS/xAvj69tTzlTxbM?=
+ =?iso-8859-2?Q?+PolWxcmEoJVEZke3sSUXI4xXQGWV/gNV6YtB1Di0FW3fEw6DFfGiYu4Up?=
+ =?iso-8859-2?Q?R9/XTWEViWFn6A6DcJY0ck8UUdxeGZaygmakWcmQ2tGyEQYcWvJptSeM0S?=
+ =?iso-8859-2?Q?uvQN9/QmTWK1zzePD8RIHmwe53nvnIT6VPmrzkUEUNJT6tweiTEEXBZ1OR?=
+ =?iso-8859-2?Q?gsWdNu3FQrldA1UfKxg0FXh+5rx9K2NuWjdGeFNkXC+rf994+TYoDLhAKq?=
+ =?iso-8859-2?Q?u6yWYrOX7/vJghF2ECqFLSa8aJsKqsyHQ4eqYncUi7so7sp7P3rYV4Wwd8?=
+ =?iso-8859-2?Q?6rzWmrWjWJWHnOpPEeT8vdy7VAi8qBFbeOmDyJVL6Q+4jkr2DSWUIE1mY/?=
+ =?iso-8859-2?Q?1f6q18IQ5IPXZkzIw0RYRQGdvFm6OXzxWdoTe1SAfpzp5wWwRQiOBaWUAy?=
+ =?iso-8859-2?Q?eFmo1sKb82jDu/JkBUCMgv/qyygcAeEL1dwMEw7bgn1xxOwK2+6BpKrQ4k?=
+ =?iso-8859-2?Q?5ZolyG+peGl1fymmjVphF85+0s9g8GKfKwk0QMCGOygoN/MZgl9SyuVFMs?=
+ =?iso-8859-2?Q?1thDz3/hfQCQwtvQcKUEsZgT4C7OnMoFq5Alr04knkldPn22oICZBSuhJf?=
+ =?iso-8859-2?Q?eYxBJEpEUzEhlI0rPRnZmukw3BCpUSsAr9f+SD9rDIseUz5J6BlS9aPtj0?=
+ =?iso-8859-2?Q?gI9mi8mAJiiO2l7JMqgk0gP97Ywa2YuMarG6uWY0jRNPUzarcYE3kt0QLc?=
+ =?iso-8859-2?Q?K6BXfP+9IkpXnfcWyn14MLtmM6UBTonFP7ywYyN5bx95toPUM56fFWgHSy?=
+ =?iso-8859-2?Q?RPWhFodzjDGoKeJqbU8gfc49q3oLk7dDeg+n/Q9J4Zdl3yncEJT5LCut1I?=
+ =?iso-8859-2?Q?2c5bEQclNLmYEU9WrRv6py+4yV2DwIN1op6xX2OXdlKWWXwxk9KPlTBb3C?=
+ =?iso-8859-2?Q?Eq8f3D5o3R/SfAxyWKB7Ejh00/4yG0LKjgNVcw=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY4PR03MB3399.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-2?Q?prZLCq73YL9LNjNVWxOpQBRAFdwzewF/lGKznXC4/BzyMCEAJGSuKR5Mxb?=
+ =?iso-8859-2?Q?0xBIeXroDL0juRGfQg91igq4sld7ypGgHseRVVW8rKpwZe0+g1lvifOMqT?=
+ =?iso-8859-2?Q?5UPyq4K0u26sJVzrPV5K7B6BA5CZFyilBbk3XGzsaG2VcJ5NmcGaLIBxuh?=
+ =?iso-8859-2?Q?u27tioTenLTLACiQ0z6ZHCmNhrtYa5dUIGGwKehpJhX+vNV5dzDM323HVf?=
+ =?iso-8859-2?Q?e94BQka/wWmPyDPR9HyiEXqTfTo+a+DtxfGq3AAcfn6/ZuowS+j2ecVZlr?=
+ =?iso-8859-2?Q?97G8iafwWjQc25QniSPVzjgRP4+HWKMXQpARDmMlh5KhgyjC7pKEA6+agH?=
+ =?iso-8859-2?Q?Yky6TUCZrA784haEHbHUi9s0+miE+gm3Jyjvf2J/kFjFH+3gc9agnfxPB9?=
+ =?iso-8859-2?Q?NEA+xu4Zd/SuOAL5S/AQQMtgmWYC6MTjrLCcWIwquyHRTzZ0wCLMVjZo1Z?=
+ =?iso-8859-2?Q?l5N7M3GJiOnxfuKeZNWIUGq6if/FybfnQzTFJtpKhZ6Hs6zV9EBzkVjsh0?=
+ =?iso-8859-2?Q?ifOTxZ4Ss8N/SACCTnsSGE2IlYhhTeX3UtBdSOqm/fzpEq8uvfvfGgL2bh?=
+ =?iso-8859-2?Q?57ZH8/fYo+WmbWWItWU56oKTHqzAq/qCxiHeqqrOqaWH9CBBgqnVR/yu6U?=
+ =?iso-8859-2?Q?aHrPE8FdT1OSaSyvWS7kl48YXX1XInS4qfoDFoxbtiff46fiUXmZadOcKA?=
+ =?iso-8859-2?Q?tqinERDDm6x3ssQOVnReKr8Fwk238cwPsnESlaLJkS8TDvNyBSCac8fewr?=
+ =?iso-8859-2?Q?Acd0bq+RMHDp+FVBsdjjRx0npKmAhpPOsbjiRzzNYd59miwqgvMV/SvEZh?=
+ =?iso-8859-2?Q?vzHINlMa+lxtxryHfzolObignyms1W7Rcj3o26sO88QCheUFt4M4lfeNOX?=
+ =?iso-8859-2?Q?cITCz0k8CxuvI/o94PzNvp9fDrd2x5nWtL9T5SctU0bESgzVqqVi+wBDet?=
+ =?iso-8859-2?Q?NtHIQV+yjVShHf82kWj83z9I2PqKqocIq6my/OALZnqijRg/0gie0qBszq?=
+ =?iso-8859-2?Q?5lOHraL01stRIqR4QU7/Grb2a3o/rEpRdsa2vB+ePGARM2s6xLweepp0ev?=
+ =?iso-8859-2?Q?09Pr2jLQ1m0z/1Vf2FstKweRiBjKmD6gC5a5eiOxjgk1xJ4CwQwTrGEzfj?=
+ =?iso-8859-2?Q?eBRxxrV6sDNEs5Ar++OSRd0hwuc6ew+f2PZBzznJJVpGBvTtMgJ/FveMFo?=
+ =?iso-8859-2?Q?GZJW+e4fvSb7o0Ux2KJUbx3SzIe0JT7LNiCMNPTdJ4wJA+8P5Vtyor+HhU?=
+ =?iso-8859-2?Q?oltJgFxdNa4Sjy75MhSZLuUs4hXZknfeaWzYQ2KVf9PistVIChJBJ/f6q/?=
+ =?iso-8859-2?Q?hYmjRYNylRsDd1M//U6p3YrASY+6+RivSDMnIiW74xQ2cAJ1/xqYIzchAp?=
+ =?iso-8859-2?Q?tXN4mK/oLiXvyEwDGNtYwH1c8bFq5vbKIYxk4HVw53PptCjlCm5uXIcjX0?=
+ =?iso-8859-2?Q?Bj+QDlkqVEgJ4XBwqAMxcDyBIV2wh8HyBN2Uz/LFvRR7Kl3DY+IP2GLb89?=
+ =?iso-8859-2?Q?EuHkjXdT1fjrtrbfa9Ryx+PINBNsRlcgtjkmk8ttea3onA9lAU9z8bM4G8?=
+ =?iso-8859-2?Q?E79EYXrwYZh/GSeNyKrGXPv4TZ8v7Pw+ADKy38BApYGIWuaMfHwXz2fiJA?=
+ =?iso-8859-2?Q?JSs/NjiRj+7Gx4aUC2nsZBGh5X/f/DGRws?=
+Content-Type: text/plain; charset="iso-8859-2"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126074005.546447-1-tmyu0@nuvoton.com> <20241126074005.546447-3-tmyu0@nuvoton.com>
- <20241130203929.67c6c7f6@jic23-huawei>
-In-Reply-To: <20241130203929.67c6c7f6@jic23-huawei>
-From: Ming Yu <a0282524688@gmail.com>
-Date: Mon, 2 Dec 2024 17:30:54 +0800
-Message-ID: <CAOoeyxVXWAFC4ZL5Hr7H4+Vk8b86Qf2FBY0vGWa7NWPWHo6MWg@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] iio: temperature: Add Nuvoton NCT7718W support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: tmyu0@nuvoton.com, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, cmo@melexis.com, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3399.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd2c940b-0912-4f63-7c4b-08dd12b6512f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Dec 2024 09:47:21.1702
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Fi/v8q2s7Vellog+yyKPIBRztWQrvGiVrQVYCGwYug81CeAXUPhMM1hbIO3T6ljbYemLgMF43W4KlFBj5SB8mH47wKbOpGMQUcV5XxAxSaM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR03MB6178
+X-Proofpoint-GUID: sAocVfrW8RIj2qr8mnKh_Qz4JCtq6_YA
+X-Proofpoint-ORIG-GUID: sAocVfrW8RIj2qr8mnKh_Qz4JCtq6_YA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxlogscore=999 spamscore=0 clxscore=1015 mlxscore=0 adultscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412020086
 
-Dear Jonathan,
 
-Thank you for your comments,
-I will move the driver to HWMON.
 
-Best regards,
-Ming
+--
+Antoniu Micl=E3u=BA
 
-Jonathan Cameron <jic23@kernel.org> =E6=96=BC 2024=E5=B9=B412=E6=9C=881=E6=
-=97=A5 =E9=80=B1=E6=97=A5 =E4=B8=8A=E5=8D=884:39=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Tue, 26 Nov 2024 15:40:05 +0800
-> Ming Yu <a0282524688@gmail.com> wrote:
->
-> > This patch adds support for the Nuvoton NCT7718W temperature sensor.
+> -----Original Message-----
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, November 30, 2024 6:40 PM
+> To: Miclaus, Antoniu <Antoniu.Miclaus@analog.com>
+> Cc: robh@kernel.org; conor+dt@kernel.org; linux-iio@vger.kernel.org;
+> devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> pwm@vger.kernel.org
+> Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adf4371: add rdiv2 and doub=
+ler
+>=20
+> [External]
+>=20
+> On Fri, 29 Nov 2024 17:33:52 +0200
+> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+>=20
+> > Add support for reference doubler enable and reference divide by 2
+> > clock.
 > >
-> Hi Ming, I'll give this a quick look only as I suspect you will end
-> up moving over to hwmon.
->
-> Thanks,
->
+> > Both of these blocks are optional on the frequency path within the
+> > chip and can be adjusted depending on the custom needs of the
+> > applications.
+> Thanks for the additional info!
+> >
+> > The doubler is useful for increasing the PFD comparison frequency
+> > which will result in a noise performance of the system.
+>=20
+> So I'll play devil's advocate. Improved noise performance sounds
+> good. If it doesn't take me out of range of allowed frequencies, why
+> would I not turn it on?  What is it about the surrounding circuitry
+> etc that would make this a bad idea for some uses of this chip
+> but not others?
+>=20
+> >
+> > The reference divide by 2 divides the reference signal by 2,
+> > resulting in a 50% duty cycle PFD frequency.
+>=20
+> why would I want one of those? My 'guess' is this makes sense
+> if the reference frequency is too high after the application of
+> the scaling done by the 5 bit counter.  In effect it means the
+> division circuitry does divide by 1-31, 2-64 in steps of 2.
+>=20
+> That could all be wrapped up in the existing control of the
+> frequency, and so far I'm still not seeing a strong reason why
+> it belongs in DT.
+>=20
+> The 50% cycle thing is a bit of a red herring as assuming it
+> is triggered on say the rising edge of the high frequency signal
+> to toggle the divided signal, that will always be a 50% duty cycle.
+>=20
+As mentioned in the cover letter this was mostly a request from
+customers that are using adf4371 on a large scale and they need
+these features to be controllable somehow by the user.
+
+Since these attributes were already validated as devicetree properties
+for adf4350 on mainline, I found this as the best approach to satisfy
+both ends.
+
+Antoniu
 > Jonathan
->
-> > Signed-off-by: Ming Yu <tmyu0@nuvoton.com>
-> ...
->
-> > diff --git a/drivers/iio/temperature/nct7718.c b/drivers/iio/temperatur=
-e/nct7718.c
-> > new file mode 100644
-> > index 000000000000..60624b3de629
-> > --- /dev/null
-> > +++ b/drivers/iio/temperature/nct7718.c
-> > @@ -0,0 +1,505 @@
->
-> > +struct nct7718_data {
-> > +     struct i2c_client *client;
-> > +     struct mutex lock;
-> Locks need a comment to say what data they are protecting.
->
-> > +     u16 status_mask;
-> > +};
->
-> > +static int nct7718_write_event_config(struct iio_dev *indio_dev,
-> > +                                   const struct iio_chan_spec *chan,
-> > +                                   enum iio_event_type type,
-> > +                                   enum iio_event_direction dir,
-> > +                                   int state)
-> > +{
-> > +     struct nct7718_data *data =3D iio_priv(indio_dev);
-> > +     unsigned int status_mask;
-> > +     int ret;
-> > +
-> > +     switch (chan->channel2) {
-> > +     case IIO_MOD_TEMP_AMBIENT:
-> > +             if (dir =3D=3D IIO_EV_DIR_RISING)
-> > +                     status_mask =3D NCT7718_MSK_LTH;
-> > +             break;
-> > +     case IIO_MOD_TEMP_OBJECT:
-> > +             if (dir =3D=3D IIO_EV_DIR_RISING)
-> > +                     status_mask =3D NCT7718_MSK_RT1H;
-> > +             else
-> > +                     status_mask =3D NCT7718_MSK_RT1L;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     mutex_lock(&data->lock);
-> > +     ret =3D i2c_smbus_read_byte_data(data->client, NCT7718_ALERTMASK_=
-REG);
-> > +     mutex_unlock(&data->lock);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     if (state)
-> > +             ret &=3D ~status_mask;
-> > +     else
-> > +             ret |=3D  status_mask;
-> I would not bother with this sort of alignment. It tends to be fragile lo=
-nger
-> term as code gets modified and doesn't make much difference to readablili=
-ty.
->
-> > +
-> > +     return i2c_smbus_write_byte_data(data->client, NCT7718_ALERTMASK_=
-REG,
-> > +                                      data->status_mask =3D ret);
-> > +}
->
-> > +
-> > +static int nct7718_write_thresh(struct iio_dev *indio_dev,
-> > +                             const struct iio_chan_spec *chan,
-> > +                             enum iio_event_type type,
-> > +                             enum iio_event_direction dir,
-> > +                             enum iio_event_info info,
-> > +                             int val, int val2)
-> > +{
-> > +     struct nct7718_data *data =3D iio_priv(indio_dev);
-> > +     struct i2c_client *client =3D data->client;
-> > +     u8 msb_reg, lsb_reg;
-> > +     s16 thresh;
-> > +     int ret, s_val;
-> > +
-> > +     switch (chan->channel2) {
-> > +     case IIO_MOD_TEMP_AMBIENT:
-> > +             val =3D clamp_val(val, NCT7718_LOCAL_TEMP_MIN,
-> > +                             NCT7718_LOCAL_TEMP_MAX);
-> > +
-> > +             if (dir =3D=3D IIO_EV_DIR_RISING) {
-> > +                     return i2c_smbus_write_byte_data(client,
-> > +                                                      NCT7718_LT_HALER=
-T_REG,
-> > +                                                      val);
-> > +             }
-> > +             break;
-> > +     case IIO_MOD_TEMP_OBJECT:
-> > +             s_val =3D (val < 0) ? ((val * 1000000) - val2) :
-> > +                                 ((val * 1000000) + val2);
-> > +
-> > +             s_val =3D clamp_val(s_val, NCT7718_REMOTE_TEMP_MIN_MICRO,
-> > +                               NCT7718_REMOTE_TEMP_MAX_MICRO);
-> > +
-> > +             if (dir =3D=3D IIO_EV_DIR_RISING) {
-> > +                     msb_reg =3D NCT7718_RT1_HALERT_MSB_REG;
-> > +                     lsb_reg =3D NCT7718_RT1_HALERT_LSB_REG;
-> > +             } else {
-> > +                     msb_reg =3D NCT7718_RT1_LALERT_MSB_REG;
-> > +                     lsb_reg =3D NCT7718_RT1_LALERT_LSB_REG;
-> > +             }
-> > +
-> > +             thresh =3D (s16)(s_val / (1000000 >> 3));
-> > +             ret =3D i2c_smbus_write_byte_data(client,
-> > +                                             msb_reg, thresh >> 3);
-> > +             if (ret < 0)
-> > +                     return ret;
-> > +             return i2c_smbus_write_byte_data(client,
-> > +                                              lsb_reg, thresh << 5);
-> > +     default:
-> > +             break;
-> return -EINVAL; and drop return below.
->
-> > +     }
-> > +
-> > +     return -EINVAL;
-> > +}
+>=20
 > >
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > ---
+> > changes in v3:
+> >  - add explanation in commit body
+> >  .../devicetree/bindings/iio/frequency/adf4371.yaml    | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.ya=
+ml
+> b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> > index 1cb2adaf66f9..ef241c38520c 100644
+> > --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> > @@ -40,6 +40,17 @@ properties:
+> >        output stage will shut down until the ADF4371/ADF4372 achieves l=
+ock
+> as
+> >        measured by the digital lock detect circuitry.
+> >
+> > +  adi,reference-doubler-enable:
+> > +    type: boolean
+> > +    description:
+> > +      If this property is present, the reference doubler block is enab=
+led.
 > > +
-> > +static bool nct7718_check_id(struct i2c_client *client)
-> > +{
-> > +     int chip_id, vendor_id, device_id;
+> > +  adi,adi,reference-div2-enable:
+> > +    type: boolean
+> > +    description:
+> > +      If this property is present, the reference divide by 2 clock is =
+enabled.
+> > +      This feature can be used to provide a 50% duty cycle signal to t=
+he PFD.
 > > +
-> > +     chip_id =3D i2c_smbus_read_byte_data(client, NCT7718_VID_REG);
-> > +     if (chip_id < 0)
-> > +             return false;
-> > +
-> > +     vendor_id =3D i2c_smbus_read_byte_data(client, NCT7718_VID_REG);
-> > +     if (vendor_id < 0)
-> > +             return false;
-> > +
-> > +     device_id =3D i2c_smbus_read_byte_data(client, NCT7718_DID_REG);
-> > +     if (device_id < 0)
-> > +             return false;
-> > +
-> > +     return (chip_id =3D=3D NCT7718_CHIP_ID &&
-> > +             vendor_id =3D=3D NCT7718_VENDOR_ID &&
-> > +             device_id =3D=3D NCT7718_DEVICE_ID);
-> As below. Don't treat this failing as an error.   It is an error if
-> you can't read anything however.
->
-> > +}
-> > +
-> > +static int nct7718_chip_config(struct nct7718_data *data)
-> > +{
-> > +     int ret;
-> > +
-> > +     /* Enable MSK_LTH, MSK_RT1H, and MSK_RT1L to monitor alarm */
-> Code makes this fairly obvoius.
->
-> > +     ret =3D i2c_smbus_read_byte_data(data->client,
-> > +                                    NCT7718_ALERTMASK_REG);
-> > +     if (ret < 0)
-> > +             return ret;
-> > +     data->status_mask =3D ret;
-> > +     data->status_mask &=3D ~(NCT7718_MSK_LTH  |
-> > +                            NCT7718_MSK_RT1H |
-> > +                            NCT7718_MSK_RT1L);
-> > +
-> > +     ret =3D i2c_smbus_write_byte_data(data->client,
-> > +                                     NCT7718_ALERTMASK_REG,
-> > +                                     data->status_mask);
->
-> Perhaps consider regmap for it's richer set of functionality.
->
-> > +     if (ret < 0)
-> > +             return ret;
-> > +
-> > +     /* Config ALERT Mode Setting to comparator mode */
->
-> Ideally (like here) the code should be self explanatory so you don't
-> need comments.  When that is the case the comment is both unnecessary
-> and a source of possible future confusion if the code changes and we
-> fail to keep the comment in sync.
->
-> > +     return i2c_smbus_write_byte_data(data->client,
-> > +                                      NCT7718_ALERTMODE_REG,
-> > +                                      NCT7718_MOD_COMP);
-> > +}
-> > +
-> > +static int nct7718_probe(struct i2c_client *client)
-> > +{
-> > +     struct nct7718_data *data;
-> > +     struct iio_dev *indio_dev;
-> > +     int ret;
-> > +
-> > +     if (!nct7718_check_id(client)) {
-> > +             dev_err(&client->dev, "No NCT7718 device\n");
->
-> If you get an ID missmatch, it is fine to print a message, but carry on a=
-nyway.
-> This is necessary because DT has fallback compatibles to allow for newer =
-devices
-> working with older drivers.  That only works if we believe the firmware a=
-nd
-> ignore a mismatched ID.
->
-> > +             return -ENODEV;
-> > +     }
-> > +
-> > +     indio_dev =3D devm_iio_device_alloc(&client->dev, sizeof(*data));
-> > +     if (!indio_dev)
-> > +             return -ENOMEM;
-> > +
-> > +     data =3D iio_priv(indio_dev);
-> > +     data->client =3D client;
-> > +     mutex_init(&data->lock);
->
-> For new code prefer
->         ret =3D devm_mutex_init()
->         if (ret)
->                 return ret;
->
-> > +
-> > +     indio_dev->name =3D client->name;
->
-> client->name doesn't always end up as the part number which is what
-> we need here.  Just put "nct7718" in here directly.
->
-> Some drivers do this wrong and we can't fix them without breaking
-> userspace, but we don't want to introduce more.
->
-> > +     indio_dev->channels =3D nct7718_channels;
-> > +     indio_dev->num_channels =3D ARRAY_SIZE(nct7718_channels);
-> > +     indio_dev->info =3D &nct7718_info;
-> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +
-> > +     ret =3D nct7718_chip_config(data);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     if (client->irq) {
-> > +             ret =3D devm_request_threaded_irq(&client->dev,
-> > +                                             client->irq,
-> > +                                             NULL,
-> > +                                             nct7718_alert_handler,
-> > +                                             IRQF_TRIGGER_FALLING |
-> > +                                             IRQF_ONESHOT,
-> > +                                             "nct7718", indio_dev);
-> > +             if (ret) {
-> > +                     dev_err(&client->dev, "Failed to request irq!\n")=
-;
-> > +                     return ret;
-> > +             }
-> > +     }
-> > +
-> > +     return devm_iio_device_register(&client->dev, indio_dev);
-> > +}
+> >  required:
+> >    - compatible
+> >    - reg
+
 

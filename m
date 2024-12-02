@@ -1,143 +1,240 @@
-Return-Path: <linux-iio+bounces-12967-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12968-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA769E0BE5
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 20:18:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A739E0BF7
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 20:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A739282302
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 19:18:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21370282C49
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 19:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512D81DE3BC;
-	Mon,  2 Dec 2024 19:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6D01DE4D8;
+	Mon,  2 Dec 2024 19:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y96HLoHJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gsJhKomj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1191DACA7;
-	Mon,  2 Dec 2024 19:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79E61DE3BF;
+	Mon,  2 Dec 2024 19:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733167134; cv=none; b=cGghy1LHGYRT49KhweK8Y7JLXmNtTvAuaCAd/3ro26QG9uTOA/9mEYFPMMXmhIIML7Td0BOe17G04ZXCbUAUU7XWvwOuH8QHSs80vPCF0WB6nsJxaDbjQnjJ3mLUxWjc1mY2p9FkHJ7IpR1sxC5Zrlm86ka/cFqFFNoerK4WY1U=
+	t=1733167427; cv=none; b=dboRTdo+7iTyoP+/97wEQmvJjlPkPeiHfgWdqpFYIDJxXBbMcAafu6llgHb36QMWKDcNNIign1+KQ61FUoWws7bDUdJVMRubvEFbeQ3HEgH+udADnwVIKoMRYmYdymwLolHKPGXyON/DLYGrrXhEGydBc784uxcSE3OgxImwDvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733167134; c=relaxed/simple;
-	bh=UNYTQCQ4U0f5t75v+3oqKVreEsYoOkeElwGyOVTcyLY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JJPEZ8vSAmQnJIVnWTLSUI9NqVmO0GanjksIqLO4jKDGK1I5ZOUmA2KOFUnoHJPGrfaguL6hABmMupgu33SaDkTurvaCNwlJy02KFdbzmvHdTrMU9YKEGexWiqWYvxaODvJ6AQy95Yi+A8PfsK50VHloT+9RGxuQNQVt5Z1CpEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y96HLoHJ; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1733167427; c=relaxed/simple;
+	bh=4Oa4VegWAegyaTKr1OmCwheDlziE8RsG2Fn2v1W8GQo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WISFganB+4XSUxcOscT+lNhD6cr0DCDQ5OiF55R3wQHxJPRUm+0Iagw2obCUgesQ8VlX0S0Rjl+o8nfFyBAplFwWFWw1jzGFxd0QULgffFICqL7u1hqHX2OeelexrLIkEHy3s7++mXhmWh4+LO4jJqbF6GmO+kfmD48EEVEMuOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gsJhKomj; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434ab938e37so30263485e9.0;
-        Mon, 02 Dec 2024 11:18:52 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-434a83c6b01so40753165e9.0;
+        Mon, 02 Dec 2024 11:23:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733167131; x=1733771931; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b1M8QkqJkisY/ETmPRqXk3HD34EoSuZs2F99KPXzllo=;
-        b=Y96HLoHJkByYQyttJOP9ETJI6xOcm7D2aXkonklGeJ1XjFP/tGKYel6TF+oisD5S/4
-         pq1WLhK+3wqU2aFsCsD8vmNpVYg+c5DFR5YTeVwg4M20NH+KnoHlxnsFRZ/HxBR28Jhb
-         LzXcfDLyETjVmelqj6osXiIRtcGMfA3S/eQ/wivRs/ZQxZlukYkSMTT/bw8YebQBZr+p
-         G8stg/JHjCrzvR6l7OS3dosYvgAItP3atnEbmwQ6+O5tju7nwMj4zcYtlx3x9rc/l4ts
-         I2NWI7R7PtU1PhPAuaLkqdly9bRE5cV7aC/mMgcGDfWlRpBuFe6Yr1Xlk9cy/h1VGgAs
-         b1Lg==
+        d=gmail.com; s=20230601; t=1733167424; x=1733772224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T2xlagNSs/n68wjChaazhkpy5KeZi0HFp84+ebzxe0A=;
+        b=gsJhKomj+ap4JHaBw9aky2rkkHQ1GKbRg5FwzfrN+6O6IbI0lLhJpS4tRBAxmT6nB0
+         TLKyIdqH+0ZobeLyRnKXrKK02rd7Amw+0iHMu9TRx2Liq68wMbs1EQPxzyaXLwqkyDhX
+         EHOIcnUThz/wxG1W1Umy0RLF/LltlA+2AtmaFychP2WB2l8xcnPiibt0vkTVQIFAVqsk
+         SMdQyL9GSLZVVSSBt1DSdKpPzwGvyu9GJJt4MFi5DiLgQFw3t1cvwEUiQHKdCys1ohyB
+         j536N9OLGDChhpfBwtxuYYtZY6YsBdqYdJ6YdWvxk1Y14M+HvbpuTUaE7CvSvSyWIPGM
+         VTHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733167131; x=1733771931;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1733167424; x=1733772224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b1M8QkqJkisY/ETmPRqXk3HD34EoSuZs2F99KPXzllo=;
-        b=ISvyAEEKNILhKh4DMlnmP2jEG4bGUXwVktlyD+H+ZDvM6d6ntCYBxFDxzExoLR4c/M
-         SmmtY4njtgeZhIxQqemHUtzuaoLLWzUTVQ70+P9wAkJSNlZx0WVP8gdZHvBRt00XLbPn
-         j6aOAGp6APicv9u6u3pHtmwi/CEUfgKN6ChU+oJSqK/OImf4nTzXXz4FbJYwAHhNQFXy
-         B1Its5EYbnDpyrX6ms1lonWaurTZmiAsturZD06Iwo2ACsSWqgt2wa6Sv3UIgabt0IS0
-         hPYVGnSYHiVRtW2lTVkqEcW6IC2r6Utwo0cKcTipwUfI+6RkyHsJCjQdMkW3fkEY9Qpj
-         /60Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUSSnL6gy2+aqeszf3xIur8FAvSCNHI1dMIe4CDnmBfxWPMhnhYc0ucvjdueWMjSW2biQocdrLk7i0AIdR+@vger.kernel.org, AJvYcCXAd7lGs5A816Pemt4vQpTBqq86fLiqNsN1vdi0kZbiqo1/eOWOMibKbyhPbSJpqmPCDSoOAHoJ9JU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw33pT6saPEsrvpRlOZFVscZDWJNqgERAs76ycrvUhbjB8sKl2
-	us3tRK7PlWvZJp1JXRFNCUvRYg9KZP89WoJfu46ZfqGrR2MtHFTr
-X-Gm-Gg: ASbGnctEgiIgXTNf5Cq8SGdFMzoZjLql6HmMSwflXOZMOF1wYkpNumBDYChdSzk3qnR
-	C7lnVyQLoIHHa7qY2PfhWrRBQ4dtvxYt14Kgn2U6stNJPKOi38DZYDJ/a27uVwKo4Fffc78kXtU
-	cre/NahZprIXsLWDuqJ2/KQX3lJVaJxJzPWpKEe2mmwdRuk4YqK+D5mTCEp/Jrs/idf5IryCguZ
-	FbYgu1Z0DmuVBCvRaHl9ocPLVvpVBhG83sicab9rFP+ZJMnnej+xRiQxKnZnaL1SQoaUzBeJAsv
-	K9172Nt229Emav5dditzYdmVpFhpo0It3PlJlp6uxPxfzZ1fahmkdkIUFt211W39CpQIw1m3
-X-Google-Smtp-Source: AGHT+IFT1C64b0Tm1Azea/Zf2eWohd4XOQWB+8j1jNvlxpO77F81dukY7Vw9Q+YU53eXBD1Zo5U5KA==
-X-Received: by 2002:a05:6000:4712:b0:385:f271:a22c with SMTP id ffacd0b85a97d-385f271a44cmr5002241f8f.59.1733167130494;
-        Mon, 02 Dec 2024 11:18:50 -0800 (PST)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-d553-b993-925a-609c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d553:b993:925a:609c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd36b80sm13198423f8f.29.2024.12.02.11.18.49
+        bh=T2xlagNSs/n68wjChaazhkpy5KeZi0HFp84+ebzxe0A=;
+        b=J1X60iF85dKavBWE5V/dMiVGr7kzRwFEfae/qwp+Z1mI9Y/lpwKUN9ExekCzJUjhgT
+         iD88aJCOBEI4YjMUK09OQlI/NyPssa79sbFicZzq0NmeXZJzQQlcxnqm6/z6a9wTa0eO
+         oEdZGI2GJaxTbLpXQ7dowR1jJjj6zDO2TaEhI3bVBgRJBxwflu83eLdqfGmyWAwV7XwC
+         gTyafIwHS1db1259+bZ5mxW56LR7bMlzhhyEAUm0nfLzyXSm7DyqhfnKG2pOxPD6LLXt
+         AE+hII7p4rWcKQfZToxblQGF3PrTL4lC9GSJj+M3HqwYXrn/ARBIxyxDPKBwBwmtjIkY
+         CvMw==
+X-Forwarded-Encrypted: i=1; AJvYcCVC5bZuWr9q10dxv43Bh+BCFhJP3nAVZflNWl9UPfJASZ015k0u2spdTorOcKnbSpEpu248t8BKu24z@vger.kernel.org, AJvYcCW6SggawIe9i59hrW8VwceFXwRe/I6CaLpvZDV2dgTD+eEH0E/AJriRnBnKCW6uoR54hu2jYIM0+574K7hF@vger.kernel.org, AJvYcCXL1LtZq7EJq/ib9a8X/P4ynhNPZj9LKPHpvGAK4GiGs8+4R6eDkyKzwOvGJWX6rsoW+NMFdFGxMDZg@vger.kernel.org
+X-Gm-Message-State: AOJu0YzKwvp4jQjyIfqkqfBhdBlo5D4IE1DfrUGHh4ZDR/aY52rL7zMl
+	ryGYRZK52L7+gYj1iL0X57vfsqvCUwbuBAGrPmlOWRRQf+JmIanlytParLaJ
+X-Gm-Gg: ASbGncvX2XDCP0Ru6fqzQPQfmRXUmFgf/4obythbJp5TV0uf3dg/ibURdti0BwgTdGE
+	5eSZcbfRNk3xUNxY7Nt5pHjYHmS7Y3tFGNFzIhpLfMi84fJOssDkl8bcYo7hNs+xMlhZgXPdZMR
+	SrPqrSLTQr3g5kfN99H3SDkHPxmW9W4cGeSumEb0l9/pt4vyR5tMpBD2fCA6K0NVnVJQctdiYL9
+	S32MeDkIq8rJIbaV1J9tjeEHLLZt4Itpm8fRxOM6sMjDDl0SqkuOQqNEf36lCA=
+X-Google-Smtp-Source: AGHT+IGBVdsLfOi1dW35VMunQiekF7LRMOLyuLk+WDGtBa7P4UJpuKtREyeGcNvCDp+YzUFUD6VHEg==
+X-Received: by 2002:a5d:5e8a:0:b0:385:e22e:288f with SMTP id ffacd0b85a97d-385e22e2925mr10589587f8f.31.1733167423779;
+        Mon, 02 Dec 2024 11:23:43 -0800 (PST)
+Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:ea8a:93ec:a066:eb25])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385faec0c9dsm832609f8f.20.2024.12.02.11.23.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Dec 2024 11:18:50 -0800 (PST)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 02 Dec 2024 20:18:44 +0100
-Subject: [PATCH] iio: adc: ti-ads1119: fix sample size in scan struct for
- triggered buffer
+        Mon, 02 Dec 2024 11:23:43 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: vassilisamir@gmail.com,
+	u.kleine-koenig@pengutronix.de,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/3] iio: chemical bme680: 2nd round of cleanup
+Date: Mon,  2 Dec 2024 20:23:38 +0100
+Message-ID: <20241202192341.33187-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-ti-ads1119_s16_chan-v1-1-fafe3136dc90@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABMITmcC/x2MSwqAMAwFryJZGzD1A3oVkVJt1GxUGhFBenerm
- 4GBee8B5SCs0GUPBL5EZd+SUJ7BtLptYRSfHExhKkrAU9B5JaLWKjX2i9A4Jt/MNdNYQloegWe
- 5/9d+iPEFYunm1mUAAAA=
-To: Francesco Dolcini <francesco@dolcini.it>, 
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733167129; l=1359;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=UNYTQCQ4U0f5t75v+3oqKVreEsYoOkeElwGyOVTcyLY=;
- b=VpZJFmK3vOM2cCjPBIBU4i3shRgvvAyHUK3ZhesaFeokMS1oaiA+x1goyqgQ3EnBYNv7UMI+Q
- EzCX1DcnvDDDa2lMs8+5bm4N8BO+BxtfoILcC4FUsmUOMxxspCbnlfH
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Transfer-Encoding: 8bit
 
-This device returns signed, 16-bit samples as stated in its datasheet
-(see 8.5.2 Data Format). That is in line with the scan_type definition
-for the IIO_VOLTAGE channel, but 'unsigned int' is being used to read
-and push the data to userspace.
+Changes in v5:
 
-Given that the size of that type depends on the architecture (at least
-2 bytes to store values up to 65535, but its actual size is often 4
-bytes), use the 's16' type to provide the same structure in all cases.
+[PATCH v5 1/3]:
+	- Changed name of sensor to "co2-sensor" as it is already used
+	  by other chemical sensors.
+	- Added reviewer tag.
 
-Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/adc/ti-ads1119.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[PATCH v5 2/3]:
+	- Removed unnecessary macro
+	- Added reviewer tag
 
-diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
-index 533610ac214e..6637cb6a6dda 100644
---- a/drivers/iio/adc/ti-ads1119.c
-+++ b/drivers/iio/adc/ti-ads1119.c
-@@ -500,7 +500,7 @@ static irqreturn_t ads1119_trigger_handler(int irq, void *private)
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct ads1119_state *st = iio_priv(indio_dev);
- 	struct {
--		unsigned int sample;
-+		s16 sample;
- 		s64 timestamp __aligned(8);
- 	} scan;
- 	unsigned int index;
+[PATCH v5 3/3]:
+	- Replaced pm_runtime_get_sync() with
+	  pm_runtime_resume_and_get()
 
 ---
-base-commit: a0d6ec6575fce400e976af1dd9223823251775e9
-change-id: 20241202-ti-ads1119_s16_chan-2ae1d6f5e1b3
+v4: https://lore.kernel.org/linux-iio/20241128193246.24572-1-vassilisamir@gmail.com/
+Changes in v4:
 
-Best regards,
+[PATCH v4 1/3]:
+	- Changed description to include the move out of trivial
+	  devices.
+
+---
+v3: https://lore.kernel.org/linux-iio/20241102131311.36210-1-vassilisamir@gmail.com/
+Changes in v3:
+
+Removed applied patches 1,2,3,5,6,7,8
+
+[PATCH v3 1/7]:
+	- v2 4/13
+	- Set mode of sensor with enum variable and remove macros
+
+[PATCH v3 5/7]:
+	- v2 11/13
+	- removed regulators from being required, adjusted commit
+	  message
+
+[PATCH v3 7/7]:
+	- v2 13/13
+	- removed unecessary usage of runtime PM functions
+
+---
+v2: https://lore.kernel.org/linux-iio/20241021195316.58911-1-vassilisamir@gmail.com/
+Changes in v2:
+
+Generally, the patches were rearranged according to comments from Andy
+in previous version in order to be more consistent. The refactoring of
+the ambient temperature was dropped for now because it was a bit more
+complicated than I thought and this series is already heavy enough.
+
+[PATCH v2 01/13]:
+	- New patch
+
+[PATCH v2 02/13]:
+	- v1 1/13
+	- used "optimized" in commit message to not prompt for a fix.
+	- added documentation of where this sleep comes from
+
+[PATCH v2 03/13]:
+	- v1 2/13
+	- Fix indentation of array and removed extra whitespace.
+
+[PATCH v2 04/13]:
+	- v1 5/13
+	- removed extra check inside the set_mode() function.
+
+[PATCH v2 06/13]:
+	- v1 1/13
+	- removed indentation fixes which are fixed later since code is
+	  changed in those lines in later commits.
+
+[PATCH v2 09/13]:
+	- v1 12/13
+	- removed unnecessary debug messages
+	- Used struture instead of buffer to push data to userspace
+
+[PATCH v2 10/13]:
+	- v1 13/13
+	- used better naming
+	- made channel index to -1
+
+[PATCH v2 11/13]:
+	- v1 06/13
+	- removed device from trivial-devices
+
+[PATCH v2 12/13]:
+	- v1 07/13
+	- use devm_regulator_bulk_get_enable()
+
+[PATCH v2 13/13]:
+	- v1 08/13
+	- removed internal usage of dev structure
+	- added missing header in both bme680_core.c and bme680.h
+	- used devm_pm_runtime_enable
+
+---
+v1: https://lore.kernel.org/linux-iio/20241010210030.33309-1-vassilisamir@gmail.com
+
+This patch series is continuing the work that started on [1] by
+improving some small issues of the driver in the commits 1,2,3.
+
+Commits 4,5 are refactorizing existing code.
+
+Commits 6,7,8 are adding DT, regulator and PM support.
+
+Commit 9 is refactorizing one macro to attribute.
+
+Commit 10,11,12 are refactorizing the read/compensate functions
+to become generic and add triggered buffer support.
+
+Finally, commit 13 adds support for an *output* channel of type
+IIO_CURRENT in order to preheat the plate that is used to measure the
+quality of the air.
+
+This and the previous series [1] started with the idea to add support
+for the new bme688 device but due to the structure of the driver I
+decided that it is better to restructure and improve some things before
+adding extra funcitonalities.
+
+[1]: https://lore.kernel.org/linux-iio/20240609233826.330516-1-vassilisamir@gmail.com
+
+Vasileios Amoiridis (3):
+
+Vasileios Amoiridis (3):
+  dt-bindings: iio: bosch,bme680: Move from trivial-devices and add
+    supplies
+  iio: chemical: bme680: add regulators
+  iio: chemical: bme680: add power management
+
+ .../bindings/iio/chemical/bosch,bme680.yaml   |  62 +++++++++
+ .../devicetree/bindings/trivial-devices.yaml  |   2 -
+ drivers/iio/chemical/bme680.h                 |   2 +
+ drivers/iio/chemical/bme680_core.c            | 125 +++++++++++++++++-
+ drivers/iio/chemical/bme680_i2c.c             |   1 +
+ drivers/iio/chemical/bme680_spi.c             |   1 +
+ 6 files changed, 184 insertions(+), 9 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/chemical/bosch,bme680.yaml
+
+
+base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 

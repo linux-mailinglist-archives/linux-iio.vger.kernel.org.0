@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-12926-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12927-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471F69DFA9A
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 07:06:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E1E9DFAD5
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 07:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDCDA2818E6
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 06:06:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE62B21866
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 06:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDE41D63FB;
-	Mon,  2 Dec 2024 06:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691731D63F9;
+	Mon,  2 Dec 2024 06:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GV7VdaRU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RtX8suNN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C52B17E;
-	Mon,  2 Dec 2024 06:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B201F8EF0;
+	Mon,  2 Dec 2024 06:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733119598; cv=none; b=tFJtBT61piDMeLL23NdNYNa/TkuWt7EDNbJXv3E4Dloi2ze04P9lRcgCGtJ+kPvG5fu4+QHBO0vg8jDYsBcRyYTWxxVCl+y7gPypwKyPCxAvfJJpKXaPJRxKItoPhQxNMwgKBcMkMrLVy8Ksjl9ktH72xRYfgKgKGe4kGoWaxps=
+	t=1733121906; cv=none; b=t7rBxMYi93hE9c5qvSzTyOq/kT7gaGGdiO0eonMtvAbkDadXFSmz8k8lGsVAyZ3tT8dmUTDjB3BDl1MiCxsW6l0aI8livdh9pyD6nXrHxD1Z0vWNRmHSEsbIW6oGioIe4/N8SDUV2pRB/kLOJTwxoNeHRUZjgQYC+G2+8qtCtfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733119598; c=relaxed/simple;
-	bh=VcOStvxHj8Z+scSApM0IUCw33Ucgul5bnv0mWS086PI=;
+	s=arc-20240116; t=1733121906; c=relaxed/simple;
+	bh=NWyhNFwkROuQEWkO0srSA6N8NQM9TB3aC1fKVL5H4GA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=scxWOWJXjroWRr4/euVTtMbLNySof358TZ9pTwy9zhIp8SC7mnCnWsAjNqM1pRueFBcMSbi1oEWH8VcWg74clODZ3QnK4UQNB9Lx6yma+63kaU/eXh8u7FnocsM8FwfQVDNMZ91OFz0Z/VoMaEGFCTD+wi6tdWxHTYdwNndDZz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GV7VdaRU; arc=none smtp.client-ip=209.85.208.180
+	 In-Reply-To:Content-Type; b=b1d3WSjFVUMXyOTKwUdoghzYIzpyTWr6ZO71UfrCOE1G1rGPUGYWYFHGZeen+v7z5p60hwXqGguqeazeWsPOJgaQsT5XJyW3CDQV9hFB99PFux8bZuULs3y7U4WCo2gp+QVXXvV0ZZla/J0vqDJs31tVF4kj1P4lTWefLE3GsIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RtX8suNN; arc=none smtp.client-ip=209.85.208.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ffb5b131d0so38025051fa.2;
-        Sun, 01 Dec 2024 22:06:35 -0800 (PST)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2ffbea0acc2so39575321fa.1;
+        Sun, 01 Dec 2024 22:45:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733119594; x=1733724394; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733121902; x=1733726702; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Py1+g6xpJxZI8cr6wr8SsaAw1VlWsqIN/NQfOIFnPCo=;
-        b=GV7VdaRULvZU9jFvSsPGe9g0huYtk5NCzW2EGXCxqxpGb0LBTs88DooX7qDY5isVpX
-         fvpz/eqHtn1d8XmTHIw5K1rtazig1QdsO3u1bKPqmJt718qeOrXMME4LZV6Kmxm+GqZe
-         BF03xSRAVmM4+ZdVTWaBWs7h3j1233BOjgfFf9JunEtz6izRp7evTaXmQdgw5FynuoSh
-         W2GY/NV3anCmJ4d1H7FARl29wXEQbPAjlYkJ9xUKwBD1V+SC7meyF9wQBfWkEpozZkE6
-         7Wme4K6Jtq75uQFy0SHCLi1KiJK9foSAAxYVhNiIVNVMkHW2LLJf403f6CGNvxvWDkkf
-         3GkA==
+        bh=dkvfc8rUC3zYH63ASpHPRmnBLTGKCK6yLd3NLu3Guzw=;
+        b=RtX8suNNxylEkxzYGMbMDZfWxZBbkkT51MDFlBPsK+JYjZeyClRxrJI/BA+Ak3aXJ+
+         e+uOQgJ1T1yosRTONHHwHRJXo/n8O8klwtessH26Sg8/ABl58W1p/7ndBOHH98BzPHzI
+         Zhj637DE0iZCfl8gynTb0ktTe4OUHKlp5M8QQkUA8Uxf1ebfCmJDd0l1mgGeNaqGrIoV
+         r5uuz3h7XKoKu9xg7e9/8tJvibAWx49WNprcFpIBe0ThjkX8nU2+sgBzo9ZjK2w5hJ5x
+         Zhjf1LipKlQL43U5W56bSSgLqfJo2GULp9m+XBGNwXjbnKR+3ZwBzBQ/26mnXUSUm8Ml
+         MdQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733119594; x=1733724394;
+        d=1e100.net; s=20230601; t=1733121902; x=1733726702;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Py1+g6xpJxZI8cr6wr8SsaAw1VlWsqIN/NQfOIFnPCo=;
-        b=Djss4jC7RoSvOfM8+xAnSPLpMaqBmu6u6fHNUNkjFZOhBjv6nYVTydXiKNG40yvtQF
-         uRZIRaobgRYYaILeivqSKJU9VLOvzpUWjH9F95cGkyj+Oqu7OjhIEB+t5dhEZo63K4cb
-         1+eZpaHFUgKFX9F7cu49sXtAdJJIDtmk5q5EJrraAhQzun388wSA+uvedMrW8czXQnZK
-         F3W2JQzxejfO9/RlP48FG9MmFDTjsRe6kVyK4GNaJ1yNKBUbwwLW1kEfwV0xzGwO1cj6
-         wBmJiYFDM7ZOYCAK1YzkKuh+7KJ9dQrcUTwZK1VPFVZbMWiMWl3W+ZQOvNGSjr+SpqvT
-         KWIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmRplmP/lDNH7zZH63fnAMemFVUApMytqR4PCnPA7iM3c/fBuyua1mqqj6EtQioWxOylD54wZVjEs=@vger.kernel.org, AJvYcCXtpyIJxKqzJDpGDaue5uXxTJpAWnQz8ksPg75pbR/4lkD6BMu8X2DDYKfOX/5aGvOw5XNyEXQYqHQIJXwf@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUbkJVQt11e2jIiudS+skNBZVxR7FXJe/2apyeWBEy/n1GRB+u
-	XGLEBM1AiJwKmAx9+eDq+HXipjsaCIR+rmeIsn32ktojNMZB/oq7Y18JIQ==
-X-Gm-Gg: ASbGncsUZGFO0oNOoXFDf+KoBo3qoEF/H75gKITSdxMK0XX1efHUCm0x0TOqwZmfUGm
-	uqM7SoxoDL/Brgqvdrp1/Kul+VtoUdd26fjUMlk+7EioSqJq3KY/zbH/aNgTB4qbkZdxEAuk9Ic
-	LaYnKNaCuUawiXlz6czN/YTvpUKXE+xzKh45ut6I1eV6dgS/nbmiY1ZncwPw/jFRqk2Uczgx5FY
-	fYSNs6ulCvk/IumGAUb4zVSJO4tXxY6vPO2mNJjNdQqspkikSdURdEi4P9Zr3e5JMD+da6aNuI8
-	X0zroeA7Tzv4AcNskCr2yc5fpw7duIA=
-X-Google-Smtp-Source: AGHT+IGo7ujBlAV0LYkJRc/7SS4Dttf3fy47ADg2rHlcf8yZ7+TUfQiiKt3dExCzE8UgY5LgsmFxxQ==
-X-Received: by 2002:a05:6512:3b90:b0:53d:d242:6bb0 with SMTP id 2adb3069b0e04-53df0112153mr7127049e87.49.1733119593953;
-        Sun, 01 Dec 2024 22:06:33 -0800 (PST)
+        bh=dkvfc8rUC3zYH63ASpHPRmnBLTGKCK6yLd3NLu3Guzw=;
+        b=lFcTaZAMZoP2p219hhRaUDqjJSXcG/tuZTGdUNbujDg63mEcD4hXcZETz2uOIwzYBr
+         r5aYpu2p/FOlI24lKgQ2gLHx3CEeefrXTyUA+Ljcuhep5JFABLE/5LSN1/fSlz78nNK+
+         XeGsw+X6FPmn7ZKKTQyqYYkjNWy9HitJzOlUt2KXQY6q/eMD9Tr8qGkKKZoXRWMawvED
+         mhDrfyIh0PsfHYADlkn4gqEYMWx5XYbU4BT9bvOUrJiQnVZRRphW/rAOD5GdhkHT34Ht
+         +XvfbdbgPdWOPL3RgCofSWx1VlPowFgq5EKlOA8eBVOCvmbtCSOv1np7oYACSf80xg01
+         dhMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEAfpGvqoStqJJSw0whPU3spwKh7r825wJlJHORF0oRHHavmFRRn+sOvkZSJcxDWl5cpZoOaDMzWk=@vger.kernel.org, AJvYcCXUyVyjlEuD1rgTS3q4i6zuhEC6EbO1Ismym/W11lPSBpAbM65xDgr7EN0rs2RPpzO3DuIipKUOKHkpFtNb@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzf8BF87eI06XhPLa2WwgZYrqkstGhuMcYGRjbr8ovAROL1aVen
+	+VGCeIE/4smhT8AL1QdLA0ADrkpxDeln5Q8gScVhB/V2PPwVow1AboFtBg==
+X-Gm-Gg: ASbGncsS58XY8ZEhI8qE7GV6HgcsgN/Jsj/iE/yWytmNE4vlRiSDf6aEzdjmYh1Uqsq
+	D7ie12HBvwOj5SZ1tEVz7VzI6i7i1cw3usVC4+mcbTOqCXLm4I3tObDn0YKvvClaV0S5ShQvuLt
+	6OXBq9Go75/fmRoJiFUuvHVyunwRt3jxh3aA+s/S1+8tTJTBjnjaVjkpvBnLpKN9uyucFVKFknM
+	yvQyk4gSXES89LrFaMjPouiuZY9qfDWsEpR5/kcmxs02Z1x7Xe+oW24+Y6QGhafo02U36kzG98R
+	93vUvRShdqzWj69zO+Kbpp1V5zeMioY=
+X-Google-Smtp-Source: AGHT+IGaTieny3qw0MVJptpe5t5N20qahfFypOA6x/u1+MkXUji6aaCcXd2JoPkFxlDZChxNmvTeLg==
+X-Received: by 2002:a2e:a98a:0:b0:2ff:a7cd:ee7e with SMTP id 38308e7fff4ca-2ffd6040dc0mr94963181fa.6.1733121901858;
+        Sun, 01 Dec 2024 22:45:01 -0800 (PST)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53df649f10esm1324677e87.227.2024.12.01.22.06.32
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffdfccad87sm12248851fa.121.2024.12.01.22.44.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Dec 2024 22:06:33 -0800 (PST)
-Message-ID: <4a06a31f-1b3e-4ce3-a801-138d2d21bacd@gmail.com>
-Date: Mon, 2 Dec 2024 08:06:31 +0200
+        Sun, 01 Dec 2024 22:45:00 -0800 (PST)
+Message-ID: <670d860b-f6fc-4ef1-ba05-bbce24ed82fd@gmail.com>
+Date: Mon, 2 Dec 2024 08:44:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,144 +81,199 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] iio: gts: simplify scale table build
+Subject: Re: [PATCH 1/3] iio: gts: Simplify using __free
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <cover.1732811829.git.mazziesaccount@gmail.com>
- <4b05448b65969f9f433f7ac3aa234c33025ad262.1732811829.git.mazziesaccount@gmail.com>
- <20241130180117.088352ce@jic23-huawei>
+ <1f8e1388b69df8a5a1a87748e9c748d2a3aa0533.1732811829.git.mazziesaccount@gmail.com>
+ <20241130175141.14d3589a@jic23-huawei>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241130180117.088352ce@jic23-huawei>
+In-Reply-To: <20241130175141.14d3589a@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 30/11/2024 20:01, Jonathan Cameron wrote:
-> On Thu, 28 Nov 2024 18:51:00 +0200
+On 30/11/2024 19:51, Jonathan Cameron wrote:
+> On Thu, 28 Nov 2024 18:50:24 +0200
 > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> The GTS helpers offer two different set of "available scales" -tables.
->> Drivers can choose to advertice the scales which are available on a
->> currently selected integration time (by just changing the hwgain).
->> Another option is to list all scales which can be supported using any of
->> the integration times. This is useful for drivers which allow scale
->> setting to also change the integration time to meet the scale user
->> prefers.
+>> The error path in the gain_to_scaletables() uses goto for unwinding an
+>> allocation on failure. This can be slightly simplified by using the
+>> automated free when exiting the scope.
 >>
->> The helper function which build these tables for the GTS did firstbuild
-> The helper function which builds these tables for the GTS first builds the "time specific" ..
-> 
->> the "time specific" scale arrays for all the times. This is done by
->> calculating the scales based on the integration time specific "total
->> gain" arrays (gain contributed by both the integration time and hw-gain).
->>
->> After this the helper code calculates an array for all available scales.
->> This is done combining all the time specific total-gains into one sorted
->> array, removing dublicate gains and finally converting the gains to
->> scales as above.
->>
->> This can be somewhat simplified by changing the logic for calculating
->> the 'all available scales' -array to directly use the time specific
->> scale arrays instead of time specific total-gain arrays. Code can
->> directly just add all the already computed time specific scales to one
->> big 'all scales'-array, keep it sorted and remove duplicates.
+>> Use __free(kfree) and drop the goto based error handling.
 >>
 >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->>
-> Minor comments inline.
+>> ---
+>> This is derived from the:
+>> https://lore.kernel.org/lkml/5efc30d832275778d1f48d7e2c75b1ecc63511d5.1732105157.git.mazziesaccount@gmail.com/
+> 
+> Hi Matti
+> 
+> A few comments on specific parts of this below
 > 
 > Thanks,
 > 
 > Jonathan
 > 
->> ---
->>
->> This has been tested by IIO-gts kunit tests only. All testing is
->> appreciated.
->>
->> Comparing the scales is not as pretty as comparing the gains was, as
->> scales are in two ints where the gains were in one. This makes the code
->> slightly more hairy. I however believe that the logic is now more
->> obvious. This might be more important for one reading this later...
->> ---
->>   drivers/iio/industrialio-gts-helper.c | 109 ++++++++++----------------
->>   1 file changed, 42 insertions(+), 67 deletions(-)
->>
->> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
->> index 7f900f578f1d..31101848b194 100644
->> --- a/drivers/iio/industrialio-gts-helper.c
->> +++ b/drivers/iio/industrialio-gts-helper.c
->> @@ -191,86 +191,61 @@ static int fill_and_sort_scaletables(struct iio_gts *gts, int **gains, int **sca
->>   	return 0;
->>   }
+>> +static int build_combined_table(struct iio_gts *gts, int **gains, size_t gain_bytes)
+>> +{
+>> +	int ret, i, j, new_idx, time_idx;
+>> +	int *all_gains __free(kfree) = kcalloc(gts->num_itime, gain_bytes,
+>> +					       GFP_KERNEL);
+>> +
+>>   	if (!all_gains)
+>>   		return -ENOMEM;
 >>   
->> -static int combine_gain_tables(struct iio_gts *gts, int **gains,
->> -			       int *all_gains, size_t gain_bytes)
->> +static int scale_eq(int *sc1, int *sc2)
->>   {
->> -	int i, new_idx, time_idx;
->> +	return *sc1 == *sc2 && *(sc1 + 1) == *(sc2 + 1);
-> 	return sc1[0] == sc2[0] && sc1[1] == sc2[1];
+>> @@ -232,10 +238,9 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>>   
+>>   	gts->avail_all_scales_table = kcalloc(new_idx, 2 * sizeof(int),
+>>   					      GFP_KERNEL);
 > 
-> Would be easier to read in my opinion.
+> I'm not particularly keen in a partial application of __free magic.
 
-I agree. (As with the other (ptr + 1) cases you commented)
+I am starting to think the partial application of __free would actually 
+be what I preferred... (see below).
 
->> +}
->>   
->> -	/*
->> -	 * We assume all the gains for same integration time were unique.
->> -	 * It is likely the first time table had greatest time multiplier as
->> -	 * the times are in the order of preference and greater times are
->> -	 * usually preferred. Hence we start from the last table which is likely
->> -	 * to have the smallest total gains.
->> -	 */
->> -	time_idx = gts->num_itime - 1;
->> -	memcpy(all_gains, gains[time_idx], gain_bytes);
->> -	new_idx = gts->num_hwgain;
->> +static int scale_smaller(int *sc1, int *sc2)
->> +{
->> +	if (*sc1 != *sc2)
->> +		return *sc1 < *sc2;
->> +
->> +	/* If integer parts are equal, fixp parts */
->> +	return *(sc1 + 1) < *(sc2 + 1);
->> +}
->> +
->> +static int do_combined_scaletable(struct iio_gts *gts, int **scales, size_t scale_bytes)
->> +{
->> +	int t_idx, i, new_idx;
->> +	int *all_scales = kcalloc(gts->num_itime, scale_bytes, GFP_KERNEL);
->>   
->> -	while (time_idx-- > 0) {
->> -		for (i = 0; i < gts->num_hwgain; i++) {
->> -			int candidate = gains[time_idx][i];
->> +	if (!all_scales)
+> Perhaps you can use a local variable for this and a no_free_ptr() to assign it after we know
+> there can't be an error that requires it to be freed.
+
+I am having second thoughts of this whole series. I do love the idea of 
+__free() magic, when applied on a simple temporary allocations that are 
+intended to be freed at the end of a function. Eg, for cases where we 
+know the scope from the very beginning. With a consistent use of __free 
+in such cases could make it much more obvious for a reader that this 
+stuff is valid only for a duration of this block. I have a feeling that 
+mixing the no_free_ptr() is a violation, and will obfuscate this.
+
+I know I used it in this series while trying to simplify the flow - and 
+I am already regretting this.
+
+Additionally, I indeed am not okay with introducing variables in middle 
+of a function. I do really feel quite strongly about that.
+
+It seems that in many functions it makes sense to have some checks or 
+potentially failing operations done before doing memory allocations. So, 
+keeping the allocation at the start of a block can often require some 
+additional "check/do these things before calling an internal function 
+which does alloc + rest of the work" -wrappers.
+
+It will then also mean that the internal function (called from a wrapper 
+with checks) will lack of the aforementioned checks, and, is thus 
+somehow unsafe. I am not saying such wrappers are always wrong - 
+sometimes it may be ok - but it probably should be consistent approach 
+and not a mixture of conventions depending on allocations...
+
+Also, sometimes this would result some very strangely split functions 
+with no well defined purpose.
+
+As a result, I would definitely only use the "__free magic" in places 
+where it does fit well for freeing a memory which is known to be needed 
+only for a specific block. And, I would only use it where the alloc can 
+be done at the beginning of a function in a rather natural way. This, 
+however, is very likely to lead in mixed use of "__free magic" and 
+regular allocs.
+
+>> -	if (!gts->avail_all_scales_table) {
+>> -		ret = -ENOMEM;
+>> -		goto free_out;
+>> -	}
+>> +	if (!gts->avail_all_scales_table)
 >> +		return -ENOMEM;
 >> +
->> +	t_idx = gts->num_itime - 1;
->> +	memcpy(all_scales, scales[t_idx], scale_bytes);
->> +	new_idx = gts->num_hwgain * 2;
+>>   	gts->num_avail_all_scales = new_idx;
+>>   
+>>   	for (i = 0; i < gts->num_avail_all_scales; i++) {
+>> @@ -246,14 +251,25 @@ static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>>   		if (ret) {
+>>   			kfree(gts->avail_all_scales_table);
+>>   			gts->num_avail_all_scales = 0;
+>> -			goto free_out;
+>> +			return ret;
+>>   		}
+>>   	}
+>>   
+>> -free_out:
+>> -	kfree(all_gains);
+>> +	return 0;
+>> +}
+>>   
+>> -	return ret;
+>> +static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **scales)
+>> +{
+>> +	int ret;
+>> +	size_t gain_bytes;
 >> +
->> +	while (t_idx-- > 0) {
-> maybe a reverse for loop is clearer
+>> +	ret = fill_and_sort_scaletables(gts, gains, scales);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	gain_bytes = array_size(gts->num_hwgain, sizeof(int));
 > 
-> 	for (tidx = t_idx; tidx; tidx--)
-> For me a for loop indicates bounds are known and we change the index
-> one per loop.
+> array_size is documented as being for 2D arrays, not an array of a multi byte
+> type.  We should not use it for this purpose.
 
-I could've said that :)
+Thanks for pointing this out. I was not familiar with that. I am 
+actually pretty sure that using the array_size() has been recommended to 
+me :)
 
-> While loop indicates either unknown bounds, or that we are
-> modifying the index other than than in the loop controls.
+> I'd be tempted to not worry about overflow, but if you do want to be sure then
+> copy what kcalloc does and use a check_mul_overflow()
+> 
+> https://elixir.bootlin.com/linux/v6.12.1/source/include/linux/slab.h#L919
 
-I'm not entirely sure why I've used while here, could be a result of 
-some review discussion.
+Thanks for the direct pointer :) I'll take a look at it!
 
-I'll fix these for the next version.
+> 
+> You don't have to tidy that up in this patch though.
+> 
+>> +
+>> +	return build_combined_table(gts, gains, gain_bytes);
+>>   }
+> 
+>>   
+>> +/**
+>> + * iio_gts_build_avail_time_table - build table of available integration times
+>> + * @gts:	Gain time scale descriptor
+>> + *
+>> + * Build the table which can represent the available times to be returned
+>> + * to users using the read_avail-callback.
+>> + *
+>> + * NOTE: Space allocated for the tables must be freed using
+>> + * iio_gts_purge_avail_time_table() when the tables are no longer needed.
+>> + *
+>> + * Return: 0 on success.
+>> + */
+>> +static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+> Hmm. I guess this wrapper exists because perhaps you aren't comfortable
+> yet with the __free() handling mid function.  It does not harm so I'm fine
+> having this.
+
+Yes. This was the reason for this wrapper. But I'm not really happy 
+about the wrappers either (even if I agree with you that it does not 
+really hurt here). Furthermore, if you're feeling strongly about not 
+mixing the __free and regular allocs, then I simply prefer not using the 
+magic one. I don't think using the __free with allocations intended to 
+last longer than the scope is clear. Ues, goto sequences may not always 
+be simple, but at least people are used to be wary with them.
+
+>> +{
+>> +	if (!gts->num_itime)
+>> +		return 0;
+>> +
+>> +	return __iio_gts_build_avail_time_table(gts);
+>> +}
+>> +
+>>   /**
+>>    * iio_gts_purge_avail_time_table - free-up the available integration time table
+>>    * @gts:	Gain time scale descriptor
+> 
+
+Thanks a ton for the review :) It helped me to clarify my thoughts on this!
 
 Yours,
 	-- Matti
+
 

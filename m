@@ -1,112 +1,127 @@
-Return-Path: <linux-iio+bounces-12965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-12959-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40BD9E0B3A
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 19:42:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F01FE16419B
-	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 18:42:20 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD731DE3B1;
-	Mon,  2 Dec 2024 18:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NDuB9Eia"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA619E0C94
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 20:53:01 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC221DE2B5;
-	Mon,  2 Dec 2024 18:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEC22B42431
+	for <lists+linux-iio@lfdr.de>; Mon,  2 Dec 2024 18:19:25 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8DB1DDC1C;
+	Mon,  2 Dec 2024 18:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VbnSE288"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264FD1DDA2F;
+	Mon,  2 Dec 2024 18:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733164932; cv=none; b=bfCWT6h/FDAMK2/g5DBxDIoJh0SIsP/r6luIwoP+hDU2pPOoFkN9m4oaVz7bXcTn1bVvPHHBxUX9g/irOcVxkH1qpdqSppCkrgRgj3lxH9cbPyGG+OmOSwQ91Y4LH98MosY37w0Dh+JkWqCwJIQa0Lsmxp9+pZh1feXDnVmYli4=
+	t=1733163561; cv=none; b=M55q1Jau87tNIejxPg/xnCNzMJdlTVinyKIRohyfgCebWTunwn+sz6wg0LfKt6iiAxsN0rsbpaZ5TDalaNsIOa0ta93YnYyPVarAoRhBaNlVEd3KNlD/LVmTFviGCcBMBHpNbBbwKK9Gse6fQ3LfsPYcjzXo0ZBRRoMEuF8JTeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733164932; c=relaxed/simple;
-	bh=L5Ijyy9dZ3Ky9mGp6GfzWtNpgc+FMQNImJC3qA2CI00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=giT8dSxgyU934ZP4Kojj+hT6ozk+gTS+I9YssKCer5c6turm6QcXBqL41ouo9W939bbjm1c2p+ADxIT6YFbQ31MuQLc4Xn5GaaDNsq8LRa4NM8xvkr8msnDyzGAZUMOO7i4U1Mg2mm696noUHA3pp/MalmiHcyu1RqD1TvCd4Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NDuB9Eia; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733164931; x=1764700931;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=L5Ijyy9dZ3Ky9mGp6GfzWtNpgc+FMQNImJC3qA2CI00=;
-  b=NDuB9EiaKzA8FAt03xT9fd0u3y+i42kLzJ620Iahfe2ZbqO5pP5fBaic
-   I2h1NESJDkAPTpIOp+wdIP7DqsatMWwx74F9arbpsPKeP6EY3WIjdYIhU
-   /76tYRleIc9xkfIopps73CH1zVAOecsqrG86qG024FJ5myKpvawkYA5R2
-   HQaKhPU/KOj6hzMX37ywUJzChcuDw8XAy9UF+kXVZ+aRiAqoSx6NoIroB
-   FZGXYfMMtwHInfUyWtvWb1ke55yw0Bi8DNbpR/m7YOs/qu3UVPUyBDSZt
-   EzwoIDe1BTKS9UbrzQuIfqm00vniDVxzBlMKOyM75HW6iqpm522rN1/dB
-   Q==;
-X-CSE-ConnectionGUID: 2t/L6PDXT42NS0C5KwVVsg==
-X-CSE-MsgGUID: JihQGMNMTeWRyebJ0Qlgfw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="37290703"
-X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
-   d="scan'208";a="37290703"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 10:42:10 -0800
-X-CSE-ConnectionGUID: eLbJ7IBJRkKkFYhiyn4nFw==
-X-CSE-MsgGUID: 31XlT2VdThGTfAGMRDIHag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,203,1728975600"; 
-   d="scan'208";a="93098357"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Dec 2024 10:42:08 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tIBMy-00000003Dkd-1rrN;
-	Mon, 02 Dec 2024 20:42:04 +0200
-Date: Mon, 2 Dec 2024 20:42:04 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ajarizzo@gmail.com, ak@it-klinger.de,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] iio: pressure: bmp280: Minor cleanup
-Message-ID: <Z03_fBy9PmqDGLg3@smile.fi.intel.com>
-References: <20241202181907.21471-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1733163561; c=relaxed/simple;
+	bh=LrBoWxijJ1bBBEyhd5ZBFe5NE59y98eFG+bauKn86ks=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UIXfjRNK398MEtLNCmpvL3cj02HiQKUH3diuokaHc+nKASrFDtGlhwpeRmW2q4vJQCdIineIMdmSXrDsZmTSSlnDb045iU5ns2D++aMLW9EYR9r4ZPugjOpvG4f22tWsCJqlBTAMQPhxia+CZe8wpPOu41zytk/KP2XRmrBlR1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VbnSE288; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385eb7ee7e2so948301f8f.3;
+        Mon, 02 Dec 2024 10:19:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733163558; x=1733768358; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eS4xW5bYpSQfreZMUtLuqFHdZm+D+xD9TMB5vunZyGg=;
+        b=VbnSE288zbQkvVFjWimhbCGuTyleijirwdTD8sFv4Io2Osqu68xJSu8UnDe+FRk5pm
+         5VInLTrdftgqMC3p/iZBst5Oz4PBfPXfaWNV25XpVcB5hIxeIx3ad2GWqjyDa/QJLdHu
+         coELpARLKZILbRNUyH6lWNmpRag3Z6V7iFdLdjYAgZWPj4MNVvTAdDL3dUoggAgZRc0A
+         7vx3MIFBv5Ezrxo0FK9ZKLV3U0nQyjouhLFE+lI0ekJP1I8oEHXsLtTzh2YzWfRo1WLR
+         EhFCaXgMWaQ+MWkw0vZW3Ew+zHvOR0mBss9qzYCvRas6ZHJGwmCQH6HWGCofOiwAfAli
+         h9IA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733163558; x=1733768358;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eS4xW5bYpSQfreZMUtLuqFHdZm+D+xD9TMB5vunZyGg=;
+        b=ekRxZqbcVaclauWu9okgs/YtzIfUa2f08t/QYJaflia9hew62813fB7ISl9J0XaOZa
+         cGpXrUwJG9itD/qzek5YF10pOW/vFaNxo0EHPcOTCPIHbWbcnMIPtQQDAWOU1gFu5mnB
+         t8XyI3tqFu14vS2ohnnRT8+yQgb578c7MTAh/HgGEtk8tS2At675ipaEp+pa/C+Ba4WL
+         qv40+HUPAtjXmpqXJd24XlXMltmfNaLkzq5nmjK11E/Xut/XWer2qxK+daKIbrI8C28i
+         bA6x+UjQ3nxLsSwZOvghkCbfBY9iCdjWEqRw0HNmicNdLLaBOv6SbHskkspc009rJROC
+         Dg7g==
+X-Forwarded-Encrypted: i=1; AJvYcCU6NiTQznG68mwFxrl2xZ8nIgzIAYd9ksJYM0omoEviuHK3hiJnNyB0zE98hg8k5RE9rKSRu5KLRkfp@vger.kernel.org, AJvYcCWXqhTR01PYz0p389+k7ony0GWZzyLAB3cVmfYu7H5GSdkaCz0KnqW3LVLhEFpQHtpWcXYFOT85f8S9Wroo@vger.kernel.org, AJvYcCXQwFHs7S3DHlX9b8kGEAgQkgZmTCi1uiT0IeWbGWgy1EIihP4A6vXzf5XsjlW/l+0L+SCpOX62OvYu@vger.kernel.org
+X-Gm-Message-State: AOJu0YxT9iD96LJjMG/hYrYBz2A2J/D5CTRyTNhLcPFOKfFWtwVvmi8W
+	LJR57MJQUgTbI54kuPEEF78mTZb2WoayFOwuEWGnl2L2EUFcLcnV
+X-Gm-Gg: ASbGncvVO5Xx3RKQ9cliLzoDEjDjuoAbuFoVqjfTYdWU0d/7cUjAy6TeW3BueRqYaLh
+	8JJJe6IiIiJ5T5wquESaZoSjGNyiEDhJci5sCsL5OW7b2wdFLg+U4mTlc/IVITHhci/oRttOaNw
+	y61tc7gcTCb7csO3rkhzD4cc3Zq1P5Wmde4dv3lGP3e/lhPGtwvW6ph4C2yErouBDt7LX4ApYzc
+	zhbanYvkU5pBMWFmzg0952wb+ksNoSgdx4GWz1hs+Jmx2D3yQ+9bJrDG891eKA=
+X-Google-Smtp-Source: AGHT+IF73v4p+/LAaohAtnVHMGc9wjHGQfWa5Frpwp1w/97vS2OPCYBNoiBZhfuKnRgrICJKEUs33w==
+X-Received: by 2002:a05:6000:683:b0:385:f1ac:3abf with SMTP id ffacd0b85a97d-385f1ac3c5fmr4866855f8f.23.1733163558116;
+        Mon, 02 Dec 2024 10:19:18 -0800 (PST)
+Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:ea8a:93ec:a066:eb25])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-385d7d4d9b0sm11659108f8f.65.2024.12.02.10.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 10:19:17 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andriy.shevchenko@linux.intel.com
+Cc: ajarizzo@gmail.com,
+	ak@it-klinger.de,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	vassilisamir@gmail.com
+Subject: [PATCH v2 0/3] iio: pressure: bmp280: Minor cleanup
+Date: Mon,  2 Dec 2024 19:19:04 +0100
+Message-ID: <20241202181907.21471-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241202181907.21471-1-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 02, 2024 at 07:19:04PM +0100, Vasileios Amoiridis wrote:
-> Changes in v2:
-> 
-> Patch 1/3:
-> 	- Switch if case for better readability
-> 
-> Patch 2/3:
-> 	- Reword commit message
-> 
-> ---
-> v1: https://lore.kernel.org/linux-iio/20241128232450.313862-1-vassilisamir@gmail.com/
-> 
-> This series adds the SPI interface description on the device-tree file
-> of the sensor, adds proper self-described sized variables and performs
-> a minor optimization in time variable names.
+Changes in v2:
 
-For some reason your patches still have v1 in them. I dunno how you prepare
-your series but I recommend one of the two options:
-1) b4 relay
-2) my script: https://github.com/andy-shev/home-bin-tools/blob/master/ge2maintainer.sh
+Patch 1/3:
+	- Switch if case for better readability
 
+Patch 2/3:
+	- Reword commit message
+
+---
+v1: https://lore.kernel.org/linux-iio/20241128232450.313862-1-vassilisamir@gmail.com/
+
+This series adds the SPI interface description on the device-tree file
+of the sensor, adds proper self-described sized variables and performs
+a minor optimization in time variable names.
+
+Vasileios Amoiridis (3):
+  dt-bindings: iio: pressure: bmp085: Add SPI interface
+  iio: pressure: bmp280: Use sizeof() for denominator
+  iio: pressure: bmp280: Make time vars intuitive and move to fsleep
+
+ .../bindings/iio/pressure/bmp085.yaml         | 32 +++++++++++++++
+ drivers/iio/pressure/bmp280-core.c            | 39 ++++++++++---------
+ drivers/iio/pressure/bmp280.h                 |  8 ++--
+ 3 files changed, 56 insertions(+), 23 deletions(-)
+
+
+base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 

@@ -1,87 +1,80 @@
-Return-Path: <linux-iio+bounces-13020-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13021-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D37F9E1BFA
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 13:20:38 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D19E1CDC
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 13:58:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2908167529
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 12:20:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA797B41F1E
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 12:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737F01E5705;
-	Tue,  3 Dec 2024 12:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B341EB9E7;
+	Tue,  3 Dec 2024 12:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IJLzxgE7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L4OpATY3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AE71E4908;
-	Tue,  3 Dec 2024 12:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246872500BB;
+	Tue,  3 Dec 2024 12:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733228347; cv=none; b=fDfWw7K8SctupJQc8+T6fhMK3+jdznhFg2ZzkSw8RL559ui57JUJ47IQ3pEsbNlUbG4RLGliIA7uUURdRFYVZvnMrxJaxvtN0ehUpyuE+avvPY3KhEiNryYUzWrAg0aVxzrqX0QPCyAgnQwe+VxM0qLEG41/2QqIOowBqsoipuw=
+	t=1733229763; cv=none; b=CY8IDGt0peyEvyc/1c5P/+FsL+W0cBmlb1SiSGYTroX8DJLrNAeKoR8T+p0XlXYk8mZuQnj2eHka+Ebd9GA+saDceepetCuzYxJsHk65/yev3lWBwnM8OjZdmxdEfW0JCwtdfFXYzF0CAnIQujrNaH25kiCpytPAZMwqyZvGlwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733228347; c=relaxed/simple;
-	bh=ndKEPt7of7/kxIz3Ya4S9dp3qvpwDd3rQMoPCIHXakQ=;
+	s=arc-20240116; t=1733229763; c=relaxed/simple;
+	bh=GEVDWoXU8EkXt2/Ud0xmX9mi2TRTdqO++Z+8LyxF8Gc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l6SThhRi+bvTw4jNtDZpqXfIOebpiK3AOPxzyo/O8SCqeyQvCoH+j4g3inwHtWv4iiVH+4qGfiQ27y0rjFTobGu1+ZPnyiEn4I+T6XEyxgDXZeopRNbiTf/QfmcIGpCGtERPsgxVin5vO6EUteO3uWGa7a+xanAoJ/0yxPH0Qi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IJLzxgE7; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee6c2d6db0so3113981a91.1;
-        Tue, 03 Dec 2024 04:19:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733228345; x=1733833145; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o9N4bf5lFwCp0Geh+81OBCgf6RNbshA4H4t2xhZyJ0I=;
-        b=IJLzxgE71U5bjJU9Rx1E5GXZFltE5dC7QPaNjq3joI8PcmZbkJHECMqnGzUw0Suq1V
-         yaQ+i3N7g0ffX6oaBYCgBWz3IkuJgLsYuUNi8D7s6hRy4yfG312tcNikCgIkFAKnAU51
-         kjbGLk0easiyfmRegKW9ld//K3VM7N5Erh4I2RsIrC47gz4QdfoozGwfIrU0i1seU3bU
-         24RfBOhCEsNg3ZdKTI3IZJvgoSz3FosOGrk7sOpcmyEp5QNlr0claUpso7MjYOuHYVI8
-         q2u/BH5tLCsC9lRgLH4cND8s3qtpQQsS/IyIRfbSaZN2XKHipcCcmafHRHAHJHQlIdSk
-         gt7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733228345; x=1733833145;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o9N4bf5lFwCp0Geh+81OBCgf6RNbshA4H4t2xhZyJ0I=;
-        b=XB42rBaM2KXMR4KYHYiDWxr4VVPteRzWu6oWLajeVBRLIRvDVbM68gZGN4dXIk9nl2
-         lhQ96N4jVRTBF5ofEDFOXWk/5sQ0xPLWleOx13ys/xaBrm3pKVMYgmb8nz3jkGnoL3a7
-         X737w2AdAAfIUBUvVVDoJFMG0evu481Yzaw3OGFQk6lID1dIG3dykVzvJljBtkZ34AHI
-         KsDPZ0o5slpc/cxAs6ZYyso7fbeKv6YGY+dsFM7KnSZyueYVATH17dRQlafGxJ0PY83Y
-         lsIAB6FfNBlYYONbVYn9PYfQH3KsFsJefIHNsrInKIDfVYC82jaR8m/DKO6gqRK14dpP
-         fWyw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1mQVMnrXbeCcQAp42fNlLRAv4aSxOH8LVDBfD07IAKAkUdELHmI2WbzBuRLYEc+DezYspr7k4dBPSyWY0@vger.kernel.org, AJvYcCWM5e4w3F5n+QMLwEDMzY8IofRgJd23vS26pd1YksNTtBPmi8/C5atKSdLC0o1BiGVYRIwd+4jVfXk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZgtUhWXsrPZdFECwp87jUAceGUXo6Wjz1bhYIcHfiywk0t3mH
-	2uakvOMtTvmneiGj7x/SOa6pMWp6I8UDcMZ9EZiUGeexwVO9jVVi
-X-Gm-Gg: ASbGncvk8QqbwWzEE/vpcJVgZD0vJojBwrI9TjscdOMZwqYRL5VG89Hr4k2k/Eca9ty
-	evoUFT6T3baZgwJ2p8HKICTDWXNQ2v2nMGQHerrxbXk3I8v7yheH7x089wrMhqpRWMdKSYUMCBD
-	qAuf4HC6R9zGKJBn534n4mCC/LjwbYEa7XCwWUWOC5tCMic0CweHiZeKZkUJvEqskEtz9qvfLLW
-	3Huqu6B4Kx0nrVkOUKRwJARHCRiGHfcA95T3ezsX16oRH/NBdo/tk0pJSM=
-X-Google-Smtp-Source: AGHT+IFpphu+frZ+0DihURUZf8DhfsSFTBOlZqNjtMtBQudjLmN08seIWfD4cJJjCl+fZZFpr+d/qQ==
-X-Received: by 2002:a17:90b:1c07:b0:2ee:74a1:fba2 with SMTP id 98e67ed59e1d1-2ef012101demr2966167a91.20.1733228344698;
-        Tue, 03 Dec 2024 04:19:04 -0800 (PST)
-Received: from localhost ([2804:30c:1618:9800:694b:286f:2b3a:5414])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eeab112db4sm4585179a91.43.2024.12.03.04.19.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 04:19:03 -0800 (PST)
-Date: Tue, 3 Dec 2024 09:19:30 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Subject: Re: [PATCH 1/1] Documentation: ABI: IIO: Re-add
- filter_type/filter_mode
-Message-ID: <Z073UvHZToWl88f9@debian-BULLSEYE-live-builder-AMD64>
-References: <b2132bd3ca1d64cdd8d5afab1f1f33c574718b50.1732901318.git.marcelo.schmitt@analog.com>
- <52513d34-8484-4c4b-8f87-29cbbdcefc06@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=C85owkEbnzdz4Xa+ZwWGj5lXRwm+Q0pOyPjib/+dU2jqkeaHb3GCDLq0kWlBCcju/bj7MBBLJ1vH6ZXz04IH8CsVDDwsG01cAIEj0zwq4KYx9YepFqvYcMJ+zXwuXzhRj4HkoyL7GtbaQS22fa2rDiU6AJKxJf5CVwkvyG1oFr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L4OpATY3; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733229762; x=1764765762;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GEVDWoXU8EkXt2/Ud0xmX9mi2TRTdqO++Z+8LyxF8Gc=;
+  b=L4OpATY39k2zAx0zqAEuEJV/RxYeKf1+Bb0zcBPPt4+35+ntAOcyIwlU
+   cbOGldUV3Na7dgn3oGlZc4O0qxp4XjcNHilbfo9jic4qbPjD7ggSQE61h
+   CMJTP4m2RqTxMhiMwBBA1VR6BzY1ntDiP/wA1f7pFxLSefSH0DNhtOhIU
+   w5ZjlnkLpA4sK45FxamohMC2QSGRG8SupfJ2gaKKug6BuLsixJ6N46b+R
+   MClXAxRk1Ga3YJGeWq08RmgQVv0ZFEk0cwZC1aYsnxFFPwA+6XutKnVf9
+   /eW8O2hytnD6ajXUvL9xms02gNzGo7fQmkfN9gvPwIFqTpkl+vN+mOcJo
+   A==;
+X-CSE-ConnectionGUID: caj+rfiXSI+cemIc9nzeMg==
+X-CSE-MsgGUID: K2MP4OWPRF2YarTwMLAfnA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11274"; a="32785675"
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="32785675"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 04:42:41 -0800
+X-CSE-ConnectionGUID: Cjp9XN5TQnWBwd25pyBIQg==
+X-CSE-MsgGUID: skx+fdfuTdKqJ4NbE8lekQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,205,1728975600"; 
+   d="scan'208";a="93510610"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2024 04:42:39 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tISEe-00000003RGH-1eT5;
+	Tue, 03 Dec 2024 14:42:36 +0200
+Date: Tue, 3 Dec 2024 14:42:36 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, u.kleine-koenig@pengutronix.de,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] iio: chemical: bme680: add power management
+Message-ID: <Z078vIxRoQf_zLsy@smile.fi.intel.com>
+References: <20241202192341.33187-1-vassilisamir@gmail.com>
+ <20241202192341.33187-4-vassilisamir@gmail.com>
+ <Z04N6GUSL2H0zt6_@smile.fi.intel.com>
+ <Z04aJg7eoBR9CYKe@vamoirid-laptop>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,99 +83,69 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <52513d34-8484-4c4b-8f87-29cbbdcefc06@baylibre.com>
+In-Reply-To: <Z04aJg7eoBR9CYKe@vamoirid-laptop>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 12/02, David Lechner wrote:
-> On 12/2/24 12:22 PM, Marcelo Schmitt wrote:
-> > The ad4130 driver exports in_voltageY-voltageZ_filter_mode and
-> > in_voltage-voltage_filter_mode_available attributes to user space.
-> > The ad7779 driver exports filter_type and filter_type_available.
-> > Add (back again) documentation for filter_type/filter_mode attributes.
+On Mon, Dec 02, 2024 at 09:35:50PM +0100, Vasileios Amoiridis wrote:
+> On Mon, Dec 02, 2024 at 09:43:36PM +0200, Andy Shevchenko wrote:
+> > On Mon, Dec 02, 2024 at 08:23:41PM +0100, Vasileios Amoiridis wrote:
+> > > Add runtime power management to the device.
+
+...
+
+> > > +	ret = pm_runtime_resume_and_get(dev);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
+> > > +	pm_runtime_mark_last_busy(dev);
+> > > +	pm_runtime_put_autosuspend(dev);
 > > 
-> > Fixes: 01bb12922b60 ("Documentation: ABI: added filter mode doc in sysfs-bus-iio")
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> > ---
-> > Digressing a bit away from the specific ABI used by ad4130 and ad7779,
-> > the sinc3/4/5 filters are called `filter_mode` in ad4130 driver while other
-> > drivers (ad7779, ad7124, ad7768-1) call sinc3/4/5 filters a `filter_type`.
-> > Datasheets use the term `filter type`.
+> > Side note: as long as idle method is not defined (NULL) the above dance is
+> > already taken into account in the regular put.
+
+> Thanks again for the review! Indeed by looking at the code a bit, it
+> looks like the suspend callback is being called if the idle one is not
+> found. But I have seen this dance that you mention much more often in
+> the IIO that's why I used it. We can see what Jonathan has to say as
+> well, I think what you propose, simplifies things.
+
+Yeah, this is cargo cult by many people (including me :-) who missed that
+detail. If any, this can be addressed in a different series.
+
+...
+
+> > > +static int bme680_buffer_preenable(struct iio_dev *indio_dev)
+> > > +{
+> > > +	struct bme680_data *data = iio_priv(indio_dev);
+> > > +	struct device *dev = regmap_get_device(data->regmap);
+> > > +	int ret;
 > > 
-> > Depending on the particular ADC chip/design, the sinc3/4/5 filter configuration
-> > may have an impact on the output data rate (ODR) (which is equivalent to the
-> > sampling frequency for SAR ADCs - `sampling_frequency` ABI), 3dB cutoff
-> > frequency of the filter (`_low_pass_3db_frequency` attributes), or settling
-> > time.
+> > > +	ret = pm_runtime_resume_and_get(dev);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	return 0;
 > > 
-> > ad7768-1 sets sinc3/4/5 according to the sampling_frequency attribute. No
-> > filter_type attribute.
+> > Either this is broken (if the above can return positive codes), or can be
+> > replaced with direct return:
 > > 
-> > ad7173 sets the filter_type according to sampling_frequency too, though it
-> > looks like support for only one filter type is implemented.
+> > 	return pm_...
 > > 
-> > ad7124 sets sinc3/4/5 filters according to a filter_low_pass_3db_frequency
-> > attribute so it doesn't export filter type attributes to user space.
-> > Missing `in_voltageY-voltageZ_filter_low_pass_3db_frequency` documentation?
-> > follow up patch?
+> > (but I believe it's the former and you wanted something like if (ret < 0)
+> >  there).
+> > 
+> > > +}
 > 
-> cc: Guillaume and Uwe since they are working on these last two drivers
-> currently. Maybe something they could address?
-> 
-> > 
-> >  Documentation/ABI/testing/sysfs-bus-iio | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index f83bd6829285..704c9033cb5b 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -2268,6 +2268,20 @@ Description:
-> >  		An example format is 16-bytes, 2-digits-per-byte, HEX-string
-> >  		representing the sensor unique ID number.
-> >  
-> > +What:		/sys/bus/iio/devices/iio:deviceX/filter_type
-> > +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_filter_mode
-> > +voltageY_filter_type_available
-> > +KernelVersion:	6.1
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Set the filter mode of the channel. When the filter mode
-> > +		changes, the in_voltageY-voltageZ_sampling_frequency and
-> > +		in_voltageY-voltageZ_sampling_frequency_available attributes
-> > +		might also change to accommodate the new filter mode.
-> > +		If the current sampling frequency is out of range for the new
-> > +		filter mode, the sampling frequency will be changed to the
-> > +		closest valid one.
-> 
-> I think it can be safely assumed that changing any IIO attribute can
-> cause any other to change, so we probably don't need to mention the
-> sampling frequency interaction here, especially since it doesn't apply
-> to every possible user of these attributes.
+> Well, pm_runtime_resume_and_get() looks like it returns 0 on success and
+> negative value on error so I think the if (ret) is correct, no? But I
+> agree with you that it can be simplified as you proposed.
 
-Besides these filter attributes, the _offset attribute was allowed to change
-after a change in _scale for a different driver so I'm also thinking IIO
-attribute changes are allowed to cause updates to other device attributes.
-The description above is roughly the same that was removed in 01bb12922b60.
-Can think of something more accurate if that would be appreciated.
+Please, go ahead with the simplification!
 
-Jonathan, let me know if you prefer to re-add ABI doc as it was or if we
-can re-add an updated version of it.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> 
-> Some other useful things to add instead:
-> * Mention that the values are the same as the ones listed in the
->   "..._available" attribute docs.
-Sure, will do if going to update the ABI description.
 
-> * We should deprecate one of the names and recommend the other for
->   future drivers to use. Since "type" is used more than once and
->   "mode" only once, it seems natural to keep using "type" going
->   forward.
-Agree.
-
-> 
-> > +
-> >  What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
-> >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
-> >  KernelVersion:	6.1
-> > 
 

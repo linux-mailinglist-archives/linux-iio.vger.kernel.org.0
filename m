@@ -1,157 +1,139 @@
-Return-Path: <linux-iio+bounces-13032-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13033-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC5B9E29EC
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 18:48:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 874869E2A66
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 19:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94AF7161287
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 17:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1186C166AC2
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 18:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453831FBCA1;
-	Tue,  3 Dec 2024 17:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bkUoZW5s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82791FC10C;
+	Tue,  3 Dec 2024 18:07:40 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9DA1632F3;
-	Tue,  3 Dec 2024 17:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9A31E868;
+	Tue,  3 Dec 2024 18:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733248114; cv=none; b=WBbnkEGEsB9cUW3p6+Kif7/FfISE/E8xmyvXL2Nz1VgKwnWtutj0VqiP/IMv3QhJ2uOfraXj38IX5+ihuE6XIj+/LLTFR/6gIVZL8/hhrKsGZ/gynRXf2zAIttJqKoC1ypeJ1n7ZbE2ekp+7wOQCi3UEaOeP72ePU01xiBVDqCc=
+	t=1733249260; cv=none; b=rfYZZk+CgQLa6ars5mZW9yoS+TrIqkeWV9IKsXWHXst1qfl5WU+36DWYFQ3Rq5j8dmNDZAM/yuzmuZN5NRiKCAr0jBKUZJdlb7Y3+9aejoPArk+8GdKKWkmQL+drmBgQeambvgbsGeRTYk1mcxvmoZsvpVuBnKmGBb4G7XWmRjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733248114; c=relaxed/simple;
-	bh=d+jCWgo6EElY4bwZaJas/PG3O2tTB+4SzeRZqKzyQtc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lkG7KD6p6/pPNXX2K2k+p6x9hcQfXgDPRTG3oDEqspNr1MB9SK3mOf+u6cMVVbZkOtV5+S946/U+uT3RIlN9J+msIuYNZoQRDHs2AjRkEPjWTSSxUSeECdprfcOTdTyDHObB3xOqAl8CnRrL38ujemJrizARMj3Ykq4f0viP3mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bkUoZW5s; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa5325af6a0so820209066b.2;
-        Tue, 03 Dec 2024 09:48:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733248111; x=1733852911; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PnvbEAC2YtLls/04SGMg6SxSWMbA6kNxrt6oKTJKjMY=;
-        b=bkUoZW5smniVO+z6U5Crh9kb7aRUre/YHyGf94xoCcXtlyDpi2xDdkn747Tie9R/ce
-         HviNAytrPXgZrKqJKWZASWRV5smyMc7htz7q6b+XAxrzPAnTAySOq9BsxLALNBqfXKkM
-         0lA9SdPiRQi2ZfsatRKUTXjkLt5UG2oTCH+Y5oCdlkZAq1MGmF8/3MzfJ/QbFcYsqBYn
-         cNkAITZ29J9MxC2fRj7hTnBWwSEDYtLDtOeCxVaLWjJvC7K1fTEPh5gZuEFaGGPiZkJG
-         XroVO5x+pf2dQfXH/fyXYz0A9B5E6FuwG3GONu9vrSPCCDfwKVdZHnOmENKQA5e/VUwj
-         qE9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733248111; x=1733852911;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PnvbEAC2YtLls/04SGMg6SxSWMbA6kNxrt6oKTJKjMY=;
-        b=t+ePXTYqKLe99sPPpYae+DKe4Y6B3KoTWic/08QN/XtP1FEuwcL5n1FILGMMuF3YWr
-         /sUDxAIwwJZkdgcVD2r7K4jL4rqtEfn+ADjud9H1utE8g+Jj3iHdEqVVQl5XnFOR/DXM
-         xKbyc20mMUlilmyfX7+qH3y/1/3WSx5dsnnFRsYB4+U+hCemVxtuE9muHCnPoGrBLpOd
-         fYjhovbXCTSN6NBRIhzDp2XvicLi6XFMsri4hRD6e4v4dVKDLKGRxVYGOATRX8t7i+7u
-         0BbQX87rCLzpH86IGjnPK60zNGwJ9aPXsNXmpmNoVrY9aAbqu6pZQWw5vD1raPQdau/O
-         rydw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMJzkRQhDPI4a7rCH8IR1f/OSE90TwGUqZjflvuA70pmLkfL9cHFhW3V9dDU2azDOHj5k26jLaFWpU@vger.kernel.org, AJvYcCWQ963iMwxpAH3wbFLzWJXLxdgkTqCjE/XmGIZQytEJy+OYMvwnE7RXYUUMEVJXJm7SW3ZVhcjZ79b7@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWcCk5t/5Msel9gCyVvqyAU4KvTjTo6Ya4qGy+yYJsMMKyt8nD
-	Wv4TuRrYgSmsWkietJXx7Qx1frLbJuvcmz3X5WXpqo4DHaBl9cU5iqiMVScgutNZI217J7gfM0r
-	ygfveR3yyBLc0TL8rHqSy2pWEz7E=
-X-Gm-Gg: ASbGnct9RBx/7P6tOjJfW99gKCKQHfXqQ0byTbhl9Ivi/275ovQcYfDGtxPLCB3PVur
-	5zc/7Pnldaxt3ovd3pDQDPq7uSGijPEM=
-X-Google-Smtp-Source: AGHT+IFPH92JOHin4lcnT8ALlS3vdDckialsLIKMTdkjKzkL/svqP/DjzraFQ8836uT+1lr3ybN+nBezNIpef0RTSEw=
-X-Received: by 2002:a17:907:75d3:b0:aa5:2a71:1646 with SMTP id
- a640c23a62f3a-aa5f7da975cmr305957566b.33.1733248110449; Tue, 03 Dec 2024
- 09:48:30 -0800 (PST)
+	s=arc-20240116; t=1733249260; c=relaxed/simple;
+	bh=dqztknOIkm8ntS9wy+GQNN8ohu1VudzQqaeaZ2cvWb4=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i/nkJ0re27qWWXI8a3nA+wfSjtn3tZ1H7D07A0Xerp94J6nPisPT4YsiJ4ABAJY3I4t0lyC5KBFcBNK9q75c9nLIjCPyXCNtIFzaMtv2kZQQI1TAPXQE98Uh7O869qHDCjz0w1ZFZP7drIsDjTckoLxRYKYm7dw0AqD4C1EXfFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Y2pR80KFJz6K6XW;
+	Wed,  4 Dec 2024 02:03:00 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id D7E5F140B63;
+	Wed,  4 Dec 2024 02:07:12 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 3 Dec
+ 2024 19:07:12 +0100
+Date: Tue, 3 Dec 2024 18:07:10 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Paul Barker <paul.barker.ct@bp.renesas.com>
+CC: Claudiu <claudiu.beznea@tuxon.dev>,
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>, <jic23@kernel.org>,
+	<lars@metafoo.de>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <geert+renesas@glider.be>, <magnus.damm@gmail.com>,
+	<mturquette@baylibre.com>, <sboyd@kernel.org>, <p.zabel@pengutronix.de>,
+	<linux-iio@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-clk@vger.kernel.org>, Claudiu Beznea
+	<claudiu.beznea.uj@bp.renesas.com>
+Subject: Re: [PATCH 06/14] iio: adc: rzg2l_adc: Simplify the locking scheme
+ in rzg2l_adc_read_raw()
+Message-ID: <20241203180710.0000204d@huawei.com>
+In-Reply-To: <6f627195-6c55-4687-b6b6-7fb791d13819@bp.renesas.com>
+References: <20241203111314.2420473-1-claudiu.beznea.uj@bp.renesas.com>
+	<20241203111314.2420473-7-claudiu.beznea.uj@bp.renesas.com>
+	<6f627195-6c55-4687-b6b6-7fb791d13819@bp.renesas.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203110019.1520071-12-u.kleine-koenig@baylibre.com>
- <20241203110019.1520071-20-u.kleine-koenig@baylibre.com> <CAHp75VfuTRDAjOD73re8tCWWJsAFUq_P6hPiPd4j_mOFM8oKGw@mail.gmail.com>
- <wfcqlw3xqs2farpvkn3jjlot2bhmsgfa7lfpyzrjwuwuininsn@ni5rcnm3zdxs>
-In-Reply-To: <wfcqlw3xqs2farpvkn3jjlot2bhmsgfa7lfpyzrjwuwuininsn@ni5rcnm3zdxs>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 3 Dec 2024 19:47:53 +0200
-Message-ID: <CAHp75VdYagk3Rk=ZwhrONHmJBQ=oxQuJc0-RHZwj7E_wGim-OA@mail.gmail.com>
-Subject: Re: [PATCH v5 08/10] iio: adc: ad_sigma_delta: Check for previous
- ready signals
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alisa-Dariana Roman <alisa.roman@analog.com>, Renato Lui Geh <renatogeh@gmail.com>, 
-	Ceclan Dumitru <dumitru.ceclan@analog.com>, devicetree@vger.kernel.org, 
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, 
-	Alexandru Ardelean <aardelean@baylibre.com>, Trevor Gamblin <tgamblin@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500009.china.huawei.com (7.191.174.84) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, Dec 3, 2024 at 6:16=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
-> On Tue, Dec 03, 2024 at 03:10:30PM +0200, Andy Shevchenko wrote:
-> > On Tue, Dec 3, 2024 at 1:01=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> > <u.kleine-koenig@baylibre.com> wrote:
-> > >
-> > > It can happen if a previous conversion was aborted the ADC pulls down
-> > > the =CC=85R=CC=85D=CC=85Y line but the event wasn't handled before. I=
-n that case enabling
-> >
-> > Interesting use of Unicode, but I suggest to avoid it when it can be
-> > avoided, i.e.
-> > using the notation of #RDY_N might be appropriate as that is how
-> > usually the HW people refer to the active low signals.
->
-> Usage of =CC=85R=CC=85D=CC=85Y has the advantage to match the reference m=
-anual and data
-> sheet. So I tend to keep it.
+On Tue, 3 Dec 2024 13:03:29 +0000
+Paul Barker <paul.barker.ct@bp.renesas.com> wrote:
 
-Not sure it's strictly the same. The above has two dashes on top
-(actually misaligned a bit) of two letters out of three, this is quite
-confusing (as to me to an electrical engineer) and I hardly believe
-it's the same in the datasheet (however nowadays everything is
-possible with (ab)use of Unicode).
-
-> > > the irq might immediately fire (depending on the irq controller's
-> >
-> > controller
->
-> That matches the way I spelled it. Do you mean s/'s//?
-
-Yes.
-
-> > > capabilities) and even with a rdy-gpio isn't identified as an unrelat=
-ed
-> > > one.
-> > >
-> > > To cure that problem check for a pending event before the measurement=
- is
-> > > started and clear it if needed.
-
+> Hi Claudiu,
+> 
+> On 03/12/2024 11:13, Claudiu wrote:
+> > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > 
+> > Simplify the locking scheme in rzg2l_adc_read_raw() by saving the converted
+> > value only if the rzg2l_adc_conversion() returns success. The approach
+> > simplifies the addition of thermal sensor support (that will be done in the
+> > next commits). The downside is that the ret variable need to be checked
+> > twice.
+> > 
+> > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > ---
+> >  drivers/iio/adc/rzg2l_adc.c | 9 +++------
+> >  1 file changed, 3 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> > index 62932f9295b6..eed2944bd98d 100644
+> > --- a/drivers/iio/adc/rzg2l_adc.c
+> > +++ b/drivers/iio/adc/rzg2l_adc.c
+> > @@ -227,14 +227,11 @@ static int rzg2l_adc_read_raw(struct iio_dev *indio_dev,
+> >  		mutex_lock(&adc->lock);
+> >  		ch = chan->channel & RZG2L_ADC_CHN_MASK;
+> >  		ret = rzg2l_adc_conversion(indio_dev, adc, ch);
+> > -		if (ret) {
+> > -			mutex_unlock(&adc->lock);
+> > -			return ret;
+> > -		}
+> > -		*val = adc->last_val[ch];
+> > +		if (!ret)
+> > +			*val = adc->last_val[ch];
+> >  		mutex_unlock(&adc->lock);
+> >  
+> > -		return IIO_VAL_INT;
+> > +		return ret ? ret : IIO_VAL_INT;  
+> 
+> It would be maybe slightly neater to use:
+> 
+> 	if (!ret) {
+> 		*val = adc->last_val[ch];
+> 		ret = IIO_VAL_INT;
+> 	}
+> 	mutex_unlock(&adc->lock);
+> 
+> 	return ret;
+> 
+Better I think to use {} for scope and
+guard(mutex)()
 ...
+if (ret)
+	return ret;
 
-> > > +       data =3D kzalloc(data_read_len + 1, GFP_KERNEL);
-> >
-> > Yes, I know that's not needed right now, but would make code robust
-> > against changes. I'm talking about using __free() here.
->
-> Given that I expect this commit to be backported to stable and
->
->         $ git show stable/linux-4.19.y:include/linux/cleanup.h
->         fatal: path 'include/linux/cleanup.h' exists on disk, but not in =
-'stable/linux-4.19.y'
->
-> I'd not do that *now* and in this commit. But in general I agree.
+*val = adc->last_val[ch];
 
-Good!
+Where possible keeping the error path as the out of line element is
+easier to follow on basis that is most common pattern so what a reviewers
+eye is 'trained' to see.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Jonathan
+
+> Thanks,
+> 
+
 

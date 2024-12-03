@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-13044-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13046-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E709E2DC0
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 22:01:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03F89E2D9D
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 21:53:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B519B35DCC
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 20:53:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9B83165D28
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 20:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F062207A0F;
-	Tue,  3 Dec 2024 20:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48054209F5E;
+	Tue,  3 Dec 2024 20:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="URHxfmWO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBBggEGI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961931B21AA;
-	Tue,  3 Dec 2024 20:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CD5207A3B;
+	Tue,  3 Dec 2024 20:53:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733259186; cv=none; b=BWD1M4dditj/lfnk+/HBmNAPMbzORWEUrcYLXOrnSZ+MkoODhfWgme+n9NlcLi52ouqYIxgkOOqj4D0JmSCFrMOxY45x1nhO2oSqxXDZi7Yyn7oUoQ1D9bVI1Yvq/LIJE4pyfHkX9rE+jOiJTyLxEo8+Nf+s1G3lx0g6VXOgB1I=
+	t=1733259189; cv=none; b=Yo+iSoFHaI/Hv3sw7XycUbFWmpt1YiDBH+O9NbGGWhGBFtt5PIkfimuMTrRdJjjrBnV4JVXviHY6EpwH80Ss4XeE28r8yY09u4R9YI13fWN86v462OLcLQ8eszehhsPHkM5TkhhbcF8f2pcnIXGlBEOOJOCwDfOde/FJYMUBi7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733259186; c=relaxed/simple;
-	bh=Xh1HrFRQCcFhnCOCpCoeW+y2e4KcVSimwHdorrZTCF4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QmgNCuJuFISB130lBBByL6fZiEnSc7vdgljCktFCwcgiNdpbrKWRX6mUVxdrR+ZbgNw4DCBU5tOVwhpu7bPmw3H2ur5wGNm7L1kBYpPpittdUhQMDJmSecm3OM5jRAhLfn+GisiPgSSYdLglPP2YNXMkuip7AVuBEzMOLs7phWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URHxfmWO; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1733259189; c=relaxed/simple;
+	bh=+SXaFaCDUVInjRlDueNbx9/MYhzQH+ayDZ4JgqAY0DE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=GVXpc/eGO/8Mz93dmKfMoTVkHPxg+aZF3YcKi6nsB9xNbipZ816GdGMQ4tef+ULJn9COWillvDvYHlSfiCB/F9wRW9KgW9Df3E/b7/7/Aq+8RhciXg5H1G+t5fcF5tOBrTzQROCf0iqGi0cPcp7T0CGwhDdtkmbwdLlyICmrNVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBBggEGI; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-434a0300d4cso5194665e9.3;
-        Tue, 03 Dec 2024 12:53:04 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-434a0300d4cso5194725e9.3;
+        Tue, 03 Dec 2024 12:53:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733259183; x=1733863983; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RRV2TZX4MygrN+eP9YLgKwtwVCNWhxIUfzSzBMdRIzw=;
-        b=URHxfmWOkcK8q36RTn9Z8iTokNqV5jAJ/XFuNgOeHurKiRt2ar9P1g70l6o00/cA8U
-         /NrvWg/9E/xI+xMbt8ySPIOG7wEeoPT4c9RnQZZO8vcel+Vir0OuS7QEWzsQFrZiRfU1
-         5RLkx+WOpHATzZaxQw3lkaW+GeTowfL/ZENxIhNF6PbTiM7mu99tJSxGK9yZsu5MXwCB
-         Lrs/GPsGvNJFk9ZYYooIThxMpjYIklXewFiT4HIJkpHQaXHsUoQgEAs4ngwcetsIFfHJ
-         HiC0WhCyEOKexujK1NK0Y6701jA41/zrEgH2j440/5QhAnJwgZmaeRM1tWPS6Vr0CE0Y
-         oM4w==
+        d=gmail.com; s=20230601; t=1733259185; x=1733863985; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cq8vAqrAI+qdVi5s97T365YIN/eEAmM+hfA50EMM1b0=;
+        b=SBBggEGIFKcoUEMPss3tkrOFx1qPUZrddwQS/eg8w71wRW54g+jl9BtLcsp9BBiXTl
+         POXA1wib7AdHYCYPVRFr0syX0Kr/AiyR8hv1ZAVnlZP7BsrZQY1eRufDDTnzwrnK0d5f
+         Qfy2wP6mFN6ecs4Zs49dXztDsxh/CrSik6eFciW1RFI3opDCaeGCPkGhaiYIWdpZ67Gi
+         O+yb8sWLHGtikYeAXBYBFKZB18sywaDTJAyVyyK1Hi3Bp+Y9B+Pzq6t37GDvJp3SsApF
+         1Acilu9L/oOQaA9yShPOau0LDKpYZYOSHrJE4o302hjPiu1Z/X87D1e9in7K1BCAQ9uM
+         rcaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733259183; x=1733863983;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RRV2TZX4MygrN+eP9YLgKwtwVCNWhxIUfzSzBMdRIzw=;
-        b=avMGaIaRB2EyQsUFyRg2ao0jBCjCVAgp2s6gdECb2Je1oBGHFvd/cxrX6L/qMdR35W
-         cFRg/6/B9g2Oi/cVLyG0ntCa+tBeDRPaDusnU5Ebg5eidXpHthhgMtw1vHNIYspi2Ywe
-         2EEFWVMnLlS9b3lB/Lahh8HUkIINlJH7J2BIOCeT/DTtEjfdcWKfstu7HbAQQntzIvCI
-         ouNZ4ynXUuj6D8llmQUgJCkksfp9lKYjT30y9kNqXl8rqBUfjMdWlAYv3pV4lJR7Zcv4
-         jc0fzKfW/2jthV/yw56YUUBU+icV7BHrDMsYiSV0sQtLlKtNErYIScA6Q7nNO1B0i+kL
-         7wiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzfqq76J9M6UeCcXZCWRSoS3aaDz6jJV5u/V+wNXeMErygKxrUPtjViKQuCWDO3T5hXXnNMrzGLvvx2zip@vger.kernel.org, AJvYcCW10dcVuPHq2Amh25EzKSE8hVRnLUfIhafWl6AjDoA1qWO1d/3SXoS7BajRpJs5fbNXMUZDltF8oNE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoNjQTD+pWn+UgZ3fnvzfeqASrVbo7gMvb9rCf9hbj1X0Y1kLN
-	onHljwY+3cek2GQLGbTprjt3y8PM0rSuUDXlySJhqbGJKBznNvvJ8KFhHQ==
-X-Gm-Gg: ASbGncsa4io/lUoDUXSzfChkB8StX7UNM73Sj82nHfVsJHkKvWI9vkAuDXKUTiFhDqM
-	ZecaAvYBFhQBFVZet1jbUs5/bEhLzh397vIvZWCgIbZ/eqatx1Jqdsn0vAqdKfrAJNlZnz+9Lbg
-	Xi3BMJFD2Y1Sz6a7GCnhmiNLTpzwBiLxcVIJbxSrzs2lqytKzJT+IaDsS62uGOt9+UB0bPf90/f
-	CdKNGtAF7yhO26G/ZoATKp/KpUYRB2JOQUPhQGh5vYTpf722AnpGki2W5tE6Ku+mUL3yaTg9SJc
-	ftiVf8EDvidUjd56AmKYdWkzF1xC
-X-Google-Smtp-Source: AGHT+IFmd1HUA0v5RCa8SB5947dub215Ycyw9+q2q0pwAKi2vW9Vp2IIDTrDE+GdMXDAsEAnNeV+pQ==
-X-Received: by 2002:a05:600c:1d16:b0:434:941c:9df2 with SMTP id 5b1f17b1804b1-434d11d0d28mr14167285e9.8.1733259182553;
-        Tue, 03 Dec 2024 12:53:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733259185; x=1733863985;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cq8vAqrAI+qdVi5s97T365YIN/eEAmM+hfA50EMM1b0=;
+        b=t2x5r10lPAm0aflb3l4/Fzs0BDzsg1RFC61EDT8vUTVfewPHxqKuJOQTvXsITxEsgV
+         xhbFp9r8Tuze9Fwy8t87CFpJAn9zb7ODrKPpml/IemAhjfng1HjRxnZyjEht8ryHD2D+
+         lFLj9LCRjdFMfs2LtPzPI1+qdSMpMiQyJFfetLBaJwZZNa3Fu9ZZUr4yhsgbktH1j/SY
+         HsSK1PFNNpiOnZzrC19doium36rjXK0NM3N1bnMckKhaxiuzDdopy0IYxUJgpcQeas53
+         9C/5V5L6bDIaHXHgM+kMTzhQijL6OqsqigmBbz1dhQbtnlM+biuvvFjk5Q8iQprCCqsF
+         vakw==
+X-Forwarded-Encrypted: i=1; AJvYcCUSUq9o8ey90bffIxKUVnE+EbLWfXjqMcr1XS5ERs5qGWwPtwe7T97YceTOWp/cW1u7Kw8/Yur906kTHtgC@vger.kernel.org, AJvYcCVur4XKQZ7LRR4BxFrrtjJopJ6zIE7/yqiuJQydC3ekqY670d19SGYwMx/tpgPB/DmFQrkBQh8qCYU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfPewCbTYoc6h1PhR2XFJoEIz3cx4Ap/e8XFZPyMbLVNTgT+po
+	Yny1gFmZBYXUUMIw3FrkQgDRk12U7eLF5G40/tlqd4viVQczvo36
+X-Gm-Gg: ASbGncuotBtG8fLl7hhz2dSVUXnTXTJ01oR9E3SShIfDVx4gAjOAtUji1XCOZTykuEz
+	reYpwooL0kIyJpsK9SvOGHhX6tD8wEsXWjQmbKIYy/4CW6PnPxWgEuxVWsdxFi441BwwZbPFnVi
+	/nsFzJC63a4VqKMVXfZFvCrS70BIK7zMq+xqRy67FXIX1ZY4uU1u2SwrgAdqR+9F95dfF8WTMUs
+	zKyYmoZMS4AnIcQNRn4cXXyYD6n3w3z+svQpAowW1Y2UpdVX0ZWMKZSi6dqG7SqwxaUHatIG3ao
+	sJiOisKvBNwEw/kdFRyMFmrV67k/
+X-Google-Smtp-Source: AGHT+IEuhrMEyESbHuppQVOFrd1cwDwo/Nx+cBC78f/SfDyN61wYe2toUGlxUF4V9SGLbLDxZ4dBRw==
+X-Received: by 2002:a05:6000:184e:b0:385:fa20:6583 with SMTP id ffacd0b85a97d-385fddd3462mr1088243f8f.2.1733259185441;
+        Tue, 03 Dec 2024 12:53:05 -0800 (PST)
 Received: from 7b58d44c4ff6.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ebaf3bccsm9042750f8f.68.2024.12.03.12.53.00
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ebaf3bccsm9042750f8f.68.2024.12.03.12.53.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 12:53:01 -0800 (PST)
+        Tue, 03 Dec 2024 12:53:05 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -82,10 +84,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v3 00/10] iio: accel: adxl345: add FIFO operating with IRQ triggered watermark events
-Date: Tue,  3 Dec 2024 20:52:31 +0000
-Message-Id: <20241203205241.48077-1-l.rubusch@gmail.com>
+Subject: [PATCH v3 02/10] iio: accel: adxl345: rename variable data to st
+Date: Tue,  3 Dec 2024 20:52:33 +0000
+Message-Id: <20241203205241.48077-3-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241203205241.48077-1-l.rubusch@gmail.com>
+References: <20241203205241.48077-1-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,126 +98,174 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The adxl345 sensor offers several features. Most of them are based on
-using the hardware FIFO and reacting on events coming in on an interrupt
-line. Add access to configure and read out the FIFO, handling of interrupts
-and configuration and application of the watermark feature on that FIFO.
+Rename the locally used variable data to st. The st refers to "state",
+representing the internal state of the driver object. Further it
+prepares the usage of an internal data pointer needed for the
+implementation of the sensor features.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
-Although I tried to implement most of the requested changes, now the code
-is simplified and clearer, I still encounter some issues.
+ drivers/iio/accel/adxl345_core.c | 44 ++++++++++++++++----------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-1) Unsure if my way reading out the FIFO elements with a regmap_noinc_read()
-   is supposed to be like that. TBH, isn't there a better way, say, to
-   configure the channel correctly and this is handled by the iio API
-   internally? As I understood from v2 there might be a way using
-   available data, also in iio_info I see now as buffer attributes an
-   available data field. Where can I find information how to use it or
-   did I get this wrong?
-
-2) Overrun handling: I'm trying to reset the FIFO and registers. Unsure,
-   if this is the correct dealing here.
-
-3) I can see the IRQs coming in, and with a `watch -n 0.1 iio_info` I can
-   see the correct fields changing. I tried the follwoing down below,
-   but the iio_readdev shows me the following result. I don't quite
-   understand if I still have an issue here, or if this is a calibration
-   thing?
-
-# iio_info 
-Library version: 0.23 (git tag: v0.23)
-Compiled with backends: local xml ip usb
-IIO context created with local backend.
-Backend version: 0.23 (git tag: v0.23)
-Backend description string: Linux dut1138 6.6.21-lothar02 #3 SMP PREEMPT Wed Nov  6 21:21:14 UTC 2024 aarch64
-IIO context has 2 attributes:
-	local,kernel: 6.6.21-lothar02
-	uri: local:
-IIO context has 1 devices:
-	iio:device0: adxl345 (buffer capable)
-		3 channels found:
-			accel_x:  (input, index: 0, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: -14                          <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-			accel_y:  (input, index: 1, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: 6                            <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-			accel_z:  (input, index: 2, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: 247                          <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-		2 device-specific attributes found:
-				attr  0: sampling_frequency_available value: 0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200
-				attr  1: waiting_for_supplier value: 0
-		3 buffer-specific attributes found:
-				attr  0: data_available value: 13
-				attr  1: direction value: in
-				attr  2: watermark value: 15
-		No trigger on this device
-
-  Above I marked what keeps changing with "CHANGES", that's what I expect. Then with readdev
-  I obtain the following result.
-
-# iio_attr -c adxl345
-dev 'adxl345', channel 'accel_x' (input, index: 0, format: le:s13/16>>0), found 4 channel-specific attributes
-dev 'adxl345', channel 'accel_y' (input, index: 1, format: le:s13/16>>0), found 4 channel-specific attributes
-dev 'adxl345', channel 'accel_z' (input, index: 2, format: le:s13/16>>0), found 4 channel-specific attributes
-# echo 1 > ./scan_elements/in_accel_x_en
-# echo 1 > ./scan_elements/in_accel_y_en
-# echo 1 > ./scan_elements/in_accel_z_en
-# echo 32 > ./buffer0/length
-# echo 15 > ./buffer0/watermark
-# echo 1 > ./buffer0/enable
-# iio_readdev -b 16 -s 21 adxl345 > samples.dat
-# hexdump -d ./samples.dat 
-0000000   65523   00006   00248   65523   00005   00235   65522   00006
-0000010   00248   65522   00006   00248   65521   00005   00247   65522
-0000020   00007   00249   65523   00005   00249   65521   00006   00248
-0000030   65522   00006   00248   65522   00006   00250   65522   00006
-0000040   00249   65522   00005   00248   65523   00005   00248   65521
-0000050   00007   00248   65521   00006   00250   65522   00005   00248
-0000060   65521   00006   00248   65522   00007   00247   65522   00006
-0000070   00248   65522   00006   00248   65521   00004   00250        
-000007e
-
-  Am I doing this actually correctly?
-
----
-v2 -> v3: Implementation reworked and simplified
-          - INT lines are defined by binding
-          - kfifo is prepared by devm_iio_kfifo_buffer_setup()
-          - event handler is registered w/ devm_request_threaded_irq()
-v1 -> v2: Fix comments according to Documentation/doc-guide/kernel-doc.rst
-          and missing static declaration of function.
----
-Lothar Rubusch (10):
-  iio: accel: adxl345: fix comment on probe
-  iio: accel: adxl345: rename variable data to st
-  iio: accel: adxl345: measure right-justified
-  iio: accel: adxl345: add function to switch measuring
-  iio: accel: adxl345: extend list of defines
-  dt-bindings: iio: accel: add interrupt-names
-  iio: accel: adxl345: initialize IRQ number
-  iio: accel: adxl345: initialize FIFO delay value for SPI
-  iio: accel: adxl345: prepare channel for scan_index
-  iio: accel: adxl345: add kfifo with watermark
-
- .../bindings/iio/accel/adi,adxl345.yaml       |  13 +
- drivers/iio/accel/adxl345.h                   |  90 +++-
- drivers/iio/accel/adxl345_core.c              | 427 ++++++++++++++++--
- drivers/iio/accel/adxl345_i2c.c               |   2 +-
- drivers/iio/accel/adxl345_spi.c               |   7 +-
- 5 files changed, 484 insertions(+), 55 deletions(-)
-
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index cf73d7052e9..0b613f5652e 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -17,7 +17,7 @@
+ 
+ #include "adxl345.h"
+ 
+-struct adxl345_data {
++struct adxl345_state {
+ 	const struct adxl345_chip_info *info;
+ 	struct regmap *regmap;
+ };
+@@ -43,7 +43,7 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
+ 			    struct iio_chan_spec const *chan,
+ 			    int *val, int *val2, long mask)
+ {
+-	struct adxl345_data *data = iio_priv(indio_dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
+ 	__le16 accel;
+ 	long long samp_freq_nhz;
+ 	unsigned int regval;
+@@ -56,7 +56,7 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
+ 		 * ADXL345_REG_DATA(X0/Y0/Z0) contain the least significant byte
+ 		 * and ADXL345_REG_DATA(X0/Y0/Z0) + 1 the most significant byte
+ 		 */
+-		ret = regmap_bulk_read(data->regmap,
++		ret = regmap_bulk_read(st->regmap,
+ 				       ADXL345_REG_DATA_AXIS(chan->address),
+ 				       &accel, sizeof(accel));
+ 		if (ret < 0)
+@@ -66,10 +66,10 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+-		*val2 = data->info->uscale;
++		*val2 = st->info->uscale;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+-		ret = regmap_read(data->regmap,
++		ret = regmap_read(st->regmap,
+ 				  ADXL345_REG_OFS_AXIS(chan->address), &regval);
+ 		if (ret < 0)
+ 			return ret;
+@@ -81,7 +81,7 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
+ 
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		ret = regmap_read(data->regmap, ADXL345_REG_BW_RATE, &regval);
++		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
+ 		if (ret < 0)
+ 			return ret;
+ 
+@@ -99,7 +99,7 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 			     struct iio_chan_spec const *chan,
+ 			     int val, int val2, long mask)
+ {
+-	struct adxl345_data *data = iio_priv(indio_dev);
++	struct adxl345_state *st = iio_priv(indio_dev);
+ 	s64 n;
+ 
+ 	switch (mask) {
+@@ -108,14 +108,14 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 		 * 8-bit resolution at +/- 2g, that is 4x accel data scale
+ 		 * factor
+ 		 */
+-		return regmap_write(data->regmap,
++		return regmap_write(st->regmap,
+ 				    ADXL345_REG_OFS_AXIS(chan->address),
+ 				    val / 4);
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		n = div_s64(val * NANOHZ_PER_HZ + val2,
+ 			    ADXL345_BASE_RATE_NANO_HZ);
+ 
+-		return regmap_update_bits(data->regmap, ADXL345_REG_BW_RATE,
++		return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
+ 					  ADXL345_BW_RATE,
+ 					  clamp_val(ilog2(n), 0,
+ 						    ADXL345_BW_RATE));
+@@ -180,7 +180,7 @@ static void adxl345_powerdown(void *regmap)
+ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 		       int (*setup)(struct device*, struct regmap*))
+ {
+-	struct adxl345_data *data;
++	struct adxl345_state *st;
+ 	struct iio_dev *indio_dev;
+ 	u32 regval;
+ 	unsigned int data_format_mask = (ADXL345_DATA_FORMAT_RANGE |
+@@ -189,17 +189,17 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 					 ADXL345_DATA_FORMAT_SELF_TEST);
+ 	int ret;
+ 
+-	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 
+-	data = iio_priv(indio_dev);
+-	data->regmap = regmap;
+-	data->info = device_get_match_data(dev);
+-	if (!data->info)
++	st = iio_priv(indio_dev);
++	st->regmap = regmap;
++	st->info = device_get_match_data(dev);
++	if (!st->info)
+ 		return -ENODEV;
+ 
+-	indio_dev->name = data->info->name;
++	indio_dev->name = st->info->name;
+ 	indio_dev->info = &adxl345_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = adxl345_channels;
+@@ -207,12 +207,12 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 
+ 	if (setup) {
+ 		/* Perform optional initial bus specific configuration */
+-		ret = setup(dev, data->regmap);
++		ret = setup(dev, st->regmap);
+ 		if (ret)
+ 			return ret;
+ 
+ 		/* Enable full-resolution mode */
+-		ret = regmap_update_bits(data->regmap, ADXL345_REG_DATA_FORMAT,
++		ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+ 					 data_format_mask,
+ 					 ADXL345_DATA_FORMAT_FULL_RES);
+ 		if (ret)
+@@ -221,14 +221,14 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 
+ 	} else {
+ 		/* Enable full-resolution mode (init all data_format bits) */
+-		ret = regmap_write(data->regmap, ADXL345_REG_DATA_FORMAT,
++		ret = regmap_write(st->regmap, ADXL345_REG_DATA_FORMAT,
+ 				   ADXL345_DATA_FORMAT_FULL_RES);
+ 		if (ret)
+ 			return dev_err_probe(dev, ret,
+ 					     "Failed to set data range\n");
+ 	}
+ 
+-	ret = regmap_read(data->regmap, ADXL345_REG_DEVID, &regval);
++	ret = regmap_read(st->regmap, ADXL345_REG_DEVID, &regval);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Error reading device ID\n");
+ 
+@@ -237,11 +237,11 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 				     regval, ADXL345_DEVID);
+ 
+ 	/* Enable measurement mode */
+-	ret = adxl345_powerup(data->regmap);
++	ret = adxl345_powerup(st->regmap);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to enable measurement mode\n");
+ 
+-	ret = devm_add_action_or_reset(dev, adxl345_powerdown, data->regmap);
++	ret = devm_add_action_or_reset(dev, adxl345_powerdown, st->regmap);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.39.5
 

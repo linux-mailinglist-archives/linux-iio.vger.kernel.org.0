@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-13052-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13053-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3411F9E2DC4
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 22:04:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FD09E2DA9
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 21:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F509B434B3
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 20:55:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABBA6282BA1
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 20:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D8320C00E;
-	Tue,  3 Dec 2024 20:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BFC20C029;
+	Tue,  3 Dec 2024 20:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dQzqE9p5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OPoeXa8n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A96D20B80A;
-	Tue,  3 Dec 2024 20:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27B120B81F;
+	Tue,  3 Dec 2024 20:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733259200; cv=none; b=Begi3evEm1emBeZhK7nG7VznTBeqV0bbzKemQRl7gSXKqIh0XCiYmJGt0BnePCWwkR24gAczVNFObNmmZ5jkmaR7EICn0/C/FC3Z/VBfP7WWnAmbwS2q3MT1Uhh1OArg0B6hssw0P57O2xBCFWHNg7yT20FObxjTHjJf+tx/BMI=
+	t=1733259201; cv=none; b=BJibDEG2D3R1x8Whm4+2jgy4Kim7dEpSFe2zLaCiX/acgoKyuEIDY8G8yp6vEnTO3vvZ+yxOjY9m803UOP4Vj0w2mhkW5/uNTZ9fSOZbaWe2toV+Q806N1yVcvcGCsezjuRgjNmGo81vKd75mMUQodMrgxN7cw3lSXziRuZbpFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733259200; c=relaxed/simple;
-	bh=xmZUynmRWNWKGnq7UcYg+jNu/xpT4i/K33pytjM2Xx8=;
+	s=arc-20240116; t=1733259201; c=relaxed/simple;
+	bh=9Bss6I5KJEiYKsBm3/rj1oLUsL1KavlBK7tLyDrLMkI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=grnyGRNfFPC/CVpbkTYzS09GYzGeFzrXweMp5/yAJ1gBXX7oj59fZKSk30r5UPkqq+oafbuAogOKec12ng11oXyYZihY3Q325DqMi83yisDhNn1MruKkGUJZ/3F/JQbp14xY1WZVcuxm5WG/9Dgk7aTp8nNqwzaeSOMedlUIDHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dQzqE9p5; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=BePhBCX/3Pa29QsrbcquNUz6UudwkLOLT09ILweR0tjHLg0odXbr9nkTrTSvlpii53PyONZMWzxq2+I/SR9o3kAPqOMc58MTYnd4y/BcYmtbTM0Hl5Tus6Do09SXj9t6JOgmua31GHHo2rTDq2QS3zRHYqcJ3E0NJkF23JtezxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OPoeXa8n; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4349d25eb5bso5220575e9.0;
-        Tue, 03 Dec 2024 12:53:18 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385e971a2a0so195403f8f.1;
+        Tue, 03 Dec 2024 12:53:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733259197; x=1733863997; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733259198; x=1733863998; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sDuxrRBgTslcQZJKzlz1N9LrOE4h7D4sKvBVuQ6VaRQ=;
-        b=dQzqE9p5uYL704b1f0Sasw/Fxe6+dVVw5HTOScGPtN69ZYHKjBsTu3Hp/FpCLh+XUz
-         LDzxEKlCTtq2B/XvnU3uPbLrb28wCdC3yhIdbXhHLqgbOil6gv/0VoBkPjdTDn1tD6Qr
-         wERZFP0uLFJDo0NDBkhm5bxQp9VsHeZWDIfJXkuQzRzHPjqv8ryXDFIRvl5Pudn25UIE
-         w+B3ZTtGvFA2pagAhpqXYHALoS362Vb5KyD7cc5vVjIIjwNXo7m+BWJq8JH6RGyPy6xk
-         sXYOHTdJ7F7pjyL5uvB84ECz63eATYM72hEB7Y6PqXDi3YSQ1cWAIbacu2i6mG545/BX
-         Y1+Q==
+        bh=7TsozYlA/4LNEKtOtGZNm63GhiDqkuqNaZFE9mL8HFE=;
+        b=OPoeXa8nCD7+WhgWJ96XptlXv6gWm/eFBhgMoxIgxbpOe6QkhTpX3Qzp+C/hFvQQPs
+         bSkK00Ont0DY6+DGdtFlc7rIIMNI+FJ6RrXzVzg4tbttpkeFbl642sYAdb9hexBdWeGU
+         iTIscQNpNaqkM2Su3VkkuGrEBj2wI9wCyRFK9DiEhekAHG0JSeU+l4yqEGitEJNNggvY
+         H8kxgCOZ5rkp54vYLxAAqaufx3Ao+tDPVk13UC4jRlfPjdq2vGKPNd5xHqquG0wSzxmE
+         azTJKOsKcFhoGZkqpsb50aaWfC++kheua7jXHYNn3JITeHgEv3q/lIMNt2VEkI7g/qaO
+         aV1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733259197; x=1733863997;
+        d=1e100.net; s=20230601; t=1733259198; x=1733863998;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sDuxrRBgTslcQZJKzlz1N9LrOE4h7D4sKvBVuQ6VaRQ=;
-        b=shfFHvFVe/1X0NJXKTw6xpaW8bV9FO/JxHOEmINN/qUiF73w0oNcFJaxrNuYAF91YS
-         Lote3aPDB1V0AbXBSe0boHp7Il64CWnwEQqp0LHE+TQig0AIVLfcTu1awXTCCKHXZBGS
-         FC72fS7rOPIICRkoLUTWWrQ8dYzV/u2+W6SV8l7ztDo8RWUwsZm4/pQIgTL43ieVgfRY
-         ZgkTcJxMSvqK/XMW0aCOVifbYe3idpjD6FZlaQCvq5NvKtBQ/1OYKw6u1v6jxYmL79kZ
-         kBvRW6nZIMhFMoOxHcv6mLhs5cEJgs7LeTBoiLtHS1/I413pfe8J+b8ZWEBb+J28AooU
-         gOkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUGJ/2Zq3ITshPsprOUkIclQMmjtyGTF03kuFkrOERH+7Pe3YgqwGAjrIJf4flRrJxHtlaPZ1wyCAM=@vger.kernel.org, AJvYcCVLA+kJgADy2Mfy9kHw7S68vF5+dLJJFUVhRjJ5ppnrBsQ/djz/PhS+CzC6nI8bHwvH0gpm+bzXWL1t7mvi@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjCx5sjgzyzaBBYsEUDLmG86GUQCqhciO15i4eK9fd4EFvX3Xc
-	MktMzoF4BRPtINZLendv50pxO8n+qg3fkyo4P/cLmtbjoHF+rFce
-X-Gm-Gg: ASbGncuj7xlu8z0EfXbAP6keqlPnlxSzm6Epm5doWGbp+1QljstT9CIEY6t/OedoKpp
-	h7t0LsfbFyz0C1VhEMIJseVCvKuDESJeIMvqrMjNvseQf7ZzlLd4iViPZsdyhkR3Rsai4/9iMwU
-	2jcH4lgW7cs/Mg7qrGoKDQHMikMkPOYaN9DV8SJx8LrVYhKxQGcv9Jt19tpaeBilUNT0Ie4mLRi
-	3fFhBL3V0lzJomfAliZSxFnOZ0XDW1ocdBA76L29oomVqiwsJCDFQdMSeTaxeJ0bpflEk/Lo5Kg
-	j0xo4aXT3litQxTbNhaK1irjcEtz
-X-Google-Smtp-Source: AGHT+IGhwrPtB3Jdn0AgOUg68IG6L6rn9HZdnWNlWAUNaXKr9aCy64UakjwlY+xrlpMYwoS8D7+adg==
-X-Received: by 2002:a05:6000:1a8b:b0:385:e16b:72be with SMTP id ffacd0b85a97d-385fde34e60mr1107253f8f.14.1733259196673;
-        Tue, 03 Dec 2024 12:53:16 -0800 (PST)
+        bh=7TsozYlA/4LNEKtOtGZNm63GhiDqkuqNaZFE9mL8HFE=;
+        b=usI3bj7JW0hTFgdyURWLJP3YW8khqar1YUhc7lxp+onLiFFZthx2987PpO4plEp+1X
+         irqrZZjyaTKhlzqzHoZajO3FqJ91md2F7HSDy0W8iz27F+vbyzlgZPmi+Bql9S4MqCC8
+         8cW1m8+S0zzKp0p/ZGVoxkfm0LeB1BHPmcTimoA/OEYYXZYLqgq2jte3uu2zucZLfQlN
+         S27U4fMw24Y1zIdwnbSb8QrIG//SYP8+whHc0rRE6U7jga+jmAAZGbdDMkrPX1kWMqT2
+         6lLqAPkfRYAzdz4VG2B9dX1IlRdm/0ZaB1LyNwqW1cei3qdlQn/3xvbXwuVYR08Slsft
+         1n2A==
+X-Forwarded-Encrypted: i=1; AJvYcCURsSfXuoHKFbq+RBbmNFuDcA4ODIFIv0ONDQ0jQGc2ksrmGYobAznt2qDU1NAiIFHvhwW6x3qcMbtfUC0Y@vger.kernel.org, AJvYcCWv2yh4niykuG/GH3d8iA18dbv36h5m5vlZqz1ayK4ExpyHN/hCOoMr4E3OpP6AYZuKCZTXRsSEq/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3uOAs88SwR8bPWL/UmjMqqze+C2Lk+eCx4e6QDMJZvQiYIroc
+	3WQHROQOXw0HER0yGu0JNxdJFct+iZpKL3a7IaowzKMOC2/pW0N/
+X-Gm-Gg: ASbGnctXwNRgR57o65N8QOWYXqO3jcOB9++5mkhxsgdMMcn7/5o0ZgBfH96gfIxiRCB
+	1/EdQ+wcF1qWH8mzKGT5zIteJ8UF1PgHi0sbzYxuEy2YHpf3Igo5nNFBW1/35qfcsF8Dt9V8JxX
+	wU6MCDxsv6D6Wkpfbfd/KPbHr+vheWm77cdeX3Kog/jbUABj0BBYY1iXYZOJzLsSWAkvBwwocw3
+	d97UG8ildj+ewjMGXcMCnSu6BMYX55A1m8comjW8Zd4jZhreiabh7FbnpoLzEV9WvKZGm5CV7Dq
+	ERxl56wIhQtzFcU/6DI9byVmRSPt
+X-Google-Smtp-Source: AGHT+IGxPsQa8ldQ+XfDQ/gSCNiezoyJsldfzfMlqnfmgxj8yLhBYvITVrOLYDMx+LON5+irHXo7TA==
+X-Received: by 2002:a05:6000:4011:b0:385:df17:214f with SMTP id ffacd0b85a97d-385fd432843mr1370336f8f.9.1733259198225;
+        Tue, 03 Dec 2024 12:53:18 -0800 (PST)
 Received: from 7b58d44c4ff6.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ebaf3bccsm9042750f8f.68.2024.12.03.12.53.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ebaf3bccsm9042750f8f.68.2024.12.03.12.53.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 12:53:16 -0800 (PST)
+        Tue, 03 Dec 2024 12:53:17 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -84,9 +84,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v3 08/10] iio: accel: adxl345: initialize FIFO delay value for SPI
-Date: Tue,  3 Dec 2024 20:52:39 +0000
-Message-Id: <20241203205241.48077-9-l.rubusch@gmail.com>
+Subject: [PATCH v3 09/10] iio: accel: adxl345: prepare channel for scan_index
+Date: Tue,  3 Dec 2024 20:52:40 +0000
+Message-Id: <20241203205241.48077-10-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20241203205241.48077-1-l.rubusch@gmail.com>
 References: <20241203205241.48077-1-l.rubusch@gmail.com>
@@ -98,121 +98,50 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the possibility to delay FIFO access when SPI is used. According to
-the datasheet this is needed for the adxl345. When initialization
-happens over SPI the need for delay is to be signalized, and the delay
-will be used.
+Add separate fields for register and index to the channel definition.
+The scan_index is set up with the kfifo in the follow up patches.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345.h      |  1 +
- drivers/iio/accel/adxl345_core.c | 12 ++++++++++++
- drivers/iio/accel/adxl345_i2c.c  |  2 +-
- drivers/iio/accel/adxl345_spi.c  |  7 +++++--
- 4 files changed, 19 insertions(+), 3 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index ed81d5cf445..c07709350d3 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -127,6 +127,7 @@ struct adxl345_chip_info {
- };
- 
- int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-+		       bool fifo_delay_default,
- 		       int (*setup)(struct device*, struct regmap*));
- 
- #endif /* _ADXL345_H_ */
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index dc91b2dcd62..636b8ec48db 100644
+index 636b8ec48db..0a3acce2198 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -22,6 +22,7 @@ struct adxl345_state {
- 	int irq;
- 	const struct adxl345_chip_info *info;
- 	struct regmap *regmap;
-+	bool fifo_delay; /* delay: delay is needed for SPI */
+@@ -26,21 +26,26 @@ struct adxl345_state {
  	u8 intio;
  };
  
-@@ -193,12 +194,21 @@ static const struct iio_info adxl345_info = {
-  * adxl345_core_probe() - Probe and setup for the accelerometer.
-  * @dev:	Driver model representation of the device
-  * @regmap:	Regmap instance for the device
-+ * @fifo_delay_default: Using FIFO with SPI needs delay
-  * @setup:	Setup routine to be executed right before the standard device
-  *		setup
-  *
-+ * For SPI operation greater than 1.6 MHz, it is necessary to deassert the CS
-+ * pin to ensure a total delay of 5 us; otherwise, the delay is not sufficient.
-+ * The total delay necessary for 5 MHz operation is at most 3.4 us. This is not
-+ * a concern when using I2C mode because the communication rate is low enough
-+ * to ensure a sufficient delay between FIFO reads.
-+ * Ref: "Retrieving Data from FIFO", p. 21 of 36, Data Sheet ADXL345 Rev. G
-+ *
-  * Return: 0 on success, negative errno on error
-  */
- int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-+		       bool fifo_delay_default,
- 		       int (*setup)(struct device*, struct regmap*))
- {
- 	struct adxl345_state *st;
-@@ -230,6 +240,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	if (!st->info)
- 		return -ENODEV;
+-#define ADXL345_CHANNEL(index, axis) {					\
++#define ADXL345_CHANNEL(index, reg, axis) {					\
+ 	.type = IIO_ACCEL,						\
+ 	.modified = 1,							\
+ 	.channel2 = IIO_MOD_##axis,					\
+-	.address = index,						\
++	.address = (reg),						\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+ 		BIT(IIO_CHAN_INFO_CALIBBIAS),				\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.scan_index = (index),				\
+ }
  
-+	st->fifo_delay = fifo_delay_default;
++enum adxl345_chans {
++	chan_x, chan_y, chan_z,
++};
 +
- 	indio_dev->name = st->info->name;
- 	indio_dev->info = &adxl345_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-diff --git a/drivers/iio/accel/adxl345_i2c.c b/drivers/iio/accel/adxl345_i2c.c
-index cb23fb11fcd..8c385dd6c01 100644
---- a/drivers/iio/accel/adxl345_i2c.c
-+++ b/drivers/iio/accel/adxl345_i2c.c
-@@ -27,7 +27,7 @@ static int adxl345_i2c_probe(struct i2c_client *client)
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(&client->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+ static const struct iio_chan_spec adxl345_channels[] = {
+-	ADXL345_CHANNEL(0, X),
+-	ADXL345_CHANNEL(1, Y),
+-	ADXL345_CHANNEL(2, Z),
++	ADXL345_CHANNEL(0, chan_x, X),
++	ADXL345_CHANNEL(1, chan_y, Y),
++	ADXL345_CHANNEL(2, chan_z, Z),
+ };
  
--	return adxl345_core_probe(&client->dev, regmap, NULL);
-+	return adxl345_core_probe(&client->dev, regmap, false, NULL);
- }
- 
- static const struct adxl345_chip_info adxl345_i2c_info = {
-diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-index 015b334e5b0..ec1773e7ff1 100644
---- a/drivers/iio/accel/adxl345_spi.c
-+++ b/drivers/iio/accel/adxl345_spi.c
-@@ -12,6 +12,7 @@
- #include "adxl345.h"
- 
- #define ADXL345_MAX_SPI_FREQ_HZ		5000000
-+#define ADXL345_MAX_FREQ_NO_FIFO_DELAY	1500000
- 
- static const struct regmap_config adxl345_spi_regmap_config = {
- 	.reg_bits = 8,
-@@ -28,6 +29,7 @@ static int adxl345_spi_setup(struct device *dev, struct regmap *regmap)
- static int adxl345_spi_probe(struct spi_device *spi)
- {
- 	struct regmap *regmap;
-+	bool needs_delay;
- 
- 	/* Bail out if max_speed_hz exceeds 5 MHz */
- 	if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ)
-@@ -38,10 +40,11 @@ static int adxl345_spi_probe(struct spi_device *spi)
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
- 
-+	needs_delay = (spi->max_speed_hz > ADXL345_MAX_FREQ_NO_FIFO_DELAY);
- 	if (spi->mode & SPI_3WIRE)
--		return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setup);
-+		return adxl345_core_probe(&spi->dev, regmap, needs_delay, adxl345_spi_setup);
- 	else
--		return adxl345_core_probe(&spi->dev, regmap, NULL);
-+		return adxl345_core_probe(&spi->dev, regmap, needs_delay, NULL);
- }
- 
- static const struct adxl345_chip_info adxl345_spi_info = {
+ static int adxl345_read_raw(struct iio_dev *indio_dev,
 -- 
 2.39.5
 

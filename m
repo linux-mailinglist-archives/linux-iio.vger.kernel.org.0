@@ -1,151 +1,153 @@
-Return-Path: <linux-iio+bounces-13050-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13055-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347C29E2EAD
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 23:08:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2389E2E2E
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 22:38:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D4F5B3E5EE
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 20:54:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BB1163E9C
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 21:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEAB208981;
-	Tue,  3 Dec 2024 20:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E3320898C;
+	Tue,  3 Dec 2024 21:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SX7AY1NL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BY3Ya0eZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8BE20B1E1;
-	Tue,  3 Dec 2024 20:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A72205AA9;
+	Tue,  3 Dec 2024 21:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733259196; cv=none; b=TQ+wWnUQboPW51x0pL3K42kYv7eEpACPu5rOa/GpEqwcCo/M9PnyDKUNT0ZyoNGXDCXSo/DkJyIO22MInp7jq4b3gEzNp2EOkSPkcofrzFnolgSzi6bXLxjIX5Fbbs67vUgvfiegUHp3YpiQbyiks3d1omtm3kw7gZ05VCeB2ik=
+	t=1733261898; cv=none; b=ub3Vv334Rju0d9OTm/dY/010u0/TCP8iaF9bX0UxPn+XCNFI7WxcwhcDNkYM2516JrPa29ggf+bWc/gISjXWn25fGAPYWLTcn7b0SZqnT+V0K/WJ8O83KajOUmu9TrdmCHjT7qJdW1RMz8/uSySK5EBjJhM4/bqmaZXtFK8JHFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733259196; c=relaxed/simple;
-	bh=hjcd5A8voRW+pwEIP7TsS26RQsBVlcg+595pH9ZdwXU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BsJ/nRGhbULhOn+7TV28C92OxPCM7WcQDsJzkpRLa8Js6w395P1/vpJFUXiS7QC+E2aa3+JCMSkBxuMjtQ2dHtZPVvzLoTEIie6G3ZkdBUeinhG5nHEa+3nqZzxLLiv4IBzssDVQjXjLaveyppJOwm/+eWBMp78WfgvYDx3u4UQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SX7AY1NL; arc=none smtp.client-ip=209.85.128.52
+	s=arc-20240116; t=1733261898; c=relaxed/simple;
+	bh=l03a30oLSQSPguXncQBQuphNBZWYsKqZgJCGJsnRpWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jYvtE41nchVx7IP81hzMI8F1uHJGSA790ZlSOMwi+gDl944MeaBTBjhSigJvpR9z6iQnRy+KwcbNIY9U+JGfu7gezd1lapFnTUZtVwwr6VrvaiHpHbou4op1RM+GnVia0Q3Srx4vuBkFMnq2wHsYWjSOj1z7HPp2zv/nZUdy5fU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BY3Ya0eZ; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43499332f7aso5206475e9.1;
-        Tue, 03 Dec 2024 12:53:14 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-385de59c1a0so4514473f8f.2;
+        Tue, 03 Dec 2024 13:38:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733259193; x=1733863993; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hSRlyww607wNG4Ky6SHBw5ubjyNIkPXdbs/bES90CC4=;
-        b=SX7AY1NLNr8cfTES3KW3u2H1/xlcCT1OFihE3UbBGgG/Lt119uXA0EWv4j14bkXYk+
-         s2k4XQpsa6n5quF8n28kbxAD4z0zNEV5k+YVs8FkKS/FSCTGhH7ZKFCrwhAvbN5m9toa
-         kpqh9Odgp7+S9h6q/Y9cxHDx8EWvuLeEyPz0DAOm9bThW1/DE5gZb1osrwPJS8e4P5o6
-         csa8U/GsICSoVasJffS69yWfpJRCYE5vDmPQDjCR6yQM7/NgOC7Zyp7wfFbvBcZI8OXb
-         S//4d+PfIYrnVpSI3j42fshpbv4hJv7tdSH5bNAsF2d067hbkDStobeS99LUrXFmYq8a
-         pmpQ==
+        d=gmail.com; s=20230601; t=1733261895; x=1733866695; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2FGHzM7J3OqvAreJZS1EIJ3jxTVqZr7bzpMiim9rHNY=;
+        b=BY3Ya0eZIY0tjhmKmAFAaACZwB6oOxb3T9YGBIT8UGFPnUlKaeSFOYorZnejF33oUm
+         jVLO9secg4fx3S+297fFy5LLkw3PsxSXM0ebtZt2yaQCeSdGXKjQKOCIWsxSgSkIm30F
+         Mee81BAyfiJhCvOgn9sOPbV0hS2IRieONPAwmKZLpPn0K25b+uT/3Y+yquSPzH3oB/AO
+         M6rXH3nd7vUJrk9tLwutcp6ayctDp1YUw92rJXx1WV/HQcDyHzhllXO548v4h8jXVOFI
+         cv6j/gRT8ddLVVquKn2fvSFPEOG5qevWMPKqa5/dKqW3Z/ctZ4Bbz23tPjVifGs+s5YG
+         PKDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733259193; x=1733863993;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hSRlyww607wNG4Ky6SHBw5ubjyNIkPXdbs/bES90CC4=;
-        b=bfcZIf+CLgtcwUnk28KCv8agb7UB4lbEpVDn0f4OK5wHur1fRAZelz+iuqIGvo+rjc
-         wMkJze1OxtxKhFCxuxwkEVL6j8Ln38Coo13n0Sc+7EPSQpXT82lubdkKXbB1bkXW39F7
-         Qrgyr0mE+QLyp9XuB98JBhuC9N/DM+AJ1Mb43M1gN8V8LBEbiEE/7tLgb3DCkqEA+GfJ
-         xEL8hgJXWCHinPBY36BymwiN7WkP8fU2As01Cu+dmsU/Q3EFwoFJpvETf+umkeWpK9DD
-         2Z9QEDVOyigMby4Kux2yYqJRJE4GwZJYQ6VrJnVWWDPd3/f582Rw4XIAeh9j6YODdvMf
-         ntZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqkEY2TzDz/ZczjvpLeM558EVeJMpfnZOSm+RbsGKF1NJTJCQkv7fG1K7jvVO03q8+e3DbCXk0Agg=@vger.kernel.org, AJvYcCXnxNILbypcAIWgXnE3imKj8VBquNS09LVWAq/m+hQPMfdXymibpZOVeT0870Jmj9Oa1ATCTIjGw1LoOXdm@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCwnFzB8JW6OHDWg8y9nKP8Lb3rA3MjfQtHMnB5uUom8feHUZi
-	G9JBYcC6U4zqh7kzfF44DinSEs5tR04EMDD2tIy1qoZEcFqk+v8c
-X-Gm-Gg: ASbGncvA4rQrDXULOx/10b0TglzDmD68EjAKiBbtpl75r0e26OVSS804p3KYjp0Rjwk
-	ZMPtMgmJgL3wWxx1j4YLLBHbJheaGkDUrze1VanaOn5VVfFl7Nt8zdFJDPRi0XV1bkDAWWtH4uq
-	jNAbQqk1rVZ9d/Y8ytCF2ryRLS6YUmHk5fR6EzOIM/AJjxJhWMDpd+VDebR/ivQ8jeqGffeSSNT
-	vw4VfT55T0n6ccZrUBjjkJhIC7bddouAT+O7pbl20YZzcJjp7W4PBCZ77F9KukeY+ONgfbVyt7L
-	ehszmt0B7FcXFKBhWdbXRDw1kAw7
-X-Google-Smtp-Source: AGHT+IFKabrlhumUgKLcNroI+FaBmvovJMbwHTjB5dMy0//6WqKHy/yNGRh8dTYHHwqHPYZ4ste/DA==
-X-Received: by 2002:a5d:6d05:0:b0:385:e88a:7038 with SMTP id ffacd0b85a97d-385fddd3402mr1240391f8f.1.1733259192709;
-        Tue, 03 Dec 2024 12:53:12 -0800 (PST)
-Received: from 7b58d44c4ff6.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ebaf3bccsm9042750f8f.68.2024.12.03.12.53.11
+        d=1e100.net; s=20230601; t=1733261895; x=1733866695;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2FGHzM7J3OqvAreJZS1EIJ3jxTVqZr7bzpMiim9rHNY=;
+        b=XBxW6sZrQBGKOikRg/uvWViESAnTLof6g9wobJxcUld2x55r0W1UgHz6n8Q/vZQ0bg
+         +bRRtSo5JIWt6TF3PEJy/N1UGevlpq/e7eosiGIq1RKiYfyazagh2QeVPe5bH0YizKxu
+         J12P2zOii7sCu6ae5Skw+nABvMqxs47QF/x8W1i0EfHa/8X928dY/sLM/4I4hZbpZx5G
+         TPM9VfaQFgEl4wsLX2wyIGjyXCfzxaenu18tTGU2yWYpkRkC5Xb/5l78gF1OdX7qek8O
+         8VfcqGNZzCFJCeFyEQQIhYf1ZY8+E1i7WYQVgTI2CfaJFxXzJYKif8j26cJrW0JdNhM6
+         /uYA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJXiPaoF+RGU6dY0/cqy1k5XE0NOZvt5QBfN+8N00RiSJtgo91wDJh/QecpScchvcYRqkD8fkTkrE=@vger.kernel.org, AJvYcCVaFJgy5UFOIsi70qStrG0ADZh4vituuIjPUE6BWRWHaNmbmZKrKgzNcfQRGI3cd8NMMiAsNnIoRw0d0fy/@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhZ57W2MRUdKc79TJirARAf7zipvhN58dsbdwOOrW8dAc839Rq
+	eHLJRU/omzjrhPYztLPtwmqthi9IEz8wVWy4Y0XoeV4UMKM207g3
+X-Gm-Gg: ASbGncvmBp90JXC8Ub/JrgPrT0BXG4y659cLO97/qd4YNKqDWP3j3O8WCQ6neEJYKDe
+	nAf2K9DKCVPL5iPgmpsoMRnaoANATTkgbwCE8LPX8z9ZaOQVIB/pgkEszKjDkmhpBIC8s5uAXDJ
+	OgoZbMpHWI0P3mVsIIW9ohAHtZObIrD+HgRfOWZBuIoIpfJgx9nwMSWc5xFGrXtN7fEL8/s9iH0
+	kPvuN8KfxVP5fSxFyHisPUWDIBuV6UVo+jMJ8OS6iURGi8l3MQJZXBFw7wR
+X-Google-Smtp-Source: AGHT+IHL4wO3JlYTbKLCNKO+w6R37VMh8CYOEEr1VcKlglNKl05nYfs4II9OTn1WL0oy9csmVypfnA==
+X-Received: by 2002:a5d:64ce:0:b0:385:f220:f779 with SMTP id ffacd0b85a97d-385fd4364bcmr3386171f8f.49.1733261894586;
+        Tue, 03 Dec 2024 13:38:14 -0800 (PST)
+Received: from vamoirid-laptop ([2a04:ee41:82:7577:56d9:cf1e:faf4:54e1])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385e13e8eadsm12366715f8f.28.2024.12.03.13.38.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 12:53:12 -0800 (PST)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH v3 06/10] dt-bindings: iio: accel: add interrupt-names
-Date: Tue,  3 Dec 2024 20:52:37 +0000
-Message-Id: <20241203205241.48077-7-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241203205241.48077-1-l.rubusch@gmail.com>
-References: <20241203205241.48077-1-l.rubusch@gmail.com>
+        Tue, 03 Dec 2024 13:38:14 -0800 (PST)
+Date: Tue, 3 Dec 2024 22:38:12 +0100
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
+	u.kleine-koenig@baylibre.com, abhashkumarjha123@gmail.com,
+	jstephan@baylibre.com, dlechner@baylibre.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Jack Andersen <jackoalan@gmail.com>
+Subject: Re: [PATCH RFC 3/6] iio: adc: dln2-adc: make use of
+ iio_is_soft_ts_enabled()
+Message-ID: <Z096RGnVRUQo-Wgn@vamoirid-laptop>
+References: <20241130002710.18615-1-vassilisamir@gmail.com>
+ <20241130002710.18615-4-vassilisamir@gmail.com>
+ <20241130140255.70b4b68b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241130140255.70b4b68b@jic23-huawei>
 
-Add interrupt-names INT1 and INT2 for the two interrupt lines of the
-sensor. Only one line will be connected for incoming events. The driver
-needs to be configured accordingly. If no interrupt line is set up, the
-sensor will still measure, but no events are possible.
+On Sat, Nov 30, 2024 at 02:02:55PM +0000, Jonathan Cameron wrote:
+> On Sat, 30 Nov 2024 01:27:07 +0100
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> 
+> > Use the iio_is_soft_ts_enabled() accessor to access the value of the
+> > scan_timestamp. This way, it can be marked as __private when there
+> > are no direct accessors of it.
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> 
+> The original code looks to me like a micro optimization that we should
+> consider dropping to reduce complexity.  It is only used to zero a hole
+> in a structure conditionally if the timestamp is enabled.
+> 
+> Better I think to just drop all the ts_pad_offset etc stuff in favour of
+> just zeroing the whole of the data structure in dln2_adc_trigger_h()
+> whether or not the timestamp is enabled.
+> 
+> My guess is that on a reasonably performance CPU the occasional cost
+> of a branch miss prediction will outweigh zeroing a fairly small structure
+> anyway.
+> 
+> +CC Jack who wrote this driver.
+> 
+> Jonathan
+> 
+> 
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- .../devicetree/bindings/iio/accel/adi,adxl345.yaml  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+Hi Jonathan,
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-index 280ed479ef5..c3483a4b652 100644
---- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-@@ -37,6 +37,17 @@ properties:
-   interrupts:
-     maxItems: 1
- 
-+  interrupt-names:
-+    Data ready is only available on INT1, but events can use either or
-+    both pins.  If not specified, first element assumed to correspond
-+    to INT1 and second (where present) to INT2.
-+  minItems: 1
-+  maxItems: 2
-+  items:
-+    enum:
-+      - INT1
-+      - INT2
-+
- required:
-   - compatible
-   - reg
-@@ -61,6 +72,7 @@ examples:
-             reg = <0x2a>;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-         };
-     };
-   - |
-@@ -79,5 +91,6 @@ examples:
-             spi-cpha;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT2";
-         };
-     };
--- 
-2.39.5
+Thanks for the review once again! It looks like it should be fairly
+straightforward to drop the zeroing of the ts_pad_{offset/length} so
+indeed, if Jack doesn't have anything strong against it I could move
+forward and send a v2.
 
+Cheers,
+Vasilis
+
+> > ---
+> >  drivers/iio/adc/dln2-adc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+> > index 30328626d9be..f9cf132c41e6 100644
+> > --- a/drivers/iio/adc/dln2-adc.c
+> > +++ b/drivers/iio/adc/dln2-adc.c
+> > @@ -128,7 +128,7 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
+> >  		in_loc += 2;
+> >  	}
+> >  
+> > -	if (indio_dev->scan_timestamp) {
+> > +	if (iio_is_soft_ts_enabled(indio_dev)) {
+> >  		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
+> >  
+> >  		dln2->ts_pad_offset = out_loc;
+> 
 

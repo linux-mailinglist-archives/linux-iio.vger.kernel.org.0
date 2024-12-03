@@ -1,43 +1,43 @@
-Return-Path: <linux-iio+bounces-13022-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13023-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E57A29E1E49
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 14:53:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF629E1D14
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 14:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5194B30BF1
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 12:53:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB90FB3AC62
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 13:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67531EC009;
-	Tue,  3 Dec 2024 12:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AFB1EE034;
+	Tue,  3 Dec 2024 13:03:52 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF79C1EBA04;
-	Tue,  3 Dec 2024 12:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E743C1E0E0C;
+	Tue,  3 Dec 2024 13:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733230415; cv=none; b=BsD2QP0/2AlFwEagnryw+8lU0j/50V4C6t48vCiMO4TZFK86+RXPBsYJmzVLI0gLYconcjUG1yTsWWk5HL1wSUAmoFcgefUrT3mgY/SF1tLJLZeYke6ILfEV/EN9ZP7ZYT8Bj9JkUKk3Agw9ia4cpYJfQaNPTpx/WTUA1/tx9o8=
+	t=1733231032; cv=none; b=dI2Ea8RHIMPlS4fSPP+Oth7+146MvjXcN+bS1jSjcZtPStjOZTNWxjwCPVfm0Yq3tnPT3NVpgpF+doOCY5IGR77GOQUO+MNAbRRan75a3z2GBE6ghLueD/0CCJ0jzB+EeEF4Dz3vs8gETk9vyRK9xksrHhn1RmnftZUbEd2iWC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733230415; c=relaxed/simple;
-	bh=cNmkxzapUO7QczoDwL+xVGi9yBG+fPmNhU/lvd+cUvs=;
+	s=arc-20240116; t=1733231032; c=relaxed/simple;
+	bh=ulhV8p19khZo4FSRs3NgrLM359uPbLHsOWsvdJIfP+A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a9nj/H4gCHfSqw8wYg/iWEDP7MtcQx1xpehxTDZYP9+KTybSZJ6rm07exHRbMQH4Qoj1rPmhkfgrYHnmXHR7IrJkLtwiB1WIgL03XFEC8RKUP8Vg2RUIX0vT64p2pMi8hN3fFJQ2C2UfxgIUwfqJNZwp5Budk0wNV4lkEQtEMgc=
+	 In-Reply-To:Content-Type; b=OS6FhU+mAtkc66MxhSquVEPewjOmIuXoJTlot/Jz2VNNRA7cAptNPYeRwxmhOjrEIy464MFBj374u8/arSfk8ql61POaQsYVDvBony/flJHfdj2JNPDQT2YlV+KENTWfqq8VeP6T6D+VmB3lJ6iLjX7fmW7vupw7PJPZ0KQJ4Vs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com; spf=pass smtp.mailfrom=bp.renesas.com; arc=none smtp.client-ip=210.160.252.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bp.renesas.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bp.renesas.com
-X-CSE-ConnectionGUID: NZ2Q9QJrS8etHAiLa1x1gg==
-X-CSE-MsgGUID: JtmiqDwnS4m1caDtvBSMNA==
+X-CSE-ConnectionGUID: cThaTchoSu24saTRNojErw==
+X-CSE-MsgGUID: moxWudRiTVaFLZlderrHNA==
 X-IronPort-AV: E=Sophos;i="6.12,205,1728918000"; 
-   d="asc'?scan'208";a="226786275"
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 03 Dec 2024 21:53:30 +0900
+   d="asc'?scan'208";a="226786721"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 03 Dec 2024 22:03:47 +0900
 Received: from [10.226.93.8] (unknown [10.226.93.8])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id 161DC4002623;
-	Tue,  3 Dec 2024 21:53:24 +0900 (JST)
-Message-ID: <9fbf057c-164b-4451-85a8-cf4d5807b4c1@bp.renesas.com>
-Date: Tue, 3 Dec 2024 12:53:23 +0000
+	by relmlir6.idc.renesas.com (Postfix) with ESMTP id 801B540727CD;
+	Tue,  3 Dec 2024 22:03:30 +0900 (JST)
+Message-ID: <6f627195-6c55-4687-b6b6-7fb791d13819@bp.renesas.com>
+Date: Tue, 3 Dec 2024 13:03:29 +0000
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -45,7 +45,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/14] iio: adc: rzg2l_adc: Simplify the runtime PM code
+Subject: Re: [PATCH 06/14] iio: adc: rzg2l_adc: Simplify the locking scheme in
+ rzg2l_adc_read_raw()
 Content-Language: en-GB
 To: Claudiu <claudiu.beznea@tuxon.dev>,
  prabhakar.mahadev-lad.rj@bp.renesas.com, jic23@kernel.org, lars@metafoo.de,
@@ -56,16 +57,16 @@ Cc: linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-clk@vger.kernel.org, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 References: <20241203111314.2420473-1-claudiu.beznea.uj@bp.renesas.com>
- <20241203111314.2420473-4-claudiu.beznea.uj@bp.renesas.com>
+ <20241203111314.2420473-7-claudiu.beznea.uj@bp.renesas.com>
 From: Paul Barker <paul.barker.ct@bp.renesas.com>
-In-Reply-To: <20241203111314.2420473-4-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20241203111314.2420473-7-claudiu.beznea.uj@bp.renesas.com>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------ejkQ6uLn0GaiFSlClZC0XSqf"
+ boundary="------------6t5Uabc36aLXyj0ONpUFbPVQ"
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------ejkQ6uLn0GaiFSlClZC0XSqf
-Content-Type: multipart/mixed; boundary="------------dmg0AGwwVL6W8RXA0ox4qbMm";
+--------------6t5Uabc36aLXyj0ONpUFbPVQ
+Content-Type: multipart/mixed; boundary="------------SWTOlpOL7ORz8bE0b0020s80";
  protected-headers="v1"
 From: Paul Barker <paul.barker.ct@bp.renesas.com>
 To: Claudiu <claudiu.beznea@tuxon.dev>,
@@ -76,16 +77,17 @@ To: Claudiu <claudiu.beznea@tuxon.dev>,
 Cc: linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-clk@vger.kernel.org, Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Message-ID: <9fbf057c-164b-4451-85a8-cf4d5807b4c1@bp.renesas.com>
-Subject: Re: [PATCH 03/14] iio: adc: rzg2l_adc: Simplify the runtime PM code
+Message-ID: <6f627195-6c55-4687-b6b6-7fb791d13819@bp.renesas.com>
+Subject: Re: [PATCH 06/14] iio: adc: rzg2l_adc: Simplify the locking scheme in
+ rzg2l_adc_read_raw()
 References: <20241203111314.2420473-1-claudiu.beznea.uj@bp.renesas.com>
- <20241203111314.2420473-4-claudiu.beznea.uj@bp.renesas.com>
-In-Reply-To: <20241203111314.2420473-4-claudiu.beznea.uj@bp.renesas.com>
+ <20241203111314.2420473-7-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20241203111314.2420473-7-claudiu.beznea.uj@bp.renesas.com>
 
---------------dmg0AGwwVL6W8RXA0ox4qbMm
-Content-Type: multipart/mixed; boundary="------------u8Ideiazs4hCjoXAckzRyQhI"
+--------------SWTOlpOL7ORz8bE0b0020s80
+Content-Type: multipart/mixed; boundary="------------VivEKTRZRP7bCjISc0I0PIV1"
 
---------------u8Ideiazs4hCjoXAckzRyQhI
+--------------VivEKTRZRP7bCjISc0I0PIV1
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
@@ -94,83 +96,56 @@ Hi Claudiu,
 On 03/12/2024 11:13, Claudiu wrote:
 > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 >=20
-> All Renesas SoCs using the rzg2l_adc driver manage ADC clocks through P=
-M
-> domains. Calling pm_runtime_{resume_and_get, put_sync}() implicitly set=
-s
-> the state of the clocks. As a result, the code in the rzg2l_adc driver =
-that
-> explicitly manages ADC clocks can be removed, leading to simpler and
-> cleaner implementation.
->=20
-> Additionally, replace the use of rzg2l_adc_set_power() with direct PM
-> runtime API calls to further simplify and clean up the code.
+> Simplify the locking scheme in rzg2l_adc_read_raw() by saving the conve=
+rted
+> value only if the rzg2l_adc_conversion() returns success. The approach
+> simplifies the addition of thermal sensor support (that will be done in=
+ the
+> next commits). The downside is that the ret variable need to be checked=
+
+> twice.
 >=20
 > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 > ---
->  drivers/iio/adc/rzg2l_adc.c | 100 ++++++++----------------------------=
-
->  1 file changed, 20 insertions(+), 80 deletions(-)
+>  drivers/iio/adc/rzg2l_adc.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
 >=20
 > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index 7039949a7554..a17690ecbdc3 100644
+> index 62932f9295b6..eed2944bd98d 100644
 > --- a/drivers/iio/adc/rzg2l_adc.c
 > +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -8,7 +8,6 @@
->   */
+> @@ -227,14 +227,11 @@ static int rzg2l_adc_read_raw(struct iio_dev *ind=
+io_dev,
+>  		mutex_lock(&adc->lock);
+>  		ch =3D chan->channel & RZG2L_ADC_CHN_MASK;
+>  		ret =3D rzg2l_adc_conversion(indio_dev, adc, ch);
+> -		if (ret) {
+> -			mutex_unlock(&adc->lock);
+> -			return ret;
+> -		}
+> -		*val =3D adc->last_val[ch];
+> +		if (!ret)
+> +			*val =3D adc->last_val[ch];
+>  		mutex_unlock(&adc->lock);
 > =20
->  #include <linux/bitfield.h>
-> -#include <linux/clk.h>
->  #include <linux/completion.h>
->  #include <linux/delay.h>
->  #include <linux/iio/iio.h>
-> @@ -69,8 +68,6 @@ struct rzg2l_adc_data {
-> =20
->  struct rzg2l_adc {
->  	void __iomem *base;
-> -	struct clk *pclk;
-> -	struct clk *adclk;
->  	struct reset_control *presetn;
->  	struct reset_control *adrstn;
->  	struct completion completion;
-> @@ -188,29 +185,18 @@ static int rzg2l_adc_conversion_setup(struct rzg2=
-l_adc *adc, u8 ch)
->  	return 0;
->  }
-> =20
-> -static int rzg2l_adc_set_power(struct iio_dev *indio_dev, bool on)
-> -{
-> -	struct device *dev =3D indio_dev->dev.parent;
-> -
-> -	if (on)
-> -		return pm_runtime_resume_and_get(dev);
-> -
-> -	return pm_runtime_put_sync(dev);
-> -}
-> -
->  static int rzg2l_adc_conversion(struct iio_dev *indio_dev, struct rzg2=
-l_adc *adc, u8 ch)
->  {
-> +	struct device *dev =3D indio_dev->dev.parent;
->  	int ret;
-> =20
-> -	ret =3D rzg2l_adc_set_power(indio_dev, true);
-> +	ret =3D pm_runtime_resume_and_get(dev);
->  	if (ret)
->  		return ret;
+> -		return IIO_VAL_INT;
+> +		return ret ? ret : IIO_VAL_INT;
 
-Should we check (ret < 0) here instead of just (ret)? According to the
-docs [1], pm_runtime_resume_and_get() can return 1 if the device is
-already active.
+It would be maybe slightly neater to use:
 
-[1]: https://docs.kernel.org/power/runtime_pm.html#runtime-pm-device-help=
-er-functions
+	if (!ret) {
+		*val =3D adc->last_val[ch];
+		ret =3D IIO_VAL_INT;
+	}
+	mutex_unlock(&adc->lock);
+
+	return ret;
 
 Thanks,
 
 --=20
 Paul Barker
---------------u8Ideiazs4hCjoXAckzRyQhI
+--------------VivEKTRZRP7bCjISc0I0PIV1
 Content-Type: application/pgp-keys; name="OpenPGP_0x27F4B3459F002257.asc"
 Content-Disposition: attachment; filename="OpenPGP_0x27F4B3459F002257.asc"
 Content-Description: OpenPGP public key
@@ -234,22 +209,22 @@ ZyZGVsEsOuGCLkekUMF/5dwOhEDXrY42VR/ZxdDTY99dznQkwTt4o7FOmkY=3D
 =3DsIIN
 -----END PGP PUBLIC KEY BLOCK-----
 
---------------u8Ideiazs4hCjoXAckzRyQhI--
+--------------VivEKTRZRP7bCjISc0I0PIV1--
 
---------------dmg0AGwwVL6W8RXA0ox4qbMm--
+--------------SWTOlpOL7ORz8bE0b0020s80--
 
---------------ejkQ6uLn0GaiFSlClZC0XSqf
+--------------6t5Uabc36aLXyj0ONpUFbPVQ
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZ07/QwUDAAAAAAAKCRDbaV4Vf/JGvVOM
-AQCiRexXepiHi421Gc03OVPh445YisuIwwomitYof6QldgEAujvSzuyZroUMHy7zZTCeAHqe4H/E
-Z+DS14dFXJTVyQU=
-=hrD+
+wnsEABYIACMWIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZ08BoQUDAAAAAAAKCRDbaV4Vf/JGvVgY
+AP9xoHxYUzRAXikKlbEGaySUX2sauonk6OzOZCKl3ET1wgD+LAWpd6JAzuokpIiTdQtTmfhgdZ1i
+AN+1R/m9yw0bQgE=
+=rjmV
 -----END PGP SIGNATURE-----
 
---------------ejkQ6uLn0GaiFSlClZC0XSqf--
+--------------6t5Uabc36aLXyj0ONpUFbPVQ--
 

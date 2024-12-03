@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-13004-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13000-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E149E1A31
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 12:02:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBB59E1B1A
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 12:35:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D7228530B
-	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 11:02:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A26B3D166
+	for <lists+linux-iio@lfdr.de>; Tue,  3 Dec 2024 11:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF651E3DC3;
-	Tue,  3 Dec 2024 11:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77D41E377D;
+	Tue,  3 Dec 2024 11:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KxTiu2pO"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZhDj7tUD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741BF1E3798
-	for <linux-iio@vger.kernel.org>; Tue,  3 Dec 2024 11:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFF01E3772
+	for <linux-iio@vger.kernel.org>; Tue,  3 Dec 2024 11:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733223701; cv=none; b=VtVLUmzbGva654uTp0O20QiR1+FUn2aQ6Jxtn2EI3KtcMTKTbl1D5nj1Gpa64Y52C7dUN9V6wxQrsArKIdJbnGkeibR5Mu3o+JcR55RMOADvgaJNETZRG0DfSBJv5PMShnu/2/F5Q3GJ84L8W/B225IGGAcuc51CR9oMif+EmfA=
+	t=1733223689; cv=none; b=t5HsiM1u+1C1JXByRzbowtXlijAgAvgPT9asYYzDgq6oDMKwGchFMI2OI7hJdP7Y7aOlK8+E/7mQfOifFACuzLg66xrn/4JmxpvHGI2C3/Jkk6VtX1lCTBPHCmLd1AtjjUW2ncuMAQRtfpTchOP5FDegvIiRxgVSf++8vn/ZMr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733223701; c=relaxed/simple;
-	bh=PzIORblitgR8o9Wn8H59N3kcmZSxmQXU/hVecY0uC2M=;
+	s=arc-20240116; t=1733223689; c=relaxed/simple;
+	bh=/UtxUNcu7FlfgGbbbYqeI92ekworOfOuWxMulK9vmm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UKp24mn7PiKmbnXRG9YInrD4fVbjvEfCwKOH/pfaHy41HNzoQbga5c/rjGAXNFfBhRWXvnl4UR2ngrMCm8Ew7osnQLzJVGEmGjDZsh6N1TC15XjOwSNJypjplkX8zNCntfmppM7SSA999eJGiiHO+nou9QCOlmLH+2D2BGhtw54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KxTiu2pO; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version:Content-Type; b=nFipSrbzIgPiT7cqZ7P/wpqLZH6Nm0P7YUw4SWnRTFgl9ZIkx5Cp552Y2BKD6Mh+vWHjLvDa9y0tEUCwmUXI7/wjpBjekuyCWW3uah9qm0NGaxE6QlY8kL6MlHWpoMRHY3tai9bE+2KYMjNY9F04GvEbglDd0SEMekO0TAWKx9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZhDj7tUD; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4349fd77b33so43813855e9.2
-        for <linux-iio@vger.kernel.org>; Tue, 03 Dec 2024 03:01:38 -0800 (PST)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434a766b475so49409635e9.1
+        for <linux-iio@vger.kernel.org>; Tue, 03 Dec 2024 03:01:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733223697; x=1733828497; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733223685; x=1733828485; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aseOZ/ig8fHd/fQ9eVD49B+jZ1dXmCphPlgyXXsphrs=;
-        b=KxTiu2pOgRbs43o0ydnYdrDMMdXDpgVGmvc52KtfgyTgDrHy2M5p4Ge+hOdzOWKG8C
-         y9XX6Lc2OGkQuMjhHucHRHWISbWWs7bfc5YEEsimw35XWdsgHKBCzu4pvl/tgJpWaFJu
-         ixB4VwUmdflB4YvDVdzfdDpO6TrvyB32cXDSNrvS/O/Hd6Przo/JXCp2pLa76+7hUv71
-         027PvPNwrkmr95Ikc/GBZtxJXRUPJ96HEVRGO8vAq9TOZ8EP0rogtFMOsVihZMAKC8M1
-         +QyKe5rGXNY6Ld4h4B0hrMLh10JfhIKXfIBmlY4ozhWtMbHUh5WiXdO7WMwUaRzkHxVD
-         50+A==
+        bh=Aig5K0sssQgvPkFPKhN2zssbw+/Mz4FBnMCldVaVbqU=;
+        b=ZhDj7tUD+zwGeqVqzGrsArYWIgT/aZT3dKVijX7C4WOEOvOzFp7yCe/ZG3yP3rRJ5W
+         x1USeWknkR6eJ05b9uDhQ+wgT4Qk/cSSSS1wYtu5g8sFO/qC260GcnFEY41QjfTdqKJ7
+         81Jlo5KGvBBMTjdwAVZV9Yw0/bW2f9hD/smpvKWV/LvONen7ADufeGjNyb0+d/2ChWwy
+         GKdtNR0pBIHdjfJ4Uju6CNAQqao8nZrYbW8vJ8cK5KH4kkO73HT+4oWAK7EKRiGdooRA
+         QcaKcUIJB71KSWg5ZSE07Z++aU8gsKKCfEJ4Hfq1aWAJH2z0aRXb85dt90btswTIRx+G
+         YjyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733223697; x=1733828497;
+        d=1e100.net; s=20230601; t=1733223685; x=1733828485;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aseOZ/ig8fHd/fQ9eVD49B+jZ1dXmCphPlgyXXsphrs=;
-        b=UNFHK4kG8yNrBz538XHlQ1h1UL/55e+tNpJaOGsChj1OZI6yn5vzcG8hZ5s0sf7apn
-         95FQviZNMUc3PkEda2cXt1WAnODZwrFfWiwDjABmDdRY+MamQKXChGlm2Dtl3xNPNtfS
-         JzDBxGD3xJbIn0F9nHrDb28YzhA6CJM7J6EJOarXtRxnAJ0ymqeaHyzxrLYgc+W1I4cc
-         tO1iUNSQrAs+yFwV+sSN1rJVJiJ97SkY34xdmTidgqxgn5e6YN0Tso/fGlhTjuWvFxQi
-         H/tBPXWm+YuOwIoZFHbtufLz8DMzvK7lpQl2ymw8RDELqJLdbu7BRyu3tviVzdZIcMrT
-         9Kbw==
-X-Forwarded-Encrypted: i=1; AJvYcCXgqXQe+ivr9C852NzUwzgjptpzS8woWk70tcjExWaPteB4EQZ7vBKyXP26ZqUC9QU3GorXRIRBgnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpnqnXJlf1ziwtYfZWQLYR0jDnAyx/ePWSLK4bUNDvvBVUXtq2
-	4rBrZDOunf8oKoLekgbste9+P1lJ45MvhRFdgO3oLCSs+9LlKKsjCZl2ys5NMco=
-X-Gm-Gg: ASbGncs5Xr7/tRszywPaAa7iI0FQxrK6B/FAS4mVCL4vzWvqLS4V1Gf2R7EjU61Zdgu
-	J3OXGFhEEUw30RcAPXNbmvtH6kFPpZq2sc6xCvNdIs5IAX/dtGtynA+KIlXqkZkf5UDgsmU94fP
-	4QhvhiHyvwq8n3VNojXxBl7aukKFCNxxlZBE2OAwC/X+YGHAJys8zhUS2D6+LVOvaB/meDnrfHi
-	FQmIV12cuekPdc0x915cz/ctCl8U8FA6rRFE5npk/4L9LEhJa32gsw2dLxQKNYPX92VBJOUG6ge
-	nFoILRmP75Tn7yBz2cgQEmSlg4uCGKMfjZEivtY=
-X-Google-Smtp-Source: AGHT+IFe6Ur7Dc0QXIqQDvEIH5iPZHgOKXmjXthnf9J8NhH++FCK874qebsX6AqFH2Rqhdn97SGDPg==
-X-Received: by 2002:a05:600c:3502:b0:434:a902:415b with SMTP id 5b1f17b1804b1-434d09b647cmr20518885e9.10.1733223697473;
-        Tue, 03 Dec 2024 03:01:37 -0800 (PST)
+        bh=Aig5K0sssQgvPkFPKhN2zssbw+/Mz4FBnMCldVaVbqU=;
+        b=laaT2umdjN74I0NSMSts3i5tRDVag+mrzenmUB3An3MGNy7dyReqHpFtucwhAZ7T7T
+         z7ZqzPK+ZyloG5MqUWi5oPktAeAoXI/jDjwqkhjEwnOIhQg4ScIrgi9qkqa07vTsrIIu
+         zpJv7hrScAj/W9hc+6eqWiikM0bbox8lX9rDJJmhzbqsUOliuFUz9K4Lm/5b/ywCYd8k
+         VJZGcSZS6d3sLj/mELnDTfndCl0heSO9X6VI4bLhgIn3paXVazpRcz7rLssRFuj2rfp4
+         Q0wcf9tRi5V/7KyxDXWQaXuasST86h3RvxX+gWVVddMaMWCRDikoOsU8wXxTTCRnXQQF
+         gViw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFY0uu3wZXpFZt2ftal2sqonzqYRpKKtSQfTcTlGL5wschgW3NQbl0nuDYykGFo+OhASk/6zCXEAU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjKHskYnyQUV2R9LnaINLV/f187gmHSGeHsddMSUaoiM3zqdOC
+	63OG5K8Ii5U3e5jKfMjbAUbL/mFULYfFZhoLX1dqC5i7gKLsz1V6HkYdHxzONx0=
+X-Gm-Gg: ASbGncuGd6hEIfpku4RcFBWxz253WsDwX/J7B2AIWMeS6m4gvtvyaoudhe3WKm8FMSD
+	DZtHSwbsPnhkJqKU4S1sUjAfTnThcYPuyMv2Oy1ebkeAE2GxtoxKDNXzbRKYNaqO1db65EbB/Na
+	TUkVcmTCdfBZ60gx4/nT8/J2SYGP+4bK6uHPUalBU2QR3q23CHCa+htfa4/2IS379agiaStKm82
+	gDF8v9UJkEQ6PY9p/R3PdKrEoMNUbW2qCUwvx3n8HkYf/PF9BN9aC1ywnZFh75/mq/AoZfl5ww5
+	OSkZFN42tiBxAVfIR6KtX2D4tOXTVczXfoMpp3w=
+X-Google-Smtp-Source: AGHT+IEflZ/bfJ7Yhpi3X7wclP9fPQc0soHAFLK8OtuTF11ung6XmDWNFqD7T93WlhYn3Rc6QlZuGw==
+X-Received: by 2002:a5d:5f84:0:b0:382:3cc2:537c with SMTP id ffacd0b85a97d-385fd3eb66emr1795981f8f.26.1733223684816;
+        Tue, 03 Dec 2024 03:01:24 -0800 (PST)
 Received: from localhost (p200300f65f242d005bbc9b581c6b9666.dip0.t-ipconnect.de. [2003:f6:5f24:2d00:5bbc:9b58:1c6b:9666])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434b0f32589sm189218195e9.28.2024.12.03.03.01.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-385ccd3a522sm15094135f8f.52.2024.12.03.03.01.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2024 03:01:37 -0800 (PST)
+        Tue, 03 Dec 2024 03:01:24 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -89,9 +89,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Alexandru Ardelean <aardelean@baylibre.com>,
 	Andy Shevchenko <andy.shevchenko@gmail.com>,
 	Trevor Gamblin <tgamblin@baylibre.com>
-Subject: [PATCH v5 10/10] iio: adc: ad7124: Implement temperature measurement
-Date: Tue,  3 Dec 2024 12:00:30 +0100
-Message-ID: <20241203110019.1520071-22-u.kleine-koenig@baylibre.com>
+Subject: [PATCH v5 06/10] iio: adc: ad_sigma_delta: Fix a race condition
+Date: Tue,  3 Dec 2024 12:00:26 +0100
+Message-ID: <20241203110019.1520071-18-u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241203110019.1520071-12-u.kleine-koenig@baylibre.com>
 References: <20241203110019.1520071-12-u.kleine-koenig@baylibre.com>
@@ -102,184 +102,169 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5420; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=PzIORblitgR8o9Wn8H59N3kcmZSxmQXU/hVecY0uC2M=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnTuTkU4JHKiap3rPd1eTqeDzUhthNZfuou1LnG KOtVIh+kMqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ07k5AAKCRCPgPtYfRL+ TuXQB/4iamkPEY5yC3cQnm2HOCMFXsSZo5zs9YWkiLMVsb4lXmBZS0kVPNGqXlPhu9TSZ5QVbVz 5BoiJr3nztys0NZFgzoxKxpbprofjFhngow4WuYdx8Fu8HLkDs3pCnY/J+Na5lzPFm3xf1jFUs8 RSrjz7dIpYQslpIVSVEWg4EW6RSOqAXXl3bUaSgUM9U4IQmqQ9jBrCA2mKv+tISxeCENFZbaoju mcoZsFxhK/r1igV13JoYaSMku9S8H6VHAiyZujIlDa3dCdWT0n3hzy8ZRgdZiMYB50XwnHXqozc i/84/TJCoe7cb97JCMv6As49xy8phr37YinzARvhS31SdrnW
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5630; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=/UtxUNcu7FlfgGbbbYqeI92ekworOfOuWxMulK9vmm4=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnTuTXZ1jctnT359wUzbJNDXuiikKyGWIfPGgx0 Z+4vPzq9DCJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ07k1wAKCRCPgPtYfRL+ TurMCACwp77bmy+d6tT9ffLfcGgapofq3I0A69QQLgwSDQDkHV6DV6Ocn8b57sVXwxxOYdYTuVc i9D9DrnxW7F7VWt5FpvNE05FtiQT0cyCovcTw7Kdq7Roq3ohdg8OfM8VkuaohTHDsKrQmZKo5lx XtN3iculo8PK7W3XDDj5vf68YrE/N7DLFUp6JMo9UHkY6dh5IHj4B+Oadwj57S64GbhZL+r4O9l AN0ZfmzsS0aNVlJdcyreYGowxvfcs3ibawQyLvXdGoWOZYSNc7BzKvgYOOPHGcoyCNNKxHcKuzg VsrSWayXZGx70Z8RDeueIONdx4fTM1f8tRbG6Rlzns1H8Ll+
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-If the maximal count of channels the driver supports isn't fully
-utilized, add an attribute providing the internal temperature.
+The ad_sigma_delta driver helper uses irq_disable_nosync(). With that
+one it is possible that the irq handler still runs after the
+irq_disable_nosync() function call returns. Also to properly synchronize
+irq disabling in the different threads proper locking is needed and
+because it's unclear if the irq handler's irq_disable_nosync() call
+comes first or the one in the enabler's error path, all code locations
+that disable the irq must check for .irq_dis first to ensure there is
+exactly one disable call per enable call.
 
+So add a spinlock to the struct ad_sigma_delta and use it to synchronize
+irq enabling and disabling. Also only act in the irq handler if the irq
+is still enabled.
+
+Fixes: af3008485ea0 ("iio:adc: Add common code for ADI Sigma Delta devices")
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/iio/adc/ad7124.c | 112 +++++++++++++++++++++++++++++++--------
- 1 file changed, 91 insertions(+), 21 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c       | 56 ++++++++++++++++----------
+ include/linux/iio/adc/ad_sigma_delta.h |  1 +
+ 2 files changed, 36 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 9405cb579324..d858bffd2628 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -95,6 +95,10 @@
- #define AD7124_MAX_CONFIGS	8
- #define AD7124_MAX_CHANNELS	16
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index a2efd2145373..9abde276cd17 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -202,6 +202,27 @@ int ad_sd_reset(struct ad_sigma_delta *sigma_delta,
+ }
+ EXPORT_SYMBOL_NS_GPL(ad_sd_reset, IIO_AD_SIGMA_DELTA);
  
-+/* AD7124 input sources */
-+#define AD7124_INPUT_TEMPSENSOR	16
-+#define AD7124_INPUT_AVSS	17
++static bool ad_sd_disable_irq(struct ad_sigma_delta *sigma_delta)
++{
++	guard(spinlock_irqsave)(&sigma_delta->irq_lock);
 +
- enum ad7124_ids {
- 	ID_AD7124_4,
- 	ID_AD7124_8,
-@@ -589,26 +593,59 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
++	/* It's already off, return false to indicate nothing was changed */
++	if (sigma_delta->irq_dis)
++		return false;
++
++	sigma_delta->irq_dis = true;
++	disable_irq_nosync(sigma_delta->irq_line);
++	return true;
++}
++
++static void ad_sd_enable_irq(struct ad_sigma_delta *sigma_delta)
++{
++	guard(spinlock_irqsave)(&sigma_delta->irq_lock);
++
++	sigma_delta->irq_dis = false;
++	enable_irq(sigma_delta->irq_line);
++}
++
+ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
+ 	unsigned int mode, unsigned int channel)
+ {
+@@ -221,12 +242,10 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
+ 	if (ret < 0)
+ 		goto out;
  
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		mutex_lock(&st->cfgs_lock);
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			mutex_lock(&st->cfgs_lock);
+-	sigma_delta->irq_dis = false;
+-	enable_irq(sigma_delta->irq_line);
++	ad_sd_enable_irq(sigma_delta);
+ 	time_left = wait_for_completion_timeout(&sigma_delta->completion, 2 * HZ);
+ 	if (time_left == 0) {
+-		sigma_delta->irq_dis = true;
+-		disable_irq_nosync(sigma_delta->irq_line);
++		ad_sd_disable_irq(sigma_delta);
+ 		ret = -EIO;
+ 	} else {
+ 		ret = 0;
+@@ -294,8 +313,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
  
--		idx = st->channels[chan->address].cfg.pga_bits;
--		*val = st->channels[chan->address].cfg.vref_mv;
--		if (st->channels[chan->address].cfg.bipolar)
--			*val2 = chan->scan_type.realbits - 1 + idx;
--		else
--			*val2 = chan->scan_type.realbits + idx;
-+			idx = st->channels[chan->address].cfg.pga_bits;
-+			*val = st->channels[chan->address].cfg.vref_mv;
-+			if (st->channels[chan->address].cfg.bipolar)
-+				*val2 = chan->scan_type.realbits - 1 + idx;
-+			else
-+				*val2 = chan->scan_type.realbits + idx;
-+
-+			mutex_unlock(&st->cfgs_lock);
-+			return IIO_VAL_FRACTIONAL_LOG2;
-+
-+		case IIO_TEMP:
-+			/*
-+			 * According to the data sheet
-+			 *   Temperature (°C)
-+			 * = ((Conversion − 0x800000)/13584) − 272.5
-+			 * = (Conversion − 0x800000 - 13584 * 272.5) / 13584
-+			 * = (Conversion − 12090248) / 13584
-+			 * So scale with 1000/13584 to yield °mC. Reduce by 8 to
-+			 * 125/1698.
-+			 */
-+			*val = 125;
-+			*val2 = 1698;
-+			return IIO_VAL_FRACTIONAL;
-+
-+		default:
-+			return -EINVAL;
-+		}
+ 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_SINGLE);
  
--		mutex_unlock(&st->cfgs_lock);
--		return IIO_VAL_FRACTIONAL_LOG2;
- 	case IIO_CHAN_INFO_OFFSET:
--		mutex_lock(&st->cfgs_lock);
--		if (st->channels[chan->address].cfg.bipolar)
--			*val = -(1 << (chan->scan_type.realbits - 1));
--		else
--			*val = 0;
-+		switch (chan->type) {
-+		case IIO_VOLTAGE:
-+			mutex_lock(&st->cfgs_lock);
-+			if (st->channels[chan->address].cfg.bipolar)
-+				*val = -(1 << (chan->scan_type.realbits - 1));
-+			else
-+				*val = 0;
-+
-+			mutex_unlock(&st->cfgs_lock);
-+			return IIO_VAL_INT;
-+
-+		case IIO_TEMP:
-+			/* see calculation above */
-+			*val = -12090248;
-+			return IIO_VAL_INT;
-+
-+		default:
-+			return -EINVAL;
-+		}
+-	sigma_delta->irq_dis = false;
+-	enable_irq(sigma_delta->irq_line);
++	ad_sd_enable_irq(sigma_delta);
+ 	ret = wait_for_completion_interruptible_timeout(
+ 			&sigma_delta->completion, HZ);
  
--		mutex_unlock(&st->cfgs_lock);
--		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		mutex_lock(&st->cfgs_lock);
- 		*val = st->channels[chan->address].cfg.odr;
-@@ -826,11 +863,10 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 	struct ad7124_channel *channels;
- 	struct iio_chan_spec *chan;
- 	unsigned int ain[2], channel = 0, tmp;
-+	unsigned int num_channels;
- 	int ret;
+@@ -314,10 +332,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
+ 		&raw_sample);
  
--	st->num_channels = device_get_child_node_count(dev);
--	if (!st->num_channels)
--		return dev_err_probe(dev, -ENODEV, "no channel children\n");
-+	num_channels = device_get_child_node_count(dev);
+ out:
+-	if (!sigma_delta->irq_dis) {
+-		disable_irq_nosync(sigma_delta->irq_line);
+-		sigma_delta->irq_dis = true;
+-	}
++	ad_sd_disable_irq(sigma_delta);
  
- 	/*
- 	 * The driver assigns each logical channel defined in the device tree
-@@ -839,9 +875,12 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 	 * CHANNEL_15) as an additional channel register. The driver could be
- 	 * improved to lift this limitation.
+ 	sigma_delta->keep_cs_asserted = false;
+ 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
+@@ -396,8 +411,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *indio_dev)
+ 	if (ret)
+ 		goto err_unlock;
+ 
+-	sigma_delta->irq_dis = false;
+-	enable_irq(sigma_delta->irq_line);
++	ad_sd_enable_irq(sigma_delta);
+ 
+ 	return 0;
+ 
+@@ -414,10 +428,7 @@ static int ad_sd_buffer_postdisable(struct iio_dev *indio_dev)
+ 	reinit_completion(&sigma_delta->completion);
+ 	wait_for_completion_timeout(&sigma_delta->completion, HZ);
+ 
+-	if (!sigma_delta->irq_dis) {
+-		disable_irq_nosync(sigma_delta->irq_line);
+-		sigma_delta->irq_dis = true;
+-	}
++	ad_sd_disable_irq(sigma_delta);
+ 
+ 	sigma_delta->keep_cs_asserted = false;
+ 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
+@@ -516,8 +527,7 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
+ 
+ irq_handled:
+ 	iio_trigger_notify_done(indio_dev->trig);
+-	sigma_delta->irq_dis = false;
+-	enable_irq(sigma_delta->irq_line);
++	ad_sd_enable_irq(sigma_delta);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -551,11 +561,13 @@ static irqreturn_t ad_sd_data_rdy_trig_poll(int irq, void *private)
+ 	 * So read the MOSI line as GPIO (if available) and only trigger the irq
+ 	 * if the line is active. Without such a GPIO assume this is a valid
+ 	 * interrupt.
++	 *
++	 * Also as disable_irq_nosync() is used to disable the irq, only act if
++	 * the irq wasn't disabled before.
  	 */
--	if (st->num_channels > AD7124_MAX_CHANNELS)
-+	if (num_channels > AD7124_MAX_CHANNELS)
- 		return dev_err_probe(dev, -EINVAL, "Too many channels defined\n");
+-	if (!sigma_delta->rdy_gpiod || gpiod_get_value(sigma_delta->rdy_gpiod)) {
++	if ((!sigma_delta->rdy_gpiod || gpiod_get_value(sigma_delta->rdy_gpiod)) &&
++	    ad_sd_disable_irq(sigma_delta)) {
+ 		complete(&sigma_delta->completion);
+-		disable_irq_nosync(irq);
+-		sigma_delta->irq_dis = true;
+ 		iio_trigger_poll(sigma_delta->trig);
  
-+	/* Add one for temperature */
-+	st->num_channels = min(num_channels + 1, AD7124_MAX_CHANNELS);
-+
- 	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
- 			    sizeof(*chan), GFP_KERNEL);
- 	if (!chan)
-@@ -862,7 +901,7 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 			return dev_err_probe(dev, ret,
- 					     "Failed to parse reg property of %pfwP\n", child);
- 
--		if (channel >= indio_dev->num_channels)
-+		if (channel >= num_channels)
- 			return dev_err_probe(dev, -EINVAL,
- 					     "Channel index >= number of channels in %pfwP\n", child);
- 
-@@ -902,6 +941,37 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 		chan[channel].channel2 = ain[1];
+ 		return IRQ_HANDLED;
+@@ -691,6 +703,8 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
+ 		}
  	}
  
-+	if (num_channels < AD7124_MAX_CHANNELS) {
-+		st->channels[num_channels] = (struct ad7124_channel) {
-+			.nr = num_channels,
-+			.ain = AD7124_CHANNEL_AINP(AD7124_INPUT_TEMPSENSOR) |
-+				AD7124_CHANNEL_AINM(AD7124_INPUT_AVSS),
-+			.cfg = {
-+				.bipolar = true,
-+			},
-+		};
++	spin_lock_init(&sigma_delta->irq_lock);
 +
-+		chan[num_channels] = (struct iio_chan_spec) {
-+			.type = IIO_TEMP,
-+			.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET) |
-+				BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+			.scan_type = {
-+				/*
-+				 * You might find it strange that a bipolar
-+				 * measurement yields an unsigned value, but
-+				 * this matches the device's manual.
-+				 */
-+				.sign = 'u',
-+				.realbits = 24,
-+				.storagebits = 32,
-+				.endianness = IIO_BE,
-+			},
-+			.address = num_channels,
-+			.scan_index = num_channels,
-+		};
-+	};
-+
- 	return 0;
- }
+ 	if (info->irq_line)
+ 		sigma_delta->irq_line = info->irq_line;
+ 	else
+diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+index 126b187d70e9..f86eca6126b4 100644
+--- a/include/linux/iio/adc/ad_sigma_delta.h
++++ b/include/linux/iio/adc/ad_sigma_delta.h
+@@ -86,6 +86,7 @@ struct ad_sigma_delta {
  
+ /* private: */
+ 	struct completion	completion;
++	spinlock_t		irq_lock; /* protects .irq_dis and irq en/disable state */
+ 	bool			irq_dis;
+ 
+ 	bool			bus_locked;
 -- 
 2.45.2
 

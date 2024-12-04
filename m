@@ -1,222 +1,221 @@
-Return-Path: <linux-iio+bounces-13089-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13090-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B223B9E3F7A
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 17:21:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2509A9E4346
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 19:25:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62132281C48
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 16:21:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5EA5167573
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 18:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F0B20C462;
-	Wed,  4 Dec 2024 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA3B1A8F95;
+	Wed,  4 Dec 2024 18:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="DG/FjBkf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QWZA9aG8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2053.outbound.protection.outlook.com [40.107.22.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306854A28;
-	Wed,  4 Dec 2024 16:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329260; cv=fail; b=CJYM/uh8XdU7KnYhrJebcOVcjsz60VjaurZxs8BhhTo+dGj4jBk4juL6yboMTxKiPVeiD2WK6oPvgYD/Lz+xoPrFq2vjx1nyiVBrwwkABBWgHnsVg8D/aePJarS7PT/jyLspbe8rxySekbw9Xrb/sQ3xllZCrNSBSe8eLAdxgDk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329260; c=relaxed/simple;
-	bh=8B9EeDhlGgulLSOJNs0biohFZNnR5MxLuQw+VVPmixo=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AsLlbm2d0SK+9l8AzNJsL8lDplAAefo6OlTy9wqTY88hdpGQahuIpYkl245u41B4M5tqVXThmG8GAk49VMk/AMCaTNp3/lNeNGdX4nIXmBuMUjYqtjkBkvWrROa+ObvG8vM2vU0TIqH7PFTIlu5n4qWY3A2iaBlZ+YwdPUElHvk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=DG/FjBkf; arc=fail smtp.client-ip=40.107.22.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UdaYZki66sY0JxueMz9fH7EBEWNyrc9GmLHnRjbmIA2buzW7NMltiLuTexf1MAgTyelqDoIqYSoEIl0S6AFhpCNGficVXqW+IEk8jbzaChAjUngId7GFDGUzbK+V550QC46ikqLafbWeeVMSXZjw/60zV3fo7QfNqzjnhFaL4k0hZB0dbpmzky1tE2eYQgKecawOvyPe+CiWA7YanxLLsHd5o8IK+++AdKYkwiOsHlcgHoi6tJ/zXEBZUXt7Q078c17wfxvljPXnmovoXP51HWN6fMX1SNbzXtVJ69qzxusXA/ho2yyBDmpWluLmRjty4WagrGqwD3Q9ZqzOnsIyQA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6mj5AUZ5/5mEiAJN1vWWyeHbUrRVL8aElZd+RfBYe7A=;
- b=xTn7kynTsry3OpE/5CsxG8AXLYTachQua/Ear3ICL+dmuHWNTF3CjF3RkYAAbCqRGj2sI0zL/1fSANEQodnrOzme0SLJmuemnBaKM+WlGZ7MVvC2WFiOrhK0j9WQHPXGymlTTfoY1x+MPeew9jCFZcAel1JpPUPU9LZhrSYnexIkyPwMpHOP8VG4R2sI9G/EnFDsbisMUG3HzVP8GZEHebzNsTdFvPDqMAv/SoJODyh4kbWW/4LFMFNzxnJGAkJRkdBUxqfg0g5tydc9pxpr7azpVaKq3UYTAkAZeB2FGOg4t2+W4i6tGQF04+6QET6kV8rvXh8vltiuLmyG5hx2yQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 217.111.95.7) smtp.rcpttodomain=kernel.org smtp.mailfrom=arri.de; dmarc=fail
- (p=none sp=none pct=100) action=none header.from=arri.de; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6mj5AUZ5/5mEiAJN1vWWyeHbUrRVL8aElZd+RfBYe7A=;
- b=DG/FjBkfzzBiexQqc2AnL8OHO/vsRbvOcE8akLEgxWG7skI8jlTHYBlzE8Vl3u4o8NzVG7mXEYf7a2ux+haDYBe4EjIgHjSjsr2YQLBBnz+GYFhySOGceydYaec9/l3cSBMT0FG7Hpcy3dulIXy+stx8vxLy57by0skQl6EMlfY=
-Received: from DU2PR04CA0232.eurprd04.prod.outlook.com (2603:10a6:10:2b1::27)
- by VI1PR0701MB6752.eurprd07.prod.outlook.com (2603:10a6:800:19c::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8207.18; Wed, 4 Dec
- 2024 16:20:49 +0000
-Received: from DB5PEPF00014B9D.eurprd02.prod.outlook.com
- (2603:10a6:10:2b1:cafe::a6) by DU2PR04CA0232.outlook.office365.com
- (2603:10a6:10:2b1::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8207.19 via Frontend Transport; Wed,
- 4 Dec 2024 16:20:48 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
- smtp.mailfrom=arri.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arri.de;
-Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
- designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.111.95.7; helo=mta.arri.de;
-Received: from mta.arri.de (217.111.95.7) by
- DB5PEPF00014B9D.mail.protection.outlook.com (10.167.8.164) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8230.7 via Frontend Transport; Wed, 4 Dec 2024 16:20:48 +0000
-Received: from n9w6sw14.localnet (10.30.4.231) by mta.arri.de (10.10.18.5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Wed, 4 Dec
- 2024 17:20:48 +0100
-From: Christian Eggers <ceggers@arri.de>
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Antoni Pokusinski <apokusinski01@gmail.com>, Francesco Dolcini
-	<francesco@dolcini.it>, =?ISO-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?=
-	<jpaulo.silvagoncalves@gmail.com>, Javier Carrasco
-	<javier.carrasco.cruz@gmail.com>
-CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	=?ISO-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>, Javier Carrasco
-	<javier.carrasco.cruz@gmail.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] iio: light: as73211: fix channel handling in only-color
- triggered buffer
-Date: Wed, 4 Dec 2024 17:20:47 +0100
-Message-ID: <3614353.dWV9SEqChM@n9w6sw14>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <20241204-iio_memset_scan_holes-v2-2-3f941592a76d@gmail.com>
-References: <20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com>
- <20241204-iio_memset_scan_holes-v2-2-3f941592a76d@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173C01A8F94;
+	Wed,  4 Dec 2024 18:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733336707; cv=none; b=fWJlBCNuiPzMjlpEg94BzSnSkxqD9wGZ8VHolZHjTHDTRVgvV6YkjN3EqSLi8MGbR6UxdKl5gPi3nSKSm3rdCJ/ATppoMSdzP8W8++48uRvD4Z55YDddqGD6tF1qEIw8A01QO24mrM9cP/6M6C+D9Y2yWYraSVQu3NJjJDY3VRc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733336707; c=relaxed/simple;
+	bh=rCVMBqnStLY3qm4PnXf8uP4XjudT7deIC3HE1cIpCbg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ommTj6W0oDBewS7Qr7VIzFW/x5eB4C8GktIhKSyro4aOg6Amk79eY31m1wcIkPjn+Hdba2KY9F6EFxvZ6g4YGsL7QMaXqVaDDQcCI4ZpGNw08sghP/UZCLXvV5PNsT9cTfMBxPRttW7rCSsUL9KW/8VXq0HS7Pc9tMrJLiUyI/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QWZA9aG8; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-434941aac88so81865e9.3;
+        Wed, 04 Dec 2024 10:25:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733336703; x=1733941503; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hSkc2gHIBCz0xgSC3qe6gBqIO9a+mdMV2HVXy8SlqeE=;
+        b=QWZA9aG8cW20EbTU8Ij0u5SHlHi2KtxheNCy+Z5RhShpEYz5tE+QMXhu/UDiFxTCMT
+         sNO2HM7l7hoxusI9EbrjfflSSkss2/32HMvxVL0HcJHbd11sveXwalrRibFjOMzlRhST
+         dbBR8WaUF/e1Ni8Xml1qkSWHY62EaqQj7cXki07ItCB6xejpcquaRPPBZVTbE7ajzdcV
+         Wgc+4X6NTRQjhvMr8Dtbp3Elzf0lSog/HoI9NBO/zib4mgKPx/ZgFVYcZ8DMtXxFyaFk
+         +xPagXq1p5FToaaQThDpJjDbWBqQONv7FsauwRBiK830wo49Cb2ZbHeiLMJS0dNRQlXn
+         vCBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733336703; x=1733941503;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hSkc2gHIBCz0xgSC3qe6gBqIO9a+mdMV2HVXy8SlqeE=;
+        b=gdleBVbnzj8EozLMCdVWplrU74qRvPa71pVRY7KaoqrNGrwk0FBdT3rratAOhprKo3
+         cxTEJzoZKx2ElDus0DJDpfduAK+57QcvqA7kx8owj+x+u6LCByyqdQTH76cSNzppLcN2
+         b1A4diVgR2JbleZpuhWNdDJfmxLC9EzADdIh7+ZMmEPXyf3vkuylSDEaVNe3eDQQkN+9
+         r5DPgSUYBqyLFx6HJOGfCd02NiWOYXYqkIvUAGamuRPhZb1KdDUd63/Zz4Duw7wO6H6u
+         S5u/L3I+g1G1IIO3er7muAPGMi+qTqrV5raABshOOMTzFwKHfRsMPEWLSYK3+zz5YS16
+         mw+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU7BUbFT+TsHgCN7UrbMQj8ZcMqvfr8NQReeaT2raMKrqKJk3a84Wj/g2X+hcKujTugfaooJ9AX+B9ZfnxK@vger.kernel.org, AJvYcCVsq/Kx9P3sfFBnRGMb/Q0xYlQe5GwGa8tE0jznpeOQcskt19HBXPOM4xtIC/TtdZkErUUfbrYWRtg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziYVTSbB/eK/jihPYablSSSh2ZerX5PSAUO5OIaRd2CIGqQIfD
+	KCZjVMEpcHDF55alUFngITxJcYnW8RycyFhNHgHYfBmyoHV3QPAD
+X-Gm-Gg: ASbGnctxA0gYqAiaD4tLppeXGRz0FhZo4OeI/KVosoqsfbcasuai4M53Z+87kV2NSDZ
+	EjQrwLxqL7z7rkDkO/6x8prjA8Glk1c5cVgM8lEu/bd51IJbV0FKOXuCSw/FW/sW5723b4wg7CT
+	UC16F8gnF01NpnJoaxFuKiGqwdEnLjmtoMMGy4pQF3dRrQtM8IbFOn2l0uzVNJbIo8n9525JVbv
+	fkHyNfGAHMveP5TQh/ynUi71pXADTdsnb7ENd/v53l8ctIUx9Ok/ppf+wDCKcmm1xQ4c37BFcgk
+	8XBLhSBU7n62LNHWHZrNufHRS6cm
+X-Google-Smtp-Source: AGHT+IFNcbLJSjmhpB6hkL+6qxzuReQCQM469QVqn9tbZH81b+OFd7Z5wbvAMU3zb359lkFeYdu48w==
+X-Received: by 2002:a05:600c:450c:b0:431:5632:448d with SMTP id 5b1f17b1804b1-434d0a3568cmr27401665e9.9.1733336703095;
+        Wed, 04 Dec 2024 10:25:03 -0800 (PST)
+Received: from 7b58d44c4ff6.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d52cbf57sm31959755e9.39.2024.12.04.10.25.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Dec 2024 10:25:02 -0800 (PST)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	eraretuya@gmail.com,
+	l.rubusch@gmail.com
+Subject: [PATCH v4 00/10] iio: accel: adxl345: add FIFO operating with IRQ triggered watermark events
+Date: Wed,  4 Dec 2024 18:24:41 +0000
+Message-Id: <20241204182451.144381-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B9D:EE_|VI1PR0701MB6752:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20ca7325-8817-4c7a-6811-08dd147f9d23
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?iCZ5GFXuJpsyJLd19Icv/qKz9IP8qcS7hTelduGRy1Tv2wYuevsv2IaGzn8f?=
- =?us-ascii?Q?6SOJfUy7XTCMnaE1AEkhF3MfK0XSgU3XQAz9OQNBgqFxRGSWOfUusSMmsda/?=
- =?us-ascii?Q?bryif7vOswm9SCZA6O8xhoAUfU61JGJ4RzhceLfzgWLpCPjZ9VyjCi1bYCyd?=
- =?us-ascii?Q?AVgs3o0ZlHH2SkuMbeeZqEysdgO0jH/V69fnuejI2vqfZeVQ1IOcNr5nXR87?=
- =?us-ascii?Q?irgF5rjr00rFy3cuOudkBRilYeFic2ydvYE7ObYM2XACHd2FcUSknbs4LFoO?=
- =?us-ascii?Q?TgopqiUgEbm3+VJs+930rl8N0tJXfn+ycu4/apVu3+yIj+G5Lvlv8Ptjud31?=
- =?us-ascii?Q?2D+4Jt+Yk0oPkCWt81W0/L1ChKDsESgx4M6Lc4EG5Xoi5+TtO2CiSHrZy4Mv?=
- =?us-ascii?Q?eGwPr9vCZ63fxdaS0kQXBjsPEa5GJQ9O8QkyySMmufqEwysPIW24kGHpSeVx?=
- =?us-ascii?Q?9vjebq+tDMkYKZ1Rq1DE8JVJ+RbY9t20SCs5Wa7nw8ACMePrU2m7cWkcpfBt?=
- =?us-ascii?Q?eAW1uPeh7fWFFpJgyfVv04SOh/+x0U+ILXHeZ6Uw5wFMwzQrEVHXN7C3L/an?=
- =?us-ascii?Q?PhiY7CLdn98/xoKABcqGmn2EAPWoLULLfVy6nuh87KwuYuXE7QkxBbVeZnhV?=
- =?us-ascii?Q?xnM2KBtQzTs16I3pa++yaony9Mc9TY7h62WTdqMoxtLT//oV1QbSSYax9Z/6?=
- =?us-ascii?Q?zHl7swNlUFkC0j3n0LV2oYFpNEdvV01j3y2hqr051RXnsr8scSVzZITTnEcs?=
- =?us-ascii?Q?sdAV/tcxhSdRM4AopBxJwiYGokLR1/Vgeg0aRBv/3iAEp4+TXZZgqcVulbz/?=
- =?us-ascii?Q?B8jcxuwhIoUU4X8wTjovDZMqOCgD/Zd7tfLITtskScoQxoow7EFYO69A1KNu?=
- =?us-ascii?Q?Y5pnbPUaNRDeFCet1xAU2P9k0xVmCAh39R6AbwJEIgPBacQ1Tj1Wtc8k/uJW?=
- =?us-ascii?Q?lol6GD2w082nG6KtwLG68bG8ZFwltk5CkWZKakoj5UNAG6TS0dMI9z6uPScY?=
- =?us-ascii?Q?7wKPEsdrfKiWJrSBTaEf+W7wYjONXVvzT0z+zS6rToLkBIDwC5HlEijzHvCU?=
- =?us-ascii?Q?osPaFkPtRVLQLrF9Eb2tI8RgqhlSNUHbEWKrL+lW+mFmh6CeoMFLnouOXF5P?=
- =?us-ascii?Q?1WNqKWk6HTjefe/2cVarAD+Uw8nDFJoyP4+c6OLbUEjnYBgkWwbKvXiLhlzX?=
- =?us-ascii?Q?lAKE3ID1FvTEnueefVBbiFkYKXTA5mMUV+oaDPOFrjH4hbk91Z/JzNl19Hb4?=
- =?us-ascii?Q?HtnMPVw5Rnfpwuj9Lkpc4d6Tdotwi41bknW6uBFWYzgPgyQd1OXgy8jdG9Ed?=
- =?us-ascii?Q?7tqckCLvVwgXw3u57Hub8o6bI97hW33JdQ/6myuBBYx0kjujJyRnq1C75np1?=
- =?us-ascii?Q?Zi/qrayTmW909Zuzebhzuyq7x8mWGfLoEzn7y2KJPVxN65XWe079oRyeYQ1b?=
- =?us-ascii?Q?Xcg1b6vHZJLaSywd0nsLmdalPzqoCNH8?=
-X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2024 16:20:48.5442
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20ca7325-8817-4c7a-6811-08dd147f9d23
-X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B9D.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0701MB6752
+Content-Transfer-Encoding: 8bit
 
-On Wednesday, 4 December 2024, 00:55:32 CET, Javier Carrasco wrote:
-> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> set (optimized path for color channel readings), and it must be shifted
-> instead of leaving an empty channel for the temperature when it is off.
-> 
-> Once the channel index is fixed, the uninitialized channel must be set
-> to zero to avoid pushing uninitialized data.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
->  drivers/iio/light/as73211.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..2d45dfeda406 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -672,9 +672,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  
->  		/* AS73211 starts reading at address 2 */
->  		ret = i2c_master_recv(data->client,
-> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
->  		if (ret < 0)
->  			goto done;
-> +
-> +		/* Avoid pushing uninitialized data */
-> +		scan.chan[3] = 0;
->  	}
->  
->  	if (data_result) {
-> @@ -682,9 +685,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  		 * Saturate all channels (in case of overflows). Temperature channel
->  		 * is not affected by overflows.
->  		 */
-> -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		} else {
-> +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +		}
->  	}
->  
->  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> 
-> 
+The adxl345 sensor offers several features. Most of them are based on
+using the hardware FIFO and reacting on events coming in on an interrupt
+line. Add access to configure and read out the FIFO, handling of interrupts
+and configuration and application of the watermark feature on that FIFO.
 
-With this change, having only X, Y and Z in the scan_mask (without the
-temperature channel) works fine.
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+Although I tried to implement most of the requested changes, now the code
+is simplified and clearer, I still encounter some issues.
 
-But it looks that there is still another problem if a single color channel
-(e.g. X) is omitted from the scan mask (which probably wouldn't make much
-sense in practice).  If I am right, the layout of scan.chan[] is also wrong for
-that case, so e.g. if omitting X, the application will get the X values where
-it expects the temperature value (which isn't read from the hardware at all).
+1) Unsure if my way reading out the FIFO elements with a regmap_noinc_read()
+   is supposed to be like that. TBH, isn't there a better way, say, to
+   configure the channel correctly and this is handled by the iio API
+   internally? As I understood from v2 there might be a way using
+   available data, also in iio_info I see now as buffer attributes an
+   available data field. Where can I find information how to use it or
+   did I get this wrong?
 
-Does it make sense to write a follow-up patch for this? I fear that taking all
-possible combinations into account could make the driver more complicated than
-necessary.  Or is there a good example how to handle such combinations?
+2) Overrun handling: I'm trying to reset the FIFO and registers. Unsure,
+   if this is the correct dealing here.
 
+3) I can see the IRQs coming in, and with a `watch -n 0.1 iio_info` I can
+   see the correct fields changing. I tried the follwoing down below,
+   but the iio_readdev shows me the following result. I don't quite
+   understand if I still have an issue here, or if this is a calibration
+   thing?
 
-Tested-by: Christian Eggers <ceggers@arri.de>
+# iio_info 
+Library version: 0.23 (git tag: v0.23)
+Compiled with backends: local xml ip usb
+IIO context created with local backend.
+Backend version: 0.23 (git tag: v0.23)
+Backend description string: Linux dut1138 6.6.21-lothar02 #3 SMP PREEMPT Wed Nov  6 21:21:14 UTC 2024 aarch64
+IIO context has 2 attributes:
+	local,kernel: 6.6.21-lothar02
+	uri: local:
+IIO context has 1 devices:
+	iio:device0: adxl345 (buffer capable)
+		3 channels found:
+			accel_x:  (input, index: 0, format: le:s13/16>>0)
+			4 channel-specific attributes found:
+				attr  0: calibbias value: 0
+				attr  1: raw value: -14                          <--- CHANGES
+				attr  2: sampling_frequency value: 100.000000000
+				attr  3: scale value: 0.038300
+			accel_y:  (input, index: 1, format: le:s13/16>>0)
+			4 channel-specific attributes found:
+				attr  0: calibbias value: 0
+				attr  1: raw value: 6                            <--- CHANGES
+				attr  2: sampling_frequency value: 100.000000000
+				attr  3: scale value: 0.038300
+			accel_z:  (input, index: 2, format: le:s13/16>>0)
+			4 channel-specific attributes found:
+				attr  0: calibbias value: 0
+				attr  1: raw value: 247                          <--- CHANGES
+				attr  2: sampling_frequency value: 100.000000000
+				attr  3: scale value: 0.038300
+		2 device-specific attributes found:
+				attr  0: sampling_frequency_available value: 0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200
+				attr  1: waiting_for_supplier value: 0
+		3 buffer-specific attributes found:
+				attr  0: data_available value: 13
+				attr  1: direction value: in
+				attr  2: watermark value: 15
+		No trigger on this device
 
+  Above I marked what keeps changing with "CHANGES", that's what I expect. Then with readdev
+  I obtain the following result.
 
+# iio_attr -c adxl345
+dev 'adxl345', channel 'accel_x' (input, index: 0, format: le:s13/16>>0), found 4 channel-specific attributes
+dev 'adxl345', channel 'accel_y' (input, index: 1, format: le:s13/16>>0), found 4 channel-specific attributes
+dev 'adxl345', channel 'accel_z' (input, index: 2, format: le:s13/16>>0), found 4 channel-specific attributes
+# echo 1 > ./scan_elements/in_accel_x_en
+# echo 1 > ./scan_elements/in_accel_y_en
+# echo 1 > ./scan_elements/in_accel_z_en
+# echo 32 > ./buffer0/length
+# echo 15 > ./buffer0/watermark
+# echo 1 > ./buffer0/enable
+# iio_readdev -b 16 -s 21 adxl345 > samples.dat
+# hexdump -d ./samples.dat 
+0000000   65523   00006   00248   65523   00005   00235   65522   00006
+0000010   00248   65522   00006   00248   65521   00005   00247   65522
+0000020   00007   00249   65523   00005   00249   65521   00006   00248
+0000030   65522   00006   00248   65522   00006   00250   65522   00006
+0000040   00249   65522   00005   00248   65523   00005   00248   65521
+0000050   00007   00248   65521   00006   00250   65522   00005   00248
+0000060   65521   00006   00248   65522   00007   00247   65522   00006
+0000070   00248   65522   00006   00248   65521   00004   00250        
+000007e
 
+  Am I doing this actually correctly?
+
+---
+v3 -> v4: fix kernel-doc warning; fix dt-binding indention
+v2 -> v3: Implementation reworked and simplified
+          - INT lines are defined by binding
+          - kfifo is prepared by devm_iio_kfifo_buffer_setup()
+          - event handler is registered w/ devm_request_threaded_irq()
+v1 -> v2: Fix comments according to Documentation/doc-guide/kernel-doc.rst
+          and missing static declaration of function.
+---
+Lothar Rubusch (10):
+  iio: accel: adxl345: fix comment on probe
+  iio: accel: adxl345: rename variable data to st
+  iio: accel: adxl345: measure right-justified
+  iio: accel: adxl345: add function to switch measuring
+  iio: accel: adxl345: extend list of defines
+  dt-bindings: iio: accel: add interrupt-names
+  iio: accel: adxl345: initialize IRQ number
+  iio: accel: adxl345: initialize FIFO delay value for SPI
+  iio: accel: adxl345: prepare channel for scan_index
+  iio: accel: adxl345: add kfifo with watermark
+
+ .../bindings/iio/accel/adi,adxl345.yaml       |  11 +
+ drivers/iio/accel/adxl345.h                   |  90 +++-
+ drivers/iio/accel/adxl345_core.c              | 427 ++++++++++++++++--
+ drivers/iio/accel/adxl345_i2c.c               |   2 +-
+ drivers/iio/accel/adxl345_spi.c               |   7 +-
+ 5 files changed, 482 insertions(+), 55 deletions(-)
+
+-- 
+2.39.2
 
 

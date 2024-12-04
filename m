@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-13071-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13072-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1609E31E1
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 04:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21A7A9E3204
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 04:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F98E162110
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 03:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFA9A161C3E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 03:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1F013C9A3;
-	Wed,  4 Dec 2024 03:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDC813C9A3;
+	Wed,  4 Dec 2024 03:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YjBk146R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ihbdj/p3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE23E136658;
-	Wed,  4 Dec 2024 03:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A6617BA1;
+	Wed,  4 Dec 2024 03:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733281878; cv=none; b=acl89oaNYkzjWzw+YEBD4WJ2BMlRe7mIVBYZ67ZYgc2H6WwlCPO8d3YnYJtBO4gKyi0EV1feUYsTQJegA9gCl0ImTG8IBPxsjsICnzgzr0Mxx+/el9vr/KeEN5Jj9hQ9o8jDanr4KB6FS93gpRBUmGau90fDIsjKELImNIhMeQY=
+	t=1733282460; cv=none; b=BMJJlLjrvXMHVjn0zDe1C+PB9DcUtdaaoiFXrpt83bNHf3fiLSPlOTM6uoaZmU9r9GL6iQmnz2oCbwB1s2gPXiUhg+e6gjeOdrITZr7j4jSNChg3b+71IUcw2nc+ZgiDVzW/WPktFDNOI0U+jYMt8Se1tYxDqaM+ImOmNOdooDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733281878; c=relaxed/simple;
-	bh=FC1IO+5zq7LugENdBj6DrnnJuMser+B89cR1TBzHDug=;
+	s=arc-20240116; t=1733282460; c=relaxed/simple;
+	bh=xFiJD3eDhYrPQHtnKlD8TkcwxwRmE2OmsefHI750AS4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TdwDgS6gNcIUoBdo3g1D8OOsqqxr8gBG+080LiHChcr390fpIk8BsczO54NTiOUFtudkXxJe1Rz1hrjluvX8dx3dCbzTOU4Q+Bd3nu57KQqV1CQUI76ZGf3DVtLfdVmtv7Sl6eNBsIrJ0KxLUu0N/Zm490EIZZknO6RON+fl6S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YjBk146R; arc=none smtp.client-ip=209.85.218.46
+	 To:Cc:Content-Type; b=AhFkJmzMZzbG9t5oK8FQndxCuXff76l/f3msF3j2qWdRuY7bw6gT8hJvQLljnzCXiFle4XCEebBEUfuNttLVDN0+PdwVIpUL1WM236wgYIpJchO+t/FOyoczwT++J6qUZHyvBDKmu46FlSZEJ7PkIUU8LCET8+2ZXa2sLe7RWkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ihbdj/p3; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9e8522445dso877123766b.1;
-        Tue, 03 Dec 2024 19:11:16 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a9ec267b879so1038482566b.2;
+        Tue, 03 Dec 2024 19:20:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733281875; x=1733886675; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733282457; x=1733887257; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vHq1dAMl45aI7ZS4WgJJtiN3EJIyNkMWjx+eXqTV7sU=;
-        b=YjBk146Rpez7vv3nviorXLAw6N8WgKZBzbfici60LH/W1CNuTQbPve3O1C028HAXgC
-         L/oDoKBWjulbKBn7Av+4pqfrbHIquMYKCfRNOyVklIqeCRcQy+1GXjThfQoUnrh/MmAL
-         SWxPQrhROo72RxKI6hlma326NrXbW6HyO93civWx/OkBxC2YGRKk+CYuUn4zK/8HtOdV
-         037PGZQecZaJP1KNBareRI5cxM6f4iKLXbZSezsJk17HZF6xRNqsiWf5/AYc186JXrRo
-         3ER73fQbhq5dIYdTImSnLNRQfxOijjj/albe/AUgy/2Cs9FMwEgC+CfDiPoG+q8E+k7B
-         9iKg==
+        bh=y04cA3TO1YirE/koG9dsISeizBY/CnfgH65djkwX2Bk=;
+        b=Ihbdj/p37YTVFZ6A8ZMvwRBI4LhuFzSMu55Z/6MWvBNtfxbSydNk92luFdg9QxgZpj
+         g4Fe2wPRgAxZcFugiSjaLa6BTqlSzIH6GwY/31IZTyRN9kzy/cFnlrKeE6nQfj6exOGX
+         2sATQXgO2fzrAiywelfaxR4UnVgkJ+tc1N77AyyqBWh4CoJuu3eqLxUULCJolsJjqO93
+         4j5XM3/8SOTEeRLQgsR6zEilgqzRtMK5XU/wq8SLUm4tY1agkJcdUvrqX1ZrAz+sZ+z4
+         jI5nbCqlbyHJ9Pgr0jXpn2pjWhlhOmzbHMzJpAt2l7vhRhpXf3wcWTDBEtmwhBujcuCd
+         DbBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733281875; x=1733886675;
+        d=1e100.net; s=20230601; t=1733282457; x=1733887257;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vHq1dAMl45aI7ZS4WgJJtiN3EJIyNkMWjx+eXqTV7sU=;
-        b=Lt9JG1DlBfATO0zVIU1kUQPojYt2gv+K7+1gQrChYhwk339IZPJ4Iq4G4iJAbFumb7
-         NpIhPc7Uaw9kW4SHyvUM1XqbMRrQXpwnfdW7tnYt6cyQGnF1sf1sHeCJ7ve5wO3hrMGz
-         I9nsfg7jji7Unnzi+qdWzpmDyRdgCvKimapZ2YY68B7LNAJEJZzgmLtAujOwv9lOAuMG
-         doM2UQN+EBcxSzsOM9ti30sE/woUYvAyak6oT7Qufl9b5lTO/sbKL6ju8Jc70MOOWcm6
-         0s/O1i+3V6UltaDhraU8C117bjKzeAV2+PvR2D1NiMwKGKMQla2cnhhE4dlW0v2R/eeE
-         fiBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUHN+0cqAR2cUUn1+Xr0wTJfEp7PiSzSdN7JflQsO59KCG85x4digNAj6WN8OjvsJMVEDIQIoRwq3z8/2Cz@vger.kernel.org, AJvYcCWO/yYmAw77VIN4ilCQlo5AlBbhb+gMBl09Nsj1Sb2gnCu2tFq8tVDww7lXHd/SPDt05o6k1DCajKiA@vger.kernel.org, AJvYcCXt+9y4oJ4PymU9hShRDlJ9xDkSHIfC4Mr38xfnc0Yb5UxQ5CXA1j6buDePQ2f2csVnCT1+7amOjgBr@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJJW1wpY0lKub6Lhn+8DQfVBSFr5xnVMNiRX2NEow+48hh2tNJ
-	yAQZ3V6QiAlRN+sqT9f2bEbETuCAnnG82sMUJE30q38f15BKH8unMQdt3WlXGy3b9KlQ0f44ziD
-	YkNr2v/ytE5inbuJwklQV0c20QGU=
-X-Gm-Gg: ASbGncteBaTjrzPHwhXdlseXVbzc9pUVHF9j08oyMohBOgeD3Fk0poje4pTB5CdGw3H
-	w976t4qkaGtRUBhz8eFeoUqxyvmARt54=
-X-Google-Smtp-Source: AGHT+IHq0xfIi11duE9fpLS8hULXoZ211QH6ftIQfZtPmWl0i10iI9AvhODiMZP73poEwbzDTPOxIXqVpsVjjeTUD1Q=
-X-Received: by 2002:a17:906:9c9:b0:aa5:4d72:6dd7 with SMTP id
- a640c23a62f3a-aa5f7da2bcfmr315567566b.29.1733281875078; Tue, 03 Dec 2024
- 19:11:15 -0800 (PST)
+        bh=y04cA3TO1YirE/koG9dsISeizBY/CnfgH65djkwX2Bk=;
+        b=JWLQ19ZxrDR8EDegXYv2V0plr4zApAd2yWHXemzd8TewDAVT2tTrurn/Mkk1m1ru8E
+         XQSdYAaTdunuR+qRp1uPSNIxdy2X6/ODArrc1Gs+VonkrrVuEkNk7htnIZgC3gvNZzu2
+         HnC51r5UaPeLazqZAKarcKEUELO5+W1+5sjEr7Xy3lMo9ZtLOE+C5rDwkrcFev9dHMzC
+         KtY9YaVbEuxb5ETAUDekd6G5cyMnQ5GHeDzfGc+sB7qI8CN6wJEg9D+zLzXC0UoxBX2X
+         BSgZ2sdYKXX0nFof+77o/CNJdOcHt4TNZnINPp6holCFFw4GzXO6ZG9Uqo7djGiEOM4F
+         +JMw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0h0jzvgEbeUbeg9HgTNtSh7FgS5Hnn2P+rux9xbuWqlhXySykmCgVCFKwZgIpllNsZQrMWr+rAbq/R7Sk@vger.kernel.org, AJvYcCUfPZmsC8ctwYjjfC9ORqVLRqE/gvK7rmtBcX5796LXscHeoAxO2v4tLEgsSuXWCHJOxjlR6lSeFY1e@vger.kernel.org, AJvYcCXAJKPwwqeT9Aw5rAZgQTA6xVj2rPibRjWDJfiKMJ2CVX8KLPG0LCTSn8M9ykXu1UTJjpyC+E8LLzIa@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1SvMabUnIb4KcO1+SkNyjqO42QV92Hu+Z4+FU1x4y1wLVSnpc
+	ZpFy9ldOTJDm/E4P+3RxDDucvJH1pKbBvfweM6Hdxy7bG2a8ivezwbpI+2GhYMHbDKrRAaisY3E
+	TPpTwZERPTMFAbEh1LdPXTx8chVg=
+X-Gm-Gg: ASbGncuyrKk2MqoTFBBPh5jJKADWu5b46p9n+g1DR9sDstZ5LMiBDb1Wlg2L9Juycg4
+	GOByT0TZiYjvAtFpdft3Q4jh035PMX8o=
+X-Google-Smtp-Source: AGHT+IGwe/oix06krX2fuoZe1ERy+q9naY8xqOUcm7s53LomcongR2PQFcGeSdVl85Uok60HVU/VrIr7KREYgLQOuhE=
+X-Received: by 2002:a17:906:32ce:b0:aa5:1d68:1ec8 with SMTP id
+ a640c23a62f3a-aa5f7cce55cmr446672366b.7.1733282457090; Tue, 03 Dec 2024
+ 19:20:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,138 +74,85 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20241203091540.3695650-1-j2anfernee@gmail.com>
- <20241203091540.3695650-2-j2anfernee@gmail.com> <4c5044a0-8286-463c-ace9-78a4245f112e@kernel.org>
-In-Reply-To: <4c5044a0-8286-463c-ace9-78a4245f112e@kernel.org>
+ <20241203091540.3695650-3-j2anfernee@gmail.com> <Z08MkR40fjfW3MXZ@smile.fi.intel.com>
+In-Reply-To: <Z08MkR40fjfW3MXZ@smile.fi.intel.com>
 From: Yu-Hsian Yang <j2anfernee@gmail.com>
-Date: Wed, 4 Dec 2024 11:10:38 +0800
-Message-ID: <CA+4VgcKWAOh=sQ=wUUPD89ORjYqZP0EDqJfqFT7FjNPppf=4Ow@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
- NCT720x ADCs
-To: Krzysztof Kozlowski <krzk@kernel.org>
+Date: Wed, 4 Dec 2024 11:20:20 +0800
+Message-ID: <CA+4VgcJW=9rtuqr3VZbfA8QxgYAR+KvfAHdf_0xv4XLQtVVQJw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, 
 	venture@google.com, yuenn@google.com, benjaminfair@google.com, 
 	jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
 	conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com, 
-	javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com, 
-	marcelo.schmitt@analog.com, olivier.moysan@foss.st.com, 
-	mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com, 
-	alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com, 
-	ramona.nechita@analog.com, mike.looijmans@topic.nl, 
-	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
-	openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
+	javier.carrasco.cruz@gmail.com, marcelo.schmitt@analog.com, 
+	olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com, 
+	matteomartelli3@gmail.com, alisadariana@gmail.com, gstols@baylibre.com, 
+	thomas.bonnefille@bootlin.com, ramona.nechita@analog.com, 
+	mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com, 
+	yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Dear Krzysztof Kozlowski,
+Dear Andy Shevchenko,
 
-Thank you for your kind feedback.
+Thank you for your comment.
 
-Krzysztof Kozlowski <krzk@kernel.org> =E6=96=BC 2024=E5=B9=B412=E6=9C=883=
-=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=885:25=E5=AF=AB=E9=81=93=EF=BC=
-=9A
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2024=E5=B9=B4=
+12=E6=9C=883=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=889:50=E5=AF=AB=E9=
+=81=93=EF=BC=9A
 >
-> On 03/12/2024 10:15, Eason Yang wrote:
-> > This adds a binding specification for the Nuvoton NCT7201/NCT7202
->
->
-> Please do not use "This commit/patch/change", but imperative mood. See
-> longer explanation here:
-> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/sub=
-mitting-patches.rst#L95
->
-> A nit, subject: drop second/last, redundant "bindings". The
-> "dt-bindings" prefix is already stating that these are bindings.
-> See also:
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree=
-/bindings/submitting-patches.rst#L18
->
-
-I read the submit patch rule and understand how to rewrite it.
-
+> On Tue, Dec 03, 2024 at 05:15:40PM +0800, Eason Yang wrote:
+> > Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
 > >
-> > Signed-off-by: Eason Yang <j2anfernee@gmail.com>
-> > ---
-> >  .../bindings/iio/adc/nuvoton,nct720x.yaml     | 40 +++++++++++++++++++
-> >  MAINTAINERS                                   |  1 +
-> >  2 files changed, 41 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,n=
-ct720x.yaml
+> > NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up =
+to
+> > 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins fo=
+r
+> > independent alarm signals, and the all threshold values could be set fo=
+r
+> > system protection without any timing delay. It also supports reset inpu=
+t
+> > RSTIN# to recover system from a fault condition.
 > >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nct720x.=
-yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct720x.yaml
-> > new file mode 100644
-> > index 000000000000..2ed1e15b953b
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct720x.yaml
-> > @@ -0,0 +1,40 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nct720x.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Nuvoton nct7202 and similar ADCs
-> > +
-> > +maintainers:
-> > +  - Eason Yang <j2anfernee@gmail.com>
-> > +
-> > +description: |
-> > +   Family of ADCs with i2c interface.
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - nuvoton,nct7201
-> > +      - nuvoton,nct7202
-> > +
-> > +  reg:
-> > +    maxItems: 1
+> > Currently, only single-edge mode conversion and threshold events suppor=
+t.
 >
+> Please, get rid of explicit castings where the are not needed or implied,=
+ like
 >
-> No other properties? No resources?
+>         u16 foo;
+>         ...
+>         foo =3D (u16)bar;
+>
+> you have a lot of this in the code.
 >
 
-The difference is to remove read-vin-data-size property and default
-use read word vin data.
+We would  get rid of explicit castings in all codes.
 
-> I think you skipped quite a lot from previous review.
+> Second, why do you need two regmaps? How debugfs is supposed to work on t=
+he
+> registers that are 16-bit if you access them via 8-bit regmap and vice ve=
+rsa?
 >
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        nct7202@1d {
+> Can't you simply use bulk reads/writes when it makes sense and drop 16-bi=
+t
+> regmap completely?
 >
-> Nothing improved here.
->
-> <form letter>
-> This is a friendly reminder during the review process.
->
-> It seems my or other reviewer's previous comments were not fully
-> addressed. Maybe the feedback got lost between the quotes, maybe you
-> just forgot to apply it. Please go back to the previous discussion and
-> either implement all requested changes or keep discussing them.
->
-> Thank you.
-> </form letter>
 >
 
-Thanks for your friendly reminder.
-It's impolite not to reply to every reviewer's comment.
-I would keep discussing with reviewers and apply the changes in the
-next version.
+Read VIN info can use word read or byte read, and other registers
+should use byte read.
 
+For a reviewer's comment,
+If the i2c controller allows word read
+then the right thing is to always use it.
+
+
+> --
+> With Best Regards,
+> Andy Shevchenko
 >
-> Best regards,
-> Krzysztof
+>
 

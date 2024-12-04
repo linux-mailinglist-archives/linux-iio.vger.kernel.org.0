@@ -1,116 +1,162 @@
-Return-Path: <linux-iio+bounces-13082-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13084-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA739E394C
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 12:53:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A89399E38DE
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 12:33:57 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C6A16619E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 11:33:54 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A464C1B21BA;
+	Wed,  4 Dec 2024 11:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jf6XkKmj"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FAC1B3CCFB
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 11:16:44 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EBA1B393A;
-	Wed,  4 Dec 2024 11:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="nrE9G5jb"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DF71B3950
-	for <linux-iio@vger.kernel.org>; Wed,  4 Dec 2024 11:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99A91AC884;
+	Wed,  4 Dec 2024 11:33:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733310837; cv=none; b=iDzJYHZ5ECeYJRWYcS5u7RwIGk5wqQDGWQPhnZE8qC5Qish8KVGIVGjiyYqStlXjQ0pYbx7rzTgGYr+3qA6Yrc2Q8lwYnCMccLKGbl0+PkQTcCwj0251zx54TfKl1rDsuC4l2uyufwcFoEv+7vv8TDcNCoYtipw2pv3fsR5btbM=
+	t=1733312032; cv=none; b=THqMcuV7Tz/SgpZStykgxBTgPaboKR7NKsyEgLQM7+vAvT/kBSZ6I0feQvp5K1w6EsiEWy1hUEfU1dagTmUEB3d003YIzgrtvS8ezlR7+HJd/B3aILJAitR+DOSrmAhBhBdUyHJe8x+smInOiCHc+GrQt6PvLsvLjofPGkS0Zcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733310837; c=relaxed/simple;
-	bh=fMLBMyFaM+8GF+GsOXCzjWqGB484ZqIJkcQU6sTqrLo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f9ugoDMJAkLI9thMTg0MpT5yM81giLgXGQeYyH38rW/UB6vVc1+VWrtrnjdWQeYsHwjQDUJfUz91nTnzll4/SQKQGEDinCXvUlJB/cBV5zXuJS7eyz1hZhgBBECWDgXdeyNC/qGWcTjDFRQn0kYUZAlpq44WFvvG2ah7Zigwm5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=nrE9G5jb; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-725958d5ee0so196800b3a.1
-        for <linux-iio@vger.kernel.org>; Wed, 04 Dec 2024 03:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733310834; x=1733915634; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=COeSzvUdKK4Vt29yvAR5N7LjtaJmGcFQIVQGosYq3rw=;
-        b=nrE9G5jbrDp1XRrYFYGad5k5gAlkTIZQRBvroqQYCCXHAvRqrfYIKZKiIBDb48zRYx
-         VtQ5GdH5D2Adw+lNVe3JAYRiW9wJisBXMbwJaLd/GMZgFaiZoBT335++yWtTbllVVGUz
-         1cnrYz4ePt/omhy0DXj19KOjLLF+KojYmBridG8QtSJeiCDycls/9ZpwtMKBvzfGbO7s
-         gF1YrzhhdyKjUKqjPYWcybBNnh865HrLwBQ5YXui6vWm4q+N2lsQpXJ4LgiTmLjiRGEh
-         45eNtKSZRR1thsgGmWfxnM1L2g2iR5UNUPbKDqqagE3Y+S//2yhG5sHMkIrRkfsiYtUQ
-         B67g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733310834; x=1733915634;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=COeSzvUdKK4Vt29yvAR5N7LjtaJmGcFQIVQGosYq3rw=;
-        b=tlFd0mKcsoMOdYUU7ZIIMK20mn0jySIA4dX5UpnflXCRfNOEGjtgYTefIdWKZPSHx2
-         UaBy1elLMmSL822u6xx6uAwuMBXIkE76G2HX6GRCZAsh/YMutWkOnP7WLvFAUfh4HpHK
-         jaZWURocql5d49tSC+c3qrHVC9eBXK/h9fPppeL/6lzb/FDm+u/poQyj3pc3U/qcwfyW
-         1z+yrOAMC83F0yG/fdr6B79ZVBZiTQjplHNSQnhIh4YUTyPlpx4+kHac7KQNK5MO2tL+
-         nP68ScWl3VGFdp4inQFQhllZtV3dAGQL4z8tZC7zZbrOu84jeq+2834N5q8BUeop7ciN
-         F+Wg==
-X-Gm-Message-State: AOJu0YyEgUZin9bYTbHCNZwKvO5KKK25ftmst/P7zoVtfIIeD8KDFefG
-	KiAc7bijcDwefmxRUeiF9UBFGl2K4kDoPAYjwbjz++3ZRdBaPo/b9ZEJMBoy+GA=
-X-Gm-Gg: ASbGncvxc02C2T3jCTxbP0pTACFAeSerUxRV/JF5/loI7MxQN3MxLHIcmYC1+skVcU1
-	DDr4Ys6vFAD1IMqCxTFSvEcWHo8lxUL711Ndt0SB2D45ssqOzKsrHHohtiagPR+pfxCOj6+IeO2
-	kYzJDxHvXnRQ8AX60Vay2Km/XYnfnDNquISFF2zyAt+vAAqhRAVnltKlwV9/FPvO6D6uGCd0HKJ
-	gyJUbRBmPHeytwCSNyIeSMKfriskwG9L7fFabJ+3iMAzsNr8aec3Q+BJ7bj0Z4EBmnSJ33Znxn5
-	UVtE/b/CE6LUVkKvHjF/JUg8nD49Rq6SBRLZ
-X-Google-Smtp-Source: AGHT+IHdHwBFiI83UzVvljJAnoa8pHjrGFbingIy3W6Vp737f7j0z9UyOvAdNkw2jiD58MOl0k1sEg==
-X-Received: by 2002:a05:6a00:3a1b:b0:724:f86e:e3d9 with SMTP id d2e1a72fcca58-7257fc74190mr8866053b3a.14.1733310833979;
-        Wed, 04 Dec 2024 03:13:53 -0800 (PST)
-Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725442c086csm12253420b3a.189.2024.12.04.03.13.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 03:13:53 -0800 (PST)
-From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: linux-iio@vger.kernel.org,
-	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Subject: [PATCH] iio: inkern: call iio_device_put() only on mapped devices
-Date: Wed,  4 Dec 2024 20:13:42 +0900
-Message-Id: <20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1733312032; c=relaxed/simple;
+	bh=icNQ1hK/KEU+ydk3SKlmtjZgJ3jM4g14xAoPkqOL7KQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4JdzWfy6Yci453d/QACMYbUn/dZM8qQGbMO38jTD88QfIBJDyrBU41AF6uTZNh3Q5/uzLTQVRNqNJ+e6kOfxzpKtwtwfqZ7dROeABb0EovxMF9UKfqJFhcnKdFtYVsF1rc1ec2DPGGZQvkj06vY3CijZu5qX+uE+l/1vPB0fNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jf6XkKmj; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733312030; x=1764848030;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=icNQ1hK/KEU+ydk3SKlmtjZgJ3jM4g14xAoPkqOL7KQ=;
+  b=Jf6XkKmjX+UtWZz64oqL9eQsq02ZVEgMztXCJKxtq/3SKiDKQdKFtA9t
+   jNbiWl3KX0LP3RE4rChmZPeo+MFyy5ppfCYilh9nwmDj5PkJlWdFN+6Vj
+   VGyAFIj9hwkebh2WA61aqjwbWhesXkuAbfXJ/z7UryRlCWgckU1FncEgk
+   tux3kzFiOGCJT/+duMUt6YOauonUlI5MUcj6Sru6YE2Wu54d+K9myMu85
+   TYR5Io26GSOwVE50Pvo69qA5i56vmbI2Pi/tDTteaBtsw3JGr2yL6B/xQ
+   XwXDgyDxHxVtAVt7z/rn7Ks6+u0LjKjctcktjUKGj2Pwcm4T+3K4y0VXS
+   Q==;
+X-CSE-ConnectionGUID: /3x/V5POQKO59+qFpacYCA==
+X-CSE-MsgGUID: K88dkSLESuKwlduDSpfkdA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="21155299"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="21155299"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:33:50 -0800
+X-CSE-ConnectionGUID: q+vr65RRTaSzksH6y/BXFQ==
+X-CSE-MsgGUID: TgHUJz4/SpCVjX0z0bEIKQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="98766291"
+Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 04 Dec 2024 03:33:47 -0800
+Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tIndZ-0002xZ-0a;
+	Wed, 04 Dec 2024 11:33:45 +0000
+Date: Wed, 4 Dec 2024 19:32:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 3/4] iio: afe: rescale: Re-use generic struct s32_fract
+Message-ID: <202412041908.UaZf89I0-lkp@intel.com>
+References: <20241204013620.862943-4-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204013620.862943-4-andriy.shevchenko@linux.intel.com>
 
-In the error path of iio_channel_get_all(), iio_device_put() is called
-on all IIO devices, which can cause a refcount imbalance. Fix this error
-by calling iio_device_put() only on IIO devices whose refcounts were
-previously incremented by iio_device_get().
+Hi Andy,
 
-Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
-Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
----
- drivers/iio/inkern.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+kernel test robot noticed the following build errors:
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 136b225b6bc8..9050a59129e6 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -500,7 +500,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 	return_ptr(chans);
- 
- error_free_chans:
--	for (i = 0; i < nummaps; i++)
-+	for (i = 0; i < mapind; i++)
- 		iio_device_put(chans[i].indio_dev);
- 	return ERR_PTR(ret);
- }
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.13-rc1 next-20241203]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/iio-afe-rescale-Don-t-use-for-booleans/20241204-124353
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241204013620.862943-4-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v1 3/4] iio: afe: rescale: Re-use generic struct s32_fract
+config: arm-randconfig-003 (https://download.01.org/0day-ci/archive/20241204/202412041908.UaZf89I0-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 592c0fe55f6d9a811028b5f3507be91458ab2713)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241204/202412041908.UaZf89I0-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412041908.UaZf89I0-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/iio/test/iio-test-rescale.c:655:10: error: no member named 'numerator' in 'struct rescale'
+     655 |         rescale.numerator = t->numerator;
+         |         ~~~~~~~ ^
+>> drivers/iio/test/iio-test-rescale.c:656:10: error: no member named 'denominator' in 'struct rescale'
+     656 |         rescale.denominator = t->denominator;
+         |         ~~~~~~~ ^
+   drivers/iio/test/iio-test-rescale.c:684:10: error: no member named 'numerator' in 'struct rescale'
+     684 |         rescale.numerator = t->numerator;
+         |         ~~~~~~~ ^
+   drivers/iio/test/iio-test-rescale.c:685:10: error: no member named 'denominator' in 'struct rescale'
+     685 |         rescale.denominator = t->denominator;
+         |         ~~~~~~~ ^
+   4 errors generated.
+
+
+vim +655 drivers/iio/test/iio-test-rescale.c
+
+8e74a48d17d509 Liam Beguin 2022-02-12  645  
+8e74a48d17d509 Liam Beguin 2022-02-12  646  static void iio_rescale_test_scale(struct kunit *test)
+8e74a48d17d509 Liam Beguin 2022-02-12  647  {
+8e74a48d17d509 Liam Beguin 2022-02-12  648  	struct rescale_tc_data *t = (struct rescale_tc_data *)test->param_value;
+8e74a48d17d509 Liam Beguin 2022-02-12  649  	char *buff = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+8e74a48d17d509 Liam Beguin 2022-02-12  650  	struct rescale rescale;
+8e74a48d17d509 Liam Beguin 2022-02-12  651  	int values[2];
+8e74a48d17d509 Liam Beguin 2022-02-12  652  	int rel_ppm;
+8e74a48d17d509 Liam Beguin 2022-02-12  653  	int ret;
+8e74a48d17d509 Liam Beguin 2022-02-12  654  
+8e74a48d17d509 Liam Beguin 2022-02-12 @655  	rescale.numerator = t->numerator;
+8e74a48d17d509 Liam Beguin 2022-02-12 @656  	rescale.denominator = t->denominator;
+8e74a48d17d509 Liam Beguin 2022-02-12  657  	rescale.offset = t->offset;
+8e74a48d17d509 Liam Beguin 2022-02-12  658  	values[0] = t->schan_val;
+8e74a48d17d509 Liam Beguin 2022-02-12  659  	values[1] = t->schan_val2;
+8e74a48d17d509 Liam Beguin 2022-02-12  660  
+8e74a48d17d509 Liam Beguin 2022-02-12  661  	ret = rescale_process_scale(&rescale, t->schan_scale_type,
+8e74a48d17d509 Liam Beguin 2022-02-12  662  				    &values[0], &values[1]);
+8e74a48d17d509 Liam Beguin 2022-02-12  663  
+8e74a48d17d509 Liam Beguin 2022-02-12  664  	ret = iio_format_value(buff, ret, 2, values);
+8e74a48d17d509 Liam Beguin 2022-02-12  665  	KUNIT_EXPECT_EQ(test, (int)strlen(buff), ret);
+8e74a48d17d509 Liam Beguin 2022-02-12  666  
+8e74a48d17d509 Liam Beguin 2022-02-12  667  	rel_ppm = iio_test_relative_error_ppm(buff, t->expected);
+8e74a48d17d509 Liam Beguin 2022-02-12  668  	KUNIT_EXPECT_GE_MSG(test, rel_ppm, 0, "failed to compute ppm\n");
+8e74a48d17d509 Liam Beguin 2022-02-12  669  
+8e74a48d17d509 Liam Beguin 2022-02-12  670  	KUNIT_EXPECT_EQ_MSG(test, rel_ppm, 0,
+8e74a48d17d509 Liam Beguin 2022-02-12  671  			    "\t    real=%s"
+8e74a48d17d509 Liam Beguin 2022-02-12  672  			    "\texpected=%s\n",
+8e74a48d17d509 Liam Beguin 2022-02-12  673  			    buff, t->expected);
+8e74a48d17d509 Liam Beguin 2022-02-12  674  }
+8e74a48d17d509 Liam Beguin 2022-02-12  675  
+
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

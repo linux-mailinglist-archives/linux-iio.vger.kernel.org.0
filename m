@@ -1,180 +1,140 @@
-Return-Path: <linux-iio+bounces-13076-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13077-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539079E356F
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 09:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6149E35D1
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 09:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22410160601
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 08:31:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A05316408E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 08:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D321953B0;
-	Wed,  4 Dec 2024 08:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C1A196C7B;
+	Wed,  4 Dec 2024 08:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="SDAJlXbc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oz193Ehn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44B4192D7E
-	for <linux-iio@vger.kernel.org>; Wed,  4 Dec 2024 08:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E364C18B460;
+	Wed,  4 Dec 2024 08:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733301103; cv=none; b=VveLxhQy6RFOAiIINVKOIdlj3t+XSClHgk7HFKRvpvy0GViaXdsvQ5ACgy8PaEC7mMiONgHckcEk3aEiQcPo4LNdvvIJPyIEKJu5FP7+zXDII0vSQ9XcdidcFIeK095Bz0uD7aZnIkQvv/aF5Afue3fRcEp1w8izgKjZ2DmqwMc=
+	t=1733302100; cv=none; b=fiNHlPkeQ1+c8Nq5EZlGyU9lNzv68UxbunofGwVSfwBCJ1KcMw0rhcIC8scNjDIFCMC2iJu6S2ouQ01Dk5521JjLg3Fa74bU/n5vbqvRdG4ZloZuqKZdjCtVHP6hq2eAII6rRPvTfjnMDegH+djJNCiZcfG4+YF00xGlFWOJ8Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733301103; c=relaxed/simple;
-	bh=xabGMu3fdt5kFURE8R2vOsZrTXZ3kgYgaYfP0f8Lock=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uHjEl8lAA6zQvYPyoJly80mCETKC3Kz4NM5oTkOk4p80vPHaOBk2GQIMBBPgVcKbg8QeylmYBLWItDPDD8AUlSeT10LwEYkFdro/r/m4gQ8aviZai9CsQlQJoCPCrraS4KvWa8IyRWgmK3oQLoAf3sXyi6/atMR+naGxSgmyiQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=SDAJlXbc; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4349f160d62so53313685e9.2
-        for <linux-iio@vger.kernel.org>; Wed, 04 Dec 2024 00:31:40 -0800 (PST)
+	s=arc-20240116; t=1733302100; c=relaxed/simple;
+	bh=CEme4bK3HvAXUHsxp0VvxIuIYtf8ma7gcwcUEEAvrcQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f+H92hEoRhH1pF+k6Je1q97Kc5yGq1kFNpcdAXQY+bvq7SHT+xnYI0B/p3qAVvpG6nRI39FegLw67n3kJIVX/rQgfjL+NK2xLvjU+vi5ektvqRLjST1iGyWKnhwIV+x6lTH1WKgzxGb6JCSKh/Lr+bHGLE24cepsP5ZnlpNunJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oz193Ehn; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa531a70416so409544066b.0;
+        Wed, 04 Dec 2024 00:48:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1733301099; x=1733905899; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GuEPwyIkCadZaJxdWvgGbzvWeURHvA2orRW9IhLBR4k=;
-        b=SDAJlXbc+dFNvAZtCEL9z4dO7tpL1NCIZbOIMTllgcn+Hwx9qKKFR3MICdDaB7bOwf
-         pO/4C10NFE7PdQillzmvinuobHqVhIoVjmqfwPD2lsIW9GHKmEb12ZUCaejQDVk1c8tL
-         93ilif2dimOKq5EgwBXMsGHqCZjPdYJGLC91roJR//vrsZX7LtJ7bAkXSusmh4i4QI4Q
-         C4jQ2sjcNvYMsAntI4UN16oJaVBGP00bTrS8SUcstQvlhgeb3EuU/gMbhYSS0Rf3ZKxn
-         MWo9tCtk0N6mFFMsteUj/0NdjyPfWB8FmHwF+bIlqSTQ57CuUy1o0Kj8j/8geIMbdCiM
-         bf7Q==
+        d=gmail.com; s=20230601; t=1733302097; x=1733906897; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FMjUUcp4s9WK33JeqEJM6ue595vQiRg0HZzRgWfe0OI=;
+        b=Oz193Ehn3r7i5ZZMYJZkpunkZGbWZIzBQqXOgvELzhGEDd+xfU7T0putVlZpg+Vx1p
+         6Xkk8IO9BHMY0Hial1qj9sCqab6xyTb6CPqvnvj+OEQ5kMsj5sG+EQB/QX994Q5+7TRw
+         B8iOt6+SSdNjXUEVnssGct409yI1VvR/ozYbMw83H3Ul/j16m0gCwFLQLvH59jPvM14M
+         0++J4rXuyZNQSFVwPll3vMgqvxL74+8KBlkT44HygLExBj/Xmrno/T/BH3aJXcHsFX9w
+         kGNFCMBsz8Y2ss9mznzHpKIxSGgZPXkm0Z2jPS9aSzKx5Vx2/U6S5Qi9VEtEvq1YnW+L
+         clHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733301099; x=1733905899;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GuEPwyIkCadZaJxdWvgGbzvWeURHvA2orRW9IhLBR4k=;
-        b=c5ggKqxWLETGtDUGbvxSOtdgETL8sjkci6ZypjWaXv1Ms7nEsr4ZMNmFx5/cgpmPiB
-         niDXE8kGsqTYd7i36piE8F07la5K7xJupr/fr5RXTUbuGRuw7SNFLYTrKc67k5Wqgk11
-         2GkC6iPuqr+3tCoztlX236uItonq+g34JjTWqEMU3TEImMXS/mnTAc+ORKLTUn9pXr9w
-         B3u34j7m7xQS+fAtrt5WkfY075183e7xWKqojCA2tSjeSgxvnv4PYlPsDvX0FaJoq/Vz
-         1/5TFhDeJjhyYciOHrAHrKnKyTgACPY6+UgTxVbXjWq4YmDbodZSstkdzOYa2JJCh3rm
-         YP4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVe6DMi8S0v2fkGH5mfQQ+Y/OTMUTQ/cFO8eSV9thYABNGMEmd/Atj0O9gjTIpNznCWhlDPKTBSQrc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVWTBYIjwiK2RRROSdOZADn0aiiAy9ENPcHGA9smCCurUSxNm0
-	pwe0zgxb91op3Yl/5hTBQRJtJNMoOKXbigSc6YGc4b5X93eFIGeqrjD0RpN2iZ4=
-X-Gm-Gg: ASbGncvXS9bvNfBtMWnu/yNyUclVg68YPHlYOVsXn7OBHD2yDE8Lt5tZO21aTV7SZeu
-	mm2Mj0xQ/CfUo+wUl4Rqh3IGAxCaPM2oZYUyYJtESlECwOEt9R/hNs1uOqGByqouyAj3jgWWCum
-	x6MPYtXjGtEPft9fT4AfeI1MGdUy364RipdGhnLk04z70ggd4Crr8uGcGfZTnHj1q/GprTMaz5M
-	KQ77BEjQRYip14nkFsv/S1QNkJpa0EO20u0gE4BAzMg5vWqtUa2jtiGsAw=
-X-Google-Smtp-Source: AGHT+IHQNqpt+GIB9xF7p8MXDoapzcemzg5VBTJ4EDGzEYyaHfuVToI8Mqv94RLzyinN5pW25vh12w==
-X-Received: by 2002:a05:600c:5117:b0:431:6060:8b16 with SMTP id 5b1f17b1804b1-434d0a1d63dmr53758325e9.30.1733301098852;
-        Wed, 04 Dec 2024 00:31:38 -0800 (PST)
-Received: from [192.168.50.4] ([82.78.167.161])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434d52723b6sm16489015e9.6.2024.12.04.00.31.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 00:31:38 -0800 (PST)
-Message-ID: <e05191b0-eb3b-472f-bd8f-9d9a28100d0a@tuxon.dev>
-Date: Wed, 4 Dec 2024 10:31:36 +0200
+        d=1e100.net; s=20230601; t=1733302097; x=1733906897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FMjUUcp4s9WK33JeqEJM6ue595vQiRg0HZzRgWfe0OI=;
+        b=DWJQnYIqaTDWqAE4/8b0ZwSTDXmnbhX//c1yiQ73QXDJ+cuI4KeSvv2c64LAwY4oBJ
+         RvHqKMqIA2lMXIRjNil4918VQiBFGE+C21vJzJN2oGIc62kZh0q8bg/0UJ2KHgzEjcF1
+         lQXiriXHKEs/LQrSA57dpTRApQhsGXWSy65gqoRzSMion0ZL52LtQjzJKNLej4GhiDEW
+         GLfzCXalPXOoTz4e34tDHXJYF18XaDODrnu+YgMbPoFCt+269d+yz16/7rmpM+274sCk
+         Fxmo0l2Dq+BaPUfNLXiiOF3vO6CoNNk8xSTI3y7QBPkRHARr8oTMfylh5Zfa+8bZdAnj
+         0FMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUaELdOlIBhCXjCKAlvFP8nV62lKNABf0CX1di3YDJM/R7natiL64o1DjzYnF5KZng/T3PxJIWupN15@vger.kernel.org, AJvYcCXBa85dbx2+TmF8krYFVjYR/8ynXMBDrNunyiA/gX27AYM1gPzRoz3i3c60YFnY/aC1r5tZDh4EQsDN@vger.kernel.org, AJvYcCXhvIJE76hrYgtwzmgRdpU6Ok1D7fjSepjLAeG5wHx+2E1ZOesjG0wvYrayYyrw85h5ZOHwanBgma9txdTt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5q2HH8SAC+sek0AQw0PYhsncdSfgS2siej6PtsBaHYE4OZvSM
+	CFutlEhkvHMgMARFrSG4SPm3g9+nrLZdRLAUkQkVAlUbNHj9IOpzxJNCw64S/iasxEnrdJ4bfhO
+	sxkiYIIQ7WLJu1JxZwvEGX5TOZTo=
+X-Gm-Gg: ASbGncvQ3brcseZs4zG+aP6plw70grWD0mUgnA4FObDMEj0hxm/686M7PbF+sifpjwL
+	DzRj3UPJs2jMn2liSTy5VlnN8VZCC/pQ=
+X-Google-Smtp-Source: AGHT+IEV994LEINSr66a32qFp1PLrkVFbJKep+D0UOrnqshNaXQqn1YPwdFJS2NDx4pAab/+t04tbGLuIAzMXMB5q68=
+X-Received: by 2002:a05:6402:51ca:b0:5d0:d818:559d with SMTP id
+ 4fb4d7f45d1cf-5d10cb56467mr6229120a12.11.1733302096963; Wed, 04 Dec 2024
+ 00:48:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/14] iio: adc: rzg2l_adc: Enable runtime PM autosuspend
- support
-Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- geert+renesas@glider.be, magnus.damm@gmail.com, mturquette@baylibre.com,
- sboyd@kernel.org, p.zabel@pengutronix.de, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-References: <20241203111314.2420473-1-claudiu.beznea.uj@bp.renesas.com>
- <20241203111314.2420473-8-claudiu.beznea.uj@bp.renesas.com>
- <20241203200046.0dfb784a@jic23-huawei>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-In-Reply-To: <20241203200046.0dfb784a@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241203091540.3695650-1-j2anfernee@gmail.com>
+ <20241203091540.3695650-2-j2anfernee@gmail.com> <4c5044a0-8286-463c-ace9-78a4245f112e@kernel.org>
+ <CA+4VgcKWAOh=sQ=wUUPD89ORjYqZP0EDqJfqFT7FjNPppf=4Ow@mail.gmail.com> <4a223d37-4fe4-4ec3-a5de-def15b8b3761@kernel.org>
+In-Reply-To: <4a223d37-4fe4-4ec3-a5de-def15b8b3761@kernel.org>
+From: Yu-Hsian Yang <j2anfernee@gmail.com>
+Date: Wed, 4 Dec 2024 16:47:40 +0800
+Message-ID: <CA+4VgcJs7kwHyjj0VtVkicK7j+XNh6aAcexg+cVp5sgPNnRzrQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
+ NCT720x ADCs
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, 
+	venture@google.com, yuenn@google.com, benjaminfair@google.com, 
+	jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com, 
+	javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com, 
+	marcelo.schmitt@analog.com, olivier.moysan@foss.st.com, 
+	mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com, 
+	alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com, 
+	ramona.nechita@analog.com, mike.looijmans@topic.nl, 
+	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
+	openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi, Jonathan,
+Dear Krzysztof Kozlowski,
 
-On 03.12.2024 22:00, Jonathan Cameron wrote:
-> On Tue,  3 Dec 2024 13:13:07 +0200
-> Claudiu <claudiu.beznea@tuxon.dev> wrote:
-> 
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->>
->> Enable runtime PM autosuspend support for the rzg2l_adc driver. With this
->> change, consecutive conversion requests will no longer cause the device to
->> be runtime-enabled/disabled after each request. Instead, the device will
->> transition based on the delay configured by the user.
->>
->> This approach reduces the frequency of hardware register access during
->> runtime PM suspend/resume cycles, thereby saving CPU cycles. The default
->> autosuspend delay is set to zero to maintain the previous driver behavior.
-> 
-> Unless you have a weird user who is polling slow enough to not trigger
-> autosuspend with a non zero period, but is still saving power I'm not convinced
-> anyone will notice if you just enable this for a sensible autosuspend delay.
-> There will of course be a small increase in power usage for each read but
-> hopefully that is trivial.
-> 
-> So I'd not go with a default of 0, though what value makes sense depends
-> on the likely usecase + how much power is saved by going to sleep.
-> 
-> If you really want to keep 0 I don't mind that much, just seems odd!
+Krzysztof Kozlowski <krzk@kernel.org> =E6=96=BC 2024=E5=B9=B412=E6=9C=884=
+=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=883:13=E5=AF=AB=E9=81=93=EF=BC=
+=9A
+>
+> On 04/12/2024 04:10, Yu-Hsian Yang wrote:
+> >>> +  reg:
+> >>> +    maxItems: 1
+> >>
+> >>
+> >> No other properties? No resources?
+> >>
+> >
+> > The difference is to remove read-vin-data-size property and default
+> > use read word vin data.
+>
+>
+> No supplies? No interrupts?
+>
 
-I agree with you. I chose it like this as I got internal request (on other
-drivers enabling autosuspend support) to keep the previous behavior in place.
+We would add interrupts and reset-gpios but not include in required block.
+Add these two properties in todo list.
++  interrupts:
++    maxItems: 1
 
-Thank you for your review,
-Claudiu
++  reset-gpios:
++    description:
++      Reset pin for the device.
++    maxItems: 1
 
-> 
-> Jonathan
-> 
->>
->> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->> ---
->>  drivers/iio/adc/rzg2l_adc.c | 9 +++++++--
->>  1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
->> index eed2944bd98d..fda8b42ded81 100644
->> --- a/drivers/iio/adc/rzg2l_adc.c
->> +++ b/drivers/iio/adc/rzg2l_adc.c
->> @@ -207,7 +207,8 @@ static int rzg2l_adc_conversion(struct iio_dev *indio_dev, struct rzg2l_adc *adc
->>  	rzg2l_adc_start_stop(adc, false);
->>  
->>  rpm_put:
->> -	pm_runtime_put_sync(dev);
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_put_autosuspend(dev);
->>  	return ret;
->>  }
->>  
->> @@ -372,7 +373,8 @@ static int rzg2l_adc_hw_init(struct device *dev, struct rzg2l_adc *adc)
->>  	rzg2l_adc_writel(adc, RZG2L_ADM(3), reg);
->>  
->>  exit_hw_init:
->> -	pm_runtime_put_sync(dev);
->> +	pm_runtime_mark_last_busy(dev);
->> +	pm_runtime_put_autosuspend(dev);
->>  	return ret;
->>  }
->>  
->> @@ -412,6 +414,9 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
->>  		return PTR_ERR(adc->presetn);
->>  	}
->>  
->> +	/* Default 0 for power saving. Can be overridden via sysfs. */
->> +	pm_runtime_set_autosuspend_delay(dev, 0);
->> +	pm_runtime_use_autosuspend(dev);
->>  	ret = devm_pm_runtime_enable(dev);
->>  	if (ret)
->>  		return ret;
-> 
+Besides, I found a mistake that the Node name should follow.
+> +        nct7202@1d {
+So, correct it as
+ +        adc@1d {
+
+>
+> Best regards,
+> Krzysztof
 

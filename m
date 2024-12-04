@@ -1,226 +1,163 @@
-Return-Path: <linux-iio+bounces-13081-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13083-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0BD9E36D4
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 10:41:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE199E389E
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 12:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D23E428526E
-	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 09:41:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C707BB3CFEC
+	for <lists+linux-iio@lfdr.de>; Wed,  4 Dec 2024 11:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E90D1A9B5D;
-	Wed,  4 Dec 2024 09:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED40A1B6D0F;
+	Wed,  4 Dec 2024 11:14:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N/j31cxC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C3B13AA2E;
-	Wed,  4 Dec 2024 09:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092F21B6D0C;
+	Wed,  4 Dec 2024 11:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733305276; cv=none; b=Ee3XNevBc7SPv1mgNBv3RHRadsbSZr8eL7kB6b6OOoGk8VQBKIKjpYKCOesq43qRQKnJHLbC4aVTYz3jCYo6xne+3wnDtd2DfBAtA/ihkrqzIgRGwEfvtQUkISVznf1tVt7kBJiPs2LsYC0ztP6piOZp8nz1O2yYMkOK6s9kvOs=
+	t=1733310894; cv=none; b=Vw2uuMvlA5jlkZSTK4PP4B+Ie45ZDCIl3gb6p1AtYQ4lMHHqFR3Lu0l2AC9SswZpSpaupAICTa2iBN6LJ6CS9kcleovfEhsv796mue0yPlggP0SmilqwGUSTrMUUFGh/zEqxa8mznMOc7AWIWm0pQtp1vff39RkuRxZsnQRApj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733305276; c=relaxed/simple;
-	bh=tVmbPF2pJpMy5k0c/k1i6rwkCBPV7LEpyNc6zrDcJs8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=de7HPw1nn1l3t1UiBT4sk5Py1C6t5pM2fIxfzrl9BB1jkHZ+ZVxnybZbR4gi7GtIjYy6Oxp8z23XrtmPB7By/9QhRNeedfP5mfflhkJQoi7X0xJz/9QLfQwQ+wV1h0WX0qBYgssGpucISRpZC6Fwjc05zVtvtW40ruTAw6wTQGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-4afb23be757so83588137.0;
-        Wed, 04 Dec 2024 01:41:14 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733305271; x=1733910071;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3I1mx9iMvoMrIftcsdLHcYs1anLKta4hVW8NBR8O1XM=;
-        b=NwP09RRo8mVgAC9FGF6a7llfp7NKbERw3lnU9oMEwO4QPumm+B/bny51JFutIkXhFj
-         BL98/nJY6KaO0P/BgHmdGKiKK7Av5aVuYL8y0wKlUDS3jFinv3B1fS6ZkPi9mu6RHpbn
-         fjO0WkslGqg+FJuxB1uxVMwlLcpAsdRarb8CZLh92+mIHYPwN09oe0/MCDi45oDwpIuW
-         uwaQRD/9KqdCwUJbdI6c9jiji4xulynhyu0mU+5rhNQbtKbWX33a8CjUGm+Qi9OelHRJ
-         GTsMzN2pbH4xswUV5tRoK5JX47RJskyrB4KCRgFDpBPkOtvRCwd2o2S5caDnub70ax2y
-         I91A==
-X-Forwarded-Encrypted: i=1; AJvYcCU9uLbaTnHDN6m25IVUdvTArx/LS9omm7lTtBEP9mpDCx1lXwVhleaw8TqtKRoJr0N8SN6EzoH5CUMV@vger.kernel.org, AJvYcCWHMo2tvih24mrhh3PRqkwVIN6nkZS9BRGqAJgRHFPyMmZ6bP5kgeMM+7UaWe52QZ34JQHa3ZYk8Thn@vger.kernel.org, AJvYcCWVNCWVo3i2MrbMRXUOaPpwmGbVH7CzBbDMk2tLVfP/5H7t6ylRCv3UhlT9YK55kexf6eQp1Eg3KMsv9XgL@vger.kernel.org, AJvYcCWpWICwfvmZxwWlaYREgku73cmW2xApSLiLFvdE6XaDRunJUMzOkh/w/NAbTQdmy8xNLup7YZ1gjVpQ@vger.kernel.org, AJvYcCXRP5INpnK7eAc4xHZL77FzskElLlqodIlP7DXh4MJyA9bh1ZXnnR2W2r547kU29YHKBzpW4mZNjNGnUQDL2FQZPGg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6TXUT75QQMZd5cSyNQFKtvXnPRDNsPezpiIIl/yf5wTUP2uSv
-	B8+e7dF0oDroL57gje9TKN9jZ3TSu3jFl8O8An63KyXIff3Lf15/W8gohqT7
-X-Gm-Gg: ASbGncvgKonKJSlYKg2uMuyKh9zfMpe5ldnHy9H3S/jCqRPAQDYEzdzixUwxX5m1Fs9
-	Jebqfi/LPDF8+3GCDtHw09dflrIUqGybc1hYT7FDhvtnwudsOPJvSPBugwc0TlIvgJiYVlPH96L
-	s3/Ex63wUcARX1gH8ERtkUPGKX7qggxd86KLq2v8C0+2XAybUb3Owwg2gsQujzoWJzc2hPUSgW0
-	vd2zkTknQEEztdCSY7DIynCCSzcWksii9THe3Hk1EIfOk5UC7g2DScnET1VgcSLLzKZuYDQpiqH
-	ZbJvbdCsOC/P
-X-Google-Smtp-Source: AGHT+IHQUITYODpk38lmOSp76al6jYxknEGib6bMTxU6siSDzku1pIV2UkJWxBfAu3z1f/D7rZNrXA==
-X-Received: by 2002:a05:6102:548a:b0:4a4:8346:186d with SMTP id ada2fe7eead31-4af9731606cmr8190089137.26.1733305271273;
-        Wed, 04 Dec 2024 01:41:11 -0800 (PST)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4af592352b8sm2384145137.27.2024.12.04.01.41.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2024 01:41:10 -0800 (PST)
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85bad9e0214so979142241.3;
-        Wed, 04 Dec 2024 01:41:10 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVNe99KEpT2QNSLRZMACFKz8nQyB12pkWdVqX8RP/e4ewCXYdcQbwImV4bzgpIqbSHmxMthgyWJkc5LZHSg@vger.kernel.org, AJvYcCW6quHemLO4plfEo/FTNPtW2zgeMUIsxNeTYs6Tob8WrOPByH9FBR9oTinZjVTEs4BBz6M+vZHdUVh1@vger.kernel.org, AJvYcCWQm0fvt+Kdrs1dKsK4HKyo63BHxwuUbvdSrB9Y4BGQbTqUZqnYpwha8MMPe3BueosyhRPHQABnBbbf@vger.kernel.org, AJvYcCWrjAbTk6HWlCPVN7FicfldGiYKweuRI7UaIMYFA7YEafH9ve9XeA64xj1WTH6l7ZrKbMZte2dMO+F6bHN8FN++DPk=@vger.kernel.org, AJvYcCWtGrw43U3nVqTDgrOMQ7V7b30LIwKFo/BRGd1neKXu8TyflqUNpVdg8AKyUYHKC3agZ95xlzxF4k0W@vger.kernel.org
-X-Received: by 2002:a05:6102:2929:b0:4af:5f93:3557 with SMTP id
- ada2fe7eead31-4af97183aa1mr6835274137.5.1733305269874; Wed, 04 Dec 2024
- 01:41:09 -0800 (PST)
+	s=arc-20240116; t=1733310894; c=relaxed/simple;
+	bh=TRrjlDtNrJaiiiHFC3eFwvdwTNvVe78pKIUN5/g/PgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CkcRo4Bwg1MERAXe3NxqZiH+FMLkNlPlqvGsnx1A+2nyJr5aIWCeupSo/kcR86QbtTGLefI87or/zBvMRZNUnVpufsbQKrCnCRRBzLz/fF710mqIqKOknUQMs5c2uMvcIrJsIGwr682dMhqNJI2fc3HxxvmACbg829UAtfT7ICs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N/j31cxC; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733310893; x=1764846893;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TRrjlDtNrJaiiiHFC3eFwvdwTNvVe78pKIUN5/g/PgE=;
+  b=N/j31cxCejX55CNqOyjsPktO2qcv83+MdNv2YZGF3d/GyNxbGmF7sfNU
+   5zqp8UKoniojmowa68YnF4yLIh2jZbJzEph94QueMpQR5oP8/ICdV4g6G
+   CvNYEO80SnYoxJyS0BfyeN+5ClTXXFxOThGY1xl7VxVr0fbxFNSGDSPb7
+   LsEiTQlmTVFNNlIRXsIHDmVdIdxOhNfVC0N95cnXJf4fyWv4oMw7WvKYa
+   Wb2zqGZDXgGTImU5C3Bne0s/sWam/cb7i787MRCCJzDk2Ta/LR+durFkW
+   FIgTvl6uQX8v4eNQRstmgQX7gIkj8Qnkdkd1Qs+KG/kdAls8bEXKO5ZmX
+   w==;
+X-CSE-ConnectionGUID: VoQMtktvS0GSZqnAs2DeJA==
+X-CSE-MsgGUID: fZAleUxHSbCYH/RDN3wGNg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11275"; a="58976277"
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="58976277"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2024 03:14:52 -0800
+X-CSE-ConnectionGUID: EOVvGmCfSKeJ4jho8ubKpw==
+X-CSE-MsgGUID: A3qZavwTTySTGjj3PJBb7A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,207,1728975600"; 
+   d="scan'208";a="93626968"
+Received: from lkp-server02.sh.intel.com (HELO 1f5a171d57e2) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 04 Dec 2024 03:14:50 -0800
+Received: from kbuild by 1f5a171d57e2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tInKi-0002vh-20;
+	Wed, 04 Dec 2024 11:14:22 +0000
+Date: Wed, 4 Dec 2024 19:11:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v1 3/4] iio: afe: rescale: Re-use generic struct s32_fract
+Message-ID: <202412041825.tYQkmq7d-lkp@intel.com>
+References: <20241204013620.862943-4-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203111314.2420473-1-claudiu.beznea.uj@bp.renesas.com>
- <20241203111314.2420473-9-claudiu.beznea.uj@bp.renesas.com> <20241203200941.03ec9ea3@jic23-huawei>
-In-Reply-To: <20241203200941.03ec9ea3@jic23-huawei>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Wed, 4 Dec 2024 10:40:58 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVGXqn2AMfEmTHfOc2pYWs3KB9cJoCEW3gV8d1zsCqg_w@mail.gmail.com>
-Message-ID: <CAMuHMdVGXqn2AMfEmTHfOc2pYWs3KB9cJoCEW3gV8d1zsCqg_w@mail.gmail.com>
-Subject: Re: [PATCH 08/14] iio: adc: rzg2l_adc: Prepare for the addition of
- RZ/G3S support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Claudiu <claudiu.beznea@tuxon.dev>, prabhakar.mahadev-lad.rj@bp.renesas.com, 
-	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	geert+renesas@glider.be, magnus.damm@gmail.com, mturquette@baylibre.com, 
-	sboyd@kernel.org, p.zabel@pengutronix.de, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241204013620.862943-4-andriy.shevchenko@linux.intel.com>
 
-Hi Jonathan,
+Hi Andy,
 
-On Tue, Dec 3, 2024 at 9:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
-> On Tue,  3 Dec 2024 13:13:08 +0200
-> Claudiu <claudiu.beznea@tuxon.dev> wrote:
-> > The ADC IP available on the RZ/G3S differs slightly from the one found =
-on
-> > the RZ/G2L. The identified differences are as follows:
-> > - different number of channels (one being used for temperature conversi=
-on);
-> >   consequently, various registers differ
-> > - different default sampling periods
-> > - the RZ/G3S variant lacks the ADVIC register.
-> >
-> > To accommodate these differences, the rzg2l_adc driver has been updated=
- by
-> > introducing the struct rzg2l_adc_hw_params, which encapsulates the
-> > hardware-specific differences between the IP variants. A pointer to an
-> > object of type struct rzg2l_adc_hw_params is embedded in
-> > struct rzg2l_adc_data.
-> >
-> > Additionally, the completion member of struct rzg2l_adc_data was reloca=
-ted
-> > to avoid potential padding, if any.
-> >
-> > The code has been adjusted to utilize hardware-specific parameters stor=
-ed
-> > in the new structure instead of relying on plain macros.
-> >
-> > The check of chan->channel in rzg2l_adc_read_raw() function, against th=
-e
-> > driver specific mask was removed as the subsystem should have already
-> > been done this before reaching the rzg2l_adc_read_raw() function.
-> >
-> > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> > ---
-> >  drivers/iio/adc/rzg2l_adc.c | 92 ++++++++++++++++++++++++++-----------
-> >  1 file changed, 64 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> > index fda8b42ded81..aff41152ebf8 100644
-> > --- a/drivers/iio/adc/rzg2l_adc.c
-> > +++ b/drivers/iio/adc/rzg2l_adc.c
-> > @@ -32,20 +32,15 @@
-> >  #define RZG2L_ADM1_MS                        BIT(2)
-> >  #define RZG2L_ADM1_BS                        BIT(4)
-> >  #define RZG2L_ADM1_EGA_MASK          GENMASK(13, 12)
-> > -#define RZG2L_ADM2_CHSEL_MASK                GENMASK(7, 0)
-> >  #define RZG2L_ADM3_ADIL_MASK         GENMASK(31, 24)
-> >  #define RZG2L_ADM3_ADCMP_MASK                GENMASK(23, 16)
-> > -#define RZG2L_ADM3_ADCMP_E           FIELD_PREP(RZG2L_ADM3_ADCMP_MASK,=
- 0xe)
-> > -#define RZG2L_ADM3_ADSMP_MASK                GENMASK(15, 0)
-> >
-> >  #define RZG2L_ADINT                  0x20
-> > -#define RZG2L_ADINT_INTEN_MASK               GENMASK(7, 0)
-> >  #define RZG2L_ADINT_CSEEN            BIT(16)
-> >  #define RZG2L_ADINT_INTS             BIT(31)
-> >
-> >  #define RZG2L_ADSTS                  0x24
-> >  #define RZG2L_ADSTS_CSEST            BIT(16)
-> > -#define RZG2L_ADSTS_INTST_MASK               GENMASK(7, 0)
-> >
-> >  #define RZG2L_ADIVC                  0x28
-> >  #define RZG2L_ADIVC_DIVADC_MASK              GENMASK(8, 0)
-> > @@ -56,12 +51,26 @@
-> >  #define RZG2L_ADCR(n)                        (0x30 + ((n) * 0x4))
-> >  #define RZG2L_ADCR_AD_MASK           GENMASK(11, 0)
-> >
-> > -#define RZG2L_ADSMP_DEFAULT_SAMPLING 0x578
-> > -
-> > -#define RZG2L_ADC_MAX_CHANNELS               8
-> > -#define RZG2L_ADC_CHN_MASK           0x7
-> >  #define RZG2L_ADC_TIMEOUT            usecs_to_jiffies(1 * 4)
-> >
-> > +/**
-> > + * struct rzg2l_adc_hw_params - ADC hardware specific parameters
-> > + * @default_adsmp: default ADC sampling period (see ADM3 register)
-> > + * @adsmp_mask: ADC sampling period mask (see ADM3 register)
-> > + * @adint_inten_mask: conversion end interrupt mask (see ADINT registe=
-r)
-> > + * @default_adcmp: default ADC cmp (see ADM3 register)
-> > + * @num_channels: number of supported channels
-> > + * @adivc: specifies if ADVIC register is available
-> > + */
-> > +struct rzg2l_adc_hw_params {
-> > +     u16 default_adsmp;
-> > +     u16 adsmp_mask;
-> > +     u16 adint_inten_mask;
-> > +     u8 default_adcmp;
-> > +     u8 num_channels;
-> > +     bool adivc;
-> > +};
-> > +
-> >  struct rzg2l_adc_data {
-> >       const struct iio_chan_spec *channels;
-> >       u8 num_channels;
-> > @@ -71,10 +80,11 @@ struct rzg2l_adc {
-> >       void __iomem *base;
-> >       struct reset_control *presetn;
-> >       struct reset_control *adrstn;
-> > -     struct completion completion;
-> >       const struct rzg2l_adc_data *data;
-> > +     const struct rzg2l_adc_hw_params *hw_params;
-> > +     u16 *last_val;
-> > +     struct completion completion;
-> >       struct mutex lock;
-> > -     u16 last_val[RZG2L_ADC_MAX_CHANNELS];
->
-> Just make this big enough for the max device.  Chances are it will make l=
-ittle or
-> no difference to this allocation and nice to avoid the dynamic part.
->
-> Feel free to add a runtime check to make sure this is big enough to avoid=
- any
-> future problems with forgetting to update it.
+kernel test robot noticed the following build errors:
 
-Flexible array member and the new __counted_by() attribute?
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.13-rc1 next-20241203]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Gr{oetje,eeting}s,
+url:    https://github.com/intel-lab-lkp/linux/commits/Andy-Shevchenko/iio-afe-rescale-Don-t-use-for-booleans/20241204-124353
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241204013620.862943-4-andriy.shevchenko%40linux.intel.com
+patch subject: [PATCH v1 3/4] iio: afe: rescale: Re-use generic struct s32_fract
+config: arm64-randconfig-001 (https://download.01.org/0day-ci/archive/20241204/202412041825.tYQkmq7d-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241204/202412041825.tYQkmq7d-lkp@intel.com/reproduce)
 
-                        Geert
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412041825.tYQkmq7d-lkp@intel.com/
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+All errors (new ones prefixed by >>):
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
+   drivers/iio/test/iio-test-rescale.c: In function 'iio_rescale_test_scale':
+>> drivers/iio/test/iio-test-rescale.c:655:16: error: 'struct rescale' has no member named 'numerator'
+     655 |         rescale.numerator = t->numerator;
+         |                ^
+>> drivers/iio/test/iio-test-rescale.c:656:16: error: 'struct rescale' has no member named 'denominator'
+     656 |         rescale.denominator = t->denominator;
+         |                ^
+   drivers/iio/test/iio-test-rescale.c: In function 'iio_rescale_test_offset':
+   drivers/iio/test/iio-test-rescale.c:684:16: error: 'struct rescale' has no member named 'numerator'
+     684 |         rescale.numerator = t->numerator;
+         |                ^
+   drivers/iio/test/iio-test-rescale.c:685:16: error: 'struct rescale' has no member named 'denominator'
+     685 |         rescale.denominator = t->denominator;
+         |                ^
+
+
+vim +655 drivers/iio/test/iio-test-rescale.c
+
+8e74a48d17d509b Liam Beguin 2022-02-12  645  
+8e74a48d17d509b Liam Beguin 2022-02-12  646  static void iio_rescale_test_scale(struct kunit *test)
+8e74a48d17d509b Liam Beguin 2022-02-12  647  {
+8e74a48d17d509b Liam Beguin 2022-02-12  648  	struct rescale_tc_data *t = (struct rescale_tc_data *)test->param_value;
+8e74a48d17d509b Liam Beguin 2022-02-12  649  	char *buff = kunit_kmalloc(test, PAGE_SIZE, GFP_KERNEL);
+8e74a48d17d509b Liam Beguin 2022-02-12  650  	struct rescale rescale;
+8e74a48d17d509b Liam Beguin 2022-02-12  651  	int values[2];
+8e74a48d17d509b Liam Beguin 2022-02-12  652  	int rel_ppm;
+8e74a48d17d509b Liam Beguin 2022-02-12  653  	int ret;
+8e74a48d17d509b Liam Beguin 2022-02-12  654  
+8e74a48d17d509b Liam Beguin 2022-02-12 @655  	rescale.numerator = t->numerator;
+8e74a48d17d509b Liam Beguin 2022-02-12 @656  	rescale.denominator = t->denominator;
+8e74a48d17d509b Liam Beguin 2022-02-12  657  	rescale.offset = t->offset;
+8e74a48d17d509b Liam Beguin 2022-02-12  658  	values[0] = t->schan_val;
+8e74a48d17d509b Liam Beguin 2022-02-12  659  	values[1] = t->schan_val2;
+8e74a48d17d509b Liam Beguin 2022-02-12  660  
+8e74a48d17d509b Liam Beguin 2022-02-12  661  	ret = rescale_process_scale(&rescale, t->schan_scale_type,
+8e74a48d17d509b Liam Beguin 2022-02-12  662  				    &values[0], &values[1]);
+8e74a48d17d509b Liam Beguin 2022-02-12  663  
+8e74a48d17d509b Liam Beguin 2022-02-12  664  	ret = iio_format_value(buff, ret, 2, values);
+8e74a48d17d509b Liam Beguin 2022-02-12  665  	KUNIT_EXPECT_EQ(test, (int)strlen(buff), ret);
+8e74a48d17d509b Liam Beguin 2022-02-12  666  
+8e74a48d17d509b Liam Beguin 2022-02-12  667  	rel_ppm = iio_test_relative_error_ppm(buff, t->expected);
+8e74a48d17d509b Liam Beguin 2022-02-12  668  	KUNIT_EXPECT_GE_MSG(test, rel_ppm, 0, "failed to compute ppm\n");
+8e74a48d17d509b Liam Beguin 2022-02-12  669  
+8e74a48d17d509b Liam Beguin 2022-02-12  670  	KUNIT_EXPECT_EQ_MSG(test, rel_ppm, 0,
+8e74a48d17d509b Liam Beguin 2022-02-12  671  			    "\t    real=%s"
+8e74a48d17d509b Liam Beguin 2022-02-12  672  			    "\texpected=%s\n",
+8e74a48d17d509b Liam Beguin 2022-02-12  673  			    buff, t->expected);
+8e74a48d17d509b Liam Beguin 2022-02-12  674  }
+8e74a48d17d509b Liam Beguin 2022-02-12  675  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

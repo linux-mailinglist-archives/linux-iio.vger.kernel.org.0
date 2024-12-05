@@ -1,176 +1,153 @@
-Return-Path: <linux-iio+bounces-13113-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13114-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D7F9E5193
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 10:42:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 423439E5617
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 14:01:02 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105F918809C8
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 09:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1D562847A8
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 13:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4461D5CC2;
-	Thu,  5 Dec 2024 09:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761F2218AD7;
+	Thu,  5 Dec 2024 12:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWB6B8aD"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="oYN0ZAhy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193611D47A2;
-	Thu,  5 Dec 2024 09:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A749218ACC
+	for <linux-iio@vger.kernel.org>; Thu,  5 Dec 2024 12:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733391747; cv=none; b=J6+i8iRK0Ntb03Rpbuk8yFL4z+A8znm6OvtQSb0cfLaKQchhjMDBTIMIlK+T2QD5zTIK4pfARykRyaNigOKp9YEgVEkfIY0h6Oyijg04wPwXiEufcY1lFsOCJqH86eUsZetw3+7pocBo0HBICB9kDJEqR19nZ+FHDp5VFoMWKzQ=
+	t=1733403567; cv=none; b=Y+3wRAGlqMUtln6h/GbCaojn5GkcvztBUyKjMrAVcHuw35SPQoLPh0GxbcOyKYqsAG9qRJxhgzbCvRqJLXTtshX4TH6+bS1RJ7mSQ/kvc2J/aNHtr+oAnZ+xMus/3JGq+QGv+DwrDQscp7i5NKHorV+vXCs0Y0HflKzuzbrpEyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733391747; c=relaxed/simple;
-	bh=uMfTwaW+z1uixy5zgQAaP5OlpK7VhcX7/nfcxPE3qYE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=fn0/hhW50bKf6c5S+OCoSzinnuDpbiso63wABC9FuvZje4rABhQKuoMR+2LoZU5iiLcBaY45Elc2GAqJLu9kMP+kw/Sh5gvwHTFeVbkJTB3gjwS82zrdHCa9g1/dT3BomQJSsuBmOd/Bkt9W9tiHtgSS43gaYlG0vms2XSwnZQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jWB6B8aD; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53df19bf6a9so784112e87.1;
-        Thu, 05 Dec 2024 01:42:25 -0800 (PST)
+	s=arc-20240116; t=1733403567; c=relaxed/simple;
+	bh=ebx+GgY3hNlUc59VsaJ6hQUiwXrTKNYfGaLlqqc/Vzk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=d0BFcXzD8MUzqOiOMNq8b+X+msu/J8KuAHiPmpAl7F9B33AeniHklJ0w3U4B+tn0uOvgG+KWICGZOwM69mgLH7/XQrcngUZIlY0Wk0qbXhv9RGJDD4LDK2agiE1bbdik368yaXeo7vwbMbtlhvTfXkVNM1gKivNQtFpjRkFTZ1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=oYN0ZAhy; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-51544e9a0abso1020449e0c.1
+        for <linux-iio@vger.kernel.org>; Thu, 05 Dec 2024 04:59:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733391744; x=1733996544; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6QUY0v5q5a5aeJy9BcvmDe3ZKrjse/FVqfzz1Ow9ERM=;
-        b=jWB6B8aDWurrYFb/foKON8WdsSLpPUioPMmCSNCobwILVt12Idi209uMN4TVRWKttX
-         kooDgzly42hJ6A53jA/HQ068rEJ1jHuD+E4xjAXuy6p097N0/kP6Zv3/JbgdFVaXxwKu
-         pK8VQCqy2ICOcXyAnCrb+y1Oze5x78D7v2jFyjpt9Z01e3KmifFE7bRzCv65CyLxW58f
-         YCffwY4XuNx4em8zJHC5hxbxNnG/z8Y7HXcJAymg3EDQCazsFZp/Nx/CRoj398QPG9Fu
-         inln3ikAy0SDUcrUUMI4Nr+RUXpXXRSUyzV/Kb2pq+DeToetZlH3/0BVjN+wwisvNucz
-         oQFg==
+        d=chromium.org; s=google; t=1733403564; x=1734008364; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VwfcoPBjO/Q1HvZfrTkBp1X4/TXkK2jPxvYFzVie8mc=;
+        b=oYN0ZAhyWAadi65bgqyi3OBNDykGmEXE99qDKNiXZI1VX8Y5rimkX4KiQ9HdsOuJ+R
+         rXj3K54cS8AqR/jWx9puxmFWsPiL+VsrOjDeU36+P1/RgKtH7bCMvRzVWY20+R16Gtit
+         4R2xuhmd+aurIh9p/brDxFj2LjSlcX3LLMLbc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733391744; x=1733996544;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6QUY0v5q5a5aeJy9BcvmDe3ZKrjse/FVqfzz1Ow9ERM=;
-        b=jPKXYzgvxkpDP88Z0XSxxAY1TeFzxbwfyfCUB2dlRikJeOxJ0rgiu/s+IX8EF+IvGr
-         u5oU33tKttIz7bcitBxylHZRkxL9CE+rUB8o1e+TANVLh6mZoF7Zz5Pcd7dqHlsECHoN
-         m1EFQYDJoy+eVkXILUkvI1sgb3gVDVRvq+k9Oh1qK8gUWcJW8Tp8RMCu911ebLa3u/wm
-         T1YF/qu+hCZarRF9tDBduYq8yjKlI3gD4Kqk3ybBdG67fPRoeA5Ms8sOJu+eNVcn0ISc
-         lEfbVE7Fu3nCvDUV7F5nQ+GRnXYQkHmmnfK2zrBOeoriNyhKdZtQxEL3dTyBWF10Gh/6
-         SzZw==
-X-Forwarded-Encrypted: i=1; AJvYcCV3IKv2nHpGOhkSDkgt+zuAMtruUn4Y3TuDi1H5aGKZSntSi5isfvXshx7iCc6OtIB9bLX4s5ZiRbDEmyP7@vger.kernel.org, AJvYcCViIDRAxJ1UpnvoTOKAZUSkGHS1kusavzm0uOD0ThsKWFNEaVLWbKe+fnYy9p4CvSUva9FlBR5oBb4o@vger.kernel.org, AJvYcCWHNbQjirX3kg7QBm9IBH4fsYQ9NBMSWYmIRL7fdxq89WP+P5alCgeXl9nL1kPVpOOOFciB2GvNxw7U@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtLAZk9UqpC/v7PfB5XMiBhVlfSk3FEamGOT3NtYMk+OCwztlQ
-	KrUOsqeBwVaq5zvbop/0rd4sP4QbwS1oq5UJmSTMKlGHNj9AQAp+
-X-Gm-Gg: ASbGncuNW7Hxt5/yKTm2YjMnqwuHnVS2SK3INmWIwIXL2+AHSYHLQfmxOcVIki7rP1+
-	Oaw1JaJrG0vV8Z3Sb9TlRZQYM7LVBMYdlE6SkBbCzHaN4OrZKbs/VtXu9eoeUd2xV0NGrapp6Zx
-	YKRxvWTaPhAHRI9oUvfcxiKFjVOlVVaE6Xemu+NPMUaK4sswOcD5RHySs+noUoYeF5JYunMmGxn
-	E8dvWT4fD05fxZ4RbwNMuyP4clblvPFCbIgJbPbuP4hvxlZgAAJ9O/nPpSph2B2IZ275T45W5VG
-	2AHePVSNsmEnsQPOckts6GqAIQwbC04=
-X-Google-Smtp-Source: AGHT+IEfSRZ7J9WsY8VKTHBNKbsM71xhiPnLOEwNnwRYWWpfDNYDHMn8qsh4P9CGnvF0ibeS8Nxx0g==
-X-Received: by 2002:a05:6512:118e:b0:53d:e544:3fda with SMTP id 2adb3069b0e04-53e12a31939mr5282564e87.55.1733391743946;
-        Thu, 05 Dec 2024 01:42:23 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e2294792csm181423e87.1.2024.12.05.01.42.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Dec 2024 01:42:23 -0800 (PST)
-Message-ID: <7194cce7-5082-4df5-8599-186c2e39c599@gmail.com>
-Date: Thu, 5 Dec 2024 11:42:21 +0200
+        d=1e100.net; s=20230601; t=1733403564; x=1734008364;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VwfcoPBjO/Q1HvZfrTkBp1X4/TXkK2jPxvYFzVie8mc=;
+        b=RXU1znBjYdoiV2UWerrYxTIzrhyTtTnDiVTXhdVZ4tvbfxKTLDAHAV6PLE4vj8axIO
+         dr3xZm7fGWwkpNcgvl/VOK0soFuQRNw9Jvp8XVx6AjfucPL7riMHBh8KGDQN70W4e3rh
+         IOFUdVz73PENyhS/ZoHMp8ADGQ02UrL+4san232UM26lsjVsoyASmohdZC2KmDE24etc
+         XRfiXd1Tra47C2yBF1COHihanmLd8tRlE25P4gCyEjTtWwxm6UYFKTNIPXMH3Tv0sLY+
+         bB3ZUGRexd7x8Wm2M3xyDE/9JpKnONSmhCJ51NJOHMBWj4UyG4v1WXIp/kjpgZJGz30h
+         BcrA==
+X-Forwarded-Encrypted: i=1; AJvYcCUwA0ATPQgg21R1dT0+wvIUk+zSWmMP/Gn40gF1BSeyij8dK4n5zgn0+5RjVinx3qBPposaGTCHnCE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxqas8O7CZPoHgQGWTeX6WY2VqNJU3RceWPjFSUuWDsjKkbB7Xx
+	fIk2rYWN1MwVxZZHkKZ0BUuck1Ncy9EUYUKdd8/uPTeuBTqSrz+2NEdFU57UrQ==
+X-Gm-Gg: ASbGncsrUDpbIkg0TEcwbNdTpg3h2SXdTEiXjyBDwwPoYtxC/Uo4yVuwkut0KyT+KEB
+	cUYi5WL8h/B1L5uzemuItdPjR0Fxs1YSUsgTEjuvz137tCwOByxWzPbgdpoOOykVUuySv8XZtda
+	wOD/5E/RJRpJ+Ny2jO9/1ldIl94ThrCmVGtWrt1eCfx337JXyPtoJ7NrDZ0x2SJ3nkFrgt1qYJP
+	7+vkXUnlfDXz98vpFRReEihvdQQmId9Vo02bmvXjcXg5wDE3xU4ansUMbq3nSYfehk67iesYLS4
+	LLbVOcxLzqkBuzNK1bghOBvY
+X-Google-Smtp-Source: AGHT+IHRLV21fZ2rD9jYQl6Ini+eOswxWXzZy6lQU7eAzpT6Z49VS53HCUoS496Q7JbrKuLSk5piYQ==
+X-Received: by 2002:a05:6122:4a:b0:515:43ff:6ed8 with SMTP id 71dfb90a1353d-515e6fee69fmr2528809e0c.5.1733403564563;
+        Thu, 05 Dec 2024 04:59:24 -0800 (PST)
+Received: from denia.c.googlers.com (5.236.236.35.bc.googleusercontent.com. [35.236.236.5])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-515eacb5775sm119244e0c.0.2024.12.05.04.59.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2024 04:59:23 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Thu, 05 Dec 2024 12:59:20 +0000
+Subject: [PATCH] iio: hid-sensor-prox: Merge information from different
+ channels
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
- driver
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
- Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-Cc: Mikael Gonella-Bolduc via B4 Relay
- <devnull+mgonellabolduc.dimonoff.com@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>
-References: <20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com>
- <20241119-apds9160-driver-v1-2-fa00675b4ea4@dimonoff.com>
- <20241124211545.194a9f87@jic23-huawei> <Z0eY+1X1ZSkNui9U@uva.nl>
- <20241201132054.0c063a11@jic23-huawei>
- <9d810e5c-c7a5-41e5-8073-b703717faf3d@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-In-Reply-To: <9d810e5c-c7a5-41e5-8073-b703717faf3d@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org>
+X-B4-Tracking: v=1; b=H4sIAKejUWcC/x2MywqAIBAAf0X23IKPKOxXokPolnvRcCEC6d+Tj
+ gMz00CoMgksqkGlm4VL7mAGBSHt+STk2BmstqOx2uHBDyaOKJSlVJwsGT97ClE76NFVqRv/cN3
+ e9wNNr+8gYAAAAA==
+To: Jiri Kosina <jikos@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.13.0
 
-On 02/12/2024 10:22, Matti Vaittinen wrote:
-> Hi Jonathan & Mikael,
-> 
-> On 01/12/2024 15:20, Jonathan Cameron wrote:
->>
->>>>> +};
->>>>> +MODULE_DEVICE_TABLE(of, apds9160_of_match);
->>>>> +
->>>>> +static struct i2c_driver apds9160_driver = {
->>>>> +    .driver      = {
->>>>> +        .name    = APDS9160_DRIVER_NAME,
->>>>> +        .owner = THIS_MODULE,
->>>>> +        .of_match_table = apds9160_of_match,
->>>>> +    },
->>>>> +    .probe    = apds9160_probe,
->>>>> +    .remove      = apds9160_remove,
->>>>> +    .id_table = apds9160_id,
->>>>> +};
->>> First, regarding the integration time/gain/scale parameters. I took a 
->>> look at the datasheet again as there is a table
->>> provided to get lux/count (scale?) for the ALS sensor depending on 
->>> gain and integration time.
->>>
->>> It looks like the correlation in the table is almost linear but it's 
->>> not as there is a loss of precision.
->>> For example, at 1x gain with integration time 100ms the lux/count is 
->>> 0.819 but at 3x the table is stating 0.269 instead of exepected 0.273.
->>>
->>> Is it still possible to use the gts helpers in that case?
->>
->> Ah. Probably not if it goes non linear.  Matti? (+CC)
-> 
-> Disclaimer - I didn't go through the patch and I just respond from the 
-> top of my head :) So, please take my words with a pinch of salt.
-> 
-> AFAIR, it is not required that the impact of integration time is 
-> _linear_ through the range. The "multiplication factor" can be set for 
-> each integration time separately. So, it is perfectly Ok to say:
-> 
-> time 1 => multiply by 1
-> time 2 => multiply by 2
-> time 10 => multiply by 9 <= not linear, as linear would be 10.
-> time 15 => multiply by 15
-> 
-> ...
-> 
-> The notable limitation of _current_ implementation is that the 
-> "multiplication factor" needs to be integer. So, this may result loss of 
-> accuracy.
+The device only provides a single scale, frequency and hysteresis for
+all the channels. Fix the info_mask_* to match the reality of the
+device.
 
-// Snip.
+Without this patch:
+in_attention_scale
+in_attention_hysteresis
+in_attention_input
+in_attention_offset
+in_attention_sampling_frequency
+in_proximity_scale
+in_proximity_sampling_frequency
+in_proximity_offset
+in_proximity0_raw
+in_proximity_hysteresis
 
-I ended up re-reading this mail as a result of running some of my 
-public-inbox scripts...
+With this patch:
+hysteresis
+scale
+sampling_frequency
+in_attention_input
+in_attention_offset
+in_proximity0_offset
+in_proximity0_raw
 
-...and I noticed that the non linear correlation was not about 
-integration time, but about gain. Eg, if I now read you right, the 
-integration time is kept constant 100mS, and gain is changed from 1x => 
-3x, which actually did not bring 3x gain to the lux/count values.
+Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+ drivers/iio/light/hid-sensor-prox.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-If this is the case, then the GTS helpers aren't likely to help you 
-much. Sorry.
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+index e8e7b2999b4c..f21d2da4c7f9 100644
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -49,9 +49,11 @@ static const u32 prox_sensitivity_addresses[] = {
+ #define PROX_CHANNEL(_is_proximity, _channel) \
+ 	{\
+ 		.type = _is_proximity ? IIO_PROXIMITY : IIO_ATTENTION,\
+-		.info_mask_separate = _is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
+-				      BIT(IIO_CHAN_INFO_PROCESSED),\
+-		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |\
++		.info_mask_separate = \
++		(_is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
++				BIT(IIO_CHAN_INFO_PROCESSED)) |\
++		BIT(IIO_CHAN_INFO_OFFSET),\
++		.info_mask_shared_by_all = \
+ 		BIT(IIO_CHAN_INFO_SCALE) |\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ) |\
+ 		BIT(IIO_CHAN_INFO_HYSTERESIS),\
 
+---
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+change-id: 20241203-fix-hid-sensor-62e1979ecd03
 
-Yours,
-	-- Matti
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
+
 

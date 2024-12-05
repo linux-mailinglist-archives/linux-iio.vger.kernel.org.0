@@ -1,142 +1,153 @@
-Return-Path: <linux-iio+bounces-13130-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13131-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E269E5E44
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 19:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C0319E5E8C
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 20:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1C251884F2D
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 18:31:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 305941884C82
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 19:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFFE229B15;
-	Thu,  5 Dec 2024 18:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAF7218E98;
+	Thu,  5 Dec 2024 19:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iPlLR2m8"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AKRFRzeb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CF0CA5A
-	for <linux-iio@vger.kernel.org>; Thu,  5 Dec 2024 18:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB09196D9A
+	for <linux-iio@vger.kernel.org>; Thu,  5 Dec 2024 19:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733423468; cv=none; b=g8Qi7vt4DkWKEOxkjneyJV/CkITNoEFxmYAdDYJmJYfzLCWvVEYxntc1BH5nffoPuYt4TyGaFAva+GuvgkLV4Tpa7UJQpX0sORp/TxzNQqSbHSNSB+/IYmL2AT/jbzJbO+pAv3QA5xFLsbngu3Xxw/6XXfOrh+jJyY8H/AmCwRw=
+	t=1733425318; cv=none; b=j5OYdP7M/fvfbnAIcAnZr9It9vJEJmZXSSTnq5SXB85cFIT2oyON6Gc2cVnnf+hFWojgtluy4eYeaYAREeV3e/XbwyUwr3Lfiz/+Fw6wC5xVRvlgnz7W228W0HKnKkNAMpgONgW86gClL2iV3/mm9cVqiHkfFsyr6TYVPiPy84M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733423468; c=relaxed/simple;
-	bh=QuzwAYKP6y0WYybZ98GYlbXU/18zgti4WhdRXKNgN4A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nFXF8y7OZNkkI3WuW/19UJXnZWvdq5nnvlyHZzwh6YU1xGN+92bixe5zWiDG3vJCDZiXaTciSBXyMIR1biu7qCvjAU3k3HKCG9QJZgE26WDiH23/2Zb8vFL4KNAzDUbJmW6NpY9y+CrJO1CXa0Md75RxpvIiwKwgwrqK8mDc3jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iPlLR2m8; arc=none smtp.client-ip=209.85.221.66
+	s=arc-20240116; t=1733425318; c=relaxed/simple;
+	bh=8ik38w9GU2WtkRtkZaXq6QpH4+Y0ahI6eayxAGSMAWg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FJrfKBmIiznO0t9FEATmNHBxiKluJu8k2nUoKkD9VzfNgvb7Y8XfnQj3BQVm+cLUNDQR2vbqtoh12wYlnxQn8RswT+t0hDGiBuQYPZGOfCzeMnC6UVOPYO49FZuMaG6iAvz3lLCe2kKfA/ewoEVGv811WqSPGeLXGpplxvhgLkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AKRFRzeb; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-385eed29d7fso907920f8f.0
-        for <linux-iio@vger.kernel.org>; Thu, 05 Dec 2024 10:31:06 -0800 (PST)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3ea696c4dcaso810924b6e.2
+        for <linux-iio@vger.kernel.org>; Thu, 05 Dec 2024 11:01:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733423465; x=1734028265; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nI/eTNT0MeMirB96tdoKMUKUCbzlY21F1vUoI8tn+9w=;
-        b=iPlLR2m8ssrYbf8yuizjEiK8dHm0HUwaDTusPRz3L5N7fPeYsWrTcXPoumjmnKPFza
-         +gL7WnAQhzPrqMWILPxwa+URoxcxSRyJSK0ZOrsdA7JNxYt4Ca1+nnbAJKgYRs4cxp4r
-         9yAeaZ33v3PcB8DlH/eQoorXu0asSNN92WDeDHYJkZhlht5M39gafVwj/g3XsqCQmOtt
-         u0FQPUsHsIUW2ECY7auN1TSw2Mox0Me2ag4fe8DVvnuJ+0Ea3ZtQRK4mt2MQWdIH6m72
-         QFqsOYf948o5lCnF2IPgR4dQQlDwTAm1DHr/GEW3/fgUHTR44AuAiR1Lu3Yj6iOSMLDO
-         3isg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733425315; x=1734030115; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=IaFOO/mfjUBixXAYtvSMoA7J8PbrmSflkGjEoxaTBzw=;
+        b=AKRFRzebX8wl24LMA9NWbIz+LXBGvL4732lXcCo1vADffGbQikUR/1Gy7pBWnlHzMx
+         xusjQ1rAvMLVqgSeaRsx5HXRNlsAB4ty7EgKeqOIWwFnb9FsFIQB+dvrdvo9sYJfyWCf
+         ynWO066KlOKGcceoUnubch0Kut/rnrV3UBWyHlGQBh5mTsQBU9/5FGdd528nj9ax/vB4
+         h7CUliDmd7GXfsD5bpYdtaQgJBH9hY/KvGabfSORU+WIIJa702H3+e+N0AdccrdpR3l8
+         8/zMa3qhr1yhpOWvBzHvzkMsplQcnQigy3A7MMWtc4l934YkosBuDN4y/St6rxW31Hma
+         /g0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733423465; x=1734028265;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nI/eTNT0MeMirB96tdoKMUKUCbzlY21F1vUoI8tn+9w=;
-        b=Nmh8khBgB74siF6F9b7DPFwlyXoNbVWgcYpPrq/8GoNLFO5s8SyeqjmYfmi5dFxnQs
-         hEZG3ZislfFDBPS8lV5aX6hNDtpcVqjeqqidt4aBoJY8KAWwVlRpW7tkWj/GZnXgJFIs
-         DWAUzyQj9c6uQji8BR6LvPcppLa7O9RgTOJp5ixIXbnDVXBY1qjWukxbtxhU0HvruKI/
-         ThR/U7JOj7BNtI4Sox2Cq3EteFKLtC8LcDJKPwbFDgKQZLgrY5VBdYaDtKAP+z4ui3MH
-         ROJoGzBzAqToRQ3CH2bELIqvivjwYzdvTLoaAOLiV4Jwf1vRNJTyz/YSNEhv3TQbbVTv
-         vuJA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtsax9qeRwOZ9bbYXoo3r5Va+uAd+U/1Gx9/H3grQaU/KmbktYOjazkucCdXNX5fECHrP2bIljpBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgN0jz3eo9yYNpisoMsfyz6GpeB+O38GOxl7hSP7bWmqcw+yay
-	Y75Zt/wLfhAKy2GRewTT2hr+cGfCnG7BagYtLDXyEy7qV0ox+uTly+8xf6U9jdE=
-X-Gm-Gg: ASbGncuT+UCUO80HNdnTSIeKeb6YYebdFRneCeeD0P1UGh8FH4oZYKozehojnzChZJa
-	eAGrrxZfH8USrSDczvOhW9/6/D4GIf5+F0m5IfPqYqQchEy5rbme8ivZAvqEfz5Lb8gNK51vJ1X
-	UpTzA8cFjmEu0kmUSVrEm75dRBbG0upihM7NiPP5wl+7QnBsgRCQab8GuJo5b7BoMAVhxNkRQvy
-	s1EPq/Wv8qwLjFBIwVd74zOh2xNJcNEOqlqRh4g7sToBQQn0KZxw4FDoEhKRgvab5rVNoqW7T7i
-	mRoK
-X-Google-Smtp-Source: AGHT+IGqQWdQdSDbu6y+4Nqk1tOE7EZS/rmgFfu8XR0kvbW+Ek3dvWuMR5u6gUY7Znay64mPAiGNXQ==
-X-Received: by 2002:a5d:64ab:0:b0:385:e10a:4d97 with SMTP id ffacd0b85a97d-3862a914a05mr271364f8f.21.1733423464813;
-        Thu, 05 Dec 2024 10:31:04 -0800 (PST)
-Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38621fbbd70sm2576996f8f.90.2024.12.05.10.31.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 10:31:04 -0800 (PST)
-Date: Thu, 5 Dec 2024 19:31:02 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alisa-Dariana Roman <alisa.roman@analog.com>, Renato Lui Geh <renatogeh@gmail.com>, 
-	Ceclan Dumitru <dumitru.ceclan@analog.com>, devicetree@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, Alexandru Ardelean <aardelean@baylibre.com>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>
-Subject: Re: [PATCH v5 00/10] iio: adc: ad7124: Various fixes
-Message-ID: <izv2vupxttrq6jqemmnkwqtwb5ar5mzaimwity7mqnk32alwgl@elwhe3piv4n3>
-References: <20241203110019.1520071-12-u.kleine-koenig@baylibre.com>
+        d=1e100.net; s=20230601; t=1733425315; x=1734030115;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IaFOO/mfjUBixXAYtvSMoA7J8PbrmSflkGjEoxaTBzw=;
+        b=L/nM+JTq3EVWzfe887sI69rm9lMy3xIDiRndXnhjIGGGqnXWR/F5Cby2Teluzx6rGG
+         O16U9JZJ8A6eVIQvHY5rFBvsKuP4Wt/BJUwMvgwWqJeBV3RAVZxOEngIgiw0Pvnw8Rla
+         9Jwzp2auydbGhBKdHApkZSTCTLNu7w+GxMj/zWw3PiVsHxgB2Eo74JTcPyarv6xNdaUf
+         4k8twIR01IYLD7TkFQO048KtcY15hFkDfy8u9k4esZWSx0us2nU91NzOWd6XbaFnJOdo
+         zQHwnhLFF91fPixTt5BOrCvGDPvqk31mHS6BNfjiqK78j1WOLtXC3ZxXnJ0i943G5Mmr
+         vE4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUA9itmH3UaU9NHangBzBIg++5YGvnWHoXk/ipdlwGhYo0Wki1Zh56+gktcA11E5asDzPaDyxcACCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye7Q7e6f8Ur01HPceRkiPO0UYrUEAWTl/kgEyrGffqTaWdO97j
+	VOkc959krV8j9WUjxZQ5H5aGokX0y18nOnsxmNt1LISr7rQLbtLzKFyj4Miq9hQ=
+X-Gm-Gg: ASbGncsq3Pu6DTk6Rv+1toM2EYV690DzhTZRlCpeM1qtWX0tDrbHlO68SP0hbjm47yP
+	sCsL2v0iSF7VoTXtRgMkVMXqP1gibiKtf1HBi7PjELWvRUhP2BSpeeuPhQj4qn0srrYO02PaVRK
+	O7mxevB7udWRasU9L4C8ST7rOTHGC7eysrX/cmoZhboC+p1tHg0sqc8sjBuwjjXx0EGlLVxVG8o
+	YaCRzV3akrIPqLmUu/Ytf/qIdiZInZ1AsVFhtRrDVYwuhHVoj8UrNhwtPX0P7dvE+PKmgPKCh9D
+	9a6y4Xei5jI=
+X-Google-Smtp-Source: AGHT+IFUDmVuFaNfj2c7OVLcgWFCxMQtCVuhMU/p4FrORrns3HwZaKiwq8nLNxh6O55/Euxmzx2I2w==
+X-Received: by 2002:a05:6808:1898:b0:3e6:2772:2a4b with SMTP id 5614622812f47-3eb19c168a3mr59071b6e.9.1733425314900;
+        Thu, 05 Dec 2024 11:01:54 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3eb07869655sm408646b6e.50.2024.12.05.11.01.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2024 11:01:53 -0800 (PST)
+Message-ID: <a4cd4d74-93bc-4c63-a9ee-aa25957b96d9@baylibre.com>
+Date: Thu, 5 Dec 2024 13:01:51 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t5nu6lfvefddqxt2"
-Content-Disposition: inline
-In-Reply-To: <20241203110019.1520071-12-u.kleine-koenig@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
+From: David Lechner <dlechner@baylibre.com>
+To: Eason Yang <j2anfernee@gmail.com>, avifishman70@gmail.com,
+ tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
+ yuenn@google.com, benjaminfair@google.com, jic23@kernel.org,
+ lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
+ andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
+ olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com,
+ matteomartelli3@gmail.com, alisadariana@gmail.com, gstols@baylibre.com,
+ thomas.bonnefille@bootlin.com, ramona.nechita@analog.com,
+ mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
+ yhyang2@nuvoton.com
+Cc: openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241203091540.3695650-1-j2anfernee@gmail.com>
+ <20241203091540.3695650-3-j2anfernee@gmail.com>
+ <8f5ca298-54ba-4274-a35d-83be868fcfc8@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <8f5ca298-54ba-4274-a35d-83be868fcfc8@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+On 12/5/24 12:22 PM, David Lechner wrote:
+> On 12/3/24 3:15 AM, Eason Yang wrote:
 
 
---t5nu6lfvefddqxt2
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v5 00/10] iio: adc: ad7124: Various fixes
-MIME-Version: 1.0
+>> +static int nct720x_read_raw(struct iio_dev *indio_dev,
+>> +			    struct iio_chan_spec const *chan,
+>> +			    int *val, int *val2, long mask)
+>> +{
+>> +	int index = nct720x_chan_to_index[chan->address];
+>> +	u16 volt;
+>> +	unsigned int value;
+>> +	int err;
+>> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
+>> +
+>> +	if (chan->type != IIO_VOLTAGE)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	guard(mutex)(&chip->access_lock);
+>> +	switch (mask) {
+>> +	case IIO_CHAN_INFO_RAW:
+>> +		err = regmap_read(chip->regmap16, REG_VIN[index], &value);
+>> +		if (err < 0)
+>> +			return err;
+>> +		volt = (u16)value;
+>> +		*val = volt >> 3;
+> 
+> It seems strange that this is 13 bits when the chips are 8 and 12 bit.
+> 
+>> +		return IIO_VAL_INT;
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		/* From the datasheet, we have to multiply by 0.0004995 */
+> 
+> The scale is the same for both 8 bit and 12 bit chips?
+> 
+>> +		*val = 0;
+>> +		*val2 = 499500;
+>> +		return IIO_VAL_INT_PLUS_NANO;
+>> +	default:
+>> +		return -EINVAL;
+>> +	}
+>> +}
+>> +
 
-Hello,
-
-On Tue, Dec 03, 2024 at 12:00:20PM +0100, Uwe Kleine-K=F6nig wrote:
-> changes since v4, https://lore.kernel.org/linux-iio/20241127145929.679408=
--12-u.kleine-koenig@baylibre.com
->=20
->  - Drop | after description in the binding docs (Rob in v2)
->  - Dynamically allocate spi buffer (Jonathan)
->  - Fix capitalisation of a comment (Jonathan)
->  - drop comments about already emitted error messages (Jonathan)
->=20
-> As before this is based on v6.12 + 64612ec9b909 ("iio: adc:
-> ad7124: Disable all channels at probe time").
-
-In case you intended to apply this despite Andy's concern: Please don't,
-I found a bug in one of the patches. Will send a fixed series tomorrow.
-
-Best regards
-Uwe
-
---t5nu6lfvefddqxt2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdR8WQACgkQj4D7WH0S
-/k6GoggAg85Z6D9vWjKd90Y7O1hgRuFkvNEFe+7bMIFaLWf7OjUYQEK1Ya5AJ7CK
-yH1w10J68l21qEYJNnR3kRi58Ucau9L/j6eXBnJntZkjN97W0Eo8nNajXgGimGKF
-yTHLsPGapcyd0Sz6n4NYENRAaNXmuT7DS4eQKjoXW0pcnoortD7sAlfnNYutvwUJ
-shU0f6Sa/nM7Pu1+p6YS9bdztq/SJZHVP5/0sfaqzIvBPlEdW/TNE6LqOebyLaWn
-yLIm3scUmUygVsjxNRnUco4wBa2LJF5j/5jHeDTfeYJvt0TVUiBjfLGw9bkM5rlM
-3lh0IdcKcoc0mxHYn7AK6RRWsA4RYg==
-=pEaV
------END PGP SIGNATURE-----
-
---t5nu6lfvefddqxt2--
+Sorry, I got confused. The difference between the two chips is the
+number of channels, not the number of bits. Please ignore these two
+comments.
 

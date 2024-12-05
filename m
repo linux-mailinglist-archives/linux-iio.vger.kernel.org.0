@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-13116-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13117-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E876F9E5CA2
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 18:14:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80FD9E5CA5
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 18:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE7E16B57B
-	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 17:14:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628EF1883C8C
+	for <lists+linux-iio@lfdr.de>; Thu,  5 Dec 2024 17:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273A222576B;
-	Thu,  5 Dec 2024 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D460C22579A;
+	Thu,  5 Dec 2024 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIZyJkJi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KrHy9fVv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BAC224AEF;
-	Thu,  5 Dec 2024 17:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02172224B1D;
+	Thu,  5 Dec 2024 17:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733418833; cv=none; b=J6Bzvb5X4cQOPTaVXapxpVhg78fPQBLvm2W7ytw65/usg+48cF7MGt0EZcrvTyeprhCOHVtdmMLOVP6AZzGwYMjTwD8ot763PPibFyi75clSR0uA85co8NNOhsZu1HAy9VN73PiC4lquALcXxQnN8K6lwXqrw7KTERXSyr14ANA=
+	t=1733418835; cv=none; b=Qaf3HvsqJrZnAVk19oLkXFsjwaaZgbhRpZ+SSMUSc87P+3MbRLFRkguB1pHyr1gLecAnDyvRwiJ6pW6LXo1MhFH17go+3dGuY0UOZsQ4igb0oVnmo3fEmdwPsL/VOPlARZ4w8rWy2hf7FvKdHYWcEbtPO9BuASMARaICVPsGdx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733418833; c=relaxed/simple;
-	bh=TocBcIzh0TEIAvJBYzZUsFPIvVCRg/BYMCDTs4mbFVk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FGgnNAT0lM0dWYZDtcI6t3Fy1m5Y6zyVFWMEOhsE6Nw5UIUSkAPKkEWzJ6btuZC3yEN0wPlwaJz7vfs/IpVop7qvkgkg9/jM2M4RPdUP2zybYxtQZ7s/b2sEzBC+WAJ9dy/TGVcxkEZw9J5S3qL90fp0hM1ERsJOoJl6J9gmWt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIZyJkJi; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1733418835; c=relaxed/simple;
+	bh=MJRcOjRxqauR3VIt4oFjuLbKiHlmawUNI5WmBsNNWfY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=c9v0cKoIRQJcOnRVyF2pzi8TnZtRZhsv1Tbtz1BxmgQn5aLz48O85POjtGjXSPrtnxQrUDdHQch2ANqTMcIDV3aJ3n1eQQtAYYijsHy/Kx3xeO1oTzH58HRXr368M321IHfFALw7r7OGaRkuFZI0WgNmNaNc7hkZr0EHUxc+Ock=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KrHy9fVv; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5d0bdb7ea5cso154861a12.0;
-        Thu, 05 Dec 2024 09:13:51 -0800 (PST)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5d0cdff12b4so157738a12.1;
+        Thu, 05 Dec 2024 09:13:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733418830; x=1734023630; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5xOEBy5Kj8Gz9VwS48fPoYMyC1ZjP/g4WXgCxdhJIM4=;
-        b=hIZyJkJi2rXdB7w/uMJuw80vbryRY5iBSdBv17LKAV0aENmvqpufkmt2htb+cL6m9h
-         5SKNyHzAH5IZ+oi8y012UWhvaY97egU7N5A/pNJx8ZjMDllGgBHU8qTkI8MT3q9tPFnw
-         LwaZaBl1A8WKIrGQrNBayTLWoyA6ei2ew9oKt7r3bzw5tghLF23mD5UqCUpLIh3/BF8Q
-         F4UlNE3z7LzP0H/v+FB+kaWl+Epp1u5I6e6HAW46TUN9XJzHvuJw8DunEYdBdNOAhfWQ
-         nosCD1z6O+WqMIC5cPMuO6C9vFRCaTpZOU9+gwIUo+UZwoA8F61V2N5PxlVhhPk3am7x
-         6zEw==
+        d=gmail.com; s=20230601; t=1733418832; x=1734023632; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ItFtpbeRue66V6lbrgr6VbuNzJvE3GBXZAD5o5I2hDY=;
+        b=KrHy9fVvMCOfY1DK7S3xT/vIGUgVLu0dXC2vPz/acvlopp2pIwZPzpY7218M9LqCRv
+         tXUavNoOXBRFerD366GqeE/ADldz8yny75I+B+zd9x+uDsVFba8yJYVINLMi7SYH2Inx
+         low4hL/q8MkFFAxxvHqxp8WaDYsPyzQetrxMdOvdYd6yNge7j9DHXulh5wmrzynPStRB
+         u/X6SScoIj8wn3hHkZhbweaHUzVFQU8uarVK8njYlxjn9gFn/ksEorrNTBe9VHdZB9zc
+         5HlfGGoh4c5/t/+7ZWJwrbb+QQR4ldhNENBXd+k/xbL2gXu+ZW6TOfJ/u6xMPIk6zpdW
+         ZT0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733418830; x=1734023630;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5xOEBy5Kj8Gz9VwS48fPoYMyC1ZjP/g4WXgCxdhJIM4=;
-        b=uE9WFJYHBz5QIDUio9t5ODYChLTF68c63WuTdx4sO00DufPHnybZXgToPh7aVViwoh
-         ofnP6BLYUMrF95beXKpczRDcsND6C17xG+0xP7sYgBOZcGtYdSt6W1szVODE5l39jy/f
-         vEwcSvgBLwuBul/KYPYFSXeq7F7miGXKgo3RVjgQW9wBTRShQDJO5H5/8w01XmtDiZZm
-         mAZ9xz1kFzhuHII/ef3r5OmgccFMNPoGn0tl/7luM/wqgkNOlMdRxZnNsuvz4YDebGWd
-         3XefbtLpNGtgFLo6mE4Ts3DHfploYQxhonWeAj97UUjiSDX3C2WYtuRZlhRer+igKDnZ
-         XTMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvF5oCFBJ0Z3nAxwXAVzxHX0nsQ2UP/alCDTkNTTBxu5d2rR6+Vzk2iECUvvuj67jjMRgcWWb54bMO2yEj@vger.kernel.org, AJvYcCX5sIMZY/cNMTEqFObOTNV0pKLeulAbQYlFG6kbXMwrUGg6+VANjpVIGT59AXreukWIfsmBeXUt6Cc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzz8YoaLjoeLyaNDGknL8qYumNtNeaFcvwgtoNS0o2z/Fzl9/mk
-	1OJI82dg0p24xaf0KTSzF36k9qIgEqvs7UlhBY527c5vmFOneut5
-X-Gm-Gg: ASbGnctBkD2NjLXD8EJa9+6lZl7teT/F2DklEokoOc2ppu/4+4ep8KPKIhd1YicngNe
-	Few7noZ0MrxNg8729mgY3iacCGrhjAFQmjm81H8eNIXnHWuoqwWnvEDEutFrplC6ESa1KFTbBus
-	wCuXPZhOr7uJM5zd7Rh5H24XiBr9zesWRh3YX7Tm8VGPIRIbxN4kcpNbw1s2fUb39eVJuL4V/SF
-	KLVbz4FC85d9w5DOA43A84+5FQPA6KIkzJLhcaGkmH88ajcIjR1DwPNSkQuyNzmVnSMu7MuqlpK
-	wXf6rXZufei14Y966G6JQV9cffLV
-X-Google-Smtp-Source: AGHT+IHzqcVvWs3zfN/JxUmuj2hBqFiTE/hZf/62jaaNY028BmBR0tQUfbLNUAie1SG5XYLWvp/QfA==
-X-Received: by 2002:a05:6402:354d:b0:5cf:f39f:3410 with SMTP id 4fb4d7f45d1cf-5d10cb4e183mr4027584a12.2.1733418830027;
-        Thu, 05 Dec 2024 09:13:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733418832; x=1734023632;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ItFtpbeRue66V6lbrgr6VbuNzJvE3GBXZAD5o5I2hDY=;
+        b=RbnpdbH3piKGFpeIkIY6LEJliDl+uGZtJd0X6iRsdMW+VywMVUyeiAQK+dDbaDTVOH
+         AuTOD3TIguMa3340yIjPdE7nxjlilT7LZTIGYLeg49d9HRJSLn4gQpmKOyCp4lpNQ0QL
+         4fWK+z7IlPCjgAPkwOcG0yXu0TCkLwg9De3TBLHDYzLf+LeCBfZFin7/Tcqh8lZVE30Q
+         h+rd8miw1f8dORdam65nK3/zkz5Cz+QAAXmoC7kmFau+jgaswGIs5O2LQm1gUvjl8Eoi
+         RelcTQu0bdEFjse7WpwsEaksVy2j0VjoWtfyHnRbmRO246qZcFL3r7f9xcNYE+to9WQX
+         f8lg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA3Q0KVmZ1FPtVZYo6K/8wTW8pOxTtE/IhZ7S5g2CSsi0oDQl9uWW4laLbqI/yE7vX3xSSEGVI3nkEoA1l@vger.kernel.org, AJvYcCVG0IIpDNaDR3xCKxMzhb14+lS1dnuZuHtvpOt3MfTPDuJdNIm2LvKIQ/VcScZVyDRODvT/VlWrguQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycuhWYEQy98hcJz8V82o9JLUv9XSI5ahbYU2+qW4Sw4MC+Eiyp
+	ELVlqCAinf35ljBUWPP2lUGyBTBwxQpCiFjWN4nw41m1PLEvSUNJ
+X-Gm-Gg: ASbGnctG5NbuuTJqZehapao1n0fgXUTiO2BErUhBJEd6quCCDcG7pqhZMWLXNxZrYdq
+	xDJpFo8npC5IePJGylAorc0gUo4IV+tpLGsKSVa4Z8Tjc+sNLRKRn2ohLVbvhS0iaRb9pZBG7lS
+	XWwLveAm8rsnCq/e4zOKNYPkP16xkRdL7xoWYZKkBdT3X43NuIdOgRanMW6rNEC79Z+Ghej/qn6
+	8syzaYo7R4sQ0Y+8LkdVz3sLj7yrQFUNG4sCxI/9A43HcqVgL+DLhtVX36jkC5oVpgJ4qK3KOzY
+	fiLUGtSFHwdTjUjP00IayDlKkjTc
+X-Google-Smtp-Source: AGHT+IHmtP89Hd42kGV5XG6wzg+Ft2bMoyYlcGKQLUi4Rsl9ZPuf3KxmWSund5x/E42vQ6Oqh+dizQ==
+X-Received: by 2002:a05:6402:35d6:b0:5d0:defb:ed2e with SMTP id 4fb4d7f45d1cf-5d10cbaaf71mr4362107a12.10.1733418832125;
+        Thu, 05 Dec 2024 09:13:52 -0800 (PST)
 Received: from 7b58d44c4ff6.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d149a48a38sm1026078a12.23.2024.12.05.09.13.48
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d149a48a38sm1026078a12.23.2024.12.05.09.13.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 09:13:49 -0800 (PST)
+        Thu, 05 Dec 2024 09:13:51 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -82,10 +84,12 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v5 00/10] iio: accel: adxl345: add FIFO operating with IRQ triggered watermark events
-Date: Thu,  5 Dec 2024 17:13:33 +0000
-Message-Id: <20241205171343.308963-1-l.rubusch@gmail.com>
+Subject: [PATCH v5 01/10] iio: accel: adxl345: refrase comment on probe
+Date: Thu,  5 Dec 2024 17:13:34 +0000
+Message-Id: <20241205171343.308963-2-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241205171343.308963-1-l.rubusch@gmail.com>
+References: <20241205171343.308963-1-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -94,132 +98,27 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The adxl345 sensor offers several features. Most of them are based on
-using the hardware FIFO and reacting on events coming in on an interrupt
-line. Add access to configure and read out the FIFO, handling of interrupts
-and configuration and application of the watermark feature on that FIFO.
+Refrase comment on the probe function, avoid naming different hardware.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
-Although I tried to implement most of the requested changes, now the code
-is simplified and clearer, I still encounter some issues.
+ drivers/iio/accel/adxl345_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-1) Unsure if my way reading out the FIFO elements with a regmap_noinc_read()
-   is supposed to be like that. TBH, isn't there a better way, say, to
-   configure the channel correctly and this is handled by the iio API
-   internally? As I understood from v2 there might be a way using
-   available data, also in iio_info I see now as buffer attributes an
-   available data field. Where can I find information how to use it or
-   did I get this wrong?
-
-2) Overrun handling: I'm trying to reset the FIFO and registers. Unsure,
-   if this is the correct dealing here.
-
-3) I can see the IRQs coming in, and with a `watch -n 0.1 iio_info` I can
-   see the correct fields changing. I tried the follwoing down below,
-   but the iio_readdev shows me the following result. I don't quite
-   understand if I still have an issue here, or if this is a calibration
-   thing?
-
-# iio_info 
-Library version: 0.23 (git tag: v0.23)
-Compiled with backends: local xml ip usb
-IIO context created with local backend.
-Backend version: 0.23 (git tag: v0.23)
-Backend description string: Linux dut1138 6.6.21-lothar02 #3 SMP PREEMPT Wed Nov  6 21:21:14 UTC 2024 aarch64
-IIO context has 2 attributes:
-	local,kernel: 6.6.21-lothar02
-	uri: local:
-IIO context has 1 devices:
-	iio:device0: adxl345 (buffer capable)
-		3 channels found:
-			accel_x:  (input, index: 0, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: -14                          <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-			accel_y:  (input, index: 1, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: 6                            <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-			accel_z:  (input, index: 2, format: le:s13/16>>0)
-			4 channel-specific attributes found:
-				attr  0: calibbias value: 0
-				attr  1: raw value: 247                          <--- CHANGES
-				attr  2: sampling_frequency value: 100.000000000
-				attr  3: scale value: 0.038300
-		2 device-specific attributes found:
-				attr  0: sampling_frequency_available value: 0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200
-				attr  1: waiting_for_supplier value: 0
-		3 buffer-specific attributes found:
-				attr  0: data_available value: 13
-				attr  1: direction value: in
-				attr  2: watermark value: 15
-		No trigger on this device
-
-  Above I marked what keeps changing with "CHANGES", that's what I expect. Then with readdev
-  I obtain the following result.
-
-# iio_attr -c adxl345
-dev 'adxl345', channel 'accel_x' (input, index: 0, format: le:s13/16>>0), found 4 channel-specific attributes
-dev 'adxl345', channel 'accel_y' (input, index: 1, format: le:s13/16>>0), found 4 channel-specific attributes
-dev 'adxl345', channel 'accel_z' (input, index: 2, format: le:s13/16>>0), found 4 channel-specific attributes
-# echo 1 > ./scan_elements/in_accel_x_en
-# echo 1 > ./scan_elements/in_accel_y_en
-# echo 1 > ./scan_elements/in_accel_z_en
-# echo 32 > ./buffer0/length
-# echo 15 > ./buffer0/watermark
-# echo 1 > ./buffer0/enable
-# iio_readdev -b 16 -s 21 adxl345 > samples.dat
-# hexdump -d ./samples.dat 
-0000000   65523   00006   00248   65523   00005   00235   65522   00006
-0000010   00248   65522   00006   00248   65521   00005   00247   65522
-0000020   00007   00249   65523   00005   00249   65521   00006   00248
-0000030   65522   00006   00248   65522   00006   00250   65522   00006
-0000040   00249   65522   00005   00248   65523   00005   00248   65521
-0000050   00007   00248   65521   00006   00250   65522   00005   00248
-0000060   65521   00006   00248   65522   00007   00247   65522   00006
-0000070   00248   65522   00006   00248   65521   00004   00250        
-000007e
-
-  Am I doing this actually correctly?
-
----
-v4 -> v5:
-- fix dt-binding for enum array of INT1 and INT2
-v3 -> v4:
-- fix dt-binding indention 
-v2 -> v3:
-- reorganize commits, merge the watermark handling
-- INT lines are defined by binding
-- kfifo is prepared by devm_iio_kfifo_buffer_setup()
-- event handler is registered w/ devm_request_threaded_irq()
-v1 -> v2:
-Fix comments according to Documentation/doc-guide/kernel-doc.rst
-and missing static declaration of function.
----
-Lothar Rubusch (10):
-  iio: accel: adxl345: refrase comment on probe
-  iio: accel: adxl345: rename variable data to st
-  iio: accel: adxl345: measure right-justified
-  iio: accel: adxl345: add function to switch measuring mode
-  iio: accel: adxl345: complete list of defines
-  dt-bindings: iio: accel: add interrupt-names
-  iio: accel: adxl345: introduce interrupt handling
-  iio: accel: adxl345: initialize FIFO delay value for SPI
-  iio: accel: adxl345: prepare channel for scan_index
-  iio: accel: adxl345: add FIFO with watermark events
-
- .../bindings/iio/accel/adi,adxl345.yaml       |   7 +
- drivers/iio/accel/adxl345.h                   |  90 +++-
- drivers/iio/accel/adxl345_core.c              | 427 ++++++++++++++++--
- drivers/iio/accel/adxl345_i2c.c               |   2 +-
- drivers/iio/accel/adxl345_spi.c               |   7 +-
- 5 files changed, 478 insertions(+), 55 deletions(-)
-
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index 006ce66c0aa..eb3ce4434a5 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -169,8 +169,7 @@ static void adxl345_powerdown(void *regmap)
+ }
+ 
+ /**
+- * adxl345_core_probe() - probe and setup for the adxl345 accelerometer,
+- *                        also covers the adlx375 accelerometer
++ * adxl345_core_probe() - Probe and setup for the accelerometer.
+  * @dev:	Driver model representation of the device
+  * @regmap:	Regmap instance for the device
+  * @setup:	Setup routine to be executed right before the standard device
 -- 
 2.39.2
 

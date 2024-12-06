@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-13168-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13169-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C0A9E7752
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:30:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0819E7753
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89CC288563
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBA5B2884EF
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5132206BD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D186D1F3D5B;
 	Fri,  6 Dec 2024 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IXUJKBP3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LfBEeWqz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86472206AB
-	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 17:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F1E2206AA
+	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 17:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733506156; cv=none; b=p4kW35QSdEaX2K2NOZ2/YJuRgWoz60Dig8U8mpW4PsDc4vfdzNoMm7fy31Fumj1JEtf3WYFV5ZMhcQp/usHLDVaeKnfBoCmmyLghCGO7ap4j69YKLbBjmZG+S6LQ6b+/DRK3S31/Cj3Xbn21+LofkOm+sJ9AOwagCOSaP/cJNpY=
+	t=1733506156; cv=none; b=X6NJPr/91wahwZPaU9PPg8ZBxKBioUX5syGPBprDrvJTikUunPgHsc2IMLZ31ru9zBngffTOGSvVZYlHiWPTMPk6uqkzutvcTrH6cbkfI2lG3F147UiNiUvGX9k38hagjN5jvXLlmgg5EvMW/j+rSqfQBqIhZl5TANt8N3uNSd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733506156; c=relaxed/simple;
-	bh=2xbDE1PbDdVgWJYB6ReEXxuxr3jQ0b0TaEMBrVs+jdo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mo2JhqSX1kEvg6mzERWa56RErY+zD+u6cBVC+NBbE3Bm0uHOMyYG9gVJtKedDxGN6J6UnQBElyOJuUrYs8TzbNv4jcZKEOuqOybrA/F8lrGLRpfVadrJXEunDoHCYUBD3qqd4cGHY/agZTTNMJxbw3neNBKLCthVTLBq8OoqxWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IXUJKBP3; arc=none smtp.client-ip=209.85.128.65
+	bh=zn8zvV9Mo4O2rpc8Z3avU2Iyc7Z00tacRFBEl6WqSmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z2TRCsY5hg7EuEc5CaMNZqh4YbUeHLPlty86B9c8vZGS4ucj2NjHe8z/pbUSYKoY04IAgBCPcMqQbP4/asIMC+fJDyFEN8e3qxeJE2ZehHWxTcTb6+PftcxQiTETBE8sJEr8/iCIizQ7hu8ZeiawTfFtp+Ky5LnKNTaNq2WF7XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LfBEeWqz; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-434a852bb6eso22669065e9.3
-        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 09:29:12 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-385e3621518so1709693f8f.1
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 09:29:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733506151; x=1734110951; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TiYyc9m6NtTx9PeXyVPAO3OLDZJxiiq5MwtoXBGn3hE=;
-        b=IXUJKBP35EQaWn2v0DyeRLImRRsa7SDRcBynSOOTJSKVBjBSOFUKfgTYLjd5/DmAGI
-         b0CXyDTVQ8lB3RsKPwvT5fXPkRvFcz7MyPoQd2f9zRrd11BQ4bObY+OTFQsZXULrO9oI
-         S+QXpPiMk9gisqMr/CjPsD6FdWFqGjaaOP6hdsAIcihy69Ig/V0OJ17hk+L3Lk5IME+9
-         JbailCZqCu9wXzoF41L7U5WFdJbikIm0cTAGqDWfbGmnS5werE6sW1/biwQdc9TEd2Ce
-         jXsd+yD0UhoUceMyKw/tqpqGCVu0Nu0ODEVxhI4Fg+WNOamgjleKhni/DCa2JLevkLno
-         9NyQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733506153; x=1734110953; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EoPQYGtC/ppQEZ9aVkh2TLcv9C9qeXCGvY95zPdobik=;
+        b=LfBEeWqzIqhDRQS55O8Gi1fefhFjpSpRzr/TMoiNxgSXav0XcI/2uvH9MVFzqjvKaQ
+         axayA2Of7AJcGnXmOCZN+rrAP8StoPWJLxJhnD3z/rhs8LMNv5hwiptQ+z4viyJ3+faa
+         FbyGD6JRlNDHMOSxxPbn+YOOoGuYJFxIMxMOiRti1o9Vl+tPfm31frEkaUtpUf7xltAw
+         9mrcyN/+uYciNOX/bhtS28GCbwCyNO6XQr/gObFssGfNPKVzKBlCGWFhWxyVoqlWRBcG
+         KHFM1oxUY2cO98rNmcdKsbqihUbIFAdOEUxbrfkIYDsWLHicNh/5vcXkpAkWbck53gAR
+         +TdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733506151; x=1734110951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TiYyc9m6NtTx9PeXyVPAO3OLDZJxiiq5MwtoXBGn3hE=;
-        b=Gb+zlfJbuMEtkuU0GMpE6qI+G1phZqjg8nJJqLnjjtdXQ+AqrEGX6w5aCYPmqXHmOY
-         pUGIop7Etnht4YcG0PRo6yHoAALqjrOKNPPp9PWA2GwNgr6aYNK5u9BqdrAGFNDe7LFA
-         6YJeH5VObBRq3L0U+Zpf01SsB5VP3lZnXhXYpq5g6kxbvmRbjh25b7wcWWxR1kENFTBg
-         SiMWecrj3xY15gNNd876BZVvEGdnfCFUaWayHbXgcrx4BrZkVycUNtDrHIq5PLmQFD7H
-         bLTJFnT1SzrEPDi+AuFwBDP/ZAA9+2+cVjNQBhWjvv5IDdhaZFrddwDkx6yn50WVpIU0
-         P+2A==
-X-Forwarded-Encrypted: i=1; AJvYcCU/JdzgmiU3tXmnR0IabcjMsXCdz5gkneBUWZStorvgRBcVoDSVJAL6xBOdeN7IxOS1EQI7nURYCHE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLBEz1YCGTfZ0RzTZut936qVLRmIEbjMEM41xcbO8uOR3DI4Fo
-	s90UoTGaTzZcez8dezDiHKYwqigcmzbc2jajrnfNUv/tFO6jEaRlbo3Z4hpExjA=
-X-Gm-Gg: ASbGncuehJyTa43Eo67LRkjzA24THU1i/G6lW3upCAimE/gmdWSWbKFNRhnN6Lt5M2j
-	FNT10xRJsUvWyT9dZOOwiqByUXsji4ZDHcKcnvJ8khLvFWyWssMEKRl1jcJVBXJLjTeX5G7eNoo
-	MtBkpZ9HZDkbwPamRqsra1S2K4cVkrHiV7MKywizuFHuOQSzvH6ftyWeDbFguapfY3CDDDLapni
-	cD7SEVeNaAiP1ITvmWOzhtyT2Aopkcd0sQu+9LYT+ICEhEptyww0AbOvF+mHkTFzL6hmQjaHQC4
-	S0qh
-X-Google-Smtp-Source: AGHT+IFPeopXVABL+gcCED+FdJRnGz6U9BSOO3c7pS2bzzaZitwZKrwJf1InH15LwnEl0AM/V8SgqQ==
-X-Received: by 2002:a05:600c:3ca1:b0:431:5632:448b with SMTP id 5b1f17b1804b1-434dded66f6mr32193915e9.25.1733506151118;
-        Fri, 06 Dec 2024 09:29:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733506153; x=1734110953;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EoPQYGtC/ppQEZ9aVkh2TLcv9C9qeXCGvY95zPdobik=;
+        b=bF1MnhN9PbTSKo+ocBfRjiaHwc8jHui7ZEZuDF1rpfqStLEY/bUn9QhHGohlBq9gid
+         0gAABsgMTYe6EJRYneX84dsAQEmG8kFqKkrMFoU7lRn3/0hPsg0h6sDh/S5gTICxwUEq
+         qFMheiyYTmxAIIbL/ce8zEYs9Mmp2673CU5ftYrv5cXbr1Rln5ZxzZn2xTpbDhPGvce4
+         YsEZK0lqFqWmGhC2IH0KvgcSfiMNWIzJybRp0ySR3kdu75x/TYq1sAsqNHa7QuZFNcwg
+         JKJ/evUE57hzLvp07ztoPQ7Xc+yhfH8stAG5rd5Gl/TQ5RbQ/Hcf1zEIbaaNGpnjRI4z
+         DLjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWt9H9Nv8IxHJ1o0UlMdD5dqtJ8C9HizuXgbE9vmke1DvCqImeyO1kvxnMK6OUvbzPLk98cPYkrl/o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYLgiBgW35Oz+BvUWX6BYaOdW/YJBldoLP6Ig+tnq1wbthlkAO
+	o+1TdKCj52IJ7T+pLYofYcgsgUSJmjOcvlX0t37YPW7NRF1dzTp4j68o4GMHLFo=
+X-Gm-Gg: ASbGncu/Nab802o+r9TfnO83IMBIQ9aQIZdCFK0NehpSb6sBtrYEdM1bocaKjC2l32Q
+	J6GIpcfMSCadom99Q9oPg3CX1PVoGuTq8lLbOam0PZocWF9aW+tPZEpZRPBygPe/9e6nowLq1H1
+	fKxv0RH8Gdx9BaQILmn7eMcMANxOmBOw7w6rIIRBM54ajMNlAUZNECzQoPP57LK0qMvDz8u4keT
+	AIkl5QlQj4CytSxTaa2xUySpsnpInh+y14jWKV8a1YhnBizAby/O548ZWwB+Dw1Px61r91orIdC
+	ucei
+X-Google-Smtp-Source: AGHT+IHd4es1eZBOSw2eEfghY4/vXUkZsgHKgQq1U0xhJFuShgFPcSf1RU0stw1GBxgadbpoBIGY6A==
+X-Received: by 2002:a05:6000:2c6:b0:385:e055:a294 with SMTP id ffacd0b85a97d-3862b3e6686mr3201300f8f.59.1733506152702;
+        Fri, 06 Dec 2024 09:29:12 -0800 (PST)
 Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da1197d0sm61694895e9.39.2024.12.06.09.29.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861d0f75b4sm5173815f8f.0.2024.12.06.09.29.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 09:29:10 -0800 (PST)
+        Fri, 06 Dec 2024 09:29:12 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Alexandru Ardelean <aardelean@baylibre.com>,
@@ -87,10 +89,12 @@ Cc: Alexandru Ardelean <aardelean@baylibre.com>,
 	Renato Lui Geh <renatogeh@gmail.com>,
 	Rob Herring <robh@kernel.org>,
 	Trevor Gamblin <tgamblin@baylibre.com>
-Subject: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
-Date: Fri,  6 Dec 2024 18:28:32 +0100
-Message-ID: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v6 01/10] iio: adc: ad7124: Don't create more channels than the driver can handle
+Date: Fri,  6 Dec 2024 18:28:33 +0100
+Message-ID:  <1b9a5a1d334e5501294f7f9f9d5893f1cdf1b0ec.1733504533.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
+References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -98,70 +102,43 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2789; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=2xbDE1PbDdVgWJYB6ReEXxuxr3jQ0b0TaEMBrVs+jdo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnUzRBgXEtImKK8QBAbf8kD1oSBPWciJcjo9JkF C6O1+eYsKWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ1M0QQAKCRCPgPtYfRL+ TnSUB/46lMr7a4iN4eZ4ShKWdDKbmntVCrcClruFqITiNwrRL96gpHux9iK9EbLEUYoNQXOGkGW IA+ZKtYouXUJZdT6xwooLurtKFBijvyAcmANX7VdHbofCKWF89YBEeHCqw8fa+yRNgJCcjOyHF1 8/DwdcDw0wIH6VpBnmsGBuyzOTnpsE8tf6rE8/9jsxvUWRLm6PxET3xgl5rxHyHfuWO9Hsa+IWH aAJC/ehujgcQwArP63Xh+4khoXjNwhIJk9UORuqmZ2qNamawSqZ9lhuDLVctZbt7fcCI+C0cc/0 tAGVlARWhAmdNI+nGBubO3XrITE8zBptNDnMMp33at9MWE9+
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1454; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=zn8zvV9Mo4O2rpc8Z3avU2Iyc7Z00tacRFBEl6WqSmQ=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnUzREwrfxrPn7/gyxJ6Ho77bnj3fw7lhluAKdc jf0pS0kSeGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ1M0RAAKCRCPgPtYfRL+ TvSDB/902QBn4cFJm37Cm52C+RXIivFD2cDnWUPasBDpmCXM/VMWtRJ4ZIhKWyEiVePK1aX7FV8 7ukskMh1kiXJnqmaCaU28wcw0UloCjidZ0yfrf3q+XvKp5c4neMdtxN9OPehebLx5fohRNuLIbf c1AjpFgvBprCHb4TKqdayMz74d2+i7HfmPCW2Z3vmOpjad7YoBNCkB2dA7oMHgzseA01nScasod vWnZlrUYeX8wSyOycazmbFWTxkzCZ4TnnXtd1cydFhU6QKThV2E5SSqTv2iF7iPtybBUk3dTzW0 /iAxfTYdQ3grQ9VTLMW2GAfgQbO4lDVdFB7rZxNKZAkSJ2tz
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The ad7124-4 and ad7124-8 both support 16 channel registers and assigns
+each channel defined in dt statically such a register. While the driver
+could be a bit more clever about this, it currently isn't and specifying
+more than 16 channels yields broken behaviour. So just refuse to bind in
+this situation.
 
-here comes v6 of this series. Compared to v5
-(https://lore.kernel.org/linux-iio/20241203110019.1520071-12-u.kleine-koenig@baylibre.com)
-the following things changed:
+Fixes: b3af341bbd96 ("iio: adc: Add ad7124 support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+ drivers/iio/adc/ad7124.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
- - Rebased to v6.13-rc1 + 64612ec9b909. (No changes needed here.)
-
- - Add Ack from Conor to patch #3
-
- - Fixed how R̅D̅Y̅ is written. This was wrong before because the overline
-   char must be added after the character that should get the overline,
-   not before. I got that wrong because of
-   https://bugs.debian.org/1089108. I would expect that now this is
-   properly shown in most browsers, MUAs and editors.
-
-   I guess Andy still doesn't agree to write it that way. Jonathan,
-   would you decide here please? If you agree with Andy I suggest to
-   replace it by #RDY. Andy suggested #RDY_N which I think is too far
-   away from the original name. If you (also) like R̅D̅Y̅, just keep it as
-   is.
-
- - Fix error handling in patch #8
-   I just pasted "return ret" to all callers of
-   ad_sigma_delta_clear_pending_event() before. Now the error handling
-   matches the actual needs of the context.
-
- - s/irq controller's capabilities/irq controller capabilities/
-   as suggested by Andy for patch #8
-
-Best regards
-Uwe
-
-Uwe Kleine-König (10):
-  iio: adc: ad7124: Don't create more channels than the driver can handle
-  iio: adc: ad7124: Refuse invalid input specifiers
-  dt-bindings: iio: adc: adi,ad7{124,173,192,780}: Allow specifications of a gpio for irq line
-  iio: adc: ad_sigma_delta: Add support for reading irq status using a GPIO
-  iio: adc: ad_sigma_delta: Handle CS assertion as intended in ad_sd_read_reg_raw()
-  iio: adc: ad_sigma_delta: Fix a race condition
-  iio: adc: ad_sigma_delta: Store information about reset sequence length
-  iio: adc: ad_sigma_delta: Check for previous ready signals
-  iio: adc: ad7124: Add error reporting during probe
-  iio: adc: ad7124: Implement temperature measurement
-
- .../bindings/iio/adc/adi,ad7124.yaml          |  13 ++
- .../bindings/iio/adc/adi,ad7173.yaml          |  12 +
- .../bindings/iio/adc/adi,ad7192.yaml          |  15 ++
- .../bindings/iio/adc/adi,ad7780.yaml          |  11 +
- drivers/iio/adc/ad7124.c                      | 217 +++++++++++++-----
- drivers/iio/adc/ad7173.c                      |   1 +
- drivers/iio/adc/ad7192.c                      |   4 +-
- drivers/iio/adc/ad7791.c                      |   1 +
- drivers/iio/adc/ad7793.c                      |   3 +-
- drivers/iio/adc/ad_sigma_delta.c              | 194 +++++++++++++---
- include/linux/iio/adc/ad_sigma_delta.h        |   8 +-
- 11 files changed, 390 insertions(+), 89 deletions(-)
-
-base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-prerequisite-patch-id: 617af17fc377a984762c61893b9f2a92ae62213a
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 8d94bc2b1cac..5352b26bb391 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -821,6 +821,16 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+ 	if (!st->num_channels)
+ 		return dev_err_probe(dev, -ENODEV, "no channel children\n");
+ 
++	/*
++	 * The driver assigns each logical channel defined in the device tree
++	 * statically one channel register. So only accept 16 such logical
++	 * channels to not treat CONFIG_0 (i.e. the register following
++	 * CHANNEL_15) as an additional channel register. The driver could be
++	 * improved to lift this limitation.
++	 */
++	if (st->num_channels > AD7124_MAX_CHANNELS)
++		return dev_err_probe(dev, -EINVAL, "Too many channels defined\n");
++
+ 	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
+ 			    sizeof(*chan), GFP_KERNEL);
+ 	if (!chan)
 -- 
 2.45.2
 

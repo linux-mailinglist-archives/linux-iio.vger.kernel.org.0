@@ -1,140 +1,149 @@
-Return-Path: <linux-iio+bounces-13152-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13153-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8D99E6D23
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 12:17:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D909E6F40
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 14:25:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D740B169527
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 11:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC707282BF3
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 13:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265FA206F19;
-	Fri,  6 Dec 2024 11:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="IGUkLjZj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE6E207DF6;
+	Fri,  6 Dec 2024 13:25:00 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B29202F91
-	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 11:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BE0207661
+	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 13:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733483664; cv=none; b=cBRqlJZHAU1U+OAv2qb9rYA+PXrZtu9bVDbG/U3csy9S9kYxnJ96k/0ceMtHfXMNJ9iwioDfOm3khW31U1dMyJ/VkspGenb4fXIc5SVEz2okkjVe7W1lsT3QxzF4B7RIRZpW0Vszus2wAt1tCLGpDYvmxVg5qpVVwOenlaD3sMg=
+	t=1733491500; cv=none; b=IHtSa+x8gc0nhu1UVw9KdYnmGiTXu72TfLvmGQ2v0H1hGdslOb0e5P8N9JY9wLD7Hcn69wdAokv+KsPCZakKSyY4IgU8MqLB/dHE4lTNWf1vwrncpU6HiqLf8t0n5jnGwRdBXfrboFBfprXr1RmJzw26Hvm+SAQR+w6Y+7+2GyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733483664; c=relaxed/simple;
-	bh=a4/gsQVtR7MVHM1KJuAuPMWGtk0F3Gae6xSRbB+vIWo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OVzWq6l7ornpRYyBvPrX0W4GVxWRLOtUlH+XxtOlbBlEyN/CAIqy/HuejoVHab9ivpj6yjpm7pJagcTC7jVAmpwDiAgxK55OvDCjDON2l9IwESs1bcbsjQ3zrHTMCcxCVSiHpEY9mZk1Byl3IpcXsSt8A+/8O7iV8Wi6ARQwn/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=IGUkLjZj; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa62f0cb198so197914766b.2
-        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 03:14:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1733483661; x=1734088461; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r9Dnr8lBPRV9hwY5+L6VmdONZwzLphVT7+zA8FZuSvc=;
-        b=IGUkLjZjdXavSltmBn7WJKCt7ZmfqpeDzq+c8eJyOQNUX4pmJzPPgbOzPqDCz+QuVr
-         0Ee0ApCmiF9L5o970PXWXaFksLDbsPONJoXANY1yjBKK15S8LoRwv4yaI96oTxeBqJo2
-         Yr+gjDZ2FhW1Kh/GXVTV7lOFJ5gypIS301DAgBcVqqqsEkmOy52N31+BTOmEd/w4lLyV
-         bSuerh/gR7UOtBdU5HxbeKm1lP8vXbSByk1US73myzpL1FAp+lFZ5EzLpOngyAbGRIu/
-         VC2PirSXVrkC6aPm57d0vKHq/bjE+wVAIULPleREHmFcG5WpkgNHfVv27jaeWKhyDKH2
-         hA+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733483661; x=1734088461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r9Dnr8lBPRV9hwY5+L6VmdONZwzLphVT7+zA8FZuSvc=;
-        b=rImsTTuKtFYlx0N9bG3rlOJ5SQcuA/b9/E3nC4vWOgSoI8mVAlw8/ixD0aoq/J3XhE
-         NoiravF9G53rZzCki9OmrHHZIDYE8M+r4GX4fKyaUN5I4xPdfj1gpB1sjLctqaZIDfLP
-         kGAWlVF/92Al5HaqmboXKTRNL35DQILhO18i05y7ItBs5xmFECNdoUbqla2qsxlhYG1d
-         HyrLFKs17Z2DcE2nO/Fp4S8nCGqkyumZ1BLRcpNOQi8tmC0W1OYVlu2q2Hp4aa2yDsJJ
-         Gi1szxJqIhubOXXvmCFuH/n4R8TWjAXPEQxvoAWdoi0JdqR1Fjq4RwXmUvPQyiPQImmM
-         psgw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+6uD2dWDm6Stro1efk135+2XRG9lcli9LkAJaWbm5yJmK//TM6ABRHK1YqQzpYSxJnwsKp7KeylA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMa8B9o3bp7zS3Da12MOkAmNjgODsB4IS145xnnK68O5VBnqc2
-	yfAJPCBjElYEm5cBi8iGqxZqqYcnaDAroT9p0g8xSz3dBO1vrfgiR85nY+hPcCY=
-X-Gm-Gg: ASbGncsKGAQ6dszrVtvccpdgvyLSBgTwaMeMOpITH+mnPJyoCVzuSb5G+uaOo9TRSCY
-	+8SOItoD7WCYHGuvJfkkPn8STVAZ69spxHOGoK2pUWXwCUVqAJRx+9ZOHGRHUnv3Q3Z2u2Ftiak
-	WISc2OZ/osDMcD1qDTTO6SNViBBPRkD9TbYFNeD5W3hs7audXjw8hCdNpYxnFnKI8fouWvRZbVX
-	+iiryFGNK0dXxjW+Hg6V6jRK2OJoUhkTFBTwjR6e8/enpf/IJmig+Y8ZrzjvQHBWt8owNSxzrYE
-	m8ZX
-X-Google-Smtp-Source: AGHT+IG7gJqc4CGdANniAawsf3QrNvInv7nJ0Q0Fqm3FfT2wXTQhceZu1E4SlHPGcY841V3MyHiZiw==
-X-Received: by 2002:a17:906:4d2:b0:aa6:2e07:5cf2 with SMTP id a640c23a62f3a-aa63a2086e0mr165912666b.38.1733483661317;
-        Fri, 06 Dec 2024 03:14:21 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.161])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625eee2a6sm226877866b.90.2024.12.06.03.14.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 03:14:20 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: prabhakar.mahadev-lad.rj@bp.renesas.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	geert+renesas@glider.be,
-	magnus.damm@gmail.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	p.zabel@pengutronix.de
-Cc: claudiu.beznea@tuxon.dev,
-	linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH v2 15/15] arm64: dts: renesas: rzg3s-smarc-som: Enable ADC
-Date: Fri,  6 Dec 2024 13:13:37 +0200
-Message-Id: <20241206111337.726244-16-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1733491500; c=relaxed/simple;
+	bh=mrp7r4AkFKtw74uF7gQtHscRnzFlm1VOf+r28ozKMCs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=HCzxzd8NJ8SlJg7kEeTyHun7OhpRkQ4WOC0sFKAChlZFKDiJC81yZyLGNgwg0n3KQrdiE6pQVt8uupf5zFmIh0E/XzGnhe8+KWl6AQq7lJdjtdyi45pNMkk6rCckIpn7VBE6eCnzulEqaDEVMINyvoeV7kM4uwrwZPiOTn0mgJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-95-ndEInTIePlWej-prePKPpA-1; Fri, 06 Dec 2024 13:24:55 +0000
+X-MC-Unique: ndEInTIePlWej-prePKPpA-1
+X-Mimecast-MFC-AGG-ID: ndEInTIePlWej-prePKPpA
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 6 Dec
+ 2024 13:24:09 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Fri, 6 Dec 2024 13:24:09 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Andy Shevchenko' <andriy.shevchenko@linux.intel.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: RE: [PATCH v1 1/4] iio: afe: rescale: Don't use ^ for booleans
+Thread-Topic: [PATCH v1 1/4] iio: afe: rescale: Don't use ^ for booleans
+Thread-Index: AQHbRezm1jhKv1T7YkOoxbKwnK16YbLZNdEg
+Date: Fri, 6 Dec 2024 13:24:09 +0000
+Message-ID: <88f281a31d8342c691b2a6b2666d4e91@AcuMS.aculab.com>
+References: <20241204013620.862943-1-andriy.shevchenko@linux.intel.com>
+ <20241204013620.862943-2-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20241204013620.862943-2-andriy.shevchenko@linux.intel.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: xbe-jbBCGK4M5z0eecLs_1HRAIDHZSgXATKUv1UqS6w_1733491494
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Andy Shevchenko
+> Sent: 04 December 2024 01:33
+>=20
+> There are two (non-critical) issues with the code. First of all,
+> the eXclusive OR is not defined for booleans, so boolean to integer
+> promotion is required, Second, the u32 variable is used to keep
+> boolean value, so boolean is converted implicitly to the integer.
 
-Enable ADC.
+Except there is no such thing as 'boolean' they are all integers.
+And the compiler has to have some set of rules to handle the cases
+where the memory that hold the 'boolean' doesn't have the value 0 or 1.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+>=20
+> All these are not needed when variable is defined as boolean to begin
+> with and operations are replaced by simple !=3D and ||.
+>=20
+> Fixes: 701ee14da95d ("iio: afe: rescale: add INT_PLUS_{MICRO,NANO} suppor=
+t")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/iio/afe/iio-rescale.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.=
+c
+> index b6a46036d5ea..470dd7d41b2a 100644
+> --- a/drivers/iio/afe/iio-rescale.c
+> +++ b/drivers/iio/afe/iio-rescale.c
+> @@ -26,7 +26,7 @@ int rescale_process_scale(struct rescale *rescale, int =
+scale_type,
+>  =09int _val, _val2;
+>  =09s32 rem, rem2;
+>  =09u32 mult;
+> -=09u32 neg;
+> +=09bool neg;
+>=20
+>  =09switch (scale_type) {
+>  =09case IIO_VAL_INT:
+> @@ -95,7 +95,7 @@ int rescale_process_scale(struct rescale *rescale, int =
+scale_type,
+>  =09=09 * If only one of the rescaler elements or the schan scale is
+>  =09=09 * negative, the combined scale is negative.
+>  =09=09 */
+> -=09=09if (neg ^ ((rescale->numerator < 0) ^ (rescale->denominator < 0)))=
+ {
+> +=09=09if (neg !=3D (rescale->numerator < 0 || rescale->denominator < 0))=
+ {
 
-Changes in v2:
-- none
+That is wrong, the || would also need to be !=3D.
+Which will all generate real pile of horrid code.
+(I think the x86 version will stun you.)
 
- arch/arm64/boot/dts/renesas/rzg3s-smarc-som.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+I'm guessing that somewhere there is a:
+=09neg =3D value < 0;
 
-diff --git a/arch/arm64/boot/dts/renesas/rzg3s-smarc-som.dtsi b/arch/arm64/boot/dts/renesas/rzg3s-smarc-som.dtsi
-index 2ed01d391554..57ebdfc858eb 100644
---- a/arch/arm64/boot/dts/renesas/rzg3s-smarc-som.dtsi
-+++ b/arch/arm64/boot/dts/renesas/rzg3s-smarc-som.dtsi
-@@ -94,6 +94,10 @@ vcc_sdhi2: regulator2 {
- 	};
- };
- 
-+&adc {
-+	status = "okay";
-+};
-+
- #if SW_CONFIG3 == SW_ON
- &eth0 {
- 	pinctrl-0 = <&eth0_pins>;
--- 
-2.39.2
+Provided all the values are the same size (eg int/s32), in which case:
+=09neg =3D value;
+...
+=09if ((neg ^ rescale->numerator ^ rescale->denominator) < 0)
+will be the desired test.
+
+=09David
+
+>  =09=09=09if (*val)
+>  =09=09=09=09*val =3D -*val;
+>  =09=09=09else
+> --
+> 2.43.0.rc1.1336.g36b5255a03ac
+>=20
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
 
 

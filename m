@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-13171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95C89E776A
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B01869E776C
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFCF91888B38
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:30:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 814601888C64
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCBA1FD7BF;
-	Fri,  6 Dec 2024 17:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBB32135C4;
+	Fri,  6 Dec 2024 17:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AbuY3Rwd"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1nAl8jZa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C472A2206BE
-	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 17:29:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03BEA2206A3
+	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 17:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733506160; cv=none; b=DEFrcnggueVtvCimrghidX1WvlTOH6bsoiq/24AHIAdfqx7KcYl/y6WBffvcnuLsi13G/JpXvUMR9me69ipKFgplmBuUlBvP+W44az+5NpnfMCANXbk1ssHF2w0M0m78/dP9XxRtPLo/yXfWPq1dp1UrGza2e4PvloDiGozIMP8=
+	t=1733506162; cv=none; b=J/GhM7pQfFCyYNyFZndmfj9T0oThSwaf1jGYmCvUpBzdI5PcQQJGj9M7+WQu/Ut3T4XJaRFPzOuctqFJx1xJtBu90fwrCn8S+ZdFRrVKCxEo0xt+OF2FcCPKfhibACuYH4Yk+NBdQBiu/gAf1XdJbY0sUGUDZ7oLzCoN9uUTHdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733506160; c=relaxed/simple;
-	bh=OZ8D5DIA9c2z/ZNslS4oghsCp+4099Z8MVhbXa2hSOo=;
+	s=arc-20240116; t=1733506162; c=relaxed/simple;
+	bh=Vn/ELfht9W9fFl9T7RxrKmgdJePzkYd4eCJaOLGeJgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d6u8jNl5V+QQhmbvtnDD/+OYV1+OihItDx+GxDbCWRxQYDJqlafJ57l90NeOttb4BDJeJ0XOKN8k3C0Fo2teq7G2czD/cj/2nu7OGJtfu8dJvsn0pW8LKPwlINy7gzmbxaFYVuA8F9tRZOwSzUoq9sbKJdrsq4RDJSCc6jshTko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AbuY3Rwd; arc=none smtp.client-ip=209.85.167.50
+	 MIME-Version:Content-Type; b=ZSryMDNpnrBNZsDEzlGSRJUnk89uOWjSwF0HjJNvCThtjDjq6sIZyJcVQ4tUTmZ0W1rjF0ukq6YqJn9NXVuVGC/SvrifofgqjeCkmSB+tvtBhv2gj+IkK4Kg+aLpECg4Kg84/DElMpC3CQqWezGILkMI+rapOFICPefWMiK+AXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1nAl8jZa; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53de7321675so2989869e87.2
-        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 09:29:18 -0800 (PST)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-385e0e224cbso1209807f8f.2
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 09:29:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733506157; x=1734110957; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733506158; x=1734110958; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=s+GEESuu+0dEHj+dcMwhu+qI8/+NJXPVoXvCKL+dhpA=;
-        b=AbuY3RwdVOvk10UO976qTqgOARrYydiMdB4fiu0Hl1Zc6Dz6fAOjB6FC5A4Ebk3mQ5
-         BiJaALkEWRrHV+9ByIZWOqlV4i56TMX/2fnGWrwU13TaHyRk0kQ9t+LC//Q0qudcNZwZ
-         V3xtwcEbWNZ1eh1vwAbHBgCdYphT5OSRWBlYQT32lnw4xzC4DNmT2yIefMMq8vhjr8hk
-         U2UsqRTCtf68ht21/iB79fqy7Wdm1iw+OZ3/8WQDGImGE5IANJVGbsz2OKqbNGZf7FdZ
-         8BxsKhKbT+xmggVDpWhKqAI96t3VIYAPOBv2UP2yOheoWebx+3lUNun8wPh4fRiaddrr
-         4WuQ==
+        bh=XxBxAaEjhII8E7HCCD0eAkPaxql5c0moDKYrsrB8SOc=;
+        b=1nAl8jZawuydU5uvs8RojqXlCsyYhiLF6uccLXm4rq06h9sniiP+oFabqGe9shsGgt
+         dHK/BTfNsRTgIe2n7KaeBC9FSG+fOV4dDPoSiOTxMWZpxFkZ1v1aXmnN8TVzEW8j8Fxg
+         OilycyCKM4vgPX7l5VICyUxLcEXIX+HfWEV2HGCk7ddgP5V8wjUndy+rRP/6tGnfZ9jW
+         CxbR8SciFsiD9KBwcWR/K6XgKFCjJN49PuE0oFOtB1CPyIalF3OtUOECzHNmiMP3o5OY
+         Z5II7Imxh4HwWqMLf/8yYmY17j5cTXu2dc7f3ljIUJjBLHlqYe0PFcLR3rH9Q6XSQwf9
+         8wCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733506157; x=1734110957;
+        d=1e100.net; s=20230601; t=1733506158; x=1734110958;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s+GEESuu+0dEHj+dcMwhu+qI8/+NJXPVoXvCKL+dhpA=;
-        b=bHVQYtz3TRggFDItpTJ5eGToJMsBsOY3aVpBu1FdEZMJBY2Dk+UYeIN34aJYcausQR
-         G+Jws9A0+9bOQVNEW12vIHrS/qn7Sdm2lEgBEYrXhjqdsmlBBjrQ7FnpAG3l29pljIS6
-         +Sp5q5YCAoSHNRey7YvnjGJuw98sDhPoLYv9e7mzo2wcRRspb3aaDzIqWVaswseaEUAr
-         tDa3KknwsqAEND2L3Live9TpMhjYpDTPh4gVjlEqnJpcNB/eVvfeSCKPGDwuWoErheMq
-         3qMKQHfVDxAXm7K5iAnEOh3FQADP5lPYqPp5mh35n3ZUL/8cuvLrfIUv+fHLR27894Ss
-         ETvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVgu3+jClh7P6ud4T2qzIdRKSD+9innWu2KLb+l5xQdJYXr8FesSYlnMNSoikNb7VnqxSpHGJ3HA0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHaFHBi2P577ow6oV0g6A1BSuP6FSypt/ib6Ij4/QL5ZnHXfms
-	UTugjCTOhzxyLH5pEanMgLHY4Zrx5NOBjd41nIEVUcoOGqiCMhopaf1FxZaYW54=
-X-Gm-Gg: ASbGncvRW9Mkz9xi7YcLs9d3Dg90nfykcPEJBiByv7E91uYmfhMes8KGnSe9nwDGugu
-	gJAPvBLfMIjDAlwzCydx+g+eJs9RjOif3A3mYVg6GWMRIlHPVQl7XLSuPyla/qQklsmjdJc6U/2
-	SldXQOfwo3KvLdSnMQlkaiXAi0BCq2AhSFH5QrqvczAf4cfH8VKSJmFMCtrHOLjApovEA+IEjrt
-	xnk4IRwz/jM4/eEss+CMnSPCjfdeMbZZ4QiV5Xy4zl7/kSE1ajVBILSlnwxaBmTotl0qA25vvuW
-	A1iU
-X-Google-Smtp-Source: AGHT+IHoZ8rq3s6gUck8FQ/o0j4DgCtCQS7LWMHoxwIQnyL8SV29KxsHPw/mZXmwRlpTXXAxsGpUcw==
-X-Received: by 2002:a05:6512:402a:b0:53e:39c2:f026 with SMTP id 2adb3069b0e04-53e39c2f11cmr571347e87.14.1733506156804;
-        Fri, 06 Dec 2024 09:29:16 -0800 (PST)
+        bh=XxBxAaEjhII8E7HCCD0eAkPaxql5c0moDKYrsrB8SOc=;
+        b=D3mNsfX87tZvhDyrBumibQ9BPwZ/xj+/oIQUrpRHKHvBPed0o2cSe5JFE8aLB3slls
+         JRwxjkEqoTRfC2D8Es0l7dMd95lvLEF38XOirfyAQvC+QG3MoKhsW+qfDUaaVIbdrQMc
+         nLmTHc2oORc7Nwu4/3wqUy9tnzoUOqS+kaqgTzBbrpZxJOLN3+vpjn97ATOe6ZNe14n8
+         RPpygaLlfFplr25Zx4xOtCqbTfPJqImpjoW44X0wGf3feuGOI1jUkCl26qD1WVpTYyyx
+         rbgjto0HV+o/JhqO8+LuLvS68phl+1FM9UlH/HCXF8ePO4O65M5v10OD1HYmyStau3uf
+         LdDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFGT4Q5LQffBNLw0C3mSCMV2TOHOzSIwTsh7ww3MG32YHNDrmJuPkBgOJduZG7T9vJmAspB4YJM0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV4w/cQXY/er6urChAORL8EloenAuokHdI8isynuIcxNV+zeUy
+	EbnOCD3yTr9hFIbwvHfKeF5AmRphGezw6wb8KohzqNdGJn0y3yamrsPt3gacYR8=
+X-Gm-Gg: ASbGnctGR2tdYqj5xDPx2m/pKQ1vP7WLduf1IfGeWAFlrBjKuo2+JoY6yXn4z8r8deu
+	SEDG/LUpV3sVGRMZPxVInmELBdRugoXTLv+Lw3yFYpJgB+jXgYyC7yZRtCrj5Mr7fBUDn0gd0jM
+	7dzfCrFusLhfBBUjAs15J07fDEt55rdre5nu9Hznwb+hZs8XRzrzILwfcatujBb0Er9Tu7DYE0l
+	YWpTeO5/h7dkg6+MFL7OYWrRLhzRD4wyGqoRGtuMn2lzpL9ZG77XoUGb3JPtTiOM66PtoIcyKH8
+	1LRY
+X-Google-Smtp-Source: AGHT+IHhIeS+Yff7Ds+otbPrfa05itifmrflWcBqtVJC8PoXxesyS6H40O72SKfm7jW/kb+9E0VLnA==
+X-Received: by 2002:a05:6000:4918:b0:385:fac7:89ba with SMTP id ffacd0b85a97d-3862b3d8207mr3368307f8f.47.1733506158342;
+        Fri, 06 Dec 2024 09:29:18 -0800 (PST)
 Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da0d6a07sm61383595e9.13.2024.12.06.09.29.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862f02f5c3sm1264715f8f.65.2024.12.06.09.29.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 09:29:15 -0800 (PST)
+        Fri, 06 Dec 2024 09:29:17 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Alexandru Ardelean <aardelean@baylibre.com>,
@@ -88,11 +88,10 @@ Cc: Alexandru Ardelean <aardelean@baylibre.com>,
 	Nuno Sa <nuno.sa@analog.com>,
 	Renato Lui Geh <renatogeh@gmail.com>,
 	Rob Herring <robh@kernel.org>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH v6 03/10] dt-bindings: iio: adc: adi,ad7{124,173,192,780}: Allow specifications of a gpio for irq line
-Date: Fri,  6 Dec 2024 18:28:35 +0100
-Message-ID:  <7fc92a8539e55802d514332e70ee836a3ed08b66.1733504533.git.u.kleine-koenig@baylibre.com>
+	Trevor Gamblin <tgamblin@baylibre.com>
+Subject: [PATCH v6 04/10] iio: adc: ad_sigma_delta: Add support for reading irq status using a GPIO
+Date: Fri,  6 Dec 2024 18:28:36 +0100
+Message-ID:  <5be9a4cc4dc600ec384c88db01dd661a21506b9c.1733504533.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
 References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
@@ -103,175 +102,113 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7014; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=OZ8D5DIA9c2z/ZNslS4oghsCp+4099Z8MVhbXa2hSOo=; b=owGbwMvMwMXY3/A7olbonx/jabUkhvRgEy9HhQPy7z/3H4jRdG3lKcjY3ejzxuBu1/PL26M8C 3PEdk/pZDRmYWDkYpAVU2Sxb1yTaVUlF9m59t9lmEGsTCBTGLg4BWAih15yMMwUUuZL/vQ1+fp7 6fOiARn7zyzPfF9Us5hfXyZErbK1/wiXWPy3aau4lYSnJT05Hr7mB8vVA/8Com9zNO2PCKkVnGv qKvR+tfj9XG+JeW/Fxd1dP06zYwlqtJhpsNJLf+8q4ZXPJsroTm31/bv8UdfedMv0gG+RR+dnT9 tuKbv3uZXsq0MOkzVvCS39x86yb1aUhpCsmbYJq+Cq1Y9CS7JYJ/s1N8cyNZTmrSvstwx/Khjg4 Gd9z6zc5FAV+4zIauNlugmiXSVzZzEyPoxOOPB+SrXn51UzVS9Uy0jpbMhu2P+veJ+EbfuVEssE puiTk2eauOfFXDozX+CqX6G/Vr/rhz+/CvOZGqcm3zADAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4062; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Vn/ELfht9W9fFl9T7RxrKmgdJePzkYd4eCJaOLGeJgY=; b=owGbwMvMwMXY3/A7olbonx/jabUkhvRgE5+4cMcQpdtMKzV/ie6UDYjku/RGm10vJ/2MdryUi GFhu04nozELAyMXg6yYIot945pMqyq5yM61/y7DDGJlApnCwMUpABO558HB0HhaaoJratGccMnH 5zo87t/uOnVa/N3XhR2Ft/kqrKIDm6O+6O37oj9nRoyLqJF+n805y48qJw6aHn3xLFdWfsbNmWU nl7BK6GmwMX7h39776IQS58kTBu+kLX1zlXRVD675uynxiessQyd7L8uQa1dOtNSmnfhl/PqEZk Te9TchMgaeymuWNvrpP31nUPlv26f5Dxr/njNZWzjDeKnaBrGJlg7v6oRufokwlHvstnKyNr/f8 bzk1jWvagTOVx5+NvPcbbEFUadFT3e2XmAQCl7EWe8hNz9ljcF92zsnHngF/Z09bbVFnt6rij+s HvbMhv2iLCb7bvsp+k++y2T6jDN1RZW3xkY95fA/a7gtAA==
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-For the AD7124 chip and some of its cousins the logical irq line (R̅D̅Y̅)
-is physically on the same pin as the spi MISO output (DOUT) and so
-reading a register might trigger an interrupt. For correct operation
-it's critical that the actual state of the pin can be read to judge if
-an interrupt event is a real one or just a spurious one triggered by
-toggling the line in its MISO mode.
+Some of the ADCs by Analog signal their irq condition on the MISO line.
+So typically that line is connected to an SPI controller and a GPIO. The
+GPIO is used as input and the respective interrupt is enabled when the
+last SPI transfer is completed.
 
-Allow specification of an "rdy-gpios" property that references a GPIO
-that can be used for that purpose. While this is typically the same GPIO
-also used (implicitly) as interrupt source, it is still supposed that
-the interrupt is specified as before and usual.
+Depending on the GPIO controller the toggling MISO line might make the
+interrupt pending even while it's masked. In that case the irq handler
+is called immediately after irq_enable() and so before the device
+actually pulls that line low which results in non-sense values being
+reported to the upper layers.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+The only way to find out if the line was actually pulled low is to read
+the GPIO. (There is a flag in AD7124's status register that also signals
+if an interrupt was asserted, but reading that register toggles the MISO
+line and so might trigger another spurious interrupt.)
+
+Add the possibility to specify an interrupt GPIO in the machine
+description in addition to the plain interrupt. This GPIO is used then
+to check if the irq line is actually active in the irq handler.
+
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad7124.yaml   | 13 +++++++++++++
- .../devicetree/bindings/iio/adc/adi,ad7173.yaml   | 12 ++++++++++++
- .../devicetree/bindings/iio/adc/adi,ad7192.yaml   | 15 +++++++++++++++
- .../devicetree/bindings/iio/adc/adi,ad7780.yaml   | 11 +++++++++++
- 4 files changed, 51 insertions(+)
+ drivers/iio/adc/ad_sigma_delta.c       | 38 ++++++++++++++++++++++----
+ include/linux/iio/adc/ad_sigma_delta.h |  2 ++
+ 2 files changed, 35 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-index 35ed04350e28..7146a654ae38 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7124.yaml
-@@ -37,6 +37,17 @@ properties:
-     description: IRQ line for the ADC
-     maxItems: 1
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 2f3b61765055..f25850f4965a 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -539,12 +539,29 @@ static irqreturn_t ad_sd_data_rdy_trig_poll(int irq, void *private)
+ {
+ 	struct ad_sigma_delta *sigma_delta = private;
  
-+  rdy-gpios:
-+    description:
-+      GPIO reading the R̅D̅Y̅ line. Having such a GPIO is technically optional but
-+      highly recommended because DOUT/R̅D̅Y̅ toggles during SPI transfers (in its
-+      DOUT aka MISO role) and so usually triggers a spurious interrupt. The
-+      distinction between such a spurious event and a real one can only be done
-+      by reading such a GPIO. (There is a register telling the same
-+      information, but accessing that one needs a SPI transfer which then
-+      triggers another interrupt event.)
-+    maxItems: 1
+-	complete(&sigma_delta->completion);
+-	disable_irq_nosync(irq);
+-	sigma_delta->irq_dis = true;
+-	iio_trigger_poll(sigma_delta->trig);
++	/*
++	 * AD7124 and a few others use the same physical line for interrupt
++	 * reporting (R̅D̅Y̅) and MISO.
++	 * As MISO toggles when reading a register, this likely results in a
++	 * pending interrupt. This has two consequences: a) The irq might
++	 * trigger immediately after it's enabled even though the conversion
++	 * isn't done yet; and b) checking the STATUS register's R̅D̅Y̅ flag is
++	 * off-limits as reading that would trigger another irq event.
++	 *
++	 * So read the MOSI line as GPIO (if available) and only trigger the irq
++	 * if the line is active. Without such a GPIO assume this is a valid
++	 * interrupt.
++	 */
++	if (!sigma_delta->rdy_gpiod || gpiod_get_value(sigma_delta->rdy_gpiod)) {
++		complete(&sigma_delta->completion);
++		disable_irq_nosync(irq);
++		sigma_delta->irq_dis = true;
++		iio_trigger_poll(sigma_delta->trig);
+ 
+-	return IRQ_HANDLED;
++		return IRQ_HANDLED;
++	}
 +
-   '#address-cells':
-     const: 1
++	return IRQ_NONE;
+ }
  
-@@ -111,6 +122,7 @@ unevaluatedProperties: false
+ /**
+@@ -679,6 +696,17 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
+ 	else
+ 		sigma_delta->irq_line = spi->irq;
  
- examples:
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-     spi {
-       #address-cells = <1>;
-       #size-cells = <0>;
-@@ -121,6 +133,7 @@ examples:
-         spi-max-frequency = <5000000>;
-         interrupts = <25 2>;
-         interrupt-parent = <&gpio>;
-+        rdy-gpios = <&gpio 25 GPIO_ACTIVE_LOW>;
-         refin1-supply = <&adc_vref>;
-         clocks = <&ad7124_mclk>;
-         clock-names = "mclk";
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-index ad15cf9bc2ff..21ee319d4675 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-@@ -135,6 +135,17 @@ properties:
-   '#clock-cells':
-     const: 0
- 
-+  rdy-gpios:
-+    description:
-+      GPIO reading the R̅D̅Y̅ line. Having such a GPIO is technically optional but
-+      highly recommended because DOUT/R̅D̅Y̅ toggles during SPI transfers (in its
-+      DOUT aka MISO role) and so usually triggers a spurious interrupt. The
-+      distinction between such a spurious event and a real one can only be done
-+      by reading such a GPIO. (There is a register telling the same
-+      information, but accessing that one needs a SPI transfer which then
-+      triggers another interrupt event.)
-+    maxItems: 1
++	sigma_delta->rdy_gpiod = devm_gpiod_get_optional(&spi->dev, "rdy", GPIOD_IN);
++	if (IS_ERR(sigma_delta->rdy_gpiod))
++		return dev_err_probe(&spi->dev, PTR_ERR(sigma_delta->rdy_gpiod),
++				     "Failed to find rdy gpio\n");
 +
- patternProperties:
-   "^channel@[0-9a-f]$":
-     type: object
-@@ -443,6 +454,7 @@ examples:
-         interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-         interrupt-names = "rdy";
-         interrupt-parent = <&gpio>;
-+        rdy-gpios = <&gpio 25 GPIO_ACTIVE_LOW>;
-         spi-max-frequency = <5000000>;
-         gpio-controller;
-         #gpio-cells = <2>;
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-index 66dd1c549bd3..0bd2c6906c83 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-@@ -106,6 +106,17 @@ properties:
-     description: see Documentation/devicetree/bindings/iio/adc/adc.yaml
-     type: boolean
- 
-+  rdy-gpios:
-+    description:
-+      GPIO reading the R̅D̅Y̅ line. Having such a GPIO is technically optional but
-+      highly recommended because DOUT/R̅D̅Y̅ toggles during SPI transfers (in its
-+      DOUT aka MISO role) and so usually triggers a spurious interrupt. The
-+      distinction between such a spurious event and a real one can only be done
-+      by reading such a GPIO. (There is a register telling the same
-+      information, but accessing that one needs a SPI transfer which then
-+      triggers another interrupt event.)
-+    maxItems: 1
++	if (sigma_delta->rdy_gpiod && !sigma_delta->irq_line) {
++		sigma_delta->irq_line = gpiod_to_irq(sigma_delta->rdy_gpiod);
++		if (sigma_delta->irq_line < 0)
++			return sigma_delta->irq_line;
++	}
 +
- patternProperties:
-   "^channel@[0-9a-f]+$":
-     type: object
-@@ -181,6 +192,7 @@ unevaluatedProperties: false
+ 	iio_device_set_drvdata(indio_dev, sigma_delta);
  
- examples:
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-     spi {
-         #address-cells = <1>;
-         #size-cells = <0>;
-@@ -195,6 +207,7 @@ examples:
-             clock-names = "mclk";
-             interrupts = <25 0x2>;
-             interrupt-parent = <&gpio>;
-+            rdy-gpios = <&gpio 25 GPIO_ACTIVE_LOW>;
-             aincom-supply = <&aincom>;
-             dvdd-supply = <&dvdd>;
-             avdd-supply = <&avdd>;
-@@ -207,6 +220,7 @@ examples:
-         };
-     };
-   - |
-+    #include <dt-bindings/gpio/gpio.h>
-     spi {
-         #address-cells = <1>;
-         #size-cells = <0>;
-@@ -224,6 +238,7 @@ examples:
-             #clock-cells = <0>;
-             interrupts = <25 0x2>;
-             interrupt-parent = <&gpio>;
-+            rdy-gpios = <&gpio 25 GPIO_ACTIVE_LOW>;
-             aincom-supply = <&aincom>;
-             dvdd-supply = <&dvdd>;
-             avdd-supply = <&avdd>;
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-index be2616ff9af6..5c8df45bfab0 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
-@@ -63,6 +63,17 @@ properties:
-       marked GPIO_ACTIVE_LOW.
-     maxItems: 1
+ 	return 0;
+diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+index f8c1d2505940..126b187d70e9 100644
+--- a/include/linux/iio/adc/ad_sigma_delta.h
++++ b/include/linux/iio/adc/ad_sigma_delta.h
+@@ -29,6 +29,7 @@ struct ad_sd_calib_data {
  
-+  rdy-gpios:
-+    description:
-+      GPIO reading the R̅D̅Y̅ line. Having such a GPIO is technically optional but
-+      highly recommended because DOUT/R̅D̅Y̅ toggles during SPI transfers (in its
-+      DOUT aka MISO role) and so usually triggers a spurious interrupt. The
-+      distinction between such a spurious event and a real one can only be done
-+      by reading such a GPIO. (There is a register telling the same
-+      information, but accessing that one needs a SPI transfer which then
-+      triggers another interrupt event.)
-+    maxItems: 1
-+
- required:
-   - compatible
-   - reg
+ struct ad_sigma_delta;
+ struct device;
++struct gpio_desc;
+ struct iio_dev;
+ 
+ /**
+@@ -96,6 +97,7 @@ struct ad_sigma_delta {
+ 	unsigned int		active_slots;
+ 	unsigned int		current_slot;
+ 	unsigned int		num_slots;
++	struct gpio_desc	*rdy_gpiod;
+ 	int		irq_line;
+ 	bool			status_appended;
+ 	/* map slots to channels in order to know what to expect from devices */
 -- 
 2.45.2
 

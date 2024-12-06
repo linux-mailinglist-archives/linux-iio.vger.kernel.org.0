@@ -1,163 +1,123 @@
-Return-Path: <linux-iio+bounces-13158-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13159-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D26B9E73CE
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:24:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEA49E748C
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556391889612
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 15:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 834DB1885381
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 15:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FEDF20C494;
-	Fri,  6 Dec 2024 15:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3825C20CCC0;
+	Fri,  6 Dec 2024 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="ZNf4rL8k"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="N2TQL7G3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4C1207E1A;
-	Fri,  6 Dec 2024 15:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177FC62171
+	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 15:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498571; cv=none; b=nziH4xK4zKkOGpkWA6yoelZ1JzkNzubyp8YZEIz24DxaD9y2LrfHXKpUuHgeMxQ51dWxRWlLamcUkhoYkS6Ypkx6w27qMbUWJj1PghyGUd7MoOIpw0k5hnX/xc/rm1997nlJ+ChczR/AFATa28vexPT5p/wSSbU/bgvBIISGfWI=
+	t=1733499321; cv=none; b=goBMGCDgHkqPRJ4P7sdxa4zt3PBXRo8pY7ClRdSRXiA1jtzvvDqUVB+eKTtcRhHhboZ91C12zjhS2alj0cpFakqhhIG1rzIH1bc+Pazqq/3bOuTehqeq/GEVmtDH/nFkdzAJ+ft8JnCEmTy+nD423rGB+G/1AWwerVsa2DWxNUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498571; c=relaxed/simple;
-	bh=ue0zjSDUKAz6ZdL96QI8A75tVCwRwgeQqRXoZImt3JY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PU/jpFQ9mjRnlYp0sR+qx9vxioYiDz1HazUIe33gKojtRxzI3BFL9V8bc7glKQuM+MpEqUc9aE1E0b/NFigUtqK4TWkV/lwv2AcIuzj1RHYfqsEpnjOqKL1zv1wLcScmruan3zv9DXMxnpxQhFqR12GDMRTVkw5h8yO7ebdbeSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=ZNf4rL8k; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6E3xAQ001605;
-	Fri, 6 Dec 2024 10:22:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=XgUbt
-	M5YUPS4JP50Lpqpp/hIlUxc1ohCAAG3h35M6tw=; b=ZNf4rL8khlr8zJdrKwLKV
-	KW+dMgw6GSUmznEmuzpPHShvcW2l06s/wdtteAcN96rDWalaHBjRK8jk7Y4FQDAT
-	G3cj5LCdoMQGCk1a8UBOSELPmuEdWc6VBjlCLax7PoSw+pgEH1Lk6IjnKSIT9CbT
-	jf5dL4WYvsAAkLuPFcL6n4icrHT0ckOFcRHCsrU7Nme4FwuynHKuN4HS/CJAz2LK
-	hNL1IYjedV6vKc4ewJOm0rFkNg4jzoWh/bltyzy+2EKZ4x0+C4gAmqGI9PezCJai
-	t0vIR5g/3AOL4hlNrs0iHKqAnkjtCKNeC5Lz4C+lZbitZXc+H8/AAnwCrlplEuur
-	g==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 43bbcbxym1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 10:22:47 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4B6FMkL9020909
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 6 Dec 2024 10:22:46 -0500
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 6 Dec 2024 10:22:46 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 6 Dec 2024 10:22:32 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 6 Dec 2024 10:22:32 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.187])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4B6FMM1d025340;
-	Fri, 6 Dec 2024 10:22:29 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH 3/3] iio: frequency: adf4371: add ref doubler
-Date: Fri, 6 Dec 2024 17:22:06 +0200
-Message-ID: <20241206152207.37928-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241206152207.37928-1-antoniu.miclaus@analog.com>
-References: <20241206152207.37928-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1733499321; c=relaxed/simple;
+	bh=wVuh8+K4TFQZo0S2vY5lBgaZcol7ldJ/JWHAKBR2WPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QM+lbpOD64E0jpsBhxSygKIqr5XGaVFplmVy4MwS6H4lWtG6pebXLGonpdFs0aD1gQWYJwGTOVzajeyVHRfjmwqCsWJwSMDITD8UHiMIc7cXIAu+jqqLWmvXmhUj1frcJF6VKvXyuxuEdkiQy70KiQBMw1ve7h0ShjcBbWGeY3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=N2TQL7G3; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3ea405aa7b3so1037448b6e.3
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 07:35:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733499318; x=1734104118; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pd/MBI/iG/yKICYtrTjJIzBxjCvgZpwJbnTssb/3+lU=;
+        b=N2TQL7G3L+qo2g/vM44HKMgujSZHdqUQJGc8MH+BmFerzmA1YeXbwdLzJog/ZX9U+M
+         mzKrt/Dg+8acdS3WXLBE6aGQTuUb9YGtnIUeq52ssR7dAk9LuTFA1zD6WdmdVKCsmkZT
+         otahWMaVi4CTqmXb6srxx+etUD82eu8C3/VazwWj4VY31XyEZHTnJqkVb2mdikfDhfXh
+         RoiYi4GZMoAI4bdeV3iKMA5XAivXT5wT8e3BUE1nkWKTCnNnUPXMEOh2S60GWOkDE029
+         gdm/tVhUK4+GI6E3StTal8ruqHPh9NX+L+6bmpqT6gxqeaj62hqdOyxgicT6j/tOOhvG
+         nDbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733499318; x=1734104118;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pd/MBI/iG/yKICYtrTjJIzBxjCvgZpwJbnTssb/3+lU=;
+        b=k1hel+xSxIi2sQ9LqEiMF3dBLk7yI0UHEccC99RjoYjTk2QbU4kS64x123+pkVvwIc
+         LI80ozoZoTDkt/GInHjVVdJ4gcurxzaJurkDSdS/Zhf0lNnCLn+w8tbomZyscKfRWHew
+         KuuIBnc+/JUe4KYVVY2RRwkgsy5ejMXf1kr/kcieQ6POKPJKPNdhrgKSdTjxcytjsJ/R
+         WW04ydIM9EnclHeHX1WfoJhQX8wBvq1MT+vbR8/N6ZdGQaliLyr/mSne7/T/0XIK16dt
+         NE33lRBhdVUivNLY+FBaDcnr10pTfVcbUB7rJeWuXmarVh/dbrgAsDSAkMmIJ/4Fs20M
+         3AxA==
+X-Forwarded-Encrypted: i=1; AJvYcCXvgcQz+9kQvdbRF8OBtoZn76ZXDk6aG+5OdBVa2Z8hxV5+GOS8DwtLrlgWT1ERKy7TlAb8NzEbt3o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqHTAAS87qjpfQ79EJ0eT2hVWY6BOMh1Ex1kqbwxa68hajFFzr
+	rfWPk1jO2PIVt+6spQJnQdxC5R4SxrC6JeUD99qFtlubL+xCxcy8qJzXdnwlYdM=
+X-Gm-Gg: ASbGncv3W956kZJ6vJaTsY30XXf2kfPuY2khBPZqm/M+Wc5y1C6cU5+cYi+5H/fuGz5
+	rJwMTXS7IpqfllQkzrpYN+HrFzQ+1F3y20ogezhMeuqVXKsCI6kcqhrehOBaNtIwBdBo/9zyYCR
+	WXikXG4oWTy3AkR5SGb87MvnIgfW5JgLBTtwxehifKWNKXINbS2bRBrzApOiIJs8bGMpsJ2pbef
+	mCYRBta7OlKwgRbuIKuattar52aR809I0JQ1M3C/resz6UC3ytUrpJGJ5SRBWfzuqbEXd/uKBWe
+	p2WrdNpOFCQ=
+X-Google-Smtp-Source: AGHT+IHX/2FUAEdetGNLWNVrIoleewZYFhAZnP1cjY6rVq0ZSaR2VfNnDu3mZcvT6ej2tQL4aqDj7g==
+X-Received: by 2002:a05:6808:2f19:b0:3e7:cb02:8468 with SMTP id 5614622812f47-3eb19df8422mr1568872b6e.33.1733499318151;
+        Fri, 06 Dec 2024 07:35:18 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3eb076fce8fsm781131b6e.32.2024.12.06.07.35.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Dec 2024 07:35:16 -0800 (PST)
+Message-ID: <276fcd4d-5066-46b8-8468-f63d35b74894@baylibre.com>
+Date: Fri, 6 Dec 2024 09:35:15 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: adc: ad7124: Disable all channels at probe time
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Dumitru Ceclan <dumitru.ceclan@analog.com>, Nuno Sa <nuno.sa@analog.com>,
+ Guillaume Ranquet <granquet@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241104101905.845737-2-u.kleine-koenig@baylibre.com>
+ <20241109152438.0135f0c2@jic23-huawei>
+ <7did4jkzbsvovlinkjimbn3zdqrwi2mrs2onukfonjeexnumvh@xbzcdad4v7kd>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <7did4jkzbsvovlinkjimbn3zdqrwi2mrs2onukfonjeexnumvh@xbzcdad4v7kd>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: G6Vc7pkpStBiCNo0MxgSYbZ3wlgH8chi
-X-Proofpoint-ORIG-GUID: G6Vc7pkpStBiCNo0MxgSYbZ3wlgH8chi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
- spamscore=0 mlxlogscore=999 clxscore=1015 priorityscore=1501
- impostorscore=0 mlxscore=0 malwarescore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060115
 
-Add support for the reference doubler.
+On 12/6/24 5:04 AM, Uwe Kleine-König wrote:
+> Hello Jonathan,
+> 
+> On Sat, Nov 09, 2024 at 03:24:38PM +0000, Jonathan Cameron wrote:
+>> Sadly this has probably missed 6.12, but I have queued it up as a fix
+>> for early next cycle and marked it for stable.
+> 
+> I interpreted "early next cycle" as "This will go into v6.13-rc1.". But
+> that didn't work and didn't hit the mainline yet (as of cdd30ebb1b9f).
+> 
+> This patch was included in next as
+> 64612ec9b909b699293b7220c634f67a9fc12e06 between next-20241111 and
+> next-20241128 and then disappeared from there.
+> 
+> What is wrong here?
+> 
+> Best regards
+> Uwe
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
- drivers/iio/frequency/adf4371.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+FYI, the iio tree is currently missing from linux-next due to [1].
 
-diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
-index 55bee06fb42d..dc01f2aafb9a 100644
---- a/drivers/iio/frequency/adf4371.c
-+++ b/drivers/iio/frequency/adf4371.c
-@@ -44,6 +44,8 @@
- /* ADF4371_REG22 */
- #define ADF4371_REFIN_MODE_MASK		BIT(6)
- #define ADF4371_REFIN_MODE(x)		FIELD_PREP(ADF4371_REFIN_MODE_MASK, x)
-+#define ADF4371_REF_DOUB_MASK		BIT(5)
-+#define ADF4371_REF_DOUB(x)		FIELD_PREP(ADF4371_REF_DOUB_MASK, x)\
- 
- /* ADF4371_REG24 */
- #define ADF4371_RF_DIV_SEL_MSK		GENMASK(6, 4)
-@@ -75,6 +77,9 @@
- #define ADF4371_MAX_FREQ_REFIN		600000000UL /* Hz */
- #define ADF4371_MAX_FREQ_REFIN_SE	500000000UL /* Hz */
- 
-+#define ADF4371_MIN_CLKIN_DOUB_FREQ	10000000ULL /* Hz */
-+#define ADF4371_MAX_CLKIN_DOUB_FREQ	125000000ULL /* Hz */
-+
- /* MOD1 is a 24-bit primary modulus with fixed value of 2^25 */
- #define ADF4371_MODULUS1		33554432ULL
- /* MOD2 is the programmable, 14-bit auxiliary fractional modulus */
-@@ -480,7 +485,7 @@ static const struct iio_info adf4371_info = {
- static int adf4371_setup(struct adf4371_state *st)
- {
- 	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
--	unsigned int vco_band_div, tmp;
-+	unsigned int vco_band_div, tmp, ref_doubler_en = 0;
- 	bool ref_diff_en;
- 	int ret;
- 
-@@ -516,6 +521,10 @@ static int adf4371_setup(struct adf4371_state *st)
- 	    (!ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN_SE))
- 		return -EINVAL;
- 
-+	if (st->clkin_freq < ADF4371_MAX_CLKIN_DOUB_FREQ &&
-+	    st->clkin_freq > ADF4371_MIN_CLKIN_DOUB_FREQ)
-+		ref_doubler_en = 1;
-+
- 	ret = regmap_update_bits(st->regmap,  ADF4371_REG(0x22),
- 				 ADF4371_REFIN_MODE_MASK,
- 				 ADF4371_REFIN_MODE(ref_diff_en));
-@@ -531,7 +540,8 @@ static int adf4371_setup(struct adf4371_state *st)
- 	 */
- 	do {
- 		st->ref_div_factor++;
--		st->fpfd = st->clkin_freq / st->ref_div_factor;
-+		st->fpfd = (st->clkin_freq * (1 + ref_doubler_en)) /
-+			   (st->ref_div_factor);
- 	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
- 
- 	/* Calculate Timeouts */
--- 
-2.47.1
-
+[1]: https://lore.kernel.org/all/d707cb3b-1569-45d9-bdc3-dcc98eb88bc4@sirena.org.uk/
 

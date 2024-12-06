@@ -1,147 +1,143 @@
-Return-Path: <linux-iio+bounces-13166-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13167-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED40F9E7649
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:41:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B40A9E76B1
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8037165285
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:41:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB471882D22
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF3220628E;
-	Fri,  6 Dec 2024 16:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020141F63F0;
+	Fri,  6 Dec 2024 17:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="TFmBClOH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxPsnTm8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA2A819;
-	Fri,  6 Dec 2024 16:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE27193071;
+	Fri,  6 Dec 2024 17:08:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733503269; cv=none; b=Tkf53IiP5ue/n3IO7ZADW1ctf9M9syZsUJCAxG1uWS+usGnkVAEwcztxAerM5eV3KKAZGiRmPsQbp+BmBmaMklBwulaeJRp7hBkIrRIvVX+k/wQIJiBMk1ZGceoOWsVlR+8fYhNYKmM5UqzdT8Vu//z3gYGq1BR+gsPx4GLMZPA=
+	t=1733504881; cv=none; b=FWeP0qrBFYAWJbXxFob0M0Xnj+ZOT0CgWNcRV3D1Fn5DptqV4KdWVNhyY086452SkyO+EOunZgxtsJ48SLayUpd06WC0PB0DsN///XtXkycBaPhPLN5+s40RigQUIYNi2Wjl2/EOX8UJNKPSUElFnW0CmNN8Y5tUzqt1wQSwxi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733503269; c=relaxed/simple;
-	bh=7ANu5EScUwuJ6PQjUEeCzCCZry0hPu73TNNgvcoO70Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cxalo6z/R575WhhkW+5i8hyyse/B38cR5jwMbMOGVL7yd/QpM0LeXVaLqaEEGtCRcvJ18cC7hx8oUGIFDGKKjQj63TLRKBzvKCNozoJZ8VqqHgaTLIaKY6DKWDIOGWNlP+gwnQJLywvvaLG+VqitFqzz1idLCXwHYMnonXnEPz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=TFmBClOH; arc=none smtp.client-ip=80.12.242.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id JbMqtRjeSgyqpJbMqthh1y; Fri, 06 Dec 2024 17:39:50 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1733503190;
-	bh=j8NFJHpTnotxjR23il/PFTjZwL7eJr/DxZvCjCEpviw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=TFmBClOHnKrl2gNLgLkmaW6lQl+KGzrIc46tK1ss2HkGyLTiwFvqzgioS7ZR2eROP
-	 awZaRWMpAMnDWrltN3qsw31k93H2PLh0+IIkd3hOP8i6VCuRaeTygE5f1dq2d0zsqr
-	 FRy7ltBzCuTgHA/HgBby7GAWG8W3/sFhXpx0IwWBK2/Op4l3ZQtoAfGk7ftlqeW7CM
-	 NLugchr9Jo1AradlZ0QLkKB4T6hXD+vDaflqqdwiZyJ2zs+aumuKHgPGle5cCZanV9
-	 fd1yj4C0vqdXZRRiPLeKN2hZBjVM/H+cnrNNocW5uod0ngkRf2AXGKBMhJ6QWoXDaU
-	 s+EyAUdqhqzpA==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 06 Dec 2024 17:39:50 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: adc: ad9467: Fix the "don't allow reading vref if not available" case
-Date: Fri,  6 Dec 2024 17:39:28 +0100
-Message-ID: <cc65da19e0578823d29e11996f86042e84d5715c.1733503146.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1733504881; c=relaxed/simple;
+	bh=BJ4R5MF63GQrSkrHJErvy/V9yLpV9nFR0eYVIIdbU2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VzbYuXrsdqOtynJ4sOE3OdOIxEPmBQMpIBvYHfk4xGagHLhZNrj60HpOU/aOWI8mYRc7PP/yFyHcv4Le7b6sPzqLbaRqT/pBOzabi6hPGxByh2n5hlyZHKd3hBdUNoSuRi/cI9FH1NgZGawgwxp/kW9yJ048jRCGI9qugrGygBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxPsnTm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E5C4CED1;
+	Fri,  6 Dec 2024 17:07:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733504881;
+	bh=BJ4R5MF63GQrSkrHJErvy/V9yLpV9nFR0eYVIIdbU2s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JxPsnTm8LF1i3d6nY/uykSyio0Xc4OvCtjwkJqUjjX/45VU4uihIQUNGbeKAZoyz2
+	 qMU16He31qcwC1dG4SPBnTlwWv0Gpi2VIHRK1UDCwjQCGGgQQA3b9RM1J58FcJ+1jb
+	 LCRXPRRBgDTstaxiwYUQwg0O45wTdpR8dMPteZNmVczDwU4pNd1n2uKtYjRWL0JboQ
+	 jxvXwvSL0lFwUi6JMfuhEr2axDC45mVOVi3K2jp41ul9NNZaANGtmvH4WCi1WYL6iw
+	 qoawNxO3WptpxHredxTjB/TdRcX9cHrH9o8vR2RDOkyRDLjvlc8LMK3mI8aoL0liFp
+	 HrEHzQngQrHXQ==
+Date: Fri, 6 Dec 2024 17:07:56 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Subject: Re: [PATCH v5 06/10] dt-bindings: iio: accel: add interrupt-names
+Message-ID: <20241206-settle-impulsive-280ce8dc312f@spud>
+References: <20241205171343.308963-1-l.rubusch@gmail.com>
+ <20241205171343.308963-7-l.rubusch@gmail.com>
+ <20241205-fraying-overfull-4fe3eb6c5376@spud>
+ <CAFXKEHbGcTGBNH8Hrg3i90_-xR1KYyw_97X1pPMFB6E4ztL5Aw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="baagkmPE417JmE1E"
+Content-Disposition: inline
+In-Reply-To: <CAFXKEHbGcTGBNH8Hrg3i90_-xR1KYyw_97X1pPMFB6E4ztL5Aw@mail.gmail.com>
 
-The commit in Fixes adds a special case when only one possible scale is
-available.
-If several scales are available, it sets the .read_avail field of the
-struct iio_info to ad9467_read_avail().
 
-However, this field already holds this function pointer, so the code is a
-no-op.
+--baagkmPE417JmE1E
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Use another struct iio_info instead to actually reflect the intent
-described in the commit message. This way, the structure to use is selected
-at runtime and they can be kept as const.
+On Thu, Dec 05, 2024 at 08:41:52PM +0100, Lothar Rubusch wrote:
+> On Thu, Dec 5, 2024 at 6:54=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
+ote:
+> >
+> > On Thu, Dec 05, 2024 at 05:13:39PM +0000, Lothar Rubusch wrote:
+> > > Add interrupt-names INT1 and INT2 for the two interrupt lines of the
+> > > sensor. Only one line will be connected for incoming events. The driv=
+er
+> > > needs to be configured accordingly. If no interrupt line is set up, t=
+he
+> > > sensor will still measure, but no events are possible.
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/accel/adi,adxl345.yaml         | 7 +++++=
+++
+> > >  1 file changed, 7 insertions(+)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.=
+yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
+> > > index 280ed479ef5..67e2c029a6c 100644
+> > > --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
+> > > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
+> > > @@ -37,6 +37,11 @@ properties:
+> > >    interrupts:
+> > >      maxItems: 1
+> > >
+> > > +  interrupt-names:
+> > > +    description: Use either INT1 or INT2 for events, or ignore event=
+s.
+> > > +    items:
+> > > +      - enum: [INT1, INT2]
+> >
+> > The description for this ", or ignore events" does not make sense. Just
+> > drop it, it's clear what happens if you don't provide interrupts.
+> >
+> > However, interrupts is a required property but interrupt-names is not.
+> > Seems rather pointless not making interrupt-names a required property
+> > (in the binding!) since if you only add interrupts and not
+> > interrupt-names you can't even use the interrupt as you do not know
+> > whether or not it is INT1 or INT2?
+>=20
+> What I meant is, yes, the sensor needs an interrupt line.
+> Interrupt-names is optional. The sensor always can measure. When
+> interrupt-names is specified, though, the sensor will setup a FIFO and
+> can use events, such as data ready, watermark, single tap, freefall,
+> etc. Without the interrupt-names, the sensor goes into a "FIFO bypass
+> mode" without its specific events.
 
-This is safer because modifying static structs that are shared between all
-instances like this, based on the properties of a single instance, is
-asking for trouble down the road.
+What I'm talking about here is how it is ultimately pointless for
+interrupts to be a required property if it can never be used without
+interrupt-names as you cannot know which interrupt is in use. I think
+both should be made mandatory or neither.
 
-Fixes: b92f94f74826 ("iio: adc: ad9467: don't allow reading vref if not available")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is compile tested only and is completely speculative.
+> Hence, I better drop the description entirely, since it rather seems
+> to be confusing.
 
-Changes in v2:
-  - use another struct iio_info to keep the structure const
+--baagkmPE417JmE1E
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v1: https://lore.kernel.org/linux-kernel/556f87c8931d7d7cdf56ebc79f974f8bef045b0d.1733431628.git.christophe.jaillet@wanadoo.fr/
----
- drivers/iio/adc/ad9467.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index d358958ab310..f30119b42ba0 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -895,7 +895,7 @@ static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
--static struct iio_info ad9467_info = {
-+static const struct iio_info ad9467_info = {
- 	.read_raw = ad9467_read_raw,
- 	.write_raw = ad9467_write_raw,
- 	.update_scan_mode = ad9467_update_scan_mode,
-@@ -903,6 +903,14 @@ static struct iio_info ad9467_info = {
- 	.read_avail = ad9467_read_avail,
- };
- 
-+/* Same as above, but without .read_avail */
-+static const struct iio_info ad9467_info_no_read_avail = {
-+	.read_raw = ad9467_read_raw,
-+	.write_raw = ad9467_write_raw,
-+	.update_scan_mode = ad9467_update_scan_mode,
-+	.debugfs_reg_access = ad9467_reg_access,
-+};
-+
- static int ad9467_scale_fill(struct ad9467_state *st)
- {
- 	const struct ad9467_chip_info *info = st->info;
-@@ -1214,11 +1222,12 @@ static int ad9467_probe(struct spi_device *spi)
- 	}
- 
- 	if (st->info->num_scales > 1)
--		ad9467_info.read_avail = ad9467_read_avail;
-+		indio_dev->info = &ad9467_info;
-+	else
-+		indio_dev->info = &ad9467_info_no_read_avail;
- 	indio_dev->name = st->info->name;
- 	indio_dev->channels = st->info->channels;
- 	indio_dev->num_channels = st->info->num_channels;
--	indio_dev->info = &ad9467_info;
- 
- 	ret = ad9467_iio_backend_get(st);
- 	if (ret)
--- 
-2.47.1
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ1MvbAAKCRB4tDGHoIJi
+0nvPAQCKCfcxZqSyFB8ENeB0ZiIIgGCWkezVWtHBlxuy/3M/mAEAreGK6AakFoFg
+NlA1CskzBNYhN7qAz4Y1uwZnMsS9Ygo=
+=OMcb
+-----END PGP SIGNATURE-----
 
+--baagkmPE417JmE1E--
 

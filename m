@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-13161-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13162-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBF19E752A
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D592A9E752B
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A28EF28A2B8
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:10:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 968A828A207
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CF720DD64;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E53120DD67;
 	Fri,  6 Dec 2024 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJ2x5g+I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bFqiW3WG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2958120CCF7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295DE20D4F1;
 	Fri,  6 Dec 2024 16:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733501409; cv=none; b=vAscenazOkgdSQJ/H1t+4CYa6RacYfaNov6psGJCOLxWULZLuJMOTxLmQMHuoPpv/g56/jG8zGOltPQ5er0Vs4m6DSGLoHXRY3oD0fHcSAVxj6mvfffYW8OZKAR3QKGXdgRdPTZiZUeWYBkK40z8qwtb4mHKHI2YuZSz7Mc7SmY=
+	t=1733501409; cv=none; b=ooJNV1oxSPtbLuZi2Sf6EtIp8e6B4pBasy9Nq85wE0/+WMzTm5+0gkZOjVAXkfT3hbxGf5knetxAxemvP4H4jOTDic9XDdCCki4Wfq15bG91FPiz8h0WVfcmrhq7Do1qZsokbRo0G7+UhWywGEMhfbKnZE2h/oVYpYyiaEoBFPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733501409; c=relaxed/simple;
-	bh=ZdXL/CQ2TrjNMSokVHxllGZV1S32vZjn0gN4B66uxck=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cpDhLH4B5DRak1uz70+a5BMA70jx+i7pDfLl7vyUUDkiO20nzrPX60pXxjB15MLGIEca+1qVlXnexd0CAu2U1m7gJjFlvIpsbo6qOQDSYOgrr22qkDcK70Qdkc0Maih3rAOOty7SL/iCNOt6Txo8BQeThQJwaNec/fubRK4gbX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJ2x5g+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9DEA3C4CED1;
+	bh=p+mFtkdp46Bc2KSRHVMy+7O4hRcT8vHJcbfwy+ay9JI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gVRupEHxiYom+9sYZom32b064yXabayuuRnkPBMKH6aId3IENrkxwD0ugk1VLd2hV9WkAgHZtriAM7q+woOc9+c0+x7QF1icQAQK/JpkUiU5M1TmN2Aj2H64y4FYP1c9LNtH+d2ulP91GxsmQtHT2VE8OhN5iBP5rsEq5JgMQlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bFqiW3WG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B5FA8C4CEDE;
 	Fri,  6 Dec 2024 16:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1733501408;
-	bh=ZdXL/CQ2TrjNMSokVHxllGZV1S32vZjn0gN4B66uxck=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=aJ2x5g+IG1DtpROmC4bv7aHFGyfDyWImX8q/3V1KeY7dTNmcQKhISJShWtzf6QAoH
-	 NMmfsd2LEELgAZErTHKLsJbG8shKTVr3N6oARUl5EcFKyL/2eYQsTUdDawnvFpAhHf
-	 rpDbGxw15Xl5wajl4ttN8IeDDiauESV7yDuOrqpNe8AyYrSXXMjpywrlCE5OiFwRjM
-	 4E/xCFVLRZA2fwgqwuUJ+L1e6C+v0940pUufzTdM12w7VW9fTNMbBcCqhHuq4KGEnD
-	 YsaLhr7UWrbsoqOg3aJxRgEZ6JBGzl9h5C3TI1M9+LAyJZGT7C2v2sL9k9Ium0IcHO
-	 YIwaRQEFIE8bQ==
+	bh=p+mFtkdp46Bc2KSRHVMy+7O4hRcT8vHJcbfwy+ay9JI=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=bFqiW3WGqhk+y//dResJRlcc4u72A6llMkRkLm517BL6xLa9BIltlLL7kP7haYiO6
+	 AdpbZbwSgY1WNpVRBuafcdJjSmVaboWKa6Bl0CljZ1UPOynGRhvauvVcPXlu5dphpb
+	 cT3jBdSIzWUIxdxSo0z67YuuXX6i9PDZRPEGGalDPWx8XEcwPeNMv8rehQGpeTzX19
+	 naoAPIsxu2NNud0Kfd2OOlHAyzMkBH1MKoXeb4+WTL+epHn11PV9KDwPVJIyCA0qki
+	 4sZyvc7jxoaXWZTEDIg036YFJSW8V7DuTiqxXiwXAaQ4J/DGHqOzdw8IiqZBleMS7V
+	 5/Viq069wWt5Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 84FF4E77173;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A30AE77179;
 	Fri,  6 Dec 2024 16:10:08 +0000 (UTC)
 From: Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org>
-Subject: [PATCH v2 0/2] Add support for Avago/Broadcom APDS9160
-Date: Fri, 06 Dec 2024 11:09:55 -0500
-Message-Id: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
+Date: Fri, 06 Dec 2024 11:09:56 -0500
+Subject: [PATCH v2 1/2] dt-bindings: iio: light: Add APDS9160 binding
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,10 +55,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANMhU2cC/3WNwQ7CIBAFf6XZsxhAwLYn/8P0gLDYPbQ0YIim4
- d/F3j3OJG/eDhkTYYax2yFhoUxxbSBPHbjZrk9k5BuD5FIJIQZmN58HYTjziQom1hsXNPbG40V
- DW20JA72P4n1qPFN+xfQ5Dor42f+tIhhnwXJurvqh0KqbpyWuMYSziwtMtdYv0NGsPbEAAAA=
-X-Change-ID: 20241119-apds9160-driver-86cf5e86de35
+Message-Id: <20241206-apds9160-driver-v2-1-be2cb72ef8f4@dimonoff.com>
+References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
+In-Reply-To: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -72,11 +71,11 @@ Cc: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
  Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
  Matti Vaittinen <mazziesaccount@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733501407; l=1809;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1733501407; l=1706;
  i=mgonellabolduc@dimonoff.com; s=20241119; h=from:subject:message-id;
- bh=ZdXL/CQ2TrjNMSokVHxllGZV1S32vZjn0gN4B66uxck=;
- b=LYaNcKYSA/mz/IKt8GbypsXX7TjSie6ppUscAoJrTJ1eBPqc15dhk/wWRbKSaAZZHupMyqk5D
- 0OA7zAVhmmxB+lDWhinb0vR42ydFe+a61FRGClaWo47xhwDFhCFByWd
+ bh=s8BOf2+xEysiHus6S5AKnEPyr04Ihf22SGgL7kxbz80=;
+ b=GmZbRng+ZTh0HFgjk+jErvNjcBv38obHewDelhFeT+7Edro5UW8fXXq9qaQ/KmnWAbcmVqI/t
+ u5tBhgUlr92BI4G+LK5KB35I2y9lSo0gDLXTLQB3tDeNlHwHzO9A0Y7
 X-Developer-Key: i=mgonellabolduc@dimonoff.com; a=ed25519;
  pk=p4tvPfGPfXRyChsgHc6s7HwB6YBl2JqqcP3BXtoDitE=
 X-Endpoint-Received: by B4 Relay for mgonellabolduc@dimonoff.com/20241119
@@ -84,47 +83,75 @@ X-Endpoint-Received: by B4 Relay for mgonellabolduc@dimonoff.com/20241119
 X-Original-From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 Reply-To: mgonellabolduc@dimonoff.com
 
-APDS9160 is an ALS and proximity sensor.
-https://www.broadcom.com/products/optical-sensors/integrated-ambient-light-and-proximity-sensors/apds-9160-003
+From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+
+Add device tree bindings for APDS9160 driver
 
 Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 ---
-Changes in v2:
-- Rebased on linux-iio 20fd1383
-- dt-bindings: Dropped the old Avago name and use the brcm vendor prefix
-- dt-bindings: Updated example node name with a generic name
-- dt-bindings: Updated example indentation to 4 spaces
-- dt-bindings: Fixed element ordering
-- KConfig: Dropped unsure sentences
-- KConfig: Dropped unused Kfifo buffer selection
-- driver: Use a more recent iio light driver as template
-- driver: Remove buffer declaration
-- driver: Use avail functions instead of custom iio attributes
-- driver: Use scale instead of hardware gain
-- driver: Removed unused members and unreachable statements
-- driver: Removed unnecessary info and debug prints
-- driver: Fix some coding style and line wrapping issues
-- driver: Reordering of functions
-- Link to v1: https://lore.kernel.org/r/20241119-apds9160-driver-v1-0-fa00675b4ea4@dimonoff.com
+ .../bindings/iio/light/brcm,apds9160.yaml          | 51 ++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
----
-Mikael Gonella-Bolduc (2):
-      dt-bindings: iio: light: Add APDS9160 binding
-      iio: light: Add APDS9160 ALS & Proximity sensor driver
+diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..525fba52f156df3b78e24d7d0d445fe9d882eaa7
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+@@ -0,0 +1,51 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Broadcom Combined Proximity & Ambient light sensor
++
++maintainers:
++  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
++
++description: |
++  Datasheet: https://docs.broadcom.com/docs/APDS-9160-003-DS
++
++properties:
++  compatible:
++    enum:
++      - brcm,apds9160
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply: true
++
++required:
++  - compatible
++  - reg
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        light-sensor@53 {
++            compatible = "brcm,apds9160";
++            reg = <0x53>;
++            vdd-supply = <&vdd_reg>;
++            interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
++            interrupt-parent = <&pinctrl>;
++        };
++    };
++...
 
- .../bindings/iio/light/brcm,apds9160.yaml          |   51 +
- MAINTAINERS                                        |    7 +
- drivers/iio/light/Kconfig                          |   11 +
- drivers/iio/light/Makefile                         |    1 +
- drivers/iio/light/apds9160.c                       | 1548 ++++++++++++++++++++
- 5 files changed, 1618 insertions(+)
----
-base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
-change-id: 20241119-apds9160-driver-86cf5e86de35
-
-Best regards,
 -- 
-Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+2.34.1
 
 
 

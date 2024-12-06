@@ -1,143 +1,168 @@
-Return-Path: <linux-iio+bounces-13167-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13168-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B40A9E76B1
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:08:07 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BB471882D22
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:08:07 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020141F63F0;
-	Fri,  6 Dec 2024 17:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxPsnTm8"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C0A9E7752
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 18:30:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE27193071;
-	Fri,  6 Dec 2024 17:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89CC288563
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 17:30:22 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5132206BD;
+	Fri,  6 Dec 2024 17:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IXUJKBP3"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86472206AB
+	for <linux-iio@vger.kernel.org>; Fri,  6 Dec 2024 17:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733504881; cv=none; b=FWeP0qrBFYAWJbXxFob0M0Xnj+ZOT0CgWNcRV3D1Fn5DptqV4KdWVNhyY086452SkyO+EOunZgxtsJ48SLayUpd06WC0PB0DsN///XtXkycBaPhPLN5+s40RigQUIYNi2Wjl2/EOX8UJNKPSUElFnW0CmNN8Y5tUzqt1wQSwxi4=
+	t=1733506156; cv=none; b=p4kW35QSdEaX2K2NOZ2/YJuRgWoz60Dig8U8mpW4PsDc4vfdzNoMm7fy31Fumj1JEtf3WYFV5ZMhcQp/usHLDVaeKnfBoCmmyLghCGO7ap4j69YKLbBjmZG+S6LQ6b+/DRK3S31/Cj3Xbn21+LofkOm+sJ9AOwagCOSaP/cJNpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733504881; c=relaxed/simple;
-	bh=BJ4R5MF63GQrSkrHJErvy/V9yLpV9nFR0eYVIIdbU2s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VzbYuXrsdqOtynJ4sOE3OdOIxEPmBQMpIBvYHfk4xGagHLhZNrj60HpOU/aOWI8mYRc7PP/yFyHcv4Le7b6sPzqLbaRqT/pBOzabi6hPGxByh2n5hlyZHKd3hBdUNoSuRi/cI9FH1NgZGawgwxp/kW9yJ048jRCGI9qugrGygBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxPsnTm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215E5C4CED1;
-	Fri,  6 Dec 2024 17:07:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733504881;
-	bh=BJ4R5MF63GQrSkrHJErvy/V9yLpV9nFR0eYVIIdbU2s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JxPsnTm8LF1i3d6nY/uykSyio0Xc4OvCtjwkJqUjjX/45VU4uihIQUNGbeKAZoyz2
-	 qMU16He31qcwC1dG4SPBnTlwWv0Gpi2VIHRK1UDCwjQCGGgQQA3b9RM1J58FcJ+1jb
-	 LCRXPRRBgDTstaxiwYUQwg0O45wTdpR8dMPteZNmVczDwU4pNd1n2uKtYjRWL0JboQ
-	 jxvXwvSL0lFwUi6JMfuhEr2axDC45mVOVi3K2jp41ul9NNZaANGtmvH4WCi1WYL6iw
-	 qoawNxO3WptpxHredxTjB/TdRcX9cHrH9o8vR2RDOkyRDLjvlc8LMK3mI8aoL0liFp
-	 HrEHzQngQrHXQ==
-Date: Fri, 6 Dec 2024 17:07:56 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v5 06/10] dt-bindings: iio: accel: add interrupt-names
-Message-ID: <20241206-settle-impulsive-280ce8dc312f@spud>
-References: <20241205171343.308963-1-l.rubusch@gmail.com>
- <20241205171343.308963-7-l.rubusch@gmail.com>
- <20241205-fraying-overfull-4fe3eb6c5376@spud>
- <CAFXKEHbGcTGBNH8Hrg3i90_-xR1KYyw_97X1pPMFB6E4ztL5Aw@mail.gmail.com>
+	s=arc-20240116; t=1733506156; c=relaxed/simple;
+	bh=2xbDE1PbDdVgWJYB6ReEXxuxr3jQ0b0TaEMBrVs+jdo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mo2JhqSX1kEvg6mzERWa56RErY+zD+u6cBVC+NBbE3Bm0uHOMyYG9gVJtKedDxGN6J6UnQBElyOJuUrYs8TzbNv4jcZKEOuqOybrA/F8lrGLRpfVadrJXEunDoHCYUBD3qqd4cGHY/agZTTNMJxbw3neNBKLCthVTLBq8OoqxWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IXUJKBP3; arc=none smtp.client-ip=209.85.128.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-434a852bb6eso22669065e9.3
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 09:29:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733506151; x=1734110951; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TiYyc9m6NtTx9PeXyVPAO3OLDZJxiiq5MwtoXBGn3hE=;
+        b=IXUJKBP35EQaWn2v0DyeRLImRRsa7SDRcBynSOOTJSKVBjBSOFUKfgTYLjd5/DmAGI
+         b0CXyDTVQ8lB3RsKPwvT5fXPkRvFcz7MyPoQd2f9zRrd11BQ4bObY+OTFQsZXULrO9oI
+         S+QXpPiMk9gisqMr/CjPsD6FdWFqGjaaOP6hdsAIcihy69Ig/V0OJ17hk+L3Lk5IME+9
+         JbailCZqCu9wXzoF41L7U5WFdJbikIm0cTAGqDWfbGmnS5werE6sW1/biwQdc9TEd2Ce
+         jXsd+yD0UhoUceMyKw/tqpqGCVu0Nu0ODEVxhI4Fg+WNOamgjleKhni/DCa2JLevkLno
+         9NyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733506151; x=1734110951;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TiYyc9m6NtTx9PeXyVPAO3OLDZJxiiq5MwtoXBGn3hE=;
+        b=Gb+zlfJbuMEtkuU0GMpE6qI+G1phZqjg8nJJqLnjjtdXQ+AqrEGX6w5aCYPmqXHmOY
+         pUGIop7Etnht4YcG0PRo6yHoAALqjrOKNPPp9PWA2GwNgr6aYNK5u9BqdrAGFNDe7LFA
+         6YJeH5VObBRq3L0U+Zpf01SsB5VP3lZnXhXYpq5g6kxbvmRbjh25b7wcWWxR1kENFTBg
+         SiMWecrj3xY15gNNd876BZVvEGdnfCFUaWayHbXgcrx4BrZkVycUNtDrHIq5PLmQFD7H
+         bLTJFnT1SzrEPDi+AuFwBDP/ZAA9+2+cVjNQBhWjvv5IDdhaZFrddwDkx6yn50WVpIU0
+         P+2A==
+X-Forwarded-Encrypted: i=1; AJvYcCU/JdzgmiU3tXmnR0IabcjMsXCdz5gkneBUWZStorvgRBcVoDSVJAL6xBOdeN7IxOS1EQI7nURYCHE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLBEz1YCGTfZ0RzTZut936qVLRmIEbjMEM41xcbO8uOR3DI4Fo
+	s90UoTGaTzZcez8dezDiHKYwqigcmzbc2jajrnfNUv/tFO6jEaRlbo3Z4hpExjA=
+X-Gm-Gg: ASbGncuehJyTa43Eo67LRkjzA24THU1i/G6lW3upCAimE/gmdWSWbKFNRhnN6Lt5M2j
+	FNT10xRJsUvWyT9dZOOwiqByUXsji4ZDHcKcnvJ8khLvFWyWssMEKRl1jcJVBXJLjTeX5G7eNoo
+	MtBkpZ9HZDkbwPamRqsra1S2K4cVkrHiV7MKywizuFHuOQSzvH6ftyWeDbFguapfY3CDDDLapni
+	cD7SEVeNaAiP1ITvmWOzhtyT2Aopkcd0sQu+9LYT+ICEhEptyww0AbOvF+mHkTFzL6hmQjaHQC4
+	S0qh
+X-Google-Smtp-Source: AGHT+IFPeopXVABL+gcCED+FdJRnGz6U9BSOO3c7pS2bzzaZitwZKrwJf1InH15LwnEl0AM/V8SgqQ==
+X-Received: by 2002:a05:600c:3ca1:b0:431:5632:448b with SMTP id 5b1f17b1804b1-434dded66f6mr32193915e9.25.1733506151118;
+        Fri, 06 Dec 2024 09:29:11 -0800 (PST)
+Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da1197d0sm61694895e9.39.2024.12.06.09.29.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 09:29:10 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Alexandru Ardelean <aardelean@baylibre.com>,
+	Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Renato Lui Geh <renatogeh@gmail.com>,
+	Rob Herring <robh@kernel.org>,
+	Trevor Gamblin <tgamblin@baylibre.com>
+Subject: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
+Date: Fri,  6 Dec 2024 18:28:32 +0100
+Message-ID: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="baagkmPE417JmE1E"
-Content-Disposition: inline
-In-Reply-To: <CAFXKEHbGcTGBNH8Hrg3i90_-xR1KYyw_97X1pPMFB6E4ztL5Aw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2789; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=2xbDE1PbDdVgWJYB6ReEXxuxr3jQ0b0TaEMBrVs+jdo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnUzRBgXEtImKK8QBAbf8kD1oSBPWciJcjo9JkF C6O1+eYsKWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ1M0QQAKCRCPgPtYfRL+ TnSUB/46lMr7a4iN4eZ4ShKWdDKbmntVCrcClruFqITiNwrRL96gpHux9iK9EbLEUYoNQXOGkGW IA+ZKtYouXUJZdT6xwooLurtKFBijvyAcmANX7VdHbofCKWF89YBEeHCqw8fa+yRNgJCcjOyHF1 8/DwdcDw0wIH6VpBnmsGBuyzOTnpsE8tf6rE8/9jsxvUWRLm6PxET3xgl5rxHyHfuWO9Hsa+IWH aAJC/ehujgcQwArP63Xh+4khoXjNwhIJk9UORuqmZ2qNamawSqZ9lhuDLVctZbt7fcCI+C0cc/0 tAGVlARWhAmdNI+nGBubO3XrITE8zBptNDnMMp33at9MWE9+
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
+Hello,
 
---baagkmPE417JmE1E
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+here comes v6 of this series. Compared to v5
+(https://lore.kernel.org/linux-iio/20241203110019.1520071-12-u.kleine-koenig@baylibre.com)
+the following things changed:
 
-On Thu, Dec 05, 2024 at 08:41:52PM +0100, Lothar Rubusch wrote:
-> On Thu, Dec 5, 2024 at 6:54=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
-ote:
-> >
-> > On Thu, Dec 05, 2024 at 05:13:39PM +0000, Lothar Rubusch wrote:
-> > > Add interrupt-names INT1 and INT2 for the two interrupt lines of the
-> > > sensor. Only one line will be connected for incoming events. The driv=
-er
-> > > needs to be configured accordingly. If no interrupt line is set up, t=
-he
-> > > sensor will still measure, but no events are possible.
-> > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > ---
-> > >  .../devicetree/bindings/iio/accel/adi,adxl345.yaml         | 7 +++++=
-++
-> > >  1 file changed, 7 insertions(+)
-> > >
-> > > diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.=
-yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> > > index 280ed479ef5..67e2c029a6c 100644
-> > > --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> > > @@ -37,6 +37,11 @@ properties:
-> > >    interrupts:
-> > >      maxItems: 1
-> > >
-> > > +  interrupt-names:
-> > > +    description: Use either INT1 or INT2 for events, or ignore event=
-s.
-> > > +    items:
-> > > +      - enum: [INT1, INT2]
-> >
-> > The description for this ", or ignore events" does not make sense. Just
-> > drop it, it's clear what happens if you don't provide interrupts.
-> >
-> > However, interrupts is a required property but interrupt-names is not.
-> > Seems rather pointless not making interrupt-names a required property
-> > (in the binding!) since if you only add interrupts and not
-> > interrupt-names you can't even use the interrupt as you do not know
-> > whether or not it is INT1 or INT2?
->=20
-> What I meant is, yes, the sensor needs an interrupt line.
-> Interrupt-names is optional. The sensor always can measure. When
-> interrupt-names is specified, though, the sensor will setup a FIFO and
-> can use events, such as data ready, watermark, single tap, freefall,
-> etc. Without the interrupt-names, the sensor goes into a "FIFO bypass
-> mode" without its specific events.
+ - Rebased to v6.13-rc1 + 64612ec9b909. (No changes needed here.)
 
-What I'm talking about here is how it is ultimately pointless for
-interrupts to be a required property if it can never be used without
-interrupt-names as you cannot know which interrupt is in use. I think
-both should be made mandatory or neither.
+ - Add Ack from Conor to patch #3
 
-> Hence, I better drop the description entirely, since it rather seems
-> to be confusing.
+ - Fixed how R̅D̅Y̅ is written. This was wrong before because the overline
+   char must be added after the character that should get the overline,
+   not before. I got that wrong because of
+   https://bugs.debian.org/1089108. I would expect that now this is
+   properly shown in most browsers, MUAs and editors.
 
---baagkmPE417JmE1E
-Content-Type: application/pgp-signature; name="signature.asc"
+   I guess Andy still doesn't agree to write it that way. Jonathan,
+   would you decide here please? If you agree with Andy I suggest to
+   replace it by #RDY. Andy suggested #RDY_N which I think is too far
+   away from the original name. If you (also) like R̅D̅Y̅, just keep it as
+   is.
 
------BEGIN PGP SIGNATURE-----
+ - Fix error handling in patch #8
+   I just pasted "return ret" to all callers of
+   ad_sigma_delta_clear_pending_event() before. Now the error handling
+   matches the actual needs of the context.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ1MvbAAKCRB4tDGHoIJi
-0nvPAQCKCfcxZqSyFB8ENeB0ZiIIgGCWkezVWtHBlxuy/3M/mAEAreGK6AakFoFg
-NlA1CskzBNYhN7qAz4Y1uwZnMsS9Ygo=
-=OMcb
------END PGP SIGNATURE-----
+ - s/irq controller's capabilities/irq controller capabilities/
+   as suggested by Andy for patch #8
 
---baagkmPE417JmE1E--
+Best regards
+Uwe
+
+Uwe Kleine-König (10):
+  iio: adc: ad7124: Don't create more channels than the driver can handle
+  iio: adc: ad7124: Refuse invalid input specifiers
+  dt-bindings: iio: adc: adi,ad7{124,173,192,780}: Allow specifications of a gpio for irq line
+  iio: adc: ad_sigma_delta: Add support for reading irq status using a GPIO
+  iio: adc: ad_sigma_delta: Handle CS assertion as intended in ad_sd_read_reg_raw()
+  iio: adc: ad_sigma_delta: Fix a race condition
+  iio: adc: ad_sigma_delta: Store information about reset sequence length
+  iio: adc: ad_sigma_delta: Check for previous ready signals
+  iio: adc: ad7124: Add error reporting during probe
+  iio: adc: ad7124: Implement temperature measurement
+
+ .../bindings/iio/adc/adi,ad7124.yaml          |  13 ++
+ .../bindings/iio/adc/adi,ad7173.yaml          |  12 +
+ .../bindings/iio/adc/adi,ad7192.yaml          |  15 ++
+ .../bindings/iio/adc/adi,ad7780.yaml          |  11 +
+ drivers/iio/adc/ad7124.c                      | 217 +++++++++++++-----
+ drivers/iio/adc/ad7173.c                      |   1 +
+ drivers/iio/adc/ad7192.c                      |   4 +-
+ drivers/iio/adc/ad7791.c                      |   1 +
+ drivers/iio/adc/ad7793.c                      |   3 +-
+ drivers/iio/adc/ad_sigma_delta.c              | 194 +++++++++++++---
+ include/linux/iio/adc/ad_sigma_delta.h        |   8 +-
+ 11 files changed, 390 insertions(+), 89 deletions(-)
+
+base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+prerequisite-patch-id: 617af17fc377a984762c61893b9f2a92ae62213a
+-- 
+2.45.2
+
 

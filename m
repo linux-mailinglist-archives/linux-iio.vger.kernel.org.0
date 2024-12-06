@@ -1,141 +1,118 @@
-Return-Path: <linux-iio+bounces-13155-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13156-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0DA9E7360
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:19:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD4C9E73C8
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 16:24:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A20EA28AA82
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 15:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E546516F0DA
+	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 15:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7065D154449;
-	Fri,  6 Dec 2024 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC8F2036FA;
+	Fri,  6 Dec 2024 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="myf39t88"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Ybjvw7ZQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800C014EC60;
-	Fri,  6 Dec 2024 15:19:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E033E148832;
+	Fri,  6 Dec 2024 15:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733498381; cv=none; b=djySgTSWBNbwqjWDNwaOr6RTvTa5J6rnF0vOJTz/Qh4q6yX8hGinXKrv6V5dZgJVFX5E7pbLy+tEWe1kCCCxSNdSt6exMSOCWHG+dV//G6J0UapXYqaw1jB0r+d9Bq1f+V7GlTE+apHqejeXDuCoaDb/0v9Ur4dG2mzgl36NU9o=
+	t=1733498569; cv=none; b=jXtjkQ7nK2yr/TtLhzeJtsjJATiz1eb0vcsv1fRZLyEP79ha9a4sCRNRb0PiB+Yq+UahD1HgwB8DG8/ZtBONLkWLAKDnfjJqOSXzMkVv6NEG6esi5bnbJQl0sgfGRa+iqrJxhwrfEXp+JhXLj8lXTCVR4YVhIAfHpinohjpC+aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733498381; c=relaxed/simple;
-	bh=LMGPQdOE6e9xggsZ3nlIr5eFjaaZxIvp7E6XwHaEefU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCecVNPCgANUyiuf6/phQw02bTOwRTyfi1IVrBrAWFwOrUs8GY6I5Prsi2NchtioIzed+HlJ0yPFjoi3G1zpg2ZoZV8rjxqyhz+CR/ahhn9ct41LNMRMJW0RKygF6IqZYsH4lOCKBYfHEPFBTrXU1QimWyKybV0wGe6Plren3jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=myf39t88; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733498379; x=1765034379;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LMGPQdOE6e9xggsZ3nlIr5eFjaaZxIvp7E6XwHaEefU=;
-  b=myf39t88+QqdBfd1pMBavWg13TI7wiqdpHMFAw8G1JM/Lk7HEUvXE8yv
-   huTOAfK+DSFIAjJ7VGH/Zbffoh0wlAQxb/R8gLQT8HZ0v5FyEsgkVDhgq
-   n57O8s2P5+okjsDT1OnbW/AyKSesznuXk+MJ6Gdev0xciTjo1UG5FiJ30
-   K04xVFfUBjxf4/b1HTWN5elhGPBZarkM2D9NDEbHiU8VmzTK7ZJ5RzmNJ
-   xsW7snxOj0JzeJ71LpU5CddJy+O5rRPhyc3/sdpRieDlhyPp1vS3jM7/i
-   VTtaqy/eofZq27HPiDdNQKNjq2s1Y6ypH2c+ZuL/C0SZVBh681ASz+NOC
-   A==;
-X-CSE-ConnectionGUID: b7VJ7LJGSqO+OQ98IOcjMA==
-X-CSE-MsgGUID: 6lTzXl07QbaX6wZBmkhEZw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11278"; a="37639463"
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
-   d="scan'208";a="37639463"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 07:19:39 -0800
-X-CSE-ConnectionGUID: 87SriRu7T2qfOYeej+hQaA==
-X-CSE-MsgGUID: jPCl2P0nTimN89zmwYEYbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,213,1728975600"; 
-   d="scan'208";a="98892396"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2024 07:19:37 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tJa7C-00000004Y82-31jm;
-	Fri, 06 Dec 2024 17:19:34 +0200
-Date: Fri, 6 Dec 2024 17:19:34 +0200
-From: 'Andy Shevchenko' <andriy.shevchenko@linux.intel.com>
-To: David Laight <David.Laight@aculab.com>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Peter Rosin <peda@axentia.se>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v1 1/4] iio: afe: rescale: Don't use ^ for booleans
-Message-ID: <Z1MWBsCJsTHsqNey@smile.fi.intel.com>
-References: <20241204013620.862943-1-andriy.shevchenko@linux.intel.com>
- <20241204013620.862943-2-andriy.shevchenko@linux.intel.com>
- <88f281a31d8342c691b2a6b2666d4e91@AcuMS.aculab.com>
+	s=arc-20240116; t=1733498569; c=relaxed/simple;
+	bh=DhbQchCub9U5elTP6juJG/8cBmU+WUrbG7WOjeZ0sEg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Rn1QHlLMOS1lx8okCmyL/KD3t7KGsiimU5y51sbCjzib1DNAry+qGEMWJFDyhO4Tb6/yNFvpLIGtNe/naQU0Yzz3Sav5cTSgTXISyO/ZEQpfmLO5yEPfkRYECjIpNiXSHX23TKvWiLWMtNyq1S4JT0kxkukRVTduns2yM32TZ7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Ybjvw7ZQ; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6CI5NC016048;
+	Fri, 6 Dec 2024 10:22:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=xxpIuAj3vCkmCNrV10X2ET//KfV
+	tu4n49xBopSsZDXg=; b=Ybjvw7ZQW3xW/KjULS5G9DEIsMmPetQhcAVqnjumsrl
+	fyXbkIgtOpw1rcTk1Y/y3qlcTINJ24yMbn6b2edqjLIAW7VvU+1gYVqWDUtf3Ecu
+	SKMWqEXW740zbIeJr+psRw5nA/nzI2mU6babvoPtqwHw+8UVUruKBoaGtqtFwZ5K
+	tkapRAnMyMwJ5XCl++NM7Lua+YD5a9mfHj34uXCPSn3Xr++MdGEVhvnuz9q5YI4f
+	OMuoVgN1sc8A8BztOnQOl+Wt3glH8t1me2GxtkKjGtrPFoiJhN/uCCqlhJB2aSde
+	7RFJiSRV+4jl/gHk0uD3pEOt7ShBq/uWNS2wAWQv6zw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 43c15c8qe0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Dec 2024 10:22:33 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4B6FMWTg020888
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 6 Dec 2024 10:22:32 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 6 Dec 2024
+ 10:22:32 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 6 Dec 2024 10:22:32 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.187])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4B6FMM1b025340;
+	Fri, 6 Dec 2024 10:22:24 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 1/3] dt-bindings: iio: adf4371: add differential ref
+Date: Fri, 6 Dec 2024 17:22:04 +0200
+Message-ID: <20241206152207.37928-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88f281a31d8342c691b2a6b2666d4e91@AcuMS.aculab.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: qtoTppQDTkhRj-VdQE3V7b-EW4i2m4Zw
+X-Proofpoint-GUID: qtoTppQDTkhRj-VdQE3V7b-EW4i2m4Zw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ suspectscore=0 adultscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0
+ priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412060116
 
-On Fri, Dec 06, 2024 at 01:24:09PM +0000, David Laight wrote:
-> From: Andy Shevchenko
-> > Sent: 04 December 2024 01:33
-> > 
-> > There are two (non-critical) issues with the code. First of all,
-> > the eXclusive OR is not defined for booleans, so boolean to integer
-> > promotion is required, Second, the u32 variable is used to keep
-> > boolean value, so boolean is converted implicitly to the integer.
-> 
-> Except there is no such thing as 'boolean' they are all integers.
+Add support for differential input reference clock.
 
-I believe this is an exercise in linguistics as I'm not native speaker
-but I am very well aware of the promotions to the integer values.
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ Documentation/devicetree/bindings/iio/frequency/adf4371.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-> And the compiler has to have some set of rules to handle the cases
-> where the memory that hold the 'boolean' doesn't have the value 0 or 1.
-
-No doubts.
-
-...
-
-> >  		 * If only one of the rescaler elements or the schan scale is
-> >  		 * negative, the combined scale is negative.
-> >  		 */
-> > -		if (neg ^ ((rescale->numerator < 0) ^ (rescale->denominator < 0))) {
-> > +		if (neg != (rescale->numerator < 0 || rescale->denominator < 0)) {
-> 
-> That is wrong, the || would also need to be !=.
-
-Why do you think so? Maybe it's comment(s) that is(are) wrong?
-
-> Which will all generate real pile of horrid code.
-> (I think the x86 version will stun you.)
-
-I think your remark is based on something, can you show the output to elaborate
-what exactly becomes horrible in this case?
-
-> I'm guessing that somewhere there is a:
-> 	neg = value < 0;
-
-Nope.
-
-> Provided all the values are the same size (eg int/s32), in which case:
-> 	neg = value;
-> ...
-> 	if ((neg ^ rescale->numerator ^ rescale->denominator) < 0)
-> will be the desired test.
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+index 1cb2adaf66f9..dd9a592d0026 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+@@ -40,6 +40,11 @@ properties:
+       output stage will shut down until the ADF4371/ADF4372 achieves lock as
+       measured by the digital lock detect circuitry.
+ 
++  adi,ref-differential-enable:
++    type: boolean
++    description:
++      If this property is present, differential input reference is enabled.
++
+ required:
+   - compatible
+   - reg
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.1
 
 

@@ -1,126 +1,124 @@
-Return-Path: <linux-iio+bounces-13205-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13206-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FBB79E819B
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:34:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5278C1883B0E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:34:42 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4EC1509B4;
-	Sat,  7 Dec 2024 18:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aRughQ36"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7985C9E819D
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:34:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B488D7A13A;
-	Sat,  7 Dec 2024 18:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3074A281C3E
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:34:45 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A31315530B;
+	Sat,  7 Dec 2024 18:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8evFj8o"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E3D2E822;
+	Sat,  7 Dec 2024 18:34:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733596474; cv=none; b=ZESXadPT2bBppeJXt0Fgq9KmAKMn6iM2K+GcDSKhuEazkscjjcS9zc2dbAN+buRpPHozEdosEfRSPEKvZCdA4hr7hW2drZCCc/AX2h8o2FnAT0Uk4CC4881vFwLF52lXFsrUMPe6VvZQZatLjd0oev8EDIL8O5LqHp+suK3q8pA=
+	t=1733596475; cv=none; b=G5hbcCYMdpwM1r3LtpfSxGtzW7UFCOMXOhWwBkiJdjaXVAOawrktrXEdjcIdglmkV8Ta68Rp1lgCaGaAXgsDIWwCB/Qfr7yNKMH154Bc52ZTPn+lUee6gmOuPC6Ev6ImSXI/QxD7tsat9gMeWh4HEWXYbzALpRMdg8l6Y8dnsvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733596474; c=relaxed/simple;
-	bh=l+6Ko6CQ5FhFJ9D0H70DrCdGgtswUd0TVzG4Virbb1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dn6NjRbro61+NOu09Y9ZYc9LAhnJ093AuZuKHh43c4XxADF9kZY1YttuE9sHr44Y7ZitlBdaawLdeZTYmyCDNRqBqU0yuRnwVbvg4ZDOstp3koefP3uaeWf/3WvLy486/T96YA1Tr2ofeiqgdRPEAqEoPKeTGe9CV8OE3D8bsvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aRughQ36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD49C4CECD;
-	Sat,  7 Dec 2024 18:34:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733596474;
-	bh=l+6Ko6CQ5FhFJ9D0H70DrCdGgtswUd0TVzG4Virbb1M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aRughQ36HT2p4loQhbrJkiIfTBvFZz91GBRwnCJCmGvtbTqiBOZuBbDWshas8KGBk
-	 lSkVPnvf4yVh2utuJ+WwJC7FyZTJa8ktz8VV30Ds+J/o7L3No4wdCsvY1sv1zO65UR
-	 CimPYlXWqb49mUxZkTTU7sY2Upp8HRv1wj8SgwTHVcNndPe8HGz1eWzNytHZjmXNt0
-	 60GbB8DHrkpXEazqFCcnn2mB3AyR3HCp4uLP/paRZTqGbgY2ebbAIuwsDPvRnkFeQs
-	 czdP5raLRs+Ta+3kmGBDfluAsPeoN8SApd5pzi074m4G7ShPCGySY3WyyySsxMQd8b
-	 l7pA48A1CFWPA==
-Date: Sat, 7 Dec 2024 18:34:23 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Claudiu <claudiu.beznea@tuxon.dev>
-Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- geert+renesas@glider.be, magnus.damm@gmail.com, mturquette@baylibre.com,
- sboyd@kernel.org, p.zabel@pengutronix.de, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, Claudiu Beznea
- <claudiu.beznea.uj@bp.renesas.com>
-Subject: Re: [PATCH v2 13/15] iio: adc: rzg2l_adc: Add support for Renesas
- RZ/G3S
-Message-ID: <20241207183423.4af1f988@jic23-huawei>
-In-Reply-To: <20241206111337.726244-14-claudiu.beznea.uj@bp.renesas.com>
-References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com>
-	<20241206111337.726244-14-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1733596475; c=relaxed/simple;
+	bh=ofinPvirUzJea//33qM+nXzmX47xAchXXYpLv/XduA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OCTWxxra/21rEiQ6jSARTMzbcg1zE+AhLdD6N54stK9J+XLZUKlhZxVwQE9QIWy4QB7nttX2O7v3HmcMnnBu7NOe+gBNJ5s1UMsRotdxk/4z6sJIqSk6ZBzSV1XigdvZZDIGDHg/g7VhVCJp7i/7KDZ9yp6RAcGSSw1gQ+RRjgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8evFj8o; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733596474; x=1765132474;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ofinPvirUzJea//33qM+nXzmX47xAchXXYpLv/XduA4=;
+  b=R8evFj8oitbcOoP1zddjvKOZHLdmGN0x0iiYyXSLS+iCQL4LtvA2bTgs
+   iO+spRw/oZV7WbToenoC6RYrjE9yAadClnfqWUmSrXVJMY6xnrBvfTdxO
+   q1v5u/VTVX3tCAjmKF8iliVZ+YE/AtalyyXtcOVmQCItEeQx9FtDxXfZH
+   QCo0NpU2B7+Q5zWngF9wL4OxTtSNZJJPi//g+pHJeao4GS0UzSzfhnLeR
+   W5sDEMAXmevEHp5yFVD5SvvrAOcouqUuuSsgN+aneRB76fG7230LRBKq7
+   hgwGqjQAi4r4NS7DyN54tCy5W5vVQm/W6m//Zrdguw5iu77ESStxAwRZ8
+   w==;
+X-CSE-ConnectionGUID: 9eV4LdbsQvy0Li3fjppRCg==
+X-CSE-MsgGUID: VOZp5EuFTWCftDfpp8PaKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11279"; a="37866621"
+X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
+   d="scan'208";a="37866621"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2024 10:34:33 -0800
+X-CSE-ConnectionGUID: s7Eo6KhcQlK5fN2TFDcg8w==
+X-CSE-MsgGUID: 0J//wxV3TSiiZRQ6JLzIOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
+   d="scan'208";a="95057420"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa010.fm.intel.com with ESMTP; 07 Dec 2024 10:34:31 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id AC7301FF; Sat, 07 Dec 2024 20:34:30 +0200 (EET)
+Date: Sat, 7 Dec 2024 20:34:30 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Fabio Estevam <festevam@gmail.com>, lars@metafoo.de, dmurphy@ti.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
+Message-ID: <Z1SVNlBHz12-OP7j@black.fi.intel.com>
+References: <20241122164308.390340-1-festevam@gmail.com>
+ <20241201130356.3bf4c693@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241201130356.3bf4c693@jic23-huawei>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri,  6 Dec 2024 13:13:35 +0200
-Claudiu <claudiu.beznea@tuxon.dev> wrote:
+On Sun, Dec 01, 2024 at 01:03:56PM +0000, Jonathan Cameron wrote:
+> On Fri, 22 Nov 2024 13:43:08 -0300
+> Fabio Estevam <festevam@gmail.com> wrote:
+> > Using gpiod_set_value() to control the reset GPIO causes some verbose
+> > warnings during boot when the reset GPIO is controlled by an I2C IO
+> > expander.
+> > 
+> > As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+> > fix the issue.
+> > 
+> > Tested on a custom i.MX93 board with a ADS124S08 ADC.
 
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> Hmm. Could be considered a feature, but fair enough as the change is
+> trivial and you are setting it on a real board.
 > 
-> Add ADC support for the Renesas RZ/G3S SoC. The key features of this IP
-> include:
-> - 9 channels, with one dedicated to reading the temperature reported by the
->   Thermal Sensor Unit (TSU)
-> - A different default ADCMP value, which is written to the ADM3 register.
-> - Different default sampling rates
-> - ADM3.ADSMP field is 8 bits wide
-> - ADINT.INTEN field is 11 bits wide
-> 
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Hi Claudiu
+> Applied to the fixes-togreg branch of iio.git.
 
-As my comments were all minor stuff, I have applied this.
-However they were the sort of minor changes that result in lots of
-fuzz and hand editing when applying so please check the result.
-Applied to the testing branch of iio.git.
+...
 
-Thanks,
+> > @@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev *indio_dev)
+> >  	struct ads124s_private *priv = iio_priv(indio_dev);
+> >  
+> >  	if (priv->reset_gpio) {
+> > -		gpiod_set_value(priv->reset_gpio, 0);
+> > +		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+> >  		udelay(200);
 
-Jonathan
+Obviously if you allow that change, you should switch to fsleep() here.
 
-> ---
-> 
-> Changes in v2:
-> - none
-> 
->  drivers/iio/adc/rzg2l_adc.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index 2a911269a358..81904e2c4075 100644
-> --- a/drivers/iio/adc/rzg2l_adc.c
-> +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -502,7 +502,16 @@ static const struct rzg2l_adc_hw_params rzg2l_hw_params = {
->  	.adivc = true
->  };
->  
-> +static const struct rzg2l_adc_hw_params rzg3s_hw_params = {
-> +	.num_channels = 9,
-> +	.default_adcmp = 0x1d,
-> +	.default_adsmp = { 0x7f, 0xff },
-> +	.adsmp_mask = GENMASK(7, 0),
-> +	.adint_inten_mask = GENMASK(11, 0),
-> +};
-> +
->  static const struct of_device_id rzg2l_adc_match[] = {
-> +	{ .compatible = "renesas,r9a08g045-adc", .data = &rzg3s_hw_params },
->  	{ .compatible = "renesas,rzg2l-adc", .data = &rzg2l_hw_params },
->  	{ /* sentinel */ }
->  };
+> > -		gpiod_set_value(priv->reset_gpio, 1);
+> > +		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+> >  	} else {
+> >  		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+> >  	}
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 

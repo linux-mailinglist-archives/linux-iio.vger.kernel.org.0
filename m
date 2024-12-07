@@ -1,141 +1,120 @@
-Return-Path: <linux-iio+bounces-13192-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13193-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D769E7C4C
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 00:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9812E9E7E34
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 05:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E623A1614B2
-	for <lists+linux-iio@lfdr.de>; Fri,  6 Dec 2024 23:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD99C16A90D
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 04:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A66212FA4;
-	Fri,  6 Dec 2024 23:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBDC4C3D0;
+	Sat,  7 Dec 2024 04:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PpR2IZhn"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="auE4ViWe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D961BC07E;
-	Fri,  6 Dec 2024 23:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC0C82C7E
+	for <linux-iio@vger.kernel.org>; Sat,  7 Dec 2024 04:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733526816; cv=none; b=pOt1LNCEL9CIpO94OONRwhZhtbmf6GcA9iiN8S0eOGh0tSDXLM+w9jEok3Gjbp9Z9qAUJGGqLHUqAJPigofrSg7bjh0ChZ4gbNoq7beGjtbimwP8W9WVAXtqG+45ne42CDtcXuTOBtL3lrHFMEGeiG+GiepU9hiliqj9YkMPndU=
+	t=1733545855; cv=none; b=QAwPIYsg5ZtiJuXNaqXqx1q4h/aChHM++P4QPtbfsFghkmF+1CLSCzYjvJmQ16XvgV+lkbb80Cufz/RzRI8mDV+zS/ryszpEotGq+C91r3uiLfh9Gg7vWkNoR29M4x+jfkP4Qj/X8r+PXxKoxQhrf/WB8Yrza26p3DLUPVzE/1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733526816; c=relaxed/simple;
-	bh=3qxp4aqBbO5r6azhlFBf93yYcyvosRJNFUC8ELQQ87I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Si3btzC+mt6FIyWAhoXa0E5WaQlyzFPG7xlHcIkfU3FKEPEW029q2/Kdi84ZdDI0CJZ+sSABxdY4Pdgx/PFcyEhY+IyRFRiiR63pgerS2Qo6GSkK4Fg/RIZelQyjBYjsjJDZXC7YLr4lFdIF3ndZMoErnnuNXOdbAbnFZZlOqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PpR2IZhn; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa543c4db92so511684766b.0;
-        Fri, 06 Dec 2024 15:13:34 -0800 (PST)
+	s=arc-20240116; t=1733545855; c=relaxed/simple;
+	bh=VLjCnaWkCYXYmZe0hdq42GhTmZTOPnSeqq+v+GhcVIw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Oxqeq7Tfp+ND+ouSccveq0mDY08+MaQIOtEuHO4yqCi+mKFfUpUbzXMVyZ6frnpDUUydwt5ZemFOJlonHBUUyrfwCSkPIVrU1wWtDnK93E1qA8r5/3knpLiUKXCnLoeXmX1Fv2ylFEuEaW0rqZCAk3K3UgsaPBsZroRzBo+lkzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=auE4ViWe; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-215ac560292so27077225ad.2
+        for <linux-iio@vger.kernel.org>; Fri, 06 Dec 2024 20:30:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733526813; x=1734131613; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=upTIjMMKLahs+IiyuFRN+3jVze1ah5UJhNZodUgjzy8=;
-        b=PpR2IZhnE94bWFgK5XK+qG5B4ifjVvxED55ZsLXstUPNBZ5+zwyB+82fWqLBnr1ADC
-         nGIFd28RAVYa85wNOW3J/0qFqCVIteD47BMCK0laywXBfUYHtIzEyDlF+OFDPFCutlJl
-         pQaY9PvuQ0ntzJxfRmokXCFBL4lLGj3oFTTpOVUETDuZocdfaQNkC9CRGqILEzZGgsDq
-         t0kQYpcvV5IB2LhPikNSaTZy4VHGkhxDes6x61T/U02LkqVIBck4soB8WBp3ZV1ePZAy
-         1VtkJniw0cocXsdi9ssf+SS/Mug/RSnaJZnq27pn2lDzjIFXElG3m7f707saeoUZj7sZ
-         7i9w==
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733545852; x=1734150652; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lq4YWN5y5TmzHjXTNAtd6DRXO1iqJQIXOPm5MGyln9A=;
+        b=auE4ViWeg4rPfm/9k6eqDn3wA3AVUDEV1M9TuLwLbEeg3vaYd3BipEC9o9tsgfyj8R
+         IGvFLLqzZI8EeYDTFgWn0/+D7As7OtbNrqRFq5nhjleJ+2RF+gjJ3bDukHer9V2NZBec
+         zvq+X94yeBRU/zKXSCe2cTLDS+T3ighEqPVKSNGBc+RTGOq1qyh2ixqrbb5jecWNJJb2
+         skoCVlV2vM9sWO4U2yUMwH7n9niGkwU4Rh/gklMZzrAtpCDjvknzfc9eE0tEEOdEwUvy
+         /B8gbE6uzxY4EC+cpd1NPL89vdXYknKY4Y1COXpZTGy5VuuGmyrtvrLpyZ9N+AjenWn/
+         Grmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733526813; x=1734131613;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=upTIjMMKLahs+IiyuFRN+3jVze1ah5UJhNZodUgjzy8=;
-        b=ABjnJEE6K45igBMwtgz3l7gQ1QGVw4ZWYyFegnzNcVn5BK1nfoNXe1dVrWNTx6YsRu
-         uEH2YyblRiWO8x9YmS3XNoz7o65mCBJR+GuR8ZUr+aT7D31PRKix2IE6mQD2GtAiiFPE
-         21AcOuesFZdooN5R4TcOeSEQq9sUanOch98E2G7H7cgY+urq90kuiwQAB3PGOgcH4jSY
-         AZ0IQihYwNjYzK/x0/NntR/q4k9wzpOLQQgBskLHd7rLahhgt7TjijeW139z8ZbdVbav
-         /vFs+vy+qSva8acrW7dKVRTxRWFSa7N+TKZV4bR2J4DxL6HrZqwLhaugvqJnuXh6k1bq
-         lwlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUl5hyKcUGG/fOjD4YiFbDN/xZWdlHo4P9Mk4wA6pnkqfDf14B+3xVFM5iwhtD08JJCXnkIkCGad2py@vger.kernel.org, AJvYcCV+s9W/cGKsFAtJBWvhV1JhPPOv7GZAObyFyBHytSr4oxjIm/114wYvJWbNLcnODjjEQWuxt4n2IKSU@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA3/SKdZ0NkLfJj7uVwLVpblK5WaHYYKnGauQ9YjWky7OHoQC1
-	gw4VPA6y0Ic9eJVqVFnyJtdTi3FgAYYTnCOaWf927WKOKUSG/zC/uUkX9HelPSjt56QDVyx8hqP
-	PqOYhsT/RrXfbd/qqrtAOUgbaXfk=
-X-Gm-Gg: ASbGnctxBRRMokNuOyVMhk7XmJzGgM3EEWLCz2SofVRsaF4DP13biz0deUG14KbFj4d
-	cg8tQrZkH9i2b8UJPg5y+2sMPcumEiBA=
-X-Google-Smtp-Source: AGHT+IHgLjSZKrTX04ELF0TVjdTNAQeEsfONk30jyw1GJ/6NidagyUCS6W/vXUUWhM0ex63p39o8cmqGqxWgWkCZgrU=
-X-Received: by 2002:a17:907:2918:b0:aa6:4731:5c26 with SMTP id
- a640c23a62f3a-aa647315ca2mr206903366b.29.1733526812954; Fri, 06 Dec 2024
- 15:13:32 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733545852; x=1734150652;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lq4YWN5y5TmzHjXTNAtd6DRXO1iqJQIXOPm5MGyln9A=;
+        b=YqTfp7GzKIXPzRQpL7UGKYss+Jk4/om8/FL+7yi1a76L2iLGpToSHjmVv6bS010Mer
+         jM8PlA8p4irzb5feVsDHd6WbOYENIycwHESwThhkaG/VIzoQz7jxfFy0bH20t61Tb1Eu
+         KM0Q8fImhtku0+CJk2nuPpxjN4DFchlQyQb4ERsM3H7afOBslWckQoyrWzycon8ayWNV
+         9UtSXknMNMee0FBN8mxIsJF7sxxLpLCSu6TY9uPaBkECSI4tdAqgfHIgU/mb3KGSOZfb
+         tD3ELSFGuNCNFonVVtrHNoZc+adRu05Bg/7z9iZHsz10Uv1Y1hcTwTY38MRjCJRyTpxg
+         L2SA==
+X-Gm-Message-State: AOJu0YyQE8rAKEVmGFfFb6wWdWCindODzBPdviziVmjqwxTzSxCbSSnQ
+	2fCXIQtZ3OGH82fiwvTp4ntEesoBUrHPrpr/2eXCFBVhMZFDrWZXrnwZiU5F1RbXA863kdImo2H
+	JtLgGCQ==
+X-Gm-Gg: ASbGncs+T0sldZhFbHcVNA/V3Is/8Rmj2vCEUR0iotZlSUOVdahpIXxY+wf/YZl1ezw
+	Gw8gcsdWt1xNxG3v9etPnnp/pv6e6Iz1MFeXu6hasH/Jb9uTK3aCeiA8gXaciPBX+KitE5jkOY8
+	88MwdlvHF+G7pn1cptXYIq6bv8fPgdgNb2qWpcM3F3nOndNSlld2JdqKWqBIPZZeczmaciweKTy
+	86m3MPerMG5hVqdZ26OMtMori4qxkQMQJmmToafPZJpyFyKly/SRT0rQYqVbIBhL/SPeUELYgGK
+	YleEN+/IKTtnUp/6pPgIDQO0O7P9PGrKKsMj
+X-Google-Smtp-Source: AGHT+IE8Yi0yreQPxMznoMDGBLJPhDyZwwLrumvYD8+bNRrLhbEYVveANvgK5VjJHQaG3NBQWzm2Yg==
+X-Received: by 2002:a17:903:2447:b0:215:b40e:df60 with SMTP id d9443c01a7336-21614d81439mr90629345ad.31.1733545852602;
+        Fri, 06 Dec 2024 20:30:52 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e3ec6esm36117005ad.52.2024.12.06.20.30.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Dec 2024 20:30:50 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	nicolas.ferre@microchip.com,
+	alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev
+Cc: linux-iio@vger.kernel.org,
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH] iio: adc: at91: call input_free_device() on allocated iio_dev
+Date: Sat,  7 Dec 2024 13:30:45 +0900
+Message-Id: <20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
-In-Reply-To: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 7 Dec 2024 01:12:56 +0200
-Message-ID: <CAHp75VeS3W7zjzsdSLQhmo6yj6ELyGR6muT==kAdXaZ0ZktDrw@mail.gmail.com>
-Subject: Re: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
-To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Alexandru Ardelean <aardelean@baylibre.com>, 
-	Alisa-Dariana Roman <alisa.roman@analog.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, 
-	Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, devicetree@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, 
-	Renato Lui Geh <renatogeh@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Trevor Gamblin <tgamblin@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 6, 2024 at 7:29=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-<u.kleine-koenig@baylibre.com> wrote:
->
-> Hello,
->
-> here comes v6 of this series. Compared to v5
-> (https://lore.kernel.org/linux-iio/20241203110019.1520071-12-u.kleine-koe=
-nig@baylibre.com)
-> the following things changed:
->
->  - Rebased to v6.13-rc1 + 64612ec9b909. (No changes needed here.)
->
->  - Add Ack from Conor to patch #3
->
->  - Fixed how R=CC=85D=CC=85Y=CC=85 is written. This was wrong before beca=
-use the overline
->    char must be added after the character that should get the overline,
->    not before. I got that wrong because of
->    https://bugs.debian.org/1089108. I would expect that now this is
->    properly shown in most browsers, MUAs and editors.
->
->    I guess Andy still doesn't agree to write it that way.
+Current implementation of at91_ts_register() calls input_free_deivce()
+on st->ts_input, however, the err label can be reached before the
+allocated iio_dev is stored to st->ts_input. Thus call
+input_free_device() on input instead of st->ts_input.
 
-Yeah, I prefer a solid overline which Unicode simply incapable of, but
-HTML does.
-In any case the representation in this version is much better than in
-the previous version.
-I leave this up to Jonathan, but as I said an electrical engineer in
-me is not satisfied.
+Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+---
+ drivers/iio/adc/at91_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Jonathan,
->    would you decide here please? If you agree with Andy I suggest to
->    replace it by #RDY. Andy suggested #RDY_N which I think is too far
->    away from the original name. If you (also) like R=CC=85D=CC=85Y=CC=85,=
- just keep it as
->    is.
->
->  - Fix error handling in patch #8
->    I just pasted "return ret" to all callers of
->    ad_sigma_delta_clear_pending_event() before. Now the error handling
->    matches the actual needs of the context.
->
->  - s/irq controller's capabilities/irq controller capabilities/
->    as suggested by Andy for patch #8
+diff --git a/drivers/iio/adc/at91_adc.c b/drivers/iio/adc/at91_adc.c
+index a3f0a2321666..5927756b749a 100644
+--- a/drivers/iio/adc/at91_adc.c
++++ b/drivers/iio/adc/at91_adc.c
+@@ -979,7 +979,7 @@ static int at91_ts_register(struct iio_dev *idev,
+ 	return ret;
+ 
+ err:
+-	input_free_device(st->ts_input);
++	input_free_device(input);
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
---=20
-With Best Regards,
-Andy Shevchenko
 

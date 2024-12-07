@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-13206-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13207-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7985C9E819D
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:34:46 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9939E81B2
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:58:41 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3074A281C3E
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:34:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8858E1882A84
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A31315530B;
-	Sat,  7 Dec 2024 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF9D14AD0E;
+	Sat,  7 Dec 2024 18:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8evFj8o"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IvhXOYSA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E3D2E822;
-	Sat,  7 Dec 2024 18:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E239117E0
+	for <linux-iio@vger.kernel.org>; Sat,  7 Dec 2024 18:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733596475; cv=none; b=G5hbcCYMdpwM1r3LtpfSxGtzW7UFCOMXOhWwBkiJdjaXVAOawrktrXEdjcIdglmkV8Ta68Rp1lgCaGaAXgsDIWwCB/Qfr7yNKMH154Bc52ZTPn+lUee6gmOuPC6Ev6ImSXI/QxD7tsat9gMeWh4HEWXYbzALpRMdg8l6Y8dnsvw=
+	t=1733597917; cv=none; b=nWuuN7loylGze5S4YBeF18thaNKELDFyFyZcsHpAXFSFzbPklqWjD17vw2NGkOEHwI2DI9U2xbbEybzxP4nOwZdv6HJ2Ia8gvtERWulwwhtvo+0g5WrwLaXgnCGeKOJ2p+0cicNhLmqQNbAAwpe4nbBKyhmzdPqWHt8d6HyOR68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733596475; c=relaxed/simple;
-	bh=ofinPvirUzJea//33qM+nXzmX47xAchXXYpLv/XduA4=;
+	s=arc-20240116; t=1733597917; c=relaxed/simple;
+	bh=bYV405K9c4pghL10q5crHXg9uBz1P+gwcNo4hkGYxxg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OCTWxxra/21rEiQ6jSARTMzbcg1zE+AhLdD6N54stK9J+XLZUKlhZxVwQE9QIWy4QB7nttX2O7v3HmcMnnBu7NOe+gBNJ5s1UMsRotdxk/4z6sJIqSk6ZBzSV1XigdvZZDIGDHg/g7VhVCJp7i/7KDZ9yp6RAcGSSw1gQ+RRjgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8evFj8o; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4xim2M0P7fwFyCDwW1bzermmrxzB4eQRJq2AgixJLJsuntdZpDdgnr5MPR3bsr4lGCzWy5Njmc/7hPEB8Rp4Lrv2EQnQtUQFb5vvX9kKl4zyVRjB33dbyJyhsw8VtaBaonV2KpSTSrmcOsT03sEzZ1vGDYjayP0IArRyLzSp/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IvhXOYSA; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733596474; x=1765132474;
+  t=1733597916; x=1765133916;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=ofinPvirUzJea//33qM+nXzmX47xAchXXYpLv/XduA4=;
-  b=R8evFj8oitbcOoP1zddjvKOZHLdmGN0x0iiYyXSLS+iCQL4LtvA2bTgs
-   iO+spRw/oZV7WbToenoC6RYrjE9yAadClnfqWUmSrXVJMY6xnrBvfTdxO
-   q1v5u/VTVX3tCAjmKF8iliVZ+YE/AtalyyXtcOVmQCItEeQx9FtDxXfZH
-   QCo0NpU2B7+Q5zWngF9wL4OxTtSNZJJPi//g+pHJeao4GS0UzSzfhnLeR
-   W5sDEMAXmevEHp5yFVD5SvvrAOcouqUuuSsgN+aneRB76fG7230LRBKq7
-   hgwGqjQAi4r4NS7DyN54tCy5W5vVQm/W6m//Zrdguw5iu77ESStxAwRZ8
-   w==;
-X-CSE-ConnectionGUID: 9eV4LdbsQvy0Li3fjppRCg==
-X-CSE-MsgGUID: VOZp5EuFTWCftDfpp8PaKA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11279"; a="37866621"
+  bh=bYV405K9c4pghL10q5crHXg9uBz1P+gwcNo4hkGYxxg=;
+  b=IvhXOYSARrAz2AguPoDkzSbLEcJmxmNhJbAcJbmMu+YFRsi8cQbpbb57
+   tJmrBttkL/+kAo52iS4mFHf4YPKNmyzqskqXLas66JedHYK500ufMg/R8
+   W9dTMk6WW12dDP3263bGl42BPmNqwEY0lWz0LBzzXY/p6ZAmgKss03pAj
+   DAGKb5MPyoqpAGarCX30KtOvHURYMQsvuL1FOPvwKI2fgqWO1KpZJbSy/
+   iAamP+VBR0xaY8J64cEbo/PRFEf+B9PWEB+aQ2a468/biXGDa8hgLi/nB
+   4sinzGMozYG1HNgvD60axv7I2XR1ZEqHBVPXOjVPKz5WoxcaENMwiSbV5
+   Q==;
+X-CSE-ConnectionGUID: jCFaF4o8SMSsqP9aiPOcag==
+X-CSE-MsgGUID: NCg5twBBQSO9amiZNw9Qfw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11279"; a="33819336"
 X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
-   d="scan'208";a="37866621"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2024 10:34:33 -0800
-X-CSE-ConnectionGUID: s7Eo6KhcQlK5fN2TFDcg8w==
-X-CSE-MsgGUID: 0J//wxV3TSiiZRQ6JLzIOA==
+   d="scan'208";a="33819336"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2024 10:58:36 -0800
+X-CSE-ConnectionGUID: /6DBUX4YTuOp0C0PA//R2g==
+X-CSE-MsgGUID: bqGobrmkR12YLARrz2hPlQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
-   d="scan'208";a="95057420"
+   d="scan'208";a="94785530"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa010.fm.intel.com with ESMTP; 07 Dec 2024 10:34:31 -0800
+  by orviesa006.jf.intel.com with ESMTP; 07 Dec 2024 10:58:33 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id AC7301FF; Sat, 07 Dec 2024 20:34:30 +0200 (EET)
-Date: Sat, 7 Dec 2024 20:34:30 +0200
+	id 3517E1FF; Sat, 07 Dec 2024 20:58:31 +0200 (EET)
+Date: Sat, 7 Dec 2024 20:58:31 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Fabio Estevam <festevam@gmail.com>, lars@metafoo.de, dmurphy@ti.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
-Message-ID: <Z1SVNlBHz12-OP7j@black.fi.intel.com>
-References: <20241122164308.390340-1-festevam@gmail.com>
- <20241201130356.3bf4c693@jic23-huawei>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, lars@metafoo.de,
+	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
+	claudiu.beznea@tuxon.dev, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: at91: call input_free_device() on allocated
+ iio_dev
+Message-ID: <Z1Sa1-SlU9ENL5CA@black.fi.intel.com>
+References: <20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp>
+ <20241207173046.375dd855@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,43 +80,44 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241201130356.3bf4c693@jic23-huawei>
+In-Reply-To: <20241207173046.375dd855@jic23-huawei>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Dec 01, 2024 at 01:03:56PM +0000, Jonathan Cameron wrote:
-> On Fri, 22 Nov 2024 13:43:08 -0300
-> Fabio Estevam <festevam@gmail.com> wrote:
-> > Using gpiod_set_value() to control the reset GPIO causes some verbose
-> > warnings during boot when the reset GPIO is controlled by an I2C IO
-> > expander.
-> > 
-> > As the caller can sleep, use the gpiod_set_value_cansleep() variant to
-> > fix the issue.
-> > 
-> > Tested on a custom i.MX93 board with a ADS124S08 ADC.
-
-> Hmm. Could be considered a feature, but fair enough as the change is
-> trivial and you are setting it on a real board.
+On Sat, Dec 07, 2024 at 05:30:46PM +0000, Jonathan Cameron wrote:
+> On Sat,  7 Dec 2024 13:30:45 +0900
+> Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp> wrote:
 > 
-> Applied to the fixes-togreg branch of iio.git.
+> > Current implementation of at91_ts_register() calls input_free_deivce()
+> > on st->ts_input, however, the err label can be reached before the
+> > allocated iio_dev is stored to st->ts_input. Thus call
+> > input_free_device() on input instead of st->ts_input.
+> > 
+> > Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
+> > Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+> Hi Joe.
+> 
+> Good catch.  Longer term I'd like this driver to be fully converted to devm
+> managed cleanup though which would have made this bug go away.
 
-...
+I dunno it's good.
 
-> > @@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev *indio_dev)
-> >  	struct ads124s_private *priv = iio_priv(indio_dev);
-> >  
-> >  	if (priv->reset_gpio) {
-> > -		gpiod_set_value(priv->reset_gpio, 0);
-> > +		gpiod_set_value_cansleep(priv->reset_gpio, 0);
-> >  		udelay(200);
+First of all, the message doesn't contain any pointers to real issue, because
+there is none. And this is can be checked in two clicks on Elixir. Hence, the
+all dance with Fixes tag is wrong.
 
-Obviously if you allow that change, you should switch to fsleep() here.
+Second, the submissions is not following the researcher guidelines.
 
-> > -		gpiod_set_value(priv->reset_gpio, 1);
-> > +		gpiod_set_value_cansleep(priv->reset_gpio, 1);
-> >  	} else {
-> >  		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
-> >  	}
+Please, consider dropping this.
+
++Cc: Greg to flag this email for not following the rules.
+Joe, I highly recommend to answer to all your patches that you sent so far that
+they should not be applied (at least in their current forms).
+
+See also for the details: 20241204122152.1312051-1-joe@pf.is.s.u-tokyo.ac.jp.mbx.
+
+> However, having looked at it, that conversion is a rather substantial, if simple
+> patch, so I'm fine taking this fix and maybe someone will revisit to do that
+> cleanup later.
 
 -- 
 With Best Regards,

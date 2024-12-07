@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-13201-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13202-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE599E816C
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:58:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D79A9E816F
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:02:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65B81883351
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 17:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CC371883E46
+	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 18:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FBF14D2A2;
-	Sat,  7 Dec 2024 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C8D54652;
+	Sat,  7 Dec 2024 18:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvQ6tv+H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D51a5frh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DAC22C6CD;
-	Sat,  7 Dec 2024 17:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26A51F602;
+	Sat,  7 Dec 2024 18:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733594319; cv=none; b=IdSvdVXNd/Cv8WCgMILOUuSoQYz/MdU+x1ftYvZ6BHWDmuemtpbkxHzmtzrFViWnHZJgNyqTDpGRXMuO3sGy4+Jw4ge16KasfJXR9uu7huXA4Tbu77ckEmeJaByArCwA2pCdAKRTYrPqS4fzrdYzFToC4ANqxs8gfMLS8+S4v5o=
+	t=1733594530; cv=none; b=o8H7aszayZmvNxohaJZVMnmlYLLgjiZBIuw+NOBJRl58mvxlw6A9Fh++Pdug3uAHkfZC+92rDm36RFs4u5uw5CwEjCBMEMrLXvZy/aN18E1bM8hl77i+HO6CCb7NUpgB6/ET7BdXlinFyWf+M2e0kHVzPw1P2uizrmATBZ+9omI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733594319; c=relaxed/simple;
-	bh=KQVFdWR43wLYPyw8mjjNMylsAYGgvtlenOstfU+m/5Y=;
+	s=arc-20240116; t=1733594530; c=relaxed/simple;
+	bh=Jxot+HTaLU1cfK7uzk3/7NQ3O+57RfGJvvYTPRIrdn0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gLC3k8sIpSLTbp+KtX/yxqOvb9WdnRUuNCaVrdqCxB+Z4gKZX59XjXNoIQAwELG1wriazdYYQzt/RF0GCN2eOafgPGV6tSnU44bhrQ9pYvpjWY5ZrjGpl40Z7lVvwyOaD1W4KEDSPXAh/jzwXC76iQQisxBlaj3FMD9CYKWYJR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvQ6tv+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FBBC4CECD;
-	Sat,  7 Dec 2024 17:58:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JvA+/caMoYzgbRBAUIikZPjSXKS+/o2jDPprFU1H2vW6nPMvT4r/OKxHL2HQL4GR9BQnoykwnh0bM4nuGx9i4hmEtZQnJH9IADdSQrMxHzGX5CuN7ArpWqCBMGsi3v1NJkRK9CzuIxW0Ffasyi+Hh+e12T6oYRlkCUS1yGLJVFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D51a5frh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F08AC4CECD;
+	Sat,  7 Dec 2024 18:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733594319;
-	bh=KQVFdWR43wLYPyw8mjjNMylsAYGgvtlenOstfU+m/5Y=;
+	s=k20201202; t=1733594530;
+	bh=Jxot+HTaLU1cfK7uzk3/7NQ3O+57RfGJvvYTPRIrdn0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XvQ6tv+HKL3aVtFUjnU982KQzZFNdRmIhPkCSVAWnt4VypqEtzSnTELt587mCFCDy
-	 Xg6HuU7Tdwc5sgnu9JJQB/s6GX1VrWpCGvv0XD+xbE4ubVHDNpJ3SDBdJ8qySM8Kuj
-	 OsoQGqIbBaHmp1h4N1pLeTP/BqrqPOR/lD0BA0Z10+5KiUhS4lRozHEQGtxTTDYT+F
-	 exL5EK4Nort7l24n++IqrsyXYYvvPT01PL3j2akQ6H4V2WlF/tMHEoOQl30Cd/K3MT
-	 F7MXDQ9D0UuHp/ZpjLg5ubim+Ebcm24XKoCZvCaLuDdsAo9A+IPDidM3Vod/r3mNz9
-	 7mZEJHbDYMN7A==
-Date: Sat, 7 Dec 2024 17:58:29 +0000
+	b=D51a5frhTXDeYuGxp/LWuRSrsieCcCnGdcbZArScctOgdSRq2CTDCS8p32OwRnVva
+	 Vd/V9bB3vXF014ebgivJAm+Eg0gDyw99L++1sr2a+QznoLb/cgdDUqZd+10iNi+gNQ
+	 5vuHdyoxV1f4TTZtMkuy6cUbGDzHgipJLm2piNuLttEAEvSGxkcy4LUD9IRWSax7kF
+	 P0M5WrZBImPY0eY9+FpRDC8R1q4oIcsZdIFymHmqVaWVJV5pL5VKj5d5K13k+YhjQI
+	 o5Y2L3Cw3WyuVo+G1A6EFZN831FFG3kww5SRO2u0bPyTTTuOz4ZZ2YFRJa18/hR5I1
+	 ESutZRXedFFog==
+Date: Sat, 7 Dec 2024 18:02:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno Sa
- <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad9467: Fix the "don't allow reading vref
- if not available" case
-Message-ID: <20241207175829.31a32667@jic23-huawei>
-In-Reply-To: <cc65da19e0578823d29e11996f86042e84d5715c.1733503146.git.christophe.jaillet@wanadoo.fr>
-References: <cc65da19e0578823d29e11996f86042e84d5715c.1733503146.git.christophe.jaillet@wanadoo.fr>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Mehdi Djait <mehdi.djait@linux.intel.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure
+ members
+Message-ID: <20241207180201.51deb7ce@jic23-huawei>
+In-Reply-To: <Z1LDUj-naUdGSM6n@mva-rohm>
+References: <Z1LDUj-naUdGSM6n@mva-rohm>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,88 +62,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  6 Dec 2024 17:39:28 +0100
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Fri, 6 Dec 2024 11:26:42 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The commit in Fixes adds a special case when only one possible scale is
-> available.
-> If several scales are available, it sets the .read_avail field of the
-> struct iio_info to ad9467_read_avail().
+> The kx022a driver supports a few different HW variants. A chip-info
+> structure is used to describe sensor specific details. Support for
+> sensors with different measurement g-ranges was added recently,
+> introducing sensor specific scale arrays.
 > 
-> However, this field already holds this function pointer, so the code is a
-> no-op.
+> The members of the chip-info structure have been documented using
+> kerneldoc. The newly added members omitted the documentation. It is nice
+> to have all the entries documented for the sake of the consistency.
+> Furthermore, the scale table format may not be self explatonary, nor how
+> the amount of scales is informed.
 > 
-> Use another struct iio_info instead to actually reflect the intent
-> described in the commit message. This way, the structure to use is selected
-> at runtime and they can be kept as const.
+> Add documentation to scale table entries to maintain consistency and to
+> make it more obvious how the scales should be represented.
 > 
-> This is safer because modifying static structs that are shared between all
-> instances like this, based on the properties of a single instance, is
-> asking for trouble down the road.
-> 
-> Fixes: b92f94f74826 ("iio: adc: ad9467: don't allow reading vref if not available")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is compile tested only and is completely speculative.
-> 
-> Changes in v2:
->   - use another struct iio_info to keep the structure const
-Agree entirely with David that this is the way to go.
+> Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Applied to the togreg branch of iio.git. Initially pushed out as testing.
 
-Applied to the fixes-togreg branch of iio.git.
-
-Thanks,
+Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
+for a few days.
 
 Jonathan
 
-> 
-> v1: https://lore.kernel.org/linux-kernel/556f87c8931d7d7cdf56ebc79f974f8bef045b0d.1733431628.git.christophe.jaillet@wanadoo.fr/
 > ---
->  drivers/iio/adc/ad9467.c | 15 ++++++++++++---
->  1 file changed, 12 insertions(+), 3 deletions(-)
+> Revision history:
+> v1 => v2:
+> - Improved wording based on discussion with Mehdi.
 > 
-> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index d358958ab310..f30119b42ba0 100644
-> --- a/drivers/iio/adc/ad9467.c
-> +++ b/drivers/iio/adc/ad9467.c
-> @@ -895,7 +895,7 @@ static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
->  	return 0;
->  }
->  
-> -static struct iio_info ad9467_info = {
-> +static const struct iio_info ad9467_info = {
->  	.read_raw = ad9467_read_raw,
->  	.write_raw = ad9467_write_raw,
->  	.update_scan_mode = ad9467_update_scan_mode,
-> @@ -903,6 +903,14 @@ static struct iio_info ad9467_info = {
->  	.read_avail = ad9467_read_avail,
->  };
->  
-> +/* Same as above, but without .read_avail */
-> +static const struct iio_info ad9467_info_no_read_avail = {
-> +	.read_raw = ad9467_read_raw,
-> +	.write_raw = ad9467_write_raw,
-> +	.update_scan_mode = ad9467_update_scan_mode,
-> +	.debugfs_reg_access = ad9467_reg_access,
-> +};
-> +
->  static int ad9467_scale_fill(struct ad9467_state *st)
->  {
->  	const struct ad9467_chip_info *info = st->info;
-> @@ -1214,11 +1222,12 @@ static int ad9467_probe(struct spi_device *spi)
->  	}
->  
->  	if (st->info->num_scales > 1)
-> -		ad9467_info.read_avail = ad9467_read_avail;
-> +		indio_dev->info = &ad9467_info;
-> +	else
-> +		indio_dev->info = &ad9467_info_no_read_avail;
->  	indio_dev->name = st->info->name;
->  	indio_dev->channels = st->info->channels;
->  	indio_dev->num_channels = st->info->num_channels;
-> -	indio_dev->info = &ad9467_info;
->  
->  	ret = ad9467_iio_backend_get(st);
->  	if (ret)
+>  drivers/iio/accel/kionix-kx022a.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
+> index 142652ff4b22..d18d56cef098 100644
+> --- a/drivers/iio/accel/kionix-kx022a.h
+> +++ b/drivers/iio/accel/kionix-kx022a.h
+> @@ -137,6 +137,14 @@ struct kx022a_data;
+>   *
+>   * @name:			name of the device
+>   * @regmap_config:		pointer to register map configuration
+> + * scale_table:			An array of tables of scaling factors for
+> + *				a supported acceleration measurement range.
+> + *				Each table containing a single scaling
+> + *				factor consisting of two integers. The first
+> + *				value in a table is the integer part, and
+> + *				the second value is the	fractional part as
+> + *				parts per billion.
+> + * scale_table_size:		Amount of values in tables.
+>   * @channels:			pointer to iio_chan_spec array
+>   * @num_channels:		number of iio_chan_spec channels
+>   * @fifo_length:		number of 16-bit samples in a full buffer
+> 
+> base-commit: 05ff9c9c53c643551fe08fe52bd714310b9afc2e
 
 

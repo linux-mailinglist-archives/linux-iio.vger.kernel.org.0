@@ -1,65 +1,62 @@
-Return-Path: <linux-iio+bounces-13232-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13233-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF7279E86BD
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:58:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAB09E86D2
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:00:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D25E016421B
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:58:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3A518856AD
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2385418754F;
-	Sun,  8 Dec 2024 16:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3379C18754F;
+	Sun,  8 Dec 2024 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKFgh8Fi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqWLOjol"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9B120323;
-	Sun,  8 Dec 2024 16:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FF120323;
+	Sun,  8 Dec 2024 16:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733677090; cv=none; b=fdmIoNqtVPTGUhCzltmhwH+rUZI9107zNKafbLiST494PVg0aVSvxdWVLIWAorYa5uW8LsyQg6qEbFa41nDnYvxpmfGuh6vT1fItCQRuxLbcQJH5kaTdCER6zH+eYakgphEHeVaJIaOy4GWcvB7A1DNxgGi89AzXRcGKoNb0jr0=
+	t=1733677192; cv=none; b=W9mIdOQZ8izQPEBYfiUoR18nZaQPD1OOzG8HZAl4oNeskxwqtW5hKhZRJg3xVUtRsuIBCZu7/rleXllDi2XZ2Tu/07lNUwoImM1JCQJA1vtWTbTTpjBkZSDVAY/weKjOnrTSfHSOJdS4nierh9dUPzm/SebTPKEDoSgXdHtczv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733677090; c=relaxed/simple;
-	bh=ZupYwODzz1JZIpwYvnLeAs3GYHnLlQAmCgPJ5BKpR5Q=;
+	s=arc-20240116; t=1733677192; c=relaxed/simple;
+	bh=o5+e4VKhCq8v7S94ioflyoTxDxaWLCbTsckcliIW1kI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BdIU8cgOz6ob4UBFDi110dkCzHDAE0WKise7yGDyBQTs6W5TGiBGkqW5qHIzNiBaREcQZGRMNi3OwHg77HRtp2U5jJWDbTrfW91UvCnVzy32G093Z6dpdJJLdaN2umQbprpF5mAxDulN+EaXfBaGJnOWQeVLdC7NNjmEQGPvdLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKFgh8Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73174C4CED2;
-	Sun,  8 Dec 2024 16:58:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RSJjeBOJ9IkkZ4rmdXyerQo4n8aAJTCaI4X88VvCKImmf4C5Q+GlU/Xy0glLLzuGF4ZJUSJoIXC0NjFiWPErRGWok3vqwl1BgEfjlbdUDWUPApid2NNdyj3uGdN9SOZrtCKrMhAlgwxQ6Pns0ppBYqdtZVMjHIGlyrJ3/UnzGnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqWLOjol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731C0C4CED2;
+	Sun,  8 Dec 2024 16:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733677090;
-	bh=ZupYwODzz1JZIpwYvnLeAs3GYHnLlQAmCgPJ5BKpR5Q=;
+	s=k20201202; t=1733677191;
+	bh=o5+e4VKhCq8v7S94ioflyoTxDxaWLCbTsckcliIW1kI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tKFgh8FiS8FbRTFkK2N+FlA7iqzGWZknrBXFt8WYBZ8DtYjuE5gSiiWqTM9CNI56G
-	 fjeOd1LWq2bILNNh+9jeOvowOvhohfDcNzI65UVz0jiojk4b4/T/culUhkplgEtRDD
-	 zQ75TY9PgTECJH08yI43oLajI9aN/VZ6NhoCrFmXY8/HlsHKKD+5OsJVynKVEz730N
-	 pz4bro2tW+HiOZWGXRTSamb3qBw9NCn4Z5O+qdarOilS6zVKSm+UHFqc9ZQU5kxO9c
-	 Lnhkrju45GcVM9kYoGpc8onf6R5SXzzCxjVCRNKOuM3ks9/8pSRmEPTzGKwN7zqbRn
-	 I/jlR5A60YWHw==
-Date: Sun, 8 Dec 2024 16:58:00 +0000
+	b=EqWLOjolkrK48OCPgW3J+QmuJ3pwD3uXNseiCQNPA3QtPc3y5/XL5joyja5lrSGXD
+	 bOfh6N1CWnIuX8U89uDuSmXavhOZlX0bH3AzLpYcbmoDi2gtyXjaabp+zVW4O8Z/gL
+	 UvrugHCW2taNQ5l3+YCFREbR1fqXrMtG7onHNAV1QcPM23fJicxKnJglKHIFe7fK6d
+	 F9FX6YmtWzroswGYYVNL4Ny3Ny21U0RbXUdmqb8Pxbw7SWxRZXgT5RAX+dg8Xxqr8i
+	 5RWoL+cKjnM87kjjmxtU+hD2Zzcn4uH8923xPzerHkAXwd74XvOwpVD5qA0Mu3yu95
+	 PiofOPPxuOXYA==
+Date: Sun, 8 Dec 2024 16:59:44 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Christian Eggers <ceggers@arri.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Antoni Pokusinski
- <apokusinski01@gmail.com>, Francesco Dolcini <francesco@dolcini.it>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29u?=
- =?UTF-8?B?w6dhbHZlcw==?= <joao.goncalves@toradex.com>, Francesco Dolcini
- <francesco.dolcini@toradex.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-Message-ID: <20241208165800.1f4504a9@jic23-huawei>
-In-Reply-To: <3614353.dWV9SEqChM@n9w6sw14>
-References: <20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com>
-	<20241204-iio_memset_scan_holes-v2-2-3f941592a76d@gmail.com>
-	<3614353.dWV9SEqChM@n9w6sw14>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, =?UTF-8?B?Sm/Do28=?=
+ Paulo =?UTF-8?B?R29uw6dhbHZlcw==?= <jpaulo.silvagoncalves@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?B?Sm/Do28=?= Paulo
+ =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>, Francesco
+ Dolcini <francesco.dolcini@toradex.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1119: fix sample size in scan struct
+ for triggered buffer
+Message-ID: <20241208165944.1ca1d08b@jic23-huawei>
+In-Reply-To: <20241202194622.GA70146@francesco-nb>
+References: <20241202-ti-ads1119_s16_chan-v1-1-fafe3136dc90@gmail.com>
+	<20241202194622.GA70146@francesco-nb>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,105 +67,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 4 Dec 2024 17:20:47 +0100
-Christian Eggers <ceggers@arri.de> wrote:
+On Mon, 2 Dec 2024 20:46:22 +0100
+Francesco Dolcini <francesco@dolcini.it> wrote:
 
-> On Wednesday, 4 December 2024, 00:55:32 CET, Javier Carrasco wrote:
-> > The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> > set (optimized path for color channel readings), and it must be shifted
-> > instead of leaving an empty channel for the temperature when it is off.
+> On Mon, Dec 02, 2024 at 08:18:44PM +0100, Javier Carrasco wrote:
+> > This device returns signed, 16-bit samples as stated in its datasheet
+> > (see 8.5.2 Data Format). That is in line with the scan_type definition
+> > for the IIO_VOLTAGE channel, but 'unsigned int' is being used to read
+> > and push the data to userspace.
 > > 
-> > Once the channel index is fixed, the uninitialized channel must be set
-> > to zero to avoid pushing uninitialized data.
+> > Given that the size of that type depends on the architecture (at least
+> > 2 bytes to store values up to 65535, but its actual size is often 4
+> > bytes), use the 's16' type to provide the same structure in all cases.
 > > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > ---
-> >  drivers/iio/light/as73211.c | 17 +++++++++++++----
-> >  1 file changed, 13 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> > index be0068081ebb..2d45dfeda406 100644
-> > --- a/drivers/iio/light/as73211.c
-> > +++ b/drivers/iio/light/as73211.c
-> > @@ -672,9 +672,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
-> >  
-> >  		/* AS73211 starts reading at address 2 */
-> >  		ret = i2c_master_recv(data->client,
-> > -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> > +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
-> >  		if (ret < 0)
-> >  			goto done;
-> > +
-> > +		/* Avoid pushing uninitialized data */
-> > +		scan.chan[3] = 0;
-> >  	}
-> >  
-> >  	if (data_result) {
-> > @@ -682,9 +685,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
-> >  		 * Saturate all channels (in case of overflows). Temperature channel
-> >  		 * is not affected by overflows.
-> >  		 */
-> > -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> > -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> > -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> > +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> > +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> > +		} else {
-> > +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> > +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> > +		}
-> >  	}
-> >  
-> >  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> > 
-> >   
+> > Fixes: a9306887eba4 ("iio: adc: ti-ads1119: Add driver")
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>  
 > 
-> With this change, having only X, Y and Z in the scan_mask (without the
-> temperature channel) works fine.
+> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Cc: stable@vger.kernel.org
 > 
-> But it looks that there is still another problem if a single color channel
-> (e.g. X) is omitted from the scan mask (which probably wouldn't make much
-> sense in practice).  If I am right, the layout of scan.chan[] is also wrong for
-> that case, so e.g. if omitting X, the application will get the X values where
-> it expects the temperature value (which isn't read from the hardware at all).
+> Thanks,
+> Francesco
 > 
-> Does it make sense to write a follow-up patch for this? I fear that taking all
-> possible combinations into account could make the driver more complicated than
-> necessary.  Or is there a good example how to handle such combinations?
-> 
-Good spot. I'd fallen for assuming a driver worked the way I thought it would
-and not checked everything necessary was there.
 
-Hmm. This is a bit odd. Driver seems to be written with assumption that the IIO
-core is doing demux.  That doesn't work unless available_scan_masks is set.
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-Make that
-{
-	AS73211_SCAN_MASK_ALL,
-	AS73211_SCAN_MASK_COLOR,
-	0,
-};
-
-And then if you enable fewer channels, the IIO core will still enable one of the
-sets in available_scan_masks and then do the relevant data manipulation to repack
-as necessary.
-
-I'll not pick this patch up as it makes sense to fix both issues together.
-
-Thanks
+Thanks,
 
 Jonathan
-
-> 
-> Tested-by: Christian Eggers <ceggers@arri.de>
-> 
-> 
-> 
-> 
-
 

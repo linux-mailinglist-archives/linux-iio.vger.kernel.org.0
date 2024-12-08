@@ -1,70 +1,65 @@
-Return-Path: <linux-iio+bounces-13235-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13236-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB009E8701
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:17:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B3B9E8705
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:22:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D4A016455A
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:17:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65AD92814A0
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC1B15B971;
-	Sun,  8 Dec 2024 17:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0611662EF;
+	Sun,  8 Dec 2024 17:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7mZE4gb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jYt4e97a"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFCB13B2B6;
-	Sun,  8 Dec 2024 17:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCDE145324;
+	Sun,  8 Dec 2024 17:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733678219; cv=none; b=WMMn3Mn0JlrvpLtHccXh1oyA04af1B6+XYa6mjWxMPgf9VD4eV4iEPAEMwCxdJND6vtE7eNh6xArf4AFkoP9V9TO4PUi2xXmGfOSIUASKC267U91vkYVDTSZ5JB3la2nClYoINJNDkxHPFx2vV9Xbn+d8vKihrBVlFighqYW3BQ=
+	t=1733678569; cv=none; b=elRBelxZCW4+1KS7983+n1tuVwTXooQhw5KpM788VKsDDlBmktOKqw6F+ZSa7u+DpN7cWP+S2fm8Jro8jzqbT+5kQxwnsW5TMW/w94/ygKuNGdZ8RzDVFLAf018CtzfOSw414gXCkS1bEQL7Vjle08bJvwmTOg81ZxheR6N9ewk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733678219; c=relaxed/simple;
-	bh=80jm1WGeYCwdtfUxEN8KjbUhw+3thz/j0DAOCSXhp5k=;
+	s=arc-20240116; t=1733678569; c=relaxed/simple;
+	bh=CnFzzpu/t2T7ISYlDidZoBSSn6jeFN2Utrep7B+tRzo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DwTBwU726jkaar6WWaB+Ra+lbzoW5lC6FpSERcELtqc/Tm/0p2Oly5tCGxgfc6b+Dtxb+E0q1mA3jSFWX+9RU6mdzcI4HecbcgGGzIRRGt5D8BPdj6T6fTaBHtQBDL/9C0/bV2wmei9DW6niNEXOc6dSU+4hgyDu7M7r006LPsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7mZE4gb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFDDC4CED2;
-	Sun,  8 Dec 2024 17:16:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gKj92LzMVLIqi406ZzqXHQMhj8AROqtA2/+Xn0PGAs2YaWY6k0iXG+R50q2drHwczQPht8x8jbMA+Niwexb7tldZu+GTKwxKymaTHuBZ/RgcgHKyJetbQkt4Npjjp6EoN/NUhUq0jEbEe3/IQM2n0soHy8w5UWjL1VzQKOxfYrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jYt4e97a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8476C4CED2;
+	Sun,  8 Dec 2024 17:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733678218;
-	bh=80jm1WGeYCwdtfUxEN8KjbUhw+3thz/j0DAOCSXhp5k=;
+	s=k20201202; t=1733678569;
+	bh=CnFzzpu/t2T7ISYlDidZoBSSn6jeFN2Utrep7B+tRzo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=J7mZE4gbcAjvD3ebbTAarbmj9Cxl+vuoNBsmn8aET2qbOfc0DDscYXSdWjPpbNCrd
-	 u/HlYPrPa2/zKDpdS5oUhnBVNZtvMTZZliKgTUBJIVJ5RAIB2k0knS5rATe4DrC4Ve
-	 nL7AuzdFnEsFWjdLC7JEYAgnJGWCKb1VdaLp1qQ1UPYYz1x3bw1rksaKZ+46BXviY/
-	 H2WooL49CvuW2ujKVzRH4S5bPXRW7TU6QixT46JbZaLIrlLk8wAvmXOmnn4RKwW2sx
-	 syZe9hZ2KJ88RzRXcSng7AQ661rfE11SZasHmckdMFm5F27k3Idfr9l1JWrCJIID6t
-	 JwR3pvPiLLatA==
-Date: Sun, 8 Dec 2024 17:16:42 +0000
+	b=jYt4e97aZhp8uhaJI0bJ4bqU//5L97mLWWacgXBbkWexcLA3XQoIfIFTakx9/XxsN
+	 76e3M3KLDGhDV9MMwHpY/ACOI8kT7G6Hi8KiK5AZd1WTfq6MxDU7gPKvpVRXzH0V6W
+	 B8t5xTEB/FELMvAcsXb96x1uiYsn74PnG0ytRAF1PlnqVmA4qMLSV76ddnaftflcu/
+	 JFlDonzNdSXBdJymUMUzHXhZZNKE+OLcvyju2j3TJPWl+p3Lnl/DIe4bO88keCG+F1
+	 SrLYS1BdKlsaCwFzfv9Y+hRZc5sxBePyFgVAgSXZRDrkyYsMk0nrAXAsWr8KHW4HBc
+	 VpShZ6Gqq+iKw==
+Date: Sun, 8 Dec 2024 17:22:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Yu-Hsian Yang <j2anfernee@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+To: Eason Yang <j2anfernee@gmail.com>
+Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
  venture@google.com, yuenn@google.com, benjaminfair@google.com,
  lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  nuno.sa@analog.com, dlechner@baylibre.com, javier.carrasco.cruz@gmail.com,
- marcelo.schmitt@analog.com, olivier.moysan@foss.st.com,
- mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com,
- alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com,
- ramona.nechita@analog.com, mike.looijmans@topic.nl,
- chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com,
- openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
+ olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com,
+ matteomartelli3@gmail.com, alisadariana@gmail.com, gstols@baylibre.com,
+ thomas.bonnefille@bootlin.com, ramona.nechita@analog.com,
+ mike.looijmans@topic.nl, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
+ yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
-Message-ID: <20241208171642.2bbfa5aa@jic23-huawei>
-In-Reply-To: <CA+4Vgc+HUwbHUWHdCoLVgm7aSMdqOGQZZawU8L8z7hMFop_VxQ@mail.gmail.com>
+Message-ID: <20241208172236.18441e64@jic23-huawei>
+In-Reply-To: <20241203091540.3695650-3-j2anfernee@gmail.com>
 References: <20241203091540.3695650-1-j2anfernee@gmail.com>
 	<20241203091540.3695650-3-j2anfernee@gmail.com>
-	<Z08MkR40fjfW3MXZ@smile.fi.intel.com>
-	<CA+4VgcJW=9rtuqr3VZbfA8QxgYAR+KvfAHdf_0xv4XLQtVVQJw@mail.gmail.com>
-	<Z0_aNIrNvLxqcRHv@smile.fi.intel.com>
-	<CA+4Vgc+HUwbHUWHdCoLVgm7aSMdqOGQZZawU8L8z7hMFop_VxQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,80 +67,184 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 4 Dec 2024 17:05:19 +0800
-Yu-Hsian Yang <j2anfernee@gmail.com> wrote:
+On Tue,  3 Dec 2024 17:15:40 +0800
+Eason Yang <j2anfernee@gmail.com> wrote:
 
-> Dear Andy Shevchenko,
->=20
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2024=E5=B9=
-=B412=E6=9C=884=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=8812:27=E5=AF=
-=AB=E9=81=93=EF=BC=9A
-> >
-> > On Wed, Dec 04, 2024 at 11:20:20AM +0800, Yu-Hsian Yang wrote: =20
-> > > Andy Shevchenko <andriy.shevchenko@linux.intel.com> =E6=96=BC 2024=E5=
-=B9=B412=E6=9C=883=E6=97=A5 =E9=80=B1=E4=BA=8C =E4=B8=8B=E5=8D=889:50=E5=AF=
-=AB=E9=81=93=EF=BC=9A =20
-> > > > On Tue, Dec 03, 2024 at 05:15:40PM +0800, Eason Yang wrote: =20
-> >
-> > ...
-> > =20
-> > > > Second, why do you need two regmaps? How debugfs is supposed to wor=
-k on the
-> > > > registers that are 16-bit if you access them via 8-bit regmap and v=
-ice versa?
-> > > >
-> > > > Can't you simply use bulk reads/writes when it makes sense and drop=
- 16-bit
-> > > > regmap completely? =20
-> > >
-> > > Read VIN info can use word read or byte read, and other registers
-> > > should use byte read.
-> > >
-> > > For a reviewer's comment, If the i2c controller allows word read then=
- the
-> > > right thing is to always use it. =20
-> >
-> > But how does this differ to bulk read of two sequential 8-bit offsets?
-> > And if there is a difference, shouldn't this be addressed on regmap lev=
-el for
-> > all? Like testing for the supported flags and access registers based on=
- the
-> > controller capability and user request.
-> > =20
->=20
-> We would explain why we use two regmaps.
-> In the beginning, we declare a property read-vin-data-size for user to
-> select byte read or word read.
-> After discuss with reviewers, we don't need this property.
-> So I get rid of this property and take word read vin data first.
-> We can't use regmap_bulk_read since the vin data is not sequential.
->=20
-> For Nuvoton NCT7201/NCT7202 chip,
-> Take an example as to Vin1:
-> The VIN reading supports Byte read (One Byte) and Word read (Two Byte)
->=20
-> For Byte read:
-> First read Index 00h to get VIN1 MSB, then read Index 0Fh Bit 3~7 to
-> get VIN1 LSB.
-> Index 0Fh is a shared LSB for all VINs.
->=20
-> For Word read:
-> Read Index 00h and get 2 Byte (VIN1 MSB and VIN1 LSB).
+> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+> 
+> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
+> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
+> independent alarm signals, and the all threshold values could be set for
+> system protection without any timing delay. It also supports reset input
+> RSTIN# to recover system from a fault condition.
+> 
+> Currently, only single-edge mode conversion and threshold events support.
+> 
+> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
+Hi Eason,
 
-Yeah. This is a really weird device.  2 regmaps is probably
-the best option.  The regmap access tables or functions can be used to
-avoid the debugfs problem Andy mentioned.
+Given you have some good reviews already I only took a very quick glance
+through.  A few things inline
 
 Jonathan
 
->=20
-> > --
-> > With Best Regards,
-> > Andy Shevchenko
-> >
-> > =20
+> diff --git a/drivers/iio/adc/nct720x.c b/drivers/iio/adc/nct720x.c
+> new file mode 100644
+> index 000000000000..b28b5f4d7d70
+> --- /dev/null
+> +++ b/drivers/iio/adc/nct720x.c
 
+> +
+> +static int nct720x_write_event_value(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir,
+> +				     enum iio_event_info info,
+> +				     int val, int val2)
+> +{
+> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
+> +	int index, err = 0;
+> +	long v1, v2, volt;
+> +
+> +	index = nct720x_chan_to_index[chan->address];
+> +	volt = (val * NCT720X_IN_SCALING_FACTOR) / NCT720X_IN_SCALING;
+> +	v1 = volt >> 5;
+> +	v2 = (volt & REG_VIN_LIMIT_LSB_MASK) << 3;
+> +
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (info == IIO_EV_INFO_VALUE) {
+> +		if (dir == IIO_EV_DIR_FALLING) {
+> +			guard(mutex)(&chip->access_lock);
+
+Might as well move this up one level as it is called in both legs.
+
+> +			err = regmap_write(chip->regmap, REG_VIN_LOW_LIMIT[index], v1);
+> +			if (err < 0)
+> +				dev_err(&indio_dev->dev, "Failed to write REG_VIN%d_LOW_LIMIT\n",
+> +					index + 1);
+> +
+> +			err = regmap_write(chip->regmap, REG_VIN_LOW_LIMIT_LSB[index], v2);
+> +			if (err < 0)
+> +				dev_err(&indio_dev->dev, "Failed to write REG_VIN%d_LOW_LIMIT_LSB\n",
+> +					index + 1);
+> +
+> +		} else {
+> +			guard(mutex)(&chip->access_lock);
+> +			err = regmap_write(chip->regmap, REG_VIN_HIGH_LIMIT[index], v1);
+> +			if (err < 0)
+> +				dev_err(&indio_dev->dev, "Failed to write REG_VIN%d_HIGH_LIMIT\n",
+> +					index + 1);
+> +
+> +			err = regmap_write(chip->regmap, REG_VIN_HIGH_LIMIT_LSB[index], v2);
+> +			if (err < 0)
+> +				dev_err(&indio_dev->dev, "Failed to write REG_VIN%d_HIGH_LIMIT_LSB\n",
+> +					index + 1);
+> +		}
+> +	}
+> +	return err;
+> +}
+
+> +
+> +static const struct iio_info nct720x_info = {
+> +	.read_raw = nct720x_read_raw,
+> +	.read_event_config = nct720x_read_event_config,
+> +	.write_event_config = nct720x_write_event_config,
+> +	.read_event_value = nct720x_read_event_value,
+> +	.write_event_value = nct720x_write_event_value,
+
+Given you are supporting with and without interrupts, should probably pick between
+versions of this that have the event config part and one that doesn't.
+
+> +};
+> +
+> +static const struct nct720x_adc_model_data nct7201_model_data = {
+> +	.model_name = "nct7201",
+> +	.channels = nct7201_channels,
+> +	.num_channels = ARRAY_SIZE(nct7201_channels),
+> +	.vin_max = 8,
+> +};
+> +
+> +static const struct nct720x_adc_model_data nct7202_model_data = {
+> +	.model_name = "nct7202",
+> +	.channels = nct7202_channels,
+> +	.num_channels = ARRAY_SIZE(nct7202_channels),
+> +	.vin_max = 12,
+> +};
+> +
+> +static int nct720x_init_chip(struct nct720x_chip_info *chip)
+> +{
+> +	u8 data[2];
+> +	unsigned int value;
+> +	int err;
+> +
+> +	err = regmap_write(chip->regmap, REG_CONFIGURATION, BIT_CONFIGURATION_RESET);
+> +	if (err) {
+> +		dev_err(&chip->client->dev, "Failed to write REG_CONFIGURATION\n");
+> +		return err;
+> +	}
+> +
+> +	/*
+> +	 * After about 25 msecs, the device should be ready and then
+> +	 * the Power Up bit will be set to 1. If not, wait for it.
+> +	 */
+> +	mdelay(25);
+> +	err  = regmap_read(chip->regmap, REG_BUSY_STATUS, &value);
+> +	if (err < 0)
+> +		return err;
+> +	if (!(value & BIT_PWR_UP))
+> +		return err;
+> +
+> +	/* Enable Channel */
+> +	err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_1, REG_CHANNEL_ENABLE_1_MASK);
+> +	if (err) {
+> +		dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_1\n");
+> +		return err;
+> +	}
+> +
+> +	if (chip->vin_max == 12) {
+> +		err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_2, REG_CHANNEL_ENABLE_2_MASK);
+> +		if (err) {
+> +			dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_2\n");
+> +			return err;
+> +		}
+> +	}
+> +
+> +	guard(mutex)(&chip->access_lock);
+> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_1, &value);
+> +	if (err < 0)
+> +		return err;
+> +	data[0] = (u8)value;
+> +
+> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_2, &value);
+> +	if (err < 0)
+> +		return err;
+
+Here I think you can use a bulk read as the registers are next to each other.
+
+> +	data[1] = (u8)value;
+> +
+> +	value = get_unaligned_le16(data);
+> +	chip->vin_mask = value;
+> +
+> +	/* Start monitoring if needed */
+> +	err = regmap_read(chip->regmap, REG_CONFIGURATION, &value);
+> +	if (err < 0) {
+> +		dev_err(&chip->client->dev, "Failed to read REG_CONFIGURATION\n");
+> +		return value;
+> +	}
+> +
+> +	value |= BIT_CONFIGURATION_START;
+> +	err = regmap_write(chip->regmap, REG_CONFIGURATION, value);
+> +	if (err < 0) {
+> +		dev_err(&chip->client->dev, "Failed to write REG_CONFIGURATION\n");
+> +		return err;
+> +	}
+> +
+> +	return 0;
+> +}
 

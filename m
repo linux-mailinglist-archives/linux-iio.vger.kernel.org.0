@@ -1,67 +1,57 @@
-Return-Path: <linux-iio+bounces-13250-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13251-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EB69E874D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:32:16 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991DB9E874F
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:33:34 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73D532811D4
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A971645A7
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E9418C008;
-	Sun,  8 Dec 2024 18:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06351189B85;
+	Sun,  8 Dec 2024 18:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzmflGFx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FvHLdgEb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00EE145324;
-	Sun,  8 Dec 2024 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FB6145324;
+	Sun,  8 Dec 2024 18:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733682730; cv=none; b=mWUoZfOZk98754ID3EYFFWyHhkol0OQn1XZ+VD+sDSe8f6xF0+NL0u3NaWwSQc17NrpA9AVCc6Zfy1RPLnD09N6hKC8ntNFPPPimIQaUXm/Zc9owuDAdtpyoR1xMPi0hWczu+IL/DK+VjVGm8j+BMjbnLnXjHioyL3Rdlvpa4Ww=
+	t=1733682809; cv=none; b=CzjN+o/gyROxAD38lpDG+W/uNv0mE5c9H1A8WmqDv4tb4i8oiWvnJLH3B2zRsy3RWNjfljW7mKZ7tXH/tzuDdhCcNYbuzL4VQk11kqhs1SecmU90WVrAUKItThbuQmrbHXKAfZYCDnvEHDClc46SQDcjm5iknFWyZ0y+2CEgaR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733682730; c=relaxed/simple;
-	bh=vkpIgwYBpysi2q22hKet+gev725W0T2HlhlIHocDAeQ=;
+	s=arc-20240116; t=1733682809; c=relaxed/simple;
+	bh=8WGe0AoB3HqrlhZ2W628Rphuq9x2/QtN8G/n54zTxSw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I/AiJLyRHVg3KWcwmnMqWSZgdwgvgiMRflqF6DFakvZU8XcKd1sz3THJI/vz2mqPzA9OIpQIPv/PCP7ZIO+bwt7B/Oc8zIEehLgpMEV5ZSkz9xB0roCDJHzfzrYcFmyEoFalZkXBbNvkuBN5D76OP7YEvfIe9+PAX8ap9CR89js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzmflGFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FDBC4CED2;
-	Sun,  8 Dec 2024 18:32:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pmku2mX+yBNlebSxmBBIclU92mWsJ1pAy+rsbwo14ql/Al8vndzwg4+L0uByK9RTpBj4KgdR4BanWbRmU3DjEjU8+Tkf0SinbVA45sf0apEeQMSGvn/dyh2FADs94PMZVT44zsf5Ztcfnr6fz9gRG1uMCw+7XMHamNg17IhZLTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FvHLdgEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854F8C4CED2;
+	Sun,  8 Dec 2024 18:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733682729;
-	bh=vkpIgwYBpysi2q22hKet+gev725W0T2HlhlIHocDAeQ=;
+	s=k20201202; t=1733682809;
+	bh=8WGe0AoB3HqrlhZ2W628Rphuq9x2/QtN8G/n54zTxSw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LzmflGFxnrGBxZhk+lPv32AyRW+kaZov7v/N8zIql4RE+p0VJldBYKHdPhd6vcbMB
-	 CikdS5Y4mSVyr+lw+LwaDAs26PturPuJ//iBJpU8/I0GVifmuc50SE/CHHMsIejCVu
-	 WunOR2EI7N3hgVkXo/r7E3sYvXbsnEx8mpyl6rkr9sxaZ8Rva1OgA3z23Q77uXHzOH
-	 Zc73qAOGjZ+4KoWo7xXRk/+IIaqczM+DxNv6YMl05u741XseEmIQ2RAUgOcrVVNNZN
-	 9J39MlcieT+zAdi5NoU1sTKs+tdU2MfsvQpb8zGleQMmvyFu3ugQuyUv/SWcLdRXnh
-	 +hNUF24prbaqw==
-Date: Sun, 8 Dec 2024 18:32:01 +0000
+	b=FvHLdgEbN+ygVE3zV2r58d75LxSiKAg8YKt6NpAGzVklOfRTJPwLzqhojCJkVZSMb
+	 uHQzdncaJEX01CWtgnvjOesJVsGv4efzGXoKCiXG2dePfSS6zjYC1pA9bdoprdaXAu
+	 /EUqcxUvsqGo3No4mahTegDsLvbEgra+MQ1iOqUyypSUhK0kA2Lc8rIZlH1XJb7V2X
+	 nIZblpB0N6VGEav+lq/JJ7rATfA2kOevH8LYBJOa6lkPjzCvdq95WLG39/ViegjtA+
+	 8Lj8ZGN2ziOkfDg8cMnQElw9W1YyPESBuuHO32YG04zsCS9a7E7IJqr8HbXB02iSSh
+	 5gp92T46y2Wdw==
+Date: Sun, 8 Dec 2024 18:33:21 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, David
- Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>,
- linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v5 10/16] iio: buffer-dmaengine: add
- devm_iio_dmaengine_buffer_setup_ext2()
-Message-ID: <20241208183201.1b83cd0c@jic23-huawei>
-In-Reply-To: <21d2e190-4cb9-4090-9dfd-2bb250ba186e@baylibre.com>
-References: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
-	<20241115-dlech-mainline-spi-engine-offload-2-v5-10-bea815bd5ea5@baylibre.com>
-	<20241124171609.50c6c3a8@jic23-huawei>
-	<08ccc3fd-a53c-4d0e-8659-92204d2c27a8@baylibre.com>
-	<21d2e190-4cb9-4090-9dfd-2bb250ba186e@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: Fabio Estevam <festevam@gmail.com>, lars@metafoo.de, dmurphy@ti.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, stable@kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads124s08: Use gpiod_set_value_cansleep()
+Message-ID: <20241208183321.6b973450@jic23-huawei>
+In-Reply-To: <Z1SVNlBHz12-OP7j@black.fi.intel.com>
+References: <20241122164308.390340-1-festevam@gmail.com>
+	<20241201130356.3bf4c693@jic23-huawei>
+	<Z1SVNlBHz12-OP7j@black.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,40 +62,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 6 Dec 2024 16:04:40 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 7 Dec 2024 20:34:30 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-> On 12/6/24 3:36 PM, David Lechner wrote:
-> > On 11/24/24 11:16 AM, Jonathan Cameron wrote:  
-> >> On Fri, 15 Nov 2024 14:18:49 -0600
-> >> David Lechner <dlechner@baylibre.com> wrote:
-> >>  
-> >>> Add a new devm_iio_dmaengine_buffer_setup_ext2() function to handle
-> >>> cases where the DMA channel is managed by the caller rather than being
-> >>> requested and released by the iio_dmaengine module.
-> >>>
-> >>> Signed-off-by: David Lechner <dlechner@baylibre.com>  
-> >> Fresh read and I'm wondering if the lifetimes in here can be managed
-> >> more simply either by pushing the DMA channel get down, or dragging
-> >> the release up.   Basically I'd like to see them at the same level
-> >> of nesting in the code.  If it ends up being necessary to duplicate
-> >> more code that is fine if it makes this easier to reason about.
-> >>  
-> > 
-> > One option could be instead of introducing a 2nd function, change  
+> On Sun, Dec 01, 2024 at 01:03:56PM +0000, Jonathan Cameron wrote:
+> > On Fri, 22 Nov 2024 13:43:08 -0300
+> > Fabio Estevam <festevam@gmail.com> wrote:  
+> > > Using gpiod_set_value() to control the reset GPIO causes some verbose
+> > > warnings during boot when the reset GPIO is controlled by an I2C IO
+> > > expander.
+> > > 
+> > > As the caller can sleep, use the gpiod_set_value_cansleep() variant to
+> > > fix the issue.
+> > > 
+> > > Tested on a custom i.MX93 board with a ADS124S08 ADC.  
 > 
-> Oops. The new function is devm_ so would still need a 2nd function
-> but changing iio_dmaengine_buffer_setup_ext() to have basically
-> the same signature would still avoid the asymmetry.
-That sounds sensible. (though I've mostly forgotten the background ;)
+> > Hmm. Could be considered a feature, but fair enough as the change is
+> > trivial and you are setting it on a real board.
+> > 
+> > Applied to the fixes-togreg branch of iio.git.  
+> 
+> ...
+> 
+> > > @@ -183,9 +183,9 @@ static int ads124s_reset(struct iio_dev *indio_dev)
+> > >  	struct ads124s_private *priv = iio_priv(indio_dev);
+> > >  
+> > >  	if (priv->reset_gpio) {
+> > > -		gpiod_set_value(priv->reset_gpio, 0);
+> > > +		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+> > >  		udelay(200);  
+> 
+> Obviously if you allow that change, you should switch to fsleep() here.
+True, that would be a nice follow up tidying up.
+
+Jonathan
 
 > 
-> > the existing iio_dmaengine_buffer_setup_ext() to use the signature
-> > of the proposed devm_iio_dmaengine_buffer_setup_ext2(). There are
-> > only two users of these functions. So we could move the dma chan
-> > request/release out to the drivers for those.
-> > 
-> > Otherwise, we can't completely get rid of the owns_chan bit.
-> >   
+> > > -		gpiod_set_value(priv->reset_gpio, 1);
+> > > +		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+> > >  	} else {
+> > >  		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
+> > >  	}  
+> 
 
 

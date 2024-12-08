@@ -1,84 +1,85 @@
-Return-Path: <linux-iio+bounces-13260-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13261-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E459E87AD
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 21:23:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9A99E87CB
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 21:32:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B707F2813C7
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 20:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E080163FA3
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 20:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87B1189BB8;
-	Sun,  8 Dec 2024 20:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA129460;
+	Sun,  8 Dec 2024 20:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LsffhlAO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gD6wfvQb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B077F22C6F7;
-	Sun,  8 Dec 2024 20:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF7E81749;
+	Sun,  8 Dec 2024 20:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733689427; cv=none; b=q5ZzsrR4Fz3qQH4b7YOpg8P+jDQVqTGYH0RBzBOAxYDrAZ0Vhhn0l1FugAn2hzCqsNB28ofP6VDKTeRD8YXAkk93F0oiyxJCBZNFh4y6qSrAzylXN+9fhQ1+PHKqwdklKqFDPoxJsX86pSZyaf6wCgaDDiO7AY5+J7ajtGoED4Q=
+	t=1733689951; cv=none; b=KpjlxPv6zLtjXJsWdwewfgiMRxmBZwGylMftOI4oaDIhZoCHBID/Ck8qAkkntxKyn9osZbUOvGpaQLuJ0+pyYHEApvazC645/Bnj9y7OPu5NILqGxf5BQOTJFHfSXuGxkz/f7Hx3IeMCctK3n0sgBTI/fsKtfqZ0xd8s9PwncBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733689427; c=relaxed/simple;
-	bh=VNMED/1HHBxsGwmelvSwZPl520PM+oEtTdphUsU5CJo=;
+	s=arc-20240116; t=1733689951; c=relaxed/simple;
+	bh=bxhyU/xSCgjfkO83jJk78L6vCXb8cOZBGo8eDAD0QA8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OgQXfE7ymCCh1v4cfzLE57RDRo8+ApqviauV1yaYQiijRxnce1a7MayBqbe6+AMSQK6JFSvuiHt7Uyq0XSDIp+8Hx7tE20rtXh+ULfBVtuOU+BsjpKEGNzVXixa6kjCodHHVwnQFURJ3CL/tx/gGdl+CNA4Ojk3w9+W27SZIJoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LsffhlAO; arc=none smtp.client-ip=209.85.221.182
+	 To:Cc:Content-Type; b=mfvSJ5gWObxzxGmdOfpmH0BUHHlG7/EGzrA5sFsRq2u8E+FjddY2/V46NLNLdVaI8F7bh0bdG8TB5rp4+noeNfCeBKZ+8VrLKUqwmC6FkhqF2lUh52rFtAhc+BADOj46j9Gq2/+UcDPjwFVB4d7CiFKXD8uTzckyrntFef3vwlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gD6wfvQb; arc=none smtp.client-ip=209.85.221.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-51623968932so305230e0c.1;
-        Sun, 08 Dec 2024 12:23:45 -0800 (PST)
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-515ec243329so813581e0c.0;
+        Sun, 08 Dec 2024 12:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733689424; x=1734294224; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733689948; x=1734294748; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZHNbFtvSxURJSntgGeKQ/+5l2Y1/YzXPePAcL9wIcI4=;
-        b=LsffhlAO6sGwASuswEw/M1/JD54WYz85R04Hrl7GikrVMnHWDRPr0jnw7YjXjfZ+i4
-         ZfKR9yLCtMqN8ajzh5fU7beuUN3bhYLKAH1IYT9aixmF6Sw5wEZcL0t8E3Dql9/LTjEB
-         shzXiP2XEd3L7uOaOx7A7iUoNLLXEkVaI46c7h7GZTGFyHTIFPvPF69U5ZGwrrWxlCyF
-         mgmJnaCmwPSuBtH5RVF8LwE37G2kzdxqcgje2x7wdtE2grmaX61gpxL0nziE9/WFH6VB
-         mil0zOmGMWWXG4wB1/ZB093NBhKAfgCmukZTyMn1An0899Zo87HLxLHaVDg28Xvu1qlF
-         p6Tg==
+        bh=XrrItemxQW1VlJXt/pJxii3BAEc1oNyRdLT4xJHfgOc=;
+        b=gD6wfvQbk1a8oOmlhrVddlv85f8S++O2TQhnVE2zzLl8DEjyIbha4f3rb0jpiCb3BB
+         WrFrSdBD8T8LOZaT+gOcQoQxBugxPMkQr1F1iAU5qyhDO7O/DWBfr7SCAZGQ16oJ6KtG
+         Z9wdiCWS7RRTM5np135DKWEdZ3RlScysKg8fVi+uEfSK6Z8fM1UaIHlrhIPwbntWnWYT
+         dUqE6ZeHF2Y9nYGrHiMDgqmymxxo8tEhT3kCY+caWiToRNEgE8UKY+KqBbY8bPVHINVy
+         6yIzwRfqMcOgrHhoR74UN6/xHagrgJo/WDvemhArzB0PTQeyFU7ATimho8L3yQvpE6ar
+         2VOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733689424; x=1734294224;
+        d=1e100.net; s=20230601; t=1733689948; x=1734294748;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZHNbFtvSxURJSntgGeKQ/+5l2Y1/YzXPePAcL9wIcI4=;
-        b=g6Yb8jwyUK2612ZsrvYzRzXHrAgYbTflbt4jGHqoV0Fh8kgc93e+kPoyBPdLLdqa/X
-         YyVPcXjd51Jw0BQ20tZrRVqS7DmP/pG8+GBNcMYzlAGBQ2l+s7+vFPFsvAiAsRK4P8ZX
-         /FVRMGhlXT4iF3BA4SMfD87AGMCRyTMxWBVvgPtZJlaJG49JJc2O/8AqmyzLbTD4dd99
-         gROhQr7cMj80+cTHwtRkq2K+yKnomhv3N+edPJRQweJWvZfpqrNcY4aUQbodLkMP41f4
-         GrjmOSkaEXcJDDwCNQFIEpPCGtJRPjJQsmi/nssUmEE9qi7jJ8jRzy4J4epLnC0djFDg
-         wF6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUhVdZj+4ShjdkJn/MOu2UpKVBe0fQmtel0JH0bkvJjSscQYXinHBa/nC6ubZgLmmod0k10holiYUZg@vger.kernel.org, AJvYcCVUS0/Cr5wkUrZejmPcAxHkKbWacJVyoj9NY4RnBcai/cXkrYi27sDv48pACvDV95MX1EGS+1iagIA4@vger.kernel.org, AJvYcCVeB5VGwfEQOxSKGiN2paz58Rwujr3vpXcztMkuAk8xN+MpVf0lIjnKzUChfY6eex5g4oM1bcOrniBAQZb8@vger.kernel.org, AJvYcCVrmP/tpE3+JMLZhehNL/aCiADeEcvgn8RJaqB4zQEYHWWt/Cx4udxrus1IZO2zcLzEiqv6PYIMfWpR@vger.kernel.org, AJvYcCWvG1DD7vVzsC6ybVuepAFbHLXfxPoV0P7DVq3FaUOO1Iuxd5LQDr1vNvVsFopl5a4r/mtBsxryePPotPCiPtNqWjI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvX+cAsoEuTld4f4t3BzLATJiHkoDw1qVR9q4qPKWzrwwbIkwB
-	S+HtS2QcgDzXka3YK618U4iPPODQeo3bxPtiDYJsPbzrkPFPwB/eIJk4YzOy0PkFXuAUibsHIhr
-	hHiYKJh3IrtvJ6BFeTWZvHoQRGqk=
-X-Gm-Gg: ASbGncueH/GGIoiPp9kmSCtl+MylbhrzJeRkuWfZhQFABuqksQRyYkaKOpS05JANNmR
-	8KnY9oC0Ax5kUNOTqTqnhPMPv8tt/l7H2
-X-Google-Smtp-Source: AGHT+IEYWnOhGl+PbNKxsZ8rtD86iQvQXnpcL43yIw5jF/VLUI9i4fGYwGp3t7LqcInqJxzYgLS6r86urrOTrTTk2Po=
-X-Received: by 2002:a05:6122:c81:b0:50d:35d9:ad5a with SMTP id
- 71dfb90a1353d-515fca33f1fmr9201341e0c.5.1733689424463; Sun, 08 Dec 2024
- 12:23:44 -0800 (PST)
+        bh=XrrItemxQW1VlJXt/pJxii3BAEc1oNyRdLT4xJHfgOc=;
+        b=J6cwIzhWAV7TmW6JOVm/Nr5Cywrk8BtU+Ahv5AdDNgfZ3rKVhfNnDoxE6PqUpP06nd
+         ym2At3eHfwwHhwBeIddlEB0HCH3rRjoHHHW3cU5BYRLsjww+xr9wY2n/gOR/Fwe9ne4Y
+         8ZHk2h+ZwwohSjD+vnmI0l/s7L/qjs/vwOufdXvz3CgZowRpipknE9cML7iQuNZ+dwrk
+         dVOcYOq5BhDAcacgy6amAUW0MBniN501aE+WALPFxbeFSKZmWtAEu8hX6z2d6I33SRBo
+         Cj6PZP6jZzC6PAWtEUWV7l0bALj2kgSyxlaFJvgUnlF4ARLenZa3rDpdBg+11u15A0kd
+         pqlw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/gR5y5ZAZWP8zFx/a5xHj54CfnqS9ddk2rBtkM7NbvOGChVj6gfPuzL8f9NYjBq5eVinrnJH2paDp@vger.kernel.org, AJvYcCVDgdrgoOqws7DFtbL2gT0ngMqBCx8HS1HW7k0TDvwqpAjcnAanv85y5IJlfpbeH7MUGUWa/oGmvry7@vger.kernel.org, AJvYcCW4hLTrLiWpjcPnLAEQq/5jl7VT8q9ZFHloRedT9eelqTia23zYuCp3eBXil78R0GznSR31FqQMcXVaLEiF@vger.kernel.org, AJvYcCXJMHd841brkuZlSJ52iiHD1vNr+TmMQQ229BkWAyMhCmytZFtrsKUca4P/LnXLwUluFYfi5le85a+S@vger.kernel.org, AJvYcCXe9YUkASPhJWVvG5X/qRCeC7/4vfjgk42rOXDdtIxyaXcJbD8lEJCURj37kmXGoGlrGceMjSxhgnJzBBSE5TtbE5Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzck+QPqeTHqGXU4MS/Lk3p01j9KifBZ4jbjCZIzPVReChoHZzo
+	K+CNYfxLoymTI0nKEMF6l3MACiTNDe8zhWMO0FMGTakExKiPzE3Alb+VB5eBosbZwmUZTeDXXGy
+	7VLTGizwfjM2zh3CXbDWssGLa5FY=
+X-Gm-Gg: ASbGnct78twHRdGSK701djwrF36/EvVnbJJmRj8dFxml26SHwjG1oF/ON8IWUn7aDXg
+	KTE125Go22GTKaErXbs49M36Uq+CAoUUy
+X-Google-Smtp-Source: AGHT+IEgxmooDjk2xdyWhgKYOxteJcz5ZfbQETjfc2zl/K8fImvYS5Vyd0CiRolxIiBvDYp91REeaik6bPe+vPUB9eA=
+X-Received: by 2002:a05:6122:3549:b0:518:778b:70a1 with SMTP id
+ 71dfb90a1353d-518778b8658mr1013622e0c.7.1733689948403; Sun, 08 Dec 2024
+ 12:32:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com> <20241206111337.726244-5-claudiu.beznea.uj@bp.renesas.com>
-In-Reply-To: <20241206111337.726244-5-claudiu.beznea.uj@bp.renesas.com>
+References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com> <20241206111337.726244-6-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20241206111337.726244-6-claudiu.beznea.uj@bp.renesas.com>
 From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Sun, 8 Dec 2024 20:23:18 +0000
-Message-ID: <CA+V-a8sH0LtjZsiV2NM-h71M9KDZCoR1Wq_HxAg_ahXEyMuuaA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/15] iio: adc: rzg2l_adc: Simplify the runtime PM code
+Date: Sun, 8 Dec 2024 20:32:01 +0000
+Message-ID: <CA+V-a8t248mJZRcXbLtgLyfDo0au8acaEUTCmEG0NCObFUxrtw@mail.gmail.com>
+Subject: Re: [PATCH v2 05/15] iio: adc: rzg2l_adc: Switch to RUNTIME_PM_OPS()
+ and pm_ptr()
 To: Claudiu <claudiu.beznea@tuxon.dev>
 Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, jic23@kernel.org, lars@metafoo.de, 
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
@@ -95,24 +96,21 @@ wrote:
 >
 > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 >
-> All Renesas SoCs using the rzg2l_adc driver manage ADC clocks through PM
-> domains. Calling pm_runtime_{resume_and_get, put_sync}() implicitly sets
-> the state of the clocks. As a result, the code in the rzg2l_adc driver th=
-at
-> explicitly manages ADC clocks can be removed, leading to simpler and
-> cleaner implementation.
->
-> Additionally, replace the use of rzg2l_adc_set_power() with direct PM
-> runtime API calls to further simplify and clean up the code.
+> The use of SET_RUNTIME_PM_OPS() is now deprecated and requires
+> __maybe_unused annotations to avoid warnings about unused functions.
+> Switching to RUNTIME_PM_OPS() and pm_ptr() eliminates the need for such
+> annotations because the compiler can directly reference the runtime PM
+> functions, thereby suppressing the warnings. As a result, the
+> __maybe_unused markings can be removed.
 >
 > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 > ---
 >
 > Changes in v2:
-> - rebased on top of patch 02/15 from this version
+> - none
 >
->  drivers/iio/adc/rzg2l_adc.c | 96 ++++++++-----------------------------
->  1 file changed, 20 insertions(+), 76 deletions(-)
+>  drivers/iio/adc/rzg2l_adc.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 >
 Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
@@ -120,223 +118,52 @@ Cheers,
 Prabhakar
 
 > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index c0c13e99aa92..780cb927eab1 100644
+> index 780cb927eab1..482da6dcf174 100644
 > --- a/drivers/iio/adc/rzg2l_adc.c
 > +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -8,7 +8,6 @@
->   */
+> @@ -454,7 +454,7 @@ static const struct of_device_id rzg2l_adc_match[] =
+=3D {
+>  };
+>  MODULE_DEVICE_TABLE(of, rzg2l_adc_match);
 >
->  #include <linux/bitfield.h>
-> -#include <linux/clk.h>
->  #include <linux/completion.h>
->  #include <linux/delay.h>
->  #include <linux/iio/iio.h>
-> @@ -69,8 +68,6 @@ struct rzg2l_adc_data {
->
->  struct rzg2l_adc {
->         void __iomem *base;
-> -       struct clk *pclk;
-> -       struct clk *adclk;
->         struct reset_control *presetn;
->         struct reset_control *adrstn;
->         struct completion completion;
-> @@ -188,29 +185,18 @@ static int rzg2l_adc_conversion_setup(struct rzg2l_=
-adc *adc, u8 ch)
->         return 0;
->  }
->
-> -static int rzg2l_adc_set_power(struct iio_dev *indio_dev, bool on)
-> -{
-> -       struct device *dev =3D indio_dev->dev.parent;
-> -
-> -       if (on)
-> -               return pm_runtime_resume_and_get(dev);
-> -
-> -       return pm_runtime_put_sync(dev);
-> -}
-> -
->  static int rzg2l_adc_conversion(struct iio_dev *indio_dev, struct rzg2l_=
-adc *adc, u8 ch)
->  {
-> +       struct device *dev =3D indio_dev->dev.parent;
->         int ret;
->
-> -       ret =3D rzg2l_adc_set_power(indio_dev, true);
-> +       ret =3D pm_runtime_resume_and_get(dev);
->         if (ret)
->                 return ret;
->
->         ret =3D rzg2l_adc_conversion_setup(adc, ch);
-> -       if (ret) {
-> -               rzg2l_adc_set_power(indio_dev, false);
-> -               return ret;
-> -       }
-> +       if (ret)
-> +               goto rpm_put;
->
->         reinit_completion(&adc->completion);
->
-> @@ -219,12 +205,14 @@ static int rzg2l_adc_conversion(struct iio_dev *ind=
-io_dev, struct rzg2l_adc *adc
->         if (!wait_for_completion_timeout(&adc->completion, RZG2L_ADC_TIME=
-OUT)) {
->                 rzg2l_adc_writel(adc, RZG2L_ADINT,
->                                  rzg2l_adc_readl(adc, RZG2L_ADINT) & ~RZG=
-2L_ADINT_INTEN_MASK);
-> -               rzg2l_adc_start_stop(adc, false);
-> -               rzg2l_adc_set_power(indio_dev, false);
-> -               return -ETIMEDOUT;
-> +               ret =3D -ETIMEDOUT;
->         }
->
-> -       return rzg2l_adc_set_power(indio_dev, false);
-> +       rzg2l_adc_start_stop(adc, false);
-> +
-> +rpm_put:
-> +       pm_runtime_put_sync(dev);
-> +       return ret;
->  }
->
->  static int rzg2l_adc_read_raw(struct iio_dev *indio_dev,
-> @@ -348,13 +336,13 @@ static int rzg2l_adc_parse_properties(struct platfo=
-rm_device *pdev, struct rzg2l
->         return 0;
->  }
->
-> -static int rzg2l_adc_hw_init(struct rzg2l_adc *adc)
-> +static int rzg2l_adc_hw_init(struct device *dev, struct rzg2l_adc *adc)
->  {
->         int timeout =3D 5;
->         u32 reg;
->         int ret;
->
-> -       ret =3D clk_prepare_enable(adc->pclk);
-> +       ret =3D pm_runtime_resume_and_get(dev);
->         if (ret)
->                 return ret;
->
-> @@ -392,25 +380,10 @@ static int rzg2l_adc_hw_init(struct rzg2l_adc *adc)
->         rzg2l_adc_writel(adc, RZG2L_ADM(3), reg);
->
->  exit_hw_init:
-> -       clk_disable_unprepare(adc->pclk);
-> -
-> +       pm_runtime_put_sync(dev);
->         return ret;
->  }
->
-> -static void rzg2l_adc_pm_runtime_disable(void *data)
-> -{
-> -       struct device *dev =3D data;
-> -
-> -       pm_runtime_disable(dev->parent);
-> -}
-> -
-> -static void rzg2l_adc_pm_runtime_set_suspended(void *data)
-> -{
-> -       struct device *dev =3D data;
-> -
-> -       pm_runtime_set_suspended(dev->parent);
-> -}
-> -
->  static int rzg2l_adc_probe(struct platform_device *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
-> @@ -435,14 +408,6 @@ static int rzg2l_adc_probe(struct platform_device *p=
-dev)
->         if (IS_ERR(adc->base))
->                 return PTR_ERR(adc->base);
->
-> -       adc->pclk =3D devm_clk_get(dev, "pclk");
-> -       if (IS_ERR(adc->pclk))
-> -               return dev_err_probe(dev, PTR_ERR(adc->pclk), "Failed to =
-get pclk");
-> -
-> -       adc->adclk =3D devm_clk_get(dev, "adclk");
-> -       if (IS_ERR(adc->adclk))
-> -               return dev_err_probe(dev, PTR_ERR(adc->adclk), "Failed to=
- get adclk");
-> -
->         adc->adrstn =3D devm_reset_control_get_exclusive_deasserted(dev, =
-"adrst-n");
->         if (IS_ERR(adc->adrstn))
->                 return dev_err_probe(dev, PTR_ERR(adc->adrstn), "failed t=
-o get/deassert adrst-n\n");
-> @@ -453,7 +418,13 @@ static int rzg2l_adc_probe(struct platform_device *p=
-dev)
->                                      "failed to get/deassert presetn\n");
->         }
->
-> -       ret =3D rzg2l_adc_hw_init(adc);
-> +       ret =3D devm_pm_runtime_enable(dev);
-> +       if (ret)
-> +               return ret;
-> +
-> +       platform_set_drvdata(pdev, indio_dev);
-> +
-> +       ret =3D rzg2l_adc_hw_init(dev, adc);
->         if (ret)
->                 return dev_err_probe(&pdev->dev, ret, "failed to initiali=
-ze ADC HW, %d\n", ret);
->
-> @@ -468,26 +439,12 @@ static int rzg2l_adc_probe(struct platform_device *=
-pdev)
->
->         init_completion(&adc->completion);
->
-> -       platform_set_drvdata(pdev, indio_dev);
-> -
->         indio_dev->name =3D DRIVER_NAME;
->         indio_dev->info =3D &rzg2l_adc_iio_info;
->         indio_dev->modes =3D INDIO_DIRECT_MODE;
->         indio_dev->channels =3D adc->data->channels;
->         indio_dev->num_channels =3D adc->data->num_channels;
->
-> -       pm_runtime_set_suspended(dev);
-> -       ret =3D devm_add_action_or_reset(&pdev->dev,
-> -                                      rzg2l_adc_pm_runtime_set_suspended=
-, &indio_dev->dev);
-> -       if (ret)
-> -               return ret;
-> -
-> -       pm_runtime_enable(dev);
-> -       ret =3D devm_add_action_or_reset(&pdev->dev,
-> -                                      rzg2l_adc_pm_runtime_disable, &ind=
-io_dev->dev);
-> -       if (ret)
-> -               return ret;
-> -
->         return devm_iio_device_register(dev, indio_dev);
->  }
->
-> @@ -503,8 +460,6 @@ static int __maybe_unused rzg2l_adc_pm_runtime_suspen=
-d(struct device *dev)
->         struct rzg2l_adc *adc =3D iio_priv(indio_dev);
->
->         rzg2l_adc_pwr(adc, false);
-> -       clk_disable_unprepare(adc->adclk);
-> -       clk_disable_unprepare(adc->pclk);
->
->         return 0;
->  }
-> @@ -513,17 +468,6 @@ static int __maybe_unused rzg2l_adc_pm_runtime_resum=
-e(struct device *dev)
+> -static int __maybe_unused rzg2l_adc_pm_runtime_suspend(struct device *de=
+v)
+> +static int rzg2l_adc_pm_runtime_suspend(struct device *dev)
 >  {
 >         struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
 >         struct rzg2l_adc *adc =3D iio_priv(indio_dev);
-> -       int ret;
-> -
-> -       ret =3D clk_prepare_enable(adc->pclk);
-> -       if (ret)
-> -               return ret;
-> -
-> -       ret =3D clk_prepare_enable(adc->adclk);
-> -       if (ret) {
-> -               clk_disable_unprepare(adc->pclk);
-> -               return ret;
-> -       }
+> @@ -464,7 +464,7 @@ static int __maybe_unused rzg2l_adc_pm_runtime_suspen=
+d(struct device *dev)
+>         return 0;
+>  }
 >
->         rzg2l_adc_pwr(adc, true);
+> -static int __maybe_unused rzg2l_adc_pm_runtime_resume(struct device *dev=
+)
+> +static int rzg2l_adc_pm_runtime_resume(struct device *dev)
+>  {
+>         struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+>         struct rzg2l_adc *adc =3D iio_priv(indio_dev);
+> @@ -475,9 +475,7 @@ static int __maybe_unused rzg2l_adc_pm_runtime_resume=
+(struct device *dev)
+>  }
+>
+>  static const struct dev_pm_ops rzg2l_adc_pm_ops =3D {
+> -       SET_RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend,
+> -                          rzg2l_adc_pm_runtime_resume,
+> -                          NULL)
+> +       RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend, rzg2l_adc_pm_runtime=
+_resume, NULL)
+>  };
+>
+>  static struct platform_driver rzg2l_adc_driver =3D {
+> @@ -485,7 +483,7 @@ static struct platform_driver rzg2l_adc_driver =3D {
+>         .driver         =3D {
+>                 .name           =3D DRIVER_NAME,
+>                 .of_match_table =3D rzg2l_adc_match,
+> -               .pm             =3D &rzg2l_adc_pm_ops,
+> +               .pm             =3D pm_ptr(&rzg2l_adc_pm_ops),
+>         },
+>  };
 >
 > --
 > 2.39.2

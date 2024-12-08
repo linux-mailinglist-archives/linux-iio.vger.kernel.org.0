@@ -1,142 +1,240 @@
-Return-Path: <linux-iio+bounces-13241-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13242-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C7F9E871D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:43:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC689E8723
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:47:38 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC62818AA
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C923F1645E7
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2701C18872D;
-	Sun,  8 Dec 2024 17:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE35188915;
+	Sun,  8 Dec 2024 17:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P2WhAP6j"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="CXmPmJFZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6DC22EE4;
-	Sun,  8 Dec 2024 17:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EF415624B;
+	Sun,  8 Dec 2024 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733679811; cv=none; b=as3RBNeMef3yRk3gzIFfN93rAWomfhdp05NIQKG8ADR6IBzvy/KInZkSv4+dRBl+SOOXHNMBIq+aD7EX2ENVksh2mo+Ru62yCLsHPs8e192Y+i9QgAsR+7DYcgF9gnqW4rxheyh+CchLBmorG//oG2NHuswqAxyiX3+racbYe8I=
+	t=1733680053; cv=none; b=egnDwEP9Nc/xhJtWSlJeZgRrZRKnEYJwmeh851JWbLi0IPmNB1SpQpWtqKDO3KnKhFK2stFDd1tzre+okZBuFlnByPAGPCHRrSkN1SUkrcNC6XPBulGGDFpqZUm7rrQVGiXX3WJgM0SLXkuw/oMuFUItLdsCNUj4c6Sqiib+0NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733679811; c=relaxed/simple;
-	bh=qNenoEFm9DAdkkxGpKFK5c49TtDiYow9qC8qYzpuLRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Fg0e1dQeVpfwu4LNwTWsd4bFl/i46UAcILLhfjhWcQrw07tglEZjc1fK96LPGJpw9q50Ls6YhsdKQsW/4sffx5QzHEirRlI/xXq6tmuO7bw1xBkbNcYBvz6rhF/ZwVLxip5KRFL3hC2UGO1xZzlHgb+N3RkPWFYOW6rQsIwn5gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P2WhAP6j; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733679810; x=1765215810;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qNenoEFm9DAdkkxGpKFK5c49TtDiYow9qC8qYzpuLRY=;
-  b=P2WhAP6je6KQBjsN4EsQlocBQRW7/dADdTbVETwsK8mPuejRMV0mnMEK
-   RSjGtA/40GaaG85J5RkfAp3jmJheXoyog+kdZvy70U8EhzO/TuFvAPiVF
-   f/qTLboUftDplQ8MpKISAomeWIGUEfGeBOcH5vKkBWDHG2q8L/v1lzJGV
-   ElJM+ApMzkw+wz2iq293m4Dm/YEa8OhQja2G161t8eZmGaCc7YpukLtvq
-   OhCQ8PH3SeC5Fk/MCTn+ziEiQItDerKgTMZy8GIeItnqv2ktNM0RNEAG2
-   Uk8NCbn9GIor64x6snFl4405VnN9bgX2cvgucKz6t98YVo+lXqPpfcWvj
-   w==;
-X-CSE-ConnectionGUID: Oa2TVbDkQky4hqNMVoLQOA==
-X-CSE-MsgGUID: K+oIX9UJQVS7JTbNMt3FLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="44445736"
-X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="44445736"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:43:29 -0800
-X-CSE-ConnectionGUID: UdW6DrVoT6Ok2Os8C8n1Xw==
-X-CSE-MsgGUID: 6L0n9i/MQLWuVlw/FpITCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="99819509"
-Received: from mlehtone-mobl.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.245.12])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:43:28 -0800
-Date: Sun, 8 Dec 2024 18:42:56 +0100
-From: Mehdi Djait <mehdi.djait@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure members
-Message-ID: <xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
-References: <Z1LDUj-naUdGSM6n@mva-rohm>
- <20241207180201.51deb7ce@jic23-huawei>
+	s=arc-20240116; t=1733680053; c=relaxed/simple;
+	bh=6a1IXSz697v3EaIGky9oEvnnimAUv0VbduUKs38Ly+U=;
+	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
+	 In-Reply-To:Content-Type; b=Alq7hB9lI0YnrDR/vYaJcj0RaDELr6Z5Fbr5oLH9LsQ9g1lITEEXS80V1OHuZ8TElWMKPVo9cBJ2r3JPOzQc9HnhwA48VdOjvdmjlPUeoBOEz17Xa5pXoWwpjmE5bzSdJ/+MT2yb+lSOC9Vw7FvEDkEccv2mLsX1/2oUCo27NhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=CXmPmJFZ; arc=none smtp.client-ip=80.12.242.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id KLNJtQRwaKnkaKLNJtVg1U; Sun, 08 Dec 2024 18:47:26 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1733680046;
+	bh=ebd+Tp1v6fRh+FBN9RhAloqELrQTXUQiB8ZFG5D3eOE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=CXmPmJFZ+FytpmTgOBNgPLzgSVXjOj3xjc3FbZ5tlOD4rw5CBapYfqgEStegp1/F1
+	 qiyOCIjK9wWKq8sHSQbBhB8cnZsf3m2KWgGYevrHkRlRjRE73aPn1zM2VzRGUe7BAn
+	 ZYZNxGsCXiWCQveLxxT2wljtqCfdWwhgLtpCPs61EYH8J2Dsd9DOIMnd4/wKOJmXbF
+	 ynT4Df22slbFxH3XOKxPInqqmRomQeUof9UQQFrTyh4luowyBN10Xub2/Vymhr1m0E
+	 Qotob23zGdNh5K4mGn5N1yL04Q0VWYhHe1/qQ0/KhFu+UC6PDFRUU0LyBtoGVlL28/
+	 YuwVzR5XKYNgg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sun, 08 Dec 2024 18:47:26 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <b5b43427-d0d7-43d5-bf8a-02a966ac25d3@wanadoo.fr>
+Date: Sun, 8 Dec 2024 18:47:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241207180201.51deb7ce@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
+References: <20241203091540.3695650-1-j2anfernee@gmail.com>
+ <20241203091540.3695650-3-j2anfernee@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Eason Yang <j2anfernee@gmail.com>
+Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+ venture@google.com, yuenn@google.com, benjaminfair@google.com,
+ jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
+ javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com,
+ marcelo.schmitt@analog.com, olivier.moysan@foss.st.com,
+ mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com,
+ alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com,
+ ramona.nechita@analog.com, mike.looijmans@topic.nl,
+ chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com,
+ openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Eason Yang <j2anfernee@gmail.com>
+In-Reply-To: <20241203091540.3695650-3-j2anfernee@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+Le 03/12/2024 à 10:15, Eason Yang a écrit :
+> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+> 
+> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
+> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
+> independent alarm signals, and the all threshold values could be set for
+> system protection without any timing delay. It also supports reset input
+> RSTIN# to recover system from a fault condition.
+> 
+> Currently, only single-edge mode conversion and threshold events support.
+> 
+> Signed-off-by: Eason Yang <j2anfernee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
+> ---
 
-On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
-> On Fri, 6 Dec 2024 11:26:42 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
-> > The kx022a driver supports a few different HW variants. A chip-info
-> > structure is used to describe sensor specific details. Support for
-> > sensors with different measurement g-ranges was added recently,
-> > introducing sensor specific scale arrays.
-> > 
-> > The members of the chip-info structure have been documented using
-> > kerneldoc. The newly added members omitted the documentation. It is nice
-> > to have all the entries documented for the sake of the consistency.
-> > Furthermore, the scale table format may not be self explatonary, nor how
-> > the amount of scales is informed.
-> > 
-> > Add documentation to scale table entries to maintain consistency and to
-> > make it more obvious how the scales should be represented.
-> > 
-> > Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Applied to the togreg branch of iio.git. Initially pushed out as testing.
-> 
-> Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
-> for a few days.
-> 
-> Jonathan
-> 
-> > ---
-> > Revision history:
-> > v1 => v2:
-> > - Improved wording based on discussion with Mehdi.
-> > 
-> >  drivers/iio/accel/kionix-kx022a.h | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-> > index 142652ff4b22..d18d56cef098 100644
-> > --- a/drivers/iio/accel/kionix-kx022a.h
-> > +++ b/drivers/iio/accel/kionix-kx022a.h
-> > @@ -137,6 +137,14 @@ struct kx022a_data;
-> >   *
-> >   * @name:			name of the device
-> >   * @regmap_config:		pointer to register map configuration
-> > + * scale_table:			An array of tables of scaling factors for
-> > + *				a supported acceleration measurement range.
-> > + *				Each table containing a single scaling
-> > + *				factor consisting of two integers. The first
-> > + *				value in a table is the integer part, and
-> > + *				the second value is the	fractional part as
-> > + *				parts per billion.
-> > + * scale_table_size:		Amount of values in tables.
+...
 
-I just noticed that the '@' preceding the added members scale_table and
-scale_table_size are missing, but I guess you can add those when
-rebasing ?
+> +static const u8 REG_VIN_HIGH_LIMIT_LSB[VIN_MAX] = {
+> +	0x40, 0x42, 0x44, 0x46, 0x48, 0x4A, 0x4C, 0x4E,
+> +	0x50, 0x52, 0x54, 0x56,
+> +};
+> +static const u8 REG_VIN_LOW_LIMIT_LSB[VIN_MAX] = {
+> +	0x41, 0x43, 0x45, 0x47, 0x49, 0x4B, 0x4D, 0x4F,
+> +	0x51, 0x53, 0x55, 0x57,
+> +};
+> +static u8 nct720x_chan_to_index[] = {
 
---
-Kind Regards
-Mehdi Djait
+const as well here?
+
+> +	0 /* Not used */, 0, 1, 2, 3, 4, 5, 6,
+> +	7, 8, 9, 10, 11,
+> +};
+
+...
+
+> +static int nct720x_read_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int *val, int *val2, long mask)
+> +{
+> +	int index = nct720x_chan_to_index[chan->address];
+> +	u16 volt;
+> +	unsigned int value;
+> +	int err;
+> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
+> +
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+> +
+> +	guard(mutex)(&chip->access_lock);
+
+The IIO_CHAN_INFO_SCALE case does not seem to need the lock. Would it 
+make sense to move it only in the IIO_CHAN_INFO_RAW case?
+
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		err = regmap_read(chip->regmap16, REG_VIN[index], &value);
+> +		if (err < 0)
+> +			return err;
+> +		volt = (u16)value;
+> +		*val = volt >> 3;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/* From the datasheet, we have to multiply by 0.0004995 */
+> +		*val = 0;
+> +		*val2 = 499500;
+> +		return IIO_VAL_INT_PLUS_NANO;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+...
+
+> +static int nct720x_write_event_config(struct iio_dev *indio_dev,
+> +				      const struct iio_chan_spec *chan,
+> +				      enum iio_event_type type,
+> +				      enum iio_event_direction dir,
+> +				      bool state)
+> +{
+> +	int err = 0;
+
+Harmless but useless initialisation.
+
+> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
+> +	int index = nct720x_chan_to_index[chan->address];
+> +	unsigned int mask;
+> +
+> +	if (chan->type != IIO_VOLTAGE)
+> +		return -EOPNOTSUPP;
+
+...
+
+> +static int nct720x_init_chip(struct nct720x_chip_info *chip)
+> +{
+> +	u8 data[2];
+> +	unsigned int value;
+> +	int err;
+> +
+> +	err = regmap_write(chip->regmap, REG_CONFIGURATION, BIT_CONFIGURATION_RESET);
+> +	if (err) {
+> +		dev_err(&chip->client->dev, "Failed to write REG_CONFIGURATION\n");
+> +		return err;
+> +	}
+> +
+> +	/*
+> +	 * After about 25 msecs, the device should be ready and then
+> +	 * the Power Up bit will be set to 1. If not, wait for it.
+> +	 */
+> +	mdelay(25);
+> +	err  = regmap_read(chip->regmap, REG_BUSY_STATUS, &value);
+
+double space after err.
+
+> +	if (err < 0)
+> +		return err;
+> +	if (!(value & BIT_PWR_UP))
+> +		return err;
+> +
+> +	/* Enable Channel */
+> +	err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_1, REG_CHANNEL_ENABLE_1_MASK);
+> +	if (err) {
+> +		dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_1\n");
+> +		return err;
+> +	}
+> +
+> +	if (chip->vin_max == 12) {
+> +		err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_2, REG_CHANNEL_ENABLE_2_MASK);
+> +		if (err) {
+> +			dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_2\n");
+> +			return err;
+> +		}
+> +	}
+> +
+> +	guard(mutex)(&chip->access_lock);
+> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_1, &value);
+
+double space after err.
+
+> +	if (err < 0)
+> +		return err;
+> +	data[0] = (u8)value;
+> +
+> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_2, &value);
+
+double space after err.
+
+> +	if (err < 0)
+> +		return err;
+> +	data[1] = (u8)value;
+> +
+> +	value = get_unaligned_le16(data);
+> +	chip->vin_mask = value;
+> +
+> +	/* Start monitoring if needed */
+
+...
+
+CJ
 

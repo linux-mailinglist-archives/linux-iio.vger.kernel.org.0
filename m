@@ -1,240 +1,181 @@
-Return-Path: <linux-iio+bounces-13242-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13243-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBC689E8723
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC389E872E
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C923F1645E7
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB34B1648BE
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE35188915;
-	Sun,  8 Dec 2024 17:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0A5158862;
+	Sun,  8 Dec 2024 18:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="CXmPmJFZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HYwD5WdL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-24.smtpout.orange.fr [80.12.242.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61EF415624B;
-	Sun,  8 Dec 2024 17:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2B54690;
+	Sun,  8 Dec 2024 18:05:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733680053; cv=none; b=egnDwEP9Nc/xhJtWSlJeZgRrZRKnEYJwmeh851JWbLi0IPmNB1SpQpWtqKDO3KnKhFK2stFDd1tzre+okZBuFlnByPAGPCHRrSkN1SUkrcNC6XPBulGGDFpqZUm7rrQVGiXX3WJgM0SLXkuw/oMuFUItLdsCNUj4c6Sqiib+0NI=
+	t=1733681106; cv=none; b=rVbAyuuLUP/oFLVt8TDx3WbShG2yeaGcZfCOkRwDkgxumiz76r87nLDN/ft5F2oVsYh5ZuYC5FAvI6eVPxmkTiDGSVOgs/oQD/j8V4bH+IHeuG/6QS9hg1bYEp+HblHiPlOsj+C1FoC4W6wTnkkZjJFYiKoPgsHJaus0RTrx/Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733680053; c=relaxed/simple;
-	bh=6a1IXSz697v3EaIGky9oEvnnimAUv0VbduUKs38Ly+U=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
-	 In-Reply-To:Content-Type; b=Alq7hB9lI0YnrDR/vYaJcj0RaDELr6Z5Fbr5oLH9LsQ9g1lITEEXS80V1OHuZ8TElWMKPVo9cBJ2r3JPOzQc9HnhwA48VdOjvdmjlPUeoBOEz17Xa5pXoWwpjmE5bzSdJ/+MT2yb+lSOC9Vw7FvEDkEccv2mLsX1/2oUCo27NhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=CXmPmJFZ; arc=none smtp.client-ip=80.12.242.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id KLNJtQRwaKnkaKLNJtVg1U; Sun, 08 Dec 2024 18:47:26 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1733680046;
-	bh=ebd+Tp1v6fRh+FBN9RhAloqELrQTXUQiB8ZFG5D3eOE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=CXmPmJFZ+FytpmTgOBNgPLzgSVXjOj3xjc3FbZ5tlOD4rw5CBapYfqgEStegp1/F1
-	 qiyOCIjK9wWKq8sHSQbBhB8cnZsf3m2KWgGYevrHkRlRjRE73aPn1zM2VzRGUe7BAn
-	 ZYZNxGsCXiWCQveLxxT2wljtqCfdWwhgLtpCPs61EYH8J2Dsd9DOIMnd4/wKOJmXbF
-	 ynT4Df22slbFxH3XOKxPInqqmRomQeUof9UQQFrTyh4luowyBN10Xub2/Vymhr1m0E
-	 Qotob23zGdNh5K4mGn5N1yL04Q0VWYhHe1/qQ0/KhFu+UC6PDFRUU0LyBtoGVlL28/
-	 YuwVzR5XKYNgg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Sun, 08 Dec 2024 18:47:26 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <b5b43427-d0d7-43d5-bf8a-02a966ac25d3@wanadoo.fr>
-Date: Sun, 8 Dec 2024 18:47:20 +0100
+	s=arc-20240116; t=1733681106; c=relaxed/simple;
+	bh=dCUHW7JoJsw+WsUdPX4UiJ+l0r2TQrtjo0bPPRvnEIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rCr/SjlL+/afD7tD2L94x1rIzeCOaaCBqfXZ2mwfPcbjiOrPLWoZQ8MiRBdWadvvUcrQpI1F54tkpO4twuKhb2X8WGNTijCniL+6t5Ym8N2oDc3F2rXigHm4FA5mgpJ1IKGE/De4m233EUbmoAyf2u8BKceqB7QjD/9KCXzteR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HYwD5WdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12366C4CED2;
+	Sun,  8 Dec 2024 18:05:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733681106;
+	bh=dCUHW7JoJsw+WsUdPX4UiJ+l0r2TQrtjo0bPPRvnEIA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HYwD5WdLAoT+4/DAqLBJt8XmRd8V2IxbpPcq2e7T2d+rPhM9EwbmA8JwMBNirRhBF
+	 UdR3MsXCe0sQEN5wbUdKzxIep+2bufvEvDW+nywWSLhHH6GeKLyzHWtX9zD38K2FAK
+	 npsXAiXtskbuNedb9CXmfu1lr3nIdfyFh+QN/sJX8BYunKa5f2aFJ0BgJqwaVvFfAb
+	 1XAg3RceJ/o3/VSyHeXRF8OXCxHmdPkT7eDq1nLtXadMAoNohKMOec1totvkac2sim
+	 0kQmNa1l6DC4Khgjx4TVGAxhWXVoEKzj/5ke87t49cUexvt2ywihKyNjXnQs9jvu94
+	 x7KwqEgl4wDMw==
+Date: Sun, 8 Dec 2024 18:04:57 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, lars@metafoo.de, Guillaume Ranquet
+ <granquet@baylibre.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@baylibre.com>
+Subject: Re: [PATCH 1/1] Documentation: ABI: IIO: Re-add
+ filter_type/filter_mode
+Message-ID: <20241208180457.11c01806@jic23-huawei>
+In-Reply-To: <Z073UvHZToWl88f9@debian-BULLSEYE-live-builder-AMD64>
+References: <b2132bd3ca1d64cdd8d5afab1f1f33c574718b50.1732901318.git.marcelo.schmitt@analog.com>
+	<52513d34-8484-4c4b-8f87-29cbbdcefc06@baylibre.com>
+	<Z073UvHZToWl88f9@debian-BULLSEYE-live-builder-AMD64>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
-References: <20241203091540.3695650-1-j2anfernee@gmail.com>
- <20241203091540.3695650-3-j2anfernee@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Eason Yang <j2anfernee@gmail.com>
-Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
- venture@google.com, yuenn@google.com, benjaminfair@google.com,
- jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
- javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com,
- marcelo.schmitt@analog.com, olivier.moysan@foss.st.com,
- mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com,
- alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com,
- ramona.nechita@analog.com, mike.looijmans@topic.nl,
- chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com,
- openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Eason Yang <j2anfernee@gmail.com>
-In-Reply-To: <20241203091540.3695650-3-j2anfernee@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Le 03/12/2024 à 10:15, Eason Yang a écrit :
-> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+On Tue, 3 Dec 2024 09:19:30 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+
+> On 12/02, David Lechner wrote:
+> > On 12/2/24 12:22 PM, Marcelo Schmitt wrote:  
+> > > The ad4130 driver exports in_voltageY-voltageZ_filter_mode and
+> > > in_voltage-voltage_filter_mode_available attributes to user space.
+> > > The ad7779 driver exports filter_type and filter_type_available.
+> > > Add (back again) documentation for filter_type/filter_mode attributes.
+> > > 
+> > > Fixes: 01bb12922b60 ("Documentation: ABI: added filter mode doc in sysfs-bus-iio")
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > ---
+> > > Digressing a bit away from the specific ABI used by ad4130 and ad7779,
+> > > the sinc3/4/5 filters are called `filter_mode` in ad4130 driver while other
+> > > drivers (ad7779, ad7124, ad7768-1) call sinc3/4/5 filters a `filter_type`.
+> > > Datasheets use the term `filter type`.
+> > > 
+> > > Depending on the particular ADC chip/design, the sinc3/4/5 filter configuration
+> > > may have an impact on the output data rate (ODR) (which is equivalent to the
+> > > sampling frequency for SAR ADCs - `sampling_frequency` ABI), 3dB cutoff
+> > > frequency of the filter (`_low_pass_3db_frequency` attributes), or settling
+> > > time.
+> > > 
+> > > ad7768-1 sets sinc3/4/5 according to the sampling_frequency attribute. No
+> > > filter_type attribute.
+> > > 
+> > > ad7173 sets the filter_type according to sampling_frequency too, though it
+> > > looks like support for only one filter type is implemented.
+> > > 
+> > > ad7124 sets sinc3/4/5 filters according to a filter_low_pass_3db_frequency
+> > > attribute so it doesn't export filter type attributes to user space.
+> > > Missing `in_voltageY-voltageZ_filter_low_pass_3db_frequency` documentation?
+> > > follow up patch?  
+> > 
+> > cc: Guillaume and Uwe since they are working on these last two drivers
+> > currently. Maybe something they could address?
+> >   
+> > > 
+> > >  Documentation/ABI/testing/sysfs-bus-iio | 14 ++++++++++++++
+> > >  1 file changed, 14 insertions(+)
+> > > 
+> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > > index f83bd6829285..704c9033cb5b 100644
+> > > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > > @@ -2268,6 +2268,20 @@ Description:
+> > >  		An example format is 16-bytes, 2-digits-per-byte, HEX-string
+> > >  		representing the sensor unique ID number.
+> > >  
+> > > +What:		/sys/bus/iio/devices/iio:deviceX/filter_type
+> > > +What:		/sys/bus/iio/devices/iio:deviceX/in_voltageY-voltageZ_filter_mode
+> > > +voltageY_filter_type_available
+> > > +KernelVersion:	6.1
+> > > +Contact:	linux-iio@vger.kernel.org
+> > > +Description:
+> > > +		Set the filter mode of the channel. When the filter mode
+> > > +		changes, the in_voltageY-voltageZ_sampling_frequency and
+> > > +		in_voltageY-voltageZ_sampling_frequency_available attributes
+> > > +		might also change to accommodate the new filter mode.
+> > > +		If the current sampling frequency is out of range for the new
+> > > +		filter mode, the sampling frequency will be changed to the
+> > > +		closest valid one.  
+> > 
+> > I think it can be safely assumed that changing any IIO attribute can
+> > cause any other to change, so we probably don't need to mention the
+> > sampling frequency interaction here, especially since it doesn't apply
+> > to every possible user of these attributes.  
 > 
-> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
-> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
-> independent alarm signals, and the all threshold values could be set for
-> system protection without any timing delay. It also supports reset input
-> RSTIN# to recover system from a fault condition.
+> Besides these filter attributes, the _offset attribute was allowed to change
+> after a change in _scale for a different driver so I'm also thinking IIO
+> attribute changes are allowed to cause updates to other device attributes.
+
+They are.  There is no practical way to design an ABI where that doesn't
+happen unfortunately. We try to keep the changes as intuitive as possible
+(so don't change unless we have to, find nearest value etc) where it is
+reasonably easy to do.
+
+
+> The description above is roughly the same that was removed in 01bb12922b60.
+> Can think of something more accurate if that would be appreciated.
 > 
-> Currently, only single-edge mode conversion and threshold events support.
+> Jonathan, let me know if you prefer to re-add ABI doc as it was or if we
+> can re-add an updated version of it.
+I'm fine with updating in the same patch.
+
 > 
-> Signed-off-by: Eason Yang <j2anfernee-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org>
-> ---
+> > 
+> > Some other useful things to add instead:
+> > * Mention that the values are the same as the ones listed in the
+> >   "..._available" attribute docs.  
+> Sure, will do if going to update the ABI description.
+> 
+> > * We should deprecate one of the names and recommend the other for
+> >   future drivers to use. Since "type" is used more than once and
+> >   "mode" only once, it seems natural to keep using "type" going
+> >   forward.  
+> Agree.
 
-...
+If mode is only used once, perhaps move it to a driver specific file?
+Fine to cross reference to the main file from there.
 
-> +static const u8 REG_VIN_HIGH_LIMIT_LSB[VIN_MAX] = {
-> +	0x40, 0x42, 0x44, 0x46, 0x48, 0x4A, 0x4C, 0x4E,
-> +	0x50, 0x52, 0x54, 0x56,
-> +};
-> +static const u8 REG_VIN_LOW_LIMIT_LSB[VIN_MAX] = {
-> +	0x41, 0x43, 0x45, 0x47, 0x49, 0x4B, 0x4D, 0x4F,
-> +	0x51, 0x53, 0x55, 0x57,
-> +};
-> +static u8 nct720x_chan_to_index[] = {
+Jonathan
 
-const as well here?
+> 
+> >   
+> > > +
+> > >  What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
+> > >  What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
+> > >  KernelVersion:	6.1
+> > >   
 
-> +	0 /* Not used */, 0, 1, 2, 3, 4, 5, 6,
-> +	7, 8, 9, 10, 11,
-> +};
-
-...
-
-> +static int nct720x_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	int index = nct720x_chan_to_index[chan->address];
-> +	u16 volt;
-> +	unsigned int value;
-> +	int err;
-> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	guard(mutex)(&chip->access_lock);
-
-The IIO_CHAN_INFO_SCALE case does not seem to need the lock. Would it 
-make sense to move it only in the IIO_CHAN_INFO_RAW case?
-
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		err = regmap_read(chip->regmap16, REG_VIN[index], &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = (u16)value;
-> +		*val = volt >> 3;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		/* From the datasheet, we have to multiply by 0.0004995 */
-> +		*val = 0;
-> +		*val2 = 499500;
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-...
-
-> +static int nct720x_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      bool state)
-> +{
-> +	int err = 0;
-
-Harmless but useless initialisation.
-
-> +	struct nct720x_chip_info *chip = iio_priv(indio_dev);
-> +	int index = nct720x_chan_to_index[chan->address];
-> +	unsigned int mask;
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-
-...
-
-> +static int nct720x_init_chip(struct nct720x_chip_info *chip)
-> +{
-> +	u8 data[2];
-> +	unsigned int value;
-> +	int err;
-> +
-> +	err = regmap_write(chip->regmap, REG_CONFIGURATION, BIT_CONFIGURATION_RESET);
-> +	if (err) {
-> +		dev_err(&chip->client->dev, "Failed to write REG_CONFIGURATION\n");
-> +		return err;
-> +	}
-> +
-> +	/*
-> +	 * After about 25 msecs, the device should be ready and then
-> +	 * the Power Up bit will be set to 1. If not, wait for it.
-> +	 */
-> +	mdelay(25);
-> +	err  = regmap_read(chip->regmap, REG_BUSY_STATUS, &value);
-
-double space after err.
-
-> +	if (err < 0)
-> +		return err;
-> +	if (!(value & BIT_PWR_UP))
-> +		return err;
-> +
-> +	/* Enable Channel */
-> +	err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_1, REG_CHANNEL_ENABLE_1_MASK);
-> +	if (err) {
-> +		dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_1\n");
-> +		return err;
-> +	}
-> +
-> +	if (chip->vin_max == 12) {
-> +		err = regmap_write(chip->regmap, REG_CHANNEL_ENABLE_2, REG_CHANNEL_ENABLE_2_MASK);
-> +		if (err) {
-> +			dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_ENABLE_2\n");
-> +			return err;
-> +		}
-> +	}
-> +
-> +	guard(mutex)(&chip->access_lock);
-> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_1, &value);
-
-double space after err.
-
-> +	if (err < 0)
-> +		return err;
-> +	data[0] = (u8)value;
-> +
-> +	err  = regmap_read(chip->regmap, REG_CHANNEL_ENABLE_2, &value);
-
-double space after err.
-
-> +	if (err < 0)
-> +		return err;
-> +	data[1] = (u8)value;
-> +
-> +	value = get_unaligned_le16(data);
-> +	chip->vin_mask = value;
-> +
-> +	/* Start monitoring if needed */
-
-...
-
-CJ
 

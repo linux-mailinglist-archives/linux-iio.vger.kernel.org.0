@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-13229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D595E9E86A3
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:42:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A8D9E86B0
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:49:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974E728145D
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:42:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA1D1884DA0
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450D11714DF;
-	Sun,  8 Dec 2024 16:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FAF1537A8;
+	Sun,  8 Dec 2024 16:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSLDoBm3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifxCmp3A"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC750170A15;
-	Sun,  8 Dec 2024 16:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C386420323
+	for <linux-iio@vger.kernel.org>; Sun,  8 Dec 2024 16:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733676170; cv=none; b=HOgKlmeugNBzjZDbfYqqjhPcsnuI1WW8zQR7GUyyuQKWBvHRNo9m1PnCvbO6yJ64pNZMAfPOoeSihP+bHd1hZmOLYEiik+QRZupHh5DeljfO2F1KU/G6wZRpUJovAGjl/Ou/x8nroLH1fC74ZYsAnSMYLLVsgEGJtJEQn29AnGA=
+	t=1733676591; cv=none; b=iDgYCUaGrWWbAWSPwq00SwcrJ+EOR8KF/sj7LNcoLh5Z3dWQVRK8d4DwooMI7J55M2NfXcCN+k3+cnyggZpSr+RlP6O2VTjOOeX7nrs8ZMtIKe6B4snHVyzfYk4MoC/6Q3T5ROjo0awRFrENBHNUsxzTrEOezV9P+0HYCusih3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733676170; c=relaxed/simple;
-	bh=tqTPLGWbTSMZOXidKNmcG/xT5UtzkOmJcVigxh/AOMs=;
+	s=arc-20240116; t=1733676591; c=relaxed/simple;
+	bh=WepDuhslJBKFgh6c2ACZni9/UT5PoxAw0zgPB8rMnAE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TzefnmTNg2qSNdNb1wopIoCie6Ht0v4ur8CGAAxk0+t9Ug6vFtVN66+HJu+PiwX1jG1ZyJY7negnj1Jh3++D6zGfU2iW8Gw9iXU2Feq1ZWm+ZaPUJG/1rsm52IwfQRrKLaPyKA9Hy+giqNOTz9n9H8NgdVVmeN1zOtcEcnBAa/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSLDoBm3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D368C4CED2;
-	Sun,  8 Dec 2024 16:42:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DB45oEgCSFvKitS3Z0zjxiOjRRyg1MJoyAkVmacAwVvcjAvx0Hba8p9yLIpOTRMLfxsSUvlZER3g8BkL1BKXn00gz4RCsVNEC1ZiQQ5fOUs5GQ+ksuKZv39GNwAfICp92tzu5OKBSqvmeKg8C5vcMbqABNQ4Hm95o8z3H+KuViI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifxCmp3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7266C4CED2;
+	Sun,  8 Dec 2024 16:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733676169;
-	bh=tqTPLGWbTSMZOXidKNmcG/xT5UtzkOmJcVigxh/AOMs=;
+	s=k20201202; t=1733676591;
+	bh=WepDuhslJBKFgh6c2ACZni9/UT5PoxAw0zgPB8rMnAE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lSLDoBm3IJlpM4CuZgxMi73iHwWGjzUXw8l5wfQHt++1u1g1Wc5h7BjOrxG1d5WDk
-	 haJgrUFguT6dXbYCtbO+f+TeuENzzU7jN76j7Fdx8HlVLHa9s5kbcn+vlQ87+u6+aR
-	 A0YsfgD9AOG8gH2PX9AFqfP7uIvnI+GE2EEjiDK9CIRyGxrTDPmfQoEUAQo8oAGQv7
-	 o1SbuRVWOkCIw+dOKRqWWEWmvossdiTM/JeHfgCNlyxYgDT4Y0u9J/ITA3XPxmtlEF
-	 cwxfyvPE0v528BY3MTC6655gYVLWWS5K740tPrrNdLLhzhfUifGsBPJz7vsmofV7Pi
-	 aQaAUCn2HHSqQ==
-Date: Sun, 8 Dec 2024 16:42:42 +0000
+	b=ifxCmp3AOK3dOCGTj5QTqlV491On2FKNe6hx6OXDBOyLb/ONBrNjDH0Ni4Vnqhpmh
+	 keeC9uDgIRFiJE+dEsd+JCePl3FUuvHH0pOeSx/BJ8lGHZhYyPxKDKUnpGbhC4cbt6
+	 lHRjm76TkokRx43itJaQ4YXm2HLMeu3PYzkVnltaAHPYmXVJuVl0pWOB2d+DgeIIQC
+	 rkSZo2XZ4TtVDTXjG4Cd5B0pOsugNXTPe5R938pyOuXpg6vaqI5E9YJMiDZO8iPSWu
+	 UA2UiFEkCvh+Cb42oKS10oicItsIh1oQYRMeVHLWS3qB7k7YVG7HrUcsExm380bXaU
+	 /VgKSFzJ7WT7Q==
+Date: Sun, 8 Dec 2024 16:49:44 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH 3/3] iio: frequency: adf4371: add ref doubler
-Message-ID: <20241208164242.013ac089@jic23-huawei>
-In-Reply-To: <20241206152207.37928-3-antoniu.miclaus@analog.com>
-References: <20241206152207.37928-1-antoniu.miclaus@analog.com>
-	<20241206152207.37928-3-antoniu.miclaus@analog.com>
+To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: inkern: call iio_device_put() only on mapped
+ devices
+Message-ID: <20241208164944.6fcee6c8@jic23-huawei>
+In-Reply-To: <20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp>
+References: <20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,71 +60,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 6 Dec 2024 17:22:06 +0200
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Wed,  4 Dec 2024 20:13:42 +0900
+Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp> wrote:
 
-> Add support for the reference doubler.
+> In the error path of iio_channel_get_all(), iio_device_put() is called
+> on all IIO devices, which can cause a refcount imbalance. Fix this error
+> by calling iio_device_put() only on IIO devices whose refcounts were
+> previously incremented by iio_device_get().
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
+> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Applied to the fixes-togreg branch of iio.git and marked for stable.
+
+Thanks,
+
+Jonathan
+
 > ---
->  drivers/iio/frequency/adf4371.c | 14 ++++++++++++--
->  1 file changed, 12 insertions(+), 2 deletions(-)
+>  drivers/iio/inkern.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
-> index 55bee06fb42d..dc01f2aafb9a 100644
-> --- a/drivers/iio/frequency/adf4371.c
-> +++ b/drivers/iio/frequency/adf4371.c
-> @@ -44,6 +44,8 @@
->  /* ADF4371_REG22 */
->  #define ADF4371_REFIN_MODE_MASK		BIT(6)
->  #define ADF4371_REFIN_MODE(x)		FIELD_PREP(ADF4371_REFIN_MODE_MASK, x)
-> +#define ADF4371_REF_DOUB_MASK		BIT(5)
-> +#define ADF4371_REF_DOUB(x)		FIELD_PREP(ADF4371_REF_DOUB_MASK, x)\
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index 136b225b6bc8..9050a59129e6 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -500,7 +500,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+>  	return_ptr(chans);
 >  
->  /* ADF4371_REG24 */
->  #define ADF4371_RF_DIV_SEL_MSK		GENMASK(6, 4)
-> @@ -75,6 +77,9 @@
->  #define ADF4371_MAX_FREQ_REFIN		600000000UL /* Hz */
->  #define ADF4371_MAX_FREQ_REFIN_SE	500000000UL /* Hz */
->  
-> +#define ADF4371_MIN_CLKIN_DOUB_FREQ	10000000ULL /* Hz */
-> +#define ADF4371_MAX_CLKIN_DOUB_FREQ	125000000ULL /* Hz */
-> +
->  /* MOD1 is a 24-bit primary modulus with fixed value of 2^25 */
->  #define ADF4371_MODULUS1		33554432ULL
->  /* MOD2 is the programmable, 14-bit auxiliary fractional modulus */
-> @@ -480,7 +485,7 @@ static const struct iio_info adf4371_info = {
->  static int adf4371_setup(struct adf4371_state *st)
->  {
->  	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
-> -	unsigned int vco_band_div, tmp;
-> +	unsigned int vco_band_div, tmp, ref_doubler_en = 0;
->  	bool ref_diff_en;
->  	int ret;
->  
-> @@ -516,6 +521,10 @@ static int adf4371_setup(struct adf4371_state *st)
->  	    (!ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN_SE))
->  		return -EINVAL;
->  
-> +	if (st->clkin_freq < ADF4371_MAX_CLKIN_DOUB_FREQ &&
-> +	    st->clkin_freq > ADF4371_MIN_CLKIN_DOUB_FREQ)
-> +		ref_doubler_en = 1;
-> +
->  	ret = regmap_update_bits(st->regmap,  ADF4371_REG(0x22),
->  				 ADF4371_REFIN_MODE_MASK,
->  				 ADF4371_REFIN_MODE(ref_diff_en));
-> @@ -531,7 +540,8 @@ static int adf4371_setup(struct adf4371_state *st)
->  	 */
->  	do {
->  		st->ref_div_factor++;
-> -		st->fpfd = st->clkin_freq / st->ref_div_factor;
-> +		st->fpfd = (st->clkin_freq * (1 + ref_doubler_en)) /
-> +			   (st->ref_div_factor);
-No need for brackets on the previous line.
-
-Otherwise this looks good to me.
->  	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
->  
->  	/* Calculate Timeouts */
+>  error_free_chans:
+> -	for (i = 0; i < nummaps; i++)
+> +	for (i = 0; i < mapind; i++)
+>  		iio_device_put(chans[i].indio_dev);
+>  	return ERR_PTR(ret);
+>  }
 
 

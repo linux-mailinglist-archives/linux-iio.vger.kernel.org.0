@@ -1,71 +1,71 @@
-Return-Path: <linux-iio+bounces-13240-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13241-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B309E8719
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:34:29 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F611884077
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:34:29 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6172A18754F;
-	Sun,  8 Dec 2024 17:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RQsZaER1"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4C7F9E871D
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:43:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23822EE4;
-	Sun,  8 Dec 2024 17:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC62818AA
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:43:36 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2701C18872D;
+	Sun,  8 Dec 2024 17:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P2WhAP6j"
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6DC22EE4;
+	Sun,  8 Dec 2024 17:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733679264; cv=none; b=fwC5U4wc/uOlTUS70yUoIQWzTjQCwA2P612HCRQ8IsyKt+UqsDBQKsJzq42vmBBmWpECthZrr9ztzMzsF/H2ZMrCqXj7A/IJTTHU44e6Nu+hBDa0JU24Lij6DJYnlVGUBjvCsv95feQ7dQShH+fI1bGLi52J1FoZk7/s77597Ds=
+	t=1733679811; cv=none; b=as3RBNeMef3yRk3gzIFfN93rAWomfhdp05NIQKG8ADR6IBzvy/KInZkSv4+dRBl+SOOXHNMBIq+aD7EX2ENVksh2mo+Ru62yCLsHPs8e192Y+i9QgAsR+7DYcgF9gnqW4rxheyh+CchLBmorG//oG2NHuswqAxyiX3+racbYe8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733679264; c=relaxed/simple;
-	bh=0tMjJvNUglAsKPSgqHCefRFhhPqxQRqeTXYuDhbP3ig=;
+	s=arc-20240116; t=1733679811; c=relaxed/simple;
+	bh=qNenoEFm9DAdkkxGpKFK5c49TtDiYow9qC8qYzpuLRY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eyQ6cyJ4yIO4aU62IfWDSN9bILgMset5xAI5AyAn+HrtC2fM4DPvKgC8JDz4oP6+TobPjtP4SFJ6OQuFHvkQ153Eb0IulHogHOorOKqAlUKyzgDBkw+G0urGbgP64tjxghvuohNut0aWEKouuxXcTRYXvbPzV2vIc4oF00283sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RQsZaER1; arc=none smtp.client-ip=192.198.163.19
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fg0e1dQeVpfwu4LNwTWsd4bFl/i46UAcILLhfjhWcQrw07tglEZjc1fK96LPGJpw9q50Ls6YhsdKQsW/4sffx5QzHEirRlI/xXq6tmuO7bw1xBkbNcYBvz6rhF/ZwVLxip5KRFL3hC2UGO1xZzlHgb+N3RkPWFYOW6rQsIwn5gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P2WhAP6j; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733679262; x=1765215262;
+  t=1733679810; x=1765215810;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=0tMjJvNUglAsKPSgqHCefRFhhPqxQRqeTXYuDhbP3ig=;
-  b=RQsZaER1hONPXgDhly/kZc1Js/TJQKXNfC83sT2jFReiiZXRrHst2djr
-   NDz61EbbfJdNAmESPjqp/L6C/gzAop9XxD1nRnwq9UYEBUqvKjuD6twtu
-   2lHgM2YI9S/dZOxthy86QfVI35JnUbjmwaD4KpUj+5FAG4y8DgiX2cUt4
-   er/uy38+v6jwEyiRwLXbdKIQp6LOAhLj+h5mB7a2JlFoiW8G3o9m0QOFc
-   ht1YCJ979MMCpg+eLtYkk0KfWEu1RbRgUGJb+8Ofw7oi9jK5NsvuMiQ2+
-   hQHZ0OCi+ysD/PdeOUyR4eOweNdAnFW2i4KVmfdbBsRhJqqgTAogOB9Tk
-   A==;
-X-CSE-ConnectionGUID: wlf0MzvCRPapGqYTdI43vg==
-X-CSE-MsgGUID: RLU9pYxxQwaVMSiIhYd26Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="33300512"
+  bh=qNenoEFm9DAdkkxGpKFK5c49TtDiYow9qC8qYzpuLRY=;
+  b=P2WhAP6je6KQBjsN4EsQlocBQRW7/dADdTbVETwsK8mPuejRMV0mnMEK
+   RSjGtA/40GaaG85J5RkfAp3jmJheXoyog+kdZvy70U8EhzO/TuFvAPiVF
+   f/qTLboUftDplQ8MpKISAomeWIGUEfGeBOcH5vKkBWDHG2q8L/v1lzJGV
+   ElJM+ApMzkw+wz2iq293m4Dm/YEa8OhQja2G161t8eZmGaCc7YpukLtvq
+   OhCQ8PH3SeC5Fk/MCTn+ziEiQItDerKgTMZy8GIeItnqv2ktNM0RNEAG2
+   Uk8NCbn9GIor64x6snFl4405VnN9bgX2cvgucKz6t98YVo+lXqPpfcWvj
+   w==;
+X-CSE-ConnectionGUID: Oa2TVbDkQky4hqNMVoLQOA==
+X-CSE-MsgGUID: K+oIX9UJQVS7JTbNMt3FLQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="44445736"
 X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="33300512"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:34:21 -0800
-X-CSE-ConnectionGUID: 23ikPc2iTMOdOAMOOZrBgA==
-X-CSE-MsgGUID: mMpg/EOeTEGVeKlHsjSe2g==
+   d="scan'208";a="44445736"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:43:29 -0800
+X-CSE-ConnectionGUID: UdW6DrVoT6Ok2Os8C8n1Xw==
+X-CSE-MsgGUID: 6L0n9i/MQLWuVlw/FpITCw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
-   d="scan'208";a="95321595"
+   d="scan'208";a="99819509"
 Received: from mlehtone-mobl.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.245.12])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:34:20 -0800
-Date: Sun, 8 Dec 2024 18:34:10 +0100
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:43:28 -0800
+Date: Sun, 8 Dec 2024 18:42:56 +0100
 From: Mehdi Djait <mehdi.djait@linux.intel.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Matti Vaittinen <mazziesaccount@gmail.com>, 
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure members
-Message-ID: <gfgubkilfcsqf4tcfovib6ny7nizrb7xsptyhgs5grz5w6zme2@m5c3lkjwx7fz>
+Message-ID: <xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
 References: <Z1LDUj-naUdGSM6n@mva-rohm>
  <20241207180201.51deb7ce@jic23-huawei>
 Precedence: bulk
@@ -78,9 +78,7 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20241207180201.51deb7ce@jic23-huawei>
 
-Hi Jonathan and Matti,
-
-thank you Matti for the patch.
+Hi Jonathan,
 
 On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
 > On Fri, 6 Dec 2024 11:26:42 +0200
@@ -100,18 +98,43 @@ On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
 > > Add documentation to scale table entries to maintain consistency and to
 > > make it more obvious how the scales should be represented.
 > > 
-
-Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-
 > > Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
 > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > Applied to the togreg branch of iio.git. Initially pushed out as testing.
 > 
 > Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
 > for a few days.
+> 
+> Jonathan
+> 
+> > ---
+> > Revision history:
+> > v1 => v2:
+> > - Improved wording based on discussion with Mehdi.
+> > 
+> >  drivers/iio/accel/kionix-kx022a.h | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
+> > index 142652ff4b22..d18d56cef098 100644
+> > --- a/drivers/iio/accel/kionix-kx022a.h
+> > +++ b/drivers/iio/accel/kionix-kx022a.h
+> > @@ -137,6 +137,14 @@ struct kx022a_data;
+> >   *
+> >   * @name:			name of the device
+> >   * @regmap_config:		pointer to register map configuration
+> > + * scale_table:			An array of tables of scaling factors for
+> > + *				a supported acceleration measurement range.
+> > + *				Each table containing a single scaling
+> > + *				factor consisting of two integers. The first
+> > + *				value in a table is the integer part, and
+> > + *				the second value is the	fractional part as
+> > + *				parts per billion.
+> > + * scale_table_size:		Amount of values in tables.
 
-the kernel-doc looks good to me.
-thank you Jonathan.
+I just noticed that the '@' preceding the added members scale_table and
+scale_table_size are missing, but I guess you can add those when
+rebasing ?
 
 --
 Kind Regards

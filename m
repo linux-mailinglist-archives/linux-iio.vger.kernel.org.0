@@ -1,65 +1,59 @@
-Return-Path: <linux-iio+bounces-13248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13249-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609739E8743
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:24:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF249E8747
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:26:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4526D164309
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:23:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE8A18855EA
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6601B189B83;
-	Sun,  8 Dec 2024 18:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB75189B84;
+	Sun,  8 Dec 2024 18:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIYqvgdW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxtE1kKa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAB81EA65;
-	Sun,  8 Dec 2024 18:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B4B1EA65;
+	Sun,  8 Dec 2024 18:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733682237; cv=none; b=TCD0rtYO55RL4yrt6SnBjUowd8B5nCdajTLCeXqFhTvgAmM63vIgREQOZqvRkvVy3Q0Zen1Z3ejERifbNHxceItEgalL1a6fzsa6fQFYiT9v20XyGFI475/HEBmO/GjDilqKxqlCNHV8UFz7OcKGa6GoV1Mv/cjAzfbFZBxMWHY=
+	t=1733682361; cv=none; b=YS9TY4cHl+uJLc0rjGtPCUj+cXe2V5tsfpjJF0gjm1OHsxqP0VTaGZbqmQg7uvscDnGc7uPOo5Hk1N30zUJUGqwmOvV9z50w/nYGT7aqN9F/8bikPVBrzuQqB3+zntJ4qjaiSjM/cJPKXUA/013mbmq4gmvt7jgQMtUOBqKpZ/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733682237; c=relaxed/simple;
-	bh=kRfzs/jstU21gicAWkoqBnY6u4oTZCfCNOe93GcN/nE=;
+	s=arc-20240116; t=1733682361; c=relaxed/simple;
+	bh=ZlAEwvanh8CCMftkCtbAApvzcPFguurRr96kF4Mfg1M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eftpq1S6tOlwOvnzEwSsc1qxQ7BrsbgYHx7Cr93QeWV1JcA4xkSM4vBLhJZnnXJavOhJ4tYG5Qrslqig9AdYEdtiK73yA5xyOMSR+OXeQ8hXNvxq4Q5mpJh+cVC+19TnNlUwHEfj/MOcG7zF5RJr+j+mNrUy9IndGPbVep6mbjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIYqvgdW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4874DC4CED2;
-	Sun,  8 Dec 2024 18:23:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IXP/jxJlFQhd+7fXGQ2Q2kJRsF+szXm0vliFpRLGEUcdSr2DV0O7Ak1BrwzoUkUydqCp6gCHJgHKbdVLdxTNY+FaIoXIBI21ybieB/aoOyCM7hpRX4RASZz1tcuZZ5o4MsqkoqtDabZc6VKElk0+4cfjmnh9mTkaXAolV80LVbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxtE1kKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D54C4CED2;
+	Sun,  8 Dec 2024 18:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733682236;
-	bh=kRfzs/jstU21gicAWkoqBnY6u4oTZCfCNOe93GcN/nE=;
+	s=k20201202; t=1733682360;
+	bh=ZlAEwvanh8CCMftkCtbAApvzcPFguurRr96kF4Mfg1M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EIYqvgdWqhwzjDICf1PC8YbxkHDRKso2sjLJ4fNaTvXwaz1Nfzpk/6htg13c8vb/c
-	 1i/qiwNAibaMZMvhgl3rMuaqNYOT4Y4ZDgympIcoeZrQ71htleE/+epUOwrMcRpM9N
-	 lsFlVxWdcfo4MyVyB7UQZ0VHt+iwHguNiUy0WevhPs8g3ejocagSfgnerrarVE9Vds
-	 zwQShb6gTKzswAxbKT6B7j9V/TpgWXYoY4BTFMEMb9EiXd2vfPbMzwKJZ/MCGnjJUI
-	 YvTGoOa5QI52ux8fO0R2EPOAqrwMnQd3NY//Tg95AEHZ0gO3TdTraqFpdpqjt4yQr6
-	 GPd8bCcUR2rWg==
-Date: Sun, 8 Dec 2024 18:23:46 +0000
+	b=LxtE1kKanDbA20NOpzVCGlbICIPWYm2KU7ZdXMJ6acqnHGhZEXFJUqUIGYVZqKrBy
+	 HVPG7HlDWV0vxxK47KwkCT49GcR3pP20arlnv34quAbH3DEnxokAUm0J5zY8u4Pw0h
+	 c4IwqELxcMN0P0lCN5/NHnDxNhEO8ptsu2XDFLE9oL3OW/aDyN3KCreWyMQO+vQSbj
+	 OlsFuPmrFMsem6t4s7Y7iMuYPsfd0s7IpQUL8oowDJK9KpfbU1cPZU9xrPqCHQ6Ymk
+	 bSJtUQfXu0McCbYAg2qsSBczheFR701yu2XaBkhvyZYTv6LhoxRmrgmZrRarref7C2
+	 eMBiLTt1LGM/A==
+Date: Sun, 8 Dec 2024 18:25:53 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>, Conor
- Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>,
- Renato Lui Geh <renatogeh@gmail.com>, Rob Herring <robh@kernel.org>, Trevor
- Gamblin <tgamblin@baylibre.com>
-Subject: Re: [PATCH v6 06/10] iio: adc: ad_sigma_delta: Fix a race condition
-Message-ID: <20241208182346.423bfd06@jic23-huawei>
-In-Reply-To: <CAHp75Vei1g6iL0qWV2Y7+L4M+kJyLfUDoWd0HiXRbAWqQSR0qQ@mail.gmail.com>
-References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
-	<9e6def47e2e773e0e15b7a2c29d22629b53d91b1.1733504533.git.u.kleine-koenig@baylibre.com>
-	<20241208124205.5b297fa4@jic23-huawei>
-	<CAHp75Vei1g6iL0qWV2Y7+L4M+kJyLfUDoWd0HiXRbAWqQSR0qQ@mail.gmail.com>
+To: Mehdi Djait <mehdi.djait@linux.intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure
+ members
+Message-ID: <20241208182553.42f13c05@jic23-huawei>
+In-Reply-To: <xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
+References: <Z1LDUj-naUdGSM6n@mva-rohm>
+	<20241207180201.51deb7ce@jic23-huawei>
+	<xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,40 +61,73 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 8 Dec 2024 15:05:38 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sun, 8 Dec 2024 18:42:56 +0100
+Mehdi Djait <mehdi.djait@linux.intel.com> wrote:
 
-> On Sun, Dec 8, 2024 at 2:42=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
-> > On Fri,  6 Dec 2024 18:28:38 +0100
-> > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote: =20
->=20
-> ...
->=20
-> > From sparse.
-> >
-> > drivers/iio/adc/ad_sigma_delta.c:205:13: warning: context imbalance in =
-'ad_sd_disable_irq' - wrong count at exit
-> > drivers/iio/adc/ad_sigma_delta.c:218:13: warning: context imbalance in =
-'ad_sd_enable_irq' - wrong count at exit
-> >
-> > I saw your discussion with Linus on this...
-> >
-> > https://lore.kernel.org/all/CAHk-=3DwiVDZejo_1BhOaR33qb=3Dpny7sWnYtP4JU=
-bRTXkXCkW6jA@mail.gmail.com/
-> >
-> > So I guess we just treat that as a false positive and move on. =20
->=20
-> I'm wondering if sparse annotation __acquire and __release may help here.=
-..
-
-The complaint is (I think) about guard(spinlock_irqsave)
-so I'm not immediately sure how.
-
-
-
+> Hi Jonathan,
+> 
+> On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
+> > On Fri, 6 Dec 2024 11:26:42 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> > > The kx022a driver supports a few different HW variants. A chip-info
+> > > structure is used to describe sensor specific details. Support for
+> > > sensors with different measurement g-ranges was added recently,
+> > > introducing sensor specific scale arrays.
+> > > 
+> > > The members of the chip-info structure have been documented using
+> > > kerneldoc. The newly added members omitted the documentation. It is nice
+> > > to have all the entries documented for the sake of the consistency.
+> > > Furthermore, the scale table format may not be self explatonary, nor how
+> > > the amount of scales is informed.
+> > > 
+> > > Add documentation to scale table entries to maintain consistency and to
+> > > make it more obvious how the scales should be represented.
+> > > 
+> > > Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+> > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
+> > Applied to the togreg branch of iio.git. Initially pushed out as testing.
+> > 
+> > Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
+> > for a few days.
+> > 
+> > Jonathan
+> >   
+> > > ---
+> > > Revision history:
+> > > v1 => v2:
+> > > - Improved wording based on discussion with Mehdi.
+> > > 
+> > >  drivers/iio/accel/kionix-kx022a.h | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
+> > > index 142652ff4b22..d18d56cef098 100644
+> > > --- a/drivers/iio/accel/kionix-kx022a.h
+> > > +++ b/drivers/iio/accel/kionix-kx022a.h
+> > > @@ -137,6 +137,14 @@ struct kx022a_data;
+> > >   *
+> > >   * @name:			name of the device
+> > >   * @regmap_config:		pointer to register map configuration
+> > > + * scale_table:			An array of tables of scaling factors for
+> > > + *				a supported acceleration measurement range.
+> > > + *				Each table containing a single scaling
+> > > + *				factor consisting of two integers. The first
+> > > + *				value in a table is the integer part, and
+> > > + *				the second value is the	fractional part as
+> > > + *				parts per billion.
+> > > + * scale_table_size:		Amount of values in tables.  
+> 
+> I just noticed that the '@' preceding the added members scale_table and
+> scale_table_size are missing, but I guess you can add those when
+> rebasing ?
+Good spot ;(  I'll fix.
+> 
+> --
+> Kind Regards
+> Mehdi Djait
 
 

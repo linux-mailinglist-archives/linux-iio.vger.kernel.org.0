@@ -1,59 +1,56 @@
-Return-Path: <linux-iio+bounces-13227-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13228-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0FF9E869A
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:39:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDF09E869F
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:41:40 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F24221884D96
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:39:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 763EF281200
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0399B1714B5;
-	Sun,  8 Dec 2024 16:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21611714DF;
+	Sun,  8 Dec 2024 16:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZHBt1DPW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLoUfBvv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF23A170A15;
-	Sun,  8 Dec 2024 16:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C0F170A15;
+	Sun,  8 Dec 2024 16:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733675940; cv=none; b=lgMhdo1n/hPYt0eZ8Apf4TQrQqhtq8TruLeEbjiVEJvueV8hdx35IRDWMYEEv3it3VOhmRVInaShImOAZWPC+sBOGe9jXoc1nmmw/OHk6W1dLZLwjpwJmsr9A0djAfaD+tcZ24lHfJuEzHFMtkKSeJTQbnkzRPU3117Ka5V8RXY=
+	t=1733676094; cv=none; b=g3DSmuU0oxYcnyAeEzVc5sKMfHKWMiWyM+5jYG/AhdBSCXGmJcuvUI3LRAYpswyyOpYX7T63o5IJeGI0yWqooE6SI89aYcX5ZXkWlgOMXq8gIi9BbZ37XxCEICPyMOQSVG3Xe2t8ba7rwL/prxCyIsPiWUhuuYiD2ojy2hQGimM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733675940; c=relaxed/simple;
-	bh=sVgC6fFANm4YvTxqIJfUkENZ4pfQs2PLRusgHdi9Koo=;
+	s=arc-20240116; t=1733676094; c=relaxed/simple;
+	bh=K+F+jTNlixYTH5e7PZBrFHsaex+E+TQJEAp14fZJgS8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SYiMnsVsmyc6E7CIBh4wipQzg0EidZDGkeyiUyyYRcy8zyfGR6Udm1FSVYlasRdQjEVjt0YNSgBNws05BfEqQXX34v2JZxGP3eiyBZ2pLGitW/lfxgvbBZ8ImdJD+d26LEiTzH0FOSWGZw3c632jqXULsXf8MXzwKaYFFTHfpxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZHBt1DPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A950C4CEE0;
-	Sun,  8 Dec 2024 16:38:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LthRSmKEbU4iH3no/St/4BXlSYYhzCN8GL+VynN7q1UVNOGzcNG6h+1EmsWHHYC+4s3FjsgDumNB7dUxXWNcRXGUvOsbRu6PSvOaLHCGq6L1W6UwWvEEab2l4xAzrG+Y3g/owPZeB9/Nc/1SMbmeTRIph4ECaQyJ5ocvPrS3OyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLoUfBvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10351C4CED2;
+	Sun,  8 Dec 2024 16:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733675940;
-	bh=sVgC6fFANm4YvTxqIJfUkENZ4pfQs2PLRusgHdi9Koo=;
+	s=k20201202; t=1733676094;
+	bh=K+F+jTNlixYTH5e7PZBrFHsaex+E+TQJEAp14fZJgS8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZHBt1DPWpkWGatAOLmY6NJYYYQhJqKrVJK3NJW88HyFCuQWDylAwDvahpMvDoV0iv
-	 bm11ZdRK5hjKApiwAOOPmc1UzRBGE5x4fr6vRxYNbCV4KUWVrvelwlIDkWGzVosT5B
-	 uU0OX8mLfCo8IFD7MGnBs0bUFi5tRoC9OpfkNxDeZ9eQbX+WmUCtzFjOL9gQCaI+Ss
-	 NA09WQwiCqpsuiR8Z4h05BW7C522XZiPkfyxmRSDEVKCVNU92ZoCobGjbk0cwaXv0X
-	 rFiWMttEdPwnMBRFnblQZQfRC/rM7CRWooGOhyGkHo8U2T/iX/rATatX70tRgpvRPF
-	 AwN/YrE1/HPcA==
-Date: Sun, 8 Dec 2024 16:38:51 +0000
+	b=tLoUfBvvswCZTlHddAJKVV94FcUIyqwqPy/riawFQdMByWS5FZVoPABifn7EFeQ5o
+	 w16h8tHOtRio+tUnpI5NvYDsWlt8iBlc1n4Jra+eL1oJAmP9Th0Zrc+ql8ugGgw0KZ
+	 j2LrA4LinDQUl4KMo7IhAJf18ASGbd5KYK3Mcj7ttseVxYp+wsuD5tvB+fGuzyFseA
+	 5rvPYkArsZU4MciUSItV/8yrPdCEfNj2pAdE8Kqc8YBOnj/JxS07Gptc4Iv56puqrR
+	 +cZkznTVTnKrfkcU9qrS6HBYCpwIaJ8uuCOUBmnJylA3a6ng19Lbxnj93QOsa/6GN8
+	 8fqynidxafKgw==
+Date: Sun, 8 Dec 2024 16:41:26 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Jiri Kosina <jikos@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: hid-sensor-prox: Merge information from different
- channels
-Message-ID: <20241208163851.41c47c3f@jic23-huawei>
-In-Reply-To: <20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org>
-References: <20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adf4371: add differential ref
+Message-ID: <20241208164126.4c4fdd8c@jic23-huawei>
+In-Reply-To: <20241206152207.37928-1-antoniu.miclaus@analog.com>
+References: <20241206152207.37928-1-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,77 +61,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 05 Dec 2024 12:59:20 +0000
-Ricardo Ribalda <ribalda@chromium.org> wrote:
+On Fri, 6 Dec 2024 17:22:04 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> The device only provides a single scale, frequency and hysteresis for
-> all the channels. Fix the info_mask_* to match the reality of the
-> device.
+> Add support for differential input reference clock.
+
+If it's an input clock, why not a named clock?
+
 > 
-> Without this patch:
-> in_attention_scale
-> in_attention_hysteresis
-> in_attention_input
-> in_attention_offset
-> in_attention_sampling_frequency
-> in_proximity_scale
-> in_proximity_sampling_frequency
-> in_proximity_offset
-> in_proximity0_raw
-> in_proximity_hysteresis
-> 
-> With this patch:
-> hysteresis
-> scale
-> sampling_frequency
-> in_attention_input
-> in_attention_offset
-> in_proximity0_offset
-> in_proximity0_raw
-> 
-> Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-
-whilst perhaps not ideal use of the ABI, what is there today is not wrong
-as such.  If the ABI above was all introduce in the recent patch I might
-be fine adjusting it as you suggestion. However it wasn't, in_proximity_scale
-has been there a long time so this would be an ABI change.
-Those are generally only ok if there is a bug.
-
-Drivers are always allowed to provide finer granularity than necessary
-so in this case I don't see this as a bug.
-
-Jonathan
-
-
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
->  drivers/iio/light/hid-sensor-prox.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-> index e8e7b2999b4c..f21d2da4c7f9 100644
-> --- a/drivers/iio/light/hid-sensor-prox.c
-> +++ b/drivers/iio/light/hid-sensor-prox.c
-> @@ -49,9 +49,11 @@ static const u32 prox_sensitivity_addresses[] = {
->  #define PROX_CHANNEL(_is_proximity, _channel) \
->  	{\
->  		.type = _is_proximity ? IIO_PROXIMITY : IIO_ATTENTION,\
-> -		.info_mask_separate = _is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> -				      BIT(IIO_CHAN_INFO_PROCESSED),\
-> -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |\
-> +		.info_mask_separate = \
-> +		(_is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> +				BIT(IIO_CHAN_INFO_PROCESSED)) |\
-> +		BIT(IIO_CHAN_INFO_OFFSET),\
-> +		.info_mask_shared_by_all = \
->  		BIT(IIO_CHAN_INFO_SCALE) |\
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |\
->  		BIT(IIO_CHAN_INFO_HYSTERESIS),\
-> 
-> ---
-> base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
-> change-id: 20241203-fix-hid-sensor-62e1979ecd03
-> 
-> Best regards,
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> index 1cb2adaf66f9..dd9a592d0026 100644
+> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> @@ -40,6 +40,11 @@ properties:
+>        output stage will shut down until the ADF4371/ADF4372 achieves lock as
+>        measured by the digital lock detect circuitry.
+>  
+> +  adi,ref-differential-enable:
+> +    type: boolean
+> +    description:
+> +      If this property is present, differential input reference is enabled.
+> +
+>  required:
+>    - compatible
+>    - reg
 
 

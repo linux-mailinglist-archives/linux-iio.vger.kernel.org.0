@@ -1,138 +1,119 @@
-Return-Path: <linux-iio+bounces-13239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF75D9E8717
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:33:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B309E8719
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:34:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7809281557
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:33:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F611884077
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9561F187862;
-	Sun,  8 Dec 2024 17:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6172A18754F;
+	Sun,  8 Dec 2024 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBLjx57j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RQsZaER1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB6B22EE4;
-	Sun,  8 Dec 2024 17:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23822EE4;
+	Sun,  8 Dec 2024 17:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733679226; cv=none; b=fzWqpLnn1CLDAbAIMLwqW8i4rBYnrfEkEHmq+qm4HjBC+eibyCJAFZ6UcO85kSke2i4kOv9FhVgscy4+VPgVBspo5VmqC3HSJSSf578/96YTcc5nD018gjE+/xyLvZGVhuUmT/eJBRblCh8Hn+4dSByW8mMq8LKqKMkR3Jy5nw8=
+	t=1733679264; cv=none; b=fwC5U4wc/uOlTUS70yUoIQWzTjQCwA2P612HCRQ8IsyKt+UqsDBQKsJzq42vmBBmWpECthZrr9ztzMzsF/H2ZMrCqXj7A/IJTTHU44e6Nu+hBDa0JU24Lij6DJYnlVGUBjvCsv95feQ7dQShH+fI1bGLi52J1FoZk7/s77597Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733679226; c=relaxed/simple;
-	bh=tLuUoayLLlT2eNWkFArfaB8W5balZwTzE5ssrWn4He0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qlb1Hl58FqGVj6AISTv7ESProHqff3K25Cj847zUnJT20oD+WybZOtb2arzzVJvFUaUuqzAtv6R8sIM9r617n4JleRbV06vZz96ABixMu0zf2mVEWfw4omLPqllmsqwmqQ1cpO8l7LCclnej5+rbd0riJ5rWkA3BrcusZD8iZ0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBLjx57j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9767C4CED2;
-	Sun,  8 Dec 2024 17:33:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733679225;
-	bh=tLuUoayLLlT2eNWkFArfaB8W5balZwTzE5ssrWn4He0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CBLjx57jd9zdjZLLtC2DhVDHa36uS0qYAsRAS/Xb7HClfbuYzbJ7FgEYzliA4n/Rq
-	 UJ/IqIzS1bg9V7Ih67bnrOXpSqloUtYXg/w9DGUbiRTy8xOmzAhvB6AC6s54AOvy8+
-	 +HPVulRqCLRQ6R5kd7tEuOTvyakCy8IFpt2ScXb+QWM7l8IWcx0Jav+d0vJj8D9qbl
-	 jgPxb8wC/FbhhJc74pX/1l4St0zs6FPlYi9ewuIb8zE9V62HuBvkGXKZAGEdl1WA1J
-	 ye17Zq+gdbf9Uh9GNeIpXzx6EBDY18+WieP38/9/SpvIvv3vtZ6UwFmhlaygdqnJpC
-	 f9arBdF+T8G6A==
-Date: Sun, 8 Dec 2024 17:33:36 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 3/3] iio: chemical: bme680: add power management
-Message-ID: <20241208173336.6a09c9b2@jic23-huawei>
-In-Reply-To: <Z078vIxRoQf_zLsy@smile.fi.intel.com>
-References: <20241202192341.33187-1-vassilisamir@gmail.com>
-	<20241202192341.33187-4-vassilisamir@gmail.com>
-	<Z04N6GUSL2H0zt6_@smile.fi.intel.com>
-	<Z04aJg7eoBR9CYKe@vamoirid-laptop>
-	<Z078vIxRoQf_zLsy@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1733679264; c=relaxed/simple;
+	bh=0tMjJvNUglAsKPSgqHCefRFhhPqxQRqeTXYuDhbP3ig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eyQ6cyJ4yIO4aU62IfWDSN9bILgMset5xAI5AyAn+HrtC2fM4DPvKgC8JDz4oP6+TobPjtP4SFJ6OQuFHvkQ153Eb0IulHogHOorOKqAlUKyzgDBkw+G0urGbgP64tjxghvuohNut0aWEKouuxXcTRYXvbPzV2vIc4oF00283sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RQsZaER1; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733679262; x=1765215262;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0tMjJvNUglAsKPSgqHCefRFhhPqxQRqeTXYuDhbP3ig=;
+  b=RQsZaER1hONPXgDhly/kZc1Js/TJQKXNfC83sT2jFReiiZXRrHst2djr
+   NDz61EbbfJdNAmESPjqp/L6C/gzAop9XxD1nRnwq9UYEBUqvKjuD6twtu
+   2lHgM2YI9S/dZOxthy86QfVI35JnUbjmwaD4KpUj+5FAG4y8DgiX2cUt4
+   er/uy38+v6jwEyiRwLXbdKIQp6LOAhLj+h5mB7a2JlFoiW8G3o9m0QOFc
+   ht1YCJ979MMCpg+eLtYkk0KfWEu1RbRgUGJb+8Ofw7oi9jK5NsvuMiQ2+
+   hQHZ0OCi+ysD/PdeOUyR4eOweNdAnFW2i4KVmfdbBsRhJqqgTAogOB9Tk
+   A==;
+X-CSE-ConnectionGUID: wlf0MzvCRPapGqYTdI43vg==
+X-CSE-MsgGUID: RLU9pYxxQwaVMSiIhYd26Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11280"; a="33300512"
+X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
+   d="scan'208";a="33300512"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:34:21 -0800
+X-CSE-ConnectionGUID: 23ikPc2iTMOdOAMOOZrBgA==
+X-CSE-MsgGUID: mMpg/EOeTEGVeKlHsjSe2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,217,1728975600"; 
+   d="scan'208";a="95321595"
+Received: from mlehtone-mobl.ger.corp.intel.com (HELO mdjait-mobl) ([10.245.245.12])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Dec 2024 09:34:20 -0800
+Date: Sun, 8 Dec 2024 18:34:10 +0100
+From: Mehdi Djait <mehdi.djait@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure members
+Message-ID: <gfgubkilfcsqf4tcfovib6ny7nizrb7xsptyhgs5grz5w6zme2@m5c3lkjwx7fz>
+References: <Z1LDUj-naUdGSM6n@mva-rohm>
+ <20241207180201.51deb7ce@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241207180201.51deb7ce@jic23-huawei>
 
-On Tue, 3 Dec 2024 14:42:36 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Hi Jonathan and Matti,
 
-> On Mon, Dec 02, 2024 at 09:35:50PM +0100, Vasileios Amoiridis wrote:
-> > On Mon, Dec 02, 2024 at 09:43:36PM +0200, Andy Shevchenko wrote:  
-> > > On Mon, Dec 02, 2024 at 08:23:41PM +0100, Vasileios Amoiridis wrote:  
-> > > > Add runtime power management to the device.  
+thank you Matti for the patch.
+
+On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
+> On Fri, 6 Dec 2024 11:26:42 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> ...
-> 
-> > > > +	ret = pm_runtime_resume_and_get(dev);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
-> > > > +	pm_runtime_mark_last_busy(dev);
-> > > > +	pm_runtime_put_autosuspend(dev);  
-> > > 
-> > > Side note: as long as idle method is not defined (NULL) the above dance is
-> > > already taken into account in the regular put.  
-> 
-> > Thanks again for the review! Indeed by looking at the code a bit, it
-> > looks like the suspend callback is being called if the idle one is not
-> > found. But I have seen this dance that you mention much more often in
-> > the IIO that's why I used it. We can see what Jonathan has to say as
-> > well, I think what you propose, simplifies things.  
-> 
-> Yeah, this is cargo cult by many people (including me :-) who missed that
-> detail. If any, this can be addressed in a different series.
-> 
-> ...
-> 
-> > > > +static int bme680_buffer_preenable(struct iio_dev *indio_dev)
-> > > > +{
-> > > > +	struct bme680_data *data = iio_priv(indio_dev);
-> > > > +	struct device *dev = regmap_get_device(data->regmap);
-> > > > +	int ret;  
-> > >   
-> > > > +	ret = pm_runtime_resume_and_get(dev);
-> > > > +	if (ret)
-> > > > +		return ret;
-> > > > +
-> > > > +	return 0;  
-> > > 
-> > > Either this is broken (if the above can return positive codes), or can be
-> > > replaced with direct return:
-> > > 
-> > > 	return pm_...
-> > > 
-> > > (but I believe it's the former and you wanted something like if (ret < 0)
-> > >  there).
-> > >   
-> > > > +}  
+> > The kx022a driver supports a few different HW variants. A chip-info
+> > structure is used to describe sensor specific details. Support for
+> > sensors with different measurement g-ranges was added recently,
+> > introducing sensor specific scale arrays.
 > > 
-> > Well, pm_runtime_resume_and_get() looks like it returns 0 on success and
-> > negative value on error so I think the if (ret) is correct, no? But I
-> > agree with you that it can be simplified as you proposed.  
+> > The members of the chip-info structure have been documented using
+> > kerneldoc. The newly added members omitted the documentation. It is nice
+> > to have all the entries documented for the sake of the consistency.
+> > Furthermore, the scale table format may not be self explatonary, nor how
+> > the amount of scales is informed.
+> > 
+> > Add documentation to scale table entries to maintain consistency and to
+> > make it more obvious how the scales should be represented.
+> > 
+
+Reviewed-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+
+> > Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
+> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Applied to the togreg branch of iio.git. Initially pushed out as testing.
 > 
-> Please, go ahead with the simplification!
-> 
-I tweaked it and applied the series to the togreg branch of iio.git and
-pushed out as testing for all the normal reasons.
+> Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
+> for a few days.
 
-There was some mess because of the EXPORT_SYMBOL() macro changes this raced
-against.  Please sanity check I didn't mess it up.
+the kernel-doc looks good to me.
+thank you Jonathan.
 
-Jonathan
-
-
+--
+Kind Regards
+Mehdi Djait
 

@@ -1,196 +1,210 @@
-Return-Path: <linux-iio+bounces-13258-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13259-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6019F9E878E
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 20:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9C19E87A0
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 21:09:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C4718854C2
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C99A18857E3
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 20:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701CD1917D9;
-	Sun,  8 Dec 2024 19:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E0585260;
+	Sun,  8 Dec 2024 20:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MoKhYpWu"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ngelscBf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B7522318;
-	Sun,  8 Dec 2024 19:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F51146B8
+	for <linux-iio@vger.kernel.org>; Sun,  8 Dec 2024 20:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733687089; cv=none; b=TZLhf36tuc61Nos4uN1lkjZFvy+iDh7b+G3l3CG1T1jOlcd/XQJ2B5dXUxOfkPj24PeP38/jtMuR9roY8WLnkMkFRG3x0ul7TdCy0eDE/pkHm5xM5Zj+uh/m0KoHkHlB7zZwAQAl9jbZwah8vhKSyG1//8ZtGTlq72IRflzCsAs=
+	t=1733688572; cv=none; b=qyphy1WHE09Gmkz7T5STTah+cU7YueqNQVuEfM8NGzry6VcfqZIpChNoqfmD7Q1t+jRlEAUy5WzpKt0kKkcNMvnkjKXV3dKga7D8S6110EOYvrXXW7Y7C+UOWm8NnEnbWsX5ucTnppjQ8qJwBcI5uUNk2YTgrrI7KCKSH5b17Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733687089; c=relaxed/simple;
-	bh=z/IlomK55kX1UvpgapgR+FiMtG/I30tIqY2zgcbnGR8=;
+	s=arc-20240116; t=1733688572; c=relaxed/simple;
+	bh=tDolt7CdTcOAuj3WjqpFgrueMTWHOLF8Meouj6r0xp0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aM5S6G+wPHHHDFCPlUq8KXXT5517a/CIu/pLrm5DUcJgJtrQiJVHZGwNpVwonuq+J2vmdGaBXa0H1EumHo82sjxiCaeikaVfgUr/kmZVwf1S9OoEbs9ckvVhe9alghekeSVGNK6DteBzAzwBx3TnKziPB6K6XzKccVbexVLJhMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MoKhYpWu; arc=none smtp.client-ip=209.85.221.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-515e1d6b63bso508132e0c.3;
-        Sun, 08 Dec 2024 11:44:47 -0800 (PST)
+	 To:Cc:Content-Type; b=aIh92GhHkHz8hjOPaJ13CD6hGP7qc5tD6dJE5joUyFxK49dCA37NIZKYqULTECU+jEn9PIXEVA46nz6LgMov3kZCe/31tLkCY/FPZ1OJQS4aHtiJ7oD8+WtNqvGgcYEO1vgBZh6+Aa9HQtwmqYmJ5yRWf0SjUcCEg0iEzfKvR1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ngelscBf; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-724d23df764so3486515b3a.1
+        for <linux-iio@vger.kernel.org>; Sun, 08 Dec 2024 12:09:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733687086; x=1734291886; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LdyuGF53U9Pxx7HiAC4Y+SZv631LLYf9Lao16e8i3TM=;
-        b=MoKhYpWuzQpkhTb/1d3nR/fesdH8iqRhAaRnEhGwcp17ZN1BPoY4tSQtHP/r0LBXhF
-         usTdUZyg4UZaeMcAU1lzvzyFxdkHRnGg+mRnKFf+gTfhlkOQi/Oj3EgrEG0wxIC13EKQ
-         RdEnQOI0Gq4kRKltKrbABYZrX1YxhfjiC1uWiAb86obW0oVbH//Cp0GzJhY9vUMTQaDZ
-         MprxOAz5/h2w2A2u2YFyJl6bSvopeAaoFvel22hkgNO0n/oIMT26JgTPyu94XvZeKDSW
-         9eB+gdCCKl6q2c5zVwwgo76OzSdaFByzO+Sd/Wvgt7B9fwpGRF3lKPXJMbra8t+IjHvO
-         Hogg==
+        d=chromium.org; s=google; t=1733688570; x=1734293370; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bLhwkBOgmbpT4U5gL2AOUVQiIkPnhXXcl0f3hXuuoIA=;
+        b=ngelscBfuKU56gJx8DjdNW8M4GrUQD1xfCTS+ZfcxRTEsVFyWArzATGLk79rlBEhOL
+         buUDYuxn/UxeIbYUgnO/Oa1Oxb2+NmTPjZKiFwONBE/6G9NoW62YQlS7XGotin0UCTLw
+         /wKArIr+1lQiouCUrlDZqb2pfurKtLDqeVGzo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733687086; x=1734291886;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LdyuGF53U9Pxx7HiAC4Y+SZv631LLYf9Lao16e8i3TM=;
-        b=Sz8/gtUxiYcI2G/nlO2AEy0H53jhHatl+4PPB10Ag1ZiQgNegbzFAP2ts8fYoD93eo
-         yeQHIK5y6F4B6lQ0/7HUd9ofmvJ0I0Yg2YwosHYC8LkLrWJDOffpQtG03hT24wqb9EYI
-         fwZOL74Ryp8iyx3M8hVT7CcQMD72FU2SXaTvgbxf4Ya4jj0hY1peOHBAhGKaAdmSfMLQ
-         0TW6FZNAlF6E4XHrFRJFS3zBV0COF7Qp19J1hoIxKdS1Y159OmkpfqfMr4oHBtmgjblf
-         S/dUT+CmWQYsDcXTUXXuXuv7dX8+fEQfAq2U2JxdA1TEXiCIovonsgt65IOpHHi+M3QW
-         6r/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWAMVu0u9Rh37gHFukrA2XpRpASfUjKUJSq6aJWadFk6ju7scVrxg7LwY2W7CiH6hWdO3tnnuTmzqEBwafbWQWm+rc=@vger.kernel.org, AJvYcCWXeezdL/q3UZhpPQNVfSKhlHQJUhLK1lq835nlBHYP4E6xW2RqtAIOw21nwKbGRefO3pgcMhTTfUqF@vger.kernel.org, AJvYcCWufaMrLFf+j07Nz/HoOGUQT8Re9GSqoEuAiVwrqHspmaSp6aAY1LXlf5XwNTK34WwsBURZXKwuh6BVd5vE@vger.kernel.org, AJvYcCXfPvFfnXP9gARI+Kq0STH6NEyn5duLS71vjnMNxQkskdDuCx7FHGKV+uqKK2h9lIxm0V/n5svsTtqk@vger.kernel.org, AJvYcCXsnvYC6xCcf/oSXDQOBCARPcTmxe2qxzgzgL2OTf3HolmzpgMBXaYh0jAkuf5aDBdXH2T9EvHmfT8d@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyexc47h7EMH8PDHac6Hb8RsolTpNut8FS/6L71jddC/AoJFyFt
-	CuaYqVX9htPg3rg+wPjX+4Cow9tK91ntwUbSwbTKp4JZ290deaF5qhQvrZNVE6JQOk8OyeP6isG
-	gQGJuSoqOEsody5xhHv4JQEgGbEQ=
-X-Gm-Gg: ASbGncuFh38lwRXYjylkPUviUq9Kkx1Sa1U6Cw1gJNF3elyhRkbgdI+kYWxFdIS//h3
-	xlNiUr5QkuTs8+aFmvwXmldTtlnUruqOG
-X-Google-Smtp-Source: AGHT+IE5XUpx8X/w7gTzb7U+uEjAHF2vr9LujcPw8JJel5KRlP2ogm+Loanw+eE1FdlGchVtfgfHgnDuFcId0On9bgI=
-X-Received: by 2002:a05:6122:1805:b0:518:7c13:d191 with SMTP id
- 71dfb90a1353d-5187c13f229mr69409e0c.8.1733687086496; Sun, 08 Dec 2024
- 11:44:46 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733688570; x=1734293370;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bLhwkBOgmbpT4U5gL2AOUVQiIkPnhXXcl0f3hXuuoIA=;
+        b=PlBOscULdGM4XAASgWZNh4FEw8pvr685pRxoOtJjls4HVJVac3q6RmdNXwruDW1K1v
+         7eP6nfce5U6l9tfPG3uS2Z0aANJck5FnbFwL6SmGjypl5k0ua5UbxvFeeJ/Se5RwqlIj
+         p3C2EO1xmPgiD7t+KxKiy+tBGfnOMpggqpFJ/KBAxisOVwoKoXv10qY1C7phzFsHT2+7
+         DaYQqFxmVBAJ5KgWqyidEF2kjWK2RnlwsoXYQKDZX9DXnJVwGNCtTaL3f902aUu6Z1ul
+         m3lTV30+W4PvKskmZ48J5S4aeomGQYG0tpQnoa3YoK+A4IwF7ZXrAsZQWDO4HgQwHtl6
+         fWKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZnG/LOdmUsF/y5+WK7XxME0xuSC0bCMgFhBKeb29bOKZ52EDVOkmGRUyd3/eNzDCYj7XZc7YVVHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzglMK8Tniq3BCmT/vAeIUUpQhdq4CN+GcIFeit6xi6opIlME3O
+	vkMQowmktL/SL1kW+URtRwRRB7b7kBrS/hRM2zwisXd++iKP/3uIA9LXr/Q28yL7V6ac2lGez80
+	=
+X-Gm-Gg: ASbGncsPe9kIranhYuyAITeXd2gfaUAJA8aDZ+MBpgHHcjLmG+rCROMY7QI4ULuVZ00
+	BfW7z3HizRctGvZYFNltZTaDbh8VALsQduFQZkeswmsXyNd9YOwhN8vsjRzrjs5y0pyF+aIJTsU
+	5jUNUzkaV5U6E4zaYFSYCHUmA+vEWoHLdy54xmp2/PaiuJq48DSpfb7K8aEfv7D3MkxBAQGtF1l
+	hBofMGa5ovMrZtUe75zmaJnVuu2ccxvh7nc+Awl8xLr3EHpl4TgYrK9Cq5WGNBK/sQbOMz8QsBu
+	E4+Wp0esOPxjQAI9
+X-Google-Smtp-Source: AGHT+IG2ikgScTqeJQA4VtpceG/iPx0bqfzvzoavji/O+H7m06YDuYmByUuwWLWSfvY0poezQKLzog==
+X-Received: by 2002:a05:6a00:148d:b0:724:62b3:58da with SMTP id d2e1a72fcca58-725b810df82mr15071833b3a.6.1733688570339;
+        Sun, 08 Dec 2024 12:09:30 -0800 (PST)
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com. [209.85.214.170])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725a29ef4e1sm6167516b3a.77.2024.12.08.12.09.29
+        for <linux-iio@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 08 Dec 2024 12:09:29 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-215b0582aaeso27535635ad.3
+        for <linux-iio@vger.kernel.org>; Sun, 08 Dec 2024 12:09:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCX9zGXJ2B7ycN4I6F1+r7XVvqR2oDfsWiFcBeXpqjyvgWZz7ZkGEF4El2QnMZ7mUPwi3QlZykBihV8=@vger.kernel.org
+X-Received: by 2002:a17:902:fc4d:b0:216:3dc5:1240 with SMTP id
+ d9443c01a7336-2163dc515d4mr53882835ad.45.1733688568741; Sun, 08 Dec 2024
+ 12:09:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com> <20241206111337.726244-4-claudiu.beznea.uj@bp.renesas.com>
-In-Reply-To: <20241206111337.726244-4-claudiu.beznea.uj@bp.renesas.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Sun, 8 Dec 2024 19:44:20 +0000
-Message-ID: <CA+V-a8vvDYwzgQ51rTiYBoRkcy0pQvM-mNW3QCitnfROrTDUYQ@mail.gmail.com>
-Subject: Re: [PATCH v2 03/15] iio: adc: rzg2l_adc: Use devres helpers to
- request pre-deasserted reset controls
-To: Claudiu <claudiu.beznea@tuxon.dev>
-Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, jic23@kernel.org, lars@metafoo.de, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	geert+renesas@glider.be, magnus.damm@gmail.com, mturquette@baylibre.com, 
-	sboyd@kernel.org, p.zabel@pengutronix.de, linux-iio@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+References: <20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org> <20241208163851.41c47c3f@jic23-huawei>
+In-Reply-To: <20241208163851.41c47c3f@jic23-huawei>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Sun, 8 Dec 2024 21:09:16 +0100
+X-Gmail-Original-Message-ID: <CANiDSCsD2gGBPVaFMU4uhtpWf3dUr4-MA5MpcjZRcLMgBmtjZg@mail.gmail.com>
+X-Gm-Features: AZHOrDljjJs2pi977K4dUh9IOYsTVktxzHjXF2FzE_KTvdtIKS-5f-wvx8t2_EE
+Message-ID: <CANiDSCsD2gGBPVaFMU4uhtpWf3dUr4-MA5MpcjZRcLMgBmtjZg@mail.gmail.com>
+Subject: Re: [PATCH] iio: hid-sensor-prox: Merge information from different channels
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-input@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 6, 2024 at 11:14=E2=80=AFAM Claudiu <claudiu.beznea@tuxon.dev> =
-wrote:
->
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
->
-> Starting with commit d872bed85036 ("reset: Add devres helpers to request
-> pre-deasserted reset controls"), devres helpers are available to simplify
-> the process of requesting pre-deasserted reset controls. Update the
-> rzg2l_adc driver to utilize these helpers, reducing complexity in this
-> way.
->
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> ---
->
-> Changes in v2:
-> - rebased on top of patch 2/15 from this version
-> - used "failed to get/deassert" failure messages
->
->  drivers/iio/adc/rzg2l_adc.c | 37 ++++++-------------------------------
->  1 file changed, 6 insertions(+), 31 deletions(-)
->
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Hi Jonathan
 
-Cheers,
-Prabhakar
 
-> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index 8a804f81c04b..c0c13e99aa92 100644
-> --- a/drivers/iio/adc/rzg2l_adc.c
-> +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -411,11 +411,6 @@ static void rzg2l_adc_pm_runtime_set_suspended(void =
-*data)
->         pm_runtime_set_suspended(dev->parent);
->  }
+On Sun, 8 Dec 2024 at 17:39, Jonathan Cameron <jic23@kernel.org> wrote:
 >
-> -static void rzg2l_adc_reset_assert(void *data)
-> -{
-> -       reset_control_assert(data);
-> -}
-> -
->  static int rzg2l_adc_probe(struct platform_device *pdev)
->  {
->         struct device *dev =3D &pdev->dev;
-> @@ -448,34 +443,14 @@ static int rzg2l_adc_probe(struct platform_device *=
-pdev)
->         if (IS_ERR(adc->adclk))
->                 return dev_err_probe(dev, PTR_ERR(adc->adclk), "Failed to=
- get adclk");
+> On Thu, 05 Dec 2024 12:59:20 +0000
+> Ricardo Ribalda <ribalda@chromium.org> wrote:
 >
-> -       adc->adrstn =3D devm_reset_control_get_exclusive(dev, "adrst-n");
-> +       adc->adrstn =3D devm_reset_control_get_exclusive_deasserted(dev, =
-"adrst-n");
->         if (IS_ERR(adc->adrstn))
-> -               return dev_err_probe(dev, PTR_ERR(adc->adrstn), "failed t=
-o get adrstn\n");
-> -
-> -       adc->presetn =3D devm_reset_control_get_exclusive(dev, "presetn")=
-;
-> -       if (IS_ERR(adc->presetn))
-> -               return dev_err_probe(dev, PTR_ERR(adc->presetn), "failed =
-to get presetn\n");
-> -
-> -       ret =3D reset_control_deassert(adc->adrstn);
-> -       if (ret)
-> -               return dev_err_probe(&pdev->dev, ret, "failed to deassert=
- adrstn pin, %d\n", ret);
-> -
-> -       ret =3D devm_add_action_or_reset(&pdev->dev,
-> -                                      rzg2l_adc_reset_assert, adc->adrst=
-n);
-> -       if (ret) {
-> -               return dev_err_probe(&pdev->dev, ret,
-> -                                    "failed to register adrstn assert de=
-vm action, %d\n", ret);
-> -       }
-> +               return dev_err_probe(dev, PTR_ERR(adc->adrstn), "failed t=
-o get/deassert adrst-n\n");
+> > The device only provides a single scale, frequency and hysteresis for
+> > all the channels. Fix the info_mask_* to match the reality of the
+> > device.
+> >
+> > Without this patch:
+> > in_attention_scale
+> > in_attention_hysteresis
+> > in_attention_input
+> > in_attention_offset
+> > in_attention_sampling_frequency
+> > in_proximity_scale
+> > in_proximity_sampling_frequency
+> > in_proximity_offset
+> > in_proximity0_raw
+> > in_proximity_hysteresis
+> >
+> > With this patch:
+> > hysteresis
+> > scale
+> > sampling_frequency
+> > in_attention_input
+> > in_attention_offset
+> > in_proximity0_offset
+> > in_proximity0_raw
+> >
+> > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 >
-> -       ret =3D reset_control_deassert(adc->presetn);
-> -       if (ret)
-> -               return dev_err_probe(&pdev->dev, ret, "failed to deassert=
- presetn pin, %d\n", ret);
-> -
-> -       ret =3D devm_add_action_or_reset(&pdev->dev,
-> -                                      rzg2l_adc_reset_assert, adc->prese=
-tn);
-> -       if (ret) {
-> -               return dev_err_probe(&pdev->dev, ret,
-> -                                    "failed to register presetn assert d=
-evm action, %d\n", ret);
-> +       adc->presetn =3D devm_reset_control_get_exclusive_deasserted(dev,=
- "presetn");
-> +       if (IS_ERR(adc->presetn)) {
-> +               return dev_err_probe(dev, PTR_ERR(adc->presetn),
-> +                                    "failed to get/deassert presetn\n");
->         }
+> whilst perhaps not ideal use of the ABI, what is there today is not wrong
+> as such.  If the ABI above was all introduce in the recent patch I might
+> be fine adjusting it as you suggestion. However it wasn't, in_proximity_scale
+> has been there a long time so this would be an ABI change.
+> Those are generally only ok if there is a bug.
 >
->         ret =3D rzg2l_adc_hw_init(adc);
-> --
-> 2.39.2
+> Drivers are always allowed to provide finer granularity than necessary
+> so in this case I don't see this as a bug.
+
+Is it ok that changing the attention_sampling frequency the
+proximity_sampling frequency changes as well?
+(Just asking for my own education, not complaining :) )
+
+Also, what about ?:
+in_attention_scale
+in_attention_hysteresis
+in_attention_input
+in_attention_offset
+in_attention_sampling_frequency
+in_proximity0_scale
+in_proximity0_sampling_frequency
+in_proximity0_offset
+in_proximity0_raw
+in_proximity0_hysteresis
+
+Would that be acceptable? I think that if we are giving the false
+impression that every sampling frequency is independent we should go
+all the way in. WDYT?
+
+Thanks!
+
+ps: this patch is in the queue in case you missed it
+https://lore.kernel.org/linux-iio/20241122-fix-processed-v2-1-b9f606d3b519@chromium.org/
+
+That one is a real fix for the driver :)
+
+>
+> Jonathan
 >
 >
+> > ---
+> >  drivers/iio/light/hid-sensor-prox.c | 8 +++++---
+> >  1 file changed, 5 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+> > index e8e7b2999b4c..f21d2da4c7f9 100644
+> > --- a/drivers/iio/light/hid-sensor-prox.c
+> > +++ b/drivers/iio/light/hid-sensor-prox.c
+> > @@ -49,9 +49,11 @@ static const u32 prox_sensitivity_addresses[] = {
+> >  #define PROX_CHANNEL(_is_proximity, _channel) \
+> >       {\
+> >               .type = _is_proximity ? IIO_PROXIMITY : IIO_ATTENTION,\
+> > -             .info_mask_separate = _is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
+> > -                                   BIT(IIO_CHAN_INFO_PROCESSED),\
+> > -             .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |\
+> > +             .info_mask_separate = \
+> > +             (_is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
+> > +                             BIT(IIO_CHAN_INFO_PROCESSED)) |\
+> > +             BIT(IIO_CHAN_INFO_OFFSET),\
+> > +             .info_mask_shared_by_all = \
+> >               BIT(IIO_CHAN_INFO_SCALE) |\
+> >               BIT(IIO_CHAN_INFO_SAMP_FREQ) |\
+> >               BIT(IIO_CHAN_INFO_HYSTERESIS),\
+> >
+> > ---
+> > base-commit: 40384c840ea1944d7c5a392e8975ed088ecf0b37
+> > change-id: 20241203-fix-hid-sensor-62e1979ecd03
+> >
+> > Best regards,
+>
+
+
+-- 
+Ricardo Ribalda
 

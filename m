@@ -1,56 +1,61 @@
-Return-Path: <linux-iio+bounces-13238-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13239-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889DD9E870A
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:27:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF75D9E8717
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:33:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A26F18840C8
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7809281557
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509DD176240;
-	Sun,  8 Dec 2024 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9561F187862;
+	Sun,  8 Dec 2024 17:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZmOaH36"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBLjx57j"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A4F145324;
-	Sun,  8 Dec 2024 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB6B22EE4;
+	Sun,  8 Dec 2024 17:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733678855; cv=none; b=p/TFqyvG48oAXgnZgXO28+4DYtJbJlgzWLfdt1LX9PoxgTj6YG9Iy0qIC0HKq7nBWlB9JGwntdmEOTsRoHkCVbWURqR6DqRcm13CMqfnoX09te3ufYPW6KNPg+NVWmHqJiP1uTZGVZx1XZ+ugWn3z2lI5+nj2tU7XEo4NKHS9PA=
+	t=1733679226; cv=none; b=fzWqpLnn1CLDAbAIMLwqW8i4rBYnrfEkEHmq+qm4HjBC+eibyCJAFZ6UcO85kSke2i4kOv9FhVgscy4+VPgVBspo5VmqC3HSJSSf578/96YTcc5nD018gjE+/xyLvZGVhuUmT/eJBRblCh8Hn+4dSByW8mMq8LKqKMkR3Jy5nw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733678855; c=relaxed/simple;
-	bh=tzZBc7qZHdPxfeaWV/qXC1oRkW9L0BW5DCE6dDkKqWY=;
+	s=arc-20240116; t=1733679226; c=relaxed/simple;
+	bh=tLuUoayLLlT2eNWkFArfaB8W5balZwTzE5ssrWn4He0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MB3Fx+ShUaB7346k6lPZ4GBky2zu1OIYaDtOMQUjjgbnDPH0GkzPO89hthxbYlA0muo0xx+oBp9jqXqhnebG7ofCOBQ2MyEAj/ICuEMZVJ9n7m9sQc2NUhUHIi/rLUPaG5y8bQ3vY0oPH9USgHz82Pb/fvY2E+oMWBEp5uU42cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZmOaH36; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13408C4CED2;
-	Sun,  8 Dec 2024 17:27:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qlb1Hl58FqGVj6AISTv7ESProHqff3K25Cj847zUnJT20oD+WybZOtb2arzzVJvFUaUuqzAtv6R8sIM9r617n4JleRbV06vZz96ABixMu0zf2mVEWfw4omLPqllmsqwmqQ1cpO8l7LCclnej5+rbd0riJ5rWkA3BrcusZD8iZ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBLjx57j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9767C4CED2;
+	Sun,  8 Dec 2024 17:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733678854;
-	bh=tzZBc7qZHdPxfeaWV/qXC1oRkW9L0BW5DCE6dDkKqWY=;
+	s=k20201202; t=1733679225;
+	bh=tLuUoayLLlT2eNWkFArfaB8W5balZwTzE5ssrWn4He0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NZmOaH36B9wRcGvhFtzSYQEUPrZEZkSyGBrGfw1bS4PYqDlXvvmHKslzSzMlfKnBR
-	 yiRpKVeJ/yOWrW50hOVk2BhBPgy47UaqDEQZKH5DAB1DG3vQmaQWQhEcV78imFov6D
-	 qZKNkuMyVCPrs8cZHR2nu2cLMHgZSZlIbOfemcQxota6WvubSCWmxCtb2D2o4SBC/c
-	 NBHTTEHFPaiXdYDFPq64ijLgdx8vx55h3LUI/XCqRTbG4znMPbBdpWL317LNqwPKq3
-	 QozZAQkEmCZgrvwkBZ8NaTmeI7s00VD1C91ras/oikD3RwrAkQormxuTHPE31FjxbB
-	 wIaPcF+nTLuhw==
-Date: Sun, 8 Dec 2024 17:27:26 +0000
+	b=CBLjx57jd9zdjZLLtC2DhVDHa36uS0qYAsRAS/Xb7HClfbuYzbJ7FgEYzliA4n/Rq
+	 UJ/IqIzS1bg9V7Ih67bnrOXpSqloUtYXg/w9DGUbiRTy8xOmzAhvB6AC6s54AOvy8+
+	 +HPVulRqCLRQ6R5kd7tEuOTvyakCy8IFpt2ScXb+QWM7l8IWcx0Jav+d0vJj8D9qbl
+	 jgPxb8wC/FbhhJc74pX/1l4St0zs6FPlYi9ewuIb8zE9V62HuBvkGXKZAGEdl1WA1J
+	 ye17Zq+gdbf9Uh9GNeIpXzx6EBDY18+WieP38/9/SpvIvv3vtZ6UwFmhlaygdqnJpC
+	 f9arBdF+T8G6A==
+Date: Sun, 8 Dec 2024 17:33:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Nyekjaer <sean@geanix.com>
-Cc: Lorenzo Bianconi <lorenzo@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: st_lsm6dsx: don't always auto-enable I2C, I3C
- and SPI interface drivers
-Message-ID: <20241208172726.7ed07735@jic23-huawei>
-In-Reply-To: <20241203-lsm6dsx-v1-1-6d7893443bc8@geanix.com>
-References: <20241203-lsm6dsx-v1-1-6d7893443bc8@geanix.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 3/3] iio: chemical: bme680: add power management
+Message-ID: <20241208173336.6a09c9b2@jic23-huawei>
+In-Reply-To: <Z078vIxRoQf_zLsy@smile.fi.intel.com>
+References: <20241202192341.33187-1-vassilisamir@gmail.com>
+	<20241202192341.33187-4-vassilisamir@gmail.com>
+	<Z04N6GUSL2H0zt6_@smile.fi.intel.com>
+	<Z04aJg7eoBR9CYKe@vamoirid-laptop>
+	<Z078vIxRoQf_zLsy@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,76 +66,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 03 Dec 2024 08:20:17 +0100
-Sean Nyekjaer <sean@geanix.com> wrote:
+On Tue, 3 Dec 2024 14:42:36 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> This patch makes I2C, I3C and SPI interface drivers for ST lsm6dsx
-> individually selectable via Kconfig.
+> On Mon, Dec 02, 2024 at 09:35:50PM +0100, Vasileios Amoiridis wrote:
+> > On Mon, Dec 02, 2024 at 09:43:36PM +0200, Andy Shevchenko wrote:  
+> > > On Mon, Dec 02, 2024 at 08:23:41PM +0100, Vasileios Amoiridis wrote:  
+> > > > Add runtime power management to the device.  
 > 
-> The default is kept unchanged - I2C, I3C and SPI interface drivers are
-> still selected by default if the corresponding bus support is available.
+> ...
 > 
-> However, the patch makes it possible to explicitly disable drivers
-> that are not needed for a particular target.
+> > > > +	ret = pm_runtime_resume_and_get(dev);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	ret = __bme680_read_raw(indio_dev, chan, val, val2, mask);
+> > > > +	pm_runtime_mark_last_busy(dev);
+> > > > +	pm_runtime_put_autosuspend(dev);  
+> > > 
+> > > Side note: as long as idle method is not defined (NULL) the above dance is
+> > > already taken into account in the regular put.  
 > 
-> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Fair enough. Well explained and I guess you have a config which restricted enough
-that this makes sense.
+> > Thanks again for the review! Indeed by looking at the code a bit, it
+> > looks like the suspend callback is being called if the idle one is not
+> > found. But I have seen this dance that you mention much more often in
+> > the IIO that's why I used it. We can see what Jonathan has to say as
+> > well, I think what you propose, simplifies things.  
+> 
+> Yeah, this is cargo cult by many people (including me :-) who missed that
+> detail. If any, this can be addressed in a different series.
+> 
+> ...
+> 
+> > > > +static int bme680_buffer_preenable(struct iio_dev *indio_dev)
+> > > > +{
+> > > > +	struct bme680_data *data = iio_priv(indio_dev);
+> > > > +	struct device *dev = regmap_get_device(data->regmap);
+> > > > +	int ret;  
+> > >   
+> > > > +	ret = pm_runtime_resume_and_get(dev);
+> > > > +	if (ret)
+> > > > +		return ret;
+> > > > +
+> > > > +	return 0;  
+> > > 
+> > > Either this is broken (if the above can return positive codes), or can be
+> > > replaced with direct return:
+> > > 
+> > > 	return pm_...
+> > > 
+> > > (but I believe it's the former and you wanted something like if (ret < 0)
+> > >  there).
+> > >   
+> > > > +}  
+> > 
+> > Well, pm_runtime_resume_and_get() looks like it returns 0 on success and
+> > negative value on error so I think the if (ret) is correct, no? But I
+> > agree with you that it can be simplified as you proposed.  
+> 
+> Please, go ahead with the simplification!
+> 
+I tweaked it and applied the series to the togreg branch of iio.git and
+pushed out as testing for all the normal reasons.
 
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day to
-see what we missed this time
+There was some mess because of the EXPORT_SYMBOL() macro changes this raced
+against.  Please sanity check I didn't mess it up.
 
 Jonathan
 
-> ---
->  drivers/iio/imu/st_lsm6dsx/Kconfig | 18 +++++++++---------
->  1 file changed, 9 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/st_lsm6dsx/Kconfig b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> index 89d687ec3099cc3ecb848e44f610c5cd64c80ad1..3cabec3b152d21403b40668a20ca7d175109a79e 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/Kconfig
-> +++ b/drivers/iio/imu/st_lsm6dsx/Kconfig
-> @@ -6,9 +6,6 @@ config IIO_ST_LSM6DSX
->  	select IIO_BUFFER
->  	select IIO_TRIGGERED_BUFFER
->  	select IIO_KFIFO_BUF
-> -	select IIO_ST_LSM6DSX_I2C if (I2C)
-> -	select IIO_ST_LSM6DSX_SPI if (SPI_MASTER)
-> -	select IIO_ST_LSM6DSX_I3C if (I3C)
->  	help
->  	  Say yes here to build support for STMicroelectronics LSM6DSx imu
->  	  sensor.
-> @@ -42,16 +39,19 @@ config IIO_ST_LSM6DSX
->  	  will be called st_lsm6dsx.
->  
->  config IIO_ST_LSM6DSX_I2C
-> -	tristate
-> -	depends on IIO_ST_LSM6DSX
-> +	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors I2C Interface"
-> +	depends on I2C && IIO_ST_LSM6DSX
-> +	default I2C && IIO_ST_LSM6DSX
->  	select REGMAP_I2C
->  
->  config IIO_ST_LSM6DSX_SPI
-> -	tristate
-> -	depends on IIO_ST_LSM6DSX
-> +	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors SPI Interface"
-> +	depends on SPI_MASTER && IIO_ST_LSM6DSX
-> +	default SPI_MASTER && IIO_ST_LSM6DSX
->  	select REGMAP_SPI
->  
->  config IIO_ST_LSM6DSX_I3C
-> -	tristate
-> -	depends on IIO_ST_LSM6DSX
-> +	tristate "ST_LSM6DSx driver for STM 6-axis IMU MEMS sensors I3C Interface"
-> +	depends on I3C && IIO_ST_LSM6DSX
-> +	default I3C && IIO_ST_LSM6DSX
->  	select REGMAP_I3C
-> 
-> ---
-> base-commit: 4ecd1edf4994bc5385609c6ea9e599b4ee958706
-> change-id: 20241202-lsm6dsx-585182084202
-> 
-> Best regards,
 
 

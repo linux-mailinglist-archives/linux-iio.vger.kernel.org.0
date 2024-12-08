@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-13219-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13220-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7268A9E8574
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 14:28:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 641179E857C
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 14:35:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327D12810DF
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 13:28:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59DF2188484E
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 13:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB5414B077;
-	Sun,  8 Dec 2024 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9331014B955;
+	Sun,  8 Dec 2024 13:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kijKEmnP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpnEFWzB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9375F1E495;
-	Sun,  8 Dec 2024 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4239F149C4D;
+	Sun,  8 Dec 2024 13:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733664480; cv=none; b=Bh86tEcO4NWrkatvn90BMjlTS2Zey9tjvAMnPtPqSpjhZbfln41OlcpnSfJK1m9aAWylY/Nt77IcqBZmB1HEMXkch3dso/AzlhN7BE2zhVLjFGq9Fp2Eu8eVA9T5j72coLRI4oTu/Yt33YYpg3CuiKHmG1AVs4JS4xoNTFZsS50=
+	t=1733664908; cv=none; b=D5QRHiu2FG9wfzCQ3VJWWZZjzuR4MB4aYtKQQyZpXo0Vs0N5HjQUZtk/H7osD+IkkwpZLt2fiRQYlX4CkLi3EDoUrPN6YLO0/If+oZN7ErJC+yqgcmX1rcPAt8jncOgxHHxA014HC1OxQIrKJtu56u4FOdrQFo9K/ittLaOOxVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733664480; c=relaxed/simple;
-	bh=VtiUYaZOtfn3CVsyx6pJoC1eY5GRj47I+wtdrvDdkFM=;
+	s=arc-20240116; t=1733664908; c=relaxed/simple;
+	bh=oYXhjhh/j3M56nqfYpwK/VSy0qJ6PGrl83ZTlbCRTzg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oo3pb/1OfN8d0RfmJUbJizUDi32niZzwQfJWEiiISlo+nOguTFxlAPyckjRyxdEwo6ucY5Y816rbdS8aM92D1Ha9W/bDED/ZPneToCNxj0C5upBUMAHWYlW+4rF+FVKpy8BomQQVuiMzO10CiRWHS4xXwyKjvoXljbrTXKARO0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kijKEmnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1274C4CED2;
-	Sun,  8 Dec 2024 13:27:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LXsFlQMU4L5DZeZVpxh6NFtqqbUTKPwOC12htyIpOgyJ9OmnmEun3GHPmMM8mY2OggHgk2bm/JNvmD7pRQesBUznwZS4MCveDUV2Uptftavw1VJmYADDYyAXcpDr9OY3LYVVGeke+uCYgY9h7fNcDMHJ9NrbcZDI2Q4mgavuG9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpnEFWzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774D1C4CED2;
+	Sun,  8 Dec 2024 13:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733664480;
-	bh=VtiUYaZOtfn3CVsyx6pJoC1eY5GRj47I+wtdrvDdkFM=;
+	s=k20201202; t=1733664908;
+	bh=oYXhjhh/j3M56nqfYpwK/VSy0qJ6PGrl83ZTlbCRTzg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kijKEmnPXqw2ggfg9alGMCn9+jgEz0Z4SUwlStOyFOIdNDNLtRqsIbJTn7I7nYXua
-	 XIDVYHP/o1SgjZ/EUmZBqFEokvR+ZW4L92THqvjpR2nSL9BcxQL6xSCM0oWvGMFip9
-	 bXj0J32qLCatHJ4pnVOW1tqZ8D06Fl638LPj5JwRe0SYCp//vDlbMeOOLkO62WezjG
-	 LyEJhZ5T1O6z0jmQf8odoMwwO+bzjeicJckINByxXgLmuEJ747BsOeifpVjUF3dd9g
-	 dRi/2kpj6oZYpgM6rxFPvtIwpwLZvMy2HqxF5n+ECVWf4qtzbyBttTdwW2B8/x0F3W
-	 nv/uFHTI5MQ8w==
-Date: Sun, 8 Dec 2024 13:27:50 +0000
+	b=lpnEFWzB9MnyWanWvzROYkGSBtvEeioE1UIIXcyZ0DerccEBxWSQt2z8mMhGfYKak
+	 POMmLxSBhhFUPKS90mIrMBcfy5aJhRvznU2vuL0gzmTgIGm1EL9wI/VY9zNJCZ3GA2
+	 jQuR9ENbmFKQAHF0BYJ3jb/7VPeHrBFKxEm+sDeVW+4Cgyv12NiPz6NG3pwa5Unyf1
+	 TEBN4vqMP9FHGwp+NJINs+cSd0D/te7jl6T99t1rAVJcQu5voiro9SwoWFpmganhjR
+	 V24S1kuZgrbJKanrsSdAIl7N2uJQUpg/5nOBDQWILzpq0Pm+06ogI8DS9A20TrFXuS
+	 YbOu+I3VlgevQ==
+Date: Sun, 8 Dec 2024 13:34:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v5 02/10] iio: accel: adxl345: rename variable data to
- st
-Message-ID: <20241208132750.24ff93b8@jic23-huawei>
-In-Reply-To: <20241205171343.308963-3-l.rubusch@gmail.com>
+Subject: Re: [PATCH v5 03/10] iio: accel: adxl345: measure right-justified
+Message-ID: <20241208133458.4a8428b7@jic23-huawei>
+In-Reply-To: <20241205171343.308963-4-l.rubusch@gmail.com>
 References: <20241205171343.308963-1-l.rubusch@gmail.com>
-	<20241205171343.308963-3-l.rubusch@gmail.com>
+	<20241205171343.308963-4-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,15 +63,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  5 Dec 2024 17:13:35 +0000
+On Thu,  5 Dec 2024 17:13:36 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Rename the locally used variable data to st. The st refers to "state",
-> representing the internal state of the driver object. Further it
-> prepares the usage of an internal data pointer needed for the
-> implementation of the sensor features.
+> Make measurements right-justified, since it is the default for the
+> driver and sensor. By not setting the ADXL345_DATA_FORMAT_JUSTIFY bit,
+> the data becomes right-judstified. This was the original setting, there
+> is no reason to change it to left-justified, where right-justified
+> simplifies working on the registers.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Applied to the togreg branch of iio.git. Initially pushed out as testing
-to let the bots take a look.
+
+I'm still confused by this one.  Does this change affect the data output
+to userspace?  If seems like it definitely should. If it does we have
+an ABI regression somewhere. Is it currently broken and wasn't at some
+earlier stage, or is this the patch breaking things?
+
+If it worked and currently doesn't send a fix.  If this changes a previously
+working ABI then drop this patch.  Alternative being to fix up the scale
+handling to incorporate this justification change.
+
+Jonathan
+
+> ---
+>  drivers/iio/accel/adxl345_core.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+> index 88df9547bd6..98ff37271f1 100644
+> --- a/drivers/iio/accel/adxl345_core.c
+> +++ b/drivers/iio/accel/adxl345_core.c
+> @@ -184,7 +184,6 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>  	struct iio_dev *indio_dev;
+>  	u32 regval;
+>  	unsigned int data_format_mask = (ADXL345_DATA_FORMAT_RANGE |
+> -					 ADXL345_DATA_FORMAT_JUSTIFY |
+>  					 ADXL345_DATA_FORMAT_FULL_RES |
+>  					 ADXL345_DATA_FORMAT_SELF_TEST);
+>  	int ret;
+
 

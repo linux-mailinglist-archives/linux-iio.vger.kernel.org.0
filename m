@@ -1,137 +1,133 @@
-Return-Path: <linux-iio+bounces-13208-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13209-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84D59E81C0
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 20:06:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA639E84B3
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 12:41:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7301660A8
-	for <lists+linux-iio@lfdr.de>; Sat,  7 Dec 2024 19:06:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC8AC1644D1
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 11:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF12155756;
-	Sat,  7 Dec 2024 19:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A0C14600C;
+	Sun,  8 Dec 2024 11:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QoHgQJRJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Djsrzfmh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A95814AD1A
-	for <linux-iio@vger.kernel.org>; Sat,  7 Dec 2024 19:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAD11411EB;
+	Sun,  8 Dec 2024 11:41:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733598358; cv=none; b=jHjiND6WrOoXUUEjD1yW407RbWynp5Z+5b6kv7TVUSA5ZXbxq6D7RBxrwVuGR2Rk/nIi6TGRwW20sdxBhFmNobA3FkTkvQOigUQ1JMuOWTS+0Rsym7yee3fFWZfe5TAQSQbVI4VwbhXI//eR1e7H2vWftxu5c5eAPAu0A45kLY0=
+	t=1733658114; cv=none; b=e3OAwsq9k/0YzdQ5/dVabSqdmIDUg99rdeFY4ZKtACkqTVumjHuO1E0MVqC9Aqr/o9dsmKCmN6TBPjp7uuwbCRE87SUk5couS5CqzGST9ZJXi1zsjTuOtt2Hv7dO57MtGaoa0uh8mKHHaQhUydPyCPSlfdqBune6WpLeFt1PcC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733598358; c=relaxed/simple;
-	bh=6deeLwx0quYDy181Iq9I0XcwSODP2hD71EuJNQM8zFk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ql5iGXBStJFixY7ha3Y2e8pXgB01V6mDDVTC3QoiWn049J+Mv7sxUfedpaN2kzgS44wB+G/isqtehZ8Rxwmh5p2NQb1G4+R3YaTgXB7q2qrAmHRODjtS/0lCu6TYl87HDpq0rg5Xnki4Vhf+Em8V0ih+H+6KZc2x9aYTeslRbsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QoHgQJRJ; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733598356; x=1765134356;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6deeLwx0quYDy181Iq9I0XcwSODP2hD71EuJNQM8zFk=;
-  b=QoHgQJRJT0K34pLVGuUiGggWOnS/hO8VYnwGVMiUd/4yVbqaJrSSZuYJ
-   JgY0NvX+izEVKwOPFaFSbATEBC7EIbKUovgiDRaUN4GvbqFaGJTowFYER
-   /8cQ5R/RRnizSVAcOKCNiML0C+9HJmB4bi+0tr+GujLWjCTpZRsxfwIy0
-   xxyZdiBQEMeI/yNH2Jlj2W5aeCgJ1+sXH0E62MSKHXUNMGwwRtqJOd061
-   rjnE6RRjvuib0uJffPGEGDQ8ONGnab6i1O9HghyxytCAG2wTaYEXn6yMV
-   cN1Krq3HdKu7ElQ82E/2UdpLaXjJaCprejdv+TZfXuDIHRssr7zIDWtV/
-   w==;
-X-CSE-ConnectionGUID: XP8Tb1HkQSKmdpt2DwPuOg==
-X-CSE-MsgGUID: 39qfzHEmQASosIUe9g7gdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11279"; a="34051221"
-X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
-   d="scan'208";a="34051221"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2024 11:05:55 -0800
-X-CSE-ConnectionGUID: 2DaHzy1ISLmUYMPi3XrrZA==
-X-CSE-MsgGUID: p3UocLXCRWayb6kgHFPMKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,216,1728975600"; 
-   d="scan'208";a="132091339"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa001.jf.intel.com with ESMTP; 07 Dec 2024 11:05:53 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 09BB81FF; Sat, 07 Dec 2024 21:05:51 +0200 (EET)
-Date: Sat, 7 Dec 2024 21:05:51 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>, lars@metafoo.de,
-	nicolas.ferre@microchip.com, alexandre.belloni@bootlin.com,
-	claudiu.beznea@tuxon.dev, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: at91: call input_free_device() on allocated
- iio_dev
-Message-ID: <Z1Scj2-FNs7VvZe7@black.fi.intel.com>
-References: <20241207043045.1255409-1-joe@pf.is.s.u-tokyo.ac.jp>
- <20241207173046.375dd855@jic23-huawei>
- <Z1Sa1-SlU9ENL5CA@black.fi.intel.com>
+	s=arc-20240116; t=1733658114; c=relaxed/simple;
+	bh=8SGlDgjqovuxAP6Znjsem7TLlju7Ua+klwaijJBVyIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hrv/AD4exgBptzBvDT7BmLQ5nXt/HNEJ5o+IbKx9v6HCLLBZUKY3gWq6y+8IXogcVpnb0Yb1tmxj4kLPKZ+PP52TIbDrkn9H325lVdx+85hgqYW++zyZQ9yJjN9+lTwPqYuDBQDxDp6CrOvotC6BksjTvRXMUlVRK4smK+fwUtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Djsrzfmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49410C4CED2;
+	Sun,  8 Dec 2024 11:41:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733658113;
+	bh=8SGlDgjqovuxAP6Znjsem7TLlju7Ua+klwaijJBVyIY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DjsrzfmhFv0SITxQ0oJHd/IZmiUUCsgrcm/0D2BcPDTCFLLF0hoVeQKq+pD2gM77N
+	 4XViDQjVL8YLOja9k/QOoMNuEKO4YIdmMy8yrUe352tHMNz5pk7zD5FwOGMINfSbYp
+	 Yu0wfAAkdi0myHhc46A8BZ4jhYIC7zfXhkXRLti4HfJfRcD0LkYyxWRuBjwPLtmje1
+	 Y5554diceQLRaIun8w5oDp7cW9/XLzQWAaSbalZTyyCNuQE6xa39R0z5xkNx4ee25p
+	 EQHvmnyfCAmZp6m3dhmQUS6jePdTyn17Aq9jxNmPw7CFk5lPScxYCXjecsSeUQrvzG
+	 gEC1LMibyKwxQ==
+Date: Sun, 8 Dec 2024 11:41:41 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>, Lars-Peter Clausen
+ <lars@metafoo.de>
+Cc: Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Mikael Gonella-Bolduc
+ <m.gonella.bolduc@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Add APDS9160 binding
+Message-ID: <20241208114141.31df6a8e@jic23-huawei>
+In-Reply-To: <Z1NYhR9Y9T0OUCHV@uva.nl>
+References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
+	<20241206-apds9160-driver-v2-1-be2cb72ef8f4@dimonoff.com>
+	<20241206-comment-tissue-7964de6bdcd3@spud>
+	<Z1NYhR9Y9T0OUCHV@uva.nl>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z1Sa1-SlU9ENL5CA@black.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 07, 2024 at 08:58:32PM +0200, Andy Shevchenko wrote:
-> On Sat, Dec 07, 2024 at 05:30:46PM +0000, Jonathan Cameron wrote:
-> > On Sat,  7 Dec 2024 13:30:45 +0900
-> > Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp> wrote:
-> > 
-> > > Current implementation of at91_ts_register() calls input_free_deivce()
-> > > on st->ts_input, however, the err label can be reached before the
-> > > allocated iio_dev is stored to st->ts_input. Thus call
-> > > input_free_device() on input instead of st->ts_input.
+On Fri, 6 Dec 2024 15:03:17 -0500
+Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
+
+> Hi Conor,
+> 
+> See my comments inline.
+> 
+> Thank you,
+> Mikael
+> 
+> On Fri, Dec 06, 2024 at 04:33:36PM +0000, Conor Dooley wrote:
+> > On Fri, Dec 06, 2024 at 11:09:56AM -0500, Mikael Gonella-Bolduc via B4 Relay wrote:  
+> > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 > > > 
-> > > Fixes: 84882b060301 ("iio: adc: at91_adc: Add support for touchscreens without TSMR")
-> > > Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-> > Hi Joe.
+> > > Add device tree bindings for APDS9160 driver  
 > > 
-> > Good catch.  Longer term I'd like this driver to be fully converted to devm
-> > managed cleanup though which would have made this bug go away.
+> > Bindings are for hardware, not for drivers.
+> >   
 > 
-> I dunno it's good.
+> Indeed, should I change the commit message to remove the "driver" part?
+Yes.
 > 
-> First of all, the message doesn't contain any pointers to real issue, because
-> there is none. And this is can be checked in two clicks on Elixir. Hence, the
-> all dance with Fixes tag is wrong.
-
-Ah, sorry, I was looking to the wrong path!
-
-> Second, the submissions is not following the researcher guidelines.
-
-While this is true, the patch seems correct as we need to free the allocated
-input.
-
-> Please, consider dropping this.
-
-So, patch can go, but we really need to have explanation that it's done by a
-brand new static analyzer tool.
-
-> +Cc: Greg to flag this email for not following the rules.
-> Joe, I highly recommend to answer to all your patches that you sent so far that
-> they should not be applied (at least in their current forms).
+> > > 
+> > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> > > ---
+> > >  .../bindings/iio/light/brcm,apds9160.yaml          | 51 ++++++++++++++++++++++
+> > >  1 file changed, 51 insertions(+)
+> > > 
+> > > diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+> > > new file mode 100644
+> > > index 0000000000000000000000000000000000000000..525fba52f156df3b78e24d7d0d445fe9d882eaa7
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+> > > @@ -0,0 +1,51 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Broadcom Combined Proximity & Ambient light sensor
+> > > +
+> > > +maintainers:
+> > > +  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>  
+> > 
+> > How come this differs from your author email?
+> >   
 > 
-> See also for the details: 20241204122152.1312051-1-joe@pf.is.s.u-tokyo.ac.jp.mbx.
+> The author email is my work email, this one is my personal email.
+> The first one might change while the other one will not.
+> Is it required to have the same email here?
+I don' think there are firm rules on this, but there are processes in place
+for changing email via .mailmap and where relevant patches updating
+to a new email address.  A note in the commit message would be appropriate though.
+
+Jonathan
+
 > 
-> > However, having looked at it, that conversion is a rather substantial, if simple
-> > patch, so I'm fine taking this fix and maybe someone will revisit to do that
-> > cleanup later.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
 
 

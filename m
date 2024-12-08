@@ -1,59 +1,67 @@
-Return-Path: <linux-iio+bounces-13249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF249E8747
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:26:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EB69E874D
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 19:32:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BE8A18855EA
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73D532811D4
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 18:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB75189B84;
-	Sun,  8 Dec 2024 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E9418C008;
+	Sun,  8 Dec 2024 18:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxtE1kKa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzmflGFx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B4B1EA65;
-	Sun,  8 Dec 2024 18:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00EE145324;
+	Sun,  8 Dec 2024 18:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733682361; cv=none; b=YS9TY4cHl+uJLc0rjGtPCUj+cXe2V5tsfpjJF0gjm1OHsxqP0VTaGZbqmQg7uvscDnGc7uPOo5Hk1N30zUJUGqwmOvV9z50w/nYGT7aqN9F/8bikPVBrzuQqB3+zntJ4qjaiSjM/cJPKXUA/013mbmq4gmvt7jgQMtUOBqKpZ/s=
+	t=1733682730; cv=none; b=mWUoZfOZk98754ID3EYFFWyHhkol0OQn1XZ+VD+sDSe8f6xF0+NL0u3NaWwSQc17NrpA9AVCc6Zfy1RPLnD09N6hKC8ntNFPPPimIQaUXm/Zc9owuDAdtpyoR1xMPi0hWczu+IL/DK+VjVGm8j+BMjbnLnXjHioyL3Rdlvpa4Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733682361; c=relaxed/simple;
-	bh=ZlAEwvanh8CCMftkCtbAApvzcPFguurRr96kF4Mfg1M=;
+	s=arc-20240116; t=1733682730; c=relaxed/simple;
+	bh=vkpIgwYBpysi2q22hKet+gev725W0T2HlhlIHocDAeQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IXP/jxJlFQhd+7fXGQ2Q2kJRsF+szXm0vliFpRLGEUcdSr2DV0O7Ak1BrwzoUkUydqCp6gCHJgHKbdVLdxTNY+FaIoXIBI21ybieB/aoOyCM7hpRX4RASZz1tcuZZ5o4MsqkoqtDabZc6VKElk0+4cfjmnh9mTkaXAolV80LVbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxtE1kKa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D54C4CED2;
-	Sun,  8 Dec 2024 18:25:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I/AiJLyRHVg3KWcwmnMqWSZgdwgvgiMRflqF6DFakvZU8XcKd1sz3THJI/vz2mqPzA9OIpQIPv/PCP7ZIO+bwt7B/Oc8zIEehLgpMEV5ZSkz9xB0roCDJHzfzrYcFmyEoFalZkXBbNvkuBN5D76OP7YEvfIe9+PAX8ap9CR89js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzmflGFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FDBC4CED2;
+	Sun,  8 Dec 2024 18:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733682360;
-	bh=ZlAEwvanh8CCMftkCtbAApvzcPFguurRr96kF4Mfg1M=;
+	s=k20201202; t=1733682729;
+	bh=vkpIgwYBpysi2q22hKet+gev725W0T2HlhlIHocDAeQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LxtE1kKanDbA20NOpzVCGlbICIPWYm2KU7ZdXMJ6acqnHGhZEXFJUqUIGYVZqKrBy
-	 HVPG7HlDWV0vxxK47KwkCT49GcR3pP20arlnv34quAbH3DEnxokAUm0J5zY8u4Pw0h
-	 c4IwqELxcMN0P0lCN5/NHnDxNhEO8ptsu2XDFLE9oL3OW/aDyN3KCreWyMQO+vQSbj
-	 OlsFuPmrFMsem6t4s7Y7iMuYPsfd0s7IpQUL8oowDJK9KpfbU1cPZU9xrPqCHQ6Ymk
-	 bSJtUQfXu0McCbYAg2qsSBczheFR701yu2XaBkhvyZYTv6LhoxRmrgmZrRarref7C2
-	 eMBiLTt1LGM/A==
-Date: Sun, 8 Dec 2024 18:25:53 +0000
+	b=LzmflGFxnrGBxZhk+lPv32AyRW+kaZov7v/N8zIql4RE+p0VJldBYKHdPhd6vcbMB
+	 CikdS5Y4mSVyr+lw+LwaDAs26PturPuJ//iBJpU8/I0GVifmuc50SE/CHHMsIejCVu
+	 WunOR2EI7N3hgVkXo/r7E3sYvXbsnEx8mpyl6rkr9sxaZ8Rva1OgA3z23Q77uXHzOH
+	 Zc73qAOGjZ+4KoWo7xXRk/+IIaqczM+DxNv6YMl05u741XseEmIQ2RAUgOcrVVNNZN
+	 9J39MlcieT+zAdi5NoU1sTKs+tdU2MfsvQpb8zGleQMmvyFu3ugQuyUv/SWcLdRXnh
+	 +hNUF24prbaqw==
+Date: Sun, 8 Dec 2024 18:32:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mehdi Djait <mehdi.djait@linux.intel.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: kx022a: document new chip_info structure
- members
-Message-ID: <20241208182553.42f13c05@jic23-huawei>
-In-Reply-To: <xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
-References: <Z1LDUj-naUdGSM6n@mva-rohm>
-	<20241207180201.51deb7ce@jic23-huawei>
-	<xfjchvcsoeuqz4j2rnqait2jqok7p3jzrs57n4hgzykkqhqkoj@so7z326jfrzv>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, David
+ Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>,
+ linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v5 10/16] iio: buffer-dmaengine: add
+ devm_iio_dmaengine_buffer_setup_ext2()
+Message-ID: <20241208183201.1b83cd0c@jic23-huawei>
+In-Reply-To: <21d2e190-4cb9-4090-9dfd-2bb250ba186e@baylibre.com>
+References: <20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com>
+	<20241115-dlech-mainline-spi-engine-offload-2-v5-10-bea815bd5ea5@baylibre.com>
+	<20241124171609.50c6c3a8@jic23-huawei>
+	<08ccc3fd-a53c-4d0e-8659-92204d2c27a8@baylibre.com>
+	<21d2e190-4cb9-4090-9dfd-2bb250ba186e@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,70 +72,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 8 Dec 2024 18:42:56 +0100
-Mehdi Djait <mehdi.djait@linux.intel.com> wrote:
+On Fri, 6 Dec 2024 16:04:40 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hi Jonathan,
-> 
-> On Sat, Dec 07, 2024 at 06:02:01PM +0000, Jonathan Cameron wrote:
-> > On Fri, 6 Dec 2024 11:26:42 +0200
-> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> >   
-> > > The kx022a driver supports a few different HW variants. A chip-info
-> > > structure is used to describe sensor specific details. Support for
-> > > sensors with different measurement g-ranges was added recently,
-> > > introducing sensor specific scale arrays.
-> > > 
-> > > The members of the chip-info structure have been documented using
-> > > kerneldoc. The newly added members omitted the documentation. It is nice
-> > > to have all the entries documented for the sake of the consistency.
-> > > Furthermore, the scale table format may not be self explatonary, nor how
-> > > the amount of scales is informed.
-> > > 
-> > > Add documentation to scale table entries to maintain consistency and to
-> > > make it more obvious how the scales should be represented.
-> > > 
-> > > Suggested-by: Mehdi Djait <mehdi.djait@linux.intel.com>
-> > > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>  
-> > Applied to the togreg branch of iio.git. Initially pushed out as testing.
+> On 12/6/24 3:36 PM, David Lechner wrote:
+> > On 11/24/24 11:16 AM, Jonathan Cameron wrote:  
+> >> On Fri, 15 Nov 2024 14:18:49 -0600
+> >> David Lechner <dlechner@baylibre.com> wrote:
+> >>  
+> >>> Add a new devm_iio_dmaengine_buffer_setup_ext2() function to handle
+> >>> cases where the DMA channel is managed by the caller rather than being
+> >>> requested and released by the iio_dmaengine module.
+> >>>
+> >>> Signed-off-by: David Lechner <dlechner@baylibre.com>  
+> >> Fresh read and I'm wondering if the lifetimes in here can be managed
+> >> more simply either by pushing the DMA channel get down, or dragging
+> >> the release up.   Basically I'd like to see them at the same level
+> >> of nesting in the code.  If it ends up being necessary to duplicate
+> >> more code that is fine if it makes this easier to reason about.
+> >>  
 > > 
-> > Mehdi, if you want to give a tag (or more feedback) I am happy to rebase
-> > for a few days.
+> > One option could be instead of introducing a 2nd function, change  
+> 
+> Oops. The new function is devm_ so would still need a 2nd function
+> but changing iio_dmaengine_buffer_setup_ext() to have basically
+> the same signature would still avoid the asymmetry.
+That sounds sensible. (though I've mostly forgotten the background ;)
+
+> 
+> > the existing iio_dmaengine_buffer_setup_ext() to use the signature
+> > of the proposed devm_iio_dmaengine_buffer_setup_ext2(). There are
+> > only two users of these functions. So we could move the dma chan
+> > request/release out to the drivers for those.
 > > 
-> > Jonathan
+> > Otherwise, we can't completely get rid of the owns_chan bit.
 > >   
-> > > ---
-> > > Revision history:
-> > > v1 => v2:
-> > > - Improved wording based on discussion with Mehdi.
-> > > 
-> > >  drivers/iio/accel/kionix-kx022a.h | 8 ++++++++
-> > >  1 file changed, 8 insertions(+)
-> > > 
-> > > diff --git a/drivers/iio/accel/kionix-kx022a.h b/drivers/iio/accel/kionix-kx022a.h
-> > > index 142652ff4b22..d18d56cef098 100644
-> > > --- a/drivers/iio/accel/kionix-kx022a.h
-> > > +++ b/drivers/iio/accel/kionix-kx022a.h
-> > > @@ -137,6 +137,14 @@ struct kx022a_data;
-> > >   *
-> > >   * @name:			name of the device
-> > >   * @regmap_config:		pointer to register map configuration
-> > > + * scale_table:			An array of tables of scaling factors for
-> > > + *				a supported acceleration measurement range.
-> > > + *				Each table containing a single scaling
-> > > + *				factor consisting of two integers. The first
-> > > + *				value in a table is the integer part, and
-> > > + *				the second value is the	fractional part as
-> > > + *				parts per billion.
-> > > + * scale_table_size:		Amount of values in tables.  
-> 
-> I just noticed that the '@' preceding the added members scale_table and
-> scale_table_size are missing, but I guess you can add those when
-> rebasing ?
-Good spot ;(  I'll fix.
-> 
-> --
-> Kind Regards
-> Mehdi Djait
 
 

@@ -1,55 +1,63 @@
-Return-Path: <linux-iio+bounces-13230-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13231-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A8D9E86B0
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:49:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC39A9E86B5
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 17:52:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA1D1884DA0
-	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:49:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D30E61884D56
+	for <lists+linux-iio@lfdr.de>; Sun,  8 Dec 2024 16:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FAF1537A8;
-	Sun,  8 Dec 2024 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FA916DEDF;
+	Sun,  8 Dec 2024 16:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifxCmp3A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s4SMdZPq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C386420323
-	for <linux-iio@vger.kernel.org>; Sun,  8 Dec 2024 16:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CD320323;
+	Sun,  8 Dec 2024 16:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733676591; cv=none; b=iDgYCUaGrWWbAWSPwq00SwcrJ+EOR8KF/sj7LNcoLh5Z3dWQVRK8d4DwooMI7J55M2NfXcCN+k3+cnyggZpSr+RlP6O2VTjOOeX7nrs8ZMtIKe6B4snHVyzfYk4MoC/6Q3T5ROjo0awRFrENBHNUsxzTrEOezV9P+0HYCusih3s=
+	t=1733676735; cv=none; b=HAAWDcRktf0jWjcrM2PYp0sH8Ax6qkCkm0uBqnosYVBdXI8Re3YN5AoA0e22XkposPR7P9q1ZSoA9c4PgWNztlTQTVMMcS4kq1RQzqjOMaWQp9Lf5pHc8Uwdx2dkB4RY0vI0FbQBTUqR/PPC5YJNyJUox9Duf8PEkf8yaBM8XtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733676591; c=relaxed/simple;
-	bh=WepDuhslJBKFgh6c2ACZni9/UT5PoxAw0zgPB8rMnAE=;
+	s=arc-20240116; t=1733676735; c=relaxed/simple;
+	bh=bEBYco6/srzwb/gQhGO1rybBf+L9L5uWjd+rO+bMRf0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DB45oEgCSFvKitS3Z0zjxiOjRRyg1MJoyAkVmacAwVvcjAvx0Hba8p9yLIpOTRMLfxsSUvlZER3g8BkL1BKXn00gz4RCsVNEC1ZiQQ5fOUs5GQ+ksuKZv39GNwAfICp92tzu5OKBSqvmeKg8C5vcMbqABNQ4Hm95o8z3H+KuViI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifxCmp3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7266C4CED2;
-	Sun,  8 Dec 2024 16:49:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hbdHksr7qWlavNDGVvoUHI3x1U64OsVpjZkwO+G0t0wqXYTOBhfpd/7dwV5qwT/paTwZVEBq/EQZHjpu20nlGqwRScORVkA1txaFZqyLBOGoHHS0lK3paRf3p67Fxat2v6DopOOhHA1bh4yGvJgydfjh8n5KUvRGIHE/lmo3CtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s4SMdZPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC4BC4CED2;
+	Sun,  8 Dec 2024 16:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733676591;
-	bh=WepDuhslJBKFgh6c2ACZni9/UT5PoxAw0zgPB8rMnAE=;
+	s=k20201202; t=1733676733;
+	bh=bEBYco6/srzwb/gQhGO1rybBf+L9L5uWjd+rO+bMRf0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ifxCmp3AOK3dOCGTj5QTqlV491On2FKNe6hx6OXDBOyLb/ONBrNjDH0Ni4Vnqhpmh
-	 keeC9uDgIRFiJE+dEsd+JCePl3FUuvHH0pOeSx/BJ8lGHZhYyPxKDKUnpGbhC4cbt6
-	 lHRjm76TkokRx43itJaQ4YXm2HLMeu3PYzkVnltaAHPYmXVJuVl0pWOB2d+DgeIIQC
-	 rkSZo2XZ4TtVDTXjG4Cd5B0pOsugNXTPe5R938pyOuXpg6vaqI5E9YJMiDZO8iPSWu
-	 UA2UiFEkCvh+Cb42oKS10oicItsIh1oQYRMeVHLWS3qB7k7YVG7HrUcsExm380bXaU
-	 /VgKSFzJ7WT7Q==
-Date: Sun, 8 Dec 2024 16:49:44 +0000
+	b=s4SMdZPqb+sW5P5yO7g/awl5XvRH9cbqDFEz+Zn0i8Q7lHVvDWZqVDvIemGG7SDOR
+	 4WdV8DPFhuq/SsFnH0y/aYWEUBAr/qjrYenRUt72mQW/ra2kQC6c6ojGNLFKmKVjS2
+	 +36YQN5OyjiVNqd0D+nFrsE/3XL/MTmF5P0EchkX8v7K+PBMbS6/g0QQYoyjiiRwUp
+	 VarJqlpdhGIMLvFGvr5U4bq/Ljz1lTpoNmSlTNNAYFpg1Ff2KJ/w3VWTjqEfbXjiNl
+	 BL9tAGCu9/wHCTk1Dq8AbPSrAVvLd0OA5El7jWV89OYKCU2BFsmG01msFz2Xbg5Hi6
+	 HtR8WMurw6RWg==
+Date: Sun, 8 Dec 2024 16:52:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: inkern: call iio_device_put() only on mapped
- devices
-Message-ID: <20241208164944.6fcee6c8@jic23-huawei>
-In-Reply-To: <20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp>
-References: <20241204111342.1246706-1-joe@pf.is.s.u-tokyo.ac.jp>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Antoni Pokusinski
+ <apokusinski01@gmail.com>, Francesco Dolcini <francesco@dolcini.it>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <jpaulo.silvagoncalves@gmail.com>, Christian Eggers <ceggers@arri.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29u?=
+ =?UTF-8?B?w6dhbHZlcw==?= <joao.goncalves@toradex.com>, Francesco Dolcini
+ <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] iio: temperature: tmp006: fix information leak
+ in triggered buffer
+Message-ID: <20241208165204.20b5bbd4@jic23-huawei>
+In-Reply-To: <20241204-iio_memset_scan_holes-v2-1-3f941592a76d@gmail.com>
+References: <20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com>
+	<20241204-iio_memset_scan_holes-v2-1-3f941592a76d@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,38 +68,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  4 Dec 2024 20:13:42 +0900
-Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp> wrote:
+On Wed, 04 Dec 2024 00:55:31 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> In the error path of iio_channel_get_all(), iio_device_put() is called
-> on all IIO devices, which can cause a refcount imbalance. Fix this error
-> by calling iio_device_put() only on IIO devices whose refcounts were
-> previously incremented by iio_device_get().
+> The 'scan' local struct is used to push data to user space from a
+> triggered buffer, but it has a hole between the two 16-bit data channels
+> and the timestamp. This hole is never initialized.
 > 
-> Fixes: 314be14bb893 ("iio: Rename _st_ functions to loose the bit that meant the staging version.")
-> Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
-Applied to the fixes-togreg branch of iio.git and marked for stable.
-
-Thanks,
+> Initialize the struct to zero before using it to avoid pushing
+> uninitialized information to userspace.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 91f75ccf9f03 ("iio: temperature: tmp006: add triggered buffer support")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Applied but dropped the stable tag.  The patch this is fixing isn't in a release
+yet.
 
 Jonathan
 
 > ---
->  drivers/iio/inkern.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/temperature/tmp006.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 136b225b6bc8..9050a59129e6 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -500,7 +500,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
->  	return_ptr(chans);
+> diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+> index 0c844137d7aa..02b27f471baa 100644
+> --- a/drivers/iio/temperature/tmp006.c
+> +++ b/drivers/iio/temperature/tmp006.c
+> @@ -252,6 +252,8 @@ static irqreturn_t tmp006_trigger_handler(int irq, void *p)
+>  	} scan;
+>  	s32 ret;
 >  
->  error_free_chans:
-> -	for (i = 0; i < nummaps; i++)
-> +	for (i = 0; i < mapind; i++)
->  		iio_device_put(chans[i].indio_dev);
->  	return ERR_PTR(ret);
->  }
+> +	memset(&scan, 0, sizeof(scan));
+> +
+>  	ret = i2c_smbus_read_word_data(data->client, TMP006_VOBJECT);
+>  	if (ret < 0)
+>  		goto err;
+> 
 
 

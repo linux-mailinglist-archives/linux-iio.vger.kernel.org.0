@@ -1,152 +1,274 @@
-Return-Path: <linux-iio+bounces-13276-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13277-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035889E8F11
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 10:47:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77489E909C
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 11:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED0718843BB
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 09:47:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D75162FA2
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 10:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF302163AD;
-	Mon,  9 Dec 2024 09:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92978217658;
+	Mon,  9 Dec 2024 10:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="c2AuZ7py"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCEO+r9L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02A883CD2
-	for <linux-iio@vger.kernel.org>; Mon,  9 Dec 2024 09:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642622165FD;
+	Mon,  9 Dec 2024 10:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733737654; cv=none; b=fS05Rv9fZGh15svI56Eqce38NkK85iWuw3peQuESSRfpBaFnugFue5FF6vi0/j+D7Wdedv19CIRiVyF4txRK5IdNPqfDAd4CbylBG+A+Nbr7ITW033NyS/iYPDPOhFnhj2cktPPKQYUG08aUB41If25a7oWwKm0JpgIQ1h6axdc=
+	t=1733740800; cv=none; b=uLczJNOFY09ZpvfjTgNF1IPzohUWDEQiOTQbAGtMvV7G5b7bOpFm6ejcIbOmU8YRbGBPdi06eBWKjnkhxO+v8dKKZrivMQJqXUiQSa2LWPo56yWGVOZ5Vwyq3b5obwQtXzF59gN3QRarFCzxXeHuMi2YWldg0F53Whqtn6nxSYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733737654; c=relaxed/simple;
-	bh=K07jIvgxnq4fQSz9W1GmPP+8H2Q8eQ52r646fgKHgi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pupy7Ih2C9IZ4vX0i9vQnG8TgAz7t/YqYzBx2nDKkPyndn/lqF9ugsSeA/MpagKFav4Ul3SLn5hfTlWY5XX+U+U72SvSZpfocyf34F7QHp3PCf5OLVwYfDxhTQN8J4//00ohXRrfeao/vpaulEmO+1X6hvUhaIqc3iwpn/FEQkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=c2AuZ7py; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-434a83c6b01so26809965e9.0
-        for <linux-iio@vger.kernel.org>; Mon, 09 Dec 2024 01:47:32 -0800 (PST)
+	s=arc-20240116; t=1733740800; c=relaxed/simple;
+	bh=mPp3A+YaqPyOYmfji8xIukatEBYjuD64UNTGqolPSg0=;
+	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=YRrnJjFlumPDAdTxILcY7Y/4ww1yv3mSN7BtOBAuw5TSOLbAHL3DlCeneco/mokWdKo7X9064rdpuIGCQ7s/2MOyj6x0ZSPAxgRNIloyMksdRo0f0Qa2x/2U/aAARsaC1v1R98tOoLkCRbcKnAoj7gDZ/Uw4m4yczV4jQieF7R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCEO+r9L; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434a7ee3d60so30115615e9.1;
+        Mon, 09 Dec 2024 02:39:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733737651; x=1734342451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=go7aKeAGNa+zmvwqLwnt7aZLIGXrLJCVtHxrDJr3aos=;
-        b=c2AuZ7pyC+34u2SnRX5rQCjfLwvgCC0xGuHk3QRDJa2iMKdwYEEuMzTx8wldCWC7Tr
-         Tw358cBl3LyhW+1PrN0UHquFogstsmHzEE7MztXD5a6K/wYiQ20weWQtiWSgQwxmCGK7
-         OBbnTynhO+bVWqZP+S3svQbcDCIHN3nM11rq4Nr490qKlt8eKKdGaTZ7zLP9BXBMxIH8
-         eSK/NFfgrCIM/20qohzdWyrXGLF01Q9/VSzsjJUbkrYWoyiBbQQuTHSvTw4NSz2XcyAi
-         R8KYXGRVVNxo19Pkv/vf+zAwabzOzuCFTLaqN1Km5AQJO8AwLmUUeV1Ssf9TeXlDEK4M
-         +O6g==
+        d=gmail.com; s=20230601; t=1733740797; x=1734345597; darn=vger.kernel.org;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3asuRQ6tLJQZF6IE+GUKGUpYd0mBhQT3GbbPKDPpAbI=;
+        b=NCEO+r9Lb4aP98Li7WTe8nuEcV7/l7+lfSnsEYWy5Hkx7svr8J3yn2hMkaycK73tPl
+         YiRObDO3tTA8XxJ8d81+Ox7zL1bXHoTMyHIrBPfajbq2sgV7vllrcQOgqnndKnKEXy6u
+         +2HfnhR7mX/tn0QjmkMcdyvk26aqfP2+b9HImRpeUhA9J4Qkg+rRYWS/nHB/uc5H1nG7
+         6XPoRbxvSIoqRovCVxCgDtAMXmNoHTx8Q4RWkvgqFh8hvbOw6rCMt0bKHDmsuHzMouzv
+         yoLsSQgpMdO/mTL33RDBSY7aLVsAZPCfAohAqahArda5qGza7xLT1wY+aX0or8uo8bzl
+         xxMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733737651; x=1734342451;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=go7aKeAGNa+zmvwqLwnt7aZLIGXrLJCVtHxrDJr3aos=;
-        b=CUJakctBd45UB/2j+GIESyjjg7d3AiOOeWNKG35ytip2tXhkvwSYnj6gyYfBJLuIaY
-         95AgqZJw0Az0D+lSZvxZXxSQm4XQvX2qjuyTDX4HUFm1G7cbZioB5GyI10nCdFVVHPvi
-         /ZjMfBREqYwbnGz776tSZ4IWuj2g0anLGt4/L4igY1hJEnMh19F74e/L+6ftlGruBx8k
-         5F0s1rNo/ZV/cDJGM7snA9scMOz6bkLK9Yf1xNfHJU15uxRp3veHtw+sx5OiPxW+cvAD
-         pj8VdnnuOvN0YujUWuFaXF+/BdnCLUKl8/KV5SB8pQ9YT2jsxWhM0K+mJWHW1s/FS4YT
-         AMYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYGfIvecdbG0K6SaPwbpVJDL/VaPctLEFdJxanwd6RGViLiXjnxj+rgFujq4QqGyp9DAJ0PHISQcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHgBFlz4CALFbhRnctzdAde+oGlvH+jo+wdxvrAPVMTN9P2y7j
-	UZmkgNt2F7RKrHDFSLceEqxxRaXB70D0BdpmIpd6Jt69vKn73vWxYmZz/jtaOIQ=
-X-Gm-Gg: ASbGncsKEDtwNVpXb+e9WgTfJrosEiBU4q8F0Dg2HYlRwLOcDSd3V+DQzdY4TR0j4jx
-	5+EpDq/9h2P1JhDTaMkV+hEoI5UKxNjW3U7w3eiscoIe+GjE3kZAOdP0MRuCcaNAOKX+4pD7U9k
-	d/9Guj724JfSKWk5Vq5QLS+mSdOwvdffij7d3fLMl+QbpP24F7pv8HvkdsCGjuUkOJA8k1bYtDV
-	Ci9DWNgigOE7ElDtJ+0MJKIwYu7ynNrSusLF1lm8eFZNVIX22j1MuiaVcW9Wys6vcsQ1o33eCpF
-	SmRM
-X-Google-Smtp-Source: AGHT+IHRecFQQNLyXbxBQpttqJ1lAcmZD8yh3DpftERm3jw/gVyJso6ESDoowKCKRbH4kTl6gHb7TA==
-X-Received: by 2002:a05:600c:1909:b0:434:f5c0:328d with SMTP id 5b1f17b1804b1-434f5c03dbemr25258975e9.23.1733737650959;
-        Mon, 09 Dec 2024 01:47:30 -0800 (PST)
-Received: from localhost (p5dc6838f.dip0.t-ipconnect.de. [93.198.131.143])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f55733d2sm43949695e9.40.2024.12.09.01.47.30
+        d=1e100.net; s=20230601; t=1733740797; x=1734345597;
+        h=references:in-reply-to:cc:to:subject:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3asuRQ6tLJQZF6IE+GUKGUpYd0mBhQT3GbbPKDPpAbI=;
+        b=tnJpgTOZptNuKEcqcB/UNM+24rx5ZtmGKmvXMkRGS2umfVgCm6fdZiihH86FIbMcFU
+         URlywK2TJkwRKBNW37cdXQpaqPD6KqmvwaCZ8kgYryC3tBnlVcSgfr7paYZ/GC3z8EFY
+         VCsLrZ3Rotr8vsuk+qS157vmLDyBleJi8VEv9FsPiUi+EgtbhSR1SSxVVHQ/ckuaJuPl
+         q332L9EaU3trg+9JzFp89UG0hNCTlN3XmMhXN5zdncv9jD/0k75Izz6/hCmCFNSsLK+L
+         fUjaVDBlPkbQ9N2p+qhXYiXxSyHOqL1VSlFVwaMTt5a0cyzqclioA6wIXOTlLXC9+zvb
+         34+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUpgsJcI36PVmo2INuAs8cpT6Ofzj5FmY7WgKQpfthscJc/qHbPp68Wp/rtBQJIiK/JvbGWcgavfeY=@vger.kernel.org, AJvYcCXYpUVzGEVdqwbd7p3ap1osiKn3TGx+vP6LI61uQ1O5Y4+zZjEqZ5z6tXuFX9T8Ek3kYhNHtm63dgKljJve@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqJFyLI7dOautM7TCKj9bnoOoPJnRMWmHdWkeATJ5ddiMEnIWC
+	IVzkohYRnQgWVI0pCo0n8cxUYrVhFS54KWGWafLx2oWyquo8W506
+X-Gm-Gg: ASbGnct9dwEKSWLL0pNo4BrpRBg2M9fpsa+zEH8DxmAHLbGYq/5ih7ByWFPq3kLmAlq
+	QzjnNuChf49M4eGHwNGN8qBXNP/TYLjhQvBwTKwOsTxWF+J/PfI+KPGZsm8Iye854p+ciq8QeDi
+	c7x0Ndy2q3T6TDdCR44jY2rMsawM7RI6uIAXImn8Y8jY5vEECfzd/a+lxFFQOeU9S8bgzbNmHgK
+	ozytjasMG/0YOAmacIUmyZ2u83tdGMt5M/jKtypt0xOFpFoomeJ+b/20M7wP4fsJ8eBTasb2sx4
+	TVImmSAyLCGVTIKWDDsu4iioA56ruA==
+X-Google-Smtp-Source: AGHT+IF5xznv/RtVfKo9rFPIJm071XFnsTogp1q0UGeIEDIKt+XyXv3Z+L4inzvf0NgfCz9gDP/JGw==
+X-Received: by 2002:a5d:5f4c:0:b0:385:faf5:ebb8 with SMTP id ffacd0b85a97d-3862a893fadmr7274272f8f.7.1733740796475;
+        Mon, 09 Dec 2024 02:39:56 -0800 (PST)
+Received: from localhost (host-80-180-16-130.pool80180.interbusiness.it. [80.180.16.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861f59ceb6sm12905967f8f.42.2024.12.09.02.39.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 01:47:30 -0800 (PST)
-Date: Mon, 9 Dec 2024 10:47:29 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+        Mon, 09 Dec 2024 02:39:56 -0800 (PST)
+Date: Mon, 09 Dec 2024 11:39:55 +0100
+Message-ID: <97fd092da34bcdcf0a7f79c6079a04ce@gmail.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
+Subject: Re: [PATCH 2/2] iio: iio-mux: kzalloc instead of devm_kzalloc to
+ ensure page alignment
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Alexandru Ardelean <aardelean@baylibre.com>, 
-	Alisa-Dariana Roman <alisa.roman@analog.com>, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Ceclan Dumitru <dumitru.ceclan@analog.com>, Conor Dooley <conor+dt@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, devicetree@vger.kernel.org, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, 
-	Renato Lui Geh <renatogeh@gmail.com>, Rob Herring <robh@kernel.org>, 
-	Trevor Gamblin <tgamblin@baylibre.com>
-Subject: Re: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
-Message-ID: <roit3rdw6a2wv65fpq7xuullbreyz463nch2n2xmjop3b2saoe@pbhm4kahmgsj>
-References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
- <20241208124427.3b90701e@jic23-huawei>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Peter Rosin <peda@axentia.se>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241208181531.47997ab4@jic23-huawei>
+References: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
+	<20241202-iio-kmalloc-align-v1-2-aa9568c03937@gmail.com>
+	<20241208181531.47997ab4@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xbp3kdig7cnyz7vt"
-Content-Disposition: inline
-In-Reply-To: <20241208124427.3b90701e@jic23-huawei>
 
+On Sun, 8 Dec 2024 18:15:31 +0000, Jonathan Cameron <jic23@kernel.org> wrote:
+> On Mon, 02 Dec 2024 16:11:08 +0100
+> Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> 
+> > During channel configuration, the iio-mux driver allocates a page with
+> > devm_kzalloc(PAGE_SIZE) to read channel ext_info. However, the resulting
+> > buffer points to an offset of the page due to the devres header sitting
+> > at the beginning of the allocated area. This leads to failure in the
+> > provider driver when sysfs_emit* helpers are used to format the ext_info
+> > attributes.
+> > 
+> > Switch to plain kzalloc version. The devres version is not strictly
+> > necessary as the buffer is only accessed during the channel
+> > configuration phase. Rely on __free cleanup to deallocate the buffer.
+> > Also, move the ext_info handling into a new function to have the page
+> > buffer definition and assignment in one statement as suggested by
+> > cleanup documentation.
+> > 
+> > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+> This seems fine to me, but the diff ended up a bit complex, so I'd like
+> Peter to take a look as well before I apply it.
 
---xbp3kdig7cnyz7vt
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Subject: Re: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
-MIME-Version: 1.0
+For a simpler diff I could go for devm_get_free_pages()+devm_free_pages(),
+but since devres doesn't seem necessary in this case, I think this patch
+provides a cleaner solution at the end.
 
-Hello Jonathan,
+> 
+> Do you have a board that is hitting this?  If so, a fixes tag is definitely
+> appropriate. I think it is probably appropriate even it not.
 
-On Sun, Dec 08, 2024 at 12:44:27PM +0000, Jonathan Cameron wrote:
-> Given the mix of fixes and other material (kind of fixes, but also kind
-> of new functionality), I've queued this for the next merge window in my
-> togreg branch.  If you think there are particular patches that need to
-> go sooner then I can handle them in a split fashion, but that does add
-> risk that the whole lot might no land depending on timings (particularly
-> given it's coming into vacation season).
+I am not sure if any existing board is affected as I encountered this
+issue while experimenting with consumer drivers, thus using a custom DT
+on top of sun50i-a64-pine64.dts just for testing. The following DT files
+might be affected but only if the iio channel controlled by the iio_mux
+multiplexer owns an ext_info attribute which is also exposed on sysfs.
 
-So you tend to not backport the rdy-gpios patches (i.e.
+$ grep -Rl 'io-channel-mux' arch
+arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtmitchell.dts
+arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtjade.dts
+arch/arm/boot/dts/microchip/at91-tse850-3.dts
+arch/arm/boot/dts/microchip/at91-natte.dtsi
+arch/arm64/boot/dts/rockchip/rk3566-powkiddy-rk2023.dtsi
+arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353x.dtsi
+arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg503.dts
+arch/arm64/boot/dts/rockchip/rk3326-odroid-go3.dts
+arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dtb
+arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dts
 
-	dt-bindings: iio: adc: adi,ad7{124,173,192,780}: Allow specifications of a gpio for irq line
-	iio: adc: ad_sigma_delta: Add support for reading irq status using a GPIO
+I am also not sure what would be the reference commit for the Fixes tag.
+The related ext_info attributes handling was introduced in the first
+commit of the iio_mux implementation. If that applies, following the
+corresponding Fixes tag.
 
-)? I personally would want to have these backported, too, but I can
-understand that you might decide that in a different way.
+Fixes: 7ba9df54b091 ("iio: multiplexer: new iio category and iio-mux driver")
 
-Cherry picking
+> 
+> Jonathan
+> 
 
-	iio: adc: ad_sigma_delta: Fix a race condition
-	iio: adc: ad_sigma_delta: Check for previous ready signals
+Best regards,
+Matteo
+> > ---
+> >  drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
+> >  1 file changed, 46 insertions(+), 38 deletions(-)
+> > 
+> > diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
+> > index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..c309d991490c63ba4299f1cda7102f10dcf54982 100644
+> > --- a/drivers/iio/multiplexer/iio-mux.c
+> > +++ b/drivers/iio/multiplexer/iio-mux.c
+> > @@ -7,6 +7,7 @@
+> >   * Author: Peter Rosin <peda@axentia.se>
+> >   */
+> >  
+> > +#include <linux/cleanup.h>
+> >  #include <linux/err.h>
+> >  #include <linux/iio/consumer.h>
+> >  #include <linux/iio/iio.h>
+> > @@ -237,49 +238,18 @@ static ssize_t mux_write_ext_info(struct iio_dev *indio_dev, uintptr_t private,
+> >  	return ret;
+> >  }
+> >  
+> > -static int mux_configure_channel(struct device *dev, struct mux *mux,
+> > -				 u32 state, const char *label, int idx)
+> > +static int mux_configure_chan_ext_info(struct device *dev, struct mux *mux,
+> > +				       int idx, int num_ext_info)
+> >  {
+> >  	struct mux_child *child = &mux->child[idx];
+> > -	struct iio_chan_spec *chan = &mux->chan[idx];
+> >  	struct iio_chan_spec const *pchan = mux->parent->channel;
+> > -	char *page = NULL;
+> > -	int num_ext_info;
+> >  	int i;
+> >  	int ret;
+> >  
+> > -	chan->indexed = 1;
+> > -	chan->output = pchan->output;
+> > -	chan->datasheet_name = label;
+> > -	chan->ext_info = mux->ext_info;
+> > -
+> > -	ret = iio_get_channel_type(mux->parent, &chan->type);
+> > -	if (ret < 0) {
+> > -		dev_err(dev, "failed to get parent channel type\n");
+> > -		return ret;
+> > -	}
+> > -
+> > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
+> > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+> > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
+> > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> > -
+> > -	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
+> > -		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
+> > -
+> > -	if (state >= mux_control_states(mux->control)) {
+> > -		dev_err(dev, "too many channels\n");
+> > -		return -EINVAL;
+> > -	}
+> > -
+> > -	chan->channel = state;
+> > +	char *page __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> > +	if (!page)
+> > +		return -ENOMEM;
+> >  
+> > -	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
+> > -	if (num_ext_info) {
+> > -		page = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
+> > -		if (!page)
+> > -			return -ENOMEM;
+> > -	}
+> >  	child->ext_info_cache = devm_kcalloc(dev,
+> >  					     num_ext_info,
+> >  					     sizeof(*child->ext_info_cache),
+> > @@ -318,8 +288,46 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
+> >  		child->ext_info_cache[i].size = ret;
+> >  	}
+> >  
+> > -	if (page)
+> > -		devm_kfree(dev, page);
+> > +	return 0;
+> > +}
+> > +
+> > +static int mux_configure_channel(struct device *dev, struct mux *mux, u32 state,
+> > +				 const char *label, int idx)
+> > +{
+> > +	struct iio_chan_spec *chan = &mux->chan[idx];
+> > +	struct iio_chan_spec const *pchan = mux->parent->channel;
+> > +	int num_ext_info;
+> > +	int ret;
+> > +
+> > +	chan->indexed = 1;
+> > +	chan->output = pchan->output;
+> > +	chan->datasheet_name = label;
+> > +	chan->ext_info = mux->ext_info;
+> > +
+> > +	ret = iio_get_channel_type(mux->parent, &chan->type);
+> > +	if (ret < 0) {
+> > +		dev_err(dev, "failed to get parent channel type\n");
+> > +		return ret;
+> > +	}
+> > +
+> > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
+> > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+> > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
+> > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> > +
+> > +	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
+> > +		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
+> > +
+> > +	if (state >= mux_control_states(mux->control)) {
+> > +		dev_err(dev, "too many channels\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	chan->channel = state;
+> > +
+> > +	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
+> > +	if (num_ext_info)
+> > +		return mux_configure_chan_ext_info(dev, mux, idx, num_ext_info);
+> >  
+> >  	return 0;
+> >  }
+> > 
+> 
 
-isn't trivial without the rdy-gpios, but they could be reworked. Tell me
-if you want a helping hand (or an eye judging your backport).
-
-Best regards
-Uwe
-
---xbp3kdig7cnyz7vt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmdWvK4ACgkQj4D7WH0S
-/k4rbgf+L7dAqJHvnZ5OSYdnxIwrzdSmn41lQWkFfGmQO6Cgtged8IHTYN98llcX
-vkTEFuut3s3M6sa3LNLHttuArX66zzuUIplUDtMoKI7yYI8cnjLs1OOrXSGceQik
-GF5K2BRC9ZMn/A/2Nh4F+Tj37N2VSTcbAILJ8dy4DjfNYO+DD0B5EFKBXNzkcCf6
-DhJhuS3IKX0YDAQkcuOW0wlJOdN7Z9V0VeKO0xvQfhgn8tGF7kwPm3pWCz/VAa5z
-WCa1+f6OFoheffeUGZ3wtn4O/KZd1DudoaANAaWbZcRW5i7IJQW1h3HLCOlXCsx2
-kXaV2TVxb1ImZq+7L8pIAcaMSaIdbw==
-=3hfE
------END PGP SIGNATURE-----
-
---xbp3kdig7cnyz7vt--
 

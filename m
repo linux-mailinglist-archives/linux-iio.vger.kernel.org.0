@@ -1,274 +1,129 @@
-Return-Path: <linux-iio+bounces-13277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77489E909C
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 11:40:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A05ED9E90A5
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 11:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D75162FA2
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 10:40:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54C331638CB
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 10:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92978217658;
-	Mon,  9 Dec 2024 10:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8C321764B;
+	Mon,  9 Dec 2024 10:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NCEO+r9L"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="C+Zsfh5c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642622165FD;
-	Mon,  9 Dec 2024 10:39:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F377412D758;
+	Mon,  9 Dec 2024 10:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733740800; cv=none; b=uLczJNOFY09ZpvfjTgNF1IPzohUWDEQiOTQbAGtMvV7G5b7bOpFm6ejcIbOmU8YRbGBPdi06eBWKjnkhxO+v8dKKZrivMQJqXUiQSa2LWPo56yWGVOZ5Vwyq3b5obwQtXzF59gN3QRarFCzxXeHuMi2YWldg0F53Whqtn6nxSYU=
+	t=1733740974; cv=none; b=A92BfYWyV9zTXU29K1uJBP1C1+RoFzEuIC9xvjfS/zSZ+Zg+xuM2p/Eojbjupe/Ww4O2MSacW+7Zqo8tbrRoHjurRJWK6wwY9/6hVHf/e97ZdhneOm8kzHxDCMfa+wM9WgaQRYblZE+uLbrMBmuBP6YhSaP+vKOkeBPCbsbHzbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733740800; c=relaxed/simple;
-	bh=mPp3A+YaqPyOYmfji8xIukatEBYjuD64UNTGqolPSg0=;
-	h=Date:Message-ID:From:Subject:To:Cc:In-Reply-To:References; b=YRrnJjFlumPDAdTxILcY7Y/4ww1yv3mSN7BtOBAuw5TSOLbAHL3DlCeneco/mokWdKo7X9064rdpuIGCQ7s/2MOyj6x0ZSPAxgRNIloyMksdRo0f0Qa2x/2U/aAARsaC1v1R98tOoLkCRbcKnAoj7gDZ/Uw4m4yczV4jQieF7R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NCEO+r9L; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434a7ee3d60so30115615e9.1;
-        Mon, 09 Dec 2024 02:39:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733740797; x=1734345597; darn=vger.kernel.org;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3asuRQ6tLJQZF6IE+GUKGUpYd0mBhQT3GbbPKDPpAbI=;
-        b=NCEO+r9Lb4aP98Li7WTe8nuEcV7/l7+lfSnsEYWy5Hkx7svr8J3yn2hMkaycK73tPl
-         YiRObDO3tTA8XxJ8d81+Ox7zL1bXHoTMyHIrBPfajbq2sgV7vllrcQOgqnndKnKEXy6u
-         +2HfnhR7mX/tn0QjmkMcdyvk26aqfP2+b9HImRpeUhA9J4Qkg+rRYWS/nHB/uc5H1nG7
-         6XPoRbxvSIoqRovCVxCgDtAMXmNoHTx8Q4RWkvgqFh8hvbOw6rCMt0bKHDmsuHzMouzv
-         yoLsSQgpMdO/mTL33RDBSY7aLVsAZPCfAohAqahArda5qGza7xLT1wY+aX0or8uo8bzl
-         xxMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733740797; x=1734345597;
-        h=references:in-reply-to:cc:to:subject:from:message-id:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3asuRQ6tLJQZF6IE+GUKGUpYd0mBhQT3GbbPKDPpAbI=;
-        b=tnJpgTOZptNuKEcqcB/UNM+24rx5ZtmGKmvXMkRGS2umfVgCm6fdZiihH86FIbMcFU
-         URlywK2TJkwRKBNW37cdXQpaqPD6KqmvwaCZ8kgYryC3tBnlVcSgfr7paYZ/GC3z8EFY
-         VCsLrZ3Rotr8vsuk+qS157vmLDyBleJi8VEv9FsPiUi+EgtbhSR1SSxVVHQ/ckuaJuPl
-         q332L9EaU3trg+9JzFp89UG0hNCTlN3XmMhXN5zdncv9jD/0k75Izz6/hCmCFNSsLK+L
-         fUjaVDBlPkbQ9N2p+qhXYiXxSyHOqL1VSlFVwaMTt5a0cyzqclioA6wIXOTlLXC9+zvb
-         34+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUpgsJcI36PVmo2INuAs8cpT6Ofzj5FmY7WgKQpfthscJc/qHbPp68Wp/rtBQJIiK/JvbGWcgavfeY=@vger.kernel.org, AJvYcCXYpUVzGEVdqwbd7p3ap1osiKn3TGx+vP6LI61uQ1O5Y4+zZjEqZ5z6tXuFX9T8Ek3kYhNHtm63dgKljJve@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqJFyLI7dOautM7TCKj9bnoOoPJnRMWmHdWkeATJ5ddiMEnIWC
-	IVzkohYRnQgWVI0pCo0n8cxUYrVhFS54KWGWafLx2oWyquo8W506
-X-Gm-Gg: ASbGnct9dwEKSWLL0pNo4BrpRBg2M9fpsa+zEH8DxmAHLbGYq/5ih7ByWFPq3kLmAlq
-	QzjnNuChf49M4eGHwNGN8qBXNP/TYLjhQvBwTKwOsTxWF+J/PfI+KPGZsm8Iye854p+ciq8QeDi
-	c7x0Ndy2q3T6TDdCR44jY2rMsawM7RI6uIAXImn8Y8jY5vEECfzd/a+lxFFQOeU9S8bgzbNmHgK
-	ozytjasMG/0YOAmacIUmyZ2u83tdGMt5M/jKtypt0xOFpFoomeJ+b/20M7wP4fsJ8eBTasb2sx4
-	TVImmSAyLCGVTIKWDDsu4iioA56ruA==
-X-Google-Smtp-Source: AGHT+IF5xznv/RtVfKo9rFPIJm071XFnsTogp1q0UGeIEDIKt+XyXv3Z+L4inzvf0NgfCz9gDP/JGw==
-X-Received: by 2002:a5d:5f4c:0:b0:385:faf5:ebb8 with SMTP id ffacd0b85a97d-3862a893fadmr7274272f8f.7.1733740796475;
-        Mon, 09 Dec 2024 02:39:56 -0800 (PST)
-Received: from localhost (host-80-180-16-130.pool80180.interbusiness.it. [80.180.16.130])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3861f59ceb6sm12905967f8f.42.2024.12.09.02.39.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 02:39:56 -0800 (PST)
-Date: Mon, 09 Dec 2024 11:39:55 +0100
-Message-ID: <97fd092da34bcdcf0a7f79c6079a04ce@gmail.com>
-From: Matteo Martelli <matteomartelli3@gmail.com>
-Subject: Re: [PATCH 2/2] iio: iio-mux: kzalloc instead of devm_kzalloc to
- ensure page alignment
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Peter Rosin <peda@axentia.se>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241208181531.47997ab4@jic23-huawei>
-References: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
-	<20241202-iio-kmalloc-align-v1-2-aa9568c03937@gmail.com>
-	<20241208181531.47997ab4@jic23-huawei>
+	s=arc-20240116; t=1733740974; c=relaxed/simple;
+	bh=h17uuSw7iE4TfKcHSMiLy0W7uz798S2F5mihSRo09h8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KuS3ir7SGWoZ0FcNPSim85ygpHnM82BtFFZr+aVhxJ8NStG0tmg677yQOC3jgFQkNS9IhhxMrO23hMnyknUPwe0rGYhpSnN32G6a8ilpKzw90JICq4yqZaqCLVRakr6mo/ioJxg95zKlyHrcabfR+Closg1E4XJbddNah9y13Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=C+Zsfh5c; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B98tLD2025159;
+	Mon, 9 Dec 2024 05:42:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=V/1IBlK9w9X6N6BhBfAtefgRIm0
+	4sNLsBXYhaxnlzzY=; b=C+Zsfh5c5SWGSJBROPLRkVV28OKU0+oRRtBaflHt07S
+	BXWjq0fLuGFInTJM0yMfmKYWfgF4RRRUiOvzA+/UW2dpTw7brGotZ1YTJ1/ClBEv
+	wEE2RCO/n/XwUaCt/w6MzLm8O9nNUNV/hKmVK3E0P35T96UtS+bLjkCfttVBrCfa
+	YT/sziQS4NYRZ3mbcrnmKof/VAmWtjRetFOrR+C7R5BQ6eH5ZIEnHo+JJXpSvHIe
+	hDhZXoI+EXtigt+l6HyBRBOHagzEJ8emnAuBt1VaegyT9bxvjz+123TP5IGYEj3A
+	AiXNyZ6usH1QX3Vwvq9ZSTjUXmCZrBQDWnx0AhUuRWg==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 43cm557q76-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Dec 2024 05:42:37 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4B9Aga9F037884
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 9 Dec 2024 05:42:36 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 9 Dec 2024 05:42:36 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 9 Dec 2024 05:42:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 9 Dec 2024 05:42:36 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.187])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4B9AgQVR004359;
+	Mon, 9 Dec 2024 05:42:28 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v2 1/3] dt-bindings: iio: adf4371: add differential ref
+Date: Mon, 9 Dec 2024 12:41:31 +0200
+Message-ID: <20241209104201.25205-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 8nAbxi4qj8lWbVUbOjc-qFE6DGRRQO0Q
+X-Proofpoint-GUID: 8nAbxi4qj8lWbVUbOjc-qFE6DGRRQO0Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ mlxscore=0 priorityscore=1501 adultscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 mlxlogscore=999 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412090084
 
-On Sun, 8 Dec 2024 18:15:31 +0000, Jonathan Cameron <jic23@kernel.org> wrote:
-> On Mon, 02 Dec 2024 16:11:08 +0100
-> Matteo Martelli <matteomartelli3@gmail.com> wrote:
-> 
-> > During channel configuration, the iio-mux driver allocates a page with
-> > devm_kzalloc(PAGE_SIZE) to read channel ext_info. However, the resulting
-> > buffer points to an offset of the page due to the devres header sitting
-> > at the beginning of the allocated area. This leads to failure in the
-> > provider driver when sysfs_emit* helpers are used to format the ext_info
-> > attributes.
-> > 
-> > Switch to plain kzalloc version. The devres version is not strictly
-> > necessary as the buffer is only accessed during the channel
-> > configuration phase. Rely on __free cleanup to deallocate the buffer.
-> > Also, move the ext_info handling into a new function to have the page
-> > buffer definition and assignment in one statement as suggested by
-> > cleanup documentation.
-> > 
-> > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-> This seems fine to me, but the diff ended up a bit complex, so I'd like
-> Peter to take a look as well before I apply it.
+Add support for enabling differential input reference.
 
-For a simpler diff I could go for devm_get_free_pages()+devm_free_pages(),
-but since devres doesn't seem necessary in this case, I think this patch
-provides a cleaner solution at the end.
+By default the single-ended input is enabled.
 
-> 
-> Do you have a board that is hitting this?  If so, a fixes tag is definitely
-> appropriate. I think it is probably appropriate even it not.
+Input frequency boundaries are change based on the mode selected
+(single-ended/differential).
 
-I am not sure if any existing board is affected as I encountered this
-issue while experimenting with consumer drivers, thus using a custom DT
-on top of sun50i-a64-pine64.dts just for testing. The following DT files
-might be affected but only if the iio channel controlled by the iio_mux
-multiplexer owns an ext_info attribute which is also exposed on sysfs.
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+changes in v2:
+ - improve commit body.
+ Documentation/devicetree/bindings/iio/frequency/adf4371.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-$ grep -Rl 'io-channel-mux' arch
-arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtmitchell.dts
-arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtjade.dts
-arch/arm/boot/dts/microchip/at91-tse850-3.dts
-arch/arm/boot/dts/microchip/at91-natte.dtsi
-arch/arm64/boot/dts/rockchip/rk3566-powkiddy-rk2023.dtsi
-arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353x.dtsi
-arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg503.dts
-arch/arm64/boot/dts/rockchip/rk3326-odroid-go3.dts
-arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dtb
-arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dts
-
-I am also not sure what would be the reference commit for the Fixes tag.
-The related ext_info attributes handling was introduced in the first
-commit of the iio_mux implementation. If that applies, following the
-corresponding Fixes tag.
-
-Fixes: 7ba9df54b091 ("iio: multiplexer: new iio category and iio-mux driver")
-
-> 
-> Jonathan
-> 
-
-Best regards,
-Matteo
-> > ---
-> >  drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
-> >  1 file changed, 46 insertions(+), 38 deletions(-)
-> > 
-> > diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
-> > index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..c309d991490c63ba4299f1cda7102f10dcf54982 100644
-> > --- a/drivers/iio/multiplexer/iio-mux.c
-> > +++ b/drivers/iio/multiplexer/iio-mux.c
-> > @@ -7,6 +7,7 @@
-> >   * Author: Peter Rosin <peda@axentia.se>
-> >   */
-> >  
-> > +#include <linux/cleanup.h>
-> >  #include <linux/err.h>
-> >  #include <linux/iio/consumer.h>
-> >  #include <linux/iio/iio.h>
-> > @@ -237,49 +238,18 @@ static ssize_t mux_write_ext_info(struct iio_dev *indio_dev, uintptr_t private,
-> >  	return ret;
-> >  }
-> >  
-> > -static int mux_configure_channel(struct device *dev, struct mux *mux,
-> > -				 u32 state, const char *label, int idx)
-> > +static int mux_configure_chan_ext_info(struct device *dev, struct mux *mux,
-> > +				       int idx, int num_ext_info)
-> >  {
-> >  	struct mux_child *child = &mux->child[idx];
-> > -	struct iio_chan_spec *chan = &mux->chan[idx];
-> >  	struct iio_chan_spec const *pchan = mux->parent->channel;
-> > -	char *page = NULL;
-> > -	int num_ext_info;
-> >  	int i;
-> >  	int ret;
-> >  
-> > -	chan->indexed = 1;
-> > -	chan->output = pchan->output;
-> > -	chan->datasheet_name = label;
-> > -	chan->ext_info = mux->ext_info;
-> > -
-> > -	ret = iio_get_channel_type(mux->parent, &chan->type);
-> > -	if (ret < 0) {
-> > -		dev_err(dev, "failed to get parent channel type\n");
-> > -		return ret;
-> > -	}
-> > -
-> > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
-> > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
-> > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
-> > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
-> > -
-> > -	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
-> > -		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
-> > -
-> > -	if (state >= mux_control_states(mux->control)) {
-> > -		dev_err(dev, "too many channels\n");
-> > -		return -EINVAL;
-> > -	}
-> > -
-> > -	chan->channel = state;
-> > +	char *page __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
-> > +	if (!page)
-> > +		return -ENOMEM;
-> >  
-> > -	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
-> > -	if (num_ext_info) {
-> > -		page = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
-> > -		if (!page)
-> > -			return -ENOMEM;
-> > -	}
-> >  	child->ext_info_cache = devm_kcalloc(dev,
-> >  					     num_ext_info,
-> >  					     sizeof(*child->ext_info_cache),
-> > @@ -318,8 +288,46 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
-> >  		child->ext_info_cache[i].size = ret;
-> >  	}
-> >  
-> > -	if (page)
-> > -		devm_kfree(dev, page);
-> > +	return 0;
-> > +}
-> > +
-> > +static int mux_configure_channel(struct device *dev, struct mux *mux, u32 state,
-> > +				 const char *label, int idx)
-> > +{
-> > +	struct iio_chan_spec *chan = &mux->chan[idx];
-> > +	struct iio_chan_spec const *pchan = mux->parent->channel;
-> > +	int num_ext_info;
-> > +	int ret;
-> > +
-> > +	chan->indexed = 1;
-> > +	chan->output = pchan->output;
-> > +	chan->datasheet_name = label;
-> > +	chan->ext_info = mux->ext_info;
-> > +
-> > +	ret = iio_get_channel_type(mux->parent, &chan->type);
-> > +	if (ret < 0) {
-> > +		dev_err(dev, "failed to get parent channel type\n");
-> > +		return ret;
-> > +	}
-> > +
-> > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
-> > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
-> > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
-> > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
-> > +
-> > +	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
-> > +		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
-> > +
-> > +	if (state >= mux_control_states(mux->control)) {
-> > +		dev_err(dev, "too many channels\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	chan->channel = state;
-> > +
-> > +	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
-> > +	if (num_ext_info)
-> > +		return mux_configure_chan_ext_info(dev, mux, idx, num_ext_info);
-> >  
-> >  	return 0;
-> >  }
-> > 
-> 
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+index 1cb2adaf66f9..dd9a592d0026 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+@@ -40,6 +40,11 @@ properties:
+       output stage will shut down until the ADF4371/ADF4372 achieves lock as
+       measured by the digital lock detect circuitry.
+ 
++  adi,ref-differential-enable:
++    type: boolean
++    description:
++      If this property is present, differential input reference is enabled.
++
+ required:
+   - compatible
+   - reg
+-- 
+2.47.1
 
 

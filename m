@@ -1,161 +1,83 @@
-Return-Path: <linux-iio+bounces-13279-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13281-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68C59E90AB
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 11:43:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675C49E92FB
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 12:55:52 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AF91280DBF
-	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 10:43:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84B716436A
+	for <lists+linux-iio@lfdr.de>; Mon,  9 Dec 2024 11:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BA821767D;
-	Mon,  9 Dec 2024 10:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7452A2248A9;
+	Mon,  9 Dec 2024 11:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="mOKT+Y6X"
+	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="Pr8+lrlu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097E52165FD;
-	Mon,  9 Dec 2024 10:42:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+Received: from mail-m16.yeah.net (mail-m16.yeah.net [1.95.21.15])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85ACC221D9F;
+	Mon,  9 Dec 2024 11:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=1.95.21.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733740975; cv=none; b=Q0ar0ty6FBE7PjfkYlxy7QPZd5jGpDDvKrpttW7PjSYsg4kmUHjP3kO3Uru/11bDP5QFS9gEhbSK1/BoHW5z1JNYqJZeR+pyuspd4dkOeBtuWwA9C93fNTcNi5OgWKz//1bAaM2PpR9OMx2X3V5b8evXVLMecVI65Aao5ST80ik=
+	t=1733745287; cv=none; b=G9lmPHAm0aq4M3vniyo4MCBgF5RIr5+qW6XhYxKrzs8+QwuGnTl3BZAz2airGCGHdjkJHfRjWXpLzHWx8OUcPkdk5hU8kRD8Ft+ZVuoRCg7hhyau+PL7Oxglbvy/l6H4WcqAWtOVOsYoNEb58U1pH5Aw0ERVXzMJXthoX9/dH/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733740975; c=relaxed/simple;
-	bh=SM6swpyt8jyb0ikai78MJrCg7kSAZsAaAumPcFkP1i0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UE8tmaoSEKp8dZDucLP68CvEljGktNP3S9bFa/PAbKlRRCkVLD2IZrocRfFlj+7E8HUVgqwoLARtmH+9xlbTOUrFY0fcoQaW07RyBbOESDcvf3nwDWzaFk3yQKNP5Lr3HAGOqNYYEwlctBEWJdhtnrAMCXl1aiW6Eqf8XN1Z+xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=mOKT+Y6X; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B97E6Nr024881;
-	Mon, 9 Dec 2024 05:42:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=tYhmV
-	12hRFOk2EbO6khmI3eie7oSghHEWzk+IUbPKBY=; b=mOKT+Y6XvIL/Xv1X23BrK
-	tpSqA5N0HYW9G+1pfTmma4NisKRJmEWYhl0xBQsaqfeP3HrH3PUa9J1YHVHzH3+6
-	W0kEYCHGk0hxCjSYVjRtt77GM4OA9GeONthrbBdcRlYxBJZX6aRaatCDyEhoCLUI
-	fKPEF4KdDsG/5OWgiJKWIz14DGJCW0O8O6tE/NsNTHK3YcarLa2O24jS9YKcY3A5
-	vpcv4NqOFEDvlPTZ/5gFVxvUN8a8o4Q7S+hEu6REBTYO++wgMyRECzfI1OhFta8O
-	OjBL2tRO2pleNtZ9sL+aIvQ5oUP1eS6CfKufZBZaUsEFlFp2S70rsc6YKUnEqZrg
-	w==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 43duyw8vuf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 05:42:37 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4B9AgaP7010907
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 9 Dec 2024 05:42:36 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 9 Dec 2024
- 05:42:36 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 9 Dec 2024 05:42:36 -0500
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.187])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4B9AgQVT004359;
-	Mon, 9 Dec 2024 05:42:33 -0500
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v2 3/3] iio: frequency: adf4371: add ref doubler
-Date: Mon, 9 Dec 2024 12:41:33 +0200
-Message-ID: <20241209104201.25205-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241209104201.25205-1-antoniu.miclaus@analog.com>
-References: <20241209104201.25205-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1733745287; c=relaxed/simple;
+	bh=vKgDQVSCZiZVuUoe460Wv+0RAgKUSRH1hgoxUMIGfZs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lCcsq6PE+QdDATufEMnmDPb0AuMncWTWlBVAFdppFvWNc7hwiPCI7cnVqpKfSTNzSGlf3AmLEI2JaowZtju2J3/sYEdEBctpIC8Ae3tdn+aHXq8rv0pxOHDcJ0fykTLC5EeBOoNI9GS6z3lSC2lWPyB45Co9jNiQ26EQZfytQK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=Pr8+lrlu; arc=none smtp.client-ip=1.95.21.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
+	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
+	Content-Type; bh=LIpz7GLi/1VprLwmkdntmiNTbEeJvdJjxSq1eWwxCQo=;
+	b=Pr8+lrlueEgW16+Qc/mVD55zRoidCDKiv6WEF7aoZ3vM7mmkRrl91QI0NFb/s4
+	NpeZ765DFVmE+0bBHaMJ9WLDaYh88fq0lcJTZFhiYnReJIHR4ic92Gqxmi2R+5IZ
+	DgtXGxcqKOFRhpHYbUISnC9SnB13IquQE44qCVzJrXIow=
+Received: from dragon (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id Ms8vCgCnTOBH2lZn+byPBA--.47585S3;
+	Mon, 09 Dec 2024 19:53:45 +0800 (CST)
+Date: Mon, 9 Dec 2024 19:53:42 +0800
+From: Shawn Guo <shawnguo2@yeah.net>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, linux-hwmon@vger.kernel.org
+Subject: Re: [PATCH v4 3/3] arm64: dts: imx93-9x9-qsb: add temp-sensor
+ nxp,p3t1085
+Message-ID: <Z1baRpmr4MvsU0NQ@dragon>
+References: <20241112-p3t1085-v4-0-a1334314b1e6@nxp.com>
+ <20241112-p3t1085-v4-3-a1334314b1e6@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 4HeFODJ2jYYahXkO8ttp9jO48FsUlMom
-X-Proofpoint-GUID: 4HeFODJ2jYYahXkO8ttp9jO48FsUlMom
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 clxscore=1015 adultscore=0 spamscore=0 suspectscore=0
- mlxscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090084
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241112-p3t1085-v4-3-a1334314b1e6@nxp.com>
+X-CM-TRANSID:Ms8vCgCnTOBH2lZn+byPBA--.47585S3
+X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUVdgAUUUUU
+X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEQiwZWdWofLmhQAAsN
 
-Add support for the reference doubler.
+On Tue, Nov 12, 2024 at 11:52:01AM -0500, Frank Li wrote:
+> Add temp-sensor nxp,p3t1085 for imx93-9x9-qsb boards.
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v2:
- - drop redundant brackets.
- drivers/iio/frequency/adf4371.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/frequency/adf4371.c b/drivers/iio/frequency/adf4371.c
-index 55bee06fb42d..fd33a6f1cd9a 100644
---- a/drivers/iio/frequency/adf4371.c
-+++ b/drivers/iio/frequency/adf4371.c
-@@ -44,6 +44,8 @@
- /* ADF4371_REG22 */
- #define ADF4371_REFIN_MODE_MASK		BIT(6)
- #define ADF4371_REFIN_MODE(x)		FIELD_PREP(ADF4371_REFIN_MODE_MASK, x)
-+#define ADF4371_REF_DOUB_MASK		BIT(5)
-+#define ADF4371_REF_DOUB(x)		FIELD_PREP(ADF4371_REF_DOUB_MASK, x)\
- 
- /* ADF4371_REG24 */
- #define ADF4371_RF_DIV_SEL_MSK		GENMASK(6, 4)
-@@ -75,6 +77,9 @@
- #define ADF4371_MAX_FREQ_REFIN		600000000UL /* Hz */
- #define ADF4371_MAX_FREQ_REFIN_SE	500000000UL /* Hz */
- 
-+#define ADF4371_MIN_CLKIN_DOUB_FREQ	10000000ULL /* Hz */
-+#define ADF4371_MAX_CLKIN_DOUB_FREQ	125000000ULL /* Hz */
-+
- /* MOD1 is a 24-bit primary modulus with fixed value of 2^25 */
- #define ADF4371_MODULUS1		33554432ULL
- /* MOD2 is the programmable, 14-bit auxiliary fractional modulus */
-@@ -480,7 +485,7 @@ static const struct iio_info adf4371_info = {
- static int adf4371_setup(struct adf4371_state *st)
- {
- 	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
--	unsigned int vco_band_div, tmp;
-+	unsigned int vco_band_div, tmp, ref_doubler_en;
- 	bool ref_diff_en;
- 	int ret;
- 
-@@ -516,6 +521,10 @@ static int adf4371_setup(struct adf4371_state *st)
- 	    (!ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN_SE))
- 		return -EINVAL;
- 
-+	if (st->clkin_freq < ADF4371_MAX_CLKIN_DOUB_FREQ &&
-+	    st->clkin_freq > ADF4371_MIN_CLKIN_DOUB_FREQ)
-+		ref_doubler_en = 1;
-+
- 	ret = regmap_update_bits(st->regmap,  ADF4371_REG(0x22),
- 				 ADF4371_REFIN_MODE_MASK,
- 				 ADF4371_REFIN_MODE(ref_diff_en));
-@@ -531,7 +540,8 @@ static int adf4371_setup(struct adf4371_state *st)
- 	 */
- 	do {
- 		st->ref_div_factor++;
--		st->fpfd = st->clkin_freq / st->ref_div_factor;
-+		st->fpfd = st->clkin_freq * (1 + ref_doubler_en) /
-+			   st->ref_div_factor;
- 	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
- 
- 	/* Calculate Timeouts */
--- 
-2.47.1
+Applied, thanks!
 
 

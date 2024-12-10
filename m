@@ -1,300 +1,176 @@
-Return-Path: <linux-iio+bounces-13300-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13301-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A859EA86B
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2024 07:03:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDBD9EA87A
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2024 07:05:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C2AE288C7E
-	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2024 06:03:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDF6E289ACF
+	for <lists+linux-iio@lfdr.de>; Tue, 10 Dec 2024 06:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A75E228C92;
-	Tue, 10 Dec 2024 06:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFC422B590;
+	Tue, 10 Dec 2024 06:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X9pIqFyX"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="auN4fxTo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F366E1D7996;
-	Tue, 10 Dec 2024 06:00:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB34226185;
+	Tue, 10 Dec 2024 06:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733810410; cv=none; b=kc7lg9iZuU65sHCu5fS7ZAbWpDsMmhfdDUnstBz5qAqd8remNnNX/tC0/swT5FjLC1fJ09cD8zD98yt4YMmCgYj377nKAGClypM91JSg4SiFM9M/rdWwhFn0JlvahqjeMhH4eTgETOaZyosilbzjwD0MkhwTb0tLaZe6/rxUPRY=
+	t=1733810717; cv=none; b=bqqkMmqoH/XERmymJry82FCTymDi53NUxM3ObUVEIcg+186hMQ5xJVvFV1q05fOwnflqTjYQjBt7VVTiskeWasnFsNr3RdGb60pEX4XGhc/eGn0CQcV71K1qXYJZ0qjIUQHOYRZP5VcDdeM5OSMNJpsMwW6BLUWaTKnU5XdXxK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733810410; c=relaxed/simple;
-	bh=+y46efwCxXKvi4GVh+qsBB0d3u+jYVP9StzrgJkrVlQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IdLUjV7o/FTivpTQ69vf2lSH5lCjVVQizAnYCA3J6ahnhzZG5Lw7KZ9khJ5pAbgXrI/BX3hLIZX5jYgnT1QqgUKkLY4WfPiWQOBZ+EKtbTB08VLt6/Nu37If6V8cIx4BsEKqDiB4gFSow6wdg8X1AlRbLLtt/Le4UaZjdY2C68g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X9pIqFyX; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a9a0ec0a94fso738324266b.1;
-        Mon, 09 Dec 2024 22:00:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733810407; x=1734415207; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WHbfjlgRpKE4dLapuGcw54S0zICUfY0cv7/zCV0JyFQ=;
-        b=X9pIqFyXCTP7hkCTDbR7HU02q2Il5mdAep3NFiAQOSGtW6zcTyEhIFgFmu/6M+wBmD
-         wGZWoZDUGgkff9n5WkhFuZhv1NcEfViTjBCBQCF6I8HAX9obQN/pNkpfvmCcPXs2MMAS
-         l3tOnOSyvwKs3TG7I2TXgo6+AQkycIXOFSZgdAfv8Er/RwVDE+P7BXDclO0fjfEevJ5G
-         9xpKASb8OvIE9/S7BaXc6WPuIqiZrVRzqWxUTuBOk4aOqDlfsor8JGeJLPEbOhhczqe5
-         T8ggyruxUHJBc5ns+++j9KK+BIx4cgeXX0u4YGeXtoJj/yGRNpl3b4GzFcG45taVeDg+
-         3GkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733810407; x=1734415207;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WHbfjlgRpKE4dLapuGcw54S0zICUfY0cv7/zCV0JyFQ=;
-        b=QuYL01HIpWU6o855L5MaCHvVRW+UTIkdiLgtB9mxvskXkZtzDGvsqKCUwdL54Ly3ur
-         CdZQUaqkqo+vypu0PyKRWjhRX+A/F62/3IUAScl7QpdDZkqmAv4l3i4UrsRkLBe59qnJ
-         yL1zR20oNRsP9+viUvnHS1s+0JpygrV98Os8QaBI77lDmy7EZlKFyie9LNs+8k8Cv/C7
-         VJAwEpcwT4gZnwooUyk58M0trEflCuM+gYMbteUkALsV+5/ci/8rDAFZOIpCGQOfmpAb
-         Tf5P6D6zXeV9Wk6TUEXlWB2FYJuk4kznDpnvm4Q95W7cNLkkJ7VUizfeFTxE5pezlJ1r
-         caNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVCQ0Yd2mDL/CLjYAlMZv8JI8JWwM9DG0wyXpjpYGxxNwsw7BgGCiPZYptJS/v/OF20ZnU2i0GPGHCd@vger.kernel.org, AJvYcCVo+3MoGvTfoMXpICzxdgNPuevR0U/KuD22PHWo4BPB92CuLAaYUl81zF1UBy0qtZL0Ft8NtCSyMcLJ@vger.kernel.org, AJvYcCXyNTlJo+faoOe3iPtym0RhGumbGSq41C5EhC9SlHnFY8E5DV7os2IrTfD0j+gL1n/xbkOkm+cNtStzKerR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3JZZSeXNfYn1yww6jCy3RLI+qdyglDg70JNptFjBQp3eVgCjg
-	STXzstnkKbVLC9o+7VJbg/jgLhDxK0A0d4Nq5HmlFQlAPGZi/cTIUOMhhTzCYkiVd0gMmZKfmkA
-	/aHM2mpA0UGE1xskiA7hSwcN124A=
-X-Gm-Gg: ASbGncsPE8eMTH4SVELxBaYzY14Y7JfffGgk/2w9KPMk5d4l4J3ixRr7CIBLp2uFEeC
-	9J42MYL1QoWkFrenX/njgu5YqyO9lPsaIKTA=
-X-Google-Smtp-Source: AGHT+IFWw58hMimyh4Z7NYDAgrffb/Ls9djAuX/kCx7M+n51illwZCJy8tjDQ7j38hrrnuyyN4N1D5kcTq9R34TcjOM=
-X-Received: by 2002:a17:907:9507:b0:aa6:9372:cac7 with SMTP id
- a640c23a62f3a-aa69372ce49mr382580066b.31.1733810406863; Mon, 09 Dec 2024
- 22:00:06 -0800 (PST)
+	s=arc-20240116; t=1733810717; c=relaxed/simple;
+	bh=JWAv+oV4UpPbnkSoMAkg+gonAGAlJCo5/4GD46iDbkQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MWDB445r3XPg2ajrha3Z8xelh11Ek7Kw9RxudsLdW5MLWYmACtXuXsy9hYbn3Sky+cDOlP3OFvIrhNdiL8dPzzuDBVW5NcHAYYriZlMbYgJsI3cX+z0v7idFyTTGOMV5ziDPVwEFki7cimaKMs1DqT7sbIOq3Iwmf2agpcHBGmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=auN4fxTo; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BA44399019385;
+	Tue, 10 Dec 2024 06:04:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	F9I5X03zWu2wdE8Y2j/rTYjds2rycK7ouYV/Tv6i8ZY=; b=auN4fxTodfr8ykCZ
+	kYVk/ucW8cW4njBNSGDC6T8DBYZOmacJNaAb6B2/L/OeURKNtZgsKyFQPnGn19Tn
+	ASPKvIIxr+ZtagpFyb+TMVhF/gwvoOaH5KkT4kTcobQs187C2W86QM6wpi/p0dNf
+	5XHDRcbEclp5zYvpGSHrScZihItC1zbZw9S3jfc8s1wtOAqKCrYmGH9ZvNBoVWCO
+	JB65pN3HoRb7Cx8j04UeJpcRnEqsufSjOd5Ki4zMO5xR5mzAlcS3QLe5LeEMHCjV
+	OmMETUPbITyC0Y2ylnHHu9CLKN/JZsAxdzSCevobPI3k1SPu74Z4EjdVUhuT0AOZ
+	ggLlkQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43e341a0qb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Dec 2024 06:04:53 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BA64pbl025876
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Dec 2024 06:04:51 GMT
+Received: from [10.217.217.28] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 9 Dec 2024
+ 22:04:44 -0800
+Message-ID: <a6ca16e7-d831-46ea-8aa5-5bb196bf8d18@quicinc.com>
+Date: Tue, 10 Dec 2024 11:34:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203091540.3695650-1-j2anfernee@gmail.com>
- <20241203091540.3695650-3-j2anfernee@gmail.com> <b5b43427-d0d7-43d5-bf8a-02a966ac25d3@wanadoo.fr>
-In-Reply-To: <b5b43427-d0d7-43d5-bf8a-02a966ac25d3@wanadoo.fr>
-From: Yu-Hsian Yang <j2anfernee@gmail.com>
-Date: Tue, 10 Dec 2024 13:59:30 +0800
-Message-ID: <CA+4VgcK3FDdnLA_Z_xgikKd6diq3Tcfh2uDahnsKzEE0LBU=Jg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: adc: add Nuvoton NCT720x ADC driver
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com, 
-	venture@google.com, yuenn@google.com, benjaminfair@google.com, 
-	jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com, 
-	javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com, 
-	marcelo.schmitt@analog.com, olivier.moysan@foss.st.com, 
-	mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com, 
-	alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com, 
-	ramona.nechita@analog.com, mike.looijmans@topic.nl, 
-	chanh@os.amperecomputing.com, KWLIU@nuvoton.com, yhyang2@nuvoton.com, 
-	openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V4 2/4] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        "robh+dt@kernel.org >> Rob
+ Herring" <robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+CC: <jic23@kernel.org>, <agross@kernel.org>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>, <daniel.lezcano@linaro.org>,
+        <sboyd@kernel.org>, <quic_subbaram@quicinc.com>,
+        <quic_collinsd@quicinc.com>, <quic_amelende@quicinc.com>,
+        <quic_kamalw@quicinc.com>, <amitk@kernel.org>, <lee@kernel.org>,
+        <rafael@kernel.org>, <rui.zhang@intel.com>, <lukasz.luba@arm.com>,
+        <lars@metafoo.de>, <quic_skakitap@quicinc.com>,
+        <neil.armstrong@linaro.org>, <devicetree@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <cros-qcom-dts-watchers@chromium.org>
+References: <20241030185854.4015348-1-quic_jprakash@quicinc.com>
+ <20241030185854.4015348-3-quic_jprakash@quicinc.com>
+ <ag3wqsjdec7ujcba2jpvhzgcbbc5vnyjyes5ljyyf5b4edw7j3@rj23a25wvoyd>
+ <ee8f0b70-77a2-4a5e-85c8-715fd02d4437@quicinc.com>
+ <i7opxhkgukcshdcc7j6ai6jt62egag3jgfiqsghakjhgt2ikg6@eap7l64amcci>
+Content-Language: en-US
+From: Jishnu Prakash <quic_jprakash@quicinc.com>
+In-Reply-To: <i7opxhkgukcshdcc7j6ai6jt62egag3jgfiqsghakjhgt2ikg6@eap7l64amcci>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: GPeAaFMrVYs_gWsvm_HBa_0eGGCT_3tB
+X-Proofpoint-ORIG-GUID: GPeAaFMrVYs_gWsvm_HBa_0eGGCT_3tB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
+ spamscore=0 phishscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412100043
 
-Dear Christophe JAILLET,
+Hi Dmitry,
 
-Thanks for your comment.
+On 11/15/2024 10:14 PM, Dmitry Baryshkov wrote:
+> On Wed, Nov 13, 2024 at 07:36:13PM +0530, Jishnu Prakash wrote:
+>> Hi Dmitry,
+>>
+>> On 10/31/2024 11:27 PM, Dmitry Baryshkov wrote:
+>>> On Thu, Oct 31, 2024 at 12:28:52AM +0530, Jishnu Prakash wrote:
+>>>> For the PMIC5-Gen3 type PMICs, ADC peripheral is present in HW for the
+>>>> following PMICs: PMK8550, PM8550, PM8550B and PM8550VX PMICs.
+>>>>
+>>>> It is similar to PMIC5-Gen2, with SW communication to ADCs on all PMICs
+>>>> going through PBS(Programmable Boot Sequence) firmware through a single
+>>>> register interface. This interface is implemented on an SDAM (Shared
+>>>> Direct Access Memory) peripheral on the master PMIC PMK8550 rather
+>>>> than a dedicated ADC peripheral.
+>>>>
+>>>> Add documentation for PMIC5 Gen3 ADC and macro definitions for ADC
+>>>> channels and virtual channels (combination of ADC channel number and
+>>>> PMIC SID number) per PMIC, to be used by clients of this device.
+>>>>
+>>>> Co-developed-by: Anjelique Melendez <quic_amelende@quicinc.com>
+>>>> Signed-off-by: Anjelique Melendez <quic_amelende@quicinc.com>
+>>>> Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+>>>> ---
+>>>> Changes since v3:
+>>>> - Added ADC5 Gen3 documentation changes in existing qcom,spmi-vadc.yaml file
+>>>>   instead of adding separate file and updated top-level constraints in documentation
+>>>>   file based on discussion with reviewers.
+>>>
+>>> I think it has been better, when it was a separate file. Krzysztof asked
+>>> for rationale, not for merging it back. Two different things.
+>>
+>> Actually I made that change in a separate file due to a misunderstanding at that time - 
+>> I thought a separate file was the only way to accommodate a change in the top-level 'reg' and 'interrupts'
+>> constraints, but I realized later that they could be updated.
+>>
+>> From our side, we would prefer to add ADC5 Gen3 documentation in the same file, as it is
+>> mostly the same functionality which reuses all the existing properties present in this file.
+> 
+> Export the existing properties and reuse them in the new file. Gen3 (in
+> my opinion) changed the hardware too much. Having all the differences
+> via conditionals bloats the schema and makes it significantly unreadable
+> in my opinion.
 
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> =E6=96=BC 2024=E5=B9=B41=
-2=E6=9C=889=E6=97=A5 =E9=80=B1=E4=B8=80 =E4=B8=8A=E5=8D=881:47=E5=AF=AB=E9=
-=81=93=EF=BC=9A
->
-> Le 03/12/2024 =C3=A0 10:15, Eason Yang a =C3=A9crit :
-> > Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
-> >
-> > NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up =
-to
-> > 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins fo=
-r
-> > independent alarm signals, and the all threshold values could be set fo=
-r
-> > system protection without any timing delay. It also supports reset inpu=
-t
-> > RSTIN# to recover system from a fault condition.
-> >
-> > Currently, only single-edge mode conversion and threshold events suppor=
-t.
-> >
-> > Signed-off-by: Eason Yang <j2anfernee-Re5JQEeQqe8AvxtiuMwx3w@public.gma=
-ne.org>
-> > ---
->
-> ...
->
-> > +static const u8 REG_VIN_HIGH_LIMIT_LSB[VIN_MAX] =3D {
-> > +     0x40, 0x42, 0x44, 0x46, 0x48, 0x4A, 0x4C, 0x4E,
-> > +     0x50, 0x52, 0x54, 0x56,
-> > +};
-> > +static const u8 REG_VIN_LOW_LIMIT_LSB[VIN_MAX] =3D {
-> > +     0x41, 0x43, 0x45, 0x47, 0x49, 0x4B, 0x4D, 0x4F,
-> > +     0x51, 0x53, 0x55, 0x57,
-> > +};
-> > +static u8 nct720x_chan_to_index[] =3D {
->
-> const as well here?
->
-> > +     0 /* Not used */, 0, 1, 2, 3, 4, 5, 6,
-> > +     7, 8, 9, 10, 11,
-> > +};
->
+I can do something like this - Krzysztof mentioned in my V3 documentation change that I should put duplicated properties in a common schema, so
+I'm thinking of adding a new file named “qcom,spmi-vadc-common.yaml”, which would hold the common properties. This can be used as
+a reference in this existing file (qcom,spmi-vadc.yaml) as well as in the new file I will add for Gen3 ADC(qcom,spmi-adc5-gen3.yaml).
 
-Yes, it should add const here,
-Finally we would remove nct720x_chan_to_index tables.
-We would just store this value in the address field.
 
-> ...
->
-> > +static int nct720x_read_raw(struct iio_dev *indio_dev,
-> > +                         struct iio_chan_spec const *chan,
-> > +                         int *val, int *val2, long mask)
-> > +{
-> > +     int index =3D nct720x_chan_to_index[chan->address];
-> > +     u16 volt;
-> > +     unsigned int value;
-> > +     int err;
-> > +     struct nct720x_chip_info *chip =3D iio_priv(indio_dev);
-> > +
-> > +     if (chan->type !=3D IIO_VOLTAGE)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     guard(mutex)(&chip->access_lock);
->
-> The IIO_CHAN_INFO_SCALE case does not seem to need the lock. Would it
-> make sense to move it only in the IIO_CHAN_INFO_RAW case?
->
+> 
+> But please refer to DT maintainers (Rob/Krzysztof/Conor) for the final
+> opinion.
+> 
 
-Remove guard(mutex) here.
+Rob/Krzysztof/Conor - please let me know if you have any objections to the change mentioned above.
+If there's no issue, I'll do this in the next patch series.
 
-> > +     switch (mask) {
-> > +     case IIO_CHAN_INFO_RAW:
-> > +             err =3D regmap_read(chip->regmap16, REG_VIN[index], &valu=
-e);
-> > +             if (err < 0)
-> > +                     return err;
-> > +             volt =3D (u16)value;
-> > +             *val =3D volt >> 3;
-> > +             return IIO_VAL_INT;
-> > +     case IIO_CHAN_INFO_SCALE:
-> > +             /* From the datasheet, we have to multiply by 0.0004995 *=
-/
-> > +             *val =3D 0;
-> > +             *val2 =3D 499500;
-> > +             return IIO_VAL_INT_PLUS_NANO;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +}
->
-> ...
->
-> > +static int nct720x_write_event_config(struct iio_dev *indio_dev,
-> > +                                   const struct iio_chan_spec *chan,
-> > +                                   enum iio_event_type type,
-> > +                                   enum iio_event_direction dir,
-> > +                                   bool state)
-> > +{
-> > +     int err =3D 0;
->
-> Harmless but useless initialisation.
->
 
-We would remove unused err variables.
-Since it is very rare for regmap_write() to fail so usually we don't
-print an error message for these.
+Thanks,
+Jishnu
 
-> > +     struct nct720x_chip_info *chip =3D iio_priv(indio_dev);
-> > +     int index =3D nct720x_chan_to_index[chan->address];
-> > +     unsigned int mask;
-> > +
-> > +     if (chan->type !=3D IIO_VOLTAGE)
-> > +             return -EOPNOTSUPP;
->
-> ...
->
-> > +static int nct720x_init_chip(struct nct720x_chip_info *chip)
-> > +{
-> > +     u8 data[2];
-> > +     unsigned int value;
-> > +     int err;
-> > +
-> > +     err =3D regmap_write(chip->regmap, REG_CONFIGURATION, BIT_CONFIGU=
-RATION_RESET);
-> > +     if (err) {
-> > +             dev_err(&chip->client->dev, "Failed to write REG_CONFIGUR=
-ATION\n");
-> > +             return err;
-> > +     }
-> > +
-> > +     /*
-> > +      * After about 25 msecs, the device should be ready and then
-> > +      * the Power Up bit will be set to 1. If not, wait for it.
-> > +      */
-> > +     mdelay(25);
-> > +     err  =3D regmap_read(chip->regmap, REG_BUSY_STATUS, &value);
->
-> double space after err.
->
 
-Okay.
 
-> > +     if (err < 0)
-> > +             return err;
-> > +     if (!(value & BIT_PWR_UP))
-> > +             return err;
-> > +
-> > +     /* Enable Channel */
-> > +     err =3D regmap_write(chip->regmap, REG_CHANNEL_ENABLE_1, REG_CHAN=
-NEL_ENABLE_1_MASK);
-> > +     if (err) {
-> > +             dev_err(&chip->client->dev, "Failed to write REG_CHANNEL_=
-ENABLE_1\n");
-> > +             return err;
-> > +     }
-> > +
-> > +     if (chip->vin_max =3D=3D 12) {
-> > +             err =3D regmap_write(chip->regmap, REG_CHANNEL_ENABLE_2, =
-REG_CHANNEL_ENABLE_2_MASK);
-> > +             if (err) {
-> > +                     dev_err(&chip->client->dev, "Failed to write REG_=
-CHANNEL_ENABLE_2\n");
-> > +                     return err;
-> > +             }
-> > +     }
-> > +
-> > +     guard(mutex)(&chip->access_lock);
-> > +     err  =3D regmap_read(chip->regmap, REG_CHANNEL_ENABLE_1, &value);
->
-> double space after err.
->
-
-Okay.
-
-> > +     if (err < 0)
-> > +             return err;
-> > +     data[0] =3D (u8)value;
-> > +
-> > +     err  =3D regmap_read(chip->regmap, REG_CHANNEL_ENABLE_2, &value);
->
-> double space after err.
->
-
-Okay.
-
-> > +     if (err < 0)
-> > +             return err;
-> > +     data[1] =3D (u8)value;
-> > +
-> > +     value =3D get_unaligned_le16(data);
-> > +     chip->vin_mask =3D value;
-> > +
-> > +     /* Start monitoring if needed */
->
-> ...
->
-> CJ
 

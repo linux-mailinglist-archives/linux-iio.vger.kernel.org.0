@@ -1,120 +1,132 @@
-Return-Path: <linux-iio+bounces-13324-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13325-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251969ECCE4
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 14:11:22 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32595167D84
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 13:11:19 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCCF23FD23;
-	Wed, 11 Dec 2024 13:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ADI+e0Qt"
-X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F5409ECD27
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 14:27:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5746323FD14;
-	Wed, 11 Dec 2024 13:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767222810FD
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 13:27:55 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3959222B59D;
+	Wed, 11 Dec 2024 13:27:51 +0000 (UTC)
+X-Original-To: linux-iio@vger.kernel.org
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434091F193D;
+	Wed, 11 Dec 2024 13:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733922675; cv=none; b=LkI9IN8Hoq08PdedahIQHs8dIuwKNQL8EEmgjTw8mksRXX/3XoKwPdPZsN5G99uf7Rzhc7q5/yDxw85/L0O6o2NihmcZ+BTWFzfZEvtWAhUlMFmqrNMDW+NeAZwpNlR7ON/8l90Xdax4XJu7odtBHawNjGIG+GPCK3NQ5ccZsbM=
+	t=1733923671; cv=none; b=ubAYRVYJBkSxz+n/GgDpMdSSC7mT4/PqbEUKnmK9HPbqxGybcQIqmniaX7Og7+jVV+7z7iVv6Zl6tDp9zNkW1mlWe4REoHzdlTBFnVDOEvuYySgMwVxW4mDVeMbmaufxxxX/AFrtCGp+y998lcoIRomfojw8XEn2C5TsmYPfsCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733922675; c=relaxed/simple;
-	bh=pB6WfjwT9slsXqTxipmydzhAioPaD1EfbAGoCb329Mc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=P8BDUFGNLZCicUpsQGbbSrPHjuF731l+g9ekLUXJP7Ouf15LvHW+Ei7nXTdLPxNiWnL0yqIdI5/vx5/usRu9qiqgcWuKlZNlFHk+ZYYAG6LSjFbhpX/1PZMNOfh8zsKrQQpTpjZ0cn/F8G3HzZ4DxpYO9Rzqfu7n5fLBetbrST8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ADI+e0Qt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8DBC4CED2;
-	Wed, 11 Dec 2024 13:11:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733922674;
-	bh=pB6WfjwT9slsXqTxipmydzhAioPaD1EfbAGoCb329Mc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=ADI+e0QtZ1oAmgQ0QHjwIA+p/EztuGuNXG9ULPqktb3ReMUSyMvFcxtgk1Xk5pWiH
-	 AcC18yzR9mFkvDAKY4YX9IR0JhomxloM4MqHD0feCwEQEhnA6dL0AqzVE5Ea5Jm9d7
-	 XT2MGhWOHzzhDtGOYiI42wviTOebSg/1u5fJHYSrxzcdomd0sTuPA0zZZJqd6x7bW6
-	 ZNAAiuMbuc1yqnRHzWMlejmZrHyMqmZYixCKheStx6sSuZI09f+vmcSqQF1Di/gFsk
-	 vjUXa6LuU4Jm3Um5Uk9Brossj80/7Bw9BSUO+n+qXK3UGmfpQ75feVVJSWXRRoSlmR
-	 rhmutss1FC7zg==
-Date: Wed, 11 Dec 2024 14:11:11 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: =?ISO-8859-15?Q?Heiko_St=FCbner?= <heiko@sntech.de>
-cc: Lee Jones <lee@kernel.org>, jic23@kernel.org, robh@kernel.org, 
-    krzk+dt@kernel.org, conor+dt@kernel.org, jdelvare@suse.com, 
-    linux@roeck-us.net, srinivas.pandruvada@linux.intel.com, 
-    bentiss@kernel.org, dmitry.torokhov@gmail.com, pavel@ucw.cz, 
-    ukleinek@debian.org, devicetree@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-    linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-    linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
-    linux-leds@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v9 1/9] HID: hid-sensor-hub: don't use stale platform-data
- on remove
-In-Reply-To: <3196449.TQGk6oTFT5@diego>
-Message-ID: <4s41717n-3888-os6o-384n-7678n0361r0s@xreary.bet>
-References: <20241107114712.538976-1-heiko@sntech.de> <20241211120844.GD7139@google.com> <n914pn7o-pr9n-5ss0-p744-73402nnn843p@xreary.bet> <3196449.TQGk6oTFT5@diego>
+	s=arc-20240116; t=1733923671; c=relaxed/simple;
+	bh=l0n79E0UwxAsx0c03t/5SUdllR1UMQbgv1in/olMbfg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iaKvy2wc8fUGy0Kv1XiZQLi041YpPAjyzy0Icp86Ho0K5MURSBl2lmC9txHHVFFx8h1S5RG0H2lRP7L1yBP8W+yLLqxvWGerhJmd2NtmWx7S1i6mbLvzNm/G7MYRMaSQ1rPFUlieC0KfqUDY+dIc6HlrFQapdj8dLcsuGWc8dKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4affd0fb6adso883031137.1;
+        Wed, 11 Dec 2024 05:27:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733923666; x=1734528466;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FsR3cWj2rQxpzGsWHeVcLZXw5195PPdpxK8V3I3ghRw=;
+        b=YYZqbrqSyeOZI2Fqzkicj0UKbM+YQNUfFy7PzkfhwkWWJGZ1EeSY5TPwT2mGwdg+dx
+         xyQQvWVr2UbiwGkYiYqBlxGrs64LV5KWdbQWt3Wb4AAtPQtNRWmyvlzu50o+0qdz6KhG
+         TMVOl9VF18wizZUSL7/Wxl8hQnbGHNNp25E2mA6Nk2/9XO8mBxvbGpSWD7JM5GThsG07
+         z483Fj2UvBKlBAyJ7+LEzfecCrHk7GOPo/hYRv5rUsuvNFgmwY0zthqMGIxqIC5OxLKZ
+         0BhEb0LhikChrqxvcfMlwQneLbORa3+s6zxaXHnaWw2+C+yL9hO/vg3XeBrpKFPh0HsD
+         U8AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVj2as5QSUeRzdZmiRPzuQC1paSBzkJ/IGCG2Z8iU+q6Nv7sFzpY2CY7fR+7qXIDpZN+ekzyCNb9//HL+P/kap0bt4=@vger.kernel.org, AJvYcCXOR/LbON0XZI+fbxITcafV1TqlVuX91gTx0slMX+LPSEmDWO8JY8YnQcy0HNJeEoOmHUjH+TopTTGQAc8w@vger.kernel.org, AJvYcCXTIIyHmX+kF6pttteAvc3KTJ6S6LtOB+Ou73hGzmgzaaQaAx8TgXoryRHsSCb1HWWPEV5tnFlo3EUF@vger.kernel.org, AJvYcCXeVzmDNdHddGmXw3PQjoiXYchnamDpGdVUvw5yBq6o9Oi06heexyFOwemF7FqMS/LjpB9Mvky35h+x@vger.kernel.org, AJvYcCXu3Vv37E8+z5K8WsqWEzcV20222gLa+SkiyXe7Zn3/McTC4QvTo4qpjhqY4tG3GPRIRS4vyeetsH+B@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9p78pnv4NNsAkSZZvoYvzD382z5jCseBxN/1Cgx9V6TvdPAUP
+	+Vms90n1IEvVL6Lh5pvG+mozHJNrE/I8u1usfNQMmxo5bQIi0NmMjL/zX2UF
+X-Gm-Gg: ASbGnculy+oKyCcKE02L74CSRG+fKgbbSifRyw9V3MmliuL4hkRoIMHiaEdQQ+wDKm1
+	3P/f6lzhyu+OLG1xWaEAgEUt5uJsTx4ZfdazAWpZnd+Erwxd2rKykckg7otqLfQjFsJWaTqhRWG
+	cSouJ1x46gORndje7kd7522ymnnA61UE2LXy3ENZ1vreDIEXMY19NMdIhd6EREGOMRLXLazJrFc
+	QT6fYeNWkC1r2G8im2/oy7tottPtSAfpmF1eyVi1rO5ogOlrGJRMgycKTjLFjH8rFU8nZiVAqrt
+	AMFOOjEDa5VYTrtp
+X-Google-Smtp-Source: AGHT+IFG5nawDJgp9Y9hp1fhzqYJ9iMidO8pohabDIzv8vzkSQD2kgphyJLtwTgEP3KQs7hivQbNzQ==
+X-Received: by 2002:a05:6102:32c3:b0:4af:2f95:4ae5 with SMTP id ada2fe7eead31-4b128fa102fmr2556194137.9.1733923666478;
+        Wed, 11 Dec 2024 05:27:46 -0800 (PST)
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com. [209.85.217.52])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4aff0e2fae7sm947447137.3.2024.12.11.05.27.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Dec 2024 05:27:45 -0800 (PST)
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-4afde39e360so1352677137.0;
+        Wed, 11 Dec 2024 05:27:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUoGjeVU54a+hbZndzpflVRhUw/qJUan4tR6Rv6AHF5gWObp4RpNN+4IKGWsGMt5V6gwiFWbAaFkHbB@vger.kernel.org, AJvYcCVlLLPJkzFYULS8GW7dYBktLzVfbpQKLksGnGKMuG0qWUqbqUf0dlrDtdTta+/5JS/FbMtxSO1sVgvT@vger.kernel.org, AJvYcCVlM5/XRQYy32M5MGtACNL3LPySYxFF72+XUikZjkZ9Fhhjv8VW4TSGXXU4RycapeQmCkXDWSDEN3idD3IZT5FyVCs=@vger.kernel.org, AJvYcCVuxbsV/Vr0ycuP9Zo0Sp7Y9O7v53M/QPsUdoOyrmJHXaaG0PP2f6ZNa2YH/fGLCpUtwQlLI/x1FEzsIw0u@vger.kernel.org, AJvYcCXLrNsn6qO9tP4xhmWnTTbZpWrruAfIHaLmAkkIMaahiE/RU4ZDV4vCE5FGSfSnTFNeskQUWHuvhWAI@vger.kernel.org
+X-Received: by 2002:a05:6102:3747:b0:4af:c31d:b4e9 with SMTP id
+ ada2fe7eead31-4b128fedb4cmr2541368137.13.1733923665100; Wed, 11 Dec 2024
+ 05:27:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com> <20241206111337.726244-15-claudiu.beznea.uj@bp.renesas.com>
+In-Reply-To: <20241206111337.726244-15-claudiu.beznea.uj@bp.renesas.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Wed, 11 Dec 2024 14:27:33 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVMQr9RhG7v32vQeSrepmdh2VdzzwF5obJUpdGNotGV7Q@mail.gmail.com>
+Message-ID: <CAMuHMdVMQr9RhG7v32vQeSrepmdh2VdzzwF5obJUpdGNotGV7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 14/15] arm64: dts: renesas: r9a08g045: Add ADC node
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, jic23@kernel.org, lars@metafoo.de, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	geert+renesas@glider.be, magnus.damm@gmail.com, mturquette@baylibre.com, 
+	sboyd@kernel.org, p.zabel@pengutronix.de, linux-iio@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, 
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Dec 2024, Heiko St=FCbner wrote:
+Hi Claudiu,
 
-> > > > > > This change was more or less a surprise find, because I wanted =
-to make
-> > > > > > the platform_data pointer in the mfd_cell struct const and this=
- the hid
-> > > > > > sensor hub stood out as doing something strange ;-) .
-> > > > > >=20
-> > > > > > So patch 2 of this series actually depends on this change to no=
-t cause
-> > > > > > build errors.
-> > > > >=20
-> > > > > Ah, right.
-> > > > >=20
-> > > > > > But seeing that we're after -rc6 alredy, I would assume the bru=
-nt of the=20
-> > > > > > mcu series might need to wait after 6.13-rc1 anyway - but I gue=
-ss that=20
-> > > > > > depends on how Lee sees things ;-) .
-> > > > >=20
-> > > > > OK, I am keeping my hands off it for the time being.
-> > > >=20
-> > > > I can take it now with an Ack.
-> > >=20
-> > > Looking to apply this set now.
-> > >=20
-> > > Ack please.
-> >=20
-> > I'd preferer if Srinivas could ack this as the more specific maintainer=
-=2E=20
-> > Srinivas, please?=20
->=20
-> The patch already includes the
->    Ack from Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> from a previous version, so I guess it should be ok already?
+On Fri, Dec 6, 2024 at 12:14=E2=80=AFPM Claudiu <claudiu.beznea@tuxon.dev> =
+wrote:
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>
+> Add the device tree node for the ADC IP available on the Renesas RZ/G3S
+> SoC.
+>
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-Ah, I missed that, indeed, sorry for the noise.
+Thanks for your patch!
 
-With that
+> --- a/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
+> +++ b/arch/arm64/boot/dts/renesas/r9a08g045.dtsi
+> @@ -87,6 +87,59 @@ rtc: rtc@1004ec00 {
+>                         status =3D "disabled";
+>                 };
+>
+> +               adc: adc@10058000 {
+> +                       compatible =3D "renesas,r9a08g045-adc";
+> +                       reg =3D <0 0x10058000 0 0x400>;
 
-=09Acked-by: Jiri Kosina <jkosina@suse.com>
+Table 5.1 ("Detailed Address Space") says the size is 4 KiB.
 
-and Lee, please feel free to take it.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in renesas-devel for v6.14, with the above fixed.
 
-Thanks,
+Gr{oetje,eeting}s,
+
+                        Geert
 
 --=20
-Jiri Kosina
-SUSE Labs
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 

@@ -1,64 +1,65 @@
-Return-Path: <linux-iio+bounces-13343-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13344-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F4D9ED667
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:22:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95DB9ED66C
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:23:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96206165994
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 19:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEF5C281749
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 19:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E6025949D;
-	Wed, 11 Dec 2024 19:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05F2594AC;
+	Wed, 11 Dec 2024 19:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnSMQeE2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvZ+M8FF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7B7259483;
-	Wed, 11 Dec 2024 19:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAB825948D;
+	Wed, 11 Dec 2024 19:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733944811; cv=none; b=YvN7wJ1AqUBGLGZPqaUPurnuZuulKiO6+v8mzdvjO3HLVhhymKkPey9rvB2oMLAyaOY6dsQNAZmjnm8a7zTWdTzqjsljfKbT72PoF43kpLcv8fhc20KiW9UycRPiOaJTBIxYJtP+2DAcMMyL2pLD6URMC6Z9MljDpsgFMVNfuRA=
+	t=1733944991; cv=none; b=mpCsdNYC6cF6LKvLVCoEtmGNeEoixS4ZeH+ORP95VB8KnRUqhG7ZKiVVVIbGjyOWRIZ21Snb1y+Dme1MRZ75RKBfoKZrQ+/hrV0Yfu9hLtHeokcecOdXq3Ak4vprK0o1YiEIDRaw7X5AtKyurMMbTW1icezr4JW82OUfP1VOoto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733944811; c=relaxed/simple;
-	bh=p/Xx8QnAWy25KqreG9RP47kRg5CpGfys4XG+Zt9wH1E=;
+	s=arc-20240116; t=1733944991; c=relaxed/simple;
+	bh=zuB3sRSO/sRFvgXYvGAoUrkuagLiyC3cCBGNZtAFLjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BkRHQOYbURZasQFozZn4Zh/rVRJEAZgW9Q+imVPAQeKeW/1IYGGk0tezmEtkKewzc5NYRxlxY86DTs6NjhZS1s/UO/3/+VoJcmiIxuA9yOl99AXrZobPYoGk6R3/gsCzrVQ8j13/1Mz7QzJFFQo1vfRWfzx0Y1jmkA/lDow7Il0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnSMQeE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A02FC4CED2;
-	Wed, 11 Dec 2024 19:20:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IwLpDPeJYjJ35/9rf2rvvtfITHhF0V8YMwGNTAJq5bHC0nddHqI+XusfuDm5P5/WCZs6ImXdNOUPM7ZC9Y2InSZMiRpmR6mwMpGyUpQkQW8I/W4SV4WOgVuIVg3wjnmqK3bqzZkFqIleS188jYxcAUn81wxeQVyPidP4cTP9Sso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvZ+M8FF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3084BC4CED2;
+	Wed, 11 Dec 2024 19:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733944811;
-	bh=p/Xx8QnAWy25KqreG9RP47kRg5CpGfys4XG+Zt9wH1E=;
+	s=k20201202; t=1733944991;
+	bh=zuB3sRSO/sRFvgXYvGAoUrkuagLiyC3cCBGNZtAFLjQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GnSMQeE28iiBAoTlFlEkuubq7ZCxcwkuZVmI1nhrUExXDEBn0PGwm1yZ7bliKHOCG
-	 7xAfbyR2w2kjdIWx53Uk6vdLc9I9doib4OamCQaFAPEYFOcv9PHKXJOtQHE/3oZoAG
-	 RKXC1ehP4B2qWe8PhaZ9CcDnImHgRV7YRg/Jsg9ffAJ3LbSgMwYBcSY2lT/YVU3tel
-	 MZ0H3j4F3l0RdnvmDwdYcvdHPUiro7y3gJpILC7Fds6QkZRCTFjfj+EnTbjjyhmlYG
-	 4ajGraJy6ETiPGx5ZSCnlz3cfqWRe2OD09r4WE4DbTMD7j/q61txCgXTxsXso5GWUr
-	 pvemXYzevXmMQ==
-Date: Wed, 11 Dec 2024 19:19:59 +0000
+	b=gvZ+M8FFsfExF5oj5tyRgvcFbCHr7+MeWHxpR+/kRINWRsHs8Al05bNdyG9uJHVSC
+	 E4190/gq/uHso7eyM7dGzTW+0at9hbinBfPk+jTFQQop4T9ZAhidxyIvDl3YJpidxJ
+	 LIveb/TOqMDcu9SLKU8rmgrF7bFtSW2i4eUBeD3N1nIQ4h//feo5VUt3sY9NzHNmy3
+	 MR7HCqiKUJMpaHY+bsguDxDOWPa/FnZR1WFmt7CbEwK3WZ4QhBIjU1qu/6xttFPgvg
+	 8Mb3eYrUYxniP8lJPdksBLv/KoEl1uEzgbnOy0rXnIpXcO4+dC9Iu2qXclAQMqL036
+	 U6UwitIYQ0DTw==
+Date: Wed, 11 Dec 2024 19:23:00 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Cc: Claudiu <claudiu.beznea@tuxon.dev>,
- prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, geert+renesas@glider.be,
- magnus.damm@gmail.com, mturquette@baylibre.com, sboyd@kernel.org,
- p.zabel@pengutronix.de, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, Claudiu Beznea
- <claudiu.beznea.uj@bp.renesas.com>
-Subject: Re: [PATCH v2 11/15] iio: adc: rzg2l_adc: Add suspend/resume
- support
-Message-ID: <20241211191959.3bd377d9@jic23-huawei>
-In-Reply-To: <CA+V-a8vHovd7L2bcY61n_Ox_hKvTvhUZMZPKgHFtd5DHQeZNMw@mail.gmail.com>
-References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com>
-	<20241206111337.726244-12-claudiu.beznea.uj@bp.renesas.com>
-	<CA+V-a8vHovd7L2bcY61n_Ox_hKvTvhUZMZPKgHFtd5DHQeZNMw@mail.gmail.com>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman
+ <alisa.roman@analog.com>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, Conor Dooley
+ <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>,
+ Renato Lui Geh <renatogeh@gmail.com>, Rob Herring <robh@kernel.org>, Trevor
+ Gamblin <tgamblin@baylibre.com>
+Subject: Re: [PATCH v6 10/10] iio: adc: ad7124: Implement temperature
+ measurement
+Message-ID: <20241211192300.6218e5a1@jic23-huawei>
+In-Reply-To: <hoiksj7mar2qbegvy4du3b2pq4c23myrgmzmdc7axwl7yzcxm4@dupqkcedvjax>
+References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
+	<433211af8ac3f02dee58586ecb51d2e98246a095.1733504533.git.u.kleine-koenig@baylibre.com>
+	<hoiksj7mar2qbegvy4du3b2pq4c23myrgmzmdc7axwl7yzcxm4@dupqkcedvjax>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,139 +70,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 8 Dec 2024 21:35:50 +0000
-"Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
+On Mon, 9 Dec 2024 10:28:17 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-> On Fri, Dec 6, 2024 at 11:16=E2=80=AFAM Claudiu <claudiu.beznea@tuxon.dev=
-> wrote:
-> >
-> > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> >
-> > The Renesas RZ/G3S SoC features a power-saving mode where power to most=
- of
-> > the SoC components is turned off, including the ADC IP.
-> >
-> > Suspend/resume support has been added to the rzg2l_adc driver to restore
-> > functionality after resuming from this power-saving mode. During suspen=
-d,
-> > the ADC resets are asserted, and the ADC is powered down. On resume, the
-> > ADC resets are de-asserted, the hardware is re-initialized, and the ADC
-> > power is restored using the runtime PM APIs.
-> >
-> > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-> > ---
-> >
-> > Changes in v2:
-> > - none
-> >
-> >  drivers/iio/adc/rzg2l_adc.c | 70 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 70 insertions(+)
+> Hello Jonathan,
+>=20
+> On Fri, Dec 06, 2024 at 06:28:42PM +0100, Uwe Kleine-K=C3=B6nig wrote:
+> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> > index 9405cb579324..d858bffd2628 100644
+> > --- a/drivers/iio/adc/ad7124.c
+> > +++ b/drivers/iio/adc/ad7124.c
+> > [...]
+> > @@ -902,6 +941,37 @@ static int ad7124_parse_channel_config(struct iio_=
+dev *indio_dev,
+> >  		chan[channel].channel2 =3D ain[1];
+> >  	}
 > > =20
-> Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> > +	if (num_channels < AD7124_MAX_CHANNELS) {
+> > +		st->channels[num_channels] =3D (struct ad7124_channel) {
+> > +			.nr =3D num_channels,
+> > +			.ain =3D AD7124_CHANNEL_AINP(AD7124_INPUT_TEMPSENSOR) |
+> > +				AD7124_CHANNEL_AINM(AD7124_INPUT_AVSS),
+> > +			.cfg =3D {
+> > +				.bipolar =3D true,
+> > +			},
+> > +		};
+> > +
+> > +		chan[num_channels] =3D (struct iio_chan_spec) {
+> > +			.type =3D IIO_TEMP,
+> > +			.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> > +				BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET) |
+> > +				BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> > +			.scan_type =3D {
+> > +				/*
+> > +				 * You might find it strange that a bipolar
+> > +				 * measurement yields an unsigned value, but
+> > +				 * this matches the device's manual.
+> > +				 */
+> > +				.sign =3D 'u',
+> > +				.realbits =3D 24,
+> > +				.storagebits =3D 32,
+> > +				.endianness =3D IIO_BE,
+> > +			},
+> > +			.address =3D num_channels,
+> > +			.scan_index =3D num_channels,
+> > +		};
+> > +	}; =20
+>=20
+> The kernel build bot wailed about the ; here. Should I send a proper
+> patch, or can you still just rewrite your tree to drop it?
 
-Thanks.  I've updated tags.
+I tweaked it in the tree
+
+Thanks,
 
 Jonathan
 
 >=20
-> Cheers,
-> Prabhakar
->=20
-> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> > index e8dbc5dfbea1..2a911269a358 100644
-> > --- a/drivers/iio/adc/rzg2l_adc.c
-> > +++ b/drivers/iio/adc/rzg2l_adc.c
-> > @@ -88,6 +88,7 @@ struct rzg2l_adc {
-> >         struct completion completion;
-> >         struct mutex lock;
-> >         u16 last_val[RZG2L_ADC_MAX_CHANNELS];
-> > +       bool was_rpm_active;
-> >  };
-> >
-> >  /**
-> > @@ -527,8 +528,77 @@ static int rzg2l_adc_pm_runtime_resume(struct devi=
-ce *dev)
-> >         return 0;
-> >  }
-> >
-> > +static int rzg2l_adc_suspend(struct device *dev)
-> > +{
-> > +       struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> > +       struct rzg2l_adc *adc =3D iio_priv(indio_dev);
-> > +       struct reset_control_bulk_data resets[] =3D {
-> > +               { .rstc =3D adc->presetn },
-> > +               { .rstc =3D adc->adrstn },
-> > +       };
-> > +       int ret;
-> > +
-> > +       if (pm_runtime_suspended(dev)) {
-> > +               adc->was_rpm_active =3D false;
-> > +       } else {
-> > +               ret =3D pm_runtime_force_suspend(dev);
-> > +               if (ret)
-> > +                       return ret;
-> > +               adc->was_rpm_active =3D true;
-> > +       }
-> > +
-> > +       ret =3D reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
-> > +       if (ret)
-> > +               goto rpm_restore;
-> > +
-> > +       return 0;
-> > +
-> > +rpm_restore:
-> > +       if (adc->was_rpm_active)
-> > +               pm_runtime_force_resume(dev);
-> > +
-> > +       return ret;
-> > +}
-> > +
-> > +static int rzg2l_adc_resume(struct device *dev)
-> > +{
-> > +       struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
-> > +       struct rzg2l_adc *adc =3D iio_priv(indio_dev);
-> > +       struct reset_control_bulk_data resets[] =3D {
-> > +               { .rstc =3D adc->adrstn },
-> > +               { .rstc =3D adc->presetn },
-> > +       };
-> > +       int ret;
-> > +
-> > +       ret =3D reset_control_bulk_deassert(ARRAY_SIZE(resets), resets);
-> > +       if (ret)
-> > +               return ret;
-> > +
-> > +       if (adc->was_rpm_active) {
-> > +               ret =3D pm_runtime_force_resume(dev);
-> > +               if (ret)
-> > +                       goto resets_restore;
-> > +       }
-> > +
-> > +       ret =3D rzg2l_adc_hw_init(dev, adc);
-> > +       if (ret)
-> > +               goto rpm_restore;
-> > +
-> > +       return 0;
-> > +
-> > +rpm_restore:
-> > +       if (adc->was_rpm_active) {
-> > +               pm_runtime_mark_last_busy(dev);
-> > +               pm_runtime_put_autosuspend(dev);
-> > +       }
-> > +resets_restore:
-> > +       reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
-> > +       return ret;
-> > +}
-> > +
-> >  static const struct dev_pm_ops rzg2l_adc_pm_ops =3D {
-> >         RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend, rzg2l_adc_pm_runti=
-me_resume, NULL)
-> > +       SYSTEM_SLEEP_PM_OPS(rzg2l_adc_suspend, rzg2l_adc_resume)
-> >  };
-> >
-> >  static struct platform_driver rzg2l_adc_driver =3D {
-> > --
-> > 2.39.2
-> >
-> > =20
+> Best regards and thanks and sorry,
+> Uwe
 
 

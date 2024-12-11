@@ -1,61 +1,64 @@
-Return-Path: <linux-iio+bounces-13342-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13343-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592A89ED66D
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:23:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F4D9ED667
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 033C8188A489
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 19:17:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96206165994
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 19:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F40231A59;
-	Wed, 11 Dec 2024 19:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E6025949D;
+	Wed, 11 Dec 2024 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOKrypyn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GnSMQeE2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28041C548F;
-	Wed, 11 Dec 2024 19:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7B7259483;
+	Wed, 11 Dec 2024 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733944545; cv=none; b=q+t2p2ckj+Ra58jLtfTwTlkQVGsN8viJMuUwEJhlVZzE7YxmEJzjcmTAOw1NiCfEIHBNh+JelVmtg0HKnhbK5oMECnmS3wFvtWIgtW2h8aFybOQlRrf4Ze6eXDW6Fbgz1/ov0IW3ehnpsXf3s7oLdhUB3+Attih/gbdV0e8YvpU=
+	t=1733944811; cv=none; b=YvN7wJ1AqUBGLGZPqaUPurnuZuulKiO6+v8mzdvjO3HLVhhymKkPey9rvB2oMLAyaOY6dsQNAZmjnm8a7zTWdTzqjsljfKbT72PoF43kpLcv8fhc20KiW9UycRPiOaJTBIxYJtP+2DAcMMyL2pLD6URMC6Z9MljDpsgFMVNfuRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733944545; c=relaxed/simple;
-	bh=TycHuwKOqMmwmgXtlpvbcP6Cd7VjA6M0ekrYMGO/yEk=;
+	s=arc-20240116; t=1733944811; c=relaxed/simple;
+	bh=p/Xx8QnAWy25KqreG9RP47kRg5CpGfys4XG+Zt9wH1E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c6y1JWkehDF55nFYy2PR64XUvjwRi66AiyGf4ZPJR4XIqNR8olrd/m4YVx+DqrNjw2eD+q9OpZnEPEUH22ddIDCrd73SBkaklOFwS5fSx6e1awqkU+920srK6LYlgDQRuoRgsNLjRHwuavTAWalSIwHg1mRuWm94gh2CsF0tbhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOKrypyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2E1C4CED2;
-	Wed, 11 Dec 2024 19:15:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BkRHQOYbURZasQFozZn4Zh/rVRJEAZgW9Q+imVPAQeKeW/1IYGGk0tezmEtkKewzc5NYRxlxY86DTs6NjhZS1s/UO/3/+VoJcmiIxuA9yOl99AXrZobPYoGk6R3/gsCzrVQ8j13/1Mz7QzJFFQo1vfRWfzx0Y1jmkA/lDow7Il0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GnSMQeE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A02FC4CED2;
+	Wed, 11 Dec 2024 19:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733944545;
-	bh=TycHuwKOqMmwmgXtlpvbcP6Cd7VjA6M0ekrYMGO/yEk=;
+	s=k20201202; t=1733944811;
+	bh=p/Xx8QnAWy25KqreG9RP47kRg5CpGfys4XG+Zt9wH1E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HOKrypynG4At1cB14qOLL/okQZnfH9pGms2vTOQTsuWpmc3DqdEVOuG5Acsxv+faT
-	 j4Haut7R+d2d1Kz+QdZoJa3LEq4Qkwhg872K9rTqXE7LDiQPIB9Nw07pAdNEtBA4K1
-	 gF02VL4duNd5yPCfVqAVN1C5XyUSm8NI0hiIomaJNqEX+Y9S1G+gg8t+PrYesTkJDQ
-	 Df33m49aHVpa9hMpxr1GsrHr/8yhcOVraVRpWAxINJmSCWzezSVSVS+P9FPiteXI87
-	 3LNpR3cQd3i8rBHtUyAuaihf9RZfY5bJ822lk6zEUzHpNS0nlQEkoIsH9JAlEDebU4
-	 M+1PVhiLgEpMA==
-Date: Wed, 11 Dec 2024 19:15:36 +0000
+	b=GnSMQeE28iiBAoTlFlEkuubq7ZCxcwkuZVmI1nhrUExXDEBn0PGwm1yZ7bliKHOCG
+	 7xAfbyR2w2kjdIWx53Uk6vdLc9I9doib4OamCQaFAPEYFOcv9PHKXJOtQHE/3oZoAG
+	 RKXC1ehP4B2qWe8PhaZ9CcDnImHgRV7YRg/Jsg9ffAJ3LbSgMwYBcSY2lT/YVU3tel
+	 MZ0H3j4F3l0RdnvmDwdYcvdHPUiro7y3gJpILC7Fds6QkZRCTFjfj+EnTbjjyhmlYG
+	 4ajGraJy6ETiPGx5ZSCnlz3cfqWRe2OD09r4WE4DbTMD7j/q61txCgXTxsXso5GWUr
+	 pvemXYzevXmMQ==
+Date: Wed, 11 Dec 2024 19:19:59 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Lothar Rubusch <l.rubusch@gmail.com>,
- lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, lkp@intel.com,
- oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v5 10/10] iio: accel: adxl345: add FIFO with watermark
- events
-Message-ID: <20241211191536.224c89e9@jic23-huawei>
-In-Reply-To: <dc914326-7eae-4e4a-8c93-ae1a7007bcc9@stanley.mountain>
-References: <20241205171343.308963-11-l.rubusch@gmail.com>
-	<dc914326-7eae-4e4a-8c93-ae1a7007bcc9@stanley.mountain>
+To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
+Cc: Claudiu <claudiu.beznea@tuxon.dev>,
+ prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, geert+renesas@glider.be,
+ magnus.damm@gmail.com, mturquette@baylibre.com, sboyd@kernel.org,
+ p.zabel@pengutronix.de, linux-iio@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-clk@vger.kernel.org, Claudiu Beznea
+ <claudiu.beznea.uj@bp.renesas.com>
+Subject: Re: [PATCH v2 11/15] iio: adc: rzg2l_adc: Add suspend/resume
+ support
+Message-ID: <20241211191959.3bd377d9@jic23-huawei>
+In-Reply-To: <CA+V-a8vHovd7L2bcY61n_Ox_hKvTvhUZMZPKgHFtd5DHQeZNMw@mail.gmail.com>
+References: <20241206111337.726244-1-claudiu.beznea.uj@bp.renesas.com>
+	<20241206111337.726244-12-claudiu.beznea.uj@bp.renesas.com>
+	<CA+V-a8vHovd7L2bcY61n_Ox_hKvTvhUZMZPKgHFtd5DHQeZNMw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,82 +66,142 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 10 Dec 2024 11:47:37 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Sun, 8 Dec 2024 21:35:50 +0000
+"Lad, Prabhakar" <prabhakar.csengg@gmail.com> wrote:
 
-> Hi Lothar,
-> 
-> kernel test robot noticed the following build warnings:
+> On Fri, Dec 6, 2024 at 11:16=E2=80=AFAM Claudiu <claudiu.beznea@tuxon.dev=
+> wrote:
+> >
+> > From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> >
+> > The Renesas RZ/G3S SoC features a power-saving mode where power to most=
+ of
+> > the SoC components is turned off, including the ADC IP.
+> >
+> > Suspend/resume support has been added to the rzg2l_adc driver to restore
+> > functionality after resuming from this power-saving mode. During suspen=
+d,
+> > the ADC resets are asserted, and the ADC is powered down. On resume, the
+> > ADC resets are de-asserted, the hardware is re-initialized, and the ADC
+> > power is restored using the runtime PM APIs.
+> >
+> > Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> > ---
+> >
+> > Changes in v2:
+> > - none
+> >
+> >  drivers/iio/adc/rzg2l_adc.c | 70 +++++++++++++++++++++++++++++++++++++
+> >  1 file changed, 70 insertions(+)
+> > =20
+> Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-Ah. This was the report you were referring to I guess.  Just fix these in v6 version
-of this patch.
-
-Thanks,
+Thanks.  I've updated tags.
 
 Jonathan
 
-> 
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Lothar-Rubusch/iio-accel-adxl345-refrase-comment-on-probe/20241206-011802
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-> patch link:    https://lore.kernel.org/r/20241205171343.308963-11-l.rubusch%40gmail.com
-> patch subject: [PATCH v5 10/10] iio: accel: adxl345: add FIFO with watermark events
-> config: nios2-randconfig-r072-20241210 (https://download.01.org/0day-ci/archive/20241210/202412101132.Kj6R6i3h-lkp@intel.com/config)
-> compiler: nios2-linux-gcc (GCC) 14.2.0
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202412101132.Kj6R6i3h-lkp@intel.com/
-> 
-> smatch warnings:
-> drivers/iio/accel/adxl345_core.c:441 adxl345_event_handler() warn: unsigned 'int_stat' is never less than zero.
-> 
-> vim +/ret +321 drivers/iio/accel/adxl345_core.c
-> 
-> 55d2386488598bb Lothar Rubusch 2024-12-05  433  static irqreturn_t adxl345_event_handler(int irq, void *p)
-> 55d2386488598bb Lothar Rubusch 2024-12-05  434  {
-> 55d2386488598bb Lothar Rubusch 2024-12-05  435  	struct iio_dev *indio_dev = p;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  436  	struct adxl345_state *st = iio_priv(indio_dev);
-> 55d2386488598bb Lothar Rubusch 2024-12-05  437  	u8 int_stat;
->                                                         ^^^^^^^^^^^
-> 
-> 55d2386488598bb Lothar Rubusch 2024-12-05  438  	int samples;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  439  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  440  	int_stat = adxl345_get_status(st);
-> 55d2386488598bb Lothar Rubusch 2024-12-05 @441  	if (int_stat < 0)
->                                                             ^^^^^^^^^^^^
-> signedness bug
-> 
-> 55d2386488598bb Lothar Rubusch 2024-12-05  442  		return IRQ_NONE;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  443  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  444  	if (int_stat == 0x0)
-> 55d2386488598bb Lothar Rubusch 2024-12-05  445  		goto err;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  446  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  447  	if (int_stat & ADXL345_INT_OVERRUN)
-> 55d2386488598bb Lothar Rubusch 2024-12-05  448  		goto err;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  449  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  450  	if (int_stat & (ADXL345_INT_DATA_READY | ADXL345_INT_WATERMARK)) {
-> 55d2386488598bb Lothar Rubusch 2024-12-05  451  		samples = adxl345_get_samples(st);
-> 55d2386488598bb Lothar Rubusch 2024-12-05  452  		if (samples < 0)
-> 55d2386488598bb Lothar Rubusch 2024-12-05  453  			goto err;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  454  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  455  		if (adxl345_fifo_push(indio_dev, samples) < 0)
-> 55d2386488598bb Lothar Rubusch 2024-12-05  456  			goto err;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  457  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  458  	}
-> 55d2386488598bb Lothar Rubusch 2024-12-05  459  	return IRQ_HANDLED;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  460  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  461  err:
-> 55d2386488598bb Lothar Rubusch 2024-12-05  462  	adxl345_fifo_reset(st);
-> 55d2386488598bb Lothar Rubusch 2024-12-05  463  
-> 55d2386488598bb Lothar Rubusch 2024-12-05  464  	return IRQ_HANDLED;
-> 55d2386488598bb Lothar Rubusch 2024-12-05  465  }
-> 
+>=20
+> Cheers,
+> Prabhakar
+>=20
+> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> > index e8dbc5dfbea1..2a911269a358 100644
+> > --- a/drivers/iio/adc/rzg2l_adc.c
+> > +++ b/drivers/iio/adc/rzg2l_adc.c
+> > @@ -88,6 +88,7 @@ struct rzg2l_adc {
+> >         struct completion completion;
+> >         struct mutex lock;
+> >         u16 last_val[RZG2L_ADC_MAX_CHANNELS];
+> > +       bool was_rpm_active;
+> >  };
+> >
+> >  /**
+> > @@ -527,8 +528,77 @@ static int rzg2l_adc_pm_runtime_resume(struct devi=
+ce *dev)
+> >         return 0;
+> >  }
+> >
+> > +static int rzg2l_adc_suspend(struct device *dev)
+> > +{
+> > +       struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> > +       struct rzg2l_adc *adc =3D iio_priv(indio_dev);
+> > +       struct reset_control_bulk_data resets[] =3D {
+> > +               { .rstc =3D adc->presetn },
+> > +               { .rstc =3D adc->adrstn },
+> > +       };
+> > +       int ret;
+> > +
+> > +       if (pm_runtime_suspended(dev)) {
+> > +               adc->was_rpm_active =3D false;
+> > +       } else {
+> > +               ret =3D pm_runtime_force_suspend(dev);
+> > +               if (ret)
+> > +                       return ret;
+> > +               adc->was_rpm_active =3D true;
+> > +       }
+> > +
+> > +       ret =3D reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+> > +       if (ret)
+> > +               goto rpm_restore;
+> > +
+> > +       return 0;
+> > +
+> > +rpm_restore:
+> > +       if (adc->was_rpm_active)
+> > +               pm_runtime_force_resume(dev);
+> > +
+> > +       return ret;
+> > +}
+> > +
+> > +static int rzg2l_adc_resume(struct device *dev)
+> > +{
+> > +       struct iio_dev *indio_dev =3D dev_get_drvdata(dev);
+> > +       struct rzg2l_adc *adc =3D iio_priv(indio_dev);
+> > +       struct reset_control_bulk_data resets[] =3D {
+> > +               { .rstc =3D adc->adrstn },
+> > +               { .rstc =3D adc->presetn },
+> > +       };
+> > +       int ret;
+> > +
+> > +       ret =3D reset_control_bulk_deassert(ARRAY_SIZE(resets), resets);
+> > +       if (ret)
+> > +               return ret;
+> > +
+> > +       if (adc->was_rpm_active) {
+> > +               ret =3D pm_runtime_force_resume(dev);
+> > +               if (ret)
+> > +                       goto resets_restore;
+> > +       }
+> > +
+> > +       ret =3D rzg2l_adc_hw_init(dev, adc);
+> > +       if (ret)
+> > +               goto rpm_restore;
+> > +
+> > +       return 0;
+> > +
+> > +rpm_restore:
+> > +       if (adc->was_rpm_active) {
+> > +               pm_runtime_mark_last_busy(dev);
+> > +               pm_runtime_put_autosuspend(dev);
+> > +       }
+> > +resets_restore:
+> > +       reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+> > +       return ret;
+> > +}
+> > +
+> >  static const struct dev_pm_ops rzg2l_adc_pm_ops =3D {
+> >         RUNTIME_PM_OPS(rzg2l_adc_pm_runtime_suspend, rzg2l_adc_pm_runti=
+me_resume, NULL)
+> > +       SYSTEM_SLEEP_PM_OPS(rzg2l_adc_suspend, rzg2l_adc_resume)
+> >  };
+> >
+> >  static struct platform_driver rzg2l_adc_driver =3D {
+> > --
+> > 2.39.2
+> >
+> > =20
 
 

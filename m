@@ -1,64 +1,67 @@
-Return-Path: <linux-iio+bounces-13345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94239ED685
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:29:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5A99ED780
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 21:53:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B87188347D
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 19:25:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE5A168477
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5907B2594AC;
-	Wed, 11 Dec 2024 19:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4082210F2;
+	Wed, 11 Dec 2024 20:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJsyB5WV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jF9IlOcV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1098A2594A3;
-	Wed, 11 Dec 2024 19:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B35259498;
+	Wed, 11 Dec 2024 20:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733945111; cv=none; b=SA+kOSdmbYR8HXhuHcxfyGo4styM87DF3J3c/mBXjhJ+Sovwi8NEf6HvVjFb1reNdrzRbiI2YX4qJqpKyc/KHp1q2cvuTCJnPejsUaRCRVdLXQ4ojsCoid4SLqZhStZV5Bep+jO7FTDTtzStIzRpESpOoEkoFxUdpUigKvU1xE8=
+	t=1733950394; cv=none; b=Uke/0wt4baFOUDxMefEsxkmqxAbcJqNMZ+hYU9trtrQdlAPVCA3pajYpc1fA7gAEQoBiuvX9u9OBxLe+TVb6mXHnw2AnFosqy8KtUcEDuFePKlZUpZ6GimMizith5DQ2Y//tfCcqe3GZ7jmGga4/U9rZndYmKDeaqeriFtyKVNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733945111; c=relaxed/simple;
-	bh=Haat11j8rd3eQKi+LMSCO8iDCcyhrGTxLa0q7wu1VhU=;
+	s=arc-20240116; t=1733950394; c=relaxed/simple;
+	bh=h5MY6n9s52R9K4S4G1UuwM6yzSqhfXepqx5616VdQqM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ibp/8FtKYvY7VvspHhazv5ApJVGnZ4GvGrkiu5bSs3/2JAmY6M8uCEr8OgxooSJrTa22fYABXSYQduGeIA/nEZsGC2emdDdDkJ6MkqDJOLKrSAaoM+CvxFHBA5sxjMG2pRotIGerFNNSQHH/K6UWYELLtZq6/h1+6XCm+iDjP44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJsyB5WV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A69C4CED2;
-	Wed, 11 Dec 2024 19:25:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DP3iunav920+eYe6nA4N4b1C8aFqR3gnbk96i6862+pVFFtkdd/gyvfYaBV9NYY4vCG/8L3kP0Zn2aazlpr3KAGEESyId18/M+wG+Uj37Cm8doagyhozOxV0zZpQ8yqt5GPRw9xFFPGXC+iwqCCJikQe8FBJCbr/yBDocyKSvEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jF9IlOcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3A0C4CED2;
+	Wed, 11 Dec 2024 20:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733945110;
-	bh=Haat11j8rd3eQKi+LMSCO8iDCcyhrGTxLa0q7wu1VhU=;
+	s=k20201202; t=1733950394;
+	bh=h5MY6n9s52R9K4S4G1UuwM6yzSqhfXepqx5616VdQqM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RJsyB5WVlJMhN2R/9ddT4ipfFxfZQ2gd+wSKNpy819QGvLuw/WSfsg03D0k3B+6tL
-	 dtrm5flUrOKS+f4Z00VRjRY+brANBYB2WL9ObNclKi6ECAYTI5u8s/iYOcE6C1Rcyn
-	 bJU0jCxavHR9UwYLwGUfXlPpzrnuHu0WVA26RNjFGSJMMQ5Un9UNFwaQwqySc81m0m
-	 kMfCvJvZLguQjijBInehWm5rH2DfX3A3Y7lg+0T/JnRYIe66X21jtBVmPH5QlqRIKR
-	 r7pxTTVsIIzTogFyyfc+y2gjVCUwKVjTsR5TeHTbqKQDzw2HVeBhdVBmzZaDLCGb/0
-	 gfoROMjymYq/g==
-Date: Wed, 11 Dec 2024 19:24:59 +0000
+	b=jF9IlOcVZ7CnGk+pLzx3qeNz2UQWzdj4Cq+PAIz6vAYiLBosddkGHEpY2oHZlWhzR
+	 VwlJNbOjH1DLckuLuFBbq58vZJVSnRlcW4RoR6RQpilBd+/qyrZrAo0ZnoMaPHgq6O
+	 BQ9mtKv7GclkmrGiOoisQkbRwirDaKcfO+FqVQMSlyJ+5X2msBsnqNhAz/TScksqiL
+	 Pz+SqKitWfIFec/2yEQ0ILs2VEQL4ZqZUkbWuKGkXBumtHFr6Mu9o38sCdDnTYMXJq
+	 sZixnWZ3JUmlP/QEqDD4TxBVzDwf3GdpkyE4VLIT9LgzzsqFrElfu6ZHYCeatsfcRY
+	 6SZ1SvnBVqE6A==
+Date: Wed, 11 Dec 2024 20:53:02 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, Andy Shevchenko <andy.shevchenko@gmail.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, Conor Dooley
- <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>,
- Renato Lui Geh <renatogeh@gmail.com>, Rob Herring <robh@kernel.org>, Trevor
- Gamblin <tgamblin@baylibre.com>
-Subject: Re: [PATCH v6 00/10] iio: adc: ad7124: Various fixes
-Message-ID: <20241211192459.430fd9d3@jic23-huawei>
-In-Reply-To: <roit3rdw6a2wv65fpq7xuullbreyz463nch2n2xmjop3b2saoe@pbhm4kahmgsj>
-References: <cover.1733504533.git.u.kleine-koenig@baylibre.com>
-	<20241208124427.3b90701e@jic23-huawei>
-	<roit3rdw6a2wv65fpq7xuullbreyz463nch2n2xmjop3b2saoe@pbhm4kahmgsj>
+To: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+Cc: Mikael Gonella-Bolduc via B4 Relay
+ <devnull+mgonellabolduc.dimonoff.com@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
+ Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Mikael
+ Gonella-Bolduc <m.gonella.bolduc@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
+ driver
+Message-ID: <20241211205302.2ba32a4a@jic23-huawei>
+In-Reply-To: <Z1dl2C9/BYoeyudu@uva.nl>
+References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
+	<20241206-apds9160-driver-v2-2-be2cb72ef8f4@dimonoff.com>
+	<20241208122038.18cf7db8@jic23-huawei>
+	<Z1dl2C9/BYoeyudu@uva.nl>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,51 +69,116 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 9 Dec 2024 10:47:29 +0100
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Mon, 9 Dec 2024 16:49:12 -0500
+Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
 
-> Hello Jonathan,
->=20
-> On Sun, Dec 08, 2024 at 12:44:27PM +0000, Jonathan Cameron wrote:
-> > Given the mix of fixes and other material (kind of fixes, but also kind
-> > of new functionality), I've queued this for the next merge window in my
-> > togreg branch.  If you think there are particular patches that need to
-> > go sooner then I can handle them in a split fashion, but that does add
-> > risk that the whole lot might no land depending on timings (particularly
-> > given it's coming into vacation season). =20
->=20
-> So you tend to not backport the rdy-gpios patches (i.e.
->=20
-> 	dt-bindings: iio: adc: adi,ad7{124,173,192,780}: Allow specifications of=
- a gpio for irq line
-> 	iio: adc: ad_sigma_delta: Add support for reading irq status using a GPIO
->=20
-> )? I personally would want to have these backported, too, but I can
-> understand that you might decide that in a different way.
+> On Sun, Dec 08, 2024 at 12:20:38PM +0000, Jonathan Cameron wrote:
+> > On Fri, 06 Dec 2024 11:09:57 -0500
+> > Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org> wrote:
+> >   
+> > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> > > 
+> > > APDS9160 is a combination of ALS and proximity sensors.
+> > > 
+> > > This patch add supports for:
+> > >     - Intensity clear data and illuminance data
+> > >     - Proximity data
+> > >     - Gain control, rate control
+> > >     - Event thresholds
+> > > 
+> > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>  
+> > 
+> > Hi Mikael,
+> > 
+> > As the bots noted, the maintainers entry has the wrong vendor prefix,
+> > or the binding does.
+> > 
+> > Also the issue with missing include of linux/bitfield.h
+> > 
+> > Unused gain table is less obvious. Not sure what intent was on that one.
+> > 
+> > Given the discussion with Matti about how to do the gain control, please add
+> > some description here of the outcome.  The control scheme is not particularly
+> > obvious and is the key bit we should be reviewing.  It feels like you've
+> > applied the feedback on v1 to the light channel but it is equally applicable
+> > to proximity channels when they are just measures of reflected light intensity.
+> > 
+> > Various other minor things inline.
+> > 
+> > Thanks,
+> > 
+> > 
+> > Jonathan  
+> 
+> Hi Jonathan,
+> 
+> I will fix the warnings the bots noted and other inline comments for v3, sorry about that.
+> Regarding gain control for ALS, I kept the non-linear table provided in the datasheet.
+> The user can adjust the integration time and the available scales will update
+> depending on the value.
+> For example, at 100ms, you have possible scales of 0.819, 0.269, 0.131, etc. (lux/count).
+> The hardware gain and other relevant registers gets adjusted by the driver depending on selected scale.
+> The attribute is kept as read-only as Matti suggested.
+> 
+> Now, for proximity, again I'm confused. Please bear with me a little.
+> The only "scale" I see in the datasheet is that the proximity sensor is for a short distance of under 70mm.
 
-Yeah. If it were tiny amount of code I might have gone the other way, but
-this just got a bit too complex.=20
+That sounds like a design point for sensitivity of sensor vs light source brightness.
 
->=20
-> Cherry picking
->=20
-> 	iio: adc: ad_sigma_delta: Fix a race condition
-> 	iio: adc: ad_sigma_delta: Check for previous ready signals
->=20
-> isn't trivial without the rdy-gpios, but they could be reworked. Tell me
-> if you want a helping hand (or an eye judging your backport).
->=20
-A backport won't go anywhere until these are upstream.  At that point if you
-want them, feel free to suggest backporting these and provide the code ;)
+> There's nothing provided in the datasheet to convert the proximity ADC count to a distance or to anything meaningful like standard units.
+> I don't feel like this is really precise and the intended use case is probably like mine where you can use this to detect
+> if there's something covering the sensor or not.
+> 
+> I took a look at other light/proximity sensors, again, it's not clear for me how to handle this.
+> It seems that some drivers just directly control the hardware gain register with the scale even if it's not really a scale.
+Typical case is that it is a scale, just not of distance.  But rather controls an amplifier on the light sensor,
+so same as for the ambient light sensor.
 
-Thanks,
+The ABI docs are a little vague on this Documentation/ABI/testing/sysfs-bus-iio
+has
+What:		/sys/.../iio:deviceX/in_proximity_raw
+What:		/sys/.../iio:deviceX/in_proximity_input
+What:		/sys/.../iio:deviceX/in_proximityY_raw
+KernelVersion:	3.4
+Contact:	linux-iio@vger.kernel.org
+Description:
+		Proximity measurement indicating that some
+		object is near the sensor, usually by observing
+		reflectivity of infrared or ultrasound emitted.
+
+		Often these sensors are unit less and as such conversion
+		to SI units is not possible. Higher proximity measurements
+		indicate closer objects, and vice versa. Units after
+		application of scale and offset are meters.
+
+So it kind of says we can't relate them to real units, but then we provide
+a unit. Hmm, not our finest and clearest documentation.
+
+Probably best bet is to follow precedence as even if we haven't tightly defined
+it that is what any userspace tuning these value will be using.
+
+Given inverse square law and different characteristics of reflective surfaces
+I think it is normally a case of crank the gain up until the signal is good.
+
+In most cases these proximity sensors aren't much more than fancy switches
+though can be used for approaching vs moving away detection.
+
+Anyhow, I haven't checked all the precedence in existing drivers but from
+memory scale is the standard choice.
+
+Hardware gain as a writable control is just rarely used and only in devices where
+it doesn't affect what we are measuring. In proximity that means time of flight
+sensors, not ones based on reflected intensity.
 
 Jonathan
 
-> Best regards
-> Uwe
+> 
+> What should I do?
+> 
+> Best regards,
+> Mikael
 
 

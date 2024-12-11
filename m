@@ -1,184 +1,266 @@
-Return-Path: <linux-iio+bounces-13346-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13347-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5A99ED780
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 21:53:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFA29ED78C
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 21:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE5A168477
-	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:53:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6436E168421
+	for <lists+linux-iio@lfdr.de>; Wed, 11 Dec 2024 20:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA4082210F2;
-	Wed, 11 Dec 2024 20:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E5B259490;
+	Wed, 11 Dec 2024 20:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jF9IlOcV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="JqPs31EW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B35259498;
-	Wed, 11 Dec 2024 20:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1905B225A52
+	for <linux-iio@vger.kernel.org>; Wed, 11 Dec 2024 20:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733950394; cv=none; b=Uke/0wt4baFOUDxMefEsxkmqxAbcJqNMZ+hYU9trtrQdlAPVCA3pajYpc1fA7gAEQoBiuvX9u9OBxLe+TVb6mXHnw2AnFosqy8KtUcEDuFePKlZUpZ6GimMizith5DQ2Y//tfCcqe3GZ7jmGga4/U9rZndYmKDeaqeriFtyKVNk=
+	t=1733950498; cv=none; b=k6IdVc/aTxtefrJsZEOLs/Qki2w4U09iF12z15ZcuDNxFDUwwtYLyDa7psLEc/+N0p7/6gRErmG8mysWSlX1ciQuch5cUH0c0lKX8QtnmUYRUOWDibXEuGHEN5sqkdt02ZhoQUbSe362bif4mjIIShEE9czVXwaXWeOSjHBZWZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733950394; c=relaxed/simple;
-	bh=h5MY6n9s52R9K4S4G1UuwM6yzSqhfXepqx5616VdQqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DP3iunav920+eYe6nA4N4b1C8aFqR3gnbk96i6862+pVFFtkdd/gyvfYaBV9NYY4vCG/8L3kP0Zn2aazlpr3KAGEESyId18/M+wG+Uj37Cm8doagyhozOxV0zZpQ8yqt5GPRw9xFFPGXC+iwqCCJikQe8FBJCbr/yBDocyKSvEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jF9IlOcV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3A0C4CED2;
-	Wed, 11 Dec 2024 20:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733950394;
-	bh=h5MY6n9s52R9K4S4G1UuwM6yzSqhfXepqx5616VdQqM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jF9IlOcVZ7CnGk+pLzx3qeNz2UQWzdj4Cq+PAIz6vAYiLBosddkGHEpY2oHZlWhzR
-	 VwlJNbOjH1DLckuLuFBbq58vZJVSnRlcW4RoR6RQpilBd+/qyrZrAo0ZnoMaPHgq6O
-	 BQ9mtKv7GclkmrGiOoisQkbRwirDaKcfO+FqVQMSlyJ+5X2msBsnqNhAz/TScksqiL
-	 Pz+SqKitWfIFec/2yEQ0ILs2VEQL4ZqZUkbWuKGkXBumtHFr6Mu9o38sCdDnTYMXJq
-	 sZixnWZ3JUmlP/QEqDD4TxBVzDwf3GdpkyE4VLIT9LgzzsqFrElfu6ZHYCeatsfcRY
-	 6SZ1SvnBVqE6A==
-Date: Wed, 11 Dec 2024 20:53:02 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-Cc: Mikael Gonella-Bolduc via B4 Relay
- <devnull+mgonellabolduc.dimonoff.com@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
- Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Mikael
- Gonella-Bolduc <m.gonella.bolduc@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
- Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
- driver
-Message-ID: <20241211205302.2ba32a4a@jic23-huawei>
-In-Reply-To: <Z1dl2C9/BYoeyudu@uva.nl>
-References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
-	<20241206-apds9160-driver-v2-2-be2cb72ef8f4@dimonoff.com>
-	<20241208122038.18cf7db8@jic23-huawei>
-	<Z1dl2C9/BYoeyudu@uva.nl>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1733950498; c=relaxed/simple;
+	bh=OvwiQLnYA0FC4btps/SB28eG/A2uLzi8u4tHo5Ohxic=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=i4o+T5aPGW0Ao5U9ffUAgTI8zFKnVyvHtSxQb2MECDcgmBibD2i//Nh5ARJNA+yl11Z3ImmbH3qpmKSP9q5HHahJ20kJKoxc6LJMMw81QC/tocfIxwhgfW/7cDXm9hHdEyPJgd3I1aRQitSrNVEXGr5TtUSgkzOiI0t29PH9fMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=JqPs31EW; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-71e22b2387cso512554a34.3
+        for <linux-iio@vger.kernel.org>; Wed, 11 Dec 2024 12:54:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1733950494; x=1734555294; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=W6v76obBpEyhyDBRmwYte1jAQRvqqCqDiU8b8n9rTgs=;
+        b=JqPs31EWFlctSOKZmmjkJPQgXw2ga4CuwPBdtrvAEjHkf5yAnVLpLC6Tu277Tl0ZSL
+         gBf28vRo4lXjWr+kq+DDlXsY1kGIG6ntpZWjwYE1DIqKPsHviTtfyx2cpF8ZMSuzUQcV
+         fkjmBrEDFJovwaTb2lHebjmqS6DbRysSq60tiywvJjJ/4RGYEttXfzbRX6XnmFhd2hBI
+         RqLfHF48DFwe8SnOzsN0oELcgS8U6gCJ//RXlddmqtRSbF4VbYCTifrdtBxHt4lkAq33
+         mKbIl7+LAZ1+Y05XThcED6Ytk05+uEnM+qQD1Y1uPYe5IRztVbZYO6DE2vwTn2rpbdXw
+         4E3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733950494; x=1734555294;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W6v76obBpEyhyDBRmwYte1jAQRvqqCqDiU8b8n9rTgs=;
+        b=XyYdAFallQl8frxAiTIqsG6F0GEy/y5qpIQsBMWtEOY/R5RcwLVtkxotfrFCXR/OdR
+         37Pz8h0nGlrb4u4ACmlmpKlQh7HzVtU3irYfbQB4dxZOzcTfkPNTlb08Ng8XA6tO7cco
+         EwBtp67n0pH+nZcLErd0MnIoYWqFPjyJQVcBKE3DmcBVgqQnoii97oj+ygCj3o42nHSz
+         3YgPeEcO4ICa7tZOJHTjLlcC4R81ApuBPyefE5b/aYW+b9S7ViaL9Vgj3nVpg7j38PTD
+         hOHfLwX1o+c3LGI8uzKtuVocvTHCuplkPyLhGZAv3OzTvP+HxPoQ2wh7FuKTJeEWqWck
+         wikw==
+X-Forwarded-Encrypted: i=1; AJvYcCXIuEb1PYaHuO99L3XS8EEY10AvyfLfbzl9DXbrdI0ZXHrShNfYw2IyXTmjgYaRlHpCRymhjYqDi5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDD6xyrikg/4DN49TSFNjuNj0FcnzGV2GLSTQPbC8fFzQnGh+1
+	xpL0uBGBOxF531gLDXpgDN2tToINFgVcq6CwOHLwAHKA8dlEtfbho/kpuq1J0n8=
+X-Gm-Gg: ASbGncvLmA9WBD2IF+qMCWNXvTapanfIVmVzyepMVKwsisT7V9CrJfNcSCb/RP0TMwT
+	bbkczK+aV7y/r40dKxMQzcCKxZqnuNyCLRz397rmkygi6f95YSZTvoB7bGKiVJIin3FuRiOMl4j
+	vi/Vgk3vczGwMt4USvPPDywSTpYjndaVcN9hZtlUVNUNhL5IUJ41Sp5GYmKmR0Ds+u2Q0bjd2vY
+	NGMT7HnlgpA5j53RML0WXfpY5deKOeeS3thcy/eJl7qFNGAr2T3OZG6pXZsTnD64J/O+ZJHM2jW
+	AbZfYe3GzQ==
+X-Google-Smtp-Source: AGHT+IFNDEOjvNOX5bJwM+maGY3ABusKGwINCwh8iOScXEB4QUNI10mrV2AERnfTCXNrv8EfRusM7w==
+X-Received: by 2002:a05:6830:6c09:b0:71d:63fc:2ea6 with SMTP id 46e09a7af769-71e29bb5a0fmr595822a34.8.1733950493780;
+        Wed, 11 Dec 2024 12:54:53 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71def651fb2sm1888288a34.27.2024.12.11.12.54.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Dec 2024 12:54:52 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v6 00/17] spi: axi-spi-engine: add offload support
+Date: Wed, 11 Dec 2024 14:54:37 -0600
+Message-Id: <20241211-dlech-mainline-spi-engine-offload-2-v6-0-88ee574d5d03@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA38WWcC/5XRzWrDMAwA4FcJPs/Dkf972nuMHWRbbg1p0iVZa
+ Cl997kptDB66C7GMuiTLJ3ZRGOhiW2aMxtpKVMZ+hqYt4bFHfZb4iXVmIEAJXQreOoo7vgeS9+
+ Vnvh0KJz67fU65NwNmDhwzJGk9SJoDKxKh5FyOa5VPr9qvCvTPIyntegC19f/+QtwwZ0VFusRl
+ dQfAU9dCSO9x2HPriUW+WAtwGusrKxVIEjplI0PT1h1Z1sB8jVWVTa7FnTwPmtsn7D6wbatfo3
+ VlQ2ErtUhacK/Q7jcBj/S90/d6nybPjvgXOWSNo0lk6QJOYIB0gZisCppUORNCkYZr4RREsy6w
+ HtWckZR9tmhlUI6gKRF0k6gpxCSS1Ko6BDXrIAT8drLvsybpqfjzNcPQitqd5df5Lt1YXsCAAA
+ =
+X-Change-ID: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
+To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>, 
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ David Lechner <dlechner@baylibre.com>, Axel Haslam <ahaslam@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On Mon, 9 Dec 2024 16:49:12 -0500
-Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
+Not much to say for this revision. The main changes were making the
+trigger-sources/#trigger-source-cells properties more generic,
+splitting up the spi-offload.h header into consumer/provider/types.h
+and adding a DAC driver patch to make use of the TX DMA stream API.
 
-> On Sun, Dec 08, 2024 at 12:20:38PM +0000, Jonathan Cameron wrote:
-> > On Fri, 06 Dec 2024 11:09:57 -0500
-> > Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org> wrote:
-> >   
-> > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> > > 
-> > > APDS9160 is a combination of ALS and proximity sensors.
-> > > 
-> > > This patch add supports for:
-> > >     - Intensity clear data and illuminance data
-> > >     - Proximity data
-> > >     - Gain control, rate control
-> > >     - Event thresholds
-> > > 
-> > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>  
-> > 
-> > Hi Mikael,
-> > 
-> > As the bots noted, the maintainers entry has the wrong vendor prefix,
-> > or the binding does.
-> > 
-> > Also the issue with missing include of linux/bitfield.h
-> > 
-> > Unused gain table is less obvious. Not sure what intent was on that one.
-> > 
-> > Given the discussion with Matti about how to do the gain control, please add
-> > some description here of the outcome.  The control scheme is not particularly
-> > obvious and is the key bit we should be reviewing.  It feels like you've
-> > applied the feedback on v1 to the light channel but it is equally applicable
-> > to proximity channels when they are just measures of reflected light intensity.
-> > 
-> > Various other minor things inline.
-> > 
-> > Thanks,
-> > 
-> > 
-> > Jonathan  
-> 
-> Hi Jonathan,
-> 
-> I will fix the warnings the bots noted and other inline comments for v3, sorry about that.
-> Regarding gain control for ALS, I kept the non-linear table provided in the datasheet.
-> The user can adjust the integration time and the available scales will update
-> depending on the value.
-> For example, at 100ms, you have possible scales of 0.819, 0.269, 0.131, etc. (lux/count).
-> The hardware gain and other relevant registers gets adjusted by the driver depending on selected scale.
-> The attribute is kept as read-only as Matti suggested.
-> 
-> Now, for proximity, again I'm confused. Please bear with me a little.
-> The only "scale" I see in the datasheet is that the proximity sensor is for a short distance of under 70mm.
+If we think this is good enough to go in, the SPI patches should be
+applying fine since this is based on a recent linux-next. But the IIO
+patches will need some care. There are dependencies on both the
+iio/fixes-togreg and the iio/testing branches as well as a couple of
+patches that haven't been applied yet because they are waiting for other
+dependencies [1]. So best would be to let Mark pick up the SPI stuff and
+create an immutable branch and let Jonathan work out the IIO stuff.
 
-That sounds like a design point for sensitivity of sensor vs light source brightness.
+[1]: https://lore.kernel.org/all/20241124125206.1ffd6e6c@jic23-huawei/
 
-> There's nothing provided in the datasheet to convert the proximity ADC count to a distance or to anything meaningful like standard units.
-> I don't feel like this is really precise and the intended use case is probably like mine where you can use this to detect
-> if there's something covering the sensor or not.
-> 
-> I took a look at other light/proximity sensors, again, it's not clear for me how to handle this.
-> It seems that some drivers just directly control the hardware gain register with the scale even if it's not really a scale.
-Typical case is that it is a scale, just not of distance.  But rather controls an amplifier on the light sensor,
-so same as for the ambient light sensor.
+---
+Changes in v6:
+- Dropped the "spi: dt-bindings: add trigger-source.yaml" patch. It was
+  reworked and merged into dt-schema in
+  https://github.com/devicetree-org/dt-schema/pull/147
+- Adjusted other dt-bindings patches to account for above change.
+- Dropped one iio patch that was already applied to iio tree.
+- Added a DAC patch to make use of the TX DMA stream API.
+- Minor fixes and improvements to other patches based on feedback.
+- Link to v5: https://lore.kernel.org/r/20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com
 
-The ABI docs are a little vague on this Documentation/ABI/testing/sysfs-bus-iio
-has
-What:		/sys/.../iio:deviceX/in_proximity_raw
-What:		/sys/.../iio:deviceX/in_proximity_input
-What:		/sys/.../iio:deviceX/in_proximityY_raw
-KernelVersion:	3.4
-Contact:	linux-iio@vger.kernel.org
-Description:
-		Proximity measurement indicating that some
-		object is near the sensor, usually by observing
-		reflectivity of infrared or ultrasound emitted.
+Changes in v5:
+- Dropped pwm patch. A variant of this patch has been picked up in the
+  pwm tree.
+- Addressed review comments (see details in individual patches).
+- Added some polish, like MAINTAINERS entries and updating ADC docs.
+- Link to v4: https://lore.kernel.org/r/20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com
 
-		Often these sensors are unit less and as such conversion
-		to SI units is not possible. Higher proximity measurements
-		indicate closer objects, and vice versa. Units after
-		application of scale and offset are meters.
+Changes in v4:
+- Dropped #spi-offload-cells and spi-offload properties from DT bindings.
+- Made an attempt at a more generic trigger interface instead of using
+  clk framework. This also includes a new driver for a generic PWM
+  trigger.
+- Addressed IIO review comments.
+- Added new patches for iio/adc/ad4695 as 2nd user of SPI offload.
+- Link to v3: https://lore.kernel.org/r/20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com
 
-So it kind of says we can't relate them to real units, but then we provide
-a unit. Hmm, not our finest and clearest documentation.
+Changes in v3:
+- Reworked DT bindings to have things physically connected to the SPI
+  controller be properties of the SPI controller and use more
+  conventional provider/consumer properties.
+- Added more SPI APIs for peripheral drivers to use to get auxillary
+  offload resources, like triggers.
+- Link to v2: https://lore.kernel.org/r/20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com
 
-Probably best bet is to follow precedence as even if we haven't tightly defined
-it that is what any userspace tuning these value will be using.
+Individual patches have more details on these changes and earlier revisions too.
+---
 
-Given inverse square law and different characteristics of reflective surfaces
-I think it is normally a case of crank the gain up until the signal is good.
+As a recap, here is the background and end goal of this series:
 
-In most cases these proximity sensors aren't much more than fancy switches
-though can be used for approaching vs moving away detection.
+The AXI SPI Engine is a SPI controller that has the ability to record a
+series of SPI transactions and then play them back using a hardware
+trigger. This allows operations to be performed, repeating many times,
+without any CPU intervention. This is needed for achieving high data
+rates (millions of samples per second) from ADCs and DACs that are
+connected via a SPI bus.
 
-Anyhow, I haven't checked all the precedence in existing drivers but from
-memory scale is the standard choice.
+The offload hardware interface consists of a trigger input and a data
+output for the RX data. These are connected to other hardware external
+to the SPI controller.
 
-Hardware gain as a writable control is just rarely used and only in devices where
-it doesn't affect what we are measuring. In proximity that means time of flight
-sensors, not ones based on reflected intensity.
+To record one or more transactions, commands and TX data are written
+to memories in the controller (RX buffer is not used since RX data gets
+streamed to an external sink). This sequence of transactions can then be
+played back when the trigger input is asserted.
 
-Jonathan
+This series includes core SPI support along with the first SPI
+controller (AXI SPI Engine) and SPI peripheral (AD7944 ADC) that use
+them. This enables capturing analog data at 2 million samples per
+second.
 
-> 
-> What should I do?
-> 
-> Best regards,
-> Mikael
+The hardware setup looks like this:
+
++-------------------------------+   +------------------+
+|                               |   |                  |
+|  SOC/FPGA                     |   |  AD7944 ADC      |
+|  +---------------------+      |   |                  |
+|  | AXI SPI Engine      |      |   |                  |
+|  |             SPI Bus ============ SPI Bus          |
+|  |                     |      |   |                  |
+|  |  +---------------+  |      |   |                  |
+|  |  | Offload 0     |  |      |   +------------------+
+|  |  |   RX DATA OUT > > > >   |
+|  |  |    TRIGGER IN < < <  v  |
+|  |  +---------------+  | ^ v  |
+|  +---------------------+ ^ v  |
+|  | AXI PWM             | ^ v  |
+|  |                 CH0 > ^ v  |
+|  +---------------------+   v  |
+|  | AXI DMA             |   v  |
+|  |                 CH0 < < <  |
+|  +---------------------+      |
+|                               |
++-------------------------------+
+
+---
+Axel Haslam (1):
+      iio: dac: ad5791: Add offload support
+
+David Lechner (16):
+      spi: add basic support for SPI offloading
+      spi: offload: add support for hardware triggers
+      dt-bindings: trigger-source: add generic PWM trigger source
+      spi: offload-trigger: add PWM trigger driver
+      spi: add offload TX/RX streaming APIs
+      spi: dt-bindings: axi-spi-engine: add SPI offload properties
+      spi: axi-spi-engine: implement offload support
+      iio: buffer-dmaengine: split requesting DMA channel from allocating buffer
+      iio: buffer-dmaengine: add devm_iio_dmaengine_buffer_setup_with_handle()
+      iio: adc: ad7944: don't use storagebits for sizing
+      iio: adc: ad7944: add support for SPI offload
+      doc: iio: ad7944: describe offload support
+      dt-bindings: iio: adc: adi,ad4695: add SPI offload properties
+      iio: adc: ad4695: Add support for SPI offload
+      doc: iio: ad4695: add SPI offload support
+      iio: dac: ad5791: sort include directives
+
+ .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  13 +
+ .../bindings/spi/adi,axi-spi-engine.yaml           |  24 ++
+ .../bindings/trigger-source/pwm-trigger.yaml       |  37 ++
+ Documentation/iio/ad4695.rst                       |  68 +++
+ Documentation/iio/ad7944.rst                       |  24 +-
+ MAINTAINERS                                        |  12 +
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad4695.c                           | 445 +++++++++++++++++++-
+ drivers/iio/adc/ad7944.c                           | 307 +++++++++++++-
+ drivers/iio/adc/adi-axi-adc.c                      |   2 +-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 144 +++++--
+ drivers/iio/dac/Kconfig                            |   3 +
+ drivers/iio/dac/ad5791.c                           | 166 +++++++-
+ drivers/iio/dac/adi-axi-dac.c                      |   2 +-
+ drivers/spi/Kconfig                                |  16 +
+ drivers/spi/Makefile                               |   4 +
+ drivers/spi/spi-axi-spi-engine.c                   | 314 +++++++++++++-
+ drivers/spi/spi-offload-trigger-pwm.c              | 162 +++++++
+ drivers/spi/spi-offload.c                          | 465 +++++++++++++++++++++
+ drivers/spi/spi.c                                  |  10 +
+ include/dt-bindings/iio/adc/adi,ad4695.h           |   7 +
+ include/linux/iio/buffer-dmaengine.h               |   7 +-
+ include/linux/spi/offload/consumer.h               |  39 ++
+ include/linux/spi/offload/provider.h               |  47 +++
+ include/linux/spi/offload/types.h                  |  99 +++++
+ include/linux/spi/spi.h                            |  20 +
+ 26 files changed, 2336 insertions(+), 103 deletions(-)
+---
+base-commit: 8ca8e57217e8263bc6dda6b77ef6c9051c2b6241
+change-id: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
+prerequisite-patch-id: 7e6d36bfc262e562cb74d524e96db64694064326
+prerequisite-patch-id: d864ef9f8a7303822d50d580a9ebbd8d304c8aa6
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

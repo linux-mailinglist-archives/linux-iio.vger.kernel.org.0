@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-13381-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13382-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF469EE0DA
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 09:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D269EE0E3
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 09:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A381882DBE
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 08:07:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B3DC61889F94
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 08:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D995020B7EA;
-	Thu, 12 Dec 2024 08:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33C320CCEC;
+	Thu, 12 Dec 2024 08:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlWozK+c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I65s+1dw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93823558BA;
-	Thu, 12 Dec 2024 08:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C9020CCD5;
+	Thu, 12 Dec 2024 08:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733990849; cv=none; b=fW2mrtHO43ghw7u6NP0lmTsG2q8CXemVl0AwFQ9sPaWrcJwd2n0C9k1Sz+4C/0BDQ2wpCc+Lw1uXp5uGz5/21iEFEu4sl/qi1dGz4z50fpROzdo8b85Kpg2YHmvyVUdvNWaszL9jFOMvoe2HS8xKgmXRftpBi3xQJSZgLwIvU8M=
+	t=1733990906; cv=none; b=hu5+T+Lrj4o1RyUJtMziZmsZx7n1GWARVYQnFg+EhGzIqsDxSuUIsYlCR70oLtS5DelqoIBTTpBkXpMZkCBG2La/Vv8CiT8McrlUkqj+ULN8JtNW+xEvaByvoHFVr8JOLHygLxVmXq8P92gZhFqOGZn1jrbIm1Dc64InjGffXdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733990849; c=relaxed/simple;
-	bh=bvmxcorHen4rPUu4gUVJQ57vn4Ri3EwuQEcpWR0m5RY=;
+	s=arc-20240116; t=1733990906; c=relaxed/simple;
+	bh=iTu94tkLBfASIn9nPAb8LQ8+jAIiVJzN8RQ4ZD7V5TQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LxvDg9nOuwNR7KVlSb0cc0gmMmumXceEh/cmoMt541+MKqKNUtipALgeOeVFPTIwHrDTXbPE+skA5qJaCLekUNZz9C8n+RWvvc2GkF+dltIbSVpRSzBpCKLdzalbhRy5C4Hrm4HRbuCltAcGnDwQkrOJ0yidpI5hMcMReX7/0Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlWozK+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BF5C4CECE;
-	Thu, 12 Dec 2024 08:07:28 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=bHl8mPXOXRCdZBRUZfCqlJ7jLvs3mj5jPgy70A0lkRP+zAbsutuBPAG5KmDxjBI0HlvmsSAXctRRANguAOEiZXBatjHXbVsVMAEOMxEzjPspFSlkrXdQJgWFtwd19bEMZ/Qld+xpKJBjGOnUXJLKwQOSpnXLBe2QpzFuRaOoSns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I65s+1dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF29C4CECE;
+	Thu, 12 Dec 2024 08:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733990849;
-	bh=bvmxcorHen4rPUu4gUVJQ57vn4Ri3EwuQEcpWR0m5RY=;
+	s=k20201202; t=1733990906;
+	bh=iTu94tkLBfASIn9nPAb8LQ8+jAIiVJzN8RQ4ZD7V5TQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AlWozK+cpnXVLIbkjenkDHGPiuySwAWne3UWR000okZM/L0l5EYL2XY80rSLpzd0v
-	 OQNWaLbVE+yE2FOGZZDi1le+tkPD+3X7k4dWf2lsc3fgvIC0RgHFcylfT6icxZP24q
-	 tDmH92e4PJjQCSDtUgHsEDNm6B9J7KnCfe59lh4cDgUXYMxF0Bi16tMzr8kPvwfXRD
-	 9fZ0BlafKUTGJeeKThbUzOBKo6gt5xduQnKVQUFXhGMrPuLUl4YyFDZmbAilesYwVL
-	 wvujtvAPYW8g5AGf9C6J2UvV/uJpk+5QsU98kmz632NYuUTtCpertT5EjZ+qUR4d2B
-	 A+I0e+Ol1t8pg==
-Date: Thu, 12 Dec 2024 09:07:25 +0100
+	b=I65s+1dwNpNXqzgKqmOMajGKlPo0TJqt6k7A4edklgjbpfuCHCSCLmN54yiQrHcJ/
+	 Wj7I/Qg9Pnaw0IS16fp5ivx4ldDPpsqsPBx0BJ1gdeM8USWmJVgAOX/bzhkkK6ne8M
+	 FrTsXRQZmsCAfZiFv7DXCnTrRZOIInx2impLfNWQDYB1c8f+HnaKiYir9GsnFjTApc
+	 P9YCflyQDpFD6mliar7ub2vKujb7bu2UjKxMc9m0NHY59/mAFdEkJD6k/vh0jT77fq
+	 vAYGMoAKT/Z6qT77BLQ6YZpA2qUX10kLqd3V92PAkubmdsrcsrYheyuL64Tv19/gLN
+	 +01B6TXg6KMtA==
+Date: Thu, 12 Dec 2024 09:08:22 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
 	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
 	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	eraretuya@gmail.com
-Subject: Re: [PATCH v6 2/7] iio: accel: adxl345: complete the list of defines
-Message-ID: <ldsvh5heh6gkdljxvgovwl6ni55cudvqw2mihbrliw7dqanrnk@lwlg6irtvg4x>
+Subject: Re: [PATCH v6 3/7] dt-bindings: iio: accel: adxl345: add
+ interrupt-names
+Message-ID: <scybtk2qyy6m55klkj6tsv2snmcqp2zjbkzwfh5dv2p6cjjeud@xjq4vsxjszex>
 References: <20241211230648.205806-1-l.rubusch@gmail.com>
- <20241211230648.205806-3-l.rubusch@gmail.com>
+ <20241211230648.205806-4-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -60,18 +61,17 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241211230648.205806-3-l.rubusch@gmail.com>
+In-Reply-To: <20241211230648.205806-4-l.rubusch@gmail.com>
 
-On Wed, Dec 11, 2024 at 11:06:43PM +0000, Lothar Rubusch wrote:
-> Extend the list of constants. Keep them the header file for readability.
-> The defines allow the implementation of events like watermark, single
-> tap, double tap, freefall, etc.
+On Wed, Dec 11, 2024 at 11:06:44PM +0000, Lothar Rubusch wrote:
+> Add interrupt-names INT1 and INT2 for the two interrupt lines of the
+> sensor. Only one line will be connected for incoming events. The driver
+> needs to be configured accordingly. If no interrupt line is set up, the
+> sensor will fall back to FIFO bypass mode and still measure, but no
+> interrupt based events are possible.
 
-We don't store constants just to store constants, so this commit does
-not have reason to be separate. We store constants/defines only to
-implement the driver. Merge these with the users... unless you want to
-say there are no users of this at all, but then make it clear: move the
-patch to the end.
+There was interrupt before and it was required, so I do not understand
+last statement. You describe case which is impossible.
 
 Best regards,
 Krzysztof

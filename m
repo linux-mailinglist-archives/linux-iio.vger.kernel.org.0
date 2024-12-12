@@ -1,130 +1,107 @@
-Return-Path: <linux-iio+bounces-13398-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13399-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E179F9EF613
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 18:22:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8155D9EF64E
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 18:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7235340109
-	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 17:03:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E90C1940273
+	for <lists+linux-iio@lfdr.de>; Thu, 12 Dec 2024 17:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA46222D4A;
-	Thu, 12 Dec 2024 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C04222D46;
+	Thu, 12 Dec 2024 17:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwKkrDWj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDF32165F0;
-	Thu, 12 Dec 2024 16:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEE21F2381;
+	Thu, 12 Dec 2024 17:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734022793; cv=none; b=o7DbO3EULuVU+sUeHIZmEakH/+kgu53EAiRalutdyqbb+5wTmlCJZ0dihJuhZIkaxIG4cneKql4k/qxmsOQbvpMOwkpMNcqjGL1EtAKesdaPQckWGM4M+S8fTo/IYW1bkFuQey9qkzn5hLcJVIKgpq1I030CVEo8l+FE1YDvrSI=
+	t=1734023882; cv=none; b=mQjLHsCnDbu24sk2c1AJ6EymvaGX/W4GhGaze/Qd8bO6QXZ14P4Cp04kahZDOOgNNO9rFgXGXjlJeFQ2io4yY/V89tSzeqV+32NgJ6e/HBF7Q+GwLFNdS3WFmVqgfsjDpgSoxnOarJI7CxyXCN8oJqTglB1QojyyGgVD29Iirhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734022793; c=relaxed/simple;
-	bh=nhnzrn97bO1y8U7MCI+hPywmftsYsXEZoi/h/wiACHU=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sj5/TC/Ktn3zehdhRCbI+JWeEbCWgT2jqz5C1lYwXv624fG/EDZvqRdzDLEi/pWDuGfIGo/KV7Zd37u5sGGP8yXjO0qL/Wc9RpcH05J0rVCFmlxwOQoT4wPIGcVvMSACLIUiO6fDPXLzUPHbgVifKdLdSFx7COK50z+1HX6Q7IY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Y8JXD1grnz6K99D;
-	Fri, 13 Dec 2024 00:56:28 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id DAF7F140109;
-	Fri, 13 Dec 2024 00:59:47 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Dec
- 2024 17:59:47 +0100
-Date: Thu, 12 Dec 2024 16:59:45 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Guenter Roeck <linux@roeck-us.net>
-CC: Hermes Zhang <Hermes.Zhang@axis.com>, <jdelvare@suse.com>,
-	<robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<kernel@axis.com>, <linux-kernel@vger.kernel.org>,
-	<linux-hwmon@vger.kernel.org>, Jonathan Cameron <jic23@kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] hwmon: Add support for D3-323-AA Pyroelectric IR
- sensor
-Message-ID: <20241212165945.0000584b@huawei.com>
-In-Reply-To: <5b53cffd-ae7f-45e5-b265-8e700d753275@roeck-us.net>
-References: <20241212042412.702044-1-Hermes.Zhang@axis.com>
-	<20241212042412.702044-3-Hermes.Zhang@axis.com>
-	<5b53cffd-ae7f-45e5-b265-8e700d753275@roeck-us.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1734023882; c=relaxed/simple;
+	bh=gUkmLslWwau7PQ/rqBKBXnsLHUj3XhDqGxojh6HslHA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pZHu6ObiLAXVsA97CtzNSC/6VBS98yCfc+GEVED+fHKNPygpakRXamvTI7mUkZmptZHt5ztVwevDAF/u5wJHu41zqYJ4DsXqGbPRuhONR9gROGjrY/lM9w25/0Jq4r5lDiK+nqKH5ZzC7/XZV45l1L/VbverKVtV2iUynlA0mxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwKkrDWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59C5C4CED3;
+	Thu, 12 Dec 2024 17:17:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734023881;
+	bh=gUkmLslWwau7PQ/rqBKBXnsLHUj3XhDqGxojh6HslHA=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=cwKkrDWjiW8TR9jqZjKrU5uWhsvufo/SKwmpc6Rrg5GZe5ncsc0bu0jgz9DXMVafs
+	 8R6byDSjz6nc2ZkWvgF5RbtYq71wKsVEdqrV6fwEA6XyvtQIdZKd4xkI+0SIzcCFap
+	 ML8vQ0pyQ0njSAHDp0uPzqdPz71t2MOZDRe/1enAn+qslPZy3NqdtQoF5MD0jD+xqw
+	 29v5HrtCmxHLLU5wAX/vzzKNtSLBKqwG6zJvUnfq+UeiVScxVgufqWl55r7UM6J8CF
+	 xTOLKFCL1wLJZ+pr0NBzm3mztQKnxZg/w1/U8W2DTEW5wm2t8fkr66dfhpSTfhjRjL
+	 xwR/tXpUcsMIQ==
+From: Lee Jones <lee@kernel.org>
+To: lee@kernel.org, jikos@kernel.org, jic23@kernel.org, 
+ Heiko Stuebner <heiko@sntech.de>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+ jdelvare@suse.com, linux@roeck-us.net, srinivas.pandruvada@linux.intel.com, 
+ bentiss@kernel.org, dmitry.torokhov@gmail.com, pavel@ucw.cz, 
+ ukleinek@debian.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-leds@vger.kernel.org
+In-Reply-To: <20241107114712.538976-1-heiko@sntech.de>
+References: <20241107114712.538976-1-heiko@sntech.de>
+Subject: Re: [PATCH v9 0/9] Drivers to support the MCU on QNAP NAS devices
+Message-Id: <173402387748.2234929.7484373598047473898.b4-ty@kernel.org>
+Date: Thu, 12 Dec 2024 17:17:57 +0000
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
 
-On Wed, 11 Dec 2024 22:17:49 -0800
-Guenter Roeck <linux@roeck-us.net> wrote:
-
-> Hi,
+On Thu, 07 Nov 2024 12:47:03 +0100, Heiko Stuebner wrote:
+> This implements a set of drivers for the MCU used on QNAP NAS devices.
 > 
-> On 12/11/24 20:24, Hermes Zhang wrote:
-> > Add support for Nicera D3-323-AA Pyroelectric IR sensor. The sensor
-> > support to config the threshold/filter_type/filter_step and return the
-> > detect result in sysfs attribute.
-> > 
-> > Signed-off-by: Hermes Zhang <Hermes.Zhang@axis.com>
-> > ---
-> >  
-> ...
+> Of course no documentation for the serial protocol is available, so
+> thankfully QNAP has a tool on their rescue-inird to talk to the MCU and
+> I found interceptty [0] to listen to what goes over the serial connection.
 > 
-> > +
-> > +static DEVICE_ATTR_WO(pir_threshold);
-> > +static DEVICE_ATTR_WO(pir_filter_step);
-> > +static DEVICE_ATTR_WO(pir_filter_type);
-> > +static DEVICE_ATTR_RO(pir_detector);
-> > +
-> > +static struct attribute *d3323aa_attrs[] = {
-> > +	&dev_attr_pir_threshold.attr,
-> > +	&dev_attr_pir_filter_step.attr,
-> > +	&dev_attr_pir_filter_type.attr,
-> > +	&dev_attr_pir_detector.attr,
-> > +	NULL,
-> > +};
-> > +
-> > +ATTRIBUTE_GROUPS(d3323aa);
-> > +  
+> In general it looks like there are two different generations in general,
+> an "EC" device and now this "MCU" - referenced in the strings of the
+> userspace handlers for those devices.
 > 
-> I don't know what this is, but it is most definitely not a hardware
-> monitoring device. I don't see a definition of those attributes,
-> so I have no idea what they represent.
-> 
-> Maybe this is an iio device, but given the unusual attributes
-> I am not even sure about that. Jonathan, any thoughts ?
+> [...]
 
-New type of sensor, but sure could be in IIO. 
+Applied, thanks!
 
-Seems mostly a human presence sensor. Not that different from some
-types of proximity sensor and indeed that might be the path to take
-here.
+[1/9] HID: hid-sensor-hub: don't use stale platform-data on remove
+      commit: e079a120f31e3f9c00180aa13c1df18cc138f7fe
+[2/9] mfd: core: make platform_data pointer const in struct mfd_cell
+      commit: 8f4009ad901c44f0428dbde654c4dd1fb29c863b
+[3/9] dt-bindings: mfd: add binding for qnap,ts433-mcu devices
+      commit: 8877bcff3e3b4f08a1fc0232dbfdaeda085cfdf3
+[4/9] mfd: add base driver for qnap-mcu devices
+      commit: 944ca826f69e4723853b3876875b03aeafe67b60
+[5/9] leds: add driver for LEDs from qnap-mcu devices
+      commit: fe6a21ee38f12e3e5f9adbd2f9a840be105b943f
+[6/9] Input: add driver for the input part of qnap-mcu devices
+      commit: 4b27e0da257371d3d141fae38fdbdc3c3a67bce6
+[7/9] hwmon: add driver for the hwmon parts of qnap-mcu devices
+      commit: 41755872a8a8ab8d1644459d9634c53b743fe2be
+[8/9] arm64: dts: rockchip: hook up the MCU on the QNAP TS433
+      (no commit info)
+[9/9] arm64: dts: rockchip: set hdd led labels on qnap-ts433
+      (no commit info)
 
-Taking a quick look at the driver suggests there is lots more information
-needed to understand the ABI.  At very least needs ABI docs so we can
-discuss how that is generalized. So if submitting an IIO driver
-I want to see
-Documenation/ABI/testing/sysfs-bus-iio-xxxx
-with significant detail. The datasheet provides no where near enough
-info.
-
-Jonathan
-
-
-> 
-> Guenter
-> 
-> 
+--
+Lee Jones [李琼斯]
 
 

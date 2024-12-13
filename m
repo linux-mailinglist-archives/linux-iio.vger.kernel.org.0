@@ -1,118 +1,166 @@
-Return-Path: <linux-iio+bounces-13413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13414-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0784C9F06E5
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 09:50:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91689F07A8
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 10:21:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDD0B28475C
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 08:50:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 258E71883973
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 09:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0926C1B413E;
-	Fri, 13 Dec 2024 08:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B201AF0DB;
+	Fri, 13 Dec 2024 09:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I/sSkSqe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YCzjrnSR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43FD1A8F71;
-	Fri, 13 Dec 2024 08:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027831AA7B9;
+	Fri, 13 Dec 2024 09:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734079755; cv=none; b=et0Q5gRJfAaYyKRFKOH4URzgKkzk9ZulB1niHM0GMwLXAlEcGjFaGkr8HMILwTy3z6M7F/t/psrplasdafJwnk7L9uIf306tGl0O/id8SpLv2ATkv1VftBs/XAOiMS8/H6Wsyd4v/al3+eYWH7MEqtzwjpr6wf/uHnNhbjFCzXM=
+	t=1734081657; cv=none; b=bsMGYJzqt3UNVEYf1WCpevCWce6P9qcIdjlZGq59zeFdNCKEzY11RzrerpRe43a+f7QYvrO5e8MSupYjLavmr7ZalWwaVzyZb53oic2377kCo6XYlyE+/KM8zAZsDavGdQ6sakaSkRvwOuQ8kV+FFzqWiKml+ZWlJ5832ZDaKx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734079755; c=relaxed/simple;
-	bh=3HHbI/8U1x533ln7X0lZpqT9A6MISkLGuUXtILr5Tms=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O71Z+Y+NzV8WVPjpJoGsmmFgF+acb3OAMP9BVc2UmYuIxLBnRVAj2Y1raJZJspqI/+wzM4y8MKTy5jdk4ji3jt3XrXMUzeYCpbNQQwuOY9lzdFyCKI6vMx8EJd4dQW/W+w3AkS6YFRhzUoUf+kXvwcfZ0hn9gWcwN8WY1/PGBr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I/sSkSqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53308C4CED0;
-	Fri, 13 Dec 2024 08:49:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734079755;
-	bh=3HHbI/8U1x533ln7X0lZpqT9A6MISkLGuUXtILr5Tms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I/sSkSqe+OXO6gWM3BUfiYvAzjo/GeuhRK7BdMByEa6zsmrBzs/47cymXE+8GDKSB
-	 FiuPjsBeaAtB1jl1R2g2e1wJB3QbcdEHCEXdQHi8Ze2CIR3ufyurTM19UdXi8nLFtn
-	 NB9HbLwlm/d8yL4cIMMDc6vazidX8I3H0E2lTGTrwCjFKEiaarIw+nQsm+aW+qJg9f
-	 Bx4uOQcKM5UgHdrPVLcGvuuk61SMIF8MFlg2ZX5GrkY+lU94CfJwrwOQ3Oadwr83G2
-	 pc1VPxctrVF7sgItrnEHzM/aa9QI4wfh/wqLVPBEJvrKsO0zGrohPQJDXa4z9/z4Yw
-	 easA8zgAFkfoA==
-Date: Fri, 13 Dec 2024 09:49:11 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	eraretuya@gmail.com
-Subject: Re: [PATCH v6 4/7] dt-bindings: iio: accel: adxl345: make interrupts
- not a required property
-Message-ID: <vndl6ovfuebbyck36li5xzhaatkbl7hbm3mdelz2j6s4ckrs54@da3npmwzgnw3>
-References: <20241211230648.205806-1-l.rubusch@gmail.com>
- <20241211230648.205806-5-l.rubusch@gmail.com>
- <iqdm3x6fhyosqkm4mdknf6ee2idizq3p2nt7rjqgtuzxr75iaj@tcdl2e6l5g2s>
- <CAFXKEHatgV9gYVCvcxmjce9qcHtVLhvQuuSuC7rxtqFa5XLtMg@mail.gmail.com>
+	s=arc-20240116; t=1734081657; c=relaxed/simple;
+	bh=RKydHSliqwBi1XS8hs6ov2Q7ePZ/b05EhYL8sN+etCY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rRsqrLtiqDPNDVTmfjXZxZ4GySi4GW63F/dr5ZNQJ7v8NKEi7rBAGAh//muUflJBDa3UVo/sRgdpCUUUs0AnTku0azBqwuwEmMrCaz/jf1/I9ABVTJ6q4p/UTVSOjY/o4owAVX6pSXMfh9W8cm4SO70vP6rKYJ4OyaSl78Uf8GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YCzjrnSR; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD81hDg022255;
+	Fri, 13 Dec 2024 09:20:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jZAxqrw/xHxdKfC005ToSh1VAd8VY+EISYZK8FQL88M=; b=YCzjrnSRqlL2ARBc
+	kBK/9y4nVRdVqv02aV8apMniiK1Am+7E1D24W9hRnoJYN46QaqtBdeAedImrYv7e
+	VcpYHG9zmm8sucPFePCdX0QdeQd7iPP/Wg+toQIwCJSP+ACyVrRNQscFV8gMb9Qy
+	t5Qxk2r1rsUnjJOYyfOWNztmdtAztM2E2x7h46uZS1Vb8EZFtWrIDj3o489PkUo3
+	mEUXC6mcSD5u7lXyv6FFKUFdzgT7XVqbhFgdHo4Z7UcVC+E5xSRdb4GkurAoxHeM
+	gNbX8VcFHkpnEAUUEwtUQDVym70J0P/Kz1J1iw7LfvIx6qV3LQYupJB7nXtJaN3l
+	LKEZLw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43gh2707qq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 09:20:35 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BD9KYYH007719
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 09:20:34 GMT
+Received: from [10.110.49.139] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 13 Dec
+ 2024 01:20:26 -0800
+Message-ID: <07c89c2e-1212-4170-97e6-e490480101a6@quicinc.com>
+Date: Fri, 13 Dec 2024 14:50:23 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CAFXKEHatgV9gYVCvcxmjce9qcHtVLhvQuuSuC7rxtqFa5XLtMg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 0/5] Add support for MBG Thermal monitoring device
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano
+	<daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
+	<lukasz.luba@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, Lee Jones
+	<lee@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, Amit Kucheria
+	<amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Ajit Pandey <quic_ajipan@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        "Jagadeesh
+ Kona" <quic_jkona@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <quic_jprakash@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
+ <qq3cggafexwpdrv46eqijxfmrdbqusl2vpbuswqmcvshqueaiw@r4mrmap4nwkt>
+Content-Language: en-US
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+In-Reply-To: <qq3cggafexwpdrv46eqijxfmrdbqusl2vpbuswqmcvshqueaiw@r4mrmap4nwkt>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 3kxuxIM9U-TAzn6tyCp8Zn8H9jFfJzyJ
+X-Proofpoint-GUID: 3kxuxIM9U-TAzn6tyCp8Zn8H9jFfJzyJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 spamscore=0 mlxlogscore=924 impostorscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412130063
 
-On Fri, Dec 13, 2024 at 09:06:39AM +0100, Lothar Rubusch wrote:
-> On Thu, Dec 12, 2024 at 9:11=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.=
-org> wrote:
-> >
-> > On Wed, Dec 11, 2024 at 11:06:45PM +0000, Lothar Rubusch wrote:
-> > > Remove interrupts from the list of required properties. The ADXL345
-> > > provides two interrupt lines. Anyway, the interrupts are an option, to
-> > > be used for additional event features. The driver can measure without
-> > > interrupts. Hence, interrupts should never have been required for the
-> > > ADXL345. Thus having interrupts required can be considered to be a
-> > > mistake.
-> >
-> > Partially this explains my question on previous patch, so consider
-> > reordering them.
-> >
->=20
-> I understand.
->=20
-> > And with combined knowledge, your driver now depends on interrupt names
-> > to setup interrupts. "interrupts" property alone is not sufficient, so
-> > you should encode it in the binding and explain in rationale why this is
-> > required (it is a change in ABI).
-> >
-> > https://elixir.bootlin.com/linux/v6.8-rc3/source/Documentation/devicetr=
-ee/bindings/example-schema.yaml#L193
-> >
->=20
-> The accelerometer does not need interrupts connected/configured for
-> basic functionality. Interrupt declaration allows for additional
-> features. Then there are two possible interrupt lines, only one is
-> connected. Thus, either only one INT out of two, or none needs to be
-> configured in the DT depending on the hardware setup. This also needs
-> to be configured then in the sensor, which INT line to use for
-> signalling. Thus we need the information if INT1 or INT2 was setup, if
-> any.
 
-I meant, explain in the commit msg.
+On 12/13/2024 2:08 PM, Krzysztof Kozlowski wrote:
+> On Thu, Dec 12, 2024 at 09:41:19PM +0530, Satya Priya Kakitapalli wrote:
+>> Add bindings, driver and DT for the Qualcomm's MBG thermal
+>> monitoring device.
+>>
+>> Please note that this series is dependent on [1] which adds
+>> ADC5-GEN3 support.
+> Where is the changelog? What happened here?
 
->=20
-> Hence, configuring an "interrupts" property only makes sense, if also
-> a "interrupt-names" is configured, and vice versa. None of them are
-> required for basic accelerometer functionality.
 
-I know, I already stated this. But almost every question should have its
-answer in the commit msg.
+Sorry for missing the change log, please find the summary below:
 
-Best regards,
-Krzysztof
 
+Changes from v1 to v2:
+
+- Squash the ADC IIO channel bindings(header) and yaml into single patch
+
+- Add new patch [2/5] to add reference to qcom-spmi-mbg-tm.yaml in 
+mfd/qcom,spmi-pmic.yaml bindings.
+
+- Use scoped_guard mutex in driver, remove the helper APIs and directly 
+use regmap_set/clear_bits() APIs
+
+- Corrected the isr logic to notify the thermal only for lvl1 upper 
+threshold violation.  Earlier logic was not handling this fully.
+
+- Update the dt node names and remove the polling delay as it is 0 by 
+default.
+
+- Link to v1: 
+https://lore.kernel.org/linux-arm-msm/54c3fdd2-f701-4a06-bb3f-41f5a431687a@quicinc.com/
+
+
+> Why this is RFC?
+
+
+On v1 I was suggested to mark this as RFC since the dependent changes 
+are not yet accepted.
+
+
+> Limited review follows (as this is not yet ready).
+>
+> Best regards,
+> Krzysztof
+>
 

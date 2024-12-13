@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-13432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7704A9F17EF
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 22:20:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8589F17F2
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 22:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97ECD16702D
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 21:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B45E188F966
+	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 21:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1801019A297;
-	Fri, 13 Dec 2024 21:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285AD1A8F73;
+	Fri, 13 Dec 2024 21:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EKH1fXkh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I93g6yBK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A458194AEE;
-	Fri, 13 Dec 2024 21:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47547198A32;
+	Fri, 13 Dec 2024 21:19:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734124764; cv=none; b=JgRcVSa2EIfxaxGTHbYTrKhLUGK3TFF6aBSozz1hfO1sYRbhE50YJfHOST0UP6qdfTCsGh76UQt85/uRSxQeyN6+k7FTQHyf1l7voeKdvPMjLLQlrYm8djiW1E2NlivRYaueBc0KfeidAnDr/nX4pknL002dX/VGEYJA4tUJ3fQ=
+	t=1734124765; cv=none; b=L/K4npcU390sEz7qjjKonOodzhQsNVJT70bCaSLIPJwVwMeDagv2rEZNfXdEp6FvxQQgoMl7VHFAycqwJo/TtixRVdekkQw4AUhnd8wb4msOKnanBO1Sym07zCa0oxxUeGpI3o6Q6q4SmnsNV8NmAMfyKrMDfOxcdbzSYqtCg+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734124764; c=relaxed/simple;
-	bh=VN1pT1soceWpBRL1Ff/Xu3C46TBaJ+7J7MPPx/IwKw8=;
+	s=arc-20240116; t=1734124765; c=relaxed/simple;
+	bh=OnEi/NtWpRQrR4crDgkQmPpkIr60sP3pUIwvNBRDZyI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ek6PnIuFfZFBxVRDtjtUNK+7qA16/p7EfpgRCI8AR3xkBBEMmLakyZ+XB1lj/c/uci3wid35X70gbkARSezZ3LTuP1ObRv8uETUMmEEuJyoZ9Httiz6ku7Oa0A1qpTqasCYgp2gLBma4a972VsGz1llZMXU9YTRpSYztkvRKUDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EKH1fXkh; arc=none smtp.client-ip=209.85.128.54
+	 MIME-Version; b=YZCzg5Q02+7FHdM85g4apXa0iHvq+ZfSXP7dS9Xuk9hGifNdJki3QY7RZ0PWFqOIyc6oVAjMxEwdOtk4VwaKNCX0BNEPAd2B4JdZl5c+AZ7I6FSreSlNjDzzDGIYHmt/MKY6szHmjPFqectXpPhEY9JUu8h7am+2+rqbd0TcTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I93g6yBK; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436203f1203so2122115e9.2;
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4361aa6e517so2487995e9.2;
         Fri, 13 Dec 2024 13:19:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734124761; x=1734729561; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734124762; x=1734729562; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vdD/19e5UCPRHcpX6fbB0zxAQ1c/6JKAgU5L9Fu+S8A=;
-        b=EKH1fXkhZ1y3P4wt6Z06sYSsaciGdIj+NpZV4y0hET6zOV7A+K5Gi9J+W2ia10VYpA
-         0lqs76BEdY7p510+Xiy/KLIxHs0vvfGKF8SLcp7Mx0q4GL8ZEX6WcVwy0ugh6tnQoOLJ
-         eItEgvXTuzzgq2UkMCFkiZ0wuFP11pmfK9SEu+fBXxEFuWRvQdtOrHuNE5+58lqhAdv4
-         DO0nNixsg2h40viYGKCtQPvl0e6RRsffL2G3/5/9QB/rlBJShJzsqGw0/GEA8DrSEXGn
-         4f5ER0FLLna4vcFjETTnDLMrWcn7C2NuMSZzE9ofbutG8jp3ouO6GmCegs0BBQ91xWIc
-         f3Gw==
+        bh=JWLUOvAYC/+QKYOvlVecoPGtDiIOOdHySdnie/FYzsE=;
+        b=I93g6yBKg8fmsa/HB22YfQCo8WNETL3qgq+DSPzje1DpBUIbSHvGLxnsdypfZ/pGJq
+         Kwjsnm8Bye8/vcXvrXVR4Oxd3MYNm8wGqD1FBlFlC4yuCqB/NK2/Hm3+gcVVynw2efch
+         phGAyrTh93+4VuJYD6Ro+t/5AonLRRZraSyRpnbsPhkhn2DfEPH4LphJYR/5SyMc6xLs
+         puWdwBtFSbHdOmBnm3cg83/b4UWMlzMrbPM/y3CG61xB17c28BQZlsGk46tVC7ztM6ij
+         O+ZRuqd5lgMZUaXmEEdYZQPiO9n11NuFsT2oBc36TYtVyxI8hSll7XNneezhZzARXx4d
+         ojow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734124761; x=1734729561;
+        d=1e100.net; s=20230601; t=1734124762; x=1734729562;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vdD/19e5UCPRHcpX6fbB0zxAQ1c/6JKAgU5L9Fu+S8A=;
-        b=er/K6+yOH69nihqZgf5MESAH7WalV7FiZom9CV3PaOxULTuHkdTtg7GryQG13r3s9Q
-         Ij3i6pumE4SGAj2iq0jrVtewdwsYc2+kG5117eUVL5UfKDBfZYsAeXJY+8FWQvHQ+9fM
-         ANAnUVZzl3TG/zbAg5MN91LNRSvx6pj4pMv1GzY4S72tuvIasXXImIa1A0rTTrvaUCda
-         QHSN1Vg0GK41VTIThO0+6NX/AjSL8FfXEXKZxYqytKX5rQlJoFSLy9KZN/n5KsEK12RA
-         cSBBpuKAMfo8jIkEdgcxwZWL2Njtk4dSnI1MC/4/77hCdLjGoxN/jUHxbhHgpg8r9ybC
-         eSaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVd01jNTvRKBmeH4DKs6iYauSvQNMsSXyatESwXTm2bvff4YaCuy37SSxj+HcoOXvea28qxVB81bnI+CIKR@vger.kernel.org, AJvYcCX4TmBnborZp+FfmnE4UUdCyXWwPbBZDJYNtvcvT8Y1ekBjw2OGOy2sS2cGmWp1QrrqCtZ0xlFioq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz64Eb1IfVxIYN7rKcWYHkxAdOu6DVCMXf390f1taQl/yDXS51J
-	sP7G6esQ+PxChQasvT7FYVGlOXCqfde1JNurPbCtR42qVuqojnvS
-X-Gm-Gg: ASbGnctS790F3hqgzQXJKtY7d6b7LRFbPsyh+v7qi+EIybmcyoBm00DbEOCbxZIqT0d
-	IPtky6l0JifWLgvY3OLeTQhHg/mHQeNuRZ9/38Q5WO12cG1ZFucDNw/JGgJjg2dZOcr38YHz75E
-	XWMKPMkGpqt0fScgNiqccWIVVBzggX5B4z5hEXw19lDU3w7CrVeaPm9zSR6Ts1UCSJwsfagsawe
-	eJw5C3cgXlsv346AJkrYajYWT3ny1BHb11+Fnpb0IZIXmRfPUS/sAOmWtKvi3bqQk63FvIOOSyM
-	Yw1Od7kccb2hs3kTvGtO/3QQx/U/VB0PkKk=
-X-Google-Smtp-Source: AGHT+IF0bko2WOIywFKeHNWnHmJRPLjjE7KSWwBu0xE4s5zDpafSbkJ9DMrewmjaXpkxGsDTsybY1Q==
-X-Received: by 2002:a05:600c:35c6:b0:434:a30b:5433 with SMTP id 5b1f17b1804b1-4362aa9f021mr13815045e9.5.1734124761315;
-        Fri, 13 Dec 2024 13:19:21 -0800 (PST)
+        bh=JWLUOvAYC/+QKYOvlVecoPGtDiIOOdHySdnie/FYzsE=;
+        b=OUSlcXOVZWiT30sJlklm+hAzlxcTO5L6Apr7PNLydbjSzSZmERQ2i8eO4YFXcbM8+i
+         ggg/3qfscIAbPqCZIieeHSQlg+6qtZYjl4UY7vAQ6hPRNITdeKbNHG7sf4X0vaSWwPY0
+         JOYytGoL1FZR5sA1DYuyQ9MMByFXs9mkEyXcPgRf0mekkoM+aSS1ZRwUfm3KAkj+QlHz
+         DVgnKoKFi7ZKSphNSzfK0OxhELlcOa3R0pTy0wsFPcyAr8cXJj5ZIGscwi22O1QSutI5
+         D4OOAEzssexZkszoREgJDpYsaTHbZj7WhgZPEgOX/ZWv0c7knHxmlPGGUJIKWEfyzO6u
+         xVoA==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ9b4uf5hcXXzqvZM1JNmMoPba/Zvk5QtBFEAIrQSL5wGH3UbuqP4OvMz+ZTJ0FDnT8Okv7vmQ3U1D6paS@vger.kernel.org, AJvYcCXKv2QuYa8my11/WXf7L4TrvxnoH4/9GabXQI8ymHkQCwHOEVljfaHxXKf+C4S/d+wxuwnZdh65EuE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVktupCm9c36KPqDQ2T/W/3Ih6rVXYVPu+6xYYNB9jW1CIxb/g
+	kriMudZ2y9Wep7fSEd+yy3KGqMyUtnYXGqGeFFpFJ6updYJfTdGh
+X-Gm-Gg: ASbGncs6m5HVE41kdO8OTxT3vLX4/qn+DF7Kt1uYm8NuXzJRjP6Tk+dg3N/LBMBvCcZ
+	v45jk1s19H7/5Puy86+w56Ecnh0evNwXLd1dZMeRgsI911i8YCQ9opvp0radoC6fPWdhFxIAfBl
+	MjYGEwXhLlW6cwz2e30fIpVnLWmbSs5yoXSck88PlsHnDa2UpIIBRRAT1X89uWnm0VS649UvERQ
+	SRmwodKD7m6LgJdBQ2wOJjMsmEZRqSTt5LVrsGixNwhIdW+fbaqZfbUnJM458uOmu2RKZ+x0VDd
+	VTyLE85VrzfO7P41axIktKyLcbCYqUkTL80=
+X-Google-Smtp-Source: AGHT+IEaB8ELntB6TFtQtjeN4DzEyRiil0MGC4A8CGZ6SVnONMmopDnvD9kZVWRZ+WHmSWxnK2hZDQ==
+X-Received: by 2002:a5d:6d09:0:b0:385:df17:214f with SMTP id ffacd0b85a97d-3888e0f4580mr1234953f8f.9.1734124762342;
+        Fri, 13 Dec 2024 13:19:22 -0800 (PST)
 Received: from d9dabf0abd47.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c801acfdsm552484f8f.57.2024.12.13.13.19.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c801acfdsm552484f8f.57.2024.12.13.13.19.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Dec 2024 13:19:20 -0800 (PST)
+        Fri, 13 Dec 2024 13:19:22 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -84,9 +84,9 @@ Cc: devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v7 3/7] dt-bindings: iio: accel: adxl345: add interrupt-names
-Date: Fri, 13 Dec 2024 21:19:05 +0000
-Message-Id: <20241213211909.40896-4-l.rubusch@gmail.com>
+Subject: [PATCH v7 4/7] iio: accel: adxl345: introduce interrupt handling
+Date: Fri, 13 Dec 2024 21:19:06 +0000
+Message-Id: <20241213211909.40896-5-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241213211909.40896-1-l.rubusch@gmail.com>
 References: <20241213211909.40896-1-l.rubusch@gmail.com>
@@ -98,56 +98,66 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add interrupt-names INT1 and INT2 for the two interrupt lines of the
-sensor.
-
-When one of the two interrupt lines is connected, the interrupt as its
-interrupt-name, need to be declared in the devicetree. The driver then
-configures the sensor to indicate its events on either INT1 or INT2.
-
-If no interrupt is configured, then no interrupt-name should be
-configured, and vice versa. In this case the sensor runs in FIFO BYPASS
-mode. This allows sensor measurements, but none of the sensor events.
+Add the possibility to claim an interrupt. Init the state structure
+with an interrupt line obtained from the DT. The adxl345 can use
+two different interrupt lines for event handling. Only one is used.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- .../devicetree/bindings/iio/accel/adi,adxl345.yaml     | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/iio/accel/adxl345_core.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-index bc46ed00f..4f971035b 100644
---- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-@@ -37,6 +37,14 @@ properties:
-   interrupts:
-     maxItems: 1
+diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+index b48bc838c..fb3b45d99 100644
+--- a/drivers/iio/accel/adxl345_core.c
++++ b/drivers/iio/accel/adxl345_core.c
+@@ -11,15 +11,22 @@
+ #include <linux/property.h>
+ #include <linux/regmap.h>
+ #include <linux/units.h>
++#include <linux/interrupt.h>
  
-+  interrupt-names:
-+    items:
-+      - enum: [INT1, INT2]
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+ 
+ #include "adxl345.h"
+ 
++#define ADXL345_INT_NONE		0xff
++#define ADXL345_INT1			0
++#define ADXL345_INT2			1
 +
-+dependencies:
-+  interrupts: [ 'interrupt-names' ]
-+  interrupt-names: [ 'interrupts' ]
+ struct adxl345_state {
++	int irq;
+ 	const struct adxl345_chip_info *info;
+ 	struct regmap *regmap;
++	u8 intio;
+ };
+ 
+ #define ADXL345_CHANNEL(index, axis) {					\
+@@ -213,6 +220,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 
+ 	st = iio_priv(indio_dev);
+ 	st->regmap = regmap;
 +
- required:
-   - compatible
-   - reg
-@@ -60,6 +68,7 @@ examples:
-             reg = <0x2a>;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT1";
-         };
-     };
-   - |
-@@ -78,5 +87,6 @@ examples:
-             spi-cpha;
-             interrupt-parent = <&gpio0>;
-             interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+            interrupt-names = "INT2";
-         };
-     };
+ 	st->info = device_get_match_data(dev);
+ 	if (!st->info)
+ 		return -ENODEV;
+@@ -263,6 +271,15 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	st->intio = ADXL345_INT1;
++	st->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT1");
++	if (st->irq < 0) {
++		st->intio = ADXL345_INT2;
++		st->irq = fwnode_irq_get_byname(dev_fwnode(dev), "INT2");
++		if (st->irq < 0)
++			st->intio = ADXL345_INT_NONE;
++	}
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(adxl345_core_probe, IIO_ADXL345);
 -- 
 2.39.5
 

@@ -1,80 +1,55 @@
-Return-Path: <linux-iio+bounces-13442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8244F9F1A40
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 00:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7C79F1E4A
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 12:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D12188E35A
-	for <lists+linux-iio@lfdr.de>; Fri, 13 Dec 2024 23:43:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF03D1885FF9
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 11:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46A11C07C1;
-	Fri, 13 Dec 2024 23:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A90E18D622;
+	Sat, 14 Dec 2024 11:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Uvyt9x9+"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="YIIe+e5X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+Received: from smtp.smtpout.orange.fr (smtp-30.smtpout.orange.fr [80.12.242.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6171B6D1A
-	for <linux-iio@vger.kernel.org>; Fri, 13 Dec 2024 23:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAD8187FE4;
+	Sat, 14 Dec 2024 11:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734133392; cv=none; b=Zijitg0qtHgP0QgC4+uVRAYntBO6hBo8K0zfTfN1q+BnQ345AyT7keWrJkIAC/qm9GKpcrMEvEeihAUZtc6GnvCBIRSXLMJ+Gj3ZllmoQvyRQupm/VFCwP8Ak9Bd5sGIaggO2cnkFOn1IBwZaeNvqJkzh5uqYRdYYGF6RQa+BU4=
+	t=1734176086; cv=none; b=nbjUzQTGU2a8emzcAKPdHPSMj0FVT61MLf/MjwetnPBQcyeQXFXmVSHetpG6kPpSWFWsCEO1k4w2UWFcN07Y21Vp5q89lL6Pxb8mUbYFSvgrM39sma83KdZpDe9qVtGWJZu9W9RqRo/X4NcQae994yiqEuEhS5YWtugMuO97uHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734133392; c=relaxed/simple;
-	bh=g6LzPVDAC/w05vA9m81+JnaAYi9R2afMBfHb5xaaD9A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ehy1m0LDjhZ3ui2ZPqvOHgFmynOU5BWyDqOeV0yI7hFhiBM/kDviKLK1mLfQLJiGXPw0E4Cy4So4TkLwkJNfFq51w6lQHVhHe5SHB46DfA1d4VYyWiFm6sUnqLc1YkYgbQszdDw7APhlMgH8cKKslpZQI1Vk7VZaGC+2KsKrmK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Uvyt9x9+; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-71e157a79c8so597160a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 13 Dec 2024 15:43:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734133389; x=1734738189; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kAixFUvh++BurSMkwv5vN8338veAVkTLhHRp3R2yZxQ=;
-        b=Uvyt9x9+ZvL+2YVCKqyu5LtcrpE8s+mfqibir6TlhtoTq7vnZKuj+Q0iMSQ21YkDgS
-         tFlAg5JQZ+JDEOiV7EFJ//q6+79EapXttLygpGGzdVPbqsApmyP9VfrH/efK51o317IW
-         I4hEOLUbs4UC1ZTL9DpGdXU4ZIjSt8SQTKOkv9fnXTvyHVdnLXhuOSnW5thqtKFkcSTq
-         zHTBnz8qVOCOCsbngPeDR4pJFozwfOM9ldkSY38S56a67AK8OIGbAWRhAvg+cGKnK73w
-         56gOEOKyY6QZXqfaVD9xqy+zqzfGBclhegOAdiIKrjMS2/x5zLYsN77onzQ6v3QcnTYY
-         8Prw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734133389; x=1734738189;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kAixFUvh++BurSMkwv5vN8338veAVkTLhHRp3R2yZxQ=;
-        b=MrcNpoP9B9thTQDnMtFHMpOhPV3p2KzjfcLbmzSmwwI0/O/svsSUJCwheh7+J+tWlx
-         2MTc6p4H6opiAPdddCk6YlE9SAuMpNUR7BH5paxg1bZ4/dB8+eTn4AbayFT0m3+C9ViK
-         xeAWuuni6uKFRLJiiUU+3RIn7yi1PfZTIAfKnQAvcaehzD07DMrTzh/Mci4hCiWjTwN0
-         3CN+otBUKCXBsywQaJh7hL6wiRMkc/DpYONc0atthzHh8G8tsEoSEIl/6w1iFLxeJaLO
-         n15pAwN87jEmusGMK8cMTs9Wvn2ruDMjzIFGEB574sZ1d50ZqFn0el1j5isbDIm4jo2k
-         G+nA==
-X-Forwarded-Encrypted: i=1; AJvYcCWU98tH+iyHsijZYLVRAH2tjv/ayE4B+ZgjKLpcLUn7ifeUnOgFOlSN5Ab+gVOgQzSPdbp0g5M0A+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtNbqbakTKGd/UnC4TQYvkR6G0WsyvJOpez2aFsmEb3e/GXXu8
-	5GfLH1vc3/j0iGHMg5dFPTIROCeg0sQQLC6EpWrL7GRt1w5IKCgRcwfMshld/Ai4xORpYmt64jH
-	M
-X-Gm-Gg: ASbGnctBxnHCKVfUtP3nzJotg+pl6/x+qgLOpSPlWZfMUGD5THO7IWwKmZQyJXLryg4
-	pmUIb09Pr2sgKQjHhKFLHbxJCU6d2YFx7nVkC971TNZeQ4cSrDYvIqanC1GdbISp79/c6qGNtCu
-	jXG5sp52NC5vWkTGd+XoUAFRGZrfy7NuYHEXsACK0c3ducGxHZGkuOAKxEMkiLPcX5QH/MavxR+
-	0CQJWg1yir5DJoGq+n4GleleGRJqYVzwnwelYbz51SDk34xYviAH/NAX3UfFPx4nhHT+vH47MqZ
-	XmS8+icYYH7wBNFO5A==
-X-Google-Smtp-Source: AGHT+IHNZOV5c740YHYR+v0obhIdti/m3jkuM6vF+0vNZPknqgd1GPEaToKR/m8TrGe5zgpMrsnlwQ==
-X-Received: by 2002:a05:6830:258c:b0:710:fef4:3c92 with SMTP id 46e09a7af769-71e3ba26862mr3269055a34.21.1734133388498;
-        Fri, 13 Dec 2024 15:43:08 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71e48370f23sm157126a34.37.2024.12.13.15.43.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Dec 2024 15:43:07 -0800 (PST)
-Message-ID: <2f7c5893-695c-4633-9142-10e70c1b3220@baylibre.com>
-Date: Fri, 13 Dec 2024 17:43:06 -0600
+	s=arc-20240116; t=1734176086; c=relaxed/simple;
+	bh=QGxPA2Z8w4bT8Nx4145f6RlyjJFWG7P8cnc3HcqOyh0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LNUgB5Slr9W8JHMfYIkV49CUF/PCITXpHgi/FDXK97GJDAiA5o0iBN4JARxRS4dt+OWlLT9hOyKcUSZwsP7YXuAEVKPNNYwruaSs6wmbAsU2yJMh/PVKs6m6utHtBGF5eQbRDjRYliTG7TccmCQwI7HU4iUNsEGwRzK4C0SAbEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=YIIe+e5X; arc=none smtp.client-ip=80.12.242.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id MQOmt72lRkTMYMQOntHrWZ; Sat, 14 Dec 2024 12:33:30 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1734176010;
+	bh=Gw75nHpU5weP3nyqjDky6dBdLXhFOK8aL3/PM8WREb8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=YIIe+e5Xbbt14M3Z9IG1aGbdwEB8hEAAnGZBOnvWbND71wM0QVRcUUwhSqlGE+jxI
+	 w65tR4YZBz4jXS30qQjuwmpFV7tzqJv9CtjaDRGaI0MyZg/2W2/MGKg7nLVEPfdjQk
+	 VLs3/omEzJFdQU+oMwrEdFPdBeGw90NYlzN9CJ5WC8vI/H/1LGaD49r75jeFOQRs9q
+	 HXw9Af3jf5Ghoi3eZHzuXAMVlQb3vmqyzRhb72J4gg2E+8hrRDC5sqdmi1GpxbMzOw
+	 MgiWPIrAoQEsdsvHh6WdFyzdlU/UDJ37tVhKvVOLb0vYG88TReLWH5pG+d6fqHUonL
+	 f51uZ4MOvObmg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Sat, 14 Dec 2024 12:33:30 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <80b5d56d-b16f-4a93-8868-0a23b10f6ab8@wanadoo.fr>
+Date: Sat, 14 Dec 2024 12:33:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,51 +57,42 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 8/8] iio: adc: ad4851: add ad485x driver
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org
-References: <20241213164445.23195-1-antoniu.miclaus@analog.com>
- <20241213164445.23195-8-antoniu.miclaus@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20241213164445.23195-8-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v7 1/7] iio: accel: adxl345: add function to switch
+ measuring mode
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com, l.rubusch@gmail.com,
+ lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+References: <20241213211909.40896-1-l.rubusch@gmail.com>
+ <20241213211909.40896-2-l.rubusch@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20241213211909.40896-2-l.rubusch@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 12/13/24 10:44 AM, Antoniu Miclaus wrote:
-> Add support for the AD485X a fully buffered, 8-channel simultaneous
-> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-> differential, wide common-mode range inputs.
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v8:
->  - fix kernel bot warnings.
->  - drop optional members from chip info struct
->  - drop final line continuation
->  - drop ext_scan_type and num_ext_scan_type duplicate set.
->  - create common function for parsing channels to avoid code duplication.
->  - add comment for fields not set in the parts chip info struct.
->  - add safety margin for pwm duty cycle.
->  - use FIELD_PREP where indicated.
->  - use chip resolution instead of chan->scan_type.realbits where indicated.
->  - move the reset procedure before setting refbuf/refsel registers.
->  - use iio_get_current_scan_type where indicated.
->  - refull and compute scales if osr is changed.
->  - take into account the osr for the sampling frequency.
->  - drop num_channels division by 2 which remained from v6.
->  - drop ad4851_scan_type_16 since it is not used.
->  - change sign based on diff in iio channel definition.
->  - shrink same register writes into a single operation.
-I'm a bit confused on what the intention is now. In v7, diff-channels
-was added to the DT bindings but in v8 it was removed again.
+Le 13/12/2024 à 22:19, Lothar Rubusch a écrit :
+> Replace the powerup / powerdown functions by a generic function to put
+> the sensor in STANDBY, or MEASURE mode. When configuring the FIFO for
+> several features of the accelerometer, it is recommended to put
+> measuring in STANDBY mode.
 
-Did you change your mind internally again? Or is the intention still
-to specify single-ended/differential in the devicetree?
+...
 
-It really helps reviewers if you include a cover letter and explain
-the reasoning behind big changes like this. Otherwise we are left
-guessing.
+> +static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
+> +{
+> +	unsigned int val = 0;
+
+Nitpick: useless init
+
+> +
+> +	val = (en) ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
+
+Nitpick: useless () around en.
+
+> +	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
+> +}
+
+...
 

@@ -1,157 +1,124 @@
-Return-Path: <linux-iio+bounces-13479-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13480-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03FF59F2098
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 20:15:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DE39F20AC
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 21:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C504167BD1
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 19:15:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AB7E188561C
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 20:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412EA1B4123;
-	Sat, 14 Dec 2024 19:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395A91AF0A7;
+	Sat, 14 Dec 2024 20:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TLPPLHOp"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tB6w25kT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF021B2180;
-	Sat, 14 Dec 2024 19:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2745316419
+	for <linux-iio@vger.kernel.org>; Sat, 14 Dec 2024 20:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734203674; cv=none; b=XIMsr2++nJegviOaICcVJESeoMSaFConhRNpda6Q+2CkyUso8ato9w/+OPuYZQ+nvV6wAr3i9oMUDrOEyypP8Mty73OMi82Bvj9k26WZzEmsB0JSAKqvYWMtyfq0GVA0UjZVJC5FvDE8N6mxLLjGyrYZeuEYicdUGnj9/Eo6taI=
+	t=1734207852; cv=none; b=DYJon242Icm2U3UzwKofOCtGjXNqPgl05IWwXAE+9dzKSoYlr2IaeH24GjqB9PmwHlY875I/DASx/4v4XF2fAvUbOIeyFNCJ9FAthbWa7Lqapg0rT9YDtRUdAzTnULaWNkukBD53jFqDnb1JGpW+Ig1l1QMphhNdJmHHoB3Tcq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734203674; c=relaxed/simple;
-	bh=hwJ7g5Qp2RYDm7YSTNB5S2KOZXblWfiTufqQlCHXLeo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNzw7YrTQ9PigxhVif3pydKVaqpkmPeRU3M9+GV4UXTtYM623MFCxKTqjSeKK6g0719ZN6cH+G1GYo6Hw0UZXUuPc7uPBH6KKA2xo7+pBdR1Q4xf5mKmj3QZtLr0brYuLG6dJDdqNluhK4OWRoTZ5+hHWk9h+dU9b298zd7UnTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TLPPLHOp; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d3f65844deso4516882a12.0;
-        Sat, 14 Dec 2024 11:14:32 -0800 (PST)
+	s=arc-20240116; t=1734207852; c=relaxed/simple;
+	bh=zofDod8j+ztP7THAIYRKQRjOLssFMAflJyxP2FRPQZQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lw3XFG8vApeZJHQ2SqDobuj222zA4iOY1B2Hae7myk9PFqhTIePvbzc8Ed7zwgpemfCowGtBNvAvXZBunE1+Ixgie9JZaJQnJduNkl+MW6dP8hE6WWPPc14eusaUFVMlaHu9eCukEo++Qt7wjQdiIbzi6OgOaIXb+XTenJUbqWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tB6w25kT; arc=none smtp.client-ip=209.85.160.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-29fe7ff65e6so889358fac.0
+        for <linux-iio@vger.kernel.org>; Sat, 14 Dec 2024 12:24:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734203671; x=1734808471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EByrdtVQZYuV+5Drqauo7ZU8zZ2F3oVsb8nD9rm3sk8=;
-        b=TLPPLHOpAAJkaFCdiU5AJhIyZtBSQmpw6ztBMqjofNSgpznBj0EPuIP+832J9rlq/q
-         llZJDraoYO0/V6+va45aHdzSkQPbfO7eoBLwbdW5j1JyigfxbB8QIxg5AZWRI8EX+Eyp
-         NswhMg5zvxx7E7IosxH6JkkLmafirHI+442FrHomujf7KgzclUk1HynvQeuq/K6WxO8x
-         EIGuVNP5PDA9MDBXrOZJ8HSDXogpAfQrH9c4rDa6QdQvYOcisgwGoRP9ska/s+03bvCY
-         4uYq0spz73eP7fRsBYuoWE7TJAx/yiA8mtjyg8uc3emlcZzyY54Zt3Eoy7sbVL8lw5T/
-         6A+w==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734207848; x=1734812648; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SrkjOPWzOWxIOLJtRQcSvC8VCKadtMcoPJW8JEroxUE=;
+        b=tB6w25kTXyEjVAJFv7LAnx5MscDaMuvhklAmSGFOW4xfo8yQZ9FINMBXbbvVDRaBOH
+         lwI/v4RadsGLa0mTjYJfh3k8KUH3zOeryJQRe0h3K27bjNByC6QnxhI5zpjP77q04vf9
+         bQaBg7v4ZfL80G0i0UnIlyNo/SIJ7QTsrnHa1mEnfDyyW0awlkV5qb5/7twwfdvIODs8
+         4iP7xpDQzsix29evUgtAOwglu/+6In149R8uohTR939rzBXduR+K+jXsOZ+yHWv4qQVH
+         SwIvTmBxiPMWbyqCRFRFBZ7K/1sisUgyb+g+/pEruuWxyX+Ka+wIPAf7084JujWwGoRD
+         T5vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734203671; x=1734808471;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EByrdtVQZYuV+5Drqauo7ZU8zZ2F3oVsb8nD9rm3sk8=;
-        b=U+/ALAxetg2sJjQV2Z+gmQ23SlJ9T4Q2T9gk5JAwuwRJS6MtUUoFyjfOZc7kAV+etR
-         al5lrAqg6OJwgiig97YJVxH5JSdEvh7mkbaEW2Oc/nrjugoUvvdRGHQbJ48BQEJjxrZz
-         EXgi3TKq7tasufn9iUYgjcUFMbkZwfxlNxF+rSew9MpjtPIRN8nuTUQdmku3GgBGsCEi
-         g+I1eOZpKQTU7LuMaI8SguNL1UIl2L+T/+F/yqmuP+1ny7dXmRkzOzOzxqiWO+5/F90c
-         +1pEspa1QsVM5yi3bXIyonreh0XKpab9myiGcH7xgoxR79doSFnZfUkXN7gOWNjYcyxL
-         VtoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfcD+UzeXkXgUJR0NjtqA2NQi3sR4lpwrOByC3ShEIfDIMejA2G77Cl7MYrtiYg0wkCYh4Zp6YZj7iQMEC@vger.kernel.org, AJvYcCW8NyX5SDCGZTJNfwwFsEsfrGQhdC7rrkkctKJY22XSbh86uDH8TXhugG9BzeOr4xr4vVPfAGv7Bto=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRr1VMnUsPeBsScWo6UPARdKiSFXS7uXUdHRryQUhjvD986IRB
-	BPkmT730ZnvaaT7ijCn580n5Au5zqXp0umnOuhtz4n8/8FDAPOfS
-X-Gm-Gg: ASbGnctxW9fMv1ORqTn3I0qMCUE0rvR1qDSjPI8uS0HfaJl+igTNv2R4CzN84FhZ8Cb
-	fFdYmvppSkDZVGa7LNRtkmUFMq04zPSqYsn5mWS9gSo0DlF/uKnKP1WOJd0FlmXSZrr7JG6wBX7
-	znbojRGTt17YTsdcvupBkPUp2PNSijZfi3pWyOdPGGyKqaJpkNB7vceCGZlTddA/kLa07z05m9H
-	I718TQrmG03LRt08bt1XTzhdFf5V3+8ap9XuCuaE/wUHOZh539ekrnsoz/Prdj+hORYsQ==
-X-Google-Smtp-Source: AGHT+IHFL+bYnOYz8jFHG0mNxTg+1Mi/aJXuva23CyBnKKVieqWxlldrLG5HeM59bEEJw5gz+++0sA==
-X-Received: by 2002:a17:906:328d:b0:aa6:6e41:ea55 with SMTP id a640c23a62f3a-aab778be635mr626347666b.7.1734203670416;
-        Sat, 14 Dec 2024 11:14:30 -0800 (PST)
-Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:abde:dd08:a767:d63c])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab963c54d2sm122818766b.190.2024.12.14.11.14.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2024 11:14:30 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: krzysztof.kozlowski@linaro.org,
-	nuno.sa@analog.com,
-	u.kleine-koenig@baylibre.com,
-	abhashkumarjha123@gmail.com,
-	jstephan@baylibre.com,
-	dlechner@baylibre.com,
-	jackoalan@gmail.com,
-	k.wrona@samsung.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	vassilisamir@gmail.com
-Subject: [PATCH v2 4/4] iio: core: mark scan_timestamp as __private
-Date: Sat, 14 Dec 2024 20:14:21 +0100
-Message-ID: <20241214191421.94172-5-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241214191421.94172-1-vassilisamir@gmail.com>
-References: <20241214191421.94172-1-vassilisamir@gmail.com>
+        d=1e100.net; s=20230601; t=1734207848; x=1734812648;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SrkjOPWzOWxIOLJtRQcSvC8VCKadtMcoPJW8JEroxUE=;
+        b=wpAzDHtmh5saq6R4z/TYC3FimbCzmk7ovMlZgx8YWENb8VVHiYXVHsWsdtuSVn0M9m
+         2diCS79LRLpgWFkP4KIlk5wuQBKuuIb9+9EL+P3+F0zeYyWkSecujBjELqQeU6yPvgbe
+         iGTEe7VgN4+iCzGX9DSKaFSVrz+YU6bOp3XmhLsi0l95a5QSPy6BCCr5Cyq+9n1YVdzl
+         ARopIGz86pqsxTYjrlviXy+LXpc5Rf5LR9ezsNZyKLCHpvlQIrjOU5OgW4/6JAekEtiP
+         PBvuWh3bY2dS82RtvzpeXFJeL77wT4rhHJFD2lghUMTdTaL1irnqRSmkTn1MEilE+eKD
+         EYRA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJMSeebkPIS11346VYyr46xvyE6a35Pid02+DC1tkd9em7H0rLF8Ej8Kf2+0BsvICJa0carlGneqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz00o1R1SiJtK36fckHMHxyx/clCYN+b2z+qnoQcscUTvuwi8Rv
+	tSPc11vcPvfr3hvCTkxIglZZuoT/njM2+U1xAEDpXSIt4Hqr/iKh96Tjk4cBh0Q=
+X-Gm-Gg: ASbGnctH1ewxmOO9zQ6kOwdkskVwunCA6pTfcdqUDCLr1hNvJzfWYggh6z/8JMa6ypd
+	6D9zlYx84w4ozc+ssdha9KY4DWmsohN/LYTPZGKeoBIDvSZlNTiJZ/iqsCm6HARuJHf/fv8ixXU
+	2Qc0lM8EULTrjueNIsJqUaIshXVXLrD2F4FhpLrCaHZq9Tx06KAOrDckRfWxU0eaAdoKvucVUQ/
+	/u4HZX1aMKDqa1Pp9VNUoRnmWvQBSlM77fodJxR5zveQ4KrbH7ko50hB5G8K6t9oPc+eRdcF/fF
+	h2dgcEowkm2pSgbc4w==
+X-Google-Smtp-Source: AGHT+IEzwHeZTPoi4etfNnGZeXD/roCPhCaM/ndaTdf2HRFNxeHbdaDaBvyiEJyZScfzW8J+9PK8yQ==
+X-Received: by 2002:a05:6870:15ca:b0:29e:43ce:a172 with SMTP id 586e51a60fabf-2a3ac867f5amr3376165fac.28.1734207848013;
+        Sat, 14 Dec 2024 12:24:08 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2a3d2541725sm724169fac.12.2024.12.14.12.24.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 14 Dec 2024 12:24:07 -0800 (PST)
+Message-ID: <ebd71e3d-1902-402b-a84e-819b0976ba4b@baylibre.com>
+Date: Sat, 14 Dec 2024 14:24:05 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: dac: ad5791: ldac gpio is active low
+To: ahaslam@baylibre.com, jic23@kernel.org
+Cc: Michael.Hennerich@analog.com, robh@kernel.org, conor+dt@kernel.org,
+ krzk+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241106103824.579292-1-ahaslam@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20241106103824.579292-1-ahaslam@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Since there are no more direct accesses to the indio_dev->scan_timestamp
-value, it can be marked as __private and use the macro ACCESS_PRIVATE()
-in order to access it. Like this, static checkers will be able to inform
-in case someone tries to either write to the value, or read its value
-directly.
+On 11/6/24 4:38 AM, ahaslam@baylibre.com wrote:
+> From: Axel Haslam <ahaslam@baylibre.com>
+> 
+> On the example, the ldac gpio is flagged as active high, when in reality
+> its an active low gpio. Fix the example by using the active low flag for
+> the ldac gpio.
+> 
+> Fixes: baaa92d284d5 ("dt-bindings: iio: dac: ad5791: Add optional reset, clr and ldac gpios")
+> Signed-off-by: Axel Haslam <ahaslam@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> index 79cb4b78a88a..2bd89e0aa46b 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad5791.yaml
+> @@ -91,7 +91,7 @@ examples:
+>              vrefn-supply = <&dac_vrefn>;
+>              reset-gpios = <&gpio_bd 16 GPIO_ACTIVE_LOW>;
+>              clear-gpios = <&gpio_bd 17 GPIO_ACTIVE_LOW>;
+> -            ldac-gpios = <&gpio_bd 18 GPIO_ACTIVE_HIGH>;
+> +            ldac-gpios = <&gpio_bd 18 GPIO_ACTIVE_LOW>;
+>          };
+>      };
+>  ...
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/industrialio-buffer.c | 2 +-
- include/linux/iio/buffer.h        | 2 +-
- include/linux/iio/iio.h           | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 2708f87df719..a80f7cc25a27 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1137,7 +1137,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
- 	int ret;
- 
- 	indio_dev->active_scan_mask = config->scan_mask;
--	indio_dev->scan_timestamp = config->scan_timestamp;
-+	ACCESS_PRIVATE(indio_dev, scan_timestamp) = config->scan_timestamp;
- 	indio_dev->scan_bytes = config->scan_bytes;
- 	iio_dev_opaque->currentmode = config->mode;
- 
-diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-index 418b1307d3f2..3b8d618bb3df 100644
---- a/include/linux/iio/buffer.h
-+++ b/include/linux/iio/buffer.h
-@@ -37,7 +37,7 @@ int iio_pop_from_buffer(struct iio_buffer *buffer, void *data);
- static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
- 	void *data, int64_t timestamp)
- {
--	if (indio_dev->scan_timestamp) {
-+	if (ACCESS_PRIVATE(indio_dev, scan_timestamp)) {
- 		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
- 		((int64_t *)data)[ts_offset] = timestamp;
- 	}
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index ae65890d4567..56161e02f002 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -611,7 +611,7 @@ struct iio_dev {
- 	const unsigned long		*available_scan_masks;
- 	unsigned int			__private masklength;
- 	const unsigned long		*active_scan_mask;
--	bool				scan_timestamp;
-+	bool				__private scan_timestamp;
- 	struct iio_trigger		*trig;
- 	struct iio_poll_func		*pollfunc;
- 	struct iio_poll_func		*pollfunc_event;
--- 
-2.43.0
-
+Hi Jonathan, any reason this one didn't get picked up yet?
 

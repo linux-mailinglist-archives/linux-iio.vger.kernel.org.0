@@ -1,64 +1,61 @@
-Return-Path: <linux-iio+bounces-13444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AAF9F1E54
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 12:46:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55F69F1E5B
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 12:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC43A167C1F
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 11:46:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD634167C90
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 11:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1377F18E37B;
-	Sat, 14 Dec 2024 11:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012EE18F2DA;
+	Sat, 14 Dec 2024 11:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isDfM8xF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbkDmBVJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2A2154C00;
-	Sat, 14 Dec 2024 11:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB527170A13;
+	Sat, 14 Dec 2024 11:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734176772; cv=none; b=A0EjFaWRdop/U6x/0hw/t+vEmKpF718cwQJJnzxbog6ZrQf8VZAoYNBZ6uOL4uHvb2lbE3VimK7smMp7hAAKeJzXks3azUwPDF19CvP7xLLHiSWBoQE7O2SCBQ2bLtQd53I6tMmcOjvurMz2XjRLlMvBW/2KRDr4Jz91/SLw0vk=
+	t=1734176961; cv=none; b=o+bSfQlRIPT1jvlvRpB86REIJMDHCNgQWQTN6QZn0aBeyzKYJkVs0QFH2mELBBQPITfpV+1r+cQNuq/wAkHQ4fy8w3LquwICiMHdUXXPTmosiWUa12q0FadZBArWko/Nye3H5LUfgl3K5jo8MWzBaf3Iq63xHE9hdPR1pSLTiTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734176772; c=relaxed/simple;
-	bh=LiDT+4Sqgdk41JHmh264e+RxJgrj5cF6Q+GLadxXmRM=;
+	s=arc-20240116; t=1734176961; c=relaxed/simple;
+	bh=xJSS30hg2FmUw1g1FBZO8Pu4Z0GIfgxqCh5NDr3y3MQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y0c5UtVbhtfh2fwE+0NU5dXGoik8NW1sEVP2LMIygule2VKbsw4/M0c7j5YRsoEC3n7gAIxf46px9SrXDLWB/zOyNtdB7tLGZUwmySV5wxdYcDc2P9egIvFvGIS1pZEnKaHoC1hldiVE1jyFZAJzQxA7SoymyXZDjb17BMVGNgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isDfM8xF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE64DC4CED1;
-	Sat, 14 Dec 2024 11:46:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hLBBEtOwT/Mm6Roz+ogf/4vu03S8vMX8/CRg0V6zdBY0nlkf0vtaYh8oqdinsoy1xrH6DmDhx3A2YNEm8wDQIBNTXTmeJgRL2Nk6pJMq0UuvwYoDdmQYpAkGJsDOVd3f3IGzceETH6TKEEWSSbi8uNVednfa/9lpV5jk+sG8rno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbkDmBVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7174DC4CED1;
+	Sat, 14 Dec 2024 11:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734176772;
-	bh=LiDT+4Sqgdk41JHmh264e+RxJgrj5cF6Q+GLadxXmRM=;
+	s=k20201202; t=1734176961;
+	bh=xJSS30hg2FmUw1g1FBZO8Pu4Z0GIfgxqCh5NDr3y3MQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=isDfM8xFVwh2FdN7tQAcXFJZSTx9kCtWqn61QiOszlCRQB1YFO+CPWn4GcyFbEfZW
-	 yuwlCZAQYh+OvSDa4genjEMJ8D5IkQNaRId0s9JgQZxlT2lTwGRUJ92ohRJD2Jr26c
-	 +kT56j/unPeTZR0K/zT2Vof72CugqnxONTD7uzMaeMoLrEZt9w3gcSbgKQ7sDYGcyF
-	 T7CW5Di1iY5KWlMG5QCdVo8C36Hm3+LuiS5ayilQj55a9+LSGGt3Sc9jGK4/TGHrQk
-	 vVmzn6xRCrwVrYSrQ20Gf9bJqygNjaZwGkarKcbVJQvGQ8N1FB2dwWGC+SIO8MpsyY
-	 vxa99RIcxJ1zA==
-Date: Sat, 14 Dec 2024 11:46:03 +0000
+	b=WbkDmBVJ13bAnrkUhSfL+sb1j3d4AQ2LnSWZCZA8BEmn2PgIubP5j4/28LxUYoMs9
+	 ZsZyCNMJq8m6KGu+AfMwbU4jgHkZb5VNar9eHOLHht2YV185EJY0/Id/kZYO0o0hpb
+	 MpuXAMn/j8+GRcOV6qCXI4YuPtIJmA7BwGYDfiTKeY//7m+zHGmvOQZ1kH3LVTQYyJ
+	 ycoPRGT44Kn4DpVITZSCeT6Xj+INedT3O+BPwJRnovU2x7ZgBGiHLNUKg8/JFprxdO
+	 TtncqN6gpIaZPelgL/iAUTM6sKHnCYOmPWeAJVHB37VjnMo09tG5DRvyHIEqznuxhE
+	 +IHiMQADIAHLg==
+Date: Sat, 14 Dec 2024 11:49:14 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Hermes Zhang <chenhuiz@axis.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Guenter Roeck
- <linux@roeck-us.net>, Hermes Zhang <Hermes.Zhang@axis.com>,
- jdelvare@suse.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, kernel@axis.com, linux-kernel@vger.kernel.org,
- linux-hwmon@vger.kernel.org, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 2/2] hwmon: Add support for D3-323-AA Pyroelectric IR
- sensor
-Message-ID: <20241214114603.7db6bdbc@jic23-huawei>
-In-Reply-To: <3a5c0c73-0d80-bbd0-b53b-522e2f3e936e@axis.com>
-References: <20241212042412.702044-1-Hermes.Zhang@axis.com>
-	<20241212042412.702044-3-Hermes.Zhang@axis.com>
-	<5b53cffd-ae7f-45e5-b265-8e700d753275@roeck-us.net>
-	<20241212165945.0000584b@huawei.com>
-	<3a5c0c73-0d80-bbd0-b53b-522e2f3e936e@axis.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Subject: Re: [PATCH v6 2/7] iio: accel: adxl345: complete the list of
+ defines
+Message-ID: <20241214114914.02a280dd@jic23-huawei>
+In-Reply-To: <CAFXKEHZr2MT6Ard2pTpQtU9BVrr8FHes0wFO0PU=rM7iFX6H8A@mail.gmail.com>
+References: <20241211230648.205806-1-l.rubusch@gmail.com>
+	<20241211230648.205806-3-l.rubusch@gmail.com>
+	<ldsvh5heh6gkdljxvgovwl6ni55cudvqw2mihbrliw7dqanrnk@lwlg6irtvg4x>
+	<CAFXKEHZr2MT6Ard2pTpQtU9BVrr8FHes0wFO0PU=rM7iFX6H8A@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,99 +63,67 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 13 Dec 2024 13:39:01 +0800
-Hermes Zhang <chenhuiz@axis.com> wrote:
+On Thu, 12 Dec 2024 10:37:55 +0100
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Hi
-> 
-> On 2024/12/13 0:59, Jonathan Cameron wrote:
-> > On Wed, 11 Dec 2024 22:17:49 -0800
-> > Guenter Roeck <linux@roeck-us.net> wrote:
-> >  
-> >> Hi,
-> >>
-> >> On 12/11/24 20:24, Hermes Zhang wrote:  
-> >>> Add support for Nicera D3-323-AA Pyroelectric IR sensor. The sensor
-> >>> support to config the threshold/filter_type/filter_step and return the
-> >>> detect result in sysfs attribute.
-> >>>
-> >>> Signed-off-by: Hermes Zhang <Hermes.Zhang@axis.com>
-> >>> ---
-> >>>     
-> >> ...
-> >>  
-> >>> +
-> >>> +static DEVICE_ATTR_WO(pir_threshold);
-> >>> +static DEVICE_ATTR_WO(pir_filter_step);
-> >>> +static DEVICE_ATTR_WO(pir_filter_type);
-> >>> +static DEVICE_ATTR_RO(pir_detector);
-> >>> +
-> >>> +static struct attribute *d3323aa_attrs[] = {
-> >>> +	&dev_attr_pir_threshold.attr,
-> >>> +	&dev_attr_pir_filter_step.attr,
-> >>> +	&dev_attr_pir_filter_type.attr,
-> >>> +	&dev_attr_pir_detector.attr,
-> >>> +	NULL,
-> >>> +};
-> >>> +
-> >>> +ATTRIBUTE_GROUPS(d3323aa);
-> >>> +  
-> >> I don't know what this is, but it is most definitely not a hardware
-> >> monitoring device. I don't see a definition of those attributes,
-> >> so I have no idea what they represent.
-> >>
-> >> Maybe this is an iio device, but given the unusual attributes
-> >> I am not even sure about that. Jonathan, any thoughts ?  
-> > New type of sensor, but sure could be in IIO.
+> Hi  Krzysztof,
+> Thank you so much for reviewing.
+>=20
+> On Thu, Dec 12, 2024 at 9:07=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.=
+org> wrote:
 > >
-> > Seems mostly a human presence sensor. Not that different from some
-> > types of proximity sensor and indeed that might be the path to take
-> > here.
+> > On Wed, Dec 11, 2024 at 11:06:43PM +0000, Lothar Rubusch wrote: =20
+> > > Extend the list of constants. Keep them the header file for readabili=
+ty.
+> > > The defines allow the implementation of events like watermark, single
+> > > tap, double tap, freefall, etc. =20
 > >
-> > Taking a quick look at the driver suggests there is lots more information
-> > needed to understand the ABI.  At very least needs ABI docs so we can
-> > discuss how that is generalized. So if submitting an IIO driver
-> > I want to see
-> > Documenation/ABI/testing/sysfs-bus-iio-xxxx
-> > with significant detail. The datasheet provides no where near enough
-> > info.
-> >
-> > Jonathan  
-> 
-> Thanks for your suggestions. For the new sensor, it seems require three 
-> attributes, e.g. /sys/bus/iio/devices/iio:deviceX/in_threshold 
-> (in_filter_step, in_filter_type), then one data to indicate if it is 
-> been triggerred (bool), but I'm not sure what is sutible IIO type could 
-> it used? Do you have any suggestion?
+> > We don't store constants just to store constants, so this commit does
+> > not have reason to be separate. We store constants/defines only to
+> > implement the driver. Merge these with the users... unless you want to
+> > say there are no users of this at all, but then make it clear: move the
+> > patch to the end.
+> > =20
+>=20
+> I see your point.
+>=20
+> The defines are needed for the current introduction of the FIFO usage,
+> connected with the watermark feature. Some of it is related to
+> upcoming features, such as mentioned in the comment (tap events,
+> freefall, powersafe, selftest, etc).
+>=20
+> This patch series now on FIFO/watermark are just the first step to get
+> a solid reviewed common base. Further features are upcoming. I did not
+> split up the constants. All the specified registers will be needed to
+> allow for their configuration and setup. I understand it's no organig
+> growth by immediate need, as I understand, but giving IMHO a bit
+> flexibility then in implementing what is the next feature, since all
+> registers are already defined.
+>=20
+> Pls, let me know, if you prefer me to only introduce immediately
+> needed constants for a current specific feature?
 
-Look at the existing ABI in Documentation/ABI/testing/sysfs-bus-iio
-and aim to fit within that scheme.
+That would be the normal way to do it in a series that is adding those
+features.
 
-I'm hoping you have access to a datasheet that tells you something about the
-filters that lets you map them to something standard.  Normally we aim
-for something like 3DB frequency.  Filter types are harder but there tend to
-only be so many types people actually build.
+There are cases where we do blanket includes of all registers etc in=20
+one patch but they tend to be autogenerated from another source (so
+annoying to split up) rather than introduced alongside features.
 
-Channel type wise, I'm thinking this is kind of a form of proximity sensor
-so IIO_PROXIMITY is probably appropriate.  That has always been a bit vague
-as many proximity sensors are kind of 'there is something nearish' rather
-than providing actual units etc.
-
-It's a little different as I believe these only detect movement rather
-than entirely static people, but in the case of the ones for presence detection
-they work on tiny movements so more or less the same as detecting proximity.
+Also tends to be more common for first posting of a driver rather than
+adding new features when the author of the driver decided to do a subset
+(so follow the local style).
 
 Jonathan
 
-
-
-> 
-> Best Regards,
-> Hermes
-> 
-> 
+> Best,
+> L
+>=20
+> > Best regards,
+> > Krzysztof
+> > =20
 
 

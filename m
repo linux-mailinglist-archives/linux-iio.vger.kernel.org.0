@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-13445-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13446-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55F69F1E5B
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 12:49:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0F39F1E5E
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 12:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD634167C90
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 11:49:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEBCF163A88
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 11:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012EE18F2DA;
-	Sat, 14 Dec 2024 11:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 072D818FC8F;
+	Sat, 14 Dec 2024 11:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbkDmBVJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L8agEhLG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB527170A13;
-	Sat, 14 Dec 2024 11:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BC3154C00;
+	Sat, 14 Dec 2024 11:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734176961; cv=none; b=o+bSfQlRIPT1jvlvRpB86REIJMDHCNgQWQTN6QZn0aBeyzKYJkVs0QFH2mELBBQPITfpV+1r+cQNuq/wAkHQ4fy8w3LquwICiMHdUXXPTmosiWUa12q0FadZBArWko/Nye3H5LUfgl3K5jo8MWzBaf3Iq63xHE9hdPR1pSLTiTM=
+	t=1734177420; cv=none; b=tcl4ZnZs0OIEmmblw3TUdCWA7S42cd3zPOYJkdB9CDCpYjhatkSuq+LgjsXKqMRObSHBzNrQ/z4KyuYbRL/KyqVmh8fZByJqMBHcXojtV5Xs/mZFGQgAeSp74igzunmvP55aUAY61Ez1aS5uS9wxlRLP18P1Rggn4eTD891XudY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734176961; c=relaxed/simple;
-	bh=xJSS30hg2FmUw1g1FBZO8Pu4Z0GIfgxqCh5NDr3y3MQ=;
+	s=arc-20240116; t=1734177420; c=relaxed/simple;
+	bh=e7CE8+w2lR9vnZnxyFZ5NV1YGU7f5fZ374lTWK4pq4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hLBBEtOwT/Mm6Roz+ogf/4vu03S8vMX8/CRg0V6zdBY0nlkf0vtaYh8oqdinsoy1xrH6DmDhx3A2YNEm8wDQIBNTXTmeJgRL2Nk6pJMq0UuvwYoDdmQYpAkGJsDOVd3f3IGzceETH6TKEEWSSbi8uNVednfa/9lpV5jk+sG8rno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbkDmBVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7174DC4CED1;
-	Sat, 14 Dec 2024 11:49:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QUfWJGHbfi8opZEAGoQZA2PTN/8YXBbBsh+vW9k7SEN6FqcG24vANu2PWROTOGKAI6pQBC0pbyZbAMQniICGv6g7AqejnMWcxTnioZWRmWMQqZVY3JFVpTgZiDEKAmb5PHezm2KeLdHTkMJyppRgV89DbKGSWrMESPlOY4JRKpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L8agEhLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88ADC4CED1;
+	Sat, 14 Dec 2024 11:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734176961;
-	bh=xJSS30hg2FmUw1g1FBZO8Pu4Z0GIfgxqCh5NDr3y3MQ=;
+	s=k20201202; t=1734177420;
+	bh=e7CE8+w2lR9vnZnxyFZ5NV1YGU7f5fZ374lTWK4pq4Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WbkDmBVJ13bAnrkUhSfL+sb1j3d4AQ2LnSWZCZA8BEmn2PgIubP5j4/28LxUYoMs9
-	 ZsZyCNMJq8m6KGu+AfMwbU4jgHkZb5VNar9eHOLHht2YV185EJY0/Id/kZYO0o0hpb
-	 MpuXAMn/j8+GRcOV6qCXI4YuPtIJmA7BwGYDfiTKeY//7m+zHGmvOQZ1kH3LVTQYyJ
-	 ycoPRGT44Kn4DpVITZSCeT6Xj+INedT3O+BPwJRnovU2x7ZgBGiHLNUKg8/JFprxdO
-	 TtncqN6gpIaZPelgL/iAUTM6sKHnCYOmPWeAJVHB37VjnMo09tG5DRvyHIEqznuxhE
-	 +IHiMQADIAHLg==
-Date: Sat, 14 Dec 2024 11:49:14 +0000
+	b=L8agEhLGgacEP0x1BMvxbyriJg9sWE51pg4CB71o5iZa2DrL4VEeoOal9kIpY2aV0
+	 XConY2DPuGw8ARUazMiySvi6q+rvrwar5rimRm/btXjFjfylPb5ozLH6mMcqrkda5E
+	 Fq1ltx8UPWxoiZoCyzij/T4QL/zVtrHFeA6towiyfQrZGqzoM+G+iGTsUImXFqpxcd
+	 2PaiHzsk/b+zjcWzEgGU1FBKJ5bSr2nxC7JZBBU5QRn0Gc7fPe6rA2jwTc9hWwqekg
+	 /4Udk0aJUgH1ZRNBXibjiQImH7ZxZADcFlAjxDcZc8NPjgSGTfedYtCzFZVdEkICRz
+	 KoCFFMBoMs4hA==
+Date: Sat, 14 Dec 2024 11:56:50 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, lars@metafoo.de,
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
  Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v6 2/7] iio: accel: adxl345: complete the list of
- defines
-Message-ID: <20241214114914.02a280dd@jic23-huawei>
-In-Reply-To: <CAFXKEHZr2MT6Ard2pTpQtU9BVrr8FHes0wFO0PU=rM7iFX6H8A@mail.gmail.com>
+Subject: Re: [PATCH v6 3/7] dt-bindings: iio: accel: adxl345: add
+ interrupt-names
+Message-ID: <20241214115650.2b3a7f83@jic23-huawei>
+In-Reply-To: <scybtk2qyy6m55klkj6tsv2snmcqp2zjbkzwfh5dv2p6cjjeud@xjq4vsxjszex>
 References: <20241211230648.205806-1-l.rubusch@gmail.com>
-	<20241211230648.205806-3-l.rubusch@gmail.com>
-	<ldsvh5heh6gkdljxvgovwl6ni55cudvqw2mihbrliw7dqanrnk@lwlg6irtvg4x>
-	<CAFXKEHZr2MT6Ard2pTpQtU9BVrr8FHes0wFO0PU=rM7iFX6H8A@mail.gmail.com>
+	<20241211230648.205806-4-l.rubusch@gmail.com>
+	<scybtk2qyy6m55klkj6tsv2snmcqp2zjbkzwfh5dv2p6cjjeud@xjq4vsxjszex>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,67 +62,54 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Dec 2024 10:37:55 +0100
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Thu, 12 Dec 2024 09:08:22 +0100
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> Hi  Krzysztof,
-> Thank you so much for reviewing.
->=20
-> On Thu, Dec 12, 2024 at 9:07=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.=
-org> wrote:
-> >
-> > On Wed, Dec 11, 2024 at 11:06:43PM +0000, Lothar Rubusch wrote: =20
-> > > Extend the list of constants. Keep them the header file for readabili=
-ty.
-> > > The defines allow the implementation of events like watermark, single
-> > > tap, double tap, freefall, etc. =20
-> >
-> > We don't store constants just to store constants, so this commit does
-> > not have reason to be separate. We store constants/defines only to
-> > implement the driver. Merge these with the users... unless you want to
-> > say there are no users of this at all, but then make it clear: move the
-> > patch to the end.
-> > =20
->=20
-> I see your point.
->=20
-> The defines are needed for the current introduction of the FIFO usage,
-> connected with the watermark feature. Some of it is related to
-> upcoming features, such as mentioned in the comment (tap events,
-> freefall, powersafe, selftest, etc).
->=20
-> This patch series now on FIFO/watermark are just the first step to get
-> a solid reviewed common base. Further features are upcoming. I did not
-> split up the constants. All the specified registers will be needed to
-> allow for their configuration and setup. I understand it's no organig
-> growth by immediate need, as I understand, but giving IMHO a bit
-> flexibility then in implementing what is the next feature, since all
-> registers are already defined.
->=20
-> Pls, let me know, if you prefer me to only introduce immediately
-> needed constants for a current specific feature?
+> On Wed, Dec 11, 2024 at 11:06:44PM +0000, Lothar Rubusch wrote:
+> > Add interrupt-names INT1 and INT2 for the two interrupt lines of the
+> > sensor. Only one line will be connected for incoming events. The driver
+> > needs to be configured accordingly.
+This is all driver info.  This patch description just needs to say something
+like:
+"
+There are two interrupt lines that may be connected. As the device can
+route each type of interrupt to one or other of those lines, interrupt-names
+is necessary for two reasons.
 
-That would be the normal way to do it in a series that is adding those
-features.
+- One interrupt line is connected, the device has to be configured to send
+  interrupts to that line.
+- Two interrupt lines connected.  The device can route all interrupts to 
+  one line or elect to split them up.
 
-There are cases where we do blanket includes of all registers etc in=20
-one patch but they tend to be autogenerated from another source (so
-annoying to split up) rather than introduced alongside features.
+If no interrupt lines are connected, device functionality may be restricted.
+"
 
-Also tends to be more common for first posting of a driver rather than
-adding new features when the author of the driver decided to do a subset
-(so follow the local style).
+Note as below, the required interrupts entry should be removed in a precursor
+patch.
+
+> If no interrupt line is set up, the
+> > sensor will fall back to FIFO bypass mode and still measure, but no
+> > interrupt based events are possible.  
+> 
+> There was interrupt before and it was required, so I do not understand
+> last statement. You describe case which is impossible.
+
+Binding was wrong. Interrupt isn't required for quite a bit of the functionality.
+
+I'd like to see an earlier patch removing that required entry and explaining
+why rather than jumping into adding the new interrupt-names part without
+resolving that.  Its a relaxation of constraints so probably no need to backport
+that patch.
 
 Jonathan
 
-> Best,
-> L
->=20
-> > Best regards,
-> > Krzysztof
-> > =20
+
+> 
+> Best regards,
+> Krzysztof
+> 
 
 

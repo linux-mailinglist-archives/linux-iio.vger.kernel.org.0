@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-13476-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13477-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6F69F2092
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 20:14:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DFB9F2094
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 20:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2094167ADF
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 19:14:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D90897A0FEF
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 19:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310101AD3E5;
-	Sat, 14 Dec 2024 19:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE671B0F37;
+	Sat, 14 Dec 2024 19:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZqM3Of3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SSWiCVYS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E51C13C3F6;
-	Sat, 14 Dec 2024 19:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177F61ACDE8;
+	Sat, 14 Dec 2024 19:14:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734203670; cv=none; b=QnyzY6N3GwwlvQeIRgJOHy1guc86vB8KQKa8t2i2EtKb3xss8Is81N6+wqgamsNY+yvuwSnV6rNmXDIQ/Z8mCL+SRp25OqYe75IBpZjpAJMco10Y0pvNWDeKriPPd66Vl+Od3A3v9FPEKZYP9sqbucH5sGjgECpGrHh8LPhc0yE=
+	t=1734203671; cv=none; b=dbG89Q6YK8D5hfgonKxTtPBhaLroCjYCLX+dsjFMHG7qVGczOm0iltccoM81nvktXAML5LHMzIiIbzUNYbpTGhx4SarQ1TTzAiSNdzf3M+JTJ6o9cFMYAgeEmC50lKrXYXaLbDMrUa7+ElWfyfE0d9ppyUR1B8VNoCwoofHKUNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734203670; c=relaxed/simple;
-	bh=d2OhmxiI5AooTlDW7fxkPksCuvAuqSC7QMfWprQMVdQ=;
+	s=arc-20240116; t=1734203671; c=relaxed/simple;
+	bh=56UqBDrnbwwhqvj/0lN8ie1YNa66Hu6CK0aHQK/FB3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJCfVCeU3LvCT48alDjP8a4lq+0GPWWgD1yvL3deIE21+SIEVbkYFnTWRPBXNUFsTcP9G2hiLcAbsCqoPesNQxgw+gsfbDeOs9KgySbEcTEfeLSHnYJlNL9UX5NDKby1v6GX3FmsXJrG7NChNj/qAtcj3jQ8cXbslT8NwD17hho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZqM3Of3; arc=none smtp.client-ip=209.85.218.48
+	 MIME-Version; b=VC5r1o43AD1JQxaaD+lU0oI3gvPqIzPall5eu8j1iVqzrcVyaghQNgq+0zS6nvn7n+16Ptzn1uWWSK/c82rfKb7nbW7UOx05LHez8TuMYTz+xWtzdHTYqDEtvXZIZr7BVrqaTIyYZyWbd7qJVC909mvCdTarB1YtaJJVMfYdlA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SSWiCVYS; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa679ad4265so735996466b.0;
-        Sat, 14 Dec 2024 11:14:28 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9e44654ae3so416245766b.1;
+        Sat, 14 Dec 2024 11:14:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734203667; x=1734808467; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734203668; x=1734808468; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Wu2e1te76pbd3jGB8qjgDG52ERUhwrkw7zPt6u0Sb9A=;
-        b=fZqM3Of3b0VFIgpuhlJWNfug2q7SU8zX+xvbOra5PG5hZNpn5hIr9YZgiIpkkyHSUU
-         YaAstY0chP1cVORqwm03SNFRFlwYjvPgT6MxlypCCHC9A0krR5qi+/ynpH9jfJvXYAcd
-         Tt5EPkMZw1eGiqNtSy6cKFGqkEvQLQgEOZSEM1HTPmNWrrIfsT4sKSrl2NWgfgJ587eC
-         y+OpsuLB2vxppaafB6xMFLx06TQPujcSEl8Pmq8ed/07pgoKIZNITGOOfUJijCBwMkj1
-         8rG0GlDqh71NuX66MyaNTkepBfvd2adct1hSnTb1KA2G6Yc6kvMntYS6hX5YLKVjp7oE
-         MU1A==
+        bh=NaAb2acuLXVgIg0u7IBl7VlwH62YP9kYmoP/9Ij8jM0=;
+        b=SSWiCVYSB1VfMTcFbtRvtoIBXrbQx6Lq4JSWtP01iD2z13Hev+oPlFBlNGwqwi674Q
+         2LbycRqiH/ayhAUNDH+dnysTfPSpqes0wHzzfqtPRmGy+tdEji6WatJ9JiYrv6SqgoEw
+         I2+Akn5Cg3M5Kl/Fpquv3rs4ill0wId965/LmlQN0pe3IpIS5cYrbCsZqwcahgdCp/FN
+         0M0TmHblDHCiVF8LnOXxpDqMIbXmy0N7ekWyPNTVjTwM5ehX7gKQ7UJQ7aJ6+9IFVsm0
+         sdSFPhPgTx1Kt7QRXmwXGCc5dfhf9ZuwLJe73xMA6GrbkdeEkkmR1SD8izLggHa7aj0R
+         dgUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734203667; x=1734808467;
+        d=1e100.net; s=20230601; t=1734203668; x=1734808468;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Wu2e1te76pbd3jGB8qjgDG52ERUhwrkw7zPt6u0Sb9A=;
-        b=wV+gZBLX9iZ/PHZO8fR8nJIZ+hGJ/413nc29JxvPQrNwRx+Y/5LhyAfsAc97RdRgt+
-         jjeLDsYGtUsyC0eys7RoGN7mTeCs+ok+EGHK606zdOEdp0ylYEwBy1M3bGd1cDvYEx76
-         8sYveroP2HmZ7PChQnyOzz7Z/0qwcSgxHUoQDxRrD0otZSrB98NqozKJ3k+yeCuRj3Hy
-         9YFPzKP32KpRSLpfJWms2lBDhDG86s3IeXIv/jS79hwc8W1O+rOnkanEQC/1M2t6Xuuv
-         x9dqMIMvB8ilBuMAvN7/nre2qI/27+uUISQfH+Z0qWzbTrtDCWgo51439VRT+QfgesaA
-         Vm5w==
-X-Forwarded-Encrypted: i=1; AJvYcCWUncRQcV310bBOd+Czke89yq0XuQSOWlN4Ok7aVsYwV++23wQ4iDyildyo1bh6RDUGvWuUsazXmLM=@vger.kernel.org, AJvYcCWnd1dzCx8S7lTovXEGDxIQwZcYB5wRZKJ0hQkCWZhOOkiMQJFNkkX+k7H0KggNyTGLh6zKmnsvJ202/qng@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIIaKZV6tKw5Mqw0NuitX07ocWTHAkZTeSdDm7pTy9sYfvM/RY
-	DO/5NhVVweXZiV69MW79t0xc335ptv5OorD6pOdbpXN7wJA2QFgP
-X-Gm-Gg: ASbGnct6nm2i3k4i8ndI4Ag2sHMvZO4CD1o7TVGFNyX5QuV8cAqAdUcnlaiQuddGV0b
-	kN5eofsztzzig1/7o0qbqGIcTXdpwE9mUFZfm+QLnbe156vuqvRMxE2tuuDmabDDOtYcsWW4Ero
-	E0n9yRaqxNa6Rsokd2JUKOK5D5sTVmoWDecSHH5qEOpIoIWSBFbEbRaWviAhNMzVjcoBQXx+iqJ
-	GLVJlerJdtvoEXuc7AT28Py30IG1cpCQhdy+grXdFeZn+8qZmlFtnzwOYi3IwdqhD12Qw==
-X-Google-Smtp-Source: AGHT+IGmSHaWumALTERb63RSMZc8h59eP/qVSKoebKQ7UH75jqqyOT0q6zUN5UqR+nYyLAft3cT5AA==
-X-Received: by 2002:a17:907:1c10:b0:aa6:7ff9:d248 with SMTP id a640c23a62f3a-aa6c40f78f0mr1285884566b.8.1734203666421;
-        Sat, 14 Dec 2024 11:14:26 -0800 (PST)
+        bh=NaAb2acuLXVgIg0u7IBl7VlwH62YP9kYmoP/9Ij8jM0=;
+        b=Go5+L5csiSRi6Z5TBsZHti+lqeGLfTEbVclVelfSfbm0rKs0SCv5zkwk9U3VQfSQU0
+         Pe8Th9lUOYcHQ5lz5XEqqBwpFWP9jVDFmPOr1rmW2/I6Rw0QIX20plqb5Q0HBdCsj9ZR
+         WVqZq4KuwnOUM938YJZ8NPKhefBeAybuKwoegHIj1n4foTVSqyeTNEcrkebHapndzbH8
+         Gvn/2Cvdc2vP42q2ebbmv6KCkqasMwVUsQypsxQM6Mz2k1xpI6X5Z9SV38HE9KFB2qTF
+         Isu0jUkAUnYcERZwBk55V0TIZP+KWoOVEkbeumwqdFrncwtAhaLC6wT22t1wnnVeM+lT
+         Y2eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV35T0KzB6Iw1OXwBA8LcXNf8AHBbeabD4JaV3TQTYVNGaTiSTQPbYBbOE2NTHgRkiGLEMEFFi1fFk=@vger.kernel.org, AJvYcCXmlvblVTgmsYFUSiaIbXrBePjpp0WYks4JuWcAlDUJ/9RCsMuNqDKNl9ED7EI62wYozfFS5oF2XLbAMJ5D@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg54g/13rVsReYkRjpjqpXRF9D1Uy4AOQYpirj+4JPq59gY4Xy
+	/gGGEpt0g25BjeK9CiO/iQoczymWD14BO6vz8T69kFrVyqQD/bh3
+X-Gm-Gg: ASbGncuPuVOENnUerw/gt7fhAHzePyynuNNqhpj9IUhV9GNV4es4UEBPi64TMnSTVqA
+	M1QYFgD5vOtapglO/2o6pSJSipf+qo8Vg1mWVvxkVSMCSvJxlg/839EiIWq56U63UyE+m1vKPPZ
+	FYTiFU0YXssY5hUd7axyL5k8l9+F8nErLqqLdcWoYpAiSQYctH587J3aV0peIUgYoUP2ZdOSi/7
+	ueWnQJ1aNRD2BPB+tjahzeYTi7DjGsI7Sk853HH62uU+JP+38mX1svKV0hdTjFt6NGiBg==
+X-Google-Smtp-Source: AGHT+IGdWo3YszxT9i4wIoPQuSKR7JwpZibXSfO0wJrT+fKRu05+eFcMZeLFgFP+Rse5WUDAwc2+QQ==
+X-Received: by 2002:a17:907:7741:b0:aa9:1b4b:489e with SMTP id a640c23a62f3a-aab7798905bmr545493266b.24.1734203668154;
+        Sat, 14 Dec 2024 11:14:28 -0800 (PST)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:abde:dd08:a767:d63c])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab963c54d2sm122818766b.190.2024.12.14.11.14.25
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aab963c54d2sm122818766b.190.2024.12.14.11.14.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2024 11:14:25 -0800 (PST)
+        Sat, 14 Dec 2024 11:14:27 -0800 (PST)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de
@@ -85,9 +85,9 @@ Cc: krzysztof.kozlowski@linaro.org,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	vassilisamir@gmail.com
-Subject: [PATCH v2 1/4] iio: adc: dln2-adc: zero full struct instead of just the padding
-Date: Sat, 14 Dec 2024 20:14:18 +0100
-Message-ID: <20241214191421.94172-2-vassilisamir@gmail.com>
+Subject: [PATCH v2 2/4] iio: adc: max1363: make use of iio_is_soft_ts_enabled()
+Date: Sat, 14 Dec 2024 20:14:19 +0100
+Message-ID: <20241214191421.94172-3-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241214191421.94172-1-vassilisamir@gmail.com>
 References: <20241214191421.94172-1-vassilisamir@gmail.com>
@@ -99,75 +99,88 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Drop a minor optimization of zeroing the padding between data and
-timestamp and zero the whole structure. This is done in favor of
-simpler code, and in order to drop the usage of the internal private
-variable "scan_timestamp" of the struct iio_dev.
+Drop the recurrent allocation of the data buffer from the trigger
+handler and put it in the iio_priv(). This way, the maximum amount of
+channels is always allocated in favor of simpler code and drop
+of usage of the internal private variable "scan_timestamp" of the
+struct iio_dev.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/adc/dln2-adc.c | 21 ++-------------------
- 1 file changed, 2 insertions(+), 19 deletions(-)
+ drivers/iio/adc/max1363.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 30328626d9be..221a5fdc1eaa 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -66,8 +66,6 @@ struct dln2_adc {
- 	/* Demux table */
- 	unsigned int demux_count;
- 	struct dln2_adc_demux_table demux[DLN2_ADC_MAX_CHANNELS];
--	/* Precomputed timestamp padding offset and length */
--	unsigned int ts_pad_offset, ts_pad_length;
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index 9a0baea08ab6..e8d731bc34e0 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -161,6 +161,7 @@ struct max1363_chip_info {
+  * @vref_uv:		Actual (external or internal) reference voltage
+  * @send:		function used to send data to the chip
+  * @recv:		function used to receive data from the chip
++ * @data:		buffer to store channel data and timestamp
+  */
+ struct max1363_state {
+ 	struct i2c_client		*client;
+@@ -186,6 +187,10 @@ struct max1363_state {
+ 						const char *buf, int count);
+ 	int				(*recv)(const struct i2c_client *client,
+ 						char *buf, int count);
++	struct {
++		u8 buf[MAX1363_MAX_CHANNELS * 2];
++		aligned_s64 ts;
++	} data;
  };
  
- struct dln2_adc_port_chan {
-@@ -111,8 +109,6 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
- 	if (iio_get_masklength(indio_dev) &&
- 	    (*indio_dev->active_scan_mask & 0xff) == 0xff) {
- 		dln2_adc_add_demux(dln2, 0, 0, 16);
--		dln2->ts_pad_offset = 0;
--		dln2->ts_pad_length = 0;
- 		return;
- 	}
+ #define MAX1363_MODE_SINGLE(_num, _mask) {				\
+@@ -1462,22 +1467,10 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct max1363_state *st = iio_priv(indio_dev);
+-	__u8 *rxbuf;
+ 	int b_sent;
+-	size_t d_size;
+ 	unsigned long numvals = bitmap_weight(st->current_mode->modemask,
+ 					      MAX1363_MAX_CHANNELS);
  
-@@ -127,16 +123,6 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
- 		out_loc += 2;
- 		in_loc += 2;
- 	}
--
+-	/* Ensure the timestamp is 8 byte aligned */
+-	if (st->chip_info->bits != 8)
+-		d_size = numvals*2;
+-	else
+-		d_size = numvals;
 -	if (indio_dev->scan_timestamp) {
--		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
--
--		dln2->ts_pad_offset = out_loc;
--		dln2->ts_pad_length = ts_offset * sizeof(int64_t) - out_loc;
--	} else {
--		dln2->ts_pad_offset = 0;
--		dln2->ts_pad_length = 0;
+-		d_size += sizeof(s64);
+-		if (d_size % sizeof(s64))
+-			d_size += sizeof(s64) - (d_size % sizeof(s64));
 -	}
- }
- 
- static int dln2_adc_get_chan_count(struct dln2_adc *dln2)
-@@ -494,6 +480,8 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
- 	if (ret < 0)
+ 	/* Monitor mode prevents reading. Whilst not currently implemented
+ 	 * might as well have this test in here in the meantime as it does
+ 	 * no harm.
+@@ -1485,21 +1478,16 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
+ 	if (numvals == 0)
  		goto done;
  
-+	memset(&data, 0, sizeof(data));
-+
- 	/* Demux operation */
- 	for (i = 0; i < dln2->demux_count; ++i) {
- 		t = &dln2->demux[i];
-@@ -501,11 +489,6 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
- 		       (void *)dev_data.values + t->from, t->length);
- 	}
+-	rxbuf = kmalloc(d_size,	GFP_KERNEL);
+-	if (rxbuf == NULL)
+-		goto done;
+ 	if (st->chip_info->bits != 8)
+-		b_sent = st->recv(st->client, rxbuf, numvals * 2);
++		b_sent = st->recv(st->client, st->data.buf, numvals * 2);
+ 	else
+-		b_sent = st->recv(st->client, rxbuf, numvals);
++		b_sent = st->recv(st->client, st->data.buf, numvals);
+ 	if (b_sent < 0)
+-		goto done_free;
++		goto done;
  
--	/* Zero padding space between values and timestamp */
--	if (dln2->ts_pad_length)
--		memset((void *)data.values + dln2->ts_pad_offset,
--		       0, dln2->ts_pad_length);
--
- 	iio_push_to_buffers_with_timestamp(indio_dev, &data,
+-	iio_push_to_buffers_with_timestamp(indio_dev, rxbuf,
++	iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
  					   iio_get_time_ns(indio_dev));
+ 
+-done_free:
+-	kfree(rxbuf);
+ done:
+ 	iio_trigger_notify_done(indio_dev->trig);
  
 -- 
 2.43.0

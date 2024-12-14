@@ -1,58 +1,64 @@
-Return-Path: <linux-iio+bounces-13460-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13461-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993F69F1F41
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 15:22:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522DF9F1F47
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 15:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40FD0165AFA
-	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 14:22:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 834C0165B50
+	for <lists+linux-iio@lfdr.de>; Sat, 14 Dec 2024 14:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF29B1925B9;
-	Sat, 14 Dec 2024 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8DA192D75;
+	Sat, 14 Dec 2024 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9ijJajR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQMdx3QM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73860653;
-	Sat, 14 Dec 2024 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D27169397;
+	Sat, 14 Dec 2024 14:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734186150; cv=none; b=erOMSvWBw3EVcCo2p/Wa8SeudYs1ozFVWeePW8cSJV8GTgXjTwt/QrZ6bQKKT9BZvLalel/0o4mnZI0HgbCFdz2SrecdkrJhE1SWvPP85+2i+bHw4arKjh6ta3EUHeO1/QkWEXTPNWmeBrYV/I6vX+yNOh391xlIDclXVMfuJFU=
+	t=1734186325; cv=none; b=SxGOdTvmAJvGSkIKKdSx8MHOfqHyDTlTbgt9i5FncT2SkTGLEbQ1JZ0HTLTolsdtD/RWr+o5JpI3NdMLBIFyqIiCZ9tNud2nE+c9xhEH3VGF8w/Cb/mfp9UDvwbEeckNKj6F1ipZibfMDhpWM2NcSQlcfEXNldkyShw5QW+G5ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734186150; c=relaxed/simple;
-	bh=uehpG8mYumIcqRR5AOgovcyMyNpC9sPQLe4yKCCaf/o=;
+	s=arc-20240116; t=1734186325; c=relaxed/simple;
+	bh=uo7FIWAio2B7yGgy0lABEYgsS8AiZPqc79yXVquOkrw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FFsiqiehf0exBSAamKJvnAs0ShSpt23HBQwh9tBnASrMtKOA7KkUVjiOxQKdQzbqoYyRFAYReRZfKpVndC75KT/eGvjg3VhCklrTXzjW96YRFhtJWigmue2gG5JKSQ7W4uVkwuYuAYLGof/glf95rxHPuQehPi7O3C7fA24Rmes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9ijJajR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EEBC4CED1;
-	Sat, 14 Dec 2024 14:22:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YuG4HM4HDXRJ2sG4c+RfBG+FSzWRYCm40L8N98naJXYbdA7PL1gzjkZlKGaqlxr7KoRsgLGCz4tEHn5fJcCbdH+HbMWCbJjeRD+KHXGbyUpBkrqG1b6xOx3Cd3aYz8HRrjdpJxWO/yChl6vCX8L42ZHxCBHwjguO9aNIhFSb2hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQMdx3QM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535BCC4CED1;
+	Sat, 14 Dec 2024 14:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734186149;
-	bh=uehpG8mYumIcqRR5AOgovcyMyNpC9sPQLe4yKCCaf/o=;
+	s=k20201202; t=1734186324;
+	bh=uo7FIWAio2B7yGgy0lABEYgsS8AiZPqc79yXVquOkrw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=B9ijJajRYDD0GzZxpg92Fbma3tCb57pLgwawQFJhfQx99SY7Kq1t3o3dmnFF657ql
-	 BmOBK1U/otNSMrCLn8RVP9LlwcKKfH1mshT8vIwxJvrCJp6L+HtjvJCD7nJ+F8pX1M
-	 ACURRyCsMIyO0C/DnUXUDGVGx0C9gzv8PmsP5rj0NYgKxOC7Bu7pE2Pb7m+hhTx/D8
-	 Dmi5hatkhAoiURiQtqSRsP/29Ob9Fvj1736+JvarMEBktrtg2nswQxfRyrwzTPuuBp
-	 h34UM9ea0BcRjGTYBuDlazcGaDfqxlrjOae2FU6WHjZqyfu/EQpi882VQFaAyTgwIq
-	 B2s57jZoXjmdg==
-Date: Sat, 14 Dec 2024 14:22:21 +0000
+	b=YQMdx3QMi51nA0Rl1qxkPQMUUHSS697Pm3psyQXjjmxMKhxz2p5cUllCAOYjRo/uK
+	 hqOvL59M3JnBgEnw7JjFCnBwyKlvHcN74qaEG60ObQN52nHJF/xKWJfB1bLvvGCsRz
+	 q9C7FY921zBAhREk+mfcMbKR8+hLSDg8Hxkqm7gmc7+YjcJGqlU0NIZ6/xHOIAqfrW
+	 IDztn4HHHVnH9og37duLJghYDbgWNBQWYfw+vl39kKn2chQWAkiPyXfgxXgeApSSOG
+	 zl3wycQQVZy4fjvIDTcAeHPPHARDGYH4W7A/n6eH9q43iqh+42fGK1l96XRaOtiLU5
+	 I6kYreyn9XYcg==
+Date: Sat, 14 Dec 2024 14:25:11 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers
- <ceggers@arri.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v3] iio: light: as73211: fix channel handling in
- only-color triggered buffer
-Message-ID: <20241214142221.3412ad9c@jic23-huawei>
-In-Reply-To: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
-References: <20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, David
+ Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>,
+ linux-spi@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v6 03/17] dt-bindings: trigger-source: add generic PWM
+ trigger source
+Message-ID: <20241214142511.2dcdb5be@jic23-huawei>
+In-Reply-To: <20241211-dlech-mainline-spi-engine-offload-2-v6-3-88ee574d5d03@baylibre.com>
+References: <20241211-dlech-mainline-spi-engine-offload-2-v6-0-88ee574d5d03@baylibre.com>
+	<20241211-dlech-mainline-spi-engine-offload-2-v6-3-88ee574d5d03@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,130 +69,95 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 12 Dec 2024 18:56:32 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Wed, 11 Dec 2024 14:54:40 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
-> set (optimized path for color channel readings), and it must be shifted
-> instead of leaving an empty channel for the temperature when it is off.
+> Add a new binding for using a PWM signal as a trigger source.
 > 
-> Once the channel index is fixed, the uninitialized channel must be set
-> to zero to avoid pushing uninitialized data.
+> The idea here is similar to e.g. "pwm-clock" to allow a trigger source
+> consumer to use a PWM provider as a trigger source.
 > 
-> Add available_scan_masks for all channels and only-color channels to let
-> the IIO core demux and repack the enabled channels.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
-> Tested-by: Christian Eggers <ceggers@arri.de>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+LGTM. But obviously this is really one for the dt-binding maintainers to look
+at. With that in mind.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
-> This issue was found after attempting to make the same mistake for
-> a driver I maintain, which was fortunately spotted by Jonathan [1].
 > 
-> Keeping old sensor values if the channel configuration changes is known
-> and not considered an issue, which is also mentioned in [1], so it has
-> not been addressed by this series. That keeps most of the drivers out
-> of the way because they store the scan element in iio private data,
-> which is kzalloc() allocated.
+> v6 changes:
+> * Moved file from bindings/spi/ to bindings/trigger-source/
+> * Updated description to not mention SPI
+> * Dropped $ref: /schemas/spi/trigger-source.yaml#
+> * Swapped order in name to be consistent with "pwm-clock"
 > 
-> This series only addresses cases where uninitialized i.e. unknown data
-> is pushed to the userspace, either due to holes in structs or
-> uninitialized struct members/array elements.
+> v5 changes:
+> * Add MAINTAINERS entry
 > 
-> While analyzing involved functions, I found and fixed some triviality
-> (wrong function name) in the documentation of iio_dev_opaque.
-> 
-> Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
+> v4 changes: new patch in v4
 > ---
-> Changes in v3:
-> - as73211.c: add available_scan_masks for all channels and only-color
->   channels to let the IIO core demux and repack the enabled channels.
-> - Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
+>  .../bindings/trigger-source/pwm-trigger.yaml       | 37 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  5 +++
+>  2 files changed, 42 insertions(+)
 > 
-> Changes in v2:
-> - as73211.c: shift channels if no temperature is available and
->   initialize chan[3] to zero.
-> - Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
-> ---
->  drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
->  1 file changed, 20 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
-> index be0068081ebb..4be2e349a068 100644
-> --- a/drivers/iio/light/as73211.c
-> +++ b/drivers/iio/light/as73211.c
-> @@ -177,6 +177,12 @@ struct as73211_data {
->  	BIT(AS73211_SCAN_INDEX_TEMP) | \
->  	AS73211_SCAN_MASK_COLOR)
->  
-> +static const unsigned long as73211_scan_masks[] = {
-> +	AS73211_SCAN_MASK_ALL,
-> +	AS73211_SCAN_MASK_COLOR,
-
-I probably mislead you on this :(
-Needs to be the other way around as the core code starts at first
-entry whilst trying to find a mask that is a superset of what is turned on.
-here that means it will always use the first one.
-See iio_scan_mask_match() - strict isn't set int this case.
-
-
-	
-> +	0,
-No need for comma on the 0. It's a terminating entry so we don't
-want anyone to think they can add things after this
-
-> +};
+> diff --git a/Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml b/Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..1eac20031dc3cf921aafb8aa37f4e4eca1075835
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> @@ -0,0 +1,37 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/trigger-source/pwm-trigger.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
->  static const struct iio_chan_spec as73211_channels[] = {
->  	{
->  		.type = IIO_TEMP,
-> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  
->  		/* AS73211 starts reading at address 2 */
->  		ret = i2c_master_recv(data->client,
-> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
-> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
->  		if (ret < 0)
->  			goto done;
+> +title: Generic trigger source using PWM
 > +
-> +		/* Avoid pushing uninitialized data */
-> +		scan.chan[3] = 0;
->  	}
+> +description: Remaps a PWM channel as a trigger source.
+> +
+> +maintainers:
+> +  - David Lechner <dlechner@baylibre.com>
+> +
+> +properties:
+> +  compatible:
+> +    const: pwm-trigger
+> +
+> +  '#trigger-source-cells':
+> +    const: 0
+> +
+> +  pwms:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - '#trigger-source-cells'
+> +  - pwms
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +    trigger {
+> +        compatible = "pwm-trigger";
+> +        #trigger-source-cells = <0>;
+> +        pwms = <&pwm 0 1000000 0>;
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 9284a257607a740ab7f6fd960c2bcdc34ead7586..b2aa6f37743e48353c60e5973ea8126590c7f6d5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -23879,6 +23879,11 @@ W:	https://github.com/srcres258/linux-doc
+>  T:	git git://github.com/srcres258/linux-doc.git doc-zh-tw
+>  F:	Documentation/translations/zh_TW/
 >  
->  	if (data_result) {
-> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
->  		 * Saturate all channels (in case of overflows). Temperature channel
->  		 * is not affected by overflows.
->  		 */
-> -		scan.chan[1] = cpu_to_le16(U16_MAX);
-> -		scan.chan[2] = cpu_to_le16(U16_MAX);
-> -		scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +			scan.chan[3] = cpu_to_le16(U16_MAX);
-> +		} else {
-> +			scan.chan[0] = cpu_to_le16(U16_MAX);
-> +			scan.chan[1] = cpu_to_le16(U16_MAX);
-> +			scan.chan[2] = cpu_to_le16(U16_MAX);
-> +		}
->  	}
->  
->  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
-> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
->  	indio_dev->channels = data->spec_dev->channels;
->  	indio_dev->num_channels = data->spec_dev->num_channels;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->available_scan_masks = as73211_scan_masks;
->  
->  	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
->  	if (ret < 0)
+> +TRIGGER SOURCE - PWM
+> +M:	David Lechner <dlechner@baylibre.com>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/trigger-source/pwm-trigger.yaml
+> +
+>  TRUSTED SECURITY MODULE (TSM) ATTESTATION REPORTS
+>  M:	Dan Williams <dan.j.williams@intel.com>
+>  L:	linux-coco@lists.linux.dev
 > 
-> ---
-> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
-> change-id: 20241123-iio_memset_scan_holes-a673833ef932
-> 
-> Best regards,
 
 

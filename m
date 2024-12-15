@@ -1,161 +1,189 @@
-Return-Path: <linux-iio+bounces-13504-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13505-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0309F24A3
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 16:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD9C9F2548
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444A51885E7D
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 15:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615A7188544C
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0068218EFED;
-	Sun, 15 Dec 2024 15:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2AE1B218C;
+	Sun, 15 Dec 2024 18:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSRXQgpx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uI8Gj6dq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED5DDDC5;
-	Sun, 15 Dec 2024 15:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1938B13C8FF
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734276812; cv=none; b=oaFRLkE4PV7yUxeBQLLNMGzPRgNFY3b7RwCOvQZouhmCEQa9CuBKVqqF2VyUlRPTK/OAERD/3TyWImJy5xNAadpaEcnsWqb2SvrZwAHfvqH+7rPfiETeZhRof54njXYfCqpHMPAyRDO/bC3UKvPL+U+SMDN62v1p1pmi8aRZXMU=
+	t=1734287371; cv=none; b=k+49mxbQFTFWN/kRxH+wpyxsWtM0Z6bSDHvqeAs2gyT5ZATfURpiU8AsKnLZC82SajNt6FOb2gBSdo9FSXQt+T5nguDO3su7C/DK+2NoWyfwUx6HaqYPLtsF5u980+bJzIjbw3ck43VdGsyr4Js+3jmJ9omFVcGZp8rC5J/50Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734276812; c=relaxed/simple;
-	bh=y23FOLBTiB16HEELVlgnSAcNUDlCnKMjS+oum5r/7hg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J6Fg6jFXCKUH9Z+N5hd/GuC5uSjUO3NzW8Y+9kvnl/YWgX1f/T7B71QJv2SwSEz39BpQnwvV8dq8KU4KsBu23nPAielCLuFaSVd+0r0/hp4AAZy99hKr2U22Su/ZLhdgPBuR7ryMhV6TMy405Dlu12xXfempYC7vJJsYpCbyYPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSRXQgpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2383BC4CECE;
-	Sun, 15 Dec 2024 15:33:28 +0000 (UTC)
+	s=arc-20240116; t=1734287371; c=relaxed/simple;
+	bh=xLlqXWajPFrxJ38MNxYJb6tpdceD3ntlJr296ixvjt8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fDsJSKiJl08Kwj3iDi8Wmt2jKfo2sghcL3kKYPxBZy/EjARzBWbKhs1/sJkG9O2nnMaxjoIJ5H6GtgUKRoB7Xiy9/rMZTh4XRRgbsnTWgqumvzZfNQHGmIzJ7ckendSPqNy0lNiWT/BkQxyyfGd5kC50vKcPIhhH5GMCLAcXp1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uI8Gj6dq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CA7C4CECE;
+	Sun, 15 Dec 2024 18:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734276812;
-	bh=y23FOLBTiB16HEELVlgnSAcNUDlCnKMjS+oum5r/7hg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TSRXQgpxHrXEr221x/S8InYJBo6vHQOIs/uSxBgdRsTJfHKToH/DjSpAwN6QFa9lg
-	 rEZvIdN2fo2qWve0ysj1ZWrWNoKrhtDy5Da+Sn8WcM5nQr1OvpY0FQfgT3X4Y6HrG9
-	 ZI0dCWeJlWJmaJlp5QkSqjCUsOtdNTUhEVyg1mkbkrJhMFtSmg5WRe8FE9cLJhOU4d
-	 OP8bKE04FHYbY08pPqo8Bm1UQVNPfL2BbB4teGgF6o4zx/YtiE1iKYr1eiJC8rjCuh
-	 DFrz+GJ/JNr87xI0clG236WrVo4CNVMjVgb+VNN8rH6HHIjaIjpuEvTuIxtmY5bjXg
-	 EHfEdczIEDDoQ==
-Date: Sun, 15 Dec 2024 15:33:26 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Add APDS9160 binding
-Message-ID: <20241215-ought-ambitious-d330fdfdcddf@spud>
-References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
- <20241206-apds9160-driver-v2-1-be2cb72ef8f4@dimonoff.com>
- <20241206-comment-tissue-7964de6bdcd3@spud>
- <Z1NYhR9Y9T0OUCHV@uva.nl>
- <20241208114141.31df6a8e@jic23-huawei>
+	s=k20201202; t=1734287370;
+	bh=xLlqXWajPFrxJ38MNxYJb6tpdceD3ntlJr296ixvjt8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=uI8Gj6dqUQW0Kn6IYcuU3LaGLrGyLUJtQ/eSEIxL3tpFgUab72vCqnM6SBRtdgtIA
+	 AH4ZrVnx/LZtwskAOFEttuqgLh7NbpZydCNxW+GQE6S+sZXGDT+4ANa7eSHrJ6iGtY
+	 j0xVKTNsCZuuti2ByhPo7uuJjFQXuqKkAhb1GGX8VbUvHVnq1VZg+H6IMyFCIsrxgL
+	 aF/DgLkCaHxLtWP9ya6tEqKfuZXrKGIBltSggphjZsYtU6mVEAoS/aWuJ8My3uusZl
+	 +FeF1InytyENKPAi0dsIBGPlLrcOqhr0xQEvT9J/kN/f5DAihvywhyfepRyQCWMypC
+	 FOS4HTBA1Zfhg==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/20] IIO: Tidying up timestamp alignment markings.
+Date: Sun, 15 Dec 2024 18:28:51 +0000
+Message-ID: <20241215182912.481706-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jQPKVG1EHZbCIf8V"
-Content-Disposition: inline
-In-Reply-To: <20241208114141.31df6a8e@jic23-huawei>
+Content-Transfer-Encoding: 8bit
 
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
---jQPKVG1EHZbCIf8V
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I haven't +CC everyone relevant as that would be too long a list
+and these are mostly entirely mechanical changes that just need
+someone to sanity check I didn't do anything stupid.
 
-On Sun, Dec 08, 2024 at 11:41:41AM +0000, Jonathan Cameron wrote:
-> On Fri, 6 Dec 2024 15:03:17 -0500
-> Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
->=20
-> > Hi Conor,
-> >=20
-> > See my comments inline.
-> >=20
-> > Thank you,
-> > Mikael
-> >=20
-> > On Fri, Dec 06, 2024 at 04:33:36PM +0000, Conor Dooley wrote:
-> > > On Fri, Dec 06, 2024 at 11:09:56AM -0500, Mikael Gonella-Bolduc via B=
-4 Relay wrote: =20
-> > > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> > > >=20
-> > > > Add device tree bindings for APDS9160 driver =20
-> > >=20
-> > > Bindings are for hardware, not for drivers.
-> > >  =20
-> >=20
-> > Indeed, should I change the commit message to remove the "driver" part?
-> Yes.
-> >=20
-> > > >=20
-> > > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> > > > ---
-> > > >  .../bindings/iio/light/brcm,apds9160.yaml          | 51 ++++++++++=
-++++++++++++
-> > > >  1 file changed, 51 insertions(+)
-> > > >=20
-> > > > diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9=
-160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> > > > new file mode 100644
-> > > > index 0000000000000000000000000000000000000000..525fba52f156df3b78e=
-24d7d0d445fe9d882eaa7
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> > > > @@ -0,0 +1,51 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Broadcom Combined Proximity & Ambient light sensor
-> > > > +
-> > > > +maintainers:
-> > > > +  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com> =20
-> > >=20
-> > > How come this differs from your author email?
-> > >  =20
-> >=20
-> > The author email is my work email, this one is my personal email.
-> > The first one might change while the other one will not.
-> > Is it required to have the same email here?
-> I don' think there are firm rules on this, but there are processes in pla=
-ce
-> for changing email via .mailmap and where relevant patches updating
-> to a new email address.  A note in the commit message would be appropriat=
-e though.
+This combines several related types of change:
 
-Ye, I wasn't intending to raise an objection, just checking if the
-difference was intentional.
+- Some 'fixes'. These aren't actual bugs but more places where
+  the code relies on factors it shouldn't such as what architecture
+  the driver is running on, or padding of the wrong element happening
+  to always make enough room.
+- Now we have aligned_s64, use that to replace all the remaining
+  s64 timestamp __aligned(8) instances in IIO.
+  This is both cleaner and hopefully less prone to confusing static
+  analysis tools.
+- Change the timestamp type in iio_push_to_buffers_with_timestamp() to s64.
+  This is an entirely in kernel interface. It's data is pushed to user space
+  in many case but by a rather indirect route, so I think it is more
+  appropriate to switch this to s64 which is the type of almost all the
+  values passed into it. Note a follow up series may tidy up some
+  local variables that are of the int64_t type.
+- Change the few int64_t timestamp __aligned(8) cases to aligned_s64.
+  This is mostly a consistency thing to avoid confusion if a new author
+  is trying to figure out what types they should use.  Better to have
+  one answer than a mixture.
 
---jQPKVG1EHZbCIf8V
-Content-Type: application/pgp-signature; name="signature.asc"
+There is one other IIO driver hiding over in media that will be modified
+by a separate patch because I want to add some more info to that and
+a more specific CC list.
 
------BEGIN PGP SIGNATURE-----
+Jonathan Cameron (20):
+  iio: adc: ad7944: Fix sign and use aligned_s64 for timestamp.
+  io: adc: ina2xx-adc: Fix sign and use aligned_s64 for timestamp.
+  iio: temperature: tmp006: Use aligned_s64 instead of open coding
+    alignment.
+  iio: resolver: ad2s1210: Use aligned_s64 instead of open coding
+    alignment.
+  iio: proximity: Use aligned_s64 instead of open coding alignment.
+  iio: pressure: Use aligned_s64 instead of open coding alignment.
+  iio: magnetometer: Use aligned_s64 instead of open coding alignment.
+  iio: light: Use aligned_s64 instead of open coding alignment.
+  iio: imu: Use aligned_s64 instead of open coding alignment.
+  iio: humidity: Use aligned_s64 instead of open coding alignment.
+  iio: gyro: Use aligned_s64 instead of open coding alignment.
+  iio: chemical: Use aligned_s64 instead of open coding alignment.
+  iio: adc: Use aligned_s64 instead of open coding alignment.
+  iio: accel: bma220: Use aligned_s64 instead of open coding alignment.
+  iio: buffer: Make timestamp s64 in
+    iio_push_to_buffers_with_timestamp()
+  iio: adc: ti-lmp92064: Switch timestamp type from int64_t __aligned(8)
+    to aligned_s64
+  iio: chemical: scd4x: witch timestamp type from int64_t __aligned(8)
+    to aligned_s64
+  iio: imu: inv_icm42600: witch timestamp type from int64_t __aligned(8)
+    to aligned_s64
+  iio: adc: mt6360: Correct marking of timestamp alignment.
+  iio: adc: rockchip: correct alignment of timestamp
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ172xgAKCRB4tDGHoIJi
-0jNJAP9yVRE4G0oVarvTtLhBF6X5qJR4lt0ode2LP1h9r7uXgwD+ISMKOpivvSY1
-zlnZLNbESlYyaSHXQE2t+Q4uXN8aHQw=
-=1zbL
------END PGP SIGNATURE-----
+ drivers/iio/accel/bma220_spi.c                    | 2 +-
+ drivers/iio/adc/ad4000.c                          | 2 +-
+ drivers/iio/adc/ad7944.c                          | 2 +-
+ drivers/iio/adc/ina2xx-adc.c                      | 2 +-
+ drivers/iio/adc/max1118.c                         | 2 +-
+ drivers/iio/adc/max11410.c                        | 2 +-
+ drivers/iio/adc/mcp3911.c                         | 2 +-
+ drivers/iio/adc/mt6360-adc.c                      | 4 ++--
+ drivers/iio/adc/pac1921.c                         | 2 +-
+ drivers/iio/adc/rockchip_saradc.c                 | 2 +-
+ drivers/iio/adc/rtq6056.c                         | 2 +-
+ drivers/iio/adc/ti-adc081c.c                      | 2 +-
+ drivers/iio/adc/ti-adc084s021.c                   | 2 +-
+ drivers/iio/adc/ti-ads1015.c                      | 2 +-
+ drivers/iio/adc/ti-ads1119.c                      | 2 +-
+ drivers/iio/adc/ti-ads131e08.c                    | 2 +-
+ drivers/iio/adc/ti-lmp92064.c                     | 2 +-
+ drivers/iio/adc/ti-tsc2046.c                      | 2 +-
+ drivers/iio/adc/vf610_adc.c                       | 2 +-
+ drivers/iio/chemical/ccs811.c                     | 2 +-
+ drivers/iio/chemical/ens160_core.c                | 2 +-
+ drivers/iio/chemical/scd30_core.c                 | 2 +-
+ drivers/iio/chemical/scd4x.c                      | 2 +-
+ drivers/iio/gyro/adxrs290.c                       | 2 +-
+ drivers/iio/gyro/bmg160_core.c                    | 2 +-
+ drivers/iio/gyro/itg3200_buffer.c                 | 2 +-
+ drivers/iio/gyro/mpu3050-core.c                   | 2 +-
+ drivers/iio/humidity/am2315.c                     | 2 +-
+ drivers/iio/humidity/hdc100x.c                    | 2 +-
+ drivers/iio/humidity/hts221.h                     | 2 +-
+ drivers/iio/imu/bmi323/bmi323_core.c              | 2 +-
+ drivers/iio/imu/bno055/bno055.c                   | 2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 2 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 2 +-
+ drivers/iio/light/adjd_s311.c                     | 2 +-
+ drivers/iio/light/as73211.c                       | 2 +-
+ drivers/iio/light/bh1745.c                        | 2 +-
+ drivers/iio/light/isl29125.c                      | 2 +-
+ drivers/iio/light/ltr501.c                        | 2 +-
+ drivers/iio/light/max44000.c                      | 2 +-
+ drivers/iio/light/rohm-bu27034.c                  | 2 +-
+ drivers/iio/light/rpr0521.c                       | 2 +-
+ drivers/iio/light/st_uvis25.h                     | 2 +-
+ drivers/iio/light/tcs3414.c                       | 2 +-
+ drivers/iio/light/tcs3472.c                       | 2 +-
+ drivers/iio/magnetometer/af8133j.c                | 2 +-
+ drivers/iio/magnetometer/ak8974.c                 | 2 +-
+ drivers/iio/magnetometer/ak8975.c                 | 2 +-
+ drivers/iio/magnetometer/bmc150_magn.c            | 2 +-
+ drivers/iio/magnetometer/hmc5843.h                | 2 +-
+ drivers/iio/magnetometer/mag3110.c                | 2 +-
+ drivers/iio/magnetometer/yamaha-yas530.c          | 2 +-
+ drivers/iio/pressure/hsc030pa.h                   | 2 +-
+ drivers/iio/pressure/ms5611_core.c                | 2 +-
+ drivers/iio/pressure/rohm-bm1390.c                | 2 +-
+ drivers/iio/proximity/as3935.c                    | 2 +-
+ drivers/iio/proximity/hx9023s.c                   | 2 +-
+ drivers/iio/proximity/mb1232.c                    | 2 +-
+ drivers/iio/proximity/pulsedlight-lidar-lite-v2.c | 2 +-
+ drivers/iio/proximity/srf08.c                     | 2 +-
+ drivers/iio/proximity/sx_common.h                 | 2 +-
+ drivers/iio/resolver/ad2s1210.c                   | 2 +-
+ drivers/iio/temperature/tmp006.c                  | 2 +-
+ include/linux/iio/buffer.h                        | 6 +++---
+ 64 files changed, 67 insertions(+), 67 deletions(-)
 
---jQPKVG1EHZbCIf8V--
+-- 
+2.47.1
+
 

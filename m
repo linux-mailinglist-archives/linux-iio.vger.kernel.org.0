@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-13507-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36949F254A
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:29:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35EC99F254B
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A7ED1885467
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C34F163D73
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E848F1B5ED0;
-	Sun, 15 Dec 2024 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E0B1B4138;
+	Sun, 15 Dec 2024 18:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="imbjCwH1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W31qGfcH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FC813C8FF
-	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514D313C8FF
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734287376; cv=none; b=Iu213MeJZTUMX9TDeudnPtN4GNddqSKO3ypdVFEBwVfMxzXzoeJnO/LPNhSUIilsps4LeteCqRalIkRkpHQSqldchY3srMaLuIEa/wiP/auQ/3ta5OZh+3B9GiEaMm6ViJN7izT08jJ/nB1ML+phaPeReMTMDa1atWimMODliU4=
+	t=1734287379; cv=none; b=o1Pp7Xk8mRvnO9F1U6OlezpAx3+GfFBqgu0oojTaXISpCeay+hXg+68+h5BJVcDDQTxTx3EmoY/cnmiSE3BlaQWYAgBBhSnq80q0/8YND+OSTzOgvK8jEK4sKmA6zZ4r2ZdAKuSYohMhMHfWw5d1rZbI1EgdwheQ9Vja+fvzLgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734287376; c=relaxed/simple;
-	bh=1WTeeEaBe9njS2zLj0MVTaTiIdyyf+X+6zDMsOVdavU=;
+	s=arc-20240116; t=1734287379; c=relaxed/simple;
+	bh=G4nI2P24Y3fIooMWa4anK1EWslXELM4X1MLzm0Ajlz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc0h60j7uiy4Qi7mmKQkd7h78M9o83fFa7QAw6VNeodN80vuok8uPLYve+pKg7JEl/AkCn8BZhh2iGWwyWZlOqPB+bzdWlWaxGHFZlCoPQJSojxpH+VSZ7jFAhJyq2fAUma6IHkZN/TwprZjM4hzXFqJmAqE9V3xZi6EMmWwDWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=imbjCwH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017E3C4CECE;
-	Sun, 15 Dec 2024 18:29:33 +0000 (UTC)
+	 MIME-Version; b=QFsDiJGmngJVnbIrCpXiShRBKDb0jqFEV10ZorFwd5dK6Ydln7l7MiVG1hNfg7IP7k5i2cquhRGw2pJ1eKRrwfV3H9JrQmUrvImeO9DpKlUc9CA2a9u4vQEJtkJEO9YrfeftLh+/LLFGBFY9NEjKBtxRj2FheaiCocDk7cfQrqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W31qGfcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A72C4CED3;
+	Sun, 15 Dec 2024 18:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734287376;
-	bh=1WTeeEaBe9njS2zLj0MVTaTiIdyyf+X+6zDMsOVdavU=;
+	s=k20201202; t=1734287378;
+	bh=G4nI2P24Y3fIooMWa4anK1EWslXELM4X1MLzm0Ajlz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imbjCwH1whIf6mkC+dG0mY9p8zXEH4qUQQXIsB6/y3j1CqdQtwZLNdAt+1H11X2Pq
-	 p9qQkH/hlwuNKrzMAUo15cj69rj+QpVS8wMur6sNViTvRRPfJpceurAtfgKf6pLpo7
-	 AjbhvDZz7HPBRx1GQc1yAJu4/l/QVyHm1xd8Ou7mWmsIG6+A5yhM6ON5SD7UlTov23
-	 fCd+p9jD12cUYbg0vj+1DnbqLd3ZllWH09mvT7ZTENs1T6VEjRjA/zQhlrp8OgJLvX
-	 vuuyP6b0B1yYGsnho7Wd7xmLaTPt9yZRaKgD0syVK+lwRodXD1UpD514djRZNFGWk8
-	 Jm0JTXU9bUx3Q==
+	b=W31qGfcH83QZP8xiZKwVPXN3qNTxBcAgTAcJWIe5FKlN8riQ5rmIIfgL7AT2wEdrQ
+	 f/wGmAYyhdU258P3gSc84EW4LDA9DF5a3rjoE3sbY8XM5NdZFONRz1v48N6RJMnKgd
+	 hij5dUKPxkgfsJm0G1lOCPNSgfx81OdHZOyA+ypO/bOHk2yo8aX2HcvA7bKiEWuCor
+	 m7F9aaWuuCfIwVhd1NnTdbL2Y7cui9VbEGoyg/KEpd+cboRFGq3vK55he2dWl0+4hH
+	 Mog6filLOfgowzzq6/OP/dBFQc7hzpEtSpRTPb/iEbGvIyMdthI4NxbDK/umGbvJy6
+	 l0FJImx2Pol8g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 02/20] io: adc: ina2xx-adc: Fix sign and use aligned_s64 for timestamp.
-Date: Sun, 15 Dec 2024 18:28:53 +0000
-Message-ID: <20241215182912.481706-3-jic23@kernel.org>
+Subject: [PATCH 03/20] iio: temperature: tmp006: Use aligned_s64 instead of open coding alignment.
+Date: Sun, 15 Dec 2024 18:28:54 +0000
+Message-ID: <20241215182912.481706-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215182912.481706-1-jic23@kernel.org>
 References: <20241215182912.481706-1-jic23@kernel.org>
@@ -63,28 +63,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Whilst it doesn't actually make any difference because the code
-that fills this field doesn't care, timestamps are all signed.
-Use the new aligned_s64 instead of open coding alignment to avoid
-confusing static analyzers and give slightly cleaner code.
+Use this new type to both slightly simplify the code and avoid
+confusing static analysis tools. Mostly this series is about consistency
+to avoid this code pattern getting copied into more drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ina2xx-adc.c | 2 +-
+ drivers/iio/temperature/tmp006.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ina2xx-adc.c b/drivers/iio/adc/ina2xx-adc.c
-index 48c95e12e791..40d14faa71c5 100644
---- a/drivers/iio/adc/ina2xx-adc.c
-+++ b/drivers/iio/adc/ina2xx-adc.c
-@@ -150,7 +150,7 @@ struct ina2xx_chip_info {
- 	/* data buffer needs space for channel data and timestamp */
+diff --git a/drivers/iio/temperature/tmp006.c b/drivers/iio/temperature/tmp006.c
+index 0c844137d7aa..7beaabc9ecc7 100644
+--- a/drivers/iio/temperature/tmp006.c
++++ b/drivers/iio/temperature/tmp006.c
+@@ -248,7 +248,7 @@ static irqreturn_t tmp006_trigger_handler(int irq, void *p)
+ 	struct tmp006_data *data = iio_priv(indio_dev);
  	struct {
- 		u16 chan[4];
--		u64 ts __aligned(8);
+ 		s16 channels[2];
+-		s64 ts __aligned(8);
 +		aligned_s64 ts;
  	} scan;
- };
+ 	s32 ret;
  
 -- 
 2.47.1

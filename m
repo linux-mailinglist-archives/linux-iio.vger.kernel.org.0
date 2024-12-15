@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-13521-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13522-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1DE9F2557
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536A59F2559
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A28163C92
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4206188548D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AE1B393C;
-	Sun, 15 Dec 2024 18:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285E41B6D17;
+	Sun, 15 Dec 2024 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hq3NceQD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyPhiDXI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079971B6D1A
-	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB742149C41
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734287413; cv=none; b=ltFVJMdVrUPqlRCQ0Z7sv6n063ZwXptLxMzcf01BkjXfvtXjefCsIP8DvaCFGZRQRYeUmL8PxNTpkrYJMG3J24jo3I/rXLnLiV+0Fq6yyieJGhfxfe9Eur56YEmBRgx9J9/X1esgX+7SjTX5yuz5TdFCzocJl9u4zsTDdIDsUnw=
+	t=1734287415; cv=none; b=imfEqYJQBIEP3fGGI3uCUXck7pifxB+ZJyBU3Pm+uncATbDL6Sdxc1nT4ihnADFwdup5lFeUHUOATxjkGQHdX30SLAEO0TZtM2lWWA9vQbcT8g7nhTJAZbWr2XDZ9paEHxmPWOjH617A0PDrm98OQtuq3TCYN0cJAo0HJ6RuEfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734287413; c=relaxed/simple;
-	bh=PDHdQLnWj/WLnDwPCZayZMmmjXMdt0ZGc+n50t9Oh30=;
+	s=arc-20240116; t=1734287415; c=relaxed/simple;
+	bh=QfoBBvHQQB5OnC+N5aALu+RsqgzPQLZkx8KwEB82kTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BEPxA+657ldRaP0EHFgQBJNRAHVhJ41ZrWDGVYT84T4oDOcCK/2tE6a7XlAllCmhdOAKEGOSNaCh1GPY+K6nkK1IydHxvJZl1C5Yf50p9dyLqS/ACM7270Q/ZvrpU0BKKTAKiT1xvBwS5H6bEop1IzyZ55MA4oqfEPPVa6ZdKW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hq3NceQD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1032C4CECE;
-	Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
+	 MIME-Version; b=WXEqgF4dQp46Ees7saMAvrtvdN2jBSxHsV83ECXmAVQkmMCBQRsOF8ijZ0blWBDoSiWmY5bG7ySQ1W6NN9nkYnuKc6uxJ/BKL9qB+3wPkfOyu+r8C1DMRh5uWfN40IaL1yc5eXb8bV1ADEay/jD7cnZPDQ9Ue2ISUBlWtQLmwMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyPhiDXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3EAC4CECE;
+	Sun, 15 Dec 2024 18:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734287412;
-	bh=PDHdQLnWj/WLnDwPCZayZMmmjXMdt0ZGc+n50t9Oh30=;
+	s=k20201202; t=1734287415;
+	bh=QfoBBvHQQB5OnC+N5aALu+RsqgzPQLZkx8KwEB82kTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hq3NceQD5X3mhba/732gAorGYzv1Vbh7/6tL1jiyfBbrbJObLWV0okfBYMGg9xskO
-	 +ZkBE+E9llkHnLfVaGCsczguAJQq9AHKWbRL4XN7ogy7Z+XM0BVf/r/2d1PQZy4DBV
-	 0GoTdt/FxMCQbLrgu/3hVhI8DBV9hFIdDc6+LlbuMDBIUvM4PL1Sk2KXVEo1eTO2qi
-	 BFryJ/RLHv/0k4QllWT4Bgs+5092O6SxC/mvLjEGQQdCncFdpowEnkDUKlRVgIZN6J
-	 iTgM50/TZLFGmk/UA7Dg4jwsBLAacKIjJyOm++w+i5hUiT4baBm8uujvSnUkKjTeqg
-	 mYDysxGa1J3vQ==
+	b=KyPhiDXI+ADzR17nDGv3pfk7iK4SyCznxPI8TUtVRAKlWB5V1LALuNHDMqmjo6mgY
+	 clfgFqZlY8I14nqPNGNaYQ7Mj3TfHmT01MQvNK/YEHWSeizxL1gKcuPMI/l8JZCjBN
+	 vy3Cf35OdqMfX9dcz0FbK3z0ZW+ljCz3VRr2qV7Bljc2nQWvOVPOJGU+KxkH0Bqa0D
+	 UVST3clcYnBC2CovHpEecJD/jR9oNOtdfh7o/h0WKvzhOQE5+YSllfCjeUlGluaXS6
+	 wzw+a0eVJBkaae9z8vYcZrWx00+xpRmMOZ8x2z9DVlUb0wsBbqpHbD7foBxlDpKQtv
+	 UIlJg4aTi6q5g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 16/20] iio: adc: ti-lmp92064: Switch timestamp type from int64_t __aligned(8) to aligned_s64
-Date: Sun, 15 Dec 2024 18:29:07 +0000
-Message-ID: <20241215182912.481706-17-jic23@kernel.org>
+Subject: [PATCH 17/20] iio: chemical: scd4x: switch timestamp type from int64_t __aligned(8) to aligned_s64
+Date: Sun, 15 Dec 2024 18:29:08 +0000
+Message-ID: <20241215182912.481706-18-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215182912.481706-1-jic23@kernel.org>
 References: <20241215182912.481706-1-jic23@kernel.org>
@@ -71,20 +71,20 @@ ensure there is one obvious choice for future drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ti-lmp92064.c | 2 +-
+ drivers/iio/chemical/scd4x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
-index 169e3591320b..1e4a78677fe5 100644
---- a/drivers/iio/adc/ti-lmp92064.c
-+++ b/drivers/iio/adc/ti-lmp92064.c
-@@ -199,7 +199,7 @@ static irqreturn_t lmp92064_trigger_handler(int irq, void *p)
- 	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
+diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
+index 52cad54e8572..50e3ac44422b 100644
+--- a/drivers/iio/chemical/scd4x.c
++++ b/drivers/iio/chemical/scd4x.c
+@@ -665,7 +665,7 @@ static irqreturn_t scd4x_trigger_handler(int irq, void *p)
+ 	struct scd4x_state *state = iio_priv(indio_dev);
  	struct {
- 		u16 values[2];
--		int64_t timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} data;
+ 		uint16_t data[3];
+-		int64_t ts __aligned(8);
++		aligned_s64 ts;
+ 	} scan;
  	int ret;
  
 -- 

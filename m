@@ -1,120 +1,161 @@
-Return-Path: <linux-iio+bounces-13503-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13504-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E289F2497
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 16:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0309F24A3
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 16:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5444F1885E11
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 15:21:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444A51885E7D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 15:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A53E18CC13;
-	Sun, 15 Dec 2024 15:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0068218EFED;
+	Sun, 15 Dec 2024 15:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="EOTZ+d9Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TSRXQgpx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEEB5A937;
-	Sun, 15 Dec 2024 15:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED5DDDC5;
+	Sun, 15 Dec 2024 15:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734276101; cv=none; b=JcEPuyk+CXsd683ma3hgIkB5e+WK24D0YN4Mq4GcTqHiysGw1UjEd2RIbTQhd8kb2WXu9dL1b/0uV6EzMw5ZFyXZtQSTAhKdIYFd6CNAwJZwrzc3+KbjxSD6P4F3taET8Ei8v6n0k2PQ/v97KjBU+sJTvvrOZ4y9W4QTlaMaMMY=
+	t=1734276812; cv=none; b=oaFRLkE4PV7yUxeBQLLNMGzPRgNFY3b7RwCOvQZouhmCEQa9CuBKVqqF2VyUlRPTK/OAERD/3TyWImJy5xNAadpaEcnsWqb2SvrZwAHfvqH+7rPfiETeZhRof54njXYfCqpHMPAyRDO/bC3UKvPL+U+SMDN62v1p1pmi8aRZXMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734276101; c=relaxed/simple;
-	bh=qShK9F1Wh2aE1QIaJsa9IAity+PaAJ8AZds5D1NyDoc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LQy+TESvbFnxPoBovb6BMCTXfIBx0NtV9ZPuj9yZLrYLnWpzmrF4PDyzBuR64Lny9pbIMUNKSRE8suICZfKs46l8dtJ5Sfuk2oQjAPLCApK6UI5eLNpKQbESFSz4DUjIPTvW0YSe82j2rVZTCBjzwQmX6E9KzyCU7lNCNgPjulc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=EOTZ+d9Y; arc=none smtp.client-ip=159.69.126.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1734276096;
-	bh=qShK9F1Wh2aE1QIaJsa9IAity+PaAJ8AZds5D1NyDoc=;
-	h=From:Date:Subject:To:Cc:From;
-	b=EOTZ+d9Yvz2UmFcCdts0JPoiJ55mrXHCWdQ4Krk9FjyFzyxMr/obWe99jztSFpG8s
-	 Z6cqsWF9yM7TW632jvN5mB2+YrBvFbrUEm398afzL1QkpAMTLeb/o0qD8K1lPQmohz
-	 wlcv0xfUMtPwlgsJ9xXHc351lHjKsBsa55bPhYVo=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Sun, 15 Dec 2024 16:21:24 +0100
-Subject: [PATCH] iio: imu: bno055: constify 'struct bin_attribute'
+	s=arc-20240116; t=1734276812; c=relaxed/simple;
+	bh=y23FOLBTiB16HEELVlgnSAcNUDlCnKMjS+oum5r/7hg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J6Fg6jFXCKUH9Z+N5hd/GuC5uSjUO3NzW8Y+9kvnl/YWgX1f/T7B71QJv2SwSEz39BpQnwvV8dq8KU4KsBu23nPAielCLuFaSVd+0r0/hp4AAZy99hKr2U22Su/ZLhdgPBuR7ryMhV6TMy405Dlu12xXfempYC7vJJsYpCbyYPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TSRXQgpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2383BC4CECE;
+	Sun, 15 Dec 2024 15:33:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734276812;
+	bh=y23FOLBTiB16HEELVlgnSAcNUDlCnKMjS+oum5r/7hg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TSRXQgpxHrXEr221x/S8InYJBo6vHQOIs/uSxBgdRsTJfHKToH/DjSpAwN6QFa9lg
+	 rEZvIdN2fo2qWve0ysj1ZWrWNoKrhtDy5Da+Sn8WcM5nQr1OvpY0FQfgT3X4Y6HrG9
+	 ZI0dCWeJlWJmaJlp5QkSqjCUsOtdNTUhEVyg1mkbkrJhMFtSmg5WRe8FE9cLJhOU4d
+	 OP8bKE04FHYbY08pPqo8Bm1UQVNPfL2BbB4teGgF6o4zx/YtiE1iKYr1eiJC8rjCuh
+	 DFrz+GJ/JNr87xI0clG236WrVo4CNVMjVgb+VNN8rH6HHIjaIjpuEvTuIxtmY5bjXg
+	 EHfEdczIEDDoQ==
+Date: Sun, 15 Dec 2024 15:33:26 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: light: Add APDS9160 binding
+Message-ID: <20241215-ought-ambitious-d330fdfdcddf@spud>
+References: <20241206-apds9160-driver-v2-0-be2cb72ef8f4@dimonoff.com>
+ <20241206-apds9160-driver-v2-1-be2cb72ef8f4@dimonoff.com>
+ <20241206-comment-tissue-7964de6bdcd3@spud>
+ <Z1NYhR9Y9T0OUCHV@uva.nl>
+ <20241208114141.31df6a8e@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241215-sysfs-const-bin_attr-iio-v1-1-a5801212482e@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAPPzXmcC/x3MPQqAMAxA4atIZgM2VQevIiL+pJqllaaIIt7d4
- vgN7z2gHIUVuuKByKeoBJ9hygKWffIbo6zZQBXVhkyDeqtTXILXhLP4cUopokjAtp25IbK2chZ
- yfkR2cv3rfnjfD6LTwAVqAAAA
-X-Change-ID: 20241215-sysfs-const-bin_attr-iio-66be522330f3
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734276093; l=1771;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=qShK9F1Wh2aE1QIaJsa9IAity+PaAJ8AZds5D1NyDoc=;
- b=Ky+nDDZAGVjQVsBt0gACt1SRrVHpBdNMTKY7tyqtFt1ik1b36thq/d/LPHitMR/4VsRdbvkw1
- z5Q61/7Ced0Ca7x/XrcrJGrEkCsgDXx/Tn0CV4nIj0mYTIvSfKx4Zow
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="jQPKVG1EHZbCIf8V"
+Content-Disposition: inline
+In-Reply-To: <20241208114141.31df6a8e@jic23-huawei>
 
-The sysfs core now allows instances of 'struct bin_attribute' to be
-moved into read-only memory. Make use of that to protect them against
-accidental or malicious modifications.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/iio/imu/bno055/bno055.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+--jQPKVG1EHZbCIf8V
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/iio/imu/bno055/bno055.c b/drivers/iio/imu/bno055/bno055.c
-index 0728d38260a1c9dd218569ee870bd62c833e9906..59814de042c7d6d69547eb2adc9e1174a7e0c324 100644
---- a/drivers/iio/imu/bno055/bno055.c
-+++ b/drivers/iio/imu/bno055/bno055.c
-@@ -1193,7 +1193,7 @@ static ssize_t serialnumber_show(struct device *dev,
- }
- 
- static ssize_t calibration_data_read(struct file *filp, struct kobject *kobj,
--				     struct bin_attribute *bin_attr, char *buf,
-+				     const struct bin_attribute *bin_attr, char *buf,
- 				     loff_t pos, size_t count)
- {
- 	struct bno055_priv *priv = iio_priv(dev_to_iio_dev(kobj_to_dev(kobj)));
-@@ -1348,16 +1348,16 @@ static struct attribute *bno055_attrs[] = {
- 	NULL
- };
- 
--static BIN_ATTR_RO(calibration_data, BNO055_CALDATA_LEN);
-+static const BIN_ATTR_RO(calibration_data, BNO055_CALDATA_LEN);
- 
--static struct bin_attribute *bno055_bin_attrs[] = {
-+static const struct bin_attribute *const bno055_bin_attrs[] = {
- 	&bin_attr_calibration_data,
- 	NULL
- };
- 
- static const struct attribute_group bno055_attrs_group = {
- 	.attrs = bno055_attrs,
--	.bin_attrs = bno055_bin_attrs,
-+	.bin_attrs_new = bno055_bin_attrs,
- };
- 
- static const struct iio_info bno055_info = {
+On Sun, Dec 08, 2024 at 11:41:41AM +0000, Jonathan Cameron wrote:
+> On Fri, 6 Dec 2024 15:03:17 -0500
+> Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
+>=20
+> > Hi Conor,
+> >=20
+> > See my comments inline.
+> >=20
+> > Thank you,
+> > Mikael
+> >=20
+> > On Fri, Dec 06, 2024 at 04:33:36PM +0000, Conor Dooley wrote:
+> > > On Fri, Dec 06, 2024 at 11:09:56AM -0500, Mikael Gonella-Bolduc via B=
+4 Relay wrote: =20
+> > > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> > > >=20
+> > > > Add device tree bindings for APDS9160 driver =20
+> > >=20
+> > > Bindings are for hardware, not for drivers.
+> > >  =20
+> >=20
+> > Indeed, should I change the commit message to remove the "driver" part?
+> Yes.
+> >=20
+> > > >=20
+> > > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> > > > ---
+> > > >  .../bindings/iio/light/brcm,apds9160.yaml          | 51 ++++++++++=
+++++++++++++
+> > > >  1 file changed, 51 insertions(+)
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9=
+160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+> > > > new file mode 100644
+> > > > index 0000000000000000000000000000000000000000..525fba52f156df3b78e=
+24d7d0d445fe9d882eaa7
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+> > > > @@ -0,0 +1,51 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Broadcom Combined Proximity & Ambient light sensor
+> > > > +
+> > > > +maintainers:
+> > > > +  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com> =20
+> > >=20
+> > > How come this differs from your author email?
+> > >  =20
+> >=20
+> > The author email is my work email, this one is my personal email.
+> > The first one might change while the other one will not.
+> > Is it required to have the same email here?
+> I don' think there are firm rules on this, but there are processes in pla=
+ce
+> for changing email via .mailmap and where relevant patches updating
+> to a new email address.  A note in the commit message would be appropriat=
+e though.
 
----
-base-commit: 2d8308bf5b67dff50262d8a9260a50113b3628c6
-change-id: 20241215-sysfs-const-bin_attr-iio-66be522330f3
+Ye, I wasn't intending to raise an objection, just checking if the
+difference was intentional.
 
-Best regards,
--- 
-Thomas Weißschuh <linux@weissschuh.net>
+--jQPKVG1EHZbCIf8V
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ172xgAKCRB4tDGHoIJi
+0jNJAP9yVRE4G0oVarvTtLhBF6X5qJR4lt0ode2LP1h9r7uXgwD+ISMKOpivvSY1
+zlnZLNbESlYyaSHXQE2t+Q4uXN8aHQw=
+=1zbL
+-----END PGP SIGNATURE-----
+
+--jQPKVG1EHZbCIf8V--
 

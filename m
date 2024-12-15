@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-13489-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13490-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABAB9F23B3
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0AA39F23B6
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1B91886470
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:26:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 577AC18863D4
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2929F17E00F;
-	Sun, 15 Dec 2024 12:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24295183CA6;
+	Sun, 15 Dec 2024 12:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ML3RFGf/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNLK/myI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE69517A58F;
-	Sun, 15 Dec 2024 12:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC93374FF;
+	Sun, 15 Dec 2024 12:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734265562; cv=none; b=qSHhwXhYHE3o4spyCvJ3nf3sOU+93nwuXpNRriE40zgYpKxG+7cFPvufxm4bDgMTwhfyNdJzKA5ETdcmzLF+BO4Ni5ulogJ9+sn6xnZdfCXlMSo3xTdXWqmPQ+kHQ7JUMHnsSrbgbm60v6fk5ebAWNdrX+nsmcn2Y78+w+QU0k0=
+	t=1734265719; cv=none; b=MB2fhSkfSlODO7Ijyu48bprh0Vi4P5xTs8HKvgvwpIU29Qky3RQDbzj9NRdR5FT1FLEhsoFZ9hw4UuIaCOisEzMfZKT0tUikqzYR5oIIacsVFGVhEdzh7JzZgZ9ODZET8jkKGXmt27m+nmKBZx7L11wpRVZJRcpJp5TwLAfxkvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734265562; c=relaxed/simple;
-	bh=hBCBYksFIyNhxJwJxRKXqjB5K6Spf0NiF3kaZ0z6gZ8=;
+	s=arc-20240116; t=1734265719; c=relaxed/simple;
+	bh=dwCH+0fYRE1FijYjTFxSBPY6i0A9PIbI2v9LnQxznMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hAGkJAl5BtguuT5Lv1Qho0xJIjclfbqK7gxxJKRJkXaDNk7WbC6LTQvARVkFHZslmbt1JDK2ljdnMbNuDYeGmCLxeXCTR63uUcJ9V1nGbSx1lyPZdgG4Av73A6lZRupU7GYqT8RUSM/PTD310KOC85tQujYhbSiU9g4r1QZuYw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ML3RFGf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D7BC4CECE;
-	Sun, 15 Dec 2024 12:25:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D4t3A7uf77iiSB+R+mf6NC0lLnJBgeE30upNrGrSa/Z6rjhdo5FEQ9nct7w/h5mf8x+cxdQM4hErLe74ADbYU4jK+MCwPP9M7ZFGLs+/6C3k9xSFMWXV0zLwcU8wJvq33ckytlo3r4hxOnw40F38viC2FvwDfJygF3VBjBzTp8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNLK/myI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AD6C4CECE;
+	Sun, 15 Dec 2024 12:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734265562;
-	bh=hBCBYksFIyNhxJwJxRKXqjB5K6Spf0NiF3kaZ0z6gZ8=;
+	s=k20201202; t=1734265719;
+	bh=dwCH+0fYRE1FijYjTFxSBPY6i0A9PIbI2v9LnQxznMI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ML3RFGf/JgEAFv3dDlzelPXTh2oN4dXEQfUH402JguQABiaZObjU5aFfyZiUtLoqV
-	 DPRRG1uz3G5kYdB1x8gswhVywmO0jTSuFfLnumoBhxDlYOthZGNlgkp46e1bvy4N/Y
-	 v8Pn8jvfAbgi3iW94Yy6WEw53VnS6dM5xnUWrg8NVXsIDWSysRdQogzrFq6Knd4nqa
-	 fo6oZdIT5aY1qYOGqPOXgM3mloRtR73fHMYFBrAvoHnYTdkDvaTyPJypZIyXlWv910
-	 jtj8iab7oSEeekrKyZy9HLkgNXGOrJgbewXP0DY6cVwHPfu9lxvLnjUrXRYnvMGlx1
-	 QuBq1H9F8Tp7w==
-Date: Sun, 15 Dec 2024 12:25:53 +0000
+	b=aNLK/myInAQySGNNpnw+/m8vaUS8NUdoNC3v9OtwVcDMiRxXmd1F70a5DWepneYqK
+	 n/m14zXfCJJ14Y01QHD7otzfeI0QY8I7G8QK39zGgPFG0RUI0T0NjILV6o9Eu0FQJP
+	 Fr/LgTe6WD8bHfbwLlvLFPvHjm59o1b0zQ6J8VrxjHf6BI3njBXPagYTIqXofUPRV6
+	 0dhzKKBKLgNDF6bclKl8JAGQHBatQXLFm1ZODOCLuvySm/7KlBkxdEgExCGA/ncoTH
+	 phUBn/C+F7HXjq5WlbC+6HcOxVr/+5zaZJkl4t3QJwNkbZ4FNjoHK6QQ1ZcDiGmNmP
+	 wdN1ZDMZTsTbw==
+Date: Sun, 15 Dec 2024 12:28:30 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Yasin Lee <yasin.lee.x@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>, yasin.lee.x@outlook.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org
-Subject: Re: [PATCH] iio: proximity: hx9023s: Added firmware file parsing
- functionality
-Message-ID: <20241215122553.60c2caba@jic23-huawei>
-In-Reply-To: <20241210-hx9023s-firmware-20241209-v1-1-8a736691b106@gmail.com>
-References: <20241210-hx9023s-firmware-20241209-v1-1-8a736691b106@gmail.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, ak@it-klinger.de, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof
+ Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v3 1/1] dt-bindings: iio: pressure: bmp085: Add SPI
+ interface
+Message-ID: <20241215122830.159555e1@jic23-huawei>
+In-Reply-To: <20241209233845.29539-2-vassilisamir@gmail.com>
+References: <20241209233845.29539-1-vassilisamir@gmail.com>
+	<20241209233845.29539-2-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,188 +64,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024 12:24:03 +0800
-Yasin Lee <yasin.lee.x@gmail.com> wrote:
+On Tue, 10 Dec 2024 00:38:45 +0100
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Configuration information is now prioritized from the firmware file.
-> If the firmware file is missing or fails to parse, the driver falls
-> back to using the default configuration list for writing the settings.
+> The BMP{2,3,5}80 and BME280 devices have an SPI interface, so include it
+> in the device-tree.
 > 
-> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Stray blank line at end of file.  I fixed that up and applied,
 
-Ok.  I guess just reading a load of register values isn't hugely different
-to more complex firmware loads.
-
-Comments inline - in particular please take the time to tidy up
-formatting of your code before posting.
-
-Also why is this +CC linux-hardening, Kees and Gustavo?
-
-They have enough stuff to do without getting patches that seem to have nothing
-to do with hardening!
+Thanks,
 
 Jonathan
 
 > ---
->  drivers/iio/proximity/hx9023s.c | 96 ++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 89 insertions(+), 7 deletions(-)
+>  .../bindings/iio/pressure/bmp085.yaml         | 30 +++++++++++++++++++
+>  1 file changed, 30 insertions(+)
 > 
-> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-> index 4021feb7a7ac..6cb1b688bfa9 100644
-> --- a/drivers/iio/proximity/hx9023s.c
-> +++ b/drivers/iio/proximity/hx9023s.c
-> @@ -14,6 +14,7 @@
->  #include <linux/cleanup.h>
->  #include <linux/device.h>
->  #include <linux/errno.h>
-> +#include <linux/firmware.h>
->  #include <linux/i2c.h>
->  #include <linux/interrupt.h>
->  #include <linux/irqreturn.h>
-> @@ -100,6 +101,17 @@
->  #define HX9023S_INTERRUPT_MASK GENMASK(9, 0)
->  #define HX9023S_PROX_DEBOUNCE_MASK GENMASK(3, 0)
+> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> index cb201cecfa1a..017abe8eb9c5 100644
+> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
+> @@ -55,12 +55,16 @@ properties:
+>        If not set, defaults to push-pull configuration.
+>      type: boolean
 >  
-> +#define FW_VER_OFFSET 2
-> +#define FW_REG_CNT_OFFSET 3
-> +#define FW_DATA_OFFSET 16
+> +  spi-max-frequency:
+> +    maximum: 10000000
 > +
-> +struct hx9023s_bin {
-> +	u16 reg_count;
-> +	u16 fw_size;
-> +	u8 fw_ver;
-> +	u8 data[] __counted_by(fw_size);
-> +};
-> +
->  struct hx9023s_ch_data {
->  	s16 raw; /* Raw Data*/
->  	s16 lp; /* Low Pass Filter Data*/
-> @@ -998,6 +1010,80 @@ static int hx9023s_id_check(struct iio_dev *indio_dev)
->  	return 0;
->  }
+>  required:
+>    - compatible
+>    - vddd-supply
+>    - vdda-supply
 >  
-> +static int hx9023s_bin_load(struct hx9023s_data *data,
-> +								struct hx9023s_bin *bin)
-> +{
-> +	u8 *cfg_start = bin->data + FW_DATA_OFFSET;
-> +	u8 addr, val;
-> +	u16 i;
-> +	int ret;
-> +
-> +	for (i = 0; i < bin->reg_count; i++) {
-> +		addr = cfg_start[i * 2];
-> +		val = cfg_start[i * 2 + 1];
-> +		ret = regmap_write(data->regmap, addr, val);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return ret;
-return 0;
-Can't get here with anything else.
-
-> +}
-> +
-> +static int hx9023s_send_cfg(const struct firmware *fw,
-> +								struct hx9023s_data *data)
-
-
-Fix all your indenting to match kernel style.
-
-> +{
-> +	if (!fw)
-
-You can't get to this call below with out fw so drop this check.
-
-> +		return -EINVAL;
-> +
-> +	struct hx9023s_bin *bin __free(kfree) =
-> +		kzalloc(fw->size + sizeof(*bin), GFP_KERNEL);
-> +	if (!bin)
-> +		return -ENOMEM;
-> +
-> +	memcpy(bin->data, fw->data, fw->size);
-> +	release_firmware(fw);
-> +
-> +	bin->fw_size = fw->size;
-> +	bin->fw_ver = bin->data[FW_VER_OFFSET];
-> +	bin->reg_count = get_unaligned_le16(bin->data + FW_REG_CNT_OFFSET);
-> +
-> +	return hx9023s_bin_load(data, bin);
-> +}
-> +
-> +static void hx9023s_cfg_update(const struct firmware *fw, void *context)
-> +{
-> +	struct hx9023s_data *data = context;
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	int ret;
-> +
-> +	if (!fw || !fw->data) {
-> +		dev_warn(dev, "No firmware\n");
-> +		goto no_fw;
-> +	}
-> +
-> +	ret = hx9023s_send_cfg(fw, data);
-> +	if (ret)
-If this fails, we want to notify the user.  The firmware loaded
-but we were unable to use it for some reasons.
-
-> +		goto no_fw;
-> +
-> +	ret = regcache_sync(data->regmap);
-> +	if (ret)
-> +		dev_err(dev, "regcache sync failed\n");
-> +
-> +	return;
-> +
-> +no_fw:
-> +	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
-> +								ARRAY_SIZE(hx9023s_reg_init_list));
-> +	if (ret) {
-> +		dev_err(dev, "Error loading default configuration\n");
-> +		return;
-> +	}
-> +
-> +	ret = regcache_sync(data->regmap);
-> +	if (ret)
-> +		dev_err(dev, "regcache sync failed\n");
-> +}
-> +
->  static int hx9023s_probe(struct i2c_client *client)
->  {
->  	struct device *dev = &client->dev;
-> @@ -1036,18 +1122,14 @@ static int hx9023s_probe(struct i2c_client *client)
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	i2c_set_clientdata(client, indio_dev);
+>  allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>    - if:
+>        properties:
+>          compatible:
+> @@ -73,6 +77,16 @@ allOf:
+>      then:
+>        properties:
+>          interrupts: false
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - bosch,bmp085
+> +              - bosch,bmp180
+> +    then:
+> +      properties:
+> +        spi-max-frequency: false
 >  
-> -	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
-> -				     ARRAY_SIZE(hx9023s_reg_init_list));
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "device init failed\n");
-> -
->  	ret = hx9023s_ch_cfg(data);
->  	if (ret)
->  		return dev_err_probe(dev, ret, "channel config failed\n");
+>  additionalProperties: false
 >  
-> -	ret = regcache_sync(data->regmap);
-
-> +	ret = request_firmware_nowait(THIS_MODULE, true, "hx9023s.bin",
-> +						dev, GFP_KERNEL, data, hx9023s_cfg_update);
-
-Indent dev under T of the THIS_MODULE
-
-
->  	if (ret)
-> -		return dev_err_probe(dev, ret, "regcache sync failed\n");
-> +		return dev_err_probe(dev, ret, "reg config failed\n");
->  
->  	if (client->irq) {
->  		ret = devm_request_threaded_irq(dev, client->irq,
-> 
-> ---
-> base-commit: 8d4d26450d71289a35ff9e847675fd9c718798b8
-> change-id: 20241209-hx9023s-firmware-20241209-47411e8cda0b
-> 
-> Best regards,
+> @@ -93,3 +107,19 @@ examples:
+>              vdda-supply = <&bar>;
+>          };
+>      };
+> +  - |
+> +    # include <dt-bindings/gpio/gpio.h>
+> +    # include <dt-bindings/interrupt-controller/irq.h>
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        pressure@0 {
+> +            compatible = "bosch,bmp280";
+> +            reg = <0>;
+> +            spi-max-frequency = <10000000>;
+> +            reset-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
+> +            vddd-supply = <&foo>;
+> +            vdda-supply = <&bar>;
+> +        };
+> +    };
+> +
 
 

@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-13500-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13501-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2EF9F244B
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 15:10:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BACF9F2450
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 15:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ECDC164FE3
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 14:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B330F16510D
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 14:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A99518E373;
-	Sun, 15 Dec 2024 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FC418FC75;
+	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYmsKz/p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LAe7lJvI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA461805A;
-	Sun, 15 Dec 2024 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96ABC1805A;
+	Sun, 15 Dec 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734271835; cv=none; b=SrSEA3cijZy9Q3GAzMXzqRPFF0YQS3fpzipfJ5674vKM6hWNVHUZywFsnZPOD8HJ8hx6KuUVAFAFVnlNljUEiio5tXbKFzDXJKMYXEjYS3CZ2hrW1aDaAEetEgT4Xp0LjKVa0dmELDJn4aQ/s9z8EUcVqHhi6nrQhSvf6mckNOE=
+	t=1734271952; cv=none; b=J4Ne8tQEMsy6Bi2sPliKSYdVHGVFLDcVp+bw4WO0NlFfrlKNIpi/cinpFKUfSVIFITTRZXCVjj6N0ig4sj/N5GWSWe6w+ZxhS3h8TXZN1+GEarbFb2frz9zPHstMtYkpCm+uNQp3LstRw0K3Ip17P6+75tCP/A7HV7ME7NORPmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734271835; c=relaxed/simple;
-	bh=Ugt82RAiwmx4n7n5jRLgGBhD/IdHRmG1Grv/4HCIsK4=;
+	s=arc-20240116; t=1734271952; c=relaxed/simple;
+	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L3bge84uAvl0KxjMHtWnajff0CJ3166y9Iah+B64NGKlX1Qxi51TDtxWbzuOnrpn5EcEvZZqOMuDhsuZisfuq93q07uZpl328Lj8vcIlcvjMCsAEx1O/cmhHS0sTXnucWX6h5WNyMro+MVxshmMm6UwdT2Qh+vP1xP3wB4Ol8mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYmsKz/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93956C4CECE;
-	Sun, 15 Dec 2024 14:10:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SEGpzipsIwWVOyDIZOzSOhapMCQaCwrvQdLoQ2vJSiO8myy/I702ZzOLQBGvKwrx2ODfv5yNrmYt3MAddI/puK6vPWTF9J5dETd3UcYHrBuy50AQRCHZ9trw2CzQJxvkqTakR98fZloQB2BcVmtBgW8k64hhd979brUxCKoYGvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LAe7lJvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D11DC4CECE;
+	Sun, 15 Dec 2024 14:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734271835;
-	bh=Ugt82RAiwmx4n7n5jRLgGBhD/IdHRmG1Grv/4HCIsK4=;
+	s=k20201202; t=1734271952;
+	bh=C+fkFXJDD2gYrYFFw7MKPSxt8fU/qG5ZsjWmCqJBbVY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DYmsKz/p8aD42joolfp3Z4n/GCB+OzMwy1faMGhL0NJOXQC1xpnRqe0eYJ8x/em5I
-	 YVrA1lY85UZmHaLeK+2QYysldr6GxN07yFh3f83ZePPkUd2axra0kYSbpdVxJgBdZl
-	 BuD9shXH6z/iMrW56rVpwBYtIAu6eKDm04tE3J6kJv5WcELk2dVmHwDvisM+QCL6l8
-	 w+wcFfAR1eNj57XMbqpElUuwGBdAl/jzERIjKxxtfxCqqIZpKav2+8Cpph1IGCuhrF
-	 vWOgvOsJ1jKTeN5Jut8CXyWoet1YOlx1MH8JpOqPyPJG6GmGl/LEfQqWV/VXi+qIss
-	 xkDjJTewuEfoA==
-Date: Sun, 15 Dec 2024 14:10:27 +0000
+	b=LAe7lJvIofTgXqxh1euei5ekS910YOX364ZSpCIQvyatdW8PVGFkHxHUKuOy5repb
+	 3YpWYjyeO7LdoL9O6qNd96iFTY59IoW9MzDLRehR/HAQjGlcN89/0t0Poq10jPG8aC
+	 +x9xX55JZG5mvGNOxd4SoqTIiB8hhg4qiX/RnoowuAxBf/E29G0+aznCGpfDXak2gV
+	 wQ2T9KIxkv6lid4iMsz/s7Scj224NLKC+MTQB0mwZEPjUQYYYt9OONNmnsDGTJD1NI
+	 3XBRbplOauDuCCXOnarGu1XUQw5IbKx7JfQz4EGpMpHaHRS+rMUGLBbq8+3djAIGAa
+	 X6FFA3v7SvWLA==
+Date: Sun, 15 Dec 2024 14:12:26 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Christian Eggers
+ <ceggers@arri.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v7 1/7] iio: accel: adxl345: add function to switch
- measuring mode
-Message-ID: <20241215141027.6ee70828@jic23-huawei>
-In-Reply-To: <CAFXKEHamiip3fVp1HNX4DZSzNnc7bMOQNg1RKsY45NbFymzr7g@mail.gmail.com>
-References: <20241213211909.40896-1-l.rubusch@gmail.com>
-	<20241213211909.40896-2-l.rubusch@gmail.com>
-	<20241214120227.56b885fa@jic23-huawei>
-	<CAFXKEHamiip3fVp1HNX4DZSzNnc7bMOQNg1RKsY45NbFymzr7g@mail.gmail.com>
+ stable@vger.kernel.org
+Subject: Re: [PATCH v4] iio: light: as73211: fix channel handling in
+ only-color triggered buffer
+Message-ID: <20241215141226.31c81048@jic23-huawei>
+In-Reply-To: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
+References: <20241214-iio_memset_scan_holes-v4-1-260b395b8ed5@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,156 +60,132 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 15 Dec 2024 10:41:12 +0100
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Sat, 14 Dec 2024 23:55:50 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> On Sat, Dec 14, 2024 at 1:02=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Fri, 13 Dec 2024 21:19:03 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > =20
-> > > Replace the powerup / powerdown functions by a generic function to put
-> > > the sensor in STANDBY, or MEASURE mode. When configuring the FIFO for
-> > > several features of the accelerometer, it is recommended to put
-> > > measuring in STANDBY mode.
-> > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
-> > Mostly in the interests of trimming down the queue of patches in flight
-> > and because this one has been fine for a few versions without significa=
-nt
-> > comment.
-> >
-> > Applied this patch to the togreg branch of iio.git and pushed out initi=
-ally
-> > as testing to let 0-day take a look.
-> > =20
->=20
-> Question here: you applied this patch now to the iio branch. Now,
-> Christophe Jaillet pointed still something out that could be improved,
-> the function could be shortened to, e.g.
->=20
-> +static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
-> +{
-> +     unsigned int val =3D en ? ADXL345_POWER_CTL_MEASURE :
-> ADXL345_POWER_CTL_STANDBY;
-> +
-> +     return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-> +}
->=20
-> Should I present an improved patch? Or, in case this was urgent, would
-> it require an additional patch/fix? What would be the way to deal with
-> such fixes immediately after "applied"?
->=20
-Send me a patch on top. I may well squash it into the original (particularly
-if you stick a note on that being sensible under the --- for the patch!)
+> The channel index is off by one unit if AS73211_SCAN_MASK_ALL is not
+> set (optimized path for color channel readings), and it must be shifted
+> instead of leaving an empty channel for the temperature when it is off.
+> 
+> Once the channel index is fixed, the uninitialized channel must be set
+> to zero to avoid pushing uninitialized data.
+> 
+> Add available_scan_masks for all channels and only-color channels to let
+> the IIO core demux and repack the enabled channels.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 403e5586b52e ("iio: light: as73211: New driver")
+> Tested-by: Christian Eggers <ceggers@arri.de>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Applied to the fixes-togreg branch of iio.git.
 
-There is always a window in which I'm happy to rebase (or pull a patch
-if we get feedback needing bigger changes) because I typically give
-at least half a week for 0-day to poke the tree before I make a potential
-mess in linux-next.  Ultimately I'll rebase after that for a sufficiently
-serious issue but for something like this I'll just apply the patch on top
-once it's out for linux-next to pick up.
+Thanks,
 
 Jonathan
 
-> Best,
-> L
->=20
-> > Thanks
-> >
-> > Jonathan
-> > =20
-> > > ---
-> > >  drivers/iio/accel/adxl345_core.c | 42 +++++++++++++++++++++++-------=
---
-> > >  1 file changed, 30 insertions(+), 12 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
-l345_core.c
-> > > index 88df9547b..b48bc838c 100644
-> > > --- a/drivers/iio/accel/adxl345_core.c
-> > > +++ b/drivers/iio/accel/adxl345_core.c
-> > > @@ -138,6 +138,34 @@ static int adxl345_write_raw_get_fmt(struct iio_=
-dev *indio_dev,
-> > >       }
-> > >  }
-> > >
-> > > +/**
-> > > + * adxl345_set_measure_en() - Enable and disable measuring.
-> > > + *
-> > > + * @st: The device data.
-> > > + * @en: Enable measurements, else standby mode.
-> > > + *
-> > > + * For lowest power operation, standby mode can be used. In standby =
-mode,
-> > > + * current consumption is supposed to be reduced to 0.1uA (typical).=
- In this
-> > > + * mode no measurements are made. Placing the device into standby mo=
-de
-> > > + * preserves the contents of FIFO.
-> > > + *
-> > > + * Return: Returns 0 if successful, or a negative error value.
-> > > + */
-> > > +static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
-> > > +{
-> > > +     unsigned int val =3D 0;
-> > > +
-> > > +     val =3D (en) ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_ST=
-ANDBY;
-> > > +     return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-> > > +}
-> > > +
-> > > +static void adxl345_powerdown(void *ptr)
-> > > +{
-> > > +     struct adxl345_state *st =3D ptr;
-> > > +
-> > > +     adxl345_set_measure_en(st, false);
-> > > +}
-> > > +
-> > >  static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
-> > >  "0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 =
-100 200 400 800 1600 3200"
-> > >  );
-> > > @@ -158,16 +186,6 @@ static const struct iio_info adxl345_info =3D {
-> > >       .write_raw_get_fmt      =3D adxl345_write_raw_get_fmt,
-> > >  };
-> > >
-> > > -static int adxl345_powerup(void *regmap)
-> > > -{
-> > > -     return regmap_write(regmap, ADXL345_REG_POWER_CTL, ADXL345_POWE=
-R_CTL_MEASURE);
-> > > -}
-> > > -
-> > > -static void adxl345_powerdown(void *regmap)
-> > > -{
-> > > -     regmap_write(regmap, ADXL345_REG_POWER_CTL, ADXL345_POWER_CTL_S=
-TANDBY);
-> > > -}
-> > > -
-> > >  /**
-> > >   * adxl345_core_probe() - Probe and setup for the accelerometer.
-> > >   * @dev:     Driver model representation of the device
-> > > @@ -237,11 +255,11 @@ int adxl345_core_probe(struct device *dev, stru=
-ct regmap *regmap,
-> > >                                    regval, ADXL345_DEVID);
-> > >
-> > >       /* Enable measurement mode */
-> > > -     ret =3D adxl345_powerup(st->regmap);
-> > > +     ret =3D adxl345_set_measure_en(st, true);
-> > >       if (ret < 0)
-> > >               return dev_err_probe(dev, ret, "Failed to enable measur=
-ement mode\n");
-> > >
-> > > -     ret =3D devm_add_action_or_reset(dev, adxl345_powerdown, st->re=
-gmap);
-> > > +     ret =3D devm_add_action_or_reset(dev, adxl345_powerdown, st);
-> > >       if (ret < 0)
-> > >               return ret;
-> > > =20
-> > =20
+> ---
+> This issue was found after attempting to make the same mistake for
+> a driver I maintain, which was fortunately spotted by Jonathan [1].
+> 
+> Keeping old sensor values if the channel configuration changes is known
+> and not considered an issue, which is also mentioned in [1], so it has
+> not been addressed by this series. That keeps most of the drivers out
+> of the way because they store the scan element in iio private data,
+> which is kzalloc() allocated.
+> 
+> This series only addresses cases where uninitialized i.e. unknown data
+> is pushed to the userspace, either due to holes in structs or
+> uninitialized struct members/array elements.
+> 
+> While analyzing involved functions, I found and fixed some triviality
+> (wrong function name) in the documentation of iio_dev_opaque.
+> 
+> Link: https://lore.kernel.org/linux-iio/20241123151634.303aa860@jic23-huawei/ [1]
+> ---
+> Changes in v4:
+> - Fix as73211_scan_masks[] (first MASK_COLOR, then MASK_ALL, no comma
+>   after 0 i.e. the last element).
+> - Link to v3: https://lore.kernel.org/r/20241212-iio_memset_scan_holes-v3-1-7f496b6f7222@gmail.com
+> 
+> Changes in v3:
+> - as73211.c: add available_scan_masks for all channels and only-color
+>   channels to let the IIO core demux and repack the enabled channels.
+> - Link to v2: https://lore.kernel.org/r/20241204-iio_memset_scan_holes-v2-0-3f941592a76d@gmail.com
+> 
+> Changes in v2:
+> - as73211.c: shift channels if no temperature is available and
+>   initialize chan[3] to zero.
+> - Link to v1: https://lore.kernel.org/r/20241125-iio_memset_scan_holes-v1-0-0cb6e98d895c@gmail.com
+> ---
+>  drivers/iio/light/as73211.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/light/as73211.c b/drivers/iio/light/as73211.c
+> index be0068081ebb..11fbdcdd26d6 100644
+> --- a/drivers/iio/light/as73211.c
+> +++ b/drivers/iio/light/as73211.c
+> @@ -177,6 +177,12 @@ struct as73211_data {
+>  	BIT(AS73211_SCAN_INDEX_TEMP) | \
+>  	AS73211_SCAN_MASK_COLOR)
+>  
+> +static const unsigned long as73211_scan_masks[] = {
+> +	AS73211_SCAN_MASK_COLOR,
+> +	AS73211_SCAN_MASK_ALL,
+> +	0
+> +};
+> +
+>  static const struct iio_chan_spec as73211_channels[] = {
+>  	{
+>  		.type = IIO_TEMP,
+> @@ -672,9 +678,12 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>  
+>  		/* AS73211 starts reading at address 2 */
+>  		ret = i2c_master_recv(data->client,
+> -				(char *)&scan.chan[1], 3 * sizeof(scan.chan[1]));
+> +				(char *)&scan.chan[0], 3 * sizeof(scan.chan[0]));
+>  		if (ret < 0)
+>  			goto done;
+> +
+> +		/* Avoid pushing uninitialized data */
+> +		scan.chan[3] = 0;
+>  	}
+>  
+>  	if (data_result) {
+> @@ -682,9 +691,15 @@ static irqreturn_t as73211_trigger_handler(int irq __always_unused, void *p)
+>  		 * Saturate all channels (in case of overflows). Temperature channel
+>  		 * is not affected by overflows.
+>  		 */
+> -		scan.chan[1] = cpu_to_le16(U16_MAX);
+> -		scan.chan[2] = cpu_to_le16(U16_MAX);
+> -		scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		if (*indio_dev->active_scan_mask == AS73211_SCAN_MASK_ALL) {
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+> +			scan.chan[3] = cpu_to_le16(U16_MAX);
+> +		} else {
+> +			scan.chan[0] = cpu_to_le16(U16_MAX);
+> +			scan.chan[1] = cpu_to_le16(U16_MAX);
+> +			scan.chan[2] = cpu_to_le16(U16_MAX);
+> +		}
+>  	}
+>  
+>  	iio_push_to_buffers_with_timestamp(indio_dev, &scan, iio_get_time_ns(indio_dev));
+> @@ -758,6 +773,7 @@ static int as73211_probe(struct i2c_client *client)
+>  	indio_dev->channels = data->spec_dev->channels;
+>  	indio_dev->num_channels = data->spec_dev->num_channels;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->available_scan_masks = as73211_scan_masks;
+>  
+>  	ret = i2c_smbus_read_byte_data(data->client, AS73211_REG_OSR);
+>  	if (ret < 0)
+> 
+> ---
+> base-commit: 91e71d606356e50f238d7a87aacdee4abc427f07
+> change-id: 20241123-iio_memset_scan_holes-a673833ef932
+> 
+> Best regards,
 
 

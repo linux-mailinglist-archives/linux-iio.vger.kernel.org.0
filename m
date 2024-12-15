@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-13520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4179F2556
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A1DE9F2557
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7E92163D75
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A28163C92
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95491B87C8;
-	Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AE1B393C;
+	Sun, 15 Dec 2024 18:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSqH/IAy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hq3NceQD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720A1B81C1
-	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079971B6D1A
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734287410; cv=none; b=j6maxsHlgyE2YFscLF4beGjIDmZeFYZcAD1jib7tm48oTj3hHElKuisRSwd3La57HNeQi3ENVFRhrnW55n97dYwXZo++8eYTs8WvdpUMcjMR5Qg5CppOOGGuXgbUnbqwCPDhDLzGOkHIHX05sV6PSxZatvJ6aNnjNQFyjVq3uYE=
+	t=1734287413; cv=none; b=ltFVJMdVrUPqlRCQ0Z7sv6n063ZwXptLxMzcf01BkjXfvtXjefCsIP8DvaCFGZRQRYeUmL8PxNTpkrYJMG3J24jo3I/rXLnLiV+0Fq6yyieJGhfxfe9Eur56YEmBRgx9J9/X1esgX+7SjTX5yuz5TdFCzocJl9u4zsTDdIDsUnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734287410; c=relaxed/simple;
-	bh=5PrNw/Y/zmvWCTV4BWaNgwfR6d4W7+Xf24j91EFCgN8=;
+	s=arc-20240116; t=1734287413; c=relaxed/simple;
+	bh=PDHdQLnWj/WLnDwPCZayZMmmjXMdt0ZGc+n50t9Oh30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sy+uD+V/g6UTQnNyFXrfukXNcb5xtfanJKBPf1CkhRXkSzudnQH98tPUTe9xlRHzPN/zxfbm2QGyUQkLY8YezDSKcd9augVHVVl1oRJJ92KYOIgVgHCreTDtb/Twz7wZhkr2QFgj7+scGVYOcKz131M2j4MnHGFSkDokGcqZd5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSqH/IAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBE4C4CED3;
-	Sun, 15 Dec 2024 18:30:08 +0000 (UTC)
+	 MIME-Version; b=BEPxA+657ldRaP0EHFgQBJNRAHVhJ41ZrWDGVYT84T4oDOcCK/2tE6a7XlAllCmhdOAKEGOSNaCh1GPY+K6nkK1IydHxvJZl1C5Yf50p9dyLqS/ACM7270Q/ZvrpU0BKKTAKiT1xvBwS5H6bEop1IzyZ55MA4oqfEPPVa6ZdKW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hq3NceQD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1032C4CECE;
+	Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734287410;
-	bh=5PrNw/Y/zmvWCTV4BWaNgwfR6d4W7+Xf24j91EFCgN8=;
+	s=k20201202; t=1734287412;
+	bh=PDHdQLnWj/WLnDwPCZayZMmmjXMdt0ZGc+n50t9Oh30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSqH/IAyzLdCGglsfRGW4n/2BjeVcKXFz0lNH5IRTi+lD8OjjDH3Yc2UPg+Prp0CB
-	 vrBuop5UYGq+XbrCmTRqPMwIOt95XiE+A2UD9Fp0oWkN4dKDSzEHDa/Z1dP3dvfDKc
-	 xVDLnjIDqmm7eNuqHbts+DVX1DHC3hVApGMUUfyVwc0yKEuSmlJhVNSHTzEjG9y1fR
-	 chaJvm9k+V2YzLtOLeZPrbZCIYlQVI2Ya9TWrSrXZmPnERLS0SMHM1AsjDn4B/mr+W
-	 VlFAfV8673PFbbHzXwIjBzUBYPkdLQ8oMj9TbLNmbzdsP1F9wVZ63CkOds/+/UJcPW
-	 J5VxaBWtLo/EA==
+	b=Hq3NceQD5X3mhba/732gAorGYzv1Vbh7/6tL1jiyfBbrbJObLWV0okfBYMGg9xskO
+	 +ZkBE+E9llkHnLfVaGCsczguAJQq9AHKWbRL4XN7ogy7Z+XM0BVf/r/2d1PQZy4DBV
+	 0GoTdt/FxMCQbLrgu/3hVhI8DBV9hFIdDc6+LlbuMDBIUvM4PL1Sk2KXVEo1eTO2qi
+	 BFryJ/RLHv/0k4QllWT4Bgs+5092O6SxC/mvLjEGQQdCncFdpowEnkDUKlRVgIZN6J
+	 iTgM50/TZLFGmk/UA7Dg4jwsBLAacKIjJyOm++w+i5hUiT4baBm8uujvSnUkKjTeqg
+	 mYDysxGa1J3vQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 15/20] iio: buffer: Make timestamp s64 in iio_push_to_buffers_with_timestamp()
-Date: Sun, 15 Dec 2024 18:29:06 +0000
-Message-ID: <20241215182912.481706-16-jic23@kernel.org>
+Subject: [PATCH 16/20] iio: adc: ti-lmp92064: Switch timestamp type from int64_t __aligned(8) to aligned_s64
+Date: Sun, 15 Dec 2024 18:29:07 +0000
+Message-ID: <20241215182912.481706-17-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215182912.481706-1-jic23@kernel.org>
 References: <20241215182912.481706-1-jic23@kernel.org>
@@ -63,39 +63,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This is a bit of a corner case for selecting between the in kernel types
-and standard c integer types we tend to prefer for userspace interfaces.
-The interface is entirely within the kernel but in many cases the data
-ultimately ends up in userspace (via some time in a kfifo).  On balance
-the value passed is almost always an s64, so standardize on that.
-Main reason to change this is that it has led to some inconsistency in
-the storage type used.  The majority use aligned_s64 rather than
-int64_t __aligned(8) and this will ensure there is one obvious choice.
+The vast majority of IIO drivers use aligned_s64 for the type of the
+timestamp field.  It is not a bug to use int64_t and until this series
+iio_push_to_buffers_with_timestamp() took and int64_t timestamp, it
+is inconsistent.  This change is to remove that inconsistency and
+ensure there is one obvious choice for future drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/iio/buffer.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ti-lmp92064.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-index 418b1307d3f2..88699a341669 100644
---- a/include/linux/iio/buffer.h
-+++ b/include/linux/iio/buffer.h
-@@ -35,11 +35,11 @@ int iio_pop_from_buffer(struct iio_buffer *buffer, void *data);
-  * Returns 0 on success, a negative error code otherwise.
-  */
- static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
--	void *data, int64_t timestamp)
-+	void *data, s64 timestamp)
- {
- 	if (indio_dev->scan_timestamp) {
--		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
--		((int64_t *)data)[ts_offset] = timestamp;
-+		size_t ts_offset = indio_dev->scan_bytes / sizeof(s64) - 1;
-+		((s64 *)data)[ts_offset] = timestamp;
- 	}
+diff --git a/drivers/iio/adc/ti-lmp92064.c b/drivers/iio/adc/ti-lmp92064.c
+index 169e3591320b..1e4a78677fe5 100644
+--- a/drivers/iio/adc/ti-lmp92064.c
++++ b/drivers/iio/adc/ti-lmp92064.c
+@@ -199,7 +199,7 @@ static irqreturn_t lmp92064_trigger_handler(int irq, void *p)
+ 	struct lmp92064_adc_priv *priv = iio_priv(indio_dev);
+ 	struct {
+ 		u16 values[2];
+-		int64_t timestamp __aligned(8);
++		aligned_s64 timestamp;
+ 	} data;
+ 	int ret;
  
- 	return iio_push_to_buffers(indio_dev, data);
 -- 
 2.47.1
 

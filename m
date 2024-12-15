@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-13523-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13524-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE6F9F255A
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B68F59F255B
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 041DE1885486
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5278B18854A6
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C0D1B6CFF;
-	Sun, 15 Dec 2024 18:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E941B6D17;
+	Sun, 15 Dec 2024 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O8ODDzUg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vRsK+Ayr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48B0191461
-	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A2B2629C
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734287418; cv=none; b=NeEk0zaqLlDJ6PMkclRlf96e59yE+X/7LmrhB8z2IzmGNLa+Jfcu4Z3vMvipl3Gt7fcyk+C0ZV1kL2QQoMdGcYe2acFnGLxh8k7RevUHJiObLI0SdF0OoHBJXC1tqr3IhI8k2rjr4SMa7We8VERUYiLwBz7U3fjcoli649+YoxY=
+	t=1734287421; cv=none; b=aVHkiyWPw4JCsCHPXdEjqAOImwwfFxc3NMzh0Lwfq5aa8EpbZ5NSt0fkzFmvstp5Vk96Kt67eKvkyacuD1qGYoJNbYg8nyWSq6dorl/pcepNZqGT1uH8IrjY4qx37a4dExZuqmaTsa1wgEqeXiEoep+5W8h5jgUC/eF3tFz/VTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734287418; c=relaxed/simple;
-	bh=a4p6HEQC5fDWXHkQFSRalHiulrtIRFusvcYmrHnSD8o=;
+	s=arc-20240116; t=1734287421; c=relaxed/simple;
+	bh=rX1K0B1JDmjVDAy1ocrzCx+iLyeaOJo5Nz8j4sblZxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZWb3j0Iv6VxNm9VqqzdE1HCsIEg6PP5mwVx+W3oa1OL+Z4AZlFTo/ArMH4ZaYIsBkfU+RvYuvaSy1M5nIee+/3oMigr0iNXkbwwh8kAarBfwGd0HIEKltYlK2bhXEyQRRRZxjxwaj4j2Q9LCyu77tg7eh64BGPJ45OjFRyAUd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O8ODDzUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49843C4CECE;
-	Sun, 15 Dec 2024 18:30:15 +0000 (UTC)
+	 MIME-Version; b=uwQAiskluv5WNYa75Hj6j59hNDXFL9WKYXa2TUIqpTCw5Xk/flr93R1Qzd4HPLO2wv2YM4ADf5Dn1CoKjP+yK3hoWuAD6icbY6RQ4dP6nKKYOZrPAzZFOpSdmjIW/8gouExnNPKj68c9z3BMEspltixNCzAavngP+mTTkHtSq+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vRsK+Ayr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF3BC4CECE;
+	Sun, 15 Dec 2024 18:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734287418;
-	bh=a4p6HEQC5fDWXHkQFSRalHiulrtIRFusvcYmrHnSD8o=;
+	s=k20201202; t=1734287421;
+	bh=rX1K0B1JDmjVDAy1ocrzCx+iLyeaOJo5Nz8j4sblZxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8ODDzUgJmX0XZe32tSdimRN6PwOidKfmBPVcPfjDQgzFIl4Niad35phjPflEgumi
-	 vbUautZYnMl2R4Koytq7/x5uoNYNVfUyM0/w6Ix6qXgPryGs0jtZ2FF4jVovz32upl
-	 u6hNem+r0wl6QyEKpcTYQoX7/r4LdqxcWIvnV2L2lQRJKb26Qpnwq9cwjuncX28xd+
-	 2d+wDW+zyB06moLUtzvB46Hj2AgMurcD4jOGdS8w8z8/HPrmpBzEIfKxu0P58hNOhI
-	 SdkR7Wykm2RhlQIn8H+IEE1t1Ka5dp5k2WfYSyWffJelwv+GBPL+XIWxzfPLJ5yDFx
-	 ZVy927k+Op2SQ==
+	b=vRsK+AyrKCyPW8rjEmw464eg98mlj9TSuHzm7TOda+4Yl0QU+mip/kl21gdD8U8bb
+	 GB+T4OAle0Erj2cGSqpJ/RDPeJSTY4loSJRIc6YtJmlFnpfygVzmbWaf9dOUvAayBr
+	 UXFfC81n9LpJ1uUo/xKXiQwrGtXazQkHMZa1LzfsOqGZa3ce/nWTdjkWVmRYK7JUT9
+	 bMMcVUHh0ztnzYoBGxeLQaIFoM9cmKUE0bbU+VlIeLdduPWxP+fO6LwxhaJUbNrowY
+	 OrKqWV4Mjnw9gyZG5qg+//hBXeV1f5V6m0M1UVn0M4iCkFfEdDBoiTy9EJUu7JqVm6
+	 g17yZ2HGmk/ZQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 18/20] iio: imu: inv_icm42600: switch timestamp type from int64_t __aligned(8) to aligned_s64
-Date: Sun, 15 Dec 2024 18:29:09 +0000
-Message-ID: <20241215182912.481706-19-jic23@kernel.org>
+Subject: [PATCH 19/20] iio: adc: mt6360: Correct marking of timestamp alignment.
+Date: Sun, 15 Dec 2024 18:29:10 +0000
+Message-ID: <20241215182912.481706-20-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215182912.481706-1-jic23@kernel.org>
 References: <20241215182912.481706-1-jic23@kernel.org>
@@ -63,44 +63,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The vast majority of IIO drivers use aligned_s64 for the type of the
-timestamp field.  It is not a bug to use int64_t and until this series
-iio_push_to_buffers_with_timestamp() took and int64_t timestamp, it
-is inconsistent.  This change is to remove that inconsistency and
-ensure there is one obvious choice for future drivers.
+This is sort of a fix as I assume this device only exists on
+architectures that do 8 byte alignment of 8 byte types.  However,
+drivers should not be written with that assumption and should allow
+for the 4 byte alignment of these types as seen for example on
+x86_32.  As such, we need to force the alignment of the timestamp
+field itself not the containing structure, which will also be aligned
+appropriate given C structure alignment guarantees alignment to at least
+the alignment of structure member that needs highest alignment.
+
+This is even more in the 'sort of' category because if we did
+have insufficient alignment of the timestamp, then marking the structure
+__aligned(8) would result in padding after the timestamp field.
+iio_push_to_buffers_with_timestamp() doesn't actually use the field, but
+instead where it is expected to be so will place the timestamp
+in the last 8 bytes, whether or not the structure definition puts it there.
+Hence it all works before the change. The reasoning is too subtle,
+just mark the right element aligned and use the new aligned_s64 to do so
+also clearing up the inconsistency of an int64_t timestamp relative
+to most other IIO drivers.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 2 +-
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/mt6360-adc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 7968aa27f9fd..388520ec60b5 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -178,7 +178,7 @@ static const struct iio_chan_spec inv_icm42600_accel_channels[] = {
- struct inv_icm42600_accel_buffer {
- 	struct inv_icm42600_fifo_sensor_data accel;
- 	int16_t temp;
--	int64_t timestamp __aligned(8);
-+	aligned_s64 timestamp;
- };
+diff --git a/drivers/iio/adc/mt6360-adc.c b/drivers/iio/adc/mt6360-adc.c
+index 4eb2455d6ffa..f8e98b6fa7e9 100644
+--- a/drivers/iio/adc/mt6360-adc.c
++++ b/drivers/iio/adc/mt6360-adc.c
+@@ -263,8 +263,8 @@ static irqreturn_t mt6360_adc_trigger_handler(int irq, void *p)
+ 	struct mt6360_adc_data *mad = iio_priv(indio_dev);
+ 	struct {
+ 		u16 values[MT6360_CHAN_MAX];
+-		int64_t timestamp;
+-	} data __aligned(8);
++		aligned_s64 timestamp;
++	} data;
+ 	int i = 0, bit, val, ret;
  
- #define INV_ICM42600_SCAN_MASK_ACCEL_3AXIS				\
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index c6bb68bf5e14..591ed78a55bb 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_icm42600_gyro_channels[] = {
- struct inv_icm42600_gyro_buffer {
- 	struct inv_icm42600_fifo_sensor_data gyro;
- 	int16_t temp;
--	int64_t timestamp __aligned(8);
-+	aligned_s64 timestamp;
- };
- 
- #define INV_ICM42600_SCAN_MASK_GYRO_3AXIS				\
+ 	memset(&data, 0, sizeof(data));
 -- 
 2.47.1
 

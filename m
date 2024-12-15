@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-13487-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13488-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD5E9F2392
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:05:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4889F23A0
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DF0A1652EF
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:05:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA852165A02
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CE015534E;
-	Sun, 15 Dec 2024 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA0417B50F;
+	Sun, 15 Dec 2024 12:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vM7yxdex"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kf270ICS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B67638384;
-	Sun, 15 Dec 2024 12:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61151119A;
+	Sun, 15 Dec 2024 12:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734264335; cv=none; b=Je+fC9CusUA+wLiq4eunCT+uLWnMi9mTXU8t79B/A1o3EokVa/0N1jOoWmtLvi8kf4lMOOGK5UlWqY2qAHjPd9gIkEmAMY/7nGaYJhKHw51p80vFvvnOIjbSGQCa0iidCfWc6wzyfrRglVw8hPFloblB5pPC1GVS3OLnL0Slz/M=
+	t=1734264769; cv=none; b=AmogKU2EjM1lrF3YsuRfMvQTVsKZu6ePPlrL3zVuY4j1gXwwm3l44B09j9J01udEJJLeg6EdEZ2Pypc2X2hEEZD4veNv6g6brFaw90Gx5qHcsC7qM9oywkh4EnEC6jTkrp3q25xGfkxGjmySWK5FzEfj78wLgNLBq12/mdd82Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734264335; c=relaxed/simple;
-	bh=tkWNbT4uu+gfMrKCNqOzvi4TJkR3xUxhFs0MxlXbYdQ=;
+	s=arc-20240116; t=1734264769; c=relaxed/simple;
+	bh=y4YVhyoN2ufUxLJzDHKA4NzFIiBoIAH7gqZ1QytFXeY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=svDp1Y+P7gctfd6gwbj8V0aQ+5EzJynRDHVxleZ3pjRRbr5eMWPng4OYbVYCb4/aGgV0IQmPNqOGvAJRIjxmR/JsoPiT0ca6O/TgARxbi/xR+ujeRm5oKvxPQRwuxNHdeY8RjtHvwZcdFcv4vkk3dvEEHJLZR+i5Q6jBo3jm/do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vM7yxdex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6637EC4CECE;
-	Sun, 15 Dec 2024 12:05:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oPoceMxIN+YKRREH0sdmuzr9n8P8nqFz+95IffBrwJrYczHFOpWdFR+xQQRtio16vDsohK5vEHY/90b4aX/nlJmSJNBTGJ0wotOC7nl0iFtYnt+Ptjf0S/lyLhSgj23SIapnAUJWGL1nFLEm0zy2CEVlgr0a1Wja5yVF0KEhl70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kf270ICS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33016C4CECE;
+	Sun, 15 Dec 2024 12:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734264334;
-	bh=tkWNbT4uu+gfMrKCNqOzvi4TJkR3xUxhFs0MxlXbYdQ=;
+	s=k20201202; t=1734264768;
+	bh=y4YVhyoN2ufUxLJzDHKA4NzFIiBoIAH7gqZ1QytFXeY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vM7yxdex6QK/h27rlfikgkUfa5nwIK+ZB11Zy+rM81IAcfpe0Blz8+Ko9k4aJyAqj
-	 4mNgBOD/2/Ys17CXSPmBgcFnNiO8m2JIm2SNJQSbPA7TidwsvJX44yFjlfce581EUZ
-	 u57e5Jp870ojrHA1QWWSxPOXHNXA80Oe4vVgumVstE+2HLe+x85lJOHPJsb9FQehQh
-	 kM04jKZu84iNdHHD6DehQm7pvKVlcQDQX1rXV5Czk/xI++N2RXimBHDYYVl0LMSzi8
-	 L2z41mAZTCFrUURFNU/7YwNfEYIMkTvOLeHdfpynxsKj08K2maU8aWMpx/co9TAPRW
-	 gHnzXUuBn/lfQ==
-Date: Sun, 15 Dec 2024 12:05:23 +0000
+	b=Kf270ICS26nWHeMdTOBTZw3tw9so5/jfEv4z8Ygl3BPtp4ynXvFqvVes7enArqUbM
+	 CM23ETLuqcXqpkZoIfw1S9QTbooTM7UfUnmOPWFU89kRvj4Cg5G/9XOTl3c0zPL0z/
+	 eJ8w0/zkXKQvKpDl5ByRObPgeyaEEWnN5/hSXCL6YpIj1jU3i+nmor/lzNeOFm6ZKN
+	 DeONHIAe2wVsWCEFYfzIU9q1tfDxStYMc0TathjI71W1jIzV9HiOyuINK9GLTkrsKi
+	 MKRlb4gajZjyNy34oQRIFpcXEZutKW/ggIYCnJO7pQ1O1kQHswxp4u6wCAHYttHl2X
+	 wBRqXIEBjIjKw==
+Date: Sun, 15 Dec 2024 12:12:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Guillaume Stols <gstols@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -51,12 +51,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  devicetree@vger.kernel.org, dlechner@baylibre.com, jstephan@baylibre.com,
  aardelean@baylibre.com, adureghello@baylibre.com
-Subject: Re: [PATCH v2 6/9] iio: adc: adi-axi-adc: Add support for AD7606
- register writing
-Message-ID: <20241215120523.1b60ed43@jic23-huawei>
-In-Reply-To: <20241210-ad7606_add_iio_backend_software_mode-v2-6-6619c3e50d81@baylibre.com>
+Subject: Re: [PATCH v2 9/9] iio: adc: ad7606: Add support for writing
+ registers when using backend
+Message-ID: <20241215121239.10a29743@jic23-huawei>
+In-Reply-To: <20241210-ad7606_add_iio_backend_software_mode-v2-9-6619c3e50d81@baylibre.com>
 References: <20241210-ad7606_add_iio_backend_software_mode-v2-0-6619c3e50d81@baylibre.com>
-	<20241210-ad7606_add_iio_backend_software_mode-v2-6-6619c3e50d81@baylibre.com>
+	<20241210-ad7606_add_iio_backend_software_mode-v2-9-6619c3e50d81@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,151 +67,156 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024 10:46:46 +0000
+On Tue, 10 Dec 2024 10:46:49 +0000
 Guillaume Stols <gstols@baylibre.com> wrote:
 
-> Since we must access the bus parallel bus using a custom procedure,
-> let's add a specialized compatible, and define specialized callbacks for
-> writing the registers using the parallel interface.
+> Adds the logic for effectively enabling the software mode for the
+> iio-backend, i.e enabling the software mode channel configuration and
+> implementing the register writing functions.
 > 
 > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 Hi Guillaume,
 
-A few comments inline.
+Main thing in here is really about not adding more cases of
+iio_device_claim_direct_scoped() given the problems we are having with it
+and lack of a clean replacement.
 
-Thanks,
+My current thinking is that it's just not worth the pain of weird
+compiler quirks etc and readability issues (even though I for one have
+gotten used to that bit!)
 
 Jonathan
+
 > ---
->  drivers/iio/adc/ad7606_bi.h   |  16 +++++++
->  drivers/iio/adc/adi-axi-adc.c | 100 ++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 116 insertions(+)
+>  drivers/iio/adc/ad7606.h     | 15 ++++++++++++
+>  drivers/iio/adc/ad7606_par.c | 56 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 71 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/ad7606_bi.h b/drivers/iio/adc/ad7606_bi.h
-> new file mode 100644
-> index 000000000000..9ade23ec61dd
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad7606_bi.h
-
-Why bi?  Bus interface?  I'd spell it out.  Header name lengths don't
-usually need to be quite this short.
-
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * Copyright (c) 2010-2024 Analog Devices Inc.
-> + * Copyright (c) 2024 Baylibre, SAS
-> + */
-> +#ifndef __LINUX_PLATFORM_DATA_AD7606_H__
-> +#define __LINUX_PLATFORM_DATA_AD7606_H__
+> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+> index ada8065fba4e..9da39c2d5d53 100644
+> --- a/drivers/iio/adc/ad7606.h
+> +++ b/drivers/iio/adc/ad7606.h
+> @@ -96,6 +96,21 @@
+>  		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
+>  		0, 0, 16)
+>  
+> +#define AD7606_BI_SW_CHANNEL(num)			\
+> +	AD760X_CHANNEL(num,				\
+> +		/* mask separate */			\
+> +		BIT(IIO_CHAN_INFO_SCALE),		\
+> +		/* mask type */				\
+> +		0,					\
+> +		/* mask all */				\
+> +		BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
+> +		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+> +		/* mask separate available */		\
+> +		BIT(IIO_CHAN_INFO_SCALE),		\
+> +		/* mask all available */		\
+> +		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
+> +		16)
 > +
-> +#include <linux/iio/backend.h>
-Only a pointer type needed, so a forward def better than an include
-(which costs some trivial amount of compile time).
+>  struct ad7606_state;
+>  
+>  typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
+> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+> index 64733b607aa8..c159cd4f7802 100644
+> --- a/drivers/iio/adc/ad7606_par.c
+> +++ b/drivers/iio/adc/ad7606_par.c
+> @@ -13,12 +13,14 @@
+>  #include <linux/module.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/property.h>
+> +#include <linux/pwm.h>
 
-struct iio_backend;
+Why the addition of this?  If it was simply missing previously spin a
+separate patch.
 
-> +
-> +struct ad7606_platform_data {
-> +	int (*bus_reg_read)(struct iio_backend *back, u32 reg, u32 *val);
-> +	int (*bus_reg_write)(struct iio_backend *back, u32 reg, u32 val);
-> +};
-> +
-> +#endif /* __LINUX_PLATFORM_DATA_AD7606_H__ */
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index 7ff636643e56..b8bcf89417b0 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -27,6 +27,7 @@
->  #include <linux/iio/buffer.h>
+>  #include <linux/types.h>
+>  
+>  #include <linux/iio/backend.h>
 >  #include <linux/iio/iio.h>
 >  
+>  #include "ad7606.h"
 > +#include "ad7606_bi.h"
->  /*
->   * Register definitions:
->   *   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip#register_map
-> @@ -73,6 +74,12 @@
->  #define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
->  #define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
 >  
-> +#define ADI_AXI_REG_CONFIG_WR			0x0080
-> +#define ADI_AXI_REG_CONFIG_RD			0x0084
-> +#define ADI_AXI_REG_CONFIG_CTRL			0x008c
-> +#define   ADI_AXI_REG_CONFIG_CTRL_READ		0x03
-> +#define   ADI_AXI_REG_CONFIG_CTRL_WRITE		0x01
+>  static const struct iio_chan_spec ad7606b_bi_channels[] = {
+>  	AD7606_BI_CHANNEL(0),
+> @@ -31,6 +33,17 @@ static const struct iio_chan_spec ad7606b_bi_channels[] = {
+>  	AD7606_BI_CHANNEL(7),
+>  };
+>  
+> +static const struct iio_chan_spec ad7606b_bi_sw_channels[] = {
+> +	AD7606_BI_SW_CHANNEL(0),
+> +	AD7606_BI_SW_CHANNEL(1),
+> +	AD7606_BI_SW_CHANNEL(2),
+> +	AD7606_BI_SW_CHANNEL(3),
+> +	AD7606_BI_SW_CHANNEL(4),
+> +	AD7606_BI_SW_CHANNEL(5),
+> +	AD7606_BI_SW_CHANNEL(6),
+> +	AD7606_BI_SW_CHANNEL(7),
+> +};
 > +
->  #define ADI_AXI_ADC_MAX_IO_NUM_LANES		15
->  
->  #define ADI_AXI_REG_CHAN_CTRL_DEFAULTS		\
-> @@ -80,6 +87,11 @@
->  	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
->  	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
->  
-> +/* AD7606's specific */
-> +#define AD7606_REG_READ_BIT			0x8000
-> +#define AD7606_REG_ADDRESS_MASK			0xff00
-> +#define AD7606_REG_VALUE_MASK			0x00ff
-> +
-
-Maybe name these to keep the ADI_AXI_ prefix as well.  Otherwise it might get
-a little confusing wrt to registers in teh deivce.  They are nice short
-names currently so that shouldn't make the code to messy.
-
->  struct axi_adc_info {
->  	unsigned int version;
->  	const struct iio_backend_info *backend_info;
-> @@ -313,6 +325,80 @@ static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
->  	return iio_dmaengine_buffer_setup(st->dev, indio_dev, dma_name);
+>  static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned long *scan_mask)
+>  {
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> @@ -86,9 +99,52 @@ static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio
+>  	return 0;
 >  }
 >  
-> +static int axi_adc_raw_write(struct iio_backend *back, void *buf, unsigned int len)
+> +static int ad7606_bi_reg_read(struct iio_dev *indio_dev, unsigned int addr)
 > +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> +	u32 data;
-> +	u32 *bdata = buf;
-
-	data = *(u32)(buf);
-
-Is fine here I think rather than the extra local variable that is just
-used to do the type cast.
-
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	int val, ret;
+> +	struct ad7606_platform_data *pdata =  st->dev->platform_data;
 > +
-> +	data = *bdata;
-> +	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_WR, data);
-> +	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL,
-> +		     ADI_AXI_REG_CONFIG_CTRL_WRITE);
-> +	usleep_range(50, 100);
-> +	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL, 0x00);
-> +	usleep_range(50, 100);
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+As below. Let's go back to
+	ret = iio_device_claim_direct_mode(indio-dev)
+	if (ret)
+		return ret;
+
+	ret = ....
+
+	iio_device_release_direct_mode()
+	if (ret < 0)
+		return ret;
+
+	return val;
+> +		ret = pdata->bus_reg_read(st->back,
+> +					addr,
+> +					&val);
+> +	}
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +	return 0;
+> +	return val;
 > +}
-
-...
-
 > +
-> +static int ad7606_bi_reg_write(struct iio_backend *back, u32 reg, u32 val)
+> +static int ad7606_bi_reg_write(struct iio_dev *indio_dev,
+> +			       unsigned int addr,
+> +			       unsigned int val)
 > +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> +	u32 buf;
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	struct ad7606_platform_data *pdata =  st->dev->platform_data;
+> +	int ret;
 > +
-> +	guard(mutex)(&st->lock);
-> +
-> +	/* Read any register to switch to register mode */
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +	ret = pdata->bus_reg_write(st->back,
+Quite a few things wrong with indentation here.
 
-What follows looks like a write...
+Also a small request.   Don't use iio_device_claim_direct_scoped.
+It's proved a PITA for all sorts of reasons so one of my possible projects
+for when I get bored is to look at just how bad it would be to rip it out.
 
-> +	buf = 0xaf00;
-> +	axi_adc_raw_write(back, &buf, sizeof(buf));
-> +
-> +	buf = FIELD_PREP(AD7606_REG_ADDRESS_MASK, reg) | FIELD_PREP(AD7606_REG_VALUE_MASK, val);
-> +	axi_adc_raw_write(back, &buf, sizeof(buf));
-> +
-> +	/* Write 0x0 on the bus to get back to ADC mode */
-> +	buf = 0;
-> +	axi_adc_raw_write(back, &buf, sizeof(buf));
-> +
-> +	return 0;
+One of those things that seems cool and useful but turns out it's not worth it.
+
+Jonathan
+
+
+> +					addr,
+> +					val);
+> +	}
+> +	return ret;
 > +}
 
 

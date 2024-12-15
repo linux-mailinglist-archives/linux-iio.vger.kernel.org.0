@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-13490-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13491-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AA39F23B6
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:28:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F036E9F23BA
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 13:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 577AC18863D4
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:28:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9E5161A9A
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 12:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24295183CA6;
-	Sun, 15 Dec 2024 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320A71465A5;
+	Sun, 15 Dec 2024 12:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aNLK/myI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa1PSBtJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC93374FF;
-	Sun, 15 Dec 2024 12:28:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E625C1119A
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 12:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734265719; cv=none; b=MB2fhSkfSlODO7Ijyu48bprh0Vi4P5xTs8HKvgvwpIU29Qky3RQDbzj9NRdR5FT1FLEhsoFZ9hw4UuIaCOisEzMfZKT0tUikqzYR5oIIacsVFGVhEdzh7JzZgZ9ODZET8jkKGXmt27m+nmKBZx7L11wpRVZJRcpJp5TwLAfxkvE=
+	t=1734265849; cv=none; b=l+Teqtsw624tzq9wIwLHG5CXTwv9mFmJ1WQnp9ecvuKg2POM1wdvPbBbbPt2vQK41thFQV9rMVrZglUJfoFuJUGY9vdgtaulGcomsyFCjm1AfmndDRqn6Q/S55sVmygp37vgfakdXDSzrK0LzI9T/e09Fjer77/bL8TJM58nDZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734265719; c=relaxed/simple;
-	bh=dwCH+0fYRE1FijYjTFxSBPY6i0A9PIbI2v9LnQxznMI=;
+	s=arc-20240116; t=1734265849; c=relaxed/simple;
+	bh=qApTtuixGSvNcTyH2GJARb6Ym9EpJv7YrdvvXHOj4h4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D4t3A7uf77iiSB+R+mf6NC0lLnJBgeE30upNrGrSa/Z6rjhdo5FEQ9nct7w/h5mf8x+cxdQM4hErLe74ADbYU4jK+MCwPP9M7ZFGLs+/6C3k9xSFMWXV0zLwcU8wJvq33ckytlo3r4hxOnw40F38viC2FvwDfJygF3VBjBzTp8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aNLK/myI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AD6C4CECE;
-	Sun, 15 Dec 2024 12:28:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LXeoJ/KTtAC44H58/HFoF8wGwjLVhfcdiSfksN7y//SDs0S9VGhDMa+mLIFmHErVVFAyTrLSlhwACPRN9T2lDPFitpzdpZ9wGJorgAlRxRmm92OV53YdTtui+pG33DPvccnOMIq2rjP0PgHT4MITbsRdVHPTYy+3D8hav+jXwN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa1PSBtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455C4C4CECE;
+	Sun, 15 Dec 2024 12:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734265719;
-	bh=dwCH+0fYRE1FijYjTFxSBPY6i0A9PIbI2v9LnQxznMI=;
+	s=k20201202; t=1734265848;
+	bh=qApTtuixGSvNcTyH2GJARb6Ym9EpJv7YrdvvXHOj4h4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aNLK/myInAQySGNNpnw+/m8vaUS8NUdoNC3v9OtwVcDMiRxXmd1F70a5DWepneYqK
-	 n/m14zXfCJJ14Y01QHD7otzfeI0QY8I7G8QK39zGgPFG0RUI0T0NjILV6o9Eu0FQJP
-	 Fr/LgTe6WD8bHfbwLlvLFPvHjm59o1b0zQ6J8VrxjHf6BI3njBXPagYTIqXofUPRV6
-	 0dhzKKBKLgNDF6bclKl8JAGQHBatQXLFm1ZODOCLuvySm/7KlBkxdEgExCGA/ncoTH
-	 phUBn/C+F7HXjq5WlbC+6HcOxVr/+5zaZJkl4t3QJwNkbZ4FNjoHK6QQ1ZcDiGmNmP
-	 wdN1ZDMZTsTbw==
-Date: Sun, 15 Dec 2024 12:28:30 +0000
+	b=Wa1PSBtJq/j8OAHEWOVIIioO6DMfrTdkbaucZ/d6pszppj8s08Bj9PQ2KohPfSOWA
+	 GXfu9IpAKDbjCrOV9iOmF9uNXBCM9MyCvj8QZV+9xy14i1B3rsKW3OnNWUSzbuYOU0
+	 MgSfSch9cZCWcW0u2d4Tu9KMpc+dCBPe2WRZ/C0mL2AckSBqSVGXNIXxLadg4ooQFd
+	 RWQiHwFf82k2Ts1pu7N4XWlZo6659uM6Ay6G51tppSZpdmDwah2thUNYBQedgU5PQa
+	 JPq8Ve/rw3U6gaoOQXCUaFDA2TEylWiZ+AmVoZxfJVQ5MwCZDP8ILeWuQ1sPsrAH+a
+	 I5f/Vlu9iA6+g==
+Date: Sun, 15 Dec 2024 12:30:40 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, ak@it-klinger.de, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Krzysztof
- Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v3 1/1] dt-bindings: iio: pressure: bmp085: Add SPI
- interface
-Message-ID: <20241215122830.159555e1@jic23-huawei>
-In-Reply-To: <20241209233845.29539-2-vassilisamir@gmail.com>
-References: <20241209233845.29539-1-vassilisamir@gmail.com>
-	<20241209233845.29539-2-vassilisamir@gmail.com>
+To: Fabio Estevam <festevam@gmail.com>
+Cc: linux-iio@vger.kernel.org, andriy.shevchenko@intel.com, Fabio Estevam
+ <festevam@denx.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2] iio: adc: ti-ads124s08: Switch to fsleep()
+Message-ID: <20241215123040.36d60bd7@jic23-huawei>
+In-Reply-To: <20241209181624.1260868-1-festevam@gmail.com>
+References: <20241209181624.1260868-1-festevam@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,81 +60,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024 00:38:45 +0100
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Mon,  9 Dec 2024 15:16:24 -0300
+Fabio Estevam <festevam@gmail.com> wrote:
 
-> The BMP{2,3,5}80 and BME280 devices have an SPI interface, so include it
-> in the device-tree.
+> From: Fabio Estevam <festevam@denx.de>
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Stray blank line at end of file.  I fixed that up and applied,
+> According to Documentation/timers/delay_sleep_functions.rst,
+> fsleep() is the preferred delay function to be used in non-atomic
+> context, so switch to it accordingly.
+> 
+> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Fabio Estevam <festevam@denx.de>
+This is one is stalled behind the cansleep patch which I decided
+was trivial enough and sort of a fix so sent the fast way.
 
-Thanks,
+If the two had been together I'd have included this as well, but now
+it's just an optimization so needs to go the slow route.
 
 Jonathan
 
 > ---
->  .../bindings/iio/pressure/bmp085.yaml         | 30 +++++++++++++++++++
->  1 file changed, 30 insertions(+)
+> Changes since v1:
+> - Use andriy.shevchenko@linux.intel.com in the Suggested-by tag.
+> - Add Reviewed-by.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> index cb201cecfa1a..017abe8eb9c5 100644
-> --- a/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> +++ b/Documentation/devicetree/bindings/iio/pressure/bmp085.yaml
-> @@ -55,12 +55,16 @@ properties:
->        If not set, defaults to push-pull configuration.
->      type: boolean
+>  drivers/iio/adc/ti-ads124s08.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ti-ads124s08.c b/drivers/iio/adc/ti-ads124s08.c
+> index f452f57f11c9..77c299bb4ebc 100644
+> --- a/drivers/iio/adc/ti-ads124s08.c
+> +++ b/drivers/iio/adc/ti-ads124s08.c
+> @@ -184,7 +184,7 @@ static int ads124s_reset(struct iio_dev *indio_dev)
 >  
-> +  spi-max-frequency:
-> +    maximum: 10000000
-> +
->  required:
->    - compatible
->    - vddd-supply
->    - vdda-supply
->  
->  allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
->    - if:
->        properties:
->          compatible:
-> @@ -73,6 +77,16 @@ allOf:
->      then:
->        properties:
->          interrupts: false
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - bosch,bmp085
-> +              - bosch,bmp180
-> +    then:
-> +      properties:
-> +        spi-max-frequency: false
->  
->  additionalProperties: false
->  
-> @@ -93,3 +107,19 @@ examples:
->              vdda-supply = <&bar>;
->          };
->      };
-> +  - |
-> +    # include <dt-bindings/gpio/gpio.h>
-> +    # include <dt-bindings/interrupt-controller/irq.h>
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        pressure@0 {
-> +            compatible = "bosch,bmp280";
-> +            reg = <0>;
-> +            spi-max-frequency = <10000000>;
-> +            reset-gpios = <&gpio0 26 GPIO_ACTIVE_LOW>;
-> +            vddd-supply = <&foo>;
-> +            vdda-supply = <&bar>;
-> +        };
-> +    };
-> +
+>  	if (priv->reset_gpio) {
+>  		gpiod_set_value_cansleep(priv->reset_gpio, 0);
+> -		udelay(200);
+> +		fsleep(200);
+>  		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+>  	} else {
+>  		return ads124s_write_cmd(indio_dev, ADS124S08_CMD_RESET);
 
 

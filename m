@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-13519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A681A9F2558
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4179F2556
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 19:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7CAD7A06EA
-	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7E92163D75
+	for <lists+linux-iio@lfdr.de>; Sun, 15 Dec 2024 18:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3090F1B81DC;
-	Sun, 15 Dec 2024 18:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95491B87C8;
+	Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5r1TWiG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSqH/IAy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B471B87C9
-	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720A1B81C1
+	for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 18:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734287408; cv=none; b=XyI2JgUbC9wHCETtqno04VMcYMPtqh4gTbD57WvKlCqHDd7AYy/BGFjvF4dElpWEjd7o7yJonDrKDX/R6EDZPb/1gL2lASjdQtUZUr9ZtgTWg+lwxZSDvsuf1uGczoJsBbaxHJbYtnGP6WPloW6AX6NCNFwGF+caFgCVxNNpizw=
+	t=1734287410; cv=none; b=j6maxsHlgyE2YFscLF4beGjIDmZeFYZcAD1jib7tm48oTj3hHElKuisRSwd3La57HNeQi3ENVFRhrnW55n97dYwXZo++8eYTs8WvdpUMcjMR5Qg5CppOOGGuXgbUnbqwCPDhDLzGOkHIHX05sV6PSxZatvJ6aNnjNQFyjVq3uYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734287408; c=relaxed/simple;
-	bh=lHp0QJc48vtV03JO4iJTHOaa4JdkmrAuMvy+bWJyd/A=;
+	s=arc-20240116; t=1734287410; c=relaxed/simple;
+	bh=5PrNw/Y/zmvWCTV4BWaNgwfR6d4W7+Xf24j91EFCgN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPYn4NYXI/U+Odbq5IfUPn3Elz+IFbg5fxeQqPspbxr7bJxgq2bRS4rc5PKC32jI3bD85jaBc2CcP7qXUOMWfgUIhyRT9Ct5qEIMp/LS0DExdjz2EQO5FPbf88xJtuvdLLqSf44aZXlunYv/hUmc2lamKNSGyafwO6uOxmfyyN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5r1TWiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E074C4CECE;
-	Sun, 15 Dec 2024 18:30:05 +0000 (UTC)
+	 MIME-Version; b=Sy+uD+V/g6UTQnNyFXrfukXNcb5xtfanJKBPf1CkhRXkSzudnQH98tPUTe9xlRHzPN/zxfbm2QGyUQkLY8YezDSKcd9augVHVVl1oRJJ92KYOIgVgHCreTDtb/Twz7wZhkr2QFgj7+scGVYOcKz131M2j4MnHGFSkDokGcqZd5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSqH/IAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBE4C4CED3;
+	Sun, 15 Dec 2024 18:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734287407;
-	bh=lHp0QJc48vtV03JO4iJTHOaa4JdkmrAuMvy+bWJyd/A=;
+	s=k20201202; t=1734287410;
+	bh=5PrNw/Y/zmvWCTV4BWaNgwfR6d4W7+Xf24j91EFCgN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5r1TWiGFE0kzoe+X7Tk8yA2q+OqroPOLUFvYtlvDmLY4hvTmoZjArZezGdA9NGjp
-	 lt5APqd7X8+1aIyeoiu7gyv0vUQuM+3vFzocYswTty6auPOMZpxi5I1eKvrI4cbJT9
-	 xvr3iKUUbfJMnNbDwd3qPVirzR4yTMb0QFdWSnPCnEm92PVdCU+bPnAVnMK3DCHMdA
-	 F8W+DmlEkhpYSTxtXt1evRlWcFBb8LJd776xxsHH+S3YKpvzjy8A2d33dfnsWnwO/b
-	 i6UjtprWTdtlhs/N316daQzkikOzUDuYz2weG6DQ4cBa2RFLffDC/cwCAjYWtdsLzn
-	 jJph6iwTfR0XA==
+	b=lSqH/IAyzLdCGglsfRGW4n/2BjeVcKXFz0lNH5IRTi+lD8OjjDH3Yc2UPg+Prp0CB
+	 vrBuop5UYGq+XbrCmTRqPMwIOt95XiE+A2UD9Fp0oWkN4dKDSzEHDa/Z1dP3dvfDKc
+	 xVDLnjIDqmm7eNuqHbts+DVX1DHC3hVApGMUUfyVwc0yKEuSmlJhVNSHTzEjG9y1fR
+	 chaJvm9k+V2YzLtOLeZPrbZCIYlQVI2Ya9TWrSrXZmPnERLS0SMHM1AsjDn4B/mr+W
+	 VlFAfV8673PFbbHzXwIjBzUBYPkdLQ8oMj9TbLNmbzdsP1F9wVZ63CkOds/+/UJcPW
+	 J5VxaBWtLo/EA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 14/20] iio: accel: bma220: Use aligned_s64 instead of open coding alignment.
-Date: Sun, 15 Dec 2024 18:29:05 +0000
-Message-ID: <20241215182912.481706-15-jic23@kernel.org>
+Subject: [PATCH 15/20] iio: buffer: Make timestamp s64 in iio_push_to_buffers_with_timestamp()
+Date: Sun, 15 Dec 2024 18:29:06 +0000
+Message-ID: <20241215182912.481706-16-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241215182912.481706-1-jic23@kernel.org>
 References: <20241215182912.481706-1-jic23@kernel.org>
@@ -63,28 +63,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Use this new type to both slightly simplify the code and avoid
-confusing static analysis tools. Mostly this series is about consistency
-to avoid this code pattern getting copied into more drivers.
+This is a bit of a corner case for selecting between the in kernel types
+and standard c integer types we tend to prefer for userspace interfaces.
+The interface is entirely within the kernel but in many cases the data
+ultimately ends up in userspace (via some time in a kfifo).  On balance
+the value passed is almost always an s64, so standardize on that.
+Main reason to change this is that it has led to some inconsistency in
+the storage type used.  The majority use aligned_s64 rather than
+int64_t __aligned(8) and this will ensure there is one obvious choice.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/bma220_spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/iio/buffer.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/bma220_spi.c b/drivers/iio/accel/bma220_spi.c
-index 009e6243c6cb..96ba028157ee 100644
---- a/drivers/iio/accel/bma220_spi.c
-+++ b/drivers/iio/accel/bma220_spi.c
-@@ -66,7 +66,7 @@ struct bma220_data {
- 	struct {
- 		s8 chans[3];
- 		/* Ensure timestamp is naturally aligned. */
--		s64 timestamp __aligned(8);
-+		aligned_s64 timestamp;
- 	} scan;
- 	u8 tx_buf[2] __aligned(IIO_DMA_MINALIGN);
- };
+diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
+index 418b1307d3f2..88699a341669 100644
+--- a/include/linux/iio/buffer.h
++++ b/include/linux/iio/buffer.h
+@@ -35,11 +35,11 @@ int iio_pop_from_buffer(struct iio_buffer *buffer, void *data);
+  * Returns 0 on success, a negative error code otherwise.
+  */
+ static inline int iio_push_to_buffers_with_timestamp(struct iio_dev *indio_dev,
+-	void *data, int64_t timestamp)
++	void *data, s64 timestamp)
+ {
+ 	if (indio_dev->scan_timestamp) {
+-		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
+-		((int64_t *)data)[ts_offset] = timestamp;
++		size_t ts_offset = indio_dev->scan_bytes / sizeof(s64) - 1;
++		((s64 *)data)[ts_offset] = timestamp;
+ 	}
+ 
+ 	return iio_push_to_buffers(indio_dev, data);
 -- 
 2.47.1
 

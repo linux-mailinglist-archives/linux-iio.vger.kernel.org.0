@@ -1,252 +1,474 @@
-Return-Path: <linux-iio+bounces-13536-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13537-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAEC9F2C18
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 09:41:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149059F2C73
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 09:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44DA1672FB
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:41:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71BD8161924
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619D1FFC41;
-	Mon, 16 Dec 2024 08:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF23200BAA;
+	Mon, 16 Dec 2024 08:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="Vtar4fQt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i0Ks55wd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF011F709A
-	for <linux-iio@vger.kernel.org>; Mon, 16 Dec 2024 08:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734338446; cv=fail; b=T1AqDLuFO5fo9cerO6cPDWtQNiuiaZAwsK2o4roVxMC2963kzqYes87GoqDrenVGzeXer4rrZEcwcaEkXZoHNsRgZeuM/ExbCn2/CCoi0WWu1ySPZ2mt00gtVHaOx/NKoeiBTlYqLWuu0sbHwyDF27UKfjaLYhTh6No01hUgeyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734338446; c=relaxed/simple;
-	bh=sOev49cFwA3saEB79OFmo59w9tN03n5JyT384vfP8Ug=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=VYt7IIv9S4JL6wqcU0x3Sj0wqzPF+MGL4JDzYVMKtKwU953shF5i8AuM5PelncvG8te+QM+rzKe+nQHrAhHJCMddy+jy1Ga3YC5ZC1aDhh4pyVHS5Sj87zQXYX2L88TP42ZLlg0CN5rFiHrdYdqr08r0y7DzpQwQFyvbyoelMIw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=Vtar4fQt; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BFMvSRJ025145;
-	Mon, 16 Dec 2024 08:31:24 GMT
-Received: from fr4p281cu032.outbound.protection.outlook.com (mail-germanywestcentralazlp17012049.outbound.protection.outlook.com [40.93.78.49])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 43h2xx126w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 08:31:24 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dYwMwFYwj/TqBmLmlx5Z1m2E+S9+JBnHZVbVpTdBGlT8ddoOzidk0ZznwueJqWJlom3iH3e9gq/Kg08c6WaK/Wt7AFh2VhxLfr2+yQLBIR3x1iQwRi6xJS/YtXZzNUCP/8mcdRWXiUl1QHXMXT04nG7LONUh7uPjjnPCbrlG+VAA48j8CuaU7FA/M7xihGYGRT1U96BK+MG1oIz2YY87oo8N8oEIvig/9T/aOmuMZC+KgiUg+z4Ud4v4zeElGuX+AEqQ0bd5U6i6Z1vysHzQDto3VB5eT1AKP6yV6syxigSZD1fXmcISBWwOCckPJ6tCn4+9Q3Hht+Gd+DR2YgOiAA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eVHvSvYqJgI6vT5zHud7qKUySOLgPTXtZqV6ilkzcz4=;
- b=uqodDsHQWbz8/bc6qUofbeUdcPmBnwoQx/9d57TzcRAmF0v+61BUhL+tYxucRS/clxyvz6fLgg8DNtDKe7e1yNhs7FcN5/qt/1dpEyVaskNvOrChyyq8+6Rxg1Q6HJZpq+aXHc8oyMTUP2+qUUKghpCbSM7gnOOuEOIstu5BQzjqq7FXuGgMWpEvv3HToOPLMIwWLKAiuHlBeNPVgkUFZMXZv6MoepdvHEK7pk6drmxuFD+Y+utrHJpbyJnunwjAqRuQSm9pDZ0Znw4N6FnfwpxSlURZhyCerQo78rh7zgzqyXekwBRbnfUcNP3hAZzGM4q7xUrJdW91wwLIPDRUAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eVHvSvYqJgI6vT5zHud7qKUySOLgPTXtZqV6ilkzcz4=;
- b=Vtar4fQta2EoZTaT1yTKPNp79frp1TqnnZm9bsk+F/2l0X+Wn/psYEkI1qlzLlC6Enr7jQ365cW2EESm2QOhFhtY6vOQEDpwm5DO7IqRxPnhq+nEzmqYuhUd8La7rzzk9h1c+WTbmqt4qxTl0V+As25/vTIeDie2w0EMmQSE5VNlKb2y4K9+cRrLf8M8ElQUkNCvpc4xtJ9tlD8kw4wXrgYMPlPtx7f/PPyMyRKWykSiizR76CkK1FosNdxy40nmp+w2tklWtodyXQejl+TZysHQfVWSG3cr3XAko55GQsTdDEYk2ZEzbzLEJ0MjttjpvL8u7lNXkgKsg+aheAON/w==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by FR3P281MB1792.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:6c::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.21; Mon, 16 Dec
- 2024 08:31:18 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac%6]) with mapi id 15.20.8251.015; Mon, 16 Dec 2024
- 08:31:12 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>
-CC: David Lechner <dlechner@baylibre.com>, Heiko Stuebner <heiko@sntech.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 18/20] iio: imu: inv_icm42600: switch timestamp type from
- int64_t __aligned(8) to aligned_s64
-Thread-Topic: [PATCH 18/20] iio: imu: inv_icm42600: switch timestamp type from
- int64_t __aligned(8) to aligned_s64
-Thread-Index: AQHbTx9tByvXp22NO027AbPD1ptj2bLoizNv
-Date: Mon, 16 Dec 2024 08:31:11 +0000
-Message-ID:
- <FR3P281MB17577F86CDB48E269394C19BCE3B2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20241215182912.481706-1-jic23@kernel.org>
- <20241215182912.481706-19-jic23@kernel.org>
-In-Reply-To: <20241215182912.481706-19-jic23@kernel.org>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR3P281MB1792:EE_
-x-ms-office365-filtering-correlation-id: 00804863-63be-4994-fd22-08dd1dabff6d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|366016|38070700018|3613699012;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?QMWt4Ystk/4UjHww0JYQapPzBjAfOIgmyqtOSZqA5ZMWLWqkcpqSKItI1c?=
- =?iso-8859-1?Q?8jne58uxj37iC6UZZMANfHQu/9CFlc7so5pPTOhVGF1aqqxnUD0+JYwcrJ?=
- =?iso-8859-1?Q?o50dDoWWi/cMjRaYIyiOhnF7piv9xOTff4rsyr+oxvxo5Wdo4REfY92nx4?=
- =?iso-8859-1?Q?1fkOoxbllj0Oh2dQfyHOKPZSFchsShfOYPIcWKe2tXvlfsetTSlVqxvjnI?=
- =?iso-8859-1?Q?rFvAmbRthQi2c5P339EVsMRigfW6fyc4uBulRewXK144P7qBwwIYdRl8Ha?=
- =?iso-8859-1?Q?eaZkm8tO6ezg1oCTItw2S4XaZG/ONIqqtREa03rjTUi3hxWI4iIRUEYXyT?=
- =?iso-8859-1?Q?Mf/1aqJGAiasyR0Ohr8MQmwp3TX5mQhPya0Jwmoi+r/N6jIvMrZAHvJBb3?=
- =?iso-8859-1?Q?weolSiRPq0/2i/+4u+xowWxy7lEKIg/MXBz5kuYODTV8qR0vDkGri7Yxdp?=
- =?iso-8859-1?Q?kMV9WSKP+9H8vpvDESx1caqHRS3VBb4HMR6O4cQZ4pVDvW4UOOtsUU8pA3?=
- =?iso-8859-1?Q?05s02t8SrUWAk9XYs903+5pd08lQXO2emMetKWqpwhVDyrTt/xIEv0BT7k?=
- =?iso-8859-1?Q?c9It6rx4XXsyG0AAXhX34cCGn8cvylDlxudqJlEYiTMubVro0d8Ki0BOt+?=
- =?iso-8859-1?Q?xZDMdz+VwVfdocwD/406HuasD5clIvV9dCg1p8QhB1f4PI4Ot9ItSD/4kL?=
- =?iso-8859-1?Q?dt/7/ccRgLJslgAej/fTMf0FA2JsBA1PizdStmsChrcykJh2Prp9gI58Hh?=
- =?iso-8859-1?Q?M9NeX1+6kUbFB6HC0lfQhAVaLobWLV59qjYwh7w4KWzcXDlCOfEaBSEl9m?=
- =?iso-8859-1?Q?h3mSiQvMLG8kfNbFkcDxuidUC8jDUFWlCeucEBkxvgGx/Cx2pVpc7CG0Hi?=
- =?iso-8859-1?Q?b8ElH8+YrvcXTZi2uooU9+GQ3SrlEpjk1akwRnaufxDl2sOzMSboPYY8r3?=
- =?iso-8859-1?Q?YXIYLG9sWDiYppn9/AlE/yHs8Yg1YkVvaOGl0FCs+xWqTGofLB6L/V3gXm?=
- =?iso-8859-1?Q?xcmatabR9/YfSJ4ce+ShsGcAn1XxjJraIZInRwPgLwz8mnmHGqkNlDGkce?=
- =?iso-8859-1?Q?2tFKcrc73Iou0Tw1RAhUQQuZGpQJ10flb7HhiECSdfR6115/O6NT7X//lP?=
- =?iso-8859-1?Q?E8NSDdU4XBN+RdyA/rYqdtspm5Fwg2STQX/gCeZQJgQbH5fkf4NQ5z1f/O?=
- =?iso-8859-1?Q?pTk2pHyNIJ//11/alLQTApD9iaJyEqBF/JHm5ROB1IUFuaz1hijesmNapz?=
- =?iso-8859-1?Q?CobpekPmsqBvoNTiTO5xRiZXClbBMSZXSELAj8C/t4lsjh/+Tcqx3If0vw?=
- =?iso-8859-1?Q?IUtksiAzeBvETNW2ffd5So4OPNYxMcwYLqi+QsxiwyTLy+UDVqaj3SZcGV?=
- =?iso-8859-1?Q?I9otlZZMGjx5C/N6gUBHYUTTXSnh0L3Vui2Az5ES0JXuMDtMYf5MXGLPKR?=
- =?iso-8859-1?Q?9kfcilwx21LwonvlypFSbv1R66rEJG7kCyGpeJDOOv9enKVqFGMLU5pclc?=
- =?iso-8859-1?Q?rYXu75++0j8PVWGS9csH+N+pDxjhm/eVAnAgSu3HySMg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018)(3613699012);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?33QsSwDfw3paC/0ZhvN9L524SVWZpC4pHT+yJRKbOS8o/2Qu4d8NlaB9B2?=
- =?iso-8859-1?Q?9QGhO65M27W8SlBf8IS12K3UyTXEd/RDxPu+3wQ8txnpkR2bwFWN5vTeFJ?=
- =?iso-8859-1?Q?g/+Q55/CI8X3iAB3N/bsMXlqQ/bvoKRYNXY6eDIK2mkKfSdNV9WOUdqsay?=
- =?iso-8859-1?Q?+2Vf+YRTvdSFa3fxlvyvd8dfjzSgJQkmODufk2ScCk8yp3V2N0OyZ39sK9?=
- =?iso-8859-1?Q?Vg+4DXAJXqDl3fA/GH5bx+TjoVVg3OcnvxtxMKwDRGfV/Pdc4/ZtF0rdmk?=
- =?iso-8859-1?Q?C7xnodWMKcdyQlhr4Ft6ibv4gSaGGKYo2IA/z4EiV9VoZ3w9365f7/RXdX?=
- =?iso-8859-1?Q?5GdOKu4MYHWLKkwnnxnqDzwEzyV2IkIIEF/EedrO4qOvN9jmGTh6EK+w7J?=
- =?iso-8859-1?Q?iy7uIJjixVwiMirEVqavy7KZxpRVHH8TtWG81JQzYdwGvOUOKAI/YGvUdh?=
- =?iso-8859-1?Q?JwJixqaHHz6DsMRMh/QzkSoSQ/KZysU8ESxjo+E3YQcyfDbfszsMyPDoAF?=
- =?iso-8859-1?Q?C4wh1QSIFP/AUp4RLh12wCoHRTrXV5/KJ8tpxuJRPqmc/9zbRdDTUEEWpF?=
- =?iso-8859-1?Q?N706V8RLZtwAnxcpIvMEN+JN19xdyWYOOIqjNJ7RgaQTtCZQR/aZIqOc6f?=
- =?iso-8859-1?Q?nhafG50+EKFpeRFjvvaB6a6ZR5MD6vDJm0zlpH4ezUEJypFwsP6b483VJJ?=
- =?iso-8859-1?Q?t7Lw1+BA0Y9fYXMkHR0DiDYzdyIWyBa4iSRzM1dtviD8QV2OQBEIfA726o?=
- =?iso-8859-1?Q?nTeRrgrfna2HjXwtHtIfRpIQ22P1aZ7FHqTWgywC+S/0Nl6eYog2sZnasS?=
- =?iso-8859-1?Q?YwBe4xEFrnu/qiRgTHBmaETb5TEaJuLmZciF8dewHFRplfZFpyj8ZCKOkP?=
- =?iso-8859-1?Q?qOqTCKAw62x7tnpJrM+yVgi2ztUQEU3koeOHTq+3Lupi1lj/eK7QuL7gak?=
- =?iso-8859-1?Q?ePD51tsZfLKfC7vO76mCqttRiw1ojVMPpXUPAlCKilE2TrhxIvTCiiqU+X?=
- =?iso-8859-1?Q?ySHwVaMv4SdB+qWTGkZ6Q8nYG/cR0IwI08wzJBM9F3hO/LwwXoilj2xe8G?=
- =?iso-8859-1?Q?UjzuOWpnDtRL9DGJ44wa+GEzyb7ZRTstdUcDOrap7ULgxUgktKueNmFu0p?=
- =?iso-8859-1?Q?9L2GpuzPbQCaSXmEmYd97DA011wKnDmX4SddINy9rsPGqPRSOXuM7qfSxm?=
- =?iso-8859-1?Q?afsoGd+hHX6wAaZOG4EJv+wsok25pknhfdMB2+JnLdABhwPUnm3A+Fn0xD?=
- =?iso-8859-1?Q?w6Ve5KCs+WJ5cK96Ga3bYw5u5M3b3/b317T/W2gZXGJR7UtAAlqqZ0+IzD?=
- =?iso-8859-1?Q?ZZogEmzFwxLSl3XBvGxriEEarmcelGjRlPpJhfdVisCRRhiCaf5lTxgb/B?=
- =?iso-8859-1?Q?ha61tJsb+mdddcLZUpIkuTMMvtrohlmUx6m5J7vAa4IXGJgHkxJdLIrsnO?=
- =?iso-8859-1?Q?w8n6yY3mymGuUFeiwszk37ILBvO9ug3LiRdCUfksxFlKBLPeq4GU4EkVW2?=
- =?iso-8859-1?Q?syIOncvc3VwyScQry6xO8qnPKovuIFvKtU6Gqflfo3S0vYNK0U8OWijcNb?=
- =?iso-8859-1?Q?rIv+IPuUakn3n9kul+lBx3wBMb7KrSKzjzz0yiisgJc0clW+7yu/yUDumX?=
- =?iso-8859-1?Q?UW63GMgnjktCLm2WC6S0VqSyYMOXokMzol8xzsuA2mhhMhUKXL7sA39w?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0F7200B8C;
+	Mon, 16 Dec 2024 08:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1734339408; cv=none; b=hc5TW7PguVqiefJUUMWVkIiEjxWn2yvJgqxBUgZ73Zvk6nVTbdiLVr6vjf0rDQ+HyJSezjnJuhmIWCTiPX0RHDM2y7sUiq55ltJ8F2lEnY927+gJvFQEpjy5kCMDJyJvrOtCETB073omU8eFvu9Kwjv895m0ITEI/WQpqrBHDbc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1734339408; c=relaxed/simple;
+	bh=tfbUP9gjJDGiJPTIqFiPdMEMEkKSRuNhcd5l9B9OJ/8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=M5r5A54WYvsVkdK+k/n7Iz5ko9B2sRi26+dZxi3r23yXKTzRr1WNq1b4fxDP2DL9DigwPMW/GB/FO8caW3+iv2+f+oN1FDvPwveFcSf8KgYuBXaIIqC6+SzwfiX5jzyMXrjBEw+XaUll9mLhe/0DARltb8J30QL5u8GKK7e214I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i0Ks55wd; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30034ad2ca3so32154881fa.1;
+        Mon, 16 Dec 2024 00:56:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734339404; x=1734944204; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=626pWv5KSy+d5fJyUTQWTlBU9Lgvvvj33oOG+jYjkv0=;
+        b=i0Ks55wdt8p0o7dCT7Z0MXpxZmMhc1ef5FbTht3p+vGedmTgOeucvQMNwieOrCm8W6
+         CwQ3LHTh5QITNHopFkLqlSFYScGLchBYOY4TtZjrC/EIaP5bgCve3Hn2wNlPVJdKIoYk
+         v9FxKbJ8LpmCNSRrEpdXx9R59EpSBkM6VO6BP8JkoahJhwIXDsiZ9aqS+ucc8e91jVob
+         3xZ+hOtNBkE2TJ0u2qdplf89AhdG+lXBpy+nYke2EIx41bX2eBML9l0ny/pjzcZyXMWH
+         OfwG1lB4QLHQEoPlhwiREHxM38L7E3RMI/FXY6lcSzSKEZhsJnFtJLNdqqPNzn+bNOU8
+         PvJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734339404; x=1734944204;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=626pWv5KSy+d5fJyUTQWTlBU9Lgvvvj33oOG+jYjkv0=;
+        b=pvnRMaa2gkAhGJ3A9gTeFYY9d91OziXhDPUNZpTB1He1qLqdcSLFmg0PzuwvoWYL3D
+         Hvk+WnrHzOKemjg3ZtxOVgJdn0ks1Irq4DUPsY6uPvSWNI6ZIUsMTiP9zvLN5x126Ad/
+         y6QLN/vZp+XKU8816P3H936pUuU+G9ZrpYyBjCBnqxzwSyDQI1oAKk2SdJXGChbh3t89
+         xS6+UjPMR6LaXDC4+spBBwClnejWwUxAsLyTgN6cdLoAu7O8TY+ddC+S9HsXK7wkyyPA
+         kEjKuNDfO9faKH4LzUO4yQ6+i6QH8ObslcanQ0ChJ93Gb37sgfogpgVdD6SVW8PDc2QV
+         D+AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpWDdrnRWpYuqZLJ48qQXN6i3LXTI/dgtmkW8G51Pa2zugsj8Bgtxmva/P7z3iBLFW/S2ZezHhQPbVR/2r@vger.kernel.org, AJvYcCWA5QokS0PvMhnonkolgsuXJxMfUnzE5COnNolN3ecld3aAb/YKNYmOtZlMcopVdHZIReIzW1LegIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHMIXSRdvkMBGQpnrAZ82/SVkmXdIpRZBMKLuEfSma0oxchSEj
+	KlrgFTEdrkQoj0cNQVDJWWaDGWB/2Ps6MYtXSOHXALXyTjBT1/aU
+X-Gm-Gg: ASbGncvPjOY5jUwCdzXPw1HJx8XA/ulTVPG9BC7/0OBf9VFXmdqU2cFeU3dtOEKpSkJ
+	6rWAb01eQmPWlv90hyadH/+M27wZXV+ftwGlSKxZcX6vFG9GllhUlwX+A7t68zS/awquDO6gDh/
+	TGs+6yE+1rD3zlEb2ANXWpTkivYgPcNjIL+/MKBtTwcfbMf2tXOK5U85C8LG+5se1cv2pnNkuK2
+	6a/1EAUppId0zw3w8EAZkVEPptRlEqYOhD6pQ2B0ZR2QwD0w1/w8pInWyw=
+X-Google-Smtp-Source: AGHT+IG3Oh337cUx8Oy+qqjyTPg8NGVyK3fDHAmv4fQ//dttOmRU51JIvzr7qeqQXMoU/yfI7RqujA==
+X-Received: by 2002:a2e:a30e:0:b0:2ff:df01:2b43 with SMTP id 38308e7fff4ca-3025447b0a9mr31724281fa.18.1734339404090;
+        Mon, 16 Dec 2024 00:56:44 -0800 (PST)
+Received: from mva-rohm ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-303441a5fbcsm8358901fa.105.2024.12.16.00.56.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Dec 2024 00:56:42 -0800 (PST)
+Date: Mon, 16 Dec 2024 10:56:37 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] iio: gts: Simplify available scale table build
+Message-ID: <Z1_rRXqdhxhL6wBw@mva-rohm>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 00804863-63be-4994-fd22-08dd1dabff6d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Dec 2024 08:31:11.8241
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 00rlS220FHnVvEwuiIOjjo3Bin3Q5FnXELXkoNqlZ9lapzS6gziotXnFJrWaRlfx7C9hjYlWXoVx6ZXHSFqeT35K7/DCwQGaOcdA7wtEocI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3P281MB1792
-X-Proofpoint-ORIG-GUID: Alpt0f-8vJkHh-undJdvM1UUdWTKTeos
-X-Proofpoint-GUID: Alpt0f-8vJkHh-undJdvM1UUdWTKTeos
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 clxscore=1011 spamscore=0 bulkscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412160069
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="eo02nJzJzcUjPyry"
+Content-Disposition: inline
 
-Hello,=0A=
-=0A=
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-=0A=
-Thanks,=0A=
-JB=0A=
-________________________________________=0A=
-From:=A0Jonathan Cameron <jic23@kernel.org>=0A=
-Sent:=A0Sunday, December 15, 2024 19:29=0A=
-To:=A0linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; Andy Shevchenk=
-o <andriy.shevchenko@linux.intel.com>=0A=
-Cc:=A0David Lechner <dlechner@baylibre.com>; Heiko Stuebner <heiko@sntech.d=
-e>; Jonathan Cameron <Jonathan.Cameron@huawei.com>=0A=
-Subject:=A0[PATCH 18/20] iio: imu: inv_icm42600: switch timestamp type from=
- int64_t __aligned(8) to aligned_s64=0A=
-=A0=0A=
-This Message Is From an External Sender=0A=
-This message came from outside your organization.=0A=
-=A0=0A=
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>=0A=
-=0A=
-The vast majority of IIO drivers use aligned_s64 for the type of the=0A=
-timestamp field.  It is not a bug to use int64_t and until this series=0A=
-iio_push_to_buffers_with_timestamp() took and int64_t timestamp, it=0A=
-is inconsistent.  This change is to remove that inconsistency and=0A=
-ensure there is one obvious choice for future drivers.=0A=
-=0A=
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>=0A=
----=0A=
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 2 +-=0A=
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 2 +-=0A=
- 2 files changed, 2 insertions(+), 2 deletions(-)=0A=
-=0A=
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/ii=
-o/imu/inv_icm42600/inv_icm42600_accel.c=0A=
-index 7968aa27f9fd..388520ec60b5 100644=0A=
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c=0A=
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c=0A=
-@@ -178,7 +178,7 @@ static const struct iio_chan_spec inv_icm42600_accel_ch=
-annels[] =3D {=0A=
- struct inv_icm42600_accel_buffer {=0A=
- 	struct inv_icm42600_fifo_sensor_data accel;=0A=
- 	int16_t temp;=0A=
--	int64_t timestamp __aligned(8);=0A=
-+	aligned_s64 timestamp;=0A=
- };=0A=
- =0A=
- #define INV_ICM42600_SCAN_MASK_ACCEL_3AXIS				\=0A=
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio=
-/imu/inv_icm42600/inv_icm42600_gyro.c=0A=
-index c6bb68bf5e14..591ed78a55bb 100644=0A=
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c=0A=
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c=0A=
-@@ -78,7 +78,7 @@ static const struct iio_chan_spec inv_icm42600_gyro_chann=
-els[] =3D {=0A=
- struct inv_icm42600_gyro_buffer {=0A=
- 	struct inv_icm42600_fifo_sensor_data gyro;=0A=
- 	int16_t temp;=0A=
--	int64_t timestamp __aligned(8);=0A=
-+	aligned_s64 timestamp;=0A=
- };=0A=
- =0A=
- #define INV_ICM42600_SCAN_MASK_GYRO_3AXIS				\=0A=
--- =0A=
-2.47.1=0A=
-=0A=
-=0A=
+
+--eo02nJzJzcUjPyry
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Make available scale building more clear. This hurts the performance
+quite a bit by looping throgh the scales many times instead of doing
+everything in one loop. It however simplifies logic by:
+ - decoupling the gain and scale allocations & computations
+ - keeping the temporary 'per_time_gains' table inside the
+   per_time_scales computation function.
+ - separating building the 'all scales' table in own function and doing
+   it based on the already computed per-time scales.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
+Revision history:
+ v2:
+    - Add a few comments
+    - Use more descriptive variable name
+
+This is still only tested using the kunit tests. All further testing is
+still highly appreciated!
+---
+ drivers/iio/industrialio-gts-helper.c | 272 ++++++++++++++++----------
+ 1 file changed, 174 insertions(+), 98 deletions(-)
+
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrial=
+io-gts-helper.c
+index 291c0fc332c9..65697be58a10 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -160,16 +160,123 @@ static void iio_gts_purge_avail_scale_table(struct i=
+io_gts *gts)
+ 	gts->num_avail_all_scales =3D 0;
+ }
+=20
++static int scale_eq(int *sc1, int *sc2)
++{
++	return sc1[0] =3D=3D sc2[0] && sc1[1] =3D=3D sc2[1];
++}
++
++static int scale_smaller(int *sc1, int *sc2)
++{
++	if (sc1[0] !=3D sc2[0])
++		return sc1[0] < sc2[0];
++
++	/* If integer parts are equal, fixp parts */
++	return sc1[1] < sc2[1];
++}
++
++/*
++ * Do a single table listing all the unique scales that any combination of
++ * supported gains and times can provide.
++ */
++static int do_combined_scaletable(struct iio_gts *gts,
++				  size_t all_scales_tbl_bytes)
++{
++	int t_idx, i, new_idx;
++	int **scales =3D gts->per_time_avail_scale_tables;
++	int *all_scales =3D kcalloc(gts->num_itime, all_scales_tbl_bytes,
++				  GFP_KERNEL);
++
++	if (!all_scales)
++		return -ENOMEM;
++	/*
++	 * Create table containing all of the supported scales by looping
++	 * through all of the per-time scales and copying the unique scales
++	 * into one sorted table.
++	 *
++	 * We assume all the gains for same integration time were unique.
++	 * It is likely the first time table had greatest time multiplier as
++	 * the times are in the order of preference and greater times are
++	 * usually preferred. Hence we start from the last table which is likely
++	 * to have the smallest total gains.
++	 */
++	t_idx =3D gts->num_itime - 1;
++	memcpy(all_scales, scales[t_idx], all_scales_tbl_bytes);
++	new_idx =3D gts->num_hwgain * 2;
++
++	while (t_idx-- > 0) {
++		for (i =3D 0; i < gts->num_hwgain ; i++) {
++			int *candidate =3D &scales[t_idx][i * 2];
++			int chk;
++
++			if (scale_smaller(candidate, &all_scales[new_idx - 2])) {
++				all_scales[new_idx] =3D candidate[0];
++				all_scales[new_idx + 1] =3D candidate[1];
++				new_idx +=3D 2;
++
++				continue;
++			}
++			for (chk =3D 0; chk < new_idx; chk +=3D 2)
++				if (!scale_smaller(candidate, &all_scales[chk]))
++					break;
++
++			if (scale_eq(candidate, &all_scales[chk]))
++				continue;
++
++			memmove(&all_scales[chk + 2], &all_scales[chk],
++				(new_idx - chk) * sizeof(int));
++			all_scales[chk] =3D candidate[0];
++			all_scales[chk + 1] =3D candidate[1];
++			new_idx +=3D 2;
++		}
++	}
++
++	gts->num_avail_all_scales =3D new_idx / 2;
++	gts->avail_all_scales_table =3D all_scales;
++
++	return 0;
++}
++
++static void iio_gts_free_int_table_array(int **arr, int num_tables)
++{
++	int i;
++
++	for (i =3D 0; i < num_tables; i++)
++		kfree(arr[i]);
++
++	kfree(arr);
++}
++
++static int iio_gts_alloc_int_table_array(int ***arr, int num_tables, int n=
+um_table_items)
++{
++	int i, **tmp;
++
++	tmp =3D kcalloc(num_tables, sizeof(**arr), GFP_KERNEL);
++	if (!tmp)
++		return -ENOMEM;
++
++	for (i =3D 0; i < num_tables; i++) {
++		tmp[i] =3D kcalloc(num_table_items, sizeof(int), GFP_KERNEL);
++		if (!tmp[i])
++			goto err_free;
++	}
++
++	*arr =3D tmp;
++
++	return 0;
++err_free:
++	iio_gts_free_int_table_array(tmp, i);
++
++	return -ENOMEM;
++}
++
+ static int iio_gts_gain_cmp(const void *a, const void *b)
+ {
+ 	return *(int *)a - *(int *)b;
+ }
+=20
+-static int gain_to_scaletables(struct iio_gts *gts, int **gains, int **sca=
+les)
++static int fill_and_sort_scaletables(struct iio_gts *gts, int **gains, int=
+ **scales)
+ {
+-	int i, j, new_idx, time_idx, ret =3D 0;
+-	int *all_gains;
+-	size_t gain_bytes;
++	int i, j, ret;
+=20
+ 	for (i =3D 0; i < gts->num_itime; i++) {
+ 		/*
+@@ -189,71 +296,69 @@ static int gain_to_scaletables(struct iio_gts *gts, i=
+nt **gains, int **scales)
+ 		}
+ 	}
+=20
+-	gain_bytes =3D array_size(gts->num_hwgain, sizeof(int));
+-	all_gains =3D kcalloc(gts->num_itime, gain_bytes, GFP_KERNEL);
+-	if (!all_gains)
+-		return -ENOMEM;
++	return 0;
++}
++
++static void compute_per_time_gains(struct iio_gts *gts, int **gains)
++{
++	int i, j;
++
++	for (i =3D 0; i < gts->num_itime; i++) {
++		for (j =3D 0; j < gts->num_hwgain; j++)
++			gains[i][j] =3D gts->hwgain_table[j].gain *
++				      gts->itime_table[i].mul;
++	}
++}
++
++static int compute_per_time_tables(struct iio_gts *gts, int **scales)
++{
++	int **per_time_gains;
++	int ret;
+=20
+ 	/*
+-	 * We assume all the gains for same integration time were unique.
+-	 * It is likely the first time table had greatest time multiplier as
+-	 * the times are in the order of preference and greater times are
+-	 * usually preferred. Hence we start from the last table which is likely
+-	 * to have the smallest total gains.
++	 * Create a temporary array of the 'total gains' for each integration
++	 * time.
+ 	 */
+-	time_idx =3D gts->num_itime - 1;
+-	memcpy(all_gains, gains[time_idx], gain_bytes);
+-	new_idx =3D gts->num_hwgain;
++	ret =3D iio_gts_alloc_int_table_array(&per_time_gains, gts->num_itime,
++					    gts->num_hwgain);
++	if (ret)
++		return ret;
+=20
+-	while (time_idx-- > 0) {
+-		for (j =3D 0; j < gts->num_hwgain; j++) {
+-			int candidate =3D gains[time_idx][j];
+-			int chk;
++	compute_per_time_gains(gts, per_time_gains);
+=20
+-			if (candidate > all_gains[new_idx - 1]) {
+-				all_gains[new_idx] =3D candidate;
+-				new_idx++;
++	/* Convert the gains to scales and populate the scale tables */
++	ret =3D fill_and_sort_scaletables(gts, per_time_gains, scales);
+=20
+-				continue;
+-			}
+-			for (chk =3D 0; chk < new_idx; chk++)
+-				if (candidate <=3D all_gains[chk])
+-					break;
++	iio_gts_free_int_table_array(per_time_gains, gts->num_itime);
+=20
+-			if (candidate =3D=3D all_gains[chk])
+-				continue;
++	return ret;
++}
+=20
+-			memmove(&all_gains[chk + 1], &all_gains[chk],
+-				(new_idx - chk) * sizeof(int));
+-			all_gains[chk] =3D candidate;
+-			new_idx++;
+-		}
+-	}
++/*
++ * Create a table of supported scales for each supported integration time.
++ * This can be used as available_scales by drivers which don't allow scale
++ * setting to change the integration time to display correct set of scales
++ * depending on the used integration time.
++ */
++static int **create_per_time_scales(struct iio_gts *gts)
++{
++	int **per_time_scales, ret;
+=20
+-	gts->avail_all_scales_table =3D kcalloc(new_idx, 2 * sizeof(int),
+-					      GFP_KERNEL);
+-	if (!gts->avail_all_scales_table) {
+-		ret =3D -ENOMEM;
+-		goto free_out;
+-	}
+-	gts->num_avail_all_scales =3D new_idx;
++	ret =3D iio_gts_alloc_int_table_array(&per_time_scales, gts->num_itime,
++					    gts->num_hwgain * 2);
++	if (ret)
++		return ERR_PTR(ret);
+=20
+-	for (i =3D 0; i < gts->num_avail_all_scales; i++) {
+-		ret =3D iio_gts_total_gain_to_scale(gts, all_gains[i],
+-					&gts->avail_all_scales_table[i * 2],
+-					&gts->avail_all_scales_table[i * 2 + 1]);
++	ret =3D compute_per_time_tables(gts, per_time_scales);
++	if (ret)
++		goto err_out;
+=20
+-		if (ret) {
+-			kfree(gts->avail_all_scales_table);
+-			gts->num_avail_all_scales =3D 0;
+-			goto free_out;
+-		}
+-	}
++	return per_time_scales;
+=20
+-free_out:
+-	kfree(all_gains);
++err_out:
++	iio_gts_free_int_table_array(per_time_scales, gts->num_itime);
+=20
+-	return ret;
++	return ERR_PTR(ret);
+ }
+=20
+ /**
+@@ -275,55 +380,26 @@ static int gain_to_scaletables(struct iio_gts *gts, i=
+nt **gains, int **scales)
+  */
+ static int iio_gts_build_avail_scale_table(struct iio_gts *gts)
+ {
+-	int **per_time_gains, **per_time_scales, i, j, ret =3D -ENOMEM;
+-
+-	per_time_gains =3D kcalloc(gts->num_itime, sizeof(*per_time_gains), GFP_K=
+ERNEL);
+-	if (!per_time_gains)
+-		return ret;
+-
+-	per_time_scales =3D kcalloc(gts->num_itime, sizeof(*per_time_scales), GFP=
+_KERNEL);
+-	if (!per_time_scales)
+-		goto free_gains;
++	int ret, all_scales_tbl_bytes;
++	int **per_time_scales;
+=20
+-	for (i =3D 0; i < gts->num_itime; i++) {
+-		per_time_scales[i] =3D kcalloc(gts->num_hwgain, 2 * sizeof(int),
+-					     GFP_KERNEL);
+-		if (!per_time_scales[i])
+-			goto err_free_out;
+-
+-		per_time_gains[i] =3D kcalloc(gts->num_hwgain, sizeof(int),
+-					    GFP_KERNEL);
+-		if (!per_time_gains[i]) {
+-			kfree(per_time_scales[i]);
+-			goto err_free_out;
+-		}
+-
+-		for (j =3D 0; j < gts->num_hwgain; j++)
+-			per_time_gains[i][j] =3D gts->hwgain_table[j].gain *
+-					       gts->itime_table[i].mul;
+-	}
++	if (unlikely(check_mul_overflow(gts->num_hwgain, 2 * sizeof(int),
++					&all_scales_tbl_bytes)))
++		return -EOVERFLOW;
+=20
+-	ret =3D gain_to_scaletables(gts, per_time_gains, per_time_scales);
+-	if (ret)
+-		goto err_free_out;
++	per_time_scales =3D create_per_time_scales(gts);
++	if (IS_ERR(per_time_scales))
++		return PTR_ERR(per_time_scales);
+=20
+-	for (i =3D 0; i < gts->num_itime; i++)
+-		kfree(per_time_gains[i]);
+-	kfree(per_time_gains);
+ 	gts->per_time_avail_scale_tables =3D per_time_scales;
+=20
+-	return 0;
+-
+-err_free_out:
+-	for (i--; i >=3D 0; i--) {
+-		kfree(per_time_scales[i]);
+-		kfree(per_time_gains[i]);
++	ret =3D do_combined_scaletable(gts, all_scales_tbl_bytes);
++	if (ret) {
++		iio_gts_free_int_table_array(per_time_scales, gts->num_itime);
++		return ret;
+ 	}
+-	kfree(per_time_scales);
+-free_gains:
+-	kfree(per_time_gains);
+=20
+-	return ret;
++	return 0;
+ }
+=20
+ static void iio_gts_us_to_int_micro(int *time_us, int *int_micro_times,
+--=20
+2.47.0
+
+
+--eo02nJzJzcUjPyry
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdf60EACgkQeFA3/03a
+ocWsLwf/coSoYvQ6FJiP/WDFlXtYTHiNisdHqHJfZddfnCbTSmHp3k8f3OcKHJhl
+Dw4II4slg/o7JeEPq2bQQkghOh5nTduDRvTkAYunZ3OCqjBSnUeelcXtPuEEdy2H
+0WKeZxEOF2flmgQDM65sWdfGCEeRh4V4D0nzmG3xUo8G4C2gLylflEW2qR+ktvX1
+YmUucIyvgp6g7SzEGQZPIhFe9MfIiH+YqzmUk0FZm0Zw0io4mudfI7gMSEndIN2E
+f+dzALyEABuntcOacQZrbhy4dw0Lovxvl6tvd8KRGsE/ZIzoIzpG8YqFO7yf6bDG
+Mo1KsWauX9pagkQJI/F7n0KAVhze3g==
+=iwJ3
+-----END PGP SIGNATURE-----
+
+--eo02nJzJzcUjPyry--
 

@@ -1,82 +1,113 @@
-Return-Path: <linux-iio+bounces-13532-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13533-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B7089F2B24
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:45:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C555C9F2B2F
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71AC57A1A6F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 07:45:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF1E9166698
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 07:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B48C1F755A;
-	Mon, 16 Dec 2024 07:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E36B1FF60C;
+	Mon, 16 Dec 2024 07:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2wpmJIm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k3gN10lS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65E11F7096;
-	Mon, 16 Dec 2024 07:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167E81FF7A1
+	for <linux-iio@vger.kernel.org>; Mon, 16 Dec 2024 07:52:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734335124; cv=none; b=l+cp8jCwuLmFxDV4JO0IkcKJ5Oc3A8pGmwFu1kT46eGtaD+zxBKTtte5nLVebtYdbXuyhdhlMGaWkR/d40jHavdBPGxOpQ08zDZnN6uc+09g8/Z977NwLkgWMxGvZW8/I24iyuFTedt5vnmtExDFWuk77lXQ3mLOdvKVHeTrKHU=
+	t=1734335549; cv=none; b=DkmMvEiPM+hq/T31DzYQXwUnnyTlg9Byc04i/EvaePhn+iVDIay0ZjvEP7Po1JuoMsDKBfniL5i8kzdxcCJzkpwKphcChVVhDR9tjkgGx327eGh+PVF8h/ZJDP+P1UHDj4/NfqAo6QRS/YB9NgwvAXSzevntXwpwHtDkK0PtvyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734335124; c=relaxed/simple;
-	bh=BRd9WrVWrPPypLQFGauJyVbeBzlr4i97fwMDcEAdrhQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UpTfZmFnNOtCY9OIyxAlAWp3pFZBkzAMGD8rbkfRV379/NM0ZVvIzXtkheEDkgnbiy8BieX6vw/2Pnq5Ej4L1pmq1ll0yBkFIXdZ+/MQYRFS5eO/Ze8I+ezmqDA4Z9PNVTvT8Ani6avzDx0EkjNwdVD654GHup3j5QSkz+0tH08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2wpmJIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD38C4CEDD;
-	Mon, 16 Dec 2024 07:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734335124;
-	bh=BRd9WrVWrPPypLQFGauJyVbeBzlr4i97fwMDcEAdrhQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2wpmJImo2AtRz/LiQu6uhWv7vpdfO+wCKQR9bD4jFc/HcxWw51bqMrYFb6u/Q0Il
-	 gY0QrntkfbfYzKELJYq822JttXRd1/bqcFW8Mz6wCQa9wy9kMeoPfseHhe2zIoUt1p
-	 GwHV1kRshxqO3uZ2SDBn+kR500eAoEgNTjh3h2oYCooAHHrvaKyoZVZT01vtdqU0Gy
-	 2Sp8j120OgU3M4JO4myO7GkgpqtMNOgkhe/Vq+Ink+s/j3ctAhBHiUSlyb1qwJYh/I
-	 jo/IfWuXAHddpAt5sqtSfuU0UYCMdUnBgLF9BgBjiAdN+YTBYom+ha8FbQW1lfpHYn
-	 Az3XMjWsjXPpQ==
-Date: Mon, 16 Dec 2024 08:45:21 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	eraretuya@gmail.com
-Subject: Re: [PATCH v7 2/7] dt-bindings: iio: accel: adxl345: make interrupts
- not a required property
-Message-ID: <opbjiktkrrqwd2gnvmyl7bn2ng2imc7c6vwzhr22yisdg4xns7@5gpr7ggkypw5>
-References: <20241213211909.40896-1-l.rubusch@gmail.com>
- <20241213211909.40896-3-l.rubusch@gmail.com>
+	s=arc-20240116; t=1734335549; c=relaxed/simple;
+	bh=TB4pKMySUmU+bo2j6i0wtu1fqIogVR+P5haCPwuRkbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N2TYfV2ARHVnvIchQE9YM/JDmzV2lRNbJErG4bUSi16BUk3RqpLqRpUf1JbPoqImzd0CZiovFnSbpccV4BHzFTAsIRVvFtpncNifTy7lhOJVro7UuJUlIxCXF7yGWmWsWSyJ3Xt8grA9K43hCnuYpG2bU0t9CPQiYag/0AoJQ0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k3gN10lS; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54024ecc33dso4100681e87.0
+        for <linux-iio@vger.kernel.org>; Sun, 15 Dec 2024 23:52:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734335546; x=1734940346; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sbjnL6rAwA3/0HLJ9bCL9RrjkUeJqWfoDvm/GtVdU/Y=;
+        b=k3gN10lSyG3ydgvx4upgozgsepP4MFmqBRPiiU+KGO0ZcZqDJFPfYsLkR2QFW1AEML
+         vMt8KtIDvLlfIfdUWBqZeL/V3SKBTeUGNOH9/+TPkNBIRaQpz0q66Y/kxQbXAgsa5l6N
+         uQvM6F+c+FnJ9sNAAxiTmIMxA1wQdwARMoleMGKgqYYaNNnIVie/gCV/n+oe5XVqXNVO
+         n4if1fqqv0fUvaN0sT3CiQlgBJtDRCzs7k0GkRUu5hR/0/wEU/tTb36PJ5tJOO0DR7Ip
+         pUzJP/VInkpRW372HHpEhAc48u5xO93UGMiPOYhP2nMuK5bdeWUVCvMZ4f+0WoVWcumS
+         J07w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734335546; x=1734940346;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sbjnL6rAwA3/0HLJ9bCL9RrjkUeJqWfoDvm/GtVdU/Y=;
+        b=BkB2nhuz0x0gOVV9hzB0FmOm3R4YOglqyNphcrrToOla7XLH4oqX2D4Hy0f3crKC2L
+         V7o6MsDBTR0ZlQQEXBygs7efEiHTR+MBbIztOHgkEJ1nCnLGqJ7XKnxkoKNvEhVLLxak
+         +KfKcQ3hEpT/KONZLLGUiR2O4wJZAylyxAODip+ZUqEt0FDR7HjMT15+U98bchNCxUvG
+         vVAqaqzxBeIYbRAm68qkRY3yrUBvmFP9RMvQTfUPjLzgoTjuBNjb8rapwmAy5SSRd9yj
+         MoER9Hptki/MTuF47ddQ56hvkrrLISL6+veldOImLeRMK9dcKQLxN/CAG/1AmU77GI6i
+         AjZw==
+X-Forwarded-Encrypted: i=1; AJvYcCV5xbsacUe3N7qWsRQTtNhi/Pr+Ug+gNKa+b7wqisZrF05D0oTX/vJ03F7KJo09UHjBI1Euhiz7R0A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg/Z4ydHljG82Xp0WUbrpHQObUUv/ZlORWpRXYXxb9ihWbVXT8
+	Rc6EnCcTY+p3eKwGJmzRFQfWRcXQhljgnreEGxNYNkQPtNo8micD
+X-Gm-Gg: ASbGnct3oiyob+kzSnxDExIMRguyxrNkKPoCXjuUoPZA6UILnsIu5zbQbFB3Emy4zsz
+	hwlMVONwG9N8fw0Ott03ePGy83lWnJTqtEpBm2ML7pU4IS/qBce/W+Rgu1CD85dDXg+4T7o3caE
+	DinZMCMmYHKWflpMW10jybvl8IPQlr5/j6MzTbMQD+smHdC0F8+vW1q6d5i6wuVFdimtHHzDfBo
+	dzXf396nl5LJgXuQG6fEs5uSCnvlNBs3SQ9eJCn1efuiN4X0adorRbF2eYBoL/JnDIOLw==
+X-Google-Smtp-Source: AGHT+IHZ3GqmRgLI6H0BqZIjWxWdZsOrr7/Qntz0dsD8aX/6nStuEkZ+Q9YNV2ipfcLKkPuRtZHKlA==
+X-Received: by 2002:a05:6512:281e:b0:540:1f7d:8bce with SMTP id 2adb3069b0e04-540916d72d9mr4114665e87.38.1734335546025;
+        Sun, 15 Dec 2024 23:52:26 -0800 (PST)
+Received: from [172.16.183.207] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54120b9f269sm753364e87.42.2024.12.15.23.52.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Dec 2024 23:52:25 -0800 (PST)
+Message-ID: <39a7e191-47d7-4390-88bd-3cc347ebcf89@gmail.com>
+Date: Mon, 16 Dec 2024 09:52:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241213211909.40896-3-l.rubusch@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 06/20] iio: pressure: Use aligned_s64 instead of open
+ coding alignment.
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: David Lechner <dlechner@baylibre.com>, Heiko Stuebner <heiko@sntech.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20241215182912.481706-1-jic23@kernel.org>
+ <20241215182912.481706-7-jic23@kernel.org>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20241215182912.481706-7-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 13, 2024 at 09:19:04PM +0000, Lothar Rubusch wrote:
-> Remove interrupts from the list of required properties. The ADXL345
-> does not need interrupts for basic accelerometer functionality. The
-> sensor offers optional events which can be indicated on one of two
-> interrupt lines.
+On 15/12/2024 20:28, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Use this new type to both slightly simplify the code and avoid
+> confusing static analysis tools. Mostly this series is about consistency
+> to avoid this code pattern getting copied into more drivers.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml | 1 -
->  1 file changed, 1 deletion(-)
+>   drivers/iio/pressure/rohm-bm1390.c | 2 +-
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+For the BD1390:
+Acked-By: Matti Vaittinen <mazziesaccount@gmail.com>
 
-Best regards,
-Krzysztof
-
+Yours,
+	-- Matti
 

@@ -1,258 +1,291 @@
-Return-Path: <linux-iio+bounces-13534-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13535-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98179F2B6F
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 09:05:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC3E9F2BA7
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 09:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFD99188C1F7
-	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:04:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310551885C4E
+	for <lists+linux-iio@lfdr.de>; Mon, 16 Dec 2024 08:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498DE1FFC60;
-	Mon, 16 Dec 2024 08:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AD91FF7C1;
+	Mon, 16 Dec 2024 08:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wh8wa8rN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bOhHFJma"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702351FF7BC;
-	Mon, 16 Dec 2024 08:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7248D1D318F;
+	Mon, 16 Dec 2024 08:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734336071; cv=none; b=NR9bj/FFRb6xQFsvllG0oM93P7rIZiB/MX2Ox/AMQ1D8UyQwHhL8Fm5b5mb+OGvplDQra3XDI0G2NIq2m+0e5aizU/5WLCTG4f0Qqok1v2CBeN7ggQRQNJA8bYRk4HRVahSecAIcVnw5J6pNPz8i0zp+hkO1Bm2imQXdNgPhncc=
+	t=1734337135; cv=none; b=joqj1dyTKrqPvFUkDIbdjbprFoMVgQrJpbRCyLrUmlDMW7TEUjfUvzWjtReCcyjrEyYj/4nfakvN+BJ/VcT/rfa7MCSwsCG22j56k/mQf64FQ23zVB53855n9rSo8eToc09Blxe8WC93yqWvQMJjwW33EnWwyc/0QmvEdoHuAtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734336071; c=relaxed/simple;
-	bh=lhTD1xtsnfe9gVQvJwMXbUYQjIUYAYA3/l7q5tSFC4w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fKai0F7zBq6/n/SgP1Kkv7G4XxqGhL4mU+RTDMkkA90RX9ZSJX586uQKVhOtHmo5WaD/LrFnPffrCiC8Opekb08FrKmeH8Le954HFhfuyWfVCFbzqAJQjNWkeb6D7qjBLzMMUbHmyFxTJICiG/T/2bwxREgvVkOy7VmFs/Fz+Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wh8wa8rN; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1734337135; c=relaxed/simple;
+	bh=VLDBFoXfvZEXFdP5zRERbJJkMvmfC2f5jtSS0Y1Afdw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MJmUyEdyPaT7n5np3Cwp+ZfgElD3NhiL0cecRGuBnSiZOo3dI5LBv6M9LZZS0c7shcbKW6ybnpqSF4+WrAh5tW5urHlCKeLsfHanPAIsJu6GM7PM2u7EfKKaIAkFSKlRYU2NXGNpx6hFsLmW8RN1eJ2BDCw0b+gqLas7ODLxf8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bOhHFJma; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-215464b0432so3513205ad.0;
-        Mon, 16 Dec 2024 00:01:09 -0800 (PST)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21564262babso4861095ad.3;
+        Mon, 16 Dec 2024 00:18:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734336069; x=1734940869; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v57IcqBQbatDtclCvaJ3hvMsJ4mdDv1UaAkTvQRYm+E=;
-        b=Wh8wa8rNw1Z2bQeKEMW/Gz4DfyQ6t0dyPp4VyH/qqe8AThI8lBKfWnLA34iiGD4Zyz
-         wY/BAxyF9c77BpsTcMSCSaKXKCT6Wy/h5eRG14TUyqU0zE4WAceRfVoJFlKkfro7yP43
-         G3d8YyouHcpNJW2g16u7Z6yEXmUA+5nGI6a+NYAvT3Ce6PugC2WR7wtvygjia/XTPvT7
-         SF+6KDGuSboxjX6kCWDT5zTYhfOiWozojmRxPXj16DzVt3jJAoVMar+KjaxTuADLRmiv
-         jPj9+NU6v30XBAgGaFK6qpVSO0Q2t7ebugnO4khEvANvbviNc7cTBQx7wkNSDJONgLJr
-         aIXQ==
+        d=gmail.com; s=20230601; t=1734337133; x=1734941933; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=86o4ynhOavyPlFdh+OIw8szkaSSkef/OgqQcYpbsDjU=;
+        b=bOhHFJmaxdAGHLN6monfEA5LuBA76cCvqNfDsOMebQEoaLttB6c7NBbi6Xz2gZgGtq
+         1iw+9kRpC0D2w741F939qFfccbh/1rcC9enT5+hyRGsOT9ru37oNooo8+xhIciCJW0Sg
+         F55xO9Ztzfutz9mS2s0RKaNRm1of+ooCXbe7m5td2f2EQ6pVEEaHCI4FlUGgrT9pdjzy
+         IAhkxUEBVA0zNRrkrpCkRlBiut3eVHNrHgCzkA7Q08O0CLkYOMYMECLZNB+8tAOKuCmM
+         IhwnaLSGi2KB66lz5wWLD2xO31A6WOcg1MHUjCgz6Cvf6TzxQ9E2tjSBxeKKL4SPF+Be
+         kpwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734336069; x=1734940869;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v57IcqBQbatDtclCvaJ3hvMsJ4mdDv1UaAkTvQRYm+E=;
-        b=LoR6uNRxW7J+sHaOHQyJHSSbBoqSoZHFjws2c1iD+ll3lDtBnBAL9CDszzD9jrW0w1
-         dLNI601lqUG6rN2ysdwUmuROSUcvI66KMVIV12KNH1swFbQwH3SFyLl7tXrDZ0mztW7b
-         qnEmz3mMHpHAn5xWca32NKmVjwNhCaGNVbtzGQBsATwysLPe6Gl5NmCe9vNaA1okL/Wh
-         Ouj1Kem/i3uZRDDhlk6o9OB5l6xVhoOi3rKGGKgDcz6iBd6MPPne1evrAQlv0IvtP+3v
-         EHYHF48Pq6L9tHl3P26Y56S68P0hd675Qj9MkGs2IYCNxwI3LGxpxR5gLHtDXoVyuEq5
-         B+Cw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAbA+FP+RwNyJItB6RpL84fITTuBI3y9/d0JZWpyK0yibAAnGfYd/zIjlPMNblDNF6QtUYQPb8Nqt8QWqrNmM=@vger.kernel.org, AJvYcCXeG9OYVU+e8FXw9JAlVl3J302c7dyHR/QeAVbMHISZCIaKUqBu5nZn7pi03n8+lFHUPaoxDTEqc5ld6AR9@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRdBDosXXx8yu/fyMfYNxKOjLkWKlxHwXu1oq6Hv3/SUw4HltA
-	97+M6S4+XzZWKr6q0zAphuSIKIKLJlK6iV8J41gWgmJMxayu68ZOpf9LMg==
-X-Gm-Gg: ASbGnct8owJvN7JU1bru0WQb8sJl6SgplE2waOjnz8+P52Uj+mKnR1e22uIYLQnuQ+4
-	8ZMenomw0UhKoT0/WVdXWS3ApWTanSyEGmzwILCF9tT0kx28I2x+CmjKb/XuUAQzTXlxU6NZ85r
-	lYCdp5xHU5/k4JX8Fag3/VdzFJZFdkTpJg5OeME332iXJrOLfDAX3Vml8xGZShmys3jykmDXC4k
-	xitbyORSh1WL1xMQRBwkOFFVcAjRRIv3p0afga1xBrMbTeo/7e0r51G
-X-Google-Smtp-Source: AGHT+IG+EwHj8aSdE1HDdWaIfqBuEhvv/e4LR0vp8CiFvt/Adw7PCjXuswkZJ9BXX3UehKHbeOWzJQ==
-X-Received: by 2002:a17:902:d483:b0:215:2f19:1dd with SMTP id d9443c01a7336-21892a441damr62564215ad.11.1734336068626;
-        Mon, 16 Dec 2024 00:01:08 -0800 (PST)
-Received: from [127.0.1.1] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e5c228sm37075355ad.171.2024.12.16.00.01.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 00:01:07 -0800 (PST)
-From: Yasin Lee <yasin.lee.x@gmail.com>
-Date: Mon, 16 Dec 2024 15:59:40 +0800
-Subject: [PATCH v2] iio: proximity: hx9023s: Added firmware file parsing
- functionality
+        d=1e100.net; s=20230601; t=1734337133; x=1734941933;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=86o4ynhOavyPlFdh+OIw8szkaSSkef/OgqQcYpbsDjU=;
+        b=uCgcIvEcXlc2wf/yFVu2GSOfXTzjaz4vauVSOzqLpQU7QRw30ukERvwhkLhMhtcxPY
+         vcL3X4UB/6bSE5cyY5thj9lY7cYgFbxMXoH2t/ajtyxHeFIy1cD+0Ow5hI54rcdfzOSr
+         2jwTc9o0odn0LRs7wW1o9NFWmeAErPryh2XCEw1CRqc1jmwxr07dXNm5rZyVnQafUKpb
+         Vbtf5A4my7wPviWA3S+okb8nhLx6hz7ZY0NC6j4Cl4Bb2NUfC7NJ5h+w6oysl3CSsAbY
+         BKuMglN9Hbxhra63JhelTtuMpHNrKZbn9jhb08nVXGB4yowEiW4EBhrjDRwlO2NSc0Ez
+         f6jw==
+X-Forwarded-Encrypted: i=1; AJvYcCU/cExnjkc2nJfZri2+NhbxtazRFbmQo6WwNuevNyIoqedT7yAGGvOG1wrkeDxoWbrfQ5A/0dpLlWwH@vger.kernel.org, AJvYcCVSiNUEDCmFUc2kgaCdJQ7Zu0YzpeQDwRHRbCrIbb/dAY5tim+47KKBVjEUqefDC/ft7D5iRJZdnPMGLBbV@vger.kernel.org, AJvYcCWso0nvcAQl1mL2lsZP4V6fGTxu+aDQI3SxCZwSJWplBO6/ogiem/eDVxcPWGR0NFgsE0+foDmVbZvBy6Wnx3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycZqwsnNzFSrXd6Pt6ciQfCCgY2GDEm0CC2iOWMvVXROhE/kkD
+	3rNnpGWSMKz2ciYpG9cVNzfds3cMD/gFUHKBGc9JOY43f61ckCOk
+X-Gm-Gg: ASbGncu6vCMR+H76aHwMUKhevVkpcSkX5K1/MQ3uiGNDIXtnUzuxiXoT95Gy7KJvBCH
+	SSd5Ndj8Ij+fIvO94BHbInLmZZHeKf2yjrkK6Xa4CD65zlyDnWHoDHG1+GtywiESb4CnTywnhDe
+	WUTwcBSAkoDMFt1/Jle3qeS3mhZWEudK3mL40ZXrmIxo0zUdw2EhISeJVOGwsZb0SyZgPHpSMqv
+	oDN5HaWGrL3PnulfItDCd9r1aIo/y2p/7/Q/YzMxThLwc+Tbe65sS1gXtDCZ2tR
+X-Google-Smtp-Source: AGHT+IELD3cahoTCtVuK1cg9LyRlcUjavMn8fnBjdQ8mMrTC8rsrYcEADOBuwBW96o4BdVpruWV8KA==
+X-Received: by 2002:a17:902:f54c:b0:215:5f17:4296 with SMTP id d9443c01a7336-21892a3fb95mr58866385ad.8.1734337132661;
+        Mon, 16 Dec 2024 00:18:52 -0800 (PST)
+Received: from [100.116.227.126] ([45.32.86.188])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1e6d0fesm37335225ad.256.2024.12.16.00.18.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Dec 2024 00:18:51 -0800 (PST)
+Message-ID: <aee7f90e-a4af-4cc8-b2e7-c895a8aa6db2@gmail.com>
+Date: Mon, 16 Dec 2024 16:18:45 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241216-hx9023s-firmware-20241209-v2-1-ce1b0a1121d0@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAOvdX2cC/32NzQ6CMBCEX4Xs2ZpuaQp48j0Mh1IW2ER+0pqKI
- by7lRiPHr+ZzDcbBPJMAS7ZBp4iB56nBOqUgRvs1JPgNjEoqTQqWYlhraTKg+jYj0/rSfwaXWh
- EKl1rZQNpv3jqeD3ctzrxwOEx+9dxFfGTfq0o/1gjChSlLXJjKmxQmms/Wr6f3TxCve/7G2g4x
- DnCAAAA
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-hardening@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4597; i=yasin.lee.x@gmail.com;
- h=from:subject:message-id; bh=lhTD1xtsnfe9gVQvJwMXbUYQjIUYAYA3/l7q5tSFC4w=;
- b=owGbwMvMwCEYyfeRr6Zs90zG02pJDOnx94zO8miENksJ697yj72YM00uQPW+/oKH+R5KiXPmf
- jQ0XLCpo5SFQZCDQVZMkeXM6zes+aoP9wT/ds2AmcPKBDKEgYtTACbSrcrI8NYt1Zhz/hXl57eX
- MJ2YbH+qwnLqCvf/pXZ8gm+aCicuvszIcPUgX9aKeqd103Q3hGeZH22+8Pz2xeui1/t3bbn4c1q
- 34C4A
-X-Developer-Key: i=yasin.lee.x@gmail.com; a=openpgp;
- fpr=CCEBEC056F25E1BC53FB4568590EF10E7C76BB99
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: proximity: hx9023s: Added firmware file parsing
+ functionality
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <20241210-hx9023s-firmware-20241209-v1-1-8a736691b106@gmail.com>
+ <20241215122553.60c2caba@jic23-huawei>
+Content-Language: en-US
+From: Yasin Lee <yasin.lee.x@gmail.com>
+In-Reply-To: <20241215122553.60c2caba@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Configuration information is now prioritized from the firmware file.
-If the firmware file is missing or fails to parse, the driver falls
-back to using the default configuration list for writing the settings.
+On 12/15/24 20:25, Jonathan Cameron wrote:
+> On Tue, 10 Dec 2024 12:24:03 +0800
+> Yasin Lee <yasin.lee.x@gmail.com> wrote:
+>
+>> Configuration information is now prioritized from the firmware file.
+>> If the firmware file is missing or fails to parse, the driver falls
+>> back to using the default configuration list for writing the settings.
+>>
+>> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+> Ok.  I guess just reading a load of register values isn't hugely different
+> to more complex firmware loads.
+>
+> Comments inline - in particular please take the time to tidy up
+> formatting of your code before posting.
+>
+> Also why is this +CC linux-hardening, Kees and Gustavo?
+>
+> They have enough stuff to do without getting patches that seem to have nothing
+> to do with hardening!
+>
+> Jonathan
+>
+Hi Jonathan,
 
-Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
----
-Changes in v2:
-- Removed unnecessary null checks for firmware loading logic and ensured consistent return values.
-- Adjusted code formatting and indentation to comply with Linux kernel coding standards.
-- Enhanced error handling: clearly notify users about firmware loading failures through logs.
-- Removed unrelated CC recipients.
-- Link to v1: https://lore.kernel.org/r/20241210-hx9023s-firmware-20241209-v1-1-8a736691b106@gmail.com
----
- drivers/iio/proximity/hx9023s.c | 93 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 86 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index 4021feb7a7ac..d5b1522d3c19 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -14,6 +14,7 @@
- #include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
-+#include <linux/firmware.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/irqreturn.h>
-@@ -100,6 +101,17 @@
- #define HX9023S_INTERRUPT_MASK GENMASK(9, 0)
- #define HX9023S_PROX_DEBOUNCE_MASK GENMASK(3, 0)
- 
-+#define FW_VER_OFFSET 2
-+#define FW_REG_CNT_OFFSET 3
-+#define FW_DATA_OFFSET 16
-+
-+struct hx9023s_bin {
-+	u16 reg_count;
-+	u16 fw_size;
-+	u8 fw_ver;
-+	u8 data[] __counted_by(fw_size);
-+};
-+
- struct hx9023s_ch_data {
- 	s16 raw; /* Raw Data*/
- 	s16 lp; /* Low Pass Filter Data*/
-@@ -998,6 +1010,77 @@ static int hx9023s_id_check(struct iio_dev *indio_dev)
- 	return 0;
- }
- 
-+static int hx9023s_bin_load(struct hx9023s_data *data, struct hx9023s_bin *bin)
-+{
-+	u8 *cfg_start = bin->data + FW_DATA_OFFSET;
-+	u8 addr, val;
-+	u16 i;
-+	int ret;
-+
-+	for (i = 0; i < bin->reg_count; i++) {
-+		addr = cfg_start[i * 2];
-+		val = cfg_start[i * 2 + 1];
-+		ret = regmap_write(data->regmap, addr, val);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int hx9023s_send_cfg(const struct firmware *fw, struct hx9023s_data *data)
-+{
-+	struct hx9023s_bin *bin __free(kfree) =
-+		kzalloc(fw->size + sizeof(*bin), GFP_KERNEL);
-+	if (!bin)
-+		return -ENOMEM;
-+
-+	memcpy(bin->data, fw->data, fw->size);
-+	release_firmware(fw);
-+
-+	bin->fw_size = fw->size;
-+	bin->fw_ver = bin->data[FW_VER_OFFSET];
-+	bin->reg_count = get_unaligned_le16(bin->data + FW_REG_CNT_OFFSET);
-+
-+	return hx9023s_bin_load(data, bin);
-+}
-+
-+static void hx9023s_cfg_update(const struct firmware *fw, void *context)
-+{
-+	struct hx9023s_data *data = context;
-+	struct device *dev = regmap_get_device(data->regmap);
-+	int ret;
-+
-+	if (!fw || !fw->data) {
-+		dev_warn(dev, "No firmware\n");
-+		goto no_fw;
-+	}
-+
-+	ret = hx9023s_send_cfg(fw, data);
-+	if (ret) {
-+		dev_warn(dev, "Firmware update failed: %d\n", ret);
-+		goto no_fw;
-+	}
-+
-+	ret = regcache_sync(data->regmap);
-+	if (ret)
-+		dev_err(dev, "regcache sync failed\n");
-+
-+	return;
-+
-+no_fw:
-+	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
-+				     ARRAY_SIZE(hx9023s_reg_init_list));
-+	if (ret) {
-+		dev_err(dev, "Error loading default configuration\n");
-+		return;
-+	}
-+
-+	ret = regcache_sync(data->regmap);
-+	if (ret)
-+		dev_err(dev, "regcache sync failed\n");
-+}
-+
- static int hx9023s_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
-@@ -1036,18 +1119,14 @@ static int hx9023s_probe(struct i2c_client *client)
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	i2c_set_clientdata(client, indio_dev);
- 
--	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
--				     ARRAY_SIZE(hx9023s_reg_init_list));
--	if (ret)
--		return dev_err_probe(dev, ret, "device init failed\n");
--
- 	ret = hx9023s_ch_cfg(data);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "channel config failed\n");
- 
--	ret = regcache_sync(data->regmap);
-+	ret = request_firmware_nowait(THIS_MODULE, true, "hx9023s.bin", dev,
-+				      GFP_KERNEL, data, hx9023s_cfg_update);
- 	if (ret)
--		return dev_err_probe(dev, ret, "regcache sync failed\n");
-+		return dev_err_probe(dev, ret, "reg config failed\n");
- 
- 	if (client->irq) {
- 		ret = devm_request_threaded_irq(dev, client->irq,
-
----
-base-commit: 8d4d26450d71289a35ff9e847675fd9c718798b8
-change-id: 20241209-hx9023s-firmware-20241209-47411e8cda0b
+Thank you for your detailed feedback on my patch. I’ve carefully 
+reviewed and addressed all the issues you highlighted:
+1. Simplified the return value handling in hx9023s_bin_load to directly 
+return 0 where applicable.
+2. Corrected all indentation and alignment issues to conform to the 
+Linux kernel coding standards.
+3. Improved log messages to clearly inform users of specific reasons for 
+firmware load failure.
+4. Removed irrelevant recipients, such as linux-hardening, from the CC list.
 
 Best regards,
--- 
-Yasin Lee <yasin.lee.x@gmail.com>
+Yasin Lee
 
+>> ---
+>>   drivers/iio/proximity/hx9023s.c | 96 ++++++++++++++++++++++++++++++++++++++---
+>>   1 file changed, 89 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
+>> index 4021feb7a7ac..6cb1b688bfa9 100644
+>> --- a/drivers/iio/proximity/hx9023s.c
+>> +++ b/drivers/iio/proximity/hx9023s.c
+>> @@ -14,6 +14,7 @@
+>>   #include <linux/cleanup.h>
+>>   #include <linux/device.h>
+>>   #include <linux/errno.h>
+>> +#include <linux/firmware.h>
+>>   #include <linux/i2c.h>
+>>   #include <linux/interrupt.h>
+>>   #include <linux/irqreturn.h>
+>> @@ -100,6 +101,17 @@
+>>   #define HX9023S_INTERRUPT_MASK GENMASK(9, 0)
+>>   #define HX9023S_PROX_DEBOUNCE_MASK GENMASK(3, 0)
+>>   
+>> +#define FW_VER_OFFSET 2
+>> +#define FW_REG_CNT_OFFSET 3
+>> +#define FW_DATA_OFFSET 16
+>> +
+>> +struct hx9023s_bin {
+>> +	u16 reg_count;
+>> +	u16 fw_size;
+>> +	u8 fw_ver;
+>> +	u8 data[] __counted_by(fw_size);
+>> +};
+>> +
+>>   struct hx9023s_ch_data {
+>>   	s16 raw; /* Raw Data*/
+>>   	s16 lp; /* Low Pass Filter Data*/
+>> @@ -998,6 +1010,80 @@ static int hx9023s_id_check(struct iio_dev *indio_dev)
+>>   	return 0;
+>>   }
+>>   
+>> +static int hx9023s_bin_load(struct hx9023s_data *data,
+>> +								struct hx9023s_bin *bin)
+>> +{
+>> +	u8 *cfg_start = bin->data + FW_DATA_OFFSET;
+>> +	u8 addr, val;
+>> +	u16 i;
+>> +	int ret;
+>> +
+>> +	for (i = 0; i < bin->reg_count; i++) {
+>> +		addr = cfg_start[i * 2];
+>> +		val = cfg_start[i * 2 + 1];
+>> +		ret = regmap_write(data->regmap, addr, val);
+>> +		if (ret < 0)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return ret;
+> return 0;
+> Can't get here with anything else.
+>
+>> +}
+>> +
+>> +static int hx9023s_send_cfg(const struct firmware *fw,
+>> +								struct hx9023s_data *data)
+>
+> Fix all your indenting to match kernel style.
+>
+>> +{
+>> +	if (!fw)
+> You can't get to this call below with out fw so drop this check.
+>
+>> +		return -EINVAL;
+>> +
+>> +	struct hx9023s_bin *bin __free(kfree) =
+>> +		kzalloc(fw->size + sizeof(*bin), GFP_KERNEL);
+>> +	if (!bin)
+>> +		return -ENOMEM;
+>> +
+>> +	memcpy(bin->data, fw->data, fw->size);
+>> +	release_firmware(fw);
+>> +
+>> +	bin->fw_size = fw->size;
+>> +	bin->fw_ver = bin->data[FW_VER_OFFSET];
+>> +	bin->reg_count = get_unaligned_le16(bin->data + FW_REG_CNT_OFFSET);
+>> +
+>> +	return hx9023s_bin_load(data, bin);
+>> +}
+>> +
+>> +static void hx9023s_cfg_update(const struct firmware *fw, void *context)
+>> +{
+>> +	struct hx9023s_data *data = context;
+>> +	struct device *dev = regmap_get_device(data->regmap);
+>> +	int ret;
+>> +
+>> +	if (!fw || !fw->data) {
+>> +		dev_warn(dev, "No firmware\n");
+>> +		goto no_fw;
+>> +	}
+>> +
+>> +	ret = hx9023s_send_cfg(fw, data);
+>> +	if (ret)
+> If this fails, we want to notify the user.  The firmware loaded
+> but we were unable to use it for some reasons.
+>
+>> +		goto no_fw;
+>> +
+>> +	ret = regcache_sync(data->regmap);
+>> +	if (ret)
+>> +		dev_err(dev, "regcache sync failed\n");
+>> +
+>> +	return;
+>> +
+>> +no_fw:
+>> +	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
+>> +								ARRAY_SIZE(hx9023s_reg_init_list));
+>> +	if (ret) {
+>> +		dev_err(dev, "Error loading default configuration\n");
+>> +		return;
+>> +	}
+>> +
+>> +	ret = regcache_sync(data->regmap);
+>> +	if (ret)
+>> +		dev_err(dev, "regcache sync failed\n");
+>> +}
+>> +
+>>   static int hx9023s_probe(struct i2c_client *client)
+>>   {
+>>   	struct device *dev = &client->dev;
+>> @@ -1036,18 +1122,14 @@ static int hx9023s_probe(struct i2c_client *client)
+>>   	indio_dev->modes = INDIO_DIRECT_MODE;
+>>   	i2c_set_clientdata(client, indio_dev);
+>>   
+>> -	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
+>> -				     ARRAY_SIZE(hx9023s_reg_init_list));
+>> -	if (ret)
+>> -		return dev_err_probe(dev, ret, "device init failed\n");
+>> -
+>>   	ret = hx9023s_ch_cfg(data);
+>>   	if (ret)
+>>   		return dev_err_probe(dev, ret, "channel config failed\n");
+>>   
+>> -	ret = regcache_sync(data->regmap);
+>> +	ret = request_firmware_nowait(THIS_MODULE, true, "hx9023s.bin",
+>> +						dev, GFP_KERNEL, data, hx9023s_cfg_update);
+> Indent dev under T of the THIS_MODULE
+>
+>
+>>   	if (ret)
+>> -		return dev_err_probe(dev, ret, "regcache sync failed\n");
+>> +		return dev_err_probe(dev, ret, "reg config failed\n");
+>>   
+>>   	if (client->irq) {
+>>   		ret = devm_request_threaded_irq(dev, client->irq,
+>>
+>> ---
+>> base-commit: 8d4d26450d71289a35ff9e847675fd9c718798b8
+>> change-id: 20241209-hx9023s-firmware-20241209-47411e8cda0b
+>>
+>> Best regards,
 

@@ -1,130 +1,134 @@
-Return-Path: <linux-iio+bounces-13612-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FF79F6547
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 12:48:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFF59F68B2
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 15:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26F927A0FA0
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 11:48:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A369516387D
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 14:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC54D1E4BE;
-	Wed, 18 Dec 2024 11:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA261BEF6C;
+	Wed, 18 Dec 2024 14:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mXbxDdjh"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="T6C36971"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3A3193079
-	for <linux-iio@vger.kernel.org>; Wed, 18 Dec 2024 11:48:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24C5199EA1;
+	Wed, 18 Dec 2024 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734522520; cv=none; b=Q54IS11CfD2i8r6TNp1VCI/3boITg9/5MLGNvWgxzjo0zYqC2kkyt8fAvUadwbA7G+TTF6WtI7jTCG88Xqv5Np9Hcu+5bp0itoaIalW81iRml5BvpE/oBYe9rasPa60cFPEu+E5UKyYZNVvP15Z3N0b8YtazHZZI+8S/Av0oxA4=
+	t=1734532666; cv=none; b=Gy4tVsr7xHxZ+4vNLacUfrcQxg065XQOfohwi2ButqTIefhfQs5qLOj3Nj8dRZXHklfKwHicPIzn+xW7aFUJcZYX0+Y4YXsXLEsdjjQOmz0cjfANoO/BWH9Qylnp5wzndGQbDBzlyrMAyuCJBoSeMv6Yt4aCNDUj6Lt8rN7i/hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734522520; c=relaxed/simple;
-	bh=T54FxyPNRCdVs3+gkr9Kb1Q0yUyf5Q7aplQQADOy28Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YVA3CSy9GwC+oCwqzLCHtg7vQiaXRk73CC5SQiESaNFnLEdWuVfNZvxqqrq2IegjXgdHL9uNNnuO8LWXI0X8bZk5KVrZoCXY7RJqon4BC7t8eQ1DfZ7aVOYltgDYfPyMJsj0D1a1qPN3zf1bfl1wAL3ktUkTXZeLwuQ/kN1oHK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mXbxDdjh; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aa543c4db92so559466b.0
-        for <linux-iio@vger.kernel.org>; Wed, 18 Dec 2024 03:48:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734522516; x=1735127316; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6yM0iuIjSwaIFc9pAiwOGe7pFcDeBb7dXTiKpMAYUZA=;
-        b=mXbxDdjh0R9xRgBsLxAXKZaxtFud5YEwIjj7VVj+Yr5jHC4apPwHS87h0zXEFlf7Qr
-         I0Es98H3fuSMcot2u56BJr73LJ6hdT0qRMsX2+HB9vq0Ko35FKWndNyjf7i2sUyS9KD0
-         Jdbx9Qnf+IN4drwuLMBJFK5KqICqyDq1nlfT13lCfg0z9y51pLJCaUoE6bQX6zN+/S2t
-         nUVpY0y1QVdHVmvYcEwhePkmNMxkyHprO5Xer3qOzh4CsccFS4csll56yM8FfKoJMqlY
-         R+jgoBKDvHB+7ZGDQzlz35FhcNesJmscyFxLjU5NfBPQwvTPx621Ge0snG8x9Gnd/B9F
-         doyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734522516; x=1735127316;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6yM0iuIjSwaIFc9pAiwOGe7pFcDeBb7dXTiKpMAYUZA=;
-        b=mL9ZsEVOSNKvzqNnv1M7I3n9WtkHMgaMPkswGS/U/4tU9o3pIIeq9ylcMkwvvR/iy/
-         pgkSuJHdmhKIpAlxfJ8h3glrNxIOmxBef8FkkQEQE6SXaCNAdOHoVnq1lHARvnjQbvx/
-         aihbibHknRuhN2DnyMNi5nheUogvCjAdOo6FiHX4yAj+Xd0KJ0E2tu88n8HTPxTZnrNx
-         MMhbTMpgHEr32KumacVoFuluNIPfkKGkFgBAVw47CILK0aWVnUAEN+aYs7BtKEbgU+7w
-         SnWZRUqNFg3FmMiyt57lD4e3I9XQ0zv5bhv05dW4db9RTER+mWqwPYWQBpU64NSdEb00
-         k26w==
-X-Forwarded-Encrypted: i=1; AJvYcCV/QitSacOrMwinm9yi9iIBqp5lGiYURgHSTsDxqJG7dkeXZl8yWqJkgjUK08MZjNsQav1j1JbwiZI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynY+y2gg2odWjhRZhuxB1p3SWS0VwHoETnes1x/+iC50doHM6a
-	jJ3zMWVncbnOWRqx+8h3qk5DV0FGN20lbPR/zcTvqzfW1a67lcNY1Nw2KzGIIaM=
-X-Gm-Gg: ASbGncuB5jilW4CBrup8RDKlU6veHe37zrUb/Z5B7E9MavNC+P+xowPE1XUJ/st0/zn
-	ogHyqQIVzX1+BdgbZmOp8Vcmj4EPwboGM8yhfeOZGIqzOv7STsFyDI3S+xJ9ZkTlgJVeib7g1HM
-	gQ7Q4IkkgDfqO5T4mhmPionpYWyqGa51NYVaE3dhpOnssm8Gb+0wEsvLCkiecAyfBrDu/kPibXh
-	uRuitemKTBRqXpElJJ2FROaZfDwm6HWufEFgEZ75jIExktw/l3ghJq6jLdP1KwfryW3pxvzP0jw
-	C8zWDXbFgw==
-X-Google-Smtp-Source: AGHT+IERq+S1Ho+Q8x8mRCM6OygopM7ECLwWvp8CATw9YKJSNKMMBUvtN1dWITD7md6QqQ55iI2K4w==
-X-Received: by 2002:a17:907:6d16:b0:aa6:653c:409a with SMTP id a640c23a62f3a-aabf4937abfmr229480366b.57.1734522515866;
-        Wed, 18 Dec 2024 03:48:35 -0800 (PST)
-Received: from localhost (p50915bc6.dip0.t-ipconnect.de. [80.145.91.198])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aab9635957fsm560954366b.109.2024.12.18.03.48.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 03:48:35 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: adc: ad_sigma_delta: Use `unsigned int` instead of plain `unsigned`
-Date: Wed, 18 Dec 2024 12:48:09 +0100
-Message-ID: <20241218114809.1378063-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1734532666; c=relaxed/simple;
+	bh=Qmm4KBkY3reT/YQX878vAWm3kg5dKLeeD6CzGyp7KMM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r7OrmAus5MEI8yk05eeEnoNW9StnAwyDZ4urgUjgX8wwZQf9PhBVLsOaaaImKKWRjaiBsgtZaw1Ft+AagRJrTXJlIssWzF4QKodFtpHjN1P0QlFyscVrgMuOTbEjWRYJc4Sp3tf90yEFFQo9pHYI8sKf7iOE9GJGn1ulIHZw+Eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=T6C36971; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BICgWiF006384;
+	Wed, 18 Dec 2024 09:37:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=38MO/nF0YX0X8BxIQXwVnYC5JfA
+	D59WTFa8cJDGJcCI=; b=T6C36971BXVGDvPwV8kuqI5SkyHJVQavN+xZwKySBgG
+	oYmQPX5tdtUgVpyv+m5cefd7jvb+xkLOoXu/su/cnWk/uKpRTzL8PX9CT2SUjCDx
+	drb7nX8PH1CIxtXXaGdFCPk+cSTjB1tTJ2R05yH4G/802FA6D2511tOtkM8dlRpl
+	vbmlUwR/F3k1AaVIGHxVZv8enzQpQ2tMP3KM+jc8FxIAon6r7Sd0DemGv+pCQxi+
+	qzuuvOvBFtp0Z8OP0x8gsBQ+7NixXt0kdQCzGs1zS2Ucjf2owomP6tUDkifL1Xs5
+	7jmQyZ/wn8WsVgNJSQTo06wzoc1d+ROZUHtQl0Iiw9Q==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 43kxmr0gvx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Dec 2024 09:37:17 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4BIEbGFS022640
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 18 Dec 2024 09:37:16 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 18 Dec
+ 2024 09:37:16 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 18 Dec 2024 09:37:16 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4BIEb5eC030544;
+	Wed, 18 Dec 2024 09:37:08 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <ana-maria.cusco@analog.com>, <marcelo.schmitt1@gmail.com>
+Subject: [RFC PATCH 0/4] Add support for AD4170
+Date: Wed, 18 Dec 2024 11:37:01 -0300
+Message-ID: <cover.1734530280.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1168; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=T54FxyPNRCdVs3+gkr9Kb1Q0yUyf5Q7aplQQADOy28Q=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnYrZ5YSyzKuvzKDsQf+4poS/5lCF4JzwaRaifz CnGYFLN67mJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ2K2eQAKCRCPgPtYfRL+ TmwcB/wKeOF4w31gL6OcGyzVIciCbF06jtWkX6908YXP0Juc4MVqAPZcUutDpc1PYdxf0p9i+gU gFYgmxaPWX+lAcAXjdqG4fuT0hb48hPyoRAcDHZ0bxmciMti0TN0jepv4AfF/3NfTx5vCmVhpLk G70nadCsxeB+CK+laSdxrvFdzWckbnsLq6cLM8yzpquSIDLLD38TcylonxBMOOglitW6c66Tu2e QmNn5eIuLHK4NchSgrZ3QgcYdLCkSPo0XFTKxxYWhzPh/hrLG6zbP8eS7YuxP6PscV2CG+UyMwp T/4US98qeG4pQrE35AimX3yZ9EVbCO+5Kib1f9iVtZJayEGa
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: YMVXyVSwYe4itCuyAQDfqBFxJxtDoWSM
+X-Proofpoint-ORIG-GUID: YMVXyVSwYe4itCuyAQDfqBFxJxtDoWSM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ phishscore=0 malwarescore=0 mlxlogscore=999 bulkscore=0 clxscore=1015
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412180114
 
-This fixes a checkpatch warning:
+Add support for AD4170.
+Initial driver for ad4170 was inpired from ad4130. Then I picked it up from
+ADI Linux repo and changed a lot. Clock provider support is the same from
+ad7173.
 
-	WARNING: Prefer 'unsigned int' to bare use of 'unsigned'
-	#70: FILE: drivers/iio/adc/ad_sigma_delta.c:253:
-	+		unsigned status_reg;
+Most disruptive things are:
+- Draft support for negative/bipolar voltage reference supply.
+- IIO channels sharing setup number will share configurations.
+- Draft ADC documentation to help clarify/explain why so many possible ADC
+  input configurations.
 
-Fixes: 132d44dc6966 ("iio: adc: ad_sigma_delta: Check for previous ready signals")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+This is big so not expecting to receive any review on this any time soon.
+Happy holly days.
 
-if it's not already to late for that, feel free to squash this into the
-original commit.
+Ana-Maria Cusco (2):
+  include: dt-bindings: iio: adc: Add defines for AD4170
+  iio: adc: Add support for AD4170
 
-Best regards
-Uwe
+Marcelo Schmitt (2):
+  dt-bindings: iio: adc: Add AD4170
+  Documentation: iio: Add ADC documentation
 
- drivers/iio/adc/ad_sigma_delta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/iio/adc/adi,ad4170.yaml          |  473 ++++
+ Documentation/iio/iio_adc.rst                 |  280 +++
+ Documentation/iio/index.rst                   |    1 +
+ drivers/iio/adc/Kconfig                       |   16 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4170.c                      | 2049 +++++++++++++++++
+ drivers/iio/adc/ad4170.h                      |  316 +++
+ include/dt-bindings/iio/adc/adi,ad4170.h      |   96 +
+ 8 files changed, 3232 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+ create mode 100644 Documentation/iio/iio_adc.rst
+ create mode 100644 drivers/iio/adc/ad4170.c
+ create mode 100644 drivers/iio/adc/ad4170.h
+ create mode 100644 include/dt-bindings/iio/adc/adi,ad4170.h
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index c3c81aef34d8..7164ae255ed7 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -251,7 +251,7 @@ static int ad_sigma_delta_clear_pending_event(struct ad_sigma_delta *sigma_delta
- 	if (sigma_delta->rdy_gpiod) {
- 		pending_event = gpiod_get_value(sigma_delta->rdy_gpiod);
- 	} else {
--		unsigned status_reg;
-+		unsigned int status_reg;
- 
- 		ret = ad_sd_read_reg(sigma_delta, AD_SD_REG_STATUS, 1, &status_reg);
- 		if (ret)
 
-base-commit: 132d44dc6966c1cf841ffe0f6f048165687e870b
+base-commit: a61ff7eac77e86de828fe28c4e42b8ae9ec2b195
 -- 
 2.45.2
 

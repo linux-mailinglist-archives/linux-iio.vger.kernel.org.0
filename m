@@ -1,121 +1,126 @@
-Return-Path: <linux-iio+bounces-13596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13598-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7334F9F6044
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 09:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0779F60C6
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 10:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0B9A16A86A
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 08:38:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F0E4163DE9
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 09:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF268189F37;
-	Wed, 18 Dec 2024 08:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017051953AD;
+	Wed, 18 Dec 2024 09:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlAnbncW"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="4FfTT2hY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399F1176FB4;
-	Wed, 18 Dec 2024 08:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086BE187862;
+	Wed, 18 Dec 2024 09:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734511113; cv=none; b=SIy5kWjXVZhvdQ9RQfPba1U3VzbV1iiIyT9hAueykFBOuH3oBbHf6IShSQbpR2gQZlfp3Uxqk6jVBmzGzuOiS0tMQkumASp4MsEHBBheU6lvMtDNmyAH1/EgrtrXAn/G192JtfASH/FIIBk6rvS4Fp8l2SczXi35GhZFvvsY3dw=
+	t=1734512696; cv=none; b=eOHgbU7LiWwHPh9HU10KNawGwg8RO61sytObvCIkibXYvXr2UQmJi+ib/5RmdA4t4XyN702KU9o5/Nd9arIs8hU3Lk7waVybBtCnJkx2GSET/WwiDVVpSk8GjZKQjHfyqpO3QivxFblso/1zcCEPZcdHSd9qtM+kFU9a8BoAd4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734511113; c=relaxed/simple;
-	bh=RaUWyV/m8b639sivC00QFLGLRquDE8/hw4qzBs5W9hY=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=H2dlbMNLRbSDmfnglwZS9qTJcy6zD5bVyIoIx4e2ga/u6jTUOxBdhMy5SiIY9gFdnZn3qNnlJ1a9dER6ImK8tLc++6MtPqPSzBkEwidksAaGyhhys1lPNQCc6Neeu/fdZmMuPk9vawzgi3btSEoXAIEDhLU3y04eHiDYiwDWEPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlAnbncW; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3004028c714so61179081fa.2;
-        Wed, 18 Dec 2024 00:38:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734511110; x=1735115910; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EfBCq0/QSTzaOXzgrjJqq0o7Gj63KOGYM1ElaLTHPQw=;
-        b=TlAnbncWRuM6EWqWQXy81VbDjan+dH9pM+CIORYae6KBBSTYOkuOcZVk6vmRLESrm4
-         lrOIvkmrJQoyQGHEVX7GA3Fw674OubUVbdTTLj9vTNSAEcdkUTIpoNlnCMgAdpCRIJQV
-         l62AXs4Xas10/bB+rT+oS1QWu3q3CbmuMidhmqjaPJuv2HAclS4ZoQCmA0bEeQxZ8HL3
-         94sozlPHjfBsF3GzSLIEYJ+2RnmqhrGaWznB0toOeyQFaRGOu60spCh+D9b7Su6R66Px
-         gqIEKADeYXihKFfvRe3UZjMgVXm6JU7bA4vw4sDoPxR0DVGqQsY9AlHGmmBtJHCf1NiS
-         wJpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734511110; x=1735115910;
-        h=content-transfer-encoding:subject:from:cc:to:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EfBCq0/QSTzaOXzgrjJqq0o7Gj63KOGYM1ElaLTHPQw=;
-        b=Bn3ZWOa81Z80UJUtENIwFIl69v6WDMFGrBxxOouwoWwqP90tQoKuYdhsjB0G6JP+Gw
-         nUwyjqMiNT+E5tqBHlOjNOgR9AHr88jGYm5lHZEQw95IFIAiKdLUJ5XMr9GALpnGAvgm
-         lnKaMMBsF+V3E04iyIpGaEifB4EbT6eEtlH1BUDny3539YsPlUjDSQKnKMI2SdhtkD5U
-         ezqBrKk7qASMx0jPYV9zmwSH6X0wJ/2IYooHg+ACBJxgJeGQVNanu3iPi3Br9mjrsZpt
-         imLeC9CCAGLbFRZPH5hfQKBk0EZFDJahkTMy+sFNYNq3sOevoPU8qH7UAlPzGslIP3zN
-         jEAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6msDEdK3dO24mt21Deyn48ggzRgfsF3yau7d8zyvQm4/5IZ9XVrDh1/Fk8dnMd1ylN8zDmwQxtM8=@vger.kernel.org, AJvYcCUeAXI58BPwOjjTTwuTJNenEEF3QDVac6ECrMFkCGye3OjNx79pF2SoFRwrMOX+Hopj0gM5HfbwaJjC2MKG@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiYqvhnACsT/+JrY2utaaLJLqJWlvhUM7jnjkq2zEfShRFiBbO
-	/7dcjLBGicgdqR3amcCERCUsbNsZTfW4LM796OS73B0eMunrGZ0m
-X-Gm-Gg: ASbGnctVWN2p0TCscWfd7OM/SFQLA7OKXxeabFGeG9NM2hHaGSEfh9LuQvjOEKVbmWl
-	1LGVNpJ6nCBo3rlqRO62yKsQBTTBVuhwyVIPBsQN2Sz1Ax8DUaStvPu5IHMYElLkb+yUX2usl7L
-	rIoRrhBlOfLR2LqT0zj9cbt9QShyxZQi4vENopqJouwyTRUY0U5pv9hFQ6r/cC/Xhqy7T9TQmPb
-	va1dlDxJGwbWi3JwbBxaoGLKO72chpb6upRU37sngZdbDpa81aoi8vC36Ej21onS41SgA==
-X-Google-Smtp-Source: AGHT+IEIkkx/MZlpN82UY1lRdxGyemjAMAcMDtyXMZI3nKabWUn9l80gZ1iQeYH3ns9kCgrrK3iLVQ==
-X-Received: by 2002:a05:651c:198c:b0:302:26ff:d0ca with SMTP id 38308e7fff4ca-3044dabeab7mr6297221fa.3.1734511110133;
-        Wed, 18 Dec 2024 00:38:30 -0800 (PST)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-303441a5973sm14758581fa.107.2024.12.18.00.38.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Dec 2024 00:38:28 -0800 (PST)
-Message-ID: <3f5ff01b-8c32-423f-b3cc-a95399b69399@gmail.com>
-Date: Wed, 18 Dec 2024 10:38:26 +0200
+	s=arc-20240116; t=1734512696; c=relaxed/simple;
+	bh=HuxtwBiliTFACkDAti+9enYfQMXJD4UrA2I7TajWmYA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iRVgcyBH5xGAbo7viFPFSACi0Dh8ZIiFO6uWumJfiasFi2gv0nzfYz3p84jSX3mKyt/IwXLe8rn5mC8+2zTHT4b9/1N6igvbQF6UeytimGQukhcUoQlCOtYILC/iQ3CLXZFoMSg0Wdk8evQOxKlwDWzISbS6zFIwACBlBhrv0XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=4FfTT2hY; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BI7Eetl022006;
+	Wed, 18 Dec 2024 10:04:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=1oWrWl5HM94IDeHh5v4VY9
+	2O0MF3BbHI+a7HB2xR+Cs=; b=4FfTT2hYqblXiq3AnMeik5u524MAdH+EuI2lQI
+	N7LHXhuR7+R6MqXLsk8qrY1yv48SuZoAeo+BKA23Yd4ogrvjNuhGisXeoGqRzjRe
+	exPABAd2J3gMNf7VlXL1PheZXw6OHzQJPi+qFg0DHz6qnD1HGnqamPr4yl4WpCcv
+	wPrCm9q8AQ+3BE58N+GOl8u7JKEwqcDplhBCe81nuLJdT4j/HgzbFoz4sg4xQ+L7
+	uqfgJvZ4Ze89mmtCDrpJLBQ0+JQMafx0MsRskTXXmRIox5dkowDVTACdcAEoU8Kv
+	4NFummP1BmXoLkYPjcg1rTpUcy5/SyTF3C0fCUV96qxRUIxA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 43kfu8a4ty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Dec 2024 10:04:44 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id DF04B4004D;
+	Wed, 18 Dec 2024 10:03:53 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id F0B7525EED5;
+	Wed, 18 Dec 2024 10:02:54 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Wed, 18 Dec
+ 2024 10:02:54 +0100
+Received: from localhost (10.48.86.222) by SAFDAG1NODE1.st.com (10.75.90.17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Wed, 18 Dec
+ 2024 10:02:54 +0100
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To: <lee@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <wbg@kernel.org>, <jic23@kernel.org>, <ukleinek@kernel.org>
+CC: <catalin.marinas@arm.com>, <will@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <olivier.moysan@foss.st.com>
+Subject: [PATCH 0/9] Add STM32MP25 timers support: MFD, PWM, IIO and counter drivers
+Date: Wed, 18 Dec 2024 10:01:44 +0100
+Message-ID: <20241218090153.742869-1-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, en-AU, en-GB, en-BW
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-Subject: iio: dac: ad5624r_spi.c - use of scan_type
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 
-Hi dee Ho peeps,
+This series adds STM32MP25 support on MFD PWM, IIO, counter timer drivers.
+This new timer variant is managed by using a new DT compatible string.
+It comes with a slightly updated register set, some new features and new
+interconnect signals inside the SoC. There is also a new instance (TIM20).
+Same feature list as on STM32MP1x is supported currently, except for PWM
+capture (not enabled, by DT).
+The device tree files add all instances in stm32mp251 dtsi. PWM, counter
+and trigger examples are provided for stm32mp257f-ev1 board.
 
-I started drafting a driver for a ROHM DAC. I took a quick look at the 
-ad5624r_spi.c, and the use of the 'scan_type' -field in the struct 
-iio_chan_spec puzzled me.
+Fabrice Gasnier (9):
+  dt-bindings: mfd: stm32-timers: add support for stm32mp25
+  mfd: stm32-timers: add support for stm32mp25
+  iio: trigger: stm32-timer: add support for stm32mp25
+  counter: stm32-timer-cnt: add support for stm32mp25
+  pwm: stm32: add support for stm32mp25
+  arm64: defconfig: enable STM32 timers drivers
+  arm64: dts: st: add timer nodes on stm32mp251
+  arm64: dts: st: add timer pins for stm32mp257f-ev1
+  arm64: dts: st: add timer nodes on stm32mp257f-ev1
 
-I think this field is used by the driver to convert the data from user 
-to register format while performing the INDIO_DIRECT_MODE raw writes. I 
-don't spot any buffer usage. Furthermore, as far as I can say the 'sign' 
-and 'storagebits' are unused.
+ .../bindings/mfd/st,stm32-timers.yaml         |  18 +-
+ arch/arm64/boot/dts/st/stm32mp25-pinctrl.dtsi |  61 ++
+ arch/arm64/boot/dts/st/stm32mp251.dtsi        | 524 ++++++++++++++++++
+ arch/arm64/boot/dts/st/stm32mp257f-ev1.dts    |  58 ++
+ arch/arm64/configs/defconfig                  |   4 +
+ drivers/counter/stm32-timer-cnt.c             |   7 +-
+ drivers/iio/trigger/stm32-timer-trigger.c     |  21 +-
+ drivers/mfd/stm32-timers.c                    |  32 +-
+ drivers/pwm/pwm-stm32.c                       |  39 +-
+ include/linux/iio/timer/stm32-timer-trigger.h |   6 +
+ include/linux/mfd/stm32-timers.h              |   9 +
+ 11 files changed, 766 insertions(+), 13 deletions(-)
 
-My understanding has been that the scan_type is only intended for 
-parsing the buffered values, and usually when the data direction is from 
-driver to user.
+-- 
+2.25.1
 
-I suppose I shouldn't copy the ad5624r_spi.c use of scan_type to a new 
-driver. I'm somewhat tempted to send a patch which drops the scan_type 
-from the ad5624r_spi.c, and adds the 'realbits' and 'shift' to the 
-driver's internal struct ad5624r_state. This, however, will change the 
-interface to userland so maybe it's best to not do that.
-
-I wonder if I am missing something? (That wouldn't be unheard of XD). If 
-not, then at least a documentary patch with a comment "don't do this in 
-new drivers" might be Ok, or how do you see this?
-
-Yours,
-	-- Matti
 

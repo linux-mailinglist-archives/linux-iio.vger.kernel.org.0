@@ -1,573 +1,475 @@
-Return-Path: <linux-iio+bounces-13621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F309F6E76
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 20:48:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00929F6F07
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 21:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8350F7A02B8
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 19:48:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FF617A4075
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 20:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D621FBC96;
-	Wed, 18 Dec 2024 19:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470BC1FC0E9;
+	Wed, 18 Dec 2024 20:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnQ30i8b"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="M4hOlcKN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4589219CC20;
-	Wed, 18 Dec 2024 19:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE66F50F
+	for <linux-iio@vger.kernel.org>; Wed, 18 Dec 2024 20:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734551287; cv=none; b=kS4Iu9XzHCic59VYYH4cdSBYZSNQw7JRw3Y5ZEnaORdLNuOSqEQVYO1P/4EhZXUqxrKMOoVhJurZQQI+1PCZhmwFyW2ep/oujQdaejSd3SLmuiYH55KSSoJtbtTGq8tJF3cUNLaw2SJ2LybBhkAB33NPNijfmyw3B1/TADeaRds=
+	t=1734554782; cv=none; b=NPfI2KAiVrnHbIl39CxHfix2VYH9VEZqfVOP7LY1ZlfMrU9Kx4RuxpQbEvn7q9ZSjN+tqiHSVNlT145AmcMvPErfhxM7F4R4Vv4iNmrql02JDNKxUFwWAXhevwOzdRYkqLhfj/VvC+Nx/zaOPsMcgAEHjgN5P2Otsmo//rUCl+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734551287; c=relaxed/simple;
-	bh=2i5RTvMGyyLfn+vGxWFc5RYZHckTTBSavAYO7uo/L4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PWb43WNLer3weyNtYATQ6z22UAIDB9MGmLfSuvItO8HJVVyCOVnum3DLJJ77t+W/n9qHbaxtjfhp0+U3jw2KVo4dFWFp9uA8fj2FhkPcyin6YrB+eodJeHlPGWDj8Qb49FCLFjRDjahXsTZLO29clUiGy1CHlz6C7SUng5hHfsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnQ30i8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277DEC4CECD;
-	Wed, 18 Dec 2024 19:48:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734551286;
-	bh=2i5RTvMGyyLfn+vGxWFc5RYZHckTTBSavAYO7uo/L4o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mnQ30i8bMKS1+xhSibLzAsTEeSfVigtEu9fDn5nkiR+3wsnSvc3vZXR6wC3H+bdPL
-	 c9lokBhcMWPJGVl3BcZU9pxxJ18BRh1dVTbO0MFvuQYrNsVOT0vHSZ8ti5wc7xAS2U
-	 wwQmJApG17a9d2uxwnVXeP+lRUuhWOOdjD0ICENmazLm2BNBZJbYe6y+UIDF5OOu12
-	 BwiRmq413iT+tK8NrmfUyC1FTzPjw/sm1ZyC7/onX3YsTXLPxRtdIvBgMbi3UveVZj
-	 HO3JubwSPCjD6/YrbUuIxEZoETl39rsI99F85P09V1ZwNr/bS1Uzzgz9zz8YaGumFm
-	 i/kpF86IJgIug==
-Date: Wed, 18 Dec 2024 13:48:04 -0600
-From: Rob Herring <robh@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, krzk+dt@kernel.org,
-	conor+dt@kernel.org, ana-maria.cusco@analog.com,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [RFC PATCH 2/4] dt-bindings: iio: adc: Add AD4170
-Message-ID: <20241218194804.GA2203791-robh@kernel.org>
-References: <cover.1734530280.git.marcelo.schmitt@analog.com>
- <caadb73da62e80877eab8b0287d996b52266d912.1734530280.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1734554782; c=relaxed/simple;
+	bh=3GRuOQXhLX5wzyCu0HOlmCijKnb+i4WtZXoK7vxMpO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FsgPaeUPJtL4i5LSCntlJbr0p4n7FH6nW20AKZaOdMuDQIbB1RIlIkvslOnxrnygjO/SVnhEsE+VAXB3+bWn+0X5u0y6FMXIVZwsYKot4dEv36utx9OYtUIKAWgEJkAeAxLE+oxWguAs93Uc6BArxnXKn4fgV6jwFjC2AP+e3Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=M4hOlcKN; arc=none smtp.client-ip=209.85.160.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-27d0e994ae3so5169fac.3
+        for <linux-iio@vger.kernel.org>; Wed, 18 Dec 2024 12:46:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734554777; x=1735159577; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WKAvhMFQ20/EBQvmaQoGUPn3HJy1rkTqe1t15xH4pDA=;
+        b=M4hOlcKN6xl4X/NnatPpozTOxElOm5uSO6+3pTQ98TrAZxzn85Jc4ZkBBDNq1tizm8
+         Fj2kUqKDSE/FV6e8zj6DYVzHJ6qrUQVOQ/6/IR6Vux3RCuQ7Dv8if1GAhV5jH98y//CS
+         AICUDqBQiJev3j0mpAdtQUueb/a1FZX66zk6Li6kWD1iV2UqpraMg8DxUXwCwlOjllKm
+         ZCgeFA3DeRaiocdh7mH0CYq6qQbMU26a3M8j/ciHme5uLj0r1rART/437uIZ4t+LK+p5
+         OyoUrnYOz7L9VxTRGprUafbabiOyyfnfGq9KtTHKgutKdmdrPY5fbRXA5IAbW3mQUGpb
+         9JEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734554777; x=1735159577;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WKAvhMFQ20/EBQvmaQoGUPn3HJy1rkTqe1t15xH4pDA=;
+        b=icZSf0hI/JtM+gQ4JDjvp8vMG1q0u0oXr6qgrYday9G6y0RvkHvfczQxuoZ9dyyp/b
+         y2SknmpTHJMwunFDCKOFVJ+rAASMpdjth59UN6HgBq+6jao9Wj0rVwQNQ+Yc+lIq6+xC
+         7fy6SeepZim7CKAF3qYau2hOuiuia+XiY2WEoGVK4oBYnUJ4TlH/bm8Pe7es2tLCMhvJ
+         nxj2BaBiyN5E8yB1g++qWJl1ThLf2viM8oy/T2o13wzaohKZ5+dNZdw0136OSBC/I/YU
+         a4e1KPal8CdhTz8d574gUfb7e598cotvgbAxlm01XskS1MoAnD59xdkdH3LdGbV1acT/
+         VhVA==
+X-Forwarded-Encrypted: i=1; AJvYcCUG2Ef5IBun5AafrQInyTYjjAnGqvzjCvyypGoEneDH32wj0m+BXt9pEcsUNA4g7+HtEjZm8aG66/E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz4XK/zHSklz7qHg6UNPA55oE6LN9E163dMpqHeCv1jyyUciccR
+	a0c72JGtin/c/RUlDGKP3fzXev1ZXvWBZyx5pDxY2sl+Lo3TVPoPGVaKNBl5EkU=
+X-Gm-Gg: ASbGnctopiFSS8QUXn+wq3XvS0RzWEa43L8yX0OXPcfMk0ObLKIUAUZn4PZxt7DxP/i
+	Y6qq2SC/scIg1gu+tEwO9BEOIOpcCOs0bG3mlIqEXfrUBClmwGkIbiEjGKEoYk3dTbK7maqoJsV
+	xlJTO4uOyFqR1utyp95tka0iXNS6jq8wfQnx76nZkIbetE2ON9VKWhGPUXW1pnlzGfoCqpujVyk
+	IKXEyhtTX7+Y35GuzcrNX392w/Xvsh/jETbFHVkfv3xeNlJHiT0gluoteq61AK1R/iNiddPiQ1n
+	vSfyErGCo/RpBbsXuA==
+X-Google-Smtp-Source: AGHT+IELjcbzDbytKYdhZ46b3/I+pNOvZsESIGOu25HQIeZSDtQpRPztNVLOGe9VAKSV7WHqKjC8BQ==
+X-Received: by 2002:a05:6871:7246:b0:29e:362b:2148 with SMTP id 586e51a60fabf-2a7d0841a78mr559204fac.19.1734554777195;
+        Wed, 18 Dec 2024 12:46:17 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2a3d2645500sm3691594fac.20.2024.12.18.12.46.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2024 12:46:15 -0800 (PST)
+Message-ID: <a2e76ca6-ec21-4ce5-91f7-4d3a0ed792ce@baylibre.com>
+Date: Wed, 18 Dec 2024 14:46:14 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 4/4] Documentation: iio: Add ADC documentation
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ ana-maria.cusco@analog.com, marcelo.schmitt1@gmail.com
+References: <cover.1734530280.git.marcelo.schmitt@analog.com>
+ <48876e204590c47c532fc5f71e02ca3a00028cb7.1734530280.git.marcelo.schmitt@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <48876e204590c47c532fc5f71e02ca3a00028cb7.1734530280.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <caadb73da62e80877eab8b0287d996b52266d912.1734530280.git.marcelo.schmitt@analog.com>
 
-On Wed, Dec 18, 2024 at 11:37:42AM -0300, Marcelo Schmitt wrote:
-> Add device tree documentation for AD4170 sigma-delta ADCs.
+On 12/18/24 8:38 AM, Marcelo Schmitt wrote:
+> ADCs can have different input configurations such that developers can get
+> confused when trying to model some of them into IIO channels.
 > 
-
-The usual question with long lists of properties. Any of these should be 
-run-time controlled (by userspace) instead? If they might vary by the 
-user for given h/w design, then should be user controlled instead.
-
+> For example, some differential ADCs can have their channels configured as
+> pseudo-differential channels. In that configuration, only one input
+> connects to the signal of interest as opposed to using two inputs of a
+> differential input configuration. Datasheets sometimes also refer to
+> pseudo-differential inputs as single-ended inputs even though they have
+> distinct physical configuration and measurement procedure. There has been
+> some previous discussion in the mailing list about pseudo-differential and
+> single-ended channels [1].
+> 
+> Documenting the many possible ADC channel configurations should provide two
+> benefits:
+> A) Consolidate the knowledge from [2] and from [1], and hopefully reduce
+> the reviewing time of forthcoming ADC drivers.
+> B) Help Linux developers figure out quicker how to better support
+> differential ADCs, specially those that can have channels configured as
+> pseudo-differential inputs.
+> 
+> Add documentation about common ADC characteristics and IIO support for them.
+> 
+> [1]: https://lore.kernel.org/linux-iio/0fef36f8-a7db-40cc-86bd-9449cb4ab46e@gmail.com/
+> [2]: https://www.analog.com/en/resources/technical-articles/sar-adc-input-types.html.
+> 
 > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > ---
->  .../bindings/iio/adc/adi,ad4170.yaml          | 473 ++++++++++++++++++
->  1 file changed, 473 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+
+This is really nice to have!
+
+>  Documentation/iio/iio_adc.rst | 280 ++++++++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst   |   1 +
+>  2 files changed, 281 insertions(+)
+>  create mode 100644 Documentation/iio/iio_adc.rst
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
+> diff --git a/Documentation/iio/iio_adc.rst b/Documentation/iio/iio_adc.rst
 > new file mode 100644
-> index 000000000000..8c5defc614ee
+> index 000000000000..43b8cad547c9
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4170.yaml
-> @@ -0,0 +1,473 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4170.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/Documentation/iio/iio_adc.rst
+> @@ -0,0 +1,280 @@
+> +.. SPDX-License-Identifier: GPL-2.0
 > +
-> +title: Analog Devices AD4170 Analog to Digital Converter
+> +=========================
+> +IIO Abstractions for ADCs
+> +=========================
 > +
-> +maintainers:
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
+> +1. Overview
+> +===========
 > +
-> +description: |
-> +  Analog Devices AD4170 Analog to Digital Converter.
-> +  Specifications can be found at:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4170-4.pdf
+> +The IIO subsystem supports many Analog to Digital Converters (ADCs). Some ADCs
+> +have features and characteristics that are supported in specific ways by IIO
+> +device drivers. This documentation describes common ADC features and explains
+> +how they are (should be?) supported by the IIO subsystem.
 > +
-> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +1. ADC Channel Types
+> +====================
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad4170
+> +ADCs can have distinct types of inputs, each of them measuring analog voltages
+> +in a slightly different way. An ADC digitizes the analog input voltage over a
+> +span given by the provided voltage reference, the input type, and the input
+> +polarity. The input range allowed to an ADC channel is needed to determine the
+> +scale factor and offset needed to obtain the measured value in real-world
+> +units (millivolts for voltage measurement, milliamps for current measurement,
+> +etc.).
 > +
-> +  avss-supply:
-> +    description:
-> +      Referece voltage supply for AVDD. AVSS can be set below 0V to provide a
-> +      bipolar power supply to AD4170-4. Must be −2.625V at minimum, 0V maximum.
-> +      If not specified, this is assumed to be analog ground.
-> +
-> +  avdd-supply:
-> +    description:
-> +      A supply of 4.75V to 5.25V relative to AVSS that powers the chip (AVDD).
-> +
-> +  iovdd-supply:
-> +    description: 1.7V to 5.25V reference supply to the serial interface (IOVDD).
-> +
-> +  refin1p-supply:
-> +    description: REFIN+ supply that can be used as reference for conversion.
-> +
-> +  refin1n-supply:
-> +    description: REFIN- supply that can be used as reference for conversion.
-> +
-> +  refin2p-supply:
-> +    description: REFIN2+ supply that can be used as reference for conversion.
-> +
-> +  refin2n-supply:
-> +    description: REFIN2- supply that can be used as reference for conversion.
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +    description: |
+> +There are three types of ADC inputs (single-ended, differential,
+                  ^
+                  | general
 
-Don't need '|' if no formatting to preserve.
-
-> +      Optional external clock source. Can include one clock source: external
-> +      clock or external crystal.
+> +pseudo-differential) and two possible polarities (unipolar, bipolar). The input
+> +type (single-ended, differential, pseudo-differential) is one channel
+> +characteristic, and is completely independent of the polarity (unipolar,
+> +bipolar) aspect. A comprehensive article about ADC input types (on which this
+> +doc is heavily based on) can be found at
+> +https://www.analog.com/en/resources/technical-articles/sar-adc-input-types.html.
 > +
-> +  clock-names:
-> +    enum:
-> +      - ext-clk
-> +      - xtal
+> +1.1 Single-ended channels
+> +-------------------------
 > +
-> +  '#clock-cells':
-> +    const: 0
+> +Single-ended channels digitize the analog input voltage relative to ground and
+> +can be either unipolar or bipolar.
 > +
-> +  adi,gpio0-power-down-switch:
-> +    type: boolean
-> +    description:
-> +      Describes whether GPIO0 is used as a switch to disconnect bridge circuits
-> +      from AVSS. Pin defaults to GPIO if this property is not present.
+> +1.1.1 Single-ended Unipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 > +
-> +  adi,gpio1-power-down-switch:
-> +    type: boolean
-> +    description:
-> +      Describes whether GPIO1 is used as a switch to disconnect bridge circuits
-> +      from AVSS. Pin defaults to GPIO if this property is not present.
+> +::
 > +
-> +  adi,vbias-pins:
-> +    description: Analog inputs to apply a voltage bias of (AVDD − AVSS) / 2 to.
-> +    $ref: /schemas/types.yaml#/definitions/uint32-array
-> +    minItems: 1
-> +    maxItems: 9
-> +    items:
-> +      minimum: 0
-> +      maximum: 8
+> +  ---------- VREF -------------
+> +      ´ `           ´ `                  _____________
+> +    /     \       /     \               /             |
+> +   /       \     /       \         --- <  IN    ADC   |
+> +            \   /         \   /         \             |
+> +             `-´           `-´           \       VREF |
+> +  -------- GND (0V) -----------           +-----------+
+> +                                                  ^
+> +                                                  |
+> +                                             External VREF
 > +
-> +  adi,dig-aux1:
-> +    description:
-> +      Describes whether DIG_AUX1 pin will operate as data ready output,
-> +      synchronization output signal (SYNC_OUT), or if it will be disabled.
-> +      A value of 0 indicates DIG_AUX1 pin disabled. High impedance.
-> +      A value of 1 indicates DIG_AUX1 is configured as ADC data ready output.
-> +      A value of 1 indicates DIG_AUX1 is configured as SYNC_OUT output.
-> +      If this property is absent, DIG_AUX1 pin is disabled.
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2]
-> +    default: 0
+> +The input voltage to a **single-ended unipolar** channel is allowed to swing
+> +from GND to VREF (where VREF is a voltage reference with electrical potential
+> +higher than system ground). The maximum input voltage is also called VFS
+> +(full-scale input voltage), with VFS being determined by VREF. The voltage
+> +reference may be provided from an external supply or derived from the chip power
+> +source.
 > +
-> +  adi,dig-aux2:
-> +    description:
-> +      Describes whether DIG_AUX2 pin will function as DAC LDAC input,
-> +      synchronization start input (START), or if it will be disabled.
-> +      A value of 0 indicates DIG_AUX2 pin is disabled. High impedance.
-> +      A value of 1 indicates DIG_AUX2 pin is configured as active-low LDAC input
-> +      for the DAC.
-> +      A value of 2 indicates DIG_AUX2 pin is configured as START input.
-> +      If this property is absent, DIG_AUX2 pin is disabled.
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2]
-> +    default: 0
+> +A single-ended unipolar channel could be described in device tree like the
+> +following example::
 > +
-> +  adi,sync-option:
-> +    description:
-> +      Describes how ADC conversions are going to be synchronized. A value of 1
-> +      indicates the SYNC_IN pin will function as a synchronization input that
-> +      allows the user to control the start of sampling by pulling SYNC_IN high.
-> +      Use option number 2 to set the alternate synchronization functionality
-> +      which allows per channel conversion start control when multiple channels
-> +      are enabled. Option number 0 disables synchronization.
-> +      A value of 0 indicates no synchronization. SYNC_IN pin disabled.
-> +      A value of 1 indicates standard synchronization functionality.
-> +      A value of 2 indicates alternate synchronization functionality.
-> +      If this property is absent, no synchronization is performed.
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2]
-> +    default: 1
-> +
-> +  adi,excitation-pin-0:
-> +    description: |
-> +      Specifies the pin to apply excitation current 0 (IOUT0). Besides the
-> +      analog pins 0 to 8, the excitation current can be applied to GPIO pins.
-> +      17: Output excitation current IOUT0 to GPIO0.
-> +      18: Output excitation current IOUT0 to GPIO1.
-> +      19: Output excitation current IOUT0 to GPIO2.
-> +      20: Output excitation current IOUT0 to GPIO3.
-> +      If this property is absent, IOUT0 is not routed to any pin.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20]
-> +    default: 0
-> +
-> +  adi,excitation-pin-1:
-> +    description: |
-> +      Specifies the pin to apply excitation current 1 (IOUT1). Besides the
-> +      analog pins 0 to 8, the excitation current can be applied to GPIO pins.
-> +      17: Output excitation current IOUT1 to GPIO0.
-> +      18: Output excitation current IOUT1 to GPIO1.
-> +      19: Output excitation current IOUT1 to GPIO2.
-> +      20: Output excitation current IOUT1 to GPIO3.
-> +      If this property is absent, IOUT1 is not routed to any pin.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20]
-> +    default: 0
-> +
-> +  adi,excitation-pin-2:
-> +    description: |
-> +      Specifies the pin to apply excitation current 2 (IOUT2). Besides the
-> +      analog pins 0 to 8, the excitation current can be applied to GPIO pins.
-> +      17: Output excitation current IOUT2 to GPIO0.
-> +      18: Output excitation current IOUT2 to GPIO1.
-> +      19: Output excitation current IOUT2 to GPIO2.
-> +      20: Output excitation current IOUT2 to GPIO3.
-> +      If this property is absent, IOUT2 is not routed to any pin.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20]
-> +    default: 0
-> +
-> +  adi,excitation-pin-3:
-> +    description: |
-> +      Specifies the pin to apply excitation current 3 (IOUT3). Besides the
-> +      analog pins 0 to 8, the excitation current can be applied to GPIO pins.
-> +      17: Output excitation current IOUT3 to GPIO0.
-> +      18: Output excitation current IOUT3 to GPIO1.
-> +      19: Output excitation current IOUT3 to GPIO2.
-> +      20: Output excitation current IOUT3 to GPIO3.
-> +      If this property is absent, IOUT3 is not routed to any pin.
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 17, 18, 19, 20]
-> +    default: 0
-> +
-> +  adi,excitation-current-0-microamp:
-> +    description: |
-> +      Excitation current in microamps to be applied to IOUT0 output pin
-> +      specified in adi,excitation-pin-0.
-> +    enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +    default: 0
-> +
-> +  adi,excitation-current-1-microamp:
-> +    description: |
-> +      Excitation current in microamps to be applied to IOUT1 output pin
-> +      specified in adi,excitation-pin-1.
-> +    enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +    default: 0
-> +
-> +  adi,excitation-current-2-microamp:
-> +    description: |
-> +      Excitation current in microamps to be applied to IOUT2 output pin
-> +      specified in adi,excitation-pin-2.
-> +    enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +    default: 0
-> +
-> +  adi,excitation-current-3-microamp:
-> +    description: |
-> +      Excitation current in microamps to be applied to IOUT3 output pin
-> +      specified in adi,excitation-pin-3.
-> +    enum: [0, 10, 50, 100, 250, 500, 1000, 1500]
-> +    default: 0
-> +
-> +  adi,chop-iexc:
-> +    description: |
-> +      Specifies the chopping/swapping functionality for excitation currents.
-> +      0: No Chopping of Excitation Currents.
-> +      1: Chop/swap IOUT0 and IOUT1 (pair AB) excitation currents.
-> +      2: Chop/swap IOUT2 and IOUT3 (pair CD) excitation currents.
-> +      3: Chop/swap both pairs (pair AB and pair CD) of excitation currents.
-> +      If this property is absent, no chopping is performed.
-> +      There are macros for the above values in dt-bindings/iio/adi,ad4170.h.
-> +    $ref: /schemas/types.yaml#/definitions/uint8
-> +    enum: [0, 1, 2, 3]
-> +    default: 0
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@([0-9]|1[0-5])$":
-
-Unit-addresses are typically hex, not decimal.
-
-> +    $ref: adc.yaml
-> +    type: object
-> +    unevaluatedProperties: false
-> +    description: |
-> +      Represents the external channels which are connected to the ADC.
-> +
-> +    properties:
-> +      reg:
-> +        description: |
-> +          The channel number. The device can have up to 16 channels numbered
-> +          from 0 to 15.
-
-Don't need to say in prose what the schema says. IOW, drop the 2nd 
-sentence.
-
-> +        items:
-> +          minimum: 0
-> +          maximum: 15
-> +
-> +      diff-channels:
-> +        description: |
-> +          This property is used for defining the inputs of a differential
-> +          voltage channel. The first value is the positive input and the second
-> +          value is the negative input of the channel.
-> +
-> +          Besides the analog input pins AIN0 to AIN8, there are special inputs
-> +          that can be selected with the following values:
-> +            17: Temperature sensor input
-> +            18: (AVDD-AVSS)/5
-> +            19: (IOVDD-DGND)/5
-> +            20: DAC output
-> +            21: ALDO
-> +            22: DLDO
-> +            23: AVSS
-> +            24: DGND
-> +            25: REFIN+
-> +            26: REFIN-
-> +            27: REFIN2+
-> +            28: REFIN2-
-> +            29: REFOUT
-> +
-> +          There are macros for those values in dt-bindings/iio/adi,ad4170.h.
-> +
-> +        items:
-> +          minimum: 0
-> +          maximum: 31
-> +
-> +      single-channel: true
-> +
-> +      common-mode-channel: true
-> +
-> +      bipolar: true
-> +
-> +      adi,config-setup-number:
-> +        description: |
-> +          Specifies which of the 8 setups are used to configure the channel.
-> +          A setup comprises of: AFE, FILTER, FILTER_FS, MISC, OFFSET, and GAIN
-> +          registers. More than one channel can use the same configuration setup
-> +          number in which case they will share the settings of the above
-> +          mentioned registers.
-> +        items:
-> +          minimum: 0
-> +          maximum: 7
-> +
-> +      adi,chop-adc:
-> +        description: |
-> +          Specifies the chopping/swapping functionality for a channel setup.
-> +          Macros for adi,chop-adc values are available in
-> +          dt-bindings/iio/adi,ad4170.h. When enabled, the analog inputs are
-> +          continuously swapped and a conversion is generated for each time a
-> +          swap occurs. The analog input pins are connected in one direction,
-> +          sampled, swapped, sampled again, and then the conversion results are
-> +          averaged. The input swap minimizes system offset and offset drift.
-> +          This property also specifies whether AC excitation using 2 or 4 GPIOs
-> +          are going to be used.
-> +          0: No channel chop.
-> +          1: Chop/swap the channel inputs.
-> +          2: AC Excitation using 4 GPIOs.
-> +          3: AC Excitation using 2 GPIOs.
-> +          If this property is absent, no chopping is performed.
-> +        $ref: /schemas/types.yaml#/definitions/uint16
-> +        enum: [0, 1, 2, 3]
-> +        default: 0
-> +
-> +      adi,burnout-current-nanoamp:
-> +        description: |
-> +          Current in nanoamps to be applied for this channel. Burnout currents
-> +          are only active when the channel is selected for conversion.
-> +        enum: [0, 100, 2000, 10000]
-> +        default: 0
-> +
-> +      adi,buffered-negative:
-> +        description: Enable precharge buffer, full buffer, or skip reference
-> +          buffering of the negative voltage reference. Because the output
-> +          impedance of the source driving the voltage reference inputs may be
-> +          dynamic, RC combinations of those inputs can cause DC gain errors if
-> +          the reference inputs go unbuffered into the ADC. Enable reference
-> +          buffering if the provided reference source has dynamic high impedance
-> +          output.
-> +        enum: [0, 1, 2]
-> +        default: 0
-> +
-> +      adi,buffered-positive:
-> +        description: Enable precharge buffer, full buffer, or skip reference
-> +          buffering of the positive voltage reference. Because the output
-> +          impedance of the source driving the voltage reference inputs may be
-> +          dynamic, RC combinations of those inputs can cause DC gain errors if
-> +          the reference inputs go unbuffered into the ADC. Enable reference
-> +          buffering if the provided reference source has dynamic high impedance
-> +          output.
-> +        enum: [0, 1, 2]
-> +        default: 0
-> +
-> +      adi,reference-select:
-> +        description: |
-> +          Select the reference source to use when converting on the specific
-> +          channel. Valid values are:
-> +          0: Differential reference voltage REFIN+ - REFIN−.
-> +          1: Differential reference voltage REFIN2+ - REFIN2−.
-> +          2: Internal 2.5V referece (REFOUT) relative to AVSS.
-> +          3: Analog supply voltage (AVDD) relative relative AVSS.
-> +          If this field is left empty, the internal reference is selected.
-> +        $ref: /schemas/types.yaml#/definitions/uint8
-> +        enum: [0, 1, 2, 3]
-> +        default: 2
-> +
-> +    required:
-> +      - reg
-> +      - adi,config-setup-number
-> +
-> +    allOf:
-> +      - oneOf:
-> +          - required: [single-channel]
-> +            properties:
-> +              diff-channels: false
-> +          - required: [diff-channels]
-> +            properties:
-> +              single-channel: false
-> +              common-mode-channel: false
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - avdd-supply
-> +  - iovdd-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    #include <dt-bindings/iio/adc/adi,ad4170.h>
-> +    spi {
+> +    adc@0 {
+> +        ...
 > +        #address-cells = <1>;
 > +        #size-cells = <0>;
 > +
-> +        adc@0 {
-> +            compatible = "adi,ad4170";
+> +        channel@0 {
 > +            reg = <0>;
-> +            avdd-supply = <&avdd>;
-> +            iovdd-supply = <&iovdd>;
-> +            spi-max-frequency = <20000000>;
-> +            interrupt-parent = <&gpio_in>;
-> +            interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
-> +            adi,dig-aux1 = /bits/ 8 <1>;
-> +            adi,dig-aux2 = /bits/ 8 <0>;
-> +            adi,sync-option = /bits/ 8 <0>;
-> +            adi,excitation-pin-0 = <19>;
-> +            adi,excitation-current-0-microamp = <10>;
-> +            adi,excitation-pin-1 = <20>;
-> +            adi,excitation-current-1-microamp = <10>;
-> +            adi,chop-iexc = /bits/ 8 <1>;
-> +            adi,vbias-pins = <5 6>;
-> +            #address-cells = <1>;
-> +            #size-cells = <0>;
-> +
-> +            // Sample AIN0 with respect to AIN1 throughout AVDD/AVSS input range
-> +            // Fully differential. If AVSS < 0V, Fully differential true bipolar
-> +            channel@0 {
-> +                reg = <0>;
-> +                bipolar;
-> +                diff-channels = <AD4170_MAP_AIN0 AD4170_MAP_AIN1>;
-> +                adi,config-setup-number = <0>;
-> +                adi,reference-select = /bits/ 8 <3>;
-> +                adi,burnout-current-nanoamp = <100>;
-> +            };
-> +            // Sample AIN2 with respect to DGND throughout AVDD/DGND input range
-> +            // Peseudo-differential unipolar (fig. 2a)
-> +            channel@1 {
-> +                reg = <1>;
-> +                single-channel = <AD4170_MAP_AIN2>;
-> +                common-mode-channel = <AD4170_MAP_DGND>;
-> +                adi,config-setup-number = <1>;
-> +                adi,reference-select = /bits/ 8 <3>;
-> +            };
-> +            // Sample AIN3 with respect to 2.5V throughout AVDD/AVSS input range
-> +            // Pseudo-differential bipolar (fig. 2b)
-> +            channel@2 {
-> +                reg = <2>;
-> +                bipolar;
-> +                single-channel = <AD4170_MAP_AIN3>;
-> +                common-mode-channel = <AD4170_MAP_REFOUT>;
-> +                adi,config-setup-number = <2>;
-> +                adi,reference-select = /bits/ 8 <3>;
-> +            };
-> +            // Sample AIN4 with respect to DGND throughout AVDD/AVSS input range
-> +            // Pseudo-differential true bipolar if AVSS < 0V (fig. 2c)
-> +            channel@3 {
-> +                reg = <3>;
-> +                bipolar;
-> +                single-channel = <AD4170_MAP_AIN4>;
-> +                common-mode-channel = <AD4170_MAP_DGND>;
-> +                adi,config-setup-number = <3>;
-> +                adi,reference-select = /bits/ 8 <3>;
-> +            };
-> +            // Sample AIN5 with respect to 2.5V throughout AVDD/REFOUT input range
-> +            // Pseudo-differential unipolar (AD4170 datasheet page 46 example)
-> +            channel@4 {
-> +                reg = <4>;
-> +                single-channel = <AD4170_MAP_AIN5>;
-> +                common-mode-channel = <AD4170_MAP_REFOUT>;
-> +                adi,config-setup-number = <4>;
-> +                adi,reference-select = /bits/ 8 <2>;
-> +            };
-> +            // Sample AIN6 with respect to REFIN+ throughout AVDD/AVSS input range
-> +            // Pseudo-differential unipolar
-> +            channel@5 {
-> +                reg = <5>;
-> +                single-channel = <AD4170_MAP_AIN6>;
-> +                common-mode-channel = <AD4170_MAP_REFIN1_P>;
-> +                adi,config-setup-number = <4>;
-> +                adi,reference-select = /bits/ 8 <2>;
-> +            };
-> +            // Sample AIN7 with respect to DGND throughout REFIN+/REFIN- input range
-> +            // Pseudo-differential bipolar
-> +            channel@6 {
-> +                reg = <6>;
-> +                bipolar;
-> +                diff-channels = <AD4170_MAP_AIN7 AD4170_MAP_DGND>;
-> +                adi,config-setup-number = <5>;
-> +                adi,reference-select = /bits/ 8 <0>;
-> +            };
 > +        };
 > +    };
-> +...
 > +
-> -- 
-> 2.45.2
-> 
+> +See ``Documentation/devicetree/bindings/iio/adc/adc.yaml`` for the complete
+> +documentation of ADC specific device tree properties.
+> +
+> +
+> +1.1.2 Single-ended Bipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +::
+> +
+> +  ---------- +VREF ------------
+> +      ´ `           ´ `                  _____________________
+> +    /     \       /     \               /                     |
+> +   /       \     /       \         --- <  IN          ADC     |
+> +            \   /         \   /         \                     |
+> +             `-´           `-´           \       +VREF  -VREF |
+> +  ---------- -VREF ------------           +-------------------+
+> +                                                  ^       ^
+> +                                                  |       |
+> +                             External +VREF ------+  External -VREF
+> +
+> +For a **single-ended bipolar** channel, the analog voltage input can go from
+> +-VREF to +VREF (where -VREF is the voltage reference that has the lower
+> +electrical potential while +VREF is the reference with the higher one). Some ADC
+> +chips derive the lower reference from +VREF, others get it from a separate
+> +input.  Often, +VREF and -VREF are symmetric but they don't need to be so. When
+> +-VREF is lower than system ground, these inputs are also called single-ended
+> +true bipolar.
+> +
+> +Here's an example device tree description of a single-ended bipolar channel.
+> +::
+
+To be consistent with other sections, put :: at the end of the text.
+
+	Here's an example device tree description of a single-ended bipolar channel::
+
+> +
+> +    adc@0 {
+> +        ...
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        channel@0 {
+> +            reg = <0>;
+> +            bipolar;
+> +        };
+> +    };
+> +
+> +1.2 Differential channels
+> +-------------------------
+> +
+> +A differential voltage measurement digitizes the voltage level at the positive
+> +input (IN+) relative to the negative input (IN-) over the -VREF to +VREF span.
+> +In other words, a differential channel measures how many volts IN+ is away from
+> +IN- (IN+ - IN-).
+
+Suggest using the word "difference" or the "the potential difference between"
+instead of saying "is away from".
+
+> +
+> +1.2.1 Differential Bipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +::
+> +
+> +  -------- +VREF ------
+> +    ´ `       ´ `               +-------------------+
+> +  /     \   /     \   /        /                    |
+> +         `-´       `-´    --- <  IN+                |
+> +  -------- -VREF ------        |                    |
+> +                               |            ADC     |
+> +  -------- +VREF ------        |                    |
+> +        ´ `       ´ `     --- <  IN-                |
+> +  \   /     \   /     \        \       +VREF  -VREF |
+> +   `-´       `-´                +-------------------+
+> +  -------- -VREF ------                  ^       ^
+> +                                         |       +---- External -VREF
+> +                                  External +VREF
+> +
+> +The analog signals to **differential bipolar** inputs are also allowed to swing
+> +from -VREF to +VREF. If -VREF is below system GND, these are also called
+> +differential true bipolar inputs.
+> +
+> +Device tree example of a differential bipolar channel::
+> +
+> +    adc@0 {
+> +        ...
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        channel@0 {
+> +            reg = <0>;
+> +            bipolar;
+> +            diff-channels = <0 1>;
+> +        };
+> +    };
+> +
+> +In the ADC driver, `differential = 1` is set into `struct iio_chan_spec` for the
+> +channel. See ``include/linux/iio/iio.h`` for more information.
+> +
+> +1.2.2 Differential Unipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To be consistent with the other sections, move unipolar before bipolar.
+
+> +
+> +For **differential unipolar** channels, the analog voltage at the positive input
+> +must also be higher than the voltage at the negative input. Thus, the actual
+> +input range allowed to a differential unipolar channel is IN- to +VREF. Because
+> +IN+ is allowed to swing with the measured analog signal and the input setup must
+> +guarantee IN+ will not go below IN- (nor IN- will raise above IN+), most
+> +differential unipolar channel setups have IN- fixed to a known voltage that does
+> +not fall within the voltage range expected for the measured signal. This leads
+> +to a setup that is equivalent to a pseudo-differential channel. Thus,
+> +differential unipolar channels are actually pseudo-differential unipolar
+> +channels.
+
+The diagrams are really helpful, so please add a diagram in this section as well.
+
+> +
+> +1.3 Pseudo-differential Channels
+> +--------------------------------
+> +
+> +There is a third ADC input type which is called pseudo-differential or
+> +single-ended to differential configuration. A pseudo-differential channel is
+> +similar to a differential channel in that it also measures IN+ relative to IN-.
+> +However, unlike differential channels, the negative input is limited to a narrow
+> +voltage range while only IN+ is allowed to swing. A pseudo-differential channel
+> +can be made out from a differential pair of inputs by restricting the negative
+> +input to a known voltage while allowing only the positive input to swing. Aside
+> +from that, some parts have a COM pin that allows single-ended inputs to be
+> +referenced to a common-mode voltage, making them pseudo-differential channels.
+
+I think it would be helpful to mention here that the common mode input voltage is
+usually described in the devicetree as a voltage regulator since it is basically
+a constant  voltage source, e.g. ``com-supply`` to correspond to the example COM
+pin.
+
+> +
+> +1.3.1 Pseudo-differential Unipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +::
+> +
+> +  -------- +VREF ------          +-------------------+
+> +    ´ `       ´ `               /                    |
+> +  /     \   /     \   /    --- <  IN+                |
+> +         `-´       `-´          |                    |
+> +  --------- IN- -------         |            ADC     |
+
+The bottom rail should be GND, not IN-. Typically, the common mode voltage is
+VREF / 2. In other words it is halfway between the two rails.
+
+> +                                |                    |
+> +  Common-mode voltage -->  --- <  IN-                |
+> +                                \       +VREF  -VREF |
+> +                                 +-------------------+
+> +                                          ^       ^
+> +                                          |       +---- External -VREF
+
+This is unipolar, so would not expect -VREF here.
+
+> +                                   External +VREF
+> +
+> +A **pseudo-differential unipolar** input has the limitations a differential
+> +unipolar channel would have, meaning the analog voltage to the positive input
+> +IN+ must stay within IN- to +VREF. The fixed voltage to IN- is sometimes called
+> +common-mode voltage and it must be within -VREF to +VREF as would be expected
+> +from the signal to any differential channel negative input.
+> +
+> +In pseudo-differential configuration, the voltage measured from IN+ is not
+> +relative to GND (as it would be for a single-ended channel) but to IN-, which
+> +causes the measurement to always be offset by IN- volts. To allow applications
+> +to calculate IN+ voltage with respect to system ground, the IIO channel may
+> +provide an `_offset` attribute to report the channel offset to user space.
+
+In some chips though, the common mode voltage may be GND. (Example is AD7944
+that calls this "ground sense"). So in that case, there is no common mode
+supply or ``_offset`` attribute.
+
+> +
+> +Device tree example for pseudo-differential unipolar channel::
+> +
+> +    adc@0 {
+> +        ...
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        channel@0 {
+> +            reg = <0>;
+> +            single-channel = <0>;
+> +            common-mode-channel = <1>;
+> +        };
+> +    };
+> +
+> +Do not set `differential` in the channel `iio_chan_spec` struct of
+
+Needs `` for .rst formatting.
+
+> +pseudo-differential channels.
+> +
+> +1.3.2 Pseudo-differential Bipolar Channels
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +::
+> +
+> +  -------- +VREF ------          +-------------------+
+> +    ´ `       ´ `               /                    |
+> +  /     \   /     \   /    --- <  IN+                |
+> +         `-´       `-´          |                    |
+> +  -------- -VREF ------         |            ADC     |
+> +                                |                    |
+> +  Common-mode voltage -->  --- <  IN-                |
+> +                                \       +VREF  -VREF |
+> +                                 +-------------------+
+> +                                          ^       ^
+> +                                          |       +---- External -VREF
+> +                                   External +VREF
+> +
+> +A **pseudo-differential bipolar** input is not limited by the level at IN- but
+> +it will be limited to -VREF or to GND on the lower end of the input range
+> +depending on the particular ADC. Similar to their unipolar counter parts,
+> +pseudo-differential bipolar channels may define an `_offset` attribute to
+> +provide the read offset relative to GND.
+> +
+> +Device tree example for pseudo-differential bipolar channel::
+> +
+> +    adc@0 {
+> +        ...
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        channel@0 {
+> +            reg = <0>;
+> +            bipolar;
+> +            single-channel = <0>;
+> +            common-mode-channel = <1>;
+> +        };
+> +    };
+> +
+> +Again, the `differential` field of `struct iio_chan_spec` is not set for
+> +pseudo-differential channels.
+> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
+> index 074dbbf7ba0a..15f62d304eaa 100644
+> --- a/Documentation/iio/index.rst
+> +++ b/Documentation/iio/index.rst
+> @@ -7,6 +7,7 @@ Industrial I/O
+>  .. toctree::
+>     :maxdepth: 1
+>  
+> +   iio_adc
+
+Maybe make this iio_adc_inputs in case we make a general adc page in the future.
+
+>     iio_configfs
+>     iio_devbuf
+>     iio_dmabuf_api
+
 

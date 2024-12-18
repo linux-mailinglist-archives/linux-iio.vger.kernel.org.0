@@ -1,143 +1,121 @@
-Return-Path: <linux-iio+bounces-13595-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13596-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268669F5FFD
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 09:17:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7334F9F6044
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 09:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D341D7A1B1E
-	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 08:17:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0B9A16A86A
+	for <lists+linux-iio@lfdr.de>; Wed, 18 Dec 2024 08:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D33615990C;
-	Wed, 18 Dec 2024 08:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF268189F37;
+	Wed, 18 Dec 2024 08:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JRkP8sAO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlAnbncW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE73735945;
-	Wed, 18 Dec 2024 08:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399F1176FB4;
+	Wed, 18 Dec 2024 08:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734509854; cv=none; b=RYnvuqmPuHAF6P3Oyh1bAh2CjFXQsGknC/AAw/OKDkpiZGafjyY51Efh3B+UCFhPVSFGwzDt+u2z0pZBNI7okT0pmBcgWwUwiKnbckbiPNEQakoxfmspLFNxKKs13Ahn8nIP00+c8K3TfA+yF6KdnW2I9v7SM9OeummTeP0AZl4=
+	t=1734511113; cv=none; b=SIy5kWjXVZhvdQ9RQfPba1U3VzbV1iiIyT9hAueykFBOuH3oBbHf6IShSQbpR2gQZlfp3Uxqk6jVBmzGzuOiS0tMQkumASp4MsEHBBheU6lvMtDNmyAH1/EgrtrXAn/G192JtfASH/FIIBk6rvS4Fp8l2SczXi35GhZFvvsY3dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734509854; c=relaxed/simple;
-	bh=A3T1QJ3NOU7tRQpb1lCk+AMO0Y0dbZ5rqmPUmYJPVkQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=XPnS2mktcoH+4N8s9J9jLg05c6bw/yhdMlN9SO0xfIl2y1uwDxZlUxVqh5aA/Rw2umlO/JRgkMVJ06b/fwxbjAbCGnvQ2cPcrQrRgo3IVpg02l/WbTQu7uo3LZxnU09HCR9Ruf3xqP+9B4YXuwDbfYTShZ58NuGQWvRD2ZQlV48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JRkP8sAO; arc=none smtp.client-ip=209.85.208.172
+	s=arc-20240116; t=1734511113; c=relaxed/simple;
+	bh=RaUWyV/m8b639sivC00QFLGLRquDE8/hw4qzBs5W9hY=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=H2dlbMNLRbSDmfnglwZS9qTJcy6zD5bVyIoIx4e2ga/u6jTUOxBdhMy5SiIY9gFdnZn3qNnlJ1a9dER6ImK8tLc++6MtPqPSzBkEwidksAaGyhhys1lPNQCc6Neeu/fdZmMuPk9vawzgi3btSEoXAIEDhLU3y04eHiDYiwDWEPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlAnbncW; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ffdbc0c103so55373941fa.3;
-        Wed, 18 Dec 2024 00:17:31 -0800 (PST)
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3004028c714so61179081fa.2;
+        Wed, 18 Dec 2024 00:38:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734509850; x=1735114650; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=81jFL5t5nOp890xXjLKx1phRJXA10fYfBI0GOMYOfoU=;
-        b=JRkP8sAOLATDTX+x1ggAGZQQcBsKDsTjubapiX2P5YOCx9KvkRg5nH6skXMK69VBol
-         ep83B4pmWik5r6zkSuUdfdoGjRRlFEPQq9DbaczAVoyqM4VcObGO0DQE0T/fykK2eN0e
-         l17y2AtYhkM6cXBe/+ly9vNIaZKxvdG3AiEIN7W34CeN2nq2luH2+avFkrsvamAvmodA
-         BnytIfB71Gw49XQvzcDjgU5jD5mDP9YtmGTGRRgsvbFMEtrgFHJ2HbQbYrzHsMQcIczu
-         HBRfYjRATKwN7ZBuG1SLdK0ncRuFh0uewUoTWgTGrpw8VO8Xy/kiGzFbK+4z+AWLAvw8
-         I60Q==
+        d=gmail.com; s=20230601; t=1734511110; x=1735115910; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EfBCq0/QSTzaOXzgrjJqq0o7Gj63KOGYM1ElaLTHPQw=;
+        b=TlAnbncWRuM6EWqWQXy81VbDjan+dH9pM+CIORYae6KBBSTYOkuOcZVk6vmRLESrm4
+         lrOIvkmrJQoyQGHEVX7GA3Fw674OubUVbdTTLj9vTNSAEcdkUTIpoNlnCMgAdpCRIJQV
+         l62AXs4Xas10/bB+rT+oS1QWu3q3CbmuMidhmqjaPJuv2HAclS4ZoQCmA0bEeQxZ8HL3
+         94sozlPHjfBsF3GzSLIEYJ+2RnmqhrGaWznB0toOeyQFaRGOu60spCh+D9b7Su6R66Px
+         gqIEKADeYXihKFfvRe3UZjMgVXm6JU7bA4vw4sDoPxR0DVGqQsY9AlHGmmBtJHCf1NiS
+         wJpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734509850; x=1735114650;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=81jFL5t5nOp890xXjLKx1phRJXA10fYfBI0GOMYOfoU=;
-        b=ljY+jNoDquA1Q3DfBfrTZjf9PX4i7bRK3bcDuVNxBzMsyTC1ehJilmCDH3Tsheu4Ul
-         sv9EVq8yQ32P9GTcQw/PtO/aOtkX+y4mhcty1uksh4fEpM7Mflzahumeg9sCvxCRmCZR
-         GWwZLIpqczJopYqHkwCuygy3ZJExGrKGt/tRnEMzzpRJCbc8A5kuE+a4h5AjBy57dDl/
-         w+n2b2wVEQFKdiyhHlkGOKpMa52VMQaJvXGNu7koT4Z0Ffwjd7HauTzCjsM9J92KfdhZ
-         i4gles/ovmqLpPZAPu9/RThBTMGoO4nRCxXwKD+xnAGyQPkL3i8FfFXlmGUEOB+jjhQ1
-         M5JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZxPCYA9qpc0YfyrKn6v3Vf4jYAqcAwNNmRlogyhi2RM6PbsUfztVHeM3jsxiTcJ8DzkafHwxZYEA=@vger.kernel.org, AJvYcCXOECRqsv8Grs0eMINPNCElMxJsNRytme57UWKY+VD1sfP9bWZraNK3AxLD+X80d54v5b2Dyw1QQMs5wrg0@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjD+PK7KyESSNqSKpr26gnDWpCuR/wFEgUhHjon+cvr0eY+EfE
-	ZAd2cQ6lt7uaE/a1ZWcxR8fIDsknu1GAbmCoz+FSYxR+euZzz1O+fX2bpg==
-X-Gm-Gg: ASbGncsAcxpHcQsWCPjdoqV9UV6bjklqLs54xaSI/QffCmt/OW456Jqh3AI1zI5Zq9A
-	l4/k4yYGuMMwLsxI/GcoXS6o01mJyp68knCL+bolDMIHFyxoUYy5RZHqvHpraYf223jo0W9+Aly
-	5KOss7A8rl6y3b+xb+MAl1lUUQv6b6BbURTGM2gFSbAzhXhEnS4VfeIN91PP4Q2tugL/TqD1jV/
-	6g0Cg2ldRigNLxpz3z71t3FslEUpDH/WCLXNTkTIeWN+GCXTnHFSUHEEvs=
-X-Google-Smtp-Source: AGHT+IHmBka3SaAX9pOO8kzFMFOYsqBj1CWgCuhmRAXDcCzNpX1EdAgNprXLy68dJzaaGCZFnnMMnA==
-X-Received: by 2002:a2e:bc16:0:b0:2fa:d7ea:a219 with SMTP id 38308e7fff4ca-3044db58d55mr7076551fa.37.1734509849619;
-        Wed, 18 Dec 2024 00:17:29 -0800 (PST)
-Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-303441ea11bsm15229791fa.121.2024.12.18.00.17.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 00:17:27 -0800 (PST)
-Date: Wed, 18 Dec 2024 10:17:15 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: dac: ad5624r: Drop docs of missing members
-Message-ID: <Z2KFC7ZBwmM69Qb4@mva-rohm>
+        d=1e100.net; s=20230601; t=1734511110; x=1735115910;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EfBCq0/QSTzaOXzgrjJqq0o7Gj63KOGYM1ElaLTHPQw=;
+        b=Bn3ZWOa81Z80UJUtENIwFIl69v6WDMFGrBxxOouwoWwqP90tQoKuYdhsjB0G6JP+Gw
+         nUwyjqMiNT+E5tqBHlOjNOgR9AHr88jGYm5lHZEQw95IFIAiKdLUJ5XMr9GALpnGAvgm
+         lnKaMMBsF+V3E04iyIpGaEifB4EbT6eEtlH1BUDny3539YsPlUjDSQKnKMI2SdhtkD5U
+         ezqBrKk7qASMx0jPYV9zmwSH6X0wJ/2IYooHg+ACBJxgJeGQVNanu3iPi3Br9mjrsZpt
+         imLeC9CCAGLbFRZPH5hfQKBk0EZFDJahkTMy+sFNYNq3sOevoPU8qH7UAlPzGslIP3zN
+         jEAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6msDEdK3dO24mt21Deyn48ggzRgfsF3yau7d8zyvQm4/5IZ9XVrDh1/Fk8dnMd1ylN8zDmwQxtM8=@vger.kernel.org, AJvYcCUeAXI58BPwOjjTTwuTJNenEEF3QDVac6ECrMFkCGye3OjNx79pF2SoFRwrMOX+Hopj0gM5HfbwaJjC2MKG@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiYqvhnACsT/+JrY2utaaLJLqJWlvhUM7jnjkq2zEfShRFiBbO
+	/7dcjLBGicgdqR3amcCERCUsbNsZTfW4LM796OS73B0eMunrGZ0m
+X-Gm-Gg: ASbGnctVWN2p0TCscWfd7OM/SFQLA7OKXxeabFGeG9NM2hHaGSEfh9LuQvjOEKVbmWl
+	1LGVNpJ6nCBo3rlqRO62yKsQBTTBVuhwyVIPBsQN2Sz1Ax8DUaStvPu5IHMYElLkb+yUX2usl7L
+	rIoRrhBlOfLR2LqT0zj9cbt9QShyxZQi4vENopqJouwyTRUY0U5pv9hFQ6r/cC/Xhqy7T9TQmPb
+	va1dlDxJGwbWi3JwbBxaoGLKO72chpb6upRU37sngZdbDpa81aoi8vC36Ej21onS41SgA==
+X-Google-Smtp-Source: AGHT+IEIkkx/MZlpN82UY1lRdxGyemjAMAcMDtyXMZI3nKabWUn9l80gZ1iQeYH3ns9kCgrrK3iLVQ==
+X-Received: by 2002:a05:651c:198c:b0:302:26ff:d0ca with SMTP id 38308e7fff4ca-3044dabeab7mr6297221fa.3.1734511110133;
+        Wed, 18 Dec 2024 00:38:30 -0800 (PST)
+Received: from [172.16.183.207] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-303441a5973sm14758581fa.107.2024.12.18.00.38.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Dec 2024 00:38:28 -0800 (PST)
+Message-ID: <3f5ff01b-8c32-423f-b3cc-a95399b69399@gmail.com>
+Date: Wed, 18 Dec 2024 10:38:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="u7bg1VuWw0Nw+bUx"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, en-AU, en-GB, en-BW
+To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: iio: dac: ad5624r_spi.c - use of scan_type
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi dee Ho peeps,
 
---u7bg1VuWw0Nw+bUx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I started drafting a driver for a ROHM DAC. I took a quick look at the 
+ad5624r_spi.c, and the use of the 'scan_type' -field in the struct 
+iio_chan_spec puzzled me.
 
-The documentation for struct ad5624r_state contains members that are (no
-longer?) part of the structure.
+I think this field is used by the driver to convert the data from user 
+to register format while performing the INDIO_DIRECT_MODE raw writes. I 
+don't spot any buffer usage. Furthermore, as far as I can say the 'sign' 
+and 'storagebits' are unused.
 
-Remove unnecessary docs.
+My understanding has been that the scan_type is only intended for 
+parsing the buffered values, and usually when the data direction is from 
+driver to user.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- drivers/iio/dac/ad5624r.h | 2 --
- 1 file changed, 2 deletions(-)
+I suppose I shouldn't copy the ad5624r_spi.c use of scan_type to a new 
+driver. I'm somewhat tempted to send a patch which drops the scan_type 
+from the ad5624r_spi.c, and adds the 'realbits' and 'shift' to the 
+driver's internal struct ad5624r_state. This, however, will change the 
+interface to userland so maybe it's best to not do that.
 
-diff --git a/drivers/iio/dac/ad5624r.h b/drivers/iio/dac/ad5624r.h
-index 8c2ab6ae855b..098fb5a7683d 100644
---- a/drivers/iio/dac/ad5624r.h
-+++ b/drivers/iio/dac/ad5624r.h
-@@ -42,10 +42,8 @@ struct ad5624r_chip_info {
-=20
- /**
-  * struct ad5624r_state - driver instance specific data
-- * @indio_dev:		the industrial I/O device
-  * @us:			spi_device
-  * @chip_info:		chip model specific constants, available modes etc
-- * @reg:		supply regulator
-  * @vref_mv:		actual reference voltage used
-  * @pwr_down_mask	power down mask
-  * @pwr_down_mode	current power down mode
---=20
-2.47.0
+I wonder if I am missing something? (That wouldn't be unheard of XD). If 
+not, then at least a documentary patch with a comment "don't do this in 
+new drivers" might be Ok, or how do you see this?
 
-
---u7bg1VuWw0Nw+bUx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdihQcACgkQeFA3/03a
-ocXMIwf/ZElcpN+zpOb0UqBUeR/1RCb6VMoXIpHoEj5idB3GRzRA5ICP1HBPskhp
-9VZXzsvaVXoSniQYDVAbn+qFZLZJhBqDlu5Z5hIgTMD7XH/nzkWOS1VxZWjMSjQz
-pFoK1Xu/CnccULLXgtlQMXl657enepo5DRIREr7I62sr0xCCliJTp1ggHdqO6gjc
-NgYV+54Do8Ozw4MBqCjmIiRrXOP+sPN87fY3Kq66A9oBMGpYfZpzrxlL3XDZSIFo
-qh6dE/pCkGUl0K+XPt2F6ow4zvx76vFLSMmMZucnnKg3c9Tc9d5nWTEIExkvjR89
-8249k/x5eCQVKcz35HWxvsJypGVumw==
-=JcTK
------END PGP SIGNATURE-----
-
---u7bg1VuWw0Nw+bUx--
+Yours,
+	-- Matti
 

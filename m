@@ -1,59 +1,65 @@
-Return-Path: <linux-iio+bounces-13669-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13670-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E669F81A7
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:23:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8A09F81B3
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4152170F1D
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:19:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E901893914
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25AB1990B7;
-	Thu, 19 Dec 2024 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A3D1A2C06;
+	Thu, 19 Dec 2024 17:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fB2tWhhC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQXB4oYv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA91A072C;
-	Thu, 19 Dec 2024 17:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DEF19C56D;
+	Thu, 19 Dec 2024 17:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734628647; cv=none; b=M+4GSE3TP5D5SL/5DxZaNQ/9PAnhwafF6k/4Vgpk6kAF1BPyhr2zVSqE3ZsAIGCfhHpN/Vpj0m0u53fxOXY/uKyI3X2VHzIJfnkZvMQn8yGG3T8AfUIyErEIMzn1nq1pHzWcOSIWIOmgvF8LI+n+Zt0foNSZDZ9YgB6wc6pxTLw=
+	t=1734628740; cv=none; b=KLDgFAbb0iaCrYn8+VZhpf92yI5AsBhslJps9JrMhBHcNm8rYg7raz8iuLgn/sFnN/8ZzWVmHAYtPWbGxhIccHJpl3udkzBzcGBkOaSZU9+e5qtCKBTu+w8ocgVtPmfiwZgOAnCdw8FGs8ScSFPUJUnJeaRDUvDNitxBMkqrD+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734628647; c=relaxed/simple;
-	bh=CdgZs2ST2EHcflObKh92+jX0IJgfg0jGqqPrz2v1QkM=;
+	s=arc-20240116; t=1734628740; c=relaxed/simple;
+	bh=EpxJFfnZzgsAhKOsgbC5z2lZk3Ha4f5t6SsaVfVU32U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mt/peYJ9ZAlTCoP9QCmlmTXkZ+1XfwmsbCi8HS/WjDoMmRu7yNlxFF08IdPKTNodrlIlEtY4v3IeT8ePTfBRmDkT63ofz9nwHRtVqCFy/MeHM9fdYpH7KGEle68R5d1It+CTVjVkLAw8KGJzlcQIdo2rmzW/Fu881oudwnpI+hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fB2tWhhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F85C4CED0;
-	Thu, 19 Dec 2024 17:17:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b8EUyCTnL4a1mHaUXc8WqxZp8Tzg4P5Hdtr0Xt30mMhTTH+c67jhEAMDHiNa3Q3Alz5Jbqjar45eU2gsOXd0dQ4Clm/0ZOSU0dLW74qz5X/fY28IGoFQKVKeUbU+mTH8QEgjfAGMgfZKqyl9Xxabfr7vM3G9/F+J91OyGlnQlW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQXB4oYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47D8C4CECE;
+	Thu, 19 Dec 2024 17:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734628646;
-	bh=CdgZs2ST2EHcflObKh92+jX0IJgfg0jGqqPrz2v1QkM=;
+	s=k20201202; t=1734628740;
+	bh=EpxJFfnZzgsAhKOsgbC5z2lZk3Ha4f5t6SsaVfVU32U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fB2tWhhCaFvCyMNFX8WnhXVjx72vUb6jB0R7Oc+l/7pS4N+Yzqm1NkCCyBmPFts+K
-	 2uIcJcFANQnR0QAEdLabLy9eEwmmpPSlMWba0POJUoQ/hdXbfCN6q4Bm0L7PClguiM
-	 u9rE10wmUiqmNduL7P7LPR/nFptBvkrsiCLfSt3s8k3xn9V8DZW9YY1qDH6CG5pFMF
-	 JWRl1PEodGhv7wANNltLUw/Ae9+B5l6YJz9J9yfFuE0lMFsWEINfsFfCq2qwT5o7tv
-	 TKLqXYkmpmnxDvpVWNU7UxGYMDfjb7hkn/NlRsuVi2oBpbsY12XrFdazvSVl2DV3wq
-	 2vsRIEt+QjJdg==
-Date: Thu, 19 Dec 2024 17:17:18 +0000
+	b=oQXB4oYv71Jfp7rRRoiyTMvTi0GwPnxayz1S41xq76J0MYSX1fHCv+ccqksJt+CC3
+	 ikAJpEQXTr8qjwGFuU66WMQZCnFwTtGt9HHVVVg16wCLy/i9nggun3NU317F8ekqzp
+	 /haTQ/bwxiku3yk9Nd+gUlGnMBFgV8UwCNf7zlIBN72h2b2V2wm+7IkdJDCPhxoGq1
+	 YwNE0TSXJMsFf+opMhXBEHEqOvmgsFKVCqeNoCJPNphiSMyPBoo3y9EjbX18F4KNHV
+	 M6SarpKUWehSxObtgz5Amd/uMAifQIETkecxXnVqVc50qf/LmNStgPNO5p/OJzlfAq
+	 3XnMzoyYIcjTQ==
+Date: Thu, 19 Dec 2024 17:18:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Jiri Kosina <jikos@kernel.org>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: hid-sensor-prox: Split difference from multiple
- channels
-Message-ID: <20241219171718.2af17d6d@jic23-huawei>
-In-Reply-To: <20241216-fix-hid-sensor-v2-1-ff8c1959ec4a@chromium.org>
-References: <20241216-fix-hid-sensor-v2-1-ff8c1959ec4a@chromium.org>
+To: Robert Budai <robert.budai@analog.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, Ramona Gradinariu
+ <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shen Jianping
+ <Jianping.Shen@de.bosch.com>, Alex Lanzano <lanzano.alex@gmail.com>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <robi_budai@yahoo.com>
+Subject: Re: [PATCH v3 1/7] iio: imu: adis: Remove documented not used
+ elements
+Message-ID: <20241219171847.56cec7b9@jic23-huawei>
+In-Reply-To: <20241216144818.25344-2-robert.budai@analog.com>
+References: <20241216144818.25344-1-robert.budai@analog.com>
+	<20241216144818.25344-2-robert.budai@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,95 +70,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 16 Dec 2024 10:05:53 +0000
-Ricardo Ribalda <ribalda@chromium.org> wrote:
+On Mon, 16 Dec 2024 16:48:07 +0200
+Robert Budai <robert.budai@analog.com> wrote:
 
-> When the driver was originally created, it was decided that
-> sampling_frequency and hysteresis would be shared_per_type instead
-> of shared_by_all (even though it is internally shared by all). Eg:
-> in_proximity_raw
-> in_proximity_sampling_frequency
+> This patch removes elements from adis.h that are documented
+> but not used anymore.
 > 
-> When we introduced support for more channels, we continued with
-> shared_by_type which. Eg:
-> in_proximity0_raw
-> in_proximity1_raw
-> in_proximity_sampling_frequency
-> in_attention_raw
-> in_attention_sampling_frequency
-> 
-> Ideally we should change to shared_by_all, but it is not an option,
-> because the current naming has been a stablished ABI by now. Luckily we
-> can use separate instead. That will be more consistent:
-> in_proximity0_raw
-> in_proximity0_sampling_frequency
-> in_proximity1_raw
-> in_proximity1_sampling_frequency
-> in_attention_raw
-> in_attention_sampling_frequency
-> 
-> Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> Signed-off-by: Robert Budai <robert.budai@analog.com>
+I already picked this one up.  Don't included in any future versions
+as it will just confuse me :)
 
-I got lost somewhere in the discussion.  This is still an ABI change compared
-to original interface at the top (which is the one that has been there 
-quite some time).
-
-However we already had to make one of those to add the index that wasn't there
-for _raw. (I'd missed that in earlier discussion - thanks for laying out the
-steps here!)  Srinivas, Jiri, do you think we are better off just assuming users
-of this will be using a library that correctly deals with sharing and just
-jump to 
-in_proximity0_raw
-in_proximity1_raw
-in_attention_raw
-(should have indexed that but it may never matter) and
-sampling_frequency
-
-Which is what I think Ricardo originally asked.
-
-Do we have any guarantee the sampling_frequency will be shared across the
-sensor channels?  It may be the most common situation but I don't want to
-wall us into a corner if it turns out someone runs separate sensors at
-different rates (no particularly reason they should be one type of sensor
-so this might make sense).  If we don't have that guarantee
-then this patch is fine as far as I'm concerned.
+Thanks,
 
 Jonathan
-
-
-
 > ---
-> Changes in v2:
-> - Use separate
-> - Link to v1: https://lore.kernel.org/r/20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org
-> ---
->  drivers/iio/light/hid-sensor-prox.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  include/linux/iio/imu/adis.h | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-> index c83acbd78275..71dcef3fbe57 100644
-> --- a/drivers/iio/light/hid-sensor-prox.c
-> +++ b/drivers/iio/light/hid-sensor-prox.c
-> @@ -49,9 +49,10 @@ static const u32 prox_sensitivity_addresses[] = {
->  #define PROX_CHANNEL(_is_proximity, _channel) \
->  	{\
->  		.type = _is_proximity ? IIO_PROXIMITY : IIO_ATTENTION,\
-> -		.info_mask_separate = _is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> -				      BIT(IIO_CHAN_INFO_PROCESSED),\
-> -		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |\
-> +		.info_mask_separate = \
-> +		(_is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> +				BIT(IIO_CHAN_INFO_PROCESSED)) |\
-> +		BIT(IIO_CHAN_INFO_OFFSET) |\
->  		BIT(IIO_CHAN_INFO_SCALE) |\
->  		BIT(IIO_CHAN_INFO_SAMP_FREQ) |\
->  		BIT(IIO_CHAN_INFO_HYSTERESIS),\
-> 
-> ---
-> base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
-> change-id: 20241203-fix-hid-sensor-62e1979ecd03
-> 
-> Best regards,
+> diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+> index e6a75356567a..4bb98d9731de 100644
+> --- a/include/linux/iio/imu/adis.h
+> +++ b/include/linux/iio/imu/adis.h
+> @@ -99,7 +99,6 @@ struct adis_data {
+>   * @spi: Reference to SPI device which owns this ADIS IIO device
+>   * @trig: IIO trigger object data
+>   * @data: ADIS chip variant specific data
+> - * @burst: ADIS burst transfer information
+>   * @burst_extra_len: Burst extra length. Should only be used by devices that can
+>   *		     dynamically change their burst mode length.
+>   * @state_lock: Lock used by the device to protect state
 
 

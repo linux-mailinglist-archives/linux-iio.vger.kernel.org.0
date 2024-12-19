@@ -1,213 +1,144 @@
-Return-Path: <linux-iio+bounces-13631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3D19F7A63
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 12:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1229F7A81
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 12:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AE977A2AFD
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 11:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D037A7A31B2
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 11:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59889223C62;
-	Thu, 19 Dec 2024 11:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C0622371F;
+	Thu, 19 Dec 2024 11:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YLiqm5Rf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eusqXFOh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED5223702
-	for <linux-iio@vger.kernel.org>; Thu, 19 Dec 2024 11:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914B721661D;
+	Thu, 19 Dec 2024 11:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734607718; cv=none; b=DkS2eE49o6YOcT5zcDtUjJOauivAGILjehIx6Nb6WufjlW/ZoC8uVF7/CKCe5eK6yHclYr/INLAldwDvfWJHLRHR0S/KE+G/BcbRlhfrGXYGa7ySD4w/BpJFCf/trZepvXI2yVGOc5/EUyFfTva4c5p/WnLtkev9QZoA+BIaNpk=
+	t=1734608347; cv=none; b=QpWiYSDKNwEzcsDpdn0HrGBhqSbwwXptAbu3obEgzpojHtly6o5rw7rxLzhIZXVAtvAdShP8oi5ypMRC4pmsTQ7ht0cFuH98u659tgqNDU2y2ptiquXYwFyY/obIRYh8IFGVEzn3vkjGJFOkK2SFA7N3ZmVAIeLcL+eu7yffK6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734607718; c=relaxed/simple;
-	bh=Rn2ZpBXFJSkcrBt0bHzy2Hci5m3Vfg3h/UGKwBmkFL0=;
+	s=arc-20240116; t=1734608347; c=relaxed/simple;
+	bh=TkkRPc10uSqauOTUMY8jj6ucGDskZXgstjwzTWyAEQ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=rR8wJ/WLMoj9O7hdRHGbY93xf+8Glhb3FR5yLW1D0wouBjKMimq9I12Fr6cdEOvZ8atmnJaU3pAgFoiQxWPAoDm0kcgF/ky+1xuyZIm9pYMqgyA6Es/MjAXxVwcln6lwzd6sd6CWOG0kMOVGk3Jx5FsG0U2JecZXxZZLn4FB/wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YLiqm5Rf; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d7e3f1fc01so1209515a12.2
-        for <linux-iio@vger.kernel.org>; Thu, 19 Dec 2024 03:28:35 -0800 (PST)
+	 Content-Disposition; b=gPmByhK6HEbQGqcYf0o0/qmGTJAjQPf2BvVI7+Jd9XKE2l4yDpG4Ijtd5h53ck88wOpyUMg1pyoPQ3z32WdOUACeQwtQq+TkNAP7u6wwgSLL1gWC0ZdaDNdGYJygS3phAFvitJV5cXFchsgHhKQzh1veWiHLTvnTpzJt8B72Va0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eusqXFOh; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-300392cc4caso8043051fa.3;
+        Thu, 19 Dec 2024 03:39:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734607714; x=1735212514; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OOeztBILv3pJs8OslB3gpiwKZSWXXwGxwA1Hj/M2nz0=;
-        b=YLiqm5RfGKCqEMoPwXF0akkJNxIIiCUkXYLrGWH4buOc74ceGocovDxAbwu58qBzRL
-         VOe0shz4T8miwbT91CMii515J7x02dobnwzy6QGgaYp/EGKlk4T3yWi/qlSqg1sWvS/f
-         kpSeVLw03dcTqqgXYFspdrrHxA6oMWbrMXejD9hJ44ln3A+U9Ytx4De0B6jfBlmt4TXm
-         AD5i0B0h+M1ASrOrAFNZwZ2kL2HPzc1aPRSK630JSOWELuutKzEHUP0xT8lXTdpGhGif
-         EJzgsm25wx/wNo3iY9OimmTUagPsrnz2xWtV7AJ9Iwr2X5sHLlnn/5tuBU+rmHmuab+d
-         9cYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734607714; x=1735212514;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+        d=gmail.com; s=20230601; t=1734608342; x=1735213142; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OOeztBILv3pJs8OslB3gpiwKZSWXXwGxwA1Hj/M2nz0=;
-        b=uKiumxR9rV/yhrPup57Pvnf9cPaMZPoJdto7jYSZjHeVLajax5DjLM9mE3nuWFi9M0
-         d1onN0yewoo/qb5K8OmZMAvfjZi14sHmEzPCtZKKVTTILq/hv8PjyLlMLZ/v4YkpHgpF
-         hAPoUTDBCCql8ZC3x/g90QnsKvpzboWf4e47FuCmLydKlHBAx6eZxLMOn8A8y0B2GvWa
-         sGzIfoFj6aBQejMeEX927m6ieprJWerpuNc+jhPzwkXdi3Eh/0wuJrOkq92fA2xCWczT
-         y4l5iEYzYx4O+N1CaqEqDNwwKzq2j1Yuls91Xv1qL5nIr5+0+/R7CGTfVtLxBX/+9KPM
-         cJKw==
-X-Forwarded-Encrypted: i=1; AJvYcCX+i6JYQjhrPA8gO22LybxiKLqUsfeOG+AKB4bMr/Zh6mi5VlVwGaRjv1i5HYenjWbat/eTtg1EAEI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqEouGPpRKnv58F9w+Cl9sMvv0tOr6hDRFSlc2ukUNeVvBaWAu
-	kGNcR4i8IEXTJR2cwvspVTX745V/agEM71/rnXwr7hSF6Lpl4Cko4slg+T5Y28E=
-X-Gm-Gg: ASbGncvjM2vr4EpcW2jWGrXZJWvvD55WZrP/GIMKoYud0sY1S+de27x5OK+0k9qMOhr
-	2ZVzdmPu0ko9CvlJcQjlbOwFxv4QM5FMR8OFjDHj99Iu7OYoX5ZqaXdm9zleuAnsb34duPR9xRY
-	fSbnh1PevVEvoNV4Vsuxdk+xlePYq2k5/ur5dVVoUO/NbDmj+n6l98MQHImxPvmTazHHlclrlTp
-	7AKOvGR1f+qrO/CP14K8Pw5FbpH0cfNRdAkLFkh8Nu0KlFNMG1mqHopMajkPg==
-X-Google-Smtp-Source: AGHT+IFYWlKPrlMPHYtzOzC5RXOXIxvlzii7QxWTWtpsaIvsQ6CcdA3QHj09PwSdK/kjpbIBT0HhWg==
-X-Received: by 2002:a05:6402:2801:b0:5d0:8359:7a49 with SMTP id 4fb4d7f45d1cf-5d80246fbdamr2511850a12.0.1734607714301;
-        Thu, 19 Dec 2024 03:28:34 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80679efc9sm550366a12.47.2024.12.19.03.28.32
+        bh=5sdjYwn3aAQLvHw3G13g4cBd9ULlduAL/auqjSZV/i4=;
+        b=eusqXFOhh6IOtVZ8sy1k2Q2R+hC903Zs5s0SPu0bqgRZqJAbCO8/lyJ9DeLvh+YSm5
+         aQVUKv1Gez4c8gVIEDDPeEyfi2/dcznj2QQpwsSRnKHIM4a2pNCDZdhx5mSvq9Lz5EPR
+         7maRBhj2vh1iO8HukR8dHHgvyb0+OBUAriYIEqYuDFEDHE9r4LTVfA42veWzZ8pD5XBJ
+         CSeFTviYNotNeMdqNm1EXWux7bLrw2q7MMUG8YqHMW65EWRj9cELMU01w1Ha3FFIjoDE
+         f+sEGrancsdcWOuDfn+dOSiAY6HiHfBtJZSW7M6x4+gJlQTwaLKB4mR8CWFQo7kvpXs6
+         KhbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734608342; x=1735213142;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5sdjYwn3aAQLvHw3G13g4cBd9ULlduAL/auqjSZV/i4=;
+        b=RIojmeyKrsiEWzQ7aUPsh0CfbIVSEu+HVkR9nEZ1l7DcSHMR3MNygaId0nyIw65v7v
+         bD6V1Y3EbYo208s0+W2XTcdtrMUGexFZvEdbwSKrWjj5jubiHzjucq0WaK6fwvvZdu16
+         g25zhzqy+Xjc8BlaAqR7Ey30YXcqbh6LEa9ePKf6KJJqL1dENg7y7JGpqUACaQb0sydg
+         F/m/+xcVCnTHIxTjJeX4ULmlWgbxN731NvOtk5HHUuhFKTQap7Ahf2TBbrNg90rkjESJ
+         hjeuu2jwMxPj9AmYZJpAwnIA+7CtxZXnIh5Uuw7Qj9nm7TCRjznV6CqJEIxV7BENsqk5
+         Zutw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhIoF9fWjm32+bRHwv6DyKx8rE9zTLu/INJL9D7Gd+ssqFPLM9LQpy0afFLiQ9oAIlZyOu0dImWA4Q@vger.kernel.org, AJvYcCUirLleEroiqabnKLSbkHJm+M8S4q7gTkw43Tx1oicUJLkuf0hqqKM0NgND9iKI2BlobzsNkwNZOQOGUl+L@vger.kernel.org, AJvYcCXxRzZIZzrlSOVT5sdG3TgiQk6K8R+UBZdEYAhn+hWofqjIQJy01q5MhNMPn4KU589fUIKSImVZr19j@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOkSgFpVzfgMANFPu9DebUGucxV929Is7Ve8h5PTvayyPE7lju
+	zo7yvtAHFKoBv/mG8T8J60Im+HPel6H6Tq+nIS4VvcOF+gaMvEtdrREqMg==
+X-Gm-Gg: ASbGnctwhgBY/mwkKbGvmDRhOvqW2Qrlwq0cWY3MWAfSQ/LixLG8GzDAoq+aSv3UMqV
+	Op6c38A+/rMfH6rAIhIXmWiAtpNpGs1UFHfpCCk8Ak5MvHBdcNFRlyUDyFFB0+1fWx4PPodLofR
+	BVSLDAeNdxiihH3566eXymWA4EFvnwAAtCtuwZDHO5uvBxo6ZBoxPakaj5l4D5THQQGakMBN2SF
+	eLffj9+ZiT+Bd/TEsRV5ya8O/RZatgG+xLIet2LVDgxHVl2GEdILQMyLDY=
+X-Google-Smtp-Source: AGHT+IEnfRIl7BJOHCGZhtLTu20hQ0ALHxyPu/F854wB0msKXn6h5SdyQ6n7nJIvF7ZvckvBLdPHwg==
+X-Received: by 2002:a05:6512:114a:b0:53e:23ec:b2e7 with SMTP id 2adb3069b0e04-541e6751465mr2119456e87.34.1734608341356;
+        Thu, 19 Dec 2024 03:39:01 -0800 (PST)
+Received: from mva-rohm ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542235f64c1sm147235e87.51.2024.12.19.03.38.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 03:28:33 -0800 (PST)
-Date: Thu, 19 Dec 2024 14:28:29 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: oe-kbuild@lists.linux.dev, Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+        Thu, 19 Dec 2024 03:39:00 -0800 (PST)
+Date: Thu, 19 Dec 2024 13:38:54 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: Re: [PATCH v2 3/3] iio: frequency: adf4371: add ref doubler
-Message-ID: <bc42978f-e86a-4560-bb4b-8a5fb2df4f4c@stanley.mountain>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Support ROHM BD79703 DAC
+Message-ID: <cover.1734608215.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="PZ+NvlxHLXMmC+Vu"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241209104201.25205-3-antoniu.miclaus@analog.com>
 
-Hi Antoniu,
 
-kernel test robot noticed the following build warnings:
+--PZ+NvlxHLXMmC+Vu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Add support for the ROHM BD79703 DAC
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-frequency-adf4371-add-differential-ref/20241209-184437
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20241209104201.25205-3-antoniu.miclaus%40analog.com
-patch subject: [PATCH v2 3/3] iio: frequency: adf4371: add ref doubler
-config: parisc-randconfig-r073-20241219 (https://download.01.org/0day-ci/archive/20241219/202412191811.lAia02sc-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 14.2.0
+The ROHM BD79703 DAC is a 6-channel 8-bit digital to analog converter
+which can be controlled over SPI bus. This series adds support for
+controlling the analog channels via IIO direct mode.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-| Closes: https://lore.kernel.org/r/202412191811.lAia02sc-lkp@intel.com/
+Matti Vaittinen (3):
+  dt-bindings: Add ROHM BD79703
+  iio: dac: Support ROHM BD79703 DAC
+  MAINTAINERS: Add maintainer for ROHM BD79703
 
-smatch warnings:
-drivers/iio/frequency/adf4371.c:545 adf4371_setup() error: uninitialized symbol 'ref_doubler_en'.
+ .../bindings/iio/dac/rohm,bd79703.yaml        |  61 +++++++
+ MAINTAINERS                                   |   5 +
+ drivers/iio/dac/Kconfig                       |   8 +
+ drivers/iio/dac/Makefile                      |   1 +
+ drivers/iio/dac/rohm-bd79703.c                | 162 ++++++++++++++++++
+ 5 files changed, 237 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/rohm,bd79703.=
+yaml
+ create mode 100644 drivers/iio/dac/rohm-bd79703.c
 
-vim +/ref_doubler_en +545 drivers/iio/frequency/adf4371.c
 
-7f699bd14913423 Stefan Popa     2019-06-04  487  static int adf4371_setup(struct adf4371_state *st)
-7f699bd14913423 Stefan Popa     2019-06-04  488  {
-7f699bd14913423 Stefan Popa     2019-06-04  489  	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  490  	unsigned int vco_band_div, tmp, ref_doubler_en;
-011032df594999f Antoniu Miclaus 2024-12-09  491  	bool ref_diff_en;
-7f699bd14913423 Stefan Popa     2019-06-04  492  	int ret;
-7f699bd14913423 Stefan Popa     2019-06-04  493  
-7f699bd14913423 Stefan Popa     2019-06-04  494  	/* Perform a software reset */
-7f699bd14913423 Stefan Popa     2019-06-04  495  	ret = regmap_write(st->regmap, ADF4371_REG(0x0), ADF4371_RESET_CMD);
-7f699bd14913423 Stefan Popa     2019-06-04  496  	if (ret < 0)
-7f699bd14913423 Stefan Popa     2019-06-04  497  		return ret;
-7f699bd14913423 Stefan Popa     2019-06-04  498  
-7f699bd14913423 Stefan Popa     2019-06-04  499  	ret = regmap_multi_reg_write(st->regmap, adf4371_reg_defaults,
-7f699bd14913423 Stefan Popa     2019-06-04  500  				     ARRAY_SIZE(adf4371_reg_defaults));
-7f699bd14913423 Stefan Popa     2019-06-04  501  	if (ret < 0)
-7f699bd14913423 Stefan Popa     2019-06-04  502  		return ret;
-7f699bd14913423 Stefan Popa     2019-06-04  503  
-def914a4c3899b6 Stefan Popa     2019-06-24  504  	/* Mute to Lock Detect */
-def914a4c3899b6 Stefan Popa     2019-06-24  505  	if (device_property_read_bool(&st->spi->dev, "adi,mute-till-lock-en")) {
-def914a4c3899b6 Stefan Popa     2019-06-24  506  		ret = regmap_update_bits(st->regmap, ADF4371_REG(0x25),
-def914a4c3899b6 Stefan Popa     2019-06-24  507  					 ADF4371_MUTE_LD_MSK,
-def914a4c3899b6 Stefan Popa     2019-06-24  508  					 ADF4371_MUTE_LD(1));
-def914a4c3899b6 Stefan Popa     2019-06-24  509  		if (ret < 0)
-def914a4c3899b6 Stefan Popa     2019-06-24  510  			return ret;
-def914a4c3899b6 Stefan Popa     2019-06-24  511  	}
-def914a4c3899b6 Stefan Popa     2019-06-24  512  
-011032df594999f Antoniu Miclaus 2024-12-09  513  	ref_diff_en = device_property_read_bool(&st->spi->dev, "adi,ref-differential-enable");
-011032df594999f Antoniu Miclaus 2024-12-09  514  
-7f699bd14913423 Stefan Popa     2019-06-04  515  	/* Set address in ascending order, so the bulk_write() will work */
-7f699bd14913423 Stefan Popa     2019-06-04  516  	ret = regmap_update_bits(st->regmap, ADF4371_REG(0x0),
-7f699bd14913423 Stefan Popa     2019-06-04  517  				 ADF4371_ADDR_ASC_MSK | ADF4371_ADDR_ASC_R_MSK,
-7f699bd14913423 Stefan Popa     2019-06-04  518  				 ADF4371_ADDR_ASC(1) | ADF4371_ADDR_ASC_R(1));
-7f699bd14913423 Stefan Popa     2019-06-04  519  	if (ret < 0)
-7f699bd14913423 Stefan Popa     2019-06-04  520  		return ret;
-011032df594999f Antoniu Miclaus 2024-12-09  521  
-011032df594999f Antoniu Miclaus 2024-12-09  522  	if ((ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN) ||
-011032df594999f Antoniu Miclaus 2024-12-09  523  	    (!ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN_SE))
-011032df594999f Antoniu Miclaus 2024-12-09  524  		return -EINVAL;
-011032df594999f Antoniu Miclaus 2024-12-09  525  
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  526  	if (st->clkin_freq < ADF4371_MAX_CLKIN_DOUB_FREQ &&
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  527  	    st->clkin_freq > ADF4371_MIN_CLKIN_DOUB_FREQ)
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  528  		ref_doubler_en = 1;
+base-commit: 4d112ebd02d10faf202aa8335b06de0aca8b536b
+--=20
+2.47.0
 
-Uninitialized on else path.
 
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  529  
-011032df594999f Antoniu Miclaus 2024-12-09  530  	ret = regmap_update_bits(st->regmap,  ADF4371_REG(0x22),
-011032df594999f Antoniu Miclaus 2024-12-09  531  				 ADF4371_REFIN_MODE_MASK,
-011032df594999f Antoniu Miclaus 2024-12-09  532  				 ADF4371_REFIN_MODE(ref_diff_en));
-011032df594999f Antoniu Miclaus 2024-12-09  533  	if (ret < 0)
-011032df594999f Antoniu Miclaus 2024-12-09  534  		return ret;
-011032df594999f Antoniu Miclaus 2024-12-09  535  
-7f699bd14913423 Stefan Popa     2019-06-04  536  	/*
-7f699bd14913423 Stefan Popa     2019-06-04  537  	 * Calculate and maximize PFD frequency
-7f699bd14913423 Stefan Popa     2019-06-04  538  	 * fPFD = REFIN × ((1 + D)/(R × (1 + T)))
-7f699bd14913423 Stefan Popa     2019-06-04  539  	 * Where D is the REFIN doubler bit, T is the reference divide by 2,
-7f699bd14913423 Stefan Popa     2019-06-04  540  	 * R is the reference division factor
-7f699bd14913423 Stefan Popa     2019-06-04  541  	 * TODO: it is assumed D and T equal 0.
-7f699bd14913423 Stefan Popa     2019-06-04  542  	 */
-7f699bd14913423 Stefan Popa     2019-06-04  543  	do {
-7f699bd14913423 Stefan Popa     2019-06-04  544  		st->ref_div_factor++;
-347e385fdd6ecda Antoniu Miclaus 2024-12-09 @545  		st->fpfd = st->clkin_freq * (1 + ref_doubler_en) /
-347e385fdd6ecda Antoniu Miclaus 2024-12-09  546  			   st->ref_div_factor;
-7f699bd14913423 Stefan Popa     2019-06-04  547  	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
-7f699bd14913423 Stefan Popa     2019-06-04  548  
-7f699bd14913423 Stefan Popa     2019-06-04  549  	/* Calculate Timeouts */
-7f699bd14913423 Stefan Popa     2019-06-04  550  	vco_band_div = DIV_ROUND_UP(st->fpfd, 2400000U);
-7f699bd14913423 Stefan Popa     2019-06-04  551  
-7f699bd14913423 Stefan Popa     2019-06-04  552  	tmp = DIV_ROUND_CLOSEST(st->fpfd, 1000000U);
-7f699bd14913423 Stefan Popa     2019-06-04  553  	do {
-7f699bd14913423 Stefan Popa     2019-06-04  554  		timeout++;
-7f699bd14913423 Stefan Popa     2019-06-04  555  		if (timeout > 1023) {
-7f699bd14913423 Stefan Popa     2019-06-04  556  			timeout = 2;
-7f699bd14913423 Stefan Popa     2019-06-04  557  			synth_timeout++;
-7f699bd14913423 Stefan Popa     2019-06-04  558  		}
-7f699bd14913423 Stefan Popa     2019-06-04  559  	} while (synth_timeout * 1024 + timeout <= 20 * tmp);
-7f699bd14913423 Stefan Popa     2019-06-04  560  
-7f699bd14913423 Stefan Popa     2019-06-04  561  	do {
-7f699bd14913423 Stefan Popa     2019-06-04  562  		vco_alc_timeout++;
-7f699bd14913423 Stefan Popa     2019-06-04  563  	} while (vco_alc_timeout * 1024 - timeout <= 50 * tmp);
-7f699bd14913423 Stefan Popa     2019-06-04  564  
-7f699bd14913423 Stefan Popa     2019-06-04  565  	st->buf[0] = vco_band_div;
-7f699bd14913423 Stefan Popa     2019-06-04  566  	st->buf[1] = timeout & 0xFF;
-7f699bd14913423 Stefan Popa     2019-06-04  567  	st->buf[2] = ADF4371_TIMEOUT(timeout >> 8) | 0x04;
-7f699bd14913423 Stefan Popa     2019-06-04  568  	st->buf[3] = synth_timeout;
-7f699bd14913423 Stefan Popa     2019-06-04  569  	st->buf[4] = ADF4371_VCO_ALC_TOUT(vco_alc_timeout);
-7f699bd14913423 Stefan Popa     2019-06-04  570  
-7f699bd14913423 Stefan Popa     2019-06-04  571  	return regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
-7f699bd14913423 Stefan Popa     2019-06-04  572  }
+--PZ+NvlxHLXMmC+Vu
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdkBcoACgkQeFA3/03a
+ocVK4gf+IRKgfN2/zqILGTVf3xvBKsvXRs2F5ZGdVkVmFFyZJvpHOXBxKL+DPNRK
+hR24Xg6OcorZN1+OIPL4R/h07gpfmYV8CLLTYRIvkHR014jv44F+9HTAaVhNzQTr
+67tGtQ5uFRNGTTsj/sfzeLFaRDLhr6NXkj4pVHbXzSZ4si301wSeM2l/z8i6E+p2
+ZKWgQQ/X2gM/mReDvtN9IvL/fErjeIcDhDbY/3YB5uCOkYiREABLIe4Qm4z6RQk5
+bWXpgF8WdYzWSDk1YQ9W/wtGWGoWON1a5j611fsQ5ecF/xZVIsFJmNNTkHTnaEp4
+K46PPS9NMQkGAWShyAZrXP1BZ9C4XA==
+=cZvR
+-----END PGP SIGNATURE-----
+
+--PZ+NvlxHLXMmC+Vu--
 

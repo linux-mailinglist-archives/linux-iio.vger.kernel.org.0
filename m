@@ -1,60 +1,64 @@
-Return-Path: <linux-iio+bounces-13676-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13677-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3CB9F8266
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:49:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597C89F82B2
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B235C16849F
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C5471894D66
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF78E1A4F1B;
-	Thu, 19 Dec 2024 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEA51A0BFE;
+	Thu, 19 Dec 2024 17:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFtppZ4u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJ5klVLY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2901A706F;
-	Thu, 19 Dec 2024 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562AE19DF99;
+	Thu, 19 Dec 2024 17:47:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734630310; cv=none; b=du2hg5VZGoQrR5ypMoMLAwq63fuUZ5L0fXj2ZTw8E+xwdHiqtpxOCjUzzpwdDXWOdGZvBmi42Y1VeUAL76tL/KLlUXd95r6my2nnsPy5kj5b2OaMBAcL8NWO7pFtPlgxMROItH+hc5okz2XjlcI8pBhAvPFdWfyCQC/x1UzhgMc=
+	t=1734630466; cv=none; b=B9dMWa3JF9dtzqLeQr3Sm2FrRui1oXPAO3tYNg1z0CSMHMOp20MS02GOfQb6S0oNLT0g4SaRD7YYOpSMf/xuG/CJ4TLHfPBL3bAtMbPAS/QUXx9ZRc8DYqy6GM5UFUQHh1ubqD+1j/xGoMLqKsSMeXgjcBb6mmXu2W62Iql3Gqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734630310; c=relaxed/simple;
-	bh=nwvuHko52AL3XUdx41dRyK5V4Zjzq/KZYIM9g4l1EhU=;
+	s=arc-20240116; t=1734630466; c=relaxed/simple;
+	bh=vYrLMIoh8if7mNNwfS2c8sOSya3b7R5FT45cdStkNG8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZCnAhsLxJwQJe58dUrrcgOX3KwkSNlLCZBachWoV+itr0xfRjIS6FfOqLfK1Q/ZtKr6BjdCwYpwDJQDNtVGuJ+qt8CK2p1gv6XHlNuEckpPwMd36UD8d1Zn+8KUkOV/xtWkQJCYS5laH1qyiAkp2BVdbvWa+Y4metK96YFRilyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFtppZ4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3749C4CECE;
-	Thu, 19 Dec 2024 17:45:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JRcFxP+BRP7s8hVP4SPb/GTrISN6/LVm9Qsu94Cksa8317D1nZtxuODwRlUZ3dnJ77Kz5KxT0luX1t/Lx6XJbOwn6jJkyse0mEbn82aLT132mWcYDaHVFfjE7bF5Jyjhi4P+DRPaBcuR0Al+7AQCDrCmWnBhoy/ub1NWrV2FprE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sJ5klVLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDC1C4CECE;
+	Thu, 19 Dec 2024 17:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734630310;
-	bh=nwvuHko52AL3XUdx41dRyK5V4Zjzq/KZYIM9g4l1EhU=;
+	s=k20201202; t=1734630465;
+	bh=vYrLMIoh8if7mNNwfS2c8sOSya3b7R5FT45cdStkNG8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SFtppZ4usuhiX7aoLUXytbnT/lWu5KhwI3U1/vPcCGtO8N7U6ru6gj4EwidkQh/lo
-	 /R0DGvvREa6ZDKmDbqUcPQpMLdbP+GEJ8VOYp9tksttaPhQ9CxluuUFzB4sQaBhYrg
-	 OzSKnhp+kXbS39jjtDMJylnYwfkfUr7UacMhNwBjntcWTmoYa8o4iA0X8i6aIFmUyP
-	 DzZ1yWc3xj6y1Wz1zJSHCAztHxEppNQw+XdCwz8Wo/sD2KVmI1Jkf2mW1ncVowQrpI
-	 76yewqoguwUwcd0S5qMnw2Wfeh5IIjjDz00g/nObsgS2i5b60iVJBG/+rZ3Pt2crpi
-	 mzqFUoFmVTF7A==
-Date: Thu, 19 Dec 2024 17:45:00 +0000
+	b=sJ5klVLYhlG66pDh4rl0lQV6BkwlMSb6t8ylRTSXZoIPlZzDPkgThmZ+teKVZry+2
+	 H86CcYl1w/gqksRoSgWRVidxEYvSnYufa/4/WFW9wWdrg8hnUpZp/Epff449wAtXC5
+	 jbQEtmTFV8qXYOR7t58S4NM6VtPMg06Rqqy73+lnR47lIqPPTXF5Xx16cLXonmmxkY
+	 h6g7eGyPewc8BTtaj8R9DsJE5nN0GWopSkjWLd3/R2jJ2NsBQNrgbAcY5fj1iIunSC
+	 lvcljPywn5VCgRoiyT4Se9k55PM+Lgij/Go55bGNs9e0RpmDDOomZUYprJyBHCD/lv
+	 sJRhbNAM20Sag==
+Date: Thu, 19 Dec 2024 17:47:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
+Cc: David Lechner <dlechner@baylibre.com>, lars@metafoo.de,
+ krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
  u.kleine-koenig@baylibre.com, abhashkumarjha123@gmail.com,
- jstephan@baylibre.com, dlechner@baylibre.com, jackoalan@gmail.com,
- k.wrona@samsung.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] iio: adc: max1363: make use of
- iio_is_soft_ts_enabled()
-Message-ID: <20241219174500.18038922@jic23-huawei>
-In-Reply-To: <20241214191421.94172-3-vassilisamir@gmail.com>
+ jstephan@baylibre.com, jackoalan@gmail.com, k.wrona@samsung.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/4] iio: common: ssp_sensors: drop conditional
+ optimization for simplicity
+Message-ID: <20241219174736.7bf2fdc2@jic23-huawei>
+In-Reply-To: <Z2M7E9gmJyFkNEcD@vamoirid-laptop>
 References: <20241214191421.94172-1-vassilisamir@gmail.com>
-	<20241214191421.94172-3-vassilisamir@gmail.com>
+	<20241214191421.94172-4-vassilisamir@gmail.com>
+	<5e133bba-ee3e-498f-80ea-375dd857c057@baylibre.com>
+	<Z2IMQXJC-A0TjQK2@vamoirid-laptop>
+	<82e97712-3765-4d93-bdb5-f50fa7025e81@baylibre.com>
+	<Z2M7E9gmJyFkNEcD@vamoirid-laptop>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,100 +69,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Dec 2024 20:14:19 +0100
+On Wed, 18 Dec 2024 22:13:55 +0100
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-Patch needs a new title.  I'll fix it up.
-
-Use a small fixed size buffer to replace dynamic allocation
-
-with that, applied.
+> On Wed, Dec 18, 2024 at 09:17:44AM -0600, David Lechner wrote:
+> > On 12/17/24 5:41 PM, Vasileios Amoiridis wrote:  
+> > > On Mon, Dec 16, 2024 at 03:57:44PM -0600, David Lechner wrote:  
+> > >> On 12/14/24 1:14 PM, Vasileios Amoiridis wrote:  
+> > >>> Drop conditional in favor of always calculating the timestamp value.
+> > >>> This simplifies the code and allows to drop usage of internal private
+> > >>> variable "scan_timestamp" of the struct iio_dev.
+> > >>>
+> > >>> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > >>> ---
+> > >>>  drivers/iio/common/ssp_sensors/ssp_iio.c | 9 +++------
+> > >>>  1 file changed, 3 insertions(+), 6 deletions(-)
+> > >>>
+> > >>> diff --git a/drivers/iio/common/ssp_sensors/ssp_iio.c b/drivers/iio/common/ssp_sensors/ssp_iio.c
+> > >>> index caa404edd9d0..6b86b5315694 100644
+> > >>> --- a/drivers/iio/common/ssp_sensors/ssp_iio.c
+> > >>> +++ b/drivers/iio/common/ssp_sensors/ssp_iio.c
+> > >>> @@ -8,6 +8,8 @@
+> > >>>  #include <linux/iio/kfifo_buf.h>
+> > >>>  #include <linux/module.h>
+> > >>>  #include <linux/slab.h>
+> > >>> +#include <linux/unaligned.h>
+> > >>> +#include <linux/units.h>
+> > >>>  #include "ssp_iio_sensor.h"
+> > >>>  
+> > >>>  /**
+> > >>> @@ -70,7 +72,6 @@ EXPORT_SYMBOL_NS(ssp_common_buffer_postdisable, "IIO_SSP_SENSORS");
+> > >>>  int ssp_common_process_data(struct iio_dev *indio_dev, void *buf,
+> > >>>  			    unsigned int len, int64_t timestamp)
+> > >>>  {
+> > >>> -	__le32 time;
+> > >>>  	int64_t calculated_time = 0;
+> > >>>  	struct ssp_sensor_data *spd = iio_priv(indio_dev);
+> > >>>  
+> > >>> @@ -82,11 +83,7 @@ int ssp_common_process_data(struct iio_dev *indio_dev, void *buf,
+> > >>>  	 */
+> > >>>  	memcpy(spd->buffer, buf, len);
+> > >>>  
+> > >>> -	if (indio_dev->scan_timestamp) {
+> > >>> -		memcpy(&time, &((char *)buf)[len], SSP_TIME_SIZE);
+> > >>> -		calculated_time =
+> > >>> -			timestamp + (int64_t)le32_to_cpu(time) * 1000000;
+> > >>> -	}
+> > >>> +	calculated_time = timestamp + get_unaligned_le32(buf + len) * MEGA;  
+> > >>
+> > >> Don't we still need to cast to 64 bit to avoid multiplication overflow?
+> > >>  
+> > > 
+> > > Hi David,
+> > > 
+> > > Thanks for your message!
+> > > 
+> > > Aren't we already covered by the fact that MEGA is defined as an
+> > > unsigned long?  
+> > 
+> > That is only 64-bits on 64-bit architectures, so could still overflow on
+> > 32-bit architectures where long is 32-bit.
+> >   
+> 
+> Hi David,
+> 
+> Hmmm, I think you are right. I can fix it in next, iteration. I will
+> wait also for Jonathan's comments on the rest of the series.
+> 
+I tweaked it and applied.  Also dropped the initial assignment of calculated_time given it is now
+always set before use.
 
 Thanks,
 
+Jonathan
 
-> Drop the recurrent allocation of the data buffer from the trigger
-> handler and put it in the iio_priv(). This way, the maximum amount of
-> channels is always allocated in favor of simpler code and drop
-> of usage of the internal private variable "scan_timestamp" of the
-> struct iio_dev.
+
+> Cheers,
+> Vasilis
 > 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/adc/max1363.c | 30 +++++++++---------------------
->  1 file changed, 9 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
-> index 9a0baea08ab6..e8d731bc34e0 100644
-> --- a/drivers/iio/adc/max1363.c
-> +++ b/drivers/iio/adc/max1363.c
-> @@ -161,6 +161,7 @@ struct max1363_chip_info {
->   * @vref_uv:		Actual (external or internal) reference voltage
->   * @send:		function used to send data to the chip
->   * @recv:		function used to receive data from the chip
-> + * @data:		buffer to store channel data and timestamp
->   */
->  struct max1363_state {
->  	struct i2c_client		*client;
-> @@ -186,6 +187,10 @@ struct max1363_state {
->  						const char *buf, int count);
->  	int				(*recv)(const struct i2c_client *client,
->  						char *buf, int count);
-> +	struct {
-> +		u8 buf[MAX1363_MAX_CHANNELS * 2];
-> +		aligned_s64 ts;
-> +	} data;
->  };
->  
->  #define MAX1363_MODE_SINGLE(_num, _mask) {				\
-> @@ -1462,22 +1467,10 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
->  	struct iio_poll_func *pf = p;
->  	struct iio_dev *indio_dev = pf->indio_dev;
->  	struct max1363_state *st = iio_priv(indio_dev);
-> -	__u8 *rxbuf;
->  	int b_sent;
-> -	size_t d_size;
->  	unsigned long numvals = bitmap_weight(st->current_mode->modemask,
->  					      MAX1363_MAX_CHANNELS);
->  
-> -	/* Ensure the timestamp is 8 byte aligned */
-> -	if (st->chip_info->bits != 8)
-> -		d_size = numvals*2;
-> -	else
-> -		d_size = numvals;
-> -	if (indio_dev->scan_timestamp) {
-> -		d_size += sizeof(s64);
-> -		if (d_size % sizeof(s64))
-> -			d_size += sizeof(s64) - (d_size % sizeof(s64));
-> -	}
->  	/* Monitor mode prevents reading. Whilst not currently implemented
->  	 * might as well have this test in here in the meantime as it does
->  	 * no harm.
-> @@ -1485,21 +1478,16 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
->  	if (numvals == 0)
->  		goto done;
->  
-> -	rxbuf = kmalloc(d_size,	GFP_KERNEL);
-> -	if (rxbuf == NULL)
-> -		goto done;
->  	if (st->chip_info->bits != 8)
-> -		b_sent = st->recv(st->client, rxbuf, numvals * 2);
-> +		b_sent = st->recv(st->client, st->data.buf, numvals * 2);
->  	else
-> -		b_sent = st->recv(st->client, rxbuf, numvals);
-> +		b_sent = st->recv(st->client, st->data.buf, numvals);
->  	if (b_sent < 0)
-> -		goto done_free;
-> +		goto done;
->  
-> -	iio_push_to_buffers_with_timestamp(indio_dev, rxbuf,
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
->  					   iio_get_time_ns(indio_dev));
->  
-> -done_free:
-> -	kfree(rxbuf);
->  done:
->  	iio_trigger_notify_done(indio_dev->trig);
->  
+> > > 
+> > > 	include/linux/units.h:12:#define MEGA 1000000UL
+> > > 
+> > > Cheers,
+> > > Vasilis
+> > >   
+> > >>>  
+> > >>>  	return iio_push_to_buffers_with_timestamp(indio_dev, spd->buffer,
+> > >>>  						  calculated_time);  
+> > >>  
+> >   
 
 

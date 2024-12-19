@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-13694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82DDE9F88AE
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 00:48:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286B09F88B2
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 00:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE071169E6B
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 23:48:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5221889CA8
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 23:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A94C1F8EEE;
-	Thu, 19 Dec 2024 23:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC7A1FCD00;
+	Thu, 19 Dec 2024 23:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bwbYFZcB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk+fVooQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7FE1F4726;
-	Thu, 19 Dec 2024 23:47:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBE71FBCBD;
+	Thu, 19 Dec 2024 23:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734652078; cv=none; b=kjpnF9uD8aOGGxFrKZZ4cUfzaTPib/nKOkMUr+MGZlI8fcIFc/jq5NkPObzXqO7VN+jwbYlbPKhqQmb9Zx30OlSJLZDEvCf9oXFVJN0QA4mz2zvAtjF7tRbGoqO0jZWBsbmyhBfeiW4hRGlXaT+xUxsbLFgM5+zBJmY3JHuUwwY=
+	t=1734652080; cv=none; b=C97yMERRFQaeZzb5CH7beFXfCckYPzwDe5p0u1yJwG1V4ao1vy7O5X0hUh/pkkdHt7Fn8ByV80Pe+ES8rRky6Tna7YHXuejy9dR3JhDPy+xitDva7QY/hCpHpbrBRaEtg7JH5SeUgNDsOVdjC36ZfZWAKK76pLti7aDABHjdlrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734652078; c=relaxed/simple;
-	bh=7oB9LOSeFycT9I/8bD9O9Th27bcRLD8q4Nv3vmPKypA=;
+	s=arc-20240116; t=1734652080; c=relaxed/simple;
+	bh=x9qRdqGIhCaAuWRo+oOMzDL+2phsdCFzUR+//wE7H3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru1Jbl4oZvTMunRAL5QeWiPu3u/J9JtPu+Jgihkrsce7960FwrYCKXIqX97+e9wMabWMJ+KmlTHl2MBdDAgDUAhoKVFc1bR6brwLECd4gE4qNlCMerZlpRdVAvdCTmrVBAUtuzljFdSlHsQEBPwvWQhaTq/3hIQXMygJMcpkJRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bwbYFZcB; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=VwFbtdvAXOeNc0HhgFXmBeuOAkycngq19JfruKtgCkfYUYQIJUOaniok/S1NMHUr9NBgxMuGh3erl3oXxxxyPq0kenIKB8ycXQym+GdVTBwdvWtHl+xTmB9KGDup5GsMTDo0yCY3azjY7RFLRQJbMXZF0ltu8G8u7ELWtdDGiRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk+fVooQ; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aa66e4d1d5aso212756966b.2;
-        Thu, 19 Dec 2024 15:47:56 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aab6fa3e20eso233310166b.2;
+        Thu, 19 Dec 2024 15:47:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734652075; x=1735256875; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734652077; x=1735256877; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IKavMMwNKVC9ev1USvalc/SFe3F9t+NSs2JtWlS/i0I=;
-        b=bwbYFZcB7O3y1Wy49Kqm7AMZC517UArInmsWQ7QhnBWdYHayU+mA5XVk0PYjWmEtB0
-         nrZdaMNPDzvY/9YNlzaIn+/P175KKN/ddpE2XGxYvcV5AGp7rrNCRc8bZhLXz6GdfTgp
-         FDduCM9VLgP5QfsVARGwvNHCLCqH5aJHNO799aKoIEp2kSDR3q2Wt0sqZ+XZV3k6Nt4l
-         dSu+LflqDNY6L+FLBpCXU/pEWgNXLlJ7bbpLEpyAeT8XoybECeFR56wHdM1enPZgrnvr
-         XLOD+Af0zN3SnKA/LfrBQP/s3Jvjj2xcos130QGeB/VAyPnC3AX+sRXlIqnM9sd6OVHv
-         TUyA==
+        bh=pvF15Rz393YpMjvvv6M32rWW6iRblM6L4I6VGjr4yYY=;
+        b=Mk+fVooQ6Bd1fq88xrZ9GZfU42DXZhCeoeSphr98X5j9/krEtDvedNLyeNmV8G/zUd
+         fZaDGswJpZjl5iFOjK9CZBSAZv3TrwSK2oh0xkvxYtWVbAQhxI1MqUmNj066fvqFQC27
+         HqVVs6rtzxFqGXb5+9KIIeCqM0pcJBpRX0TDsyvxPWluIOp4xyAJ8jPIekM3kScjCcfF
+         jZTh8LRNVLgl+2z9KVzq7FSZvpNohmzJCaLFboaKvDt0MOurkM/Yp3VkfUnAdrseFQyH
+         wux1R/L6ZLzjX8TaYA95aTM/uoS6ImvO17d+funf0kRimZ1tVxZUDMIs/1TQd0hFd4zZ
+         nhqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734652075; x=1735256875;
+        d=1e100.net; s=20230601; t=1734652077; x=1735256877;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IKavMMwNKVC9ev1USvalc/SFe3F9t+NSs2JtWlS/i0I=;
-        b=fzq7xxtOZVrZJBYMkQc2xeDqlyXDuR97pjny6KitXEm5fG2hxUJuKPhhd4I+7hC8Fu
-         eKCzCoP+S8A34vsPwRlCKXwlHiwZNngW4r3mKggBAd2MTfHUFB8+/MIc0m3CYqLoUjm8
-         JJB9KUlAcoy2tIlXjyVW9yLGLYKIy6Ztz+SzXcgmh/1go0oFPaciTTHykVYrdDEwTbEt
-         0gCpxWTtyS0sjz80Akfin8cGoqFcF4lGxjtlQSdiK0iZfvfwcL1/80o0RR+ranpXmDkI
-         Jxgx7QX3TfN5Es541BXoJnWTWyZbpdknXbSsEdXQeYSfRv6SYG1Cwl60eSomj5c8oMyH
-         kteA==
-X-Forwarded-Encrypted: i=1; AJvYcCWCNhnDK7BM96UkJIA+oeRyxIQM1LNxJ3jU8voeBsG8Qg/t+EY7L4Dv7i+9Ua/Jpkh6MgZOWP44rV6K@vger.kernel.org, AJvYcCWVv0ciowTqvNJ9/vxGd8dqankYyY359HG+FzFmS+zGGs4DfuTOscWuHXkVoZjzxwrMYbQjQC1V/X6wdr+c@vger.kernel.org, AJvYcCX3Ts7N/BH31jUAJvWEdJnKfvFyWAXSnIGNxj0gxKePO9R4KM/3gRREzHWUMOG9TZeCCiTRE/P6qtWb@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpwgBuH2rBN8KuLZhLuH1IKs70a3VU0+dj6kj4joazKuchi9U4
-	rPmcMqMJspZ71ENAd+paoBt2cIkts0Rwio8CbO60djL2SGz+dshH
-X-Gm-Gg: ASbGncsDamZgWMBfOf3yPhxvnQZdBLTOuN7Dbd6K0+26F7H18raYwO4TYDNL9wW2TpP
-	MnvzJrCBcxCMLdTfDR9mELTCIyaTh1PFzpBrXTyG/17ED/Wg6QHmAUM5CqnoE5mjlK89FyGb+71
-	nXd/i133HZzCTWPMwQhOizCNAlWTBv6aMJQEo4JehCojg1ZKwi3n9QhNWKZneYJBK14DSVzrvqg
-	t+GqCAsh+3f3wsXK1GJ9D8FwEm13RntPhg7ci67T0X9apTvc2xd8JnGOBtZvYYUvgKi
-X-Google-Smtp-Source: AGHT+IFWJWO6dZLB2d7q+ZewIDF469dzx7WhPjmD520QX2NYubWS7VyoYbxHFg0Sl0FfjJGiQkTruQ==
-X-Received: by 2002:a17:907:948d:b0:aa6:a87e:f2df with SMTP id a640c23a62f3a-aac2ba400c6mr55916666b.25.1734652074672;
-        Thu, 19 Dec 2024 15:47:54 -0800 (PST)
+        bh=pvF15Rz393YpMjvvv6M32rWW6iRblM6L4I6VGjr4yYY=;
+        b=pfA9k0HNHEBb8XC7miMIm+fnTpAc45SpybvLMmy3V3+utfNVS4mjzK/eliM5vUE6nR
+         Y1XjOnr33HSbbgqnsY4s/cY4tTvNPsWYzZmnP5j/dSp8XVuBMZ60wyelzEppg9Jgz56j
+         dfO0Co0ew1Yo2Oioi+C8BVzAfcCO4n1bVZc8295txao8U1ybZoFzEB9jsJrXDfJM1GPO
+         WnAtWUCpf0XzUHSZMK80RpgSgmnS8BHAtQyamzqXNIsYU4pDSAS7IvzQEGfIxjnXNyNY
+         4ZlawHpMm+d1op+gVcim9T9Rivwf5ooljgDh+fO1L5NPLcT8ARBm9h9T4zon0+aCF86m
+         T4sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnth/Lm9SKxK2DuTkOc3Y2AnzI9atrlJpVGvBSxli/AkjWAMW76AXJ6nPRTvGSVpb5q2EwCZlItc5r@vger.kernel.org, AJvYcCXg78tMRHRyPZO6hePyIjBq+hJWo9cCkKpYCtbxORTXjm4W/wGfoIdOPRLz0bLoO9k2IxN1tpwJl86F@vger.kernel.org, AJvYcCXzdYId/OKDrpfEhTavVAKnAk7Y4uDJDL+00amb7DN70ERGMIdfd+DmXoaVlIlewbA1teB1g/VI8L+7dJrJ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8kXqzAC90puZp9CqiSL+uM2oTDi9Jk9vxoyqfW2OLXj3rwghU
+	uWwmqQ3apxDBhPnvH+i8vtTVE8j/leCS5Y7uqJ/3ffj6cCoesPTA
+X-Gm-Gg: ASbGnctRrQIsvGnTkX2ExVzC1xJXJhYSsYAFg0ttcp+rYaSxOcH/Tbq/FYpOrXecqRz
+	bHv4PvW5BHZXW9bSfLV8rhC/2YhkE2C1SzPBqMSatE35cYpM9ng38xi0eECrRU4Van60w7V5G9H
+	25l63t97Nm9+nrte6eipKU/G53UCFWGxq2lN+wxjqqx+q+pa1HKD8MoPyfP3A7O4rFII3K5TTif
+	57zmkkdd3/o26pjwXBcjAk3aW9XnpbzBnEqy0ctDgYYGh5brtc/rTaBoR0YQTa2uZNy
+X-Google-Smtp-Source: AGHT+IFooLhlSWuE8YFuaRwlJkMtRF/jk9eCI4whcTgzDBQQjrXQStnjqOGQHhXHDZk/XzvnAfASSw==
+X-Received: by 2002:a17:906:f59d:b0:aa6:9372:cac7 with SMTP id a640c23a62f3a-aac334c1628mr49804866b.31.1734652077110;
+        Thu, 19 Dec 2024 15:47:57 -0800 (PST)
 Received: from vamoirid-laptop.. ([2a04:ee41:82:7577:6db1:ccfa:1b4:55ac])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aac0f076d1dsm113244866b.204.2024.12.19.15.47.52
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-aac0f076d1dsm113244866b.204.2024.12.19.15.47.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 15:47:53 -0800 (PST)
+        Thu, 19 Dec 2024 15:47:56 -0800 (PST)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -85,9 +85,9 @@ Cc: lanzano.alex@gmail.com,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 2/3] dt-bindings: iio: imu: bmi270: add boolean type for drive-open-drain
-Date: Fri, 20 Dec 2024 00:47:44 +0100
-Message-ID: <20241219234745.58723-3-vassilisamir@gmail.com>
+Subject: [PATCH v1 3/3] dt-bindings: iio: imu: bmi323: add boolean type for drive-open-drain
+Date: Fri, 20 Dec 2024 00:47:45 +0100
+Message-ID: <20241219234745.58723-4-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241219234745.58723-1-vassilisamir@gmail.com>
 References: <20241219234745.58723-1-vassilisamir@gmail.com>
@@ -103,20 +103,20 @@ Add missing type description "boolean" for the drive-open-drain property.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml | 1 +
+ Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
-index 7b0cde1c9b0a..860a6c1fea3c 100644
---- a/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi270.yaml
-@@ -41,6 +41,7 @@ properties:
+diff --git a/Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml b/Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+index 64ef26e19669..7bf8294a8f2e 100644
+--- a/Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
++++ b/Documentation/devicetree/bindings/iio/imu/bosch,bmi323.yaml
+@@ -38,6 +38,7 @@ properties:
          - INT2
  
    drive-open-drain:
 +    type: boolean
      description:
-       set if the specified interrupt pins should be configured as
+       set if the specified interrupt pin should be configured as
        open drain. If not set, defaults to push-pull.
 -- 
 2.43.0

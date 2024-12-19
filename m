@@ -1,62 +1,69 @@
-Return-Path: <linux-iio+bounces-13681-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAA99F8329
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 19:21:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F679F833C
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 19:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1182C163301
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:21:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8934C16B0EB
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE51D1A08CA;
-	Thu, 19 Dec 2024 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FA81A256B;
+	Thu, 19 Dec 2024 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U1+a+rDN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyZO3JlG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826E1194C96;
-	Thu, 19 Dec 2024 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E0C1A0B12;
+	Thu, 19 Dec 2024 18:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734632475; cv=none; b=E2cqs4BWhQzKk5nnROJdAqhcoULPgINhIkPImVniFhEKM0H14z8c/uPq/xoARWy7BGDUvWdjwqtIL6x/9g/Eq1Fq1Hd++4QwrXMs4fFwnXQGz3UcKuZB/74TScBaU4NcAOe/4QINZ5xecaT9pOG+hs+seC21jVc/qIQzsfGluM8=
+	t=1734632804; cv=none; b=ra3f+y5hasaC8OPx7xJEYeOe+9W03viVogMLgeRKOx8g59n3UwSrBrjt0bze0eKhjMvSMjdBhIUXfFfri886Y1yct/OM0Q1VuyFE4bzIvHAtPaujmx1tvi6RwZOPNEffC16r9S5j4HTOuTMeTsmkJqLftxl7QkiDR9fHNtEm5tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734632475; c=relaxed/simple;
-	bh=KStSTCaoxijgxnmT/IjZ7gGMW3smHpzDkQnOb89b6i0=;
+	s=arc-20240116; t=1734632804; c=relaxed/simple;
+	bh=PXBsRxZhmi+gRU8Ewb3RrU6nlQeOo6CurTgsxR7ntTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bDEB3jy6l99roie5+XnXmWfYtFncRUgUG+2ofoAhAsYyDNaTl9165x0kCgff+HhQQeX9zccRiceafxDc8IDRfoHQoUnSkjAnk5mHXPGgxXqffYS8+2VWVf5tQ/sD6MMOjli0p8N7L9jOVCX1EReIjYjX/l4iGKP5GCGUgLHwbE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U1+a+rDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EA1C4CECE;
-	Thu, 19 Dec 2024 18:21:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=j36GelxrQc6v4oYplJXZI/5+1dMdZ4CZr8L3Ihuz3lv9HjkFL9rGJwirbUuXcHXDxEgJjNpkGZoVp3CUkBCfaB/lVYZEDnEYHAqPtY1aYy8mm3JZkvLPLrgZGGvbRZI8CVHpuP48J3nmnCMxczHrL5hdGTm6wVEuN6FL9mnAwlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyZO3JlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B560C4CECE;
+	Thu, 19 Dec 2024 18:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734632475;
-	bh=KStSTCaoxijgxnmT/IjZ7gGMW3smHpzDkQnOb89b6i0=;
+	s=k20201202; t=1734632804;
+	bh=PXBsRxZhmi+gRU8Ewb3RrU6nlQeOo6CurTgsxR7ntTs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U1+a+rDNdPPFd17PozQFKvDn1JVERFr700oXiyhtVQBtrNRTB3o3aGEETqIfq2J7L
-	 p6t6wy6g3r2xsQKdpdB/LakxkI69sWP2WYcoVxJ0rabLooMfBimAWspElW9sRA1lJh
-	 DfQzjThwG3HkG9fD5X44xh2kOP7Q0MTw1iItaa40JyoQytlPVXLCy2foh0U+F8ov55
-	 9PyYLkQHhWfeIP9FEtNpg/QBiX1YrTJVQxg0t/wDw8RGcS6PkpHOQNlV8q4lV0AEZN
-	 Lln1aisCPVbx4SKKfD0NEVEiXBTOkYjtLgJzB+wYzY+pw15/b+TdYZZOa+8bNEAupR
-	 iOOKQVnDAJOvg==
-Date: Thu, 19 Dec 2024 18:21:10 +0000
+	b=fyZO3JlGB4XdVZoin2PD1zfI15ruJD5Y4jzefw/9UU6RMX4uh+PHVPYeFwLaEw9tF
+	 Uqa4EXB1bH+jJd5gwxlte+ADi0r1BNlxdu44NoW0n8cY/Q+PJTdQlOKRWFY/Cg4Tum
+	 Oe/D5eB+mcQpsj0bMHMT/jw3CnBdVuajA6g9cp+gaUpZcWDeZgWdS9msK/0gGr4jF4
+	 R+w7HV+vKXFAt28+ZOGsFedu9iKqwet9wETZip27i/Duhww7dUwLda2zzm7hTcj9aB
+	 Cb/7HDoLqlozsOmgDDPKmzyLKvL+ezl/gtyiNwtERJy0yVQcC9IcGVIgkLdFdc1IC8
+	 MVZPKdKbfMK7w==
+Date: Thu, 19 Dec 2024 18:26:38 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com
-Subject: Re: [PATCH v7 3/7] dt-bindings: iio: accel: adxl345: add
- interrupt-names
-Message-ID: <20241219-pregame-blot-e15ff0fbfe45@spud>
-References: <20241213211909.40896-1-l.rubusch@gmail.com>
- <20241213211909.40896-4-l.rubusch@gmail.com>
- <20241214121057.5b12a236@jic23-huawei>
- <20241215-satisfied-expiring-9200ec935768@spud>
- <20241219175815.797b376a@jic23-huawei>
+Cc: mgonellabolduc@dimonoff.com, Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 2/9] dt-bindings: media: clarify stm32 csi & simplify
+ example
+Message-ID: <20241219-backspace-tameness-defc6e43cf52@spud>
+References: <20241216-apds9160-driver-v3-0-c29f6c670bdb@dimonoff.com>
+ <20241216-apds9160-driver-v3-1-c29f6c670bdb@dimonoff.com>
+ <20241217-brilliant-jubilance-54641c6ba990@spud>
+ <20241219153249.39b49561@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -64,89 +71,58 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="JWhiqjxceXA0OMS3"
+	protocol="application/pgp-signature"; boundary="PVdqPFf4XmF9Pl8z"
 Content-Disposition: inline
-In-Reply-To: <20241219175815.797b376a@jic23-huawei>
+In-Reply-To: <20241219153249.39b49561@jic23-huawei>
 
 
---JWhiqjxceXA0OMS3
+--PVdqPFf4XmF9Pl8z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 19, 2024 at 05:58:15PM +0000, Jonathan Cameron wrote:
-> On Sun, 15 Dec 2024 14:56:58 +0000
+On Thu, Dec 19, 2024 at 03:32:49PM +0000, Jonathan Cameron wrote:
+> On Tue, 17 Dec 2024 18:31:09 +0000
 > Conor Dooley <conor@kernel.org> wrote:
 >=20
-> > On Sat, Dec 14, 2024 at 12:10:57PM +0000, Jonathan Cameron wrote:
-> > > On Fri, 13 Dec 2024 21:19:05 +0000
-> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > >  =20
-> > > > Add interrupt-names INT1 and INT2 for the two interrupt lines of the
-> > > > sensor.
-> > > >=20
-> > > > When one of the two interrupt lines is connected, the interrupt as =
-its
-> > > > interrupt-name, need to be declared in the devicetree. The driver t=
-hen
-> > > > configures the sensor to indicate its events on either INT1 or INT2.
-> > > >=20
-> > > > If no interrupt is configured, then no interrupt-name should be
-> > > > configured, and vice versa. In this case the sensor runs in FIFO BY=
-PASS
-> > > > mode. This allows sensor measurements, but none of the sensor event=
-s.
-> > > >=20
-> > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
+> > On Mon, Dec 16, 2024 at 05:55:40PM -0500, Mikael Gonella-Bolduc via B4 =
+Relay wrote:
+> > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 > > >=20
-> > > Just to repeat what I sent in reply to v6 (well after you'd posted th=
-is).
-> > > Maybe we can maintain compatibility with the binding before this by a=
-dding
-> > > a default of INT1. =20
+> > > Add device tree bindings for APDS9160
+> > > Note: Using alternate email for maintainer
+> > >=20
+> > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> =
+=20
 > >=20
-> > But can you make that assumption? If we did, and it's not universally
-> > true, we break systems that had INT2 connected that previously worked.
+> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 >=20
-> I guess there is a possibility of a driver in some other OS assuming INT2=
-, but
-> seems an odd 'default' choice.
+> Conor, any idea how we got that title on a reply to a completely differen=
+t series?
 
-Ye, I think that it is unlikely a driver author would think that way.
+mutt bug? I actually noticed that the subject line was not correct when
+I sent the mail, but I thought it was a visual bug in mutt rather than
+one that affected the mail itself. mutt sometimes lags pretty badly for
+me, there's a good chance I queued up the actions required to delete
+the $subject thread, jump to this patch and initiate the reply-all
+process during one of these periods of lag? I'm not entirely sure of
+that, but I do know for sure that I saw the erroneous subject in mutt's
+"mail configuration" screen after I had hit y to send it.
 
-> Also odd for a writer of DT for a platform
-> to assume it.
+> Anyhow, I'll assume you intended to give RB to Mikael's patch!
 
-I agree, I think it is unlikely that someone would assume it'd work like
-this. I think a lack of attention paid to the schematic of the board is
-a more likely culprit.
+Ye, content of the mail is what's correct here.
 
-> There is a thing that comes up in spec orgs when discussing whether to
-> rush out an errata.  "Is this bug something people would get wrong
-> thinking the answer was clear, or something where the would ask a questio=
-n?"
-> Anyone who thinks INT2 is the obvious choice for me falls into the would
-> ask category.
->=20
-> However, in the linux driver we would would go from assuming no interrupts
-> to assuming the wrong one.  That's indeed bad.  So I guess this doesn't w=
-ork.
-> Oh well no default it is.
-
-I don't think you really lose anything from having no default. The
-driver works just fine without the interrupt, so the albeit small risk
-just doesn't seem worth it.
-
---JWhiqjxceXA0OMS3
+--PVdqPFf4XmF9Pl8z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2RkFgAKCRB4tDGHoIJi
-0itwAQDSa7yw1vcG8HpgCMxnNfO/VCkpSZkMU5pnA+ct4zwKMQEAmtAhKFrDlBGr
-60dRHpzdMx56ysbv9mFYdMWKjW35nAA=
-=eOyI
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2RlXgAKCRB4tDGHoIJi
+0nMqAQDqvugOEEgubwx8CJbxAlr1rQwGFWYqGyIkMYPXKGn2IAEA9cuJTXkb6s76
+a/oFGOgV+Iom8cwyo6UaoYwlRHc4agU=
+=1xX/
 -----END PGP SIGNATURE-----
 
---JWhiqjxceXA0OMS3--
+--PVdqPFf4XmF9Pl8z--
 

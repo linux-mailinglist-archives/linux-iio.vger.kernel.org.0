@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-13629-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13630-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EBF9F7867
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 10:25:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545389F786A
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 10:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F179018868EF
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 09:25:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A10EE1615FF
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 09:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B01D22331A;
-	Thu, 19 Dec 2024 09:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD672206B3;
+	Thu, 19 Dec 2024 09:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lH8IwiBv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNo2++u6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4C6222D7C;
-	Thu, 19 Dec 2024 09:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F9149DF4;
+	Thu, 19 Dec 2024 09:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734600149; cv=none; b=DJbr5RkMzraS0z1gmLOxuM+azTRy0fdaP6dEFeoKsPz9mlho5EtOsmIhynlIa/Whx3Bjad3b+osVdB1IeNDkpd++6qNrePnXMBP/8kGp/BEGa3T9pPOX3lbjoc2RAQ4Joeh93ljf5Dr6a73WOlwFP7AVuUHS1hqpDsZ8kIn7Lyw=
+	t=1734600346; cv=none; b=bLn1IiblQTjTgMnEo5KkshZMqclvTe5+WBlmoAB7DARbl8+aACgHhTbiB7sfHT/+CzT16MdM4ZzffUAb540LebvzzGv5UBRIAxONe3Hbb4eceKa8/DVTJEJ5g1V+GNZLvHsNQC5Uv34SupJcUsVF4tlTzDpwiGTf+VbqbS7GO+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734600149; c=relaxed/simple;
-	bh=3tS10k4IOjDcPr10Ejz50H+xn32a4PmOVOdp4UJ9QXw=;
+	s=arc-20240116; t=1734600346; c=relaxed/simple;
+	bh=RiVs4vHHPFNKa9gxFhvBrQr/L++mlNtDRqRq7uDDW3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PTeGlMIHgnYzpINmLYQ1Q/VAXgOddHb3VkJS+3vhgPDf6La0JmQjjQsrf+THsB33HB2ZKMgFAwAgVLdCKWCUPlmPHbR6Y+1nGcdSHNiL8CZhVEaHuVVYJ6SGj3O+PtmYwJbZBxoa8BbEMuGeY5WRqCjlLQKt6oIxuNcWIPIaii0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lH8IwiBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC036C4CED0;
-	Thu, 19 Dec 2024 09:22:25 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aAwK3QBlM0VIwcvzTYRCZ9gMCl3gAAx/rfX+mdwSLB8f+x0QrPlkTuKOJYcTlV5qQoJSCZppzKlr8oNErqkqlROfwVLH5wmiIH9Br+Hs27aSBE2O/ZQVQFatMtvSLThS9gzDqkkr9Vj9Hz2jC8Qe2O+mTDsRkI0Y4YGjDMCYzCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNo2++u6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EFBC4CECE;
+	Thu, 19 Dec 2024 09:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734600146;
-	bh=3tS10k4IOjDcPr10Ejz50H+xn32a4PmOVOdp4UJ9QXw=;
+	s=k20201202; t=1734600346;
+	bh=RiVs4vHHPFNKa9gxFhvBrQr/L++mlNtDRqRq7uDDW3I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lH8IwiBvmcJDcJRHwy2rUgxFbXF7FJigBq3SVVKe0WrS06RZvPVPF6Qjko+W7/oS9
-	 5jRNgZ4/m8f3rNArJhp+u48RLemmx1bK90+DclNG5C5xtbDdN6ZYWNUoXJ6nlm5kt1
-	 lfNxZuSJI+DHemyh7/LzFtuFh9biPErAhi1NfNvYer9HaIf3s9nfW/bvwDbkd2+QNP
-	 ll9q18btcMJq0n4vDR3fgr3g369Rgujmncgu3YmXBWl/W4oZn8kAvOnF/BctBLQEAp
-	 qpOUre8+nSpHX9RL2uAqNPQVBpmUvzw31cCJEvOEfquwQOL9F46HlPFz1gYSoIOZhh
-	 RUz7aeC6HJyhQ==
-Date: Thu, 19 Dec 2024 10:22:22 +0100
+	b=FNo2++u6NAPUtvUpfexcCVgDGV8uzgzOcmWdOGXXYBRmnvBFKbyIsQVt2to2HnmAb
+	 GDLFCEPu57iqa8etOhR/8tVzFeF8HPpVWfze/gAmWfVlZWNpBqhxJ+qCz4ODE0TuE0
+	 b/3cJimHGhzot5EuCjodCQmW/iTCSXY/84wUgrllCLee1o5lmxErbFOnzIPtGp0NCA
+	 3GYFf8H81XvltFsHjlxM3zma97RczAksWuZSIHMXQX8u67cejf8QUCdu3mufr2bh/M
+	 efK5ZYyI4h+lNNnpuSzycFxEpWlXdbn6E0Q7GGsYGANHSjUhIhBEDFvs1s+nR2MW/5
+	 6prvtOjn4NOzA==
+Date: Thu, 19 Dec 2024 10:25:42 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org, 
 	lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
-Subject: Re: [RFC PATCH 1/4] include: dt-bindings: iio: adc: Add defines for
- AD4170
-Message-ID: <ikq55kcfu2lmxzeeobu4zwf67xypyikadnpycw2m4d7o6gvmi2@tkepvcvzqzoh>
+	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com, 
+	Dragos Bogdan <dragos.bogdan@analog.com>
+Subject: Re: [RFC PATCH 3/4] iio: adc: Add support for AD4170
+Message-ID: <6a3gofna73cl7i36qkrptyyjwbnlenb6qzqildeeuobxgwh6be@p4hmb64fqc75>
 References: <cover.1734530280.git.marcelo.schmitt@analog.com>
- <973852b372f8ecf3a62dc7e5b26d75bfaab99a4d.1734530280.git.marcelo.schmitt@analog.com>
+ <827daa6ba0882cc7974a9a61831e53dbf1ed5a78.1734530280.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -61,50 +61,25 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <973852b372f8ecf3a62dc7e5b26d75bfaab99a4d.1734530280.git.marcelo.schmitt@analog.com>
+In-Reply-To: <827daa6ba0882cc7974a9a61831e53dbf1ed5a78.1734530280.git.marcelo.schmitt@analog.com>
 
-On Wed, Dec 18, 2024 at 11:37:26AM -0300, Marcelo Schmitt wrote:
-> From: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-> 
-> Add defines to improve readability of AD4170 device tree nodes.
-
-Binding headers define the ABI between driver and DTS. Improving
-readability of DTS is not their purpose.
-
-Explain why this is binding. Also, I don't get why this is separate from
-device binding - see git log history how various IDs are being added.
-
-> 
-> Signed-off-by: Ana-Maria Cusco <ana-maria.cusco@analog.com>
-> Co-developed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
->  include/dt-bindings/iio/adc/adi,ad4170.h | 96 ++++++++++++++++++++++++
->  1 file changed, 96 insertions(+)
->  create mode 100644 include/dt-bindings/iio/adc/adi,ad4170.h
-> 
-> diff --git a/include/dt-bindings/iio/adc/adi,ad4170.h b/include/dt-bindings/iio/adc/adi,ad4170.h
-> new file mode 100644
-> index 000000000000..a508b37e9a46
-> --- /dev/null
-> +++ b/include/dt-bindings/iio/adc/adi,ad4170.h
-> @@ -0,0 +1,96 @@
-> +/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-> +/*
-> + * AD4170 ADC
-> + *
-> + * Copyright 2024 Analog Devices Inc.
-> + *
-> + * Licensed under the GPL-2.
-
-No, you cannot say something else than SPDX. Anyway, drop license
-boilerplate text.
-
-> + */
+On Wed, Dec 18, 2024 at 11:37:59AM -0300, Marcelo Schmitt wrote:
+> +#include <asm/div64.h>
+> +#include <linux/unaligned.h>
 > +
-> +#ifndef _DT_BINDINGS_IIO_ADC_AD4170_H_
-> +#define _DT_BINDINGS_IIO_ADC_AD4170_H_
+> +#include <linux/iio/buffer.h>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/kfifo_buf.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include "ad4170.h"
 > +
+
+No bindings header included? No usage of binding defines (I did look for
+them in case you have some incorrect include via other header)? So not a
+binding...
 
 Best regards,
 Krzysztof

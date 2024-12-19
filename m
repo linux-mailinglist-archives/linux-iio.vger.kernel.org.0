@@ -1,87 +1,213 @@
-Return-Path: <linux-iio+bounces-13630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545389F786A
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 10:26:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3D19F7A63
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 12:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A10EE1615FF
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 09:26:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AE977A2AFD
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 11:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD672206B3;
-	Thu, 19 Dec 2024 09:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59889223C62;
+	Thu, 19 Dec 2024 11:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNo2++u6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YLiqm5Rf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79F9149DF4;
-	Thu, 19 Dec 2024 09:25:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CED5223702
+	for <linux-iio@vger.kernel.org>; Thu, 19 Dec 2024 11:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734600346; cv=none; b=bLn1IiblQTjTgMnEo5KkshZMqclvTe5+WBlmoAB7DARbl8+aACgHhTbiB7sfHT/+CzT16MdM4ZzffUAb540LebvzzGv5UBRIAxONe3Hbb4eceKa8/DVTJEJ5g1V+GNZLvHsNQC5Uv34SupJcUsVF4tlTzDpwiGTf+VbqbS7GO+4=
+	t=1734607718; cv=none; b=DkS2eE49o6YOcT5zcDtUjJOauivAGILjehIx6Nb6WufjlW/ZoC8uVF7/CKCe5eK6yHclYr/INLAldwDvfWJHLRHR0S/KE+G/BcbRlhfrGXYGa7ySD4w/BpJFCf/trZepvXI2yVGOc5/EUyFfTva4c5p/WnLtkev9QZoA+BIaNpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734600346; c=relaxed/simple;
-	bh=RiVs4vHHPFNKa9gxFhvBrQr/L++mlNtDRqRq7uDDW3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aAwK3QBlM0VIwcvzTYRCZ9gMCl3gAAx/rfX+mdwSLB8f+x0QrPlkTuKOJYcTlV5qQoJSCZppzKlr8oNErqkqlROfwVLH5wmiIH9Br+Hs27aSBE2O/ZQVQFatMtvSLThS9gzDqkkr9Vj9Hz2jC8Qe2O+mTDsRkI0Y4YGjDMCYzCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNo2++u6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71EFBC4CECE;
-	Thu, 19 Dec 2024 09:25:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734600346;
-	bh=RiVs4vHHPFNKa9gxFhvBrQr/L++mlNtDRqRq7uDDW3I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FNo2++u6NAPUtvUpfexcCVgDGV8uzgzOcmWdOGXXYBRmnvBFKbyIsQVt2to2HnmAb
-	 GDLFCEPu57iqa8etOhR/8tVzFeF8HPpVWfze/gAmWfVlZWNpBqhxJ+qCz4ODE0TuE0
-	 b/3cJimHGhzot5EuCjodCQmW/iTCSXY/84wUgrllCLee1o5lmxErbFOnzIPtGp0NCA
-	 3GYFf8H81XvltFsHjlxM3zma97RczAksWuZSIHMXQX8u67cejf8QUCdu3mufr2bh/M
-	 efK5ZYyI4h+lNNnpuSzycFxEpWlXdbn6E0Q7GGsYGANHSjUhIhBEDFvs1s+nR2MW/5
-	 6prvtOjn4NOzA==
-Date: Thu, 19 Dec 2024 10:25:42 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Ana-Maria Cusco <ana-maria.cusco@analog.com>, jic23@kernel.org, 
-	lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org, 
-	krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com, 
-	Dragos Bogdan <dragos.bogdan@analog.com>
-Subject: Re: [RFC PATCH 3/4] iio: adc: Add support for AD4170
-Message-ID: <6a3gofna73cl7i36qkrptyyjwbnlenb6qzqildeeuobxgwh6be@p4hmb64fqc75>
-References: <cover.1734530280.git.marcelo.schmitt@analog.com>
- <827daa6ba0882cc7974a9a61831e53dbf1ed5a78.1734530280.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1734607718; c=relaxed/simple;
+	bh=Rn2ZpBXFJSkcrBt0bHzy2Hci5m3Vfg3h/UGKwBmkFL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rR8wJ/WLMoj9O7hdRHGbY93xf+8Glhb3FR5yLW1D0wouBjKMimq9I12Fr6cdEOvZ8atmnJaU3pAgFoiQxWPAoDm0kcgF/ky+1xuyZIm9pYMqgyA6Es/MjAXxVwcln6lwzd6sd6CWOG0kMOVGk3Jx5FsG0U2JecZXxZZLn4FB/wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YLiqm5Rf; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d7e3f1fc01so1209515a12.2
+        for <linux-iio@vger.kernel.org>; Thu, 19 Dec 2024 03:28:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734607714; x=1735212514; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OOeztBILv3pJs8OslB3gpiwKZSWXXwGxwA1Hj/M2nz0=;
+        b=YLiqm5RfGKCqEMoPwXF0akkJNxIIiCUkXYLrGWH4buOc74ceGocovDxAbwu58qBzRL
+         VOe0shz4T8miwbT91CMii515J7x02dobnwzy6QGgaYp/EGKlk4T3yWi/qlSqg1sWvS/f
+         kpSeVLw03dcTqqgXYFspdrrHxA6oMWbrMXejD9hJ44ln3A+U9Ytx4De0B6jfBlmt4TXm
+         AD5i0B0h+M1ASrOrAFNZwZ2kL2HPzc1aPRSK630JSOWELuutKzEHUP0xT8lXTdpGhGif
+         EJzgsm25wx/wNo3iY9OimmTUagPsrnz2xWtV7AJ9Iwr2X5sHLlnn/5tuBU+rmHmuab+d
+         9cYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734607714; x=1735212514;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OOeztBILv3pJs8OslB3gpiwKZSWXXwGxwA1Hj/M2nz0=;
+        b=uKiumxR9rV/yhrPup57Pvnf9cPaMZPoJdto7jYSZjHeVLajax5DjLM9mE3nuWFi9M0
+         d1onN0yewoo/qb5K8OmZMAvfjZi14sHmEzPCtZKKVTTILq/hv8PjyLlMLZ/v4YkpHgpF
+         hAPoUTDBCCql8ZC3x/g90QnsKvpzboWf4e47FuCmLydKlHBAx6eZxLMOn8A8y0B2GvWa
+         sGzIfoFj6aBQejMeEX927m6ieprJWerpuNc+jhPzwkXdi3Eh/0wuJrOkq92fA2xCWczT
+         y4l5iEYzYx4O+N1CaqEqDNwwKzq2j1Yuls91Xv1qL5nIr5+0+/R7CGTfVtLxBX/+9KPM
+         cJKw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+i6JYQjhrPA8gO22LybxiKLqUsfeOG+AKB4bMr/Zh6mi5VlVwGaRjv1i5HYenjWbat/eTtg1EAEI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyqEouGPpRKnv58F9w+Cl9sMvv0tOr6hDRFSlc2ukUNeVvBaWAu
+	kGNcR4i8IEXTJR2cwvspVTX745V/agEM71/rnXwr7hSF6Lpl4Cko4slg+T5Y28E=
+X-Gm-Gg: ASbGncvjM2vr4EpcW2jWGrXZJWvvD55WZrP/GIMKoYud0sY1S+de27x5OK+0k9qMOhr
+	2ZVzdmPu0ko9CvlJcQjlbOwFxv4QM5FMR8OFjDHj99Iu7OYoX5ZqaXdm9zleuAnsb34duPR9xRY
+	fSbnh1PevVEvoNV4Vsuxdk+xlePYq2k5/ur5dVVoUO/NbDmj+n6l98MQHImxPvmTazHHlclrlTp
+	7AKOvGR1f+qrO/CP14K8Pw5FbpH0cfNRdAkLFkh8Nu0KlFNMG1mqHopMajkPg==
+X-Google-Smtp-Source: AGHT+IFYWlKPrlMPHYtzOzC5RXOXIxvlzii7QxWTWtpsaIvsQ6CcdA3QHj09PwSdK/kjpbIBT0HhWg==
+X-Received: by 2002:a05:6402:2801:b0:5d0:8359:7a49 with SMTP id 4fb4d7f45d1cf-5d80246fbdamr2511850a12.0.1734607714301;
+        Thu, 19 Dec 2024 03:28:34 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80679efc9sm550366a12.47.2024.12.19.03.28.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Dec 2024 03:28:33 -0800 (PST)
+Date: Thu, 19 Dec 2024 14:28:29 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH v2 3/3] iio: frequency: adf4371: add ref doubler
+Message-ID: <bc42978f-e86a-4560-bb4b-8a5fb2df4f4c@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <827daa6ba0882cc7974a9a61831e53dbf1ed5a78.1734530280.git.marcelo.schmitt@analog.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241209104201.25205-3-antoniu.miclaus@analog.com>
 
-On Wed, Dec 18, 2024 at 11:37:59AM -0300, Marcelo Schmitt wrote:
-> +#include <asm/div64.h>
-> +#include <linux/unaligned.h>
-> +
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/kfifo_buf.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/trigger.h>
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +#include "ad4170.h"
-> +
+Hi Antoniu,
 
-No bindings header included? No usage of binding defines (I did look for
-them in case you have some incorrect include via other header)? So not a
-binding...
+kernel test robot noticed the following build warnings:
 
-Best regards,
-Krzysztof
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-frequency-adf4371-add-differential-ref/20241209-184437
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20241209104201.25205-3-antoniu.miclaus%40analog.com
+patch subject: [PATCH v2 3/3] iio: frequency: adf4371: add ref doubler
+config: parisc-randconfig-r073-20241219 (https://download.01.org/0day-ci/archive/20241219/202412191811.lAia02sc-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 14.2.0
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202412191811.lAia02sc-lkp@intel.com/
+
+smatch warnings:
+drivers/iio/frequency/adf4371.c:545 adf4371_setup() error: uninitialized symbol 'ref_doubler_en'.
+
+vim +/ref_doubler_en +545 drivers/iio/frequency/adf4371.c
+
+7f699bd14913423 Stefan Popa     2019-06-04  487  static int adf4371_setup(struct adf4371_state *st)
+7f699bd14913423 Stefan Popa     2019-06-04  488  {
+7f699bd14913423 Stefan Popa     2019-06-04  489  	unsigned int synth_timeout = 2, timeout = 1, vco_alc_timeout = 1;
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  490  	unsigned int vco_band_div, tmp, ref_doubler_en;
+011032df594999f Antoniu Miclaus 2024-12-09  491  	bool ref_diff_en;
+7f699bd14913423 Stefan Popa     2019-06-04  492  	int ret;
+7f699bd14913423 Stefan Popa     2019-06-04  493  
+7f699bd14913423 Stefan Popa     2019-06-04  494  	/* Perform a software reset */
+7f699bd14913423 Stefan Popa     2019-06-04  495  	ret = regmap_write(st->regmap, ADF4371_REG(0x0), ADF4371_RESET_CMD);
+7f699bd14913423 Stefan Popa     2019-06-04  496  	if (ret < 0)
+7f699bd14913423 Stefan Popa     2019-06-04  497  		return ret;
+7f699bd14913423 Stefan Popa     2019-06-04  498  
+7f699bd14913423 Stefan Popa     2019-06-04  499  	ret = regmap_multi_reg_write(st->regmap, adf4371_reg_defaults,
+7f699bd14913423 Stefan Popa     2019-06-04  500  				     ARRAY_SIZE(adf4371_reg_defaults));
+7f699bd14913423 Stefan Popa     2019-06-04  501  	if (ret < 0)
+7f699bd14913423 Stefan Popa     2019-06-04  502  		return ret;
+7f699bd14913423 Stefan Popa     2019-06-04  503  
+def914a4c3899b6 Stefan Popa     2019-06-24  504  	/* Mute to Lock Detect */
+def914a4c3899b6 Stefan Popa     2019-06-24  505  	if (device_property_read_bool(&st->spi->dev, "adi,mute-till-lock-en")) {
+def914a4c3899b6 Stefan Popa     2019-06-24  506  		ret = regmap_update_bits(st->regmap, ADF4371_REG(0x25),
+def914a4c3899b6 Stefan Popa     2019-06-24  507  					 ADF4371_MUTE_LD_MSK,
+def914a4c3899b6 Stefan Popa     2019-06-24  508  					 ADF4371_MUTE_LD(1));
+def914a4c3899b6 Stefan Popa     2019-06-24  509  		if (ret < 0)
+def914a4c3899b6 Stefan Popa     2019-06-24  510  			return ret;
+def914a4c3899b6 Stefan Popa     2019-06-24  511  	}
+def914a4c3899b6 Stefan Popa     2019-06-24  512  
+011032df594999f Antoniu Miclaus 2024-12-09  513  	ref_diff_en = device_property_read_bool(&st->spi->dev, "adi,ref-differential-enable");
+011032df594999f Antoniu Miclaus 2024-12-09  514  
+7f699bd14913423 Stefan Popa     2019-06-04  515  	/* Set address in ascending order, so the bulk_write() will work */
+7f699bd14913423 Stefan Popa     2019-06-04  516  	ret = regmap_update_bits(st->regmap, ADF4371_REG(0x0),
+7f699bd14913423 Stefan Popa     2019-06-04  517  				 ADF4371_ADDR_ASC_MSK | ADF4371_ADDR_ASC_R_MSK,
+7f699bd14913423 Stefan Popa     2019-06-04  518  				 ADF4371_ADDR_ASC(1) | ADF4371_ADDR_ASC_R(1));
+7f699bd14913423 Stefan Popa     2019-06-04  519  	if (ret < 0)
+7f699bd14913423 Stefan Popa     2019-06-04  520  		return ret;
+011032df594999f Antoniu Miclaus 2024-12-09  521  
+011032df594999f Antoniu Miclaus 2024-12-09  522  	if ((ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN) ||
+011032df594999f Antoniu Miclaus 2024-12-09  523  	    (!ref_diff_en && st->clkin_freq > ADF4371_MAX_FREQ_REFIN_SE))
+011032df594999f Antoniu Miclaus 2024-12-09  524  		return -EINVAL;
+011032df594999f Antoniu Miclaus 2024-12-09  525  
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  526  	if (st->clkin_freq < ADF4371_MAX_CLKIN_DOUB_FREQ &&
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  527  	    st->clkin_freq > ADF4371_MIN_CLKIN_DOUB_FREQ)
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  528  		ref_doubler_en = 1;
+
+Uninitialized on else path.
+
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  529  
+011032df594999f Antoniu Miclaus 2024-12-09  530  	ret = regmap_update_bits(st->regmap,  ADF4371_REG(0x22),
+011032df594999f Antoniu Miclaus 2024-12-09  531  				 ADF4371_REFIN_MODE_MASK,
+011032df594999f Antoniu Miclaus 2024-12-09  532  				 ADF4371_REFIN_MODE(ref_diff_en));
+011032df594999f Antoniu Miclaus 2024-12-09  533  	if (ret < 0)
+011032df594999f Antoniu Miclaus 2024-12-09  534  		return ret;
+011032df594999f Antoniu Miclaus 2024-12-09  535  
+7f699bd14913423 Stefan Popa     2019-06-04  536  	/*
+7f699bd14913423 Stefan Popa     2019-06-04  537  	 * Calculate and maximize PFD frequency
+7f699bd14913423 Stefan Popa     2019-06-04  538  	 * fPFD = REFIN × ((1 + D)/(R × (1 + T)))
+7f699bd14913423 Stefan Popa     2019-06-04  539  	 * Where D is the REFIN doubler bit, T is the reference divide by 2,
+7f699bd14913423 Stefan Popa     2019-06-04  540  	 * R is the reference division factor
+7f699bd14913423 Stefan Popa     2019-06-04  541  	 * TODO: it is assumed D and T equal 0.
+7f699bd14913423 Stefan Popa     2019-06-04  542  	 */
+7f699bd14913423 Stefan Popa     2019-06-04  543  	do {
+7f699bd14913423 Stefan Popa     2019-06-04  544  		st->ref_div_factor++;
+347e385fdd6ecda Antoniu Miclaus 2024-12-09 @545  		st->fpfd = st->clkin_freq * (1 + ref_doubler_en) /
+347e385fdd6ecda Antoniu Miclaus 2024-12-09  546  			   st->ref_div_factor;
+7f699bd14913423 Stefan Popa     2019-06-04  547  	} while (st->fpfd > ADF4371_MAX_FREQ_PFD);
+7f699bd14913423 Stefan Popa     2019-06-04  548  
+7f699bd14913423 Stefan Popa     2019-06-04  549  	/* Calculate Timeouts */
+7f699bd14913423 Stefan Popa     2019-06-04  550  	vco_band_div = DIV_ROUND_UP(st->fpfd, 2400000U);
+7f699bd14913423 Stefan Popa     2019-06-04  551  
+7f699bd14913423 Stefan Popa     2019-06-04  552  	tmp = DIV_ROUND_CLOSEST(st->fpfd, 1000000U);
+7f699bd14913423 Stefan Popa     2019-06-04  553  	do {
+7f699bd14913423 Stefan Popa     2019-06-04  554  		timeout++;
+7f699bd14913423 Stefan Popa     2019-06-04  555  		if (timeout > 1023) {
+7f699bd14913423 Stefan Popa     2019-06-04  556  			timeout = 2;
+7f699bd14913423 Stefan Popa     2019-06-04  557  			synth_timeout++;
+7f699bd14913423 Stefan Popa     2019-06-04  558  		}
+7f699bd14913423 Stefan Popa     2019-06-04  559  	} while (synth_timeout * 1024 + timeout <= 20 * tmp);
+7f699bd14913423 Stefan Popa     2019-06-04  560  
+7f699bd14913423 Stefan Popa     2019-06-04  561  	do {
+7f699bd14913423 Stefan Popa     2019-06-04  562  		vco_alc_timeout++;
+7f699bd14913423 Stefan Popa     2019-06-04  563  	} while (vco_alc_timeout * 1024 - timeout <= 50 * tmp);
+7f699bd14913423 Stefan Popa     2019-06-04  564  
+7f699bd14913423 Stefan Popa     2019-06-04  565  	st->buf[0] = vco_band_div;
+7f699bd14913423 Stefan Popa     2019-06-04  566  	st->buf[1] = timeout & 0xFF;
+7f699bd14913423 Stefan Popa     2019-06-04  567  	st->buf[2] = ADF4371_TIMEOUT(timeout >> 8) | 0x04;
+7f699bd14913423 Stefan Popa     2019-06-04  568  	st->buf[3] = synth_timeout;
+7f699bd14913423 Stefan Popa     2019-06-04  569  	st->buf[4] = ADF4371_VCO_ALC_TOUT(vco_alc_timeout);
+7f699bd14913423 Stefan Popa     2019-06-04  570  
+7f699bd14913423 Stefan Popa     2019-06-04  571  	return regmap_bulk_write(st->regmap, ADF4371_REG(0x30), st->buf, 5);
+7f699bd14913423 Stefan Popa     2019-06-04  572  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 

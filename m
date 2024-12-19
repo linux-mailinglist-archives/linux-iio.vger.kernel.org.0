@@ -1,147 +1,165 @@
-Return-Path: <linux-iio+bounces-13635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13636-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD4B9F7A8A
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 12:40:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7FD9F7B24
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 13:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31DC816A086
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 11:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062CD189356A
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 12:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C21522333F;
-	Thu, 19 Dec 2024 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1AF224898;
+	Thu, 19 Dec 2024 12:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZX2hWVBe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CemdOb59"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DEF2236EB;
-	Thu, 19 Dec 2024 11:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDF5224888;
+	Thu, 19 Dec 2024 12:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734608405; cv=none; b=PGhF9rFhJS85iQtDR8NP7wZWXvhZDmqlmT7ELnwWqt+Rkh12JuHK95WeW7i5trYcWie2di+eaEZo46QjtNahrZ5lSBFGITZ73xoy6vWbw4/tnwyuI9cmsabcie7ca2Ez4z5Rj5h20xR+TtoZeKukLThQyROqs+L994+KZcVHNg4=
+	t=1734610839; cv=none; b=bvOGFfhIHeD8x4fKRxiXn58Mur7HCHkt+P1dbQFUPdZGge6bYGZp+fQ/jgfkwjlhaVHhI6NoP/FTPzs4Vu2i4dQ5w3P5AbkcNO3aSOZfYwFb0M1HcKsea0Z+ePkVzbr5JHLBGrOyTowtYdpjQn3l6OQaXP+smViJdBsVeWWKlOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734608405; c=relaxed/simple;
-	bh=GsWX0vVkkirrGEurGYJ73upRE090niXMZMeSM5m6kh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pN20oFCJxjLrsB/GTHoT8oXDGrrpiOr6zbSJBWzAJjoOJ6+I+nmBhUZGXkCG5HOBkUyPqIUPFT98gcKZO6LIaFdEXqG5jHfbzd8Q3I9FoX95LxPiYiaBPMn5nKxMXisj0Nk3v2WUVR5wBpGMMdpsHBQIgB+93WEqSNter/KnSYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZX2hWVBe; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53e3778bffdso692148e87.0;
-        Thu, 19 Dec 2024 03:40:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734608401; x=1735213201; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=h6kur+fgYF8cqbUvJGhld4diSdQInsPI0wEyhGiq1Sg=;
-        b=ZX2hWVBejCJsrs5SWZVzNmrMYfkTtyQbZEJWQ8j1AF5dam5xSey2S4FR54H+2mkCUz
-         rJGsEjYUEIRD0PgUsXnsCBkyGm03VZt4d1FW1UnlFSoH0xV5X6dyiHOctDHTkvTrHv65
-         rM5Egz39MOvACztBi/PoBJqSry4rtIbmoeXuZ8YmNZkmChNiMQMz8AriqkYzDuCYwlO7
-         vx6Lyj/21SSljiEIWnjbWIUWSmq7UFhC1fFDy7tKvQrVYQ1xCTWsq8Y1nx0ARneW1ROk
-         lYpot/qIpFvoZELLzKy7yIme4rXuUXfrM8z0Obop00gLvTMRVH0VvMAIvbKmVwFv5sF3
-         mLRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734608401; x=1735213201;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h6kur+fgYF8cqbUvJGhld4diSdQInsPI0wEyhGiq1Sg=;
-        b=sTfX6t+ICsBBi6mNkoSpBOUr5mH/2TGfetEOQawNv5A8PaLGCjZETSUoI9rTi68g1r
-         gLMoSbCaXb7KuppcG3b4z9o998UrCJJlMT6IVPmAT6NTjr44rlAdTcbkDmL1Q/RRIAlW
-         9iGjfS//fSQ8qyR5Qxq+SIbo6nIBoxLkGtRgnwY6Z5q3hnYR8wbWxSKUgzYibCu0dX/S
-         EpUWHWlPrtc1D8BhknoOhc8HWrBTyd7xJYgFdwAnrpBT+d4Q4TuXvmihheMdg0Et2nun
-         4jAKSuLcVSyQnpqJwwhxTNmF3XaEVXq0XB2+1gicHwULeyGS2lO7jC4KPxYtgleGXOc/
-         kSyA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8KKDKxv70Dh02uOnuJW6uI9bQTju7LP3J6aXOoEtY2VRZT8XChcBGkU8zoYeai1iG2Me985NUaz2n@vger.kernel.org, AJvYcCVZD2QpXvdtWR1e+41M5lmRT+sDD+9F7PQEKp7wixuMeU6dVUv7avWqW0mplQ4HOGjaH36whuqQUQT6@vger.kernel.org, AJvYcCWxGORktWbtXADtFB4g2G0UT9OExfnh7QGHiFTzBPOWim5EsOdnoPa5jKlk7EKTJGJIRTYcQpGcTF0O+5aG@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsvzmBow2Y4PWlgpRJDTYa1lx1f4F+5SUgJxiX1Y874Ad0ui1f
-	3w6YgGFIC0qLdv/U3jML2BciAkt3eJxUbZLGaSqTybkbqD8g8QA4
-X-Gm-Gg: ASbGncvLSOiiZFp6xgynRNqLaIoujHot15eyKpZnBeypUtOZh0MZ7inLgmA6qJ+pLmv
-	rYoehSDwLEtLPrP25pIOK3UJF90i/qjOg81uQcahLIV4cdqu0O1xfXNvv9NTYiZ4E7XI9t2DMc9
-	4HrTJechnLQUqD9C05+TcH5qkXB2ZSVtm6bCCutNma26iveajKpaXuDOKMX5M5Vh9q9CzP48+qy
-	HxSO++pvq9qLSnd6DHyfUf+gesRwWQlnh7UmUKZsSrDI/Q/HOR2EzBdvZw=
-X-Google-Smtp-Source: AGHT+IEjjBezRcljXDPG5A4unoJxUR/ijpAt9XHxlqsVSoLPsvSc5YtkKgIxlBOQkA4qy7BdPW6yvQ==
-X-Received: by 2002:a05:6512:224a:b0:542:24c8:e072 with SMTP id 2adb3069b0e04-54224c8e0e8mr488352e87.18.1734608401260;
-        Thu, 19 Dec 2024 03:40:01 -0800 (PST)
-Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-542238217f9sm146250e87.211.2024.12.19.03.39.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Dec 2024 03:40:00 -0800 (PST)
-Date: Thu, 19 Dec 2024 13:39:55 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] MAINTAINERS: Add maintainer for ROHM BD79703
-Message-ID: <5e99d4153b61a0d62174b8bde2ba6ae49da1e970.1734608215.git.mazziesaccount@gmail.com>
-References: <cover.1734608215.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1734610839; c=relaxed/simple;
+	bh=oG/gbXEG/mHuSCKwaPuuo2uIRwY3FD4w9Pk7bT437iY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=U+tUHpo0QzLCHIjTcLlv+/4CMZOL+ql8VoX+uFpmBEpesiyoY8bRS3Ltd/rSwmaF838z56AdeWNWocIYjBUkS51JJ4ZKH3jNI6+7oCb+YMJVVP2xz4dOovZHoTZ278VniLWAbUxfUtflyLbkIvm2HtrzMr4zoF9qacmfMoWmVN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CemdOb59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F47C4CECE;
+	Thu, 19 Dec 2024 12:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734610839;
+	bh=oG/gbXEG/mHuSCKwaPuuo2uIRwY3FD4w9Pk7bT437iY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CemdOb593uLG6QKc1GEGT5FuWIGnqtLCP20ugRTZKBmCyZ/Q8CEEzC7qYGPK8qZpf
+	 TckqlhsL8npsSEz0vnkOxUPbHI1E8spT113bLWC19gTp53yB6ETmDnB98BP012LH30
+	 A6t7ELgf42AxZuQrnxB3LIm3Lodc1u5+yP3h/s80Tl15+W1ZhhDxUi/37HR89xKcMu
+	 kQDAu1OrZmve+7Dofs2NLimITOlug3gBWgaT5x0RZW0lZ1sce99FV2GTbekUVv6xFV
+	 Qn10nRgp2SUB1xlrx4qSEJh1ZnNhxFJzcpB7sVwJ0g4sKlIgR0GWuuJgfj790HCpxZ
+	 CBSGcX4vSToyw==
+Date: Thu, 19 Dec 2024 12:20:30 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, David Lechner
+ <dlechner@baylibre.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: iio: dac: ad5624r_spi.c - use of scan_type
+Message-ID: <20241219122030.31ee7ff5@jic23-huawei>
+In-Reply-To: <c1795ffa-c2e7-428f-8897-2b8846e9fa44@gmail.com>
+References: <3f5ff01b-8c32-423f-b3cc-a95399b69399@gmail.com>
+	<296d9e03-1153-4589-95b8-87195d7bbdef@baylibre.com>
+	<c1795ffa-c2e7-428f-8897-2b8846e9fa44@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="iYubq3X35aU1OuNi"
-Content-Disposition: inline
-In-Reply-To: <cover.1734608215.git.mazziesaccount@gmail.com>
-
-
---iYubq3X35aU1OuNi
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Add undersigned as a maintainer for the ROHM BD79703 DAC driver.
+On Thu, 19 Dec 2024 08:05:17 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8e5167443cea..98a3c1e46311 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20286,6 +20286,11 @@ L:	linux-serial@vger.kernel.org
- S:	Odd Fixes
- F:	drivers/tty/serial/rp2.*
+> On 18/12/2024 22:53, David Lechner wrote:
+> > On 12/18/24 2:38 AM, Matti Vaittinen wrote: =20
+> >> Hi dee Ho peeps,
+> >>
+> >> I started drafting a driver for a ROHM DAC. I took a quick look at the=
+ ad5624r_spi.c, and the use of the 'scan_type' -field in the struct iio_cha=
+n_spec puzzled me.
+> >>
+> >> I think this field is used by the driver to convert the data from user=
+ to register format while performing the INDIO_DIRECT_MODE raw writes. I do=
+n't spot any buffer usage. Furthermore, as far as I can say the 'sign' and =
+'storagebits' are unused.
+> >>
+> >> My understanding has been that the scan_type is only intended for pars=
+ing the buffered values, and usually when the data direction is from driver=
+ to user.
+> >>
+> >> I suppose I shouldn't copy the ad5624r_spi.c use of scan_type to a new=
+ driver. I'm somewhat tempted to send a patch which drops the scan_type fro=
+m the ad5624r_spi.c, and adds the 'realbits' and 'shift' to the driver's in=
+ternal struct ad5624r_state. This, however, will change the interface to us=
+erland so maybe it's best to not do that. =20
+>=20
+> I think I was wrong here. I suppose plain scan_type population does not=20
+> result user visible entries if buffer is not created. So, confusion=20
+> stays in driver - but it also means changes wouldn't impact the userland.
+>=20
+> >>
+> >> I wonder if I am missing something? (That wouldn't be unheard of XD). =
+If not, then at least a documentary patch with a comment "don't do this in =
+new drivers" might be Ok, or how do you see this?
+> >>
+> >> Yours,
+> >>  =C2=A0=C2=A0=C2=A0=C2=A0-- Matti
+> >> =20
+> >=20
+> > I think scan_type is a convenient place to store this information even =
+if
+> > buffers aren't implemented. The struct is there whether we use it or no=
+t, =20
+>=20
+> Valid point.
+>=20
+> > so
+> > might as well use it. And if buffer support is ever added, that is one =
+less
+> > thing to do (removing the duplicate fields). =20
+>=20
+> I find populating the scan_type still somewhat confusing for a reader.=20
+> Kinda willing to hear what Jonathan thinks of it, he probably has=20
+> broadest view on how to keep things consistent in IIO. If it is usual to=
 =20
-+ROHM BD79703 DAC
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/dac/rohm-bd79703.c
-+
- ROHM BD99954 CHARGER IC
- M:	Matti Vaittinen <mazziesaccount@gmail.com>
- S:	Supported
---=20
-2.47.0
+> use the scan_type without buffer, then this is totally fine with me.
+
+I'm against filling it in if there is no use being made of it (which people
+sometimes do) but I don't mind it being used for this sort of purpose.
+The reasoning being that we wouldn't want duplication if buffered mode
+was supported, and this is just using it in the way we would use it
+under those circumstances.
+
+I'm also against carrying it around if it's actually a constant, so bring
+this in only when dealing with a driver supporting multiple values (either
+multiple devices or channels where this is the only difference).
+
+>=20
+> I suppose the shifts and amount of bits are constants? In that regard=20
+> one could also just use a define, which would make it possible to not=20
+> add this information to any of the structs.
+
+Absolutely. If there is only one value used and no buffered support I'd
+prefer to see it as a define used inline in the code.  The usual principle
+of don't generalize until you need to applies here.
 
 
---iYubq3X35aU1OuNi
-Content-Type: application/pgp-signature; name="signature.asc"
+>=20
+> Out of the curiosity, do we use 'input buffers' in IIO? This far I've=20
+> mostly worked with IIO devices focusing on output.
 
------BEGIN PGP SIGNATURE-----
+There are some.  Look for IIO_BUFFER_DIRECTION_OUT. Eg. dac/ad3552r.c
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmdkBgsACgkQeFA3/03a
-ocXDsgf/erOfwszOIiFolJkx8xGhrowZ3vlsDrr7lBEQM+R4cQZ+WKqso9cS0aqd
-FIbnBBt+jlOAklLFviyttHhzQxT/cjCle6uvgBXAN70F/WAQG4XXHI1JBrD/HsvZ
-R2cBUqmADBLNtzg1Yl0Wh5/Yn3Prkzs/CwxKs4YvKc3cNAWlEFOjpPo5zgg2to8U
-mDbuVMA5ZI2Dn9Y7H9sLVGjuFoHB73Czjuc+pqHvVM+RuKBaQl/U7PFRBRH0VhMT
-pN1X46obvLklG2llMdZvqQ3Xu8AUWWLHErszGwvOQwhFc3u6DqHGUiThTzZr5c9r
-0lIIHSuctSckEm3bq9XsIA8OYR4zsg==
-=rz50
------END PGP SIGNATURE-----
+It's relatively new infrastructure and for many DACs we support it isn't
+worth the effort as they are more about tuning a signal than waveform
+generation etc. Hence, not that many drivers yet and some of those
+are using the IIO backend stuff with fpga IPs to get the data rates.
 
---iYubq3X35aU1OuNi--
+Jonathan
+
+>=20
+> Thanks for sharing your opinion!
+>=20
+> Yours,
+> 	-- Matti
+>=20
+
 

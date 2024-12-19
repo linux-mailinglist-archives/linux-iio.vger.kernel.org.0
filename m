@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-13675-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13676-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1049F8252
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:47:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3CB9F8266
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 18:49:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9A9C167E54
-	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B235C16849F
+	for <lists+linux-iio@lfdr.de>; Thu, 19 Dec 2024 17:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F35A19CD07;
-	Thu, 19 Dec 2024 17:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF78E1A4F1B;
+	Thu, 19 Dec 2024 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxZ3sbz+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFtppZ4u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D6E1A0BF2;
-	Thu, 19 Dec 2024 17:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2901A706F;
+	Thu, 19 Dec 2024 17:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734630095; cv=none; b=jE92u+VoOPIUJFIJowAdMD1jjwjmZUnnLfvis0wl1VEW92YVnmBq1Aicb8IkO/KRnW1DwjJNUZQB2nMmutC9CSvgUjPis8dVGAJ/jH3bFRDINBtygw4SuHHUEEarHlonslwwYUU8az5KXQRcHkRd8TGYz1zcDE8XT9qTIe2kK2k=
+	t=1734630310; cv=none; b=du2hg5VZGoQrR5ypMoMLAwq63fuUZ5L0fXj2ZTw8E+xwdHiqtpxOCjUzzpwdDXWOdGZvBmi42Y1VeUAL76tL/KLlUXd95r6my2nnsPy5kj5b2OaMBAcL8NWO7pFtPlgxMROItH+hc5okz2XjlcI8pBhAvPFdWfyCQC/x1UzhgMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734630095; c=relaxed/simple;
-	bh=+VPcmkh5U0In89UK8H1fXfUKHxHILa3R6gwrx5c/CS8=;
+	s=arc-20240116; t=1734630310; c=relaxed/simple;
+	bh=nwvuHko52AL3XUdx41dRyK5V4Zjzq/KZYIM9g4l1EhU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ROwcuZCiHaUnIK2CnnBpT6J+co094AND35cGsRfa+BB7kTFP9QFDRClLxYKm2/32ATicLuWKtziMHFUiTlzs3hjjSi3IYpgrZ3DrYvwNHs49pTlcdFIXW+4SqXtpIs7kx2pTf/6FonSrWgk1EulF0OTGYHbntfN6C54IWe+0BgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxZ3sbz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A944C4CECE;
-	Thu, 19 Dec 2024 17:41:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZCnAhsLxJwQJe58dUrrcgOX3KwkSNlLCZBachWoV+itr0xfRjIS6FfOqLfK1Q/ZtKr6BjdCwYpwDJQDNtVGuJ+qt8CK2p1gv6XHlNuEckpPwMd36UD8d1Zn+8KUkOV/xtWkQJCYS5laH1qyiAkp2BVdbvWa+Y4metK96YFRilyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFtppZ4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3749C4CECE;
+	Thu, 19 Dec 2024 17:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734630094;
-	bh=+VPcmkh5U0In89UK8H1fXfUKHxHILa3R6gwrx5c/CS8=;
+	s=k20201202; t=1734630310;
+	bh=nwvuHko52AL3XUdx41dRyK5V4Zjzq/KZYIM9g4l1EhU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WxZ3sbz+D6f3hJeEZ3jlH8PX+d7f09M/VyHcWNHH7z/OPh5Hkhi1v7WJkT+DtKWjh
-	 8Sm8sq7M7OppkG1MMzITMMFS1Di9Q8M/errJrw5AFJ6QH/IWkH99YMbY7MhPczBSu5
-	 JPWg0Zgua359dRRB726a58xBQR3eu2+W0d1oJeOgpNNul4W9KqWODkD4OtyDFDi/ul
-	 4iECrbhyGhUM1zdC8db0clA7OWpymYqMPNum8Mki2+P7LM2Qs7K9tAy1lsTZUwcKFg
-	 YT5InTphQHwwo47ZwfXOIAGg5i/dhesrYLKnHXPW77nuTO0oeHrcRezZtbdVQq1xU9
-	 c+4DSc6lGGIxQ==
-Date: Thu, 19 Dec 2024 17:41:25 +0000
+	b=SFtppZ4usuhiX7aoLUXytbnT/lWu5KhwI3U1/vPcCGtO8N7U6ru6gj4EwidkQh/lo
+	 /R0DGvvREa6ZDKmDbqUcPQpMLdbP+GEJ8VOYp9tksttaPhQ9CxluuUFzB4sQaBhYrg
+	 OzSKnhp+kXbS39jjtDMJylnYwfkfUr7UacMhNwBjntcWTmoYa8o4iA0X8i6aIFmUyP
+	 DzZ1yWc3xj6y1Wz1zJSHCAztHxEppNQw+XdCwz8Wo/sD2KVmI1Jkf2mW1ncVowQrpI
+	 76yewqoguwUwcd0S5qMnw2Wfeh5IIjjDz00g/nObsgS2i5b60iVJBG/+rZ3Pt2crpi
+	 mzqFUoFmVTF7A==
+Date: Thu, 19 Dec 2024 17:45:00 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
@@ -49,12 +49,12 @@ Cc: lars@metafoo.de, krzysztof.kozlowski@linaro.org, nuno.sa@analog.com,
  jstephan@baylibre.com, dlechner@baylibre.com, jackoalan@gmail.com,
  k.wrona@samsung.com, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] iio: adc: dln2-adc: zero full struct instead of
- just the padding
-Message-ID: <20241219174125.1a75a429@jic23-huawei>
-In-Reply-To: <20241214191421.94172-2-vassilisamir@gmail.com>
+Subject: Re: [PATCH v2 2/4] iio: adc: max1363: make use of
+ iio_is_soft_ts_enabled()
+Message-ID: <20241219174500.18038922@jic23-huawei>
+In-Reply-To: <20241214191421.94172-3-vassilisamir@gmail.com>
 References: <20241214191421.94172-1-vassilisamir@gmail.com>
-	<20241214191421.94172-2-vassilisamir@gmail.com>
+	<20241214191421.94172-3-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,84 +65,100 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 14 Dec 2024 20:14:18 +0100
+On Sat, 14 Dec 2024 20:14:19 +0100
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Drop a minor optimization of zeroing the padding between data and
-> timestamp and zero the whole structure. This is done in favor of
-> simpler code, and in order to drop the usage of the internal private
-> variable "scan_timestamp" of the struct iio_dev.
+Patch needs a new title.  I'll fix it up.
+
+Use a small fixed size buffer to replace dynamic allocation
+
+with that, applied.
+
+Thanks,
+
+
+> Drop the recurrent allocation of the data buffer from the trigger
+> handler and put it in the iio_priv(). This way, the maximum amount of
+> channels is always allocated in favor of simpler code and drop
+> of usage of the internal private variable "scan_timestamp" of the
+> struct iio_dev.
 > 
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Applied.
-
-thanks,
-
-Jonathan
-
 > ---
->  drivers/iio/adc/dln2-adc.c | 21 ++-------------------
->  1 file changed, 2 insertions(+), 19 deletions(-)
+>  drivers/iio/adc/max1363.c | 30 +++++++++---------------------
+>  1 file changed, 9 insertions(+), 21 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-> index 30328626d9be..221a5fdc1eaa 100644
-> --- a/drivers/iio/adc/dln2-adc.c
-> +++ b/drivers/iio/adc/dln2-adc.c
-> @@ -66,8 +66,6 @@ struct dln2_adc {
->  	/* Demux table */
->  	unsigned int demux_count;
->  	struct dln2_adc_demux_table demux[DLN2_ADC_MAX_CHANNELS];
-> -	/* Precomputed timestamp padding offset and length */
-> -	unsigned int ts_pad_offset, ts_pad_length;
+> diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+> index 9a0baea08ab6..e8d731bc34e0 100644
+> --- a/drivers/iio/adc/max1363.c
+> +++ b/drivers/iio/adc/max1363.c
+> @@ -161,6 +161,7 @@ struct max1363_chip_info {
+>   * @vref_uv:		Actual (external or internal) reference voltage
+>   * @send:		function used to send data to the chip
+>   * @recv:		function used to receive data from the chip
+> + * @data:		buffer to store channel data and timestamp
+>   */
+>  struct max1363_state {
+>  	struct i2c_client		*client;
+> @@ -186,6 +187,10 @@ struct max1363_state {
+>  						const char *buf, int count);
+>  	int				(*recv)(const struct i2c_client *client,
+>  						char *buf, int count);
+> +	struct {
+> +		u8 buf[MAX1363_MAX_CHANNELS * 2];
+> +		aligned_s64 ts;
+> +	} data;
 >  };
 >  
->  struct dln2_adc_port_chan {
-> @@ -111,8 +109,6 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
->  	if (iio_get_masklength(indio_dev) &&
->  	    (*indio_dev->active_scan_mask & 0xff) == 0xff) {
->  		dln2_adc_add_demux(dln2, 0, 0, 16);
-> -		dln2->ts_pad_offset = 0;
-> -		dln2->ts_pad_length = 0;
->  		return;
->  	}
+>  #define MAX1363_MODE_SINGLE(_num, _mask) {				\
+> @@ -1462,22 +1467,10 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
+>  	struct iio_poll_func *pf = p;
+>  	struct iio_dev *indio_dev = pf->indio_dev;
+>  	struct max1363_state *st = iio_priv(indio_dev);
+> -	__u8 *rxbuf;
+>  	int b_sent;
+> -	size_t d_size;
+>  	unsigned long numvals = bitmap_weight(st->current_mode->modemask,
+>  					      MAX1363_MAX_CHANNELS);
 >  
-> @@ -127,16 +123,6 @@ static void dln2_adc_update_demux(struct dln2_adc *dln2)
->  		out_loc += 2;
->  		in_loc += 2;
->  	}
-> -
+> -	/* Ensure the timestamp is 8 byte aligned */
+> -	if (st->chip_info->bits != 8)
+> -		d_size = numvals*2;
+> -	else
+> -		d_size = numvals;
 > -	if (indio_dev->scan_timestamp) {
-> -		size_t ts_offset = indio_dev->scan_bytes / sizeof(int64_t) - 1;
-> -
-> -		dln2->ts_pad_offset = out_loc;
-> -		dln2->ts_pad_length = ts_offset * sizeof(int64_t) - out_loc;
-> -	} else {
-> -		dln2->ts_pad_offset = 0;
-> -		dln2->ts_pad_length = 0;
+> -		d_size += sizeof(s64);
+> -		if (d_size % sizeof(s64))
+> -			d_size += sizeof(s64) - (d_size % sizeof(s64));
 > -	}
->  }
->  
->  static int dln2_adc_get_chan_count(struct dln2_adc *dln2)
-> @@ -494,6 +480,8 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
->  	if (ret < 0)
+>  	/* Monitor mode prevents reading. Whilst not currently implemented
+>  	 * might as well have this test in here in the meantime as it does
+>  	 * no harm.
+> @@ -1485,21 +1478,16 @@ static irqreturn_t max1363_trigger_handler(int irq, void *p)
+>  	if (numvals == 0)
 >  		goto done;
 >  
-> +	memset(&data, 0, sizeof(data));
-> +
->  	/* Demux operation */
->  	for (i = 0; i < dln2->demux_count; ++i) {
->  		t = &dln2->demux[i];
-> @@ -501,11 +489,6 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
->  		       (void *)dev_data.values + t->from, t->length);
->  	}
+> -	rxbuf = kmalloc(d_size,	GFP_KERNEL);
+> -	if (rxbuf == NULL)
+> -		goto done;
+>  	if (st->chip_info->bits != 8)
+> -		b_sent = st->recv(st->client, rxbuf, numvals * 2);
+> +		b_sent = st->recv(st->client, st->data.buf, numvals * 2);
+>  	else
+> -		b_sent = st->recv(st->client, rxbuf, numvals);
+> +		b_sent = st->recv(st->client, st->data.buf, numvals);
+>  	if (b_sent < 0)
+> -		goto done_free;
+> +		goto done;
 >  
-> -	/* Zero padding space between values and timestamp */
-> -	if (dln2->ts_pad_length)
-> -		memset((void *)data.values + dln2->ts_pad_offset,
-> -		       0, dln2->ts_pad_length);
-> -
->  	iio_push_to_buffers_with_timestamp(indio_dev, &data,
+> -	iio_push_to_buffers_with_timestamp(indio_dev, rxbuf,
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &st->data,
 >  					   iio_get_time_ns(indio_dev));
+>  
+> -done_free:
+> -	kfree(rxbuf);
+>  done:
+>  	iio_trigger_notify_done(indio_dev->trig);
 >  
 
 

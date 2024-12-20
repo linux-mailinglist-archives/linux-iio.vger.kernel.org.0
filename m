@@ -1,144 +1,118 @@
-Return-Path: <linux-iio+bounces-13696-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13697-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E209F8F6A
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 10:56:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C479F8F70
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 10:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B0FB1895E98
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 09:56:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E85F16A34B
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21541B6D08;
-	Fri, 20 Dec 2024 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5A61BC077;
+	Fri, 20 Dec 2024 09:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tRWKxUyP"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="VfM+/K4F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBCF1AA1F4;
-	Fri, 20 Dec 2024 09:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1DA1AA1F4;
+	Fri, 20 Dec 2024 09:56:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734688562; cv=none; b=QejJDX0IewRITOOcYt4rAH9GT1CwGBzp8NlekEnWbiGa9Rrt6rR/+qkAAqcA1Vtpgj7GDxxOsuLW3coZju9hjM3+jmwqXEsGyQhSDUKWIlyJ949C7Li821VH9ck1Zo1bNukkT50pMDjkZvUxfZmuWq62RuYFvaHbDk5SXQKXMUo=
+	t=1734688602; cv=none; b=MjYxdIH+ok66xYpfvCJq+WsdcdG5ltjiURKMQA8wFFruEyRfiiar9JdKZQh3NBv4rEND/5tZwubGMVVRb0fdbLmdMc6eGHyDlXv1Yz+Rc6gfvvjM6sPP/m35mL5aa1OpqiZGA2n9U7CNHCVFdbxfz98U1arZZ/IlPZbm8fy2RKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734688562; c=relaxed/simple;
-	bh=Vgmqw7RLh6LSeQ4KsWocrWkyAkBnXZCFAbIFEspou/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JzaOkPlRgn4iMfEU9KbmLydFvvHrK5GXcYprsYW/cf/sRsdWZVLiYlWGhiLeFx6GBmrn/mp5caF4XEXGCX4hLl4EB4dlqusOsvzIRIuzMKpCjfsoV8zIwtQNrjMcYBTqU3FI6K0xjZvYMrJtwRfO92nwBHkaeLKw0L9PEw/6Ux8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tRWKxUyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802EDC4CECD;
-	Fri, 20 Dec 2024 09:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734688562;
-	bh=Vgmqw7RLh6LSeQ4KsWocrWkyAkBnXZCFAbIFEspou/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tRWKxUyPGGhsgYuT38runu+HdMdSxF009XhHhGkx0dMkb3p+HJt9W+XXp1xtfV0vf
-	 xbat0uN5pHH2ME+ypNASB5/kvK9gx4d8iGOfxvBVZG6C0wqfNWm5/e7aZJA7vbSABJ
-	 rrUZTIbu3kWRRloP+C9phQLu0RnQ5hcKdPO0JZR+PDHFnOulS9pYtY8o1JuSb5QTpo
-	 M/uIMB5rDFZBAATwRyo9MVAeLHhRfsBjhqe8LjB5POlM12TCYAaAtvUJWsR3sNSDf+
-	 MbM2DR2oh8gFf9Ae6eNYrpFZRJXWEVtHnMS+R/VseUIC65vYJWHOh7r3Ib/zccxdBd
-	 RH1bgatxnls2g==
-Date: Fri, 20 Dec 2024 09:55:58 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Angelo Dureghello <adureghello@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6/8] iio: dac: ad3552r-hs: exit for error on wrong chip id
-Message-ID: <20241220-probe-outrage-7620d0cbc9d3@spud>
-References: <20241216-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-0-856ff71fc930@baylibre.com>
- <20241216-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-6-856ff71fc930@baylibre.com>
- <20241219165446.7b8d0a9a@jic23-huawei>
+	s=arc-20240116; t=1734688602; c=relaxed/simple;
+	bh=h70jEkjwDWoMMWgwpubkSckWpzRGWO+REXBSil5mb8E=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SPR6Jkq2HMzwUkSfFF/qy23KBHbJmfhg3zDtvadyLHkD09kbZvYZneH5mCTA+t5yUXNrv7d9cZ23DKJn5JqsWUdvLXF6Gwv4z9Y+D6CtphQWs44CqEjuHX2Q+Kl5JJ78fHJRPAwKUPn0HOf2D0/NkDJ7unVvqkGueaoNJCPrv34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=VfM+/K4F; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK8i79w014094;
+	Fri, 20 Dec 2024 04:56:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=g9ViHUI+OVFBQSue1RmTlAEXr1i
+	ICB3gG0ilQTSt53E=; b=VfM+/K4F+VwtTrxMw+l8qrZlqrO/tl3ugmOEmhz9iiq
+	T0aUx7j410FlMDcQI0W1n3RDumjGxIhR/xFkF7wQe0d/wTgIlrOw5UcWQGuHKEm6
+	WrdBYYl5S1l49XtWWKE4M59GtU5dig+bn4FsMIJW1yNM3F/cHUmLtAgUGUvrDiCO
+	/L63RH2zvLshxN3QYdArQESc+yDO1G+6Exe2gWrgLpJdkXDL8hwYK741dE07qWqS
+	D6GWnPF7LtufhGO9F0ibq7A/iIwy849XG02drD/L2mCjswrDPVL5uc/JhaseqYU7
+	cfEvROpMQRDXZd8MwRWeZ+qCmB68OuJwXwj/W53SnAg==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 43n5b589by-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 20 Dec 2024 04:56:37 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4BK9uadH002452
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 20 Dec 2024 04:56:36 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 20 Dec 2024 04:56:36 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 20 Dec 2024 04:56:36 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 20 Dec 2024 04:56:36 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.133])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4BK9uROU023622;
+	Fri, 20 Dec 2024 04:56:29 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v3 0/3] ADF4371 refin mode and doubler support
+Date: Fri, 20 Dec 2024 11:56:12 +0200
+Message-ID: <20241220095620.4918-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2I69WoCsvm9pepVy"
-Content-Disposition: inline
-In-Reply-To: <20241219165446.7b8d0a9a@jic23-huawei>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: n4TAAU2UetccHrS3yXVIVWnMjQ-YukFG
+X-Proofpoint-ORIG-GUID: n4TAAU2UetccHrS3yXVIVWnMjQ-YukFG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxlogscore=962 malwarescore=0 impostorscore=0 spamscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412200081
 
+Add support for selecting between single-ended and differential
+reference input. By default the single-ended input is enabled.
 
---2I69WoCsvm9pepVy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Input frequency boundaries are change based on the mode selected
+(single-ended/differential).
 
-On Thu, Dec 19, 2024 at 04:54:46PM +0000, Jonathan Cameron wrote:
-> On Mon, 16 Dec 2024 21:36:26 +0100
-> Angelo Dureghello <adureghello@baylibre.com> wrote:
->=20
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> >=20
-> > Exit for error on wrong chip id, otherwise driver continues
-> > with wrong assumptions.
-> Why? Chip ID does not define all future compatible parts, just the
-> ones we know about today.
->=20
-> The reason not failing is that the moment we do exit on a mismatch
-> we can never support fallback device tree compatible IDs.  Is there
-> no chance that ADI will release a backwards compatible part in the
-> future that we'd like to work with old kernels?
->=20
-> Any mismatch in DT vs hardware present is considered a firmware
-> bug, not a kernel problem.
-> We used to reject missmatched IDs but after a long discussion with
-> DT maintainers it became clear that broke their model.
+Add support for the reference doubler. This feature is enabled
+automatically to improve noise performance if the input frequency
+is within the accepted range.
 
-I'd probably still say the warning of the info message is still too
-harsh, and that it should be something like "Chip ID mismatch, operating
-detected 0x%x as a 0x%x" ;)
+Antoniu Miclaus (3):
+  dt-bindings: iio: adf4371: add refin mode
+  iio: frequency: adf4371: add refin mode
+  iio: frequency: adf4371: add ref doubler
 
-> Thanks,
->=20
-> Jonathan
->=20
-> >=20
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> >  drivers/iio/dac/ad3552r-hs.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> > index 8974df625670..e613eee7fc11 100644
-> > --- a/drivers/iio/dac/ad3552r-hs.c
-> > +++ b/drivers/iio/dac/ad3552r-hs.c
-> > @@ -326,8 +326,9 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state=
- *st)
-> > =20
-> >  	id |=3D val << 8;
-> >  	if (id !=3D st->model_data->chip_id)
-> > -		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
-> > -			 AD3552R_ID, id);
-> > +		return dev_err_probe(st->dev, -ENODEV,
-> > +				     "chip id error, expected 0x%x, got 0x%x\n",
-> > +				     st->model_data->chip_id, id);
-> > =20
-> >  	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
-> >  	ret =3D st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
-> >=20
->=20
+ .../bindings/iio/frequency/adf4371.yaml       |  7 ++++
+ drivers/iio/frequency/adf4371.c               | 38 ++++++++++++++++++-
+ 2 files changed, 43 insertions(+), 2 deletions(-)
 
---2I69WoCsvm9pepVy
-Content-Type: application/pgp-signature; name="signature.asc"
+-- 
+2.47.1
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2U/LQAKCRB4tDGHoIJi
-0t2pAP9csKUXSrKxjHOYaZxni9eqigMkZisA1iuHC3o6E4fIPQEA8RE1jfdsqmdY
-FgEP37Q60wMzBrdS3GBIgMGoF46yaQE=
-=ai0l
------END PGP SIGNATURE-----
-
---2I69WoCsvm9pepVy--
 

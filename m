@@ -1,127 +1,98 @@
-Return-Path: <linux-iio+bounces-13725-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13726-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F979F99FB
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:11:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813DC9F9A0B
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B702A163182
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 19:11:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 794D8188FA67
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 19:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445631632DD;
-	Fri, 20 Dec 2024 19:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAE9220680;
+	Fri, 20 Dec 2024 19:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgswXFQo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h+5mQi/R"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E767721C174;
-	Fri, 20 Dec 2024 19:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9324321A423;
+	Fri, 20 Dec 2024 19:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734721857; cv=none; b=psU8P1GfnfH+QnCuJ8biqjXjiq4j1MlSJgErBKyWMY7c0jn5DNnSnm8uV/WrYKeH2xaCU2JcGOn0qS0eI/YyjpGST5X4zGQqr3T3JZJAm0+s4qkiCZwIv5ZPLD+VqvBJwD0Y9icBelhWMGQUJoXh4v23Mmb7epInVVxoMK5Qx8s=
+	t=1734721974; cv=none; b=SVCjpp85rZu5LujNAzEcyEGTlUrHlCRcVVAsJEjdbqt5dA2FKZdH05tUdgQme88NHExpjKHRBOKnlEdw4in/dvY895cl5Zpow1h+4rymEoxoZGwajmbur0yjWqP2420KPhxgV0hZr/tcRwcMRYGBDsDcgMt9HMAtrVilfIH5pik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734721857; c=relaxed/simple;
-	bh=BfmcZeDZXIPOPuAc/Sy/Gwvm0D6pO7FfLx8A2nWZKLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8+Q9O3UrvNNqutdZV14ryEI852AhVlyT0OnhlpGIG12DTD8eXchZ/mL2C9mFYx2FiDY2ldpeS5yk/v28OezgJd7/NzAUTYQGyqIywDF4Tq0VaHdEpMqL2UQNJlp5redf5JfP7nuq2sdIKtg0QEQ6w09Z8xFoox2DeGaH9D6HOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgswXFQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F028CC4CECD;
-	Fri, 20 Dec 2024 19:10:54 +0000 (UTC)
+	s=arc-20240116; t=1734721974; c=relaxed/simple;
+	bh=iQnGYVwaajUJ7CmWsd19Cw2pgWco3tOwIfJCvwzDB/Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WtVzEU6wPKrzmRnbY9jDhRx4+OyQffr7ZNPe8EjqUx53aWUFe/qiUHfs0aJhomg4CwKAcX4wVpFdNoxOMZlaBJALqV4X8Vx8phm8LMpDid5Uz0tNCjXfUQoEU52NhqrZE+CZEZn0dW6/ZamfxrmTwRX7Fc41Y84qR0J6zwT1w2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h+5mQi/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A12C4CED4;
+	Fri, 20 Dec 2024 19:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734721856;
-	bh=BfmcZeDZXIPOPuAc/Sy/Gwvm0D6pO7FfLx8A2nWZKLo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XgswXFQoUGmyvq3fMFFCPRZlleWa1DhBULsFMf8EquPfthsOg30aTq8AvIOliPfhb
-	 maGtyizEHFr2ccStUakpuEpKH0k+b+P6nnFoODaZioD8Px/aSRC2GiwDJ5W5GZSvHr
-	 o0V3ApwLhsnHLQPuBX2yLQlXLqkZZS3SgDQXwJt9/Xf/0lDKw2WxKHGIymaOEUX6M7
-	 JenlQmzbZrcPVMRigyRBuOrkORIpgnZyXo8INxxcUY4tKzo+YDSm+0AgcPTS8lLewr
-	 TLINI92M11pab5F7NGxQ+SOcknuP7du9qy+WbUKjzVWKM0LgEKwZfJNLOOyBJnBtqe
-	 TCbstq96llDkg==
-Date: Fri, 20 Dec 2024 19:10:52 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adf4371: add refin mode
-Message-ID: <20241220-work-attest-d842adf74af3@spud>
-References: <20241220095620.4918-1-antoniu.miclaus@analog.com>
- <20241220095620.4918-2-antoniu.miclaus@analog.com>
+	s=k20201202; t=1734721974;
+	bh=iQnGYVwaajUJ7CmWsd19Cw2pgWco3tOwIfJCvwzDB/Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=h+5mQi/RikrWIjvDiJm6D1ZKOlrj0ejGEN17xdmsoYYFBQQ7jpF1MY8I6W41nt+R1
+	 8OHb+XZMMwcBN2lAsjP7C88tHO4hH+XzEhhZu8RMrBf3E2a/oZOOZ4BjvrAyObCFkc
+	 W49C07GS0vB/qMo4hiNGnCLG2gSbW0e5aBUEnOiUsryWdXBLnvNA8JhVnBv5Ire03Y
+	 LSDvzIagIDzGRtxQwwEOL5afYN50sVmEi5wCE8PYetNAvgPDvY4FX8Pm7W4JdilyRi
+	 LbY5BvxpXBnlAvEIccRjwqSLM70np0syY+6GqFE2bcepYfKdCPqqB7VEYFswnMcoOs
+	 geTG58gzVFRmw==
+Date: Fri, 20 Dec 2024 19:12:45 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Support ROHM BD79703 DAC
+Message-ID: <20241220191245.2f96a115@jic23-huawei>
+In-Reply-To: <cover.1734608215.git.mazziesaccount@gmail.com>
+References: <cover.1734608215.git.mazziesaccount@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BqW5FKGWfU8oK8bj"
-Content-Disposition: inline
-In-Reply-To: <20241220095620.4918-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 19 Dec 2024 13:38:54 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
---BqW5FKGWfU8oK8bj
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Add support for the ROHM BD79703 DAC
+> 
+> The ROHM BD79703 DAC is a 6-channel 8-bit digital to analog converter
+> which can be controlled over SPI bus. This series adds support for
+> controlling the analog channels via IIO direct mode.
+Tweaked the two trivial comments from Conor and I and applied.
 
-On Fri, Dec 20, 2024 at 11:56:13AM +0200, Antoniu Miclaus wrote:
-> Add support for selecting between single-ended and differential
-> reference input.
->=20
-> By default the single-ended input is enabled.
+Pushed out as testing for all the normal reasons plus that this was only
+on the list for a day so there may be more reviews! :)
 
-You can, and should, add a default: to the property then. Nothing in the
-binding says what teh default is at present.
+What can I say, it's near Christmas and I was feeling impatient!
+> 
+> Matti Vaittinen (3):
+>   dt-bindings: Add ROHM BD79703
+>   iio: dac: Support ROHM BD79703 DAC
+>   MAINTAINERS: Add maintainer for ROHM BD79703
+> 
+>  .../bindings/iio/dac/rohm,bd79703.yaml        |  61 +++++++
+>  MAINTAINERS                                   |   5 +
+>  drivers/iio/dac/Kconfig                       |   8 +
+>  drivers/iio/dac/Makefile                      |   1 +
+>  drivers/iio/dac/rohm-bd79703.c                | 162 ++++++++++++++++++
+>  5 files changed, 237 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
+>  create mode 100644 drivers/iio/dac/rohm-bd79703.c
+> 
+> 
+> base-commit: 4d112ebd02d10faf202aa8335b06de0aca8b536b
 
->=20
-> Input frequency boundaries are change based on the mode selected
-> (single-ended/differential).
->=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v3:
->  - add option to select between refin-se and refin-diff
->  .../devicetree/bindings/iio/frequency/adf4371.yaml         | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml=
- b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index 1cb2adaf66f9..f927d3af9f43 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -40,6 +40,13 @@ properties:
->        output stage will shut down until the ADF4371/ADF4372 achieves loc=
-k as
->        measured by the digital lock detect circuitry.
-> =20
-> +  adi,refin-mode:
-> +    description:
-> +      Choose between single-ended or differential reference input.
-> +      refin-se - Single-Ended Reference Input
-> +      refin-diff - Differential Reference Input
-> +    enum: [refin-se, refin-diff]
-> +
->  required:
->    - compatible
->    - reg
-> --=20
-> 2.47.1
->=20
-
---BqW5FKGWfU8oK8bj
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2XBPAAKCRB4tDGHoIJi
-0mEnAQDOSYzTQd7+LscgrkW+lVt8hXjEbwujRNZdQGUJZqhOGAEA3rWKBdphS6tL
-mT4qPAIs9i0Ppfn5S4DCVV8GVaVpzgA=
-=nacv
------END PGP SIGNATURE-----
-
---BqW5FKGWfU8oK8bj--
 

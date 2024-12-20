@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-13730-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13731-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913B59F9A7C
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:29:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1DA9F9A7D
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAAF216384B
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 19:29:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B44D7A3BC1
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 19:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92D9222570;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7D5221445;
 	Fri, 20 Dec 2024 19:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wmd49BuM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jMK6iFXm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226072206BE;
-	Fri, 20 Dec 2024 19:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F309C2210D2;
+	Fri, 20 Dec 2024 19:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734722926; cv=none; b=LzFj8MRAHNlQC58pkPKMWS+oCw+bb8fvs1k3jiHU+lazv54bYONwJOITmL/1bFn6Svg1lCG4PXwXlEtbX81WU1joIxCUCNiEotkjghEGacXr8+V0OSO/DhHk2aG3/e2+iAp405Z8oMBd72zcp20rcXdiUXyXXOZPlrLuJ8QMWSY=
+	t=1734722927; cv=none; b=trRUDO/Z3htsuMlm2zjYRV895RuV6BsLalcwmMMBR0IU1NFbUo5XfJjThB/Ay9XtK/1HAm3mYaHoLfGDDXzIW2wB+gYhqLOe6ZrxzgV3AFXXa5zRL0AhqzPSKVGSwq9Zhw3S0TINImHnHU3l6mH+FIlQZjIqdVXiXv7hj4QQryU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734722926; c=relaxed/simple;
-	bh=Wwa6UwXNbl+DrQxFCklOmu+d6IK8aLYDi9Gr1IKlYtI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DkdbqRXixoaafRvK+aIq60IfyFNlrzXuJM0abcdl4jBzBklXhR8a5BhHxTFcQwzWuH9dViMffd+nwc4SgJLhlT4jaFD4G2Z1Ug6HZpaI67WV//c8Qa3qy5YAop5nqjLt4uK+jD9Z0JJFSJkHt0OXnqh7VuZIKUeUrWt8ojD4A9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wmd49BuM; arc=none smtp.client-ip=209.85.128.48
+	s=arc-20240116; t=1734722927; c=relaxed/simple;
+	bh=lRIcob3MmLCag3pqwH4XZhG+3achPumKsGxUJQkU02I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=p6bgHZp7n1NhnriYOCy2Tu0ERR2Tbt+SJOJ1fDhtXPBeY+gY8wM5PlwZcnrsT+gFWzds9FtKaMhTspxCi/dptr7ShT4HfcFdapNKUNBiIXn7EmLtsbYQdcXvyHFD3nayEWUnVbYBt9YTvEh4m7W0ewwJDv+9gOvnioVCGoydhMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jMK6iFXm; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43634b570c1so16762735e9.0;
-        Fri, 20 Dec 2024 11:28:43 -0800 (PST)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-385de9f789cso1757564f8f.2;
+        Fri, 20 Dec 2024 11:28:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734722921; x=1735327721; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5B9kO2+0kYh3Ray8TcFhLQEdI47zddBnVLH0Vps83fI=;
-        b=Wmd49BuMqU4+UK9k39lumPYcoPvZUuPvN+BPSm67OUnULycFQwFvWyLta/DZXM0V3A
-         x3vXhtNRgqn9B6WdHJllyJMZrgCA3xKhmmYN24dZClR8V5/TX5Pi6zRIqpXJtxzJ6ews
-         q3A0zhLys7d+Jy1I6FK72h9CRFbmqjUb+9Ypsgcsn2lj6sRLSI1MHzm1BIFjsO0cctlT
-         Nqh8jQRzjo8HMcS/LcBRXKIIjA1E0NERitNIPEjROkaPNvGJ86WqkDDVoaqgyIOusDkm
-         HrBaG4+1fw9ECVs0pDh12tYYsDhvY5e1z+Bd/gxI9eZ8pIqfPtdQGaMAmWhMC3tfLRwO
-         ukDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734722921; x=1735327721;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1734722923; x=1735327723; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5B9kO2+0kYh3Ray8TcFhLQEdI47zddBnVLH0Vps83fI=;
-        b=bgO51RQpldwt5okxirg2f7xJ3LzA0mHqug/RWkvvzO3YWLsJG0mDv975oyCqaiwzp4
-         ELmS2bSJkK3S220gYu3+QVY3MVQZhO1AR9YCeKi2sb7en6EU3QPhH5E5DyYVS1h/e+A1
-         Ly3uHMZHG8kyMTdvYBGi3xr5DvwBlAIUc3Mj+aC7mSzhwOIJGM5LzrlxpldjDtFGHbah
-         1sUFNpydMCLWEwkoblyz07Quu1fu4OJLrDnQ+NoERGPsLgQyNEAv23AkMz9JDBv42CtC
-         uNK4bwn7UhDELcvjD8vw4gRtHTzLpHZnPVr28A2gTNtHAX8WMD5mugp7mJBAFPY/6OmB
-         PXpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8D1Jaee8hvrICas8EYaanoMmREua7MOjWpHLQcCYi9ePZe8muayL9t51h6r5MJEsATNqjx2PtSbPVkeI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFFVCHSyKNM67o/WAMdmUt3n18gFAiF+Q5oSiLYBgSQ7u9syo0
-	6L3+Dnd4VlAOY5tX1cpqjRdNt55sacxPVNSJxbSPRnA/6U+6iAddkLFiZA==
-X-Gm-Gg: ASbGncv8HyZyh3jCVeOSAXNu1sRDA+x6lNFoirYbuYrUQsYybHHKen9YjWyfQmezwO1
-	jC0vHygoslEm0d5vjWOUTUkGU2CFeoDWyGQa7hD/z8Mtw21dcJxJpR5E0MaffxLNDaCOfb1ZspH
-	ROXSHA+t3jqHbFqPtPpBalSzTO2GIILBul+M5nehNP1i0Id3Xp3jQhkFujAXchKii9XdpG6ISji
-	dKhuqt6hFS/zoEiga/9AEkOaFhYi7OV43pR73fqUhagqHv7GgkF4Cmg2kZ40K2Wcv56O839Fc98
-	0lwtyV7b0qn05wbbtvj/BCyYRglXdjDAUxJHVcE4kbCFTtbgPRKY3J6lB83gxP/HmewdjyqnbjD
-	Gzdc=
-X-Google-Smtp-Source: AGHT+IGStNKPKkez5zWUQ/tUc/GIOGi6OjADIngEahae0VQ/pzJDVw9E92SOk3d61Rl/9l86iv2fhg==
-X-Received: by 2002:a05:600c:1396:b0:42f:7e87:3438 with SMTP id 5b1f17b1804b1-4366790cd9bmr42898285e9.0.1734722920629;
-        Fri, 20 Dec 2024 11:28:40 -0800 (PST)
+        bh=49IMAEFWlOfYA59ZoLIUwcVsB9n9a6Z3uJBX/spVF/U=;
+        b=jMK6iFXm3KRVUGaFaKwm9qDpobfgde9Fqd0FZembS2uaZJd2CXu8yJRLF8rPOlJqeD
+         /PpUx0UJ1fS9oqy66z169RO9un6t68SODY5Z9Z44E+JcUgMKwSkeIxthN11CSXiL+j/7
+         9Ei6IiuIGEyyenouyon6KYvFCE+JIh52lYQBnaTd1l7VZU7HQeAus/0+bYu59MP7MNnH
+         7P/V1E59WnjoesF6uGzSDzJ/D9NeriAZI4tj9pkIaUpJxxTAHfcYShKD3mKYvio/0TBe
+         HA20+7Wbx8sCubOSUuzjDfWHGLd2f6JZgjyCmMSfuq+RqrKvwQx+hLs9mVauKTeOLbsL
+         rglg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734722923; x=1735327723;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=49IMAEFWlOfYA59ZoLIUwcVsB9n9a6Z3uJBX/spVF/U=;
+        b=hgDxpqKZdwIZSoAxf/dit+1tGNXxRYjxj9Wa0dL7PqSgJhXB6Vl2O8UJtdC7WN7r5f
+         5M1/E57yrIpUG14DUtmKUftPPU3SApiS6fnemjE5FSd+shlmQhAxHLZjhtk/oR1x4CSg
+         zyS78mwU4PwZuwgX8ubY/F+HID5wahu5pg9FtSSPsDrifOfDZnA/ntqJmDkd4LjYFrVO
+         9/VLQOINr3QqpvzxHD8lW7MB90fW2wbFEt346FRquyC3CZbmJ3E8xf6vyT+wTqn182EA
+         zdlXyDzUHQ+oxfmF8Ck/4FrGXHStz0Fp3R6N0596hj3rV8WbqI3S5HDKNcW3774op8Dp
+         BEjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzMk139ci6XUu/CP8QizEKpzj8nWfyR3IV83zS8HscDLztPPo7/lUHpFEWwrsVj+yyXvibIcJBPFol8/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5C9epRmX/fkV54XoX0JJrgiE8UhYnHAKwWlgynybvTFB44S0j
+	vntIeiJqLAXsRMBJnYEr0ohZS44A046LMOxheaanG1DL92vByv9S9x4+mg==
+X-Gm-Gg: ASbGncvue0MMPNFHkTB6c/YBTcfcB7bgKekdy6A1szK3tN7RmSWLXPUSWtrCUq/qS7/
+	796gvHun4E7N+C21UZAHf93hZOK8AXLxapWu5OP9N8h1LjrAZIobnDIeK7eyeHpCHbAWlMQCjmx
+	jUaNapm2iZjYgJeokknHCw3o5D/lSljCq+JQac5L5uIELgxZqiYkVmb7DF4POhuePyINRabkanj
+	AfQD5PNAN0wqWTrukzgExpCXR4jBUeKbYOxisEwkMqoafqjN7kMEzM1ftJib16qBKvRqeH+lGGE
+	tH+uJwTQzui/Q7n3UtnjcXhm5jjFwcshGCrYLQ00pqlZngQ3KTI1xoF+Efx9nXXGxGS/xtEaPhp
+	j0Gg=
+X-Google-Smtp-Source: AGHT+IHjjYdiKigBLJwa+mmmFI7MPe3+6hEeR6DcSNuVd1RfkLPtPlHFv/EOpDKgHLGgAqKqSA9VQw==
+X-Received: by 2002:a05:6000:1f8c:b0:385:f89a:402e with SMTP id ffacd0b85a97d-38a221f65c9mr4771256f8f.14.1734722922803;
+        Fri, 20 Dec 2024 11:28:42 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-e9bd-7e4a-34d9-3ba2.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:e9bd:7e4a:34d9:3ba2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c847dabsm4674274f8f.59.2024.12.20.11.28.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c847dabsm4674274f8f.59.2024.12.20.11.28.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 11:28:40 -0800 (PST)
+        Fri, 20 Dec 2024 11:28:42 -0800 (PST)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/2] iio: light: fix scale in veml3235 and add helpers to
- iio-gts
-Date: Fri, 20 Dec 2024 20:28:27 +0100
-Message-Id: <20241220-veml3235_scale-v1-0-b43b190bbb6a@gmail.com>
+Date: Fri, 20 Dec 2024 20:28:28 +0100
+Subject: [PATCH 1/2] iio: gts-helper: add helpers to ease searches of
+ gain_sel and new_gain
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,59 +85,162 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFvFZWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDI0NT3bLU3BxjI2PT+OLkxJxUXTOjlFRLi2TzJNO0RCWgpoKi1LTMCrC
- B0bG1tQA+hpoYYAAAAA==
+Message-Id: <20241220-veml3235_scale-v1-1-b43b190bbb6a@gmail.com>
+References: <20241220-veml3235_scale-v1-0-b43b190bbb6a@gmail.com>
+In-Reply-To: <20241220-veml3235_scale-v1-0-b43b190bbb6a@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>, 
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734722919; l=1666;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734722919; l=5671;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=Wwa6UwXNbl+DrQxFCklOmu+d6IK8aLYDi9Gr1IKlYtI=;
- b=AfrswMOffOX2HMt97zhj6uRsPJ3baaiIMWgzO9PGa9gFgEp1QW6sEv11JJmF+wsvDAc9L8h/G
- 5RaY0I3GhrWDugcBMFUmHV+TWxQD4TKM5+uy2+6AkoICYfejKVdDUV7
+ bh=lRIcob3MmLCag3pqwH4XZhG+3achPumKsGxUJQkU02I=;
+ b=IqjVrX/ZlZEEHBrvvJlJFvy2bzuzQucYaK5+4vnJ5vkur1Dv+nWl9FXLuAO/nRO5pCtNdT8Vw
+ Ydglw4ci/SpDQWRDi0yQcVqWTDe+uukwwm2ZbWa01clidzlEChX5Ol1
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series addresses an issue in the veml3235 that was inherited from
-an older driver (veml6030, not covered here but probably addressed after
-discussing this series), where the scale is does not follow ABI.
+This helper functions reduce the burden in the drivers that want to
+fetch a gain selector in all available times or a new optimal gain.
 
-To simplify the gain/integration time handling, the iio-gts helpers have
-been used. And to further simplify the process, two new helpers have
-been proposed to address repetitive patterns that are found in all users
-of iio-gts.
+The former is currently achieved by calling
+iio_gts_find_gain_sel_for_scale_using_time() for the current time
+selector, and then iterating over the rest of time selectors if the
+gain selector was not found.
 
-The additions to iio-gts are wrappers around existing helpers, and I
-have tried to keep their names short, as adding more prefixes to the
-existing functions looked too cumbersome and inconvenient to follow the
-80-char/line recommendation. I have not added any test for the new
-helpers because I would prefer to discuss them first.
+The latter requires a combination of multiple iio-gts helpers to find
+the new gain, look for an optimal gain if there was no exact match, and
+set a minimum gain if the optimal gain is not in the range of available
+gains.
 
-This series has been tested with a veml3235sl under all supported gains
-and integration times as well as with a few unsupported values to make
-sure the operations fail in those cases.
+Provide simpler workflows by means of functions that address common
+patterns in the users of the iio-gts helpers.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (2):
-      iio: gts-helper: add helpers to ease searches of gain_sel and new_gain
-      iio: veml3235: fix scale to conform to ABI
+ drivers/iio/industrialio-gts-helper.c | 74 +++++++++++++++++++++++++++++++++++
+ include/linux/iio/iio-gts-helper.h    |  5 +++
+ 2 files changed, 79 insertions(+)
 
- drivers/iio/industrialio-gts-helper.c |  74 ++++++++++
- drivers/iio/light/Kconfig             |   1 +
- drivers/iio/light/veml3235.c          | 252 +++++++++++++++++++---------------
- include/linux/iio/iio-gts-helper.h    |   5 +
- 4 files changed, 219 insertions(+), 113 deletions(-)
----
-base-commit: e25c8d66f6786300b680866c0e0139981273feba
-change-id: 20241215-veml3235_scale-62de98c7b5fa
+diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+index 3b5a99815062..f88b0b7192dd 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -915,6 +915,38 @@ int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int time_sel
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_sel_for_scale_using_time, "IIO_GTS_HELPER");
+ 
++/**
++ * iio_gts_find_gain_sel_in_times - Fetch gain selector in the available times.
++ * @gts:	Gain time scale descriptor
++ * @scale_int:	Integral part of the scale (typically val1)
++ * @scale_nano:	Fractional part of the scale (nano or ppb)
++ * @gain_sel:	Pointer to value where gain selector is stored.
++ * @time_sel:	Pointer to value where time selector is stored.
++ *
++ * Wrapper around iio_gts_find_gain_for_scale_using_time() to fetch the
++ * gain selector for all supported integration times.
++ *
++ * Return: 0 on success and -EINVAL on error.
++ */
++int iio_gts_find_gain_sel_in_times(struct iio_gts *gts, int scale_int,
++				   int scale_nano, int *gain_sel, int *time_sel)
++{
++	int i, ret;
++
++	for (i = 0; i < gts->num_itime; i++) {
++		*time_sel = gts->itime_table[i].sel;
++		ret = iio_gts_find_gain_sel_for_scale_using_time(gts, *time_sel,
++								 scale_int,
++								 scale_nano,
++								 gain_sel);
++		if (!ret)
++			return 0;
++	}
++
++	return -EINVAL;
++}
++EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_sel_in_times, "IIO_GTS_HELPER");
++
+ static int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
+ {
+ 	const struct iio_itime_sel_mul *itime;
+@@ -1086,6 +1118,48 @@ int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_gain,
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_by_old_gain_time, "IIO_GTS_HELPER");
+ 
++/**
++ * iio_gts_find_new_gain_by_gain_time_min - compensate for time change
++ * @gts:	Gain time scale descriptor
++ * @old_gain:	Previously set gain
++ * @old_time:	Selector corresponding previously set time
++ * @new_time:	Selector corresponding new time to be set
++ * @new_gain:	Pointer to value where new gain is to be written
++ * @in_range:	Indicate if the @new_gain was in the range of
++ *		supported gains.
++ *
++ * Wrapper around iio_gts_find_new_gain_by_old_gain_time() that tries to
++ * set an optimal value if no exact match was found, defaulting to the
++ * minimum gain to avoid saturations if the optimal value is not in the
++ * range of supported gains.
++ *
++ * Return: 0 on success and a negative value if no gain was found.
++ */
++int iio_gts_find_new_gain_by_gain_time_min(struct iio_gts *gts, int old_gain,
++					   int old_time, int new_time,
++					   int *new_gain, bool *in_range)
++{
++	int ret;
++
++	*in_range = true;
++	ret = iio_gts_find_new_gain_by_old_gain_time(gts, old_gain, old_time,
++						     new_time, new_gain);
++	if (*new_gain < 0)
++		return -EINVAL;
++
++	if (ret) {
++		*new_gain = iio_find_closest_gain_low(gts, *new_gain, in_range);
++		if (*new_gain < 0) {
++			*new_gain = iio_gts_get_min_gain(gts);
++			if (*new_gain < 0)
++				return ret;
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_by_gain_time_min, "IIO_GTS_HELPER");
++
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
+ MODULE_DESCRIPTION("IIO light sensor gain-time-scale helpers");
+diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts-helper.h
+index 9cb6c80dea71..ae91ad008cc8 100644
+--- a/include/linux/iio/iio-gts-helper.h
++++ b/include/linux/iio/iio-gts-helper.h
+@@ -188,6 +188,8 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
+ int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int time_sel,
+ 					       int scale_int, int scale_nano,
+ 					       int *gain_sel);
++int iio_gts_find_gain_sel_in_times(struct iio_gts *gts, int scale_int,
++				   int scale_nano, int *gain_sel, int *time_sel);
+ int iio_gts_get_scale(struct iio_gts *gts, int gain, int time, int *scale_int,
+ 		      int *scale_nano);
+ int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
+@@ -196,6 +198,9 @@ int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
+ int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_gain,
+ 					   int old_time, int new_time,
+ 					   int *new_gain);
++int iio_gts_find_new_gain_by_gain_time_min(struct iio_gts *gts, int old_gain,
++					   int old_time, int new_time,
++					   int *new_gain, bool *in_range);
+ int iio_gts_avail_times(struct iio_gts *gts,  const int **vals, int *type,
+ 			int *length);
+ int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *type,
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 

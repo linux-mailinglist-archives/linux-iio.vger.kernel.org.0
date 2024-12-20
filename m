@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-13734-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13735-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B599F9AB3
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:52:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 707FD9F9AE9
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 21:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1E417A27F2
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 19:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6FF916A24E
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 20:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1462A22371E;
-	Fri, 20 Dec 2024 19:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 442FA157A48;
+	Fri, 20 Dec 2024 20:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FoW/iu+b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGRbc2cc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A32220680;
-	Fri, 20 Dec 2024 19:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDCD21B1BF;
+	Fri, 20 Dec 2024 20:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734724349; cv=none; b=ai1eC049WJtpfxBpB2PvOK0BhSRksVYlXldGXNUJ/Y04H0Pm7kzNK5eYjL44azU8oytCr1C1A3qXsOzhiD2ZtGQtl1F217I3JFe6pvh4vLXEzJ4SSrXysgKVn5+mBtgtHCMX2fumyRzWkA/ey+DdmKcCtZvsoTSwkS4zDs4Jp+U=
+	t=1734725376; cv=none; b=qJ1G4H1LF/ngHqvSy924qAkhCvaJcjR21pPv/vxibnDQ5hA3BcKUDlResYw3Hh4eOoTFG4814KHdbORWoizAByJdzSe86CQq/6B6FVzSmh98AbMbCbh3Pdu1d+xWqJWO9Q0AM5IWUcm4tgSG4gIL9k1N4UnffFN2xyqROyQJnqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734724349; c=relaxed/simple;
-	bh=RmkDMXxieeNH/LFiW+kpfaHBX3nJ0eqQ88QDyohMCVs=;
+	s=arc-20240116; t=1734725376; c=relaxed/simple;
+	bh=NiubEGwL32goWTVWGWZCjRqyuj/w2Jz2YOYyclIVTX0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P6cOOYcrL2p4S7WQjK8cSFeHArT/DE2MHY2fIh4doAU8F68/UJZpe5A8CtYdn0vktXJMJNacVlTE1lD4gCNkUoXohAQMrZQNNumCAg1iwpZDUOTl4rOtFPIm/Y9DtiLFA39vxFxjU6cRGRBYTGC/UxUKmiy/IK8LoKzeJqBn/4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FoW/iu+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E90EC4CECD;
-	Fri, 20 Dec 2024 19:52:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhi7Kd/c13W0P7ND7owU1kXtot8lExW+ngmCJ3XPWTfvIOc/6aQ7CfAur1pjlOCt/TGhse5dOIyXeD6Mt9mNkdnBBfs/YxlMIknmoG1m6PVY0eeR3syDECMt6DChtc9GwWd9iitYeqNdyhF31fx7JyyPuz6SorfUVUnRoU7IezI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGRbc2cc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5565AC4CECD;
+	Fri, 20 Dec 2024 20:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734724349;
-	bh=RmkDMXxieeNH/LFiW+kpfaHBX3nJ0eqQ88QDyohMCVs=;
+	s=k20201202; t=1734725375;
+	bh=NiubEGwL32goWTVWGWZCjRqyuj/w2Jz2YOYyclIVTX0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FoW/iu+bx7MUux3jlpaihGRk0uXbkb6639ufmkwSKkH5Il6mWIqfgl2nuaOZMgCCK
-	 ZY7+cTlP6ND8TdTSgjYzgDcrDLDzpT8dVpwHrQDE3XU1XsmmaldnTeJ95xx112lWvu
-	 /Z4XL6eilwHkGQn7SCuetUzXOLT+RbLPTUC+INAPZUNcBHSuBY9/AlXDSFL9sNBvGp
-	 mmcB4aU6fXIacV8av5EJ62yhX9jEN2KyfPG1dqFvYexfBwpHkVM5kCdRCzpA4gJdA7
-	 3NOaCa1uwsmP91rOxLvAMRwZ4k0+POgWTMg6lIwlmWVV9rzCcYGDgsWwKc/ET1FCZa
-	 Pp0b3emimQuMw==
-Date: Fri, 20 Dec 2024 19:52:20 +0000
+	b=WGRbc2ccm++0a9dKG7ITPYX7Q3jZaQ6mWul7KHxnGSOG1lNrGg2yWNcPeW4yLjUYu
+	 pTfDIjcRKw+pI933jtlrqGwHjdLBKfxcsJffMxqvQaMHp/sVV60ZKiFd5zfJZTVJiQ
+	 Oggw0rp5EbjPszPyheBXoe6Zzr7nfhDoPNSc+hGttwMRMo1NAhC7BVhBE1ivXMkwxm
+	 wTcryjNmSi2+djRLfDtKkv897iojr6xwiw0OWhrYCbr8LoyrBBkT6xn6OfGu7VAinW
+	 KR4vaVEJ9We5ftd8MXVU392fLKmiR/dOI3T2YKZKecZ9g/6WJCmkrEsbwkt9YrsK/u
+	 cjMqsyy+tv9DQ==
+Date: Fri, 20 Dec 2024 20:09:28 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adf4371: add refin mode
-Message-ID: <20241220195220.1e1e1d6f@jic23-huawei>
-In-Reply-To: <20241220095620.4918-2-antoniu.miclaus@analog.com>
-References: <20241220095620.4918-1-antoniu.miclaus@analog.com>
-	<20241220095620.4918-2-antoniu.miclaus@analog.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iio: ABI: combine current input sections
+Message-ID: <20241220200928.224f7313@jic23-huawei>
+In-Reply-To: <20241219-iio-abi-combine-current-input-sections-v1-1-8dcd8221d469@baylibre.com>
+References: <20241219-iio-abi-combine-current-input-sections-v1-1-8dcd8221d469@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,75 +60,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 20 Dec 2024 11:56:13 +0200
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Thu, 19 Dec 2024 13:25:23 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Add support for selecting between single-ended and differential
-> reference input.
+> Combine two duplicate sections describing in_currentY_raw.
 > 
-> By default the single-ended input is enabled.
+> This went unnoticed until we renamed in_currentX_raw to in_currentY_raw
+> and the kernel test robot found the duplication.
 > 
-> Input frequency boundaries are change based on the mode selected
-> (single-ended/differential).
-> 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202412200256.OB5Hmw5Q-lkp@intel.com/
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Applied.
+Thanks,
+
+J
 > ---
-> changes in v3:
->  - add option to select between refin-se and refin-diff
->  .../devicetree/bindings/iio/frequency/adf4371.yaml         | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  Documentation/ABI/testing/sysfs-bus-iio | 19 +++++--------------
+>  1 file changed, 5 insertions(+), 14 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> index 1cb2adaf66f9..f927d3af9f43 100644
-> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
-> @@ -40,6 +40,13 @@ properties:
->        output stage will shut down until the ADF4371/ADF4372 achieves lock as
->        measured by the digital lock detect circuitry.
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> index d97c35057a034c76ed433e3e6de0aff8ec4bbb70..25d366d452a55293c420300335a0271a28855107 100644
+> --- a/Documentation/ABI/testing/sysfs-bus-iio
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> @@ -168,18 +168,6 @@ Description:
+>  		is required is a consistent labeling.  Units after application
+>  		of scale and offset are millivolts.
 >  
-> +  adi,refin-mode:
-> +    description:
-> +      Choose between single-ended or differential reference input.
-> +      refin-se - Single-Ended Reference Input
-> +      refin-diff - Differential Reference Input
-> +    enum: [refin-se, refin-diff]
-
-I think I've failed convey what I was suggesting in previous reviews.
-
-Until now the binding has
-
-  clocks:
-    description:
-      Definition of the external clock (see clock/clock-bindings.txt)
-    maxItems: 1
-
-  clock-names:
-    description:
-      Must be "clkin"
-    maxItems: 1
-
-Now you have a situation not dissimilar to what we do for clock where they may
-be connected to either a clock source or a crystal.  There we provide
-two clock names and depending on which one is set, configure the device
-appropriately.
-
-Here we have clkin. That will be whatever the default we have so far.
-Now add a possible name of
-clkin-se or clkin-diff depending on which one we are not considering the
-default.  I think the default is single ended, so make our two possible clock
-names
-
-clkin and clkin-diff  with description explaining that clkin is a single ended
-clocks signal.
-
-Jonathan
-
-
-
-
-> +
->  required:
->    - compatible
->    - reg
+> -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_raw
+> -What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_raw
+> -KernelVersion:	3.17
+> -Contact:	linux-iio@vger.kernel.org
+> -Description:
+> -		Raw (unscaled no bias removal etc.) current measurement from
+> -		channel Y. In special cases where the channel does not
+> -		correspond to externally available input one of the named
+> -		versions may be used. The number must always be specified and
+> -		unique to allow association with event codes. Units after
+> -		application of scale and offset are milliamps.
+> -
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_powerY_raw
+>  KernelVersion:	4.5
+>  Contact:	linux-iio@vger.kernel.org
+> @@ -1700,15 +1688,18 @@ Description:
+>  		or without compensation from tilt sensors.
+>  
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_raw
+> +What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_supply_raw
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_i_raw
+>  What:		/sys/bus/iio/devices/iio:deviceX/in_currentY_q_raw
+> -KernelVersion:	3.18
+> +KernelVersion:	3.17
+>  Contact:	linux-iio@vger.kernel.org
+>  Description:
+>  		Raw current measurement from channel Y. Units are in milliamps
+>  		after application of scale and offset. If no offset or scale is
+>  		present, output should be considered as processed with the
+> -		unit in milliamps.
+> +		unit in milliamps. In special cases where the channel does not
+> +		correspond to externally available input one of the named
+> +		versions may be used.
+>  
+>  		Channels with 'i' and 'q' modifiers always exist in pairs and both
+>  		channels refer to the same signal. The 'i' channel contains the in-phase
+> 
+> ---
+> base-commit: fe2a04fbcbfe44694fcb36ff6212fce54b8f56cc
+> change-id: 20241219-iio-abi-combine-current-input-sections-c62cf5dbfa9b
+> 
+> Best regards,
 
 

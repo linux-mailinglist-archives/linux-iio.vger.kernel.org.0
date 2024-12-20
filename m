@@ -1,111 +1,89 @@
-Return-Path: <linux-iio+bounces-13721-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13722-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F859F9212
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 13:22:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62F79F943D
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 15:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C260166ABE
-	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 12:22:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BABEF188C8A7
+	for <lists+linux-iio@lfdr.de>; Fri, 20 Dec 2024 14:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F7620469C;
-	Fri, 20 Dec 2024 12:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C26215F7D;
+	Fri, 20 Dec 2024 14:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yq+tb1ps"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="c3MomHsA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AFA31A7AE3;
-	Fri, 20 Dec 2024 12:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7CC186607
+	for <linux-iio@vger.kernel.org>; Fri, 20 Dec 2024 14:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734697316; cv=none; b=TDIiwUUrEtm6twyomjSCct5MRfRt/tgfmLYP7tyGJs4zp4xeEktFTHJOdvfE01lI03uCkzQFBbROcerheaD7e1Pu7nDazQAmuoNnEMzaWZzeP63emPIcJxjJSyZmaBXCOh+SizanyH5ZATwo+XqSJFMZREv9avFiCAWnI/EZYp8=
+	t=1734704840; cv=none; b=TGbdi1L+QoxYVOE9d2zqiZutCr/zQ10IQz/9pCGF129fWSAIqsub+xd9H2+XkSTqVUoFPVHb+rG5y/L7DafVPIq04JEdy/oSuN+NhncwBuWQ54cIfG8mxPACJ12TbgZ6S8Pct46mGOH0gvhDCMO/ue1MElJAhAA6RXmtJ4qSUAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734697316; c=relaxed/simple;
-	bh=JduFaswRmxN5tGLStvzwUiaywMEIItZVTSmKsVx9nOI=;
+	s=arc-20240116; t=1734704840; c=relaxed/simple;
+	bh=LVL3APt8w4ilvr2FlejQYMKKS0B08LDRJeGHPA9hak8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rm4jRIh61FDTqFa4Wqoho1YpUA8bygGHav7a9cstSMKlhSuVDC+bbPGXdAGx77au9BuXy6CUCYnYD8s6iLuqXiGA0AboG0Jzab3zzVyaGpoHQxF9Cz88n2PtJg4pJpREJiF49Btjh0DQYiAwCcpna2SOfS5Lr4jX7ZEmu8z7lBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yq+tb1ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B3BC4CECD;
-	Fri, 20 Dec 2024 12:21:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734697316;
-	bh=JduFaswRmxN5tGLStvzwUiaywMEIItZVTSmKsVx9nOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yq+tb1psbAD0EEaGVo62BeRkwh9Xj1zwGjU1RnX9bPc3zuKVZ+vFaKjzZirLF0O5Q
-	 cWqZTrj/8oUOashMDH0in9idt9Jf9pCN3xfKSbuna7zWsHJDYmyLi1Jgqy+04F5+b+
-	 WkFCtRLWZn13uCsuIFDP/5NAmVeHVQ3OLBfdEu0A=
-Date: Fri, 20 Dec 2024 13:21:51 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kever Yang <kever.yang@rock-chips.com>
-Cc: heiko@sntech.de, linux-rockchip@lists.infradead.org,
-	Simon Xue <xxm@rock-chips.com>, Lee Jones <lee@kernel.org>,
-	dri-devel@lists.freedesktop.org, Zhang Rui <rui.zhang@intel.com>,
-	Elaine Zhang <zhangqing@rock-chips.com>, linux-clk@vger.kernel.org,
-	Conor Dooley <conor+dt@kernel.org>, FUKAUMI Naoki <naoki@radxa.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Andy Yan <andyshrk@163.com>,
-	Michael Riesch <michael.riesch@wolfvision.net>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	linux-pm@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jose Abreu <joabreu@synopsys.com>, Jamie Iles <jamie@jamieiles.com>,
-	Detlev Casanova <detlev.casanova@collabora.com>,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Frank Wang <frank.wang@rock-chips.com>, linux-mmc@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>, linux-i2c@vger.kernel.org,
-	Simona Vetter <simona@ffwll.ch>,
-	Finley Xiao <finley.xiao@rock-chips.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-watchdog@vger.kernel.org, David Wu <david.wu@rock-chips.com>,
-	Shresth Prasad <shresthprasad7@gmail.com>,
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>, linux-iio@vger.kernel.org,
-	linux-pci@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	linux-phy@lists.infradead.org, Jonas Karlman <jonas@kwiboo.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-pwm@vger.kernel.org,
-	Rob Herring <robh@kernel.org>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Mark Brown <broonie@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Johan Jonker <jbx6244@gmail.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-serial@vger.kernel.org,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	devicetree@vger.kernel.org,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Tim Lunn <tim@feathertop.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Subject: Re: [PATCH 00/38] rockchip: Add rk3562 support
-Message-ID: <2024122018-groove-glitzy-f3bc@gregkh>
-References: <20241220103825.3509421-1-kever.yang@rock-chips.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fMw/6081a/X5IuKIpETPuyZrTZEee4fV6j6A/dsBFRxpvCpunmBDHGKwKA+vMKw+GN+wKHoEaypATQA+JPj6n0OK47Ete/guXi5wfzMEmcK0GP8nNOjCQIsj19Td/yVRLvWpvFHi8iLV8pnIqE4IshcuvqsQbNBG3yOmDyNt+ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=c3MomHsA; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43622267b2eso19963455e9.0
+        for <linux-iio@vger.kernel.org>; Fri, 20 Dec 2024 06:27:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734704836; x=1735309636; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K8Hj19uI5dcumZ2p5TeL9XzxIcFxbI6DML72hc9BJx4=;
+        b=c3MomHsAQYxcLyilPYjTOHHBbqmfNLO4QdUXwlpD/frhvvhDit5Bz/3BmMglTkwCn9
+         sGYjNRiM5uTlig9+C1FjmMzY1e97DFhSlFt0c+chleyLHkVL9xBJ5boCSoz8kPfrcGpF
+         1svx4qX+xBQLrmzJ4+6GquZyk62E54K0Ixodr8ZyvDW9Reym69dyZ57peNVD7t5Q9eJf
+         ta3Hb/8Vmw4mOWohEwj4pWqg1cqSUzbTV9KFAfqAe3LMugtv9CAmKvsR6ZLvL6daPFVh
+         TzkBGZDJhDyyQ4O1ZdWNP6GPY8JDgDp8fIEqXqesHDBzRFtTSZ1dJXhxbRLPJmjhuGcg
+         PrsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734704836; x=1735309636;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K8Hj19uI5dcumZ2p5TeL9XzxIcFxbI6DML72hc9BJx4=;
+        b=pqsMNOpJyl5wlExeud12mRc7OSJAPXk4nO9CrxCJtEcNgpuFKMMkE36E4TcmM/R/vF
+         GJF5geLsr3d5phCEKL3qxOdCidUzZ4pRnhFtCQMU4ZTrq71pQpnVR0C5mo6Ct21e3vdS
+         dlxNifKWsVOf7b9gRqFdSv38KUzkJhYj9UzPqHKgQDVwQUtgCvs0uJDN6lGIH3ebkBbh
+         TYJ6HQpZriM0DXbudAFmQri9goXOBN0O5SgUwgIkMbaUgU5XU8BpBwmc+e/Kdy97AmVB
+         unlt1/RWDhE8Xf0k8Rb4hQMiuUi88ldy+sUb7B70wre+24rV5V9Axi/qarq8YyD6ikCJ
+         uF5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUCa1kG5N092OoES5VXSwBU054/7wHTXKrYyuKfF47muatTsiIfnM70ETc7zcrtTHUNkACin43dLMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3pobVEXKD0+4CaLt1bjkDrxNYKRP/0MJZfmzBNSlIz1EFiVx3
+	ZPSh57YAJH4Zd76wwDKqlNHPE2WcuAjfucmXebuMkuzv4Cj5G8T4DIo5vBnOVGQ=
+X-Gm-Gg: ASbGncuVWIkbsdDMN2lQXgZF0uoAfhsUgYbs2NMvWva4EqXuOquBy9nyWUWoeZZzh4D
+	yPC4M0q0iN8wnnGvylsKMb84HVm7fH907VrKKAbQsR3p8XDg0kMylVwi2Ems1aXeIAGtr/vCh+S
+	cucKOL3e/36AyTXZJ9HeMuBXuzVxTd/EC+7BsQQsLbo+ijNG4sSR4dlo1JkTc4DKJHQMDlINGbi
+	UjoVUj936Hzrv5CtuRa0fVQOStAJLeR/GOGWvcEqNNNSXWIf9Sx2j2SRLTsXVKfspB8j18jxDAh
+	dmi3SwgEDi96sFJ6kCFfQ2M=
+X-Google-Smtp-Source: AGHT+IH3EYmzTyANIK4ByW5axFM6hELX2B4oHwpp46jsoFeS8QvzAomgrRoDjnIkEP9BB6wAiK7Smw==
+X-Received: by 2002:a05:600c:4f11:b0:435:9ed3:5698 with SMTP id 5b1f17b1804b1-43668b5e09bmr24152555e9.24.1734704835796;
+        Fri, 20 Dec 2024 06:27:15 -0800 (PST)
+Received: from dfj (host-79-17-239-245.retail.telecomitalia.it. [79.17.239.245])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b11d1dsm81831505e9.25.2024.12.20.06.27.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 06:27:15 -0800 (PST)
+Date: Fri, 20 Dec 2024 15:25:45 +0100
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Mihail Chindris <mihail.chindris@analog.com>, 
+	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, 
+	Olivier Moysan <olivier.moysan@foss.st.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/8] iio: dac: ad3552r-hs: exit for error on wrong chip id
+Message-ID: <urrbejidktwg4sgmsteemmthjk6kl3piljio4bvhntquqoujte@xkty43eqtuod>
+References: <20241216-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-0-856ff71fc930@baylibre.com>
+ <20241216-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-6-856ff71fc930@baylibre.com>
+ <20241219165446.7b8d0a9a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -114,21 +92,57 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241220103825.3509421-1-kever.yang@rock-chips.com>
+In-Reply-To: <20241219165446.7b8d0a9a@jic23-huawei>
 
-On Fri, Dec 20, 2024 at 06:37:46PM +0800, Kever Yang wrote:
+On 19.12.2024 16:54, Jonathan Cameron wrote:
+> On Mon, 16 Dec 2024 21:36:26 +0100
+> Angelo Dureghello <adureghello@baylibre.com> wrote:
 > 
-> This patch set adds rk3562 SoC and its evb support.
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > 
+> > Exit for error on wrong chip id, otherwise driver continues
+> > with wrong assumptions.
+> Why? Chip ID does not define all future compatible parts, just the
+> ones we know about today.
 > 
-> The patch number is a little bit too big, some of them may need to split
-> out for different maintainers, please let me know which patch need to
-> split out.
+> The reason not failing is that the moment we do exit on a mismatch
+> we can never support fallback device tree compatible IDs.  Is there
+> no chance that ADI will release a backwards compatible part in the
+> future that we'd like to work with old kernels?
+>
+> Any mismatch in DT vs hardware present is considered a firmware
+> bug, not a kernel problem.
+> We used to reject missmatched IDs but after a long discussion with
+> DT maintainers it became clear that broke their model.
+> 
+Ok, i will apply to what decided so.  
 
-I recommend you doing the split-apart as you know the dependencies here
-the best, right?  Otherwise we all will just probably ignore them
-assuming someone else is going to review/accept them...
-
-thanks,
-
-greg k-h
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > ---
+> >  drivers/iio/dac/ad3552r-hs.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+> > index 8974df625670..e613eee7fc11 100644
+> > --- a/drivers/iio/dac/ad3552r-hs.c
+> > +++ b/drivers/iio/dac/ad3552r-hs.c
+> > @@ -326,8 +326,9 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
+> >  
+> >  	id |= val << 8;
+> >  	if (id != st->model_data->chip_id)
+> > -		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
+> > -			 AD3552R_ID, id);
+> > +		return dev_err_probe(st->dev, -ENODEV,
+> > +				     "chip id error, expected 0x%x, got 0x%x\n",
+> > +				     st->model_data->chip_id, id);
+> >  
+> >  	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
+> >  	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
+> > 
+> 
 

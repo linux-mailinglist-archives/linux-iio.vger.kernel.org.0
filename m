@@ -1,241 +1,190 @@
-Return-Path: <linux-iio+bounces-13742-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13743-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7003A9FA1D8
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Dec 2024 19:19:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3275F9FA426
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 06:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEF187A2555
-	for <lists+linux-iio@lfdr.de>; Sat, 21 Dec 2024 18:19:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2535E18894BD
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 05:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B0016F84F;
-	Sat, 21 Dec 2024 18:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3F814E2E8;
+	Sun, 22 Dec 2024 05:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cesrX0Gx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KmUUqKKO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26EE1632C5;
-	Sat, 21 Dec 2024 18:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE0117BA9;
+	Sun, 22 Dec 2024 05:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734805169; cv=none; b=YKKXuDsBhzy37fWe1/7McM7iGI3vLf6S35fR+Q0HQx7StgZECVywr0Gp5ynzh+fKZiJduPJ8uOrqaxNyVJQBliFnc9uTMMuE183oS05d79BCTAo4zA4SqdnLyDQzqTXU8N7OhM6aFQh0Y+EAFekwQarz9DXdrE6zKVJ+f+PTAa0=
+	t=1734847000; cv=none; b=nuFnyrDFYw8iZ0GdEtWdgerxqvkiNV98rSsz4c/t5pu8kbe2NJayTnrMLMlQAOKj/uG3lHV/EYYuZN+C1NEruc/5MeBrkfs3bf1jAciICcR6KXbPffdwADY13YPE4ILWSL+hu5p/Vjx0SLVKIkZQ4dkPB/wQMc0aZiiSFNYmc0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734805169; c=relaxed/simple;
-	bh=8A6eIH408Zxm0WoCIZuom7w03GEnoaEl1UT9rpBM0xQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rrKeHGlGSuaIQw+wWFdXvrsjwpHlMByRJBwaispLIY6BV/v+am0w/gCbqF0zpW0JMah8LmJ0Xd687tYUnDIxZjD0ZIPqwqq7kRPGuRlKTUYsXVL3Ll0LhtaNohtg5v1CT9LO39YoRsiWwFUJMGl7bahFjbbHpVLyFK8Bum+aaGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cesrX0Gx; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1734847000; c=relaxed/simple;
+	bh=rtAOpsMPWgRC8DgMJ/m1PF5WA8zSOXdQrLT3ciodyk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EkNDumFgUbRmv3iE5pK+OkC3DyO1ocX/AUb7r1h06CLrh9qySiZTQ/DJ8YZiB3cfT7qgdeH98ztncETjg5UHQJq/HjuCxPGj9YEhIUNFwEoqsBCgKtVQ1qI0Pz6s38wuvJsnmZYGbIjkMh0RHnBMm6dS1S9IpxDMogCoRBOjO2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KmUUqKKO; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-540218726d5so2971433e87.2;
-        Sat, 21 Dec 2024 10:19:27 -0800 (PST)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-72739105e02so3366272b3a.0;
+        Sat, 21 Dec 2024 21:56:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734805166; x=1735409966; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=uWyNHTT7nGYtDukx/I19Gco3OvpuLD+raehZDNila/M=;
-        b=cesrX0GxUR/GM2yiyYyyim5PB8uWiS4die/mdq1UtNDKSX56U5ieI8oHaB3Nrht3Q+
-         Xuf3mM56p6SNTT94TC0AkLjYsFB5RHrmol16vfxNdBLEqvLIJWQdfE3i9CMGAAEe8rYA
-         mL7Ch7S0YK+efcaBIsHDwhrCZBvk7614k8ZFDsG32n+EFdX8LJLZh0H+EUX6s8jUH/65
-         7AzLCQagiVR4U4mS8441+jE550YGgy9kSC+DKT05KnEDvU83MQNLLneDMttGOA5FzOUl
-         4QQopmHB9f8ieyrpmdOUQxdX73xMyxAQ2SGqPlt6jcA7wdZ7rKbNEeDQCPJfMq2AaQVf
-         uHmw==
+        d=gmail.com; s=20230601; t=1734846998; x=1735451798; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5BwgJZPVtl4XhwNY1XFgizSA3iSqTzWQpG8IdnlsPp4=;
+        b=KmUUqKKO0rjxmlkWbvuZh0nm8qBx+osqUyNOxw3oOX97mFTV9K+sWgY3jP25xZnTqg
+         LTN8W0LdtpgI4cKb/NAVKw9bVeHmDZuojavWPH5YdZVlpWkSzfTqVoiASbYR/WTFrnlG
+         lheFPeuGDvottNMIwl5EWElFCnr5zEizn9tIetDzrZCVDTD7QVGE7EqITEXyE8CvnZnS
+         oAKIbzD7McNagfIPj/+xuioYZzAaI0+unDpeV4MQme8SBEQp+4gGpXzX4Ggcv47USwGm
+         a3zy9QbLrXL/PjhB3oMj8sPXbgQl9kC/l2qpUUxyT0yH1LVow3um+Sem3/tEJPufuu6U
+         HDjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734805166; x=1735409966;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1734846998; x=1735451798;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uWyNHTT7nGYtDukx/I19Gco3OvpuLD+raehZDNila/M=;
-        b=Vk1zb5B26TJ9+4qDcq+ODdNqOdndFAjgVPcEEqBq3zp6G9dJvAdQLPPP7hatBs8enr
-         3AzQhIFV8XWzdeVjZBSsgtraB2N0deBMPOb4Xe/uvNoLQgkFx4ryfNjAilSUF961lDnn
-         YrqQ3KVdBnbZ1es5UYvcW6DSEvjAqqzaAMq/dOxc8X0PjHbk4Dz9GGLdzKwpNFW5+NWr
-         fcBZrAN09/uAFHBpyIqSFTMfqyNP4l1Ukn6zDUoQ76YP5jLMQDuVqb3C1cHYr/equ2zY
-         6qinWuoXJRbuOmehvRLPwfrCbIkDoTtbwnoN80r8vrJOxVEBRXjC8KjMsZCjm3+pMeb1
-         NQog==
-X-Forwarded-Encrypted: i=1; AJvYcCUIzq7p+9QwpA2nYRHtMz6SdVcoY3ny/KI5A1MEqepDJ6cvCp5jpbPQDLmI3LNRnOHA98IzyJeNtyZ3ebw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUCVLYKSVXlv+y3f1YISsFf3opEap4+ENMDpxO05sI8vpd/hi+
-	aLtYREgb8vBvMHVSycA5wNPxCxDJ0Lm+d9xryRKC4WKQSjYn0Fyl
-X-Gm-Gg: ASbGncstQ5FXZIMvYU90pOh2WLI9xzENWt241rVldpOMbvJ3ReO9hhnlxjTYnqZxECC
-	Hde2ZuIKf+Kn35hxiSjamcEooWmE73Gfg3kkPRSkAkiQkFSN2IaMkw39Hdb4ecz6N7Whypx8xgX
-	BCV4PwxE25Qf6c+wUYl3XeK5XZmqn60JUg8gCCNCFO0HWSqL/DY1OSiA+/MEAmeitySjZ/JVUNK
-	RUlcj1S/A8Y/3pUdHTwSGP6K7jFI58qhLBxuXTgk9263/cmZ/MCuZdpiZSkiSwhCUZ4NiBg8P8w
-	z2pMF5DLSlU3kpXqMXZZIdwaV3naE6ATpvI=
-X-Google-Smtp-Source: AGHT+IELQbqY9pfnZFvYFabgLl/9tyOmsAYzPd4FyfUJVYLFioADGp6I0AP13+L7gVAjVA/3/+DizA==
-X-Received: by 2002:a05:6512:4019:b0:540:202f:4955 with SMTP id 2adb3069b0e04-542295603c8mr2090518e87.46.1734805165576;
-        Sat, 21 Dec 2024 10:19:25 -0800 (PST)
-Received: from ?IPV6:2001:14ba:419:b800::7? (2001-14ba-419-b800--7.rev.dnainternet.fi. [2001:14ba:419:b800::7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223832c5bsm794318e87.274.2024.12.21.10.19.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Dec 2024 10:19:23 -0800 (PST)
-Message-ID: <3d1154e3-bd5c-46b8-8cce-4ede9c39de4b@gmail.com>
-Date: Sat, 21 Dec 2024 20:19:21 +0200
+        bh=5BwgJZPVtl4XhwNY1XFgizSA3iSqTzWQpG8IdnlsPp4=;
+        b=rDbwSjcUtNMFhpOe8snvaDpYwGFNX4DqihOd0CaNB68C5GPd5VS4HwKyWeszjp51Qq
+         fAhWG8xedDB5MFfk9705Q9lg2EalSHDX3lG3K+QvAUr1VKTCg6f8AuOUUOoSh2mtzPwI
+         VmtDgyWttnExT+XeqsYk4kqT/4Q6NZFMlFi6sE9VP/0UV7AU31C5vVqlYQYXv5bIqb5F
+         ViZaJwFh0W/DFVWkiJyGAP7hbVgdqtpj/8v0cDkTbLivYNPLzAOlTJ/cVkUwzcLMVA5F
+         zmd4AOlAdQ7qspOMDOZsdtBtiwnBkZPaW68KYv6HTIBE5IkdxZNTom6oWeq1J8N8WAuA
+         z18g==
+X-Forwarded-Encrypted: i=1; AJvYcCVcskzDBlzPJ8hcPW7BDmGPu4SOzip7kweebGiaoRxO+cEmz9m0RQZcT7NeOFdG6b8B+Oj4ef6n2wYDkt8G@vger.kernel.org, AJvYcCWeDw4bCYtB9lVKUmfDXdZ9olgrpD4UuGBUVL5qgP9Vj/A1WG43uF56xmgOj43jU57IGshZAWu3Yi4w@vger.kernel.org, AJvYcCX96ZNryv1AkCyjrv2kzxANH1D6fN7ewzD/cjgQ9SUjXbO5eVA3ZvZ4o5kss1rLHoBB56jBBZiflSI2@vger.kernel.org, AJvYcCXQjMU43D/NlaOV5SI7TwOH6pRKEcyotGqi1djtT6b506HzdQdrV5RU5uiZLLLYCbiGCkCKcoMh/bjL@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6dY4xELqp9mM0tSvbDzIM5y8HxiuPG/EBKWLv11k9UP3fhA26
+	TFZsqp9DZoBJHEEOJEzGm4qC0yCF8nQxHDIQyiAeS0qMkCPhR3YJ
+X-Gm-Gg: ASbGncuSZYEib01W48WQTDAfF9y8+k0iCS/oMCRZXl/CJCM5fFcxdAB4WOsV9E3WivZ
+	SbkDeN8X5UyrkvEUcLp7JFUbvv5G0wPZY7aAC4eiAOAWhpDvAMhVc+CzVgPeUDq5UXVIau0ceXD
+	0nRWtq1Ku7romdmifTHSi7/SiCNbOQNxXUrJMywLZHJnQizW+WEmRdgQirN0Ym0IZLXF4j3o9Vp
+	+Dn9TjUQ0+68drS6QENeofGXxAb5YaXAHC2Ao02p9jIjN8HBUW4Djc2eLlf9GL0mw==
+X-Google-Smtp-Source: AGHT+IFmzvmOXgYF9y+4NfgUyaSRpQVJIRtpzFBicntYlHMruGNiqBTmQzgJb/9ooYLi/PXK0JTMLA==
+X-Received: by 2002:a05:6a00:8087:b0:725:ef4d:c1bd with SMTP id d2e1a72fcca58-72abde84667mr13284129b3a.19.1734846997952;
+        Sat, 21 Dec 2024 21:56:37 -0800 (PST)
+Received: from localhost ([2804:30c:4057:c200:dfe2:5075:a83a:1a44])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8157f9sm5808035b3a.24.2024.12.21.21.56.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 21 Dec 2024 21:56:37 -0800 (PST)
+Date: Sun, 22 Dec 2024 02:57:13 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Esteban Blanc <eblanc@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 2/6] iio: adc: ad4030: add driver for ad4030-24
+Message-ID: <Z2eqOSN2Uk8SfTq1@debian-BULLSEYE-live-builder-AMD64>
+References: <20241219-eblanc-ad4630_v1-v2-0-f36e55907bf5@baylibre.com>
+ <20241219-eblanc-ad4630_v1-v2-2-f36e55907bf5@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: gts-helper: add helpers to ease searches of
- gain_sel and new_gain
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20241220-veml3235_scale-v1-0-b43b190bbb6a@gmail.com>
- <20241220-veml3235_scale-v1-1-b43b190bbb6a@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241220-veml3235_scale-v1-1-b43b190bbb6a@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241219-eblanc-ad4630_v1-v2-2-f36e55907bf5@baylibre.com>
 
-On 20/12/2024 21:28, Javier Carrasco wrote:
-> This helper functions reduce the burden in the drivers that want to
-> fetch a gain selector in all available times or a new optimal gain.
-> 
-> The former is currently achieved by calling
-> iio_gts_find_gain_sel_for_scale_using_time() for the current time
-> selector, and then iterating over the rest of time selectors if the
-> gain selector was not found.
-> 
-> The latter requires a combination of multiple iio-gts helpers to find
-> the new gain, look for an optimal gain if there was no exact match, and
-> set a minimum gain if the optimal gain is not in the range of available
-> gains.
-> 
-> Provide simpler workflows by means of functions that address common
-> patterns in the users of the iio-gts helpers.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hello Esteban, some comments inline.
 
-Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
+On 12/19, Esteban Blanc wrote:
+> This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
+> 
+> The driver implements basic support for the AD4030-24 1 channel
+> differential ADC with hardware gain and offset control.
+> 
+> Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
 > ---
->   drivers/iio/industrialio-gts-helper.c | 74 +++++++++++++++++++++++++++++++++++
->   include/linux/iio/iio-gts-helper.h    |  5 +++
->   2 files changed, 79 insertions(+)
-> 
-> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> index 3b5a99815062..f88b0b7192dd 100644
-> --- a/drivers/iio/industrialio-gts-helper.c
-> +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -915,6 +915,38 @@ int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int time_sel
->   }
->   EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_sel_for_scale_using_time, "IIO_GTS_HELPER");
->   
-> +/**
-> + * iio_gts_find_gain_sel_in_times - Fetch gain selector in the available times.
-> + * @gts:	Gain time scale descriptor
-> + * @scale_int:	Integral part of the scale (typically val1)
-> + * @scale_nano:	Fractional part of the scale (nano or ppb)
-> + * @gain_sel:	Pointer to value where gain selector is stored.
-> + * @time_sel:	Pointer to value where time selector is stored.
-> + *
-> + * Wrapper around iio_gts_find_gain_for_scale_using_time() to fetch the
-> + * gain selector for all supported integration times.
-> + *
-> + * Return: 0 on success and -EINVAL on error.
-> + */
-> +int iio_gts_find_gain_sel_in_times(struct iio_gts *gts, int scale_int,
-> +				   int scale_nano, int *gain_sel, int *time_sel)
-> +{
-> +	int i, ret;
+[...]
 > +
-> +	for (i = 0; i < gts->num_itime; i++) {
-> +		*time_sel = gts->itime_table[i].sel;
-> +		ret = iio_gts_find_gain_sel_for_scale_using_time(gts, *time_sel,
-> +								 scale_int,
-> +								 scale_nano,
-> +								 gain_sel);
-> +		if (!ret)
-> +			return 0;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_sel_in_times, "IIO_GTS_HELPER");
-> +
->   static int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
->   {
->   	const struct iio_itime_sel_mul *itime;
-> @@ -1086,6 +1118,48 @@ int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_gain,
->   }
->   EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_by_old_gain_time, "IIO_GTS_HELPER");
->   
-> +/**
-> + * iio_gts_find_new_gain_by_gain_time_min - compensate for time change
-> + * @gts:	Gain time scale descriptor
-> + * @old_gain:	Previously set gain
-> + * @old_time:	Selector corresponding previously set time
-> + * @new_time:	Selector corresponding new time to be set
-> + * @new_gain:	Pointer to value where new gain is to be written
-> + * @in_range:	Indicate if the @new_gain was in the range of
-> + *		supported gains.
-> + *
-> + * Wrapper around iio_gts_find_new_gain_by_old_gain_time() that tries to
-> + * set an optimal value if no exact match was found, defaulting to the
-> + * minimum gain to avoid saturations if the optimal value is not in the
-> + * range of supported gains.
-> + *
-> + * Return: 0 on success and a negative value if no gain was found.
-> + */
-> +int iio_gts_find_new_gain_by_gain_time_min(struct iio_gts *gts, int old_gain,
-> +					   int old_time, int new_time,
-> +					   int *new_gain, bool *in_range)
+> +static int ad4030_spi_read(void *context, const void *reg, size_t reg_size,
+> +			   void *val, size_t val_size)
 > +{
 > +	int ret;
-> +
-> +	*in_range = true;
-> +	ret = iio_gts_find_new_gain_by_old_gain_time(gts, old_gain, old_time,
-> +						     new_time, new_gain);
-> +	if (*new_gain < 0)
-> +		return -EINVAL;
-> +
-> +	if (ret) {
-> +		*new_gain = iio_find_closest_gain_low(gts, *new_gain, in_range);
-> +		if (*new_gain < 0) {
-> +			*new_gain = iio_gts_get_min_gain(gts);
-> +			if (*new_gain < 0)
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_gts_find_new_gain_by_gain_time_min, "IIO_GTS_HELPER");
-> +
->   MODULE_LICENSE("GPL");
->   MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
->   MODULE_DESCRIPTION("IIO light sensor gain-time-scale helpers");
-> diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts-helper.h
-> index 9cb6c80dea71..ae91ad008cc8 100644
-> --- a/include/linux/iio/iio-gts-helper.h
-> +++ b/include/linux/iio/iio-gts-helper.h
-> @@ -188,6 +188,8 @@ int iio_gts_total_gain_to_scale(struct iio_gts *gts, int total_gain,
->   int iio_gts_find_gain_sel_for_scale_using_time(struct iio_gts *gts, int time_sel,
->   					       int scale_int, int scale_nano,
->   					       int *gain_sel);
-> +int iio_gts_find_gain_sel_in_times(struct iio_gts *gts, int scale_int,
-> +				   int scale_nano, int *gain_sel, int *time_sel);
->   int iio_gts_get_scale(struct iio_gts *gts, int gain, int time, int *scale_int,
->   		      int *scale_nano);
->   int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
-> @@ -196,6 +198,9 @@ int iio_gts_find_new_gain_sel_by_old_gain_time(struct iio_gts *gts,
->   int iio_gts_find_new_gain_by_old_gain_time(struct iio_gts *gts, int old_gain,
->   					   int old_time, int new_time,
->   					   int *new_gain);
-> +int iio_gts_find_new_gain_by_gain_time_min(struct iio_gts *gts, int old_gain,
-> +					   int old_time, int new_time,
-> +					   int *new_gain, bool *in_range);
->   int iio_gts_avail_times(struct iio_gts *gts,  const int **vals, int *type,
->   			int *length);
->   int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *type,
-> 
+> +	struct ad4030_state *st = context;
+> +	struct spi_transfer xfer = {
+> +		.tx_buf = st->tx_data,
+> +		.rx_buf = st->rx_data.raw,
+> +		.len = reg_size + val_size,
+> +		.speed_hz = AD4030_SPI_MAX_REG_XFER_SPEED,
+Is speed_hz really needed? What happens if the controller can't clock at 80MHz?
 
+> +	};
+> +
+> +	if (xfer.len > ARRAY_SIZE(st->tx_data) ||
+> +	    xfer.len > ARRAY_SIZE(st->rx_data.raw))
+> +		return  -EINVAL;
+
+Would it make sense to bring register configuration mode commands into the
+regmap calls?
+I mean, to do the ad4030_enter_config_mode() transfer here and the
+ad4030_exit_config_mode() at the end of this function.
+From datasheet, it looks like both enter/exit config mode are required for reg
+access so why not doing them in the regmap callbacks?
+With that, I think it won't be needed to call register config mode functions
+in ad4030_single_conversion() and in buffer enable/disable functions.
+Might need implement regmap_config read and write callbacks to properly handle
+regmap_bulk_read/write interface.
+
+
+> +
+> +	memset(st->tx_data, 0, ARRAY_SIZE(st->tx_data));
+> +	memcpy(st->tx_data, reg, reg_size);
+> +
+> +	ret = spi_sync_transfer(st->spi, &xfer, 1);
+> +	if (ret)
+> +		return ret;
+> +
+> +	memcpy(val, &st->rx_data.raw[reg_size], val_size);
+> +
+> +	return ret;
+> +}
+> +
+[...]
+> +
+> +static int ad4030_get_chan_calibscale(struct iio_dev *indio_dev,
+> +				      struct iio_chan_spec const *chan,
+> +				      int *val,
+> +				      int *val2)
+> +{
+> +	struct ad4030_state *st = iio_priv(indio_dev);
+> +	u16 gain;
+> +	int ret;
+> +
+> +	ret = regmap_bulk_read(st->regmap, AD4030_REG_GAIN_CHAN(chan->address),
+> +			       st->rx_data.raw, AD4030_REG_GAIN_BYTES_NB);
+> +	if (ret)
+> +		return ret;
+> +
+> +	gain = get_unaligned_be16(st->rx_data.raw);
+My impression is that it is a bit odd to handle endianness after/before
+calling regmap_read/write(). Can you try set
+.val_format_endian_default = REGMAP_ENDIAN_BIG, in ad4030_regmap_bus?
+If that doesn't help, what about doing the get/set_unaligned stuff within
+the bus read/write calls?
+
+> +
+> +	/* From datasheet: multiplied output = input × gain word/0x8000 */
+> +	*val = gain / 0x8000;
+Use a define to give a name to the gain constant?
+
+> +	*val2 = mul_u64_u32_div(gain % 0x8000, NANO, 0x8000);
+> +
+> +	return IIO_VAL_INT_PLUS_NANO;
+> +}
+> +
+[...]
 

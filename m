@@ -1,160 +1,154 @@
-Return-Path: <linux-iio+bounces-13748-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13749-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688AB9FA695
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 17:13:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C70939FA785
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 19:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15A2165A1A
-	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 16:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77FD1886FDE
+	for <lists+linux-iio@lfdr.de>; Sun, 22 Dec 2024 18:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FB018E054;
-	Sun, 22 Dec 2024 16:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A5F6188CC9;
+	Sun, 22 Dec 2024 18:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqCSLxXj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyqPxXXr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C032F18C035;
-	Sun, 22 Dec 2024 16:13:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E056512B17C;
+	Sun, 22 Dec 2024 18:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734884010; cv=none; b=J4gB44v+OsVEFVLquL0XmwDal0TDekmKr0gyhYv6rp9396hobSadQVI8+dTolgdqIq6uMM1DfB3FrgcPWRDKRThfjT3eAqdEbn2JQRG6V6Lr+8YeG4ETmcMiCXh3s8JAYGBcto3Ststji/u5LlgzkYgmEvN0tK2mwCUGMoW5a78=
+	t=1734890843; cv=none; b=PWlt2JjpWS88PUXVZ1Nm3a4MeeY46BGa/fnhaBwOvBS+oF0UbUUtbt9HOa1Ag/dO2ri6IBYjfzbJQz2NZBLsW6v8ypAJrzBiVgo3GlunfWAzc/r3SYeQSqlarff9CNrV3iVSeZ4EVzeyK0e/DI6S99Fp+bjhjIujGIdyd9oShm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734884010; c=relaxed/simple;
-	bh=fGNF3uvic4Sy12GBLCskR/2pxZDaCdTVX4hyM91tjfo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=ZCvKS5DRrOP1kBOLXdjRcw8YaGeBFgwts1HsO6tK+YjS47D6gxzIoiZvwijlQ/Jr7KNigepUkJaKgTsM1qeKuCvikG4Ntur09rHpdd18R4lMio8xpsqEKAeG48lUrUBqlmiuvGIEs4UtImSQfbjgH4sH6ToH+2Y0SaTV6mYH6LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqCSLxXj; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361f65ca01so34302765e9.1;
-        Sun, 22 Dec 2024 08:13:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734884007; x=1735488807; darn=vger.kernel.org;
-        h=in-reply-to:references:cc:subject:from:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pgYCG06gfBaaRaukkJiE2QdE6+ayEzWoyPHHU6rD6Mg=;
-        b=WqCSLxXjdwW/sw6oCO1kCrBw3i+wEoghsFFZd6Hku9EzfMbS/AjM5ewIfyDgRx2qTp
-         Z6CYr8pPTlSEPNJPkKBZjllHbmp0PWiMvmuK65WOWNU6dGn1V0X0pyiqmn82UgvzgeUz
-         BEA44y/7leZOvIuHYsyXA5srojaYpWDEvh4BkDf6WIxCsvhIEYSofZTrXtkMxqOVl6g9
-         fIBamsOFG5+ta1MqwOdjk/E5r/+1xEbEpo6GSl/y/v3fYMmvgwW7UZo16eEGi/7ySaLe
-         bo9OsVV/jGgCGJ0j9N1QM6b0AXxhdIioePTjlgRDApKOE5BU1gHN10dIL2N2aqxDgdF+
-         JbAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734884007; x=1735488807;
-        h=in-reply-to:references:cc:subject:from:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pgYCG06gfBaaRaukkJiE2QdE6+ayEzWoyPHHU6rD6Mg=;
-        b=I0Mz6jNP1ow6Aqf4TiTq0/sBUF/rNZZbCDWQGcbilJHhSsluR6ctRp9PbltjKycBif
-         HGGoOCAXXWLCVbMk0lZXmWk4qYq4WeSyL0MLtums6Lxhi1EqMOtgpxZ5Z5ghp88Q0qVk
-         fCmsdyCXN+JdMR5L+jVnskK5nl/WUFpcZXKP63oCmzekxF6PNFK18Z4loAp2XSeaLkvb
-         HF86BaDKgtvB8WiyIPSq2JWqPl07Fv2N9P0rGVbEW9mtUJY0z5xZnqG5xi9hEjJgc/R2
-         ZU5gDF9qJ42pcOyMncRKqSLYCyZejwa4arv7ZWp7TaP76qoiF7sjtJU+BGJ1QuQZFjrb
-         3jow==
-X-Forwarded-Encrypted: i=1; AJvYcCVtzJjJuIfKCUWMfkSDItxMU9BJmpLbwZpZyBLLP6w+crIgGYHnT3PY+UGpZ99vfsKIHujJOP2u5rcF3kM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiKl5GFbd0mO3vEVfhSJa4QUuYcMuSOQynH6dqcy/Ys+/+DQqr
-	GfFT5cPvAlw3A9MRVRuxS7hjSECBUCDDPQmFtay2Ei24ycdPsnQS
-X-Gm-Gg: ASbGnctKX6zfLAAzQ3mkGV5AoHLCu5uD3ZgjKYmKUQzsFCIMVXiYGtpzqfxgVeI9ZNB
-	/xmpkquEKIcUNuTCEM+fzDi7ud28f1IgAX/S1/Rf7QG8D3hM0jgORgX+GdNQiJ5N+37NhiS8csC
-	inOKuJnos6ncaEb1vlqgh4b4jDChMoJL0HvmIBIeLUlWP9tjINkvkkqw+WUObeViIVqynHQGn73
-	d+DtXZvkKSinxUKqL1n3z89VzWbePquM6qEvEh8nYlWR3sTeLs3Capm68y0ZOG+Ly/1Jq2+gMaf
-	SHal7voGg50jSJmFUdwwQOV06vIcH3fd/3f+9jLEQo/nMZp8MFrr/JZdKw2Hfu0VrZgHa4TtEc4
-	=
-X-Google-Smtp-Source: AGHT+IFvEiJcyu0vvQGdFwDNWiQpQ2DDVaoR795ah6h5iuwm7LrkpyrEtNi9gVdnZjFqWth/J268xA==
-X-Received: by 2002:a05:600c:4fd4:b0:436:1bbe:f686 with SMTP id 5b1f17b1804b1-43668b48084mr73028335e9.21.1734884006580;
-        Sun, 22 Dec 2024 08:13:26 -0800 (PST)
-Received: from localhost (2a02-8389-41cf-e200-195b-09cc-ed70-10a8.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:195b:9cc:ed70:10a8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c847263sm9164621f8f.50.2024.12.22.08.13.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Dec 2024 08:13:26 -0800 (PST)
+	s=arc-20240116; t=1734890843; c=relaxed/simple;
+	bh=L9kFGUCLB2E6GEnN77Qe+tRgv/r9Esyhg+Wv1RGtX+0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Ja7Wzsy6fGNUQBdfSJY7fN7hznIHd5wLwZH5ZmGsr0IoQgiDZlJMHWQV/4YqV4iuAITRNoLOdDcz1DKPYF8qoBzVDCs68wvfLUKk7YFlccxzzVwWxR/qoJSX/EKcuW2jqIbO+VcVb1CP9ZO0i+msD7fANWkkJZwQX/m4DhonSUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyqPxXXr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902AAC4CECD;
+	Sun, 22 Dec 2024 18:07:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734890842;
+	bh=L9kFGUCLB2E6GEnN77Qe+tRgv/r9Esyhg+Wv1RGtX+0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kyqPxXXrmrlaskEN4gV/sn85d+cg0NpYM7X3DdJOir81BqA24ayRCSVWmPsJ1g9sH
+	 YocszyRMLOZJSMLT/kWtWrfFcu31OvIyQzoy1iSWrxcO3LWeaj1OSvDcOeMnVlzMhB
+	 oOsSOTDw+WxFeLlxiwhtd3Siy9A+pmYYNqtfAZtkXaRhfLfQR9kumN09CZkXoygmyB
+	 ynxr6chXxU9R7E/TObtiyzwCOy6DsL6Z0joGp17LVudH7h3OwQHJrUecI5ddxbdDTl
+	 3X+IzkcizuGcvT976smNFe+3ihjqoLWVN9Bbyu8ZwjGypKevMiOqFaCIu1cvVCr4bp
+	 e3IZwsMK2UM5Q==
+Date: Sun, 22 Dec 2024 18:07:13 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, David Lechner <dlechner@baylibre.com>, Uwe
+ =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Subject: Re: [PATCH v1 1/3] iio: adc: ad_sigma_delta: Add CS assert function
+Message-ID: <20241222180713.64f27040@jic23-huawei>
+In-Reply-To: <20241221155926.81954-2-alisa.roman@analog.com>
+References: <20241221155926.81954-1-alisa.roman@analog.com>
+	<20241221155926.81954-2-alisa.roman@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Dec 2024 17:13:24 +0100
-Message-Id: <D6ID1X10HYA2.IEBHNZMD9D7Z@gmail.com>
-To: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Jonathan Cameron"
- <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-Subject: Re: [PATCH 2/2] iio: veml3235: fix scale to conform to ABI
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-X-Mailer: aerc 0.18.2
-References: <20241220-veml3235_scale-v1-0-b43b190bbb6a@gmail.com>
- <20241220-veml3235_scale-v1-2-b43b190bbb6a@gmail.com>
- <b4b8ab5e-7b94-4919-98a4-1525be903954@gmail.com>
-In-Reply-To: <b4b8ab5e-7b94-4919-98a4-1525be903954@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun Dec 22, 2024 at 2:43 PM CET, Matti Vaittinen wrote:
-> On 20/12/2024 21:28, Javier Carrasco wrote:
-> > The current scale is not ABI-compliant as it is just the sensor gain
-> > instead of the value that acts as a multiplier to be applied to the raw
-> > value (there is no offset).
-> >
-> > Use the iio-gts helpers to obtain the proper scale values according to
-> > the gain and integration time to match the resolution tables from the
-> > datasheet.
-> >
-> > Fixes: c5a23f80c164 ("iio: light: add support for veml3235")
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > ---
->
-> ...
->
-> > +static const struct iio_itime_sel_mul veml3235_it_sel[] =3D {
-> > +	GAIN_SCALE_ITIME_US(50000, 0, 1),
-> > +	GAIN_SCALE_ITIME_US(100000, 1, 2),
-> > +	GAIN_SCALE_ITIME_US(200000, 2, 4),
-> > +	GAIN_SCALE_ITIME_US(400000, 3, 8),
-> > +	GAIN_SCALE_ITIME_US(800000, 4, 16),
-> >   };
-> >
-> > -static const int veml3235_scale_vals[] =3D { 1, 2, 4, 8 };
-> > +/*
-> > + * The MSB (DG) doubles the value of the rest of the field, which lead=
-s to
-> > + * two possible combinations to obtain gain =3D 2 and gain =3D 4. The =
-gain
-> > + * handlding can be simplified by restricting DG =3D 1 to the only gai=
-n that
-> > + * really requires it, gain =3D 8. Note that "X10" is a reserved value=
-.
->
-> Just a question - do you ensure there is no "invalid" register values? I
-> think Jonathan has prefered doing this by writing known initialization
-> values at probe.
->
-> I *think* the GTS should survive cases where multiple bit patterns can
-> be used to represent same gain/time - but I don't remember this for sure.
->
-> I didn't have the time to do a proper thorough review - sorry. Still,
-> what I browsed quickly looked good :) Thanks!
->
-> Yours,
-> 	-- Matti
+On Sat, 21 Dec 2024 17:56:00 +0200
+Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 
-Hi Matti,
+> Some sigma-delta ADCs, such as AD7191 and AD7780, have no registers and
+> start conversion when CS is asserted. Add helper function to support
+> this use case by allowing devices to assert CS without performing
+> register operations.
+Hi Alisa-Dariana,
 
-Thanks for your feedback. The initial value of this register is indeed
-set during the initialization (default is gain =3D 1). That comment is
-only to explain why some combinations are missing, and why only one bit
-patter per combination is required. The user does not care which one is
-used, and it should be transparent to them.
+I had a look at the ad7191 datasheet. Given this description,
+I was expecting to see it do a pre pulse of the chip select to trigger
+the acquisition.  However, what I see is a power down line (which is more
+or less a chip select) but it just has a specified t1 delay before the
+DOUT will change to the state for the first bit and the host
+can start driving the clock.
 
-I just noticed that there is a small typo in that comment (handlding
-instead of handling), and I will update it for v2 after I collect more
-feedback.
+That can be done by setting spi_device->cs_setup to whatever delay is
+needed.  The text is spi_device docs are a little vague,
+but I'd take it as t1 + t2 (maybe t3 to be safe).
 
-Best regards,
-Javier Carrasco
+That is going to be more reliable than trying to hold the cs across
+messages / spi_sync() calls, particularly if the bus might not be
+locked (which the code below suggests).
+
+Jonathan
+
+
+> 
+> This function can be used by drivers through their set_mode callback.
+> 
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> ---
+>  drivers/iio/adc/ad_sigma_delta.c       | 24 ++++++++++++++++++++++++
+>  include/linux/iio/adc/ad_sigma_delta.h |  1 +
+>  2 files changed, 25 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+> index 0f355dac7813..c0f33d4baddf 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -48,6 +48,30 @@ void ad_sd_set_comm(struct ad_sigma_delta *sigma_delta, uint8_t comm)
+>  }
+>  EXPORT_SYMBOL_NS_GPL(ad_sd_set_comm, "IIO_AD_SIGMA_DELTA");
+>  
+> +/**
+> + * ad_sd_assert_cs() - Assert chip select line
+> + *
+> + * @sigma_delta: The sigma delta device
+> + *
+> + * Returns 0 on success, an error code otherwise.
+> + **/
+> +int ad_sd_assert_cs(struct ad_sigma_delta *sigma_delta)
+> +{
+> +	struct spi_transfer t = {
+> +		.len = 0,
+> +		.cs_change = sigma_delta->keep_cs_asserted,
+> +	};
+> +	struct spi_message m;
+> +
+> +	spi_message_init(&m);
+> +	spi_message_add_tail(&t, &m);
+> +
+> +	if (sigma_delta->bus_locked)
+> +		return spi_sync_locked(sigma_delta->spi, &m);
+> +	return spi_sync(sigma_delta->spi, &m);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(ad_sd_assert_cs, IIO_AD_SIGMA_DELTA);
+> +
+>  /**
+>   * ad_sd_write_reg() - Write a register
+>   *
+> diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+> index 417073c52380..99ab56d04793 100644
+> --- a/include/linux/iio/adc/ad_sigma_delta.h
+> +++ b/include/linux/iio/adc/ad_sigma_delta.h
+> @@ -178,6 +178,7 @@ static inline int ad_sigma_delta_postprocess_sample(struct ad_sigma_delta *sd,
+>  }
+>  
+>  void ad_sd_set_comm(struct ad_sigma_delta *sigma_delta, uint8_t comm);
+> +int ad_sd_assert_cs(struct ad_sigma_delta *sigma_delta);
+>  int ad_sd_write_reg(struct ad_sigma_delta *sigma_delta, unsigned int reg,
+>  	unsigned int size, unsigned int val);
+>  int ad_sd_read_reg(struct ad_sigma_delta *sigma_delta, unsigned int reg,
+
 

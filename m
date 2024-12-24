@@ -1,219 +1,160 @@
-Return-Path: <linux-iio+bounces-13768-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198619FB9B8
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 07:14:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CA29FBB4A
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 10:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7331C1884F9E
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 06:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E69E37A2662
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 09:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 000AD1553A7;
-	Tue, 24 Dec 2024 06:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EEEC1AE01C;
+	Tue, 24 Dec 2024 09:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hwXdpX9a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazon11021142.outbound.protection.outlook.com [40.107.51.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119A814EC46;
-	Tue, 24 Dec 2024 06:14:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.51.142
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735020877; cv=fail; b=LApEgaYCRIn+jM3PmkXdnsBkq6R+jU/4ZzwIyOPCcNBwr0QXtPW0p1k/GvtLZPU/wD1TLReI5zV/RPNbffIXfFYZaUVjH+eZVD0DnbvgUQfYgdoGfivwjEjvwKJ+f4+79Hn85TdNBujmsksbyksTFRpnuvtrer9aV18a45L2CBY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735020877; c=relaxed/simple;
-	bh=m6pdy0sFW7k+5pcG1eWdRFRrt8DTD6CTH4k9BoUJIAY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PeRhCJWCufWL+Rb/rJEqkcIs+a7jJpNocArrNKFuzu3fS/L8DrAEZIqLQYaZrBMCrwx5cLqoKWzQLvAWIhePKwLjBpz6Db+J0top5aX/IS4jUl0FDOcdDDHvbKQDsxuIy3G4BBq7edy+5B3mFiHIl0xRjHAYlmd8DjzZTlx3HxY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=40.107.51.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mdXE8ladetC6OH6YzMi9Jn6ixiH/jinBIC4sE/8JUYx4vOM12PwwUMNsOwt4H8jpaHq7WhTsI+j6RB1MSMjOnpbRdjfHVvRSOrI26pCfi9sjxqx215WhLu37+mKAm4pAqN5YWKa3OFt8YAme9FScFjnSAts3byvr3xxOdVZ2k3+pwOtult6Sz4rJoHFBqH8QizaEXPMZ4LBcNjv/IImTaGrqb2yfmrBnZm/g/TdsRjxyO8Jqf3rJCSGw2yNORA5cX3ml0j9v3VjPJL23ATS5fVBqB2DQWKVrfYcLudpaxTvK/SjHW4YizgW/Sl2mTYdBnX4T/dRGAF6VCrqPAmdfRg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=teCbmW17gteq/hTogXQpoKpMYO3rjaCPo/wJkgj+Ri8=;
- b=Fq2araakXRmizU+2R5bP1F9tlbrk6Ekj+WYPSuSgVQFt/QkduUe8N+JbU8E7EfJ8bGYgmDqlRv1JVc36UDk/rUKPQ4d2H2q2jMIQzNzmIo2yl13YRUcsCrKxm3xbXzc1/mGcZSFf707ZoPaHNf7nFO6Ps3hcC/69TNNNyMC+M0Rw48H5BasdzDnQ35LHSCMCGHVMwMl2cwD5A3xC+8pwdw9SXJNY0rCOmO8+qAiXFmDRAPqbIcUwrCgfgYaPQBqox0M5x2uf2Frnokkf2NG/wOvKsMjf149j/t3oGvYA/P/vHVZx4Bs3whvvtvodf3v67xRjnE/XbspAiVOjOQcn6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:204::8)
- by MA0P287MB0331.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:b0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.21; Tue, 24 Dec
- 2024 06:14:32 +0000
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac]) by PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac%4]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
- 06:14:31 +0000
-From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-To: jic23@kernel.org
-Cc: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Arthur Becker <arthur.becker@sentec.com>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Andreas Dannenberg <dannenberg@ti.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] iio: light: opt3001: Add Support for opt3004 light sensor
-Date: Tue, 24 Dec 2024 11:43:16 +0530
-Message-Id: <20241224061321.6048-3-hardevsinh.palaniya@siliconsignals.io>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io>
-References: <20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: PN2PR01CA0154.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c01:26::9) To PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:204::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F63EC0
+	for <linux-iio@vger.kernel.org>; Tue, 24 Dec 2024 09:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735032881; cv=none; b=cLxn6DULslhOiM8QsLlQCiqY1gNkRkBzHg/6Vyjg4VP48W0HEWa3np+zI0umcPc2eRawaud5HVVFIFx6zfMI2h6vhRSspqrffv6znmvxKm8g4GEBtu3KuIe0K3s41l3G8qoaGg9qtj0D79+OH/vmgGUEsh1yq38SHXH1holYw4s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735032881; c=relaxed/simple;
+	bh=gTP11STaOambNCrfwCro80qN7oJiUElgow1HkycNbHk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Tux9ZYInuP444Z4CQhlWiom7O/5Wr69B0qKc5GdhUhYp/OdwDHg20uhOQgXEKhLQ/boBKLnCoI5AX2Q5DkbAVCfRdTnvQFWloxAq3P5rQq3YvrQKqT60k5d+RJsqBcG55Yy5OZhq8R+upsjZSenk9DP+qF9PalH5cAE2c3Vh704=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hwXdpX9a; arc=none smtp.client-ip=209.85.128.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-436249df846so34020835e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 24 Dec 2024 01:34:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1735032876; x=1735637676; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N0Ght693j/xuIl81ogZ/rFRsFKJQFysaPVf5fimjLkw=;
+        b=hwXdpX9aJZ5IbBsSfNkslk7hwGc27j9Y1L0Lmy6P6PjD1bfBy7bo5+NFgNQUxnJCSo
+         aixo/jYbuPmFTJ9ptZH5ajKlJOv1SIQp6MWSh8/++ya+neqBRkQtvsMeALJzIR7wX74u
+         zVUrHKsQVedsEAcxJ3mIoSaRpQLfj+MhnENHH2GYejVVsGgqqFSB7Q9Tor9r+X1mf5D5
+         g9Cpy45tjl2nRsRbN2IiR6y/t7DGxZ/AeSKHF2O0tmyVG9bweJkr9CidWtZow6T+bY7B
+         4VquAESpFwiWTgw06lDDoJuhLbca7IYRadf8O46mSE0x40wo2rY+CAeShR8DC6sVm8WX
+         jO1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735032876; x=1735637676;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=N0Ght693j/xuIl81ogZ/rFRsFKJQFysaPVf5fimjLkw=;
+        b=q8Kf1s8YviDZzee/a2Y4ESyLl/5H/4wdDxzS+S33JFbjTAycPa1j9RzAXugmXFhhfM
+         QeNeil+3iGxxd5zs3VT+HShScYJgpbaGD15jO94ba8PbV/zG/sdq/RC9P+Jm1FEvZtdK
+         JrzHCc8I1YP3dHTuZlSqrndZPG6Pql+MQIY0SN4OwsN3WSTHPuCG+YEIfyF1OElwOA2W
+         I4Y17TppfOIDFFB4MjIZOR6JmxFHsKcfQ5or0X4Cq5y9cp2wo6Tfjtt2DFfMbwoJOVWc
+         J5z9K+I2QmavzWJM1xDcoauWGI8/Mi+o7woRN9xJC/oP+3TkopqUlXIeEGoi36twJkXW
+         ch9g==
+X-Gm-Message-State: AOJu0YzIAYvXbuizTZdxlgHLt8AL6xO4KcVYXAw35WEiBpfVNRs5iLlm
+	QGYzRzQoYiWPVgfy6DVBx2k0yWudYNbxVbA90TZfNkUdpt1TQrBba2IV55OU1Aw=
+X-Gm-Gg: ASbGncvlQH4rWHOqkd+smHuf23GslQV/RHCiDSCkSii46FRUtrnr/ZAefA0aH690UzO
+	QFMbK9kKFghRIMyEqn6/6Zsc2lnQCrxGdAV/kByFxvvoomdAYzTE43oO+CGaNx5zOdyB7+Ptp30
+	JqIxLokGUh3ohgLo9DGQx/1cwf90B3JdGgAcRhOtf79WHrybuN4HWgm+xcaW2uECqSiqUFxaFEJ
+	XHsSsIzl19gVBZeNesmywyZG0TAb8QIGiyhwswnDO+8B1UnxuEBXBYK0M/6CbNGhilFORlc1eLK
+	Qjw3LrqBUCxAI0bd1FXjn6B6hud70iEv7whck9m2K8Q3ghz5tQ==
+X-Google-Smtp-Source: AGHT+IEsgDxRPzkbXXtlK3VaH4Q+DJ6FgkizyiG5Fyr+eZyjLexw0tZrYi1npUGFdYkBQ5L2oJLvNA==
+X-Received: by 2002:a05:6000:188d:b0:385:ebea:969d with SMTP id ffacd0b85a97d-38a221fb1a9mr13669120f8f.22.1735032876048;
+        Tue, 24 Dec 2024 01:34:36 -0800 (PST)
+Received: from [192.168.1.62] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43661219a7csm160932535e9.24.2024.12.24.01.34.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Dec 2024 01:34:35 -0800 (PST)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH RFC v2 0/4] iio: adc: ad7380: add alert support
+Date: Tue, 24 Dec 2024 10:34:29 +0100
+Message-Id: <20241224-ad7380-add-alert-support-v2-0-7c89b2bf7cb3@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PN0P287MB2843:EE_|MA0P287MB0331:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e1c5b9c-c4dc-402f-a340-08dd23e23b16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|7416014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Hw48JdGbW8TzDQbjWJgoXiqHTsIAp3zgky05vU3da55j/zLYMfnaQKtLo32x?=
- =?us-ascii?Q?o4xBq+H8iSXeZG7m8igvbWOkniNri+nirt/V5xomCuRO9oATqR5G/Y8GX98T?=
- =?us-ascii?Q?Tc5HNi3r5RShad+Lx6TQCE70dSDa7WskKYjpRa0Fs1m72DMRu9mB9RjxRcw8?=
- =?us-ascii?Q?WTqZfHW6kOZ+IZw1OUblHvFPBBnAk8p+nzbIXgytx2rDIXge7wBig5cHu2X9?=
- =?us-ascii?Q?YDdeaxltjf9bEOK/9Re71Q3vezfTVERx4hA5l37FQLOKeyQfEl7n7DtwrpT1?=
- =?us-ascii?Q?RZcKzTavvSSVSzpfGUas0bRNeQOSxVcv+KV02r93OX16Zyul/LGr//2xVRoT?=
- =?us-ascii?Q?Dqz0HjNTRJCmK9QIZKa7YMsJCyfWcBpESJHL9J+nDKjsJ+lYuk5YwORh7+WX?=
- =?us-ascii?Q?GbuOkQLpCv6jaqYZ0sfEtVlZwVlPOVzQi3CchyG1D93Cu8ddb7cFgZN+Gx4s?=
- =?us-ascii?Q?QX0tK1XR8lO/nhxcZzqa/ClY4ubjQx701LPed+UCxg7C8MshIsND2uU4ARYp?=
- =?us-ascii?Q?Bn1ovlUHlB0ZrpXnMwCyVDMPIl9RpyJpL6YCPr7mE6AnJS0s3CHuFFMju2pm?=
- =?us-ascii?Q?Wp5IdlArXgcvbMh9ib1Eh3qZc5SjAbHOEqSnreU6wXHosRN8gJTSggr0KMsY?=
- =?us-ascii?Q?is5aaUYY19aEFifbXd+a9dhGoN0vqNOz83oHqXyKmCCoXbR0xt/4guBCDls/?=
- =?us-ascii?Q?nxC68N4wpO5sjCnn+H3WeKD1YmK6DtOzRH5Tu/lHeXa3gpjlSYzA7H3SscZV?=
- =?us-ascii?Q?7fejjEcBnH63fLYPX8yzlFPfjlKq/fwFj6fkq11gCkSDZPzHUtdkVIU57CCd?=
- =?us-ascii?Q?log0jcDZ8WKmpqdnMB7shQuvH8dlof87bZqDSGGIYxb+EUTr+AFUdMrV7PBT?=
- =?us-ascii?Q?vUC1fY1X3nX1zdWS4Kh05bDtMX9PcDBCq4YPsknyl7TfERY2uZhG8xO60Uj2?=
- =?us-ascii?Q?SPD9+Lj8avXAiatxRMySkUQa3RGOBpCDItHEu1nOtyrzDjfo5UhWClFCaZww?=
- =?us-ascii?Q?iCrDoAsQrmbDuMAKTJz6LB5ygalwM0KgdPMgRboLVgQNag03PiH6NqgY8Ysh?=
- =?us-ascii?Q?TYEjCJyutk0g4IHa4lVYvTINveuDBl0wU1gt3SLe39Nsk/3fotUdFLmHT9U7?=
- =?us-ascii?Q?8g8mrQQAOCY5n5zeN6dkNdcxZGwPNHL1WrYffpinXA2Z6pmUFC/wG9GVKgFN?=
- =?us-ascii?Q?A4EeipKViYDPn5gOFSwQAqIjvplmn5QDEY9RH51zGQW4PV/d1c95gLYn8I7Z?=
- =?us-ascii?Q?zl6Gu3GybaUOgDx0ibUo+JQET499Pw6TPXPpO/GKnRhZQ6cactmaU8vLsLFE?=
- =?us-ascii?Q?Y48q34oqxcO6aw0+8uM7dlF2TG/BxV4ynS9gBab4JobvHf/cXLE9WG1/5y9E?=
- =?us-ascii?Q?zWHeE4oq27wvJ6IJsD5P1gs6/HFtELDbtopzUVljeTq3ZH37iuWAdG2IaHdl?=
- =?us-ascii?Q?enWtIqGOt+NYn0Fryj908pv2Q9PLyZQT?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2843.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1OK6a6RIlsJDG2PqAN4nWWxB9y4LSXJ6249ieYyxKlGCtP5i8km9sn+lX3gK?=
- =?us-ascii?Q?sEWjJuS8/VROjzMK6FAZTIkSno/C//fESD4KWuaIgmQQaHdaqTTIO2hTyUW6?=
- =?us-ascii?Q?LNTio1jO4lBCB3HPruugxxA0TqSB4ETa9RPi57w6HigVZVEzrt68epntUvzM?=
- =?us-ascii?Q?/xZBQ1Et53K6HGYes+OO63IYnbYYkzwKSEx3XdojSme16wewQEf/4LRocpQl?=
- =?us-ascii?Q?9+e1ZEvtLjeyfI8dki/jfppdG8rWhOmelSUwMUEuLCDBLjpy4mBCkrk1Qa/x?=
- =?us-ascii?Q?LJG9rYdvoejQjZ6YKDLM3bpnGTcMqnBpsWdTRQbIOskX3Abq62Lg3WXPlJ72?=
- =?us-ascii?Q?rM1sEDfJNquTdorkdCpRHrOegu32rE5z72SXvdkopchfMuc5JLvQq1AB/IYV?=
- =?us-ascii?Q?VjSVeVpydzSg7Adq9Mlrb45HwZWr/IJh6apJKzcj9g5Ej62mfQBKWiwAb81v?=
- =?us-ascii?Q?eGqS+G0ze6aBtqiyRScuELdixYQvOE884nwwjCIh2cEowOccgZcMgQN3fqIU?=
- =?us-ascii?Q?hMv404cDqQDylF5xyvIT8Q9gtJ/SSN+EBDAE817MKXGVnq4Z28nC7qrXg8XR?=
- =?us-ascii?Q?NTb8/idJPhMIDFJj4JILWGhHPGCgVLuGB+CB9L1jkwZ5K5bwZU2+F8fdToBt?=
- =?us-ascii?Q?Z7NmR0ZdP/nhEblM77bqVVdG0Y6sChOXArXQQN7VxOZkD2hGJ/ihor2zN8i4?=
- =?us-ascii?Q?tegSGs+IfhWYErMDsRXgXoqAgQyvviIH6n3zauutH8YDxCkxjuTnJbpF7oPX?=
- =?us-ascii?Q?0BHoxdan2VKb6A/EZQp8Qo4F1EAhLHliZYoyPAUn3VDgq0hiAvqI58u2ueTc?=
- =?us-ascii?Q?O9ZGt5MYm8FGnEZt5rGBSrhGsRZDbfTgnkPOY3KMYSYJYlPJehmruB8fMRNS?=
- =?us-ascii?Q?VO+4dblryJ+0E4Tv2FixR2B5aimL3fzb0KyS9Ge2xj8/kAiLQKfVcc2phNBR?=
- =?us-ascii?Q?JsTw19uow7J6pkbyDD0rTe2ymVWEyRwYjLalR4L7DuLyvUGV2yXRcgKWHxt3?=
- =?us-ascii?Q?LSQfF8LRyoDbMmBXotFrhObXBXWSIFFHJeTPRD/8Fe/rbY+tAnMhpo1n045K?=
- =?us-ascii?Q?nrfbzT4OK4Biz5Ev/dz76Xlo1hsFBYOXgwdIIz9mBXdeuWTOiuNhJs3jpWEh?=
- =?us-ascii?Q?xfiZvLjmVxSjFYjmJCNJe2sDl/gU8ojR9HRMe1E8SIEwHCeYXW0ney8we0k7?=
- =?us-ascii?Q?embjvF6v6daAw0mZPTIor/KJCa/zTecwcvXvHnZp36V979qZxrJ2k5grCJ12?=
- =?us-ascii?Q?LwXTXmJI4XD2UHVolEHsclGfF6WCMgdKyqx/UkXA1NW9krJjbpeDSZcmqKzX?=
- =?us-ascii?Q?TpvAiOu0nQ4qLyEBi7EWyzRUt3P9JeDY9DKTYKWluJUPPA8g0CrEthYV072L?=
- =?us-ascii?Q?QmqZAOvjgTPoyuza8KXYOR09UB5bH8/tc8k7etyiKVHHUSiKLbozuwnvjJOM?=
- =?us-ascii?Q?Cfq9k07eI6NmEWfvas9xoOAj4L9vQlIPO03YtkTnR67aGlzLdzDvTL24J4TU?=
- =?us-ascii?Q?xQgLcTwyHG+1KioJlvwtRms4sQOs2PJR7kNkeBFlhgrd/8ONAFcbhEF5sF99?=
- =?us-ascii?Q?8Lxo9yChP8WZ2T4WiSIiFkHUgIsdRjIf4pwv9r96tlKuqr46VzjkHLO/4EHk?=
- =?us-ascii?Q?kXVI0fDSzlPospwByt8bnn0=3D?=
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e1c5b9c-c4dc-402f-a340-08dd23e23b16
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2024 06:14:31.8768
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xP0/Zcn7au2leUOuk1bZ3HRt/UINSPXegYmIyz4vluKopJeIcw18hECiHwt66kLG17PTjNNyN/TpIG1ceQQ56xFRWs47r78frqgNTgZVi4c4U26bX/2EiTpbKMAU+pna
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MA0P287MB0331
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACWAamcC/4VOSw6CMBC9Cpm1NW1BKa5MTDyAW8OidEZpghRbI
+ BLC3a1wAFcv7zdvZgjkLQU4JTN4Gm2wro1E7hIwtW6fxCxGDpLLTHBZMI15qngEZLoh37MwdJ2
+ LmCFHPBrSyiDEeufpYT/r6TvcrhcoN9HTe4gz/eb8xNqG3vlp/WEUa/7/3CiYYMjTQ5FxUeVKn
+ Ss9NbbytDfuBeWyLF88AGCr3QAAAA==
+X-Change-ID: 20241029-ad7380-add-alert-support-4d0dd6cea8cd
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Julien Stephan <jstephan@baylibre.com>
+X-Mailer: b4 0.14.2
 
-Add Support for OPT3004 Digital ambient light sensor (ALS) with
-increased angular IR rejection
+Hello,
 
-The OPT3004 sensor shares the same functionality and scale range as
-the OPT3001. This Adds the compatible string for OPT3004, enabling
-the driver to support it without any functional changes.
+The ad738x family includes a built-in alert mechanism for early
+detection of out-of-bounds conversion results. This series introduces
+this functionality to the ad7380 family.
 
-Datasheet: https://www.ti.com/lit/gpn/opt3004
+As a reminder, an RFC was sent [1] with several open questions.
 
-Tested-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+Here is a summary of the changes made:
+
+- I now have a better understanding of the alert high/low registers, and
+  it is much simpler than I initially thought: users can use the same
+scale as the raw value; we just need to extract the 12 MSBs.
+- IRQs are now disabled by default and only enabled before read_raw and
+  buffered_read operations.
+- I implemented the reset timeout mechanism, as suggested in the RFC, to
+  avoid generating too many events during buffered reads (this has no
+effect on read_raw).
+- Reading registers via debugfs no longer triggers events.
+- The reset_timeout attribute is added only if an IRQ is present in the
+  device tree. However, the high/low thresholds and enable attributes
+  are always available. This allows configuration of the thresholds and
+  alert enablement even when no interrupts are defined in the device tree.
+  For example, a user can enable alerts and hardwire the interrupt line,
+  without relying on user events.
+
+- I added an alert section to the documentation.
+
+- Two preliminary commits have been added to this series:
+  - A cleanup patch to remove iio_device_claim_direct_scoped calls.
+  - A patch to implement regcache.
+
+[1]: https://lore.kernel.org/r/20241029-ad7380-add-aleyyrt-support-v1-1-d0359401b788@baylibre.com
+
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
- drivers/iio/light/Kconfig   | 3 ++-
- drivers/iio/light/opt3001.c | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+Changes in v2:
+- fix read/write high/low thresholds
+- add reset_timeout mechanism for buffered reads
+- implement regcache
+- add cleanup patch to remove iio_device_claim_direct_scoped calls
+- add alert section in the Documentation page
+- Link to v1: https://lore.kernel.org/r/20241029-ad7380-add-aleyyrt-support-v1-1-d0359401b788@baylibre.com
 
-diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-index 29ffa8491927..748c8c2cd3e7 100644
---- a/drivers/iio/light/Kconfig
-+++ b/drivers/iio/light/Kconfig
-@@ -475,7 +475,8 @@ config OPT3001
- 	depends on I2C
- 	help
- 	  If you say Y or M here, you get support for Texas Instruments
--	  OPT3001 Ambient Light Sensor, OPT3002 Light-to-Digital Sensor.
-+	  OPT3001 Ambient Light Sensor, OPT3002 Light-to-Digital Sensor,
-+	  OPT3004 Digital ambient light sensor.
- 
- 	  If built as a dynamically linked module, it will be called
- 	  opt3001.
-diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
-index 65b295877b41..542af8612d34 100644
---- a/drivers/iio/light/opt3001.c
-+++ b/drivers/iio/light/opt3001.c
-@@ -949,6 +949,7 @@ static const struct opt3001_chip_info opt3002_chip_information = {
- static const struct i2c_device_id opt3001_id[] = {
- 	{ "opt3001", (kernel_ulong_t)&opt3001_chip_information },
- 	{ "opt3002", (kernel_ulong_t)&opt3002_chip_information },
-+	{ "opt3004", (kernel_ulong_t)&opt3001_chip_information },
- 	{ } /* Terminating Entry */
- };
- MODULE_DEVICE_TABLE(i2c, opt3001_id);
-@@ -956,6 +957,7 @@ MODULE_DEVICE_TABLE(i2c, opt3001_id);
- static const struct of_device_id opt3001_of_match[] = {
- 	{ .compatible = "ti,opt3001", .data = &opt3001_chip_information },
- 	{ .compatible = "ti,opt3002", .data = &opt3002_chip_information },
-+	{ .compatible = "ti,opt3004", .data = &opt3001_chip_information },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, opt3001_of_match);
+---
+Julien Stephan (4):
+      iio: adc: ad7380: do not use iio_device_claim_direct_scoped anymore
+      iio: adc: ad7380: enable regmap cache
+      iio: adc: ad7380: add alert support
+      docs: iio: ad7380: add alert support
+
+ Documentation/iio/ad7380.rst |  56 ++++-
+ drivers/iio/adc/ad7380.c     | 531 +++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 537 insertions(+), 50 deletions(-)
+---
+base-commit: 5ab39233382c621d3271cc274d1534e1b687f4d3
+change-id: 20241029-ad7380-add-alert-support-4d0dd6cea8cd
+
+Best regards,
 -- 
-2.34.1
+Julien Stephan <jstephan@baylibre.com>
 
 

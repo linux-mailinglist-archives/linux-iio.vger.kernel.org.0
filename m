@@ -1,141 +1,187 @@
-Return-Path: <linux-iio+bounces-13786-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13787-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAC19FC061
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 17:37:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1A09FC12C
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 19:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85AF01884549
-	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 16:37:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72CB3164323
+	for <lists+linux-iio@lfdr.de>; Tue, 24 Dec 2024 18:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50CC212B18;
-	Tue, 24 Dec 2024 16:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9719E1FF7AC;
+	Tue, 24 Dec 2024 18:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCP+a7/h"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="MiJrjIyW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D2C2AE6C;
-	Tue, 24 Dec 2024 16:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735058228; cv=none; b=P943pIIFGpswnnAZ8TGByW/PEt2/mFDHXyazCubb7vW1iDK6rhOYgTobvmiBmfbvgByOIvzqD3ccSCAIsLiga8iBY698xsiUo0a+k6e9WHvOXpNmISIrWFzjrzzyJZRAjcr5JMYOh9cNH3D/AqiT7wn9CA0j3NzlqCA5Vevsv3k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735058228; c=relaxed/simple;
-	bh=dbSHHVNh84FA7Cls48I5xFZUDkqvJap9eZqrol1y794=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xnyfvu+BUWHRqLNngJKz2XPpZC1ieOsF6NvIPrdDj1QrFJ+5edEHUOkl2CoGX7BVmzjmunYKwo4kONOWGJx+J0fqKx4fo3/QasjUNWL/3cyDqTZySi53gl7m3Nd3TMt1k+4l9LFbXdDolG7eQYvZ1xmtrT7y4weRGa3HqGhcdUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCP+a7/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A143C4CED0;
-	Tue, 24 Dec 2024 16:37:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735058228;
-	bh=dbSHHVNh84FA7Cls48I5xFZUDkqvJap9eZqrol1y794=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WCP+a7/hS943herHaKunur/52SvD9kdk7k7YdTNsGDgOPPCKBhVcFkyV+dDgQQJKM
-	 1Phn6kNN1TJhPs7R4kvIfYs7Ora4ueuebasqeeNIayKU9ZIlwZnVx0BhFISnhArXTV
-	 Mj9hxZGFhpYeADjFpdTlNW0w3RCUMfTSwyUD1S/+GFlOVZOpS5ccCv8zcDQ0dDrxrJ
-	 tz4ul6tCFJ4Uk3XvaQLoCvY5fYeU8tAtjfaL4GwVV+PlJLtvQmfGpaQMmK8qs2wSff
-	 dJwMDrErJ21AKPk3e4ibyxIbZ0Uun1OYv0VuUybwcs1vBN21VlPCi6eqRdNFNmCBj3
-	 31IK9gBQiXg9w==
-Message-ID: <93f57211-7157-485a-b84a-ceffbd8591cc@kernel.org>
-Date: Tue, 24 Dec 2024 17:37:01 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507591BC9FF
+	for <linux-iio@vger.kernel.org>; Tue, 24 Dec 2024 18:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735063827; cv=fail; b=OXd212en5azaWeSxm1GiUWCeYUOC23f/CPusY6JNhozBeMkPE+dU3Zm4qYz1HgqJU0/Kynt3496tVeVNAovWm1UpsqzEtkL1VDXcFglbzylrRBRtaFzLbpVXxPEGXLEllHggWM5k4M5IibGUSZ3qdx0hGjKZOB1VrQyFKMPNdRM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735063827; c=relaxed/simple;
+	bh=jq8+gr8ea8RGh88FXhwj7NJ3m2x62Mtg/ztobt/IWtI=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=EafQRmBUMaZL5HDrzQJgmXsUgoJNEpIxQQZ0IIbKFY/Uw48zEgax/uIL0vv6cYmouSwQfX38CgN9fDOtHINe47pN7AgqZhtg8JjsRmj06Rg+v4FUNIuzSRh1FzECtJGBECPsBVJLzFFE4NrQEMaFukzFdtvR0jCUCwybqsDNRpY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=MiJrjIyW; arc=fail smtp.client-ip=205.220.166.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOGj2w6001452;
+	Tue, 24 Dec 2024 16:57:43 GMT
+Received: from beup281cu002.outbound.protection.outlook.com (mail-germanynorthazlp17010005.outbound.protection.outlook.com [40.93.77.5])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 43nm1ya6m9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Dec 2024 16:57:43 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mPcGdWfH/LjuL/6jKCGA/OyiVY2KYB5TgXj9a+mPMW43mBAQFv64w4AVTg82hUP96aYQysCGtIKaXKk082mO3Szqz+2blL9GrsqDaA5bRzqEkg4LmNRTWkk7MmwI9S32MltoVrlwPCU3fzcG3ERTm44swoiOVOx1SdIF7kFa23HOBrzCJ9ncAgkieHEL3TfCoBACnRfEPINkSCqdVjs+iCxX79BGNnWitu9/i+QBg+WJZn0xAcuUYA6EWq1TllI+V/KzCNrvCJ60wiZaXWmFmKWBmKF6MzU4i+h7my9WIuYVF5ibvPLXyHm/H7p7FI2DUFERtJTpVggiIZ3bdxR/2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jq8+gr8ea8RGh88FXhwj7NJ3m2x62Mtg/ztobt/IWtI=;
+ b=wOm7Hslxi5X6qyshiTsBGEJMT0RdYUjsQJhfppKKvhI1LPVy/fGPzYMA7pYvmxBhv1EUTcwQb3pKEFRewEc4mc7PWC6KnTvK0s9rb2l8Hhki2pl/1S6Q4YEbe3nslyRpod9PZ56Ni0E/E+RYDvPiUNfFfpad76EANtZUJLdo8j0PYWj3Y+IxGIQNJpIyolYRxz/4ZuPX86QyyhJN/p0QQKA/aWlijk4rqWeLkaTDBXjzEOR/EOsTfk42Vi4tayDiir7FTllvvrig2WL3OQTt9EQiZ9jd1m1EGIUNQt8lgtZagRA68PNy/ZyTAHtNXy+ZaeyxRyFULlT7qTXT+BzmVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
+ header.d=tdk.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jq8+gr8ea8RGh88FXhwj7NJ3m2x62Mtg/ztobt/IWtI=;
+ b=MiJrjIyWyYmqLphvnDXXOnlrWuBTK0gqUMKHRSrwJPzY3HgXisZ6njBHfzRYPHEPO6e70Z0z/615eqmC9/njyDVEr7a9C0+zUTGCraOkn4oLr2LP4tdwdymLi7v6fRztw26kRHXOs6zXNZLNI5R5/++937r8IDRiH6YHwp49m4ZYmb/J0RJB4Afm+aO3XWvKT3V10DrSJjys3EC9dFeouAmtHdxjnV6b9n0PelLPPOkozg8aMt3YWMMNPOXVrnsvcBT8ksuRiRtvGHkn6ikebBXf5pYxeiwmewXckCnc2tCGL/X0EJSCYQE581aIUJGjHYtFGdQgYawihoEPyfzd+Q==
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
+ by FR4P281MB4807.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:146::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8272.22; Tue, 24 Dec
+ 2024 16:57:34 +0000
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac%7]) with mapi id 15.20.8272.013; Tue, 24 Dec 2024
+ 16:57:33 +0000
+From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: linux-iio <linux-iio@vger.kernel.org>
+Subject: Merge of fixes-togreg inside testing?
+Thread-Topic: Merge of fixes-togreg inside testing?
+Thread-Index: AQHbViQWlQ3i43FRPESH/gx6YirM1Q==
+Date: Tue, 24 Dec 2024 16:57:33 +0000
+Message-ID:
+ <FR3P281MB1757F070DE7F29786C13412ECE032@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+Accept-Language: en-US, fr-FR
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR4P281MB4807:EE_
+x-ms-office365-filtering-correlation-id: 39ac32f1-679e-458e-16a1-08dd243c0fc9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|366016|10070799003|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?4YBlhp5cHDTJurga/8JlFPLuq3FdKLRcqjA6m3g71nyeosD0W3UF7cajuP?=
+ =?iso-8859-1?Q?hvVQGOs2iTVq+uLCF7uT5oCWADt0hCtLf+qlUq6Ug5vp8rCoz0xuWFEVLk?=
+ =?iso-8859-1?Q?TMCC36/yxqFWQ6Q7Qn0P7/gDc9isqbBgiKQv906T7rhOtxVkZMxZgdOPLt?=
+ =?iso-8859-1?Q?Del4xteZ7lerlQxjbjvHg8qliV4CGrL50n1UxYHo4Q7IakfVYoXueo1G49?=
+ =?iso-8859-1?Q?TkI24YMhQl5lcg5xnzo6sDSunbAhWHcSF0tz6++2XXM90/Z+3Lcc1NAVwB?=
+ =?iso-8859-1?Q?Hr1Ychb6z+j5QrE5Hd+XB3jZceqUVSxIWb7imhgyphFB3QMFt2WhIP0+o8?=
+ =?iso-8859-1?Q?mWNa6in/IdukDS1l39Q5IUfBy7BqcGanouJarWuYVA4h+CAbDbQ5vf5ntY?=
+ =?iso-8859-1?Q?pZw/llMgCs7Mc2xJW2VbGnXqZaRulh57JBfIVuLfIJULq6R8h1DxNMWohe?=
+ =?iso-8859-1?Q?u0ZYTEMuruS7YnrYM83GVmJPWWjPaR1LESJHs10UogGuLYCQeMgvXWpSEH?=
+ =?iso-8859-1?Q?7orBVy36nVq1eLdG3Aqfrn13GdTKKPS3gViyQTTvZ3hH5iuicWf4ihjhXG?=
+ =?iso-8859-1?Q?swi8hfibfucQVuxxV97rVm3Gjr1O6EZcX5pxeJ1UL5VE7h8R403NUOOHD1?=
+ =?iso-8859-1?Q?BhIRvdALAWag3fy6nztWZ5SevtgdR27ZlJUMuizlQ3+KCocz4L9Pg4liXI?=
+ =?iso-8859-1?Q?w0obRBjw0PIDWOinW5tmenZZw8RXee+eS/mxbJ3r4/d4dNxEIDa44xed3L?=
+ =?iso-8859-1?Q?+87AhAktxaD1kzW3yNsN9yv5ZboeFpjl1AUFgtaodRNZLDnV0YckxxR52B?=
+ =?iso-8859-1?Q?PNJoLZ8lmBBL6w5wovj+9WAB55ArADitX3x31ufPM25Y37UC9tdyPkMakJ?=
+ =?iso-8859-1?Q?h0MCKBKtlBoSSU/a8EfzdIBtv44kdPxa+9syyinRi2Og0zWLi+pEkZQSxz?=
+ =?iso-8859-1?Q?S2yduDsTw1aZb/kDmqVhc0NPpO3oL0JigBhUZqEGGdj/2HnkfA97BxBZEh?=
+ =?iso-8859-1?Q?dseRlP0cc/0WCbwFEDjzLSjcJcrF0g1AuWbkzJ6Vg/8huI/FHVORNhA0mj?=
+ =?iso-8859-1?Q?glGpiSsknnR+IscoPDksoRGAEeNUlNJn0eBQRRsJQ10lce9Na8bVzunOI5?=
+ =?iso-8859-1?Q?IWdn6W1b5On8VuFOjHlWhvZ+Qd0DiIatWNiRVrAMVq1w+e1yW8ZVlE3YSW?=
+ =?iso-8859-1?Q?n+VDg9sIFv6Zpzgwf+Tyr7FFIOqQtfDzYNX7tBKsnxGSLctHh/KSKG2I8Z?=
+ =?iso-8859-1?Q?QG0MmEfvZemnWOrxwu0IxVpyPWIEQuTh53IXJsa8OyF6+nA1dNiLfpbxpD?=
+ =?iso-8859-1?Q?UeX3gwhj8b8SP8jRzfGEzhoHesWvo6zzLFh+RlzJDBKffDhn3v9eIjSZfB?=
+ =?iso-8859-1?Q?sIqxqbn5gBxHD1yUxr62+Kd47B3H/HX4ydDZpJmM7DZ89a9M/i3lIjZHDi?=
+ =?iso-8859-1?Q?iq/EeXQ5HBA5CaWUIljwT7/aVQYmYcXzaNbzogcxYXiN/mCZUASjY+GdaJ?=
+ =?iso-8859-1?Q?Q5/0aR7eo6WohDhrQM3d+h?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(10070799003)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?xpBOLegci5AcXC88nOKtkTTbaoK72dQ9g6YILvb7z6PEHNns9hMoh6wBq/?=
+ =?iso-8859-1?Q?hr/pZUFfQ66BTqvyTFnF1OwdE86xC0wdsN3bcpKj3GiY53Eg8mLfV8hqB8?=
+ =?iso-8859-1?Q?xu9KmvyDaVgOw4AdXuWFCBJbfMDIy5JdT8SMRHNEqDenNWZOAOJ4eT3Q+R?=
+ =?iso-8859-1?Q?8w5vDiZ7iY+1erNzurTbgU/7XOdDGWJPw9dmSBiV63kYHWXO7yf5+1eGG3?=
+ =?iso-8859-1?Q?AoyfeOKJP/yRCk19cIysp7o3n+wFVGYi4dhTLkjzyj8+3JTQZmmO4xDtmN?=
+ =?iso-8859-1?Q?+wQSQbUXm+wCRpCGpiIcgpt7CdmbaPhmUaL3u3MAl2Q5QiolVveCRuW97m?=
+ =?iso-8859-1?Q?JkuH3+W7FvwlFSBrYBxUF9tYjHvdmW4rqYDswpcGPhMMbjR/1WEj3aHTeU?=
+ =?iso-8859-1?Q?wMYNx3zQryKBM4aFBhb9E5uPBnorjJ0mGRNBXzwBbBZnmU3aSwoHAw9PC4?=
+ =?iso-8859-1?Q?+ib6GlySGHgpZAbZRY9jAkY60PjdkzxFz1Nps9m9/ae4fx25LtrYf0Mh4v?=
+ =?iso-8859-1?Q?oRKfhBDRXEV31EF93m7lAvdK3ibO7xdIeu4CmO0vGLpO/VTbn1mGc+CI/8?=
+ =?iso-8859-1?Q?s5gnHJgYnywXqMpLNzmsEmvVFlaYkcguzHzBh5yJJHn4N36FN9/m+enWIW?=
+ =?iso-8859-1?Q?HR3fU7GwrWdHrHTxz/N3PdrqQiV5kqPZqJLgN7/GDjlniQS1yLXLQk3GDm?=
+ =?iso-8859-1?Q?Dkk27WbzrOqlt7Rclkp20g0ZDbaUwgAqVUFQtwAO/I8kjCIgrgY7KcT+Kf?=
+ =?iso-8859-1?Q?5VK37UphHPFfLvPIeG0CxLZ3gbK71KAeF9aRefoFpoj6Qzsf6pygeimKO+?=
+ =?iso-8859-1?Q?A+j1IXlxbvN0h4HjPZrvKa+v2ObtZQlwX98TnmnS7vQlu+tcnA7JlaXIzP?=
+ =?iso-8859-1?Q?ZS4E33dR5IQoPD45QhW0+Fs6vMg9Xz+WP1U4AsqxkP9q7O+rMm+30YzCkt?=
+ =?iso-8859-1?Q?NzVMjBOoAR+j1ilFfk0JUOuHxOiS4e5pLVf54XBWKXX/J4U89mWZjDCTVA?=
+ =?iso-8859-1?Q?t+tW7nnxH21nsAQ8aeJuZkBt31kow0OlFmL8krMR7nwX3x9HkWV7OJipJK?=
+ =?iso-8859-1?Q?O0g7oQx1SxOIfsbeUp49AMWsmJzWA/cNqCJl6m+1XkzuEoeWlvJH6gnv+U?=
+ =?iso-8859-1?Q?7bJITtwwHUpCVk4sbeo7pXoH9w3H1NS8Q4Kp7EPuAe0SRo1RniAZKrZwim?=
+ =?iso-8859-1?Q?xIIPacHhGIrkk/SIEUrF5+N4sTov292pAOsYHrCDY+5dak0rnTkrShRQ9p?=
+ =?iso-8859-1?Q?x4Hw0GO5fI/xZ+6F3G2vBwVBrhHw/Lvr5WTKKNCRMNMki2pxzB/B5sFltr?=
+ =?iso-8859-1?Q?a4O7ptUR6AlgF95NSKSJXhe+N10R51MHzaKlzfGizqK1wfxFpmOSNkxymn?=
+ =?iso-8859-1?Q?1O/IoIlqZBR1bc0pttVxyK9PoRXPZBz3BVdytLp8rn/qpK16i7zllxOqcV?=
+ =?iso-8859-1?Q?mn5rU15yixT88DIK5nQia/QTwslBeUnCAEGxVrsT8YsCA4jEFcl7k/trrB?=
+ =?iso-8859-1?Q?uaF9Ytf+0pKTWegD5tdGVOVAKHjH2TRw++YVhK8HtfgDOyDEzo31YeaGRZ?=
+ =?iso-8859-1?Q?EXxOajXA2gPg95qZQby9ShxIdSeLuqrATtgXbr0DPdckq6sq6JF9kulcMf?=
+ =?iso-8859-1?Q?SGDU1PwG7ei3UTfHMne6mcAeBHsSXeVLPCDQ9kI2oQ+9mbfA7zmxnTV/sJ?=
+ =?iso-8859-1?Q?EWsUsVOaOQHc/1G5+NUaIyvtob1PYGJv/gvekILONSatJrQvD3tkgTjx0C?=
+ =?iso-8859-1?Q?zISQ=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: light: opt3001: add compatible for
- opt3004
-To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>,
- jic23@kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Emil Gedenryd <emil.gedenryd@axis.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Arthur Becker <arthur.becker@sentec.com>,
- Ivan Orlov <ivan.orlov0322@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Mudit Sharma <muditsharma.info@gmail.com>,
- Julien Stephan <jstephan@baylibre.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- Andreas Dannenberg <dannenberg@ti.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io>
- <20241224061321.6048-2-hardevsinh.palaniya@siliconsignals.io>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20241224061321.6048-2-hardevsinh.palaniya@siliconsignals.io>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39ac32f1-679e-458e-16a1-08dd243c0fc9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Dec 2024 16:57:33.7393
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 28tV+Yy/FA2gekKpElXRNX7tg9k15fy7SIx/A8Fi1JNM7SWlPuANgon+IF8eTXwWkOqQWTWm23L9DO0c/HPEmWx1R0NxdXtvhXsCo9rI8Y0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR4P281MB4807
+X-Proofpoint-GUID: co6Aoz_1EMWHbehiY4OpbCMtZRmThMfh
+X-Proofpoint-ORIG-GUID: co6Aoz_1EMWHbehiY4OpbCMtZRmThMfh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxlogscore=410
+ adultscore=0 suspectscore=0 mlxscore=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412240147
 
-On 24/12/2024 07:13, Hardevsinh Palaniya wrote:
-> Add Support for OPT3004 Digital ambient light sensor (ALS) with
-> increased angular IR rejection
-> 
-> The OPT3004 sensor shares the same functionality and scale range as
-> the OPT3001. This Adds the compatible string for OPT3004.
-
-
-Make the devices compatible (use fallback).
-
-> 
-> Datasheet: https://www.ti.com/lit/gpn/opt3004
-> 
-> Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-> ---
-
-
-Best regards,
-Krzysztof
+Hello Jonathan,=0A=
+=0A=
+I currently have 2 patches inside fixes-togreg branch for driver inv_icm426=
+00 that have not been merged inside testing branch (c0f866de4ce4 and 65a60a=
+590142). I've been waiting for them to be merged to send a new feature patc=
+h that is based on them.=0A=
+=0A=
+Can you tell me when you plan to merge these fixes inside testing branch?=
+=0A=
+=0A=
+Thanks a lot,=0A=
+JB=
 

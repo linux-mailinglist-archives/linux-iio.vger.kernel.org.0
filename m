@@ -1,95 +1,112 @@
-Return-Path: <linux-iio+bounces-13804-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13805-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786B69FC650
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Dec 2024 19:16:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E18E9FC8B7
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Dec 2024 06:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739D91882766
-	for <lists+linux-iio@lfdr.de>; Wed, 25 Dec 2024 18:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 732547A1237
+	for <lists+linux-iio@lfdr.de>; Thu, 26 Dec 2024 05:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D01A1D1F6B;
-	Wed, 25 Dec 2024 18:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783EE15E5CA;
+	Thu, 26 Dec 2024 05:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NERIU9vK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUOEJ4Yc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770841CEEB4;
-	Wed, 25 Dec 2024 18:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC39E14AD3F;
+	Thu, 26 Dec 2024 05:53:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735150444; cv=none; b=neBRcY19mNS/Kfh6Oz5dw9NbEC5S9H5iIixQnemcTPNeS7+osxKwMJGqJBg0RpN3K+46bGDAww3G/I/iJrrHTkopOyE+0Pczsg2/duBWEbN43VP1T8rrS38egzsnW+zcerMS5azK9JWbV9GWbm1YapR4UPVnJfEIMO6Byh+/+RE=
+	t=1735192409; cv=none; b=KNWuNQ8zHxiKF33XsFd+o23E6kjS3CCqF+3MbyeiK8wxNQVvCinNAoRwBqoDcBuu1lg1QgabIli5iU6D1iC5XvQdZPufKw2pvprrah20SiFnXEZdbuH5ZMh7OC2g9tL7jVzcTCbVFaePmvMi5DKqRrWkxEP2HnrRVoyIi/1klSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735150444; c=relaxed/simple;
-	bh=s/2Sud8tbTn3DV/gVz7omCuTc6DCCbix5hAZkUvCcyc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qB8mdzyLcelgSaL+jQybk6w7Fa+wTNDUPeUnHvl7+cFo3uX1jcZy+oOLjoXuyKmlK4qxNP+vP/28ZuyDaQUotLjllZy1zCUHc7i1VgGDdwAHph0vjpn6vcj6xDe7XMU1lyXSVP+ggKgq3S4V28al1QzspNYnzqLNRSxgyiAUY0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NERIU9vK; arc=none smtp.client-ip=209.85.218.54
+	s=arc-20240116; t=1735192409; c=relaxed/simple;
+	bh=7VvkaDH/zxEpeZoFn8NW96i/X2Xo+pswTjpT1YVY1jY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F93UsQtcfz2uSyJMN4MYRoCHJEkhKg4Ob2lk92SXN+Jb0sucOVyQbwU7sk+eL5YXzg0aePie8x61w25FjLZ6WteilSqDER6azRct3gG2id5X50NThXTOqRIaorQcp0g8xL4Ns7nslY1xQRD9mTxbEirWEkiSJDjlqV8QnyhcVSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUOEJ4Yc; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aab73e995b5so108986666b.0;
-        Wed, 25 Dec 2024 10:14:02 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2156e078563so63172215ad.2;
+        Wed, 25 Dec 2024 21:53:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735150441; x=1735755241; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CYq2MT/kLJ5VNDS2ggKYbL2pEgZu56efpig6dGEeYSQ=;
-        b=NERIU9vK3wYVexb1CbTAwY/MQ3lo71xY+OPovy144ncCQPwTzqgBck4QwcKGIlInYA
-         4GwwcIG9vPBuDe3YV9MMfhs3BjJSb3yu3YqTV0dpVh3SUskRRQR0jURAnlapyMGkl3W7
-         cCmbjdQ1W7dBKv7GEUYL6nUob6N4548aYOIIXHARDziT1AS94MLAXHq5wZJ1SpVIHUwT
-         B+CfSPvq9nkvXTvjsPSYYRYmUPeGHPIio6v5eadqZIJd9aCZoCEZX++gladM+Zmpw1XG
-         1/huU4toV4XZDzdNpvsO0OWRMjG7wVIfgDuHBUbu+jvoDVFDX9e3tZal379XSurTqqec
-         kgTQ==
+        d=gmail.com; s=20230601; t=1735192407; x=1735797207; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FeWw1POirV279kyPc1N7G6Ig9OxjD0d5GRNIwt9u/dU=;
+        b=OUOEJ4Yc9FbuvO0sNmKdcVRl6rIrkPDr10RkrRmEMOIfIzjDvziXkmPjHY8/3bZZtZ
+         47TpCfcTZCU2+CxDn9ThrnFX9lNq681ROOJNuflIuZ2Vt4DZYxbagLkkpmlciw+teGWW
+         Tb6svinKjXqMs+VrawW5rP2UK8jiFCqzXKIMrY5Y9CXGv1hernWZaxfw8yRLv5sXK2wa
+         sj7GAS52nj8oChqI+eL4ckgNX2X4hiJWGs7uVCUDZJS9JqsShanuoE/CCdmjXuRM0i9o
+         IbsQzkgIq/TvZAbbo/Z3jNWuzRuV84m7tXQAiyz8m8HVjF9hnjHXoQGEjfLRSNYUaDRG
+         qYGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735150441; x=1735755241;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CYq2MT/kLJ5VNDS2ggKYbL2pEgZu56efpig6dGEeYSQ=;
-        b=gfAGbfEMqos6zqH82sLhucdQyWwaURTHv3WjD7PzDMnUpWcULrhp1khDw5v11xC6Gr
-         56IGrGhd8fa8PLiMZpaguRHPhUM5qGHl8kAO45la4yBUM5FhTTy2yXlotOE5vtFuex08
-         3w0Ovbn0NvDZ6Ues+pRf78Nl9C23Gt0/BlwInu0M9gyHG1qEJPOrYyd/gRi5UD9I9ea6
-         kgmWivZPQ/xBhTxqHJ5Z5FDjdmQCXypmTNWPwRBljaGnYV8+BMLpfEEphnjZQLplduky
-         DMWuqRWN45B/8i+PAnljHHFLam5Iw6fBTIgPtrw5jvTGZIHcA0QllMjtXUraKaKQvx3u
-         YIwg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdKR63hCHHk8eJqBQ/mqxucAyBdXIMwJxKrkUG7t1/Vmf7kzhhCZ5CWpITKo4Ic+SsMciBONLWaSw=@vger.kernel.org, AJvYcCVO7w06Q+L6lEKQvIKFo/WYvWuoFzqWSKQnYprbOgcfe3qdiptuqTgMA5eCRlXK2LRjI9QYdyYufQhSTVm9@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTXKaVkk34Fn7KeTAFTR6YBzJbh7mJF3HP0DqYNay5BDdLsRxG
-	EQiQArKgnL4FRTnTZQOXmO93CRZyg3ZVnlpA1ICWs4CwQl9RSTUY
-X-Gm-Gg: ASbGnctfFX+y6rcd7m9pBB1c9qpd0l4SPZh6JhkFo3SykX+vJ54ZkelVimmliaSl5RM
-	ouCrZgADVw3qqTFFhNXRk+zSCXMbSuSf3i0eFZawIILUa5anxg5NhwsaJHGomnzNxCrUtWh5LYo
-	A23X2vJYav1RnT7u+B1lHdtpuCcU99nHMatheM9gnlQGqxvIO96kG1JLUBV0T+IegZq+8JQbsiK
-	vSA4xQ/xpc7h8K0mzMElGrLWbC2BbssV8huTh4UinqLZG/mCKRtIE2Xj4vxdK0jQlMO40L8orC2
-	BuBNrPWWANfkR+iV7SqyOdocyyLrTgsSac4=
-X-Google-Smtp-Source: AGHT+IF6H0bMBaPLluCSQabzlTudYAwuj5SbVP2NOXXbbHTsdrugpv+mucLR3NL6+vnLMnQ/uoBu3w==
-X-Received: by 2002:a05:6402:5109:b0:5d0:bd3b:b9a9 with SMTP id 4fb4d7f45d1cf-5d81de1c38cmr7396409a12.8.1735150440821;
-        Wed, 25 Dec 2024 10:14:00 -0800 (PST)
-Received: from d9dabf0abd47.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80701ca31sm7721141a12.88.2024.12.25.10.13.58
+        d=1e100.net; s=20230601; t=1735192407; x=1735797207;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FeWw1POirV279kyPc1N7G6Ig9OxjD0d5GRNIwt9u/dU=;
+        b=ODOGzgW59jFJFP0otE3ymiG7euNJmaEsQXOkohOCMMcLz4EEkNlPFIVUe4WMy4kWRa
+         hCSn15A2n9e123aH8lNdUSrxdJlxUM3Vm9cfuh2vAb+ukaUb4C6D15BqSado2LPdA/B8
+         NpRUtAshKc6ALevClZEOnM2xuBPDOOY/ejZQTJ8aLHje0+YO77pb/5N7GH9Zy346H3nj
+         w0KYdvCUaTA8K2IKic7Bs14NiUjt2tfuo9OVxyx2W42L6YI51FiTLGM/u/uM4E4mjwev
+         8lDt1y3UFYnXV5ErVQ4EJuntBsU4l0+2sJcAYH4Bf5yxcanX32bKilmvIXQPGEstumf2
+         LQ4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUwD8whGqDlyEPLotfcA8Vbv8jTO8+NjsvhUgN4HSOuapi+39a4UCirB6KPhIgErHhGTeXjCKh2ZAqs@vger.kernel.org, AJvYcCX42CunauX+MfrE7TvX6wLM+9aHihN6EatMB1bx6PT8js7HPRUjqgLNhbCZj0UrhQedKFjG/qcdWT5HUqfe@vger.kernel.org, AJvYcCXImqVtHW2Z3iThq3CU7rEcxMiIZHulDvHsF8GsZ55YdpVTOS4BvnoSkBgCotsc4x1zXJD/wiiD8btv@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0Maa54w1oh4gXj891yPXA+ByrnKcD4w7UYkaa+CkCoyxawIQa
+	xQe2nQhvhVfOw7UuSMVu+evEICEQMr+JDPyBD5rj8HfVmJ38UI77
+X-Gm-Gg: ASbGncsBccNEVN1I0vAigvwMc2pjfPGpk9JYHsBsKCCXoHfmxGSNqN2FAMq0PvTQ/X7
+	20rUDd+1k6EnLE+Gr+1lAqf+tco8sCc4x+rKDwxInud7vWkFNCgbHsbLh0IQQJN3Vk9fuSnO/Qc
+	s/+rpVi0NCX+QrutHzIAUCCorIVMet4lDNgcVT4pXtFTtOUy0o1Q3gCSI5RS3OdqCWMJGLaiiCP
+	BnH2AC2CZrZf6UmzNlDRsih0hT2vqPE4HXIkMXhYRKEvcgWVI1ltT/cv7kOyAORZrxXj1JMMKW2
+	+w5Ac9QlDTKGdLMdlOSl/g==
+X-Google-Smtp-Source: AGHT+IFFhwKO4ICta882R38aTBMCAsSh7ScglNr3FCDjMYJyLDyCZlBEzIXsDd8x71I/ifCe9b3iWg==
+X-Received: by 2002:a17:903:320a:b0:216:539d:37c3 with SMTP id d9443c01a7336-219e6e9e8d0mr316810885ad.24.1735192407017;
+        Wed, 25 Dec 2024 21:53:27 -0800 (PST)
+Received: from hcdev-d520mt.. (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96312asm112679455ad.21.2024.12.25.21.53.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Dec 2024 10:13:59 -0800 (PST)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
+        Wed, 25 Dec 2024 21:53:26 -0800 (PST)
+From: Eason Yang <j2anfernee@gmail.com>
+To: avifishman70@gmail.com,
+	tmaimon77@gmail.com,
+	tali.perry1@gmail.com,
+	venture@google.com,
+	yuenn@google.com,
+	benjaminfair@google.com,
 	jic23@kernel.org,
+	lars@metafoo.de,
 	robh@kernel.org,
 	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: devicetree@vger.kernel.org,
+	conor+dt@kernel.org,
+	nuno.sa@analog.com,
+	dlechner@baylibre.com,
+	javier.carrasco.cruz@gmail.com,
+	andriy.shevchenko@linux.intel.com,
+	marcelo.schmitt@analog.com,
+	olivier.moysan@foss.st.com,
+	mitrutzceclan@gmail.com,
+	tgamblin@baylibre.com,
+	matteomartelli3@gmail.com,
+	alisadariana@gmail.com,
+	gstols@baylibre.com,
+	thomas.bonnefille@bootlin.com,
+	herve.codina@bootlin.com,
+	chanh@os.amperecomputing.com,
+	KWLIU@nuvoton.com,
+	yhyang2@nuvoton.com
+Cc: openbmc@lists.ozlabs.org,
 	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH v8 7/7] iio: accel: adxl345: complete the list of defines
-Date: Wed, 25 Dec 2024 18:13:38 +0000
-Message-Id: <20241225181338.69672-8-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241225181338.69672-1-l.rubusch@gmail.com>
-References: <20241225181338.69672-1-l.rubusch@gmail.com>
+	Eason Yang <j2anfernee@gmail.com>
+Subject: [PATCH v3 0/2] iio: adc: add Nuvoton NCT7201 ADC driver
+Date: Thu, 26 Dec 2024 13:53:11 +0800
+Message-Id: <20241226055313.2841977-1-j2anfernee@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -98,103 +115,43 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Having interrupts events and FIFO available allows to evaluate the
-sensor events. Cover the list of interrupt based sensor events. Keep
-them in the header file for readability.
+Change since version 3:
+ - Fix comments
+ - Don't put nct720"x" in the name, just call it nct7201
+ - Remove differential inputs until conversions are finished
+ - Add NCT7201_ prefix in all macros and avoid the tables
+ - Correct event threshold values in raw units
+ - Add with and without interrupt callback function to have the event
+   config part and one that doesn't
+ - Remove print an error message if regmap_wirte failed case
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- drivers/iio/accel/adxl345.h | 57 +++++++++++++++++++++++++++++++++----
- 1 file changed, 51 insertions(+), 6 deletions(-)
+Change since version 2:
+ - Remvoe read-vin-data-size property, default use read word vin data
+ - Use regmap instead of i2c smbus API
+ - IIO should be IIO_CHAN_INFO_RAW and _SCALE not _PROCESSED
+ - Use dev_xxx_probe in probe function and dev_xxx in other functions
+ - Use devm_iio_device_register replace of iio_device_register
+ - Use guard(mutex) replace of mutex_lock
+ - Use get_unaligned_le16 conversion API
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index bf9e86cff..df3977bda 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -9,10 +9,35 @@
- #define _ADXL345_H_
- 
- #define ADXL345_REG_DEVID		0x00
-+#define ADXL345_REG_THRESH_TAP		0x1D
- #define ADXL345_REG_OFSX		0x1E
- #define ADXL345_REG_OFSY		0x1F
- #define ADXL345_REG_OFSZ		0x20
- #define ADXL345_REG_OFS_AXIS(index)	(ADXL345_REG_OFSX + (index))
-+
-+/* Tap duration */
-+#define ADXL345_REG_DUR		0x21
-+/* Tap latency */
-+#define ADXL345_REG_LATENT		0x22
-+/* Tap window */
-+#define ADXL345_REG_WINDOW		0x23
-+/* Activity threshold */
-+#define ADXL345_REG_THRESH_ACT		0x24
-+/* Inactivity threshold */
-+#define ADXL345_REG_THRESH_INACT	0x25
-+/* Inactivity time */
-+#define ADXL345_REG_TIME_INACT		0x26
-+/* Axis enable control for activity and inactivity detection */
-+#define ADXL345_REG_ACT_INACT_CTRL	0x27
-+/* Free-fall threshold */
-+#define ADXL345_REG_THRESH_FF		0x28
-+/* Free-fall time */
-+#define ADXL345_REG_TIME_FF		0x29
-+/* Axis control for single tap or double tap */
-+#define ADXL345_REG_TAP_AXIS		0x2A
-+/* Source of single tap or double tap */
-+#define ADXL345_REG_ACT_TAP_STATUS	0x2B
-+/* Data rate and power mode control */
- #define ADXL345_REG_BW_RATE		0x2C
- #define ADXL345_REG_POWER_CTL		0x2D
- #define ADXL345_REG_INT_ENABLE		0x2E
-@@ -34,20 +59,40 @@
- #define ADXL345_FIFO_CTL_MODE(x)	FIELD_PREP(GENMASK(7, 6), x)
- 
- #define ADXL345_INT_DATA_READY		BIT(7)
-+#define ADXL345_INT_SINGLE_TAP		BIT(6)
-+#define ADXL345_INT_DOUBLE_TAP		BIT(5)
-+#define ADXL345_INT_ACTIVITY		BIT(4)
-+#define ADXL345_INT_INACTIVITY		BIT(3)
-+#define ADXL345_INT_FREE_FALL		BIT(2)
- #define ADXL345_INT_WATERMARK		BIT(1)
- #define ADXL345_INT_OVERRUN		BIT(0)
-+
-+#define ADXL345_S_TAP_MSK	ADXL345_INT_SINGLE_TAP
-+#define ADXL345_D_TAP_MSK	ADXL345_INT_DOUBLE_TAP
-+
-+/*
-+ * BW_RATE bits - Bandwidth and output data rate. The default value is
-+ * 0x0A, which translates to a 100 Hz output data rate
-+ */
- #define ADXL345_BW_RATE			GENMASK(3, 0)
-+#define ADXL345_BW_LOW_POWER		BIT(4)
- #define ADXL345_BASE_RATE_NANO_HZ	97656250LL
- 
- #define ADXL345_POWER_CTL_STANDBY	0x00
-+#define ADXL345_POWER_CTL_WAKEUP	GENMASK(1, 0)
-+#define ADXL345_POWER_CTL_SLEEP	BIT(2)
- #define ADXL345_POWER_CTL_MEASURE	BIT(3)
-+#define ADXL345_POWER_CTL_AUTO_SLEEP	BIT(4)
-+#define ADXL345_POWER_CTL_LINK		BIT(5)
- 
--#define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)	/* Set the g range */
--#define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)	/* Left-justified (MSB) mode */
--#define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)	/* Up to 13-bits resolution */
--#define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)	/* 3-wire SPI mode */
--#define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)	/* Enable a self test */
--
-+/* Set the g range */
-+#define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)
-+/* Data is left justified */
-+#define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)
-+/* Up to 13-bits resolution */
-+#define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)
-+#define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)
-+#define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)
- #define ADXL345_DATA_FORMAT_2G		0
- #define ADXL345_DATA_FORMAT_4G		1
- #define ADXL345_DATA_FORMAT_8G		2
+Changes since version 1:
+ - Add new property in iio:adc binding document
+ - Add new driver for Nuvoton NCT720x driver
+
+Eason Yang (2):
+  dt-bindings: iio: adc: Add binding for Nuvoton NCT720x ADCs
+  iio: adc: add Nuvoton NCT7201 ADC driver
+
+ .../bindings/iio/adc/nuvoton,nct7201.yaml     |  49 ++
+ MAINTAINERS                                   |   2 +
+ drivers/iio/adc/Kconfig                       |  10 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/nct7201.c                     | 449 ++++++++++++++++++
+ 5 files changed, 511 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
+ create mode 100644 drivers/iio/adc/nct7201.c
+
 -- 
-2.39.5
+2.34.1
 
 

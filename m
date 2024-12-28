@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-13842-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13843-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF039FDB83
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 16:41:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C52D9FDB85
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 16:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBF341614DB
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:41:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7309160F00
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4A5160799;
-	Sat, 28 Dec 2024 15:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A05166F07;
+	Sat, 28 Dec 2024 15:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+muVLQc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXaKakPA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA04B67F;
-	Sat, 28 Dec 2024 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50C3BB67F;
+	Sat, 28 Dec 2024 15:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735400470; cv=none; b=Yb6FuURz+X4lMWHm9lAyPTqDNbE+0wf1tgBgioU+zsSmcL8PHMctayiUqas3nEgBKUmLqjfvoeo59BQ/oLZa23l7An/rLsZwNkJ/VFv4zrg/+ZCNx3zjjdQm6rlvfDX/4MnelqNpJoK3aGwlIsGME1QNnnLHQDXzdRLUNoSJz7k=
+	t=1735400530; cv=none; b=s3FTtSXIa5WVoai+XEx6TY4DCs7IeadyUFRthXpnUrER7wURlJjOsLLKYaU/VhJS/34ak4kw1n+B2Wdkmwqz94BsbuoMJ5yrQnecY1S0GNQwZIeoeXUOzVv/Z5QkNQ83JsFXKTeCO3yETK6NfKLv38jns5obAHjnmChavUjroIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735400470; c=relaxed/simple;
-	bh=H/smT9WIQrV0an7KQDRTFZ3lwhDFTLFEQDU1vJb6i1k=;
+	s=arc-20240116; t=1735400530; c=relaxed/simple;
+	bh=f3/OuU2DMTF+FFmb1cQB/7Uo3sJpoxGWs1FuPYVZB3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SWH7z254TEIA60CWE1Py/xDxAob3XmnH0kL4XJTZX8I0bWQvFu0vt/VW98Z04rKsp593dtpTLAR3hXu6VdVF5v9+tqggjKajdcbQSkgCgiY4+GVXt7pYhPYuCspoI0apbg8Oszx17Xg9y4D+VzgvUi1NYbGwww0TD4MulNiac8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+muVLQc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C8DC4CECD;
-	Sat, 28 Dec 2024 15:41:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IxrdBbSErfSE4kiEzhG5RwohnZyyuoUI8PiWcVe/NxTNmBgr1iYBGW3jgIdlO4c2t46Kfmm9mk/Gnvw3fOq+of8VgwYLSVhd6GbfBivW5+Fp2pqyX/5ylKPNC4QmeGMc2wlCps+5IxYyYy2ETt4GE7eaTfS1hKRUHbWldpks7Nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXaKakPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32BC4CECD;
+	Sat, 28 Dec 2024 15:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735400469;
-	bh=H/smT9WIQrV0an7KQDRTFZ3lwhDFTLFEQDU1vJb6i1k=;
+	s=k20201202; t=1735400530;
+	bh=f3/OuU2DMTF+FFmb1cQB/7Uo3sJpoxGWs1FuPYVZB3U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=E+muVLQcAZ3KI/vVVSwkQ3Zss5Wc3EHLv1bCYBotVx7krUa8PZVniLTwkXXN3F4Zr
-	 9IVYIGTjdkUDtmq5wO87f583Do8eFZfyCpEdF8d6lhcag0j35ocHDBHcjRMmeXJrA2
-	 xl5aVErPNAbfSWSb9rSyfVjji5iG6NKAre8AYTW4vjRQ2zLNOp+qDL1p4mCQol9xbK
-	 yih3Golx7glQW0QlJHK8hfnvs7W/zMKHUAb9V1DLYUFPyw0LNaV2deuKkb9gmennPn
-	 kxC6IMY6YZCikZP4jAIDOMcSVHTlUOCIJ1tkQmTFAIzje86UBTcaApc+fZPlCjOtqN
-	 9BaJyXWbYHTbA==
-Date: Sat, 28 Dec 2024 15:41:01 +0000
+	b=aXaKakPAGaMNy0ex+5YQYB8S0Jv/eF3+P3PqnvzXPSN+0+89YrKxwsfc948Tq0+6e
+	 CReIekoG0t2O9U9suaO7c1wYZccjZCc0ODP0rZErMqxG8PiKIdJUdiRFlv37/Ig3Gj
+	 ObgA5aGwZ5ePOEFXk9wKo7Cten9C1EdNztAFsHzCb0VRI4UM1mH4G4/uFY/EPdn/XA
+	 VVggM4urkaQuyQvLSqJSUcUBsF71Hmk/DCnlRk94CNyl5HDED1j0Wl9qZbBHhtIInj
+	 d/jznMYAjTop/39Km3h4Z/yPyXegl/EKC9c1RvC3FKTEa9zJBQGjJLGOJxSKZGquGf
+	 2si4Nl4wJptvw==
+Date: Sat, 28 Dec 2024 15:42:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Lars-Peter Clausen
  <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 1/4] iio: gts-helper: add helpers to ease searches of
- gain_sel and new_gain
-Message-ID: <20241228154101.7f6f2e11@jic23-huawei>
-In-Reply-To: <20241224-veml3235_scale-v2-1-2e1286846c77@gmail.com>
+Subject: Re: [PATCH v2 2/4] iio: light: veml3235: fix code style
+Message-ID: <20241228154204.43f1b416@jic23-huawei>
+In-Reply-To: <20241224-veml3235_scale-v2-2-2e1286846c77@gmail.com>
 References: <20241224-veml3235_scale-v2-0-2e1286846c77@gmail.com>
-	<20241224-veml3235_scale-v2-1-2e1286846c77@gmail.com>
+	<20241224-veml3235_scale-v2-2-2e1286846c77@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,34 +62,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Dec 2024 11:59:00 +0100
+On Tue, 24 Dec 2024 11:59:01 +0100
 Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> This helper functions reduce the burden in the drivers that want to
-> fetch a gain selector in all available times or a new optimal gain.
-> 
-> The former is currently achieved by calling
-> iio_gts_find_gain_sel_for_scale_using_time() for the current time
-> selector, and then iterating over the rest of time selectors if the
-> gain selector was not found.
-> 
-> The latter requires a combination of multiple iio-gts helpers to find
-> the new gain, look for an optimal gain if there was no exact match, and
-> set a minimum gain if the optimal gain is not in the range of available
-> gains.
-> 
-> Provide simpler workflows by means of functions that address common
-> patterns in the users of the iio-gts helpers.
+> Trivial fixes to drop double spacings.
 > 
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Matti gave an Ack.   If you intentionally dropped it due to significant
-changes, you should say so...
+This stands fine on it's own.
 
-> ---
+Applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to take a look.
 
-here.
-
-Other than that, looks fine to me.
+Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/light/veml3235.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/light/veml3235.c b/drivers/iio/light/veml3235.c
+> index 66361c3012a3d9f30a79630d51f329dacfb141bc..fa5c7e7dfbfaec1b96428612b1dcba91ea51603f 100644
+> --- a/drivers/iio/light/veml3235.c
+> +++ b/drivers/iio/light/veml3235.c
+> @@ -321,7 +321,7 @@ static void veml3235_read_id(struct veml3235_data *data)
+>  {
+>  	int ret, reg;
+>  
+> -	ret = regmap_field_read(data->rf.id,  &reg);
+> +	ret = regmap_field_read(data->rf.id, &reg);
+>  	if (ret) {
+>  		dev_info(data->dev, "failed to read ID\n");
+>  		return;
+> @@ -389,8 +389,8 @@ static int veml3235_hw_init(struct iio_dev *indio_dev)
+>  }
+>  
+>  static const struct iio_info veml3235_info = {
+> -	.read_raw  = veml3235_read_raw,
+> -	.read_avail  = veml3235_read_avail,
+> +	.read_raw = veml3235_read_raw,
+> +	.read_avail = veml3235_read_avail,
+>  	.write_raw = veml3235_write_raw,
+>  };
+>  
+> 
+
 

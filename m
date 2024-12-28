@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-13838-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13839-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB819FDAEA
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:30:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D249FDAEE
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFC4C162174
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:30:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E5CE18830BE
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8271E156C74;
-	Sat, 28 Dec 2024 14:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5356216A930;
+	Sat, 28 Dec 2024 14:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhHeLNqk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j/Ko32qh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3954910E5;
-	Sat, 28 Dec 2024 14:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBAD524F;
+	Sat, 28 Dec 2024 14:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735396236; cv=none; b=imvpN4shZIJy71jZ+3h7kkw9RjhPmGnz4tTKN67htTtJhvYvU5QNqK/fMcGWucgJob63ONYO/0GXvGoPNAEZWobJfv+SQ+0xRlAkjwWGpyEcOoI/pEt53vDLmvJmpCI8JO+rApJ5AwQl0v0LOFxMoL2/ewdocXEXHKF3x65/4hs=
+	t=1735396248; cv=none; b=t4bXlmtYnO9OKKP3v7wE/8xAB+L6yYXND0vyK8msgcr+3IkbhDc2nVfZGSn8/RWmso+yNGTuh/8MBI4quHnG8b8I6PrrJqvIIhrrW9aUNF32S9NHZ2KGgsrgSiNeZjUzUaa4Dd3Bb1hg88ry48ywnQ+LM2XolFNPsR6uCL1goSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735396236; c=relaxed/simple;
-	bh=42d65e+I2bfgobXIhYC9FAIAFIK/lNe6zGpkmuNmgLM=;
+	s=arc-20240116; t=1735396248; c=relaxed/simple;
+	bh=BcgGtKTYasXayRat+Nz4cnvZhgXWJTtjXF5xdyiUq0Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lmBzkYRKQWKK5pGIXstxL6HoEsYK0yIY1OrC8OPHuhh52OHq0F09Z9Sucu1YuIJvU7S0Oe2/AtAmCW2C4mUC7f+I4U2YjKJhztyq2YZUUuLWrbbC4nXuSSJZ+4Y1AAK619g+b4iedZJXXCwXWGBIKljwohyvJ6hi95rlSF7Iy/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZhHeLNqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60764C4CECD;
-	Sat, 28 Dec 2024 14:30:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HAluCsfaployJ2GiQf0CW47FvZbDhR5MQr4esCLTWFP0SzNylN3cOi8IkQKpPDtNAaCMEB3HmOD+H6WPlHcr0UMS27L7yGiATmvuQvnhgC7UwDbbGwqp47jSKqRYJYkW8p/S8JvL7zYVhiGMBq8hQu6zST+0IaD6Hy777kthLBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j/Ko32qh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C176C4CECD;
+	Sat, 28 Dec 2024 14:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735396235;
-	bh=42d65e+I2bfgobXIhYC9FAIAFIK/lNe6zGpkmuNmgLM=;
+	s=k20201202; t=1735396247;
+	bh=BcgGtKTYasXayRat+Nz4cnvZhgXWJTtjXF5xdyiUq0Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZhHeLNqkD+jy83Afh9RHMOXC9iyA271UhFz6zdZJMksmB5YBUs12ft3m14RU6dxMe
-	 UNZrLkRRoN5ynwU8hKSef6duCnSjJ1Nv1kCgGZmekK7W+21brchv5vwdyValbMgRRc
-	 HZaZKz+isgwfUtv1CbObwsltHCLQr/35wTK76GFCiVQPWn5Vcd7/1DMaWTemULWrUM
-	 8Iz/hMLeJ/Uk4t0uuJqqwqes3hbsvwfz4q9cTVi9dF7EaP+Mxjc2uQEQbdF2yrHI+d
-	 4b+k/uQFKS4OYWGTn69q1UJaoZ/zDXHoB0yWhaUkiX2SH46LCis7bdW6bHy69IWGUJ
-	 KZVcwVefYynhw==
-Date: Sat, 28 Dec 2024 14:30:25 +0000
+	b=j/Ko32qhU7RljL3BoCZSJ4xH9jv07LxI+1RJJ/ASosS5wAp/g9SlqtAmfezZ6+mFl
+	 MWFUbveezZyDrghbBUVyASDK7+TcObQ0G4kwpKP1fwdNCi9urA7ScbuMBPQHwMFWCS
+	 3kfkKnLDja1WqjTe7OLuRDJxnGZ44PevrbwfaysH9PKEvDhYLcZ/Pyf8jKOKwXfgkm
+	 6UrgeoaAIJNtDZ//kM5U8HHwKnKwho6SehA7mlii3W7hY2zdcDD1aJv3bBoUiAvnpz
+	 FKOmDiZzcWwWHYVjVvjV9r2bhb0h3kb3+UpDBnyAzA5TV51PC5AYsMz5OeHIGauwCc
+	 whFnJxJRkxBoA==
+Date: Sat, 28 Dec 2024 14:30:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH v8 2/7] dt-bindings: iio: accel: adxl345: make
- interrupts not a required property
-Message-ID: <20241228143025.4af64793@jic23-huawei>
-In-Reply-To: <20241225181338.69672-3-l.rubusch@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Subject: Re: [PATCH v8 3/7] dt-bindings: iio: accel: adxl345: add
+ interrupt-names
+Message-ID: <20241228143038.29c7a9a5@jic23-huawei>
+In-Reply-To: <36gtabgmu7f2mafxzq4siwbf2hocyoudgi7mhkr3v33ajqcn57@xq7l63lrgdxf>
 References: <20241225181338.69672-1-l.rubusch@gmail.com>
-	<20241225181338.69672-3-l.rubusch@gmail.com>
+	<20241225181338.69672-4-l.rubusch@gmail.com>
+	<36gtabgmu7f2mafxzq4siwbf2hocyoudgi7mhkr3v33ajqcn57@xq7l63lrgdxf>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,34 +65,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 25 Dec 2024 18:13:33 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Fri, 27 Dec 2024 08:58:00 +0100
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
 
-> Remove interrupts from the list of required properties. The ADXL345
-> does not need interrupts for basic accelerometer functionality.
+> On Wed, Dec 25, 2024 at 06:13:34PM +0000, Lothar Rubusch wrote:
+> > Add interrupt-names INT1 and INT2 for the two interrupt lines of the
+> > sensor.
+> > 
+> > When one of the two interrupt lines is connected, the interrupt as its
+> > interrupt-name, need to be declared in the devicetree. The driver then
+> > configures the sensor to indicate its events on either INT1 or INT2.
+> > 
+> > If no interrupt is configured, then no interrupt-name should be
+> > configured, and vice versa. In this case the sensor runs in FIFO BYPASS
+> > mode. This allows sensor measurements, but none of the sensor events.
+> > 
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>  
 > 
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Applied.
-
-Thanks,
-
-J
-> ---
->  Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml | 1 -
->  1 file changed, 1 deletion(-)
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> index 280ed479e..bc46ed00f 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> @@ -40,7 +40,6 @@ properties:
->  required:
->    - compatible
->    - reg
-> -  - interrupts
->  
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> Best regards,
+> Krzysztof
+> 
+Applied. thanks
 
+Jonathan
 

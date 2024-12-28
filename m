@@ -1,59 +1,61 @@
-Return-Path: <linux-iio+bounces-13834-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13835-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCAA9FDAD7
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:02:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEB09FDAD9
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 15:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7141619E3
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4359618831FD
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262E515855C;
-	Sat, 28 Dec 2024 14:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1258D15B13D;
+	Sat, 28 Dec 2024 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dt5vSrCy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neKmbm+Q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4EA2111;
-	Sat, 28 Dec 2024 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA94D3596F;
+	Sat, 28 Dec 2024 14:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735394527; cv=none; b=mzFZutGBmMiOAF3IK73koLDQG1PW4LQq67CyGRPOhGg7CYUDlgamsZAOXd+b6GXlbMbYAhnnE4aUCLbr5V/wPzdhNG7tSEXox5OOCef+DOA/c5ZDozikHlV5C3ACCyCdWx1V/6pFXVVXgs0jXxqiS1lqQ4irugJag/t4ap1EjYU=
+	t=1735394834; cv=none; b=VI6uC/7Nh7su8MaHdBoooK6dSgrV+LBAE/74BjEjp9mSoIr2b2I2AYpY1ELIT+f5Mi+6AsRVckeofOEVF3++APRQeOXlij9P9nIxH1FSxKqteWEwAY9/nJB6BDzcmvCoDhqgS1OqDXTW0SNFquw/D/MGTokGdyfVimm8Mo+ZbQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735394527; c=relaxed/simple;
-	bh=h15LbiGPG4ptqGryeqF0MqkSwDB4fZRoG3IGL3gQvs0=;
+	s=arc-20240116; t=1735394834; c=relaxed/simple;
+	bh=+OyRhcMCTsP0U8oc1KWDKGk6tnVWjmWBGtAfuCCoH/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uvmLQ0L+8CEBKi/0h7kFzOleB6zHk4rBfNixyuwU5LahgwLuRxK32gRd2b2G5vQ2kE/eSsI+XCqrYXhWOJNpI3K3O6aYzUY12EBppeSyiBPEZgbAYhUVq9KvhzQ4rCLdFS/ICTV6TpFd/pM42L7nHctT/Y2S3DeY/IfkSVHJB1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dt5vSrCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8CDC4CECD;
-	Sat, 28 Dec 2024 14:02:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LEys9ISKKWgqFnXV6RwPkButq/KCkZyd18mRTxdv6j8Y6L4C8wpyCYLKcgAlsJOJ8KMVT9Kxcwtpuf5keGHuj5xSXmcvmgOY3pPdriDOmkniyizZR3NbORwYo7QNfAL61afu6E4zHCT1lkwDrf75+sVPzF00lBzxMnUwneIlj6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neKmbm+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF36C4CECD;
+	Sat, 28 Dec 2024 14:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735394526;
-	bh=h15LbiGPG4ptqGryeqF0MqkSwDB4fZRoG3IGL3gQvs0=;
+	s=k20201202; t=1735394834;
+	bh=+OyRhcMCTsP0U8oc1KWDKGk6tnVWjmWBGtAfuCCoH/M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Dt5vSrCyW/ATR48JWKitWYwtUTz0hB0+zWuONDbjH1sC+c736RUUV4m+5bSVrSFsY
-	 0olRFKV2WQSVEIZ26Wz2mkN9M8k6DBys2YSLq7cNSMstu0KbjFoUKIhjdvJh1yjAkg
-	 nDKSePZgtH5By5dcZtSyPKXWVAd8+ka9uMhb4Hi8NBlOwnkNyCb1ZquPciyqMC9H1v
-	 IbSDDlUKmtRK91sGhIPHLMXeHnPGw859AiY9nLYDaLVI5bIAUvFG26AhRxdnGpEMIk
-	 Bk2AGMtA7HN/uGmgppzBnoB/TejxRdXXSljdw9mOR3w3zf6rNa60LFUZExoJxtTP5Y
-	 CAyefUkktkkZQ==
-Date: Sat, 28 Dec 2024 14:02:01 +0000
+	b=neKmbm+QV7RQxDkJN/B+iOz9nKNJHIzYujBHhdc5cVKNipALVDgnL0PTsblhf1GZa
+	 OBT1IPAuedFLsy1n6+eyooigwa1IBX/NHO0wQZSn6clEhgkgenh3qZnlc/7TpakBCM
+	 M27G2aQcthIzXgZBMBD3JEXNJpF1XXr/1yvOQDUlkYRM4vUOyxn4WjmWa5Fka6UAVw
+	 eZxP7ujd2F2TweA3UEF+Cro7dePI8uPD6CJL5SqurxdQjopsZffuqljhIR99InXgoL
+	 QWnxIdeOhF2BdEGQsad4OYLqCB4W0BtloLppLCIjdbhsl4Mpn/SAB6k+lZtNNEFg0P
+	 v474K24ZRNOFw==
+Date: Sat, 28 Dec 2024 14:07:04 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org
 Subject: Re: [PATCH RFC v2 2/4] iio: adc: ad7380: enable regmap cache
-Message-ID: <20241228140201.424936ba@jic23-huawei>
-In-Reply-To: <20241224-ad7380-add-alert-support-v2-2-7c89b2bf7cb3@baylibre.com>
+Message-ID: <20241228140704.7115fb23@jic23-huawei>
+In-Reply-To: <zkur45la23hyqmqusjdfyzgsofhfli3n54be55dkdrwtxf5g7e@fdpdeliljyz3>
 References: <20241224-ad7380-add-alert-support-v2-0-7c89b2bf7cb3@baylibre.com>
 	<20241224-ad7380-add-alert-support-v2-2-7c89b2bf7cb3@baylibre.com>
+	<zkur45la23hyqmqusjdfyzgsofhfli3n54be55dkdrwtxf5g7e@fdpdeliljyz3>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,68 +63,40 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 24 Dec 2024 10:34:31 +0100
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Fri, 27 Dec 2024 09:48:35 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-> Enable regmap cache, to avoid useless access on spi bus.
-> Don't store anymore the oversampling ratio in private data structure.
-> 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> On Tue, Dec 24, 2024 at 10:34:31AM +0100, Julien Stephan wrote:
+> > Enable regmap cache, to avoid useless access on spi bus.
+> > Don't store anymore the oversampling ratio in private data structure. =
+=20
+>=20
+> I would split that.=20
 
-A few really minor things inline,
+Splitting it probably makes sense, though the regcache enabling patch will =
+be small
+(which is fine).
+
+> There are a few changes in this patch that I don't
+> understand, e.g. why does the return type of ad7380_update_xfers()
+> change?
+
+On first call of this, the register contents may not be in the cache
+so you might get an error from the bus read. Even if we known it is in the =
+cache
+(and from a quick glance I'm not sure we do as we haven't forced a full
+fill of the regcache or accessed this register) from a local code point of =
+view
+it is correct to handle the potential error and pass it to higher layers.
 
 Jonathan
 
->  static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
-> @@ -692,6 +709,37 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
->  	return ret;
->  }
->  
-> +/**
-> + * ad7380_regval_to_osr - convert OSR register value to ratio
-> + * @regval: register value to check
-> + *
-> + * Returns: the ratio corresponding to the OSR register. If regval is not in
-> + * bound, return 1 (oversampling disabled)
-> + *
-> + */
-> +static int ad7380_regval_to_osr(int regval)
 
-Make regval an unsigned int and yout can drop one test.
-The FIELD_GET is never going to give you a signed value anyway.
-
-> +{
-> +	if (regval < 0 || regval >= ARRAY_SIZE(ad7380_oversampling_ratios))
-> +		return 1;
-> +
-> +	return ad7380_oversampling_ratios[regval];
-> +}
-> +
-> +static int ad7380_get_osr(struct ad7380_state *st, int *val)
-> +{
-> +	int tmp;
-> +	int ret = 0;
-
-No point in initializing.
-
-> +
-> +	ret = regmap_read(st->regmap, AD7380_REG_ADDR_CONFIG1, &tmp);
-> +	if (ret)
-> +		return ret;
-> +
-> +	*val = ad7380_regval_to_osr(FIELD_GET(AD7380_CONFIG1_OSR, tmp));
-> +
-> +	return 0;
-> +}
-> +
-> +
-
-Trivial but one blank line almost always enough!
-
->  /*
-
+>=20
+> Best regards
+> Uwe
 
 

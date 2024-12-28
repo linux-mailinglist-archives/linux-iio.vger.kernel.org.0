@@ -1,57 +1,71 @@
-Return-Path: <linux-iio+bounces-13829-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13830-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F6C9FDAB7
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:40:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C49F9FDAC0
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BE8F161F93
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 13:40:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963153A1325
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 13:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF67F156237;
-	Sat, 28 Dec 2024 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BDB14AD3D;
+	Sat, 28 Dec 2024 13:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMqoFzNj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exrw+0Uo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A39C8DF;
-	Sat, 28 Dec 2024 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0621C382;
+	Sat, 28 Dec 2024 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735393228; cv=none; b=ozGY3znL1aVxFT8sM2HurWQ2YZbnQFbQnURnfsF7vzc1jNnkDfh0YugcfN2/2DamvEPbK3blwh7SUWdHBwHaCdrLgjZcf9F91zgHUFiRdTR3XBU4sckfmeP52HEy3HlBXewg6J/Phzs4s7djvNbE5hDUTfayTuokXOm9Pk6IYZQ=
+	t=1735393581; cv=none; b=jElDWt3nPndxrTkdgGMeNPSAzuO550sXdqwXIyEKYBYeHwLqCWeTsucj1G4TnG925fmNNQ4E7ghc5habZcrfAAId8h/XhXffsieolhvAwhKrCCDDui4RyAshHSjZS8opR9ScEVzv8nmsEVlWHv9L4DjF2b192Lti+LK7tipB+Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735393228; c=relaxed/simple;
-	bh=Ws77mFO+Nb16yI+ZZOatgdOyPQiA00A6vd+eNtyHFOs=;
+	s=arc-20240116; t=1735393581; c=relaxed/simple;
+	bh=sPNMAUa6zaIi6/CjfPs+wC02gmcaaGewaAKcC4h92Uk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TVpfSiGp64N9aBULF4exGBJX7/DRPQffYUtG/648BckAtixfwfp77zTEXkBE36NlnRgx2zdwgPwb7j1yed1cXN/abzdZfvOiowaKIXuIWoyAniCoug+75am80evsRBhAprArTTaHO5Wvql85uQsHgnAS15R7I/CsD6HBuK3crVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMqoFzNj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58F9C4CECD;
-	Sat, 28 Dec 2024 13:40:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GgYIceAKFhyawTS2VX9ZGYtI3YP9zymehRQ68jhHCAnYLT7V5QKZFJ5L7DxZxF4O/15cIg4978couvmcYbq4KZs2NtL1tNqx9N7b/1OJzgXr32daPnWFnDUdI1R3t5z/GNDk4CtHmM5IVpgIU5jS4gF5HncOsOtuiS1Y0cIOLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exrw+0Uo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201B0C4CECD;
+	Sat, 28 Dec 2024 13:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735393226;
-	bh=Ws77mFO+Nb16yI+ZZOatgdOyPQiA00A6vd+eNtyHFOs=;
+	s=k20201202; t=1735393580;
+	bh=sPNMAUa6zaIi6/CjfPs+wC02gmcaaGewaAKcC4h92Uk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fMqoFzNj25bHV/NuP1qtroxtqMG+yyQlsf8jC5lCufwQ9OC6fg6GebqQj4OjZJYtL
-	 hMkoakx46m8qtazpy6i/FAbcE2cyM8Hi7S8rtPoRhOubL59+UoO80cFrovMOHy5wDe
-	 zv+SG5Vps683HwwDWy+h1Y5+6LXvGarfXeBgVAxvw/PmoX1YRe6RNQyqzhg9x5THk7
-	 Ldl/z5YmvtMpr8fFuZq/d1GAVimWz57exbq0G9fSIYV6hamc2f8gaR7+HqbwTqbfTP
-	 EurlzY0obPVdlCApale+v9n3dCYgx5V1lRNXfBT+Tb+GIwEqFJXCwMRvbMnr/63enh
-	 wlwnaCyBDPDTQ==
-Date: Sat, 28 Dec 2024 13:40:17 +0000
+	b=exrw+0UoKTWbefo3jhjh3AtjH/FZiuB7Ecm31Z13jm1Ycdx9BP0SdwTVXJmtcOpKj
+	 G8kY8z0Bkt1603LmYGan52wZpDgq2V1eDAf/ttOMoMInj7GoBCeT6ON0AuwHrnzH6O
+	 r4tLzqZ6b4MKFjAGbPmIFwZRk0u/oCVYF5V1I7caUnapWsjEUDG9ldtN1SnfVEvusL
+	 lfHdCjcPxT5vwSWubeC4npyoMd1hqJP17AtqFfVtQsa7lmBNfP2lwhYdwvR5xIp+x/
+	 r1Tee6BULbdHffVEc4/qMsETWdcMvKhIdei+fRuTdyer0zTRDol2b94tfoAhj/UXu2
+	 9hzOLg7aeuczg==
+Date: Sat, 28 Dec 2024 13:46:08 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: linux-iio@vger.kernel.org, linux-amlogic@lists.infradead.org,
- lars@metafoo.de, gnstark@salutedevices.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- neil.armstrong@linaro.org
-Subject: Re: [PATCH v2 0/3] iio: adc: meson: a few improvements
-Message-ID: <20241228134017.321c7e60@jic23-huawei>
-In-Reply-To: <20241224142941.97759-1-martin.blumenstingl@googlemail.com>
-References: <20241224142941.97759-1-martin.blumenstingl@googlemail.com>
+To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Emil Gedenryd
+ <emil.gedenryd@axis.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Arthur Becker <arthur.becker@sentec.com>, Mudit Sharma
+ <muditsharma.info@gmail.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Julien Stephan <jstephan@baylibre.com>,
+ Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
+ Andreas Dannenberg <dannenberg@ti.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] iio: light: opt3001: Add Support for opt3004 light
+ sensor
+Message-ID: <20241228134609.30d62192@jic23-huawei>
+In-Reply-To: <PN3P287MB2845E6B3A390BE3741CFBF13FF0D2@PN3P287MB2845.INDP287.PROD.OUTLOOK.COM>
+References: <20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io>
+	<20241224061321.6048-3-hardevsinh.palaniya@siliconsignals.io>
+	<Z2rRnBGd4qqJXAb5@smile.fi.intel.com>
+	<PN0P287MB2843562E6C965196D05E2BCFFF0C2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
+	<Z2wJ9BLsrLeDD-zb@smile.fi.intel.com>
+	<PN3P287MB2845E6B3A390BE3741CFBF13FF0D2@PN3P287MB2845.INDP287.PROD.OUTLOOK.COM>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,40 +76,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 24 Dec 2024 15:29:38 +0100
-Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
+On Thu, 26 Dec 2024 06:14:59 +0000
+Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io> wrote:
 
-> This series contains three improvements to the meson SAR ADC driver.
-> None of them are meant to change the existing behavior. The goal is
-> to make the driver code easier to read and understand.
+> Hi Andy
 > 
-> Changes since v1 at [0]:
-> - drop the patch 2 "iio: adc: meson: consistently use bool/enum in
->   struct meson_sar_adc_param" for now as the purpose of the fields is
->   unfortunately still not clarified
-> - add space to tab conversion from former patch 2 as a separate patch
-> - Cc linux-iio (which was forgotton in v1)
+> > On Wed, Dec 25, 2024 at 09:56:36AM +0000, Hardevsinh Palaniya wrote:  
+> > > > On Tue, Dec 24, 2024 at 11:43:16AM +0530, Hardevsinh Palaniya wrote:  
+> >  
 > 
-Applied to the togreg branch of iio.git
+> ...
+> 
+> > > > > Add Support for OPT3004 Digital ambient light sensor (ALS) with
+> > > > > increased angular IR rejection  
+> > > >
+> > > > Missing period here.  
+> >  
+> > > > > The OPT3004 sensor shares the same functionality and scale range as
+> > > > > the OPT3001. This Adds the compatible string for OPT3004, enabling
+> > > > > the driver to support it without any functional changes.
+> > > > >
+> > > > > Datasheet: https://www.ti.com/lit/gpn/opt3004  
+> > > >  
+> > > > >  
+> > > >
+> > > > This blank line is not needed.  
+> > 
+> > You left two above comments unanswered while Acking the rest, it's a bit confusing.
+> > Are you agree on them or not?  
+> 
+> Apologies for overlooking those comments. They seemed straightforward, so I
+> assumed your review was accurate, and I planned to address them directly in the
+> next version without explicitly responding.
+> 
+> Regarding the second comment:
+> The blank line was added to differentiate between the commit message and the
+> SoB tag. Are you sure it should be removed?
+> 
+> ...
+> 
+> > > > >  static const struct of_device_id opt3001_of_match[] = {
+> > > > >       { .compatible = "ti,opt3001", .data = &opt3001_chip_information },
+> > > > >       { .compatible = "ti,opt3002", .data = &opt3002_chip_information },
+> > > > > +     { .compatible = "ti,opt3004", .data = &opt3001_chip_information },
+> > > > >       { }
+> > > > >  };  
+> > > >
+> > > > I'm always puzzled why do we need a new compatible for the existing driver
+> > > > data? Is this hardware has an additional feature that driver does not (yet)
+> > > > implement?  
+> > >
+> > > OPT3001 and OPT3004 sensors are functionally identical, and there are no
+> > > additional features in the OPT3004 that require separate handling in the driver.
+> > >
+> > > The new compatible string for the OPT3004 is being added, which will allow the
+> > > driver to recognize and support this sensor in the same way it handles the OPT3001.  
+> > But why? I understand if you put two compatible strings into the DT to make it
+> > explicit in case of the future developments of the driver, but new compatible
+> > in the driver makes only sense when you have either quirk(s) or feature(s) that
+> > are different to the existing code. Since you haven't added either, what's the
+> > point?  
+> 
+> Understood.
+> 
+> I also found a similar case with the ADXL346, which is identical to the ADXL345.
+> In the mainline kernel, a compatible string was added as a fallback in the bindings
+> but was not added to the driver itself.
 
-Dropped fixes tag from patch 1.   A typo fix on something entirely internal
-to the driver is just cleanup, not a fix and definitely not something
-we want anyone to backport!
+There is a small difference. The ADXL346 at least has a different ID from the ADXL345.
+The driver may sanity check that. It shouldn't reject an ID it doesn't recognise but
+it may well print a message as sometimes this indicates a wrong DT.
 
-Thanks,
+The ADXL346 also has additional registers, so whilst it is backwards compatible with
+the ADXL345 additional features may be support in future that need the distinction
+to be in DT.
 
 Jonathan
-> 
-> [0] https://lore.kernel.org/linux-arm-kernel/20240324140429.5484eb54@jic23-huawei/T/#m81d92c2192de1936646543543501d8a62527da8d
-> 
-> 
-> Martin Blumenstingl (3):
->   iio: adc: meson: fix voltage reference selection field name typo
->   iio: adc: meson: use tabs instead of spaces for some REG11 bit fields
->   iio: adc: meson: simplify MESON_SAR_ADC_REG11 register access
-> 
->  drivers/iio/adc/meson_saradc.c | 47 ++++++++++++----------------------
->  1 file changed, 17 insertions(+), 30 deletions(-)
-> 
 
+
+Jonathan
+
+> 
+> Thanks for the insight.
+> 
+> In the next version, I will drop this patch and only submit the bindings for the OPT3004.
+> using the fallback mechanism.
+> 
+> Best Regards,
+> Hardev
 

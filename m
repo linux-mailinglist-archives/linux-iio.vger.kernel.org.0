@@ -1,71 +1,60 @@
-Return-Path: <linux-iio+bounces-13830-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13831-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C49F9FDAC0
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:46:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675D49FDAC3
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 14:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963153A1325
-	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 13:46:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041C81620B0
+	for <lists+linux-iio@lfdr.de>; Sat, 28 Dec 2024 13:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BDB14AD3D;
-	Sat, 28 Dec 2024 13:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E57B14AD3D;
+	Sat, 28 Dec 2024 13:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exrw+0Uo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxBKK3ta"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0621C382;
-	Sat, 28 Dec 2024 13:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB714382;
+	Sat, 28 Dec 2024 13:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735393581; cv=none; b=jElDWt3nPndxrTkdgGMeNPSAzuO550sXdqwXIyEKYBYeHwLqCWeTsucj1G4TnG925fmNNQ4E7ghc5habZcrfAAId8h/XhXffsieolhvAwhKrCCDDui4RyAshHSjZS8opR9ScEVzv8nmsEVlWHv9L4DjF2b192Lti+LK7tipB+Kk=
+	t=1735393784; cv=none; b=tCrWo/MEg4jSRinVTuLOROZdt0h2H5WbdGL+7ImCB3D2qxmC7MgJ3Xk7+fv8wOKCSVwCA1N56NmnXD6aRwVBoqOepX3y0kiUxc6fZHQ/Je1YyMKJjHzD2GjeWzROOmfjHJiYqCMa7FFaKhdWg24KBb5zfxLNtqKokY3OKJoUDjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735393581; c=relaxed/simple;
-	bh=sPNMAUa6zaIi6/CjfPs+wC02gmcaaGewaAKcC4h92Uk=;
+	s=arc-20240116; t=1735393784; c=relaxed/simple;
+	bh=Uf3FwWFN6qMD3hjszLA60RJPph/BOqa10OWUnHSftvM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GgYIceAKFhyawTS2VX9ZGYtI3YP9zymehRQ68jhHCAnYLT7V5QKZFJ5L7DxZxF4O/15cIg4978couvmcYbq4KZs2NtL1tNqx9N7b/1OJzgXr32daPnWFnDUdI1R3t5z/GNDk4CtHmM5IVpgIU5jS4gF5HncOsOtuiS1Y0cIOLBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exrw+0Uo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201B0C4CECD;
-	Sat, 28 Dec 2024 13:46:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i6Fxf8I3SqLuTLSJ6HjFni+vnGq5Fgjor/w99cXtbH3dq+hqvvqQ9IENiuuqk4RkVANER+W0J2gJcPurWOeqkvrlFPDECC+rcJ6+/Ehzym6ObQz+UDZSs6zknlkL4oc1zNYpAKw12g0Vi8bnoFU+dYKoHk0v1fYBzWYDntToNOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxBKK3ta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBE0C4CECD;
+	Sat, 28 Dec 2024 13:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735393580;
-	bh=sPNMAUa6zaIi6/CjfPs+wC02gmcaaGewaAKcC4h92Uk=;
+	s=k20201202; t=1735393784;
+	bh=Uf3FwWFN6qMD3hjszLA60RJPph/BOqa10OWUnHSftvM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=exrw+0UoKTWbefo3jhjh3AtjH/FZiuB7Ecm31Z13jm1Ycdx9BP0SdwTVXJmtcOpKj
-	 G8kY8z0Bkt1603LmYGan52wZpDgq2V1eDAf/ttOMoMInj7GoBCeT6ON0AuwHrnzH6O
-	 r4tLzqZ6b4MKFjAGbPmIFwZRk0u/oCVYF5V1I7caUnapWsjEUDG9ldtN1SnfVEvusL
-	 lfHdCjcPxT5vwSWubeC4npyoMd1hqJP17AtqFfVtQsa7lmBNfP2lwhYdwvR5xIp+x/
-	 r1Tee6BULbdHffVEc4/qMsETWdcMvKhIdei+fRuTdyer0zTRDol2b94tfoAhj/UXu2
-	 9hzOLg7aeuczg==
-Date: Sat, 28 Dec 2024 13:46:08 +0000
+	b=qxBKK3ta0r7akYcwAGAXw8DgHzUfxzHpXWvfY1yQa0ILk+24qqx50/aTgsMC68wuK
+	 +m0m9jztvPLXKhWDGLf9WKUtZ8UUyAwZEcicYFxKGHb0B9uX4c6T2Mm/eaIKbpXt91
+	 951bDVEDAEx9GkYem1Cz+jhHAnr7FQagUbr4Mi3ndutRJva9i9K9C6UtQ1oyTdokQV
+	 1GtAn/smuK5l1yW+8wgoIy7A4tJa1V1y8m+/E2Hlm/0PBAFEUsZbCkHMg5iW78gJam
+	 7VHzRcvukFTB4ujA8/1Irzm5W8kSbMmSs0KpT71S38guyiyEjzLRVvatLFMdpze4Jz
+	 YQakj6DEyMmhQ==
+Date: Sat, 28 Dec 2024 13:49:34 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Emil Gedenryd
- <emil.gedenryd@axis.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Arthur Becker <arthur.becker@sentec.com>, Mudit Sharma
- <muditsharma.info@gmail.com>, Subhajit Ghosh
- <subhajit.ghosh@tweaklogic.com>, Julien Stephan <jstephan@baylibre.com>,
- Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- Andreas Dannenberg <dannenberg@ti.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: light: opt3001: Add Support for opt3004 light
- sensor
-Message-ID: <20241228134609.30d62192@jic23-huawei>
-In-Reply-To: <PN3P287MB2845E6B3A390BE3741CFBF13FF0D2@PN3P287MB2845.INDP287.PROD.OUTLOOK.COM>
-References: <20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io>
-	<20241224061321.6048-3-hardevsinh.palaniya@siliconsignals.io>
-	<Z2rRnBGd4qqJXAb5@smile.fi.intel.com>
-	<PN0P287MB2843562E6C965196D05E2BCFFF0C2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
-	<Z2wJ9BLsrLeDD-zb@smile.fi.intel.com>
-	<PN3P287MB2845E6B3A390BE3741CFBF13FF0D2@PN3P287MB2845.INDP287.PROD.OUTLOOK.COM>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH RFC v2 1/4] iio: adc: ad7380: do not use
+ iio_device_claim_direct_scoped anymore
+Message-ID: <20241228134934.38e69020@jic23-huawei>
+In-Reply-To: <20241224-ad7380-add-alert-support-v2-1-7c89b2bf7cb3@baylibre.com>
+References: <20241224-ad7380-add-alert-support-v2-0-7c89b2bf7cb3@baylibre.com>
+	<20241224-ad7380-add-alert-support-v2-1-7c89b2bf7cb3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,92 +65,150 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 26 Dec 2024 06:14:59 +0000
-Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io> wrote:
+On Tue, 24 Dec 2024 10:34:30 +0100
+Julien Stephan <jstephan@baylibre.com> wrote:
 
-> Hi Andy
+> Rollback and remove the scoped version of iio_dvice_claim_direct_mode.
 > 
-> > On Wed, Dec 25, 2024 at 09:56:36AM +0000, Hardevsinh Palaniya wrote:  
-> > > > On Tue, Dec 24, 2024 at 11:43:16AM +0530, Hardevsinh Palaniya wrote:  
-> >  
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> ---
+>  drivers/iio/adc/ad7380.c | 89 ++++++++++++++++++++++++++++--------------------
+>  1 file changed, 53 insertions(+), 36 deletions(-)
 > 
-> ...
-> 
-> > > > > Add Support for OPT3004 Digital ambient light sensor (ALS) with
-> > > > > increased angular IR rejection  
-> > > >
-> > > > Missing period here.  
-> >  
-> > > > > The OPT3004 sensor shares the same functionality and scale range as
-> > > > > the OPT3001. This Adds the compatible string for OPT3004, enabling
-> > > > > the driver to support it without any functional changes.
-> > > > >
-> > > > > Datasheet: https://www.ti.com/lit/gpn/opt3004  
-> > > >  
-> > > > >  
-> > > >
-> > > > This blank line is not needed.  
-> > 
-> > You left two above comments unanswered while Acking the rest, it's a bit confusing.
-> > Are you agree on them or not?  
-> 
-> Apologies for overlooking those comments. They seemed straightforward, so I
-> assumed your review was accurate, and I planned to address them directly in the
-> next version without explicitly responding.
-> 
-> Regarding the second comment:
-> The blank line was added to differentiate between the commit message and the
-> SoB tag. Are you sure it should be removed?
-> 
-> ...
-> 
-> > > > >  static const struct of_device_id opt3001_of_match[] = {
-> > > > >       { .compatible = "ti,opt3001", .data = &opt3001_chip_information },
-> > > > >       { .compatible = "ti,opt3002", .data = &opt3002_chip_information },
-> > > > > +     { .compatible = "ti,opt3004", .data = &opt3001_chip_information },
-> > > > >       { }
-> > > > >  };  
-> > > >
-> > > > I'm always puzzled why do we need a new compatible for the existing driver
-> > > > data? Is this hardware has an additional feature that driver does not (yet)
-> > > > implement?  
-> > >
-> > > OPT3001 and OPT3004 sensors are functionally identical, and there are no
-> > > additional features in the OPT3004 that require separate handling in the driver.
-> > >
-> > > The new compatible string for the OPT3004 is being added, which will allow the
-> > > driver to recognize and support this sensor in the same way it handles the OPT3001.  
-> > But why? I understand if you put two compatible strings into the DT to make it
-> > explicit in case of the future developments of the driver, but new compatible
-> > in the driver makes only sense when you have either quirk(s) or feature(s) that
-> > are different to the existing code. Since you haven't added either, what's the
-> > point?  
-> 
-> Understood.
-> 
-> I also found a similar case with the ADXL346, which is identical to the ADXL345.
-> In the mainline kernel, a compatible string was added as a fallback in the bindings
-> but was not added to the driver itself.
+> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+> index 4f32cb22f140442b831dc9a4f275e88e4ab2388e..4e26e0e7ac1d5a1c4c67118dbc34f2921fc171a4 100644
+> --- a/drivers/iio/adc/ad7380.c
+> +++ b/drivers/iio/adc/ad7380.c
+> @@ -675,15 +675,21 @@ static const struct regmap_config ad7380_regmap_config = {
+>  static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
+>  				     u32 writeval, u32 *readval)
+>  {
+> -	iio_device_claim_direct_scoped(return  -EBUSY, indio_dev) {
+> -		struct ad7380_state *st = iio_priv(indio_dev);
+> +	struct ad7380_state *st = iio_priv(indio_dev);
+> +	int ret;
+>  
+> -		if (readval)
+> -			return regmap_read(st->regmap, reg, readval);
+> -		else
+> -			return regmap_write(st->regmap, reg, writeval);
+> -	}
+> -	unreachable();
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (readval)
+> +		ret = regmap_read(st->regmap, reg, readval);
+> +	else
+> +		ret = regmap_write(st->regmap, reg, writeval);
+> +
+> +	iio_device_release_direct_mode(indio_dev);
+> +
+> +	return ret;
+>  }
+>  
+>  /*
+> @@ -920,6 +926,7 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad7380_state *st = iio_priv(indio_dev);
+>  	const struct iio_scan_type *scan_type;
+> +	int ret;
+>  
+>  	scan_type = iio_get_current_scan_type(indio_dev, chan);
+>  
+> @@ -928,11 +935,16 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+>  
+>  	switch (info) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -			return ad7380_read_direct(st, chan->scan_index,
+> -						  scan_type, val);
+> -		}
+> -		unreachable();
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = ad7380_read_direct(st, chan->scan_index,
+> +					 scan_type, val);
+> +
+> +		iio_device_release_direct_mode(indio_dev);
+> +
+> +		return ret;
+>  	case IIO_CHAN_INFO_SCALE:
+>  		/*
+>  		 * According to the datasheet, the LSB size is:
+> @@ -1024,31 +1036,36 @@ static int ad7380_write_raw(struct iio_dev *indio_dev,
+>  		/* always enable resolution boost when oversampling is enabled */
+>  		boost = osr > 0 ? 1 : 0;
+>  
+> -		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -			ret = regmap_update_bits(st->regmap,
+> -					AD7380_REG_ADDR_CONFIG1,
+> -					AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
+> -					FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
+> -					FIELD_PREP(AD7380_CONFIG1_RES, boost));
+> +		ret = iio_device_claim_direct_mode(indio_dev);
+> +		if (ret)
+> +			return ret;
+>  
+> -			if (ret)
+> -				return ret;
+> +		ret = regmap_update_bits(st->regmap,
+> +					 AD7380_REG_ADDR_CONFIG1,
+> +					 AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
+> +					 FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
+> +					 FIELD_PREP(AD7380_CONFIG1_RES, boost));
+>  
+> -			st->oversampling_ratio = val;
+> -			st->resolution_boost_enabled = boost;
+> -
+> -			/*
+> -			 * Perform a soft reset. This will flush the oversampling
+> -			 * block and FIFO but will maintain the content of the
+> -			 * configurable registers.
+> -			 */
+> -			return regmap_update_bits(st->regmap,
+> -					AD7380_REG_ADDR_CONFIG2,
+> -					AD7380_CONFIG2_RESET,
+> -					FIELD_PREP(AD7380_CONFIG2_RESET,
+> -						   AD7380_CONFIG2_RESET_SOFT));
+> -		}
+> -		unreachable();
+> +		if (ret)
+> +			goto err;
+> +
+> +		st->oversampling_ratio = val;
+> +		st->resolution_boost_enabled = boost;
+> +
+> +		/*
+> +		 * Perform a soft reset. This will flush the oversampling
+> +		 * block and FIFO but will maintain the content of the
+> +		 * configurable registers.
+> +		 */
+> +		ret = regmap_update_bits(st->regmap,
+> +					 AD7380_REG_ADDR_CONFIG2,
+> +					 AD7380_CONFIG2_RESET,
+> +					 FIELD_PREP(AD7380_CONFIG2_RESET,
+> +						    AD7380_CONFIG2_RESET_SOFT));
+> +err:
+Labels within switch statements can become hard to maintainer / read.
 
-There is a small difference. The ADXL346 at least has a different ID from the ADXL345.
-The driver may sanity check that. It shouldn't reject an ID it doesn't recognise but
-it may well print a message as sometimes this indicates a wrong DT.
+Id' suggest factoring out the bits between claim and release as a single
+__ad7380_write_oversample() or something along those lines.
 
-The ADXL346 also has additional registers, so whilst it is backwards compatible with
-the ADXL345 additional features may be support in future that need the distinction
-to be in DT.
+Otherwise looks good to me and thanks for doing this.
 
 Jonathan
 
 
-Jonathan
+> +		iio_device_release_direct_mode(indio_dev);
+> +
+> +		return ret;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> 
 
-> 
-> Thanks for the insight.
-> 
-> In the next version, I will drop this patch and only submit the bindings for the OPT3004.
-> using the fallback mechanism.
-> 
-> Best Regards,
-> Hardev
 

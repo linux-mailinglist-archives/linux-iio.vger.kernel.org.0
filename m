@@ -1,79 +1,48 @@
-Return-Path: <linux-iio+bounces-13853-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13854-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6408D9FDDAC
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2024 07:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD20B9FDE57
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2024 10:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12C5D7A1284
-	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2024 06:54:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 564AB7A1680
+	for <lists+linux-iio@lfdr.de>; Sun, 29 Dec 2024 09:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A2A36AF5;
-	Sun, 29 Dec 2024 06:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188A770806;
+	Sun, 29 Dec 2024 09:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BwimilKs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DEyLWM5H"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D67518E29;
-	Sun, 29 Dec 2024 06:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6FADC148;
+	Sun, 29 Dec 2024 09:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735455246; cv=none; b=C4GfBYFOGOy3k7BJDiXqMlW1C2hma4GVC4Y9PtNAzTxODUHZCPDExswV1IEcPxllE3Wg/EzMNQj+1TH14U8ylSvfE4qM0gmt5RqH2o0OBXpf8U9wM+HAnoFUS72kyBkfsAl2Jnp51bZqswj/pv+1MoZJNkZQ1sRyXO0A59fYnWg=
+	t=1735465549; cv=none; b=PWy7rpBTFAJdrigcduHxOs2dI1fbvqxx0YRYthJIelgAJJMNWLirhO214QYswcWs+wlutAogzeRGps0vBrBaTQVXLSomYSVoOOw5gG0lb1aDw6Hu797tRD9J6u56Gm1s/lwGUaii02oLONWtRQKNs4koQa1jtVuJxdz1zef5u8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735455246; c=relaxed/simple;
-	bh=kcNPwHHWIXtLnH3tzTB0/L+ajSzraWQ7CRbaYbGGWU4=;
+	s=arc-20240116; t=1735465549; c=relaxed/simple;
+	bh=ToiyK62BA2sVB41Mp3HFuYkY+jXMeZk24ee0ItT2fpE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QM0YaQh9wz2A8PLQhZfiBRg8w+LpGmDkZi7MzoOAuiDrQ14VwHjmJwPTomNLNHci/P296ljZnlyn5H5+LqoouvF+Fap7dMSubJ6BPWIOdsoYZYOhK/xPV1iGlubMUVxStK8/n+8z2x3C0G4vXZXCtLLi/UYJivmcnDh5GPtJdms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BwimilKs; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3022598e213so15765171fa.0;
-        Sat, 28 Dec 2024 22:54:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735455242; x=1736060042; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cpOfhWB1jjAdvcwOG+doGT0y2OHAh1pRliwEc8USFEU=;
-        b=BwimilKsZUiTNUbsW9xPwjKSM5rt7oN2jjJaEwDQEFyQkeVZALAw9xlUgoT4LNb6L/
-         kSQge09MBEWv89fcHK/NjlDPf0A/93d5659tejFH884IDSkFTU+yF9LPfWExtW3piJoh
-         5a48olggZ7h5hiEhbCl47Mxb6uCAALg5cIcXLNB7VquMFqln9hC70PQZEIUqgtI//tZ4
-         KAajB0VyA1gLiCq5PMNQprVsBeTklLJovFAnokFgPVf1iU0otgBBDhM1bqZ0Zh90sWLr
-         ChvGcCirgUiVeaHCjeJPMmNXgM6dQeg9fyCBYUmN9OIMsFGGbKsR4PaCWOFoxuuGNDuf
-         qq2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735455242; x=1736060042;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cpOfhWB1jjAdvcwOG+doGT0y2OHAh1pRliwEc8USFEU=;
-        b=Dabgu7bSmS7wcPJGaOVt0kV9fzMzFXFSHyfq74N727a/ueN8OCOVuhL40PHuB4VpYA
-         DJqbCY8BVqYgg7/gNPT9715XAuKslg7ncfS7Il+2LSRQ+YwZvyhWEaAQe1jgtGuEtwM6
-         FKN+bV5aY3O+H0BeOzibIWEXUJTIrRXuanF4h2nezKMykU8NCzf4Tr7l1XCBwb7cRvyk
-         aBa2p5lt4onexUwSKKdITIqhYC4zqNLpwJVZ9HUiyK1zyoxL6lSlV7kW6Tr5IbaiypPN
-         55QvcY4Y6/wQNCVKZh/oXT6pJQKZA/sPM+yIPMfNxYk1m5IYFV9J5LakVRSeFBf+rDNc
-         kXaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSSOHuFIQvjpF5rpNKIaDzdixbGxHS5JIhiygYGioPGnBF0GLlyFkSRJe8ivtdtbhRee+XdlRm8fOb/tE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxt+cZqHWCSNdokGpXu2eGdjNkfCDR5om27DbrYztoQuWN1fLw4
-	yoZBL7nj1MuXJrGKnG4f0W4t39MvfYU/NLowSUxCF4/7Dq0O/5QcuL2Bxw==
-X-Gm-Gg: ASbGncvTItUyO3/MFzBuJLtiILLD6UeRkolHuGJzuIbuS4EnHdciedGDdtkHllzifY1
-	iZk5KQ8JfrA/iewUXX3q+eF+LuHgYe4cPEviPpA5h1p8TjIafHMofQuIQKJ7RuEMNEkiRc6EgjO
-	hSsaCw1+DgJgfJkIxBtB2nhAR5yebSdBv1DfUYD690czQHkJj26aGATNDT45TOjBdpAaASFh6GP
-	5WIhRGXykJHEh+Pxpip7cHHyWUzwXaukiqP0ZYsOq/jiXxHQyM4vN9wuVvojsrXafs+xsciO8sq
-	gN78XSC0R3VtqFtmfesViMvMaI8PVzQhQ6E=
-X-Google-Smtp-Source: AGHT+IGcToXcAK2c8NVPg6VvFkq2Tf3YBsy/jA+Y86ZzsLZi1m4hxS23DdviieKet1WeYjXBfP1Utg==
-X-Received: by 2002:a05:6512:3e2a:b0:540:2311:28c5 with SMTP id 2adb3069b0e04-5422956c4c7mr8907725e87.57.1735455242164;
-        Sat, 28 Dec 2024 22:54:02 -0800 (PST)
-Received: from ?IPV6:2001:14ba:419:b800::7? (2001-14ba-419-b800--7.rev.dnainternet.fi. [2001:14ba:419:b800::7])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54223832a5bsm2790062e87.270.2024.12.28.22.53.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Dec 2024 22:54:00 -0800 (PST)
-Message-ID: <b5aa553d-fed4-459e-bbe8-70b9b9b39cbd@gmail.com>
-Date: Sun, 29 Dec 2024 08:53:58 +0200
+	 In-Reply-To:Content-Type; b=cNbmgeHnPRGlLdNuF7rxV0mZNAatokaPjWUmQzLYKOlJMYgC5JMuEZmCuGAx27AqFLTLl71ECScElLp47sXBeONfHYYG+yByUlyuXfgr71Mj4ggiBUItYZOuB5fKKnpdD3TdKVeU5uNOa0A5ew7mhImq5W5wRfSnuz7XyO45Mhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DEyLWM5H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F97C4CED1;
+	Sun, 29 Dec 2024 09:45:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735465549;
+	bh=ToiyK62BA2sVB41Mp3HFuYkY+jXMeZk24ee0ItT2fpE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DEyLWM5H2RayKfpuVxNtJmz8HRgWs9Av4tVmji2/iFUbpwuii6oWqvaDXp0IJ2VPW
+	 WQUzgrq6grX446zYybpLUX3usg2lM3rsFsMvxccHpftygnEC74A8hK3SUXv/XOxPUT
+	 X/LxFb6w7tFy0axaSzW+QNkaJMoMxUpWY6JdLy4wvM+JiW16Co6Qc/+bvQm9iCqjee
+	 VIU17tTmyWNkd1WkpWeKG6YFvmpZnUpHJ0JkOaWBI5/BuOa3OrSDfda0KhK1TkgrjC
+	 W3TMHZxLEm31zvKxdTdM9iYrM1FYbFUxMnOVWZlIMkaWEnojRG1+3PvuoxY+Bm57pY
+	 MM19Z9zbC21Zg==
+Message-ID: <0a0e9d97-26f2-45b1-a783-fabcbb9e1c05@kernel.org>
+Date: Sun, 29 Dec 2024 10:45:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,55 +50,103 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] iio: veml3235: fix scale to conform to ABI
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20241224-veml3235_scale-v2-0-2e1286846c77@gmail.com>
- <20241224-veml3235_scale-v2-4-2e1286846c77@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20241224-veml3235_scale-v2-4-2e1286846c77@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v3] dt-bindings: iio: light: opt3001: add compatible for
+ opt3004
+To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
+Cc: "jic23@kernel.org" <jic23@kernel.org>,
+ "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
+ "andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Emil Gedenryd <emil.gedenryd@axis.com>,
+ Andreas Dannenberg <dannenberg@ti.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20241227131134.10810-1-hardevsinh.palaniya@siliconsignals.io>
+ <qgottqtq5lvp6fifi37xzq7supalvm7leue755yjatyun6k5um@pju4v3kqoizq>
+ <PN0P287MB2843E7005997F1728B0F9B2CFF0F2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <PN0P287MB2843E7005997F1728B0F9B2CFF0F2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 24/12/2024 12:59, Javier Carrasco wrote:
-> The current scale is not ABI-compliant as it is just the sensor gain
-> instead of the value that acts as a multiplier to be applied to the raw
-> value (there is no offset).
-> 
-> Use the iio-gts helpers to obtain the proper scale values according to
-> the gain and integration time to match the resolution tables from the
-> datasheet. When at it, use 'scale' instead of 'gain' consistently for
-> the get/set functions to avoid misunderstandings.
-> 
-> Fixes: c5a23f80c164 ("iio: light: add support for veml3235")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
+On 28/12/2024 11:54, Hardevsinh Palaniya wrote:
+>>> - Reverse the order of compatible string
+>>>
+>>> v1 -> v2:
+>>>
+>>> - Use fallback mechanism for the OPT3004.
+>>> - Drop 2/2 patch from the patch series[1] as per feedback.
+>>>
+>>> Link[1]: https://lore.kernel.org/linux-iio/20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io/T/#t
+>>  
+>>
+>> And where is any user of this, the DTS? We don't take bindings just
+>> because there is such device out there.
+>>
+>> I looked and nothing:
+>> https://lore.kernel.org/all/?q=ti%2Copt3004
+>  
+> I added compatibility for the OPT3004 into the driver. However, 
+> based on Andy's feedback, it seems there might not be a need 
+> to include this directly in the driver. 
+> (Refer to Link [1] from the changelog.)
+>  
+> we could follow a similar approach to how we handled the ADXL346,
+> by just adding it to the bindings, since the ADXL346 is similar to the 
+> ADXL345.
 
-This looks good to me, although I now think we made a mistake with the 
-naming of the iio_gts_find_gain_sel_in_times().
+Sure, I am not talking about this. I am looking for a user of the
+binding. Where is one?
 
-The intended use is finding the gain and time (selector) for the new 
-scale (while preferring keeping the time unchanged if possible), right?
+User is any piece of *upstream* project which uses the binding.
 
-So, in this regard it'd be better to use name which reflects the fact 
-that the function finds gain and time for given scale.
 
-I would now (after having to look the doc of this new function while 
-reviewing the code 2 weeks after reviewing this new function :rolleyes:)
-name it something like:
 
-iio_gts_find_gain_time_sel_for_scale()
-
-Well, it's not really in the scope of the review anymore, but I'd love 
-to see a renaming patch while we have only one user... :)
-
-Anyways:
-
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
-Yours,
-	-- Matti
+Best regards,
+Krzysztof
 

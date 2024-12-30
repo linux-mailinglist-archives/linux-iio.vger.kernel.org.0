@@ -1,334 +1,139 @@
-Return-Path: <linux-iio+bounces-13856-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13857-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60049FE502
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 10:46:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6F49FE51A
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 10:58:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ADB162514
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 09:46:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE953A1FCC
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 09:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D053B1A2860;
-	Mon, 30 Dec 2024 09:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3901A304A;
+	Mon, 30 Dec 2024 09:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UBmWNUWa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPxHIQ/x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087241D540;
-	Mon, 30 Dec 2024 09:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53821A2C0E;
+	Mon, 30 Dec 2024 09:58:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735551968; cv=none; b=e6Kjib+t3kobLmQsYcZF+s66/s8rM3b9Ux1lTRCtlOXAFfZsUPuggP0kYyLwoXSKj1GIMahoH4pYcVuX4kdj106qxB+xJu2O4qxt4emJy+o/rNoBn7Ny+f9OhVMw4Ta25tY9VprsRFlqmAvW6xcuTs2OTEvMWvu5N3o44TtaL08=
+	t=1735552706; cv=none; b=YqPsg1iO8HDTVv6OT82bM89qwypTvRFwVEiExNHI+x1S1Fxs0HN3N0rTtAyEg53dUJuOkmN/3NTgFoG2mJlBgSz6BVjqGbGas7UwJxpKP+c6ZHcCqY0XOwns1Qvi2R7Q5XWsTcZPYsWvriQYNIkZyFIdhkfjdB+Hmu6i8pjvTrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735551968; c=relaxed/simple;
-	bh=9vD9MtuX5fTs/84zjWforym1XDL1NOxumqnACS8YaNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f4LXeQY2iAOfalFAqY94YJSNkpnuEjkjASlt6CUon4KOLR6aitlqJNxiW09W/EoITpa3IQcSpMQHLpLCJ8usZqIYvywKRv+pEgmMXNolCYD4tBHCU+LQqwtvxBKpLppTvmIEqDcce6u2Mupr/a9pUI3wNaV96grSInpMiJYLU7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UBmWNUWa; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BU7Fwnu027219;
-	Mon, 30 Dec 2024 09:45:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nE7Pl8ty/cDHDnKCID6Uh3U9BiIrHhReoZ30nnIVRcs=; b=UBmWNUWa3KL4xlMO
-	JkIDRaLVtu5PUdX+Ae3+cJSZvZ7wSvHWOVmaW8nNOKYoAUXAdDn/vG5wwC20+ES4
-	jzUhANdfxUBhGHoojQCBTEXFWTMtlzt94KoeMYkY2I7ZU+IZmSPOtX/7cdoVUaVV
-	ud8Gsotp8rQpv/hASM3Cq8xGymYKbGTIuAzn6/2LfzKkONTPWO6P3q7G1fUoLTeR
-	FC6wZx/qVtLUhWcS+MCjC4aJ9y54GjobvwDQHPQhhFsF2bPeK3jU/f0CJMJ6QY3/
-	WMyLQWfB5gQcZ+fsIoM9fu3LRic2EBdchVfCaYcgtDBkEeelN4nRCEv7sIF1dOpN
-	VTHXEg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43upyr89a0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Dec 2024 09:45:45 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BU9ji0T013191
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Dec 2024 09:45:44 GMT
-Received: from [10.218.23.250] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 30 Dec
- 2024 01:45:35 -0800
-Message-ID: <c5079172-e127-4dfc-826a-b32489d852f8@quicinc.com>
-Date: Mon, 30 Dec 2024 15:15:32 +0530
+	s=arc-20240116; t=1735552706; c=relaxed/simple;
+	bh=LMpsPTfwY1W792DoMCosJOMmGmWiaJsAtZEGqg1U2XI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=bbhG6xONIcJGZymUBSofGDSHgHVlTpxK0tnEdwaJvD8tY4y5Mj/pxJIQGyhT6eNz9pKldmR/ljVvqCO7G+jO7dj3MHlpu5YxXhuanPilvX17+aI+yHQ96dNpsrJwtYCsAtarZ+1Q9ZXNasUSTMNGffsPEvIl6BPJ34xCQ21E4D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPxHIQ/x; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43635796b48so54610875e9.0;
+        Mon, 30 Dec 2024 01:58:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735552703; x=1736157503; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BKR3CmUDPeca1b4GGjP6VSHlyziYNpuOYKwOZ7KV8Ew=;
+        b=mPxHIQ/xg3LLn5q119nRUPvYgGJbuEI88lCKJYhfNCWsnIG1uq14v/SnrZ2v7M2X+X
+         Vf+ECVaMoViNjFcYL2rpLvQGhgte/pnZJg+r1LKll3WVu6/l6o1wnZQRRcNsXUOtKBus
+         zqykR2Lm1w2uRNvXbH29+BRDoQJAkIaLZ7m/T2i0ASYik0Vq6vTlseCfqx7X9DfaeR32
+         H8GKRXq+g4JTPJJN1QYl6d7W1FXpK3b7OQTMF0INskIeFC4u+qFSW9QeXUtoQ6dLPPNX
+         XfMEH97THofYifUs6iANqPzxtYouSaE1ArdevVO8wYUnHZcPDlbQjAtwwC/2nj1E75uK
+         bB3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735552703; x=1736157503;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=BKR3CmUDPeca1b4GGjP6VSHlyziYNpuOYKwOZ7KV8Ew=;
+        b=F5866m2ERIDocsEkpfl/pShX9CngO16N5TgqYBrrSsLfVdxenoFWwdYZtxWQjbKOM+
+         Ak4r5d+G+UlEXfh+9xme0NPuuoOdPW9F9QOS89+t6TNy3en1R+1fStZJDdUQbL4URIeD
+         9XHe2WrKUZan0MYC+PUpDGSppXkoS7xv3vuoy+KgFSPG5biaxy5Ng6D7ukKBK2sbS45M
+         bWcV1jzUx9eTVWJ/m7EocbaLglNHe8D2f7GeGRKpkRKy5G86rFC76OBTRHsgLAlg/68y
+         QUgKsqX36w/02FwUXP2Wo6fiFqOldL2JXO6XCRRJ97+reacWhkWNo5kDD6uK7s7Vlu21
+         rHqw==
+X-Forwarded-Encrypted: i=1; AJvYcCWgBQaGF5ys7+oA44NQJek+Ry5x6R5lkNcXUvectShDLWh4f1Da4AlcFmVw/t34VhJmxSJo7JXvECc=@vger.kernel.org, AJvYcCXidKuzBSpV3x2S5We0xRMSMa+e4U9aRhYSHE1jY+26wK5rknMwDBFI379ms+gEkPgObmlPvoDpJ/VUBb0o@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGzGkd3ObQAVLcT2pQAqWp9nKfCK2V2FjIJrPXvI0BqRDfU+fg
+	URfvxPW3gcqB8uqqG4oTOG0QntDy56xvw25Kvtq8U2FCz7A5Oht7EiMLaw==
+X-Gm-Gg: ASbGnctc3hx4CYAFKa8dA9vX8VrT8HuwHZnWU3fcjsKaIU0fMOFxRo8iOMLgbVd2BaK
+	vdURjx0HkoCMvpSH3cmiVtFiC37Ib29PkmXJ6qKL0QOj814U7K39DuuCnpPYcFWW0QxFKvdyDd7
+	FQLyT6bTetxH5aXs7nGn35eO83k4haS/4vFTsSWS2hYJXP27pUwHHm9O/VO+yM3tXye+dn1tvVQ
+	tlQaziuXsGupUxZT1ip11+csXibBD0m2rKNjEegsUVpWy54XXPR7GWT9OBQlT16xwLouNH6W3yj
+	uleksV5bQrLxbZddMnaxYKBUWw==
+X-Google-Smtp-Source: AGHT+IG+Af7I17mpaNEMAVFnIJsnpSkD2rN+S2DtWlwPjNkrm8LZckN0glVCxrNJyHvgSD7+CRWp3g==
+X-Received: by 2002:a05:600c:3147:b0:436:1b86:f05 with SMTP id 5b1f17b1804b1-43669a22df3mr285971885e9.11.1735552702770;
+        Mon, 30 Dec 2024 01:58:22 -0800 (PST)
+Received: from localhost (82.158.190.253.dyn.user.ono.com. [82.158.190.253])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b441bbsm382726065e9.40.2024.12.30.01.58.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Dec 2024 01:58:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 3/5] thermal: qcom: Add support for MBG thermal
- monitoring
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        "Rafael J. Wysocki"
-	<rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui
-	<rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Rob Herring
-	<robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        "Lars-Peter
- Clausen" <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
-        Stephen Boyd
-	<sboyd@kernel.org>, Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath
-	<thara.gopinath@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Konrad
- Dybcio" <konradybcio@kernel.org>
-CC: Ajit Pandey <quic_ajipan@quicinc.com>,
-        Imran Shaik
-	<quic_imrashai@quicinc.com>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        "Jagadeesh
- Kona" <quic_jkona@quicinc.com>, <quic_kamalw@quicinc.com>,
-        <quic_jprakash@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
- <20241212-mbg-v2-support-v2-3-3249a4339b6e@quicinc.com>
- <cf2f2510-9d27-4473-bf50-45b14725f4c5@oss.qualcomm.com>
-Content-Language: en-US
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-In-Reply-To: <cf2f2510-9d27-4473-bf50-45b14725f4c5@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: oUaXNI0tYN-jc47S-txQVBDRdvOyUM29
-X-Proofpoint-ORIG-GUID: oUaXNI0tYN-jc47S-txQVBDRdvOyUM29
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 clxscore=1015
- impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412300083
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 30 Dec 2024 10:58:20 +0100
+Message-Id: <D6OY33W0C0B3.29ERSR50BSV9N@gmail.com>
+Subject: Re: [PATCH v2 1/4] iio: gts-helper: add helpers to ease searches of
+ gain_sel and new_gain
+Cc: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Lars-Peter Clausen"
+ <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>
+To: "Jonathan Cameron" <jic23@kernel.org>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+X-Mailer: aerc 0.18.2
+References: <20241224-veml3235_scale-v2-0-2e1286846c77@gmail.com>
+ <20241224-veml3235_scale-v2-1-2e1286846c77@gmail.com>
+ <20241228154101.7f6f2e11@jic23-huawei>
+In-Reply-To: <20241228154101.7f6f2e11@jic23-huawei>
 
-
-On 12/13/2024 9:18 PM, Konrad Dybcio wrote:
-> On 12.12.2024 5:11 PM, Satya Priya Kakitapalli wrote:
->> Add driver for the MBG thermal monitoring device. It monitors
->> the die temperature, and when there is a level 1 upper threshold
->> violation, it receives an interrupt over spmi. The driver reads
->> the fault status register and notifies thermal accordingly.
->>
->> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
->> ---
-> [...]
+On Sat Dec 28, 2024 at 4:41 PM CET, Jonathan Cameron wrote:
+> On Tue, 24 Dec 2024 11:59:00 +0100
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 >
->> +static const struct mbg_map_table map_table[] = {
-> Is this peripheral/pmic-specific?
-
-
-Yes, peripheral specific.
-
-
->> +	/* minT	vtemp0	tc */
->> +	{ -60000, 4337, 1967 },
->> +	{ -40000, 4731, 1964 },
->> +	{ -20000, 5124, 1957  },
->> +	{ 0,      5515, 1949 },
->> +	{ 20000,  5905, 1940 },
->> +	{ 40000,  6293, 1930 },
->> +	{ 60000,  6679, 1921 },
->> +	{ 80000,  7064, 1910 },
->> +	{ 100000, 7446, 1896 },
->> +	{ 120000, 7825, 1878 },
->> +	{ 140000, 8201, 1859 },
->> +};
->> +
->> +static int mbg_tm_get_temp(struct thermal_zone_device *tz, int *temp)
->> +{
->> +	struct mbg_tm_chip *chip = thermal_zone_device_priv(tz);
->> +	int ret, milli_celsius;
->> +
->> +	if (!temp)
->> +		return -EINVAL;
->> +
->> +	if (chip->last_thres_crossed) {
->> +		pr_debug("last_temp: %d\n", chip->last_temp);
-> Use dev_dbg for consistency with the other debug prints
-
-
-Okay.
-
-
->> +		chip->last_thres_crossed = false;
->> +		*temp = chip->last_temp;
->> +		return 0;
->> +	}
->> +
->> +	ret = iio_read_channel_processed(chip->adc, &milli_celsius);
->> +	if (ret < 0) {
->> +		dev_err(chip->dev, "failed to read iio channel %d\n", ret);
->> +		return ret;
->> +	}
->> +
->> +	*temp = milli_celsius;
->> +
->> +	return 0;
->> +}
->> +
->> +static int temp_to_vtemp(int temp)
->> +{
->> +
->> +	int idx, vtemp, tc = 0, t0 = 0, vtemp0 = 0;
->> +
->> +	for (idx = 0; idx < ARRAY_SIZE(map_table); idx++)
->> +		if (temp >= map_table[idx].min_temp &&
->> +				temp < (map_table[idx].min_temp + 20000)) {
-> Please align the two lines, tab width is 8 for kernel code
-
-
-Okay.
-
-
->> +			tc = map_table[idx].tc;
->> +			t0 = map_table[idx].min_temp;
->> +			vtemp0 = map_table[idx].vtemp0;
->> +			break;
->> +		}
->> +
->> +	/*
->> +	 * Formula to calculate vtemp(mV) from a given temp
->> +	 * vtemp = (temp - minT) * tc + vtemp0
->> +	 * tc, t0 and vtemp0 values are mentioned in the map_table array.
->> +	 */
->> +	vtemp = ((temp - t0) * tc + vtemp0 * 100000) / 1000000;
-> So you say vtemp = ... and the func is called temp_to_vtemp
+> > This helper functions reduce the burden in the drivers that want to
+> > fetch a gain selector in all available times or a new optimal gain.
+> >
+> > The former is currently achieved by calling
+> > iio_gts_find_gain_sel_for_scale_using_time() for the current time
+> > selector, and then iterating over the rest of time selectors if the
+> > gain selector was not found.
+> >
+> > The latter requires a combination of multiple iio-gts helpers to find
+> > the new gain, look for an optimal gain if there was no exact match, and
+> > set a minimum gain if the optimal gain is not in the range of available
+> > gains.
+> >
+> > Provide simpler workflows by means of functions that address common
+> > patterns in the users of the iio-gts helpers.
+> >
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Matti gave an Ack.   If you intentionally dropped it due to significant
+> changes, you should say so...
 >
->> +	return abs(vtemp - MBG_TEMP_DEFAULT_TEMP_MV) / MBG_TEMP_STEP_MV;
-> But you end up returning a scaled version of it..
-> Please clarify that in the code
-
-
-Sure, I'll update the function name to temp_to_vtemp_mv and probably add 
-a comment in the code.
-
-
+> > ---
 >
->> +}
->> +
->> +static int mbg_tm_set_trip_temp(struct thermal_zone_device *tz, int low_temp,
->> +						int temp)
->> +{
->> +	struct mbg_tm_chip *chip = thermal_zone_device_priv(tz);
->> +	int ret = 0;
->> +
->> +	guard(mutex)(&chip->lock);
->> +
->> +	/* The HW has a limitation that the trip set must be above 25C */
->> +	if (temp > MBG_MIN_TRIP_TEMP && temp < MBG_MAX_SUPPORTED_TEMP) {
->> +		regmap_set_bits(chip->map,
->> +			chip->base + MBG_TEMP_MON2_MISC_CFG, MON2_UP_THRESH_EN);
->> +		ret = regmap_write(chip->map, chip->base + MON2_LVL1_UP_THRESH,
->> +						temp_to_vtemp(temp));
->> +		if (ret < 0)
->> +			return ret;
->> +	} else {
->> +		dev_dbg(chip->dev, "Set trip b/w 25C and 160C\n");
->> +		regmap_clear_bits(chip->map,
->> +			chip->base + MBG_TEMP_MON2_MISC_CFG, MON2_UP_THRESH_EN);
->> +	}
->> +
->> +	/*
->> +	 * Configure the last_temp one degree higher, to ensure the
->> +	 * violated temp is returned to thermal framework when it reads
->> +	 * temperature for the first time after the violation happens.
->> +	 * This is needed to account for the inaccuracy in the conversion
->> +	 * formula used which leads to the thermal framework setting back
->> +	 * the same thresholds in case the temperature it reads does not
->> +	 * show violation.
->> +	 */
->> +	chip->last_temp = temp + MBG_TEMP_CONSTANT;
->> +
->> +	return ret;
->> +}
->> +
->> +static const struct thermal_zone_device_ops mbg_tm_ops = {
->> +	.get_temp = mbg_tm_get_temp,
->> +	.set_trips = mbg_tm_set_trip_temp,
->> +};
->> +
->> +static irqreturn_t mbg_tm_isr(int irq, void *data)
->> +{
->> +	struct mbg_tm_chip *chip = data;
->> +	int ret, val;
->> +
->> +	scoped_guard(mutex, &chip->lock) {
->> +		ret = regmap_read(chip->map,
->> +			chip->base + MBG_TEMP_MON2_FAULT_STATUS, &val);
->> +		if (ret < 0)
->> +			return IRQ_HANDLED;
->> +	}
->> +
->> +	if ((val & MON_FAULT_STATUS_MASK) & MON_FAULT_STATUS_LVL1) {
->> +		if ((val & MON_POLARITY_STATUS_MASK) & MON_POLARITY_STATUS_UPR) {
-> Just checking the last argument to AND in both lines is enough, as
-> they're both parts of the bitfield
-
-
-Both the bits of each mask need to be checked in order to proceed 
-accordingly, I will update with proper logic in next version.
-
-
+> here.
 >
-> [...]
+> Other than that, looks fine to me.
 >
->> +	ret = device_property_read_u32(chip->dev, "reg", &res);
->> +	if (ret < 0)
->> +		return ret;
-> return dev_err_probe(dev, ret, "Couldn't read reg property"\n);
->
->> +
->> +	chip->base = res;
->> +
->> +	chip->irq = platform_get_irq(pdev, 0);
->> +	if (chip->irq < 0)
->> +		return chip->irq;
-> Similarly here
->
->> +
->> +	chip->adc = devm_iio_channel_get(&pdev->dev, "thermal");
->> +	if (IS_ERR(chip->adc))
->> +		return dev_err_probe(&pdev->dev, PTR_ERR(chip->adc),
->> +			       "failed to get adc channel\n");
->> +
->> +	chip->tz_dev = devm_thermal_of_zone_register(&pdev->dev, 0,
->> +						chip, &mbg_tm_ops);
->> +	if (IS_ERR(chip->tz_dev))
->> +		return dev_err_probe(&pdev->dev, PTR_ERR(chip->tz_dev),
->> +			       "failed to register sensor\n");
-> Please also make the error messages start with an uppercase letter
->
->> +
->> +	return devm_request_threaded_irq(&pdev->dev, chip->irq, NULL,
->> +			mbg_tm_isr, IRQF_ONESHOT, node->name, chip);
->> +}
->> +
->> +static const struct of_device_id mbg_tm_match_table[] = {
->> +	{ .compatible = "qcom,spmi-pm8775-mbg-tm" },
-> I don't think the 'spmi' bit belongs here
+> Jonathan
 
+Hi Jonathan, you are absolutely right.
 
-Okay, will update it.
+I did not add the Ack on purpose because I thought that I had to modify
+the helpers functions, but in the end that was not the case. Matti's tag
+should have stayed.
 
-
-> Konrad
+Best regards,
+Javier Carrasco
 

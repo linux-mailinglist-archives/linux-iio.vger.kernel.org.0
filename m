@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-13857-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13858-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F6F49FE51A
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 10:58:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94269FE522
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 11:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FE953A1FCC
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 09:58:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E1D83A1F54
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 10:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3901A304A;
-	Mon, 30 Dec 2024 09:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA821A2C0B;
+	Mon, 30 Dec 2024 10:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPxHIQ/x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wr5P4Lyy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53821A2C0E;
-	Mon, 30 Dec 2024 09:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A567F171C9;
+	Mon, 30 Dec 2024 10:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735552706; cv=none; b=YqPsg1iO8HDTVv6OT82bM89qwypTvRFwVEiExNHI+x1S1Fxs0HN3N0rTtAyEg53dUJuOkmN/3NTgFoG2mJlBgSz6BVjqGbGas7UwJxpKP+c6ZHcCqY0XOwns1Qvi2R7Q5XWsTcZPYsWvriQYNIkZyFIdhkfjdB+Hmu6i8pjvTrE=
+	t=1735552922; cv=none; b=dz7iQT4noVNTMh7HgHC6q3YKtelAN6fEYao9xR+z+O677pXVwv2NscuJ3aQCxqXC7f4g7p4f5yW7vZ1c4G9vxKXwXjcjZ8BGHO3+f9T0f2kX0U74SntZ2qytzUYxiSbsq4OlsTgKmK+kXw5x8tsPDAtsPe648ROz6le5DDSxH2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735552706; c=relaxed/simple;
-	bh=LMpsPTfwY1W792DoMCosJOMmGmWiaJsAtZEGqg1U2XI=;
+	s=arc-20240116; t=1735552922; c=relaxed/simple;
+	bh=4IH5Uz+ZOV3DD/XxDNPOvubA9+91wCczy7G8+dwZ95k=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=bbhG6xONIcJGZymUBSofGDSHgHVlTpxK0tnEdwaJvD8tY4y5Mj/pxJIQGyhT6eNz9pKldmR/ljVvqCO7G+jO7dj3MHlpu5YxXhuanPilvX17+aI+yHQ96dNpsrJwtYCsAtarZ+1Q9ZXNasUSTMNGffsPEvIl6BPJ34xCQ21E4D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPxHIQ/x; arc=none smtp.client-ip=209.85.128.43
+	 References:In-Reply-To; b=Cb3oGceSD2EaIes8d1R2fDBd/G4LGZuFyAiTi0ftgygdxRklxWvXZXnyJRw40Rc0bAjT8rzx121L5pOYZiRQ8F/4NluulqoSMndhVW4LwxtuOfPhw3RqZ9K4wIiEzW/PWr0y7x0NrIRl3fGV4mY66zBh3zTw15XDXkM5P7nuaOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wr5P4Lyy; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43635796b48so54610875e9.0;
-        Mon, 30 Dec 2024 01:58:24 -0800 (PST)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3862d161947so4289183f8f.3;
+        Mon, 30 Dec 2024 02:02:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735552703; x=1736157503; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1735552919; x=1736157719; darn=vger.kernel.org;
         h=in-reply-to:references:from:to:cc:subject:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BKR3CmUDPeca1b4GGjP6VSHlyziYNpuOYKwOZ7KV8Ew=;
-        b=mPxHIQ/xg3LLn5q119nRUPvYgGJbuEI88lCKJYhfNCWsnIG1uq14v/SnrZ2v7M2X+X
-         Vf+ECVaMoViNjFcYL2rpLvQGhgte/pnZJg+r1LKll3WVu6/l6o1wnZQRRcNsXUOtKBus
-         zqykR2Lm1w2uRNvXbH29+BRDoQJAkIaLZ7m/T2i0ASYik0Vq6vTlseCfqx7X9DfaeR32
-         H8GKRXq+g4JTPJJN1QYl6d7W1FXpK3b7OQTMF0INskIeFC4u+qFSW9QeXUtoQ6dLPPNX
-         XfMEH97THofYifUs6iANqPzxtYouSaE1ArdevVO8wYUnHZcPDlbQjAtwwC/2nj1E75uK
-         bB3Q==
+        bh=iJ4Pq5PgA42OQFhdICtd4TJQMzoXC6uWkgMdmISJGzE=;
+        b=Wr5P4Lyyl/sFKkgLmNNaZMVQY2xD7dkRbve+h/x34xQG1iSH9remH4lbRdeRzMhWLY
+         9rgA9txZzaCRqH2vEbK53+pRpt0kajSIgib1ycjjnt5GLn9xarNp3f/VD7Sj1gpmnaja
+         edeYn0MAbNttlFsG9tml3fk6IPqa5elY6xWL5Q6eYRqHuRMv3jyvM4BsXdDLNtnWGleb
+         kWMposlILnaBtclhu13gzdzQokgb6aJZRY++/WDXHTRpOYKhhrCXGAd5hUlYs0svP0EC
+         XL9xfyfrYDUXHOX03gvS6PDdtItDDbng2nWlaXStAOrJj6RXR5+rkjveD37wWAfLtcIK
+         WV3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735552703; x=1736157503;
+        d=1e100.net; s=20230601; t=1735552919; x=1736157719;
         h=in-reply-to:references:from:to:cc:subject:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=BKR3CmUDPeca1b4GGjP6VSHlyziYNpuOYKwOZ7KV8Ew=;
-        b=F5866m2ERIDocsEkpfl/pShX9CngO16N5TgqYBrrSsLfVdxenoFWwdYZtxWQjbKOM+
-         Ak4r5d+G+UlEXfh+9xme0NPuuoOdPW9F9QOS89+t6TNy3en1R+1fStZJDdUQbL4URIeD
-         9XHe2WrKUZan0MYC+PUpDGSppXkoS7xv3vuoy+KgFSPG5biaxy5Ng6D7ukKBK2sbS45M
-         bWcV1jzUx9eTVWJ/m7EocbaLglNHe8D2f7GeGRKpkRKy5G86rFC76OBTRHsgLAlg/68y
-         QUgKsqX36w/02FwUXP2Wo6fiFqOldL2JXO6XCRRJ97+reacWhkWNo5kDD6uK7s7Vlu21
-         rHqw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgBQaGF5ys7+oA44NQJek+Ry5x6R5lkNcXUvectShDLWh4f1Da4AlcFmVw/t34VhJmxSJo7JXvECc=@vger.kernel.org, AJvYcCXidKuzBSpV3x2S5We0xRMSMa+e4U9aRhYSHE1jY+26wK5rknMwDBFI379ms+gEkPgObmlPvoDpJ/VUBb0o@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGzGkd3ObQAVLcT2pQAqWp9nKfCK2V2FjIJrPXvI0BqRDfU+fg
-	URfvxPW3gcqB8uqqG4oTOG0QntDy56xvw25Kvtq8U2FCz7A5Oht7EiMLaw==
-X-Gm-Gg: ASbGnctc3hx4CYAFKa8dA9vX8VrT8HuwHZnWU3fcjsKaIU0fMOFxRo8iOMLgbVd2BaK
-	vdURjx0HkoCMvpSH3cmiVtFiC37Ib29PkmXJ6qKL0QOj814U7K39DuuCnpPYcFWW0QxFKvdyDd7
-	FQLyT6bTetxH5aXs7nGn35eO83k4haS/4vFTsSWS2hYJXP27pUwHHm9O/VO+yM3tXye+dn1tvVQ
-	tlQaziuXsGupUxZT1ip11+csXibBD0m2rKNjEegsUVpWy54XXPR7GWT9OBQlT16xwLouNH6W3yj
-	uleksV5bQrLxbZddMnaxYKBUWw==
-X-Google-Smtp-Source: AGHT+IG+Af7I17mpaNEMAVFnIJsnpSkD2rN+S2DtWlwPjNkrm8LZckN0glVCxrNJyHvgSD7+CRWp3g==
-X-Received: by 2002:a05:600c:3147:b0:436:1b86:f05 with SMTP id 5b1f17b1804b1-43669a22df3mr285971885e9.11.1735552702770;
-        Mon, 30 Dec 2024 01:58:22 -0800 (PST)
+        bh=iJ4Pq5PgA42OQFhdICtd4TJQMzoXC6uWkgMdmISJGzE=;
+        b=I6FsJy3vb2ihP84J8hR9JFe3jJTCbXuoNtzKEgrPubrb2vinEMcvuVsw0k46aFEcgv
+         KTeKfgaqjLnBex/DSKNIOKAueRu0IaV/+abrbh8TV5zWYB2xrZhJY5mCXS3EBtQFYW8U
+         QwqERT2d/20q4sDmbY1Q2jEPbEzIVyBJbUZ1MzsBOXoV23nuGzxo73M+9Z6F7QhZqbNW
+         CS4qWfwVBI6YAtgoW+iS2/WNCfOWnQaW+3SuHHvzs3Mfch/CDreNfRKCoxWJ4fBXCXOk
+         jbuRuNXlgzOia4PjOiM/UX4qvkAWEwrRwQ/zWk378aGSCdfM1EwL5qp42f0IOOaXEflz
+         8uTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbv2jZPTAZBqap/khp4Pi+Tg3R/AxTZ0H6AQ8eXZpP1uo8sd3mcYXY70mRaRQG7pUjJjZJ7dGQTYedKOQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxerHegMqAOEjQaYo34CDr/yhrTaoWduC545DgBylL6Kcddf3ig
+	D0tsFF8zVZjG758DentnbjDdesQPHihBwBouSi9JOAjKVIT1k9ctA8FJpQ==
+X-Gm-Gg: ASbGncti0shI9b+b75YZuO7wczzTRORCdnp8lGyDMrBf/JpLGw0HiyAQZRIn+hQlmd/
+	LHEYwDLnLKFiodRfkROyTR0JPqU4+g/fEJnns+9P6c8eEIO8/mQCe0y2UTaTtkR6UX+khXQ88Pq
+	odjWvSXPHNbTAQ4UyzfBN+QrorCELMBazAeLgimxI290g2BDlMUy2jmcMLh4PpNuwnjC9fRQjYS
+	e6mdz8K4bMwQTRX1RYV52oCQhH+6iV3lUNXhj3s2kf/1y51+3rfgXXSxkIjsKsrc7FRRU3ZdHDC
+	mfHtty82W/r3Slxqacj70nMH5Q==
+X-Google-Smtp-Source: AGHT+IFEwMXjOadgTT1j4b044mGxK7Tjpt/d7lDya9unKAJukRtLKJ3awgTNamWx7xrB6LZeHL+s+Q==
+X-Received: by 2002:a5d:6f01:0:b0:386:3dad:8147 with SMTP id ffacd0b85a97d-38a221f9ed6mr23661694f8f.32.1735552918732;
+        Mon, 30 Dec 2024 02:01:58 -0800 (PST)
 Received: from localhost (82.158.190.253.dyn.user.ono.com. [82.158.190.253])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b441bbsm382726065e9.40.2024.12.30.01.58.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e278sm30026484f8f.75.2024.12.30.02.01.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Dec 2024 01:58:22 -0800 (PST)
+        Mon, 30 Dec 2024 02:01:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -80,59 +80,66 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 30 Dec 2024 10:58:20 +0100
-Message-Id: <D6OY33W0C0B3.29ERSR50BSV9N@gmail.com>
-Subject: Re: [PATCH v2 1/4] iio: gts-helper: add helpers to ease searches of
- gain_sel and new_gain
-Cc: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Lars-Peter Clausen"
- <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>
-To: "Jonathan Cameron" <jic23@kernel.org>
+Date: Mon, 30 Dec 2024 11:01:57 +0100
+Message-Id: <D6OY5V93Q2YC.S61HE5A0GMO1@gmail.com>
+Subject: Re: [PATCH v2 4/4] iio: veml3235: fix scale to conform to ABI
+Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>
+To: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>
 From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
 X-Mailer: aerc 0.18.2
 References: <20241224-veml3235_scale-v2-0-2e1286846c77@gmail.com>
- <20241224-veml3235_scale-v2-1-2e1286846c77@gmail.com>
- <20241228154101.7f6f2e11@jic23-huawei>
-In-Reply-To: <20241228154101.7f6f2e11@jic23-huawei>
+ <20241224-veml3235_scale-v2-4-2e1286846c77@gmail.com>
+ <b5aa553d-fed4-459e-bbe8-70b9b9b39cbd@gmail.com>
+In-Reply-To: <b5aa553d-fed4-459e-bbe8-70b9b9b39cbd@gmail.com>
 
-On Sat Dec 28, 2024 at 4:41 PM CET, Jonathan Cameron wrote:
-> On Tue, 24 Dec 2024 11:59:00 +0100
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
->
-> > This helper functions reduce the burden in the drivers that want to
-> > fetch a gain selector in all available times or a new optimal gain.
+On Sun Dec 29, 2024 at 7:53 AM CET, Matti Vaittinen wrote:
+> On 24/12/2024 12:59, Javier Carrasco wrote:
+> > The current scale is not ABI-compliant as it is just the sensor gain
+> > instead of the value that acts as a multiplier to be applied to the raw
+> > value (there is no offset).
 > >
-> > The former is currently achieved by calling
-> > iio_gts_find_gain_sel_for_scale_using_time() for the current time
-> > selector, and then iterating over the rest of time selectors if the
-> > gain selector was not found.
+> > Use the iio-gts helpers to obtain the proper scale values according to
+> > the gain and integration time to match the resolution tables from the
+> > datasheet. When at it, use 'scale' instead of 'gain' consistently for
+> > the get/set functions to avoid misunderstandings.
 > >
-> > The latter requires a combination of multiple iio-gts helpers to find
-> > the new gain, look for an optimal gain if there was no exact match, and
-> > set a minimum gain if the optimal gain is not in the range of available
-> > gains.
-> >
-> > Provide simpler workflows by means of functions that address common
-> > patterns in the users of the iio-gts helpers.
-> >
+> > Fixes: c5a23f80c164 ("iio: light: add support for veml3235")
 > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> Matti gave an Ack.   If you intentionally dropped it due to significant
-> changes, you should say so...
->
 > > ---
 >
-> here.
+> This looks good to me, although I now think we made a mistake with the
+> naming of the iio_gts_find_gain_sel_in_times().
 >
-> Other than that, looks fine to me.
+> The intended use is finding the gain and time (selector) for the new
+> scale (while preferring keeping the time unchanged if possible), right?
 >
-> Jonathan
+> So, in this regard it'd be better to use name which reflects the fact
+> that the function finds gain and time for given scale.
+>
+> I would now (after having to look the doc of this new function while
+> reviewing the code 2 weeks after reviewing this new function :rolleyes:)
+> name it something like:
+>
+> iio_gts_find_gain_time_sel_for_scale()
+>
+> Well, it's not really in the scope of the review anymore, but I'd love
+> to see a renaming patch while we have only one user... :)
+>
+> Anyways:
+>
+> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>
+> Yours,
+> 	-- Matti
 
-Hi Jonathan, you are absolutely right.
+Hi Matti,
 
-I did not add the Ack on purpose because I thought that I had to modify
-the helpers functions, but in the end that was not the case. Matti's tag
-should have stayed.
+Thank you for your suggestion, I will add it to v3 as this patch and the
+one that introduced the helper functions have not been applied yet, so
+we don't need an extra patch to rename the function. I will add your
+tag too because I will only change what you suggested.
 
 Best regards,
 Javier Carrasco

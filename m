@@ -1,261 +1,334 @@
-Return-Path: <linux-iio+bounces-13855-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13856-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE749FE349
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 08:34:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60049FE502
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 10:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00B41881FFE
-	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 07:34:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ADB162514
+	for <lists+linux-iio@lfdr.de>; Mon, 30 Dec 2024 09:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F4919F420;
-	Mon, 30 Dec 2024 07:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D053B1A2860;
+	Mon, 30 Dec 2024 09:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UBmWNUWa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazon11020116.outbound.protection.outlook.com [52.101.227.116])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321315B99E;
-	Mon, 30 Dec 2024 07:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.227.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735544074; cv=fail; b=kSnxebAFD0n6FnACHkC0CAZCSeDa7HxLGDx40whkiuu4NnxGx/H2DgQwYCILt57JcXCdJloQ6QLcqMLDfoI2QsLWKUOpd5UdPRFTCIeqcLKw7qIRnNqrGxuN1B7v3Yk3hNllKLfBk0HBB3MF+Y1Uax/76TZjIqaJlMuRXXzwwKQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735544074; c=relaxed/simple;
-	bh=OpKsaO1+/QmSlR3Zy6JK00MnFDPzPXIBTzsLw7TA0Uk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NTH/+T3g3IPZbNdkTMjrs9h7Fv9hAaPNSUp4z29/4jbSWZN7X3pK6LbUb/lnn5KqD9Zqx3x93g49uCNYpTR6+FCAgphE2Vp72vgA7GYt7xvLd4xYEiWsvmhXY7mhfwic8c+5CDNeyNDugI5kD0jA1RyEXoq13s6jKzP2WUmulgA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io; spf=pass smtp.mailfrom=siliconsignals.io; arc=fail smtp.client-ip=52.101.227.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=siliconsignals.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siliconsignals.io
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qgHEANP3HcL3Dd7de6ga2M3MrOhuHiq7pex6P/twmUnnO/J64SPX9nZ/GTIP9keN893olwuJk6LxEcbLpyPh33ZnvVvEMeYrfN0fn2uUlOrduhsEIX8osuqJ/okwDEBis3POULyvAZwtzDUZrdP0nyKOQgNiVmDHqI+sZ/c4bAurU2l9bpU9OhXVG5Gb051fxs2BdctFImP+bizBdVa/J7dBw+3Tcz3Xaop7oU0Mdk7D4XAaii8xpWs7R5osPUcGNNV/yfGhcG+7fSw/00dzkCv57Ka1KwH7hORFlzPGAqH9h5z6yoiaTEdSaX35ruDUtSqZoh0K4W9PJKJUkZ63Uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OpKsaO1+/QmSlR3Zy6JK00MnFDPzPXIBTzsLw7TA0Uk=;
- b=M6YMSg7l8pVO5YmTMCCmIUjsIkZsJiCbNZZYJNnK+ZL10XzydpAMESLVMUZc00cmJuEptYn2+Ygy3v6TLwDprRztgwiyw4UiWYMuoyJVMBCoRl8HYCsdkMCGsS3wWXewX/Sc59KKsw9pMvaLfRuq1yohA5uphFhJPLSBzxrfuifpXNKrbepJTkoeLRet1YRsJcZBOFMiFcHPYezTdIAJps0v5WoCLuSYNcuJNVzmHCCkY+XtucCK7tbxb/PWnorRMSWLEHs6KV93ZJ1CeWhWAyCDLJuqMPTtaNB15l1B7HJDAiW17XnRmNpGYScY55Rs8OFZKVzRcChqmwNJaiOANQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siliconsignals.io; dmarc=pass action=none
- header.from=siliconsignals.io; dkim=pass header.d=siliconsignals.io; arc=none
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:204::8)
- by PN2P287MB1263.INDP287.PROD.OUTLOOK.COM (2603:1096:c01:1ad::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.18; Mon, 30 Dec
- 2024 07:34:27 +0000
-Received: from PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac]) by PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
- ([fe80::1134:92d7:1f68:2fac%5]) with mapi id 15.20.8293.000; Mon, 30 Dec 2024
- 07:34:27 +0000
-From: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-To: Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
-CC: "krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Emil Gedenryd <emil.gedenryd@axis.com>, Andreas
- Dannenberg <dannenberg@ti.com>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] dt-bindings: iio: light: opt3001: add compatible for
- opt3004
-Thread-Topic: [PATCH v3] dt-bindings: iio: light: opt3001: add compatible for
- opt3004
-Thread-Index: AQHbWGDuX+oJMhxVRk2+n9xm6GhD4bL7cayAgAAKz0OAACkCgIACw9B/
-Date: Mon, 30 Dec 2024 07:34:27 +0000
-Message-ID:
- <PN0P287MB284355F3DD7DCF6BFC6D071FFF092@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
-References: <20241227131134.10810-1-hardevsinh.palaniya@siliconsignals.io>
-	<qgottqtq5lvp6fifi37xzq7supalvm7leue755yjatyun6k5um@pju4v3kqoizq>
-	<PN0P287MB2843E7005997F1728B0F9B2CFF0F2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
- <20241228131929.49e4a90d@jic23-huawei>
-In-Reply-To: <20241228131929.49e4a90d@jic23-huawei>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siliconsignals.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN0P287MB2843:EE_|PN2P287MB1263:EE_
-x-ms-office365-filtering-correlation-id: d05aac18-2f58-4010-411d-08dd28a463fe
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?BJPrABaDxhnqXOcTyP6rltmufCvAxpftOc71V7O2/kB5VLT+dsrLLjdwMH?=
- =?iso-8859-1?Q?pApwOvMIQDfkH78LVGZLrLeUUQq3cY9UuHlrfleL8qV2SdqIO5TZFI9+tL?=
- =?iso-8859-1?Q?iW9xPDo211xaQZXXI7GHQgosR7n4rsADehzTf+Lk5mIWAn1XVxxIa1S1Xc?=
- =?iso-8859-1?Q?q+f/KdOgb2YTrx5PvQyizlWTz2GJK+a5U5cszdhfpzRV+PaXrxAEHY/PDr?=
- =?iso-8859-1?Q?IefbCBzqVyq4t147Bo314Wf18ywLzahfB3LECORufxK1mYrMVI6NyuDXzE?=
- =?iso-8859-1?Q?V/un9XZSOSbh/rL5linG1Px+HfDfeFhbfvpIeo2UvqHPTSsdxJUELYVlxE?=
- =?iso-8859-1?Q?3BzqAAWwMPjftZSos/75g9VGYJBkv41zC4w+C3CYND3Wn5UIDHPrYVUmix?=
- =?iso-8859-1?Q?jhdQ4wkVFXfyawVj268kaN7/08C6N+jlkcymgwBEUfq1hZAehOWw2zUXuC?=
- =?iso-8859-1?Q?Rx5PlRoBbHWT+xfPlFGCcGe2Vf3l2Nq4j4rZ21Qj5gDR/aA6a75Li2Ce2d?=
- =?iso-8859-1?Q?lpkADapfLHDXPJTRwh8A7x6lRGlu36+gHw7eMNbQIGeaHHScDssxzVk1EX?=
- =?iso-8859-1?Q?LOd1mlWHhFQO2EN94HPu5Eot2guzXfJom7J/9Kw9uAvuXjgHE/B4K7NFgT?=
- =?iso-8859-1?Q?gHG63PjfZ+UlxRWHEILcr1BNy64KZPVf6836EHpt/d2+8oBxcNco4JKkGf?=
- =?iso-8859-1?Q?dXX16cPmbxB3kME+gxCB3KPKthGO7rMmxwH+hUBYeqJjuqmtMhv35QQ5/A?=
- =?iso-8859-1?Q?QK255MLPD2EeMKLV1O8KjdlTt9VI/KoxlGAabyQ/UY+6oF7UKiInxcYFAz?=
- =?iso-8859-1?Q?zJWT6Rel5EvcEOQn/XYAbRPgPFZsZaJzMBp4hG9PRh2YW1Dzxw2mPHiW+R?=
- =?iso-8859-1?Q?MhR4R+Ze59ILq4Dsh34tN7fkH8mxCiNxUIHr45IsmNjw9f2ftiW08kvhNl?=
- =?iso-8859-1?Q?xWtLs7r4VRGG/DxCyYA6OXmtWPEirjKYiVeBW8Vmluhfu8rQDChFbncZjM?=
- =?iso-8859-1?Q?QEixQO2OjZ7+LY59t0XLgKD/t2ueHf2BoyibHQ+bdQgEH212gxab84iBvs?=
- =?iso-8859-1?Q?bNgZwSxzJvMn8pOtejX6m/tke0p1UmYFbRYSaMpPpqubDn0Xg2W2ULrLFk?=
- =?iso-8859-1?Q?9ib/DnsEVfY3FDpShF88WKAxKMRSza+VwfZ7SCUb6NR+EA+BGbGBA2FkVp?=
- =?iso-8859-1?Q?UZFmPtfWgJmLBVsx+308r9yE0yyeQyC1vmhE6e2oBO2wNJ+Ywoq91fm0QU?=
- =?iso-8859-1?Q?G68pHi5XoNI7zCYJ+XKp7tr0hQlTJqLLhTSAXYWfFBTb0hXeOodbiCKR9G?=
- =?iso-8859-1?Q?O/0uqNq63iey2TBJM6lr1/PeOA356Ccg0DlIFjWYlPKkkZRJV1R9n2G7rj?=
- =?iso-8859-1?Q?SLfaSOvmoA5fY+KxebfWayZATNEfbovJHjmWSYf4ESUwes9yW02yhsr/8i?=
- =?iso-8859-1?Q?HtweoZ3gCXKyCwuaW9EWzoWn70dFELJbMLRMTg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PN0P287MB2843.INDP287.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?g1z4kzEL6aYJlz3PgPJiYrg4G8jc6CchILpbWQzrMXiIz+Hb0BxWF1WVhn?=
- =?iso-8859-1?Q?34qRtJCYJ8pfl+3ByWqou/5eRb/Uk8eTq6OowSnlFJpQAxfpk0Oe18NpHd?=
- =?iso-8859-1?Q?j/KiQroDVoPrclTmLJ/rfG6/jm614AkNydfyXcv4dcPYQfuRriCJqWpRC5?=
- =?iso-8859-1?Q?ybchFo7eAKJTZBwMqRVw9VRPzD0wYmSGN5yRoY+AbCGo9fPB/YFK+r2rhp?=
- =?iso-8859-1?Q?Kufi+X5JQfTIgBlNvuXHPgg115ZAIURn27o46zuLhzHJkRA9qLiHa524Yq?=
- =?iso-8859-1?Q?/yUXRBtsgUXGtKqF3MwW32Hdja11x5DCsRVWfLofI68oxxzT+s3TKJjQOR?=
- =?iso-8859-1?Q?T3ZVhmnJTd457/s53GNPCglfUx1yr9lIzVCEd8d7Sq9hA4eeO8Yy2IwZ1R?=
- =?iso-8859-1?Q?YeaPS/z8b2u4Z90TD+AR8g5VCPe8ycgaqPDdb5nFTIdMuuMGyDTo1yU+7H?=
- =?iso-8859-1?Q?fuQHPLq/PdhN7rC9OKbvPC3sOjE34kaPFJEdBMzuhcAOUeM5yps2eeLDHM?=
- =?iso-8859-1?Q?lkqcMp8+17Hy3fT0ZMmTVoPkGNbqgXTg+4PiWMibeYm00W1jG0Y7zxJyJn?=
- =?iso-8859-1?Q?+jqPg0INkyOBGTdV8ENyNHFeU3qDJj8X/3IaH6BV+Wum0+z4YQRvl5T1Vd?=
- =?iso-8859-1?Q?rS/Wo7D+8+SvDkniEX4Q0hfffjfzV5uCIS2Sk9n8kkHZZEVYkqA2uGXw20?=
- =?iso-8859-1?Q?JwkcwhGgFMHSS5qp4ar1gX4S23DkxnoTlX+4N01kSDP4Bo4/9bLiw3eWCh?=
- =?iso-8859-1?Q?VyIWu5jfBWpkZBRw0sPsYu6lekbQr2x2mEBPt2IPC19SG8mc0HvQAC8Ckp?=
- =?iso-8859-1?Q?pmpStr39eaJgCtpu4W+fM6YnUWJ/DBGWi2XOQPPCTnAvY5rR/vkSlzLT+6?=
- =?iso-8859-1?Q?COGJciPgC/rwnSFKvxvMk9MafEZOqAbJXPAvpdLbA0xLxPWGmWvXWMJDNA?=
- =?iso-8859-1?Q?9wI99ndb7/zmzAkDuS8LOciV3PCNzMY2TVz9WTtJYqfseZW3dP8AmEKh1s?=
- =?iso-8859-1?Q?s9ki1Oz5KJWFrIZMM9mPx+TuodRt9azl1DDh3FP59NAMoMS8eWdLTmHM/u?=
- =?iso-8859-1?Q?hJHgwEGS+WdAyIG1OTZsziRWmO7bj3R4Rvm2N6rN/1BeV3//UqCLbxufCv?=
- =?iso-8859-1?Q?0gqQeDL12+SD8euspaN7+A94Mm5Cx8UME+vWidJ2H1kGujFW2FVWFIbzIh?=
- =?iso-8859-1?Q?1YtqmvXXfUiGUu79u9CMGxRdjwpfg2P7mslAFF43RxXC5CT+tng7g5GsxR?=
- =?iso-8859-1?Q?PnNBSDikPRxPf+PJjlWNTtG5/fWGnUhgk4lJF8FjmkI5ipVbZwz8r+LEqo?=
- =?iso-8859-1?Q?7D9Q3KS5hCOMNg1Yy3Oi8pBeeQWmEaW/5Z3ngq8HB4lPjUvM6yETER0rVI?=
- =?iso-8859-1?Q?DKsYMtsWpjXpbgrRUPOjis3wSxI2V5PauFX73/JOqpdoWGB2nwFJ3vcb97?=
- =?iso-8859-1?Q?03+gARu/Ym36dJJno6TxquDiz+rfArbygnxPMPGfeyi82o8PVTPxXIl0p5?=
- =?iso-8859-1?Q?w3r0okYfvWHNsOgZr2ZnKpNiYL1+lDNoAayTdd3w5UCK0+/PBItj/QEqkj?=
- =?iso-8859-1?Q?IVaJu9AwQIT8jNUgt9WOVPboxOosBePf68Umh5Gx59vHHCUI33WsXwWdCk?=
- =?iso-8859-1?Q?FaNrc3qeVAVWEHSfSnah9/h2de8K9V0yzfuzQEFp1Iv4KoGupDi/lT5Aag?=
- =?iso-8859-1?Q?PZdxaNOToCgxJlhKitU=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087241D540;
+	Mon, 30 Dec 2024 09:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1735551968; cv=none; b=e6Kjib+t3kobLmQsYcZF+s66/s8rM3b9Ux1lTRCtlOXAFfZsUPuggP0kYyLwoXSKj1GIMahoH4pYcVuX4kdj106qxB+xJu2O4qxt4emJy+o/rNoBn7Ny+f9OhVMw4Ta25tY9VprsRFlqmAvW6xcuTs2OTEvMWvu5N3o44TtaL08=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1735551968; c=relaxed/simple;
+	bh=9vD9MtuX5fTs/84zjWforym1XDL1NOxumqnACS8YaNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f4LXeQY2iAOfalFAqY94YJSNkpnuEjkjASlt6CUon4KOLR6aitlqJNxiW09W/EoITpa3IQcSpMQHLpLCJ8usZqIYvywKRv+pEgmMXNolCYD4tBHCU+LQqwtvxBKpLppTvmIEqDcce6u2Mupr/a9pUI3wNaV96grSInpMiJYLU7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UBmWNUWa; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BU7Fwnu027219;
+	Mon, 30 Dec 2024 09:45:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	nE7Pl8ty/cDHDnKCID6Uh3U9BiIrHhReoZ30nnIVRcs=; b=UBmWNUWa3KL4xlMO
+	JkIDRaLVtu5PUdX+Ae3+cJSZvZ7wSvHWOVmaW8nNOKYoAUXAdDn/vG5wwC20+ES4
+	jzUhANdfxUBhGHoojQCBTEXFWTMtlzt94KoeMYkY2I7ZU+IZmSPOtX/7cdoVUaVV
+	ud8Gsotp8rQpv/hASM3Cq8xGymYKbGTIuAzn6/2LfzKkONTPWO6P3q7G1fUoLTeR
+	FC6wZx/qVtLUhWcS+MCjC4aJ9y54GjobvwDQHPQhhFsF2bPeK3jU/f0CJMJ6QY3/
+	WMyLQWfB5gQcZ+fsIoM9fu3LRic2EBdchVfCaYcgtDBkEeelN4nRCEv7sIF1dOpN
+	VTHXEg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43upyr89a0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 09:45:45 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BU9ji0T013191
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 09:45:44 GMT
+Received: from [10.218.23.250] (10.80.80.8) by nalasex01c.na.qualcomm.com
+ (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 30 Dec
+ 2024 01:45:35 -0800
+Message-ID: <c5079172-e127-4dfc-826a-b32489d852f8@quicinc.com>
+Date: Mon, 30 Dec 2024 15:15:32 +0530
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: siliconsignals.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN0P287MB2843.INDP287.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: d05aac18-2f58-4010-411d-08dd28a463fe
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Dec 2024 07:34:27.3745
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7ec5089e-a433-4bd1-a638-82ee62e21d37
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0vvvewRIf1tH6dqt+n3ggxDLzlY5zFcyRp1TTOso754ZX2+ybXV6ouH1LwnyQbZX4KT+NQJGb7qYnaAn7GBBW7bnH9d2DIhJJ7cAV1AsQreR0jrR04uDT131gCHCoIDK
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2P287MB1263
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 3/5] thermal: qcom: Add support for MBG thermal
+ monitoring
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        "Rafael J. Wysocki"
+	<rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui
+	<rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        "Lars-Peter
+ Clausen" <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+        Stephen Boyd
+	<sboyd@kernel.org>, Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath
+	<thara.gopinath@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "Konrad
+ Dybcio" <konradybcio@kernel.org>
+CC: Ajit Pandey <quic_ajipan@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        "Jagadeesh
+ Kona" <quic_jkona@quicinc.com>, <quic_kamalw@quicinc.com>,
+        <quic_jprakash@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
+ <20241212-mbg-v2-support-v2-3-3249a4339b6e@quicinc.com>
+ <cf2f2510-9d27-4473-bf50-45b14725f4c5@oss.qualcomm.com>
+Content-Language: en-US
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+In-Reply-To: <cf2f2510-9d27-4473-bf50-45b14725f4c5@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: oUaXNI0tYN-jc47S-txQVBDRdvOyUM29
+X-Proofpoint-ORIG-GUID: oUaXNI0tYN-jc47S-txQVBDRdvOyUM29
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0 clxscore=1015
+ impostorscore=0 priorityscore=1501 suspectscore=0 phishscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412300083
 
-Hi Jonathan,=A0Krzysztof=0A=
-=A0=0A=
-Thanks for your input.=0A=
-=A0=0A=
-> On Sat, 28 Dec 2024 10:54:33 +0000=0A=
-> Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io> wrote:=0A=
->=A0=0A=
-> > Hi Krzysztof,=0A=
-> >=0A=
-> > > On Fri, Dec 27, 2024 at 06:41:32PM +0530, Hardevsinh Palaniya wrote:=
-=0A=
-> > > > Add Support for OPT3004 Digital ambient light sensor (ALS) with=0A=
-> > > > increased angular IR rejection.=0A=
-> > > >=0A=
-> > > > The OPT3004 sensor shares the same functionality and scale range as=
-=0A=
-> > > > the OPT3001. The compatible string is added with fallback support t=
-o=0A=
-> > > > ensure compatibility.=0A=
-> > > >=0A=
-> > > > Datasheet: https://www.ti.com/lit/gpn/opt3004=0A=
-> > > > Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsign=
-als.io>=0A=
-> > > > ---=0A=
-> > > >=0A=
-> > > > v2 -> v3:=0A=
-> > > >=0A=
-> > > > - Reverse the order of compatible string=0A=
-> > > >=0A=
-> > > > v1 -> v2:=0A=
-> > > >=0A=
-> > > > - Use fallback mechanism for the OPT3004.=0A=
-> > > > - Drop 2/2 patch from the patch series[1] as per feedback.=0A=
-> > > >=0A=
-> > > > Link[1]: https://lore.kernel.org/linux-iio/20241224061321.6048-1-ha=
-rdevsinh.palaniya@siliconsignals.io/T/#t=0A=
-> > >=A0=0A=
-> > >=0A=
-> > > And where is any user of this, the DTS? We don't take bindings just=
-=0A=
-> > > because there is such device out there.=0A=
-> > >=0A=
-> > > I looked and nothing:=0A=
-> > > https://lore.kernel.org/all/?q=3Dti%2Copt3004=0A=
-> > >=0A=
-> > I added compatibility for the OPT3004 into the driver. However,=0A=
-> > based on Andy's feedback, it seems there might not be a need=0A=
-> > to include this directly in the driver.=0A=
-> > (Refer to Link [1] from the changelog.)=0A=
-> >=0A=
-> > we could follow a similar approach to how we handled the ADXL346,=0A=
-> > by just adding it to the bindings, since the ADXL346 is similar to the=
-=0A=
-> > ADXL345.=0A=
-> >=0A=
-> > If I misunderstood then please let me know.=0A=
->=0A=
-> Perhaps give some more information on the device in which this is found?=
-=0A=
-> If that's a board that you plan to support upstream in the longer term=0A=
-> then that would provide more justification for this patch.=0A=
->=A0=0A=
-> The note on the opt3001 page does give a hint as to how the parts are dif=
-ferent=0A=
-> but saying the opt3004 has better IR rejection.=A0 They also have a somew=
-hat different=0A=
-> sensitivity curves. However, those are details we don't expose in the ABI=
- and the=0A=
-> devices unhelpfully report the same ID register value, so it is not obvio=
-us that=0A=
-> we need to treat them differently.=0A=
-=A0=0A=
-In our customer project, this sensor is utilized in the product. However,=
-=A0=0A=
-I acknowledge that, at present, there is no upstream user of this binding=
-=0A=
-in the mainline.=0A=
-=A0=0A=
-Additionally, it is unlikely that the custom board using this sensor will b=
-e=A0=0A=
-upstreamed in the future. The primary motivation for this patch is the=A0=
-=0A=
-absence of existing support for the OPT3004 in the mainline kernel.=0A=
-=A0=0A=
-I fully understand your concerns regarding the addition of bindings without=
-=A0=0A=
-an immediate upstream use case. I leave the decision to you regarding wheth=
-er=0A=
-it would be appropriate to include this binding. I am open to your guidance=
- and=0A=
-will respect the outcome either way.=0A=
-=A0=0A=
-Best Regards,=0A=
-Hardev=
+
+On 12/13/2024 9:18 PM, Konrad Dybcio wrote:
+> On 12.12.2024 5:11 PM, Satya Priya Kakitapalli wrote:
+>> Add driver for the MBG thermal monitoring device. It monitors
+>> the die temperature, and when there is a level 1 upper threshold
+>> violation, it receives an interrupt over spmi. The driver reads
+>> the fault status register and notifies thermal accordingly.
+>>
+>> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+>> ---
+> [...]
+>
+>> +static const struct mbg_map_table map_table[] = {
+> Is this peripheral/pmic-specific?
+
+
+Yes, peripheral specific.
+
+
+>> +	/* minT	vtemp0	tc */
+>> +	{ -60000, 4337, 1967 },
+>> +	{ -40000, 4731, 1964 },
+>> +	{ -20000, 5124, 1957  },
+>> +	{ 0,      5515, 1949 },
+>> +	{ 20000,  5905, 1940 },
+>> +	{ 40000,  6293, 1930 },
+>> +	{ 60000,  6679, 1921 },
+>> +	{ 80000,  7064, 1910 },
+>> +	{ 100000, 7446, 1896 },
+>> +	{ 120000, 7825, 1878 },
+>> +	{ 140000, 8201, 1859 },
+>> +};
+>> +
+>> +static int mbg_tm_get_temp(struct thermal_zone_device *tz, int *temp)
+>> +{
+>> +	struct mbg_tm_chip *chip = thermal_zone_device_priv(tz);
+>> +	int ret, milli_celsius;
+>> +
+>> +	if (!temp)
+>> +		return -EINVAL;
+>> +
+>> +	if (chip->last_thres_crossed) {
+>> +		pr_debug("last_temp: %d\n", chip->last_temp);
+> Use dev_dbg for consistency with the other debug prints
+
+
+Okay.
+
+
+>> +		chip->last_thres_crossed = false;
+>> +		*temp = chip->last_temp;
+>> +		return 0;
+>> +	}
+>> +
+>> +	ret = iio_read_channel_processed(chip->adc, &milli_celsius);
+>> +	if (ret < 0) {
+>> +		dev_err(chip->dev, "failed to read iio channel %d\n", ret);
+>> +		return ret;
+>> +	}
+>> +
+>> +	*temp = milli_celsius;
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int temp_to_vtemp(int temp)
+>> +{
+>> +
+>> +	int idx, vtemp, tc = 0, t0 = 0, vtemp0 = 0;
+>> +
+>> +	for (idx = 0; idx < ARRAY_SIZE(map_table); idx++)
+>> +		if (temp >= map_table[idx].min_temp &&
+>> +				temp < (map_table[idx].min_temp + 20000)) {
+> Please align the two lines, tab width is 8 for kernel code
+
+
+Okay.
+
+
+>> +			tc = map_table[idx].tc;
+>> +			t0 = map_table[idx].min_temp;
+>> +			vtemp0 = map_table[idx].vtemp0;
+>> +			break;
+>> +		}
+>> +
+>> +	/*
+>> +	 * Formula to calculate vtemp(mV) from a given temp
+>> +	 * vtemp = (temp - minT) * tc + vtemp0
+>> +	 * tc, t0 and vtemp0 values are mentioned in the map_table array.
+>> +	 */
+>> +	vtemp = ((temp - t0) * tc + vtemp0 * 100000) / 1000000;
+> So you say vtemp = ... and the func is called temp_to_vtemp
+>
+>> +	return abs(vtemp - MBG_TEMP_DEFAULT_TEMP_MV) / MBG_TEMP_STEP_MV;
+> But you end up returning a scaled version of it..
+> Please clarify that in the code
+
+
+Sure, I'll update the function name to temp_to_vtemp_mv and probably add 
+a comment in the code.
+
+
+>
+>> +}
+>> +
+>> +static int mbg_tm_set_trip_temp(struct thermal_zone_device *tz, int low_temp,
+>> +						int temp)
+>> +{
+>> +	struct mbg_tm_chip *chip = thermal_zone_device_priv(tz);
+>> +	int ret = 0;
+>> +
+>> +	guard(mutex)(&chip->lock);
+>> +
+>> +	/* The HW has a limitation that the trip set must be above 25C */
+>> +	if (temp > MBG_MIN_TRIP_TEMP && temp < MBG_MAX_SUPPORTED_TEMP) {
+>> +		regmap_set_bits(chip->map,
+>> +			chip->base + MBG_TEMP_MON2_MISC_CFG, MON2_UP_THRESH_EN);
+>> +		ret = regmap_write(chip->map, chip->base + MON2_LVL1_UP_THRESH,
+>> +						temp_to_vtemp(temp));
+>> +		if (ret < 0)
+>> +			return ret;
+>> +	} else {
+>> +		dev_dbg(chip->dev, "Set trip b/w 25C and 160C\n");
+>> +		regmap_clear_bits(chip->map,
+>> +			chip->base + MBG_TEMP_MON2_MISC_CFG, MON2_UP_THRESH_EN);
+>> +	}
+>> +
+>> +	/*
+>> +	 * Configure the last_temp one degree higher, to ensure the
+>> +	 * violated temp is returned to thermal framework when it reads
+>> +	 * temperature for the first time after the violation happens.
+>> +	 * This is needed to account for the inaccuracy in the conversion
+>> +	 * formula used which leads to the thermal framework setting back
+>> +	 * the same thresholds in case the temperature it reads does not
+>> +	 * show violation.
+>> +	 */
+>> +	chip->last_temp = temp + MBG_TEMP_CONSTANT;
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static const struct thermal_zone_device_ops mbg_tm_ops = {
+>> +	.get_temp = mbg_tm_get_temp,
+>> +	.set_trips = mbg_tm_set_trip_temp,
+>> +};
+>> +
+>> +static irqreturn_t mbg_tm_isr(int irq, void *data)
+>> +{
+>> +	struct mbg_tm_chip *chip = data;
+>> +	int ret, val;
+>> +
+>> +	scoped_guard(mutex, &chip->lock) {
+>> +		ret = regmap_read(chip->map,
+>> +			chip->base + MBG_TEMP_MON2_FAULT_STATUS, &val);
+>> +		if (ret < 0)
+>> +			return IRQ_HANDLED;
+>> +	}
+>> +
+>> +	if ((val & MON_FAULT_STATUS_MASK) & MON_FAULT_STATUS_LVL1) {
+>> +		if ((val & MON_POLARITY_STATUS_MASK) & MON_POLARITY_STATUS_UPR) {
+> Just checking the last argument to AND in both lines is enough, as
+> they're both parts of the bitfield
+
+
+Both the bits of each mask need to be checked in order to proceed 
+accordingly, I will update with proper logic in next version.
+
+
+>
+> [...]
+>
+>> +	ret = device_property_read_u32(chip->dev, "reg", &res);
+>> +	if (ret < 0)
+>> +		return ret;
+> return dev_err_probe(dev, ret, "Couldn't read reg property"\n);
+>
+>> +
+>> +	chip->base = res;
+>> +
+>> +	chip->irq = platform_get_irq(pdev, 0);
+>> +	if (chip->irq < 0)
+>> +		return chip->irq;
+> Similarly here
+>
+>> +
+>> +	chip->adc = devm_iio_channel_get(&pdev->dev, "thermal");
+>> +	if (IS_ERR(chip->adc))
+>> +		return dev_err_probe(&pdev->dev, PTR_ERR(chip->adc),
+>> +			       "failed to get adc channel\n");
+>> +
+>> +	chip->tz_dev = devm_thermal_of_zone_register(&pdev->dev, 0,
+>> +						chip, &mbg_tm_ops);
+>> +	if (IS_ERR(chip->tz_dev))
+>> +		return dev_err_probe(&pdev->dev, PTR_ERR(chip->tz_dev),
+>> +			       "failed to register sensor\n");
+> Please also make the error messages start with an uppercase letter
+>
+>> +
+>> +	return devm_request_threaded_irq(&pdev->dev, chip->irq, NULL,
+>> +			mbg_tm_isr, IRQF_ONESHOT, node->name, chip);
+>> +}
+>> +
+>> +static const struct of_device_id mbg_tm_match_table[] = {
+>> +	{ .compatible = "qcom,spmi-pm8775-mbg-tm" },
+> I don't think the 'spmi' bit belongs here
+
+
+Okay, will update it.
+
+
+> Konrad
 

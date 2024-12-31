@@ -1,126 +1,123 @@
-Return-Path: <linux-iio+bounces-13866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D709FEE00
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Dec 2024 09:39:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F649FEFB6
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Dec 2024 14:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3915D3A28A1
-	for <lists+linux-iio@lfdr.de>; Tue, 31 Dec 2024 08:39:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BF8C1882BD9
+	for <lists+linux-iio@lfdr.de>; Tue, 31 Dec 2024 13:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8C018D625;
-	Tue, 31 Dec 2024 08:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A39119CD1B;
+	Tue, 31 Dec 2024 13:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hJQrto0f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y/ICLdY4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01ED2D7BF;
-	Tue, 31 Dec 2024 08:39:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39FC196D90;
+	Tue, 31 Dec 2024 13:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735634349; cv=none; b=Z67sOT0MlhqfeQZOI7nMjt+5TP7R2bUsgKXhVPe3uHvplM79I0RxMIDd3Q6L8uFHzAvN752jSjkm7nem1hFzAAcrhQHnFqRKgB+awgCNhB6Pwx3Aks1c4VmePlgYdapHximTOefkXiU/ECZe2jPQSfTbj+OK3lnD1IHmwNc28OY=
+	t=1735651543; cv=none; b=TecK6vV5PglKTHGGc9cCLX+EhhFm5jJhrEE4+XHGV1Uj/SDBR0h0ktyKK8TEKJf+QSV5kBmJIx6vcpHXnvx/EO71zfjokAvzeYntqeoiyYgk53BDm4ayrXpvPRdoi5Bv5YbV+x/1qBP49FdqcsKSVVwYD1pyz2UCnDdIoe1SN5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735634349; c=relaxed/simple;
-	bh=HhjwaOW4H6LSRx3nXKseFXvPm+oY1sQiwXcKAdYCpXA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=kTaBqU4rRmyRRtwq24poCDmHRwFoceCd/2rxKWjxkDHqgwWrfZIMUwEIWIfgg44+s7uBi3IA4SxMqhO4gSLgquru+/FSZFRrT5DGmVy5z0z7i3rY7A90TXeQaxBTQpNgVrNiYo6tBPR6MtdFFIYCX/xkDLlET16CEsHEmzY243w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hJQrto0f; arc=none smtp.client-ip=209.85.128.47
+	s=arc-20240116; t=1735651543; c=relaxed/simple;
+	bh=pA4P+kWaLB2hTvkWd5iXIVwhJd7Km3gvKoA4e+fqrIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JH/pr+CIl2iW6nmsEKnV+fcq/Vh4/Ql68VwTlA+od7FN4LMvzkEKzGoLKMZsne7TRuPxiy6SihpGPtnnZOEPM7pfm2wpZDHyG2E8bL+GUkuPAmbAoHy4mu6O5cMtVKB4Q+kmgs7i5i8N8ScgHoqs2ZK62nP/LfUnSreODTCaZa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y/ICLdY4; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-436637e8c8dso99528225e9.1;
-        Tue, 31 Dec 2024 00:39:07 -0800 (PST)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5d3f28a4fccso15360129a12.2;
+        Tue, 31 Dec 2024 05:25:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735634346; x=1736239146; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mZduQXI13FtBo45AD8F9a1Xz4oXXtB4vjoYK1+/48Ik=;
-        b=hJQrto0fwPHjCzDNE4UJn+jxzkN4HMclg/0roYTvk1y3ROzV2ltjOlubgw3mVxTnfg
-         RKMlpkXhPPqFEzr9ePBriXPpCilQTpJlGse4N3GmPuj3feCBj7fNntLGf2ENwQDz+52I
-         ZkPgbrH8gTSKapeZmk+Cz0OBp5wyihd2OHTGEdcdcJm6AGURBBGaYRtMKK22G/9DkRMD
-         AmhsrevBv1FpjUqjfHSrdVk9CWKpKv5iwCdT9VLFN0U3a4wQbDiGvD5I5xDYQoygixcn
-         mf6h5P0iPy8J17IyHWb5fS3sotpubuPWbSRl88lQqp4ZVx/+rO3e3xmyz/+N95yFxFDJ
-         V5Qw==
+        d=gmail.com; s=20230601; t=1735651540; x=1736256340; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4VqfX3ZNu7cE4naHQV4kCkKc4MhT07Sxz02F6k8JamE=;
+        b=Y/ICLdY4qZuVqd8gyA3xI0g3mCijdYQK/KS95KOSStLhUm3yzTtXVYmX3leA7QX5Ww
+         5RXGxOsSuwVK/W+7XaJ5l9RP5bPcSfq3vOLNvE2pw5M/oOipi6kS2/oUPJfYw3bPhSax
+         UmppBbe1rb496Rop3SrrFVA5FkuOXKlEK4TiHb74o2st5Ezm6vp0HTtLTC/ZgjmmHLkm
+         UC4kWuJQAqx1BFlc3MuKqaBtkWBcY/jk/kiwN7nkpUATpfad1YlIU9KPUG8VMbgBsXWV
+         SqLx5/dBJC1hg8mbMC+dJo4NbLmY8isNb/aqsye2Ts8L/k+AYcqbm81f65OMC8AKOn2+
+         wjYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735634346; x=1736239146;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=mZduQXI13FtBo45AD8F9a1Xz4oXXtB4vjoYK1+/48Ik=;
-        b=hZ+lowVrweyR11YlypB5UtRi7u4S4q+6vvvPyAwuy0NWRqDtQAfTlJkc1/dKBteVUb
-         ec0MKi99vLvTq2kvtY4YNyeBAtkUWTL9nrXquibcj8um1V6vdDpA0LDP6ljjD8OJ4iw7
-         qijCdnWDbr7ft3eEOaXAdKOw95riPAwiYrLbEqnp76Zl+lW/END2s/B6+JN/g7VPKyd5
-         Gq285d+p5iRXJDtQnGYuRPotcwOLBHdIpTdPILi6hptZrWg10Z79z8BQrMyXauhbt06Z
-         iBx8XgGq4JSJPa2OodyClDMupH19mkN43GeA76xzQ/qA2HUcKzEGS/tndH4wxAdvGr6Y
-         M/Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ80/oANKz3TA39QU0vzwyBVcVs8NfqB9bXE3u878XdSfSdn2gxPNjXDG7MvcXsPdYV/9f1WDOxKy95Bk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZIKCQNRUT3L0l5sq0uT5qq7Qh4B4yQOnT1KVoUrbLSRIxMTzj
-	TomJ51MelaFUVLAf8SwmWi8ziLO9NDj3IPHbe8ftO2QP2JT8LNr7kbZXdw==
-X-Gm-Gg: ASbGncu1OwIEPcD10Ew3nD3rH8sIIR3XseaH9o5+1a+VwyEyz8Fvw9M2bIPN37ZFjFh
-	mVAbfDyGn64j8i4NGUq5vf9HeJR9bATE+USC9IDJ2HtDFwfhnpjC69y+yuGEdtnprAvAwrdzt3b
-	qZTv2iIAgSlcs77Sjq2H6jVQFhWlfbmdeovmumN/0RGnjoYEMMLtQ5eL++MRF/hN44lxeY6eGB3
-	ppcz1b+Hl64qb0PnVOYjAwZaSsK49tu05TtYraIDWd26axzjwriM4xobiqKkSrAjsJUCFz7huIt
-	1nZc7L9rRwAceFslqOp3fh4=
-X-Google-Smtp-Source: AGHT+IHxhBqnuTzHPKyfJr7++0oZya3/MawDiw6zfSRuDwoZFjcjXIOJHL4r/xDZ9fZtI6C4AwFrfQ==
-X-Received: by 2002:a05:600c:4f11:b0:435:9ed3:5698 with SMTP id 5b1f17b1804b1-43668b5e09bmr293419915e9.24.1735634345721;
-        Tue, 31 Dec 2024 00:39:05 -0800 (PST)
-Received: from localhost (17.pool62-36-37.static.orange.es. [62.36.37.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436611ea3d5sm384806185e9.5.2024.12.31.00.39.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Dec 2024 00:39:05 -0800 (PST)
+        d=1e100.net; s=20230601; t=1735651540; x=1736256340;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4VqfX3ZNu7cE4naHQV4kCkKc4MhT07Sxz02F6k8JamE=;
+        b=bLADQi1q6EeobKG8vsuzL1h0Ihm2eAI7GgOLDZ948zT89DywCnCecd45ZRfK0T7Z/Q
+         M+s4zhV09eglzDuuwMoP/opVxgL6gtpeoZklavkIj82KJo+6LI44xTuxWF8UeSDf3kp2
+         rfuRLJne/XLOYv9BJDej4wnu5KSQvkCpBEZ857nLBMl8hm1tTfJLx73QtIWnO+LhJKJg
+         vcfrk3MooUA01E1fx9KrnjZRvJzudh5MGS7+uvzOY6xw5nE8rVLLxSyCsh8yhZNBw0IV
+         yvlNEvO6FAEzmD38mgVmbZQEJgkS526IDxymAvlUyzjwky01EBPOyFeLzLBtv8iWsXvb
+         5ZsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlCuLmAyUrWhMGT0+5W6udlLWMNN06IsQyzk2OAuaDM5i45V4Rx/3WJ9Qf81OIxoW4yudnEtvmuOninnyJ@vger.kernel.org, AJvYcCXQ3QW3lYgZu7//mvNh6S+pR0PhAO4KHlYlLC6mr7ln4V5w9J92WBf1B/cPItebJrtEKjx2fQsDBwM+@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFd1HwqwoHwQiMAqN+Edhi0gjBX3NOcHL+cIo3mpaviQ1KrPcO
+	Q5iiggTK8ROh/DEHKomVttZxt4h+OOi5+/ROthFLusIO+tz8WzPtTIGVCmUoB+Y=
+X-Gm-Gg: ASbGncs0qxmNYJIIsvDaDoupG5m8iMEi3V1m98ZjWZA1THulbdaCUFLoO8moXjnSHtU
+	7BFofCXYz9S/ozz0VjRkOBc6JlBnFDiOSnLVougx79y4j5KUbm2OegPx+A2eoEfQJPY7uF3I3i3
+	Mb57Tz2WVMu2UpB/3Q6mx04N3W7j3X2IF8jy3YBSJ4m0lAT/pBT3OQht6w4hP3t6AFztAsmkbNy
+	cS6rBqEl+gGXFKQE0UNwNeKuftipEF26j71iZVLK1Ed9ZUS1jjG7ZubTs9dz00NTensZLsDsHE=
+X-Google-Smtp-Source: AGHT+IEkHl00nggOQGkGQ9ndQmvKX/Xt4MoQG4QCboqjD9VK8h+KD3UQX7I1rg8Xv/OJscybd0Qmfw==
+X-Received: by 2002:a17:907:1b86:b0:aaf:4008:5e2c with SMTP id a640c23a62f3a-aaf40085f90mr773523466b.2.1735651539599;
+        Tue, 31 Dec 2024 05:25:39 -0800 (PST)
+Received: from localhost.localdomain ([90.156.117.233])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0eae71desm1569345766b.89.2024.12.31.05.25.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Dec 2024 05:25:39 -0800 (PST)
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: jic23@kernel.org,
+	krzysztof.kozlowski@linaro.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	conor+dt@kernel.org,
+	andrej.skvortzov@gmail.com,
+	neil.armstrong@linaro.org,
+	danila@jiaxyga.com,
+	icenowy@aosc.io,
+	javier.carrasco.cruz@gmail.com,
+	andy@kernel.org,
+	megi@xff.cz
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Antoni Pokusinski <apokusinski01@gmail.com>
+Subject: [PATCH 0/2] iio: magnetometer: add support for Si7210
+Date: Tue, 31 Dec 2024 14:25:11 +0100
+Message-ID: <20241231132513.6944-1-apokusinski01@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 31 Dec 2024 09:39:03 +0100
-Message-Id: <D6PR0XZ27Z67.1IJEM2DOL18QY@gmail.com>
-Subject: Re: [PATCH v3 2/2] iio: veml3235: fix scale to conform to ABI
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-To: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>, "Matti Vaittinen"
- <mazziesaccount@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>,
- "Lars-Peter Clausen" <lars@metafoo.de>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20241230-veml3235_scale-v3-0-48a5795e2f64@gmail.com>
- <20241230-veml3235_scale-v3-2-48a5795e2f64@gmail.com>
-In-Reply-To: <20241230-veml3235_scale-v3-2-48a5795e2f64@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon Dec 30, 2024 at 4:13 PM CET, Javier Carrasco wrote:
-> The current scale is not ABI-compliant as it is just the sensor gain
-> instead of the value that acts as a multiplier to be applied to the raw
-> value (there is no offset).
->
-> Use the iio-gts helpers to obtain the proper scale values according to
-> the gain and integration time to match the resolution tables from the
-> datasheet. When at it, use 'scale' instead of 'gain' consistently for
-> the get/set functions to avoid misunderstandings.
->
-> Fixes: c5a23f80c164 ("iio: light: add support for veml3235")
-> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
->  drivers/iio/light/Kconfig    |   1 +
->  drivers/iio/light/veml3235.c | 237 +++++++++++++++++++++++--------------=
-------
->  2 files changed, 130 insertions(+), 108 deletions(-)
->
+This patch series adds support for the Si7210 Hall effect I2C sensor.
+The driver currently supports the basic functionalities (i.e. making
+temperature and magnetic field measurements and changing the
+measurements scale) but I plan to add support for some other features in
+the future as well (e.g. the digital output interrupt).
 
-@Jonathan, if you apply this patch in its current form, could you please
-fix the message from "iio: veml3235:..." to "iio: light: veml3235:..."?
-I just noticed that the "light:" bit is missing.
-I can send a new version if that's preferred.
+Antoni Pokusinski (2):
+  dt-bindings: iio: magnetometer: add binding for Si7210
+  iio: magnetometer: si7210: add driver for Si7210
 
-The applied patches from this series did not have this issue.
+ .../iio/magnetometer/silabs,si7210.yaml       |  44 ++
+ drivers/iio/magnetometer/Kconfig              |  11 +
+ drivers/iio/magnetometer/Makefile             |   2 +
+ drivers/iio/magnetometer/si7210.c             | 412 ++++++++++++++++++
+ 4 files changed, 469 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml
+ create mode 100644 drivers/iio/magnetometer/si7210.c
 
-Thanks and best regards,
-Javier Carrasco
+-- 
+2.45.2
+
 

@@ -1,178 +1,247 @@
-Return-Path: <linux-iio+bounces-13876-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13877-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B139FF8D4
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 12:32:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A699FFDE1
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 19:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC673A2D5F
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 11:32:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370E31612AF
+	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 18:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943BF1B0F22;
-	Thu,  2 Jan 2025 11:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136361B3F30;
+	Thu,  2 Jan 2025 18:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GRNZOcdt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="m8kmSMil"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286F41B0429;
-	Thu,  2 Jan 2025 11:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D618B1B0F33
+	for <linux-iio@vger.kernel.org>; Thu,  2 Jan 2025 18:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735817516; cv=none; b=qKs/QfNPQd1gjXsS01rM9SQnqG+ChVim7GdOhnDZrdpkraTxDpOPLek3pdJR7RwLP4r3FjnExxfak2Jkb0p6xoXpuTIgUHAM1eb1sqGH9JwjYaEfYDFaTbKJd1jR4vxO099VxGxHVrciwtFGspIcjujt6BdTU8uAlzqaS9cfQeY=
+	t=1735841964; cv=none; b=A/AW1orLhATpGTP7PslpJWisIGaD5uxNgjsUtY1Bm+RVDbIsLZGxhJnjzrfGSBGDpYUrHpozuKXYYOd1ztn4ueLQ6SD6bOqP8fdoWjYfGPdjK1hJ4gCQfCc3JxeLqBCNDBsEv0hUHXzzVljs+1Eoo4pq4vi8WwGAw2RoyaKb5eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735817516; c=relaxed/simple;
-	bh=Sy9qvv8oQoq/9h9qcBbWefVUptXmIhFXkPfMNNuFGtY=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=UIlNykMIoVFEn4hiJVYPBJAz25aCIGv4d/LQUm80E7p3o9hvx50d11Ru11lbuBmP8AnlxrJ8MAo6KDwfBp0+XSZZvPjUJ/TLhHjigmBtFFsg4igkzUAWY9PDjouKRLYjJTTaIxGH06Ihh0yi/vf+0aEBfCP+AK01zRcBO3KdheQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GRNZOcdt; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43622267b2eso119171235e9.0;
-        Thu, 02 Jan 2025 03:31:53 -0800 (PST)
+	s=arc-20240116; t=1735841964; c=relaxed/simple;
+	bh=5dvgBABeyGFxnBG3Y5nT2U5CVkpQfQV1dff5/rH3IEA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WUs04WybzjSNyXFQsoy6EVSW7zfdVA+HOsqgt8aEj67+gm+CNLoO0D1uAsF00c1vHseZ7kGv8EE4zC052WpwIuCcoz2LOlSYXCTEwxy3NhHrgZbeB/kGNjEMjmKHzJpvMCTVU+G0/zULcd0zbqv+FQqhBn6LA7eOs2xJpxvHM/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=m8kmSMil; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7b6e8fe401eso967734585a.2
+        for <linux-iio@vger.kernel.org>; Thu, 02 Jan 2025 10:19:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735817512; x=1736422312; darn=vger.kernel.org;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :references:from:to:cc:subject:date:message-id:reply-to;
-        bh=6wcHiBkRkYS13bhGe02lr8rGk3XbGLMMM9eQ3HQy9pc=;
-        b=GRNZOcdthYgmDweW3FCjOcs1LRG4MQwbyo7astFLtv9qLjsAioHNYsPEekFFRRTcT+
-         NYFmcnJx+vBFCxhnYNwWyFhBaNF/6OjdCrue5K3wzmY3UtNofyKcugWO6rN0SsGkgc4y
-         5O8oIckw+JVrD3fxlCSkEz6gorKcyUR0NPseP4NDIQ8Mj8UVsySBBqJw0Q5h9Jvq+fwZ
-         SVODZLh2K1BTmwVBI1NW6heyMpYyhRcW30Snp77F99wzVbVDyNPBC5a6sM7EctU//Kb/
-         1vQfqqbK3xTQW5En7hAnu+7RaDusCh97Y8kZd+/jn68rO2f6sV/E0ktc3qX1PuylcQqg
-         pGKA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1735841961; x=1736446761; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bvvb86cIzS/dOwVH6EYJXcGMKz0+uVXUG4GedKpth0U=;
+        b=m8kmSMilDE+WE7k6YQRtZ/O9w5G5W+vBpxFYZyixRdRGYV490HO59leIlTS+HqI26t
+         YX68Cozl/swLfL4MJilyXyqpjuP9Q0QFw4jIYbPMKTI19Um01SSqURNCPJBZtDxi1TiL
+         ySFDme2xTJgtb2hnPYTr5rEcnqddFmguMSD3XGBCDO2wGWvGw4jONYA7AYjqbm4kniNA
+         JS6Bn4L8s3rU//RCzPmJMB26MQHEdS3W9K9ek46FI3gf6wp4m4urmGAPcp/HvKoV2+e0
+         TWYa+TW9WfYfOYsgLkPtJDB0LLR0zLGeQtDHtzVAKu8ILkrd0UdmSLLSwSk50wt4JT45
+         Y7lA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735817512; x=1736422312;
-        h=mime-version:message-id:in-reply-to:date:subject:cc:to:from
-         :references:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6wcHiBkRkYS13bhGe02lr8rGk3XbGLMMM9eQ3HQy9pc=;
-        b=vsPvA5INGzafz/dzcA4o4u6Rgl2clb2fHQgdq+LKXuc0+pBW7rte2D0YPAGvncqyoe
-         F3Flrx2nLUutsxOHabgIg3yL/NGHX69HZ+X45Co5YGSGlSR2s5e8XQybvWbRMmXH6vQP
-         CsJdgKT/2KOt4cBwl8jtFVyCjMlGW0nP11QehN4UcwGH9qDoGg5rKxSYLH2ae9+03IrZ
-         w4ek/85scBXs5OPh/eRWi75ImNpzKjCy6/F6wCm5kslXAWaU/Fe0pGBnp+P5lwwD8Ae0
-         q7xIzNDJaLXtk24nrfsgpQpm0KpdY7hAK7+UUmesD0kKyYn1N3AzuSuFIOeozh4pObNl
-         Gymw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXkEnWbq3nynlWsQG2lU6ddZSvpiDNfXaXStxX3yWXA24NVjL/icvfwY69Tb++s6HTP/WLTSRtiEM=@vger.kernel.org, AJvYcCW6Yu5VJtVA8G34aWE31NAXa0YzS/4rFdR7nVVFm+WEZgs5Q2rqMvap/45HE0VKGg5fCk3BDc3GnDMr@vger.kernel.org, AJvYcCWaCumiu4eb82vqAiQeyyrLSY/gU0U0TRCqLZ/vnPIqPreqsAU3fbJif5yvRYF8bXnasPPNy662HsfyucrD@vger.kernel.org, AJvYcCXSwQgl3D0Z9chRmLGoH82K1ffUu3X1dk8oTbr6h7oe6AabLvbjhJYv8bSIRdBm5t7BkXKmHWmHGxjV@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8uPrlvwnItlf6qW6nBL0EX7lhBMoN7j4jsIQMSRwNJzl5qUuO
-	dBqdfSkXKQS+e7EpjnEkAxT8S3fRbR7h2P5zgrKFNuR4x98rgFdh
-X-Gm-Gg: ASbGnctmfBL84h78mCLJdNraEWAIXYDYndLNNsYp1mu2tWrS+Og7Ty0LZU7gqXuvyL0
-	g3RHSzQgt+dJfcoe6rTOCNkyXxAgZ0mfoY02ec1zFWxNG0AyTinzVAD+UUD1V55LGRy1CXXHKOV
-	0zSKY86YDLMbAcRjtxJWG8a2GmWQ7IXKYUvPIdq7N4Idw9cJXzHJRnWzVTiBTzOiDLREzVui6A8
-	yMUnoLqtvfxBUZSTr5qLNc2QMk5oOVanAhk+T6LtmsbSGJ5e8r5MMQa6hdqu9ZR
-X-Google-Smtp-Source: AGHT+IHV4jPTiUqrXA+3RgaNsECQZU0VOfvJYgGlt1bAEMcUljMwbh7ep6IPt0Qu2f8zTyeQYe/uOQ==
-X-Received: by 2002:a05:6000:470a:b0:385:f092:df2 with SMTP id ffacd0b85a97d-38a221faae4mr33240914f8f.34.1735817512042;
-        Thu, 02 Jan 2025 03:31:52 -0800 (PST)
-Received: from localhost ([167.98.27.226])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c832e74sm37384777f8f.30.2025.01.02.03.31.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 03:31:51 -0800 (PST)
-References: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
- <1535049f-1e4c-446b-8070-6f51877b2649@gmail.com>
- <20240608141832.7fdc9eb8@jic23-huawei>
-From: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
-To: Alex Bee <knaerzche@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, wens@csie.org, ee.jones@linaro.org,
- sre@kernel.org, lgirdwood@gmail.com, broonie@kernel.org, lars@metafoo.de,
- andy.shevchenko@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
- michael@walle.cc, samuel@sholland.org, linux-iio@vger.kernel.org,
- linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 0/13] Add support for AXP192 PMIC
-Date: Thu, 02 Jan 2025 10:44:16 +0000
-In-reply-to: <20240608141832.7fdc9eb8@jic23-huawei>
-Message-ID: <cItZox1cacPR8zQiMUpDztLjYyVXenxO@localhost>
+        d=1e100.net; s=20230601; t=1735841961; x=1736446761;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bvvb86cIzS/dOwVH6EYJXcGMKz0+uVXUG4GedKpth0U=;
+        b=qAGDCsl2KLYbckKl7EP2vOPt+uQV1cpcHwZgz0i5rUNJuK+UZHbJGsLETNhjZBe09q
+         ck0c7D66N7fDT/4e17hPRjPRRAQuWndVQgCbQ5t8PG6Se3h2MVcoAXetw7NJ3Qe5YvI6
+         0xNmYIF44SIuu/Z4rni4gR5iKbGt0wkr0JW1IKEFuLLYOWPAok1Gb0FoMd/mgohoRudU
+         x6CF5w/dBlNtXMkJxXrYy8YSuijmdCPHXQyAZQ/Gx5nwPkrF0oLMPZeW+WFXWsz0jZwq
+         pCXcnzyELOLUp0laS5An3TV0idBpnHth6TVrN+ywgrz2MZvPgpdP89pmXKefcEdSpxp9
+         zoMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA7ZO7jGg9NDom0kynbqrGwgTRaWcUOd7nBfDrjRhW4PlQCko35c3zg0IzsE/ew7WPri3vpnD2DgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt/TYljofkAQni5pq8gnnQYHsFof3gmvbbAS3twOJcVei8Hfzr
+	FT62fvAKLOyYgnHOBD3HS/xE11XjGJyfbcPpOYoXwgfRyHCf69E7EckD6umQ2BA=
+X-Gm-Gg: ASbGncusshy9gHymiBXnfDipLk0H/yB1rMnIwrzNg+UabJxL5JXmvalQ5mnyKy9q1+H
+	Bre/EIbGTgOksJTa2FfXEYRe19iZiMnx4m4xo1mg5/F4tqKaklX1ps0Xz2UGC8wT7cech7rTpLL
+	p1/198cNFAxmZWgrQ3xTr8aIp7hdQlHyYt/kD/QQ5Yf7OhU9OjWivkgKJ1G0MTZzwOHgQ4WKX7i
+	/E82TAL2CV3awzZJUGDb3Yt3FgnA3vrlogvaMxIB/LiYcmd7GGtYrWFmxlfnjXZbxsZYn4EYey5
+	BJ2PmqtEfkU2f2VdGCn/9XrK
+X-Google-Smtp-Source: AGHT+IGeOONPgFA0dXRFKcX210Q5kkrtbZxdBQLMw2EGeHfAGwIzMg9YGL5jsDDC44doX2Wugk0ppg==
+X-Received: by 2002:a05:620a:2807:b0:7b6:edd0:d752 with SMTP id af79cd13be357-7b9ba7167c4mr8333933085a.5.1735841960779;
+        Thu, 02 Jan 2025 10:19:20 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3eb2b0a1sm138004651cf.74.2025.01.02.10.19.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jan 2025 10:19:20 -0800 (PST)
+Message-ID: <1c641b37-475a-4153-bcfc-e0e72d79fa76@baylibre.com>
+Date: Thu, 2 Jan 2025 13:19:19 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] iio: adc: ad4695: add offload-based oversampling
+ support
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20241217-ad4695-oversampling-v1-0-0b045d835dac@baylibre.com>
+ <20241217-ad4695-oversampling-v1-1-0b045d835dac@baylibre.com>
+ <20241219161301.3f708302@jic23-huawei>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <20241219161301.3f708302@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-Hi Alex,
-
-Jonathan Cameron <jic23@kernel.org> writes:
-
-> On Fri, 7 Jun 2024 17:12:51 +0200
-> Alex Bee <knaerzche@gmail.com> wrote:
+On 2024-12-19 11:13, Jonathan Cameron wrote:
+> On Tue, 17 Dec 2024 16:47:28 -0500
+> Trevor Gamblin <tgamblin@baylibre.com> wrote:
 >
->> Hi Aidan,
+>> Add support for the ad4695's oversampling feature when SPI offload is
+>> available. This allows the ad4695 to set oversampling ratios on a
+>> per-channel basis, raising the effective-number-of-bits from 16
+>> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
+>> full cycle through the auto-sequencer). The logic for reading and
+>> writing sampling frequency for a given channel is also adjusted based on
+>> the current oversampling ratio.
 >>
->> Am 17.10.22 um 01:43 schrieb Aidan MacDonald:
->> > This series adds support for the AXP192 PMIC to the AXP20x MFD driver
->> > framework, including support for regulators, ADCs, and AC/USB/battery
->> > power supplies.
->> >
->> > v6 is a resend of v5 from July -- the patches haven't changed at all
->> > but I've rebased them on the latest git master branch.
->> I'm not entirely sure if I've found the latest version of the patches - at
->> least b4 didn't find a newer. It looks a lot like only mfd and usb-power
->> patches have been applied for some reason. Are you planing to resend the
->> other ones?
-
-These patches were part of porting Linux to a music player I had, but I
-lost interest in the project and I'm not really paying attention to the
-mailing list anymore. As Jonathan already indicated, there were some
-cross-tree dependencies on mfd, and I think on regmap-irq as well.
-I didn't realize at first how much of a headache it was to deal with
-these things. :)
-
-Eventually I resubmitted the mfd patch separately and did the same for
-the USB power patch (after removing the mfd dependency) so both of those
-got merged. Didn't get around to doing the other patches unfortunately.
-
-Regards,
-Aidan
-
+>> The non-offload case isn't supported as there isn't a good way to
+>> trigger the CNV pin in this mode. Support could be added in the future
+>> if a use-case arises.
+>>
+>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> Hi Trevor,
 >
-> This was delayed originally by a dependency on a header in mfd and that is
-> obviously resolved now.  I think everyone was expecting a resend
-> of the series or for Lee to pick up the dependent ones and so we all
-> stopped tracking it.
->
-> Anyhow, I had the two IIO cleanups already, but I've now picked up
-> the 3rd patch (where the dependency was) as well.
->
-> Thanks,
+> The clamping fun of get_calibbias seems overkill. If this isn't going to ever
+> overflow an s64 maybe just use the high precision to do it the easy way.
+> I'm not sure you can't just fit it in an s32 for that matter. I've just
+> not done the maths to check.
 >
 > Jonathan
 >
->>
->> Regards,
->> Alex
->>
->> > Aidan MacDonald (13):
->> >    dt-bindings: mfd: add bindings for AXP192 MFD device
->> >    dt-bindings: iio: adc: axp209: Add AXP192 compatible
->> >    dt-bindings: power: supply: axp20x: Add AXP192 compatible
->> >    dt-bindings: power: axp20x-battery: Add AXP192 compatible
->> >    mfd: axp20x: Add support for AXP192
->> >    regulator: axp20x: Add support for AXP192
->> >    iio: adc: axp20x_adc: Minor code cleanups
->> >    iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
->> >    iio: adc: axp20x_adc: Add support for AXP192
->> >    power: supply: axp20x_usb_power: Add support for AXP192
->> >    power: axp20x_battery: Add constant charge current table
->> >    power: axp20x_battery: Support battery status without fuel gauge
->> >    power: axp20x_battery: Add support for AXP192
->> >
->> >   .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
->> >   .../bindings/mfd/x-powers,axp152.yaml         |   1 +
->> >   .../x-powers,axp20x-battery-power-supply.yaml |   1 +
->> >   .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
->> >   drivers/iio/adc/axp20x_adc.c                  | 356 ++++++++++++++++--
->> >   drivers/mfd/axp20x-i2c.c                      |   2 +
->> >   drivers/mfd/axp20x.c                          | 141 +++++++
->> >   drivers/power/supply/axp20x_battery.c         | 142 ++++++-
->> >   drivers/power/supply/axp20x_usb_power.c       |  84 ++++-
->> >   drivers/regulator/axp20x-regulator.c          | 100 ++++-
->> >   include/linux/mfd/axp20x.h                    |  84 +++++
->> >   11 files changed, 856 insertions(+), 74 deletions(-)
->> >
+>
+>> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
+>> +{
+>> +	unsigned int reg_val;
+>> +
+>> +	switch (osr) {
+>> +	case 4:
+>> +		if (val2 >= 0 && val > S16_MAX / 2)
+>> +			reg_val = S16_MAX;
+>> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 2)
+> It has been a while, but IIRC if val2 < 0 then val == 0 as otherwise
+> we carry the sign in the val part.  Sometimes we generalize that to
+> make life easier for driver writers but I think you can use that here
+> to simplify things.
+>
+> (for background look at __iio_str_to_fixpoint() - it's a bit of a hack
+> to deal with integers have no negative 0)
+>
+> 		if (val > S16_MAX / 2)
+> 			...
+> 		else if (val < S16_MIN / 2)
+> 			...	
+> 		else if (val2 < 0) etc
+>
+> You may feel it is better to keep the code considering the val2 < 0 when
+> val != 0 case and I don't mind that as it's not wrong, just overly complex!
+>
+> If you can easily clamp the overall range you can just do some maths
+> with enough precision to get one number (probably a s64) and clamp that.
+> Easy to sanity check for overflow based on val to ensure no overflows.
+
+Hi Jonathan,
+
+I'm reviewing this again but I'm not entirely clear what you mean.
+
+Are you suggesting that the entire switch block could be simplified 
+(i.e. eliminating the previous simplification for the val2 < 0 case in 
+the process), or that the calls to clamp_t can be combined?
+
+I've tested out simplifying the val2 < 0 case locally and driver 
+functionality still seems OK. Maybe I'm missing a third option.
+
+- Trevor
+
+>
+> 		
+>
+>
+>> +			reg_val = S16_MIN;
+>> +		else if (val2 < 0)
+>> +			reg_val = clamp_t(int,
+>> +				-(val * 2 + -val2 * 2 / MICRO),
+>> +				S16_MIN, S16_MAX);
+>> +		else if (val < 0)
+>> +			reg_val = clamp_t(int,
+>> +				val * 2 - val2 * 2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		else
+>> +			reg_val = clamp_t(int,
+>> +				val * 2 + val2 * 2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		return reg_val;
+>> +	case 16:
+>> +		if (val2 >= 0 && val > S16_MAX)
+>> +			reg_val = S16_MAX;
+>> +		else if ((val2 < 0 ? -val : val) < S16_MIN)
+>> +			reg_val = S16_MIN;
+>> +		else if (val2 < 0)
+>> +			reg_val = clamp_t(int,
+>> +				-(val + -val2 / MICRO),
+>> +				S16_MIN, S16_MAX);
+>> +		else if (val < 0)
+>> +			reg_val = clamp_t(int,
+>> +				val - val2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		else
+>> +			reg_val = clamp_t(int,
+>> +				val + val2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		return reg_val;
+>> +	case 64:
+>> +		if (val2 >= 0 && val > S16_MAX * 2)
+>> +			reg_val = S16_MAX;
+>> +		else if ((val2 < 0 ? -val : val) < S16_MIN * 2)
+>> +			reg_val = S16_MIN;
+>> +		else if (val2 < 0)
+>> +			reg_val = clamp_t(int,
+>> +				-(val / 2 + -val2 / 2 / MICRO),
+>> +				S16_MIN, S16_MAX);
+>> +		else if (val < 0)
+>> +			reg_val = clamp_t(int,
+>> +				val / 2 - val2 / 2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		else
+>> +			reg_val = clamp_t(int,
+>> +				val / 2 + val2 / 2 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		return reg_val;
+>> +	default:
+>> +		if (val2 >= 0 && val > S16_MAX / 4)
+>> +			reg_val = S16_MAX;
+>> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
+>> +			reg_val = S16_MIN;
+>> +		else if (val2 < 0)
+>> +			reg_val = clamp_t(int,
+>> +				-(val * 4 + -val2 * 4 / MICRO),
+>> +				S16_MIN, S16_MAX);
+>> +		else if (val < 0)
+>> +			reg_val = clamp_t(int,
+>> +				val * 4 - val2 * 4 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		else
+>> +			reg_val = clamp_t(int,
+>> +				val * 4 + val2 * 4 / MICRO,
+>> +				S16_MIN, S16_MAX);
+>> +		return reg_val;
+>> +	}
+>> +}
+>> +
 

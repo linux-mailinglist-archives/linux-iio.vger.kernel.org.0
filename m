@@ -1,159 +1,217 @@
-Return-Path: <linux-iio+bounces-13878-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13879-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B722A000B8
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 22:34:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA221A0088C
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 12:20:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8ED21882BC0
-	for <lists+linux-iio@lfdr.de>; Thu,  2 Jan 2025 21:34:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56C73A479A
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 11:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1281B415A;
-	Thu,  2 Jan 2025 21:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A2D1F9A8A;
+	Fri,  3 Jan 2025 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dud4uyCw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rz5rGoTU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8F713AA2A;
-	Thu,  2 Jan 2025 21:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1A01527AC;
+	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735853680; cv=none; b=Q059qZgDRkUrwnoBkqbr2rlFPz8Tfn0dgur0G7Oo5MAF4aMbMSXVz3SZ7Y4B8su6zEg45gM38yL6lfqxuEDTewBxQ/aXyIbfm2JeWVIfIhZIgvTsSnTaQmdRpQaXmLD4X9orFtsFAA2RN6TOVgjvn22sk64SoDJ6JkGABCD5F9w=
+	t=1735903243; cv=none; b=S3L0jjqZJZwCtMOZIVDbB4EeqQ9m3PnYR6psjtFAtDBoeJ7yMh0invbi03ZAkNZgK0T/TZS2ZehUDkS+SlDDi0zZyXvHu8NA0um9PvBZdIZ09p13Vyu0+VNgZCqi2W3RkLhsmSdgJe/GHi/bXtGyQ5i9GZYTN8sN+/nwHsdGciw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735853680; c=relaxed/simple;
-	bh=3t49K6dc09HYQTbG/D+IZZo7V3U7nhGevTZen16XX7k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TKhEhk8B7KKGXOig19xfE+d/sJhLFiIFJz5TS1W6HMuN46CuM0bAD2NjPXb75ZzPmc/4OEZZtX/bX11w649B7t1pveZdlZO1YetTHsKPvII8BSlONt4800EusdMy9VnV+rTDJNOc7LUyAcxU40upGk38LnGiYhxhFrSX7YD2LvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dud4uyCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02813C4CED0;
-	Thu,  2 Jan 2025 21:34:37 +0000 (UTC)
+	s=arc-20240116; t=1735903243; c=relaxed/simple;
+	bh=uyrlwtQE4rMHn9I5GAmKy1khgpbtrM6HHWX2r3idiWo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bbYQd06vzXguJAyd9p1D2bhMQXeFSIud2XrlOQ2H8Xt43vqb3OlYNS9D1mNpYv6dFcEDNATqgkVDLwVTso/ybsvoNhI80rks0r0TYnjTXFfonYpqFy9lRW4vt0dWKGaUw4UyqgGLs+HHy310FH6u1V4nlhXGYo7U1xVlShMDhpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rz5rGoTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C336C4CECE;
+	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735853678;
-	bh=3t49K6dc09HYQTbG/D+IZZo7V3U7nhGevTZen16XX7k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dud4uyCwevuFwIG/33iSUErORQHcSuewU97OnuWHz2QDfS4Ph3GxJA4bE+gKW3Ls6
-	 sLXIz+UUam4QmeGYu9yEXoe709Rj0bdep3jPtmLQOGV8TLdwagStDeASoHmd2T/6DT
-	 G7Yo2pXu2Fsew8qPvk53OOMN5A183AODninDHrZ1scxYW0VqUfQ0acADwAZ9ywDVrP
-	 HOgQnWKjWNzjIJA5Lj0G5MOnkNUUEDuxJBtxYLAso7iuPbTOkeJko/BhJz/BrDI633
-	 R3SjJC7AHXODplB8HNJFrvnbHYr8LqtgV++wYEbQ/99bC3pMfSL4POS65uy2X9SoBR
-	 RotPPZk9Eb+dQ==
-Date: Thu, 2 Jan 2025 15:34:36 -0600
-From: Rob Herring <robh@kernel.org>
-To: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	"krzk+dt@kernel.org" <krzk+dt@kernel.org>,
-	"andriy.shevchenko@linux.intel.com" <andriy.shevchenko@linux.intel.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
-	Andreas Dannenberg <dannenberg@ti.com>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] dt-bindings: iio: light: opt3001: add compatible for
- opt3004
-Message-ID: <20250102213436.GA602988-robh@kernel.org>
-References: <20241227131134.10810-1-hardevsinh.palaniya@siliconsignals.io>
- <qgottqtq5lvp6fifi37xzq7supalvm7leue755yjatyun6k5um@pju4v3kqoizq>
- <PN0P287MB2843E7005997F1728B0F9B2CFF0F2@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
- <20241228131929.49e4a90d@jic23-huawei>
- <PN0P287MB284355F3DD7DCF6BFC6D071FFF092@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
+	s=k20201202; t=1735903242;
+	bh=uyrlwtQE4rMHn9I5GAmKy1khgpbtrM6HHWX2r3idiWo=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Rz5rGoTUUIqZ5wPBXjA5r5mG8d+j9sK8RKMUabtBOHXlDUpL6dzaUo0Od9KSyF3dL
+	 nG8KZrUTPySd/ef4wrD0fwGZz2RDAj/T+PWQTbwyxAQjPuqpefSgkEpTOwC/Gk5QuO
+	 75IYhzAXie2UxYKtQEbafKMHN49LKT+Gutgt70HIE9WqtMQ/CKi1Oo3L6umxRPf0UC
+	 kBbhpX8bBNvhorqs6n5cx4JI4n2Wt0oHejIjEZzUwj1dTicWN8/azjw2BmGNBTsoMB
+	 l2R70IGcKj4q5v3jQ/gXLmUOAhcxBd77A38cORiN4WOeH6tcjPXIsBvUkep062DOnR
+	 3c8Gsd1LvHeKQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 662ADE77188;
+	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
+From: Nayab Sayed via B4 Relay <devnull+nayabbasha.sayed.microchip.com@kernel.org>
+Date: Fri, 03 Jan 2025 16:50:40 +0530
+Subject: [PATCH] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <PN0P287MB284355F3DD7DCF6BFC6D071FFF092@PN0P287MB2843.INDP287.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250103-fix-sama7g5-adc-realbits-v1-1-1732d265c36a@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAAfId2cC/x2MQQqDMBAAvyJ77kISSaN+pfSwmo0uaJRsKQXx7
+ 4YeB2bmBOUirDA0JxT+isqeK9hHA9NCeWaUWBmccd5Y02KSHyptFGaPFCcsTOsoH8U2pKdLXe9
+ 8DFDzo3B1/+vX+7puS12KlmoAAAA=
+To: Eugen Hristev <eugen.hristev@linaro.org>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Nayab Sayed <nayabbasha.sayed@microchip.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4982;
+ i=nayabbasha.sayed@microchip.com; h=from:subject:message-id;
+ bh=Za46OdRtTJEi9yRlw0XaUeuB5ttTzM/pmijAikNetGo=;
+ b=owGbwMvMwCEmfMj/xNz7ei8ZT6slMaSXn+BIC/gt+P2Y6tTyP2WJ29d7aRSpWzVubtHgv3msc
+ eNklUMtHaUsDGIcDLJiiizdm+fPNiz605n5k3MFzBxWJpAhDFycAjARw8UM/3OvJDdr7fi0+UnW
+ ux0repqMJm/g5Ha9nsjNX7jxS5e2xBGG/2Vmf8N3/kj4q+227CqX+Yk1Z0oL5pyznaFgyOK57uZ
+ BH04A
+X-Developer-Key: i=nayabbasha.sayed@microchip.com; a=openpgp;
+ fpr=E108A58C09FB2280B0AB41DAE24318EF3B3861A3
+X-Endpoint-Received: by B4 Relay for nayabbasha.sayed@microchip.com/default
+ with auth_id=304
+X-Original-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+Reply-To: nayabbasha.sayed@microchip.com
 
-On Mon, Dec 30, 2024 at 07:34:27AM +0000, Hardevsinh Palaniya wrote:
-> Hi Jonathan, Krzysztof
->  
-> Thanks for your input.
->  
-> > On Sat, 28 Dec 2024 10:54:33 +0000
-> > Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io> wrote:
-> > 
-> > > Hi Krzysztof,
-> > >
-> > > > On Fri, Dec 27, 2024 at 06:41:32PM +0530, Hardevsinh Palaniya wrote:
-> > > > > Add Support for OPT3004 Digital ambient light sensor (ALS) with
-> > > > > increased angular IR rejection.
-> > > > >
-> > > > > The OPT3004 sensor shares the same functionality and scale range as
-> > > > > the OPT3001. The compatible string is added with fallback support to
-> > > > > ensure compatibility.
-> > > > >
-> > > > > Datasheet: https://www.ti.com/lit/gpn/opt3004
-> > > > > Signed-off-by: Hardevsinh Palaniya <hardevsinh.palaniya@siliconsignals.io>
-> > > > > ---
-> > > > >
-> > > > > v2 -> v3:
-> > > > >
-> > > > > - Reverse the order of compatible string
-> > > > >
-> > > > > v1 -> v2:
-> > > > >
-> > > > > - Use fallback mechanism for the OPT3004.
-> > > > > - Drop 2/2 patch from the patch series[1] as per feedback.
-> > > > >
-> > > > > Link[1]: https://lore.kernel.org/linux-iio/20241224061321.6048-1-hardevsinh.palaniya@siliconsignals.io/T/#t
-> > > > 
-> > > >
-> > > > And where is any user of this, the DTS? We don't take bindings just
-> > > > because there is such device out there.
-> > > >
-> > > > I looked and nothing:
-> > > > https://lore.kernel.org/all/?q=ti%2Copt3004
-> > > >
-> > > I added compatibility for the OPT3004 into the driver. However,
-> > > based on Andy's feedback, it seems there might not be a need
-> > > to include this directly in the driver.
-> > > (Refer to Link [1] from the changelog.)
-> > >
-> > > we could follow a similar approach to how we handled the ADXL346,
-> > > by just adding it to the bindings, since the ADXL346 is similar to the
-> > > ADXL345.
-> > >
-> > > If I misunderstood then please let me know.
-> >
-> > Perhaps give some more information on the device in which this is found?
-> > If that's a board that you plan to support upstream in the longer term
-> > then that would provide more justification for this patch.
-> > 
-> > The note on the opt3001 page does give a hint as to how the parts are different
-> > but saying the opt3004 has better IR rejection.  They also have a somewhat different
-> > sensitivity curves. However, those are details we don't expose in the ABI and the
-> > devices unhelpfully report the same ID register value, so it is not obvious that
-> > we need to treat them differently.
->  
-> In our customer project, this sensor is utilized in the product. However, 
-> I acknowledge that, at present, there is no upstream user of this binding
-> in the mainline.
->  
-> Additionally, it is unlikely that the custom board using this sensor will be 
-> upstreamed in the future. The primary motivation for this patch is the 
-> absence of existing support for the OPT3004 in the mainline kernel.
->  
-> I fully understand your concerns regarding the addition of bindings without 
-> an immediate upstream use case. I leave the decision to you regarding whether
-> it would be appropriate to include this binding. I am open to your guidance and
-> will respect the outcome either way.
+From: Nayab Sayed <nayabbasha.sayed@microchip.com>
 
-I'm confused. Jonathan seems to say the OPT3004 needs different 
-handling. The binding says it doesn't at least for some subset of 
-functionality matching OPT3001.
+The number of valid bits in SAMA7G5 ADC channel data register are 16.
+Hence changing the realbits value to 16
 
-If you need driver changes, then submit this with the driver changes. If 
-you don't, then make it clear the device works with the existing driver.
+Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
+---
+ drivers/iio/adc/at91-sama5d2_adc.c | 68 ++++++++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 28 deletions(-)
 
-Rob
+diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
+index 8e5aaf15a921..c3a1dea2aa82 100644
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ #define AT91_HWFIFO_MAX_SIZE_STR	"128"
+ #define AT91_HWFIFO_MAX_SIZE		128
+ 
+-#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.channel = num,						\
+@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 'u',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.indexed = 1,						\
+ 	}
+ 
+-#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
++
++#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
++	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
++
++#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
+ 	{								\
+ 		.type = IIO_VOLTAGE,					\
+ 		.differential = 1,					\
+@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.scan_index = index,					\
+ 		.scan_type = {						\
+ 			.sign = 's',					\
+-			.realbits = 14,					\
++			.realbits = rbits,				\
+ 			.storagebits = 16,				\
+ 		},							\
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
+@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
+ 		.indexed = 1,						\
+ 	}
+ 
++#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
++
++#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
++	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
++
+ #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
+ 	{								\
+ 		.type = IIO_POSITIONRELATIVE,				\
+@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_sama5d2_adc_channels[] = {
+ };
+ 
+ static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
+-	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
+-	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
+-	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
+-	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
+-	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
+-	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
+-	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
+-	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
+-	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
+-	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
+-	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
+-	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
+-	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
+-	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
+-	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
+-	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
+-	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
+-	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
+-	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
+-	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
+-	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
+-	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
+-	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
+-	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
++	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
++	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
++	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
++	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
++	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
++	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
++	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
++	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
++	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
++	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
++	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
++	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
++	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
++	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
++	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
++	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
++	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
++	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
++	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
++	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
++	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
++	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
++	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
+ 	IIO_CHAN_SOFT_TIMESTAMP(24),
+ 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
+ };
+
+---
+base-commit: 0bc21e701a6ffacfdde7f04f87d664d82e8a13bf
+change-id: 20250103-fix-sama7g5-adc-realbits-37f62f8925d7
+
+Best regards,
+-- 
+Nayab Sayed <nayabbasha.sayed@microchip.com>
+
+
 

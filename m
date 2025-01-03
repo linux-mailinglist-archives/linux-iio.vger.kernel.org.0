@@ -1,217 +1,121 @@
-Return-Path: <linux-iio+bounces-13879-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13880-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA221A0088C
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 12:20:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A626A00A2E
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 15:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B56C73A479A
-	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 11:20:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C0DA7A1ED0
+	for <lists+linux-iio@lfdr.de>; Fri,  3 Jan 2025 14:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A2D1F9A8A;
-	Fri,  3 Jan 2025 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179521F940A;
+	Fri,  3 Jan 2025 14:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rz5rGoTU"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="OEHbV+Ej"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1A01527AC;
-	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CCE1FA8CF
+	for <linux-iio@vger.kernel.org>; Fri,  3 Jan 2025 14:00:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735903243; cv=none; b=S3L0jjqZJZwCtMOZIVDbB4EeqQ9m3PnYR6psjtFAtDBoeJ7yMh0invbi03ZAkNZgK0T/TZS2ZehUDkS+SlDDi0zZyXvHu8NA0um9PvBZdIZ09p13Vyu0+VNgZCqi2W3RkLhsmSdgJe/GHi/bXtGyQ5i9GZYTN8sN+/nwHsdGciw=
+	t=1735912860; cv=none; b=hW8/nDI/hhqfQ9HDN3gmD57txsChVNMNGmlqaKUrbqCraHEc0GDF/05dbAjevn2/6lT2qXus/qDP2bgEWa6oWV3uPt/yUTUHpRKTe/g8RPaB5X4eS6yu+bmupgbuTCptGsVvFQYHE6ysj9xsQsTfj6x403wpWa7kQlz1YcxKAhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735903243; c=relaxed/simple;
-	bh=uyrlwtQE4rMHn9I5GAmKy1khgpbtrM6HHWX2r3idiWo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bbYQd06vzXguJAyd9p1D2bhMQXeFSIud2XrlOQ2H8Xt43vqb3OlYNS9D1mNpYv6dFcEDNATqgkVDLwVTso/ybsvoNhI80rks0r0TYnjTXFfonYpqFy9lRW4vt0dWKGaUw4UyqgGLs+HHy310FH6u1V4nlhXGYo7U1xVlShMDhpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rz5rGoTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C336C4CECE;
-	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735903242;
-	bh=uyrlwtQE4rMHn9I5GAmKy1khgpbtrM6HHWX2r3idiWo=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Rz5rGoTUUIqZ5wPBXjA5r5mG8d+j9sK8RKMUabtBOHXlDUpL6dzaUo0Od9KSyF3dL
-	 nG8KZrUTPySd/ef4wrD0fwGZz2RDAj/T+PWQTbwyxAQjPuqpefSgkEpTOwC/Gk5QuO
-	 75IYhzAXie2UxYKtQEbafKMHN49LKT+Gutgt70HIE9WqtMQ/CKi1Oo3L6umxRPf0UC
-	 kBbhpX8bBNvhorqs6n5cx4JI4n2Wt0oHejIjEZzUwj1dTicWN8/azjw2BmGNBTsoMB
-	 l2R70IGcKj4q5v3jQ/gXLmUOAhcxBd77A38cORiN4WOeH6tcjPXIsBvUkep062DOnR
-	 3c8Gsd1LvHeKQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 662ADE77188;
-	Fri,  3 Jan 2025 11:20:42 +0000 (UTC)
-From: Nayab Sayed via B4 Relay <devnull+nayabbasha.sayed.microchip.com@kernel.org>
-Date: Fri, 03 Jan 2025 16:50:40 +0530
-Subject: [PATCH] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+	s=arc-20240116; t=1735912860; c=relaxed/simple;
+	bh=t8fxei54uN9o1jvVyQlhHWpPizYdfXuCssnzgSnQL90=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iV5ll+eAVmp3mvUzhJnkgQvOqiWvY5TQMQmsBkym4IWNBxIUK2wPVLEYAVkZA3dJ5iChACUQdpwcz1fc+1AItz8bzyQdByIrlFBEWpXlN/0n0qQJXl0/3TRbjGDxp9iuMK60yga6G0E+R9dSEzruGjdRxhlIRcY7mbo8gj3u8QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=OEHbV+Ej; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5d3ecae02beso15154413a12.0
+        for <linux-iio@vger.kernel.org>; Fri, 03 Jan 2025 06:00:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1735912855; x=1736517655; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PJRIeirdBRYDa71STbttzeJBbsC2eIbsmBB0Kex5yKU=;
+        b=OEHbV+EjEJYL5CaDyJ03GFqMu6um4qc4CtAniXMZigzWHLV1XzojiLrQ5kGsr8hGjC
+         92axwhOidguOYCcf3l4ZkwSthudczwTveiCTNzrgd2BalLrmj76kt2s9HzQy21+zdsSH
+         buIMbV2cTekErkbhngQ6IdyVG8fMU1cZogriHQD3UdUNXd9pjCXsVlBIJuN3D9GrC8U7
+         cciCy38usx94ni0RrHUOT2UqCrrya+RNIpT8GG0O/ex21ZSMBYulzICLAeylt9uyvqX3
+         +UoXLiiOz/5n1bgnZP4fYUEOBbUfBCDxvrpMdtdSQAUNjG1O9srHKfIW/bwrxNyvWUIy
+         ypPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735912855; x=1736517655;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PJRIeirdBRYDa71STbttzeJBbsC2eIbsmBB0Kex5yKU=;
+        b=YNGmPNz8Zmh7BJ1SqFp97j2qOFhwHxJsdSF/AtbfxIji4LRQLLgYEap07rgIW2X6FI
+         ij51CCZkIkCnCAKv/WKYiD19h79YuN0iqdchtIWWeGKP+Fyw9wmjXM+aSHkgJl0DZcok
+         HoLxPkL6vpHnj2U9/cQpZni9JQ/6bgk9ystU1Ddbfy1HL00mCim+weg7YDWyLzRyGSjS
+         KFRd6fQRLzDpcjO8f2qB0HBelYiENzV9KhxBqo4EDomfGlOCzgCVGRTjrRqXnW92q3zP
+         Cqd8pBYMsC4hG7tONd+vxspqIg5zLiqLn/Y6sSFSypK1Kq3a63L6KAr8VJnxXCUbd8e9
+         Nqsg==
+X-Gm-Message-State: AOJu0YyiB6DimIeFG36Ihn9gys8OlbmCtzHqBVDRosJYFnp6ycOpnntH
+	B/MxaH9+qRi5StpRUygOc6Y9ZIX1JjRrMipzKAMHiQ4mzFmaCzmenA8eCdk7FzA=
+X-Gm-Gg: ASbGnct1BzSqAvRWi46F6iLDq9ai99NgVtxN5at5DB0BEjODD+Hx59MN6x1pbXHjG+y
+	lr1YFzlVcewbCt8hRzm9x32+ZEko1ssiAvF8MDaQAz7ZfomhPdlEkkv+VAnh4QLSNlkByytA+0c
+	eIfEdWU/2SbOmTROCGkdWk6PiXQWA4rsxL0EnaRowiljxQY/ZRhIcS5Z6RMDgwlhjbTUCsa7328
+	h5ShDKpVFCneTAjpcuuggRtyP+1nTbUmGw95FPwxe5Rlr3sRwqMlroLoV4Gw6O0ftSJ82/x4H2T
+	lcEojuHIAEI=
+X-Google-Smtp-Source: AGHT+IFSyOQzbinppHxUP9oh8DJ5DHvKPosqPNihCcG+SIUNZQ/slS6mXMPHUj9d0EW0nov+n+p6Pw==
+X-Received: by 2002:a05:6402:354b:b0:5d4:4143:c082 with SMTP id 4fb4d7f45d1cf-5d81ddfbda8mr36765096a12.21.1735912854203;
+        Fri, 03 Jan 2025 06:00:54 -0800 (PST)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.102])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d80679f0e4sm19502384a12.42.2025.01.03.06.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jan 2025 06:00:52 -0800 (PST)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: prabhakar.mahadev-lad.rj@bp.renesas.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	ulf.hansson@linaro.org
+Cc: linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	claudiu.beznea@tuxon.dev,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 0/2] iio: rzg2l_adc: Cleanups for rzg2l_adc driver
+Date: Fri,  3 Jan 2025 16:00:40 +0200
+Message-ID: <20250103140042.1619703-1-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250103-fix-sama7g5-adc-realbits-v1-1-1732d265c36a@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAAfId2cC/x2MQQqDMBAAvyJ77kISSaN+pfSwmo0uaJRsKQXx7
- 4YeB2bmBOUirDA0JxT+isqeK9hHA9NCeWaUWBmccd5Y02KSHyptFGaPFCcsTOsoH8U2pKdLXe9
- 8DFDzo3B1/+vX+7puS12KlmoAAAA=
-To: Eugen Hristev <eugen.hristev@linaro.org>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Nayab Sayed <nayabbasha.sayed@microchip.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4982;
- i=nayabbasha.sayed@microchip.com; h=from:subject:message-id;
- bh=Za46OdRtTJEi9yRlw0XaUeuB5ttTzM/pmijAikNetGo=;
- b=owGbwMvMwCEmfMj/xNz7ei8ZT6slMaSXn+BIC/gt+P2Y6tTyP2WJ29d7aRSpWzVubtHgv3msc
- eNklUMtHaUsDGIcDLJiiizdm+fPNiz605n5k3MFzBxWJpAhDFycAjARw8UM/3OvJDdr7fi0+UnW
- ux0repqMJm/g5Ha9nsjNX7jxS5e2xBGG/2Vmf8N3/kj4q+227CqX+Yk1Z0oL5pyznaFgyOK57uZ
- BH04A
-X-Developer-Key: i=nayabbasha.sayed@microchip.com; a=openpgp;
- fpr=E108A58C09FB2280B0AB41DAE24318EF3B3861A3
-X-Endpoint-Received: by B4 Relay for nayabbasha.sayed@microchip.com/default
- with auth_id=304
-X-Original-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
-Reply-To: nayabbasha.sayed@microchip.com
+Content-Transfer-Encoding: 8bit
 
-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-The number of valid bits in SAMA7G5 ADC channel data register are 16.
-Hence changing the realbits value to 16
+Hi,
 
-Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
----
- drivers/iio/adc/at91-sama5d2_adc.c | 68 ++++++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 28 deletions(-)
+Series adds some cleanups for the RZ/G2L ADC driver after the support
+for the RZ/G3S SoC.
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 8e5aaf15a921..c3a1dea2aa82 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- #define AT91_HWFIFO_MAX_SIZE_STR	"128"
- #define AT91_HWFIFO_MAX_SIZE		128
- 
--#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.channel = num,						\
-@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 'u',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.indexed = 1,						\
- 	}
- 
--#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
-+
-+#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.differential = 1,					\
-@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 's',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.indexed = 1,						\
- 	}
- 
-+#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
-+
- #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
- 	{								\
- 		.type = IIO_POSITIONRELATIVE,				\
-@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_sama5d2_adc_channels[] = {
- };
- 
- static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
--	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
--	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
--	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
--	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
--	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
--	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
--	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
--	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
--	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
--	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
--	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
--	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
--	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
--	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
--	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
--	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
--	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
--	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
--	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
--	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
--	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
--	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
--	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
--	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
-+	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
-+	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
-+	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
-+	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
-+	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
-+	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
-+	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
-+	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
-+	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
-+	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
-+	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
-+	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
-+	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
-+	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
-+	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
-+	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
-+	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
-+	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
-+	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
-+	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
-+	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
-+	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
- 	IIO_CHAN_SOFT_TIMESTAMP(24),
- 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
- };
+Ulf, all,
 
----
-base-commit: 0bc21e701a6ffacfdde7f04f87d664d82e8a13bf
-change-id: 20250103-fix-sama7g5-adc-realbits-37f62f8925d7
+Please, do you think there might be something wrong on the power domains
+implementation that led to the conclusion from patch
+"iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()"?
 
-Best regards,
+Thank you,
+Claudiu Beznea
+
+Claudiu Beznea (2):
+  iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()
+  iio: adc: rzg2l: Cleanup suspend/resume path
+
+ drivers/iio/adc/rzg2l_adc.c | 62 +++++++++++++++++++------------------
+ 1 file changed, 32 insertions(+), 30 deletions(-)
+
 -- 
-Nayab Sayed <nayabbasha.sayed@microchip.com>
-
+2.43.0
 
 

@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-13893-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13894-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FFEA01514
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 14:52:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E4B4A0151F
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 14:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A930616399B
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 13:52:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D44733A3D96
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605A21B4132;
-	Sat,  4 Jan 2025 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF191B85EC;
+	Sat,  4 Jan 2025 13:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LtfC7NPP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTa8YRn1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B93F2BCF5;
-	Sat,  4 Jan 2025 13:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3065842C0B;
+	Sat,  4 Jan 2025 13:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735998755; cv=none; b=jEJ8ebzlyo746skcRVoQ64YI05FKhcrLRzLmEpQcyFOzHRGdtpHPEHGp8+kps98qcHIaJJKUNOOsKGsYRH8U9BlA86/H4gu8/E6SKSUyY+hACDMcH7nCLS2nLx3pVfNU1egGAMRZsHrpg2rBu8TVP+8b4wm5AEOELkDgeG+56Do=
+	t=1735999159; cv=none; b=kxhozwH0daqaI2rjeU/SxB8HtdV2oA6tpbJPRpQmT++cyXyesdQgbtUsQGoagSEu9wlVooi7MvNkZuxdyGQY3ktTTREpKEf0dJqPY5pOGxEJzkYpI7ttY8SUQi7Q3dDbWkr3b317o+iPvn3BwGrrfAQ6OR/Qb+XRaL+FvGP8HDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735998755; c=relaxed/simple;
-	bh=fuJ6Xv6g78cSanjTIqLY4Vy63Tg6Aw6IFnUAIAbXxCg=;
+	s=arc-20240116; t=1735999159; c=relaxed/simple;
+	bh=4n1bUXFAX1wVT1KsrzG+8WwspZWcX0SLePYj+L4Un+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DIEYOrnfGjdGzueXKYdsdND/8VxLMyQutwdm+RGGWYFyHKGFNFYiSheYlr8zNdW6zUtKj4qZmaXu5qC2j8nYS89sowkD0ZkFkQbWVTq1lR9i5U2ohPtJSGjZ75as0G4oit64Kt8M/doF1iD8/9FLq+rh/3JvQbggRvMg6Yyxx6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LtfC7NPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4994AC4CED1;
-	Sat,  4 Jan 2025 13:52:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AZel8m2FLxYJJDdOx+Qj/V7gMRzED3iiu8Ck7i5uu2jHzCpmfLlTIMsMIkAzpo0+CvYqPjlV9iEBEDpfOuK3PTYk1mT1MxmEdyM5MgALbeYp7F7L2qMgw5PweBRyQdUjMwlFe+29J87Xn+G6QsfO+Dwq9lyledts4DbMLUYZq4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTa8YRn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3762EC4CED1;
+	Sat,  4 Jan 2025 13:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735998754;
-	bh=fuJ6Xv6g78cSanjTIqLY4Vy63Tg6Aw6IFnUAIAbXxCg=;
+	s=k20201202; t=1735999159;
+	bh=4n1bUXFAX1wVT1KsrzG+8WwspZWcX0SLePYj+L4Un+U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LtfC7NPPIBDktZ7SSJshE5ufi41cs02gGsLtSDhcAwE1/quPk+6RG6X70gdyjK5xy
-	 n4yGe6sjvvfJJEk5UjKhomMk6FVc0hRRQDRbKWPkKVat02We5MY1Op+6jSmny6AgfN
-	 sOFHrKws3en2w9LqKW/yJprEc8slL8+V6Jz3JONqJOZa/e4vpzsJU8q0LNoLHQofM5
-	 w7ovGSW5XDT1vz8q9YE1MW4qVCZLwi23s+YTvr70nkUkMiKjwuu552o55ThZ2fUTBT
-	 quQe5ibURzfyQgEVMvPWck/V28mcvqlq4wGfnTcknR7QxBtwRNnm7nE78dSgG2C+ln
-	 TUlcDmZfmioew==
-Date: Sat, 4 Jan 2025 13:52:25 +0000
+	b=jTa8YRn1JZwSxkRuIT5DIPHiVeeRyilrkHcgh0hOQVUargj5dkAmfKINI/Moj8vdk
+	 /j5RvYC6ohzW8W6WXg0r86x0oS94gS8PXyqTyznpwRXdY0dLvBgnGHmAfheAbNoBJO
+	 Gj1NOqu2TM+W85SO3/ELFqzAExAgoG9Mt2XdDxEnNTD6vCwvvYVZVklbc6vqqk1MZ4
+	 0iioKgm4yCb8j9jcHpacG7MezcPIrdpHmqGNsO8J7Jz8hC2XgyqxsF8bZJXABK+b5C
+	 +0aAw9CK3l44HuCfHZVLB0Uk+rglW15+H9bGN9yFz9IZUMxtySLzNsBDYiSCOefq3G
+	 vXOdptBIGjQmg==
+Date: Sat, 4 Jan 2025 13:59:12 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Claudiu <claudiu.beznea@tuxon.dev>
-Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
- ulf.hansson@linaro.org, linux-iio@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-kernel@vger.kernel.org, Claudiu
- Beznea <claudiu.beznea.uj@bp.renesas.com>, "Rafael J. Wysocki"
- <rafael@kernel.org>, linux-pm@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()
-Message-ID: <20250104135225.2573285b@jic23-huawei>
-In-Reply-To: <20250103140042.1619703-2-claudiu.beznea.uj@bp.renesas.com>
-References: <20250103140042.1619703-1-claudiu.beznea.uj@bp.renesas.com>
-	<20250103140042.1619703-2-claudiu.beznea.uj@bp.renesas.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-amlogic@lists.infradead.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, gnstark@salutedevices.com, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ christianshewitt@gmail.com
+Subject: Re: [RFC PATCH v1 2/2] iio: adc: meson: add support for the GXLX
+ SoC
+Message-ID: <20250104135912.390ec87c@jic23-huawei>
+In-Reply-To: <20241231194207.2772750-3-martin.blumenstingl@googlemail.com>
+References: <20241231194207.2772750-1-martin.blumenstingl@googlemail.com>
+	<20241231194207.2772750-3-martin.blumenstingl@googlemail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,155 +65,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  3 Jan 2025 16:00:41 +0200
-Claudiu <claudiu.beznea@tuxon.dev> wrote:
+On Tue, 31 Dec 2024 20:42:07 +0100
+Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
 
-> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-+CC Rafael and linux-pm
+> The SARADC IP on the GXLX SoC itself is identical to the one found on
+> GXL SoCs. However, GXLX SoCs require poking the first three bits in the
+> MESON_SAR_ADC_REG12 register to get the three MPLL clocks (used as clock
+> generators for the audio frequencies) to work.
+> 
+> The reason why there are MPLL clock bits in the ADC register space is
+> entirely unknown and it seems that nobody is able to comment on this.
+> So clearly mark this as a workaround and add a warning so users are
+> notified that this workaround can change (once we know what these bits
+> actually do).
 
-> 
-> On all systems where the rzg2l_adc driver is used, the ADC clocks are part
-> of a PM domain. The code that implements the PM domains support is in
-> drivers/clk/renesas/rzg2l-cpg.c, the functions of interest for this commit
-> being rzg2l_cpg_attach_dev() and rzg2l_cpg_deattach_dev(). The PM
-> domains support is registered with GENPD_FLAG_PM_CLK which, according to
-> the documentation, instructs genpd to use the PM clk framework while
-> powering on/off attached devices.
-> 
-> During probe, the ADC device is attached to the PM domain
-> controlling the ADC clocks. Similarly, during removal, the ADC device is
-> detached from the PM domain.
-> 
-> The detachment call stack is as follows:
-> 
-> device_driver_detach() ->
->   device_release_driver_internal() ->
->     __device_release_driver() ->
->       device_remove() ->
->         platform_remove() ->
->           dev_pm_domain_detach()
-> 
-> During driver unbind, after the ADC device is detached from its PM domain,
-> the device_unbind_cleanup() function is called, which subsequently invokes
-> devres_release_all(). This function handles devres resource cleanup.
-> 
-> If runtime PM is enabled via devm_pm_runtime_enable(), the cleanup process
-> triggers the action or reset function for disabling runtime PM. This
-> function is pm_runtime_disable_action(), which leads to the following call
-> stack of interest when called:
-> 
-> pm_runtime_disable_action() ->
->   pm_runtime_dont_use_autosuspend() ->
-
-So is the only real difference that in the code below you disable runtime pm
-before autosuspend?  Can you still do that with a devm callback just not
-the standard one?
-
-
->     __pm_runtime_use_autosuspend() ->
->       update_autosuspend() ->
->         rpm_idle()
-> 
-> The rpm_idle() function attempts to runtime resume the ADC device.
-
-Can you give a little more on that path. I'm not immediately spotting
-how rpm_idle() is causing a resume
-
-> However,
-> at the point it is called, the ADC device is no longer part of the PM
-> domain (which manages the ADC clocks). Since the rzg2l_adc runtime PM
-> APIs directly modifies hardware registers, the
-> rzg2l_adc_pm_runtime_resume() function is invoked without the ADC clocks
-> being enabled. This is because the PM domain no longer resumes along with
-> the ADC device. As a result, this leads to system aborts.
-> 
-> Drop the devres API for runtime PM enable.
-> 
-> Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
-> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-
-See below. I'm doubtful in general about the sequence changes and
-specifically you can't just remove one devm callback from a driver without
-modifying a lot of other code / leaving really fragile ordering.
+So IIUC this is to make some non ADC component work.
+How are you handling dependencies?  The ADC driver might not be loaded or
+is there some reason it definitely is at the point where the audio driver
+loads?
 
 Jonathan
 
-> ---
->  drivers/iio/adc/rzg2l_adc.c | 33 ++++++++++++++++++++++++---------
->  1 file changed, 24 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index 883c167c0670..f12f3daf08cc 100644
-> --- a/drivers/iio/adc/rzg2l_adc.c
-> +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -464,25 +464,26 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> ---
+>  drivers/iio/adc/meson_saradc.c | 34 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 34 insertions(+)
+> 
+> diff --git a/drivers/iio/adc/meson_saradc.c b/drivers/iio/adc/meson_saradc.c
+> index 997def4a4d2f..df15a2566ec7 100644
+> --- a/drivers/iio/adc/meson_saradc.c
+> +++ b/drivers/iio/adc/meson_saradc.c
+> @@ -160,6 +160,11 @@
+>  	#define MESON_SAR_ADC_REG11_EOC				BIT(1)
+>  	#define MESON_SAR_ADC_REG11_VREF_SEL			BIT(0)
 >  
->  	pm_runtime_set_autosuspend_delay(dev, 300);
->  	pm_runtime_use_autosuspend(dev);
-> -	ret = devm_pm_runtime_enable(dev);
-> -	if (ret)
-> -		return ret;
-> +	pm_runtime_enable(dev);
->  
->  	platform_set_drvdata(pdev, indio_dev);
->  
->  	ret = rzg2l_adc_hw_init(dev, adc);
-> -	if (ret)
-> -		return dev_err_probe(&pdev->dev, ret,
-> -				     "failed to initialize ADC HW\n");
-> +	if (ret) {
-> +		dev_err_probe(&pdev->dev, ret, "failed to initialize ADC HW\n");
-> +		goto rpm_disable;
-> +	}
->  
->  	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0)
-> -		return irq;
-> +	if (irq < 0) {
-> +		ret = irq;
-> +		goto rpm_disable;
-> +	}
->  
->  	ret = devm_request_irq(dev, irq, rzg2l_adc_isr,
->  			       0, dev_name(dev), adc);
->  	if (ret < 0)
-> -		return ret;
-> +		goto rpm_disable;
->  
->  	init_completion(&adc->completion);
->  
-> @@ -493,6 +494,19 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
->  	indio_dev->num_channels = adc->data->num_channels;
->  
->  	return devm_iio_device_register(dev, indio_dev);
+> +#define MESON_SAR_ADC_REG12					0x30
+> +	#define MESON_SAR_ADC_REG12_MPLL0_UNKNOWN		BIT(0)
+> +	#define MESON_SAR_ADC_REG12_MPLL1_UNKNOWN		BIT(1)
+> +	#define MESON_SAR_ADC_REG12_MPLL2_UNKNOWN		BIT(2)
 > +
-> +rpm_disable:
-> +	pm_runtime_disable(dev);
-> +	pm_runtime_dont_use_autosuspend(dev);
-> +	return ret;
-If you have to move away from devm you must do it for all calls after
-the first thing that is manually cleaned up.
-As you have it here the userspace interfaces are left available at a point
-well after power down.
-
-> +}
-> +
-> +static void rzg2l_adc_remove(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +
-> +	pm_runtime_disable(dev);
-> +	pm_runtime_dont_use_autosuspend(dev);
->  }
+>  #define MESON_SAR_ADC_REG13					0x34
+>  	#define MESON_SAR_ADC_REG13_12BIT_CALIBRATION_MASK	GENMASK(13, 8)
 >  
->  static const struct rzg2l_adc_hw_params rzg2l_hw_params = {
-> @@ -614,6 +628,7 @@ static const struct dev_pm_ops rzg2l_adc_pm_ops = {
+> @@ -326,6 +331,7 @@ struct meson_sar_adc_param {
+>  	u8					cmv_select;
+>  	u8					adc_eoc;
+>  	enum meson_sar_adc_vref_sel		vref_voltage;
+> +	bool					enable_mpll_clock_workaround;
+>  };
 >  
->  static struct platform_driver rzg2l_adc_driver = {
->  	.probe		= rzg2l_adc_probe,
-> +	.remove		= rzg2l_adc_remove,
->  	.driver		= {
->  		.name		= DRIVER_NAME,
->  		.of_match_table = rzg2l_adc_match,
+>  struct meson_sar_adc_data {
+> @@ -995,6 +1001,15 @@ static int meson_sar_adc_init(struct iio_dev *indio_dev)
+>  				    priv->param->cmv_select);
+>  		regmap_update_bits(priv->regmap, MESON_SAR_ADC_REG11,
+>  				   MESON_SAR_ADC_REG11_CMV_SEL, regval);
+> +
+> +		if (priv->param->enable_mpll_clock_workaround) {
+> +			dev_warn(dev,
+> +				 "Enabling unknown bits to make the MPLL clocks work. This may change so always update dtbs and kernel together\n");
+> +			regmap_write(priv->regmap, MESON_SAR_ADC_REG12,
+> +				     MESON_SAR_ADC_REG12_MPLL0_UNKNOWN |
+> +				     MESON_SAR_ADC_REG12_MPLL1_UNKNOWN |
+> +				     MESON_SAR_ADC_REG12_MPLL2_UNKNOWN);
+> +		}
+>  	}
+>  
+>  	ret = clk_set_parent(priv->adc_sel_clk, priv->clkin);
+> @@ -1219,6 +1234,17 @@ static const struct meson_sar_adc_param meson_sar_adc_gxl_param = {
+>  	.cmv_select = 1,
+>  };
+>  
+> +static const struct meson_sar_adc_param meson_sar_adc_gxlx_param = {
+> +	.has_bl30_integration = true,
+> +	.clock_rate = 1200000,
+> +	.regmap_config = &meson_sar_adc_regmap_config_gxbb,
+> +	.resolution = 12,
+> +	.disable_ring_counter = 1,
+> +	.vref_voltage = VREF_VOLTAGE_1V8,
+> +	.cmv_select = true,
+> +	.enable_mpll_clock_workaround = true,
+> +};
+> +
+>  static const struct meson_sar_adc_param meson_sar_adc_axg_param = {
+>  	.has_bl30_integration = true,
+>  	.clock_rate = 1200000,
+> @@ -1267,6 +1293,11 @@ static const struct meson_sar_adc_data meson_sar_adc_gxl_data = {
+>  	.name = "meson-gxl-saradc",
+>  };
+>  
+> +static const struct meson_sar_adc_data meson_sar_adc_gxlx_data = {
+> +	.param = &meson_sar_adc_gxlx_param,
+> +	.name = "meson-gxlx-saradc",
+> +};
+> +
+>  static const struct meson_sar_adc_data meson_sar_adc_gxm_data = {
+>  	.param = &meson_sar_adc_gxl_param,
+>  	.name = "meson-gxm-saradc",
+> @@ -1298,6 +1329,9 @@ static const struct of_device_id meson_sar_adc_of_match[] = {
+>  	}, {
+>  		.compatible = "amlogic,meson-gxl-saradc",
+>  		.data = &meson_sar_adc_gxl_data,
+> +	}, {
+> +		.compatible = "amlogic,meson-gxlx-saradc",
+> +		.data = &meson_sar_adc_gxlx_data,
+>  	}, {
+>  		.compatible = "amlogic,meson-gxm-saradc",
+>  		.data = &meson_sar_adc_gxm_data,
 
 

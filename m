@@ -1,62 +1,59 @@
-Return-Path: <linux-iio+bounces-13884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13885-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5CBA0144E
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 13:30:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CA57A01455
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 13:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB0F163962
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 12:30:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE0A07A164A
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 12:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828D2190077;
-	Sat,  4 Jan 2025 12:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB0C189B8C;
+	Sat,  4 Jan 2025 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBy8ZalD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7g8FhlE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2672481728;
-	Sat,  4 Jan 2025 12:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E051C01;
+	Sat,  4 Jan 2025 12:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735993838; cv=none; b=D/ibPK8u/4fBI4oLdAbT5aQG3lDImudC5blo5wzjZmamomWt5/50d6m8QfVTxmgC1e1nitCkwg3RjGR05M8iDzYJApSFDoELRdND9mN1RZh5Ol04gIHudEUjsXJbcU8RKo9yq7ubyMJtDZejVDmDeD15rnjI8zw0ajhbJe7aeAo=
+	t=1735994384; cv=none; b=dRemn6iHyBz1pkU/erafQwYiygisdnmJ4NMvp25HaAcNcBOK2rfYCazlhV3lxTYWUUC9r20VO/oEumtoIBlu/J4TbXvucmA+sBZ54jcYO09wzhHCy2axX/XW3TvfKAxRGXA/0+PUkEawVIQYomDDOCDN2EHCXyK75BTK2VgC8ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735993838; c=relaxed/simple;
-	bh=+1hSY2Ft7Oj3UkOvHVLbK+L/8bwp/5OQyQuJA4B+uSQ=;
+	s=arc-20240116; t=1735994384; c=relaxed/simple;
+	bh=jSKmsazX+Pnz3pwW7kxYsij7/QU4ZBp5U/98fNHNuj8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aMPjQ8qosE8yi8St91yc9Zu5xKFmZ8IT3uaFvPAVtgDw2m1sb3wj7MMbJg8kTpBZjvvkxG15DLKjJ1Gttwu54c2LxA7g5Udd7i/nxD+HkDqUwD6BojFO6YDzlKWComsdI3/oWLdRtaDIGEkEgVvR1OY/o6TgCfkvlmaswqgh7Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBy8ZalD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B86C4CED1;
-	Sat,  4 Jan 2025 12:30:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AM9/EWd/Xg4rwyfUhM5Z4YbEnwuEC2O/fWW3H/sLRTMzoYFUmbqTB5nXX4WInZ4O7Lk79CPc/VN6O5hWJpZK4b8pompLLxP0eHhcdFydXUj45RivbaEmaLc+gDfI1hw/kYGykLvPVpwbVZtI/7FzxaExrFHG0AZReOQmLNwtKGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7g8FhlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D64C4CED1;
+	Sat,  4 Jan 2025 12:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735993837;
-	bh=+1hSY2Ft7Oj3UkOvHVLbK+L/8bwp/5OQyQuJA4B+uSQ=;
+	s=k20201202; t=1735994383;
+	bh=jSKmsazX+Pnz3pwW7kxYsij7/QU4ZBp5U/98fNHNuj8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JBy8ZalDb/HE9s7tLLo2XDGM0e38CGwlUErR/8RGFFn1fOWT2wTcQ0KkcHig5+r6d
-	 nW0D3RBFRzqTmIrOVk9UFMlrFs9zhu1nku+L+7V+9kIMEQj0hSCZN/xdZbagt9B5zK
-	 UFu7aLQuCj6R8yu6MXKQvTr2gF5escAVMzE5iqbOKqz5En+JUJvpftfc3PEhO8Me5e
-	 l1We5HyLsXfwb8su7JSkBhj1vzCHYOMx6XjQwmV3r/ey1eW5tN/nAeUkdU9kztdvcy
-	 uUO+kAw9M7xIyZ+ZO9VzRHPmx5baeT7bI7g4F/adHjO1506x6cpJrX8RGUa+BoxbsT
-	 D/c1zKIUdxj5Q==
-Date: Sat, 4 Jan 2025 12:30:29 +0000
+	b=K7g8FhlE7IzyTiWQRoWxlkag4EOiJivDbnFGreOTBGkdSQQYXuKnOrAS2O1NV709l
+	 H2KuREqPwUjPFysoJtIuFODEwyWpGHn/fb5KSFhVTiJMTI2rajvbsxfTd0TT3OROsH
+	 ydRpMGMbwTto2GS/Ja4bzDFZsBUEuqkVNjanR7gKOiWrw7M2brIOZgWC9mT7GCZSxz
+	 KmF7pPU6tLizR5QUpLQOHehM5WI/noIJUBDL/ATynbRzxoJNTBPMPHFP32TGXlte1Q
+	 k3d1WHl7pg/lAGPrgKgtrEFWMv2o51U8ORhpYXE6jRS1iI26PtEKyBMAdFh6sbqt/6
+	 YuBx4UvK92aIw==
+Date: Sat, 4 Jan 2025 12:39:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Trevor Gamblin <tgamblin@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: ad4695: add offload-based oversampling
- support
-Message-ID: <20250104123029.12a4e19e@jic23-huawei>
-In-Reply-To: <1c641b37-475a-4153-bcfc-e0e72d79fa76@baylibre.com>
-References: <20241217-ad4695-oversampling-v1-0-0b045d835dac@baylibre.com>
-	<20241217-ad4695-oversampling-v1-1-0b045d835dac@baylibre.com>
-	<20241219161301.3f708302@jic23-huawei>
-	<1c641b37-475a-4153-bcfc-e0e72d79fa76@baylibre.com>
+To: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+Cc: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Lars-Peter Clausen"
+ <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 2/2] iio: veml3235: fix scale to conform to ABI
+Message-ID: <20250104123935.08018aae@jic23-huawei>
+In-Reply-To: <D6PR0XZ27Z67.1IJEM2DOL18QY@gmail.com>
+References: <20241230-veml3235_scale-v3-0-48a5795e2f64@gmail.com>
+	<20241230-veml3235_scale-v3-2-48a5795e2f64@gmail.com>
+	<D6PR0XZ27Z67.1IJEM2DOL18QY@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,235 +64,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 2 Jan 2025 13:19:19 -0500
-Trevor Gamblin <tgamblin@baylibre.com> wrote:
+On Tue, 31 Dec 2024 09:39:03 +0100
+"Javier Carrasco" <javier.carrasco.cruz@gmail.com> wrote:
 
-> On 2024-12-19 11:13, Jonathan Cameron wrote:
-> > On Tue, 17 Dec 2024 16:47:28 -0500
-> > Trevor Gamblin <tgamblin@baylibre.com> wrote:
+> On Mon Dec 30, 2024 at 4:13 PM CET, Javier Carrasco wrote:
+> > The current scale is not ABI-compliant as it is just the sensor gain
+> > instead of the value that acts as a multiplier to be applied to the raw
+> > value (there is no offset).
+> >
+> > Use the iio-gts helpers to obtain the proper scale values according to
+> > the gain and integration time to match the resolution tables from the
+> > datasheet. When at it, use 'scale' instead of 'gain' consistently for
+> > the get/set functions to avoid misunderstandings.
+> >
+> > Fixes: c5a23f80c164 ("iio: light: add support for veml3235")
+> > Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> > ---
+> >  drivers/iio/light/Kconfig    |   1 +
+> >  drivers/iio/light/veml3235.c | 237 +++++++++++++++++++++++--------------------
+> >  2 files changed, 130 insertions(+), 108 deletions(-)
 > >  
-> >> Add support for the ad4695's oversampling feature when SPI offload is
-> >> available. This allows the ad4695 to set oversampling ratios on a
-> >> per-channel basis, raising the effective-number-of-bits from 16
-> >> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
-> >> full cycle through the auto-sequencer). The logic for reading and
-> >> writing sampling frequency for a given channel is also adjusted based on
-> >> the current oversampling ratio.
-> >>
-> >> The non-offload case isn't supported as there isn't a good way to
-> >> trigger the CNV pin in this mode. Support could be added in the future
-> >> if a use-case arises.
-> >>
-> >> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>  
-> > Hi Trevor,
-> >
-> > The clamping fun of get_calibbias seems overkill. If this isn't going to ever
-> > overflow an s64 maybe just use the high precision to do it the easy way.
-> > I'm not sure you can't just fit it in an s32 for that matter. I've just
-> > not done the maths to check.
-> >
-> > Jonathan
-> >
-> >  
-> >> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
-> >> +{
-> >> +	unsigned int reg_val;
-> >> +
-> >> +	switch (osr) {
-> >> +	case 4:
-> >> +		if (val2 >= 0 && val > S16_MAX / 2)
-> >> +			reg_val = S16_MAX;
-> >> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 2)  
-> > It has been a while, but IIRC if val2 < 0 then val == 0 as otherwise
-> > we carry the sign in the val part.  Sometimes we generalize that to
-> > make life easier for driver writers but I think you can use that here
-> > to simplify things.
-> >
-> > (for background look at __iio_str_to_fixpoint() - it's a bit of a hack
-> > to deal with integers have no negative 0)
-> >
-> > 		if (val > S16_MAX / 2)
-> > 			...
-> > 		else if (val < S16_MIN / 2)
-> > 			...	
-> > 		else if (val2 < 0) etc
-> >
-> > You may feel it is better to keep the code considering the val2 < 0 when
-> > val != 0 case and I don't mind that as it's not wrong, just overly complex!
-> >
-> > If you can easily clamp the overall range you can just do some maths
-> > with enough precision to get one number (probably a s64) and clamp that.
-> > Easy to sanity check for overflow based on val to ensure no overflows.  
 > 
-> Hi Jonathan,
+> @Jonathan, if you apply this patch in its current form, could you please
+> fix the message from "iio: veml3235:..." to "iio: light: veml3235:..."?
+> I just noticed that the "light:" bit is missing.
+> I can send a new version if that's preferred.
 > 
-> I'm reviewing this again but I'm not entirely clear what you mean.
-> 
-> Are you suggesting that the entire switch block could be simplified 
-> (i.e. eliminating the previous simplification for the val2 < 0 case in 
-> the process), or that the calls to clamp_t can be combined?
-> 
-> I've tested out simplifying the val2 < 0 case locally and driver 
-> functionality still seems OK. Maybe I'm missing a third option.
-The extra info we can use is that val2 is always positive
-if val != 0 and it never takes a value beyond +- MICRO because
-otherwise val would be non 0 instead.
+> The applied patches from this series did not have this issue.
+Applied to the togreg branch of iio.git and tidied patch names as suggested.
+As normal pushed out briefly as testing for 0-day to have fun with it.
 
+Thanks,
 
-Taking original code and ruling out cases.
-+	case 4:
-+		if (val2 >= 0 && val > S16_MAX / 2)
-// If val is non 0 then val2 is postive, so
-//		if (val > S16_MAX / 2)
-//			reg_val = S16_MAX;
-
-+			reg_val = S16_MAX;
-+		else if ((val2 < 0 ? -val : val) < S16_MIN / 2)
-
-// If val2 < 0 then val == 0 which is never less than S16_MIN / 2
-// So this condition never happens.
-
-+			reg_val = S16_MIN;
-+		else if (val2 < 0)
-// likewise, this is actually clamping val2 * 2 / MICRO which 
-// is never going to be anywhere near S16_MIN or S16_MAX as I think
-// it is always between +1 and -1 as val2 itself is limited to -MICRO to MICRO
-
-+			reg_val = clamp_t(int,
-+				-(val * 2 + -val2 * 2 / MICRO),
-+				S16_MIN, S16_MAX);
-+		else if (val < 0)
-//This one is fine.
-+			reg_val = clamp_t(int,
-+				val * 2 - val2 * 2 / MICRO,
-+				S16_MIN, S16_MAX);
-+		else
-//As is this one
-+			reg_val = clamp_t(int,
-+				val * 2 + val2 * 2 / MICRO,
-+				S16_MIN, S16_MAX);
-+		return reg_val;
-
-Maybe trick is to reorder into 3 conditions and set the value in a temporary integer.
-	int val_calc;
-	if (val > 0)
-		val_calc = val * 2 + val2 * 2 / MICRO;
-	else if (val < 0)
-		val_calc = -(val * 2 - val2 * 2 / MICRO);
-	else /* Only now does val2 sign matter as val == 0 */
-		val_calc = val2 * 2 / MICRO;
-
-Which can simplify because we know val is 0 for last case.
-Whether this is worth doing depends on trade off between
-docs needed to explain the code and shorter code.
-
-	/* Note that val2 > 0 if val != 0 and val2 range +- MICRO */
-	if (val < 0)
-		val_calc = val * 2 - val2 * 2 / MICRO;
-	else
-		val_calc = val * 2 + val2 * 2 / MICRO;
-
-	reg_val = clamp_t(int, val_calc, S16_MIN, S16_MAX);
-	
-One trivial additional simplication below.
-
-You might also be able to scale temporary up by 2 and ust
-have the switch statement set a scaling value.
-
-In this case scale == 4 in other cases below, 2, 1, and 8 for the default
-
-
-	if (val < 0)
-		val_calc = val * scale - val2 * scale / MICRO;
-	else
-		val_calc = val * scale + val2 * scale / MICRO;
-
-	val_calc /= 2; /* to remove the factor of 2 */
-
-	reg_val = clamp_t (int, val_calc, S16_MIN, S16_MAX);
-after the switch statement with comments when setting scale on the * 2
-multiplier to avoid the / 2 for case 64.
+Jonathan
 
 > 
-> - Trevor
-> 
-> >
-> > 		
-> >
-> >  
-> >> +			reg_val = S16_MIN;
-> >> +		else if (val2 < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				-(val * 2 + -val2 * 2 / MICRO),
-> >> +				S16_MIN, S16_MAX);
-> >> +		else if (val < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				val * 2 - val2 * 2 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		else
-> >> +			reg_val = clamp_t(int,
-> >> +				val * 2 + val2 * 2 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		return reg_val;
-> >> +	case 16:
-> >> +		if (val2 >= 0 && val > S16_MAX)
-> >> +			reg_val = S16_MAX;
-> >> +		else if ((val2 < 0 ? -val : val) < S16_MIN)
-> >> +			reg_val = S16_MIN;
-> >> +		else if (val2 < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				-(val + -val2 / MICRO),
-> >> +				S16_MIN, S16_MAX);
-> >> +		else if (val < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				val - val2 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		else
-> >> +			reg_val = clamp_t(int,
-> >> +				val + val2 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		return reg_val;
-> >> +	case 64:
-> >> +		if (val2 >= 0 && val > S16_MAX * 2)
-> >> +			reg_val = S16_MAX;
-> >> +		else if ((val2 < 0 ? -val : val) < S16_MIN * 2)
-> >> +			reg_val = S16_MIN;
-> >> +		else if (val2 < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				-(val / 2 + -val2 / 2 / MICRO),
-> >> +				S16_MIN, S16_MAX);
-> >> +		else if (val < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				val / 2 - val2 / 2 / MICRO,
-
-For these val2 / 2 / MICRO always 0 so value of val2 never matters.
-
-> >> +				S16_MIN, S16_MAX);
-> >> +		else
-> >> +			reg_val = clamp_t(int,
-> >> +				val / 2 + val2 / 2 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		return reg_val;
-> >> +	default:
-> >> +		if (val2 >= 0 && val > S16_MAX / 4)
-> >> +			reg_val = S16_MAX;
-> >> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
-> >> +			reg_val = S16_MIN;
-> >> +		else if (val2 < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				-(val * 4 + -val2 * 4 / MICRO),
-> >> +				S16_MIN, S16_MAX);
-> >> +		else if (val < 0)
-> >> +			reg_val = clamp_t(int,
-> >> +				val * 4 - val2 * 4 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		else
-> >> +			reg_val = clamp_t(int,
-> >> +				val * 4 + val2 * 4 / MICRO,
-> >> +				S16_MIN, S16_MAX);
-> >> +		return reg_val;
-> >> +	}
-> >> +}
-> >> +  
+> Thanks and best regards,
+> Javier Carrasco
 
 

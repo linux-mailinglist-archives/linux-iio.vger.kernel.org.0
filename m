@@ -1,59 +1,60 @@
-Return-Path: <linux-iio+bounces-13895-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13896-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D224A01549
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 15:32:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71B2A0155D
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 15:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 411873A1174
-	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 14:32:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86C821636FB
+	for <lists+linux-iio@lfdr.de>; Sat,  4 Jan 2025 14:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80CF01C3023;
-	Sat,  4 Jan 2025 14:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1211BD9F9;
+	Sat,  4 Jan 2025 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qxUkG+sI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="blI4sdpZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCBF1B85C0;
-	Sat,  4 Jan 2025 14:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BCF8F5A;
+	Sat,  4 Jan 2025 14:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736001168; cv=none; b=JqnlMYj6YoiQlNPURGlivcLCAnKl87UAMp8d95IyOHhSqV9NK2daSTuv0HKXs/vsrye+/GqEo7/WDjU4CohIPIbDvtSYxyJpNSnGiA1cID/QsYKy1n0/50wjf5zwcqEf2dLGZ0ArEyKIne0AbikTOqXcDCFSHYBbS+PrdAuYuwg=
+	t=1736002169; cv=none; b=VpPCEOS/6pGCKe68Lm8mvZk7lOPm01efecd2rHx0Tlf/+UPZUz2RyyxpAGvBjZtDa7Xy/dNLoGEl2oZ3oKCNFV5vC8AE0qk30D2b9KfYq5NvyaSfvq1MOOqePWuqJMyX4H8JwqVg+CwD8mvqdxbWwDZHcn6W/xNw0lxy3tSSoU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736001168; c=relaxed/simple;
-	bh=krl034N4LM+Mashdg37HEEbQlu1+NKbLEqyvvaE4uR4=;
+	s=arc-20240116; t=1736002169; c=relaxed/simple;
+	bh=CN9VucQ5r/XcslJyMzATOwEzLxHB+i2MsFSaVMS2HiA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P4E9vSPUgHmhaA60blp1MW3+99MCKVwj2TMP9GZSqED0/Z424AspTqk6RDaFSP5/UAxaeayJ+uN0VVZHe8W1mYKDVx0w69ueJCZg+1ZpBK6rYhMXE2+N8F9V0xm4c4B4CPjRm26kkAfYbAk4hgX6WXAwbjK2y0fZqqLtmuMl9YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qxUkG+sI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2064C4CED2;
-	Sat,  4 Jan 2025 14:32:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gT+qxtFevKPimtpSsbdatkxqUIecn8gvET/jI5ryZ2iOEff9//0oVc5wosn/3UiTPpLzXMFlyojeZMKjJCFzjYk3mmjTDL11loe9kykeng3RvZvWh15jkSjLL82XokerosJLpqUtoZ5mOHuXJSo8YM7GdJBbD6FHvetC61vNvR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=blI4sdpZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655ECC4CED2;
+	Sat,  4 Jan 2025 14:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736001167;
-	bh=krl034N4LM+Mashdg37HEEbQlu1+NKbLEqyvvaE4uR4=;
+	s=k20201202; t=1736002169;
+	bh=CN9VucQ5r/XcslJyMzATOwEzLxHB+i2MsFSaVMS2HiA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qxUkG+sILaAksYN0RfJeO9bc0fH37BOuNC7AGN9gsWxel+lhFmgjPpT7C+9coao0n
-	 HoomaYcN12p6MBLodNVISTfU9sHYJqFHQhP7KRyGBRKcFOflFjQJCUpxLUxV1NDmS9
-	 Ga76zZjvTJlAnDAvowtCo1/S07qdi6Qd0S9qZ2jMAJvWPP0+uXeCS8mAO2BvHVLvKe
-	 +GDbHlOr0s9NgGUW0j7zlOZwzL8xKKrR7ECKZ8VP5QmWF7mGiADOISAg8uv+jHfKQR
-	 IUdzRDaxjwpu5poZqn000OdAAeBhyOpE3GjfW9EcOjjYuqeeVZeidco0IwkKYLZGR8
-	 xUm4EE3dyZ0Ag==
-Date: Sat, 4 Jan 2025 14:32:36 +0000
+	b=blI4sdpZnPVmkcOSyyG1+DM6ELyvDb8EIr3YMelNDuQ7QiWcd3AwQbygoMsgn9/hS
+	 LdronaJow2qwIBWbvUgDCqWFH8B147x8/NttGI+vcVJ1UtclnQrozJ+n1s+SiFWLL6
+	 8U6f1hMuDayB4rRtm0W39vrvyqC6uCPO6cBGs7v/h1Hx9AE1AOEft7GUGuZ0J0ehug
+	 UTNkPwaP/oSJcYP8Ny+nFlwoF5913iTUk6n8KSySsFBww6Ih8lfEXPH/N5VpLhB6qe
+	 z2Ioh3DdhiWlv99ZscqWCFIshnO6LOzyQbkq5SVcMhi3KNnYW1yVQWhRoBa3nv7OeI
+	 t/MIwU25/LZYg==
+Date: Sat, 4 Jan 2025 14:49:23 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: krzysztof.kozlowski@linaro.org, lars@metafoo.de, robh@kernel.org,
- conor+dt@kernel.org, andrej.skvortzov@gmail.com, neil.armstrong@linaro.org,
- danila@jiaxyga.com, icenowy@aosc.io, javier.carrasco.cruz@gmail.com,
- andy@kernel.org, megi@xff.cz, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <20250104143236.33e6ba3f@jic23-huawei>
-In-Reply-To: <20241231132513.6944-3-apokusinski01@gmail.com>
-References: <20241231132513.6944-1-apokusinski01@gmail.com>
-	<20241231132513.6944-3-apokusinski01@gmail.com>
+To: Matteo Martelli <matteomartelli3@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Peter Rosin <peda@axentia.se>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] iio: iio-mux: kzalloc instead of devm_kzalloc to
+ ensure page alignment
+Message-ID: <20250104144923.47933eb8@jic23-huawei>
+In-Reply-To: <20241211181754.52e0f627@jic23-huawei>
+References: <20241202-iio-kmalloc-align-v1-0-aa9568c03937@gmail.com>
+	<20241202-iio-kmalloc-align-v1-2-aa9568c03937@gmail.com>
+	<20241208181531.47997ab4@jic23-huawei>
+	<97fd092da34bcdcf0a7f79c6079a04ce@gmail.com>
+	<20241211181754.52e0f627@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,397 +65,211 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 31 Dec 2024 14:25:13 +0100
-Antoni Pokusinski <apokusinski01@gmail.com> wrote:
+On Wed, 11 Dec 2024 18:17:54 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Silicon Labs Si7210 is an I2C Hall effect magnetic position and
-> temperature sensor. The driver supports the following functionalities:
-> * reading the temperature measurements
-> * reading the magnetic field measurements in a single-shot mode
-> * choosing the magnetic field measurement scale (20 or 200 mT)
+> On Mon, 09 Dec 2024 11:39:55 +0100
+> Matteo Martelli <matteomartelli3@gmail.com> wrote:
 > 
-> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
-Hi Antoni
+> > On Sun, 8 Dec 2024 18:15:31 +0000, Jonathan Cameron <jic23@kernel.org> wrote:  
+> > > On Mon, 02 Dec 2024 16:11:08 +0100
+> > > Matteo Martelli <matteomartelli3@gmail.com> wrote:
+> > >     
+> > > > During channel configuration, the iio-mux driver allocates a page with
+> > > > devm_kzalloc(PAGE_SIZE) to read channel ext_info. However, the resulting
+> > > > buffer points to an offset of the page due to the devres header sitting
+> > > > at the beginning of the allocated area. This leads to failure in the
+> > > > provider driver when sysfs_emit* helpers are used to format the ext_info
+> > > > attributes.
+> > > > 
+> > > > Switch to plain kzalloc version. The devres version is not strictly
+> > > > necessary as the buffer is only accessed during the channel
+> > > > configuration phase. Rely on __free cleanup to deallocate the buffer.
+> > > > Also, move the ext_info handling into a new function to have the page
+> > > > buffer definition and assignment in one statement as suggested by
+> > > > cleanup documentation.
+> > > > 
+> > > > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>    
+> > > This seems fine to me, but the diff ended up a bit complex, so I'd like
+> > > Peter to take a look as well before I apply it.    
+> > 
+> > For a simpler diff I could go for devm_get_free_pages()+devm_free_pages(),
+> > but since devres doesn't seem necessary in this case, I think this patch
+> > provides a cleaner solution at the end.  
+> 
+> The approach is fine I think, I'd just like a second opinion so will
+> give Peter some time to get to it before applying.
 
-A few comments inline. Main one is that I 'think' the scale for the
-temperature is off by 1000. I got a bit lost in the maths so may have
-that wrong.
+I want to get some build coverage at least on this, so I've applied it
+for now to the togreg branch of iio.git and pushed out as testing.
+Still a few more days for Peter to shout if he wants more time to looks at it!
 
 Jonathan
-
-> diff --git a/drivers/iio/magnetometer/si7210.c b/drivers/iio/magnetometer/si7210.c
-> new file mode 100644
-> index 000000000000..3b9b5b9807fd
-> --- /dev/null
-> +++ b/drivers/iio/magnetometer/si7210.c
-> @@ -0,0 +1,412 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Silicon Labs Si7210 Hall Effect sensor driver
-> + *
-> + * Copyright (c) 2024 Antoni Pokusinski <apokusinski01@gmail.com>
-> + *
-> + * Datasheet:
-> + *  https://www.silabs.com/documents/public/data-sheets/si7210-datasheet.pdf
-> + */
-> +
-> +#include <linux/module.h>
-
-Order seems a bit random.  Probably better to just go alphabetical.
-
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/regmap.h>
-> +#include <linux/math64.h>
-> +#include <linux/mutex.h>
-
-> +struct si7210_data {
-> +	struct i2c_client *client;
-> +	struct regmap *regmap;
-> +	struct mutex fetch_lock;
-> +	struct mutex otp_lock;
-Even though somewhat obvious, each lock needs a comment on what
-data it is protecting.
-
-For the otp_lock I'm not sure you even needed as it is only used
-during probe.  If that weren't the case, can you safely overlap fetch
-and otp?  Is it worth that distinction, if not is one lock enough?
-
-> +	s8 temp_offset;
-> +	s8 temp_gain;
-> +	s8 scale_20_a[A_REGS_COUNT];
-> +	s8 scale_200_a[A_REGS_COUNT];
-> +	u8 curr_scale;
-> +};
-> +
-> +static const struct iio_chan_spec si7210_channels[] = {
-> +	{
-> +		.type = IIO_MAGN,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
-> +	},
-> +	{
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +	}
-> +};
-> +
-> +static int si7210_fetch_measurement(struct si7210_data *data,
-> +				    struct iio_chan_spec const *chan,
-> +				    u8 buf[2])
-
-See below. May be worth treating this as a __be16?
-It is described in the datasheet as being made up of most significant
-and least significant bytes so that seems a logic cleanup.
-
-> +{
-> +	u8 dspsigsel = chan->type == IIO_MAGN ? 0 : 1;
-> +	int ret;
-> +
-> +	scoped_guard(mutex, &data->fetch_lock) {
-
-As below. guard(mutex) better here to reduce indent a little and indicate the lock
-is held for whole function.
-
-> +		ret = regmap_update_bits(data->regmap, SI7210_REG_DSPSIGSEL,
-> +					 SI7210_MASK_DSPSIGSEL, dspsigsel);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = regmap_update_bits(data->regmap, SI7210_REG_POWER_CTRL,
-> +					 SI7210_MASK_ONEBURST | SI7210_MASK_STOP,
-> +					 SI7210_MASK_ONEBURST & ~SI7210_MASK_STOP);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* Read the contents of the registers containing the result: DSPSIGM, DSPSIGL */
-> +		ret = regmap_bulk_read(data->regmap, SI7210_REG_DSPSIGM, buf, 2);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int si7210_read_raw(struct iio_dev *indio_dev,
-> +			   struct iio_chan_spec const *chan,
-> +			   int *val, int *val2, long mask)
-> +{
-> +	struct si7210_data *data = iio_priv(indio_dev);
-> +	long long tmp;
-> +	u8 dspsig[2];
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = si7210_fetch_measurement(data, chan, dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = ((dspsig[0] & 0x7F) << 8) + dspsig[1];
-
-Very nearly a simple endian get. Probably better to treat it like
-one anyway. *val = get_unaligned_be16(dpsig) & GENMASK(14, 0)
-
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		if (data->curr_scale == 20)
-> +			*val2 = 1250;
-> +		else /* data->curr_scale == 200 */
-> +			*val2 = 12500;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = -16384;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		ret = si7210_fetch_measurement(data, chan, dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		tmp = ((dspsig[0] & 0x7F) << 5) + (dspsig[1] >> 3);
-
-This may be appropriate as an endian read and FIELD_GET().  Perhaps not worth it
-except that the type for the fetch_measurements could then be a __be16 rather than
-what looks like unrelated u8 pair.
-
-Given the docs have this a most and least significant bytes that seems to make
-sense to me.
-
-> +		tmp = (div_s64(-383 * tmp * tmp, 100) + (160940 * tmp - 279800000));
-> +		tmp = (1 + (data->temp_gain >> 11)) * tmp + 62500 * data->temp_offset;
-> +		tmp -= 732600;
-This is form 0.222 * VDD, given you should have a regulator as per the binding feedback
-you should be able to query that voltage.
-> +
-> +		*val = div_s64_rem(tmp, 1000000, val2);
-> +
-I think this is returning a value in degrees celsius?  IIO ABI matches older hwmon
-on temperatures and is in milicelsius. (Documentation/ABI/testing/sysfs-bus-iio)
-
-Please check other units match the aABI.
-
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
-> +{
-> +	s8 *a_otp_values;
-> +	int ret;
-> +
-> +	if (scale == 20)
-> +		a_otp_values = data->scale_20_a;
-> +	else if (scale == 200)
-> +		a_otp_values = data->scale_200_a;
-> +	else
-> +		return -EINVAL;
-> +
-> +	scoped_guard(mutex, &data->fetch_lock) {
-As below (though this one is a little less clear as it's mid way through the function).
-I would just used guard()
-
-> +		/* Write the registers 0xCA - 0xCC*/
-> +		ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		/* Write the registers 0xCE - 0xD0*/
-> +		ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		data->curr_scale = scale;
-> +	}
-> +
-> +	return 0;
-> +}
-
-> +static int si7210_read_otpreg_val(struct si7210_data *data, unsigned int otpreg, u8 *val)
-> +{
-> +	int ret;
-> +	unsigned int otpdata;
-> +
-> +	scoped_guard(mutex, &data->otp_lock) {
-
-As you hold the lock for the whole body, I would just use
-	guard(mutex)(&datap->otp_lock);
-as then the indent of the rest will be reduced, slightly improving readability.
-
-> +		ret = regmap_write(data->regmap, SI7210_REG_OTP_ADDR, otpreg);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = regmap_update_bits(data->regmap, SI7210_REG_OTP_CTRL,
-> +					 SI7210_MASK_OTP_READ_EN, SI7210_MASK_OTP_READ_EN);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = regmap_read(data->regmap, SI7210_REG_OTP_DATA, &otpdata);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = (u8)otpdata;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int si7210_device_wake(struct si7210_data *data)
-> +{
-> +	/* According to the datasheet, the primary method to wake up a device is
-> +	 *  to send an empty write. However this is not feasible using current API so we
-> +	 *  use the other method i.e. read a single byte. The device should respond with 0xFF
-> +	 */
-Comment syntax for IIO would make this
-	/*
-	 * According to the datasheet, the primary method to wake up a
-	 * device is to send an empty write. However this is not feasible
-	 * using current API so we use the other method i.e. read a single
-	 * byte. The device should respond with 0xFF
-	 */
-
-> +
-> +	int ret = 0;
-> +
-> +	ret = i2c_smbus_read_byte(data->client);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if ((u8)ret != 0xFF)
-
-Why is the cast needed?
-
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static int si7210_device_init(struct si7210_data *data)
-> +{
-> +	int ret;
-> +	unsigned int i;
-> +
-> +	ret = si7210_device_wake(data);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	usleep_range(1000, 1500);
-
-fsleep() preferred.  It'll use slightly different range, but the aim of that
-function is we never need to care what exactly is set and consider if the margin
-is reasonable or not.
-
-> +
-> +	ret = si7210_read_otpreg_val(data, SI7210_OTPREG_TMP_GAIN, &data->temp_gain);
-> +	if (ret < 0)
-> +		return ret;
-> +	ret = si7210_read_otpreg_val(data, SI7210_OTPREG_TMP_OFF, &data->temp_offset);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	for (i = 0; i < A_REGS_COUNT; i++) {
-> +		ret = si7210_read_otpreg_val(data, a20_otp_regs[i], &data->scale_20_a[i]);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +	for (i = 0; i < A_REGS_COUNT; i++) {
-> +		ret = si7210_read_otpreg_val(data, a200_otp_regs[i], &data->scale_200_a[i]);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	ret = regmap_update_bits(data->regmap, SI7210_REG_ARAUTOINC,
-> +				 SI7210_MASK_ARAUTOINC, SI7210_MASK_ARAUTOINC);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return si7210_set_scale(data, 20);
-> +}
-> +
-> +static const struct iio_info si7210_info = {
-> +	.read_raw = si7210_read_raw,
-> +	.write_raw = si7210_write_raw,
-> +};
-> +
-> +static int si7210_probe(struct i2c_client *client)
-> +{
-> +	struct si7210_data *data;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-
-Is this used?  If not don't set it.
-
-> +	data->client = client;
-> +
-> +	mutex_init(&data->fetch_lock);
-> +	mutex_init(&data->otp_lock);
-> +
-> +	data->regmap = devm_regmap_init_i2c(client, &si7210_regmap_conf);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(&client->dev, PTR_ERR(data->regmap),
-> +				     "failed to register regmap\n");
-> +
-> +	indio_dev->name = dev_name(&client->dev);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->info = &si7210_info;
-> +	indio_dev->channels = si7210_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(si7210_channels);
-> +
-> +	ret = si7210_device_init(data);
-> +	if (ret)
-> +		return dev_err_probe(&client->dev, ret, "device initialization failed\n");
-
-Generally we try to keep the line length in IIO to traditional 80 chars
-unless there is a good readability reason to do otherwise.  Here I'd wrap before
-the message.
-
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
-> +}
-> +
-> +static const struct i2c_device_id si7210_id[] = {
-> +	{ "si7210", 0 },
-
-Trivial: No real point in setting the 0 explicitly.
-
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, si7210_id);
-> +
-> +static const struct of_device_id si7210_dt_ids[] = {
-> +	{ .compatible = "silabs,si7210" },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, si7210_dt_ids);
-> +
-> +static struct i2c_driver si7210_driver = {
-> +	.driver = {
-> +		.name = "si7210",
-> +		.of_match_table = si7210_dt_ids,
-> +	},
-> +	.probe		= si7210_probe,
-> +	.id_table	= si7210_id,
-
-Totally trivial but I'd not bother with tab alignment at all rather than mixing
-using it and not here.
-	.probe = si7120_probe, etc is fine and avoids mess of realigning in future
-if something longer named turns up.
-
-> +};
-> +
-> +module_i2c_driver(si7210_driver);
-> +MODULE_AUTHOR("Antoni Pokusinski <apokusinski01@gmail.com>");
-> +MODULE_DESCRIPTION("Silicon Labs Si7210 Hall Effect sensor I2C driver");
-> +MODULE_LICENSE("Dual BSD/GPL");
+> 
+> >   
+> > > 
+> > > Do you have a board that is hitting this?  If so, a fixes tag is definitely
+> > > appropriate. I think it is probably appropriate even it not.    
+> > 
+> > I am not sure if any existing board is affected as I encountered this
+> > issue while experimenting with consumer drivers, thus using a custom DT
+> > on top of sun50i-a64-pine64.dts just for testing. The following DT files
+> > might be affected but only if the iio channel controlled by the iio_mux
+> > multiplexer owns an ext_info attribute which is also exposed on sysfs.
+> > 
+> > $ grep -Rl 'io-channel-mux' arch
+> > arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtmitchell.dts
+> > arch/arm/boot/dts/aspeed/aspeed-bmc-ampere-mtjade.dts
+> > arch/arm/boot/dts/microchip/at91-tse850-3.dts
+> > arch/arm/boot/dts/microchip/at91-natte.dtsi
+> > arch/arm64/boot/dts/rockchip/rk3566-powkiddy-rk2023.dtsi
+> > arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg353x.dtsi
+> > arch/arm64/boot/dts/rockchip/rk3566-anbernic-rg503.dts
+> > arch/arm64/boot/dts/rockchip/rk3326-odroid-go3.dts
+> > arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dtb
+> > arch/arm64/boot/dts/allwinner/sun50i-h700-anbernic-rg35xx-h.dts
+> > 
+> > I am also not sure what would be the reference commit for the Fixes tag.
+> > The related ext_info attributes handling was introduced in the first
+> > commit of the iio_mux implementation. If that applies, following the
+> > corresponding Fixes tag.
+> > 
+> > Fixes: 7ba9df54b091 ("iio: multiplexer: new iio category and iio-mux driver")  
+> That works I think.
+> 
+> Thanks,
+> 
+> >   
+> > > 
+> > > Jonathan
+> > >     
+> > 
+> > Best regards,
+> > Matteo  
+> > > > ---
+> > > >  drivers/iio/multiplexer/iio-mux.c | 84 +++++++++++++++++++++------------------
+> > > >  1 file changed, 46 insertions(+), 38 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
+> > > > index 2953403bef53bbe47a97a8ab1c475ed88d7f86d2..c309d991490c63ba4299f1cda7102f10dcf54982 100644
+> > > > --- a/drivers/iio/multiplexer/iio-mux.c
+> > > > +++ b/drivers/iio/multiplexer/iio-mux.c
+> > > > @@ -7,6 +7,7 @@
+> > > >   * Author: Peter Rosin <peda@axentia.se>
+> > > >   */
+> > > >  
+> > > > +#include <linux/cleanup.h>
+> > > >  #include <linux/err.h>
+> > > >  #include <linux/iio/consumer.h>
+> > > >  #include <linux/iio/iio.h>
+> > > > @@ -237,49 +238,18 @@ static ssize_t mux_write_ext_info(struct iio_dev *indio_dev, uintptr_t private,
+> > > >  	return ret;
+> > > >  }
+> > > >  
+> > > > -static int mux_configure_channel(struct device *dev, struct mux *mux,
+> > > > -				 u32 state, const char *label, int idx)
+> > > > +static int mux_configure_chan_ext_info(struct device *dev, struct mux *mux,
+> > > > +				       int idx, int num_ext_info)
+> > > >  {
+> > > >  	struct mux_child *child = &mux->child[idx];
+> > > > -	struct iio_chan_spec *chan = &mux->chan[idx];
+> > > >  	struct iio_chan_spec const *pchan = mux->parent->channel;
+> > > > -	char *page = NULL;
+> > > > -	int num_ext_info;
+> > > >  	int i;
+> > > >  	int ret;
+> > > >  
+> > > > -	chan->indexed = 1;
+> > > > -	chan->output = pchan->output;
+> > > > -	chan->datasheet_name = label;
+> > > > -	chan->ext_info = mux->ext_info;
+> > > > -
+> > > > -	ret = iio_get_channel_type(mux->parent, &chan->type);
+> > > > -	if (ret < 0) {
+> > > > -		dev_err(dev, "failed to get parent channel type\n");
+> > > > -		return ret;
+> > > > -	}
+> > > > -
+> > > > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
+> > > > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+> > > > -	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
+> > > > -		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> > > > -
+> > > > -	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
+> > > > -		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
+> > > > -
+> > > > -	if (state >= mux_control_states(mux->control)) {
+> > > > -		dev_err(dev, "too many channels\n");
+> > > > -		return -EINVAL;
+> > > > -	}
+> > > > -
+> > > > -	chan->channel = state;
+> > > > +	char *page __free(kfree) = kzalloc(PAGE_SIZE, GFP_KERNEL);
+> > > > +	if (!page)
+> > > > +		return -ENOMEM;
+> > > >  
+> > > > -	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
+> > > > -	if (num_ext_info) {
+> > > > -		page = devm_kzalloc(dev, PAGE_SIZE, GFP_KERNEL);
+> > > > -		if (!page)
+> > > > -			return -ENOMEM;
+> > > > -	}
+> > > >  	child->ext_info_cache = devm_kcalloc(dev,
+> > > >  					     num_ext_info,
+> > > >  					     sizeof(*child->ext_info_cache),
+> > > > @@ -318,8 +288,46 @@ static int mux_configure_channel(struct device *dev, struct mux *mux,
+> > > >  		child->ext_info_cache[i].size = ret;
+> > > >  	}
+> > > >  
+> > > > -	if (page)
+> > > > -		devm_kfree(dev, page);
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > > +static int mux_configure_channel(struct device *dev, struct mux *mux, u32 state,
+> > > > +				 const char *label, int idx)
+> > > > +{
+> > > > +	struct iio_chan_spec *chan = &mux->chan[idx];
+> > > > +	struct iio_chan_spec const *pchan = mux->parent->channel;
+> > > > +	int num_ext_info;
+> > > > +	int ret;
+> > > > +
+> > > > +	chan->indexed = 1;
+> > > > +	chan->output = pchan->output;
+> > > > +	chan->datasheet_name = label;
+> > > > +	chan->ext_info = mux->ext_info;
+> > > > +
+> > > > +	ret = iio_get_channel_type(mux->parent, &chan->type);
+> > > > +	if (ret < 0) {
+> > > > +		dev_err(dev, "failed to get parent channel type\n");
+> > > > +		return ret;
+> > > > +	}
+> > > > +
+> > > > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_RAW))
+> > > > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+> > > > +	if (iio_channel_has_info(pchan, IIO_CHAN_INFO_SCALE))
+> > > > +		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> > > > +
+> > > > +	if (iio_channel_has_available(pchan, IIO_CHAN_INFO_RAW))
+> > > > +		chan->info_mask_separate_available |= BIT(IIO_CHAN_INFO_RAW);
+> > > > +
+> > > > +	if (state >= mux_control_states(mux->control)) {
+> > > > +		dev_err(dev, "too many channels\n");
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +
+> > > > +	chan->channel = state;
+> > > > +
+> > > > +	num_ext_info = iio_get_channel_ext_info_count(mux->parent);
+> > > > +	if (num_ext_info)
+> > > > +		return mux_configure_chan_ext_info(dev, mux, idx, num_ext_info);
+> > > >  
+> > > >  	return 0;
+> > > >  }
+> > > >     
+> > >     
+> >   
+> 
+> 
 
 

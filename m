@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-13923-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13924-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297F4A01AED
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 18:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0AEA01AEE
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 18:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E93D1882D6D
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 17:27:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B8461882DE8
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 17:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4D118A6AE;
-	Sun,  5 Jan 2025 17:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0D918D63C;
+	Sun,  5 Jan 2025 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fe8wwTE1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l39Wd5vh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CE28F6C
-	for <linux-iio@vger.kernel.org>; Sun,  5 Jan 2025 17:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA338F6C
+	for <linux-iio@vger.kernel.org>; Sun,  5 Jan 2025 17:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736098046; cv=none; b=FHBg0SMVW7PV6bA+/euPkSw5H6zoMlh8pWiF1aVSCr/WrSRG/BMEJjF0mmEY37kPFI2oIMZqNTZBPu+iPtzWRV79ysg4Rkwlt2GDW+Gupn4DSsM89UyVNQx6gE2m/GJ99lOpNmz/xqJ/mj91g7ATz+mzagA1dIYx3+yd28v1iL8=
+	t=1736098050; cv=none; b=DVjlouz0VP76voutdi4l+SDDiKPsWTFXbKP4bA0EbrtDQyrC7NvmBLO33LevVx3z+lWCt9m0eMQMmOIY+mSbhNv9m04DEIdWT57f6apCmmcMenOGgsPHkjBFNbIDhSOGUvyV5SH51W2MTUAwKv4XNaSdhwNsGA01qNDkLRvL90I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736098046; c=relaxed/simple;
-	bh=AoDf4nBDGo++mG69k4T1L8PEeggQpxjopLGcZh3X2xU=;
+	s=arc-20240116; t=1736098050; c=relaxed/simple;
+	bh=md6jWwUtO95BgwcXVwXezSoZBYj5BSJ5q6Ow5oWA/IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeBq06LBGsDwvJhaU1XIT0otFJ4Dbv/Y+m7T79A+zXU0pDScbeZU9cvYF+LBKsNDDg4t5Ei08CDPZO3VElG1PW+RFGrmXv/OzlIkz7V9PHpAXPK4fHFFJfVt2XPEbZeZ39V6In7ItcpLrQpRHhtLgkDEB7VGfRZsxEX0P6PKaOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fe8wwTE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6612C4CEDD;
-	Sun,  5 Jan 2025 17:27:23 +0000 (UTC)
+	 MIME-Version; b=JrR+upsFxJZSJa8ko+mYU447MOuk4U3lLD2TWa77u2fZ1aVqXr6dmUQ+9g53+DujT1kPZEEQrs3CRSMPLNJn50EvUGdrsZjGsVOYVHScg6NNMFmIu7KgPkRjr7QuRY1L4IzXK6KUQWAPm0+/6xwetmUJYIJQ99qSbM50NTuOc0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l39Wd5vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FCFC4CED0;
+	Sun,  5 Jan 2025 17:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736098046;
-	bh=AoDf4nBDGo++mG69k4T1L8PEeggQpxjopLGcZh3X2xU=;
+	s=k20201202; t=1736098048;
+	bh=md6jWwUtO95BgwcXVwXezSoZBYj5BSJ5q6Ow5oWA/IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fe8wwTE1SiYhradFfB6vT469t71qqcqEaLJGjyQ77dIRIFaLJxiD6yfE8CAtRZrmx
-	 DNBfM+DD03TZE74o9Pl8fat7BOd1BVhI5jJmWyTwVn+Y976x9ar22vhUuEY4mIhIFm
-	 HcyEw7r7tpg2byMpviEAHdKB+Mc92mCpqG41tyo1Gy+MVfytgbwnuUfrY88tFYtWF3
-	 WXSvsTz7v7HYXS6GF0TDXd07OfvUeYvvtAc2bb5fPwEP2hjzTJNtlvufsUczV+7mZy
-	 Qrs4qsruwixLPxU37LE8wdmzSmNHzl+2+Fesqy785vfBlr4PrGIv4RZG7eUaQ6AQX0
-	 bWVcU2dAqcRxg==
+	b=l39Wd5vh4WVu0C+d1gRmOhG5jgAYwof5b8lkKvJDX3jpBHth1wBa4/SltR0D8sHEE
+	 zdgxKBF6XRtr/NCZ5zSG0eCpTiqLpGAfKqtO/iCCZrstFqjS5yBdGmX3+K63+cBzxc
+	 CvssKiQkHZJDKf2KhFK+F1eNS79uND72RfX3ePCh5ZE6NEHPHOEx+fexSI2Zo/6o4M
+	 fet36wA3ukgsBIqpryo87VYtFVLO/O33XZOgN7n3AfugLEyLcapwQoRBNsPgny79X4
+	 YlPAJ5eQyuzoK0dmI0VIHG3xBSpHLyX6+9wsyArB4nF2UfxopSbbLZ50WdeGwf6Mov
+	 8oFSmld06/TYw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?=E2=80=9CLuc=20Van=20Oostenryck=E2=80=9D?= <luc.vanoostenryck@gmail.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 24/27] iio: dac: ad8460: Stop using iio_device_claim_direct_scoped()
-Date: Sun,  5 Jan 2025 17:26:09 +0000
-Message-ID: <20250105172613.1204781-25-jic23@kernel.org>
+Subject: [RFC PATCH 25/27] iio: dummy: Stop using iio_device_claim_direct_scoped()
+Date: Sun,  5 Jan 2025 17:26:10 +0000
+Message-ID: <20250105172613.1204781-26-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250105172613.1204781-1-jic23@kernel.org>
 References: <20250105172613.1204781-1-jic23@kernel.org>
@@ -67,54 +67,156 @@ to be more trouble that it is worth in terms of false positive compiler
 warnings and hard to read code.
 
 Move directly to the new claim/release_direct() that allow sparse
-to check for unbalanced context.
+to check for unbalanced context. Introduce two new utility functions
+to allow for direct returns with claim and release of direct mode
+in the caller.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/dac/ad8460.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/iio/dummy/iio_simple_dummy.c | 119 ++++++++++++++++-----------
+ 1 file changed, 70 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/iio/dac/ad8460.c b/drivers/iio/dac/ad8460.c
-index 535ee3105af6..6e45686902dd 100644
---- a/drivers/iio/dac/ad8460.c
-+++ b/drivers/iio/dac/ad8460.c
-@@ -264,9 +264,12 @@ static ssize_t ad8460_write_toggle_en(struct iio_dev *indio_dev, uintptr_t priva
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/dummy/iio_simple_dummy.c b/drivers/iio/dummy/iio_simple_dummy.c
+index 09efacaf8f78..8575d4a08963 100644
+--- a/drivers/iio/dummy/iio_simple_dummy.c
++++ b/drivers/iio/dummy/iio_simple_dummy.c
+@@ -267,6 +267,65 @@ static const struct iio_chan_spec iio_dummy_channels[] = {
+ 	},
+ };
  
--	iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
--		return ad8460_enable_apg_mode(state, toggle_en);
--	unreachable();
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
++static int __iio_dummy_read_raw(struct iio_dev *indio_dev,
++				struct iio_chan_spec const *chan,
++				int *val)
++{
++	struct iio_dummy_state *st = iio_priv(indio_dev);
 +
-+	ret = ad8460_enable_apg_mode(state, toggle_en);
-+	iio_device_release_direct(indio_dev);
-+	return ret;
- }
- 
- static ssize_t ad8460_read_powerdown(struct iio_dev *indio_dev, uintptr_t private,
-@@ -421,14 +424,17 @@ static int ad8460_write_raw(struct iio_dev *indio_dev,
- 			    long mask)
++	guard(mutex)(&st->lock);
++	switch (chan->type) {
++	case IIO_VOLTAGE:
++		if (chan->output) {
++			/* Set integer part to cached value */
++			*val = st->dac_val;
++			return IIO_VAL_INT;
++		} else if (chan->differential) {
++			if (chan->channel == 1)
++				*val = st->differential_adc_val[0];
++			else
++				*val = st->differential_adc_val[1];
++			return IIO_VAL_INT;
++		} else {
++			*val = st->single_ended_adc_val;
++			return IIO_VAL_INT;
++		}
++
++	case IIO_ACCEL:
++		*val = st->accel_val;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int __iio_dummy_read_processed(struct iio_dev *indio_dev,
++				      struct iio_chan_spec const *chan,
++				      int *val)
++{
++	struct iio_dummy_state *st = iio_priv(indio_dev);
++
++	guard(mutex)(&st->lock);
++	switch (chan->type) {
++	case IIO_STEPS:
++		*val = st->steps;
++		return IIO_VAL_INT;
++	case IIO_ACTIVITY:
++		switch (chan->channel2) {
++		case IIO_MOD_RUNNING:
++			*val = st->activity_running;
++			return IIO_VAL_INT;
++		case IIO_MOD_WALKING:
++			*val = st->activity_walking;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	default:
++		return -EINVAL;
++	}
++}
++
+ /**
+  * iio_dummy_read_raw() - data read function.
+  * @indio_dev:	the struct iio_dev associated with this device instance
+@@ -283,59 +342,21 @@ static int iio_dummy_read_raw(struct iio_dev *indio_dev,
+ 			      long mask)
  {
- 	struct ad8460_state *state = iio_priv(indio_dev);
+ 	struct iio_dummy_state *st = iio_priv(indio_dev);
 +	int ret;
  
  	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		switch (chan->type) {
- 		case IIO_VOLTAGE:
--			iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
--				return ad8460_set_sample(state, val);
--			unreachable();
-+			if (!iio_device_claim_direct(indio_dev))
-+				return -EBUSY;
-+			ret = ad8460_set_sample(state, val);
-+			iio_device_release_direct(indio_dev);
-+			return ret;
- 		case IIO_CURRENT:
- 			return regmap_write(state->regmap, AD8460_CTRL_REG(0x04),
- 					    FIELD_PREP(AD8460_QUIESCENT_CURRENT_MSK, val));
+ 	case IIO_CHAN_INFO_RAW: /* magic value - channel value read */
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			guard(mutex)(&st->lock);
+-			switch (chan->type) {
+-			case IIO_VOLTAGE:
+-				if (chan->output) {
+-					/* Set integer part to cached value */
+-					*val = st->dac_val;
+-					return IIO_VAL_INT;
+-				} else if (chan->differential) {
+-					if (chan->channel == 1)
+-						*val = st->differential_adc_val[0];
+-					else
+-						*val = st->differential_adc_val[1];
+-					return IIO_VAL_INT;
+-				} else {
+-					*val = st->single_ended_adc_val;
+-					return IIO_VAL_INT;
+-				}
+-
+-			case IIO_ACCEL:
+-				*val = st->accel_val;
+-				return IIO_VAL_INT;
+-			default:
+-				return -EINVAL;
+-			}
+-		}
+-		unreachable();
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
++		ret = __iio_dummy_read_raw(indio_dev, chan, val);
++		iio_device_release_direct(indio_dev);
++		return ret;
+ 	case IIO_CHAN_INFO_PROCESSED:
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			guard(mutex)(&st->lock);
+-			switch (chan->type) {
+-			case IIO_STEPS:
+-				*val = st->steps;
+-				return IIO_VAL_INT;
+-			case IIO_ACTIVITY:
+-				switch (chan->channel2) {
+-				case IIO_MOD_RUNNING:
+-					*val = st->activity_running;
+-					return IIO_VAL_INT;
+-				case IIO_MOD_WALKING:
+-					*val = st->activity_walking;
+-					return IIO_VAL_INT;
+-				default:
+-					return -EINVAL;
+-				}
+-			default:
+-				return -EINVAL;
+-			}
+-		}
+-		unreachable();
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
++		ret = __iio_dummy_read_processed(indio_dev, chan, val);
++		iio_device_release_direct(indio_dev);
++		return ret;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		/* only single ended adc -> 7 */
+ 		*val = 7;
 -- 
 2.47.1
 

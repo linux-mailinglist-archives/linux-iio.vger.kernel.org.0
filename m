@@ -1,54 +1,54 @@
-Return-Path: <linux-iio+bounces-13900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13901-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35C9FA01AD6
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 18:26:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35201A01AD7
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 18:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 163C8161E40
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 17:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB653A2EF1
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 17:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0251C159209;
-	Sun,  5 Jan 2025 17:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43C015CD41;
+	Sun,  5 Jan 2025 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiOFvpHC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2iyfiCN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B422C8F6C
-	for <linux-iio@vger.kernel.org>; Sun,  5 Jan 2025 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653838F6C
+	for <linux-iio@vger.kernel.org>; Sun,  5 Jan 2025 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736097990; cv=none; b=Hr2s1AaJ6oQczPVTWiA+PI2x08yj0chzEExK2aU0YqAmPPwyk9uxGxBWC36jo/xtFWuWZtegCCcUMO0ba3iTdVVTrX/SP59SrjcShtWKRZYeB753/CINy178L9U1iB+YVa63PvaT8DO9DmAf3+2uAT59lUSZ2VD/nWCLWoc2n/M=
+	t=1736097993; cv=none; b=MgsLTlSEQNsOiAGOG7BQnE4lyp6feWNJklbX8Om4fIEwLAM3Xj7cL4eRXQTIL80VX0SIT/f2lOh5Pn3C6cAvsbh0pDMj5+JyGuWTFVCLdBiipEL+RNsVIvU01stouxwSXD8IfCkiMUwybrycirh0ynNEtHGDyu7/jr8XvznNx7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736097990; c=relaxed/simple;
-	bh=uEy7XfVyKiylyEn4Evs4DnAOBsFPscv+E6YjKvkF2ZA=;
+	s=arc-20240116; t=1736097993; c=relaxed/simple;
+	bh=tXARHx0nU+EFgnfS5x8+8xk5+/ZqqRKljBqydqynMrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c16zRhYXWYfLDw+zlSJDh1yVBD2aV2AJT3Ib283H4cSzGTVvVXCsbaE3EQpBevVCxbYKHZOO4bQo3xystlAZiphcF3VKrGKDRW1T8AgeYT4TbeK96wFexSe9nCgezO97w0420H4W+uB2nT5EPM85o0O/dWUkO24aBURTFZ3uxXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiOFvpHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54685C4CEDD;
-	Sun,  5 Jan 2025 17:26:28 +0000 (UTC)
+	 MIME-Version; b=fCxeqBtHfsR63U/CO+LUhIO00lirZqj/3tgYrcGcQm3cYvchKqGH3AEnidUR5KOGrING/WIJBr9wIVReeiC3bJsvZjNADLRvxlGwTVnfnAbI1dKNg1uTlCLKP2izGGcE5gi3yFFk5HI58g8MtyPA0vuCVATbXH+H7tlrA612E6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2iyfiCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020F1C4CED0;
+	Sun,  5 Jan 2025 17:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736097990;
-	bh=uEy7XfVyKiylyEn4Evs4DnAOBsFPscv+E6YjKvkF2ZA=;
+	s=k20201202; t=1736097992;
+	bh=tXARHx0nU+EFgnfS5x8+8xk5+/ZqqRKljBqydqynMrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiOFvpHCe+094RCe6z3zcQ1jFk5jhqgj2FivvaBt4kwMe+Ce9qobHdoBwDy/652I2
-	 7RCPu/dgLWqbtK6SR9gGwvJm6NtOJhvSXZh0a4u++CNuTJDpzOqasdsRoq0dXdnYZ4
-	 8ZpNCpOLcVXY6gNu/99o1/Ga+g3vax3N0mpJhH7Eb2j9WECQkS3GGvSMPoCLZrUrMp
-	 8P+Qfu3yUHowaCwPRwK+mhzg9e69PyosI1vv3Z49e3pL0xJrwGQY71ZoaB31rSXG9F
-	 CEY3VS3FFmG1qcnmPNoJVdiAmv78RjIi+kuVevdT0UhUTlFujL6nVQok1A/fImqOw3
-	 Ejm93QgGRRkfw==
+	b=F2iyfiCN5QTz+r+TXJXhj4Tf4BVl/4bw3/oSp5Q366uxKYAbtuyi5pZ5xPNzbuHkO
+	 3eWjBKOf6Fmmk1aayG027L+1x6VvF7tfZZFAggQslV3VlOFTe/O6jYq/8v9A2YJqaV
+	 k+2Oo6RCwdX/OgTG1L/715vK1E7ErAHiqUvdysBJr3KoMvvmbZUPbLglwamnG8CrkY
+	 NmDQ6tTwlt3kC42LdyuL8sffBhpTDJOWK5zyAxTqFY+Ucr8n99e9tFz5wRI0l42Jn0
+	 vXNVMtLcESjSdPsWc1zr/m4p5fPqBr7uD0vu7U3y8hnn6SFbjp8mXaE5xOfH+5mYiq
+	 bQiajDomCsWug==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?=E2=80=9CLuc=20Van=20Oostenryck=E2=80=9D?= <luc.vanoostenryck@gmail.com>
 Cc: David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [RFC PATCH 01/27] iio: core: Rework claim and release of direct mode to work with sparse.
-Date: Sun,  5 Jan 2025 17:25:46 +0000
-Message-ID: <20250105172613.1204781-2-jic23@kernel.org>
+Subject: [RFC PATCH 02/27] iio: chemical: scd30: Switch to sparse friendly claim/release_direct()
+Date: Sun,  5 Jan 2025 17:25:47 +0000
+Message-ID: <20250105172613.1204781-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250105172613.1204781-1-jic23@kernel.org>
 References: <20250105172613.1204781-1-jic23@kernel.org>
@@ -62,63 +62,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Initial thought was to do something similar to __cond_lock()
-
-	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
-+ Appropriate static inline iio_device_release_direct_mode()
-
-However with that, sparse generates false positives. E.g.
-
-drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock
-
-So instead, this patch rethinks the return type and makes it more
-'conditional lock like' (which is part of what is going on under the hood
-anyway) and return a boolean - true for successfully acquired, false for
-did not acquire.
-
-To allow a migration path given the rework is now no trivial, take a leaf
-out of the naming of the conditional guard we currently have for IIO
-device direct mode and drop the _mode postfix from the new functions giving
-iio_device_claim_direct() and iio_device_release_direct()
+This driver caused a false positive with __cond_lock() style solution
+but is fine with the simple boolean return approach now used.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- include/linux/iio/iio.h | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/iio/chemical/scd30_core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 56161e02f002..4ef2f9893421 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
- int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
- void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index d613c54cb28d..cfbf2f5e9443 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -211,18 +211,19 @@ static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 			break;
+ 		}
  
-+/*
-+ * Helper functions that allow claim and release of direct mode
-+ * in a fashion that doesn't generate false positives from sparse.
-+ */
-+static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)
-+{
-+	int ret = iio_device_claim_direct_mode(indio_dev);
-+
-+	if (ret)
-+		return false;
-+
-+	__acquire(iio_dev);
-+
-+	return true;
-+}
-+
-+static inline void iio_device_release_direct(struct iio_dev *indio_dev) __releases(indio_dev)
-+{
-+	iio_device_release_direct_mode(indio_dev);
-+	__release(indio_dev);
-+}
-+
- /*
-  * This autocleanup logic is normally used via
-  * iio_device_claim_direct_scoped().
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
++		if (!iio_device_claim_direct(indio_dev)) {
++			ret = -EBUSY;
+ 			break;
++		}
+ 
+ 		ret = scd30_read(state);
+ 		if (ret) {
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
+ 			break;
+ 		}
+ 
+ 		*val = state->meas[chan->address];
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		ret = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SCALE:
 -- 
 2.47.1
 

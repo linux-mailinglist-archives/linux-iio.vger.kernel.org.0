@@ -1,134 +1,201 @@
-Return-Path: <linux-iio+bounces-13898-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13899-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1836EA01A27
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 16:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB15A01AD5
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 18:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC0B93A22C8
-	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 15:50:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02A293A2EE0
+	for <lists+linux-iio@lfdr.de>; Sun,  5 Jan 2025 17:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E3E91487C5;
-	Sun,  5 Jan 2025 15:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F6715625A;
+	Sun,  5 Jan 2025 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="BtC9USIq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rm314fvC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9C3F9C1;
-	Sun,  5 Jan 2025 15:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CC28F6C
+	for <linux-iio@vger.kernel.org>; Sun,  5 Jan 2025 17:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736092202; cv=none; b=YnQq2WWpi0Pokz/KtOgjbaWrHiLEs1ncPwItq8MmHtpzY5tCBrMNsdql+RIMtTkzSiTd1FBdvdo3nMS9FiksuzMMHK4AF7b6LZNqRtq0Zo2sqX0nAnIuB6FO/8QIUn9/fiWzuG6x7dZSgLbMhU/1/k2NzvDJfvUAXt9cXCEJEPs=
+	t=1736097990; cv=none; b=nlWiHDfEqS8YqBbXxPS7SAX4vNBzP/7ZuN5wAuvkHBjstr5Ai7YbC321RbtPRUtlAhmzDfj4jAuREseA4WKvRAkAvzrnK7TkVGyDjbOMEgvDPolGJwdMckdJy8oM+jVm/zUIeyvM8ZnVi0w3tC2heA90t0uubRa8GPh3BAMq6R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736092202; c=relaxed/simple;
-	bh=RM5s8U32OtCMbASk0leCuR/9r2hIRgbjXYDeee/6GXo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oR19AyHopn57UzEJvzDLPy/Y2T3ES9P5+04ZJJefMGc5faGDHBghl+4vFTqpcaSMsj/huy6e9AIeVGSed0KDfCAbp8XOtGIvKnze896/8cv5Ibs0pRBtZYDrUFyG2od+lF7eB9WTpBQQc3CF6f25cOg0bjqOyG4V0yioab+5V/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=BtC9USIq; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2161eb95317so198417595ad.1;
-        Sun, 05 Jan 2025 07:50:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1736092200; x=1736697000; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YywA5lTEdJWoFMmlp4DfxD/jE6edYt47y3+JzLz1vMk=;
-        b=BtC9USIqGHutKlQSvsbSTHuykR6RHTEW78OQ5zdHx1fygPrM11Cjm1iomUVasw+ZpZ
-         kLxowF9aGYzu0zHexLLUZPt3K41XzEQq8ZXvTo45Y/FY+BiXGg9ZELFZbAv9TL80QFnF
-         TnWMeDvi8B/SpCKzsBQ0oN17VF2Li5XzfMx03J5BUBk/OMsUP0d04X5oPenfI7NEXRxY
-         TX/wlCnS3zExIxLJERmZn4t0vOqqZTkSXdfQzVbCzhetojTBWthhLni8tHidkohJcZCB
-         IrQPIY3FPvwVdCrwcP5N/BYeLTSYEYkHk9Ip5DnwmCZUMC0TsD4dWBjJIRnXcbMC0Mwj
-         UPpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736092200; x=1736697000;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YywA5lTEdJWoFMmlp4DfxD/jE6edYt47y3+JzLz1vMk=;
-        b=oBXL1lIIe+mq57y2dSExeP+CQUOm6ovr3Xrf+BIXN4rkEwOsCsyuSNJaEkhT7NY7d5
-         xAPbG7YdvU9w4t/JyeWPskE4/+XwH567J05JwZVoN8lTaMdjIIPW5qhaOoAY2bcbFVhS
-         IzfWAAIgfv5kbR0QByIWYCAPjmRA3CRZlwUsvKXNEkP95lihyjEQHNM9E8pf6G+CyU1m
-         e8T046+QoHBQKJJN2CnXnpbK5I2RBoa0a7tJDblhC2q8gQu67wzThPaDfjK5Aa2Nfcug
-         9Oa5F8B/VhqFIIF0gizS8moITTMHoDa/FVbU4Llp9MwmAN78Os4Jiq6sysJaOS/c+Fyf
-         OqXw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVEfB1f3LTA/DiQphq5tYfwrzL9IP7h/JYOw4Sn2ZPUt1e/ToVfkn0hJN2pdOZRMHuAtXIUUp0vNuo@vger.kernel.org, AJvYcCUwkUJ9xSeHiFJzbf1XcBH2jG6LiKc+jKFUIgSQvvyC43VojVS/kLA5hIYdjeG4qt6iK9nxvQW/9APNKryc@vger.kernel.org, AJvYcCXkpBCatZ2x0AM6punXnYxutmw+cGX4TfamQj0z/iB3izJK6395GNvGdZCoMIrVEWKHqRnDRT9admxp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBGtoiDovQvQMNrNBBOn5jnaGtg8Yp8rBMGKqHVdKar186+K3h
-	a5Pw6LiSXNlO5Jdjfo7V7+WEXus5gbOmUC9Vkz3RP0Yvn9R41JT7ZV9BGiY34Qdw/TnkUQ4hjWA
-	5U1rg0dBhxKBzWkggsfUyasguOMo=
-X-Gm-Gg: ASbGncuX+SS2TiQNVFjCZbn+weo6zWYoe2CaodTk/ol03W99ILUFJNgPP1atXZwyFWe
-	2dvBDdGnJof91MjVm5PueJR0KhQUxgiJWKecRCHvboaei1gz0nZHU
-X-Google-Smtp-Source: AGHT+IHBq4Bpn7IMCuiOvWpCDfq6WSEWbk+kF8P/My012EE2LHfMCwEfjsvbXgI3Q5S8UqpawhTxxnoNTWpu5as8yyE=
-X-Received: by 2002:a17:902:d4c4:b0:216:7cbf:951f with SMTP id
- d9443c01a7336-219e6ea195cmr764170955ad.21.1736092200275; Sun, 05 Jan 2025
- 07:50:00 -0800 (PST)
+	s=arc-20240116; t=1736097990; c=relaxed/simple;
+	bh=FDcPBaFhPvqjGwmR6X45JYimx4gLDmYLloYYBJHg0+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oQxrCsPRkCRqcTnN7zMDHJMtEYNYbv8U3aYVeJOrUU+E6sLkZ9/2lNa3fQQmYbvOQWLpCZzJovlv0QxufNtB3N+Z6shjebcz/o80Pz70Y789ynax29D1xaIa0WKZqBYY3UlAos/b/B9I0ZVjgDwCSR3y5K/74RUKCqvzab30g+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rm314fvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA4EC4CED0;
+	Sun,  5 Jan 2025 17:26:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736097987;
+	bh=FDcPBaFhPvqjGwmR6X45JYimx4gLDmYLloYYBJHg0+8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rm314fvCV5TqQv7hQEYvzrS9MOAv1uxjvEXF6pljggeZlSP992xoTCiWYac+PAwtR
+	 uFAN/s9xkfFo4GyQP8xJqvnYnSNo1fh7hny+YbH40HmZnMh8K9US/PywnjwGzpwuA+
+	 EAOuDRpmKRatu/1vNAaJRYiLE94NtyuCU0VmhABLD6UApc4NJBiwHAyA48HOsoIqAa
+	 3PB6/794BKyYUcR1J7RmWNjopZWIpKmSFWBTLgfHo8yFuVVpkYAj50HD6DVH9TFZIE
+	 iufPCOSTnnC9a6SV6Ww9ByQzYvw5rinOCBfNHqDXKBLPFGJmVt/kjGxU4oIVrSDmkr
+	 AsfFZrS2Xc9pg==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org,
+	=?UTF-8?q?=E2=80=9CLuc=20Van=20Oostenryck=E2=80=9D?= <luc.vanoostenryck@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [RFC PATCH 00/27] iio: improve handling of direct mode claim and release
+Date: Sun,  5 Jan 2025 17:25:45 +0000
+Message-ID: <20250105172613.1204781-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241231194207.2772750-1-martin.blumenstingl@googlemail.com>
- <20241231194207.2772750-3-martin.blumenstingl@googlemail.com> <20250104135912.390ec87c@jic23-huawei>
-In-Reply-To: <20250104135912.390ec87c@jic23-huawei>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Sun, 5 Jan 2025 16:49:49 +0100
-Message-ID: <CAFBinCBxaVet9HxW98uCSDnv1XVXV6r4V9Z3BRmZJypTcxDZ0Q@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 2/2] iio: adc: meson: add support for the GXLX SoC
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-amlogic@lists.infradead.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, gnstark@salutedevices.com, lars@metafoo.de, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	christianshewitt@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Jonathan,
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-On Sat, Jan 4, 2025 at 2:59=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
->
-> On Tue, 31 Dec 2024 20:42:07 +0100
-> Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
->
-> > The SARADC IP on the GXLX SoC itself is identical to the one found on
-> > GXL SoCs. However, GXLX SoCs require poking the first three bits in the
-> > MESON_SAR_ADC_REG12 register to get the three MPLL clocks (used as cloc=
-k
-> > generators for the audio frequencies) to work.
-> >
-> > The reason why there are MPLL clock bits in the ADC register space is
-> > entirely unknown and it seems that nobody is able to comment on this.
-> > So clearly mark this as a workaround and add a warning so users are
-> > notified that this workaround can change (once we know what these bits
-> > actually do).
->
-> So IIUC this is to make some non ADC component work.
-That's correct
+Note I haven't attempted to CC relevant people for specific drivers.
+I'll do that for a non RFC version if we move forwards.
 
-> How are you handling dependencies?  The ADC driver might not be loaded or
-> is there some reason it definitely is at the point where the audio driver
-> loads?
-Unfortunately there are no dependencies at the moment.
-To me it's not even 100% clear if those bits are a dependency for the
-audio IP or if they are instead linked with the clock controller (more
-background info: some of the MPLL clocks are - at least in theory, in
-practice we don't use that - are also used as input for the Mali GPU
-and video subsystem. The only practical usage that I'm aware of is the
-audio controller).
+Effectively two linked things in this series:
 
-Christian and I have both tried with all of our contacts at Amlogic
-but did not get any answers.
-If I knew the purpose of these bits I'd model them as whatever they
-are (resets, clock gates, ...) and provide proper dt-bindings.
+1) Ripping out iio_device_claim_direct_scoped()
+2) Enabling use of sparse to check the claim is always released.
+
+The iio_device_claim_direct_scoped() was an interesting experiment
+built on conditional scoped guards, but it has been the source of
+a range of esoteric build warnings and is awkward to use.
+
+Several attempts have been made to improve the related handling but
+in the end it looks like this is just too hard to use and too prone
+to tripping up the compiler.  So time to rip it out.
+Most recent discussion was around if_not_cond_guard()
+https://lore.kernel.org/all/CAHk-=wi8C2yZF_y_T180-v+dSZAhps5QghS_2tKfn-+xAghYPQ@mail.gmail.com/
+which looked like a promising avenue but ran into problems and
+got reverted.
+
+A large part of the advantage of scoped cleanup is that it
+removes the possibility of failing to call the 'destructor' which here
+released the claim on direct mode (implementation detail is that
+corresponds to unlocking a mutex).  It's a shame to lose that but
+we do have other infrastructure to prevent such common mistakes,
+lock markings + sparse.  Hence I thought we could simply enable
+those for existing iio_device_claim_direct_mode() /
+iio_device_release_direct_mode() via similar magic to that used
+for __cond_lock() that is rename existing iio_device_claim_direct_mode
+to do_iio_device_claim_direct_mode and
+
+#define iio_device_cliam_direct_mode(iio_dev) \
+	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
+
+Unfortunatley that gives a few false positives. Seems sparse is tripping
+up on this magic in some more complex switch statements.
+
+Rather than figure out how to fix sparse, this patch set currently proposes
+some new handlers that can use __cond_acquires() and __releases() markings.
+
+iio_device_claim_direct() and iio_device_claim_release().
+Key is that iio_device_claim_direct() returns a boolean (true for the
+claim succeeding, false for it not).  Naming is based on no
+one seeming bothered that we dropped mode from the scoped case.
+Long term plan would be to drop the _direct_mode() calls.
+
+To test this out I've included converting some of the sources of
+false positives with the first approach above and all but 1 of the
+users of iio_device_claim_direct_scoped() (That 1 is being removed
+in a another series). It's possible there will be false positives
+when converting all the other drivers but I can't see why similar
+would not have been seen for the trylock equivalent markings.
+
+I'm not sure which way to go here:
+
+1) Transition to this lock like scheme.  Advantage is that this code
+   looks more 'standard' when it comes to new checks etc in future.
+2) Figure out how to avoid the false positives from sparse
+(see patch 1 for a little more information on that)
+It is easy to surpress them but that's not a long term solution as
+false positives will continue to annoy us from time to time.
+
+Luc, if you have any suggestions on that it would be most welcome.
+I don't have the patch to hand any more but I can easilly recreate it
+to test out any theories on the reasons for the false positives.
+
+Hence the RFC.
+
+Note that replacing of _scoped() calls takes a mixture of different paths
+and in some cases involves moving locks / direct_claims up or down
+the call stack, and in others adding aditional utility functions with
+the claim done around calls of those.  Which makes sense depends on the
+complexity of the particular code being called.
+
+Jonathan
 
 
-Best regards,
-Martin
+
+Jonathan Cameron (27):
+  iio: core: Rework claim and release of direct mode to work with
+    sparse.
+  iio: chemical: scd30: Switch to sparse friendly claim/release_direct()
+  iio: temperature: tmp006: Stop using iio_device_claim_direct_scoped()
+  iio: imu: st_lsm6dsx: Switch to sparse friendly claim/release_direct()
+  iio: proximity: sx9310: Stop using iio_device_claim_direct_scoped()
+  iio: proximity: sx9324: Stop using iio_device_claim_direct_scoped()
+  iio: proximity: sx9360: Stop using iio_device_claim_direct_scoped()
+  iio: accel: adxl367: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad4000: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad4130: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad4130: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad4695: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad7606: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad7625: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad7779: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ad9467: Stop using iio_device_claim_direct_scoped()
+  iio: adc: max1363: Stop using iio_device_claim_direct_scoped()
+  iio: adc: rtq6056: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ti-adc161s626: Stop using iio_device_claim_direct_scoped()
+  iio: adc: ti-ads1119: Stop using iio_device_claim_direct_scoped()
+  iio: addac: ad74413r: Stop using iio_device_claim_direct_scoped()
+  iio: chemical: ens160: Stop using iio_device_claim_direct_scoped()
+  iio: dac: ad3552r-hs: Stop using iio_device_claim_direct_scoped()
+  iio: dac: ad8460: Stop using iio_device_claim_direct_scoped()
+  iio: dummy: Stop using iio_device_claim_direct_scoped()
+  iio: imu: bmi323: Stop using iio_device_claim_direct_scoped()
+  iio: light: bh1745: Stop using iio_device_claim_direct_scoped()
+
+ drivers/iio/accel/adxl367.c                  | 194 ++++++++-------
+ drivers/iio/adc/ad4000.c                     |  61 +++--
+ drivers/iio/adc/ad4130.c                     |  18 +-
+ drivers/iio/adc/ad4695.c                     | 240 ++++++++++---------
+ drivers/iio/adc/ad7606.c                     |  14 +-
+ drivers/iio/adc/ad7625.c                     |   9 +-
+ drivers/iio/adc/ad7779.c                     | 103 ++++----
+ drivers/iio/adc/ad9467.c                     |  23 +-
+ drivers/iio/adc/max1363.c                    | 165 +++++++------
+ drivers/iio/adc/rtq6056.c                    |  39 +--
+ drivers/iio/adc/ti-adc161s626.c              |  14 +-
+ drivers/iio/adc/ti-ads1119.c                 |  17 +-
+ drivers/iio/addac/ad74413r.c                 |  14 +-
+ drivers/iio/chemical/ens160_core.c           |  32 ++-
+ drivers/iio/chemical/scd30_core.c            |   9 +-
+ drivers/iio/dac/ad3552r-hs.c                 |  15 +-
+ drivers/iio/dac/ad8460.c                     |  18 +-
+ drivers/iio/dummy/iio_simple_dummy.c         | 119 +++++----
+ drivers/iio/imu/bmi323/bmi323_core.c         |  51 ++--
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |  14 +-
+ drivers/iio/light/bh1745.c                   |  18 +-
+ drivers/iio/proximity/sx9310.c               |  19 +-
+ drivers/iio/proximity/sx9324.c               |  19 +-
+ drivers/iio/proximity/sx9360.c               |  19 +-
+ drivers/iio/temperature/tmp006.c             |  33 +--
+ include/linux/iio/iio.h                      |  22 ++
+ 26 files changed, 765 insertions(+), 534 deletions(-)
+
+-- 
+2.47.1
+
 

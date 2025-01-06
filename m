@@ -1,176 +1,174 @@
-Return-Path: <linux-iio+bounces-13932-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13933-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F41A023AA
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2025 11:59:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725ABA02705
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2025 14:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70CBD18824D5
-	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2025 10:59:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 728937A16EA
+	for <lists+linux-iio@lfdr.de>; Mon,  6 Jan 2025 13:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A861DC98B;
-	Mon,  6 Jan 2025 10:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1225C1DE885;
+	Mon,  6 Jan 2025 13:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EqoUdcns"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKjA9MhX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7E61DACBE;
-	Mon,  6 Jan 2025 10:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE611DE4E6;
+	Mon,  6 Jan 2025 13:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736161147; cv=none; b=eG/QmisK/WtmsT6z78R1SF8IfM4bXn895SQhkt55NGQSoVNWc3H/FBUcF+t5QA4gRleyYZ+PyARIRpNfW7IE2PStfjK3Mla11uNy4Hn4wcHzldDe3vYkKev3041yc/aAV/RNn0rorQU/wKIbPNmYBobCuswVUP/7EGtvN++JS0U=
+	t=1736171118; cv=none; b=GRpqmRI6NyI9BIrtwvIvXLJRLJD0jQZDTvbY0Klk5wjAHMoRz9pCDlz++UTOvTUHWYE/YsAqwr0oYK62MjxguYQwGLXTpEQlE+oTPFTOkCvVFrLIL7CvWsEDjQbmPJ2ZgQi/Vm25MwGRqocqQNORNggKq/0snUCiAxkD0eKek14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736161147; c=relaxed/simple;
-	bh=sPnK4NincK9ONjdqEGtqrcdtTHIRO612NkOB1/BvDOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HpkxD8ebE8ZWymdntsij7hgXibNdWEoVcw+MtNB1GdhL8y4Ohf1Tw3MPCs3/qxL3a5bhQ1oj1Q6ejPL6bBvlhh5rgJbXzJVPZZghOlkHq4f2ag9FtP58Ko1daufN6mRE51kilzlLU5D1bcl396NTg7YJuG1MAvXbkoF49uKHesI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EqoUdcns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC94BC4CEDD;
-	Mon,  6 Jan 2025 10:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736161146;
-	bh=sPnK4NincK9ONjdqEGtqrcdtTHIRO612NkOB1/BvDOM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=EqoUdcnsg+VIh+OkW0itMm9HUHRBuiX251fwQ8fEl0m9x5iNaWZuW0UGnwkniy3wr
-	 5/oi/UbCIXtHUJ5Ih4YtuU9mWo92dvnApo0grsjfYPnGMNuBvFkRzhKH6N/i9lZzPp
-	 0oUlwiWN21LKuYDQGkEt2qEEoGeI/FR/mjSfrxl+q4v3NqotfbqgonMsA4lwznQbI3
-	 BF4Y04Qr7GGkrj2s8oE4YPqqA/bMpX/8KMwLUH1GeOfMySj6ZA8A4oyPGWs/r4Wt6n
-	 S+fBA0BDMoCoylextHETj8UX4qt3P7fyGeF9Ote0BVdt4ugZlaGcvf5XiIiANucLjF
-	 ZcURZ/V6r15Zw==
-Message-ID: <ef13cebd-6772-4d03-8677-a6a2d4884d77@kernel.org>
-Date: Mon, 6 Jan 2025 11:58:54 +0100
+	s=arc-20240116; t=1736171118; c=relaxed/simple;
+	bh=yS0zY0kAp+pL6lQ0uh/hRLrJOiF+vAJiULkHHv+EE4w=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=DwFVZLGWKSMAxnlFNEjj81itjR58lA1ixyabI7zW7vQMO7AnCUTkRsbgJLcJZ4gefuNF5jI2vYSeWSxb5uWdxTuzWofIpVstzUh6TihtKtnTzGK4eaAxDL0uLxDXdUa588EHf03JhZKvOTJpmFJ+iyZj4ojiKBPqB6/e9mMsJqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKjA9MhX; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43621d27adeso99554495e9.2;
+        Mon, 06 Jan 2025 05:45:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736171112; x=1736775912; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ItfAlhegRqUnAayH03vNTd/Xo24KQrqpjT4xjTRai64=;
+        b=bKjA9MhX/TO1dl/f/i/O2MTmSt26CIRUuuyIqRtJxq5EOOeEXq7JqJy/9Fpe3kKnQj
+         QcNWlRELmIa4uAqDtZ+BnP485RtPxiA48lZUTcBknAUFwGLTSxlVPCeBVDhk8LdNiHyW
+         gum9DZlgU+3DVFH3cyhKGcw9ghoK7PKfwMEQo9gLk/xEB5sdpbN+oqd+iSZIfR0YyhBg
+         geEb5xWAvK/+LzaozJ83yz82CV9+TEAab7Hg+Sq5FdrAB6Wcw/PvyXsPT4aD+n20zLsL
+         E/sxb3qKflJJngVjBCav+4ZbKnecDmpRYyKeokZPBi6MkaC/6GnR8uV1eJ9DTGzgQbrK
+         AkHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736171112; x=1736775912;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ItfAlhegRqUnAayH03vNTd/Xo24KQrqpjT4xjTRai64=;
+        b=TQavczaN9fwkSIEUoo2lBtJ69DQfu9HUFSGtjOZCHvtlT844AsN1J6V5oL+8/cdFaM
+         NsAbIBM3HcOunNB+UzhGy//KFeMNY0xhJTwC7wf6zguOmU36ofjYkkyLhU5O1v3Y4EKF
+         uDuJDFt1TABpMaeAup2Zu2T/iKewdXCfJExsmKpDTIQ/9LFZ+2R1xoELkwaxsiRWCFPX
+         FTU0UPFvdejBwSE2nyk7+WiF3KA6ysZfoZLD1763Kmi5QEbGuaIk28nCQrVpGrWFIEzQ
+         9tMbGd76/hPpvqs0PYAx/b8xBsz4jdt3DeFAXypNrrjNcHTUhEfGyVbYVNzVdQw+GDtk
+         IDHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMmHe4BVA+s//Lfyb9XFSglaSL9zY5LO31NmX/wBUBFPRzCmWVIXi+ln9Jh3WufMmj4jvHpP3/b9Gz@vger.kernel.org, AJvYcCWFK2MzT3IytKH25iySu8cnPYuR4sDizZXn1wMdvke8WM2rzvjU/u+bFp0hXJugd21xRxvq7hrD76P5@vger.kernel.org, AJvYcCWWJvUEyPWDspup6pZRqbzOCdDX277Lm9kksmhJnya/nTGyJxgRqZCk4+9QMja/h+ifJVCECkN/0rgTRzHT@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8uf9WxOsSHNQl6nvxlNjLiMBvF2wVItMq8l+VDGHpi4Uu6X5l
+	mTrw+d+EuKALjEAza03PhB9IHKdOyLPWWuFCiCpMj4BbpdnTwqN2
+X-Gm-Gg: ASbGncvTQVxFzb417Shi1U5trjCQ/Spg0pbARtMqhT816iMHO+XBNJC6WCirHYSbDoE
+	cGTCHwgVX485UNGm0xaHECjj00Qd7T3y7tjrn6b+U/8yMXnbPEcIf5wrYsBre/uioZWjdR7kU8P
+	WQ3Gd8eMzNev1plFuYq77iyAPKQGKvG4LlmNUOek4HWaZrcgOEny3LEmnWDLbcTQgpBkx/xBFhm
+	CY8qWdZ9jhR8O/XcOZURTeQGcfh39J2n3daP0yVSmqnXW7WRQXh65D4wLLax/zv/VeFE6sVhI/x
+	2x8=
+X-Google-Smtp-Source: AGHT+IFpYq7jObg5i1HWdwSt3YUPjDcKdkOSTUzwLSeVbBRKvKflO+nH3UXeFLKIJPIauB4ckmahgA==
+X-Received: by 2002:a05:600c:4510:b0:436:5fc9:30ba with SMTP id 5b1f17b1804b1-43668b783d0mr462344865e9.29.1736171111550;
+        Mon, 06 Jan 2025 05:45:11 -0800 (PST)
+Received: from smtpclient.apple ([87.200.95.144])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8474c2sm47324663f8f.55.2025.01.06.05.45.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 Jan 2025 05:45:11 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: Add binding for Nuvoton
- NCT720x ADCs
-To: Yu-Hsian Yang <j2anfernee@gmail.com>
-Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
- venture@google.com, yuenn@google.com, benjaminfair@google.com,
- jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, nuno.sa@analog.com, dlechner@baylibre.com,
- javier.carrasco.cruz@gmail.com, andriy.shevchenko@linux.intel.com,
- marcelo.schmitt@analog.com, olivier.moysan@foss.st.com,
- mitrutzceclan@gmail.com, tgamblin@baylibre.com, matteomartelli3@gmail.com,
- alisadariana@gmail.com, gstols@baylibre.com, thomas.bonnefille@bootlin.com,
- herve.codina@bootlin.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241226055313.2841977-1-j2anfernee@gmail.com>
- <20241226055313.2841977-2-j2anfernee@gmail.com>
- <lfthwnvwodqogsk446r5nzpmjunfnpdv33xmaookedwjgpdu4n@llvla6siyl5f>
- <CA+4VgcK_9_YD0d7LUKbxU6yd3Qo9RT4yNbi90mMN=kK0LHXwow@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <CA+4VgcK_9_YD0d7LUKbxU6yd3Qo9RT4yNbi90mMN=kK0LHXwow@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.200.121\))
+Subject: Re: [RFC PATCH v1 2/2] iio: adc: meson: add support for the GXLX SoC
+From: Christian Hewitt <christianshewitt@gmail.com>
+In-Reply-To: <CAFBinCBxaVet9HxW98uCSDnv1XVXV6r4V9Z3BRmZJypTcxDZ0Q@mail.gmail.com>
+Date: Mon, 6 Jan 2025 17:44:56 +0400
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ linux-amlogic@lists.infradead.org,
+ linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org,
+ gnstark@salutedevices.com,
+ lars@metafoo.de,
+ robh@kernel.org,
+ krzk+dt@kernel.org,
+ conor+dt@kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <5CEDC847-2653-42F3-A85E-A06D6E5DB135@gmail.com>
+References: <20241231194207.2772750-1-martin.blumenstingl@googlemail.com>
+ <20241231194207.2772750-3-martin.blumenstingl@googlemail.com>
+ <20250104135912.390ec87c@jic23-huawei>
+ <CAFBinCBxaVet9HxW98uCSDnv1XVXV6r4V9Z3BRmZJypTcxDZ0Q@mail.gmail.com>
+To: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+X-Mailer: Apple Mail (2.3826.200.121)
 
-On 06/01/2025 08:22, Yu-Hsian Yang wrote:
->>> ---
->>>  .../bindings/iio/adc/nuvoton,nct7201.yaml     | 49 +++++++++++++++++++
->>>  MAINTAINERS                                   |  1 +
->>>  2 files changed, 50 insertions(+)
->>>  create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
->>> new file mode 100644
->>> index 000000000000..08b52258e4af
->>> --- /dev/null
->>> +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
->>> @@ -0,0 +1,49 @@
->>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
->>> +%YAML 1.2
->>> +---
->>> +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nct7201.yaml#
->>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>> +
->>> +title: Nuvoton nct7201 and similar ADCs
->>> +
->>> +maintainers:
->>> +  - Eason Yang <j2anfernee@gmail.com>
->>> +
->>> +description: |
->>> +   Family of ADCs with i2c interface.
->>> +
->>> +properties:
->>> +  compatible:
->>> +    enum:
->>> +      - nuvoton,nct7201
->>> +      - nuvoton,nct7202
->>
->> Devices aren't compatible? Explain in the commit msg why they aren't or
->> use proper compatibility (oneOf, see numerous other bindings or example-schema).
->>
->>
-> 
-> +  compatible:
-> -    enum:
-> -      - nuvoton,nct7201
-> -      - nuvoton,nct7202
-> +    oneOf:
-> +      - const: nuvoton,nct7201
-> +      - const: nuvoton,nct7202
+> On 5 Jan 2025, at 7:49=E2=80=AFpm, Martin Blumenstingl =
+<martin.blumenstingl@googlemail.com> wrote:
+>=20
+> Hi Jonathan,
+>=20
+> On Sat, Jan 4, 2025 at 2:59=E2=80=AFPM Jonathan Cameron =
+<jic23@kernel.org> wrote:
+>>=20
+>> On Tue, 31 Dec 2024 20:42:07 +0100
+>> Martin Blumenstingl <martin.blumenstingl@googlemail.com> wrote:
+>>=20
+>>> The SARADC IP on the GXLX SoC itself is identical to the one found =
+on
+>>> GXL SoCs. However, GXLX SoCs require poking the first three bits in =
+the
+>>> MESON_SAR_ADC_REG12 register to get the three MPLL clocks (used as =
+clock
+>>> generators for the audio frequencies) to work.
+>>>=20
+>>> The reason why there are MPLL clock bits in the ADC register space =
+is
+>>> entirely unknown and it seems that nobody is able to comment on =
+this.
+>>> So clearly mark this as a workaround and add a warning so users are
+>>> notified that this workaround can change (once we know what these =
+bits
+>>> actually do).
+>>=20
+>> So IIUC this is to make some non ADC component work.
+> That's correct
+>=20
+>> How are you handling dependencies?  The ADC driver might not be =
+loaded or
+>> is there some reason it definitely is at the point where the audio =
+driver
+>> loads?
+> Unfortunately there are no dependencies at the moment.
+> To me it's not even 100% clear if those bits are a dependency for the
+> audio IP or if they are instead linked with the clock controller (more
+> background info: some of the MPLL clocks are - at least in theory, in
+> practice we don't use that - are also used as input for the Mali GPU
+> and video subsystem. The only practical usage that I'm aware of is the
+> audio controller).
+
+In my testing it makes no difference to the audio driver when the adc
+bit poke is done. The audio driver probes and loads and you can play
+media without generating any visible errors. There=E2=80=99s just no =
+audible
+output on GXLX until the poke - it=E2=80=99s like hitting an un-mute =
+button.
+
+For the series:
+
+Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+
+Christian
+
+> Christian and I have both tried with all of our contacts at Amlogic
+> but did not get any answers.
+> If I knew the purpose of these bits I'd model them as whatever they
+> are (resets, clock gates, ...) and provide proper dt-bindings.
+>=20
+>=20
+> Best regards,
+> Martin
 
 
-Nothing improved. I referenced 'oneOf' for the case of compatibility.
-Don't use it to code enum in different way.
-
-Address the comment and questions. You did not respond to several
-comments, so I assume you are going to implement/fix all of pointed out
-things.
-
-Best regards,
-Krzysztof
 

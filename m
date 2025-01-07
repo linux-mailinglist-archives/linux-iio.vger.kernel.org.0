@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-14005-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14006-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDE9A04DB5
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 00:40:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B75A04DB8
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 00:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB483A4AEE
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 23:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA6818879EE
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 23:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431B3273F9;
-	Tue,  7 Jan 2025 23:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9B21F37C0;
+	Tue,  7 Jan 2025 23:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z7HBq2nj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XGnfxwNC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21C619CD07
-	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 23:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54B51E493C
+	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 23:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736293218; cv=none; b=Nxq47D5GBTyMkbHhDPFDxAfN0jZeg7+C8sGd0GMYU8fBm6aIOKzU7RYvbx62827W3J0dkZpJhP73OjZ2HG8Hr5Si1q0VOdfPcoFg2s+jWeS6NLmn04qmCCmd6da0j3ay+heMpjxuiPn1M/H6DNt1DiY+L1vRaH9ST/Nqx1ZgZDM=
+	t=1736293259; cv=none; b=GVUFyOVvU/2khKRy4XJyXbxjp0GCyOIT10VoLwnmqxjlK/PvNmImkt9oa0oeslShHu3DePVuL7gbB5rW5HvSpbUAbNg51EX5pt/YQi6M5TLFva91p4Gu1NhC3E00YZ6iW7l8ufO0X29tBkVo8D5taR6BHWFKGcyrti0gc3CiZAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736293218; c=relaxed/simple;
-	bh=jfTpOGKr0wQcc2L8f69AZ9dp6NW5ajddeQBm1nraAXM=;
+	s=arc-20240116; t=1736293259; c=relaxed/simple;
+	bh=vY3TG3+Uru+KujoSXwhGQJx4QFHJrYIK51bTcCgFbTM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qkhOArLYe9IG+75HFu4tdMoa+Pmabfa8ZB4swt5Dc/41V2f46Hw2VPB3q5JnvTul1LwNXw3CC2hTp4uakPaTmNaSe7zA0q2eAT6IUd6VjW9mIKQSB4gUqVPfoDQEVfh+4k+Bk+cjY8tLZn5ljM/Z4fWgLfyyidaK9LQCOa8Om2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z7HBq2nj; arc=none smtp.client-ip=209.85.210.45
+	 In-Reply-To:Content-Type; b=hRcDWiSky++ptvJYGdaH+yLANUw0hGbSzesQgs9H2tOfmhL+ciWdxxRADLXqDmiBHgbioe3Q6Nt3J28wZby5/LMLOHoTQtucKvY8kiLnJdbL+lrgA1UCs3W+2XGbxaAk/e9D8vx0MBDk/+Dkg+GeOj5pnPEso+XvP8wwUuRF9dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XGnfxwNC; arc=none smtp.client-ip=209.85.167.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71e1597e3b4so4681355a34.3
-        for <linux-iio@vger.kernel.org>; Tue, 07 Jan 2025 15:40:14 -0800 (PST)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3eba583fbe8so5413435b6e.3
+        for <linux-iio@vger.kernel.org>; Tue, 07 Jan 2025 15:40:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736293214; x=1736898014; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736293257; x=1736898057; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=O2Eas7BrmzjhcA+ZrXqMVkpxsT7oX0umexUKB4e1IpE=;
-        b=z7HBq2njBu1jHNG84Mcv87i+tp8KqdQw3ZGmC5ibgNdSVyGEHB9MoOwu3cS2kfuUmJ
-         t7PZWUPj4YB0J9rv5rQ7Qy+lxJrJ49GP2iXeLiwm01tSzJe0eQkRNqofNgSXko/yrfIF
-         eBmBU7H1gLB/x3ecSBPSc2IaOBk8HWbtFmUPdOPx54c+DnlXozcdspwAkH/JkYVhhlEp
-         d2Yn8UdpWzLVl3lf6EMe5bUcKY0zzX//+pRQR0t41N2E/Ry2/N3PaZnldynP4C5RU2Yd
-         OO6/suk3O0N+FWiW7Hs9hky8miqmeYBwRS+niZ91CiCA18Z3vwOJ6a0t22AbsJZuHDCP
-         OjUg==
+        bh=hA9SMIRGl/zMWWHv+Ri/ux3lkoHtjeTWyaOGSnC9Hc8=;
+        b=XGnfxwNCc0CrjZzcUqTbXm1smku4Km/qIsNcAbEgJaF/FbhWWbq+HV1H0MNW374NEL
+         S0vAopqA5fXwTA9/ZHvYvZDOsr3l9rnaIwaJgEEkiAqWTHP+8TzyRSwHs4OASbFrnswc
+         2c6n11qwWLYC1ufmvPeO5C8ZDPnjSXtV9WBpPktIcCY4tdq357hSNTppnSX9ZYqcW6Eu
+         EGyMIcUwyIkK6PGPmjoq+kfOJZB3ABDA64FGXrXT4IIR6IvfibfLOAdW7bK2VAm8RgS5
+         uChiCkR/lUxbRaHIaYs2IQ52broldzH/NPKSNFPWBvKVwtZsrrOSAFOpCS2q4AeS33e9
+         LbKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736293214; x=1736898014;
+        d=1e100.net; s=20230601; t=1736293257; x=1736898057;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O2Eas7BrmzjhcA+ZrXqMVkpxsT7oX0umexUKB4e1IpE=;
-        b=pd3a1G7nlX+adJjHZ8qAYIoAC/OZX/rHlayMV186WU8j7M9du74uKTIDv7ZulBAQEC
-         stOIoDh4iyqa+rHoeE0P2pIEikeA2l310v8/C7Gynii9rCwZlv0lpsSqjxp8yY1J70T/
-         LT6gVmeS6AWMHIELxoBFIF+CmGS46bWcAVwS5Fb9F2vq4RXF5hOnpFvFYUw0rlOOnjRs
-         uWXpoOyt1+1tSLr7BQJKnFD5rVPBUinNgk2XCC+b8YMo9D4CA9Wvpyb0n5eMutov2FGR
-         ySLF1Su4fwntHm3Y4Bloho9Luu+JVKdHglQyFRLp2oH30d5uMiaYEQO7TS3e4BLtdqU5
-         hwAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVMpf6RkOlq0eZsQI8ioed8ZPkbqIkOZ0m2zfOHuDMzI3A7bFQJM67JwrA3lLiJ9ru9Zhw7GOESa2k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyef2itfa4Rp/pcHq2EXNXDCiiOTh2orZ0mSm4jIraQyo3A4qNT
-	cuMcl1lsjhgl3QQwRtK+n72EmvKNdWOTx1eW0IclB16R7jeF6rtQkGrmlGmjNg4=
-X-Gm-Gg: ASbGncv3FtMkroe5ouKH6dRBQaASAmLwJN1uFXe66bComSstf1F6m4xDuRAOWLcaMmE
-	40o6kL7SD/us2uFjMQuGwu7urqnKEr78GMqsK8ipNMwQLc58f0PYyD19DPfxkNN6UWEmMDwM+Ly
-	N21hu7zpWuNji1dpB0ENGOrcmAEjeTMDn/5zLccXGx8Jbz0GmlXhLdoV8C/sZdWomx6kFs33hMZ
-	scmZ98sTe0uPK7zZpZ0L7IcYTgLKpfMQvTIlGC+D+igEW8YCRevhZVik/NvRfN87Mx9ZwYT7PPy
-	r/RRZcY96oFuQhIyyQ==
-X-Google-Smtp-Source: AGHT+IGtfDHNF/ydxld0CqCusHeQ1otA7hAtxou0jX/2OQsW5XxImqkiWOhjS8YyReikmH/jReFxKw==
-X-Received: by 2002:a05:6830:61c7:b0:718:7c3:f86a with SMTP id 46e09a7af769-721e2dfcb59mr638050a34.6.1736293214168;
-        Tue, 07 Jan 2025 15:40:14 -0800 (PST)
+        bh=hA9SMIRGl/zMWWHv+Ri/ux3lkoHtjeTWyaOGSnC9Hc8=;
+        b=lFRWvQBmdoojUYHe8lxKbqOuILUvVK8IZqZ5Cr7BwZC8YhqDhbkKNFZQb9CknBRmbl
+         Joy0d/ss6mWc5OpzTLak7u0lQZkOd5YL0eWdijCh5YM0DsfnxOq7vRUtwveigCEX9XYH
+         5kmv3rWEN3DdrA0Pzo5jOThYi01W926aXdWLF+mqKduoZf/bF5iXywaJjA62dq5zMTeD
+         sLA7x7/WQ2vwgdeslR+CNVsZSUESpP4+VwtrQVOXfTw2f5iIRsP/T/UD3hb0OW81ERg7
+         2IjQIiuFmaOV+NdXBhlxGJddmwIGHSzfEUubZ8Obipw89nkiKXmgFKo17WHHfuXmVQpc
+         secQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU8x1lTNLEPbgi1MfOz6f3CxBlZBzC3X6VAfb5Wr2+K04lmAUTfZxDJJDt6bt+jIXQsY0/44E0kcSs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxaf5EF0hbBI1S7IPFiOxb6zVtlkdgttPVlj6cta8PDoqOadDrX
+	O0kIbWb1DO4BiYy5WrwH/+3H8nq3oM2e28Vg/gatsOmawSbAE14fWoyfvlVB0Pg=
+X-Gm-Gg: ASbGncvK7CWwELfytJuGyG+EqJEORklbCsWo3Y5U6r2U4gduyekrtfANZvzwZ2U2y4z
+	HgjKrtSiPTtneKEkS9oiIALlS3ZfP6VdDe64K4Eet5v1qZ2Xjj8fq7kmjFw0/FrWLLyN60+Eu4p
+	sM9Z4cIZtlm0prJ6cLKKj+OoqyiWUdqs3QVq+a8SeQjqQg0S87S4CzsCr6XUQdnKnrUVX1z29pv
+	KPq3MpXgz0agZZpLRSeZMSeEVY158c8KWfPmbHn3CQqyK6La0tUNJRPWXUWyiJHI4Hd3TQ+BOCD
+	uLCqJ87FK5MPe3dGKA==
+X-Google-Smtp-Source: AGHT+IEgB/WWksiX3jt4m5035Fhdbgpeqq/NdpXf+C0NbgMNenjn6UZUe5f6Mk4QAPVqauJHK/ySZg==
+X-Received: by 2002:a05:6808:220e:b0:3e7:bd97:759a with SMTP id 5614622812f47-3ef2eeb0d61mr379709b6e.39.1736293256882;
+        Tue, 07 Jan 2025 15:40:56 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71fc97dc94dsm10555741a34.34.2025.01.07.15.40.12
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3ece247e117sm10792562b6e.14.2025.01.07.15.40.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 15:40:13 -0800 (PST)
-Message-ID: <4449ec60-08cd-4074-ba0b-95603864a458@baylibre.com>
-Date: Tue, 7 Jan 2025 17:40:12 -0600
+        Tue, 07 Jan 2025 15:40:55 -0800 (PST)
+Message-ID: <6b60de31-4bbb-4a94-a62b-63ccbacdf1b4@baylibre.com>
+Date: Tue, 7 Jan 2025 17:40:53 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,73 +81,73 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 05/15] iio: adc: ad7768-1: set MOSI idle state to high
+Subject: Re: [PATCH v1 07/15] iio: adc: ad7768-1: Add reset gpio
 To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marcelo.schmitt1@gmail.com
+Cc: Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, marcelo.schmitt1@gmail.com
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <714ff48341753de0509208e3c553b19c1c43e480.1736201898.git.Jonathan.Santos@analog.com>
+ <45cfd15501384a183a97d871b6848fb79fdb7b39.1736201898.git.Jonathan.Santos@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <714ff48341753de0509208e3c553b19c1c43e480.1736201898.git.Jonathan.Santos@analog.com>
+In-Reply-To: <45cfd15501384a183a97d871b6848fb79fdb7b39.1736201898.git.Jonathan.Santos@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/7/25 9:25 AM, Jonathan Santos wrote:
-> All supported parts require that the MOSI line stays high
-> while in idle.
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> Configure SPI controller to set MOSI idle state to high.
+> Depending on the controller, the default state of a gpio can vary. This
+> change excludes the probability that the dafult state of the ADC reset
+> gpio will be HIGH if it will be passed as reference in the deivcetree.
 > 
-> Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > ---
->  drivers/iio/adc/ad7768-1.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+>  drivers/iio/adc/ad7768-1.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
 > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index c3cf04311c40..463a28d09c2e 100644
+> index 881446462ff5..f73b9aec8b0f 100644
 > --- a/drivers/iio/adc/ad7768-1.c
 > +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -574,6 +574,15 @@ static int ad7768_probe(struct spi_device *spi)
->  		return -ENOMEM;
+> @@ -161,6 +161,7 @@ struct ad7768_state {
+>  	struct completion completion;
+>  	struct iio_trigger *trig;
+>  	struct gpio_desc *gpio_sync_in;
+> +	struct gpio_desc *gpio_reset;
+>  	const char *labels[ARRAY_SIZE(ad7768_channels)];
+>  	/*
+>  	 * DMA (thus cache coherency maintenance) may require the
+> @@ -441,6 +442,18 @@ static int ad7768_setup(struct ad7768_state *st)
+>  {
+>  	int ret;
 >  
->  	st = iio_priv(indio_dev);
-> +	/*
-> +	 * The ADC SDI line must be kept high when
-> +	 * data is not being clocked out of the controller.
-> +	 * Request the SPI controller to make MOSI idle high.
-> +	 */
-> +	spi->mode |= SPI_MOSI_IDLE_HIGH;
-> +	ret = spi_setup(spi);
-> +	if (ret < 0)
-> +		return ret;
->  	st->spi = spi;
->  
->  	st->vref = devm_regulator_get(&spi->dev, "vref");
+> +	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
+> +						 GPIOD_OUT_LOW);
 
-Very few SPI controllers currently have the SPI_MOSI_IDLE_HIGH capability flag
-set in Linux right now (whether they actually support it or not), so this could
-break existing users.
+Could be simplified by setting this to GPIOD_OUT_HIGH and drop
 
-The datasheet says:
+	gpiod_direction_output(st->gpio_reset, 1);
 
-	When reading back data with CS held low, it is recommended that SDI
-	idle high to prevent an accidental reset of the device where SCLK is
-	free running (see the Reset section).
+> +	if (IS_ERR(st->gpio_reset))
+> +		return PTR_ERR(st->gpio_reset);
+> +
+> +	if (st->gpio_reset) {
+> +		gpiod_direction_output(st->gpio_reset, 1);
+> +		usleep_range(10, 15);
+> +		gpiod_direction_output(st->gpio_reset, 0);
+> +		usleep_range(10, 15);
 
-And the reset section says:
+prefer fsleep()
 
-	When CS is held low, it is possible to provide a reset by clocking
-	in a 1 followed by 63 zeros on SDI, which is the SPI resume command
-	reset function used to exit power-down mode.
+> +	}
+> +
 
-Since the largest xfer we do is 3 bytes before deasserting CS, I don't think
-we have any risk of accidentally resetting right now.
+We can move the code below in an else since we don't need to do 2 resets.
 
-If we ever do implement a data read of more than 64 bits without toggling CS,
-then we could just set the TX data to be all 0xFF and have the same effect
-without requiring the SPI controller to support SPI_MOSI_IDLE_HIGH.
+>  	/*
+>  	 * Two writes to the SPI_RESET[1:0] bits are required to initiate
+>  	 * a software reset. The bits must first be set to 11, and then
+
 

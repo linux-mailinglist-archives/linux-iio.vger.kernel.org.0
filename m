@@ -1,189 +1,162 @@
-Return-Path: <linux-iio+bounces-13958-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13959-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42340A041CB
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 15:11:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A534A04273
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 15:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34C377A2C07
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 14:11:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA3F3A57A3
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 14:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1561F37B4;
-	Tue,  7 Jan 2025 14:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QQoI+b1a"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151B71E9B2E;
+	Tue,  7 Jan 2025 14:25:00 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972CA1F2374;
-	Tue,  7 Jan 2025 14:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387F61AD3E0
+	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 14:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736258804; cv=none; b=UifflTjm9UWA2T1Nf/K2zbbbgEEIF8DX6jPkQFwlhaYtdMt1qr4tQchfKN0Q96V/2DW9zVGQsh47MVt4iiPmavJ+rr1voGwcCfKoLcM+SMx7asyq35Oa3etxVxi/ZWM0ig30KcLEkHTba/q4hvF5p8NNyZkNHocIIXrYWhV6+4g=
+	t=1736259899; cv=none; b=P1A/aMxZyTMmv5gX1fOd1FwATrE2FN94LTS8sY+JPba7pocVqNA5DP14e1XUs+8U1cMp+ciJyJhHc8bG57DmU4PCWdiJi8UL7HE7wTU5SBXgnkOwyAY542oxk9qLzPA0f2hLUPITSNsMfBFAtVlJBue6nGIPMvdNvf1emJmXctE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736258804; c=relaxed/simple;
-	bh=gtu2JZ5e+++PAt97B0zZ70AP39fEi7/1hL6yFShiOpQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Sm6T6PhIkpcGq+lz0EldO6dbr7Ycpx10N3Gcb2TsIXH0jJHioco17SoQWsEi7Jah3Ltjuy1NzqCgrPcL2FYEVqsd8sy+F1K9+J7ND4y4qKeLsydMjPU2dEYOGQKZp63nmTkB9J6dPM/9zS8jlghacqVIM6mUUAccVJ8hqIeuPJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QQoI+b1a; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4361f65ca01so154778145e9.1;
-        Tue, 07 Jan 2025 06:06:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736258797; x=1736863597; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gtu2JZ5e+++PAt97B0zZ70AP39fEi7/1hL6yFShiOpQ=;
-        b=QQoI+b1anz6FkK5riwU5/sa5m2C34RRHryBeFM0odwFD11OWBn/3wYRdYOw1pWGcbb
-         lmB04VHGWzMRQZsSTBCyykxe3ekuUevZRIx4yeXG7IUW9U81iqaBSczCPqqG2JHDhrEZ
-         0BiBHjucdRMhMLlzCitxjL7DUsHUXoMUMGKyQFnmunPX528+SKM/ABli9ZR04rPDbMfV
-         o3ebowy1KaFRkHqvROv2Xg7MFDiil3/J9GFN6WptQgl+REtAe3eH9vX62OJ6Issb5iY3
-         zncbkvh5J3JMU+6jHdIG/Y0lQqkjl7B7/2jqX+4zkhX29KqeiBeicsImBfDjx59NmsSz
-         qubw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736258797; x=1736863597;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gtu2JZ5e+++PAt97B0zZ70AP39fEi7/1hL6yFShiOpQ=;
-        b=Y6S0HoZg6gXodg7g9usgX2QVbJgCMs18+DmTeq5dEjHogB8dUsVnJvOwvceJN2LSl6
-         V1N1NreUJIvUTrXBhAXyAJOwIX94KVdZl4/baAqlKdQDlWST/KHEO5jj8kEEVHtIT/kU
-         C5963rtuRS4StquFa7mILi6aymsbyNa24CG9nK8xZJFk/RDceona+VJv9sotR/xC7UcN
-         9Q7cwWDWFp5N8+iVF5HxB9KDlQ2L48ekfZu2B5jdHW2qNyThVPpG8DpfXO7ZlhgxVmnb
-         wB9ijNwWLwHjPOjRnBEyFzVINx9j2DHF0Y3Yuqy8mJb5bkGUeP8rfuOXnn4efQaeRJfs
-         fFVw==
-X-Forwarded-Encrypted: i=1; AJvYcCV64P9iW+QYYcJazlLAkL/+xdUqCQYVulw3rq0tIFUszAu0HgSrtSrCJiAcYc5p6vHnWAaGEDBQYbsw@vger.kernel.org, AJvYcCVN8jvzB6SCA55JavV6Zq2BNayWZnen1UaAavsdsGB9/C5QhL7jaQPtLljnGIJZa98eXkCewmkrIshr@vger.kernel.org, AJvYcCWKEGzNblZhPNUZmQeQGzDLPlf8WMbOmXvXx2jimDvZ9JtOz7qvYUe3Z90qYLip3dY3E2IhLPwDRxV7ChTY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8XUoI12Vtl/NKdpN2j5yEWyBucEywr/dieqoi6wJHzkbIifo3
-	NZN3BZW7dD/bFPuu3/JxngaTZl5EaLY1EAE3r27wL5SPJLKRDvIp
-X-Gm-Gg: ASbGncuQIPcHLmjFlABW5hx1+uE5+6AjuQOEIM2XcIqcfvXFv6dUtqZ2xSaAXxzCXnp
-	cvdM9LPRMK/bRrWTQ0lU/gkTr3GEJ8Hlc6uLKsA/xTiycRHokR5couIo+CVdJtkJ6Rk3O0MBjBa
-	BJ8rcDM66XJwTW01sWdhIy/F1b2zmzAde8YTEaBk9N6iJVvSk6GUkInshtKb1eP7W1O91KBdBPV
-	W4dwNDTph9kW9oEcd+9kf+jJUZB5N3Pfi7q+zLce9fU3XTfawvJascsjjIULtCGkVX6ZToYfycZ
-	gG+AtNeXfbwYm4ZRD4s4++7gLoFK
-X-Google-Smtp-Source: AGHT+IEOnFACU9muGCAJh47a+3xiDh1PixxVWfR+98vQ2MECLsNWythJDrldnuO0ZktlFUZGb2hG+Q==
-X-Received: by 2002:a05:600c:4fd4:b0:436:1bbe:f686 with SMTP id 5b1f17b1804b1-43668b48084mr470986205e9.21.1736258797207;
-        Tue, 07 Jan 2025 06:06:37 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c829120sm51854534f8f.6.2025.01.07.06.06.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 06:06:36 -0800 (PST)
-Message-ID: <d2c31c3cc5542629b7ceb2347464260822fe3202.camel@gmail.com>
-Subject: Re: [PATCH] dt-bindings: iio: Correct indentation and style in DTS
- example
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski	 <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Puranjay Mohan	 <puranjay@kernel.org>, Joshua
- Felmeden <jfelmeden@thegoodpenguin.co.uk>,  Sankar Velliangiri	
- <navin@linumiz.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- 	linux-kernel@vger.kernel.org
-Date: Tue, 07 Jan 2025 14:06:35 +0000
-In-Reply-To: <20250107125848.226899-1-krzysztof.kozlowski@linaro.org>
-References: <20250107125848.226899-1-krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.54.2 
+	s=arc-20240116; t=1736259899; c=relaxed/simple;
+	bh=LQt3nDWw9gdhwXy4ktKWqj9KHfRKWdKhVFTJidLZL0w=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j/pmPb86WymNr6YljlaPsJx+BJZ9msMVT5FSxXGLxkwk54rh2WuVzFp8uVVz996FTpjelb3E0c4bKOEN6T0v6cF3MQk2b4yqKjBofPp0HPrp5EwlY/OVFaJwBuH7scWPK4V99Bmt78xwDaVOO1k4dUOWkvas9Bxz7GuoNPG42Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YSCr50g07z6JBDf;
+	Tue,  7 Jan 2025 22:20:21 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id CAB281403A8;
+	Tue,  7 Jan 2025 22:24:53 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 7 Jan
+ 2025 15:24:53 +0100
+Date: Tue, 7 Jan 2025 14:24:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: David Lechner <dlechner@baylibre.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+	=?UTF-8?Q?=E2=80=9CLuc?= Van =?UTF-8?Q?Oostenryck=E2=80=9D?=
+	<luc.vanoostenryck@gmail.com>
+Subject: Re: [RFC PATCH 01/27] iio: core: Rework claim and release of direct
+ mode to work with sparse.
+Message-ID: <20250107142451.000021db@huawei.com>
+In-Reply-To: <88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
+References: <20250105172613.1204781-1-jic23@kernel.org>
+	<20250105172613.1204781-2-jic23@kernel.org>
+	<88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-T24gVHVlLCAyMDI1LTAxLTA3IGF0IDEzOjU4ICswMTAwLCBLcnp5c3p0b2YgS296bG93c2tpIHdy
-b3RlOgo+IERUUyBleGFtcGxlIGluIHRoZSBiaW5kaW5ncyBzaG91bGQgYmUgaW5kZW50ZWQgd2l0
-aCAyLSBvciA0LXNwYWNlcyBhbmQKPiBhbGlnbmVkIHdpdGggb3BlbmluZyAnLSB8Jywgc28gY29y
-cmVjdCBhbnkgZGlmZmVyZW5jZXMgbGlrZSAzLXNwYWNlcyBvcgo+IG1peHR1cmVzIDItIGFuZCA0
-LXNwYWNlcyBpbiBvbmUgYmluZGluZy4KPiAKPiBObyBmdW5jdGlvbmFsIGNoYW5nZXMgaGVyZSwg
-YnV0IHNhdmVzIHNvbWUgY29tbWVudHMgZHVyaW5nIHJldmlld3Mgb2YKPiBuZXcgcGF0Y2hlcyBi
-dWlsdCBvbiBleGlzdGluZyBjb2RlLgo+IAo+IFNpZ25lZC1vZmYtYnk6IEtyenlzenRvZiBLb3ps
-b3dza2kgPGtyenlzenRvZi5rb3psb3dza2lAbGluYXJvLm9yZz4KPiAtLS0KCkFja2VkLWJ5OiBO
-dW5vIFNhIDxudW5vLnNhQGFuYWxvZy5jb20+Cgo+IMKgLi4uL2JpbmRpbmdzL2lpby9kYWMvYWRp
-LGFkNTM4MC55YW1swqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAxOCArKysrKysrKystLS0tLS0tLS0K
-PiDCoC4uLi9paW8vaHVtaWRpdHkvc2Npb3NlbnNlLGVuczIxMC55YW1swqDCoMKgwqDCoMKgwqDC
-oCB8IDEyICsrKysrKy0tLS0tLQo+IMKgLi4uL2lpby90ZW1wZXJhdHVyZS9tYXhpbSxtYXgzMTg2
-NS55YW1swqDCoMKgwqDCoMKgwqAgfCAxOCArKysrKysrKystLS0tLS0tLS0KPiDCoC4uLi9iaW5k
-aW5ncy9paW8vdGVtcGVyYXR1cmUvdGksdG1wMTE3LnlhbWzCoMKgwqAgfMKgIDYgKysrLS0tCj4g
-wqA0IGZpbGVzIGNoYW5nZWQsIDI3IGluc2VydGlvbnMoKyksIDI3IGRlbGV0aW9ucygtKQo+IAo+
-IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2RhYy9h
-ZGksYWQ1MzgwLnlhbWwKPiBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8v
-ZGFjL2FkaSxhZDUzODAueWFtbAo+IGluZGV4IDllYjk5Mjg1MDBlMi4uM2UzMjNmMWE1NDU4IDEw
-MDY0NAo+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vZGFjL2Fk
-aSxhZDUzODAueWFtbAo+ICsrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9p
-aW8vZGFjL2FkaSxhZDUzODAueWFtbAo+IEBAIC01NSwxOCArNTUsMTggQEAgZXhhbXBsZXM6Cj4g
-wqDCoMKgwqDCoMKgwqDCoCAjYWRkcmVzcy1jZWxscyA9IDwxPjsKPiDCoMKgwqDCoMKgwqDCoMKg
-ICNzaXplLWNlbGxzID0gPDA+Owo+IMKgwqDCoMKgwqDCoMKgwqAgZGFjQDAgewo+IC3CoMKgwqDC
-oMKgwqDCoMKgwqDCoCByZWcgPSA8MD47Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbXBhdGli
-bGUgPSAiYWRpLGFkNTM5MC01IjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqAgdnJlZi1zdXBwbHkg
-PSA8JmRhY3ZyZWY+Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlZyA9IDwwPjsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImFkaSxhZDUzOTAtNSI7Cj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgdnJlZi1zdXBwbHkgPSA8JmRhY3ZyZWY+Owo+IMKgwqDCoMKgwqDC
-oMKgwqAgfTsKPiDCoMKgwqDCoCB9Owo+IMKgwqAgLSB8Cj4gwqDCoMKgwqAgaTJjIHsKPiAtwqDC
-oMKgwqDCoMKgICNhZGRyZXNzLWNlbGxzID0gPDE+Owo+IC3CoMKgwqDCoMKgwqAgI3NpemUtY2Vs
-bHMgPSA8MD47Cj4gLcKgwqDCoMKgwqDCoCBkYWNANDIgewo+IC3CoMKgwqDCoMKgwqDCoMKgwqAg
-cmVnID0gPDB4NDI+Owo+IC3CoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJhZGksYWQ1
-MzgwLTMiOwo+IC3CoMKgwqDCoMKgwqAgfTsKPiArwqDCoMKgwqDCoMKgwqAgI2FkZHJlc3MtY2Vs
-bHMgPSA8MT47Cj4gK8KgwqDCoMKgwqDCoMKgICNzaXplLWNlbGxzID0gPDA+Owo+ICvCoMKgwqDC
-oMKgwqDCoCBkYWNANDIgewo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJlZyA9IDwweDQyPjsK
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gImFkaSxhZDUzODAtMyI7Cj4g
-K8KgwqDCoMKgwqDCoMKgIH07Cj4gwqDCoMKgwqAgfTsKPiDCoC4uLgo+IGRpZmYgLS1naXQKPiBh
-L0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vaHVtaWRpdHkvc2Npb3NlbnNl
-LGVuczIxMC55YW1sCj4gYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2h1
-bWlkaXR5L3NjaW9zZW5zZSxlbnMyMTAueWFtbAo+IGluZGV4IGVkMGVhOTM4ZjdmOC4uMWUyNWNm
-NzgxY2YxIDEwMDY0NAo+IC0tLSBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9p
-aW8vaHVtaWRpdHkvc2Npb3NlbnNlLGVuczIxMC55YW1sCj4gKysrIGIvRG9jdW1lbnRhdGlvbi9k
-ZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9odW1pZGl0eS9zY2lvc2Vuc2UsZW5zMjEwLnlhbWwKPiBA
-QCAtNDMsMTMgKzQzLDEzIEBAIGFkZGl0aW9uYWxQcm9wZXJ0aWVzOiBmYWxzZQo+IMKgZXhhbXBs
-ZXM6Cj4gwqDCoCAtIHwKPiDCoMKgwqDCoCBpMmMgewo+IC3CoMKgwqDCoMKgwqAgI2FkZHJlc3Mt
-Y2VsbHMgPSA8MT47Cj4gLcKgwqDCoMKgwqDCoCAjc2l6ZS1jZWxscyA9IDwwPjsKPiArwqDCoMKg
-wqDCoMKgwqAgI2FkZHJlc3MtY2VsbHMgPSA8MT47Cj4gK8KgwqDCoMKgwqDCoMKgICNzaXplLWNl
-bGxzID0gPDA+Owo+IMKgCj4gLcKgwqDCoMKgwqDCoCB0ZW1wZXJhdHVyZS1zZW5zb3JANDMgewo+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21wYXRpYmxlID0gInNjaW9zZW5zZSxlbnMyMTAiOwo+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoCByZWcgPSA8MHg0Mz47Cj4gLcKgwqDCoMKgwqDCoCB9Owo+
-ICvCoMKgwqDCoMKgwqDCoCB0ZW1wZXJhdHVyZS1zZW5zb3JANDMgewo+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIGNvbXBhdGlibGUgPSAic2Npb3NlbnNlLGVuczIxMCI7Cj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgcmVnID0gPDB4NDM+Owo+ICvCoMKgwqDCoMKgwqDCoCB9Owo+IMKgwqDCoMKg
-IH07Cj4gwqAuLi4KPiDCoAo+IGRpZmYgLS1naXQKPiBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJl
-ZS9iaW5kaW5ncy9paW8vdGVtcGVyYXR1cmUvbWF4aW0sbWF4MzE4NjUueWFtbAo+IGIvRG9jdW1l
-bnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby90ZW1wZXJhdHVyZS9tYXhpbSxtYXgzMTg2
-NS55YW1sCj4gaW5kZXggN2NjMzY1ZTBlYmM4Li43YzBjNmFiNmZjNjkgMTAwNjQ0Cj4gLS0tIGEv
-RG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby90ZW1wZXJhdHVyZS9tYXhpbSxt
-YXgzMTg2NS55YW1sCj4gKysrIGIvRG9jdW1lbnRhdGlvbi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lp
-by90ZW1wZXJhdHVyZS9tYXhpbSxtYXgzMTg2NS55YW1sCj4gQEAgLTQwLDE1ICs0MCwxNSBAQCB1
-bmV2YWx1YXRlZFByb3BlcnRpZXM6IGZhbHNlCj4gwqBleGFtcGxlczoKPiDCoMKgIC0gfAo+IMKg
-wqDCoMKgIHNwaSB7Cj4gLcKgwqDCoMKgwqDCoCAjYWRkcmVzcy1jZWxscyA9IDwxPjsKPiAtwqDC
-oMKgwqDCoMKgICNzaXplLWNlbGxzID0gPDA+Owo+ICvCoMKgwqDCoMKgwqDCoCAjYWRkcmVzcy1j
-ZWxscyA9IDwxPjsKPiArwqDCoMKgwqDCoMKgwqAgI3NpemUtY2VsbHMgPSA8MD47Cj4gwqAKPiAt
-wqDCoMKgwqDCoMKgIHRlbXBlcmF0dXJlLXNlbnNvckAwIHsKPiAtwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgY29tcGF0aWJsZSA9ICJtYXhpbSxtYXgzMTg2NSI7Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHJlZyA9IDwwPjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3BpLW1heC1mcmVxdWVuY3kgPSA8
-NDAwMDAwPjsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3BpLWNwaGE7Cj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgIG1heGltLDMtd2lyZTsKPiAtwqDCoMKgwqDCoMKgIH07Cj4gK8KgwqDCoMKgwqDC
-oMKgIHRlbXBlcmF0dXJlLXNlbnNvckAwIHsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb21w
-YXRpYmxlID0gIm1heGltLG1heDMxODY1IjsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZWcg
-PSA8MD47Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3BpLW1heC1mcmVxdWVuY3kgPSA8NDAw
-MDAwPjsKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzcGktY3BoYTsKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBtYXhpbSwzLXdpcmU7Cj4gK8KgwqDCoMKgwqDCoMKgIH07Cj4gwqDCoMKgwqAg
-fTsKPiDCoC4uLgo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGlu
-Z3MvaWlvL3RlbXBlcmF0dXJlL3RpLHRtcDExNy55YW1sCj4gYi9Eb2N1bWVudGF0aW9uL2Rldmlj
-ZXRyZWUvYmluZGluZ3MvaWlvL3RlbXBlcmF0dXJlL3RpLHRtcDExNy55YW1sCj4gaW5kZXggNThh
-YTE1NDI3NzZiLi5mYmJhNWU5MzQ4NjEgMTAwNjQ0Cj4gLS0tIGEvRG9jdW1lbnRhdGlvbi9kZXZp
-Y2V0cmVlL2JpbmRpbmdzL2lpby90ZW1wZXJhdHVyZS90aSx0bXAxMTcueWFtbAo+ICsrKyBiL0Rv
-Y3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8vdGVtcGVyYXR1cmUvdGksdG1wMTE3
-LnlhbWwKPiBAQCAtNDQsOCArNDQsOCBAQCBleGFtcGxlczoKPiDCoMKgwqDCoMKgwqDCoMKgICNz
-aXplLWNlbGxzID0gPDA+Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoCB0bXAxMTdANDggewo+IC3C
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY29tcGF0aWJsZSA9ICJ0aSx0bXAxMTciOwo+IC3CoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgcmVnID0gPDB4NDg+Owo+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgdmNjLXN1cHBseSA9IDwmcG1pY19yZWdfM3YzPjsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBjb21wYXRpYmxlID0gInRpLHRtcDExNyI7Cj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-cmVnID0gPDB4NDg+Owo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHZjYy1zdXBwbHkgPSA8JnBt
-aWNfcmVnXzN2Mz47Cj4gwqDCoMKgwqDCoMKgwqDCoCB9Owo+IMKgwqDCoMKgIH07Cgo=
+On Mon, 6 Jan 2025 17:14:12 -0600
+David Lechner <dlechner@baylibre.com> wrote:
+
+> On 1/5/25 11:25 AM, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Initial thought was to do something similar to __cond_lock()
+> > 
+> > 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
+> > + Appropriate static inline iio_device_release_direct_mode()
+> > 
+> > However with that, sparse generates false positives. E.g.
+> > 
+> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock  
+> 
+> Even if false positives aren't technically wrong, if sparse is having a hard
+> time reasoning about the code, then it is probably harder for humans to reason
+> about the code as well. So rewriting these false positives anyway could be
+> justified beyond just making the static analyzer happy.
+> 
+> > 
+> > So instead, this patch rethinks the return type and makes it more
+> > 'conditional lock like' (which is part of what is going on under the hood
+> > anyway) and return a boolean - true for successfully acquired, false for
+> > did not acquire.  
+> 
+> I think changing this function to return bool instead of int is nice change
+> anyway since it makes writing the code less prone authors to trying to do
+> something "clever" with the ret variable. And it also saves one one line of
+> code.
+> 
+> > 
+> > To allow a migration path given the rework is now no trivial, take a leaf
+> > out of the naming of the conditional guard we currently have for IIO
+> > device direct mode and drop the _mode postfix from the new functions giving
+> > iio_device_claim_direct() and iio_device_release_direct()
+> > 
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > ---
+> >  include/linux/iio/iio.h | 22 ++++++++++++++++++++++
+> >  1 file changed, 22 insertions(+)
+> > 
+> > diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > index 56161e02f002..4ef2f9893421 100644
+> > --- a/include/linux/iio/iio.h
+> > +++ b/include/linux/iio/iio.h
+> > @@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+> >  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+> >  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+> >  
+> > +/*
+> > + * Helper functions that allow claim and release of direct mode
+> > + * in a fashion that doesn't generate false positives from sparse.
+> > + */
+> > +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)  
+> 
+> Doesn't __cond_acquires depend on this patch [1] that doesn't look like it was
+> ever picked up in sparse?
+> 
+> [1]: https://lore.kernel.org/all/CAHk-=wjZfO9hGqJ2_hGQG3U_XzSh9_XaXze=HgPdvJbgrvASfA@mail.gmail.com/
+
+I wondered about that. It 'seems' to do the job anyway. I didn't fully
+understand that thread so I just blindly tried it instead :)
+
+This case is simpler that that thread, so maybe those acrobatics aren't
+needed?
+
+Jonathan
+
+> 
+> > +{
+> > +	int ret = iio_device_claim_direct_mode(indio_dev);
+> > +
+> > +	if (ret)
+> > +		return false;
+> > +
+> > +	__acquire(iio_dev);
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +static inline void iio_device_release_direct(struct iio_dev *indio_dev) __releases(indio_dev)
+> > +{
+> > +	iio_device_release_direct_mode(indio_dev);
+> > +	__release(indio_dev);
+> > +}
+> > +
+> >  /*
+> >   * This autocleanup logic is normally used via
+> >   * iio_device_claim_direct_scoped().  
+> 
+> In summary, assuming we get the required changed merged into sparse, I think this
+> seems like the best solution.
+> 
 
 

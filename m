@@ -1,71 +1,67 @@
-Return-Path: <linux-iio+bounces-13979-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13980-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0259A04464
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 16:29:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DA2A04469
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 16:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EB03A66CB
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 15:28:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8252C1882927
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 15:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C891F37DD;
-	Tue,  7 Jan 2025 15:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 681C81F37DA;
+	Tue,  7 Jan 2025 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="zGl/jVsT"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="mXXInYdl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEBF1F3D35;
-	Tue,  7 Jan 2025 15:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4C41F2C3D;
+	Tue,  7 Jan 2025 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736263643; cv=none; b=DrNSHGd/mTzQLv3gBondwiV5a1Kgbx+gtxtgkKrlwLNcC885M5MLa87FKdihrFuXEG2uyBjooCmvB6OuT/ABc6ylsKnt8L0nIZseAWePHcNSgKcgSsUneISbcZctPY/CGCVDwtPteUE8ZXz2950wZAOCvYLdl4OszUo/7ZuVhOY=
+	t=1736263655; cv=none; b=qDPeFVhUAsXvBRxVMy2BZwKuRyOhXqynltU7q0IS3C1/QO7RyIwIyqU8QbFiQ7EuZ8WzXBwIX9m4jFuG37w1jWWjpX21vUACFkGkHSgzD27DrMHc/8rfmG4JzE+2PCFLaJHSeQ0Hz8iJzslj/TOP/tRhriDAGokGH/l0D7aAJvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736263643; c=relaxed/simple;
-	bh=HYRQeeKc9+lr0ssmLx+vl1QWKLgCPVMmXBQeVWpoc7I=;
+	s=arc-20240116; t=1736263655; c=relaxed/simple;
+	bh=YXqEk4aPWChwKTBIMT/2irZ6Up+zAGjNs5QESEtf2NQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OdYWleNaboMAeurBuRm/3XBSRVNXvS3ojnKSqhb9qvymxZo/g+U//HkrLJq9pNH0Pj73OvjTQlggksRSQ8WSRVG958VPG1MJ2qLtjB4h0AzqADXp0iopqeKZy48K+P6SByg8NAxekvjJiNrHit6cpsYPghIBreAfO4CP1ABwDRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=zGl/jVsT; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=HXbB8Tbe/RkWfGyoCxtjKRzsx9Z67lD8KJkxbjivjbImV/TSaaQZfdmy1Zx5mfN7XL0JaEg4DoJN+ZzBELcJ7lTp87eCH3Zz6YLMoK/ye+pT1gvqPorHDvhx/u0SGKQ0ygswiSvzNMgeBI4xPNXaGxvhowQjdKFQvAykt6F8ujM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=mXXInYdl; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507FM8Uk006089;
-	Tue, 7 Jan 2025 10:27:06 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507EvGOu013581;
+	Tue, 7 Jan 2025 10:27:18 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=QYgs9
-	4ucVg11JkPxgMRPdOvNLIxwkN456FGA5Od6/NM=; b=zGl/jVsTpaCKCvPA3zKr1
-	1V4RyhFhk/NnFzgiPqx94Ysv0HFLhGrUx32eWBdZaaMrTmKbckRGW9nk4rxDYcjB
-	dI+67lAU4PlfZ0YCZ9v0LXrw+jr2VJo9Gx16FCywH/Pqcoy566G70VsF6CanHHZJ
-	UGLC46uwntLXrPU5qFg9NZpyFkC926IE1i2qN2kjRTZLg3UaPjUXyRNMk6QUaT01
-	AKkWNtI+OS1K3AIZhhVwdTJf1o4yaVui7AxO4R2bZhDkycd3bX/03BgULOK2q3Dj
-	BpuCLLI10bEZCEdUdfj6180eXJhcfIdkiu4psF8scIG2AFao79Mxx/1DG32rkbPZ
-	g==
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=n5zWM
+	Vdnc0IRCEpG/cfeZ+UJuA32koliXDITZdHZ7Eg=; b=mXXInYdlNjY56wwYP0BlE
+	dudd/WhlxjVlBoD3PgCmDL7+ZLs52xbDy9dqnEBo0OKFy5HBxJDFme2G0duT4pKL
+	1sW8XYz4r8y+81O//QlUwPzW+5qygXLHtqs9aGI/yvgjjzdsu3JlOtXcy0OxF9lJ
+	qJv5GP46Z/ckO8KdQiBtrF2nSAgu+DOB2n0Dsxz9xeL1csFTtpHIppGv1jO7TRjn
+	TmK0q2P6pyQUEGBDQt4iaM3Vli4K6eOv1+9fLB+f+IyXXTK1QIMxTofZ7xqxAPTg
+	xPgTTQzAv6KE4joybOHiDT/aaA4kEHO9eE31ML4DQOyIxwn8s8zDbwcUSAUG8aPN
+	Q==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4416uq00j9-1
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4415f6gdpp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 10:27:06 -0500 (EST)
+	Tue, 07 Jan 2025 10:27:18 -0500 (EST)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 507FR4GF034189
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 507FRHM9034201
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 7 Jan 2025 10:27:04 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 7 Jan 2025 10:27:04 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 7 Jan 2025 10:27:04 -0500
+	Tue, 7 Jan 2025 10:27:17 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 7 Jan 2025
+ 10:27:16 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 7 Jan 2025 10:27:04 -0500
+ Transport; Tue, 7 Jan 2025 10:27:16 -0500
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 507FQrtM030347;
-	Tue, 7 Jan 2025 10:26:55 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 507FR4Ln030355;
+	Tue, 7 Jan 2025 10:27:06 -0500
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
@@ -73,9 +69,9 @@ CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
         <Michael.Hennerich@analog.com>, <jic23@kernel.org>, <robh@kernel.org>,
         <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v1 13/15] iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
-Date: Tue, 7 Jan 2025 12:26:53 -0300
-Message-ID: <170c5ca1b6c45b2114f248d9085588572d6269b4.1736201898.git.Jonathan.Santos@analog.com>
+Subject: [PATCH v1 14/15] iio: adc: ad7768-1: add support for Synchronization over SPI
+Date: Tue, 7 Jan 2025 12:27:03 -0300
+Message-ID: <0f9a15e6e2e6b7b2c82ef79d8cb883d9eb6c55dd.1736201898.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1736201898.git.Jonathan.Santos@analog.com>
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
@@ -88,183 +84,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: nNKG1ntmzmcYkbyTRwQzORS6vUYjDtYD
-X-Proofpoint-GUID: nNKG1ntmzmcYkbyTRwQzORS6vUYjDtYD
+X-Proofpoint-ORIG-GUID: ggKlIxymNY-OcA9FHT-alpdVGCNtTGHn
+X-Proofpoint-GUID: ggKlIxymNY-OcA9FHT-alpdVGCNtTGHn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=0 impostorscore=0
- adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501070130
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0 adultscore=0
+ impostorscore=0 malwarescore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501070130
 
-When the device is configured to Sinc5 filter and decimation x8,
-output data is reduced to 16-bits in order to support 1 MHz of
-sampling frequency due to clock limitation.
+The synchronization method using GPIO requires the generated pulse to be
+truly synchronous with the base MCLK signal. When it is not possible to
+do that in hardware, the datasheet recommends using synchronization over
+SPI, where the generated pulse is already synchronous with MCLK. This
+requires the SYNC_OUT pin to be connected to SYNC_IN pin.
 
-Use multiple scan types feature to enable the driver to switch
-scan type in runtime, making possible to support both 24-bit and
-16-bit resolution.
+Add the option to handle device synchronization over SPI.
 
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
- drivers/iio/adc/ad7768-1.c | 65 ++++++++++++++++++++++++++++++++------
- 1 file changed, 56 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 33 +++++++++++++++++++++++++++------
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 9741a6d47942..5e4e7d387f9a 100644
+index 5e4e7d387f9a..0b0cb3b396ff 100644
 --- a/drivers/iio/adc/ad7768-1.c
 +++ b/drivers/iio/adc/ad7768-1.c
-@@ -134,6 +134,11 @@ struct ad7768_clk_configuration {
- 	enum ad7768_pwrmode pwrmode;
- };
- 
-+enum ad7768_scan_type {
-+	AD7768_SCAN_TYPE_NORMAL,
-+	AD7768_SCAN_TYPE_HIGH_SPEED,
-+};
-+
- static const char * const ad7768_vcm_modes[] = {
- 	"(AVDD1-AVSS)/2",
- 	"2V5",
-@@ -145,6 +150,10 @@ static const char * const ad7768_vcm_modes[] = {
- 	"OFF",
- };
- 
-+static const int ad7768_mclk_div_rates[4] = {
-+	16, 8, 4, 2,
-+};
-+
- static const struct ad7768_clk_configuration ad7768_clk_config[] = {
- 	{ AD7768_MCLK_DIV_2, AD7768_DEC_RATE_8, 16,  AD7768_FAST_MODE },
- 	{ AD7768_MCLK_DIV_2, AD7768_DEC_RATE_16, 32,  AD7768_FAST_MODE },
-@@ -159,6 +168,21 @@ static const struct ad7768_clk_configuration ad7768_clk_config[] = {
- 	{ AD7768_MCLK_DIV_16, AD7768_DEC_RATE_1024, 16384, AD7768_ECO_MODE },
- };
- 
-+static const struct iio_scan_type ad7768_scan_type[] = {
-+	[AD7768_SCAN_TYPE_NORMAL] = {
-+		.sign = 's',
-+		.realbits = 24,
-+		.storagebits = 32,
-+		.endianness = IIO_BE,
-+	},
-+	[AD7768_SCAN_TYPE_HIGH_SPEED] = {
-+		.sign = 's',
-+		.realbits = 16,
-+		.storagebits = 32,
-+		.endianness = IIO_BE,
-+	},
-+};
-+
- static int ad7768_get_vcm(struct iio_dev *dev, const struct iio_chan_spec *chan);
- static int ad7768_set_vcm(struct iio_dev *dev, const struct iio_chan_spec *chan,
- 			  unsigned int mode);
-@@ -190,13 +214,9 @@ static const struct iio_chan_spec ad7768_channels[] = {
- 		.indexed = 1,
- 		.channel = 0,
- 		.scan_index = 0,
--		.scan_type = {
--			.sign = 's',
--			.realbits = 24,
--			.storagebits = 32,
--			.shift = 8,
--			.endianness = IIO_BE,
--		},
-+		.has_ext_scan_type = 1,
-+		.ext_scan_type = ad7768_scan_type,
-+		.num_ext_scan_type = ARRAY_SIZE(ad7768_scan_type),
- 	},
- };
- 
-@@ -208,6 +228,7 @@ struct ad7768_state {
- 	struct gpio_chip gpiochip;
- 	unsigned int gpio_avail_map;
- 	unsigned int mclk_freq;
-+	unsigned int dec_rate;
- 	unsigned int samp_freq;
- 	unsigned int common_mode_voltage;
- 	struct completion completion;
-@@ -308,6 +329,15 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
- 	ret = ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, &readval, 3);
- 	if (ret < 0)
- 		return ret;
-+
-+	/*
-+	 * When the decimation rate is set to x8, the ADC data precision is reduced
-+	 * from 24 bits to 16 bits. Since the AD7768_REG_ADC_DATA register provides
-+	 * 24-bit data, the precision is reduced by right-shifting the read value
-+	 * by 8 bits.
-+	 */
-+	if (st->dec_rate == 8)
-+		readval = readval >> 8;
+@@ -235,6 +235,7 @@ struct ad7768_state {
+ 	struct iio_trigger *trig;
+ 	struct gpio_desc *gpio_sync_in;
+ 	struct gpio_desc *gpio_reset;
++	bool en_spi_sync;
+ 	int irq;
+ 	const char *labels[ARRAY_SIZE(ad7768_channels)];
  	/*
- 	 * Any SPI configuration of the AD7768-1 can only be
- 	 * performed in continuous conversion mode.
-@@ -489,6 +519,8 @@ static int ad7768_set_freq(struct ad7768_state *st,
- 	if (ret < 0)
- 		return ret;
+@@ -295,6 +296,19 @@ static int ad7768_spi_reg_write_masked(struct ad7768_state *st,
+ 	return ad7768_spi_reg_write(st, addr, (reg_val & ~mask) | val);
+ }
  
-+	st->dec_rate = ad7768_clk_config[idx].clk_div /
-+		       ad7768_mclk_div_rates[ad7768_clk_config[idx].mclk_div];
- 	st->samp_freq = DIV_ROUND_CLOSEST(st->mclk_freq,
- 					  ad7768_clk_config[idx].clk_div);
- 
-@@ -544,8 +576,13 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 			   int *val, int *val2, long info)
- {
- 	struct ad7768_state *st = iio_priv(indio_dev);
-+	const struct iio_scan_type *scan_type;
- 	int scale_uv, ret;
- 
-+	scan_type = iio_get_current_scan_type(indio_dev, chan);
-+	if (IS_ERR(scan_type))
-+		return PTR_ERR(scan_type);
-+
- 	switch (info) {
- 	case IIO_CHAN_INFO_RAW:
- 		ret = iio_device_claim_direct_mode(indio_dev);
-@@ -554,7 +591,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 
- 		ret = ad7768_scan_direct(indio_dev);
- 		if (ret >= 0)
--			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
-+			*val = sign_extend32(ret, scan_type->realbits - 1);
- 
- 		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
-@@ -568,7 +605,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 			return scale_uv;
- 
- 		*val = (scale_uv * 2) / 1000;
--		*val2 = chan->scan_type.realbits;
-+		*val2 = scan_type->realbits;
- 
- 		return IIO_VAL_FRACTIONAL_LOG2;
- 
-@@ -612,11 +649,21 @@ static const struct attribute_group ad7768_group = {
- 	.attrs = ad7768_attributes,
- };
- 
-+static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
-+					const struct iio_chan_spec *chan)
++static int ad7768_send_sync_pulse(struct ad7768_state *st)
 +{
-+	struct ad7768_state *st = iio_priv(indio_dev);
++	if (st->en_spi_sync)
++		return ad7768_spi_reg_write(st, AD7768_REG_SYNC_RESET, 0x00);
 +
-+	return st->dec_rate == 8 ? AD7768_SCAN_TYPE_HIGH_SPEED :
-+		AD7768_SCAN_TYPE_NORMAL;
++	if (st->gpio_sync_in) {
++		gpiod_set_value_cansleep(st->gpio_sync_in, 1);
++		gpiod_set_value_cansleep(st->gpio_sync_in, 0);
++	}
++
++	return 0;
 +}
 +
- static const struct iio_info ad7768_info = {
- 	.attrs = &ad7768_group,
- 	.read_raw = &ad7768_read_raw,
- 	.write_raw = &ad7768_write_raw,
- 	.read_label = ad7768_read_label,
-+	.get_current_scan_type = &ad7768_get_current_scan_type,
- 	.debugfs_reg_access = &ad7768_reg_access,
- };
+ static int ad7768_set_mode(struct ad7768_state *st,
+ 			   enum ad7768_conv_mode mode)
+ {
+@@ -379,10 +393,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
+ 		return ret;
  
+ 	/* A sync-in pulse is required every time the filter dec rate changes */
+-	gpiod_set_value(st->gpio_sync_in, 1);
+-	gpiod_set_value(st->gpio_sync_in, 0);
+-
+-	return 0;
++	return ad7768_send_sync_pulse(st);
+ }
+ 
+ static int ad7768_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
+@@ -697,11 +708,21 @@ static int ad7768_setup(struct ad7768_state *st)
+ 	if (ret)
+ 		return ret;
+ 
+-	st->gpio_sync_in = devm_gpiod_get(&st->spi->dev, "adi,sync-in",
+-					  GPIOD_OUT_LOW);
++	st->gpio_sync_in = devm_gpiod_get_optional(&st->spi->dev, "adi,sync-in",
++						   GPIOD_OUT_LOW);
+ 	if (IS_ERR(st->gpio_sync_in))
+ 		return PTR_ERR(st->gpio_sync_in);
+ 
++	if (device_property_present(&st->spi->dev, "adi,sync-in-spi"))
++		st->en_spi_sync = true;
++
++	/*
++	 * GPIO and SPI Synchronization are mutually exclusive.
++	 * Return error if both are enabled
++	 */
++	if (st->gpio_sync_in && st->en_spi_sync)
++		return -EINVAL;
++
+ 	ret = ad7768_gpio_init(st);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.34.1
 

@@ -1,382 +1,154 @@
-Return-Path: <linux-iio+bounces-13994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 250A2A04AE6
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 21:21:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92056A04B37
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 21:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F9D3166EF9
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 20:21:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0722418880DB
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 20:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3241F5403;
-	Tue,  7 Jan 2025 20:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351C21E0084;
+	Tue,  7 Jan 2025 20:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lmOspixe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vw6fdb1c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E82418D620
-	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 20:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C8A95C;
+	Tue,  7 Jan 2025 20:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736281301; cv=none; b=ZutpjPvJvZEMyRg9GnjAa+me4UmGtJC701PePEw8/45brU7OHMqUY5Tb/MPcTssqjglglVNzArgTdGWSoFtI3QS41DlX73CwY2IVovBvctcvvWAdgdp0napD9qbvFufRlH7SNNQQ6xvnK3d8p6vS6HkjwxZJMX+IengWPw69N+Y=
+	t=1736283033; cv=none; b=kGbWB4a/kNsz+f6G8cyfsiEbPxGsdr28x40GIGegzh8UOgMxrL4or/ukzJCI2jgavEE1+iIHaZw3ewgF51NC0or+VHZwhdy49mTo0JW3PyWNUqGRY9MH2BbrEV8kcgl5Pg6PjyamhfvZ/Ms6vL9peKLlF3KL6Efp0or2gd5lXQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736281301; c=relaxed/simple;
-	bh=DDCF/bACMSBCaQ0r8jqYjpUgAM3Mv9a8r7t9AFsTiyM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qadCgr627pkd71wKWjUqjItfVm/gJUYLYhxYU4ArFBwDwpLQ4LQFJHk4FMR5R+JSnFt4QSWJYn4z3pFBjvuk6q6gI/urkYpl95IzvC/c9Plw25MNJg+qtlhsxqGstJyWn3++lMR8VGnwK4QBG/ZO3Ovu5ETiP+/rrLzpEaTYjCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lmOspixe; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-468f6b3a439so133600811cf.1
-        for <linux-iio@vger.kernel.org>; Tue, 07 Jan 2025 12:21:37 -0800 (PST)
+	s=arc-20240116; t=1736283033; c=relaxed/simple;
+	bh=cEDXrzDAGwn89i07P0yWZjAXaeNwVKps0fgpA+pnbg4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TqjSkUxhOUQ6vjicIoHrzSXvi8vCoavaViykFTYIkiahSLUNmPhpSRbVsCc71oW/uI/l0DAxPMhwd6nj/VTIBx6GvitKn4bAiVzR07RA/M0uHZAM/yyVBPMZEa4SFN3dLzIrwgaQmSwZL3gpSD5+uY8uZsDNQl64MCubER+9x2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vw6fdb1c; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4361b6f9faeso1114325e9.1;
+        Tue, 07 Jan 2025 12:50:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736281297; x=1736886097; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eZXED0N0ifdmys79THqoBFcO9C/LEJOBvhpy2BpHB1o=;
-        b=lmOspixe52FF1coI5NB0U6z49BH3mVxWOz7ys2+JLZ0tE/jCKmB633FfDKNn4p8SV7
-         grwSw79FHt3hIwt27SHr3R2VSTvxlFVwl2jKiQoKmfi8XMRxThDXrJhXbZzSpAI6B/em
-         YYd73evx+GnroeH9p5litVQvnMeenp1f6+i7TcRpoe6YTziE1wVpd8++QLiKhhp7Id43
-         QzYXAX/VmaxZHT5v4KijDOYbdLBG5UX5yCuMpu0IH69PkjeY7/+EAnazqEJaB+k5haie
-         ND7g4+IkIGAt5VDDzr9t2/3n+pc/SULGpuQIUNhwluUEAKI178azIjk3nY4fPcCw+NRV
-         O9KA==
+        d=gmail.com; s=20230601; t=1736283029; x=1736887829; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bRQ37yVdnn78l8TV/lFd8BR/arBGK2xhRXFfyCcpT6Y=;
+        b=Vw6fdb1cSFhW9lVAJHvHhJuPhb232gFDjbwcqe/c+KzjtNCX2ANvDOpabFVS078igq
+         A075I2XUOpIChPQQ91/eq7XJVqzl8dlRUQtEvjyvJt2k6wouFTXUZPkCNmDgV9Jgc/sl
+         gAPtF3PuJNpCVM0Ly8M9J8pjpoitNTnepeX+LHlLxxFNuOQf5/Shq4L7YkKY9zcccDop
+         urkNjinhczfzFl/WDtsekHjcL5BtHlus/dkiQqonTmX6cWdDBcbQRwMYTTqNIvcCRea4
+         44BBOQfO0u8ehWnDq4YvYtZ9A+Hv1foksZlN5K1HdgKWR/qjS4uSpHwzV6dZ+Xba3y4h
+         hVaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736281297; x=1736886097;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZXED0N0ifdmys79THqoBFcO9C/LEJOBvhpy2BpHB1o=;
-        b=nJ5L2FZA/MjFL4EHSE0N+1vzymjzvhQqyRFMAldzMurGazFwEAgn1ALfCiBBCyErFU
-         ep2f4/MPbQbYP3zK5SnB18iSYJpUdKpQsQK26sXuCFhAWRFq5BgIHh7wiOOj2DJ9/fy1
-         tpni4AOwUgzXugxDehqqc7BAT9ivmimO97IrTcDg2gDiF5fIdN0NA1wQzOvBjZR5oFG4
-         Kd8GQDSRPNVV/B62QbAuzEimTdtxafUnZeTYBbI3b06r/pMWJiA9GmxZgnvVzcSc4p9b
-         McblKkAlY3s/y04nB3NzRIOZVzdIsScRaTEuKqYHHu19yERLPQf31sfFNRWu1jyEw/Ay
-         V3Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCUld8Hrn4prvsXZCpL/Gi5UunaVevdld9n6dtETANgKpt4+O8lOgo1Lj2ZFUEURONnLm4rv7ACA7V4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwNnAnsQGxcaxSKkZUEK8BXXSrNBkTUK6YyV7LrPfJ5QLYWHK58
-	gNgTYtTMq024P+Bik4bFiBF17W29mzcH51uWknZXzRyEqUEoEtts+C0D5DSnKo8=
-X-Gm-Gg: ASbGncsAZEPfxP7We0pZzE4nkhvI9WVBPZ28ZIv9hH7+yzoDSpAg3v8GfI2sBD1jgst
-	s6PnIsSfn6GIAQ2Y2oRg76eUvEiGfuVshSPBpzpveG136i7NyCFRFLeAUCxtkNP1o0oTQSxMwPH
-	NvjqQYFmmXBbH/dEXn75Z46nfpvNnHzBIvcPjyifth9lSayxbc9+Gf3/SrtDnpQRAXswxEf4sPO
-	yUDnTMSFUer5rM2ECgaNFI9dken6L2NA2suojNmh8TTT/2elhrbtGptzECoOnjjjOeHX8y/nqEd
-	ASqCbnrj7FZKt/E3EDwDCT8j
-X-Google-Smtp-Source: AGHT+IEk8eY06r7V6KzVmBOZ2xkke3SXkW/Ijdj5K0dkEnUZEQU7ux5vyTTDmHg0pLosEs+8Rntjng==
-X-Received: by 2002:a05:622a:11d4:b0:467:451b:eba3 with SMTP id d75a77b69052e-46c70fd2146mr3541411cf.8.1736281296934;
-        Tue, 07 Jan 2025 12:21:36 -0800 (PST)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3e677a55sm188887291cf.27.2025.01.07.12.21.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 12:21:36 -0800 (PST)
-Message-ID: <9128ecae-73e9-4a66-8cd0-4d98c14ff05f@baylibre.com>
-Date: Tue, 7 Jan 2025 15:21:34 -0500
+        d=1e100.net; s=20230601; t=1736283029; x=1736887829;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bRQ37yVdnn78l8TV/lFd8BR/arBGK2xhRXFfyCcpT6Y=;
+        b=cUls1lo0hoifXPnXVfNae6ivLkr9OYw4PIFoaMz7JbfP7bUQRYeaXwvhk7DdSreUGk
+         TbOwRFr6kMnUkyfjO6xe6rPvJ6r9gpnCni5GOI5+67pBMuncwxG/uvs55R+bTbDNTDoS
+         VNmMAvhHmxGVgVE+jMwXI6MGy7sniSiHOfJoP1UsyEcNa4DiwhhJ0buvthfqeyqVlccb
+         eIiGe25C3PBB2GsVMPdu3Tna9jw8bXrCdGUybAmaM686aDoRWOhk3SqXUDWdScuDXpyo
+         yCbTjRdbfPBS/MZAmBsBicpQzgeouX0dNpFvksTKrqv2YEEodRe2Qy+slhrYtUkqKDY0
+         IpOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVisifale77P+roWVcQ9vUtEs5eRGhsox+XCADGkFz115xVB41xipoD8yPTfEg8GsWAHtCRYusGnHNwtMg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2Ay0Dyb9Wj22T/D5iDN+E2XargG8doqG9chPeH2oIm8GH6gPM
+	OYfnETmSd6mspbVGYVLirSCZl0LtdojcURNStYMZQ6ijZxHi4iOT
+X-Gm-Gg: ASbGnctk0lAfQKI0RX/t0Yl8CgNXDdeKM2YPYDFn2Hmt5Q8ykJefq+85mzRmcpU6FeN
+	636d6d3G/ggM566ZBXMJRpeBb9KEO/CTJP7XUZ4eS+9iCrdvv40HiR7LdIJ3noyXMFkzkOSkMG9
+	xX48reB7VvaNzjdzii3LyREkaKpM8W/xxqO20CWKQ+29TKwap/cxT3OPAeXNeHaEiiSAVZh7ddD
+	VVq3KIaZRKnyICT5xqSxC/yW0lEKBw5i0uYZU9NAnwKBBWYnKEulosxyWddFBBJtNC2rssaveRH
+	DLRLb5LdEcllCd8CahZULpIENscRq1zummYGWvYQkbYRV3QPotVeEATE1arZnmbxcsRqU6farp7
+	ZK8Y=
+X-Google-Smtp-Source: AGHT+IGp4cmv6sCBQQPg/Zrz7RZ09VVhlEsurmant8u4hlwnTmzl4oNuuUJMbtzwDaF71BZAK0wOFw==
+X-Received: by 2002:a05:600c:1d0d:b0:434:fe3c:c662 with SMTP id 5b1f17b1804b1-436e1e301e4mr4215165e9.12.1736283029240;
+        Tue, 07 Jan 2025 12:50:29 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-d595-98be-71e7-371c.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d595:98be:71e7:371c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a67c77a90sm13164132f8f.54.2025.01.07.12.50.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jan 2025 12:50:28 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] iio: light: fix scale in veml6030
+Date: Tue, 07 Jan 2025 21:50:20 +0100
+Message-Id: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: adc: ad4695: add offload-based oversampling
- support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20241217-ad4695-oversampling-v1-0-0b045d835dac@baylibre.com>
- <20241217-ad4695-oversampling-v1-1-0b045d835dac@baylibre.com>
- <20241219161301.3f708302@jic23-huawei>
- <1c641b37-475a-4153-bcfc-e0e72d79fa76@baylibre.com>
- <20250104123029.12a4e19e@jic23-huawei>
-Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20250104123029.12a4e19e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIyTfWcC/x3MSwqAIBRG4a3IHSf4CI22Eg2ifutCWShEEO49a
+ fgNznkpIzEy9eKlhJszn7FCN4LmbYorJC/VZJRptbFa3jh2p6ySeZ52yE63JtjOw8NRja6EwM8
+ /HMZSPoat/YhgAAAA
+X-Change-ID: 20241231-veml6030-scale-8142f387e7e6
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.15-dev-1b0d6
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736283026; l=2268;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=cEDXrzDAGwn89i07P0yWZjAXaeNwVKps0fgpA+pnbg4=;
+ b=UO2IgIrXptGE3VTCWi3tVhFzHWPSw8UVA3tiKrf966retrM/RjRFVKsOcARegOo7rtyIK6MEq
+ Pab79Hz+KigC+O6nBbKK43KDdD6/2fi13UoZAllQMvXFi5xaJsJkDPe
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
+This series follows a similar approach as recently used for the veml3235
+by using iio-gts to manage the scale as stated in the ABI. In its
+current form, the driver exposes the hardware gain instead of the
+multiplier for the raw value to obtain a value in lux.
 
-On 2025-01-04 07:30, Jonathan Cameron wrote:
-> On Thu, 2 Jan 2025 13:19:19 -0500
-> Trevor Gamblin <tgamblin@baylibre.com> wrote:
->
->> On 2024-12-19 11:13, Jonathan Cameron wrote:
->>> On Tue, 17 Dec 2024 16:47:28 -0500
->>> Trevor Gamblin <tgamblin@baylibre.com> wrote:
->>>   
->>>> Add support for the ad4695's oversampling feature when SPI offload is
->>>> available. This allows the ad4695 to set oversampling ratios on a
->>>> per-channel basis, raising the effective-number-of-bits from 16
->>>> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
->>>> full cycle through the auto-sequencer). The logic for reading and
->>>> writing sampling frequency for a given channel is also adjusted based on
->>>> the current oversampling ratio.
->>>>
->>>> The non-offload case isn't supported as there isn't a good way to
->>>> trigger the CNV pin in this mode. Support could be added in the future
->>>> if a use-case arises.
->>>>
->>>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
->>> Hi Trevor,
->>>
->>> The clamping fun of get_calibbias seems overkill. If this isn't going to ever
->>> overflow an s64 maybe just use the high precision to do it the easy way.
->>> I'm not sure you can't just fit it in an s32 for that matter. I've just
->>> not done the maths to check.
->>>
->>> Jonathan
->>>
->>>   
->>>> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
->>>> +{
->>>> +	unsigned int reg_val;
->>>> +
->>>> +	switch (osr) {
->>>> +	case 4:
->>>> +		if (val2 >= 0 && val > S16_MAX / 2)
->>>> +			reg_val = S16_MAX;
->>>> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 2)
->>> It has been a while, but IIRC if val2 < 0 then val == 0 as otherwise
->>> we carry the sign in the val part.  Sometimes we generalize that to
->>> make life easier for driver writers but I think you can use that here
->>> to simplify things.
->>>
->>> (for background look at __iio_str_to_fixpoint() - it's a bit of a hack
->>> to deal with integers have no negative 0)
->>>
->>> 		if (val > S16_MAX / 2)
->>> 			...
->>> 		else if (val < S16_MIN / 2)
->>> 			...	
->>> 		else if (val2 < 0) etc
->>>
->>> You may feel it is better to keep the code considering the val2 < 0 when
->>> val != 0 case and I don't mind that as it's not wrong, just overly complex!
->>>
->>> If you can easily clamp the overall range you can just do some maths
->>> with enough precision to get one number (probably a s64) and clamp that.
->>> Easy to sanity check for overflow based on val to ensure no overflows.
->> Hi Jonathan,
->>
->> I'm reviewing this again but I'm not entirely clear what you mean.
->>
->> Are you suggesting that the entire switch block could be simplified
->> (i.e. eliminating the previous simplification for the val2 < 0 case in
->> the process), or that the calls to clamp_t can be combined?
->>
->> I've tested out simplifying the val2 < 0 case locally and driver
->> functionality still seems OK. Maybe I'm missing a third option.
-Hi Jonathan,
-> The extra info we can use is that val2 is always positive
-> if val != 0 and it never takes a value beyond +- MICRO because
-> otherwise val would be non 0 instead.
->
->
-> Taking original code and ruling out cases.
-> +	case 4:
-> +		if (val2 >= 0 && val > S16_MAX / 2)
-> // If val is non 0 then val2 is postive, so
-> //		if (val > S16_MAX / 2)
-> //			reg_val = S16_MAX;
->
-> +			reg_val = S16_MAX;
-> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 2)
->
-> // If val2 < 0 then val == 0 which is never less than S16_MIN / 2
-> // So this condition never happens.
-Thanks for catching these.
->
-> +			reg_val = S16_MIN;
-> +		else if (val2 < 0)
-> // likewise, this is actually clamping val2 * 2 / MICRO which
-> // is never going to be anywhere near S16_MIN or S16_MAX as I think
-> // it is always between +1 and -1 as val2 itself is limited to -MICRO to MICRO
->
-> +			reg_val = clamp_t(int,
-> +				-(val * 2 + -val2 * 2 / MICRO),
-> +				S16_MIN, S16_MAX);
-> +		else if (val < 0)
-> //This one is fine.
-> +			reg_val = clamp_t(int,
-> +				val * 2 - val2 * 2 / MICRO,
-> +				S16_MIN, S16_MAX);
-> +		else
-> //As is this one
-> +			reg_val = clamp_t(int,
-> +				val * 2 + val2 * 2 / MICRO,
-> +				S16_MIN, S16_MAX);
-> +		return reg_val;
->
-> Maybe trick is to reorder into 3 conditions and set the value in a temporary integer.
-> 	int val_calc;
-> 	if (val > 0)
-> 		val_calc = val * 2 + val2 * 2 / MICRO;
-> 	else if (val < 0)
-> 		val_calc = -(val * 2 - val2 * 2 / MICRO);
-> 	else /* Only now does val2 sign matter as val == 0 */
-> 		val_calc = val2 * 2 / MICRO;
+Although this driver and the veml3235 have many similarities, there are
+two main differences in this series compared to the one used to fix the
+other driver:
 
-I've been testing out these simplifications (but using the scaling 
-suggestion from below, which is great - for some reason I had it in my 
-head that doing so wasn't an option).
+- The veml6030 has fractional gains, which are not supported by the
+  iio-gts helpers. My first attempt was adding support for them, but
+  that made the whole iio-gts implementation more complex, cumbersome,
+  and the risk of affecting existing clients was not negligible.
+  Instead, a x8 factor has been used for the hardware gain to present
+  the minimum value (x0.125) as x1, keeping linearity. The scales
+  iio-gts generates are therefore right without any extra conversion,
+  and they match the values provided in the different datasheets.
 
-These seem to have some issues with signs for particularly small 
-calibbias values. I think it's because while my (val2 < 0) case was 
-doing unnecessary clamping, the math itself was OK.
+- This driver included a processed value for the ambient light, maybe
+  because the scale did not follow the ABI and the conversion was not
+  direct. To avoid breaking userspace, the functionality has been kept,
+  but of course using the fixed scales. That requires using intermediate
+  u64 values u64 divisions via div_u64() and do_div() to avoid overflows.
 
-I did some more experimenting, and came up with a new version of the 
-function that looks like this:
+To ease the usage of the iio-gts selectors, a previous patch to support
+regfields and caching has been included.
 
-static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
-{
-         int val_calc, scale;
+This issue has been present since the original implementation, and it
+affects all devices it supports.
 
-         switch (osr) {
-         case 4:
-                 scale = 4;
-                 break;
-         case 16:
-                 scale = 2;
-                 break;
-         case 64:
-                 scale = 1;
-                 break;
-         default:
-                 scale = 8;
-                 break;
-         }
+This series has been tested with a veml7700 (same gains as veml6030) and
+a veml6035 with positive results.
 
-         /* Note that val2 > 0 if val != 0 and val2 range +- MICRO */
-         if (val < 0)
-                 val_calc = val * scale - val2 * scale / MICRO;
-         else if (val2 < 0)
-                 /* if val2 < 0 then val == 0 */
-                 val_calc = -(-val2 * scale / MICRO);
-         else
-                 val_calc = val * scale + val2 * scale / MICRO;
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (2):
+      iio: light: veml6030: extend regmap to support regfields and caching
+      iio: light: veml6030: fix scale to conform to ABI
 
-         val_calc /= 2;
+ drivers/iio/light/Kconfig    |   1 +
+ drivers/iio/light/veml6030.c | 594 ++++++++++++++++++++-----------------------
+ 2 files changed, 282 insertions(+), 313 deletions(-)
+---
+base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
+change-id: 20241231-veml6030-scale-8142f387e7e6
 
-         return clamp_t(int, val_calc, S16_MIN, S16_MAX);
-}
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-This seems to match all of the expected outputs for the 
-pre-simplification version in this patch series when I test it. If there 
-are no issues with it, I'll send a v2.
-
->
-> Which can simplify because we know val is 0 for last case.
-> Whether this is worth doing depends on trade off between
-> docs needed to explain the code and shorter code.
->
-> 	/* Note that val2 > 0 if val != 0 and val2 range +- MICRO */
-> 	if (val < 0)
-> 		val_calc = val * 2 - val2 * 2 / MICRO;
-> 	else
-> 		val_calc = val * 2 + val2 * 2 / MICRO;
->
-> 	reg_val = clamp_t(int, val_calc, S16_MIN, S16_MAX);
-> 	
-> One trivial additional simplication below.
->
-> You might also be able to scale temporary up by 2 and ust
-> have the switch statement set a scaling value.
->
-> In this case scale == 4 in other cases below, 2, 1, and 8 for the default
->
->
-> 	if (val < 0)
-> 		val_calc = val * scale - val2 * scale / MICRO;
-> 	else
-> 		val_calc = val * scale + val2 * scale / MICRO;
->
-> 	val_calc /= 2; /* to remove the factor of 2 */
->
-> 	reg_val = clamp_t (int, val_calc, S16_MIN, S16_MAX);
-> after the switch statement with comments when setting scale on the * 2
-> multiplier to avoid the / 2 for case 64.
->
->> - Trevor
->>
->>> 		
->>>
->>>   
->>>> +			reg_val = S16_MIN;
->>>> +		else if (val2 < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				-(val * 2 + -val2 * 2 / MICRO),
->>>> +				S16_MIN, S16_MAX);
->>>> +		else if (val < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				val * 2 - val2 * 2 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		else
->>>> +			reg_val = clamp_t(int,
->>>> +				val * 2 + val2 * 2 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		return reg_val;
->>>> +	case 16:
->>>> +		if (val2 >= 0 && val > S16_MAX)
->>>> +			reg_val = S16_MAX;
->>>> +		else if ((val2 < 0 ? -val : val) < S16_MIN)
->>>> +			reg_val = S16_MIN;
->>>> +		else if (val2 < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				-(val + -val2 / MICRO),
->>>> +				S16_MIN, S16_MAX);
->>>> +		else if (val < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				val - val2 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		else
->>>> +			reg_val = clamp_t(int,
->>>> +				val + val2 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		return reg_val;
->>>> +	case 64:
->>>> +		if (val2 >= 0 && val > S16_MAX * 2)
->>>> +			reg_val = S16_MAX;
->>>> +		else if ((val2 < 0 ? -val : val) < S16_MIN * 2)
->>>> +			reg_val = S16_MIN;
->>>> +		else if (val2 < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				-(val / 2 + -val2 / 2 / MICRO),
->>>> +				S16_MIN, S16_MAX);
->>>> +		else if (val < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				val / 2 - val2 / 2 / MICRO,
-> For these val2 / 2 / MICRO always 0 so value of val2 never matters.
->
->>>> +				S16_MIN, S16_MAX);
->>>> +		else
->>>> +			reg_val = clamp_t(int,
->>>> +				val / 2 + val2 / 2 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		return reg_val;
->>>> +	default:
->>>> +		if (val2 >= 0 && val > S16_MAX / 4)
->>>> +			reg_val = S16_MAX;
->>>> +		else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
->>>> +			reg_val = S16_MIN;
->>>> +		else if (val2 < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				-(val * 4 + -val2 * 4 / MICRO),
->>>> +				S16_MIN, S16_MAX);
->>>> +		else if (val < 0)
->>>> +			reg_val = clamp_t(int,
->>>> +				val * 4 - val2 * 4 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		else
->>>> +			reg_val = clamp_t(int,
->>>> +				val * 4 + val2 * 4 / MICRO,
->>>> +				S16_MIN, S16_MAX);
->>>> +		return reg_val;
->>>> +	}
->>>> +}
->>>> +
 

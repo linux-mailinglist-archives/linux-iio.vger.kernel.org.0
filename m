@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-13951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-13948-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AE5A03A26
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 09:49:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A31EA03A20
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 09:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B071654B8
-	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 08:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81F4A165515
+	for <lists+linux-iio@lfdr.de>; Tue,  7 Jan 2025 08:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDE81E0B7D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8221E32CA;
 	Tue,  7 Jan 2025 08:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QmbOoHym"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ZR106Kv8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD831DF75E
-	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 08:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D822133CA
+	for <linux-iio@vger.kernel.org>; Tue,  7 Jan 2025 08:48:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736239714; cv=none; b=ZR4xBkLos4Uw5ekBo2y9ik+VmagnoaN1dJ6o+XsuZpYouqE7C4IvUK6BsMoh92/W+0yQOe3Jx2KKCGc4pdBkNOPswTidN1D94WTBlqZpX0nyYBxHvriOAlYkjLzM2Y1AOlIuUAWc1xq9eUc1DAf/SYRDa3a8hYRc73P9gHYU8qQ=
+	t=1736239713; cv=none; b=PaoGYMIUFOAUi8B60ZvszydobmIr3skK8pBjbNLWN4orp1dT/+1DOrRNhlkF1orM9DMbWr3/CluwiBFrcIe7jxAyBq9J/Hs2UFg5cGVQ6u1XXkyQSv89ukx9V9Ll9kNgWpyZLG46ncjFozogFg2esW1ADQwwpoS1sDnXcgld2v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736239714; c=relaxed/simple;
-	bh=eSSplP/3FY91YR2XwZTXJZ2Ax/rrzWeyNFYg2OhghvI=;
+	s=arc-20240116; t=1736239713; c=relaxed/simple;
+	bh=7qCtycerJ0E7BO6irPTIjHbz+5YMM8ZJmtF+i0cqt8U=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZcIqO8x7J8jZkruYTqlibEaoLQrPSuHq9e3wHp5xYH2VyVNsqn9mpyxy3yvmnbDqwEyMgZVoEHXpcpzd4G8e6cpwxi6ObaC1wapgueBP2BRGACm4KfduigQ6tenFW/kOijiQzTJyq+THjmQm6nDG4qP5VJSMpJ2wNz5XHWE413I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QmbOoHym; arc=none smtp.client-ip=209.85.128.46
+	 In-Reply-To:To:Cc; b=VN1xIGOGAdaww+hcSCrp8gsaDhIP19pBUX7Gc5nLH1VeYyteUCRz7h83Zm0RRlYPxaUrHocZOWPoYHwSKKb+xHhzl1pLkSkOjVdnDqY2ErGP0olPNz9MBQkVCRIozwBzjSyLi/mlnD2Ie+3wSXY+5bGTCSyatAHWBPmdfl2Gmto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ZR106Kv8; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43635796b48so91868995e9.0
-        for <linux-iio@vger.kernel.org>; Tue, 07 Jan 2025 00:48:28 -0800 (PST)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862df95f92so6678293f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 07 Jan 2025 00:48:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736239706; x=1736844506; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736239708; x=1736844508; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hZ+/3KnECndMbh/2k2JKBTk8y/NjC4Kknkr3b9iFCA8=;
-        b=QmbOoHymiXR3HSPWS4+gtQR+EwmtBPja7KgOHX6jD3cKInHr78dlnaAXdAYrnQys35
-         m3KLBez06RVWIiuDMFc5JzUhdBia+Ql2MEECtqOd5PdAuPEC8050yHjKV84CqxWkVIWs
-         wDPW5LskeTD+mB1QxjHWucJbTtj1eK882mV0PaQBHPt3zbl3dCgdzMU5DLX1CW/nYKoH
-         qnmK0Yzg3I8WYtDCEClssUqzqbTIvN8hncqrJCKJ/Vr8+85xLiyF/PWVp1Heo6GjANgu
-         rKFXOqxEk68zPgC1OGm40+ltp23QZWeijHa6UJ5wlmEwmE2PAr+iV2iSSFY2xegEMBLL
-         /VlQ==
+        bh=Mmx4+6G+rkiZk9IxH+TiIsFUVQG9SU6UNwMqQ7on0Oo=;
+        b=ZR106Kv8wgxYSKSLM4LdCIFmQ7uwulcqF3r/8DUqXXPhmXYSguZUiWVeiu6LvA6fdT
+         5RyqvLrIpqHxA6UlTeVBkdy4sENXjXJ3miKrOWelWbltTCx6gMrxoLqV2IidlUqhdlOu
+         jq1ipV+2PJ7L6+hJvYInHw14OaXhsL98bqnS5iGc2T4rzSBLukfLi7ccJofbkM5oCoya
+         oXvlEUnoymC1Veqc6gfF5Qe8iBa//jvFID3r8kI6CIk29L0suILQCgE0IFBDObMktjeZ
+         9xnnUDRPmbcRtupDQoYvGmM96KjwPk8CceqqxVclc58Mf+Gf+bmW+AghBkMdrsJCJtWv
+         42Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736239706; x=1736844506;
+        d=1e100.net; s=20230601; t=1736239708; x=1736844508;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hZ+/3KnECndMbh/2k2JKBTk8y/NjC4Kknkr3b9iFCA8=;
-        b=VeQkawMytPiDIlZU6GdiRl7Q3qR9Weua53nxCokYyWqywfi1CACujs743CI7Xy7oPh
-         YtULwJUMwsQgi4+MykpL4YwqPA3K3LK+LM4Qj6mwPUqsX9TsMGlq86S8opppMUh3ewah
-         H8DtVmYV/UKY9yt78F4wisYzX27gNGiSheLow514NyeoWJ0XPMexl6lzCzuKCVc7Tt8i
-         vqp4YUK1ktTic840ZjqijwUnVe2d8ObLkmf5+lNYUYzQPNuF8Q8SfFhxJ5hyKoMdUyWx
-         1YHty3ak/IWrWwRFtO9gHHFI9vFVu5tcoUJi4yPDx70q77Y/YwzP9mwX0IwNpwUP6xEk
-         zrZQ==
-X-Gm-Message-State: AOJu0Yw8yGi2ZTB2YznDSTmn7lZesgG2UZZjzBtCIZi+am0dGJIrDxwa
-	9c6e77k5sqFD6lV277MJEKGDxPYgKwJ34V1GEAAjlvatNkMMVLATFs/f/iJr1Nc=
-X-Gm-Gg: ASbGnctan+rK+YQz9mRTGkWzGb1oj1UaZb2ZjH1RR1SwnUTf4meAv+jy7mw5Sd1hbTT
-	UGX6O667g7DQfWcEX+kW/aPEDFe2t3fGhtPaNgelOPVWf9chSEMColzomN/92hzGCQFenRn1v0N
-	26aKDAUr9hlQGnsj+Et7NxJ/PpOCBEANoauG1NzQmvJJ3eCLKYBsYdQ8E3M+CVJ5ZNsGvdwHSsm
-	svY4HyZRp4YGR/ASUpzZs+kW2Wn34YRwXzmGSQfvffPYq84oMzRvfFuWEo0LANda02kLZ2rmtA0
-	4iFiuzWkbUjKNvikblM/8hpQKGZ5T1Mp1UjzjvBxtoOYhRLGcg==
-X-Google-Smtp-Source: AGHT+IGQ4V3dSc3vK+Zyhlr0chhocUMOJ1bGwH2LL7mekY4ZcsViuFPyGalpXb4K+Ellw6y7xZP6gw==
-X-Received: by 2002:a05:600c:1d12:b0:436:1b86:f05 with SMTP id 5b1f17b1804b1-436dc20b0c1mr16203915e9.11.1736239706555;
-        Tue, 07 Jan 2025 00:48:26 -0800 (PST)
+        bh=Mmx4+6G+rkiZk9IxH+TiIsFUVQG9SU6UNwMqQ7on0Oo=;
+        b=HPs9pifdN7wOFwKO+57adw9sPmlJQYsQlkufMxdENZkF0JM5zcGhlhKK7PeeY0v7yU
+         9jEvC8zEw7NO2HKNgKkD4lVjPFmunUjLjwMQ2yc+jcVmJUcYHOlDbsS3GRyLqX8iOtfI
+         kzoN8Sm2d6j+iOfKtOqt6DxNwseC5GPHJcBlfN/BxAQV9chD3VIdAIX0jRxuch8diAEJ
+         IEW5/cqij4bEIB5nntxd6b0Emlmu5ysymme4h2IAN9RsXdCXi1p//uMErCXe+VQ5UmR1
+         nNtjI2wOokb9FW7SXHRBEikS7dpbHdCl2pXVthigdD2UcuhgB8xt7WtsN735rSHWmcGE
+         8cSg==
+X-Gm-Message-State: AOJu0Yxr+pV3yud6qMgBPpeo2K9dEwNLHUS1uwwege8OseX0dzdLLKZj
+	UnN5ctHPC48lsOMKqWm90JdMlT+bJtMwJ8P4RdSj4xD0KfHyAY4IljjbtMPa6hg=
+X-Gm-Gg: ASbGncv/i+WAIhero4TKRVc7lt2fc2KZi00eXu54tGUvaj8BP3ETU/yi2cT/VCtFT5l
+	NUsqx/WudPolDNsJfs9XM8d8qdDKgclEeWlJYqVqb3WY8r5E4TUMyVbwNp6rgw+DLZMRZm3LMc9
+	b5IjDaZnShGLT6Y1uLArfPOJm4O8yHJLReCBBYKNUDoMN9zeydEy/fejpR/h6Uw+8/2DrYgX2PE
+	TNsv+SFz3Hdxsv+y24Sra/zvaVRdQzPYUU/Ma9Hd5jFpNp/Ic/54LVY5vYsjFHsKvZtZ3+ThTEy
+	y0q6bS4+a9PrIxtMuO2gFUxRXZO06CxjHZOI3Ph1J3LqYJr8mg==
+X-Google-Smtp-Source: AGHT+IGyEcwIUTZtYtssZEIQClpbBVEqxd3T1X/W9wsKPy3pGHiYnZmgLn6QRRS86rH3uHjsZwNMLw==
+X-Received: by 2002:a5d:64c4:0:b0:386:459e:e138 with SMTP id ffacd0b85a97d-38a223f71c7mr51700868f8f.36.1736239707327;
+        Tue, 07 Jan 2025 00:48:27 -0800 (PST)
 Received: from [192.168.1.62] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c828817sm50722280f8f.1.2025.01.07.00.48.25
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c828817sm50722280f8f.1.2025.01.07.00.48.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 07 Jan 2025 00:48:26 -0800 (PST)
 From: Julien Stephan <jstephan@baylibre.com>
-Date: Tue, 07 Jan 2025 09:48:25 +0100
-Subject: [PATCH v3 1/5] iio: adc: ad7380: do not use
- iio_device_claim_direct_scoped anymore
+Date: Tue, 07 Jan 2025 09:48:26 +0100
+Subject: [PATCH v3 2/5] iio: adc: ad7380: enable regmap cache
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +82,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250107-ad7380-add-alert-support-v3-1-bce10afd656b@baylibre.com>
+Message-Id: <20250107-ad7380-add-alert-support-v3-2-bce10afd656b@baylibre.com>
 References: <20250107-ad7380-add-alert-support-v3-0-bce10afd656b@baylibre.com>
 In-Reply-To: <20250107-ad7380-add-alert-support-v3-0-bce10afd656b@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -95,171 +94,49 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org, Julien Stephan <jstephan@baylibre.com>
 X-Mailer: b4 0.14.2
 
-Conditionnal scoped handlers are turning out to be a real pain:
-readability issues, compiler and linker handling issues among others so
-rollback and remove the scoped version of iio_dvice_claim_direct_mode.
-
-To impove code readability factorize code to set oversampling ratio.
+Enable regmap cache, to avoid useless access on spi bus.
 
 Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
- drivers/iio/adc/ad7380.c | 110 +++++++++++++++++++++++++++++------------------
- 1 file changed, 67 insertions(+), 43 deletions(-)
+ drivers/iio/adc/ad7380.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index 4f32cb22f140442b831dc9a4f275e88e4ab2388e..bc7d58850a3e2a84a241d81377e3dc14c43fc101 100644
+index bc7d58850a3e2a84a241d81377e3dc14c43fc101..b97d2978289e92ad502cd6a67de43d2b51cdab56 100644
 --- a/drivers/iio/adc/ad7380.c
 +++ b/drivers/iio/adc/ad7380.c
-@@ -675,15 +675,21 @@ static const struct regmap_config ad7380_regmap_config = {
+@@ -663,6 +663,20 @@ static int ad7380_regmap_reg_read(void *context, unsigned int reg,
+ 	return 0;
+ }
+ 
++static const struct reg_default ad7380_reg_defaults[] = {
++	{ AD7380_REG_ADDR_ALERT_LOW_TH, 0x800 },
++	{ AD7380_REG_ADDR_ALERT_HIGH_TH, 0x7FF },
++};
++
++static const struct regmap_range ad7380_volatile_reg_ranges[] = {
++	regmap_reg_range(AD7380_REG_ADDR_CONFIG2, AD7380_REG_ADDR_ALERT),
++};
++
++static const struct regmap_access_table ad7380_volatile_regs = {
++	.yes_ranges = ad7380_volatile_reg_ranges,
++	.n_yes_ranges = ARRAY_SIZE(ad7380_volatile_reg_ranges),
++};
++
+ static const struct regmap_config ad7380_regmap_config = {
+ 	.reg_bits = 3,
+ 	.val_bits = 12,
+@@ -670,6 +684,10 @@ static const struct regmap_config ad7380_regmap_config = {
+ 	.reg_write = ad7380_regmap_reg_write,
+ 	.max_register = AD7380_REG_ADDR_ALERT_HIGH_TH,
+ 	.can_sleep = true,
++	.reg_defaults = ad7380_reg_defaults,
++	.num_reg_defaults = ARRAY_SIZE(ad7380_reg_defaults),
++	.volatile_table = &ad7380_volatile_regs,
++	.cache_type = REGCACHE_MAPLE,
+ };
+ 
  static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
- 				     u32 writeval, u32 *readval)
- {
--	iio_device_claim_direct_scoped(return  -EBUSY, indio_dev) {
--		struct ad7380_state *st = iio_priv(indio_dev);
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	int ret;
- 
--		if (readval)
--			return regmap_read(st->regmap, reg, readval);
--		else
--			return regmap_write(st->regmap, reg, writeval);
--	}
--	unreachable();
-+	ret = iio_device_claim_direct_mode(indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	if (readval)
-+		ret = regmap_read(st->regmap, reg, readval);
-+	else
-+		ret = regmap_write(st->regmap, reg, writeval);
-+
-+	iio_device_release_direct_mode(indio_dev);
-+
-+	return ret;
- }
- 
- /*
-@@ -920,6 +926,7 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
- {
- 	struct ad7380_state *st = iio_priv(indio_dev);
- 	const struct iio_scan_type *scan_type;
-+	int ret;
- 
- 	scan_type = iio_get_current_scan_type(indio_dev, chan);
- 
-@@ -928,11 +935,16 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (info) {
- 	case IIO_CHAN_INFO_RAW:
--		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--			return ad7380_read_direct(st, chan->scan_index,
--						  scan_type, val);
--		}
--		unreachable();
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
-+
-+		ret = ad7380_read_direct(st, chan->scan_index,
-+					 scan_type, val);
-+
-+		iio_device_release_direct_mode(indio_dev);
-+
-+		return ret;
- 	case IIO_CHAN_INFO_SCALE:
- 		/*
- 		 * According to the datasheet, the LSB size is:
-@@ -1008,47 +1020,59 @@ static int ad7380_osr_to_regval(int ratio)
- 	return -EINVAL;
- }
- 
-+static int ad7380_set_oversampling_ratio(struct ad7380_state *st, int val)
-+{
-+	int ret, osr, boost;
-+
-+	osr = ad7380_osr_to_regval(val);
-+	if (osr < 0)
-+		return osr;
-+
-+	/* always enable resolution boost when oversampling is enabled */
-+	boost = osr > 0 ? 1 : 0;
-+
-+	ret = regmap_update_bits(st->regmap,
-+				 AD7380_REG_ADDR_CONFIG1,
-+				 AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
-+				 FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
-+				 FIELD_PREP(AD7380_CONFIG1_RES, boost));
-+
-+	if (ret)
-+		return ret;
-+
-+	st->oversampling_ratio = val;
-+	st->resolution_boost_enabled = boost;
-+
-+	/*
-+	 * Perform a soft reset. This will flush the oversampling
-+	 * block and FIFO but will maintain the content of the
-+	 * configurable registers.
-+	 */
-+	ret = regmap_update_bits(st->regmap,
-+				 AD7380_REG_ADDR_CONFIG2,
-+				 AD7380_CONFIG2_RESET,
-+				 FIELD_PREP(AD7380_CONFIG2_RESET,
-+					    AD7380_CONFIG2_RESET_SOFT));
-+	return ret;
-+}
- static int ad7380_write_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan, int val,
- 			    int val2, long mask)
- {
- 	struct ad7380_state *st = iio_priv(indio_dev);
--	int ret, osr, boost;
-+	int ret;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		osr = ad7380_osr_to_regval(val);
--		if (osr < 0)
--			return osr;
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
- 
--		/* always enable resolution boost when oversampling is enabled */
--		boost = osr > 0 ? 1 : 0;
-+		ret = ad7380_set_oversampling_ratio(st, val);
- 
--		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--			ret = regmap_update_bits(st->regmap,
--					AD7380_REG_ADDR_CONFIG1,
--					AD7380_CONFIG1_OSR | AD7380_CONFIG1_RES,
--					FIELD_PREP(AD7380_CONFIG1_OSR, osr) |
--					FIELD_PREP(AD7380_CONFIG1_RES, boost));
-+		iio_device_release_direct_mode(indio_dev);
- 
--			if (ret)
--				return ret;
--
--			st->oversampling_ratio = val;
--			st->resolution_boost_enabled = boost;
--
--			/*
--			 * Perform a soft reset. This will flush the oversampling
--			 * block and FIFO but will maintain the content of the
--			 * configurable registers.
--			 */
--			return regmap_update_bits(st->regmap,
--					AD7380_REG_ADDR_CONFIG2,
--					AD7380_CONFIG2_RESET,
--					FIELD_PREP(AD7380_CONFIG2_RESET,
--						   AD7380_CONFIG2_RESET_SOFT));
--		}
--		unreachable();
-+		return ret;
- 	default:
- 		return -EINVAL;
- 	}
 
 -- 
 2.47.1

@@ -1,81 +1,80 @@
-Return-Path: <linux-iio+bounces-14031-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14032-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BDFA0636F
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:31:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02EECA06370
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A47167253
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DFF3188ADB9
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52B42036E0;
-	Wed,  8 Jan 2025 17:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C502036E9;
+	Wed,  8 Jan 2025 17:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Gp5+FlpH"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IcjGHFO4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DD4202F6D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDAB202C45
 	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736357443; cv=none; b=p7ySxjhQbVExWui2f76l59sIM+GtUPCewbQ9cfmevFBfbKnodHvABnIK6ScXi5fO8Dpe2G72noyj6DXQA4MDM7hW1P+C9djQ2ZQLHzIvkT7JzHYvFx0DM83SXVlXQhPAY9aiEHVbluK0WxXDAcL23y9DbOw/+vK3+w5sNZOmdhc=
+	t=1736357443; cv=none; b=m/AEkI1IfeITT18Djp+YSxyMcVB+uiiNSbwleHUczJj37ZPrH27Nxz+Dn/cVPQLuBdhdTpYk2f/6v8DWnmFuZDv82uWZCZ0q4XJalTwC522uHqCdi0DAgFGg+yb7+BCgI3GjBJnS6aFiA8JK+h3g0yzpZ/7LzrAmJByxDioCbT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1736357443; c=relaxed/simple;
-	bh=DnAjjx0PkSOieNJ5OJb2nk2Cce0Mvn+naUnXYCUW1PM=;
+	bh=yPBj8+317vNPAuFqO9cv8l0b9AdvZ+jKb3gEbQivFoE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=inyVwfR7cY8vWOHmgdjjeJHYkoVcPqLNJoj6vBLqoQ7jQiQM20vAScOXbWdJnyCM/kBqgr7XzBCYqHq1IgeB0zcwfmMd/Z0H8DMecvTv2PIzG6VtuTE6oIFlt6LCuSquf+zSHsz3kI8iO66hjs2h79dRaRg9ieA/mp41m+hK1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Gp5+FlpH; arc=none smtp.client-ip=209.85.128.45
+	 In-Reply-To:To:Cc; b=V93+3mWMYXvOZ3njdwBboNqHcDSvFTWUIqdPVLBEg+4se8QthjMJac6Fruc1D+lrJAa+kT84NoaOdQpMZEv7lxvlaYgczBdIgsNCvbFVLGeG3UZqI9olUZ20IGsXiKBXMpLelry8AkXTQy3SUiJq8b42HQiM8TnPN6K9Vj6lh+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IcjGHFO4; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361fe642ddso758565e9.2
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385deda28b3so20413f8f.0
         for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:30:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736357440; x=1736962240; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qABqYAhj0TrQzJxH7XVarpnbO7+OveXqYM2s3icznC4=;
-        b=Gp5+FlpHJFNF4Iv1xZSRQrMCGxxP96zqrOhsI2nCDVQV/F2fhUcjpqib8XK0zowHCv
-         jnfVioIcJ3MwAb5+dpn2F64Wj++/TmguihzKtLDRrrrgXGK1NT0kd7ad8gC2CRwEBkvK
-         91rSF/Ur53zPbINWSTxJhRi7CFc/qzsVE21DAllAbn+CZpPkhGdhohnG1EkcWzCUJ9m1
-         3rSXqdG3+6csNurp9ONIVEGPNiiC7EZJQd60qgA+wxzUEQMOReA2sbW8VUOgTzHzsuGI
-         XuFNUXokkf2xrln0OzfMbzR55Awtcc7tvn/MmRd/+9DHyio+aqpIdX7aAUgurcKKeo2p
-         1tTg==
+        bh=CNTleVNIiTU9nZ6xRJX/KSmh/FQGS6/eS5WcZiPevhQ=;
+        b=IcjGHFO4bUZsVypNlpe5bFcQ8+unHA6rXaGqZFeicw6Tx+WJbM2tg0k9+fF5HsBfvS
+         1mT1qc3o8Dy+djD4mwNv8ucKrpOJyudWA+aTFmeRHD7qAo7RL2r9fOlVn5HAz9CZs4u/
+         ORVKvogTJLm23HIdibsLiPFYaLKdbgILNr8YddALiKLr2h0HTy6oFVFHO7NQNrVEWJg6
+         DLumMkxhe0EBmw0g4qw/Z1hVnosqpkK8VNQPn6kUI2kDNuhlWV73QT2csA/VFAhnfLh5
+         U0PMJYqzmDUxMxtqlxYcFU0fWW3BnFyIqAzwnj+wRaBf30gNBeSwUH5pQOEL078pBrbo
+         H/RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1736357440; x=1736962240;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qABqYAhj0TrQzJxH7XVarpnbO7+OveXqYM2s3icznC4=;
-        b=mwECWmDZRzBBkE4LSGPIwy0noneV5oONnejc7OZma8c9gRadafoGZn03dASsfNR++q
-         WlLSv09Nrwc1x99u6isEyHsvm31FUdlTliD7l5EUK3XXZP1FiK+OIjboFnnqZWpjGAcM
-         ijBWhVKm3MzndnV+s8yznQqxScMyCV02AzRgKqU7gD+v3t/Nhkavq6rfSJHbairn+m9k
-         PD/GXbN+vpZd7QxuG/Db4orEtBBXwWF1TQExz23TChUaeixOH7yuYLCMfb4O0Bb0DuY9
-         d/zamUEyqYADnrwFH6Grgi30cEYkP3Nd/Y0l+ZCTMtzDkGHIm9EGD6/xVhzt/6pCHwYQ
-         IQzA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDPbJiQDyaOCKiUprxf5JfFg+c1400k4inaw+LSLYap66mlnBMaJitAiQFiK5QI5FLxadi8MPbnLo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzA5H2/CZqZH2RZEtW4C9bM8+WWTd0h9oiSirsRMFedVmqrpDKE
-	jDH9VZmur3idFYNy6HCFSi5zSSgztHNFi2hIDVFcFjyi3QHRxIPWtujsusb1GCU=
-X-Gm-Gg: ASbGnct8QugdXw9tHaTbqMv4VCTon8WYC58jgF5s/71Bt/CY2hPuMgGDbfDUR6iKwnl
-	MO3Qjno/PNHzzkgg8ITdzVRtM21QD7yaG5gINRp5e4yJVCcOHEE7duPSbjumQPpneuHCrj/8PU1
-	7kprcb6HGg2K5vOrbrc2uxPsdUfafK8vOcdgrS0+1pQkI9+qRzuJJs0fwCkvihXo0kZNspmtQls
-	Wwwh9dkz0k8vJvy6ke5YO961i/FZYY2nHdewEg4akkQT15TuvAY6TjeVzE=
-X-Google-Smtp-Source: AGHT+IF3nilwMU43g5/fpaBvcw4VZUw4Fkdm9sOic07GjpPunCK+W3hkn/+CE4mn9czZhiryv71U9w==
-X-Received: by 2002:a05:600c:1e09:b0:436:e751:e445 with SMTP id 5b1f17b1804b1-436e751e61fmr16540885e9.5.1736357438725;
-        Wed, 08 Jan 2025 09:30:38 -0800 (PST)
+        bh=CNTleVNIiTU9nZ6xRJX/KSmh/FQGS6/eS5WcZiPevhQ=;
+        b=Wr37sq2pGzt8A/U4M6Dqhcs+JZVXJZUVLYzzDcpNogv3HyGRB4ILYP0vivCF2Y7DZa
+         88dufjlwuE2m6s3qzNlJZdCVDyAURCmT3AWp+GDYV7kSsKRui1nkdQxJ5ZbGzSbMIFnM
+         ShNaloE5CzT3iqFW4GSoLN/AcZUZbIAJ6YSEVJ0XgSWYUL656uzT/ztIrs5AeLq3LeUB
+         D8MH+VMPGOFXfD/e8q5we3muv+K5LvX36gUvo0n0JMygr8b4IvNNfI2Wg0PhRagTXiKo
+         X4ZzfmYc6GHKTXMSzhUrGnwm+lKw5w+sLekrBECrSGwT68m0h6A3AW6HoYpMzuN9YGcw
+         67XA==
+X-Forwarded-Encrypted: i=1; AJvYcCXwtdxurRqHXFU/VXAh4NwFbc0npaO8KOeLvt2ZbeqVuZDNQldVPZ7fFLPBIZ1jo6p0CEGr4k1Ctio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCdK2DCkoTD7/ZI17/UIAMl1ZnPsy7yBuNz5I4/NgZOYZoK5aC
+	Gmd3TN/9UQYXZKm0i7AA/T895nR+rGWmDCasut29b34Lo9rBwzKROxP/wrqKCXY=
+X-Gm-Gg: ASbGnct7+gjeDNXPcUkiMjDMquEg1W0Q4jerH3TEXn3+hoiJTDFuun93WfpqZ0D5sfi
+	B4Xr7M9vcN+yNXsajJ3Zj4MLtUX1ip7DAjjlWOAZN062FZmF65O2ci6Df3aUTWWX0wE1BA4ChWA
+	akIx0ooNH6gWCliIyKuZS4DCFmGPIM/UeqqHLrJ90cmYaGwsvjUWaXpqtAMHJVs7ZDSPG8okY/m
+	pejmMVI44KLcQYwafeEtys9U6Iequqb/vMtbDSxyOkHsVNlB0o87xV18UY=
+X-Google-Smtp-Source: AGHT+IHtHhpOxNudv3flMNURgU+J5Uz+IMqJA+3tUtgmXAU844RXw/Uo6ltVqTOhohjFukKWhgwc6A==
+X-Received: by 2002:a05:6000:4714:b0:386:3752:b28c with SMTP id ffacd0b85a97d-38a8732bb23mr2741757f8f.41.1736357440075;
+        Wed, 08 Jan 2025 09:30:40 -0800 (PST)
 Received: from [127.0.1.1] ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 09:30:38 -0800 (PST)
+        Wed, 08 Jan 2025 09:30:39 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 08 Jan 2025 18:29:20 +0100
-Subject: [PATCH v2 6/9] iio: dac: ad3552r-hs: use instruction mode for
- configuration
+Date: Wed, 08 Jan 2025 18:29:21 +0100
+Subject: [PATCH v2 7/9] iio: dac: ad3552r: share model data structures
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-6-2dac02f04638@baylibre.com>
+Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-7-2dac02f04638@baylibre.com>
 References: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
 In-Reply-To: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -99,71 +98,151 @@ X-Mailer: b4 0.14.1
 
 From: Angelo Dureghello <adureghello@baylibre.com>
 
-Use "instruction" mode over initial configuration and all other
-non-streaming operations.
-
-DAC boots in streaming mode as default, and the driver is not
-changing this mode.
-
-Instruction r/w is still working becouse instruction is processed
-from the DAC after chip select is deasserted, this works until
-loop mode is 0 or greater than the instruction size.
-
-All initial operations should be more safely done in instruction
-mode, a mode provided for this.
+Preparing for new parts to be added also in the hs driver,
+set model data structures in ad3552r-common.c, to be accessible
+from both -hs and non hs driver.
 
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/dac/ad3552r-hs.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/iio/dac/ad3552r-common.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ drivers/iio/dac/ad3552r-hs.c     |  8 --------
+ drivers/iio/dac/ad3552r.c        | 36 ------------------------------------
+ drivers/iio/dac/ad3552r.h        |  5 +++++
+ 4 files changed, 45 insertions(+), 44 deletions(-)
 
+diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-common.c
+index 03e0864f5084..36920ec95836 100644
+--- a/drivers/iio/dac/ad3552r-common.c
++++ b/drivers/iio/dac/ad3552r-common.c
+@@ -37,6 +37,46 @@ static const s32 gains_scaling_table[] = {
+ 	[AD3552R_CH_GAIN_SCALING_0_125]		= 125
+ };
+ 
++const struct ad3552r_model_data ad3541r_model_data = {
++	.model_name = "ad3541r",
++	.chip_id = AD3541R_ID,
++	.num_hw_channels = 1,
++	.ranges_table = ad3542r_ch_ranges,
++	.num_ranges = ARRAY_SIZE(ad3542r_ch_ranges),
++	.requires_output_range = true,
++};
++EXPORT_SYMBOL_NS_GPL(ad3541r_model_data, "IIO_AD3552R");
++
++const struct ad3552r_model_data ad3542r_model_data = {
++	.model_name = "ad3542r",
++	.chip_id = AD3542R_ID,
++	.num_hw_channels = 2,
++	.ranges_table = ad3542r_ch_ranges,
++	.num_ranges = ARRAY_SIZE(ad3542r_ch_ranges),
++	.requires_output_range = true,
++};
++EXPORT_SYMBOL_NS_GPL(ad3542r_model_data, "IIO_AD3552R");
++
++const struct ad3552r_model_data ad3551r_model_data = {
++	.model_name = "ad3551r",
++	.chip_id = AD3551R_ID,
++	.num_hw_channels = 1,
++	.ranges_table = ad3552r_ch_ranges,
++	.num_ranges = ARRAY_SIZE(ad3552r_ch_ranges),
++	.requires_output_range = false,
++};
++EXPORT_SYMBOL_NS_GPL(ad3551r_model_data, "IIO_AD3552R");
++
++const struct ad3552r_model_data ad3552r_model_data = {
++	.model_name = "ad3552r",
++	.chip_id = AD3552R_ID,
++	.num_hw_channels = 2,
++	.ranges_table = ad3552r_ch_ranges,
++	.num_ranges = ARRAY_SIZE(ad3552r_ch_ranges),
++	.requires_output_range = false,
++};
++EXPORT_SYMBOL_NS_GPL(ad3552r_model_data, "IIO_AD3552R");
++
+ u16 ad3552r_calc_custom_gain(u8 p, u8 n, s16 goffs)
+ {
+ 	return FIELD_PREP(AD3552R_MASK_CH_RANGE_OVERRIDE, 1) |
 diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index 27949f207d42..991b11702273 100644
+index 991b11702273..bfb6228c9b9b 100644
 --- a/drivers/iio/dac/ad3552r-hs.c
 +++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -132,6 +132,13 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 		return -EINVAL;
- 	}
- 
-+	/* Primary region access, set streaming mode (now in SPI + SDR). */
-+	ret = ad3552r_qspi_update_reg_bits(st,
-+					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+					   AD3552R_MASK_SINGLE_INST, 0, 1);
-+	if (ret)
-+		return ret;
-+
- 	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
- 				      loop_len, 1);
- 	if (ret)
-@@ -198,6 +205,14 @@ static int ad3552r_hs_buffer_predisable(struct iio_dev *indio_dev)
- 	if (ret)
- 		return ret;
- 
-+	/* Back to single instruction mode, disabling loop. */
-+	ret = ad3552r_qspi_update_reg_bits(st,
-+					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+					   AD3552R_MASK_SINGLE_INST,
-+					   AD3552R_MASK_SINGLE_INST, 1);
-+	if (ret)
-+		return ret;
-+
- 	return 0;
+@@ -527,14 +527,6 @@ static int ad3552r_hs_probe(struct platform_device *pdev)
+ 	return devm_iio_device_register(&pdev->dev, indio_dev);
  }
  
-@@ -308,6 +323,13 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
- 	if (ret)
- 		return ret;
+-static const struct ad3552r_model_data ad3552r_model_data = {
+-	.model_name = "ad3552r",
+-	.chip_id = AD3552R_ID,
+-	.num_hw_channels = 2,
+-	.ranges_table = ad3552r_ch_ranges,
+-	.num_ranges = ARRAY_SIZE(ad3552r_ch_ranges),
+-};
+-
+ static const struct of_device_id ad3552r_hs_of_id[] = {
+ 	{ .compatible = "adi,ad3552r", .data = &ad3552r_model_data },
+ 	{ }
+diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
+index e7206af53af6..9d28e06b80c0 100644
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -649,42 +649,6 @@ static int ad3552r_probe(struct spi_device *spi)
+ 	return devm_iio_device_register(&spi->dev, indio_dev);
+ }
  
-+	ret = st->data->bus_reg_write(st->back,
-+				      AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+				      AD3552R_MASK_SINGLE_INST |
-+				      AD3552R_MASK_SHORT_INSTRUCTION, 1);
-+	if (ret)
-+		return ret;
+-static const struct ad3552r_model_data ad3541r_model_data = {
+-	.model_name = "ad3541r",
+-	.chip_id = AD3541R_ID,
+-	.num_hw_channels = 1,
+-	.ranges_table = ad3542r_ch_ranges,
+-	.num_ranges = ARRAY_SIZE(ad3542r_ch_ranges),
+-	.requires_output_range = true,
+-};
+-
+-static const struct ad3552r_model_data ad3542r_model_data = {
+-	.model_name = "ad3542r",
+-	.chip_id = AD3542R_ID,
+-	.num_hw_channels = 2,
+-	.ranges_table = ad3542r_ch_ranges,
+-	.num_ranges = ARRAY_SIZE(ad3542r_ch_ranges),
+-	.requires_output_range = true,
+-};
+-
+-static const struct ad3552r_model_data ad3551r_model_data = {
+-	.model_name = "ad3551r",
+-	.chip_id = AD3551R_ID,
+-	.num_hw_channels = 1,
+-	.ranges_table = ad3552r_ch_ranges,
+-	.num_ranges = ARRAY_SIZE(ad3552r_ch_ranges),
+-	.requires_output_range = false,
+-};
+-
+-static const struct ad3552r_model_data ad3552r_model_data = {
+-	.model_name = "ad3552r",
+-	.chip_id = AD3552R_ID,
+-	.num_hw_channels = 2,
+-	.ranges_table = ad3552r_ch_ranges,
+-	.num_ranges = ARRAY_SIZE(ad3552r_ch_ranges),
+-	.requires_output_range = false,
+-};
+-
+ static const struct spi_device_id ad3552r_id[] = {
+ 	{
+ 		.name = "ad3541r",
+diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+index 4b5581039ae9..23f038464a0c 100644
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -137,6 +137,11 @@
+ extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+ extern const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2];
+ 
++extern const struct ad3552r_model_data ad3541r_model_data;
++extern const struct ad3552r_model_data ad3542r_model_data;
++extern const struct ad3552r_model_data ad3551r_model_data;
++extern const struct ad3552r_model_data ad3552r_model_data;
 +
- 	ret = ad3552r_hs_scratch_pad_test(st);
- 	if (ret)
- 		return ret;
+ enum ad3552r_id {
+ 	AD3541R_ID = 0x400b,
+ 	AD3542R_ID = 0x4009,
 
 -- 
 2.47.0

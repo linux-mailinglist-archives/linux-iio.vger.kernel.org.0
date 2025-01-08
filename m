@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-14023-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14024-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA5BA06287
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:48:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21AB0A06301
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AF801882706
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 16:48:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBECD3A7CAA
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AC01FF7B7;
-	Wed,  8 Jan 2025 16:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BD81FFC7B;
+	Wed,  8 Jan 2025 17:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d9ABVYhL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WsJnBZQF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E4D1FECD0
-	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 16:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890A61FFC6C
+	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736354905; cv=none; b=Nrpo2nBfiKAPaJW6jP0V7dpsbRHx7oQ4OjuKjeSeRaGQOS7gwuwnpTQrurm3Qz0pGW2SPAU/s2PjcGtA5gSQfAFxh1B0W3RTGQkbuYPke8ee26OGdatlYXtf/HIOI/epH0uld9QZcDs91V2PND0b83LbJfiwz8nE0oh633i2W44=
+	t=1736355975; cv=none; b=RxeMaYyoMG/iQT0VE98SBc6EFZEzQS5jTEmdag9T63bd6T1hEhYCCegIDxcRTa9AsBhWFXfM8kV8Es4BM71DhF+pmkFscKRhcl5+i8erPE7rbaAB9NDKbAs4R5gc+qiWHRsbhN4CANh+sorXGHeBvbCdkUY5OxC9xPW5DfzBm5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736354905; c=relaxed/simple;
-	bh=XPKx6pwqHeZAfQbv4Dj1kdEFP8M1og0QDIj1AX/CnW8=;
+	s=arc-20240116; t=1736355975; c=relaxed/simple;
+	bh=jCamsfLpcBDv0KT7qF02it6Id78FDWwVeoi+mD41IZg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ao4K+6VMc9dF1ituAU8CWIY8ttjSJdFtRGHftO6mJglkNsczT++hUt5DRLKgRPfpdB2RD5yUXM6Npt0ONqB4QadLkNw/DZjoQmvPHFi7axnp2e/aaWgw6tDvrjUhmS6LjgPZXhA4OFZBK2EpKxVbzW5wgr/8AJpsWyjLjShG/NY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d9ABVYhL; arc=none smtp.client-ip=209.85.210.48
+	 In-Reply-To:Content-Type; b=um5BdAZWvln9W8XluO2/PEYCss3t39fDmW6jq6y/mye3rME/+BB6z3Ntbwcy680FKgv6a1TEsJpOcjUTrBqCroRgq3a3AuhxhbZct3RreOzlKd4Bv3I19WmgqN2K6f+1YoHLhXlvbwWj1fhFkabZcTKKE5FikNky+ZWQpzW8b2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WsJnBZQF; arc=none smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-71e16519031so556105a34.1
-        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 08:48:22 -0800 (PST)
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eb6b16f1a0so4881393b6e.3
+        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:06:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736354902; x=1736959702; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736355972; x=1736960772; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=I9d73tRObAGN5BNE9biuTjeLMSgHxGDZ3+RKn5a9A0M=;
-        b=d9ABVYhLbbQtzNXIaPeZ5HYaNPOIotU+JFg69ENsbXAh13m3JHW8XNNW+iLuku4+qd
-         aYfjterm+NYT9Qt9vGw8Eri8ClaXFp8xAhgdjA4evr0evhUTDnJdlEH/rtJ/R0dfrLQ2
-         euw5l0uXEU6cyTP8ht2Y/T/evdqrp65kEyw9DYw5WCQDkcGb5pIoS7Kwhv3NOfDyzIme
-         yquVYKjVkKa6Zau50dmE7fzU7KWIpjr8WFdksIJIqv8ueIwcvzcr1mAbo7R7STGC5ACu
-         3BvfHZDqSwZrSaIrZCTJupAI5LBEm2CA65lK/J/1t2bAatKr3CpgRTuNGjl7IGKmqcaC
-         OQng==
+        bh=n/b4Xzx1xkuwA/wx5BhKWtA/mjZMQ0mArLR9j53cJLo=;
+        b=WsJnBZQFZnH1CSsoN9fIHXN5k800U4yja6SiLWiBRwNgBxjwMCzcYinOUwsyMxE0fr
+         lElSqVqS2KOC35bk8BJJrhi9DnFlBOkTkeS/p192FqfJHFoUEglhpXs2amTo+mW4V7g1
+         r/dK89OLsP4oQAElb554Z23uNObr/VrzEzH7wibOWGlxRSHgfnCD9eHAig1eNkB6lIhk
+         kVJSDvGgGYQDd6TMS5G6vQkaI01p3quOqigX7hwh75/H+TkBlFwHUBo8MOo7dmmzb/aa
+         J+PpYlzIDbFv0L8H8iWZKFrqm1P8z/WwsnU0MDE6f1RwIDRJzpZhnAzLJtJ1D3m3kx+j
+         SkRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736354902; x=1736959702;
+        d=1e100.net; s=20230601; t=1736355972; x=1736960772;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I9d73tRObAGN5BNE9biuTjeLMSgHxGDZ3+RKn5a9A0M=;
-        b=K5kkiVqJsTLSy2dthyL8mnezTncE1fJS9wnQYfsU3sqyRZb4dU/NTG7+qd1lDaCH48
-         dGr6KdC9K+G3/7ZCIXVSSGHVB4KyPGISHW2ghKMooIoOSJl0OYeKx3uPazZoHwYZ+fHs
-         vENPCVCrIK9sFny9dR/W1LqV4OWYKpEG0bJigHPL7mEES8lI19F+2Fz2wO+STP0zbe07
-         CLBbepx50d0G3MPSHaQhqBDilpNK5drhEVnINSlkJQPRWsbW2TSK0tigkVxGAuNAZTt9
-         5G57ijs7rvpcQPoW9YnH2pdWvnhHtHMYFT6f9HysLxUivwhNl0qRasl/n+QNMNYjF/Vu
-         QJOw==
-X-Forwarded-Encrypted: i=1; AJvYcCX10xzcOUpwz0Ibpz1bFi9+cWe7Sx7504pEiweonSnYipP58dzn5nfq8OSRUrVDN7isatPEhCf29lw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgiDVRq3NEDQ2kE8vW71eKSYRNSyX/fLzy8StYeJcrRNSzDdrA
-	zlqdGlpXyFZsbHQ5bKGwC0FHomuphDAQd3qJLOqOaVKHtQ335fgPDC0hlGZA2X79SXgnePx8fq9
-	H
-X-Gm-Gg: ASbGncvnkspMCHNuRcy61CNrm3jG0eHrAtrI5G/GQkDSAZdxSRhmnMYor0P3EVrWmQl
-	TB8rFAq4T27RNk5KY9Fmt0nn1hwK+zsgPeLOfRWJE0gbFbZn8HJBZK41Mmm33SLNMbCnN57ZQeJ
-	IQ3fWILgpv2mQB0g3272aFQRzFGWOOZIfkkSdJ6fTFtft88yoclhtFWV4dNv831XMbp7dRYqUch
-	9PNn6TPBB7u9PtiGStQ4XOBRZc7IY4LxstmMepuHxRxSooa3ByNiOpmAcSY4MMPAx4YWcqItfW4
-	9Quqg/tO7oxEuKwqcQ==
-X-Google-Smtp-Source: AGHT+IHQCHpXwWe2WUYcdoU/HlAsqT58kq3vmmB7qJG8C07naoC9qJvmIA8o/WlVXQK90bBqeIVaow==
-X-Received: by 2002:a05:6830:1b70:b0:71d:51a4:ed48 with SMTP id 46e09a7af769-721d569f12bmr3665511a34.8.1736354901977;
-        Wed, 08 Jan 2025 08:48:21 -0800 (PST)
+        bh=n/b4Xzx1xkuwA/wx5BhKWtA/mjZMQ0mArLR9j53cJLo=;
+        b=ZX0z5IGfUt0P9c2pZu8wZWnK7O6eCY+n64azkK10UjjNTJIhSsI+VevstcLTysCobq
+         3lUK066gi27SdmLVdE/wYkYbwu6tJoRcwyAzxLDqwkzJMVw9ZP/ymyHq6M2jERm3bjNr
+         8XsHV2/Y4Q64sVCTIgEy2N9oCsITc7MLg4t/FlhzVrFp2AVB9i9UsLPo+Ub4LehPuiUk
+         Oepw6fX/M8YMb7W0jKFmC0h1FIU3nZNckQ5SKkmWfqd2EeFJhA7wS4MNjJxOA+duBMgz
+         sOn18eJtC/2uyB8bPZlC0vTYYWdmVsp09lEcCPMKSST9wMLnqZjAZSef/eI6twNGv3aD
+         YaEQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlPhfEDg3jivyi4EwPKHvj0BSz63Ccn9lNWJkNqL6AUepYi46uAwcgJH3te2dUFfIEnfC+zOVFPZw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyv9bf4hEHQYQ6UG/PRKpDQm+ukjiQTPQDOMiwzyTEj8/Ca5xDk
+	4civYXESZuZiGCad1wqb1RhwQJD1MuuoHysqASDkoHy5QQgJillv8nukFiIUx5E=
+X-Gm-Gg: ASbGncvxxgmr9TmlHw2enitDHqkpooEfxcObZT+iVkZdTh48At2JtNL4au476irAp21
+	F1IsdKVhufauDw3dFlFuHACF//GUUofFtWOcTEpqI9c81t4k0IWFP3vA7IdFvUCmRsKDpuicNrm
+	l4ozGtBGpDfKIzaGPVgrjUlnjEFlHoTFjuFNr0Tcjn9GIekPo/02++FMhXXBecvWEd7fKGuhsMC
+	1VarW5NtqluaOfuWZUm8T6AE7dvnyrnvnZ/JeLDt1nmir5GzThx44OIQ6HwfF769bwlWZRGq/at
+	2i2RL2ucLesPLE09tA==
+X-Google-Smtp-Source: AGHT+IEWotvyiUKl/k0KXLMw0knOeNaJYVLSpncNojbcFb3g/TMcabu1SuBV0WZUGqsskizMdV4GPA==
+X-Received: by 2002:a05:6808:913:b0:3eb:5d13:f688 with SMTP id 5614622812f47-3ef2edd34d7mr1881257b6e.26.1736355972541;
+        Wed, 08 Jan 2025 09:06:12 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71fc99d0b90sm11309518a34.63.2025.01.08.08.48.19
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3ece244e86asm11434861b6e.5.2025.01.08.09.06.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 08:48:20 -0800 (PST)
-Message-ID: <e1e38f64-4cf4-4f12-bf9d-e7520d4e5721@baylibre.com>
-Date: Wed, 8 Jan 2025 10:48:18 -0600
+        Wed, 08 Jan 2025 09:06:11 -0800 (PST)
+Message-ID: <b650f023-19f6-4f84-ae07-4383376268e6@baylibre.com>
+Date: Wed, 8 Jan 2025 11:06:09 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,72 +81,70 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 7/8] dt-bindings: iio: adc: add ad4851
+Subject: Re: [PATCH v9 8/8] iio: adc: ad4851: add ad485x driver
 To: Jonathan Cameron <jic23@kernel.org>,
  Antoniu Miclaus <antoniu.miclaus@analog.com>
 Cc: robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
+ linux-pwm@vger.kernel.org
 References: <20241220120134.42760-1-antoniu.miclaus@analog.com>
- <20241220120134.42760-7-antoniu.miclaus@analog.com>
- <20241223114008.71e00bee@jic23-huawei>
+ <20241220120134.42760-8-antoniu.miclaus@analog.com>
+ <20241223120005.1bc9a208@jic23-huawei>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20241223114008.71e00bee@jic23-huawei>
+In-Reply-To: <20241223120005.1bc9a208@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/23/24 5:40 AM, Jonathan Cameron wrote:
-> On Fri, 20 Dec 2024 14:01:33 +0200
+On 12/23/24 6:00 AM, Jonathan Cameron wrote:
+> On Fri, 20 Dec 2024 14:01:34 +0200
 > Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
-> 
->> Add devicetree bindings for ad485x family.
->>
->> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
->> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Mixed single end and differential channel devices that have per channel
-> child nodes need a more complex description to avoid reg have different
-> and possibly clashing meanings for the two types of channel.
-> 
-> See inline.
 > 
 
 ...
 
->> +patternProperties:
->> +  "^channel(@[0-7])?$":
->> +    $ref: adc.yaml
->> +    type: object
->> +    description: Represents the channels which are connected to the ADC.
+>> +	ret = devm_regulator_get_enable_optional(dev, "vddh");
+>> +	if (ret < 0 && ret != -ENODEV)
+>> +		return dev_err_probe(dev, ret, "failed to enable vddh voltage\n");
 >> +
->> +    properties:
->> +      reg:
->> +        description: The channel number in single-ended mode.
-> 
-> And what is it in differential mode?  (usually just an index).
-> Which is a problem if you have a mix.  That's why we added
-> single-channel.
-
-This chip isn't a mix-and match like many chips with muxes that use this binding
-so I think it should just be diff-channels = <0 0>; similar to adi,ad7606. The
-pins on the chip are labeled IN0+ and IN0- so it makes sense that both the
-positive and negative inputs to be 0.
-
-So, this should be fine with or without a single-channel property since reg
-should always have the same number as diff-channels and single-channel.
-
-> 
-> So for devices where reg isn't enough, you can use:
-> reg: index of channel, not real meaning just makes them unique.
-> single-channel: The channel number for single ended.
-> diff-channels: The channel numbers for differential channels.
-> 
->> +        minimum: 0
->> +        maximum: 7
+>> +	ret = devm_regulator_get_enable_optional(dev, "vddl");
+>> +	if (ret < 0 && ret != -ENODEV)
+>> +		return dev_err_probe(dev, ret, "failed to enable vddl voltage\n");
 >> +
->> +      diff-channels: true
+>> +	ret = devm_regulator_get_enable_optional(dev, "vrefbuf");
+>> +	if (ret < 0 && ret != -ENODEV)
+>> +		return dev_err_probe(dev, ret, "failed to enable vrefbuf voltage\n");
+>> +
+>> +	if (ret > 0)
 > 
-> Should be constraints / information on the values possible.
-> I've no idea what the 8 is in your example for instance.
+> I'm fairly sure that call never returns a positive.  Will return 0 for success so I think this
+> should be if (ret == 0)
+
+Even better, make it 1 line instead of 4 and use the specific error code we are
+checking for:
+
+		st->vrefbuf_en = ret != -ENODEV;
 > 
+>> +		st->vrefbuf_en = true;
+>> +	else
+>> +		st->vrefbuf_en = false;
+>> +
+>> +	ret = devm_regulator_get_enable_optional(dev, "vrefio");
+>> +	if (ret < 0 && ret != -ENODEV)
+>> +		return dev_err_probe(dev, ret, "failed to enable vrefio voltage\n");
+>> +
+>> +	if (ret > 0)
+> 
+> Same here.
+  ^
+> 
+>> +		st->vrefio_en = true;
+>> +	else
+>> +		st->vrefio_en = false;
+>> +
+> ...
+> 
+>> +}
+> 
+
 

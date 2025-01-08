@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-14029-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14030-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CB6A0636C
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:31:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E0CEA06372
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F79C188A35B
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:31:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317497A3887
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F7202C2E;
-	Wed,  8 Jan 2025 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0D5202F76;
+	Wed,  8 Jan 2025 17:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="e0A3ZUXs"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fl+bbM8v"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6452010E5
-	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2666201278
+	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736357439; cv=none; b=jxIrAXdcGT29OQH/A6oujhZRGRW/Qt8Ma4h47/z5UEs6GJPdVvRPZIMCqIYUVJyp6KTDHANLxKsre3Y1svEVrz7h3mkzoZrSynJn2JA6Q6DtO3006EYJrtN/gdaFPWzO2weh55ZUi6sQHhvJJg4jZkP4yRWD59X8GnvJ/4aTbpk=
+	t=1736357441; cv=none; b=E0GvqW+TXxAmuDXZPtn55Oeg4ckjIp2s4tH4iKBqS5O+H5YoGbd8CTM8RZISwyccec119XDTmI83bSV72oYybriV4GS4LFhnCmUfBxRsSA1ciNYl9AcKTvZAr2FgH9mhWZXQJd2VfIBuw2X+B6P9Ph92OkyfQFLkKjScowKaj6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736357439; c=relaxed/simple;
-	bh=XfnaLwPbwvEvqLzRap/jhDwdzzaCiSDrFwR+woVVJDc=;
+	s=arc-20240116; t=1736357441; c=relaxed/simple;
+	bh=IuHaI/semL+Hv8JNr40Pmjd0RO8u7Ce4lu8w8B537I0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=G1IWXm8yYNI2aa/SsAWTknbcdUYlZhyJvt8ju3wcKWcYB76oRoDeg2DUay9CFzQndrQrYBdX9nTBo0c5Kd1MvZD1hIhLHwXKkocNtwRaVHkWch5HvNBfPqZxf3kbnKz5lr7MxqXPUxuCJ/MmbhPsUiB7UstDg/4sVBgC7BRVuwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=e0A3ZUXs; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:To:Cc; b=H4rsIWHHlvTl8f/eDefiJZ2COBhn6dW5vfI5Wz+6GjVqDVBg/9gnaqshZFxhItiladH3w2pLRdp6rf8/FIVXShlBBWnt+CWMRrPJWBjQBqbC9YZ3NgoYeP9unZUecRWvtfzrtHnHISQCJDHNvvMxpYHw1aXnRdKQ2o4skb3IBv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fl+bbM8v; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3862d161947so8220f8f.3
-        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:30:37 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43623f0c574so657585e9.2
+        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:30:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736357436; x=1736962236; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736357437; x=1736962237; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4FQcFBx5V6lkdkVoqAqgUJ0fqMpy++8oGzKM6couGQY=;
-        b=e0A3ZUXsdRCigPCDpEehbVPj2edMD7Lj0pw4dVJXADJ9JCXSMSLQXZBbdVSZgFA4Kk
-         OuEEHaNm7Ls1xsUDgIWoUOH/CyLRQLXK/7NxQpMc9rbj0NMvuCTqwgmFJTp+fYt8ayQp
-         OoKE3Los04hj1sbyd6MWXILVh51bXz5g3+TIo6y3Cf/7SZfLaTTM7HWC3lEDiO8GShLk
-         5j+RJvBEachfHrrYDsYUIfQ6QxRsQR6EeGt8oJxgHVCa2a/ysGbDRqBEVpKpbE44Xdlv
-         jVEvjvyc92DLHM4kufqAEJK+e3XNoD6uasVx4TkhCBSDfBGuHxfzhSqr7Rhkf/fcwQSN
-         zagg==
+        bh=szKwztPhzV6CVF/0X9HGbGEX7Uh9TD9UOgptum5XTx8=;
+        b=fl+bbM8vy1Ovyuhzmdz+qTWRxaNY/cD8dPmdfWFomZMLhk/jwr8EsYHhqsJJmEddGg
+         +pKkrqoNcCMbQ7TPMIYnL/vSFIc26aRIIIeCe/Dgk7T+D5/l0vbtGINObG4T+8kqIak0
+         fhmVedw6qeay4xb5L6LLn90vLHBMdkAeuL80eGXbhq3U89HWoQ9d23vgZLnvrrhc2JaF
+         xforg/F03QKxJzgTYwr+ztEQ5JV4xTNy/lajN6uWhlupF4nXmXgqRAhM3dWQnaWPQrkl
+         NAxff8wINBgrUouEmlP1nZvCwhYwhPvC07oLWM+fBb3Upd7eOYLCTCR3V2e5XM9EyJrE
+         53iA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736357436; x=1736962236;
+        d=1e100.net; s=20230601; t=1736357437; x=1736962237;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4FQcFBx5V6lkdkVoqAqgUJ0fqMpy++8oGzKM6couGQY=;
-        b=OjzUEgCeqt2dxiXb7YFAJ7cWjMPFOFx2omRzFPRdBcFeqp2yHAgOv+xzui9YpERvLe
-         qvcMvgwPYFGz1B4bF9Fs/gq4PMLSMCZvONZ5X1nutyqHanV+LRFdt8zHjlhe6J6t+rRo
-         +JWmI/fFphKZWx8hILLCuj44UqeRbGiSwjtraZqWG4+IyPzK1PUBRYD93EYkdnoRfbC2
-         VUHdKZYxThODpKRVRW7RaluOKzFEbzNcLDjZP9/k/f3OwpyeV0JAkYLYN3episH0BD4V
-         OyIhDaI6tDWcZe7Xnru3yhl3fhUMTC/4b/H5Mjt49EG7gGeKMNqN08JJiP/Vq6cugpFh
-         6RMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWPrKQMMaTrcjTqzEn2QFovms/OjqnSC5QIoj+gJWRM/Q2U1hqCiulduqzu8Yf2k/2VSxEaL83EjuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzcfr71FXZn8H//p5IXEzJ9LogRwr+cxKqhJVMoWIigu+MNmxSY
-	Y4ItrrTKu8Ncy6m91UeKY7k19FIp7DnneLWBL0JS8Z1qmeAF/LTHTdNsFQ7C0+E=
-X-Gm-Gg: ASbGncsRT0ci0Znv8kJrGp64WosNoDniZZHiq6Ay61mbxR+WoQE9L4qMdpEN9RYT6SF
-	MoQW+117XYsfiCGXD/0fz57AGFj8Bf2ccFhKpQVuxH/fXiZQQILcJUdP1eWnnO4nElRO3EWb5Vi
-	afsbo+QNha1YRqi7LM0TQyyyzdmVlKKMwYZKTuJh/II0YNpM0eHA0WUZsVeqPdCHut3HREh0s13
-	eb/hkc5tJri217eT5z8yF/febiS9kbUCR/953kPoK5/y9I39DEPVk8+CN0=
-X-Google-Smtp-Source: AGHT+IGgfxt16ev6MsDtJ/+I4o/+V+kvxrkDi2iioXLqcSIuCoTFprBTGUC4euEkcvZinBrYpakpsg==
-X-Received: by 2002:a05:6000:4102:b0:38a:8afe:9530 with SMTP id ffacd0b85a97d-38a8afe9557mr194371f8f.33.1736357436006;
-        Wed, 08 Jan 2025 09:30:36 -0800 (PST)
+        bh=szKwztPhzV6CVF/0X9HGbGEX7Uh9TD9UOgptum5XTx8=;
+        b=lUED+CGsuamzNDst0/4gbtu2o4KIJgLQCXnVSSQ0ReNdWrdVOR868zarssNaWOFE4J
+         ED9eT0tqge3gSgKPpClIgES/7DSeSj3NpjdBo+0TEcbQuKd4vdvHVzZ7fEYgqf7XaMnJ
+         zbcqO8yIVlGbuvURAWx+1ppPiEQyjaVsuPNU3A+ivMpavOnB5zzQbFqzt94aUmYRQycJ
+         QCKgMm7XuAtAEBjqEbKd6zr6LGx8BJZQx1kETFegmpm3p78kq5/8qM4TOMKVKuyISrFZ
+         /aw1FNMgpHwUqnjRoaRLKjCgtnkYkcm14gLr/4YKZAr2BoWiTm8BsXozz6fvIAEs0yK3
+         XqqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWD9hu20avoQ4Eaacbq5/befH0bQ4fzI43ugeL9d2fvMCLD0h8JSunHfsshhVeKjSR8Gyi0qqEYBaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPaj1Tn1lu2984Tnded4kM2hRbPuCmwVO4V8TXVTi+mrfSqr/w
+	ePKrxhVHvYdJ3MIvDOTMvg3xUbbyYDt6+IRLyzdkFZEgM5j4AdBkG8ZCieHb5QQ=
+X-Gm-Gg: ASbGnctOfiL/FElsZsTf9u0JkGJP5ICa32ZziYOz2l2ZSY7vIVhzn0GGM4E7D15Gv1a
+	l8tygE6PHWhwiSR/XjUwl7TBh5wWEWfDsflfY98AR0nloptKR0lzAIPJNgm7qf7Aogy4sCDfhET
+	CqeyGssAjnOHUJ/ZnkxDBQJoV+GTPiA6FMxktwTJWAzZzgR0+uzwhfHGXsqZvQLgTRKB99lflwX
+	JmoMyXpmmB8FgkCpU6BUR1Db3/4OzVQVuaSpi3JMXIKXWJoFCKx+wxoSYo=
+X-Google-Smtp-Source: AGHT+IHZQe7bqAuDCWH482pq2vJ7oArvpn5JDt8LHHWBYu8pE/3pqQpPt6ie/yD+qulq+Fw1RO94Lg==
+X-Received: by 2002:a5d:64eb:0:b0:38a:50fa:d582 with SMTP id ffacd0b85a97d-38a87363364mr2332501f8f.59.1736357437339;
+        Wed, 08 Jan 2025 09:30:37 -0800 (PST)
 Received: from [127.0.1.1] ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 09:30:35 -0800 (PST)
+        Wed, 08 Jan 2025 09:30:36 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 08 Jan 2025 18:29:18 +0100
-Subject: [PATCH v2 4/9] iio: dac: adi-axi-dac: add bus mode setup
+Date: Wed, 08 Jan 2025 18:29:19 +0100
+Subject: [PATCH v2 5/9] iio: dac: ad3552r-hs: fix message on wrong chip id
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-4-2dac02f04638@baylibre.com>
+Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-5-2dac02f04638@baylibre.com>
 References: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
 In-Reply-To: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -98,93 +98,30 @@ X-Mailer: b4 0.14.1
 
 From: Angelo Dureghello <adureghello@baylibre.com>
 
-The ad354xr requires DSPI mode (2 data lanes) to work in buffering
-mode, so backend needs to allow a mode selection between:
-    SPI  (entire ad35xxr family),
-    DSPI (ad354xr),
-    QSPI (ad355xr).
+Set a better info message on wrong chip id, fixing the
+expected value as read from the info struct.
 
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/dac/ad3552r-hs.h  |  8 ++++++++
- drivers/iio/dac/adi-axi-dac.c | 26 +++++++++++++++++++++++++-
- 2 files changed, 33 insertions(+), 1 deletion(-)
+ drivers/iio/dac/ad3552r-hs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/dac/ad3552r-hs.h b/drivers/iio/dac/ad3552r-hs.h
-index 724261d38dea..4a9e35234124 100644
---- a/drivers/iio/dac/ad3552r-hs.h
-+++ b/drivers/iio/dac/ad3552r-hs.h
-@@ -8,11 +8,19 @@
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index 8974df625670..27949f207d42 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -326,8 +326,9 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
  
- struct iio_backend;
+ 	id |= val << 8;
+ 	if (id != st->model_data->chip_id)
+-		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
+-			 AD3552R_ID, id);
++		dev_info(st->dev,
++			 "Chip ID mismatch, detected 0x%x but expected 0x%x\n",
++			 id, st->model_data->chip_id);
  
-+enum ad3552r_io_mode {
-+	AD3552R_IO_MODE_SPI,
-+	AD3552R_IO_MODE_DSPI,
-+	AD3552R_IO_MODE_QSPI,
-+};
-+
- struct ad3552r_hs_platform_data {
- 	int (*bus_reg_read)(struct iio_backend *back, u32 reg, u32 *val,
- 			    size_t data_size);
- 	int (*bus_reg_write)(struct iio_backend *back, u32 reg, u32 val,
- 			     size_t data_size);
-+	int (*bus_set_io_mode)(struct iio_backend *back,
-+			       enum ad3552r_io_mode mode);
- 	u32 bus_sample_data_clock_hz;
- };
- 
-diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-index d02eb535b648..79ca158c1ad9 100644
---- a/drivers/iio/dac/adi-axi-dac.c
-+++ b/drivers/iio/dac/adi-axi-dac.c
-@@ -64,7 +64,7 @@
- #define   AXI_DAC_UI_STATUS_IF_BUSY		BIT(4)
- #define AXI_DAC_CUSTOM_CTRL_REG			0x008C
- #define   AXI_DAC_CUSTOM_CTRL_ADDRESS		GENMASK(31, 24)
--#define   AXI_DAC_CUSTOM_CTRL_SYNCED_TRANSFER	BIT(2)
-+#define   AXI_DAC_CUSTOM_CTRL_MULTI_IO_MODE	GENMASK(3, 2)
- #define   AXI_DAC_CUSTOM_CTRL_STREAM		BIT(1)
- #define   AXI_DAC_CUSTOM_CTRL_TRANSFER_DATA	BIT(0)
- 
-@@ -725,6 +725,29 @@ static int axi_dac_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val,
- 	return regmap_read(st->regmap, AXI_DAC_CUSTOM_RD_REG, val);
- }
- 
-+static int axi_dac_bus_set_io_mode(struct iio_backend *back,
-+				   enum ad3552r_io_mode mode)
-+{
-+	struct axi_dac_state *st = iio_backend_get_priv(back);
-+	int ival, ret;
-+
-+	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-+				 AXI_DAC_CUSTOM_CTRL_MULTI_IO_MODE,
-+				 FIELD_PREP(AXI_DAC_CUSTOM_CTRL_MULTI_IO_MODE, mode));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read_poll_timeout(st->regmap,
-+				       AXI_DAC_UI_STATUS_REG, ival,
-+				       FIELD_GET(AXI_DAC_UI_STATUS_IF_BUSY, ival) == 0,
-+				       10, 100 * KILO);
-+
-+	if (ret == -ETIMEDOUT)
-+		dev_err(st->dev, "AXI read timeout\n");
-+
-+	return ret;
-+}
-+
- static void axi_dac_child_remove(void *data)
- {
- 	platform_device_unregister(data);
-@@ -736,6 +759,7 @@ static int axi_dac_create_platform_device(struct axi_dac_state *st,
- 	struct ad3552r_hs_platform_data pdata = {
- 		.bus_reg_read = axi_dac_bus_reg_read,
- 		.bus_reg_write = axi_dac_bus_reg_write,
-+		.bus_set_io_mode = axi_dac_bus_set_io_mode,
- 		.bus_sample_data_clock_hz = st->dac_clk_rate,
- 	};
- 	struct platform_device_info pi = {
+ 	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
+ 	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
 
 -- 
 2.47.0

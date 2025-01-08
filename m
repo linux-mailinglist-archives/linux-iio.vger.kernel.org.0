@@ -1,150 +1,144 @@
-Return-Path: <linux-iio+bounces-14024-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14025-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AB0A06301
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:06:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D649A06363
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBECD3A7CAA
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:06:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A0703A64C8
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BD81FFC7B;
-	Wed,  8 Jan 2025 17:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E813F1FFC7B;
+	Wed,  8 Jan 2025 17:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WsJnBZQF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PSGBGDZs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890A61FFC6C
-	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D6015E5B8
+	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736355975; cv=none; b=RxeMaYyoMG/iQT0VE98SBc6EFZEzQS5jTEmdag9T63bd6T1hEhYCCegIDxcRTa9AsBhWFXfM8kV8Es4BM71DhF+pmkFscKRhcl5+i8erPE7rbaAB9NDKbAs4R5gc+qiWHRsbhN4CANh+sorXGHeBvbCdkUY5OxC9xPW5DfzBm5E=
+	t=1736357434; cv=none; b=SEewRS2e+dyHkmFPaC397HGGSc+ow78Q695W5iKEkihCcO0gNzd8m8ZIk6XIRObPuRLJOBt9GZs8bK07tKTLFaMKy9AiGBs1EBg7pypjXc65fgCv10+b+fxRl5RE0vcjhrT8kCONR9/qGzZIXNF9+4bcfyRrEDfhlPMSWjXODsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736355975; c=relaxed/simple;
-	bh=jCamsfLpcBDv0KT7qF02it6Id78FDWwVeoi+mD41IZg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=um5BdAZWvln9W8XluO2/PEYCss3t39fDmW6jq6y/mye3rME/+BB6z3Ntbwcy680FKgv6a1TEsJpOcjUTrBqCroRgq3a3AuhxhbZct3RreOzlKd4Bv3I19WmgqN2K6f+1YoHLhXlvbwWj1fhFkabZcTKKE5FikNky+ZWQpzW8b2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WsJnBZQF; arc=none smtp.client-ip=209.85.167.177
+	s=arc-20240116; t=1736357434; c=relaxed/simple;
+	bh=fpVjiOzU0iD1XUlCDZIAr6EP5RIEX41K0YW3HJlP3cA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jOTPPrdC3fGWLoS9N9SvwPAanvC+oIXlds8X6I0UdAsCgFMrf5jjSxw85yeI0tfZsyan+usuq+jM/ShdhiLHfMFLetBHx1YmKa6/04B+O4DXIVVfIX4fh5TwxZCSx5+dAzc+zwE3O9eB2l1qZBwhDnz2pLoEN3plEsNY56cHFtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PSGBGDZs; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3eb6b16f1a0so4881393b6e.3
-        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:06:13 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-436345cc17bso763285e9.0
+        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736355972; x=1736960772; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n/b4Xzx1xkuwA/wx5BhKWtA/mjZMQ0mArLR9j53cJLo=;
-        b=WsJnBZQFZnH1CSsoN9fIHXN5k800U4yja6SiLWiBRwNgBxjwMCzcYinOUwsyMxE0fr
-         lElSqVqS2KOC35bk8BJJrhi9DnFlBOkTkeS/p192FqfJHFoUEglhpXs2amTo+mW4V7g1
-         r/dK89OLsP4oQAElb554Z23uNObr/VrzEzH7wibOWGlxRSHgfnCD9eHAig1eNkB6lIhk
-         kVJSDvGgGYQDd6TMS5G6vQkaI01p3quOqigX7hwh75/H+TkBlFwHUBo8MOo7dmmzb/aa
-         J+PpYlzIDbFv0L8H8iWZKFrqm1P8z/WwsnU0MDE6f1RwIDRJzpZhnAzLJtJ1D3m3kx+j
-         SkRQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736357430; x=1736962230; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/wzKM/x5FC36Smmof5rrr+iE96TzoFsYrHQXVew5QDM=;
+        b=PSGBGDZs/ZmdqzPrEBcrI4XdOH959rUq/qUJd46bGubWm3j1xCegcUUJHmVHIIfqYq
+         vT23Z3m3eO7mZLwg0tHzCoA2N4TC2A/ofnNmAmOlceWeWgRwyKjPXoaG4beoQB2sS8io
+         flq7l2dQADLxmsrO2gT9Ygd/letC1E2xU+Jt7FdUPvRF5JM1yoELPIw1nLbUdRXbjbQh
+         kDqkzT2vxuqJ0s2+hUKa1Gl4x3/SAfcq7mD75VCkymO6WcYhBgEOFr7oPE2WMk1nUb9s
+         UMrvoLDYZB7Q+XDYYKvVLdJqM9tcqucSmCewnXe4f5irIJsCuUrJHkS2UVgAdk4rDuXm
+         tIpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736355972; x=1736960772;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=n/b4Xzx1xkuwA/wx5BhKWtA/mjZMQ0mArLR9j53cJLo=;
-        b=ZX0z5IGfUt0P9c2pZu8wZWnK7O6eCY+n64azkK10UjjNTJIhSsI+VevstcLTysCobq
-         3lUK066gi27SdmLVdE/wYkYbwu6tJoRcwyAzxLDqwkzJMVw9ZP/ymyHq6M2jERm3bjNr
-         8XsHV2/Y4Q64sVCTIgEy2N9oCsITc7MLg4t/FlhzVrFp2AVB9i9UsLPo+Ub4LehPuiUk
-         Oepw6fX/M8YMb7W0jKFmC0h1FIU3nZNckQ5SKkmWfqd2EeFJhA7wS4MNjJxOA+duBMgz
-         sOn18eJtC/2uyB8bPZlC0vTYYWdmVsp09lEcCPMKSST9wMLnqZjAZSef/eI6twNGv3aD
-         YaEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUlPhfEDg3jivyi4EwPKHvj0BSz63Ccn9lNWJkNqL6AUepYi46uAwcgJH3te2dUFfIEnfC+zOVFPZw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv9bf4hEHQYQ6UG/PRKpDQm+ukjiQTPQDOMiwzyTEj8/Ca5xDk
-	4civYXESZuZiGCad1wqb1RhwQJD1MuuoHysqASDkoHy5QQgJillv8nukFiIUx5E=
-X-Gm-Gg: ASbGncvxxgmr9TmlHw2enitDHqkpooEfxcObZT+iVkZdTh48At2JtNL4au476irAp21
-	F1IsdKVhufauDw3dFlFuHACF//GUUofFtWOcTEpqI9c81t4k0IWFP3vA7IdFvUCmRsKDpuicNrm
-	l4ozGtBGpDfKIzaGPVgrjUlnjEFlHoTFjuFNr0Tcjn9GIekPo/02++FMhXXBecvWEd7fKGuhsMC
-	1VarW5NtqluaOfuWZUm8T6AE7dvnyrnvnZ/JeLDt1nmir5GzThx44OIQ6HwfF769bwlWZRGq/at
-	2i2RL2ucLesPLE09tA==
-X-Google-Smtp-Source: AGHT+IEWotvyiUKl/k0KXLMw0knOeNaJYVLSpncNojbcFb3g/TMcabu1SuBV0WZUGqsskizMdV4GPA==
-X-Received: by 2002:a05:6808:913:b0:3eb:5d13:f688 with SMTP id 5614622812f47-3ef2edd34d7mr1881257b6e.26.1736355972541;
-        Wed, 08 Jan 2025 09:06:12 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3ece244e86asm11434861b6e.5.2025.01.08.09.06.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 09:06:11 -0800 (PST)
-Message-ID: <b650f023-19f6-4f84-ae07-4383376268e6@baylibre.com>
-Date: Wed, 8 Jan 2025 11:06:09 -0600
+        d=1e100.net; s=20230601; t=1736357430; x=1736962230;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/wzKM/x5FC36Smmof5rrr+iE96TzoFsYrHQXVew5QDM=;
+        b=XKWhtubSbrLpfbnE63Oodwx9dgagtP4n5EmK1t02n+PEqh89EKrMptuKJPb1hf38NQ
+         4ysE+FxeYaRI5q2fgcGeGSJQOU/MyodKO4pqnwNF2C30jOP4wZ1Y/gXsO3qG158G4zAJ
+         ljlKw4z40ENCvO9nq46NKxrInmrwjrNm3TuuUTff2b2b55jtaA/1BGuxcaaJtMVNKF7+
+         /eCFoPDiqXPsBhqcxM5q6FYC0PIYcLh5lUX5HisB1nYrmDXq9iZ9VEYUPuK05VMZhOvE
+         Zf1kvZzdtsFmQYpT/uNcsVx4E0UbGPJHZ1Fnk2zVBKse8AzrugHbZSeejY0M4GwuNsuB
+         yzjw==
+X-Forwarded-Encrypted: i=1; AJvYcCU09CClfaC4oMMgMzDN5+ycyEW9WUjCkx7Qon01CfFYY8QHwBl+0ix//BUTPnDeqHGE2kyeqr6F25Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2IKAkSMAywOyxmtKqNT2A8C+kx2HOiAtjQ9SY8HUV2nIeLr8h
+	uuZ0/WGQ0/pEv50iJdnoJv0giHhkU1d8H7mgIuoobAgWvlGRzZ+SaYbx5raVEUtBClPLdJaBTaT
+	3
+X-Gm-Gg: ASbGncs9YYMSL3iZb6ontuMeoWY84A/bTUHcHD0eN6DwbWmdOIP9HpT8AmTnMOl+s8x
+	Vd0l8IehEpAe8MnLjoCqArj9Ypdw/THR6k8dr019av+Sv/MkKLNa9K6H5+W7q5qfqohKJhs8RfQ
+	mBgxNxhn+UREa1yzTFIHDAMdUNEfz0qTYxZAkuq2uvtzZHQHkO+Cc3HLF6pYa3YMhnOc0j4EUE2
+	Ot4jm/hdmXOKUzJ+3ChUrtdWSUXEjNtpSzoMb8xXJkBIjxgJ9jB7XNGgM4=
+X-Google-Smtp-Source: AGHT+IHe8vylys+BGl97wuXx+LlFfd8Yc14Q1Wcxl2p2whHVSZapDVOqdUyvFcx4+DIPqWDl2Cpg3g==
+X-Received: by 2002:a05:6000:18ac:b0:385:ef39:6cd5 with SMTP id ffacd0b85a97d-38a872f6ed5mr3308004f8f.1.1736357430257;
+        Wed, 08 Jan 2025 09:30:30 -0800 (PST)
+Received: from [127.0.1.1] ([87.13.70.66])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2025 09:30:29 -0800 (PST)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Subject: [PATCH v2 0/9] iio: ad3552r-hs: add support for ad3541/42r
+Date: Wed, 08 Jan 2025 18:29:14 +0100
+Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 8/8] iio: adc: ad4851: add ad485x driver
-To: Jonathan Cameron <jic23@kernel.org>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org
-References: <20241220120134.42760-1-antoniu.miclaus@analog.com>
- <20241220120134.42760-8-antoniu.miclaus@analog.com>
- <20241223120005.1bc9a208@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20241223120005.1bc9a208@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOq1fmcC/x3NQQqDQAxA0atI1g2MKQPTXqV0ETXagMxIIlYQ7
+ +7g8m3+P8DFVBzezQEmm7qWXEGPBvof50lQh2qgQDG0IeFfF+xm5OEZIxnyrrgFVC24iq+aJ+z
+ Z5uL4GlmIu5S4Jai5xWTU/V59vud5AUjP5dR6AAAA
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Mihail Chindris <mihail.chindris@analog.com>, Nuno Sa <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On 12/23/24 6:00 AM, Jonathan Cameron wrote:
-> On Fri, 20 Dec 2024 14:01:34 +0200
-> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
-> 
+This patchset add support for ad3541/42r, 16MUPS, respectively
+single and dual channel DACs, together with some minor fixes.
 
-...
+The ad354xr connect through a DSPI bus (while ad355xr through
+QSPI), so a new fpga HDL supporting bus mode switch has been
+developed to support them.
 
->> +	ret = devm_regulator_get_enable_optional(dev, "vddh");
->> +	if (ret < 0 && ret != -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to enable vddh voltage\n");
->> +
->> +	ret = devm_regulator_get_enable_optional(dev, "vddl");
->> +	if (ret < 0 && ret != -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to enable vddl voltage\n");
->> +
->> +	ret = devm_regulator_get_enable_optional(dev, "vrefbuf");
->> +	if (ret < 0 && ret != -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to enable vrefbuf voltage\n");
->> +
->> +	if (ret > 0)
-> 
-> I'm fairly sure that call never returns a positive.  Will return 0 for success so I think this
-> should be if (ret == 0)
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+Changes in v2:
+- reproposing the patchset using platform data for bus mode
+  change functionality,
+- improve commit messages,
+- add separate patch for instruction mode,
+- add separate patch for sharing model data structures,
+- remove error on wrong id,
+- fix id detection info message in case of wrong id.
 
-Even better, make it 1 line instead of 4 and use the specific error code we are
-checking for:
+---
+Angelo Dureghello (9):
+      iio: dac: ad3552r-common: fix ad3541/2r ranges
+      iio: dac: ad3552r-hs: clear reset status flag
+      iio: dac: adi-axi-dac: modify stream enable
+      iio: dac: adi-axi-dac: add bus mode setup
+      iio: dac: ad3552r-hs: fix message on wrong chip id
+      iio: dac: ad3552r-hs: use instruction mode for configuration
+      iio: dac: ad3552r: share model data structures
+      iio: dac: ad3552r-hs: add ad3541/2r support
+      iio: dac: ad3552r-hs: update function name (non functional)
 
-		st->vrefbuf_en = ret != -ENODEV;
-> 
->> +		st->vrefbuf_en = true;
->> +	else
->> +		st->vrefbuf_en = false;
->> +
->> +	ret = devm_regulator_get_enable_optional(dev, "vrefio");
->> +	if (ret < 0 && ret != -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to enable vrefio voltage\n");
->> +
->> +	if (ret > 0)
-> 
-> Same here.
-  ^
-> 
->> +		st->vrefio_en = true;
->> +	else
->> +		st->vrefio_en = false;
->> +
-> ...
-> 
->> +}
-> 
+ drivers/iio/dac/ad3552r-common.c |  49 ++++++-
+ drivers/iio/dac/ad3552r-hs.c     | 303 ++++++++++++++++++++++++++++++---------
+ drivers/iio/dac/ad3552r-hs.h     |   8 ++
+ drivers/iio/dac/ad3552r.c        |  36 -----
+ drivers/iio/dac/ad3552r.h        |  16 ++-
+ drivers/iio/dac/adi-axi-dac.c    |  37 ++++-
+ 6 files changed, 339 insertions(+), 110 deletions(-)
+---
+base-commit: 5f8c6f117400b7b21ad248959ae2cb6e0d634e97
+change-id: 20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-9fae2ab88a12
+
+Best regards,
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
 
 

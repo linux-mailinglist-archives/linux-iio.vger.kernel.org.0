@@ -1,244 +1,198 @@
-Return-Path: <linux-iio+bounces-14034-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14035-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52062A06376
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 18:32:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9A7A0659E
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 20:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98F423A819F
-	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 17:32:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5A5C3A52B3
+	for <lists+linux-iio@lfdr.de>; Wed,  8 Jan 2025 19:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42FC200BA2;
-	Wed,  8 Jan 2025 17:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F39201262;
+	Wed,  8 Jan 2025 19:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sOxSlhA0"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aGstr54T"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE34202F7E
-	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 17:30:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B912F1A8403
+	for <linux-iio@vger.kernel.org>; Wed,  8 Jan 2025 19:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736357446; cv=none; b=ayWRL/7O0w9f/8mAYOw/hnJUBuf//r09ZrI1VxCWSQtCxDCPxkFYG37B7xkGn/BeC7LrBXey0e9L/jdPBIUFFhewLM4r5yvq6QCGEeQyZisZ3i03LVFb0T8WtNPCpZZF6NIb4mUeZZ/NbGXB8x5VsHmz/2CdthGdUXn7VFwswQY=
+	t=1736366083; cv=none; b=TnR+816kn/RLPTQdhCoFui/N0+WKtBGTD9ieJdc3SLjB5kOK1HKp98Ro5q8jgkWLYEK/kkWqaQXx49Ka7ipW4u9xlMnDHM0jskPtTUKI+n5ppr8ptyOJmxvnNMsympuMQJwf4KRWYCkdXm9kHrFWP5QACa/g8wsNvY03R2LcfEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736357446; c=relaxed/simple;
-	bh=T6i3t0gkmspAQpLvDBy59RH0XXVU3fyslIP9/NkPmzs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SW80mizFQOIT/X1b7p9HK2l9O9Yis/kCOrfXUG8VcjJmme4dHfYXsUHywlSpF7DHuhssW6hPyEy0pkVAigfVE4JEkxO/C0UFbeajkbuzFyXAGU+nKhmzkEdDow1MNgOPFsKymTxKe/7u8n5mpXUKpOz1eFs/rOPo0Y8oag2t9zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sOxSlhA0; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1736366083; c=relaxed/simple;
+	bh=C1/uSt29Z7szw8XkZQAWSHQ+Z5mvd/7B/Kyd6DoLGcY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ssfRS83wKOAmLr5IkPl+1iZXPioUjUAMDDE5tI8WHMCmTuFSFlVwACnUz4awaf0ok9KRpUAlSGAZiY3QNSBqrkMpM3v0h/Bl7EWhKYajBNqd8kXFP8NV23nYndRWyeNpQP5xB8pcqt3D3s9X/bdnpHHztCirHGQT1JRQZgk0mS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aGstr54T; arc=none smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so24861f8f.0
-        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 09:30:44 -0800 (PST)
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-46772a0f85bso735101cf.3
+        for <linux-iio@vger.kernel.org>; Wed, 08 Jan 2025 11:54:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736357443; x=1736962243; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=63sUA66Ctgyf7KL2tc561CUvyyC0coEhZW4ecsp3aQg=;
-        b=sOxSlhA0/tlGSO/VGi0tk0PoX0Q1AgFDEfob5mDHa5U80tTu7IU4VR2HAymsknT/n0
-         ooKuzUzXeo+rNjWrHw4aVIZmNevFUj2uvO88/ng66rxd2T+5XXokuid0Awd5iP+ko8Ms
-         wFo1NDHIHTUE2bexUlDNGF6qdeushdSnpxTrXNEObgqrAnFVVbfTK3tl4owwrenEOCcO
-         wvfjndSgdb2hkBiPrbWqYlOp2Yi5f/kzLGl31D/xbsPGA6cb4NowCzOONMHrc/ngjiyS
-         1EqIaxg5ARHHktmWJowZxY0F572yHrgEmhMQGj51lxiN4pXAIgUQi6Tft1TkSQgLelJQ
-         PI2w==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736366079; x=1736970879; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9WMAvTH1lV39HYnAYNAQk4zKitV1LjMad/RFWOGRodQ=;
+        b=aGstr54TcbySi/gXV1UgrdTKuOj83e0E8G9I3P64347x8zFFQhcYfZYLytDf3CKeLq
+         BIln2UaxAxvFK7n1ruYUj0+ERtG1CXa2k/LNz5SQidUJp+hzjGaGYMTtB/E2uxK2aoL1
+         pBTNg77gyNEQVdX3yn9B2sjzo8BO7t4v6hgZ0CSoMiJHjW5suKSj+qJI1OauLq9FFCpj
+         /mKRFB7SW0eso9QrI68c0Gto/Pyk5oRrOsSSunr2/cQnHE9F2xNZgP0r31q/gugQsgss
+         StUjoPD5IQMUsgYdQf11tW6d7nWCZZc8ple+vStl2qWlqfiglkz1azIO1ucvGrI5UERQ
+         qYQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736357443; x=1736962243;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=63sUA66Ctgyf7KL2tc561CUvyyC0coEhZW4ecsp3aQg=;
-        b=cC204aNe4p0fs7LRNa827u5N0RJNLghCgTOPFbJERDmcSYbSz/HVukYWfUg6iHtdNq
-         0MH07I6Ln6BXDFmsCfCjQzk3Vz14+XSKvHQXTjkaOt6vdlbEjnZlC1LzWT8Hno0yRicz
-         j+Khd81ET73P/PASl5HoQQVKN90rltsJ+ghtWmXxS63k+aaCYGiansFH9eTcKaWK/AeR
-         GkOK2EEbUHL07T9soiM25AlL4nDKeX7s5zQ0Q/bPoMgKSg+l8S7ahHhMntIDpaeI3Z1J
-         /AhInSbB/8HCHSR+62DxYL6XCxudrdmXU2FVOjjlYiw3YOM1xilGCq8Z0aRMyOtgeWEM
-         186A==
-X-Forwarded-Encrypted: i=1; AJvYcCWDwA3D/SqGBTk+FXCjc4B7GyAn4YObcHBPFxrcVAw8AQfYCoZtQObVe9bd+DpLnXwVkS8Xmohe6X0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH7XPHPBRqpBRWuPTi3QbnQEDroF1ZBgIiiDcq3h8glLkF2jPJ
-	bONhd1xScdwisQC86erR510M4m/jrkDawt1ZS8ZbaXLmGBEiBFeSNOHDxDhzYaY=
-X-Gm-Gg: ASbGncv/k8UuDrmyPF3w7INg+/tJfA/usbsPHE54qnnvsSP+WRiTuGchl7UJyKeywfm
-	61ESeuB5oJ3k7/jVpAllQkQOuXhlH2AesKnDRkKjnD+iv+cwqhuRyuk824P42hph5m2k7iCpq7T
-	mT7NfsGk6/mhyN/uWoiapgZN6utn0KjB7Zmwb9twRiEkmzblDNQDOUXjEDjNX+oxnyV20Z0Yjb/
-	e1hXQ96/ue0TVoqWp0KghzP0W1RJjghBM7LH+OKlwad/MQlzMboYuxr+lw=
-X-Google-Smtp-Source: AGHT+IGzdj5Cb9f/UsfLaSyFl+zkmljSKvG6y4+kUJdZtYo99f9dUTCsFvgvvixfxjqKsbmZuOxeYw==
-X-Received: by 2002:a5d:64eb:0:b0:38a:50fa:d582 with SMTP id ffacd0b85a97d-38a87363364mr2332840f8f.59.1736357443074;
-        Wed, 08 Jan 2025 09:30:43 -0800 (PST)
-Received: from [127.0.1.1] ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c8330d4sm52782599f8f.29.2025.01.08.09.30.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2025 09:30:42 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 08 Jan 2025 18:29:23 +0100
-Subject: [PATCH v2 9/9] iio: dac: ad3552r-hs: update function name (non
- functional)
+        d=1e100.net; s=20230601; t=1736366079; x=1736970879;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9WMAvTH1lV39HYnAYNAQk4zKitV1LjMad/RFWOGRodQ=;
+        b=qrombuKdRzSlkKKugu82qda6awiC1lPaQIcq6yDGh+T+KU9yk8r0OOiJCjtS0ybn1y
+         QM/kmOMBfuLV58sqozaavAstBDY4fMUgDp4TRwCjqn3Ief/5x8uCDgHwPyc0nSAPiZCm
+         ZM8npp1+UQnDabLT5XB19+TF3qhkQnV5rSPdmcemXVda4/GleL5TeP+h8JlMLk0OCYsm
+         TgLVHxUzDQNARBh+Gq3xFS/2mkG0qiQYsugIPRMx1aA9CJ1wa2/9A2Eo9qWvRYucISmx
+         CqSCJoDvtxQuddp9ZEaysXnpSSs1tA26Ky94sYYLhxSX/tIz5nKr9vGZmR2lMj5zp5WY
+         5Itg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNO3fOZsUBFI6HNjR0FcSmM3HJYaZQ70+6zjnHMA0PrCiA9RjXT8PX8yjkVAq33cNMstvEjJUFh5s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGfGv26c+QqmC+zcpcwtX1TmSwPnldg+4AO7CDgl7XBZJcZjdq
+	VtZ7BgMv0/iuOQFfG7WuoMr+T744Mt4OjLkc7x9Syo96d5RVTZe5mptzTp9CMTk=
+X-Gm-Gg: ASbGncvQXA9v8rvekiMMjdEX2yuhfMND4D4PKnUCqL0xOuT11hbyTx/t+tVqs/TOiTO
+	cqy2WZfzRPROgHQ2XdmHPG2cLpwkNlWC2Hkqww7U4a+XAK0lmONea/fMGinlHaFw6LsII9H0jaj
+	nslnTOaQxYJbOn/YqzhoTOe/8Sg0mnExuDAgJTkMoKnAVVQmx8pte6tLE51XFY9N5b/HDbEucE3
+	4JVMfUeZfrOWn7j7zKWEAOpxOlaqNizpsc4kNpqmYVuS2Yev4vkhPV9+Zij1d4HqhCVm4cJ19ae
+	lMzWHa7V2Gr1lzZEwm4acgvU
+X-Google-Smtp-Source: AGHT+IF2k0f8UoxQ4gUXy7jDYaFSpIyxqTH2gVnyBauxADea4b+vnx5Ou0DhyKxXno6pWcxm1pOSWg==
+X-Received: by 2002:a05:622a:254:b0:467:6c95:19de with SMTP id d75a77b69052e-46c7107dc95mr61258801cf.11.1736366079602;
+        Wed, 08 Jan 2025 11:54:39 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3e65181bsm199161141cf.7.2025.01.08.11.54.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jan 2025 11:54:38 -0800 (PST)
+Message-ID: <dbf6dc15-ec2e-4779-9a0a-4038aaa59624@baylibre.com>
+Date: Wed, 8 Jan 2025 14:54:37 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-9-2dac02f04638@baylibre.com>
-References: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
-In-Reply-To: <20250108-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v2-0-2dac02f04638@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Mihail Chindris <mihail.chindris@analog.com>, Nuno Sa <nuno.sa@analog.com>, 
- David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] iio: adc: ad4695: add offload-based oversampling
+ support
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20241217-ad4695-oversampling-v1-0-0b045d835dac@baylibre.com>
+ <20241217-ad4695-oversampling-v1-1-0b045d835dac@baylibre.com>
+ <20241219161301.3f708302@jic23-huawei>
+ <1c641b37-475a-4153-bcfc-e0e72d79fa76@baylibre.com>
+ <20250104123029.12a4e19e@jic23-huawei>
+ <9128ecae-73e9-4a66-8cd0-4d98c14ff05f@baylibre.com>
+ <f801aecd-be1c-45f5-9ea0-081162dd74e2@baylibre.com>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <f801aecd-be1c-45f5-9ea0-081162dd74e2@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Angelo Dureghello <adureghello@baylibre.com>
 
-Update ad3552r_qspi_update_reg_bits function name to a more
-generic name, since used mode can be SIMPLE/DUAL/QUAD SPI.
-
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/dac/ad3552r-hs.c | 58 ++++++++++++++++++++------------------------
- 1 file changed, 26 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index 5995bab6a9b1..53ab912eea11 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -56,9 +56,9 @@ struct ad3552r_hs_state {
- 	u32 config_d;
- };
- 
--static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state *st,
--					u32 reg, u32 mask, u32 val,
--					size_t xfer_size)
-+static int ad3552r_update_reg_bits(struct ad3552r_hs_state *st,
-+				   u32 reg, u32 mask, u32 val,
-+				   size_t xfer_size)
- {
- 	u32 rval;
- 	int ret;
-@@ -206,9 +206,8 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 	 */
- 
- 	/* Primary region access, set streaming mode (now in SPI + SDR). */
--	ret = ad3552r_qspi_update_reg_bits(st,
--					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
--					   AD3552R_MASK_SINGLE_INST, 0, 1);
-+	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+				      AD3552R_MASK_SINGLE_INST, 0, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -217,10 +216,9 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 	 * and keeping loop len value so it's not cleared hereafter when
- 	 * enabling streaming mode (cleared by CS_ up).
- 	 */
--	ret = ad3552r_qspi_update_reg_bits(st,
--		AD3552R_REG_ADDR_TRANSFER_REGISTER,
--		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
--		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-+	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-+				      AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-+				      AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
- 	if (ret)
- 		goto exit_err_streaming;
- 
-@@ -247,7 +245,6 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 	ret = st->data->bus_reg_write(st->back,
- 				      AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
- 				      st->config_d, 1);
--
- 	if (ret)
- 		goto exit_err_streaming;
- 
-@@ -257,7 +254,7 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 
- 	/*
- 	 * From here onward mode is DDR, so reading any register is not
--	 * possible anymore, including calling "ad3552r_qspi_update_reg_bits"
-+	 * possible anymore, including calling "ad3552r_update_reg_bits"
- 	 * function.
- 	 */
- 
-@@ -359,10 +356,9 @@ static int ad3552r_hs_buffer_predisable(struct iio_dev *indio_dev)
- 	 * Back to simple SPI for secondary region too now,
- 	 * so to be able to dump/read registers there too if needed.
- 	 */
--	ret = ad3552r_qspi_update_reg_bits(st,
--					   AD3552R_REG_ADDR_TRANSFER_REGISTER,
--					   AD3552R_MASK_MULTI_IO_MODE,
--					   AD3552R_SPI, 1);
-+	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-+				      AD3552R_MASK_MULTI_IO_MODE,
-+				      AD3552R_SPI, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -386,10 +382,10 @@ static inline int ad3552r_hs_set_output_range(struct ad3552r_hs_state *st,
- 	else
- 		val = FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode);
- 
--	return ad3552r_qspi_update_reg_bits(st,
--					AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
--					AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
--					val, 1);
-+	return ad3552r_update_reg_bits(st,
-+				       AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-+				       AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
-+				       val, 1);
- }
- 
- static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-@@ -405,10 +401,10 @@ static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
- 		fsleep(10);
- 		gpiod_set_value_cansleep(st->reset_gpio, 0);
- 	} else {
--		ret = ad3552r_qspi_update_reg_bits(st,
--					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
--					AD3552R_MASK_SOFTWARE_RESET,
--					AD3552R_MASK_SOFTWARE_RESET, 1);
-+		ret = ad3552r_update_reg_bits(st,
-+			AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-+			AD3552R_MASK_SOFTWARE_RESET,
-+			AD3552R_MASK_SOFTWARE_RESET, 1);
- 		if (ret)
- 			return ret;
- 	}
-@@ -541,19 +537,17 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
- 
- 	val = ret;
- 
--	ret = ad3552r_qspi_update_reg_bits(st,
--				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
--				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
--				val, 1);
-+	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-+				      AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-+				      val, 1);
- 	if (ret)
- 		return ret;
- 
- 	ret = ad3552r_get_drive_strength(st->dev, &val);
- 	if (!ret) {
--		ret = ad3552r_qspi_update_reg_bits(st,
--					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
--					AD3552R_MASK_SDO_DRIVE_STRENGTH,
--					val, 1);
-+		ret = ad3552r_update_reg_bits(st,
-+			AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-+			AD3552R_MASK_SDO_DRIVE_STRENGTH, val, 1);
- 		if (ret)
- 			return ret;
- 	}
-
--- 
-2.47.0
-
+On 2025-01-07 16:02, David Lechner wrote:
+> On 1/7/25 2:21 PM, Trevor Gamblin wrote:
+>> On 2025-01-04 07:30, Jonathan Cameron wrote:
+>>> On Thu, 2 Jan 2025 13:19:19 -0500
+>>> Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>>>
+>>>> On 2024-12-19 11:13, Jonathan Cameron wrote:
+>>>>> On Tue, 17 Dec 2024 16:47:28 -0500
+>>>>> Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>>>>>   
+>>>>>> Add support for the ad4695's oversampling feature when SPI offload is
+>>>>>> available. This allows the ad4695 to set oversampling ratios on a
+>>>>>> per-channel basis, raising the effective-number-of-bits from 16
+>>>>>> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
+>>>>>> full cycle through the auto-sequencer). The logic for reading and
+>>>>>> writing sampling frequency for a given channel is also adjusted based on
+>>>>>> the current oversampling ratio.
+>>>>>>
+>>>>>> The non-offload case isn't supported as there isn't a good way to
+>>>>>> trigger the CNV pin in this mode. Support could be added in the future
+>>>>>> if a use-case arises.
+>>>>>>
+>>>>>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> ...
+>
+>>> Maybe trick is to reorder into 3 conditions and set the value in a temporary integer.
+>>>      int val_calc;
+>>>      if (val > 0)
+>>>          val_calc = val * 2 + val2 * 2 / MICRO;
+>>>      else if (val < 0)
+>>>          val_calc = -(val * 2 - val2 * 2 / MICRO);
+>>>      else /* Only now does val2 sign matter as val == 0 */
+>>>          val_calc = val2 * 2 / MICRO;
+>> I've been testing out these simplifications (but using the scaling suggestion from below, which is great - for some reason I had it in my head that doing so wasn't an option).
+>>
+>> These seem to have some issues with signs for particularly small calibbias values. I think it's because while my (val2 < 0) case was doing unnecessary clamping, the math itself was OK.
+>>
+> Mail is easier to read when wrapped to 80 chars. ;-)
+My bad.
+>
+>
+>> I did some more experimenting, and came up with a new version of the function that looks like this:
+>>
+>> static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
+>> {
+>>          int val_calc, scale;
+>>
+>>          switch (osr) {
+>>          case 4:
+>>                  scale = 4;
+>>                  break;
+>>          case 16:
+>>                  scale = 2;
+>>                  break;
+>>          case 64:
+>>                  scale = 1;
+>>                  break;
+>>          default:
+>>                  scale = 8;
+>>                  break;
+>>          }
+>>
+>>          /* Note that val2 > 0 if val != 0 and val2 range +- MICRO */
+> This comment doesn't seem 100% accurate. val2 range is (-MICRO, MICRO) if
+> val == 0 or [0, MICRO) if val != 0.
+Alright, will fix this.
+>
+>>          if (val < 0)
+>>                  val_calc = val * scale - val2 * scale / MICRO;
+>>          else if (val2 < 0)
+>>                  /* if val2 < 0 then val == 0 */
+>>                  val_calc = -(-val2 * scale / MICRO);
+> Could also write this as `val2 * scale / (int)MICRO` lest someone try to remove
+> the double negative and break it (because MICRO is unsigned).
+And this.
+>
+> This also calls into question if MICRO and similar macros should actually be
+> unsigned because it can lead to subtle bugs since it is perfectly reasonable
+> to expect -1 * MICRO to be -1000000, but it isn't.
+>
+>>          else
+>>                  val_calc = val * scale + val2 * scale / MICRO;
+>>
+>>          val_calc /= 2;
+>>
+>>          return clamp_t(int, val_calc, S16_MIN, S16_MAX);
+>> }
+>>
+>> This seems to match all of the expected outputs for the pre-simplification version in this patch series when I test it. If there are no issues with it, I'll send a v2.
+> Probably not a big deal, but there is unhanded overflow when val is near S32_MAX
+> or S32_MIN.
+Should I handle that with an extra call to clamp_t()?
 

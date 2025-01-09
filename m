@@ -1,105 +1,134 @@
-Return-Path: <linux-iio+bounces-14064-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14065-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55249A07FC1
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2025 19:25:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AD2A08012
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2025 19:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868BB3A4A45
-	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2025 18:25:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4237A3A7040
+	for <lists+linux-iio@lfdr.de>; Thu,  9 Jan 2025 18:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20F1199385;
-	Thu,  9 Jan 2025 18:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A115B19E7F8;
+	Thu,  9 Jan 2025 18:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a8kj6GN5"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="n4IrSBhV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D540747F;
-	Thu,  9 Jan 2025 18:25:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51BBA2D
+	for <linux-iio@vger.kernel.org>; Thu,  9 Jan 2025 18:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736447138; cv=none; b=gHnByv4pmHuIa97fbLd4zkCiFvdTNYP/kmoTitB9iujR7/oleeFkY/mFDiF/qq7CrDmDx3GXXPm7H8ggiCYoCMj4bnsZ0UJVavOx7IkukFnvtxAl+wmoRznIO8T9qUyRaq3WzWXqE1JnMiaPmDSHkYDWZQ2E4CTzDz2KUDKPMFE=
+	t=1736448451; cv=none; b=rcVGKA03nXjNGGCroLtINlSesASySELyo4Nyz/w214GPb7mORRc9in3cqo3zZECUxMjqYYanQ9BXdy1RC1WGQVegFDyR+yH4SUCsdE7owYOA/cRXmvL8qe1AZxOU62AnhTg3/SJw7fqKEnK6+bZcv5XGVlj3OrU6N/caHkwJ494=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736447138; c=relaxed/simple;
-	bh=jJYLqX1Wvzo50KTj3seMVu0AOOohiMA4zPktn26hf9k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sb3pZTIixcc4jaKCZYqTGprszKBlWzFAdl1FI860GIfdDgmQgh0kOPYqd1EQbMJJgEkVJr5LBrxy9xhlw8jPoBlV9rRbqtw2S0+9c4GxxC9j2slI13M+QciHhxaDnI7pfOl6wyJGI0/2ragwypx5EjC+HYSgZcVR33DHgpwLvrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a8kj6GN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C514C4CED2;
-	Thu,  9 Jan 2025 18:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736447137;
-	bh=jJYLqX1Wvzo50KTj3seMVu0AOOohiMA4zPktn26hf9k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=a8kj6GN5ah6Hv3gjYu1tvtcReuujhZfGlMSBObitDYHC8gfHsvGi/yQkBJ9MXohgE
-	 p/+5qpU5zP/dIfd3cyq9CUr5gFlAJIxdglh7t2VJrJh6RaKT+HXyE9oxr52xnU3TCc
-	 QWqQNPznHsPTFHiQiB9isVnxuRVQcjNCXFjA2Oyh2XumqP1B5VK1A7HKLIsLUznGvZ
-	 YONUf5mG2zwf2i6oDh6RFE9DjfiKR/iuCkqB3yfiH1m/BYuFr9b9PRIYHvCnBYDRXl
-	 yBn+29hzva82f9CFRA/CtSk/RSeGyeL9bfGO9Sh5nl5hoZwXLiXccaW+FTXnXjrsi4
-	 Yo1jPThexw+yA==
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: stm32: Drop unnecessary DT property presence check
-Date: Thu,  9 Jan 2025 12:23:25 -0600
-Message-ID: <20250109182325.3973684-2-robh@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1736448451; c=relaxed/simple;
+	bh=SdHLgA6hMZWHMgsbotcJ+WvghAkLReDpXCVd3Hw1HEg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=q84f/4v8Ev+M+NwmAlhvqdK7+cg1fJWnRToug8Q/eC5BrZ+1SsvfR4YrzohrEKW+HYuvAvFsY1kJA0hIopaDXLq2zzZJz53MEwClKvK4UDDwI1u7IgBj+Sc5e1XXf9i5tg+xA07n91yOYt75F2qIDmc0VY+ThkzlZu/lIKGvCM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=n4IrSBhV; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7b6e9317a2aso191204785a.0
+        for <linux-iio@vger.kernel.org>; Thu, 09 Jan 2025 10:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736448446; x=1737053246; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EBzfPU9gNZEbLc1BBci6q4AdbZIidQPUgRG2TRlPwYg=;
+        b=n4IrSBhVmRxetI8s+H4hKi0ZYREVSuk8SC/OW2lWTBgxeOwmCkIjbUTStGhrDv4zLO
+         hIKMqenpeYPha6mBXqtL9M5NmZvGJ1Krb3aChFg5ylVr1Oc8OqveCdD1wxr8M7D75UFW
+         9aS+KoM/miz+NFKnkCV5wdK151ScRYbQAc/Z3thEgOEQc6ctO9S3CHH026cBCyJiiPyh
+         pLRB89+FfgeITBYg0uDOEdrpGrXiwhglU0qudmYangScxIJNtu7pHUaduXnBOoF0DdDj
+         LiY+ZLyM/bdjI/ZAGa3vksBBcdQIKgWGK5HtQrgqZgUM1npGIoEG+GIaFusfIozrQIz1
+         e8dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736448446; x=1737053246;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EBzfPU9gNZEbLc1BBci6q4AdbZIidQPUgRG2TRlPwYg=;
+        b=vtf+FJ7I3HedgA1A3IefiLiOppnzOIzZM8WoILJYAvbvln6UUJHhK0wJCww0iCOdI6
+         7dHS3QQg+gbfvjqntevTXESrBUSfGUc+W8doLma//3euSilDP4cs9evqaSrkcp3C94YL
+         9VrcFk6tN8khMcalpc1EJFtZcj1P9PGUFw4HVVbOjvqAbpIUXKaLK/HlqWeCzKK0sQkn
+         M+z628F/gtJMzMcALmhWs1HbYN7H48hlCwdUyHOsgP/L64uofxA/4WANZGryI7i3aGub
+         P7ur74xXHP0ACJdCA7AwBGbzGFsF/IFIFkjhVWihFOrw7DVdyvwZrQjJ2mjb+8fWowB4
+         nH0w==
+X-Gm-Message-State: AOJu0YyPDj3ezsx8UlOlY7NnaUlofkoxI9uCqE7foFgh6l7tNynxkMof
+	U0Leyx1rWU8tDTD0gpYjyNtR2EjeeTrgKJvoddh/QACtzXXGYbM8+ORHErQahQ8=
+X-Gm-Gg: ASbGncsQc9nnDN2iTZEzRPC8rCfUIzeNFsjp8wtu1tBjbrBxcdQbJ8AnS2I9lRhzZ4d
+	SdUyJI7emfa0oz2LmPrmo1+mkfCNxuNq8kZu0UCRHgdXgPQAP1gmzKzfyOGviCiDYYdZ3d59Syl
+	omDvk8UTWjCE15nPMe1EF9auzS7XAVRpsY1I/TlZhQtw9FyIHzoW9QtK9Epf0D4aEPYGi2t0IBm
+	HEQzQ7h9021X1sKmh32/T1Bj9X45q/asIOL5M1mtaNRfWHa4eLhvxbBmbV27KZwlous6vgys8ES
+	fZ8kUYow/VPqKOmj
+X-Google-Smtp-Source: AGHT+IHGX7Nrz9RlIt6zKZH3ez/179ERRbKkoOyF6dqrbwBF/lI8nHTn4mEoeT8UyPp04zylRgXEYQ==
+X-Received: by 2002:a05:6214:468a:b0:6d8:b81c:ecc1 with SMTP id 6a1803df08f44-6dfa3a99e36mr65481166d6.13.1736448446627;
+        Thu, 09 Jan 2025 10:47:26 -0800 (PST)
+Received: from localhost (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dfade733e9sm1075596d6.82.2025.01.09.10.47.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jan 2025 10:47:25 -0800 (PST)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+Subject: [PATCH v2 0/2] iio: adc: ad4695: add oversampling support
+Date: Thu, 09 Jan 2025 13:47:22 -0500
+Message-Id: <20250109-ad4695-oversampling-v2-0-a46ac487082c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALsZgGcC/32NQQ6DIBBFr2JmXRpAtLWr3qNxATLoJCoGGlJju
+ HupB+jyveS/f0DEQBjhUR0QMFEkvxaQlwqGSa8jMrKFQXKphBQ3pq1qu4b5hCHqZZtpHZnsVOs
+ M1tq5GspyC+joc1ZffeGJ4tuH/TxJ4mf/95JgnHHDVWPvdWP18DR6n8kEvA5+gT7n/AWYlyR6u
+ QAAAA==
+To: Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Cameron <jic23@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, Trevor Gamblin <tgamblin@baylibre.com>
+X-Mailer: b4 0.14.1
 
-There's no reason to check for regulator supply property presence before
-calling devm_regulator_get_optional() as that will return -ENODEV if
-the supply is not present.
+Add driver logic and documentation for the oversampling feature of the
+AD469x parts from Analog Devices. For now, this only works with offload
+support, and takes advantage of that mode's higher performance to make
+oversampling possible on multiple channels with varying sampling
+frequencies. Some significant rework of the driver had to be done in
+order to conditionally support this feature, including use of
+iio_scan_types to help determine the appropriate spi message
+configurations depending on oversampling ratio.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+This series depends on David's recent SPI engine changes for adding
+offload support:
+
+https://lore.kernel.org/all/20241211-dlech-mainline-spi-engine-offload-2-v6-0-88ee574d5d03@baylibre.com/
+
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
-The diff context doesn't show it, but the next line returns on error 
-other than -ENODEV.
+Changes in v2:
+- Removed section in cover letter about correct implementation
+- Simplify math of ad4695_get_calibbias() in ad4695.c, based on
+  Jonathan and David's suggestions
+- Link to v1: https://lore.kernel.org/r/20241217-ad4695-oversampling-v1-0-0b045d835dac@baylibre.com
 
- drivers/iio/adc/stm32-adc-core.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+---
+Trevor Gamblin (2):
+      iio: adc: ad4695: add offload-based oversampling support
+      doc: iio: ad4695: describe oversampling support
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 2201ee9987ae..0914148d1a22 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -615,8 +615,7 @@ static int stm32_adc_core_switches_probe(struct device *dev,
- 	}
- 
- 	/* Booster can be used to supply analog switches (optional) */
--	if (priv->cfg->has_syscfg & HAS_VBOOSTER &&
--	    of_property_read_bool(np, "booster-supply")) {
-+	if (priv->cfg->has_syscfg & HAS_VBOOSTER) {
- 		priv->booster = devm_regulator_get_optional(dev, "booster");
- 		if (IS_ERR(priv->booster)) {
- 			ret = PTR_ERR(priv->booster);
-@@ -628,8 +627,7 @@ static int stm32_adc_core_switches_probe(struct device *dev,
- 	}
- 
- 	/* Vdd can be used to supply analog switches (optional) */
--	if (priv->cfg->has_syscfg & HAS_ANASWVDD &&
--	    of_property_read_bool(np, "vdd-supply")) {
-+	if (priv->cfg->has_syscfg & HAS_ANASWVDD) {
- 		priv->vdd = devm_regulator_get_optional(dev, "vdd");
- 		if (IS_ERR(priv->vdd)) {
- 			ret = PTR_ERR(priv->vdd);
+ Documentation/iio/ad4695.rst |  36 ++++-
+ drivers/iio/adc/ad4695.c     | 333 +++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 338 insertions(+), 31 deletions(-)
+---
+base-commit: 0c6c3bf84f541fb4ec7097baf9eac10136f98c62
+change-id: 20241217-ad4695-oversampling-2946fbe3aff3
+
+Best regards,
 -- 
-2.45.2
+Trevor Gamblin <tgamblin@baylibre.com>
 
 

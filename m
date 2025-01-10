@@ -1,88 +1,80 @@
-Return-Path: <linux-iio+bounces-14116-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14117-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7D7A09E23
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 23:37:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FE1A09E62
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 23:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9C0B7A4B4D
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 22:36:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3D4D3A2265
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 22:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB24223719;
-	Fri, 10 Jan 2025 22:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF635218599;
+	Fri, 10 Jan 2025 22:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UqEL/ehY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L998vUzP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A002135DF;
-	Fri, 10 Jan 2025 22:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A015E2080F6;
+	Fri, 10 Jan 2025 22:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736548443; cv=none; b=H5m/lFIxPndli721v95q4fzsh+ecIQLZI/Kxt6sbnZVOydJ2kFSLveA7QnxOHRGa4CTzvoJEeLOgzgDmryxDWIaabPPXPPAgSf+rIEEiBIEsV/XUAVU53K3cTZRF3Gdtkfo5A5jgquX+EmUWc/BvRZ8OZPsix3GLAdpYKh0SN7o=
+	t=1736549508; cv=none; b=k7zmzUrFPwC5w/n3VuvRH/uBZyKkHBeWvxvX/ETuvw42lYDVGJBSpZoy7TjBiTF7j29d0jn+/2yTIhWghDW3QbRLGW9csWBcpEWnnUj0qkwLAfONX38lnlJ+Ol6MVr4Gn3rnbPIQQsOFpFPLM5BnzlBLNnJXTw8iBhwr1mgp8XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736548443; c=relaxed/simple;
-	bh=TeNFSjKjy8UcROaFLJc1GjjDATnrGgDfmChPlfsoqWg=;
+	s=arc-20240116; t=1736549508; c=relaxed/simple;
+	bh=HIlURnE0nRCK3UATcsv+lxBjbZaQ9GHcOJpoRbi91lk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NfwphQzGHMtJGmFrNWOEGmmkGKIcvW4eyrk6GGRJY5tMJg4wACogYfbN7TraNmr9APjs3uEwUrjglbQ23mVV0vNO8QuxHnTAStvQQkTvS9EiOlzoCly7x/6b5EdGOrQqS9WmwYHtLz04y30QCBm/HdQIawiHEZm4iiXrdRYD65Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UqEL/ehY; arc=none smtp.client-ip=209.85.221.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-5187aa2c97dso981060e0c.2;
-        Fri, 10 Jan 2025 14:34:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736548441; x=1737153241; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y+7m1HUJMB9GF2AZ+eHqMjKdwSe1SFU0f8P4kZQFjZo=;
-        b=UqEL/ehYvj9VRhOkMxrS3xieCxOWye9T5oA8/9IDf+rZYQSBVzWKJadsxBl+K/qSMr
-         gcRLibeib3OiGrGLDr6obo/aqX0KgEbzTCwnv0snzv3286qH5hyDHCm+3+KG/fS5Fbc1
-         qmqYlwS6CxieXibZkYIgMsLLagPpcgpDfbzWbEVQsW/ieFp3CNqlFm59HdFHokvgFuQ3
-         zo307DiVwpvIYXgRlkIcSwCcLKt5KyXEE7J4OCPC9nF7V+muLzpUi9lwakxIec7+zVwZ
-         0D1nitYrWAph/mOoslrjNZkKVyTmPd9183xPMDA8wCXWgFOoG0bJPko4LKVRBJvB0xbX
-         EI/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736548441; x=1737153241;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y+7m1HUJMB9GF2AZ+eHqMjKdwSe1SFU0f8P4kZQFjZo=;
-        b=ZBry/N3fiWvZHeT+S2BiY1IvSYxD2a5oqWVT/do3jzUunE6ZLpQvGYI9l6VQi/+oTv
-         pM4x9EZoDbFL6PQR+slrk/6kxePvzi9FER5wado9xIUznfWwLe8uSNjyOM+kvw3TDAPt
-         dkspS2KW4lLo/khRwDVcU2sg5NskhRsncMsHm0AeV3Yu8hWCbNt5VwhFM6u5qUptI1Nl
-         UrxW2PUEVQpuqfJN085r7cm0na8M035fSPP1Mil0oMIOcjBZVw2bhvZP5H65dP0VP/zN
-         6uP7emzi1X39ZYTmc6nXwA9dflDL4SwwvEASwkFr48B8Wik1kZxDiUzEQHEg0gMLJwA0
-         5Jmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVEfI19RDaHuneO4xMIsUnqSN1rKzL18XKNtDkqnsWXv00UJfN8dHrAIvojcHMEL/QGgjz5mm798JuL@vger.kernel.org, AJvYcCXfH2J/Aew3OuGp6Wv/gp7vB8fCZm/kDTB1Bhu7jVMDo3ek5NUcIrMHVavPxaDwLE7q2x4p4EXlaoRGKIWD@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo7JdcGD4k3gcO8CKEd7HmhonC6L8Bt00n0OnL944bZlKNsatC
-	T9PeBAVCKd76pD01HVNhN53fHTPGkW2ZngHdWJbIUxZibZljlvvdaPoDp7qd
-X-Gm-Gg: ASbGncuZR06UgVZr1USc5FOCzLVgcjuE4WLWSwb3MntEYEEYPof/aXbKkJMfWT+YYuH
-	JzGmXuid2/nK2iCccgjL+2uHVTOpLmEYCg95FnSW5Ev1+Jc57JiQPGiJMrQxkTKpqfFw0cXMh7Q
-	yiDWM66MPNdHL2rKOL8/4yPjrDd3Kw8Y8ypgygy5kn81kIcYs8e8/RINoRWKdANg4j3fIk1lLXW
-	cPvaCKqrRaCuZClV0dzBQVd06uUCPfvlh5dHsIWrrHh5p9TsU3ZFrnqbvUw5nvzAms=
-X-Google-Smtp-Source: AGHT+IHyzH5pNIEDMBF4z67ygBR9xYH0Unc7xpWSo32Po/JnjZ0KY+O5PN/uz73T521gyVkiMNlzyQ==
-X-Received: by 2002:a05:6122:926:b0:50d:a31c:678c with SMTP id 71dfb90a1353d-51c6c356692mr12969887e0c.2.1736548441037;
-        Fri, 10 Jan 2025 14:34:01 -0800 (PST)
-Received: from localhost ([2804:30c:1f79:9d00:c6c6:ec89:7531:7838])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51c7fb9bcefsm2756906e0c.7.2025.01.10.14.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 14:34:00 -0800 (PST)
-Date: Fri, 10 Jan 2025 19:34:31 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v1 11/15] iio: adc: ad7768-1: Add reg_write_masked
- function
-Message-ID: <Z4GgdxU-EuR_xYrJ@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <67649c43050d161621bc0494638bfa71fed82ea8.1736201898.git.Jonathan.Santos@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=rEkGCX91yC1TNVeCgWsR3zAE5jcW6t93cv/hXDSS/S4P9rt5g0TP1mEAjmBpi/3fv5O3IYIzAPGtU1z4epGsTbLxRHMveTYjlVc2VQPOTHfAeZkkXypdlSn9792wVsN3qo5iR7cPrKQlU2WbyH/GA7Q1zH2kj9rFqTewqX3Tp9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L998vUzP; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736549507; x=1768085507;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HIlURnE0nRCK3UATcsv+lxBjbZaQ9GHcOJpoRbi91lk=;
+  b=L998vUzPrKReaGqDxmplllbashtsRzV7WhYHMku2xFYPCWEqlJ/u+YfI
+   7ltm89vBiivp7vUzp9Mzf1dVxVZoVbVTrjYBngKlMpbsGTjPe9x1kGHjl
+   VQi044r85XIwcAxfZMribXIemWpc0Ua/FvKrybAQbJbsfOTZ89tkRSdVF
+   0PqWbByocdAYxiUUiqlJjQhVwEbk8yFHeabp5PAPlUD9oNA5EWqbbIbrq
+   eIxT2ff8ZRWFh+autUh42SXCoyBMAeUBEUyQmotT1vPSpYtVfoi9jWQlb
+   +bvqolRMJEd+VoO15E/lQ8TsLg9IS9peJW6S2bsl8lfWN/5w8DlBxvIm4
+   g==;
+X-CSE-ConnectionGUID: oZ9mY4U5R9GK4ac70MhUJg==
+X-CSE-MsgGUID: Q1muRywyQiaS6ql3hLFc8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="62228171"
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; 
+   d="scan'208";a="62228171"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 14:51:46 -0800
+X-CSE-ConnectionGUID: wtq/LuD/SseJPQf4BgTzaQ==
+X-CSE-MsgGUID: 5MIOti9ISqSoK7iJ+S3q3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; 
+   d="scan'208";a="108870400"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 10 Jan 2025 14:51:42 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tWNqt-000Jr5-1m;
+	Fri, 10 Jan 2025 22:51:39 +0000
+Date: Sat, 11 Jan 2025 06:51:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, andrej.skvortzov@gmail.com,
+	neil.armstrong@linaro.org, icenowy@aosc.io, megi@xff.cz,
+	danila@jiaxyga.com, javier.carrasco.cruz@gmail.com, and@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, apokusinski01@gmail.com,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
+Message-ID: <202501110655.qR09D59T-lkp@intel.com>
+References: <20250108234411.882768-3-apokusinski01@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,52 +83,77 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67649c43050d161621bc0494638bfa71fed82ea8.1736201898.git.Jonathan.Santos@analog.com>
+In-Reply-To: <20250108234411.882768-3-apokusinski01@gmail.com>
 
-On 01/07, Jonathan Santos wrote:
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> 
-> This commit adds the ad7768_spi_reg_write_masked() which is a helper
-> function for writing specific bits inside a register, without interfering
-> with the other bit values.
-> 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> ---
->  drivers/iio/adc/ad7768-1.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 574d735f2c3a..675af9ea856d 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -242,6 +242,21 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
->  	return spi_write(st->spi, st->data.d8, 2);
->  }
->  
-> +static int ad7768_spi_reg_write_masked(struct ad7768_state *st,
-> +				       unsigned int addr,
-> +				       unsigned int mask,
-> +				       unsigned int val)
-> +{
-> +	unsigned int reg_val;
-> +	int ret;
-> +
-> +	ret = ad7768_spi_reg_read(st, addr, &reg_val, 1);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return ad7768_spi_reg_write(st, addr, (reg_val & ~mask) | val);
-> +}
-> +
-ad7768_spi_reg_write_masked() should be added together with at least one
-user of it otherwise it leads to build warnings.
-Though, better if able to convert to regmap as David suggested.
-regmap_set_bits() and regmap_update_bits() come for free.
+Hi Antoni,
 
->  static int ad7768_set_mode(struct ad7768_state *st,
->  			   enum ad7768_conv_mode mode)
->  {
-> -- 
-> 2.34.1
-> 
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on linus/master v6.13-rc6 next-20250110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Antoni-Pokusinski/dt-bindings-iio-magnetometer-add-binding-for-Si7210/20250109-074641
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20250108234411.882768-3-apokusinski01%40gmail.com
+patch subject: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
+config: arc-randconfig-r111-20250111 (https://download.01.org/0day-ci/archive/20250111/202501110655.qR09D59T-lkp@intel.com/config)
+compiler: arc-elf-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20250111/202501110655.qR09D59T-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501110655.qR09D59T-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned short [usertype] val @@     got restricted __be16 [usertype] @@
+   drivers/iio/magnetometer/si7210.c:169:16: sparse:     expected unsigned short [usertype] val
+   drivers/iio/magnetometer/si7210.c:169:16: sparse:     got restricted __be16 [usertype]
+   drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: cast from restricted __be16
+   drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: cast from restricted __be16
+   drivers/iio/magnetometer/si7210.c:189:24: sparse: sparse: restricted __be16 degrades to integer
+   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: cast to restricted __be16
+   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: restricted __be16 degrades to integer
+   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: restricted __be16 degrades to integer
+
+vim +169 drivers/iio/magnetometer/si7210.c
+
+   143	
+   144	static int si7210_fetch_measurement(struct si7210_data *data,
+   145					    struct iio_chan_spec const *chan,
+   146					    __be16 *buf)
+   147	{
+   148		u8 dspsigsel = chan->type == IIO_MAGN ? 0 : 1;
+   149		int ret;
+   150	
+   151		guard(mutex)(&data->fetch_lock);
+   152	
+   153		ret = regmap_update_bits(data->regmap, SI7210_REG_DSPSIGSEL,
+   154					 SI7210_MASK_DSPSIGSEL, dspsigsel);
+   155		if (ret < 0)
+   156			return ret;
+   157	
+   158		ret = regmap_update_bits(data->regmap, SI7210_REG_POWER_CTRL,
+   159					 SI7210_MASK_ONEBURST | SI7210_MASK_STOP,
+   160					 SI7210_MASK_ONEBURST & ~SI7210_MASK_STOP);
+   161		if (ret < 0)
+   162			return ret;
+   163	
+   164		/* Read the contents of the registers containing the result: DSPSIGM, DSPSIGL */
+   165		ret = regmap_bulk_read(data->regmap, SI7210_REG_DSPSIGM, buf, 2);
+   166		if (ret < 0)
+   167			return ret;
+   168	
+ > 169		*buf = cpu_to_be16(*buf);
+   170	
+   171		return 0;
+   172	}
+   173	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

@@ -1,87 +1,87 @@
-Return-Path: <linux-iio+bounces-14110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D0BA09D62
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 22:50:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF41EA09D6F
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 22:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0BEB3AA775
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 21:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C0003A4D62
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 21:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A4820ADC6;
-	Fri, 10 Jan 2025 21:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEF2214202;
+	Fri, 10 Jan 2025 21:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0cE+NGW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lv4MCLp0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23439209696;
-	Fri, 10 Jan 2025 21:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7168209F50;
+	Fri, 10 Jan 2025 21:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736545837; cv=none; b=WX9vui7N1+iADsg7CCj5P+eP8Unln173qpjszP6KOLp0prkatSQRyywwh+fKqrDB43HghC4Yf2f2dHCusPURa/k+VT31xSIK+bBVefez9BejiT4WV/UMTMCt6pql4vAfEPwMX9N5MBAp1YmKzjOOwddodstm0trx73QLeLlWgiQ=
+	t=1736545929; cv=none; b=jID2VyKmHWGX8vdb1/Oar1FDvgRRnm9Lv0YTAWR/yTO19W1ixDd4qQSHoZGIaoEiehFsI4zT4foLad85jIj7ZEREE4G8DlNc9XS6HGFJUmpxPgGQdIwCOod48fQhB4T3hFu6Nu4J+QO2xwk/ZTbqHu1hiH38B14WjdO6w3pIc7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736545837; c=relaxed/simple;
-	bh=0OyY23vJ0d2YYHt7z8F4xbKFu7fMbUTv4q9YBWnySa4=;
+	s=arc-20240116; t=1736545929; c=relaxed/simple;
+	bh=5cRilqtxfdMOGBiTNJzjGd5l+IzwcpborthqSLQW+NM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cA2h2MStOCYGXP2dSseiVEggVBFBsqUVTEgdKDTQ1w2mETa1pSsPeztxYi68Jr8AYwiN4WjrfdvgQ2stoCUH73mj67xtGq7DG23/IYbaW9UBTJf8OlZG+62DyrSp660TcNcZa0R4BRabr49a8R+Kw37IJS4mRPiO0ZnuqQtAPv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0cE+NGW; arc=none smtp.client-ip=209.85.222.51
+	 Content-Type:Content-Disposition:In-Reply-To; b=Np8YZ1Rf+OTSZwb+cjPFjf2GgB3FrHXha+UySDn6Ig8ZxdsJ45rvio50McHmJbYOJx63GmQC0mAGu2oRgvsOHruI2hsJfFY0aSda/BnK2zdG6g2kG8gsDcn5STy5A786Ep3J4suq861EZwBvimVv6WMSa2y3iUJa62FpCAB6gvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lv4MCLp0; arc=none smtp.client-ip=209.85.217.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-85c559ed230so676988241.0;
-        Fri, 10 Jan 2025 13:50:35 -0800 (PST)
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-4afe70b41a8so927417137.3;
+        Fri, 10 Jan 2025 13:52:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736545835; x=1737150635; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736545927; x=1737150727; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bMQH1h0Dr9ppiNzpovv7gXauZahIJxSRMst8z1BloBs=;
-        b=W0cE+NGWA0b5gAsR5qiAvJ0LNpJ6GfoKqarSeYhXgdO2+2nNQ3loP9rQ+7ngGgPwH9
-         WaMbj8N0RQYMcNhJP4UrqV4j5oqsYzPJn/7XgDAYRuy/AFVt7rQLsXuGSc2LcFV/BXtf
-         Hq8mBmZNCKyOHkZAp4K9NG3K3ll7/dciAUbmszDQ6sK+OkVPESKQv85jK0rBbKOLAwqJ
-         mNzC20rMuBq4CR1CsOJCPKMkIsP7kaC5yAaupJ8Eyy65jjJ5QUhUksS3zYcs5GkEKqEm
-         UYiiyjEHFjivktdGTzMZVbletg4dcAc4Fy/tBmgpDp4hcWN12mpV9coX2O5EHYk64XaJ
-         c/1A==
+        bh=9tZ0bi2Z9yThkshYHVUpv6sP8eop4ARnnyW6YjrsK14=;
+        b=Lv4MCLp0p+geujckRQzhMJHNgN+dRMk+b2ulVVgPo6NYX/q1/V7EKWdr4/rZjgH04I
+         1g6NYLIN2sRHIY4xPiNrT6gLoIfh0OMgmLevrMsOsdj7MqvNcvpDf4VFdZDPPe89wmb1
+         3JrO/SKivVUQcztgpcfFnMrDpEVgLdv3cGTE5Ydps7gfY+ZxUcfbHYpUowaI2Asm8k4a
+         0QNAzvOQQWUy/+i0esONLgeJW9DnwGMKwECWLKD6wKbuZZonQ4PCvdFok4V7Q3WV2bhJ
+         Ri5SEDqVg8aKEAA4A3/fWUB9B5TVcJgfPkB/NGQi/SD4kYwHCuv5IqWR5GSTDF7lggq0
+         MgTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736545835; x=1737150635;
+        d=1e100.net; s=20230601; t=1736545927; x=1737150727;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bMQH1h0Dr9ppiNzpovv7gXauZahIJxSRMst8z1BloBs=;
-        b=porzulgNqm7vZst9jc8UkxSLeviwwXDbOKAqXf/+ARb0E1Wij52wofF617ejZAuqZn
-         2zgPFregv+6dQls4xlih14SmCRebRr/Ngg/CDJor187NWxCJPLLLLklYJEj7Pu4lBiRd
-         uGs9qzFmZSsrCmC9V6vzG97wxJjWj0gZlhx76t4ZkRIgpUVsBwNN8q81ocRke/1Jbl8l
-         1Hi5HwyuxDKtUGGU9ploqzBxCKrGeQzIGNNhgw4XPyiethSjOYUAH2hNxP34ONIH9MqC
-         wLO7t06KfDpOTe2XPa0JJsnjXfYgnoIFIu/YVri/TPlSis46VjG7WablfnKiuzYGnKrV
-         yhDw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0G6RBYbE5vdAeFHwV8WSv+jHJpiXZ5McLY05iOUdvhMPnKMZIcE2OBuS6nTaGlq1Pm2qzysJgiCRZVESU@vger.kernel.org, AJvYcCWl3w2tFJkVbV4A4ZPTrPyJAhxTrcgCRn2TWHwfQVUDMTbSOUaXY4UZxZ/4uX0nyCfOZaVuyU6u0ULX@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeCZzyLgVelpVmWN4/LSQm+iC+X1Lmaj2FoCh39BoS00QvCJrW
-	T3/6mZ2XIR4bsaDBrVbDBgg+rETvB/oKenfvVFzaHBHhgdwAutA6
-X-Gm-Gg: ASbGncszRb0HMpRR8Oe0+o+b6tU4jH5GM2lhFyV4IWEIz7CzPpmwpjtOTkqKWKu/Go/
-	INvyDyLngPVIk8fKhul2/CrU9gsjJIDFXA4CTrZulA8mAv3lVAZWXbkeb2gVQ7Q0ChnZM+cZIgS
-	ow4qqRDYBXUqxlvqf5k9bsxwaqfCPM9GwYzLU371sykMTxNhzoTnNZ4QqO/49TjTVV3Rf/zACGw
-	dK0PjAqtr8YZYSED2X9RoFWxA3PFUUAnhOd75smIBZL6qKCESSNOZUPGuuhRseRSnQ=
-X-Google-Smtp-Source: AGHT+IFTcKXjrqi4Rlf8I8DFX2cAubhoPFBolLt4O2nr5fXV8r8c8y67vAcrclgSxKCq09jXeVmiUQ==
-X-Received: by 2002:a05:6102:6e88:b0:4b3:ece0:7daa with SMTP id ada2fe7eead31-4b3ece08829mr10065071137.23.1736545834855;
-        Fri, 10 Jan 2025 13:50:34 -0800 (PST)
+        bh=9tZ0bi2Z9yThkshYHVUpv6sP8eop4ARnnyW6YjrsK14=;
+        b=CupJQDii3aCDAdVKXYoEzCndrKyobSarMBk2mMA0kHdPQ9UmFyUXDbKSwtU6JZbxYR
+         3K2O2Ft+KG+jcGRQeOfjr2HifeUdhHIh2RQMCB2yiytdlw8oJyOxSUy4jBJvdw1/jK2X
+         9/QYLBdTH4nx3UZdUEgbLP1emyHmsjgnjz1yIuJCBT9sG8oZ6SBCkwKj0VnBO0M+4K7T
+         btuy7RM1bi+lT3HfwLVjIuQZiU2AIOsnbqW8gjBwKdGcuJFISG37uRLO/X1plCOSyBYm
+         HY1BaD8CJfO5NsBgaZBUqKHa9peW/JzDB5aVug60jfXn0imh+wKufqoMgMmm7W+GQFNa
+         BZ+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW95GcGFjk5qqTZqiYKhAkLZw1/XOG2AvOMVuvgNXTFXXTYqIbUI5LFfaRXLjABdQTG1rKfnv0rJINJ@vger.kernel.org, AJvYcCWh2ex6qVjYJ4Kb88RJ0KOugv5Sd0gDDkvStFqqCbNLb3tDXvEeJr/RPA6FyDgTN31ut10tnMabowKsLZJJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuMLCuYHl0USOIs/VuwgXld+V2WmYCoeGS7NbvPcNQq1V0MALI
+	74giuCdLUJOAi9G3PgmpQ480zwJ8YPtmysovwFOaYQHi2eADMLAD
+X-Gm-Gg: ASbGncvTlZ+KnDAi3VKiNFr9xcWA1I3pGl/OdhQodk2wdEqGi+cCRhDbcRNlyrybony
+	9DdN1+OEcr7AhW5wSXFEzKfDLieKZSQBkWOjSQh668nQJWdPLyFcipibpde3TuNrAiqHro9UiEl
+	sdv5H36fu3kpCYYyhuYWNmO5rdn/E6R3gUFSXPLY9WxdueQKuvPkOYVJtOD97ZKqi746bmhO74f
+	auCYaBa6zmlGWjSkQ8e42LxZnDLWVK/7heN65SFYO1BxFXob1uNxLEJqKpGg+orBbQ=
+X-Google-Smtp-Source: AGHT+IHz2u/EYknhpRsoxWUpK+VioUZK9PkNMUZXK6MNmf6cINU+02hKEN0OzbidsSpiK939U+OiEw==
+X-Received: by 2002:a05:6102:2b9b:b0:4af:dcbe:4767 with SMTP id ada2fe7eead31-4b3d0d9fc34mr13610927137.10.1736545926628;
+        Fri, 10 Jan 2025 13:52:06 -0800 (PST)
 Received: from localhost ([2804:30c:1f79:9d00:c6c6:ec89:7531:7838])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b608f04da0sm3147512137.2.2025.01.10.13.50.32
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8623136226fsm3423816241.11.2025.01.10.13.52.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 13:50:33 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:51:06 -0300
+        Fri, 10 Jan 2025 13:52:06 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:52:38 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	linux-kernel@vger.kernel.org,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
 	Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
 	krzk+dt@kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
- synchronization over SPI property
-Message-ID: <Z4GWSgruwnkDfYSg@debian-BULLSEYE-live-builder-AMD64>
+Subject: Re: [PATCH v1 04/15] iio: adc: ad7768-1: Fix conversion result sign
+Message-ID: <Z4GWpjnAoRKtexz2@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+ <e521bb5cb60d413edbcd1ea582fd81073218eaf5.1736201898.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,80 +90,63 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+In-Reply-To: <e521bb5cb60d413edbcd1ea582fd81073218eaf5.1736201898.git.Jonathan.Santos@analog.com>
 
 On 01/07, Jonathan Santos wrote:
-> Add adi,sync-in-spi property to enable synchronization over SPI.
-> This should be used in the case when the GPIO cannot provide a
-> pulse synchronous with the base MCLK signal.
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> User can choose between SPI, GPIO synchronization or neither of them,
-> but only if a external pulse can be provided, for example, by another
-> device in a multidevice setup.
+> The ad7768-1 is a fully differential ADC, meaning that the voltage
+> conversion result is a signed value. Since the value is a 24 bit one,
+Hmm, I think the reason why we sign _raw values should be because of the ADC
+output code format. There are differential ADCs that can measure a negative
+difference between IN+ and IN- but outputting straight binary data format (not
+signed values). In those cases, the _offset attribute is used to "shift" the
+_raw value so that output codes that represent IN+ < IN- are adjusted to a
+negative decimal value (the _raw + _offset part of IIO ABI to get to mV units).
+For AD7768-1/ADAQ7768-1, the ADC output code is indeed two's complement and thus
+signed so the code change is correct for it.
+Since you are probably going to re-spin on the patch series, will be nice
+to adjust the message to something like:
+The ad7768-1 ADC output code is two's complement, meaning that the voltage
+conversion result is a signed value. ...
+
+With that,
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+
+> stored in a 32 bit variable, the sign should be extended in order to get
+> the correct representation.
 > 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> Also the channel description has been updated to signed representation,
+> to match the ADC specifications.
+> 
+> Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > ---
->  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
->  1 file changed, 23 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/ad7768-1.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> index 3ce59d4d065f..55cec27bfe60 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-> @@ -47,6 +47,15 @@ properties:
->        in any way, for example if the filter decimation rate changes.
->        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> index 113703fb7245..c3cf04311c40 100644
+> --- a/drivers/iio/adc/ad7768-1.c
+> +++ b/drivers/iio/adc/ad7768-1.c
+> @@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+>  		.channel = 0,
+>  		.scan_index = 0,
+>  		.scan_type = {
+> -			.sign = 'u',
+> +			.sign = 's',
+>  			.realbits = 24,
+>  			.storagebits = 32,
+>  			.shift = 8,
+> @@ -371,7 +371,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
 >  
-> +  adi,sync-in-spi:
-> +    description:
-> +      Enables synchronization of multiple devices over SPI. This property is
-> +      used when a signal synchronous to the base MCLK signal cannot be provided
-> +      via GPIO. It requires the SYNC_OUT pin to be connected to the SYNC_IN pin
-> +      on the ADC. In the case of multiple devices, the SYNC_OUT pin of one device
-> +      should be routed to the SYNC_IN pins of the other devices.
-So, if I'm getting it right, /SYNC_IN may be driven by a GPIO (ADAQ7768-1
-datasheet Figure 131), /SYNC_IN may be driven by own device /SYNC_OUT
-(ADAQ7768-1 datasheet Figure 133), or /SYNC_IN may be driven by other AD7768-1
-/SYNC_OUT pin (also Figure 133).
-That is too much to describe with a boolean.
-
-If David's suggestion of using a trigger-source doesn't fit, this property
-should at least become an enum or string.
-
-> +    type: boolean
-> +
->    reset-gpios:
->      maxItems: 1
+>  		ret = ad7768_scan_direct(indio_dev);
+>  		if (ret >= 0)
+> -			*val = ret;
+> +			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
 >  
-> @@ -65,7 +74,6 @@ required:
->    - vref-supply
->    - spi-cpol
->    - spi-cpha
-> -  - adi,sync-in-gpios
->  
->  patternProperties:
->    "^channel@([0-9]|1[0-5])$":
-> @@ -89,6 +97,20 @@ patternProperties:
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
->  
-> +  # adi,sync-in-gpios and adi,sync-in-spi are mutually exclusive (neither is also valid)
-> +  - if:
-> +      required:
-> +        - adi,sync-in-gpios
-> +    then:
-> +      properties:
-> +        adi,sync-in-spi: false
-> +  - if:
-> +      required:
-> +        - adi,sync-in-spi
-> +    then:
-> +      properties:
-> +        adi,sync-in-gpios: false
-> +
->  unevaluatedProperties: false
->  
->  examples:
+>  		iio_device_release_direct_mode(indio_dev);
+>  		if (ret < 0)
 > -- 
 > 2.34.1
 > 

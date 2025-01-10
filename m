@@ -1,55 +1,79 @@
-Return-Path: <linux-iio+bounces-14105-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14106-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3762CA096E1
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:13:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D72A096E8
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7613A174E
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 16:12:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B5D43A1E39
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 16:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9643212B36;
-	Fri, 10 Jan 2025 16:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EA0212D6A;
+	Fri, 10 Jan 2025 16:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="oi9npryN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="roJdMb/H"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7255212D7F;
-	Fri, 10 Jan 2025 16:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64997212D65
+	for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 16:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736525570; cv=none; b=CbdCbltVZoKZfWaH8nOR+637ErfXbiv0+PXNml3c6JqD67+mCtqKSArQhcrcd37ZkV8uQffMog4iSI5jy6PlrAwg6RbGa7FU7/216Gj3id1nCNEewyksud8EGOynHE0h4uEdnJjiWaqAxthQpOw0vcuPMx5e5yZxnyOCoVBM1Kc=
+	t=1736525654; cv=none; b=hJx+UVg7jhKtNfpkMHZSuXCA8ML9AKsXYpobNV2sflswp/1xC2DzT2Fy2gd10LvSouZhK7434uKhDhKbnz2caCVq5aL6i0ceFLFTwAPGfbbBbYhTRoiIQuM50OKDK9ZRitQ4E4FDRTzzKgqz6NK7wLkv+cq3XH1LOXxTLi/rTq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736525570; c=relaxed/simple;
-	bh=B/LjKaQEHy7KEr/6zyM+4jYclIOFdaHDBMv/5D+Izq8=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
-	 In-Reply-To:Content-Type; b=C/wy2DxVfyFbbhv9lU2uwRRDGBgJhUnI6+IoUQ5BXqDsDos7rNTG6Jr54Ju387sp4kLFoX7wkQPtHKbqnAKA6Hqf1U2LhkUNpJOHTNqoZkFOZWEt7Upc4T6cy5WT3tuPdtewG6Wu7eRm8plH2GU6PGfNi0jUWY9azWNHC6cf1xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=oi9npryN; arc=none smtp.client-ip=80.12.242.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id WHcftqzmJsdQ2WHcitXIQm; Fri, 10 Jan 2025 17:12:38 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1736525558;
-	bh=cVLAzhm2YWxCwHrXp+1PYJnEwZhWtQTnEIBmj0ECNRI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To;
-	b=oi9npryNzpIwaWIY1k6CaekGNoo4qT8/r0ODym3ETKzg8ViErZWzhBHO8gPmNOcyE
-	 z2YlzaMd+Lir72ei9Auk2lB6JfbptjWADunTj+u0BUhwovCy7w1BmctKwBf8DGvCeZ
-	 XM/wqT6Q20hj9TqGJf8+rkOCXXBqYfblzjJ/V6K7CcrAX5icY+gcExryBC72WvvnB0
-	 aunYtxTvYgGSDv5/nxh2iQxzuBa1+c2/ijmA0heLQ5rZgjV/xAiH16Iz/04f3hFbB0
-	 wGCJ6BXO7doiw5CIacM56/gaHbEm+oSR4iuyM/FEoFH/APzuV0nssGoqjhPPsP/Lpg
-	 efP8Z0ZYSGE+Q==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 10 Jan 2025 17:12:38 +0100
-X-ME-IP: 90.11.132.44
-Message-ID: <22cec5f4-5945-405a-b586-dcc9b1cef3aa@wanadoo.fr>
-Date: Fri, 10 Jan 2025 17:12:33 +0100
+	s=arc-20240116; t=1736525654; c=relaxed/simple;
+	bh=CUcc1KsGhmwdCWJ5UXS/a+OjWvNDJzw5kzI4sQPQhi8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TXpSEIrzs1HfoRLrO05u+PlzycfckhXxLZjSQBLoitttrrYefWcYkarfVTBl2VOZVg7TLqLxisnb3MN7TojNJi5l6SEgconlPX6/oayVfBkzNHj8GxULZYjmJEtk1OFXzgn1yXYuVGMjmyg4zHKn18iZ6GNmLo0RTYaZuYiNmrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=roJdMb/H; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3eb7ecc3c54so1132420b6e.0
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 08:14:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736525651; x=1737130451; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YP/B6txSDV+Xuo8fhFJcgx+tWiRy3jljO2uml8P7Ic0=;
+        b=roJdMb/HleNyBaZnT6iT2mTqf1JahqqNJxyhtJvD1vTW34ibUGteLmiLc06rlyIHsl
+         80/1wXL/QLwqP1vax2z5ahQ1TwrmtIsQLiD4sOi51AFxTfPSFy8/hc+jKPPyyWCAspJT
+         fbVUrpGb0X2781X5kj0WpLo+iOu5PFWDOrW/RpS8yzlEDhHhFaPB/ANvlPqdPGo55FEL
+         zB429Zy35RuhBcEZedjV/IXIpgew8qNAUAhpiumUSgIjv1F84clws6NFXSMSanj+g32w
+         4fnFJ6NkbriiL4hNk99EYmECmtEmD8xps41reS6JDtVvPfSthtVfY3De7Qkba156mwXv
+         ThIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736525651; x=1737130451;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YP/B6txSDV+Xuo8fhFJcgx+tWiRy3jljO2uml8P7Ic0=;
+        b=p3wC3TpFnmCdJidawZ/jpwK9GCapJnBxNWx/RFFfkQKrt0mb+6iNYwXiPx/bE2lWKg
+         jmrBVff8tURh8wKotlaF+PZT+gZRgrSqOoIhJFkbWCuwqtBsujgO7gsZubolU5mWlI0f
+         vMjBeUHirb8mMayDWcR/D7s7Pp/R+8umbNvFy9W1chHkHpZJhAhYZvzpLEwgcDpLe+PB
+         LoCldifzpzLJBOFirFWGP3RoVXn9QEEM4CdJdhiAxzBgToHfvsP9MbwjwNlJZ1cFAjTt
+         T+gwf4UqSFwdYO9qbjQRiMOy9qYZBhKtFoTJn7FbSxNomNHi965Wr2xEgQuBASUpkEHn
+         SVtA==
+X-Forwarded-Encrypted: i=1; AJvYcCVihhIuL/bS0LCSxDIt56lQ9fUYcoZlWts4aNSGfAuC+9dwyOyeL9xhVNCMarI2I+rCxhiPBBbwBQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxbd0GxmtwHT2+cNJCbmidjqTQoSCyIOteneJX4fIRgn1AxRktB
+	1+f5kpYmHRTxLK6O7bNjsiMFPxl0+lhzGv19AStxHMcIQHJdjrvBXaA65MNjlLQ=
+X-Gm-Gg: ASbGncsb+41vv30tqshexdYkA2g+2naVznMBiroi03VXdqROX93ywy7i0huoL8BgQfb
+	bUn6D5wqr5KF8mbuzq3Y4iBdY0yuEAcP550kUmn8PJKftH+GLYktF94AQ675JT33JH0EdUiI7/e
+	thGZEqrcYlflum/4UUvdcx9xepogZTHo7QiBKCFa82sqje7HbwzBgjpRxVyKGK1HB0+WiUsd2lt
+	poOlVNAgfWm7/kEQxrrudZbaXcpWQqsHmOaTgw53kN3CQJQv1jCbjcFKqOlLVlKR5a6ZNuxiDFa
+	fsjM+sXTnt09SZFZTg==
+X-Google-Smtp-Source: AGHT+IF+fbbn5YdTrFiyQ3S6Sqwd4wPQsajQsc+A/TdRDNjsoP4/3jXHtTi7/7sAlCN3jQcvxnbG4Q==
+X-Received: by 2002:a05:6808:170e:b0:3e6:4f5b:aff1 with SMTP id 5614622812f47-3ef2ec47eecmr7507578b6e.8.1736525651610;
+        Fri, 10 Jan 2025 08:14:11 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f037a22f53sm783650b6e.46.2025.01.10.08.14.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 08:14:10 -0800 (PST)
+Message-ID: <806aaed8-fddc-40cb-8d58-23d1b2289f6a@baylibre.com>
+Date: Fri, 10 Jan 2025 10:14:08 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -57,187 +81,30 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
-References: <20250108234411.882768-1-apokusinski01@gmail.com>
- <20250108234411.882768-3-apokusinski01@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: apokusinski01@gmail.com
-Cc: andrej.skvortzov@gmail.com, andy@kernel.org, conor+dt@kernel.org,
- danila@jiaxyga.com, devicetree@vger.kernel.org, icenowy@aosc.io,
- javier.carrasco.cruz@gmail.com, jic23@kernel.org,
- krzysztof.kozlowski@linaro.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, megi@xff.cz, neil.armstrong@linaro.org,
- robh@kernel.org
-In-Reply-To: <20250108234411.882768-3-apokusinski01@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 9/9] iio: dac: ad3552r-hs: update function name (non
+ functional)
+To: Angelo Dureghello <adureghello@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-0-ab42aef0d840@baylibre.com>
+ <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-9-ab42aef0d840@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-9-ab42aef0d840@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le 09/01/2025 à 00:44, Antoni Pokusinski a écrit :
-> Silicon Labs Si7210 is an I2C Hall effect magnetic position and
-> temperature sensor. The driver supports the following functionalities:
-> * reading the temperature measurements
-> * reading the magnetic field measurements in a single-shot mode
-> * choosing the magnetic field measurement scale (20 or 200 mT)
+On 1/10/25 4:24 AM, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Update ad3552r_qspi_update_reg_bits function name to a more
+> generic name, since used mode can be SIMPLE/DUAL/QUAD SPI.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-...
-
-> diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
-> index 3e4c2ecd9adf..58f32a855494 100644
-> --- a/drivers/iio/magnetometer/Makefile
-> +++ b/drivers/iio/magnetometer/Makefile
-> @@ -31,6 +31,8 @@ obj-$(CONFIG_SENSORS_RM3100)		+= rm3100-core.o
->   obj-$(CONFIG_SENSORS_RM3100_I2C)	+= rm3100-i2c.o
->   obj-$(CONFIG_SENSORS_RM3100_SPI)	+= rm3100-spi.o
->   
-> +obj-$(CONFIG_SI7210) += si7210.o
-
-Maybe add some tabs, to align?
-
-> +
->   obj-$(CONFIG_TI_TMAG5273)		+= tmag5273.o
->   
->   obj-$(CONFIG_YAMAHA_YAS530)		+= yamaha-yas530.o
-
-...
-
-> +static int si7210_read_raw(struct iio_dev *indio_dev,
-> +			   struct iio_chan_spec const *chan,
-> +			   int *val, int *val2, long mask)
-> +{
-> +	struct si7210_data *data = iio_priv(indio_dev);
-> +	long long tmp;
-
-I think that temp is better than tmp
-(temperature vs temporary?)
-
-> +	__be16 dspsig;
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = dspsig & GENMASK(14, 0);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		if (data->curr_scale == 20)
-> +			*val2 = 1250;
-> +		else /* data->curr_scale == 200 */
-> +			*val2 = 12500;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = -16384;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		tmp = FIELD_GET(GENMASK(14, 3), dspsig);
-> +		tmp = (div_s64(-383 * tmp * tmp, 100) + (160940 * tmp - 279800000));
-
-I would keep 279800000 outside of the (), or even write it to better 
-match the spec:
-	tmp = div_s64(-383 * tmp * tmp, 100) + 160940 * tmp - 279800000;
-
-Here, tmp seems to be Temperature_raw from the sepc * 10^6
-
-
-> +		tmp = (1 + (data->temp_gain >> 11)) * tmp + 62500 * data->temp_offset;
-
-/ 2048 instead of >> 11 to match the formula in the sepc?
-
-Would it be clearer to have 62500 written as (1000000 / 32)
-
-> +
-> +		ret = regulator_get_voltage(data->vdd);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		tmp -= 222 * div_s64(ret, 1000);
-> +
-> +		*val = div_s64(tmp, 1000);
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
-> +{
-> +	s8 *a_otp_values;
-> +	int ret;
-> +
-> +	if (scale == 20)
-> +		a_otp_values = data->scale_20_a;
-> +	else if (scale == 200)
-> +		a_otp_values = data->scale_200_a;
-> +	else
-> +		return -EINVAL;
-> +
-> +	guard(mutex)(&data->fetch_lock);
-> +
-> +	/* Write the registers 0xCA - 0xCC*/
-
-Missing space before */
-
-> +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Write the registers 0xCE - 0xD0*/
-
-Missing space before */
-
-> +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	data->curr_scale = scale;
-> +
-> +	return 0;
-> +}
-
-...
-
-> +static int si7210_device_wake(struct si7210_data *data)
-> +{
-> +	/*
-> +	 * According to the datasheet, the primary method to wake up a
-> +	 * device is to send an empty write. However this is not feasible
-> +	 * using current API so we use the other method i.e. read a single
-> +	 * byte. The device should respond with 0xFF
-
-Nitpick: Missing ending .
-
-> +	 */
-> +
-> +	int ret = 0;
-
-No need to init.
-
-> +
-> +	ret = i2c_smbus_read_byte(data->client);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ret != 0xFF)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-
-...
-
-> +MODULE_DESCRIPTION("Silicon Labs Si7210 Hall Effect sensor I2C driver");
-> +MODULE_LICENSE("Dual BSD/GPL");
-
-This is not consistent with the SPDX tag.
-
-CJ
 

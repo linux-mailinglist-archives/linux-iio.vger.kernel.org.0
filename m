@@ -1,79 +1,81 @@
-Return-Path: <linux-iio+bounces-14107-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14108-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F8CA098BE
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 18:40:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D3EA098C0
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 18:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E09D1884990
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C0911884FAA
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF79213E66;
-	Fri, 10 Jan 2025 17:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BC421420D;
+	Fri, 10 Jan 2025 17:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sP7MZSVj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="p1lzPf6P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD1E212B1C
-	for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 17:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F722135AA
+	for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 17:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736530815; cv=none; b=ILIrSlkTbW+2/c24WO3DENi6Lr1sbTYj+fpXW1IhlKap8rpNp6HnrYYeTE23oR6nphhP4AW82ifY3aMKLxg7ypZkNuUlo5hr1P6VvTzNLNBVR5ObThDXpx5otP1kbxRukwVZFC5M/Frr25dw959RXz1sykcHpTKxCkGWTGDl8Xc=
+	t=1736530817; cv=none; b=S9dNt0w4KrvdYUhLtHZ8tCCFzz4bSEtWLWSOFAZa+VfmFe2DTJtbxdhzW1BK2ufzazzds8ayUa5u1yDO23K08Bry6LjCgWA0RQ3I34souFO9fdDgzr+oBzPI75Zi1+TFykr8TZOsAamxfNMUWddocbGk/rrA1E34DJP8JkwH5rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736530815; c=relaxed/simple;
-	bh=F2Cz22JuLMDTqM4eXxFMrRaym8j9btQ2mtwLkNnHK0E=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hnk9voVmZIaG7JITmyN0IOjxy3QUPevKYhzS/d8DhddnqJtczGZfgF0mkfW3H2JTrB+lZCeFS/bm0O7fyHLtJj4v8XZjickKstNyo4laLF32mJvSYuyORa8dOHvyOczr5/iAHXkmC3cXiVJdbE3SXnTKxPJnSRu5MAdUmTC+x+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sP7MZSVj; arc=none smtp.client-ip=209.85.167.182
+	s=arc-20240116; t=1736530817; c=relaxed/simple;
+	bh=M6Fcbwc3PbjlPukv9xod6YdOA5v1mZleHYkzNCORguw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=a3VLdihYz070cPNKpYP8zWpFRQvDfK71eTvU19wTSBlnSs9zkNnzf7YAHZ8bjZDNUqBuZ+abBccI/Me+drQqYmu9CyubHVaXH0q2Z0fOYMkAx7HR8LciGu7cW9qAydkw9cmGYRhGmY2x1u7h7DRh0whkMgYkJiTveHvRE7BhyUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=p1lzPf6P; arc=none smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3eb7edfa42dso991824b6e.2
-        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 09:40:13 -0800 (PST)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3eb98ad8caaso934766b6e.0
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 09:40:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736530813; x=1737135613; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cf69nspx1UASBjxRM+kRJ6Tl50tDGhlBKRym8hMWYiY=;
-        b=sP7MZSVjWt1J9G8adXk6gaoUM0ypos6VpTrtgYs1dhh0JO0Lc59FxGqaZtP5WeT07o
-         k3A60wHdiFtbrwhbJPnWylqveWxeaSB+CjbQVO14sp0WoSDLJNXWnXp/vOQMBUH8Xj6L
-         FyYwC6/R7LHfPSsxCQDhCo03H6HKgFetYk58St/kLn7HmHMP2Q+i6nFvViZItDsRCndD
-         mISldHP81F293cH78JpmQoZ8seehUpt2betQ10Dcash8UKbPV3prc3JE/IaEK1S4O2Ek
-         z12WTD+M/rOaDbLe+l/X9EQ+dqMUp1Ckpcw8pPadmxaXc7EYNlsu7w8fZ9zkypgvUTXK
-         vDCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736530813; x=1737135613;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736530814; x=1737135614; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cf69nspx1UASBjxRM+kRJ6Tl50tDGhlBKRym8hMWYiY=;
-        b=UZs+T38Z9pZY5kdl+w+ALei4LS8vuAXphCxxVHC8LxQFBC4lFo9yXZz25vx4rLo+xc
-         yNwmlw0npaWFVgvTast9HFIB75p8ubiZ3+QIKYsKyWqQ9bfa/mgAlmzGa4L8MfM+3Xgg
-         MRUXDj80/YaZovt1T7oy8JbK66S1nT0baqW3EJUU00Yrjk6YcWaTHciH2AihWfiVFFfM
-         Y1ihXdHowXpZhgwPGtIlM9vis1OyG0s0COn2P9BD3z/8x98UrUbW2CxJQrs5/uf3+eZy
-         mi2Miik1lMQ6CspK6pIO9veU+vJsiL7mGWKUEedKYaulteIiYpy4+PHnwkjR6q5fYCG8
-         d3/g==
-X-Forwarded-Encrypted: i=1; AJvYcCV6CAgzwFXVuMq2V9RT10YkIDSUzJSxK+6pLsRKfkPjzyL64FI7nqQ5vwmMKZPex3kcqdg3RmJApJ4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcVWW3f+t2cSMyUYXkifhKdrkYJ7UdcmM9DDgo09yPwT9cdSqx
-	2bT7BBzB3iS2IbvBYoh9Up6MhgKCWzf2j+IqE0MsQPfWU6HB22sMVJF8C/jbyzw=
-X-Gm-Gg: ASbGncuCvOdQN8Nz16H/Bss+dsRMrt+9Eob/EdWVOJfmsfk3vzweXd1telFxXBMkizb
-	dkOVsbefCJLwn6w7pzKVmwOiMDa6P3KEhVgB8ZKAZ1ap43yXD5NZVbisOwCvKVuDXIMimmBt8cA
-	aMlb80JN42Xb3FDeox1giIQBY6KH8WPpwfXj6Cg9ME7EyzdTnbacgV3du7DsT194BjqLR4NyZgN
-	hnTO2F1k5qd/h3UsDD/noKHDUxLVdQPX/a91YQAQKQEl0Rcrq3kNurz3cB98Y0QZp8YXwdhsBh2
-	Q0pfdYsTasEv
-X-Google-Smtp-Source: AGHT+IHccU47uyrpntcj5g/jQaiYCJAXmmCPJLwo5wRF89RNYMSyDzy2pgoKn9zOAUGgixEgowVr0Q==
-X-Received: by 2002:a05:6808:309f:b0:3e7:a201:db0f with SMTP id 5614622812f47-3ef2ecb1fadmr6828292b6e.25.1736530811419;
-        Fri, 10 Jan 2025 09:40:11 -0800 (PST)
+        bh=Tx4/GBkv0m6R1EJU0MqLGBWVuvonzJEQkiaHtLTW0dg=;
+        b=p1lzPf6PvPs3kp1Mfz3AgD8b1npFunJJh+QSkCfDo2t8k+f79mHxhS779Vdz1EQIwN
+         dGclDkoxwoM7JP6J4YiB6RgPKk5+UD7o+KtLnTGTE9cXx0ImB5TI5dWEmEhPNLGKgCrF
+         urXin2U7+0/Vq1P6VZ6rTfyYN3bUiA/1792lVdrNy68k4Cy08B0kr9SFbL/ANzf9rqOH
+         F6lmgm8GVIZpnd2RImmiOibepYaxsFjRwQgykc9zhguSQXWSdoOFo8OVgsFvUg1XsTFg
+         aq1/Dq/tYSj9905Ni5PDZfDPPJ+blQwN8SyJE8DCuRLH0FD9FsCghjC3bTVXq1zoLvri
+         Rd/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736530814; x=1737135614;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tx4/GBkv0m6R1EJU0MqLGBWVuvonzJEQkiaHtLTW0dg=;
+        b=fPUrZoTt1frdcISj5D+phi/VV4NFc4uJ1IkVjDGhy+F7RAZSdSLcK9fXOLkFCf30C6
+         GZZ4Rbyg35ur+i51tscXKDkO7i3QGZ+v2XcgQz2eXhvjs54kB7U1fKuY61I3Q0h6jJUI
+         KZA+iy+y+QwnVTelFGSL4c2iYavEHFd34BodwO40oCHA+JAgGcNPJWGhQRln6B3HpYjD
+         8je0CWd/grXp8y3Mf4dedXu/N1O+wiujCnbY8IbBIRZXKYUrzRTHHN78sYNgX9bPF4lz
+         QjSWjWK+uRbkLJcFiSN5eINQidKH2W2lParbC833FdneGs5dreP2B/JPaDHe81PYChOz
+         hEIA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5BqkfU2M7Xx6TA1QDDGBbfc6p2u1ALx8MnWCjo99VeWVpNfiP+0FD67Brv/GbDk0gY+LSaPjwpJ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxurMVrWMBhtUjv6exgqrVvH4Mn5rb2Oiw68SDnzQVU8u8pIuNF
+	b3vLZWknQoaMaXZ2EceQ2xwTI1rWTCtJe+69Y+Jy+hhn5EZcArC2lML/AHLz8es=
+X-Gm-Gg: ASbGnctqU4wwi1L202PSn7/sbjnhjB9EWAD7W9bRWK94/6kKmh8r7rvn1ord+swvS7S
+	on+lV6OZDgGe0bDa08jTdpZ5k/rpMoTnaytHnq+Q9XOlqbI1MEohQ9axhPf34ACOsKiFz7WUsH4
+	HStN9ffSeGYTkOP3UKyzysY30OvtMrscIbtQNDf1DGRM6msrNprFeIKtozZX762CA7wnRogDgKE
+	JwRodbZPawMy3a5+mg4T7v7iY+oU0Hu+BenVk7xMfdhQlo97acuRes1tqCFTM8pUg59mHakM6uw
+	WqRDqdK+MqzF
+X-Google-Smtp-Source: AGHT+IGvG4TqQXVJRPgtlOTlk4Q/5oV1YPrJZ7HZfl8Z5jkIIndaLv71DjeZBDGuGgWv0oHh93TVYA==
+X-Received: by 2002:a05:6808:3024:b0:3eb:42d0:f3c with SMTP id 5614622812f47-3ef2eba742fmr6484284b6e.3.1736530814261;
+        Fri, 10 Jan 2025 09:40:14 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f03769a8f8sm842165b6e.26.2025.01.10.09.40.08
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f03769a8f8sm842165b6e.26.2025.01.10.09.40.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 09:40:10 -0800 (PST)
+        Fri, 10 Jan 2025 09:40:12 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v3 0/2] iio: adc: ad7173: fix non-const info struct
-Date: Fri, 10 Jan 2025 11:40:05 -0600
-Message-Id: <20250110-iio-adc-ad7313-fix-non-const-info-struct-v3-0-41e1c9cdd1a7@baylibre.com>
+Date: Fri, 10 Jan 2025 11:40:06 -0600
+Subject: [PATCH v3 1/2] iio: adc: ad7173: remove special handling for irq
+ number
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,11 +84,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHVbgWcC/52NQQ6CMBBFr0K6dkw7BRpceQ/jgpZRJtHWtEgkh
- LtbWBl3upjFm/y8N4tEkSmJQzGLSCMnDj6D3hXC9a2/EnCXWaDEUilEYA7Qdi6f0UrDhV/ggwc
- XfBqA/SVAGuLTDdAgVY1tFBGSyLpHpDzeUqdz5p7TEOK0lUe1fv+IjAokdLJyEjWW1uijbacb2
- 0h7F+5i7Yz46TY/uDG7bd0ZiWhNWddf7mVZ3qXrEGM/AQAA
-X-Change-ID: 20241122-iio-adc-ad7313-fix-non-const-info-struct-92e59b91ee2e
+Message-Id: <20250110-iio-adc-ad7313-fix-non-const-info-struct-v3-1-41e1c9cdd1a7@baylibre.com>
+References: <20250110-iio-adc-ad7313-fix-non-const-info-struct-v3-0-41e1c9cdd1a7@baylibre.com>
+In-Reply-To: <20250110-iio-adc-ad7313-fix-non-const-info-struct-v3-0-41e1c9cdd1a7@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Dumitru Ceclan <mitrutzceclan@gmail.com>
 Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
@@ -98,43 +98,99 @@ Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-While working ad7124, Uwe pointed out a bug in the ad7173 driver.
-static struct ad_sigma_delta_info ad7173_sigma_delta_info was not const
-and was being modified during driver probe, which could lead to race
-conditions if two instances of the driver were probed at the same time.
+Remove the int irq_line field in struct ad_sigma_delta_info and all code
+that referenced it.
 
-The fix from v2 has already been picked up, so these are the remaining
-patches that can now be applied since the fix has made it's way back
-into the iio/togreg branch.
+This struct is intended to be used as static const data. Currently, the
+only user that doesn't uses the static const struct directly, namely the
+ad7173 driver is making a copy of this struct to be able to modify the
+irq_line field. However, this field is written and never used due to the
+fact that ad_sd_init() which reads the field is called before
+ad7173_fw_parse_device_config() which writes it.
 
+The runtime behavior does not change since ad_sd_init() was already
+(unintentionally) being called with irq_line = 0.  But, even though
+this could be considered a bug, the behavior was still correct. The SPI
+subsystem always uses the first interrupt in the interrupts array from
+the devicetree and the devicetree bindings for this family of chips
+specify that the RDY interrupt is always the first interrupt. Therefore,
+we don't actually need the special call to fwnode_irq_get_byname(), so
+it is removed in this patch instead of moving it to the correct place.
+
+Tested-by: Guillaume Ranquet <granquet@baylibre.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-Changes in v3:
-- Dropped first patch that was already applied.
-- Fixed compile error due to spurious rebasing artifact.
-- Rebased on top of latest iio tree and resolved conflicts.
-- Link to v2: https://lore.kernel.org/r/20241127-iio-adc-ad7313-fix-non-const-info-struct-v2-0-b6d7022b7466@baylibre.com
 
-Changes in v2:
-- Fixed chip name in a few places.
-- Add new simpler patch for "fix" that gets backported.
-- Rebase other patches on this and incorporate feedback.
-- Link to v1: https://lore.kernel.org/r/20241122-iio-adc-ad7313-fix-non-const-info-struct-v1-0-d05c02324b73@baylibre.com
+v3 changes:
+* Removed spurious change that was causing compiler error.
+* Rebased on iio/testing and resolved some merge conflicts.
 
+v2 changes:
+* Fixed chip name is subject line
+* Uwe's comment made me realize that the special case was actually never
+being used because of the ordering bug and could safely be removed
+rather than trying to preserve it.
 ---
-David Lechner (2):
-      iio: adc: ad7173: remove special handling for irq number
-      iio: adc: ad7173: don't make copy of ad_sigma_delta_info struct
+ drivers/iio/adc/ad7173.c               | 6 ------
+ drivers/iio/adc/ad_sigma_delta.c       | 5 +----
+ include/linux/iio/adc/ad_sigma_delta.h | 2 --
+ 3 files changed, 1 insertion(+), 12 deletions(-)
 
- drivers/iio/adc/ad7173.c               | 487 +++++++++++++++++----------------
- drivers/iio/adc/ad_sigma_delta.c       |   5 +-
- include/linux/iio/adc/ad_sigma_delta.h |   2 -
- 3 files changed, 255 insertions(+), 239 deletions(-)
----
-base-commit: 56ea2bb4297338aa1c185696b287d384ec27c0d4
-change-id: 20241122-iio-adc-ad7313-fix-non-const-info-struct-92e59b91ee2e
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 6c4ed10ae580d66287857252ce9a69cfaa45db0b..b92aca39d117a315d6b55951fba7c3b51787555a 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -1515,12 +1515,6 @@ static int ad7173_fw_parse_device_config(struct iio_dev *indio_dev)
+ 			return ret;
+ 	}
+ 
+-	ret = fwnode_irq_get_byname(dev_fwnode(dev), "rdy");
+-	if (ret < 0)
+-		return dev_err_probe(dev, ret, "Interrupt 'rdy' is required\n");
+-
+-	st->sigma_delta_info.irq_line = ret;
+-
+ 	return ad7173_fw_parse_channel_config(indio_dev);
+ }
+ 
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index d5d81581ab34099cef30ec63944ce1171c80ec14..38a72ced10326656b30fd39d7a72cefe8c4c1aa5 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -801,10 +801,7 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
+ 
+ 	spin_lock_init(&sigma_delta->irq_lock);
+ 
+-	if (info->irq_line)
+-		sigma_delta->irq_line = info->irq_line;
+-	else
+-		sigma_delta->irq_line = spi->irq;
++	sigma_delta->irq_line = spi->irq;
+ 
+ 	sigma_delta->rdy_gpiod = devm_gpiod_get_optional(&spi->dev, "rdy", GPIOD_IN);
+ 	if (IS_ERR(sigma_delta->rdy_gpiod))
+diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+index 417073c52380f60a1a45a4924f4f556b64832295..521e3dc95db9117b7df12710eaae3f373d1df7bc 100644
+--- a/include/linux/iio/adc/ad_sigma_delta.h
++++ b/include/linux/iio/adc/ad_sigma_delta.h
+@@ -53,7 +53,6 @@ struct iio_dev;
+  *   be used.
+  * @irq_flags: flags for the interrupt used by the triggered buffer
+  * @num_slots: Number of sequencer slots
+- * @irq_line: IRQ for reading conversions. If 0, spi->irq will be used
+  * @num_resetclks: Number of SPI clk cycles with MOSI=1 to reset the chip.
+  */
+ struct ad_sigma_delta_info {
+@@ -70,7 +69,6 @@ struct ad_sigma_delta_info {
+ 	unsigned int data_reg;
+ 	unsigned long irq_flags;
+ 	unsigned int num_slots;
+-	int irq_line;
+ 	unsigned int num_resetclks;
+ };
+ 
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

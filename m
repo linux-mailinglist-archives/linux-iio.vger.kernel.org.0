@@ -1,69 +1,78 @@
-Return-Path: <linux-iio+bounces-14098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A682FA08F05
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 12:20:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6E3A09366
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 15:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A38188C3E7
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 11:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38AEF3A9DCF
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 14:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBCB20ADC2;
-	Fri, 10 Jan 2025 11:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E711210F43;
+	Fri, 10 Jan 2025 14:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="f6JWExp4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q0HCkPJ8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E994E1FF602;
-	Fri, 10 Jan 2025 11:20:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE0B205ABD;
+	Fri, 10 Jan 2025 14:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736508035; cv=none; b=Ue3Ddj6bCixYFhRR7D65+XA5wqj2M/M9DtoxtaeyLWK6SvREoGtYNEiqJ5rKmn4EImyhzT9FEsNKQ2AU7LqL4DoY7RtOufBXcPjbOgG4BfDNrCm2YcscMb0HSofJIZURbz811nSnxNfxMZV/kyjbuqoG3e6SR6l4fLonnU1yL/c=
+	t=1736519185; cv=none; b=KGw4w4Ni11KaClwsRFU+f1McMvxgK9mDyKVmWXgvA9Z9dfyvSBns3eDp6odUelky3LWxSjE0LjMGTWfE49CwaAhAqxgBuV4EKCoY5C9+4W/FF0Cp4oGOpmCJldWQ8GUE59eW7vxJgNfjmXdBWTzpulEdnwLGTh2ztRqTwyH8Hos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736508035; c=relaxed/simple;
-	bh=CqhVdS4+KOe/q6qNAbml57dOWyYgAtHElQpX66q4b2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bCpLtGsmM8WFkHspMJTiM9lmwK/q8AxQvhINOP7SuMlTWqSecDB4Nj5OhLeX/wQ3HRQW56/kEGtX7YbdJskkr0U9AEb6sYaL6cgYEGOJVgkXXHAXuSuPUholXizoOnxAcV305KuNM26cMDL6MlP0wGys4WsAtbiwk99Uvf6nNTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=f6JWExp4; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A6XPXL018522;
-	Fri, 10 Jan 2025 12:20:06 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	6O0IzZdicbDnl+ThnIAAob2BiQyf9NMS5q74NBvP63Q=; b=f6JWExp4ct10P4SU
-	OjyL/96MiRqY2IXnuKvQSzUbrLCOd31/N1T+C7yotKJm/D5/S8LyF5gFNpjE77wM
-	em03bvuzgVWXgw526qn+RJn940qKk2urGywI/ki9gbjFQNEyrwt6n62oyG3x9DEn
-	/CYreg4GjtjlhNUpoVs0vzXAdFeaqmDHCmbA+YuXE668GspWqdOAGv/MIHkodbwa
-	E1Hm4PmNw0O2mQEkxra80LfEdw6nP7wnGRv3ccMu8IcTN3MJYg2Vx54GZhjnZxoU
-	xSZh/b5CZtkcg3SS64lEAl9WYO6jqa7BdTTcjnMliR8x2YvOhGoIQzs1m2LYwKTn
-	6yzB8A==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 442f5q4p5s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 12:20:06 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 5518940045;
-	Fri, 10 Jan 2025 12:18:56 +0100 (CET)
-Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id B4C542930E7;
-	Fri, 10 Jan 2025 12:18:14 +0100 (CET)
-Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
- (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 10 Jan
- 2025 12:18:14 +0100
-Received: from [10.252.28.64] (10.252.28.64) by SAFDAG1NODE1.st.com
- (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.37; Fri, 10 Jan
- 2025 12:18:13 +0100
-Message-ID: <9df8fc8b-b827-4505-9273-ac56ab7426e7@foss.st.com>
-Date: Fri, 10 Jan 2025 12:18:12 +0100
+	s=arc-20240116; t=1736519185; c=relaxed/simple;
+	bh=xm7hQ+q/PLV3VeHSt79Er/hBHmVeMIcQRzaOFB2g2lg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dGDI2zMPLTHDSbj6UlLGna07VrIJbU+epFoasC3cMm4G7NFQZ0Vwbl/uu/Cl3yhNc2bnn6qYN89R0OyFAeANnrB2O7lsYgQCAvjWNNOfp3Kl6+0o6n5jkzMEcCCojFnPKkLXu14mH7CDJyzd6Gi8DNj9/ajTSvpQJYeHPcn8CrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q0HCkPJ8; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30229d5b21cso18696841fa.1;
+        Fri, 10 Jan 2025 06:26:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736519182; x=1737123982; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=UpoBLHHJih29vFt0sUCsXiQEphlyKx2cFD3wTI/+RkU=;
+        b=Q0HCkPJ8dsRJT8wPiutOwhD1fxqy+18xHOUXiXYjcXqUMeLy/bfkbFfvqeM918ayR3
+         +VTEosnzKjCEypfqOLLDIQwb8bzrLOkaUnr/KIJLKx8iLorZ+2GF5UUh4iDI1wwzwVsD
+         Dznco+DIaI+nJVCPWqW5xfuRcKg4ZS5ckGHoeU4Ms+qDxxkeQ0yT66+KnH/TpVNUwdXS
+         7Hub8Fdsq789uXK9ngLBnYeiMpHtU2NzFCOmI//dBKk8uCg97O8aH30xdz15XYDUpfyb
+         x6LD25LLutvxtCYKfnL7vsTwaqyuGLtPJAFc5hHdAl0S6lymkHObmi2G1WDBblTpVgSK
+         U9cQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736519182; x=1737123982;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UpoBLHHJih29vFt0sUCsXiQEphlyKx2cFD3wTI/+RkU=;
+        b=KPffTILcDvloFGjvpRGNCUE+3BqVS71nyRpRWh4ui4C/PnJgp5DKIPF6R0Zo7Xzf6g
+         wIH1vawCTWesqDXUpvnK3+ylBnLUo0pxhI4VGA4IXb4wN9oGXuF4wYtfCbNQ+xWUDZ4d
+         lwlBYhzvvm9PCMHDHZ5DPNoJAQ/k7TPsLRTUjejvmpQCm/MG7AaqrFLqyzI0IWeNCR4O
+         Gngy9u5xrn2jt2gy/ID/MK1Fny4fa+MQJqwmXy4+PnvfT4qBYRnHrBG0dxhQk5XaysCf
+         76yEOeLiVjh/zmCd18He4nvCqwMOwtt6BkMDPQeJ5FnPXvd9IK8XuiBVPdcSYcz54Lk8
+         mslQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIJxeuzKzobktl9f76CdSQfon+oGcSt7DjiHYkmDN+Ay8cYiuB3HkfiF04mswYOsojUjNdtGiicEA=@vger.kernel.org, AJvYcCW32+3JxzWKZdhKSPVkYgexW5eKBRlB5WrY2I9yPJaMSIBwlfRUpzlflJMa4JpiC/xMFQUEsTVo4N3UPlTk@vger.kernel.org
+X-Gm-Message-State: AOJu0YymbGvb2CcGHPYUFRoaYE35aiplFQHpqMsYgxmZ4gX7DQEEkQWN
+	CU8I+sDFxiEC8HX41zmvuh9oX2dg/JTB4nuHcIb0l0AXZLxwnPmx
+X-Gm-Gg: ASbGncu6VGAZ0dTCCq42oS14Y3xT3tvlVqIJyxSLVsbYz66W5DxlTFJweHU6JFbWJps
+	d5YjaqSA4kq6tOObd1aV5I/kY7v+9BKVzOktnXbCRir3R/IA5+Zzvk2SP8gjtESkqXzs1hJDkKi
+	ikzxrTGR9UVYL93NGkwQZbMMgIIhJLQ/xvo9hYQLNvx8o3bNgcTkdzvWsTLZudD3WOvpANGqmqA
+	12ReIq4NkLHrGdlyQ0yryqupzlsEQH0f/4t0w1n7YQl1BF60wx5qCr6xFC2WM39N0UFLA==
+X-Google-Smtp-Source: AGHT+IHv9y96ODQrBrEdvqfZDcX1zoazfI58+3y8fSpwlnax5HY+Ki6K/9LH8UCz2vVxUTL69iMHJg==
+X-Received: by 2002:a2e:bb8e:0:b0:2ff:56a6:2992 with SMTP id 38308e7fff4ca-305f45fe704mr24525071fa.37.1736519181803;
+        Fri, 10 Jan 2025 06:26:21 -0800 (PST)
+Received: from [172.16.183.207] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-305ff0f655bsm5059941fa.53.2025.01.10.06.26.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 10 Jan 2025 06:26:20 -0800 (PST)
+Message-ID: <a49a57c0-e3fa-4d4a-aec7-be8f7a681f3b@gmail.com>
+Date: Fri, 10 Jan 2025 16:26:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -71,76 +80,46 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: adc: stm32: Drop unnecessary DT property presence
- check
-To: "Rob Herring (Arm)" <robh@kernel.org>,
-        Jonathan Cameron
-	<jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-CC: <linux-iio@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20250109182325.3973684-2-robh@kernel.org>
-Content-Language: en-US
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <20250109182325.3973684-2-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SAFDAG1NODE1.st.com
- (10.75.90.17)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Subject: Re: [PATCH v2] iio: gts: Simplify available scale table build
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+ Mudit Sharma <muditsharma.info@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <Z1_rRXqdhxhL6wBw@mva-rohm> <20241220192118.3e9ba7f9@jic23-huawei>
+ <9c07b71a-160f-4336-8a8d-cad7003e4b68@gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+In-Reply-To: <9c07b71a-160f-4336-8a8d-cad7003e4b68@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 1/9/25 19:23, Rob Herring (Arm) wrote:
-> There's no reason to check for regulator supply property presence before
-> calling devm_regulator_get_optional() as that will return -ENODEV if
-> the supply is not present.
+On 22/12/2024 11:24, Matti Vaittinen wrote:
+> On 20/12/2024 21:21, Jonathan Cameron wrote:
+>> On Mon, 16 Dec 2024 10:56:37 +0200
+>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+>>
+>>> Make available scale building more clear. This hurts the performance
+>>> quite a bit by looping throgh the scales many times instead of doing
+>>> everything in one loop. It however simplifies logic by:
+>>>   - decoupling the gain and scale allocations & computations
+>>>   - keeping the temporary 'per_time_gains' table inside the
+>>>     per_time_scales computation function.
+>>>   - separating building the 'all scales' table in own function and doing
+>>>     it based on the already computed per-time scales.
+>>>
+>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> Looks good to me, but I want to leave it on list a while before applying.
+>> Ideal if it gets some tested-by or other tags before I pick it up.
+>> As always, this is fiddly code, so the more eyes the better!
 > 
-> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-> ---
-> The diff context doesn't show it, but the next line returns on error 
-> other than -ENODEV.
+> Please, let it wait until the Christmas has passed. I got information we 
+> might be getting some testing before the year changes :)
 
-Hi Rob,
+Well, the year changed and no tested-by tags emerged. I suppose my 
+sources weren't right at this time.
 
-Tested on STM32MP157C-EV1,
-
-Acked-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-
-Thanks & BR,
-Fabrice
-
-> 
->  drivers/iio/adc/stm32-adc-core.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-> index 2201ee9987ae..0914148d1a22 100644
-> --- a/drivers/iio/adc/stm32-adc-core.c
-> +++ b/drivers/iio/adc/stm32-adc-core.c
-> @@ -615,8 +615,7 @@ static int stm32_adc_core_switches_probe(struct device *dev,
->  	}
->  
->  	/* Booster can be used to supply analog switches (optional) */
-> -	if (priv->cfg->has_syscfg & HAS_VBOOSTER &&
-> -	    of_property_read_bool(np, "booster-supply")) {
-> +	if (priv->cfg->has_syscfg & HAS_VBOOSTER) {
->  		priv->booster = devm_regulator_get_optional(dev, "booster");
->  		if (IS_ERR(priv->booster)) {
->  			ret = PTR_ERR(priv->booster);
-> @@ -628,8 +627,7 @@ static int stm32_adc_core_switches_probe(struct device *dev,
->  	}
->  
->  	/* Vdd can be used to supply analog switches (optional) */
-> -	if (priv->cfg->has_syscfg & HAS_ANASWVDD &&
-> -	    of_property_read_bool(np, "vdd-supply")) {
-> +	if (priv->cfg->has_syscfg & HAS_ANASWVDD) {
->  		priv->vdd = devm_regulator_get_optional(dev, "vdd");
->  		if (IS_ERR(priv->vdd)) {
->  			ret = PTR_ERR(priv->vdd);
+Yours,
+	-- Matti
 

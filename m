@@ -1,79 +1,55 @@
-Return-Path: <linux-iio+bounces-14104-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14105-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6748A096DB
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:12:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3762CA096E1
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 17:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CA46188E7AE
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 16:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7613A174E
+	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 16:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97983212D67;
-	Fri, 10 Jan 2025 16:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9643212B36;
+	Fri, 10 Jan 2025 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XnhJyEE2"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="oi9npryN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from smtp.smtpout.orange.fr (smtp-27.smtpout.orange.fr [80.12.242.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0A211288
-	for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 16:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7255212D7F;
+	Fri, 10 Jan 2025 16:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736525539; cv=none; b=q9QMpOoBo5DnmNxOaZC7jg1rg6QtMT6o/y/JAaDmjF8/BhjgAgXesjqBrEXGyLYnlkS7NGk+Zl4SW1Fftil7heZNHr1nOpLTM+oHB3QICCvBdww9RkxiGh/djcGbjYixpsytrLEcvyUbXiIbPfUx4RReXorm7/+DohCFg74cFq8=
+	t=1736525570; cv=none; b=CbdCbltVZoKZfWaH8nOR+637ErfXbiv0+PXNml3c6JqD67+mCtqKSArQhcrcd37ZkV8uQffMog4iSI5jy6PlrAwg6RbGa7FU7/216Gj3id1nCNEewyksud8EGOynHE0h4uEdnJjiWaqAxthQpOw0vcuPMx5e5yZxnyOCoVBM1Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736525539; c=relaxed/simple;
-	bh=lpuK8OR/n3tmxcAxXugYYB2UaUwmUm3NDFUu/9uqsiU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NtlJ+qXOI8zNFCu4mZfdLNWkq9HVI0GGIkuCJM5Ilg34arbZyff0jetI7cgSTX7/IOPe2tW6jpZvsEeEBfO7v7hCexJobWjQRDCFk/rHQ0aPKuDYwwYldm+5SX8qQJ0R9N+T1yQrCaoLI5cG/T1Bc2V15fJpcRGkSf5GImkppsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XnhJyEE2; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f32fab5de9so613222eaf.2
-        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 08:12:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736525535; x=1737130335; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GAuHO1b44k5AxnlIkasVBNwmUMkj9yOBNt6aXQteDlg=;
-        b=XnhJyEE2ZEJpRQSS++pSJ39K44d+6fT0aiqENKtRvF7jHCqXkI7Ku/faiLW46wmHTU
-         beaD9I6d9x69xz+cJiX8gd6wztnRjCzPj0UNsIDyu+lquvRzZWF+Jvc6GXJU79GTCQ/v
-         ndxFylbm9mlrZN02NSFBQ9cWFbVEbhdlsWDi43K6kIv6rMkNf+c+Ve4zMgmpjiK6HNy+
-         I73OmVtqHk1LUEfMBypVr5fkKm8magF6kichjIH90heMROXYWGwOfc6TnwiIQOwCsm9p
-         OcFGi14w+4zwG4kjeovsH3QX240Z7cvAI71BKqsRmDFAmWro1v3/eH00z5jEg7ZSKQ4S
-         0GHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736525535; x=1737130335;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GAuHO1b44k5AxnlIkasVBNwmUMkj9yOBNt6aXQteDlg=;
-        b=CG1KjDZPilvCO7JhnX5HlmV9Q7DqQ2jUylGTpjzoCN+kwDtQb8DV2DNMYAkx1g/i0j
-         3QEHI5u/S/hnR3Xh+jvU8ElpNhw+awVG+c4Sx+r7R8pUgkhHO/hPp1ZJJxZkySy/EzMj
-         B398gtzqZVe05Kp5d+Ko/fEzoxbkj/HBVX8bXmBhIEP3Gi+k0I9KuK7V/W20SFTd3Sjt
-         rJSiCDs5vea1chEreSQOP7YgHXrx5Oahi+l0M8XwnKXEZWAjyeZHzQa1nkvB9TMh4Vkt
-         K2TkKqN1O+9HvhS3sV/GRz7umbrcpyAbOohFTj0n1yw45w8GCmqvTXybrxSp8ZmdLrik
-         cmnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOjhz8NY5RzE3mjTNnWKDVqHzo0BPSoVCvwNw651vNYkJ8TvowDfGwgZndN1Uw0Tbk4+9tAtN3MdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAsxYul80+NErY7cfdFeqjuL2gGs6uYYzkPgG+oMfmakOlLkog
-	tTUA4pHZP1KwobljtxG9NYBd4j3tVs4vv1KTgAOkpRQjL+WZfLd0G6M5nHZVCLU=
-X-Gm-Gg: ASbGncuc1sn2ZEOQmsCwsyIu3HkTc9DFCTSg3CGbyRsL7iR6r80YRqLZNm0oifW0HIb
-	ZPfpYBQ63enMs+ZM5UGVonYPENJ5XZIyDMqigJLiAXOYxV0n1p/d36KY7E0c14SueCONbAhqgO4
-	F4B+PkbwgerbTCgpJLoCKc4k7ZcgactbxvTNEmCGYBT48mKa3CxSkdV3abJwJzrnds8djPSSvxv
-	z6mwsd35TECg8FhgWJ9h4hLeYs0d8RIc6jYuudH8yVLURAubpdLNCi7EMY4/zQgXnh0LM8tK4LV
-	kUaHmjJPAC4IlCm/vQ==
-X-Google-Smtp-Source: AGHT+IG9UWT6+UtW1+6mBflgBW6+S9PKMGjapdyo5qsRLtA7+iy0R49t7ozHV0wb9W3uYEidUkqfzQ==
-X-Received: by 2002:a05:6870:6ec9:b0:29e:40f8:ad9b with SMTP id 586e51a60fabf-2aa066d6787mr6559272fac.14.1736525535136;
-        Fri, 10 Jan 2025 08:12:15 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad805a43dcsm1005500fac.32.2025.01.10.08.12.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 10 Jan 2025 08:12:13 -0800 (PST)
-Message-ID: <a643e2cc-b540-42df-b63b-07cc339bb33e@baylibre.com>
-Date: Fri, 10 Jan 2025 10:12:12 -0600
+	s=arc-20240116; t=1736525570; c=relaxed/simple;
+	bh=B/LjKaQEHy7KEr/6zyM+4jYclIOFdaHDBMv/5D+Izq8=;
+	h=Message-ID:Date:MIME-Version:Subject:References:From:To:Cc:
+	 In-Reply-To:Content-Type; b=C/wy2DxVfyFbbhv9lU2uwRRDGBgJhUnI6+IoUQ5BXqDsDos7rNTG6Jr54Ju387sp4kLFoX7wkQPtHKbqnAKA6Hqf1U2LhkUNpJOHTNqoZkFOZWEt7Upc4T6cy5WT3tuPdtewG6Wu7eRm8plH2GU6PGfNi0jUWY9azWNHC6cf1xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=oi9npryN; arc=none smtp.client-ip=80.12.242.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id WHcftqzmJsdQ2WHcitXIQm; Fri, 10 Jan 2025 17:12:38 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1736525558;
+	bh=cVLAzhm2YWxCwHrXp+1PYJnEwZhWtQTnEIBmj0ECNRI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To;
+	b=oi9npryNzpIwaWIY1k6CaekGNoo4qT8/r0ODym3ETKzg8ViErZWzhBHO8gPmNOcyE
+	 z2YlzaMd+Lir72ei9Auk2lB6JfbptjWADunTj+u0BUhwovCy7w1BmctKwBf8DGvCeZ
+	 XM/wqT6Q20hj9TqGJf8+rkOCXXBqYfblzjJ/V6K7CcrAX5icY+gcExryBC72WvvnB0
+	 aunYtxTvYgGSDv5/nxh2iQxzuBa1+c2/ijmA0heLQ5rZgjV/xAiH16Iz/04f3hFbB0
+	 wGCJ6BXO7doiw5CIacM56/gaHbEm+oSR4iuyM/FEoFH/APzuV0nssGoqjhPPsP/Lpg
+	 efP8Z0ZYSGE+Q==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Fri, 10 Jan 2025 17:12:38 +0100
+X-ME-IP: 90.11.132.44
+Message-ID: <22cec5f4-5945-405a-b586-dcc9b1cef3aa@wanadoo.fr>
+Date: Fri, 10 Jan 2025 17:12:33 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,242 +57,187 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/9] iio: dac: ad3552r-hs: add ad3541/2r support
-To: Angelo Dureghello <adureghello@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-0-ab42aef0d840@baylibre.com>
- <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-8-ab42aef0d840@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-8-ab42aef0d840@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
+References: <20250108234411.882768-1-apokusinski01@gmail.com>
+ <20250108234411.882768-3-apokusinski01@gmail.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: apokusinski01@gmail.com
+Cc: andrej.skvortzov@gmail.com, andy@kernel.org, conor+dt@kernel.org,
+ danila@jiaxyga.com, devicetree@vger.kernel.org, icenowy@aosc.io,
+ javier.carrasco.cruz@gmail.com, jic23@kernel.org,
+ krzysztof.kozlowski@linaro.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, megi@xff.cz, neil.armstrong@linaro.org,
+ robh@kernel.org
+In-Reply-To: <20250108234411.882768-3-apokusinski01@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 1/10/25 4:24 AM, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> A new FPGA HDL has been developed from ADI to support ad354xr
-> devices.
-> 
-> Add support for ad3541r and ad3542r with following additions:
-> 
-> - use common device_info structures for hs and non hs drivers,
-> - DMA buffering, use DSPI mode for ad354xr and QSPI for ad355xr,
-> - change sample rate to respect number of lanes.
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
->  drivers/iio/dac/ad3552r-common.c |   4 +
->  drivers/iio/dac/ad3552r-hs.c     | 225 ++++++++++++++++++++++++++++++++-------
->  drivers/iio/dac/ad3552r.h        |   3 +
->  3 files changed, 195 insertions(+), 37 deletions(-)
-> 
+Le 09/01/2025 à 00:44, Antoni Pokusinski a écrit :
+> Silicon Labs Si7210 is an I2C Hall effect magnetic position and
+> temperature sensor. The driver supports the following functionalities:
+> * reading the temperature measurements
+> * reading the magnetic field measurements in a single-shot mode
+> * choosing the magnetic field measurement scale (20 or 200 mT)
 
 ...
 
-> diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> index bfb6228c9b9b..4600a9e84dfc 100644
-> --- a/drivers/iio/dac/ad3552r-hs.c
-> +++ b/drivers/iio/dac/ad3552r-hs.c
+> diff --git a/drivers/iio/magnetometer/Makefile b/drivers/iio/magnetometer/Makefile
+> index 3e4c2ecd9adf..58f32a855494 100644
+> --- a/drivers/iio/magnetometer/Makefile
+> +++ b/drivers/iio/magnetometer/Makefile
+> @@ -31,6 +31,8 @@ obj-$(CONFIG_SENSORS_RM3100)		+= rm3100-core.o
+>   obj-$(CONFIG_SENSORS_RM3100_I2C)	+= rm3100-i2c.o
+>   obj-$(CONFIG_SENSORS_RM3100_SPI)	+= rm3100-spi.o
+>   
+> +obj-$(CONFIG_SI7210) += si7210.o
+
+Maybe add some tabs, to align?
+
+> +
+>   obj-$(CONFIG_TI_TMAG5273)		+= tmag5273.o
+>   
+>   obj-$(CONFIG_YAMAHA_YAS530)		+= yamaha-yas530.o
 
 ...
 
-> @@ -104,6 +136,42 @@ static int ad3552r_hs_write_raw(struct iio_dev *indio_dev,
->  	}
->  }
->  
-> +static int ad3552r_hs_set_bus_io_mode_hs(struct ad3552r_hs_state *st)
+> +static int si7210_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val, int *val2, long mask)
 > +{
-> +	int bus_mode;
+> +	struct si7210_data *data = iio_priv(indio_dev);
+> +	long long tmp;
+
+I think that temp is better than tmp
+(temperature vs temporary?)
+
+> +	__be16 dspsig;
+> +	int ret;
 > +
-> +	if (st->model_data->num_spi_data_lanes == 4)
-> +		bus_mode = AD3552R_IO_MODE_QSPI;
-> +	else
-> +		bus_mode = AD3552R_IO_MODE_DSPI;
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_RAW:
+> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
+> +		if (ret < 0)
+> +			return ret;
 > +
-> +	return st->data->bus_set_io_mode(st->back, bus_mode);
+> +		*val = dspsig & GENMASK(14, 0);
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		*val = 0;
+> +		if (data->curr_scale == 20)
+> +			*val2 = 1250;
+> +		else /* data->curr_scale == 200 */
+> +			*val2 = 12500;
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		*val = -16384;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_PROCESSED:
+> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		tmp = FIELD_GET(GENMASK(14, 3), dspsig);
+> +		tmp = (div_s64(-383 * tmp * tmp, 100) + (160940 * tmp - 279800000));
+
+I would keep 279800000 outside of the (), or even write it to better 
+match the spec:
+	tmp = div_s64(-383 * tmp * tmp, 100) + 160940 * tmp - 279800000;
+
+Here, tmp seems to be Temperature_raw from the sepc * 10^6
+
+
+> +		tmp = (1 + (data->temp_gain >> 11)) * tmp + 62500 * data->temp_offset;
+
+/ 2048 instead of >> 11 to match the formula in the sepc?
+
+Would it be clearer to have 62500 written as (1000000 / 32)
+
+> +
+> +		ret = regulator_get_voltage(data->vdd);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		tmp -= 222 * div_s64(ret, 1000);
+> +
+> +		*val = div_s64(tmp, 1000);
+> +
+> +		return IIO_VAL_INT;
+> +	default:
+> +		return -EINVAL;
+> +	}
 > +}
 > +
-> +static int ad3552r_hs_set_target_io_mode_hs(struct ad3552r_hs_state *st)
+> +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
 > +{
-> +	int mode_target;
-
-u32 would be more natural for register value. Or make an enum for this.
-
+> +	s8 *a_otp_values;
+> +	int ret;
 > +
-> +	/*
-> +	 * Best access for secondary reg area, QSPI where possible,
-> +	 * else as DSPI.
-> +	 */
-> +	if (st->model_data->num_spi_data_lanes == 4)
-> +		mode_target = AD3552R_QUAD_SPI;
+> +	if (scale == 20)
+> +		a_otp_values = data->scale_20_a;
+> +	else if (scale == 200)
+> +		a_otp_values = data->scale_200_a;
 > +	else
-> +		mode_target = AD3552R_DUAL_SPI;
+> +		return -EINVAL;
 > +
-> +	/*
-> +	 * Better to not use update here, since generally it is already
-> +	 * set as DDR mode, and it's not possible to read in DDR mode.
-> +	 */
-> +	return st->data->bus_reg_write(st->back,
-> +				AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> +				FIELD_PREP(AD3552R_MASK_MULTI_IO_MODE,
-> +					   mode_target) |
-> +				AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
+> +	guard(mutex)(&data->fetch_lock);
+> +
+> +	/* Write the registers 0xCA - 0xCC*/
+
+Missing space before */
+
+> +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Write the registers 0xCE - 0xD0*/
+
+Missing space before */
+
+> +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	data->curr_scale = scale;
+> +
+> +	return 0;
 > +}
-> +
->  static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
->  {
->  	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-> @@ -132,6 +200,11 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
->  		return -EINVAL;
->  	}
->  
-> +	/*
-> +	 * With ad3541/2r support, QSPI pin is held low at reset from HDL,
-> +	 * streaming start sequence must respect strictly the order below.
-> +	 */
-> +
->  	/* Primary region access, set streaming mode (now in SPI + SDR). */
->  	ret = ad3552r_qspi_update_reg_bits(st,
->  					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> @@ -139,48 +212,106 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
->  	if (ret)
->  		return ret;
->  
-> -	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_STREAM_MODE,
-> +	/*
-> +	 * Set target loop len, 0x2c 0r 0x2a, descending loop, and keeping loop
 
-Not sure what 0x2c and 0x2a mean, so comment could be improved. And 0r looks
-like a typo.
+...
 
-> +	 * len value so it's not cleared hereafter when enabling streaming mode
-> +	 * (cleared by CS_ up).
-> +	 */
-> +	ret = ad3552r_qspi_update_reg_bits(st,
-> +		AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> +		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-> +		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-> +	if (ret)
-> +		goto exit_err_streaming;
-> +
-> +	ret = st->data->bus_reg_write(st->back,
-> +				      AD3552R_REG_ADDR_STREAM_MODE,
->  				      loop_len, 1);
->  	if (ret)
-> -		return ret;
-> +		goto exit_err_streaming;
->  
-> -	/* Inform DAC chip to switch into DDR mode */
-> -	ret = ad3552r_qspi_update_reg_bits(st,
-> -					   AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> -					   AD3552R_MASK_SPI_CONFIG_DDR,
-> -					   AD3552R_MASK_SPI_CONFIG_DDR, 1);
-> +	/* Setting DDR now, caching current config_d. */
-> +	ret = st->data->bus_reg_read(st->back,
-> +				     AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +				     &st->config_d, 1);
->  	if (ret)
-> -		return ret;
-> +		goto exit_err_streaming;
-> +
-> +	st->config_d |= AD3552R_MASK_SPI_CONFIG_DDR;
-> +	ret = st->data->bus_reg_write(st->back,
-> +				      AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +				      st->config_d, 1);
-> +	if (ret)
-> +		goto exit_err_streaming;
->  
-> -	/* Inform DAC IP to go for DDR mode from now on */
->  	ret = iio_backend_ddr_enable(st->back);
-> -	if (ret) {
-> -		dev_err(st->dev, "could not set DDR mode, not streaming");
-> -		goto exit_err;
-> -	}
-> +	if (ret)
-> +		goto exit_err_ddr_mode_target;
-> +
+> +static int si7210_device_wake(struct si7210_data *data)
+> +{
 > +	/*
-> +	 * From here onward mode is DDR, so reading any register is not possible
-> +	 * anymore, including calling "ad3552r_qspi_update_reg_bits" function.
-> +	 */
-> +
-> +	/* Set target to best high speed mode (D or QSPI). */
-> +	ret = ad3552r_hs_set_target_io_mode_hs(st);
-> +	if (ret)
-> +		goto exit_err_ddr_mode;
-> +
-> +	/* Set bus to best high speed mode (D or QSPI). */
-> +	ret = ad3552r_hs_set_bus_io_mode_hs(st);
-> +	if (ret)
-> +		goto exit_err_bus_mode_target;
->  
-> +	/*
-> +	 * Backend setup must be done now only, or related register values will
-> +	 * be disrupted by previous bus accesses.
-> +	 */
->  	ret = iio_backend_data_transfer_addr(st->back, val);
->  	if (ret)
-> -		goto exit_err;
-> +		goto exit_err_bus_mode_target;
->  
->  	ret = iio_backend_data_format_set(st->back, 0, &fmt);
->  	if (ret)
-> -		goto exit_err;
-> +		goto exit_err_bus_mode_target;
->  
->  	ret = iio_backend_data_stream_enable(st->back);
->  	if (ret)
-> -		goto exit_err;
-> +		goto exit_err_bus_mode_target;
->  
->  	return 0;
->  
-> -exit_err:
-> -	ad3552r_qspi_update_reg_bits(st,
-> -				     AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> -				     AD3552R_MASK_SPI_CONFIG_DDR,
-> -				     0, 1);
-> +exit_err_bus_mode_target:
-> +	/* Back to simple SPI, not using update to avoid read. */
-> +	st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> +				FIELD_PREP(AD3552R_MASK_MULTI_IO_MODE,
-> +					   AD3552R_SPI) |
-> +				AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-> +
-> +	/*
-> +	 * Back bus to simple SPI, this must be executed together with above
-> +	 * target mode unwind, and can be done only after it.
-> +	 */
-> +	st->data->bus_set_io_mode(st->back, AD3552R_IO_MODE_SPI);
->  
-> +exit_err_ddr_mode:
->  	iio_backend_ddr_disable(st->back);
->  
-> +exit_err_ddr_mode_target:
-> +	/*
-> +	 * Back to SDR. In DDR we cannot read, whatever the mode is, so not
-> +	 * using update.
-> +	 */
-> +	st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +				FIELD_PREP(AD3552R_MASK_SDO_DRIVE_STRENGTH, 1),
-> +				1);
+> +	 * According to the datasheet, the primary method to wake up a
+> +	 * device is to send an empty write. However this is not feasible
+> +	 * using current API so we use the other method i.e. read a single
+> +	 * byte. The device should respond with 0xFF
 
-Should be using st->config_d & ~AD3552R_MASK_SPI_CONFIG_DDR here instead of
-hard-coding FIELD_PREP(AD3552R_MASK_SDO_DRIVE_STRENGTH, 1).
+Nitpick: Missing ending .
+
+> +	 */
+> +
+> +	int ret = 0;
+
+No need to init.
 
 > +
-> +exit_err_streaming:
-> +	/* Back to single instruction mode, disabling loop. */
-> +	st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> +				AD3552R_MASK_SINGLE_INST |
-> +				AD3552R_MASK_SHORT_INSTRUCTION, 1);
+> +	ret = i2c_smbus_read_byte(data->client);
+> +	if (ret < 0)
+> +		return ret;
 > +
->  	return ret;
->  }
->  
+> +	if (ret != 0xFF)
+> +		return -EIO;
+> +
+> +	return 0;
+> +}
+
+...
+
+> +MODULE_DESCRIPTION("Silicon Labs Si7210 Hall Effect sensor I2C driver");
+> +MODULE_LICENSE("Dual BSD/GPL");
+
+This is not consistent with the SPDX tag.
+
+CJ
 

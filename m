@@ -1,130 +1,137 @@
-Return-Path: <linux-iio+bounces-14144-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14145-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264EAA0A648
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:46:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E15A0A64D
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAD6C3A93C6
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:46:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1332D168A5D
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C441B87EE;
-	Sat, 11 Jan 2025 22:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2021BBBD4;
+	Sat, 11 Jan 2025 22:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T3ANu8ZZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VZFpsNtr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A81E1CFBC;
-	Sat, 11 Jan 2025 22:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF18192B8A;
+	Sat, 11 Jan 2025 22:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736635577; cv=none; b=jGB/j/s5144+k5tu47LdRoLWJcNjNNVzoqjlu6AKACMfg4RRHhktSgKu5wv8rqbTxBnnce9ElhM80xaoxvf2fimyR2XjhuGfDi9rxRj9Tabr8Mws8HGzQ71rkhPOAqsgkigdTv6YkjiLSdQX1mZgvSAF5Q8c/tdo3hfz/hoicqA=
+	t=1736635823; cv=none; b=Ope+YjeTapUgrq4lfY6J1FHJVbJKBjfKvPpIlRUpibhq8MfKoWR7PdLxwXvhvcJF3J8QrO71u6sVJa0nsTrfZxkTXuGQwdk7v2qdYM1xA78LBUeQWifXYitZvL451pA27NkkUmqgD/Uwyy5rVHTAoVA7VGkkV++Nw+MevmKedMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736635577; c=relaxed/simple;
-	bh=o+w5Li6CugsY1rMtBKHT3w/3ElEQqX2buH+hTrsXbQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LYORn4+c6hsMQc5ylx/+Ova0yWyJ2QUwj8JHBZ45E6DBxiqmZQJOZ8s5GF9PjnaXIjzPAgS6tuCcZxacxsHwJRUj0qZkRZNMDU9WdbTC//JY1ualzgwkWnz/++HdtMAThlLTKc99gGWe2F6Q/wKFn3F7C4ROE/zm2UBfz0REQLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T3ANu8ZZ; arc=none smtp.client-ip=209.85.208.47
+	s=arc-20240116; t=1736635823; c=relaxed/simple;
+	bh=57BUQRm5CpDl5O6xYUuG2zZI129fZ6RyxJ5iW9A+HpQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TVXM+eFJL/iLt7PDwSZEq8xkxzEWW/e5bHuBUbB6vjiwSHEe2cjAOR6EKoUiWZEIilkHQhC4zrf0C35x0sN+LWd1ZvTz3ofgjws6lPlXLifQZ3aE41eMKD8R2zHNGrayN3N4myM2KGdG5lysk9F1kQPyCR2gAQROpaBhNMKZ45g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VZFpsNtr; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d4e2aa7ea9so6076462a12.2;
-        Sat, 11 Jan 2025 14:46:14 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71e252c3c19so207063a34.2;
+        Sat, 11 Jan 2025 14:50:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736635573; x=1737240373; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/CWQH26Pe6Delzux6Jgpfafp+fCmhkNG341Nb6v67/w=;
-        b=T3ANu8ZZtuWwzRDp7SyFCDewGcelKiGDn49X/1cY11nd/BTi1CVF6KnTkVmz98cI/8
-         njrEOmlSB1JKyFXvr339U+G4By5L4+7S1wP3/OpXkhd+TRUPtNzOGPOLELZ57d3v0T/9
-         2Rflr5QAHQij5D38tA5i/uC/c+OHzzIIgYc+ylPQab2VxR6avGDgVjm39CdhrWdLip3w
-         TsLkgCi9iNqRVypVqXoVZY02i9YyQkODAOsinG75pBLmXFrtPYJkO29j9WDdGH5sO9qX
-         wwhUub64oaqRTMXS1/QDKuDQBj63Qs2slKFrCwsHUhR8cdA13udrCfjG+uvQwK77qsYi
-         ofmg==
+        d=gmail.com; s=20230601; t=1736635821; x=1737240621; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XqIGw26QfbBZkP0ka4AqH4cix7WA90/E1Q7X8jAGMGI=;
+        b=VZFpsNtrP/k94WEqFW1nIr2smm2/bruaxC6MX+0xfPFRolaFHPmdCP/zleOMHsmzMt
+         uqCr4XKqL21kB3VUcGPQ3luZWZ06hRyISEyZNvXb1RsfCO0bPcRVm2ajPFlzA+KtXmgX
+         ynlALd8Az27YssZvYJVFLYFqOjg2JFepRDsVtM7ZUbvyb01yCL43Qk5kFFzhGXOm33nF
+         lmkmb+crQZGg6EyvpNhX0n0WmvwttKhNjjn+KhGPNsGRvieEEqMAvKgo4WJPLw5vdFul
+         yyw+Ss8I9lL1q7EYjVnEyqWnzDT0Eik9mNkYtROdCKSOd/9z3l9qY/AN9v2edPd3+7Bv
+         zWPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736635573; x=1737240373;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CWQH26Pe6Delzux6Jgpfafp+fCmhkNG341Nb6v67/w=;
-        b=gfB1ruTgqox1hTW4iMUxO5scVhknJxTRbUaqlQFhuzZPyEErn98hTcIADRP54tFeB3
-         BCHD4rIG2pL3h9uNWD4Mg1ApaUKlbdQdSPx9QRp4VdEh93y/0pFSS1Hmt0aHzzNVId+e
-         L+aTeatgUS+9x7Hc5XTVkl+0wgi1eaeJ94fys/P7BCmKRrvnD8Sx9jHmiJYqmM9rJ7J3
-         y3Hx1IF61SPR6XtkGUyVs2HYzG8RKe2q80+ni5N33zcUYPNq2E59DVLTpt3BuhNWVbTi
-         1X8x9rMBP3ii5uFRKk0d/6RH+NDB3D2zEKzYQs8Cmj9sCedM3lL5Dxm8Rre685G8/0Cu
-         fXew==
-X-Forwarded-Encrypted: i=1; AJvYcCVRmqQKak9tvqtCpkt+iiaPDEnH/TueDt2QlTXoiTDx9x0BlRxSHf3Qe3+WiQ2zlTX2Vx/J0UYtatd7r1Sk@vger.kernel.org, AJvYcCXR34ZmLlLuJwZ2bfMBv/BiHifxhvSSh7zyA00K6ZGIo2QPXzM1L5YqTzEN/KSCQfBLPaLHhJaa7XyW@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwlXQW+C0S48nGIfQpxiwAdg+CctkD/nNV65e2UomApC9RNWmF
-	eGkZvNB9ggEXVm6FBiACLPzQmWjMYrBtr1JuZ1PBFmQDmVc1/U6Hy152p/yC
-X-Gm-Gg: ASbGncu9NiHjvzhcq2cow96X9p0TNmI2+5UQrzqrqrwZi9IX31vgWKPEjKlO+CKwaM2
-	DR8DnEXi7U/abx6z+D23wRqKBibwxps7lBk67pmUfbNQyAPdouAMH+gdre0/KEZOq1lbR9s1/2I
-	LgkRiOYlOiTxDES9rYM/1GQ+XfQEqd+pjLJI4GalYfCwey1IwQ8q8vIocYGI408MppVhyU7hwFM
-	johTFBLGyg0FiF+MzyJ4Bdz3IQDwIvlogNCbgekLsbyetxeiFxuETRoVvWKuyfsd5Lf
-X-Google-Smtp-Source: AGHT+IHurMzxNme4ab1sCrMZd1yFcHCqtF9mNKR9A2LesfnhlWpxJG93sV11qxlTe2D6Hs/QTPrmkA==
-X-Received: by 2002:a17:907:2ce5:b0:aa6:7c36:3423 with SMTP id a640c23a62f3a-ab2ab675c18mr1285015866b.1.1736635572708;
-        Sat, 11 Jan 2025 14:46:12 -0800 (PST)
-Received: from [192.168.31.111] ([194.39.226.133])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90dace5sm317977766b.60.2025.01.11.14.46.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Jan 2025 14:46:12 -0800 (PST)
-Message-ID: <cdbcb8eb-b3f4-4a2c-b303-0ebedbab06b7@gmail.com>
-Date: Sun, 12 Jan 2025 00:46:09 +0200
+        d=1e100.net; s=20230601; t=1736635821; x=1737240621;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XqIGw26QfbBZkP0ka4AqH4cix7WA90/E1Q7X8jAGMGI=;
+        b=JNxONVz89MDPorDaigQhlZWeOxsWiLoQDXoTmMuoVG6OrfIxV9+kizCjgEXrUruIfq
+         BjsRt26IvLthSMHOwB/aVlLSqjSlrbpmSu9BWEoJVVYVS+wnbExgxoZ80Ok2LmTeYdOX
+         8TBmc9vKL6A18BLQaUcfi0es2Md8/WJIg+nI3jfKq8HTW2tdKtBysFTTL/mEfMBihbpi
+         Qgx/r3XLN26oz5+9oW+60UF6PDPS5PNg3QtnWkH8gAFbbeYYgFZHL7jEbIW+rd062gRS
+         FYPrAfk0QK2UxuBcmCoMyYqBARmbLTzWIgIlC6XNXWjXMJNb+Fj6KCgiQJpQTrVT/33R
+         khwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU79bfINYew7L+b7xDauIneJ88vfjobuZwvcVAAy0QmTe53TLJXit/QKbfBpURtLTv5qLqJItgYHgXA@vger.kernel.org, AJvYcCUMP0/m/IjzKQ76lRVECLs1nMSUK4snGMJMbXuN+edUxfcwffi5dgsyx1mQQc+0vftXxIT7HoHcgwtk@vger.kernel.org, AJvYcCXowbc4MhfNjYYjpzZwo+T7WQhaTT2xoisNL3uNU/TMh40LT72TGrggapby9wjVd1lQh9+gK3JJs+eUy+q+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvP7tWu9Wg6X1BnjLs2Gybs+plWShSItb4AQL0hdowvCMTrDGr
+	XcN9vLl9V5ZzpFmsUP/iJUID4F0xzAc4+Qmkv8OGNWMyk0wzu8OV
+X-Gm-Gg: ASbGncsT93VBbPQEWwl6m9SkR3Ku6f+PZFpHv5zuOuLqd7ZWAwXYk1F+Wgma4pyfNxp
+	Lil49Q0zEK2c8YdPoEvSbh6gSB/WSCy+d4Y2lQIKpjwumdfX3uODSIfgkfL1oAINOcRsYmGAjpe
+	hycHxClpflcLq1vgD1No6iF2fZs7N4jdMOa4R4eUZ5+3l5dKizsLC0Zb8w2UfqaDDuTpRvJWMVg
+	vmX33i0j8yykuyhB43gC2Nm+TI4P1iXb/tLC4eTkIsx3Wb0qz6JpqUCaYL3QXdZ6zhFCvskHm0C
+	xQ==
+X-Google-Smtp-Source: AGHT+IGVcwKOYTRdWGOSClDeVXtJhGfYDMmO4gL05Ja+f2uI5m75/VhDIUeBI7AjW7BE4zTSgNoL4w==
+X-Received: by 2002:a05:6830:660f:b0:710:f408:bd54 with SMTP id 46e09a7af769-721e2de3ad9mr3140119a34.2.1736635821670;
+        Sat, 11 Jan 2025 14:50:21 -0800 (PST)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-723185382a2sm2076612a34.3.2025.01.11.14.50.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jan 2025 14:50:21 -0800 (PST)
+Date: Sat, 11 Jan 2025 19:50:18 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 02/15] Documentation: ABI: add wideband filter type to
+ sysfs-bus-iio
+Message-ID: <Z4L1qrqHBUE5JGdX@JSANTO12-L01.ad.analog.com>
+Reply-To: 8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+ <40707fa904ba7b1659554747ff7520139dd6f94e.1736201898.git.Jonathan.Santos@analog.com>
+ <8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] dt-bindings: iio: accel: mc3230: document mc3510c
-To: nekodevelopper@gmail.com, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20250111-mainlining-mc3510c-v1-0-57be503addf8@gmail.com>
- <20250111-mainlining-mc3510c-v1-4-57be503addf8@gmail.com>
-Content-Language: en-US
-From: Markuss Broks <markuss.broks@gmail.com>
-In-Reply-To: <20250111-mainlining-mc3510c-v1-4-57be503addf8@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com>
 
-Hey Vasiliy,
+On 01/07, David Lechner wrote:
+> On 1/7/25 9:24 AM, Jonathan Santos wrote:
+> > The Wideband Low Ripple FIR filter is used for AD7768-1 Driver.
+> > Document wideband filter option into filter_type_avaialable
+> 
+> s/avaialable/available/
+> 
+> > attribute.
+> > 
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index f83bd6829285..c4c21a7bfba1 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -2291,6 +2291,8 @@ Description:
+> >  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
+> >  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
+> >  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
+> > +		* "wideband" - FIR filter with wideband low ripple passband
+> 
+> I think "fir" would be a more specific filter type name than "wideband". (i.e.
+> there are wikipedia pages for sinc and FIR filters, but not one for "wideband"
+> filters)
+> 
 
-On 1/11/25 10:11 PM, Vasiliy Doylov via B4 Relay wrote:
-> From: Vasiliy Doylov <nekodevelopper@gmail.com>
->
-> The MC3510C is a 3 asix digital accelerometer.
-> It handled by the same driver as MC3230.
-> Document it as a trivial device.
->
-> Signed-off-by: Vasiliy Doylov <nekodevelopper@gmail.com>
-> ---
->   Documentation/devicetree/bindings/trivial-devices.yaml | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/trivial-devices.yaml b/Documentation/devicetree/bindings/trivial-devices.yaml
-> index fadbd3c041c8c39faedfe62874d4eba25a0bf30e..6c34e4c0dcc6df5a4d8edc5effb80980de820db9 100644
-> --- a/Documentation/devicetree/bindings/trivial-devices.yaml
-> +++ b/Documentation/devicetree/bindings/trivial-devices.yaml
-> @@ -187,6 +187,8 @@ properties:
->             - maxim,max6621
->               # mCube 3-axis 8-bit digital accelerometer
->             - mcube,mc3230
-> +            # mCube 3-axis 8-bit digital accelerometer
-> +          - mcube,mc3510c
->               # Measurement Specialities I2C temperature and humidity sensor
->             - meas,htu21
->               # Measurement Specialities I2C pressure and temperature sensor
+Isn't "fir" a bit too generic for this case? Since Wideband here is a class of a FIR filter.
+Maybe something like "wideband-fir" or "fir-wideband" would work better?
 
-DT bindings changes are supposed to be on top of the series for the ease 
-of picking them by DT bindings maintainers.
-
-- Markuss
-
+> > +		  and sharp transition band.
+> >  
+> >  What:		/sys/.../events/in_proximity_thresh_either_runningperiod
+> >  KernelVersion:	6.6
+> 
 

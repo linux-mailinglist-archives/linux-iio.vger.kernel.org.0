@@ -1,161 +1,237 @@
-Return-Path: <linux-iio+bounces-14141-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA06A0A630
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:56:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A582CA0A63C
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F70168555
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 21:56:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A913A93AB
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B370C1BC09A;
-	Sat, 11 Jan 2025 21:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AED11BBBCC;
+	Sat, 11 Jan 2025 22:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="auD1K+uB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YAcCxDPu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECFCA55;
-	Sat, 11 Jan 2025 21:56:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E02512E7E
+	for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 22:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736632582; cv=none; b=IMOzjuV+hy5for/PVLaaYtuBRgdX/y7qoDDjfCtw/6uLt4P6aezUDtEF8vS9zCCMsjKHJszCwuaml7H0HiG6O9K8nVdjB2qGwNOxfXh0vlPQ1eEb+1OFAAyW0jnz7zrOGJ2Ozdw8Q/SPjFaSCoTNNBIjaqMPGYkxMWZbQ9DQdxA=
+	t=1736634490; cv=none; b=eLRkl813k3DzwrSi4YKsR72i63u+aEnLf2Fr3qhI+IyOMkc2AcHvXEebEUW8Y3fSQJab1UhHUy0gZrayp7fSDUKLtndAoCnbDcEqnIsAQfupbKTh23Bxh0aepyONU3IWk4yhdDZhdpy5PO+Wd+w3Woth9jbSlbZzssjsimAcn5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736632582; c=relaxed/simple;
-	bh=wVAIOcC8/MluVMZNcHxAYpkkoZnwc3NcstGDJ0zZu4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pI1Wm+yTT2nCfL7kKqAb60SNiXVGbYIUszGlr81T5vXvXWLScIlsjgmPlG/KE8iMedezzQIzDoY72Mq3c/3HAiuT0GTmoqLRs/fYs//TT/Xf10fenTflouwC2G9k0QZJPIA5w8hHSZgUmYhcC6DDRelwMhpGtbE+5RhZD7Iv7So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=auD1K+uB; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-71e31d295eeso367814a34.3;
-        Sat, 11 Jan 2025 13:56:19 -0800 (PST)
+	s=arc-20240116; t=1736634490; c=relaxed/simple;
+	bh=HNu77MdGd6FTFDlvzW1AN/cc3gs1jPiWGNYkp+AtsS4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ugy+dEPh5kT0kVoR2OE/BMrIbbVSkP7ZoWHF9dLE82Oy5MbbcLQRu++962MBJMGBWQGa23qqc9MeymH6eZ7iu397SiXbU4cgcCixN6pEaL+Jb57Sq8529SeCXkarCQo/5f/+9Oe6scPZ1er2gMYEhYKLUT4vxHScZfLQX7QHOLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YAcCxDPu; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-71e157a79c8so853151a34.2
+        for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 14:28:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736632579; x=1737237379; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=loOtPquvh3+Rddn8R48POaSkeUCptBGFOlaZFrQdYso=;
-        b=auD1K+uBW83olQ+A4M/xN5zcG7FgVpMoGIgMKCDqpKMdUiN02xTSwPvIp04kfqL1Oi
-         NZvWgZpwkc8r1siPhy/MNdhPmxiZNqWfshbHixGRjgHdoYNvIWGL/kZYY7RsPrtTdJ+P
-         xnzArgNOpxipyCEArUqiNvWbu3Eg8k4RrndNORW+PjarhCzdQY+zvJAkuBAQaHb21V9z
-         P1Rt5u+Dr8ljLiTm/zTfBMKwcEfAAF0Qrx7l8DgGAGh1+v/J0K7/YDxgUqQMBaHHz5q3
-         Jhr8SUHihCwuO2RithQOR2YCPTBiXBiFoAR5olyKTNl8jFn3JjCDdhW8zw6YSqKufpuZ
-         Gcdg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736634485; x=1737239285; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=43KntmIcqaFM3AqBzwzGM1E4RNbEmGc/LuGqR73pHdI=;
+        b=YAcCxDPu8T5Db3ezIoNUqtj4tVuaGfY6him+2zUF38JanHxm/Yc5F8wHMzSmdBCuP+
+         iLCoIjLqpSEX5gp43kzRaaw5OEXrGFqkU/g6sE2xZdlylJ/kk3Olh+yOBdqar8Ndx9ct
+         WmZc7NiCVS9zuFEi6U2ff0nJg31RI3kuiLio36YPDeW2VVCYuOYiCfqR0TP5oNUx4gMw
+         5hKgyZoHz23AnEefAcnq4csCK6zrGaUu5g9F3n7SQR33pz5syys++5bt1dIXbvvUxaH6
+         UEBeE9yi9I0i9FvU0LvueLkWH7sHgmRWC/RpNH1lqH+e8ikx8Q8q8SrCOvJVL3oNNwP5
+         DxJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736632579; x=1737237379;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=loOtPquvh3+Rddn8R48POaSkeUCptBGFOlaZFrQdYso=;
-        b=ik0FDhpruRVLWkxRJIMRjnRMtV+4vh1mCUF8Yj4zrzQ2/GsBNDsI0LJc9xUsbe8SeK
-         XOJsiy1C1I2g0eL3fzeIb3LLcTHQZT8DA/3Gsmx/VkL4DhvMiOdXtc7bVWcYGOPMxQWZ
-         1y+6N+q9coSoBWXmryiAVNoeHj+ci7AfSc05oc7505Jh1uNJLWQ0fNWAX00sL7dHhLgv
-         p2zcz7m0LGWY73Ueo2XmVPwDCXXuoPNadxZsqDMR8PTtWzYXVB9qbFfUHt/EaeWM8lCH
-         067oRvS3UYd349m6huUMq3WiMBHlnAqSJVStEnzavkfNWRlaoum9Dr1c459nUGi1OBnB
-         kQKw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+OYW7jPTe6UeAX8SbaUTheyNuZL0YogctkgBOxcVJrnKE5wsSnQEHD9WTl/E45EGN2+6/CM/J7tqc@vger.kernel.org, AJvYcCWiKWq8cDNPI6U935sWlPB04aEinydpNowWSKal7BehJPl2Bphrvo1wKeN3/KvS576fjfBGe7zTIrOp@vger.kernel.org, AJvYcCXZgG+V9a9tRheHr4ikmKqDR8JhcDogAar4icbxkMbhJwbA3qHKh452Tt3OVUBoDHDMSJbJGbcBqC3ktJsN@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQXn1vAD9Q0vawzbhFtxzitz00JfZp6HSu3dr4PpuQxiAiDbsv
-	Cim7et5nri0O1iSGzCpQpcDF6ro1vF+owboxhQaAA0/RCG5cORES
-X-Gm-Gg: ASbGnctvDl1CKEj008M+ClFH4r3I8RWNtKqrLDcpp1xaffC9PxdrmYS5O8y95MViv+S
-	r71lIGJXWqK2i+qaV7UsVlWKYBeiq8INNR/lfNImzZ/mbi0dZdwvdBSN1Y0waNKGfm42VdMoIbh
-	kvuHIhLKzI+8E02J7iRbIcxdyZ6v+jSBzFTqkLFsVp4tvlINunkwqpXH2R1sO3cuGsOhWdcNHS4
-	uIAYCtlaS7toc+GIRIw0GnjlPWVGgguWddwf2SNlJCdACjwqvggfOAl8daKo1Mi98OKDPCTTr5A
-	GA==
-X-Google-Smtp-Source: AGHT+IGuHISPlavr3hGJB+OMwWrc9jBpOUN+SV1VDOHzQz20bQR9b31+g8SYn+XssRntWIJfIqFvTw==
-X-Received: by 2002:a05:6830:6206:b0:71f:c1df:7b5 with SMTP id 46e09a7af769-721e2f2cbbbmr3966321a34.7.1736632578914;
-        Sat, 11 Jan 2025 13:56:18 -0800 (PST)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231862a20asm2027666a34.65.2025.01.11.13.56.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 13:56:18 -0800 (PST)
-Date: Sat, 11 Jan 2025 18:56:13 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 00/15] iio: adc: ad7768-1: Add features, improvements,
- and fixes
-Message-ID: <Z4Lo/cmUbKeBJWce@JSANTO12-L01.ad.analog.com>
-Reply-To: eeea054d-ebe8-4917-85c6-ff001cef50c5@baylibre.com
-References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <eeea054d-ebe8-4917-85c6-ff001cef50c5@baylibre.com>
+        d=1e100.net; s=20230601; t=1736634485; x=1737239285;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=43KntmIcqaFM3AqBzwzGM1E4RNbEmGc/LuGqR73pHdI=;
+        b=QqcKtZjdit+zJ3B5b/gDWDhZBpjjg3g10eLVaS2xtMIUtxS9ELxDyPf25bj/12CcOZ
+         WFxj/I70/2yjCTA8SxnY1MiSDkexOLf+faThQs2DseqjlfG4OmFifA/zBHvUC1StzWvY
+         D2BAGBDilI4n3WMyl9wERrBnLMCj4fSk21LYuj0l71vNSNYx+6mmwyiJlXCETX39N0Y8
+         pxRmx1ZtaEIKvpu5uRNZ3SPFCWsLXGJetSfxE+xiNCzZjEOjgBmyhSusphDqdjqGgjRL
+         3D0gaJ4wK3dfnlBJH+mHgJ0iurF3gRmU0huEk29Qbh59BjZgox4QGCRXb9OiKNctq4Fq
+         MrOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUyY62KBBv2RTlpnOCWCo3PaiZI98r30SjnItdYVPEOw/Jpzab1iQ3gmvsvEDhUkO3oWJi2eYh24HI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL1DeiFd+LTWSVI7lzo857wOREcaojbai33+Byy57tTbPUTQ/A
+	F2jRhhK4tRKtoAkTQZ1FnZlMmAJKtJO//fJvr+4TtJCrf44/yANt+XQ8cGv9/No=
+X-Gm-Gg: ASbGncvnt5hc/c11gSFOeGbdDCteNET69cOxTlSYdoX9zChQHoHxl/4ps/JZtOQfYOe
+	6t8H9xAq2pO7gNy0eWWrQ0Rx4Hso5X70qkWZk1J9Fu1ez4esqz/7+aBeDQ+OsSTlfOPV75kDUHH
+	u1fiGu1E4KxPar3MneMuvfEUkHJoPJiZOZaJggLLeH/jgA0Th8lQKsUAjlvK7/KeQ33uErXGis5
+	Y0/Y9LJSLbZG557JGVGoNOl3nmD4pPKxY0DInpxXHOiM1uiAgULXUbheru3pKU4AaCU80x8tm57
+	t9BabNbmRSeoydeCNA==
+X-Google-Smtp-Source: AGHT+IFL6RbErtzygKKUoW2sxp+4MBv8n4eDcNm3EaAkeuTYvCKu/GIcwg9JovroyHCpFBj0VZMJOw==
+X-Received: by 2002:a05:6830:6312:b0:71e:f1:3e1 with SMTP id 46e09a7af769-721e2dff8eamr11053345a34.3.1736634484797;
+        Sat, 11 Jan 2025 14:28:04 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231853827esm2071966a34.4.2025.01.11.14.28.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Jan 2025 14:28:04 -0800 (PST)
+Message-ID: <61785c12-1a5e-4465-92e9-83d81c02dd59@baylibre.com>
+Date: Sat, 11 Jan 2025 16:28:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eeea054d-ebe8-4917-85c6-ff001cef50c5@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 01/27] iio: core: Rework claim and release of direct
+ mode to work with sparse.
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, =?UTF-8?B?4oCcTHVjIFZhbiBPb3N0ZW5yeWNr4oCd?=
+ <luc.vanoostenryck@gmail.com>
+References: <20250105172613.1204781-1-jic23@kernel.org>
+ <20250105172613.1204781-2-jic23@kernel.org>
+ <88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
+ <20250107142451.000021db@huawei.com>
+ <c298f1bb-d0a1-42af-b237-9aa8e422ec1b@baylibre.com>
+ <20250111133552.2a44c74e@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250111133552.2a44c74e@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 01/07, David Lechner wrote:
-> On 1/7/25 9:23 AM, Jonathan Santos wrote:
-> > This patch series introduces some new features, improvements,
-> > and fixes for the AD7768-1 ADC driver. 
-> > 
-> > The goal is to support all key functionalities listed in the device
-> > datasheet, including filter mode selection, common mode voltage 
-> > configuration and GPIO support. Additionally, this includes fixes 
-> > for SPI communication and for IIO interface, and also code improvements
-> > to enhance maintainability and readability.
+On 1/11/25 7:35 AM, Jonathan Cameron wrote:
+> On Tue, 7 Jan 2025 10:09:15 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> It looks like some of the patches also have to do with a sync trigger for one
-> or more chips. There was a recent discussion about this for another ADC that
-> seems relevant:
+>> On 1/7/25 8:24 AM, Jonathan Cameron wrote:
+>>> On Mon, 6 Jan 2025 17:14:12 -0600
+>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>   
+>>>> On 1/5/25 11:25 AM, Jonathan Cameron wrote:  
+>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>>
+>>>>> Initial thought was to do something similar to __cond_lock()
+>>>>>
+>>>>> 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
+>>>>> + Appropriate static inline iio_device_release_direct_mode()
+>>>>>
+>>>>> However with that, sparse generates false positives. E.g.
+>>>>>
+>>>>> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock    
+>>>>
+>>>> Even if false positives aren't technically wrong, if sparse is having a hard
+>>>> time reasoning about the code, then it is probably harder for humans to reason
+>>>> about the code as well. So rewriting these false positives anyway could be
+>>>> justified beyond just making the static analyzer happy.
+>>>>  
+>>>>>
+>>>>> So instead, this patch rethinks the return type and makes it more
+>>>>> 'conditional lock like' (which is part of what is going on under the hood
+>>>>> anyway) and return a boolean - true for successfully acquired, false for
+>>>>> did not acquire.    
+>>>>
+>>>> I think changing this function to return bool instead of int is nice change
+>>>> anyway since it makes writing the code less prone authors to trying to do
+>>>> something "clever" with the ret variable. And it also saves one one line of
+>>>> code.
+>>>>  
+>>>>>
+>>>>> To allow a migration path given the rework is now no trivial, take a leaf
+>>>>> out of the naming of the conditional guard we currently have for IIO
+>>>>> device direct mode and drop the _mode postfix from the new functions giving
+>>>>> iio_device_claim_direct() and iio_device_release_direct()
+>>>>>
+>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>>> ---
+>>>>>  include/linux/iio/iio.h | 22 ++++++++++++++++++++++
+>>>>>  1 file changed, 22 insertions(+)
+>>>>>
+>>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+>>>>> index 56161e02f002..4ef2f9893421 100644
+>>>>> --- a/include/linux/iio/iio.h
+>>>>> +++ b/include/linux/iio/iio.h
+>>>>> @@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+>>>>>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+>>>>>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+>>>>>  
+>>>>> +/*
+>>>>> + * Helper functions that allow claim and release of direct mode
+>>>>> + * in a fashion that doesn't generate false positives from sparse.
+>>>>> + */
+>>>>> +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)    
+>>>>
+>>>> Doesn't __cond_acquires depend on this patch [1] that doesn't look like it was
+>>>> ever picked up in sparse?
+>>>>
+>>>> [1]: https://lore.kernel.org/all/CAHk-=wjZfO9hGqJ2_hGQG3U_XzSh9_XaXze=HgPdvJbgrvASfA@mail.gmail.com/  
+>>>
+>>> I wondered about that. It 'seems' to do the job anyway. I didn't fully
+>>> understand that thread so I just blindly tried it instead :)
+>>>
+>>> This case is simpler that that thread, so maybe those acrobatics aren't
+>>> needed?  
+>>
+>> I was not able to get a sparse warning without applying that patch to sparse
+>> first. My test method was to apply this series to my Linux tree and then
+>> comment out a iio_device_release_direct() line in a random driver.
+>>
+>> And looking at the way the check works, this is exactly what I would expect.
+>> The negative output argument in __attribute__((context,x,0,-1)) means something
+>> different (check = 0) without the spare patch applied.
+>>
+> Curious. I wasn't being remotely careful with what sparse version
+> i was running so just went with what Arch is carrying which turns out to be
+> a bit old.
 > 
-> [1]: https://lore.kernel.org/linux-iio/20241128125811.11913-1-alisa.roman@analog.com/
+> Same test as you describe gives me:
+>   CHECK   drivers/iio/adc/ad4000.c
+> drivers/iio/adc/ad4000.c:533:12: warning: context imbalance in 'ad4000_read_raw' - different lock contexts for basic block
 > 
-Interesting. That would cover the case where we control the synchronization with a GPIO,
-but it gets more complex when using /SYNC_OUT in a multidevice setup, since it requires
-sending a SPI command to the "main device" to toggle the pin.
+> So I tried that with latest sparse from kernel.org and I still get that warning
+> which is what I'd expect to see.
+> 
+> Simple make C=1 W=1 build
+> 
+> I wonder what we have different?  Maybe it is missing some cases?
+> 
+> diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
+> index ef0acaafbcdb..6785d55ff53a 100644
+> --- a/drivers/iio/adc/ad4000.c
+> +++ b/drivers/iio/adc/ad4000.c
+> @@ -543,7 +543,7 @@ static int ad4000_read_raw(struct iio_dev *indio_dev,
+>                         return -EBUSY;
+>  
+>                 ret = ad4000_single_conversion(indio_dev, chan, val);
+> -               iio_device_release_direct(indio_dev);
+> +//             iio_device_release_direct(indio_dev);
+>                 return ret;
+>         case IIO_CHAN_INFO_SCALE:
+>                 *val = st->scale_tbl[st->span_comp][0];
+> 
+> Was the test I ran today.
+> 
+> Jonathan
+> 
 
-The main device being the one which its /SYNC_OUT drives the others SYNC_IN.
-> > 
-> > Jonathan Santos (8):
-> >   dt-bindings: iio: adc: ad7768-1: add synchronization over SPI property
-> >   Documentation: ABI: add wideband filter type to  sysfs-bus-iio
-> >   Documentation: ABI: testing: ad7768-1: Add device specific ABI
-> >     documentation.
-> >   iio: adc: ad7768-1: set MOSI idle state to high
-> >   iio: adc: ad7768-1: use guard(mutex) to simplify code
-> >   iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
-> >   iio: adc: ad7768-1: add support for Synchronization over SPI
-> >   iio: adc: ad7768-1: add filter type and decimation rate attributes
-> > 
-> > Sergiu Cuciurean (7):
-> >   iio: adc: ad7768-1: Fix conversion result sign
-> >   iio: adc: ad7768-1: Update reg_read function
-> >   iio: adc: ad7768-1: Add reset gpio
-> >   iio: adc: ad7768-1: Move buffer allocation to a separate function
-> >   iio: adc: ad7768-1: Add support for variable VCM
-> >   iio: adc: ad7768-1: Add reg_write_masked function
-> >   iio: adc: ad7768-1: Add GPIO controller support
-> > 
-> >  Documentation/ABI/testing/sysfs-bus-iio       |   2 +
-> >  .../ABI/testing/sysfs-bus-iio-adc-ad7768-1    |  13 +
-> >  .../bindings/iio/adc/adi,ad7768-1.yaml        |  24 +-
-> >  drivers/iio/adc/ad7768-1.c                    | 830 +++++++++++++++---
-> >  4 files changed, 747 insertions(+), 122 deletions(-)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
-> > 
-> > 
-> > base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
-> 
-> What are all of these prerequisites?
-> 
-I might have done something wrong while generating the pacthes, i will check this.
-> > prerequisite-patch-id: 8b531bca46f7c7ea1c0f6d232d162fd05fda52f7
-> > prerequisite-patch-id: c8c8637cb3343097c3224a9aa315fc45dca15f45
-> > prerequisite-patch-id: e0baac9ef84e6e8a0a272fc6191fc1cb48143e44
-> > prerequisite-patch-id: 7e5cad70809fa7d37e917628147c197427c11594
-> > prerequisite-patch-id: 28dcdb0ebc3ca3c02713f83c94a4eedbe81095dc
-> > ...
+Hmmm... I think maybe I had some other local modifications when I was testing
+previously. But I understand better what is going on now. Your implementation
+is only working because it is static inline. The __cond_acquires() and
+__releases() attributes have no effect and the "different lock contexts for
+basic block" warning is coming from the __acquire() and __release() attributes.
+So it is working correctly, but perhaps not for the reason you thought.
+
+I think what I had done locally is make iio_device_claim_direct() and
+iio_device_release_direct() regular functions instead of static inline so that
+it had to actually make use of __cond_acquires(). In that case, with an
+unpatched sparse, we get "unexpected unlock" warnings for all calls to
+iio_device_release_direct(). With patched sparse, this warning goes away.
+
+So for now, we could take your patch with the __cond_acquires() and
+__releases() attribute removed (since they don't do anything) and leave
+ourselves a note in a comment that sparse needs to be fixed so that we can use
+the __cond_acquires() attribute if/when we get rid of
+iio_device_release_direct_mode() completely and want to make
+iio_device_release_direct() a regular function.
+
+
 

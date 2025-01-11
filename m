@@ -1,151 +1,147 @@
-Return-Path: <linux-iio+bounces-14125-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14126-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3771A0A379
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 13:04:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA24CA0A39F
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 13:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA807A4442
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 12:03:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80C1F188B8DE
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 12:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7785A193094;
-	Sat, 11 Jan 2025 12:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B774B19DF98;
+	Sat, 11 Jan 2025 12:42:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jtj24Grs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N4kWioCA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E413192B60;
-	Sat, 11 Jan 2025 12:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706EE19D898;
+	Sat, 11 Jan 2025 12:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736597033; cv=none; b=rLn7Rf8ECq8aOdcQbT5lQJNylWhk5dFuCjdAsbJVY43oN6Zh+fJV+wVZBQTSh53XRnqEY8vl/V4fIEavSGg10e6QErMv2OnYNCwkYhK2b6ED4xatFPBiySquRtDQfgxGRrdGNIvKwjoBp9RGkFnYxYOGaKrXWP/ZD2NkmS3+Hts=
+	t=1736599356; cv=none; b=HFjozH0E9aySEE30p4tJaR/kB/kWkxc+fUkTlz+UsoqfP/zIX85QVq4qvRqmtPlKbRwp2u1VSChyY861bqMYWOuOO0kgdYHpd4474r9kz9nf9k0ypkfO0M2Y+ZjgjFQhYiAgKOL2h4SkPJw4DnZy/ClxAuJH6F/99y+F0gkWUEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736597033; c=relaxed/simple;
-	bh=9lwsD16mqpsxnr7Lg7DWtNqFWv+blTvHMR+Mp08IuZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m1kSA/MXFe4mgbhKCsg9titPSvMUWHUVFoCwepiB/tce+Y3FQ6LFzg1cXbKJqvKUmXiug0WLcrZcNQ2PHi7dNlbnAxcuJGI29g4eYZ5yoKKw50yuRLuoh/AilY6WHgdH7GG5NyCKRiQH/fvJYgXeJiGTzK/iMVnaB5Gf+Yox8W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jtj24Grs; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736597031; x=1768133031;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9lwsD16mqpsxnr7Lg7DWtNqFWv+blTvHMR+Mp08IuZE=;
-  b=jtj24GrsJy7+5bkj0lzB3T7SMR2TDtOeRRbxP8unuN+7CC1QQwv8739I
-   ncV3GuxKWRcNiSP6irvZR9F+hk1vzaC/gC/dOJYNF1aeObze+PYVyw1zT
-   AtqBZrANKtUAx3XlBf2a4plBtHBOab3u0N/lOy2Ie7L+LonfBIOTQsXNe
-   g2cDtlZW2OwRjzIrOqUbmCe/IRP2EZqGoNtJxVDUEgN1Xx/m4w4SK/7aA
-   DyLdMmIWN0X0BQHsr0JjO3YbQgPU+fPGSfIDZJ5LJFaraeH/vBxhh/ioX
-   fMZkiDE6qN2AqD8jN07pWWzjXgnktzYUv2vT4I1nas6VE+5HavzHCDOpz
-   Q==;
-X-CSE-ConnectionGUID: X2gIRxrhS0y5OcDAWow4dg==
-X-CSE-MsgGUID: 4omRTZgyTz6qITmhcu4FCw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="40565034"
-X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
-   d="scan'208";a="40565034"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 04:03:51 -0800
-X-CSE-ConnectionGUID: lavWYR7CQUyr8plOHXlQ4Q==
-X-CSE-MsgGUID: jiv1JclGTi2UazKOfNLNjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
-   d="scan'208";a="103781731"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 11 Jan 2025 04:03:47 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWaDQ-000Kbj-2y;
-	Sat, 11 Jan 2025 12:03:44 +0000
-Date: Sat, 11 Jan 2025 20:03:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robert Budai <robert.budai@analog.com>, Nuno Sa <nuno.sa@analog.com>,
-	Ramona Gradinariu <ramona.gradinariu@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alex Lanzano <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 5/6] iio: imu: adis16550: add adis16550 support
-Message-ID: <202501111951.NHXp98OK-lkp@intel.com>
-References: <20250110074254.38966-6-robert.budai@analog.com>
+	s=arc-20240116; t=1736599356; c=relaxed/simple;
+	bh=XZthtrMbzkRMJY6YGyuBSg7i/WROOOVS1c+PSKk9piU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cc0KNc0/YmkfoZQCzICOsztfLjRsX5wt1q/c9YnkLnatotSmbGZdGJr9ACe1zW28DmHfYdyTCYoElNfz8EPfNrG3gSRkV7M9U7O4WLgnC6Bjtaf7iI1QskpI9w4A4XWVw4sxxW3yMsG+uyX0vyADrxGYXuqUY8WFyREERH3QmAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N4kWioCA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F19C4CED2;
+	Sat, 11 Jan 2025 12:42:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736599356;
+	bh=XZthtrMbzkRMJY6YGyuBSg7i/WROOOVS1c+PSKk9piU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=N4kWioCAAuutVRuFgKUWpmdUVhHrZt79rle52NT/DAvNqK4QgsT33YLejLSTVTgLE
+	 Q2nbzqQNPHMsrW3zlWY7Ot73yG5NcJwgy2VsBckfxGbA+Ra8l694vpRd6iuWQ6G6Uy
+	 4azkUvx9JfuScUr8plPVSVNMFUaAvk4Ow/AEJ8HuMBLKN7eUkEi+uVFnZLJpGBVSA6
+	 tzf5c0ampX6oL5nx3tknBv1B2w0fPyff7BdjbQWCh8HneG8NYK9XOcoVXOGHPJV3tN
+	 c7FAilV2+JYU00/8yssmLfgkVrFROkEWg7of4OTAu4FxEhE/hmhXLNCuqPQX5hv7y0
+	 5bat1xBCJ54Ug==
+Date: Sat, 11 Jan 2025 12:42:24 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Mudit Sharma <muditsharma.info@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: gts: Simplify available scale table build
+Message-ID: <20250111124224.008b826a@jic23-huawei>
+In-Reply-To: <b25638fb-15c1-4270-ab26-769be0ce57c9@tweaklogic.com>
+References: <Z1_rRXqdhxhL6wBw@mva-rohm>
+	<20241220192118.3e9ba7f9@jic23-huawei>
+	<9c07b71a-160f-4336-8a8d-cad7003e4b68@gmail.com>
+	<a49a57c0-e3fa-4d4a-aec7-be8f7a681f3b@gmail.com>
+	<b25638fb-15c1-4270-ab26-769be0ce57c9@tweaklogic.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250110074254.38966-6-robert.budai@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Robert,
+On Sat, 11 Jan 2025 14:47:28 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-kernel test robot noticed the following build errors:
+> On 11/1/25 00:56, Matti Vaittinen wrote:
+> > On 22/12/2024 11:24, Matti Vaittinen wrote: =20
+> >> On 20/12/2024 21:21, Jonathan Cameron wrote: =20
+> >>> On Mon, 16 Dec 2024 10:56:37 +0200
+> >>> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >>> =20
+> >>>> Make available scale building more clear. This hurts the performance
+> >>>> quite a bit by looping throgh the scales many times instead of doing
+> >>>> everything in one loop. It however simplifies logic by:
+> >>>> =C2=A0 - decoupling the gain and scale allocations & computations
+> >>>> =C2=A0 - keeping the temporary 'per_time_gains' table inside the
+> >>>> =C2=A0=C2=A0=C2=A0 per_time_scales computation function.
+> >>>> =C2=A0 - separating building the 'all scales' table in own function =
+and doing
+> >>>> =C2=A0=C2=A0=C2=A0 it based on the already computed per-time scales.
+> >>>>
+> >>>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com> =20
+> >>> Looks good to me, but I want to leave it on list a while before apply=
+ing.
+> >>> Ideal if it gets some tested-by or other tags before I pick it up.
+> >>> As always, this is fiddly code, so the more eyes the better! =20
+> >>
+> >> Please, let it wait until the Christmas has passed. I got information =
+we might be getting some testing before the year changes :) =20
+> >=20
+> > Well, the year changed and no tested-by tags emerged. I suppose my sour=
+ces weren't right at this time.
+> >=20
+> > Yours,
+> >  =C2=A0=C2=A0=C2=A0=C2=A0-- Matti =20
+> Hi Matti,
+>=20
+> Hope you had a good Christmas and new year. After my US trip, it took me =
+some time
+> to come to terms that I have to work for a living!
+>=20
+> The code works fine. I tested it with apds9306 driver with stm32mp157-dk2=
+ board.
+>=20
+> Tested-by: subhajit.ghosh@tweaklogic.com
+>=20
+> Just want to report something else which may not be related to this.
+> When I tried to cross-compile with linux-gnueabi-gcc version 12.2.0 with =
+Linux kernel 6.1.28, I got the following errors:
+>    CC [M]  /home/subhajit/opensource_contributions/apds9306/apds9306_back=
+port/./drivers/iio/industrialio-gts-helper.o
+> /tmp/ccn9UpwF.s: Assembler messages:
+> /tmp/ccn9UpwF.s:22: Error: junk at end of line, first unrecognized charac=
+ter is `I'
+> ...
+> ...
+>=20
+> I had to remove the double quotes from the macros for all symbol exports:
+> EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, "IIO_GTS_HELPER");
+> to
+> EXPORT_SYMBOL_NS_GPL(iio_gts_total_gain_to_scale, IIO_GTS_HELPER);
+>=20
+> However the x86_64 native build of the mainline kernel 6.13.0-rc6 on my l=
+aptop went just fine with this patch.
+>=20
+> Regards,
+> Subhajit Ghosh
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.13-rc6 next-20250110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hi Subhajit,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Budai/iio-imu-adis-Add-custom-ops-struct/20250110-154645
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250110074254.38966-6-robert.budai%40analog.com
-patch subject: [PATCH v4 5/6] iio: imu: adis16550: add adis16550 support
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250111/202501111951.NHXp98OK-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250111/202501111951.NHXp98OK-lkp@intel.com/reproduce)
+You've run into a tree wide change wrt to those quote that went in just aft=
+er rc1 of this cycle.
+The error message is less than helpful and we've spent all cycle fixing the=
+se up :(
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501111951.NHXp98OK-lkp@intel.com/
+Anyhow this is expected if backporting.
 
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/module.h:22,
-                    from include/linux/device/driver.h:21,
-                    from include/linux/device.h:32,
-                    from include/linux/iio/iio.h:10,
-                    from include/linux/iio/buffer.h:10,
-                    from drivers/iio/imu/adis16550.c:12:
->> drivers/iio/imu/adis16550.c:1202:18: error: expected ',' or ';' before 'IIO_ADISLIB'
-    1202 | MODULE_IMPORT_NS(IIO_ADISLIB);
-         |                  ^~~~~~~~~~~
-   include/linux/moduleparam.h:26:61: note: in definition of macro '__MODULE_INFO'
-      26 |                 = __MODULE_INFO_PREFIX __stringify(tag) "=" info
-         |                                                             ^~~~
-   include/linux/module.h:299:33: note: in expansion of macro 'MODULE_INFO'
-     299 | #define MODULE_IMPORT_NS(ns)    MODULE_INFO(import_ns, ns)
-         |                                 ^~~~~~~~~~~
-   drivers/iio/imu/adis16550.c:1202:1: note: in expansion of macro 'MODULE_IMPORT_NS'
-    1202 | MODULE_IMPORT_NS(IIO_ADISLIB);
-         | ^~~~~~~~~~~~~~~~
+Jonathan
 
 
-vim +1202 drivers/iio/imu/adis16550.c
-
-  1196	
-  1197	MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-  1198	MODULE_AUTHOR("Ramona Gradinariu <ramona.gradinariu@analog.com>");
-  1199	MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
-  1200	MODULE_DESCRIPTION("Analog Devices ADIS16550 IMU driver");
-  1201	MODULE_LICENSE("GPL");
-> 1202	MODULE_IMPORT_NS(IIO_ADISLIB);
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

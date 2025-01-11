@@ -1,204 +1,151 @@
-Return-Path: <linux-iio+bounces-14124-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14125-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AF6A0A231
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 10:17:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3771A0A379
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 13:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5D6F3A6BEB
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 09:17:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA807A4442
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 12:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1407188596;
-	Sat, 11 Jan 2025 09:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7785A193094;
+	Sat, 11 Jan 2025 12:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QBZ8NuzR"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jtj24Grs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACBF15666D
-	for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 09:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E413192B60;
+	Sat, 11 Jan 2025 12:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736587065; cv=none; b=BAhttponnB0n5fNKJiAAFbv0qtKV4kmtJACIFbOiESdTpzNIPAGMPjwzCUyk2APkW20rYDP85q4mSGA4qkcME52B2c8mU8tzDu6ttaq2HMfYIR/rfn+0rMHwTI1RUTpffYLBWcPzD8dJnQtHXuXoy/BYkz3p9to6F9WEIwk8l3M=
+	t=1736597033; cv=none; b=rLn7Rf8ECq8aOdcQbT5lQJNylWhk5dFuCjdAsbJVY43oN6Zh+fJV+wVZBQTSh53XRnqEY8vl/V4fIEavSGg10e6QErMv2OnYNCwkYhK2b6ED4xatFPBiySquRtDQfgxGRrdGNIvKwjoBp9RGkFnYxYOGaKrXWP/ZD2NkmS3+Hts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736587065; c=relaxed/simple;
-	bh=kSz2ozfM+GDCUl2noTxMIW/0mQvo0ucpjYOvKWX2YDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FpR9NaKfcT1crud5smDHvgUMNetLTrBmDTv6Tq8nFmKjpfdE/ZBf/PJMpMHJzo63CN/85Ki4JDg6/chCsffNRbJevosknAmUe+dr787IIGrCUcOXg50O3s3f7zH/kxUpQFieLfruFXAClcDOrO8ol31LAaj9rP37aMglQFfnwbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QBZ8NuzR; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-3022484d4e4so26392041fa.1
-        for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 01:17:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736587062; x=1737191862; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=tisWqy82G+U2up76UdxFU1XP7JkgoC4pn3Hzy6vKW3s=;
-        b=QBZ8NuzRy0JLE9wEu7vMK5TEv6CDp2C6XBCZZEN9+qCvWgc9YuWEPepNhHf741h3g4
-         3erccNaoi4Ecd9fzNssHSSLLVUQVNRgnC6w7KfoRu8IHuj+wbh+iYcDtwmPRHsYaVFsr
-         QvdKyP2NTFXNR3BY+RVDWSbn8yuZydKo1JzZU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736587062; x=1737191862;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tisWqy82G+U2up76UdxFU1XP7JkgoC4pn3Hzy6vKW3s=;
-        b=oTyndWL+RZyifYqT9gOcii+ODTXntd8rIZRxVBEtk7F/zuptFX40m/1/fCcCHjh7m5
-         yYWI0VE4nDad/SgqcC20+AOMWNdzfSFZRoIC+K4hO3CdTjBKry6ZI2rTY3xzhNx0iOMm
-         UmZb97HejjWSiUY5NDvpIfTFYUqpjSiI2n21Mh8NkmVnQ2DyWmb3kyhnM2pySo42ULzQ
-         BdER099kYyE+OAU/uMZo7fAzMLprKFUWSaLzZK334ByrVt1UoN1JEX1EYFvxMKG0VYJv
-         GKg3O+iiL+q5RmgScDpmTZsvAo4YLGPsWEsKlir+01KZBxsKgyCXgRtD9sGH6ZmOhcpF
-         fTkg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuOZkBC7SnTwKqgyMlhikbGxPzTLvYF/l75AfIm1Tlqo1CKmSKXiTrGMZZM4P+ShQPGkBxDoJXtKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynGGbEN7jBre3vqlOdsiCr1zw4sJ3wAHFLMwu2tvVjxaag55hw
-	i9tWjNUYbhVc+Y3RB4D01CizjWTH+MZPpWsiFsskhEtpDuMFL4XkchGla9fQkKXtaXzm3g1sfnc
-	=
-X-Gm-Gg: ASbGncsighbeisEIfaXMj7iyScWxYD+xKT8Qit6jiw6MtbCkxARP62kgvuVKZ1TOysR
-	tptMbJ4PTiWhklipWDsJSV6CuVD5tooQZ6f2rdXVipUXP5f1+DJ20cGikOrT7IjxwboktXnXYhv
-	9e83WTcApDMV70T8PW4nzsWvCaUZR/greC3ISfIcWVtyE4pSK8xRLtxNX/rGr6+mNmHn1z+dRsH
-	/kmmoMGUsqmR2N4l3wHW3TXp+KDD30U3ShgP4HTWiL6X8UmM4/lttCzuHSuoID7EyQ1hgNztVZI
-	UZgu0tccb1NdAlwGDc4=
-X-Google-Smtp-Source: AGHT+IEtrWu8bq+XSNp1vGzHgnuwCgi4ZHnz3i+bb4WqcrSrB8TuP0xHqe9b8G02gp8VF/S6nuHtxA==
-X-Received: by 2002:a05:6512:a8c:b0:53e:368c:ac4c with SMTP id 2adb3069b0e04-542847f9e04mr4292700e87.39.1736587061592;
-        Sat, 11 Jan 2025 01:17:41 -0800 (PST)
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com. [209.85.167.45])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428bec0768sm786371e87.207.2025.01.11.01.17.39
-        for <linux-iio@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Jan 2025 01:17:40 -0800 (PST)
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53e389d8dc7so2753029e87.0
-        for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 01:17:39 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXOd07JhD+U7FORVIf503G3KNP0GAPSKq2WeZQHgPaFYSWGlhIddj8nk4I9sP7NB4q7MkKwVMMZqM0=@vger.kernel.org
-X-Received: by 2002:a05:6512:3994:b0:542:29a6:a063 with SMTP id
- 2adb3069b0e04-542847f9de7mr4891846e87.43.1736587059313; Sat, 11 Jan 2025
- 01:17:39 -0800 (PST)
+	s=arc-20240116; t=1736597033; c=relaxed/simple;
+	bh=9lwsD16mqpsxnr7Lg7DWtNqFWv+blTvHMR+Mp08IuZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m1kSA/MXFe4mgbhKCsg9titPSvMUWHUVFoCwepiB/tce+Y3FQ6LFzg1cXbKJqvKUmXiug0WLcrZcNQ2PHi7dNlbnAxcuJGI29g4eYZ5yoKKw50yuRLuoh/AilY6WHgdH7GG5NyCKRiQH/fvJYgXeJiGTzK/iMVnaB5Gf+Yox8W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jtj24Grs; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736597031; x=1768133031;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9lwsD16mqpsxnr7Lg7DWtNqFWv+blTvHMR+Mp08IuZE=;
+  b=jtj24GrsJy7+5bkj0lzB3T7SMR2TDtOeRRbxP8unuN+7CC1QQwv8739I
+   ncV3GuxKWRcNiSP6irvZR9F+hk1vzaC/gC/dOJYNF1aeObze+PYVyw1zT
+   AtqBZrANKtUAx3XlBf2a4plBtHBOab3u0N/lOy2Ie7L+LonfBIOTQsXNe
+   g2cDtlZW2OwRjzIrOqUbmCe/IRP2EZqGoNtJxVDUEgN1Xx/m4w4SK/7aA
+   DyLdMmIWN0X0BQHsr0JjO3YbQgPU+fPGSfIDZJ5LJFaraeH/vBxhh/ioX
+   fMZkiDE6qN2AqD8jN07pWWzjXgnktzYUv2vT4I1nas6VE+5HavzHCDOpz
+   Q==;
+X-CSE-ConnectionGUID: X2gIRxrhS0y5OcDAWow4dg==
+X-CSE-MsgGUID: 4omRTZgyTz6qITmhcu4FCw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="40565034"
+X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
+   d="scan'208";a="40565034"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 04:03:51 -0800
+X-CSE-ConnectionGUID: lavWYR7CQUyr8plOHXlQ4Q==
+X-CSE-MsgGUID: jiv1JclGTi2UazKOfNLNjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
+   d="scan'208";a="103781731"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 11 Jan 2025 04:03:47 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tWaDQ-000Kbj-2y;
+	Sat, 11 Jan 2025 12:03:44 +0000
+Date: Sat, 11 Jan 2025 20:03:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Robert Budai <robert.budai@analog.com>, Nuno Sa <nuno.sa@analog.com>,
+	Ramona Gradinariu <ramona.gradinariu@analog.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alex Lanzano <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v4 5/6] iio: imu: adis16550: add adis16550 support
+Message-ID: <202501111951.NHXp98OK-lkp@intel.com>
+References: <20250110074254.38966-6-robert.budai@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241216-fix-hid-sensor-v2-1-ff8c1959ec4a@chromium.org> <20241219171718.2af17d6d@jic23-huawei>
-In-Reply-To: <20241219171718.2af17d6d@jic23-huawei>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Sat, 11 Jan 2025 10:17:27 +0100
-X-Gmail-Original-Message-ID: <CANiDSCvkKX68UqSuKiGiys8nwm5BX-FbKmHPtxJK=Hh=B4RqZQ@mail.gmail.com>
-X-Gm-Features: AbW1kvb3kmA3hlXu6jsQWY_mgIugqbft_Rz5Xg5Vgrmik685pNeK1ZCM9EUmt1o
-Message-ID: <CANiDSCvkKX68UqSuKiGiys8nwm5BX-FbKmHPtxJK=Hh=B4RqZQ@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: hid-sensor-prox: Split difference from multiple channels
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-input@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110074254.38966-6-robert.budai@analog.com>
 
-Hi Jonathan
+Hi Robert,
 
-Happy new year!
+kernel test robot noticed the following build errors:
 
-Friendly ping about this patch so we can change the ABI before the
-kernel release happens
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.13-rc6 next-20250110]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-On Thu, 19 Dec 2024 at 18:17, Jonathan Cameron <jic23@kernel.org> wrote:
->
-> On Mon, 16 Dec 2024 10:05:53 +0000
-> Ricardo Ribalda <ribalda@chromium.org> wrote:
->
-> > When the driver was originally created, it was decided that
-> > sampling_frequency and hysteresis would be shared_per_type instead
-> > of shared_by_all (even though it is internally shared by all). Eg:
-> > in_proximity_raw
-> > in_proximity_sampling_frequency
-> >
-> > When we introduced support for more channels, we continued with
-> > shared_by_type which. Eg:
-> > in_proximity0_raw
-> > in_proximity1_raw
-> > in_proximity_sampling_frequency
-> > in_attention_raw
-> > in_attention_sampling_frequency
-> >
-> > Ideally we should change to shared_by_all, but it is not an option,
-> > because the current naming has been a stablished ABI by now. Luckily we
-> > can use separate instead. That will be more consistent:
-> > in_proximity0_raw
-> > in_proximity0_sampling_frequency
-> > in_proximity1_raw
-> > in_proximity1_sampling_frequency
-> > in_attention_raw
-> > in_attention_sampling_frequency
-> >
-> > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
->
-> I got lost somewhere in the discussion.  This is still an ABI change compared
-> to original interface at the top (which is the one that has been there
-> quite some time).
->
-> However we already had to make one of those to add the index that wasn't there
-> for _raw. (I'd missed that in earlier discussion - thanks for laying out the
-> steps here!)  Srinivas, Jiri, do you think we are better off just assuming users
-> of this will be using a library that correctly deals with sharing and just
-> jump to
-> in_proximity0_raw
-> in_proximity1_raw
-> in_attention_raw
-> (should have indexed that but it may never matter) and
-> sampling_frequency
->
-> Which is what I think Ricardo originally asked.
->
-> Do we have any guarantee the sampling_frequency will be shared across the
-> sensor channels?  It may be the most common situation but I don't want to
-> wall us into a corner if it turns out someone runs separate sensors at
-> different rates (no particularly reason they should be one type of sensor
-> so this might make sense).  If we don't have that guarantee
-> then this patch is fine as far as I'm concerned.
->
-> Jonathan
->
->
->
-> > ---
-> > Changes in v2:
-> > - Use separate
-> > - Link to v1: https://lore.kernel.org/r/20241205-fix-hid-sensor-v1-1-9b789f39c220@chromium.org
-> > ---
-> >  drivers/iio/light/hid-sensor-prox.c | 7 ++++---
-> >  1 file changed, 4 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
-> > index c83acbd78275..71dcef3fbe57 100644
-> > --- a/drivers/iio/light/hid-sensor-prox.c
-> > +++ b/drivers/iio/light/hid-sensor-prox.c
-> > @@ -49,9 +49,10 @@ static const u32 prox_sensitivity_addresses[] = {
-> >  #define PROX_CHANNEL(_is_proximity, _channel) \
-> >       {\
-> >               .type = _is_proximity ? IIO_PROXIMITY : IIO_ATTENTION,\
-> > -             .info_mask_separate = _is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> > -                                   BIT(IIO_CHAN_INFO_PROCESSED),\
-> > -             .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_OFFSET) |\
-> > +             .info_mask_separate = \
-> > +             (_is_proximity ? BIT(IIO_CHAN_INFO_RAW) :\
-> > +                             BIT(IIO_CHAN_INFO_PROCESSED)) |\
-> > +             BIT(IIO_CHAN_INFO_OFFSET) |\
-> >               BIT(IIO_CHAN_INFO_SCALE) |\
-> >               BIT(IIO_CHAN_INFO_SAMP_FREQ) |\
-> >               BIT(IIO_CHAN_INFO_HYSTERESIS),\
-> >
-> > ---
-> > base-commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
-> > change-id: 20241203-fix-hid-sensor-62e1979ecd03
-> >
-> > Best regards,
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Budai/iio-imu-adis-Add-custom-ops-struct/20250110-154645
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20250110074254.38966-6-robert.budai%40analog.com
+patch subject: [PATCH v4 5/6] iio: imu: adis16550: add adis16550 support
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20250111/202501111951.NHXp98OK-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250111/202501111951.NHXp98OK-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501111951.NHXp98OK-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/module.h:22,
+                    from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from include/linux/iio/iio.h:10,
+                    from include/linux/iio/buffer.h:10,
+                    from drivers/iio/imu/adis16550.c:12:
+>> drivers/iio/imu/adis16550.c:1202:18: error: expected ',' or ';' before 'IIO_ADISLIB'
+    1202 | MODULE_IMPORT_NS(IIO_ADISLIB);
+         |                  ^~~~~~~~~~~
+   include/linux/moduleparam.h:26:61: note: in definition of macro '__MODULE_INFO'
+      26 |                 = __MODULE_INFO_PREFIX __stringify(tag) "=" info
+         |                                                             ^~~~
+   include/linux/module.h:299:33: note: in expansion of macro 'MODULE_INFO'
+     299 | #define MODULE_IMPORT_NS(ns)    MODULE_INFO(import_ns, ns)
+         |                                 ^~~~~~~~~~~
+   drivers/iio/imu/adis16550.c:1202:1: note: in expansion of macro 'MODULE_IMPORT_NS'
+    1202 | MODULE_IMPORT_NS(IIO_ADISLIB);
+         | ^~~~~~~~~~~~~~~~
+
+
+vim +1202 drivers/iio/imu/adis16550.c
+
+  1196	
+  1197	MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
+  1198	MODULE_AUTHOR("Ramona Gradinariu <ramona.gradinariu@analog.com>");
+  1199	MODULE_AUTHOR("Antoniu Miclaus <antoniu.miclaus@analog.com>");
+  1200	MODULE_DESCRIPTION("Analog Devices ADIS16550 IMU driver");
+  1201	MODULE_LICENSE("GPL");
+> 1202	MODULE_IMPORT_NS(IIO_ADISLIB);
 
 -- 
-Ricardo Ribalda
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

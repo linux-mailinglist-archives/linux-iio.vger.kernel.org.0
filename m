@@ -1,137 +1,241 @@
-Return-Path: <linux-iio+bounces-14145-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14146-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E15A0A64D
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:50:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123F1A0A675
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 00:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1332D168A5D
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE4947A37C0
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2021BBBD4;
-	Sat, 11 Jan 2025 22:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13571B9831;
+	Sat, 11 Jan 2025 23:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VZFpsNtr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVBEL131"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF18192B8A;
-	Sat, 11 Jan 2025 22:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF951CFBC;
+	Sat, 11 Jan 2025 23:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736635823; cv=none; b=Ope+YjeTapUgrq4lfY6J1FHJVbJKBjfKvPpIlRUpibhq8MfKoWR7PdLxwXvhvcJF3J8QrO71u6sVJa0nsTrfZxkTXuGQwdk7v2qdYM1xA78LBUeQWifXYitZvL451pA27NkkUmqgD/Uwyy5rVHTAoVA7VGkkV++Nw+MevmKedMY=
+	t=1736636680; cv=none; b=Y9CaOD1BWU1QiZp2yJVm5+Orqt3/6dfYWpdShq1JTFEt37JNaEFQnYhRSprBJrxZG9h76uemwcUF3vxwo31qw05C4sScDuf8bUBWwjJ8pZDDAkCKdYnpUECmiV6LPpn6OWS3AlD0PlnChDsYYphXiMQPb7Z02+VN4jMChqxPYD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736635823; c=relaxed/simple;
-	bh=57BUQRm5CpDl5O6xYUuG2zZI129fZ6RyxJ5iW9A+HpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TVXM+eFJL/iLt7PDwSZEq8xkxzEWW/e5bHuBUbB6vjiwSHEe2cjAOR6EKoUiWZEIilkHQhC4zrf0C35x0sN+LWd1ZvTz3ofgjws6lPlXLifQZ3aE41eMKD8R2zHNGrayN3N4myM2KGdG5lysk9F1kQPyCR2gAQROpaBhNMKZ45g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VZFpsNtr; arc=none smtp.client-ip=209.85.210.44
+	s=arc-20240116; t=1736636680; c=relaxed/simple;
+	bh=W2H3AW6407JrXP6XAsE6+DrUggYoa4M4nN/h6ORef3I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aRcmV1MqbG8INzLwRC0Ag0JmZT62w39H/5T4eDX6wLf7NUgUBvlKDuiReTgNExZ1ow9fade9pfbySJcox1jok/WFnH//h0QQgEV4JIsh1rU1GcHQhAt0tbQvaVnwFOAF/itag1YEqpf9X61GVMT0z+zQRCPbIbnaxC7G4c4/3+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QVBEL131; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71e252c3c19so207063a34.2;
-        Sat, 11 Jan 2025 14:50:22 -0800 (PST)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54024ecc33dso3314802e87.0;
+        Sat, 11 Jan 2025 15:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736635821; x=1737240621; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XqIGw26QfbBZkP0ka4AqH4cix7WA90/E1Q7X8jAGMGI=;
-        b=VZFpsNtrP/k94WEqFW1nIr2smm2/bruaxC6MX+0xfPFRolaFHPmdCP/zleOMHsmzMt
-         uqCr4XKqL21kB3VUcGPQ3luZWZ06hRyISEyZNvXb1RsfCO0bPcRVm2ajPFlzA+KtXmgX
-         ynlALd8Az27YssZvYJVFLYFqOjg2JFepRDsVtM7ZUbvyb01yCL43Qk5kFFzhGXOm33nF
-         lmkmb+crQZGg6EyvpNhX0n0WmvwttKhNjjn+KhGPNsGRvieEEqMAvKgo4WJPLw5vdFul
-         yyw+Ss8I9lL1q7EYjVnEyqWnzDT0Eik9mNkYtROdCKSOd/9z3l9qY/AN9v2edPd3+7Bv
-         zWPQ==
+        d=gmail.com; s=20230601; t=1736636677; x=1737241477; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=w55y3+3erCyA+fwa/UE39zyE5mUBB5pydvZI9fr70hw=;
+        b=QVBEL1310vLDybx38keHPx01ZPKLTofXDrfFMLqk8UJn4EPwftyL7iT7BkOFDL7D+S
+         yMW4ugjgAritfvwazYiC+Moj9Kdmo8BagzkaEI+DIac8fU8bHBnLQ+SlabD7nzvyCxQN
+         AzJ24bwukVALDHgianbPh0rp+LUbeWVJ4xcoLQUDvok+umfeyPJJwakjEACaCBm+wozX
+         BOOkNPLgN9cCM4fH6iag+y14z/9fHvQ51JqiJCVfo1HhfFFHGvKTFHyrwicRJj/KS0fZ
+         eY9krCKSCAMAHJlH7MD/dYkOy/TyLVF8u2lm7MA+bCH4N+pjGK3QAEFf7fA75I5lxFnU
+         Jv8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736635821; x=1737240621;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XqIGw26QfbBZkP0ka4AqH4cix7WA90/E1Q7X8jAGMGI=;
-        b=JNxONVz89MDPorDaigQhlZWeOxsWiLoQDXoTmMuoVG6OrfIxV9+kizCjgEXrUruIfq
-         BjsRt26IvLthSMHOwB/aVlLSqjSlrbpmSu9BWEoJVVYVS+wnbExgxoZ80Ok2LmTeYdOX
-         8TBmc9vKL6A18BLQaUcfi0es2Md8/WJIg+nI3jfKq8HTW2tdKtBysFTTL/mEfMBihbpi
-         Qgx/r3XLN26oz5+9oW+60UF6PDPS5PNg3QtnWkH8gAFbbeYYgFZHL7jEbIW+rd062gRS
-         FYPrAfk0QK2UxuBcmCoMyYqBARmbLTzWIgIlC6XNXWjXMJNb+Fj6KCgiQJpQTrVT/33R
-         khwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU79bfINYew7L+b7xDauIneJ88vfjobuZwvcVAAy0QmTe53TLJXit/QKbfBpURtLTv5qLqJItgYHgXA@vger.kernel.org, AJvYcCUMP0/m/IjzKQ76lRVECLs1nMSUK4snGMJMbXuN+edUxfcwffi5dgsyx1mQQc+0vftXxIT7HoHcgwtk@vger.kernel.org, AJvYcCXowbc4MhfNjYYjpzZwo+T7WQhaTT2xoisNL3uNU/TMh40LT72TGrggapby9wjVd1lQh9+gK3JJs+eUy+q+@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvP7tWu9Wg6X1BnjLs2Gybs+plWShSItb4AQL0hdowvCMTrDGr
-	XcN9vLl9V5ZzpFmsUP/iJUID4F0xzAc4+Qmkv8OGNWMyk0wzu8OV
-X-Gm-Gg: ASbGncsT93VBbPQEWwl6m9SkR3Ku6f+PZFpHv5zuOuLqd7ZWAwXYk1F+Wgma4pyfNxp
-	Lil49Q0zEK2c8YdPoEvSbh6gSB/WSCy+d4Y2lQIKpjwumdfX3uODSIfgkfL1oAINOcRsYmGAjpe
-	hycHxClpflcLq1vgD1No6iF2fZs7N4jdMOa4R4eUZ5+3l5dKizsLC0Zb8w2UfqaDDuTpRvJWMVg
-	vmX33i0j8yykuyhB43gC2Nm+TI4P1iXb/tLC4eTkIsx3Wb0qz6JpqUCaYL3QXdZ6zhFCvskHm0C
-	xQ==
-X-Google-Smtp-Source: AGHT+IGVcwKOYTRdWGOSClDeVXtJhGfYDMmO4gL05Ja+f2uI5m75/VhDIUeBI7AjW7BE4zTSgNoL4w==
-X-Received: by 2002:a05:6830:660f:b0:710:f408:bd54 with SMTP id 46e09a7af769-721e2de3ad9mr3140119a34.2.1736635821670;
-        Sat, 11 Jan 2025 14:50:21 -0800 (PST)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-723185382a2sm2076612a34.3.2025.01.11.14.50.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 14:50:21 -0800 (PST)
-Date: Sat, 11 Jan 2025 19:50:18 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 02/15] Documentation: ABI: add wideband filter type to
- sysfs-bus-iio
-Message-ID: <Z4L1qrqHBUE5JGdX@JSANTO12-L01.ad.analog.com>
-Reply-To: 8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com
-References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <40707fa904ba7b1659554747ff7520139dd6f94e.1736201898.git.Jonathan.Santos@analog.com>
- <8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com>
+        d=1e100.net; s=20230601; t=1736636677; x=1737241477;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w55y3+3erCyA+fwa/UE39zyE5mUBB5pydvZI9fr70hw=;
+        b=U+7+g+0qG6KBumvBr3ECP0LUpu15Om76qkBwmE4pP7fqR5oCthmvsg4hP4YAET60Nu
+         3w9X6iGhmzXLZrK2Xj6GHAXTiPBhWrfzsYaCE6d79Nmr51r3YnhW3Cop0thYEYqhWJb4
+         SxzrV+3SQgJQIkKnN7qjO/EGRTcZMNXwUMI7cPf10Gf6VMUClezngpMUnkoIBcE62wl4
+         4Hh0pmKg+EVnoqBk6b60ISRMCP5dEsE6vauxcFgAeSCeFT3WqR/0vQsVx6aZJnxXp9bg
+         Ebal46qCoveTXhiYNWVs6dGMNsEp4gXHb4fP9SUgCQfhcqxROptBHsTnVcGZuygwJ5jV
+         LYBg==
+X-Forwarded-Encrypted: i=1; AJvYcCUfs07ltg/QaLbIl6mPFAL/qfTLfFdID8KbmOZeBDU27uE/RIsLfubvJd7SIHWEae/0fHJKam9MEp/jjWoK@vger.kernel.org, AJvYcCVDYlkCCbRhZ+I2HX3GQaqNedwoRNrWmXkQ63DN3+qpKUsvzRsQ2O6t6W5pRMssCPFsySuAz56K+rM3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1CrOyo9cAiwL7WQiNNERoGBUW7r8XKowbigSo2C0xN2mNHZpz
+	EWYsTiJwrbZcLiV+evLYhIaIQwRg+LSarHC4APVvrH1Twn7i5LeM
+X-Gm-Gg: ASbGncsaZ3BjnI8xVSiyCLb04VJRXd2mvjzHMobWyf2zHlfsk6Joz4UlBTGh+/KVVl3
+	C3nV7I3gwyljNR5BhDQsYjxCMJxhz6dX9nuO+UYNlZy9rpfeXZuuAT4+nC58Tu4yTcG6o0kmJ+R
+	aq071MUUa8Re59QMYQiKtdWbwzHLZddtfQK7ouRKce8SD0tJ9Bs9cg4Oei70blQa5x0hO3i4D4O
+	bEzD41GzD0xky1pKiRyWrbJIReaL6yM7nuCpy9ZMvxZcpdDwMvDoZZt1ze63ONSNpI6
+X-Google-Smtp-Source: AGHT+IFo+nLjLF6Oglw5MtqkMHVxv611rxkq4yDYJnjnR12ZaaxKIguR/K5cKAaiXr5f8CpBkQ6ZpA==
+X-Received: by 2002:a05:6512:4013:b0:540:1e65:1d7d with SMTP id 2adb3069b0e04-54284545eadmr4888517e87.23.1736636676561;
+        Sat, 11 Jan 2025 15:04:36 -0800 (PST)
+Received: from [192.168.31.111] ([194.39.226.133])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5428bea6a7dsm920499e87.150.2025.01.11.15.04.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 11 Jan 2025 15:04:36 -0800 (PST)
+Message-ID: <8d5a2647-a130-4d99-a3e1-3abd1d336bbb@gmail.com>
+Date: Sun, 12 Jan 2025 01:04:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] iio: accel: mc3230: add mc3510c support
+To: nekodevelopper@gmail.com, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20250111-mainlining-mc3510c-v1-0-57be503addf8@gmail.com>
+ <20250111-mainlining-mc3510c-v1-3-57be503addf8@gmail.com>
+Content-Language: en-US
+From: Markuss Broks <markuss.broks@gmail.com>
+In-Reply-To: <20250111-mainlining-mc3510c-v1-3-57be503addf8@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 01/07, David Lechner wrote:
-> On 1/7/25 9:24 AM, Jonathan Santos wrote:
-> > The Wideband Low Ripple FIR filter is used for AD7768-1 Driver.
-> > Document wideband filter option into filter_type_avaialable
-> 
-> s/avaialable/available/
-> 
-> > attribute.
-> > 
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index f83bd6829285..c4c21a7bfba1 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -2291,6 +2291,8 @@ Description:
-> >  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
-> >  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
-> >  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
-> > +		* "wideband" - FIR filter with wideband low ripple passband
-> 
-> I think "fir" would be a more specific filter type name than "wideband". (i.e.
-> there are wikipedia pages for sinc and FIR filters, but not one for "wideband"
-> filters)
-> 
-
-Isn't "fir" a bit too generic for this case? Since Wideband here is a class of a FIR filter.
-Maybe something like "wideband-fir" or "fir-wideband" would work better?
-
-> > +		  and sharp transition band.
-> >  
-> >  What:		/sys/.../events/in_proximity_thresh_either_runningperiod
-> >  KernelVersion:	6.6
-> 
+On 1/11/25 10:11 PM, Vasiliy Doylov via B4 Relay wrote:
+> From: Vasiliy Doylov <nekodevelopper@gmail.com>
+>
+> This commit integrates support for the mc3510c into the mc3230 driver.
+>
+> Tested on Huawei MediaPad T3 10 (huawei-agassi)
+>
+> Signed-off-by: Vasiliy Doylov <nekodevelopper@gmail.com>
+> ---
+>   drivers/iio/accel/mc3230.c | 55 ++++++++++++++++++++++++++++++++++++----------
+>   1 file changed, 44 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/iio/accel/mc3230.c b/drivers/iio/accel/mc3230.c
+> index 3cad6f2d7a2a79df38f90e5656763f6ed019a920..ebbb96c658d87a83007c7c3c7212ce9ebf039963 100644
+> --- a/drivers/iio/accel/mc3230.c
+> +++ b/drivers/iio/accel/mc3230.c
+> @@ -22,20 +22,41 @@
+>   #define MC3230_MODE_OPCON_STANDBY	0x03
+>   
+>   #define MC3230_REG_CHIP_ID		0x18
+> -#define MC3230_CHIP_ID			0x01
+> -
+>   #define MC3230_REG_PRODUCT_CODE		0x3b
+> -#define MC3230_PRODUCT_CODE		0x19
+>   
+>   /*
+>    * The accelerometer has one measurement range:
+>    *
+>    * -1.5g - +1.5g (8-bit, signed)
+>    *
+> - * scale = (1.5 + 1.5) * 9.81 / (2^8 - 1)	= 0.115411765
+>    */
+>   
+> -static const int mc3230_nscale = 115411765;
+> +enum mc3xxx_chips {
+> +	MC3230,
+> +	MC3510C,
+> +};
+> +
+> +struct mc3xxx_chip_info {
+> +	const char *name;
+> +	const u8 chip_id;
+> +	const u8 product_code;
+> +	const int scale;
+> +};
+The struct members are usually ordered alphabetically. Also, const 
+specifiers for u8s and int are redundant, you will only want it for the 
+pointer, usually.
+> +
+> +static struct mc3xxx_chip_info mc3xxx_chip_info_tbl[] = {
+> +	[MC3230] = {
+> +		.name = "mc3230",
+> +		.chip_id = 0x01,
+> +		.product_code = 0x19,
+> +		.scale = 115411765, // (1.5 + 1.5) * 9.81 / (2^8 - 1) = 0.115411765
+/* */ style comments are preferred. Also, it should be above the .scale 
+to not make the line so long (even if the line length requirement is met).
+> +	},
+> +	[MC3510C] = {
+> +		.name = "mc3510c",
+> +		.chip_id = 0x23,
+> +		.product_code = 0x10,
+> +		.scale = 625000000, // Was obtained empirically
+Same here.
+> +	},
+> +};
+>   
+>   #define MC3230_CHANNEL(reg, axis) {	\
+>   	.type = IIO_ACCEL,	\
+> @@ -50,6 +71,7 @@ static const int mc3230_nscale = 115411765;
+>   struct mc3230_data {
+>   	struct i2c_client *client;
+>   	struct iio_mount_matrix orientation;
+> +	const struct mc3xxx_chip_info *chip_info;
+Same here, order alphabetically.
+>   };
+>   
+>   static const struct iio_mount_matrix *
+> @@ -111,7 +133,7 @@ static int mc3230_read_raw(struct iio_dev *indio_dev,
+>   		return IIO_VAL_INT;
+>   	case IIO_CHAN_INFO_SCALE:
+>   		*val = 0;
+> -		*val2 = mc3230_nscale;
+> +		*val2 = data->chip_info->scale;
+>   		return IIO_VAL_INT_PLUS_NANO;
+>   	default:
+>   		return -EINVAL;
+> @@ -127,15 +149,23 @@ static int mc3230_probe(struct i2c_client *client)
+>   	int ret;
+>   	struct iio_dev *indio_dev;
+>   	struct mc3230_data *data;
+> +	const struct mc3xxx_chip_info *chip_info;
+>   
+> +	chip_info = i2c_get_match_data(client);
+>   	/* First check chip-id and product-id */
+>   	ret = i2c_smbus_read_byte_data(client, MC3230_REG_CHIP_ID);
+> -	if (ret != MC3230_CHIP_ID)
+> +	if (ret != chip_info->chip_id) {
+> +		dev_err(&client->dev,
+> +		"chip id check fail: 0x%x != 0x%x !\n", ret, chip_info->chip_id);
+>   		return (ret < 0) ? ret : -ENODEV;
+> +	}
+>   
+>   	ret = i2c_smbus_read_byte_data(client, MC3230_REG_PRODUCT_CODE);
+> -	if (ret != MC3230_PRODUCT_CODE)
+> +	if (ret != chip_info->product_code) {
+> +		dev_err(&client->dev,
+> +		"product code check fail: 0x%x != 0x%x !\n", ret, chip_info->product_code);
+>   		return (ret < 0) ? ret : -ENODEV;
+> +	}
+>   
+>   	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*data));
+>   	if (!indio_dev) {
+> @@ -145,10 +175,11 @@ static int mc3230_probe(struct i2c_client *client)
+>   
+>   	data = iio_priv(indio_dev);
+>   	data->client = client;
+> +	data->chip_info = chip_info;
+>   	i2c_set_clientdata(client, indio_dev);
+>   
+>   	indio_dev->info = &mc3230_info;
+> -	indio_dev->name = "mc3230";
+> +	indio_dev->name = chip_info->name;
+>   	indio_dev->modes = INDIO_DIRECT_MODE;
+>   	indio_dev->channels = mc3230_channels;
+>   	indio_dev->num_channels = ARRAY_SIZE(mc3230_channels);
+> @@ -200,13 +231,15 @@ static int mc3230_resume(struct device *dev)
+>   static DEFINE_SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
+>   
+>   static const struct i2c_device_id mc3230_i2c_id[] = {
+> -	{ "mc3230" },
+> +	{ "mc3230", (kernel_ulong_t)&mc3xxx_chip_info_tbl[MC3230] },
+> +	{ "mc3510c", (kernel_ulong_t)&mc3xxx_chip_info_tbl[MC3510C] },
+>   	{}
+>   };
+>   MODULE_DEVICE_TABLE(i2c, mc3230_i2c_id);
+>   
+>   static const struct of_device_id mc3230_of_match[] = {
+> -	{ .compatible = "mcube,mc3230" },
+> +	{ .compatible = "mcube,mc3230", &mc3xxx_chip_info_tbl[MC3230] },
+> +	{ .compatible = "mcube,mc3510c", &mc3xxx_chip_info_tbl[MC3510C] },
+>   	{ },
+>   };
+>   MODULE_DEVICE_TABLE(of, mc3230_of_match);
 

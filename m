@@ -1,237 +1,198 @@
-Return-Path: <linux-iio+bounces-14142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14143-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A582CA0A63C
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:28:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CA3A0A63F
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:34:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A913A93AB
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812EB1687B9
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 22:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AED11BBBCC;
-	Sat, 11 Jan 2025 22:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA2D1B9831;
+	Sat, 11 Jan 2025 22:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YAcCxDPu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JUMyk82W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E02512E7E
-	for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 22:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A18415383C;
+	Sat, 11 Jan 2025 22:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736634490; cv=none; b=eLRkl813k3DzwrSi4YKsR72i63u+aEnLf2Fr3qhI+IyOMkc2AcHvXEebEUW8Y3fSQJab1UhHUy0gZrayp7fSDUKLtndAoCnbDcEqnIsAQfupbKTh23Bxh0aepyONU3IWk4yhdDZhdpy5PO+Wd+w3Woth9jbSlbZzssjsimAcn5E=
+	t=1736634862; cv=none; b=Cm3d75JYWZtOkHY+TKUHwkF2MgxalOUF7eMRudxQw4iyjkBWoClVaUQY718wq0cX8h/tIycSHD6YkVImjoLpq2efgI5vFqhjlN8LZyyPbBMLDprujPduG1GPwd3YuDdc7y9V/U1V3zENEGa+PUiIvcu97IPI4OiteJfA1sqdIzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736634490; c=relaxed/simple;
-	bh=HNu77MdGd6FTFDlvzW1AN/cc3gs1jPiWGNYkp+AtsS4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ugy+dEPh5kT0kVoR2OE/BMrIbbVSkP7ZoWHF9dLE82Oy5MbbcLQRu++962MBJMGBWQGa23qqc9MeymH6eZ7iu397SiXbU4cgcCixN6pEaL+Jb57Sq8529SeCXkarCQo/5f/+9Oe6scPZ1er2gMYEhYKLUT4vxHScZfLQX7QHOLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YAcCxDPu; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-71e157a79c8so853151a34.2
-        for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 14:28:05 -0800 (PST)
+	s=arc-20240116; t=1736634862; c=relaxed/simple;
+	bh=uKFRvKB3Z6IX4NPkJr6trhGulT6JeHkAM8Dz562NcjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LqYQSwQt8EUVDxODUT8MeJ9mm5hPhJZpFhdFkFyR5pDmoON0dWzRy7JLChDNldzLnyoJPVZJ6NAtNcp54MyOtfTSWmc1jLAd4Hv9zmsGymc3aZlGeWsQ9ybhwG+ZOTPbkKW9kVhGChowfonQaasYEqlBfopf4vch6T5ZJ6mU4B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JUMyk82W; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-71e327ffbafso396008a34.2;
+        Sat, 11 Jan 2025 14:34:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736634485; x=1737239285; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=43KntmIcqaFM3AqBzwzGM1E4RNbEmGc/LuGqR73pHdI=;
-        b=YAcCxDPu8T5Db3ezIoNUqtj4tVuaGfY6him+2zUF38JanHxm/Yc5F8wHMzSmdBCuP+
-         iLCoIjLqpSEX5gp43kzRaaw5OEXrGFqkU/g6sE2xZdlylJ/kk3Olh+yOBdqar8Ndx9ct
-         WmZc7NiCVS9zuFEi6U2ff0nJg31RI3kuiLio36YPDeW2VVCYuOYiCfqR0TP5oNUx4gMw
-         5hKgyZoHz23AnEefAcnq4csCK6zrGaUu5g9F3n7SQR33pz5syys++5bt1dIXbvvUxaH6
-         UEBeE9yi9I0i9FvU0LvueLkWH7sHgmRWC/RpNH1lqH+e8ikx8Q8q8SrCOvJVL3oNNwP5
-         DxJw==
+        d=gmail.com; s=20230601; t=1736634859; x=1737239659; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KO5Nh/wm6Ek4qtIcencBavl3r9HWIoiPqvgOtXk6wLY=;
+        b=JUMyk82WQAWRhIEJ/618tYDnDKso3Vird3jlSrZYS5zwwzuV0+8fLnyORSK8TSUGLh
+         yOJKk+3mJ/Q/RXngeDozsWj2FTJvWhTPxhgVJNfw0OCswIuQz8QDgWD90kKZMRgdgiWT
+         VZ4esSClPtE3PGUxLRNtM+gjvJMcUHlhZkqvD71jD9pFuGwjNnWQW4Hm8onU3JDW3iDB
+         2DSiAtt0tacPm5ZbtcBEFJpq8riON08+OMBg292f3vTM8YM8KarrFtRSwwecGUh2qi8l
+         7FnQAY8p6UlaaaJG3RV9whYQ32HKdD2haawg9lRuucyWHR1ozye7Nsu9UjW1AARCyS28
+         jA5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736634485; x=1737239285;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=43KntmIcqaFM3AqBzwzGM1E4RNbEmGc/LuGqR73pHdI=;
-        b=QqcKtZjdit+zJ3B5b/gDWDhZBpjjg3g10eLVaS2xtMIUtxS9ELxDyPf25bj/12CcOZ
-         WFxj/I70/2yjCTA8SxnY1MiSDkexOLf+faThQs2DseqjlfG4OmFifA/zBHvUC1StzWvY
-         D2BAGBDilI4n3WMyl9wERrBnLMCj4fSk21LYuj0l71vNSNYx+6mmwyiJlXCETX39N0Y8
-         pxRmx1ZtaEIKvpu5uRNZ3SPFCWsLXGJetSfxE+xiNCzZjEOjgBmyhSusphDqdjqGgjRL
-         3D0gaJ4wK3dfnlBJH+mHgJ0iurF3gRmU0huEk29Qbh59BjZgox4QGCRXb9OiKNctq4Fq
-         MrOg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyY62KBBv2RTlpnOCWCo3PaiZI98r30SjnItdYVPEOw/Jpzab1iQ3gmvsvEDhUkO3oWJi2eYh24HI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwL1DeiFd+LTWSVI7lzo857wOREcaojbai33+Byy57tTbPUTQ/A
-	F2jRhhK4tRKtoAkTQZ1FnZlMmAJKtJO//fJvr+4TtJCrf44/yANt+XQ8cGv9/No=
-X-Gm-Gg: ASbGncvnt5hc/c11gSFOeGbdDCteNET69cOxTlSYdoX9zChQHoHxl/4ps/JZtOQfYOe
-	6t8H9xAq2pO7gNy0eWWrQ0Rx4Hso5X70qkWZk1J9Fu1ez4esqz/7+aBeDQ+OsSTlfOPV75kDUHH
-	u1fiGu1E4KxPar3MneMuvfEUkHJoPJiZOZaJggLLeH/jgA0Th8lQKsUAjlvK7/KeQ33uErXGis5
-	Y0/Y9LJSLbZG557JGVGoNOl3nmD4pPKxY0DInpxXHOiM1uiAgULXUbheru3pKU4AaCU80x8tm57
-	t9BabNbmRSeoydeCNA==
-X-Google-Smtp-Source: AGHT+IFL6RbErtzygKKUoW2sxp+4MBv8n4eDcNm3EaAkeuTYvCKu/GIcwg9JovroyHCpFBj0VZMJOw==
-X-Received: by 2002:a05:6830:6312:b0:71e:f1:3e1 with SMTP id 46e09a7af769-721e2dff8eamr11053345a34.3.1736634484797;
-        Sat, 11 Jan 2025 14:28:04 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231853827esm2071966a34.4.2025.01.11.14.28.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 11 Jan 2025 14:28:04 -0800 (PST)
-Message-ID: <61785c12-1a5e-4465-92e9-83d81c02dd59@baylibre.com>
-Date: Sat, 11 Jan 2025 16:28:02 -0600
+        d=1e100.net; s=20230601; t=1736634859; x=1737239659;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KO5Nh/wm6Ek4qtIcencBavl3r9HWIoiPqvgOtXk6wLY=;
+        b=mWMsEfe/z8INilJ/yLzOPFrWecsw8xOxhgZst9Da57TGEqxE9XaxV+QZWZfZ475qy5
+         pWAGohTe1IWCr+n+XZrYySR5AVlHtr33ZBzbLGxUZaV4BTLfP4EXhNOOckovIIPGI7/R
+         PnZccWkmJlMMGok5BqhY7hkM1Shx8nVEPck165XuDvWIhvLYH9gWcRN2fL8qXbxarUG2
+         q8c7hC90XNSCl3Ai1p6cTGY+bovja7YOUO/8q9dzat8Ef53CNfqNqa+WsAUbtUUBEY48
+         u2U0QTW4LQRsbUYs3XEo64AeUpIRiICAE+1CwysfMZCkVC+p3iwqDC/J5hlDAHoEokR3
+         rV2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUFifLog0Ues9gAZTaFaX9u5ZvUklGYYEj1qY9BSOIEdY3fodc/mMRYEmtStCjrhoM17L1ZP48UkPL3@vger.kernel.org, AJvYcCWnEVy7on14RclQvhh7YgGhsYvCbwGL7ITWivqqfaYiYTinu3bRsAjx1ISZKfiDt3LsfsCgQSZR8+vk@vger.kernel.org, AJvYcCXEIZ3N3kmhoyws2McKlvOTkF3ubBGf3umgnv0N5FgFRWnfjJ8ZZ+DORxymUl9FCFIqweyZxscT1yNxaYIB@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpPU2Qo5U18ybg55qDhrr+uxk4nXu37nF/nHJxvsGPhUGRPEOH
+	TIiie+PuJlFBORqCy88yYaARDIPrPMxtLz52A243T1+AlXu2vmFC
+X-Gm-Gg: ASbGnctwbNYR4dZZdHINfqXd8uOh7LligcImdvB1PZGoG6L3A31UPmQKvRLo3FyKH8J
+	meZXyz/0L0P2i19FA839UO5mv2Qc+vYgycpKq7LFVMeMvQFAfS+k4Hui2fpCYSgN2s9xJmju7Q9
+	JfOFahYF3PivLNbs87JpxytT+Iot5wx5g7Long8RV5MgbYZsZeJ8LYAEKId8H2K89ehcgoBq3h0
+	H9BT2fgLwJf1GOq+8AvPYjjh+NtuJLFIM15/l7dv7/58knpK50nTcdAPf98Rzsqwkrtmyc5HGNY
+	gQ==
+X-Google-Smtp-Source: AGHT+IEUpPVdVZXBXMBEhfzBxlqZ+DN5TmixP2mTWjoecPSJshPgfQGFdMg4wAuFO7wqJLEKLCcOBw==
+X-Received: by 2002:a05:6830:6206:b0:71f:c1df:7b5 with SMTP id 46e09a7af769-721e2f2cbbbmr3987101a34.7.1736634859033;
+        Sat, 11 Jan 2025 14:34:19 -0800 (PST)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-723185484d5sm2054456a34.26.2025.01.11.14.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jan 2025 14:34:18 -0800 (PST)
+Date: Sat, 11 Jan 2025 19:34:14 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
+ synchronization over SPI property
+Message-ID: <Z4Lx5myE2OPDie6n@JSANTO12-L01.ad.analog.com>
+Reply-To: dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+ <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+ <dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/27] iio: core: Rework claim and release of direct
- mode to work with sparse.
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, =?UTF-8?B?4oCcTHVjIFZhbiBPb3N0ZW5yeWNr4oCd?=
- <luc.vanoostenryck@gmail.com>
-References: <20250105172613.1204781-1-jic23@kernel.org>
- <20250105172613.1204781-2-jic23@kernel.org>
- <88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
- <20250107142451.000021db@huawei.com>
- <c298f1bb-d0a1-42af-b237-9aa8e422ec1b@baylibre.com>
- <20250111133552.2a44c74e@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250111133552.2a44c74e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
 
-On 1/11/25 7:35 AM, Jonathan Cameron wrote:
-> On Tue, 7 Jan 2025 10:09:15 -0600
-> David Lechner <dlechner@baylibre.com> wrote:
+On 01/07, David Lechner wrote:
+> On 1/7/25 9:24 AM, Jonathan Santos wrote:
+> > Add adi,sync-in-spi property to enable synchronization over SPI.
+> > This should be used in the case when the GPIO cannot provide a
+> > pulse synchronous with the base MCLK signal.
+> > 
+> > User can choose between SPI, GPIO synchronization or neither of them,
+> > but only if a external pulse can be provided, for example, by another
+> > device in a multidevice setup.
+> > 
 > 
->> On 1/7/25 8:24 AM, Jonathan Cameron wrote:
->>> On Mon, 6 Jan 2025 17:14:12 -0600
->>> David Lechner <dlechner@baylibre.com> wrote:
->>>   
->>>> On 1/5/25 11:25 AM, Jonathan Cameron wrote:  
->>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>>
->>>>> Initial thought was to do something similar to __cond_lock()
->>>>>
->>>>> 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
->>>>> + Appropriate static inline iio_device_release_direct_mode()
->>>>>
->>>>> However with that, sparse generates false positives. E.g.
->>>>>
->>>>> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock    
->>>>
->>>> Even if false positives aren't technically wrong, if sparse is having a hard
->>>> time reasoning about the code, then it is probably harder for humans to reason
->>>> about the code as well. So rewriting these false positives anyway could be
->>>> justified beyond just making the static analyzer happy.
->>>>  
->>>>>
->>>>> So instead, this patch rethinks the return type and makes it more
->>>>> 'conditional lock like' (which is part of what is going on under the hood
->>>>> anyway) and return a boolean - true for successfully acquired, false for
->>>>> did not acquire.    
->>>>
->>>> I think changing this function to return bool instead of int is nice change
->>>> anyway since it makes writing the code less prone authors to trying to do
->>>> something "clever" with the ret variable. And it also saves one one line of
->>>> code.
->>>>  
->>>>>
->>>>> To allow a migration path given the rework is now no trivial, take a leaf
->>>>> out of the naming of the conditional guard we currently have for IIO
->>>>> device direct mode and drop the _mode postfix from the new functions giving
->>>>> iio_device_claim_direct() and iio_device_release_direct()
->>>>>
->>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>>> ---
->>>>>  include/linux/iio/iio.h | 22 ++++++++++++++++++++++
->>>>>  1 file changed, 22 insertions(+)
->>>>>
->>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
->>>>> index 56161e02f002..4ef2f9893421 100644
->>>>> --- a/include/linux/iio/iio.h
->>>>> +++ b/include/linux/iio/iio.h
->>>>> @@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
->>>>>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
->>>>>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
->>>>>  
->>>>> +/*
->>>>> + * Helper functions that allow claim and release of direct mode
->>>>> + * in a fashion that doesn't generate false positives from sparse.
->>>>> + */
->>>>> +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)    
->>>>
->>>> Doesn't __cond_acquires depend on this patch [1] that doesn't look like it was
->>>> ever picked up in sparse?
->>>>
->>>> [1]: https://lore.kernel.org/all/CAHk-=wjZfO9hGqJ2_hGQG3U_XzSh9_XaXze=HgPdvJbgrvASfA@mail.gmail.com/  
->>>
->>> I wondered about that. It 'seems' to do the job anyway. I didn't fully
->>> understand that thread so I just blindly tried it instead :)
->>>
->>> This case is simpler that that thread, so maybe those acrobatics aren't
->>> needed?  
->>
->> I was not able to get a sparse warning without applying that patch to sparse
->> first. My test method was to apply this series to my Linux tree and then
->> comment out a iio_device_release_direct() line in a random driver.
->>
->> And looking at the way the check works, this is exactly what I would expect.
->> The negative output argument in __attribute__((context,x,0,-1)) means something
->> different (check = 0) without the spare patch applied.
->>
-> Curious. I wasn't being remotely careful with what sparse version
-> i was running so just went with what Arch is carrying which turns out to be
-> a bit old.
+> While we are fixing up these bindings, we could add some more trivial things,
+> like power supplies.
 > 
-> Same test as you describe gives me:
->   CHECK   drivers/iio/adc/ad4000.c
-> drivers/iio/adc/ad4000.c:533:12: warning: context imbalance in 'ad4000_read_raw' - different lock contexts for basic block
-> 
-> So I tried that with latest sparse from kernel.org and I still get that warning
-> which is what I'd expect to see.
-> 
-> Simple make C=1 W=1 build
-> 
-> I wonder what we have different?  Maybe it is missing some cases?
-> 
-> diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-> index ef0acaafbcdb..6785d55ff53a 100644
-> --- a/drivers/iio/adc/ad4000.c
-> +++ b/drivers/iio/adc/ad4000.c
-> @@ -543,7 +543,7 @@ static int ad4000_read_raw(struct iio_dev *indio_dev,
->                         return -EBUSY;
->  
->                 ret = ad4000_single_conversion(indio_dev, chan, val);
-> -               iio_device_release_direct(indio_dev);
-> +//             iio_device_release_direct(indio_dev);
->                 return ret;
->         case IIO_CHAN_INFO_SCALE:
->                 *val = st->scale_tbl[st->span_comp][0];
-> 
-> Was the test I ran today.
-> 
-> Jonathan
+> Also, the interrupt property could use a description since the chip has multiple
+> output pins. I assume it means the /DRDY pin?
 > 
 
-Hmmm... I think maybe I had some other local modifications when I was testing
-previously. But I understand better what is going on now. Your implementation
-is only working because it is static inline. The __cond_acquires() and
-__releases() attributes have no effect and the "different lock contexts for
-basic block" warning is coming from the __acquire() and __release() attributes.
-So it is working correctly, but perhaps not for the reason you thought.
+Right! Yes, the interrupt pin refers to the /DRDY.
 
-I think what I had done locally is make iio_device_claim_direct() and
-iio_device_release_direct() regular functions instead of static inline so that
-it had to actually make use of __cond_acquires(). In that case, with an
-unpatched sparse, we get "unexpected unlock" warnings for all calls to
-iio_device_release_direct(). With patched sparse, this warning goes away.
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
+> >  1 file changed, 23 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > index 3ce59d4d065f..55cec27bfe60 100644
+> > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > @@ -47,6 +47,15 @@ properties:
+> >        in any way, for example if the filter decimation rate changes.
+> >        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+> >  
+> > +  adi,sync-in-spi:
+> 
+> If this is saying that SYNC_OUT is connected to SYNC_IN, then I think the name
+> should be something like adi,sync-in-sync-out. SPI seems irrelevant here since
+> we should just be describing how things are wired up, not how it is being used.
+> 
+> But if we also need to consider the case where SYNC_OUT of one chip is connected
+> to SYNC_IN of another chip, we might want to consider using trigger-source
+> bindings instead (recently standardized in dtschema).
+> 
 
-So for now, we could take your patch with the __cond_acquires() and
-__releases() attribute removed (since they don't do anything) and leave
-ourselves a note in a comment that sparse needs to be fixed so that we can use
-the __cond_acquires() attribute if/when we get rid of
-iio_device_release_direct_mode() completely and want to make
-iio_device_release_direct() a regular function.
+Do you mean the trigger-sources used for LEDs? I can try to see if it works, but would it
+handle the non-GPIO case? While testing a multidevice setup, I found it simpler to 
+have a single device to manage everything. It lets us toggle the GPIO or /SYNC_OUT
+without referencing another device and makes simultaneous buffered reads easier.
 
+Maybe we could stick to synchronization within the chip for now.
 
+> > +    description:
+> > +      Enables synchronization of multiple devices over SPI. This property is
+> > +      used when a signal synchronous to the base MCLK signal cannot be provided
+> > +      via GPIO. It requires the SYNC_OUT pin to be connected to the SYNC_IN pin
+> > +      on the ADC. In the case of multiple devices, the SYNC_OUT pin of one device
+> > +      should be routed to the SYNC_IN pins of the other devices.
+> > +    type: boolean
+> > +
+> >    reset-gpios:
+> >      maxItems: 1
+> >  
+> > @@ -65,7 +74,6 @@ required:
+> >    - vref-supply
+> >    - spi-cpol
+> >    - spi-cpha
+> > -  - adi,sync-in-gpios
+> >  
+> >  patternProperties:
+> >    "^channel@([0-9]|1[0-5])$":
+> > @@ -89,6 +97,20 @@ patternProperties:
+> >  allOf:
+> >    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> >  
+> > +  # adi,sync-in-gpios and adi,sync-in-spi are mutually exclusive (neither is also valid)
+> > +  - if:
+> > +      required:
+> > +        - adi,sync-in-gpios
+> > +    then:
+> > +      properties:
+> > +        adi,sync-in-spi: false
+> > +  - if:
+> > +      required:
+> > +        - adi,sync-in-spi
+> > +    then:
+> > +      properties:
+> > +        adi,sync-in-gpios: false
+> 
+> I think this can be simplified to using oneOf: to provide XOR validation
+> 
+
+Right!
+
+> > +
+> >  unevaluatedProperties: false
+> >  
+> >  examples:
+> 
 

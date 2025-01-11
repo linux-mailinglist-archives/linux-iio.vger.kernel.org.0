@@ -1,159 +1,128 @@
-Return-Path: <linux-iio+bounces-14117-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14118-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FE1A09E62
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 23:51:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97784A09F40
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 01:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3D4D3A2265
-	for <lists+linux-iio@lfdr.de>; Fri, 10 Jan 2025 22:51:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3BEA7A364C
+	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 00:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF635218599;
-	Fri, 10 Jan 2025 22:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E977483;
+	Sat, 11 Jan 2025 00:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L998vUzP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GqZpUvX8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A015E2080F6;
-	Fri, 10 Jan 2025 22:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106131B815
+	for <linux-iio@vger.kernel.org>; Sat, 11 Jan 2025 00:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736549508; cv=none; b=k7zmzUrFPwC5w/n3VuvRH/uBZyKkHBeWvxvX/ETuvw42lYDVGJBSpZoy7TjBiTF7j29d0jn+/2yTIhWghDW3QbRLGW9csWBcpEWnnUj0qkwLAfONX38lnlJ+Ol6MVr4Gn3rnbPIQQsOFpFPLM5BnzlBLNnJXTw8iBhwr1mgp8XU=
+	t=1736554949; cv=none; b=mPcVRxcIlSPr8sxtQT1OgjbHAhlGsfbqzzAr14xpPqtrfJ/gFz+oHGPMzO0aJiPPZgDd90dpF6dvVyvdRw0TN2Ap5xczR5236kqRQ299tOqrvgQwRET+ZopGU3NmQlguzFLkb11DQzZOOIQPtjYxoy+A2vGJEVLZLeWRdwbAHKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736549508; c=relaxed/simple;
-	bh=HIlURnE0nRCK3UATcsv+lxBjbZaQ9GHcOJpoRbi91lk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rEkGCX91yC1TNVeCgWsR3zAE5jcW6t93cv/hXDSS/S4P9rt5g0TP1mEAjmBpi/3fv5O3IYIzAPGtU1z4epGsTbLxRHMveTYjlVc2VQPOTHfAeZkkXypdlSn9792wVsN3qo5iR7cPrKQlU2WbyH/GA7Q1zH2kj9rFqTewqX3Tp9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L998vUzP; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736549507; x=1768085507;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HIlURnE0nRCK3UATcsv+lxBjbZaQ9GHcOJpoRbi91lk=;
-  b=L998vUzPrKReaGqDxmplllbashtsRzV7WhYHMku2xFYPCWEqlJ/u+YfI
-   7ltm89vBiivp7vUzp9Mzf1dVxVZoVbVTrjYBngKlMpbsGTjPe9x1kGHjl
-   VQi044r85XIwcAxfZMribXIemWpc0Ua/FvKrybAQbJbsfOTZ89tkRSdVF
-   0PqWbByocdAYxiUUiqlJjQhVwEbk8yFHeabp5PAPlUD9oNA5EWqbbIbrq
-   eIxT2ff8ZRWFh+autUh42SXCoyBMAeUBEUyQmotT1vPSpYtVfoi9jWQlb
-   +bvqolRMJEd+VoO15E/lQ8TsLg9IS9peJW6S2bsl8lfWN/5w8DlBxvIm4
-   g==;
-X-CSE-ConnectionGUID: oZ9mY4U5R9GK4ac70MhUJg==
-X-CSE-MsgGUID: Q1muRywyQiaS6ql3hLFc8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="62228171"
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; 
-   d="scan'208";a="62228171"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 14:51:46 -0800
-X-CSE-ConnectionGUID: wtq/LuD/SseJPQf4BgTzaQ==
-X-CSE-MsgGUID: 5MIOti9ISqSoK7iJ+S3q3A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,305,1728975600"; 
-   d="scan'208";a="108870400"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 10 Jan 2025 14:51:42 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWNqt-000Jr5-1m;
-	Fri, 10 Jan 2025 22:51:39 +0000
-Date: Sat, 11 Jan 2025 06:51:12 +0800
-From: kernel test robot <lkp@intel.com>
-To: Antoni Pokusinski <apokusinski01@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andrej.skvortzov@gmail.com,
-	neil.armstrong@linaro.org, icenowy@aosc.io, megi@xff.cz,
-	danila@jiaxyga.com, javier.carrasco.cruz@gmail.com, and@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, apokusinski01@gmail.com,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <202501110655.qR09D59T-lkp@intel.com>
-References: <20250108234411.882768-3-apokusinski01@gmail.com>
+	s=arc-20240116; t=1736554949; c=relaxed/simple;
+	bh=5hjs71Q2Qvi/4/+FzHizTz3U4RvPYkjjzUIkHxwgZOU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pM+XGrs8O9s+JBzUZLDLe4//7XPqPlpK9MeIL+nUFvcHjWMkJxWbJraH8B64fFuHDoV03woX624YtXIKeq6r7BTEhZGDZatDA+b1Z33MYwCq6sFAj4BUyJEa/MaaIt/oC7G4AVsgK+z5c8lcPLnbyj/El9tuXkNih99Z2eBgnH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GqZpUvX8; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-71e3284f963so1278694a34.1
+        for <linux-iio@vger.kernel.org>; Fri, 10 Jan 2025 16:22:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736554944; x=1737159744; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KJx2V9P1rSJ9fo0hY6rmZSfYcr2sE1x8/CnNE275bJU=;
+        b=GqZpUvX8H5pfNo7H7B6nIbqVY3kHCalQ0V4BBqse85ipcQ/mooYPWvYR4Yq7XYre2c
+         6IFWhOYlpSSdjjv9QrcRJoNC13lUsAGcVdxWMr7ixWEmGEPQ25fWiTS+JGdVqMH7vGdB
+         ue1GTxFF7e3sLrF7MwCXEL4jm1L8IvSO/ZT26oVaJqD6TS8rFiLSILvVH6jjnmZ1/lru
+         46PSj0M6l0UYQ8LDjxJ4DgIEk40ulVxlalos6ZRLn1ARkUlvUUc/PsPRtAXXvt0pSzWh
+         tgkkdCVhhzOAOU3rP/F3EsJR4WhgNtknGjepbZUAbVi9Wa5S1bxfKaJt04z1YFZ0doOm
+         3f2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736554944; x=1737159744;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KJx2V9P1rSJ9fo0hY6rmZSfYcr2sE1x8/CnNE275bJU=;
+        b=qntmku99RTfJQxTRDDiRIpB16Jvm18NV6m+eRwQpysCPcs0bq8prjvj50SPzSEFxCx
+         gOGn7VVjY11LG8PE/NN4xV4ShHSCCA83IVtvBX/AJr6kQebkhdjZ5VHAGL9Z5G9lFh0f
+         2lztJH+V+eV2Qk0kvBMraxSplT2UTZe865ArwW1qjZNKbpGtaVXlyYQUh2jAbMwllYUp
+         G8YEI7QriV8nbrvgeN6o9T8v1q+WEDpYDPpzbTzR4hu72SggVccvPJICyJ2eYEFO+eV5
+         r+EFwwCA0+cYykI5NXi9c694ScUgUxjtLSQvU5iA5a0ghepj36T/eQOiC4Ag2W1jkYSz
+         c94A==
+X-Forwarded-Encrypted: i=1; AJvYcCW8eMSkNE8TsGkPybnjS2PUu+lqIeem6ye3aGOu4jzFzVL5Rbwmd5ok6YtxfjobzQeJBMzR4yZMsQs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTLokIdUtWcLNRUIfhPPdRNDPq0kvPDepyNx4Zj0vf0HbrGE1V
+	oG2MVGMCTlj5Oj5vxj9Ddvw2ZGzQi0L4DJOtLbojZmd575zPTpSC+BJUuISNtwtVlVU3bKfUKP7
+	7
+X-Gm-Gg: ASbGncu/Hg254F4y5FtHfy0En4uJ82RWbu5lr4o+gg2E5ajwnyYb8yB2sowk9ZZ4JXS
+	++sbv1gPg4Gb7NO/zWg4ltRmlVBJMa1zoyDFU6oV3zQqcoqkPeztKuhMHq71MzE+wVegWkY/OLU
+	pQvxS1U8fXY8FNyhzKLMrRkfwvi5FmSfrwbtJ6rfrKHmW1U9pgG6xfePvxqlI9Dw27TWltljDof
+	AtY8pPtoYRlEoqhObFr0Uy7MNvERUhpcluN7g8QJHEwUErxjh/o3ReVPhQdRsOzpLsamNgPaUwH
+	0/wVxJ4vPROp
+X-Google-Smtp-Source: AGHT+IGW82wCgs57JFGMPAuRYlz2DyZ2BmYiMI3L7K0Y9CjRJ1hAPxPTlbs7j+rn5hQ7yZhO5fWLig==
+X-Received: by 2002:a05:6830:25c2:b0:713:ce15:d4d1 with SMTP id 46e09a7af769-721e2ecc96fmr6609727a34.26.1736554944100;
+        Fri, 10 Jan 2025 16:22:24 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-723186280easm1228941a34.59.2025.01.10.16.22.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 16:22:22 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v2 0/4] counter: ti-eqep: add direction support
+Date: Fri, 10 Jan 2025 18:22:03 -0600
+Message-Id: <20250110-counter-ti-eqep-add-direction-support-v2-0-c6b6f96d2db9@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108234411.882768-3-apokusinski01@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKu5gWcC/x2NwQrCMBAFf6Xs2YUkklL8FfFQs0/dSxI3qQil/
+ 27wOIeZ2anBFI0u006GjzYteUA4TZRea36CVQZTcCE67x2nsuUO466MNyqvIixqSH2Y3LZai3W
+ Gj/Esi7vPy0yjVQ0P/f4/19tx/ADFpAOIdwAAAA==
+X-Change-ID: 20250110-counter-ti-eqep-add-direction-support-e1553d80b686
+To: William Breathitt Gray <wbg@kernel.org>, 
+ Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: Judith Mendez <jm@ti.com>, linux-iio@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
 
-Hi Antoni,
+This is dusting off an old patch [1] that adds direction support to the
+TI eQEP driver, so calling this a v2, even though it has been several
+years. :-)
 
-kernel test robot noticed the following build warnings:
+v2 changes:
+* Split out core change into separate patch.
+* Removed extra blank line.
+* Rebased on current iio/testing branch.
+* Add patch adding the event to the counter_event_watch tool.
+* Bonus patch to fix a missing gitignore entry.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.13-rc6 next-20250110]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+David Lechner (4):
+      tools/counter: gitignore counter_watch_events
+      counter: add direction change event
+      tools/counter: add direction change event to watcher
+      counter: ti-eqep: add direction support
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Antoni-Pokusinski/dt-bindings-iio-magnetometer-add-binding-for-Si7210/20250109-074641
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250108234411.882768-3-apokusinski01%40gmail.com
-patch subject: [PATCH v2 2/2] iio: magnetometer: si7210: add driver for Si7210
-config: arc-randconfig-r111-20250111 (https://download.01.org/0day-ci/archive/20250111/202501110655.qR09D59T-lkp@intel.com/config)
-compiler: arc-elf-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20250111/202501110655.qR09D59T-lkp@intel.com/reproduce)
+ drivers/counter/ti-eqep.c            | 32 ++++++++++++++++++++++++++++++++
+ include/uapi/linux/counter.h         |  2 ++
+ tools/counter/.gitignore             |  1 +
+ tools/counter/counter_watch_events.c |  5 +++++
+ 4 files changed, 40 insertions(+)
+---
+base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
+change-id: 20250110-counter-ti-eqep-add-direction-support-e1553d80b686
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501110655.qR09D59T-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: incorrect type in argument 1 (different base types) @@     expected unsigned short [usertype] val @@     got restricted __be16 [usertype] @@
-   drivers/iio/magnetometer/si7210.c:169:16: sparse:     expected unsigned short [usertype] val
-   drivers/iio/magnetometer/si7210.c:169:16: sparse:     got restricted __be16 [usertype]
-   drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: cast from restricted __be16
-   drivers/iio/magnetometer/si7210.c:169:16: sparse: sparse: cast from restricted __be16
-   drivers/iio/magnetometer/si7210.c:189:24: sparse: sparse: restricted __be16 degrades to integer
-   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: cast to restricted __be16
-   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: restricted __be16 degrades to integer
-   drivers/iio/magnetometer/si7210.c:206:23: sparse: sparse: restricted __be16 degrades to integer
-
-vim +169 drivers/iio/magnetometer/si7210.c
-
-   143	
-   144	static int si7210_fetch_measurement(struct si7210_data *data,
-   145					    struct iio_chan_spec const *chan,
-   146					    __be16 *buf)
-   147	{
-   148		u8 dspsigsel = chan->type == IIO_MAGN ? 0 : 1;
-   149		int ret;
-   150	
-   151		guard(mutex)(&data->fetch_lock);
-   152	
-   153		ret = regmap_update_bits(data->regmap, SI7210_REG_DSPSIGSEL,
-   154					 SI7210_MASK_DSPSIGSEL, dspsigsel);
-   155		if (ret < 0)
-   156			return ret;
-   157	
-   158		ret = regmap_update_bits(data->regmap, SI7210_REG_POWER_CTRL,
-   159					 SI7210_MASK_ONEBURST | SI7210_MASK_STOP,
-   160					 SI7210_MASK_ONEBURST & ~SI7210_MASK_STOP);
-   161		if (ret < 0)
-   162			return ret;
-   163	
-   164		/* Read the contents of the registers containing the result: DSPSIGM, DSPSIGL */
-   165		ret = regmap_bulk_read(data->regmap, SI7210_REG_DSPSIGM, buf, 2);
-   166		if (ret < 0)
-   167			return ret;
-   168	
- > 169		*buf = cpu_to_be16(*buf);
-   170	
-   171		return 0;
-   172	}
-   173	
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+David Lechner <dlechner@baylibre.com>
+
 

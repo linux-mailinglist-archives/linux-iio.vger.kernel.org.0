@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-14166-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14167-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6732CA0A87A
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:11:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2213A0A883
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52F02166590
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 11:11:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30E93A75F7
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 11:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595561AA1C4;
-	Sun, 12 Jan 2025 11:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6210C1AA791;
+	Sun, 12 Jan 2025 11:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UtIbQgTl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcaLY0Wk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BE3187553;
-	Sun, 12 Jan 2025 11:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE4D12C499;
+	Sun, 12 Jan 2025 11:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736680271; cv=none; b=bqvFpkNn2uRphLURX/dHc8UU09c9B5y11ehyZjqoqeOP5m3+AMyLBI0XaH/jZudMlHZk6z9y4pFZqqjFwlRZz2g4N9ZUZ8L72q9oPZ+Tq6rUduDa4Sx4KGTY7+XfcdKv0WNLe0UacPflr51swsxd/Iw5BTF2F+pXP8ZYkVJFvOw=
+	t=1736681321; cv=none; b=qq84g4/iocOKPHTZiYo6T9SOBvkncNWM/wS3TWpP4GEuPn3VKJl7n2wQugUpDZzpcf3k+LBYWZApCPhxSK6HIfCRJ+/GFTVoMrzMQRRJuzBGOiokHjwWzHb24NRK7rUVBWrnV6ZFPv5XDEJvjeDu7ZYrgwYY+JqUgeOLavDXO8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736680271; c=relaxed/simple;
-	bh=jfdItxbg0JYmuum+A0lOphvYN8PWl4MNSSYUdQkROaU=;
+	s=arc-20240116; t=1736681321; c=relaxed/simple;
+	bh=e2mT9GmnoD4qxkc3EzJPF7YkPA6QxczdEFZNr6VUDXE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lLpU/gH9Oc2cA12b2mBoXWDvrggzk5DmCDMuYOB+y7FJuwx3/ENR6Dz25Lct9CKjNJGuTB8o1tmqoMDBOjE+tUq6o7NShXUNa9lEJY1Yf9KRd2r80s9/La/B9co1rjowIhGcWvFjlJv9VEFOC4fIyyGYV2FUlIdTZYhH/44DZqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UtIbQgTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B0BC4CEDF;
-	Sun, 12 Jan 2025 11:11:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GrqG8istE+VRQkP6zcmdBn0l6QhkExS5uAnXD9HWsGn+AnCCfKh8Owc2dFrhaKgokAatfmJ5nDI0erNIf2/sJxUiglnRIPHnntdsGOeWavAHCkq2f3A1HwB202AG4K8dZleycWtevSXnFCRazhgB81OBhhwaVcPWxdDYsCmyx1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcaLY0Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09654C4CEDF;
+	Sun, 12 Jan 2025 11:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736680270;
-	bh=jfdItxbg0JYmuum+A0lOphvYN8PWl4MNSSYUdQkROaU=;
+	s=k20201202; t=1736681320;
+	bh=e2mT9GmnoD4qxkc3EzJPF7YkPA6QxczdEFZNr6VUDXE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UtIbQgTl0TAzmYl9uenllQcucCDJTq97fEKlQTg056nFgig96yjcwSyUIwK15QPO9
-	 EusYS3xDWN/F/7MPC3AJZzaM4PvaarX0uwa3vuW2+cXsQ8oMy92jOd79osLqeFnoHr
-	 UhdLyeHUnoPhJNvi9J3mwc31D5nI6dY0gApH6HAR2d4Rw6vjN5caa7L9Vj84HZQM7V
-	 sr18Ivjd87wuzTqztmbvMdkBDcxNRmUCO/17XCwP2WTLa55iZVnNeVg04sfbsCCEPN
-	 p880TNEeQoCpSDI9GXybBtQYBbBVjzDRPEKWd7fxxS6Jow+OcxrUZ42xM8JceOujpc
-	 MMHBotLVnqvnw==
-Date: Sun, 12 Jan 2025 11:10:59 +0000
+	b=YcaLY0Wky2jnLvpYxX5zw2GGFEuwYB/fZ7fNL8OTxrRzC6efISOWv1MIfTjblrnjy
+	 jrpR5Y4ci+fNj5zwxswS1QGf0yMkxCbAvEkmVYUfgOGjK7zzBBoOrflIdK3zEohlHJ
+	 5gQ7u8jHgowaSA1/nhB0wo/+U9nxzVGZn+0WLtYL8wRirAnw1qz7PbjzMpJyGKKe1u
+	 xuKZXAZL7RBVlD0SPXml3uogSS2LR0J6nZuw3dqAwdMRvP21XJSYAjgrMNy0zTBsOG
+	 RW0nyTs+i9vvvulEJQde89NvmCk80FUSBvye4mbtn0DCCehoZdbAH/47l1bIRVTCE3
+	 fyuOVLqutHinQ==
+Date: Sun, 12 Jan 2025 11:28:29 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Mikael Gonella-Bolduc via B4 Relay
  <devnull+mgonellabolduc.dimonoff.com@kernel.org>
@@ -54,11 +54,12 @@ Cc: mgonellabolduc@dimonoff.com, Lars-Peter Clausen <lars@metafoo.de>, Rob
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
  Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: Add APDS9160 binding
-Message-ID: <20250112111059.677f8708@jic23-huawei>
-In-Reply-To: <20250106-apds9160-driver-v4-1-f88d9fc45d84@dimonoff.com>
+Subject: Re: [PATCH v4 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
+ driver
+Message-ID: <20250112112829.067b48b0@jic23-huawei>
+In-Reply-To: <20250106-apds9160-driver-v4-2-f88d9fc45d84@dimonoff.com>
 References: <20250106-apds9160-driver-v4-0-f88d9fc45d84@dimonoff.com>
-	<20250106-apds9160-driver-v4-1-f88d9fc45d84@dimonoff.com>
+	<20250106-apds9160-driver-v4-2-f88d9fc45d84@dimonoff.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,125 +70,284 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 06 Jan 2025 17:23:01 -0500
+On Mon, 06 Jan 2025 17:23:02 -0500
 Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org> wrote:
 
 > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 > 
-> Add device tree bindings for APDS9160
-> Note: Using alternate email for maintainer
+> APDS9160 is a combination of ALS and proximity sensors.
+> 
+> This patch add supports for:
+>     - Intensity clear data and illuminance data
+>     - Proximity data
+>     - Gain control, rate control
+>     - Event thresholds
 > 
 > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> ---
->  .../bindings/iio/light/brcm,apds9160.yaml          | 86 ++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+
+Hi Mikael,
+
+A few really minor things inline in addition to potential changes from
+the dt-binding review / real units suggestion for the current controls.
+
+Jonathan
+
+> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> index f14a3744271242f04fe7849b47308397ac2c9939..4a22043acdbbbed2b696a3225e4024654d5d9339 100644
+> --- a/drivers/iio/light/Makefile
+> +++ b/drivers/iio/light/Makefile
+> @@ -9,6 +9,7 @@ obj-$(CONFIG_ADJD_S311)		+= adjd_s311.o
+>  obj-$(CONFIG_ADUX1020)		+= adux1020.o
+>  obj-$(CONFIG_AL3010)		+= al3010.o
+>  obj-$(CONFIG_AL3320A)		+= al3320a.o
+> +obj-$(CONFIG_APDS9160)		+= apds9160.o
+>  obj-$(CONFIG_APDS9300)		+= apds9300.o
+>  obj-$(CONFIG_APDS9306)		+= apds9306.o
+>  obj-$(CONFIG_APDS9960)		+= apds9960.o
+> diff --git a/drivers/iio/light/apds9160.c b/drivers/iio/light/apds9160.c
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..756d46c2edb171da840ee49a7339cb781fe84ad2
+> index 0000000000000000000000000000000000000000..4aa02f87ace72056a9c50c70e9f761cb6c52c985
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> @@ -0,0 +1,86 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +++ b/drivers/iio/light/apds9160.c
+> @@ -0,0 +1,1586 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * APDS9160 sensor driver.
+> + * Chip is combined proximity and ambient light sensor.
+> + * Author: 2024 Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
+> + */
 > +
-> +title: Broadcom Combined Proximity & Ambient light sensor
+> +#include <linux/bits.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/cleanup.h>
+> +#include <linux/delay.h>
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/interrupt.h>
+> +#include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/types.h>
+> +#include <linux/units.h>
 > +
-> +maintainers:
-> +  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/iio/sysfs.h>
 > +
-> +description: |
-> +  Datasheet: https://docs.broadcom.com/docs/APDS-9160-003-DS
+> +#include <linux/unaligned.h>
 > +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - brcm,apds9160
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  ps-cancellation-duration:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Proximity sensor cancellation pulse duration in half clock cycles.
-> +      This parameter determines a cancellation pulse duration.
-> +      The cancellation is applied in the integration phase to cancel out
-> +      unwanted reflected light from very near objects such as tempered glass
-> +      in front of the sensor.
-> +    minimum: 0
-> +    maximum: 63
-> +    default: 0
-> +
-> +  ps-cancellation-current-coarse:
+> +#define APDS9160_REGMAP_NAME "apds9160_regmap"
+Just put this inline.  No benefit in having the define that I can see.
 
-I've lost track on what we've discussed previously but I'm curious as to whether
-we can end up with a cleaner binding for this.  We may well see other identical
-controls in future, so nice to have something more 'generic'.  I'm not suggesting
-we don't keep it vendor specific though as not sure it will generalize beyond
-different broadcomm parts.
+> +#define APDS9160_REG_CNT 37
+Same for this. Define isn't adding anything. 
 
-It is a multiple of nA, so can we just express the combination of
-this and ps-cancellation-current-fine as a single parameter, probably in pA
+> +
+> +/* Main control register */
+> +#define APDS9160_REG_CTRL 0x00
+> +#define APDS9160_CTRL_SWRESET BIT(4) /* 1: Activate reset */
+> +#define APDS9160_CTRL_MODE_RGB BIT(2) /* 0: ALS & IR, 1: RGB & IR */
+> +#define APDS9160_CTRL_EN_ALS BIT(1) /* 1: ALS active */
+> +#define APDS9160_CTLR_EN_PS BIT(0) /* 1: PS active */
+> +
+> +/* Status register  */
+> +#define APDS9160_SR_LS_INT BIT(4)
+> +#define APDS9160_SR_LS_NEW_DATA BIT(3)
+> +#define APDS9160_SR_PS_INT BIT(1)
+> +#define APDS9160_SR_PS_NEW_DATA BIT(0)
+> +
+> +/* Interrupt configuration registers */
+> +#define APDS9160_REG_INT_CFG 0x19
+> +#define APDS9160_REG_INT_PST 0x1A
+> +#define APDS9160_INT_CFG_EN_LS BIT(2) /* LS int enable */
+> +#define APDS9160_INT_CFG_EN_PS BIT(0) /* PS int enable */
+> +
+> +/* Proximity registers */
+> +#define APDS9160_REG_PS_LED 0x01
+> +#define APDS9160_REG_PS_PULSES 0x02
+> +#define APDS9160_REG_PS_MEAS_RATE 0x03
+> +#define APDS9160_REG_PS_THRES_HI_LSB 0x1B
+> +#define APDS9160_REG_PS_THRES_HI_MSB 0x1C
+> +#define APDS9160_REG_PS_THRES_LO_LSB 0x1D
+> +#define APDS9160_REG_PS_THRES_LO_MSB 0x1E
+> +#define APDS9160_REG_PS_DATA_LSB 0x08
+> +#define APDS9160_REG_PS_DATA_MSB 0x09
+> +#define APDS9160_REG_PS_CAN_LEVEL_DIG_LSB 0x1F
+> +#define APDS9160_REG_PS_CAN_LEVEL_DIG_MSB 0x20
+> +#define APDS9160_REG_PS_CAN_LEVEL_ANA_DUR 0x21
+> +#define APDS9160_REG_PS_CAN_LEVEL_ANA_CURRENT 0x22
+> +
+> +/* Light sensor registers */
+> +#define APDS9160_REG_LS_MEAS_RATE 0x04
+> +#define APDS9160_REG_LS_GAIN 0x05
+> +#define APDS9160_REG_LS_DATA_CLEAR_LSB 0x0A
+> +#define APDS9160_REG_LS_DATA_CLEAR 0x0B
+> +#define APDS9160_REG_LS_DATA_CLEAR_MSB 0x0C
+> +#define APDS9160_REG_LS_DATA_ALS_LSB 0x0D
+> +#define APDS9160_REG_LS_DATA_ALS 0x0E
+> +#define APDS9160_REG_LS_DATA_ALS_MSB 0x0F
+> +#define APDS9160_REG_LS_THRES_UP_LSB 0x24
+> +#define APDS9160_REG_LS_THRES_UP 0x25
+> +#define APDS9160_REG_LS_THRES_UP_MSB 0x26
+> +#define APDS9160_REG_LS_THRES_LO_LSB 0x27
+> +#define APDS9160_REG_LS_THRES_LO 0x28
+> +#define APDS9160_REG_LS_THRES_LO_MSB 0x29
+> +#define APDS9160_REG_LS_THRES_VAR 0x2A
+> +
+> +/* Part identification number register */
+> +#define APDS9160_REG_ID 0x06
+> +
+> +/* Status register */
+> +#define APDS9160_REG_SR 0x07
+> +#define APDS9160_SR_DATA_ALS BIT(3)
+> +#define APDS9160_SR_DATA_PS BIT(0)
+> +
+> +/* Supported ID:s */
+> +#define APDS9160_PART_ID_0 0x03
+> +
+> +#define APDS9160_PS_THRES_MAX 0x7FF
+> +#define APDS9160_LS_THRES_MAX 0xFFFFF
+> +#define APDS9160_CMD_LS_RESOLUTION_25MS 0x04
+> +#define APDS9160_CMD_LS_RESOLUTION_50MS 0x03
+> +#define APDS9160_CMD_LS_RESOLUTION_100MS 0x02
+> +#define APDS9160_CMD_LS_RESOLUTION_200MS 0x01
+> +#define APDS9160_PS_DATA_MASK 0x7FF
+> +
+> +#define APDS9160_DEFAULT_LS_GAIN 3
+> +#define APDS9160_DEFAULT_LS_RATE 100
+> +#define APDS9160_DEFAULT_PS_RATE 100
+> +#define APDS9160_DEFAULT_PS_CANCELLATION_LEVEL 0
+> +#define APDS9160_DEFAULT_PS_ANALOG_CANCELLATION 0
+> +#define APDS9160_DEFAULT_PS_GAIN 1
+> +#define APDS9160_DEFAULT_PS_CURRENT 100
+> +#define APDS9160_DEFAULT_PS_RESOLUTION_11BITS 0x03
+> +
+> +static const struct reg_default apds9160_reg_defaults[] = {
+> +	{ APDS9160_REG_CTRL, 0x00 }, /* Sensors disabled by default  */
+> +	{ APDS9160_REG_PS_LED, 0x33 }, /* 60 kHz frequency, 100 mA */
 
-The tricky bit being there seem to be holes, so the allowed list would be complex.
+No need to change anything but a parsing comment.
+This is one reason I personally don't like the regfield stuff (though
+I never stop people using it, I won't encourage it either!)
+If we'd had a traditional use of FIELD_PREP() and masks throughout then
+we'd have everything needed to allow explicit setting of these default
+values as fields as well.  We don't have the defines for that and I
+definitely don't want to suggest you add them alongside regfield
+equivalents.
 
-Even if we can't do that can we express it as two nA values rather than indexes?
+> +	{ APDS9160_REG_PS_PULSES, 0x08 }, /* 8 pulses */
+> +	{ APDS9160_REG_PS_MEAS_RATE, 0x05 }, /* 100ms */
+> +	{ APDS9160_REG_LS_MEAS_RATE, 0x22 }, /* 100ms */
+> +	{ APDS9160_REG_LS_GAIN, 0x01 }, /* 3x */
+> +	{ APDS9160_REG_INT_CFG, 0x10 }, /* Interrupts disabled */
+> +	{ APDS9160_REG_INT_PST, 0x00 },
+> +	{ APDS9160_REG_PS_THRES_HI_LSB, 0xFF },
+> +	{ APDS9160_REG_PS_THRES_HI_MSB, 0x07 },
+> +	{ APDS9160_REG_PS_THRES_LO_LSB, 0x00 },
+> +	{ APDS9160_REG_PS_THRES_LO_MSB, 0x00 },
+> +	{ APDS9160_REG_PS_CAN_LEVEL_DIG_LSB, 0x00 },
+> +	{ APDS9160_REG_PS_CAN_LEVEL_DIG_MSB, 0x00 },
+> +	{ APDS9160_REG_PS_CAN_LEVEL_ANA_DUR, 0x00 },
+> +	{ APDS9160_REG_PS_CAN_LEVEL_ANA_CURRENT, 0x00 },
+> +	{ APDS9160_REG_LS_THRES_UP_LSB, 0xFF },
+> +	{ APDS9160_REG_LS_THRES_UP, 0xFF },
+> +	{ APDS9160_REG_LS_THRES_UP_MSB, 0x0F },
+> +	{ APDS9160_REG_LS_THRES_LO_LSB, 0x00 },
+> +	{ APDS9160_REG_LS_THRES_LO, 0x00 },
+> +	{ APDS9160_REG_LS_THRES_LO_MSB, 0x00 },
+> +	{ APDS9160_REG_LS_THRES_VAR, 0x00 },
+> +};
 
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Proximity sensor crosstalk cancellation current coarse value.
-> +      This parameter adjust the current in steps of 60 nA up to 240 nA.
-> +      This parameter is used in conjunction with the cancellation duration.
-> +    minimum: 0
-> +    maximum: 4
-> +    default: 0
+> +/*
+> + * This parameter determines the cancellation pulse duration
+> + * in each of the PWM pulse. The cancellation is applied during the
+> + * integration phase of the PS measurement.
+> + * Duration is programmed in half clock cycles
+> + * A duration value of 0 or 1 will not generate any cancellation pulse
+> + */
+> +static int apds9160_set_ps_analog_cancellation(struct apds9160_chip *data,
+> +					       int val)
+> +{
+> +	int ret;
 > +
-> +  ps-cancellation-current-fine:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      Proximity sensor crosstalk cancellation current fine value.
-> +      This parameter adjust the current in steps of 2.4 nA up to 36 nA.
-> +      This parameter is used in conjunction with the cancellation duration.
-> +    minimum: 0
-> +    maximum: 15
-> +    default: 0
+> +	if (val < 0 || val > 63)
+> +		return -EINVAL;
 > +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - vdd-supply
+> +	ret = regmap_write(data->regmap, APDS9160_REG_PS_CAN_LEVEL_ANA_DUR,
+> +			   val);
 > +
-> +additionalProperties: false
+> +	return ret;
+
+return regmap_write...
+
+> +}
+
+
+
+> +static int apds9160_write_event(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				enum iio_event_type type,
+> +				enum iio_event_direction dir,
+> +				enum iio_event_info info, int val, int val2)
+> +{
+> +	u8 reg;
+> +	int ret = 0;
+> +	struct apds9160_chip *data = iio_priv(indio_dev);
 > +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +	if (info != IIO_EV_INFO_VALUE)
+> +		return -EINVAL;
 > +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
+> +	ret = apds9160_get_thres_reg(chan, dir, &reg);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +        light-sensor@53 {
-> +            compatible = "brcm,apds9160";
-> +            reg = <0x53>;
-> +            vdd-supply = <&vdd_reg>;
-> +            interrupts = <29 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-parent = <&pinctrl>;
-> +            ps-cancellation-duration = <10>;
-> +            ps-cancellation-current-coarse = <2>;
-> +            ps-cancellation-current-fine = <10>;
-> +        };
-> +    };
-> +...
-> 
+> +	switch (chan->type) {
+> +	case IIO_PROXIMITY: {
+> +		__le16 buf = cpu_to_le16(val);
+
+Trivial: A little odd to set this before the range checks.
+> +
+> +		if (val < 0 || val > APDS9160_PS_THRES_MAX)
+> +			return -EINVAL;
+> +
+> +		return regmap_bulk_write(data->regmap, reg, &buf, 2);
+> +	}
+> +	case IIO_LIGHT: {
+> +		u8 buf[3];
+> +
+> +		if (val < 0 || val > APDS9160_LS_THRES_MAX)
+> +			return -EINVAL;
+> +
+> +		put_unaligned_le24(val, buf);
+> +		return regmap_bulk_write(data->regmap, reg, &buf, 3);
+> +	}
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+
+> +
+> +static int apds9160_detect(struct apds9160_chip *chip)
+> +{
+> +	struct i2c_client *client = chip->client;
+> +	int ret;
+> +	u32 val;
+> +
+> +	ret = regmap_read(chip->regmap, APDS9160_REG_ID, &val);
+> +	if (ret < 0) {
+> +		dev_err(&client->dev, "ID read failed\n");
+> +		return ret;
+> +	}
+> +
+> +	if (val != APDS9160_PART_ID_0)
+> +		dev_info(&client->dev, "Unsupported part id %u\n", val);
+
+"Unknown part" or "Unrecognised part"
+we are trying at least to support it in fallback case!
+
+> +
+> +	return 0;
+> +}
 
 

@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-14175-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14176-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801B6A0A8D7
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:55:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCADA0A8DB
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B0687A2AF9
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 11:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E013A6F4C
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 11:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211CC1B0422;
-	Sun, 12 Jan 2025 11:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D481AE00E;
+	Sun, 12 Jan 2025 11:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCx6+qYW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DE0cRDAM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF0D1ACECA;
-	Sun, 12 Jan 2025 11:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62017B425;
+	Sun, 12 Jan 2025 11:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736682903; cv=none; b=LugvnBkQzrly0OZV1+1z+bzgRkBhQhKb0STsZ/SuPdWreJ+Bprd7sN/YeMCg0t6WR6oEmWeVFQjUgieAoHDwBbDVzTjZk5y9oqUrR5XlxYwQVGgz1rlQbk2x0lsPGZWyWXgDuYYdTD1J+V2a54JZW3UxcBLdSIHOGe4Epcnz0ss=
+	t=1736683008; cv=none; b=QGrkdZAJGEMALETRqOSNHH8ex+5c9b0kYQ9o55JXtjKQdQiAIdtiWVa3C0D7mVWYa3mC4g65+tTkDAkPX/KQ2kegEEyZpfb5TEcp73DGJjJ0c2fiLs9Cd3rrqyjl5iVhDXiGofJgdgy4UBxmmwlx8GDG9hyUXhb2odlh2xQW+no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736682903; c=relaxed/simple;
-	bh=VmTcEtVKqj4u7husfN+bDDlV9bObcEGnscGrS0K4Rek=;
+	s=arc-20240116; t=1736683008; c=relaxed/simple;
+	bh=7n/TD42a3JmZvJ6uJC1VhbZVCu4UNuRl4GDmxclS4Co=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SQKz1r3LFotKOLvsyL2tXQ5l0JkxYrdgkP7LDV+KH+cTzJlwSIaGPkfJe1v7aCxBJcOo6KjczpMjrJR6SexbfAauTlSDLx9huLLmz+3vSIfjlyuReTEYYe5rPfYkKH9S6dgk9o5aGrlX2bfeQiKs8uCL5RiDlOsMhTSiKMCIR8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCx6+qYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7A5C4CEDF;
-	Sun, 12 Jan 2025 11:54:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AoPK2rhgHKcs2BJy9GwO5LghUgCv7uxOvwMZruq8VRuJc6/19GejylIQhWECB/2Kz5770m9xO3+6s/oc4RIBcxIW0SEmSBqNasqBsMI6cpY0nc+7MZxNubrUu6jfdqhPOFbpnPeSV8YDudcL0Nv6yc2tNcBzxkwdTX1Q2SpYpng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DE0cRDAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6547CC4CEDF;
+	Sun, 12 Jan 2025 11:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736682903;
-	bh=VmTcEtVKqj4u7husfN+bDDlV9bObcEGnscGrS0K4Rek=;
+	s=k20201202; t=1736683008;
+	bh=7n/TD42a3JmZvJ6uJC1VhbZVCu4UNuRl4GDmxclS4Co=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RCx6+qYWwDMGdBwybgB/bJvQztXm93fuO5UbA474YwIUjSi4p9Z0k8mcTgBTNftSm
-	 5g8iMuAmSElK6qRQ2orkFhA0CUlfYUv9FQVKEG9TsEzGwEOtzhJrI/tczVGEjjBudp
-	 dHGdCjXXQ6azYiBiBWDCa41Onb3yYlk0PkD8Z+Hd9Aa5y9YHe+Tfkj0fEvVgXNFwlN
-	 B4jOB8YRfNmlmUSJK7MDjvHQPcSFb+aVAs9903ZWSQgww3htxsEbidjFtWhhlZeGWT
-	 HKHGdNAGfsWbLksQgHLNTnNx1cg2yuPuMV5Ai3YRCJT6ksUZqrLbIhZvx1G6FUfix7
-	 EZZ1YZHBWb3ew==
-Date: Sun, 12 Jan 2025 11:54:54 +0000
+	b=DE0cRDAMEnx+PXNdgi/cJGYf5Bqk0GTv8l8eInR3P4QoGzqqINQUoMISVEpXE8UkB
+	 uWLGdb5a0cPJ64nYhpelTaVHj4ECR7r3T+f6XkjT/bubYiu1i0EDV234S+Jux0kPrJ
+	 LRuDG4eDsYa8au0IFqPUirF3C3iMWok0X09PVEAas5GgyUpgn1+MDXKr5Rl9k867pY
+	 PO7Odr5T2hINNXhm2g2DgJS/6/fHki64k6ul+nol5fSseo9LvDJgFIFoL0brZYVygr
+	 cLU0MMxVMMWBh8USSQ994vCI6RqkmHMU39e2YvHyIarqtY+/BqW/kmylX33TWoCwqC
+	 itr61UWHjcQkg==
+Date: Sun, 12 Jan 2025 11:56:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Joshua Felmeden
- <jfelmeden@thegoodpenguin.co.uk>, Sankar Velliangiri <navin@linumiz.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: Correct indentation and style in DTS
- example
-Message-ID: <20250112115454.4ff5fb2f@jic23-huawei>
-In-Reply-To: <20250107125848.226899-1-krzysztof.kozlowski@linaro.org>
-References: <20250107125848.226899-1-krzysztof.kozlowski@linaro.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cosmin.tanislav@analog.com, lars@metafoo.de,
+ granquet@baylibre.com, u.kleine-koenig@baylibre.com,
+ marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v2 3/3] Documentation: ABI: IIO: Drop AD4130 specific
+ filter_type_available options
+Message-ID: <20250112115638.1b163908@jic23-huawei>
+In-Reply-To: <1684bc1a-c983-4baf-8b4d-0c6ff0f1640a@baylibre.com>
+References: <cover.1736261047.git.marcelo.schmitt@analog.com>
+	<5b86acb56fd2aa337223a6467c1caf2a06682fcd.1736261048.git.marcelo.schmitt@analog.com>
+	<1684bc1a-c983-4baf-8b4d-0c6ff0f1640a@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,20 +65,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  7 Jan 2025 13:58:47 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Tue, 7 Jan 2025 11:53:44 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> DTS example in the bindings should be indented with 2- or 4-spaces and
-> aligned with opening '- |', so correct any differences like 3-spaces or
-> mixtures 2- and 4-spaces in one binding.
+> On 1/7/25 9:13 AM, Marcelo Schmitt wrote:
+> > The only driver exporting filter_type_available attribute is ad7779 and it
+> > only supports sinc3 and sinc5 filters. Remove options that are not
+> > presented through filter_type_available attribute.
+> > 
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > ---
+> > Maybe this is not worth it (or desirable?) since the options may come back in
+> > the future if new drivers happen to need them.  
 > 
-> No functional changes here, but saves some comments during reviews of
-> new patches built on existing code.
+> I would be tempted to add filter_type{,_available} attributes to the ad4130
+> driver that mirrors the existing filter_mode{,_available} attributes. We can't
+> remove filter_mode since that would break things, but having filter_type in
+> addition to that would mean than userspace tools could standardize on
+> filter_type and not have to make a special exception for the different naming
+> on ad4130.
 > 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied and pushed out as testing for 0-day to take a look.
+> Then we wouldn't need to delete the extra items here and we wouldn't have to
+> repeat the docs for sysfs-bus-iio-adc-ad4130. Those docs can just have the
+> deprecation paragraph and mention that it returns values identical to the
+> filter_type attributes for backwards compatibility.
 
-This has probably just missed this cycle :(
+Good idea.  Given we always allow any attribute to change any other, having
+duplicates for ABI backwards compatibility is fine.
+
+Thanks,
 
 Jonathan
 

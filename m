@@ -1,61 +1,62 @@
-Return-Path: <linux-iio+bounces-14249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA04A0AAFD
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 17:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07617A0AB01
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 17:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C481D3A3215
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 16:40:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75A33A3BF2
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 16:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBED1BE871;
-	Sun, 12 Jan 2025 16:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F211BEF67;
+	Sun, 12 Jan 2025 16:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c115Eg/y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zs+RNQ/N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB9320DF4;
-	Sun, 12 Jan 2025 16:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B90020DF4;
+	Sun, 12 Jan 2025 16:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736700015; cv=none; b=QosrPE2Wrul200jX+sq3m2hV5qise/NpAd44QOsXPPP3UQwl92ihJWBHksIrqnKNSHbccWBemdIs1lbhUtD5jIblotNs7Z0snsMG21jyLjSAOKKAY2PtcQX8sdR26Idsce+bAH8Q6W9rx2edLXPoirwgoNTspsiqEH8S6MoVcR8=
+	t=1736700130; cv=none; b=Oido57wFPTIBoz56cQOlaX7CoFSw4AA6hQeNtawMCN7FOkglWJi5pD9VM5H5z5RupdaynU8FIjA7QAewstwBv2Pmj8sVEqlW7mjngGyo19PIk+DlF/0L9l4sWSCpRPfkmdE7D9KSgyC3sSRxFLkOaIRmnqZ9q6UZBxoeZvZ+DKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736700015; c=relaxed/simple;
-	bh=DD/juU9ACGWt0ccBf3GuJZuORc/SZlbw19veSmxGX5w=;
+	s=arc-20240116; t=1736700130; c=relaxed/simple;
+	bh=MFsCSIQ+3lX2JGCMn69Y7qKryOUmEQrQYiScE1Suxks=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uysAeBw+H7qViyeeqe6xKWSS5PvjbiEDB8bJ63UwVcMg6Gj8SXGMmq8Rm9RCEdktIgzSSVnJMdcNwLQdQj17OohZnqG2iD6lejbCvVd8amhwwrxTgVt1YD4K1fTcrf8HxiWd+Tr/foAYdwsI552IVwSt0vAG2UqjbjhjdrlrkB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c115Eg/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC93C4CEDF;
-	Sun, 12 Jan 2025 16:40:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z3ZHfmiWpyoHWWzAdoWNjmssddTAkTjJLKz+pHgXs1TbrgYKY9dtwJC4dc8C0e9Gu5Xzr4Nl3ws4GqbL5EtmKKNWFeNR3dA7RwjzmcYY/zpxzqNpjz35dOdXzRf3xWzLuG++384CIn0TF2jVerKWKMsLSmyL4zFxKcNlFPj3i1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zs+RNQ/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBB0C4CEDF;
+	Sun, 12 Jan 2025 16:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736700014;
-	bh=DD/juU9ACGWt0ccBf3GuJZuORc/SZlbw19veSmxGX5w=;
+	s=k20201202; t=1736700130;
+	bh=MFsCSIQ+3lX2JGCMn69Y7qKryOUmEQrQYiScE1Suxks=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=c115Eg/yj0CcRohHCi7W88LmrSaMZ4tksgmPPbo6nxRFIa2newQjb4Fo5/YHeiyYB
-	 YjZfoePuYNhmkG0dU8OV2rstcnnu4ZGdOTDoKAZXtozew/q+GGjLGoONQyLGQ0jFGc
-	 e16AHU9CeN8DWhvsNOWHgBYJU5f+jOeUCylVcIIJ5ACwb6XZ3fG45mIvp1238LkKRo
-	 XYVU89GATy8ZnQMdCAkXn+KWIu/pV2xp3EBGQCQPGUi0NeayjQObThfQPjwXdlTY7H
-	 9SFAxiyUmEbpLCb+oyVWdK/RxUq7AM+QhtvilOs75igT8rdwgqypO3VSCIaCIs/ly2
-	 xkLsBH/yndv7A==
-Date: Sun, 12 Jan 2025 16:40:06 +0000
+	b=Zs+RNQ/NWvd8ZcOhNy76P2L9TlRbE2yKE90yBnBouIKNHQ/+Bod2FfJzSnRmq6/bA
+	 twMtI4yywmlX9amdPCbnop5p4OlA54WJ5F++VY7TiTsPdFUdppjxIZOPXvG2B2byG6
+	 7By7gsokjYG1XH82TODX5JAwP9Pm8BsvwQ1t5Z+2raI2Daps1OzRJ3adXZTp4Nnv3c
+	 4iDVdMwopQ4quEILVuzAU0Am2DiKkiZjEqdLIT7I+IIqGjIlgkuXhd0lC3sm+V6V64
+	 fcTMog01kZVozh9XQJuo29FJF1vydIN0Jdnveg719gKEuBQWKl7V0RQzUaMzX0ifNy
+	 X/Ims+5kZ+S2Q==
+Date: Sun, 12 Jan 2025 16:42:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Rishi Gupta"
- <gupt21@gmail.com>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/2] iio: light: veml6030: extend regmap to support
- regfields and caching
-Message-ID: <20250112164006.218cf045@jic23-huawei>
-In-Reply-To: <D705L20050OB.3UOW9R2QA4QA5@gmail.com>
-References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
-	<20250107-veml6030-scale-v1-1-1281e3ad012c@gmail.com>
-	<20250112131845.539ecc7c@jic23-huawei>
-	<D705L20050OB.3UOW9R2QA4QA5@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v4 1/5] iio: adc: ad7380: do not use
+ iio_device_claim_direct_scoped anymore
+Message-ID: <20250112164201.067ecd9e@jic23-huawei>
+In-Reply-To: <Z4Pt9oZEkfQMuYUm@surfacebook.localdomain>
+References: <20250108-ad7380-add-alert-support-v4-0-1751802471ba@baylibre.com>
+	<20250108-ad7380-add-alert-support-v4-1-1751802471ba@baylibre.com>
+	<Z4Pt9oZEkfQMuYUm@surfacebook.localdomain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,74 +67,32 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 12 Jan 2025 15:10:14 +0100
-"Javier Carrasco" <javier.carrasco.cruz@gmail.com> wrote:
+On Sun, 12 Jan 2025 18:29:42 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Sun Jan 12, 2025 at 2:18 PM CET, Jonathan Cameron wrote:
-> > On Tue, 07 Jan 2025 21:50:21 +0100
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
-> >  
-> > > The configuration registers are not volatile and are not affected
-> > > by read operations (i.e. not precious), making them suitable to be
-> > > cached in order to reduce the number of accesses to the device.
-> > >
-> > > Add support for regfields as well to simplify register operations,
-> > > taking into account the different fields for the veml6030/veml7700 and
-> > > veml6035.
-> > >
-> > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > > ---
-> > >  drivers/iio/light/veml6030.c | 141 +++++++++++++++++++++++++++++++++++--------
-> > >  1 file changed, 116 insertions(+), 25 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> > > index 9b71825eea9bee2146be17ed2f30f5a8f7ad37e3..a6385c6d3fba59a6b22845a3c5e252b619faed65 100644
-> > > --- a/drivers/iio/light/veml6030.c
-> > > +++ b/drivers/iio/light/veml6030.c
-> > > @@ -65,6 +65,11 @@ enum veml6030_scan {
-> > >  	VEML6030_SCAN_TIMESTAMP,
-> > >  };
-> > >
-> > > +struct veml6030_rf {
-> > > +	struct regmap_field *it;
-> > > +	struct regmap_field *gain;
-> > > +};
-> > > +
-> > >  struct veml603x_chip {
-> > >  	const char *name;
-> > >  	const int(*scale_vals)[][2];
-> > > @@ -75,6 +80,7 @@ struct veml603x_chip {
-> > >  	int (*set_info)(struct iio_dev *indio_dev);
-> > >  	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
-> > >  	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
-> > > +	int (*regfield_init)(struct iio_dev *indio_dev);  
-> >
-> > With only two fields, why use a callback rather than just adding the two
-> > const struct reg_field into this structure directly?  
+> Wed, Jan 08, 2025 at 01:49:33PM +0100, Julien Stephan kirjoitti:
+> > Conditionnal scoped handlers are turning out to be a real pain:
+> > readability issues, compiler and linker handling issues among others so
+> > rollback and remove the scoped version of iio_dvice_claim_direct_mode.  
 > 
-> The rationale was that extending the driver for more devices with
-> additional fields would not require extra elements in the struct that
-> would only apply to some devices. All members of this struct are rather
-> basic and all devices will require them, and although integration time
-> and gain regfields will be required too, if a new regfield for a
-> specific device is added, it will be added to the rest as empty element.
-> 
-> But that's probably too much "if" and "would", so I am fine with your
-> suggestion.
+> Is it IIO level decision or you as a contributor to/maintainer of this driver?
+> If the former? can you add a Link to the discussion?
 
-Absolutely - it is in kernel stuff so we can always revisit if it turns
-out to make more sense this way.
+
+IIO. Agreed a link would have been sensible here.
 
 > 
-> >
-> > I'd also be tempted to do the caching and regfield changes as separate patches.
-> >  
+> Otherwise, I would like to understand the common approach / practices in IIO
+> WRT individual drivers to deviate the common approaches. Jonathan?
+
+Patch series on list ripping the whole lot out that has some more explanation
+and links.  Basically we never found a way to overcome the short comings of
+conditional scoped guards.
+
+https://lore.kernel.org/linux-iio/20250105172613.1204781-1-jic23@kernel.org/
+
+Jonathan
+
 > 
-> Then I will split the patch for v2.
-> 
-> > Jonathan  
-> 
-> Thank you for your feedback and best regards,
-> Javier Carrasco
 
 

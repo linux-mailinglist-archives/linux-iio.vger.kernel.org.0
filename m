@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-14215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14216-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061CCA0AA3C
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 15:54:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF27A0AA4A
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 15:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 038C316656F
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:54:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 653C03A71E2
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3261B87F1;
-	Sun, 12 Jan 2025 14:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC791B983E;
+	Sun, 12 Jan 2025 14:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATVqQuhi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTU/anH6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC601B3948;
-	Sun, 12 Jan 2025 14:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F5C1A8F7F;
+	Sun, 12 Jan 2025 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736693685; cv=none; b=U+/wKVQ111k+WNTmiikHcQRHEYaNUSeuQ7tI/dfoXK5eU2JSBFWK6JShL/wRHOioNocLmNYq+6LVAt6pq2tAMNtOiPnrLU8onBCkE+FowsmtlzWatYs6ikkKXaQIXGtlGLqqbdYNwz2pLbZCHLdwOuuAO34J0kgMII9Z7gNiR8I=
+	t=1736693987; cv=none; b=oyT79Wyy6YLRshIfpzESKNaAYM9MH4nzjaNA8PZHo6jB7/8C9oIviDLWhlrAYioiacASErBM0SCCLw64+XOUQT7g/m9VPRoMtLqh/19+NJoTTfeiyAK5b5dO5ZQPbXnSEb0n26upd9WE73js9QCGcBAYqGW6t8BhL0trLJlSJ8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736693685; c=relaxed/simple;
-	bh=SogzWzOfPnfubygeHqBxtJ3VhCumFs8JTueGakiYli8=;
+	s=arc-20240116; t=1736693987; c=relaxed/simple;
+	bh=yTK6dID88MbcHcZhpOGsfFRFfCpI4L0A/YmG1unsfiw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0Boihos6Ux4HsmnT+Ajxez8AvMnpvcEoyYhCvpzvWkbNSxvc8qjnIVUA8mlYB+0/ZiWvVJjSTTpbhoAGRe6IBF0OU3f+hH1C+MqVbp0CDzziCh+OjlN1jwECZU0saBR0jNWt5BtTN2Qr8tH6EvenP15lAQzkLtwV3v23h8y9hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATVqQuhi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5B5C4CEDF;
-	Sun, 12 Jan 2025 14:54:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e09vpOlr/xyphPtrDvurkHlMoZG3JBNVvOOtPy3FMOpuTri8HslzW6/s96pOyCpsnEm1YS5704+2upRLrgq6QQYu05aVwwmq2lXb/AV5z1rkb+A8bBmJLfwX7nXnYqMkI7aRJ9xQxxX4xckBSwTeeqvdemzFeYiwQQMnzSAq49U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTU/anH6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71122C4CEDF;
+	Sun, 12 Jan 2025 14:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736693684;
-	bh=SogzWzOfPnfubygeHqBxtJ3VhCumFs8JTueGakiYli8=;
+	s=k20201202; t=1736693986;
+	bh=yTK6dID88MbcHcZhpOGsfFRFfCpI4L0A/YmG1unsfiw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ATVqQuhiQ8EQgIql/hTldoGcxtaXZomSwBRawODJwjB8vDyHOD+YhDNsay/0dXFOM
-	 UZrr4g2qP7JX0QFFhpfl21xIkOIT6j30ysesmYGJ/S1lm+T5R2s721dbm5zwel5X9c
-	 nr4Vjera0rx/jDtXti3yARxk6MEofTn5p5qBb0t6fbjbFP7EuUz11IW4pjpYxpq/Ps
-	 Bo5pW3Dw1gdmhx91xKK60I8JhM+bpEOJW8fHxQhnTjKa3ED/cfyNYwAf1HwtrxiB81
-	 /FeYN7/bD7yKih+JpAzuIFXoFtYatPiBEg7kB0XxDa1zG1r1f7CIfcmA6MP4o56HqD
-	 /pBAtUt3ml8dA==
-Date: Sun, 12 Jan 2025 14:54:39 +0000
+	b=cTU/anH69d0j6QwfMBJohwHI6TQYoNC2uO7rPpkLVWXeG7exMOADOrXcwJWMY+4Av
+	 8+pKHsOiczmSWmJ9S4FsuStsNxptUp+Vy1Fl9BRz8GvJykPMtl0bjF3LVgf7jvDUxl
+	 OZzoUoWXtqHaHOypfW0xIIaRexAKHhk+hKavfIktOJ7OV0sB/ySxXtJBf+8gYWf6ZS
+	 fyoXrvZTF3g8rbs2aezkwsIW9hOmdb4Emm6lKuQip35DuGBVfNEmgGPGWBY8CWQ2s0
+	 eSMAUQ/ZrESGi+w4SWcaPg4a5VcT8IYcVCAPjF/vgprBZ7fqOgOSyaZ6VI9GMRUPqf
+	 Y6ut7iapCfXQw==
+Date: Sun, 12 Jan 2025 14:59:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, andrej.skvortzov@gmail.com, neil.armstrong@linaro.org,
- icenowy@aosc.io, megi@xff.cz, danila@jiaxyga.com,
- javier.carrasco.cruz@gmail.com, andy@kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <20250112145439.2624b22e@jic23-huawei>
-In-Reply-To: <20250112104453.45673-3-apokusinski01@gmail.com>
-References: <20250112104453.45673-1-apokusinski01@gmail.com>
-	<20250112104453.45673-3-apokusinski01@gmail.com>
+To: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra
+ <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
+ <jikos@kernel.org>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [PATCH] iio: hid-sensor-attributes: validate sensitivity
+ attributes
+Message-ID: <20250112145938.7138c922@jic23-huawei>
+In-Reply-To: <20250109040006.1273797-1-acelan.kao@canonical.com>
+References: <20250109040006.1273797-1-acelan.kao@canonical.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,244 +64,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 12 Jan 2025 11:44:53 +0100
-Antoni Pokusinski <apokusinski01@gmail.com> wrote:
+On Thu,  9 Jan 2025 12:00:06 +0800
+"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com> wrote:
 
-> Silicon Labs Si7210 is an I2C Hall effect magnetic position and
-> temperature sensor. The driver supports the following functionalities:
-> * reading the temperature measurements
-> * reading the magnetic field measurements in a single-shot mode
-> * choosing the magnetic field measurement scale (20 or 200 mT)
+> An invalid sensor device was observed which provided valid index and
+> report_ids for poll, report_state and power_state attributes, but had
+> invalid report_latency, sensitivity, and timestamp attributes. This would
+> cause the system to hang when using iio_info to access attributes, as
+> runtime PM tried to wake up an unresponsive sensor.
 > 
-> Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
-Hi Antoni,
+> [    2.594565] [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+> [    2.594573] [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff ffffffff:ffffffff
+> [    2.595485] [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+> [    2.595492] [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:11, 3:11, 1:11 ffffffff:ffffffff ffffffff:ffffffff
+> 
+> Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+If you can come up with an appropriate fixes tag that would be great
+as will help us figure out how far this might be backported.
 
-Some issues in the endian handling as your fix for the build bot
-warnings is backwards I think.
-A few other comments inline.
+Also, can we add any info on what device this was seen on?
++CC Jiri and Srinivas who are the other listed maintainers of this driver.
+
+Thanks,
 
 Jonathan
 
-> diff --git a/drivers/iio/magnetometer/si7210.c b/drivers/iio/magnetometer/si7210.c
-> new file mode 100644
-> index 000000000000..107312d127e6
-> --- /dev/null
-> +++ b/drivers/iio/magnetometer/si7210.c
-> @@ -0,0 +1,428 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Silicon Labs Si7210 Hall Effect sensor driver
-> + *
-> + * Copyright (c) 2024 Antoni Pokusinski <apokusinski01@gmail.com>
-> + *
-> + * Datasheet:
-> + *  https://www.silabs.com/documents/public/data-sheets/si7210-datasheet.pdf
-> + */
-> +
-> +#include <linux/bitfield.h>
-> +#include <linux/i2c.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/math64.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-
-At lease linux/mod_devicetable.h is missing here.
-we  more or less go by include what you use in kernel drivers so
-you should make minimal assumptions about what includes what.
-There are a few headers that are subsections of a wider interface
-where that isn't necessary but for most things should be here.
-
-
-> +static const struct iio_chan_spec si7210_channels[] = {
-> +	{
-> +		.type = IIO_MAGN,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
-> +	},
-> +	{
-
-Slight preference for more compact
-	}, {
-
-
-> +		.type = IIO_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-> +	}
-> +};
-> +
-> +static int si7210_fetch_measurement(struct si7210_data *data,
-> +				    struct iio_chan_spec const *chan,
-> +				    __be16 *buf)
-> +{
-> +	u8 dspsigsel = chan->type == IIO_MAGN ? 0 : 1;
-> +	int ret, result;
-> +
-> +	guard(mutex)(&data->fetch_lock);
-> +
-> +	ret = regmap_update_bits(data->regmap, SI7210_REG_DSPSIGSEL,
-> +				 SI7210_MASK_DSPSIGSEL, dspsigsel);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_update_bits(data->regmap, SI7210_REG_POWER_CTRL,
-> +				 SI7210_MASK_ONEBURST | SI7210_MASK_STOP,
-> +				 SI7210_MASK_ONEBURST & ~SI7210_MASK_STOP);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Read the contents of the registers containing the result: DSPSIGM, DSPSIGL */
-> +	ret = regmap_bulk_read(data->regmap, SI7210_REG_DSPSIGM, &result, 2);
-use sizeof to replace that 2.
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*buf = cpu_to_be16(result);
-
-You've lost me.  The regmap bulk will load in 'an order'. Not sure whether thant
-is big endian or little endian here, but it's definitely not CPU endian.
-I 'think' you can read directly into buf.  Must be a wrong endian conversion
-somewhere though as on typical le system you are currently reversing the bytes
-here and at the callsite.
-
-However, I think what you actually want is
-static int si7210_fetch_measurement(struct si7210_data *data,
-				    struct iio_chan_spec const *chan,
-				    u16 *buf)
-	__be16 result;
-...
-
-
-	ret = regmap_bulk_read(..., &result, sizeof(result));
-...
-	*buf = be16_to_cpu(result);
-
-
-
-
-
-> +
-> +	return 0;
-> +}
-> +
-> +static int si7210_read_raw(struct iio_dev *indio_dev,
-> +			   struct iio_chan_spec const *chan,
-> +			   int *val, int *val2, long mask)
-> +{
-> +	struct si7210_data *data = iio_priv(indio_dev);
-> +	long long temp;
-> +	__be16 dspsig;
-> +	int ret;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = dspsig & GENMASK(14, 0);
-It is big endian. You can't do this and expect to hit the right bits.
-More to the point you can't set val to the big endian anyway so markings
-are wrong somewhere.
-
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 0;
-> +		if (data->curr_scale == 20)
-> +			*val2 = 1250;
-> +		else /* data->curr_scale == 200 */
-> +			*val2 = 12500;
-> +		return IIO_VAL_INT_PLUS_MICRO;
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = -16384;
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_PROCESSED:
-> +		ret = si7210_fetch_measurement(data, chan, &dspsig);
-> +		if (ret < 0)
-> +			return ret;
-> +
-Big endian, You can't do any of this safely. Convert it to cpu endian (e.g. u16)
-first.
-> +		temp = FIELD_GET(GENMASK(14, 3), dspsig);
-> +		temp = div_s64(-383 * temp * temp, 100) + 160940 * temp - 279800000;
-> +		temp = (1 + (data->temp_gain / 2048)) * temp + (1000000 / 16) * data->temp_offset;
-> +
-> +		ret = regulator_get_voltage(data->vdd);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		temp -= 222 * div_s64(ret, 1000);
-> +
-> +		*val = div_s64(temp, 1000);
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-...
-
-> +static int si7210_device_wake(struct si7210_data *data)
-> +{
-> +	/*
-> +	 * According to the datasheet, the primary method to wake up a
-> +	 * device is to send an empty write. However this is not feasible
-> +	 * using current API so we use the other method i.e. read a single
-> +	 * byte. The device should respond with 0xFF.
-> +	 */
-> +
-> +	int ret;
-> +
-> +	ret = i2c_smbus_read_byte(data->client);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ret != 0xFF)
-> +		return -EIO;
-> +
-> +	return 0;
-> +}
-> +
-> +static int si7210_device_init(struct si7210_data *data)
-> +{
-> +	int ret;
-> +	unsigned int i;
-> +
-> +	ret = si7210_device_wake(data);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	fsleep(1000);
-> +
-> +	ret = si7210_read_otpreg_val(data, SI7210_OTPREG_TMP_GAIN, &data->temp_gain);
-> +	if (ret < 0)
-> +		return ret;
-
-Blank line here and similar places where you have a call / check result pair before
-doing something more or less unrelated.
-
-> +	ret = si7210_read_otpreg_val(data, SI7210_OTPREG_TMP_OFF, &data->temp_offset);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	for (i = 0; i < A_REGS_COUNT; i++) {
-> +		ret = si7210_read_otpreg_val(data, a20_otp_regs[i], &data->scale_20_a[i]);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +	for (i = 0; i < A_REGS_COUNT; i++) {
-> +		ret = si7210_read_otpreg_val(data, a200_otp_regs[i], &data->scale_200_a[i]);
-> +		if (ret < 0)
-> +			return ret;
+> ---
+>  .../hid-sensors/hid-sensor-attributes.c       | 23 +++++++++++--------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> index ad1882f608c0..b7ffd97e6c56 100644
+> --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> @@ -564,8 +564,21 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+>  	} else
+>  		st->timestamp_ns_scale = 1000000000;
+>  
+> +	ret = 0;
+> +	if (st->sensitivity.index < 0 || st->sensitivity_rel.index < 0) {
+> +		ret = -EINVAL;
+> +		goto out;
 > +	}
 > +
-> +	ret = regmap_update_bits(data->regmap, SI7210_REG_ARAUTOINC,
-> +				 SI7210_MASK_ARAUTOINC, SI7210_MASK_ARAUTOINC);
-> +	if (ret < 0)
-> +		return ret;
+>  	hid_sensor_get_report_latency_info(hsdev, usage_id, st);
+>  
+> +	ret = sensor_hub_get_feature(hsdev,
+> +				st->power_state.report_id,
+> +				st->power_state.index, sizeof(value), &value);
+> +	if (value < 0)
+> +		ret = -EINVAL;
 > +
-> +	return si7210_set_scale(data, 20);
-> +}
->
+> +out:
+>  	hid_dbg(hsdev->hdev, "common attributes: %x:%x, %x:%x, %x:%x %x:%x %x:%x\n",
+>  		st->poll.index, st->poll.report_id,
+>  		st->report_state.index, st->report_state.report_id,
+> @@ -573,15 +586,7 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
+>  		st->sensitivity.index, st->sensitivity.report_id,
+>  		timestamp.index, timestamp.report_id);
+>  
+> -	ret = sensor_hub_get_feature(hsdev,
+> -				st->power_state.report_id,
+> -				st->power_state.index, sizeof(value), &value);
+> -	if (ret < 0)
+> -		return ret;
+> -	if (value < 0)
+> -		return -EINVAL;
+> -
+> -	return 0;
+> +	return ret;
+>  }
+>  EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, "IIO_HID");
+>  
+
 

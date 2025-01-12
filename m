@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-14206-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14207-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345E9A0A97D
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:19:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BA6A0A985
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237131886546
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BC13A17E6
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2281B4134;
-	Sun, 12 Jan 2025 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB911B4254;
+	Sun, 12 Jan 2025 13:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnqKvgg6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oSkREVN7"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB87815278E;
-	Sun, 12 Jan 2025 13:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B24915278E;
+	Sun, 12 Jan 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736687934; cv=none; b=pcWhb3RTqfGE9WyvRHkABlTsmH9UR5+bzyEhYLTM/7vCpA3ITd+8etbPQAJeAAYwOfcnJ6BzyDqHoVaJrxEf/geoSZPO4AhgFCUBGqiv3cgkReKaRrHTmil6uo2djQnwrqGoI7NzYkZkTRHccbkLNF4xPLageiONkUCJkIvLIsU=
+	t=1736688149; cv=none; b=JavcIerGWJOUwFKimzC/Qg+Eef13g9AyrdP7bIMOYCZBjPX4cRO2kro1NT80C5czu68/1DlA1L+S9rOvEUYV3BYM575qvQj2badm55/YKdegA1YuiLqxHLzw4If8XbYGRM9EmkFQgdx51Vm6eVv2naXhIn+HOy9EbHi7XX3RvsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736687934; c=relaxed/simple;
-	bh=3EZipdaCtN8SR7n678FBxi9oJC2hlQZ4fitrFNBsq64=;
+	s=arc-20240116; t=1736688149; c=relaxed/simple;
+	bh=VeOwc3dw6Sh9zY8TAw1nwR/5+k/71wp2kV0z3cD1Dn8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uGorPVjg6arttLKC7wIhxncpmPRM6+1ZNaddt5PX/IEMAktTQGC3+z60oS8ZW/SqHXE22v+ou4ykyUfhoc1Gu13XmE51Nrpu7NncJk73SbgbfoBqX08d+uTb/8JZQpfnKyy9DT4IeyPweysXccAQnJLX68J0iwOQvVSvg+DkMEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnqKvgg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FE0C4CEDF;
-	Sun, 12 Jan 2025 13:18:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cvBjqplVmZblAto9lUL/6QhZXR966+98YA6HzE86piP3kJb7GJg5kI42LOzKRqfbinhaAs4tK8ZYmI9NESJM2+WumaFEiB/dTdoOFudXVSXATPFNsduWIRQBf1AzK0BtRcGd68XdfzcrrvLhul+EKm/zOqTJC5EVmH+1JcK/RZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oSkREVN7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F76CC4CEDF;
+	Sun, 12 Jan 2025 13:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736687933;
-	bh=3EZipdaCtN8SR7n678FBxi9oJC2hlQZ4fitrFNBsq64=;
+	s=k20201202; t=1736688147;
+	bh=VeOwc3dw6Sh9zY8TAw1nwR/5+k/71wp2kV0z3cD1Dn8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rnqKvgg6cJKPcFTJ7oKP24e9Sij8nvW/LNAdYFTIDTPdlHlHA95Uiyl2zEsCEPm80
-	 jEXSRkWHr42crU/eMCaFuwzRDOKUBCgm93C6TYZK08oL7qTkGtd6tppTALVh2PwNp7
-	 UR+k+GUX6+6B1xA4jDoS/6URVEcYllxJ3xeB4ZizKtfWDcInHlyTZoBx8anBfapCuc
-	 wzXVqtOl8VmjKGiK4YKoP+ROJdbmcII5LEGrFmpJmD+2AyRHP9dvJNpjPKqAa73zlC
-	 GGQtbPt5Dw/S9hk2UEYVjStq1NuIVjAftcdk0YvgqkhE1xpXT/pQQx1arjj3fy7I3z
-	 GlFd1zNwIqtGQ==
-Date: Sun, 12 Jan 2025 13:18:45 +0000
+	b=oSkREVN7k+afLjnopbjNmz1XnfHJ6qFe8dc/aYJeoxD9p2eeCq9MWVQtMt+U2xHiJ
+	 K2jeRyda0/t4Rr9TOvHTAcg+poBKXTHmo+QIGXP3P7qXWIGJodgR6KEqzp3FnfAXEY
+	 Wu5kAYCVb0mxVddTW/6VyOBcfYdHfYmCrYTc3Xczf8+aOUSIv2mye1VF2SdmbNsJ2A
+	 oepHpDbY6OhhwRBI/xiGhgu+I+PN3nEtg/BWafw/eKIxajCNICc9VEKsOg9pvHLD6f
+	 u7QFKXEWw9l9wTwn5KsM3jN2Qrg/2mUnF0lFefJ8si/14mWiuhFfYQLBqhUyn2VuXT
+	 2eGmwg3MiA5sg==
+Date: Sun, 12 Jan 2025 13:22:19 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH 1/2] iio: light: veml6030: extend regmap to support
- regfields and caching
-Message-ID: <20250112131845.539ecc7c@jic23-huawei>
-In-Reply-To: <20250107-veml6030-scale-v1-1-1281e3ad012c@gmail.com>
+ <Jonathan.Cameron@huawei.com>, Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH 2/2] iio: light: veml6030: fix scale to conform to ABI
+Message-ID: <20250112132219.7b0eb004@jic23-huawei>
+In-Reply-To: <20250107-veml6030-scale-v1-2-1281e3ad012c@gmail.com>
 References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
-	<20250107-veml6030-scale-v1-1-1281e3ad012c@gmail.com>
+	<20250107-veml6030-scale-v1-2-1281e3ad012c@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,51 +62,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 07 Jan 2025 21:50:21 +0100
+On Tue, 07 Jan 2025 21:50:22 +0100
 Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> The configuration registers are not volatile and are not affected
-> by read operations (i.e. not precious), making them suitable to be
-> cached in order to reduce the number of accesses to the device.
+> The current scale is not ABI-compliant as it is just the sensor gain
+> instead of the value that acts as a multiplier to be applied to the raw
+> value (there is no offset).
 > 
-> Add support for regfields as well to simplify register operations,
-> taking into account the different fields for the veml6030/veml7700 and
-> veml6035.
+> Use the iio-gts helpers to obtain the proper scale values according to
+> the gain and integration time to match the resolution tables from the
+> datasheet and drop dedicated variables to store the current values of
+> the integration time, gain and resolution. When at it, use 'scale'
+> instead of 'gain' consistently for the get/set functions to avoid
+> misunderstandings.
 > 
+> Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
 > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
->  drivers/iio/light/veml6030.c | 141 +++++++++++++++++++++++++++++++++++--------
->  1 file changed, 116 insertions(+), 25 deletions(-)
-> 
-> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index 9b71825eea9bee2146be17ed2f30f5a8f7ad37e3..a6385c6d3fba59a6b22845a3c5e252b619faed65 100644
-> --- a/drivers/iio/light/veml6030.c
-> +++ b/drivers/iio/light/veml6030.c
-> @@ -65,6 +65,11 @@ enum veml6030_scan {
->  	VEML6030_SCAN_TIMESTAMP,
->  };
->  
-> +struct veml6030_rf {
-> +	struct regmap_field *it;
-> +	struct regmap_field *gain;
-> +};
-> +
->  struct veml603x_chip {
->  	const char *name;
->  	const int(*scale_vals)[][2];
-> @@ -75,6 +80,7 @@ struct veml603x_chip {
->  	int (*set_info)(struct iio_dev *indio_dev);
->  	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
->  	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
-> +	int (*regfield_init)(struct iio_dev *indio_dev);
 
-With only two fields, why use a callback rather than just adding the two
-const struct reg_field into this structure directly?
+For iio-gts useage please +CC Matti.
 
-I'd also be tempted to do the caching and regfield changes as separate patches.
+Matti is far more likely to spot subtle issues around that than other
+reviewers such as me :)  Obviously that depends on Matti having time!
+
+To me this looks fine
 
 Jonathan
-
-
-
 

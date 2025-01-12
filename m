@@ -1,158 +1,161 @@
-Return-Path: <linux-iio+bounces-14148-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98CAA0A6A9
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 00:22:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4658DA0A6B1
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 01:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B379A1689F7
-	for <lists+linux-iio@lfdr.de>; Sat, 11 Jan 2025 23:22:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E701A3A12BF
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 00:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57061BC9EE;
-	Sat, 11 Jan 2025 23:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194CD4A35;
+	Sun, 12 Jan 2025 00:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NbSanFuH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WdVKmThT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7AB199924;
-	Sat, 11 Jan 2025 23:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C97819;
+	Sun, 12 Jan 2025 00:01:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736637764; cv=none; b=KLJvY+n/Ht++dIF6g8Yu5cZfK09QW6x65VRF6UMbIvZYfoi2U0xOwL0AWqysem1iZkg6pjUItc2ipMEbBAC9u2fnCNAhMexNusACvo9VM9KHC0SlnS+nmy8qsZsVIMgBXKvCtx2+q8/5QOVO20smCXuqQ49cRDaAmqzEO7kdH9k=
+	t=1736640062; cv=none; b=sIoXIkeSC/wyygFsmPo+8+LsF0jKYLuLB9asieHVyb/wZZI9WiYrDNnJ9cnZYaeGArH6ZtiMUh3/TiLSe6ioqa4P4EPyCgF0JHKBUsySfczuCUYoQJ6M85p6e5hPie+UXwfsS4+b6GNE3mHs4ZSNLkL3Jpjc8swgx1nBiESiWHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736637764; c=relaxed/simple;
-	bh=kgTx0iPuTYR3nDwT/CHQ41bHPGBEFQn1moXbgDdo8FU=;
+	s=arc-20240116; t=1736640062; c=relaxed/simple;
+	bh=FxH0cllwR1HPI/Hq0JZ72sZwNkw/QzoeKvTAn9qTgNg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LgCia8/UIRf2q9ISjFEl+dfl7Plyo5b19k4qGcgTrCk5JQNadMXenEqbIj9VvxvDb/ev2dNU/p/Jxs5O/91D3odAWe5RdNOGfm41AiuMk7kvhDTiEcFagF2SYTxgTJLio2EbihFR+SYWQYZI3246dWnnwFbseNd+8QQxNdoYHgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NbSanFuH; arc=none smtp.client-ip=209.85.161.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=L5irTiQkdWq7v/BN3b6R705t5jCbvY4e/6DIa5cCvQJdRyoXUIZol6r0InGoSM+lvL5P1kYvNEP9r5hSrF2rizeVM6FXtQZ/8vWGedK5siNvmddcvze8UMiSSDt2Va9jm7RIvZFgbQZN1UDqsEAdPNhcl3dojd8519kZXyZstBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WdVKmThT; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5f2e32b44dfso257045eaf.2;
-        Sat, 11 Jan 2025 15:22:42 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71e3c7117e8so69521a34.2;
+        Sat, 11 Jan 2025 16:01:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736637762; x=1737242562; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=33Dv9n42OXA67oxG0b3KHx/ASsgttylLmsdpaayyPls=;
-        b=NbSanFuHiNKw9fXlqC3sQVzKYf0/3K1lnaAbXsAkhL2rvtjUbVbcxRpo01InNGP5Sh
-         7qtSZYkGloyoOQiKN83/n8mM3vc5RrLcf28CUKggk/Nd6+tezDhiO5RUNc1xszhnyDcJ
-         pm9jsI3fdgnRGsnKh6UwQPBdASPzw6ozuQaeE5fSj/E90EiS/g+78XsbJOd7YFCPDcT5
-         EwLeQuNyM0e83kgdgDr+qEvDZKvwYC7mYjBF8vRipCgTLtNdvNdktuKbQADSAMPNsar/
-         wrcs25V+X8bVoW1PyRtbJfeKU4X6zHglK9JvS1fD1gSQ2qa/oPCrgQM7XTwQiMB3kcVd
-         Dp8g==
+        d=gmail.com; s=20230601; t=1736640060; x=1737244860; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ViMxrOr6TBlIcv8Q9XOTTtXutX4mRftVRSACLwo6Z9c=;
+        b=WdVKmThTooXV6uj0yFupgVv08MOHUqgx71lhHLOsZS2iKaWM+y6TEMKrsnHZZxgam/
+         7fsnza5ICjMRfrM2Vfquwb3WIctyj9qbrA/FKabFNCV/X1iX2D9hnB6zsTr+h8TsMh3m
+         Euus0UGl/YSb7zU+45ios2eCwEMBzidASuRGm1GuIDa/9d5TIiLHgYbPxr/P5jXQ8Da5
+         5zCiek3uBOWBv1Mpl4kL9N5zBJE2BU97ZKOP4wXkr72+bvwhQ5q0EZFcFRSJwhEkT0pG
+         Y7iaPnsOTWANA3oaDC80IFg5MOyXZlaXht2q6mVxLSGEusBmhyZCaC+4fWnGc+KkR5R0
+         JlNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736637762; x=1737242562;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:reply-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=33Dv9n42OXA67oxG0b3KHx/ASsgttylLmsdpaayyPls=;
-        b=AjeLhWyxO8AVWIE3sSHofOCBPR9Va88tKTLBnFSwKPYCMIAGFkKP288McWgWfSKH2s
-         5hcYOTHf1O89eeKvNCsV2d/vYpyaikcwcVkwXe9PJesUeG+E8XRajV8TbIErdcI+0naq
-         sAqPYeclcnqP4wUrAUZv78cYvK3qCGMhVuak9RSUjp+ybFJoLNo8ygKiKwf1MBWTScMs
-         J22KG4fJkgYIztJ32re+ZcAK9IeT3Ujyx0G5nUAw2FBVlx+1qgt0TREMVuug+ozVH/Y+
-         pKX6P5WoO5KlxzU5peA4ozdcD9y4xK+p0jCwv5svhvHUPhAF3+Zfxw6pjq20viMM+29S
-         RRBA==
-X-Forwarded-Encrypted: i=1; AJvYcCU62Qsz2JTlbl3MD/nPStFmQ13zpigC/tQf0ELjjdzJ7sEeQUM1xdH1M5MGLZiuT99dxhztbbh7E23h@vger.kernel.org, AJvYcCW3DfLXHcVeq3PjhknGGAoBb/AuzpEiMaJf5OmYGgALTq5+up33KWRNqm+RT1Ly3OAYAoL+7RmjpyaN@vger.kernel.org, AJvYcCWdSTiOi58mrqIyalrfykSYospUvzJsYkibMaYIcwWHOrI7+d63F9LJrvigTBRmg6oWNkvQROvnh7pRAVoO@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9AZmodro0U0k7jKnYfsD3D8Z1cQ0cwnuTuj5aC2ygWFxPn0v5
-	Z6UTRpgdQjrGO8t2XSonSPuI6LoJFmuBGEpAcwszFdllqY++Ohfw
-X-Gm-Gg: ASbGncuxl8ibm7xI2O80FC2OrZH2GKvtwSDpy2fsvR2f6R0lL/grfp68P415dF6Zdok
-	l8V29JpS8+2YfP+IUt77w/wMIk8Glc6wcNcKg9mJKQDHswOsgbcUYuelTE8vbY9iqloVmafJXsb
-	eaunUnwfWt4dsXjUbrerfT9vuPExg+yDF4hqJGhowQKTRzfJAw/ktZvN80eXWqRF3fA2n2KQasD
-	1NJ9AHlYMmLRaynv3ct25WHvICMJtXHw8JGiwuM3W7NZSujcZlVVEh+zRGRdGOkqKlerGRyX2Hp
-	FQ==
-X-Google-Smtp-Source: AGHT+IEWzbM18iz+WUFAvgzwU9Y5Xjpzidv1HXQ8icujb5px+DQQ8Fq/vi6rKDmeRpphLT+zlNsnbA==
-X-Received: by 2002:a05:6830:660f:b0:71d:4eef:8f03 with SMTP id 46e09a7af769-721e2cd8c1cmr3515485a34.0.1736637762125;
-        Sat, 11 Jan 2025 15:22:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736640060; x=1737244860;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ViMxrOr6TBlIcv8Q9XOTTtXutX4mRftVRSACLwo6Z9c=;
+        b=mKu4k6Vx6FZ/dUj3WkkwDaJRBqB5Ensp2ucnZa0Z3cMyDXJGddCqyiwjSzvqLvFgjI
+         LoA3bBJ2OiaMwDB+tyQvI2JOMLGgRrar88rPYpJKFWrmMY+y/ujERIVcH2NErp6klwjj
+         4orP9HaolBxj0IWGIz7FvSQg5FQuRHNq+a8t+lUC9HaEpI0TH58lzJYD98icBQTuYkub
+         oZuTkdhTQW5DQujg7EeT5sFpuC06YXsB6+2qf79/i/tUgYcutoFiAj7AaPX2fY9oZjJO
+         iqvcsJ9mMU+OiZ7WCGSIqnqu5bGHWj9wGOg6KUstBRvc2BzF2QAtd3OsbE/9WHde96gg
+         rHxw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1UDkicvxnxGUctiuCJm5+7wdOjMK6NcfvMeT5nyZybcy+lApOh79HGXQ0uIsYV0sSFwkP4A5Gq+y4@vger.kernel.org, AJvYcCUrbJdrOUjwYvwZlX/TQpOxTVahblsGpkOcm35ESxaXoGwJDZpqq/iapwL5bg3jCXpxdH99vgsa8mLoPvXL@vger.kernel.org, AJvYcCXshqeRMgt3bDJMi3+N1UdiabjLvq3tkg8NyQX+GEssVfcOS319cOaB7stR0sFHA167mTt0SJBQCdV1@vger.kernel.org
+X-Gm-Message-State: AOJu0YzFmZp63AV/Lugjjrqr0W7P6EvNnY440ashXNJcpVZxYD289zjt
+	TRdW61lWpwE0J+rsqYzDFiaYGf1g4y4HhJfu/h2Jk/ZqHZ9zLlQ1
+X-Gm-Gg: ASbGncsVwJA6+Yst2gQttpek4y2HMPM1zhUgFsgyL25iVN3VKvU0Swxf8EIZlPmCYoT
+	GA773TctIweCFN/tivkeQ+K+USQYxtjPs8lgBHafXlPWpg8+UpX8Ql3M9PLCAD8rVvHKabZNWYx
+	d9WGLH4iJK5s3Y7ZWlEtHm0ETBEIi6qstso9gCQhqXK2cbDEK8b+H12loSgDxkjw9zqP7O+cgJe
+	GmEf4LO6+fBkbHA6/MUve9jSdy6qHeaMQcC83X28nCxOJ5aqr7FUmxRjfEh74KiUSsRzljPqc2e
+	iw==
+X-Google-Smtp-Source: AGHT+IF1Fq+N/UGakrZ4h80jKryj7M8L1Vv+uvDDr3m1UkvGL7n9zUVHCuXf3m932Y9dipoGq5dkiw==
+X-Received: by 2002:a05:6830:6118:b0:71e:af5:4981 with SMTP id 46e09a7af769-721e2f29f30mr3386140a34.6.1736640060176;
+        Sat, 11 Jan 2025 16:01:00 -0800 (PST)
 Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855290esm2115147a34.29.2025.01.11.15.22.37
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231862a38csm2136656a34.68.2025.01.11.16.00.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 15:22:40 -0800 (PST)
-Date: Sat, 11 Jan 2025 20:22:36 -0300
+        Sat, 11 Jan 2025 16:00:59 -0800 (PST)
+Date: Sat, 11 Jan 2025 21:00:55 -0300
 From: Jonathan Santos <jonath4nns@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 03/15] Documentation: ABI: testing: ad7768-1: Add
- device specific ABI documentation.
-Message-ID: <Z4L9PKKNfonI/4E2@JSANTO12-L01.ad.analog.com>
-Reply-To: 58ea1899-05be-4743-911b-77a56f08c347@baylibre.com
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, jic23@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org
+Subject: Re: [PATCH v1 04/15] iio: adc: ad7768-1: Fix conversion result sign
+Message-ID: <Z4MGNyDTMj0JBGod@JSANTO12-L01.ad.analog.com>
+Reply-To: Z4GWpjnAoRKtexz2@debian-bullseye-live-builder-amd64.smtp.subspace.kernel.org
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <f78c3dee381b23c17787f1e2bc9c5667741d407b.1736201898.git.Jonathan.Santos@analog.com>
- <58ea1899-05be-4743-911b-77a56f08c347@baylibre.com>
+ <e521bb5cb60d413edbcd1ea582fd81073218eaf5.1736201898.git.Jonathan.Santos@analog.com>
+ <Z4GWpjnAoRKtexz2@debian-BULLSEYE-live-builder-AMD64>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <58ea1899-05be-4743-911b-77a56f08c347@baylibre.com>
+In-Reply-To: <Z4GWpjnAoRKtexz2@debian-BULLSEYE-live-builder-AMD64>
 
-On 01/07, David Lechner wrote:
-> On 1/7/25 9:24 AM, Jonathan Santos wrote:
-> > Add ABI documentation specific to the ad7768-1 device, detailing
-> > the decimation_rate attribute for better clarity and usability.
+On 01/10, Marcelo Schmitt wrote:
+> On 01/07, Jonathan Santos wrote:
+> > From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > > 
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > The ad7768-1 is a fully differential ADC, meaning that the voltage
+> > conversion result is a signed value. Since the value is a 24 bit one,
+> Hmm, I think the reason why we sign _raw values should be because of the ADC
+> output code format. There are differential ADCs that can measure a negative
+> difference between IN+ and IN- but outputting straight binary data format (not
+> signed values). In those cases, the _offset attribute is used to "shift" the
+> _raw value so that output codes that represent IN+ < IN- are adjusted to a
+> negative decimal value (the _raw + _offset part of IIO ABI to get to mV units).
+> For AD7768-1/ADAQ7768-1, the ADC output code is indeed two's complement and thus
+> signed so the code change is correct for it.
+> Since you are probably going to re-spin on the patch series, will be nice
+> to adjust the message to something like:
+> The ad7768-1 ADC output code is two's complement, meaning that the voltage
+> conversion result is a signed value. ...
+> 
+> With that,
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+>
+
+You are right, Thanks! will do that.
+
+> > stored in a 32 bit variable, the sign should be extended in order to get
+> > the correct representation.
+> > 
+> > Also the channel description has been updated to signed representation,
+> > to match the ADC specifications.
+> > 
+> > Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+> > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > > ---
-> >  .../ABI/testing/sysfs-bus-iio-adc-ad7768-1          | 13 +++++++++++++
-> >  1 file changed, 13 insertions(+)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
+> >  drivers/iio/adc/ad7768-1.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
 > > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
-> > new file mode 100644
-> > index 000000000000..065247f07cfb
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
-> > @@ -0,0 +1,13 @@
-> > +What:		/sys/bus/iio/devices/iio:deviceX/decimation_rate_available
-> > +KernelVersion:
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Reading returns a range of possible decimation rate values.
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/decimation_rate
-> > +KernelVersion:
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Sets up the decimation rate for the digital filter. This can
-> > +		directly impact in the final sampling frequency. Reading returns
-> > +		the decimation rate. Writing sets the decimation rate.
-> 
-> If this only affects the filter, I would suggest to add `filter_` to the
-> beginning of the attribute names.
-> 
-> Also, an explanation of how to interpret the numbers would be helpful. It looks
-> like a unitless number that acts a sort of a multiplier or divider, but that
-> part isn't so clear to me. 
-> 
-> Or...
-> 
-> Since the decimation rate affects the -3dB point of the filters we could use
-> the standard IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY instead of introducing
-> a new attribute.
-
-Well, here the -3dB cutoff depends on the ODR, which is determined by both the MCLK
-divider and decimation rate.
-
-Wideband: -3dB at 0.433 × ODR
-Sinc5: -3dB at 0.204 × ODR
-Sinc3: -3dB at 0.2617 × ODR
-
-If we use _filter_low_pass_3db_frequency to control the decimation and _sampling_frequency
-to control the MCLK divider, wouldn’t it be confusing for one to always affect the other?
-A different ODR would result in a different cutoff, and vice versa.
-
-Would something like <type>[_name]_oversampling_ratio make more sense? Let me know what you think
-
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index 113703fb7245..c3cf04311c40 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> > @@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+> >  		.channel = 0,
+> >  		.scan_index = 0,
+> >  		.scan_type = {
+> > -			.sign = 'u',
+> > +			.sign = 's',
+> >  			.realbits = 24,
+> >  			.storagebits = 32,
+> >  			.shift = 8,
+> > @@ -371,7 +371,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+> >  
+> >  		ret = ad7768_scan_direct(indio_dev);
+> >  		if (ret >= 0)
+> > -			*val = ret;
+> > +			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
+> >  
+> >  		iio_device_release_direct_mode(indio_dev);
+> >  		if (ret < 0)
+> > -- 
+> > 2.34.1
+> > 
 

@@ -1,60 +1,61 @@
-Return-Path: <linux-iio+bounces-14202-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14203-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297C0A0A962
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:59:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06DD4A0A967
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D08D7A1511
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144D3165E33
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91E71B4148;
-	Sun, 12 Jan 2025 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF00A1B4157;
+	Sun, 12 Jan 2025 13:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h45FQaKR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8Oe7h0f"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC0D3C1F;
-	Sun, 12 Jan 2025 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D4F224D7;
+	Sun, 12 Jan 2025 13:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736686762; cv=none; b=KrDNkCJ6w99X1AiEV2zoMkbVZ+IjDrNW9l2Qm6W2jYJtR7JWniWxaGpJDygkCwpvjyaR0rHkC7aFFy/hQ2lNhn5kPl/cBcLPgGIIkPC+6+ZR7WjQz8mg6eReqdLZTaGqHeFDPC5DnYJIBrHHO1dHeHF+yQIoHRpAfP+urz7mncI=
+	t=1736687076; cv=none; b=ot6sTzDPK23Tqmo36q9Ei8CFoOFWi33LvdcDrL9l0GLAsBaiyHUXK1eaJU2pohPpTM1gSOQ/PozD/MyvVErDlFzHFVkyxfOxTXztD4YIQ4iDUcjPiPII3/16Kzkzrjw69+BKlnHt4u624zwm9tQySl1QdWMYoFjYaNu+8KtWsq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736686762; c=relaxed/simple;
-	bh=WkrHIGdtR5ZdYcpXZgxkITmKXrAiqITdKKOcQ66HBCU=;
+	s=arc-20240116; t=1736687076; c=relaxed/simple;
+	bh=5z7pUTVj8hCbgOiWle6Q+0t/vIfOR2hASvkUXFUt1DY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DS6gauJneoL4mZWc/pfws7be/xYf/xiqmEDZZwizEmV8C8JaZl5s+Pp6SiXAp3OydxEndK9YiKdTuwza2vostedtivNWKM3LmieVNFr3e+dLVLB8AzFsWmv+5yO0n2xyRpJeUBUV/cqn71KhvWkvXbfZ31jaljmHaL4qQHXW22g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h45FQaKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A46C4CEE2;
-	Sun, 12 Jan 2025 12:59:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E4+hFcxkkLKSi9He7Tqt6sDJ+QVNh/Cy6hZxzDOeDWn96Lrb47E1kCX0BzWwduIxmhYqL/u0kCGbutKFWR7MHVkuHeYswlNczXvTZg41n/uMagReBEW1zsXOpjigMCESLzUafsq2R98dBDjVsQNuSZXolNKShaigSfrlm2mS/bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8Oe7h0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A278C4CEDF;
+	Sun, 12 Jan 2025 13:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736686762;
-	bh=WkrHIGdtR5ZdYcpXZgxkITmKXrAiqITdKKOcQ66HBCU=;
+	s=k20201202; t=1736687075;
+	bh=5z7pUTVj8hCbgOiWle6Q+0t/vIfOR2hASvkUXFUt1DY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=h45FQaKRzrf0dToOgmhgUDBtGTtvAA43FP58SHlm8DvDnaByPLv3ulTMrdGJ7G2fo
-	 cfckFfrvQHdmjd0s6rY9PZUV+8Gglf5Yh0etnNEYcTScmL5NeXM7+RvR95ywP0r84w
-	 3iWV7J7WpvXNe/85vYUHL8G0A/0SIdu9o8GOkktEClJXV2QlWq/c61qo+b1Y4G5a0q
-	 RkDh4SIvAqbK1C/sdFxxJOmibjFnwAtSZke516olbiDmU3Fza+0Q98CzBCJBUfUwoD
-	 SZPfnZAD3dKjgl/+Jh8XOAlfBTmCQNd9gt6ti/6c904gHchwyFa+XxYCpN305SikTG
-	 wARvMsXbB8rjA==
-Date: Sun, 12 Jan 2025 12:59:13 +0000
+	b=i8Oe7h0fyqP0hNqJn8ZtGt7GfKoMOO4OWQvAn2Kk4OBddA9KfyOPLL5kWR10MK6Mh
+	 EOhV5iPVkfsu5v6oBUWYndyjgkhFbE30OSscsrqpNKDa1/qEAgwI4QwIJUeIu0CcXC
+	 xGjel2KZqSkm4+6sJSoKh4lhJmgLI97toV8KELpOEEUKlgO7xcrKMLoNxRoCUrzNmb
+	 8iETBSjFJwb/VqVk7aB5EKBFZZd2FWBdsFuglnLqBf/Ek4zKrn2Askvhi58KgWbztu
+	 PqL8LSY1Inl0OB4WoFUcJSzQSt/pCfFLvTQ8HckWJQNwV+yddocy7fHp8LpD6QRep6
+	 k/gWv4mW3/xdQ==
+Date: Sun, 12 Jan 2025 13:04:26 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
  Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 14/15] iio: adc: ad7768-1: add support for
- Synchronization over SPI
-Message-ID: <20250112125913.3ea9c71b@jic23-huawei>
-In-Reply-To: <c0981545-5e0e-4b6e-93d9-cb2871b583e8@baylibre.com>
+ conor+dt@kernel.org, marcelo.schmitt1@gmail.com, PopPaul2021
+ <paul.pop@analog.com>
+Subject: Re: [PATCH v1 15/15] iio: adc: ad7768-1: add filter type and
+ decimation rate attributes
+Message-ID: <20250112130426.29b660b1@jic23-huawei>
+In-Reply-To: <5d492f38-b103-4850-8d13-ef1fd1d2c483@baylibre.com>
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
-	<0f9a15e6e2e6b7b2c82ef79d8cb883d9eb6c55dd.1736201898.git.Jonathan.Santos@analog.com>
-	<c0981545-5e0e-4b6e-93d9-cb2871b583e8@baylibre.com>
+	<b88a167234c49a66792c0d3e182bb40b5b695b5c.1736201898.git.Jonathan.Santos@analog.com>
+	<5d492f38-b103-4850-8d13-ef1fd1d2c483@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,68 +66,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 7 Jan 2025 17:50:29 -0600
+On Tue, 7 Jan 2025 17:50:56 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
 > On 1/7/25 9:27 AM, Jonathan Santos wrote:
-> > The synchronization method using GPIO requires the generated pulse to be
-> > truly synchronous with the base MCLK signal. When it is not possible to
-> > do that in hardware, the datasheet recommends using synchronization over
-> > SPI, where the generated pulse is already synchronous with MCLK. This
-> > requires the SYNC_OUT pin to be connected to SYNC_IN pin.
+> > Separate filter type and decimation rate from the sampling frequency
+> > attribute. The new filter type attribute enables SINC3 and WIDEBAND
+> > filters, which were previously unavailable.  
+> 
+> See related comments in my reply to the documentation patches about wideband vs.
+> FIR and decimation rate vs. -3dB cutoff.
+> 
 > > 
-> > Add the option to handle device synchronization over SPI.
-> > 
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---  
+> > Previously, combining decimation and MCLK divider in the sampling
+> > frequency obscured performance trade-offs. Lower MCLK divider
+> > settings increase power usage, while lower decimation rates reduce
+> > precision by decreasing averaging. By creating a decimation attribute,
+> > users gain finer control over performance.  
 > 
-> ...
-> 
-> >  static int ad7768_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
-> > @@ -697,11 +708,21 @@ static int ad7768_setup(struct ad7768_state *st)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	st->gpio_sync_in = devm_gpiod_get(&st->spi->dev, "adi,sync-in",
-> > -					  GPIOD_OUT_LOW);
-> > +	st->gpio_sync_in = devm_gpiod_get_optional(&st->spi->dev, "adi,sync-in",
-> > +						   GPIOD_OUT_LOW);
-> >  	if (IS_ERR(st->gpio_sync_in))
-> >  		return PTR_ERR(st->gpio_sync_in);
-> >  
-> > +	if (device_property_present(&st->spi->dev, "adi,sync-in-spi"))
-> > +		st->en_spi_sync = true;
-> > +
-> > +	/*
-> > +	 * GPIO and SPI Synchronization are mutually exclusive.
-> > +	 * Return error if both are enabled  
-> 
-> Should it also be an error if we have neither? Otherwise it sounds like
-> decimation won't work correctly since there is a comment that says we have
-> to toggle this after updating the decimation rate register.
+> It seems like we would also want a power_mode attribute. We already have an
+> attribute for this for used by accelerometers so there is some precedent for
+> such an attribute.
 
-I'm not quite sure how this interacts with potential future support
-for daisy chaining but for now, if we have no GPIO specified why can't
-we assume spi sync is the way to go?
+I'm not sure that attribute was ever a good idea :(
+So would prefer we don't use it again unless we are really really stuck.
 
-If no GPIO is provided and for a single device SYNC_OUT is not wired
-to SYNC_IN I think the board is broken anyway and we don't have to care.
+Usual assumption tends to be if anyone wants to reduce power they
+should be able to do so with other controls (i.e. reduce sampling rate or
+oversampling). Those are easier to interpret than magic low power mode
+attributes.
 
 Jonathan
 
+
 > 
-> > +	 */
-> > +	if (st->gpio_sync_in && st->en_spi_sync)
-> > +		return -EINVAL;  
-> 
-> A dev_err_probe() message would be helpful here when creating a new DT and
-> bringing up a new system since it is easy to forget a property or make a typo
-> that could lead to this error.
-> 
-> > +
-> >  	ret = ad7768_gpio_init(st);
-> >  	if (ret < 0)
-> >  		return ret;  
+> > 
+> > The addition of those attributes allows a wider range of sampling
+> > frequencies and more access to the device features.  
 > 
 > 
 

@@ -1,117 +1,126 @@
-Return-Path: <linux-iio+bounces-14187-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14188-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1309A0A910
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:23:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93993A0A913
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D37B3A0FF6
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:22:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B05921632E9
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8187A1B1D65;
-	Sun, 12 Jan 2025 12:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86171B21A6;
+	Sun, 12 Jan 2025 12:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t3W+nn0R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NRjfI51w"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E972A1B2;
-	Sun, 12 Jan 2025 12:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF972A1B2;
+	Sun, 12 Jan 2025 12:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736684575; cv=none; b=kWXd6kdBpO7TG7ddV9CWF91CpGkSqMUbPD0DpwT/GjTascUW5sdxEFBeV0HX6UtqCxuTmjn4u/hfNNnnukjfvhFTnvnsQZIFdiL6ScpDlwcIuY/VgjS6Kxi8R/lG2wBrPDJUeC3EXZIbPvZOW6EXLGp3vRxprEDG4IP9MEDVjNY=
+	t=1736684780; cv=none; b=VjYst2/5n8L3Re0KzyVa39v2DAMwY9mEdHrZJ0kx29WoW/xnJYfNnMXO6mEumqUdgbW+nGSBgE3aD77RaIx1zRrz1hROYtAZ5fdFBAdoRaS++IZo8ivV2qmwWElhOGof3A1+nhhomZDVTpsbtEuUQBxyBawllqVQf1brCSrVR7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736684575; c=relaxed/simple;
-	bh=ZG6H6oLVG7h62MhTeYE0o89LwcZAQn3ZwdnRUwiaBMM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nbcE7xfYxXWF6CcLzbVbbfueEx9+0Uo7jsaFn4gECKRX25VgwVkUvEs4uJ2OPR0MnSlDyx/sfJTeZr8rXt6katdy1VA7jO+2tFm5Mil32+1P94c0A7Gw0ZXYblNheo76yQUNpDlgVLPPZf/d76cCpMVTwoWD6RsyIUIm4UtJRAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t3W+nn0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE6CC4CEDF;
-	Sun, 12 Jan 2025 12:22:52 +0000 (UTC)
+	s=arc-20240116; t=1736684780; c=relaxed/simple;
+	bh=e0ydEge+kSwWNQjHzk+12rYyMrffoSe8Ys0yrFFY5Yc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=DgiTh6G8LDnii26nGJ9a4hlxOxiixBwi32hZ6iwq60j8BB51GgWRnIYPrOhLs5hVuMktoQZlmA5AAcW5Edsqdphb77K4We+CO1WFIWIyRkS9yG1YytdNCTmWtZHFV/JsJiRzJjyrR8IjJk0TsPuuQ4Nvf4+Fx6NQfwoD7FID3S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NRjfI51w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 24292C4CEDF;
+	Sun, 12 Jan 2025 12:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736684574;
-	bh=ZG6H6oLVG7h62MhTeYE0o89LwcZAQn3ZwdnRUwiaBMM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t3W+nn0R9mG4wN2CG5JvvcmFZYnGWq9fQRg7s48sm2RFpM5MqdHWTYwnh4n1IYzEz
-	 3R/qGiILCdLdYKKPtF6ufeIgBhyltFJYVXVK2saBiglzmKf57RkHrrtd9Z00ee4HXW
-	 irMbg7ufT0hOUmDcYKNfZZJkftjZWUShf+NRT8M4pq2A56NXT0CN3ke5Yx6OvIJcIi
-	 iZROKJuYkoFnlMiXecb8Xi9TIoCv+77J2YgV09fQn947VQYuXxOyMU+zDlWHulfvh6
-	 hwlLnoXEvb+z4b+Yq9aYztaSqI5YVv5M2Js+XXSCtlk6NMTX/u/hH7CTdV03EStioc
-	 5pALyxMzI1tcQ==
-Date: Sun, 12 Jan 2025 12:22:49 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Sergiu Cuciurean
- <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
- <Michael.Hennerich@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v1 04/15] iio: adc: ad7768-1: Fix conversion result sign
-Message-ID: <20250112122249.3bc9dfe0@jic23-huawei>
-In-Reply-To: <e521bb5cb60d413edbcd1ea582fd81073218eaf5.1736201898.git.Jonathan.Santos@analog.com>
-References: <cover.1736201898.git.Jonathan.Santos@analog.com>
-	<e521bb5cb60d413edbcd1ea582fd81073218eaf5.1736201898.git.Jonathan.Santos@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=k20201202; t=1736684780;
+	bh=e0ydEge+kSwWNQjHzk+12rYyMrffoSe8Ys0yrFFY5Yc=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=NRjfI51wn2c4xdOSt/XX/bUpjts67k4+vELrPMfBp1BV6xy7qWZ/9iFtmAo34Pldp
+	 tlsCjfr8mIEIsN1Bv3/RyKMv84qJoHrYNHKdRDrWsg5Gkq/u5jlC0WzL02tHgzITWR
+	 slUOQnyvyyjraXAiNVgw4J24HFEhAz03LmFL/DCcHQKTjSNZZ00AYl0y7MZ8u7xIiK
+	 kxInpsrnHNiw8JAKOMZCR/5cghQqTb9J/BEVF+BQlaJMa9jO2bdA6Ex/0I3fqII3Ea
+	 6OBVEQJV5CWcW+wONpNMyl3q5MikEYeNz7fMuwbo7dwx/evA2Iqcba0LSNFqOBNPlA
+	 4aJ+/V80Nd/1A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17494E77188;
+	Sun, 12 Jan 2025 12:26:20 +0000 (UTC)
+From: Vasiliy Doylov via B4 Relay <devnull+nekodevelopper.gmail.com@kernel.org>
+Subject: [PATCH v3 0/5] iio: accel: mc3230: add mount matrix, of match and
+ mc3510c support
+Date: Sun, 12 Jan 2025 15:25:34 +0300
+Message-Id: <20250112-mainlining-mc3510c-v3-0-9ee6520ab69d@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL60g2cC/32NQQ6DIBBFr2Jm3WlApZqueo/GBcKAkygaaEgb4
+ 91LPUCX7+f/93dIFJkS3KsdImVOvIYCzaUCM+ngCdkWhlrUSkgpcdEcZg4cPC6mUVIYVLe2E7U
+ bddt3UIZbJMfvU/ocCk+cXmv8nB9Z/tK/uixRoOpGUqLR1rr+4Utrvpp1geE4ji8i/3o+tAAAA
+ A==
+X-Change-ID: 20250111-mainlining-mc3510c-564702fba487
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Vasiliy Doylov <nekodevelopper@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1275;
+ i=nekodevelopper@gmail.com; h=from:subject:message-id;
+ bh=e0ydEge+kSwWNQjHzk+12rYyMrffoSe8Ys0yrFFY5Yc=;
+ b=owGbwMvMwCW2fZ/SFZeSpU2Mp9WSGNKbt7xyabhccEjz2dU1S5LOHJX17J1/vfFE6J3O/vm3V
+ isnXv38uqOUhUGMi0FWTJHFZqPHbLH8cMlJ054qwMxhZQIZwsDFKQATWbOLkWGOdt+SaetnO/67
+ 9ZRxk3jf2y+xtoLL44Vvcc3i3jeJ4epmRoZ3H3c/3xd0cc8sue1r3m7X4rvytFbFIqFitlVqosL
+ G0NlsAA==
+X-Developer-Key: i=nekodevelopper@gmail.com; a=openpgp;
+ fpr=3CB1489B166F57199296E520B7BE22D44474A582
+X-Endpoint-Received: by B4 Relay for nekodevelopper@gmail.com/default with
+ auth_id=314
+X-Original-From: Vasiliy Doylov <nekodevelopper@gmail.com>
+Reply-To: nekodevelopper@gmail.com
 
-On Tue, 7 Jan 2025 12:25:07 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+Changes includes:
+- Add mount matrix handling
+- Add match table to work with DT
+- Add MC3510C support
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> 
-> The ad7768-1 is a fully differential ADC, meaning that the voltage
-> conversion result is a signed value. Since the value is a 24 bit one,
-> stored in a 32 bit variable, the sign should be extended in order to get
-> the correct representation.
-> 
-> Also the channel description has been updated to signed representation,
-> to match the ADC specifications.
-> 
-> Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-Looks good, but for v2, please pull fixes to the start of the patch set.
+MC3510C use same registors as MC3230, but different value scale.
 
-Whilst it doesn't matter here as the earlier patches are all docs,
-it is still good practice as anyone looking for fixes tends to look 
-there.
+Signed-off-by: Vasiliy Doylov <nekodevelopper@gmail.com>
+---
+Changes in v2:
+- Ordered commits
+- Fixed comment style
+- Ordered struct members
+- Fixed device table
+- MC5310C commit splitted
+- Link to v1: https://lore.kernel.org/r/20250111-mainlining-mc3510c-v1-0-57be503addf8@gmail.com
 
-Jonathan
+Changes in v3:
+- Fixed patch (poped stash)
+- Link to v2: https://lore.kernel.org/all/20250112-mainlining-mc3510c-v2-0-322804a545cf@gmail.com
 
-> ---
->  drivers/iio/adc/ad7768-1.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 113703fb7245..c3cf04311c40 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
->  		.channel = 0,
->  		.scan_index = 0,
->  		.scan_type = {
-> -			.sign = 'u',
-> +			.sign = 's',
->  			.realbits = 24,
->  			.storagebits = 32,
->  			.shift = 8,
-> @@ -371,7 +371,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
->  
->  		ret = ad7768_scan_direct(indio_dev);
->  		if (ret >= 0)
-> -			*val = ret;
-> +			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
->  
->  		iio_device_release_direct_mode(indio_dev);
->  		if (ret < 0)
+---
+Vasiliy Doylov (5):
+      dt-bindings: iio: accel: mc3230: document mc3510c
+      iio: accel: mc3230: add mount matrix support
+      iio: accel: mc3230: add OF match table
+      iio: accel: mc3230: add multiple devices support
+      iio: accel: mc3230: add mc3510c support
+
+ .../devicetree/bindings/trivial-devices.yaml       |  2 +
+ drivers/iio/accel/mc3230.c                         | 93 ++++++++++++++++++----
+ 2 files changed, 79 insertions(+), 16 deletions(-)
+---
+base-commit: 2b88851f583d3c4e40bcd40cfe1965241ec229dd
+change-id: 20250111-mainlining-mc3510c-564702fba487
+
+Best regards,
+-- 
+Vasiliy Doylov <nekodevelopper@gmail.com>
+
 
 

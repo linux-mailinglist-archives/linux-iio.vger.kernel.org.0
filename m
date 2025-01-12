@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-14205-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14206-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07BEA0A972
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:13:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 345E9A0A97D
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 14:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDBA11656F4
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237131886546
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4DC1B4245;
-	Sun, 12 Jan 2025 13:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2281B4134;
+	Sun, 12 Jan 2025 13:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdXbfAMZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnqKvgg6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72286224D7;
-	Sun, 12 Jan 2025 13:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB87815278E;
+	Sun, 12 Jan 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736687601; cv=none; b=Oq1l2rpmNhCEEowF4jugmAa2Oi8yuru39zQhoaeSuyJ5lvJKaCVSuVHShma7+a+j6hb0A0qlVFZZeaXkwxPpkRybW0zKVXgBTmRKrfwsYa05OyjCGxdDjr255S7pCD47530Oakii4fn8HVrxQzIYSfSFXNaSl7mNx2z9FDOo/BU=
+	t=1736687934; cv=none; b=pcWhb3RTqfGE9WyvRHkABlTsmH9UR5+bzyEhYLTM/7vCpA3ITd+8etbPQAJeAAYwOfcnJ6BzyDqHoVaJrxEf/geoSZPO4AhgFCUBGqiv3cgkReKaRrHTmil6uo2djQnwrqGoI7NzYkZkTRHccbkLNF4xPLageiONkUCJkIvLIsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736687601; c=relaxed/simple;
-	bh=QEcnFhl++ltNcvDgJni9HgjGPl7mLIix7BHHZUKp8Pw=;
+	s=arc-20240116; t=1736687934; c=relaxed/simple;
+	bh=3EZipdaCtN8SR7n678FBxi9oJC2hlQZ4fitrFNBsq64=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZCKccW+BWWakeXvIFrKs7aNtZ4zgc6NgzAh2jLNwRPduxD2pvo8I5k1PvJUTiNLK3QhEqQrhXHmaL0f7aSGOuJ5Dyy/qbWNIx2AtKLCra++LI0n77RJkMrmd8MtJwqatFht7Fj73ZR2bLAJByuEdtG5416cTxGyBO+KGwJPNUDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdXbfAMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C697C4CEDF;
-	Sun, 12 Jan 2025 13:13:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uGorPVjg6arttLKC7wIhxncpmPRM6+1ZNaddt5PX/IEMAktTQGC3+z60oS8ZW/SqHXE22v+ou4ykyUfhoc1Gu13XmE51Nrpu7NncJk73SbgbfoBqX08d+uTb/8JZQpfnKyy9DT4IeyPweysXccAQnJLX68J0iwOQvVSvg+DkMEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnqKvgg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FE0C4CEDF;
+	Sun, 12 Jan 2025 13:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736687600;
-	bh=QEcnFhl++ltNcvDgJni9HgjGPl7mLIix7BHHZUKp8Pw=;
+	s=k20201202; t=1736687933;
+	bh=3EZipdaCtN8SR7n678FBxi9oJC2hlQZ4fitrFNBsq64=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JdXbfAMZxB4Uq8m9K9N+2lDUtUxeCmWMgOhqDYDAcvE0OOjcU9kdLRWuzVwgdjyIQ
-	 y271YQN83kg1u5GEwxz9yZ5n2odHpl2X5b7xfqOTLpeQEIaJy1vHell32dNJHhp+kX
-	 gvV5BrZ6ekSJ3qif4XSsJEnqi6hm3BEYWf16iobtzu+0sPnFAF8ioDIUKEU4lMIxoF
-	 N7ymnTiZLBnui0kDVJtoCaUNB0jm5vNO5BgDWyJOl5r/2y3PbAV9m27TF00LMI1D7t
-	 KF3toxNw9ZVY+15vVmFDfDVqBpy37XpFl4H0/68RRN3RbdRn+U+PxB3BjRmVFKT4ng
-	 MbHDiqfrZNF5g==
-Date: Sun, 12 Jan 2025 13:13:13 +0000
+	b=rnqKvgg6cJKPcFTJ7oKP24e9Sij8nvW/LNAdYFTIDTPdlHlHA95Uiyl2zEsCEPm80
+	 jEXSRkWHr42crU/eMCaFuwzRDOKUBCgm93C6TYZK08oL7qTkGtd6tppTALVh2PwNp7
+	 UR+k+GUX6+6B1xA4jDoS/6URVEcYllxJ3xeB4ZizKtfWDcInHlyTZoBx8anBfapCuc
+	 wzXVqtOl8VmjKGiK4YKoP+ROJdbmcII5LEGrFmpJmD+2AyRHP9dvJNpjPKqAa73zlC
+	 GGQtbPt5Dw/S9hk2UEYVjStq1NuIVjAftcdk0YvgqkhE1xpXT/pQQx1arjj3fy7I3z
+	 GlFd1zNwIqtGQ==
+Date: Sun, 12 Jan 2025 13:18:45 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: chemical: bme680: Fix uninitialized variable in
- __bme680_read_raw()
-Message-ID: <20250112131313.749b58ec@jic23-huawei>
-In-Reply-To: <Z37uRAl18atKgVz0@vamoirid-laptop>
-References: <4addb68c-853a-49fc-8d40-739e78db5fa1@stanley.mountain>
-	<Z37uRAl18atKgVz0@vamoirid-laptop>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 1/2] iio: light: veml6030: extend regmap to support
+ regfields and caching
+Message-ID: <20250112131845.539ecc7c@jic23-huawei>
+In-Reply-To: <20250107-veml6030-scale-v1-1-1281e3ad012c@gmail.com>
+References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
+	<20250107-veml6030-scale-v1-1-1281e3ad012c@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,57 +63,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 8 Jan 2025 22:29:40 +0100
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Tue, 07 Jan 2025 21:50:21 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-> On Wed, Jan 08, 2025 at 12:37:22PM +0300, Dan Carpenter wrote:
-> > The bme680_read_temp() function takes a pointer to s16 but we're passing
-> > an int pointer to it.  This will not work on big endian systems and it
-> > also means that the other 16 bits are uninitialized.
-> > 
-> > Pass an s16 type variable.
-> > 
-> > Fixes: f51171ce2236 ("iio: chemical: bme680: Add SCALE and RAW channels")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > ---
-> >  drivers/iio/chemical/bme680_core.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> > index 26eb0fa77a43..9d73fd2cf52c 100644
-> > --- a/drivers/iio/chemical/bme680_core.c
-> > +++ b/drivers/iio/chemical/bme680_core.c
-> > @@ -879,11 +879,11 @@ static int __bme680_read_raw(struct iio_dev *indio_dev,
-> >  	case IIO_CHAN_INFO_RAW:
-> >  		switch (chan->type) {
-> >  		case IIO_TEMP:
-> > -			ret = bme680_read_temp(data, (s16 *)&chan_val);
-> > +			ret = bme680_read_temp(data, &temp_chan_val);
-> >  			if (ret)
-> >  				return ret;
-> >  
-> > -			*val = chan_val;
-> > +			*val = temp_chan_val;
-> >  			return IIO_VAL_INT;
-> >  		case IIO_PRESSURE:
-> >  			ret = bme680_read_press(data, &chan_val);
-> > -- 
-> > 2.45.2
-> >  
+> The configuration registers are not volatile and are not affected
+> by read operations (i.e. not precious), making them suitable to be
+> cached in order to reduce the number of accesses to the device.
 > 
-> Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> Add support for regfields as well to simplify register operations,
+> taking into account the different fields for the veml6030/veml7700 and
+> veml6035.
 > 
-> Hi Dan,
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>  drivers/iio/light/veml6030.c | 141 +++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 116 insertions(+), 25 deletions(-)
 > 
-> I had already applied this for IIO_CHAN_INFO_PROCESSED but not for the
-> IIO_CHAN_INFO_RAW channel... Very good that you spotted it!
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> index 9b71825eea9bee2146be17ed2f30f5a8f7ad37e3..a6385c6d3fba59a6b22845a3c5e252b619faed65 100644
+> --- a/drivers/iio/light/veml6030.c
+> +++ b/drivers/iio/light/veml6030.c
+> @@ -65,6 +65,11 @@ enum veml6030_scan {
+>  	VEML6030_SCAN_TIMESTAMP,
+>  };
+>  
+> +struct veml6030_rf {
+> +	struct regmap_field *it;
+> +	struct regmap_field *gain;
+> +};
+> +
+>  struct veml603x_chip {
+>  	const char *name;
+>  	const int(*scale_vals)[][2];
+> @@ -75,6 +80,7 @@ struct veml603x_chip {
+>  	int (*set_info)(struct iio_dev *indio_dev);
+>  	int (*set_als_gain)(struct iio_dev *indio_dev, int val, int val2);
+>  	int (*get_als_gain)(struct iio_dev *indio_dev, int *val, int *val2);
+> +	int (*regfield_init)(struct iio_dev *indio_dev);
 
-Most likely will go in during the merge window or slightly after.
+With only two fields, why use a callback rather than just adding the two
+const struct reg_field into this structure directly?
 
-> 
-> Cheers,
-> Vasilis
-> 
+I'd also be tempted to do the caching and regfield changes as separate patches.
+
+Jonathan
+
+
 
 

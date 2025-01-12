@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-14185-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14186-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68C3A0A902
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:16:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0696CA0A90A
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 13:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0F7C165FC9
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 037EB1661F8
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 12:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65F91B041B;
-	Sun, 12 Jan 2025 12:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5031B0F36;
+	Sun, 12 Jan 2025 12:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YOyCsoxi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KB4ppEoz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8B82A1B2;
-	Sun, 12 Jan 2025 12:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F442A1B2;
+	Sun, 12 Jan 2025 12:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736684189; cv=none; b=T+MAld/GoOd2m96zHKhEkqPmRRyaIv/fyKAp0EYzNtee2iUfvD771ade3AHzf3zMciAC79ddLuSMVgzp3ZmSifU1SuovhAL3MyHYL8jA0OfWprNv7D41TdXq2iiClGhaJxgxKZ4ID4E1Vgxnt5c/M4xkfHoEXDc17Y/0nuh6XeE=
+	t=1736684458; cv=none; b=If8CYNTwB5itMm7cQeriGMPVOxJkBmSj1f2M7ypJnimIRZTwKJaPbiYEKPIohfth8iQ4WmEBlTtg/upBC3YXIkFS0pWVfJH/SOR7dSdFgCzbO2ONWEUD2OD0B+BAcOlg4U4ovAYePvBsTzlULlj431u6ghwb96JUT8kJkp0IwD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736684189; c=relaxed/simple;
-	bh=A42SAXRmwcnKE4TLCOokFqjpUhC46Ujvsoz7qnnqVSU=;
+	s=arc-20240116; t=1736684458; c=relaxed/simple;
+	bh=op/9zIUF5tYmNVE5XwFVyNhTb7m8mZ98vMCGcvlhJ80=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kJtV4WmSHbGn081GUNH447P8evwCJKFAHNdQ57XN9KJHzXk52HlOFbzTlq3OBK3xTIEJUK4kiPOWvHJYicNDmmR9R/em2h0Mo9BwJrw+sQ0WKtq+zb8Nle+C+FzncrbI0QJBcFlskt+wVnzVCnSLdwmxdWoIE4NzJHjMfKIro6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YOyCsoxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC99FC4CEDF;
-	Sun, 12 Jan 2025 12:16:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tM7CwpXOGRUVBddKikyJcOWMlGz+DWxJ4PPQIVFKwAl1xpJu3MNmzM2Q7D1e54u/s/fS/XtiIqdbHzAB583cl9BH2l0+nrSriRFHuSg9Ii3xjO0Ni1GjOCR239baEVQjvonXahXkr4sMUFmtL4KwmbPyLIHukTFLCFyUc3Vjh7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KB4ppEoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751C4C4CEDF;
+	Sun, 12 Jan 2025 12:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736684187;
-	bh=A42SAXRmwcnKE4TLCOokFqjpUhC46Ujvsoz7qnnqVSU=;
+	s=k20201202; t=1736684457;
+	bh=op/9zIUF5tYmNVE5XwFVyNhTb7m8mZ98vMCGcvlhJ80=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YOyCsoxiSIXBdwBNGiSub6ad0FKjP6c55CmuUW80BmENKsk+E0HLV6IMR+JQILk+M
-	 obb1lMG1M2wYHpWhFPERgeVwSGncP5A9bWNasE6P19LlLZJrF0nWxNHKz6rqeRBhZl
-	 N7jfL75afNTO38+xHfk39ZzRPV4WtftUw8dUU09GxZhnj8VzxTQk/KHNHqwMG2S4C7
-	 GFn3OPm4FpYDVN65Fq5sFssqR0DLGHZB1IB85B3kk5fJDX9sfUeBm9tA1Tp3BwIZ7N
-	 Ezwre43/nuP1S+CbdbNiG/1ZZ5bAnh/vK+R6xu3T8vOgzUmAeTF7DRTPyJVJ/ZVkoL
-	 VU439h9rE5SSQ==
-Date: Sun, 12 Jan 2025 12:16:17 +0000
+	b=KB4ppEoz+mxj/iBGrXsHkUaJnMn3Bz6bpAQILNyHNyeTGM5cocJH2S+lLXfQpmAAw
+	 0B0UvnDKsR28DJ17AILc8R1jIxxSdpR+xjlIvt1cmHQV2h4EtnLuR/Sg+6auOE8VmO
+	 Ydj0FK1eY07QHSodblLcHinJlEwJhJ3ddZAiXbVD/mhgp+i3cGx+SEnz6YUqONGrOz
+	 jdZ1xK24ITZqT4Re/X3YDX9aAKN95Chi80iDwWQUYcuExLY9fNs0FvuSiJi9SBv3Yu
+	 bXyYZ3ZoFRxPoLsUA5UXAKFWOk3jTIaWdE8EUoeL8J4+rUANVr3nO9OgmLBk6srpM0
+	 V6ZwfslCdba2g==
+Date: Sun, 12 Jan 2025 12:20:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jonathan Santos <jonath4nns@gmail.com>
-Cc: 8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com, David Lechner
+Cc: 58ea1899-05be-4743-911b-77a56f08c347@baylibre.com, David Lechner
  <dlechner@baylibre.com>, Jonathan Santos <Jonathan.Santos@analog.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, lars@metafoo.de,
  Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 02/15] Documentation: ABI: add wideband filter type
- to sysfs-bus-iio
-Message-ID: <20250112121617.668f90c2@jic23-huawei>
-In-Reply-To: <Z4L1qrqHBUE5JGdX@JSANTO12-L01.ad.analog.com>
+Subject: Re: [PATCH v1 03/15] Documentation: ABI: testing: ad7768-1: Add
+ device specific ABI documentation.
+Message-ID: <20250112122047.1e1978e0@jic23-huawei>
+In-Reply-To: <Z4L9PKKNfonI/4E2@JSANTO12-L01.ad.analog.com>
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
-	<40707fa904ba7b1659554747ff7520139dd6f94e.1736201898.git.Jonathan.Santos@analog.com>
-	<8601da92-1f08-40e3-9b39-f9b99dbc1507@baylibre.com>
-	<Z4L1qrqHBUE5JGdX@JSANTO12-L01.ad.analog.com>
+	<f78c3dee381b23c17787f1e2bc9c5667741d407b.1736201898.git.Jonathan.Santos@analog.com>
+	<58ea1899-05be-4743-911b-77a56f08c347@baylibre.com>
+	<Z4L9PKKNfonI/4E2@JSANTO12-L01.ad.analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,56 +65,95 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 11 Jan 2025 19:50:18 -0300
+On Sat, 11 Jan 2025 20:22:36 -0300
 Jonathan Santos <jonath4nns@gmail.com> wrote:
 
 > On 01/07, David Lechner wrote:
-> > On 1/7/25 9:24 AM, Jonathan Santos wrote:  
-> > > The Wideband Low Ripple FIR filter is used for AD7768-1 Driver.
-> > > Document wideband filter option into filter_type_avaialable  
-> > 
-> > s/avaialable/available/
-> >   
-> > > attribute.
-> > > 
+> > On 1/7/25 9:24 AM, Jonathan Santos wrote: =20
+> > > Add ABI documentation specific to the ad7768-1 device, detailing
+> > > the decimation_rate attribute for better clarity and usability.
+> > >=20
 > > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > > > ---
-> > >  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > > index f83bd6829285..c4c21a7bfba1 100644
-> > > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > > @@ -2291,6 +2291,8 @@ Description:
-> > >  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
-> > >  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
-> > >  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
-> > > +		* "wideband" - FIR filter with wideband low ripple passband  
-> > 
-> > I think "fir" would be a more specific filter type name than "wideband". (i.e.
-> > there are wikipedia pages for sinc and FIR filters, but not one for "wideband"
-> > filters)
-> >   
-> 
-> Isn't "fir" a bit too generic for this case? Since Wideband here is a class of a FIR filter.
-> Maybe something like "wideband-fir" or "fir-wideband" would work better?
+> > >  .../ABI/testing/sysfs-bus-iio-adc-ad7768-1          | 13 +++++++++++=
+++
+> > >  1 file changed, 13 insertions(+)
+> > >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad776=
+8-1
+> > >=20
+> > > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1 b/D=
+ocumentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
+> > > new file mode 100644
+> > > index 000000000000..065247f07cfb
+> > > --- /dev/null
+> > > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7768-1
+> > > @@ -0,0 +1,13 @@
+> > > +What:		/sys/bus/iio/devices/iio:deviceX/decimation_rate_available
+> > > +KernelVersion:
+> > > +Contact:	linux-iio@vger.kernel.org
+> > > +Description:
+> > > +		Reading returns a range of possible decimation rate values.
+> > > +
+> > > +What:		/sys/bus/iio/devices/iio:deviceX/decimation_rate
+> > > +KernelVersion:
+> > > +Contact:	linux-iio@vger.kernel.org
+> > > +Description:
+> > > +		Sets up the decimation rate for the digital filter. This can
+> > > +		directly impact in the final sampling frequency. Reading returns
+> > > +		the decimation rate. Writing sets the decimation rate. =20
+> >=20
+> > If this only affects the filter, I would suggest to add `filter_` to the
+> > beginning of the attribute names.
+> >=20
+> > Also, an explanation of how to interpret the numbers would be helpful. =
+It looks
+> > like a unitless number that acts a sort of a multiplier or divider, but=
+ that
+> > part isn't so clear to me.=20
+> >=20
+> > Or...
+> >=20
+> > Since the decimation rate affects the -3dB point of the filters we coul=
+d use
+> > the standard IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY instead of int=
+roducing
+> > a new attribute. =20
+>=20
+> Well, here the -3dB cutoff depends on the ODR, which is determined by bot=
+h the MCLK
+> divider and decimation rate.
+>=20
+> Wideband: -3dB at 0.433 =C3=97 ODR
+> Sinc5: -3dB at 0.204 =C3=97 ODR
+> Sinc3: -3dB at 0.2617 =C3=97 ODR
+>=20
+> If we use _filter_low_pass_3db_frequency to control the decimation and _s=
+ampling_frequency
+> to control the MCLK divider, wouldn=E2=80=99t it be confusing for one to =
+always affect the other?
+> A different ODR would result in a different cutoff, and vice versa.
 
+We should definitely not have a filter control changing sampling frequency =
+(which tends to
+be a more common control for users to fiddle with).  However the other way =
+around is
+fine.  So for a given _sampling_frequency present via
+in_xx_filter_low_pass_3db_frequency_available the list of
+possible 3db frequencies and use them to configure the decimation.
 
-Not sure FIR is even useful. That's just a particular filter architecture, not
-related directly to the characteristics userspace cares about.
-You can sometimes at least build a very similar response from an IIR filter.
-The sinc ones describe the pattern they let through, FIR isn't that specific.
-So I'd not mention FIR anywhere.
+>=20
+> Would something like <type>[_name]_oversampling_ratio make more sense? Le=
+t me know what you think
 
-> 
-> > > +		  and sharp transition band.
-> > >  
-> > >  What:		/sys/.../events/in_proximity_thresh_either_runningperiod
-> > >  KernelVersion:	6.6  
-> >   
+I'd rather not if we can avoid that new ABI, but it is is better than a new=
+ term
+like decimation_rate.
+
+Jonathan
+
+>=20
 
 

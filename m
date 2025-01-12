@@ -1,92 +1,110 @@
-Return-Path: <linux-iio+bounces-14247-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14248-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFF7A0AAF8
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 17:38:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E150A0AAFB
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 17:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 645F61632EA
-	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 16:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B13BB1641FC
+	for <lists+linux-iio@lfdr.de>; Sun, 12 Jan 2025 16:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DA41BE86A;
-	Sun, 12 Jan 2025 16:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B74E1BEF6D;
+	Sun, 12 Jan 2025 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iv60FlsS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cWe2podS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB251BDABE;
-	Sun, 12 Jan 2025 16:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3211120DF4;
+	Sun, 12 Jan 2025 16:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736699924; cv=none; b=pKw0shADq8P9CrRlIXd4/lT9n+I32ya7oSUUyXOj5zQpKDbJj5N0ZVG2f45x+9LQzzXgk64+Oxfw5OUsgfwNamQjSuR7WYVUoCMOmr8K01zz5FIsLwNiKxfQEUXUk/KIKenvUK3/BJgVwbEyXbsPk2MHZ0S3z6x0AE5kDkG1XzY=
+	t=1736699937; cv=none; b=cZ2SNR+oHBH0eueoBviYaLqXP6Du4vztYZz9FNyR2tWwXScsWEiG3cCd5xUMeQ2RmfA7GxA6ItC3Y50/FLcWuY4gQ+8wxsb+NB9QJtCoikYryCer7jsvzKr/ku8kJZ/eL7TiwfpcqAJj3dULTGnxeOG/Maf9QMDT/KvnQ/x26Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736699924; c=relaxed/simple;
-	bh=xFv9Sq7Qg+XiMIWgdm8R65SmgkXmwD6YNA1qMm2pcoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nCoUOd3i8ec4Rie5ZDG/0YVBlNaPfaJsr9k76/YBN+3OrrI+OjTr/t4g0Ito/ujkaJkabYK38Kg4FLZgIxNPvmgm56Shnj1lWB5KCudveDFn7vDomn3TIB0IU8VsxvVJOppTJb8YrQZovhYJGAa+d76j94s+z9AJFi1SRG5vLek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iv60FlsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1C9C4CEDF;
-	Sun, 12 Jan 2025 16:38:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736699923;
-	bh=xFv9Sq7Qg+XiMIWgdm8R65SmgkXmwD6YNA1qMm2pcoE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Iv60FlsSvptDyhKU39WNACaTstbsC633jawEYJ0v3UfYdr2ytiM0bq1T1cy4gVBud
-	 mtn1ruAF8Km3dmEoTQDtVCqI3ePRcQB/kfD6C7WYPdTl5kARhP0K57e5PPDzKRAhdf
-	 Jsdgqm5ZBRsNdKvzg3B8zQ4l2jN0AJ8Q9g2Zshaf0E/k4x3shfbUxc7YrKMbM08V3e
-	 PVRFsRihElsFnnPU2iJ4i2u0yje53TyuN7XjD4CjJZ48H6hMHVszR3yeNy/fUxbRBk
-	 1MQGcU3V9zOMEdld4R/+OXm8jOX+WhFQ8GRn4nAe1AgE0fNCi7Udqh36r4zvso6w12
-	 XYxpWoWQAthCQ==
-Date: Sun, 12 Jan 2025 16:38:36 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v9 0/4] iio: accel: adxl345: add FIFO operating with IRQ
- triggered watermark events
-Message-ID: <20250112163836.512ff0c5@jic23-huawei>
-In-Reply-To: <Z4Poo4x9xvBpdeso@surfacebook.localdomain>
-References: <20241228232949.72487-1-l.rubusch@gmail.com>
-	<20250104130916.5a25b5bd@jic23-huawei>
-	<Z4Poo4x9xvBpdeso@surfacebook.localdomain>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1736699937; c=relaxed/simple;
+	bh=jPpGORFM6DLQsfgJohdnFBDUgiOLrJ46EWkWEEzNJ40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CaXtJmyN819U+NGYfUAxdbcJl8c45Upqi49u8q37uOQtuIPJai76/punLtAd1Q6BoNCMWJcp18OTUZA9yt6sOPqne0lKHGxECLur7DR2OV7ai8vhX7r/lRPfhRdsoGMLtqbBHl0ZPwmp9W4f2NXjEnYplctA6yn7qLZlrGof7PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cWe2podS; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-53e3c47434eso3379182e87.3;
+        Sun, 12 Jan 2025 08:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736699934; x=1737304734; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ds2jyaTBI3B9tgp/razIWjdXXtbhaGZ8vh/IiAlVgko=;
+        b=cWe2podSq52a9vi9iKVt+3sVLMZ48t+VwtKn0bPc3plQSHp4ctUUfX4fkwGIn4VKDS
+         8Kie3sHrGG0hNJluBvO30qARaYRJ1IhVC0mzrMoXzTglSqgzCQcFlv1Nbg9nbp31FiKb
+         Qb6cFnhGXuhXIX3x4nj+591COPPTpAq8d1k1VSoG7A6NlI7D4ZQxBZCMi8MGJoQQk4sl
+         bO5XSwYdD55ktaagBH7XHXmTghBAXOL4LKbKhb7ybz98Z1kJv/Kb1aisAUV0vYyYEw7a
+         jT2GBvJukMH0S4ZNeA4WMfouvHQYRj/SQ5K4n+HqcHd0BB88lyla+/w3MGfDlyO2p8db
+         KBwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736699934; x=1737304734;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ds2jyaTBI3B9tgp/razIWjdXXtbhaGZ8vh/IiAlVgko=;
+        b=oJIah7hETsEU3130kZeNO/Wh0tMeNQKOOjDlxJyU9otXd4QgXyCf4ETs4DgcpUgpRm
+         CS4BlzfM95nASz/YEx7fiKuS9gqDU/SuBaQhS/gHxAXLRfoiAkWuyqV4iDS4jOHnKBPr
+         UwjvBrfzG4P4DRXw/b3g5C0ZhGk/w/nHBfNLePDt+TNhzzn+suBXUqds8Tl2uiagQ5Ad
+         ZpOd5Nyf5Nj1tMbdhUH1gHDgCJEzjyuu7OV684dWQLpSsEg87rdhEqXxqjjkoVks6h6S
+         VZl9L7y7y6K2EONHr2n1E0rHYLPhIatzrFYutK6kj9xh6Ag+1rJME0hBGlkU/L0qrzXL
+         qM9A==
+X-Forwarded-Encrypted: i=1; AJvYcCV4CXxPgzSY73AZvDMzNSADbhlwrbIpn3g91mYLB9tNFSgUrEBjIkA3X4LDK/w+tjC+OEsKnIea2l0t@vger.kernel.org, AJvYcCV4q0041uS0HqFRpWraGA0N8sTxT+bwOGZG/PN/wGEhculYPTEpXNleabn5mCxequ/Ydgul+jA5UtbN3yK5@vger.kernel.org, AJvYcCWj2VbEq2b5xnFI+6vdRU+tcKUefheBLWRuk7CElzaHvC2j50Tt6n9Lqy8AL1LOGaAmsI9oIOuvSmal@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSUbwEszbhys/1fakE5RE9HSzRWBMqjjTwzqyFa6o9+slBHXaj
+	0AbFoT2R+VYXWHsYr5+Y23dVg9ULVZeE6HJ0qnIH6m6kWVx4EmpvfEJzka3ydUrE6w==
+X-Gm-Gg: ASbGncsFYwXDU6WhCUH2FDhX7IQQLo9oSL+Q2hJ0b7pgph6Fk17WOq9X4goj1Xg9fZx
+	AtI492L9L93OyfReQxdYfEc6WJDNo4PlBMDENvUYbnCuPo9zOuaf6WrUCrgLG+SbtCpe5IM40hc
+	BewKfNpQoiOm9nMWeFHm6XXlrcpb2KhmAf5fI71I/E8qj3vm976/sgl0iT9Wjm8jgUbq4/VW+tu
+	buRwUGkn+2VwW+pgsp7C9WBibcI+/k7H2/HNYj3z+pcjn162ruMuE0ig60dIpOC5Q==
+X-Google-Smtp-Source: AGHT+IGo0aM5LCtEa90lCe66FeXky8murQpb0RO1LekxgSviijCpb5SaMTYFb63BR0dtQcEDjc14EQ==
+X-Received: by 2002:a05:6512:318d:b0:542:8cbb:b204 with SMTP id 2adb3069b0e04-5428cbbb7d3mr4312014e87.21.1736699933877;
+        Sun, 12 Jan 2025 08:38:53 -0800 (PST)
+Received: from [192.168.1.78] ([45.136.247.92])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5429941669bsm409196e87.7.2025.01.12.08.38.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 12 Jan 2025 08:38:53 -0800 (PST)
+Message-ID: <5210adc6-eb1b-4797-a2f1-0368cc44c392@gmail.com>
+Date: Sun, 12 Jan 2025 19:38:51 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] iio: accel: mc3230: add OF match table
+To: Jonathan Cameron <jic23@kernel.org>,
+ Vasiliy Doylov via B4 Relay <devnull+nekodevelopper.gmail.com@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250112-mainlining-mc3510c-v3-0-9ee6520ab69d@gmail.com>
+ <20250112-mainlining-mc3510c-v3-3-9ee6520ab69d@gmail.com>
+ <20250112162917.6f0cfa9f@jic23-huawei>
+Content-Language: en-US
+From: Vasiliy Doylov <nekodevelopper@gmail.com>
+In-Reply-To: <20250112162917.6f0cfa9f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Sun, 12 Jan 2025 18:06:59 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> Sat, Jan 04, 2025 at 01:09:16PM +0000, Jonathan Cameron kirjoitti:
-> > On Sat, 28 Dec 2024 23:29:45 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> >   
-> > > The adxl345 sensor offers several features. Most of them are based on
-> > > using the hardware FIFO and reacting on events coming in on an interrupt
-> > > line. Add access to configure and read out the FIFO, handling of interrupts
-> > > and configuration and application of the watermark feature on that FIFO.
-> > > 
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>  
-> > Series applied but with a tweak on patch 3.  Please take a look at the
-> > testing branch where this will sit for a few days,  
-> 
-> I would expect the comments I gave to be addressed as well before going to
-> upstream, but sorry for having a bit prolonged vacation.
-> 
-I missed outstanding bits.  Suggested improvements will need to be handled
-as cleanup patches on top.
+On 1/12/25 7:29 PM, Jonathan Cameron wrote:
+> Are you sure that didn't previously work?  I thought there were
+> fallbacks that would make it use the driver name if nothing else matched.
 
-Hope you had a good vacation.
+It works if I modprobe module, but module doesn't loading automatically 
+on boot like other modules.
 
-Jonathan
+With OF match it loads automatically during boot, without i need to call 
+modprobe explicitly
+
 

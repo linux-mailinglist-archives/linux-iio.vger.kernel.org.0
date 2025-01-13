@@ -1,219 +1,189 @@
-Return-Path: <linux-iio+bounces-14291-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14292-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42DFA0BB53
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 16:12:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FAEA0BCAB
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 16:56:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 809E47A14BC
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 15:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D7AD163AF1
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 15:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D231FBBE0;
-	Mon, 13 Jan 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C7C1FBBC0;
+	Mon, 13 Jan 2025 15:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iH6kHYqT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Je725qdI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4451FBBDB;
-	Mon, 13 Jan 2025 15:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45787240225;
+	Mon, 13 Jan 2025 15:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736780742; cv=none; b=chFq4LDelbEy+5dGn4/i+y/SjAe0rEUbv/GYaBVC5q1BXqXyu4U6cVcvFu5kYaKOJ0qGkLoWKvfvTk8JUpxAqpCHpN4XpkOMkHIS/Ddeu+XvMTJqDEX0v7JXKqoBptA/rVRZyLOIN/fx56OZ4mtEUdT41qaLCgPJcey6yXaokmI=
+	t=1736783772; cv=none; b=PhIeQtuwP+6U/NSSIE/PtfgK49PkXNCnHAUq5QBWZlrqaTCiJ4Zlpf10HteUrnTxNOUEGcyJNWNrkT9/XAge8iCNS5JauKJMIPVmOuCfk+0Rm0I6QB+4bXT1OgSIzfTCQ9SFrJe3R1YMc0HgRBy6dVUAFNJo6pPxH8bVxn/gp04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736780742; c=relaxed/simple;
-	bh=dJxG1+NkxSJ3zLBVV5odI2Lk9mkvbGJ8raackbstNDQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=qgbL6KX1tMkwT+voiI+aVaFAHY0Vvlp5krEV+PhgneZIuvoWDEDAl7+IBHgN3fEAmx9jY/wwsmsRjPdHi5cj2l2pBwX0sfuZGvS8lwqaISzQ/YTs6ylcu2ZyJOIJ3alr0GLyX0xcv/AajybXhU7RmbNYni7ene1rgheTZ2Dx8n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iH6kHYqT; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1736783772; c=relaxed/simple;
+	bh=a+hKdJQRJlvZ0TbVYygHNWbgwTvmHLVJbHPDgrYsNig=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Q7ll0E0JxQHeDFaUjc3mutvqJwv4yMyz5ik3n4S5uKSZTbc5ndCBrZJlhfRynl2mQnHv9U57GFNDgqLlB/MuZKi87nfJW3T9X65JuTh9vihvO3eafGH/fMtLD1/Kd6eyW7jz6wTWZJ9ON5gm18Pukdg8LONnjA8In4BYLzJf4WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Je725qdI; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4362bae4d7dso31591475e9.1;
-        Mon, 13 Jan 2025 07:05:40 -0800 (PST)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361815b96cso31563225e9.1;
+        Mon, 13 Jan 2025 07:56:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736780739; x=1737385539; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=na2J4vSWOKtMDV+CfYo5WCflbc1aa5pJno8iqSwOgP0=;
-        b=iH6kHYqTCFzBe/msAi1sXoSffoQLFy7piWZoKjrrF3EsS2iV+Qkseqq6mUfX2ogrVC
-         l45U20FsR/zhhx6VSGlXoE1rnb4UKD0amaM6tVGZ/YL89ICZsyXHas4K9qdyPuzHFRl6
-         gzMZGSdqnlYr1K9Mq4WGQuinpfQubL4IIoN1lYQYo6FIl7Eb6m8L/IrtzNi3J+iTZQo6
-         TO2oqHwTMjdr1ooxy4kHIPjxL7depKoe0tXs0ZPUhZeKEKOhUKqi92FYzy08MTQw+ZW7
-         fcfA7U9v9+5HvqQmGERasCXcWeaBtHdGyHE38wtzElzNtfMuKh3L/pLL/WEGqfqx3cyJ
-         J+7Q==
+        d=gmail.com; s=20230601; t=1736783768; x=1737388568; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ElAbJJxdmIe3RhGhz/WeyyLSlNZbEGlARt/QWOxqa2o=;
+        b=Je725qdId3YiN8NgAQ1u0tRJkmO3/4IARvAF/xe6WDuh1dyyjP0tiPETPxGH9P9nea
+         PTVYVE4vJXetaP1s0NrD1rz2YRqWBMobtsghpMJmNPcOJHHg+EWXY3czHSjNSEU6u19w
+         JHw1cWiJcPBdVbzauknEmjmleQKclOUXaGa3jp7zyXnB/AZTSIeV16xPt+lCjtdjG5EC
+         AqVNynxydD/TVBWQ/zbuwZOE3YgWVivFiMA6slY1ihSTFOaFqmuO9ifFAjx/kMKe0INy
+         cZLutE5enh5ePiLr+NVyZs2Hab+ICfBgYbA4XWfUiTNRJfjRnFO+yx9DM2OfKlPu9I1k
+         rN2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736780739; x=1737385539;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=na2J4vSWOKtMDV+CfYo5WCflbc1aa5pJno8iqSwOgP0=;
-        b=CPPdUm4oMpqt3VzbuMHNCmRqja7myggtE714infjMwT/mm5SvOt9hSRl1AAdX4oE31
-         aHr/0TBRbj3Lp5Z6axOQpnBYCaaUpDcu7eSuMlBV7IL9jxzY7Vxt5VUsIL5NHJv2eykO
-         c8UMGQLACAGHLxY6B+0Lj+YGM4a+g1Ft95DzGY1aeZOEUAFrPf6BAbqGuB/ePxSCXguI
-         iJB0u6B6IRJUT2IXlVOV7jPR/0bqOWmqFzl2kQn/5v/3eReOzFAL4+B+uHtBj9iC2evq
-         M5jnKNhEVZsbgCqJeKwY7P00cTWetUSPXCkrm4V7XpUZxWw1I5nLlilI6NEHa1indNBh
-         YAhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXoC3v6hij0ieFAgM44YvOCf41Vd+jBztIHzXNWFyfxdnAvpUAciGmlE3XinMozw5qegIKjZMV93Zq1rXI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywjey7FFeYKBOJnRgA6FwGlcBqlSxLVsreSsMtgdW370CHRfrwq
-	aXlx8o/TxQocDvg3KdgairlMWWxxZroMGM2/tnrFNDv2QAY8Af4x
-X-Gm-Gg: ASbGncvDj4GkopSa2cv5M/wzKtnUbavQHddOy300lXdEPpLdhoIn8Dbsb7kQFw1NGRP
-	+V7ptbjGWqgpkxf/8VdhKpcfysqZefLKtAnYkkMkblwuv593KQChZ1RlKRi9ZWR298esENEc3aZ
-	UTIABs/D3iVytuz/sVZJp4kvnPSGUHDrO1oZVvJqqSaaT+DjrH/EqlAVW/MczzrV54DpgdqDi8z
-	7seIBTlQX01LJT4qZUc339MgK8h+ITg0m7ARX6XiEZAgLgCSF9x5Kt6rWN7n1m266u75+O0u2Qy
-	xoWnA0dQGSts8HfoZh1tdK0y5Btf9g==
-X-Google-Smtp-Source: AGHT+IELvxSfhJvT3t4RcLEtyOm2hKbnUaX0hG+4tYvlsAW5nVp9lMteCxqiRA+fZ/Sr5ppQwASUPg==
-X-Received: by 2002:a05:600c:25a:b0:431:547e:81d0 with SMTP id 5b1f17b1804b1-436ee0a061emr151544575e9.11.1736780738090;
-        Mon, 13 Jan 2025 07:05:38 -0800 (PST)
-Received: from localhost (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b81a4sm12675963f8f.68.2025.01.13.07.05.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 07:05:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736783768; x=1737388568;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ElAbJJxdmIe3RhGhz/WeyyLSlNZbEGlARt/QWOxqa2o=;
+        b=eOMCgX9eUg9Wg7VHuzrHetJQcqK/m7tVuxJUmAUSbQdQsWEU5YtJf6r+coMrBE9SW0
+         rbcCGowl6OfdG0UefO6NSteP2/PKLALSfM/90DRO3+/77vNYwKm0Y8dBpK2HOIBljb+a
+         9AdvQ5JFcilLhxuwPkdXijvjMR/d9PVQXlX+3zEK36kmad+VYcZfFB+cCJXunGZKDGjo
+         3CNya32S+c6l2vWsKwdcKGHnogOK/1ATqeO/9VFBozhGH34vofco9BgSJl3BIjkHZZZf
+         M3DkebwBgV6khU4HmtQAGUtHuA3xHWpeskSFCDqxKN0rjRfSL+Im9f7eIhHv427NiCDU
+         4qBA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhtulV3vnn8wd87E5HhXE0eyHzQ1HspUkWCP5Foj0jXrznIOpgiAScHjqkmlMBr9gG9zprBujIYow=@vger.kernel.org, AJvYcCUn2enLRsvJeLcPxvCQi6cYfl2Ddrl2gHNlpPOjVpXHbV1S65+4nbZR+9LAfHXhLW6YiaYEuhd54rgWa1mc@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjhU6FdStk7ppVmRl9R+1TWoQ+uAWbLnjd2U94kBJjwzUJwuEm
+	preLNMl/9ImtowzKY08PVNBDMSJpkDK42XOS0LbiwKAZv2hKjaJ9
+X-Gm-Gg: ASbGncvRfAcZYXYwdyqMJpCe0ifQo+urc6Fpn5kr4Lbj6+2Y60FjRzng8OmmdzDbOrC
+	N7Dpt26fWQt0fO/Faz9WqM2ZXPSSdedozi3/6evJnCwoEq+NqFjpM11ubSHbmGu9SQ8h5JG7Ca8
+	+hh6BZDRaPvpqwrLfhyqDopV3209qicoaCoFCtn9MR6gucUPXudaqo0552EuN6ffjwv6hQtMkWd
+	wAT+ijYqhy9iKwmzfv2S6DiAI+CsvJuL4wnjBtAXKwIpvBVSufVqJnhhuNjdTMLWUs4ALRBEySZ
+	mKXBY4FHCWOl+6P7VUJ0cAz/z/te
+X-Google-Smtp-Source: AGHT+IFCB512DFsnvB8ysRw+mA7xR3siYJsI/byNJUYdFjiQqiy6XGWwVo0TGAv3tYMKArADoNszRQ==
+X-Received: by 2002:a05:600c:1c1a:b0:434:f2f4:4c07 with SMTP id 5b1f17b1804b1-436e26bd126mr206796805e9.15.1736783768282;
+        Mon, 13 Jan 2025 07:56:08 -0800 (PST)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e37d090sm12399279f8f.2.2025.01.13.07.56.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 07:56:07 -0800 (PST)
+Message-ID: <490b530b737cf2fb0be4830ae4f368569231df79.camel@gmail.com>
+Subject: Re: [PATCH v3 1/9] iio: dac: ad3552r-common: fix ad3541/2r ranges
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron
+	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno Sa
+	 <nuno.sa@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, 	linux-kernel@vger.kernel.org
+Date: Mon, 13 Jan 2025 15:56:07 +0000
+In-Reply-To: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-1-ab42aef0d840@baylibre.com>
+References: 
+	<20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-0-ab42aef0d840@baylibre.com>
+	 <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-1-ab42aef0d840@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jan 2025 16:05:36 +0100
-Message-Id: <D711DZJWGQX5.2D4PLVQN7NB8Z@gmail.com>
-Subject: Re: [PATCH 2/2] iio: light: veml6030: fix scale to conform to ABI
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-To: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Jonathan Cameron"
- <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rishi Gupta"
- <gupt21@gmail.com>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
- <20250107-veml6030-scale-v1-2-1281e3ad012c@gmail.com>
- <129de6d6-50f4-44d7-9a06-db61a6669810@gmail.com>
-In-Reply-To: <129de6d6-50f4-44d7-9a06-db61a6669810@gmail.com>
+MIME-Version: 1.0
 
-On Mon Jan 13, 2025 at 12:56 PM CET, Matti Vaittinen wrote:
-> On 07/01/2025 22:50, Javier Carrasco wrote:
-> > The current scale is not ABI-compliant as it is just the sensor gain
-> > instead of the value that acts as a multiplier to be applied to the raw
-> > value (there is no offset).
-> >
-> > Use the iio-gts helpers to obtain the proper scale values according to
-> > the gain and integration time to match the resolution tables from the
-> > datasheet and drop dedicated variables to store the current values of
-> > the integration time, gain and resolution. When at it, use 'scale'
-> > instead of 'gain' consistently for the get/set functions to avoid
-> > misunderstandings.
-> >
-> > Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light=
- sensor")
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
->
-> Thanks for the patch Javier.
->
-> And, sorry for a review which is more about questions than suggested
-> improvements. I find it hard to focus on reading code today.
->
-> > ---
-> >   drivers/iio/light/Kconfig    |   1 +
-> >   drivers/iio/light/veml6030.c | 499 ++++++++++++++++------------------=
----------
-> >   2 files changed, 189 insertions(+), 311 deletions(-)
-> >
->
-> I like the diffstats of this Fix! :) It's nice you found gts-helpers
-> helpful :)
+On Fri, 2025-01-10 at 11:24 +0100, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+>=20
+> Fix ad3541/2r voltage ranges to be as per ad3542r datasheet,
+> rev. C, table 38 (page 57).
+>=20
+> The wrong ad354xr ranges was generating erroneous Vpp output.
+>=20
+> In more details:
+> - fix wrong number of ranges, they are 5 ranges, not 6,
+> - remove non-existent 0-3V range,
+> - adjust order, since ad3552r_find_range() get a wrong index,
+> =C2=A0 producing a wrong Vpp as output.
+>=20
+> Retested all the ranges on real hardware, EVALAD3542RFMCZ:
+>=20
+> adi,output-range-microvolt (fdt):
+> <(000000) (2500000)>;=C2=A0=C2=A0 ok (Rfbx1, switch 10)
+> <(000000) (5000000)>;=C2=A0=C2=A0 ok (Rfbx1, switch 10)
+> <(000000) (10000000)>;=C2=A0 ok (Rfbx1, switch 10)
+> <(-5000000) (5000000)>; ok (Rfbx2, switch +/- 5)
+> <(-2500000) (7500000)>; ok (Rfbx2, switch -2.5/7.5)
+>=20
+> Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
 
-I wonder how painful the int. time/gain/scale issue in ALS was before
-iio-gts existed :D
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
->
-> ...
->
-> > +
-> > +static int veml6030_process_als(struct veml6030_data *data, int raw,
-> > +				int *val, int *val2)
-> > +{
-> > +	int ret, scale_int, scale_nano;
-> > +	u64 tmp;
-> > +
-> > +	ret =3D veml6030_get_scale(data, &scale_int, &scale_nano);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> > +	tmp =3D (u64)raw * scale_nano;
-> > +	*val =3D raw * scale_int + div_u64(tmp, NANO);
-> > +	*val2 =3D div_u64(do_div(tmp, NANO), MILLI);
->
-> do_div() is horrible on some platforms. Or, at least it used to be. Is
-> there really no way to go without it? We're dealing with 16bit data and
-> maximum of 512x total gain only, so maybe there was a way(?)
->
-> Maybe a stupid question (in which case I blame mucus in my head) - could
-> you just divide the raw value by the total gain?
->
+> =C2=A0drivers/iio/dac/ad3552r-common.c | 5 ++---
+> =C2=A0drivers/iio/dac/ad3552r.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 8 +++-----
+> =C2=A02 files changed, 5 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/iio/dac/ad3552r-common.c b/drivers/iio/dac/ad3552r-
+> common.c
+> index 0f495df2e5ce..03e0864f5084 100644
+> --- a/drivers/iio/dac/ad3552r-common.c
+> +++ b/drivers/iio/dac/ad3552r-common.c
+> @@ -22,11 +22,10 @@ EXPORT_SYMBOL_NS_GPL(ad3552r_ch_ranges, "IIO_AD3552R"=
+);
+> =C2=A0
+> =C2=A0const s32 ad3542r_ch_ranges[AD3542R_MAX_RANGES][2] =3D {
+> =C2=A0	[AD3542R_CH_OUTPUT_RANGE_0__2P5V]	=3D { 0, 2500 },
+> -	[AD3542R_CH_OUTPUT_RANGE_0__3V]		=3D { 0, 3000 },
+> =C2=A0	[AD3542R_CH_OUTPUT_RANGE_0__5V]		=3D { 0, 5000 },
+> =C2=A0	[AD3542R_CH_OUTPUT_RANGE_0__10V]	=3D { 0, 10000 },
+> -	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	=3D { -2500, 7500 },
+> -	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	=3D { -5000, 5000 }
+> +	[AD3542R_CH_OUTPUT_RANGE_NEG_5__5V]	=3D { -5000, 5000 },
+> +	[AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V]	=3D { -2500, 7500 }
+> =C2=A0};
+> =C2=A0EXPORT_SYMBOL_NS_GPL(ad3542r_ch_ranges, "IIO_AD3552R");
+> =C2=A0
+> diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+> index fd5a3dfd1d1c..4b5581039ae9 100644
+> --- a/drivers/iio/dac/ad3552r.h
+> +++ b/drivers/iio/dac/ad3552r.h
+> @@ -131,7 +131,7 @@
+> =C2=A0#define AD3552R_CH1_ACTIVE				BIT(1)
+> =C2=A0
+> =C2=A0#define AD3552R_MAX_RANGES	5
+> -#define AD3542R_MAX_RANGES	6
+> +#define AD3542R_MAX_RANGES	5
+> =C2=A0#define AD3552R_QUAD_SPI	2
+> =C2=A0
+> =C2=A0extern const s32 ad3552r_ch_ranges[AD3552R_MAX_RANGES][2];
+> @@ -189,16 +189,14 @@ enum ad3552r_ch_vref_select {
+> =C2=A0enum ad3542r_ch_output_range {
+> =C2=A0	/* Range from 0 V to 2.5 V. Requires Rfb1x connection */
+> =C2=A0	AD3542R_CH_OUTPUT_RANGE_0__2P5V,
+> -	/* Range from 0 V to 3 V. Requires Rfb1x connection=C2=A0 */
+> -	AD3542R_CH_OUTPUT_RANGE_0__3V,
+> =C2=A0	/* Range from 0 V to 5 V. Requires Rfb1x connection=C2=A0 */
+> =C2=A0	AD3542R_CH_OUTPUT_RANGE_0__5V,
+> =C2=A0	/* Range from 0 V to 10 V. Requires Rfb2x connection=C2=A0 */
+> =C2=A0	AD3542R_CH_OUTPUT_RANGE_0__10V,
+> -	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection=C2=A0 */
+> -	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+> =C2=A0	/* Range from -5 V to 5 V. Requires Rfb2x connection=C2=A0 */
+> =C2=A0	AD3542R_CH_OUTPUT_RANGE_NEG_5__5V,
+> +	/* Range from -2.5 V to 7.5 V. Requires Rfb2x connection=C2=A0 */
+> +	AD3542R_CH_OUTPUT_RANGE_NEG_2P5__7P5V,
+> =C2=A0};
+> =C2=A0
+> =C2=A0enum ad3552r_ch_output_range {
+>=20
 
-In its current form we need the 64-bit operations to handle the scale,
-and it will probably have to stay like that for the reasons I give you
-below.
-
-> ...
->
-> >
-> >   static irqreturn_t veml6030_event_handler(int irq, void *private)
-> > @@ -1084,6 +968,13 @@ static int veml6030_hw_init(struct iio_dev *indio=
-_dev, struct device *dev)
-> >   	int ret, val;
-> >   	struct veml6030_data *data =3D iio_priv(indio_dev);
-> >
-> > +	ret =3D devm_iio_init_iio_gts(dev, 2, 150400000,
->
-> Can you please explain the seemingly odd choice for the max scale?
->
-> Just a quick look at the sensor spec and this driver allows me to assume
-> following:
->
-> Maximum 'total gain' from both HWGAIN and integration time is 16 * 32 =3D=
- 512.
->
-> If we chose the 'total gain' 1x to match scale 1, then the smallest
-> scale would be 1/512 =3D 0.001 953 125
->
-> This is 1953125 NANOs. This would mean the max-scale 1X =3D> gain 1X woul=
-d
-> not cause precision loss. (Well, I'm not at my sharpest as I've caught
-> cold - but I _think_ this is true, right?)
->
-> If I read this correctly, the only channel where the scale gets applied
-> is the INTENSITY channel, right? Hence it should be possible to chose
-> the scale as we see best. (Unless the idea of this seemingly odd scale
-> is to maintain the old intensity / scale values in order to not shake
-> userland any more - in which case this could be mentioned).
->
-
-The scale is applied to an IIO_LIGHT channel, not to the INTENSITY,
-which forces us to provide the scale as a value that multiplied by the
-raw measurement gives a result in lux. The maximum scale in that case,
-as provided by the application note [1] (page 5, RESOLUTION AND MAXIMUM
-DETECTION RANGE table) is 2.1504 to convert from cnt to lux.
-
-The same applies for the rest of the device supported by this driver
-(veml6035 and veml6035).
-
->
-> Yours,
-> 	-- Matti
-
-Thank you for your feedback, I hope my reply could answer your
-questions. If something is still not clear or simply wrong, please let
-me know.
-
-Best regards,
-Javier Carrasco
-
-Link to app note: https://www.vishay.com/docs/84367/designingveml6030.pdf [=
-1]
 

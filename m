@@ -1,271 +1,270 @@
-Return-Path: <linux-iio+bounces-14308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DF1A0C2D6
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 21:56:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AED80A0C2E2
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 22:01:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 622EE1888FDA
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 20:56:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAF67169BD7
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 21:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42241D4601;
-	Mon, 13 Jan 2025 20:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677E51D5145;
+	Mon, 13 Jan 2025 21:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Zvn5v2HT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IITjvqHS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592FC1D5173
-	for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 20:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7391C8FD4
+	for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 21:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736801789; cv=none; b=JYSysRZ8tVLj+f0CzGnE2qxauPyp0yb6da12qB0LfyzbFyXIaW6WmcI0B4bibJ+Aneid9EXz/pBT9y7JB1uGxFS1Hc6NnGweGM1wt6M3pmsBnV47FPgWVFYDBHEUPhbA+U3S9shgD3ipmgxRYKJUW7s2dVZ9C9MOe/Z4FZhlm6o=
+	t=1736802057; cv=none; b=icxPbCQwRB+Jf/BVA3skU94b5vweGlmggdttPhD12vgNLmYi/QARR+EY6T3qW4RAswB70/s08GOwYfAkU9fgymq6zb5bl2sDygIUpHH2Y9OY8ow4CGLDM5RYIpKkQpF+6OHCE5WUicYhb7J6cIF7rReu1psUkfxLm9IACK5XbZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736801789; c=relaxed/simple;
-	bh=Ua7tqBmzyshoulaB7VZ0deiyOPNpRSquephKdWNciNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kmf2LNmDUM0vT34Nyu9dMU3KU3YyB7vIFsE+VMeUBHQ5xkSJudhYLRD6N9Gzpzm32eDjHCovt/oShhGfPeQyH+FE1YdhjQ6mHv+e9xwuKYScuUl27sM5xxNC6Ega7VmFfWqwtX1+6z+t23ZQ47raabqS56ol4keoMQvmkd8kbGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Zvn5v2HT; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1736802057; c=relaxed/simple;
+	bh=+XxJO96MN8GyA2olPpEPgu0OAhPuT0MCx2LmULLlwBg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=MmD2sXH56Xol5gn1A9neL0xdV6EQAHYUxtFaVWuPJx54cy8rPlfkkkXdcXz7qkIxGMtjUoQVt0bRNAGZeZIrx1lTIdJcJDX2XI40lD1J7BDeWApZtxmCAgb4rgXAOnKYG2mLh7oAp9SLvGVQIssWFlnfFq77//EWmimZ97uU88Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IITjvqHS; arc=none smtp.client-ip=209.85.210.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43618283d48so34407785e9.1
-        for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 12:56:25 -0800 (PST)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-71e3284f963so2441983a34.1
+        for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 13:00:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736801784; x=1737406584; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aTCDAAmyzMk9WAizg1mC0yuEdu4+GkStJfMTKRDWoeI=;
-        b=Zvn5v2HTvyjl3x4cs4OJI6RV/Vylg7UrTFYxMY/HyoIeK7FHgUMbFqLhw37H4pSGwi
-         NVHmZmEpek3OaEaCwa6Eqq+A75Z9VbcVYEa/BtYIfbqv7GHSnvHTePjhnQxdCraTp504
-         z1p9Pxee6+BQpAvJkFMN279OYMe10KZxBYHzATHRV/5g8FSZtRsvLQvtLYH7GW2u+VAZ
-         Yp7QcfluMemji5Cyb0+KAQ2lKwMpEGffRtKLWQ5VkzFthFTk4j4bnV6ygayK36BYe/Vv
-         CfGDrYBw4lr39GGIJhXs3lpdrD9CUz5feNCX/mxxBe+iS6st7m8F0wzvHqP64PNGZXMU
-         VrXA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736802053; x=1737406853; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TKg1ZIerSTCW5+x1RlJGDBMD+CW27K/9Q4mm4yRANFM=;
+        b=IITjvqHShnuOrG6QmJonpZSMhG23JWqAq2e9B2h4xs0scmLS1nXVbexcTmo8iib54M
+         AJnMzoEv+ajIKnjh552+Q8RSxvjHKEmKO0nvwOvVaOyi3F9I/QdJCmdClfYXYQ3guMLk
+         goOCIrWYRmJNpijOoUidPZAiDP0sCFZqvFpQWNYcXBOxTxHpSLotX4XPrLMpbYqddF+f
+         9sq4MY5S/90YyOffZ7+7SKJLw+k2e/+MuZciVFaWYl5NLkriPXf0BEpzRggmRoHgNPBC
+         Z97bHraNyTZyakS5VIu5Aa7+uiVqC3XZXtPEjIhr3oda4wwJATnZEHBnhiNrfDtOGRyi
+         QkjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736801784; x=1737406584;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aTCDAAmyzMk9WAizg1mC0yuEdu4+GkStJfMTKRDWoeI=;
-        b=rmGukBrc+t9BKiUIbTlQdAi7CjPC6/fw0lyAtE9HfERvF4UUTxiY9G8ZANv17dbaUl
-         oWHKCPAKfWiIn3mbvJ2xQg92qKpsXmEO8bI0IB1vTBQrxxFgeoe+vNPOOAjasxMcc8/N
-         FkvHng/IRjNlkEtomTkVRekD6spQph5tonPsR5L8pD3hsg5oDvF1vSqYkQrPxMwQYcqL
-         fEQ6bUNiJzvt0dKiYMJgcIpKgFMfUtjc1+Yll0nn/VuHTy/v1WtE9HpITAPt/2bcmOqT
-         LrxeIFsp1GIJWJnZZQXR2NAidYfzhL53Doe6bHjIDmQ3QPppR2Ogomn1ii6SDwyrItaM
-         65cg==
-X-Forwarded-Encrypted: i=1; AJvYcCUC86HrhUezFVnMTdTaBG67u866r09VJpmGY24k2+mzgvncqBTLavjtN9kp20Yb8Ey23lNKeW/JVIg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZFeHjo17EoiVlmqpgxMKRo2lzwdAnbV3VdMxxu7PHkIgTHJ2g
-	ebTQCP0w07XOAVHHnjDp4Mza55jO4c0tfbaSml4gvnhkbQncyxJZudjB4Ir32oU=
-X-Gm-Gg: ASbGncuPsMBJ83bxrSI4zTOu0cubB+f7WT7S91lpGb+j0t2CJYaHrnIRP5KOG8OxniL
-	qE/8MtdwnpgNtbchfR/b8sRaldw9RLNh9SsjM+Jh8nVhm7XtqUhM4CjEK0oPYmtUdHmLsI68eAa
-	+Txnr8C42k0OFxhhQehxHTMx9OTjh47wPkN2HrgketzAkv7BGy+rfPg+SCTKdQ+GQR7MaHO7nt7
-	3ZNXBTdsNfysybemF+E2WBn1V+zwCfWFaETjugiiALs/4zx
-X-Google-Smtp-Source: AGHT+IFFvWoYSNjAjdD+ttOr5njDiwTJWmamc3tiDZe/rtc1b8d4aGfVQK7HbEGyvuksmw2dXhIguw==
-X-Received: by 2002:a5d:5f52:0:b0:385:fa2e:a33e with SMTP id ffacd0b85a97d-38a8733a284mr20251338f8f.43.1736801784453;
-        Mon, 13 Jan 2025 12:56:24 -0800 (PST)
-Received: from dfj ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38f0eesm13289102f8f.61.2025.01.13.12.56.22
+        d=1e100.net; s=20230601; t=1736802053; x=1737406853;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TKg1ZIerSTCW5+x1RlJGDBMD+CW27K/9Q4mm4yRANFM=;
+        b=P5ucRdwH/4gc1fMQo7ZsRRozoVcCXEJbRIDApZTQvRYfdfQSshq+TFjXwWDqNYDyDB
+         mA0tAs6cb4m5BUnD2TM2BMtvuvG4zAUl6RSTbcc+K97rkaGV0Rao4xB3pYLrXpRg1L2G
+         l3yg0znnBAfl9wkEdBWWmlHmKpdb0A6My4FGcQjc3QcSjLbKjB0ui9RJX/bMUkIw83G6
+         lNvsToLg+t1gKe+NSzK1vk8cyaFlin4yPhXqaZdgfa/WnOLvGfnEfhNH6arsrI4V9vgl
+         2sNMOg5QBpRaH7Q/jqV6AcwaonpRRqPMLsnG/rkwX5y9AJr0mPPlmZdNzU7j0XhAbYkV
+         bdNg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1YiXye0f8p3GuOtrU/ml1o+2rveqXYDTG8ZTWzSDNWYMh5zQ+jg21/Y3V9nWZpDjvIFrsDbZ6EH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyubA3XpBKAVGQdN73NgYH4AMNtC/fxiaV+jGkqvc3RsPyOR32a
+	kpdIb8Ds6Ug02e1J+q2FIs4RWl6qFq+Bd0tnM1HFYcgvKLSWQW6/ME3iZmC7Vp4=
+X-Gm-Gg: ASbGncsWveg4GO3jks27OfDTdSA6tw9Tq5TvWSXO57FNUxnOZOpZtewjLt6gEGcBwIE
+	EjSyujG4w+fpjoaSVs2N5mo6d6zwYSAXhm0Y9jIEOyfurXznFDN2cfFbCK8dnlrZpphK6v4wxJt
+	WYJ3GmBmvSxBAe9xp0CNZw6j/uhXvkcVG4p96tcJyv02fZ8ulIeY/QzPEBtdaCUWHhFOweq+wMX
+	56kBRzoAnxgs1tlz6cSkvbeb7wPYbPgj/jejsS+UbBtMLD88zLCa0rpcK6cMSvxgATarNhsZlOG
+	OzDRr0jazA0J
+X-Google-Smtp-Source: AGHT+IGQwUa6ClCD2HbBTBy7UzdHDnH0UU+cNZvOpmP9ULHc/rbUBz/RZt0nxjeF6LRGgb3GKehwAQ==
+X-Received: by 2002:a05:6830:678e:b0:71d:fc52:1ab6 with SMTP id 46e09a7af769-721e2e9b660mr14413764a34.23.1736802053400;
+        Mon, 13 Jan 2025 13:00:53 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3927744a34.33.2025.01.13.13.00.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 12:56:23 -0800 (PST)
-Date: Mon, 13 Jan 2025 21:55:01 +0100
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	David Lechner <dlechner@baylibre.com>, Nuno Sa <nuno.sa@analog.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 9/9] iio: dac: ad3552r-hs: update function name (non
- functional)
-Message-ID: <khdjndqgevuorjbjdqwi3geqdindsyllegud34ya4iwkcgib77@64lswbelidak>
-References: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-0-ab42aef0d840@baylibre.com>
- <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-9-ab42aef0d840@baylibre.com>
- <4436a3be542569959a640c78397db67d3152c895.camel@gmail.com>
+        Mon, 13 Jan 2025 13:00:52 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v7 00/17] spi: axi-spi-engine: add offload support
+Date: Mon, 13 Jan 2025 15:00:05 -0600
+Message-Id: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4436a3be542569959a640c78397db67d3152c895.camel@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANV+hWcC/5XSzW7DIAwA4FepOI8JDAbS095j2oEf0yK1SZdkU
+ auq7z6SSq009ZBdEEbiszG+soH6QgPbbq6sp6kMpWtrYN82LO59uyNeUo0ZCNACpeDpQHHPj76
+ 0h9ISH06FU7ubt13Oh84nDtznSMo2IqAPrEqnnnI5L1k+v2q8L8PY9Zcl6QTz6f/8Cbjgzgrr6
+ xK1wo/gL4cSenqP3ZHNKSb1ZC3AOlZV1moQpDFl04QXrH6wUoBax+rKZicBQ9Nk9PIFi09WSlz
+ HYmUDeScxJCT/qgnmyYKU61gz99YRodUJk1B/2Nv9P3v6/qnDMt4/lZ38WOWS6uSQScqEHMEAo
+ YEYZgc0NSYFo02jhdEKzDIXj1vJGU25yc5bJZQDSCgSOuEbCiG5pISOzvvlVvAD8VrLsYzbTUv
+ nkdcHopBS1Opuv+hR03/SAgAA
+X-Change-ID: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
+To: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>, 
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ David Lechner <dlechner@baylibre.com>, Axel Haslam <ahaslam@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On 13.01.2025 16:11, Nuno Sá wrote:
-> On Fri, 2025-01-10 at 11:24 +0100, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Update ad3552r_qspi_update_reg_bits function name to a more
-> > generic name, since used mode can be SIMPLE/DUAL/QUAD SPI.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> 
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->
+We've got Reviewed-by's from all of the relevant maintainers now other
+than SPI, so up to you Mark to say what you want to do with this.
 
-I think i have to use driver prefix "ad3552r_hs", so ad3552r_hs_update_reg_bits
-not ad3552r_update_reg_bits.
+If we think this is good enough to go in, the SPI patches should be
+applying fine since this is based on a recent linux-next. But the IIO
+patches will need some care. There are dependencies on both the
+iio/fixes-togreg and the iio/testing branches as well as a couple of
+patches that haven't been applied yet because they are waiting for other
+dependencies [1]. Given the timing in the merge cycle, if Mark picks up
+the SPI patches and they make it into 3.14, then Jonathan can pick up
+the IIO patches after the 3.14 merge window closes. Or we can wait until
+then for everything to go in at once.
 
-Going to adjust it.
+[1]: https://lore.kernel.org/all/20241124125206.1ffd6e6c@jic23-huawei/
 
-> >  drivers/iio/dac/ad3552r-hs.c | 64 ++++++++++++++++++++-----------------------
-> > -
-> >  1 file changed, 29 insertions(+), 35 deletions(-)
-> > 
-> > diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> > index 4600a9e84dfc..7f3a70cfbef8 100644
-> > --- a/drivers/iio/dac/ad3552r-hs.c
-> > +++ b/drivers/iio/dac/ad3552r-hs.c
-> > @@ -56,9 +56,9 @@ struct ad3552r_hs_state {
-> >  	u32 config_d;
-> >  };
-> >  
-> > -static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state *st,
-> > -					u32 reg, u32 mask, u32 val,
-> > -					size_t xfer_size)
-> > +static int ad3552r_update_reg_bits(struct ad3552r_hs_state *st,
-> > +				   u32 reg, u32 mask, u32 val,
-> > +				   size_t xfer_size)
-> >  {
-> >  	u32 rval;
-> >  	int ret;
-> > @@ -206,9 +206,8 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev
-> > *indio_dev)
-> >  	 */
-> >  
-> >  	/* Primary region access, set streaming mode (now in SPI + SDR). */
-> > -	ret = ad3552r_qspi_update_reg_bits(st,
-> > -					  
-> > AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> > -					   AD3552R_MASK_SINGLE_INST, 0, 1);
-> > +	ret = ad3552r_update_reg_bits(st,
-> > AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> > +				      AD3552R_MASK_SINGLE_INST, 0, 1);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -217,10 +216,9 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev
-> > *indio_dev)
-> >  	 * len value so it's not cleared hereafter when enabling streaming
-> > mode
-> >  	 * (cleared by CS_ up).
-> >  	 */
-> > -	ret = ad3552r_qspi_update_reg_bits(st,
-> > -		AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> > -		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-> > -		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-> > +	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> > +				      AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-> > +				      AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-> > 1);
-> >  	if (ret)
-> >  		goto exit_err_streaming;
-> >  
-> > @@ -250,7 +248,7 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev
-> > *indio_dev)
-> >  
-> >  	/*
-> >  	 * From here onward mode is DDR, so reading any register is not
-> > possible
-> > -	 * anymore, including calling "ad3552r_qspi_update_reg_bits"
-> > function.
-> > +	 * anymore, including calling "ad3552r_update_reg_bits" function.
-> >  	 */
-> >  
-> >  	/* Set target to best high speed mode (D or QSPI). */
-> > @@ -351,18 +349,16 @@ static int ad3552r_hs_buffer_predisable(struct iio_dev
-> > *indio_dev)
-> >  	 * Back to simple SPI for secondary region too now, so to be able to
-> >  	 * dump/read registers there too if needed.
-> >  	 */
-> > -	ret = ad3552r_qspi_update_reg_bits(st,
-> > -					  
-> > AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> > -					   AD3552R_MASK_MULTI_IO_MODE,
-> > -					   AD3552R_SPI, 1);
-> > +	ret = ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> > +				      AD3552R_MASK_MULTI_IO_MODE,
-> > +				      AD3552R_SPI, 1);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> >  	/* Back to single instruction mode, disabling loop. */
-> > -	ret = ad3552r_qspi_update_reg_bits(st,
-> > -					  
-> > AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> > -					   AD3552R_MASK_SINGLE_INST,
-> > -					   AD3552R_MASK_SINGLE_INST, 1);
-> > +	ret = ad3552r_update_reg_bits(st,
-> > AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> > +				      AD3552R_MASK_SINGLE_INST,
-> > +				      AD3552R_MASK_SINGLE_INST, 1);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > @@ -379,10 +375,10 @@ static inline int ad3552r_hs_set_output_range(struct
-> > ad3552r_hs_state *st,
-> >  	else
-> >  		val = FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode);
-> >  
-> > -	return ad3552r_qspi_update_reg_bits(st,
-> > -
-> > 					AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-> > -					AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
-> > -					val, 1);
-> > +	return ad3552r_update_reg_bits(st,
-> > +				       AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-> > +				       AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
-> > +				       val, 1);
-> >  }
-> >  
-> >  static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-> > @@ -398,10 +394,10 @@ static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-> >  		fsleep(10);
-> >  		gpiod_set_value_cansleep(st->reset_gpio, 0);
-> >  	} else {
-> > -		ret = ad3552r_qspi_update_reg_bits(st,
-> > -					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-> > -					AD3552R_MASK_SOFTWARE_RESET,
-> > -					AD3552R_MASK_SOFTWARE_RESET, 1);
-> > +		ret = ad3552r_update_reg_bits(st,
-> > +			AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-> > +			AD3552R_MASK_SOFTWARE_RESET,
-> > +			AD3552R_MASK_SOFTWARE_RESET, 1);
-> >  		if (ret)
-> >  			return ret;
-> >  	}
-> > @@ -534,19 +530,17 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
-> >  
-> >  	val = ret;
-> >  
-> > -	ret = ad3552r_qspi_update_reg_bits(st,
-> > -				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> > -				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-> > -				val, 1);
-> > +	ret = ad3552r_update_reg_bits(st,
-> > AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> > +				      AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-> > +				      val, 1);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> >  	ret = ad3552r_get_drive_strength(st->dev, &val);
-> >  	if (!ret) {
-> > -		ret = ad3552r_qspi_update_reg_bits(st,
-> > -					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > -					AD3552R_MASK_SDO_DRIVE_STRENGTH,
-> > -					val, 1);
-> > +		ret = ad3552r_update_reg_bits(st,
-> > +			AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> > +			AD3552R_MASK_SDO_DRIVE_STRENGTH, val, 1);
-> >  		if (ret)
-> >  			return ret;
-> >  	}
-> > 
-> 
+---
+Changes in v7:
+- Addressed some very minor feedback.
+- Link to v6: https://lore.kernel.org/r/20241211-dlech-mainline-spi-engine-offload-2-v6-0-88ee574d5d03@baylibre.com
+
+Changes in v6:
+- Dropped the "spi: dt-bindings: add trigger-source.yaml" patch. It was
+  reworked and merged into dt-schema in
+  https://github.com/devicetree-org/dt-schema/pull/147
+- Adjusted other dt-bindings patches to account for above change.
+- Dropped one iio patch that was already applied to iio tree.
+- Added a DAC patch to make use of the TX DMA stream API.
+- Minor fixes and improvements to other patches based on feedback.
+- Link to v5: https://lore.kernel.org/r/20241115-dlech-mainline-spi-engine-offload-2-v5-0-bea815bd5ea5@baylibre.com
+
+Changes in v5:
+- Dropped pwm patch. A variant of this patch has been picked up in the
+  pwm tree.
+- Addressed review comments (see details in individual patches).
+- Added some polish, like MAINTAINERS entries and updating ADC docs.
+- Link to v4: https://lore.kernel.org/r/20241023-dlech-mainline-spi-engine-offload-2-v4-0-f8125b99f5a1@baylibre.com
+
+Changes in v4:
+- Dropped #spi-offload-cells and spi-offload properties from DT bindings.
+- Made an attempt at a more generic trigger interface instead of using
+  clk framework. This also includes a new driver for a generic PWM
+  trigger.
+- Addressed IIO review comments.
+- Added new patches for iio/adc/ad4695 as 2nd user of SPI offload.
+- Link to v3: https://lore.kernel.org/r/20240722-dlech-mainline-spi-engine-offload-2-v3-0-7420e45df69b@baylibre.com
+
+Changes in v3:
+- Reworked DT bindings to have things physically connected to the SPI
+  controller be properties of the SPI controller and use more
+  conventional provider/consumer properties.
+- Added more SPI APIs for peripheral drivers to use to get auxillary
+  offload resources, like triggers.
+- Link to v2: https://lore.kernel.org/r/20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com
+
+Individual patches have more details on these changes and earlier revisions too.
+---
+
+As a recap, here is the background and end goal of this series:
+
+The AXI SPI Engine is a SPI controller that has the ability to record a
+series of SPI transactions and then play them back using a hardware
+trigger. This allows operations to be performed, repeating many times,
+without any CPU intervention. This is needed for achieving high data
+rates (millions of samples per second) from ADCs and DACs that are
+connected via a SPI bus.
+
+The offload hardware interface consists of a trigger input and a data
+output for the RX data. These are connected to other hardware external
+to the SPI controller.
+
+To record one or more transactions, commands and TX data are written
+to memories in the controller (RX buffer is not used since RX data gets
+streamed to an external sink). This sequence of transactions can then be
+played back when the trigger input is asserted.
+
+This series includes core SPI support along with the first SPI
+controller (AXI SPI Engine) and SPI peripheral (AD7944 ADC) that use
+them. This enables capturing analog data at 2 million samples per
+second.
+
+The hardware setup looks like this:
+
++-------------------------------+   +------------------+
+|                               |   |                  |
+|  SOC/FPGA                     |   |  AD7944 ADC      |
+|  +---------------------+      |   |                  |
+|  | AXI SPI Engine      |      |   |                  |
+|  |             SPI Bus ============ SPI Bus          |
+|  |                     |      |   |                  |
+|  |  +---------------+  |      |   |                  |
+|  |  | Offload 0     |  |      |   +------------------+
+|  |  |   RX DATA OUT > > > >   |
+|  |  |    TRIGGER IN < < <  v  |
+|  |  +---------------+  | ^ v  |
+|  +---------------------+ ^ v  |
+|  | AXI PWM             | ^ v  |
+|  |                 CH0 > ^ v  |
+|  +---------------------+   v  |
+|  | AXI DMA             |   v  |
+|  |                 CH0 < < <  |
+|  +---------------------+      |
+|                               |
++-------------------------------+
+
+---
+Axel Haslam (1):
+      iio: dac: ad5791: Add offload support
+
+David Lechner (16):
+      spi: add basic support for SPI offloading
+      spi: offload: add support for hardware triggers
+      dt-bindings: trigger-source: add generic PWM trigger source
+      spi: offload-trigger: add PWM trigger driver
+      spi: add offload TX/RX streaming APIs
+      spi: dt-bindings: axi-spi-engine: add SPI offload properties
+      spi: axi-spi-engine: implement offload support
+      iio: buffer-dmaengine: split requesting DMA channel from allocating buffer
+      iio: buffer-dmaengine: add devm_iio_dmaengine_buffer_setup_with_handle()
+      iio: adc: ad7944: don't use storagebits for sizing
+      iio: adc: ad7944: add support for SPI offload
+      doc: iio: ad7944: describe offload support
+      dt-bindings: iio: adc: adi,ad4695: add SPI offload properties
+      iio: adc: ad4695: Add support for SPI offload
+      doc: iio: ad4695: add SPI offload support
+      iio: dac: ad5791: sort include directives
+
+ .../devicetree/bindings/iio/adc/adi,ad4695.yaml    |  13 +
+ .../bindings/spi/adi,axi-spi-engine.yaml           |  24 ++
+ .../bindings/trigger-source/pwm-trigger.yaml       |  37 ++
+ Documentation/iio/ad4695.rst                       |  68 +++
+ Documentation/iio/ad7944.rst                       |  24 +-
+ MAINTAINERS                                        |  12 +
+ drivers/iio/adc/Kconfig                            |   2 +
+ drivers/iio/adc/ad4695.c                           | 445 +++++++++++++++++++-
+ drivers/iio/adc/ad7944.c                           | 307 +++++++++++++-
+ drivers/iio/adc/adi-axi-adc.c                      |   2 +-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 144 +++++--
+ drivers/iio/dac/Kconfig                            |   3 +
+ drivers/iio/dac/ad5791.c                           | 179 +++++++-
+ drivers/iio/dac/adi-axi-dac.c                      |   2 +-
+ drivers/spi/Kconfig                                |  16 +
+ drivers/spi/Makefile                               |   4 +
+ drivers/spi/spi-axi-spi-engine.c                   | 314 +++++++++++++-
+ drivers/spi/spi-offload-trigger-pwm.c              | 162 +++++++
+ drivers/spi/spi-offload.c                          | 465 +++++++++++++++++++++
+ drivers/spi/spi.c                                  |  10 +
+ include/dt-bindings/iio/adc/adi,ad4695.h           |   7 +
+ include/linux/iio/buffer-dmaengine.h               |   7 +-
+ include/linux/spi/offload/consumer.h               |  39 ++
+ include/linux/spi/offload/provider.h               |  47 +++
+ include/linux/spi/offload/types.h                  |  99 +++++
+ include/linux/spi/spi.h                            |  20 +
+ 26 files changed, 2349 insertions(+), 103 deletions(-)
+---
+base-commit: 2ba607f3f13e4cb147ad0f05e3c6de4a544c9a52
+change-id: 20240510-dlech-mainline-spi-engine-offload-2-afce3790b5ab
+prerequisite-patch-id: 7e6d36bfc262e562cb74d524e96db64694064326
+prerequisite-patch-id: d864ef9f8a7303822d50d580a9ebbd8d304c8aa6
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

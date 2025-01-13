@@ -1,120 +1,196 @@
-Return-Path: <linux-iio+bounces-14303-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14304-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D407A0C151
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 20:24:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E02DA0C21B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 20:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 058447A2466
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 19:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7E7167469
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 19:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6511CB9E2;
-	Mon, 13 Jan 2025 19:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8161F8932;
+	Mon, 13 Jan 2025 19:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnI3S2yD"
+	dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b="wxc2slGF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="c0sbNU2t"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541EC1B21BC;
-	Mon, 13 Jan 2025 19:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1C1C760A;
+	Mon, 13 Jan 2025 19:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736796243; cv=none; b=TMplntBtZpFR6BDc8xwmnoMcJRKnxe5D+c4Up/oB3S6y3zL209SWABrcU56dAEM4eX5NQbP86B+QevJwTOM1InSc48GwN+uRa4ETOhYC9VLceX2epPiotimvLfbOaR9Q+sMtNGSX3IV+czk2EMlOouZU/+lOVksGNGVRxuEGflg=
+	t=1736797897; cv=none; b=GhYbLTxEifyKpyDFcXuk004yOBR5FHPSQzZ9V6MXjZqhSVZ9uzlv2iOKmvU7q3VQUW+8hwLTg7borOfNTqnDN+nN2YOZ3F00z2A7ToF9n5HCngOKkRUoKQFrrqzVPMriaDWp/jmv4MwuuhoFHO/4DZCr7SAtZypllIrCEYeGMyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736796243; c=relaxed/simple;
-	bh=Umu9UrW9TO3I2erQ+JEA6A+7LHpPVBphN3aQGziCzgE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rqJ4LypMjQJImfvdHdeT2/zbay7PVqay7vn6woXk0PtCk3tZqDlYkzKj6C9bS69945sw0Yb8T7elpRCtQYh+07UOy4dfGuJdi6xau361dAt4vAhhjRBXFJbivOf85R5VoL+f7PO7zaObo+R4NByV0o0kT9NAzxlCw2nZuobJP3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnI3S2yD; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso824544466b.3;
-        Mon, 13 Jan 2025 11:24:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736796239; x=1737401039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p+2XtHqUfN0cnrDUpReiLg6E5eKQJA73ha0wU7YxT90=;
-        b=KnI3S2yDcACcbv5wmbiCC0ZD5g+kKhy0+g2ozlFtJisUyU/xQg/jyUOgEIBJ54U0m7
-         nMPdq/G9p3e19iKm8NLE71op1cFcTKznqlyfWjB9MrWdfE9xmdOjp2UncY14NwkgqkMn
-         dGFjGRVkJ0I8ZU8wSUMruJwLVpgjxSHWpLPljU3Vf5TYsY2KvXcru5lRhuivYopVtI4V
-         EB4RlEzCqUm9bi4PPShGzLr3OBdOLIDVonWibVL0/GxNpUnoJwvw7kyKFHJ7CNtbIiTB
-         it7hgQlQ/UYUmsKsW24iNLmXaf8t5W8b1+BAKnXsIPKndrXiGYaqsb+FrKCyOaMCd9zY
-         wapw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736796239; x=1737401039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p+2XtHqUfN0cnrDUpReiLg6E5eKQJA73ha0wU7YxT90=;
-        b=KszCbE/eUb/mX98hEkqdxB1vKRLwdCtcCAQToVExWDw5ookrY09SkD9pqr4C5Y5uRW
-         UF6h+KxVqJaSURzRfIh3NHDBTu6mSDnJxzGL+MvL+KbD9TQ/K9LszTXIxftG+fA52cpN
-         7jPeO1k1J7ejeoi1qE5Zd/rdcLW91Oz+ZuP8BGmHkh76JpRmMGwKoIUBiOVGSu5cj6zf
-         ym8kFNBQe65D6lR7MO+2TDGjcdkncmtNugSsHMibkaH2JgA4R9qkOIWR350ayCEXhCcH
-         lWMz4OS/N/9mZ0c9jdE3Nhsox/nR0ywW+OYa+zRODmpU2Wcu1fDy95xRi1X0RSqdGd0P
-         m/qg==
-X-Forwarded-Encrypted: i=1; AJvYcCUg/cvNtfLGgWC9RzxqhOYkNn6qNG0WWovgH/5pP/Z32Qa5Hj5PpcmhwK/OgG9uSFXy/2fz1HvIeveVVWXe@vger.kernel.org, AJvYcCXgx2sCshlxV7Vjn88XGbEEnIBgDt1A0OeaG/p0ijtWpokTiIoD8EgxtmUZygubBOnRyirkdWI7a+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwADW+loAwLLx+67lWrGizCYFNYgSH01yA+eNn4vWpNVp13iEGl
-	tk7qmBsv38zEqwDaba5a3MqJhpXTvMz5oi3M9M9mFyZ/YkJbtaW7vztxwF4t9kzzlRiRS3j5NLu
-	ESsW84hmj1HoyoHMZA/n0VsybbKc=
-X-Gm-Gg: ASbGncv9IYxGcsn5zaG7fup0MupuSIkUqXLRPnUNT2bvhSJUjocOMLrmW+e/wTmC/gt
-	9vjlHFJcXC9N3978zRZXckjXAzPTVqQVBoAk9Rg==
-X-Google-Smtp-Source: AGHT+IHOeVTi+PVxrtG2LMQyClp1RbIi99BTRUiYZ5OYRxlbpC4+/1Pg/pwd+nNTcp5qBbIW820hmCuJN2NURqGF92w=
-X-Received: by 2002:a17:907:3f95:b0:aa6:9b02:7fd0 with SMTP id
- a640c23a62f3a-ab2aad3f4a6mr2172149966b.0.1736796239356; Mon, 13 Jan 2025
- 11:23:59 -0800 (PST)
+	s=arc-20240116; t=1736797897; c=relaxed/simple;
+	bh=0bHHgzrNqa3fYPBLBtN/WSM3ej4oelh0tp8dbE0JfhI=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=rwz8zuLCqL3NYSaaUqvQn5Cy4+O2uFVnngALZh4JHQSJZgIlfBw+e3mvlKku5lsaGT4la+YaVA1cUKuv5acXVNfdxO+crhlchGd/VNJe6KJmU8brDS3qlBArwZ76CmPAxJK5DR2nI4FViHr8XHuwwaHUD8NsN5OPAMRX5bDgXE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca; spf=pass smtp.mailfrom=squebb.ca; dkim=pass (2048-bit key) header.d=squebb.ca header.i=@squebb.ca header.b=wxc2slGF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=c0sbNU2t; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=squebb.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=squebb.ca
+Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id DFF511140094;
+	Mon, 13 Jan 2025 14:51:33 -0500 (EST)
+Received: from phl-imap-10 ([10.202.2.85])
+  by phl-compute-02.internal (MEProxy); Mon, 13 Jan 2025 14:51:33 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=squebb.ca; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1736797893;
+	 x=1736884293; bh=crQtvXcB4CVDtZoxgjvLjzhcmtpkH5xTXvUFColn2Kw=; b=
+	wxc2slGFjmSg1ZPpG9iTjuTge+e8IcHRQFforpS8AlTUdQWEoqNAJ61qGXLxSF+8
+	O/YxMJ/KDkuitUJd0+/u8wlhxCcz4OuocjM84bUyVOR4Nx1w4H9znvCdkT1qwvtp
+	RXk+MWvrlkeP3JUB3OS3oSfdNUplnoBnQa4WjN7Ex4hbWnO8ubX6x1zqUCySfR6+
+	zmUAr0CCBPMoJxRKQEBLZJ79fU79ESgzqmHf/yPCQjPaYCmGcfgXe9eUhi8TPonc
+	3ijN5ApT+xTUD7/LqC9oNPRszHN4yeLI5LgldVBXFPNr4iTkqam8HuMQqhjER7Gf
+	uQeiQg7GX8infZEIrgsn1Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1736797893; x=
+	1736884293; bh=crQtvXcB4CVDtZoxgjvLjzhcmtpkH5xTXvUFColn2Kw=; b=c
+	0sbNU2tODPGJt+hBXjOE6DH4DpovfgwL7PzDfRYZWB5iElWCXR1RWw2+TdF1nI3c
+	Jm6csoAEefYOYMYTbXFVN7p+IO2Brfs0vJOonsMjYfgFhoAWFEIi/5C+TH10P/VC
+	batAECJpZpnehwV8u8PIFvUI2Zytvkt+45cCKgO5j0ZjMzVTvTVM/6nsOyj+UIqK
+	Bc/+GOqQpt5ymDTq8LNknH7rWGbxYpTuF9f/+RiQ/x4WGIm9dFIsbfUaqizxYVJh
+	l8ia/ErXnM5G6e99QUPpmwSXN+fnLc/JjHSLcwiJ2hxTOdFd85knSOpGmrgtdlNU
+	OQlf1KbhC5msq2bNdnD4g==
+X-ME-Sender: <xms:xW6FZ_2OhmuguUoqXtmsNujknW_hmaIQ1KF3Ob6OPyyb4W7nsfDN9Q>
+    <xme:xW6FZ-FL9CvROQN1lKHI9BKaksPmDh22R7jqE5KBVLYRJpZxNWz4sNdWbWaxjWxcV
+    NjEIssVMLP1AI_ZrcU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudehgedguddvkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhepofggff
+    fhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfofgrrhhkucfrvggrrhhs
+    ohhnfdcuoehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrqeenucggtf
+    frrghtthgvrhhnpefhuedvheetgeehtdehtdevheduvdejjefggfeijedvgeekhfefleeh
+    keehvdffheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehmphgvrghrshhonhdqlhgvnhhovhhosehsqhhuvggssgdrtggrpdhnsggprhgtphht
+    thhopeelpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrihgsrghluggrsegthh
+    hrohhmihhumhdrohhrghdprhgtphhtthhopehjohhnrghthhgrnhdrtggrmhgvrhhonhes
+    hhhurgifvghirdgtohhmpdhrtghpthhtohepshhrihhnihhvrghsrdhprghnughruhhvrg
+    gurgesihhnthgvlhdrtghomhdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhr
+    ghdprhgtphhtthhopehjihhkohhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlrg
+    hrshesmhgvthgrfhhoohdruggvpdhrtghpthhtoheplhhinhhugidqihhiohesvhhgvghr
+    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhinhhpuhhtsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
+    rhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:xW6FZ_7M_Ds_wL0a2fdD69QLZw-9MIfVvOjrOrvvAGvNPYWKowkf_w>
+    <xmx:xW6FZ03o2i3vCcCCXEq8Fj8YbF_G5dsMk5fN7R1VkV9FLJiLke6ZZw>
+    <xmx:xW6FZyHbKVwB6JnFCD_CeKgOWNE4a0n_8rilcJYJrN-nyO5BcrUcWw>
+    <xmx:xW6FZ1-PBPoJFiFHhqXX7vWEG0An3dG63tFwgGuCKnVo20f27evP0w>
+    <xmx:xW6FZwbxkI-PIFqIPsRW_d8ir8s4vgFP9niUgX_YWR_w0AGIzmlrpY7R>
+Feedback-ID: ibe194615:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 17ACF3C0068; Mon, 13 Jan 2025 14:51:33 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250113132214.36276-1-victor.duicu@microchip.com>
-In-Reply-To: <20250113132214.36276-1-victor.duicu@microchip.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 13 Jan 2025 21:23:23 +0200
-X-Gm-Features: AbW1kvbmNW3BJlzGMQSiXVNCbuXym3jCA_Pkz7i3dKQ6et2FOfIHawvAA2UCS8M
-Message-ID: <CAHp75VcyVsZ=Q3d0i7YWGgZms8bSokcQgDKs1U0h=RsSVxanAw@mail.gmail.com>
-Subject: Re: [PATCH v1] iio: adc: pac1921: Move ACPI_FREE to cover all branches
-To: victor.duicu@microchip.com
-Cc: matteomartelli3@gmail.com, jic23@kernel.org, lars@metafoo.de, 
-	marius.cristea@microchip.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 13 Jan 2025 14:49:59 -0500
+From: "Mark Pearson" <mpearson-lenovo@squebb.ca>
+To: Srinivas <srinivas.pandruvada@intel.com>, ribalda@chromium.org,
+ jic23@kernel.org
+Cc: jikos@kernel.org, linux-input@vger.kernel.org,
+ Jonathan.Cameron@huawei.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-Id: <8fed2747-c419-454a-bb72-43f158b4f081@app.fastmail.com>
+In-Reply-To: 
+ <TYZPR03MB599406F8035E6322E6B66CBFBD1F2@TYZPR03MB5994.apcprd03.prod.outlook.com>
+References: <20241216-fix-hid-sensor-v2-1-ff8c1959ec4a@chromium.org>
+ <20241219171718.2af17d6d@jic23-huawei>
+ <CANiDSCvkKX68UqSuKiGiys8nwm5BX-FbKmHPtxJK=Hh=B4RqZQ@mail.gmail.com>
+ <45ae61a978e7d4ea34502604a6d508f14c29303b.camel@intel.com>
+ <TYZPR03MB599406F8035E6322E6B66CBFBD1F2@TYZPR03MB5994.apcprd03.prod.outlook.com>
+Subject: Re: [PATCH v2] iio: hid-sensor-prox: Split difference from multiple channels
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 13, 2025 at 3:25=E2=80=AFPM <victor.duicu@microchip.com> wrote:
+Note - switched to my open-source friendly email account (avoid the Lenovo address, especially for mailing lists, it's Outlook based and can't cope).
+
+On Mon, Jan 13, 2025, at 2:19 PM, Mark Pearson wrote:
+> Subject: [External] Re: [PATCH v2] iio: hid-sensor-prox: Split 
+> difference from multiple channels
 >
-> From: Victor Duicu <victor.duicu@microchip.com>
+> On Sat, 2025-01-11 at 10:17 +0100, Ricardo Ribalda wrote:
+>> Hi Jonathan
+>>
+>> Happy new year!
+>>
+>> Friendly ping about this patch so we can change the ABI before the
+>> kernel release happens
+>>
+>> On Thu, 19 Dec 2024 at 18:17, Jonathan Cameron <jic23@kernel.org>
+>> wrote:
+>> >
+>> > On Mon, 16 Dec 2024 10:05:53 +0000
+>> > Ricardo Ribalda <ribalda@chromium.org> wrote:
+>> >
+>> > > When the driver was originally created, it was decided that
+>> > > sampling_frequency and hysteresis would be shared_per_type
+>> > > instead
+>> > > of shared_by_all (even though it is internally shared by all).
+>> > > Eg:
+>> > > in_proximity_raw
+>> > > in_proximity_sampling_frequency
+>> > >
+>> > > When we introduced support for more channels, we continued with
+>> > > shared_by_type which. Eg:
+>> > > in_proximity0_raw
+>> > > in_proximity1_raw
+>> > > in_proximity_sampling_frequency
+>> > > in_attention_raw
+>> > > in_attention_sampling_frequency
+>> > >
+>> > > Ideally we should change to shared_by_all, but it is not an
+>> > > option,
+>> > > because the current naming has been a stablished ABI by now.
+>> > > Luckily we
+>> > > can use separate instead. That will be more consistent:
+>> > > in_proximity0_raw
+>> > > in_proximity0_sampling_frequency
+>> > > in_proximity1_raw
+>> > > in_proximity1_sampling_frequency
+>> > > in_attention_raw
+>> > > in_attention_sampling_frequency
+>> > >
+>> > > Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more
+>> > > channels")
+>> > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>> >
+>> > I got lost somewhere in the discussion.  This is still an ABI
+>> > change compared
+>> > to original interface at the top (which is the one that has been
+>> > there
+>> > quite some time).
+>> >
+>> > However we already had to make one of those to add the index that
+>> > wasn't there
+>> > for _raw. (I'd missed that in earlier discussion - thanks for
+>> > laying out the
+>> > steps here!)
 >
-> This patch moves ACPI_FREE in pac1921_match_acpi_device
+> Didn't realize this. I don't see proximity sensor use in the mainline
+> Linux distro user space, so it will affect only some private user space
+> programs.
+> Adding Mark to see if it affects Lenovo Sensing solution as there was
+> specific custom sensor added to this driver for Lenovo.
+>
 
-ACPI_FREE()
-pac1921_match_acpi_device()
+Can I get some pointers to what sensor that is please?
+We've been asking for the HID support drivers, but it isn't available yet to my knowledge. Would the MIPI camera work tie into this?
 
-> in order to cover all branches.
+If I can get details on what the sensor is I'll go and check what is impacted.
 
-Do we need a Fixes tag?
-
-...
-
-> +       ACPI_FREE(status);
-> +
-
-Not sure if we need this blank line.
-
->         if (!label)
->                 return -ENOMEM;
-
-...
-
-Other than above, LGTM, thanks for addressing it.
-
---=20
-With Best Regards,
-Andy Shevchenko
+Thanks
+Mark
 

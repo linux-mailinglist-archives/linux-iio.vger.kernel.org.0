@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-14264-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14265-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C006A0B2C8
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 10:29:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5874EA0B382
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 10:47:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDD667A0FBF
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 09:29:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF703ABCD3
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 09:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970F12397BF;
-	Mon, 13 Jan 2025 09:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C066922C32B;
+	Mon, 13 Jan 2025 09:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tj+vE0u/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RN56A3YJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3EE14A09C;
-	Mon, 13 Jan 2025 09:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A8B22AE76;
+	Mon, 13 Jan 2025 09:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736760589; cv=none; b=u4Bt82l3d90B+KXKqnkWNkZbMDZ/GHuuYFCn2032dk+EFm4BtDvoGOAEITZb2MwrzlxkCZehw/1CEMUkP/Ppc/01yaWwQfazPEL/LycgO5M0gf5L7PeBcdKh7vDzhLtlJLCSl/MpKERPKVJolsL2Su1N/CBq6Ch6YK6PldFkMQA=
+	t=1736761002; cv=none; b=Rq5lTExhsE9q+ijW9gveIsewNyBuW3Sxsa6HE6z0girxyH5Af4tZDRBlF+nV3FPJjmkt9VSLxwGVq9bdEin3RpzG+qmdPU1+jButoKJ3yzV1SrVPkV0cjmxXO7INaYkuTlWbxxm6HmVffF3lgdctlh3QltdG4PUJlLy+d6VK74U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736760589; c=relaxed/simple;
-	bh=uuhhoIuboHPWhczc/6YMTwUy8feTwWUv8uqp0LqwNug=;
+	s=arc-20240116; t=1736761002; c=relaxed/simple;
+	bh=CnSGARktw4IXiEEBL5guac/mAy2S/VeEr/vvlM4oBsY=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QcpyEe7MHYUnB0j9fdugow2tz3j7ZGg/X4PUG9qB6eb+gA0dUahmonBDtHCwk5rNeV6iYv1DEL33LkJJbM/IGqse+KsdQ3MP4ED+ROFPVejTR05msGJ0MTeN5rV/dqVAzGbad3K5IZdLs5VSkXgcXaopThCpzuwzPF8srUbzv3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tj+vE0u/; arc=none smtp.client-ip=209.85.128.54
+	 Content-Type:MIME-Version; b=BTVbQMS5z8Zp3fNBqOZzQJS/o9AWJnasoaEpSQIj/h5YSepNbFplKQ/jmInLy5mWRWFUnMIcucChVdh/e/UMZTVFglQIwX6huTP+k9n/34HpANumwBL/n8HN0Wnuq/AY3saHYrx8XcFe93pJyrCC3V/icUSwl8xywVB/NbFiY6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RN56A3YJ; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436202dd730so28277245e9.2;
-        Mon, 13 Jan 2025 01:29:47 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso2114850f8f.3;
+        Mon, 13 Jan 2025 01:36:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736760586; x=1737365386; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736760999; x=1737365799; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=p0cX2s6y1CpgFWbk714th6XfIo828EXlRRcCeLbR80U=;
-        b=Tj+vE0u/BCHN6XFw8nryqIakkZsFvGuh2x/Z0isolFf6PBREwK9zirag9Q9PGi4rYI
-         n8Idai5GsSW9OTD3KHg0lN9iFSNR71cLpuT7qzyRrb2NR1UIXFU92j/IXMpRakrGpd9L
-         l8/wPBM8Qlk8HfBswJ7isMtRT3pp075bQVGWFczZlk7tvKj9g4K2po8Hpl9lVBF8pHgb
-         kFWEMghtct74icFFKsJOAipSg/Q86/rg4TC9B/BAUSsouQAVDt6k8a+KKKhS5LDz4wGo
-         zJBK9S0O+tgPwrCuAVgnoZHqZtGVowvNS+0d5P/YK6u1Jx/zlria2MIwQlY36AsIwgTB
-         bE2g==
+        bh=7nyUSHHP0yR3ZtnhpxdtDCyqMGbgmdlP3dka+ZfZ0PI=;
+        b=RN56A3YJ6jJ9fVBaydvYqdI4fjOnhhIAeKz4rWms8cOcwKkCmZ8FSbM0FSPa0vUSIV
+         Rc/sEXT4Fid1WJfLdAIoV0GDy1D8pTF42GdIhUnxEwZcajMHyT9PzVth+KVXf8gek3hk
+         bBYywYes7exrSuR09QkFVBZ4nT21p3Q1sb21WFFANDDg5cAnH6AO/NmVgfQ9hHf7I/a4
+         dfAYeRWp3j/8+j3F8rBVbovmeT5wbCwSJHTNLxrU6wnWLxnCGifqAyLKReU3bnbXJncU
+         PDOuiSANTK3NXwtRHL0JwqM8gYs55Y9yH/tV0xxbh1Y7eA1skQcHXixRGDutJx80nty/
+         83bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736760586; x=1737365386;
+        d=1e100.net; s=20230601; t=1736760999; x=1737365799;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=p0cX2s6y1CpgFWbk714th6XfIo828EXlRRcCeLbR80U=;
-        b=tGaRK9MWTwoSo0hms5c4Ig+JpAkCXDdXP9/BSCQPtSTBWVM/lZTJq+qxkNq5wqaaIq
-         8WcnMbO0CrA/bDNLXCbOX1u/GQRKikFLPjmwlJ6WgN7qEv+KHxIClo/LdtfzJbEVWmg3
-         CSa5cHGgl1g4u5/2EBdkXyogk8n4FUhoa84//nUfyqlK52RiqxW/fz4GF3x9evH745yq
-         HK08ON3rwHyF533ZBIgESnb8QFq4TNY+vNJmfzZi08/Q3ZD8DI/fYkpJ/6woBvYkV9wc
-         RwRf+JfmUCk2OwaD6nK+6kkBeA/lYU63LTWG/sfOzjWIrxKYqgeRAjChBKKm83jT79sQ
-         EK5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUlUVUHzEuwFlwxfHGBqyToJuHKY3GhhudRyMGJEFseWJi0qmzFMfdjv9XLWC4tXTBa7KKZm5WPpEtZ@vger.kernel.org, AJvYcCVBmMCpGFYUi1m2PJBu6t8BUnAr46CGzIKg7xuHwNrxVDPCFnpxdbgNCuYzmBq9xewaz3+DrDYNEK/uDNaG@vger.kernel.org, AJvYcCW28XHV7WYNjDUE1EKha1UItkQgtgaRZGIFMfKTvjz2wys0/85ePoJUpOCIzGPRyXbnzh3MQJr0jisz@vger.kernel.org, AJvYcCX3NbDV7pa5g/GucaXiSNbzdR/Jf9Kg5Pfsevf8EYz2X+5qVTJzsQI+7dLwXaSG4avTIYh4xja5w4/3@vger.kernel.org
-X-Gm-Message-State: AOJu0YxS54j98LhwHqDDGO3WxFyrNCI09g05zUYArgaGq3YHfC4/wy/I
-	zGLrrlcDhIEreV5jAA8mbjHr9MPP8SXqSLAzAaQrf7AKjO5FqYde
-X-Gm-Gg: ASbGncv+f9pH8YTRdscZ2U/y0qG8PHn12z+TFBuHsnWIKfo79iAXA1BOeoBzm5DAxia
-	RZ1JCM4iLfWWpyevKuRUe+0pv1JD6qFmmvbYen0O/cFrZPFk0Z09ZlyiwWF5emJ1wCfMOofm0OF
-	IZVYTCSG1TcGZW4zdbvlkJ8B/eNUSn7ezOw96YDn4SZA5mZRKQOsKQlJ7bBpFHj+vt7NywbW8s5
-	h71E7Nl048/GZbPH1VykZCLYuCHqVpnizCua9S0BDPNL8UlrUTpov8H9DMpseq2SUDnAtchEQXi
-	joKKnA7S7R2tD25aQZUjNhimM8m1
-X-Google-Smtp-Source: AGHT+IEi6E132aBc5zotFnSPKgF4a2PYwlIZFpppWVMgdMhRO0HF+t4W3CnCbYcOa6CRz1H7P7+qPA==
-X-Received: by 2002:a05:6000:2a3:b0:388:e2a6:ba81 with SMTP id ffacd0b85a97d-38a87355917mr17953620f8f.47.1736760585678;
-        Mon, 13 Jan 2025 01:29:45 -0800 (PST)
+        bh=7nyUSHHP0yR3ZtnhpxdtDCyqMGbgmdlP3dka+ZfZ0PI=;
+        b=LcPVutEpoGqa91xvLsiPv9fqpaH7Kc0/Q6KZNJRsXyVWwJf7/nwA551akBnHk8u72f
+         Oyn9tbI6gEnQ33h2hHzgJJpHAJ9z+Lxz0CpIocyug4M57zw6EOyjc5dRbauhX6mQFVjn
+         0UeV4WRaB68dH53ebSH2SFjTfZL2sZYrz6/+EkFc8BaXgUfswFKn9JIwZJITwWUixqkf
+         tgjrDCpdKEUUdSKgQIPm/9mMbXSDtL4OPrUk7G4fLKv2eeLFRVD0S0MnET8ebquvjdTf
+         udaUkTyG2EMBRNsFHfm7QiYTBUVR4gwtHHM7D3zOKAck0VD7BO8GOkh4y2Bs3op0dkbp
+         G+DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUr1Q+0SGFz0f2wWUTb3RCBpwW77Jc0mbSN9oW73RYq6lBNviEfFWcabN/PEMs8pliCFUIAHqGD7LK@vger.kernel.org, AJvYcCXK0LVKO7YdbGK9RDXkiiTuGjbvlI6NvqDXzA2edACz4wDyM7ca8QFmt8AQEdd4t9sSgSgBQ49nuV8U@vger.kernel.org, AJvYcCXU2Pv4+8A/TQmzT4BX/62Nb0rH4hMYCJi0c9iXpHMg7EGPJATex0se8O+JDZyaq6M3NFWQ6dFozGHf@vger.kernel.org, AJvYcCXvB+tLYRVMWBKd/2rfwa5weZVvjnjqs+vFI5AuWCuSJsewkp02tb0GdJhq7gEGUIN4nG7EFj2ysIzvcy2g@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeE4P9Q0ZAxfEifGI0kcmfYMYaxf/FAGPvsopIWRB7U55NvFNo
+	h5cgUF5IBNIcyoVr2MqgfRl+g2ODplXJ39req9u+33bsSchkqumr
+X-Gm-Gg: ASbGncuACnq2de47WrvIjcW2UfPjlAMeO63N/ZLnzbdH/mcOClDl7y2p6iIs6aR7R8O
+	Juqu5pCXlEOeA+4Z1F8+qtKDNUGvjkV/kOPCGGSI1KHEbnSaP4kKVo382KxFD2FbUMqjs5jqipW
+	rUhYx4bFd9afZYnmiJ9srpJsLEoV9Gz9ayE31psIYuL3aqBGGspU1DkUbp27wMZLNvRVJASBQYg
+	p2WL81l+Kn3jDUY5cdgvUBuxb/yC7f/aiUW155bFh46Oiw03TBmY9F/41Z5r3HH53EUHe8t/8nA
+	oPsfSkOnSFPHOi/eU4ctg5YPLkxu
+X-Google-Smtp-Source: AGHT+IESwRCXbGth1qot4cl0kyw6thE3Qlkh6tb8Sk5ZxVbqvaA8AEXyrAMpEIhD/zBSCKA7evuCVg==
+X-Received: by 2002:a05:6000:1acc:b0:385:db39:2cf with SMTP id ffacd0b85a97d-38a872c943fmr16012470f8f.12.1736760999113;
+        Mon, 13 Jan 2025 01:36:39 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2df2faesm172831695e9.26.2025.01.13.01.29.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b80d4sm11395176f8f.85.2025.01.13.01.36.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 01:29:45 -0800 (PST)
-Message-ID: <7a6290b673d8d9492418365392b2554e310ef557.camel@gmail.com>
-Subject: Re: [PATCH v4 4/6] dt-bindings: iio: Add adis16550 bindings
+        Mon, 13 Jan 2025 01:36:38 -0800 (PST)
+Message-ID: <c5bbfd1555a8a141caca944f2bb1b6eccb88fd67.camel@gmail.com>
+Subject: Re: [PATCH v4 5/6] iio: imu: adis16550: add adis16550 support
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Robert Budai
  <robert.budai@analog.com>
@@ -86,11 +86,11 @@ Cc: Nuno Sa <nuno.sa@analog.com>, Ramona Gradinariu
  <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, 	linux-kernel@vger.kernel.org,
  linux-doc@vger.kernel.org
-Date: Mon, 13 Jan 2025 09:29:44 +0000
-In-Reply-To: <20250112154836.47feeea8@jic23-huawei>
+Date: Mon, 13 Jan 2025 09:36:38 +0000
+In-Reply-To: <20250112161141.563064c2@jic23-huawei>
 References: <20250110074254.38966-1-robert.budai@analog.com>
-		<20250110074254.38966-5-robert.budai@analog.com>
-	 <20250112154836.47feeea8@jic23-huawei>
+		<20250110074254.38966-6-robert.budai@analog.com>
+	 <20250112161141.563064c2@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.2 
@@ -101,137 +101,72 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sun, 2025-01-12 at 15:48 +0000, Jonathan Cameron wrote:
-> On Fri, 10 Jan 2025 09:42:52 +0200
+On Sun, 2025-01-12 at 16:11 +0000, Jonathan Cameron wrote:
+> On Fri, 10 Jan 2025 09:42:53 +0200
 > Robert Budai <robert.budai@analog.com> wrote:
 >=20
-> > Document the ADIS16550 device devicetree bindings.
+> > The ADIS16550 is a complete inertial system that includes a triaxis
+> > gyroscope and a triaxis accelerometer. Each inertial sensor in
+> > the ADIS16550 combines industry leading MEMS only technology
+> > with signal conditioning that optimizes dynamic performance. The
+> > factory calibration characterizes each sensor for sensitivity, bias,
+> > and alignment. As a result, each sensor has its own dynamic com-
+> > pensation formulas that provide accurate sensor measurements
 > >=20
+> > Co-developed-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
 > > Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 > > Signed-off-by: Robert Budai <robert.budai@analog.com>
 > > ---
 > >=20
 > > 4:
-> > - applied styling changes to the bindings file
-> > - restricted sync-mode to intervals 1-2=20
-> >=20
-> > =C2=A0.../bindings/iio/imu/adi,adis16550.yaml=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 96 +++++++++++++++++++
-> > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- |=C2=A0 9 ++
-> > =C2=A02 files changed, 105 insertions(+)
-> > =C2=A0create mode 100644
-> > Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.ya=
-ml
-> > b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> > new file mode 100644
-> > index 000000000000..e7ccf3883e55
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-> > @@ -0,0 +1,96 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/imu/adi,adis16550.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Analog Devices ADIS16550 and similar IMUs
-> > +
-> > +maintainers:
-> > +=C2=A0 - Nuno Sa <nuno.sa@analog.com>
-> > +=C2=A0 - Ramona Gradinariu <ramona.gradinariu@analog.com>
-> > +=C2=A0 - Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > +
-> > +properties:
-> > +=C2=A0 compatible:
-> > +=C2=A0=C2=A0=C2=A0 enum:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,adis16550
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,adis16550w
-> > +
-> > +=C2=A0 reg:
-> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > +
-> > +=C2=A0 spi-cpha: true
-> > +
-> > +=C2=A0 spi-cpol: true
-> > +
-> > +=C2=A0 spi-max-frequency:
-> > +=C2=A0=C2=A0=C2=A0 maximum: 15000000
-> > +
-> > +=C2=A0 vdd-supply: true
-> > +
-> > +=C2=A0 interrupts:
-> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > +
-> > +=C2=A0 reset-gpios:
-> > +=C2=A0=C2=A0=C2=A0 description:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 RESET active low pin.
-> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > +
-> > +=C2=A0 clocks:
-> > +=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > +=C2=A0=C2=A0=C2=A0 description: If not provided, then the internal clo=
-ck is used.
-> > +
-> > +=C2=A0 adi,sync-mode:
-> > +=C2=A0=C2=A0=C2=A0 description:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Configures the device SYNC pin. The fol=
-lowing modes are supported
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 - output_sync
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 - direct_sync
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2 - scaled_sync
+> > - reorganized channels to match the order in the datasheet
+> > - removed extra checks and goto statements
+> > - for buffer memory allocation used only kfree, since adis library alre=
+ady
+> > takes care of freeing the buffer
 >=20
-> A little more on these would be good.=C2=A0 They are 'weird' options
-> that are not commonly seen so help the reader out.
+> That last bit makes for a mess wrt to who owns the buffer and lifetime
+> management. Suggestions inline.
 >=20
-> For scaled_sync don't we need information on the scale for it to be usefu=
-l?
-> If we had that then a value of 1 would mean direct sync and wouldn't need
-> another control.=20
 >=20
-> I'm not fully understanding the usecases for this.
+
+...
+
+> > +
+> > +	/*
+> > +	 * Allocate the xfer and buffer for the burst read operation. The
+> > buffer
+> > +	 * is used to store the burst data and the xfer is used to send the
+> > burst
+> > +	 * command and receive the data. On device remove the adis libraary
+> > is going
 >=20
-> If we have a say a pulse per second input, the control of the scale shoul=
-d
-> be userspace anyway.=C2=A0 So maybe this maps to the input clock that we =
-can elect
-> to
-> use and control the effective frequency of by using scaled sync?
-
-I guess you likely already saw it in the driver. The scale value is
-automatically set by the driver depending on the desired ODR (sampling
-frequency).
-
+> library.
 >=20
-> I'm not sure what pulse sync is. Grepping the datasheet didn't give me
-> anything that seemed related.=C2=A0=C2=A0 The sync pin is input only so I=
-'m also
-> not sure on output sync.
+> > +	 * to free the xfer and buffer.
+>=20
+> That is a horrible lifetime control.=C2=A0 They should either be allocate=
+d in the
+> library
+> and freed in the library or allocated and freed in the driver.=C2=A0 Mixi=
+ng that
+> doesn't
+> make sense.
 
-I think this is a copy paste from the adis16475 bindings. For this device, =
-it
-seems we only have:
- * internal clock;
- * external:
-   * direct mode
-   * scaled mode
-
-But yeah, as you pointed out I think we do not need the binding. The presen=
-ce of
-an optional input clock plus the frequency should be all we need in order t=
-o set
-the desired configuration. It should also be possible to add the allowed ra=
-nges
-to the external input clock in the bindings...
-
+Agreed. TBH, I did not remembered at all to suggest ignoring the library an=
+d let
+it call kfree() on NULL. I also don't like that much of how things are done=
+ in
+the lib but I don't think it would be that straight to change things for th=
+e non
+'burst mode' cases. For the devices implementing 'burst mode' doing the fre=
+e +
+allocation on every update_scan_modes seems unnecessary. Anyways, maybe
+something worth looking at in the future.
 
 - Nuno S=C3=A1
-
 
 

@@ -1,182 +1,219 @@
-Return-Path: <linux-iio+bounces-14290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82020A0B995
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 15:35:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D42DFA0BB53
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 16:12:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54DE93A3663
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 14:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 809E47A14BC
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 15:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5105023A56E;
-	Mon, 13 Jan 2025 14:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D231FBBE0;
+	Mon, 13 Jan 2025 15:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkQX2vvY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iH6kHYqT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2AF3232;
-	Mon, 13 Jan 2025 14:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4451FBBDB;
+	Mon, 13 Jan 2025 15:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736778905; cv=none; b=Um7BCnpd9MZxaGP0HpZqRBcpAa9qJDFU8q5T50kbh2bHwCtjol4A6F80ke+7lFcdWNz/jxysWpKUkrGQcyJZwTsctOeoVOZ7OXaPb7LneU43QuhbVdCSs0a88Fryc82MtOmyvJ6cNSFY6hMABdEmSwaJNYE4v+gqf5KhDoc+1ss=
+	t=1736780742; cv=none; b=chFq4LDelbEy+5dGn4/i+y/SjAe0rEUbv/GYaBVC5q1BXqXyu4U6cVcvFu5kYaKOJ0qGkLoWKvfvTk8JUpxAqpCHpN4XpkOMkHIS/Ddeu+XvMTJqDEX0v7JXKqoBptA/rVRZyLOIN/fx56OZ4mtEUdT41qaLCgPJcey6yXaokmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736778905; c=relaxed/simple;
-	bh=fmm+g4G9C0YGrg445ZbEejWEGQIW05+JEg4ujpxlVcU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HwbINMnzR5/w80UXwuzeA81dZTgxDHAmevRuCUQEvdb+znuNpt54aSe+zPJBnvCVokaqmQMJb/fFIB+y5VPtU4EpjWZVfUmRlfwazcIGR9T8iBpr/tz62eh7hYq0rjs3hSk7fAfCMEHlBpBn0iun9PQ22J/znMZUAlJTTojKL78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkQX2vvY; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1736780742; c=relaxed/simple;
+	bh=dJxG1+NkxSJ3zLBVV5odI2Lk9mkvbGJ8raackbstNDQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qgbL6KX1tMkwT+voiI+aVaFAHY0Vvlp5krEV+PhgneZIuvoWDEDAl7+IBHgN3fEAmx9jY/wwsmsRjPdHi5cj2l2pBwX0sfuZGvS8lwqaISzQ/YTs6ylcu2ZyJOIJ3alr0GLyX0xcv/AajybXhU7RmbNYni7ene1rgheTZ2Dx8n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iH6kHYqT; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38a25d4b9d4so2267342f8f.0;
-        Mon, 13 Jan 2025 06:35:03 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4362bae4d7dso31591475e9.1;
+        Mon, 13 Jan 2025 07:05:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736778902; x=1737383702; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JE/TcA/PePKDGSy3mSdMP0VuintwCB3gzx8giISURwk=;
-        b=lkQX2vvY2kvI9pqQiBWl62yBFzgcyA3NRspj2wj/wE4gh+VukClXpTFmfeD5CgcTJU
-         t0lbKVNtKKoKQpnTFYZLkwESyQsqS0XEnE+/Vorig6OwCY3GiLOCBX383b8KcKNbiL/a
-         ckWjd8L3/z3etxYhkwbHudHJYLr14Hl8VB/p3j8b45NTRHXQM79JkhiB0Py8h8BZldXj
-         Nyjbg5MTekSaKjUtcReWP2t1eQRiFYoxk74N2XPnFAKJEkGqhpqOgE2an/jn+lTiWI+s
-         VxLdBBGsZ6Tyw7GJ4ZljrP9qZNy5ESGmtjoWbMiFOv6geOk9CEndTnxy5HJZdlCcgR8g
-         hz4Q==
+        d=gmail.com; s=20230601; t=1736780739; x=1737385539; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=na2J4vSWOKtMDV+CfYo5WCflbc1aa5pJno8iqSwOgP0=;
+        b=iH6kHYqTCFzBe/msAi1sXoSffoQLFy7piWZoKjrrF3EsS2iV+Qkseqq6mUfX2ogrVC
+         l45U20FsR/zhhx6VSGlXoE1rnb4UKD0amaM6tVGZ/YL89ICZsyXHas4K9qdyPuzHFRl6
+         gzMZGSdqnlYr1K9Mq4WGQuinpfQubL4IIoN1lYQYo6FIl7Eb6m8L/IrtzNi3J+iTZQo6
+         TO2oqHwTMjdr1ooxy4kHIPjxL7depKoe0tXs0ZPUhZeKEKOhUKqi92FYzy08MTQw+ZW7
+         fcfA7U9v9+5HvqQmGERasCXcWeaBtHdGyHE38wtzElzNtfMuKh3L/pLL/WEGqfqx3cyJ
+         J+7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736778902; x=1737383702;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JE/TcA/PePKDGSy3mSdMP0VuintwCB3gzx8giISURwk=;
-        b=TV4RdXPeWsSTv19i+c7qis3QPpECHS0/9ts5T42BVAzvJg0SMTW8zQLHkNwlmTmhCe
-         dxQe2BGmnbCDPb4ZSUA2drh5+t//SItA7e26PMUGW27TF1gOXgbCMCf6UhHk0HXciYlf
-         5z0CeQMt+PpKL2gIaohwkR9VGChpaQOGoqZCM0gBoaDQZ90FXE8gda5QXldA4sZYdipK
-         D9Xt9gdFDU/ZVAU/nWPTX6+ZEhlpQdyDsMNSWexJEI4opWG5TZWU0By4Y4kdDY4V03dh
-         B5KyC9hY9kv1jEbt+2m88HgTfshTPXk0ZLj5TGVKdKerzVS02I6OtF8YhW+2tOG+QirF
-         hFew==
-X-Forwarded-Encrypted: i=1; AJvYcCW/4Kx7XipJ5C0DiNQmgJhvfKAmikKJVYW4utBT3QTSAjQQtpVMt6MR86XveahOT2f4Nc1dzkRj6g8ftdOY@vger.kernel.org, AJvYcCWsN41MKa+bGFJahpcB8pejfrk2bvGoub9vnlv1iTUuk5w7188oVlikUEH2wmrwbO1+Rh3w0azh8ho=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxraoZoozHoz3sgwIWJFAXQhvNqFtFDsNNvFIQKTMNuSsk3T8L8
-	4BAm1fwHaONJs6W8O2NYGXbKds2bSmQ5PhVpfixJeBpzHpWxRta/
-X-Gm-Gg: ASbGncurCI+zCTsyQ8YALWNXa05UoVmLyj+Lm0qP+5PWXTkrwcexoNvi+8OKh7hztt0
-	CqL8hQEbDVxe4FgP0AMWnJ1Nsn5CiuIlVWuSFx5RBYjfMTc1dtXvGf4RkPrak+q5vPFUKpoh8q3
-	2dEsfhBCS2LeAWQasBIuw3Xnv5fVTEXGheNjIkfXjT/4nIuYAQoxT6FTHlFfmRjbLlt9/djMuGt
-	LnJ45KxGrgL/R17he4fOHfRhWvzLQlL45XaHdx+t9WGHBTF1I2TmCmzDeU0K5E/rYBBSDJbBITT
-	x+Yn5pkBoDCAjUbllBnE09LYBql7
-X-Google-Smtp-Source: AGHT+IHGtKdLOS/PXHkSrC4XqgiY1L2U481ttauNnxmEBTWZ9vBhAiB3NF0dBzcNHtX+VtqGrmB/vA==
-X-Received: by 2002:a5d:6c68:0:b0:38a:82a3:395f with SMTP id ffacd0b85a97d-38a872c93f9mr14362546f8f.9.1736778901390;
-        Mon, 13 Jan 2025 06:35:01 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fba4sm146425175e9.4.2025.01.13.06.35.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 06:35:01 -0800 (PST)
-Message-ID: <e3fd7f56675908a60d8ce6bcb6ad4f05b828e132.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] iio: adc: ad4695: add offload-based oversampling
- support
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Trevor Gamblin <tgamblin@baylibre.com>, Michael Hennerich	
- <michael.hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>,  David Lechner <dlechner@baylibre.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,  Jonathan
- Corbet	 <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Date: Mon, 13 Jan 2025 14:35:00 +0000
-In-Reply-To: <20250109-ad4695-oversampling-v2-1-a46ac487082c@baylibre.com>
-References: <20250109-ad4695-oversampling-v2-0-a46ac487082c@baylibre.com>
-	 <20250109-ad4695-oversampling-v2-1-a46ac487082c@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 
+        d=1e100.net; s=20230601; t=1736780739; x=1737385539;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=na2J4vSWOKtMDV+CfYo5WCflbc1aa5pJno8iqSwOgP0=;
+        b=CPPdUm4oMpqt3VzbuMHNCmRqja7myggtE714infjMwT/mm5SvOt9hSRl1AAdX4oE31
+         aHr/0TBRbj3Lp5Z6axOQpnBYCaaUpDcu7eSuMlBV7IL9jxzY7Vxt5VUsIL5NHJv2eykO
+         c8UMGQLACAGHLxY6B+0Lj+YGM4a+g1Ft95DzGY1aeZOEUAFrPf6BAbqGuB/ePxSCXguI
+         iJB0u6B6IRJUT2IXlVOV7jPR/0bqOWmqFzl2kQn/5v/3eReOzFAL4+B+uHtBj9iC2evq
+         M5jnKNhEVZsbgCqJeKwY7P00cTWetUSPXCkrm4V7XpUZxWw1I5nLlilI6NEHa1indNBh
+         YAhw==
+X-Forwarded-Encrypted: i=1; AJvYcCXoC3v6hij0ieFAgM44YvOCf41Vd+jBztIHzXNWFyfxdnAvpUAciGmlE3XinMozw5qegIKjZMV93Zq1rXI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywjey7FFeYKBOJnRgA6FwGlcBqlSxLVsreSsMtgdW370CHRfrwq
+	aXlx8o/TxQocDvg3KdgairlMWWxxZroMGM2/tnrFNDv2QAY8Af4x
+X-Gm-Gg: ASbGncvDj4GkopSa2cv5M/wzKtnUbavQHddOy300lXdEPpLdhoIn8Dbsb7kQFw1NGRP
+	+V7ptbjGWqgpkxf/8VdhKpcfysqZefLKtAnYkkMkblwuv593KQChZ1RlKRi9ZWR298esENEc3aZ
+	UTIABs/D3iVytuz/sVZJp4kvnPSGUHDrO1oZVvJqqSaaT+DjrH/EqlAVW/MczzrV54DpgdqDi8z
+	7seIBTlQX01LJT4qZUc339MgK8h+ITg0m7ARX6XiEZAgLgCSF9x5Kt6rWN7n1m266u75+O0u2Qy
+	xoWnA0dQGSts8HfoZh1tdK0y5Btf9g==
+X-Google-Smtp-Source: AGHT+IELvxSfhJvT3t4RcLEtyOm2hKbnUaX0hG+4tYvlsAW5nVp9lMteCxqiRA+fZ/Sr5ppQwASUPg==
+X-Received: by 2002:a05:600c:25a:b0:431:547e:81d0 with SMTP id 5b1f17b1804b1-436ee0a061emr151544575e9.11.1736780738090;
+        Mon, 13 Jan 2025 07:05:38 -0800 (PST)
+Received: from localhost (91-118-163-37.static.upcbusiness.at. [91.118.163.37])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b81a4sm12675963f8f.68.2025.01.13.07.05.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jan 2025 07:05:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 13 Jan 2025 16:05:36 +0100
+Message-Id: <D711DZJWGQX5.2D4PLVQN7NB8Z@gmail.com>
+Subject: Re: [PATCH 2/2] iio: light: veml6030: fix scale to conform to ABI
+Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>
+To: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rishi Gupta"
+ <gupt21@gmail.com>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+X-Mailer: aerc 0.18.2
+References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
+ <20250107-veml6030-scale-v1-2-1281e3ad012c@gmail.com>
+ <129de6d6-50f4-44d7-9a06-db61a6669810@gmail.com>
+In-Reply-To: <129de6d6-50f4-44d7-9a06-db61a6669810@gmail.com>
 
-On Thu, 2025-01-09 at 13:47 -0500, Trevor Gamblin wrote:
-> Add support for the ad4695's oversampling feature when SPI offload is
-> available. This allows the ad4695 to set oversampling ratios on a
-> per-channel basis, raising the effective-number-of-bits from 16
-> (OSR =3D=3D 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. on=
-e
-> full cycle through the auto-sequencer). The logic for reading and
-> writing sampling frequency for a given channel is also adjusted based on
-> the current oversampling ratio.
->=20
-> The non-offload case isn't supported as there isn't a good way to
-> trigger the CNV pin in this mode. Support could be added in the future
-> if a use-case arises.
->=20
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> ---
+On Mon Jan 13, 2025 at 12:56 PM CET, Matti Vaittinen wrote:
+> On 07/01/2025 22:50, Javier Carrasco wrote:
+> > The current scale is not ABI-compliant as it is just the sensor gain
+> > instead of the value that acts as a multiplier to be applied to the raw
+> > value (there is no offset).
+> >
+> > Use the iio-gts helpers to obtain the proper scale values according to
+> > the gain and integration time to match the resolution tables from the
+> > datasheet and drop dedicated variables to store the current values of
+> > the integration time, gain and resolution. When at it, use 'scale'
+> > instead of 'gain' consistently for the get/set functions to avoid
+> > misunderstandings.
+> >
+> > Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light=
+ sensor")
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>
+> Thanks for the patch Javier.
+>
+> And, sorry for a review which is more about questions than suggested
+> improvements. I find it hard to focus on reading code today.
+>
+> > ---
+> >   drivers/iio/light/Kconfig    |   1 +
+> >   drivers/iio/light/veml6030.c | 499 ++++++++++++++++------------------=
+---------
+> >   2 files changed, 189 insertions(+), 311 deletions(-)
+> >
+>
+> I like the diffstats of this Fix! :) It's nice you found gts-helpers
+> helpful :)
 
-LGTM, just one small thing inline... Either way:
+I wonder how painful the int. time/gain/scale issue in ALS was before
+iio-gts existed :D
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>
+> ...
+>
+> > +
+> > +static int veml6030_process_als(struct veml6030_data *data, int raw,
+> > +				int *val, int *val2)
+> > +{
+> > +	int ret, scale_int, scale_nano;
+> > +	u64 tmp;
+> > +
+> > +	ret =3D veml6030_get_scale(data, &scale_int, &scale_nano);
+> > +	if (ret < 0)
+> > +		return ret;
+> > +
+> > +	tmp =3D (u64)raw * scale_nano;
+> > +	*val =3D raw * scale_int + div_u64(tmp, NANO);
+> > +	*val2 =3D div_u64(do_div(tmp, NANO), MILLI);
+>
+> do_div() is horrible on some platforms. Or, at least it used to be. Is
+> there really no way to go without it? We're dealing with 16bit data and
+> maximum of 512x total gain only, so maybe there was a way(?)
+>
+> Maybe a stupid question (in which case I blame mucus in my head) - could
+> you just divide the raw value by the total gain?
+>
 
-> =C2=A0drivers/iio/adc/ad4695.c | 333 ++++++++++++++++++++++++++++++++++++=
-++++++----
-> -
-> =C2=A01 file changed, 303 insertions(+), 30 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
-> index c8cd73d19e86..0caaeaa310ed 100644
-> --- a/drivers/iio/adc/ad4695.c
-> +++ b/drivers/iio/adc/ad4695.c
-> @@ -79,6 +79,7 @@
-> =C2=A0#define=C2=A0=C2=A0 AD4695_REG_CONFIG_IN_MODE			=C2=A0 BIT(6)
-> =C2=A0#define=C2=A0=C2=A0 AD4695_REG_CONFIG_IN_PAIR			=C2=A0 GENMASK(5, 4=
-)
-> =C2=A0#define=C2=A0=C2=A0 AD4695_REG_CONFIG_IN_AINHIGHZ_EN		=C2=A0 BIT(3)
-> +#define=C2=A0=C2=A0 AD4695_REG_CONFIG_IN_OSR_SET			=C2=A0 GENMASK(1, 0)
-> =C2=A0#define AD4695_REG_UPPER_IN(n)				(0x0040 | (2 * (n)))
-> =C2=A0#define AD4695_REG_LOWER_IN(n)				(0x0060 | (2 * (n)))
-> =C2=A0#define AD4695_REG_HYST_IN(n)				(0x0080 | (2 * (n)))
-> @@ -127,6 +128,7 @@ struct ad4695_channel_config {
-> =C2=A0	bool bipolar;
-> =C2=A0	enum ad4695_in_pair pin_pairing;
-> =C2=A0	unsigned int common_mode_mv;
-> +	unsigned int oversampling_ratio;
-> =C2=A0};
-> =C2=A0
+In its current form we need the 64-bit operations to handle the scale,
+and it will probably have to stay like that for the reasons I give you
+below.
 
-...
+> ...
+>
+> >
+> >   static irqreturn_t veml6030_event_handler(int irq, void *private)
+> > @@ -1084,6 +968,13 @@ static int veml6030_hw_init(struct iio_dev *indio=
+_dev, struct device *dev)
+> >   	int ret, val;
+> >   	struct veml6030_data *data =3D iio_priv(indio_dev);
+> >
+> > +	ret =3D devm_iio_init_iio_gts(dev, 2, 150400000,
+>
+> Can you please explain the seemingly odd choice for the max scale?
+>
+> Just a quick look at the sensor spec and this driver allows me to assume
+> following:
+>
+> Maximum 'total gain' from both HWGAIN and integration time is 16 * 32 =3D=
+ 512.
+>
+> If we chose the 'total gain' 1x to match scale 1, then the smallest
+> scale would be 1/512 =3D 0.001 953 125
+>
+> This is 1953125 NANOs. This would mean the max-scale 1X =3D> gain 1X woul=
+d
+> not cause precision loss. (Well, I'm not at my sharpest as I've caught
+> cold - but I _think_ this is true, right?)
+>
+> If I read this correctly, the only channel where the scale gets applied
+> is the INTENSITY channel, right? Hence it should be possible to chose
+> the scale as we see best. (Unless the idea of this seemingly odd scale
+> is to maintain the old intensity / scale values in order to not shake
+> userland any more - in which case this could be mentioned).
+>
 
-> +
-> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
-> +{
-> +	int val_calc, scale;
-> +
-> +	switch (osr) {
-> +	case 4:
-> +		scale =3D 4;
-> +		break;
-> +	case 16:
-> +		scale =3D 2;
-> +		break;
-> +	case 64:
-> +		scale =3D 1;
-> +		break;
-> +	default:
-> +		scale =3D 8;
-> +		break;
-> +	}
-> +
-> +	val =3D clamp_t(int, val, S32_MIN / 8, S32_MAX / 8);
-> +
+The scale is applied to an IIO_LIGHT channel, not to the INTENSITY,
+which forces us to provide the scale as a value that multiplied by the
+raw measurement gives a result in lux. The maximum scale in that case,
+as provided by the application note [1] (page 5, RESOLUTION AND MAXIMUM
+DETECTION RANGE table) is 2.1504 to convert from cnt to lux.
 
-Why not clamp()? AFAICS, we have the same type on all the arguments. I also
-think clamp*() macros got the same improvements as min/max() ones which mea=
-ns
-that using the ones with explicit casts are not so often needed anymore. My
-understanding is also that those macros are not that encouraged as it's eas=
-y to
-go wrong with the casts.
+The same applies for the rest of the device supported by this driver
+(veml6035 and veml6035).
 
-- Nuno S=C3=A1
->=20
+>
+> Yours,
+> 	-- Matti
+
+Thank you for your feedback, I hope my reply could answer your
+questions. If something is still not clear or simply wrong, please let
+me know.
+
+Best regards,
+Javier Carrasco
+
+Link to app note: https://www.vishay.com/docs/84367/designingveml6030.pdf [=
+1]
 

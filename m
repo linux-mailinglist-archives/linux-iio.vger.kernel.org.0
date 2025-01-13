@@ -1,281 +1,184 @@
-Return-Path: <linux-iio+bounces-14299-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14300-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D10FA0BCF7
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 17:11:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3BEA0BE02
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 17:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56621188464D
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 16:11:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0BFF7A447B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 16:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B761FBBEA;
-	Mon, 13 Jan 2025 16:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DC720F08C;
+	Mon, 13 Jan 2025 16:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIcVo9WV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zwQ0warO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F201CA8D;
-	Mon, 13 Jan 2025 16:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3CD1FBBEB
+	for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 16:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736784680; cv=none; b=h3G6bzmj29rBi0fBjZY04KAEeU6K3o+R0Sgb91pP7sbFyJvWQNGyaw0QRTkXNDswXOESQQscSc3MzlIEEC3d6DqSOF6GovfEWc3XN5zEO5op/78hbmATUA+aEcYCecDmvxCyBmIPZkEXmbdMl0Pdhp8nd8i/A8qEsdzpdD1jmUM=
+	t=1736786996; cv=none; b=Z54dVMwwwzDQKiVpd/rIC5Tb9HfOnRf6K30VfDj/cGuE04fJQKGTxFKRwOXRJ5SFmpwuD8NCq/GReyVIgLghcMr7ZDiHJ6XXkuT91iv+vYlD/DTyI/8jd/e4WEwGX+dmO4pMn5ZDI0W1e947Oe1gQREUC0kXQfD6g3zOJDi641U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736784680; c=relaxed/simple;
-	bh=a1xVmpoeuO87QAR7ktrYGDsxGfnGGaNYkwQgrUcTVMU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GudxWGVv7y3If7CHAAo8AxfQgkC4TdCQmtc1NkyMSaqxujdvnuz+7/zHPYebU/Cyrfu+1d8ujz27J6FFhTXTQ8H4W58lPevA/yOB/ejE3q3RDRqJgJz4zauBWqG9OmvMubXqvpIlMRjW/W474NzA5+lxZyEz8ZjNGY5CgyVuzIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIcVo9WV; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-436326dcb1cso31808425e9.0;
-        Mon, 13 Jan 2025 08:11:16 -0800 (PST)
+	s=arc-20240116; t=1736786996; c=relaxed/simple;
+	bh=5R8Z+Pn/PPnTY8jfLG97xqOJA6BxHCPtkA+ReHw86RM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gCbguEw7VzX6ZN3yjVAd6Z99NIpMz3WuHXe08Kyi2/I7UjC5bxg/Poc2hv/3Qi+5to4bXV5TQgU7a3X4WTk5vN2Ddt1OEI8vpaim5M+9/jD+gESap+QUisZkZ0G3M5Ut9WXPX3vtcJq52z46JHFHvBObewol7l0cdbh+M8+Qdtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zwQ0warO; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4679eacf2c5so42979111cf.0
+        for <linux-iio@vger.kernel.org>; Mon, 13 Jan 2025 08:49:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736784675; x=1737389475; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7k6VjkHKrdZBwUE3ZmNmQit8NnV6aF6R7973kqTmXpA=;
-        b=iIcVo9WVBjrjHR9QStfIPBrzL1fHgfrKrVkZ5FX1AB+JAJge2Yx3T/CntkjdxKch/l
-         Z+F4SRIrbXrdvjkeGei/BQOdMkIxAIVE+k1fxrW1IpvQCGz/zhUU8U6eYBHQcyVtO4Tl
-         hdyUgDTytNQVVaogHOWmZvX6KgG0s38+IHu+kBZ7yLRLay2EERZskNBI73V0QrAy7+TV
-         QI79/JZHm8fcfYFXP7C/F2oQqWAQ2ArbG1k+Dwiyp5EXeEmtuBIRMBaaiYc9/Ap0EL6k
-         Fh8urP0JmBIOa7tgPWw4vviLBHEicSYy7Q+R3Hfh8EPcs/7n2yIoHIJdKY4Z2ZoKW0P5
-         JA/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736784675; x=1737389475;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736786991; x=1737391791; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7k6VjkHKrdZBwUE3ZmNmQit8NnV6aF6R7973kqTmXpA=;
-        b=CkSswmg+m7H++PIYY8ogxSTkchwxkMA/Xf1uVhFZh5W1vWToMj+bFqWOO6OzGinTON
-         ARn4wCnnuPtK0yKTB+lWp9KKa8qVbdDyGW4ECM3ZmxWn5eBw2qQPsBNvfAuMYtp4Bd3W
-         JSM8EfS1lqwQxFmDYYHci5wB+jARFZ25tfILsd4A5GNqtIasDIFWOZ2wwid3z5S0pfii
-         lA37ZfdVBst2+NgIwsyUQjSlkhia11SNxZFZCMJsCN67Ax2wJy/wWgn/Lk37g/2ZbDlA
-         CZxRpxlw3sB276Fr1W7OvJrpbjMqI/nvF35bbhQ0yL7nBKIZgHXg4X7C872nANqWGUde
-         praA==
-X-Forwarded-Encrypted: i=1; AJvYcCU2sVWYqtaJSXDWz4BSR50n9Dd/p98XWhcDOEF4yl30kT4/cwHK0ZzVfFx0ToksPkQLFSwGrfKCtT8=@vger.kernel.org, AJvYcCUg/tx26K+nI+5r9kLJ3mDnOWqP5AZTr61HJvKp9i5ScQXKVlvMyMlCw5acocrDi7WMxREkUniXASDXmh6s@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydipb8rZINt4BCJtfClvIgrG5KPQRxlIXjzAgbgE/0O5RcEgDe
-	ds8ZFs+WT7xMiRKG25bBXAzNcGzw5hj5jDRVu9yoVBtCC6Xt/pgn
-X-Gm-Gg: ASbGncvaUHiBS6jmypSxAS+SH8bXhnRzfnnqj81vt9q+jXnCoWDgp5Z6h5lD4Z3Y8Az
-	oms2kKkz4atBFfEKBrTPxdUFcCU8wVrQFP1Hz0Kxg3nVAWtYwL64X9crctRG4U/VNNhw6WTZkB6
-	B4xs3fkAPG19nHTbZm3QzN4qJBXHu+dLZkXE3cleQDYWkYv8Pp0Xc+DkMYTsqJFvXc+ouKsJ5i9
-	2QYNfIhIV6mY8SYHo7t7oXLmQibzHV1NmIIhDHJgDgk52Z7NOr5QQKG/jz02tMgcdqTu3MNuyEO
-	hiOMqKjj/GqRD/ZsDFzOYEj6lrBU
-X-Google-Smtp-Source: AGHT+IHs7Cp7fHovuLOFjhAQqnq98hKLbd3ZiYhKUkoQjuyL4GuQGl5mvs3PonlNKKCg0J21Orzf4g==
-X-Received: by 2002:a5d:6da4:0:b0:385:de67:2269 with SMTP id ffacd0b85a97d-38a8730e04amr17656939f8f.36.1736784674665;
-        Mon, 13 Jan 2025 08:11:14 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4c1daasm12803498f8f.93.2025.01.13.08.11.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 08:11:14 -0800 (PST)
-Message-ID: <4436a3be542569959a640c78397db67d3152c895.camel@gmail.com>
-Subject: Re: [PATCH v3 9/9] iio: dac: ad3552r-hs: update function name (non
- functional)
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron
-	 <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, Nuno Sa
-	 <nuno.sa@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, 	linux-kernel@vger.kernel.org
-Date: Mon, 13 Jan 2025 16:11:14 +0000
-In-Reply-To: <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-9-ab42aef0d840@baylibre.com>
-References: 
-	<20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-0-ab42aef0d840@baylibre.com>
-	 <20250110-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v3-9-ab42aef0d840@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 
+        bh=sEuSOcdGgqmCGmEswksuVOiY36y/yqL1o3cjWspZHHA=;
+        b=zwQ0warOnj9mgFPw3aL9Wv8mDRIVzMzf7iOuVtZtBKoQKpyB/5HSt+sicPIg9VNUVZ
+         8dXMMgxT0QY/fveV4RQkRHvX53XCGdZTVH5TNUwZoelYNhN0EybBgthYJELR/gScvj59
+         fiZemDg14/aAyxxDm/Jb6GtimBAE7znHvZ1mEPgDmpGLui0bl80pO3wtH2jqipKa+k04
+         Ivc1MCAV9mTDh6kMZ2EBiULJZCZAYjPDXvwn6aeUJVRpnNzLPKpxys4Y8c4eejcKJHXt
+         I4Wm/RCMZMgJiew1/NvPiQl+/Y6aodc3ap57B4Y0hEHKCIS1R6fULAnp8hvA5I/73iW9
+         1xGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736786991; x=1737391791;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sEuSOcdGgqmCGmEswksuVOiY36y/yqL1o3cjWspZHHA=;
+        b=KuUT4H6QIoMOkNm4agrhx9Dw+dUsTYgiBy8P4aixNv+VF8CjZOd2B9AX4gU+nHooQH
+         WgyyEoNXGzV0P4YCt67RprHIGdR6Rct7iI/w3B4OyJMN2XsiKyyOcEgdTvn77DuuWrY4
+         WXMY0xSvzJCSPLoAU/EBvt9N3Q4B6oZmKvHus+ri0ED3ohM0MCeuK4jz/RtBJwRtXP9e
+         vVgLjMoZoYfi6+Kri4b28sFBGDABLjes1ew9xK+9kJS44V+aDtKa2zcBbkCNd6OGvi25
+         7JhrdJHazqAsaQIGSvXos9QWJLCeqNuV01cqQzmk9a7mmq8uTH0mDHcsLBFhwaY5OZg4
+         nLFA==
+X-Gm-Message-State: AOJu0YyCwckmhon+MWD4vk3S9KAy38GkiRV5oTFINDJh83SS8hR4eKsi
+	Z9y654hFlYgjo37id/FJ/lW3tb9fiJKwS2MMDtXv0GKpS0tWEYX0ofUxV8yH8mw=
+X-Gm-Gg: ASbGncvuzdXRSAS1Z1VxA9dR6oMcK9kpA7pgKGZI4JQ4bChOuv1jHSg/7ukVgaznx2p
+	9947sCqStZAlN8PEq48okqXSUjsEipkaYn1DpxxAXtNXMeMjqDHZj0TknmiIz/aT0+GWR15Jztz
+	AW2im//KV6MHOKLSatT2IBHImYq+gSeXPtbrZ3GX2Yn2sW2UlIHpB8yhNkW8FX+77YtXosf/Yxb
+	0Lkkj9KY7P5JVoGBZGboNvEOP4UZGeonA8Nsw9tFiCxqjmexA2KbCVuzRKCnHKFC4Ud/mjkmoqY
+	Coi64BGabbOn2Q4HWsxPHyqy
+X-Google-Smtp-Source: AGHT+IFNSEcDX5l/rwUhlg71qHnodYMhIxIuQDqIrH7anGzKvOcHlAuLuuuOT0Tyfj5WaYZcTVlywA==
+X-Received: by 2002:a05:622a:20d:b0:461:22f0:4f83 with SMTP id d75a77b69052e-46c71084227mr360867621cf.43.1736786991533;
+        Mon, 13 Jan 2025 08:49:51 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c873216e6sm43125471cf.2.2025.01.13.08.49.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jan 2025 08:49:50 -0800 (PST)
+Message-ID: <efba6746-47a6-484f-ade5-f1e17246ac68@baylibre.com>
+Date: Mon, 13 Jan 2025 11:49:49 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] iio: adc: ad4695: add offload-based oversampling
+ support
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20250109-ad4695-oversampling-v2-0-a46ac487082c@baylibre.com>
+ <20250109-ad4695-oversampling-v2-1-a46ac487082c@baylibre.com>
+ <e3fd7f56675908a60d8ce6bcb6ad4f05b828e132.camel@gmail.com>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <e3fd7f56675908a60d8ce6bcb6ad4f05b828e132.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2025-01-10 at 11:24 +0100, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
->=20
-> Update ad3552r_qspi_update_reg_bits function name to a more
-> generic name, since used mode can be SIMPLE/DUAL/QUAD SPI.
->=20
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+On 2025-01-13 09:35, Nuno Sá wrote:
+> On Thu, 2025-01-09 at 13:47 -0500, Trevor Gamblin wrote:
+>> Add support for the ad4695's oversampling feature when SPI offload is
+>> available. This allows the ad4695 to set oversampling ratios on a
+>> per-channel basis, raising the effective-number-of-bits from 16
+>> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
+>> full cycle through the auto-sequencer). The logic for reading and
+>> writing sampling frequency for a given channel is also adjusted based on
+>> the current oversampling ratio.
+>>
+>> The non-offload case isn't supported as there isn't a good way to
+>> trigger the CNV pin in this mode. Support could be added in the future
+>> if a use-case arises.
+>>
+>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+>> ---
+> LGTM, just one small thing inline... Either way:
+>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>
+>>   drivers/iio/adc/ad4695.c | 333 ++++++++++++++++++++++++++++++++++++++++++----
+>> -
+>>   1 file changed, 303 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+>> index c8cd73d19e86..0caaeaa310ed 100644
+>> --- a/drivers/iio/adc/ad4695.c
+>> +++ b/drivers/iio/adc/ad4695.c
+>> @@ -79,6 +79,7 @@
+>>   #define   AD4695_REG_CONFIG_IN_MODE			  BIT(6)
+>>   #define   AD4695_REG_CONFIG_IN_PAIR			  GENMASK(5, 4)
+>>   #define   AD4695_REG_CONFIG_IN_AINHIGHZ_EN		  BIT(3)
+>> +#define   AD4695_REG_CONFIG_IN_OSR_SET			  GENMASK(1, 0)
+>>   #define AD4695_REG_UPPER_IN(n)				(0x0040 | (2 * (n)))
+>>   #define AD4695_REG_LOWER_IN(n)				(0x0060 | (2 * (n)))
+>>   #define AD4695_REG_HYST_IN(n)				(0x0080 | (2 * (n)))
+>> @@ -127,6 +128,7 @@ struct ad4695_channel_config {
+>>   	bool bipolar;
+>>   	enum ad4695_in_pair pin_pairing;
+>>   	unsigned int common_mode_mv;
+>> +	unsigned int oversampling_ratio;
+>>   };
+>>   
+> ...
+>
+>> +
+>> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
+>> +{
+>> +	int val_calc, scale;
+>> +
+>> +	switch (osr) {
+>> +	case 4:
+>> +		scale = 4;
+>> +		break;
+>> +	case 16:
+>> +		scale = 2;
+>> +		break;
+>> +	case 64:
+>> +		scale = 1;
+>> +		break;
+>> +	default:
+>> +		scale = 8;
+>> +		break;
+>> +	}
+>> +
+>> +	val = clamp_t(int, val, S32_MIN / 8, S32_MAX / 8);
+>> +
+> Why not clamp()? AFAICS, we have the same type on all the arguments. I also
+> think clamp*() macros got the same improvements as min/max() ones which means
+> that using the ones with explicit casts are not so often needed anymore. My
+> understanding is also that those macros are not that encouraged as it's easy to
+> go wrong with the casts.
+I have no preference, this is just a recent habitual use of clamp_t(). If
+clamp() is preferred I can send a v3. Or maybe Jonathan can tweak it 
+when it is
 
-> =C2=A0drivers/iio/dac/ad3552r-hs.c | 64 ++++++++++++++++++++-------------=
-----------
-> -
-> =C2=A01 file changed, 29 insertions(+), 35 deletions(-)
->=20
-> diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-> index 4600a9e84dfc..7f3a70cfbef8 100644
-> --- a/drivers/iio/dac/ad3552r-hs.c
-> +++ b/drivers/iio/dac/ad3552r-hs.c
-> @@ -56,9 +56,9 @@ struct ad3552r_hs_state {
-> =C2=A0	u32 config_d;
-> =C2=A0};
-> =C2=A0
-> -static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state *st,
-> -					u32 reg, u32 mask, u32 val,
-> -					size_t xfer_size)
-> +static int ad3552r_update_reg_bits(struct ad3552r_hs_state *st,
-> +				=C2=A0=C2=A0 u32 reg, u32 mask, u32 val,
-> +				=C2=A0=C2=A0 size_t xfer_size)
-> =C2=A0{
-> =C2=A0	u32 rval;
-> =C2=A0	int ret;
-> @@ -206,9 +206,8 @@ static int ad3552r_hs_buffer_postenable(struct iio_de=
-v
-> *indio_dev)
-> =C2=A0	 */
-> =C2=A0
-> =C2=A0	/* Primary region access, set streaming mode (now in SPI + SDR). *=
-/
-> -	ret =3D ad3552r_qspi_update_reg_bits(st,
-> -					=C2=A0=C2=A0
-> AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> -					=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST, 0, 1);
-> +	ret =3D ad3552r_update_reg_bits(st,
-> AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST, 0, 1);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> @@ -217,10 +216,9 @@ static int ad3552r_hs_buffer_postenable(struct iio_d=
-ev
-> *indio_dev)
-> =C2=A0	 * len value so it's not cleared hereafter when enabling streaming
-> mode
-> =C2=A0	 * (cleared by CS_ up).
-> =C2=A0	 */
-> -	ret =3D ad3552r_qspi_update_reg_bits(st,
-> -		AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> -		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-> -		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-> +	ret =3D ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE=
-,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE=
-,
-> 1);
-> =C2=A0	if (ret)
-> =C2=A0		goto exit_err_streaming;
-> =C2=A0
-> @@ -250,7 +248,7 @@ static int ad3552r_hs_buffer_postenable(struct iio_de=
-v
-> *indio_dev)
-> =C2=A0
-> =C2=A0	/*
-> =C2=A0	 * From here onward mode is DDR, so reading any register is not
-> possible
-> -	 * anymore, including calling "ad3552r_qspi_update_reg_bits"
-> function.
-> +	 * anymore, including calling "ad3552r_update_reg_bits" function.
-> =C2=A0	 */
-> =C2=A0
-> =C2=A0	/* Set target to best high speed mode (D or QSPI). */
-> @@ -351,18 +349,16 @@ static int ad3552r_hs_buffer_predisable(struct iio_=
-dev
-> *indio_dev)
-> =C2=A0	 * Back to simple SPI for secondary region too now, so to be able =
-to
-> =C2=A0	 * dump/read registers there too if needed.
-> =C2=A0	 */
-> -	ret =3D ad3552r_qspi_update_reg_bits(st,
-> -					=C2=A0=C2=A0
-> AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> -					=C2=A0=C2=A0 AD3552R_MASK_MULTI_IO_MODE,
-> -					=C2=A0=C2=A0 AD3552R_SPI, 1);
-> +	ret =3D ad3552r_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_MULTI_IO_MODE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_SPI, 1);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> =C2=A0	/* Back to single instruction mode, disabling loop. */
-> -	ret =3D ad3552r_qspi_update_reg_bits(st,
-> -					=C2=A0=C2=A0
-> AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> -					=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST,
-> -					=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST, 1);
-> +	ret =3D ad3552r_update_reg_bits(st,
-> AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_SINGLE_INST, 1);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> @@ -379,10 +375,10 @@ static inline int ad3552r_hs_set_output_range(struc=
-t
-> ad3552r_hs_state *st,
-> =C2=A0	else
-> =C2=A0		val =3D FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode);
-> =C2=A0
-> -	return ad3552r_qspi_update_reg_bits(st,
-> -
-> 					AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-> -					AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
-> -					val, 1);
-> +	return ad3552r_update_reg_bits(st,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_REG_ADDR_CH0_CH1_OUTPUT=
-_RANGE,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_CH_OUTPUT_RANGE_SE=
-L(ch),
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val, 1);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-> @@ -398,10 +394,10 @@ static int ad3552r_hs_reset(struct ad3552r_hs_state=
- *st)
-> =C2=A0		fsleep(10);
-> =C2=A0		gpiod_set_value_cansleep(st->reset_gpio, 0);
-> =C2=A0	} else {
-> -		ret =3D ad3552r_qspi_update_reg_bits(st,
-> -					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-> -					AD3552R_MASK_SOFTWARE_RESET,
-> -					AD3552R_MASK_SOFTWARE_RESET, 1);
-> +		ret =3D ad3552r_update_reg_bits(st,
-> +			AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-> +			AD3552R_MASK_SOFTWARE_RESET,
-> +			AD3552R_MASK_SOFTWARE_RESET, 1);
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0	}
-> @@ -534,19 +530,17 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state=
- *st)
-> =C2=A0
-> =C2=A0	val =3D ret;
-> =C2=A0
-> -	ret =3D ad3552r_qspi_update_reg_bits(st,
-> -				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> -				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-> -				val, 1);
-> +	ret =3D ad3552r_update_reg_bits(st,
-> AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 val, 1);
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
-> =C2=A0
-> =C2=A0	ret =3D ad3552r_get_drive_strength(st->dev, &val);
-> =C2=A0	if (!ret) {
-> -		ret =3D ad3552r_qspi_update_reg_bits(st,
-> -					AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> -					AD3552R_MASK_SDO_DRIVE_STRENGTH,
-> -					val, 1);
-> +		ret =3D ad3552r_update_reg_bits(st,
-> +			AD3552R_REG_ADDR_INTERFACE_CONFIG_D,
-> +			AD3552R_MASK_SDO_DRIVE_STRENGTH, val, 1);
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0	}
->=20
+eventually applied?
 
+- Trevor
+
+>
+> - Nuno Sá
 

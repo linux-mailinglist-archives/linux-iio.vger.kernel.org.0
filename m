@@ -1,156 +1,177 @@
-Return-Path: <linux-iio+bounces-14279-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14280-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC85A0B64D
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 13:05:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47452A0B698
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 13:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E167A3A2390
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 12:05:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521DB161E33
+	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 12:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819931CAA97;
-	Mon, 13 Jan 2025 12:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1589C204588;
+	Mon, 13 Jan 2025 12:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WoohdWU5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EDHwcVSo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168522CF30;
-	Mon, 13 Jan 2025 12:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571E51CAA99;
+	Mon, 13 Jan 2025 12:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736769935; cv=none; b=YoLR8Pjv90oKqVSMaD8+joBjSH6PiZRk9zaDXz4408l1vUJ06Li484BcQWwUQ9p6/k7zjIEME+deBueL14o5UcWOS+8qE6rQWEePPsrfxfXndZn9GzqMYAQTATCGQk7npNTLs5JtV3tyL2zUdhmsW8/u51ksEWz9QLyP1R45k+A=
+	t=1736770748; cv=none; b=Pf7c8GSjhUmeHMWrzePSVNDLLz7bTK7pDu5n+NuGr5v/RBrjxXEs5bchT6AOJygj+ejIPjAHatcR10RDQM/OhQtftpJw4LGHOg6WR2U+Bh3tgnuyvUX7UmHrSozbQ0VBkLcZC0tZSVGHbq6v1qw59rzH39PLpLS3VsdVEGrptR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736769935; c=relaxed/simple;
-	bh=Tl8WEdfhX9UOf3ddQ1wjXuebH+A8ftC+yTOtlapkx/o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JbluLGNR5O5tdqcEewFttiIBKMfB2Sd+F2URZ+5XCERZ7EWkpMuDxnPovIT175DrJTATciH8mP/Mydb0rPcNPjRlLlfkyEviRcusJZdkpL778axmugploj2+J0d6w3DYSEtRh76NRPsvsG0Pc0eAklzjV4ePqRJOPuEFmkS8t1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WoohdWU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218DCC4CED6;
-	Mon, 13 Jan 2025 12:05:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736769934;
-	bh=Tl8WEdfhX9UOf3ddQ1wjXuebH+A8ftC+yTOtlapkx/o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WoohdWU5YbBBxI8nqcF/rAaJMLotkaXR0hRoH0MsQen1GSkch/m3fOKVmheuoWopG
-	 brDm4hEncm8lQ0YXl1YzCOxS/e3KI9axD4ex/rUrr0ap3Qgy+R4ZdCcdVVaKtRc8PU
-	 xb/l7PCCgUKiQCLKRcEKIxHHQkcMDTTdl8SYqqStTfeXLHq/4VgzxVrtvFvmztoj2P
-	 AJu7VKAB45aw5JHMatStcgksoWbUtEmPaOivPKv/Cg1At93zaPz9C0kAbXuPO2M/NM
-	 PxImlQFjoDTDQVvKiz6DYtGOUWGfiHHWBz2n3P+dagI8KcAwloHrrE69ci4PP/Hc+t
-	 ZshmTYZcF2eaw==
-Message-ID: <9f6ae7ab-bda5-4551-a679-783ccca60383@kernel.org>
-Date: Mon, 13 Jan 2025 13:05:30 +0100
+	s=arc-20240116; t=1736770748; c=relaxed/simple;
+	bh=gF9aPXFp3MZBUiRujEgFNRIJYIld8+MclVBdfLI2MoQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vu7YJYI43uAno0ydd+90kkb89U3Ct5Yjv1l2ImXdEIbIPhIE5H3f3RRzUrnVnEghm5yIymjiygvPouwjX36v9ZKpyKmoCoiSz3SjTQjYt6B7ks/f5MiwWc3wdWkbajm4tUumP5HFPFf/0LynPaBWPPnJxX+qvSkgQh1XXGkyjQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EDHwcVSo; arc=none smtp.client-ip=209.85.210.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-71e287897ceso2902780a34.0;
+        Mon, 13 Jan 2025 04:19:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736770746; x=1737375546; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJhMFZsRRTFUiROv1W77X+iXzKpGATZ1OEQYzcxFZRc=;
+        b=EDHwcVSopzc6iWbVulVhUC/RkiVX8C8nuEcFp+q4QxsNxMsvqLo+YjNNkLQwi0bzZZ
+         2kcJfstpKKr0inIMR4t7W/mbeRifCyAktYCnbrRkrZ7X1YIv8FsJ/FstcD2IDoACRM6k
+         HdlylK3Bl8ZaboCsMSMmx9R3VKbQ291FEhtSyn6qRSbghyFae34jS0xI/l+/vnMT26RP
+         nvVAHoRMQtn2EQw/uLI4OAEefq5XngPBnIqml0oBvL8QhoRspHMNT7mzfpynTegnIuuZ
+         xmDlDsHCWAzIj+OfHkpRCVzftEXjJzjwoAQOKxxgsT15aD00zdfA9mssz4R3WOMG3kjp
+         GN6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736770746; x=1737375546;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EJhMFZsRRTFUiROv1W77X+iXzKpGATZ1OEQYzcxFZRc=;
+        b=igPKf5EHtUjqAZmbkVCmPx4eEN/bkZrMjgt6Si92aWDoiM+DWh/7dJgZ59GES2Y9w4
+         7PyZTVrhdty1cEGM0AIuRjl29tGh4hWV40K6GASpgWiZZfcKvh+s9QCH/DkoUqeUfTc6
+         ax3Zb44JhUvzCTRIrGuZrNglYfFmGIvi7ZLArdseY7zA8vJA11oyX/3VO44GvIYxDo6u
+         gWEQGvaSYuBHw4OwZtvLvwpG9ggNt1lwPaKdiMazDDJM9E0Om5CBxh10VyelVaRjTgUk
+         AlbTRzcz47rAFKUnNHzeB1jzCGC9RUFMtgY1FzXtp/vQgyUt8wNLoQpTw5SmizFXYLnE
+         ZBuw==
+X-Forwarded-Encrypted: i=1; AJvYcCUGW+yh9ugrRzEHmC6XNAbhTbHR9t6fN5fjui8gf4oTMlmq0YHGPziTcbIQ24u9agkXL5104MchYV+Y@vger.kernel.org, AJvYcCUNhbh4cmRGUc0wQSIkaqFKUYTNN3Ac6AAo7QxEvV8Txc7h3IDd/ZeplDMNL6vFyBMwxYSQg8yMIlD+HMDX@vger.kernel.org, AJvYcCXyR+kHlRlbMLzKaLVGJkohRcXqkpAKGV1nzPMvr1le6N7/sBeIGzcONgaZ2qXjZHPjgfuS/w1zYJ3i@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/yM6o8sH/XKoEiDZexykv4FUn/fVjjeq5DJ2PS64QjX1Cpopc
+	Vn7aTJRw9XVb4P93Sw7zWm8f7EnelvtRD/sKP4TQDHEJqL9ZY7Wj6dP7VkaF
+X-Gm-Gg: ASbGnct6+5OZHdUW3f4ZM7PHpOToQKhOe2FKvmuVKxJ1cQ6Kb8cyz5lRj4Zbom39A2h
+	PLusVQi25idt6hWl7+COmHm//lgcUsrENaxqtAiR2PjT0cCh0bq93OPJTMR/uHFP6FHqNsfKBSg
+	GDyTq+OtyocVqvtgQEW8luJCGBqcB6CobpOR/FvFM8MrjbsUPWUrPX1/+7PsA3efIzxt8V2Nx5v
+	F0anaGK2QIOQDr5C65BiwlgVmuT55I2bUxVEUipPo4FF1KiGZ9fiFBTUzDAZxaYTkc=
+X-Google-Smtp-Source: AGHT+IFSE61udVxcN4NGU7g5/PBATh3H6eNg3KChjRywD2F00vIQb9okwni8mkQNOdyXi1TndChLlg==
+X-Received: by 2002:a05:6830:6004:b0:71d:eee3:fd1a with SMTP id 46e09a7af769-721e2d06aa8mr12526190a34.0.1736770746296;
+        Mon, 13 Jan 2025 04:19:06 -0800 (PST)
+Received: from localhost ([2804:30c:1f79:9d00:c6c6:ec89:7531:7838])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7231855effasm3442598a34.33.2025.01.13.04.19.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 04:19:05 -0800 (PST)
+Date: Mon, 13 Jan 2025 09:19:42 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Subject: Re: [PATCH v1 05/15] iio: adc: ad7768-1: set MOSI idle state to high
+Message-ID: <Z4UE3p6HCsD8PiGh@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+ <714ff48341753de0509208e3c553b19c1c43e480.1736201898.git.Jonathan.Santos@analog.com>
+ <4449ec60-08cd-4074-ba0b-95603864a458@baylibre.com>
+ <Z4GXikxVw6mHIYHc@debian-BULLSEYE-live-builder-AMD64>
+ <20250112123023.75dc7750@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] dt-bindings: iio: adf4371: add refin mode
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org"
- <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20250109133707.3845-1-antoniu.miclaus@analog.com>
- <20250109133707.3845-2-antoniu.miclaus@analog.com>
- <mr7j4znl63p3ldhrxpc47mio63deszpqswbsqxxiby5nftpgbr@b4h47yp3xev5>
- <2f483161cbe1f797a9095ca3c9f4f472d3785acb.camel@gmail.com>
- <499ef047-d3fc-4d2a-ba7d-342ff08a351d@kernel.org>
- <98dad0cd3ba55411797c1871c5ceb5f656b8225b.camel@gmail.com>
- <f47bc5f9-cabc-4cbb-b641-693f3c729012@kernel.org>
- <CY4PR03MB33993668E69121A9F786E5219B1F2@CY4PR03MB3399.namprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <CY4PR03MB33993668E69121A9F786E5219B1F2@CY4PR03MB3399.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250112123023.75dc7750@jic23-huawei>
 
-On 13/01/2025 12:50, Miclaus, Antoniu wrote:
->>>
->>> Oh sure... Makes sense and I forgot that the property is not new...
->>>
->>>> But looking for pins brought second point - here you claim these are
->>>> mutually exclusive while datasheet suggests that both inputs can be
->>>> connected. Unless they come from the same source always?
->>>>
->>>
->>> If you have a single ended input then only one pin (the positive one) will be
->>> used. If the input signal is differential, then both pins will be used. So they
->>
->> But the clocks describe input pins, at least in typical case, so that's
->> my question: how many clock sources do you have here? One or two?
->>
->>> are mutually exclusive... You either have single ended or a differential input.
->>> And depending on the input type, the limit of the input frequency varies.
->>
->> Based on this, this is the same clock, so using "diff" is not a property
->> of "clocks". Look at other bindings how they encode differential choice
->> for some signals - usually bool property, but not always - see other
->> adi/admv devices.
+On 01/12, Jonathan Cameron wrote:
+> On Fri, 10 Jan 2025 18:56:26 -0300
+> Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 > 
-> This approach that you suggest was implemented in patch series v1 (as boolean) / v3 (as enum).
-> Based on feedback in v3 received from Jonathan I switched to this. Should I revert it?
+> > On 01/07, David Lechner wrote:
+> > > On 1/7/25 9:25 AM, Jonathan Santos wrote:  
+> > > > All supported parts require that the MOSI line stays high
+> > > > while in idle.
+> > > > 
+> > > > Configure SPI controller to set MOSI idle state to high.
+> > > > 
+> > > > Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+> > > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > > > ---  
+> > ...
+> > > > @@ -574,6 +574,15 @@ static int ad7768_probe(struct spi_device *spi)
+> > > >  		return -ENOMEM;
+> > > >  
+> > > >  	st = iio_priv(indio_dev);
+> > > > +	/*
+> > > > +	 * The ADC SDI line must be kept high when
+> > > > +	 * data is not being clocked out of the controller.
+> > > > +	 * Request the SPI controller to make MOSI idle high.
+> > > > +	 */
+> > > > +	spi->mode |= SPI_MOSI_IDLE_HIGH;
+> > > > +	ret = spi_setup(spi);
+> > > > +	if (ret < 0)
+> > > > +		return ret;
+> > > >  	st->spi = spi;
+> > > >  
+> > > >  	st->vref = devm_regulator_get(&spi->dev, "vref");  
+> > > 
+> > > Very few SPI controllers currently have the SPI_MOSI_IDLE_HIGH capability flag
+> > > set in Linux right now (whether they actually support it or not), so this could
+> > > break existing users.  
+> > 
+> > Good point. Maybe only dev_warn() if SPI_MOSI_IDLE_HIGH is not supported?
+> > 
+> > >   
+> > ...
+> > > 
+> > > If we ever do implement a data read of more than 64 bits without toggling CS,
+> > > then we could just set the TX data to be all 0xFF and have the same effect
+> > > without requiring the SPI controller to support SPI_MOSI_IDLE_HIGH.  
+> > 
+> > One point of having SPI_MOSI_IDLE_HIGH is that the controller may bring MOSI low
+> > between data words of a transfer. I think all transfer words are going to be
+> > either 16 or 24 with the new patches setting bits_per_word in all transfers but
+> > that might still not be enough if eventually the controller is unable to support
+> > those word sizes. 
+> 
+> Can we make the use of SPI_MOSI_IDLE_HIGH only apply if controller doesn't support
+> what is required to do the transfers in one go?
 
-I see:
-https://lore.kernel.org/lkml/20241220195220.1e1e1d6f@jic23-huawei/
+I think so, but that would require tweaking spi controller drivers since we
+don't know at spi_setup() what transfers will ask for their bits_per_word.
+Not excited with this idea but may try something if that makes it easier to
+support these unusual SPI devices.
 
-I think that v3 was preferred with arguments above. You have one clock
-input and you want to configure the device differently, based on how
-this clock is wired. But it is still one clock.
-
-Wait for Jonathan before reverting to v3.
-
-Best regards,
-Krzysztof
+> 
+> > Plus you would have the complication of filling the tx_buf for
+> > all transfers.
+> 
+> Wrap that up in a regmap, or read and write functions and that should be easy enough.
+> 
+> > 
+> > For the part that instigated the development of SPI_MOSI_IDLE_HIGH, the MOSI line
+> > also had to be high in between transfers. The diagrams at AD7768-1 datasheet
+> > page 51 suggest the same would be needed for this chip too.
+> 
+> Whilst the datasheet indeed draws lines for that, i doubt it notices except on
+> clock transitions and between transfers the clock won't do anything.
+> If we confirm that the device does notice, then I don't mind limiting the controllers
+> to those with that can ensure it doesn't get set wrong.
+> 
+> Jonathan
+> 
+> 
 

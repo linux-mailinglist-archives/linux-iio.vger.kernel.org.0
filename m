@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-14363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D555A10B7D
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:51:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DAAEA10BBD
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 17:05:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F4B03A4CD8
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 15:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B107918842D0
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC65615E5CA;
-	Tue, 14 Jan 2025 15:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E188218EFCC;
+	Tue, 14 Jan 2025 16:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="D5FRSsbH"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HiDp/Cxi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9050145A07
-	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 15:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B32016EC19
+	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 16:05:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736869891; cv=none; b=sdAe646E8EMtEjh9N6bPbONlqUyodypPKO67bg88e6EPYZwKzE4jC5X6bd9LjkplwLRGiBghVJP/O2w20WErIK7Kb85cZzWI1hyn2fEg+BaY9maWqJICkqEgmeDJ2IbpRHyDyuRS8eHcM8AWntA4WDWn6AG+MD14eX7JAadpwJU=
+	t=1736870707; cv=none; b=R3BjAPCBq4HeFt/MVT9s6KT0hYI2hX7ca7snIqOEOtot6oWN7KQjsSSroSshRfSKPi+QEbwTpNpsYeB2Tk2VRltw0XkqwQzfRmdZBseqWt+L4RzOAfNTH0QCUX/4BoRLEIIK6UxWmknWuGvDY7y7qjqLJrhEf5igrvl0JOSZ54s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736869891; c=relaxed/simple;
-	bh=L74jRs1dONVGrPeAHFmIlQs5fRrA3AGMZqSCnDcXEwI=;
+	s=arc-20240116; t=1736870707; c=relaxed/simple;
+	bh=uhdLgpV/BmxgeAcEClI5pB1nbFwpdZKaJ3yd0iPmXeQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JCi0CXE4tmdQYisYVAa6FFQdakoK3x3tP7xcjZGdrJOnKJCsFEcMzf+RQTZOw1teZwmIOp6YPP1vFtFy5c/cxHvhXAoEaynbd2P/MN0sy9bQ2SraaSp/6qT9Zeai4G74avz1PmkPDyqIFkT+qKLvoFooPvWzLjoUEA1ZByRLLmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=D5FRSsbH; arc=none smtp.client-ip=209.85.161.45
+	 In-Reply-To:Content-Type; b=L0TNOqhn+6MMhgIgX0gKgqS4UGhApaN+DQ/oBftanXHaDjiMuNx9pF6qKpmzlIuzDdi6CulfZEBDmPtX0uyxIneEhdBye+GZn8fbnIhW4jVvQRZUHYjIY9SYa1mJi6WV7pxctV2OkIy+ztqC7PT9JHBF7xfTHPE69e1d4Ph+A04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HiDp/Cxi; arc=none smtp.client-ip=209.85.161.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f2e2608681so2816510eaf.1
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 07:51:29 -0800 (PST)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5f2dee7d218so2597526eaf.2
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 08:05:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736869889; x=1737474689; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736870703; x=1737475503; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tvuSSpwSkjYIraUioNxnd9y7q+DAaxVqELrz32e6A30=;
-        b=D5FRSsbH/jrCcfFa2WYsYzDjkWv36q/hxECbF70hmKaDwSXVx+QCVJP1zX3lr7R+xc
-         4N+ID4JPy898pe4AoZcfXaltMcK/R5DP0+KaINBUincts41pd6m2qUrQFQ1Odf8e5AeB
-         sR28AcczQvh/fojL6YKYrkoKxNV/WmZm5LBf+SdtyzgpnOq3xZRF1rN5jEk5sbEb9LWu
-         l18pv0RXzi+Y4QQKGYs/0hLmthWsV2Uv5K7Kj2VmA3Pg/UaCoYsd8+vvbv2276vaZX1X
-         OQx/PnDmmlOUZageQlcxvTlO+aaMI+0nN8V2CikIHg1NatauPOC6R63DwfSx3UEj5XBM
-         Nyhw==
+        bh=gM/Ylpi8BGtTMa4TdQBKQwwvtVllJ24sITQPrHbwGvI=;
+        b=HiDp/Cxiv2eGVvRm5d7QUxSs8474AMBPAw0hyxXZsDA2j8O+j/cvq+AcrjCN/0kJ+6
+         AD7rqwMnwp626Yx60agqFklf4+SI98LCrmBnoWu9SOcK05af18/SEbCjWcRXJerLhLaQ
+         RVt/gv+QukwBYHpuRGuClXnoDVykSUJ4lmPeEZhZvJOUhjKnk83kLDXJpyJ/4Zwaktrl
+         pz/oRCDxj7nc/PXlx0Jl2kf/hx+W2V/q6Vpv/Qw5ychl9q0o6ilAhylbOb5EUYEtSxus
+         ImMtc+uSexo2snY4P/DySRmvfdQ7V5uZgRdG3aR4LIBUuGCE9QSt1FQtMIgAouY7xSek
+         ZUOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736869889; x=1737474689;
+        d=1e100.net; s=20230601; t=1736870703; x=1737475503;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tvuSSpwSkjYIraUioNxnd9y7q+DAaxVqELrz32e6A30=;
-        b=vbxvxMrAnWx0g2prW781S3mLKugekI4JdEOk6bRNL+ncG2JMAxMLZLqnaNhpQ1Oxx5
-         7ZfwYJGPStq1KRE/TC9XSTEC79p6YKywqnqNoME1pad6ZOS9hvpVvLyJOaampw9802xA
-         QYrxi4xwyr7udJAqr2gqgfFRfDyuZBioFI1oTUqe01slfwinVVTEyHBrEDB3FoaGAU2e
-         0rIXqEoeUbm1YNC7cQEHkgilbmN6ATbfjQ6lFO7qnVf/it/erKyF7MD5GjxqGvD/9HfA
-         IvnQqXm5Jefobfn/Hp57x75PKZqTMGtTSn1ZXLoVMHeRIG5aZmYJJ8PFs/auhuBZ0WdA
-         KDPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVv7NmSPf7iM0XlVEyeXA1EfPSw2EZ95EKYtcdVgO/D6sf4/Qm4ISaTtILZ9/hYnC2kudtwHofMw7w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzbt1vKmfjwoCxjb1dkkBhnrc6KDIjU2/m/HILlHiQ6Yl+nmK4+
-	Aa8Y4vX66sw7SPL86QYjkS9lmT922VH7mD1imTKDXgXjVxDKA9fxpU0w/9P35UBPV/d5nlQIo9E
-	4
-X-Gm-Gg: ASbGncvs+7kuzpvnXeA+e7eKkjqPhub2aZGPeIAiGgz1h0CizlvrDipKtX5mezDDLQv
-	aWB8zSFSRP0kCKUHHPTdjg86vEBvXlJxhZd3SvlZ43yoaZrmihbwESaCYrvALUFPZaV73NiCkal
-	l/I9ZDYiSzjNS32ibchB0Wb+nLLVCgz0QsXud7yWZ8AVnqKB/nj8sFAg8O/lKnC0SyZdwewxilK
-	EoGggHaaFWPYoSR2ZO6J+mBCP47tfD3AMR5l/V0GzYmK3uoU4yuRDWrIPEPvSRL6h87cSd7JI5j
-	HBj1T48K7RFovVn8fQ==
-X-Google-Smtp-Source: AGHT+IGALdOvjLIjRKcsuyz9XUa9hgth8o9CIfqhXL6qycHUaaR7ZJ3MTLSS5iUrarkgheuuDhPueA==
-X-Received: by 2002:a05:6870:2007:b0:29e:5297:a2a7 with SMTP id 586e51a60fabf-2aa068d657fmr16043927fac.30.1736869888835;
-        Tue, 14 Jan 2025 07:51:28 -0800 (PST)
+        bh=gM/Ylpi8BGtTMa4TdQBKQwwvtVllJ24sITQPrHbwGvI=;
+        b=U1lJ4sem6tKVf3RyhQnA5FRLwChN7XCmdzVgfUotUt20mIyz0lqTYFt6EZDWZMyXIq
+         UtRO8tTaHjuBRkfO8iEUQaOnLs3QWevLZemOA6tqrSTYmyxKU7SniLb1pIxLx9J4UjvV
+         OOElUJmOATShWoezkfMSG47mCFPVmNzRLoMbc8LO1lQg4C31pn9qa3GiXSg3NloVgDui
+         07IOFbHupxZ/sHUoVGd6GWWzBuBqBIY1MVUZDyTvOAgb1bxrA5uJY7D9vxKwYdLHhblZ
+         BXHra2OjDNj3UOdtQTdmAjC9dfDPMVB2oaLLwowJsXhVQpWE8OmK7gNjO6yxtzvKULVY
+         jIvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrGlBrF4NWUhNaeDpCpjmQuvL8eMpx9cGNZaXsT9b3Qfi+L21ffZXL77CpX0U4LaS5rVsyxBwmMkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcZkKXwHtvvlGXoXxxgXLwPAaMrhFgL1i5/M4dVnz4FAXmJvs3
+	tiw52xnW8yc26fWUOtZMZ8eSmAURpelGpl9W9YFC+BO7+lGsW9gEal/Eo01n79U=
+X-Gm-Gg: ASbGncuDTqSpwgSkVjIC9tDBCBggqJ7S5UzvUr9PnlQHTh1k5JcfUpkDPEQhWvbr+zJ
+	QCXszoVtVcsxF0M4DXTmFKAzLJT9DB9cnc0qZjzVNy81Leo3ztDWF6zeqfvZc90PPDeWGF3uvM1
+	MkXmWI155MHg170r5DtMoggW3xJNRzuQXBp7dZFezyXgOq0dGU3tigevyEXjsz/BZSLMba8hK7X
+	DrO5Q4BtvMySnLDqAASvyUrfjOn/A1tHtzpWQ07u/mgeFoZk4BaUqfbGjNcpXHpBxf0OQHQsavL
+	MEEf93Z/G8h8CdYCbQ==
+X-Google-Smtp-Source: AGHT+IGLuN/S04Wr5iZ7apUvKcieZi+/rsslDQGiueNokxdD4hhgllY2eGR0IzRM09ZopJdyRw0gZw==
+X-Received: by 2002:a05:6871:2085:b0:296:fff8:817 with SMTP id 586e51a60fabf-2aa06982e2emr16289903fac.35.1736870703303;
+        Tue, 14 Jan 2025 08:05:03 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad8017c2d0sm5093216fac.0.2025.01.14.07.51.27
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad809a759dsm5199843fac.33.2025.01.14.08.05.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 07:51:27 -0800 (PST)
-Message-ID: <95e54ca0-041e-4e6e-8364-d22d6d2e16a5@baylibre.com>
-Date: Tue, 14 Jan 2025 09:51:26 -0600
+        Tue, 14 Jan 2025 08:05:02 -0800 (PST)
+Message-ID: <e5e8eba7-2455-488b-a36f-e246844e11fd@baylibre.com>
+Date: Tue, 14 Jan 2025 10:05:02 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,202 +81,125 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 8/8] iio: adc: ad4851: add ad485x driver
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
-Cc: "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org"
- <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20241220120134.42760-1-antoniu.miclaus@analog.com>
- <20241220120134.42760-8-antoniu.miclaus@analog.com>
- <37fcda1c-0051-4a8c-b61c-583a1b8faa1e@baylibre.com>
- <CY4PR03MB3399F8E7AFA00340321BB2A69B182@CY4PR03MB3399.namprd03.prod.outlook.com>
- <20250114132035.00004abd@huawei.com>
+Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
+ synchronization over SPI property
+To: 20250112120530.1950a265@jic23-huawei.smtp.subspace.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com,
+ Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+ <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+ <dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
+ <Z4Lx5myE2OPDie6n@JSANTO12-L01.ad.analog.com>
+ <20250112121229.5bc7545c@jic23-huawei>
+ <Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250114132035.00004abd@huawei.com>
+In-Reply-To: <Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/14/25 7:20 AM, Jonathan Cameron wrote:
-> 
-> Hi Antoniu
-> 
-> For future replies please crop to only the bits you are reply to.
-> Took me a couple of goes to find the reply, so in some cases
-> the important parts can be completely missed by a reader if
-> the rest isn't cropped down.
-> 
-> ...
-> 
->>>> +static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
->>>> +					 const struct iio_chan_spec *chan,
->>>> +					 unsigned int osr)
->>>> +{
->>>> +	struct ad4851_state *st = iio_priv(indio_dev);
->>>> +	int val, ret;
->>>> +
->>>> +	guard(mutex)(&st->lock);
->>>> +
->>>> +	if (osr == 1) {
->>>> +		ret = regmap_clear_bits(st->regmap,  
->>> AD4851_REG_OVERSAMPLE,  
->>>> +					AD4851_OS_EN_MSK);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +	} else {
->>>> +		val = ad4851_osr_to_regval(osr);
->>>> +		if (val < 0)
->>>> +			return -EINVAL;
->>>> +
->>>> +		ret = regmap_update_bits(st->regmap,  
->>> AD4851_REG_OVERSAMPLE,  
->>>> +					 AD4851_OS_EN_MSK |
->>>> +					 AD4851_OS_RATIO_MSK,
->>>> +					 FIELD_PREP(AD4851_OS_EN_MSK,  
->>> 1) |  
->>>> +  
->>> FIELD_PREP(AD4851_OS_RATIO_MSK, val));  
->>>> +		if (ret)
->>>> +			return ret;
->>>> +	}
->>>> +
->>>> +	ret = iio_backend_oversampling_ratio_set(st->back, osr);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	switch (st->info->resolution) {
->>>> +	case 20:
->>>> +		switch (osr) {
->>>> +		case 0:
->>>> +			return -EINVAL;
->>>> +		case 1:
->>>> +			val = 20;
->>>> +			break;
->>>> +		default:
->>>> +			val = 24;
->>>> +			break;
->>>> +		}
->>>> +		break;
->>>> +	case 16:
->>>> +		val = 16;
->>>> +		break;
->>>> +	default:
->>>> +		return -EINVAL;
->>>> +	}
->>>> +
->>>> +	ret = iio_backend_data_size_set(st->back, val);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	if (osr == 1 || st->info->resolution == 16) {
->>>> +		ret = regmap_clear_bits(st->regmap, AD4851_REG_PACKET,
->>>> +					AD4851_PACKET_FORMAT_MASK);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +
->>>> +		st->resolution_boost_enabled = false;
->>>> +	} else {
->>>> +		ret = regmap_update_bits(st->regmap, AD4851_REG_PACKET,  
->>>
->>> regmap_set_bits  
+On 1/13/25 6:18 PM, Jonathan Santos wrote:
+> On 01/12, Jonathan Cameron wrote:
+>> On Sat, 11 Jan 2025 19:34:14 -0300
+>> Jonathan Santos <jonath4nns@gmail.com> wrote:
 >>
->> Why? Packet format is two bits wide according to the register map.
-
-Oops, I was expecting it to be symmetric with regmap_clear_bits() above. But
-of course you are correct.
-
->>
->>>> +					 AD4851_PACKET_FORMAT_MASK,
->>>> +  
->>> FIELD_PREP(AD4851_PACKET_FORMAT_MASK, 1));  
->>>> +		if (ret)
->>>> +			return ret;
->>>> +
->>>> +		st->resolution_boost_enabled = true;
->>>> +	}
->>>> +
->>>> +	if (st->osr != osr) {
->>>> +		ret = ad4851_scale_fill(indio_dev);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +
->>>> +		st->osr = osr;
->>>> +	}
->>>> +
->>>> +	return 0;
->>>> +}
->>>> +
-> ...
-> 
->>>> +static int ad4851_setup(struct ad4851_state *st)
->>>> +{
->>>> +	unsigned int product_id;
->>>> +	int ret;
->>>> +
->>>> +	if (st->pd_gpio) {
->>>> +		/* To initiate a global reset, bring the PD pin high twice */
->>>> +		gpiod_set_value(st->pd_gpio, 1);
->>>> +		fsleep(1);
->>>> +		gpiod_set_value(st->pd_gpio, 0);
->>>> +		fsleep(1);
->>>> +		gpiod_set_value(st->pd_gpio, 1);
->>>> +		fsleep(1);
->>>> +		gpiod_set_value(st->pd_gpio, 0);
->>>> +		fsleep(1000);
->>>> +	} else {
->>>> +		ret = regmap_set_bits(st->regmap,  
->>> AD4851_REG_INTERFACE_CONFIG_A,  
->>>> +				      AD4851_SW_RESET);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +	}
->>>> +
->>>> +	if (st->vrefbuf_en) {
->>>> +		ret = regmap_set_bits(st->regmap,  
->>> AD4851_REG_DEVICE_CTRL,  
->>>> +				      AD4851_REFBUF_PD);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +	}
->>>> +
->>>> +	if (st->vrefio_en) {
->>>> +		ret = regmap_set_bits(st->regmap,  
->>> AD4851_REG_DEVICE_CTRL,  
->>>> +				      AD4851_REFSEL_PD);
->>>> +		if (ret)
->>>> +			return ret;
->>>> +	}  
+>>> On 01/07, David Lechner wrote:
+>>>> On 1/7/25 9:24 AM, Jonathan Santos wrote:  
+>>>>> Add adi,sync-in-spi property to enable synchronization over SPI.
+>>>>> This should be used in the case when the GPIO cannot provide a
+>>>>> pulse synchronous with the base MCLK signal.
+>>>>>
+>>>>> User can choose between SPI, GPIO synchronization or neither of them,
+>>>>> but only if a external pulse can be provided, for example, by another
+>>>>> device in a multidevice setup.
+>>>>>   
+>>>>
+>>>> While we are fixing up these bindings, we could add some more trivial things,
+>>>> like power supplies.
+>>>>
+>>>> Also, the interrupt property could use a description since the chip has multiple
+>>>> output pins. I assume it means the /DRDY pin?
+>>>>   
 >>>
->>> PD stands for power down, so should we be powering down if not enabled?
->>> (i.e.
->>> if is missing !)  
->> We power down the internal reference if the external one is used. Not sure what is wrong here.
-
-
-I see. The macro name is wrong, which made me think it was doing something
-different. It should be AD4851_REF_SEL rather than AD4851_REFSEL_PD.
-
-
->>>> +
->>>> +	ret = regmap_write(st->regmap,  
->>> AD4851_REG_INTERFACE_CONFIG_B,  
->>>> +			   AD4851_SINGLE_INSTRUCTION);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
->>>> +	ret = regmap_write(st->regmap,  
->>> AD4851_REG_INTERFACE_CONFIG_A,  
->>>> +			   AD4851_SDO_ENABLE);
->>>> +	if (ret)
->>>> +		return ret;
->>>> +
+>>> Right! Yes, the interrupt pin refers to the /DRDY.
+>>>
+>>>>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+>>>>> ---
+>>>>>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
+>>>>>  1 file changed, 23 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+>>>>> index 3ce59d4d065f..55cec27bfe60 100644
+>>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+>>>>> @@ -47,6 +47,15 @@ properties:
+>>>>>        in any way, for example if the filter decimation rate changes.
+>>>>>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+>>>>>  
+>>>>> +  adi,sync-in-spi:  
+>>>>
+>>>> If this is saying that SYNC_OUT is connected to SYNC_IN, then I think the name
+>>>> should be something like adi,sync-in-sync-out. SPI seems irrelevant here since
+>>>> we should just be describing how things are wired up, not how it is being used.
+>>>>
+>>>> But if we also need to consider the case where SYNC_OUT of one chip is connected
+>>>> to SYNC_IN of another chip, we might want to consider using trigger-source
+>>>> bindings instead (recently standardized in dtschema).
+>>>>   
+>>>
+>>> Do you mean the trigger-sources used for LEDs? I can try to see if it works, but would it
+>>> handle the non-GPIO case? While testing a multidevice setup, I found it simpler to 
+>>> have a single device to manage everything. It lets us toggle the GPIO or /SYNC_OUT
+>>> without referencing another device and makes simultaneous buffered reads easier.
+>>
+>> Daisy-chain mode (figure 131)?  In that case we normally end up with a single presented device
+>> with a 'lot' of channels. (See the electric car style battery charging chips, those can
+>> be chained in very large numbers!)
+>>
 > 
-> Thanks,
+> Actually, it is more like Figure 133 , but the premise is similar. We
+> have here a Quad setup.
 > 
-> Jonathan
+>> Probably similar for figure 133 (which is a dual SPI setup) as the SPI clock must
+>> be shared so we still see it over a single interface.
+>>
+> 
+> We could view them as a single device with multiple channels, and since
+> the goal is to read them simultaneously with buffered reads, some parameters
+> such as sampling frequency should be equal to all devices.
+> 
+> However, there are some implications: If we do the above, we have
+> limitations in the customization of the "channels", they would have
+> the same filter, frequency modulator and scale (we plan to add support
+> for ADAQ776x-1 series, which include PGA and AAF gain).
+> 
+> To customize them separetely, we would need to assert only the
+> corresponding chip select, which is only possible with different
+> instances, as far as I know.
 
+FYI, I've been discussing with the HDL folks at ADI about how we could make a
+multi-bus SPI controller, similar to controllers used for parallel SPI flash
+memories that are used as a single logical device. So that is the solution I
+am hoping for here. It would would allow a single IIO device instance for
+multiple chips. But the SPI controller would allow addressing individual chips
+for configuration and addressing all chips at the same time for reading sample
+data.
+
+> 
+>> If those are the only two options then keeping this within the driver is fine.
+>> For daisy chain there are examples in tree and it normally means we have to
+>> have a DT parameter that says how long the chain is, though we maybe can
+>> do that with per channel nodes as well if those make sense here.
+>>
+>> Jonathan
+>>
+> 
+> Those are the options in the datasheet and in hardware so far. I was 
+> considering other scenarios in case the user combine them differently.
+> I believe keping within the driver covers the main cases. 
+> 
 

@@ -1,92 +1,94 @@
-Return-Path: <linux-iio+bounces-14336-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A061A0FDDF
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 02:14:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5022CA0FE0C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 02:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48FD71662C7
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 01:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65847167632
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 01:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C10243AA1;
-	Tue, 14 Jan 2025 01:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA90224B19;
+	Tue, 14 Jan 2025 01:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EAzPcGzs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DI1nQC4b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CF83597C;
-	Tue, 14 Jan 2025 01:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA6FEC5;
+	Tue, 14 Jan 2025 01:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736817282; cv=none; b=d/O0YsTLkHAfgkK8wupg0kH3n61tyYEDyvRQ1QZbA9ZMeiBzq2DlwEdgoQkBb4zBnjDJu9wMffZuMvg9QPWyDLVL4vAcTxCQcOto0/ItuV6MaoD7Xs8gef9/JsClkVaJdIMPzbkPD7j8GBqsMehJnb8JWxNM2cejDLxGWFWPOgo=
+	t=1736818071; cv=none; b=hx6/8X7YRaseES/SOWSedyVL5uqT+R1Oa4PzpM6OjiI5mxSExQ5n3M9Kpxcc3effkpOUdQGIIXgcBNrutt7cf+MQ+r7Kj/DeulxXB8c3uQ91M/rTRhBZGzmsOx6hmCVy+7uiiwi7afGe4nq224VnwtGG0GDJXJYVKgttyILpnOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736817282; c=relaxed/simple;
-	bh=FtH77cl/rpstL759f+31paGLpCFQsRIA6Dmj5zQOO6E=;
+	s=arc-20240116; t=1736818071; c=relaxed/simple;
+	bh=WCggxWWV3oV68JBkKmkabRt5is9NA4JYFDu3t/aH4a4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oVigpN4oIAkL3opfKjdjKlEDBS94cZNl7cHoHqLh7pm9NcMbhemYgYQkI3+7k76/tOgwtV+TL6RjeM6ht3bPPKP39N+AWmvPiiY6tbeKQM3jcH2J5XX9IVPcz5nDZq5SPs93h4lrBWTip0L5z6sePfHzj356CAOtIWou+3jRDgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EAzPcGzs; arc=none smtp.client-ip=209.85.160.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=sKvOfERvmfC5MwA1zhd1cE9yHfmvo/xCAiCBNbK5KCkTz/bM+u7zJ/Er9G2Rdxlc16FBEMJP9QfRggZHO9/EI8zmTAC46TtzVzHZ1qwu7LUz1b7hmvvXrbxLB/7hX1/WBXHgPxuObGReHmHvs+SYO1RW9bnFkVwdF41p9qYFcHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DI1nQC4b; arc=none smtp.client-ip=209.85.222.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-46b2fe9c6a9so1533171cf.0;
-        Mon, 13 Jan 2025 17:14:40 -0800 (PST)
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7b702904ec9so34955685a.1;
+        Mon, 13 Jan 2025 17:27:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736817280; x=1737422080; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736818068; x=1737422868; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:reply-to
          :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wmPOCH5hfbM75Lbyesisu8SSSCuyPooO0XAn15pw3Cs=;
-        b=EAzPcGzseS4L21G13lMI/eyth5t3UlgfZdjxtMDni+DRGiM4bbnvW/s3RTU2tpsuw3
-         GSkae1xY+pTnYvDfzu1L1rm7jRqyY86OqUXkwkr1+/02fuJj/sLGK3sdAOeCMgp5mbUj
-         q543Aq/4Kef0626geV51oNaDlASiOGBdDLIV1UGbkouTHd0EPj0AAwzty+uwQc26Puf/
-         L3WviuyZ3y7vxLeSg/jZp3bCx+wwfdGP688DX+0GKo45fOq+PDYd6rZ3z7mNRdanF28/
-         d5UMOxjvxBU2sxRTOiKovZuCFNiyhk3CuuMgtAoHvaAjGtNu/zyBWz0xRfMc8d9gAIrv
-         ZqMg==
+        bh=g6wQqjIyZG0pseRLgwiBkNM80mdE2E2o/L23/EzsOQU=;
+        b=DI1nQC4bIFsoeGcNH/yqkC8WH6nOHTyxVTpc2aRlNLNf0WDdUn+QTQfP0BbevYkGgd
+         LznLDcLLIsHBzbLQXhYnPbq777E5zwLQmEo1nSUPDazV0vkQTf/rMuMIPeOgj0pJ2189
+         1kG9PMGIPwX0CqqaB9jR3fp78OIEAAlQQUlGVgmINvfAoZ60JG8XZzXzxKAi3DfZQekU
+         Xwl128x+NZyagno1LuxsF4DQU5oCpN96ORC0w96OZDhAKUqXfAFg/zdECOp5xVsN5swc
+         bhhacIizUFDp98xyroUyj0F0/kvoXKr610e5xHt7ji07T8LB0yKCgrCA5/WjQ1ea4xrv
+         TMcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736817280; x=1737422080;
+        d=1e100.net; s=20230601; t=1736818068; x=1737422868;
         h=in-reply-to:content-disposition:mime-version:references:reply-to
          :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wmPOCH5hfbM75Lbyesisu8SSSCuyPooO0XAn15pw3Cs=;
-        b=Os8ywbaptpfCvGf6oKYUWvJ2U4sCeZrzpFgmXXY64eYoqoqrNU/VEaY/RyEBqNrgMT
-         liVEIWe8iL8Uk8HZgiVoZ8M+3+rDZhrI6aiWgrsFdX80HMIC8/t07HnK1hPYX8MtMWkC
-         qG3SPejFxmZ1nFBJ23et8GmS7y3NLfScAQGdSzqp/iW05Rq6+7YWXg29f6k2bIgdxowf
-         rEBp1LGdvMXMhG27l2QpUBjTVQEP/9wgh1nMmDXOIoZroXdsYfxbHnL+UokYnDG+n1Ie
-         HR7UqxOQPXb0pPxkF2hEKZ5cJg0jzc4r0LeQNiMiBJ4M5lh4vJrrq2tqreIm0zM4OtPB
-         MVfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRxvhUE3QkjTTByMk94EJEWak623ZEhDLIziMczpxOKmv6Z4/8uoW/4kPzYsqSFoJ1jR01lNcR8KN+@vger.kernel.org, AJvYcCVjuefiRXspjhvULnaUGtzCOF/9qv9M9PvN6U0FbXRKqGEKlqe/M0gtuEzpdYz5Fkqp1ufyeemJH7uog2ln@vger.kernel.org, AJvYcCX0QnAK758eWsKrwEWvOBz99ovmMzaMfBywcQx8ZO65npGWqAdQ0jT6IFIebySB3/nPDIpXbxATOn0x@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWOO+U2oR1tTWVoEKHmOPb4+AK8QN230krKVeMHsajN8/rOQGD
-	JEgGaaAI8gznNII74LoYpyIm86fEyejZZaYMVupQ/+QgRzv3mawa
-X-Gm-Gg: ASbGnctD30KSZtcc6B87Ji7iidCL96DX70ZEFJB0eFVmEeRFpK3BKlQy3hXjU8TvOWP
-	1efMBSOLl3LEGcQHpwaBXWrQLWYCqSGENSqwlLx6GAra2NqeOsYV+5a+K7KMCWY6LcOqGymn4tF
-	jnTBJvBrDPBr5Y2QdRixbYjP3n7L+BcyCmoCwjRlXAiA/hw42XMMaAUouGfOQ4cDb7MawqEKMtr
-	JajBTeKbyoCFHlBvCrNFZOuGY7TxdDaDY9s9EhGY9vCo/B8lKVZ235XkCtGdynzFN5lZTkAazuZ
-	EA==
-X-Google-Smtp-Source: AGHT+IFyWWcpJojau7VOfXFCaLT6bnYbAfSToV3/g69UG2mIawbwSV6jPmXR4rJ7tyAtwFzgH0luZg==
-X-Received: by 2002:a05:622a:1a9a:b0:467:5fd2:9963 with SMTP id d75a77b69052e-46c71003a8cmr17932831cf.6.1736817279636;
-        Mon, 13 Jan 2025 17:14:39 -0800 (PST)
+        bh=g6wQqjIyZG0pseRLgwiBkNM80mdE2E2o/L23/EzsOQU=;
+        b=TGqHJr6m7LkXlL1c5h3qgFjp7cb2GtbSUnKm5oWW6Xvt0DL/hVa7N6q45BMDSL6Zwn
+         QxuOt5lhNw00BVe6zBPyl2x9XGyRfEXzje2rtAiuC7fzRkT3FlpkaDDVU7c2E1zafhVI
+         8FZI/+rH0FQEXqoStbhsA0Z41MuQve3hnABXcZ75MmoYSLDkXpZNZdXIWsNliK+vDCFp
+         c6Z4uuVOLKgIkVNxXXK9JMSX7asgdKFbJFDZBB5FINq4EuT5U0APTAOjxX/0FBIJWHXK
+         Dw5ehkNR4DHeJRsQZ8FFzsekXyLnQ2trHOGRtQo02vYf0c9bAKpbJkF7GIqMKNj+VRC2
+         QJHA==
+X-Forwarded-Encrypted: i=1; AJvYcCV5YuC9NQZvMvvPZ4PetsPnyeyvfLX7JYnTKvD4ESe1hTSyt+osWFji3rM9KSeZcRnE8izJDs5R0nyT@vger.kernel.org, AJvYcCXDemp6bVs6eMpblVfNoWCHbqWwTM52ZREPUWsEYfSv2nzeCK+JofvY4JjIYJ8lVLXYE5EjUfrIEYA5VBDv@vger.kernel.org, AJvYcCXQvzDqyG5T/Y2MeQqlhEBw+ycnhanXdERwrBgJ5+mhORuLaPpXaFv75f6D/NTySEPyLm5ZCqB7W1Hh@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZiHIay+AuwvjVX67wRQzW8XKHK7fWyB+t2N1wu+nnj3Utde7b
+	IGzUjfr9C11HRnX1/e1zykoHatgTq7Cw52yPJ2P8abITUXWrj+gz
+X-Gm-Gg: ASbGncvULmkIcKxonB1lJIchmtw5uijIPjWD+PA3bCfOLIewP45znAB/XxWp4ETUR1C
+	uHqY6NiQFpEceh323ra7kk4L2zrlZOINMSOL/Au1ukgleFDkNjgm8jH63/1wQ/gUt6mu6RsxBmx
+	Vz5WAKliv7r0c964Yi9B7vwKO9/gnDFYaUhDb2u0EwDjeV1ufvS+8Pk6ZQoEgY8JkwW142K0qoE
+	qQVw1DfLc4Fx0088sB5OGAYjs35/bWVfTchcLdUGkTMiqaOrXBZEPJbHbfFU4yhkOqwitBR40H0
+	fA==
+X-Google-Smtp-Source: AGHT+IHo36fDgVCJSgk8h43SxIGW0pr30V3NwybNkBlh1hzdqopei/0Q9uc41O87BMYlLsXEsgdwSw==
+X-Received: by 2002:a05:620a:4589:b0:7b6:dc4f:8874 with SMTP id af79cd13be357-7bcd975ddcbmr1309403085a.12.1736818068436;
+        Mon, 13 Jan 2025 17:27:48 -0800 (PST)
 Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c8732f7d1sm47279421cf.17.2025.01.13.17.14.36
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce327bac8sm553113785a.55.2025.01.13.17.27.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 17:14:38 -0800 (PST)
-Date: Mon, 13 Jan 2025 22:14:33 -0300
+        Mon, 13 Jan 2025 17:27:47 -0800 (PST)
+Date: Mon, 13 Jan 2025 22:27:43 -0300
 From: Jonathan Santos <jonath4nns@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
 	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v1 09/15] iio: adc: ad7768-1: Move buffer allocation to a
- separate function
-Message-ID: <Z4W6eVn1+HMqISxK@JSANTO12-L01.ad.analog.com>
-Reply-To: 20250112124056.4c933181@jic23-huawei.smtp.subspace.kernel.org
+Subject: Re: [PATCH v1 14/15] iio: adc: ad7768-1: add support for
+ Synchronization over SPI
+Message-ID: <Z4W9j9/UNOMnHtFK@JSANTO12-L01.ad.analog.com>
+Reply-To: 20250112125913.3ea9c71b@jic23-huawei.smtp.subspace.kernel.org
 References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <319a685855eb4b942e05e456a37319d3f73f7cd4.1736201898.git.Jonathan.Santos@analog.com>
- <20250112124056.4c933181@jic23-huawei>
+ <0f9a15e6e2e6b7b2c82ef79d8cb883d9eb6c55dd.1736201898.git.Jonathan.Santos@analog.com>
+ <c0981545-5e0e-4b6e-93d9-cb2871b583e8@baylibre.com>
+ <20250112125913.3ea9c71b@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,129 +97,78 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250112124056.4c933181@jic23-huawei>
+In-Reply-To: <20250112125913.3ea9c71b@jic23-huawei>
 
 On 01/12, Jonathan Cameron wrote:
-> On Tue, 7 Jan 2025 12:26:05 -0300
-> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+> On Tue, 7 Jan 2025 17:50:29 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> > From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> > On 1/7/25 9:27 AM, Jonathan Santos wrote:
+> > > The synchronization method using GPIO requires the generated pulse to be
+> > > truly synchronous with the base MCLK signal. When it is not possible to
+> > > do that in hardware, the datasheet recommends using synchronization over
+> > > SPI, where the generated pulse is already synchronous with MCLK. This
+> > > requires the SYNC_OUT pin to be connected to SYNC_IN pin.
+> > > 
+> > > Add the option to handle device synchronization over SPI.
+> > > 
+> > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > > ---  
 > > 
-> > This change moves the buffer allocation in a separate function, making
-> > space for adding another type of iio buffer if needed.
+> > ...
 > > 
-> > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> > ---
-> >  drivers/iio/adc/ad7768-1.c | 64 ++++++++++++++++++++++----------------
-> >  1 file changed, 37 insertions(+), 27 deletions(-)
+> > >  static int ad7768_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
+> > > @@ -697,11 +708,21 @@ static int ad7768_setup(struct ad7768_state *st)
+> > >  	if (ret)
+> > >  		return ret;
+> > >  
+> > > -	st->gpio_sync_in = devm_gpiod_get(&st->spi->dev, "adi,sync-in",
+> > > -					  GPIOD_OUT_LOW);
+> > > +	st->gpio_sync_in = devm_gpiod_get_optional(&st->spi->dev, "adi,sync-in",
+> > > +						   GPIOD_OUT_LOW);
+> > >  	if (IS_ERR(st->gpio_sync_in))
+> > >  		return PTR_ERR(st->gpio_sync_in);
+> > >  
+> > > +	if (device_property_present(&st->spi->dev, "adi,sync-in-spi"))
+> > > +		st->en_spi_sync = true;
+> > > +
+> > > +	/*
+> > > +	 * GPIO and SPI Synchronization are mutually exclusive.
+> > > +	 * Return error if both are enabled  
 > > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index cd1b08053105..eaa9a12737ac 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> > @@ -163,6 +163,7 @@ struct ad7768_state {
-> >  	struct iio_trigger *trig;
-> >  	struct gpio_desc *gpio_sync_in;
-> >  	struct gpio_desc *gpio_reset;
-> > +	int irq;
-> >  	const char *labels[ARRAY_SIZE(ad7768_channels)];
-> >  	/*
-> >  	 * DMA (thus cache coherency maintenance) may require the
-> > @@ -569,6 +570,40 @@ static int ad7768_set_channel_label(struct iio_dev *indio_dev,
-> >  	return 0;
-> >  }
-> >  
-> > +static int ad7768_triggered_buffer_alloc(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad7768_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	st->trig = devm_iio_trigger_alloc(indio_dev->dev.parent, "%s-dev%d",
-> > +					  indio_dev->name,
-> > +					  iio_device_id(indio_dev));
-> > +	if (!st->trig)
-> > +		return -ENOMEM;
-> > +
-> > +	st->trig->ops = &ad7768_trigger_ops;
-> > +	iio_trigger_set_drvdata(st->trig, indio_dev);
-> > +	ret = devm_iio_trigger_register(indio_dev->dev.parent, st->trig);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	indio_dev->trig = iio_trigger_get(st->trig);
-> > +
-> > +	init_completion(&st->completion);
-> > +
-> > +	ret = devm_request_irq(indio_dev->dev.parent, st->irq,
-> > +			       &ad7768_interrupt,
-> > +			       IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-> > +			       indio_dev->name, indio_dev);
-> > +	if (ret)
+> > Should it also be an error if we have neither? Otherwise it sounds like
+> > decimation won't work correctly since there is a comment that says we have
+> > to toggle this after updating the decimation rate register.
 > 
-> As with the completion, the interrupt is not just for triggered buffer use
-> either, so probably doesn't belong in this function.  Again, not
-> a bug to do so, but hurts readability a little.
+> I'm not quite sure how this interacts with potential future support
+> for daisy chaining but for now, if we have no GPIO specified why can't
+> we assume spi sync is the way to go?
+> 
+> If no GPIO is provided and for a single device SYNC_OUT is not wired
+> to SYNC_IN I think the board is broken anyway and we don't have to care.
+> 
+> Jonathan
 > 
 
-OK, i see it now. I will make the modifcations.
+I also think it is safe to assume the spi sync if we don't have the GPIO
+defined. For Daisy chaining it would be as problem if we decided for
+multiple instances in case of multiple devices. With the single device
+approach it still works.
 
-> > +		return ret;
-> > +
-> > +	return devm_iio_triggered_buffer_setup(indio_dev->dev.parent, indio_dev,
-> > +					       &iio_pollfunc_store_time,
-> > +					       &ad7768_trigger_handler,
-> > +					       &ad7768_buffer_ops);
-> > +}
-> > +
-> >  static int ad7768_probe(struct spi_device *spi)
-> >  {
-> >  	struct ad7768_state *st;
-> > @@ -610,6 +645,7 @@ static int ad7768_probe(struct spi_device *spi)
-> >  		return PTR_ERR(st->mclk);
-> >  
-> >  	st->mclk_freq = clk_get_rate(st->mclk);
-> > +	st->irq = spi->irq;
-> >  
-> >  	mutex_init(&st->lock);
-> >  
-> > @@ -625,37 +661,11 @@ static int ad7768_probe(struct spi_device *spi)
-> >  		return ret;
-> >  	}
-> >  
-> > -	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-> > -					  indio_dev->name,
-> > -					  iio_device_id(indio_dev));
-> > -	if (!st->trig)
-> > -		return -ENOMEM;
-> > -
-> > -	st->trig->ops = &ad7768_trigger_ops;
-> > -	iio_trigger_set_drvdata(st->trig, indio_dev);
-> > -	ret = devm_iio_trigger_register(&spi->dev, st->trig);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	indio_dev->trig = iio_trigger_get(st->trig);
-> > -
-> > -	init_completion(&st->completion);
-> > -
-> >  	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	ret = devm_request_irq(&spi->dev, spi->irq,
-> > -			       &ad7768_interrupt,
-> > -			       IRQF_TRIGGER_RISING | IRQF_ONESHOT,
-> > -			       indio_dev->name, indio_dev);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> > -					      &iio_pollfunc_store_time,
-> > -					      &ad7768_trigger_handler,
-> > -					      &ad7768_buffer_ops);
-> > +	ret = ad7768_triggered_buffer_alloc(indio_dev);
-> >  	if (ret)
-> >  		return ret;
-> >  
+> > 
+> > > +	 */
+> > > +	if (st->gpio_sync_in && st->en_spi_sync)
+> > > +		return -EINVAL;  
+> > 
+> > A dev_err_probe() message would be helpful here when creating a new DT and
+> > bringing up a new system since it is easy to forget a property or make a typo
+> > that could lead to this error.
+> > 
+> > > +
+> > >  	ret = ad7768_gpio_init(st);
+> > >  	if (ret < 0)
+> > >  		return ret;  
+> > 
+> > 
 > 
 

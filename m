@@ -1,181 +1,288 @@
-Return-Path: <linux-iio+bounces-14340-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14341-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905A3A10121
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 08:02:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 929EFA101E2
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 09:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D16A1887E6A
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 07:02:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD983A7644
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 08:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B772397B2;
-	Tue, 14 Jan 2025 07:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB96924333D;
+	Tue, 14 Jan 2025 08:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BvLo/L1Y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJxNVr8I"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0446233547;
-	Tue, 14 Jan 2025 07:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EAF2343B6;
+	Tue, 14 Jan 2025 08:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736838157; cv=none; b=eKidskpWjQzLflVYu6vPl1ZZ9JY7oljU5GegGYyqRVsWanJawbaH1OCS4VGon//pNI09lUKUb+i7Zyc3Ncr6L18aVRqbqJIgxGk7PQ6D/46MV+xOkCbwyerAD5/lu1LXkV5WbDNdD16ExXPsZRRizPN64cHPXe5Ad7KbqKaFtCs=
+	t=1736842762; cv=none; b=GPy1Gp26vwEqtagYWFnKKMEk4mDDxeFxw7tBI7NFzEo0FGIvsz9iIXXsZ7XVAIgY96rL8Z7BZm9mNxC/Zl6H3KclAbkiAR02BslaOmgKAZuHw6k432Ghyy0Uor4mWzY5vhdWLtFAQ99108ltUS7VAqAPy8thYV7enArXamv4XTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736838157; c=relaxed/simple;
-	bh=eP96/UxlSbqr8INGllcA27eJBJUAeYRtgL+BeHIdWh8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=MgU4bD9pVJy7M/GCE4CQ50z+8ULRilK70QbnYr0nkQYAuh9/wZ2pcCB1Y5Bw+MG0CMMjfuA6mI3Xcm+zINxZ5gTJfx/MFPAK/+fULlzUfw8yT76tV7K4OXqeFtsgzGZoQ1dmoE7ANq4zVTyYGjR6KzO/E0NKNTYISskIZ7nhaZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BvLo/L1Y; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=canonical.com
+	s=arc-20240116; t=1736842762; c=relaxed/simple;
+	bh=bikrOWAqC1i+P8t9ckTPqH7CKB6ZM6dowebuYFwUxfE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YIyvdKMKDkl/+SqU1iTRhHgET79/0AriJt+ppc4alPjyJmFQARRcjxcwDXvI7PuwpErMyHbu6hFq9BvPNg19jFq2UJ0rRuKYE/VqGkONKhTe7g5ZD24+tSVVtKUM1WNmy5F0Gm8952Ft/bG3V0l0PoXk4SYqZZvcoRFplsi3pfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJxNVr8I; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21669fd5c7cso92225455ad.3;
-        Mon, 13 Jan 2025 23:02:35 -0800 (PST)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3863494591bso2755138f8f.1;
+        Tue, 14 Jan 2025 00:19:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736838155; x=1737442955; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WMEwm6g1OtkCE/I+rQscC86RvQEkgporJ3fM+wWISXc=;
-        b=BvLo/L1YI4MX2qtDKJV/15g6vNWsF2xMDFRnbGAExd9+GwE6LYuzP8+VSbw2mIfiqx
-         eH3Y36+4N9Nvqb1D3/YpeuwmYJ4TBBYgQZeF3ZUlGQoGk5VixKLLaXwHUsvDLU3bkMub
-         kUM83bikDzVMs2DvtIkQNj8HVAYEEYKT1Mts/y+vOSxdy/cmFEzzpEKC+PXqaA1uavRe
-         ggIxkVFOI7b+DPbTPlu5hzESmdxVwCHHH880VGFO0saBUO37U101sl62ONHJaZY2GHUV
-         0U+gd6D3bJnoc4ywEI9TlEP3drH1FB8o+1Ae24LR4NtlYWvyT0T6v0ZPhjLuTcZEs6L7
-         R+ig==
+        d=gmail.com; s=20230601; t=1736842759; x=1737447559; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bikrOWAqC1i+P8t9ckTPqH7CKB6ZM6dowebuYFwUxfE=;
+        b=TJxNVr8II54M3ZibbijjsDLQp8XdGsqX1DrfCEZNbWPZNsN7sBjno0iAZItnAaKICI
+         8QlF6KHJCCA6RupFPwkFsbwm8M/54PIZtN9P3Z/UtwQB07faIVCzEy19bdy7mH8TLumk
+         Ny12qwhW3FKxVCxJ+silFnLAdRtZQ0K8rPdvB7ZPIkQKecLtjLO+vW9FUk7FSYygCZ6M
+         kjdZqWgXQZtNaHvtpwUg2/gb6aHqCVVxH7s/L7k4VPGpIS9vJc9yTvIsJB4xaIepbB0K
+         v4TT3+TQBNX/fWttrwP1C4Fax2kQpf2GaXRNceoRihDluR27m0eH3TE7ypAD1lOm6Hzh
+         2HSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736838155; x=1737442955;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WMEwm6g1OtkCE/I+rQscC86RvQEkgporJ3fM+wWISXc=;
-        b=Al9gaXxZX2hCw+RbM0kmQlwy4fBUi7adBFi85r/2qYu8f1cipsKhxp8ztrRXvx5ILc
-         DBsUGkUMQ+2/ne8Wc0GzUc1FlTsmVfPgzPKRUCCqoruW5e9FhZv29GwXf8oza/nx7qPL
-         XA3yDrvdutD0Vf6Uv2VlVamFzZbNJQHZ8uAwh4tEHt5li9H0qRyhTAbyNKKgaNPcL1GT
-         JZnt8yWT/dpdvQRluDVSX5+L3bQD0OjMnVKoKI6D0/X3bNMYw2CI0YIJdVeDxBxPju5m
-         oJ9UDAVb4Ew7JYkSWgnWaaGBoHTt9uIYIGOo2pONFCfh5jiCksvaYBN2CkEVAhbHxUTM
-         ei0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVP1R7GngQST+MZcNnMt6LGeOuiBP3VjRBYz3WpwAIidC56ORJLiOUujyI+5gQGXHb0+98nF0KRmiw=@vger.kernel.org, AJvYcCXDyUxYqBKTy0vRqn4o8ZPmKD3KXyiofmBgWtgl12p9hb06WSkCIMpx38o4+yhaUbbKX1rEpqeUwwXqND/u@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDKmlNx2X4bBCUU7lCIdKfYN9Pr5RP3vDi2Jw854RFtZrjICMy
-	5OQlnddm+YNFotQFIsEJNwqhRTSNqAhYEcyC7dQwMaqLWIoDfcjr
-X-Gm-Gg: ASbGncsMH/D+tAfSuKyOzZreAn87ySOg/Q/n7nNYVucbJ17ed6Qh6e+498E3imdsBcR
-	l2UN6v4/yFHuLZk5+izwqh9yRk3qCn3AyzSeO16u4ufrpxDDuSX5xGRt0zmiCgfZ6sWxnsC60gn
-	9t8ix2EZKmHjQQ60pmd4MWHZDrPtkXXbNe8UCD6YjAC2RDOxg9xfcr/030UR8tHxhRf0ksadEo6
-	Tk2BIt8n1kvbeHJz4ye5jeGBA9EUQ3CxxVdV4A=
-X-Google-Smtp-Source: AGHT+IEjJRo9daiO/fiNDjEDHpCrMEuNKpRtffBAGnyYg8cSuse+oAft7zFuJnVBRJ40Cixli/EqqA==
-X-Received: by 2002:a17:902:ce8a:b0:21a:5501:9d5 with SMTP id d9443c01a7336-21a83fde4femr386847245ad.44.1736838154828;
-        Mon, 13 Jan 2025 23:02:34 -0800 (PST)
-Received: from localhost ([2001:67c:1562:8007::aac:4468])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f25a477sm61455785ad.240.2025.01.13.23.02.32
+        d=1e100.net; s=20230601; t=1736842759; x=1737447559;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bikrOWAqC1i+P8t9ckTPqH7CKB6ZM6dowebuYFwUxfE=;
+        b=SyMUuii9azY3uqvEZ8+zispLkgksyvrZJrvPO6/KZzjEw8ecjThes4V1tyW0F0yxDY
+         6fsLUAL2yTDwlcDfAl+Gsqyf4XC1E8P1sa2nhI07AiXylhtWBhsSoZj9cPH5EQ/xWg+p
+         kOfkT5Ag0bLZuVreyqREDtCKR11HrkIitcAmN5f8IYKnoaCOjannp61FpmZtmYPftrky
+         r7djCQL2HXZMO89KCEqTvLaNGVCRhch/3HNN1X2bPIVEGtUT42M/12RbVi0NQKp6SsA3
+         l7WDpMR4sloxksVgYVpdmRe+6eas45JeGnZRWeSwubv08cF2laiVCDXC69BMVSHWf/HR
+         siRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWKFc713KBg+4YA2ZpmRWq+2z4J2iGfbQQQyYHDAhyJddaSzHMjGgM6ptCdr7Pzd7KiXGCHgFdo6w8@vger.kernel.org, AJvYcCUz5sWE9KO91Vk3cULNJUOgI9trLy0xml+pmO5goFZnSQeQ2GGd+fCEv/BsROFtb9JJHL8ZhhlYlmsgMVMt@vger.kernel.org, AJvYcCWvjMEK260Hehut3EXa/s+6DSTsIbrrVY3UPjyGeko4OtdkFIfKRy5pIETSQOAkAfjH3wOWkT3zaAPi@vger.kernel.org, AJvYcCXqB82GGzXmkLNc3i/u8H1euatmDL+UGGH1Pts0ikgPsHl5K1/tBwCu46fpfm17SZuB+5UdZe/u2DIu@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/zCm6vU1x22oSN+CbyIsYDjvxQ91HI2wh3bAaClCkQzHnrEbD
+	15YRXF8dY2+3/ZOr+g3TIk435VIHnUJlV8ly0k9Jme5knWJwTPmK
+X-Gm-Gg: ASbGnctgujWaAqHMwNXKPUOhvcVWoGyUUFEapohPCg5b6g7d46V32Tp/s8VAKbuuq+8
+	mUZc64GvChaezQYU/eCwSoTuy8/2HbPBzwgCJ2haaN2uDFUJ/3ijgnbULTFAFMANFfXdQFSVlZf
+	C+DOiDo24BGTXEYTuUwOdtUnXlCgvfZarnXVz6K0ZtrKaz1jM7jjUd6+S+0+o+Sc9L2FcHaVi8J
+	0cJgMBhCjOR0t++PNFmBCzKfXHkp/ywLmL9kkTmhRTGNcm/V9SrJY0HIGFyDdnw1DPvUwPQyZlZ
+	LkWV2g09ARFCpm3c4olEt/35iA3k
+X-Google-Smtp-Source: AGHT+IFEwtFMaeziLByVam0N5p11X8uRTgjhFOXabwC7pRfCSi5HfU758A//id0fUQ5xhCpoySmqQQ==
+X-Received: by 2002:a5d:64cb:0:b0:385:ee40:2d88 with SMTP id ffacd0b85a97d-38a872d2a11mr21146494f8f.3.1736842758568;
+        Tue, 14 Jan 2025 00:19:18 -0800 (PST)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9df958dsm166267925e9.17.2025.01.14.00.19.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 23:02:34 -0800 (PST)
-Sender: AceLan Kao <acelan@gmail.com>
-From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jiri Kosina <jikos@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Subject: [PATCH v2] iio: hid-sensor-attributes: validate sensitivity attributes
-Date: Tue, 14 Jan 2025 15:02:27 +0800
-Message-ID: <20250114070227.1778298-1-acelan.kao@canonical.com>
-X-Mailer: git-send-email 2.43.0
+        Tue, 14 Jan 2025 00:19:18 -0800 (PST)
+Message-ID: <f2565ff63e13af297d0af3be60ccdf9dbe517d18.camel@gmail.com>
+Subject: Re: [PATCH v4 4/6] dt-bindings: iio: Add adis16550 bindings
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: "Budai, Robert" <Robert.Budai@analog.com>, Jonathan Cameron
+	 <jic23@kernel.org>
+Cc: "Sa, Nuno" <Nuno.Sa@analog.com>, "Gradinariu, Ramona"	
+ <Ramona.Gradinariu@analog.com>, "Miclaus, Antoniu"
+ <Antoniu.Miclaus@analog.com>,  Lars-Peter Clausen	 <lars@metafoo.de>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley	
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Alex Lanzano	
+ <lanzano.alex@gmail.com>, "linux-iio@vger.kernel.org"	
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"	
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
+ <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"	
+ <linux-doc@vger.kernel.org>
+Date: Tue, 14 Jan 2025 08:19:17 +0000
+In-Reply-To: <d9bc40ab79a24045ae9ff627ff5d302a@analog.com>
+References: <20250110074254.38966-1-robert.budai@analog.com>
+			<20250110074254.38966-5-robert.budai@analog.com>
+		 <20250112154836.47feeea8@jic23-huawei>
+	 <7a6290b673d8d9492418365392b2554e310ef557.camel@gmail.com>
+	 <d9bc40ab79a24045ae9ff627ff5d302a@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-An invalid sensor device was observed in HP 5MP Camera (USB ID 0408:5473)
-which provided valid index and report_ids for poll, report_state and
-power_state attributes, but had invalid report_latency, sensitivity, and
-timestamp attributes. This would cause the system to hang when using
-iio_info to access attributes, as runtime PM tried to wake up an
-unresponsive sensor.
+On Mon, 2025-01-13 at 14:22 +0000, Budai, Robert wrote:
+>=20
+>=20
+> > -----Original Message-----
+> > From: Nuno S=C3=A1 <noname.nuno@gmail.com>
+> > Sent: Monday, January 13, 2025 11:30 AM
+> > To: Jonathan Cameron <jic23@kernel.org>; Budai, Robert
+> > <Robert.Budai@analog.com>
+> > Cc: Sa, Nuno <Nuno.Sa@analog.com>; Gradinariu, Ramona
+> > <Ramona.Gradinariu@analog.com>; Miclaus, Antoniu
+> > <Antoniu.Miclaus@analog.com>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>; Rob Herring
+> > <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Dool=
+ey
+> > <conor+dt@kernel.org>; Jonathan Corbet <corbet@lwn.net>; Alex Lanzano
+> > <lanzano.alex@gmail.com>; linux-iio@vger.kernel.org;
+> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; linux-
+> > doc@vger.kernel.org
+> > Subject: Re: [PATCH v4 4/6] dt-bindings: iio: Add adis16550 bindings
+> >=20
+> > [External]
+> >=20
+> > On Sun, 2025-01-12 at 15:48 +0000, Jonathan Cameron wrote:
+> > > On Fri, 10 Jan 2025 09:42:52 +0200
+> > > Robert Budai <robert.budai@analog.com> wrote:
+> > >=20
+> > > > Document the ADIS16550 device devicetree bindings.
+> > > >=20
+> > > > Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > > Signed-off-by: Robert Budai <robert.budai@analog.com>
+> > > > ---
+> > > >=20
+> > > > 4:
+> > > > - applied styling changes to the bindings file
+> > > > - restricted sync-mode to intervals 1-2
+> > > >=20
+> > > > =C2=A0.../bindings/iio/imu/adi,adis16550.yaml=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 96 +++++++++++++++++++
+> > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 9 ++
+> > > > =C2=A02 files changed, 105 insertions(+)
+> > > > =C2=A0create mode 100644
+> > > > Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > >=20
+> > > > diff --git
+> > a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > > b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..e7ccf3883e55
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > > @@ -0,0 +1,96 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id:
+> > https://urldefense.com/v3/__http://devicetree.org/schemas/iio/imu/adi,a=
+dis
+> > 16550.yaml*__;Iw!!A3Ni8CS0y2Y!74KHajr7iKZQ7Ld5deb4LytVFckO_Og8tIG
+> > Ukf233OLregM6AqtN-v-IBRfAn-4Z1tC0bwbcEpNO7Glv8YjiXWI$
+> > > > +$schema: https://urldefense.com/v3/__http://devicetree.org/meta-
+> > schemas/core.yaml*__;Iw!!A3Ni8CS0y2Y!74KHajr7iKZQ7Ld5deb4LytVFckO_
+> > Og8tIGUkf233OLregM6AqtN-v-IBRfAn-4Z1tC0bwbcEpNO7GlvNAV5ERI$
+> > > > +
+> > > > +title: Analog Devices ADIS16550 and similar IMUs
+> > > > +
+> > > > +maintainers:
+> > > > +=C2=A0 - Nuno Sa <nuno.sa@analog.com>
+> > > > +=C2=A0 - Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > > +=C2=A0 - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > +
+> > > > +properties:
+> > > > +=C2=A0 compatible:
+> > > > +=C2=A0=C2=A0=C2=A0 enum:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,adis16550
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,adis16550w
+> > > > +
+> > > > +=C2=A0 reg:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 spi-cpha: true
+> > > > +
+> > > > +=C2=A0 spi-cpol: true
+> > > > +
+> > > > +=C2=A0 spi-max-frequency:
+> > > > +=C2=A0=C2=A0=C2=A0 maximum: 15000000
+> > > > +
+> > > > +=C2=A0 vdd-supply: true
+> > > > +
+> > > > +=C2=A0 interrupts:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 reset-gpios:
+> > > > +=C2=A0=C2=A0=C2=A0 description:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 RESET active low pin.
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 clocks:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +=C2=A0=C2=A0=C2=A0 description: If not provided, then the internal=
+ clock is used.
+> > > > +
+> > > > +=C2=A0 adi,sync-mode:
+> > > > +=C2=A0=C2=A0=C2=A0 description:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Configures the device SYNC pin. The=
+ following modes are supported
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 0 - output_sync
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1 - direct_sync
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 2 - scaled_sync
+> > >=20
+> > > A little more on these would be good.=C2=A0 They are 'weird' options
+> > > that are not commonly seen so help the reader out.
+> > >=20
+> > > For scaled_sync don't we need information on the scale for it to be
+> > > useful?
+> > > If we had that then a value of 1 would mean direct sync and wouldn't =
+need
+> > > another control.
+> > >=20
+> > > I'm not fully understanding the usecases for this.
+> > >=20
+> > > If we have a say a pulse per second input, the control of the scale s=
+hould
+> > > be userspace anyway.=C2=A0 So maybe this maps to the input clock that=
+ we can
+> > elect
+> > > to
+> > > use and control the effective frequency of by using scaled sync?
+> >=20
+> > I guess you likely already saw it in the driver. The scale value is
+> > automatically set by the driver depending on the desired ODR (sampling
+> > frequency).
+> >=20
+> > >=20
+> > > I'm not sure what pulse sync is. Grepping the datasheet didn't give m=
+e
+> > > anything that seemed related.=C2=A0=C2=A0 The sync pin is input only =
+so I'm also
+> > > not sure on output sync.
+> >=20
+> > I think this is a copy paste from the adis16475 bindings. For this devi=
+ce,
+> > it
+> > seems we only have:
+> > =C2=A0* internal clock;
+> > =C2=A0* external:
+> > =C2=A0=C2=A0 * direct mode
+> > =C2=A0=C2=A0 * scaled mode
+> >=20
+> > But yeah, as you pointed out I think we do not need the binding. The
+> > presence
+> > of
+> > an optional input clock plus the frequency should be all we need in ord=
+er to
+> > set
+> > the desired configuration. It should also be possible to add the allowe=
+d
+> > ranges
+> > to the external input clock in the bindings...
+> >=20
+> >=20
+> > - Nuno S=C3=A1
+> >=20
+> Will drop this binding than and add a frequency one that is dependent on =
+clock
+> with specified ranges.
+>=20
 
-Fix this by validating both sensitivity.index and sensitivity_rel.index
-during sensor probe. Since valid sensors must initialize these with
-non-negative values, reject the sensor if either index is negative.
+Note I would not add a new binding if there's no standard one. My previous
+comment can be misleading... I see there is a 'clock-frequency' property in=
+ the
+clock schema but descriptions says it's legacy and apparently for fixed-clo=
+cks.
+So maybe not suitable for this case?
 
-[    2.594565] [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-[    2.594573] [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff ffffffff:ffffffff
-[    2.595485] [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
-[    2.595492] [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:11, 3:11, 1:11 ffffffff:ffffffff ffffffff:ffffffff
-
-T:  Bus=03 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.01 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0408 ProdID=5473 Rev=00.07
-S:  Manufacturer=Quanta
-S:  Product=HP 5MP Camera
-S:  SerialNumber=01.00.00
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=0e(video) Sub=01 Prot=01 Driver=uvcvideo
-E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=16ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0e(video) Sub=02 Prot=01 Driver=uvcvideo
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=0e(video) Sub=01 Prot=01 Driver=uvcvideo
-E:  Ad=85(I) Atr=03(Int.) MxPS=  16 Ivl=16ms
-I:  If#= 3 Alt= 0 #EPs= 0 Cls=0e(video) Sub=02 Prot=01 Driver=uvcvideo
-I:  If#= 4 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=00 Prot=00 Driver=usbhid
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=16ms
-I:  If#= 5 Alt= 0 #EPs= 0 Cls=fe(app. ) Sub=01 Prot=01 Driver=(none)
-
-v2. add fixes tag and the device info
-
-Fixes: bba6d9e47f3e ("iio: hid-sensor-attributes: Fix sensor property setting failure.")
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
----
- .../hid-sensors/hid-sensor-attributes.c       | 23 +++++++++++--------
- 1 file changed, 14 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-index ad1882f608c0..b7ffd97e6c56 100644
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -564,8 +564,21 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
- 	} else
- 		st->timestamp_ns_scale = 1000000000;
- 
-+	ret = 0;
-+	if (st->sensitivity.index < 0 || st->sensitivity_rel.index < 0) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
- 	hid_sensor_get_report_latency_info(hsdev, usage_id, st);
- 
-+	ret = sensor_hub_get_feature(hsdev,
-+				st->power_state.report_id,
-+				st->power_state.index, sizeof(value), &value);
-+	if (value < 0)
-+		ret = -EINVAL;
-+
-+out:
- 	hid_dbg(hsdev->hdev, "common attributes: %x:%x, %x:%x, %x:%x %x:%x %x:%x\n",
- 		st->poll.index, st->poll.report_id,
- 		st->report_state.index, st->report_state.report_id,
-@@ -573,15 +586,7 @@ int hid_sensor_parse_common_attributes(struct hid_sensor_hub_device *hsdev,
- 		st->sensitivity.index, st->sensitivity.report_id,
- 		timestamp.index, timestamp.report_id);
- 
--	ret = sensor_hub_get_feature(hsdev,
--				st->power_state.report_id,
--				st->power_state.index, sizeof(value), &value);
--	if (ret < 0)
--		return ret;
--	if (value < 0)
--		return -EINVAL;
--
--	return 0;
-+	return ret;
- }
- EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, "IIO_HID");
- 
--- 
-2.43.0
-
+- Nuno S=C3=A1
 

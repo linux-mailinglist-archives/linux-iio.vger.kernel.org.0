@@ -1,238 +1,283 @@
-Return-Path: <linux-iio+bounces-14362-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14363-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C344A10AEE
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:33:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D555A10B7D
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A77168AB5
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 15:33:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F4B03A4CD8
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 15:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A761F9AA5;
-	Tue, 14 Jan 2025 15:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC65615E5CA;
+	Tue, 14 Jan 2025 15:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BiL9ZafD"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="D5FRSsbH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE9B1B86D5
-	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 15:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9050145A07
+	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 15:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736868719; cv=none; b=ZhqGXm9UegxAG56BIXpOp/8SIImEqXheJJIp3KWkibAgOmS+ylqB2UfL5O84+S4OtWH2AtKaGgiGvtEdeM8OevSiEnip2S6Nk8Tl+Qmvxw5hOYlBqCCFv7Dm4Q6gVXO2GDPVDQo2nJ4T8pXEySoXckj3FX78m5geEtP1Qd3ijz0=
+	t=1736869891; cv=none; b=sdAe646E8EMtEjh9N6bPbONlqUyodypPKO67bg88e6EPYZwKzE4jC5X6bd9LjkplwLRGiBghVJP/O2w20WErIK7Kb85cZzWI1hyn2fEg+BaY9maWqJICkqEgmeDJ2IbpRHyDyuRS8eHcM8AWntA4WDWn6AG+MD14eX7JAadpwJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736868719; c=relaxed/simple;
-	bh=qYyzsrOrzx5St4FThuHvNxAMEp85//w2zLTC8Y3IIIY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ffZ31a1fg1/GbCk4IcL6yOhmcR1H4aCxsPbZPNDb4P5mtpf2DniDc1Cj3SZEtxnKrju2C9hhJDk/nyJh3G/YVEsHHzb0BLFSQl7UyjqxCEgOSCac7rInpB2tquSZ3QwXUmFjQddafnJtj0x6q/5nRn0cxqyZTIfIBcET3pu+noQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BiL9ZafD; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1736869891; c=relaxed/simple;
+	bh=L74jRs1dONVGrPeAHFmIlQs5fRrA3AGMZqSCnDcXEwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JCi0CXE4tmdQYisYVAa6FFQdakoK3x3tP7xcjZGdrJOnKJCsFEcMzf+RQTZOw1teZwmIOp6YPP1vFtFy5c/cxHvhXAoEaynbd2P/MN0sy9bQ2SraaSp/6qT9Zeai4G74avz1PmkPDyqIFkT+qKLvoFooPvWzLjoUEA1ZByRLLmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=D5FRSsbH; arc=none smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-436ce2ab251so40521315e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 07:31:57 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f2e2608681so2816510eaf.1
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 07:51:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736868716; x=1737473516; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ylCBASlMPJkZHv6GhjEiCkHB/0+Vz29gsqJdZKd5MdM=;
-        b=BiL9ZafD5bf+6j7JrIAiCjJcNrdDSrm0Xul3MKobnYOc6qu2HsAkTQWcFHfIa/Q0Nz
-         LDLxLRlh4p3hrwU8FOm+u/EZfH1ZGKnlFq2yTK+dW7tXpK8B3b/QUpEKyWUJMIoI10F1
-         sYWcG3F3g+sUCEhLKMO4QC/Hg9IJv8A7WJt1V5gjzLElnT6LKTW9a/mf1AL6sXh0qoHx
-         GxaCoepbuiVyz+w7/p/fzD6A8mv14GjwAVm6qCG8dLzVlvuDgMexFinU2Cfc/uWiHktD
-         Ho7/K+RId2mZ1v+zZaw/ctOHhKkw7L1zZzQZ5XaeiiE3pCebdfI2viyZaFdCNOks2SKT
-         kU9w==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736869889; x=1737474689; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tvuSSpwSkjYIraUioNxnd9y7q+DAaxVqELrz32e6A30=;
+        b=D5FRSsbH/jrCcfFa2WYsYzDjkWv36q/hxECbF70hmKaDwSXVx+QCVJP1zX3lr7R+xc
+         4N+ID4JPy898pe4AoZcfXaltMcK/R5DP0+KaINBUincts41pd6m2qUrQFQ1Odf8e5AeB
+         sR28AcczQvh/fojL6YKYrkoKxNV/WmZm5LBf+SdtyzgpnOq3xZRF1rN5jEk5sbEb9LWu
+         l18pv0RXzi+Y4QQKGYs/0hLmthWsV2Uv5K7Kj2VmA3Pg/UaCoYsd8+vvbv2276vaZX1X
+         OQx/PnDmmlOUZageQlcxvTlO+aaMI+0nN8V2CikIHg1NatauPOC6R63DwfSx3UEj5XBM
+         Nyhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736868716; x=1737473516;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ylCBASlMPJkZHv6GhjEiCkHB/0+Vz29gsqJdZKd5MdM=;
-        b=ZYaPGwjK6/5wUpK7nBIgqNHj7roUvV7oGK6tDaxZhl1QE887+0+9s8GyqkXbTJezbJ
-         SB1RakmroQ4BD3K9Yy1cWbhLOyEdhMbxjUeHK2fCVceWYDkZgI853jznuP6uS5FgOnjq
-         Rbu7wjiB7PVgBza2ZYDbHSgQVsByoGTVLmbeYwRK1Xvg3iRI1Kz5C/qb07370eOT1ZDz
-         MeA5SCdW+DATcPx96JVyV1OHHkbYuMKefiQJzoHinJGAbyJEFlGZ4DRvC1Gu13/nrscz
-         1TxQtv/WKtKira+ECdHjfhLRJIfr+h3GshA87UEdWCcMsRYakPqIF8qWYzCQFO9dZMho
-         kffQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUkKPfUa2taqinuHHzwKtBSaRicAsy75Am1TypRrcmk4K4scFlpl5SFv509sSUL604D2YSprdpX9Vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwUbd8Qwa8DfQ5EMJlzDDYlUMDgu8gfAwghMLAgkfCtcXwl2B/
-	zR84yroZ0wjCobw1Tu/dXrnLU8zPjyn0VNM7K4QpO9/vfsi3zqMda1bedWrWTz8=
-X-Gm-Gg: ASbGncuQtST6cbREEbm3OgGtq0V37vXGOo+7Bdljsq1BFxVePKsK30jsf1x2Ou3e0Ax
-	AR9LU+fNumV6+Onf8RZ3nvnM6frtNC50nM99ZZvWj9s6UkgfsYPAFMogt9jK2+ECIhzQdir4+5b
-	oKjsxNRi756kNqe+SHJ9/N+AVVzlsfZ+mb9nplzKeVZBsZuLFcq9pSLzaoLj+KL6hvVrn0jU94E
-	HKDcpcQ9w5Wh9AGqnUGnJKFLaiOoC4n+SAMEyFiCCDO3+yp3HO9PuXoPN8=
-X-Google-Smtp-Source: AGHT+IHGq0wfH03pxXCXZ0hcHDHI669Hj0ZbP8/2Zn0o0ALPUihu4LyMgScyCO3Pg4kIgBtCvARAqw==
-X-Received: by 2002:a05:6000:1787:b0:38a:41b6:d685 with SMTP id ffacd0b85a97d-38a872f6f17mr23199035f8f.3.1736868715927;
-        Tue, 14 Jan 2025 07:31:55 -0800 (PST)
-Received: from [127.0.1.1] ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b8116sm15049907f8f.79.2025.01.14.07.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 07:31:55 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Tue, 14 Jan 2025 16:30:18 +0100
-Subject: [PATCH v4 9/9] iio: dac: ad3552r-hs: update function name (non
- functional)
+        d=1e100.net; s=20230601; t=1736869889; x=1737474689;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tvuSSpwSkjYIraUioNxnd9y7q+DAaxVqELrz32e6A30=;
+        b=vbxvxMrAnWx0g2prW781S3mLKugekI4JdEOk6bRNL+ncG2JMAxMLZLqnaNhpQ1Oxx5
+         7ZfwYJGPStq1KRE/TC9XSTEC79p6YKywqnqNoME1pad6ZOS9hvpVvLyJOaampw9802xA
+         QYrxi4xwyr7udJAqr2gqgfFRfDyuZBioFI1oTUqe01slfwinVVTEyHBrEDB3FoaGAU2e
+         0rIXqEoeUbm1YNC7cQEHkgilbmN6ATbfjQ6lFO7qnVf/it/erKyF7MD5GjxqGvD/9HfA
+         IvnQqXm5Jefobfn/Hp57x75PKZqTMGtTSn1ZXLoVMHeRIG5aZmYJJ8PFs/auhuBZ0WdA
+         KDPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVv7NmSPf7iM0XlVEyeXA1EfPSw2EZ95EKYtcdVgO/D6sf4/Qm4ISaTtILZ9/hYnC2kudtwHofMw7w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzbt1vKmfjwoCxjb1dkkBhnrc6KDIjU2/m/HILlHiQ6Yl+nmK4+
+	Aa8Y4vX66sw7SPL86QYjkS9lmT922VH7mD1imTKDXgXjVxDKA9fxpU0w/9P35UBPV/d5nlQIo9E
+	4
+X-Gm-Gg: ASbGncvs+7kuzpvnXeA+e7eKkjqPhub2aZGPeIAiGgz1h0CizlvrDipKtX5mezDDLQv
+	aWB8zSFSRP0kCKUHHPTdjg86vEBvXlJxhZd3SvlZ43yoaZrmihbwESaCYrvALUFPZaV73NiCkal
+	l/I9ZDYiSzjNS32ibchB0Wb+nLLVCgz0QsXud7yWZ8AVnqKB/nj8sFAg8O/lKnC0SyZdwewxilK
+	EoGggHaaFWPYoSR2ZO6J+mBCP47tfD3AMR5l/V0GzYmK3uoU4yuRDWrIPEPvSRL6h87cSd7JI5j
+	HBj1T48K7RFovVn8fQ==
+X-Google-Smtp-Source: AGHT+IGALdOvjLIjRKcsuyz9XUa9hgth8o9CIfqhXL6qycHUaaR7ZJ3MTLSS5iUrarkgheuuDhPueA==
+X-Received: by 2002:a05:6870:2007:b0:29e:5297:a2a7 with SMTP id 586e51a60fabf-2aa068d657fmr16043927fac.30.1736869888835;
+        Tue, 14 Jan 2025 07:51:28 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad8017c2d0sm5093216fac.0.2025.01.14.07.51.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 07:51:27 -0800 (PST)
+Message-ID: <95e54ca0-041e-4e6e-8364-d22d6d2e16a5@baylibre.com>
+Date: Tue, 14 Jan 2025 09:51:26 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 8/8] iio: adc: ad4851: add ad485x driver
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+Cc: "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org"
+ <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
+References: <20241220120134.42760-1-antoniu.miclaus@analog.com>
+ <20241220120134.42760-8-antoniu.miclaus@analog.com>
+ <37fcda1c-0051-4a8c-b61c-583a1b8faa1e@baylibre.com>
+ <CY4PR03MB3399F8E7AFA00340321BB2A69B182@CY4PR03MB3399.namprd03.prod.outlook.com>
+ <20250114132035.00004abd@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250114132035.00004abd@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-9-979402e33545@baylibre.com>
-References: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-0-979402e33545@baylibre.com>
-In-Reply-To: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-0-979402e33545@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>, 
- Nuno Sa <nuno.sa@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.1
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On 1/14/25 7:20 AM, Jonathan Cameron wrote:
+> 
+> Hi Antoniu
+> 
+> For future replies please crop to only the bits you are reply to.
+> Took me a couple of goes to find the reply, so in some cases
+> the important parts can be completely missed by a reader if
+> the rest isn't cropped down.
+> 
+> ...
+> 
+>>>> +static int ad4851_set_oversampling_ratio(struct iio_dev *indio_dev,
+>>>> +					 const struct iio_chan_spec *chan,
+>>>> +					 unsigned int osr)
+>>>> +{
+>>>> +	struct ad4851_state *st = iio_priv(indio_dev);
+>>>> +	int val, ret;
+>>>> +
+>>>> +	guard(mutex)(&st->lock);
+>>>> +
+>>>> +	if (osr == 1) {
+>>>> +		ret = regmap_clear_bits(st->regmap,  
+>>> AD4851_REG_OVERSAMPLE,  
+>>>> +					AD4851_OS_EN_MSK);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +	} else {
+>>>> +		val = ad4851_osr_to_regval(osr);
+>>>> +		if (val < 0)
+>>>> +			return -EINVAL;
+>>>> +
+>>>> +		ret = regmap_update_bits(st->regmap,  
+>>> AD4851_REG_OVERSAMPLE,  
+>>>> +					 AD4851_OS_EN_MSK |
+>>>> +					 AD4851_OS_RATIO_MSK,
+>>>> +					 FIELD_PREP(AD4851_OS_EN_MSK,  
+>>> 1) |  
+>>>> +  
+>>> FIELD_PREP(AD4851_OS_RATIO_MSK, val));  
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +	}
+>>>> +
+>>>> +	ret = iio_backend_oversampling_ratio_set(st->back, osr);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	switch (st->info->resolution) {
+>>>> +	case 20:
+>>>> +		switch (osr) {
+>>>> +		case 0:
+>>>> +			return -EINVAL;
+>>>> +		case 1:
+>>>> +			val = 20;
+>>>> +			break;
+>>>> +		default:
+>>>> +			val = 24;
+>>>> +			break;
+>>>> +		}
+>>>> +		break;
+>>>> +	case 16:
+>>>> +		val = 16;
+>>>> +		break;
+>>>> +	default:
+>>>> +		return -EINVAL;
+>>>> +	}
+>>>> +
+>>>> +	ret = iio_backend_data_size_set(st->back, val);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	if (osr == 1 || st->info->resolution == 16) {
+>>>> +		ret = regmap_clear_bits(st->regmap, AD4851_REG_PACKET,
+>>>> +					AD4851_PACKET_FORMAT_MASK);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +
+>>>> +		st->resolution_boost_enabled = false;
+>>>> +	} else {
+>>>> +		ret = regmap_update_bits(st->regmap, AD4851_REG_PACKET,  
+>>>
+>>> regmap_set_bits  
+>>
+>> Why? Packet format is two bits wide according to the register map.
 
-Update ad3552r_qspi_update_reg_bits function name to a more
-generic name, since used mode can be SIMPLE/DUAL/QUAD SPI.
+Oops, I was expecting it to be symmetric with regmap_clear_bits() above. But
+of course you are correct.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/dac/ad3552r-hs.c | 60 +++++++++++++++++++++-----------------------
- 1 file changed, 29 insertions(+), 31 deletions(-)
+>>
+>>>> +					 AD4851_PACKET_FORMAT_MASK,
+>>>> +  
+>>> FIELD_PREP(AD4851_PACKET_FORMAT_MASK, 1));  
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +
+>>>> +		st->resolution_boost_enabled = true;
+>>>> +	}
+>>>> +
+>>>> +	if (st->osr != osr) {
+>>>> +		ret = ad4851_scale_fill(indio_dev);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +
+>>>> +		st->osr = osr;
+>>>> +	}
+>>>> +
+>>>> +	return 0;
+>>>> +}
+>>>> +
+> ...
+> 
+>>>> +static int ad4851_setup(struct ad4851_state *st)
+>>>> +{
+>>>> +	unsigned int product_id;
+>>>> +	int ret;
+>>>> +
+>>>> +	if (st->pd_gpio) {
+>>>> +		/* To initiate a global reset, bring the PD pin high twice */
+>>>> +		gpiod_set_value(st->pd_gpio, 1);
+>>>> +		fsleep(1);
+>>>> +		gpiod_set_value(st->pd_gpio, 0);
+>>>> +		fsleep(1);
+>>>> +		gpiod_set_value(st->pd_gpio, 1);
+>>>> +		fsleep(1);
+>>>> +		gpiod_set_value(st->pd_gpio, 0);
+>>>> +		fsleep(1000);
+>>>> +	} else {
+>>>> +		ret = regmap_set_bits(st->regmap,  
+>>> AD4851_REG_INTERFACE_CONFIG_A,  
+>>>> +				      AD4851_SW_RESET);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +	}
+>>>> +
+>>>> +	if (st->vrefbuf_en) {
+>>>> +		ret = regmap_set_bits(st->regmap,  
+>>> AD4851_REG_DEVICE_CTRL,  
+>>>> +				      AD4851_REFBUF_PD);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +	}
+>>>> +
+>>>> +	if (st->vrefio_en) {
+>>>> +		ret = regmap_set_bits(st->regmap,  
+>>> AD4851_REG_DEVICE_CTRL,  
+>>>> +				      AD4851_REFSEL_PD);
+>>>> +		if (ret)
+>>>> +			return ret;
+>>>> +	}  
+>>>
+>>> PD stands for power down, so should we be powering down if not enabled?
+>>> (i.e.
+>>> if is missing !)  
+>> We power down the internal reference if the external one is used. Not sure what is wrong here.
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index e8e309046f11..c1dae58c1975 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -65,9 +65,8 @@ static int ad3552r_hs_reg_read(struct ad3552r_hs_state *st, u32 reg, u32 *val,
- 	return st->data->bus_reg_read(st->back, reg, val, xfer_size);
- }
- 
--static int ad3552r_qspi_update_reg_bits(struct ad3552r_hs_state *st,
--					u32 reg, u32 mask, u32 val,
--					size_t xfer_size)
-+static int ad3552r_hs_update_reg_bits(struct ad3552r_hs_state *st, u32 reg,
-+				      u32 mask, u32 val, size_t xfer_size)
- {
- 	u32 rval;
- 	int ret;
-@@ -215,9 +214,9 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 	 */
- 
- 	/* Primary region access, set streaming mode (now in SPI + SDR). */
--	ret = ad3552r_qspi_update_reg_bits(st,
--					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
--					   AD3552R_MASK_SINGLE_INST, 0, 1);
-+	ret = ad3552r_hs_update_reg_bits(st,
-+					 AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+					 AD3552R_MASK_SINGLE_INST, 0, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -226,10 +225,10 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 	 * 0x2c or 0x2a, in descending loop (2 or 4 bytes), keeping loop len
- 	 * value so that it's not cleared hereafter when _CS is deasserted.
- 	 */
--	ret = ad3552r_qspi_update_reg_bits(st,
--		AD3552R_REG_ADDR_TRANSFER_REGISTER,
--		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
--		AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE, 1);
-+	ret = ad3552r_hs_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-+					 AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-+					 AD3552R_MASK_STREAM_LENGTH_KEEP_VALUE,
-+					 1);
- 	if (ret)
- 		goto exit_err_streaming;
- 
-@@ -252,7 +251,7 @@ static int ad3552r_hs_buffer_postenable(struct iio_dev *indio_dev)
- 
- 	/*
- 	 * From here onward mode is DDR, so reading any register is not possible
--	 * anymore, including calling "ad3552r_qspi_update_reg_bits" function.
-+	 * anymore, including calling "ad3552r_hs_update_reg_bits" function.
- 	 */
- 
- 	/* Set target to best high speed mode (D or QSPI). */
-@@ -353,18 +352,17 @@ static int ad3552r_hs_buffer_predisable(struct iio_dev *indio_dev)
- 	 * Back to simple SPI for secondary region too now, so to be able to
- 	 * dump/read registers there too if needed.
- 	 */
--	ret = ad3552r_qspi_update_reg_bits(st,
--					   AD3552R_REG_ADDR_TRANSFER_REGISTER,
--					   AD3552R_MASK_MULTI_IO_MODE,
--					   AD3552R_SPI, 1);
-+	ret = ad3552r_hs_update_reg_bits(st, AD3552R_REG_ADDR_TRANSFER_REGISTER,
-+					 AD3552R_MASK_MULTI_IO_MODE,
-+					 AD3552R_SPI, 1);
- 	if (ret)
- 		return ret;
- 
- 	/* Back to single instruction mode, disabling loop. */
--	ret = ad3552r_qspi_update_reg_bits(st,
--					   AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
--					   AD3552R_MASK_SINGLE_INST,
--					   AD3552R_MASK_SINGLE_INST, 1);
-+	ret = ad3552r_hs_update_reg_bits(st,
-+					 AD3552R_REG_ADDR_INTERFACE_CONFIG_B,
-+					 AD3552R_MASK_SINGLE_INST,
-+					 AD3552R_MASK_SINGLE_INST, 1);
- 	if (ret)
- 		return ret;
- 
-@@ -381,10 +379,10 @@ static inline int ad3552r_hs_set_output_range(struct ad3552r_hs_state *st,
- 	else
- 		val = FIELD_PREP(AD3552R_MASK_CH1_RANGE, mode);
- 
--	return ad3552r_qspi_update_reg_bits(st,
--					AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
--					AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
--					val, 1);
-+	return ad3552r_hs_update_reg_bits(st,
-+					  AD3552R_REG_ADDR_CH0_CH1_OUTPUT_RANGE,
-+					  AD3552R_MASK_CH_OUTPUT_RANGE_SEL(ch),
-+					  val, 1);
- }
- 
- static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
-@@ -400,10 +398,10 @@ static int ad3552r_hs_reset(struct ad3552r_hs_state *st)
- 		fsleep(10);
- 		gpiod_set_value_cansleep(st->reset_gpio, 0);
- 	} else {
--		ret = ad3552r_qspi_update_reg_bits(st,
--					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
--					AD3552R_MASK_SOFTWARE_RESET,
--					AD3552R_MASK_SOFTWARE_RESET, 1);
-+		ret = ad3552r_hs_update_reg_bits(st,
-+			AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
-+			AD3552R_MASK_SOFTWARE_RESET,
-+			AD3552R_MASK_SOFTWARE_RESET, 1);
- 		if (ret)
- 			return ret;
- 	}
-@@ -544,10 +542,10 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
- 
- 	val = ret;
- 
--	ret = ad3552r_qspi_update_reg_bits(st,
--				AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
--				AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
--				val, 1);
-+	ret = ad3552r_hs_update_reg_bits(st,
-+					 AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
-+					 AD3552R_MASK_REFERENCE_VOLTAGE_SEL,
-+					 val, 1);
- 	if (ret)
- 		return ret;
- 
 
--- 
-2.47.0
+I see. The macro name is wrong, which made me think it was doing something
+different. It should be AD4851_REF_SEL rather than AD4851_REFSEL_PD.
+
+
+>>>> +
+>>>> +	ret = regmap_write(st->regmap,  
+>>> AD4851_REG_INTERFACE_CONFIG_B,  
+>>>> +			   AD4851_SINGLE_INSTRUCTION);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+>>>> +	ret = regmap_write(st->regmap,  
+>>> AD4851_REG_INTERFACE_CONFIG_A,  
+>>>> +			   AD4851_SDO_ENABLE);
+>>>> +	if (ret)
+>>>> +		return ret;
+>>>> +
+> 
+> Thanks,
+> 
+> Jonathan
 
 

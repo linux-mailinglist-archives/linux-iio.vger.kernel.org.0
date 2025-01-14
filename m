@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-14354-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14356-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E530A10ADE
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:32:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF630A10AE3
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59CEC3A90AC
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 15:32:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EE163A91D8
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 15:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17489194A74;
-	Tue, 14 Jan 2025 15:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D9E1BD9EA;
+	Tue, 14 Jan 2025 15:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Rww4GutW"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oQTAmP0V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BFC15746B
-	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 15:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3273218EFCC
+	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 15:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736868710; cv=none; b=T1FZUWhsWeddyBKtHl6jBc7JT6L+dvAucFCMnU8ONYU60RKQ4r3Y1eXjJsqzOeUwEno4FyhA4jZ4keCsN6Gi3EJFl2SrCU6DcUFZcscwK1T3u75IEyBWzzZAucYDltjfrBMNs1RPc7ZcGeeR7rIP8yPKrI2MnxtRYIWdpotDto0=
+	t=1736868712; cv=none; b=Rxgc+Rs2MMU+7QKUxnS6adpzPCTF1hAeNsuCRZSQsBX+o/kSBj5KSgMGETqBXmuBgwYV3IDpnCj+ZwANucnJnMToHqQVJ1d7FLKzqBr23t/I8olckNg19zSpWxeSJ4juFJt6Nz0FN7DWoCd8wUFJZi36RJNqCxPLOicvdiyVItU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736868710; c=relaxed/simple;
-	bh=WwKlVxTv7Oeh09OXx+DvjZEFIeEypUPrgYxitxNiF28=;
+	s=arc-20240116; t=1736868712; c=relaxed/simple;
+	bh=pSP5O2KpDcWDn/YPvUVk/p3yqEOsgwFMEHN2oKWfl2Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JxQ43snqW+DlfV1MvyTUCjny5H8br/1DNJvAMQR6vWrp019jmuVwzU9+jGcu53r4JGjEwCJ5YforNY6FsI1pVheU1Szpx9gMuBrbBckcCJ11ZG5dkVfDT5Ti7T+zrEPwxkoxnx85kscH5wPteqxvF0eiha4tmQo5khkOMx/vFTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Rww4GutW; arc=none smtp.client-ip=209.85.221.43
+	 In-Reply-To:To:Cc; b=sq+WXB9tWtJ+KHe4V8U8rtjHWcleRmPSxqSR+vrS0qoCvCgnwWOO9S2hhQn9ZwMlEhPC740V59xjdEWzAbzbU6h6MX8JfmyzvPcWv3PCXPDdPfQl9RtvB12cMMxVw3IbMq51gaN/QG6xYbYMxB2aR+yzY9jREZ0nJbMqXjAc7aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oQTAmP0V; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385f06d0c8eso2952333f8f.0
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 07:31:48 -0800 (PST)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38a88ba968aso4664219f8f.3
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 07:31:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736868707; x=1737473507; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736868708; x=1737473508; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RmYlx/En2aqqfgAz0OoSAfJ3wizK8wbnQXwhJAWjCCw=;
-        b=Rww4GutWC7vy+903fwKqVbdjh7ptEPyodeJR5ErcStemSSqLhX1SPTCJ9FrsFAXgZ2
-         HnKPqTawsKKkS9U8f+bZalPWMEIKAvvcjoKx3DCW3ev3UjQZ6IQYWQ3zewrLJ9htH89U
-         9Kdp/tt73zZn/hHuk3jkghWjMz+ygMu1bUR+93m1cGxnZES6GF/L5gKFCV6SCR2XSK1d
-         ua93ucYSPIWCFbLl/E4Eh5M9f0lGe9o1i51+V2N/Zszcxcq+110hnNyXbfTtcH+jyg7G
-         b+n9j7auq9rX858JGzkeYR4ezqHSxQtTLLahC8Q8/U2GdJa2u4OxGODu2iipikWArtUl
-         8cFg==
+        bh=79ELYnS/0cFQomhFXegbEFpd0OUlcm/1XJ4h0p0TxPA=;
+        b=oQTAmP0VN/7YrYU0b6McFPgPIdRbtBGuuj+QZs7zFWMpc4Ys4B7A8DNhTO8k5qNSjE
+         Tcov0GwTlyF1O3zTegRwtabcUiflWHbRUoG2/SzC78tRM4R211tRDCa+PudXefg4VALW
+         VB++8ghIMHRVIma6U/wURV2BWFahXvuW1S23nyN0M5Uvs3jQIO+xDragxvQYE0RKkalD
+         2OiqSM0U/nFNlDP4NNLc0VdZnu7Bto776vSc7om4bKqyf6Kdbl9UcKMNo0bayrD1AF0m
+         iIIJcccdjzNa19ATmduCyDqw0VQ0IbpxlyyIN+6iPdzaBUqn1dRwJlQCWRoamSSQPzem
+         28fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736868707; x=1737473507;
+        d=1e100.net; s=20230601; t=1736868708; x=1737473508;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RmYlx/En2aqqfgAz0OoSAfJ3wizK8wbnQXwhJAWjCCw=;
-        b=mjYn1U6/5FBGF8EiMeLsti2KxztH9V4gxSpJ7JSDsbQvlb9eRe5p8LeVTkicLEqC/w
-         T0J+a7GenoFUSfMtX9S3vWwPkFob2HZAs9QiV5upaVr3mXO79q9zsnyD6WICEiSNpKUq
-         DnHmN6E0KX3ytyWnHXCyaypsYQ+uKmEDChEvCH7W0Wjs1USIp884CBEhPC+aiyFrm12s
-         4aPQHaUmMFO5ehz0ccbMCzjuDfe1b6Be/xEtMj3RPihLw0mh0F753EpZ3R1AWqTCAXS4
-         WMI+lSlH7RgjOmniC2YgRQSQawPHH7xG2xaTz2I18M1ZQEyPXjMxQLhwTkwNj5JqE9k6
-         GsyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSQIUt5aqZjsFEyoPdL8n9auaLVKdC+wew2QuF0TBJwnhnDqacYkhfj3Ht+XZ+16qSBjLCL2xIcwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfMDy6y1mT+iRDkVg+G+5oaKbPqAkaWSq/yNziZbsFZJKDLhki
-	JD60Eo6BQ7WDpl1Kap+FNkUM+427nwKDNxTooNSye25IgGLaoaZP+2vF/AoJ9Gg=
-X-Gm-Gg: ASbGncs4Vr/TpoAhmqMf3867Rdzuktfr0XVMsPp3alTYM9eLxmDfqxRQxQxUKlon9L2
-	gTL+Wlr9c+YkgQTDI4ApaZVKlx0t1ERQYhsa58z5DcyRNWwGikT8C2aUnd6rE670jTMpVODESZ2
-	6ITe0pI9T1fQL8dQOJxU04LpDTo3kz+oFugbmouAfXJTsim03cNWRyx9pQZTeiq7HUz+Po0cXwl
-	yzF6yH9I6GAN8qjRcO0Oz/NtRkxG+05PWF/dpDEscLrLp1lWmk/L5f0wyc=
-X-Google-Smtp-Source: AGHT+IGTfu68TjbqpJhz91FbPuANOfke+PQV/4PPq6Ra3BMMNeQguSEVyw6KgI7jOnEtN3nP89YzHg==
-X-Received: by 2002:a5d:6d0e:0:b0:38a:a117:3da1 with SMTP id ffacd0b85a97d-38aa1173f70mr10969153f8f.5.1736868705806;
-        Tue, 14 Jan 2025 07:31:45 -0800 (PST)
+        bh=79ELYnS/0cFQomhFXegbEFpd0OUlcm/1XJ4h0p0TxPA=;
+        b=FWJo1TASfyWNc3ZtwJlOEZY3N8V3dsgqIuEFXMuooXAtY8ayogFrFarMrymlxF0JS9
+         JztUReuJNzbwqKOFNsErh2dv9klP0HzYpXDUrbs4ZGCLBQ6E1318jbAXMWJd+k32ud8x
+         kEIYlEcqSUrU1R0dV7Nb2FzFlQ4Cc+ApjlqiO1nK/qvihJpTbE6lsxaJo2ckN8cOOScM
+         ebxQhw5fKLkM1HKroSJ/WtSRpPWGFECRJ+vV0yTRSRKQSDUn6X1SqrfulId/QpzwDa0Y
+         GlbbpxgWkunsHRiWpanD7MMudmTdbgRkwGUNX9o5iwtGCKqCmUVZ+NZlJ38IeBExMq+t
+         ClLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOzFo5qu/TEaybYfI8fwEhIPCYQyJHc03y0f8r6LMMRVek8uHkLsGCqyZg8UGham9BDL9JtbYTTww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgUrxmgCHYL1gDoyuo+RpXu7axWBUpaN/6CrzTuJ2GfqqaTba4
+	8Cf7jaA3LI5HbZ0gKJDUVaX/6rgxJOUgc8GoPCHfLFdFLaE4yOqZ6vrTyB3LwaA=
+X-Gm-Gg: ASbGncuEGDZ3MlmX157o6WtH1/WyI1WJSw5dH79ryu2CIsTMp5cGD9A9BdMFW3Glzmx
+	F+GqKtjzsFMDlS+waAQcG7eKYWbunadQwOQ9ftYHaeCCTD+f3JSBjVi3DfrkM3okYDlPUjIP6Rq
+	zNIwivDdbYn3LOhvw/CIQaTjZIguUiFMh1S7PqE8AnSqsnGdZlYELMGSVwt21xQitFSBsm0IaGX
+	jA8AfiYTvgVJy1h5Orz2kVt08HGf8qvU3v7A1x4pdy9IpOLuXoRM/5fwAs=
+X-Google-Smtp-Source: AGHT+IEQwIlC+JLtLtee+bYn5GDdoWVZ3hShcRyhT/V0Hier8yuFXFLUZ2GFZ3aUCqKCEmcFYWLBlw==
+X-Received: by 2002:a05:6000:184e:b0:382:46ea:113f with SMTP id ffacd0b85a97d-38a872fc1b3mr23588975f8f.10.1736868707122;
+        Tue, 14 Jan 2025 07:31:47 -0800 (PST)
 Received: from [127.0.1.1] ([87.13.70.66])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b8116sm15049907f8f.79.2025.01.14.07.31.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4b8116sm15049907f8f.79.2025.01.14.07.31.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 07:31:45 -0800 (PST)
+        Tue, 14 Jan 2025 07:31:46 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Tue, 14 Jan 2025 16:30:11 +0100
-Subject: [PATCH v4 2/9] iio: dac: ad3552r-hs: clear reset status flag
+Date: Tue, 14 Jan 2025 16:30:12 +0100
+Subject: [PATCH v4 3/9] iio: dac: adi-axi-dac: modify stream enable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-2-979402e33545@baylibre.com>
+Message-Id: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-3-979402e33545@baylibre.com>
 References: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-0-979402e33545@baylibre.com>
 In-Reply-To: <20250114-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v4-0-979402e33545@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -97,39 +97,36 @@ X-Mailer: b4 0.14.1
 
 From: Angelo Dureghello <adureghello@baylibre.com>
 
-Clear reset status flag, to keep error status register
-clean after reset (ad3552r manual, rev B table 38).
+Change suggested from the AXI HDL team, modify the function
+axi_dac_data_stream_enable() to check for interface busy, to avoid
+possible issues when starting the stream.
 
-Reset error flag was left to 1, so debugging registers, the
-"Error Status Register" was dirty (0x01). It is important
-to clear this bit, so if there is any reset event over normal
-working mode, it is possible to detect it.
-
-Fixes: 0b4d9fe58be8 ("iio: dac: ad3552r: add high-speed platform driver")
+Fixes: e61d7178429a ("iio: dac: adi-axi-dac: extend features")
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/dac/ad3552r-hs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/dac/adi-axi-dac.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index 216c634f3eaf..8974df625670 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -329,6 +329,12 @@ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
- 		dev_info(st->dev, "Chip ID error. Expected 0x%x, Read 0x%x\n",
- 			 AD3552R_ID, id);
- 
-+	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
-+	ret = st->data->bus_reg_write(st->back, AD3552R_REG_ADDR_ERR_STATUS,
-+				      AD3552R_MASK_RESET_STATUS, 1);
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+index b143f7ed6847..ac871deb8063 100644
+--- a/drivers/iio/dac/adi-axi-dac.c
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -585,6 +585,14 @@ static int axi_dac_ddr_disable(struct iio_backend *back)
+ static int axi_dac_data_stream_enable(struct iio_backend *back)
+ {
+ 	struct axi_dac_state *st = iio_backend_get_priv(back);
++	int ret, val;
++
++	ret = regmap_read_poll_timeout(st->regmap,
++				AXI_DAC_UI_STATUS_REG, val,
++				FIELD_GET(AXI_DAC_UI_STATUS_IF_BUSY, val) == 0,
++				10, 100 * KILO);
 +	if (ret)
 +		return ret;
-+
- 	ret = st->data->bus_reg_write(st->back,
- 				      AD3552R_REG_ADDR_SH_REFERENCE_CONFIG,
- 				      0, 1);
+ 
+ 	return regmap_set_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
+ 			       AXI_DAC_CUSTOM_CTRL_STREAM_ENABLE);
 
 -- 
 2.47.0

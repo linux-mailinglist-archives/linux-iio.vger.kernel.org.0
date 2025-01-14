@@ -1,259 +1,246 @@
-Return-Path: <linux-iio+bounces-14331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794A7A0C4CF
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 23:37:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC20A0FD4C
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 01:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27A347A496B
-	for <lists+linux-iio@lfdr.de>; Mon, 13 Jan 2025 22:32:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3037D7A1022
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 00:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602341E04B5;
-	Mon, 13 Jan 2025 22:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22D08F5A;
+	Tue, 14 Jan 2025 00:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDjo4t1Z"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OdHfJLYa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5595019AD89;
-	Mon, 13 Jan 2025 22:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0F64A0F;
+	Tue, 14 Jan 2025 00:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736807566; cv=none; b=m/3YyBtog1OT/x3n++5YQt73Ytgn42CBl3FtHao1KAuCEoYhk2LqNDrY4F238DxALyfpnqg+iaS7SZ/wtm4VG3Qo1zNGJ3E3o3r/AUYN7XtYZEnOmhveaQLxXamHmh3Q0hipg/p+sYwoXqH/QmHjMaM/PuUBTfy3KLeWcPjb0xM=
+	t=1736813941; cv=none; b=VnozOOwFojaCQcjla4aBuw2HOtAyUWG5FhD+2DOqOpycY3rE/i67xvrjLk5Y/TTv0fBkB0YrhUX2xs/CnJVIn5JrAxRV8aG4uDthStW3/ySLx1F2UWU4MHPGjOVFcnLW/ROJEVqyR2YwcHYb5vnLS9J7IOXGQqQxNZzb0EUo19I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736807566; c=relaxed/simple;
-	bh=Hb8+ZRcPMdgZ8JVzf096crixRii9kG0dLaDzNU+A38A=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=P9AT3VJOdaOEwQFipsBwfdY81UM1qzPyp+pdbMiHkKuH4UWH7AdiwCRdzbWcW7dkkGYjcQq8bgsg++uMXHxGlbYUIGSrhe8Bod0A7aQZZ9gC6N7ClmOvgKBrGTXQu0aUSTU9voKiotT1kcPz49c2H0n7GNesi6G8kS7/hIjpP6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDjo4t1Z; arc=none smtp.client-ip=209.85.221.44
+	s=arc-20240116; t=1736813941; c=relaxed/simple;
+	bh=5NtjgTeVG76VME5kPVrnOepFDRL2Km4QlR/YDSsTQsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tn5btDEUAOjnuMNw4KW7y2PRjrkH4TBMMj1m0j3UUaM/V0Kk7+lKGVA/xIukTA7NfNoS01uBAxAwn35PnEsG5jfy+OGA1Kd++FLT/iaS6ObhRG3ELdi/UTxFOEfTfRReAwOxnqrGR2Vtd8+q/V5qR7zG8UYubM6xsntKEdxvaao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OdHfJLYa; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38633b5dbcfso4966689f8f.2;
-        Mon, 13 Jan 2025 14:32:44 -0800 (PST)
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b6ebcec3aaso39073385a.0;
+        Mon, 13 Jan 2025 16:18:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736807563; x=1737412363; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1736813939; x=1737418739; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kC5ZLO2wqe4rCC8a1YRUukDPf2FKx/o1plQCwueR24c=;
-        b=MDjo4t1ZguaRX2WWsSpG3GfF07fSDJbEI2Vn12/vRZ87FDYYtvlPzXLUqi9KrT5/co
-         uPbnVttFUmiYXPV6HWpesGFw176emEk7IN3sQ5u/ZUeSlByXHaLFqVqDHSEjv1UQIpFu
-         WimjU/sqsKYqibARf7O9lEsvy5z9bSCXNt4EdhQzbtYpo1GXIAUUZQ5K8N7gi3+bfJID
-         onG28pFltBdu9j3/9sOBPoTdIQGOMn7P8aYkR4RKB6d4SyAaAVMq4t+AZ4ah8h2fAclM
-         1CPe/QU8Zty9onjhtI2HUokQ+dwHDMrrDTFj94YlR14kndBjECZNRH6/xujAvGiMPp35
-         iX6g==
+        bh=+VVhqziPCjVPYmd6jcqm141EF5w5B3KXG8Iitf4lFYQ=;
+        b=OdHfJLYab7VYcPvnJ7jzDzEnIRzUM3fsciR1rZXvzzZatsCLddx6gQd5OKKGHMb6BN
+         NRA2mwFSECnEQJQWlwz1ieyuJ5TeyUIPygNmtZ9ObTtVe1B08zVwz/B8uoKABBP9Tqxw
+         DpZXIQqf5drHn0KojRHyhNOQB4yIZ8X4NlPntvfKvGc2IKinssDs8V0P9/doigFxbDEk
+         ax63Zj5ETO6ugy2VJWJln+Ya+LrtYPqrC39DdIokoc0GxXqywcd65lPQ79bk707AvBAp
+         xDRjydta0TVMm3bJE58aObkaafcqR11gSe/0pDsL8kkYSIUku8Ole1S1M+1bRQ9ibCE3
+         Ov4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736807563; x=1737412363;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kC5ZLO2wqe4rCC8a1YRUukDPf2FKx/o1plQCwueR24c=;
-        b=dzjE0pjtngM1DsjCSNJsHC2qv7Lr84U0NojRegzEF0X1gc6gUcNy3OTw3ZgalOxzbK
-         cZGA0Iri//Ohw7qsWKeYolEA4hGGNYoYTSEiM9OFq7O5YLDRf8galKPRXl3KBlrSnXV3
-         dYcBTib+Q5hc1UpFeQKO3FCD5uHCiYYvTjBaW9/7N8xuLBPmCPTxPvdJHXrFF9svowbv
-         K+3qYBFOwtixaIaCEstpL9bMq33+IpgbDQMks68xrgH90OuQKeFHGJKu3m+EgO+5FVrO
-         bpGc8yB+wYN5V81XdSxDR7a+XOonIoc6L1SZX0cB7dWmvhovSFyF6iIo2uo9EiT6fvOR
-         dK1w==
-X-Forwarded-Encrypted: i=1; AJvYcCViHRFYVbtkw42BUr0QbMjGRp7nbVX86hfj12K9EogTojHCVVcYs4FcQWhX5Rtf3rMrt84yvcJiToY0HUbB@vger.kernel.org, AJvYcCWa2eNyBueTM+LhcgN69x4NR52xjkHnRJDha3rp+j9r6Z81K//UJty2JyDtlkyOgGkfwJpftuQVn0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5pCba+LYc6ONhQ5xC/+xef7OW2yEBH0sRxu+ldrIWW4BddPNT
-	4kLmAcmg4jrRZzdYClkWeosl1T2uwiEOg8FEiF+3I7M93/ghGRgQ
-X-Gm-Gg: ASbGnctP34KFfGABcAQeB7WbGvGBsKnbUXVpow1C6U5Yz1owTbTtp1N3OfXL9dKrKkE
-	epbPubkX9YByqn9QYHxm1E1eVIpZmvPPAN4pBdAT1+f/Ssyyh18epXIZ8SOar73BCRuR6fLsQoD
-	iUyM0fCj/PAy8M8iEvbFLhM6tnFDe53PmeekgrD0AzD1SvLvq4jGXXd07FOGsoSnp1CUHMDQysV
-	S3Kg/6FVSbRvf2v9JnKocPM6gk4tZ3rG0301Sd797ug77/HZKVLp8UJG5OJuYEUB3SGZgR1bJdR
-	CRUIoWnqlK9ThSk0zMZCtRGHQTF7tUBBEloMPiqchH245ou6hO44fW7xxV3jnZpL7oHcEe9A6jU
-	J
-X-Google-Smtp-Source: AGHT+IE6mvedaS+IVZCH4a08F4mKIEYjt3slaJPEOuifdL9mgUv1/1jK05KNX3G0I1AvQ97kaSVfXA==
-X-Received: by 2002:a5d:5986:0:b0:386:605:77e with SMTP id ffacd0b85a97d-38a873572a5mr20314990f8f.49.1736807562392;
-        Mon, 13 Jan 2025 14:32:42 -0800 (PST)
-Received: from localhost (2a02-8389-41cf-e200-990d-46e6-a7a0-1b88.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:990d:46e6:a7a0:1b88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4c1f2esm13263423f8f.98.2025.01.13.14.32.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 13 Jan 2025 14:32:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736813939; x=1737418739;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+VVhqziPCjVPYmd6jcqm141EF5w5B3KXG8Iitf4lFYQ=;
+        b=bOMQiXOlCadtsiBX2il70YGBBO3BzfB1Q6UpZt4wn6G1Hj5P69kyL7bCBZKD9c9n5A
+         WYxSvnsk6jHSOkMUo6uN+g+FIpCIvGe5JlxLOdEEU0edZ1NJRu+VbVjBr5k+6StKYB/n
+         iU1KJmozaVeMjPlRZZBHubC9LYRt3QRco4RsRf/wqG7gWQtUm7lcMLiv0Lri/QK+pLWY
+         kByG8jfjbC5JhY0utSZkYl2RfPc/m7vzdMPe1q/Zb+xiLUncGF0gGNhEYk7vz/PpUBQZ
+         /UOcXjx8VbxZq+1PF+BVTW3DJiyIKD1bbWDD/x01VXAy/8R1q5eCuo3o02+s0aX/L0Bo
+         K+Jw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUCR2I02rAlikKPS+20kUl1MSd8rNieHEqgvRnM3rUi9q1hbge5PI9vlYCupCLxtaweC3Zg3NRkWFK@vger.kernel.org, AJvYcCWq+/oEZQfAETTO/fCxlU/rujVvmZAxyVNv0cm1UHEFa158fbBCMXeZh7fRJpvEvq5J3MzrJoyi3irSE+Wq@vger.kernel.org, AJvYcCWritpIIaEywtbQAr82Bx6W4bWMuGswF7NhQqQdPpjljfl8KFl8IFsgTqIHHkN/Xcx6pSKHeh9N1yZ6@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO6NlgA54cTT9fAogvRwETOsoHjrhaOmguNLht/+E2xXescz3C
+	crloKdUS1MBOIXxBG6dSE4zu7e1HhG3MGx8Xqa2UztfEfw46U0jV
+X-Gm-Gg: ASbGncsRRlHmItxQAicv9Peg9xApKhHE836Bd8QcRI54VhqAZNzj2LPjKppGz0se3zX
+	rYDEMmd8FMOXCx/fI3yRkoy+PHTPLm+upP41M04WWhbzTamxOqFrnz8iqLeYGY2D3iDWv8/qOWD
+	DVkhVNRJZEnp+XKHBZeAueN3MhqtZuHt3CpOBQY3hsRuxvl5V9/8AF7+Fh5+CsZ020NCatW7LBM
+	s63c2RJlQRC+2rChwYu/jdovbfYFs39+H0AayqwY3AbIkLy/GwqfwA0JkRk4IpcLTZ8QNjdvzHd
+	lw==
+X-Google-Smtp-Source: AGHT+IHC75y1LWLfSFPfnaIMCwmT5iCmksgqyuBDXFnVW5pUaMj3YOr8kzJsoS87g/hCAIfpnqqQYw==
+X-Received: by 2002:a05:6214:29e8:b0:6d8:8cb0:b403 with SMTP id 6a1803df08f44-6df9b2d8623mr125925396d6.11.1736813938761;
+        Mon, 13 Jan 2025 16:18:58 -0800 (PST)
+Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46c87321cfcsm46748611cf.14.2025.01.13.16.18.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Jan 2025 16:18:58 -0800 (PST)
+Date: Mon, 13 Jan 2025 21:18:53 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
+ synchronization over SPI property
+Message-ID: <Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
+Reply-To: 20250112120530.1950a265@jic23-huawei.smtp.subspace.kernel.org
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+ <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+ <dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
+ <Z4Lx5myE2OPDie6n@JSANTO12-L01.ad.analog.com>
+ <20250112121229.5bc7545c@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 13 Jan 2025 23:32:38 +0100
-Message-Id: <D71AW9R10XCO.D7ONB8ZU3M56@gmail.com>
-Subject: Re: [PATCH 2/2] iio: light: veml6030: fix scale to conform to ABI
-Cc: "Jonathan Cameron" <jic23@kernel.org>, "Lars-Peter Clausen"
- <lars@metafoo.de>, "Rishi Gupta" <gupt21@gmail.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-To: "Matti Vaittinen" <mazziesaccount@gmail.com>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com>
- <20250107-veml6030-scale-v1-2-1281e3ad012c@gmail.com>
- <129de6d6-50f4-44d7-9a06-db61a6669810@gmail.com>
- <D711DZJWGQX5.2D4PLVQN7NB8Z@gmail.com>
- <CANhJrGNT9H07MokRbVXRmDprZ+aV0XoDi=LhvrOkeSLzHnqsYw@mail.gmail.com>
-In-Reply-To: <CANhJrGNT9H07MokRbVXRmDprZ+aV0XoDi=LhvrOkeSLzHnqsYw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250112121229.5bc7545c@jic23-huawei>
 
-On Mon Jan 13, 2025 at 8:52 PM CET, Matti Vaittinen wrote:
-> ma 13.1.2025 klo 17.05 Javier Carrasco
-> (javier.carrasco.cruz@gmail.com) kirjoitti:
-> >
-> > On Mon Jan 13, 2025 at 12:56 PM CET, Matti Vaittinen wrote:
-> > > On 07/01/2025 22:50, Javier Carrasco wrote:
-> > > > The current scale is not ABI-compliant as it is just the sensor gai=
-n
-> > > > instead of the value that acts as a multiplier to be applied to the=
- raw
-> > > > value (there is no offset).
-> > > >
-> > > > Use the iio-gts helpers to obtain the proper scale values according=
- to
-> > > > the gain and integration time to match the resolution tables from t=
-he
-> > > > datasheet and drop dedicated variables to store the current values =
-of
-> > > > the integration time, gain and resolution. When at it, use 'scale'
-> > > > instead of 'gain' consistently for the get/set functions to avoid
-> > > > misunderstandings.
-> > > >
-> > > > Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient l=
-ight sensor")
-> > > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > >
-> > > Thanks for the patch Javier.
-> > >
-> > > And, sorry for a review which is more about questions than suggested
-> > > improvements. I find it hard to focus on reading code today.
-> > >
+On 01/12, Jonathan Cameron wrote:
+> On Sat, 11 Jan 2025 19:34:14 -0300
+> Jonathan Santos <jonath4nns@gmail.com> wrote:
+> 
+> > On 01/07, David Lechner wrote:
+> > > On 1/7/25 9:24 AM, Jonathan Santos wrote:  
+> > > > Add adi,sync-in-spi property to enable synchronization over SPI.
+> > > > This should be used in the case when the GPIO cannot provide a
+> > > > pulse synchronous with the base MCLK signal.
+> > > > 
+> > > > User can choose between SPI, GPIO synchronization or neither of them,
+> > > > but only if a external pulse can be provided, for example, by another
+> > > > device in a multidevice setup.
+> > > >   
+> > > 
+> > > While we are fixing up these bindings, we could add some more trivial things,
+> > > like power supplies.
+> > > 
+> > > Also, the interrupt property could use a description since the chip has multiple
+> > > output pins. I assume it means the /DRDY pin?
+> > >   
+> > 
+> > Right! Yes, the interrupt pin refers to the /DRDY.
+> > 
+> > > > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > > > > ---
-> > > >   drivers/iio/light/Kconfig    |   1 +
-> > > >   drivers/iio/light/veml6030.c | 499 ++++++++++++++++--------------=
--------------
-> > > >   2 files changed, 189 insertions(+), 311 deletions(-)
-> > > >
-> > >
-> > > I like the diffstats of this Fix! :) It's nice you found gts-helpers
-> > > helpful :)
-> >
-> > I wonder how painful the int. time/gain/scale issue in ALS was before
-> > iio-gts existed :D
-> >
-> I don't really know. I wrote the gts-helpers as soon as I wrote my
-> first light sensor driver :)
+> > > >  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
+> > > >  1 file changed, 23 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > > > index 3ce59d4d065f..55cec27bfe60 100644
+> > > > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > > > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> > > > @@ -47,6 +47,15 @@ properties:
+> > > >        in any way, for example if the filter decimation rate changes.
+> > > >        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+> > > >  
+> > > > +  adi,sync-in-spi:  
+> > > 
+> > > If this is saying that SYNC_OUT is connected to SYNC_IN, then I think the name
+> > > should be something like adi,sync-in-sync-out. SPI seems irrelevant here since
+> > > we should just be describing how things are wired up, not how it is being used.
+> > > 
+> > > But if we also need to consider the case where SYNC_OUT of one chip is connected
+> > > to SYNC_IN of another chip, we might want to consider using trigger-source
+> > > bindings instead (recently standardized in dtschema).
+> > >   
+> > 
+> > Do you mean the trigger-sources used for LEDs? I can try to see if it works, but would it
+> > handle the non-GPIO case? While testing a multidevice setup, I found it simpler to 
+> > have a single device to manage everything. It lets us toggle the GPIO or /SYNC_OUT
+> > without referencing another device and makes simultaneous buffered reads easier.
+> 
+> Daisy-chain mode (figure 131)?  In that case we normally end up with a single presented device
+> with a 'lot' of channels. (See the electric car style battery charging chips, those can
+> be chained in very large numbers!)
 >
-> > > ...
-> > >
+
+Actually, it is more like Figure 133 , but the premise is similar. We
+have here a Quad setup.
+
+> Probably similar for figure 133 (which is a dual SPI setup) as the SPI clock must
+> be shared so we still see it over a single interface.
+> 
+
+We could view them as a single device with multiple channels, and since
+the goal is to read them simultaneously with buffered reads, some parameters
+such as sampling frequency should be equal to all devices.
+
+However, there are some implications: If we do the above, we have
+limitations in the customization of the "channels", they would have
+the same filter, frequency modulator and scale (we plan to add support
+for ADAQ776x-1 series, which include PGA and AAF gain).
+
+To customize them separetely, we would need to assert only the
+corresponding chip select, which is only possible with different
+instances, as far as I know.
+
+> If those are the only two options then keeping this within the driver is fine.
+> For daisy chain there are examples in tree and it normally means we have to
+> have a DT parameter that says how long the chain is, though we maybe can
+> do that with per channel nodes as well if those make sense here.
+> 
+> Jonathan
+> 
+
+Those are the options in the datasheet and in hardware so far. I was 
+considering other scenarios in case the user combine them differently.
+I believe keping within the driver covers the main cases. 
+
+> 
+> > 
+> > Maybe we could stick to synchronization within the chip for now.
+> > 
+> > > > +    description:
+> > > > +      Enables synchronization of multiple devices over SPI. This property is
+> > > > +      used when a signal synchronous to the base MCLK signal cannot be provided
+> > > > +      via GPIO. It requires the SYNC_OUT pin to be connected to the SYNC_IN pin
+> > > > +      on the ADC. In the case of multiple devices, the SYNC_OUT pin of one device
+> > > > +      should be routed to the SYNC_IN pins of the other devices.
+> > > > +    type: boolean
 > > > > +
-> > > > +static int veml6030_process_als(struct veml6030_data *data, int ra=
-w,
-> > > > +                           int *val, int *val2)
-> > > > +{
-> > > > +   int ret, scale_int, scale_nano;
-> > > > +   u64 tmp;
+> > > >    reset-gpios:
+> > > >      maxItems: 1
+> > > >  
+> > > > @@ -65,7 +74,6 @@ required:
+> > > >    - vref-supply
+> > > >    - spi-cpol
+> > > >    - spi-cpha
+> > > > -  - adi,sync-in-gpios
+> > > >  
+> > > >  patternProperties:
+> > > >    "^channel@([0-9]|1[0-5])$":
+> > > > @@ -89,6 +97,20 @@ patternProperties:
+> > > >  allOf:
+> > > >    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > > >  
+> > > > +  # adi,sync-in-gpios and adi,sync-in-spi are mutually exclusive (neither is also valid)
+> > > > +  - if:
+> > > > +      required:
+> > > > +        - adi,sync-in-gpios
+> > > > +    then:
+> > > > +      properties:
+> > > > +        adi,sync-in-spi: false
+> > > > +  - if:
+> > > > +      required:
+> > > > +        - adi,sync-in-spi
+> > > > +    then:
+> > > > +      properties:
+> > > > +        adi,sync-in-gpios: false  
+> > > 
+> > > I think this can be simplified to using oneOf: to provide XOR validation
+> > >   
+> > 
+> > Right!
+> > 
 > > > > +
-> > > > +   ret =3D veml6030_get_scale(data, &scale_int, &scale_nano);
-> > > > +   if (ret < 0)
-> > > > +           return ret;
-> > > > +
-> > > > +   tmp =3D (u64)raw * scale_nano;
-> > > > +   *val =3D raw * scale_int + div_u64(tmp, NANO);
-> > > > +   *val2 =3D div_u64(do_div(tmp, NANO), MILLI);
-> > >
-> > > do_div() is horrible on some platforms. Or, at least it used to be. I=
-s
-> > > there really no way to go without it? We're dealing with 16bit data a=
-nd
-> > > maximum of 512x total gain only, so maybe there was a way(?)
-> > >
-> > > Maybe a stupid question (in which case I blame mucus in my head) - co=
-uld
-> > > you just divide the raw value by the total gain?
-> > >
-> >
-> > In its current form we need the 64-bit operations to handle the scale,
-> > and it will probably have to stay like that for the reasons I give you
-> > below.
->
-> Still, I wonder if multiplying by scale really differs from dividing
-> by the total gain? I think the scale is inversely proportional to the
-> total gain, right?
->
-
-I am sorry, but I am not sure if I got your point here. The scale is the
-multiplier to get lux from raw, and for example it's not just 1/512 for
-the maximum total gain, as that is not taking the intrinsic resolution
-of the sensor. Maybe I am misunderstanding something, but I don't see the
-way around raw * scale with the scale being one of the discrete values
-provided in the application note.
-
-I will give you a simple example, so you can tell me where my reasoning
-fails:
-
-raw =3D 100 counts
-scale =3D 2.1504 lux/count (when IT=3D25ms and GAIN=3D1/8)
-processed =3D 215.04 lux (raw * scale, ABI compliant for IIO_LIGHT)
-
-The reply to your comment below explains why we have a PROCESSED
-IIO_LIGHT in the first place.
-
-> > > >   static irqreturn_t veml6030_event_handler(int irq, void *private)
-> > > > @@ -1084,6 +968,13 @@ static int veml6030_hw_init(struct iio_dev *i=
-ndio_dev, struct device *dev)
-> > > >     int ret, val;
-> > > >     struct veml6030_data *data =3D iio_priv(indio_dev);
-> > > >
-> > > > +   ret =3D devm_iio_init_iio_gts(dev, 2, 150400000,
-> > >
-> > > Can you please explain the seemingly odd choice for the max scale?
-> > >
-> > > Just a quick look at the sensor spec and this driver allows me to ass=
-ume
-> > > following:
-> > >
-> > > Maximum 'total gain' from both HWGAIN and integration time is 16 * 32=
- =3D 512.
-> > >
-> > > If we chose the 'total gain' 1x to match scale 1, then the smallest
-> > > scale would be 1/512 =3D 0.001 953 125
-> > >
-> > > This is 1953125 NANOs. This would mean the max-scale 1X =3D> gain 1X =
-would
-> > > not cause precision loss. (Well, I'm not at my sharpest as I've caugh=
-t
-> > > cold - but I _think_ this is true, right?)
-> > >
-> > > If I read this correctly, the only channel where the scale gets appli=
-ed
-> > > is the INTENSITY channel, right? Hence it should be possible to chose
-> > > the scale as we see best. (Unless the idea of this seemingly odd scal=
-e
-> > > is to maintain the old intensity / scale values in order to not shake
-> > > userland any more - in which case this could be mentioned).
-> > >
-> >
-> > The scale is applied to an IIO_LIGHT channel, not to the INTENSITY,
->
-> Isn't the IIO_LIGHT channel a PROCESSED one? I thought the scale
-> shouldn't be applied to it. (Driver may still apply scale internally,
-> but users should not see it, right? And if the driver does it only
-> internally, then the driver can also multiply values using (N *
-> scale). Well, I suppose you can as well use this "fitted MAX SCALE" -
-> but maybe it warrants a comment.
-
-IIO_LIGHT provides RAW and PROCESSED values, which shouldn't have
-happened in the first place as PROCESSED is just raw * scale, if scale
-had been right from the beginning. Actually, when I took over this
-driver, I was tempted to drop the PROCESSED value, but it was too late
-for that without breaking ABI. My guess is that the processed value was
-provided because in_illuminance_scale was not the right multiplier, only
-the gain.
-Note that in_illuminance_scale is also provided to the user, and that
-must comply with the ABI definitions.
-
-Thank you again,
-Javier Carrasco
+> > > >  unevaluatedProperties: false
+> > > >  
+> > > >  examples:  
+> > >   
+> 
 

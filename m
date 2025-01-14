@@ -1,205 +1,234 @@
-Return-Path: <linux-iio+bounces-14364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DAAEA10BBD
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 17:05:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D7CA10D35
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 18:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B107918842D0
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 16:05:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C78161C76
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E188218EFCC;
-	Tue, 14 Jan 2025 16:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555C01D5143;
+	Tue, 14 Jan 2025 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HiDp/Cxi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WhNF4xkg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B32016EC19
-	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 16:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BBB1B21AD;
+	Tue, 14 Jan 2025 17:12:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736870707; cv=none; b=R3BjAPCBq4HeFt/MVT9s6KT0hYI2hX7ca7snIqOEOtot6oWN7KQjsSSroSshRfSKPi+QEbwTpNpsYeB2Tk2VRltw0XkqwQzfRmdZBseqWt+L4RzOAfNTH0QCUX/4BoRLEIIK6UxWmknWuGvDY7y7qjqLJrhEf5igrvl0JOSZ54s=
+	t=1736874777; cv=none; b=Tl6+1sD/zd/LDeoTwkcK23OCl2PDP9X3Tp6pPG9f2KH8EO4UQyWhTlMK1/bXrvSLKW4jctHfefC45QxEINmSreWTE3y5nTy05SyvujyVjrRtsBD1zuX6W2/XYhhovAFl4fjvL7uVwQlKy9FvsvNSvx6jgJ9W0o0+D9vK+BdcwZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736870707; c=relaxed/simple;
-	bh=uhdLgpV/BmxgeAcEClI5pB1nbFwpdZKaJ3yd0iPmXeQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L0TNOqhn+6MMhgIgX0gKgqS4UGhApaN+DQ/oBftanXHaDjiMuNx9pF6qKpmzlIuzDdi6CulfZEBDmPtX0uyxIneEhdBye+GZn8fbnIhW4jVvQRZUHYjIY9SYa1mJi6WV7pxctV2OkIy+ztqC7PT9JHBF7xfTHPE69e1d4Ph+A04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HiDp/Cxi; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5f2dee7d218so2597526eaf.2
-        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 08:05:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736870703; x=1737475503; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gM/Ylpi8BGtTMa4TdQBKQwwvtVllJ24sITQPrHbwGvI=;
-        b=HiDp/Cxiv2eGVvRm5d7QUxSs8474AMBPAw0hyxXZsDA2j8O+j/cvq+AcrjCN/0kJ+6
-         AD7rqwMnwp626Yx60agqFklf4+SI98LCrmBnoWu9SOcK05af18/SEbCjWcRXJerLhLaQ
-         RVt/gv+QukwBYHpuRGuClXnoDVykSUJ4lmPeEZhZvJOUhjKnk83kLDXJpyJ/4Zwaktrl
-         pz/oRCDxj7nc/PXlx0Jl2kf/hx+W2V/q6Vpv/Qw5ychl9q0o6ilAhylbOb5EUYEtSxus
-         ImMtc+uSexo2snY4P/DySRmvfdQ7V5uZgRdG3aR4LIBUuGCE9QSt1FQtMIgAouY7xSek
-         ZUOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736870703; x=1737475503;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gM/Ylpi8BGtTMa4TdQBKQwwvtVllJ24sITQPrHbwGvI=;
-        b=U1lJ4sem6tKVf3RyhQnA5FRLwChN7XCmdzVgfUotUt20mIyz0lqTYFt6EZDWZMyXIq
-         UtRO8tTaHjuBRkfO8iEUQaOnLs3QWevLZemOA6tqrSTYmyxKU7SniLb1pIxLx9J4UjvV
-         OOElUJmOATShWoezkfMSG47mCFPVmNzRLoMbc8LO1lQg4C31pn9qa3GiXSg3NloVgDui
-         07IOFbHupxZ/sHUoVGd6GWWzBuBqBIY1MVUZDyTvOAgb1bxrA5uJY7D9vxKwYdLHhblZ
-         BXHra2OjDNj3UOdtQTdmAjC9dfDPMVB2oaLLwowJsXhVQpWE8OmK7gNjO6yxtzvKULVY
-         jIvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWrGlBrF4NWUhNaeDpCpjmQuvL8eMpx9cGNZaXsT9b3Qfi+L21ffZXL77CpX0U4LaS5rVsyxBwmMkc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcZkKXwHtvvlGXoXxxgXLwPAaMrhFgL1i5/M4dVnz4FAXmJvs3
-	tiw52xnW8yc26fWUOtZMZ8eSmAURpelGpl9W9YFC+BO7+lGsW9gEal/Eo01n79U=
-X-Gm-Gg: ASbGncuDTqSpwgSkVjIC9tDBCBggqJ7S5UzvUr9PnlQHTh1k5JcfUpkDPEQhWvbr+zJ
-	QCXszoVtVcsxF0M4DXTmFKAzLJT9DB9cnc0qZjzVNy81Leo3ztDWF6zeqfvZc90PPDeWGF3uvM1
-	MkXmWI155MHg170r5DtMoggW3xJNRzuQXBp7dZFezyXgOq0dGU3tigevyEXjsz/BZSLMba8hK7X
-	DrO5Q4BtvMySnLDqAASvyUrfjOn/A1tHtzpWQ07u/mgeFoZk4BaUqfbGjNcpXHpBxf0OQHQsavL
-	MEEf93Z/G8h8CdYCbQ==
-X-Google-Smtp-Source: AGHT+IGLuN/S04Wr5iZ7apUvKcieZi+/rsslDQGiueNokxdD4hhgllY2eGR0IzRM09ZopJdyRw0gZw==
-X-Received: by 2002:a05:6871:2085:b0:296:fff8:817 with SMTP id 586e51a60fabf-2aa06982e2emr16289903fac.35.1736870703303;
-        Tue, 14 Jan 2025 08:05:03 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2ad809a759dsm5199843fac.33.2025.01.14.08.05.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 08:05:02 -0800 (PST)
-Message-ID: <e5e8eba7-2455-488b-a36f-e246844e11fd@baylibre.com>
-Date: Tue, 14 Jan 2025 10:05:02 -0600
+	s=arc-20240116; t=1736874777; c=relaxed/simple;
+	bh=nxEW5S/T8AqZBEPbTm9NV2ETEBrvK93Xp4DbfoXBKe8=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FKT5MGFInilGidu2qkkr4i27upme+z0sG/AH/x3VS7WpzOU9ubvvtiNgSVoCfi0uBzvuL4c06NcDtW6dGdF8U2P2JnMcOLWxrNhFoKfIc24l2Vn7ndvhx/HT/SjYzhYHawRS4NCGem4BO+H3pUzzCymygnvT+Xxl8rPuhrh8ECY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WhNF4xkg; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736874775; x=1768410775;
+  h=message-id:subject:from:to:date:in-reply-to:references:
+   content-transfer-encoding:mime-version;
+  bh=nxEW5S/T8AqZBEPbTm9NV2ETEBrvK93Xp4DbfoXBKe8=;
+  b=WhNF4xkgOuiN63UETKrmUvu0XzkoT9F/Vl0C8eOvyrJEdpINvd6tjXUO
+   ThjtG5E3U+DmqJwQ3gP1dSzoW43hRzDl/fxy2kJov75mwEOrOEZmEhV5c
+   bFc2h9rty0zQYhrZJLdmIfLtYxDANwy5l3LnywrhJ3z9GbKiNb+/eSUe6
+   QF50o9IVy7VgBqOhfr8/O3oFlfPl9K/WNQM1yOgUoWZkzopBWtaAhBNjU
+   rLMAIySah2jsaH0pFO856mcam/IpCLzIGKZMnTg8CuG7UZkEIjpXEMtrw
+   wkzn4t1mDEcsAWHiMlrNwZ/w9+/Tm779VNtohUYzyfVMRz2oml2juFTSp
+   w==;
+X-CSE-ConnectionGUID: 1ZqzPjh4Q9yYxdQP4DMbvA==
+X-CSE-MsgGUID: rwOMn6NmSemDYSV3vp/GBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="47847177"
+X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
+   d="scan'208";a="47847177"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:12:54 -0800
+X-CSE-ConnectionGUID: mnv0C+v0RjyKAfeR7pC95w==
+X-CSE-MsgGUID: fD9Dh3IjQz23XLuNzPhjoQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="142143325"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:12:54 -0800
+Message-ID: <9929d10e1d61f63e4fe461eea9efc42eb91fa44a.camel@linux.intel.com>
+Subject: Re: [PATCH v2] iio: hid-sensor-attributes: validate sensitivity
+ attributes
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>, Jonathan Cameron
+	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra
+	 <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
+	 <jikos@kernel.org>
+Date: Tue, 14 Jan 2025 09:12:54 -0800
+In-Reply-To: <75131fa5a35f8ffae23087aa19c8a8238f381d4d.camel@linux.intel.com>
+References: <20250114070227.1778298-1-acelan.kao@canonical.com>
+	 <75131fa5a35f8ffae23087aa19c8a8238f381d4d.camel@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
- synchronization over SPI property
-To: 20250112120530.1950a265@jic23-huawei.smtp.subspace.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com,
- Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, marcelo.schmitt1@gmail.com
-References: <cover.1736201898.git.Jonathan.Santos@analog.com>
- <bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
- <dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
- <Z4Lx5myE2OPDie6n@JSANTO12-L01.ad.analog.com>
- <20250112121229.5bc7545c@jic23-huawei>
- <Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 1/13/25 6:18 PM, Jonathan Santos wrote:
-> On 01/12, Jonathan Cameron wrote:
->> On Sat, 11 Jan 2025 19:34:14 -0300
->> Jonathan Santos <jonath4nns@gmail.com> wrote:
->>
->>> On 01/07, David Lechner wrote:
->>>> On 1/7/25 9:24 AM, Jonathan Santos wrote:  
->>>>> Add adi,sync-in-spi property to enable synchronization over SPI.
->>>>> This should be used in the case when the GPIO cannot provide a
->>>>> pulse synchronous with the base MCLK signal.
->>>>>
->>>>> User can choose between SPI, GPIO synchronization or neither of them,
->>>>> but only if a external pulse can be provided, for example, by another
->>>>> device in a multidevice setup.
->>>>>   
->>>>
->>>> While we are fixing up these bindings, we could add some more trivial things,
->>>> like power supplies.
->>>>
->>>> Also, the interrupt property could use a description since the chip has multiple
->>>> output pins. I assume it means the /DRDY pin?
->>>>   
->>>
->>> Right! Yes, the interrupt pin refers to the /DRDY.
->>>
->>>>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
->>>>> ---
->>>>>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
->>>>>  1 file changed, 23 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>>>> index 3ce59d4d065f..55cec27bfe60 100644
->>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>>>> @@ -47,6 +47,15 @@ properties:
->>>>>        in any way, for example if the filter decimation rate changes.
->>>>>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
->>>>>  
->>>>> +  adi,sync-in-spi:  
->>>>
->>>> If this is saying that SYNC_OUT is connected to SYNC_IN, then I think the name
->>>> should be something like adi,sync-in-sync-out. SPI seems irrelevant here since
->>>> we should just be describing how things are wired up, not how it is being used.
->>>>
->>>> But if we also need to consider the case where SYNC_OUT of one chip is connected
->>>> to SYNC_IN of another chip, we might want to consider using trigger-source
->>>> bindings instead (recently standardized in dtschema).
->>>>   
->>>
->>> Do you mean the trigger-sources used for LEDs? I can try to see if it works, but would it
->>> handle the non-GPIO case? While testing a multidevice setup, I found it simpler to 
->>> have a single device to manage everything. It lets us toggle the GPIO or /SYNC_OUT
->>> without referencing another device and makes simultaneous buffered reads easier.
->>
->> Daisy-chain mode (figure 131)?  In that case we normally end up with a single presented device
->> with a 'lot' of channels. (See the electric car style battery charging chips, those can
->> be chained in very large numbers!)
->>
-> 
-> Actually, it is more like Figure 133 , but the premise is similar. We
-> have here a Quad setup.
-> 
->> Probably similar for figure 133 (which is a dual SPI setup) as the SPI clock must
->> be shared so we still see it over a single interface.
->>
-> 
-> We could view them as a single device with multiple channels, and since
-> the goal is to read them simultaneously with buffered reads, some parameters
-> such as sampling frequency should be equal to all devices.
-> 
-> However, there are some implications: If we do the above, we have
-> limitations in the customization of the "channels", they would have
-> the same filter, frequency modulator and scale (we plan to add support
-> for ADAQ776x-1 series, which include PGA and AAF gain).
-> 
-> To customize them separetely, we would need to assert only the
-> corresponding chip select, which is only possible with different
-> instances, as far as I know.
+On Tue, 2025-01-14 at 05:28 -0800, srinivas pandruvada wrote:
+> On Tue, 2025-01-14 at 15:02 +0800, Chia-Lin Kao (AceLan) wrote:
+> > An invalid sensor device was observed in HP 5MP Camera (USB ID
+> > 0408:5473)
+> > which provided valid index and report_ids for poll, report_state
+> > and
+> > power_state attributes, but had invalid report_latency,
+> > sensitivity,
+> > and
+> > timestamp attributes. This would cause the system to hang when
+> > using
+> > iio_info to access attributes, as runtime PM tried to wake up an
+> > unresponsive sensor.
+> >=20
+> > Fix this by validating both sensitivity.index and
+> > sensitivity_rel.index
+> > during sensor probe. Since valid sensors must initialize these with
+> > non-negative values, reject the sensor if either index is negative.
+> >=20
+>=20
+> These are optional fields by spec. So we can't reject sensor. I worry
+> that this will cause more regressions.
+>=20
+> We will need a blocked list. We don't process "Persistent Unique ID"
+> or
+> "Sensor Manufacturer/Model". Please check if the report descriptors
+> have any of these fields described in section 1.5 of spec.
+>=20
+> >=20
+We probably may not be able to read the above features, I suggest add
+this device Vendor=3D0408 ProdID=3D5473=20
+hid_ignore_list[].
 
-FYI, I've been discussing with the HDL folks at ADI about how we could make a
-multi-bus SPI controller, similar to controllers used for parallel SPI flash
-memories that are used as a single logical device. So that is the solution I
-am hoping for here. It would would allow a single IIO device instance for
-multiple chips. But the SPI controller would allow addressing individual chips
-for configuration and addressing all chips at the same time for reading sample
-data.
+Thanks,
+Srinivas
 
-> 
->> If those are the only two options then keeping this within the driver is fine.
->> For daisy chain there are examples in tree and it normally means we have to
->> have a DT parameter that says how long the chain is, though we maybe can
->> do that with per channel nodes as well if those make sense here.
->>
->> Jonathan
->>
-> 
-> Those are the options in the datasheet and in hardware so far. I was 
-> considering other scenarios in case the user combine them differently.
-> I believe keping within the driver covers the main cases. 
-> 
+
+
+> > [=C2=A0=C2=A0=C2=A0 2.594565] [453] hid-sensor-hub 0003:0408:5473.0003:=
+ Report
+> > latency attributes: ffffffff:ffffffff
+> > [=C2=A0=C2=A0=C2=A0 2.594573] [453] hid-sensor-hub 0003:0408:5473.0003:=
+ common
+> > attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff ffffffff:ffffffff
+> > [=C2=A0=C2=A0=C2=A0 2.595485] [453] hid-sensor-hub 0003:0408:5473.0003:=
+ Report
+> > latency attributes: ffffffff:ffffffff
+> > [=C2=A0=C2=A0=C2=A0 2.595492] [453] hid-sensor-hub 0003:0408:5473.0003:=
+ common
+> > attributes: 5:11, 3:11, 1:11 ffffffff:ffffffff ffffffff:ffffffff
+> >=20
+> > T:=C2=A0 Bus=3D03 Lev=3D01 Prnt=3D01 Port=3D03 Cnt=3D01 Dev#=3D=C2=A0 2=
+ Spd=3D480=C2=A0 MxCh=3D 0
+> > D:=C2=A0 Ver=3D 2.01 Cls=3Def(misc ) Sub=3D02 Prot=3D01 MxPS=3D64 #Cfgs=
+=3D=C2=A0 1
+> > P:=C2=A0 Vendor=3D0408 ProdID=3D5473 Rev=3D00.07
+> > S:=C2=A0 Manufacturer=3DQuanta
+> > S:=C2=A0 Product=3DHP 5MP Camera
+> > S:=C2=A0 SerialNumber=3D01.00.00
+> > C:=C2=A0 #Ifs=3D 6 Cfg#=3D 1 Atr=3Da0 MxPwr=3D500mA
+> > I:=C2=A0 If#=3D 0 Alt=3D 0 #EPs=3D 1 Cls=3D0e(video) Sub=3D01 Prot=3D01
+> > Driver=3Duvcvideo
+> > E:=C2=A0 Ad=3D87(I) Atr=3D03(Int.) MxPS=3D=C2=A0 16 Ivl=3D16ms
+> > I:=C2=A0 If#=3D 1 Alt=3D 0 #EPs=3D 0 Cls=3D0e(video) Sub=3D02 Prot=3D01
+> > Driver=3Duvcvideo
+> > I:=C2=A0 If#=3D 2 Alt=3D 0 #EPs=3D 1 Cls=3D0e(video) Sub=3D01 Prot=3D01
+> > Driver=3Duvcvideo
+> > E:=C2=A0 Ad=3D85(I) Atr=3D03(Int.) MxPS=3D=C2=A0 16 Ivl=3D16ms
+> > I:=C2=A0 If#=3D 3 Alt=3D 0 #EPs=3D 0 Cls=3D0e(video) Sub=3D02 Prot=3D01
+> > Driver=3Duvcvideo
+> > I:=C2=A0 If#=3D 4 Alt=3D 0 #EPs=3D 1 Cls=3D03(HID=C2=A0 ) Sub=3D00 Prot=
+=3D00
+> > Driver=3Dusbhid
+> > E:=C2=A0 Ad=3D84(I) Atr=3D03(Int.) MxPS=3D=C2=A0 64 Ivl=3D16ms
+> > I:=C2=A0 If#=3D 5 Alt=3D 0 #EPs=3D 0 Cls=3Dfe(app. ) Sub=3D01 Prot=3D01
+> > Driver=3D(none)
+> >=20
+> > v2. add fixes tag and the device info
+> These change description goes below "---" line.
+>=20
+> Thanks,
+> Srinivas
+>=20
+> >=20
+> > Fixes: bba6d9e47f3e ("iio: hid-sensor-attributes: Fix sensor
+> > property
+> > setting failure.")
+> > Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+> > ---
+> > =C2=A0.../hid-sensors/hid-sensor-attributes.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 | 23 +++++++++++----
+> > --
+> > --
+> > =C2=A01 file changed, 14 insertions(+), 9 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > index ad1882f608c0..b7ffd97e6c56 100644
+> > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > @@ -564,8 +564,21 @@ int hid_sensor_parse_common_attributes(struct
+> > hid_sensor_hub_device *hsdev,
+> > =C2=A0	} else
+> > =C2=A0		st->timestamp_ns_scale =3D 1000000000;
+> > =C2=A0
+> > +	ret =3D 0;
+> > +	if (st->sensitivity.index < 0 || st->sensitivity_rel.index
+> > <
+> > 0) {
+> > +		ret =3D -EINVAL;
+> > +		goto out;
+> > +	}
+> > +
+> > =C2=A0	hid_sensor_get_report_latency_info(hsdev, usage_id, st);
+> > =C2=A0
+> > +	ret =3D sensor_hub_get_feature(hsdev,
+> > +				st->power_state.report_id,
+> > +				st->power_state.index,
+> > sizeof(value), &value);
+> > +	if (value < 0)
+> > +		ret =3D -EINVAL;
+> > +
+> > +out:
+> > =C2=A0	hid_dbg(hsdev->hdev, "common attributes: %x:%x, %x:%x,
+> > %x:%x
+> > %x:%x %x:%x\n",
+> > =C2=A0		st->poll.index, st->poll.report_id,
+> > =C2=A0		st->report_state.index, st-
+> > >report_state.report_id,
+> > @@ -573,15 +586,7 @@ int hid_sensor_parse_common_attributes(struct
+> > hid_sensor_hub_device *hsdev,
+> > =C2=A0		st->sensitivity.index, st->sensitivity.report_id,
+> > =C2=A0		timestamp.index, timestamp.report_id);
+> > =C2=A0
+> > -	ret =3D sensor_hub_get_feature(hsdev,
+> > -				st->power_state.report_id,
+> > -				st->power_state.index,
+> > sizeof(value), &value);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -	if (value < 0)
+> > -		return -EINVAL;
+> > -
+> > -	return 0;
+> > +	return ret;
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, "IIO_HID");
+> > =C2=A0
+>=20
+
 

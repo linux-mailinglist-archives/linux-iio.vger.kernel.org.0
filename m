@@ -1,234 +1,131 @@
-Return-Path: <linux-iio+bounces-14365-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D7CA10D35
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 18:13:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F64AA10DD3
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 18:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C78161C76
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 17:13:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACAD9188546B
+	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 17:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555C01D5143;
-	Tue, 14 Jan 2025 17:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC6E1B78E7;
+	Tue, 14 Jan 2025 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WhNF4xkg"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bx+scrku"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BBB1B21AD;
-	Tue, 14 Jan 2025 17:12:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAA0B3C3C
+	for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 17:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736874777; cv=none; b=Tl6+1sD/zd/LDeoTwkcK23OCl2PDP9X3Tp6pPG9f2KH8EO4UQyWhTlMK1/bXrvSLKW4jctHfefC45QxEINmSreWTE3y5nTy05SyvujyVjrRtsBD1zuX6W2/XYhhovAFl4fjvL7uVwQlKy9FvsvNSvx6jgJ9W0o0+D9vK+BdcwZQ=
+	t=1736875921; cv=none; b=YkoxxeUyjzjQs1koeW7ZvXMjaqbaxXkn1B0nvdIkhWX/EhGNa2jG28ZTMTe/InKCkTfY4yEiYcB0P//F6r8YXjbLlNQq3mbkbpC4wHVHG9tGjdGcdNO/sXxqd8zCHKyrfbzI2Sjc2xfy5OWoLFJT+GK+nrRL0r+dK3c6UJNUNS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736874777; c=relaxed/simple;
-	bh=nxEW5S/T8AqZBEPbTm9NV2ETEBrvK93Xp4DbfoXBKe8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FKT5MGFInilGidu2qkkr4i27upme+z0sG/AH/x3VS7WpzOU9ubvvtiNgSVoCfi0uBzvuL4c06NcDtW6dGdF8U2P2JnMcOLWxrNhFoKfIc24l2Vn7ndvhx/HT/SjYzhYHawRS4NCGem4BO+H3pUzzCymygnvT+Xxl8rPuhrh8ECY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WhNF4xkg; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736874775; x=1768410775;
-  h=message-id:subject:from:to:date:in-reply-to:references:
-   content-transfer-encoding:mime-version;
-  bh=nxEW5S/T8AqZBEPbTm9NV2ETEBrvK93Xp4DbfoXBKe8=;
-  b=WhNF4xkgOuiN63UETKrmUvu0XzkoT9F/Vl0C8eOvyrJEdpINvd6tjXUO
-   ThjtG5E3U+DmqJwQ3gP1dSzoW43hRzDl/fxy2kJov75mwEOrOEZmEhV5c
-   bFc2h9rty0zQYhrZJLdmIfLtYxDANwy5l3LnywrhJ3z9GbKiNb+/eSUe6
-   QF50o9IVy7VgBqOhfr8/O3oFlfPl9K/WNQM1yOgUoWZkzopBWtaAhBNjU
-   rLMAIySah2jsaH0pFO856mcam/IpCLzIGKZMnTg8CuG7UZkEIjpXEMtrw
-   wkzn4t1mDEcsAWHiMlrNwZ/w9+/Tm779VNtohUYzyfVMRz2oml2juFTSp
-   w==;
-X-CSE-ConnectionGUID: 1ZqzPjh4Q9yYxdQP4DMbvA==
-X-CSE-MsgGUID: rwOMn6NmSemDYSV3vp/GBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="47847177"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
-   d="scan'208";a="47847177"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:12:54 -0800
-X-CSE-ConnectionGUID: mnv0C+v0RjyKAfeR7pC95w==
-X-CSE-MsgGUID: fD9Dh3IjQz23XLuNzPhjoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="142143325"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:12:54 -0800
-Message-ID: <9929d10e1d61f63e4fe461eea9efc42eb91fa44a.camel@linux.intel.com>
-Subject: Re: [PATCH v2] iio: hid-sensor-attributes: validate sensitivity
- attributes
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>, Jonathan Cameron
-	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra
-	 <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
-	 <jikos@kernel.org>
-Date: Tue, 14 Jan 2025 09:12:54 -0800
-In-Reply-To: <75131fa5a35f8ffae23087aa19c8a8238f381d4d.camel@linux.intel.com>
-References: <20250114070227.1778298-1-acelan.kao@canonical.com>
-	 <75131fa5a35f8ffae23087aa19c8a8238f381d4d.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1736875921; c=relaxed/simple;
+	bh=Y2PXh50uoLzaPsUadh35f8jl7VJOvny/p+6IkYlNhXQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=T9+h2rSh3l1aUEBM6jVdUaRNVjk/adwVmXBa1gRsHcb5KCUiCvhgJXD4Zm6PyojveFMzvwFJLWNwyAwZNyTSEM+avfEoVfmr+49mPjWIqWjbrevw6bKI9KJJKMLnpgwOx+HM+saA0hsa7nZdxHQ4ufjsVENyzsNTAVwyO5F1m+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bx+scrku; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b6ea711805so723078285a.1
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 09:31:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1736875918; x=1737480718; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=awRRB0AzaMITBgH8YpsZraFGiUDm+QrRoaxWwHUHmhQ=;
+        b=Bx+scrkuQjGXl2rw3D68rqA3QkznVT937ugiBqgrDfFTKsdhccHR/YPwArafOf/i0X
+         snSqpMl1StapX+97baEI04H3yYbWgcxldwLPu59qVhHj+7RliM9WeK7+givPDIFOmT+8
+         eg0rbXzKzTAF5I30U5wS28HSm2nrTsJQxtmqW3iIEsAZ0OOsH5JX7yhnrLyhT7Nn253s
+         it7rtbKTK77fRtsvhwxLlUTqUaW83mbDUWMpl0HoWBnDtFw3Q4Un2vaFy7ioZZC6X0FV
+         GxIGaDAZsgbLIBKLrj2I/hvP4XJmnU0d1T4nvgpVGOVG+4YO6kGbRDWcwueHQgCgfmF4
+         3Aeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736875918; x=1737480718;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=awRRB0AzaMITBgH8YpsZraFGiUDm+QrRoaxWwHUHmhQ=;
+        b=akvxa9aAfCCaTG43s0hIh0n37VehnFsK3si7k5/E79JpJyxuGf3kqA7yj+oaS2WGiD
+         M5gRVABaFvjf/6YLyq1nwZxlLvFD1kOYOU5vUEoXfwy/wEDFEtrPnT5H07pcNxqfiLsr
+         l0/OvCOTegO9IAaPeIg8RYkROmyIrEdU5RA0jU6J7IbLRbOaJhj2476ikqtJiHBI5orB
+         9F5y0f2WRdlaAKqat/OFBEahDInleXjPD1LzSGLj7LHijHX8BvzLCslfRRdutOzcsMq6
+         cQkpQtrjC6H8TW5Z5D8c68kdnndkhFiYrbGAZucbQyUJd49VtiyGRNuYBGF8Vlrd2bNz
+         SCbg==
+X-Gm-Message-State: AOJu0YzWTzDvi6VxBhLLlkMZy5yKhim9NvOAH2MEr9hiQRhKOQrq4v0i
+	8uyivcd5sv6s+PPDo0sUcEnubeyvqEk28jR7I3YCunNaKO6BJ7A/k/Ztf0jSqUQ=
+X-Gm-Gg: ASbGncsVXeNwodmC7SqPN68y8C+288Y3/nO6EJyION2eCvf0LYJ/HrxSxVh3Kvc38zy
+	Wx6JY68JVDAUIPOROcmenSlx329B7E4R7YnLSJhe9bKtbCV87V4OaEV7YbKSq7QCvvMkCHZ1WYH
+	80vLAjhdd5qPWMEryDHSriqYcZF1zUf+k7wSavrKzhn+8J40Z/eWYJdG+d1j3Ihr7gCZ7lJTvcX
+	G/VnUx2uhDqWcaXjDLO1LMWqpWjV/wG1vDdugTSVnStemN9a1f4Pa3X28uiQdGn/WUoCKAzp4j3
+	ZrIxrKBbQuRrQAd4
+X-Google-Smtp-Source: AGHT+IH7WG++yEZwUNgOhxsO/NsbmNcfiwzvGSMQ7nve9RVh9ZKSJmkA+eaPsQ2ys62MGb90adpv8g==
+X-Received: by 2002:a05:620a:24c9:b0:7b6:753b:9b5d with SMTP id af79cd13be357-7bcd9783de1mr4712577385a.36.1736875917786;
+        Tue, 14 Jan 2025 09:31:57 -0800 (PST)
+Received: from localhost (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7bce3516193sm622645085a.117.2025.01.14.09.31.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 09:31:57 -0800 (PST)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+Date: Tue, 14 Jan 2025 12:31:55 -0500
+Subject: [PATCH] iio: adc: ad7625: drop BSD license tag
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250114-ad7625_license-v1-1-6555b7be05ab@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAIqfhmcC/x3MQQqAIBBA0avErBPStKirRMSoUw2EhUIE4d2Tl
+ m/x/wuJIlOCsXoh0s2Jz1Ag6wrcjmEjwb4YVKNMI6UW6PtOmeVgRyGRsM4iYmtXrQco0RVp5ec
+ fTnPOH9eSIR9gAAAA
+To: Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Trevor Gamblin <tgamblin@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On Tue, 2025-01-14 at 05:28 -0800, srinivas pandruvada wrote:
-> On Tue, 2025-01-14 at 15:02 +0800, Chia-Lin Kao (AceLan) wrote:
-> > An invalid sensor device was observed in HP 5MP Camera (USB ID
-> > 0408:5473)
-> > which provided valid index and report_ids for poll, report_state
-> > and
-> > power_state attributes, but had invalid report_latency,
-> > sensitivity,
-> > and
-> > timestamp attributes. This would cause the system to hang when
-> > using
-> > iio_info to access attributes, as runtime PM tried to wake up an
-> > unresponsive sensor.
-> >=20
-> > Fix this by validating both sensitivity.index and
-> > sensitivity_rel.index
-> > during sensor probe. Since valid sensors must initialize these with
-> > non-negative values, reject the sensor if either index is negative.
-> >=20
->=20
-> These are optional fields by spec. So we can't reject sensor. I worry
-> that this will cause more regressions.
->=20
-> We will need a blocked list. We don't process "Persistent Unique ID"
-> or
-> "Sensor Manufacturer/Model". Please check if the report descriptors
-> have any of these fields described in section 1.5 of spec.
->=20
-> >=20
-We probably may not be able to read the above features, I suggest add
-this device Vendor=3D0408 ProdID=3D5473=20
-hid_ignore_list[].
+The ad7625 driver was submitted under a dual BSD/GPL license, but this
+isn't a requirement for the code, and adds extra complexity. To make it
+consistent with similar drivers, drop the BSD tag and leave it as
+GPL-2.0-only.
 
-Thanks,
-Srinivas
+Suggested-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+---
+ drivers/iio/adc/ad7625.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/iio/adc/ad7625.c b/drivers/iio/adc/ad7625.c
+index aefe3bf75c91..8b020f22c5a8 100644
+--- a/drivers/iio/adc/ad7625.c
++++ b/drivers/iio/adc/ad7625.c
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: (GPL-2.0-only OR BSD-3-Clause)
++// SPDX-License-Identifier: (GPL-2.0-only)
+ /*
+  * Analog Devices Inc. AD7625 ADC driver
+  *
+@@ -680,5 +680,5 @@ module_platform_driver(ad7625_driver);
+ 
+ MODULE_AUTHOR("Trevor Gamblin <tgamblin@baylibre.com>");
+ MODULE_DESCRIPTION("Analog Devices AD7625 ADC");
+-MODULE_LICENSE("Dual BSD/GPL");
++MODULE_LICENSE("GPL");
+ MODULE_IMPORT_NS("IIO_BACKEND");
 
+---
+base-commit: 5bc55a333a2f7316b58edc7573e8e893f7acb532
+change-id: 20250114-ad7625_license-bcbaaa3bf449
 
-> > [=C2=A0=C2=A0=C2=A0 2.594565] [453] hid-sensor-hub 0003:0408:5473.0003:=
- Report
-> > latency attributes: ffffffff:ffffffff
-> > [=C2=A0=C2=A0=C2=A0 2.594573] [453] hid-sensor-hub 0003:0408:5473.0003:=
- common
-> > attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff ffffffff:ffffffff
-> > [=C2=A0=C2=A0=C2=A0 2.595485] [453] hid-sensor-hub 0003:0408:5473.0003:=
- Report
-> > latency attributes: ffffffff:ffffffff
-> > [=C2=A0=C2=A0=C2=A0 2.595492] [453] hid-sensor-hub 0003:0408:5473.0003:=
- common
-> > attributes: 5:11, 3:11, 1:11 ffffffff:ffffffff ffffffff:ffffffff
-> >=20
-> > T:=C2=A0 Bus=3D03 Lev=3D01 Prnt=3D01 Port=3D03 Cnt=3D01 Dev#=3D=C2=A0 2=
- Spd=3D480=C2=A0 MxCh=3D 0
-> > D:=C2=A0 Ver=3D 2.01 Cls=3Def(misc ) Sub=3D02 Prot=3D01 MxPS=3D64 #Cfgs=
-=3D=C2=A0 1
-> > P:=C2=A0 Vendor=3D0408 ProdID=3D5473 Rev=3D00.07
-> > S:=C2=A0 Manufacturer=3DQuanta
-> > S:=C2=A0 Product=3DHP 5MP Camera
-> > S:=C2=A0 SerialNumber=3D01.00.00
-> > C:=C2=A0 #Ifs=3D 6 Cfg#=3D 1 Atr=3Da0 MxPwr=3D500mA
-> > I:=C2=A0 If#=3D 0 Alt=3D 0 #EPs=3D 1 Cls=3D0e(video) Sub=3D01 Prot=3D01
-> > Driver=3Duvcvideo
-> > E:=C2=A0 Ad=3D87(I) Atr=3D03(Int.) MxPS=3D=C2=A0 16 Ivl=3D16ms
-> > I:=C2=A0 If#=3D 1 Alt=3D 0 #EPs=3D 0 Cls=3D0e(video) Sub=3D02 Prot=3D01
-> > Driver=3Duvcvideo
-> > I:=C2=A0 If#=3D 2 Alt=3D 0 #EPs=3D 1 Cls=3D0e(video) Sub=3D01 Prot=3D01
-> > Driver=3Duvcvideo
-> > E:=C2=A0 Ad=3D85(I) Atr=3D03(Int.) MxPS=3D=C2=A0 16 Ivl=3D16ms
-> > I:=C2=A0 If#=3D 3 Alt=3D 0 #EPs=3D 0 Cls=3D0e(video) Sub=3D02 Prot=3D01
-> > Driver=3Duvcvideo
-> > I:=C2=A0 If#=3D 4 Alt=3D 0 #EPs=3D 1 Cls=3D03(HID=C2=A0 ) Sub=3D00 Prot=
-=3D00
-> > Driver=3Dusbhid
-> > E:=C2=A0 Ad=3D84(I) Atr=3D03(Int.) MxPS=3D=C2=A0 64 Ivl=3D16ms
-> > I:=C2=A0 If#=3D 5 Alt=3D 0 #EPs=3D 0 Cls=3Dfe(app. ) Sub=3D01 Prot=3D01
-> > Driver=3D(none)
-> >=20
-> > v2. add fixes tag and the device info
-> These change description goes below "---" line.
->=20
-> Thanks,
-> Srinivas
->=20
-> >=20
-> > Fixes: bba6d9e47f3e ("iio: hid-sensor-attributes: Fix sensor
-> > property
-> > setting failure.")
-> > Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-> > ---
-> > =C2=A0.../hid-sensors/hid-sensor-attributes.c=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 | 23 +++++++++++----
-> > --
-> > --
-> > =C2=A01 file changed, 14 insertions(+), 9 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > index ad1882f608c0..b7ffd97e6c56 100644
-> > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-> > @@ -564,8 +564,21 @@ int hid_sensor_parse_common_attributes(struct
-> > hid_sensor_hub_device *hsdev,
-> > =C2=A0	} else
-> > =C2=A0		st->timestamp_ns_scale =3D 1000000000;
-> > =C2=A0
-> > +	ret =3D 0;
-> > +	if (st->sensitivity.index < 0 || st->sensitivity_rel.index
-> > <
-> > 0) {
-> > +		ret =3D -EINVAL;
-> > +		goto out;
-> > +	}
-> > +
-> > =C2=A0	hid_sensor_get_report_latency_info(hsdev, usage_id, st);
-> > =C2=A0
-> > +	ret =3D sensor_hub_get_feature(hsdev,
-> > +				st->power_state.report_id,
-> > +				st->power_state.index,
-> > sizeof(value), &value);
-> > +	if (value < 0)
-> > +		ret =3D -EINVAL;
-> > +
-> > +out:
-> > =C2=A0	hid_dbg(hsdev->hdev, "common attributes: %x:%x, %x:%x,
-> > %x:%x
-> > %x:%x %x:%x\n",
-> > =C2=A0		st->poll.index, st->poll.report_id,
-> > =C2=A0		st->report_state.index, st-
-> > >report_state.report_id,
-> > @@ -573,15 +586,7 @@ int hid_sensor_parse_common_attributes(struct
-> > hid_sensor_hub_device *hsdev,
-> > =C2=A0		st->sensitivity.index, st->sensitivity.report_id,
-> > =C2=A0		timestamp.index, timestamp.report_id);
-> > =C2=A0
-> > -	ret =3D sensor_hub_get_feature(hsdev,
-> > -				st->power_state.report_id,
-> > -				st->power_state.index,
-> > sizeof(value), &value);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -	if (value < 0)
-> > -		return -EINVAL;
-> > -
-> > -	return 0;
-> > +	return ret;
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, "IIO_HID");
-> > =C2=A0
->=20
+Best regards,
+-- 
+Trevor Gamblin <tgamblin@baylibre.com>
 
 

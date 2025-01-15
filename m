@@ -1,147 +1,177 @@
-Return-Path: <linux-iio+bounces-14373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCABBA1248A
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 14:15:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B63A124E0
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 14:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18365188BF87
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 13:15:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6887D168753
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 13:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DEE241A05;
-	Wed, 15 Jan 2025 13:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125A5243858;
+	Wed, 15 Jan 2025 13:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLkV3nO3"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="l0FzLp5D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60511241A01;
-	Wed, 15 Jan 2025 13:15:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28AB0242264;
+	Wed, 15 Jan 2025 13:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736946910; cv=none; b=AfgdMyrhmuzsnRbJW/lS61ufKh+8Kuqa/wekzCoP8JqpowECOEZ+i9DOhu1wTx0pfs9bL86MsYq1LSgzheHxIWAtkFKQbqSQPO++WPFrJHuDPwhL9D5U6rRoqQfTQ2vAC9Ec+2oBDwYTxwuZKu5Z2H1qUrX6nrWuFG7RQCv7AlQ=
+	t=1736948141; cv=none; b=nXQYiaWnXU3ke69VsbObn0cvhDn3cdTgpoK5TpPfRhMSBKJlZxEpdxU5uhwoJy5BBEzsznZvltjHkwgT1rbhZkgR4GqW0m2AOLJL8hMJIA8F358ZsGXAHE6KW9EaTVBDHfSdkkG6GolbeWGcavn8wf6TUXqNd9j6th/LJmKQyzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736946910; c=relaxed/simple;
-	bh=Fn9dB4NSEYXXMvogJP1Bq6nvP3ex5ZtHcuIPHIpx4JQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=R5wG5jXjILDtYfp3+L2dbVxcQjKD9PIxsj1eMdY/fJVGfC4y8LVTrLXHyL1LoiyXw3nRWykRAGS+NakMpfif1R3ITB2g2dNd4qMlXvHBFxiS3biaU8VMlsNlJNyaR3YTULhrvbYJEQGtFUJ+gaJ9EZYGYq9JWAPF8Pkxcptd+mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLkV3nO3; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736946908; x=1768482908;
-  h=message-id:subject:from:to:date:in-reply-to:references:
-   content-transfer-encoding:mime-version;
-  bh=Fn9dB4NSEYXXMvogJP1Bq6nvP3ex5ZtHcuIPHIpx4JQ=;
-  b=aLkV3nO3XWaaME+424i6uK34kbw264OahlKBLgb0b6pbFRsT1MD/dJDP
-   1OgPD7XHm2A6kYlasOfcY42duzz0ubvuobLB2ueYInXHqG4ktQfIyzWcR
-   3/5gPT1jhAgoly30sPHHKZ40ER5bh2bAcLLeK3XmLJOxIG3OppDPhgVzH
-   /eSNZYpTEMUl+dCMZaOwiXhcCB7U8NVrsN0yKaLkz1BVK4A9irIwIG6W5
-   mvL7ewXRDqgc21Hm5yCXTQj5MroYZ95e09EQfaoZrN9EqC/+RZJmZfb6W
-   YrHrfQwIcBflFmj3KvCGTKxN5ZS51X3vtxLd1ZOYN3VxT4J9xXrZszEG6
-   A==;
-X-CSE-ConnectionGUID: oBHMy2JSSEa1z++77nuOIQ==
-X-CSE-MsgGUID: Ty8rtypTTpKSe3oouomovQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11316"; a="37164635"
-X-IronPort-AV: E=Sophos;i="6.13,206,1732608000"; 
-   d="scan'208";a="37164635"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 05:15:07 -0800
-X-CSE-ConnectionGUID: pYRsDTDmRBSduh3ek5bRyA==
-X-CSE-MsgGUID: qi5o4arnQvSFwkDe48zTJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104993602"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.16])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2025 05:15:07 -0800
-Message-ID: <3135248fcbf284e19a2ffd3ab01767709e322980.camel@linux.intel.com>
-Subject: Re: [PATCH] HID: quirks: ignore non-functional sensor in HP 5MP
- Camera
-From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
-To: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>, Jonathan Cameron
-	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra
-	 <peterz@infradead.org>, Greg KH <gregkh@linuxfoundation.org>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jiri Kosina
-	 <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>, 
-	linux-input@vger.kernel.org
-Date: Wed, 15 Jan 2025 05:15:07 -0800
-In-Reply-To: <20250115070020.2777721-1-acelan.kao@canonical.com>
-References: <20250115070020.2777721-1-acelan.kao@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1736948141; c=relaxed/simple;
+	bh=CKb3gP3I6xyWDSCtbWc0xKBFHwP9Wt1604HljACdQUs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FqiwnpJomRfGKsXPV5m6E8Yx9sPrzTOH+Qzh8Y0FIaNg+CrzGgJ/sHkb7VxojVwSZ/I++zL652Kgky8/u0EydXAUGg7cfxEVST+WqPr9zylkh43FL693aJHAozt/WA1syAQDKyUihZr2QTnYeeK6AER+LO7q6lpisvJG/iJ//QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=l0FzLp5D; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50FBCjpU023909;
+	Wed, 15 Jan 2025 08:35:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=CKb3g
+	P3I6xyWDSCtbWc0xKBFHwP9Wt1604HljACdQUs=; b=l0FzLp5DiuR4pbfJ4Hx5K
+	GTIbQXJi9gbhFDieowTIqLL8asBV3jOxZqDm3B/mZweM0z4s1CvPI3khRA1ZTLP8
+	ke09h0ObFjVumfv0yAjHAHsoaJHCSOUqeisHPw3uA8KLs2D385ywc1z83QrHgi8G
+	K2AREPEA2UbaLSUtrjLv7Bgj1g9KOVTtw34y1uu/vvq4Ij8LMK0Lw0xxSMD9j5Ez
+	TCPxUILL2yBZ4A26d8EWdP9Xo1FYtKxSp+nqcRvh9Z+RrU9mlty41Ky+SzLVJ/8t
+	Lz9OIl9XQ/hg+Oo5YMdhxGUQ6qbvv0jBfDkgl2iTAK2y0XUFoQFls7TCCfbrhPos
+	w==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 446bxq0jk7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 15 Jan 2025 08:35:24 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 50FDZMfY046718
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 15 Jan 2025 08:35:22 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 15 Jan
+ 2025 08:35:22 -0500
+Received: from ASHBMBX9.ad.analog.com ([fe80::47f5:af96:747a:164e]) by
+ ASHBMBX9.ad.analog.com ([fe80::47f5:af96:747a:164e%20]) with mapi id
+ 15.02.0986.014; Wed, 15 Jan 2025 08:35:22 -0500
+From: "Budai, Robert" <Robert.Budai@analog.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: "Sa, Nuno" <Nuno.Sa@analog.com>,
+        "Gradinariu, Ramona"
+	<Ramona.Gradinariu@analog.com>,
+        "Miclaus, Antoniu"
+	<Antoniu.Miclaus@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        Jonathan Cameron
+	<jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>,
+        Alex Lanzano <lanzano.alex@gmail.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: RE: [PATCH v4 4/6] dt-bindings: iio: Add adis16550 bindings
+Thread-Topic: [PATCH v4 4/6] dt-bindings: iio: Add adis16550 bindings
+Thread-Index: AQHbYzNREcgyV+0AFUmPycm4yeoemLMUu+AAgAL/8lA=
+Date: Wed, 15 Jan 2025 13:35:22 +0000
+Message-ID: <6ba74e1ea2a44c7f9a4ea74b2dce1118@analog.com>
+References: <20250110074254.38966-1-robert.budai@analog.com>
+ <20250110074254.38966-5-robert.budai@analog.com>
+ <y54kfnkbuugvsgfzufhk3mmwmmzbko47fg3jxw36sefzxaxcz6@znigvgdcljeq>
+In-Reply-To: <y54kfnkbuugvsgfzufhk3mmwmmzbko47fg3jxw36sefzxaxcz6@znigvgdcljeq>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-ref: =?utf-8?B?UEcxbGRHRStQR0YwSUdGcFBTSXdJaUJ1YlQwaVltOWtlUzUwZUhRaUlIQTlJ?=
+ =?utf-8?B?bU02WEhWelpYSnpYSEppZFdSaGFWeGhjSEJrWVhSaFhISnZZVzFwYm1kY01E?=
+ =?utf-8?B?bGtPRFE1WWpZdE16SmtNeTAwWVRRd0xUZzFaV1V0Tm1JNE5HSmhNamxsTXpW?=
+ =?utf-8?B?aVhHMXpaM05jYlhObkxXTmpPVEJqTldKakxXUXpNelF0TVRGbFppMWlZakF5?=
+ =?utf-8?B?TFdSak1XSmhNVGd4TVROalpWeGhiV1V0ZEdWemRGeGpZemt3WXpWaVpTMWtN?=
+ =?utf-8?B?ek0wTFRFeFpXWXRZbUl3TWkxa1l6RmlZVEU0TVRFelkyVmliMlI1TG5SNGRD?=
+ =?utf-8?B?SWdjM285SWpJNU56UWlJSFE5SWpFek16Z3hOREUwTlRJd05qRTROVEl4TVNJ?=
+ =?utf-8?B?Z2FEMGlVWEJqUWtsU2VrWm1kamRLWm0xR0t6aFdVSGxEVUZaRFlXUmpQU0ln?=
+ =?utf-8?B?YVdROUlpSWdZbXc5SWpBaUlHSnZQU0l4SWlCamFUMGlZMEZCUVVGRlVraFZN?=
+ =?utf-8?B?VkpUVWxWR1RrTm5WVUZCUkdkRVFVRkVOemRQSzA5UlYyWmlRVlJOVVd4UlRp?=
+ =?utf-8?B?dHBlR2RXVFhoRFZrRXpOa3hIUWxWRVFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVoQlFVRkJSR0ZCVVVGQlUyZEpRVUZQTkVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVVZCUVZGQlFrRkJRVUZtY0hsalYyZEJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGS05FRkJRVUpvUVVkUlFXRlJRbVpCU0UxQldsRkNha0ZJVlVGalow?=
+ =?utf-8?B?SnNRVVk0UVdOQlFubEJSemhCWVdkQ2JFRkhUVUZrUVVKNlFVWTRRVnBuUW1o?=
+ =?utf-8?B?QlIzZEJZM2RDYkVGR09FRmFaMEoyUVVoTlFXRlJRakJCUjJ0QlpHZENiRUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJSVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZuUVVGQlFVRkJibWRCUVVGSFJVRmFRVUp3UVVZNFFXTjNRbXhC?=
+ =?utf-8?B?UjAxQlpGRkNlVUZIVlVGWWQwSjNRVWhKUVdKM1FuRkJSMVZCV1hkQ01FRklU?=
+ =?utf-8?B?VUZZZDBJd1FVZHJRVnBSUW5sQlJFVkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVZGQlFVRkJRVUZCUVVGRFFVRkJRVUZCUTJWQlFVRkJXVkZDYTBGSGEw?=
+ =?utf-8?B?RllkMEo2UVVkVlFWbDNRakZCU0VsQldsRkNaa0ZJUVVGalowSjJRVWR2UVZw?=
+ =?utf-8?B?UlFtcEJTRkZCWTNkQ1prRklVVUZoVVVKc1FVaEpRVTFuUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVSkJRVUZCUVVGQlFVRkJTVUZCUVVGQlFVODBRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRMEZCUVVGQlFVRkJRVUZKUVVGQlFVRkJRVUZCUVdkQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGNlowRkJRVUZOUVVGQlFrOUJRVUZCUVVGQlFVRkhSVUZhUVVKd1FV?=
+ =?utf-8?Q?Y4QWN3?=
+x-dg-rorf: true
+x-dg-refone: QmxBR01BZFFCeUFHVUFYd0J3QUhJQWJ3QnFBR1VBWXdCMEFITUFYd0JtQUdFQWJBQnpBR1VBWHdCbUFHOEFjd0JwQUhRQWFRQjJBR1VBQUFBOEFBQUFBQUFBQUdFQVpBQnBBRjhBY3dCbEFHTUFkUUJ5QUdVQVh3QndBSElBYndCcUFHVUFZd0IwQUhNQVh3QjBBR2tBWlFCeUFERUFBQUE4QUFBQUFBQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURJQUFBQT0iLz48L21ldGE+
+x-adiruleop-newscl: Rule Triggered
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Proofpoint-GUID: FouZGSm6xAwBM4kPB8fY67oudxkgXGZb
+X-Proofpoint-ORIG-GUID: FouZGSm6xAwBM4kPB8fY67oudxkgXGZb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-15_05,2025-01-15_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
+ phishscore=0 mlxlogscore=999 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 bulkscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501150103
 
-One minor comment:
-"HID: quirks: ignore non-functional sensor in HP 5MP Camera"
-For this
-The format is  not same as other commits in this file. There is no
-"quirks". But not sure if Jiri cares.
-
-On Wed, 2025-01-15 at 15:00 +0800, Chia-Lin Kao (AceLan) wrote:
-> The HP 5MP Camera (USB ID 0408:5473)
->  reports a HID sensor interface that
-> is not actually implemented. Attempting to access this non-functional
-> sensor via iio_info causes system hangs as runtime PM tries to wake
-> up
-> an unresponsive sensor.
->=20
-> =C2=A0 [453] hid-sensor-hub 0003:0408:5473.0003: Report latency
-> attributes: ffffffff:ffffffff
-> =C2=A0 [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1,
-> 2:1, 3:1 ffffffff:ffffffff
->=20
-> Add this device to the HID ignore list since the sensor interface is
-> non-functional by design and should not be exposed to userspace.
->=20
-> Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-
-> ---
-> =C2=A0drivers/hid/hid-ids.h=C2=A0=C2=A0=C2=A0 | 1 +
-> =C2=A0drivers/hid/hid-quirks.c | 1 +
-> =C2=A02 files changed, 2 insertions(+)
->=20
-> diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-> index 1f47fda809b9..c5b57e857e77 100644
-> --- a/drivers/hid/hid-ids.h
-> +++ b/drivers/hid/hid-ids.h
-> @@ -1094,6 +1094,7 @@
-> =C2=A0#define
-> USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
-> =C2=A0#define
-> USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
-> =C2=A0#define
-> USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
-> +#define
-> USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
-> =C2=A0
-> =C2=A0#define I2C_VENDOR_ID_RAYDIUM		0x2386
-> =C2=A0#define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
-> diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-> index e0bbf0c6345d..5d7a418ccdbe 100644
-> --- a/drivers/hid/hid-quirks.c
-> +++ b/drivers/hid/hid-quirks.c
-> @@ -891,6 +891,7 @@ static const struct hid_device_id
-> hid_ignore_list[] =3D {
-> =C2=A0	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS,
-> USB_DEVICE_ID_SYNAPTICS_DPAD) },
-> =C2=A0#endif
-> =C2=A0	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK,
-> USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
-> +	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA,
-> USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
-> =C2=A0	{ }
-> =C2=A0};
-> =C2=A0
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogS3J6eXN6dG9mIEtvemxv
+d3NraSA8a3J6a0BrZXJuZWwub3JnPg0KPiBTZW50OiBNb25kYXksIEphbnVhcnkgMTMsIDIwMjUg
+MTA6NDQgQU0NCj4gVG86IEJ1ZGFpLCBSb2JlcnQgPFJvYmVydC5CdWRhaUBhbmFsb2cuY29tPg0K
+PiBDYzogU2EsIE51bm8gPE51bm8uU2FAYW5hbG9nLmNvbT47IEdyYWRpbmFyaXUsIFJhbW9uYQ0K
+PiA8UmFtb25hLkdyYWRpbmFyaXVAYW5hbG9nLmNvbT47IE1pY2xhdXMsIEFudG9uaXUNCj4gPEFu
+dG9uaXUuTWljbGF1c0BhbmFsb2cuY29tPjsgTGFycy1QZXRlciBDbGF1c2VuIDxsYXJzQG1ldGFm
+b28uZGU+Ow0KPiBIZW5uZXJpY2gsIE1pY2hhZWwgPE1pY2hhZWwuSGVubmVyaWNoQGFuYWxvZy5j
+b20+OyBKb25hdGhhbiBDYW1lcm9uDQo+IDxqaWMyM0BrZXJuZWwub3JnPjsgUm9iIEhlcnJpbmcg
+PHJvYmhAa2VybmVsLm9yZz47IEtyenlzenRvZiBLb3psb3dza2kNCj4gPGtyemsrZHRAa2VybmVs
+Lm9yZz47IENvbm9yIERvb2xleSA8Y29ub3IrZHRAa2VybmVsLm9yZz47IEpvbmF0aGFuDQo+IENv
+cmJldCA8Y29yYmV0QGx3bi5uZXQ+OyBBbGV4IExhbnphbm8gPGxhbnphbm8uYWxleEBnbWFpbC5j
+b20+OyBsaW51eC0NCj4gaWlvQHZnZXIua2VybmVsLm9yZzsgZGV2aWNldHJlZUB2Z2VyLmtlcm5l
+bC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7DQo+IGxpbnV4LWRvY0B2Z2VyLmtl
+cm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2NCA0LzZdIGR0LWJpbmRpbmdzOiBpaW86
+IEFkZCBhZGlzMTY1NTAgYmluZGluZ3MNCj4gDQo+IFtFeHRlcm5hbF0NCj4gDQo+IE9uIEZyaSwg
+SmFuIDEwLCAyMDI1IGF0IDA5OjQyOjUyQU0gKzAyMDAsIFJvYmVydCBCdWRhaSB3cm90ZToNCj4g
+PiArbWFpbnRhaW5lcnM6DQo+ID4gKyAgLSBOdW5vIFNhIDxudW5vLnNhQGFuYWxvZy5jb20+DQo+
+ID4gKyAgLSBSYW1vbmEgR3JhZGluYXJpdSA8cmFtb25hLmdyYWRpbmFyaXVAYW5hbG9nLmNvbT4N
+Cj4gPiArICAtIEFudG9uaXUgTWljbGF1cyA8YW50b25pdS5taWNsYXVzQGFuYWxvZy5jb20+DQo+
+ID4gKw0KPiA+ICtwcm9wZXJ0aWVzOg0KPiA+ICsgIGNvbXBhdGlibGU6DQo+ID4gKyAgICBlbnVt
+Og0KPiA+ICsgICAgICAtIGFkaSxhZGlzMTY1NTANCj4gPiArICAgICAgLSBhZGksYWRpczE2NTUw
+dw0KPiANCj4gV2hlcmUgaXMgdGhlIGFuc3dlciBmb3IgbXkgcXVlc3Rpb25zIGF0IHYxPyBObyBy
+ZXNwb25zZXMgb24gZW1haWwsDQo+IG5vdGhpbmcgaW1wcm92ZWQgaW4gdGhlIHBhdGNoc2V0LiBH
+byBiYWNrIHRvIG15IGNvbW1lbnRzIGFuZCByZXNwb25kIHRvDQo+IHRoZW0gb3IgaW1wbGVtZW50
+IHRoZW0uDQo+IA0KW1JvYmVydCBCdWRhaQ==
 

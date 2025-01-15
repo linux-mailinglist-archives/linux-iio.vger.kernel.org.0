@@ -1,225 +1,141 @@
-Return-Path: <linux-iio+bounces-14370-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14371-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E62A11969
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 07:07:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A5DA11A3F
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 08:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BF63167EC9
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 06:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D252C3A46C1
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 07:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D8D22E419;
-	Wed, 15 Jan 2025 06:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC02E22FDF4;
+	Wed, 15 Jan 2025 07:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="klriy1RE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IUD/RUOE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD3829A5;
-	Wed, 15 Jan 2025 06:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF822F166;
+	Wed, 15 Jan 2025 07:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736921241; cv=none; b=CINvkzoI2EsTMgOocIlM18yY3Kcohapg7p32+g/brYFlHLbOGZjFRZZi5dVYEocGw/l/Q+Jp8t5fFndccIaYxuOWLkDCUcWAPPkSIIMFE7zgWfSO3HLRYfptwZ/LpZjnCP/Xi1KbrXLO6JomDSqVjTs6Rnh2VRHg9XvAR/3KLKk=
+	t=1736924426; cv=none; b=GFy54wcCqXxGqdaWLgqpjbi/YEkRA5vLBj+v7qMrzovf97SDjB+OhvcTzJ3snwxiZL0EO5kkLlxKCAw1C7GyXXrMdF++MQfsVrxV069Ap0t4sx5erx1IGjHo5v8JcZeAbHXl7ndPLilg0GMBAmmOcXjR4nseBkwLNg/On1u6zGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736921241; c=relaxed/simple;
-	bh=G3pI6qrl347DsNrfhtfFcgfX1IdLc/pFN8Nj/vWwpR8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=UELe35pHQIUG7e3eSs2gSSCE2sJFy1QS7VAaJzr06MamRRNDqcobJyM/eThLJ+w6eW8VGsINLfvwPT3qLwH9nTQlvytri5UeNmRB7H/ByhnPx1FE2SWr9j0LfhZ0dl4Ii8n1/vTMpek7BngBhraknxyAVL8CI632Uou5OFK59uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=klriy1RE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5B7E2C4CEDF;
-	Wed, 15 Jan 2025 06:07:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736921239;
-	bh=G3pI6qrl347DsNrfhtfFcgfX1IdLc/pFN8Nj/vWwpR8=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=klriy1REuwnjgEjUpd4kQzTmN/IFdWD+qqyndBOME7ligMCRkrPtUMr+RLQrpM/Y/
-	 AKSMT9e41yvkSB512aR+U/Xc+5f3ZVT98rP9LdyqEGfXCZ/4zZ3krXWlbMQv62RPsc
-	 9aKFu0LtNnh2sgqvzvrNFf77jWoGiP14yK3FmmO5FYuGwpnY5aBKOcujxZJI8YQVyl
-	 zvhBcX6eqgOTC2dhi9ouVGMx8cgaEQkPjREc0UmOmGEuO2ZYLxqxs9o8t2f6DyZ8bw
-	 tfjFE8a34M+OQxCe+10E6j4wC8zo/GE/8fNXVxOHH0cVfd82KgUwmqNRNMduBFBJ7r
-	 XYYVcZYA+aj2Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C0DEC02180;
-	Wed, 15 Jan 2025 06:07:19 +0000 (UTC)
-From: Nayab Sayed via B4 Relay <devnull+nayabbasha.sayed.microchip.com@kernel.org>
-Date: Wed, 15 Jan 2025 11:37:04 +0530
-Subject: [PATCH v2] iio: adc: at91-sama5d2_adc: fix sama7g5 realbits value
+	s=arc-20240116; t=1736924426; c=relaxed/simple;
+	bh=nDyHfRo+K6FC5fnnEtaMc8Bc3uQ3Kb+bqRO8AZVdHjg=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=PKskYMQ3ctZ13s78GVnXPYIcANCHQlLU0Xz5WDPkxRT+JDoJvsBcfqEwPbAE7w0xp+8qjiOCTzxe1qOOR17JEPOlg3Ilxg9dWn2SpJ9cAsZNCEB6dcWYY2ikagBakUgbQkh4ocC2oPtdlkZbQeaLLxSuySJ9hkX+aLGSyiT8v7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUD/RUOE; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-219f8263ae0so104914295ad.0;
+        Tue, 14 Jan 2025 23:00:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736924424; x=1737529224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=Eb+O5WpkrYpDD7ZwYT7Bfm4Y6rLpuCSVUqwj2xJzlCk=;
+        b=IUD/RUOENtKkL9HR8Qfz+jnLtgXnk9zp1EBsY/pkF1FV3X/2Q0uwhRG1DIvJIQJMpN
+         0j4XSr3oY5h528p8iPNzd2L+QmS5MkM+vc5CWl+E5UODDs6jQKnl/ed1IxqHzMwHWMcN
+         nZ3J5NYua9Nw5GomFm6qvcuXg/+4BmiMY6cYWzWjNT10l67AAlEKmwiIM8h5jHaouuxQ
+         sEFUHGeB0YgGetucs4nUJ3ghsMVmAb3sTtJA193a9ySeUAPos+HqkYVy8hsZJWtNNdK2
+         g9l6oFCrYXPSbwa36ba8g95alU31tydw4PZwaVHJsPivzsmdE8wdzSTdXZ+OMLlYSsg9
+         +KCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736924424; x=1737529224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Eb+O5WpkrYpDD7ZwYT7Bfm4Y6rLpuCSVUqwj2xJzlCk=;
+        b=HuqESJDT+m86CeMOT2/OxV1ndRPSxWXoDgBKplnsIk8v5Hm3nZ5oxXDwbZ5kxI0J6d
+         /yBBzWPQ7fHKNxO/L24B/OclqpA2TTcI0hq0Nc52zyX9vzm3tFKaGbaKGTR0fl/gnSd6
+         93Jx9DuxS7ZK6xTZbU7+cfjUGY4IFDSZ+WxtH0+NcPeF4BorwG3tPrW7fQpZ+GdWwoQz
+         oPsOuZ7jqsKsteSBfIT4h735MiueC1eVS0SvDb4eaZbpunT3zrLoAU5ulmzIGwH4T8TN
+         4HKNCLMnfTZXPNFOd4RelOh3hkkSlWnbUokK1/IXOd+rWq6Nq50HnHm2Xm3TJWnrCrAa
+         bjGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBYTBF2GZ5nKvGtJxQgXF3BZsL2vi3bMRUk1YeaJe1RiI6/bRxNuUHPyBbMC2UUsDudRGda/QJI5tLs7i7@vger.kernel.org, AJvYcCW6pFTzQdP91DB4pZNcSgUMr6XRKcAl+5wJ4T1C2cut6cMqDbfLf9T71WHuBSsLfxqFa1CnLikfKh4=@vger.kernel.org, AJvYcCX6D1ygPeo6VWVYxA2+S4FGPYDv2IZ2DnHCgHqeNC/phM2v9on0/pLe17o52IXWIhC4WH4ILMKCRSe3fQM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1o+bmJ9XqVg7VbkT6fUr/SbSabhbBqjiL9/gLeA1Bzu848ejr
+	R7qMJfI06SBi2AQY/BfnBcZSnUEeUsqcfk8x4zCI5aQsNGxxWLj0zDAZ7JW62R7h1A==
+X-Gm-Gg: ASbGncuJIQZuVfoSclbYmSOtBY0NdjMEAkGZ6nElHkfwRB/rwZDov+4vsZKLE0qfFx2
+	XUQdScF1hjS/v9p2eq7sDvLVa0XGwxxs05sylQUbivC+gah8FdrdcOTxjLlp8Numk5ewzjlN1Zy
+	PMp7mtjUYLY9DnGeRQCMxk8a9JiIKXcu8TQwxG0U+VCHTvGTiQFzT8X7u5Cu1EhNxa28iMkn9vI
+	YCLREdIK5K86bgA7ZXpmABfymc+jv4kGX6nFtK6YPnxsiyhAVKCDaw4rXqIfzJNWw0D+EgF1LHw
+	1r3zSVSzCA==
+X-Google-Smtp-Source: AGHT+IFJVCuVycLYvPU2G7q6Cahbwub5Ot+OKYVFQ3+IRaOZ632beXHt0WfE1aiUGqJOzvlPvJbXTw==
+X-Received: by 2002:a05:6a21:3a8c:b0:1e1:ffec:b1bf with SMTP id adf61e73a8af0-1e88d12b62amr40659363637.26.1736924423589;
+        Tue, 14 Jan 2025 23:00:23 -0800 (PST)
+Received: from localhost (118-163-61-247.hinet-ip.hinet.net. [118.163.61.247])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a318e8ec100sm9013075a12.36.2025.01.14.23.00.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Jan 2025 23:00:22 -0800 (PST)
+Sender: AceLan Kao <acelan@gmail.com>
+From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiri Kosina <jikos@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org
+Subject: [PATCH] HID: quirks: ignore non-functional sensor in HP 5MP Camera
+Date: Wed, 15 Jan 2025 15:00:20 +0800
+Message-ID: <20250115070020.2777721-1-acelan.kao@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250115-fix-sama7g5-adc-realbits-v2-1-58a6e4087584@microchip.com>
-X-B4-Tracking: v=1; b=H4sIAIdQh2cC/42NTQ7CIBCFr9LM2jF0CEVdeQ/TBQJtJ5HSQEM0T
- e8u9gTmrb6X97NB9ol9hluzQfKFM8e5Ap0asJOZR4/sKgMJUqIVEgd+YzbB6FGhcRaTN68nrxm
- lHjoaLldSTkOtL8nX7DH96CtPnNeYPsdTaX/uH6OlxSotyVGnrOzMPbBN0U68nG0M0O/7/gXV7
- YAwxAAAAA==
-To: Eugen Hristev <eugen.hristev@linaro.org>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Nayab Sayed <nayabbasha.sayed@microchip.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5233;
- i=nayabbasha.sayed@microchip.com; h=from:subject:message-id;
- bh=akVlIDY4JEv/jdH/CBhdCc65c1LeP0Vt27jvi+Wz5GY=;
- b=owGbwMvMwCEmfMj/xNz7ei8ZT6slMaS3B0ztTL3+/4ne+5WfzKxz1uR8cRVatqDx6tM5NQ4Xf
- 6QoZlz43FHKwiDGwSArpsjSvXn+bMOiP52ZPzlXwMxhZQIZwsDFKQATCcpnZLi+d2a14iT/0BXJ
- Ygetert3/pn4Ud7br0Hn3d2WXL+8S0EM/0wCK3JU26IZYuV1Hjubn467ILAm/u6Ue3qZZ4MyGgR
- ucgEA
-X-Developer-Key: i=nayabbasha.sayed@microchip.com; a=openpgp;
- fpr=E108A58C09FB2280B0AB41DAE24318EF3B3861A3
-X-Endpoint-Received: by B4 Relay for nayabbasha.sayed@microchip.com/default
- with auth_id=304
-X-Original-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
-Reply-To: nayabbasha.sayed@microchip.com
+Content-Transfer-Encoding: 8bit
 
-From: Nayab Sayed <nayabbasha.sayed@microchip.com>
+The HP 5MP Camera (USB ID 0408:5473) reports a HID sensor interface that
+is not actually implemented. Attempting to access this non-functional
+sensor via iio_info causes system hangs as runtime PM tries to wake up
+an unresponsive sensor.
 
-The number of valid bits in SAMA7G5 ADC channel data register are 16.
-Hence changing the realbits value to 16
+  [453] hid-sensor-hub 0003:0408:5473.0003: Report latency attributes: ffffffff:ffffffff
+  [453] hid-sensor-hub 0003:0408:5473.0003: common attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff
 
-Fixes: 840bf6cb983f ("iio: adc: at91-sama5d2_adc: add support for sama7g5 device")
-Signed-off-by: Nayab Sayed <nayabbasha.sayed@microchip.com>
+Add this device to the HID ignore list since the sensor interface is
+non-functional by design and should not be exposed to userspace.
+
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 ---
-Changes in v2:
-- Add `Fixes:` tag in commit message.
-- Link to v1: https://lore.kernel.org/r/20250103-fix-sama7g5-adc-realbits-v1-1-1732d265c36a@microchip.com
----
- drivers/iio/adc/at91-sama5d2_adc.c | 68 ++++++++++++++++++++++----------------
- 1 file changed, 40 insertions(+), 28 deletions(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index 8e5aaf15a921..c3a1dea2aa82 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -329,7 +329,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- #define AT91_HWFIFO_MAX_SIZE_STR	"128"
- #define AT91_HWFIFO_MAX_SIZE		128
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 1f47fda809b9..c5b57e857e77 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1094,6 +1094,7 @@
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3001		0x3001
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3003		0x3003
+ #define USB_DEVICE_ID_QUANTA_OPTICAL_TOUCH_3008		0x3008
++#define USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473		0x5473
  
--#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+#define AT91_SAMA_CHAN_SINGLE(index, num, addr, rbits)			\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.channel = num,						\
-@@ -337,7 +337,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 'u',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -350,7 +350,13 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.indexed = 1,						\
- 	}
- 
--#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+#define AT91_SAMA5D2_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_SINGLE(index, num, addr)			\
-+	AT91_SAMA_CHAN_SINGLE(index, num, addr, 16)
-+
-+#define AT91_SAMA_CHAN_DIFF(index, num, num2, addr, rbits)		\
- 	{								\
- 		.type = IIO_VOLTAGE,					\
- 		.differential = 1,					\
-@@ -360,7 +366,7 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.scan_index = index,					\
- 		.scan_type = {						\
- 			.sign = 's',					\
--			.realbits = 14,					\
-+			.realbits = rbits,				\
- 			.storagebits = 16,				\
- 		},							\
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-@@ -373,6 +379,12 @@ static const struct at91_adc_reg_layout sama7g5_layout = {
- 		.indexed = 1,						\
- 	}
- 
-+#define AT91_SAMA5D2_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 14)
-+
-+#define AT91_SAMA7G5_CHAN_DIFF(index, num, num2, addr)			\
-+	AT91_SAMA_CHAN_DIFF(index, num, num2, addr, 16)
-+
- #define AT91_SAMA5D2_CHAN_TOUCH(num, name, mod)				\
- 	{								\
- 		.type = IIO_POSITIONRELATIVE,				\
-@@ -666,30 +678,30 @@ static const struct iio_chan_spec at91_sama5d2_adc_channels[] = {
+ #define I2C_VENDOR_ID_RAYDIUM		0x2386
+ #define I2C_PRODUCT_ID_RAYDIUM_4B33	0x4b33
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index e0bbf0c6345d..5d7a418ccdbe 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -891,6 +891,7 @@ static const struct hid_device_id hid_ignore_list[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_SYNAPTICS, USB_DEVICE_ID_SYNAPTICS_DPAD) },
+ #endif
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_YEALINK, USB_DEVICE_ID_YEALINK_P1K_P4K_B2K) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_QUANTA, USB_DEVICE_ID_QUANTA_HP_5MP_CAMERA_5473) },
+ 	{ }
  };
  
- static const struct iio_chan_spec at91_sama7g5_adc_channels[] = {
--	AT91_SAMA5D2_CHAN_SINGLE(0, 0, 0x60),
--	AT91_SAMA5D2_CHAN_SINGLE(1, 1, 0x64),
--	AT91_SAMA5D2_CHAN_SINGLE(2, 2, 0x68),
--	AT91_SAMA5D2_CHAN_SINGLE(3, 3, 0x6c),
--	AT91_SAMA5D2_CHAN_SINGLE(4, 4, 0x70),
--	AT91_SAMA5D2_CHAN_SINGLE(5, 5, 0x74),
--	AT91_SAMA5D2_CHAN_SINGLE(6, 6, 0x78),
--	AT91_SAMA5D2_CHAN_SINGLE(7, 7, 0x7c),
--	AT91_SAMA5D2_CHAN_SINGLE(8, 8, 0x80),
--	AT91_SAMA5D2_CHAN_SINGLE(9, 9, 0x84),
--	AT91_SAMA5D2_CHAN_SINGLE(10, 10, 0x88),
--	AT91_SAMA5D2_CHAN_SINGLE(11, 11, 0x8c),
--	AT91_SAMA5D2_CHAN_SINGLE(12, 12, 0x90),
--	AT91_SAMA5D2_CHAN_SINGLE(13, 13, 0x94),
--	AT91_SAMA5D2_CHAN_SINGLE(14, 14, 0x98),
--	AT91_SAMA5D2_CHAN_SINGLE(15, 15, 0x9c),
--	AT91_SAMA5D2_CHAN_DIFF(16, 0, 1, 0x60),
--	AT91_SAMA5D2_CHAN_DIFF(17, 2, 3, 0x68),
--	AT91_SAMA5D2_CHAN_DIFF(18, 4, 5, 0x70),
--	AT91_SAMA5D2_CHAN_DIFF(19, 6, 7, 0x78),
--	AT91_SAMA5D2_CHAN_DIFF(20, 8, 9, 0x80),
--	AT91_SAMA5D2_CHAN_DIFF(21, 10, 11, 0x88),
--	AT91_SAMA5D2_CHAN_DIFF(22, 12, 13, 0x90),
--	AT91_SAMA5D2_CHAN_DIFF(23, 14, 15, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(0, 0, 0x60),
-+	AT91_SAMA7G5_CHAN_SINGLE(1, 1, 0x64),
-+	AT91_SAMA7G5_CHAN_SINGLE(2, 2, 0x68),
-+	AT91_SAMA7G5_CHAN_SINGLE(3, 3, 0x6c),
-+	AT91_SAMA7G5_CHAN_SINGLE(4, 4, 0x70),
-+	AT91_SAMA7G5_CHAN_SINGLE(5, 5, 0x74),
-+	AT91_SAMA7G5_CHAN_SINGLE(6, 6, 0x78),
-+	AT91_SAMA7G5_CHAN_SINGLE(7, 7, 0x7c),
-+	AT91_SAMA7G5_CHAN_SINGLE(8, 8, 0x80),
-+	AT91_SAMA7G5_CHAN_SINGLE(9, 9, 0x84),
-+	AT91_SAMA7G5_CHAN_SINGLE(10, 10, 0x88),
-+	AT91_SAMA7G5_CHAN_SINGLE(11, 11, 0x8c),
-+	AT91_SAMA7G5_CHAN_SINGLE(12, 12, 0x90),
-+	AT91_SAMA7G5_CHAN_SINGLE(13, 13, 0x94),
-+	AT91_SAMA7G5_CHAN_SINGLE(14, 14, 0x98),
-+	AT91_SAMA7G5_CHAN_SINGLE(15, 15, 0x9c),
-+	AT91_SAMA7G5_CHAN_DIFF(16, 0, 1, 0x60),
-+	AT91_SAMA7G5_CHAN_DIFF(17, 2, 3, 0x68),
-+	AT91_SAMA7G5_CHAN_DIFF(18, 4, 5, 0x70),
-+	AT91_SAMA7G5_CHAN_DIFF(19, 6, 7, 0x78),
-+	AT91_SAMA7G5_CHAN_DIFF(20, 8, 9, 0x80),
-+	AT91_SAMA7G5_CHAN_DIFF(21, 10, 11, 0x88),
-+	AT91_SAMA7G5_CHAN_DIFF(22, 12, 13, 0x90),
-+	AT91_SAMA7G5_CHAN_DIFF(23, 14, 15, 0x98),
- 	IIO_CHAN_SOFT_TIMESTAMP(24),
- 	AT91_SAMA5D2_CHAN_TEMP(AT91_SAMA7G5_ADC_TEMP_CHANNEL, "temp", 0xdc),
- };
-
----
-base-commit: 619f0b6fad524f08d493a98d55bac9ab8895e3a6
-change-id: 20250103-fix-sama7g5-adc-realbits-37f62f8925d7
-
-Best regards,
 -- 
-Nayab Sayed <nayabbasha.sayed@microchip.com>
-
+2.43.0
 
 

@@ -1,187 +1,260 @@
-Return-Path: <linux-iio+bounces-14368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B2EA115AE
-	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 00:53:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37056A1165D
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 02:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1ED9169315
-	for <lists+linux-iio@lfdr.de>; Tue, 14 Jan 2025 23:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5125B1887C90
+	for <lists+linux-iio@lfdr.de>; Wed, 15 Jan 2025 01:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCCB219E82;
-	Tue, 14 Jan 2025 23:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 035722E630;
+	Wed, 15 Jan 2025 01:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="duLkcxWU"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="TJd0Zfbc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2FE20F97C;
-	Tue, 14 Jan 2025 23:53:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803BD1DA23
+	for <linux-iio@vger.kernel.org>; Wed, 15 Jan 2025 01:10:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736898827; cv=none; b=koLks4uo6Jyho9REudEDwkNIDaDM3RsPoGALanBDIjWh1Hi32V4nghKtv5NC9Lrc8cng9KLTaD1lMCtsbij+xQdj9uu1Iz6ex/tWWLa6ctpRGkF08pmE5WrM/RjEP3MbtCdFlPmP40Qq2jxQquTQEnRI9NHEnrMsnSdeusINDJg=
+	t=1736903445; cv=none; b=NJ5FI4lBN4k0ETgZVkf7ST8wLqKPgunM216n3e1fo45A/W+zMm9SfBaUoY9Fx3wK5g+gcMYPsbkJNWSyqx9ZFyXyxv9B1Y6LSL0dgmKbKQaEpPLNZsAi2Hjcd4jAkVEUgHpOhLJlWDJwpS/8kRnGiFuhFuVD06TfHbNWkG3e7q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736898827; c=relaxed/simple;
-	bh=iCR9tvj2qCQpmxtu9D+eylj+YRdym4FTRtJ+GDf1Kcw=;
+	s=arc-20240116; t=1736903445; c=relaxed/simple;
+	bh=ry+hJVkI8+3UfkeVwBnOy9WPdx33LdzpZt+xNkJzgMs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eeb37maIE4d8hQjwq81lRPg3y1O+5YxINZyH1PiAKkLdmDdptoixxaM9YCEgZ6cvCFoICCbryPGPLZvh3AIZPDOt9UxL8f6HUEcYi60raijGEf6IkRfLHeKwGL8GcCOxoPUmYDmDx1o5zxS7hp9MGQKjr2wOiK1AYTxQppWip5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=duLkcxWU; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d9f06f8cf2so3813440a12.3;
-        Tue, 14 Jan 2025 15:53:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736898824; x=1737503624; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lMzb8yS5h3F6arrsufJifvjJGelvMlFg50S2OirVRuA=;
-        b=duLkcxWUzDJGltZdOsjtwmctBHcw9M8IRXgSbWIVIpAaxjSIvMaTB/oNPVaKOMsEHT
-         5wd2hWjadVpgtyD2IjgxItyjYbzsyArqjrAJyNmKO+1eARGgIAuxBsdWwPVkgufXShBF
-         4ujv3mEqrhSprWS9BZ0S5LnkmH8OQxk6hMftDxux4wW4nGKQPY2UrmzWdIlcV0r2XjRA
-         jHdk5bii+NXXAVlAzxQrvyBU1/+JISdwCUj3fj9LVOhz5HhAnzAeHf4pTwp45HHBcaCe
-         V1JwpiF8xHlAqROrVkFMeLrP/U+iqOsUkiDow364n93zi82CTZMNo+jNa2ZjLqcBg8R9
-         UL4g==
+	 Content-Type:Content-Disposition:In-Reply-To; b=jcI4ZYxm/axyjZLzt3xINqnACDF9gPXV/yF0ODCJZ6sLb06Uv5OER2VjwVIg6JXbonP/khsjj5XBPIH9R6h8g85S8fseTbG9URlI8qpUpH86U7Q+Xk6+Az5DUWh8wF3Dq6JdVvXjW5AljvCbiOPlxVvzmEPhye34LcjfeKyud8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=TJd0Zfbc; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id C02ED3F851
+	for <linux-iio@vger.kernel.org>; Wed, 15 Jan 2025 01:10:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1736903435;
+	bh=OyY8tttWt4acSLoDA2rMpc78s2898+qrLIFMqO/JCh4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=TJd0Zfbcleurlh4+zkEnMQbJTEM5WSrFuXnet9emFOh9ZIG7Stxj64VRVmftKd82s
+	 jnco2PkZeV8FPobFzCj2/uae1IfjrFTW485FBkgAkRuDvKFNZMiuQnFUSaBxRYBkHH
+	 e0jAZkSdtlLAmYQXZwIIYgo1nwk+zEaJmi2sUCtsuHL7tj4pP4R/KuUwWOnnvmXDfH
+	 IF8Wpus+wMqM59qssZgMtxTv9oKRa4J0uf4UjPd9HIL3gYiTSUFeuEF/1CUYxSvqe7
+	 /POqa5b4viZkO/saV6hpzYPXQBHMMvJHYK+2r+460pHO99+tmE/05RU2w1cMcAeSk3
+	 8P2waWsQSnJfA==
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ef7fbd99a6so10670338a91.1
+        for <linux-iio@vger.kernel.org>; Tue, 14 Jan 2025 17:10:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736898824; x=1737503624;
+        d=1e100.net; s=20230601; t=1736903433; x=1737508233;
         h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lMzb8yS5h3F6arrsufJifvjJGelvMlFg50S2OirVRuA=;
-        b=LL2JoRY1DiPH0J4RKnr5Zx5Hbtv5NFUTBWI+NhpHRorhFwL95nXXT1JUiPpIC0g3Mt
-         Fmi9ON3Ol4aWdsn8rNN4Vlgp02nDUJXW31qEJhi1vVQ2qD8R1f0nSH0h/isLaE6DtOEY
-         f+n5Fqukts9/Ypx7lmnNbV16pkXfAIYm9i/gqwZs238QwNd4son+OsZVqjYMGmiO2ftl
-         VOSU199qkB+WH2JQypIAfF3rAJX3/aTflDQ/ok6S4nM0YXqX+BYKmKLAsEeW5+BHmsnQ
-         CxD6xXPoPZP41KdAfBsVx94XVx1PGa32TkuVyCs3eE3aqBqEGEi48eEBzR6QfD3aXsAi
-         27IA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0uxR9O3XUp4MdoI90YibRsnz3fBaibn6K4ACMTSn+SKPfsN7c42hJn53mJZH+GEDN3E0koimytCdE0p5G@vger.kernel.org, AJvYcCWHps3TtH6UDUzVWzyJeiNDLSdFG3XFcvxhPIpduj0Nb8pHBaVafjByP/ISm/iqVDSK+cNT76rpVIkS@vger.kernel.org, AJvYcCWj4xcWivvxOazT8NGVZBte5JlaihYhYQIhUp6+ELxt4VxVKkFNO0Zz/gifk7d9oJBvQflYZCTphfwG@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYeoYl49itrWi7XpDBLDiX6BaC1Xk6m1lcAF/VH0XUzqEUi4HV
-	Q3zqHOcSwDqgKORfAvFIB4slEmX1kMbkMKGVKLQTsx+n7JzGfc7PBbvxmEbi
-X-Gm-Gg: ASbGncvZfHrFg5Uch+L3zuq6TKCvjes4KsgmEwwBWRUC028RAwQXHH1FFZgcz/cEYh4
-	RI3YMnqgw6plKmHmIL3t2r+CVblctBcSAKzIr1B1hydnXVmpn57oFta3As4QmWksnbp6W0c5gda
-	weZmlc8nrl9jdWEr8x8jWHt1rJIZcVmg8/5qHrxPTP90UbYnotrjVqfXB5lBnwgFVuvzUdFG3ii
-	m+WKK+03WeR8ICIA+fWJxO405LuNT8fuIlvbNh6Y8/MgSOu3B2QgltzFpLXJ3Bgr4P9uZcnDLNl
-	NoM5RqKI3BzUOunpNAEyWCea
-X-Google-Smtp-Source: AGHT+IHMWQihEHrG1M2HrKWrQcstVSYgtm39lT5eq1twiFCL6hBZtE5GJLnwGhMwbTzEaGEv8lXyfw==
-X-Received: by 2002:a17:907:9687:b0:aa6:912f:7ec1 with SMTP id a640c23a62f3a-ab2abc779dcmr2778139666b.39.1736898823271;
-        Tue, 14 Jan 2025 15:53:43 -0800 (PST)
-Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([37.162.56.118])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95624e8sm681193766b.127.2025.01.14.15.53.39
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OyY8tttWt4acSLoDA2rMpc78s2898+qrLIFMqO/JCh4=;
+        b=QM0oYs46eK822nj7JIeeIXpAo9ry0Z5xN/TnbPOOApsRYxWar0LxQSGSTxDue5zLKs
+         2sHA6SMTXyVJdLd+F49U63uEw/I5229aow7y+GL8/g37kUTjeVCG8fqGKFeyNNukV9sD
+         0PREtm30n+P0LIZrPMwMC3NHfmvjSzddCgAwcDHQfDGT+pSb5ja01T7h90yCrA6PKMVK
+         DgnuxuIb868MsFeKDLM5UiKC0/M6/z4RlOt3oNLLBfX57MqESz4l/VNkU75HXjy7VEPg
+         NbyrVms5dWycd6lDpF1n8xyMKGRC4DDH1d5yB/ZRDMhXzh94h3gmbd9huB8z7FaJtWub
+         NDsg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+L5ATDkoS9iZn4x1kA/9sJAnLwLo2YbmOTNHKKVza+eqvRmNFcOtOPDcMsRRn/8Yxpa0ws22e9Ho=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkO4IhHr4Dxed0FW3KDTPbHLWzBwGg/7jLvpHhy1+78K008GkO
+	uMheIYNfcGMdYxkD1C1Gnre1hJiMymagBij0+mw0CAzZi1RDy2/pZw6zsQahoLNXGI6FgfjGR7y
+	o6GVri3ijzmlj8W1l+cET0sWcG8wNl0K9TTr8At+EnqFiFFPQfyq61JepNtT32eowJDtN2eKK8N
+	S7I9xK0m5l
+X-Gm-Gg: ASbGnctg0v+Fpu10pN1zwFHC/7jdTy+HBYqwmA7rbeooBBZfNqDBD/nrM0yPKbLGAXl
+	lHRBVRNHb5DkwSERqOqR8JRkXMSHkaiZ9KXMgZPN18oszeJqaYV7Vg+HYxk3FkqifXfDro2HwWX
+	t6cxKmysqvuSsZOJdhB5yiSs8R6ap0XeWoyxFUpBNLPGyBvZ+J4IDugpKcOgz927nwdaoc9ZkAB
+	ceM5V+77KhM+TaKeFkohej4WmozkGc6e7usBX7Tyl0Fu9AYDqiyosbVB5Lp5OSBTlnyiUVY/ZJ8
+	RCbuvx3FPT812Y0Nw5o3H9HlBAIu7jhsTPI=
+X-Received: by 2002:a05:6a00:ac2:b0:725:ea30:ab15 with SMTP id d2e1a72fcca58-72d21f7eba6mr35942696b3a.1.1736903432806;
+        Tue, 14 Jan 2025 17:10:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF3T7jY4Un/GVvHybJxTCkVjve+F5Y0teXAQHqW8ABRXQL/bE+TzgQkL46rPnKEjXOJqhEHmw==
+X-Received: by 2002:a05:6a00:ac2:b0:725:ea30:ab15 with SMTP id d2e1a72fcca58-72d21f7eba6mr35942672b3a.1.1736903432464;
+        Tue, 14 Jan 2025 17:10:32 -0800 (PST)
+Received: from acelan-precision5470 (118-163-61-247.hinet-ip.hinet.net. [118.163.61.247])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4067ef71sm8273881b3a.135.2025.01.14.17.10.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 15:53:42 -0800 (PST)
-Date: Wed, 15 Jan 2025 00:53:23 +0100
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, andrej.skvortzov@gmail.com,
-	neil.armstrong@linaro.org, icenowy@aosc.io, megi@xff.cz,
-	danila@jiaxyga.com, javier.carrasco.cruz@gmail.com, andy@kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <20250114235323.3xkktco7fsb6pmzk@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
-References: <20250112104453.45673-1-apokusinski01@gmail.com>
- <20250112104453.45673-3-apokusinski01@gmail.com>
- <CAHp75VedQvf2xwY3fDWX=FQaHyhaUSVJW3Y6Yt2ecpwru756vw@mail.gmail.com>
- <20250113221905.ruv3w3k4w53hvf2b@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
- <CAHp75Vf-zdsh6CP3XX6jyjVutch9Z_iH78zrpaFkt9WkP=qz4w@mail.gmail.com>
+        Tue, 14 Jan 2025 17:10:31 -0800 (PST)
+Date: Wed, 15 Jan 2025 09:10:25 +0800
+From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
+To: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jiri Kosina <jikos@kernel.org>
+Subject: Re: [PATCH v2] iio: hid-sensor-attributes: validate sensitivity
+ attributes
+Message-ID: <73lfadj2ss27z3p2u3cknvymnkdiuq5g775armqf4w25h6q372@bzlsbnakclqu>
+Mail-Followup-To: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>, 
+	srinivas pandruvada <srinivas.pandruvada@linux.intel.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Peter Zijlstra <peterz@infradead.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jiri Kosina <jikos@kernel.org>
+References: <20250114070227.1778298-1-acelan.kao@canonical.com>
+ <75131fa5a35f8ffae23087aa19c8a8238f381d4d.camel@linux.intel.com>
+ <9929d10e1d61f63e4fe461eea9efc42eb91fa44a.camel@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75Vf-zdsh6CP3XX6jyjVutch9Z_iH78zrpaFkt9WkP=qz4w@mail.gmail.com>
+In-Reply-To: <9929d10e1d61f63e4fe461eea9efc42eb91fa44a.camel@linux.intel.com>
 
-On Tue, Jan 14, 2025 at 11:43:11AM +0200, Andy Shevchenko wrote:
-> On Tue, Jan 14, 2025 at 12:19â€¯AM Antoni Pokusinski
-> <apokusinski01@gmail.com> wrote:
-> 
-> > Thanks for the review. I'm currently implementing some changes in the
-> > driver according to the review, however I have some doubts regarding
-> > removal of the `i2c_client` from `si7210_data`.
-> 
-> ...
-> 
-> > > > +struct si7210_data {
-> > > > +       struct i2c_client *client;
-> > >
-> > > Do we really need a room for that? Isn't it derivable from the below
-> > > regmap? Also note the frequency of use of client vs. regmap. The
-> > > result in the object file can be much better if regmap becomes the
-> > > first member here. Check it (with bloat-o-meter, for example).
-> > >
-> >
-> > I used arm-linux-nm and the bloat-o-meter to compare the sizes and it
-> > turned out that the version which contains the `i2c_client` has
-> > slightly smaller size actually. Here are the results:
-> >
-> > $ ./scripts/bloat-o-meter -p arm-linux-  ./old_si7210.ko  ./new_si7210.ko
-> > add/remove: 0/0 grow/shrink: 1/0 up/down: 4/0 (4)
-> > Function                                     old     new   delta
-> > si7210_probe                                 556     560      +4
-> > Total: Before=4021, After=4025, chg +0.10%
-> >
-> > Here is the diff (shortened for better readability) between
-> > the old_si7210.ko (uses `si7210_data->i2c_client`) and
-> > new_si7210.ko (does not use `si7210_data->i2c_client`):
-> >
-> >  struct si7210_data {
-> > -       struct i2c_client *client;
-> >         struct regmap *regmap;
-> > ...
-> >  static int si7210_device_wake(struct si7210_data *data)
-> >  {
-> > +       struct device *dev = regmap_get_device(data->regmap);
-> >         int ret;
-> >
-> > -       ret = i2c_smbus_read_byte(data->client);
-> > +       ret = i2c_smbus_read_byte(to_i2c_client(dev));
-> > ...
-> > static int si7210_probe(struct i2c_client *client)
-> >         data = iio_priv(indio_dev);
-> > -       data->client = client;
-> >
-> > Hence, I guess that it's actually better to leave the `i2c_client` as it is.
-> 
-> I don't think you have tested all that I was talking about, i.e. have
-> you tried to swap the positions of client and regmap? What I expect is
-> that when you swap them you will see a good size reduction due to
-> pointer arithmetics becoming no-op for the regmap pointer. And then
-> the dropping of the client might waste all that beneficial size.
-> 
+On Tue, Jan 14, 2025 at 09:12:54AM -0800, srinivas pandruvada wrote:
+> On Tue, 2025-01-14 at 05:28 -0800, srinivas pandruvada wrote:
+> > On Tue, 2025-01-14 at 15:02 +0800, Chia-Lin Kao (AceLan) wrote:
+> > > An invalid sensor device was observed in HP 5MP Camera (USB ID
+> > > 0408:5473)
+> > > which provided valid index and report_ids for poll, report_state
+> > > and
+> > > power_state attributes, but had invalid report_latency,
+> > > sensitivity,
+> > > and
+> > > timestamp attributes. This would cause the system to hang when
+> > > using
+> > > iio_info to access attributes, as runtime PM tried to wake up an
+> > > unresponsive sensor.
+> > > 
+> > > Fix this by validating both sensitivity.index and
+> > > sensitivity_rel.index
+> > > during sensor probe. Since valid sensors must initialize these with
+> > > non-negative values, reject the sensor if either index is negative.
+> > > 
+> > 
+> > These are optional fields by spec. So we can't reject sensor. I worry
+> > that this will cause more regressions.
+> > 
+> > We will need a blocked list. We don't process "Persistent Unique ID"
+> > or
+> > "Sensor Manufacturer/Model". Please check if the report descriptors
+> > have any of these fields described in section 1.5 of spec.
+> > 
+> > > 
+> We probably may not be able to read the above features, I suggest add
+> this device Vendor=0408 ProdID=5473 
+> hid_ignore_list[].
+Yes, this works for me, too.
+I'll go with this way and submit another patch later.
 
-Ok, so I've tried to swap the `i2c_client` and `regmap` pointers and...
-there was no change shown by the bloat-o-meter. The only improvement was
-that the new object file (that is after moving the `regmap` to the
-beginning of the struct) was 8 bytes smaller in file size.
-
-Out of curiosity I've also tried moving
-the `regmap` further away in the structure (e.g. I placed it after the
-regulator and mutex) but there was still no change. I am a bit confused,
-since this behavior is different from what you described that it should
-be.
-
-> > > > +       struct regmap *regmap;
-> > > > +       struct regulator *vdd;
-> > > > +       struct mutex fetch_lock; /* lock for a single measurement fetch */
-> > > > +       s8 temp_offset;
-> > > > +       s8 temp_gain;
-> > > > +       s8 scale_20_a[A_REGS_COUNT];
-> > > > +       s8 scale_200_a[A_REGS_COUNT];
-> > > > +       u8 curr_scale;
-> > > > +};
 > 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-
-Kinds regards,
-Antoni
+> Thanks,
+> Srinivas
+> 
+> 
+> 
+> > > [    2.594565] [453] hid-sensor-hub 0003:0408:5473.0003: Report
+> > > latency attributes: ffffffff:ffffffff
+> > > [    2.594573] [453] hid-sensor-hub 0003:0408:5473.0003: common
+> > > attributes: 5:1, 2:1, 3:1 ffffffff:ffffffff ffffffff:ffffffff
+> > > [    2.595485] [453] hid-sensor-hub 0003:0408:5473.0003: Report
+> > > latency attributes: ffffffff:ffffffff
+> > > [    2.595492] [453] hid-sensor-hub 0003:0408:5473.0003: common
+> > > attributes: 5:11, 3:11, 1:11 ffffffff:ffffffff ffffffff:ffffffff
+> > > 
+> > > T:  Bus=03 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+> > > D:  Ver= 2.01 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+> > > P:  Vendor=0408 ProdID=5473 Rev=00.07
+> > > S:  Manufacturer=Quanta
+> > > S:  Product=HP 5MP Camera
+> > > S:  SerialNumber=01.00.00
+> > > C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+> > > I:  If#= 0 Alt= 0 #EPs= 1 Cls=0e(video) Sub=01 Prot=01
+> > > Driver=uvcvideo
+> > > E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=16ms
+> > > I:  If#= 1 Alt= 0 #EPs= 0 Cls=0e(video) Sub=02 Prot=01
+> > > Driver=uvcvideo
+> > > I:  If#= 2 Alt= 0 #EPs= 1 Cls=0e(video) Sub=01 Prot=01
+> > > Driver=uvcvideo
+> > > E:  Ad=85(I) Atr=03(Int.) MxPS=  16 Ivl=16ms
+> > > I:  If#= 3 Alt= 0 #EPs= 0 Cls=0e(video) Sub=02 Prot=01
+> > > Driver=uvcvideo
+> > > I:  If#= 4 Alt= 0 #EPs= 1 Cls=03(HID  ) Sub=00 Prot=00
+> > > Driver=usbhid
+> > > E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=16ms
+> > > I:  If#= 5 Alt= 0 #EPs= 0 Cls=fe(app. ) Sub=01 Prot=01
+> > > Driver=(none)
+> > > 
+> > > v2. add fixes tag and the device info
+> > These change description goes below "---" line.
+> > 
+> > Thanks,
+> > Srinivas
+> > 
+> > > 
+> > > Fixes: bba6d9e47f3e ("iio: hid-sensor-attributes: Fix sensor
+> > > property
+> > > setting failure.")
+> > > Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+> > > ---
+> > >  .../hid-sensors/hid-sensor-attributes.c       | 23 +++++++++++----
+> > > --
+> > > --
+> > >  1 file changed, 14 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > index ad1882f608c0..b7ffd97e6c56 100644
+> > > --- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > +++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
+> > > @@ -564,8 +564,21 @@ int hid_sensor_parse_common_attributes(struct
+> > > hid_sensor_hub_device *hsdev,
+> > >  	} else
+> > >  		st->timestamp_ns_scale = 1000000000;
+> > >  
+> > > +	ret = 0;
+> > > +	if (st->sensitivity.index < 0 || st->sensitivity_rel.index
+> > > <
+> > > 0) {
+> > > +		ret = -EINVAL;
+> > > +		goto out;
+> > > +	}
+> > > +
+> > >  	hid_sensor_get_report_latency_info(hsdev, usage_id, st);
+> > >  
+> > > +	ret = sensor_hub_get_feature(hsdev,
+> > > +				st->power_state.report_id,
+> > > +				st->power_state.index,
+> > > sizeof(value), &value);
+> > > +	if (value < 0)
+> > > +		ret = -EINVAL;
+> > > +
+> > > +out:
+> > >  	hid_dbg(hsdev->hdev, "common attributes: %x:%x, %x:%x,
+> > > %x:%x
+> > > %x:%x %x:%x\n",
+> > >  		st->poll.index, st->poll.report_id,
+> > >  		st->report_state.index, st-
+> > > >report_state.report_id,
+> > > @@ -573,15 +586,7 @@ int hid_sensor_parse_common_attributes(struct
+> > > hid_sensor_hub_device *hsdev,
+> > >  		st->sensitivity.index, st->sensitivity.report_id,
+> > >  		timestamp.index, timestamp.report_id);
+> > >  
+> > > -	ret = sensor_hub_get_feature(hsdev,
+> > > -				st->power_state.report_id,
+> > > -				st->power_state.index,
+> > > sizeof(value), &value);
+> > > -	if (ret < 0)
+> > > -		return ret;
+> > > -	if (value < 0)
+> > > -		return -EINVAL;
+> > > -
+> > > -	return 0;
+> > > +	return ret;
+> > >  }
+> > >  EXPORT_SYMBOL_NS(hid_sensor_parse_common_attributes, "IIO_HID");
+> > >  
+> > 
+> 
 

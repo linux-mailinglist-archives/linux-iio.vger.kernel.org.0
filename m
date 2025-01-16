@@ -1,212 +1,170 @@
-Return-Path: <linux-iio+bounces-14403-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14404-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C02A142CA
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 21:06:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BDDA143EB
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 22:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFDE169EBF
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 20:06:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77EE3A88BF
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 21:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA62361DE;
-	Thu, 16 Jan 2025 20:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE9C1D5CD3;
+	Thu, 16 Jan 2025 21:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFvQuXVQ"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="eKiSr0OB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AE023243D;
-	Thu, 16 Jan 2025 20:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FC81AAA37
+	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 21:18:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737057981; cv=none; b=o2fAZrT5QVXV2qCY/HYVwhlWzmST28oeXsRI9dbp7vVMf1ltXbC2MMGZPFvOoQD2H17NJ4G9Tw57tlgh4VUd7PhakMAgODj3x+GTkR3Jzo+34k/tqcGp/aMYGtCAdG6ZZItvX/uzTOqZ82pBsS0NjvWxOF4+RFFA5WFjqpmwfrE=
+	t=1737062305; cv=none; b=aFxuoUo90pUeRdxxUvgFVSbzM87xX5KatYLAvlOGg06pVva21r0wt9jdw413084kGLo8wG3zf0IwmXF8zMZMtXg+iwh2C0bKVxGRmYPSyXSPZJJpxoi23uAJRZDtPOvLtsKXqTrLA1EP97X2xYPt16A/UXq7jw/WdxNUkPKbdUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737057981; c=relaxed/simple;
-	bh=GLGMKnHT3WJfJKUIeW6Onw/IFAiUQIIsoXJ7IG2GFNE=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L96Lr4KY1QX08HryIutyEwX26ylg/sdqU8AeKexEbNoB7wLnRyfrDHgLR3OvM4bLvlvME8zVrDB/QJkqStXeDJTIdJPE6vZN0sENo+b8IW88Ryb1q6Q1Hma3aE9QZGwQeNVWKH1SowoUGS/k5CdGtZzeR9164b5dAymBUzsFAm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFvQuXVQ; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4364a37a1d7so12735725e9.3;
-        Thu, 16 Jan 2025 12:06:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737057977; x=1737662777; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KA64jD3Buukkg5rIZGBFs0alua5iyaC4SBSUtwrxfak=;
-        b=SFvQuXVQhG3g+oGoOcLXuVcnP5iG7boQhF3fGh1VIHYmA1t89ATKJYvfDNJw0AiNfJ
-         /O/U7ys6PGdpHtuCkV/gHFnd74rT16LT8lJP34xeoQNIeuNaUvRnwGcv8UOmLDDjFxOl
-         /DHluoM53PFegWQpZ7UZ4DmsojCTfMSDkYyJpE8pg0vR83RasBK/GStgFkCJvwSqWSGv
-         cxU9uNKIFfCG2x2TGFd/BqYh8tPDOhaeJCsPWLcsa/avTarK9HfWKDTNz6hpO/XOERuw
-         UxJSUNcAFKnnmT4ufBpE16PtSPiwCKJWLBkLFVBnG7pXywAg1Ytm03rLtLisicevv8Bc
-         NEuw==
+	s=arc-20240116; t=1737062305; c=relaxed/simple;
+	bh=lGPE/siAy9MNUtanz/bONZNEOefFLJSE9/V8gLVyRFQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MruoAN+cIPhPyy5QNWsPPe1COO20kxztHXcgwzU/vNuk2yIqlFl6n+yu1P21PEct6pP7Zs9AwtagaF4cKvjoX3pGRc41yjMemxGQpfapfYA8y/2G0ymhVuwfPSOrVJF9V8JKwg8FC/N4sikX0+LOMpTWPx/pCohgwIcv7QlI5cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=eKiSr0OB; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50GFpie1013414
+	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 21:18:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	V0DFQF6jf95eF1muG5nl9hA5YaKwuY5/TJsBMMOUBsw=; b=eKiSr0OBATnrSA78
+	9DCzuA+IOJSafBylp6EaAz+U4G9nSXS0FHBG3k820iVaMheXDNRYHd6E4rN06rh5
+	QGp81vj5ZfWB9KTqgvCvb1LKY3z0NteljNiv0gWlKTVKchUVU98JPreYF/vSToEg
+	xQ6Ff3RBjxVZ6h1k17Z72rjL6RVgcTDTYMkRf7S4z64r2JV5IE+7mL2ObdZrQ5/z
+	zsnMYz67iTsBg1LydPspGyIN1ZOz01s5PmOaZgJQOQsITH4gx5R4JawTm1vvL+bk
+	yeistoHDtS66onEoeBDdRDcNl63xY7fkbf3AY0IHq2fjTktJq/sqDMGRH9yrXNQj
+	IRWmKQ==
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44754g8s61-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 21:18:22 +0000 (GMT)
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-4678aa83043so3470671cf.1
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 13:18:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737057977; x=1737662777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KA64jD3Buukkg5rIZGBFs0alua5iyaC4SBSUtwrxfak=;
-        b=BXxHoqntmlzT8ewsqa45XxeqWG6JW79UpKe7Pg5sHD8mdUf/VDOf7Ug4qtA8xndEu4
-         eDvOHSHfFKDt6y8nhJFUiJl9EK0ltargOW3c8oK7NeIl3e3wx8x2tRmwk9QYygkCDEM5
-         H/jqcXM1lngUqODab+d/CmaxlLQXmhpKZ9RpchplRNEoqJ+ZgWVtlq/mjv6huXNCK2s3
-         ehPqfBUbbLazKNWq2bozCHrrzU4MudrJmDL6ZdCT+d3OeaO6t69mpvOyT05r9SB2R0fg
-         IS6YlzcNVoIfsuz9GhiQiMFaRcWx0EkWCRCiOyPOgTOWxQwCL5CMGxHLnZlPmytiXFUy
-         Soyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVW+lAjZcSqt6fUXchfSY8teYn6MvCFc/FHTTITg62xp3wVfOUs+Ai6jrWNZwbH0AxkWDuPiBIHsyf/CYBn@vger.kernel.org, AJvYcCVsmqNtwn/hfUieJ/yXRm5RZAX8bpCWiejtMSHWR0OVn0uJh5wk+jJ8ep5ysFif8cDhCAxjeXWFEUDJ@vger.kernel.org, AJvYcCWCcu+4jiCEG2kgYFnhPMMpKxpB/m+fDeaaCCWZnNCCingjHTbeHruJut+7B7dX/OwqEeRu0hyNUwRJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvE9Ja3JZNNl1JKzt697uz1utmlvs49QpL1Gz2SaVahnlcVYle
-	1y9Wd6ku2lMfuIdBZH0GsBLXuXAFbtkCMwBPlIu2tN2RYGpgNnm9
-X-Gm-Gg: ASbGncuZVJQhK3C+02llGum554lRtguItR6rdMF/vzZP3d1caeqPMmI0y+LUJCPWcUY
-	AnqUpCSornSMiDgCQgRW1mj1JgfbiGdum7KXEkVkKMzJUKp8bOCwQGU7jH2CKP9bYvdjESGSUTl
-	6zy2f8x+Ne+y73FO1u0tbdwovA7QPspXC4DrCkIW+Xat3bSSNMaUp69MMG4WipLFTSGck28tsnf
-	KeuVLrQ8EyBKioLvUiJyp+N77gvXpyhmrk2nYV0tdatIdiv/sQjBkblrimGTzRq7M6N7LUa2RWB
-	dquzKqn1k51gzudmpnD/M+y2
-X-Google-Smtp-Source: AGHT+IH/Nl8ZXLmN+OwqX2FWXpVEfDLGjeAsw6lOyJLbfz4NdXK3jc2a1GLVBxqN+XczGNpYlJqyUg==
-X-Received: by 2002:a05:600c:1ca9:b0:434:f297:8e78 with SMTP id 5b1f17b1804b1-438913cb65fmr567945e9.7.1737057976341;
-        Thu, 16 Jan 2025 12:06:16 -0800 (PST)
-Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([37.161.111.60])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749956fsm70283175e9.4.2025.01.16.12.06.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 12:06:15 -0800 (PST)
-Date: Thu, 16 Jan 2025 21:05:58 +0100
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-To: Andy Shevchenko <andy@kernel.org>, jic23@kernel.org, lars@metafoo.de,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	andrej.skvortzov@gmail.com, neil.armstrong@linaro.org,
-	icenowy@aosc.io, megi@xff.cz, danila@jiaxyga.com,
-	javier.carrasco.cruz@gmail.com, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <20250116200558.mr23jxpdpwyu62md@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
-References: <20250115201622.270130-1-apokusinski01@gmail.com>
- <20250115201622.270130-3-apokusinski01@gmail.com>
- <Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
+        d=1e100.net; s=20230601; t=1737062301; x=1737667101;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V0DFQF6jf95eF1muG5nl9hA5YaKwuY5/TJsBMMOUBsw=;
+        b=LrRwm3tgdM4Tl+A+QqBK5KfqJh3T4+4sXbSvE+yrvaBMZENbDg9NrJo/wWOn6GanVB
+         WnYFae5JmVPs71a4ku/wX96otDNq2IIvLb68DpOsm+5zQsf3yO+TcjF89I4hhY/Y3Y9C
+         rYX759ftETopzpXtlBQc7aE4WuTQVijdCEPA7Wrc283l9mYiisnjSxZK2CH1qPGz8wYQ
+         fJKC2l/Ms8j1fPJarUAhCIvUiiUdq88aaQ8i9rr8bl/TyAhCaBzRxdg+Kl11K0dyUIFL
+         YMgWidNDe92y1bRn+c98vO1OQGjZzvQ5shP7cC7O0SD1PBy2gpGW58UAuakpwUgaU+Ai
+         idrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVegsWj5krHhCpZo2aRnX+GXaaX5t1Agn+percBRqs+ucS7k5aWOXHX0QWGLe8AomvP4J9v9kb8oEw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMiLku3odQDA9d2o3xyojADoIE/OtoCLlqwlN18kRtgID3zDEN
+	St7LYmfxzaH4IsKQqICfN4oU6JO+GHzcgA+mmWV1r/Sr4eVVuSofKqzQsjK7+CCs2ebUK8jVNJA
+	t2s0tjPhc1R2c+Yl88ysBhtHUyoEOyGZioRPF9vjVi5oJB7h9Je5VoYRiuqM=
+X-Gm-Gg: ASbGncvux+5pKQho4Kg2iVDbfwn7BbJRJCN6cbiS3yLwyoy4yuGXx+3gGFcJRTXm7tp
+	l6CaDGKmf3jx2XFu4YBrtuAETez79emc82FYQ72kQ+S3lKBz/DxuKxs3+M/hZuJ0K37D2jzzw8f
+	DMPvQrr+mVBDIAayKxcgZGG1bZIbZWyvmNJIiK5GZULvedjbOVSEDIIsOp/7NkSXBJU8JDLpVNT
+	qWdPozQiN9Wjy2oDQ5F2EPfgh5zg6+WOhWFVZgJt7U3MjXcmZOea4p8rkRSVJTQ0hoSSn6WMkGM
+	sCaYNZQxPZBaDxl63COtqMGoBAX4i7L9U/Y=
+X-Received: by 2002:ac8:7d13:0:b0:467:5eaf:7d23 with SMTP id d75a77b69052e-46e12a15fd7mr1317081cf.2.1737062300919;
+        Thu, 16 Jan 2025 13:18:20 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF0ktFkGh+DnzAEzmtJNQCdOdkCJ8QnEy5QQmWqMAIAlas/Q26HM+/LY+1fKPjfS1SWYGhwPg==
+X-Received: by 2002:ac8:7d13:0:b0:467:5eaf:7d23 with SMTP id d75a77b69052e-46e12a15fd7mr1316731cf.2.1737062300457;
+        Thu, 16 Jan 2025 13:18:20 -0800 (PST)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5db73ee04c8sm436772a12.80.2025.01.16.13.18.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Jan 2025 13:18:19 -0800 (PST)
+Message-ID: <c6b4f933-f51b-42c4-8f80-c63fa832776b@oss.qualcomm.com>
+Date: Thu, 16 Jan 2025 22:18:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 3/5] thermal: qcom: Add support for MBG thermal
+ monitoring
+To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>, Amit Kucheria <amitk@kernel.org>,
+        Thara Gopinath <thara.gopinath@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+Cc: Ajit Pandey <quic_ajipan@quicinc.com>,
+        Imran Shaik <quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        Jagadeesh Kona <quic_jkona@quicinc.com>, quic_kamalw@quicinc.com,
+        quic_jprakash@quicinc.com, linux-arm-msm@vger.kernel.org,
+        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
+ <20241212-mbg-v2-support-v2-3-3249a4339b6e@quicinc.com>
+ <cf2f2510-9d27-4473-bf50-45b14725f4c5@oss.qualcomm.com>
+ <c5079172-e127-4dfc-826a-b32489d852f8@quicinc.com>
+ <ba764e00-2968-447f-99d1-5925e7782491@oss.qualcomm.com>
+ <eef55e66-629a-46c4-822b-bce41cff51a2@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <eef55e66-629a-46c4-822b-bce41cff51a2@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: XN8VdAuxkojHa5XUkrIroA4fwE-9bRXc
+X-Proofpoint-ORIG-GUID: XN8VdAuxkojHa5XUkrIroA4fwE-9bRXc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-16_09,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 adultscore=0 malwarescore=0 mlxscore=0 clxscore=1015
+ lowpriorityscore=0 bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501160157
 
-On Thu, Jan 16, 2025 at 10:26:55AM +0200, Andy Shevchenko wrote:
-> On Wed, Jan 15, 2025 at 09:16:22PM +0100, Antoni Pokusinski wrote:
-> > Silicon Labs Si7210 is an I2C Hall effect magnetic position and
-> > temperature sensor. The driver supports the following functionalities:
-> > * reading the temperature measurements
-> > * reading the magnetic field measurements in a single-shot mode
-> > * choosing the magnetic field measurement scale (20 or 200 mT)
+On 16.01.2025 9:05 AM, Satya Priya Kakitapalli wrote:
 > 
-> ...
+> On 12/30/2024 7:36 PM, Konrad Dybcio wrote:
+>> On 30.12.2024 10:45 AM, Satya Priya Kakitapalli wrote:
+>>> On 12/13/2024 9:18 PM, Konrad Dybcio wrote:
+>>>> On 12.12.2024 5:11 PM, Satya Priya Kakitapalli wrote:
+>>>>> Add driver for the MBG thermal monitoring device. It monitors
+>>>>> the die temperature, and when there is a level 1 upper threshold
+>>>>> violation, it receives an interrupt over spmi. The driver reads
+>>>>> the fault status register and notifies thermal accordingly.
+>>>>>
+>>>>> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+>>>>> ---
+>>>> [...]
+>>>>
+>>>>> +static const struct mbg_map_table map_table[] = {
+>>>> Is this peripheral/pmic-specific?
+>>>
+>>> Yes, peripheral specific.
+>> Okay, I asked a question that I don't recall what I meant by.
+>>
+>> To be clear, is this table specific to all instances of MBG on
+>> different kinds of PMIC7, or does it only apply to PM8775
+>> specifically?
 > 
-> > +obj-$(CONFIG_SI7210) 			+= si7210.o
 > 
-> Looks like TAB/space mixture in the middle.
-> 
-> ...
-> 
-> > +#include <asm/byteorder.h>
-> 
-> asm/* usually goes after linux/*
-> 
-> > +#include <linux/array_size.h>
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bits.h>
-> > +#include <linux/cleanup.h>
-> > +#include <linux/err.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/math64.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/types.h>
-> > +#include <linux/units.h>
-> 
-> ...
-> 
-> Despite a good formatting I would still add a comment with a formula in
-> math-human-readable form.
-> 
-> > +		temp = FIELD_GET(GENMASK(14, 3), dspsig);
-> > +		temp = div_s64(-383 * temp * temp, 100) + 160940 * temp - 279800000;
-> > +		temp *= (1 + (data->temp_gain / 2048));
-> > +		temp += (int)(MICRO / 16) * data->temp_offset;
-> 
-> > +		ret = regulator_get_voltage(data->vdd);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +
-> > +		temp -= 222 * div_s64(ret, MILLI);
-> 
-> Including this piece.
-> 
-> > +		*val = div_s64(temp, MILLI);
-> 
-> ...
-> 
-> > +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
-> > +{
-> > +	s8 *a_otp_values;
-> > +	int ret;
-> > +
-> > +	if (scale == 20)
-> > +		a_otp_values = data->scale_20_a;
-> > +	else if (scale == 200)
-> > +		a_otp_values = data->scale_200_a;
-> > +	else
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&data->fetch_lock);
-> > +
-> > +	/* Write the registers 0xCA - 0xCC */
-> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
-> > +	if (ret)
-> > +		return ret;
-> 
-> > +	/* Write the registers 0xCE - 0xD0 */
-> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
-> > +	if (ret)
-> > +		return ret;
-> 
-> Just to be sure I understand the above. There are two of 24-bit values or there are
-> two sets of 3 byte arrays? How does datasheet refers to them? What does common sense
-> tell us here?
-> 
+> No it is not specific to PM8775 pmic, it is specific to MBG peripheral.
 
-It's the second option: we have 2 arrays of 3 elements each (a0, a1, a2
-and a3, a4, a5). In the datasheet the names of the values correspond
-to the names I used in the driver, that is there are 6 values a0, ..., a5.
+OK, that is good, thanks for confirming.
 
-The point is that the their registers are separated by the 0xCD register.
-Therefore I had to call `regmap_bulk_write()` twice in order to
-write values a0 - a2 to the registers 0xCA - 0xCC and similarly the
-values a3 - a5 to the regs 0xCE - 0xD0.
+Konrad
 
-> > +	data->curr_scale = scale;
-> > +
-> > +	return 0;
-> > +}
-> 
-> ...
-> 
-> Overall LGTM, there is no need for resend as I believe the three things above
-> may be tweaked by Jonathan. The last one can go even if there are 2 24-bit
-> values, but ideally in that case we should use those as a such and apply
-> put_unaligned_be24/le24() whichever suits better.
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
-> 
-Kind regards,
-Antoni
 

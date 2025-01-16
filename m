@@ -1,207 +1,152 @@
-Return-Path: <linux-iio+bounces-14389-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14390-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513AFA13726
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 10:57:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFB2A13913
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 12:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E917F16273D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 09:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB8018896AA
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 11:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E0D1DC046;
-	Thu, 16 Jan 2025 09:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0EB1DE88B;
+	Thu, 16 Jan 2025 11:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xHHmWMAJ"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="SBylZs2J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070271DDA0F
-	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 09:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6CC1DE2B8
+	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 11:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737021418; cv=none; b=InmTtF111bnZPO16NAnkZ+YjKx0DEO/DDd25ByXSoclaI7aEULm5/pm9GqxBDexORNCXkKcMx7D9VyMYDqOoZD+KARQDB5psok7yJmsdaSBYqX3A1rpQ881SPbaLpuhcallPVOqO1YEfe6nTXz4pUasrAyzSxD0mVm7gYSW/8kg=
+	t=1737027251; cv=none; b=MRmSennpKYUXIvgR1Srd5qEZPhu8YMiouUpxqufid1aDtenPDZ3IYHGxy2eUqBxBX9cu1t2NiBBV02QkcE1HT58Mynfkf+DrjgZXaUmKOYnSIrxjQwsBOIiTdWEwLD6f7v+o4VYPucDfxoVguAOiH5CxcLny9WfLEEQSeB4wLnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737021418; c=relaxed/simple;
-	bh=bSTSw17VRWxk/xy9xUiK8S7/og3Vs5qKzAmU3LPaFJg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=YfToM9O8N9XrBJZnpQ8QUGmLWYfJ1DXaIO6N+Q6sfFgvCZRavJFnq51KbdgrIRAO2XurH9v2VFyZcSpaOWwhiSp2QEDga4RBhnfNf1v+jKgDI/YjuFTRO460bxf7DM250AgmehD7y3ynUMlhJffONulnd/mCLiTu6GYFfDfu/jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xHHmWMAJ; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43634b570c1so4142735e9.0
-        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 01:56:55 -0800 (PST)
+	s=arc-20240116; t=1737027251; c=relaxed/simple;
+	bh=hXneXuQ61cYntgNn/sssniG0GrUQ4hSFAcED56KHbH8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R0pEP2AK3SqWSNmtF2HWFa5CbQ+LxmMOb9ftJsMTPmWFHV4ixG1mhzo3F7klMoI/vTWJP8FqNCuUnqcahvF7T9pHvrAZZ+ash63ZijSvuvBzYnk5M5qAOzYaERGwAIA2hxAA6ax83ZOG0D1Kw+6LtEcYhni3SxjQ9WEU0SH5yRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=SBylZs2J; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-21628b3fe7dso13145015ad.3
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 03:34:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737021414; x=1737626214; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uSHdPWcKmGVbVZP59aw95qXWV3lI61LHVfnVxsl+FKA=;
-        b=xHHmWMAJGVTWl/1NjISnu6Gx3ZoEERkBhguwvjscYlixUlfNj3HmKwNi9WcIiHhZ9B
-         ehcIMC61DYP0hihyrTeOHNInlgFtioNL+g3OIJxcPLkIQ5QYJceGW+bDThOwKZMFb+/y
-         nvygLbzxSpdO7KLBjFY3opzSZEUJahCz9KA3bGws8UMftpuz9BjAp0WgmNNzkizqXn/d
-         XJc+jUdlObyEKxmMjkyVCUaVINIwlW2PP1COrzCfGq/RXjfhd7H3nJBMgy5dsU/d6vce
-         n0CQyrNDLodODqYAciP3S0hY06m/IXoJS0ZjYWh9VcUyd0VFpY2tKxKXnanIA1Z0XCgB
-         yt1Q==
+        d=tweaklogic.com; s=google; t=1737027248; x=1737632048; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7YktfQbK04MmcrLOtepFIXUYlByhE6kzjeLH7SfhVzM=;
+        b=SBylZs2J7hpeLVZwrZt16G7iExemqMiAuJSLkmccRPiEG9QoNUYsGVJehBMyyERSN2
+         46/R66vz6hudpyjQEAT5R36uHBV53ne4UTuf5JcYEoB2HwlGlvu4H168ONvfF/Tptxfr
+         5V/pMeotn8F7iAIMLdqHTQ6vwg46bq4TNUgodwmjZrdK66uvwSvTo72auwOIZQn2aop3
+         JD4nFxk8nOi5MYX4QTbbEyEabaoK0+cJXBl0sEwBZ+FhEfv+FpkOolgRBWB2nm/w0xAp
+         mLfEmRLHstZyJ/e/9rwzNVMkQLhyLTM02v5wpxaFWZHl40VnsPONSpL6clacJ3wX4Wb7
+         KmRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737021414; x=1737626214;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=uSHdPWcKmGVbVZP59aw95qXWV3lI61LHVfnVxsl+FKA=;
-        b=p4RlB4Sehc0vel9Q2LTBFfa534IZkqwmCE6D1b9D6JaKB1mia9NGytG2GKfL/jh8fm
-         LoiZTfOYiruaOJyYaXbLUp2nUn/jT2Zw0eU/ubOVcF0qoZN3I1ntMHlridKsGF6+fU+Z
-         JtFLx5joxbJZaVIRhefOsNNQQ9/VP+nDkwkHRWV5aQ7YJhR9Bdb3VQJ7tAUycglHI+Mv
-         birNeltst5N/vsZEjAwp17iNPbNDC09v3kxNLh6nTbRJJg3m3JIJHuDHQqE8c5P0k3nM
-         0K8VYn7Czq++lSRf05qC/pdh41xCqkj9ItPCiX7hkUkptbeB0N5xSFbm9p3uYKKRgzg8
-         TBmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJbRd+nITOn9b4jW7cKc8FSQoS04VGABPH5RX7M1JbAO1UVlOOodW3gIB3uUoMPe4jI0Vguw85wxk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWx+48HfuZMmSN/7bo2DdBAYS0PaLGiMbovekW8H/Qa/wF8hKE
-	6ty9iWW0MZOHq1AS9E/c824+HVZDMz3S6RpVsakySj214AZ9wf4hcC8jtLeR+rA=
-X-Gm-Gg: ASbGncuU+evTu7nSHOieTEnWlf1YNzvBazgz2SSfGogS5RQOiAJLoCXuMF123Kz2q2c
-	5NaDI6WI8cf+wybdd8d2/kDbXvbygaAo/5R9Zj7DafsqZ16xwM9GhXQdN1Ml/ELonNN26JKsbto
-	7JVKRYmhlkNsSLFBeGe7A0Jovko3wOjZXj+3WbTRKgrIv9/ZyruZ7tEjJDwHaSCTWs0XC8plzah
-	kFqlihWFuHFIXk2PkY9jR5dxwVZfOqR/3xcit6cEdTMfPSpmiCW8+cTT5T2/H5qZJZTjNhjBupc
-	EKUMCiIhcXlAgsxBerW0MwZqDMLJSPoJiFPm/rSn/oM=
-X-Google-Smtp-Source: AGHT+IGDFKX1Ve2idO8rktH4XrAM8D4PejdzCkU13Mh4eAnD5iUv/2BgriTku9Ruht6b1WvCpXNR/w==
-X-Received: by 2002:a05:600c:3485:b0:436:fbe0:cebe with SMTP id 5b1f17b1804b1-436fbe0d10cmr156292295e9.30.1737021414316;
-        Thu, 16 Jan 2025 01:56:54 -0800 (PST)
-Received: from localhost (2a02-8440-9206-2584-91c4-ce73-527f-308a.rev.sfr.net. [2a02:8440:9206:2584:91c4:ce73:527f:308a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74e5e69sm52765865e9.37.2025.01.16.01.56.52
+        d=1e100.net; s=20230601; t=1737027248; x=1737632048;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7YktfQbK04MmcrLOtepFIXUYlByhE6kzjeLH7SfhVzM=;
+        b=Li9cPF4LoO5U6UYBTbmmmaSHOFl+RJwGYSE8ATc8reSorWQOPTs4TxsMwWl+YgqPKq
+         Ommipbp28fLdN02Zyj0BAeoecpOctYkOYj0xkv7/0m1UK82FCtBhr6jci9IrLOHmGcqu
+         fB8v/AhUD4y+L9Z5XTiQZrByEzj9nAoBN3asGZ7zbZZq9kAvBC1DzsC0iqke8ukZDbgw
+         HEJ2n4aRAgDjRD8kS+zKZCrcnj77KWzh8ol4H1Qo3g0V/h4GVaGC6FFWAfaorIrFf465
+         B5W5ry84i+/E1WXJQZgTQAjEgp3q6fqV1rVj+bkETpP0BYk5suKaPLvcDPH9p5szbmbp
+         emtg==
+X-Gm-Message-State: AOJu0YyIQSkfyvJAiCltUKdAJsXLKOcEKr3qPiIpU2ZKIMihyAbKa0sR
+	b1ruF/PWXAfO/O+6k5f2+pXkZujsvzur7bHO2+UensX8rvLfktlgdYAr5s/S/20=
+X-Gm-Gg: ASbGncuJi/o0xj/8msOoqSSVB05CUFUwVrpOVQUTchm9p1OWhHzZJB2NlYuYm8NGcgS
+	nVlI6spudIV2tiYfQM9LLQgMzkXuPjzfZhMO+RV0D8OTqjKZNv5Z5G61MciBEheqyIAs/b11481
+	FlZ4xCUbM7fttIAZw9xu/vwLrOZVjm47n8EMSg7KmeiOB7GuIkOgkVjiXllzhGxIR0JHbQM7Tq3
+	gEOvghDDmUaLF7e2+DUIFld4llYVvceVGHb549RRIvD0r/aG4wN3/+7BQCEicjQppoxFP+OdY1z
+X-Google-Smtp-Source: AGHT+IHn0LVg8saEn8D4DZWe1zUwgh/bi1Q+v/D6XJ0zjNhEGPRiwLuR9bIWFuiS8tWZKmN8T2HC6A==
+X-Received: by 2002:a05:6a00:858b:b0:728:8c17:127d with SMTP id d2e1a72fcca58-72d21f2da93mr50495307b3a.8.1737027247871;
+        Thu, 16 Jan 2025 03:34:07 -0800 (PST)
+Received: from [192.168.50.161] ([180.150.112.66])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-a317b761b9asm11387383a12.12.2025.01.16.03.34.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 01:56:53 -0800 (PST)
+        Thu, 16 Jan 2025 03:34:07 -0800 (PST)
+Message-ID: <ad1b01ba-53c0-4adf-aee4-a9bc0ff88ae0@tweaklogic.com>
+Date: Thu, 16 Jan 2025 22:04:01 +1030
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 Jan 2025 10:56:51 +0100
-Message-Id: <D73EP8AHW10K.9JIP74RQOHU4@baylibre.com>
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Michael Hennerich"
- <Michael.Hennerich@analog.com>, =?utf-8?q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, "Jonathan Cameron" <jic23@kernel.org>, "Rob Herring"
- <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor
- Dooley" <conor+dt@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v2 2/6] iio: adc: ad4030: add driver for ad4030-24
-From: "Esteban Blanc" <eblanc@baylibre.com>
-To: "Marcelo Schmitt" <marcelo.schmitt1@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20241219-eblanc-ad4630_v1-v2-0-f36e55907bf5@baylibre.com>
- <20241219-eblanc-ad4630_v1-v2-2-f36e55907bf5@baylibre.com>
- <Z2eqOSN2Uk8SfTq1@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <Z2eqOSN2Uk8SfTq1@debian-BULLSEYE-live-builder-AMD64>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: apds9306: fix max_scale_nano values
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+References: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
+Content-Language: en-US
+From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun Dec 22, 2024 at 6:57 AM CET, Marcelo Schmitt wrote:
-> Hello Esteban, some comments inline.
->
-> On 12/19, Esteban Blanc wrote:
-> > This adds a new driver for the Analog Devices INC. AD4030-24 ADC.
-> >=20
-> > The driver implements basic support for the AD4030-24 1 channel
-> > differential ADC with hardware gain and offset control.
-> >=20
-> > Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
-> > ---
-> [...]
-> > +
-> > +static int ad4030_spi_read(void *context, const void *reg, size_t reg_=
-size,
-> > +			   void *val, size_t val_size)
-> > +{
-> > +	int ret;
-> > +	struct ad4030_state *st =3D context;
-> > +	struct spi_transfer xfer =3D {
-> > +		.tx_buf =3D st->tx_data,
-> > +		.rx_buf =3D st->rx_data.raw,
-> > +		.len =3D reg_size + val_size,
-> > +		.speed_hz =3D AD4030_SPI_MAX_REG_XFER_SPEED,
-> Is speed_hz really needed? What happens if the controller can't clock at =
-80MHz?
-The goal was to reduce the speed when reading/writing to a register with
-a value like 10MHz. The issue I ran into is that with my setup (Zedboard
-with FPGA-based SPI controller) when I chose a speed lower than 80Mhz
-the value read are wrong. The whoami check in `ad4030_detect_chip_info`
-is failling. So for now, I left it at 80Mhz while I'm trying to figure
-out what's going on with the controller
->
-> > +	};
-> > +
-> > +	if (xfer.len > ARRAY_SIZE(st->tx_data) ||
-> > +	    xfer.len > ARRAY_SIZE(st->rx_data.raw))
-> > +		return  -EINVAL;
->
-> Would it make sense to bring register configuration mode commands into th=
-e
-> regmap calls?
-> I mean, to do the ad4030_enter_config_mode() transfer here and the
-> ad4030_exit_config_mode() at the end of this function.
-> From datasheet, it looks like both enter/exit config mode are required fo=
-r reg
-> access so why not doing them in the regmap callbacks?
-> With that, I think it won't be needed to call register config mode functi=
-ons
-> in ad4030_single_conversion() and in buffer enable/disable functions.
-> Might need implement regmap_config read and write callbacks to properly h=
-andle
-> regmap_bulk_read/write interface.
-Yes, good idea.
->
->
-> > +
-> > +	memset(st->tx_data, 0, ARRAY_SIZE(st->tx_data));
-> > +	memcpy(st->tx_data, reg, reg_size);
-> > +
-> > +	ret =3D spi_sync_transfer(st->spi, &xfer, 1);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	memcpy(val, &st->rx_data.raw[reg_size], val_size);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> [...]
-> > +
-> > +static int ad4030_get_chan_calibscale(struct iio_dev *indio_dev,
-> > +				      struct iio_chan_spec const *chan,
-> > +				      int *val,
-> > +				      int *val2)
-> > +{
-> > +	struct ad4030_state *st =3D iio_priv(indio_dev);
-> > +	u16 gain;
-> > +	int ret;
-> > +
-> > +	ret =3D regmap_bulk_read(st->regmap, AD4030_REG_GAIN_CHAN(chan->addre=
-ss),
-> > +			       st->rx_data.raw, AD4030_REG_GAIN_BYTES_NB);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	gain =3D get_unaligned_be16(st->rx_data.raw);
-> My impression is that it is a bit odd to handle endianness after/before
-> calling regmap_read/write(). Can you try set
-> .val_format_endian_default =3D REGMAP_ENDIAN_BIG, in ad4030_regmap_bus?
-> If that doesn't help, what about doing the get/set_unaligned stuff within
-> the bus read/write calls?
-I've addressed that in another email after Jonathan's comment.
->
-> > +
-> > +	/* From datasheet: multiplied output =3D input =C3=97 gain word/0x800=
-0 */
-> > +	*val =3D gain / 0x8000;
-> Use a define to give a name to the gain constant?
-Sure.
+On 12/1/25 10:38, Javier Carrasco wrote:
+> The two provided max_scale_nano values must be multiplied by 100 and 10
+> respectively to achieve nano units. According to the comments:
+> 
+> Max scale for apds0306 is 16.326432 → the fractional part is 0.326432,
+> which is 326432000 in NANO. The current value is 3264320.
+> 
+> Max scale for apds0306-065 is 14.09721 → the fractional part is 0.09712,
+> which is 97120000 in NANO. The current value is 9712000.
+> 
+> Update max_scale_nano initialization to use the right NANO fractional
+> parts.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>   drivers/iio/light/apds9306.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> index 69a0d609cffc91cc3daba160f309f511270be385..5ed7e17f49e76206609aba83c85e8144c536d17d 100644
+> --- a/drivers/iio/light/apds9306.c
+> +++ b/drivers/iio/light/apds9306.c
+> @@ -108,11 +108,11 @@ static const struct part_id_gts_multiplier apds9306_gts_mul[] = {
+>   	{
+>   		.part_id = 0xB1,
+>   		.max_scale_int = 16,
+> -		.max_scale_nano = 3264320,
+> +		.max_scale_nano = 326432000,
+>   	}, {
+>   		.part_id = 0xB3,
+>   		.max_scale_int = 14,
+> -		.max_scale_nano = 9712000,
+> +		.max_scale_nano = 97120000,
+>   	},
+>   };
+>   
+> 
+> ---
+> base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
+> change-id: 20241218-apds9306_nano_vals-d880219a82f2
+> 
+> Best regards,
+Hi Javier,
 
-Best regards,
+You are correct.
+  From iio_gts_linearize() function in industrialio-gts-helper.c
+*lin_scale = (u64)scale_whole * (u64)scaler + (u64)(scale_nano / (NANO / scaler));
+where "scaler" equals NANO (1000000000UL)
 
---=20
-Esteban Blanc
-BayLibre
+I tested it, no issues. The values did not deviate much as this is nano scale.
+
+Tested-by: subhajit.ghosh@tweaklogic.com
+
+Regards,
+Subhajit Ghosh
+
 

@@ -1,141 +1,212 @@
-Return-Path: <linux-iio+bounces-14402-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14403-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E82A14162
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 19:04:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C02A142CA
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 21:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62C251889226
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 18:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFDE169EBF
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 20:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC11222A7E4;
-	Thu, 16 Jan 2025 18:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA62361DE;
+	Thu, 16 Jan 2025 20:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="avfKKATl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SFvQuXVQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26ADD14EC4E
-	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 18:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AE023243D;
+	Thu, 16 Jan 2025 20:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737050642; cv=none; b=qFEdHEtZyT7/Ez8Y/S2Ip2nbZZR2e4rzeT6Pvakg9gpIoO5V7vMZZiMHPstuQswwRNXGtRcj1ZJDT+V64IRrMSqEdNYPFRxqr5ZJZuyO0yxbxGaj2s2opRi8jH/K+DNt0UU2Wx606nQ6bf4IzEgYF7uiFZpKyA/5fyZiPhtRpcc=
+	t=1737057981; cv=none; b=o2fAZrT5QVXV2qCY/HYVwhlWzmST28oeXsRI9dbp7vVMf1ltXbC2MMGZPFvOoQD2H17NJ4G9Tw57tlgh4VUd7PhakMAgODj3x+GTkR3Jzo+34k/tqcGp/aMYGtCAdG6ZZItvX/uzTOqZ82pBsS0NjvWxOF4+RFFA5WFjqpmwfrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737050642; c=relaxed/simple;
-	bh=GwRq+kkkV8MvTF7h5hme6wF7GfXh8COHwtUtoOZOKPk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Wsi93HUb4LsvQxeCqczgdbG7L9U3CnW3luXYnV5HVDkN3Zz1eliMu+543E1tSid/GBwrac5TWvF2YFOft4+yKA3/yCFiUAcrXIqhY84Zx1CocTgAtmpPO7e3FIJKlIY0vRXNDMcSAapLSo8IE+znhGHiCOAdTIo6zDMQQ9LbJYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=avfKKATl; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436341f575fso13007515e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 10:03:58 -0800 (PST)
+	s=arc-20240116; t=1737057981; c=relaxed/simple;
+	bh=GLGMKnHT3WJfJKUIeW6Onw/IFAiUQIIsoXJ7IG2GFNE=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L96Lr4KY1QX08HryIutyEwX26ylg/sdqU8AeKexEbNoB7wLnRyfrDHgLR3OvM4bLvlvME8zVrDB/QJkqStXeDJTIdJPE6vZN0sENo+b8IW88Ryb1q6Q1Hma3aE9QZGwQeNVWKH1SowoUGS/k5CdGtZzeR9164b5dAymBUzsFAm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SFvQuXVQ; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4364a37a1d7so12735725e9.3;
+        Thu, 16 Jan 2025 12:06:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737050637; x=1737655437; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P44xYIdsnKaC0FnL0MZlr1/0CS2jA87vVv89Y7kFczo=;
-        b=avfKKATlW78jXqWLJr2hxucByf5CPaddMWxCfnsrwA6rS3AUmZ0hNrArDx1sTPr+xX
-         M7x8zGJWE5r06joSMd421EPGbflOq2rKJ6rOy1l6k/LvZxAi8YSBiEw72BULR1njM3ZO
-         oKogOFS7QpsOcTmTaWJQ88Al2DxX7e4HKAijuEfLjTTX7fG7J83XfoUd8dbC8SNEA9u3
-         csEmEZRAs9jI5uUqH7VwXIBuB4sO59OOg0dOmcG2ENohKIkQobK5SZpUL2W5T4Npa2LJ
-         cML2IIyFuBBKM1eDPHzfVivf9ZuVvWDr0qhDMYnrcf4OT6V6HGEX9+krOT6j76wcZy7J
-         74BQ==
+        d=gmail.com; s=20230601; t=1737057977; x=1737662777; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KA64jD3Buukkg5rIZGBFs0alua5iyaC4SBSUtwrxfak=;
+        b=SFvQuXVQhG3g+oGoOcLXuVcnP5iG7boQhF3fGh1VIHYmA1t89ATKJYvfDNJw0AiNfJ
+         /O/U7ys6PGdpHtuCkV/gHFnd74rT16LT8lJP34xeoQNIeuNaUvRnwGcv8UOmLDDjFxOl
+         /DHluoM53PFegWQpZ7UZ4DmsojCTfMSDkYyJpE8pg0vR83RasBK/GStgFkCJvwSqWSGv
+         cxU9uNKIFfCG2x2TGFd/BqYh8tPDOhaeJCsPWLcsa/avTarK9HfWKDTNz6hpO/XOERuw
+         UxJSUNcAFKnnmT4ufBpE16PtSPiwCKJWLBkLFVBnG7pXywAg1Ytm03rLtLisicevv8Bc
+         NEuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737050637; x=1737655437;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P44xYIdsnKaC0FnL0MZlr1/0CS2jA87vVv89Y7kFczo=;
-        b=tJ6nRf7i/7RcYEE7sA8XPJdawsbSJcG46oNAeL5cPx6JWd7uHSPCaHPzWJvoTWALlg
-         wXIK0jMVbqOyHMi40xqRdFF9cuvLOoWEu8pIUF/umDd/79Qiqpy4JDdt7zuu6NqWMqgJ
-         SrYVGEyKfX2xwXe4chud/y2QmaggTZlxb63qRLWk9S0W+GXGbmtlG6NyfkvDRarF/Bj8
-         nC7PUW/l+g2yAvoAuUg9Az1VVGM9LrGPfBfiJjIfhkRknptGDjR6zX1TJ8d68fyWqjsG
-         FC1lzLeX9xx8PsgXEyxXpVOXvQKVrTh+mg9AOwnQxT36spkklFECZmAX/gmrGhopsohz
-         R31Q==
-X-Gm-Message-State: AOJu0YzvwVuugXrViuIn5e0FHhW/AmBCfA3yoQ82ZvPrxRR5Us7492tE
-	NM/HZSu/qmepVk+eyEhqLVEaZGNzeiVfzCwt6wr4uvQJ3HOF4lLzNeDWkXiOoBA=
-X-Gm-Gg: ASbGncuRM4FIep1TqNk5w4EIFbdFw61FrxORvZ1I48tNpKqamEcH+TPzf0aPtldz9Zi
-	L1apjlQ7Uo5tt9tA386kwLffTeb5ilKassDLsCLe6SWtMkVW/82fdsapO1u3k9fimEENx46JBdU
-	IYs4meUymLfbsu8ru9TyJaVE2+AnUOnSVKZPdhBBnPjakDehbO5XEZK5J6XmAhbqhtzSncK+Fga
-	aCjRhkdzZ/qE+NHqDrgnXOA6aS2BSefSCp7OJRdPSAwknLVvKPULeLGMhaNq0ZSZc1c7tqTltuM
-	07Eo1O7cethjiLwVOViV49A=
-X-Google-Smtp-Source: AGHT+IE5K2A6fnsCVjxy7TzKSh8H0/POAomFCSGQovICWV7B2HCmlYooCyQjDHAtwEh4ItFJ0OS3Gg==
-X-Received: by 2002:a5d:59ab:0:b0:385:eb7c:5d0f with SMTP id ffacd0b85a97d-38a8730db6cmr30771581f8f.26.1737050637195;
-        Thu, 16 Jan 2025 10:03:57 -0800 (PST)
-Received: from localhost (p200300f65f0afb0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f0a:fb04::1b9])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab384f1e57bsm27662766b.104.2025.01.16.10.03.56
+        d=1e100.net; s=20230601; t=1737057977; x=1737662777;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KA64jD3Buukkg5rIZGBFs0alua5iyaC4SBSUtwrxfak=;
+        b=BXxHoqntmlzT8ewsqa45XxeqWG6JW79UpKe7Pg5sHD8mdUf/VDOf7Ug4qtA8xndEu4
+         eDvOHSHfFKDt6y8nhJFUiJl9EK0ltargOW3c8oK7NeIl3e3wx8x2tRmwk9QYygkCDEM5
+         H/jqcXM1lngUqODab+d/CmaxlLQXmhpKZ9RpchplRNEoqJ+ZgWVtlq/mjv6huXNCK2s3
+         ehPqfBUbbLazKNWq2bozCHrrzU4MudrJmDL6ZdCT+d3OeaO6t69mpvOyT05r9SB2R0fg
+         IS6YlzcNVoIfsuz9GhiQiMFaRcWx0EkWCRCiOyPOgTOWxQwCL5CMGxHLnZlPmytiXFUy
+         Soyg==
+X-Forwarded-Encrypted: i=1; AJvYcCVW+lAjZcSqt6fUXchfSY8teYn6MvCFc/FHTTITg62xp3wVfOUs+Ai6jrWNZwbH0AxkWDuPiBIHsyf/CYBn@vger.kernel.org, AJvYcCVsmqNtwn/hfUieJ/yXRm5RZAX8bpCWiejtMSHWR0OVn0uJh5wk+jJ8ep5ysFif8cDhCAxjeXWFEUDJ@vger.kernel.org, AJvYcCWCcu+4jiCEG2kgYFnhPMMpKxpB/m+fDeaaCCWZnNCCingjHTbeHruJut+7B7dX/OwqEeRu0hyNUwRJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvE9Ja3JZNNl1JKzt697uz1utmlvs49QpL1Gz2SaVahnlcVYle
+	1y9Wd6ku2lMfuIdBZH0GsBLXuXAFbtkCMwBPlIu2tN2RYGpgNnm9
+X-Gm-Gg: ASbGncuZVJQhK3C+02llGum554lRtguItR6rdMF/vzZP3d1caeqPMmI0y+LUJCPWcUY
+	AnqUpCSornSMiDgCQgRW1mj1JgfbiGdum7KXEkVkKMzJUKp8bOCwQGU7jH2CKP9bYvdjESGSUTl
+	6zy2f8x+Ne+y73FO1u0tbdwovA7QPspXC4DrCkIW+Xat3bSSNMaUp69MMG4WipLFTSGck28tsnf
+	KeuVLrQ8EyBKioLvUiJyp+N77gvXpyhmrk2nYV0tdatIdiv/sQjBkblrimGTzRq7M6N7LUa2RWB
+	dquzKqn1k51gzudmpnD/M+y2
+X-Google-Smtp-Source: AGHT+IH/Nl8ZXLmN+OwqX2FWXpVEfDLGjeAsw6lOyJLbfz4NdXK3jc2a1GLVBxqN+XczGNpYlJqyUg==
+X-Received: by 2002:a05:600c:1ca9:b0:434:f297:8e78 with SMTP id 5b1f17b1804b1-438913cb65fmr567945e9.7.1737057976341;
+        Thu, 16 Jan 2025 12:06:16 -0800 (PST)
+Received: from antoni-VivoBook-ASUSLaptop-X512FAY-K512FA ([37.161.111.60])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c749956fsm70283175e9.4.2025.01.16.12.06.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 10:03:56 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Subject: [PATCH] iio: adc: ad7124: Micro-optimize channel disabling
-Date: Thu, 16 Jan 2025 19:03:41 +0100
-Message-ID: <20250116180342.161323-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.1
+        Thu, 16 Jan 2025 12:06:15 -0800 (PST)
+Date: Thu, 16 Jan 2025 21:05:58 +0100
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: Andy Shevchenko <andy@kernel.org>, jic23@kernel.org, lars@metafoo.de,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	andrej.skvortzov@gmail.com, neil.armstrong@linaro.org,
+	icenowy@aosc.io, megi@xff.cz, danila@jiaxyga.com,
+	javier.carrasco.cruz@gmail.com, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] iio: magnetometer: si7210: add driver for Si7210
+Message-ID: <20250116200558.mr23jxpdpwyu62md@antoni-VivoBook-ASUSLaptop-X512FAY-K512FA>
+References: <20250115201622.270130-1-apokusinski01@gmail.com>
+ <20250115201622.270130-3-apokusinski01@gmail.com>
+ <Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1764; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=GwRq+kkkV8MvTF7h5hme6wF7GfXh8COHwtUtoOZOKPk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBniUn+mk25K5P0L4+Eodthff0QCZl3G6pSYPiL7 F2BgzXMnQOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ4lJ/gAKCRCPgPtYfRL+ TjQ4B/42aDBExTlhSn2mQubQqo3uSWY9EpVbCBbl4q82ZH1ycpawXrVW8vHsM0SmUK3wXUYfLVX DatspVhS7Oo1NP3cAWwrTn+7h4+p47vO70YBavDfYnJXTtIcsrnfKd73w9jFO1YJeF6eC+NOQPU FTqBI5GqMdPr4U9pLyI4hpKRYGM/gp4H/bz/HU1v9c6mvWGL0D3dUVlj3P8enhfQLnGneGyRB64 LLjLMuZWTLorpChq1bYS1TpdszITJywQQKmPFf0DYRUZ9/BR6IPsrKk82PziIG0IT4kE4D4HxuX Le4r7GOe8LA6lMDk0NxUPH2zV/7vdQrtElGzjEXQKhe7Re9E
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
 
-The key objective in ad7124_disable_one() is clearing the
-AD7124_CHANNEL_EN_MSK bit in the channel register. However there is no
-advantage to keep the other bits in that register because when the
-channel is used next time, all fields are rewritten anyhow. So instead
-of using ad7124_spi_write_mask() (which is a register read plus a
-register write) use a simple register write clearing the complete
-register.
+On Thu, Jan 16, 2025 at 10:26:55AM +0200, Andy Shevchenko wrote:
+> On Wed, Jan 15, 2025 at 09:16:22PM +0100, Antoni Pokusinski wrote:
+> > Silicon Labs Si7210 is an I2C Hall effect magnetic position and
+> > temperature sensor. The driver supports the following functionalities:
+> > * reading the temperature measurements
+> > * reading the magnetic field measurements in a single-shot mode
+> > * choosing the magnetic field measurement scale (20 or 200 mT)
+> 
+> ...
+> 
+> > +obj-$(CONFIG_SI7210) 			+= si7210.o
+> 
+> Looks like TAB/space mixture in the middle.
+> 
+> ...
+> 
+> > +#include <asm/byteorder.h>
+> 
+> asm/* usually goes after linux/*
+> 
+> > +#include <linux/array_size.h>
+> > +#include <linux/bitfield.h>
+> > +#include <linux/bits.h>
+> > +#include <linux/cleanup.h>
+> > +#include <linux/err.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/math64.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/mutex.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> > +#include <linux/types.h>
+> > +#include <linux/units.h>
+> 
+> ...
+> 
+> Despite a good formatting I would still add a comment with a formula in
+> math-human-readable form.
+> 
+> > +		temp = FIELD_GET(GENMASK(14, 3), dspsig);
+> > +		temp = div_s64(-383 * temp * temp, 100) + 160940 * temp - 279800000;
+> > +		temp *= (1 + (data->temp_gain / 2048));
+> > +		temp += (int)(MICRO / 16) * data->temp_offset;
+> 
+> > +		ret = regulator_get_voltage(data->vdd);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +
+> > +		temp -= 222 * div_s64(ret, MILLI);
+> 
+> Including this piece.
+> 
+> > +		*val = div_s64(temp, MILLI);
+> 
+> ...
+> 
+> > +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
+> > +{
+> > +	s8 *a_otp_values;
+> > +	int ret;
+> > +
+> > +	if (scale == 20)
+> > +		a_otp_values = data->scale_20_a;
+> > +	else if (scale == 200)
+> > +		a_otp_values = data->scale_200_a;
+> > +	else
+> > +		return -EINVAL;
+> > +
+> > +	guard(mutex)(&data->fetch_lock);
+> > +
+> > +	/* Write the registers 0xCA - 0xCC */
+> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
+> > +	if (ret)
+> > +		return ret;
+> 
+> > +	/* Write the registers 0xCE - 0xD0 */
+> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
+> > +	if (ret)
+> > +		return ret;
+> 
+> Just to be sure I understand the above. There are two of 24-bit values or there are
+> two sets of 3 byte arrays? How does datasheet refers to them? What does common sense
+> tell us here?
+> 
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
----
-Hello,
+It's the second option: we have 2 arrays of 3 elements each (a0, a1, a2
+and a3, a4, a5). In the datasheet the names of the values correspond
+to the names I used in the driver, that is there are 6 values a0, ..., a5.
 
-while looking at traces I spotted this unnecessary register read. On my
-machine (de10nano) this register read takes ~23 µs when doing
+The point is that the their registers are separated by the 0xCD register.
+Therefore I had to call `regmap_bulk_write()` twice in order to
+write values a0 - a2 to the registers 0xCA - 0xCC and similarly the
+values a3 - a5 to the regs 0xCE - 0xD0.
 
-	cat /sys/bus/iio/devices/iio:device0/in_temp_raw
-
-. Compared to the time the chip needs for the actual conversion (~400
-ms) this is little gain, but still. And more relevant for me: It
-simplifies trace studies.
-
-To state the obvious: This is totally not urgent and merge window
-material.
-
-Best regards
-Uwe
-
- drivers/iio/adc/ad7124.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 6ae27cdd3250..73c831626bf3 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -559,7 +559,8 @@ static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
- {
- 	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
- 
--	return ad7124_spi_write_mask(st, AD7124_CHANNEL(chan), AD7124_CHANNEL_EN_MSK, 0, 2);
-+	/* The relevant thing here is that AD7124_CHANNEL_EN_MSK is cleared. */
-+	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan), 2, 0);
- }
- 
- static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
-
-base-commit: b323d8e7bc03d27dec646bfdccb7d1a92411f189
--- 
-2.47.1
-
+> > +	data->curr_scale = scale;
+> > +
+> > +	return 0;
+> > +}
+> 
+> ...
+> 
+> Overall LGTM, there is no need for resend as I believe the three things above
+> may be tweaked by Jonathan. The last one can go even if there are 2 24-bit
+> values, but ideally in that case we should use those as a such and apply
+> put_unaligned_be24/le24() whichever suits better.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
+> 
+Kind regards,
+Antoni
 

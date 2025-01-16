@@ -1,52 +1,79 @@
-Return-Path: <linux-iio+bounces-14397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14398-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D23A13B52
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 14:54:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58440A13D3B
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 16:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFFA83A3D3D
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 13:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53DA27A31AD
+	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D10722B5AD;
-	Thu, 16 Jan 2025 13:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC1B22B8DA;
+	Thu, 16 Jan 2025 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mblRpUOY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="u/UekPDb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E1022AE75;
-	Thu, 16 Jan 2025 13:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFC51F37DF
+	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 15:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737035613; cv=none; b=ApY3HhK6jIfWTcM2zi0gQMLnD1IsdQrCVbTJPomPZC4Jr5snERwjJHw3TLHeGUJjOWcvIwPOGFGMHwjFbbC5ne4J7qotVNMKL3oYh3hIPYHejS0p7UX8muMHtIPRH7bFAOlU9ZU20fZL9f4hCd8IJD2eO7BDSVE0Rr1u0WIFibA=
+	t=1737040013; cv=none; b=UzFohHVl98ksHJ9Xe4GpzxBARy0CuNaKCGK/7ZXARksv0LLqupYnqZndkZSnUEsi6fRD+zflCu7Ptkyzsce0dq+w1EXpN/ySGE6eOaG1xWoqSc6anliaotV9K+2lBUCWyJ6f2wKEQOi/IcXp4m+5RMClD823zAhw0Upe7/TA51I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737035613; c=relaxed/simple;
-	bh=KZRoP5Cjgcq1f45YrvRYeCZ9m1rJx7lSPGLRnbbpDFo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uun6Pn4ZTJdoT++lM605mjsAVRTCXTQCc5yR7/fvJumMkmE0kNyFfobUzONEhAZ7ZP/qRVnA5Vo/P0yMub0JQV7A2BJOPFsjSbjfaRw3usQG43cUafMN9Ox3s1z80ZwvjwGKUPLYamBAJfeQs82uRxeC4XANfyWsHUzB4J49bWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mblRpUOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DFBBC4CEE7;
-	Thu, 16 Jan 2025 13:53:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737035613;
-	bh=KZRoP5Cjgcq1f45YrvRYeCZ9m1rJx7lSPGLRnbbpDFo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=mblRpUOYEOqWYOSnuITNcxI4gut+S4GMtEBPsXPnnfU7UszxI0gowclFRYMXzgknm
-	 HXVy3pOaT0OZtr66SLZ5DUnupSVd5SeMouLxhd6GP6crmzHwppONRCK78WPRVi40OV
-	 UBOSow2mDH++s3WMM5w1mvkd1w+gsAuC9BzV6HU2moxPI5cWCjB6/u/38cnLK+zkPa
-	 eyvq+D5a9F0K2knvmWjEktkfnNF7ZkSlSypJlOJ1o4CtXtFOMtFOubXyPXquRSuU4o
-	 BaLCfjCcN3STT2FN5vUpgz4qF8247NRjMIGdqenzDTo6bTb8+YESnboViY1f+wHOE+
-	 tS7i9oTRnwQ7g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 36004C02183;
-	Thu, 16 Jan 2025 13:53:33 +0000 (UTC)
-From: Vasiliy Doylov via B4 Relay <devnull+nekodevelopper.gmail.com@kernel.org>
-Date: Thu, 16 Jan 2025 16:52:46 +0300
-Subject: [PATCH RESEND v4 5/5] iio: accel: mc3230: add mc3510c support
+	s=arc-20240116; t=1737040013; c=relaxed/simple;
+	bh=KBS/P9I2LLrNLn1NS1QGqm5TzUjueDRuJiqVE2TtIjw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=r6Y+v6aaZEAN7A7IyAPkr9xNdVcxmmWjrGq74GEGJPccl10VEnM3T/NWR6DUYrv1MjLUuteWuTbsPbpmm+AnPVs3pO1T5zIGVfsjLXb46IJSRZu4GItUrTKzkUCxtKEDPM1hXzt2DRepnGQMtKtICnXoDx9NsucPpNqMzBA7UPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=u/UekPDb; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43623f0c574so6830225e9.2
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 07:06:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737040009; x=1737644809; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GHqDURXTtTcKsvrcQ66g+RmlMvyDdroySV3/8MzmCow=;
+        b=u/UekPDbXd0nb7dEYnKcVNvjfcTHOyFbw/swaRfLx6aYXz6+LbZskq6FlZ2W/Xo12I
+         zN9rGYHHwxwkkVHOE4NqoEm8uSK3TmmLFpaL5kb0uXcPcOo+RiFh20QKQ1N5m4GzmTzd
+         r2fn/G2njTndSjdLx3Fl68yoMeniEZmuldPKHejtsYrWtFs9c98JB/Uz6jXzzR1LDI9C
+         a8x0kWpFrlGjr5EzkwIPuaMlmLRrp7D0FBpUke8dpywY4UqkIkf/UyfKB2n4B8Kh29tQ
+         9yBPfS8n8NCOs9enBYEO0/71NJzGMsDhJqIN5C+cise3QmjAi1a7uNfaqBi6urXPeokg
+         dv0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737040009; x=1737644809;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GHqDURXTtTcKsvrcQ66g+RmlMvyDdroySV3/8MzmCow=;
+        b=oFHsc3hk1hac6JU/Az4UCcJLGxFSKPSVjSdXQ8vwZokW9q+DlmN5Dn3y+U8kXmaCtr
+         ZepPJWjepGMslHyMTxQP2hlnbpUqDyGZiLqAxF0oFHaWYxe8puJ5cH/8w2Dj4f/Rvb+L
+         clLvX/WZYu8Ku3j5tDmdy5obLVBb2FuZVJq522XLafA2I4lK5VnKvS13QnLSjaZUqLtO
+         eAuw3q3Dl+69AUvHmA6HrgqLi726RljaU4YhfuBkiGN0LGIDf7vc+o1WV/19wOfd1SDw
+         wmN2DeNfEJOmPNlzVw/vK9bNfBZsDwBXZLNficpXsQ7urYo1I/8qFJN9k9spyvDBk5aQ
+         QSUw==
+X-Gm-Message-State: AOJu0Yx+BtAlrDUe1aY57oXELGaZ4HqnwpheDmUDGobnjDXyPkMM9gY2
+	F54ALmWDyyg+I6wgA8o9PWgX1GKJ67HP4wNsdRuL6aEI/6riOJyjiFc5bBJXjPM=
+X-Gm-Gg: ASbGncsy+MVbv1JHDo7YmOVmupImbxhhuVeEwEoS3PzVyZm+jIsyijp2Q0wXv4l8LF4
+	6tJz+3lSW3UGdZ4PrbAmgvv6LnzMRt50h6VxqoZh8CLaHkRA4SryXfk8UuTSbCZgtR67S00v8Tx
+	v4d0Ayr+hjWt6GdAp91zayX16yTw/R6uEKg9FcSKiBA9XhlE+Ta3bEhJDWw8CTvEW5ucq7mjd8X
+	R0iZEatPsOACxP3lW/muoegrxtcAkYl2B9adusf6n0xSnH+fCMMJnal60thgKl59h/Lj/BAAQRg
+	Dq02qcEDyDg7ugAZPm7ikgsQ65Q=
+X-Google-Smtp-Source: AGHT+IEew7ONB+f0ddWN9gZK72dm60y1I7zYki1lZgF261svGgnGh93CkieFRTxBmcwymR3M+Pibog==
+X-Received: by 2002:a05:600c:3c85:b0:434:a802:e99a with SMTP id 5b1f17b1804b1-436e267821emr299459455e9.4.1737040007539;
+        Thu, 16 Jan 2025 07:06:47 -0800 (PST)
+Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43890408a66sm2199445e9.5.2025.01.16.07.06.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 07:06:46 -0800 (PST)
+From: Guillaume Ranquet <granquet@baylibre.com>
+Subject: [PATCH RFC v3 0/2] iio: adc: ad7173: add ad4111 openwire detection
+ support
+Date: Thu, 16 Jan 2025 16:01:45 +0100
+Message-Id: <20250116-ad4111_openwire-v3-0-ea9ebf29bd1d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,79 +82,75 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250116-mainlining-mc3510c-v4-5-a41308b85ec2@gmail.com>
-References: <20250116-mainlining-mc3510c-v4-0-a41308b85ec2@gmail.com>
-In-Reply-To: <20250116-mainlining-mc3510c-v4-0-a41308b85ec2@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFkfiWcC/3WP3UoDMRBGX2XJtSNJatgfRISCD+CtSJkkExtwd
+ 9skrlvKvrvZaC+qeDV8M8w5M2cWKXiKrKvOLNDkox+HHDY3FTN7HN4IvM2ZSS7vhBAK0K51Nx5
+ o+PSBgJSypLGRbe1Y3joEcn4uxBf2/LRlr9/NQMePTE8/k55ixELvqvtr+Lwz+O51wJRvgUmAA
+ OUaya3TyjT8UeNpHdOtGfuHVakxEuTQ+9RVA80JLsAi3/uYxnAqL06i2P/9ptisbms0jXZSXds
+ KbpIXhOKCt38REjjwTS2NtJa4oV+IZVm+ALd6FHd2AQAA
+X-Change-ID: 20241115-ad4111_openwire-e55deba8297f
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Vasiliy Doylov <nekodevelopper@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1524;
- i=nekodevelopper@gmail.com; h=from:subject:message-id;
- bh=9Z3q0OsDzL5ZwgOvYT7Efze32gsUcd3XbTfzqI4bFbA=;
- b=owGbwMvMwCW2fZ/SFZeSpU2Mp9WSGNI7+aOn5M9Vtetu2X/nb0/DoXDuDWe/3jxhnbnT3ODbK
- mOu+qupHaUsDGJcDLJiiiw2Gz1mi+WHS06a9lQBZg4rE8gQBi5OAZiIRinDH/6Q44tOh6uIhUkt
- f3//fn/Mc5tXJTbxkkXBf25F+B/SMWb476qVyJ6RcI8r68E9qY9tDJeire4d8/He2Hmo+O8z383
- +jAA=
-X-Developer-Key: i=nekodevelopper@gmail.com; a=openpgp;
- fpr=3CB1489B166F57199296E520B7BE22D44474A582
-X-Endpoint-Received: by B4 Relay for nekodevelopper@gmail.com/default with
- auth_id=314
-X-Original-From: Vasiliy Doylov <nekodevelopper@gmail.com>
-Reply-To: nekodevelopper@gmail.com
+ Guillaume Ranquet <granquet@baylibre.com>
+X-Mailer: b4 0.15-dev
 
-From: Vasiliy Doylov <nekodevelopper@gmail.com>
+Hi.
 
-This change integrates mc3510c support into the mc3230 driver.
-MC3510C uses the same registers as MC3230, but a different value scale.
+This patch adds the openwire detection support for the ad4111 chip.
 
-Tested on Huawei MediaPad T3 10 (huawei-agassi)
+The openwire detection is done in software and relies on comparing the
+results of two conversions on different channels.
 
-Signed-off-by: Vasiliy Doylov <nekodevelopper@gmail.com>
+The openwire detection on ad4111 is triggered automatically when a
+single conversion is requested.
+Due to the way openwire detection works on ad4111, implementing openwire
+detection for continuous conversion mode is out of the scope of this
+series.
+
+Following discussion on V2, I have changed the event to be
+IIO_EV_TYPE_FAULT and added a direction called IIO_EV_DIR_OPENWIRE to
+signal the specific fault.
+
+The fault is level triggered (ie: the event will be sent as long as the
+fault persists).
+There's no event to signal that the fault has been "fixed", an absence
+of FAULT event means that the open wire condition is not detected.
+
+Thx,
+Guillaume.
+
+Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
 ---
- drivers/iio/accel/mc3230.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Changes in v3:
+- Rename IIO_EV_TYPE_OPENWIRE to IIO_EV_TYPE_FAULT and add
+  IIO_EV_DIR_OPENWIRE.
+- Remove per channel open wire threshold configuration interface.
+- Link to v2: https://lore.kernel.org/r/20250109-ad4111_openwire-v2-0-0372c2dde0ce@baylibre.com
 
-diff --git a/drivers/iio/accel/mc3230.c b/drivers/iio/accel/mc3230.c
-index c8d394c3ecf08fad60f0f2ae7be6fd992327d843..e2853090fa6e15f4dd74e996fae8520b30471d3b 100644
---- a/drivers/iio/accel/mc3230.c
-+++ b/drivers/iio/accel/mc3230.c
-@@ -46,6 +46,14 @@ static const struct mc3230_chip_info mc3230_chip_info = {
- 	.scale = 115411765,
- };
- 
-+static const struct mc3230_chip_info mc3510c_chip_info = {
-+	.name = "mc3510c",
-+	.chip_id = 0x23,
-+	.product_code = 0x10,
-+	/* Was obtained empirically */
-+	.scale = 625000000,
-+};
-+
- #define MC3230_CHANNEL(reg, axis) {	\
- 	.type = IIO_ACCEL,	\
- 	.address = reg,	\
-@@ -225,12 +233,14 @@ static DEFINE_SIMPLE_DEV_PM_OPS(mc3230_pm_ops, mc3230_suspend, mc3230_resume);
- 
- static const struct i2c_device_id mc3230_i2c_id[] = {
- 	{ "mc3230", (kernel_ulong_t)&mc3230_chip_info },
-+	{ "mc3510c", (kernel_ulong_t)&mc3510c_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(i2c, mc3230_i2c_id);
- 
- static const struct of_device_id mc3230_of_match[] = {
- 	{ .compatible = "mcube,mc3230", &mc3230_chip_info },
-+	{ .compatible = "mcube,mc3510c", &mc3510c_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, mc3230_of_match);
+Changes in v2:
+- Introduce IIO_EV_TYPE_OPENWIRE instead of misusing the IIO_EV_THRESH
+  event.
+- Link to v1: https://lore.kernel.org/r/20241115-ad4111_openwire-v1-1-db97ac8bf250@baylibre.com
 
+---
+Guillaume Ranquet (2):
+      iio: introduce the FAULT event type
+      iio: adc: ad7173: add openwire detection support for single conversions
+
+ drivers/iio/adc/ad7173.c         | 161 +++++++++++++++++++++++++++++++++++++++
+ drivers/iio/industrialio-event.c |   2 +
+ include/uapi/linux/iio/types.h   |   2 +
+ tools/iio/iio_event_monitor.c    |   4 +
+ 4 files changed, 169 insertions(+)
+---
+base-commit: c849f534b9ea4688304f80f4571af75931dda7c1
+change-id: 20241115-ad4111_openwire-e55deba8297f
+prerequisite-message-id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
+prerequisite-patch-id: 26241903b8fee8c4243e73d11fb2872cd9f52a15
+
+Best regards,
 -- 
-2.47.1
-
+Guillaume Ranquet <granquet@baylibre.com>
 
 

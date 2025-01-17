@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-14406-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14407-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57811A14481
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 23:37:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AF5A148D7
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 05:21:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87407188CF33
-	for <lists+linux-iio@lfdr.de>; Thu, 16 Jan 2025 22:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A75A216B388
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 04:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480C81DAC8D;
-	Thu, 16 Jan 2025 22:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F4F1F63E8;
+	Fri, 17 Jan 2025 04:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VvntlObW"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RbC3V2pW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED5F1A8F95
-	for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 22:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B426D8C11
+	for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 04:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737067027; cv=none; b=NF70EjB+5IrBzBDFHw3GmLacChQcaPhIzVtcFepe4ZmzEnVR3cp8tlDhDGNKikrcxk/JuZga8P1GZa4tHmZx+vX/favB8a6JPJksij0MlRXj7KctIbXXjZNqXivbJSZ8+SCuYwq3noPMU4iD98BEwzJj5XFGe6UvKyNCTbrTXUY=
+	t=1737087668; cv=none; b=tI5rXUzuMttHN8oTe5VFUqw3vCnk1TC320Ey+KogJqLb0ewRzM788GpYKXCzOUADjxKSXLrFBwX86jkYFyvHHQC0AjSDp/kAKe8Y9E5U3Rb1ZWbD55pop+IlDSqrdnkd12kF3Zh1PCj0U3cUFhAFj9cnUprR6h1cuij2kHHRdgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737067027; c=relaxed/simple;
-	bh=3ayTkP34D3D7R9mwnj6ooDEflroKDjjoUt1AvKuzIqg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uPD1kjFZQnmo6zunK9QxSxTwngaUV8JaHACKiV7kUWAKZX4xoI8c6uZW46Fy6j55n6dV79gc7RdaWVzAVFTRKirAnUkNY2SzYFOsfmk5RekazVor9T7jEk9mzYaISX7/kgiP7AnFLS2cn5D17S20N3V6Od/UEEchfURCCsFcgK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VvntlObW; arc=none smtp.client-ip=209.85.216.52
+	s=arc-20240116; t=1737087668; c=relaxed/simple;
+	bh=9pCAwJhQj0U5Ra7wX3UDkc9Z6oqkUQVopI76ZvSEvRo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZxScgiMxQNQAxKoPibwSsiBilCxKCvVKnQmKG8WPzP9ILdtXTdZVyv3rvBhulsKf+2hFVgo1ZMtTLjHBIU4ZW0krwwhm+r4HWF/Kl04MHwbwqiqbyEjtbRmfytQW0+ZMrI7PJ12EVw9OgY/tCxgxeg/IOIoViHuc+htBrsyOBUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RbC3V2pW; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2f44353649aso2118811a91.0
-        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 14:37:05 -0800 (PST)
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2162c0f6a39so54208635ad.0
+        for <linux-iio@vger.kernel.org>; Thu, 16 Jan 2025 20:21:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1737067025; x=1737671825; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1737087664; x=1737692464; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8kHQHLF4WjiJVT9bX0MCHJSIo/L0684L7+TFbxInaWs=;
-        b=VvntlObWbau4u2GUPErdmsw4jmkEFG+8jWpgwRlcKuA9ltaqv9B8uIeIn6qUr82f6F
-         E7XgEZfRpY7UFwJMW/MLrLw3NAmOsqZE0mggwcfGNax3a64wSGBjrZ31bJmFlpgErmHi
-         qGEl0XRxTHeFC388JGQLYNqa2fc2Lo6wtSqn8=
+        bh=vxwOy31LDFzGoC4ZmJ98AYc/8WB0Danggi82zdhIrPw=;
+        b=RbC3V2pWHVLpX+1fJVw/Sre+mIRpoqGfpI78hnqBfvF1D0HaAx3vfWzid5NeFhH9Pq
+         twJBxxhSR39G75C2PzH5q9f76mTHnMHnBeVhIqnYt7+9lwv2bb293VROmt5xFq8JBFTZ
+         PxY8iyhGVGB2CB6McLHn4dYl4A/Z8qk8E0fqY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737067025; x=1737671825;
+        d=1e100.net; s=20230601; t=1737087664; x=1737692464;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8kHQHLF4WjiJVT9bX0MCHJSIo/L0684L7+TFbxInaWs=;
-        b=Eq47Mpyfg23fIVuzzXNuoxJl8ZOaXM1UDgI8BFL/n1UJscqWEziUFJEiW4457XoWM4
-         46Apw6ZXzrgFxe4f2AQclGTRoaJepO4dBnaRdhCggwn3xkmZvShT9dx9Z5tJ5Bc/bDXT
-         cpTi3goNVdy+DcIcmqKY03JxSadA8+5jKG7QGU6EuVz5QXnv6zBpi6S1Jt85WaqiB/ao
-         pV7rZo5A42LU8CR8mA8S/+ix3ZFeghzSUtC+lgpFTKRde1a7ZBfKXKyUxH+39ASjAO+B
-         /U5PRyZUkSPbvH49xkOF3JZhca9+goDVEBzg3J4eVAY6kwD4Ll4/Fg+gvzGHZbZFflYy
-         gmdA==
-X-Forwarded-Encrypted: i=1; AJvYcCVXuosO/p6YHElr0YNJy18R65t8e4awJu8lD/y45Oz+RayhME22Mo1hO12fxwcHrLzXGvEw9Xg86q4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVNpOPIoeas/YlFOSGyqQ4quO8Jqp7E71TlJJKmZJ5OyM5zMA5
-	h2Y/v6mg33peZ/DtIVlXVcS6uAVmyH1T/9yOzEkCbO+tHo1Ai1jTka1pxOHflw==
-X-Gm-Gg: ASbGnctyZxpiHSL5CUt6FKuRoNq9wtbEugmVhkOOIPZ0ODGVYIy2vK5RxAx8LZBclqB
-	WP64+teFs+1WzEC83jNkGYNgcEhR3vjRrXuiJrlqEXIWxqGcts+r54mknZO6Ry0wBHyomsSU3ol
-	AdANBgH1KZORpQvOS6R8UxdDPzUSIgd9YxgZbwkKJ+Bh/UBcF/WXMG2gWGezcqsXfQLFopQZSz9
-	nwbunSTz1FW9Gg67eRnV/XlYp0I+YB1ddlZLVjjmMz9dQagRw==
-X-Google-Smtp-Source: AGHT+IFkW1w7rX7rwb83Edc8SiwW7N1vI1nxzfLN9KMslhd8Sh/fGFMW8j7drhn2zXE9Xhf5pSS4OA==
-X-Received: by 2002:a17:90a:c883:b0:2ee:d824:b559 with SMTP id 98e67ed59e1d1-2f782d35addmr410146a91.28.1737067024633;
-        Thu, 16 Jan 2025 14:37:04 -0800 (PST)
+        bh=vxwOy31LDFzGoC4ZmJ98AYc/8WB0Danggi82zdhIrPw=;
+        b=DPNxHWpDY3Q9s9+6QFBSYkvIS91vlWji6lA0lqygXs59tbUymwotqEyC25y+n/0AQU
+         PherknNhCkqc+1AkAXiswMUs2N15hhpS3SPiIOEAt4XTRJpNNQv11mWvpvKnpGRy8k3L
+         ORS3BzITl2OdylDuaHdN9GHffYIRV3gO2CFtgyntbWxsWkb6pf3haJfCIt04XLjvQzQv
+         Ed5DytsNk9YhaiKJZXaUlkl1zMezBKXdvxMla+fzK6/i5CSW60OBnVc+V+3RaxQSOcsL
+         mFXMr7j1hRRnA4RbjFKQB0sVYHe/ijXT5WIcYuBH1EebY1c2uDOkht1Emn318puUTnto
+         cDyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUrrkq0CE641Xrt2yF9NTlmYC5N6q2SvSReL1xSDegBA4gyGCXMxG3UzVStnd2Q5foOxLM90XM4/50=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxctJcDALGFzx7xubZzasz4B20epeWRIc60fRxf0hF2lrXZ8nK
+	DH0e7mmDLzgBf1o3zwg/Khf+ZgfSpZLJdl61oycrKgkvNsS4JtM2O4QbipeFmHH36yT9HDVD1v0
+	=
+X-Gm-Gg: ASbGnctOVnur4OqpIfqq/VGvEZgpHuICcdFT2GurXjcZ3AD4NCgUkPkUrv5FdVyXZAP
+	FiWEYEsODydcUfmmoMyOlhjzI3EMNQxgC56VQGrzthNjC3O4geEMfdfcWTX3C1XAKrFzVkONCT5
+	SkGkAYq/NFiIDWArGI2jBsPUFDDhiIAYB09A7vRHvwkyd14rtklrHTb7QzxENzDS0lewbu2LtWY
+	d6/+0EtEHlp02FAxg3Tt1cRMSEJK9Vt9LF9cnaPE9drU4eYhQ==
+X-Google-Smtp-Source: AGHT+IFudkJ6+DRbcTOt+Hy7vDEREhQFHCA1wq1hBYFNVrEh4o0U0FyvisZjLLJH5yJKVqdtxOu2aw==
+X-Received: by 2002:a05:6a20:4389:b0:1e6:50a0:f982 with SMTP id adf61e73a8af0-1eb025edd0fmr15234994637.20.1737087663911;
+        Thu, 16 Jan 2025 20:21:03 -0800 (PST)
 Received: from localhost ([2620:15c:9d:2:df50:ca7a:4ac2:d31c])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2f72c17f949sm4175678a91.17.2025.01.16.14.37.03
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-a9bdf57de17sm828928a12.77.2025.01.16.20.21.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Jan 2025 14:37:03 -0800 (PST)
+        Thu, 16 Jan 2025 20:21:03 -0800 (PST)
 From: Gwendal Grignou <gwendal@chromium.org>
 To: jic23@kernel.org
 Cc: tzungbi@kernel.org,
 	linux-iio@vger.kernel.org,
 	Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH] iio: cros_ec: Trace EC sensors command
-Date: Thu, 16 Jan 2025 14:36:59 -0800
-Message-ID: <20250116223659.555051-1-gwendal@chromium.org>
+Subject: [PATCH v2] iio: cros_ec: Trace EC sensors command
+Date: Thu, 16 Jan 2025 20:20:59 -0800
+Message-ID: <20250117042059.778637-1-gwendal@chromium.org>
 X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -95,30 +96,32 @@ When enabled, the tracing output is similar to:
 
 Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 ---
+Changes from v1 (https://patchwork.kernel.org/patch/13942368/):
+- fix merging issue with iio.git/togreg.
+
  drivers/iio/common/cros_ec_sensors/Makefile   |  3 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    |  5 +-
+ .../cros_ec_sensors/cros_ec_sensors_core.c    |  3 +
  .../cros_ec_sensors/cros_ec_sensors_trace.c   | 32 +++++++++++
  .../cros_ec_sensors/cros_ec_sensors_trace.h   | 56 +++++++++++++++++++
- 4 files changed, 94 insertions(+), 2 deletions(-)
+ 4 files changed, 93 insertions(+), 1 deletion(-)
  create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c
  create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h
 
 diff --git a/drivers/iio/common/cros_ec_sensors/Makefile b/drivers/iio/common/cros_ec_sensors/Makefile
-index f62733014606e..7471882b44955 100644
+index e0a33ab66d21a..c358fa0328abd 100644
 --- a/drivers/iio/common/cros_ec_sensors/Makefile
 +++ b/drivers/iio/common/cros_ec_sensors/Makefile
-@@ -4,7 +4,8 @@
+@@ -3,6 +3,7 @@
+ # Makefile for sensors seen through the ChromeOS EC sensor hub.
  #
  
- obj-$(CONFIG_IIO_CROS_EC_ACTIVITY) += cros_ec_activity.o
 -obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros_ec_sensors_core.o
 +cros-ec-sensors-core-objs += cros_ec_sensors_core.o cros_ec_sensors_trace.o
 +obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros-ec-sensors-core.o
  obj-$(CONFIG_IIO_CROS_EC_SENSORS) += cros_ec_sensors.o
  obj-$(CONFIG_IIO_CROS_EC_SENSORS_LID_ANGLE) += cros_ec_lid_angle.o
- obj-$(CONFIG_IIO_CROS_EC_SENSORS_SYNC) += cros_ec_sensors_sync.o
 diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index bf45bda20608b..8138aa61ab495 100644
+index 9fc71a73caa12..075196ca804a1 100644
 --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
 +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
 @@ -23,6 +23,8 @@
@@ -130,16 +133,7 @@ index bf45bda20608b..8138aa61ab495 100644
  /*
   * Hard coded to the first device to support sensor fifo.  The EC has a 2048
   * byte fifo and will trigger an interrupt when fifo is 2/3 full.
-@@ -208,7 +210,7 @@ static ssize_t hwfifo_watermark_max_show(struct device *dev,
- static IIO_DEVICE_ATTR_RO(hwfifo_watermark_max, 0);
- 
- static const struct iio_dev_attr *cros_ec_sensor_fifo_attributes[] = {
--	&iio_dev_attr_hwfifo_flush,	
-+	&iio_dev_attr_hwfifo_flush,
- 	&iio_dev_attr_hwfifo_timeout,
- 	&iio_dev_attr_hwfifo_watermark_max,
- 	NULL,
-@@ -461,6 +463,7 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
+@@ -423,6 +425,7 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
  	memcpy(state->msg->data, &state->param, sizeof(state->param));
  
  	ret = cros_ec_cmd_xfer_status(state->ec, state->msg);

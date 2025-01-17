@@ -1,266 +1,148 @@
-Return-Path: <linux-iio+bounces-14439-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14440-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46442A159C3
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 00:01:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75663A159C6
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 00:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6810B1682D1
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 23:01:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F791686C0
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 23:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38E71D8DFE;
-	Fri, 17 Jan 2025 23:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691E91D5ACD;
+	Fri, 17 Jan 2025 23:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RI9lbNmI"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="idHiBONh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EEB1BE87B
-	for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 23:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E65019CC27
+	for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 23:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737154902; cv=none; b=pNrTe0lzktQaW4ywqAc+Bvoo3Y+AeJGqofpZXPZ8bznMRB5LOHS3p8meEcxCNUcVUwDcmVl1oZFnvg7b6M2QZGn8zJH9eFczSsbkztRdoZpIztD+59ft78Cwscxoh2TLj1juhHkXWq5c/qmyX4mRjXSW3abyWCeNOZ29/Q46pNw=
+	t=1737154982; cv=none; b=Je6q6360jxaiz5qDs2T8EIzixP00oDedtgasT4g5+06eanEg3XYuU3XLi0/kHE4iA8L0jHZkpZAx0jGC/l+so+AfiyQjBxQp1afzT/2NS/X3/35Qm6mLxUcrORtqTNWJVDunCzddQvdWdFDA2DCCo0geC/i2W4yNX+zpTjm5IsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737154902; c=relaxed/simple;
-	bh=FGjn73QrJvL0b1BuH+LgIaJLPj8GU/SOOCFGkP7kM9M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A/Sb7MnCEiIKu2/Q6B7iG8AJeFYD9nVniTnZ10r+/Sf5W0+AArlcv9Q0zaeNR9jMUeHONoTaAqV/h8kwI9mFV48G1lRAdTGPpX0K4qhH0LexT2tXoUl5dvlCbcHty4/hNgdiVAPKslgq7YjRheWOQsgtz0+HuviZ+axbIBJVRoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RI9lbNmI; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1737154982; c=relaxed/simple;
+	bh=XP7nWooumzzM9GcBE+Z9cCqJD3WzWiF502YZ50lJSbk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kByC4Umrg0nBbVqxPfixSTxC2yKCx5eAjDZKpoOiqeehdcatnNgjWAxHBNYCt1Rcy+sJvVMd2/ic/rvujHFPZqNPnAc1CYT4FGsD0f41KqK2yF9ZrRbxm9+dfEnbxjH4BK87JUgwQWawHj1mKde6cFFT7Bb6t7n17jMwqwbro8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=idHiBONh; arc=none smtp.client-ip=209.85.221.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2ee86a1a92dso3848130a91.1
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 15:01:40 -0800 (PST)
+Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-5174f9c0d2aso783801e0c.1
+        for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 15:03:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1737154900; x=1737759700; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G+SSlZh/8HbbWAdFopf4WfamCtabmCJfU5y+DZmi+ug=;
-        b=RI9lbNmI4GMk3zcRXngnRIHlhQGXhPu4jzH7OQvkhUir0EAuykpDEaIQhZjVg+fx1S
-         7hHGA4P9qfNDA+SKXlgbPBqsBrr7lB1Q4O+og/GSHZeyw3n+LmzwSuD6yVfyaXuhUk3J
-         JTBf0m+wwlcOeyoFqL/4khBOwBhBn9SkuwjVM=
+        d=chromium.org; s=google; t=1737154979; x=1737759779; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zPFAicso8wU04TOj29PccqZl80rLIBhEzvUmMbwUsTs=;
+        b=idHiBONh+IiC3DltmK9M6/mz7BV05vqh4j/PMaWAASYPmLfkdiSqSbv5rFznnZRMfI
+         YJtBY0K4tmux4qAnOIF7KbSeTK/3a/VOJXH3hBib/10M2XyPfXrNM992g/fBPckGnnvT
+         ewIenLB0gn3Mxs+GnfHzoi/rFk7jrSXs/kJFU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737154900; x=1737759700;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G+SSlZh/8HbbWAdFopf4WfamCtabmCJfU5y+DZmi+ug=;
-        b=ikHEwyxYoEZsafLqXKBtDrmZ+P6/jpmbX3T6tEDCKSHBioVblKyN46tgiN3wFgyNWy
-         lhnYbbCZZb4lOJMxx2capus/DcYiSj2gLShYCAG3H/tm6uOw4JACJ36mh/F5gxwiRnuG
-         lb8Hg4/fNBPXRJBoPZynQnj3gqg8PGuLp+lHboMKakdjFOW3ahOyLQ1Hn/5KG4hBCk6e
-         Hmh3mlKznG3gUWpzPgncp3ShygFJRSHcWj6zymmwjqG7/tOtZmYPeIGyscc95TsmIp6f
-         XzJf9KdtuMDVo5e8gJAw9tePzWN1Ww7uwAHP3Y/yP0T6PCVeF0fYKF8WboIPVFaSgXaO
-         1drw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdKE80WLUHWiZXT7nWpFm0WIOHpXJSHX2t1ezpucM854ZUz2pmPszf8BQKFm7IPtUHuiETXTzdVEo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyiKphsYKh1AZl3Lf2VXyvLMTXpkb4owCo/Zd3g1TVeNFDnmV82
-	qArOOyLoNtMXXBbcNPelOPr36CfbxDsQFr8ooKp/uMiTRPu2SOrkaTY8hAnwW7OJbyrU34wLXSQ
-	=
-X-Gm-Gg: ASbGnctyLgZMGG9bdJc2j9JuEAfp/YtXta2rf1wnXUu9u4Aq4m69EybIIkQOAl4tgU/
-	DdeW08glZ5hcs0C6MzYVdcv3ZjfBP/EQWpuAe81hng70vZg0mk9LcIYVRfQyZ1gIlze0/22JeSp
-	FuN0jJJTKIm5dMUNwwC6uhRflaoe7EAHpzVL+mvORzANpUup1/1mnHDm7Nc2PpQXzuLvsRNHMWF
-	bgvGNVYJMbrwtot6eFINWkdVyF9anATG0HaV8cHk/xrGWvU/w==
-X-Google-Smtp-Source: AGHT+IGN/mU50gpZC1GZvR+UQWm9v4NN3YpRdZTJvnQeROAqbDDpBhI7wcElCwpsUN1Vzz0MhwamgQ==
-X-Received: by 2002:a17:90b:53c7:b0:2ee:c4f2:a77d with SMTP id 98e67ed59e1d1-2f782c9d45fmr5612297a91.21.1737154900308;
-        Fri, 17 Jan 2025 15:01:40 -0800 (PST)
-Received: from localhost ([2620:15c:9d:2:4ccc:4bc2:7161:207c])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2f77611aae8sm2681018a91.9.2025.01.17.15.01.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Jan 2025 15:01:39 -0800 (PST)
-From: Gwendal Grignou <gwendal@chromium.org>
-To: jic23@kernel.org
-Cc: tzungbi@kernel.org,
-	linux-iio@vger.kernel.org,
-	Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v3] iio: cros_ec: Trace EC sensors command
-Date: Fri, 17 Jan 2025 15:01:36 -0800
-Message-ID: <20250117230136.2237346-1-gwendal@chromium.org>
-X-Mailer: git-send-email 2.48.0.rc2.279.g1de40edade-goog
+        d=1e100.net; s=20230601; t=1737154979; x=1737759779;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zPFAicso8wU04TOj29PccqZl80rLIBhEzvUmMbwUsTs=;
+        b=I4MZ1fgZkiVh1mJWgWifeUG+675XTC2+sD6+dFzW4pbuKZyRJhsM18XWQ/Yl/2atDC
+         8YoH56q1ly2uCtMN/jbRh0hhuXDBp9kGytJmrHyXkx81HPZB3VeYpXjiJPa3YRIiR1iJ
+         QkYUpf1hbXGrkJbiBR7sGJLItTICLUp8kwbeeaUFa6a6kaEMK/FMgM33KknTFndlVPWA
+         ZYJ/uaMWKUl6FD5IfevolxILyYn9f2JV7kj2rR3GNjhlO10VlVib7E3+VsxRf6kZ8Eoc
+         haIFvpc/xqW4KjcyNQxgwKFcm8RhISkpkmHnw1evqgbMrqBTGBcwA9VAde1ncpEH1E0m
+         B0fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXRMglfeFSUxepMusrXA+xYej2QTuQ+aL6pCz+D6pzfsw9DnF/DjoyI+dK7/QOpx6lG3zd1Ie2QQqY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQMZM3rNWx1Yoz1xMEWnKMTYPXcEx6vSvLs4ojZIIcq3BpYkJE
+	NXCWQ0De1Z7OInIBS/USLgixSPBsGffPKLLX5+1yNpn1JYMdT83EEEF/7auMvk7v/Vf/KZ1pN/f
+	WTqaTEd6dVj18WT0lUzv6iVztVeCgsxF80dwdE8zxuAWyT0c=
+X-Gm-Gg: ASbGnctoPasPP+Oa3oTh3iUg0Z8fgjOUDTRUFwLgjiApvMXx0ljDEfGbGQCIRMsI65V
+	jw6tm4xiF5BPZhxRU1GiO6BZ7gJFzWXqo3v/8eDJKjCm1bw2zmrZSldVkujzT8C+K
+X-Google-Smtp-Source: AGHT+IHHUZ8K3xTCF/K6onjRcyjL5g0ZI5W1+nOvnREZMX64w8VjMUtV/F7GvUptN4bOp7ns/9dc3K4nONgMxcEN7X8=
+X-Received: by 2002:a05:6122:3d46:b0:518:a261:adca with SMTP id
+ 71dfb90a1353d-51d5b301146mr4544781e0c.8.1737154979373; Fri, 17 Jan 2025
+ 15:02:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250117042059.778637-1-gwendal@chromium.org> <20250117154705.00006d32@huawei.com>
+In-Reply-To: <20250117154705.00006d32@huawei.com>
+From: Gwendal Grignou <gwendal@chromium.org>
+Date: Fri, 17 Jan 2025 15:02:48 -0800
+X-Gm-Features: AbW1kvYN-nvemJUFmCRdzeUAqBsRTfOmAaQzicCw7Q6BL_5237_0rhzEeMy-Xp0
+Message-ID: <CAPUE2uvAtbxyosdorLuOKw_awnbVncy-qtFH=croiTfTSFP4RQ@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: cros_ec: Trace EC sensors command
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: jic23@kernel.org, tzungbi@kernel.org, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For debugging, add tracing for EC_CMD_MOTION_SENSE_CMD command:
-- decode the name of the subcommand
-- provide internal information for the most common sub-commands:
-  setting range, frequency, EC probing frequency, ...
-- display return status.
-
-When enabled, the tracing output is similar to:
-/sys/kernel/debug/tracing # echo 1 > events/cros_ec/enable ; echo 1 > tracing_on ; cat trace_pipe | grep MOTIONSENSE_CMD_SENSOR_ODR
- SensorDeviceImp-814     [003] .....   686.176782: cros_ec_motion_host_cmd: MOTIONSENSE_CMD_SENSOR_ODR, id: 1, data: 200000, result: 4, return: 12500
-
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
-Changes from v2 (https://patchwork.kernel.org/patch/13942819/):
-- Improve casting
-- Add intent of the patch in commit message.
-Changes from v1 (https://patchwork.kernel.org/patch/13942368/):
-- fix merging issue with iio.git/togreg.
-
- drivers/iio/common/cros_ec_sensors/Makefile   |  3 +-
- .../cros_ec_sensors/cros_ec_sensors_core.c    |  9 ++-
- .../cros_ec_sensors/cros_ec_sensors_trace.c   | 32 +++++++++++
- .../cros_ec_sensors/cros_ec_sensors_trace.h   | 56 +++++++++++++++++++
- 4 files changed, 96 insertions(+), 4 deletions(-)
- create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c
- create mode 100644 drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h
-
-diff --git a/drivers/iio/common/cros_ec_sensors/Makefile b/drivers/iio/common/cros_ec_sensors/Makefile
-index e0a33ab66d21a..c358fa0328abd 100644
---- a/drivers/iio/common/cros_ec_sensors/Makefile
-+++ b/drivers/iio/common/cros_ec_sensors/Makefile
-@@ -3,6 +3,7 @@
- # Makefile for sensors seen through the ChromeOS EC sensor hub.
- #
- 
--obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros_ec_sensors_core.o
-+cros-ec-sensors-core-objs += cros_ec_sensors_core.o cros_ec_sensors_trace.o
-+obj-$(CONFIG_IIO_CROS_EC_SENSORS_CORE) += cros-ec-sensors-core.o
- obj-$(CONFIG_IIO_CROS_EC_SENSORS) += cros_ec_sensors.o
- obj-$(CONFIG_IIO_CROS_EC_SENSORS_LID_ANGLE) += cros_ec_lid_angle.o
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index 9fc71a73caa12..7751d6f69b124 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -23,6 +23,8 @@
- #include <linux/platform_data/cros_ec_sensorhub.h>
- #include <linux/platform_device.h>
- 
-+#include "cros_ec_sensors_trace.h"
-+
- /*
-  * Hard coded to the first device to support sensor fifo.  The EC has a 2048
-  * byte fifo and will trigger an interrupt when fifo is 2/3 full.
-@@ -413,6 +415,7 @@ EXPORT_SYMBOL_GPL(cros_ec_sensors_core_register);
- int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
- 				 u16 opt_length)
- {
-+	struct ec_response_motion_sense *resp = (struct ec_response_motion_sense *)state->msg->data;
- 	int ret;
- 
- 	if (opt_length)
-@@ -423,12 +426,12 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sensors_core_state *state,
- 	memcpy(state->msg->data, &state->param, sizeof(state->param));
- 
- 	ret = cros_ec_cmd_xfer_status(state->ec, state->msg);
-+	trace_cros_ec_motion_host_cmd(&state->param, resp, ret);
- 	if (ret < 0)
- 		return ret;
- 
--	if (ret &&
--	    state->resp != (struct ec_response_motion_sense *)state->msg->data)
--		memcpy(state->resp, state->msg->data, ret);
-+	if (ret && state->resp != resp)
-+		memcpy(state->resp, resp, ret);
- 
- 	return 0;
- }
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c
-new file mode 100644
-index 0000000000000..c4db949fa7750
---- /dev/null
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c
-@@ -0,0 +1,32 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Trace events for the ChromeOS Embedded Controller
-+//
-+// Copyright 2025 Google LLC.
-+
-+#define TRACE_SYMBOL(a) {a, #a}
-+
-+// Generate the list using the following script:
-+// sed -n 's/^.*\(MOTIONSENSE_CMD.*\) = .*,$/\tTRACE_SYMBOL(\1), \\/p' include/linux/platform_data/cros_ec_commands.h
-+#define MOTIONSENSE_CMDS \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_DUMP), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_INFO), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_EC_RATE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SENSOR_ODR), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SENSOR_RANGE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_KB_WAKE_ANGLE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_DATA), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_FIFO_INFO), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_FIFO_FLUSH), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_FIFO_READ), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_PERFORM_CALIB), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SENSOR_OFFSET), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_LIST_ACTIVITIES), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SET_ACTIVITY), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_LID_ANGLE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_FIFO_INT_ENABLE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SPOOF), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_TABLET_MODE_LID_ANGLE), \
-+	TRACE_SYMBOL(MOTIONSENSE_CMD_SENSOR_SCALE)
-+
-+#define CREATE_TRACE_POINTS
-+#include "cros_ec_sensors_trace.h"
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h
-new file mode 100644
-index 0000000000000..61853e410e96c
---- /dev/null
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h
-@@ -0,0 +1,56 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Trace events for the ChromeOS Embedded Controller
-+ *
-+ * Copyright 2025 Google LLC.
-+ */
-+
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM cros_ec
-+
-+#if !defined(_CROS_EC_SENSORS_TRACE_H_) || defined(TRACE_HEADER_MULTI_READ)
-+#define _CROS_EC_SENSORS_TRACE_H_
-+
-+#include <linux/bits.h>
-+#include <linux/types.h>
-+#include <linux/platform_data/cros_ec_commands.h>
-+#include <linux/platform_data/cros_ec_proto.h>
-+
-+#include <linux/tracepoint.h>
-+
-+TRACE_EVENT(cros_ec_motion_host_cmd,
-+	    TP_PROTO(struct ec_params_motion_sense *param,
-+		     struct ec_response_motion_sense *resp,
-+		     int retval),
-+	    TP_ARGS(param, resp, retval),
-+	    TP_STRUCT__entry(__field(uint8_t, cmd)
-+			     __field(uint8_t, sensor_id)
-+			     __field(uint32_t, data)
-+			     __field(int, retval)
-+			     __field(int32_t, ret)
-+	    ),
-+	    TP_fast_assign(__entry->cmd = param->cmd;
-+			   __entry->sensor_id = param->sensor_odr.sensor_num;
-+			   __entry->data = param->sensor_odr.data;
-+			   __entry->retval = retval;
-+			   __entry->ret = retval > 0 ? resp->sensor_odr.ret : -1;
-+	    ),
-+	    TP_printk("%s, id: %d, data: %u, result: %u, return: %d",
-+		      __print_symbolic(__entry->cmd, MOTIONSENSE_CMDS),
-+		      __entry->sensor_id,
-+		      __entry->data,
-+		      __entry->retval,
-+		      __entry->ret)
-+);
-+
-+#endif /* _CROS_EC_SENSORS_TRACE_H_ */
-+
-+/* this part must be outside header guard */
-+
-+#undef TRACE_INCLUDE_PATH
-+#define TRACE_INCLUDE_PATH .
-+
-+#undef TRACE_INCLUDE_FILE
-+#define TRACE_INCLUDE_FILE cros_ec_sensors_trace
-+
-+#include <trace/define_trace.h>
--- 
-2.48.0.rc2.279.g1de40edade-goog
-
+On Fri, Jan 17, 2025 at 7:47=E2=80=AFAM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Thu, 16 Jan 2025 20:20:59 -0800
+> Gwendal Grignou <gwendal@chromium.org> wrote:
+>
+> > Add tracing for EC_CMD_MOTION_SENSE_CMD command:
+> > - decode the name of the subcommand
+> > - provide internal information for the most common sub-commands:
+> >   setting range, frequency, EC probing frequency, ...
+> > - display return status.
+> >
+> > When enabled, the tracing output is similar to:
+> > /sys/kernel/debug/tracing # echo 1 > events/cros_ec/enable ; echo 1 > t=
+racing_on ; cat trace_pipe | grep MOTIONSENSE_CMD_SENSOR_ODR
+> >  SensorDeviceImp-814     [003] .....   686.176782: cros_ec_motion_host_=
+cmd: MOTIONSENSE_CMD_SENSOR_ODR, id: 1, data: 200000, result: 4, return: 12=
+500
+> >
+> > Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+> What this is missing is why?
+>
+> I'm not against adding tracepoints in drivers, but some statement of
+> the usecase etc would be helpful. If it's debug only that makes
+> for different requirements than some tool is going to connect to
+> this stream.
+It is for debug only, will update the commit message.
+>
+> Jonathan
+>
+>
+> > diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c =
+b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > index 9fc71a73caa12..075196ca804a1 100644
+> > --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> > @@ -23,6 +23,8 @@
+> >  #include <linux/platform_data/cros_ec_sensorhub.h>
+> >  #include <linux/platform_device.h>
+> >
+> > +#include "cros_ec_sensors_trace.h"
+> > +
+> >  /*
+> >   * Hard coded to the first device to support sensor fifo.  The EC has =
+a 2048
+> >   * byte fifo and will trigger an interrupt when fifo is 2/3 full.
+> > @@ -423,6 +425,7 @@ int cros_ec_motion_send_host_cmd(struct cros_ec_sen=
+sors_core_state *state,
+> >       memcpy(state->msg->data, &state->param, sizeof(state->param));
+> >
+> >       ret =3D cros_ec_cmd_xfer_status(state->ec, state->msg);
+> > +     trace_cros_ec_motion_host_cmd(&state->param, (void *)state->msg->=
+data, ret);
+>
+> Can we cast to the right type rather than a void *?
+Fixed in v3: `data` is a char array, but in the context of
+cros_ec_motion_send_host_cmd(), it is a
+>
+> >       if (ret < 0)
+> >               return ret;
+> >
+>
+>
 

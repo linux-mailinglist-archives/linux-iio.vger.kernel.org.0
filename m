@@ -1,94 +1,74 @@
-Return-Path: <linux-iio+bounces-14412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD1DA14EAE
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 12:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 781B6A15015
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 14:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1E5B3A2FB6
-	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 11:46:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FEA23A230A
+	for <lists+linux-iio@lfdr.de>; Fri, 17 Jan 2025 13:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82611FECD4;
-	Fri, 17 Jan 2025 11:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253BD1FF7B8;
+	Fri, 17 Jan 2025 13:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="JaR/M2YS"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="xZmiauDT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A70B1FDE14
-	for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 11:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE2E1FE46E;
+	Fri, 17 Jan 2025 13:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737114357; cv=none; b=TgzgMUxzNFpEF1S7T3LtHf0iIS9gP7IemkWYR1vREyxph3rGbhWjhUwNxznxLm+meaSONGTOZkHv1OQifEgkcWVGcvNY6CB8etJ6JM3KJw5kywfDlWGfCsUpJxFD3m7e8+A7Iv1ccJXmQBVGZOgWWcBIpYNgDF5mXKfW5lImwq4=
+	t=1737119240; cv=none; b=h9cxnbftj0+nY6Tl88Rw39y9x0aeoqhqKlFIWM+uxkJP0AeXQpWddTebYvEkN9GnwbK3bzW02yhVmMXVlav0FzbRv1uvFR3fmOdQ+sOnRcHnBcMZdW8cME2C4+EtYpta1s0hwHlXIrjZmdsbCVb956enwi61oKe2PhJPYs1a1kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737114357; c=relaxed/simple;
-	bh=Ic0dUSRBbSPcwd8A1dpe05r/cEGAMekPsiRX2TPIQhM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckjYDLnQkavFf9dCCn/G59nfOGHqSZrsw1IpHylGLt1fe+YBq2mqSHGd27IeZT2CWsANDfrHPky/90EI2L8eIXQar6GenmZY8Kxbrcu79OCJO3KGAT/Ipk8pCuv8x5frzPXHKHQFHpmNzW0fEmiIokuIo8F08oO1snkSbA4h7lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=JaR/M2YS; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38a8b17d7a7so1042717f8f.2
-        for <linux-iio@vger.kernel.org>; Fri, 17 Jan 2025 03:45:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1737114353; x=1737719153; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7TZRktyyBG60hFO6UMKwaUx5vSkkWfjes2WCMQi2PJU=;
-        b=JaR/M2YScD/mbjyMV/6qv+SVyyRek3pCsHiQ6Q/U1g6U62l5ykqkCYOubUyD7pDQDX
-         iT/AwWjP9INYHi1zerf80LdCvNaZdZXgieYPxY8RFRJtJ1IJjW28N8iL9pEBNS1IBIx0
-         scp38sPbaVaEUGnJoGqa8p4qwdm4VcagFjGQb+NLBNn9HlGKHfd4s4qVMt6D576LITGB
-         eOZPypulGqBoZuXqQAptSW4ueOntDizr4FeuOhgW1UoAg7wQTd1fmsB2FGK2brEACrGf
-         hRsHLtRGhLWP9o99egY+KzKlwIhyLz03tuTdcenyMycMEgt/TiIgeIBR+I5LZsXjwkDS
-         o5EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737114353; x=1737719153;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7TZRktyyBG60hFO6UMKwaUx5vSkkWfjes2WCMQi2PJU=;
-        b=t1o/0RRm2jXwOtB3t7hXi4bQn9kLIbZ/Id6B2J5lnZUWkF5gHKtONCVg8WqUOYVK7y
-         Zgg/rnKXAi7X5tsdAL4KVozyx5/oCUCvrEigzuM9D4fBPoncomjdZ2CMm6Ojs6jKdJKr
-         oOHOK1fkDoj27Y/YWapICSPoJ2x6lSXqs1jyVA4TpkvCfPHft2TJgx7HTnKzfWdqSoaU
-         l+2h4KD8aFak+Z9CSWs+WO6/KFBnrC3zdz5MV2ToM8dJNaeeyNyeonvMWmoWph94cEwo
-         HpAn+1ITGXEu5qRHnHTlF+7Z0fwgFglhTGtIcylqjH4b+a7uuIlZYgw1988i0EzRD0Kb
-         0vfg==
-X-Forwarded-Encrypted: i=1; AJvYcCVrqcUKcaNkAMRECpuVeXQD1AIATZc44YhzzDo0wLWWO0CYbHMVl/Ntp7ClmXbyz5kCfu8+6fr5CRk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZ7BjdB0aAy+vLpKgzVhodpzyhUJp7aIFt0ePV3OH6rNmEcr0p
-	64XuKhWfa7u66zC2iRJlq8zgRcCNc4xSceYYlTvv9eznO4vPkGRJ8HbhL/d7TNI=
-X-Gm-Gg: ASbGncuH2GuGNyErJ9IY8uOcLMOjhZ0ots3EF9rjIV3n3ZOS8X3R02VSrkITeBqkmeJ
-	IE71tEQOUw9y8wHuNJzQzpJYGeGEV1fDQVVbzCIPRL9Gc0jMNK4aHUgHF476usc8P7IeftQmIf8
-	1NicUO8Ep1nm4KWH8+rq4C1nGsgXRLSlQUJdUX60thhBQTF/KOB9oYsyy0Pw9nRu/5CqXASbG1W
-	V+ZAyY5mbUi2lli+fOueEyaa7abdhlDmBeFs13gyntgfkUBpG4cKesnjbCq73Z33JanJIS+fmtB
-	XcNsPjRGHKE=
-X-Google-Smtp-Source: AGHT+IGVMbNBWKyEsgqUoHAN8pJLCCoglPmI1Y5TRMuv0rz7Lsw40J1JRHBIdaOY0OSqyYHQYiJtMw==
-X-Received: by 2002:a05:6000:186f:b0:38a:8647:3dac with SMTP id ffacd0b85a97d-38bf57a68aemr2062457f8f.34.1737114353444;
-        Fri, 17 Jan 2025 03:45:53 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.165])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf322aab8sm2348496f8f.57.2025.01.17.03.45.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2025 03:45:53 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: prabhakar.mahadev-lad.rj@bp.renesas.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	ulf.hansson@linaro.org
-Cc: claudiu.beznea@tuxon.dev,
-	linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH v2 2/2] iio: adc: rzg2l: Cleanup suspend/resume path
-Date: Fri, 17 Jan 2025 13:45:40 +0200
-Message-ID: <20250117114540.289248-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250117114540.289248-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20250117114540.289248-1-claudiu.beznea.uj@bp.renesas.com>
+	s=arc-20240116; t=1737119240; c=relaxed/simple;
+	bh=3fWhu+VDXrGSx6GgQAoPWywIBLijTUoeY6GZ7HuP/is=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t9X/XqiOiMttrz1B1sFKUN6WyosiHdZozveGaYIgV03AVskcIs71KxFVb47ykx9TG99dbytn8O13n6Yj3wxIwFVh4KWto7VJopfSlxHhip5APb/mKWKw2nMgOLA8Ubw/2SPg0Rv1rtoSacNo+rzkZ3YzQevJtqqBMLDn4Y5ngi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=xZmiauDT; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50HAhRL3023572;
+	Fri, 17 Jan 2025 08:07:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=gbSm8VRS0+oSTL1nAffhGR92WQk
+	Nt2wZ2/i+N42uglM=; b=xZmiauDTcaRoVVd+bdLDpLDxAeFGEvoiVCAgKI6xStV
+	QWOSsLYdRZnIT/fv8JMGzA+UwN75g4hQ3xLRNEHXP+hy+J4lmeO1dzoiSiA/zbF2
+	Gc+vpgaGau8abezbA1ukm07Yst7++6WWRpVP17lkbUEh5J+rlL7JPFbOQjf8rvTT
+	naAk75W42NNlPtkuiDvbtArVSDj5rWnHTj8iioNpwddw+WDNNtPdTsy1H6aD5bkk
+	9AoebqK+VhHbCWhy0GoDs4+GKp1hLiSo6Zq2/lOm8dPPJmxZdX86k6ldnRMgL6Sg
+	IXAL942L+ZbRCrdu+qpdefAT+V066rISoldWQTEigFQ==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 447nq10gdt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Jan 2025 08:07:16 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 50HD7EfL027780
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 17 Jan 2025 08:07:14 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 17 Jan
+ 2025 08:07:14 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 17 Jan 2025 08:07:14 -0500
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.159])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50HD764i013564;
+	Fri, 17 Jan 2025 08:07:09 -0500
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: <jic23@kernel.org>, <robh@kernel.org>, <conor+dt@kernel.org>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pwm@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH v10 0/8] Add support for AD485x DAS Family
+Date: Fri, 17 Jan 2025 15:06:54 +0200
+Message-ID: <20250117130702.22588-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -96,96 +76,49 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 4iE18qSKZNaZHyFc9k-M5whRk-PLMI1b
+X-Proofpoint-GUID: 4iE18qSKZNaZHyFc9k-M5whRk-PLMI1b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-17_05,2025-01-16_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 suspectscore=0 phishscore=0 mlxlogscore=967
+ adultscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ malwarescore=0 spamscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501170106
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Add support for AD485X fully buffered, 8-channel simultaneous sampling,
+16/20-bit, 1 MSPS data acquisition system (DAS) with differential, wide
+common-mode range inputs.
 
-There is no need to manually track the runtime PM status in the driver.
-The pm_runtime_force_suspend() and pm_runtime_force_resume() functions
-already call pm_runtime_status_suspended() to check the runtime PM state.
+Most of the review comments which make sense in v9 were addressed. Some of them
+might have been ommitted, especially those that are a matter of preference.
+Since we reached v10, I tried to cover everything that was pointed out until now.
 
-Additionally, avoid calling pm_runtime_put_autosuspend() during the
-suspend/resume path, as this would decrease the usage counter of a
-potential user that had the ADC open before the suspend/resume cycle.
+Antoniu Miclaus (8):
+  iio: backend: add API for interface get
+  iio: backend: add support for data size set
+  iio: backend: add API for oversampling
+  iio: adc: adi-axi-adc: add interface type
+  iio: adc: adi-axi-adc: set data format
+  iio: adc: adi-axi-adc: add oversampling
+  dt-bindings: iio: adc: add ad4851
+  iio: adc: ad4851: add ad485x driver
 
-Fixes: cb164d7c1526 ("iio: adc: rzg2l_adc: Add suspend/resume support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+ .../bindings/iio/adc/adi,ad4851.yaml          |  153 ++
+ drivers/iio/adc/Kconfig                       |   14 +
+ drivers/iio/adc/Makefile                      |    1 +
+ drivers/iio/adc/ad4851.c                      | 1297 +++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c                 |   88 ++
+ drivers/iio/industrialio-backend.c            |   60 +
+ include/linux/iio/backend.h                   |   19 +
+ 7 files changed, 1632 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4851.yaml
+ create mode 100644 drivers/iio/adc/ad4851.c
 
-Changes in v2:
-- none
-
- drivers/iio/adc/rzg2l_adc.c | 29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 4742a727a80c..99cb73347b18 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -89,7 +89,6 @@ struct rzg2l_adc {
- 	struct mutex lock;
- 	int irq;
- 	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
--	bool was_rpm_active;
- };
- 
- /**
-@@ -580,14 +579,9 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	};
- 	int ret;
- 
--	if (pm_runtime_suspended(dev)) {
--		adc->was_rpm_active = false;
--	} else {
--		ret = pm_runtime_force_suspend(dev);
--		if (ret)
--			return ret;
--		adc->was_rpm_active = true;
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	if (ret)
-@@ -596,9 +590,7 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active)
--		pm_runtime_force_resume(dev);
--
-+	pm_runtime_force_resume(dev);
- 	return ret;
- }
- 
-@@ -616,11 +608,9 @@ static int rzg2l_adc_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	if (adc->was_rpm_active) {
--		ret = pm_runtime_force_resume(dev);
--		if (ret)
--			goto resets_restore;
--	}
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		goto resets_restore;
- 
- 	ret = rzg2l_adc_hw_init(dev, adc);
- 	if (ret)
-@@ -629,10 +619,7 @@ static int rzg2l_adc_resume(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active) {
--		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
--	}
-+	pm_runtime_force_suspend(dev);
- resets_restore:
- 	reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	return ret;
 -- 
-2.43.0
+2.48.1
 
 

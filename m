@@ -1,105 +1,160 @@
-Return-Path: <linux-iio+bounces-14465-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14466-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9AFA15E34
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:01:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FACEA15E38
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 408CE3A7DC4
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:00:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96CE63A6920
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4709B1A0B0E;
-	Sat, 18 Jan 2025 17:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1187D19D89E;
+	Sat, 18 Jan 2025 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="miQ4mBqG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IoANaibD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EE4190497;
-	Sat, 18 Jan 2025 17:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E3B187561
+	for <linux-iio@vger.kernel.org>; Sat, 18 Jan 2025 17:03:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737219647; cv=none; b=C4L6ZvAwaJon0ilhT5up2/fz0AvSDVX7szBfT3Ybamd/v3UIkyuGAoOI2P8p3aMYegKA85cdTiFqbGeV7ACofPGNbGRAkVPhujDMjYP5r5mrZZdGUCA7QyBmvJkf+xr2Drv1VqHCM2Br2e3Dn57fwtLPtxFyhICT/tDsIoYuBzc=
+	t=1737219813; cv=none; b=Jdb8F+dm5+HFEBPSkpdaw3pDmGc72g2xeLbTWoToQQ0Ql6DsY3FP6QjA0dnP2BO6HamNpYfRpJWcj6OtUOj9JuJ5KkJW6gP2GcHO3dTOW1X/pbl3M+JsJwBt7nS0Imwmeh6tygfZT/e2ydHVfMQ2PZTX3wgCMJyDsbfkcjqHrr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737219647; c=relaxed/simple;
-	bh=CJAOc+cvyzkZAg/GL1KVR/kwrvEA2csOj+g4Xxk3Ft8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qhA1i3qjovAMT0qJdHqMee+dj8y70x12ujKvEAJq9U1G3kAIaJ8iyVsWht2un0389aAqnSPQZEl7mpAZ6ZWq+eI4/pFTy4gGEcuIeBByD9JJkt9nTypCgOE6DN/hpOhfgCg1j2dmZeE455Fb/ti1KQgt9r14M19t59/MZ+IWJIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=miQ4mBqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42B0C4CED1;
-	Sat, 18 Jan 2025 17:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737219646;
-	bh=CJAOc+cvyzkZAg/GL1KVR/kwrvEA2csOj+g4Xxk3Ft8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=miQ4mBqGrXHgZl/E8VOuJyJ6E+vxm3bzCqnLHmFL//A3lvzRM76cwU167rSHCxbVC
-	 /4tMxsGzAgAazNnLsbqypBJ6tKj7fJc8T5blbUIuERD6N2ryy1kJMcboFcxWqWbxJc
-	 jjIM8l/TezxXAUEjEPNxnixSuL5McS/0o9pZgPUbiiwhZMR57oSqLA85WeCIfWABjn
-	 X4y2isXVwmiXvBNWfOPT3FoHgWA5dTcV1SxOsZDaXefqRSCqM4NfOBddkIuWpaWPYO
-	 TvGQFHvKh2kF8ZxIX4ZlikqT9a+mu1EGp3vsz2VUr7N9WSs2XinzuBqa6yToQNNd9H
-	 fgRlZDkuaID0w==
-Date: Sat, 18 Jan 2025 17:00:38 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gustavo Silva <gustavograzs@gmail.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: imu: bmi270: add temperature channel
-Message-ID: <20250118170038.21cfa888@jic23-huawei>
-In-Reply-To: <20250118-bmi270-temp-v2-1-50bc85f36ab2@gmail.com>
-References: <20250118-bmi270-temp-v2-1-50bc85f36ab2@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737219813; c=relaxed/simple;
+	bh=DcBlJ+yHGq37mW8GwdQGML28nY73k807Xz5nemwgYNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XV8ign6Z/5ojXtUCqpsirYfvSnSrDwQbjX8QUAND4wu2ZeLKEjDZ4S8VfMgbnAf3np8OtUInWqRwBZRGY4runeo/Ihcuhc3nKeufaHClIR96vJuylJ21MGl8QmYqnIlB1/dl4B/w7Ga9OzfR5EVswRQGJMD09fZkaEhMNfLudoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IoANaibD; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2adc2b6837eso990353fac.1
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jan 2025 09:03:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737219810; x=1737824610; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i1ANIyCbRWk79i6OyQ23QiGmTlB5taHEKJBo3hTbDHA=;
+        b=IoANaibDouGlkSzMtvMONUGT/wVftir9F6ZpWzgzfWiMUzODOZsxq304qY7J6ZpRUt
+         wBeJxkZQ+orpOzlMbsk13TUqhWE/8wIcHE9XJ0t66xY4oG/EH+2pNhUu7v4Hf627IHaE
+         jTBJYf1LH905FxtQRwbDjF2d4MIpBGYuieUalq/tukwvjQ61JHhkuCygudvLwW4zJ5fR
+         1PhSGiR48hi9K73v5wLgIZXePlmKGhfhvIhxxE0L+cdxqlXky855jPAQSX2A97iAR33l
+         anRBkqHAnRg4SXE/olPK83vE0MBG22u4aumGbVcSviqZiaaRlBY7jWgA08ef6W9OdjGR
+         fibg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737219810; x=1737824610;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i1ANIyCbRWk79i6OyQ23QiGmTlB5taHEKJBo3hTbDHA=;
+        b=eUlrz8lco6J5ScYfrabSxoMN3Yan4sRcXVQ3A1SQ1Yxa9ip+5tXRBiJj6eFcYmf7dd
+         ncinsraWI6UQlOgMiJRfN/JolQyaRI6xkogbtN+ssjihHLdT121RhJEu6ZxxWLsbnJfu
+         8gNstnF7vB9HqmvCi9HrH7txpO1WEjZGlUxcr1oSlJiTLnck7II1oocJ/Ub0pP68JL6x
+         FcbYEtJ6RatuhmDQLzw0nSTkWjLHPwSa0N1qg9NHFnRZQc0kYYKsm5CHeFrm6LhC5vy0
+         4onZBAiaBAaq+v3RdwzsAzMM1Y6ymSPYFgSziaxpyUYnL2AqmfJY1GelHn5DI4jCgX8J
+         Q9eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUapnJokZbgSCReLBtsir6ELh51vBrWQqi9EyECyzMtwZfGaaXGIHHdHtNRNGebyku4SBBh4PeG59I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB/n8jk5foQ258rI5RyVC7erhLcXaXeyBweMEnTDqT7992j9Be
+	sG1lnQNaY09t3OO0Q/+4WCaJwW4gdXL/3GCu3FcSeODWMmk1cRi1Oqr+G/o5kyk=
+X-Gm-Gg: ASbGncufbMIwT8NWzaxGHUKx4zrK5ChcLdlwQTKiicWEBrt5K89j6LcOxnBtxhPEKAc
+	0bUDmctwoxcuWY1MP94N7x6T6ztsDGf1nSug2DlUqR4lWQOFEodGmTxkctR/Lo8MDej5ble01/Q
+	CialB9fkzYxfJOjgkmGyK8uNCHKX+OarMQVdRMUdQKnjKq/nE/wdHFHeGujsAmFLzeSP7A8/ZKn
+	wbSdyMfc4lujRUnXCD0JVJQaReA7bGpIo+9qktL4LbDpw2/jRqf99DDjPR/JHLIjqA1+DBH1zdY
+	V/qaMcDTzwrZofYHNuR0oKdolGMeUAk=
+X-Google-Smtp-Source: AGHT+IGaxsOFeQL9meWsDIzBtZAyWdpP3IMY/ltknxeZCB2vVovGDUMpfKmDrAXuoUZNZxN13+A8gw==
+X-Received: by 2002:a05:6870:718d:b0:29e:5e54:76d9 with SMTP id 586e51a60fabf-2b1c0a26ba4mr3995063fac.11.1737219810074;
+        Sat, 18 Jan 2025 09:03:30 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b1b90d0acdsm1857763fac.50.2025.01.18.09.03.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jan 2025 09:03:28 -0800 (PST)
+Message-ID: <f3c1f7d2-3cc7-43b0-a166-e2053b2dabfa@baylibre.com>
+Date: Sat, 18 Jan 2025 11:03:26 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] Documentation: iio: Add ADC documentation
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+ corbet@lwn.net, marcelo.schmitt1@gmail.com
+References: <efa1dba23c38b207716883d6226ce9e9df5a51b8.1736862045.git.marcelo.schmitt@analog.com>
+ <3bd58574-36c6-4102-ad7d-1aeff0e46a95@baylibre.com>
+ <20250118155153.2574dbe5@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250118155153.2574dbe5@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 18 Jan 2025 07:55:49 -0300
-Gustavo Silva <gustavograzs@gmail.com> wrote:
-
-> The BMI270 IMU includes a temperature sensor. Add a channel for reading
-> the temperature.
+On 1/18/25 9:51 AM, Jonathan Cameron wrote:
+> On Wed, 15 Jan 2025 11:23:24 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
-Hi Gustavo,
+>> On 1/14/25 7:53 AM, Marcelo Schmitt wrote:
 
-Applied with a small tweak.
+...
 
-> ---
-> Changes in v2:
-> - Use 'MICRO' instead of 'MEGA' for scale values
-> - Remove unintended whitespace change
-> - Link to v1: https://lore.kernel.org/r/20250111-bmi270-temp-v1-1-76ee38211bf2@gmail.com
-> ---
->  drivers/iio/imu/bmi270/bmi270_core.c | 48 ++++++++++++++++++++++++++++++++----
->  1 file changed, 43 insertions(+), 5 deletions(-)
+>>> +1.2.2 Differential Unipolar Channels
+>>> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>>> +
+>>> +For **differential unipolar** channels, the analog voltage at the positive input
+>>> +must also be higher than the voltage at the negative input. Thus, the actual
+>>> +input range allowed to a differential unipolar channel is IN- to +VREF. Because
+>>> +IN+ is allowed to swing with the measured analog signal and the input setup must
+>>> +guarantee IN+ will not go below IN- (nor IN- will raise above IN+), most
+>>> +differential unipolar channel setups have IN- fixed to a known voltage that does
+>>> +not fall within the voltage range expected for the measured signal. This leads
+>>> +to a setup that is equivalent to a pseudo-differential channel. Thus,
+>>> +differential unipolar channels are actually pseudo-differential unipolar
+>>> +channels.  
+>>
+>> I don't think this is equivalent to pseudo-differential unipolar. That one has
+>> a common mode voltage supply on the negative input. This one has a full range
+>> signal on the negative input. This is the diagram I was expecting here.
+>>
+>> ::
+>>
+>>   -------- VREF -------
+>>     ´ `       ´ `               +-------------------+
+>>   /     \   /     \   /        /                    |
+>>          `-´       `-´    --- <  IN+                |
+>>   ------ GND (0V) -----        |                    |
+>>                                |            ADC     |
+>>   -------- VREF -------        |                    |
+>>         ´ `       ´ `     --- <  IN-                |
+>>   \   /     \   /     \        \       VREF         |
+>>    `-´       `-´                +-------------------+
+>>   ------ GND (0V) -----                  ^        
+>>                                          |       
+>>                                   External VREF
 > 
-> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> index 7fec52e0b48624f07031b63a9caf6c318f33f5dc..0f89554d6cd321aeda6175cc17663cc7ad83b8e6 100644
-> --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
+> If it's unipolar, output must be positive which isn't true here.
+> Do we actually see differential unipolar except for the pseudo case with
+> common mode voltage?   Seems like a weird device.
 
->  struct bmi270_scale {
-> @@ -136,6 +143,10 @@ static const struct bmi270_scale bmi270_gyro_scale[] = {
->  	{ 0, 66 },
->  };
->  
-> +static const struct bmi270_scale bmi270_temp_scale[] = {
-> +	{BMI270_TEMP_SCALE / MICRO, BMI270_TEMP_SCALE % MICRO},
-For consistency with local style (and the one I'm trying to keep to across IIO)
-I added space after { and before }
+OK, it sounds like you and Marcelo are considering bipolar to mean that the
+difference is bipolar rather than the inputs. In that case, it doesn't seem like
+there would ever be such a thing as unipolar (true) differential.
 
-Thanks,
-Jonathan
+I was looking at this from the point of view of only the inputs and not the
+difference. I'm seeing that the input voltage can only be positive, so to me
+that would be unipolar.
 
-> +};
-> +
+So at the very beginning, when we first mention unipolar and bipolar, it would
+be helpful to add a bit making it clear exactly which point in the system we
+are talking about, the input or the output.
+
+
+
 
 
 

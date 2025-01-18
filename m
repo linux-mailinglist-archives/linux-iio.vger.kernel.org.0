@@ -1,61 +1,62 @@
-Return-Path: <linux-iio+bounces-14459-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14460-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FCFA15DF8
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:16:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86EFDA15E00
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:20:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F783A718E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 16:16:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1461886E75
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 16:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C66192590;
-	Sat, 18 Jan 2025 16:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468B6192D9D;
+	Sat, 18 Jan 2025 16:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2za9chk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ogeqStwR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E4E78F5F;
-	Sat, 18 Jan 2025 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F088623CE;
+	Sat, 18 Jan 2025 16:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737216996; cv=none; b=Yrl3xhDC0Z8jF+pvyHxzFW4FWm+znPFai9rE7ADDnXg3UVb6EEuORDwmaRHiCUDXTX98q4Mt5L+VxQCF/d9Los9o56N2KpjMq4eJe8xFVH3loKIc+K7gU88OGwgvAyMbMNIdlq/f3gK4tKJJJZsuV8TM66Kn1/u1OuZRIzbX6do=
+	t=1737217220; cv=none; b=PWUzlFL4BZVugsGY0EOvoLpZNE9V9iKeO2hDbjRLykkwSWkzLz6qaNuVzYamVooUkmV2D1cLjLNL9kGv1eGA+Ee6bhlKbtFhSva9Ev4SamOoLavd3VSRL/T8VOWkR5sklAP5Z1teJcUOpH3ZaAf7zgwA97X8M5kfgFNBJmGPCxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737216996; c=relaxed/simple;
-	bh=EBwHZ6IrRVM67JhTm9px098OBiKa0SSLNpc44aKV/ls=;
+	s=arc-20240116; t=1737217220; c=relaxed/simple;
+	bh=VEyxkr9+HdHNwnlS6cwS4n6YqtHcyLmIVbK/tE6OVKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F9oHehcg5lJ35nkBJ+eSFUC/JDDWbVo4TTS3cdA/7DjYn6dHx3FBVMiCdwQb5bU1icuW1GRw+oDLsHYK1/HCa7Md+hPNAl7an3jBDbKPv4FtQQlOHXnAOx6hXyJ0w16jEYm0Xcj/Btaq/eNFtlx2vVPcxB7YTJCpUIheQ75yvLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2za9chk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42DFC4CED1;
-	Sat, 18 Jan 2025 16:16:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GpuuzBXBG1jmBRlSbE5MeRbax4+QrXEdgiObivh+nSXrFDd+i55tn5o11MGOOFSLG96d8vRRXZP3FrkR3Iua+cGhj7VifCi8RKXK5259zM7DdtQio+35OB/pkiaMnStj8JSg5cogtXwt3Hdwpp/Lstpho9ZoD9OkR0fUAMuij6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ogeqStwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24B7C4CED1;
+	Sat, 18 Jan 2025 16:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737216994;
-	bh=EBwHZ6IrRVM67JhTm9px098OBiKa0SSLNpc44aKV/ls=;
+	s=k20201202; t=1737217219;
+	bh=VEyxkr9+HdHNwnlS6cwS4n6YqtHcyLmIVbK/tE6OVKs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O2za9chkTzONqnbk8Pg9tnuv8p1EdAV4HfNtfxFcfQ+uc62ouhSQwdxHTwleH3cp0
-	 o7QqvvfJME03ctwBxkM8uCMqTEY99d336V9pLOA0wPU51QR7qOnvviODOY3PDAuuuE
-	 hCdjVaHZcqSWxj9TW/YOGFp2yUnLuxi/ibGMRE6iRRWmZY1NAU9ho+qFuQ4sww47VD
-	 CrXcTBJ7rQNVzFOnllxNKdsR43xecpnQPM5a63NtNB9c/S0VGWE/0NMRctptFmFAV1
-	 JhKVcANKp/scmIg0mHS+bioDUsczNMt2QGFafd5OkyhPJ7ycSbzteJx5a7kKB64Frq
-	 NxykS+OQYWj1A==
-Date: Sat, 18 Jan 2025 16:16:22 +0000
+	b=ogeqStwRBAhQ+5GDY2yYZNKgw2ooHHkvotA+kq2FWXkWl3+ZpZusF7z+ATAvnNEPb
+	 ZyiU0wtbbKxoIqm6aSxEkBpjhvVZBrxAewAoDxfNx0WcxTcdpCvMhY2PoHMRuJlIzM
+	 spBxdf1Fd2C8fidjeKE8fPO6rWqjB8tMAD0DKhIHBMDs7romcHL1NBM3jbxBVzHjO7
+	 WLZicemwbE1toYqEm+7I/ZLYOVAKVxMWRkk0I4W825q0RpAXOyIwrm0wWEHb8p6Nl0
+	 NosJMPJ7Lnunp8aPKRu0shdoG/DcxYt/LuSIm+1+hIz2J66P9fQJ+vZqfJHJ/VSirA
+	 pR3sda3L5F9Tg==
+Date: Sat, 18 Jan 2025 16:20:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Antoni Pokusinski <apokusinski01@gmail.com>, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- andrej.skvortzov@gmail.com, neil.armstrong@linaro.org, icenowy@aosc.io,
- megi@xff.cz, danila@jiaxyga.com, javier.carrasco.cruz@gmail.com,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: magnetometer: si7210: add driver for Si7210
-Message-ID: <20250118161622.6b96f998@jic23-huawei>
-In-Reply-To: <Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
-References: <20250115201622.270130-1-apokusinski01@gmail.com>
-	<20250115201622.270130-3-apokusinski01@gmail.com>
-	<Z4jCz1VXVPtEDNqB@smile.fi.intel.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Vasiliy Doylov via B4 Relay
+ <devnull+nekodevelopper.gmail.com@kernel.org>, <nekodevelopper@gmail.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>, "Krzysztof
+ Kozlowski" <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH RESEND v4 0/5] iio: accel: mc3230: add mount matrix, of
+ match and mc3510c support
+Message-ID: <20250118162010.08ac38f4@jic23-huawei>
+In-Reply-To: <20250116164211.000079d0@huawei.com>
+References: <20250116-mainlining-mc3510c-v4-0-a41308b85ec2@gmail.com>
+	<20250116164211.000079d0@huawei.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,118 +67,71 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 16 Jan 2025 10:26:55 +0200
-Andy Shevchenko <andy@kernel.org> wrote:
+On Thu, 16 Jan 2025 16:42:11 +0000
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> On Wed, Jan 15, 2025 at 09:16:22PM +0100, Antoni Pokusinski wrote:
-> > Silicon Labs Si7210 is an I2C Hall effect magnetic position and
-> > temperature sensor. The driver supports the following functionalities:
-> > * reading the temperature measurements
-> > * reading the magnetic field measurements in a single-shot mode
-> > * choosing the magnetic field measurement scale (20 or 200 mT)  
+> On Thu, 16 Jan 2025 16:52:41 +0300
+> Vasiliy Doylov via B4 Relay <devnull+nekodevelopper.gmail.com@kernel.org> wrote:
 > 
-> ...
-> 
-> > +obj-$(CONFIG_SI7210) 			+= si7210.o  
-> 
-> Looks like TAB/space mixture in the middle.
-> 
-> ...
-> 
-> > +#include <asm/byteorder.h>  
-> 
-> asm/* usually goes after linux/*
-> 
-> > +#include <linux/array_size.h>
-> > +#include <linux/bitfield.h>
-> > +#include <linux/bits.h>
-> > +#include <linux/cleanup.h>
-> > +#include <linux/err.h>
-> > +#include <linux/i2c.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/math64.h>
-> > +#include <linux/mod_devicetable.h>
-> > +#include <linux/mutex.h>
-> > +#include <linux/regmap.h>
-> > +#include <linux/regulator/consumer.h>
-> > +#include <linux/types.h>
-> > +#include <linux/units.h>  
-> 
-> ...
-> 
-> Despite a good formatting I would still add a comment with a formula in
-> math-human-readable form.
+> Always say why you are resending.
 
-The rest of the comments are the sort of thing I might tweak.
-This one not so much as I'll probably get the maths wrong.
+Other than that, looks good and you seem to have addressed all
+comments on v3, so applied to the testing branch of iio.git.
+Note I'll be rebasing that on rc1 once available and only then pushing
+it out as togreg.  In the meantime it will get some build bot coverage.
 
-Given where we are with the cycle (too late 6.14, too early for 6.15
-beyond me queuing it up in testing for autobuilders to get an early lok)
-we have plenty of time so I'd prefer to pick up a v5 with this comment
-added and the other minor stuff tidied up.
-
-FWIW I took a look at the overall driver and have nothing to add
-in the way of review comments!
+Thanks,
 
 Jonathan
 
 > 
-> > +		temp = FIELD_GET(GENMASK(14, 3), dspsig);
-> > +		temp = div_s64(-383 * temp * temp, 100) + 160940 * temp - 279800000;
-> > +		temp *= (1 + (data->temp_gain / 2048));
-> > +		temp += (int)(MICRO / 16) * data->temp_offset;  
+> Jonathan
 > 
-> > +		ret = regulator_get_voltage(data->vdd);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +
-> > +		temp -= 222 * div_s64(ret, MILLI);  
+> > Changes includes:
+> > - Add mount matrix handling
+> > - Add match table to work with DT
+> > - Add MC3510C support
+> > 
+> > MC3510C use same registors as MC3230, but different value scale.
+> > 
+> > Signed-off-by: Vasiliy Doylov <nekodevelopper@gmail.com>
+> > ---
+> > Changes in v4:
+> > - Fixed commit messages
+> > - Added const modificator to chip_infos
+> > - Return name->chip_id->product_code->scale order
+> > - `{}` replaced by `{ }` (with space)
+> > - Link to v3: https://lore.kernel.org/r/20250112-mainlining-mc3510c-v3-0-9ee6520ab69d@gmail.com
+> > 
+> > Changes in v2:
+> > - Ordered commits
+> > - Fixed comment style
+> > - Ordered struct members
+> > - Fixed device table
+> > - MC5310C commit splitted
+> > - Link to v1: https://lore.kernel.org/r/20250111-mainlining-mc3510c-v1-0-57be503addf8@gmail.com
+> > 
+> > Changes in v3:
+> > - Fixed patch (poped stash)
+> > - Link to v2: https://lore.kernel.org/all/20250112-mainlining-mc3510c-v2-0-322804a545cf@gmail.com
+> > 
+> > ---
+> > Vasiliy Doylov (5):
+> >       dt-bindings: iio: accel: mc3230: document mc3510c
+> >       iio: accel: mc3230: add mount matrix support
+> >       iio: accel: mc3230: add OF match table
+> >       iio: accel: mc3230: add multiple devices support
+> >       iio: accel: mc3230: add mc3510c support
+> > 
+> >  .../devicetree/bindings/trivial-devices.yaml       |  2 +
+> >  drivers/iio/accel/mc3230.c                         | 95 ++++++++++++++++++----
+> >  2 files changed, 80 insertions(+), 17 deletions(-)
+> > ---
+> > base-commit: 2b88851f583d3c4e40bcd40cfe1965241ec229dd
+> > change-id: 20250111-mainlining-mc3510c-564702fba487
+> > 
+> > Best regards,  
 > 
-> Including this piece.
-> 
-> > +		*val = div_s64(temp, MILLI);  
-> 
-> ...
-> 
-> > +static int si7210_set_scale(struct si7210_data *data, unsigned int scale)
-> > +{
-> > +	s8 *a_otp_values;
-> > +	int ret;
-> > +
-> > +	if (scale == 20)
-> > +		a_otp_values = data->scale_20_a;
-> > +	else if (scale == 200)
-> > +		a_otp_values = data->scale_200_a;
-> > +	else
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&data->fetch_lock);
-> > +
-> > +	/* Write the registers 0xCA - 0xCC */
-> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A0, a_otp_values, 3);
-> > +	if (ret)
-> > +		return ret;  
-> 
-> > +	/* Write the registers 0xCE - 0xD0 */
-> > +	ret = regmap_bulk_write(data->regmap, SI7210_REG_A3, &a_otp_values[3], 3);
-> > +	if (ret)
-> > +		return ret;  
-> 
-> Just to be sure I understand the above. There are two of 24-bit values or there are
-> two sets of 3 byte arrays? How does datasheet refers to them? What does common sense
-> tell us here?
-> 
-> > +	data->curr_scale = scale;
-> > +
-> > +	return 0;
-> > +}  
-> 
-> ...
-> 
-> Overall LGTM, there is no need for resend as I believe the three things above
-> may be tweaked by Jonathan. The last one can go even if there are 2 24-bit
-> values, but ideally in that case we should use those as a such and apply
-> put_unaligned_be24/le24() whichever suits better.
 > 
 
 

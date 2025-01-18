@@ -1,122 +1,110 @@
-Return-Path: <linux-iio+bounces-14477-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14478-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CEAA15E60
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:41:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26F09A15E74
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 19:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267351887107
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F13C1666AB
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF511A239D;
-	Sat, 18 Jan 2025 17:41:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B56A19DF48;
+	Sat, 18 Jan 2025 18:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OBrU1LeI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H6bc8a4r"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307672913;
-	Sat, 18 Jan 2025 17:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18D9A95C;
+	Sat, 18 Jan 2025 18:21:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737222106; cv=none; b=tZI9+xRz1auipK7yGdwJ2ViRd568qlmWR8hJ/7A27YCNlPt0nqw42SG5LM3N+GBeSbSq2fAokScjOgwHeZVLNenAs4q8oAkv9eUDH86FxicdSHlsIwPWhOk3fXSWsfj9Y55MwpVkqoVuu8kuJ/PsbtSftufLt+GcDtA86kpF+Nw=
+	t=1737224510; cv=none; b=h2dSMpt0Mvu/FSfR/bvJqB15VjNDJJ1XGNFrXtLGsbWPmdF8A3Bi17XclTvOhdg4CDbaWuZmkLAQdqyYx1QKGe0Rs3nSP4lYZDwKgDVgguXXcejY5k/DNWhWcBLqIMmEuGGu6uHLKtTxH22+W1my5E+smPqVvkK89ghwlXDXL7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737222106; c=relaxed/simple;
-	bh=DwlYDOXc0BhTEpSNVbXSLN0CX12gPUS0lPThlAg36Eo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CKEVQhj0SW4kNPiwgV12lVXyEB6lM2fnHTak3btNrmULA9ONQOSu+GQNuTH477o6Qb4RWg2tUb5Z2xbrtaidI631BS5g9gZH5z3FTzS3mye3RuboXulbPXEkfHD/vIve5M6aQIwzzMxwYCfP7UT43IrTeKWMZTsVmW/0mL+l4tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OBrU1LeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607FEC4CED1;
-	Sat, 18 Jan 2025 17:41:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737222104;
-	bh=DwlYDOXc0BhTEpSNVbXSLN0CX12gPUS0lPThlAg36Eo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OBrU1LeIZi3cxhPTNpeWz5vqV80/Ow6k5votWb6QuM39g2ZIKSYCnne0Voxi5BbKl
-	 kiNnyAVw0wD5q4vvsPtbul1jLLS6eG2Uhx9sCKrPcvGGlGyP3nMcl3TwFw5FkNMX4k
-	 j7v6shdJzoIQgWZzkRdSR91dRJ0aoV0JVB+B1hFrvl7suzD6CU95zOtJWt2Nhymr06
-	 KNUC9sAys0Vh5sP+lfmA/sxw36ZnwqKJKIGe8Vrs/lJQDNYQvpNVl5kE9ocx+lGL6C
-	 q6Jtbf9w7uBdiJcYTkZGjrXXDWKhLsR/CtmGYX5Cb+Qj4tCdUNwFX5l+Iet1Y+yVwt
-	 j8qjG/HbUQHIw==
-Date: Sat, 18 Jan 2025 17:41:35 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Antoniu Miclaus <antoniu.miclaus@analog.com>, robh@kernel.org,
- conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
-Subject: Re: [PATCH v10 8/8] iio: adc: ad4851: add ad485x driver
-Message-ID: <20250118174135.1f6e24a3@jic23-huawei>
-In-Reply-To: <134bd7b9-f659-4010-9c78-48eee1dc901a@baylibre.com>
-References: <20250117130702.22588-1-antoniu.miclaus@analog.com>
-	<20250117130702.22588-9-antoniu.miclaus@analog.com>
-	<d4b9d6e9-745c-4c35-a62d-18e0a36f30c4@baylibre.com>
-	<20250118165751.334fe37b@jic23-huawei>
-	<134bd7b9-f659-4010-9c78-48eee1dc901a@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737224510; c=relaxed/simple;
+	bh=a9SqrLJPiCqKhkq3VFMoF49aX14krdlcwesZawTRMJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p9hhQLNMg88Ri31twFXbMya4YRK81BPOz8g56vgRPp2UW+MDW7yYn1hCEAQMYU1f+n3BrUF946HOfVhicV6DW9gqMlgu2A/dLm5hdk8SdWvXzsdnhT5iUlsiI7gPA4jS34GZQhZBQCZ3ltYzZPweU33C058nWJZJMzMwpZ5mw0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H6bc8a4r; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2166651f752so75609795ad.3;
+        Sat, 18 Jan 2025 10:21:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737224508; x=1737829308; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c+rZLrdQTqz1wdIWq/alYOT0NZRMEZRGkf9NlCmKGy4=;
+        b=H6bc8a4rRAViMCISSc5voZZXP0pjN+aB8PsLoPsUxzFXIJsHT0Zf+r8S5p1usVqtUC
+         hWmoM9ilXarTbkAVmgL1Y15eP3IiIjhEI0GA70v4xEREL4/yZNtaxdfHBpHL59iJxYLd
+         gR60Ehve9xad9A2x+PSJfKbEgRPuGp8/yt0dMzTwcyhV92iTrbSQBsEOhuLtJQeKrXRL
+         PzuqSIc9L6+Lqe+IOqWCxPjQa6abLLC8laSlw/0c4XqVs+JZu2MudjfDy+RqprW2EO8c
+         y18ERrbD8X/OZm84f06ms1DoEJ9qvXkms8kIdVZq67x4BF9CAPH8I9oJC9KNxHB/3EbH
+         Fp2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737224508; x=1737829308;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c+rZLrdQTqz1wdIWq/alYOT0NZRMEZRGkf9NlCmKGy4=;
+        b=Xlljs6u+iwa+4r3HwMnoVYfQaj6Cucaf6REmkrDQyK3sqlpIUDx2il8HPXO4seFaGp
+         OUEdhjd427iIYta8FU/0fP3EvcOYZ4W04hW2L2VVf5+rhYyGxB4ysTzSsPO7BM8lD0AK
+         YbC6fTfrVkpsLs32IEBGZGMT/GDn6RHtWRAInD/EDAn3UFBhO0Fli+e4wuUQn38BY3pD
+         lhNJC7f++x/Dtr3C7G5MCK8lG0mUW7nfi304H3wNv4jPDA7a8Kt1G8KWAFR2a8ijLgC7
+         Mc49vvwMA73vgvKNy0aooOjDlB4xKVW3scl8ONUBOkDnPpD0qPV5bLhTume6t2nWIyMj
+         mT8w==
+X-Forwarded-Encrypted: i=1; AJvYcCV5EIkFOUkCEUH4JRAXSPFafj6kVyZ8hFEtf2hvvtWsvvL3j2WseDS7PdxaIE7R1l58U6f858zI4pv6FBg5@vger.kernel.org, AJvYcCXTnz7HNsICdAwViDpgAfZH51vMJ+Oyrj76XwbzVLrSpiEgGBW3QwL9rMB6nQRFSZnmh08Xxxb0eTE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiI45CDg8FEA6hoAKzGFA9Hc4wKICiTX5Y2Kk+xKWdkJTr42D2
+	sCVCGOSi0jEo31Dq4UryqwXqGtO6iKgQywnUNJOw9lTNJgUlAfCS
+X-Gm-Gg: ASbGncs5secWJPJXVOAZQhrZ9XAq8GRvZcSSM0yQWmFPUa0zLKLmhE5n6EWI991WBaa
+	ec/2gDdLe72aYXpAtYHMxlLcyepitW9SkL4JragfhJJZALoxswDyBa8KTxXKlYPV2cOspBF4IXq
+	zkWCHuzaf9pos04BoTjwQ+0xGl4r9BXMMlDdlqkMofkxq4v1qDWKi7ityTzONy1oBNxVrruvFcK
+	IpBRYP7ZLrWKb0IkQgqAMAsBDQfYtkUhAhqDc7ADqQkLKjwFZXwGT0=
+X-Google-Smtp-Source: AGHT+IHp4vZwUy68IcLB+PGZgQRAVOssO7F6UgiLL/G85mDXjjZPb6KkwXAlFUOGUgF4F+HaTyz1+Q==
+X-Received: by 2002:a17:902:e5d1:b0:215:6e01:ad07 with SMTP id d9443c01a7336-21c353ef811mr98463005ad.6.1737224507929;
+        Sat, 18 Jan 2025 10:21:47 -0800 (PST)
+Received: from archlinux ([2804:14d:90a8:854f::10dc])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21c2d3ad0b1sm34419985ad.144.2025.01.18.10.21.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Jan 2025 10:21:47 -0800 (PST)
+Date: Sat, 18 Jan 2025 15:21:41 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: imu: bmi270: add temperature channel
+Message-ID: <v64q6kkwf6akdyjzvs2xqcjgbiwzys7zkf77p5bicv4ggsukns@fwoe3qqxzef2>
+References: <20250118-bmi270-temp-v2-1-50bc85f36ab2@gmail.com>
+ <20250118170038.21cfa888@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250118170038.21cfa888@jic23-huawei>
 
-On Sat, 18 Jan 2025 11:09:12 -0600
-David Lechner <dlechner@baylibre.com> wrote:
-
-> On 1/18/25 10:57 AM, Jonathan Cameron wrote:
-> > On Fri, 17 Jan 2025 15:45:35 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> On 1/17/25 7:07 AM, Antoniu Miclaus wrote:  
+On Sat, Jan 18, 2025 at 05:00:38PM +0000, Jonathan Cameron wrote:
 > 
-> ...
+> Applied with a small tweak.
+
+> > +static const struct bmi270_scale bmi270_temp_scale[] = {
+> > +	{BMI270_TEMP_SCALE / MICRO, BMI270_TEMP_SCALE % MICRO},
+> For consistency with local style (and the one I'm trying to keep to across IIO)
+> I added space after { and before }
 > 
-> >>> +		if (fwnode_property_present(child, "diff-channels")) {
-> >>> +			*channels = ad4851_chan_diff;
-> >>> +			channels->scan_index = index++;
-> >>> +			channels->channel = reg;
-> >>> +			channels->channel2 = reg;    
-> >>
-> >> Typically we don't set channel == channel2 for differential channels.  
-> > So i guess this is tripping up on these being dedicated pairs labelled
-> > +IN1,-IN1 on the datasheet.  The binding documents those as matching
-> > the diff-channels - hence both channels and reg are the same.
-> > So maybe best bet is to enforce that in the driver by checking it is
-> > true.  
+Noted. Thanks!
+
+> Thanks,
+> Jonathan
 > 
-> Are you saying that in_voltage0-voltage0_raw in userspace is OK?
-That is indeed the question.  It's odd.. 
-
-Also causes us problems because we do have a few devices where we
-actually do read a single pin wired to either side of a differential ADC
-as part of calibration where in_voltage0-voltage0_raw has
-a different meaning to here.
-
-So, gut feeling - too odd and I think every time we've met this
-before we have gone with inventing some more channels so that the
-inputs have different numbers.  I can't immediately point at an
-example though.
-
-Do we need to handle that at the binding level? I'm not sure
-if it is clearer to insist we do in both places or let the binding
-stick to datasheet numbering and just deal with inventing channel
-numbers in the driver.
-
-Jonathan
-
+> > +};
+> > +
 > 
-> > 
-> > It is a slightly weird description but only alternative would be to
-> > invent some more channel numbers for the negative sides which is
-> > less than ideal.  We could go that way though.
-> > 
-> > Some comments alongside a sanity check is probably the best way to
-> > handle this and no surprise us in the future.
-> >   
-
+> 
 

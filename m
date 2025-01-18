@@ -1,66 +1,67 @@
-Return-Path: <linux-iio+bounces-14442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0578CA15C8E
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 12:49:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085A4A15C91
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 12:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545ED1889110
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 11:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 538EB3A8B46
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 11:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8121E18A959;
-	Sat, 18 Jan 2025 11:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97B718B470;
+	Sat, 18 Jan 2025 11:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k770SPkq"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mrjNpmWc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F568155757;
-	Sat, 18 Jan 2025 11:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB9B155757;
+	Sat, 18 Jan 2025 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737200938; cv=none; b=Cov9ngVnaLY0L/Co0PtUl3tPKNbodVB6rdvXciP0iBEXGxTy4LbQvmhR+MPk0b8EbTvcBwlYJ9sANKFkoYnzewcQwatLhbUwYwLMGuBg/zab9keU/nQJDdykLk1xBZ+25XJZtXDsBnOV8sGeQPgDVKKQYWsHxvPOSKLZ/yO5OpA=
+	t=1737201535; cv=none; b=rWB7t9tz1T/eBXxn+dB5dk/WG8llpHHMd+ErCXsKU2/XcSv7B3Nj+xinDpdeS2fWpmEyFITEIQXyw6+qVPEsMzTyeZpGodOpymx/+i9LAZC71An3JtO0fokHJjlW7+NfkMBhZT29l/4C0wDpMXAaakkCUprRlqmHkCA5RieFzoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737200938; c=relaxed/simple;
-	bh=b3Vwi+XF2Ta2nU9vcSwCYJ9xZaxTn7sxWh2usC3XLjY=;
+	s=arc-20240116; t=1737201535; c=relaxed/simple;
+	bh=pmrKQ4YKlEjHO27uFH0ZemOSIQZepOHbHu2h4XvObDk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zc0pd0dRvuqbT3oZCcCWFEa+Y8bi74a6gKbSxuA57V9sFZt8LUj9riR3j9nmQDEX+10sRL2P4YSNwkkzN2o/fb6RdL7E+RiCSr8mBk7Vi6dQ3TDpvM8fRxJsDhlDfgHFDPEYWn1t8Az5LZ0Q/jQBwfBFWxTgGGZl7ecyk1OpWGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k770SPkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F10CC4CED1;
-	Sat, 18 Jan 2025 11:48:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L2FXrDoDZ5zlpay6jtZSGxIiMouOoIUrkGwnYxAYoZ3Qm70cF66W6EvgVm0RunzqIBnY3gHMJgrwmt/cpsuxgTq4b2gOiJvQWRtiCLP2+rpoh8mTbdQhmxEmwxU7VqlSw+cfDumCYZlQ6HXpRaNW2Qdbw9iZGqAXW7hYk3hsttM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mrjNpmWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFCEC4CED1;
+	Sat, 18 Jan 2025 11:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737200937;
-	bh=b3Vwi+XF2Ta2nU9vcSwCYJ9xZaxTn7sxWh2usC3XLjY=;
+	s=k20201202; t=1737201534;
+	bh=pmrKQ4YKlEjHO27uFH0ZemOSIQZepOHbHu2h4XvObDk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k770SPkqI1tbX9Pwba+mp4XqGWfB+b0ywtSAZkXei5adlA3xYs8bmYN73DWb13IrY
-	 NgTCPc6Y62aNKkad+VNE8kGCQlxwcRodiTo6U5GAPN1PfgSdt+CmIDDzUP6QxeoXxO
-	 V6YIQhraqK8wXlyCjWrYIABBu0VAEYxtce2p1HBqFtfmLutzQcflq7vDEr2SsxbbuI
-	 0S72Omdum54L9Dz4ZJAKYmW2h6fOHLVfABlDyVyH6G1iJM6qbY/3IRiVOUxsCoTnpk
-	 BBvaGSIomTmQLJuw8ojghv8nZydL2xb+zJwoh58TuHzT151I1PmXWjBQihe0x8fQPd
-	 pcr1qpmSXjIGw==
-Date: Sat, 18 Jan 2025 11:48:46 +0000
+	b=mrjNpmWcVQgnW029Vm320cY3KWdLMabFERitE1zkmWh/AvL65kmDnemh1mXbrFgTz
+	 Q7TsUSF2uoPMH107IwR2FcZONSTddF8hIBowe5gyJM6kb6lVSmy7fNhlURbLk+7jT4
+	 WA/hfaOG5/xQGvrhdXRwZmOUUnKQAeYWnfbIAyGp9unWP6qi5lJZxIu4R92tMbIWPS
+	 cTlGmePA5c9Uhq7zOs6oL4Jm0q/mNe4mrAUF0sqbuhxaXpylE3Ih5G9exm1OdkofAy
+	 jFlYPDAqEHyx+sv5JaRJYtVO0iiuc0Qt8fxyzLNy6Ddnfh5a4NlGe7aYumRaCY+V8U
+	 VhjsV2ulfL/mQ==
+Date: Sat, 18 Jan 2025 11:58:44 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-Cc: Mikael Gonella-Bolduc via B4 Relay
- <devnull+mgonellabolduc.dimonoff.com@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
- Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, Mikael
- Gonella-Bolduc <m.gonella.bolduc@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
- Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: light: Add APDS9160 binding
-Message-ID: <20250118114846.78ce0b67@jic23-huawei>
-In-Reply-To: <Z4UeCyxgbzCUQtRz@uva.nl>
-References: <20250106-apds9160-driver-v4-0-f88d9fc45d84@dimonoff.com>
-	<20250106-apds9160-driver-v4-1-f88d9fc45d84@dimonoff.com>
-	<20250112111059.677f8708@jic23-huawei>
-	<Z4UeCyxgbzCUQtRz@uva.nl>
+To: David Lechner <dlechner@baylibre.com>
+Cc: 20250112120530.1950a265@jic23-huawei.smtp.subspace.kernel.org,
+	dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v1 01/15] dt-bindings: iio: adc: ad7768-1: add
+ synchronization over SPI property
+Message-ID: <20250118115844.733a4974@jic23-huawei>
+In-Reply-To: <e5e8eba7-2455-488b-a36f-e246844e11fd@baylibre.com>
+References: <cover.1736201898.git.Jonathan.Santos@analog.com>
+	<bde43579b41199f0c17f07dfacefcb137028e66e.1736201898.git.Jonathan.Santos@analog.com>
+	<dc7f6461-6fce-4dbd-9be4-f7814053e7dc@baylibre.com>
+	<Z4Lx5myE2OPDie6n@JSANTO12-L01.ad.analog.com>
+	<20250112121229.5bc7545c@jic23-huawei>
+	<Z4WtbRG3gWQCwTmE@JSANTO12-L01.ad.analog.com>
+	<e5e8eba7-2455-488b-a36f-e246844e11fd@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,116 +72,131 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 13 Jan 2025 09:07:07 -0500
-Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com> wrote:
+On Tue, 14 Jan 2025 10:05:02 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Sun, Jan 12, 2025 at 11:10:59AM +0000, Jonathan Cameron wrote:
-> > On Mon, 06 Jan 2025 17:23:01 -0500
-> > Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org> wrote:
+> On 1/13/25 6:18 PM, Jonathan Santos wrote:
+> > On 01/12, Jonathan Cameron wrote:  
+> >> On Sat, 11 Jan 2025 19:34:14 -0300
+> >> Jonathan Santos <jonath4nns@gmail.com> wrote:
+> >>  
+> >>> On 01/07, David Lechner wrote:  
+> >>>> On 1/7/25 9:24 AM, Jonathan Santos wrote:    
+> >>>>> Add adi,sync-in-spi property to enable synchronization over SPI.
+> >>>>> This should be used in the case when the GPIO cannot provide a
+> >>>>> pulse synchronous with the base MCLK signal.
+> >>>>>
+> >>>>> User can choose between SPI, GPIO synchronization or neither of them,
+> >>>>> but only if a external pulse can be provided, for example, by another
+> >>>>> device in a multidevice setup.
+> >>>>>     
+> >>>>
+> >>>> While we are fixing up these bindings, we could add some more trivial things,
+> >>>> like power supplies.
+> >>>>
+> >>>> Also, the interrupt property could use a description since the chip has multiple
+> >>>> output pins. I assume it means the /DRDY pin?
+> >>>>     
+> >>>
+> >>> Right! Yes, the interrupt pin refers to the /DRDY.
+> >>>  
+> >>>>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> >>>>> ---
+> >>>>>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 24 ++++++++++++++++++-
+> >>>>>  1 file changed, 23 insertions(+), 1 deletion(-)
+> >>>>>
+> >>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> >>>>> index 3ce59d4d065f..55cec27bfe60 100644
+> >>>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> >>>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> >>>>> @@ -47,6 +47,15 @@ properties:
+> >>>>>        in any way, for example if the filter decimation rate changes.
+> >>>>>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+> >>>>>  
+> >>>>> +  adi,sync-in-spi:    
+> >>>>
+> >>>> If this is saying that SYNC_OUT is connected to SYNC_IN, then I think the name
+> >>>> should be something like adi,sync-in-sync-out. SPI seems irrelevant here since
+> >>>> we should just be describing how things are wired up, not how it is being used.
+> >>>>
+> >>>> But if we also need to consider the case where SYNC_OUT of one chip is connected
+> >>>> to SYNC_IN of another chip, we might want to consider using trigger-source
+> >>>> bindings instead (recently standardized in dtschema).
+> >>>>     
+> >>>
+> >>> Do you mean the trigger-sources used for LEDs? I can try to see if it works, but would it
+> >>> handle the non-GPIO case? While testing a multidevice setup, I found it simpler to 
+> >>> have a single device to manage everything. It lets us toggle the GPIO or /SYNC_OUT
+> >>> without referencing another device and makes simultaneous buffered reads easier.  
+> >>
+> >> Daisy-chain mode (figure 131)?  In that case we normally end up with a single presented device
+> >> with a 'lot' of channels. (See the electric car style battery charging chips, those can
+> >> be chained in very large numbers!)
+> >>  
+> > 
+> > Actually, it is more like Figure 133 , but the premise is similar. We
+> > have here a Quad setup.
 > >   
-> > > From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> > > 
-> > > Add device tree bindings for APDS9160
-> > > Note: Using alternate email for maintainer
-> > > 
-> > > Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-> > > ---
-> > >  .../bindings/iio/light/brcm,apds9160.yaml          | 86 ++++++++++++++++++++++
-> > >  1 file changed, 86 insertions(+)
-> > > 
-> > > diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> > > new file mode 100644
-> > > index 0000000000000000000000000000000000000000..756d46c2edb171da840ee49a7339cb781fe84ad2
-> > > --- /dev/null
-> > > +++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> > > @@ -0,0 +1,86 @@
-> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > +%YAML 1.2
-> > > +---
-> > > +$id: http://devicetree.org/schemas/iio/light/brcm,apds9160.yaml#
-> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > +
-> > > +title: Broadcom Combined Proximity & Ambient light sensor
-> > > +
-> > > +maintainers:
-> > > +  - Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
-> > > +
-> > > +description: |
-> > > +  Datasheet: https://docs.broadcom.com/docs/APDS-9160-003-DS
-> > > +
-> > > +properties:
-> > > +  compatible:
-> > > +    enum:
-> > > +      - brcm,apds9160
-> > > +
-> > > +  reg:
-> > > +    maxItems: 1
-> > > +
-> > > +  interrupts:
-> > > +    maxItems: 1
-> > > +
-> > > +  vdd-supply: true
-> > > +
-> > > +  ps-cancellation-duration:
-> > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > +    description: |
-> > > +      Proximity sensor cancellation pulse duration in half clock cycles.
-> > > +      This parameter determines a cancellation pulse duration.
-> > > +      The cancellation is applied in the integration phase to cancel out
-> > > +      unwanted reflected light from very near objects such as tempered glass
-> > > +      in front of the sensor.
-> > > +    minimum: 0
-> > > +    maximum: 63
-> > > +    default: 0
-> > > +
-> > > +  ps-cancellation-current-coarse:  
+> >> Probably similar for figure 133 (which is a dual SPI setup) as the SPI clock must
+> >> be shared so we still see it over a single interface.
+> >>  
 > > 
-> > I've lost track on what we've discussed previously but I'm curious as to whether
-> > we can end up with a cleaner binding for this.  We may well see other identical
-> > controls in future, so nice to have something more 'generic'.  I'm not suggesting
-> > we don't keep it vendor specific though as not sure it will generalize beyond
-> > different broadcomm parts.
+> > We could view them as a single device with multiple channels, and since
+> > the goal is to read them simultaneously with buffered reads, some parameters
+> > such as sampling frequency should be equal to all devices.
 > > 
-> > It is a multiple of nA, so can we just express the combination of
-> > this and ps-cancellation-current-fine as a single parameter, probably in pA
+> > However, there are some implications: If we do the above, we have
+> > limitations in the customization of the "channels", they would have
+> > the same filter, frequency modulator and scale (we plan to add support
+> > for ADAQ776x-1 series, which include PGA and AAF gain).
 > > 
-> > The tricky bit being there seem to be holes, so the allowed list would be complex.
+> > To customize them separetely, we would need to assert only the
+> > corresponding chip select, which is only possible with different
+> > instances, as far as I know.  
+
+Ah.  This is different from the daisy chain cases where even this
+is done by writing through the single interface (usually you have
+to update same register on all devices).
+
+To support this they probably have to remain separate devices because
+of how the SPI subystem will present them.  It's not impossible to
+have multiple spi parents feed into a single child device but it is
+complex. Or I guess we end up with something magic via a backend like
+David describes below.
+
+> 
+> FYI, I've been discussing with the HDL folks at ADI about how we could make a
+> multi-bus SPI controller, similar to controllers used for parallel SPI flash
+> memories that are used as a single logical device. So that is the solution I
+> am hoping for here. It would would allow a single IIO device instance for
+> multiple chips. But the SPI controller would allow addressing individual chips
+> for configuration and addressing all chips at the same time for reading sample
+> data.
+
+Maybe this could be presented as if it were a typical daisy chain.
+So a long write sends the correct writes to each chip.  However, even
+if we have HDL like this it isn't very general if someone wires this up
+to a different HDL it will look quite different :(
+
+I guess we don't have to keep to conventions of this looking like an SPI
+a device given there is going to be a backend involved.
+
+Nice to keep the bindings in line with conventional SPI though.
+
+Jonathan
+> 
+> >   
+> >> If those are the only two options then keeping this within the driver is fine.
+> >> For daisy chain there are examples in tree and it normally means we have to
+> >> have a DT parameter that says how long the chain is, though we maybe can
+> >> do that with per channel nodes as well if those make sense here.
+> >>
+> >> Jonathan
+> >>  
 > > 
-> > Even if we can't do that can we express it as two nA values rather than indexes?  
-> 
-> Hi Jonathan,
-> 
-> These holes just have me puzzled on what to do. There's many of them, and the range in value is very large.
-> I thought about just having a single more generic parameter in pA but like you said but I found it was confusing to 
-> describe the allowed values and confusing as well to just round up or down since the holes are so large.
-> 
-> Having two values as a multiplier is more straightfoward for this chip since it's just based on what's described in the datasheet.
-
-I would like them in common standard units even if we go this way.
-
-> 
-> If you prefer to keep a more generic parameter, I'm open to the idea of going back to just a single one in pA and
-> log a warning in the driver if the value provided ends up in a hole and round to the nearest allowed value.
-
-That makes sense to me as the cleanest option.
-Just rely on descriptive text to tell writer of DT binding what values are allowed.
-
-> 
-> Are you confortable with this plan?
-> 
-> If so, there's another problem with the above. I don't see any picoamp suffix in the dt bindings property-units.yaml.
-> How should I handle this?
-
-Add it.  They tend to get added on first requirement.  Here
-nothing above picoamp works for us.
-
-Jonathan.
-
-> 
-> Best regards,
-> Mikael
-> 
-> 
-> 
+> > Those are the options in the datasheet and in hardware so far. I was 
+> > considering other scenarios in case the user combine them differently.
+> > I believe keping within the driver covers the main cases. 
+> >   
 
 

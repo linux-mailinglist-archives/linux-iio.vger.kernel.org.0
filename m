@@ -1,176 +1,141 @@
-Return-Path: <linux-iio+bounces-14475-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14476-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAAAA15E56
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:35:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE83A15E5A
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 18:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF331655B0
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:35:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB7F43A6FBF
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 17:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0031B19CC24;
-	Sat, 18 Jan 2025 17:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ED119E965;
+	Sat, 18 Jan 2025 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7LOg1UK"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1/A4p9jc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB31E2913;
-	Sat, 18 Jan 2025 17:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B2C149DE8
+	for <linux-iio@vger.kernel.org>; Sat, 18 Jan 2025 17:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737221725; cv=none; b=mddqQBQXkf7LfJz5FBIZLykevcpRdzEPaKo3Ts/KOou3SzXy13O7jULl8Ummf+pfzjUM3Gbsn3rs/RP42QXgELDG3DVI/AFacRHdvxWzEPtrGNcR+pJxrdG+nJMPD7N0ZflI2Q+uFMtbdcUYNEFv+5Jp7sKsW5gymCwjQlDht+s=
+	t=1737221842; cv=none; b=rbbMEkgz+jFuSNbO9rRMQQGvY26TRDiTeMi3hZnp2Khzt9vGIDQvu0IGZi529QTMIzkhLhssxhWIYtzCnLRM3wQV9jayV+pQC1Bn13FtRxvFAHwqXFYS8GeOhj2GB8GR1lVX6qfaBwJZfykz68KU4sUprh6/7RQvTTD+v+s1GVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737221725; c=relaxed/simple;
-	bh=ZjAbuOIuOjrEJy8Qcfw/4zNEaXRurScLHYg9BNb9dus=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j2Q1+Z3X37xV2AONK9YfjHxP93/jzG1A4687a7g7RXjXALOIYSnegH9BPjvF8R8jazJCMQn73hZyBYVcKMVXr2nDxJwBlZvwcp7BwH/iFRqv5SlYhLGfBDqfSiO6Zuyu3IYKVOivqhBPOvn4x8X1j6Nz5g6f/IOoKJe0WVhiO8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7LOg1UK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F251FC4CED1;
-	Sat, 18 Jan 2025 17:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737221725;
-	bh=ZjAbuOIuOjrEJy8Qcfw/4zNEaXRurScLHYg9BNb9dus=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=J7LOg1UKPsbzRp1Ds6DRmZ6g86DmaqBogBSba7pg8j+udz3PHNNPzD/Eel0WklxOF
-	 Ac4ilAcNoyOUPV+wvZDjh8f1lU1a+zVFSzq3MKNJTT0SX2xB7LI9CvLLRiaxFnH7fU
-	 EYZ2hZRH7Ux8v9nkmDHx47Kz5SlnqjUuRLdW5iFPDKgG4w7OKxeSh99bDBc4WTA+r0
-	 ArVAFW6QmWm6Upqli+zaIByVbve9o4w61To2fRJpf8d4f/5un6IF152u+kArwNLysk
-	 n9zHr3i/cvEt4J+X96ObxEbG5ka5UF1hbA+QYyKDWqdyYUA8kVV2FZI8Py/JlBwEy0
-	 KYSAcDxaERB2w==
-Date: Sat, 18 Jan 2025 17:35:16 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- corbet@lwn.net, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v2 1/1] Documentation: iio: Add ADC documentation
-Message-ID: <20250118173516.130ca9fb@jic23-huawei>
-In-Reply-To: <f3c1f7d2-3cc7-43b0-a166-e2053b2dabfa@baylibre.com>
-References: <efa1dba23c38b207716883d6226ce9e9df5a51b8.1736862045.git.marcelo.schmitt@analog.com>
-	<3bd58574-36c6-4102-ad7d-1aeff0e46a95@baylibre.com>
-	<20250118155153.2574dbe5@jic23-huawei>
-	<f3c1f7d2-3cc7-43b0-a166-e2053b2dabfa@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737221842; c=relaxed/simple;
+	bh=5KbImRuF/5NpFTkcWvOpCTgTtv6Ro6DY1IS4jD2ffOM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=WM71jpFg3vJL58jzQRzRCPC9eZvajfarjMTO4VA7UI1QAcCLShG9Q4iwmdqq7w0LygRm97E1wSY/uKA/jEwtwVZVGZMQNGc0hi0CuRCwTgbjZjSgsAG5Xv3f4sgb0ePVl4MIpUMkQQB0nK4gegn0D+bm4SNbRH4SZ23mcqVUVHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1/A4p9jc; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-724afdca973so50171a34.1
+        for <linux-iio@vger.kernel.org>; Sat, 18 Jan 2025 09:37:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737221839; x=1737826639; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oUF4bH1WdmTIXkLPO2OLA3O+H+PKCUbXu0Y6uzH89nY=;
+        b=1/A4p9jc1j67bm9Hv5rEWJt8lozmUQf0oKyoXxqCyryNN1fyx6Wg+LF90l47MSt3yy
+         ASMr98MtvZso0CXzL1/SJ29fPP2U5xPgWxXPB8emMcQ3K32YNiPjqbdOHmHalGgD0RJv
+         VaOd/Hjk8MAaEFZgy6DXRwTwO666vEQ8wt0MP9OMKdhHFDH7gc0hRH3A+EFQETp+lBol
+         72NhDE9RY1Mh7a2gYt99V+NZUbT1uIo3txrbjN5zeAE0TE2raoOp1yWPGyEvZARGhIi+
+         uKh9hPNNq/Pgad7U64pOBOjmctukfH6qYC9uTlGu8QhdpgBNXerrFNM4FDglMOE/T+7c
+         txwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737221839; x=1737826639;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oUF4bH1WdmTIXkLPO2OLA3O+H+PKCUbXu0Y6uzH89nY=;
+        b=p6ozmZWZKz0/x02xOJcfeDlBHKiyRT9d9VHe2b2sNcTnbi2dHeQ//Me4PToMGBhUMc
+         Cr4j5mqjSRmDVEmT37ZAFXoxIozkzSyUjqrMWJiNFpueLcvIIsiY8ls/xWfc5Y/a8NSb
+         Ur6ZlnButPIdOXLWuuf6MuEgZrkVLOOLBODyz6uell5fJ7nJLsEh+YX/pBLrcG2T4lp3
+         LhJzX+nkpUhz3wZvBrqIQlW2Z68dojpOauuBV2wauEeDnB3dsXFUXyReUZi9Vd0+wB9D
+         vUaw/lR9ian27soxP4qSlcaJFdxaU47gneGGMwG2ZlRynxtzUnJvhG9nfc4QI0bkzbt8
+         WjVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwXCeJg042oKcQobaY8VWDnzVnOTaONU8eYRDPKxHnyFOCWvbdgO9+gHY8Vck8Uxempw/PygTs5F8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoqUZPQP0yQzIBWpAjCQAj+/g2kIrzZn7SZk8CL8T0xNgOFXWQ
+	ADIzBaR19/SGfaWSzV4Pe3xbkTnSLmmzUCwlLIPMeX98y3TI2LixfmMfDx4ohOM=
+X-Gm-Gg: ASbGncuDDtZ0XzZ89v/mPHQBc8wSZ3Ea9nyQVkswxNf9VNTEwiwbGB+49Hnxvg8CeJ6
+	TtI7/w4Lyb3pN5WOqtrXNR+D9f13mxtUzf/+L2jJsviuHcyNoo4JKj/9B1PfjXJA8m1hdnqVvNe
+	ZcUG7ZA6GZlq3t+uVXtdFHCwKFeQjtV1NS7ctS9SfYQivI3XXbmZYwD7CluMTqO/TzZ6ZR0pwHu
+	p26j1/ZyapZaBq4NpZiHzbuBiG/JJjx8urYn/LHxKsDD236elVNOM3bD8UQ3a6ZIV5Kjhs1Kn+N
+	3XD3KGbJaa5au9HXXUPPlParvY4lm/0=
+X-Google-Smtp-Source: AGHT+IF2phH9N+7acPxIsWlMivwopcNK/+wJoDjwY5UuWgy4NyyY0G9Qpx9Eugtq3ILFnzMuo9wdYw==
+X-Received: by 2002:a05:6830:d0c:b0:71d:f21b:a447 with SMTP id 46e09a7af769-7249dae0ab7mr3865118a34.17.1737221839059;
+        Sat, 18 Jan 2025 09:37:19 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fa36058274sm1427516eaf.40.2025.01.18.09.37.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 18 Jan 2025 09:37:17 -0800 (PST)
+Message-ID: <d0253e41-3cab-4263-91b2-81682529f9a0@baylibre.com>
+Date: Sat, 18 Jan 2025 11:37:16 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 8/8] iio: adc: ad4851: add ad485x driver
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+References: <20250117130702.22588-1-antoniu.miclaus@analog.com>
+ <20250117130702.22588-9-antoniu.miclaus@analog.com>
+ <a45c60fe9fff0f517032a7e9eb3881cf340a8c1e.camel@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <a45c60fe9fff0f517032a7e9eb3881cf340a8c1e.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, 18 Jan 2025 11:03:26 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On 1/18/25 9:10 AM, Nuno Sá wrote:
+> On Fri, 2025-01-17 at 15:07 +0200, Antoniu Miclaus wrote:
+>> Add support for the AD485X a fully buffered, 8-channel simultaneous
+>> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
+>> differential, wide common-mode range inputs.
+>>
+>> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+>> ---
 
-> On 1/18/25 9:51 AM, Jonathan Cameron wrote:
-> > On Wed, 15 Jan 2025 11:23:24 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >  =20
-> >> On 1/14/25 7:53 AM, Marcelo Schmitt wrote: =20
->=20
+...
+
 > ...
->=20
-> >>> +1.2.2 Differential Unipolar Channels
-> >>> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >>> +
-> >>> +For **differential unipolar** channels, the analog voltage at the po=
-sitive input
-> >>> +must also be higher than the voltage at the negative input. Thus, th=
-e actual
-> >>> +input range allowed to a differential unipolar channel is IN- to +VR=
-EF. Because
-> >>> +IN+ is allowed to swing with the measured analog signal and the inpu=
-t setup must
-> >>> +guarantee IN+ will not go below IN- (nor IN- will raise above IN+), =
-most
-> >>> +differential unipolar channel setups have IN- fixed to a known volta=
-ge that does
-> >>> +not fall within the voltage range expected for the measured signal. =
-This leads
-> >>> +to a setup that is equivalent to a pseudo-differential channel. Thus,
-> >>> +differential unipolar channels are actually pseudo-differential unip=
-olar
-> >>> +channels.   =20
-> >>
-> >> I don't think this is equivalent to pseudo-differential unipolar. That=
- one has
-> >> a common mode voltage supply on the negative input. This one has a ful=
-l range
-> >> signal on the negative input. This is the diagram I was expecting here.
-> >>
-> >> ::
-> >>
-> >>   -------- VREF -------
-> >>     =C2=B4 `       =C2=B4 `               +-------------------+
-> >>   /     \   /     \   /        /                    |
-> >>          `-=C2=B4       `-=C2=B4    --- <  IN+                |
-> >>   ------ GND (0V) -----        |                    |
-> >>                                |            ADC     |
-> >>   -------- VREF -------        |                    |
-> >>         =C2=B4 `       =C2=B4 `     --- <  IN-                |
-> >>   \   /     \   /     \        \       VREF         |
-> >>    `-=C2=B4       `-=C2=B4                +-------------------+
-> >>   ------ GND (0V) -----                  ^       =20
-> >>                                          |      =20
-> >>                                   External VREF =20
-> >=20
-> > If it's unipolar, output must be positive which isn't true here.
-> > Do we actually see differential unipolar except for the pseudo case with
-> > common mode voltage?   Seems like a weird device. =20
->=20
-> OK, it sounds like you and Marcelo are considering bipolar to mean that t=
-he
-> difference is bipolar rather than the inputs. In that case, it doesn't se=
-em like
-> there would ever be such a thing as unipolar (true) differential.
+> 
+>> +static int ad4851_read_raw(struct iio_dev *indio_dev,
+>> +			   const struct iio_chan_spec *chan,
+>> +			   int *val, int *val2, long info)
+>> +{
+>> +	struct ad4851_state *st = iio_priv(indio_dev);
+>> +
+>> +	switch (info) {
+>> +	case IIO_CHAN_INFO_SAMP_FREQ:
+>> +		*val = st->cnv_trigger_rate_hz / st->osr;
+>> +		return IIO_VAL_FRACTIONAL;
+>> +	case IIO_CHAN_INFO_CALIBSCALE:
+>> +		return ad4851_get_calibscale(st, chan->channel, val, val2);
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		return ad4851_get_scale(indio_dev, chan, val, val2);
+> 
+> Maybe this was discussed already and I missed it but I'm a bit puzzled. Don't we
+> still need OFFSET for differential channels? How do you express negative voltages?
+> 
+> - Nuno Sá
+> 
+> 
 
-You could build it, but it would indeed be odd.
+It was discussed in early revisions of the series. :-)
 
-  -------- VREF -------
-     =C2=B4 `       =C2=B4 `               +-------------------+
-   /     \   /     \   /        /                    |
-          `-=C2=B4       `-=C2=B4    --- <  IN+                |
-   ------    VREF- -----        |                    |
-                                |            ADC     |
-   -------- VREF -------        |                    |
-     =C2=B4 `       =C2=B4 `         --- <  IN-                |
-   /     \   /     \   /        \       VREF         |
-          `-=C2=B4       `-=C2=B4          +-------------------+
-   ------   VREF-  -----                  ^       =20
-                                          |      =20
-                                   External VREF =20
-
-Where we constrain the negative to be higher that
-the positive and it's that difference we are reading.
-
-I'm stumped on what it is for though.  Maybe if vref is
-0 some sort of current measurement?  Or just possibly
-something odd with weighing cells (if there is a weird
-data input rule, that's normally where I look for it!)
-
-
->=20
-> I was looking at this from the point of view of only the inputs and not t=
-he
-> difference. I'm seeing that the input voltage can only be positive, so to=
- me
-> that would be unipolar.
->=20
-> So at the very beginning, when we first mention unipolar and bipolar, it =
-would
-> be helpful to add a bit making it clear exactly which point in the system=
- we
-> are talking about, the input or the output.
->=20
-
-Definitely good to have a definition.  I only care about data so the output
-was what mattered to me.  Analog side is someone else's problem :)
-
-Jonathan
+There was an OFFSET back then, but we removed it because chip uses twos
+complement encoding for bipolar single-ended and (bipolar) differential. We
+have 's' and 'u' set in the scan_type.sign in those cases. The current
+implementation looks correct to me in this regard.
 
 

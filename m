@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-14447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAEAEA15CAD
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 13:25:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C3A15CB9
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 13:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58B6D1888E41
-	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 12:25:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61FD53A8C8A
+	for <lists+linux-iio@lfdr.de>; Sat, 18 Jan 2025 12:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA6618C337;
-	Sat, 18 Jan 2025 12:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DE018F2D8;
+	Sat, 18 Jan 2025 12:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EAMZowvc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBX/zMNu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9C13BADF;
-	Sat, 18 Jan 2025 12:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA6718D656;
+	Sat, 18 Jan 2025 12:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737203103; cv=none; b=Ad3aH30iviQ0a29GEqFUE2yT0xDvjNdxkAsLDeDb+dDAMp4R/tbRtIpZ3L9mC6no4B7Q32fg2u/K4+0QaPIQnhXvlP05XGqNJGQgWvgO3XL65wRPQ/JblfmFtI3s6px7/XkxmBAiBCZweosUHn5u9QBhL5gT6WMmaOuZJLUBhsc=
+	t=1737203258; cv=none; b=LoaLifRhOmK26nNmyKlW3o0KBQJpVQlSe9fX0Ew4cF/voNs7b3pKgCz8wFAfe5KSdDkIGu2oSKSN4Jwc+aplyr7WsyJvzjA2fmNePNIYVrN4hLMZp69pGJ6BJVEOjHT5TulgnghOn1DOLhmpjHWB4SihK/Z3PiaqMAOUOxBJOcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737203103; c=relaxed/simple;
-	bh=8bocchLEvBYJ1Ltc/vlXsJuW8LNfAxE97FasDuykO5g=;
+	s=arc-20240116; t=1737203258; c=relaxed/simple;
+	bh=TEYYLMQv8EXmnzCVNsgd4akFq5uJWZ0s4FFkVXX3ZA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oyefS+7gZmN3SvwIpVGb/jbiNg8z3Grlc7bWlwT1plg27jcmhicWJ1EkOudrAGzJy4d/1p+wVR5bhsRYhYmD1oc/mGfS3qQQSenpDXeD8fQ4MHSMUtBAV/O2yONlcEn74T0rynwT5y7bZ7wnJuQL4wKw45OIqyobe3UPmbo3isc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EAMZowvc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39640C4CED1;
-	Sat, 18 Jan 2025 12:24:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aNA3Fq75UADZ7dPk4kcyGfmFhpqXJKVDhg5uYAfKpcqa99thlvIhGpho26k6mwnXoTfKx0DOciq40nOR39jS1L3ztPQaMNDaSubku/EHTNk0bvtniXH4TqynzJgpHXe3FF1bMiFL9EEF5Gt5YVh9hWcde1MxfuUKVXuD6Rhutlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBX/zMNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DECC4CED1;
+	Sat, 18 Jan 2025 12:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737203102;
-	bh=8bocchLEvBYJ1Ltc/vlXsJuW8LNfAxE97FasDuykO5g=;
+	s=k20201202; t=1737203258;
+	bh=TEYYLMQv8EXmnzCVNsgd4akFq5uJWZ0s4FFkVXX3ZA4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EAMZowvcHG/0QnVtB8HAXhdukl+/zrGQd67dqCZtF3J6wiQI12OBoWX5Eb/ursKDo
-	 uG88Y4vLdZ9u2W8LT0hksXgWBn+P4DX1X5VhCFDV/0LYCfSnmpD99Ep8+jjo707Fnu
-	 x8Bad3CZqZ6BxpMApKLgJ8fS8YjlWSi+8HNfpiqjj8LhnDahl5BliFz12tQGBOdD0N
-	 NhQ96C4/1CW6SIaGMbeA2bsFBdVvyYMxCdcy7rtcegCnCAG5Ly+NMBiuTc0l3iHTMp
-	 6LgrS750aNyDGWtVKxcqNSwAbWkWCSFNyIgoqwFe5S3MTyVJS2H9Y/B10GdDwfLoZX
-	 Vnu2QSMvJ/BfA==
-Date: Sat, 18 Jan 2025 12:24:55 +0000
+	b=hBX/zMNuAVaX6DkfDAtXlSjg6aQUWtorxdszt5Y0pzo6dKv44TnDX9rdRGLtmRPpd
+	 foV7Oleewsq3hJrA28Tfo5jAyegOnnBjuWnHhAzc//QAO7BHfTAiwsbWBcJh4NqnEo
+	 H5cF9olxAWedHQDP5zYMG1sa9Fu+guWFtFD5cLW7imPyujM6vGdu8915AR5T5bXzm+
+	 lISFk9mtFuTMv4U8cOMh5l1vQfQXtteqCwdeAU6SssPa4VLAK0SPAP48+zshzw7JSD
+	 BRO6C4A4/JCf/JqUXJfSkNwNuc3QR18HXmzm9RgffmBgrx5xp7r1bJtypZHzUBdgAa
+	 m5h7U+eL3xmuQ==
+Date: Sat, 18 Jan 2025 12:27:30 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: apds9306: fix max_scale_nano values
-Message-ID: <20250118122455.54c1e96e@jic23-huawei>
-In-Reply-To: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
-References: <20250112-apds9306_nano_vals-v1-1-82fb145d0b16@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: victor.duicu@microchip.com, matteomartelli3@gmail.com, lars@metafoo.de,
+ marius.cristea@microchip.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] iio: adc: pac1921: Move ACPI_FREE() to cover all
+ branches
+Message-ID: <20250118122730.26740fde@jic23-huawei>
+In-Reply-To: <CAHp75VeDAOofiDg--mVs2M416biv8qCeVFw_PJM_YJZq=xuvTw@mail.gmail.com>
+References: <20250117065314.4431-1-victor.duicu@microchip.com>
+	<CAHp75VeDAOofiDg--mVs2M416biv8qCeVFw_PJM_YJZq=xuvTw@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,65 +63,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 12 Jan 2025 01:08:11 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Fri, 17 Jan 2025 16:36:08 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> The two provided max_scale_nano values must be multiplied by 100 and 10
-> respectively to achieve nano units. According to the comments:
+> On Fri, Jan 17, 2025 at 8:55=E2=80=AFAM <victor.duicu@microchip.com> wrot=
+e:
+> >
+> > From: Victor Duicu <victor.duicu@microchip.com>
+> >
+> > This patch moves ACPI_FREE() in pac1921_match_acpi_device()
+> > in order to cover all branches. =20
 >=20
-> Max scale for apds0306 is 16.326432 =E2=86=92 the fractional part is 0.32=
-6432,
-> which is 326432000 in NANO. The current value is 3264320.
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 >=20
-> Max scale for apds0306-065 is 14.09721 =E2=86=92 the fractional part is 0=
-.09712,
-> which is 97120000 in NANO. The current value is 9712000.
->=20
-> Update max_scale_nano initialization to use the right NANO fractional
-> parts.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+We are at an odd point in the cycle where my fixes branch
+has an odd base so I can't push it out without messing up linux-next.
 
-This just missed last pull request for this cycle.
-I've locally advanced my fixes branch to include all the material that will
-merge in next couple of weeks, but for now can't push it out without making
-a mess of linux-next (it will be in wrong place in the sequence)
+So applied, but you can't see it yet.  That will all unwind during
+the merge window
 
-So applied, but you can't see it yet!
+Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/light/apds9306.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-> index 69a0d609cffc91cc3daba160f309f511270be385..5ed7e17f49e76206609aba83c=
-85e8144c536d17d 100644
-> --- a/drivers/iio/light/apds9306.c
-> +++ b/drivers/iio/light/apds9306.c
-> @@ -108,11 +108,11 @@ static const struct part_id_gts_multiplier apds9306=
-_gts_mul[] =3D {
->  	{
->  		.part_id =3D 0xB1,
->  		.max_scale_int =3D 16,
-> -		.max_scale_nano =3D 3264320,
-> +		.max_scale_nano =3D 326432000,
->  	}, {
->  		.part_id =3D 0xB3,
->  		.max_scale_int =3D 14,
-> -		.max_scale_nano =3D 9712000,
-> +		.max_scale_nano =3D 97120000,
->  	},
->  };
-> =20
->=20
-> ---
-> base-commit: 577a66e2e634f712384c57a98f504c44ea4b47da
-> change-id: 20241218-apds9306_nano_vals-d880219a82f2
->=20
-> Best regards,
 
 

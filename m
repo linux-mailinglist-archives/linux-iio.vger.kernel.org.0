@@ -1,166 +1,163 @@
-Return-Path: <linux-iio+bounces-14499-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14501-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D91A16E1B
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 15:07:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A58A16E38
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 15:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7CAF3A8331
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 14:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444571889AB8
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 14:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555771E1C36;
-	Mon, 20 Jan 2025 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EAF1E282D;
+	Mon, 20 Jan 2025 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aT29hZnw"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FLqoRtuL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537CF1E1043
-	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 14:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FF033E7
+	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 14:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737382047; cv=none; b=sLaxAmrdafJgZaB0M+ewAfzr4TPqAl6TA0yQnI9yH5rdddYTPAiSFCK/cSszMA/IQxYQVr6EgKHKJklqHPsOiuHLuLEOdf4uy+aSZAEF/4zSyytT5v8MKnDVbVwyf4qW/4qiTdePov/qfLcUENcsh2kigzcCdyq8nmBDjd0zKeI=
+	t=1737382538; cv=none; b=OcOJhnnUiTp/iJW5Avoa70lMnX1c3zIBAP9XtNFp7NniOzh2kt1GW0LoetIwIYyiGe8QRz4QjZEieHp7VKtw+duXgsOC+sA2WEL3WCE/yhDX6IZcPOiswi45UjCEpjLllWbFoC97xR9/eZE1JwMdjSSBoNExw+BxwejFvCMoXGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737382047; c=relaxed/simple;
-	bh=mpAejTqUjX5Bglp5n2bAYKSlhgN+b8qEFQQM5avMn9c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=N5IJDIPjtzxeFBWOjuKVyLinYEZdQtt415KxG4AR+uQWvrrxIxiQLKVsA8wwwKj2DoE84yTJ4FSiFK29eHB6yK5ac0x3UqatGIOKHNikmvVwKvPTRw8LoFMFdzmRidfO52qQaqhJNToEJtMdQWlwFSv7bBdc+IgOp1zm16Vj29g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aT29hZnw; arc=none smtp.client-ip=209.85.208.49
+	s=arc-20240116; t=1737382538; c=relaxed/simple;
+	bh=Zsp71q6Rc0/Nhkg1Zve+/HiaQ5Vh0kbI2OZpw7dmjdg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bzPbwULYMyqYmldIXdwxZC3rnwpfh030PgInViURp521mopGlnfk9Ss1yZChPnoqYaWrqfVbbo8CUdR8kZ4RJLV9VJeJLRiJowkPempXulwN7W+T8AUEvLW18EZL9NVxXzrtDzSz084UBb76mT1Nl1RKr4ZLWLqUpCU3TF3I9Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FLqoRtuL; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5d3f57582a2so11217007a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 06:07:23 -0800 (PST)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43634b570c1so32382255e9.0
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 06:15:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737382041; x=1737986841; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ypm+zuetNWm7m3R6X5Zl3qocwsI0cof2KB68qxMB2L4=;
-        b=aT29hZnwGLoca3NHmyQue8UibBZd+HDRf6NVHllE8QZyM4pXSQ2CHiEl+Zj+a/2OEy
-         +hb2qhsKXjOwjnQUmTM1F9sFt9zLvvfwt1dVqwMh+NFAXnO1c7moJ+hwzEDiJ//iN9YD
-         tDrq+EG2cQijbH60SoITn7EsdqUNJSYd253IW8IkNiBEW6OPmFNYGkFeKe6IYSBgYsZW
-         HDmuyOe6jGu4BbNRG4jrFGVolgoFwXLsXPAEXOZZkU6mPKExTo7GgTYwdnhFstTT9hu5
-         bggrjmbaYQZrN4Kl3DbV41pHZVWYUSkPN+iasEfwzImsoyH6QGRWBNGZCd6KzjrbNKB/
-         gWWg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737382534; x=1737987334; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D5slyFhFFg4eXgNrFHDN5dqCXylxctmjvDX+b8DDkEU=;
+        b=FLqoRtuLMSMA33g6QhKTKdQlqALcN5kAjA4vM65Y1WnXWNBEUAmCWlfzoTxc7Ykstg
+         Ew9E8zLAq+JrLixGp82Ms+EThaKpMiSedVVhrxES5HyPkXQB3FMlMrh/wzJy+RbMemtE
+         TjMCIZLgmV0B/otWPuekGzJL9r+EGKGEwDjUE9RVjSyPvGR+x9NHA1JeHzQGNpeSVg6m
+         Dy1Tuc/7WL294HZExQvpXfPJaf59TuYWWzqcsL5z6TLbgDbS7SbKmvlve06wbLm88vHM
+         T79++8S0bQO3gTYxrYbTct4hbSNz3ig60suDs59FabjsGfevQoJ+JqLpZmgtw2QfXxx/
+         0M6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737382041; x=1737986841;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1737382534; x=1737987334;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Ypm+zuetNWm7m3R6X5Zl3qocwsI0cof2KB68qxMB2L4=;
-        b=sFO0bSiL44nn5o8u2y85xbUE6SGFbBOKUcMnSmPFGWmmhhImgLAqc4vXjDbfng2wWX
-         8L0dthn8dzEGAPOOSnrbWMY6mZOfdcNWczv36S1xsKAT8+wlnOX7Vr8qAN06XKcCppEM
-         b4xEjj/ujZ2hk+Q/xfPScn+zS8+HMhVRQWs11FbwSEwKo9KsHPh6fe35HbzfY82i+qfN
-         XFP3v7qxQjA2k3rLHm1XIrZdLbuAUHSOV7yQ74yY9Kud2hb+RGZcl3r5o9uNJ8qM8yUO
-         K1y2AacUtglzv7CsL/1VI5OMVNxMnZ5fAB4xUq0VJ6xSo74mbCZctJBcsFQznYaWuETJ
-         PX8g==
-X-Gm-Message-State: AOJu0Yzg7fiir1w1brvFhodowC8yLJ7VUWDK/HbVrUtsHkZMkv88xAo0
-	VbK78cUgRcQv1HY4oC+aWVW5WvqQ8jIOmrVV7IUPOBS583TOrAVdu7aqeXSjvuCLRwG9wPb/hpQ
-	j
-X-Gm-Gg: ASbGncsxYOHCORafyd0WH+fu30KphiDyFsJnjcd5R1gt8cUlvwF4C/4gsZod4WAnSyS
-	a7fKdtLDBSzpcI/MTeJEbMcRqaygIpO2gpO6+HtnGOAUzf/WgQFIS8qNcZVeSQ3veUA3UXq1nF5
-	bbzdBUD2GBMeQOURhUJ2p7wu3071Xukl2vQV41aGRfQCYgLxYjkrAnK/L9PoJbusWbgnstRSN9C
-	xWWeHlwUaqMNitjofHgTygmVLnGYbESsuocSYf6XKnXXzvmCX2lwbqVwCffl8IIuMp7QsBlLQc=
-X-Google-Smtp-Source: AGHT+IHRa+DZKBmetUaov+7Kjtm9B8MeYtxruKhd3BOm6Df5ZrsrAhREjLkWFhsVJUueXJurmeU2Wg==
-X-Received: by 2002:a05:6402:51d3:b0:5d4:c0c:70f9 with SMTP id 4fb4d7f45d1cf-5da0c27e591mr18895942a12.6.1737382040705;
-        Mon, 20 Jan 2025 06:07:20 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5db73edc913sm5788006a12.73.2025.01.20.06.07.19
+        bh=D5slyFhFFg4eXgNrFHDN5dqCXylxctmjvDX+b8DDkEU=;
+        b=qfaoT4BzJQvTqXASo88wYsKJGDPai0Doi3QjHI7E9pWQdniH9lb7TBDthsvg0LrzVN
+         LFeOQOjTS+ngxhCirskIO+eVgAA6GdR+Qzcb6qEz/qK+Fy2WZBep27jwWk86FX+MaDSh
+         lQalQh8BucAojbibIjJA3GXpmNBeHn2jlAHBdXWJzUR1hKFCo14FrZKYQ/LRKwAGxrlL
+         IHUcmvn6Wq0V30LLycHMUJtQ41fYWYRBdrL7BL4k/1b81gF5yDqXKZeyZPcihHslnR21
+         HR6GqNkGr7cGuri55HGIgVerBKcZgkfLg6GFZx/pvF0WdOkoJc5mmDSY6jpYzNhZSMOj
+         CVFQ==
+X-Gm-Message-State: AOJu0YzE9TOZkNVUJZyR7hj1OyDLL07y7tCtH2mzUmyWB07zCghU+kfz
+	xx+Ioa3Wdypshbf3PbDrvW+UaMLCgwxz+p7DRDrCOwaK0rqcCYvIgNsufbyzQlPiILN7UAq0PbN
+	c
+X-Gm-Gg: ASbGnctZDsddMKfoySpLAAK2kqNg8YvxksIJyKg52uJHgRU+WPDvDB40gQT2PCOEKqX
+	3aCjl18u55co5Yj0tiLaisXMMIiAIaTMLQlAZJtV/4kQVME+8n5+uRPMdP1AmWRe8F4vahNuGuI
+	80c/F8HdcPRg9YXGrZlpFxtYE03MKuKGFAZR4/K8Cb9A7ZJBvxBMu93HCbBV1GGxxd6Uw4feGMe
+	zIifFOvuBhrSQxi9ROZyIEfgEiKvfyuGzUGoSjvAUmk93NXBhNzKhuctoZd+HaVfnUjwCGi2gb8
+	3cWRinbJzY6pAhqo773v4riuF4FI6+yArlpCEB3N
+X-Google-Smtp-Source: AGHT+IHFUycdZuUdNNL2CNUC3XjcWOrzCZ8rDoxNz7si90lttH6MVmvHJw+OO2r/Obhpa15FEiwyrQ==
+X-Received: by 2002:a05:600c:1f86:b0:436:aaf:7eb9 with SMTP id 5b1f17b1804b1-43891439d5fmr111420395e9.20.1737382533794;
+        Mon, 20 Jan 2025 06:15:33 -0800 (PST)
+Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438904621cdsm141233345e9.27.2025.01.20.06.15.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 06:07:20 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Subject: [PATCH v2] iio: adc: ad7124: Micro-optimize channel disabling
-Date: Mon, 20 Jan 2025 15:07:09 +0100
-Message-ID: <20250120140708.1093655-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.1
+        Mon, 20 Jan 2025 06:15:32 -0800 (PST)
+From: Guillaume Ranquet <granquet@baylibre.com>
+Subject: [PATCH v4 0/2] iio: adc: ad7173: add ad4111 openwire detection
+ support
+Date: Mon, 20 Jan 2025 15:10:05 +0100
+Message-Id: <20250120-ad4111_openwire-v4-0-e647835dbe62@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2643; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=mpAejTqUjX5Bglp5n2bAYKSlhgN+b8qEFQQM5avMn9c=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnjliNO6zBSal+WnA+vNmvQBXEXdrI1VApoCL8X MbhOLnj0RqJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ45YjQAKCRCPgPtYfRL+ TsAcCACKg9grbfuGsV+Z6XMznfNG1qMe7qRi8qLfjTISt5t+NGIN4iqnEcRaoQ5wIk2a1sWkUML 21Dvk4qOAurPNn2jEigOn1JpxL2+EH0Dzexol1DdIGAgGSfQR9LSD7HovjLnPoQ4e62VRJ4VNRV mp4GKKA5bC8F+6q5qg4OI9j+ZH7/t4zU9pEvNeXBw38Yd0x1FFSAKnUdrLSKddfO3U2sFvRREn2 EDfQ8Z2AHkGk78pkaQTgve4x/sNweoWHahi+lVgDiRvEiIKKI0tev1EccmH77ev8hHfxwtLTjph tF0Sso3pbzG/AgHNkr8Y5pAzF1cA59DHO+1iNri3qOJ62XGO
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAD5ZjmcC/3XP7WrDIBQG4FsJ/t4ZauoSwxi9jzGKH8dVWJJOb
+ ZZScu8zlsK6br/kVXzec84kYvAYSVedScDJRz8OOWweKmL2anhH8DZnwinfMMYEKLueu/GAw5c
+ PCCiERa1aLhtH8q9DQOfnIr6+XXLAz2OG0+WS9BijKnBXPd+6886oD6+DSnkMmBgwEK7l1DotT
+ Eu3Wp3WZ3w0Y/+ytmkVEXLofeqqAecEV5Cs5Xsf0xhOZbuJlfZ/FyltVstGmVY7Lm7bCjfxKyE
+ oo/Ke4ECB1g033FqkBv8g6h8Ee7on6kygkphHkNoy+4tYluUbvM4raLQBAAA=
+X-Change-ID: 20241115-ad4111_openwire-e55deba8297f
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Guillaume Ranquet <granquet@baylibre.com>
+X-Mailer: b4 0.15-dev
 
-The key objective in ad7124_disable_one() is clearing the
-AD7124_CHANNEL_EN_MSK bit in the channel register. However there is no
-advantage to keep the other bits in that register because when the
-channel is used next time, all fields are rewritten anyhow. So instead
-of using ad7124_spi_write_mask() (which is a register read plus a
-register write) use a simple register write clearing the complete
-register.
+Hi.
 
-Also do the same in the .disable_all() callback by using the
-.disable_one() callback there.
+This patch adds the openwire detection support for the ad4111 chip.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+The openwire detection is done in software and relies on comparing the
+results of two conversions on different channels.
+
+The openwire detection on ad4111 is triggered automatically when a
+single conversion is requested.
+Due to the way openwire detection works on ad4111, implementing openwire
+detection for continuous conversion mode is out of the scope of this
+series.
+
+Following discussion on V2, I have changed the event to be
+IIO_EV_TYPE_FAULT and added a direction called IIO_EV_DIR_FAULT_OPENWIRE to
+signal the specific fault.
+
+The fault is level triggered (ie: the event will be sent as long as the
+fault persists).
+There's no event to signal that the fault has been "fixed", an absence
+of FAULT event means that the open wire condition is not detected.
+
+Thx,
+Guillaume.
+
+Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
 ---
-Hello,
+Changes in v4:
+- Rename IIO_EV_DIR_OPENWIRE to IIO_EV_DIR_FAULT_OPENWIRE to make it
+  clearer the OPENWIRE direction is in the FAULT "namespace"
+- Removal of the RFC prefix
+- Link to v3: https://lore.kernel.org/r/20250116-ad4111_openwire-v3-0-ea9ebf29bd1d@baylibre.com
 
-in (implicit) v1 I only adapted ad7124_disable_one() which resulted in
-the very legitimate question why this wasn't done for .disable_all(). I
-haven't checked because I wrongly assumed that .disable_all() used
-.disable_one(). This v2 now makes the latter true and so .disable_all()
-now also benefits from the micro optimisation.
+Changes in v3:
+- Rename IIO_EV_TYPE_OPENWIRE to IIO_EV_TYPE_FAULT and add
+  IIO_EV_DIR_OPENWIRE.
+- Remove per channel open wire threshold configuration interface.
+- Link to v2: https://lore.kernel.org/r/20250109-ad4111_openwire-v2-0-0372c2dde0ce@baylibre.com
 
-Best regards
-Uwe
+Changes in v2:
+- Introduce IIO_EV_TYPE_OPENWIRE instead of misusing the IIO_EV_THRESH
+  event.
+- Link to v1: https://lore.kernel.org/r/20241115-ad4111_openwire-v1-1-db97ac8bf250@baylibre.com
 
- drivers/iio/adc/ad7124.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+---
+Guillaume Ranquet (2):
+      iio: introduce the FAULT event type
+      iio: adc: ad7173: add openwire detection support for single conversions
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 6ae27cdd3250..2fdeb3247952 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -540,6 +540,14 @@ static int ad7124_append_status(struct ad_sigma_delta *sd, bool append)
- 	return 0;
- }
- 
-+static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
-+{
-+	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
-+
-+	/* The relevant thing here is that AD7124_CHANNEL_EN_MSK is cleared. */
-+	return ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan), 2, 0);
-+}
-+
- static int ad7124_disable_all(struct ad_sigma_delta *sd)
- {
- 	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
-@@ -547,7 +555,7 @@ static int ad7124_disable_all(struct ad_sigma_delta *sd)
- 	int i;
- 
- 	for (i = 0; i < st->num_channels; i++) {
--		ret = ad7124_spi_write_mask(st, AD7124_CHANNEL(i), AD7124_CHANNEL_EN_MSK, 0, 2);
-+		ret = ad7124_disable_one(sd, i);
- 		if (ret < 0)
- 			return ret;
- 	}
-@@ -555,13 +563,6 @@ static int ad7124_disable_all(struct ad_sigma_delta *sd)
- 	return 0;
- }
- 
--static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
--{
--	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
--
--	return ad7124_spi_write_mask(st, AD7124_CHANNEL(chan), AD7124_CHANNEL_EN_MSK, 0, 2);
--}
--
- static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
- 	.set_channel = ad7124_set_channel,
- 	.append_status = ad7124_append_status,
+ drivers/iio/adc/ad7173.c         | 166 +++++++++++++++++++++++++++++++++++++++
+ drivers/iio/industrialio-event.c |   2 +
+ include/uapi/linux/iio/types.h   |   2 +
+ tools/iio/iio_event_monitor.c    |   4 +
+ 4 files changed, 174 insertions(+)
+---
+base-commit: c849f534b9ea4688304f80f4571af75931dda7c1
+change-id: 20241115-ad4111_openwire-e55deba8297f
+prerequisite-message-id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
+prerequisite-patch-id: 26241903b8fee8c4243e73d11fb2872cd9f52a15
 
-base-commit: b323d8e7bc03d27dec646bfdccb7d1a92411f189
+Best regards,
 -- 
-2.47.1
+Guillaume Ranquet <granquet@baylibre.com>
 
 

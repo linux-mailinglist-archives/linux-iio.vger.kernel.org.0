@@ -1,159 +1,174 @@
-Return-Path: <linux-iio+bounces-14508-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14509-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F87A1720D
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 18:37:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9817A17463
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 22:56:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D292E3A6CD1
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 17:37:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93F616AC08
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 21:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EB61E9B00;
-	Mon, 20 Jan 2025 17:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A8B1F0E25;
+	Mon, 20 Jan 2025 21:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1iviO6H5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J60H2TdW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7359117A5A4
-	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 17:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952ED23A9;
+	Mon, 20 Jan 2025 21:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737394638; cv=none; b=bUHAC+A4JpgrlUq3ponOc6usZYWXszDs748D3DUJS/YJaox8RdnRPrz37Wd/rIYg7714meHeYeODZDYa0qK4LRT+ekq3FejNumDgQcgQEvTiiwbSBMM8dUPMpyErifldGoha8v2QWoQ7AJ+Ac8NvqcCFZESllk3RgE7nhYa+yd4=
+	t=1737410205; cv=none; b=SAypALKeoKEZ9bkfHRMmePV7RvDjrgwtew7tsUNRK/tovvWgmXhqLjpMdEu0b6mD1A5N4ETCAtGjUFWwwL2cZGR+fYBWgxZsD+yaxTHYgji3sY3SCerdChOvYFfNBYAtKgICch3yXkTHOkdN9mj1X3k9fQdk2po1yQ+KnbGaiSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737394638; c=relaxed/simple;
-	bh=QpwTrKzQBAEvGMXPO40eDha01s8ELCbnbLBDZ4sjGdk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=o8eizcK0EjyMUScmOEkOUhu9mJXZmYOgMCJ+ecWzyVaH6JRT3kDx/MP+BDYNL2Hqs8sClN9p6UAw5IKJDpiqEa29WMqKMN7LXO/B9kkY+UNIgp8ll5VK1XXWr67iwRhfMipMZRFEojj6z1rORv+RcyOszuWBTip+aIF9UQdvrIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1iviO6H5; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3eb8559b6b0so2752708b6e.1
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 09:37:16 -0800 (PST)
+	s=arc-20240116; t=1737410205; c=relaxed/simple;
+	bh=cfZatKSOwb4pRrTvfqqmxov6qxiGqxrxQE80O61kZQU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KfNPV0XUcRYRBctZC/UmpmzrgiK1QCGW0J66YzuAl+/51m9Q0TmZhPG8wjWuXJTPswhRCxtLwcVHsSBfI/fSan79pOP4uxgYH/xWNXZgZNPessBhNlmCgPTlklzd9eN0fFE5Gkelh+9SSCmrNuMc8Grc2Cn2WsQ1F7WMIZPzGqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J60H2TdW; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4363dc916ceso37129235e9.0;
+        Mon, 20 Jan 2025 13:56:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737394635; x=1737999435; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lfT4rN6OvTBsIG9x5a9+mxXs/tzHh45iRbVAfdvcFm4=;
-        b=1iviO6H5QwLpL79Hxdys4VBTR/ppu9p+1kccXpmkMRA0CdxmxK2t5H7Gad7M8XqjNG
-         0h4bJMuEFsSF93J7HNyuT2ouwSelRI7HxkLMnBI4cCj8DTJI3xQf3NqIyJuvDPAU/LSg
-         3TvbUx/0cZURseHOmhZaD0H4CL8SsLkV5yTjzGvFa6DVb9O6jkKoawn2E+XhE+/0+O3G
-         uF5G0svJm8zWRSBisTqLfaOIv/MlBzjddyCuRN9cr4BU3gRNm5xfbgUWDtVigcl8NvRm
-         hfsbGrhVeAB8TJnZLOxIWynouGLdvhs0BdnWr2xdwxsKpSqQjraSfEAN6UT6PBflnHbM
-         7/Vw==
+        d=gmail.com; s=20230601; t=1737410202; x=1738015002; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gy+qLl8gGznrzLuj2uSpvMqnS9BDhuVxamnKKVaP/AA=;
+        b=J60H2TdWJABh6V6pfFR8w6yFPaRPPaI/J4KoKIlCHsqCbrLqLqeyx8nQYjEQSvhEcI
+         6JYRLlmvgykLAdU+By3emyPMBvUMjQHXti3ZaYI5yosb4G3EKRU5TSvHz0ep0U44lbsg
+         eoYA2Kl35H4K3LkaxxaIuTR5/UpJcBD4Fh/BhV06jerldZJR+xh+Oj7Thm9mOVdc9GBO
+         kZtTlsZ9+2mNUiQzxahLzKEpIKCmORf4W/Dr0sRRxIuEnkiCXxVJ5vPdrKsHUcCI6DQH
+         pV+ejhHzFiGTqCgUtHXYC1VpOMIi6x1KPrdcfV6ntEl5kN4EvvC1ANEobkyBMKXlR9dN
+         /ZJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737394635; x=1737999435;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lfT4rN6OvTBsIG9x5a9+mxXs/tzHh45iRbVAfdvcFm4=;
-        b=FBh4wMwJwSBFCt0tUzL+ipdzD/RkpnkqvGdQUo+xLZTa/dMfAV1wjiDRv+e8YMb+WI
-         kCLa7zVY0SSnUaIpanjPLN/kaW32zVsYt7/Apr+LJj3LKy3vbIpt+7ZDq8OTnh9XLoEf
-         1DTGMcVbOAxvIvqrcpaVl2Q00tSeV7csHOLkdQ/Pd0T9JOLaHVGeEo9L37MHuAdBEtkC
-         AXnqr6MdOy8EfzQwI4viXViwACnsDAXR8B251wbq/bNln5f7xXDtpQnv6QVdBkWPW1xa
-         GchrXw2qLeBTfYqFWk21Pn33eHJO5XXqQwFUmcyD+eURw1L44FP8au3kuNMLxsORVf5g
-         WTgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXlaNtfqlJjQFzrRbncK5Gz5wfCe9+X/JQtHgQHGj+3cRPY+3H0v0KhVh4klBhI86NxUfbdk8sI0JY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJ67EG6h2aJyEHFBnNf60EyvBGa7aGDyksJJYYC4opuMOHjfrK
-	rQiROz04Z+cw933ham4i+e6S9AuWGmuWzIr5h6qXwtB6bMNnBh57iiwWv5LrFD01qV23KsqT3hJ
-	n
-X-Gm-Gg: ASbGncsvqm3L+ql54l7WxLK5F6BCvdkcTieyEDN4fLRfjr6lhMVoE0D0HOklOPQmbrn
-	R+9gjM+5jN12y63sBQrGat3jj2qgTDVQWtPTYYA3JINSnSnak7dz1c378G/SJhq4W7eUZoaIgek
-	THw/94402Y6xSl6MzAhIlY4ZTQVtb7Z5GUYB8p5O4kRNsx8HSIWPonSbxczaR4A+qtruYMH0/U1
-	P6urNc/G8UuN0GO9sFwMnKgdoLb2GFs3wucJIf9ghf0wIOGf1BAjiCJmYmXMQCBjh1UB8tCphh2
-	lwZS4dGqAUDE19uuuU24RwNvkcNP1p8=
-X-Google-Smtp-Source: AGHT+IH1nrkzxGSioxg3Pk04SSKoUCKqQj95yrTm9nW9uBQqIvSRaw18pxDZP0Ip0yKAj1frniReXA==
-X-Received: by 2002:a05:6808:8515:b0:3ea:404b:34ec with SMTP id 5614622812f47-3f19fdd1e61mr7056489b6e.28.1737394635489;
-        Mon, 20 Jan 2025 09:37:15 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f19da85a80sm2498563b6e.28.2025.01.20.09.37.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Jan 2025 09:37:13 -0800 (PST)
-Message-ID: <c424cedb-5b45-43c0-897b-dec83918d658@baylibre.com>
-Date: Mon, 20 Jan 2025 11:37:12 -0600
+        d=1e100.net; s=20230601; t=1737410202; x=1738015002;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gy+qLl8gGznrzLuj2uSpvMqnS9BDhuVxamnKKVaP/AA=;
+        b=T2Elvz5KwUv9FKYC99FwUTMuzJZ2eDaZBz1oGID3C67+6+p5VRFi4yNHCztCwcd6K+
+         6LhulIhgYdUGfG4vZC//2W0UwVyXxcHFutYf02cdnPHw8L5IPQ//NXklSGlNzVpWYCmi
+         RC8MS6EIa58jmyc/8W//ToPTs1r8lbQWhkY65usMLUq6x0uNdg4ga82JTXm3XqPYfDxq
+         saudmaOk04RIfkjTTfEg+cMDMvXN+K48Qd095DDaW65f0Z5+scTsRKD1msz/I9PKImHZ
+         LflG9jHASt1GnaMQqF3pN2LrXIvgWdCkAgFHLdu/zPgR1V8zSNdkVbK0GRvrX54bLpiw
+         KO4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUhO9+5AOOWGh/wxeuBM+oVupAox0VF/Q1MVDdhXRJyuUUfxhHfIRhTqZk7+/eu3eyRgjYQib9kQ1eg@vger.kernel.org, AJvYcCUoYYVcRgffyCwjybeyQSch8PglF70KVcvnt1iOoboRfkPQr65JLy3akr71WR1qSu/BVrbZgSNWegxf@vger.kernel.org, AJvYcCV5H/RBi231Ueyl4vxelznIvomsqZ5Hn8vRATBOaswSp1mOhFW6QHCLG9UlL+FyjkG1mJZlEgNMeaDKkmS4@vger.kernel.org
+X-Gm-Message-State: AOJu0YziTDHCunBHsSneNrs+BOTtIor43mUrUmPyTbad0HcEVQFtapKE
+	H9NjxPYcnkf+txCdU01nNf0RLPW9avMrmVIWVgDODkanfx99rOGv
+X-Gm-Gg: ASbGnct6D4kTsxi+hdCAPHjCVq0M/szYfbZzBJI9Il2q7AaoiM1uWZJJF28fgocVQ8o
+	vV7bOKS/czlLNPFj3+qVtIWHo5Ahm0AQeBs9LZCtJF7W0vMkyOSpVlR/G8FGZ3YWHLYbpKHrlNA
+	ZS3em2UzFUUQOqydc7KyD+ADec4X8aM44H4cGR4sqECeWExY8AJ3jw/hkxOYjr+AVS1F/4KnDV5
+	JlH52w0e7AeZjuujbwIK2fsO3jglqkmT8HMoCfHFn+bf/xg2JzQQeSRZpvIXfMENEyy/H7T0kdD
+	kJHVWsKLPw==
+X-Google-Smtp-Source: AGHT+IGHClq2XeoJ6TqmBnz/xzk2mEU0lDVEtFDHKPW6e6a4lLz/Wf0PPseArn8wV9z+doY3tFt+Uw==
+X-Received: by 2002:adf:9cc4:0:b0:386:3afc:14a7 with SMTP id ffacd0b85a97d-38bec4fb4ecmr11750249f8f.7.1737410201562;
+        Mon, 20 Jan 2025 13:56:41 -0800 (PST)
+Received: from localhost.localdomain ([37.161.88.41])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf327dd34sm11374345f8f.83.2025.01.20.13.56.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Jan 2025 13:56:40 -0800 (PST)
+From: Antoni Pokusinski <apokusinski01@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	andrej.skvortzov@gmail.com,
+	neil.armstrong@linaro.org,
+	icenowy@aosc.io,
+	megi@xff.cz,
+	danila@jiaxyga.com,
+	javier.carrasco.cruz@gmail.com,
+	andy@kernel.org
+Cc: apokusinski01@gmail.com,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v5 0/2] iio: magnetometer: add support for Si7210
+Date: Mon, 20 Jan 2025 22:56:18 +0100
+Message-Id: <20250120215620.39766-1-apokusinski01@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 8/8] iio: adc: ad4851: add ad485x driver
-To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
- "jic23@kernel.org" <jic23@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>
-References: <20250117130702.22588-1-antoniu.miclaus@analog.com>
- <20250117130702.22588-9-antoniu.miclaus@analog.com>
- <d4b9d6e9-745c-4c35-a62d-18e0a36f30c4@baylibre.com>
- <BN6PR03MB33953EC70A02D0031373C2BD9BE72@BN6PR03MB3395.namprd03.prod.outlook.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <BN6PR03MB33953EC70A02D0031373C2BD9BE72@BN6PR03MB3395.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 1/20/25 6:37 AM, Miclaus, Antoniu wrote:
->>> +		}
->>> +		channels++;
->>> +
->>> +		st->bipolar_ch[reg] = fwnode_property_read_bool(child,
->> "bipolar");
->>> +
->>> +		if (st->bipolar_ch[reg]) {
->>> +			channels->scan_type.sign = 's';
->>> +		} else {
->>> +			ret = regmap_write(st->regmap,
->> AD4851_REG_CHX_SOFTSPAN(reg),
->>> +					   AD4851_SOFTSPAN_0V_40V);
->>> +			if (ret)
->>> +				return ret;
->>> +		}
->>> +	}
->>> +
->>> +	*ad4851_channels = channels;
->>
->> At this point, channels is pointing to memory we didn't allocate (because of
->> channels++). As in the previous review, I suggest we just get rid of the output
->> parameter since indio_dev->channels already has the correct pointer.
->>
->> It's less chance for mistakes like this and avoids needing to provide an unused
->> arg in ad4857_parse_channels().
-> 
-> Hmm, how can I then do the assignments in `ad4858_parse_channels` ?
-> 
-> drivers/iio/adc/ad4851.c:1055:42: error: assignment of member ‘has_ext_scan_type’ in read-only object
->  1055 |   indio_dev->channels->has_ext_scan_type = 1;
->       |                                          ^
-> drivers/iio/adc/ad4851.c:1057:39: error: assignment of member ‘ext_scan_type’ in read-only object
->  1057 |    indio_dev->channels->ext_scan_type = ad4851_scan_type_20_b;
->       |                                       ^
-> drivers/iio/adc/ad4851.c:1058:43: error: assignment of member ‘num_ext_scan_type’ in read-only object
->  1058 |    indio_dev->channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_b);
->       |                                           ^
-> drivers/iio/adc/ad4851.c:1061:39: error: assignment of member ‘ext_scan_type’ in read-only object
->  1061 |    indio_dev->channels->ext_scan_type = ad4851_scan_type_20_u;
->       |                                       ^
-> drivers/iio/adc/ad4851.c:1062:43: error: assignment of member ‘num_ext_scan_type’ in read-only object
->  1062 |    indio_dev->channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_u);
->       |                                           ^
+This patch series adds support for the Si7210 Hall effect I2C sensor.
+The driver currently supports the basic functionalities (i.e. making
+temperature and magnetic field measurements and changing the
+measurements scale) but I plan to add support for some other features in
+the future as well (e.g. the digital output interrupt).
 
-I would be tempted to just not have a second loop of
+---
+Hi all,
+In this version I add only some minor tweaks and comments (for the
+temperature calculation) according to the latest review.
+Everything else was left intact.
 
-	device_for_each_child_node_scoped(dev, child)
+Kind regards,
+Antoni
 
-in ad4858_parse_channels() and instead do everything in ad4851_parse_channels()
-and just pass a boolean parameter to conditionally handle the difference
-between the two types of chips.
 
-Or you use a cast to remove the const qualifier.
+Changes since v4:
+* Makefile: replace spaces/tabs mixture with tabs only
+* si7210: includes: move asm/byteorder.h to the end
+* si7210: read_raw: add comments for temperature calculation
 
-	ad4851_channels = (struct iio_chan_spec *)indio_dev->channels;
+Changes since v3:
+* si7210: fetch_measurement/read_raw: fix issue with endianess
+* si7210: replace `if (ret < 0)` with `if (ret)` wherever possible
+* si7210: read_raw: use SI metric prefixes (MICRO, MILLI)
+* si7210: si7210_data: swap i2c_client with regmap
+* si7210: read_otpreg_val: remove unnecessary cast
+* si7210: minor formatting updates
+(add missing trailing commas, spaces etc)
+* si7210: probe: use devm_mutex_init
+* si7210: add missing includes
+
+Changes since v2:
+* Makefile: fix alignment
+* si7210: fetch_measurement: use temporary variable to read the
+measurement instead of reading directly to `buf`
+* si7210: read_raw: change `tmp` to `temp`
+* si7210: read_raw: adjust temperature computation to match the spec better
+* si7210: device_wake: do not init `ret` to 0
+* si7210: MODULE_LICENSE: change license type to GPL
+* si7210: minor improvements in comments
+
+Changes since v1:
+* dt-binding: add `vdd-supply`
+* si7210: reorder includes in alphabetic order
+* si7210: add comment for `fetch_lock`
+* si7210: remove `otp_lock`
+* si7210: fetch_measurement: change result type to __be16
+* si7210: use guard(mutex) instead of scoped_guard
+* si7210: read_raw: use FIELD_GET to get raw temperature value
+* si7210: read_raw: return temperature in milli-celsius
+* si7210: use regulator for getting the voltage
+* si7210: si7210_device_wake: remove unnecessary cast
+* si7210: si7210_device_init: use fsleep instead of usleep_range
+* si7210: si7210_probe: remove i2c_set_clientdata()
+* si7210: minor alignment and formatting fixes
+
+Antoni Pokusinski (2):
+  dt-bindings: iio: magnetometer: add binding for Si7210
+  iio: magnetometer: si7210: add driver for Si7210
+
+ .../iio/magnetometer/silabs,si7210.yaml       |  48 ++
+ drivers/iio/magnetometer/Kconfig              |  11 +
+ drivers/iio/magnetometer/Makefile             |   2 +
+ drivers/iio/magnetometer/si7210.c             | 446 ++++++++++++++++++
+ 4 files changed, 507 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml
+ create mode 100644 drivers/iio/magnetometer/si7210.c
+
+-- 
+2.25.1
+
 

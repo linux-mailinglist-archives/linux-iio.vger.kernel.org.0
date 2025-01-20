@@ -1,236 +1,124 @@
-Return-Path: <linux-iio+bounces-14488-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14489-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6696FA163BD
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jan 2025 20:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CFA16581
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 03:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948D93A4C2B
-	for <lists+linux-iio@lfdr.de>; Sun, 19 Jan 2025 19:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5801C3A3A66
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 02:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0521DF983;
-	Sun, 19 Jan 2025 19:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754F43398E;
+	Mon, 20 Jan 2025 02:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8dRAKRW"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HA4QQHRH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43251DF27C
-	for <linux-iio@vger.kernel.org>; Sun, 19 Jan 2025 19:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B092110E
+	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 02:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737314997; cv=none; b=XsIPrtzC41OdEd304L8l8DhlB8b+YE+c+TBuHED4mU20IQ6dsFGEZFI3cZiOBkvvpcnY7XSWxSHkA24qBKX98ED6MLqqU2ExKMYMo6yuWzOXhzDr7YmHHyaVtJdSQRy5jbmZInxq6crgDOm3VDL3zmXN3tdDbRRQDfurISu4GQY=
+	t=1737341193; cv=none; b=m/DeNeL0z3woSkzONf/FKEQQa4xIN+3f5CdGb7pliRH3IXMQ9ezbqsRBynKFDWrKY/IWBW7YKAO3pcSFg/QbQ2a43yFCinmnb83zd9BGaPPI5j/0LENcX6YVIEvFPhUH0TSxr3N090FIRPFJnBlPccuZ9hSIbXAjQr9INZME8Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737314997; c=relaxed/simple;
-	bh=f7ACFFsO0mjRSpoxqgBkblQND0/u/XESGZZv0i41HWk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PMpc1skigHrcIn4W0W8Tvlf/TcnZ6COyr1YWxy0njohm5FhRVZPr09qTRowwsXgFdfW/qxKcVR1wUW95YCLCu8tXiaH/r5uTWjA3KM8fSwNeGQoaDAWKfuiuaxXRDMeN+lq27vfOpoxy0Fa7d/Yz292hxFCv6p77PwOUaBL8nJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8dRAKRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13982C4CED6;
-	Sun, 19 Jan 2025 19:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737314997;
-	bh=f7ACFFsO0mjRSpoxqgBkblQND0/u/XESGZZv0i41HWk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j8dRAKRWSg5NdoiUNtEv79cf799sKjabUUE0iyCkwOBEF0931RcsnInOhFDNjM2XU
-	 0VRuJN+hBbFrlQ57d4+oV5vSxJmkl8F3J+bB3d/00dKu2Ue90/Lk1C/f71wccPJFzF
-	 RN5qlCXJkeo2mlckfi2Y4PdGXZ3wKykn9R4pzuHHy1tXlgzbyLjBY/EfEWpsp540Id
-	 cgUH94yD14exdCC+MCFTFv8o+xCUe4xHAZd5B3LtWo94+MoBmKyjGlRM9rknhURgLG
-	 7DqhbUj09EV9OF7/JjQes5NQGQQ3Wap95qv5kYbWrQl3IZ7yUuAspJ6Y+2pEwkWLTx
-	 Bn1LHYtVN52DQ==
-Date: Sun, 19 Jan 2025 19:29:48 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, =?UTF-8?B?4oCcTHVj?= Van =?UTF-8?B?T29zdGVu?=
- =?UTF-8?B?cnlja+KAnQ==?= <luc.vanoostenryck@gmail.com>
-Subject: Re: [RFC PATCH 01/27] iio: core: Rework claim and release of direct
- mode to work with sparse.
-Message-ID: <20250119192948.005fa672@jic23-huawei>
-In-Reply-To: <61785c12-1a5e-4465-92e9-83d81c02dd59@baylibre.com>
-References: <20250105172613.1204781-1-jic23@kernel.org>
-	<20250105172613.1204781-2-jic23@kernel.org>
-	<88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
-	<20250107142451.000021db@huawei.com>
-	<c298f1bb-d0a1-42af-b237-9aa8e422ec1b@baylibre.com>
-	<20250111133552.2a44c74e@jic23-huawei>
-	<61785c12-1a5e-4465-92e9-83d81c02dd59@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1737341193; c=relaxed/simple;
+	bh=6fhS6jrdP+M3izc4tiFS+22WyRmuQafYbnTLyIItfGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SPVFYUTBMyZQLaxuw7XVQuHqPQ1KILLflNK90vs8urtfckrcoSCnXvTVFe1MmZCHv3OWMFyKxvuCq0loeftJ1XNGA2+nJPZ/dDaAGQVR95qiF8XTQ9rfECaUpR7wM+qSsD7PK5TQFAfp6EuawUORNQVIN5/Rvd3GzBIr7wUVXQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HA4QQHRH; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7b9ad0e84e6so475745285a.0
+        for <linux-iio@vger.kernel.org>; Sun, 19 Jan 2025 18:46:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737341189; x=1737945989; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6fhS6jrdP+M3izc4tiFS+22WyRmuQafYbnTLyIItfGU=;
+        b=HA4QQHRHFC9KgsXyegZZ5il0CLAYTB91wk0gmDzWVxuEhOPhYjcjGnHQ3nZ9NOP/Re
+         EeZ6fpzvXVTvc/MgcSCs9mA73qSWy8e/Uttyydj9sPuchJGlRsnvKbQMXE5BTGMtgflZ
+         6L9WzINkl9Bb2FKQRsmOfyFXsgHvF3Aki83Jq2MCPf+G06YaWyzjei8CyE7/xpJxQ5yH
+         naj+CPeb54kHsNUxHLuaePw3NmKLx9wQVCX7K7pgs9g+ggMlxPafHE63voGOPAmpSr97
+         r19vGtg8Z0qyVKpTeRcv3RirKKyPWZYSo0iRtgd17km0C5jI3I90O5TSzhq4cZ4qX3bj
+         peqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737341189; x=1737945989;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6fhS6jrdP+M3izc4tiFS+22WyRmuQafYbnTLyIItfGU=;
+        b=A6h5n8MSZ+UwupLAgrbeWq4ogH2IsaRxpJ+HjHNay6qhmlvZQ4gcdRnM8gnY/gXU8r
+         WoNoHacyoDfOLdxAmzy9xgWU9HFPD0j5RZmvUS06fk8rPr/9YGtIvy4HTAx+aLlKENM8
+         P7Cl2x6hLlpo7rRv7pen0EQQs5CsJdHoToNdqHIrw136auh2m3t44DlbYWrV1sqia649
+         lH9NgAKk8W5z//mzFUDG4aQ2T2mLlzYE3NdQ9E0flvv4qut0c4op8NgGdxID40hWL9yg
+         upFawxGZpv7xPn6C4pnR8xWxVbDDMoQbXcLICrLyjnEk/7UNxkWqs2K5bLdXXcg2bLGR
+         h0UA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9jtiCUATfHxYZuLPWfTmwzQP/L1Y8iynOWt4GcLxpmFF5kw9jpq+xStVoFg4vEerHMYZOyJYeDdE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwaEya3okiBB+rdJsNU55T2S7FQhIhpj9LAUsevQBvliiBmD2kA
+	Qxucjm3fzzMi5rHsoOKvjlRaEVLFMtMnght6qpG1F2Ux3l1YVqxXEbRKSDiYg+V6pndb/yLg1jO
+	cTDg=
+X-Gm-Gg: ASbGnctsp83cpgx9A4yb+x7NmWAVcHs1lVqM6B9SF6Ra56qDqxXOPPBnG/3lWSms5ZW
+	Lj2lrAezylZL223Zi0ZFrHB9EbsE4SYedKwg0NiGVQUNV2pLEtVxamwDczLO3f75LDPBQFqUNC3
+	ymfrN4ugR53yY8TZvcGr5EQbVxNWXJKLA8gkgMxkGZXo2SpSmS6eHysftlBwKtC4JL/TzXHAjge
+	YEZFpFTqqAh8ryKGDNhnG4Fle+AuPXFLVeShLHfTUAeI3I22IKVe4jHaBRR84pQDqzDKpApcRP4
+	nAGTUZF2E8V2Ha1WDmolykW+nSaDs6U6hM/nfw==
+X-Google-Smtp-Source: AGHT+IE2ZGER+m/DBiuD42NI+mSvyZfSA4KqOfJnyolbuLDFTgazWkkrS8GH8HYzNIJKP5VZaB/L4Q==
+X-Received: by 2002:a05:620a:394d:b0:7b6:d643:59a9 with SMTP id af79cd13be357-7be631e56a9mr1776362585a.11.1737341188805;
+        Sun, 19 Jan 2025 18:46:28 -0800 (PST)
+Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7be614f0096sm395114685a.112.2025.01.19.18.46.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Jan 2025 18:46:27 -0800 (PST)
+Message-ID: <d87f1f77-4c8b-4c49-a211-99f06ba94425@baylibre.com>
+Date: Sun, 19 Jan 2025 21:46:25 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] iio: adc: ad4695: make
+ ad4695_exit_conversion_mode() more robust
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20241113-tgamblin-ad4695_improvements-v2-0-b6bb7c758fc4@baylibre.com>
+ <20241113-tgamblin-ad4695_improvements-v2-2-b6bb7c758fc4@baylibre.com>
+ <20250118171236.782bcb0b@jic23-huawei>
+Content-Language: en-US
+From: Trevor Gamblin <tgamblin@baylibre.com>
+In-Reply-To: <20250118171236.782bcb0b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Sat, 11 Jan 2025 16:28:02 -0600
-David Lechner <dlechner@baylibre.com> wrote:
 
-> On 1/11/25 7:35 AM, Jonathan Cameron wrote:
-> > On Tue, 7 Jan 2025 10:09:15 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> On 1/7/25 8:24 AM, Jonathan Cameron wrote:  
-> >>> On Mon, 6 Jan 2025 17:14:12 -0600
-> >>> David Lechner <dlechner@baylibre.com> wrote:
-> >>>     
-> >>>> On 1/5/25 11:25 AM, Jonathan Cameron wrote:    
-> >>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >>>>>
-> >>>>> Initial thought was to do something similar to __cond_lock()
-> >>>>>
-> >>>>> 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
-> >>>>> + Appropriate static inline iio_device_release_direct_mode()
-> >>>>>
-> >>>>> However with that, sparse generates false positives. E.g.
-> >>>>>
-> >>>>> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock      
-> >>>>
-> >>>> Even if false positives aren't technically wrong, if sparse is having a hard
-> >>>> time reasoning about the code, then it is probably harder for humans to reason
-> >>>> about the code as well. So rewriting these false positives anyway could be
-> >>>> justified beyond just making the static analyzer happy.
-> >>>>    
-> >>>>>
-> >>>>> So instead, this patch rethinks the return type and makes it more
-> >>>>> 'conditional lock like' (which is part of what is going on under the hood
-> >>>>> anyway) and return a boolean - true for successfully acquired, false for
-> >>>>> did not acquire.      
-> >>>>
-> >>>> I think changing this function to return bool instead of int is nice change
-> >>>> anyway since it makes writing the code less prone authors to trying to do
-> >>>> something "clever" with the ret variable. And it also saves one one line of
-> >>>> code.
-> >>>>    
-> >>>>>
-> >>>>> To allow a migration path given the rework is now no trivial, take a leaf
-> >>>>> out of the naming of the conditional guard we currently have for IIO
-> >>>>> device direct mode and drop the _mode postfix from the new functions giving
-> >>>>> iio_device_claim_direct() and iio_device_release_direct()
-> >>>>>
-> >>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >>>>> ---
-> >>>>>  include/linux/iio/iio.h | 22 ++++++++++++++++++++++
-> >>>>>  1 file changed, 22 insertions(+)
-> >>>>>
-> >>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> >>>>> index 56161e02f002..4ef2f9893421 100644
-> >>>>> --- a/include/linux/iio/iio.h
-> >>>>> +++ b/include/linux/iio/iio.h
-> >>>>> @@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
-> >>>>>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
-> >>>>>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
-> >>>>>  
-> >>>>> +/*
-> >>>>> + * Helper functions that allow claim and release of direct mode
-> >>>>> + * in a fashion that doesn't generate false positives from sparse.
-> >>>>> + */
-> >>>>> +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)      
-> >>>>
-> >>>> Doesn't __cond_acquires depend on this patch [1] that doesn't look like it was
-> >>>> ever picked up in sparse?
-> >>>>
-> >>>> [1]: https://lore.kernel.org/all/CAHk-=wjZfO9hGqJ2_hGQG3U_XzSh9_XaXze=HgPdvJbgrvASfA@mail.gmail.com/    
-> >>>
-> >>> I wondered about that. It 'seems' to do the job anyway. I didn't fully
-> >>> understand that thread so I just blindly tried it instead :)
-> >>>
-> >>> This case is simpler that that thread, so maybe those acrobatics aren't
-> >>> needed?    
-> >>
-> >> I was not able to get a sparse warning without applying that patch to sparse
-> >> first. My test method was to apply this series to my Linux tree and then
-> >> comment out a iio_device_release_direct() line in a random driver.
-> >>
-> >> And looking at the way the check works, this is exactly what I would expect.
-> >> The negative output argument in __attribute__((context,x,0,-1)) means something
-> >> different (check = 0) without the spare patch applied.
-> >>  
-> > Curious. I wasn't being remotely careful with what sparse version
-> > i was running so just went with what Arch is carrying which turns out to be
-> > a bit old.
-> > 
-> > Same test as you describe gives me:
-> >   CHECK   drivers/iio/adc/ad4000.c
-> > drivers/iio/adc/ad4000.c:533:12: warning: context imbalance in 'ad4000_read_raw' - different lock contexts for basic block
-> > 
-> > So I tried that with latest sparse from kernel.org and I still get that warning
-> > which is what I'd expect to see.
-> > 
-> > Simple make C=1 W=1 build
-> > 
-> > I wonder what we have different?  Maybe it is missing some cases?
-> > 
-> > diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-> > index ef0acaafbcdb..6785d55ff53a 100644
-> > --- a/drivers/iio/adc/ad4000.c
-> > +++ b/drivers/iio/adc/ad4000.c
-> > @@ -543,7 +543,7 @@ static int ad4000_read_raw(struct iio_dev *indio_dev,
-> >                         return -EBUSY;
-> >  
-> >                 ret = ad4000_single_conversion(indio_dev, chan, val);
-> > -               iio_device_release_direct(indio_dev);
-> > +//             iio_device_release_direct(indio_dev);
-> >                 return ret;
-> >         case IIO_CHAN_INFO_SCALE:
-> >                 *val = st->scale_tbl[st->span_comp][0];
-> > 
-> > Was the test I ran today.
-> > 
-> > Jonathan
-> >   
-> 
-> Hmmm... I think maybe I had some other local modifications when I was testing
-> previously. But I understand better what is going on now. Your implementation
-> is only working because it is static inline. The __cond_acquires() and
-> __releases() attributes have no effect and the "different lock contexts for
-> basic block" warning is coming from the __acquire() and __release() attributes.
-> So it is working correctly, but perhaps not for the reason you thought.
-
-Ah. That indeed explains it.
-
-> 
-> I think what I had done locally is make iio_device_claim_direct() and
-> iio_device_release_direct() regular functions instead of static inline so that
-> it had to actually make use of __cond_acquires(). In that case, with an
-> unpatched sparse, we get "unexpected unlock" warnings for all calls to
-> iio_device_release_direct(). With patched sparse, this warning goes away.
-> 
-> So for now, we could take your patch with the __cond_acquires() and
-> __releases() attribute removed (since they don't do anything) and leave
-> ourselves a note in a comment that sparse needs to be fixed so that we can use
-> the __cond_acquires() attribute if/when we get rid of
-> iio_device_release_direct_mode() completely and want to make
-> iio_device_release_direct() a regular function.
-
-I'm in two minds over whether to keep the __cond_acquires / __releases markings
-given there are other in tree uses already.  Mind you I don't care strongly
-and I assume sparse at least always obeys inline instructions so what we
-probably need is a comment to ensure we never move the code out of the header
-unless sparse is fixed.  So I'll go ahead and drop the markings for now.
-
-Even if sparse is never updated, we can keep a little bit of inline magic
-in the header to handle the conditional __acquire() and have the real
-acquire in an evil looking __iio_device_claim_direct() that no one
-should ever touch directly.
-
-We could in theory do similar for the existing iio_device_claim_direct_mode()
-but I 'think' that will still give us some false positives + the boolean
-return is nicer anyway and tends to give slightly more compact code..
-
-So far making this change to a bunch more drivers has found 2 bugs and led
-to a quite a bit of code cleanup. I'll finish doing the 'a's (accel and adc)
-then post the result.  One thing I will probably change on this initial set is
-splitting the refactors and changes to the new interface into separate
-patches as they are different types of change.
-
-Jonathan
-> 
-> 
-
+On 2025-01-18 12:12, Jonathan Cameron wrote:
+> On Wed, 13 Nov 2024 15:52:59 -0500
+> Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>
+>> Ensure that conversion mode is successfully exited when the command is
+>> issued by adding an extra transfer beforehand, matching the minimum CNV
+>> high and low times from the AD4695 datasheet. The AD4695 has a quirk
+>> where the exit command only works during a conversion, so guarantee this
+>> happens by triggering a conversion in ad4695_exit_conversion_mode().
+>> Then make this even more robust by ensuring that the exit command is run
+>> at AD4695_REG_ACCESS_SCLK_HZ rather than the bus maximum.
+>>
+>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> Applied 2 and 3 to the testing branch of iio.git.
+> I'll be rebasing that on rc1 once available.
+>
+> Thanks,
+>
+> Jonathan
+Thank you!
 

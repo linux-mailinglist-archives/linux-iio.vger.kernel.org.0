@@ -1,80 +1,79 @@
-Return-Path: <linux-iio+bounces-14501-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14502-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A58A16E38
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 15:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FE3A16E3B
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 15:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 444571889AB8
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 14:15:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96351889AF4
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 14:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EAF1E282D;
-	Mon, 20 Jan 2025 14:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067E11E32D4;
+	Mon, 20 Jan 2025 14:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="FLqoRtuL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CATZ732A"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FF033E7
-	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 14:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0C7383A2
+	for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 14:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737382538; cv=none; b=OcOJhnnUiTp/iJW5Avoa70lMnX1c3zIBAP9XtNFp7NniOzh2kt1GW0LoetIwIYyiGe8QRz4QjZEieHp7VKtw+duXgsOC+sA2WEL3WCE/yhDX6IZcPOiswi45UjCEpjLllWbFoC97xR9/eZE1JwMdjSSBoNExw+BxwejFvCMoXGQ=
+	t=1737382538; cv=none; b=ZYHgOZMVMxVL4xjd6t51tkknwj6XUc6iO63jYyf4x3rgSdsr/xVYbSSXkWZi/oadvXHkmb47JU05wWQfy0FZ/4x4+BTC0nwXsQq5RYzmopaTnTlJMKdRruJfbR9PIxBdFeYtdbsKDj6YeAplIac1qRib6TcyINy6q2iRbX2bwVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1737382538; c=relaxed/simple;
-	bh=Zsp71q6Rc0/Nhkg1Zve+/HiaQ5Vh0kbI2OZpw7dmjdg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bzPbwULYMyqYmldIXdwxZC3rnwpfh030PgInViURp521mopGlnfk9Ss1yZChPnoqYaWrqfVbbo8CUdR8kZ4RJLV9VJeJLRiJowkPempXulwN7W+T8AUEvLW18EZL9NVxXzrtDzSz084UBb76mT1Nl1RKr4ZLWLqUpCU3TF3I9Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=FLqoRtuL; arc=none smtp.client-ip=209.85.128.47
+	bh=Woe2IAahMXYWwHMcFlq9Zlh3hNuvAt2QB1RNA+l2Ar0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lf7IMdALOu8L+tx9Lf/YB9IGx6GUqOvK16S72pcWNOto5W1XQrFOZWlLepNTHlOp9ozNwbaeOUS/mc5Ojvuw3eeGmofMTglNxHB+Q6B1/4J9hBhbVxKPITN4W27D+PmMoqtY+otejAnO6+j4SUsAgxc0whwbUlCIm4R/Qc90js0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CATZ732A; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43634b570c1so32382255e9.0
-        for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 06:15:35 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so17874785e9.1
+        for <linux-iio@vger.kernel.org>; Mon, 20 Jan 2025 06:15:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737382534; x=1737987334; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=D5slyFhFFg4eXgNrFHDN5dqCXylxctmjvDX+b8DDkEU=;
-        b=FLqoRtuLMSMA33g6QhKTKdQlqALcN5kAjA4vM65Y1WnXWNBEUAmCWlfzoTxc7Ykstg
-         Ew9E8zLAq+JrLixGp82Ms+EThaKpMiSedVVhrxES5HyPkXQB3FMlMrh/wzJy+RbMemtE
-         TjMCIZLgmV0B/otWPuekGzJL9r+EGKGEwDjUE9RVjSyPvGR+x9NHA1JeHzQGNpeSVg6m
-         Dy1Tuc/7WL294HZExQvpXfPJaf59TuYWWzqcsL5z6TLbgDbS7SbKmvlve06wbLm88vHM
-         T79++8S0bQO3gTYxrYbTct4hbSNz3ig60suDs59FabjsGfevQoJ+JqLpZmgtw2QfXxx/
-         0M6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737382534; x=1737987334;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737382535; x=1737987335; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=D5slyFhFFg4eXgNrFHDN5dqCXylxctmjvDX+b8DDkEU=;
-        b=qfaoT4BzJQvTqXASo88wYsKJGDPai0Doi3QjHI7E9pWQdniH9lb7TBDthsvg0LrzVN
-         LFeOQOjTS+ngxhCirskIO+eVgAA6GdR+Qzcb6qEz/qK+Fy2WZBep27jwWk86FX+MaDSh
-         lQalQh8BucAojbibIjJA3GXpmNBeHn2jlAHBdXWJzUR1hKFCo14FrZKYQ/LRKwAGxrlL
-         IHUcmvn6Wq0V30LLycHMUJtQ41fYWYRBdrL7BL4k/1b81gF5yDqXKZeyZPcihHslnR21
-         HR6GqNkGr7cGuri55HGIgVerBKcZgkfLg6GFZx/pvF0WdOkoJc5mmDSY6jpYzNhZSMOj
-         CVFQ==
-X-Gm-Message-State: AOJu0YzE9TOZkNVUJZyR7hj1OyDLL07y7tCtH2mzUmyWB07zCghU+kfz
-	xx+Ioa3Wdypshbf3PbDrvW+UaMLCgwxz+p7DRDrCOwaK0rqcCYvIgNsufbyzQlPiILN7UAq0PbN
-	c
-X-Gm-Gg: ASbGnctZDsddMKfoySpLAAK2kqNg8YvxksIJyKg52uJHgRU+WPDvDB40gQT2PCOEKqX
-	3aCjl18u55co5Yj0tiLaisXMMIiAIaTMLQlAZJtV/4kQVME+8n5+uRPMdP1AmWRe8F4vahNuGuI
-	80c/F8HdcPRg9YXGrZlpFxtYE03MKuKGFAZR4/K8Cb9A7ZJBvxBMu93HCbBV1GGxxd6Uw4feGMe
-	zIifFOvuBhrSQxi9ROZyIEfgEiKvfyuGzUGoSjvAUmk93NXBhNzKhuctoZd+HaVfnUjwCGi2gb8
-	3cWRinbJzY6pAhqo773v4riuF4FI6+yArlpCEB3N
-X-Google-Smtp-Source: AGHT+IHFUycdZuUdNNL2CNUC3XjcWOrzCZ8rDoxNz7si90lttH6MVmvHJw+OO2r/Obhpa15FEiwyrQ==
-X-Received: by 2002:a05:600c:1f86:b0:436:aaf:7eb9 with SMTP id 5b1f17b1804b1-43891439d5fmr111420395e9.20.1737382533794;
-        Mon, 20 Jan 2025 06:15:33 -0800 (PST)
+        bh=xm4PTSA03b/yfa5uLtvcLZnr4Rze+iALf1YYnoU52r0=;
+        b=CATZ732AoWdpupBPvZPEFKFOCI+P5ooon/jWh6rgsu1CmiA6qUmRZqDNU2xfaHSDqc
+         M5pgQOZ6xJFjrLiXhMt2NTjRtjXt/vRqfoP5PY1COP1ljVzs4YKRLA8el0v9yUMK8rpH
+         CQDkviaprsB/lri2AVu2rsxvcOFb0s1AmrujHEdkdJbW+kzIX3/mrNlB9ag1KKKS6Jy+
+         AB6+NDuC98VtQZALkWrNuOjbpao6Y8y1OEGfznf3WwqLDULLsxuclQQn4+JzNkyZSeBg
+         cSl/ak+RQRsjvjaEUWx9xoPX+6uLaUfyVdrbYO4EXuV+or8uhXR0aqxawl9P46VWuRFk
+         77UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737382535; x=1737987335;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xm4PTSA03b/yfa5uLtvcLZnr4Rze+iALf1YYnoU52r0=;
+        b=JmD92uXYxQgmXwknd7OY2xR0v07p0qKVQ3chqnYqTSxySJDncwBwzElvowVpLBS3eY
+         DzfTb+ntrfwWpkw9cxAbw2MYI2ESL+v+vgwFpnN984S2cKvp0tX5shcf/wUD+is9Wm6t
+         ZRwL/CtBey12X+Nd60CKcJq/FdPu0E0F+a2nKfJZfrYQhYJBRtKw1x9FLO2KGsM5tdey
+         Gx2a/0S6hDnpm0i8kSLhSicaejpy6XXFKLyAsRjlqsfQ/XvfnC0g7Ch8nXCSqM97XjUy
+         r/qjm5Ng18uoH6idWUtL+VCMG0jKqY6caIn6M3Q+TvhZolK2NGFAiKi3Jir0fpwEYAeY
+         2xIw==
+X-Gm-Message-State: AOJu0YzMFNMRZcIMDCb/h5lznl8dJlKgoD4hRbw2GYkxrQH2MvXcykfK
+	th4qvd1EK1KUnvyxFsgoyZFH/Fn4fxK9wvdk21xiecJ6Dlere8j+OFymS6PC2U0=
+X-Gm-Gg: ASbGnctVjpv7WLruviiPUu/xUM5XuvgNNug8Imghrs9QXLGS4R0VR1ZRDPKl92norks
+	D7v1ZYaAQ+zCAsm+LRqZq+9KxXGaF3UkonXkyklR98eAsm5ZTcXOmGIHoiNNaJJBe6acTmHS5A7
+	zlNUjTfXtWprsOLiBCM3bzRYiKyqa+tePWnFv6td4ag/eBDwJkiVvtrCDtto6c0/PhnnKoNnONd
+	FsqgU1COOCipsGOn87ZI03bIkduJhTe8ZaGOSC2SYAjcEmyAw6ZjEbsWY2kf1f5ihgaQv2gFLG7
+	JCVnBYDBR1eKULl0aivWrein2v2Osmr3ar/k7YWb
+X-Google-Smtp-Source: AGHT+IGhRbvIXuL2ofFdmiNf7PtYX2OTJkrUe1eKdTjCaM0ZrjiEzhFjxCCCfNBCBJ+OpCnMkM87xQ==
+X-Received: by 2002:a05:600c:3593:b0:431:5632:448b with SMTP id 5b1f17b1804b1-4389144eed4mr106238045e9.25.1737382535033;
+        Mon, 20 Jan 2025 06:15:35 -0800 (PST)
 Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438904621cdsm141233345e9.27.2025.01.20.06.15.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438904621cdsm141233345e9.27.2025.01.20.06.15.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 06:15:32 -0800 (PST)
+        Mon, 20 Jan 2025 06:15:34 -0800 (PST)
 From: Guillaume Ranquet <granquet@baylibre.com>
-Subject: [PATCH v4 0/2] iio: adc: ad7173: add ad4111 openwire detection
- support
-Date: Mon, 20 Jan 2025 15:10:05 +0100
-Message-Id: <20250120-ad4111_openwire-v4-0-e647835dbe62@baylibre.com>
+Date: Mon, 20 Jan 2025 15:10:06 +0100
+Subject: [PATCH v4 1/2] iio: introduce the FAULT event type
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,12 +82,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAD5ZjmcC/3XP7WrDIBQG4FsJ/t4ZauoSwxi9jzGKH8dVWJJOb
- ZZScu8zlsK6br/kVXzec84kYvAYSVedScDJRz8OOWweKmL2anhH8DZnwinfMMYEKLueu/GAw5c
- PCCiERa1aLhtH8q9DQOfnIr6+XXLAz2OG0+WS9BijKnBXPd+6886oD6+DSnkMmBgwEK7l1DotT
- Eu3Wp3WZ3w0Y/+ytmkVEXLofeqqAecEV5Cs5Xsf0xhOZbuJlfZ/FyltVstGmVY7Lm7bCjfxKyE
- oo/Ke4ECB1g033FqkBv8g6h8Ee7on6kygkphHkNoy+4tYluUbvM4raLQBAAA=
-X-Change-ID: 20241115-ad4111_openwire-e55deba8297f
+Message-Id: <20250120-ad4111_openwire-v4-1-e647835dbe62@baylibre.com>
+References: <20250120-ad4111_openwire-v4-0-e647835dbe62@baylibre.com>
+In-Reply-To: <20250120-ad4111_openwire-v4-0-e647835dbe62@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>
@@ -96,68 +92,93 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Guillaume Ranquet <granquet@baylibre.com>
 X-Mailer: b4 0.15-dev
 
-Hi.
-
-This patch adds the openwire detection support for the ad4111 chip.
-
-The openwire detection is done in software and relies on comparing the
-results of two conversions on different channels.
-
-The openwire detection on ad4111 is triggered automatically when a
-single conversion is requested.
-Due to the way openwire detection works on ad4111, implementing openwire
-detection for continuous conversion mode is out of the scope of this
-series.
-
-Following discussion on V2, I have changed the event to be
-IIO_EV_TYPE_FAULT and added a direction called IIO_EV_DIR_FAULT_OPENWIRE to
-signal the specific fault.
-
-The fault is level triggered (ie: the event will be sent as long as the
-fault persists).
-There's no event to signal that the fault has been "fixed", an absence
-of FAULT event means that the open wire condition is not detected.
-
-Thx,
-Guillaume.
+Add a new event type to describe an hardware failure.
 
 Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
 ---
-Changes in v4:
-- Rename IIO_EV_DIR_OPENWIRE to IIO_EV_DIR_FAULT_OPENWIRE to make it
-  clearer the OPENWIRE direction is in the FAULT "namespace"
-- Removal of the RFC prefix
-- Link to v3: https://lore.kernel.org/r/20250116-ad4111_openwire-v3-0-ea9ebf29bd1d@baylibre.com
+ drivers/iio/industrialio-event.c | 2 ++
+ include/uapi/linux/iio/types.h   | 2 ++
+ tools/iio/iio_event_monitor.c    | 4 ++++
+ 3 files changed, 8 insertions(+)
 
-Changes in v3:
-- Rename IIO_EV_TYPE_OPENWIRE to IIO_EV_TYPE_FAULT and add
-  IIO_EV_DIR_OPENWIRE.
-- Remove per channel open wire threshold configuration interface.
-- Link to v2: https://lore.kernel.org/r/20250109-ad4111_openwire-v2-0-0372c2dde0ce@baylibre.com
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index db06501b0e61a91e3b06345b418504803f4aefb5..06295cfc2da8b1df17061cf58ade38d88020359e 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -232,6 +232,7 @@ static const char * const iio_ev_type_text[] = {
+ 	[IIO_EV_TYPE_CHANGE] = "change",
+ 	[IIO_EV_TYPE_MAG_REFERENCED] = "mag_referenced",
+ 	[IIO_EV_TYPE_GESTURE] = "gesture",
++	[IIO_EV_TYPE_FAULT] = "fault",
+ };
+ 
+ static const char * const iio_ev_dir_text[] = {
+@@ -240,6 +241,7 @@ static const char * const iio_ev_dir_text[] = {
+ 	[IIO_EV_DIR_FALLING] = "falling",
+ 	[IIO_EV_DIR_SINGLETAP] = "singletap",
+ 	[IIO_EV_DIR_DOUBLETAP] = "doubletap",
++	[IIO_EV_DIR_FAULT_OPENWIRE] = "openwire",
+ };
+ 
+ static const char * const iio_ev_info_text[] = {
+diff --git a/include/uapi/linux/iio/types.h b/include/uapi/linux/iio/types.h
+index 12886d4465e4896aedce837c2df63c78f83a5496..3eb0821af7a40e29544fbcc67c48e085507e13d0 100644
+--- a/include/uapi/linux/iio/types.h
++++ b/include/uapi/linux/iio/types.h
+@@ -119,6 +119,7 @@ enum iio_event_type {
+ 	IIO_EV_TYPE_CHANGE,
+ 	IIO_EV_TYPE_MAG_REFERENCED,
+ 	IIO_EV_TYPE_GESTURE,
++	IIO_EV_TYPE_FAULT,
+ };
+ 
+ enum iio_event_direction {
+@@ -128,6 +129,7 @@ enum iio_event_direction {
+ 	IIO_EV_DIR_NONE,
+ 	IIO_EV_DIR_SINGLETAP,
+ 	IIO_EV_DIR_DOUBLETAP,
++	IIO_EV_DIR_FAULT_OPENWIRE,
+ };
+ 
+ #endif /* _UAPI_IIO_TYPES_H_ */
+diff --git a/tools/iio/iio_event_monitor.c b/tools/iio/iio_event_monitor.c
+index cccf62ea2b8f9b55a83a4960c1a60087c7b053f3..eab7b082f19db8703aca55af7dbf4f1d624aa3af 100644
+--- a/tools/iio/iio_event_monitor.c
++++ b/tools/iio/iio_event_monitor.c
+@@ -75,6 +75,7 @@ static const char * const iio_ev_type_text[] = {
+ 	[IIO_EV_TYPE_CHANGE] = "change",
+ 	[IIO_EV_TYPE_MAG_REFERENCED] = "mag_referenced",
+ 	[IIO_EV_TYPE_GESTURE] = "gesture",
++	[IIO_EV_TYPE_FAULT] = "fault",
+ };
+ 
+ static const char * const iio_ev_dir_text[] = {
+@@ -83,6 +84,7 @@ static const char * const iio_ev_dir_text[] = {
+ 	[IIO_EV_DIR_FALLING] = "falling",
+ 	[IIO_EV_DIR_SINGLETAP] = "singletap",
+ 	[IIO_EV_DIR_DOUBLETAP] = "doubletap",
++	[IIO_EV_DIR_FAULT_OPENWIRE] = "openwire",
+ };
+ 
+ static const char * const iio_modifier_names[] = {
+@@ -249,6 +251,7 @@ static bool event_is_known(struct iio_event_data *event)
+ 	case IIO_EV_TYPE_MAG_ADAPTIVE:
+ 	case IIO_EV_TYPE_CHANGE:
+ 	case IIO_EV_TYPE_GESTURE:
++	case IIO_EV_TYPE_FAULT:
+ 		break;
+ 	default:
+ 		return false;
+@@ -260,6 +263,7 @@ static bool event_is_known(struct iio_event_data *event)
+ 	case IIO_EV_DIR_FALLING:
+ 	case IIO_EV_DIR_SINGLETAP:
+ 	case IIO_EV_DIR_DOUBLETAP:
++	case IIO_EV_DIR_FAULT_OPENWIRE:
+ 	case IIO_EV_DIR_NONE:
+ 		break;
+ 	default:
 
-Changes in v2:
-- Introduce IIO_EV_TYPE_OPENWIRE instead of misusing the IIO_EV_THRESH
-  event.
-- Link to v1: https://lore.kernel.org/r/20241115-ad4111_openwire-v1-1-db97ac8bf250@baylibre.com
-
----
-Guillaume Ranquet (2):
-      iio: introduce the FAULT event type
-      iio: adc: ad7173: add openwire detection support for single conversions
-
- drivers/iio/adc/ad7173.c         | 166 +++++++++++++++++++++++++++++++++++++++
- drivers/iio/industrialio-event.c |   2 +
- include/uapi/linux/iio/types.h   |   2 +
- tools/iio/iio_event_monitor.c    |   4 +
- 4 files changed, 174 insertions(+)
----
-base-commit: c849f534b9ea4688304f80f4571af75931dda7c1
-change-id: 20241115-ad4111_openwire-e55deba8297f
-prerequisite-message-id: <20241115-ad411x_calibration-v1-1-5f820dfb5c80@baylibre.com>
-prerequisite-patch-id: 26241903b8fee8c4243e73d11fb2872cd9f52a15
-
-Best regards,
 -- 
-Guillaume Ranquet <granquet@baylibre.com>
+2.47.1
 
 

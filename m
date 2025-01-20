@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-14509-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14510-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9817A17463
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 22:56:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24909A17467
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 22:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93F616AC08
-	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 21:56:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD181188ACE4
+	for <lists+linux-iio@lfdr.de>; Mon, 20 Jan 2025 21:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A8B1F0E25;
-	Mon, 20 Jan 2025 21:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050DA1F0E4B;
+	Mon, 20 Jan 2025 21:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J60H2TdW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFBryyXk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952ED23A9;
-	Mon, 20 Jan 2025 21:56:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1600B23A9;
+	Mon, 20 Jan 2025 21:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737410205; cv=none; b=SAypALKeoKEZ9bkfHRMmePV7RvDjrgwtew7tsUNRK/tovvWgmXhqLjpMdEu0b6mD1A5N4ETCAtGjUFWwwL2cZGR+fYBWgxZsD+yaxTHYgji3sY3SCerdChOvYFfNBYAtKgICch3yXkTHOkdN9mj1X3k9fQdk2po1yQ+KnbGaiSY=
+	t=1737410210; cv=none; b=YKjZHvlS9HKvQ/9wB5Cxx7Kawpy1wSnGsziqfoLGiSzQH0vSeyXj3KXs/KzcI+J1TOdQ6W6nwyESK5DZrDAghDgeT2jCwdKb1jjjpr/78j4vUmDY0xNl73FQvxDSqBz2AjgiI0tFrhN34IclrFUuocv4vQmv5ONwTbcapl8jB7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737410205; c=relaxed/simple;
-	bh=cfZatKSOwb4pRrTvfqqmxov6qxiGqxrxQE80O61kZQU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KfNPV0XUcRYRBctZC/UmpmzrgiK1QCGW0J66YzuAl+/51m9Q0TmZhPG8wjWuXJTPswhRCxtLwcVHsSBfI/fSan79pOP4uxgYH/xWNXZgZNPessBhNlmCgPTlklzd9eN0fFE5Gkelh+9SSCmrNuMc8Grc2Cn2WsQ1F7WMIZPzGqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J60H2TdW; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1737410210; c=relaxed/simple;
+	bh=ar1h2TcY1mxL038b/A8b51EXhxGPSiLsQ3DDoDy9mUU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Ho+I/5QpbrZ5TU60FGpBVuq1PblexYgbCMfWMctmeadxzl0DYGL/7UZ3GKZfmy0N+z7HwAVIBbRVoB5m7k5vPEP2Y4sS7hJiz9P4FvEp2SVMdu3uNB7puZMfBx7iuJXijnnLlBTOE7TmqV5P8jYpMN+GpIQo6LGGJxnmoZ87nD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFBryyXk; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4363dc916ceso37129235e9.0;
-        Mon, 20 Jan 2025 13:56:43 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3862f32a33eso2249814f8f.3;
+        Mon, 20 Jan 2025 13:56:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737410202; x=1738015002; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gy+qLl8gGznrzLuj2uSpvMqnS9BDhuVxamnKKVaP/AA=;
-        b=J60H2TdWJABh6V6pfFR8w6yFPaRPPaI/J4KoKIlCHsqCbrLqLqeyx8nQYjEQSvhEcI
-         6JYRLlmvgykLAdU+By3emyPMBvUMjQHXti3ZaYI5yosb4G3EKRU5TSvHz0ep0U44lbsg
-         eoYA2Kl35H4K3LkaxxaIuTR5/UpJcBD4Fh/BhV06jerldZJR+xh+Oj7Thm9mOVdc9GBO
-         kZtTlsZ9+2mNUiQzxahLzKEpIKCmORf4W/Dr0sRRxIuEnkiCXxVJ5vPdrKsHUcCI6DQH
-         pV+ejhHzFiGTqCgUtHXYC1VpOMIi6x1KPrdcfV6ntEl5kN4EvvC1ANEobkyBMKXlR9dN
-         /ZJA==
+        d=gmail.com; s=20230601; t=1737410207; x=1738015007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KDhogYmxn9nFFr/Cayc1gvX78+DR1DlL9ARkoQx2kco=;
+        b=VFBryyXkjdlSJ+EZaiXrmOK0mP30Wo93YfJeQZs2k03mJYfwaaaBsFn/jBKMd10Sje
+         bCAaEYd5A5v5S8lOObHrtLVzVr0ytIichH++YKxWGlDE3/dUcK8y3rhhmRw/G0/UnToF
+         0S99QxfAT3sl9zFaXlWzKna6RcU4lCUdytDTD7YUHXS1qWkJbOY83gsd717HQkjBf2D7
+         CG+MiKr73rp2eI6z0XXHY5HRlZ3eLINwVt/o8hUqya8H9c6WQNQgCbX7z1c5hhrjwuFT
+         aY8UGySTyoCeJDkCxL201ew98XLiOsFyQWq66dcbmYlCTthWmxpd8m9e+Gx1qRI6hP78
+         vkxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737410202; x=1738015002;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gy+qLl8gGznrzLuj2uSpvMqnS9BDhuVxamnKKVaP/AA=;
-        b=T2Elvz5KwUv9FKYC99FwUTMuzJZ2eDaZBz1oGID3C67+6+p5VRFi4yNHCztCwcd6K+
-         6LhulIhgYdUGfG4vZC//2W0UwVyXxcHFutYf02cdnPHw8L5IPQ//NXklSGlNzVpWYCmi
-         RC8MS6EIa58jmyc/8W//ToPTs1r8lbQWhkY65usMLUq6x0uNdg4ga82JTXm3XqPYfDxq
-         saudmaOk04RIfkjTTfEg+cMDMvXN+K48Qd095DDaW65f0Z5+scTsRKD1msz/I9PKImHZ
-         LflG9jHASt1GnaMQqF3pN2LrXIvgWdCkAgFHLdu/zPgR1V8zSNdkVbK0GRvrX54bLpiw
-         KO4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUhO9+5AOOWGh/wxeuBM+oVupAox0VF/Q1MVDdhXRJyuUUfxhHfIRhTqZk7+/eu3eyRgjYQib9kQ1eg@vger.kernel.org, AJvYcCUoYYVcRgffyCwjybeyQSch8PglF70KVcvnt1iOoboRfkPQr65JLy3akr71WR1qSu/BVrbZgSNWegxf@vger.kernel.org, AJvYcCV5H/RBi231Ueyl4vxelznIvomsqZ5Hn8vRATBOaswSp1mOhFW6QHCLG9UlL+FyjkG1mJZlEgNMeaDKkmS4@vger.kernel.org
-X-Gm-Message-State: AOJu0YziTDHCunBHsSneNrs+BOTtIor43mUrUmPyTbad0HcEVQFtapKE
-	H9NjxPYcnkf+txCdU01nNf0RLPW9avMrmVIWVgDODkanfx99rOGv
-X-Gm-Gg: ASbGnct6D4kTsxi+hdCAPHjCVq0M/szYfbZzBJI9Il2q7AaoiM1uWZJJF28fgocVQ8o
-	vV7bOKS/czlLNPFj3+qVtIWHo5Ahm0AQeBs9LZCtJF7W0vMkyOSpVlR/G8FGZ3YWHLYbpKHrlNA
-	ZS3em2UzFUUQOqydc7KyD+ADec4X8aM44H4cGR4sqECeWExY8AJ3jw/hkxOYjr+AVS1F/4KnDV5
-	JlH52w0e7AeZjuujbwIK2fsO3jglqkmT8HMoCfHFn+bf/xg2JzQQeSRZpvIXfMENEyy/H7T0kdD
-	kJHVWsKLPw==
-X-Google-Smtp-Source: AGHT+IGHClq2XeoJ6TqmBnz/xzk2mEU0lDVEtFDHKPW6e6a4lLz/Wf0PPseArn8wV9z+doY3tFt+Uw==
-X-Received: by 2002:adf:9cc4:0:b0:386:3afc:14a7 with SMTP id ffacd0b85a97d-38bec4fb4ecmr11750249f8f.7.1737410201562;
-        Mon, 20 Jan 2025 13:56:41 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737410207; x=1738015007;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KDhogYmxn9nFFr/Cayc1gvX78+DR1DlL9ARkoQx2kco=;
+        b=KIUHk9Ut8eLM5wjEUmgg4DDgsJdI56Ziu0AV66TZ2TckEFCoXzOhjy605o5Vg0XOTW
+         r1xlBRJr/OF6Rrbr0GI8qBpnAJjRd7HxjilawhLtTADFf6CLxcIp40Yqfr/gwgbFCkU0
+         7xACZP1DS18fA/fOmKr2VlMaz/vjCMJxX2RLcJGwKfuBJfAg3KRkA7m3R4fdkSaMBWji
+         SOm0PRaDGgRchIFFQlDcKHqv+0gNgHoLX2aQPFDjv3tCZoB9hp175mPIpCPcgtsV/+Ak
+         pC2QTR8XVUonyCkRiuymJOYPESa39TYcVIoDMCFtIvhCJZktfxB7W21hQPDUI/ry4iMq
+         f/Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCUj5ixCaYOgDf1qhsvvOu7mcXSKQLbAvYEz2U+SbYfa2CRmjgO9F3vAabXx2vlKAHk3evglIwVHAMvu@vger.kernel.org, AJvYcCUjj7fUNv6OUsGqDuXKD2S85+EuCboOF0IGFRYhnq2bwRtRCfCPjpW4FK55CfLut2doGrTKgYa9FSep@vger.kernel.org, AJvYcCVzO5Xf+sGfHICp6a9gJvgoGhs1S8YLModRK5NEmyiVIMWxj0CKC57+TehMDQRI+/odYEpCaREgOaWtWSXL@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFOaoPyaCQ/NF0XMQnskNtuqQsQj6BT61IsqDa9iNEl0grSi95
+	7Zj+4UVE3mI16KMfK0aQOyibBEqtxXbTydinGeQC7IVA4UMLq4Dh
+X-Gm-Gg: ASbGncvEfsYVGQQwuA4ptjaqYQ+h7U1naro9bBj1LvdlFhint4IEzafExACAh3jjz+x
+	Qv23EwStmOPp0R/wnHDaX0Xu95wnv8vQE0hWzgyVdSA0cc2ePLmyjxdJPpaNM5jZgsRYF+u4Ts6
+	uWgAARTUAquXvTsGVQeQ7lwfulZIHUnnERl1nr7OyAdhqlZQG61nFg3GRF3ym9OgXlL4dZsSjnM
+	DXFyJ0I2q2ynpdENU9VV13hhvRWGEwk+ZA7okNFZviQiiBJ3cOuuWShlBfu/1fMoVe3PrU6hjUC
+	qRMSZQUXtA==
+X-Google-Smtp-Source: AGHT+IGfg424YbJwLwTrZvwaTx/CCNiZAi+pSxcqkX4Msf0M2MFRyjL+/crcGMf2GThqcbn/DFZejQ==
+X-Received: by 2002:a05:6000:4012:b0:38a:9f27:838c with SMTP id ffacd0b85a97d-38bf57ce8b8mr13753626f8f.55.1737410207010;
+        Mon, 20 Jan 2025 13:56:47 -0800 (PST)
 Received: from localhost.localdomain ([37.161.88.41])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf327dd34sm11374345f8f.83.2025.01.20.13.56.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf327dd34sm11374345f8f.83.2025.01.20.13.56.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Jan 2025 13:56:40 -0800 (PST)
+        Mon, 20 Jan 2025 13:56:46 -0800 (PST)
 From: Antoni Pokusinski <apokusinski01@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de,
@@ -86,11 +88,14 @@ To: jic23@kernel.org,
 Cc: apokusinski01@gmail.com,
 	linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v5 0/2] iio: magnetometer: add support for Si7210
-Date: Mon, 20 Jan 2025 22:56:18 +0100
-Message-Id: <20250120215620.39766-1-apokusinski01@gmail.com>
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v5 1/2] dt-bindings: iio: magnetometer: add binding for Si7210
+Date: Mon, 20 Jan 2025 22:56:19 +0100
+Message-Id: <20250120215620.39766-2-apokusinski01@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250120215620.39766-1-apokusinski01@gmail.com>
+References: <20250120215620.39766-1-apokusinski01@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -99,75 +104,70 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch series adds support for the Si7210 Hall effect I2C sensor.
-The driver currently supports the basic functionalities (i.e. making
-temperature and magnetic field measurements and changing the
-measurements scale) but I plan to add support for some other features in
-the future as well (e.g. the digital output interrupt).
+Silicon Labs Si7210 is an I2C Hall effect magnetic position
+and temperature sensor.
 
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Antoni Pokusinski <apokusinski01@gmail.com>
 ---
-Hi all,
-In this version I add only some minor tweaks and comments (for the
-temperature calculation) according to the latest review.
-Everything else was left intact.
-
-Kind regards,
-Antoni
-
-
-Changes since v4:
-* Makefile: replace spaces/tabs mixture with tabs only
-* si7210: includes: move asm/byteorder.h to the end
-* si7210: read_raw: add comments for temperature calculation
-
-Changes since v3:
-* si7210: fetch_measurement/read_raw: fix issue with endianess
-* si7210: replace `if (ret < 0)` with `if (ret)` wherever possible
-* si7210: read_raw: use SI metric prefixes (MICRO, MILLI)
-* si7210: si7210_data: swap i2c_client with regmap
-* si7210: read_otpreg_val: remove unnecessary cast
-* si7210: minor formatting updates
-(add missing trailing commas, spaces etc)
-* si7210: probe: use devm_mutex_init
-* si7210: add missing includes
-
-Changes since v2:
-* Makefile: fix alignment
-* si7210: fetch_measurement: use temporary variable to read the
-measurement instead of reading directly to `buf`
-* si7210: read_raw: change `tmp` to `temp`
-* si7210: read_raw: adjust temperature computation to match the spec better
-* si7210: device_wake: do not init `ret` to 0
-* si7210: MODULE_LICENSE: change license type to GPL
-* si7210: minor improvements in comments
-
-Changes since v1:
-* dt-binding: add `vdd-supply`
-* si7210: reorder includes in alphabetic order
-* si7210: add comment for `fetch_lock`
-* si7210: remove `otp_lock`
-* si7210: fetch_measurement: change result type to __be16
-* si7210: use guard(mutex) instead of scoped_guard
-* si7210: read_raw: use FIELD_GET to get raw temperature value
-* si7210: read_raw: return temperature in milli-celsius
-* si7210: use regulator for getting the voltage
-* si7210: si7210_device_wake: remove unnecessary cast
-* si7210: si7210_device_init: use fsleep instead of usleep_range
-* si7210: si7210_probe: remove i2c_set_clientdata()
-* si7210: minor alignment and formatting fixes
-
-Antoni Pokusinski (2):
-  dt-bindings: iio: magnetometer: add binding for Si7210
-  iio: magnetometer: si7210: add driver for Si7210
-
- .../iio/magnetometer/silabs,si7210.yaml       |  48 ++
- drivers/iio/magnetometer/Kconfig              |  11 +
- drivers/iio/magnetometer/Makefile             |   2 +
- drivers/iio/magnetometer/si7210.c             | 446 ++++++++++++++++++
- 4 files changed, 507 insertions(+)
+ .../iio/magnetometer/silabs,si7210.yaml       | 48 +++++++++++++++++++
+ 1 file changed, 48 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml
- create mode 100644 drivers/iio/magnetometer/si7210.c
 
+diff --git a/Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml b/Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml
+new file mode 100644
+index 000000000000..d4a3f7981c36
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/magnetometer/silabs,si7210.yaml
+@@ -0,0 +1,48 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/magnetometer/silabs,si7210.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Si7210 magnetic position and temperature sensor
++
++maintainers:
++  - Antoni Pokusinski <apokusinski01@gmail.com>
++
++description: |
++  Silabs Si7210 I2C Hall effect magnetic position and temperature sensor.
++  https://www.silabs.com/documents/public/data-sheets/si7210-datasheet.pdf
++
++properties:
++  compatible:
++    const: silabs,si7210
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vdd-supply:
++    description: Regulator that provides power to the sensor
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        magnetometer@30 {
++            compatible = "silabs,si7210";
++            reg = <0x30>;
++            interrupt-parent = <&gpio1>;
++            interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
++            vdd-supply = <&vdd_3v3_reg>;
++        };
++    };
 -- 
 2.25.1
 

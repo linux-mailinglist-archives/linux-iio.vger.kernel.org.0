@@ -1,119 +1,94 @@
-Return-Path: <linux-iio+bounces-14517-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14518-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 364C8A180FD
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2025 16:19:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDCCA182FF
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2025 18:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28CCF3A14D7
-	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2025 15:19:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D7447A11F3
+	for <lists+linux-iio@lfdr.de>; Tue, 21 Jan 2025 17:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C1214EC5B;
-	Tue, 21 Jan 2025 15:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEAB1F540E;
+	Tue, 21 Jan 2025 17:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="EDYM4KaC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgtfnnZR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA1127702;
-	Tue, 21 Jan 2025 15:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0741509BF;
+	Tue, 21 Jan 2025 17:35:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737472774; cv=none; b=nDPMKV8WFhpa3VqFe34LQAOUfAqa4Ht1m3Ww+tHkwDphlr6rUFtJDCnTHwrseLvAkLfVOupnU04c0w97CxuxJ5lPC7sMjW202Di0fzfKxy7B8DD5RwfuqBWAAud7OZhrXRxnVmkYGrrhx0rwVtGkUIbegXUADJisazA3ROnD37o=
+	t=1737480911; cv=none; b=jBbBYDp+XyrPNg0JPbKDFUlYhG8zTyQkgRPAdJBX9Z/tvB8Pi2a7uoDPo78p17E5YIFKIXga7Tgk56mbbAMbHZnMRJyxI26vqCKfyA8R2wzcZURoVK0ewgiD/eNcCODv3oNBwf+jmRPQ+opao76M0S5maaUQHYFa8FHKSytIDfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737472774; c=relaxed/simple;
-	bh=J9Pxde6A+iw7H1/Rk922hQRKg2/vxGfLY5TxwEmXAbY=;
-	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=LqfbQgCHQhziO/nl4W8tqK+txPduXTGzI4tsTZCA/gZmHqoJOyXyOH6sBvOgtRLIFeNYDJxma3cTW3rP7DV1vA1OOBFNgltxNCyGOlH2wRG/AWwoql+9X4xDtOpmCLBpLUrfm224XVk0UtwH6+nVav6O4PXYBN29C6LdckUGhIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=EDYM4KaC; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 341A5A1398;
-	Tue, 21 Jan 2025 16:19:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=YvSKUk5v6EFDKQLEGztTw1EfOLgqPgtPZVAGwGdWSV8=; b=
-	EDYM4KaCJlzn5nU9DaE4/F2L53G9QcUJe5kNRIsYjfViLqTIbit6OzIbFGniH+LF
-	Djy9tgYfH5znDGs/uz68zNkaNbcP1FHKRRnc/DYOzr7ajZWphvK+vZ3Mik3DDhFg
-	iCxjDhcmC0tL4y7QtgcuKydotWHPllcnh7IdbPDzgr3ki7tPuvBgpF3jWcC42IBe
-	UqaVatbPIVtT3pJIhlxDeXqew2mas2O4YHMpo4ahVaeOnzFJuVjlx8SINHN3aDG5
-	fIC1tOzBpkAv87Dj6C2pQzPxExAyWbppKWZRsMDBG7ZzaNu027OwXqU3885gpcuA
-	9VIE7NXepx/qdYuTRxOedmGVbfQMhllfsZcBVEl0ovkzCUU9dSytbiAGJNFO7IU7
-	QA8zbjBWySvbXhPI2cleKV7Wz3YIpEBH5N2pmmjdqLcXitjWLkeDKOuMLU6kds9l
-	Gc+DUI77fjTqcfNZBIvC3Iy6U8Gbgg0ZW1qadfMlC+aANiYqfOWiP4+lbAlPQx9e
-	cOL2rlSfNV+0BdfylzzCn9sqbpXRQHJDsVoDMyEPCxfAA68fIzxvar7LIyVnyypj
-	t8uzptbHQIjMBmFVhGHDgYet6xErA53fcjR3hj0kLs0AHBvQh//J3H7/YtqPgaSR
-	GD21DQqFvLw2T3IsR5esHk7KEEz3aGciGpU0dvRMJMc=
-Message-ID: <f2ec8a55-42ad-498a-b793-072444dcb92e@prolan.hu>
-Date: Tue, 21 Jan 2025 16:19:27 +0100
+	s=arc-20240116; t=1737480911; c=relaxed/simple;
+	bh=0O73OE+w4Xbznwo5wLX2Ao+rZtbtIsgrmJGdYX8/1uQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pbjOGQusD5EzwWsLRjKc5HttXUAh5i5LoyLJYlXPAXsRTxnWuiPEj42srFpMcCmqQg6U7y3DUSfJZK+hdbLK6RwndkOCOU7T1GMO2yUhsgMQJDKC7y6kMh4+9mUI3CFvFvqjp4KAxA12O0hqIjcTpi416rv7W8yaYQ5fTi3hWmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgtfnnZR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7126DC4CEDF;
+	Tue, 21 Jan 2025 17:35:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737480911;
+	bh=0O73OE+w4Xbznwo5wLX2Ao+rZtbtIsgrmJGdYX8/1uQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MgtfnnZR7XEN2Ki/+LK1za5x+icZYLPytphulTVncxI5po/BrCor67f3UUI7cVJhq
+	 IhvCQdAuCEVogvEWnC+2ivraLNR6tuMJWZXU8/YjINtchsXtRJDgxQ+JB3ps/D+X3r
+	 +0ExDB4LxrsbhzEp1m/GCU/hRkG2X7pynHyQuK7DNLauMkIFw4tkM2pJaFlKM/R5sA
+	 TQL1pGysG0wFldQVGFJ5gocKkq4HzSrAm2JK0VxC8ziNgzhCfqsgqA8D5jS5+HheHt
+	 eKcLg88aAV2eWWKVgY26zzTarzeDczjWnzV+9jTYgxon5/VFbBPAAUbDBnqCCNXJ1M
+	 db6tu1nUFBDDQ==
+Date: Tue, 21 Jan 2025 17:35:07 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v5 1/3] dt-bindings: iio: adf4371: add refin mode
+Message-ID: <20250121-crumb-dispense-b455b591481a@spud>
+References: <20250120113408.24395-1-antoniu.miclaus@analog.com>
+ <20250120113408.24395-2-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<timestamp@lists.linux.dev>
-CC: William Breathitt Gray <wbg@kernel.org>, Jonathan Cameron
-	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Daniel Lezcano
-	<daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>, "Dipen
- Patel" <dipenp@nvidia.com>
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-Subject: [Q] Frequency & duty cycle measurement?
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D9485267746B
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ACBy6CDaGsrlwYH6"
+Content-Disposition: inline
+In-Reply-To: <20250120113408.24395-2-antoniu.miclaus@analog.com>
 
-Hi all,
 
-we want to measure the frequency and duty cycle of a signal (relating to 
-power consumption) using a hardware timer in our SoC (Microchip 
-SAMA5D2). The hardware is capable of taking a snapshot of the timer 
-value into another dedicated register pair (RA, RB) on the 
-rising/falling edges, and a small `devmem`-based userspace utility was 
-created as a working PoC. Now we want to move to a "proper" kernelspace 
-solution.
+--ACBy6CDaGsrlwYH6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-However, none of the existing drivers seem to be able to do this; the 
-closest was `drivers/counter/microchip-tcb-capture.c`, but that only 
-seems to count one type of edge (rising/falling), and cannot give us the 
-time between them, which would be needed for duty cycle calculation. The 
-only other driver I could find was 
-`drivers/clocksource/timer-atmel-tcb.c`, which again seems incapable of 
-such measurements. Therefore, a new module will probably be needed; the 
-question then becomes: which API to implement.
+On Mon, Jan 20, 2025 at 01:34:02PM +0200, Antoniu Miclaus wrote:
+> Add support for selecting between single-ended and differential
+> reference input.
+>=20
+> Input frequency boundaries are change based on the mode selected
+> (single-ended/differential).
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-As `microchip-tcb-capture.c` uses the Generic Counter Interface, that 
-was obviously a first stop. However, from what I could see, you can only 
-represent (1) the number of times an edge has been encountered, and (2) 
-rotary encodings (quadrature and direction-step decoders); and not the 
-time between edges.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-IIO_ALTVOLTAGE and IIO_CHAN_INFO_FREQUENCY/_PHASE also seemed promising 
-(although the lack of IIO_CHAN_INFO_DUTY_CYCLE already posed a problem), 
-until I saw that all current drivers are frequency *generators*, and not 
-measurers, the latter seems to be completely unimplemented.
+--ACBy6CDaGsrlwYH6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The only other contender I could find was the Hardware Timestamping 
-Engine (HTE), but again, it's not clear whether (1) the API is even 
-capable of relaying duty cycle information to userspace and (2) if it 
-is, how would one go about implementing it.
+-----BEGIN PGP SIGNATURE-----
 
-It is also entirely possible I missed a driver or API that could handle 
-this better, if so, please don't keep it to yourselves.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ4/aywAKCRB4tDGHoIJi
+0i45AP98E4w9Lx20+jojJoUS/vrMwvCLu8pfWIqpfZEi0npcCAD7BHvuIIR30lKl
+eylmT9CA8ioT63/Qa4i+RuJKZN6ZHgs=
+=LsVt
+-----END PGP SIGNATURE-----
 
-So, how could one go about implementing such a driver?
-
-Bence
-
+--ACBy6CDaGsrlwYH6--
 

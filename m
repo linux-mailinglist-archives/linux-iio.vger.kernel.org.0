@@ -1,74 +1,76 @@
-Return-Path: <linux-iio+bounces-14529-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14530-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AE8A1926E
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 14:29:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF89A19270
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 14:29:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 922947A21E1
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 13:28:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 631981621E1
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 13:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4418521324F;
-	Wed, 22 Jan 2025 13:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC0F21325D;
+	Wed, 22 Jan 2025 13:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HVzhUUmc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f7o61hpD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0B321323E;
-	Wed, 22 Jan 2025 13:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1876E21323E;
+	Wed, 22 Jan 2025 13:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737552532; cv=none; b=nm9KsLqllO8wKFoiJsKkvAKA9nGfG7txoPmSRHUJwkKKoSXid5wfjm2T8GamwqbPD2jroPviKw8/QwsJ+5UwPtEkC1gglQEanNW0GDTyUv5AtYniVjqZ4IEOeRYXb5mUY9ZuakRHFmYDghvtD5GG+/wOSUeEz8a85SG6hXd3WQQ=
+	t=1737552547; cv=none; b=k8R7RWFHE9UubL6SI/D7MrBrJhz8DTUntUtShbNTkJlZOGxAsK4ajc/ldpQepBG8g820G9xf68+mgqEFmhTROsbTXa9HJa1OgRG8SJAluKQYAasJXHjvHiLz2KUrZOFzL2zcAl4d3H7jCTCaaQTCcU4GD5kp7n7rPveeWtGs0TA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737552532; c=relaxed/simple;
-	bh=I3ZgJthKn/5LDVmiEKxsfh4XsWGmGMHh4GZBkGxse4w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WCgqyUxX52EipQ3KmKoI32O36ITB4JJjokinYqbdcCwWO5HQixZuoFEhhQm0tGXl6ui7rsDAgeZiCsQsnjD2pMRSmFKcov5bgK2xBXkAxmH1639xZWrbrwwcBCRgYNLgHLlVtUBNLOTfDyWbjyoCQJhYKQBcevaFHXZVkk+9/1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HVzhUUmc; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1737552547; c=relaxed/simple;
+	bh=6Ug6MY3Fyk/PIG0Fsi/EPISNogWR5drYtfGYqiRV/TQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UTSVOPiuJGG++D2dpWIYCBiCQAQ2a65fJpeqi8I0lQ5G9ofkfb+NGw+k7qWFh2nWrA/0fh2IS16Utf1iIUsqHhBKew8i6Wxn5Kx4Y/J0qrP/NEMc6IE8jVVSxMw3BMoqa4sRWVgaLSsfdquv8DZq9ZJjYrFsExTvCMhHbswhpYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f7o61hpD; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43626213fffso5633195e9.1;
-        Wed, 22 Jan 2025 05:28:50 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385eed29d17so3677164f8f.0;
+        Wed, 22 Jan 2025 05:29:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737552528; x=1738157328; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WNcmf2G29Xm3UYUwAJtDRRxd8fmd0FSrNhzjHvoDxlE=;
-        b=HVzhUUmcJUxdBS4YOzllGQTxMVd5wbNkRg0K/HzGZ69g7j/W+Syic/PPw70V3st2K7
-         S0NAoQU8RJaRWZkp4sJtTuJBzjN8WNaWgOWROrGcz8cmcpDd99ri8gqi2X2t74yFBh2s
-         iFGVMuiwIzcM4DWnPQDPTD8s/kwyDL6Ke9U7U83xSdJcbKJ9Zg4txnpBjvxtUNq04R/o
-         TAClO/zmTx02yMw3V5NQL8PZidu0a7H3VpIMqRT4jbYsLbP8tNGvLqTOU3ACxa/zAeTt
-         RhrJ+AhQ+05jed1Fkbknf32sClchKGgYPaFWRFDLbBPtifobbeMulnjCIwz6e/1uB65j
-         xXDg==
+        d=gmail.com; s=20230601; t=1737552543; x=1738157343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GkqX9VAHdNzzFhb9yX2jyhz14c5QFySAR6IZ3g5wTS4=;
+        b=f7o61hpDdrv0OUr6RH27Kfigzz370FjyiO1fBW7QOiA/jzzFf19OHgvIClEIPm2cTG
+         kNBRu1OL9750H7LD/ZH19u7t9qRuwGR2pwXym+IJP8UfqNTYuKe8zl+kOjQeiD6nsw28
+         ZoGj/fweqa13DPeVutEpZ4AMMkKBYLrEed+XfdQeKCYFb+PdlIVV+Tm4a0VwbwEKoViF
+         q0QoAlqlARtqFHxUhhYTBgvHJc4qhb2z1I49EIyhtxKEfyRLnnp588Gl3ePoBizBOq2f
+         B5omeCAcZtg91P+v1EGfyWKQTUvB5E5EhBFWEeLIKH4+b4zvs/tASZGgQbhtMPWuitTI
+         Hi5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737552528; x=1738157328;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WNcmf2G29Xm3UYUwAJtDRRxd8fmd0FSrNhzjHvoDxlE=;
-        b=aiHwFN6hsnkGfV6A4AS283O4o5+QtwCERDb9XQMq3SRoNi3lrN31BfzUsrZgcs+CAM
-         zg2P8H2aQgkesqSGGe5Mu80540q92jQYMrQ1yJLtKvM8f+YXS6nQWFHUaOzu68VIM1Yf
-         OyfkkOSg0IUTZ9RogjoSdSjoWCBPhBp7PrwwTpk0OLemrLA+r7N1RJUFJve2LZuBCDpL
-         5wkeo7qSdvLJ5U9GGI1DyucW4A3VqszgrZOv67er9RInmKZ6mG/qP1VQvmmlBLLVdobG
-         /9DJ2jNVK0uHhyXwUZKHSTidY4I9gihK8wE+IggwWG7OvePLK3fDmigwtVV5nHZfULnj
-         INVg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGBEW9SqIJIyPaaGP1ntl6y/sfyUWmDuTskFll62a41noGgviNmyAPzUdAXHUlui7wJEsIummLMC443Q==@vger.kernel.org, AJvYcCUOS9YGXu0HwJ+S0nljDTicSOZXE/3Y/BFf2dLPBiS7B9u1KNYaA8W4rwcFD0lrwCiAg08CG48HEnA0@vger.kernel.org, AJvYcCUR9jDFSWRD701JIYE1TGdAditOnwETooX7W/dVbTgHy7k9waBdfFR0MaWoeX7WAJaxjwKHUhTyjqGZfLW6@vger.kernel.org, AJvYcCUhAGBw/7QH+nuUjU5mkfHsmNOCUzSc0uROTfaYu2DZhhafAad5b1KP+9GZ+MHZVgxernDZ4lNeAeK1@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAgYDG+JPA1UpPcWA3OhhtMV3ekFGQ77MsDsZ6m0cNQ/g1/5Ou
-	RsNyNATEYOThHbn5WsaqpEkIgKSjVMsAWi949QfbxultrNQpQ1U8
-X-Gm-Gg: ASbGncuinXMxh5QdSnoQeRRuoedd/kJgzRVYvWOQVxv7gqiEGCHNOwjuhPisoLTi/F8
-	z9NAk23ff8KxSMo/OuQlL6sq2+/SyKa5t3OxPaRvj56Qfqx2YPpbnnMttu/Lt5eu91mvdGF5ymR
-	y8A3IJ/8F5Sro0DfLE46prexq4WVCKxtD4g6UIKXbuU07YBcHGMQ+eNsI89YSfuGDIfopoVfLff
-	HEKQPM97aEas6EYFmTu9+1tsomXGA5hq3WmoLgWFZEss8W6ymec35zyTem/9uFc
-X-Google-Smtp-Source: AGHT+IEY41Uh4ITMjhsoQlxLQ5J+u5vmkWOP2nOiO5qxRSsGIB/nva7MEBWOUD0S6StlmmMoJM4lPg==
-X-Received: by 2002:a5d:64cb:0:b0:386:374b:e8bc with SMTP id ffacd0b85a97d-38bec505eb1mr23604015f8f.15.1737552528328;
-        Wed, 22 Jan 2025 05:28:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737552543; x=1738157343;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GkqX9VAHdNzzFhb9yX2jyhz14c5QFySAR6IZ3g5wTS4=;
+        b=Bs+Nbj8B1bYbhvckBAb00C7GlLyz0SgS0V7VEwYVSUeGyE1o6xr8yQl62uqf4ZmKeV
+         p182zZmi4JYydxzuvw69a06r2MMS6eLa84O94oPyN8+Aq8DyOdLmjnEflc9DKSpZ1f3Q
+         QvgdraI+CRPQAJ7dOFA/WNIEw5AYrFNg/nEfB1cymfXJ7nsbZxMpWbqTUh7arze2Lc6b
+         8sHBu18Yi8PFoVVKOzhqaCC9PPRT6x0eX545fqQaRjhTIX2EKpwMCJu+mFaBk/rFS3iA
+         k7hcCY6F4DGU8Eo4QmdpDiN3VGGYuJFyq6KPsV5AFm0YnbYPwbS6glNHGHHlbhJGgpjq
+         LASw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeGFXLh/9qw+Q8lC0VPdiFleDCQoe7HERsd5YdeABG8mG48Es+YNTgMeMPZH8yeQbzwc/b+8pLIEOA@vger.kernel.org, AJvYcCVWo10EsUPi9vZWsQlLANFD3WOlcHyFneDshTIcCYXnNe/o0PnBMIN3V7BlkXnTz90MhcjKTcHGfzsVFw==@vger.kernel.org, AJvYcCW1uJif3/I85JRfn+HqRzMMEU7TvgCjeRQ3a1GiSdyEvMqHiCyOpr/4bFZMld9oUjpGuaQVUn+BpW/E@vger.kernel.org, AJvYcCW2lvdjFLqXmgKjkqhjSZRDOr8HKXOFuHXyAVCc0MoaGcjn1bATlQ4uAz0eRslVqbhPO3BRVl+ey44MDMoO@vger.kernel.org
+X-Gm-Message-State: AOJu0YzivgGmaTGvGUo8AkLpaVpOxvW5GTZGyXemCzdSfFWREE9t/IbI
+	Jw1pbQM+bjyhlNHf5SgONK+g4xw2qb9T0NbAnuWcbUdMIwUc05M0
+X-Gm-Gg: ASbGnctdZGU+K87DVI2bifR+MSKW9qV98DOVwHwP0YAaqxJMxndl+2A+0R73LHw66Eg
+	yA4cwJ8W+72pT6ZmmRwaLb06CgM477t0H1IOaoKoLAP3kNDOgq/TArpMx8o2Or4FFpW+GVIWy9u
+	pcHIZceVGE1r/NEV+fyq6Wrs3kPNQ7ymndFhyx3bZEMB9Gqj89krpLzjpJXlK1paLE0m9IwMJ+2
+	0oNxpB0I0dm9PCOOz9JjE7VhLKGAVbcBsurhTYWjn0Ol6lpSFO0LsA40c8jAFyI
+X-Google-Smtp-Source: AGHT+IHuEp/y8/sgTl9R4+sCJRzVqDSsedgCxpfcG/bGMbsC+6eEBthY6D7NeW0q8qzOV3J0FzNJ7A==
+X-Received: by 2002:a05:6000:1888:b0:385:fb59:8358 with SMTP id ffacd0b85a97d-38bf57bd745mr17502043f8f.53.1737552543038;
+        Wed, 22 Jan 2025 05:29:03 -0800 (PST)
 Received: from spiri.. ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf328847esm16481241f8f.98.2025.01.22.05.28.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bf328847esm16481241f8f.98.2025.01.22.05.29.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2025 05:28:47 -0800 (PST)
+        Wed, 22 Jan 2025 05:29:02 -0800 (PST)
 From: Alisa-Dariana Roman <alisadariana@gmail.com>
 X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
 To: Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -86,10 +88,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <brgl@bgdev.pl>
-Subject: [PATCH v2 0/2] Add support for AD7191
-Date: Wed, 22 Jan 2025 15:20:38 +0200
-Message-ID: <20250122132821.126600-1-alisa.roman@analog.com>
+Subject: [PATCH v2 1/2] dt-bindings: iio: adc: add AD7191
+Date: Wed, 22 Jan 2025 15:20:39 +0200
+Message-ID: <20250122132821.126600-2-alisa.roman@analog.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250122132821.126600-1-alisa.roman@analog.com>
+References: <20250122132821.126600-1-alisa.roman@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -98,25 +102,219 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Dear maintainers,
+AD7191 is a pin-programmable, ultralow noise 24-bit sigma-delta ADC
+designed for precision bridge sensor measurements. It features two
+differential analog input channels, selectable output rates,
+programmable gain, internal temperature sensor and simultaneous
+50Hz/60Hz rejection.
 
-Thank you for your feedback! Here is the updated series of patches for
-adding AD7191 support.
-
-Kind regards,
-Alisa-Dariana Roman.
-
+Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 ---
+ .../bindings/iio/adc/adi,ad7191.yaml          | 175 ++++++++++++++++++
+ MAINTAINERS                                   |   7 +
+ 2 files changed, 182 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
 
-v1: https://lore.kernel.org/all/20241221155926.81954-1-alisa.roman@analog.com/
-
-v1 -> v2:
-	- removed patch adding function in ad_sigma_delta.h/.c
-	- added a function set_cs() for asserting/deasserting the cs
-	- handle pinstrapping cases
-	- refactored all clock handling
-	- updated bindings: corrected and added new things
-	- -> address of the channels is used in set_channel()
-	- addressed all the other changes
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
+new file mode 100644
+index 000000000000..c0a6bed7a9cb
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
+@@ -0,0 +1,175 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2025 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7191.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD7191 ADC device driver
++
++maintainers:
++  - Alisa-Dariana Roman <alisa.roman@analog.com>
++
++description: |
++  Bindings for the Analog Devices AD7191 ADC device. Datasheet can be
++  found here:
++  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7191
++
++  reg:
++    maxItems: 1
++
++  spi-cpol: true
++
++  spi-cpha: true
++
++  clocks:
++    maxItems: 1
++    description:
++      Optionally, either a crystal can be attached externally between MCLK1 and
++      MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
++      pin. If absent, internal 4.92MHz clock is used.
++
++  interrupts:
++    maxItems: 1
++
++  avdd-supply:
++    description: AVdd voltage supply
++
++  dvdd-supply:
++    description: DVdd voltage supply
++
++  vref-supply:
++    description: Vref voltage supply
++
++  odr-gpios:
++    description: |
++      ODR1 and ODR2 pins for output data rate selection. Should be defined if
++      adi,odr-state is absent.
++    maxItems: 2
++
++  adi,odr-state:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Should be present if ODR pins are pin-strapped. Value corresponds to:
++      0: 120 Hz (ODR1=0, ODR2=0)
++      1: 60 Hz (ODR1=0, ODR2=1)
++      2: 50 Hz (ODR1=1, ODR2=0)
++      3: 10 Hz (ODR1=1, ODR2=1)
++      If defined, odr-gpios must be absent.
++    enum: [0, 1, 2, 3]
++
++  pga-gpios:
++    description: |
++      PGA1 and PGA2 pins for gain selection. Should be defined if adi,pga-state
++      is absent.
++    maxItems: 2
++
++  adi,pga-state:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Should be present if PGA pins are pin-strapped. Value corresponds to:
++      0: Gain 1 (PGA1=0, PGA2=0)
++      1: Gain 8 (PGA1=0, PGA2=1)
++      2: Gain 64 (PGA1=1, PGA2=0)
++      3: Gain 128 (PGA1=1, PGA2=1)
++      If defined, pga-gpios must be absent.
++    enum: [0, 1, 2, 3]
++
++  temp-gpios:
++    description: TEMP pin for temperature sensor enable.
++    maxItems: 1
++
++  chan-gpios:
++    description: CHAN pin for input channel selection.
++    maxItems: 1
++
++  clksel-gpios:
++    description: |
++      Clock source selection pin (internal or external). Should be defined if
++      clksel-config is absent.
++    maxItems: 1
++
++  adi,clksel-state:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      Should be present if CLKSEL is pin-strapped. 0 selects an external clock,
++      1 selects the internal clock. If defined, clksel-gpios must be absent.
++    enum: [0, 1]
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - avdd-supply
++  - dvdd-supply
++  - vref-supply
++  - spi-cpol
++  - spi-cpha
++  - temp-gpios
++  - chan-gpios
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++  - if:
++      required:
++        - adi,odr-state
++    then:
++      properties:
++        odr-gpios: false
++    else:
++      required:
++        - odr-gpios
++  - if:
++      required:
++        - adi,pga-state
++    then:
++      properties:
++        pga-gpios: false
++    else:
++      required:
++        - pga-gpios
++  - if:
++      required:
++        - adi,clksel-state
++    then:
++      properties:
++        clksel-gpios: false
++    else:
++      required:
++        - clksel-gpios
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,ad7191";
++            reg = <0>;
++            spi-max-frequency = <1000000>;
++            spi-cpol;
++            spi-cpha;
++            clocks = <&ad7191_mclk>;
++            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++            interrupt-parent = <&gpio>;
++            avdd-supply = <&avdd>;
++            dvdd-supply = <&dvdd>;
++            vref-supply = <&vref>;
++            odr-gpios = <&gpio 23 GPIO_ACTIVE_HIGH>, <&gpio 24 GPIO_ACTIVE_HIGH>;
++            pga-gpios = <&gpio 5 GPIO_ACTIVE_HIGH>, <&gpio 6 GPIO_ACTIVE_HIGH>;
++            temp-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
++            chan-gpios = <&gpio 27 GPIO_ACTIVE_HIGH>;
++            clksel-gpios = <&gpio 13 GPIO_ACTIVE_HIGH>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 98a3c1e46311..262beced3143 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1302,6 +1302,13 @@ W:	http://ez.analog.com/community/linux-device-drivers
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+ F:	drivers/iio/adc/ad7091r*
+ 
++ANALOG DEVICES INC AD7191 DRIVER
++M:	Alisa-Dariana Roman <alisa.roman@analog.com>
++L:	linux-iio@vger.kernel.org
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
++
+ ANALOG DEVICES INC AD7192 DRIVER
+ M:	Alisa-Dariana Roman <alisa.roman@analog.com>
+ L:	linux-iio@vger.kernel.org
+-- 
+2.43.0
 
 

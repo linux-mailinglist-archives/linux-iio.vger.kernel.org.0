@@ -1,97 +1,82 @@
-Return-Path: <linux-iio+bounces-14525-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14526-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3204A18BB1
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 07:06:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED25A18BCC
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 07:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC853A349A
-	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 06:06:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 263AE7A44A0
+	for <lists+linux-iio@lfdr.de>; Wed, 22 Jan 2025 06:14:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C74190486;
-	Wed, 22 Jan 2025 06:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4E1191F6C;
+	Wed, 22 Jan 2025 06:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6hKWMFx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SL257t7a"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669D52EAE6
-	for <linux-iio@vger.kernel.org>; Wed, 22 Jan 2025 06:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4CE175D47
+	for <linux-iio@vger.kernel.org>; Wed, 22 Jan 2025 06:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737526006; cv=none; b=eLWdu2S0KSDs2ZwKjdYTMe2q519YgRjQ44f+eayRWXv9HqqmHc/lR9Wwik65fb80W27U/B/WXkMXpiQvZu+I4gGsDbd43O6Bttvmy7LaHF1GMQP29ZkfSSXbclRPCAeNQXbBnNPEQdhWmahQY+XlwDLwrlE4Xyv8CuXK4k67XJ4=
+	t=1737526463; cv=none; b=k1aWd48KGfUFlkIbWI5LH7ZKti9LvtIQNe7DOWChC7XjF/KKxPdv58MXFMFXk6qFl55AMcpE+2Z2JivBkL/QJMXoV/f3RR1UYfOqc9pMsmC/mfXcTwUHEBmowWQwVPHaE0eFkjf55ZlsrhujcX6iOCM3uN5HBDPfWqTW62Lu/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737526006; c=relaxed/simple;
-	bh=Ey9EpO8/Au2zsBU+aaQAo642hPbjS5nK4Kqu2rvOzBY=;
+	s=arc-20240116; t=1737526463; c=relaxed/simple;
+	bh=a906MVP+vbd2ay4JEofGWEqV+0TYzWsPsnOp7nj1o2k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qw1Gh7897NTKc2CIp+rRAuOVEl4sIJDzAufjWnh7h2NkAc4jvmSzuXgjYf57THksXdIdkGVtKDQW6CgFYenUt564nQUCQ4HO7DFYPbxxz9HYI48pkiCCMSbTeyFJuGRXk2UAeNRphoYBhEQScRbFbT2GIEwnVvuiJaeuGLFxlyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6hKWMFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF1CC4CED6;
-	Wed, 22 Jan 2025 06:06:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pEcXHoxXCo9NSHpM2HIdFi2PGGOodStwozqCiNRWqRZuA4VrnUHgG+fILIlEyaoujtDnmaIRWSh2uLcnOUNBzaaYrX0WS5mK4QwvNBFu/J022sQobb/MVKbK8FkJH5dP/V7szJ+SmHz0Y1O+VhdcSTJKllGzpoxw0gpr1BFZP9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SL257t7a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A66EC4CED6;
+	Wed, 22 Jan 2025 06:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737526005;
-	bh=Ey9EpO8/Au2zsBU+aaQAo642hPbjS5nK4Kqu2rvOzBY=;
+	s=k20201202; t=1737526462;
+	bh=a906MVP+vbd2ay4JEofGWEqV+0TYzWsPsnOp7nj1o2k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W6hKWMFx1/x1C4dj7CUDmYdlbOGj6A9u6Pxf0IzRSv/h4MPDcvmBrxjISPpHg1Te5
-	 Ecr5Fm91ID5fextk+Bjh8uX5RkGJO9oNQA44SnQ7Gsfu+pqwFMY4BfmzmgDsEJRkN2
-	 O4KjuT8c7I46HR7mLF8xl6Z2wTsvuPFZMEXHaDlAmseFdD1vAHcgcWka+AYbSAylUJ
-	 czcTIUNKDGQmY6G7qH0KEJ8hatMdGldDabdeg64KAH2/I9O7sKiug4pW4rcAKT/P0n
-	 3h4FzJubmLLUTI+7KfH4LMf29SVUgU099pzK9OTAjnN/MRIbfT3O5UHsxWMB8ImEK6
-	 IeOajQbClRXnQ==
-Date: Wed, 22 Jan 2025 06:06:42 +0000
+	b=SL257t7alcrOhDFG8aunYr9cDHY/m1A458g2xy/DQnDYU11AZH7sWicrAkCCsfoEo
+	 G24Ny0IZ4fzc5BzYBjVk+1aLi97/DFEUhL9zQPJdh0f0eAWMGJBfBjlKZboj25VT2i
+	 /ti67qLg3me1lGGZVu6Ltrz3RngkWAvjYLCsVLH0NkidI1qpfu4DmwlJ/zR+btrGwz
+	 g4eKJyuWqR/VeM0+fMtmFukrHlFyfTDNjWuzP9HgwB8NFsKPOPmGPa/KZLf0uEUSA4
+	 Jzi5K/CjSlGOreJDyWc7LYGFpGS4g/KSOws/mmvkuX0yAzkq//rf1+YVKbJaldqsXW
+	 K3NDeVQsz/+/g==
+Date: Wed, 22 Jan 2025 06:14:19 +0000
 From: Tzung-Bi Shih <tzungbi@kernel.org>
 To: Gwendal Grignou <gwendal@chromium.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3] iio: cros_ec: Trace EC sensors command
-Message-ID: <Z5CK8ltaZM6Z85Wi@google.com>
-References: <20250117230136.2237346-1-gwendal@chromium.org>
- <20250118162748.6badf0ab@jic23-huawei>
- <Z44OaSCdFeCygJLQ@google.com>
- <CAPUE2utb_L0rhjN6BdY2WEOX3i48DiTAkytY=WLgjbymrZc6Tw@mail.gmail.com>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v4] iio: cros_ec: Trace EC sensors command
+Message-ID: <Z5CMu4yIgbPgJknf@google.com>
+References: <20250121232007.1020666-1-gwendal@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPUE2utb_L0rhjN6BdY2WEOX3i48DiTAkytY=WLgjbymrZc6Tw@mail.gmail.com>
+In-Reply-To: <20250121232007.1020666-1-gwendal@chromium.org>
 
-On Tue, Jan 21, 2025 at 01:54:31PM -0800, Gwendal Grignou wrote:
-> On Mon, Jan 20, 2025 at 12:50 AM Tzung-Bi Shih <tzungbi@kernel.org> wrote:
-> >
-> > On Sat, Jan 18, 2025 at 04:33:52PM +0000, Jonathan Cameron wrote:
-> > > I briefly applied this, but...
-> > >
-> > > [jic23@jic23-huawei iio]$ make LOCALVERSION= W=1 -j12  C=1
-> > > mkdir -p /home/jic23/src/kernel/iio/tools/objtool && make O=/home/jic23/src/kernel/iio subdir=tools/objtool --no-print-directory -C objtool
-> > >   CALL    scripts/checksyscalls.sh
-> > >   INSTALL libsubcmd_headers
-> > >   CC [M]  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.o
-> > >   CC [M]  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.o
-> > > In file included from drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.h:56,
-> > >                  from drivers/iio/common/cros_ec_sensors/cros_ec_sensors_trace.c:32:
-> > > ./include/trace/define_trace.h:106:42: fatal error: ./cros_ec_sensors_trace.h: No such file or directory
-> > >   106 | #include TRACE_INCLUDE(TRACE_INCLUDE_FILE)
-> > >       |                                          ^
-> > >
-> > > Despite dealing with trace points a lot in the day job
-> > > I still find them hard to actually add to a subsystem because
-> > > of fun things like this one.
-> I reproduced this error on a fresh kernel source tree. I suspect an
-> issue with sparse, as other trace.c files use __CHECKER__ macros. For
-> instance `drivers/net/wireless/intel/iwlwifi/iwl-devtrace.c`:
+On Tue, Jan 21, 2025 at 03:20:07PM -0800, Gwendal Grignou wrote:
+> For debugging, add tracing for EC_CMD_MOTION_SENSE_CMD command:
+> - decode the name of the subcommand
+> - provide internal information for the most common sub-commands:
+>   setting range, frequency, EC probing frequency, ...
+> - display return status.
 > 
->  10 /* sparse doesn't like tracepoint macros */
->  11 #ifndef __CHECKER__
-> ...
+> When enabled, the tracing output is similar to:
+> /sys/kernel/debug/tracing # echo 1 > events/cros_ec/enable ; echo 1 > tracing_on ; cat trace_pipe | grep MOTIONSENSE_CMD_SENSOR_ODR
+>  SensorDeviceImp-814     [003] .....   686.176782: cros_ec_motion_host_cmd: MOTIONSENSE_CMD_SENSOR_ODR, id: 1, data: 200000, result: 4, return: 12500
+> 
+> Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
 
-I still can't reproduce the error by using a just-cloned kernel source tree
-with C=1.  Could you provide some more details about your steps?  I'm
-wondering about which steps I may miss.
+Except I can't verify the build error seen in v3, the patch looks good to me,
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+
+> ---
+> Changes from v2 (https://patchwork.kernel.org/patch/13944028/):
+> - Fix include error, based on commit a98c75fcd0e ("drm/tegra: trace: Fix path to include")
+
+Typo, v3.
 

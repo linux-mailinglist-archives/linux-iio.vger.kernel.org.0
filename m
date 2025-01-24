@@ -1,200 +1,349 @@
-Return-Path: <linux-iio+bounces-14557-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14556-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693AFA1BC8D
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 20:01:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0857A1BC47
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 19:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4EF118883AE
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 19:01:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C123A6AA0
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 18:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440DA157485;
-	Fri, 24 Jan 2025 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81869222579;
+	Fri, 24 Jan 2025 18:41:46 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from USG02-CY1-obe.outbound.protection.office365.us (mail-cy1usg02on0084.outbound.protection.office365.us [23.103.209.84])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4527726;
-	Fri, 24 Jan 2025 19:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=23.103.209.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737745279; cv=fail; b=LUjZY9eEK2Uvjs9fSzkJuISINzVj/w3IvMEVCB0gwbyFe11bplspp9Z/hCNAWGNCX9/RuWaYcFxM79b2iwCepybnXK239GsS9fwWE0JUVRRoSpFT81ja+AHhtjrf8BoyQcFepcZn//Ptr2dhiMSE0kxqocRINVWVmUWURpXZmh8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737745279; c=relaxed/simple;
-	bh=uEC7PPNO6Tqk+rmYYFAZxN62Pi8aMJ2xGPhm1Dr/T0k=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HdvXcdC4wPqLt9R06BtkJuDK/i84PEAcQTlGeyGKjM4JJlfeLBDqfC20clH6UjTt0nnlOJ+k/F9D3KvumIXEj/uTvijN6VKR5kQhYG7RM63J2MlkwjixCxGRcpiXYouByph+Z89AMGILFBqLH+JFvb5xveNTB5EaTrV3CZd8YKw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=arka.org; spf=pass smtp.mailfrom=arka.org; arc=fail smtp.client-ip=23.103.209.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=arka.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arka.org
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector5401; d=microsoft.com; cv=none;
- b=0oMS34dNZqhWdSIbbBqF1k/sXpnPW7bb2/AElypPvKKaTRnBaoBQu6xo+AOlyDo5UawwBsoMQbQMMFSi9KnO4PUPybXcE2eLW6ErHYtTCSLaDJdvP8nxdtfbqvSV6OIJOXfMzzJPVqwbEPO9JSOtJSYGAAY+ihdLSwtU1rGzjjZIrr/8Fy6De94nOCH6H5BjrRMaLG8q6yl/2+68BGcJwUW2GHuGoNLkT703f8LhsHmgta2WXx5cjed9IKqYMMyBy10chC7X/3eEj3F+D/7biD6+5IhmSP6Wml5ZUWHZ5JpQI1xSIl/exB6ruSK+WldDoVjW8u/Zv8bV1q3szJL7yQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector5401;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=tq/FGt++jGpiZQZ1golVIZ3u14CWVJWsXpS6d+XPZDw=;
- b=m7IRdS8SCXq9g+Q4FcZ+jsBjoA6xQdk0/LoAIUskMQTM/xAUJZSBpneT6oPsDGl/3t0gr2xbQB0p8z6TQLsvm+pO8PTP451REbOJ4CXsv/B/WssIYq2vgY8vJF2svJFnDn/rBd2XsGKUW1cKw45Mqcf0yFjrh3DEAgBep8CGDXtC3c8MfnLXJX1spyLWYbTksFDJbOChldngx71TVxhRcFvw7+jLv//TkrmP79QqHKtAi2K+5l1r8voo+JW058seRMf/pAgXV/atY4JiPwGkvVHUIH1ymhnGMQvyfFqjjy35lzIQRfcJOB0nSyR295BBD6WVusECiiO11m2p2XWDFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arka.org; dmarc=pass action=none header.from=arka.org;
- dkim=pass header.d=arka.org; arc=none
-Received: from SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:170::5)
- by SA1P110MB1213.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:192::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.19; Fri, 24 Jan
- 2025 18:27:46 +0000
-Received: from SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
- ([fe80::fd7b:b16a:a9df:78e8]) by SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
- ([fe80::fd7b:b16a:a9df:78e8%5]) with mapi id 15.20.8377.009; Fri, 24 Jan 2025
- 18:27:46 +0000
-From: Sam Winchenbach <swinchenbach@arka.org>
-To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>, "lars@metafoo.de"
-	<lars@metafoo.de>, "Michael.Hennerich@analog.com"
-	<Michael.Hennerich@analog.com>, "jic23@kernel.org" <jic23@kernel.org>
-Subject: [PATCH] iio: filter: admv8818: Force initialization of SDO
-Thread-Topic: [PATCH] iio: filter: admv8818: Force initialization of SDO
-Thread-Index: AdtujaIg5KDF3LXLTmKHzI1/shuiAA==
-Date: Fri, 24 Jan 2025 18:27:46 +0000
-Message-ID:
- <SA1P110MB1069C61BF6709D362CA86CA0BCE3A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arka.org;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1P110MB1069:EE_|SA1P110MB1213:EE_
-x-ms-office365-filtering-correlation-id: 748b0cb2-4d50-44a2-f8af-08dd3ca4ccee
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|41320700013|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Qwa/du3MnJ+Ehey1lJw0WNsi1q0HJ8RTkvvksmTETdg4+d6tagYyjQyj7KiC?=
- =?us-ascii?Q?jh3v4s5qfcosVcrxq5N0PrsVMDgU72ZYhpCjns36+s6epchpCv6TeI/1adil?=
- =?us-ascii?Q?xrAqyHgCVzWhinNzoDX/bvnVJ+JI1I0BIY1tRw/q4ZB2PdwA6nGCBHrQZJ/i?=
- =?us-ascii?Q?cuDqVg+KCFr+2T2A3wap2g6wuolk2j8Myn4KyQVmjQA31H77GOUEMhtHLoCW?=
- =?us-ascii?Q?VyLoN6DdIuAM5dpfFTXmysisMRt65a0+TMh/WnSDib+1rvfcf4KmvOqKi+hD?=
- =?us-ascii?Q?0ErYdPzbfnx/vqcnfizBipotei8ePQlR1PlETq52Z+/TWWDXg1f2IahhQdX5?=
- =?us-ascii?Q?sRZL+J8o+qfAlXsiaTaHw7NwHYO6ZvCjhWuAlF7L/2SBKZHm82ogDXzGSSlx?=
- =?us-ascii?Q?jZuhADDkWk4wUsP5XL6QamcFbPXJrSeNTYg1FAfGmMV5SkxbrodXXzvKdhBc?=
- =?us-ascii?Q?0Ged6ZTszMSGKfYLZ4AYbR5F70SCO3gzVMMnhw6ZKilnwcx2x4FMuT0ADAZm?=
- =?us-ascii?Q?e8eKOBlKJ482guAMgKajKS7bPuNAAYem9WJoIBv8+V+v21EL542Ea7WZzvbs?=
- =?us-ascii?Q?d4hvZrVSvNap9NLnfcLhMCNk5YkHkAJadLqOFZh6FgqI08cxUgVSsUh7XZLb?=
- =?us-ascii?Q?QyY43Vqw5Tjxhp4b/Pr+3fiGRW25kmvihxy8LuTwrkbGg/1/C64W02+WtNvt?=
- =?us-ascii?Q?Zkw7J9VoUYnUP7a9B3SVBxXrq1W7TViyuBWWv/Ff5bdKsDojxIpAbkpcJ6s/?=
- =?us-ascii?Q?8JJC+pPsdWnIely/hksEV67ICsrXAIOt0iZCMBZQI3xlcPZmMuC5MfgW/Ost?=
- =?us-ascii?Q?je3CZtGTn81IV8RdvUzUSi+6hntU4fX9TLBlrhvU1OsOIG5rhVD0Apyl9zOi?=
- =?us-ascii?Q?2Il2a9LS3lC5YY9uDJ/unAejNyjuVD0bYgrAwzK3P3RRFAQODQuMVeCYOUel?=
- =?us-ascii?Q?M+WGkEYASiSINXsia4K549BQNy9NE3c9BJu9fmGp9nopRb6O+R7SitrCMkH0?=
- =?us-ascii?Q?FBE5ObPPJ4Q7FNxt6yhmdVoHJztSmFGmDtxipZs77uMUBp/dODpNunrK6I7y?=
- =?us-ascii?Q?oRV9ot3lh2DYN20dsKQVR+hEu5Ywr2TXxTqov+MtGu6Bg0QlqSWc35RedtTI?=
- =?us-ascii?Q?+wbGd4Ouh2OP6afuxA7Zu2kJ2xLPItoWZ7/CEzzfc3dc8wNcfzKtbVwgrsKm?=
- =?us-ascii?Q?o2jLGztgvvkOXY3cXnYfPElMdA4lJpfNAR0LBStIe4oLNWaB7AHVVeBhH2mT?=
- =?us-ascii?Q?vVqVMt92krHRRuq3cyqiyUsHipzwnsCTREEZ+GB1YFZ3CgZ7Hr6qFNrozGD1?=
- =?us-ascii?Q?Ehy9v/ZnRJNRR6wSMjcNwSxsgRHs+to4mV0oQl7wRgElRthAjcqJyH92rFBX?=
- =?us-ascii?Q?feL2PzUamjsqxeqvqsCDp8FLYAgtWqDAbLf7xWXOHGuRoOymgq5/Lo5xT4Qg?=
- =?us-ascii?Q?hHA9QxmYKm1yPVZaj07IkYdhtJmNLUV/?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(41320700013)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?d4S4beAJkJVAjovCodSEhb6uPoCHFuXFWFn1QArh8r1Y9zTba3xUNspXftiw?=
- =?us-ascii?Q?JMtLkSyTypEMOE9ZS7HMgUrY/1NNvSL9XkKhwQ/Ar0Xj7jNiJH6+A5jfrt+o?=
- =?us-ascii?Q?vKduTKRwXVDE86wjUWusUzankTI6dKzesDMn95YNSjxfPh2PuomTgELQCD97?=
- =?us-ascii?Q?h7OoX/l1GxKZ6Z/cS8dhM4MT6cE7tWyHiDbyvhDtkwZFSaHh/qdOHcn9tOgR?=
- =?us-ascii?Q?ulNuwwonzKodcqfjhU5vi8yOcQOomYR7ODsB4KtCQl8n/KEvmeJfKl0grA1V?=
- =?us-ascii?Q?SbIuzQpUSntka7L0OS2l1iA+CSzzAp/sFVe5xENctlZng9cx4ICj4+IemHVC?=
- =?us-ascii?Q?tC/f8J0Fw4/HueVfTZOF6JhZS3nbYiJ07GUZu1SAzv0o2CaAxMWlPVHFkw6J?=
- =?us-ascii?Q?J1sCsU5uuXAa605Wq0c5fszR7bIUB46ey47PK2hghkXjd3gTMySwl7HmeLwU?=
- =?us-ascii?Q?k1l+t/Q+Y9Uwf9kHCGSzVBB3VFfHCKiy2EYBfLnvyQnq4+BW1EdQ2j2tHEO0?=
- =?us-ascii?Q?wl/fHnpyokc3JFblnASnNqk2M60WZaT7OAgNRpKWvAZGNw/mqyJNW0RrTvRL?=
- =?us-ascii?Q?6m48oVGt2qD7t96VL9+uaNPFnQ/BBGy8MtWymKU7dcZ6/7X2NcXHQtrXAKok?=
- =?us-ascii?Q?oF6TVvBDbsIIP62OqK51tZXNO74zvph5LQ6cJR2gXaj1KC6vFQ/QZk7GzRvS?=
- =?us-ascii?Q?QxnyMhoR6KdR2yIQlOHCDYI8e+HjzxXbd5YKT8ba/eEsZK60cbqP/tPeGfPz?=
- =?us-ascii?Q?mUb4pmwCThvKZHUOXGgeVz0bv1aQBxYUga+7u6uzbxjTXNEfPJpf6aai5nYX?=
- =?us-ascii?Q?unFfivAEdtK0ZVcmDnZv+2VMxK+6Ybu6jHqsY6vtE08AmqW9euJG61A+DhWA?=
- =?us-ascii?Q?sVCtxxJRLzJzvxOKEOR9xPhjEei+UmPdSaIPH2S8YoGVkxMZ1yV4z6v3oQeV?=
- =?us-ascii?Q?nCUgymv7jxuYsMkW+LXFHQUmrw+npa8ff7y4wbV8s8we0gzZHztFqAeuE0YO?=
- =?us-ascii?Q?KLxvdqNHwu0o2VnmtxhPFypNcXLcqoAFw6Qrj+8sYtUoLS1h32zp264h6k+0?=
- =?us-ascii?Q?IvyO0GfKSnMlISlomqE6J8/d6gP0cxK1x04K1CpO/8i6dfEeOKYmKkuEVKWI?=
- =?us-ascii?Q?W+p+qcd69APZtvQ5KsgyWPiWWanF7xroj7Vi+cFIPOzTTD8aS7m6ulOJR8aC?=
- =?us-ascii?Q?wuj9b91cAEhmyYR8aey1X7OVcWSAuZH+9TdHkygFKnpbrtnGeXtb72An4KP1?=
- =?us-ascii?Q?vRsgJV2Y0iNyYUMHSoyYTzXCCGNY6y1ePR45zXttcKMbBvKPZjEo8KLOPjIB?=
- =?us-ascii?Q?tTsXx3Oa2uiyvb7mb0SuOJ5GX3oT2zODxl3HHEETJ8xZEYW0O9Y5xVV8Cj+h?=
- =?us-ascii?Q?Nnkgn228MUuoq5pJimE0d9ocsJ4YyNCAd6kfPVer2IisYG1R7IWiKi6GXaTZ?=
- =?us-ascii?Q?/hC5V1rPq2X82x87KCu7CMEin0AzoiGRdpAkLAFLM/Y0J3WQQDEed9huqjCI?=
- =?us-ascii?Q?Wkm8pMQDduBEMcbSmnktX8LXcW5DZB4Anx5/?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C981221DBD;
+	Fri, 24 Jan 2025 18:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737744106; cv=none; b=owmW+8piqr4b1LBcxHeJL3er5zlZsrl9Z08vzzKu9wO5ii9numeUHlyOAZSoCfi6iyz+SfIP9LeICYPecf7AnVu/VGlXs7qyQUve8h3dNahyYHBRfg7kmHH0EURLwLuj/MItqF8BkiK8ISfd8zCbQGbWvmDzng3iI1QlUNUhw40=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737744106; c=relaxed/simple;
+	bh=PLg3fbBWVFPOAHM+bZDXpWZpzgB/HocdxNtJskjuxSw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jbeiZmOdLPDwbsCSvJ3qMhipA2YxE1Bwv/agNeUr2mH5Ob/A9a7IoRiEzUN5QtaLhpWRfDa7CHsNS83E7PPoLCrauhaSUEh4jD8nhOb/l/M4zMJxVYDLi719Ubdp1GgG3AJDUtbcxpvoYrLBct9U1KdHrngLsJ++T4fj6ZidhTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YfmnR4bGjz6L57t;
+	Sat, 25 Jan 2025 02:39:39 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6C100140D1A;
+	Sat, 25 Jan 2025 02:41:39 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 24 Jan
+ 2025 19:41:38 +0100
+Date: Fri, 24 Jan 2025 18:41:37 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+CC: Claudiu Beznea <claudiu.beznea@tuxon.dev>, Jonathan Cameron
+	<jic23@kernel.org>, <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	<lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+	<linux-renesas-soc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Claudiu
+ Beznea" <claudiu.beznea.uj@bp.renesas.com>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 1/2] iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()
+Message-ID: <20250124184137.0000047a@huawei.com>
+In-Reply-To: <CAPDyKFpQUMOFtA-QCbYdaeKSDGJpnjcA+tiKZ=kzmrjYRtFZdw@mail.gmail.com>
+References: <20250103140042.1619703-1-claudiu.beznea.uj@bp.renesas.com>
+	<20250103140042.1619703-2-claudiu.beznea.uj@bp.renesas.com>
+	<20250104135225.2573285b@jic23-huawei>
+	<44e4a6b4-39a4-49d0-b3a5-fc5545c39a56@tuxon.dev>
+	<20250111131409.36bebfd3@jic23-huawei>
+	<bb987a1b-a999-478c-8e35-124fcf41561d@tuxon.dev>
+	<CAPDyKFoJ3pLU-5_b5MSxMZd7B1cfOvmcdqR4FGkU2Wb7No0mcw@mail.gmail.com>
+	<20250117155226.00002691@huawei.com>
+	<CAPDyKFpQUMOFtA-QCbYdaeKSDGJpnjcA+tiKZ=kzmrjYRtFZdw@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: arka.org
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 748b0cb2-4d50-44a2-f8af-08dd3ca4ccee
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jan 2025 18:27:46.6830
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 71928351-9f62-452c-b7f4-40bd09a22e1a
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1P110MB1213
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-From f851ce8225fc239fcbfc2e06adaa93336a9242ae Mon Sep 17 00:00:00 2001
-From: Sam Winchenbach <swinchenbach@arka.org>
-Date: Thu, 23 Jan 2025 15:24:09 -0500
-Subject: [PATCH] iio: filter: admv8818: Force initialization of SDO
+On Mon, 20 Jan 2025 15:59:02 +0100
+Ulf Hansson <ulf.hansson@linaro.org> wrote:
 
-When a weak pull-up is present on the SDO line, regmap_update_bits fails
-to write both the SOFTRESET and SDOACTIVE bits because it incorrectly
-reads them as already set.
+> On Fri, 17 Jan 2025 at 16:52, Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Wed, 15 Jan 2025 16:29:15 +0100
+> > Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> >  
+> > > On Wed, 15 Jan 2025 at 14:37, Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:  
+> > > >
+> > > > Hi, Jonathan,
+> > > >
+> > > > Thank you for your input!
+> > > >
+> > > > On 11.01.2025 15:14, Jonathan Cameron wrote:  
+> > > > > On Mon, 6 Jan 2025 11:18:41 +0200
+> > > > > Claudiu Beznea <claudiu.beznea@tuxon.dev> wrote:
+> > > > >  
+> > > > >> Hi, Jonathan,
+> > > > >>
+> > > > >>
+> > > > >> On 04.01.2025 15:52, Jonathan Cameron wrote:  
+> > > > >>> On Fri,  3 Jan 2025 16:00:41 +0200
+> > > > >>> Claudiu <claudiu.beznea@tuxon.dev> wrote:
+> > > > >>>  
+> > > > >>>> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>  
+> > > > >>> +CC Rafael and linux-pm
+> > > > >>>  
+> > > > >>>>
+> > > > >>>> On all systems where the rzg2l_adc driver is used, the ADC clocks are part
+> > > > >>>> of a PM domain. The code that implements the PM domains support is in
+> > > > >>>> drivers/clk/renesas/rzg2l-cpg.c, the functions of interest for this commit
+> > > > >>>> being rzg2l_cpg_attach_dev() and rzg2l_cpg_deattach_dev(). The PM
+> > > > >>>> domains support is registered with GENPD_FLAG_PM_CLK which, according to
+> > > > >>>> the documentation, instructs genpd to use the PM clk framework while
+> > > > >>>> powering on/off attached devices.
+> > > > >>>>
+> > > > >>>> During probe, the ADC device is attached to the PM domain
+> > > > >>>> controlling the ADC clocks. Similarly, during removal, the ADC device is
+> > > > >>>> detached from the PM domain.
+> > > > >>>>
+> > > > >>>> The detachment call stack is as follows:
+> > > > >>>>
+> > > > >>>> device_driver_detach() ->
+> > > > >>>>   device_release_driver_internal() ->
+> > > > >>>>     __device_release_driver() ->
+> > > > >>>>       device_remove() ->
+> > > > >>>>         platform_remove() ->
+> > > > >>>>           dev_pm_domain_detach()
+> > > > >>>>
+> > > > >>>> During driver unbind, after the ADC device is detached from its PM domain,
+> > > > >>>> the device_unbind_cleanup() function is called, which subsequently invokes
+> > > > >>>> devres_release_all(). This function handles devres resource cleanup.
+> > > > >>>>
+> > > > >>>> If runtime PM is enabled via devm_pm_runtime_enable(), the cleanup process
+> > > > >>>> triggers the action or reset function for disabling runtime PM. This
+> > > > >>>> function is pm_runtime_disable_action(), which leads to the following call
+> > > > >>>> stack of interest when called:
+> > > > >>>>
+> > > > >>>> pm_runtime_disable_action() ->
+> > > > >>>>   pm_runtime_dont_use_autosuspend() ->  
+> > > > >>>
+> > > > >>> So is the only real difference that in the code below you disable runtime pm
+> > > > >>> before autosuspend?  
+> > > > >>
+> > > > >> No, the difference is that now, the driver specific runtime PM APIs are not
+> > > > >> called anymore (through the pointed call stack) after the ADC was removed
+> > > > >> from it's PM domain.  
+> > > > >
+> > > > > By my reading they are only not called now because you turn autosuspend off
+> > > > > after disabling runtime PM.  
+> > > >
+> > > > Sorry, I wanted to say that the runtime PM APIs are not called anymore from
+> > > > devm_action_release(), though this call stack:
+> > > >
+> > > > [   24.801195] Call trace:
+> > > > [   24.803633]  rzg2l_adc_pm_runtime_suspend+0x18/0x54 (P)
+> > > > [   24.808847]  pm_generic_runtime_suspend+0x2c/0x44 (L)
+> > > > [   24.813887]  pm_generic_runtime_suspend+0x2c/0x44
+> > > > [   24.818580]  __rpm_callback+0x48/0x198
+> > > > [   24.822319]  rpm_callback+0x68/0x74
+> > > > [   24.825798]  rpm_suspend+0x100/0x578
+> > > > [   24.829362]  rpm_idle+0xd0/0x17c
+> > > > [   24.832582]  update_autosuspend+0x30/0xc4
+> > > > [   24.836580]  pm_runtime_disable_action+0x40/0x64
+> > > > [   24.841184]  devm_action_release+0x14/0x20
+> > > > [   24.845274]  devres_release_all+0xa0/0x100
+> > > > [   24.849361]  device_unbind_cleanup+0x18/0x60
+> > > >
+> > > > This is because I dropped the devm_pm_runtime_enable() which registers the
+> > > > pm_runtime_disable_action(), which is called at the time the
+> > > > device_unbind_cleanup() is called, which is called when the ADC is not
+> > > > anymore part of its PM domain.
+> > > >
+> > > > If I change the order in remove function proposed in this patch, thus do:
+> > > >
+> > > > +static void rzg2l_adc_remove(struct platform_device *pdev)
+> > > > +{
+> > > > +       struct device *dev = &pdev->dev;
+> > > > +
+> > > > +       pm_runtime_dont_use_autosuspend(dev);
+> > > > +       pm_runtime_disable(dev);
+> > > >  }
+> > > >
+> > > > nothing changes with the behavior of this patch. There will be no issue if
+> > > > the device is runtime suspended/resumed through the
+> > > > pm_runtime_dont_use_autosuspend() because at the time the
+> > > > rzg2l_adc_remove() is called the ADC is still part of the PM domain.
+> > > >
+> > > >
+> > > >  
+> > > > >  
+> > > > >>
+> > > > >>  
+> > > > >>>  Can you still do that with a devm callback just not
+> > > > >>> the standard one?  
+> > > > >>
+> > > > >> No. It doesn't matter if we call the standard devm callback or driver
+> > > > >> specific one. As long as it is devm it will impact us as long as the driver
+> > > > >> specific runtime PM APIs are called through devres_release_all() after
+> > > > >> dev_pm_domain_detach(). And at that time the PM domain may be off along
+> > > > >> with its clocks disabled.  
+> > > > >
+> > > > > As above, I think that this is only the case because of the reordering
+> > > > > of those two calls, not something more fundamental.  
+> > > >
+> > > > I tried having a local devm function (the following diff applied with this
+> > > > patch reverted) identical with pm_runtime_disable_action():
+> > > >
+> > > > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> > > > index 22a581c894f8..459cc9c67eec 100644
+> > > > --- a/drivers/iio/adc/rzg2l_adc.c
+> > > > +++ b/drivers/iio/adc/rzg2l_adc.c
+> > > > @@ -423,6 +423,12 @@ static int rzg2l_adc_hw_init(struct device *dev,
+> > > > struct rzg2l_adc *adc)
+> > > >         return ret;
+> > > >  }
+> > > >
+> > > > +static void rzg2l_pm_runtime_disable(void *data)
+> > > > +{
+> > > > +       pm_runtime_dont_use_autosuspend(data);
+> > > > +       pm_runtime_disable(data);
+> > > > +}
+> > > > +
+> > > >  static int rzg2l_adc_probe(struct platform_device *pdev)
+> > > >  {
+> > > >         struct device *dev = &pdev->dev;
+> > > > @@ -463,7 +469,9 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+> > > >
+> > > >         pm_runtime_set_autosuspend_delay(dev, 300);
+> > > >         pm_runtime_use_autosuspend(dev);
+> > > > -       ret = devm_pm_runtime_enable(dev);
+> > > > +       pm_runtime_enable(dev);
+> > > > +
+> > > > +       ret = devm_add_action_or_reset(dev, rzg2l_pm_runtime_disable, dev);
+> > > >         if (ret)
+> > > >                 return ret;
+> > > >
+> > > > With this the issue is still reproducible.
+> > > >
+> > > > However, changing the order of functions in rzg2l_pm_runtime_disable() and
+> > > > having it like:
+> > > >
+> > > > +static void rzg2l_pm_runtime_disable(void *data)
+> > > > +{
+> > > > +       pm_runtime_disable(data);
+> > > > +       pm_runtime_dont_use_autosuspend(data);
+> > > > +}
+> > > >
+> > > >
+> > > > leads to no failure when doing unbind/bind.
+> > > >
+> > > > However, I see the pm_runtime_disable() can still call rpm_resume() under
+> > > > certain conditions. It can still lead to failures if it is called after the
+> > > > device was remove from its PM domain.
+> > > >  
+> > > > >
+> > > > > In driver remove flow, device_unbind_cleanup9() is called
+> > > > > just after device_remove() which is calling the dev->driver_remove()
+> > > > > callback. There are no runtime pm related calls in between that I can see.  
+> > > >
+> > > > On my side the device_remove() is calling dev->bus->remove() which is
+> > > > platform_remove(), which calls the dev_pm_domain_detach(). The
+> > > > dev_pm_domain_detach() detaches the ADC from it's PM domain. Because of
+> > > > this, accessing now the ADC registers after a runtime resume leads to
+> > > > failures pointed in this patch (as of my investigation) (as the ADC is not
+> > > > anymore part of its PM domain and its PM domain is not started anymore
+> > > > though runtime PM APIs).
+> > > >
+> > > > A similar issue was found while I was adding thermal support for RZ/G3S,
+> > > > explained in
+> > > > https://lore.kernel.org/all/20250103163805.1775705-3-claudiu.beznea.uj@bp.renesas.com
+> > > >
+> > > >
+> > > > Jonathan, Rafael, Ulf, all,
+> > > >
+> > > > Do consider OK to change the order in pm_runtime_disable_action() to get
+> > > > rid of these issues, e.g.:
+> > > >
+> > > > diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+> > > > index 2ee45841486b..f27d311d2619 100644
+> > > > --- a/drivers/base/power/runtime.c
+> > > > +++ b/drivers/base/power/runtime.c
+> > > > @@ -1547,8 +1547,8 @@ EXPORT_SYMBOL_GPL(pm_runtime_enable);
+> > > >
+> > > >  static void pm_runtime_disable_action(void *data)
+> > > >  {
+> > > > -       pm_runtime_dont_use_autosuspend(data);
+> > > >         pm_runtime_disable(data);
+> > > > +       pm_runtime_dont_use_autosuspend(data);
+> > > >  }
+> > > >
+> > > > though I see a rpm_resume() call is still possible though pm_runtime_disable().  
+> > >
+> > > I am still worried about keeping the device runtime enabled during a
+> > > window when we have turned off all resources for the device. Typically
+> > > we want to leave the device in a low power state after unbind.
+> > >
+> > > That said, I would rather just drop the devm_pm_runtime_enable() API
+> > > altogether and convert all users of it into
+> > > pm_runtime_enable|disable(), similar to what your patch does.  
+> >
+> > That is making a mess of a lot of automated cleanup for a strange
+> > runtime pm related path.  This is pain a driver should not have
+> > to deal with, though I'm not clear what the right solution is!
+> >
+> > Key is that drivers should not mix devm managed cleanup and not, so
+> > that means that anything that happens after runtime pm is enabled
+> > has to be torn down manually.  One solution to this might be to
+> > always enable it late assuming that is safe to do so there is
+> > never anything else done after it in the probe path of a driver.  
+> 
+> The problem is that runtime PM isn't really comparable to other
+> resources that we are managing through devm* functions.
+> 
+> Enabling runtime PM for a device changes the behaviour for how
+> power-mgmt is handled for the device. Enabling/disabling of runtime PM
+> really needs to be explicitly controlled by the driver for the device.
 
-Since the soft reset disables the SDO line, performing a
-read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line
-doesn't make sense. This change directly writes to the register instead
-of using regmap_update_bits.
+I'm sorry to say I'm not yet convinced.
 
-Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
----
- drivers/iio/filter/admv8818.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+Devm callbacks are explicitly registered by the driver so that they
+are unwound in a specific order.  Many other parts of driver
+registration rely on this ordering.  This does not seem different
+for runtime PM than anything else.
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 195e58bc4..9cd1eee84 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -577,21 +577,15 @@ static int admv8818_init(struct admv8818_state *st)
- 	struct spi_device *spi =3D st->spi;
- 	unsigned int chip_id;
-=20
--	ret =3D regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
--				 ADMV8818_SOFTRESET_N_MSK |
--				 ADMV8818_SOFTRESET_MSK,
--				 FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
--				 FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
-+	ret =3D regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-+			   ADMV8818_SOFTRESET_N_MSK | ADMV8818_SOFTRESET_MSK);
- 	if (ret) {
- 		dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
- 		return ret;
- 	}
-=20
--	ret =3D regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
--				 ADMV8818_SDOACTIVE_N_MSK |
--				 ADMV8818_SDOACTIVE_MSK,
--				 FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
--				 FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
-+	ret =3D regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-+			   ADMV8818_SDOACTIVE_N_MSK | ADMV8818_SDOACTIVE_MSK);
- 	if (ret) {
- 		dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
- 		return ret;
---=20
-2.48.1
+Superficially the issue here looks to me to be that a non devm
+cleanup is inserted by the bus->remove() callback into drivers
+that are otherwise relying on explicit ordering provided
+by managed cleanup.
+
+I appreciate there may be no trivial solution.
+
+Maybe we can minimize that impact by always doing runtime pm last
+in any probe() function?  Can that work here?
+
+
+> 
+> If there are cleanups to be made for runtime PM, beyond disabling
+> runtime PM, we could instead consider adding that code in
+> pm_runtime_reinit().
+
+I'm not familiar enough to comment on this option beyond it being
+after devres_release_all() so, maybe?  It seems superficially
+a better point in the sequence.
+
+Jonathan
+> 
+> [...]
+> 
+> Kind regards
+> Uffe
 
 

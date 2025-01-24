@@ -1,166 +1,200 @@
-Return-Path: <linux-iio+bounces-14555-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14557-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63D1EA1B9DB
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 17:02:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693AFA1BC8D
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 20:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18B31890B7F
-	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 16:02:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4EF118883AE
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 19:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01CE18E02D;
-	Fri, 24 Jan 2025 16:01:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DpKBM3Le"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440DA157485;
+	Fri, 24 Jan 2025 19:01:19 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from USG02-CY1-obe.outbound.protection.office365.us (mail-cy1usg02on0084.outbound.protection.office365.us [23.103.209.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D150D16EC19
-	for <linux-iio@vger.kernel.org>; Fri, 24 Jan 2025 16:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737734503; cv=none; b=kJi/G5pRKw5vlBHOZqkgChe8KFreX5QFalvxCYvmc3aVonedECAXOsWG3l2inesx5jgU5x1DxG7GW++go1NdJZH6ZAQg8w15d016LfrDwYpp740XUhYj5y8uGSazqJ8iJ2kkzacJHqRm5O70bkwaVsDfw+t3kUPa9o1gwX7gUT0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737734503; c=relaxed/simple;
-	bh=uXr1ITHjKvOLpvD0hVAFujBjqWenww5u7P6+nwcKO0Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L6SNKJBdal4nXC27xpJ6yRK+B6e6J6QiAvKuPBapEsRaTCw7HlNMIbwNVssY1/1P8lYuWWUoMZ7lJnUPgpuRsZdkUXeZX2a2PIUX2RqaGbPiVGshpwA4W88LS4D9x5V0uqif/0FOWVOkiuz3oZfkG6nXl7aJ6Us5RePwtI113+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DpKBM3Le; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab2aea81cd8so414244466b.2
-        for <linux-iio@vger.kernel.org>; Fri, 24 Jan 2025 08:01:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737734498; x=1738339298; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qrLugdlwL5/Ilh8OCqqpgiBabhYSEK2nNoDNBCgTthA=;
-        b=DpKBM3LeVqSiAw1Kd+4vyhZxQugySt9BNAz6kCPRHQ4KjQ4NYlIfz3nne24bhRHcsK
-         q/VBoHsY6sdcQgT8qhzfKZ2Vz3REVura/+9s8v/vrJFcEgdqVtWjDtcvhfsly23t1LLH
-         uVUcwu9kL+fvtMJ7ZDj0wHSwMRB1mcGtpr9L2HZqnQV3oUyBhyT3Jnzd1oKqdOUTlcjQ
-         wgTdY6X7EeI/c1KzMkb9nYyBV4jZ5zDpttJkmts2ysM1hkK8iY0PBcyIEtJ8LRSRF1w1
-         bqwXSwYDVmUKKvb+rXduZ1giDorP5Bbjdpc/oelc2IiVDsjFvTj4n70I94M0FeuZejyg
-         jWdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737734498; x=1738339298;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qrLugdlwL5/Ilh8OCqqpgiBabhYSEK2nNoDNBCgTthA=;
-        b=vdqmd+nycaydohEilOT3+4zCgcQh62KF8o8p28f+prEdVJJrkEqt1MlRnu/CPI+0Y1
-         ArHU9s+cFP3L5612MMYXVbANdQ/3/dAVPL58ehwcW3b5MxHHPGVBijtGmdRKJ0/bzXIr
-         NRz5Enst6xF849xMn59eiJanX0nNFcO3So73kNT6+ZpgZ+SZMSTqGzSDlgY4xMQCuIQF
-         nwvCg2mMbXopOuIK9GjHoZHj4M4KSa0VLeUauqftN7pFOolyfyy2Tgp01Pg6NaNSVgWx
-         r2RMQjL+bx7uDrX0JNjBZpIMBQSq71/lTYndtb0eBZATRjKQdOgzSIYTqvJjwVH8ZHn4
-         ysqA==
-X-Gm-Message-State: AOJu0YxdjtWypmNwEtPbEwrNogh8qnJV58Xua9QGLLdAZwvh6/5Orz7Y
-	ZWwGuLbocUlUiljH39M1jX/C588ozpKaLryjeZ94DUl3OaqmeQUCEcbdPeZIeiw=
-X-Gm-Gg: ASbGncvAEA54QU3poDSwgZZPYLcd7U9ehQd4ZyicUBo1zmVC9wAldycngl+tpCMccBV
-	oDYbH5c5+a3B5BGb3Oq+qAA53OvRvdyLu93BV9pEwsTGFhhPZTxbJhYnIkuCIGflBcrzafyFmlr
-	5xJjVQJxOewbperl/IcRPAH87hQhtz/Kb3JxxA02hajkw/ro4n4xZyvvdmPgtlU1Uxtexrb8xcS
-	AvW8YogrhaA0I7zBiRsBVg7BtqdS/50GnTdGbspTOW6LP4ItLIjaLvUudqLDWlOwmMBf5ChgNZ9
-	Vd60zqz3YuDxnCMD0JnSoVwMHY3GsHPQ441khaZ7wOoVYUQ=
-X-Google-Smtp-Source: AGHT+IFxfINdDp7Y+XggTboowyqqKzj+s2twZAmHmh1GmjCd1HjVxcCiVBesq7+cWsAusIjOiPgslw==
-X-Received: by 2002:a17:907:7ba9:b0:aab:8ca7:43df with SMTP id a640c23a62f3a-ab38b37eb9fmr3199054066b.39.1737734496197;
-        Fri, 24 Jan 2025 08:01:36 -0800 (PST)
-Received: from localhost (p200300f65f018b0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f01:8b04::1b9])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dc186183eesm1355484a12.10.2025.01.24.08.01.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 08:01:35 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Subject: [PATCH] iio: adc: ad7124: Fix comparison of channel configs
-Date: Fri, 24 Jan 2025 17:01:23 +0100
-Message-ID: <20250124160124.435520-2-u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E4527726;
+	Fri, 24 Jan 2025 19:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=23.103.209.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1737745279; cv=fail; b=LUjZY9eEK2Uvjs9fSzkJuISINzVj/w3IvMEVCB0gwbyFe11bplspp9Z/hCNAWGNCX9/RuWaYcFxM79b2iwCepybnXK239GsS9fwWE0JUVRRoSpFT81ja+AHhtjrf8BoyQcFepcZn//Ptr2dhiMSE0kxqocRINVWVmUWURpXZmh8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1737745279; c=relaxed/simple;
+	bh=uEC7PPNO6Tqk+rmYYFAZxN62Pi8aMJ2xGPhm1Dr/T0k=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HdvXcdC4wPqLt9R06BtkJuDK/i84PEAcQTlGeyGKjM4JJlfeLBDqfC20clH6UjTt0nnlOJ+k/F9D3KvumIXEj/uTvijN6VKR5kQhYG7RM63J2MlkwjixCxGRcpiXYouByph+Z89AMGILFBqLH+JFvb5xveNTB5EaTrV3CZd8YKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=arka.org; spf=pass smtp.mailfrom=arka.org; arc=fail smtp.client-ip=23.103.209.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=arka.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arka.org
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector5401; d=microsoft.com; cv=none;
+ b=0oMS34dNZqhWdSIbbBqF1k/sXpnPW7bb2/AElypPvKKaTRnBaoBQu6xo+AOlyDo5UawwBsoMQbQMMFSi9KnO4PUPybXcE2eLW6ErHYtTCSLaDJdvP8nxdtfbqvSV6OIJOXfMzzJPVqwbEPO9JSOtJSYGAAY+ihdLSwtU1rGzjjZIrr/8Fy6De94nOCH6H5BjrRMaLG8q6yl/2+68BGcJwUW2GHuGoNLkT703f8LhsHmgta2WXx5cjed9IKqYMMyBy10chC7X/3eEj3F+D/7biD6+5IhmSP6Wml5ZUWHZ5JpQI1xSIl/exB6ruSK+WldDoVjW8u/Zv8bV1q3szJL7yQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector5401;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tq/FGt++jGpiZQZ1golVIZ3u14CWVJWsXpS6d+XPZDw=;
+ b=m7IRdS8SCXq9g+Q4FcZ+jsBjoA6xQdk0/LoAIUskMQTM/xAUJZSBpneT6oPsDGl/3t0gr2xbQB0p8z6TQLsvm+pO8PTP451REbOJ4CXsv/B/WssIYq2vgY8vJF2svJFnDn/rBd2XsGKUW1cKw45Mqcf0yFjrh3DEAgBep8CGDXtC3c8MfnLXJX1spyLWYbTksFDJbOChldngx71TVxhRcFvw7+jLv//TkrmP79QqHKtAi2K+5l1r8voo+JW058seRMf/pAgXV/atY4JiPwGkvVHUIH1ymhnGMQvyfFqjjy35lzIQRfcJOB0nSyR295BBD6WVusECiiO11m2p2XWDFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arka.org; dmarc=pass action=none header.from=arka.org;
+ dkim=pass header.d=arka.org; arc=none
+Received: from SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:170::5)
+ by SA1P110MB1213.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:192::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8377.19; Fri, 24 Jan
+ 2025 18:27:46 +0000
+Received: from SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
+ ([fe80::fd7b:b16a:a9df:78e8]) by SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
+ ([fe80::fd7b:b16a:a9df:78e8%5]) with mapi id 15.20.8377.009; Fri, 24 Jan 2025
+ 18:27:46 +0000
+From: Sam Winchenbach <swinchenbach@arka.org>
+To: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>, "lars@metafoo.de"
+	<lars@metafoo.de>, "Michael.Hennerich@analog.com"
+	<Michael.Hennerich@analog.com>, "jic23@kernel.org" <jic23@kernel.org>
+Subject: [PATCH] iio: filter: admv8818: Force initialization of SDO
+Thread-Topic: [PATCH] iio: filter: admv8818: Force initialization of SDO
+Thread-Index: AdtujaIg5KDF3LXLTmKHzI1/shuiAA==
+Date: Fri, 24 Jan 2025 18:27:46 +0000
+Message-ID:
+ <SA1P110MB1069C61BF6709D362CA86CA0BCE3A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arka.org;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1P110MB1069:EE_|SA1P110MB1213:EE_
+x-ms-office365-filtering-correlation-id: 748b0cb2-4d50-44a2-f8af-08dd3ca4ccee
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|41320700013|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Qwa/du3MnJ+Ehey1lJw0WNsi1q0HJ8RTkvvksmTETdg4+d6tagYyjQyj7KiC?=
+ =?us-ascii?Q?jh3v4s5qfcosVcrxq5N0PrsVMDgU72ZYhpCjns36+s6epchpCv6TeI/1adil?=
+ =?us-ascii?Q?xrAqyHgCVzWhinNzoDX/bvnVJ+JI1I0BIY1tRw/q4ZB2PdwA6nGCBHrQZJ/i?=
+ =?us-ascii?Q?cuDqVg+KCFr+2T2A3wap2g6wuolk2j8Myn4KyQVmjQA31H77GOUEMhtHLoCW?=
+ =?us-ascii?Q?VyLoN6DdIuAM5dpfFTXmysisMRt65a0+TMh/WnSDib+1rvfcf4KmvOqKi+hD?=
+ =?us-ascii?Q?0ErYdPzbfnx/vqcnfizBipotei8ePQlR1PlETq52Z+/TWWDXg1f2IahhQdX5?=
+ =?us-ascii?Q?sRZL+J8o+qfAlXsiaTaHw7NwHYO6ZvCjhWuAlF7L/2SBKZHm82ogDXzGSSlx?=
+ =?us-ascii?Q?jZuhADDkWk4wUsP5XL6QamcFbPXJrSeNTYg1FAfGmMV5SkxbrodXXzvKdhBc?=
+ =?us-ascii?Q?0Ged6ZTszMSGKfYLZ4AYbR5F70SCO3gzVMMnhw6ZKilnwcx2x4FMuT0ADAZm?=
+ =?us-ascii?Q?e8eKOBlKJ482guAMgKajKS7bPuNAAYem9WJoIBv8+V+v21EL542Ea7WZzvbs?=
+ =?us-ascii?Q?d4hvZrVSvNap9NLnfcLhMCNk5YkHkAJadLqOFZh6FgqI08cxUgVSsUh7XZLb?=
+ =?us-ascii?Q?QyY43Vqw5Tjxhp4b/Pr+3fiGRW25kmvihxy8LuTwrkbGg/1/C64W02+WtNvt?=
+ =?us-ascii?Q?Zkw7J9VoUYnUP7a9B3SVBxXrq1W7TViyuBWWv/Ff5bdKsDojxIpAbkpcJ6s/?=
+ =?us-ascii?Q?8JJC+pPsdWnIely/hksEV67ICsrXAIOt0iZCMBZQI3xlcPZmMuC5MfgW/Ost?=
+ =?us-ascii?Q?je3CZtGTn81IV8RdvUzUSi+6hntU4fX9TLBlrhvU1OsOIG5rhVD0Apyl9zOi?=
+ =?us-ascii?Q?2Il2a9LS3lC5YY9uDJ/unAejNyjuVD0bYgrAwzK3P3RRFAQODQuMVeCYOUel?=
+ =?us-ascii?Q?M+WGkEYASiSINXsia4K549BQNy9NE3c9BJu9fmGp9nopRb6O+R7SitrCMkH0?=
+ =?us-ascii?Q?FBE5ObPPJ4Q7FNxt6yhmdVoHJztSmFGmDtxipZs77uMUBp/dODpNunrK6I7y?=
+ =?us-ascii?Q?oRV9ot3lh2DYN20dsKQVR+hEu5Ywr2TXxTqov+MtGu6Bg0QlqSWc35RedtTI?=
+ =?us-ascii?Q?+wbGd4Ouh2OP6afuxA7Zu2kJ2xLPItoWZ7/CEzzfc3dc8wNcfzKtbVwgrsKm?=
+ =?us-ascii?Q?o2jLGztgvvkOXY3cXnYfPElMdA4lJpfNAR0LBStIe4oLNWaB7AHVVeBhH2mT?=
+ =?us-ascii?Q?vVqVMt92krHRRuq3cyqiyUsHipzwnsCTREEZ+GB1YFZ3CgZ7Hr6qFNrozGD1?=
+ =?us-ascii?Q?Ehy9v/ZnRJNRR6wSMjcNwSxsgRHs+to4mV0oQl7wRgElRthAjcqJyH92rFBX?=
+ =?us-ascii?Q?feL2PzUamjsqxeqvqsCDp8FLYAgtWqDAbLf7xWXOHGuRoOymgq5/Lo5xT4Qg?=
+ =?us-ascii?Q?hHA9QxmYKm1yPVZaj07IkYdhtJmNLUV/?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(41320700013)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?d4S4beAJkJVAjovCodSEhb6uPoCHFuXFWFn1QArh8r1Y9zTba3xUNspXftiw?=
+ =?us-ascii?Q?JMtLkSyTypEMOE9ZS7HMgUrY/1NNvSL9XkKhwQ/Ar0Xj7jNiJH6+A5jfrt+o?=
+ =?us-ascii?Q?vKduTKRwXVDE86wjUWusUzankTI6dKzesDMn95YNSjxfPh2PuomTgELQCD97?=
+ =?us-ascii?Q?h7OoX/l1GxKZ6Z/cS8dhM4MT6cE7tWyHiDbyvhDtkwZFSaHh/qdOHcn9tOgR?=
+ =?us-ascii?Q?ulNuwwonzKodcqfjhU5vi8yOcQOomYR7ODsB4KtCQl8n/KEvmeJfKl0grA1V?=
+ =?us-ascii?Q?SbIuzQpUSntka7L0OS2l1iA+CSzzAp/sFVe5xENctlZng9cx4ICj4+IemHVC?=
+ =?us-ascii?Q?tC/f8J0Fw4/HueVfTZOF6JhZS3nbYiJ07GUZu1SAzv0o2CaAxMWlPVHFkw6J?=
+ =?us-ascii?Q?J1sCsU5uuXAa605Wq0c5fszR7bIUB46ey47PK2hghkXjd3gTMySwl7HmeLwU?=
+ =?us-ascii?Q?k1l+t/Q+Y9Uwf9kHCGSzVBB3VFfHCKiy2EYBfLnvyQnq4+BW1EdQ2j2tHEO0?=
+ =?us-ascii?Q?wl/fHnpyokc3JFblnASnNqk2M60WZaT7OAgNRpKWvAZGNw/mqyJNW0RrTvRL?=
+ =?us-ascii?Q?6m48oVGt2qD7t96VL9+uaNPFnQ/BBGy8MtWymKU7dcZ6/7X2NcXHQtrXAKok?=
+ =?us-ascii?Q?oF6TVvBDbsIIP62OqK51tZXNO74zvph5LQ6cJR2gXaj1KC6vFQ/QZk7GzRvS?=
+ =?us-ascii?Q?QxnyMhoR6KdR2yIQlOHCDYI8e+HjzxXbd5YKT8ba/eEsZK60cbqP/tPeGfPz?=
+ =?us-ascii?Q?mUb4pmwCThvKZHUOXGgeVz0bv1aQBxYUga+7u6uzbxjTXNEfPJpf6aai5nYX?=
+ =?us-ascii?Q?unFfivAEdtK0ZVcmDnZv+2VMxK+6Ybu6jHqsY6vtE08AmqW9euJG61A+DhWA?=
+ =?us-ascii?Q?sVCtxxJRLzJzvxOKEOR9xPhjEei+UmPdSaIPH2S8YoGVkxMZ1yV4z6v3oQeV?=
+ =?us-ascii?Q?nCUgymv7jxuYsMkW+LXFHQUmrw+npa8ff7y4wbV8s8we0gzZHztFqAeuE0YO?=
+ =?us-ascii?Q?KLxvdqNHwu0o2VnmtxhPFypNcXLcqoAFw6Qrj+8sYtUoLS1h32zp264h6k+0?=
+ =?us-ascii?Q?IvyO0GfKSnMlISlomqE6J8/d6gP0cxK1x04K1CpO/8i6dfEeOKYmKkuEVKWI?=
+ =?us-ascii?Q?W+p+qcd69APZtvQ5KsgyWPiWWanF7xroj7Vi+cFIPOzTTD8aS7m6ulOJR8aC?=
+ =?us-ascii?Q?wuj9b91cAEhmyYR8aey1X7OVcWSAuZH+9TdHkygFKnpbrtnGeXtb72An4KP1?=
+ =?us-ascii?Q?vRsgJV2Y0iNyYUMHSoyYTzXCCGNY6y1ePR45zXttcKMbBvKPZjEo8KLOPjIB?=
+ =?us-ascii?Q?tTsXx3Oa2uiyvb7mb0SuOJ5GX3oT2zODxl3HHEETJ8xZEYW0O9Y5xVV8Cj+h?=
+ =?us-ascii?Q?Nnkgn228MUuoq5pJimE0d9ocsJ4YyNCAd6kfPVer2IisYG1R7IWiKi6GXaTZ?=
+ =?us-ascii?Q?/hC5V1rPq2X82x87KCu7CMEin0AzoiGRdpAkLAFLM/Y0J3WQQDEed9huqjCI?=
+ =?us-ascii?Q?Wkm8pMQDduBEMcbSmnktX8LXcW5DZB4Anx5/?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2864; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=uXr1ITHjKvOLpvD0hVAFujBjqWenww5u7P6+nwcKO0Q=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnk7lVBLdQ4NOoxRtfSVmt/ll/CdcDjM9rbUMzs EjLMo0GQR6JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ5O5VQAKCRCPgPtYfRL+ ThaIB/46ACPryijFu2yam/bi6YvHAoAmvJW07Ac0jSfaiHAYX6GazvS36PvZpij1uyo6N6apr6O DnZfB8tvmwc+wwrfAQ6nY3yN8E/agQz3v6XafJist+0SRpVCpJx263cWLnGJrV1L5RuhXLpTfZ4 t9gu/e+X2ENm01IPzK69TVwTRexoIezyWxi7/zCMMH9eibLXoK7uuX3hxcfTmQbkHVEpLS03PkK H8vgcYONnPGD3TUD/dpo4+lt5np3Oh4dnDevEEBNJDu4qOdOJTRpGceDmMnhXuaL2L6x0hu0CNl +EOyFqws76Kk1THiG8sxSLzlsTNf12RAny2FBk+sbJcHEK5q
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: arka.org
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748b0cb2-4d50-44a2-f8af-08dd3ca4ccee
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jan 2025 18:27:46.6830
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 71928351-9f62-452c-b7f4-40bd09a22e1a
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1P110MB1213
 
-Checking the binary representation of two structs (of the same type)
-for equality doesn't have the same semantic as comparing all members for
-equality. The former might find a difference where the latter doesn't in
-the presence of padding or when ambiguous types like float or bool are
-involved. (Floats typically have different representations for single
-values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
-at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-true, but memcmp finds a difference.)
+From f851ce8225fc239fcbfc2e06adaa93336a9242ae Mon Sep 17 00:00:00 2001
+From: Sam Winchenbach <swinchenbach@arka.org>
+Date: Thu, 23 Jan 2025 15:24:09 -0500
+Subject: [PATCH] iio: filter: admv8818: Force initialization of SDO
 
-When searching for a channel that already has the configuration we need,
-the comparison by member is the one that is needed.
+When a weak pull-up is present on the SDO line, regmap_update_bits fails
+to write both the SOFTRESET and SDOACTIVE bits because it incorrectly
+reads them as already set.
 
-Convert the comparison accordingly to compare the members one after
-another. Also add a BUILD_BUG guard to (somewhat) ensure that when
-struct ad7124_channel_config::config_props is expanded, the comparison
-is adapted, too.
+Since the soft reset disables the SDO line, performing a
+read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line
+doesn't make sense. This change directly writes to the register instead
+of using regmap_update_bits.
 
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
 ---
- drivers/iio/adc/ad7124.c | 29 ++++++++++++++++++++++++++---
- 1 file changed, 26 insertions(+), 3 deletions(-)
+ drivers/iio/filter/admv8818.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 6ae27cdd3250..5eb8ced416ba 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -338,15 +338,38 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
- 								  struct ad7124_channel_config *cfg)
- {
- 	struct ad7124_channel_config *cfg_aux;
--	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
-+	/*
-+	 * This is just to make sure that the comparison is adapted after
-+	 * struct ad7124_channel_config was changed.
-+	 */
-+	BUILD_BUG_ON(sizeof_field(struct ad7124_channel_config, config_props) !=
-+		     sizeof(struct {
-+			    enum ad7124_ref_sel refsel;
-+			    bool bipolar;
-+			    bool buf_positive;
-+			    bool buf_negative;
-+			    unsigned int vref_mv;
-+			    unsigned int pga_bits;
-+			    unsigned int odr;
-+			    unsigned int odr_sel_bits;
-+			    unsigned int filter_type;
-+		     }));
-+
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
- 		if (cfg_aux->live &&
--		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
-+		    cfg->refsel == cfg_aux->refsel &&
-+		    cfg->bipolar == cfg_aux->bipolar &&
-+		    cfg->buf_positive == cfg_aux->buf_positive &&
-+		    cfg->buf_negative == cfg_aux->buf_negative &&
-+		    cfg->vref_mv == cfg_aux->vref_mv &&
-+		    cfg->pga_bits == cfg_aux->pga_bits &&
-+		    cfg->odr == cfg_aux->odr &&
-+		    cfg->odr_sel_bits == cfg_aux->odr_sel_bits &&
-+		    cfg->filter_type == cfg_aux->filter_type)
- 			return cfg_aux;
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index 195e58bc4..9cd1eee84 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -577,21 +577,15 @@ static int admv8818_init(struct admv8818_state *st)
+ 	struct spi_device *spi =3D st->spi;
+ 	unsigned int chip_id;
+=20
+-	ret =3D regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SOFTRESET_N_MSK |
+-				 ADMV8818_SOFTRESET_MSK,
+-				 FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
++	ret =3D regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SOFTRESET_N_MSK | ADMV8818_SOFTRESET_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
+ 		return ret;
  	}
- 
-
-base-commit: 5ffa57f6eecefababb8cbe327222ef171943b183
--- 
-2.47.1
+=20
+-	ret =3D regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
+-				 ADMV8818_SDOACTIVE_N_MSK |
+-				 ADMV8818_SDOACTIVE_MSK,
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
+-				 FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
++	ret =3D regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
++			   ADMV8818_SDOACTIVE_N_MSK | ADMV8818_SDOACTIVE_MSK);
+ 	if (ret) {
+ 		dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
+ 		return ret;
+--=20
+2.48.1
 
 

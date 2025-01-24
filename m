@@ -1,154 +1,150 @@
-Return-Path: <linux-iio+bounces-14547-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14548-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AB71A1ACBE
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jan 2025 23:37:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18DA7A1B171
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 09:12:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 585F316B35B
-	for <lists+linux-iio@lfdr.de>; Thu, 23 Jan 2025 22:37:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BAD81886B81
+	for <lists+linux-iio@lfdr.de>; Fri, 24 Jan 2025 08:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96891D416E;
-	Thu, 23 Jan 2025 22:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC27205AB7;
+	Fri, 24 Jan 2025 08:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tFxf07Np"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aX9m4KUX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E3E3C463
-	for <linux-iio@vger.kernel.org>; Thu, 23 Jan 2025 22:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FF51D61A3;
+	Fri, 24 Jan 2025 08:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737671851; cv=none; b=jp/o9A3/ZY0AndVoop8IVzGfxMOsXO1ahbKU+JhZ8tNmXo8zi373NRcHQ4JKiOEnDI2fzoUC8XcPb/QCsX6fb9DsB3h+E6AaGMxKiODauU9t9YfjSRazOpNW+qa8qk3rjH8+K2D+gCCITqnMT9HEpTlnMZucFjCZF/Yqi2X/pGo=
+	t=1737706368; cv=none; b=FpsR49ikdQ0kHaK07z459u4W+wN9s4lqlsuntZ4xoYadpDERcUJiQ0/EJj6f8MzMqobiYC3ZvvxMJHS4+1uFRnAZv7RmWGtLBk/h4JbDDy4FkuzA8mQO77VlZtQMTmurwHUsNdAzft4AP6doOV7GWMybbY2LZl34rD7fP8p17DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737671851; c=relaxed/simple;
-	bh=yb2bm1Pv59pp0/eyv/03VuHbNfjDnaGLqdS8r/oT2nQ=;
+	s=arc-20240116; t=1737706368; c=relaxed/simple;
+	bh=k4+ITQqrIbo1loVHiuZlp6XOp4dHy6I+5KXgu2/YzOw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HlVzQi9W2VU3xyyCbhqp2Vq/Vl+lcwXB25nAtv+OCCZuDwHWoIjFpxFKbom/l3BoA1Z75ZdT4W374edNvz0LHIE/dX+mvMYLxdS24g0Yte6mZHP51yGLrzbkrzfEg085jW13uBktG0odnoj8V39Vpo0bNrKSZnXSJww151sX7Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tFxf07Np; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <2784cc3b-0b8f-4116-b34d-0de4ff56cf92@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737671842;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dfFbufE/oZqYpKWLTE17oZPb84Hww5PkyDbRc8FQEe4=;
-	b=tFxf07Npt3G59e0jExTBPWWrlv0Q6ZQzxnqAc+CuBqTZInnmbTdwYtTiVgttMaHfrCRx+m
-	3kFCtUVwtMnNdfw+wt8J8iF0NVezP7bosn9yV7knS3/ybW85IH1XaOnCbfTo2bgW3/hUdp
-	M9fi7Nz61+wCFxA3FigSB6/39PVoZUY=
-Date: Thu, 23 Jan 2025 17:37:16 -0500
+	 In-Reply-To:Content-Type; b=qAt6yp1Gtq6VJ7/D8gkfo3JDxpioubFpkk/+yKtWjv98wyvXtoyLXOpN5o33oocvFhV5A60HbLjaGaN0X6KDwQ5IJP/XLUWJtSZhixHHktAkcRFH/RDcvdBzd276I7q2WDM36q5zQHE3fiImpOtVX32UPYUPaJocndQY9+NFlxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aX9m4KUX; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5401c52000fso1513587e87.2;
+        Fri, 24 Jan 2025 00:12:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737706365; x=1738311165; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/ksgYZyRCIheLXzeBXOWodFK4I/3cMnoXDRDkBciDoU=;
+        b=aX9m4KUXTQMR/s+rzzqAfQNIND+SoVkDKHB9qmCuLP9FekvJ2G+svXJMDsZUYNUPRe
+         FPRYSzVLBJfyna6rWQHpWCwQW5VKX/ISl2wnD+iVaYqf82+kSMLQtpvEIZSw8GCYiVDR
+         4Cwwrcil9CVBsY0W5M7HxoMBVLAFE/D8ab9pcP26iMoNANCt0JTeQ09Q/LQXrNf42OjO
+         Tj6aTpGupg1YZuA3yDdxAsP+M/MIZgh81J/OvK3o2EbZENtQJLCQetRw9jfvjxfxApUE
+         mr57pfHvVhuIp5vLbKF0FfujWHriQM9k4EUJ1HU8x5zCHgFiqXZRYqpd2ALCbCxeSoTp
+         Is+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737706365; x=1738311165;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ksgYZyRCIheLXzeBXOWodFK4I/3cMnoXDRDkBciDoU=;
+        b=PUI/fxct4Uqkvs5ObNFgxBjQmdIhCaFugeqm7xzNMN0BYmwFakkXjj23L2v682H6bC
+         Z3ueZYsfX3/3fXy/shEUZWDEWZc6erpUEmW+E7L7lZ8IM9TZVt3+IPjXEcUuePJBxWGF
+         w0FiuT9dZA02TBrsmtu2FQAID71f1NyX0RjUrcmN/wNgjN2s/cDFXFT8G0uHZe8Dlc6D
+         Z7KnccCR/XHlHFWaOzr/yp4M66j5N548mCu9Cv8FvoZIacRHNoycROwCQoDkI3iGZHGw
+         sm/hhL0jFd3pqhXxS+9xDOTNWCPSZVGbFYUfN6yb45BlsIsUJMYvtX4hZIcgaj8cmFT2
+         TlPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqJbHvOkCY91/gAb4wCSWTljqCVT1sCBjglrHvyb+gOBq/BAgOPR1gJoqO7NwwgHCHzvxUrxbB+5+Fv6A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5Wnz2hX4Vbdh6+C8iybC/uNryGggaVvqEk0kIWXTi7+MJ3grL
+	bBTjhsHS5I8Y3qMpE6qO6GYQ31J5jXR9WPL6C/gudoN7B5vzZykj
+X-Gm-Gg: ASbGncvj27OfQ1DemTks1y8eUL5zbMp7EAhZGL4twHARFx4WCX5NQ0G7r1l3FBtoN0F
+	Bb+VxIYtqESfWe808zKasb49brxtEKTv1Htfr7kOyf3xEcTKqH5t/fcVlL2dGpSEWz7qg3Gc1x6
+	Rn78arxGwURnKEK0OoW7xLdNWwK/0IjMnxSH/efAX3W49s7rvE8IhT2Ri73BwxcmS3+1CCsmACt
+	AAYhX4ItJrpYI1JQ0+Nodzv1gOLnbZPRPQa7pfrFbl15ZoZ3+sizTztIJfZD/2FhHuvvU8HUyyl
+	KHCoV6T18NgrK4ADFw==
+X-Google-Smtp-Source: AGHT+IGJHG71bmWkjlWvyn+G1hsNW63HDGCjoRy70j0bOKwUTh3FZkruwOvrWu3GrDn+cpXPasiYJQ==
+X-Received: by 2002:a19:f509:0:b0:540:3550:b0f1 with SMTP id 2adb3069b0e04-5439c22d865mr8029717e87.7.1737706364812;
+        Fri, 24 Jan 2025 00:12:44 -0800 (PST)
+Received: from [172.16.183.207] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543c822935csm208980e87.3.2025.01.24.00.12.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Jan 2025 00:12:43 -0800 (PST)
+Message-ID: <9bdd3a1d-0eb3-4ef1-a6b8-f613de1eecb4@gmail.com>
+Date: Fri, 24 Jan 2025 10:12:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 1/7] dt-bindings: spi: zynqmp-qspi: Split the bus
-To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>,
- Michal Simek <michal.simek@amd.com>, linux-spi@vger.kernel.org
-Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
- linux-arm-kernel@lists.infradead.org,
- Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
- linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>
-References: <20250116232118.2694169-1-sean.anderson@linux.dev>
- <20250116232118.2694169-2-sean.anderson@linux.dev>
- <9f40295b-484a-48e8-b053-ff8550e589d7@baylibre.com>
- <46a7eba6-a705-4543-b967-e83ccc89e7d4@linux.dev>
- <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <6afc379a-2f9f-4462-ae30-ef6945a83236@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] iio: gts-helper: export iio_gts_get_total_gain()
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rishi Gupta <gupt21@gmail.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250119-veml6030-scale-v2-0-6bfc4062a371@gmail.com>
+ <20250119-veml6030-scale-v2-3-6bfc4062a371@gmail.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250119-veml6030-scale-v2-3-6bfc4062a371@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
-On 1/23/25 16:59, David Lechner wrote:
-> On 1/23/25 10:24 AM, Sean Anderson wrote:
->> On 1/21/25 19:16, David Lechner wrote:
->>> On 1/16/25 5:21 PM, Sean Anderson wrote:
+On 19/01/2025 19:32, Javier Carrasco wrote:
+> Export this function in preparation for the fix in veml6030.c, where the
+> total gain can be used to ease the calculation of the processed value of
+> the IIO_LIGHT channel compared to acquiring the scale in NANO.
 > 
-> ...
-> 
->>> Could we make a single device connected to both buses like this work using
->>> the proposed spi-lower and spi-upper or should we consider a different binding
->>> like the one I suggested?
->> 
->> If you are willing to do the work to rewrite the SPI subsystem to handle
->> this, then I don't object to it in principle. Using a property would
->> also help with forwards compatibility. On the other hand, separate
->> busses are easier to implement since they integrate better with the SPI
->> subsystem (e.g. you can just call spi_register_controller to create all
->> the slaves).
->> 
->> There have been some previous patches from Xilinx to handle this
->> use case [1], but IMO they were pretty hacky. They got this feature
->> merged into U-Boot and it broke many other boards and took a lot of
->> cleanup to fix. So I have intentionally only tackled the unsynchronized
->> use case since that requires no modification to areas outside of this
->> driver. I don't need the "parallel" use case and I am not interested in
->> doing the work required to implement it.
->> 
->> --Sean
->> 
->> [1] https://lore.kernel.org/linux-spi/20221017121249.19061-1-amit.kumar-mahapatra@amd.com/
-> 
-> Fair enough, and I think it can be done without breaking things like the multi
-> CS support did.
-> 
-> Here are a couple of patches. Feel free to resubmit them with your series if
-> they work for you. To make it work with your series, you should just need to
-> modify the .dts to look like this:
-> 
-> +          flash@0 {
-> +            compatible = "jedec,spi-nor";
-> +            reg = <0>;
-> +            spi-buses = <0>; /* lower */
-> +          };
-> +
-> +          flash@1 {
-> +            reg = <1>;
-> +            compatible = "jedec,spi-nor";
-> +            /* also OK to omit property in case of spi-buses = <0>; */
-> +          };
-> +
-> +          flash@2 {
-> +            reg = <2>;
-> +            compatible = "jedec,spi-nor";
-> +            spi-buses = <1>; /* upper */
-> +          };
-> 
-> 
-> Then drop patch "spi: zynqmp-gqspi: Split the bus" of course.
-> 
-> In zynqmp_qspi_probe(), add a line:
-> 
-> 	ctlr->num_buses = 2;
-> 
-> And in the zynqmp_qspi_transfer_one() function, use spi->buses to select the
-> correct bus:
-> 
-> 	xqspi->genfifobus = FIELD_PREP(GQSPI_GENFIFO_BUS_MASK, spi->buses);
-> 
-> I don't have a SPI controller on hand with multiple buses, so I don't have
-> any patch adding support to a specific controller. But I did build and run this
-> and hacked in some stuff to the drivers I am working on to make sure it is
-> working as advertised as best as I could with a single bus.
+> Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-Your patches LGTM. I will use them for v2. Mark do you have any comments on this
-approach?
+Hi Javier,
 
---Sean
+This is fine but could you please go the extra mile and add a doc to the 
+function? I'd like to have kerneldoc for all exported functions.
+
+> ---
+>   drivers/iio/industrialio-gts-helper.c | 3 ++-
+>   include/linux/iio/iio-gts-helper.h    | 1 +
+>   2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> index d70ebe3bf7742906960c6af22102682c5b8dcdfa..6ec434338411d09fffa1db52046a7df9b34c89bf 100644
+> --- a/drivers/iio/industrialio-gts-helper.c
+> +++ b/drivers/iio/industrialio-gts-helper.c
+> @@ -950,7 +950,7 @@ int iio_gts_find_gain_time_sel_for_scale(struct iio_gts *gts, int scale_int,
+>   }
+>   EXPORT_SYMBOL_NS_GPL(iio_gts_find_gain_time_sel_for_scale, "IIO_GTS_HELPER");
+>   
+> -static int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
+> +int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
+>   {
+>   	const struct iio_itime_sel_mul *itime;
+>   
+> @@ -966,6 +966,7 @@ static int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time)
+>   
+>   	return gain * itime->mul;
+>   }
+> +EXPORT_SYMBOL_NS_GPL(iio_gts_get_total_gain, "IIO_GTS_HELPER");
+>   
+>   static int iio_gts_get_scale_linear(struct iio_gts *gts, int gain, int time,
+>   				    u64 *scale)
+> diff --git a/include/linux/iio/iio-gts-helper.h b/include/linux/iio/iio-gts-helper.h
+> index e5de7a124bad6eb65414df364f84e81301b0690b..66f830ab9b49b566d549c7b5b8291d42a0825b96 100644
+> --- a/include/linux/iio/iio-gts-helper.h
+> +++ b/include/linux/iio/iio-gts-helper.h
+> @@ -208,5 +208,6 @@ int iio_gts_all_avail_scales(struct iio_gts *gts, const int **vals, int *type,
+>   			     int *length);
+>   int iio_gts_avail_scales_for_time(struct iio_gts *gts, int time,
+>   				  const int **vals, int *type, int *length);
+> +int iio_gts_get_total_gain(struct iio_gts *gts, int gain, int time);
+>   
+>   #endif
+> 
+
 

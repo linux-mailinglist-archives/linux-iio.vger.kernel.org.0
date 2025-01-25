@@ -1,141 +1,122 @@
-Return-Path: <linux-iio+bounces-14583-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14584-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38795A1C455
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 17:26:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7421A1C520
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 21:09:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DFD9168669
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 16:26:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 516CD3A8BF6
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 20:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055E37080E;
-	Sat, 25 Jan 2025 16:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 655E6157A5A;
+	Sat, 25 Jan 2025 20:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IiwhHhXT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QCADBLXE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2441F42056
-	for <linux-iio@vger.kernel.org>; Sat, 25 Jan 2025 16:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943697082A;
+	Sat, 25 Jan 2025 20:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737822382; cv=none; b=ajNs69ot708JvbNC0yBnjql//Me9NBwM6VeWJs4Ylhh698ub+S8EWwZBXuUzrMJYd9BGqAlZJ6xg3XZEj2fP72//fHNCfsVMTvBIbqx6ZfA8RghgLI8asK8SGVcYFSVivY9Q7ABNU6jwwJLUqt3lI3TAFvJRrJiy2H+mGxgL9TQ=
+	t=1737835738; cv=none; b=lf+kMePd9xE6rfo3bO0fXVwCbjyk3YLdVFSxQmLtj8DP0eaYyXJSMLob4+RRfwEy/rkpKFt4eSuIKf7NYTBZ4lgzjt2/5LPuyQER56zOr1FAEALfcLQqJUnOFbo5Qsfj/lnIz5CoAzKPS3DX79pgUqiDS53eBykTFSoAG1m9XDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737822382; c=relaxed/simple;
-	bh=88NW+PmINLS7mBj2Miwa5PbMWVRW7QyrbprMJpmBW9o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TjCXlOcl+AroJFfAKipbeD8yDJ3xjvlWO33zUxQdIZu7h+N6+jW7cx3dXqy7z52h8PxfFcIHnC6R2WcQqLW1VGBQwuDg0TrGN/7BTJnA1lOM+eBoljHf4V5PCYXw9Mfc8AZ8sz29Lw46EHWe2s7VewhSjmw2mMo970VPOtmnLuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IiwhHhXT; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862d161947so1641235f8f.3
-        for <linux-iio@vger.kernel.org>; Sat, 25 Jan 2025 08:26:18 -0800 (PST)
+	s=arc-20240116; t=1737835738; c=relaxed/simple;
+	bh=R0yDkOgJM+kTuTkXnngAFAwVepqZ24yMOkjckWeLrCQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=dh7sPwlFeJtMPxWKdvMCEkYLj+BodBjCl/NuW8F7Zh7RzrgvQvEfq3JfwR1kwMvL5e/jjC06+/Q4Ab5ClQKAD7PUqYgWnJqdu8ZQt1+wBxRKy+kGmw2rpxSR6R4wffoXD1wVr8dAlASha3AVbAMcYXFid8BkIajr6VSPShF4reE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QCADBLXE; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-385ddcfc97bso2819383f8f.1;
+        Sat, 25 Jan 2025 12:08:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737822377; x=1738427177; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/+Xj21xtqCyZEzSK9EsgQ4oHpa78SvWziaGz8zFLpug=;
-        b=IiwhHhXTYlUGUIA5Un5OUbfGzqi17QEKO1z+tfk0xwaGoY1EaXgZLEnJNJkPCFbtrz
-         qvssTE4p+uFL1w1u4FbSMoKr0Vk7o1LLmRDdBNXEPFe0nkgaYQR0xBsJZmZoHxClbtY+
-         ICSYm+WnYk3GqgJQ2SfhpdcZj4B5ODdOzYbzbsHyMHMofXfFnt93zOm2V11wKz1ZIFy7
-         CAaWBDoSZOWqYvD5URjmil8Kd0mLmhAFNCh5+ZGd97i2nUxMlEqxZf1lChMjLwgPTmxL
-         1f8J7UzXyy0tAkYqs7uZt9SJpQ9rua5Fu4MO+EgrOXPX0Ml90lT8C2CH+ITh/pJ6l9jL
-         7/Jg==
+        d=gmail.com; s=20230601; t=1737835735; x=1738440535; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:from:to:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R0yDkOgJM+kTuTkXnngAFAwVepqZ24yMOkjckWeLrCQ=;
+        b=QCADBLXEWQE+SDH4yB6Dox3OVcMg0jjv3ElTZcWDkMLBWRBf5uETLhtedm0BZ/vsZA
+         qgJgAgvVpEhm7iJeJMSUloYgazwpPu6Hq5+IUMGCvOGSjS2coEypCc20hf48A2n3YHNi
+         mzLEQK3CDpZfmCVKM6PeJe+VUCyYCCws3+lJ2D3z/grKUjzKhMw7psSPNR5Wq6sI5xaP
+         H2u6YOevDlIU1XUnCCKeXASXMbig02TyI6WOc23c4A09hZbhdhrD+bi4NZdiE1pThDXn
+         2D2SnYUFU2bj9Bd8HHpAxhfcHbs3g6ETnMS5j/mPWhqkSP7arnOwx2E6at1MKfA7FSnI
+         NzhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737822377; x=1738427177;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/+Xj21xtqCyZEzSK9EsgQ4oHpa78SvWziaGz8zFLpug=;
-        b=ji7hS6J6xsPAfgfdj/WPoNed9X9bNA1rVusYBwKF1yWCm+0G8vUJKGbZhCmuPWorwf
-         lqGYX55kYc5gocjYtsIwh6txgOBGu1Cn36a0NDZvhoXmZlkwD6cgdBk/zMMg/39d0uu+
-         N481cZ75CKJ+GBqfQvrEcfaPkVeHNXpIdDiAmXynEogHLNq7UjuJNVCDZE+PNrckAWdD
-         IZJrm0E2PAj2EiZG8nOFEpNFt1hwmt7Qa906DjPnuH4+thDsMxm0DvFvvfedjzT95QGH
-         9+RO+wcULEk/JBJidfymE//mDwMreVtfPMmCcmO4Cb1EIUPkb+1EFNoe3hvVFd4DIIX9
-         QEgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhqh+ANkHyi+HSqt1AySnIZyHz8v/XwLwh5IecHLU101O76PgOHVoN4a2Gz2W0AppoowE8+ZVxoPs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwC0PrjwxG3GowQjhlEHULDk84CnPN81Cte7PbZqPdFDPG4UC2O
-	ew2VbXMlNkC/gd85H8Zhgbs/8gFfh7nxdPb2lKzoRX+VTegTgEpULiYpWndO1d8=
-X-Gm-Gg: ASbGncuxsv5bWaARsq+KS+u3rVQ5vYUrrg/3XfHofVcgxzumwgO7DRkoOz/SrzWLZko
-	ccKqd9QjuXumLKOeW5cYYtwb0ObQSNhZEf/VhZo4KlNJL8J8Fbd3LSXCw9COYYdYvk/2xTQ6MkS
-	ZC3n4MI5qbhq4wY3Vqf6nWvbSGRAqrkbDVZU+FV28KKpbCYMTJi68wQ3fzvaZuF++FqKATuUwFZ
-	hEhDsMiuv9rVggc2ONgocjqt6lqD5IzXbcHTQeq1yUitOkKiLA5fneT+QVmQwSlUnAnqgPHlaRs
-	OBtM126nqgnYaf3HdL+01OGwdImkL2Khl4u3ufrCSpM7ULf+byIS49JBgaie
-X-Google-Smtp-Source: AGHT+IHXaWRaLinV8OCxb0g1XcYAiC/N9s+xhH2st74bzDz2CMLQdQMY29B3CgPXVNOXi6i8RT82tg==
-X-Received: by 2002:a05:6000:1a85:b0:38b:ef22:d8c3 with SMTP id ffacd0b85a97d-38bf57a69b4mr36086193f8f.35.1737822377422;
-        Sat, 25 Jan 2025 08:26:17 -0800 (PST)
-Received: from [127.0.1.1] (host-95-245-235-245.retail.telecomitalia.it. [95.245.235.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1c403asm6008843f8f.93.2025.01.25.08.26.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Jan 2025 08:26:15 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Sat, 25 Jan 2025 17:24:32 +0100
-Subject: [PATCH v2] iio: dac: ad3552r: clear reset status flag
+        d=1e100.net; s=20230601; t=1737835735; x=1738440535;
+        h=in-reply-to:references:subject:from:to:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=R0yDkOgJM+kTuTkXnngAFAwVepqZ24yMOkjckWeLrCQ=;
+        b=A+/qmgsXT0y3Gp47vfRiSEyedztrTC4yQqk1kBXFNieU2tYbv24YxOj4viMgaTrxtw
+         YUx1d8jOaO/tgxKy3cDUi4F8LIwiy9q27KbLONgX8hL7903FU+pt2Sp0eXzWQH+3/4yQ
+         AWhksTY0C9ruXlPSwiMz+jGbt1/fN9hQfpv2zrOMg3gh+d+1qyO0QjgAmLJUyNIkmksv
+         mZt4BlKx7rjVvoclhvJ/GUNFP2AAjJteCFtG1gDlHYx7x5uSx8PgbnDtcb6am3bZvUZ/
+         PvSl8OQpAjGD3D2s7R8K1AD6kFSYS6gsiLMeQTcHpLudUuQyN6AlE7suBUMRZgBzhZ10
+         Gz7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW9aOFB4KoowCMByX0LTJ8SrEyEY4EajxIPAf9OlN9Eq8F63XWANNOL5+0CD8Ddk9meBLeMeA6ZIm2/C0s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0HaQVctBL8qhSWhHMWJBdROUma6HDZ1gDII13GCDZIAEPaWa4
+	CE2Zarc8Ydm5jH+iM7UuM/Tby4umg16hCCFwfn6FNqMgWgqnjnjT
+X-Gm-Gg: ASbGnctnhR4WyB4u0dsi0mHbda5FN5ECZz6iNVbbr+gBe3mniAZNH/HkXSSdUQZayAY
+	AzljnEODd6RCGMtXLx0YU0ph5i7SsC4b8/Mnwt+QppmoWbX9SHzgt3kTxbhbCjUTyXJIBcc9qpj
+	EfjS87h4azegobUziSAIuhGafkQiE8rWESl207rT5kKxLbU5XLg6JUZX9hT39+yYvM/0DMXUKqn
+	Yv37BUoVtcPw9UmX5KGIVtylh8KxsuTIU1dYKDCdsiu9WVMDX5vPG48IYW93I43AL3gDtiWiWRU
+	NfFcCvu/tlZNslBrK61zh8PsSzwhT1+X/JIHrkBYUyAO3o0oZvAET5QTSa8wqJ4iHVk1jDJOdap
+	Iv2UailolyIAmRxqdx9Kisxms
+X-Google-Smtp-Source: AGHT+IGFUQ4B1gE1Tc+/qXWJG+nJNTCbaQLFdt/0rvpDcOH4DZyKHjPYtF1rTM5+xlv2m7D/haVCwg==
+X-Received: by 2002:a5d:52c7:0:b0:386:37f5:99e7 with SMTP id ffacd0b85a97d-38bf5674784mr26480583f8f.33.1737835734454;
+        Sat, 25 Jan 2025 12:08:54 -0800 (PST)
+Received: from localhost (2a02-8389-41cf-e200-30ed-5dd1-b777-da06.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:30ed:5dd1:b777:da06])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a1c35e1sm6334557f8f.82.2025.01.25.12.08.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Jan 2025 12:08:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAD8QlWcC/x3MQQqDQAwF0KtI1gbGyEjrVYqLqN82ICqZYgvi3
- R1cvs07KMENidriIMduydYlQ8qCho8ub7CN2SRBYqgk8s827mfWsY5RnIcZ6uxI+HIl2mtTa3j
- gSTnYHJP97/zVnecFigiRI2wAAAA=
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Mihail Chindris <mihail.chindris@analog.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.1
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 25 Jan 2025 21:08:51 +0100
+Message-Id: <D7BFCPQPV9W0.1C7B7VU5Y4FCL@gmail.com>
+Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
+ Cameron" <Jonathan.Cameron@huawei.com>
+To: "Matti Vaittinen" <mazziesaccount@gmail.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rishi Gupta"
+ <gupt21@gmail.com>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+Subject: Re: [PATCH v2 3/4] iio: gts-helper: export iio_gts_get_total_gain()
+X-Mailer: aerc 0.18.2
+References: <20250119-veml6030-scale-v2-0-6bfc4062a371@gmail.com>
+ <20250119-veml6030-scale-v2-3-6bfc4062a371@gmail.com>
+ <9bdd3a1d-0eb3-4ef1-a6b8-f613de1eecb4@gmail.com>
+In-Reply-To: <9bdd3a1d-0eb3-4ef1-a6b8-f613de1eecb4@gmail.com>
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On Fri Jan 24, 2025 at 9:12 AM CET, Matti Vaittinen wrote:
+> On 19/01/2025 19:32, Javier Carrasco wrote:
+> > Export this function in preparation for the fix in veml6030.c, where th=
+e
+> > total gain can be used to ease the calculation of the processed value o=
+f
+> > the IIO_LIGHT channel compared to acquiring the scale in NANO.
+> >
+> > Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>
+> Hi Javier,
+>
+> This is fine but could you please go the extra mile and add a doc to the
+> function? I'd like to have kerneldoc for all exported functions.
+>
 
-Clear reset status flag, to keep error status register clean after reset
-(ad3552r manual, rev B table 38).
+Hi Matti,
 
-Reset error flag was left to 1, so debugging registers, the "Error
-Status Register" was dirty (0x01). It is important to clear this bit, so
-if there is any reset event over normal working mode, it is possible to
-detect it.
+Sure, I will add that for v3.
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/dac/ad3552r.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index 9d28e06b80c0..a44b163f3183 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -410,6 +410,12 @@ static int ad3552r_reset(struct ad3552r_desc *dac)
- 		return ret;
- 	}
- 
-+	/* Clear reset error flag, see ad3552r manual, rev B table 38. */
-+	ret = ad3552r_write_reg(dac, AD3552R_REG_ADDR_ERR_STATUS,
-+				AD3552R_MASK_RESET_STATUS);
-+	if (ret)
-+		return ret;
-+
- 	return ad3552r_update_reg_field(dac,
- 					AD3552R_REG_ADDR_INTERFACE_CONFIG_A,
- 					AD3552R_MASK_ADDR_ASCENSION,
-
----
-base-commit: 0e5dc6cf754b65ee7f945a100ee2984a1c591239
-change-id: 20250125-wip-bl-ad3552r-clear-reset-12aba63a08e9
-
-Best regards,
--- 
-Angelo Dureghello <adureghello@baylibre.com>
-
+Thanks for your feedback and best regards,
+Javier Carrasco
 

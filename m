@@ -1,65 +1,62 @@
-Return-Path: <linux-iio+bounces-14576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB31A1C3B9
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 15:20:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACFCA1C3BE
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 15:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FED918898BF
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 14:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8CD6188774E
+	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 14:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B27C1CF96;
-	Sat, 25 Jan 2025 14:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D21B282F1;
+	Sat, 25 Jan 2025 14:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UEBpDpIW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sh2huSgs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5911EB5B;
-	Sat, 25 Jan 2025 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2A21CF96;
+	Sat, 25 Jan 2025 14:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737814851; cv=none; b=sLdaKiPxArOOSAa5/KH2S3+gwsmD3NKqrnre5M6rR5MkDckqm2I526P/1Dr307K/XblieFxZAytOGZ2OjUROVpn3QaaW+rZVdr8VzMR/LsxO5BFMDLmEiL6z7BYgkgYpq1CUhSIJ79VSxezp1jsMPUT39t18jAdBVKhXyXhjmi0=
+	t=1737815091; cv=none; b=nA9Hx31uRdeVMETnk8mrQNwYFD1zhRAJk3Qt0bCJXhlBsnlgTJj+L85Yd2y5jdgW4wsAxJPciLy/f4tvwoyAgbO5jRm1bLH/qSycJqVxwt4FVAeU03MVw5oZWlwqCxfBYCNEFnTKy2HFAUkWftriew1Gj5ZwJJ9LDakv/W23yQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737814851; c=relaxed/simple;
-	bh=gRkPCy6rRZT0kv6LpId7ihiyPgtJzG4AEo31nddyytU=;
+	s=arc-20240116; t=1737815091; c=relaxed/simple;
+	bh=4ZpfPj5tJ1/E4YnacI0pM0eJjvTsk+r0AC0QYhR1V4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qzyzXDJVvZmEhf58mnxagKx3f/IjfycyigTCTOmJjnPnSPbBmiSFQenFsYlPk3IX/ekImyWuviCi4Pr+A2oVfLXE+BdF7slC8HQKz3lhSzzyTcKn9W4/CS3LmOFvqDr2Nitks0gmdJY9Dy5EdPhB2mumbMK0JKQiVbK/hlPIzpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UEBpDpIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B86C4CED6;
-	Sat, 25 Jan 2025 14:20:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A8u9brXuzMBRQKKSLJzjcjQyA0NcAaB1j6uB/eIc5fzujS4iE0Ig4V2q0cjx25yNApNLfGkljVtdykEjtknDdJoCoVuhIy2IfBQLrxfSClGGbf2jMw0tr7JehBiwf410szm83XrrEQgJBNiJHLz6dun4omki0T//p645U3gSWeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sh2huSgs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF6C4CED6;
+	Sat, 25 Jan 2025 14:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737814851;
-	bh=gRkPCy6rRZT0kv6LpId7ihiyPgtJzG4AEo31nddyytU=;
+	s=k20201202; t=1737815090;
+	bh=4ZpfPj5tJ1/E4YnacI0pM0eJjvTsk+r0AC0QYhR1V4k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UEBpDpIWVyZx3j/iXU0t8mzTVyXh5FsqOZcjYSThSfD4SLam/55frp6lSip+dH5Vi
-	 7iwnnXPHKMGAvbkOtmakXvHfNwjVNDuV/MZ1kGku9jvi1GAHUMPXDR8GgXLpV+G5/h
-	 kfRmmJ/p9U4fUn1Eh5pLZ1lSynC8y97qCB1fVolr5gxvbBnhMngXHoOQ54kH2kM4pH
-	 6Ug2tkCa6HVR4GTc3qlu2r5i73+yNHUTP0TrL4Z5qXCTnRxvb8MfPmHeP/l46W4wYq
-	 2puQI/uRToGITwClVqBxCkgGGBQmwagmQEXOUK+lnEgqsheyuxaMfYE+6BlD4K0BEO
-	 BIHrPnSn33UUw==
-Date: Sat, 25 Jan 2025 14:20:40 +0000
+	b=sh2huSgs6K0O6CPaBqwgScWIeQLP3nikmh0Lulxpf0Ms3uTIP70NR+Qd2fxgib4kh
+	 tK1/hPpT02Fxrc4mMeH1I6QFM3UCqaxR3j1noXb20rsvVgdqmBXFt9qONXW1FpKi4n
+	 Nu4dJBXrj4msKAPQV2xkaLql99METXEvuNrVHeYntRBYDq7ljerVWdC1KNO8YiUy5h
+	 1AeysdaCxti3HlkTF70IpSEnAN6lPyDZcZShplVYOgsWpLhjA6aEUFtrd4Na3925PC
+	 5QqP/oYLGfPvvEZtDiCySxXmQ5zHbZF88en3UsM+ppEKCQY0gBROTDmb8fkNV1JAAa
+	 GIIVIguqkVY+Q==
+Date: Sat, 25 Jan 2025 14:24:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Mikael Gonella-Bolduc via B4 Relay
- <devnull+mgonellabolduc.dimonoff.com@kernel.org>
-Cc: mgonellabolduc@dimonoff.com, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, Mikael Gonella-Bolduc
- <m.gonella.bolduc@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Matti
- Vaittinen <mazziesaccount@gmail.com>
-Subject: Re: [PATCH v5 2/2] iio: light: Add APDS9160 ALS & Proximity sensor
- driver
-Message-ID: <20250125142040.273f9cd6@jic23-huawei>
-In-Reply-To: <20250122-apds9160-driver-v5-2-5393be10279a@dimonoff.com>
-References: <20250122-apds9160-driver-v5-0-5393be10279a@dimonoff.com>
-	<20250122-apds9160-driver-v5-2-5393be10279a@dimonoff.com>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Linus
+ Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add AD7191
+Message-ID: <20250125142436.5e0b8661@jic23-huawei>
+In-Reply-To: <20250122132821.126600-2-alisa.roman@analog.com>
+References: <20250122132821.126600-1-alisa.roman@analog.com>
+	<20250122132821.126600-2-alisa.roman@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,238 +67,107 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 22 Jan 2025 17:59:34 -0500
-Mikael Gonella-Bolduc via B4 Relay <devnull+mgonellabolduc.dimonoff.com@kernel.org> wrote:
+On Wed, 22 Jan 2025 15:20:39 +0200
+Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 
-> From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> AD7191 is a pin-programmable, ultralow noise 24-bit sigma-delta ADC
+> designed for precision bridge sensor measurements. It features two
+> differential analog input channels, selectable output rates,
+> programmable gain, internal temperature sensor and simultaneous
+> 50Hz/60Hz rejection.
 > 
-> APDS9160 is a combination of ALS and proximity sensors.
-> 
-> This patch add supports for:
->     - Intensity clear data and illuminance data
->     - Proximity data
->     - Gain control, rate control
->     - Event thresholds
-> 
-> Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-Hi Mikael,
-
-Some minor things inline. I tidied up whilst applying.
-
-Applied to the togreg branch of iio.git; initially pushed out as testing
-as I'll be rebasing on rc1 once available.
-
-thanks,
-
-Jonathan
-
-
-
-
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
->  MAINTAINERS                  |    7 +
->  drivers/iio/light/Kconfig    |   11 +
->  drivers/iio/light/Makefile   |    1 +
->  drivers/iio/light/apds9160.c | 1597 ++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 1616 insertions(+)
+>  .../bindings/iio/adc/adi,ad7191.yaml          | 175 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 182 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index e69d1632c382fe0e366f7bb20e72ee0c9e91e30b..23d9fcbf71a311940ff86d8dc4cabd5be77925aa 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -4340,6 +4340,13 @@ F:	kernel/bpf/stackmap.c
->  F:	kernel/trace/bpf_trace.c
->  F:	lib/buildid.c
->  
-> +BROADCOM APDS9160 AMBIENT LIGHT SENSOR AND PROXIMITY DRIVER
-> +M:	Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
-> +F:	drivers/iio/light/apds9160.c
-> +
->  BROADCOM ASP 2.0 ETHERNET DRIVER
->  M:	Justin Chen <justin.chen@broadcom.com>
->  M:	Florian Fainelli <florian.fainelli@broadcom.com>
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index 29ffa84919273d64b8464ab8bbf59661b0102f97..419360661d53973eda71d7d986ff7fd481c7aa2c 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -63,6 +63,17 @@ config AL3320A
->  	  To compile this driver as a module, choose M here: the
->  	  module will be called al3320a.
->  
-> +config APDS9160
-> +	tristate "APDS9160 combined als and proximity sensor"
-> +	depends on I2C
-> +	select REGMAP_I2C
-> +	help
-> +	   Say Y here if you want to build support for a Broadcom APDS9160
-> +		combined ambient light and proximity sensor.
-
-Strange indent.
-
-> +
-> +	   To compile this driver as a module, choose M here: the
-> +	   module will be called apds9160.
-> +
-
-> diff --git a/drivers/iio/light/apds9160.c b/drivers/iio/light/apds9160.c
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..e98006de473790da66b92734a0527359e9cd1f40
+> index 000000000000..c0a6bed7a9cb
 > --- /dev/null
-> +++ b/drivers/iio/light/apds9160.c
-
-> +/*
-> + * This parameter works in conjunction with the cancellation pulse duration
-> + * The value determines the current used for crosstalk cancellation
-> + * Coarse value is in steps of 60 nA
-> + * Fine value is in steps of 2.4 nA
-> + */
-> +static int apds9160_set_ps_cancellation_current(struct apds9160_chip *data,
-> +						int coarse_val,
-> +						int fine_val)
-> +{
-> +	int ret, val;
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
+> @@ -0,0 +1,175 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +# Copyright 2025 Analog Devices Inc.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7191.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +	if (coarse_val < 0 || coarse_val > 4)
-> +		return -EINVAL;
-> +
-> +	if (fine_val < 0 || fine_val > 15)
-> +		return -EINVAL;
-> +
-> +	/* Coarse value at B4:B5 and fine value at B0:B3 */
-> +	val = (coarse_val << 4) | fine_val;
-> +
-> +	ret = regmap_write(data->regmap, APDS9160_REG_PS_CAN_LEVEL_ANA_CURRENT,
-> +			   val);
-> +
-> +	return ret;
-return regmap_write()
-
-> +}
-> +
-> +static int apds9160_ps_init_analog_cancellation(struct device *dev,
-> +						struct apds9160_chip *data)
-> +{
-> +	int ret, duration, picoamp, idx, coarse, fine;
-> +
-> +	ret = device_property_read_u32(dev,
-> +			"ps-cancellation-duration", &duration);
-> +
-Good to keep call + return together so no blank line here.
-> +	if (ret || duration == 0)
-
-Given the comment is in the block, I think this wants {} for readability
-reasons (not correctness).
-
-> +		/* Don't fail since this is not required */
-> +		return 0;
-> +
-> +	ret = device_property_read_u32(dev,
-> +			"ps-cancellation-current-picoamp", &picoamp);
-> +
-Odd line break here.
-
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (picoamp < 60000 || picoamp > 276000 || picoamp % 2400 != 0)
-> +		return dev_err_probe(dev, -EINVAL,
-> +					"Invalid cancellation current\n");
-> +
-> +	/* Compute required coarse and fine value from requested current */
-> +	fine = 0;
-> +	coarse = 0;
-> +	for (idx = 60000; idx < picoamp; idx += 2400) {
-> +		if (fine == 15) {
-> +			fine = 0;
-> +			coarse++;
-> +			idx += 21600;
-> +		} else {
-> +			fine++;
-> +		}
-> +	}
-> +
-> +	if (picoamp != idx)
-> +		dev_warn(dev,
-> +			"Invalid cancellation current %i, rounding to %i\n",
-> +			picoamp, idx);
-> +
-> +	ret = apds9160_set_ps_analog_cancellation(data, duration);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return apds9160_set_ps_cancellation_current(data, coarse, fine);
-> +}
+> +title: Analog Devices AD7191 ADC device driver
+Not a "device driver" so drop that bit or say 'binding' instead.
 
 > +
-> +/*
-> + *	Setting the integration time ajusts resolution, rate, scale and gain
+> +maintainers:
+> +  - Alisa-Dariana Roman <alisa.roman@analog.com>
+> +
+> +description: |
+> +  Bindings for the Analog Devices AD7191 ADC device. Datasheet can be
+> +  found here:
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7191
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-cpol: true
+> +
+> +  spi-cpha: true
+> +
+> +  clocks:
+> +    maxItems: 1
+> +    description:
+> +      Optionally, either a crystal can be attached externally between MCLK1 and
+> +      MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
+> +      pin. If absent, internal 4.92MHz clock is used.
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  avdd-supply:
+> +    description: AVdd voltage supply
+> +
+> +  dvdd-supply:
+> +    description: DVdd voltage supply
+> +
+> +  vref-supply:
+> +    description: Vref voltage supply
+> +
+> +  odr-gpios:
+> +    description: |
+> +      ODR1 and ODR2 pins for output data rate selection. Should be defined if
+> +      adi,odr-state is absent.
+> +    maxItems: 2
 
-Odd indent of the comment.
+minItems also 2? i guess we aren't coping with situation of one pin wired
+until some board designer decides to do that.
 
-> + */
-> +static int apds9160_set_als_int_time(struct apds9160_chip *data, int val)
 
-> +static int apds9160_read_avail(struct iio_dev *indio_dev,
-> +			       struct iio_chan_spec const *chan,
-> +			       const int **vals, int *type, int *length,
-> +			       long mask)
-> +{
-> +	struct apds9160_chip *data = iio_priv(indio_dev);
 > +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_INT_TIME:
-> +		switch (chan->type) {
-> +		case IIO_LIGHT:
-> +			*length = ARRAY_SIZE(apds9160_als_rate_avail);
-> +			*vals = (const int *)apds9160_als_rate_avail;
-> +			*type = IIO_VAL_INT;
+> +  adi,odr-state:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description: |
+> +      Should be present if ODR pins are pin-strapped. Value corresponds to:
+> +      0: 120 Hz (ODR1=0, ODR2=0)
+> +      1: 60 Hz (ODR1=0, ODR2=1)
+> +      2: 50 Hz (ODR1=1, ODR2=0)
+> +      3: 10 Hz (ODR1=1, ODR2=1)
+> +      If defined, odr-gpios must be absent.
+> +    enum: [0, 1, 2, 3]
 > +
-> +			return IIO_AVAIL_LIST;
-> +		case IIO_PROXIMITY:
-> +			*length = ARRAY_SIZE(apds9160_ps_rate_avail);
-> +			*vals = (const int *)apds9160_ps_rate_avail;
-> +			*type = IIO_VAL_INT;
-> +
-> +			return IIO_AVAIL_LIST;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_PROXIMITY:
-> +			*length = ARRAY_SIZE(apds9160_ps_gain_avail);
-> +			*vals = (const int *)apds9160_ps_gain_avail;
-> +			*type = IIO_VAL_INT;
-> +
-> +			return IIO_AVAIL_LIST;
-> +		case IIO_LIGHT:
-> +			/* The available scales changes depending on itime */
-> +			switch (data->als_itime) {
-> +			case 25:
-> +				*length = ARRAY_SIZE(apds9160_25ms_avail) * 2;
-> +				*vals = (const int *) apds9160_25ms_avail;
-> +				*type = IIO_VAL_INT_PLUS_MICRO;
-> +
-> +				return IIO_AVAIL_LIST;
-> +			case 50:
-> +				*length = ARRAY_SIZE(apds9160_50ms_avail) * 2;
-> +				*vals = (const int *) apds9160_50ms_avail;
-> +				*type = IIO_VAL_INT_PLUS_MICRO;
-> +
-> +				return IIO_AVAIL_LIST;
-> +			case 100:
-> +				*length = ARRAY_SIZE(apds9160_100ms_avail) * 2;
-> +				*vals = (const int *) apds9160_100ms_avail;
-> +				*type = IIO_VAL_INT_PLUS_MICRO;
-> +
-> +				return IIO_AVAIL_LIST;
-> +			case 200:
-> +				*length = ARRAY_SIZE(apds9160_200ms_avail) * 2;
-> +				*vals = (const int *) apds9160_200ms_avail;
-Completely trivial but the spacing here after) isn't consistent with some cases above.
+> +  pga-gpios:
+> +    description: |
+> +      PGA1 and PGA2 pins for gain selection. Should be defined if adi,pga-state
+> +      is absent.
+> +    maxItems: 2
+minItems here as well I think.
 
-> +				*type = IIO_VAL_INT_PLUS_MICRO;
+> +
+Jonathan
 

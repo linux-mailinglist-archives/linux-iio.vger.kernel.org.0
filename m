@@ -1,160 +1,261 @@
-Return-Path: <linux-iio+bounces-14585-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14586-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B81A1C526
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 21:13:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C080EA1CE27
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jan 2025 20:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB39166AB2
-	for <lists+linux-iio@lfdr.de>; Sat, 25 Jan 2025 20:13:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25A6B3A1337
+	for <lists+linux-iio@lfdr.de>; Sun, 26 Jan 2025 19:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA8B18C034;
-	Sat, 25 Jan 2025 20:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B547DA93;
+	Sun, 26 Jan 2025 19:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QzciC3uI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWQg4heh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D2D7082A;
-	Sat, 25 Jan 2025 20:13:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566134430
+	for <linux-iio@vger.kernel.org>; Sun, 26 Jan 2025 19:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737835984; cv=none; b=rnJ9RfY6E8PSAfdELoFhXUR24cJ9xKNAynwHYUJADrXMc4AiuYeFK/+W613n3TYGtfwISsdBrZrwq8n1Cnh6fNU9pNkc7Esn7AucLGHE18bhozmmtRdgeTtkiQDeFhm3L5rIIrnTVDQl4d4/A/GqIH7s/kQNWrqIaCTi6z/tSj8=
+	t=1737919409; cv=none; b=O71XSFRCVtr+JvPteI2wX3V+OYLQxXOFZa7mwFYret9OKICYmS2MfOMwRglZtIvVmlpxQbZ52u9pXm34RvyEp8UN0pP9cHiodHSsWyfSCy37qjUTlQWXzhArxMKP8VIO2iJMhb/fg9oIuWwmbKWBzXaP9EYx6nPvuqm0x7mPlwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737835984; c=relaxed/simple;
-	bh=oIE/luzggSg+SV5prRIKuRXqTwWe806A+JTOcPgwTIw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=dXMNGK79mHbxpMOCiq+mGCJFWMmq8W9rAYyx4a+49lf4x8hAEE20B+fC5c+m2ttsD3svqN+WmebDg3qDkszHO/b36XzciL/D2nIgLRSS9Z5wp/m78gwtrl1PBMDfaapB927J0gHsYBt7N0KA5b1xcpmOWHyQk8NvvThmFOg7ybQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QzciC3uI; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43675b1155bso36087565e9.2;
-        Sat, 25 Jan 2025 12:13:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737835981; x=1738440781; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=13YJcVc1LolRgU0/GI+Bm9q9rkELlwRfXFynSYlwLgc=;
-        b=QzciC3uINFStsyNu0CWetUKVFHm5M01SuMoOrGhSSt0TPr+bpo08CeAXRyhiV834/Z
-         WuQQC2nfYgci11xLL8lDpV6wIh7cvvoPisUQR0GvEO7zZjYKe9Fl7fGbTmnblZUujjeU
-         oKoBPi3aJsSbvl3edp2aJE50m3m/t3wKnmYB8bM1oFMnKADLAiakPeSxr3evlgmMVObj
-         Sw6AIDtIg/RDNYT00IAqf7yRghsDZu1ydWQjosaQWusk2DS/6FAeJrs+MV2ufKwY0lyx
-         JyJ6IbDBSU/FwzIpafIJeARqzfolaJk1mNxXH8ySlSbHqa9xCrxlZAwF0oKAvTjgVVBp
-         zXLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737835981; x=1738440781;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=13YJcVc1LolRgU0/GI+Bm9q9rkELlwRfXFynSYlwLgc=;
-        b=ZS0ceYhn23kzvbv1GGq0mrV9L88GobaGdqVXLOlplSbsgHsZIFKLxNOmofDvIyA0CK
-         Ho6wv64iOgx3WQSypjZeYxTcYVoxKFtFkWU/s3S0MP6U1jEiIQuqD42Vrh00MG3mfVrm
-         w5zx1P2LGJVZ4S6TFonN1C/HST5Tg+HLt1HZ1+I5FyV58wRH0vB7bY50pLRlK0fvLv4J
-         pX0pg/m8i3VIqmF5B2hLymLAnL+yFjZ20PIRwWslqyeQugasNaUZQTrvAOm2vGpTCyaj
-         nZhbSc8nugq3GEMYDtQHpUgbAL/trZ2C3dQlN7IHHbI0H+ySoNKpkz2T2lB+dxzwjZby
-         Gb6g==
-X-Forwarded-Encrypted: i=1; AJvYcCWTIO8lxgKQQnUuDMBcV8VLTtxq/FYfpsI2EV4YlRbX78Qms2eBS8hQQeiZIAelwBX4jCwP5pidUzg=@vger.kernel.org, AJvYcCXK3JpUG1xuq3LMH2OzjmYsnmKLXfh0XmJs/AB5zlzWAu1iapRVkonL0phHyfcLcFtlsSWHPQlzOedNHpPY@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV4gQ7yHgzv14j1Gd/euzwsUD4HINKf/+p9HiOMwnNtCfAM88e
-	p1lQMhg3JfPSCtXkCKqqs7yTCTnJSQoBJiKh8wam4pipNsT0KV9p
-X-Gm-Gg: ASbGncuth+MIm6qRJ9UEd897v0Pt7tMtvcuXsK/EyTLXFHt6SkQY32bfulmtdV0UnHT
-	ifopJXcDLNnsMy4/DNNxQsdN2+hfOP8eNM5WcliguZzM3MIrxBGqMuI1OCdnehLBHCeA8EEBfwS
-	s0h2ZCok498yw302jpVOn5rD1PTGAaEYUSbaqjymfZPWrYIhFVOWlCsnjLCslmg3uEDf5P4E+k7
-	6UCup8pIgzXHozFntM0rWvBHCWDNPt28m+s0/7aqwCMroaFE3Rp8JM58hOJkSuZ5EfIfkA5tZ2a
-	eF2zyWrV0E274LMjQmq5YbjbIkOIP8VicsWESKsTOKm4f5KbNI5So7NmnUouknI6i1oAFBp/NjD
-	DRI+r16oiygMbM854In4ESFEk
-X-Google-Smtp-Source: AGHT+IHTWKQZWwUDeNAxaBfQhn+envCpJ1DtECbFfi/4BdptPWdWb06D6ivAjpMEQ29H/y6udAaV1A==
-X-Received: by 2002:a05:600c:46cb:b0:436:1b96:7072 with SMTP id 5b1f17b1804b1-438913bebe7mr331817225e9.5.1737835980758;
-        Sat, 25 Jan 2025 12:13:00 -0800 (PST)
-Received: from localhost (2a02-8389-41cf-e200-30ed-5dd1-b777-da06.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:30ed:5dd1:b777:da06])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd575848sm69322495e9.37.2025.01.25.12.12.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jan 2025 12:12:59 -0800 (PST)
+	s=arc-20240116; t=1737919409; c=relaxed/simple;
+	bh=/WgL/MiYXNig6OjZAGW9oBWgOMZkpIf5OKX9bLZ2o8g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E38IVR6K7f3Me7lxLiYkNtSG0x7bpGQDsNPgC/u7Flhzczm65gjpv6OHtwmJ93dHPKmHNuIEAGRJzipHcfW+i3cxtoLny59wFedwefnETg08EZhBmyZL0nwZpKtp2b84q2K2G38YQDP6G/irfSiR7QySDU7lgI+CiozGkf+jchU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWQg4heh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED3CC4CED3;
+	Sun, 26 Jan 2025 19:23:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737919408;
+	bh=/WgL/MiYXNig6OjZAGW9oBWgOMZkpIf5OKX9bLZ2o8g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TWQg4hehUh5mDo2PyRsnfc+QVGrq86VJTgX/sOb/E+WUP8o/aSzi5VV47RPQRBPax
+	 HYHPOevF9wiI6PmZgslwGLgocvKysoX/zCDBPHfNbbW1UJdflDc9/pOBRZqAp5tvr8
+	 BrFRomQZoKcIgnySAgxf1cDeALLgA3Cm0dNJcwbW35fDPhjQ45Qw/1t957mNN6k4d4
+	 osvC4aSHi14+/uFElhTa8sKMNDTjxbuyMn26vrDrNXMfspDTosgykCOfBYTNoGRey8
+	 MLGWmYFCU4S31lD9mftwv3SKVvQ8veNXX9AhXoDhvl38VX3Ug/fw5lnYKSaUBdQktJ
+	 BbB1yljj1FNhQ==
+Date: Sun, 26 Jan 2025 19:23:21 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, =?UTF-8?B?4oCcTHVj?= Van =?UTF-8?B?T29zdGVu?=
+ =?UTF-8?B?cnlja+KAnQ==?= <luc.vanoostenryck@gmail.com>
+Subject: Re: [RFC PATCH 01/27] iio: core: Rework claim and release of direct
+ mode to work with sparse.
+Message-ID: <20250126192321.16b1cb3c@jic23-huawei>
+In-Reply-To: <20250119192948.005fa672@jic23-huawei>
+References: <20250105172613.1204781-1-jic23@kernel.org>
+	<20250105172613.1204781-2-jic23@kernel.org>
+	<88bd5013-19bb-45e1-a435-ab48e59db9cd@baylibre.com>
+	<20250107142451.000021db@huawei.com>
+	<c298f1bb-d0a1-42af-b237-9aa8e422ec1b@baylibre.com>
+	<20250111133552.2a44c74e@jic23-huawei>
+	<61785c12-1a5e-4465-92e9-83d81c02dd59@baylibre.com>
+	<20250119192948.005fa672@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 25 Jan 2025 21:12:57 +0100
-Message-Id: <D7BFFUH97D61.25C1T8JHA8WES@gmail.com>
-Subject: Re: [PATCH v2 0/4] iio: light: fix scale in veml6030
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>, "Rishi Gupta"
- <gupt21@gmail.com>, "Matti Vaittinen" <mazziesaccount@gmail.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>
-To: "Jonathan Cameron" <jic23@kernel.org>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <20250119-veml6030-scale-v2-0-6bfc4062a371@gmail.com>
- <20250125123331.646e8cf8@jic23-huawei>
-In-Reply-To: <20250125123331.646e8cf8@jic23-huawei>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat Jan 25, 2025 at 1:33 PM CET, Jonathan Cameron wrote:
-> On Sun, 19 Jan 2025 18:31:57 +0100
-> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
->
-> > This series follows a similar approach as recently used for the veml323=
-5
-> > by using iio-gts to manage the scale as stated in the ABI. In its
-> > current form, the driver exposes the hardware gain instead of the
-> > multiplier for the raw value to obtain a value in lux.
-> >
-> > Although this driver and the veml3235 have many similarities, there are
-> > two main differences in this series compared to the one used to fix the
-> > other driver:
-> >
-> > - The veml6030 has fractional gains, which are not supported by the
-> >   iio-gts helpers. My first attempt was adding support for them, but
-> >   that made the whole iio-gts implementation more complex, cumbersome,
-> >   and the risk of affecting existing clients was not negligible.
-> >   Instead, a x8 factor has been used for the hardware gain to present
-> >   the minimum value (x0.125) as x1, keeping linearity. The scales
-> >   iio-gts generates are therefore right without any extra conversion,
-> >   and they match the values provided in the different datasheets.
-> >
-> > - This driver included a processed value for the ambient light, maybe
-> >   because the scale did not follow the ABI and the conversion was not
-> >   direct. To avoid breaking userspace, the functionality has been kept,
-> >   but of course using the fixed scales. In order to ease the
-> >   calculations, iio_gts_get_total_gain() has been exported to avoid
-> >   working directly with the scale in NANO, that would require 64-bit
-> >   operations.
-> >
-> > To ease the usage of the iio-gts selectors, patches to support regfield=
-s
-> > and caching has been included.
-> >
-> > This issue has been present since the original implementation, and it
-> > affects all devices it supports.
-> >
-> > This series has been tested with a veml7700 (same gains as veml6030) an=
-d
-> > a veml6035 with positive results.
-> >
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> Whilst we might consider a backport eventually.  This is a huge patch
-> to do that with.  Hence I'll take this the slow way for next merge window=
-.
->
-> For now I've applied patches 1 and 2 in the interest of nibbling away
-> at what we will need to see again ;)
->
+On Sun, 19 Jan 2025 19:29:48 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Sat, 11 Jan 2025 16:28:02 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
+> 
+> > On 1/11/25 7:35 AM, Jonathan Cameron wrote:  
+> > > On Tue, 7 Jan 2025 10:09:15 -0600
+> > > David Lechner <dlechner@baylibre.com> wrote:
+> > >     
+> > >> On 1/7/25 8:24 AM, Jonathan Cameron wrote:    
+> > >>> On Mon, 6 Jan 2025 17:14:12 -0600
+> > >>> David Lechner <dlechner@baylibre.com> wrote:
+> > >>>       
+> > >>>> On 1/5/25 11:25 AM, Jonathan Cameron wrote:      
+> > >>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >>>>>
+> > >>>>> Initial thought was to do something similar to __cond_lock()
+> > >>>>>
+> > >>>>> 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
+> > >>>>> + Appropriate static inline iio_device_release_direct_mode()
+> > >>>>>
+> > >>>>> However with that, sparse generates false positives. E.g.
+> > >>>>>
+> > >>>>> drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock        
+> > >>>>
+> > >>>> Even if false positives aren't technically wrong, if sparse is having a hard
+> > >>>> time reasoning about the code, then it is probably harder for humans to reason
+> > >>>> about the code as well. So rewriting these false positives anyway could be
+> > >>>> justified beyond just making the static analyzer happy.
+> > >>>>      
+> > >>>>>
+> > >>>>> So instead, this patch rethinks the return type and makes it more
+> > >>>>> 'conditional lock like' (which is part of what is going on under the hood
+> > >>>>> anyway) and return a boolean - true for successfully acquired, false for
+> > >>>>> did not acquire.        
+> > >>>>
+> > >>>> I think changing this function to return bool instead of int is nice change
+> > >>>> anyway since it makes writing the code less prone authors to trying to do
+> > >>>> something "clever" with the ret variable. And it also saves one one line of
+> > >>>> code.
+> > >>>>      
+> > >>>>>
+> > >>>>> To allow a migration path given the rework is now no trivial, take a leaf
+> > >>>>> out of the naming of the conditional guard we currently have for IIO
+> > >>>>> device direct mode and drop the _mode postfix from the new functions giving
+> > >>>>> iio_device_claim_direct() and iio_device_release_direct()
+> > >>>>>
+> > >>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >>>>> ---
+> > >>>>>  include/linux/iio/iio.h | 22 ++++++++++++++++++++++
+> > >>>>>  1 file changed, 22 insertions(+)
+> > >>>>>
+> > >>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> > >>>>> index 56161e02f002..4ef2f9893421 100644
+> > >>>>> --- a/include/linux/iio/iio.h
+> > >>>>> +++ b/include/linux/iio/iio.h
+> > >>>>> @@ -662,6 +662,28 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+> > >>>>>  int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+> > >>>>>  void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+> > >>>>>  
+> > >>>>> +/*
+> > >>>>> + * Helper functions that allow claim and release of direct mode
+> > >>>>> + * in a fashion that doesn't generate false positives from sparse.
+> > >>>>> + */
+> > >>>>> +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev) __cond_acquires(indio_dev)        
+> > >>>>
+> > >>>> Doesn't __cond_acquires depend on this patch [1] that doesn't look like it was
+> > >>>> ever picked up in sparse?
+> > >>>>
+> > >>>> [1]: https://lore.kernel.org/all/CAHk-=wjZfO9hGqJ2_hGQG3U_XzSh9_XaXze=HgPdvJbgrvASfA@mail.gmail.com/      
+> > >>>
+> > >>> I wondered about that. It 'seems' to do the job anyway. I didn't fully
+> > >>> understand that thread so I just blindly tried it instead :)
+> > >>>
+> > >>> This case is simpler that that thread, so maybe those acrobatics aren't
+> > >>> needed?      
+> > >>
+> > >> I was not able to get a sparse warning without applying that patch to sparse
+> > >> first. My test method was to apply this series to my Linux tree and then
+> > >> comment out a iio_device_release_direct() line in a random driver.
+> > >>
+> > >> And looking at the way the check works, this is exactly what I would expect.
+> > >> The negative output argument in __attribute__((context,x,0,-1)) means something
+> > >> different (check = 0) without the spare patch applied.
+> > >>    
+> > > Curious. I wasn't being remotely careful with what sparse version
+> > > i was running so just went with what Arch is carrying which turns out to be
+> > > a bit old.
+> > > 
+> > > Same test as you describe gives me:
+> > >   CHECK   drivers/iio/adc/ad4000.c
+> > > drivers/iio/adc/ad4000.c:533:12: warning: context imbalance in 'ad4000_read_raw' - different lock contexts for basic block
+> > > 
+> > > So I tried that with latest sparse from kernel.org and I still get that warning
+> > > which is what I'd expect to see.
+> > > 
+> > > Simple make C=1 W=1 build
+> > > 
+> > > I wonder what we have different?  Maybe it is missing some cases?
+> > > 
+> > > diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
+> > > index ef0acaafbcdb..6785d55ff53a 100644
+> > > --- a/drivers/iio/adc/ad4000.c
+> > > +++ b/drivers/iio/adc/ad4000.c
+> > > @@ -543,7 +543,7 @@ static int ad4000_read_raw(struct iio_dev *indio_dev,
+> > >                         return -EBUSY;
+> > >  
+> > >                 ret = ad4000_single_conversion(indio_dev, chan, val);
+> > > -               iio_device_release_direct(indio_dev);
+> > > +//             iio_device_release_direct(indio_dev);
+> > >                 return ret;
+> > >         case IIO_CHAN_INFO_SCALE:
+> > >                 *val = st->scale_tbl[st->span_comp][0];
+> > > 
+> > > Was the test I ran today.
+> > > 
+> > > Jonathan
+> > >     
+> > 
+> > Hmmm... I think maybe I had some other local modifications when I was testing
+> > previously. But I understand better what is going on now. Your implementation
+> > is only working because it is static inline. The __cond_acquires() and
+> > __releases() attributes have no effect and the "different lock contexts for
+> > basic block" warning is coming from the __acquire() and __release() attributes.
+> > So it is working correctly, but perhaps not for the reason you thought.  
+> 
+> Ah. That indeed explains it.
+> 
+> > 
+> > I think what I had done locally is make iio_device_claim_direct() and
+> > iio_device_release_direct() regular functions instead of static inline so that
+> > it had to actually make use of __cond_acquires(). In that case, with an
+> > unpatched sparse, we get "unexpected unlock" warnings for all calls to
+> > iio_device_release_direct(). With patched sparse, this warning goes away.
+> > 
+> > So for now, we could take your patch with the __cond_acquires() and
+> > __releases() attribute removed (since they don't do anything) and leave
+> > ourselves a note in a comment that sparse needs to be fixed so that we can use
+> > the __cond_acquires() attribute if/when we get rid of
+> > iio_device_release_direct_mode() completely and want to make
+> > iio_device_release_direct() a regular function.  
+> 
+> I'm in two minds over whether to keep the __cond_acquires / __releases markings
+> given there are other in tree uses already.  Mind you I don't care strongly
+> and I assume sparse at least always obeys inline instructions so what we
+> probably need is a comment to ensure we never move the code out of the header
+> unless sparse is fixed.  So I'll go ahead and drop the markings for now.
+> 
+> Even if sparse is never updated, we can keep a little bit of inline magic
+> in the header to handle the conditional __acquire() and have the real
+> acquire in an evil looking __iio_device_claim_direct() that no one
+> should ever touch directly.
+> 
+> We could in theory do similar for the existing iio_device_claim_direct_mode()
+> but I 'think' that will still give us some false positives + the boolean
+> return is nicer anyway and tends to give slightly more compact code..
+> 
+> So far making this change to a bunch more drivers has found 2 bugs and led
+> to a quite a bit of code cleanup. I'll finish doing the 'a's (accel and adc)
+> then post the result.  One thing I will probably change on this initial set is
+> splitting the refactors and changes to the new interface into separate
+> patches as they are different types of change.
+
+I've updated this across the tree (locally). Even whilst making it look just
+like a conditional lock there are still a couple of false positives in
+light sensors (IIRC vcnl4000 and as73211) that needed more radical surgery
+to avoid.  As you note above, maybe that code wasn't that readable anyway
+so will benefit.  It seems sparse gets confused with some gotos when mixed
+with other control flow stuff like switch statements.
+
+Sometime soon I'll tidy it up into a coherent series - (after working
+out what Marcello ran into!)  Exactly how much cleanup and refactoring
+I did whilst touching the code is closely correlated to how bored I was
+getting so i should probably make that a little more consistent.
+
+Last patch will remove the old infrastructure, which will be a pain for
+anyone with out of tree drivers - but easy enough to revert that one for
+now.
+
+Jonathan
+
+> 
 > Jonathan
->
+> > 
+> >   
+> 
+> 
 
-Thanks, Jonathan.
-
-Could you please tell me where you applied them, so I
-can rebase onto that branch? I did not find them in linux-next/master,
-iio/testing or iio/togreg. Or should they show up in one of those
-within the next hours/days?
-
-Best regards,
-Javier Carrasco.
 

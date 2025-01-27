@@ -1,410 +1,234 @@
-Return-Path: <linux-iio+bounces-14611-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14612-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B1AA1D7B3
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:05:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DACA1D8E8
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E84191662D2
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 14:05:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FE71886E59
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE6B200112;
-	Mon, 27 Jan 2025 14:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7725136327;
+	Mon, 27 Jan 2025 15:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iv7wyLvG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQxBegs7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C89A6FC5
-	for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 14:04:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CBF7603F;
+	Mon, 27 Jan 2025 15:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737986697; cv=none; b=EIbivDyMs31XT87lPEUziLIBC6K+zKM7S9Oi2AQbtu2RSL6mHxNr1cpcxWiq+nlVbMGzCt6qJYSwYy8N1Z2NlsmZIiJZrpMks2d8kyqfHDz5zsbEDsZ2rLLL71uXEjjYSSlDPRi0p0RJUEvfqy3U5jgEkcNcIKdQ9MLnp4IJfnE=
+	t=1737990007; cv=none; b=LDEfEYJWZy5A8wyUjowhMNiJIzrpGwyL/fqF1ZCtmJ0Jn0F5T29wy9wdr5t1nqKZLEAtszebm5hDMsQyBuxDNb58+hUva7/tw/lO3z/dPaYbhU/9KN+bgEC0XKgSLibQ8CEjgli6XZSY/QHlUVLbAovtbX3m192sS1P6ixeJzXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737986697; c=relaxed/simple;
-	bh=tv8ufJNX2FveIIM0Ullgh4WcbgMO2rH4hcs0LieA+jQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XFKQnaRx0DSQxssoOufzbDTepOAOyeVvltNQ+K53LJh6y36CLHoFIOA135ODgbPaW3f5pd+MPnB41tJFaXWz3vjnUwTopCCFTixsbAbyeScKWeSYgYWLztnVLtQkeVJJHBW/u+Z7IJch3VaE0D/9II6cL9GiwjWxUrgAsmbjwso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iv7wyLvG; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-385d7f19f20so2287657f8f.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 06:04:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737986693; x=1738591493; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qY0uFd4cFOzopA1OWUs9gFHikn9daeVfoWLrhNqrq8o=;
-        b=iv7wyLvGyEzX4P8aXy9usbIXueAUhsXbtiNEnWVhIL83/FuGYucz0hnatAjcKJhvue
-         3d5aGnqz+6OSOYbiM42fhnJ8Y/hUov8PnBwcCTFujjnq2Y49uxtTJunhHxZ62fPgnzPz
-         6A9yn3v5WT6j5OI9OiJXySlYo2BA3bcX/o3IQOiAWFUrnbzZxLtcPR+gwt5FX3xZilnI
-         IG+nAS0onO4h56e1HIl0z1XrYv+HiufPSPn2Dzg4vaIHqSQtqrsPtRgNSZCEwsUPTB2T
-         gZSF6y6ZvPBYnCbQj9JeOQbFs3aTQdHLtYpAxi8VE6rPKn49CR+a0sA482ic/MO55NOu
-         b9NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737986693; x=1738591493;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qY0uFd4cFOzopA1OWUs9gFHikn9daeVfoWLrhNqrq8o=;
-        b=iD5ywkgVQJE8BnG/+/QSLmAm+q3VCYmcY3/bOhkZnbsBwyFlNY4FGePVgA08RxJyui
-         dS0JrDWPNIxYkq2bj2DnCZ+KvzrTl77pxAAji/RUC4Rj6dYexHCPpw8oJqrqu8kiSAf9
-         cYUV88Boj4Oqeh3ZcAm/fw9wE6/38/tSfoOnsAYKws8J04hJNEjv/jq89SfUmxiUFcft
-         IlqlMcpbPudHunwJ+3gxS5fy0Bgy7j+b9ptHU4bBr37m6GzqFb6pEzywGVmzgLvFmvkT
-         BOebBDbkP4hRUtdsv2bsOaLnsYP/vk43D9iyqhxGaJQSSohWbRBAafeXwszi6goz4lXz
-         UUCQ==
-X-Gm-Message-State: AOJu0YwcgEGPzFaymiiWqDa9Vpg613ktg3icrWWi0y9ED62sgkxjMoGM
-	UOCv+58ALf8BhwiA1dFYQNtYbGfFH+PKpcJaGuNZnVrYjQHi1Ft7BtKTRYKWfkU=
-X-Gm-Gg: ASbGncuoWSqUHZYNse055lWq8vMdfIVcQVfg+yuyf8RfaRemYE4KhB03NRXZXmO/gBs
-	cfNn578gOck91/mZdeXqcoKBOmDmfwfmq0VB2g0ZLXg+WCBovvCVYQZ/C6uVJAsBTaVc7ir03Sn
-	pvNOrv4h7mMVyqHcgAy543hFBUy9OnGZPsszm6hd/9Je7uHfvOQpqv2D5ED1P+wNoiKrTlmWvkj
-	32+HQVP/gC99pC5Ga01tg0R9+gWadbAd0C9tncZNIvirWkYPOR83kGe94iHVvdikttPBuvU8ap6
-	YGSDvPnRxVKNLG9zvUbxWmVzeMFteVvcOkf+uKwHvJ1kXDozb/4=
-X-Google-Smtp-Source: AGHT+IGLm1hJ1mW9caGceHze6AjMdQ/MxMJ2NJ1GV9e265lvP/Q/g7qOxf8xZbW2WZh7iYDigEbsHg==
-X-Received: by 2002:a05:6000:1b82:b0:385:e3b8:f331 with SMTP id ffacd0b85a97d-38bf5663bd7mr29768565f8f.14.1737986692513;
-        Mon, 27 Jan 2025 06:04:52 -0800 (PST)
-Received: from [127.0.0.1] (alille-653-1-300-114.w90-1.abo.wanadoo.fr. [90.1.180.114])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a313383sm11480639f8f.36.2025.01.27.06.04.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 06:04:51 -0800 (PST)
-From: Guillaume Ranquet <granquet@baylibre.com>
-Date: Mon, 27 Jan 2025 14:59:33 +0100
-Subject: [PATCH v5 2/2] iio: adc: ad7173: add openwire detection support
- for single conversions
+	s=arc-20240116; t=1737990007; c=relaxed/simple;
+	bh=kwWDA3rU/cN1R71j7vGPxnBKK1HlIAFQmbB0t+RzmOs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=or1vn/wZ3je39D9BRh1LH8DbyxyZW8qw60cYK9eddiXZb8pPb6gW8Tb2NcFCT3Ts088Fij5Tue5FTolht37S+5eCkv9e1KcJq7venex8a6mxpXNaImjvE5TNCKXv/a+MhRBHXoUfH4JK3xuWw4KlNCam9Qpsau/yP23ERKXE96M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQxBegs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D289C4CEE1;
+	Mon, 27 Jan 2025 15:00:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737990006;
+	bh=kwWDA3rU/cN1R71j7vGPxnBKK1HlIAFQmbB0t+RzmOs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQxBegs7WBv1X6v9R6uZ4y4VWC7i1wv6T0vRcg/AZI6Z1pVGJp6ykCPdx3rrmDEjX
+	 P4NYIOez+Mek1EWFaAZk/aVox/bR1ZYYyNTerOPKUXJk+yq0HhOy8vw4n1U+bqTfJZ
+	 AHK8io7hDUAlfBxaoHpgHZIYerrjrSwbDz1YF1r7ChOQen17LtQ6eygYXy35pIOro0
+	 l4JcDUV2n0tGoOjpUxjlVGc2cPLyN4fuSUTv59iElin3ids3qO1hd7+pAeePLdpPuq
+	 obNzopT0ST0SRco6R+3TBGhFxT7PUaXhpxfnlrmJeQkEcrfe7f0XSGtmDcnZ24j5ye
+	 vhGXQDcZalJ0w==
+Date: Tue, 28 Jan 2025 00:00:02 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
+Cc: linux-iio@vger.kernel.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-arm-kernel@lists.infradead.org, timestamp@lists.linux.dev,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Dipen Patel <dipenp@nvidia.com>, dlechner@baylibre.com
+Subject: Re: [Q] Frequency & duty cycle measurement?
+Message-ID: <Z5efcokgHix-k3lW@ishi>
+References: <f2ec8a55-42ad-498a-b793-072444dcb92e@prolan.hu>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250127-ad4111_openwire-v5-2-ef2db05c384f@baylibre.com>
-References: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
-In-Reply-To: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Guillaume Ranquet <granquet@baylibre.com>, Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.15-dev
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="L5rYZ1lkBZvzecLd"
+Content-Disposition: inline
+In-Reply-To: <f2ec8a55-42ad-498a-b793-072444dcb92e@prolan.hu>
 
-Some chips of the ad7173 family supports open wire detection.
 
-Generate a level fault event whenever an external source is disconnected
-from the system input on single conversions.
+--L5rYZ1lkBZvzecLd
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: Guillaume Ranquet <granquet@baylibre.com>
----
- drivers/iio/adc/ad7173.c | 179 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 179 insertions(+)
+On Tue, Jan 21, 2025 at 04:19:27PM +0100, Cs=F3k=E1s Bence wrote:
+> Hi all,
+>=20
+> we want to measure the frequency and duty cycle of a signal (relating to
+> power consumption) using a hardware timer in our SoC (Microchip SAMA5D2).
+> The hardware is capable of taking a snapshot of the timer value into anot=
+her
+> dedicated register pair (RA, RB) on the rising/falling edges, and a small
+> `devmem`-based userspace utility was created as a working PoC. Now we want
+> to move to a "proper" kernelspace solution.
+>=20
+> However, none of the existing drivers seem to be able to do this; the
+> closest was `drivers/counter/microchip-tcb-capture.c`, but that only seems
+> to count one type of edge (rising/falling), and cannot give us the time
+> between them, which would be needed for duty cycle calculation. The only
+> other driver I could find was `drivers/clocksource/timer-atmel-tcb.c`, wh=
+ich
+> again seems incapable of such measurements. Therefore, a new module will
+> probably be needed; the question then becomes: which API to implement.
+>=20
+> As `microchip-tcb-capture.c` uses the Generic Counter Interface, that was
+> obviously a first stop. However, from what I could see, you can only
+> represent (1) the number of times an edge has been encountered, and (2)
+> rotary encodings (quadrature and direction-step decoders); and not the ti=
+me
+> between edges.
+>=20
+> IIO_ALTVOLTAGE and IIO_CHAN_INFO_FREQUENCY/_PHASE also seemed promising
+> (although the lack of IIO_CHAN_INFO_DUTY_CYCLE already posed a problem),
+> until I saw that all current drivers are frequency *generators*, and not
+> measurers, the latter seems to be completely unimplemented.
+>=20
+> The only other contender I could find was the Hardware Timestamping Engine
+> (HTE), but again, it's not clear whether (1) the API is even capable of
+> relaying duty cycle information to userspace and (2) if it is, how would =
+one
+> go about implementing it.
+>=20
+> It is also entirely possible I missed a driver or API that could handle t=
+his
+> better, if so, please don't keep it to yourselves.
+>=20
+> So, how could one go about implementing such a driver?
+>=20
+> Bence
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 8b438c689594..1855929b23d0 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -35,6 +35,7 @@
- #include <linux/units.h>
- 
- #include <linux/iio/buffer.h>
-+#include <linux/iio/events.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
-@@ -102,6 +103,7 @@
- 
- #define AD7173_GPIO_PDSW	BIT(14)
- #define AD7173_GPIO_OP_EN2_3	BIT(13)
-+#define AD4111_GPIO_GP_OW_EN	BIT(12)
- #define AD7173_GPIO_MUX_IO	BIT(12)
- #define AD7173_GPIO_SYNC_EN	BIT(11)
- #define AD7173_GPIO_ERR_EN	BIT(10)
-@@ -149,6 +151,7 @@
- 
- #define AD7173_FILTER_ODR0_MASK		GENMASK(5, 0)
- #define AD7173_MAX_CONFIGS		8
-+#define AD4111_OW_DET_THRSH_MV		300
- 
- #define AD7173_MODE_CAL_INT_ZERO		0x4 /* Internal Zero-Scale Calibration */
- #define AD7173_MODE_CAL_INT_FULL		0x5 /* Internal Full-Scale Calibration */
-@@ -182,11 +185,15 @@ struct ad7173_device_info {
- 	bool has_int_ref;
- 	bool has_ref2;
- 	bool has_internal_fs_calibration;
-+	bool has_openwire_det;
- 	bool higher_gpio_bits;
- 	u8 num_gpios;
- };
- 
- struct ad7173_channel_config {
-+	/* Openwire detection threshold */
-+	unsigned int openwire_thrsh_raw;
-+	int openwire_comp_chan;
- 	u8 cfg_slot;
- 	bool live;
- 
-@@ -203,6 +210,7 @@ struct ad7173_channel {
- 	unsigned int ain;
- 	struct ad7173_channel_config cfg;
- 	u8 syscalib_mode;
-+	bool openwire_det_en;
- };
- 
- struct ad7173_state {
-@@ -394,6 +402,76 @@ static int ad7173_calibrate_all(struct ad7173_state *st, struct iio_dev *indio_d
- 	return 0;
- }
- 
-+/*
-+ * Associative array of channel pairs for open wire detection
-+ * The array is indexed by ain and gives the associated channel pair
-+ * to perform the open wire detection with
-+ * the channel pair [0] is for non differential and pair [1]
-+ * is for differential inputs
-+ */
-+static int openwire_ain_to_channel_pair[][2][2] = {
-+/*	AIN     Single    Differential */
-+	[0] = { {0, 15},  {1, 2}   },
-+	[1] = { {1, 2},   {2, 1}   },
-+	[2] = { {3, 4},   {5, 6}   },
-+	[3] = { {5, 6},   {6, 5}   },
-+	[4] = { {7, 8},   {9, 10}  },
-+	[5] = { {9, 10},  {10, 9}  },
-+	[6] = { {11, 12}, {13, 14} },
-+	[7] = { {13, 14}, {14, 13} },
-+};
-+
-+/*
-+ * Openwire detection on ad4111 works by running the same input measurement
-+ * on two different channels and compare if the difference between the two
-+ * measurements exceeds a certain value (typical 300mV)
-+ */
-+static int ad4111_openwire_event(struct iio_dev *indio_dev,
-+				 const struct iio_chan_spec *chan)
-+{
-+	struct ad7173_state *st = iio_priv(indio_dev);
-+	struct ad7173_channel *adchan = &st->channels[chan->address];
-+	struct ad7173_channel_config *cfg = &adchan->cfg;
-+	int ret, val1, val2;
-+
-+	ret = regmap_set_bits(st->reg_gpiocon_regmap, AD7173_REG_GPIO,
-+			      AD4111_GPIO_GP_OW_EN);
-+	if (ret)
-+		return ret;
-+
-+	adchan->cfg.openwire_comp_chan =
-+		openwire_ain_to_channel_pair[chan->channel][chan->differential][0];
-+
-+	ret = ad_sigma_delta_single_conversion(indio_dev, chan, &val1);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev,
-+			"Error running ad_sigma_delta single conversion: %d", ret);
-+		goto out;
-+	}
-+
-+	adchan->cfg.openwire_comp_chan =
-+		openwire_ain_to_channel_pair[chan->channel][chan->differential][1];
-+
-+	ret = ad_sigma_delta_single_conversion(indio_dev, chan, &val2);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev,
-+			"Error running ad_sigma_delta single conversion: %d", ret);
-+		goto out;
-+	}
-+
-+	if (abs(val1 - val2) > cfg->openwire_thrsh_raw)
-+		iio_push_event(indio_dev,
-+			       IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, chan->address,
-+						    IIO_EV_TYPE_FAULT, IIO_EV_DIR_FAULT_OPENWIRE),
-+			       iio_get_time_ns(indio_dev));
-+
-+out:
-+	adchan->cfg.openwire_comp_chan = -1;
-+	regmap_clear_bits(st->reg_gpiocon_regmap, AD7173_REG_GPIO,
-+			  AD4111_GPIO_GP_OW_EN);
-+	return ret;
-+}
-+
- static int ad7173_mask_xlate(struct gpio_regmap *gpio, unsigned int base,
- 			     unsigned int offset, unsigned int *reg,
- 			     unsigned int *mask)
-@@ -591,6 +669,9 @@ static int ad7173_set_channel(struct ad_sigma_delta *sd, unsigned int channel)
- 	      FIELD_PREP(AD7173_CH_SETUP_SEL_MASK, st->channels[channel].cfg.cfg_slot) |
- 	      st->channels[channel].ain;
- 
-+	if (st->channels[channel].cfg.openwire_comp_chan >= 0)
-+		channel = st->channels[channel].cfg.openwire_comp_chan;
-+
- 	return ad_sd_write_reg(&st->sd, AD7173_REG_CH(channel), 2, val);
- }
- 
-@@ -639,6 +720,11 @@ static int ad7173_disable_all(struct ad_sigma_delta *sd)
- 
- static int ad7173_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
- {
-+	struct ad7173_state *st = ad_sigma_delta_to_ad7173(sd);
-+
-+	if (st->channels[chan].cfg.openwire_comp_chan >= 0)
-+		chan = st->channels[chan].cfg.openwire_comp_chan;
-+
- 	return ad_sd_write_reg(sd, AD7173_REG_CH(chan), 2, 0);
- }
- 
-@@ -690,6 +776,7 @@ static const struct ad7173_device_info ad4111_device_info = {
- 	.has_current_inputs = true,
- 	.has_int_ref = true,
- 	.has_internal_fs_calibration = true,
-+	.has_openwire_det = true,
- 	.clock = 2 * HZ_PER_MHZ,
- 	.sinc5_data_rates = ad7173_sinc5_data_rates,
- 	.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-@@ -1000,6 +1087,12 @@ static int ad7173_read_raw(struct iio_dev *indio_dev,
- 		if (ret < 0)
- 			return ret;
- 
-+		if (ch->openwire_det_en) {
-+			ret = ad4111_openwire_event(indio_dev, chan);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 
-@@ -1144,12 +1237,57 @@ static int ad7173_debug_reg_access(struct iio_dev *indio_dev, unsigned int reg,
- 	return ad_sd_write_reg(&st->sd, reg, reg_size, writeval);
- }
- 
-+static int ad7173_write_event_config(struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir,
-+				     bool state)
-+{
-+	struct ad7173_state *st = iio_priv(indio_dev);
-+	struct ad7173_channel *adchan = &st->channels[chan->address];
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_FAULT:
-+		adchan->openwire_det_en = state;
-+		return 0;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad7173_read_event_config(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir)
-+{
-+	struct ad7173_state *st = iio_priv(indio_dev);
-+	struct ad7173_channel *adchan = &st->channels[chan->address];
-+
-+	switch (type) {
-+	case IIO_EV_TYPE_FAULT:
-+		return adchan->openwire_det_en;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct iio_event_spec ad4111_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_FAULT,
-+		.dir = IIO_EV_DIR_FAULT_OPENWIRE,
-+		.mask_separate = BIT(IIO_EV_INFO_VALUE),
-+		.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+};
-+
- static const struct iio_info ad7173_info = {
- 	.read_raw = &ad7173_read_raw,
- 	.write_raw = &ad7173_write_raw,
- 	.debugfs_reg_access = &ad7173_debug_reg_access,
- 	.validate_trigger = ad_sd_validate_trigger,
- 	.update_scan_mode = ad7173_update_scan_mode,
-+	.write_event_config = ad7173_write_event_config,
-+	.read_event_config = ad7173_read_event_config,
- };
- 
- static const struct iio_scan_type ad4113_scan_type = {
-@@ -1353,6 +1491,37 @@ static int ad7173_validate_reference(struct ad7173_state *st, int ref_sel)
- 	return 0;
- }
- 
-+static int ad7173_validate_openwire_ain_inputs(struct ad7173_state *st,
-+					       bool differential,
-+					       unsigned int ain0,
-+					       unsigned int ain1)
-+{
-+	/*
-+	 * If the channel is configured as differential,
-+	 * the ad4111 requires specific ains to be used together
-+	 */
-+	if (differential)
-+		return (ain0 % 2) ? (ain0 - 1) == ain1 : (ain0 + 1) == ain1;
-+
-+	return ain1 == AD4111_VINCOM_INPUT;
-+}
-+
-+static unsigned int ad7173_calc_openwire_thrsh_raw(struct ad7173_state *st,
-+						   struct iio_chan_spec *chan,
-+						   struct ad7173_channel *chan_st_priv,
-+						   unsigned int thrsh_mv) {
-+	unsigned int thrsh_raw;
-+
-+	thrsh_raw =
-+		BIT(chan->scan_type.realbits - !!(chan_st_priv->cfg.bipolar))
-+		* thrsh_mv
-+		/ ad7173_get_ref_voltage_milli(st, chan_st_priv->cfg.ref_sel);
-+	if (chan->channel < st->info->num_voltage_in_div)
-+		thrsh_raw /= AD4111_DIVIDER_RATIO;
-+
-+	return thrsh_raw;
-+}
-+
- static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- {
- 	struct ad7173_channel *chans_st_arr, *chan_st_priv;
-@@ -1400,6 +1569,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan_st_priv->cfg.bipolar = false;
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
-+		chan_st_priv->cfg.openwire_comp_chan = -1;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
- 		if (st->info->data_reg_only_16bit)
- 			chan_arr[chan_index].scan_type = ad4113_scan_type;
-@@ -1466,6 +1636,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		chan->channel = ain[0];
- 		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.odr = 0;
-+		chan_st_priv->cfg.openwire_comp_chan = -1;
- 
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
- 		if (chan_st_priv->cfg.bipolar)
-@@ -1480,6 +1651,14 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 			chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 			chan->channel2 = ain[1];
- 			chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
-+			if (st->info->has_openwire_det &&
-+			    ad7173_validate_openwire_ain_inputs(st, chan->differential, ain[0], ain[1])) {
-+				chan->event_spec = ad4111_events;
-+				chan->num_event_specs = ARRAY_SIZE(ad4111_events);
-+				chan_st_priv->cfg.openwire_thrsh_raw =
-+					ad7173_calc_openwire_thrsh_raw(st, chan, chan_st_priv,
-+								       AD4111_OW_DET_THRSH_MV);
-+			}
- 		}
- 
- 		if (st->info->data_reg_only_16bit)
+Hi Bence,
 
--- 
-2.47.1
+You could use the Counter chrdev interface to get frequency of counter
+events such as rising/falling edges, as well as associating timer values
+and snapshots. Do you get an interrupt on each timer snapshot, or is it
+just a circular array buffer that gets filled until your purge it? The
+implementation might look something like the following.
 
+In the kernel driver, you would push a counter event for each capture; I
+assume your hardware issues an interrupt each time a rising/falling edge
+occurs:
+
+    static irqreturn_t sama5d2_isr(int irq, void *dev_id)
+    {
+            struct counter_device *counter =3D dev_id;
+            counter_push_event(counter, COUNTER_EVENT_CAPTURE, 0);
+            return IRQ_HANDLED;
+    }
+
+In the userspace application, you would setup a Counter "watch" to
+collect each desired timer value on the respective Counter events; I
+assume RA and RB are Count 0 and Count 1 respectively, but if they
+represent something else please let me know:
+
+    static struct counter_watch watches[2] =3D {
+            {
+                    /* Component data: Count 0 count */
+                    .component.type =3D COUNTER_COMPONENT_COUNT,
+                    .component.scope =3D COUNTER_SCOPE_COUNT,
+                    .component.parent =3D 0,
+                    /* Event type: Capture */
+                    .event =3D COUNTER_EVENT_CAPTURE,
+                    /* Device event channel 0 */
+                    .channel =3D 0,
+            },
+            {
+                    /* Component data: Count 1 count */
+                    .component.type =3D COUNTER_COMPONENT_COUNT,
+                    .component.scope =3D COUNTER_SCOPE_COUNT,
+                    .component.parent =3D 1,
+                    /* Event type: Capture */
+                    .event =3D COUNTER_EVENT_CAPTURE,
+                    /* Device event channel 0 */
+                    .channel =3D 0,
+            },
+    };
+    ...
+    int main(void)
+    {
+            int fd;
+            int i;
+	    unsigned long long delta_ts, delta_ra, delta_rb;
+	    double ra_frequency, rb_frequency, rb_ra;
+            struct counter_event first_capture[2], second_capture[2];
+           =20
+            /* Open Counter chrdev */
+            fd =3D open("/dev/counter0", O_RDWR);
+           =20
+            for (i =3D 0; i < 2; i++) {
+	            /* Register all Counter watches */
+                    ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + i);
+            }
+	    /* Start collecting Counter events */
+            ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
+           =20
+            for (;;) {
+	        /* Read first Counter event capture */
+            	read(fd, first_capture, sizeof(first_capture));
+	        /* Read second Counter event capture */
+            	read(fd, second_capture, sizeof(second_capture));
+               =20
+		/* Within each capture, timestamp is the same so only
+		 * first element of each capture needs to be compared */
+		delta_ts =3D second_capture[0].timestamp - first_capture[0].timestamp;
+		/* Compute deltas of timer register pair RA and RB.
+		delta_ra =3D second_capture[0].value - first_capture[0].value;
+		delta_rb =3D second_capture[1].value - first_capture[1].value;
+               =20
+		ra_frequency =3D (double)delta_ra / delta_ts;
+		rb_frequency =3D (double)delta_rb / delta_ts;
+		rb_ra =3D (double)delta_rb / delta_ra;
+               =20
+            	printf("RA frequency: %ld\n"
+		       "RB frequency: %ld\n"
+		       "RB per RA: %ld\n"
+            	       ra_frequency, rb_frequency, rb_ra);
+            }
+           =20
+            return 0;
+    }
+
+If RA and RB are provided as a memory buffer on your device, you can
+instead expose them via DEFINE_COUNTER_ARRAY_CAPTURE() such as the
+ti-ecap-capture driver does, then perform your userspace computations
+by utilizing those respective "capture" array attribute values (via
+chrdev like the example above or alternatively via sysfs).
+
+Do you think this design would work for your needs?
+
+William Breathitt Gray
+
+--L5rYZ1lkBZvzecLd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ5efcgAKCRC1SFbKvhIj
+K3d3AQChNnJh7TbDSsRfyR6M/PqsPlzEiiOD9LM1ho9hnfjDnwEA886rI7ZOW9JN
+vfUSJkgvn1NVCBo5qrdZDHO5ORKlAAM=
+=zv8x
+-----END PGP SIGNATURE-----
+
+--L5rYZ1lkBZvzecLd--
 

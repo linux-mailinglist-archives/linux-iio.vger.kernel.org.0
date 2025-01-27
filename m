@@ -1,105 +1,123 @@
-Return-Path: <linux-iio+bounces-14631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2E9A1D96E
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:24:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09500A1DA9A
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 17:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB297A14B5
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:24:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03C2118891A9
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF8225A658;
-	Mon, 27 Jan 2025 15:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDCC14A630;
+	Mon, 27 Jan 2025 16:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ro4Itc3a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQSB+79M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECF5EAD0
-	for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 15:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEAF15B54A;
+	Mon, 27 Jan 2025 16:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737991460; cv=none; b=hL8sYQVOlC9z8slBRfxosjwKhOIhCiGdwPUwgQ6rikXqxiyWxrTwBZlH3vGbje/0JBu28YcQNGwK4+tlElZBUraxNJCx6NgulGOLxeI1NsfJq5ZtMzEKUg1LGNXyqH6L3lka4Ip5W8yzu8LVOfyZpCfMN7tuBO6B6O0ym7Dp/8I=
+	t=1737995455; cv=none; b=fuG5CqqzFA4Sy5sIe8LZ7hWuHVyQcoJawqEPdH9BwuYyjcmmEzNtvK6jpEjM3UCx29pPYQemHyXNU4Fuyu4eHseus5NMI2WQmDWmmNH4yi7tWk3Zmfw4wsYPiSAYiHqySX8vKuZbC44Hh2uB2k7r8qJ063HYXWgNisoUkCttuPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737991460; c=relaxed/simple;
-	bh=C061X/fQ2LtEQLjG1AwLDA3xFZJtYZtYQK5XJkYvQA4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dLVmMhf5aYVVgInwNvNoYBDFVHA9e4UphliqvXJvMv9L98D1F9Nf/GCaUCVzRapeQivW/onZu0Q2jj3F0e8uE8RMdmfcsM7XZh9Bum2oOW7AT0kEBEbT9beVpbXsYhDVDqLdfhH6hg+IEOjpLBJWV2HMeMhyJjsWP0o7hyG0KOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ro4Itc3a; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2a9ef75a20dso2653670fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 07:24:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737991456; x=1738596256; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=skHpf+xWLASVnB8ELjMQj3KKy12yHsypC1y4ZyrjFnA=;
-        b=ro4Itc3a7nHKI05uibRMZ4n4IlKb1occ95pqLxCJ97i/8O9mOJ7drouIiXT+nMAMDP
-         IikonhvharxL6zOlqyCS+4iJ6RVf1XKh47MPc+h8JEGzMPQ3KgUfzSlYVzh+AHF7I6Y3
-         TKBOJ8D9muZiRgKoBXNPY0S2JM3Xfa7XZh9pMfT9KIjGI9JDOEh+1AdsAzbZalYx2RRG
-         MNRBcejMXW94xvb13n9uVl7JtBKmKPw0p0c6wy4FM2AuS+yBy+kwP7avr6o6YxbRT9ct
-         E9qNvvbWuXnLh637oBcQG80tFKOwvWlk/QD04cViA8yxrWmrQlMzKor9eButW9Q+zgbm
-         x7sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737991456; x=1738596256;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=skHpf+xWLASVnB8ELjMQj3KKy12yHsypC1y4ZyrjFnA=;
-        b=m1DDG7maTaUY6A/KA8Q2c1ZRuX8tgTztzKerB5pMVoCpp667t87v82rAswQJKywFXE
-         uylGpYimdGyrwmY1wY8GXOqwLKBARjLyQcpa2Xfz0FDrlndiojFqxh4uUuk0HE7spb3I
-         csN1x+MitGMtjgZ9LX7a8CY212b2BAavRuU8DsqWEjgJMiS7s1SxDaExDJ6wua31ML4n
-         DwHpWR3O9IvC9tK7usxCcskjcqdJ2Czq+ozDw8hnYY3HC8uHk2ubM7UHWOME8DrVbIcK
-         PZg437egmfkmha228v9WbTN3UnwRlW5OPOLJcQ52b+eCM1Hu0a7m5xSNpJEVONiDjqSa
-         5eJw==
-X-Gm-Message-State: AOJu0Yxzdp6Zvurd0ZRmeKpDS7YaLdvjYE48hLGnKU26efhEsjf6B2dN
-	ZfWqX76icamuXUpx1GVt1YLzoaBMUNRq71I4OLcRHw8ENyB4ufDbk7XIqp3kJjI=
-X-Gm-Gg: ASbGncsC2cKXDdLi4Qn9BztEAgk770xuoc8gHeRdN3SBaX1ZYvInuuCKalY0PDQLyY4
-	CI56hzWJt1cG3x7fHXI1ZZDcmp+3JlzKwzxhkf9T2eJy1COkqyHTZF1w21awgaDBv6I3FvjMABQ
-	kTmgtM/uuwSWSUVH2Q35rKVbI3uTZJLPulneDbrCJxX//X3U3n/eMI/aGn+MC9INDbL2CxSLmJw
-	JjbMXINaybCgFzR1O2PT0XoIKKCug70UulHN+ZG5Rz9E0WTthvIcu4MBF0mINSy43aeQLGzDGxV
-	KoyHLue+/HaygZ9290lmeehATgwxPQiX7ArEeuSbIQ==
-X-Google-Smtp-Source: AGHT+IGXCu1KtafRew27ycU/kGJdpvIdckos+7ePCXBHMEwDHwWxC9eiYYQEGTmkiyMudHV9H3kVCg==
-X-Received: by 2002:a05:6871:a4c7:b0:29e:4346:7fb9 with SMTP id 586e51a60fabf-2b1c0ac9c9dmr19706932fac.22.1737991456677;
-        Mon, 27 Jan 2025 07:24:16 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b28f0fad81sm2652546fac.2.2025.01.27.07.24.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 07:24:15 -0800 (PST)
-Message-ID: <67b87690-f663-45ce-b665-c3decd716b44@baylibre.com>
-Date: Mon, 27 Jan 2025 09:24:13 -0600
+	s=arc-20240116; t=1737995455; c=relaxed/simple;
+	bh=xrJgOlMCN20/Iuji9H3bNZecr9/m/kElFt061ei3y7g=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=XCYN9CVoOoCwm6quBjJfYwKefJteBisjiokc2FUFRWmVa+pMGB6S8LcuUWBlRWudC4SaQ1wGPDLPAJwMEd1nWOvWfezEUn1TCwcZB5/OHHnXO7a4Y5ZyoYtCnIDb7Ma0IxpRnVINsB/U3MBkHkh407F4KQATBf5kLUgy7GAvhMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQSB+79M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590E2C4CED2;
+	Mon, 27 Jan 2025 16:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737995454;
+	bh=xrJgOlMCN20/Iuji9H3bNZecr9/m/kElFt061ei3y7g=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=ZQSB+79MKd1ByihnwwANgASIHEGLYWUCl/7c+iAhsKxfqBnxJHcT7RYRPOmsErp4z
+	 5WFZl2Lwr747ZyoF9HeOrtQsZPCasgUAK4PHM/E67+ZBbrz3PqGe6G9W6MvVaG9+W7
+	 NErOX5WhE1HE5HspQAhKIWBvF8Oei7vGS22q6QwPsNvjkDDEcEKaYS/od2RibD49Ef
+	 vmmcIhD+aa37TLR1p5yB2ieeS3JwoaEJ8eRDmYSFsNdbf8V201poDZryLYQo17wSJE
+	 pH1VnctUHBDhtnZbQQRQMMbcnx/K27Wi9Hu92CtMYQjM19FE1vFlJ1c5XRDTzNDDb0
+	 iWH1lpR3D0CAg==
+Date: Mon, 27 Jan 2025 10:30:53 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/2] iio: adc: ad7173: add ad4111 openwire detection
- support
-To: Guillaume Ranquet <granquet@baylibre.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Nuno Sa <nuno.sa@analog.com>
-References: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: conor+dt@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com, 
+ jic23@kernel.org, linux-kernel@vger.kernel.org, marcelo.schmitt@analog.com, 
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
+ marcelo.schmitt1@gmail.com, krzk+dt@kernel.org, jonath4nns@gmail.com
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+In-Reply-To: <f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com>
+References: <cover.1737985435.git.Jonathan.Santos@analog.com>
+ <f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com>
+Message-Id: <173799545085.405574.12986826784688326343.robh@kernel.org>
+Subject: Re: [PATCH v2 02/16] dt-bindings: iio: adc: ad7768-1: add
+ trigger-sources property
 
-On 1/27/25 7:59 AM, Guillaume Ranquet wrote:
-> Hi.
+
+On Mon, 27 Jan 2025 12:11:30 -0300, Jonathan Santos wrote:
+> Add a new trigger-sources property to enable synchronization across
+> multiple devices. This property references the main device (or
+> trigger provider) responsible for generating the pulse to drive the
+> SYNC_IN of all devices in the setup.
 > 
-> This patch adds the openwire detection support for the ad4111 chip.
+> In addition to GPIO synchronization, The AD7768-1 also supports
+> synchronization over SPI, which use is recommended when the GPIO
+> cannot provide a pulse synchronous with the base MCLK signal. It
+> consists of looping back the SYNC_OUT to the SYNC_IN pin and send
+> a command via SPI to trigger the synchronization.
 > 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+> SPI-based synchronization is enabled in the absence of adi,sync-in-gpios
+> property. Since adi,sync-in-gpios is not long the only method, remove it
+> from required properties.
+> 
+> While at it, add description to the interrupt property.
+> 
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+> v2 Changes:
+> * Patch added as replacement for adi,sync-in-spi patch.
+> * addressed the request for a description to interrupts property.
+> ---
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 22 +++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml:84:6: [error] missing starting space in comment (comments)
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml: ignoring, error in schema: required: 8
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml: required:8: None is not of type 'string'
+	from schema $id: http://json-schema.org/draft-07/schema#
+Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.example.dtb: /example-0/spi/adc@0: failed to match any schema with compatible: ['adi,ad7768-1']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

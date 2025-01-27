@@ -1,86 +1,122 @@
-Return-Path: <linux-iio+bounces-14636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600DDA1DADE
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 17:56:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5F4A1DBA0
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 18:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A8711889178
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94BEB3A4E86
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 17:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B71915E5B8;
-	Mon, 27 Jan 2025 16:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F60F18A6C1;
+	Mon, 27 Jan 2025 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fb0hE2Lz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhDelnfB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9275433CB;
-	Mon, 27 Jan 2025 16:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B9C1632EF;
+	Mon, 27 Jan 2025 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737996983; cv=none; b=R+vPBrH0NPGLtKhdO/lVqULXPtndgFs3Y2mBTtKgJdwhYWGQueCi/zesz1LgbERWwxqkGM2TCC9PrVUho8TXePpxLBXCgVR2iMcZFN2flP4jAvFwj9jVXZwKhxtm7YEhyLgdzCU9jhOVWR9T0TKYItMbpJSNChJ9xpEwWdEusXI=
+	t=1738000427; cv=none; b=Tj+L3WniDc0KhU6u6DPlykX87a+hbW3nYk0FVrrvHbUOc8AQf2nB/vzGUoFDZ/+8o2lI407HcjvyBQ/sbvMALJsCE5xwnK8XGekGPkbOLT1vvchEcETkSb8Fw0eCXPQRMqgLexvPOpJmVzRjrlw8FdtDOcVsodb+nrAopR1M1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737996983; c=relaxed/simple;
-	bh=Icp1z06DcSKJEBEZLh/HqaKK5uWkxBLX4qEKaiKT0g8=;
+	s=arc-20240116; t=1738000427; c=relaxed/simple;
+	bh=D6rTYlJ7adtRt6OVqK+mDWFMjreMOILxT7XBoOHfLEY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYy6xsPEPlPiq6EDnH7npS488kQeaQmmUXhHmHnvMa1afZL18MSYyZvw0Vp5ZT27wSM4D9+VkI7mA8Fkc3NAhn8rF/qpSwz4pjvWxSKGhMS9rHxOfWTTZCe470utxe7s0I5EKu8VM5FYq8HcodKrDNSmYFEzQ2rQFB6Ced2Ng6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fb0hE2Lz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1390BC4CED2;
-	Mon, 27 Jan 2025 16:56:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPAxkOsS1NfrjGCeefZxa+5ppMKwOVbW1P83zC14E4uwftYYFC/EgavFqn4qtrXW+PcLx6ob2BukN+zCO4wQ6v2WvGk9afAFEAgTKNxSjurXVi8ma/b0EB/MbRh7Nhe3QG7MAYuckH6tEg3N2WfEwm1ADaL4i1TGV718Zc/Onxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhDelnfB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EA2C4CED2;
+	Mon, 27 Jan 2025 17:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737996983;
-	bh=Icp1z06DcSKJEBEZLh/HqaKK5uWkxBLX4qEKaiKT0g8=;
+	s=k20201202; t=1738000427;
+	bh=D6rTYlJ7adtRt6OVqK+mDWFMjreMOILxT7XBoOHfLEY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fb0hE2LztpT+UF5YgFqYGB8TNmnGCAPb+rs7zq0g4nGT0fJvtx9db3fjQJepVskSV
-	 U2Bmo/OUlBUdrp4ehM6amzOM9B0p79EN0eSj3BR0GD9jm80i4hVsFeEfiJNigoCl/K
-	 GOzbS1LQAy3CbJjHAbkO5cEcnEFwFBWeAxAq05CQTBiCw/15UVfD/gHRKUqqrjmaRs
-	 SIpfcsQSE+EfUrN1cHvu1JogK7KJmuG8Qig0sjSuR0ybRawdVX/hTApJxtyvgalKwx
-	 nb8qcvJy9jzDFvn6qX9gB0tix/FfeRZ7e4pB5Bzc31OEPZhDD3A+F/7nmG/OA2zAT4
-	 QMSPVwi5bbL9w==
-Date: Mon, 27 Jan 2025 10:56:22 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: marcelo.schmitt@analog.com, conor+dt@kernel.org,
-	devicetree@vger.kernel.org, jic23@kernel.org, jonath4nns@gmail.com,
-	linux-iio@vger.kernel.org, lars@metafoo.de,
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
-	marcelo.schmitt1@gmail.com, krzk+dt@kernel.org
-Subject: Re: [PATCH v2 03/16] dt-bindings: iio: adc: ad7768-1: Document GPIO
- controller
-Message-ID: <173799698101.443043.276821250672905938.robh@kernel.org>
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <dc866cb508917828f83242f3438dd1d6ac9d874c.1737985435.git.Jonathan.Santos@analog.com>
+	b=FhDelnfBbP0zvX54YLY/nI+7R+AJivkYOcPZkheUdzxsHuDfHgyIegUuTy1HSIWDA
+	 52zw5M5wAC3RRlhyLeTLvLH0jjcP1Yi+H2wnT8sOgfWoPaIHWcB3pk+b8oXFpa4xfR
+	 zCLtv00exLWY1VmK8mFBUS8hJnHS7fv46EnCxd6l0qfYn5rj4DVUs6oEiur8Aqel7o
+	 HOgL+VbLJ9ONh6tKBn9QqjDVNBFMys64pkevk2zDb8MMEepZfrN1NafmDhvwBlTdec
+	 urTqH83+I3/fUne2Qf2NLA9Ywr3qbi9pbkUKZLmAQNZt7B82XxzXg+ZKqXB4lqIB9M
+	 n9BURY8VbUUlQ==
+Date: Mon, 27 Jan 2025 17:53:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: jic23@kernel.org, robh@kernel.org, conor+dt@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pwm@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] dt-bindings: iio: adf4371: add refin mode
+Message-ID: <20250127-makeshift-legroom-bb02764c6ed6@spud>
+References: <20250127101026.5320-1-antoniu.miclaus@analog.com>
+ <20250127101026.5320-2-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="m24T8jOaz/caQgXq"
+Content-Disposition: inline
+In-Reply-To: <20250127101026.5320-2-antoniu.miclaus@analog.com>
+
+
+--m24T8jOaz/caQgXq
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <dc866cb508917828f83242f3438dd1d6ac9d874c.1737985435.git.Jonathan.Santos@analog.com>
+Content-Transfer-Encoding: quoted-printable
 
-
-On Mon, 27 Jan 2025 12:11:44 -0300, Jonathan Santos wrote:
-> The AD7768-1 ADC exports four bidirectional GPIOs accessible
-> via register map.
-> 
-> Document GPIO properties necessary to enable GPIO controller for this
-> device.
-> 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+On Mon, Jan 27, 2025 at 12:10:21PM +0200, Antoniu Miclaus wrote:
+> Add support for selecting between single-ended and differential
+> reference input.
+>=20
+> Input frequency boundaries are change based on the mode selected
+> (single-ended/differential).
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > ---
-> v2 Changes:
-> * New patch in v2.
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7768-1.yaml      | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
+> no changes in v6.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Why'd you not pick up my ack?
+https://lore.kernel.org/all/20250121-crumb-dispense-b455b591481a@spud/
+:
+>  Documentation/devicetree/bindings/iio/frequency/adf4371.yaml | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml=
+ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> index 1cb2adaf66f9..53d607441612 100644
+> --- a/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> +++ b/Documentation/devicetree/bindings/iio/frequency/adf4371.yaml
+> @@ -30,8 +30,9 @@ properties:
+> =20
+>    clock-names:
+>      description:
+> -      Must be "clkin"
+> -    maxItems: 1
+> +      Must be "clkin" if the input reference is single ended or "clkin-d=
+iff"
+> +      if the input reference is differential.
+> +    enum: [clkin, clkin-diff]
+> =20
+>    adi,mute-till-lock-en:
+>      type: boolean
+> --=20
+> 2.48.1
+>=20
 
+--m24T8jOaz/caQgXq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ5fIJgAKCRB4tDGHoIJi
+0tyqAQCHsWuqf153qokbl2mu+I+QiG6wFR7hqRawftbxoFYReQEA+L8PDfzvr45y
+bw3yBThZH3lGHxySkaBrEm0sD4JpVAk=
+=HrzY
+-----END PGP SIGNATURE-----
+
+--m24T8jOaz/caQgXq--
 

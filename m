@@ -1,244 +1,147 @@
-Return-Path: <linux-iio+bounces-14613-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14614-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EE3A1D8F1
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:03:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D94A1D911
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAED83A4DF0
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:03:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1201A165B5E
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423BF55897;
-	Mon, 27 Jan 2025 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED1F136E3F;
+	Mon, 27 Jan 2025 15:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eO7/ToV5"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="QINq9xwl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FCA13633F
-	for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 15:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FA538DEC;
+	Mon, 27 Jan 2025 15:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737990191; cv=none; b=Iq1RlVk0qXx+PVtKJMYt0x82RlRAGxT29vew/gPbcgg57ajKusqABuYX1g/qclOvGrLMvi0lHdG+iTVhePKUHoIhMCxPXj4mly3KExXB6aY+DlCqu1/Caqez6HQZTuEuspLwSwfsK3BmLYhx60HUupCjc7I1vAIM+HCDWlYV8Kg=
+	t=1737990667; cv=none; b=nLfnvkeMaBcRm6EqZr5AXLpWqKkuhFyBrQRszruyJIXBy27LKtwGSgv3r01N2G9FXNPbbYsbGC8IpgulPkT0CAZXv4TbVQZr7VfIWrrEOnp4R+TV9KUOmX7pFArmWS4VEmPExFbUR559/qO2nQ8ijj0m0lQqrFXCd8lR5bd6LbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737990191; c=relaxed/simple;
-	bh=KgQQ5YANRbxtmZcEfox8jlX6dfC8/IJ+VxKphZA7qPs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mX8oXJalM8vhd4vcmb1XSeIo7E4kcic0GhxUKiBy33A+XlHrSvlxDPM1DPzEOJ/xXVBK5hI/F/A9sUivs3AC4JZGpguIs9IUnGzYtQ1WhB758rqq9clSW/456pkEmhRk4ZcopInBzppcw9Wlv/0KzDjdxfXyRprdzOVxNuBMErs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eO7/ToV5; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e54d268bc3dso7941933276.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 07:03:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737990188; x=1738594988; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NXZQ6nb4ZjNmSWmyYgZm9Czv4PRceNRa178kP6HZ8M0=;
-        b=eO7/ToV5q+w+TfV7R8OaW/k3RWkcgG+5XSSKpXgSmn9Kzfsr42IEiTRsLNpeVR2Baz
-         cnrrhFDqhctw1TB+1tS8AtR0H+nTrDvq9KCE8S5hoKqIyLxHCanAwh6Xd6f3YKZKQyZ0
-         JpsWSDgnGhBVdp9JXbbZrQnCVuUYdlbHLC6vc/z41bEUIVwy61LnpGYe5SoVYJX+Nas+
-         UNQF7Sj6lpkN8W0zvrs0pAl70+IXsiHqaZ6DqwO25zaulCQrWqUKk+bvyL5CJXGCMvlq
-         k55whc0JvC8NKj2AW0sDwlx4SbY0N5iUcKPI8CU1avha312El5ioG0iAcNN8ZD6L+VF5
-         mnxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737990188; x=1738594988;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NXZQ6nb4ZjNmSWmyYgZm9Czv4PRceNRa178kP6HZ8M0=;
-        b=nnK7saidIXX2vlbRwpvj7sEL5sh1p3LZakL2XKYptj2OX2puKw7Fpin2RdwZxRuJBl
-         5AputHYFxooe8dxqJwjxHElERKALc9lKg/jTc3TI2OEa2Ab12YiVhNgJXkxVPqQuGwGB
-         mvS4wfnzD4d32UKil4eQp9TyWR39GlWP9SRN9orioJHARmnDReFnahk4ggUqyBhoQOY4
-         Yvplyd3GFNvjvp4yJnOQ8zNj6VPN74K5jftf8Ss/6NpyAYzQyAw4Y8HswGPipNVG9MCK
-         8/Qr3S2mIeFumYCutICN7Gxnws0fRnBYCBqOxh6GMVR5wpN90YSaz3yiYyavhbQlJBKm
-         eA7g==
-X-Forwarded-Encrypted: i=1; AJvYcCV1UDOT4L2gTh03UFXgEFV2L/1xbV2OSyWv/v5zB7GDOHdoUT8xAYh9jgj5S25RK/41as2/+PUv16k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKeWobG8CUsxv2hqTNACG+VMkf++cdxNzlokPpiZXJ9XTxmLOE
-	yiUw8kOjQ14XZp5zAktvwpu8/ZKFiwKBgyuDQc7AN6BI9QhGnH6tjYH5UWar+sdg2BnRJhW1Vaq
-	benO/lNu1tcCWQ/AXuNExjGn2nJkzPo1q9jOuOw==
-X-Gm-Gg: ASbGncvGVB+uOPGAuAKn7k9jUyQNoNOXuLaPnOnZmaUA4FQGv+kV6KGaA9oaJlqQMnP
-	Ul8EA84o/5+nBGIQx5nZmE12pCYc7T4l9FuE7X9/Tu1lE62jvIaXDlXoZXYpQFOw=
-X-Google-Smtp-Source: AGHT+IEt6T/uZdsMbBRTR7v5lKTj+sx8hluU13fEefiuxj0xUTMAIdxo11ZKTBwu3aNDvJlMgWAozLpYi/KSFkSLEJY=
-X-Received: by 2002:a05:6902:1501:b0:e58:1412:95e5 with SMTP id
- 3f1490d57ef6-e5814129711mr17108491276.32.1737990187961; Mon, 27 Jan 2025
- 07:03:07 -0800 (PST)
+	s=arc-20240116; t=1737990667; c=relaxed/simple;
+	bh=FV5x4h1U7sxcz55kqdgXTDcicKcC67T4rW37QzwoaXM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H5voSoTwJqozkfvLUbYBQm0Y7fbTufs2SMakMaau5vJbMJ7OO0EsIht5/TbIbck8IJYDFztpZSN++ruJOh4iNpKh+jZuXXmQ79W3u40BV5o2irIAPL4In37joKmuGvXR/T+bKhXMrHT1n0D/dvi6ajvPUmnWQSS160s5wkoIeIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=QINq9xwl; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RDWCMw005712;
+	Mon, 27 Jan 2025 10:10:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=z/Ft/eDFh9IU3HITlqMjO/x0cqA
+	TfPsAbE5Ol/sBiMc=; b=QINq9xwlFQMIKhjbY73aZKV5oW7i87Zzr0I+KqaO9MI
+	VBeQWYInnz7kyhAieiv9mHXHxHc2O5gs6qTUYSyOnIN2ALheP7TzrN7/FrQsvTy0
+	f9W3DEOy4ZQS8+Uo4lbyU0x3SJxXbkF2b/Rdglr9t4IZpLgp6BQCyc8SLMoSr926
+	r6vksGRGM90egQt9ftZZsGDIGmkx9aB4fVlIsWjVzvbM+56BVfn3nlc6YGbBtKWL
+	mDwL/ePi87VOx+7sWBHWgeV2yGIHmiSc8fYegf5+tFGLsSNKAO2gUrxNfyMj9bOF
+	WG1TWyNKZZmyIh7olhlq/1Wz4qWoVo/HKlz2TivMW5g==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 44eb44gd9k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jan 2025 10:10:49 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 50RFAm9N038336
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 27 Jan 2025 10:10:48 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 27 Jan
+ 2025 10:10:47 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 27 Jan 2025 10:10:47 -0500
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50RFAYqW008222;
+	Mon, 27 Jan 2025 10:10:36 -0500
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
+        <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v2 00/16] Add features, improvements, and fixes
+Date: Mon, 27 Jan 2025 12:10:31 -0300
+Message-ID: <cover.1737985435.git.Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250103140042.1619703-1-claudiu.beznea.uj@bp.renesas.com>
- <20250103140042.1619703-2-claudiu.beznea.uj@bp.renesas.com>
- <20250104135225.2573285b@jic23-huawei> <44e4a6b4-39a4-49d0-b3a5-fc5545c39a56@tuxon.dev>
- <20250111131409.36bebfd3@jic23-huawei> <bb987a1b-a999-478c-8e35-124fcf41561d@tuxon.dev>
- <CAPDyKFoJ3pLU-5_b5MSxMZd7B1cfOvmcdqR4FGkU2Wb7No0mcw@mail.gmail.com>
- <20250117155226.00002691@huawei.com> <CAPDyKFpQUMOFtA-QCbYdaeKSDGJpnjcA+tiKZ=kzmrjYRtFZdw@mail.gmail.com>
- <20250124184137.0000047a@huawei.com> <CAPDyKFrqDfYEQHk0RsRi2LnMw_HgGozMW9JP9xmkAq52O7eztg@mail.gmail.com>
- <20250127123250.00002784@huawei.com>
-In-Reply-To: <20250127123250.00002784@huawei.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 27 Jan 2025 16:02:32 +0100
-X-Gm-Features: AWEUYZkibkIQT8TcMqUAUe1XzBqCQ3T6nHOIS2uELscvJhEfdW2W4UhZK7QYCLM
-Message-ID: <CAPDyKFoCx3jQOptPrY0CYNpH1R+fszF3MUQLSTn_nreyi5-vPw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>, Jonathan Cameron <jic23@kernel.org>, 
-	prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-pm@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 8vPwloxfYnQqo3D2hKjy06i9Js_nLyiJ
+X-Proofpoint-GUID: 8vPwloxfYnQqo3D2hKjy06i9Js_nLyiJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-27_07,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 mlxlogscore=919 phishscore=0
+ adultscore=0 suspectscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501270121
 
-On Mon, 27 Jan 2025 at 13:32, Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 27 Jan 2025 11:47:44 +0100
-> Ulf Hansson <ulf.hansson@linaro.org> wrote:
->
-> > [...]
-> >
-> > > > > > > Do consider OK to change the order in pm_runtime_disable_action() to get
-> > > > > > > rid of these issues, e.g.:
-> > > > > > >
-> > > > > > > diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-> > > > > > > index 2ee45841486b..f27d311d2619 100644
-> > > > > > > --- a/drivers/base/power/runtime.c
-> > > > > > > +++ b/drivers/base/power/runtime.c
-> > > > > > > @@ -1547,8 +1547,8 @@ EXPORT_SYMBOL_GPL(pm_runtime_enable);
-> > > > > > >
-> > > > > > >  static void pm_runtime_disable_action(void *data)
-> > > > > > >  {
-> > > > > > > -       pm_runtime_dont_use_autosuspend(data);
-> > > > > > >         pm_runtime_disable(data);
-> > > > > > > +       pm_runtime_dont_use_autosuspend(data);
-> > > > > > >  }
-> > > > > > >
-> > > > > > > though I see a rpm_resume() call is still possible though pm_runtime_disable().
-> > > > > >
-> > > > > > I am still worried about keeping the device runtime enabled during a
-> > > > > > window when we have turned off all resources for the device. Typically
-> > > > > > we want to leave the device in a low power state after unbind.
-> > > > > >
-> > > > > > That said, I would rather just drop the devm_pm_runtime_enable() API
-> > > > > > altogether and convert all users of it into
-> > > > > > pm_runtime_enable|disable(), similar to what your patch does.
-> > > > >
-> > > > > That is making a mess of a lot of automated cleanup for a strange
-> > > > > runtime pm related path.  This is pain a driver should not have
-> > > > > to deal with, though I'm not clear what the right solution is!
-> > > > >
-> > > > > Key is that drivers should not mix devm managed cleanup and not, so
-> > > > > that means that anything that happens after runtime pm is enabled
-> > > > > has to be torn down manually.  One solution to this might be to
-> > > > > always enable it late assuming that is safe to do so there is
-> > > > > never anything else done after it in the probe path of a driver.
-> > > >
-> > > > The problem is that runtime PM isn't really comparable to other
-> > > > resources that we are managing through devm* functions.
-> > > >
-> > > > Enabling runtime PM for a device changes the behaviour for how
-> > > > power-mgmt is handled for the device. Enabling/disabling of runtime PM
-> > > > really needs to be explicitly controlled by the driver for the device.
-> > >
-> > > I'm sorry to say I'm not yet convinced.
-> >
-> > Okay, let me try one more time. :-)
->
-> +CC Greg as the disagreement here is really a philosophy of what
-> devm cleanup is relative to remove.  Perhaps Greg or Rafael can
-> given some guidance on the intent there.
->
-> Mind you I think I found another subsystem working around this
-> and in a somewhat more elegant, general way (to my eyes anyway!)
->
-> https://elixir.bootlin.com/linux/v6.12.6/source/drivers/i2c/i2c-core-base.c#L630
-> https://lore.kernel.org/all/YFf1GFPephFxC0mC@google.com/
->
-> +CC Dmitry.
->
-> I2C creates an extra devres group and releases it before devm_pm_domain_detach()
-> As all devm calls from the driver end up in that group, they are released
-> before dev_pm_domain_detach()
->
+This patch series introduces some new features, improvements,
+and fixes for the AD7768-1 ADC driver. 
 
-How would that address the problem I pointed out with runtime PM
-below? This problem isn't limited to attaching/detaching PM domains.
+The goal is to support all key functionalities listed in the device
+datasheet, including filter mode selection, common mode voltage output
+configuration and GPIO support. Additionally, this includes fixes 
+for SPI communication and for IIO interface, and also code improvements
+to enhance maintainability and readability.
+---
+Changes in v2:
+* Removed synchronization over SPI property and replaced it for trigger-sources.
+* Added GPIO controller documentation.
+* VCM output control changed from an IIO attribute to a devicetree property (static value).
+* Converted driver to use regmap and dropped spi_read_reg and spi_write_reg pacthes.
+* replaced decimation_rate attribute for oversampling_ratio and dropped device specific documentation patch.
+* Added low pass -3dB cutoff attribute.
+* Addressed review comments, see individual pacthes.
+* Link to v1: https://lore.kernel.org/linux-iio/cover.1736201898.git.Jonathan.Santos@analog.com/T/#t
+---
+Jonathan Santos (11):
+  dt-bindings: iio: adc: ad7768-1: add trigger-sources property
+  dt-bindings: iio: adc: ad7768-1: Document GPIO controller
+  dt-bindings: iio: adc: ad7768-1: add VMC output property
+  Documentation: ABI: add wideband filter type to  sysfs-bus-iio
+  iio: adc: ad7768-1: set MOSI idle state to prevent accidental reset
+  iio: adc: ad7768-1: convert driver to use regmap
+  iio: adc: ad7768-1: remove unnecessary locking
+  iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
+  iio: adc: ad7768-1: add support for Synchronization over SPI
+  iio: adc: ad7768-1: add filter type and oversampling ratio attributes
+  iio: adc: ad7768-1: add low pass -3dB cutoff attribute
 
->
-> >
-> > >
-> > > Devm callbacks are explicitly registered by the driver so that they
-> > > are unwound in a specific order.  Many other parts of driver
-> > > registration rely on this ordering.  This does not seem different
-> > > for runtime PM than anything else.
-> >
-> > If you compare clocks, for example. It's the driver that is in full
-> > control of the clock gating/ungating. When the ->remove() callback
-> > runs, the driver typically makes sure that it leaves the clock gated.
-> > Then it doesn't really matter when the clock resource gets released.
-> > The point is, the driver is in full control of the resource.
->
-> Not a good example. devm_clk_get_enabled() does not gate the clock until
+Sergiu Cuciurean (5):
+  iio: adc: ad7768-1: Fix conversion result sign
+  iio: adc: ad7768-1: Add reset gpio
+  iio: adc: ad7768-1: Move buffer allocation to a separate function
+  iio: adc: ad7768-1: Add VCM output support
+  iio: adc: ad7768-1: Add GPIO controller support
 
-I was not referring to devm_clk_get_enable(), but rather just devm_clk_get().
+ Documentation/ABI/testing/sysfs-bus-iio       |   2 +
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |  42 +-
+ drivers/iio/adc/ad7768-1.c                    | 889 +++++++++++++++---
+ include/dt-bindings/iio/adc/adi,ad7768-1.h    |  16 +
+ 4 files changed, 816 insertions(+), 133 deletions(-)
+ create mode 100644 include/dt-bindings/iio/adc/adi,ad7768-1.h
 
-To me devm_clk_get_enable() is another interface that we should avoid.
-For example, what if the clock is already gated when the ->remove()
-callback runs? Then we need to ungate the clock just to make the
-devres path happy so it doesn't gate an already gated clock. And this,
-just to save one or two lines of code.
 
-Don't get me wrong, I certainly like the devm* functions in general,
-but it's not a good fit for everything.
+base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
+prerequisite-patch-id: 8b531bca46f7c7ea1c0f6d232d162fd05fda52f7
+-- 
+2.34.1
 
-> the devm cleanup. The assumption being that nothing that affects
-> it runs between the remove() and devm cleanup.  So pretty much identical
-> to the runtime pm case.  They being that you have to obey ordering so
-> that if you need to run something after the clock is disabled then
-> you register that callback before you call devm_clk_get_enabled()
->
-> >
-> > If runtime PM would remain enabled beyond the call to the ->remove()
-> > callback, it would mean that the driver's runtime PM callbacks could
-> > be called too. For example, userspace via sysfs may at any point
-> > decide to runtime resume the device. In other words, we may end up
-> > calling the runtime PM callbacks in the driver, when they are not
-> > intended to be called. In the worst case, I guess we could even end up
-> > trying to control resources (like a clock) from the ->runtime
-> > _resume() callback, when the references to these resources may already
-> > have been released.
->
-> This is all about what we consider remove. To me, with devm_ manged cleanup
-> in place, both remove() and devm_ cleanup count as parts of that remove
-> process.
-
-There is no straightforward process here, if you would keep runtime PM
-enabled beyond ->remove(). Things can happen in parallel.
-
-In that case, drivers would need to extend their runtime PM callbacks
-to cope with more complicated conditions, as resources that those use
-may have been released. Moreover, how can we make sure that the device
-is put into a low power state after the ->remove() has been called?
-
->
-> One option I did wonder about was having a devm_pm_domain_attach()
-> A little cheeky but I think the call in platform_probe() is late enough
-> that we don't run into the checks on no devm_ calls before driver probe.
->
-> That would shuffle the dev_pm_domain_detach() to the end of the
-> devm_ cleanup.  Mind you the i2c approach above seems better.
-
-Again, this isn't limited to PM domains.
-
-[...]
-
-Kind regards
-Uffe
 

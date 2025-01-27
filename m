@@ -1,117 +1,175 @@
-Return-Path: <linux-iio+bounces-14634-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14635-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2B7A1DAA0
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 17:31:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A54A1DADA
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 17:55:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3EB41889198
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:31:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 949461663B5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8368C178CC8;
-	Mon, 27 Jan 2025 16:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E3115A842;
+	Mon, 27 Jan 2025 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="so+SN6jH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Js+Op39k"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39083156C76;
-	Mon, 27 Jan 2025 16:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB3F433CB;
+	Mon, 27 Jan 2025 16:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737995457; cv=none; b=Zcx/fkQMurc0Wnwm2VJKqrMtqTr4M3RHtbhMy2JySrn5aMKwenFVhRHS5uewB4Cq7o59gHtraGhKGb96iV5gF7OCJjqRuP28tpKevzKe2BicL3xvQeBKHIpJ6exhoNQ7pxCnr2mnvYGju87TPoUr8RCPVg1PBMnNt3gtoD53tIQ=
+	t=1737996932; cv=none; b=bo/B68I4Cyhpsen7WD9VL8ju3gNCkR4fYZRq3d8v1I0Fg0SwrJ3xk/11b50FjhzKi9J+NT29D4b8J+jvu0u1zdwu0k5tY/mVwAIn49RbPToM27VHyOrezsDTZ48Zr7dj4LfGhBpUYFC7pTkE/QubBTt5ylBlddbCy0CGI2VUZns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737995457; c=relaxed/simple;
-	bh=EOzsobw0dCup/mm1V1SWK598t/wpvmmRb/NcHzpJ+QE=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=c48SRsUIlsJ0WDs9p+1ZpMVVkTa3jVrO2nEhp6qFisNajHp82uw6l7SY8jOVCTNTTMg+VfKcjhSS/SXDQB89DBNns17N/MmTpMuusKJBWsOkLEKMPoP1+ARmAovp2V7srHQAtOpC+MJgEIdlLU+bB87LBCXzpj97QUBFfbmsrRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=so+SN6jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E117FC4CEE3;
-	Mon, 27 Jan 2025 16:30:56 +0000 (UTC)
+	s=arc-20240116; t=1737996932; c=relaxed/simple;
+	bh=dCHZ7RThHyLwPqcj8c7NPuZ8uYZjp2Zvuxey5DCSzgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JcNMmKRxTMbEiZz0GeKasaMp34eOEeIolKfToJMx4ZXh3TaOn1gSP0Ociju7Q4uayPjfhaqg0dQnioWxQ9I+3cI5R34rlEjVA31/+Ec6qqBz6BMyf8tlKfJ20IBIOb7V2bOVHT3ocZ6qTIYM7xhQDuUKG4GN7moipW401lHytBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Js+Op39k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771E6C4CED2;
+	Mon, 27 Jan 2025 16:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737995457;
-	bh=EOzsobw0dCup/mm1V1SWK598t/wpvmmRb/NcHzpJ+QE=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=so+SN6jHebOP6I2KOuBtUn3TKAEchOJPyvRAooETXz5zaKuP+Ok7RvYm2jI2rUrQ1
-	 ZeUMZrLOC5SuRT25KtH2AAeQpjK+Q7/mBNz/PP4aVDwyMXF9CB8IsFfgXmF0Peg4n1
-	 oqPEZeTpf3KjlyzIldpKxWx3F+c4s6//1vPHpanjpPrGNxUiI+KAQu2tibHjMkxyka
-	 OyHBrLAbMM9UMmMq6YOCTP/FojL2Sx1/8m5qv1R/WPyS6YofR0AyLpziso/la8pnSl
-	 BiTFBxWqwI7XdviGbGhpWXyfO9rc34P0bQLTIAMqDpxbjjrXAeNfd7ACsFjuv/LPW3
-	 91wpOegjAV2NQ==
-Date: Mon, 27 Jan 2025 10:30:55 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1737996930;
+	bh=dCHZ7RThHyLwPqcj8c7NPuZ8uYZjp2Zvuxey5DCSzgo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Js+Op39kBr/aQANumk7C6dKH6hXZ9ZgZjrY5oE9Xj1EkJooR4sezpfa+dZZG2xSbr
+	 Gk6Fg7PKLflA8D7AuOrL7un5sM8NolM49ynMf8SErMsgD6t/EoQ5KRAw0s0KNTKXvQ
+	 gTs8pCICIDaGIUSq/OqxirnoORT1oW/dPKBW8s+x34kA1AynWiRphKMAJ3QKMi/gUG
+	 /iOI3GsgRgwIcSqsVVs6jkPpCIOa+R6u+uZIAgn2APwJX6YVzBgQywGmpTvcXo0GJM
+	 ga0TvqaGqMXoTEYny2QIJGAXYgFaG+sXUvIXNfv96bqhbS6ROshkcKjXOo739iYnwu
+	 WFA6Kgud/F5cw==
+Date: Mon, 27 Jan 2025 10:55:29 -0600
+From: Rob Herring <robh@kernel.org>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
+	jic23@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	jonath4nns@gmail.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v2 02/16] dt-bindings: iio: adc: ad7768-1: add
+ trigger-sources property
+Message-ID: <20250127165529.GA435197-robh@kernel.org>
+References: <cover.1737985435.git.Jonathan.Santos@analog.com>
+ <f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: marcelo.schmitt1@gmail.com, marcelo.schmitt@analog.com, 
- krzk+dt@kernel.org, conor+dt@kernel.org, jic23@kernel.org, 
- linux-iio@vger.kernel.org, Michael.Hennerich@analog.com, 
- linux-kernel@vger.kernel.org, jonath4nns@gmail.com, 
- devicetree@vger.kernel.org, lars@metafoo.de
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-In-Reply-To: <e17337bc3b0f2e95d3d4f7b6daa7755881e11fba.1737985435.git.Jonathan.Santos@analog.com>
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <e17337bc3b0f2e95d3d4f7b6daa7755881e11fba.1737985435.git.Jonathan.Santos@analog.com>
-Message-Id: <173799545339.405668.16086159730707197381.robh@kernel.org>
-Subject: Re: [PATCH v2 04/16] dt-bindings: iio: adc: ad7768-1: add VMC
- output property
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com>
 
-
-On Mon, 27 Jan 2025 12:12:05 -0300, Jonathan Santos wrote:
-> The AD7768-1 provides a buffered common-mode voltage output
-> on the VCM pin that can be used to bias analog input signals.
+On Mon, Jan 27, 2025 at 12:11:30PM -0300, Jonathan Santos wrote:
+> Add a new trigger-sources property to enable synchronization across
+> multiple devices. This property references the main device (or
+> trigger provider) responsible for generating the pulse to drive the
+> SYNC_IN of all devices in the setup.
 > 
-> Add adi,vcm-output to enable the configuration of the VCM output
-> circuit.
+> In addition to GPIO synchronization, The AD7768-1 also supports
+> synchronization over SPI, which use is recommended when the GPIO
+> cannot provide a pulse synchronous with the base MCLK signal. It
+> consists of looping back the SYNC_OUT to the SYNC_IN pin and send
+> a command via SPI to trigger the synchronization.
+> 
+> SPI-based synchronization is enabled in the absence of adi,sync-in-gpios
+> property. Since adi,sync-in-gpios is not long the only method, remove it
+> from required properties.
+> 
+> While at it, add description to the interrupt property.
+
+interrupts
+
 > 
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > ---
 > v2 Changes:
-> * New patch in v2.
+> * Patch added as replacement for adi,sync-in-spi patch.
+> * addressed the request for a description to interrupts property.
 > ---
->  .../bindings/iio/adc/adi,ad7768-1.yaml           | 10 ++++++++++
->  include/dt-bindings/iio/adc/adi,ad7768-1.h       | 16 ++++++++++++++++
->  2 files changed, 26 insertions(+)
->  create mode 100644 include/dt-bindings/iio/adc/adi,ad7768-1.h
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 22 +++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> index 3ce59d4d065f..3e119cf1754b 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> @@ -26,7 +26,17 @@ properties:
+>    clock-names:
+>      const: mclk
+>  
+> +  trigger-sources:
+> +    description:
+> +      References the main device responsible for synchronization. In a single
+> +      device setup, reference the own node.
+> +    maxItems: 1
+> +
+>    interrupts:
+> +    description:
+> +      Specifies the interrupt line associated with the ADC. This refers
+> +      to the DRDY (Data Ready) pin, which signals when conversion results are
+> +      available.
+>      maxItems: 1
+>  
+>    '#address-cells':
+> @@ -46,6 +56,8 @@ properties:
+>        sampling. A pulse is always required if the configuration is changed
+>        in any way, for example if the filter decimation rate changes.
+>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+> +      In the absence of this property, Synchronization over SPI will be
+> +      enabled.
+>  
+>    reset-gpios:
+>      maxItems: 1
+> @@ -57,6 +69,9 @@ properties:
+>    "#io-channel-cells":
+>      const: 1
+>  
+> +  "#trigger-source-cells":
+> +    const: 0
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -65,7 +80,8 @@ required:
+>    - vref-supply
+>    - spi-cpol
+>    - spi-cpha
+> -  - adi,sync-in-gpios
+> +  - trigger-sources
+> +  - #trigger-source-cells
 
-My bot found errors running 'make dt_binding_check' on your patch:
+You need quotes here.
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml:69:9: [warning] wrong indentation: expected 6 but found 8 (indentation)
-./Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml:101:6: [error] missing starting space in comment (comments)
+This device worked before without these properties, so why are they 
+required? That's an ABI change.
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.example.dts:39.35-36 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1506: dt_binding_check] Error 2
-make: *** [Makefile:251: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/e17337bc3b0f2e95d3d4f7b6daa7755881e11fba.1737985435.git.Jonathan.Santos@analog.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+>  
+>  patternProperties:
+>    "^channel@([0-9]|1[0-5])$":
+> @@ -99,7 +115,7 @@ examples:
+>          #address-cells = <1>;
+>          #size-cells = <0>;
+>  
+> -        adc@0 {
+> +        adc0: adc@0 {
+>              compatible = "adi,ad7768-1";
+>              reg = <0>;
+>              spi-max-frequency = <2000000>;
+> @@ -109,6 +125,8 @@ examples:
+>              interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+>              interrupt-parent = <&gpio>;
+>              adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
+> +            trigger-sources = <&adc0>;
+> +            #trigger-source-cells = <0>;
+>              reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
+>              clocks = <&ad7768_mclk>;
+>              clock-names = "mclk";
+> -- 
+> 2.34.1
+> 
 

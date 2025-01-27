@@ -1,82 +1,82 @@
-Return-Path: <linux-iio+bounces-14621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C818A1D92B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:13:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2939A1D92E
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1EED3A4FBB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142733A5620
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB3413AD22;
-	Mon, 27 Jan 2025 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280B213D8B2;
+	Mon, 27 Jan 2025 15:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="WK6U6xDf"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="hKqxHuV+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3333F13C809;
-	Mon, 27 Jan 2025 15:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7540813C809;
+	Mon, 27 Jan 2025 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737990794; cv=none; b=QY0ibi7Vuz68vDe/9F6eLijQ+VyPpdh5hkQGNZqf1SiSbpSToq/P3xQma382LcpnQRxZCazbHJM7HCQERbV0UTUp/43jIUiS2Nm/BWihYtGHVrVR9FMjyTdcA5HK9DPQ+tSgR7gAmEB2dLud8gedlLo7dIlVH3VsUFGOB5PpdCs=
+	t=1737990808; cv=none; b=bbkfeGix5nZ+7qHN+Gbol7/Ahx6tdsTsb9hfg++XQFTER7jZRpfblxj3izUcpParlIV7li1eCV7es9RYf6FiLYITnbyr6okBX5nuvL9Z8E/vDU8u2988VDKYMrdQM2flB5YyBDVq8gp8/vk9NHzw+ZiGYcrvCFm7maTE5Bq5V38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737990794; c=relaxed/simple;
-	bh=bo91lLc374d58BLY0qSELC7/XEICs7m0/4pChC9tSNw=;
+	s=arc-20240116; t=1737990808; c=relaxed/simple;
+	bh=A9xvZU/I2tK+jSG5ZVimNoB76kj9Xwjwvwh8OGMlo6A=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QZfNBgnq12uMaSJ64RdQ5LHK2Xc1NfsqrOLcIJehCvU7JQUSwVeLGICYuOlzRCZkhQU+qqSLTM0CTWFVpNjYLtLcgJZbtm5ECoSWCryf7teOkrlTa8FNaLZai69BzXSilSeKPbVmO4XuVeeEaxF7A/+SrHtIMy9CSMfHHwJew1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=WK6U6xDf; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=fXTGCm2jNlQtPJEm2BNkjLeWAHvIPr6yERwv6VfuO8yhVDqAveCSpRxI9tIGEWaOZgB2R4PMwkzQ+H8TZQ5oea3otLvaSU2/JOmklgRS5piWfmL9Zap4UN6J5ITHgQjYC77SkzKCo9O9LrRsNh6EW4UKN/f8kFEAVtq6e1N3vgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=hKqxHuV+; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50R9qf6p005403;
-	Mon, 27 Jan 2025 10:12:59 -0500
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RD2QJi005709;
+	Mon, 27 Jan 2025 10:13:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=5yMcE
-	54VQjcf6SeoSNw1A5vOpUq3YnPrnhct8E5RiiY=; b=WK6U6xDfIq8xV0l6ZVx+6
-	DCA5yToDkQk5zY3ITo2KgHwueXdzqpS/t/PdkJFKn1eacJ3bw9Zou7C/aCKTKok2
-	zK2CnBialFQrB+/cj31XkP1PbXIl2sD6WTWxNj38gjwEzqUieTHulo9qbsGK03CJ
-	F1MeeojvNpF6hmWW1M5HBkpA7LoRfwty61ZBxsmBLtX4ZgpyFCzevTqnBXBbioBh
-	gbuTGPayMz7YNIROqPAzpOCYBzwsCmQx2xSPHwWcQIpe+M704QTMV6Ug3qW9bSqB
-	iCPkjRS7gp7QhGfKoOusbMS54HLf2VsOxOM3c05oQirW8k8nijJHjYAOOa9H8h7R
-	A==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44e2n128ay-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=XFHEV
+	SSenAyPGWik/IjZ39kq4lMCNQj0hVlfsY1s2VI=; b=hKqxHuV+FOEYoulLl/pov
+	22x2csgHyduqp+rzwZVmDmHpyv/VYzZ0Ugbu26iJ+S79MAJVkbPjXZA1SFJOB9F+
+	yhPV/yHL+1idB2Jcb0RLRg2xjGc4URl14MUJPM/xpgUKT6SQROX4iIk+l87WMWnc
+	SqnvCIGxEjy2c90TmcjOq+/qkRXQ6SiBdnLI8Uu2nPNJCERTsa4jrPNLp0i1Rd0Z
+	l1cZKJd2V2PATbtZG3+pc0PwhRJFwRDW5vXmTzydz4vGzHTvJQD8yEp1d30q4VD6
+	w8u5EVCj8xRNAJWb+jg9yH/UcPTpIXNLnDBbKVUhzVuZFaaUODwCvupo1QaO++sV
+	Q==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44e0qwjqea-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jan 2025 10:12:59 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 50RFCwM7038563
+	Mon, 27 Jan 2025 10:13:12 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 50RFDBC9011055
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 27 Jan 2025 10:12:58 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+	Mon, 27 Jan 2025 10:13:11 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 27 Jan 2025 10:12:58 -0500
+ 15.2.986.14; Mon, 27 Jan 2025 10:13:11 -0500
 Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Mon, 27 Jan 2025 10:12:58 -0500
+ 15.2.986.14; Mon, 27 Jan 2025 10:13:10 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 27 Jan 2025 10:12:57 -0500
+ Transport; Mon, 27 Jan 2025 10:13:10 -0500
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50RFCiua008423;
-	Mon, 27 Jan 2025 10:12:46 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50RFCvM5008432;
+	Mon, 27 Jan 2025 10:12:59 -0500
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
+CC: Sergiu Cuciurean <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
         <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
         <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
         <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v2 07/16] iio: adc: ad7768-1: convert driver to use regmap
-Date: Mon, 27 Jan 2025 12:12:43 -0300
-Message-ID: <0968f9cfc55c5ac80492a88bbe95fc8ff7208fa5.1737985435.git.Jonathan.Santos@analog.com>
+Subject: [PATCH v2 08/16] iio: adc: ad7768-1: Add reset gpio
+Date: Mon, 27 Jan 2025 12:12:55 -0300
+Message-ID: <722340b0efff3ed22a763ce6581c96ca403316d8.1737985435.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1737985435.git.Jonathan.Santos@analog.com>
 References: <cover.1737985435.git.Jonathan.Santos@analog.com>
@@ -89,234 +89,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: AHekaWd_ZdkzEDftGqMuzIhqjjCls8ac
-X-Proofpoint-ORIG-GUID: AHekaWd_ZdkzEDftGqMuzIhqjjCls8ac
+X-Proofpoint-GUID: Vxwje_A1d_3SoSpnHvu-qlJ0MEzXETzo
+X-Proofpoint-ORIG-GUID: Vxwje_A1d_3SoSpnHvu-qlJ0MEzXETzo
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-27_07,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 suspectscore=0 mlxscore=0 clxscore=1015 mlxlogscore=999
- phishscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ lowpriorityscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 phishscore=0 mlxscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2501270121
 
-Convert the AD7768-1 driver to use the regmap API for register
-access. This change simplifies and standardizes register interactions,
-reducing code duplication and improving maintainability.
+From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Depending on the controller, the default state of a gpio can vary. This
+change excludes the probability that the dafult state of the ADC reset
+gpio will be HIGH if it will be passed as reference in the devicetree.
+
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 ---
 v2 Changes:
-* New patch in v2.
+* Replaced usleep_range() for fsleep() and gpiod_direction_output() for 
+  gpiod_set_value_cansleep().
+* Reset via SPI register is performed if the Reset GPIO is not defined. 
 ---
- drivers/iio/adc/ad7768-1.c | 82 +++++++++++++++++++++++++++-----------
- 1 file changed, 58 insertions(+), 24 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 95ba89435652..fb8d6fae5f8a 100644
+index fb8d6fae5f8a..17a49bf74637 100644
 --- a/drivers/iio/adc/ad7768-1.c
 +++ b/drivers/iio/adc/ad7768-1.c
-@@ -12,6 +12,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/sysfs.h>
- #include <linux/spi/spi.h>
-@@ -153,6 +154,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
- 
- struct ad7768_state {
- 	struct spi_device *spi;
-+	struct regmap *regmap;
- 	struct regulator *vref;
- 	struct mutex lock;
- 	struct clk *mclk;
-@@ -176,12 +178,17 @@ struct ad7768_state {
- 	} data __aligned(IIO_DMA_MINALIGN);
- };
- 
--static int ad7768_spi_reg_read(struct ad7768_state *st, unsigned int addr,
--			       unsigned int len)
-+static int ad7768_spi_reg_read(void *context, unsigned int addr,
-+			       unsigned int *val)
+@@ -163,6 +163,7 @@ struct ad7768_state {
+ 	struct completion completion;
+ 	struct iio_trigger *trig;
+ 	struct gpio_desc *gpio_sync_in;
++	struct gpio_desc *gpio_reset;
+ 	const char *labels[ARRAY_SIZE(ad7768_channels)];
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) may require the
+@@ -453,19 +454,30 @@ static int ad7768_setup(struct ad7768_state *st)
  {
--	unsigned int shift;
-+	struct iio_dev *dev = context;
-+	struct ad7768_state *st;
-+	unsigned int shift, len;
  	int ret;
  
-+	st = iio_priv(dev);
-+	/* Regular value size is 1 Byte, but 3 Bytes for ADC data */
-+	len = (addr == AD7768_REG_ADC_DATA) ? 3 : 1;
- 	shift = 32 - (8 * len);
- 	st->data.d8[0] = AD7768_RD_FLAG_MSK(addr);
+-	/*
+-	 * Two writes to the SPI_RESET[1:0] bits are required to initiate
+-	 * a software reset. The bits must first be set to 11, and then
+-	 * to 10. When the sequence is detected, the reset occurs.
+-	 * See the datasheet, page 70.
+-	 */
+-	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
+-	if (ret)
+-		return ret;
++	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
++						 GPIOD_OUT_HIGH);
++	if (IS_ERR(st->gpio_reset))
++		return PTR_ERR(st->gpio_reset);
  
-@@ -190,13 +197,19 @@ static int ad7768_spi_reg_read(struct ad7768_state *st, unsigned int addr,
- 	if (ret < 0)
- 		return ret;
- 
--	return (be32_to_cpu(st->data.d32) >> shift);
-+	*val = be32_to_cpu(st->data.d32) >> shift;
-+
-+	return 0;
- }
- 
--static int ad7768_spi_reg_write(struct ad7768_state *st,
-+static int ad7768_spi_reg_write(void *context,
- 				unsigned int addr,
- 				unsigned int val)
- {
-+	struct iio_dev *dev = context;
-+	struct ad7768_state *st;
-+
-+	st = iio_priv(dev);
- 	st->data.d8[0] = AD7768_WR_FLAG_MSK(addr);
- 	st->data.d8[1] = val & 0xFF;
- 
-@@ -206,16 +219,16 @@ static int ad7768_spi_reg_write(struct ad7768_state *st,
- static int ad7768_set_mode(struct ad7768_state *st,
- 			   enum ad7768_conv_mode mode)
- {
--	int regval;
-+	int regval, ret;
- 
--	regval = ad7768_spi_reg_read(st, AD7768_REG_CONVERSION, 1);
--	if (regval < 0)
--		return regval;
-+	ret = regmap_read(st->regmap, AD7768_REG_CONVERSION, &regval);
-+	if (ret)
-+		return ret;
- 
- 	regval &= ~AD7768_CONV_MODE_MSK;
- 	regval |= AD7768_CONV_MODE(mode);
- 
--	return ad7768_spi_reg_write(st, AD7768_REG_CONVERSION, regval);
-+	return regmap_write(st->regmap, AD7768_REG_CONVERSION, regval);
- }
- 
- static int ad7768_scan_direct(struct iio_dev *indio_dev)
-@@ -234,9 +247,10 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
- 	if (!ret)
- 		return -ETIMEDOUT;
- 
--	readval = ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
--	if (readval < 0)
--		return readval;
-+	ret = regmap_read(st->regmap, AD7768_REG_ADC_DATA, &readval);
-+	if (ret)
-+		return ret;
-+
- 	/*
- 	 * Any SPI configuration of the AD7768-1 can only be
- 	 * performed in continuous conversion mode.
-@@ -258,13 +272,11 @@ static int ad7768_reg_access(struct iio_dev *indio_dev,
- 
- 	mutex_lock(&st->lock);
- 	if (readval) {
--		ret = ad7768_spi_reg_read(st, reg, 1);
--		if (ret < 0)
-+		ret = regmap_read(st->regmap, reg, readval);
+-	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
+-	if (ret)
+-		return ret;
++	if (st->gpio_reset) {
++		fsleep(10);
++		gpiod_set_value_cansleep(st->gpio_reset, 0);
++		fsleep(10);
++	} else {
++		/*
++		 * Two writes to the SPI_RESET[1:0] bits are required to initiate
++		 * a software reset. The bits must first be set to 11, and then
++		 * to 10. When the sequence is detected, the reset occurs.
++		 * See the datasheet, page 70.
++		 */
++		ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
 +		if (ret)
- 			goto err_unlock;
--		*readval = ret;
--		ret = 0;
- 	} else {
--		ret = ad7768_spi_reg_write(st, reg, writeval);
-+		ret = regmap_write(st->regmap, reg, writeval);
- 	}
- err_unlock:
- 	mutex_unlock(&st->lock);
-@@ -283,7 +295,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
- 	else
- 		mode = AD7768_DIG_FIL_DEC_RATE(dec_rate);
- 
--	ret = ad7768_spi_reg_write(st, AD7768_REG_DIGITAL_FILTER, mode);
-+	ret = regmap_write(st->regmap, AD7768_REG_DIGITAL_FILTER, mode);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -320,7 +332,7 @@ static int ad7768_set_freq(struct ad7768_state *st,
- 	 */
- 	pwr_mode = AD7768_PWR_MCLK_DIV(ad7768_clk_config[idx].mclk_div) |
- 		   AD7768_PWR_PWRMODE(ad7768_clk_config[idx].pwrmode);
--	ret = ad7768_spi_reg_write(st, AD7768_REG_POWER_CLOCK, pwr_mode);
-+	ret = regmap_write(st->regmap, AD7768_REG_POWER_CLOCK, pwr_mode);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -447,11 +459,11 @@ static int ad7768_setup(struct ad7768_state *st)
- 	 * to 10. When the sequence is detected, the reset occurs.
- 	 * See the datasheet, page 70.
- 	 */
--	ret = ad7768_spi_reg_write(st, AD7768_REG_SYNC_RESET, 0x3);
-+	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
- 	if (ret)
- 		return ret;
- 
--	ret = ad7768_spi_reg_write(st, AD7768_REG_SYNC_RESET, 0x2);
-+	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
- 	if (ret)
- 		return ret;
- 
-@@ -509,18 +521,19 @@ static int ad7768_buffer_postenable(struct iio_dev *indio_dev)
- 	 * continuous read mode. Subsequent data reads do not require an
- 	 * initial 8-bit write to query the ADC_DATA register.
- 	 */
--	return ad7768_spi_reg_write(st, AD7768_REG_INTERFACE_FORMAT, 0x01);
-+	return regmap_write(st->regmap, AD7768_REG_INTERFACE_FORMAT, 0x01);
- }
- 
- static int ad7768_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct ad7768_state *st = iio_priv(indio_dev);
-+	unsigned int regval;
- 
- 	/*
- 	 * To exit continuous read mode, perform a single read of the ADC_DATA
- 	 * reg (0x2C), which allows further configuration of the device.
- 	 */
--	return ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
-+	return regmap_read(st->regmap, AD7768_REG_ADC_DATA, &regval);
- }
- 
- static const struct iio_buffer_setup_ops ad7768_buffer_ops = {
-@@ -563,6 +576,20 @@ static int ad7768_set_channel_label(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
-+static const struct regmap_bus ad7768_regmap_bus = {
-+	.reg_write = ad7768_spi_reg_write,
-+	.reg_read = ad7768_spi_reg_read,
-+	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-+	.val_format_endian_default = REGMAP_ENDIAN_BIG,
-+};
++			return ret;
 +
-+static const struct regmap_config ad7768_regmap_config = {
-+	.name = "ad7768-1",
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = AD7768_REG_MCLK_COUNTER,
-+};
-+
- static int ad7768_probe(struct spi_device *spi)
- {
- 	struct ad7768_state *st;
-@@ -592,6 +619,13 @@ static int ad7768_probe(struct spi_device *spi)
++		ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
++		if (ret)
++			return ret;
++	}
  
- 	st->spi = spi;
- 
-+	st->regmap = devm_regmap_init(&spi->dev,
-+				      &ad7768_regmap_bus, indio_dev,
-+				      &ad7768_regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-+				     "Failed to initialize regmap");
-+
- 	st->vref = devm_regulator_get(&spi->dev, "vref");
- 	if (IS_ERR(st->vref))
- 		return PTR_ERR(st->vref);
+ 	st->gpio_sync_in = devm_gpiod_get(&st->spi->dev, "adi,sync-in",
+ 					  GPIOD_OUT_LOW);
 -- 
 2.34.1
 

@@ -1,173 +1,105 @@
-Return-Path: <linux-iio+bounces-14630-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14631-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E24A1D94E
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:16:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2E9A1D96E
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 16:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD7D166E4B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:16:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFB297A14B5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 15:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB0815667B;
-	Mon, 27 Jan 2025 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF8225A658;
+	Mon, 27 Jan 2025 15:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="TTohG8pf"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ro4Itc3a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAA714A630;
-	Mon, 27 Jan 2025 15:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECF5EAD0
+	for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 15:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737990900; cv=none; b=vDXpkwJJ29Mn1lVRYPtG95w0smgyUXmlOO+4M6O0zQnZkAh+y/gPDxXNg67QAfXHM6uMZghiZsdB4df/Acuk2Bo2vUiBuRhZLGau2YdYrTSwK1XVm8PCRflH3S5LzTx475rYBMsoNd3KJ4+DKgeHSZQS78Ht+qXlamw4N+rL1ys=
+	t=1737991460; cv=none; b=hL8sYQVOlC9z8slBRfxosjwKhOIhCiGdwPUwgQ6rikXqxiyWxrTwBZlH3vGbje/0JBu28YcQNGwK4+tlElZBUraxNJCx6NgulGOLxeI1NsfJq5ZtMzEKUg1LGNXyqH6L3lka4Ip5W8yzu8LVOfyZpCfMN7tuBO6B6O0ym7Dp/8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737990900; c=relaxed/simple;
-	bh=vjcQkQgpYpar4YF8wJPb0qQjbsU4Jj0yEOpyN5bDYjc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=adSEATYplSdQkP4UuXRHBOF1MvZRf1aRvx93EwZEzJpBxY79Qs+Hj6u1zybiSHYHox1tegjXQ8+IFbDjILCKEklSgBHc+h4ASMyh5+3Cw9Bunt5nMMRa0nfunYscPRCwwzYSxliKwQeTF6bwjfXgcJeRpiJ/Jkrk7EcBTNvejtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=TTohG8pf; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RDWB9U005682;
-	Mon, 27 Jan 2025 10:14:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=FiWRO
-	hV+YSU4lSmrrRh3jrZVpIJthc4jSCHfbK4WoGQ=; b=TTohG8pfwTeMA7Bl/ESmp
-	KZJZzqzpIZs4eY/2i19AMc6CO6pzb1iYa3Zd16dJb6azSvGgQkiwIovK489eanqp
-	G0v9dNWdKzUHJUE3h+m2tG9qPN98PJlhTpo/jBoqK7jKPuci+7CXIHZpGtcH0wYY
-	bPed/wetJXINonsfY1iUMsLFiKJK/rKyBmk6lm9RmwkCi6I1TLesqoddrekMnqor
-	cr+azAzOA9BDnhyI81ECYG9bbn2v14iSuTLBh9GXKIutNl4KdAgCKyIkmez2YWLF
-	hTyJMMc55y+yn5XI/Z76WnktxcvHBOSNGPe2D5FZKgKfjDorJCc51mQwZXNJrZ6v
-	A==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 44eb44gdqm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jan 2025 10:14:44 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 50RFEhnC011128
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 27 Jan 2025 10:14:43 -0500
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 27 Jan
- 2025 10:14:43 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 27 Jan 2025 10:14:43 -0500
-Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50RFEWPk008470;
-	Mon, 27 Jan 2025 10:14:34 -0500
-From: Jonathan Santos <Jonathan.Santos@analog.com>
-To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
-        <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
-        <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
-        <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
-        <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v2 16/16] iio: adc: ad7768-1: add low pass -3dB cutoff attribute
-Date: Mon, 27 Jan 2025 12:14:31 -0300
-Message-ID: <91b697b66a42ead9e05dd4e79d6fb1e776c569d6.1737985435.git.Jonathan.Santos@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1737985435.git.Jonathan.Santos@analog.com>
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
+	s=arc-20240116; t=1737991460; c=relaxed/simple;
+	bh=C061X/fQ2LtEQLjG1AwLDA3xFZJtYZtYQK5XJkYvQA4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dLVmMhf5aYVVgInwNvNoYBDFVHA9e4UphliqvXJvMv9L98D1F9Nf/GCaUCVzRapeQivW/onZu0Q2jj3F0e8uE8RMdmfcsM7XZh9Bum2oOW7AT0kEBEbT9beVpbXsYhDVDqLdfhH6hg+IEOjpLBJWV2HMeMhyJjsWP0o7hyG0KOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ro4Itc3a; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2a9ef75a20dso2653670fac.2
+        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 07:24:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1737991456; x=1738596256; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=skHpf+xWLASVnB8ELjMQj3KKy12yHsypC1y4ZyrjFnA=;
+        b=ro4Itc3a7nHKI05uibRMZ4n4IlKb1occ95pqLxCJ97i/8O9mOJ7drouIiXT+nMAMDP
+         IikonhvharxL6zOlqyCS+4iJ6RVf1XKh47MPc+h8JEGzMPQ3KgUfzSlYVzh+AHF7I6Y3
+         TKBOJ8D9muZiRgKoBXNPY0S2JM3Xfa7XZh9pMfT9KIjGI9JDOEh+1AdsAzbZalYx2RRG
+         MNRBcejMXW94xvb13n9uVl7JtBKmKPw0p0c6wy4FM2AuS+yBy+kwP7avr6o6YxbRT9ct
+         E9qNvvbWuXnLh637oBcQG80tFKOwvWlk/QD04cViA8yxrWmrQlMzKor9eButW9Q+zgbm
+         x7sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737991456; x=1738596256;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=skHpf+xWLASVnB8ELjMQj3KKy12yHsypC1y4ZyrjFnA=;
+        b=m1DDG7maTaUY6A/KA8Q2c1ZRuX8tgTztzKerB5pMVoCpp667t87v82rAswQJKywFXE
+         uylGpYimdGyrwmY1wY8GXOqwLKBARjLyQcpa2Xfz0FDrlndiojFqxh4uUuk0HE7spb3I
+         csN1x+MitGMtjgZ9LX7a8CY212b2BAavRuU8DsqWEjgJMiS7s1SxDaExDJ6wua31ML4n
+         DwHpWR3O9IvC9tK7usxCcskjcqdJ2Czq+ozDw8hnYY3HC8uHk2ubM7UHWOME8DrVbIcK
+         PZg437egmfkmha228v9WbTN3UnwRlW5OPOLJcQ52b+eCM1Hu0a7m5xSNpJEVONiDjqSa
+         5eJw==
+X-Gm-Message-State: AOJu0Yxzdp6Zvurd0ZRmeKpDS7YaLdvjYE48hLGnKU26efhEsjf6B2dN
+	ZfWqX76icamuXUpx1GVt1YLzoaBMUNRq71I4OLcRHw8ENyB4ufDbk7XIqp3kJjI=
+X-Gm-Gg: ASbGncsC2cKXDdLi4Qn9BztEAgk770xuoc8gHeRdN3SBaX1ZYvInuuCKalY0PDQLyY4
+	CI56hzWJt1cG3x7fHXI1ZZDcmp+3JlzKwzxhkf9T2eJy1COkqyHTZF1w21awgaDBv6I3FvjMABQ
+	kTmgtM/uuwSWSUVH2Q35rKVbI3uTZJLPulneDbrCJxX//X3U3n/eMI/aGn+MC9INDbL2CxSLmJw
+	JjbMXINaybCgFzR1O2PT0XoIKKCug70UulHN+ZG5Rz9E0WTthvIcu4MBF0mINSy43aeQLGzDGxV
+	KoyHLue+/HaygZ9290lmeehATgwxPQiX7ArEeuSbIQ==
+X-Google-Smtp-Source: AGHT+IGXCu1KtafRew27ycU/kGJdpvIdckos+7ePCXBHMEwDHwWxC9eiYYQEGTmkiyMudHV9H3kVCg==
+X-Received: by 2002:a05:6871:a4c7:b0:29e:4346:7fb9 with SMTP id 586e51a60fabf-2b1c0ac9c9dmr19706932fac.22.1737991456677;
+        Mon, 27 Jan 2025 07:24:16 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b28f0fad81sm2652546fac.2.2025.01.27.07.24.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Jan 2025 07:24:15 -0800 (PST)
+Message-ID: <67b87690-f663-45ce-b665-c3decd716b44@baylibre.com>
+Date: Mon, 27 Jan 2025 09:24:13 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: YKygPqYe-rc38pZs783o70mI8dS4A2yp
-X-Proofpoint-GUID: YKygPqYe-rc38pZs783o70mI8dS4A2yp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-27_07,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- malwarescore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- adultscore=0 suspectscore=0 clxscore=1015 mlxscore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501270121
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/2] iio: adc: ad7173: add ad4111 openwire detection
+ support
+To: Guillaume Ranquet <granquet@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Nuno Sa <nuno.sa@analog.com>
+References: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250127-ad4111_openwire-v5-0-ef2db05c384f@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Ad7768-1 has a different -3db frequency multiplier depending on
-the filter type configured. The cutoff frequency also varies according
-to the current ODR.
-
-Add a readonly low pass -3dB frequency cutoff attribute to clarify to
-the user which bandwidth is being allowed depending on the filter
-configurations.
-
-Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
----
-v2 Changes:
-* New patch in v2.
----
- drivers/iio/adc/ad7768-1.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-index 6d0b430a8d54..daf91ef6f77b 100644
---- a/drivers/iio/adc/ad7768-1.c
-+++ b/drivers/iio/adc/ad7768-1.c
-@@ -149,6 +149,18 @@ enum ad7768_scan_type {
- 	AD7768_SCAN_TYPE_HIGH_SPEED,
- };
- 
-+/*
-+ * -3dB cutoff frequency multipliers (relative to ODR) for
-+ * each filter type. Values are multiplied by 1000.
-+ */
-+static const int ad7768_filter_3db_odr_multiplier[] = {
-+	[SINC5] = 204,
-+	[SINC5_DEC_X8] = 204,
-+	[SINC5_DEC_X16] = 204,
-+	[SINC3] = 261,
-+	[WIDEBAND] = 433,
-+};
-+
- static const int ad7768_mclk_div_rates[4] = {
- 	16, 8, 4, 2,
- };
-@@ -202,7 +214,8 @@ static const struct iio_chan_spec ad7768_channels[] = {
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
- 		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
--					   BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+					   BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
-+					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
- 		.ext_info = ad7768_ext_info,
- 		.indexed = 1,
- 		.channel = 0,
-@@ -802,7 +815,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- {
- 	struct ad7768_state *st = iio_priv(indio_dev);
- 	const struct iio_scan_type *scan_type;
--	int scale_uv, ret;
-+	int scale_uv, ret, temp;
- 
- 	scan_type = iio_get_current_scan_type(indio_dev, chan);
- 	if (IS_ERR(scan_type))
-@@ -842,6 +855,12 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
- 		*val = st->oversampling_ratio;
- 
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+		temp = st->samp_freq * ad7768_filter_3db_odr_multiplier[st->filter_type];
-+		*val = DIV_ROUND_CLOSEST(temp, 1000);
-+
- 		return IIO_VAL_INT;
- 	}
- 
--- 
-2.34.1
+On 1/27/25 7:59 AM, Guillaume Ranquet wrote:
+> Hi.
+> 
+> This patch adds the openwire detection support for the ad4111 chip.
+> 
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

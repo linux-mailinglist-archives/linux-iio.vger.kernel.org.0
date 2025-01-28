@@ -1,134 +1,217 @@
-Return-Path: <linux-iio+bounces-14656-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14657-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42CEA20309
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 02:32:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1110FA20419
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 06:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17CD18870C3
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 01:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D8711885AAB
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 05:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D872A38FB0;
-	Tue, 28 Jan 2025 01:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C20F1C3BF7;
+	Tue, 28 Jan 2025 05:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rM6CJkIL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNDBdPJn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A71E1B7F4
-	for <linux-iio@vger.kernel.org>; Tue, 28 Jan 2025 01:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BF442A92;
+	Tue, 28 Jan 2025 05:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738027968; cv=none; b=CPjtwfll4eGVx9t/fWP2FPsM7Y+pHjWauvWbAk1ZxD/nDXAzUOWG+85LQHkR3NhDHLxOnJ5R8MvCwMWILudDVrBRH1XJlraZsi0WKqXrzduj2o5jk0yVF7rfo82HIRDF3xw5jWCXGVb+t8NH39MShZbmkB5pZWzN+alM63BSEXM=
+	t=1738042850; cv=none; b=p+azheBEW3Wvf8Pw2cpr89NUp7h0JYiFVbiTiZYY841d7GFXW2fSprZKCPNjXAdyaHFyeiv8AO9JyDFTQSjX1P//kWd/l0dqKz5KNLz+JbEh8Dcq1gxOKGPNDUafh98nemygDGIQFfjeQwNRLX44GYgk0MjLADdG1sEyqJd9Ydc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738027968; c=relaxed/simple;
-	bh=lpnYd8GVhkmesJCdwtwJ90i0qkJVHatvY1VVHkW5Yo4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IQCQZo/c3/AYlKDDhk+HQSJoo4gbu7tXMTVDsFsfJ5EpYV9pRK4VFGjEwJGfIrYQioHlu/5WUelytGoA5juYzj05a2qKlXrZ2pHbLE6Xk/a5FMv91dd1Ct1gbsFzSqafTSDBIVCcZd/QezcmeFghLG5jh+93v2W/7F7KuPpjPjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rM6CJkIL; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-71e2a32297dso2872640a34.0
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 17:32:46 -0800 (PST)
+	s=arc-20240116; t=1738042850; c=relaxed/simple;
+	bh=fp/AKR08leJQyxoIVH0K+aUyLAtVoeweGwz7qftQjQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z34ww2+Dxwqz1ractwRUHSufzzOAmL7bmPAKC6ZLIms0+gKhw+BUwojtm45An5fPfkplUiaQ54isdRoUmOXElLdS4PE/id53SJkaBR32DfOyK07ZYDD/MqQMGd9W+x0+zCGB831UZIt8za+Ly+axZmefvvKHObDl2dFCw7vnFlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iNDBdPJn; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-21619108a6bso89443155ad.3;
+        Mon, 27 Jan 2025 21:40:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738027966; x=1738632766; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GbO53/E/v3sT/UJVuYcpmb+fsW1h2IM7Y9VN72GDUo8=;
-        b=rM6CJkILLzgEhQHcVQVyGkxxZCRLRdL0JOU98Qwu0kHcnTXBsojcJHPLKZIetelDLU
-         Yb/nqeCUcUTOZg4kGbGlOGyo7R2ykQofjGlbVrpdRGMekNMJvdi/FkCC+P0dVfZWkv9I
-         p1zFX5VZ5HSQehFxUlEUGcFXCLGkg2UhWwvNl2HttlLRGGF6jbXz1BLvudkWJQq9Uvgp
-         YOhs5UCk3oAsOsQk5et1XFqlrMWizMM5Nq7ZQiroVy7fEfH9Y1+E982evIypV+Mxp1Fb
-         rwK2gmHJCiPYXw9h2JnAGdzOOxDFx3Sv5EUeZxKivDjpMMZtmZQHWB1bVEu0karabEFJ
-         u5Zw==
+        d=gmail.com; s=20230601; t=1738042848; x=1738647648; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+SSF90F8yfJ8x0hIchNY8H6SvKBtg5lmJmCIqNZqmQ0=;
+        b=iNDBdPJnRwP7S1eL+36A/6VMMWfkyNZ2B39OH1738DeiMpYzdBhF2/5dsIEvaRu8Az
+         73dl52sd3DsF6iOsBQK2irHnd/cW6qFpCr3nfEY+2g/5mO1ZfaZ2OS226AEFDrvDNKem
+         MbYe+EdbA1VV25zuQ668zZCYFMkjyl2DjWD8sEO0Np8yti9lYqLnI035wIaDeMkYuwfM
+         6FE8DUD2+1WBVZklmhHg5Yu6dJauuIzCM7yL37g9ZiSeUb0QiahjWckmAIUaAP7BOMDU
+         B0OAORpC6YoST1Whg50KxM32MNgvaYHSJYZjYKcnlUtT7+FXYNca+d/tjVZQGSMj8A3w
+         wwrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738027966; x=1738632766;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GbO53/E/v3sT/UJVuYcpmb+fsW1h2IM7Y9VN72GDUo8=;
-        b=ssn2dz55ZKw3d/QEapfnK3q4EvfhkRD5ARYqxVlvfvPAo1QOTU2go3Wl1+C+Bjgxbz
-         M0hXTxjOtf9CTQW5luhF0w3Re+fx/+SfYGO4NWe6quZ9YugugDfMuz4eI/iSm/Hs1iVX
-         e3VVWrp78wE7voPwPlSquhXe5Ud1v7yyaNcdw5PSYikXlix3RPGz/PCxXmcemrGFiJGE
-         6nKBPjTWos1GeHqZKL4UabUV/6h+JbjqixJX/WQ7BmvxwLIX+qyQC0KznNE8l8V4k82O
-         HN8mNSKbD1N1W1CdSLtxSd7qBYU2rOgZ3h7CaLrjYz6fV75qhNbq/mqMG3sghpn5n61U
-         3xig==
-X-Forwarded-Encrypted: i=1; AJvYcCWIG33pdqmiVRT9PQFrD6zJikBdwxCcaHbmt5ZCrXqxPGZfAZsgZ+01E2HAErsUfxx4XpeKHekbN0U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy18MDgfG91kPHE7JbPoYg9jPT99KEogoA9dL4byI1b/VhWyVHB
-	NNvjjPYa8ymV8satis6n1kPrSv3HvU7iMM4QF1bDsgOweetL+IuutUqy1TQTBd8=
-X-Gm-Gg: ASbGncvM/ovNjNYK65u0BwnVFOp2Xufb/y0y0/Cr1XJFSVP49y7GIP+2fuzlcXY2yJp
-	JsXvm1beq/yiVDUiVfx3ISjD6BiwyOx8eqlj84FBFElp1GEVQnF/4q7AbQbAYQtozgF6s7K7zPr
-	TlR6OeOxZmcDIdubBxVELBZcy/OE3zyvgU6sXVXxrFgjHQZzO049bqmIo40E9WucvzSNUqxP++S
-	LRZ0TeL/qYQgKWKPWRS8YICAKAWjJI7rMuRoF3uipYozjk/clg31t9kQcqz9CgKW8x60zSQoNx/
-	yi+uULRAFUsp1FlpehH1AjWVetLhB4t1E9oSRk5iBusg/9WSLDFo
-X-Google-Smtp-Source: AGHT+IEY9cy5k786jJtuN21pZ/JGG1tZcIhLGrbik1aA0W/Oj5MPrOTVGqDbCv6skYcYjfTdC+aqKA==
-X-Received: by 2002:a05:6830:d06:b0:71d:f7d8:225 with SMTP id 46e09a7af769-72648c9bf71mr1046206a34.12.1738027966061;
-        Mon, 27 Jan 2025 17:32:46 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-724ecda3a22sm2696494a34.8.2025.01.27.17.32.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 17:32:45 -0800 (PST)
-Message-ID: <95e9fc42-db0a-45fd-9155-9c8721c849d7@baylibre.com>
-Date: Mon, 27 Jan 2025 19:32:45 -0600
+        d=1e100.net; s=20230601; t=1738042848; x=1738647648;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+SSF90F8yfJ8x0hIchNY8H6SvKBtg5lmJmCIqNZqmQ0=;
+        b=JBSoEr7ceGAGexRplUP2sPb1K+i2/w/8SrEWtReMy64NRxdO2WoQbII12/8+w9P+O7
+         vSV3tK45w3YNAwzNIFqCbjHXdmDKaEP0+odC1fq9ZQY81Cw6d6vHNYA3rNY/ig/9S/C6
+         eFnS8zSIhffWQIZyOYjDx5eCtxVLMI5s435F31jCNSPyC2trvDsBTt0EY/1aROhP16IW
+         7pu+YXAnMTtu2mFnJjuKjLlceHDs1W6MBJS/BAKBdSXVFaWRpLPSbaGakb8yLNAkKLTo
+         Ha5HYVL5mjXJ2AzC029DfnCwQ+d7bFCu2gNpBTd/Ci95Bfn1ZNu2OVCHAMHG7dNj0ndc
+         n4aQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIZv+6ULhl36Sq4L7RywIUW9vskssKYIdtFx2F6VQ1qfyf3nRjohIl3UdHgPF7EBCvGD0GNlpbdNWqBCKw@vger.kernel.org, AJvYcCVWHpRXjtlvTSPCIjSoLtiJc3RHOw6z4aHm/6ye4K80mTyPZu+x3kdIJm/6OCTrCtSNYb0sz2nPrIecFfz2pIpqdTw=@vger.kernel.org, AJvYcCWqcbLpgzyBNWXj0/tGBh5XuMeCCGfajjBSdBzMbfKtHKsfc2ctocD+j/wUXtxqITwu3eqZmYQcLMk=@vger.kernel.org, AJvYcCXNUcvRRcOFLfFKkGIeuSL55MrNhfjukA+JQAKPNYPBj1hNRA2wn/o57SPFEbm5aCLqLd8w23UXy+U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwotzvDD9/dpAWvYMK0AYWehe7y47f5Q2Hg6OnyzehgCJvra/dt
+	8ayvqAdWNmccDHERLqp7fuW0ALN5owbc9I9aN4dk7VmjEt+CbQTL
+X-Gm-Gg: ASbGncsquCKXNn2p2OL84xQIUuAmRpTeoSPhqKxPaxn0oJUYZG8nj6aoUud9xUu2yRY
+	MtNI44AfYOjdcAZ3neSzqpIsOwJXSKy4xyOtNsg+VfljJ5YWrRjewJXP6dJI3TbSSxfxB/c6pYx
+	9tgBRbdcV/9uOujLbn/FJEv4YLxTzDasMd3sKf8dsl7mb+x4fRLnPVjRfiUqiNLBzwubfgr/29N
+	2WcOKRkzVQgfrT+/YP6tw8owZ7bzremPWGepsgi1mdq6vKwNj9ZwfBzdlTVDaHs9mkGFApXdJzR
+	wg+sZzMqWq8CJXxm
+X-Google-Smtp-Source: AGHT+IFrI6uP8tYy0mKk4T2DvFbyzTZKJTN/fkpEQtKd5Pfd6b5+ZPMZJecQ51L7PGR+AEOJS0S3pw==
+X-Received: by 2002:a17:903:1ca:b0:216:282d:c692 with SMTP id d9443c01a7336-21c355a4923mr737047195ad.34.1738042847687;
+        Mon, 27 Jan 2025 21:40:47 -0800 (PST)
+Received: from google.com ([2620:15c:9d:2:8037:dfc5:6e64:2e4e])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da3d9c5casm72788775ad.26.2025.01.27.21.40.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 21:40:47 -0800 (PST)
+Date: Mon, 27 Jan 2025 21:40:44 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jonathan Cameron <jic23@kernel.org>,
+	prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 1/2] iio: adc: rzg2l_adc: Drop devm_pm_runtime_enable()
+Message-ID: <Z5ht3NrbAOazH7ze@google.com>
+References: <20250111131409.36bebfd3@jic23-huawei>
+ <bb987a1b-a999-478c-8e35-124fcf41561d@tuxon.dev>
+ <CAPDyKFoJ3pLU-5_b5MSxMZd7B1cfOvmcdqR4FGkU2Wb7No0mcw@mail.gmail.com>
+ <20250117155226.00002691@huawei.com>
+ <CAPDyKFpQUMOFtA-QCbYdaeKSDGJpnjcA+tiKZ=kzmrjYRtFZdw@mail.gmail.com>
+ <20250124184137.0000047a@huawei.com>
+ <CAPDyKFrqDfYEQHk0RsRi2LnMw_HgGozMW9JP9xmkAq52O7eztg@mail.gmail.com>
+ <20250127123250.00002784@huawei.com>
+ <CAPDyKFoCx3jQOptPrY0CYNpH1R+fszF3MUQLSTn_nreyi5-vPw@mail.gmail.com>
+ <20250127182423.000013a7@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/16] Documentation: ABI: add wideband filter type to
- sysfs-bus-iio
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com,
- marcelo.schmitt1@gmail.com
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <351b15550f8d8e7126ed8253f3a8028c708327f8.1737985435.git.Jonathan.Santos@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <351b15550f8d8e7126ed8253f3a8028c708327f8.1737985435.git.Jonathan.Santos@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250127182423.000013a7@huawei.com>
 
-On 1/27/25 9:12 AM, Jonathan Santos wrote:
-> The Wideband Low Ripple filter is used for AD7768-1 Driver.
-> Document wideband filter option into filter_type_available
-> attribute.
+On Mon, Jan 27, 2025 at 06:24:23PM +0000, Jonathan Cameron wrote:
+> On Mon, 27 Jan 2025 16:02:32 +0100
+> Ulf Hansson <ulf.hansson@linaro.org> wrote:
 > 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
-> v2 Changes:
-> * Removed FIR mentions.
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
->  1 file changed, 2 insertions(+)
+> > On Mon, 27 Jan 2025 at 13:32, Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
+> > >
+> > > On Mon, 27 Jan 2025 11:47:44 +0100
+> > > Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > >  
+> > > > [...]
+> > > >  
+> > > > > > > > > Do consider OK to change the order in pm_runtime_disable_action() to get
+> > > > > > > > > rid of these issues, e.g.:
+> > > > > > > > >
+> > > > > > > > > diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+> > > > > > > > > index 2ee45841486b..f27d311d2619 100644
+> > > > > > > > > --- a/drivers/base/power/runtime.c
+> > > > > > > > > +++ b/drivers/base/power/runtime.c
+> > > > > > > > > @@ -1547,8 +1547,8 @@ EXPORT_SYMBOL_GPL(pm_runtime_enable);
+> > > > > > > > >
+> > > > > > > > >  static void pm_runtime_disable_action(void *data)
+> > > > > > > > >  {
+> > > > > > > > > -       pm_runtime_dont_use_autosuspend(data);
+> > > > > > > > >         pm_runtime_disable(data);
+> > > > > > > > > +       pm_runtime_dont_use_autosuspend(data);
+> > > > > > > > >  }
+> > > > > > > > >
+> > > > > > > > > though I see a rpm_resume() call is still possible though pm_runtime_disable().  
+> > > > > > > >
+> > > > > > > > I am still worried about keeping the device runtime enabled during a
+> > > > > > > > window when we have turned off all resources for the device. Typically
+> > > > > > > > we want to leave the device in a low power state after unbind.
+> > > > > > > >
+> > > > > > > > That said, I would rather just drop the devm_pm_runtime_enable() API
+> > > > > > > > altogether and convert all users of it into
+> > > > > > > > pm_runtime_enable|disable(), similar to what your patch does.  
+> > > > > > >
+> > > > > > > That is making a mess of a lot of automated cleanup for a strange
+> > > > > > > runtime pm related path.  This is pain a driver should not have
+> > > > > > > to deal with, though I'm not clear what the right solution is!
+> > > > > > >
+> > > > > > > Key is that drivers should not mix devm managed cleanup and not, so
+> > > > > > > that means that anything that happens after runtime pm is enabled
+> > > > > > > has to be torn down manually.  One solution to this might be to
+> > > > > > > always enable it late assuming that is safe to do so there is
+> > > > > > > never anything else done after it in the probe path of a driver.  
+> > > > > >
+> > > > > > The problem is that runtime PM isn't really comparable to other
+> > > > > > resources that we are managing through devm* functions.
+> > > > > >
+> > > > > > Enabling runtime PM for a device changes the behaviour for how
+> > > > > > power-mgmt is handled for the device. Enabling/disabling of runtime PM
+> > > > > > really needs to be explicitly controlled by the driver for the device.  
+> > > > >
+> > > > > I'm sorry to say I'm not yet convinced.  
+> > > >
+> > > > Okay, let me try one more time. :-)  
+> > >
+> > > +CC Greg as the disagreement here is really a philosophy of what
+> > > devm cleanup is relative to remove.  Perhaps Greg or Rafael can
+> > > given some guidance on the intent there.
+> > >
+> > > Mind you I think I found another subsystem working around this
+> > > and in a somewhat more elegant, general way (to my eyes anyway!)
+> > >
+> > > https://elixir.bootlin.com/linux/v6.12.6/source/drivers/i2c/i2c-core-base.c#L630
+> > > https://lore.kernel.org/all/YFf1GFPephFxC0mC@google.com/
+> > >
+> > > +CC Dmitry.
+> > >
+> > > I2C creates an extra devres group and releases it before devm_pm_domain_detach()
+> > > As all devm calls from the driver end up in that group, they are released
+> > > before dev_pm_domain_detach()
+
+There is also a similar fix in HID core.
+
+> > >  
+> > 
+> > How would that address the problem I pointed out with runtime PM
+> > below? This problem isn't limited to attaching/detaching PM domains.
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index f83bd6829285..9b879e7732cd 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2291,6 +2291,8 @@ Description:
->  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
->  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
->  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
-> +		* "wideband" - filter with wideband low ripple passband
-> +		  and sharp transition band.
->  
->  What:		/sys/.../events/in_proximity_thresh_either_runningperiod
->  KernelVersion:	6.6
+> It's associated with anything that happens after a driver remove is done.
+> We just disagree on when that remove is finished. There is nothing special about
+> the remove() callback, that is just part of remove process.
+> No magic transition of state that allows new things to happen follows
+> the device driver remove finishing. Sure you can get the remove
+> handling ordering wrong whether devm is in use or not.  The trick is
+> almost always to never mix devm and not.  Once you need a single bit of
+> manual unwinding stop with the devm and do everything beyond that point
+> by hand (in probe order, before that point in remove order)
 
-I'm a bit shy to make any more suggestions on this one since my previous
-suggestions were clearly not the "right way". :-)
+Right, this is a classic problem of mixing devm-managed resources and
+ordinary ones. Every time we have a bus remove() method that is not
+trivial we need to make sure the resources are released in the right
+order, which is:
 
-But, the key takeaway I got from the discussion on v1 is that this describes the
-_shape_ of the filter. To me, "wideband" describes the size but not the shape.
-Would rectangular be the correct shape?
+1. Driver-allocated resources
+2. Bus-allocated resources
+3. Driver-core allocated resources.
 
+Establishing a devres group before calling into drivers' probe() methods
+(and releasing it before doing the rest of the cleanup in remove()) is
+one such way.
+
+Thanks.
+
+-- 
+Dmitry
 

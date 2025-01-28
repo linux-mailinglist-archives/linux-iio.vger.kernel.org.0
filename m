@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-14679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D408A20DC5
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 16:56:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0DFA20E34
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 17:16:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 605A43A67F7
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 15:56:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4973F16328E
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 16:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4091D89F1;
-	Tue, 28 Jan 2025 15:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100E71D63E6;
+	Tue, 28 Jan 2025 16:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YGqO+qe7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Hge9pbJa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A0D1D63EF
-	for <linux-iio@vger.kernel.org>; Tue, 28 Jan 2025 15:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9A31991D2
+	for <linux-iio@vger.kernel.org>; Tue, 28 Jan 2025 16:16:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738079805; cv=none; b=gSviZHQCg2A6i3VOTB936Bu3p6Sb8KefNopylAEOfK1aGRgFhsv6H1wBsedqHeg54JkydtY/4sWRSlHZCEEmOIOrmBztzmfDOmC51FKHKvc5HMPJlpLbHes5Z83pUcicFrMAQlxnWfMHoySbGa7+8iewocUqQmZ/FFag0z4KptM=
+	t=1738080964; cv=none; b=b/KR80iQx87OKzlfZ2y0+5EZ2JT9qq5exGQuE7QmAzZLKjydO306QdxVlnOskf7fyCAZuz4zn3ez5r1epw8HL1qgIJ28EWt3QhZ7bvtcprNw8RAvpG5R84KJ+xkK7MYFoSaOECSHioRQt8o3iyXTwKdDoHkikrLDbxXLya6ELpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738079805; c=relaxed/simple;
-	bh=U1CRXAgspDWLAL9BhnasVoFw3dIoFPyaUQBg3kwcafc=;
+	s=arc-20240116; t=1738080964; c=relaxed/simple;
+	bh=aW/6gRy4vh1cQ/UhFCd9W6hG9dPvBCWRkXazoAlGt/A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=G2YYTTf1n67bKIvvyJxfvkFdLVbp0zR1rF/IAhd3xXu31mYoBEYZVUs6M4FyYsigzDHYyCUYNv0z/78dusnXOori99JL28VJwOHIv646W55x7NFW4TTpQQL9rtR3bjy5MLgRm4HD/eQIAgw/5aWffp8a0bk8lM7mPim4td7UW+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YGqO+qe7; arc=none smtp.client-ip=209.85.167.172
+	 In-Reply-To:Content-Type; b=U44J++J+EsBWuVyUGpcOBMaIUYoEe1k9Ni4on9rs1ZpeG7YFETLhJrwfBg38tf1OgaactOmt+yXsG1MF9L1aj2HPbqz4FTeEaI0G0bvrcuidD5mlvfjn248B9kOFjyayd31o7o2Z84uOIid2DwnzctM4ZGZWUHJ/P+A9TxozMxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Hge9pbJa; arc=none smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3f1c94936c5so3052220b6e.1
-        for <linux-iio@vger.kernel.org>; Tue, 28 Jan 2025 07:56:41 -0800 (PST)
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5f2b21a0784so1492965eaf.1
+        for <linux-iio@vger.kernel.org>; Tue, 28 Jan 2025 08:16:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738079801; x=1738684601; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738080962; x=1738685762; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=I2Qw44d6HeXewj2arD8dL/6DqT4U1JV+B9kC0ec4R8I=;
-        b=YGqO+qe7NxqU8msv1DCe7UijfIGza7KAudeUSePl3kCzof2NU5vfKtotqLgW/FeL5z
-         8oOh6fWygQLVzWr4Hjwl6I4QrBM9oD91XKGFjDP7j3suKW38H3agWCaIdMvN9SnWUax8
-         chaBCwdnn4JhnGSm/FNn99S+7uo7uqsNygviwyvDrYBC+KQF3nt1fQctNJrrjWk3t2nf
-         xeT2eeCyv8mMH7dEZXPhY0zTx/gtEa6N6YmQLChlsvDEJm7ADn+AcHFgCoLv/lOi5LqA
-         5quEw0WjnYiCu2NTXTdrU4Z3g7BeBvoab9u76IOMyxyb+qPG9Q8K4PBYz/NlZFsF5pna
-         dybA==
+        bh=hIAEQeg78QZ/lezyk1TRO3AWQG1bJJ5m1rzrXE3HII8=;
+        b=Hge9pbJapbtgFqty25IV2Jpn93QYSDXPU5H1NkTIR03BVsL/gMJ+k5z3IciyGsrw/7
+         FVSDkAa+dj11/NS9LmcXC/FZCfyxtWkusETcXFChisi03MeJJ8PYNdX/0iupf7kHGUju
+         PWXZGwaAi1Q48anEkr+FbQ0t8t1edUS1phJWNmylkxwqzFl6is6Mst8FT7LzvZ22UoYz
+         seMQnDRZi3JXMURquLCEJk2QGdLLZ0cTLLzsOcABeNfTq/p9b12qY0Ms+yaGZcUz40Tl
+         FBqrImJFO1ah4zbV4joioODCsJ7hGrYBH2ufFYsdimzEUknDsQ8V3EE/xTwmiHVd1tqz
+         ymdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738079801; x=1738684601;
+        d=1e100.net; s=20230601; t=1738080962; x=1738685762;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I2Qw44d6HeXewj2arD8dL/6DqT4U1JV+B9kC0ec4R8I=;
-        b=xTOAq1dmyT4/wyNXLjBGmnqUV7r2ptPNNXMB3/bnhN6xKC8sohG4ZJP7GvMl4lzkYv
-         jJkyFdPStrDtgpyHb9DGpTgGZXuv+fmqt5bgyaF9g5cTyXCQHIzeQjgEoLDqeQHWhp4y
-         3K57BClHM4HVHCJmWEikGQ5feI4OV0o3E++trb/AfzC+n3oSDPdP5krVTVdO02aSmtSP
-         0mGegXD1ulloA0aZl3xXwm+zjUhW4bU9B0R5hJQhMa/uZ2AqfgPlTJ3eEqXNklpP6VRE
-         +WRd63f7J4OKvoFvwnk49eyUY+t6fV5Mf7z3vKBb8QP2GMEDLWCMBefASu0L8gD5Kc+D
-         iKWg==
-X-Forwarded-Encrypted: i=1; AJvYcCUlfTwiduO++G07PNUr7T8EaaIFiMWXioQrDvzdiKah3fPAv8Pp2v9zNw/I4AHZ2qv8VasLvRVU/04=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo+nagkzPmGPXm0Ge8xLXFyzGdlx0x6EbZw1HFprK0f3fxTJaI
-	ofcN1wL4kDFu1SDeNVuFQiFtCxw9P/+ux91Uqxbp4mBqTJb3I8aOdQC+SL4yelk=
-X-Gm-Gg: ASbGncvY/aelv+L9q1twgp7PDsTJzYpHt5B3FOLqPxid0v4wzFgUhmW0eMcoJqKU4a5
-	fXT8eo7T68Fx4euma9Dd+Y5d36bTAFRUivWre7+fDSwEaZxY9I9up2vD6xXVY/LM+3JZOCUd0OQ
-	QPX3onDNEjPsMctacI+2w8PHkyZJyIXwuNG1F22UOg/PKvZYPLU7s0ecz5j+J7OkSq+7BDpBnAS
-	fy9xV8sHbd0RnepXK/WHppufSdPpInJIHPMoUMnns6VbnoaSteNLr3VnqJiQY16mLtudbALIT2v
-	vZH4OS/XVlEeCPWOhl9cnnxshDUBG49Z9hF3/7XB1GuFn2MsxpWL
-X-Google-Smtp-Source: AGHT+IFtfyDR9boDmmfEF591oA/p0B2VQoOq0QZKo6ZB7tolgqw9/zygWP3UxD/QMyhPqXrDRH8u2Q==
-X-Received: by 2002:a05:6808:14cc:b0:3eb:64a8:837c with SMTP id 5614622812f47-3f313c8e04amr2330880b6e.6.1738079800976;
-        Tue, 28 Jan 2025 07:56:40 -0800 (PST)
+        bh=hIAEQeg78QZ/lezyk1TRO3AWQG1bJJ5m1rzrXE3HII8=;
+        b=GR5fPS5AL69ZGrABu2/n0sL6JwWz+CYaZkGin17BEkdTJ3nTriaYSRcb3scCzN5eAv
+         eAFAPEDMy+TsdSrTt5i1+n8u2oqopxZUwYMuVctQlSSxbhbkOg31wtF0Ccv+funm3sN5
+         ccpxZstz8njrbNkkHQBB9mkI6EKH9htJw0tpqdhZcVWw/kma1w02tH56hDYifGPKpSYJ
+         zhBjdSaq5elYFng8b+OMMii3VkFSqCuGnTBERmZdrdsVhOKly2LCjpKBGSBGHXkiTNTA
+         g6uzcf2rE6aZMkKicFcMLs7Og63zJ/MMiLUmgA1qrR2mE56Na/+ZUUdA5xSgtWjYagYe
+         6wJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtbUTWAyLuwSNTHzrrtrj4vSRdDZfcAe3974nyMNKiVNoxYWG+i25NONgwG10nNR0054IyYmDqHyk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw26pjl09J7gfAIvcVx7FLoWqqZAfMUiiTY+qLzbzM7wLuUx1cr
+	8vDZt+xJFlnSxM/WAqDSgftKmKZduLEJRhDFOJYS5GRo/5zAVIrGaApDIgc55pY=
+X-Gm-Gg: ASbGncsq0+MAGEn2Q+8Ihj8bxlPYwGb9pLkTZ5M5iEBXV4M+sstNwytlms8BvS03ezC
+	eNwIa/Mo2TMhDngot/+qQRK7R6IEIBENROEp1BzFwKiiJfkW59ELZng0fEK2EdmB/O3Z6D3Lidb
+	kQum6XRyQzm/OtcGPQ1L9mepNyDKk9wd54HrQ18FcbaaSgwDWn+vN91FNAQTdXAOdHrnLR9H2Sl
+	wxQKAT66sspedjzc6hirFEkQurLAv25vCweFcRe74H2xQRkoA0hRbcnqtxA6ie/2jnOpgpwhBFP
+	hZEctJxr+KXCBIgWjlHl3ZH1rbNMRybx9KCQ3xXIO1Qkoofvm8x6
+X-Google-Smtp-Source: AGHT+IEREbV08zViG4ro+q6+GbmAwN6L5mM4g1b+2nZW4JAo0bbqiGtKBOnnzRCek2knpbearmMH9w==
+X-Received: by 2002:a4a:ec49:0:b0:5f6:765c:d260 with SMTP id 006d021491bc7-5fa3889955dmr28139232eaf.7.1738080961757;
+        Tue, 28 Jan 2025 08:16:01 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f1f088b0ddsm3134959b6e.20.2025.01.28.07.56.38
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fa8b9a1f5bsm2931148eaf.30.2025.01.28.08.16.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 07:56:39 -0800 (PST)
-Message-ID: <a6e57474-6eff-4f7b-8204-8137f95a33e7@baylibre.com>
-Date: Tue, 28 Jan 2025 09:56:37 -0600
+        Tue, 28 Jan 2025 08:16:01 -0800 (PST)
+Message-ID: <08d8e97d-752d-4fa7-95f0-d828ef80f7b8@baylibre.com>
+Date: Tue, 28 Jan 2025 10:16:00 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,177 +81,103 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/16] dt-bindings: iio: adc: ad7768-1: add
- trigger-sources property
-To: 0044dd4b-01ce-4ca0-9855-8c239b9bfb6f@baylibre.com
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marcelo.schmitt1@gmail.com
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <f3972e6aa4ff3869ded1f0dbeb58c43b824b3932.1737985435.git.Jonathan.Santos@analog.com>
- <0044dd4b-01ce-4ca0-9855-8c239b9bfb6f@baylibre.com>
- <Z5jx9mJdi3Zh7Mx6@JSANTO12-L01.ad.analog.com>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: set data format
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+Cc: Nuno Sa <nuno.sa@analog.com>
+References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
+ <20250127105726.6314-6-antoniu.miclaus@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <Z5jx9mJdi3Zh7Mx6@JSANTO12-L01.ad.analog.com>
+In-Reply-To: <20250127105726.6314-6-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/28/25 9:04 AM, Jonathan Santos wrote:
-> On 01/27, David Lechner wrote:
->> On 1/27/25 9:11 AM, Jonathan Santos wrote:
->>> Add a new trigger-sources property to enable synchronization across
->>> multiple devices. This property references the main device (or
->>> trigger provider) responsible for generating the pulse to drive the
->>> SYNC_IN of all devices in the setup.
->>>
->>> In addition to GPIO synchronization, The AD7768-1 also supports
->>> synchronization over SPI, which use is recommended when the GPIO
->>> cannot provide a pulse synchronous with the base MCLK signal. It
->>> consists of looping back the SYNC_OUT to the SYNC_IN pin and send
->>> a command via SPI to trigger the synchronization.
->>>
->>> SPI-based synchronization is enabled in the absence of adi,sync-in-gpios
->>> property. Since adi,sync-in-gpios is not long the only method, remove it
->>> from required properties.
->>>
->>> While at it, add description to the interrupt property.
->>>
->>> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
->>> ---
->>> v2 Changes:
->>> * Patch added as replacement for adi,sync-in-spi patch.
->>> * addressed the request for a description to interrupts property.
->>> ---
->>>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 22 +++++++++++++++++--
->>>  1 file changed, 20 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>> index 3ce59d4d065f..3e119cf1754b 100644
->>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
->>> @@ -26,7 +26,17 @@ properties:
->>>    clock-names:
->>>      const: mclk
->>>  
->>> +  trigger-sources:
->>> +    description:
->>> +      References the main device responsible for synchronization. In a single
->>> +      device setup, reference the own node.
->>> +    maxItems: 1
->>
->> We probably actually need 2 here. One for /SYNC_IN and one for a GPIO3 pin
->> acting as the /START signal.
->>
->>> +
->>>    interrupts:
->>> +    description:
->>> +      Specifies the interrupt line associated with the ADC. This refers
->>> +      to the DRDY (Data Ready) pin, which signals when conversion results are
->>> +      available.
->>>      maxItems: 1
->>>  
->>>    '#address-cells':
->>> @@ -46,6 +56,8 @@ properties:
->>>        sampling. A pulse is always required if the configuration is changed
->>>        in any way, for example if the filter decimation rate changes.
->>>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
->>> +      In the absence of this property, Synchronization over SPI will be
->>> +      enabled.
->>
->> Isn't /SYNC_OUT connected to /SYNC_IN required for synchronization over SPI?
->>
->> If yes, instead of adding this text, I would make the binding have:
->>
+On 1/27/25 4:57 AM, Antoniu Miclaus wrote:
+> Add support for selecting the data format within the AXI ADC ip.
 > 
-> Yes, but the synchronization over SPI is enabled in the absence of the GPIO.
-> The trigger-sources property would indicate if the sync provider is the
-> own device or not. As i said below, maybe i misunderstood.
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> no changes in v11.
+>  drivers/iio/adc/adi-axi-adc.c | 46 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
 > 
->> oneOf:
->>   - required:
->>       - trigger-sources
->>   - required:
->>        - adi,sync-in-gpios
->>
-> 
-> Wouldn't be simpler to consider the absence of sync-in-gpio? this way we
-> have less changes in the ABI.
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index d2e1dc63775c..3c213ca5ff8e 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -45,6 +45,12 @@
+>  #define ADI_AXI_ADC_REG_CTRL			0x0044
+>  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
+>  
+> +#define ADI_AXI_ADC_REG_CNTRL_3			0x004c
+> +#define   AD485X_CNTRL_3_PACKET_FORMAT_MSK	GENMASK(1, 0)
+> +#define   AD485X_PACKET_FORMAT_20BIT		0x0
+> +#define   AD485X_PACKET_FORMAT_24BIT		0x1
+> +#define   AD485X_PACKET_FORMAT_32BIT		0x2
+> +
+>  #define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
+>  #define   ADI_AXI_ADC_DRP_LOCKED		BIT(17)
+>  
+> @@ -312,6 +318,45 @@ static int axi_adc_interface_type_get(struct iio_backend *back,
+>  	return 0;
+>  }
+>  
+> +static int axi_adc_data_size_set(struct iio_backend *back, unsigned int size)
+> +{
+> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> +	unsigned int val;
+> +
+> +	switch (size) {
+> +	/*
+> +	 * There are two different variants of the AXI AD485X IP block, a 16-bit
+> +	 * and a 20-bit variant.
+> +	 * The 0x0 value (AD485X_PACKET_FORMAT_20BIT) is corresponding also to
+> +	 * the 16-bit variant of the IP block.
+> +	 */
+> +	case 16:
+> +	case 20:
+> +		val = AD485X_PACKET_FORMAT_20BIT;
+> +		break;
+> +	case 24:
+> +		val = AD485X_PACKET_FORMAT_24BIT;
+> +		break;
+> +	/*
+> +	 * The 0x2 (AD485X_PACKET_FORMAT_32BIT) corresponds only to the 20-bit
+> +	 * variant of the IP block. Setting this value properly is ensured by
+> +	 * the upper layers of the drivers calling the axi-adc functions.
+> +	 * Also, for 16-bit IP block, the 0x2 (AD485X_PACKET_FORMAT_32BIT)
+> +	 * value is handled as maximum size available which is 24-bit for this
+> +	 * configuration.
+> +	 */
+> +	case 32:
+> +		val = AD485X_PACKET_FORMAT_32BIT;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return regmap_update_bits(st->regmap, ADI_AXI_ADC_REG_CNTRL_3,
+> +				  AD485X_CNTRL_3_PACKET_FORMAT_MSK,
+> +				  FIELD_PREP(AD485X_CNTRL_3_PACKET_FORMAT_MSK, val));
+> +}
+> +
+>  static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+>  						 struct iio_dev *indio_dev)
+>  {
+> @@ -360,6 +405,7 @@ static const struct iio_backend_ops adi_axi_adc_ops = {
+>  	.test_pattern_set = axi_adc_test_pattern_set,
+>  	.chan_status = axi_adc_chan_status,
+>  	.interface_type_get = axi_adc_interface_type_get,
+> +	.data_size_set = axi_adc_data_size_set,
+>  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+>  	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
+>  };
 
-Maybe it is me that missed something, but if I'm reading the datasheet
-correctly, then sync over SPI only works if /SYNC_IN is wired to /SYNC_OUT.
-And the chip isn't going to work correctly without some sort of sync. So we
-need something wired to /SYNC_IN no matter what.
+Why was [1] not addressed?
 
-In any case, the DT bindings should just say how the chip is wired up and not
-dictate how the driver should behave. So what I was going for with this is to
-have the bindings say that something has to be wired to /SYNC_IN and we can
-leave it up to the driver to decide what to do with this information.
-
-> 
->>>  
->>>    reset-gpios:
->>>      maxItems: 1
->>> @@ -57,6 +69,9 @@ properties:
->>>    "#io-channel-cells":
->>>      const: 1
->>>  
->>> +  "#trigger-source-cells":
->>> +    const: 0
->>> +
->>>  required:
->>>    - compatible
->>>    - reg
->>> @@ -65,7 +80,8 @@ required:
->>>    - vref-supply
->>>    - spi-cpol
->>>    - spi-cpha
->>> -  - adi,sync-in-gpios
->>> +  - trigger-sources
->>> +  - #trigger-source-cells
->>>  
->>>  patternProperties:
->>>    "^channel@([0-9]|1[0-5])$":
->>> @@ -99,7 +115,7 @@ examples:
->>>          #address-cells = <1>;
->>>          #size-cells = <0>;
->>>  
->>> -        adc@0 {
->>> +        adc0: adc@0 {
->>>              compatible = "adi,ad7768-1";
->>>              reg = <0>;
->>>              spi-max-frequency = <2000000>;
->>> @@ -109,6 +125,8 @@ examples:
->>>              interrupts = <25 IRQ_TYPE_EDGE_RISING>;
->>>              interrupt-parent = <&gpio>;
->>>              adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
->>
->> Don't we need to drop adi,sync-in-gpios here? I don't think we would have two
->> things connected to /SYNC_IN at the same time.
->>
-> 
-> I guess i misunderstood the use of trigger-sources. I thought it would
-> indicate the trigger provider or main device. Like if it points to other
-> device we should use it to drive the SYNC_IN of all devices.
-> 
-> Then what happens if the trigger-sources points to other node? we would't be
-> able to driver the SYNC_IN in case of any configuration change?
-
-I think you understand the trigger-source bindings correctly. 
-
-The driver doesn't have to support everything that the DT bindings allow. This
-series is big enough already, so we can defer figuring out how to implement
-triggers other than the loopback case later. :-) We just want to make the DT
-bindings as complete as we can now.
-
-> 
->>> +            trigger-sources = <&adc0>;
->>> +            #trigger-source-cells = <0>;
->>>              reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
->>>              clocks = <&ad7768_mclk>;
->>>              clock-names = "mclk";
->>
-
+[1]: https://lore.kernel.org/linux-iio/9c262f599fb9b42feac99cfb541723a0a6f50e6b.camel@gmail.com/
 

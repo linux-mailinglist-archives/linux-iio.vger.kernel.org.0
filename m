@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-14663-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14664-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A8E7A20A14
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 13:01:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED73A20A16
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 13:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6524F7A4906
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 12:01:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 988CA3A513B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 12:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA931A23BB;
-	Tue, 28 Jan 2025 12:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AE41A2645;
+	Tue, 28 Jan 2025 12:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JyR1UtDf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I4mBYaGJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6867F19D8AC;
-	Tue, 28 Jan 2025 12:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57491A2391;
+	Tue, 28 Jan 2025 12:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738065696; cv=none; b=VmgCnkrdUDNOPHDKqaEYhe4ekzPxBAK9OLXqiV5Fu1iHFdxMTZlc8F0mUZyhu4MmCgLqUmY8Ix4GPLGvKeOf+nR+/pTtVM7+BgW1v02UCotoHtFRU/vZyoQsj6R6Pio/6Ht+hPWEV4ICGJbzU2ZiLy7BjodVNKMVWjsm+h6julM=
+	t=1738065697; cv=none; b=lFmWjXGpF6plS/cJhqxk6/UKESJGYHyQQxuKFZJXrOY+v515d4zTMKLMoVBVHdMGQtVrmMYqN/kNLqDPOwlrDpIWjYALd1iUqUb6ZzHj8tQF++ofXZq8BZBo7Ae6g9WaFqvLbUFahQtTOLEM+2FjZ7RpSzkUQGw5c3KyLQfnz34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738065696; c=relaxed/simple;
-	bh=A6D/dIr0/roT1Guo5HT4UUonoFll5nlYZUMj5aI4+Qs=;
+	s=arc-20240116; t=1738065697; c=relaxed/simple;
+	bh=32pxGww22uXNRSE1h4GEPFMYm4JjozUP+kLSK2TuVGU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uuDMADKx3EvSVf0hjTp2RbRvOKIqb7NV1iu0QBqXhOZ3IP6f/3lZzGZ10M4Np5gTcWuLbLL5o1c/CeGWPcpiFsJ/jjzSaIV9hERTs1obzYbBc7Xp16mF2lTfRN3uzsDHuoOWV1JMsUkf3fllmrWpXyOZlT1E5yOSdpktZUYWrQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JyR1UtDf; arc=none smtp.client-ip=209.85.208.47
+	 MIME-Version; b=qDZ7zDqXXbNu/u0wntLmBzCgLBLLx3oQd8X11qFVd1HNGXI+itMHD3bXZ2CJh7KN+P26UnkCKL6KddYuAJYpV2AoA0spTSpdx+SaJM/gLV7SeAm5KcLf2McbSoc9i4wUD7c67owebUkT76/Zfef9sVmarvnvzCtMJly8hxxXD/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I4mBYaGJ; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5db67d1bf0bso1487293a12.0;
-        Tue, 28 Jan 2025 04:01:34 -0800 (PST)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5dbf7d45853so1281251a12.1;
+        Tue, 28 Jan 2025 04:01:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738065693; x=1738670493; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738065694; x=1738670494; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gfLycUoqALpenZs1PCwcqht3zj/rDndi4N2W7Tr/X5g=;
-        b=JyR1UtDf4LKradl403ZoNur3BYRVD1sPhn43uOU9DmhNWIIRLqTRiGgN/d4+tF0M9R
-         FL/KvyYDlaYPnRh0xpXqDSvu3bzDAeyhjWJ8I3uVvop0uDFZ0klvd2Dfj7axey5sXakP
-         fcw9HJCCr9af6UEgdUBWWqRImJP4F6sYfpvogxfyH1uQKhGUc5Nz2SaLvejhl78mMF0+
-         17N7t6ULboQlGfXGJGq/av5j1NLxLqIxaanpcnx6vqe0mR2N5orSdNEPCaer9J0dFCH7
-         iw84t7LAS3rScQYdWQ/LNXL8vSx2ExUnpLkX7X04MWbNUpH5g0/g6vI8UeRiaVNYTCEU
-         qSFw==
+        bh=iy4p7JxJyU0LbLEs05esQZqH8h+c7Oo1QTLQ6nSQRv8=;
+        b=I4mBYaGJEykNjEh4xr/1gfiHEuwbLBTNeOwPiz9nCCG+OsFTjdlU7OgbO7xSR+GA6l
+         h3WvptPz6VDr9R91TyATEU7YsN1viS1ddniMtmU0wcqoiFGlx7EJn3t93YJ3h+hn4VkN
+         Dbkq1DJxtgzwhDKvU1Lkz8RmU+mdqleWygqtIRJWYuYk6KWvYVsTTOLN222sjSqhm7ft
+         9xCoAW88AjlHIY4KJp9nd9zlePK0rztUSyZJ3mDFGMosMS4r+QQ3eOA8jD4TJg/YGbOw
+         8Yn0uOwiPaqTmddHWvCGMcN93bxDJax4XXSdELWRJgihZruBUTsFoNmPsh+Xe2lXaE7l
+         4wlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738065693; x=1738670493;
+        d=1e100.net; s=20230601; t=1738065694; x=1738670494;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gfLycUoqALpenZs1PCwcqht3zj/rDndi4N2W7Tr/X5g=;
-        b=PhjPcwXcqXfxf3AdYJv/8IA8yvMWdvUsNDCg3Q5g0tSoG5ZamAmCvo1cGbH7MsbS1r
-         d2MFhp1GXF1r1DqyumF/0odGUb15gNDd1vIAFUhJRfTAJ7fYiloUKQ82tKrxLeKxsNHt
-         dVHI2kIzJG5QTz0dCxdGAnwFiuWAi7SYEMJvpJW0QctxAMBANd8IBvUFjzjMuwgWmp3f
-         E8vecqbeH3In1aABxHYJJJrt4uvA1uX6fSakDctyUqJSiblayHCQwyU8b1aaEqNGKcjy
-         NN2cicqQlnRbyE5grxwe+j/4pBkXKBhxQK7A1y9VPKuDhyck8gTE32CUEDCAKOXAQPFT
-         sYEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDgZPiD3yEuS6+cwr86Et52Ipq3OVQaehUU+DnMFE5dU9ff0nJUDnD0er7fGB5YxLtk457rgRMzdC2/qw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCEkNf5bKbxwuqQgJIItkBgItzTY7hZJguPszhFVjBbRy/nfxc
-	VZTuQmTTDBVUwa4Te/30qA87QNHfk1VtJ0G3h+Rqg9aLLCOrDO4F
-X-Gm-Gg: ASbGncv1vNjlvMDmWuGWRI1gpKv2YJqKKFM0/bvAPs+AeDtDLNxVI2yIvDR8+cU22Nf
-	qQL6kN2qmWi3coo0LCipUQA/mI6Sff7FNiM+wb/2uoniXEcxU7T8U8nTxyKxHAV/6EsEnSrchSE
-	o5fIhNUBemQ8L8GI5CNPsSQhEc/rP41AD36E7wrqRYqbhB09NgQr/5QRGVOb2oXgVPz4BEMRVHa
-	UqlZlw8jLe7tru4QsUr13DqXRIgcGLvnpECdy9b+NQZ8X1NgRr1XkDctSe9pMm/46HAImjpYyoY
-	pg+gClvIz2qWKUAezOuPxssW2P/hidXCZXxrb+qjd6WRFEGj4DYN62ecuPohTx6ux58Ayg==
-X-Google-Smtp-Source: AGHT+IEPSEyamTIjx/62Tk90uhAgRgiRetjPvgDhLOHVt+lqH5u7gpw5a3DIeL3Cl1F3SURJgos46w==
-X-Received: by 2002:a17:907:948a:b0:aa6:6792:8bce with SMTP id a640c23a62f3a-ab38b1b6f43mr1423097966b.3.1738065692393;
-        Tue, 28 Jan 2025 04:01:32 -0800 (PST)
+        bh=iy4p7JxJyU0LbLEs05esQZqH8h+c7Oo1QTLQ6nSQRv8=;
+        b=DWp1rJz3hIvqWG1fWzKhmTR+m/LiPISt+65jiHPqsz+xuERgAFEZT9OlIgrQu6yH4E
+         0PLYXMXVGkEVo3w8TBZiCG2VN18sK6GGh6aOn1TtlRBZ6ChFvOJfqErEd/3ksL6/9Bp7
+         QzrjvJT+vCe7h69vGcFIjNlcjs9ZhfLIjQteeNspp48mjYLWhv6uIRt9nBcGJXJDQAOK
+         Xbn0HokvlQ070qRbXOCKqndKmy1xu80s/hL3BkQHrGRznWgggDq4ZjENKU3JYb7HnxDd
+         8waqz+mMD9QH5CIo2rUBkzuEhDBmjwcrte1G7HoS0YbJPq6r8N2e9FX/RIxATlRgewJp
+         6Inw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwkFWfnqDt9BYyD/zLa38CCx07qducJzsD+HGjJp9DONqLLH13ERoobN2aSC0G6YDMQkM/cNSUTuSmqnY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzabJNJhoBQdAh0ehXWbbkpaF3Q6KGJ/KCUR7jcm8wLu+Qy/ofr
+	tXwPdiOVC0RjNm2duPbYYWMW09UB/LAOX3kp6vW1FS7r5fohaMp5
+X-Gm-Gg: ASbGncuvN/SdU08+aVRDWoAxeL690OXwlM67sOx7tBHObswwo4Z6n2pUubfExxHQH30
+	fK24Yc8BISK/ifYWS4Ln/LiXF966SB0I0Ht2O6XLO8Uuqxj7UCXsnzNzOA8FSAvAYEZobY5j26X
+	aVA84VZsRT9OXUUPN1eGJPGqRQjjSDDgzEZZ/hgHGGSY9Y7ouLHnI598U0DwKZCzgq6ALjHmHPa
+	2WfbLPpVisBp5LGsmxAaJNK33v3WuYNYdrKuwZe2ya4sPltmfGx70A5szvl656Ed8DuZRJTQaqv
+	UQa7X7opZQTDDYQDC3CYjU2SAqYjqdPdWY+w0tYevt+HcgsmZ3QuHeqNfZoo43VQsWlxvg==
+X-Google-Smtp-Source: AGHT+IEKXV7QElYUwfDqVcH7rzpBecIFcCv5h8XU4S7HREeyCDvE9mj6Omi5cxRHVFagSHCjM2dc5Q==
+X-Received: by 2002:a17:907:9715:b0:ab6:b8e0:4f25 with SMTP id a640c23a62f3a-ab6b8e05026mr150998666b.4.1738065693484;
+        Tue, 28 Jan 2025 04:01:33 -0800 (PST)
 Received: from d9dabf0abd47.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab69f8555b7sm418865966b.71.2025.01.28.04.01.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab69f8555b7sm418865966b.71.2025.01.28.04.01.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 04:01:31 -0800 (PST)
+        Tue, 28 Jan 2025 04:01:33 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -80,9 +80,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v1 01/12] iio: accel: adxl345: migrate constants to core
-Date: Tue, 28 Jan 2025 12:00:49 +0000
-Message-Id: <20250128120100.205523-2-l.rubusch@gmail.com>
+Subject: [PATCH v1 02/12] iio: accel: adxl345: reorganize measurement enable
+Date: Tue, 28 Jan 2025 12:00:50 +0000
+Message-Id: <20250128120100.205523-3-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250128120100.205523-1-l.rubusch@gmail.com>
 References: <20250128120100.205523-1-l.rubusch@gmail.com>
@@ -94,221 +94,88 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The set of constants does not need to be exposed. Move constants to core
-to reduce namespace polution.
+In order to have this function generically available a position at the
+top makes more sense. In upcomming patches for particular features the
+function needs to be available, to turn off measuring while changing
+settings, and turn it on again afterwards.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345.h      | 86 ------------------------------
- drivers/iio/accel/adxl345_core.c | 91 +++++++++++++++++++++++++++++++-
- 2 files changed, 89 insertions(+), 88 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 54 ++++++++++++++++----------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index 517e494ba555..b5257dafb742 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -8,94 +8,8 @@
- #ifndef _ADXL345_H_
- #define _ADXL345_H_
- 
--#define ADXL345_REG_DEVID		0x00
--#define ADXL345_REG_THRESH_TAP		0x1D
--#define ADXL345_REG_OFSX		0x1E
--#define ADXL345_REG_OFSY		0x1F
--#define ADXL345_REG_OFSZ		0x20
--#define ADXL345_REG_OFS_AXIS(index)	(ADXL345_REG_OFSX + (index))
--
--/* Tap duration */
--#define ADXL345_REG_DUR		0x21
--/* Tap latency */
--#define ADXL345_REG_LATENT		0x22
--/* Tap window */
--#define ADXL345_REG_WINDOW		0x23
--/* Activity threshold */
--#define ADXL345_REG_THRESH_ACT		0x24
--/* Inactivity threshold */
--#define ADXL345_REG_THRESH_INACT	0x25
--/* Inactivity time */
--#define ADXL345_REG_TIME_INACT		0x26
--/* Axis enable control for activity and inactivity detection */
--#define ADXL345_REG_ACT_INACT_CTRL	0x27
--/* Free-fall threshold */
--#define ADXL345_REG_THRESH_FF		0x28
--/* Free-fall time */
--#define ADXL345_REG_TIME_FF		0x29
--/* Axis control for single tap or double tap */
--#define ADXL345_REG_TAP_AXIS		0x2A
--/* Source of single tap or double tap */
--#define ADXL345_REG_ACT_TAP_STATUS	0x2B
--/* Data rate and power mode control */
--#define ADXL345_REG_BW_RATE		0x2C
--#define ADXL345_REG_POWER_CTL		0x2D
--#define ADXL345_REG_INT_ENABLE		0x2E
--#define ADXL345_REG_INT_MAP		0x2F
--#define ADXL345_REG_INT_SOURCE		0x30
--#define ADXL345_REG_INT_SOURCE_MSK	0xFF
- #define ADXL345_REG_DATA_FORMAT		0x31
--#define ADXL345_REG_XYZ_BASE		0x32
--#define ADXL345_REG_DATA_AXIS(index)				\
--	(ADXL345_REG_XYZ_BASE + (index) * sizeof(__le16))
--
--#define ADXL345_REG_FIFO_CTL		0x38
--#define ADXL345_FIFO_CTL_SAMPLES_MSK	GENMASK(4, 0)
--/* 0: INT1, 1: INT2 */
--#define ADXL345_FIFO_CTL_TRIGGER_MSK	BIT(5)
--#define ADXL345_FIFO_CTL_MODE_MSK	GENMASK(7, 6)
--#define ADXL345_REG_FIFO_STATUS	0x39
--#define ADXL345_REG_FIFO_STATUS_MSK	0x3F
--
--#define ADXL345_INT_OVERRUN		BIT(0)
--#define ADXL345_INT_WATERMARK		BIT(1)
--#define ADXL345_INT_FREE_FALL		BIT(2)
--#define ADXL345_INT_INACTIVITY		BIT(3)
--#define ADXL345_INT_ACTIVITY		BIT(4)
--#define ADXL345_INT_DOUBLE_TAP		BIT(5)
--#define ADXL345_INT_SINGLE_TAP		BIT(6)
--#define ADXL345_INT_DATA_READY		BIT(7)
--
--/*
-- * BW_RATE bits - Bandwidth and output data rate. The default value is
-- * 0x0A, which translates to a 100 Hz output data rate
-- */
--#define ADXL345_BW_RATE			GENMASK(3, 0)
--#define ADXL345_BW_LOW_POWER		BIT(4)
--#define ADXL345_BASE_RATE_NANO_HZ	97656250LL
--
--#define ADXL345_POWER_CTL_STANDBY	0x00
--#define ADXL345_POWER_CTL_WAKEUP	GENMASK(1, 0)
--#define ADXL345_POWER_CTL_SLEEP	BIT(2)
--#define ADXL345_POWER_CTL_MEASURE	BIT(3)
--#define ADXL345_POWER_CTL_AUTO_SLEEP	BIT(4)
--#define ADXL345_POWER_CTL_LINK		BIT(5)
--
--/* Set the g range */
--#define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)
--/* Data is left justified */
--#define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)
--/* Up to 13-bits resolution */
--#define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)
- #define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)
--#define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)
--#define ADXL345_DATA_FORMAT_2G		0
--#define ADXL345_DATA_FORMAT_4G		1
--#define ADXL345_DATA_FORMAT_8G		2
--#define ADXL345_DATA_FORMAT_16G		3
--
--#define ADXL345_DEVID			0xE5
--#define ADXL345_FIFO_SIZE		32
- 
- /*
-  * In full-resolution mode, scale factor is maintained at ~4 mg/LSB
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index ed0291bea0f5..ffdb03ed7a25 100644
+index ffdb03ed7a25..142f12117627 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -14,13 +14,100 @@
- #include <linux/regmap.h>
- #include <linux/units.h>
+@@ -163,6 +163,33 @@ static const unsigned long adxl345_scan_masks[] = {
+ 	0
+ };
  
--#include <linux/iio/iio.h>
--#include <linux/iio/sysfs.h>
- #include <linux/iio/buffer.h>
-+#include <linux/iio/iio.h>
- #include <linux/iio/kfifo_buf.h>
-+#include <linux/iio/sysfs.h>
- 
- #include "adxl345.h"
- 
-+#define ADXL345_REG_DEVID		0x00
-+#define ADXL345_REG_THRESH_TAP		0x1D
-+#define ADXL345_REG_OFSX		0x1E
-+#define ADXL345_REG_OFSY		0x1F
-+#define ADXL345_REG_OFSZ		0x20
-+#define ADXL345_REG_OFS_AXIS(index)	(ADXL345_REG_OFSX + (index))
-+
-+/* Tap duration */
-+#define ADXL345_REG_DUR			0x21
-+/* Tap latency */
-+#define ADXL345_REG_LATENT		0x22
-+/* Tap window */
-+#define ADXL345_REG_WINDOW		0x23
-+/* Activity threshold */
-+#define ADXL345_REG_THRESH_ACT		0x24
-+/* Inactivity threshold */
-+#define ADXL345_REG_THRESH_INACT	0x25
-+/* Inactivity time */
-+#define ADXL345_REG_TIME_INACT		0x26
-+/* Axis enable control for activity and inactivity detection */
-+#define ADXL345_REG_ACT_INACT_CTRL	0x27
-+/* Free-fall threshold */
-+#define ADXL345_REG_THRESH_FF		0x28
-+/* Free-fall time */
-+#define ADXL345_REG_TIME_FF		0x29
-+/* Axis control for single tap or double tap */
-+#define ADXL345_REG_TAP_AXIS		0x2A
-+/* Source of single tap or double tap */
-+#define ADXL345_REG_ACT_TAP_STATUS	0x2B
-+/* Data rate and power mode control */
-+#define ADXL345_REG_BW_RATE		0x2C
-+#define ADXL345_REG_POWER_CTL		0x2D
-+#define ADXL345_REG_INT_ENABLE		0x2E
-+#define ADXL345_REG_INT_MAP		0x2F
-+#define ADXL345_REG_INT_SOURCE		0x30
-+#define ADXL345_REG_INT_SOURCE_MSK	0xFF
-+#define ADXL345_REG_XYZ_BASE		0x32
-+#define ADXL345_REG_DATA_AXIS(index)				\
-+	(ADXL345_REG_XYZ_BASE + (index) * sizeof(__le16))
-+
-+#define ADXL345_REG_FIFO_CTL		0x38
-+#define ADXL345_FIFO_CTL_SAMPLES_MSK	GENMASK(4, 0)
-+/* 0: INT1, 1: INT2 */
-+#define ADXL345_FIFO_CTL_TRIGGER_MSK	BIT(5)
-+#define ADXL345_FIFO_CTL_MODE_MSK	GENMASK(7, 6)
-+#define ADXL345_REG_FIFO_STATUS	0x39
-+#define ADXL345_REG_FIFO_STATUS_MSK	0x3F
-+
-+#define ADXL345_INT_OVERRUN		BIT(0)
-+#define ADXL345_INT_WATERMARK		BIT(1)
-+#define ADXL345_INT_FREE_FALL		BIT(2)
-+#define ADXL345_INT_INACTIVITY		BIT(3)
-+#define ADXL345_INT_ACTIVITY		BIT(4)
-+#define ADXL345_INT_DOUBLE_TAP		BIT(5)
-+#define ADXL345_INT_SINGLE_TAP		BIT(6)
-+#define ADXL345_INT_DATA_READY		BIT(7)
-+
-+/*
-+ * BW_RATE bits - Bandwidth and output data rate. The default value is
-+ * 0x0A, which translates to a 100 Hz output data rate
++/**
++ * adxl345_set_measure_en() - Enable and disable measuring.
++ *
++ * @st: The device data.
++ * @en: Enable measurements, else standby mode.
++ *
++ * For lowest power operation, standby mode can be used. In standby mode,
++ * current consumption is supposed to be reduced to 0.1uA (typical). In this
++ * mode no measurements are made. Placing the device into standby mode
++ * preserves the contents of FIFO.
++ *
++ * Return: Returns 0 if successful, or a negative error value.
 + */
-+#define ADXL345_BW_RATE			GENMASK(3, 0)
-+#define ADXL345_BW_LOW_POWER		BIT(4)
-+#define ADXL345_BASE_RATE_NANO_HZ	97656250LL
++static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
++{
++	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
 +
-+#define ADXL345_POWER_CTL_STANDBY	0x00
-+#define ADXL345_POWER_CTL_WAKEUP	GENMASK(1, 0)
-+#define ADXL345_POWER_CTL_SLEEP	BIT(2)
-+#define ADXL345_POWER_CTL_MEASURE	BIT(3)
-+#define ADXL345_POWER_CTL_AUTO_SLEEP	BIT(4)
-+#define ADXL345_POWER_CTL_LINK		BIT(5)
++	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
++}
 +
-+/* Set the g range */
-+#define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)
-+/* Data is left justified */
-+#define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)
-+/* Up to 13-bits resolution */
-+#define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)
-+#define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)
-+#define ADXL345_DATA_FORMAT_2G		0
-+#define ADXL345_DATA_FORMAT_4G		1
-+#define ADXL345_DATA_FORMAT_8G		2
-+#define ADXL345_DATA_FORMAT_16G		3
++static void adxl345_powerdown(void *ptr)
++{
++	struct adxl345_state *st = ptr;
 +
-+#define ADXL345_DEVID			0xE5
-+#define ADXL345_FIFO_SIZE		32
++	adxl345_set_measure_en(st, false);
++}
 +
- #define ADXL345_FIFO_BYPASS	0
- #define ADXL345_FIFO_FIFO	1
- #define ADXL345_FIFO_STREAM	2
+ static int adxl345_set_interrupts(struct adxl345_state *st)
+ {
+ 	int ret;
+@@ -301,33 +328,6 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
+-/**
+- * adxl345_set_measure_en() - Enable and disable measuring.
+- *
+- * @st: The device data.
+- * @en: Enable measurements, else standby mode.
+- *
+- * For lowest power operation, standby mode can be used. In standby mode,
+- * current consumption is supposed to be reduced to 0.1uA (typical). In this
+- * mode no measurements are made. Placing the device into standby mode
+- * preserves the contents of FIFO.
+- *
+- * Return: Returns 0 if successful, or a negative error value.
+- */
+-static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
+-{
+-	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
+-
+-	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
+-}
+-
+-static void adxl345_powerdown(void *ptr)
+-{
+-	struct adxl345_state *st = ptr;
+-
+-	adxl345_set_measure_en(st, false);
+-}
+-
+ static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
+ "0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200"
+ );
 -- 
 2.39.5
 

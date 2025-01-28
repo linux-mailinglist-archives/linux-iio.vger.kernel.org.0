@@ -1,135 +1,128 @@
-Return-Path: <linux-iio+bounces-14683-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14684-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642C0A21203
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 20:13:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1240A2148B
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 23:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D82A166E4D
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 19:13:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE1E1886198
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 22:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC001DE8BE;
-	Tue, 28 Jan 2025 19:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FCE1E1C1F;
+	Tue, 28 Jan 2025 22:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WXD+CBSk"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="NUNSUUGt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357061C5F2C;
-	Tue, 28 Jan 2025 19:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F052B18F2D8;
+	Tue, 28 Jan 2025 22:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738091615; cv=none; b=pfBTGcuJ2OMYInlu+RBh/V1VG+Dun+1n9POvi48/GrFNdO2pwcpyzgS7KjAISqtv5KmO/0/gb72a4iMivprjJ5fDZkreC/T/ICL6TwWcVMFtAv68AsspwFY77I5p27oZLl/Dl5NW6o67ibVyG3cWe5w4bJaJ1vW8Bj+OmjIvl6M=
+	t=1738104123; cv=none; b=ZSF1tzNNEft+ZEMz5E4zgPPXk+febAiAn33i/Eh/A6X2yRIlMKHMYXePkYGjBA29YrW1R0lzdzk27xkElQ1TfsRtEt5A+Csf4YkVhqrQuLgDt0bgaRRhNqmMnL/t6zPWAoS/PF7kQE0QMZlFM67269x0X7WL/qUqMWlBuZ/lMyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738091615; c=relaxed/simple;
-	bh=E/dzq8SoH58AxiaQJdgepZZjNNh0QmxWsFeJsObOpQA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UgLhGg+HDhlP33i3spwOraOJXVKUPZnaLM52BuLwyVvrQAz1yZis9EdnMy4KM1/AognNhDuXImc+zSiL0CIy2HKx8ilTZklCtqdQ8q7eTNLY5K2NHlaMWysxd8dLiE7o6DdBhMxdqjlj5v/otAB0hVa2hZyqoHf1wsADw9DcWzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WXD+CBSk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10A3C4CED3;
-	Tue, 28 Jan 2025 19:13:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738091614;
-	bh=E/dzq8SoH58AxiaQJdgepZZjNNh0QmxWsFeJsObOpQA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WXD+CBSkLBsLC0V53TiuKwdKW5CAEZ/Nnisg0J5Db11HaraxlEKpJI73v6oHuyU2p
-	 /xF9mM808nATtWoQSCPwAkDjioUsxMowwudI6SoYXKm0t2AqZTSfUd+YUyx+oJ4Z06
-	 KkOxf9XIcIPNcJtIQlw6TdhfK4uuyGL1OoCVobbEnsnxZoNV1wl6oT00YDffNO8NSD
-	 dUlHQohleYo0UXBYguOyg8Q8o4q9WQrI2fzzkBP2OAHgan0C4EQlyPwWSFgnxPLLJe
-	 r7E1okiNG9z0d73MuuTSMss4ad2NIgYyYhRecBHLIFipVxwi4Ojv9jj+NVu1tpVf7o
-	 LtBaylXtqGWIw==
-Date: Tue, 28 Jan 2025 19:13:27 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rishi Gupta <gupt21@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 0/2] iio: light: fix scale in veml6030
-Message-ID: <20250128191327.32263a03@jic23-huawei>
-In-Reply-To: <20250127-veml6030-scale-v3-0-4f32ba03df94@gmail.com>
-References: <20250127-veml6030-scale-v3-0-4f32ba03df94@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738104123; c=relaxed/simple;
+	bh=AOq0SJfJiBWND1wZ8FCd25+xqo3YTjsEqxOPO7EP2Os=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FstZ4C6DuUxK9n5M/3sg7jpX/GB3dpw1cVdd0Rje5e+IrzQ204QiRqwwmVyx07DktIGradd5Ie/WbNADPj5RPL0y8Zpyb+ibRpIexleAFtYiDUFvEW3KX+VkOpd/umHn281FNaZhLY+iyFPjMBcDcp1VSYcbo8UhwRuSgJsix8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=NUNSUUGt; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 06ECA403FA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1738104121; bh=+meNH1juZBBtvrp/xo2cF0Sh2lEGZRx9Dv3JEMGVfwQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NUNSUUGtYAw8IZ7v+u9urKWTHqRqgIaFDi/LwOklT1yZ+dVdXczOD9aTVo9dL8GaQ
+	 OAf5s35W/sLcrCXBP9L1rzztGXQrZf82Io4oQsEPVhxr2Gmfam9dfHpeHYHM4gAzS8
+	 Z5wJvtiQGdryhtYMX/RqM8UUTkxsZ7qqsI/DxEU04UzFD7wrLVaAgpDF9YgOAVZODR
+	 ghFfoDDu31L5plmrTy4y8+t+6MkL5TJscft0G5BNRz45gjvAU7I+oGLILjgoaHhU9M
+	 9iNee1I8iwhHjJ3JhYnCMWXNAtQ6QziZH5AMs5lTvSyDYyN1vQVIIWC4TLGwjRIBKs
+	 EZQClEOOCB0lQ==
+Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 06ECA403FA;
+	Tue, 28 Jan 2025 22:42:00 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Linux Doc Mailing
+ List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Mauro Carvalho Chehab
+ <mchehab+huawei@kernel.org>, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, coresight@lists.linaro.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ workflows@vger.kernel.org
+Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
+In-Reply-To: <cover.1738020236.git.mchehab+huawei@kernel.org>
+References: <cover.1738020236.git.mchehab+huawei@kernel.org>
+Date: Tue, 28 Jan 2025 15:42:00 -0700
+Message-ID: <87h65i7e87.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Mon, 27 Jan 2025 20:30:21 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-> This series follows a similar approach as recently used for the veml3235
-> by using iio-gts to manage the scale as stated in the ABI. In its
-> current form, the driver exposes the hardware gain instead of the
-> multiplier for the raw value to obtain a value in lux.
-> 
-> Although this driver and the veml3235 have many similarities, there are
-> two main differences in this series compared to the one used to fix the
-> other driver:
-> 
-> - The veml6030 has fractional gains, which are not supported by the
->   iio-gts helpers. My first attempt was adding support for them, but
->   that made the whole iio-gts implementation more complex, cumbersome,
->   and the risk of affecting existing clients was not negligible.
->   Instead, a x8 factor has been used for the hardware gain to present
->   the minimum value (x0.125) as x1, keeping linearity. The scales
->   iio-gts generates are therefore right without any extra conversion,
->   and they match the values provided in the different datasheets.
-> 
-> - This driver included a processed value for the ambient light, maybe
->   because the scale did not follow the ABI and the conversion was not
->   direct. To avoid breaking userspace, the functionality has been kept,
->   but of course using the fixed scales. In order to ease the
->   calculations, iio_gts_get_total_gain() has been exported to avoid
->   working directly with the scale in NANO, that would require 64-bit
->   operations.
-> 
-> This issue has been present since the original implementation, and it
-> affects all devices it supports.
-> 
-> This series has been tested with a veml7700 (same gains as veml6030) and
-> a veml6035 with positive results.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied to the togreg branch of iio.git. Initially pushed out as testing.
+> Hi Jon/Greg,
+>
+> That's the second version of my RFC patches meant to modenize the ABI
+> parser that I wrote in Perl.
 
-I've rebased on char-misc, but will almost certainly rebase once more on rc1
-once available.
+I have a couple of minor comments on the individual patches, but overall
+I do like this direction.
 
-> ---
-> Changes in v3:
-> - Rebase onto iio/testing and drop [1/4], [2/4] (applied).
-> - iio-gts: document exported function.
-> - Link to v2: https://lore.kernel.org/r/20250119-veml6030-scale-v2-0-6bfc4062a371@gmail.com
-> 
-> Changes in v2:
-> - Rename SEL_GAIN to indicate they are in MILLI.
-> - Split first patch (regfields and chaching).
-> - Use regfield structs in chip struct instead of function pointer.
-> - Use total gain to derive scale, avoiding 64-bit divisions.
-> - Link to v1: https://lore.kernel.org/r/20250107-veml6030-scale-v1-0-1281e3ad012c@gmail.com
-> 
-> ---
-> Javier Carrasco (2):
->       iio: gts-helper: export iio_gts_get_total_gain()
->       iio: light: veml6030: fix scale to conform to ABI
-> 
->  drivers/iio/industrialio-gts-helper.c |  11 +-
->  drivers/iio/light/Kconfig             |   1 +
->  drivers/iio/light/veml6030.c          | 528 ++++++++++++++--------------------
->  include/linux/iio/iio-gts-helper.h    |   1 +
->  4 files changed, 229 insertions(+), 312 deletions(-)
-> ---
-> base-commit: ed2010907caa1c838d2e565d67bbc08fe023663e
-> change-id: 20241231-veml6030-scale-8142f387e7e6
-> 
-> Best regards,
+It would be nice, though, if the code were a bit more extensively
+commented.  Parts of it get into the "twistly maze of regexes" mode that
+can be awfully hard to follow.
 
+> On this series we have:
+>
+> patches 1 to 11: several bug fixes addressing issues at ABI symbols;
+
+1-3 aren't needed - it seems you already upstreamed #2?
+
+For the rest, is there any reason to not apply them right away?  They
+just seem like worthwhile fixes.
+
+> patch 12: a fix for scripts/documentation-file-ref-check
+> patches 13-15: create new script with rest and search logic and 
+>   minimally integrate with kernel_abi Sphinx extension(phase 1);
+> patches 16-19: implement phase 2: class integration (phase 2);
+> patch 20: fix a bug at kernel_abi: the way it splits lines is buggy;
+> patches  21-24: rewrite kernel_abi logic to make it simpler and more
+>   robust;
+> patches 25-27: add cross-reference support at automarkup;
+> patches 28-36: several ABI cleanups to cope with the improvements;
+> patch 37: implement undefined command;
+> patch 38: get rid of the old Perl script.
+>
+> To make it easier to review/apply, I may end breaking the next version
+> on a couple of different patchsets. Still it would be nice to have more
+> people testing it and providing some feedback.
+
+I've looked over everything, though with limited depth.  My testing
+hasn't turned up any problems.  I've only tested with current Sphinx,
+have you tried this with the more ancient versions we support?
+
+[It's probably time to raise our minimum version again, especially now
+that current Sphinx has better performance.]
+
+I don't see a whole lot of reasons not to apply this set shortly after
+the merge window; anybody disagree?
+
+Thanks,
+
+jon
 

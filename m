@@ -1,164 +1,263 @@
-Return-Path: <linux-iio+bounces-14646-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14649-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F98A201DB
-	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 00:48:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BACFA20248
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 01:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FFFE3A623B
-	for <lists+linux-iio@lfdr.de>; Mon, 27 Jan 2025 23:47:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337EB18852E3
+	for <lists+linux-iio@lfdr.de>; Tue, 28 Jan 2025 00:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4751A1DF261;
-	Mon, 27 Jan 2025 23:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364BD19340E;
+	Tue, 28 Jan 2025 00:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eijv0JFS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YVMdUUsP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006481DED76
-	for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 23:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7623C33CFC;
+	Tue, 28 Jan 2025 00:06:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738021677; cv=none; b=diEOgwMYZaQmRVenD2tAAms40YAHDG3B2sMSt+FqZ4tjY7srHJz1TgEKVgCUNvsHNKyH+coS/N2gA3I6PbxFT6MFrhT/+k8uJswxL0JAX5cK2aFa2kWoPnE+u2rVZkLQwmsLkuks7Dv0E1bOn/eJCpkwgQFNM8EPoONO79FV3fM=
+	t=1738022797; cv=none; b=czQx09cJQyQSZBP1BGgcNSPDnT/33NLH458yGgYegrxzEkMlKIWHpoEiTAZ81pp0GgYXFyfn2bx+1M2nBKPqio9+O9McP1ALYdDeIrCoR2S9pBV33Hu9yjghdInZOAMNq5+aqlc8LYgOqjeumxcERC58NaqefZZ9Ri/y5OdRAMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738021677; c=relaxed/simple;
-	bh=ZhTim9zucw235FoWB0yKshnJisPkmKNGRB7FZmrJi8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JfRMHGnXKmF9OxKhSaTZxzJ6LSxX4deBhLidV/yrbSBxDxjbZq/ZTPxIVnhF9anG/Rd3XiRSAy1gRP5Uskj86y4jjhJQLf3byTAvUxpY8yqxvnxOvf/6U9Zbkpqkx+3QUPa7Sah8FnHe7nlzErNMEWL9GmoGdEFfDg46R7UAXUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eijv0JFS; arc=none smtp.client-ip=209.85.160.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-2adc2b6837eso1445300fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 Jan 2025 15:47:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738021674; x=1738626474; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Zj9pcMMVgp4HQXKodFRNu0/WkE6xV+1IDSiA1yELFNg=;
-        b=eijv0JFSzq3H5eSKAC4P2Holwz1lMi0J9GLOCL5jeAHw3etRFXvj0L/mgzjc3hvVaJ
-         ToA34tM/BFhI3N89l4eSI9ndzEsvWoCx8Qmxrudo5saRWsBoF1HSfuHyGUNuORktcEHY
-         8CUrvedkhqWq2bhcHidlWHaYtClnaokC/kNi5lo+tJfvadyBu2R7fxHNSlGnrMuUwwt/
-         H906C4c++BGW0cdAQRSztjE1hj2YVtd7BzfGy3OhOJICpjeuTlItWngbFzWF33FunTxU
-         RMev6l8F9lqwGRW9xxcp+sCJ0LPd1qOMzC5fmWO3A9+6EM2wggXGjFaKCE9jx8oBdpjL
-         7VGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738021674; x=1738626474;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zj9pcMMVgp4HQXKodFRNu0/WkE6xV+1IDSiA1yELFNg=;
-        b=XqKfUUj0RWHr0gV4avvJxz9bIi/8+bspn2RLbXMG3+ereUWUFiXKT/JZjZ2OoacdbG
-         rEOMtgb2Dk8HNmxD5m0UUrJaAs3o51pas4XheKoeFHD2PqueJDzDVE/SGD9yETUfp/zP
-         KppSnBNp4htgFsazIVtIDVBv8dkmgRk64KJspCpYuyfERQkaAa8d272z4qnwjGwkqzDT
-         C3TYdfnRFlNpe8isGYsBRfoGyZzpL8WWk8i4Q2dNFfs+Ci0cRZIgAHKokCrUxMoXvNyA
-         ZYcdgwcEGlF6cjj/WEGIHmcRArDX06VI6jFbaDD1rCkery3kzBT6TVigGNuiqG96u1zk
-         RjBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnRoNhjLbqP2X6TcAot90QTuUsQ86IRYJ4AVozeekLMCHqkRxvZbGs8O3xOMYeuxN3P9s2peVpZIk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw871P62JeWus+ckvjpiXylZ5gTzWkeaJg3NIamgR3wBrBED/0w
-	iKAT/vcT7kqh8KtlKwkeYM1MbFk2PpyxgEPgxIGk27pSbvxW9R1Q0MFI4Ub6ef8=
-X-Gm-Gg: ASbGncv8F5pAbwvBBOnlTIdZ8Ywh6AqMCok6hJcwX+a1e6stHExeBPnXBVm1+0O44x+
-	Wo8rp6tIyl4i2JprSDQsWrJeazpdyfwLQF1gxUoO484fVmP7xDXt00Hw3+asNTwlF3XFH/a25QD
-	O35qMP/DPSD1zkNBhJdkwoiKIrZwaKpq5MU4P02CcEJIJ8GMVBOVNqA6S8c2hfHoq4gHGX1qLDo
-	37DjW1qiFMCLHFd/oRkQVTwQPGXhIWu6Csp9pXtMn5INfYlSeoqjNvaX21w5ulSxE4Y8p7LfzAl
-	Fql9Bm/ItHJp+qkXVIlOw9Ve5iljpwZmJA7SgvpEpMSaF4zs3L29
-X-Google-Smtp-Source: AGHT+IF/BjQ2vfcU7AR2KFWOh60J8qCWDJIXaHZ5HGLcMJiuX5mst+T96QDPq/tWpXq+LexE1xiBAQ==
-X-Received: by 2002:a05:6871:2281:b0:29e:2695:5214 with SMTP id 586e51a60fabf-2b1c0c54d73mr22519741fac.25.1738021673942;
-        Mon, 27 Jan 2025 15:47:53 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b28f0facaesm3055861fac.1.2025.01.27.15.47.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Jan 2025 15:47:52 -0800 (PST)
-Message-ID: <e6591d04-bbe6-4bde-a429-a4e6fc7abd9c@baylibre.com>
-Date: Mon, 27 Jan 2025 17:47:51 -0600
+	s=arc-20240116; t=1738022797; c=relaxed/simple;
+	bh=x0APBPBQWrivChaCg4k0Jly7N3L+drRwEE2afrYm3Ko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pG7vhzPeB2x/+yDwbNhJFIvm2jB/JWVTv+koS8hxTDg5Z8vqsXUMFlVaWKj0c1vnGe3Ib5tI8WY+a0QWCU7JGNxXNd2ZOTeL6JU+kenOZTLGkalPyzF3gOL/8SADA4mtZH/PNqc1Qu9OOsNupeiDlZQVhQmePYu7Rk4kIqicx/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YVMdUUsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0CDC4CEE7;
+	Tue, 28 Jan 2025 00:06:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738022796;
+	bh=x0APBPBQWrivChaCg4k0Jly7N3L+drRwEE2afrYm3Ko=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YVMdUUsPMxPbkAk4qEzxydaiheiKgPq0V/bec3NjHqtsuNI4LbgEBDEej9+LgNza+
+	 ljIEnlJ8dOW66epiiZtLELOhM7CI9Xmfl04mwJsxOPi5DZqupGOzyLYI8OrEB0YMLK
+	 2aabCdo/efDt+1ketrNTclboOiYMqtBF3chVGB2EMC4yfr4ULHJGHphSkN/9c0uXJr
+	 2zeCibWgf8wkOz10yK0tDHg/2UyTNfnmjDli87oee4K3CFTkaD0PhvQA9VygWXf7kB
+	 Qo1Ry12uzmRsVIoEnhnI2jD01cboTneK2GBz8V4u2Zk1oJeS56JxjuAeS7Lo5BEMUu
+	 9jWWaNQP5ViKg==
+Received: from mchehab by mail.kernel.org with local (Exim 4.98)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1tcZ7h-0000000DRKO-2KyQ;
+	Tue, 28 Jan 2025 01:06:33 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	coresight@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net,
+	linux-hardening@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	workflows@vger.kernel.org
+Subject: [RFC v2 00/38] Improve ABI documentation generation
+Date: Tue, 28 Jan 2025 01:05:49 +0100
+Message-ID: <cover.1738020236.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/16] iio: adc: ad7768-1: add multiple scan types to
- support 16-bits mode
-To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com,
- marcelo.schmitt1@gmail.com
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <8bff69133cddd7e6be714781ea7655a427a6c32e.1737985435.git.Jonathan.Santos@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <8bff69133cddd7e6be714781ea7655a427a6c32e.1737985435.git.Jonathan.Santos@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-On 1/27/25 9:13 AM, Jonathan Santos wrote:
-> When the device is configured to Sinc5 filter and decimation x8,
-> output data is reduced to 16-bits in order to support 1 MHz of
-> sampling frequency due to clock limitation.
-> 
-> Use multiple scan types feature to enable the driver to switch
-> scan type in runtime, making possible to support both 24-bit and
-> 16-bit resolution.
-> 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
-> v2 Changes:
-> * Included the ".shift" value back to scan_type.
-> * Changed the number of bytes from regmap_read instead of shifting the 
->   ADC sample value when the word size is lower (16-bits).
-> ---
->  drivers/iio/adc/ad7768-1.c | 73 ++++++++++++++++++++++++++++++++------
->  1 file changed, 62 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index e3ea078e6ec4..7686556c7808 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -136,6 +136,15 @@ struct ad7768_clk_configuration {
->  	enum ad7768_pwrmode pwrmode;
->  };
->  
-> +enum ad7768_scan_type {
-> +	AD7768_SCAN_TYPE_NORMAL,
-> +	AD7768_SCAN_TYPE_HIGH_SPEED,
-> +};
-> +
-> +static const int ad7768_mclk_div_rates[4] = {
-> +	16, 8, 4, 2,
-> +};
-> +
->  static const struct ad7768_clk_configuration ad7768_clk_config[] = {
->  	{ AD7768_MCLK_DIV_2, AD7768_DEC_RATE_8, 16,  AD7768_FAST_MODE },
->  	{ AD7768_MCLK_DIV_2, AD7768_DEC_RATE_16, 32,  AD7768_FAST_MODE },
-> @@ -150,6 +159,23 @@ static const struct ad7768_clk_configuration ad7768_clk_config[] = {
->  	{ AD7768_MCLK_DIV_16, AD7768_DEC_RATE_1024, 16384, AD7768_ECO_MODE },
->  };
->  
-> +static const struct iio_scan_type ad7768_scan_type[] = {
-> +	[AD7768_SCAN_TYPE_NORMAL] = {
-> +		.sign = 's',
-> +		.realbits = 24,
-> +		.storagebits = 32,
-> +		.shift = 8,
-> +		.endianness = IIO_BE,
-> +	},
-> +	[AD7768_SCAN_TYPE_HIGH_SPEED] = {
-> +		.sign = 's',
-> +		.realbits = 16,
-> +		.storagebits = 32,
+Hi Jon/Greg,
 
-Why not make storagebits 16 here?
+That's the second version of my RFC patches meant to modenize the ABI
+parser that I wrote in Perl.
 
-> +		.shift = 16,
-> +		.endianness = IIO_BE,
-> +	},
-> +};
-> +
+I originally started it due to some issues I noticed when searching for
+ABI symbols. While I could just go ahead and fix the already existing
+script, I noticed that the script maintainance didn't have much care over
+all those years, probably because it is easier to find Python programmers
+those days.
+
+Also, the code is complex and was not using modules or classes and
+were using lots of global variables.
+
+So, I decided to rewrite it in Python. I started with a manual conversion
+for each function. Yet, to avoid future maintainership issues, I opted to
+divide the code on three classes. One class for the ABI parser, another
+one for regex conversion (used when checking symbols from local hardware,
+and an extra class for undefined symbols check.
+
+I opted to change the Sphinx integration gradually using different
+patch sets on 4 phases:
+
+1. minimal integration: just execute the new script on a similar way as
+   the perl one;
+2. the kernel_abi module was changed to import the ABI parser class,
+   using it directly;
+3. the logic at kernel_abi were rewritten to better integrate. As a bonus,
+   Sphinx now imports ReST data symbol by symbol. That solves one of
+   the issues I was discomfortable with the original approach: when lots
+   of data is sent to Sphinx parser, it stops in the middle of processing.
+   This was addressed in the past on a hacky way, but it could cause
+   problems in the future as the number of symbols increase;
+4. the ABI parser part is now called either by automarkup and kernel_abi.
+   This allowed automarkup to solve ABI symbols.
+
+Together with this series, I added some patches fixing issues and warnings
+when generating documentation.
+
+Some notes about this new RFC:
+
+- despite being able to generate documentation cross-references with
+  auto-markup, the documentation build timt didn't increase on my machine
+  (it was actually 5 seconds faster);
+- I rewrote some algorithms at the undefined symbol detection code. With
+  that, it is now a lot faster than the previous version, at least on my desktop
+  (wich has 24 CPU threads). I didn't try it on a server yet;
+- the undefined parser can optionally use multiple CPUs. This sounds
+  fancier than it seems: Python (up to version 3.12) is really bad with
+  multi-CPU support and doesn't have real multi-thread support. Python
+  3.13 has now an optional way to address that (although I didn't test yet,
+  as it requires Python manual compilation). When such feature becomes
+  standard, maybe the undefined symbols detection will be faster.
+
+Btw, I'm opting to send this as an RFC because I'd like to have more
+people testing and checking it. In particular, the undefined ABI check
+is complex, as it requires lots of tricks to reduce the run time from hours
+to seconds.
+  
+On this series we have:
+
+patches 1 to 11: several bug fixes addressing issues at ABI symbols;
+patch 12: a fix for scripts/documentation-file-ref-check
+patches 13-15: create new script with rest and search logic and 
+  minimally integrate with kernel_abi Sphinx extension(phase 1);
+patches 16-19: implement phase 2: class integration (phase 2);
+patch 20: fix a bug at kernel_abi: the way it splits lines is buggy;
+patches  21-24: rewrite kernel_abi logic to make it simpler and more
+  robust;
+patches 25-27: add cross-reference support at automarkup;
+patches 28-36: several ABI cleanups to cope with the improvements;
+patch 37: implement undefined command;
+patch 38: get rid of the old Perl script.
+
+To make it easier to review/apply, I may end breaking the next version
+on a couple of different patchsets. Still it would be nice to have more
+people testing it and providing some feedback.
+
+---
+RFC v2:
+  - Dropped a patch touching the perl script;
+  - Implemented phases 2-4 of the script's logic;
+  - Added ABI cross-references via automarkup;
+  - Added support for undefined logic;
+  - Added more ABI and scripts' fixes;
+  - Added undefined logic;
+  - Added a patch to remove the old tool.
+
+Mauro Carvalho Chehab (38):
+  docs: power: video.rst: fix a footnote reference
+  docs: media: ipu3: fix two footnote references
+  docs: block: ublk.rst: remove a reference from a dropped text
+  docs: sphinx: remove kernellog.py file
+  docs: sphinx/kernel_abi: adjust coding style
+  docs: admin-guide: abi: add SPDX tags to ABI files
+  ABI: sysfs-class-rfkill: fix kernelversion tags
+  ABI: sysfs-bus-coresight-*: fix kernelversion tags
+  ABI: sysfs-driver-dma-idxd: fix date tags
+  ABI: sysfs-fs-f2fs: fix date tags
+  ABI: sysfs-power: fix a what tag
+  scripts/documentation-file-ref-check: don't check perl/python scripts
+  scripts/get_abi.py: add a Python tool to generate ReST output
+  scripts/get_abi.py: add support for symbol search
+  docs: use get_abi.py for ABI generation
+  scripts/get_abi.py: optimize parse_abi() function
+  scripts/get_abi.py: use an interactor for ReST output
+  docs: sphinx/kernel_abi: use AbiParser directly
+  docs: sphinx/kernel_abi: reduce buffer usage for ABI messages
+  docs: sphinx/kernel_abi: properly split lines
+  scripts/get_abi.pl: Add filtering capabilities to rest output
+  scripts/get_abi.pl: add support to parse ABI README file
+  docs: sphinx/kernel_abi: parse ABI files only once
+  docs: admin-guide/abi: split files from symbols
+  docs: sphinx/automarkup: add cross-references for ABI
+  docs: sphinx/kernel_abi: avoid warnings during Sphinx module init
+  scripts/get_abi.py: Rename title name for ABI files
+  docs: media: Allow creating cross-references for RC ABI
+  docs: thunderbolt: Allow creating cross-references for ABI
+  docs: arm: asymmetric-32bit: Allow creating cross-references for ABI
+  docs: arm: generic-counter: Allow creating cross-references for ABI
+  docs: iio: Allow creating cross-references ABI
+  docs: networking: Allow creating cross-references statistics ABI
+  docs: submit-checklist: Allow creating cross-references for ABI README
+  docs: translations: Allow creating cross-references for ABI README
+  docs: ABI: drop two duplicate symbols
+  scripts/get_abi.py: add support for undefined ABIs
+  scripts/get_abi.pl: drop now obsoleted script
+
+ Documentation/ABI/removed/sysfs-class-rfkill  |    2 +-
+ Documentation/ABI/stable/sysfs-class-rfkill   |   12 +-
+ .../ABI/stable/sysfs-devices-system-cpu       |   10 -
+ .../ABI/stable/sysfs-driver-dma-idxd          |    4 +-
+ .../testing/sysfs-bus-coresight-devices-cti   |   78 +-
+ .../testing/sysfs-bus-coresight-devices-tpdm  |   52 +-
+ Documentation/ABI/testing/sysfs-fs-f2fs       |    4 +-
+ Documentation/ABI/testing/sysfs-power         |    2 +-
+ .../admin-guide/abi-obsolete-files.rst        |    7 +
+ Documentation/admin-guide/abi-obsolete.rst    |    6 +-
+ Documentation/admin-guide/abi-readme-file.rst |    6 +
+ .../admin-guide/abi-removed-files.rst         |    7 +
+ Documentation/admin-guide/abi-removed.rst     |    6 +-
+ .../admin-guide/abi-stable-files.rst          |    7 +
+ Documentation/admin-guide/abi-stable.rst      |    6 +-
+ .../admin-guide/abi-testing-files.rst         |    7 +
+ Documentation/admin-guide/abi-testing.rst     |    6 +-
+ Documentation/admin-guide/abi.rst             |   17 +
+ Documentation/admin-guide/media/ipu3.rst      |   12 +-
+ Documentation/admin-guide/thunderbolt.rst     |    2 +-
+ Documentation/arch/arm64/asymmetric-32bit.rst |    2 +-
+ Documentation/block/ublk.rst                  |    2 -
+ Documentation/driver-api/generic-counter.rst  |    4 +-
+ Documentation/driver-api/iio/core.rst         |    2 +-
+ Documentation/iio/iio_devbuf.rst              |    2 +-
+ Documentation/networking/statistics.rst       |    2 +-
+ Documentation/power/video.rst                 |    2 +-
+ Documentation/process/submit-checklist.rst    |    2 +-
+ Documentation/sphinx/automarkup.py            |   56 +
+ Documentation/sphinx/kernel_abi.py            |  162 +-
+ Documentation/sphinx/kerneldoc.py             |   14 +-
+ Documentation/sphinx/kernellog.py             |   22 -
+ Documentation/sphinx/kfigure.py               |   81 +-
+ .../it_IT/process/submit-checklist.rst        |    2 +-
+ .../sp_SP/process/submit-checklist.rst        |    2 +-
+ .../zh_CN/process/submit-checklist.rst        |    2 +-
+ .../zh_TW/process/submit-checklist.rst        |    2 +-
+ .../userspace-api/media/rc/rc-sysfs-nodes.rst |    2 +-
+ scripts/documentation-file-ref-check          |    2 +-
+ scripts/get_abi.pl                            | 1103 -------------
+ scripts/get_abi.py                            | 1437 +++++++++++++++++
+ 41 files changed, 1804 insertions(+), 1354 deletions(-)
+ create mode 100644 Documentation/admin-guide/abi-obsolete-files.rst
+ create mode 100644 Documentation/admin-guide/abi-readme-file.rst
+ create mode 100644 Documentation/admin-guide/abi-removed-files.rst
+ create mode 100644 Documentation/admin-guide/abi-stable-files.rst
+ create mode 100644 Documentation/admin-guide/abi-testing-files.rst
+ delete mode 100644 Documentation/sphinx/kernellog.py
+ delete mode 100755 scripts/get_abi.pl
+ create mode 100755 scripts/get_abi.py
+
+-- 
+2.48.1
+
 
 

@@ -1,64 +1,65 @@
-Return-Path: <linux-iio+bounces-14712-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14713-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA29A22032
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 16:26:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62652A22034
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 16:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242B21887EB2
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:26:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 032FD7A3C72
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64BCE1DE4C6;
-	Wed, 29 Jan 2025 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142531DE897;
+	Wed, 29 Jan 2025 15:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DhX2Dh59"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="me7w5hWN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDCAC1DDC35;
-	Wed, 29 Jan 2025 15:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4D31DE2BB;
+	Wed, 29 Jan 2025 15:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738164356; cv=none; b=gcq7899VyagArY6h8ntBCl2+A6w6/QPBA8FzcPIKmDCeaqmTVB7AMWH77r34SPvt6ahPBLfkPtB7Wfey7YbWj01TCtOcFX2euTcCnLEbD3WnaNsTlx5PJR5SH2WZHR0z+tQIxqFeyT1sxMb6sNZ99SDRfXHydqaoZSG7bK568BY=
+	t=1738164356; cv=none; b=XiQHyi1j3aOz/I392VpN8D4xepa2GRUV3i1QQR7N6IfJOtkBbnpVjIE8swZ73pkkNJcs6WU98AoxfnpZjnf1ZPc4PFUp/XXPzAyUZZZ1LLxb5LScdxIQwqBR0hO+M0zlyHf6AP4408FaJC0jBQJsKV5aKRe2Thtc2fTMQBD37h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738164356; c=relaxed/simple;
-	bh=a+rrefX8dP/2cjWiPdFir1iGJYrcjbldK4bZrM4dDcs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=toOVrDcSUZLiCrU4WETWTl3Ymdae85A7sBkD1nBuv8/C8Ry0OzbWl9eNb9/yQhZOCz9GuxEQQHdChaf8/UuuXvaUb/bPmxL44XvlqNCRmSfsAk7h2kV7FeBeCewdZs/R7Q+DSNpa+B2A8GwtM61a32BorTsDAdmh1pJ+EdrsWiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DhX2Dh59; arc=none smtp.client-ip=192.198.163.19
+	bh=ajFru+rJM9W/qGPV9vDJPnDtzVXHxeG3GKD1puqa7Gg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N0HBnfZ1bQZE4kuRhBvKiAG+YZRqEmAthGRpetsc1WY6Cl5q3svy8SnEKwmLWlWj1O9RLTbQe21U1jf2B+SyMVS+AIVYJYsTTjtstF5fYlqtBfRpQ+jSHBhSgsZKP7jDHWD2hFr7zsxw+VE0kq3adBDo8ObdkMLhFfRyzbk2YAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=me7w5hWN; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738164355; x=1769700355;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=a+rrefX8dP/2cjWiPdFir1iGJYrcjbldK4bZrM4dDcs=;
-  b=DhX2Dh59nhtl48ry78KMXBCWYFWz6oE6vuwM3Kg+RVsrtKLxd2fB35Oo
-   fTgwWFAgfPVp7ko0HOERKBtHuNMeGrgGxvYm9gzPexzr1xfFSouSdtW9/
-   AhvAVSqSJWbovoMaMcpdxdADnDvEAPI97LttM6P7xI/dxnT3yXrJiMwjV
-   HtN7H2ZSwatTxWjL/iovhzV37zgTJ8mmgT3wH9DUIiUD1uvwjSMf51Stw
-   IH/2Q+OuwJA6dNidC9A5P4GH9BH3BOStDE9HFu0HBYniIvMx3MuixOAB5
-   n25TgZ3QLodeVW4prVJJ/nXRRtZonrJZ2tF4R0m/a9rpxUSmSCehI3sE7
-   g==;
-X-CSE-ConnectionGUID: U1vkYZh+TvSwlTVWkB/EVg==
-X-CSE-MsgGUID: DOtk9b5QTs+nHO3NoVkkOA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="37879638"
+  t=1738164356; x=1769700356;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ajFru+rJM9W/qGPV9vDJPnDtzVXHxeG3GKD1puqa7Gg=;
+  b=me7w5hWNrtHJr9D/HnIZdhcyKpBMVcfWzjwROJeP0ex+wAxrLZE79c9S
+   etUwobCC7iOBY5xbZpBbksSUnr7P0mCwnKAlu4RnMlHaMS4D/QGRGrLRR
+   Zu+tV7oHPzeN5hCj04Khwpvt/GHVt0SwkTZIU+L+B27oQeb+/rRLM4gGM
+   fV985tmRsmFYbUvA1DM637+o8YK95daNpiK5ilhDARWckvtWEdiqtodRA
+   Dh7oUTRZtxSRs/xdTNQAZLjxMEMt6MHaUKK1VXeMa4DfxzWwM7fIzmN7E
+   lazrBs/68eujqMkpFPS0WXy8QTrt2GGDBFW3u6XI3/c9a50clEz9xfn0C
+   w==;
+X-CSE-ConnectionGUID: vPZHm5NmQr6ze4IivKxemQ==
+X-CSE-MsgGUID: d1hVXmovQ5aFQSgDRkdwEw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="37879648"
 X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
-   d="scan'208";a="37879638"
+   d="scan'208";a="37879648"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 07:25:52 -0800
-X-CSE-ConnectionGUID: Rn9XHpLNRbW49haca4KIEQ==
-X-CSE-MsgGUID: 2s/nJ1i8QjaDViBfDUiexA==
+X-CSE-ConnectionGUID: 52UHZjVIQuGR5FTpPPjk7w==
+X-CSE-MsgGUID: QlQn4dxaTiiNgD4ODTVC5Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="114051107"
+   d="scan'208";a="114051108"
 Received: from black.fi.intel.com ([10.237.72.28])
   by orviesa003.jf.intel.com with ESMTP; 29 Jan 2025 07:25:49 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id D02634CC; Wed, 29 Jan 2025 17:25:47 +0200 (EET)
+	id D908550D; Wed, 29 Jan 2025 17:25:47 +0200 (EET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Icenowy Zheng <icenowy@aosc.io>,
@@ -70,10 +71,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Jonathan Cameron <jic23@kernel.org>,
 	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 0/3] iio: drop useless assignment of cache_type
-Date: Wed, 29 Jan 2025 17:24:39 +0200
-Message-ID: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/3] iio: light: adux1020: Drop unneeded assignment for cache_type
+Date: Wed, 29 Jan 2025 17:24:40 +0200
+Message-ID: <20250129152546.1798306-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+In-Reply-To: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
+References: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,20 +85,29 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Default value is REGCACHE_NONE, no need to assign it explicitly.
-Fix all IIO drivers that do that.
+REGCACHE_NONE is the default type of the cache when not provided.
+Drop unneeded explicit assignment to it.
 
-Andy Shevchenko (3):
-  iio: light: adux1020: Drop unneeded assignment for cache_type
-  iio: magnetometer: af8133j: Drop unneeded assignment for cache_type
-  iio: pressure: zpa2326: Drop unneeded assignment for cache_type
+Note, it's defined to 0, and if ever be redefined, it will break
+literally a lot of the drivers, so it very unlikely to happen.
 
- drivers/iio/light/adux1020.c       | 1 -
- drivers/iio/magnetometer/af8133j.c | 1 -
- drivers/iio/pressure/zpa2326_i2c.c | 1 -
- drivers/iio/pressure/zpa2326_spi.c | 1 -
- 4 files changed, 4 deletions(-)
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/light/adux1020.c | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/drivers/iio/light/adux1020.c b/drivers/iio/light/adux1020.c
+index 593d614b1689..9240983a6cc4 100644
+--- a/drivers/iio/light/adux1020.c
++++ b/drivers/iio/light/adux1020.c
+@@ -118,7 +118,6 @@ static const struct regmap_config adux1020_regmap_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 16,
+ 	.max_register = 0x6F,
+-	.cache_type = REGCACHE_NONE,
+ };
+ 
+ static const struct reg_sequence adux1020_def_conf[] = {
 -- 
 2.43.0.rc1.1336.g36b5255a03ac
 

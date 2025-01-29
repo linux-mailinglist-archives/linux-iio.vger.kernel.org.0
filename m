@@ -1,82 +1,82 @@
-Return-Path: <linux-iio+bounces-14699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002B9A21BC1
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:06:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEFEA21BC7
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:06:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55757164EA1
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03873A071F
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D20B1DDC0F;
-	Wed, 29 Jan 2025 11:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419D31DE2C2;
+	Wed, 29 Jan 2025 11:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Dhuos5mH"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hg8dbtUs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBDB1DDA20
-	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE071DDC14
+	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738148713; cv=none; b=SpgVMuXk/zqghyT5eLavaL2kGGUi5X3j0tSK8CDX++IYzNUEzzOB6UzB0BND28NGNtHy/E5JLcVLIOT5YA8W8XBzUS8Dh4TzFoGhv39TTeRKj17y6QGhyGcy/cFzZoTXu+ywfVj0fzYPMFFvVsFXSsgPodT1+o5ktwRq/o6hIcc=
+	t=1738148716; cv=none; b=RRlEYAyaV1A4E3Yq/FBFSiXMYMO8epuaWepG1Y2E3XZgovDkpK9o1lwQSoq1MG3lEH2TmmMcKNPmgxt4YlipPOfBOL7Res72CoKv8V+W86KQAEinP99/ur8MFuWb5bRghP3nzV68HWlflPPRv491sZ1CVc08t2Dq/612U/s7upw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738148713; c=relaxed/simple;
-	bh=85OlqVH97K7F9YU3PJts40Anjk8hAqk1vgt8dqfrDhg=;
+	s=arc-20240116; t=1738148716; c=relaxed/simple;
+	bh=mPqWiYHTVbxQ1ZYyr5/FMNCEArrrEDwzZrloBMMEgyA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gV2JLb57i7tTw0MKdbPPNxuLqEAzI49gToVRWYU//M0atCaBXgOTjYTAeeeGdCPoJhdc+DFc7ttHw8jlz8qm42rvktf0r1Gpa3T6afVA1A8iC8XcljIWfb6vjDsV6J5XI6QH88SJ7/DZjN4YVPHhiHvXOIl6OriVhK9oC+GI8K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Dhuos5mH; arc=none smtp.client-ip=209.85.128.45
+	 In-Reply-To:To:Cc; b=qnqTkQqi1oayCWoANWaqCsjOPoFIg2lHgVM0UsIF0Qw5hLnSezxitXMVVlhJahDoetVd+pKFli8w8DRsOM/638u/94YhE4rWzB7N8tyj/TRbRrAkvYvQId8Vi3XBaCGDztgezBVAYfesqUS2TbyJgO90IaihEQaoZOMI3aLAnZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hg8dbtUs; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4362bae4d7dso47269055e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:11 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso3971725f8f.3
+        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148710; x=1738753510; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148713; x=1738753513; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pHAR9w6iE1kUg7TAE0D6ak7vDA8Cy7dNc7XiaEG+akw=;
-        b=Dhuos5mHGVy/ZK6SvHApGYKxSxGLAotbK9tcMRMzgzeHAEWQXyWSK8bHZY7vP456kE
-         vYj1Q06rp+PmusR1O7XrvBraiZvbToQvYvcH9BS/qc6bdITe7wUeYy5pdCCuQd0dqeo4
-         WjSYtpSjtHQzjFHLvZ8AU0IIQIbyxO9CFZUoP3NJYs2TCDg5z8t4h7D2lQa+tejYrJUu
-         FiTQ8pcQgYiyTd0g5H2/K7c65zf0I1cmzdo0CxGv2ScD1fjuxqxYyfdRD1F2cpX+xtvT
-         m17MyI3Exz69QsNLO6dSFAi4b2v85nfHNrXCguy0DMRwb/5l39IXwh5X7+JZPoKCLWNu
-         a4Kw==
+        bh=oB16y1gR9CriA2xIIhmFJG7RqN1ERbrsdfXmfj1Q/Eg=;
+        b=hg8dbtUs3ej2s8+8uDCPZP696mOFtiureoxZPRDgnZFG+3poUzQF8iua9CSF8unCT1
+         hAREj16yyzC4B9Ox5DiC/1W6Ooh8vGxpMLmI/ko2BvkED6xuOW8cZMC/z68GXSg8UoI/
+         8ckm6diKfkBe3CtnebTVNcsCG1XRnNFkB/Lc/V8WabSSdo0Z/rmZjdvOpqK+GFNt5DzQ
+         kLhGAqT+c4/2yb1Fu++S0yRmi5m7ocwUPFfEP4r0ddtTWCQavwgewzhdqvJIj39WU+no
+         7oBN3DFGZdtnmL/GO/tTcU58bAZIZa0Toa7QqHVGwcExHsOwJE1oY9dvr6vnHpnHCgla
+         yorA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738148710; x=1738753510;
+        d=1e100.net; s=20230601; t=1738148713; x=1738753513;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pHAR9w6iE1kUg7TAE0D6ak7vDA8Cy7dNc7XiaEG+akw=;
-        b=FK8a0ys/w2uwCbdc9bYv0mT1mNTZSr8eRVsvSF11hCZdsglKGUEllVqCQpJZDiTdZm
-         RHpNen0m+76uD+KX17QRlDCbKF7JaSaoetSWM8CVXOUppXFRPggNNoSPNGhoefYhTn0c
-         yculXLc+8vzOsg8l3qa+5SsY8nLEFNkfxLqVpeRROGbqvWPbtKPzvqrNibCWM9MtN8/G
-         JWsuLWgmFpREE1XkBxTtoGDxrtD0gmWBCkD5M7YT6kDsl0Lv7ZOY/1Kfl5jpbhi4U7z0
-         N+/wnoZnR4oH6atJee+XWeVQjadu5APxOdw/MaSVhvduDar25K0Ljf3XfeasOD1Y4IOm
-         Kfcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAVKNqXYN5Hlm01Qrk/DnHSS8jksoweI7hIlb74zk40wJ/X1r2LMcVaXfQS9VQgGuryyxbnOnAN7o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyd08FzAXNMpHd9qIl7B1k/Tc3X9s8SCDICw/BIllI5FCbcMwsl
-	mvRvixZ1erg2Fc++PtBB/iPbdLhdNc4YP1wwvb3jpXrqXVTW+whUNRLXm1hTngo=
-X-Gm-Gg: ASbGnctWtrk0zriDjF2wxsVdtPNgWXeaqbZtISwmYzQHIpGDUSqzaRWUOmiho4/40+v
-	72dNZzy7B3ZPqzWj7xH64yVrwbPmZkTDrnM7RczZnBgFa7Ah+/EMg/jk9x+L5Kupf6wjFy3a3ko
-	PjlF/Ilt4682PK9ZX8a3tv0WljQC3XAte8fa1+ezIYYs8ExFd/C3SPO8CzMoGhXn7nmUq09y8qS
-	EBxyMh/xaIXZnP47igrETQkw6RIoNTZjnXM9/el8uiLQBd5yIcydyyn4IOquXJcuvaurfS4UQZH
-	whAPYYQ0ZrdyUYJibxE2ZLqD2IwtoQ69zepDmuY0S0agcp6pCW6wxwKiPB7duH5VgxmWNAA=
-X-Google-Smtp-Source: AGHT+IFnISRAdIOu2I025O7IEY3zw9Th1g5UVnXU5gSxkPBoqoRfUsE5SpFijUzs9cafLVfb91opuQ==
-X-Received: by 2002:a05:6000:4013:b0:385:f631:612 with SMTP id ffacd0b85a97d-38c5195f2e5mr2251088f8f.17.1738148709667;
-        Wed, 29 Jan 2025 03:05:09 -0800 (PST)
+        bh=oB16y1gR9CriA2xIIhmFJG7RqN1ERbrsdfXmfj1Q/Eg=;
+        b=V/PDZ91wzNrof3/KhkstXGSwq4te6205Dtgvo9FmmWDKsz9nT2emJjrcw2RDKNQPgf
+         6D5E5tW7GQ8VJuyAU6csSXTecKuRpQ1PEnIgStw/+UqgNolutwAnCfxz/qX48p0QXN6v
+         uqduXDUsMSyHmeHhvsZA6gWWIGx3n7QL2e1ZyPYh2Sfg2lbLUDAn+sX4xV8dxvb5U4I5
+         JyIy5iXQ6TtsDx7NvSeCNfkRhrlnGwvaTe6/kUyuzarWZKgxhAWPtcBtqNI9XeLOnZxc
+         Of/PJM5MD5SezduYXK57AZQHWgM/btmC/96L5X75WWTcWP7+3pJxQ3O9Kvc2aJwxRllY
+         yl7A==
+X-Forwarded-Encrypted: i=1; AJvYcCUnWakG9aY4jrSmrMjOh5vGNkdrxKECZGELY+l5DsFfKRyLmJL4L18Oz4u18xVLwjuuwwUf8+AyNig=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz24HFtpo0w2Ved7K4zFQ72s7wxySBWh+8xm/vsjudB7nCQMe2N
+	WRhW29Uo66753j2viviAyJhnX8IFNbSafyc3d9V7tyT5Pf6C1fLha3HnusO5opE=
+X-Gm-Gg: ASbGncvuC7veZ08eNZT6dXo2z2imO8Viaz20rkOY+6eJliW2auDfbNc9AJNX4hIAW9E
+	6pJBaX+PNAztriT10SiE6GZpX2GVJ5AHmXYvxnqsiMxq9uzFuzXovtPqWDXnoplVqNnjoU36qvs
+	5Z6XxjEORsiHGvwE3S93HIE3cAMvEIFQeCBRf96BgPt0tfc7WYe29mf6tV1XelAleM8ufDoFeep
+	MscTDXeiHd0lSvz0r1DBqdEPD2b/jfD9DRR/puVz72k/JVldfR1yTgTX81znbIz05q0ejtrsFx8
+	YoDyZSmzPMqM/khoRjg1zA6bkec7TpACFkeUy2jJbjK63ET/Vuox8xgqHzI/CbQ8sR9Zzm4=
+X-Google-Smtp-Source: AGHT+IE2fvUTplc629GXhMiYkYYmY7/ekjLGkd6x/Utm4fEUGlUkylM4nyLFo8l3fkyBWJPLc/U7HQ==
+X-Received: by 2002:a05:6000:1a41:b0:38c:1281:260d with SMTP id ffacd0b85a97d-38c51b5ee9fmr1571798f8f.31.1738148712977;
+        Wed, 29 Jan 2025 03:05:12 -0800 (PST)
 Received: from [127.0.1.1] (host-95-245-235-245.retail.telecomitalia.it. [95.245.235.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.05.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.05.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 03:05:08 -0800 (PST)
+        Wed, 29 Jan 2025 03:05:11 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 29 Jan 2025 12:03:06 +0100
-Subject: [PATCH v3 05/10] iio: adc: ad7606: move software functions into
- common file
+Date: Wed, 29 Jan 2025 12:03:07 +0100
+Subject: [PATCH v3 06/10] iio: adc: adi-axi-adc: add platform children
+ support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-5-c3aec77c0ab7@baylibre.com>
+Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-6-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
@@ -103,488 +103,187 @@ X-Mailer: b4 0.14.1
 
 From: Guillaume Stols <gstols@baylibre.com>
 
-Since the register are always the same, whatever bus is used, moving the
-software functions into the main file avoids the code to be duplicated
-in both SPI and parallel version of the driver.
+This is a preparation for the next commit adding support for register
+read and write functions on AD7606.
+Since sometimes a bus will be used, it has been agreed during ad3552's
+driver implementation that the device's driver bus is the backend, whose
+device node will be a child node.
+To provide the special callbacks for setting the register, axi-adc needs
+to pass them to the child device's driver through platform data.
 
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 Co-developed-by: Angelo Dureghello <adureghello@baylibre.com>
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/adc/ad7606.c     | 133 ++++++++++++++++++++++++++++++++++++++---
- drivers/iio/adc/ad7606.h     |  37 ++++++++++--
- drivers/iio/adc/ad7606_spi.c | 137 +------------------------------------------
- 3 files changed, 158 insertions(+), 149 deletions(-)
+ drivers/iio/adc/ad7606_bus_iface.h | 16 ++++++++
+ drivers/iio/adc/adi-axi-adc.c      | 84 ++++++++++++++++++++++++++++++++++----
+ 2 files changed, 91 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 376c808df11c..7985570ed152 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -85,6 +85,10 @@ static const unsigned int ad7606_oversampling_avail[7] = {
- 	1, 2, 4, 8, 16, 32, 64,
- };
- 
-+static const unsigned int ad7606b_oversampling_avail[9] = {
-+	1, 2, 4, 8, 16, 32, 64, 128, 256,
+diff --git a/drivers/iio/adc/ad7606_bus_iface.h b/drivers/iio/adc/ad7606_bus_iface.h
+new file mode 100644
+index 000000000000..d8d39822e2a9
+--- /dev/null
++++ b/drivers/iio/adc/ad7606_bus_iface.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright (c) 2010-2024 Analog Devices Inc.
++ * Copyright (c) 2024 Baylibre, SAS
++ */
++#ifndef __LINUX_PLATFORM_DATA_AD7606_H__
++#define __LINUX_PLATFORM_DATA_AD7606_H__
++
++struct iio_backend;
++
++struct ad7606_platform_data {
++	int (*bus_reg_read)(struct iio_backend *back, u32 reg, u32 *val);
++	int (*bus_reg_write)(struct iio_backend *back, u32 reg, u32 val);
 +};
 +
- static const unsigned int ad7616_oversampling_avail[8] = {
- 	1, 2, 4, 8, 16, 32, 64, 128,
- };
-@@ -187,6 +191,8 @@ static int ad7608_chan_scale_setup(struct iio_dev *indio_dev,
- 				   struct iio_chan_spec *chan, int ch);
- static int ad7609_chan_scale_setup(struct iio_dev *indio_dev,
- 				   struct iio_chan_spec *chan, int ch);
-+static int ad7616_sw_mode_setup(struct iio_dev *indio_dev);
-+static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev);
++#endif /* __LINUX_PLATFORM_DATA_AD7606_H__ */
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index c7357601f0f8..0923565cf5bb 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -80,7 +80,18 @@
+ 	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
+ 	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
  
- const struct ad7606_chip_info ad7605_4_info = {
- 	.channels = ad7605_channels,
-@@ -239,6 +245,7 @@ const struct ad7606_chip_info ad7606b_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
-+	.sw_setup_cb = ad7606b_sw_mode_setup,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606b_info, "IIO_AD7606");
- 
-@@ -250,6 +257,7 @@ const struct ad7606_chip_info ad7606c_16_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606c_16bit_chan_scale_setup,
-+	.sw_setup_cb = ad7606b_sw_mode_setup,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606c_16_info, "IIO_AD7606");
- 
-@@ -294,6 +302,7 @@ const struct ad7606_chip_info ad7606c_18_info = {
- 	.oversampling_avail = ad7606_oversampling_avail,
- 	.oversampling_num = ARRAY_SIZE(ad7606_oversampling_avail),
- 	.scale_setup_cb = ad7606c_18bit_chan_scale_setup,
-+	.sw_setup_cb = ad7606b_sw_mode_setup,
- };
- EXPORT_SYMBOL_NS_GPL(ad7606c_18_info, "IIO_AD7606");
- 
-@@ -307,6 +316,7 @@ const struct ad7606_chip_info ad7616_info = {
- 	.oversampling_num = ARRAY_SIZE(ad7616_oversampling_avail),
- 	.os_req_reset = true,
- 	.scale_setup_cb = ad7606_16bit_chan_scale_setup,
-+	.sw_setup_cb = ad7616_sw_mode_setup,
- };
- EXPORT_SYMBOL_NS_GPL(ad7616_info, "IIO_AD7606");
- 
-@@ -1138,16 +1148,118 @@ static const struct iio_trigger_ops ad7606_trigger_ops = {
- 	.validate_device = iio_trigger_validate_own_device,
++struct axi_adc_info {
++	unsigned int version;
++	const struct iio_backend_info *backend_info;
++	bool bus_controller;
++	const void *pdata;
++	unsigned int pdata_sz;
++};
++
+ struct adi_axi_adc_state {
++	/* Target ADC platform device */
++	struct platform_device *adc_pdev;
++	const struct axi_adc_info *info;
+ 	struct regmap *regmap;
+ 	struct device *dev;
+ 	/* lock to protect multiple accesses to the device registers */
+@@ -325,6 +336,38 @@ static const struct regmap_config axi_adc_regmap_config = {
+ 	.reg_stride = 4,
  };
  
--static int ad7606_sw_mode_setup(struct iio_dev *indio_dev)
-+static int ad7606_write_mask(struct ad7606_state *st, unsigned int addr,
-+			     unsigned long mask, unsigned int val)
++static void axi_adc_child_remove(void *data)
 +{
-+	int readval;
-+
-+	readval = st->bops->reg_read(st, addr);
-+	if (readval < 0)
-+		return readval;
-+
-+	readval &= ~mask;
-+	readval |= val;
-+
-+	return st->bops->reg_write(st, addr, readval);
++	platform_device_unregister(data);
 +}
 +
-+static int ad7616_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
-+	unsigned int ch_addr, mode, ch_index;
- 
--	st->sw_mode_en = st->bops->sw_mode_config &&
--			 device_property_present(st->dev, "adi,sw-mode");
--	if (!st->sw_mode_en)
--		return 0;
-+	/*
-+	 * Ad7616 has 16 channels divided in group A and group B.
-+	 * The range of channels from A are stored in registers with address 4
-+	 * while channels from B are stored in register with address 6.
-+	 * The last bit from channels determines if it is from group A or B
-+	 * because the order of channels in iio is 0A, 0B, 1A, 1B...
-+	 */
-+	ch_index = ch >> 1;
-+
-+	ch_addr = AD7616_RANGE_CH_ADDR(ch_index);
-+
-+	if ((ch & 0x1) == 0) /* channel A */
-+		ch_addr += AD7616_RANGE_CH_A_ADDR_OFF;
-+	else	/* channel B */
-+		ch_addr += AD7616_RANGE_CH_B_ADDR_OFF;
-+
-+	/* 0b01 for 2.5v, 0b10 for 5v and 0b11 for 10v */
-+	mode = AD7616_RANGE_CH_MODE(ch_index, ((val + 1) & 0b11));
- 
--	indio_dev->info = &ad7606_info_sw_mode;
-+	return ad7606_write_mask(st, ch_addr, AD7616_RANGE_CH_MSK(ch_index),
-+				 mode);
-+}
-+
-+static int ad7616_write_os_sw(struct iio_dev *indio_dev, int val)
++static int axi_adc_create_platform_device(struct adi_axi_adc_state *st,
++					  struct fwnode_handle *child)
 +{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+
-+	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
-+				 AD7616_OS_MASK, val << 2);
-+}
-+
-+static int ad7606_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+
-+	return ad7606_write_mask(st, AD7606_RANGE_CH_ADDR(ch),
-+				 AD7606_RANGE_CH_MSK(ch),
-+				 AD7606_RANGE_CH_MODE(ch, val));
-+}
-+
-+static int ad7606_write_os_sw(struct iio_dev *indio_dev, int val)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+
-+	return st->bops->reg_write(st, AD7606_OS_MODE, val);
-+}
-+
-+static int ad7616_sw_mode_setup(struct iio_dev *indio_dev)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
++	struct platform_device_info pi = {
++		.parent = st->dev,
++		.name = fwnode_get_name(child),
++		.id = PLATFORM_DEVID_AUTO,
++		.fwnode = child,
++		.data = st->info->pdata,
++		.size_data = st->info->pdata_sz,
++	};
++	struct platform_device *pdev;
 +	int ret;
 +
-+	/*
-+	 * Scale can be configured individually for each channel
-+	 * in software mode.
-+	 */
++	pdev = platform_device_register_full(&pi);
++	if (IS_ERR(pdev))
++		return PTR_ERR(pdev);
 +
-+	st->write_scale = ad7616_write_scale_sw;
-+	st->write_os = &ad7616_write_os_sw;
-+
-+	ret = st->bops->sw_mode_config(indio_dev);
++	ret = devm_add_action_or_reset(st->dev, axi_adc_child_remove, pdev);
 +	if (ret)
 +		return ret;
 +
-+	/* Activate Burst mode and SEQEN MODE */
-+	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
-+				 AD7616_BURST_MODE | AD7616_SEQEN_MODE,
-+				 AD7616_BURST_MODE | AD7616_SEQEN_MODE);
++	st->adc_pdev = pdev;
++
++	return 0;
 +}
 +
-+static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev)
-+{
-+	struct ad7606_state *st = iio_priv(indio_dev);
-+	DECLARE_BITMAP(os, 3);
-+
-+	bitmap_fill(os, 3);
-+	/*
-+	 * Software mode is enabled when all three oversampling
-+	 * pins are set to high. If oversampling gpios are defined
-+	 * in the device tree, then they need to be set to high,
-+	 * otherwise, they must be hardwired to VDD
-+	 */
-+	if (st->gpio_os) {
-+		gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
-+				      st->gpio_os->info, os);
-+	}
-+	/* OS of 128 and 256 are available only in software mode */
-+	st->oversampling_avail = ad7606b_oversampling_avail;
-+	st->num_os_ratios = ARRAY_SIZE(ad7606b_oversampling_avail);
-+
-+	st->write_scale = ad7606_write_scale_sw;
-+	st->write_os = &ad7606_write_os_sw;
+ static const struct iio_backend_ops adi_axi_adc_ops = {
+ 	.enable = axi_adc_enable,
+ 	.disable = axi_adc_disable,
+@@ -348,7 +391,6 @@ static const struct iio_backend_info adi_axi_adc_generic = {
  
- 	return st->bops->sw_mode_config(indio_dev);
- }
-@@ -1326,9 +1438,12 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
- 	st->write_scale = ad7606_write_scale_hw;
- 	st->write_os = ad7606_write_os_hw;
+ static int adi_axi_adc_probe(struct platform_device *pdev)
+ {
+-	const unsigned int *expected_ver;
+ 	struct adi_axi_adc_state *st;
+ 	void __iomem *base;
+ 	unsigned int ver;
+@@ -370,8 +412,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(st->regmap),
+ 				     "failed to init register map\n");
  
--	ret = ad7606_sw_mode_setup(indio_dev);
--	if (ret)
--		return ret;
-+	st->sw_mode_en = st->chip_info->sw_setup_cb &&
-+			 device_property_present(st->dev, "adi,sw-mode");
-+	if (st->sw_mode_en) {
-+		indio_dev->info = &ad7606_info_sw_mode;
-+		st->chip_info->sw_setup_cb(indio_dev);
-+	}
+-	expected_ver = device_get_match_data(&pdev->dev);
+-	if (!expected_ver)
++	st->info = device_get_match_data(&pdev->dev);
++	if (!st->info)
+ 		return -ENODEV;
  
- 	ret = ad7606_chan_scales_setup(indio_dev);
+ 	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+@@ -391,12 +433,13 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
  	if (ret)
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index 8778ffe515b3..7a044b499cfe 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -10,6 +10,36 @@
+ 		return ret;
  
- #define AD760X_MAX_CHANNELS	16
+-	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
++	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=
++	    ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
+ 		dev_err(&pdev->dev,
+ 			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
+-			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
+-			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
+-			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
++			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
++			ADI_AXI_PCORE_VER_MINOR(st->info->version),
++			ADI_AXI_PCORE_VER_PATCH(st->info->version),
+ 			ADI_AXI_PCORE_VER_MAJOR(ver),
+ 			ADI_AXI_PCORE_VER_MINOR(ver),
+ 			ADI_AXI_PCORE_VER_PATCH(ver));
+@@ -408,6 +451,26 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 		return dev_err_probe(&pdev->dev, ret,
+ 				     "failed to register iio backend\n");
  
-+#define AD7616_CONFIGURATION_REGISTER	0x02
-+#define AD7616_OS_MASK			GENMASK(4, 2)
-+#define AD7616_BURST_MODE		BIT(6)
-+#define AD7616_SEQEN_MODE		BIT(5)
-+#define AD7616_RANGE_CH_A_ADDR_OFF	0x04
-+#define AD7616_RANGE_CH_B_ADDR_OFF	0x06
-+/*
-+ * Range of channels from a group are stored in 2 registers.
-+ * 0, 1, 2, 3 in a register followed by 4, 5, 6, 7 in second register.
-+ * For channels from second group(8-15) the order is the same, only with
-+ * an offset of 2 for register address.
-+ */
-+#define AD7616_RANGE_CH_ADDR(ch)	((ch) >> 2)
-+/* The range of the channel is stored in 2 bits */
-+#define AD7616_RANGE_CH_MSK(ch)		(0b11 << (((ch) & 0b11) * 2))
-+#define AD7616_RANGE_CH_MODE(ch, mode)	((mode) << ((((ch) & 0b11)) * 2))
++	if (st->info->bus_controller) {
++		device_for_each_child_node_scoped(&pdev->dev, child) {
++			int val;
 +
-+#define AD7606_CONFIGURATION_REGISTER	0x02
-+#define AD7606_SINGLE_DOUT		0x00
++			/* Processing only reg 0 node */
++			ret = fwnode_property_read_u32(child, "reg", &val);
++			if (ret || val != 0)
++				continue;
 +
-+/*
-+ * Range for AD7606B channels are stored in registers starting with address 0x3.
-+ * Each register stores range for 2 channels(4 bits per channel).
-+ */
-+#define AD7606_RANGE_CH_MSK(ch)		(GENMASK(3, 0) << (4 * ((ch) & 0x1)))
-+#define AD7606_RANGE_CH_MODE(ch, mode)	\
-+	((GENMASK(3, 0) & (mode)) << (4 * ((ch) & 0x1)))
-+#define AD7606_RANGE_CH_ADDR(ch)	(0x03 + ((ch) >> 1))
-+#define AD7606_OS_MODE			0x08
++			ret = fwnode_property_read_u32(child, "io-backends",
++						       &val);
++			if (ret)
++				continue;
 +
- #define AD760X_CHANNEL(num, mask_sep, mask_type, mask_all, bits) {	\
- 		.type = IIO_VOLTAGE,				\
- 		.indexed = 1,					\
-@@ -71,6 +101,7 @@ struct ad7606_state;
- 
- typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
- 				       struct iio_chan_spec *chan, int ch);
-+typedef int (*ad7606_sw_setup_cb_t)(struct iio_dev *indio_dev);
- 
- /**
-  * struct ad7606_chip_info - chip specific information
-@@ -80,6 +111,7 @@ typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
-  * @num_channels:	number of channels
-  * @num_adc_channels	the number of channels the ADC actually inputs.
-  * @scale_setup_cb:	callback to setup the scales for each channel
-+ * @sw_setup_cb:	callback to setup the software mode if available.
-  * @oversampling_avail	pointer to the array which stores the available
-  *			oversampling ratios.
-  * @oversampling_num	number of elements stored in oversampling_avail array
-@@ -94,6 +126,7 @@ struct ad7606_chip_info {
- 	unsigned int			num_adc_channels;
- 	unsigned int			num_channels;
- 	ad7606_scale_setup_cb_t		scale_setup_cb;
-+	ad7606_sw_setup_cb_t		sw_setup_cb;
- 	const unsigned int		*oversampling_avail;
- 	unsigned int			oversampling_num;
- 	bool				os_req_reset;
-@@ -206,10 +239,6 @@ struct ad7606_bus_ops {
- 	int (*reg_write)(struct ad7606_state *st,
- 				unsigned int addr,
- 				unsigned int val);
--	int (*write_mask)(struct ad7606_state *st,
--				 unsigned int addr,
--				 unsigned long mask,
--				 unsigned int val);
- 	int (*update_scan_mode)(struct iio_dev *indio_dev, const unsigned long *scan_mask);
- 	u16 (*rd_wr_cmd)(int addr, char isWriteOp);
- };
-diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
-index e2c147525706..885bf0b68e77 100644
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -15,36 +15,6 @@
- 
- #define MAX_SPI_FREQ_HZ		23500000	/* VDRIVE above 4.75 V */
- 
--#define AD7616_CONFIGURATION_REGISTER	0x02
--#define AD7616_OS_MASK			GENMASK(4, 2)
--#define AD7616_BURST_MODE		BIT(6)
--#define AD7616_SEQEN_MODE		BIT(5)
--#define AD7616_RANGE_CH_A_ADDR_OFF	0x04
--#define AD7616_RANGE_CH_B_ADDR_OFF	0x06
--/*
-- * Range of channels from a group are stored in 2 registers.
-- * 0, 1, 2, 3 in a register followed by 4, 5, 6, 7 in second register.
-- * For channels from second group(8-15) the order is the same, only with
-- * an offset of 2 for register address.
-- */
--#define AD7616_RANGE_CH_ADDR(ch)	((ch) >> 2)
--/* The range of the channel is stored in 2 bits */
--#define AD7616_RANGE_CH_MSK(ch)		(0b11 << (((ch) & 0b11) * 2))
--#define AD7616_RANGE_CH_MODE(ch, mode)	((mode) << ((((ch) & 0b11)) * 2))
--
--#define AD7606_CONFIGURATION_REGISTER	0x02
--#define AD7606_SINGLE_DOUT		0x00
--
--/*
-- * Range for AD7606B channels are stored in registers starting with address 0x3.
-- * Each register stores range for 2 channels(4 bits per channel).
-- */
--#define AD7606_RANGE_CH_MSK(ch)		(GENMASK(3, 0) << (4 * ((ch) & 0x1)))
--#define AD7606_RANGE_CH_MODE(ch, mode)	\
--	((GENMASK(3, 0) & mode) << (4 * ((ch) & 0x1)))
--#define AD7606_RANGE_CH_ADDR(ch)	(0x03 + ((ch) >> 1))
--#define AD7606_OS_MODE			0x08
--
- static const struct iio_chan_spec ad7616_sw_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(16),
- 	AD7616_CHANNEL(0),
-@@ -89,10 +59,6 @@ static const struct iio_chan_spec ad7606c_18_sw_channels[] = {
- 	AD7606_SW_CHANNEL(7, 18),
- };
- 
--static const unsigned int ad7606B_oversampling_avail[9] = {
--	1, 2, 4, 8, 16, 32, 64, 128, 256
--};
--
- static u16 ad7616_spi_rd_wr_cmd(int addr, char isWriteOp)
- {
- 	/*
-@@ -194,118 +160,20 @@ static int ad7606_spi_reg_write(struct ad7606_state *st,
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
++			ret = axi_adc_create_platform_device(st, child);
++			if (ret)
++				return ret;
++		}
++	}
++
+ 	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
+ 		 ADI_AXI_PCORE_VER_MAJOR(ver),
+ 		 ADI_AXI_PCORE_VER_MINOR(ver),
+@@ -416,11 +479,14 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	return 0;
  }
  
--static int ad7606_spi_write_mask(struct ad7606_state *st,
--				 unsigned int addr,
--				 unsigned long mask,
--				 unsigned int val)
--{
--	int readval;
--
--	readval = st->bops->reg_read(st, addr);
--	if (readval < 0)
--		return readval;
--
--	readval &= ~mask;
--	readval |= val;
--
--	return st->bops->reg_write(st, addr, readval);
--}
--
--static int ad7616_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
--{
--	struct ad7606_state *st = iio_priv(indio_dev);
--	unsigned int ch_addr, mode, ch_index;
--
--
--	/*
--	 * Ad7616 has 16 channels divided in group A and group B.
--	 * The range of channels from A are stored in registers with address 4
--	 * while channels from B are stored in register with address 6.
--	 * The last bit from channels determines if it is from group A or B
--	 * because the order of channels in iio is 0A, 0B, 1A, 1B...
--	 */
--	ch_index = ch >> 1;
--
--	ch_addr = AD7616_RANGE_CH_ADDR(ch_index);
--
--	if ((ch & 0x1) == 0) /* channel A */
--		ch_addr += AD7616_RANGE_CH_A_ADDR_OFF;
--	else	/* channel B */
--		ch_addr += AD7616_RANGE_CH_B_ADDR_OFF;
--
--	/* 0b01 for 2.5v, 0b10 for 5v and 0b11 for 10v */
--	mode = AD7616_RANGE_CH_MODE(ch_index, ((val + 1) & 0b11));
--	return st->bops->write_mask(st, ch_addr, AD7616_RANGE_CH_MSK(ch_index),
--				     mode);
--}
--
--static int ad7616_write_os_sw(struct iio_dev *indio_dev, int val)
--{
--	struct ad7606_state *st = iio_priv(indio_dev);
--
--	return st->bops->write_mask(st, AD7616_CONFIGURATION_REGISTER,
--				     AD7616_OS_MASK, val << 2);
--}
--
--static int ad7606_write_scale_sw(struct iio_dev *indio_dev, int ch, int val)
--{
--	struct ad7606_state *st = iio_priv(indio_dev);
--
--	return ad7606_spi_write_mask(st,
--				     AD7606_RANGE_CH_ADDR(ch),
--				     AD7606_RANGE_CH_MSK(ch),
--				     AD7606_RANGE_CH_MODE(ch, val));
--}
--
--static int ad7606_write_os_sw(struct iio_dev *indio_dev, int val)
--{
--	struct ad7606_state *st = iio_priv(indio_dev);
--
--	return ad7606_spi_reg_write(st, AD7606_OS_MODE, val);
--}
--
- static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
- {
--	struct ad7606_state *st = iio_priv(indio_dev);
--
- 	/*
- 	 * Scale can be configured individually for each channel
- 	 * in software mode.
- 	 */
- 	indio_dev->channels = ad7616_sw_channels;
+-static unsigned int adi_axi_adc_10_0_a_info = ADI_AXI_PCORE_VER(10, 0, 'a');
++static const struct axi_adc_info adc_generic = {
++	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
++	.backend_info = &adi_axi_adc_generic,
++};
  
--	st->write_scale = ad7616_write_scale_sw;
--	st->write_os = &ad7616_write_os_sw;
--
--	/* Activate Burst mode and SEQEN MODE */
--	return st->bops->write_mask(st,
--			      AD7616_CONFIGURATION_REGISTER,
--			      AD7616_BURST_MODE | AD7616_SEQEN_MODE,
--			      AD7616_BURST_MODE | AD7616_SEQEN_MODE);
-+	return 0;
- }
- 
- static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
--	DECLARE_BITMAP(os, 3);
--
--	bitmap_fill(os, 3);
--	/*
--	 * Software mode is enabled when all three oversampling
--	 * pins are set to high. If oversampling gpios are defined
--	 * in the device tree, then they need to be set to high,
--	 * otherwise, they must be hardwired to VDD
--	 */
--	if (st->gpio_os) {
--		gpiod_set_array_value(st->gpio_os->ndescs,
--				      st->gpio_os->desc, st->gpio_os->info, os);
--	}
--	/* OS of 128 and 256 are available only in software mode */
--	st->oversampling_avail = ad7606B_oversampling_avail;
--	st->num_os_ratios = ARRAY_SIZE(ad7606B_oversampling_avail);
--
--	st->write_scale = ad7606_write_scale_sw;
--	st->write_os = &ad7606_write_os_sw;
- 
- 	/* Configure device spi to output on a single channel */
- 	st->bops->reg_write(st,
-@@ -350,7 +218,6 @@ static const struct ad7606_bus_ops ad7616_spi_bops = {
- 	.read_block = ad7606_spi_read_block,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
--	.write_mask = ad7606_spi_write_mask,
- 	.rd_wr_cmd = ad7616_spi_rd_wr_cmd,
- 	.sw_mode_config = ad7616_sw_mode_config,
+ /* Match table for of_platform binding */
+ static const struct of_device_id adi_axi_adc_of_match[] = {
+-	{ .compatible = "adi,axi-adc-10.0.a", .data = &adi_axi_adc_10_0_a_info },
++	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
+ 	{ /* end of list */ }
  };
-@@ -359,7 +226,6 @@ static const struct ad7606_bus_ops ad7606b_spi_bops = {
- 	.read_block = ad7606_spi_read_block,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
--	.write_mask = ad7606_spi_write_mask,
- 	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
- 	.sw_mode_config = ad7606B_sw_mode_config,
- };
-@@ -368,7 +234,6 @@ static const struct ad7606_bus_ops ad7606c_18_spi_bops = {
- 	.read_block = ad7606_spi_read_block18to32,
- 	.reg_read = ad7606_spi_reg_read,
- 	.reg_write = ad7606_spi_reg_write,
--	.write_mask = ad7606_spi_write_mask,
- 	.rd_wr_cmd = ad7606B_spi_rd_wr_cmd,
- 	.sw_mode_config = ad7606c_18_sw_mode_config,
- };
+ MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);
 
 -- 
 2.47.0

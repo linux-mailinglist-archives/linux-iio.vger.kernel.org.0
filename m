@@ -1,82 +1,82 @@
-Return-Path: <linux-iio+bounces-14700-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14701-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEFEA21BC7
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:06:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2FAA21BCA
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03873A071F
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A62164EA1
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419D31DE2C2;
-	Wed, 29 Jan 2025 11:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065841DE3CA;
+	Wed, 29 Jan 2025 11:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hg8dbtUs"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hWNvhJ7W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE071DDC14
-	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B061DE2B3
+	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738148716; cv=none; b=RRlEYAyaV1A4E3Yq/FBFSiXMYMO8epuaWepG1Y2E3XZgovDkpK9o1lwQSoq1MG3lEH2TmmMcKNPmgxt4YlipPOfBOL7Res72CoKv8V+W86KQAEinP99/ur8MFuWb5bRghP3nzV68HWlflPPRv491sZ1CVc08t2Dq/612U/s7upw=
+	t=1738148718; cv=none; b=OqKwOvRTcTZYiGN4G8hmcJD0SQbCYFtJiC4dIdAWc07TZLLj7WJHknZkOfaVe4BxArmYh/FlV7WhBbc4jX0yGzxyTU1SRgF5J+kcwwgBW2MWiFsx5olcF/yFG1BvlMnq2pijeiBQ2VlXnx22RXQX0uUEiuMvonF3Nu9v9VnqLzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738148716; c=relaxed/simple;
-	bh=mPqWiYHTVbxQ1ZYyr5/FMNCEArrrEDwzZrloBMMEgyA=;
+	s=arc-20240116; t=1738148718; c=relaxed/simple;
+	bh=waFUc7Y98lVcelQdxEeSHTjUKlAPBIkUFiT/B2RzsUU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qnqTkQqi1oayCWoANWaqCsjOPoFIg2lHgVM0UsIF0Qw5hLnSezxitXMVVlhJahDoetVd+pKFli8w8DRsOM/638u/94YhE4rWzB7N8tyj/TRbRrAkvYvQId8Vi3XBaCGDztgezBVAYfesqUS2TbyJgO90IaihEQaoZOMI3aLAnZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hg8dbtUs; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:To:Cc; b=ObZm2Tarzb3mHJcV7LdqSuTm7wWddxp1ydwfikt7SWrpjgQMG4C8TyKmqy7r97j2OxCLjmObt0TR157aJ0/ZTi2vtvnkK2ujcYPmHNpw0f1BeV7P9FSqY66j/dHoU54DPxnWEhaxuiwvV7e2GNepUQhrIQlxaq/REdvz3LQs35U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hWNvhJ7W; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso3971725f8f.3
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:14 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3862a921123so4547571f8f.3
+        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148713; x=1738753513; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148715; x=1738753515; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oB16y1gR9CriA2xIIhmFJG7RqN1ERbrsdfXmfj1Q/Eg=;
-        b=hg8dbtUs3ej2s8+8uDCPZP696mOFtiureoxZPRDgnZFG+3poUzQF8iua9CSF8unCT1
-         hAREj16yyzC4B9Ox5DiC/1W6Ooh8vGxpMLmI/ko2BvkED6xuOW8cZMC/z68GXSg8UoI/
-         8ckm6diKfkBe3CtnebTVNcsCG1XRnNFkB/Lc/V8WabSSdo0Z/rmZjdvOpqK+GFNt5DzQ
-         kLhGAqT+c4/2yb1Fu++S0yRmi5m7ocwUPFfEP4r0ddtTWCQavwgewzhdqvJIj39WU+no
-         7oBN3DFGZdtnmL/GO/tTcU58bAZIZa0Toa7QqHVGwcExHsOwJE1oY9dvr6vnHpnHCgla
-         yorA==
+        bh=joYblRHTZ8apOwpe6Vq3h7ChVrXqa2XFvM8jV4cZmtQ=;
+        b=hWNvhJ7Wwm0y4WZjdosXn3Jmv+rz6z4noxChVoP1HEk3gw8Js0NGg3RtbsmhJ4pK/R
+         NHaYH5sZaBZ2PaW/LbDAyYxkq71i9OQaTScUgZHA1ZWNUKPZOWTfsie850urmd2ygVpb
+         MCBn92cTES43QLAml3xWzDsEaPvzaKyr48m3ZDbtTeWfYyF3WZFyRQt0UF+uIDWnr7gd
+         BwIxt3CLQSgRyX53Xgvtb76IoZins+wnsjeTABR19JFljJPXhkE8vgpQMz3RcnWIwyMX
+         NLXMNAyNgIPMgxh0N9VT6hw1/IOtAW15jVDQBUamAGzStYaFigR3L3BbYoUgfrROOCi8
+         AqnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738148713; x=1738753513;
+        d=1e100.net; s=20230601; t=1738148715; x=1738753515;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oB16y1gR9CriA2xIIhmFJG7RqN1ERbrsdfXmfj1Q/Eg=;
-        b=V/PDZ91wzNrof3/KhkstXGSwq4te6205Dtgvo9FmmWDKsz9nT2emJjrcw2RDKNQPgf
-         6D5E5tW7GQ8VJuyAU6csSXTecKuRpQ1PEnIgStw/+UqgNolutwAnCfxz/qX48p0QXN6v
-         uqduXDUsMSyHmeHhvsZA6gWWIGx3n7QL2e1ZyPYh2Sfg2lbLUDAn+sX4xV8dxvb5U4I5
-         JyIy5iXQ6TtsDx7NvSeCNfkRhrlnGwvaTe6/kUyuzarWZKgxhAWPtcBtqNI9XeLOnZxc
-         Of/PJM5MD5SezduYXK57AZQHWgM/btmC/96L5X75WWTcWP7+3pJxQ3O9Kvc2aJwxRllY
-         yl7A==
-X-Forwarded-Encrypted: i=1; AJvYcCUnWakG9aY4jrSmrMjOh5vGNkdrxKECZGELY+l5DsFfKRyLmJL4L18Oz4u18xVLwjuuwwUf8+AyNig=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz24HFtpo0w2Ved7K4zFQ72s7wxySBWh+8xm/vsjudB7nCQMe2N
-	WRhW29Uo66753j2viviAyJhnX8IFNbSafyc3d9V7tyT5Pf6C1fLha3HnusO5opE=
-X-Gm-Gg: ASbGncvuC7veZ08eNZT6dXo2z2imO8Viaz20rkOY+6eJliW2auDfbNc9AJNX4hIAW9E
-	6pJBaX+PNAztriT10SiE6GZpX2GVJ5AHmXYvxnqsiMxq9uzFuzXovtPqWDXnoplVqNnjoU36qvs
-	5Z6XxjEORsiHGvwE3S93HIE3cAMvEIFQeCBRf96BgPt0tfc7WYe29mf6tV1XelAleM8ufDoFeep
-	MscTDXeiHd0lSvz0r1DBqdEPD2b/jfD9DRR/puVz72k/JVldfR1yTgTX81znbIz05q0ejtrsFx8
-	YoDyZSmzPMqM/khoRjg1zA6bkec7TpACFkeUy2jJbjK63ET/Vuox8xgqHzI/CbQ8sR9Zzm4=
-X-Google-Smtp-Source: AGHT+IE2fvUTplc629GXhMiYkYYmY7/ekjLGkd6x/Utm4fEUGlUkylM4nyLFo8l3fkyBWJPLc/U7HQ==
-X-Received: by 2002:a05:6000:1a41:b0:38c:1281:260d with SMTP id ffacd0b85a97d-38c51b5ee9fmr1571798f8f.31.1738148712977;
-        Wed, 29 Jan 2025 03:05:12 -0800 (PST)
+        bh=joYblRHTZ8apOwpe6Vq3h7ChVrXqa2XFvM8jV4cZmtQ=;
+        b=M5Ey9ORLo3RDG/7jsyugBJbt/tdcVAlUd/E2VRoAoWkNe7FR4bQMjsr0qfHUY3yNbN
+         XXEwQ0pNilHRmCWZulAD970Xd1LrxMOhO/R7nBljF7cjSTGXqS5lKEk27QTaBv5G2XQR
+         ZWZtUZtIjt5ntdPjSp69NnqbS6dvJdoJaPhdTzzlFtEnaxMFXILuS85mK0Pt4nH3f1jV
+         nw3lmxjzOR6TJyCWVz3F35bQBvokDLT7BZTWNpZergxDpUbaGdhrm/T1zwrkq0331E0z
+         jLG3QInMKSXz/CWj+0fi5mdhAoh2b7wtKjee1LFlZq2o55FlFOkKOM++ysd9yTlGrGnD
+         gqDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0zenlDYDVZa+w9jz9vdKhq98wEzCUfLr0S/oM/9/BTS7ybTQOV52bkPWE+NApCHY60Svj0rFZNiM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyvc1jf7nntFOY+IpB0vz8DUfol/iJDh3I+hoZiA9eVRFgjpdcf
+	9LM8oXB1oTDnCQlTdoRvv+OAzeKcg1eo2MklQdIltgBZt3Noz67rUYKeDamzsPI=
+X-Gm-Gg: ASbGncsvsDQZqENEbKvbb6wr0Ljz5qFRvLMhBgkq8Fg2hzDDXHBSv3Qo/hKH6LyHxOv
+	w75puiIp++S2uEsWNTFP4/PDVyKLTF1Pm+UGgThx6Mt+0ZnT0Lwyo/9ATN6HApdt3noo8G3Uy67
+	S1BJ/5R4Xdb1WmQjE68jvhCDH3GYZOhO42t9q7xYoAIV5262mp7XHIuDHSyM0HzYK2bhSRp2ei/
+	FBAuARZqyPpUctDqDwT5m0cK86z5ZS9vIQGlRHdoWKrt51Hi59FjYCVm84qm6mP5Zs6MVVqaSfg
+	jQDGBWhQl99JDFGP3+XcDL0C1H1W7UCwnmxOMJ0ZqKOfv/D0r6HkP/zxy0BNvNa/BGtXCos=
+X-Google-Smtp-Source: AGHT+IHiMbOiYeOXFJU+/sYQ6d/SHusLAP//Q35lqgWeMJj2FLezKvdhAFo4grov+EgNrSzdFbLeRA==
+X-Received: by 2002:a5d:47c9:0:b0:38b:da31:3e3c with SMTP id ffacd0b85a97d-38c5194c567mr1967009f8f.20.1738148714791;
+        Wed, 29 Jan 2025 03:05:14 -0800 (PST)
 Received: from [127.0.1.1] (host-95-245-235-245.retail.telecomitalia.it. [95.245.235.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.05.09
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.05.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 03:05:11 -0800 (PST)
+        Wed, 29 Jan 2025 03:05:14 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 29 Jan 2025 12:03:07 +0100
-Subject: [PATCH v3 06/10] iio: adc: adi-axi-adc: add platform children
- support
+Date: Wed, 29 Jan 2025 12:03:08 +0100
+Subject: [PATCH v3 07/10] iio: adc: adi-axi-adc: add support for AD7606
+ register writing
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-6-c3aec77c0ab7@baylibre.com>
+Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
@@ -103,184 +103,156 @@ X-Mailer: b4 0.14.1
 
 From: Guillaume Stols <gstols@baylibre.com>
 
-This is a preparation for the next commit adding support for register
-read and write functions on AD7606.
-Since sometimes a bus will be used, it has been agreed during ad3552's
-driver implementation that the device's driver bus is the backend, whose
-device node will be a child node.
-To provide the special callbacks for setting the register, axi-adc needs
-to pass them to the child device's driver through platform data.
+Since we must access the bus parallel bus using a custom procedure,
+let's add a specialized compatible, and define specialized callbacks for
+writing the registers using the parallel interface.
 
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 Co-developed-by: Angelo Dureghello <adureghello@baylibre.com>
 Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 ---
- drivers/iio/adc/ad7606_bus_iface.h | 16 ++++++++
- drivers/iio/adc/adi-axi-adc.c      | 84 ++++++++++++++++++++++++++++++++++----
- 2 files changed, 91 insertions(+), 9 deletions(-)
+ drivers/iio/adc/adi-axi-adc.c | 100 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7606_bus_iface.h b/drivers/iio/adc/ad7606_bus_iface.h
-new file mode 100644
-index 000000000000..d8d39822e2a9
---- /dev/null
-+++ b/drivers/iio/adc/ad7606_bus_iface.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2010-2024 Analog Devices Inc.
-+ * Copyright (c) 2024 Baylibre, SAS
-+ */
-+#ifndef __LINUX_PLATFORM_DATA_AD7606_H__
-+#define __LINUX_PLATFORM_DATA_AD7606_H__
-+
-+struct iio_backend;
-+
-+struct ad7606_platform_data {
-+	int (*bus_reg_read)(struct iio_backend *back, u32 reg, u32 *val);
-+	int (*bus_reg_write)(struct iio_backend *back, u32 reg, u32 val);
-+};
-+
-+#endif /* __LINUX_PLATFORM_DATA_AD7606_H__ */
 diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index c7357601f0f8..0923565cf5bb 100644
+index 0923565cf5bb..aaeb445a8a3e 100644
 --- a/drivers/iio/adc/adi-axi-adc.c
 +++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -80,7 +80,18 @@
+@@ -27,6 +27,7 @@
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+ 
++#include "ad7606_bus_iface.h"
+ /*
+  * Register definitions:
+  *   https://wiki.analog.com/resources/fpga/docs/axi_adc_ip#register_map
+@@ -73,6 +74,12 @@
+ #define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
+ #define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
+ 
++#define ADI_AXI_REG_CONFIG_WR			0x0080
++#define ADI_AXI_REG_CONFIG_RD			0x0084
++#define ADI_AXI_REG_CONFIG_CTRL			0x008c
++#define   ADI_AXI_REG_CONFIG_CTRL_READ		0x03
++#define   ADI_AXI_REG_CONFIG_CTRL_WRITE		0x01
++
+ #define ADI_AXI_ADC_MAX_IO_NUM_LANES		15
+ 
+ #define ADI_AXI_REG_CHAN_CTRL_DEFAULTS		\
+@@ -80,6 +87,10 @@
  	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
  	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
  
-+struct axi_adc_info {
-+	unsigned int version;
-+	const struct iio_backend_info *backend_info;
-+	bool bus_controller;
-+	const void *pdata;
-+	unsigned int pdata_sz;
-+};
++#define ADI_AXI_REG_READ_BIT			0x8000
++#define ADI_AXI_REG_ADDRESS_MASK		0xff00
++#define ADI_AXI_REG_VALUE_MASK			0x00ff
 +
- struct adi_axi_adc_state {
-+	/* Target ADC platform device */
-+	struct platform_device *adc_pdev;
-+	const struct axi_adc_info *info;
- 	struct regmap *regmap;
- 	struct device *dev;
- 	/* lock to protect multiple accesses to the device registers */
-@@ -325,6 +336,38 @@ static const struct regmap_config axi_adc_regmap_config = {
- 	.reg_stride = 4,
- };
+ struct axi_adc_info {
+ 	unsigned int version;
+ 	const struct iio_backend_info *backend_info;
+@@ -313,6 +324,81 @@ static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+ 	return iio_dmaengine_buffer_setup(st->dev, indio_dev, dma_name);
+ }
  
-+static void axi_adc_child_remove(void *data)
++static int axi_adc_raw_write(struct iio_backend *back, void *buf, unsigned int len)
 +{
-+	platform_device_unregister(data);
-+}
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	u32 data;
 +
-+static int axi_adc_create_platform_device(struct adi_axi_adc_state *st,
-+					  struct fwnode_handle *child)
-+{
-+	struct platform_device_info pi = {
-+		.parent = st->dev,
-+		.name = fwnode_get_name(child),
-+		.id = PLATFORM_DEVID_AUTO,
-+		.fwnode = child,
-+		.data = st->info->pdata,
-+		.size_data = st->info->pdata_sz,
-+	};
-+	struct platform_device *pdev;
-+	int ret;
++	data = *(u32 *)(buf);
 +
-+	pdev = platform_device_register_full(&pi);
-+	if (IS_ERR(pdev))
-+		return PTR_ERR(pdev);
-+
-+	ret = devm_add_action_or_reset(st->dev, axi_adc_child_remove, pdev);
-+	if (ret)
-+		return ret;
-+
-+	st->adc_pdev = pdev;
++	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_WR, data);
++	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL,
++		     ADI_AXI_REG_CONFIG_CTRL_WRITE);
++	usleep_range(50, 100);
++	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL, 0x00);
++	usleep_range(50, 100);
 +
 +	return 0;
 +}
 +
- static const struct iio_backend_ops adi_axi_adc_ops = {
- 	.enable = axi_adc_enable,
- 	.disable = axi_adc_disable,
-@@ -348,7 +391,6 @@ static const struct iio_backend_info adi_axi_adc_generic = {
- 
- static int adi_axi_adc_probe(struct platform_device *pdev)
++static int axi_adc_raw_read(struct iio_backend *back, void *buf, unsigned int len)
++{
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	u32 *bdata = buf;
++
++	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL,
++		     ADI_AXI_REG_CONFIG_CTRL_READ);
++	usleep_range(50, 100);
++	regmap_read(st->regmap, ADI_AXI_REG_CONFIG_RD, bdata);
++	regmap_write(st->regmap, ADI_AXI_REG_CONFIG_CTRL, 0x00);
++	usleep_range(50, 100);
++
++	return 0;
++}
++
++static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
++{
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	u32 buf;
++
++	guard(mutex)(&st->lock);
++
++	/*
++	 * The address is written on the highest weight byte, and the MSB set
++	 * at 1 indicates a read operation.
++	 */
++	buf = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
++	axi_adc_raw_write(back, &buf, sizeof(buf));
++	axi_adc_raw_read(back, val, 4);
++
++	/* Write 0x0 on the bus to get back to ADC mode */
++	buf = 0;
++	axi_adc_raw_write(back, &buf, sizeof(buf));
++	return 0;
++}
++
++static int ad7606_bus_reg_write(struct iio_backend *back, u32 reg, u32 val)
++{
++	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
++	u32 buf;
++
++	guard(mutex)(&st->lock);
++
++	/* Write any register to switch to register mode */
++	buf = 0xaf00;
++	axi_adc_raw_write(back, &buf, sizeof(buf));
++
++	buf = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) |
++	      FIELD_PREP(ADI_AXI_REG_VALUE_MASK, val);
++	axi_adc_raw_write(back, &buf, sizeof(buf));
++
++	/* Write 0x0 on the bus to get back to ADC mode */
++	buf = 0;
++	axi_adc_raw_write(back, &buf, sizeof(buf));
++
++	return 0;
++}
++
+ static void axi_adc_free_buffer(struct iio_backend *back,
+ 				struct iio_buffer *buffer)
  {
--	const unsigned int *expected_ver;
- 	struct adi_axi_adc_state *st;
- 	void __iomem *base;
- 	unsigned int ver;
-@@ -370,8 +412,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, PTR_ERR(st->regmap),
- 				     "failed to init register map\n");
+@@ -484,9 +570,23 @@ static const struct axi_adc_info adc_generic = {
+ 	.backend_info = &adi_axi_adc_generic,
+ };
  
--	expected_ver = device_get_match_data(&pdev->dev);
--	if (!expected_ver)
-+	st->info = device_get_match_data(&pdev->dev);
-+	if (!st->info)
- 		return -ENODEV;
- 
- 	clk = devm_clk_get_enabled(&pdev->dev, NULL);
-@@ -391,12 +433,13 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
-+	if (ADI_AXI_PCORE_VER_MAJOR(ver) !=
-+	    ADI_AXI_PCORE_VER_MAJOR(st->info->version)) {
- 		dev_err(&pdev->dev,
- 			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
--			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
--			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
--			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
-+			ADI_AXI_PCORE_VER_MAJOR(st->info->version),
-+			ADI_AXI_PCORE_VER_MINOR(st->info->version),
-+			ADI_AXI_PCORE_VER_PATCH(st->info->version),
- 			ADI_AXI_PCORE_VER_MAJOR(ver),
- 			ADI_AXI_PCORE_VER_MINOR(ver),
- 			ADI_AXI_PCORE_VER_PATCH(ver));
-@@ -408,6 +451,26 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 		return dev_err_probe(&pdev->dev, ret,
- 				     "failed to register iio backend\n");
- 
-+	if (st->info->bus_controller) {
-+		device_for_each_child_node_scoped(&pdev->dev, child) {
-+			int val;
++static const struct ad7606_platform_data ad7606_pdata = {
++	.bus_reg_read = ad7606_bus_reg_read,
++	.bus_reg_write = ad7606_bus_reg_write,
++};
 +
-+			/* Processing only reg 0 node */
-+			ret = fwnode_property_read_u32(child, "reg", &val);
-+			if (ret || val != 0)
-+				continue;
-+
-+			ret = fwnode_property_read_u32(child, "io-backends",
-+						       &val);
-+			if (ret)
-+				continue;
-+
-+			ret = axi_adc_create_platform_device(st, child);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
- 	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
- 		 ADI_AXI_PCORE_VER_MAJOR(ver),
- 		 ADI_AXI_PCORE_VER_MINOR(ver),
-@@ -416,11 +479,14 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
--static unsigned int adi_axi_adc_10_0_a_info = ADI_AXI_PCORE_VER(10, 0, 'a');
-+static const struct axi_adc_info adc_generic = {
++static const struct axi_adc_info adc_ad7606 = {
 +	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
 +	.backend_info = &adi_axi_adc_generic,
++	.bus_controller = true,
++	.pdata = &ad7606_pdata,
++	.pdata_sz = sizeof(ad7606_pdata),
 +};
- 
++
  /* Match table for of_platform binding */
  static const struct of_device_id adi_axi_adc_of_match[] = {
--	{ .compatible = "adi,axi-adc-10.0.a", .data = &adi_axi_adc_10_0_a_info },
-+	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
+ 	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
++	{ .compatible = "adi,axi-ad7606x", .data = &adc_ad7606 },
  	{ /* end of list */ }
  };
  MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);

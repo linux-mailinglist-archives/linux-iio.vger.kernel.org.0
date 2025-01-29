@@ -1,81 +1,82 @@
-Return-Path: <linux-iio+bounces-14697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77ACA21BB2
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:05:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5598A21BBE
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 12:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EC9E16353A
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:05:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED6FC3A2343
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 11:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5D01D958E;
-	Wed, 29 Jan 2025 11:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EC51DC05F;
+	Wed, 29 Jan 2025 11:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ctaK8n/c"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Bz4/49AJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDB01D8E12
-	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A131D8E10
+	for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 11:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738148707; cv=none; b=OnuNXkTv60cpw4UcykZdbatpePD7h2uRCLzJFtzTIkilw5RUnpODxm3UAhBnjj5bxKLSwO+Sn25ckrZ3WIOEIB6RyGq4LaoI1tOY05FA5tGMVKAx9oYLwQS+3ZsMSaq3UNZaz4y8VSJhm5wbUFGsWZu8nLLOI28jdVV5FLHdGtA=
+	t=1738148710; cv=none; b=TFVAmSBM2XgKCTzkW7CYiE4phx0c74ABhABpEkMqXqNFMxGlOuwp2+lXjLlKZjZF9XyJJo5vy6bDir+r9hJVFtkZzBnzzQJhdu8i7xUYTrPISxau2RpyPoqpGmU7TsaKMjZIH44ltHFAg0CT+artuoGTil/HaDFuifWUchjNOUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738148707; c=relaxed/simple;
-	bh=eeeG742/LDeOmZMMgJC+W4hlPYKRzBPb8KIQGlxLJKg=;
+	s=arc-20240116; t=1738148710; c=relaxed/simple;
+	bh=dioqZv2txBsr2G2NsI3KTjuvSsHBK1WMQvxJwpSgCpc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=c6KEjKLkgQpzgrjXc5B7Bh8ngdN4wHyuS6Qd3Ukd/8EPNRkV4sdheF8oQ13oL9fG7vgCHMP9fr/fafgvr8IH7Weq7oN0/SE+5LGq5BEQ+3BQ8S1oRPCaEQ7mLa9c+jPHG5r4EPA286soo43BYQMea1K26ciTSLkEdUYpIuY+sro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ctaK8n/c; arc=none smtp.client-ip=209.85.221.52
+	 In-Reply-To:To:Cc; b=PppkdLH4hDa6JRqI7ureRTS6wo/5W+DGDBwH8pqAkvoTJAqEcSyDNHKRMcZjjLS9X25ywUDm6wbDU2nb5iMBKfuTHzK18r/IOe9KnITR1XPbmnBL3DwYUBHqkKAZJ5Of1Az5HxQESmN4Bn7NTUyerM5PkTw2065phx7XvUxjUaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Bz4/49AJ; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38a8b35e168so353055f8f.1
-        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:05 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38637614567so3263538f8f.3
+        for <linux-iio@vger.kernel.org>; Wed, 29 Jan 2025 03:05:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148704; x=1738753504; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738148707; x=1738753507; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Cdc1cATkxj+NRQremP6tEug4vIFfF8rLsJGQkTSIG7w=;
-        b=ctaK8n/cGXbZUQJsCsEeJAX1kstrN1ZAO4b+dRNxj9Bsm0Lt0hC9j+jlAdPbK7F99I
-         JAe+aES1tFjFYG51ASECBQM+3qpKJGlbIPjyeRCYtDQ5KP5V3qhq37qKpLBJ3HQQz330
-         oJ9uWH4T8nbQkEuYDsdhAtu8Blp5am4lSKl8Y3u7YMUBsExsD51duhau+RsCUb2KlgVU
-         YqYAFApmgnwjlUSVJF7ZgPE6pKUBoZr0OgG5zrnMkoFyX7NYVsCBJwKB7KlKPpUZe115
-         zuWoCHaDV/K+9P5EUJVQtUuKI6c8GoR5TRujlUgiUQ4yisberOTWVTxbMcT5gCmvKycm
-         cJow==
+        bh=wlrP600R/ci5wFmyR+m1ecPzb5qUkdneDDlwcUEYxOc=;
+        b=Bz4/49AJauD3c1+DEMoSQiC3Xk7fs9jDbGBSu3wh7rpGRxNCqMJwGm7ju8Uh9SYXDR
+         kEbg/tC1MnZZJWPFYjIMzyaoS0yhHrhy1TSjyg+BhZCGCwta12lRMEBtKkFP3T2FbDBw
+         jfaEFSG6A1jYqCPOK587causGRetL2/mhatMG4uRoaQJizw4olV2GlrkoCkgad+PqfhM
+         h6DK0uXNCF/nMUaXrMdCIUbB/MduVNd+F/bGbLI67v0xV5O1J/IYyNfuRxwumu45YH7+
+         MBcMC5NtFm1dunSlK9+99ugEgMDi3QSN7BqtXtKK9ljl2m5Q+CaVUiWOoxfzu250Rk4I
+         PMiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738148704; x=1738753504;
+        d=1e100.net; s=20230601; t=1738148707; x=1738753507;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Cdc1cATkxj+NRQremP6tEug4vIFfF8rLsJGQkTSIG7w=;
-        b=biD4Be7l2KmQD36LxKpC4DgaAyB7fN1nZc2SMLC6Dh/O8bq1SvJQa6HkFR+y30juqb
-         LpKH3nOdCmWckEjHwEwS9b3knzWKl28fAEte/N9v68jAx6A39ZMZnCpdw6zSJPi+iiYD
-         NHiejMXkYfQ9wOHiw5onx/i3ZYPP+Ku/C5d3ra0mqs4d7MOZTgVf51oTv+LGvnPWAihN
-         Zb3vU9KoHv7Z+nDuKLJBI55tSqKKvM2H43p3crKE7wYbTonHsgyZ5Gy26QDdQwSMAlIB
-         d7eueqr6WMJcMbvo5lDMzG3iL6PD8Zru4zPFA9cHYYPBe4zlW3JWPJclSqKcUOK3rnPG
-         bpcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXQAll4hd+RL9YylczF5MdzvO5unxYjFcEIsl9iqaIDV6UkPT3as875dCJjBEFEasXBma/B1FccbJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2pfXcglz84e2+cJh6w+WfpvWE7uF7wqOjQxlMYGa8lPUkxbUD
-	kXc84SMTdHuOfPneLxPgtc+HCKUJ0tvHrSrLGB1Qiju5aZiKJ5AM0oJfLtV+2Io=
-X-Gm-Gg: ASbGncuX6h6ry8PoWbbfEtJ2kQRUPbz7RlchMeoMI489idGy/SrKWcN+6EfHPktONnO
-	coLiUBFCM8ADRWPcQXnw9ynS/DuyTzdjWaobddqe6Hp1nICPstXtSqUkBtxT5niOGEJvfiVB3Wb
-	dCFXroMuh4p1VE3eq+zbCIgE4OinCauQkMAW9H2eUsIVf95VbeG6OnN2QdDECwKZzs9mC81dON3
-	J3TOLhHVxzduesy8e757QOViUFJqFSUQEjWvFXJX1qc/85FuLKIMvGm5O0banrkiiKJNbQryx/j
-	ywW3e8o1U6pkw0sL+U+8SFAL5YRvGQtg1Qch5KiX0H14rQLw0CxGnGpxImPBczsufyMd3K8=
-X-Google-Smtp-Source: AGHT+IFaDLpWVjFWIu1Y+Qyim7g9TKgeSUYK0sY4eBsggvgAlH7UPWWj1NlDTMMXxX0rHSkDBiAViQ==
-X-Received: by 2002:a5d:6481:0:b0:386:34af:9bae with SMTP id ffacd0b85a97d-38c49a051c8mr5706558f8f.4.1738148703815;
-        Wed, 29 Jan 2025 03:05:03 -0800 (PST)
+        bh=wlrP600R/ci5wFmyR+m1ecPzb5qUkdneDDlwcUEYxOc=;
+        b=plhEmIj9W7SSnWteNsUFcjCn/RjERv9eQl6ksoKJusC6NFT7Pl1Esy+qeORUEWDqI+
+         q/SOZpbRIPGIWvgEpJtc4MmTdcoeyQWb+CAV1cRi6dATMJMY+LKwSdPk4nMiY8eHH2h7
+         oDP+6uplY1fjr+gmcAlHq3l+LWKXwdLI++7fRRZM8CXcPRJVM4CmCD5XPSZtxeFgG610
+         qEupfqYj3g5n9Dz9gsFEo0cVkS1yxlR60Ws75+FhTya+UJfwunSnmmcm/bihPaRrdNkO
+         oP4Fs7ctQ43O+j3cbkZ5CBsb8glOk6h+PLhJssZlIcJWn8wAApz9S4wy7Nd2XtU+NrFm
+         9jJA==
+X-Forwarded-Encrypted: i=1; AJvYcCV51txSIxtqjgG6bEdLsMN9Cc7pZjVEjT3yYjXdB5dpKJLD/zlRB60fXGML69IEXz8xkbYB2acRFdU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwhTUp/KFI/PRUPggN1EzrystefsND/bhBv4bDI4sfsyG86xHxP
+	BRLgO4OtFj8513LtTgrRrLruMUasSORXJhW2zfRcIwqeSywLRewWD0jBbhjzxUI=
+X-Gm-Gg: ASbGncs1aMlKdv7nQBIew8bERGbBQCmkb8yp6j6htWN3rLJwrUIA/Y5ZYqHKrIlygpG
+	K+C6PN8Hkq7yeEbYZO3dG1yUaan8/c9hCcJAu4HJVMl+hOByeafKuZsEYCIuJAAwk8twchkz9Fd
+	7PisNzirTNsOKgMayxrwzYYcBPvVsHIC60qCva/axVQ93yB/Y/kTAlSPvFGr0NOg1XNizVr1kFJ
+	iqwGJaLyA3t1IRnYl3Obr6wyEM2IutwZAXpunOwu/QeNOT0sBNhqlzPr1uTOSUZDg0ERFrqxKqr
+	YSyiFLciPdoykYjzJFQmEVvdK00gWkj+B6adLGT27KXV0sXaBDxFruFwOdF2AihHT3cX4Nk=
+X-Google-Smtp-Source: AGHT+IE2sAMHKOfuQ1fuQ2nuVuYnw/aDn5EAlessm0idPWhiV/TrPf3r9aU7XQvRQSZJ/cTuX/bYWw==
+X-Received: by 2002:a5d:6149:0:b0:386:373f:47c4 with SMTP id ffacd0b85a97d-38c520b0473mr1757557f8f.49.1738148706878;
+        Wed, 29 Jan 2025 03:05:06 -0800 (PST)
 Received: from [127.0.1.1] (host-95-245-235-245.retail.telecomitalia.it. [95.245.235.245])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.04.59
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a17d7a7sm17107364f8f.32.2025.01.29.03.05.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 03:05:00 -0800 (PST)
+        Wed, 29 Jan 2025 03:05:05 -0800 (PST)
 From: Angelo Dureghello <adureghello@baylibre.com>
 X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 29 Jan 2025 12:03:04 +0100
-Subject: [PATCH v3 03/10] iio: adc: ad7606: fix wrong scale available
+Date: Wed, 29 Jan 2025 12:03:05 +0100
+Subject: [PATCH v3 04/10] iio: adc: ad7606: move the software mode
+ configuration
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +85,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com>
+Message-Id: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-4-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
@@ -100,42 +101,64 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Angelo Dureghello <adureghello@baylibre.com>
 X-Mailer: b4 0.14.1
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Guillaume Stols <gstols@baylibre.com>
 
-Fix wrong scale available list since only one value is returned:
+This is a preparation for the intoduction of the sofware functions in
+the iio backend version of the driver.
+The software mode configuration must be executed once the channels are
+configured, and the number of channels is known. This is not the case
+before iio-backend's configuration is called, and iio backend version of
+the driver does not have a timestamp channel.
+Also the sw_mode_config callback is configured during the iio-backend
+configuration.
+For clarity purpose, I moved the entire block instead of just the
+concerned function calls.
 
-...
-iio:device1: ad7606b (buffer capable)
-    8 channels found:
-           voltage0:  (input, index: 0, format: le:S16/16>>0)
-           2 channel-specific attributes found:
-                 attr  0: scale value: 0.305176
-                 attr  1: scale_available value: 0.076293
-Fix as:
-           voltage0:  (input, index: 0, format: le:S16/16>>0)
-           2 channel-specific attributes found:
-                 attr  0: scale value: 0.305176
-                 attr  1: scale_available value: 0.076293 0.152588 0.305176
-
-Fixes: 97c6d857041d ("iio: adc: ad7606: rework scale-available to be static")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
- drivers/iio/adc/ad7606.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7606.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index d8e3c7a43678..d39354afd539 100644
+index d39354afd539..376c808df11c 100644
 --- a/drivers/iio/adc/ad7606.c
 +++ b/drivers/iio/adc/ad7606.c
-@@ -1047,7 +1047,7 @@ static int ad7606_read_avail(struct iio_dev *indio_dev,
+@@ -1246,17 +1246,6 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 			return -ERESTARTSYS;
+ 	}
  
- 		cs = &st->chan_scales[ch];
- 		*vals = (int *)cs->scale_avail;
--		*length = cs->num_scales;
-+		*length = cs->num_scales * 2;
- 		*type = IIO_VAL_INT_PLUS_MICRO;
+-	st->write_scale = ad7606_write_scale_hw;
+-	st->write_os = ad7606_write_os_hw;
+-
+-	ret = ad7606_sw_mode_setup(indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	ret = ad7606_chan_scales_setup(indio_dev);
+-	if (ret)
+-		return ret;
+-
+ 	/* If convst pin is not defined, setup PWM. */
+ 	if (!st->gpio_convst) {
+ 		st->cnvst_pwm = devm_pwm_get(dev, NULL);
+@@ -1334,6 +1323,17 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 			return ret;
+ 	}
  
- 		return IIO_AVAIL_LIST;
++	st->write_scale = ad7606_write_scale_hw;
++	st->write_os = ad7606_write_os_hw;
++
++	ret = ad7606_sw_mode_setup(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = ad7606_chan_scales_setup(indio_dev);
++	if (ret)
++		return ret;
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS_GPL(ad7606_probe, "IIO_AD7606");
 
 -- 
 2.47.0

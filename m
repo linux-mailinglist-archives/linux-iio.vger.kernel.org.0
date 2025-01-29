@@ -1,185 +1,160 @@
-Return-Path: <linux-iio+bounces-14705-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14706-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C2AA21EFE
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:22:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B93A21F26
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19A4E18819BC
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 14:22:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0947163FC9
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 14:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FC51D63CE;
-	Wed, 29 Jan 2025 14:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4E11ACED2;
+	Wed, 29 Jan 2025 14:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djFiyaI1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K5psjeig"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0FD1B4250;
-	Wed, 29 Jan 2025 14:22:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77C8F4A;
+	Wed, 29 Jan 2025 14:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738160531; cv=none; b=MqzDk1aNZ+SSNVjv43r4DyISKUzQeEur/oOfPpDJVbGMYIhfSoem97n2BmiBhK0LOSlbUi6MHFZMfYIHkszoGcX92cm12kX+0gBhYvhpZ0agiWJyX50xHbA2Vi80OMyiKsC13Ly+IxtIKsD73SR11miLV9aFhQ8o4Nw35yCqzDM=
+	t=1738161069; cv=none; b=NehvOLYz2xMeV2qlx7SAy0izrW0MZrpJPNhkCxU0NtkgbsErhRKvkh4fMbNQ2AGBvk9XDZcX3JGyV6cOePAW7HC+c+qibBW7fi3IROhT9dTtiWfcOgsvz3pjMY51ssHIlshU6eor+TSwXo/SmSQopX5QencFKGyoHY/UFUVsR8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738160531; c=relaxed/simple;
-	bh=/uy2KVK+92bnjkNkIT1iw5CrTdiZ0e2lwuNq07xf8OM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dIjz3OvimteobWYLHRjzWMXoKzWhEPpYBp/O6JqsOwdVvdewpUnFs1NaqCTilPqJWha4nHJJxRgrUqN6Ert/SPUSHV3gZV96iRKaCGnvu0jrAToRkBvclybo2sg/eWRoCriqyANIdJ1Hi/K9TsDOeM+JG4ZBtncizAKGRA2A1hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djFiyaI1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A63C4CED3;
-	Wed, 29 Jan 2025 14:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738160530;
-	bh=/uy2KVK+92bnjkNkIT1iw5CrTdiZ0e2lwuNq07xf8OM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=djFiyaI1DlJWiFHE8181GXXxjAr3wEqHuYYG3QsXELwZvDKxnRVxjUbFdIQbTnmLU
-	 Lt9fufnc/G7WtGz9dtGAS3ZPyc4zzMF7RCfLnP+iBbDKwR+eb444lgkHrtJ/IVzKnP
-	 WXttUr2Yxs6fWKBISWq0/x5ZYEIrKYg1CFR9lX/xH1tZyDicoyC+ae2lT5AysNsQ5+
-	 Zrzl0ec3PcPgnqhqfetOvYwj+teyI/gwI8joVAbOMvx/WjRa3zWtMYKccoxnJSJUEq
-	 elKqiXQFndQZbOtUJb0kgnqPfoQifhZUjqbQYA3D92ZpRy6VKsPv9SGhYwjgHdtLhq
-	 gPYPXMPtSHgOQ==
-Date: Wed, 29 Jan 2025 15:22:03 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, coresight@lists.linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- workflows@vger.kernel.org
-Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
-Message-ID: <20250129152203.0dda53ca@foz.lan>
-In-Reply-To: <20250129024518.69c0be81@foz.lan>
-References: <cover.1738020236.git.mchehab+huawei@kernel.org>
-	<87h65i7e87.fsf@trenco.lwn.net>
-	<20250129024518.69c0be81@foz.lan>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1738161069; c=relaxed/simple;
+	bh=FcXgyIivx49AZaW56v7gXTj5YhT8hxXrGxu8jaRa20c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ueoGs7DAA1yQ25HOWwpEMf5zAavvG+I+zvqx5/ZKSjCNLTQYR9ErBxKcj+qxYj2it6vcGoUaBwSJbJxNSRXYjdCiddBL5RgKKVYHxPg760iDDluj1Eq1QuwSOp0NbKHeOY6mSbAbVF/knpJhWVO+6O/oFxd6on/8MEznee+fWkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K5psjeig; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-385e1fcb0e1so3682379f8f.2;
+        Wed, 29 Jan 2025 06:31:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738161066; x=1738765866; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ytQod/TtXir+lgbcpVQDva+UZpavOsy0mPhHQcNBVUU=;
+        b=K5psjeigqNXkhjpMBa5mrbyXV6ToyPCEgIwH1EJUhrMZddGjsvFTIA5XhlwUMvEwvi
+         TNjnGCroWI2VYiQ+JVqfObQk17mStsc3Ujf4nS2W4zNfB7ITxY7HS/90NeE45o7t7Itf
+         Rz9kyV8EU6EeOMNT12O7SwIE3GRBHzDfbKzJg2EpDlMTkxYlRbQAjU62QLvrRNwFbIKd
+         AX1tGSPf0l/Hv9YuJRFWfmdhXbIg/jOOqBj/Od7ICKXCLpoDawESqBewTwA9o8M3pg/W
+         B6fmhHVlPY6xrXeRAOk8H6JUsEieD2c9z9IHfYgiJrHWICIOK3LjR6L6CPlrmiroVBz3
+         c1WA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738161066; x=1738765866;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ytQod/TtXir+lgbcpVQDva+UZpavOsy0mPhHQcNBVUU=;
+        b=PmQ2wyaPDqv/DrslNFYK4+qQGDxV7vmQwDUCy73ZAEpijDP5lxVXhhNdnFVaxtvmJ8
+         A+DgGI2ko2tMANifvGapE1cX7fmnnq6/i5Xq8NtBmAToIQ4sjKMZalafnjFb4XrGWE5d
+         JDilai7DTXhU+kqHukD43w5wbnw2E4yFMSbkRmrelGKf5X5BUQ3rTrd2GqBfwv15eg3+
+         jMVEJKk0IywSgz5yCr2vbo14aZ1Kjo3aFnBCFy0K3gfS4DZfeyTNjQGyLxFS8bD8Qyi2
+         Zj4iLqLzzz2P1TaiXLG6eZyaFV+MpjJ3jFL3qvWMNBlD59Dv+7++tP4vKxk1iQNNGYx/
+         I28w==
+X-Forwarded-Encrypted: i=1; AJvYcCUK8sk5SKf2nHhtAwOFRuMv2xZwk8WhRbzAW3MpDAbXaVOA/9ka+6a4Tx6gBriP/j1Q8oNrXDKkYko3@vger.kernel.org, AJvYcCUYOYXQ97TFA+aH1oRuefDgkdEYYmeQYmniDz9f7JCmm/fug6w1XLG28C5syI7sbAiUt7+Msni1dlYy@vger.kernel.org, AJvYcCWAGq/RgQqj2Iq+pR5Jf31MObvqJgjRMP7k6wSeSReyZ+CWlsZSqMG0YoGIh3YulojTY0zNN0T1qETI@vger.kernel.org, AJvYcCX/WHv+hyUvkue3QVTj5wjdKhgw+dBx1H7bBGLRzuqRm+tCS6OYGxtTMBug66DJqwvzBaEYh7WsjyEYFHEa@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRKai9aaxlXHFbM+lc4hQGOyi9o3RocFMLSWRayMlecbnuH2vA
+	PO9DPRFVFmdhvi4ialLqT/nYa9rO9F0OG61fufps6YUAkU+/pkVwscjJxg==
+X-Gm-Gg: ASbGncvQvfJT//VA/PXUplXW7W6U0BO15Dx4soUGHXP8A/cBui1zr8O2z5D+in9bNtu
+	ZHV1Oj2/PaksOzjvLlAN5iRyJOT/bH5N+UbdNa5zFBdCuGKx4F1/3r85ZLmTKaN9YmiCurYMLm/
+	HQqHwzB+SdgKnokBgq5/RtG+ASTVpwnb6ENRxRNCGYjvRB0vqxb+QwuWp1XvX9rAOHSVAXTJ1e8
+	fI0GQROUqbUfd5SatqnvrM6PWJzajnZlBkSXcPpm822cMfkJZB4BZf+zjWbDtkLxUAR0auwQSln
+	r/FGIDnZrPw=
+X-Google-Smtp-Source: AGHT+IEkYN1blNmo/ag8BHYSdfY2J+/Gmwq/Duyn9qyH0VzAY6O2WJ/WYyKGG4ohQR21Nj1Cjc1cyg==
+X-Received: by 2002:a05:6000:1a88:b0:38b:f3f4:57af with SMTP id ffacd0b85a97d-38c5208e9cbmr3557747f8f.35.1738161066018;
+        Wed, 29 Jan 2025 06:31:06 -0800 (PST)
+Received: from spiri.. ([82.77.155.83])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188c28sm17596201f8f.54.2025.01.29.06.31.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2025 06:31:05 -0800 (PST)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Lechner <dlechner@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH v3 0/3] Add support for AD7191
+Date: Wed, 29 Jan 2025 16:29:01 +0200
+Message-ID: <20250129143054.225322-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Em Wed, 29 Jan 2025 02:45:18 +0100
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> escreveu:
 
-> > I've only tested with current Sphinx,
-> > have you tried this with the more ancient versions we support?  
-> 
-> Not yet, but I double-checked at Sphinx documentation to be sure that
-> I won't be using any newer methods: I just kept using the same Sphinx
-> API as used by other extensions at the Kernel.
+Thank you all for your feedback! Here is the updated series of patches!
 
-Just checked it with Python 3.6 and Sphinx 3.4 on Fedora 41 with:
+I addressed all the replies' points, except for the one about the size of the
+avail array being 1 when the pga/odr pins are pin-strapped. David raised a very
+good point, but, for now, I left the size fixed to 4, since the functions for
+setting the values return error anyway when they are pin-strapped.
 
-	sudo dnf install python3.6.x86_64
-	python3.6 -m venv Sphinx-3.4
-	pip install alabaster Sphinx==3.4.3 pyyaml
+I thought of 3 approaches:
+	- dynamic allocation for the avail arrays
+	- different avail array for the 2 different cases (pin-strap or gpios)
+	- different channels array for the 2 different cases (probably too much)
 
-There were some issues related to problems with early f-string
-support, as reported by Akira.
+If the current setup if not good enough, which approach would be the best?
 
-After applying the enclosed patch, it is now working fine. The only
-drawback is here:
+Kind regards,
+Alisa-Dariana Roman.
 
-	- print(f"Defined on file{'s'[:len(files) ^ 1]}:\t{", ".join(files)}")
-	+ print("Defined on file(s):\t" + ", ".join(files))
+---
 
-As I removed the file/files auto-plural logic depending on the files
-array length. Not a big deal.
+v2: https://lore.kernel.org/all/20250122132821.126600-1-alisa.roman@analog.com/
 
-I'll double-check if there's no other diff between old/new version
-and add the enclosed patch in the end.
+v2 -> v3:
+	- correct binding title
+	- remove clksel_state and clksel_gpio, assume the clksel pin is always
+pinstrapped
+	- rephrase clocks description accordingly
+	- simplify binding constraints
+	- specify in binding description that PDOWN must be connected to SPI's
+controller's CS
+	- add minItems for gpios in bindings
+	- make scope explicit for mutex guard
+	- remove spi irq check
+	- add id_table to spi_driver struct
+	- changed comments as suggested
+	- use spi_message_init_with_transfers()
+	- default returns an error in ad7191_set_mode()
+	- replace hard-coded 2 with st->pga_gpios->ndescs
+	- use gpiod_set_array_value_cansleep()
+	- change .storagebits to 32
+	- check return value for ad_sd_init()
+	- change to adi,odr-value and adi,pga-value, which now accepts the value as
+suggested
+	- modify variables names and refactor the setup of odr and pga gpios,
+indexes and available arrays into ad7191_config_setup(), since they are all
+related
+	- add ad7191.rst
 
-Thanks,
-Mauro
+v1: https://lore.kernel.org/all/20241221155926.81954-1-alisa.roman@analog.com/
 
-[PATCH] scripts/get_abi.py: make it backward-compatible with Python 3.6
+v1 -> v2:
+	- removed patch adding function in ad_sigma_delta.h/.c
+	- added a function set_cs() for asserting/deasserting the cs
+	- handle pinstrapping cases
+	- refactored all clock handling
+	- updated bindings: corrected and added new things
+	- -> address of the channels is used in set_channel()
+	- addressed all the other changes
 
-Despite being introduced on Python 3.6, the original implementation
-was too limited: it doesn't accept anything but the argument.
-
-Even on python 3.10.12, support was still limited, as more complex
-operations cause SyntaxError:
-
-	Exception occurred:
-	  File ".../linux/Documentation/sphinx/kernel_abi.py", line 48, in <module>
-	    from get_abi import AbiParser
-	  File ".../linux/scripts/get_abi.py", line 525
-	    msg += f"{part}\n{"-" * len(part)}\n\n"
-                       ^
-	SyntaxError: f-string: expecting '}'
-
-Replace f-strings by normal string concatenation when it doesn't
-work on Python 3.6.
-
-Reported-by: Akira Yokosawa <akiyks@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-
-diff --git a/scripts/get_abi.py b/scripts/get_abi.py
-index 543bed397c8c..e6e94f721fff 100755
---- a/scripts/get_abi.py
-+++ b/scripts/get_abi.py
-@@ -522,7 +522,7 @@ class AbiParser:
- 
-                 if cur_part and cur_part != part:
-                     part = cur_part
--                    msg += f"{part}\n{"-" * len(part)}\n\n"
-+                    msg += part + "\n"+ "-" * len(part) +"\n\n"
- 
-                 msg += f".. _{key}:\n\n"
- 
-@@ -546,7 +546,7 @@ class AbiParser:
-                     msg += f"Defined on file :ref:`{base} <{ref[1]}>`\n\n"
- 
-             if wtype == "File":
--                msg += f"{names[0]}\n{"-" * len(names[0])}\n\n"
-+                msg += names[0] +"\n" + "-" * len(names[0]) +"\n\n"
- 
-             desc = v.get("description")
-             if not desc and wtype != "File":
-@@ -570,7 +570,8 @@ class AbiParser:
- 
-             users = v.get("users")
-             if users and users.strip(" \t\n"):
--                msg += f"Users:\n\t{users.strip("\n").replace('\n', '\n\t')}\n\n"
-+                users = users.strip("\n").replace('\n', '\n\t')
-+                msg += f"Users:\n\t{users}\n\n"
- 
-             ln = v.get("line_no", 1)
- 
-@@ -596,7 +597,9 @@ class AbiParser:
-                 elif len(lines) == 1:
-                     f.append(f"{fname}:{lines[0]}")
-                 else:
--                    f.append(f"{fname} lines {", ".join(str(x) for x in lines)}")
-+                    m = fname + "lines "
-+                    m += ", ".join(str(x) for x in lines)
-+                    f.append(m)
- 
-             self.log.warning("%s is defined %d times: %s", what, len(f), "; ".join(f))
- 
-@@ -644,10 +647,11 @@ class AbiParser:
-                     if users:
-                         print(f"Users:\t\t\t{users}")
- 
--                    print(f"Defined on file{'s'[:len(files) ^ 1]}:\t{", ".join(files)}")
-+                    print("Defined on file(s):\t" + ", ".join(files))
- 
-                     if desc:
--                        print(f"\n{desc.strip("\n")}\n")
-+                        desc = desc.strip("\n")
-+                        print(f"\n{desc}\n")
- 
-         if not found_keys:
-             print(f"Regular expression /{expr}/ not found.")
 

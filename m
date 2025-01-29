@@ -1,127 +1,238 @@
-Return-Path: <linux-iio+bounces-14711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C277CA22030
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 16:26:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4122FA2205D
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 16:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F59B3A72E6
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:25:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EF071885494
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 15:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD6C1DDC3F;
-	Wed, 29 Jan 2025 15:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3EF1DDC3B;
+	Wed, 29 Jan 2025 15:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iz2ZEPvJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuIf5Sk2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6910D15B102;
-	Wed, 29 Jan 2025 15:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D9214830F;
+	Wed, 29 Jan 2025 15:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738164354; cv=none; b=rlELpo60MOY1VC1/aZhJ5UQjcui3J8Vw1VD6mMRBB1ub8GUHsnTzOZJtZr+uL0Ib/WZFYl4dk2fb58qYmQ1IEhbOOPGSHN4Y1/D1KPQc/kAWtGHNi4ZNAuNdr5hl2ZDCexYzY82bkbRBdqoRalJQiKU9vmIYEyMKKpvBdgkJrKk=
+	t=1738164629; cv=none; b=lOQUsCjoQ05k35wEfUp8JKSZCDZgfFGhYmoqM+4zM57alOJdR6k0EtjQ+JozBtS6Np6KbForixU4W3e2QCjAga/KYF9R/zP73ba5xUuasQNxPxrV6Iuj38+Eujwht3BKn+LjGPuEU2BKzsAKiY355h61IBjJWC4Zy+f61wtPKCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738164354; c=relaxed/simple;
-	bh=O1kPc7XADX4ZT5RIgx3jp8KfJErYzvWAz09wgcxVAIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDh9H+V71f11tHnjEboW3MYuM1YWjVJEwlO+KRGAx7EnX87RVoyCC1WiuyTNAtip62qqS/XeWoGitQYZ1fFXeO+czcqXkaixA4VsUsKB1LJzK+CYyktcX2C74eL08MbeCzqmqhv3oMncBYn24QzQtDPsAFfQZD7xYWEWdagt9Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iz2ZEPvJ; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738164353; x=1769700353;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=O1kPc7XADX4ZT5RIgx3jp8KfJErYzvWAz09wgcxVAIQ=;
-  b=Iz2ZEPvJ4InZ0kaQoSDWtjAFLrLZw0Q2wTwlyI5kpl9oi9Mfg4HhNjtY
-   ju8Aw65CLovZwjD6Tv3h6UVBrHawowkVlQDG7CnN+YRmOyRA8LOGVU9Q4
-   65H2NuTd42MEZpu5Fo1XNMIzg0tA8XsNGnDu+eHAo86ACTULbjGkl8kHT
-   obTDItuFNMh6pvJ+qpOFvCWn1CQQc6TI1Ug8Ih3BWmo5JY63DOmPHFoND
-   9/sNVxmo93itlTk0ATqEPIU8hSPFUSDgsPFXVS0hh1OeS8oMJ3ZVk5bP9
-   tAbdEnjYy3keH8HFLYD7uGmz8QWI2lHF5X6M2/zdSxQMkiBprbtgPqtnd
-   g==;
-X-CSE-ConnectionGUID: ArLwDk8/SVCM2GejV9qGhQ==
-X-CSE-MsgGUID: VNTpzec+QT6N043M7kA9hg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11330"; a="37879628"
-X-IronPort-AV: E=Sophos;i="6.13,243,1732608000"; 
-   d="scan'208";a="37879628"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2025 07:25:52 -0800
-X-CSE-ConnectionGUID: 1AybBBsUQNqixkKSzD6nag==
-X-CSE-MsgGUID: n8r+vyy5TZqSXhsd9aexxw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="114051106"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa003.jf.intel.com with ESMTP; 29 Jan 2025 07:25:49 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id 00ED453A; Wed, 29 Jan 2025 17:25:47 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Icenowy Zheng <icenowy@aosc.io>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 3/3] iio: pressure: zpa2326: Drop unneeded assignment for cache_type
-Date: Wed, 29 Jan 2025 17:24:42 +0200
-Message-ID: <20250129152546.1798306-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
-In-Reply-To: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
-References: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
+	s=arc-20240116; t=1738164629; c=relaxed/simple;
+	bh=su917WJUDlLVVvJbeCquP6XrtRrkcWv8Akxqql7MZwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qf6GgJ/tiNsYHiiTN8n/F9mAysOxeZ31e0Jb3cWUpUtYmi9MiPid1LmchUV38zGSW+Vt1Zfv1gXC4l4UdQHi5cQtX3Y4HSartxLWJebPNWAmWcVqSBcBUmLzJTk7r1fmiu4qumfHgj0S9ptoannIxhZBP54WpvSp8OniqaxBq+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuIf5Sk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B6B5C4CED1;
+	Wed, 29 Jan 2025 15:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738164628;
+	bh=su917WJUDlLVVvJbeCquP6XrtRrkcWv8Akxqql7MZwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OuIf5Sk2wPLPHidQ70Wc7i2FuIaFfDQnsj1KOYyYmjz6MRrRmKbvnVt4kNBHS18c/
+	 t2qEornCCuaheq68E+6PfZfLzyA+brIDkqE4sqk9kThUOuz2ZMADqmH/iLjov+GT1J
+	 Us4unzTVcX0I6Z1Zv32CBSr/rGbUVMY1xMbra10Ww8SolUgnEp3ewL6qUv4OxHGL+X
+	 VgWGHXZrZ6kyMg+mGlRlaOcO1hng43ahZ5G2wCqS8Trmpxe6OBgEtFqJ27d7iQpBXs
+	 Xo6HzAAHQzqG3KCFk/3PDQg5X0bkelr3VqsVFj0XWOe/eq+hyF/EN/B+gk3vH+rIo8
+	 gk4XMy8rnkQ4w==
+Date: Wed, 29 Jan 2025 09:30:27 -0600
+From: Rob Herring <robh@kernel.org>
+To: Robert Budai <robert.budai@analog.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, nuno.sa@analog.com,
+	ramona.gradinariu@analog.com, antoniu.miclaus@analog.com,
+	jic23@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	corbet@lwn.net, lanzano.alex@gmail.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v5 4/6] dt-bindings: iio: Add adis16550 bindings
+Message-ID: <20250129153027.GA2121051-robh@kernel.org>
+References: <20250129082053.19077-1-robert.budai@analog.com>
+ <20250129082053.19077-5-robert.budai@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250129082053.19077-5-robert.budai@analog.com>
 
-REGCACHE_NONE is the default type of the cache when not provided.
-Drop unneeded explicit assignment to it.
+On Wed, Jan 29, 2025 at 10:20:44AM +0200, Robert Budai wrote:
+> Document the ADIS16550 device devicetree bindings.
+> 
+> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> Signed-off-by: Robert Budai <robert.budai@analog.com>
+> ---
+> 
+> v5:
+> - removed sync-mode binding
+> - added binding for external clock frequency
+> - removed adis16550w
+> 
+>  .../bindings/iio/imu/adi,adis16550.yaml       | 80 +++++++++++++++++++
+>  MAINTAINERS                                   |  9 +++
+>  2 files changed, 89 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> new file mode 100644
+> index 000000000000..4e9406168782
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> @@ -0,0 +1,80 @@
+> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/imu/adi,adis16550.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
 
-Note, it's defined to 0, and if ever be redefined, it will break
-literally a lot of the drivers, so it very unlikely to happen.
+blank line
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/pressure/zpa2326_i2c.c | 1 -
- drivers/iio/pressure/zpa2326_spi.c | 1 -
- 2 files changed, 2 deletions(-)
+> +title: Analog Devices ADIS16550 and similar IMUs
 
-diff --git a/drivers/iio/pressure/zpa2326_i2c.c b/drivers/iio/pressure/zpa2326_i2c.c
-index 49a239ebdabf..a6034bf05d97 100644
---- a/drivers/iio/pressure/zpa2326_i2c.c
-+++ b/drivers/iio/pressure/zpa2326_i2c.c
-@@ -25,7 +25,6 @@ static const struct regmap_config zpa2326_regmap_i2c_config = {
- 	.precious_reg   = zpa2326_isreg_precious,
- 	.max_register   = ZPA2326_TEMP_OUT_H_REG,
- 	.read_flag_mask = BIT(7),
--	.cache_type     = REGCACHE_NONE,
- };
- 
- static unsigned int zpa2326_i2c_hwid(const struct i2c_client *client)
-diff --git a/drivers/iio/pressure/zpa2326_spi.c b/drivers/iio/pressure/zpa2326_spi.c
-index 317270fa1c43..c678f5b96266 100644
---- a/drivers/iio/pressure/zpa2326_spi.c
-+++ b/drivers/iio/pressure/zpa2326_spi.c
-@@ -26,7 +26,6 @@ static const struct regmap_config zpa2326_regmap_spi_config = {
- 	.precious_reg   = zpa2326_isreg_precious,
- 	.max_register   = ZPA2326_TEMP_OUT_H_REG,
- 	.read_flag_mask = BIT(7) | BIT(6),
--	.cache_type     = REGCACHE_NONE,
- };
- 
- static int zpa2326_probe_spi(struct spi_device *spi)
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+blank line
 
+> +maintainers:
+> +  - Nuno Sa <nuno.sa@analog.com>
+> +  - Ramona Gradinariu <ramona.gradinariu@analog.com>
+> +  - Antoniu Miclaus <antoniu.miclaus@analog.com>
+
+blank line
+
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,adis16550
+> +      - adi,adis16550w
+
+blank line
+
+> +  reg:
+> +    maxItems: 1
+
+blank line
+
+> +  spi-cpha: true
+> +  spi-cpol: true
+
+blank line
+
+> +  spi-max-frequency:
+> +    maximum: 15000000
+
+blank line
+
+> +  vdd-supply: true
+
+blank line
+
+> +  interrupts:
+> +    maxItems: 1
+
+blank line
+
+And so on. IOW, follow the style you see in *every* other schema doc.
+
+
+> +  reset-gpios:
+> +    description:
+> +      Must be the device tree identifier of the RESET pin. If specified,
+> +      it will be asserted during driver probe. As the line is active low,
+> +      it should be marked GPIO_ACTIVE_LOW.
+> +    maxItems: 1
+> +  clocks:
+> +    description: If not provided, then the internal clock is used.
+> +    maxItems: 1
+> +  clock-frequency:
+> +    description: Clock frequency in Hz when an external clock is used.
+> +    oneOf:
+> +      - type: integer
+
+Drop 'type'
+
+> +        minimum: 1
+> +        maximum: 128
+> +      - type: integer
+
+Drop 'type'
+
+> +        minimum: 3000
+> +        maximum: 4500
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - spi-cpha
+> +  - spi-cpol
+> +  - spi-max-frequency
+> +  - vdd-supply
+> +
+> +allOf:
+> +  - if:
+> +      properties:
+> +        clocks:
+> +          maxItems: 1
+
+clocks doesn't have to be present for this to be true. Hence the 
+failure. But this can all be expressed as:
+
+dependentRequired:
+  clock: [clock-frequency]
+
+> +    then:
+> +      required:
+> +        - clock-frequency
+> +
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +additionalProperties: false
+> +examples:
+> +  - |
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +        imu@0 {
+> +            compatible = "adi,adis16550";
+> +            reg = <0>;
+> +            spi-max-frequency = <15000000>;
+> +            spi-cpol;
+> +            spi-cpha;
+> +            vdd-supply = <&vdd>;
+> +            interrupts = <4 IRQ_TYPE_EDGE_FALLING>;
+> +            interrupt-parent = <&gpio>;
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index aeb5f3cc58a1..5c59a183cd3f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1479,6 +1479,15 @@ W:	https://ez.analog.com/linux-software-drivers
+>  F:	Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
+>  F:	drivers/iio/imu/adis16475.c
+>  
+> +ANALOG DEVICES INC ADIS16550 DRIVER
+> +M:	Nuno Sa <nuno.sa@analog.com>
+> +M:	Ramona Gradinariu <ramona.gradinariu@analog.com>
+> +M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> +
+>  ANALOG DEVICES INC ADM1177 DRIVER
+>  M:	Michael Hennerich <Michael.Hennerich@analog.com>
+>  L:	linux-hwmon@vger.kernel.org
+> -- 
+> 2.43.0
+> 
 

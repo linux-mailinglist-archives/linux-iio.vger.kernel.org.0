@@ -1,243 +1,126 @@
-Return-Path: <linux-iio+bounces-14685-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14686-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0845A21651
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 02:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0727A218D9
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 09:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207AF3A87EE
-	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 01:45:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8BAD3A5E27
+	for <lists+linux-iio@lfdr.de>; Wed, 29 Jan 2025 08:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD7F18B463;
-	Wed, 29 Jan 2025 01:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B081D19CD1D;
+	Wed, 29 Jan 2025 08:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJt4ZVW0"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="pjBYYnsz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF1E17C68;
-	Wed, 29 Jan 2025 01:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1422911713;
+	Wed, 29 Jan 2025 08:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738115125; cv=none; b=tBVLu49wQREp6CA51HPPi8LA9d/MRURrEs3ikIDAZgcf7FDgOhJG8kp9bTcgfK74ZBRUiq+koJULjZZnJESQmWE5ZHvHGrUL3LwfMXNGMGb9SEXvLBAjhPJ0c8aMeGSe2uTRR5OEl0NpAqyfU8GRGfBOdTqkU13S6i1UtYlw6ec=
+	t=1738138892; cv=none; b=N1VwezlkYOX1oo8m+AYJuToAHCD+ZhLvcYHTn9JYfwOqttHpDXMgKQsJ0kednlbJ1vw2JZR0QpzsjhCsMt7YtyqabrBmjtnjqOD5RmXEX1poD35SCXL1veXKQEZGoh77OkvHUtLiXspcAxixVsKZHqxInJTSLoObI0CK6bKrZWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738115125; c=relaxed/simple;
-	bh=CWzXW0bIMSURgr0c3IY4/tvstyV6bj1ozJj9dzgjU1s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aQ8mgffPWoD32Lu22oMBWebvQ2Opc3pRRPkcfWU4MTd7mQztYihgKse+eYhQgQY3tNqSwA/vHyXkY0AABoxQCV23q2gQkjSbsntQKJ9WbgK/u1A7N8/YIhIYnWL3EtWaBrq0GPyhepP6/1FpQZj0C83h31L8UekJYKpcIDGjX/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJt4ZVW0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3927EC4CED3;
-	Wed, 29 Jan 2025 01:45:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738115124;
-	bh=CWzXW0bIMSURgr0c3IY4/tvstyV6bj1ozJj9dzgjU1s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tJt4ZVW0p8weQsSPDZjLgTUab4flB9ZDeO3oV5MFy7mrenPn2R71XljjJYKAkhnrm
-	 UCkaqQqT+OZAhF0CZcDf6w+z1Qt+gQsQ5OCNAxgM1rmArls+WMymb4Mq830RmFCoKO
-	 +qFwvjNxZ5/w+Tx4QkGkdy0DNTUbSSpw6PslUzb5XdvZf0l8UzSKbhwOCZjyb+SnY9
-	 q6L5Zj8WJL2S1/bLsi4d6YQV8UUltZT+eHdIQb3MT8SpdgDLFwbf9U5bSybrLtzkIN
-	 sufR1bq3uvCWQSqMly5wDlwj2bsOCg3IPtP8q6yZFB3HIxEpMDKVAt03sxW/8L9VE6
-	 rHgpPPhwR2yMg==
-Date: Wed, 29 Jan 2025 02:45:18 +0100
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, coresight@lists.linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net, linux-hardening@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-usb@vger.kernel.org,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- workflows@vger.kernel.org
-Subject: Re: [RFC v2 00/38] Improve ABI documentation generation
-Message-ID: <20250129024518.69c0be81@foz.lan>
-In-Reply-To: <87h65i7e87.fsf@trenco.lwn.net>
-References: <cover.1738020236.git.mchehab+huawei@kernel.org>
-	<87h65i7e87.fsf@trenco.lwn.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1738138892; c=relaxed/simple;
+	bh=Ken+uZ/t5YexFja91w7Oo46S4hnD1GZlSEbhLAEKeAA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RaKnp0IwCtBc7qmOj06IvITSvvlif/RASXSN086D9wQjunrYz0/iRa1Po1orK7bxdTc77Ellozr6fx3Q+OFlJ5ocpWGM9Pq8penoFm/iYXJRp+mocqi5Ke/11pO62QpDI8OLx7JAsbpuU1mbRUFIjpPQJvoN19JdDX2DveVxO5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=pjBYYnsz; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50T5nLgU004116;
+	Wed, 29 Jan 2025 03:21:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=AA2cuBi7WabAVEbPnfPRDcjkiFZ
+	yO2weZBGTATd6qNo=; b=pjBYYnsz74M9kH9nhUKKJJQdJ9oFiHkhghTv5Fpyvuj
+	Y6gsiK2mJss0fiFGoJmpma+gviUTwgvEzxA4XPbDmDArDRcDEWXltKJn7DfeymPn
+	UBMeJ5XMV30rVjl3HPLaC74NuBqFELKuTOu3uw1DZ9tgYWurItVTCY9CLSTGxM2g
+	3ltvd817STVxTnL8UDggJI6qzuMcv62QfZ7r3meRY7BcziHSJUCebgsKv68ofcpb
+	LYgF6uNH43Z7KZGeWa+vdO6xZTvbpzjLwTHUK5qXetvF8EthY8E1RYBsJAPziTbv
+	l1tkick4tAiMHn4bz/1/s13T0A5kXD0KWidtVTDRo/w==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44feh7ge8g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Jan 2025 03:21:12 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 50T8LBhK028231
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 29 Jan 2025 03:21:11 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 29 Jan 2025 03:21:11 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 29 Jan 2025 03:21:10 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 29 Jan 2025 03:21:10 -0500
+Received: from robi-Precision-5540.ad.analog.com ([10.48.65.150])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 50T8KtHG025874;
+	Wed, 29 Jan 2025 03:20:58 -0500
+From: Robert Budai <robert.budai@analog.com>
+To: <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <nuno.sa@analog.com>,
+        <ramona.gradinariu@analog.com>, <antoniu.miclaus@analog.com>,
+        <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <corbet@lwn.net>, <lanzano.alex@gmail.com>,
+        <robert.budai@analog.com>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>
+Subject: [PATCH v5 0/6] Add support for ADIS16550 and ADIS16550W 
+Date: Wed, 29 Jan 2025 10:20:40 +0200
+Message-ID: <20250129082053.19077-1-robert.budai@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: EIjPALIGHBoeSMIQiaDhgW29mmf9fTfv
+X-Proofpoint-ORIG-GUID: EIjPALIGHBoeSMIQiaDhgW29mmf9fTfv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ mlxlogscore=999 malwarescore=0 clxscore=1015 phishscore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501290067
 
-Em Tue, 28 Jan 2025 15:42:00 -0700
-Jonathan Corbet <corbet@lwn.net> escreveu:
+Add support for ADIS16550 and ADIS16550W 
 
-> Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
-> 
-> > Hi Jon/Greg,
-> >
-> > That's the second version of my RFC patches meant to modenize the ABI
-> > parser that I wrote in Perl.  
-> 
-> I have a couple of minor comments on the individual patches, but overall
-> I do like this direction.
-> 
-> It would be nice, though, if the code were a bit more extensively
-> commented.  Parts of it get into the "twistly maze of regexes" mode that
-> can be awfully hard to follow.
+Robert Budai (6):
+  iio: imu: adis: Add custom ops struct
+  iio: imu: adis: Add reset to custom ops
+  iio: imu: adis: Add DIAG_STAT register size
+  dt-bindings: iio: Add adis16550 bindings
+  iio: imu: adis16550: add adis16550 support
+  docs: iio: add documentation for adis16550 driver
 
-The regex code is indeed complex, but documenting it is not an easy task.
-Btw, they are (about) the same that the Perl script does. imported also
-the documentation for there. I did some extra cleanups/optimizations there,
-though, after checking the results of some expressions.
+ .../bindings/iio/imu/adi,adis16550.yaml       |   80 ++
+ Documentation/iio/adis16550.rst               |  378 ++++++
+ Documentation/iio/index.rst                   |    1 +
+ MAINTAINERS                                   |    9 +
+ drivers/iio/imu/Kconfig                       |   13 +
+ drivers/iio/imu/Makefile                      |    1 +
+ drivers/iio/imu/adis.c                        |   31 +-
+ drivers/iio/imu/adis16550.c                   | 1182 +++++++++++++++++
+ include/linux/iio/imu/adis.h                  |   34 +-
+ 9 files changed, 1716 insertions(+), 13 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+ create mode 100644 Documentation/iio/adis16550.rst
+ create mode 100644 drivers/iio/imu/adis16550.c
 
-The big issue is that we don't have an uniform way of defining What: 
-expressions. So, each subsystem (and/or author) document it in different
-ways.
+-- 
+2.43.0
 
-There are even some ABI symbols with:
-
-	$(readlink)/sys/...
-
-(I intend to send a patch for those later on)
-
-and:
-
-	What: /sys/something/...
-
-	What: .../something_else
-
-(I guess ".../" means "/sys/something/...", but I can't be sure, as this
-is on one driver for a hardware I don't have - so, if I send a patch,
-I may end breaking it)
-
-If you want to understand how the whole set of regexes work, you can
-run:
-
-	$ ./scripts/get_abi.py -d 16 undefined --dry-run >/dev/null
-...
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/goals/\w+/current_value <== /sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/current_value
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/goals/\w+/target_metric <== /sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/target_metric
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/goals/\w+/target_value <== /sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/target_value
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/goals/nr_goals     <== /sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/nr_goals
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/ms                 <== /sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/ms
-	[DEBUG] /sys/kernel/mm/damon/admin/kdamonds/\w+/contexts/\w+/schemes/\w+/quotas/reset_interval_ms  <== /sys/kernel/mm/
-...
-
-This will place at stderr all regular expressions that are currently
-parsed (they're currently used only for /sys symbols).
-
-Yet, instead of spending too much time documenting them, IMO we shold
-do the do the reverse: use the AbiRegex class to convert "What:" into
-a new tag (like "Regex:") and use it as much as possible (we'll still
-need "What:" for some things that aren't devnodes), as, with regular
-expressions, symbols can be clearly documented. As on python match groups
-can be named with:
-
-	(?P<name>...)
-
-this could be used to better describe some arguments, e.g. (picking an
-easy case):
-
-	What: /sys/module/<MODULENAME>/srcversion
-
-could be described, instead, as:
-
-	Regex: /sys/module/(?P<MODULENAME>[\w\-]+)/srcversion
-
-The Kernel_abi extension (actually AbiParser class) can either display it
-as-is (my personal preference), or even replace:
-	(?P<MODULENAME>[\w\-]+)
-with:
-	MODULENAME
-
-and still output this at html/pdf output as before, e. g.:
-
-	What: /sys/module/<MODULENAME>/srcversion
-
-Yet, doing it on a consistent way.
-
-This is easier said than done, as if we do some automatic conversion,
-subsystem reviewers/maintainers will need to double-check if the
-converted expressions make sense.
-
-
-> > On this series we have:
-> >
-> > patches 1 to 11: several bug fixes addressing issues at ABI symbols;  
-> 
-> 1-3 aren't needed - it seems you already upstreamed #2?
-> 
-> For the rest, is there any reason to not apply them right away?  They
-> just seem like worthwhile fixes.
-> 
-> > patch 12: a fix for scripts/documentation-file-ref-check
-> > patches 13-15: create new script with rest and search logic and 
-> >   minimally integrate with kernel_abi Sphinx extension(phase 1);
-> > patches 16-19: implement phase 2: class integration (phase 2);
-> > patch 20: fix a bug at kernel_abi: the way it splits lines is buggy;
-> > patches  21-24: rewrite kernel_abi logic to make it simpler and more
-> >   robust;
-> > patches 25-27: add cross-reference support at automarkup;
-> > patches 28-36: several ABI cleanups to cope with the improvements;
-> > patch 37: implement undefined command;
-> > patch 38: get rid of the old Perl script.
-> >
-> > To make it easier to review/apply, I may end breaking the next version
-> > on a couple of different patchsets. Still it would be nice to have more
-> > people testing it and providing some feedback.  
-> 
-> I've looked over everything, though with limited depth. 
-
-> My testing hasn't turned up any problems.  
-
-Great!
-
-> I've only tested with current Sphinx,
-> have you tried this with the more ancient versions we support?
-
-Not yet, but I double-checked at Sphinx documentation to be sure that
-I won't be using any newer methods: I just kept using the same Sphinx
-API as used by other extensions at the Kernel.
-
-For instance this loop:
-
-    def do_parse(self, content, node):
-        with switch_source_input(self.state, content):
-            self.state.nested_parse(content, 0, node, match_titles=1)
-
-was changed on Sphinx 7.4[1], and even nested_parse(match_titles=1) is
-not the recommended code for versions < 7.4, as there is this 
-replacement function:
-
-	nested_parse_with_titles()
-
-Yet, as they're working fine at least up to version 8.1.3, we can
-keep using the old way.
-
-In any case, I'll do a test before sending the final version to see if
-it works fine with our minimal version.
-
-[1] See: https://www.sphinx-doc.org/en/master/extdev/markupapi.html
-
-- 
-
-On a separate discussion, I noticed one potential compatibility issue
-we may have with future Python versions, due to some ascii texts
-formatted as unicode. I'll send later a patch fixing them.
-
-Additionally, automarkup has backward-compatible code with Python 2.7.
- Can I send patches dropping 2.7 support from Sphinx extensions?
-
-> [It's probably time to raise our minimum version again, especially now
-> that current Sphinx has better performance.]
-
-Agreed. 
-
-IMO, we should also increase Python's minimal version.
-
-> I don't see a whole lot of reasons not to apply this set shortly after
-> the merge window; anybody disagree?
-
-Thanks,
-Mauro
 

@@ -1,119 +1,190 @@
-Return-Path: <linux-iio+bounces-14723-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14724-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770D5A22996
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 09:30:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92391A22C2D
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 12:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 843A63A6E0F
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 08:30:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928253A4DA0
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 11:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BA21A23B0;
-	Thu, 30 Jan 2025 08:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B051C5F2E;
+	Thu, 30 Jan 2025 11:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZCoJs7AQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DK55D2wn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7969E148832;
-	Thu, 30 Jan 2025 08:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325781C07DD
+	for <linux-iio@vger.kernel.org>; Thu, 30 Jan 2025 11:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738225850; cv=none; b=eim1Wdf4rkcwAbFYq6CoZhDF40csSVYgBIufu4GkyAlDOQ1pw0Cb5oUJmOoTNwZGJTC3mCmb6zHReBN/2g0X5yRkDFWqydA2HmlqBrh0/ZCbJeR+K0qID9TYRSQW4Octdmgum4p4Rokm8ryA9ybpq5E/py2FETHJDSvzb0wE8mI=
+	t=1738235332; cv=none; b=rDqEBYU2eR43roi6+fV7x8mhH4qoTKxrc9h4RygpPOAK7bI9fvPnybV94shxqXUXAOs0hfa97jO/IYhw91RvLuU2XufHstZvHs0IJ4OYrwGvYJG9tBlxgaiWfy0EDdK45RXFpZQsKvi501wzzEvCQdI68p70VnDnn77gk3VnvjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738225850; c=relaxed/simple;
-	bh=iBoVNDPKj/Gbf0c/W+t3asbzNss/FHHKnMcQ8SQIC7o=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T5kfWiSDvBg8tlOmW6CR5Xy02AtRS7GvpYovLUXdWfoqcMsZhrhYRSb6JkKMuclk9eAflIh4B5iqFY4D7CZXlgjJz8S5oXfstlzGMRFjfIKDznVpzSqM1jRdg4DjDXojLzBDhl2eN53K0lNpGao2iW6kgj3zQn9aSBRFriDUHY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZCoJs7AQ; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4361e89b6daso2998645e9.3;
-        Thu, 30 Jan 2025 00:30:48 -0800 (PST)
+	s=arc-20240116; t=1738235332; c=relaxed/simple;
+	bh=wkVNEJjOFcSvs5Kqm9fm8snOG5ZGNjTotpQ4cHaX6bo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NycRs74R6uD7kMoBiaFpdqRBJ1tZ8h7EfcrLdDj/TrSnO10TLjAyRiaDnPg3ONzgXEl1lej4SJisNSdmNqIY9+FyKzieFC/xK/uI925ixTASY7p1V5btQ1snrpp9yqzvoSYBsJEZs9uomKs/s73OkRc8KsBDxZxa7bdql/p/2b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DK55D2wn; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-385df53e559so499342f8f.3
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jan 2025 03:08:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738225847; x=1738830647; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iBoVNDPKj/Gbf0c/W+t3asbzNss/FHHKnMcQ8SQIC7o=;
-        b=ZCoJs7AQZk/ef6DYAeKI4N6JAXlJxZlnn/9eysW7MNv5tRJlri2tg5in0btEAmslX9
-         o1YxpwYJV/vdpUqBdRUCABoAkFqfN3YrjKbaaMebVeXHLTayYtVPlfgMnBCVn5gfU5dL
-         sqz9bcX6SBEjU6ZynIVmYkEAYBcWrgsRPRNJ+7LSIOR/dp1zsfIRZVQaZFOmCEmXQP2p
-         s94NHbupX0+4yR9/nHFVx+zec6uvFqJj1x2aV37GLCwpV3ww3lV+s6dN+WSrLfiu1sud
-         29yhycpYZRQF6r99q7Lgx7KvwUP2IVWXCcQzZbOBM9lRE22R/DgpGzQlgXtspvl8ZKWE
-         f0Bg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738235328; x=1738840128; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oNy5MECpC+OYXUNYisY0RC+pyKB5foHep9jH8rSUuVE=;
+        b=DK55D2wno2q2ojfs27oZhQ6kcJ8FosGe5QhKo2nmQ7ykFZ6hcj439kxlmlHXhOSlvy
+         L4JedTfllRcKRMbj2dx4SVtmHD5GB155eiFUTsDzpEkU1GnXfrWsp6pafoX0Iei9n+f7
+         L1uK3TMYq19iE0gYO+ps1FG5559/mki9XOiZ6vQ9i/5sqXkQZ6P+ibEnXAwvErDbE4qI
+         r3sj4NT+H17fKEBvJFouiAZjjjVzvr/jsUceDb7xuAfnJZCXSnfXoMhqdxBAGZjdfz+n
+         ubX9g8MrnzmoLzrUu3j+rsvZrkPMtvubWVhJjEz52xLT6xBkDuvOmeuKdT9XgSuz9SU+
+         0sZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738225847; x=1738830647;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iBoVNDPKj/Gbf0c/W+t3asbzNss/FHHKnMcQ8SQIC7o=;
-        b=F+5raxYWyyHbxsyQJVAm5LaE6oxIkfihiPk6eDAonEk9ZLZr4m5WHa2oCATkqam+Q3
-         JpcLJsvxaguxnrxvCovgYaZ3WzWScQgHeD/blFv8kKoqW1rNfwqAVQ+wUQ8Wd80eqW7D
-         /EbMmP/bHiiOhfUCFVy07CnguIGYrqA85++RqqNDjNSXoSwkU38t3Uo11pcAbaFx7yKG
-         hPZWXTZIScf3iy8gSJHaw8FZVUT2rAhAmhii5NnOLA3xOJiCOk4uQOVNwInlZSeJRxWp
-         Xc8IpRqgVYqobWN5bS/Wea6SHBRK0giXMrBE/JeQn8CadP7uJ0Dx1HCNhbh9NwBiwQZ0
-         YmSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYXIlRtSV7EE4OzwzvB2OmUL6J2s0UlFvTq+zVzS4irVXfRRFYvgMqWe4+4zeDK+/s++UkCgdyqDL7z919@vger.kernel.org, AJvYcCWnQGaQuMpcTCqEDKKIgl9xrcyLMzmen65U+IyqG2X7Woyz/VOcFNX1tIyEkJV2iUjvox9070WP70o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmIJ08ISAQKVJlYDwnsmqam0uuMGRzhJRRRNylFpZJIdOZyX3A
-	RpUPuo+bWgFdrwxWuQBz5uFub5LvFrVA5rEJAeduX91lFVju24HL
-X-Gm-Gg: ASbGncscJkglpVnCBmagnTjHttMz6SL8yMgHrjVTF6sMdKMfmxwJHnV7mBshvRdUX+T
-	12gJvvRY+XoeEcq1IRSOSO0kI0yhg4oXqzQXWF7UERN8wrvH0n8BdCHV+5TX4J9VZCTpd2vuVVp
-	dzx7cBLIaPAHQb1fugYFnyynjVUVCXK0lfevCpRqTPxnuZ2yv25FIygUjS7e3XBdkU67ew0SrRn
-	YiOUYoFpWeh6WDm7wod6Z7QOqH/RUlq0n8vJmmlFw6Jrko2xNxZh6FVTDurqfDo7ALiyBadQ6IG
-	OFBhhTjFHUBDsXXUvfuN3cbOgQxK1mInFRwsTZWfzegBd14KNQ6OLUHF+oBEt0k=
-X-Google-Smtp-Source: AGHT+IG5LQnrAkV7laFoY5uti4KcngXW3+Wd1vnOWp2ue0jCML1uupplCcuvj7bn12N3LoFdpRnPZA==
-X-Received: by 2002:a05:600c:4f55:b0:436:51bb:7a43 with SMTP id 5b1f17b1804b1-438dc3ab675mr59301785e9.5.1738225846463;
-        Thu, 30 Jan 2025 00:30:46 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc26d05sm50249665e9.12.2025.01.30.00.30.45
+        d=1e100.net; s=20230601; t=1738235328; x=1738840128;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oNy5MECpC+OYXUNYisY0RC+pyKB5foHep9jH8rSUuVE=;
+        b=F2vWkHThICI2VmKZ/mQrnF7C2VbiJkHy1AZg9SMDFNjcjuV6ODZf5OmmmKU+mhh0DQ
+         w/5AKBblUpwjZvOD+zv0NAE7Iu7Dwhcw2/3MJAEIgZEBroFphn/Ci9FkvNU/mJ7TOarJ
+         OWLicZBwc932LPszkY8aPi44NLYB/eNM6Aww4Y/jWYC5mmDZtnhFTHy70JCjm+MbvbI1
+         QxI2dypJoIaF8GatJU/LtzNBeZhVovsPvbURsSEGhOnlyQidSVqJzSNST4q9njTHdMey
+         +ayX0HiidoAgnvowh1cq++tu5ONjC1ywiAIGGmZfddxJWWEvTx1VqUVWGt62/VaSuhuh
+         VT4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU0vhAB90p2kIfWMKvX0/ay3ToSLjhz5PkQZTkcvoIUuy1eoYBGahKVeDzxhB1bnyS+JAcoZvXZJRc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+1VwK1aJRuGaZI1H46kzFNskKzWJrKsbWSD5ei6jZVOoSXeKo
+	bIWWb+0+/x+Ki7Uu3fAo3e1YgR16yHqcP2vcNi9ZkFLzWJnvUs9zi/JMQvbyQYs=
+X-Gm-Gg: ASbGncviuByWe7Tzqus6RHqPOmQ4zGzrKeaelroPCyLlhPAe/eDtLcezPP2J1/1jp8U
+	IGPeOMTCEv6bnxQ0asly/c4VetBX3UyM0VEkcZhmFdSZvwDHrIwqlH9WBkD7pwLf1x/XOMZl9p5
+	AIX8JcybbDeNImQc1K3mjDUpwhMtNSFI4ZDXznzjuwNheRcZaKcF0j1ktq6bJYiKH49mvtaW7fu
+	ABCaIVnObFsE662t8zMfxNEqutrOLG8pkrs7g4k8T+1iD8polKRkyR+sElvjpb7GBMGDcjR+vhG
+	RxMwfkUdFAB7GXrU
+X-Google-Smtp-Source: AGHT+IGgXzKQ+H9jNjy/BS0FApXTmawFQuNy153U0DUEwK7KZmSKfpK2zFK1M97GfUm0QBrunlvpmA==
+X-Received: by 2002:a5d:6d09:0:b0:385:fae7:fe50 with SMTP id ffacd0b85a97d-38c5209128bmr5165809f8f.42.1738235328456;
+        Thu, 30 Jan 2025 03:08:48 -0800 (PST)
+Received: from [127.0.0.1] ([2a01:e0a:448:76e0:2c72:cd2d:79b2:82ff])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c102bb2sm1689225f8f.34.2025.01.30.03.08.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2025 00:30:46 -0800 (PST)
-Message-ID: <a63a6a52102fc918ef60ed5ced0505729387a4fc.camel@gmail.com>
-Subject: Re: [PATCH v1 0/3] iio: drop useless assignment of cache_type
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron	
- <Jonathan.Cameron@huawei.com>, Icenowy Zheng <icenowy@aosc.io>, "Peter
- Zijlstra (Intel)" <peterz@infradead.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
-	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
- =?UTF-8?Q?Ond=C5=99ej?= Jirman
-	 <megi@xff.cz>
-Date: Thu, 30 Jan 2025 08:30:47 +0000
-In-Reply-To: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
-References: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+        Thu, 30 Jan 2025 03:08:48 -0800 (PST)
+From: Esteban Blanc <eblanc@baylibre.com>
+Subject: [PATCH v3 0/6] iio: adc: ad4030: new driver for AD4030 and similar
+ ADCs
+Date: Thu, 30 Jan 2025 12:08:24 +0100
+Message-Id: <20250130-eblanc-ad4630_v1-v3-0-052e8c2d897d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKhdm2cC/32P3QrCMAxGX0V6bSVNu9Z55XuISH9SLegmnQyH7
+ N3tRARFhdx8gXO+5MY6yok6tprdWKY+daltSpDzGfMH2+yJp1AyQ0AFGhUnd7SN5zYoLWHXCy4
+ sGAW1IVcLVrBzppiuD+VmW/IhdZc2D4+GXkzbP7IywHWw2igvpFO0dnY4Jpdp4dvTpH+y5gcbg
+ wctwKN08J1dIv5gK6+XUUo0MYR3dvqjx9ftAkX9xYFTv9RUVTUYF6sPxziOd7dlv0FvAQAA
+X-Change-ID: 20240624-eblanc-ad4630_v1-1a074097eb91
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, 
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Esteban Blanc <eblanc@baylibre.com>, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14.2
 
-On Wed, 2025-01-29 at 17:24 +0200, Andy Shevchenko wrote:
-> Default value is REGCACHE_NONE, no need to assign it explicitly.
-> Fix all IIO drivers that do that.
->=20
-> Andy Shevchenko (3):
-> =C2=A0 iio: light: adux1020: Drop unneeded assignment for cache_type
-> =C2=A0 iio: magnetometer: af8133j: Drop unneeded assignment for cache_typ=
-e
-> =C2=A0 iio: pressure: zpa2326: Drop unneeded assignment for cache_type
->=20
-> =C2=A0drivers/iio/light/adux1020.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
-1 -
-> =C2=A0drivers/iio/magnetometer/af8133j.c | 1 -
-> =C2=A0drivers/iio/pressure/zpa2326_i2c.c | 1 -
-> =C2=A0drivers/iio/pressure/zpa2326_spi.c | 1 -
-> =C2=A04 files changed, 4 deletions(-)
->=20
+This is adding DT bindings and a new driver for AD4030, AD4630 and
+AD4632 ADCs.
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+This work is being done in collaboration with Analog Devices Inc.,
+hence they are listed as maintainers rather than me.
+
+The code has been tested on a Zedboard with an EVAL-AD4030-24FMCZ,
+an EVAL-AD4630-24FMCZ and an EVAL-AD4630-16FMCZ. As there is no eval
+board for AD4632 the support can't be tested at the moment. The main
+difference is the reduced throughput.
+
+Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
+---
+Changes since RFC:
+- Reorder IIO channels to have the common byte channel next to its differential
+  channel.
+- Extended names for IIO channels.
+- Diffrential data channels are marked as differential channels on IIO
+  side.
+- Use get/put_unaligned_be24 for offset and sign extend it.
+- Common byte channel now has 32 realbits. This will be the same as what the
+  FPGA will return, avoiding different channel layouts.
+- Fix missing newline in some error messages.
+- Add comment for the use of spi_sync_transfer instead of
+  spi_write_then_read in ad4030_spi_read.
+- Use DMA safe buffers for regmap operations.
+- Clarify calculation for number of bytes to read from the device during
+  conversion.
+- Formating fixes.
+- Add documentation page.
+- Link to RFC: https://lore.kernel.org/r/20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com
+
+Changes since V1:
+
+The most important change is the use of the RFC's IIO channel layout as it's
+the most space efficient compared to the V1. In the event of a future DMA
+enabled version using the ADI's SPI Engine, the IIO channel layout would be
+different anyway. The V1 layout had a more logical ordering of the IIO
+channels but since we are using labels in this version, there is no reason
+to keep it.
+
+- Use REGMAP instead of REGMAP_SPI in Kconfig
+- Select IIO_TRIGGERED_BUFFER in Kconfig
+- Use layout with the differential channels first then the common byte channels.
+- Flatten rx_data union/struct layout
+- Use get/put_unaligned_beXX
+- Scale read is done without requiring direct mode
+- Grade check is just a warning now
+- Use label instead of extend names
+- Use IIO_VAL_INT_PLUS_NANO for gain values
+- Discard out of bounds values when setting oversampling ratio
+- Merge AD4030_OUT_DATA_MD_(16|24)_DIFF together
+- Use iio_chan_spec channel field to avoid maths in several places
+- Fix typos and formating
+- Link to v1: https://lore.kernel.org/r/20240822-eblanc-ad4630_v1-v1-0-5c68f3327fdd@baylibre.com
+
+---
+Changes in v3:
+- Put config mode logic into regmap read/write handlers
+- Link to v2: https://lore.kernel.org/r/20241219-eblanc-ad4630_v1-v2-0-f36e55907bf5@baylibre.com
+
+---
+Esteban Blanc (6):
+      dt-bindings: iio: adc: add ADI ad4030, ad4630 and ad4632
+      iio: adc: ad4030: add driver for ad4030-24
+      iio: adc: ad4030: add averaging support
+      iio: adc: ad4030: add support for ad4630-24 and ad4630-16
+      iio: adc: ad4030: add support for ad4632-16 and ad4632-24
+      docs: iio: ad4030: add documentation
+
+ .../devicetree/bindings/iio/adc/adi,ad4030.yaml    |  111 ++
+ Documentation/iio/ad4030.rst                       |  181 +++
+ Documentation/iio/index.rst                        |    1 +
+ MAINTAINERS                                        |   11 +
+ drivers/iio/adc/Kconfig                            |   14 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/ad4030.c                           | 1241 ++++++++++++++++++++
+ 7 files changed, 1560 insertions(+)
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20240624-eblanc-ad4630_v1-1a074097eb91
+
+Best regards,
+-- 
+Esteban Blanc <eblanc@baylibre.com>
 
 

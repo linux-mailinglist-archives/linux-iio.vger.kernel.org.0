@@ -1,184 +1,162 @@
-Return-Path: <linux-iio+bounces-14731-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14732-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79630A22E51
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 14:59:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1871A23082
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 15:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16852188AC38
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 13:59:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BCA167AAF
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 14:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DBB1B87FD;
-	Thu, 30 Jan 2025 13:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1A01E8840;
+	Thu, 30 Jan 2025 14:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="nIEAFtAj"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="U0wkuDXZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A33C1E5708;
-	Thu, 30 Jan 2025 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B1D1BB6BC;
+	Thu, 30 Jan 2025 14:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738245574; cv=none; b=NR7Txe+sSrtXisTJGPdllWDfgDzR0a0vzhckiBh35epGDLLciEY+DgUikedQRI9WlSwlMSTpvyXyE+EhF5mdBse07brwrfdOvoGditXYBUrFPdFsX0RbqwYLIjK65O9ysnVPgH78X+v+qB15y2FcGPVMXc/ANYUOI+SHTqKRQQU=
+	t=1738247910; cv=none; b=ISZHORS1Ko5CL4hCJSaQQNvW/eWirMnWRtLoz1DjKMJG56mrMoGudh9FPJHi33vWFyd4D2Er4c8sgm8LgsXJQNaNTTOTkMRx/vwXgaan2r3CFI4NlU88G13vBFn14OORiePzIM2Vl3eN/0EnmSfs4SzYrNih4KQhEJ0iAbO1kZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738245574; c=relaxed/simple;
-	bh=tZdAwVRnQ4igyPwEBO4YSIA7EcR59sAQ2Am4iy9ll3I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=px4bUxHAXTUcPiXBRZqdCNwZn2zVHWi/lVFVFF1VuP9WQE+vNMVIZLj6aUNSWBxvpbPr8Yj8yHjGY3j3327krPiE2doEa17pOGLfVDHa2App6e7M2mbazgZ+jbVDrRenYa8vpJVyd2obAJteO7dgD2yreo0swJO0+XOUEGRyVZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=nIEAFtAj; arc=none smtp.client-ip=193.68.50.107
+	s=arc-20240116; t=1738247910; c=relaxed/simple;
+	bh=JV7b0o3v1+xzAtErM1HhLNkNgRvCoFydIlxgoByPDWY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JDbc+evO8/IYvfRgTFhtIzzlfkEIek9Jr+2fwD2Zlj3n7y4P6wY/GvNFUPzQKxkOgnvX2oFDYslQdMjuvxAKhviYP6/L9A8sdNNvu3wfT/oDdS5098md1E/j9m3ytB50iREoPoWWjgiz8Jwou0HDIorLIwtqphb/GI2ck0leUvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=U0wkuDXZ; arc=none smtp.client-ip=193.68.50.107
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
 Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 985E7A0472;
-	Thu, 30 Jan 2025 14:59:21 +0100 (CET)
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 66B9DA0A58;
+	Thu, 30 Jan 2025 15:38:25 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
 	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=M8qq1IPzgBd/vMLJUXF0
-	AzXwyZ9z/lMINXwf8wvq/cU=; b=nIEAFtAj+A4yA5OmrTiy4fPGRifiC41xrudj
-	1cssfFbbIGlpnBoGWIWHI+0Iu5hEFHl0al20J20PjvANxpho8DPv+XGQdJldHu4G
-	SpUvn6jbUz8aIme7kdQrBKDg9ml2BEFr7QoEZg1NXstmiTA6Paq9aFx56bgE7WXN
-	TjJgwGfUpJJEZaTBmP6J7dvcCmIkZ6GYcPHk64T7b3eKHptuRyWaAemDG9YFIlFi
-	3dGGSevBFSx1HVrnDKH4v/5T6jsy4MIDldWpok54fHfNw5Dp0BV/+2/otBZkxsju
-	BRP7lOpLazzHzzwZAMsdI1vg9TJLQ8BavQQgj0OUUrmHOGO+0cy++5CFjptpc1Pb
-	vKDPA8J+f6EbC4aC5nJuD1NuHGPfvx9y8llgaZE/U2VLhT270mbfWGbEO0NFhGhJ
-	VKX9ktDNEHA6a8Da7U1HkQGLhXRSj3BiBpITvdqC4/TtMg1kFxsssfNAmmnoj8nN
-	z9n+mrrzrjWRa+4fU0gHyofBowiyAnOIAOeOWfsHdSXeBgFpr4/3jjObkTEGbyt5
-	ywg4iEWqRca8PMWlXAvXj+lQhh7xtvwd2M0fH1gSR66IePitBXKBPletkT1Ni45a
-	rOIWCA0D42tXF9n7gvEhLEx+1yIWdD01gy7BIiR3tyODKpBHFearVt2s+ItZPbYb
-	cd+DDVA=
-Message-ID: <dffc0f18-799a-4fc7-a6b5-2fa270e1fc58@prolan.hu>
-Date: Thu, 30 Jan 2025 14:59:20 +0100
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=4shPxN5Zjg8CWO7oqCIY3l3k+e0q+fmoz+kF6bIkmVM=; b=
+	U0wkuDXZ+YCja8dGH6AgFVUuhRRiTGpVsVSgrioEsLNMSaRslidLO77DUIz95Fvg
+	LJqArNXFUbe+iqINh8q6JwEVMFrbOKWxKw44i2iTbQs9JUeeYOsrqCco1iG+EOpm
+	0CuZ8fY1Pecu6VbX9mz5AOWSavH3W+T6aISUqYv78/JLihcKJ/bTGdz05ICqv6Fb
+	HCp1EtU3wq3IUQftnD+Nc2A/2Md0pa/FWr5Q/+cSIgPlFs/3bhasMhH6bPK8O88Z
+	Q52FtabKvw4/JcHIQrM9D+vDBRBzHePWb3p4nP3U5JKOh/mV+HFVRZPcGCJwRpMt
+	MfwkhHmjgNyDz3PPj9UX1rr7n49koEDj1oIJ2Gf3d0vdC9gKWG/Ke+gKFCqyW8a6
+	rKxqZfc5udt8/BGNEYdAMDOxyGD3toCnHmDq3HOsAn3kYuEg+EdqFbiAvor0WSPl
+	XhpoaUb34qBhfc6Lgvg8Xc/B+Ayz6y9G2xZwxx7IKJph43piKHeJVIU7W4tsyHD+
+	5GE4BgXNDusoNpGH410FCvwDk+BSqd6q2yXmpOrSTSLdDD97KtRKNBa2HH6fK8NY
+	a325R2RuPYzDpYeuGeBbzOFVnZS3FLLq5vZTDx3HwFDvfF2QQaBReBfkSfSpP63L
+	8jdxXRNOIIcMxyc97HbxaUnhlTCZ/45i8IaN7ES2yxM=
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Kamel
+ Bouhara" <kamel.bouhara@bootlin.com>, William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH] counter: microchip-tcb-capture: Add capture extensions for registers RA-RC
+Date: Thu, 30 Jan 2025 15:38:16 +0100
+Message-ID: <20250130143817.41625-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Q] Frequency & duty cycle measurement?
-To: William Breathitt Gray <wbg@kernel.org>
-CC: <linux-iio@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<timestamp@lists.linux.dev>, Jonathan Cameron <jic23@kernel.org>, "Lars-Peter
- Clausen" <lars@metafoo.de>, Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Thomas Gleixner" <tglx@linutronix.de>, Dipen Patel <dipenp@nvidia.com>,
-	<dlechner@baylibre.com>
-References: <f2ec8a55-42ad-498a-b793-072444dcb92e@prolan.hu>
- <Z5efcokgHix-k3lW@ishi>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <Z5efcokgHix-k3lW@ishi>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738247904;VERSION=7984;MC=3846925481;ID=123382;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
 X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852667467
+X-EsetId: 37303A2980D94852667464
 
-Hi William,
+TCB hardware is capable of capturing the timer value to registers RA and
+RB. On top, it is capable of triggering on compare against a third
+register, RC. Add these registers as extensions.
 
-On 2025. 01. 27. 16:00, William Breathitt Gray wrote:
-> In the userspace application, you would setup a Counter "watch" to
-> collect each desired timer value on the respective Counter events; I
-> assume RA and RB are Count 0 and Count 1 respectively, but if they
-> represent something else please let me know:
-> 
->      static struct counter_watch watches[2] = {
->              {
->                      /* Component data: Count 0 count */
->                      .component.type = COUNTER_COMPONENT_COUNT,
->                      .component.scope = COUNTER_SCOPE_COUNT,
->                      .component.parent = 0,
->                      /* Event type: Capture */
->                      .event = COUNTER_EVENT_CAPTURE,
->                      /* Device event channel 0 */
->                      .channel = 0,
->              },
->              {
->                      /* Component data: Count 1 count */
->                      .component.type = COUNTER_COMPONENT_COUNT,
->                      .component.scope = COUNTER_SCOPE_COUNT,
->                      .component.parent = 1,
->                      /* Event type: Capture */
->                      .event = COUNTER_EVENT_CAPTURE,
->                      /* Device event channel 0 */
->                      .channel = 0,
->              },
->      };
->      ...
->      int main(void)
->      {
->              int fd;
->              int i;
-> 	    unsigned long long delta_ts, delta_ra, delta_rb;
-> 	    double ra_frequency, rb_frequency, rb_ra;
->              struct counter_event first_capture[2], second_capture[2];
->              
->              /* Open Counter chrdev */
->              fd = open("/dev/counter0", O_RDWR);
->              
->              for (i = 0; i < 2; i++) {
-> 	            /* Register all Counter watches */
->                      ioctl(fd, COUNTER_ADD_WATCH_IOCTL, watches + i);
->              }
-> 	    /* Start collecting Counter events */
->              ioctl(fd, COUNTER_ENABLE_EVENTS_IOCTL);
->              
->              for (;;) {
-> 	        /* Read first Counter event capture */
->              	read(fd, first_capture, sizeof(first_capture));
-> 	        /* Read second Counter event capture */
->              	read(fd, second_capture, sizeof(second_capture));
->                  
-> 		/* Within each capture, timestamp is the same so only
-> 		 * first element of each capture needs to be compared */
-> 		delta_ts = second_capture[0].timestamp - first_capture[0].timestamp;
-> 		/* Compute deltas of timer register pair RA and RB.
-> 		delta_ra = second_capture[0].value - first_capture[0].value;
-> 		delta_rb = second_capture[1].value - first_capture[1].value;
->                  
-> 		ra_frequency = (double)delta_ra / delta_ts;
-> 		rb_frequency = (double)delta_rb / delta_ts;
-> 		rb_ra = (double)delta_rb / delta_ra;
->                  
->              	printf("RA frequency: %ld\n"
-> 		       "RB frequency: %ld\n"
-> 		       "RB per RA: %ld\n"
->              	       ra_frequency, rb_frequency, rb_ra);
->              }
->              
->              return 0;
->      }
-> 
-> If RA and RB are provided as a memory buffer on your device, you can
-> instead expose them via DEFINE_COUNTER_ARRAY_CAPTURE() such as the
-> ti-ecap-capture driver does, then perform your userspace computations
-> by utilizing those respective "capture" array attribute values (via
-> chrdev like the example above or alternatively via sysfs).
+Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+---
+ drivers/counter/microchip-tcb-capture.c | 58 +++++++++++++++++++++++++
+ 1 file changed, 58 insertions(+)
 
-Thanks for your extensive explanation! With 
-DEFINE_COUNTER_ARRAY_CAPTURE() I was able to expose RA and RB as 
-`/sys/bus/counter/devices/counter0/count0/capture{0,1}`, and could 
-verify that by replacing `devmem` calls with read()-reopen(), our PoC 
-code still works. Now I want to use the chardev interface, but I 
-couldn't find how to set up the watches appropriately. So far I have:
+diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
+index 2f096a5b973d..524b9edfaa5f 100644
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -247,6 +247,62 @@ static int mchp_tc_count_read(struct counter_device *counter,
+ 	return 0;
+ }
+ 
++static int mchp_tc_count_cap_read(struct counter_device *counter,
++				  struct counter_count *count, size_t idx, u64 *val)
++{
++	struct mchp_tc_data *const priv = counter_priv(counter);
++	u32 cnt;
++
++	switch (idx) {
++	case 0:
++		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), &cnt);
++		break;
++	case 1:
++		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), &cnt);
++		break;
++	case 2:
++		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), &cnt);
++		break;
++	default:
++		return -EINVAL;
++	}
++	*val = cnt;
++
++	return 0;
++}
++
++static int mchp_tc_count_cap_write(struct counter_device *counter,
++				   struct counter_count *count, size_t idx, u64 val)
++{
++	struct mchp_tc_data *const priv = counter_priv(counter);
++
++	if (val > U32_MAX)
++		return -ERANGE;
++
++	switch (idx) {
++	case 0:
++		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), val);
++		break;
++	case 1:
++		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), val);
++		break;
++	case 2:
++		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), val);
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static DEFINE_COUNTER_ARRAY_CAPTURE(mchp_tc_cnt_cap_array, 3);
++
++static struct counter_comp mchp_tc_count_ext[] = {
++	COUNTER_COMP_ARRAY_CAPTURE(mchp_tc_count_cap_read, mchp_tc_count_cap_write,
++				   mchp_tc_cnt_cap_array),
++};
++
+ static struct counter_count mchp_tc_counts[] = {
+ 	{
+ 		.id = 0,
+@@ -255,6 +311,8 @@ static struct counter_count mchp_tc_counts[] = {
+ 		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
+ 		.synapses = mchp_tc_count_synapses,
+ 		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
++		.ext = mchp_tc_count_ext,
++		.num_ext = ARRAY_SIZE(mchp_tc_count_ext),
+ 	},
+ };
+ 
+-- 
+2.48.1
 
-	{
-		.component.type = COUNTER_COMPONENT_EXTENSION,
-		// also tried COUNTER_COMPONENT_COUNT
-		.component.scope = COUNTER_SCOPE_COUNT,
-		.component.parent = 0,
-		.component.id = X, // also tried this instead:
-		// .channel = X,
-		.event = COUNTER_EVENT_CAPTURE,
-	},
-
-However, with this, the first read() never comes back.
-
-Bence
 
 

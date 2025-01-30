@@ -1,162 +1,131 @@
-Return-Path: <linux-iio+bounces-14732-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14733-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1871A23082
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 15:38:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BF1A23114
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 16:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BCA167AAF
-	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 14:38:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454A61889685
+	for <lists+linux-iio@lfdr.de>; Thu, 30 Jan 2025 15:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1A01E8840;
-	Thu, 30 Jan 2025 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896D61E9B22;
+	Thu, 30 Jan 2025 15:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="U0wkuDXZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="r/A95pRI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B1D1BB6BC;
-	Thu, 30 Jan 2025 14:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12C41E0B74
+	for <linux-iio@vger.kernel.org>; Thu, 30 Jan 2025 15:40:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738247910; cv=none; b=ISZHORS1Ko5CL4hCJSaQQNvW/eWirMnWRtLoz1DjKMJG56mrMoGudh9FPJHi33vWFyd4D2Er4c8sgm8LgsXJQNaNTTOTkMRx/vwXgaan2r3CFI4NlU88G13vBFn14OORiePzIM2Vl3eN/0EnmSfs4SzYrNih4KQhEJ0iAbO1kZQ=
+	t=1738251614; cv=none; b=AV8a1jDWsdZuBTf0JhehD67sFDw2nE1OQ/YYDoIbvsSXD2WptB7sqPqtSrJXw7WB4qMJl9f/UI1WJsDhn9xxFBDwZZWD0iqOjTAvJkDZzS/onSmx83MZ1+Dr5T6bfAIBe4j47fN6DISEW4YKo/QrnTBt6FC2KKx4T6UEh7JP4rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738247910; c=relaxed/simple;
-	bh=JV7b0o3v1+xzAtErM1HhLNkNgRvCoFydIlxgoByPDWY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JDbc+evO8/IYvfRgTFhtIzzlfkEIek9Jr+2fwD2Zlj3n7y4P6wY/GvNFUPzQKxkOgnvX2oFDYslQdMjuvxAKhviYP6/L9A8sdNNvu3wfT/oDdS5098md1E/j9m3ytB50iREoPoWWjgiz8Jwou0HDIorLIwtqphb/GI2ck0leUvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=U0wkuDXZ; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 66B9DA0A58;
-	Thu, 30 Jan 2025 15:38:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:message-id:mime-version:reply-to:subject:subject:to
-	:to; s=mail; bh=4shPxN5Zjg8CWO7oqCIY3l3k+e0q+fmoz+kF6bIkmVM=; b=
-	U0wkuDXZ+YCja8dGH6AgFVUuhRRiTGpVsVSgrioEsLNMSaRslidLO77DUIz95Fvg
-	LJqArNXFUbe+iqINh8q6JwEVMFrbOKWxKw44i2iTbQs9JUeeYOsrqCco1iG+EOpm
-	0CuZ8fY1Pecu6VbX9mz5AOWSavH3W+T6aISUqYv78/JLihcKJ/bTGdz05ICqv6Fb
-	HCp1EtU3wq3IUQftnD+Nc2A/2Md0pa/FWr5Q/+cSIgPlFs/3bhasMhH6bPK8O88Z
-	Q52FtabKvw4/JcHIQrM9D+vDBRBzHePWb3p4nP3U5JKOh/mV+HFVRZPcGCJwRpMt
-	MfwkhHmjgNyDz3PPj9UX1rr7n49koEDj1oIJ2Gf3d0vdC9gKWG/Ke+gKFCqyW8a6
-	rKxqZfc5udt8/BGNEYdAMDOxyGD3toCnHmDq3HOsAn3kYuEg+EdqFbiAvor0WSPl
-	XhpoaUb34qBhfc6Lgvg8Xc/B+Ayz6y9G2xZwxx7IKJph43piKHeJVIU7W4tsyHD+
-	5GE4BgXNDusoNpGH410FCvwDk+BSqd6q2yXmpOrSTSLdDD97KtRKNBa2HH6fK8NY
-	a325R2RuPYzDpYeuGeBbzOFVnZS3FLLq5vZTDx3HwFDvfF2QQaBReBfkSfSpP63L
-	8jdxXRNOIIcMxyc97HbxaUnhlTCZ/45i8IaN7ES2yxM=
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Kamel
- Bouhara" <kamel.bouhara@bootlin.com>, William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH] counter: microchip-tcb-capture: Add capture extensions for registers RA-RC
-Date: Thu, 30 Jan 2025 15:38:16 +0100
-Message-ID: <20250130143817.41625-1-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1738251614; c=relaxed/simple;
+	bh=24w1YCY0bqktSpyH2E1RxqrWFPOF58IxarOOz6drqkM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gn6iLQL8jYyqj+PEHBDbXzqH76AXo9I9+Tqx75U44KLxLkB9aJ1eGD+TNtfoH85atUIg4vqasbp4s/AJ2d9WleUHFZJjZyt66JKhWpQ9F3+rAwYvcr1+NShwW6kKBCxKo28vXbLmBct//0rP87wOZpc5nI2jzNcPT6ySDIJ6fls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=r/A95pRI; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-aafc9d75f8bso231733966b.2
+        for <linux-iio@vger.kernel.org>; Thu, 30 Jan 2025 07:40:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738251609; x=1738856409; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3N+3RkkPcHbjkUPpzJLyQLmOOwjBGiBNGRh1iUy0svs=;
+        b=r/A95pRIiJ+OxlCqyXF58kE4tmt6ex5k3j2LpGzxYIllM5U3GLf4ZLqjrYkEEvNYjn
+         NNQEEoJjPJ+5fO/HVl7vCm0DzXpmHW1+f9gaZechg7Gaz6u84A4D3rVSw4bW1bHsH7nk
+         efbwd9c3bibXu3b7wW4G/opzA0smZQPEuEs9Vbw8jghbmgAOtEO+d6xjAn/vVaLJ8nO9
+         r2uWBbRzPrwgkz6uaZHW8xkAJHjBQN7nwdK3uxi/LjbdfcGjtDaBjVs0dP5KbN+j0l46
+         Oy0O4epPwzgrkeD2zS/hQkKXpKybtAyNw+flTM1Z6BBxbsEcb2iCy+4FRtEduItnzVGB
+         9KXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738251609; x=1738856409;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3N+3RkkPcHbjkUPpzJLyQLmOOwjBGiBNGRh1iUy0svs=;
+        b=CJeP9hVVjEiq65cOErsiR1up9B4B/BejDnznJgnCj+P0NYfmJfTzxx4t9yfQddvMzT
+         0C6PCnoCgV1Vk6ILcNXGFoFE9qSnVJU4uTygZD4EyPrVPYbzHvF0G+gvSgJUjUOcTuhf
+         CsaYtqKbuPAK3YX6MFeUb9QMH6p4jcuAnOhJMuCgWH644A3/moWpJ/f39vX6ovil/v1e
+         xrCehCyvflDu/IXBZ4PcCbN+6oRY0iqCF9fttBRPsY0Zq57oN1ACV+od8mmZieZZ45PK
+         Evyu0T3+6FVKy1g+n9LYikj2zMFRvYYCAiVDaKjxZuPH6dXCl88gkVYoFSGvIbgrmYVV
+         JevQ==
+X-Gm-Message-State: AOJu0Yxf45lp0zLWNQBmHEgpWCEiGi91LqoSelUoxFS2zbSvUjcR3QD9
+	OnLh4TV2UH+/apLGsJ4N9S+i8lWS+jpHg1876gOSES8ZslP+Y9vqqUhkBqSN0SgqVZ8NydPNQrw
+	EGqY=
+X-Gm-Gg: ASbGncvtwrRyvjEgAChOLTdxUVDoyBlkn1t0z8dLBWyEUrVOvodCaSi+kpjIKXD0ChS
+	8abPRhbt4vOlpJXAZtFXP3IBhIl4F9eNsbCEYf59VJolLSmExJBhw7Qx//YzvkSuzsRC5WAw9UK
+	Xg3iPYYZoQPN17usxHsCAk6apmDZ9zbI4Z8jBLue1tRWQmAZkyzo0s3xmsj6wSJ0UUlzjHp16DU
+	akthAWinJiSKsypCkHqaHeJlUptfjmzdO2FRk85HxovBMV1g6M+5g7nMRojKni54Sy3Te/4fulZ
+	RO/DzLNTV/vRu8vZ1byC
+X-Google-Smtp-Source: AGHT+IGp+xr76bwGqE0CGtGKq98DTxArL0p3v5AK3RPnoUn9LTUP+oovyxzrRtJYDZ3P3CZK+BdvPA==
+X-Received: by 2002:a17:906:2a55:b0:ab6:d518:7cf2 with SMTP id a640c23a62f3a-ab6d5187e25mr586429466b.54.1738251609046;
+        Thu, 30 Jan 2025 07:40:09 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e4a56399sm139508266b.174.2025.01.30.07.40.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Jan 2025 07:40:07 -0800 (PST)
+Date: Thu, 30 Jan 2025 16:40:04 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, David Lechner <dlechner@baylibre.com>, 
+	Heiko Stuebner <heiko@sntech.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 02/20] io: adc: ina2xx-adc: Fix sign and use aligned_s64
+ for timestamp.
+Message-ID: <g6jrubgedsti3pi3qretmcvupyvh7lhu4uy3gnmkglb3dpjakf@dciteiogio3h>
+References: <20241215182912.481706-1-jic23@kernel.org>
+ <20241215182912.481706-3-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738247904;VERSION=7984;MC=3846925481;ID=123382;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852667464
-
-TCB hardware is capable of capturing the timer value to registers RA and
-RB. On top, it is capable of triggering on compare against a third
-register, RC. Add these registers as extensions.
-
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
- drivers/counter/microchip-tcb-capture.c | 58 +++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
-
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 2f096a5b973d..524b9edfaa5f 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -247,6 +247,62 @@ static int mchp_tc_count_read(struct counter_device *counter,
- 	return 0;
- }
- 
-+static int mchp_tc_count_cap_read(struct counter_device *counter,
-+				  struct counter_count *count, size_t idx, u64 *val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+	u32 cnt;
-+
-+	switch (idx) {
-+	case 0:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), &cnt);
-+		break;
-+	case 1:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), &cnt);
-+		break;
-+	case 2:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), &cnt);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	*val = cnt;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_cap_write(struct counter_device *counter,
-+				   struct counter_count *count, size_t idx, u64 val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+
-+	if (val > U32_MAX)
-+		return -ERANGE;
-+
-+	switch (idx) {
-+	case 0:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), val);
-+		break;
-+	case 1:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), val);
-+		break;
-+	case 2:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), val);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(mchp_tc_cnt_cap_array, 3);
-+
-+static struct counter_comp mchp_tc_count_ext[] = {
-+	COUNTER_COMP_ARRAY_CAPTURE(mchp_tc_count_cap_read, mchp_tc_count_cap_write,
-+				   mchp_tc_cnt_cap_array),
-+};
-+
- static struct counter_count mchp_tc_counts[] = {
- 	{
- 		.id = 0,
-@@ -255,6 +311,8 @@ static struct counter_count mchp_tc_counts[] = {
- 		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
- 		.synapses = mchp_tc_count_synapses,
- 		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-+		.ext = mchp_tc_count_ext,
-+		.num_ext = ARRAY_SIZE(mchp_tc_count_ext),
- 	},
- };
- 
--- 
-2.48.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cjtm3kxypm6xhqbb"
+Content-Disposition: inline
+In-Reply-To: <20241215182912.481706-3-jic23@kernel.org>
 
 
+--cjtm3kxypm6xhqbb
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH 02/20] io: adc: ina2xx-adc: Fix sign and use aligned_s64
+ for timestamp.
+MIME-Version: 1.0
+
+Hello,
+
+this patch is in next as 1b54068b5934a871f1895adc5e5ca4355781eeb7.
+
+Maybe it's already to late for that, but if not:
+
+	$Subject ~= s/io:/iio:/
+
+Best regards
+Uwe
+
+--cjtm3kxypm6xhqbb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmebnVIACgkQj4D7WH0S
+/k4zLgf+LEHdp6gVpqWy4S6qX4UI4w+UWdJ3+IV8zJURaDDEGogrZjYDcxfznEfA
+tEW7F1fX0fdHpHtZdEdFsqG2xdJE0ZZS9Lj0/R6UfuL8RiobFTwOqaU2YM0ExOP/
+k/DYviCubWLEyyCyZ4oFu4srzfuCEhpmuSbuslXixmu5ZEFGMlN2gdY56Q24HcOO
+XPkn2Q89q2mH7vyW9mAN0q5iERpe+XxrLqrVTsSisMuPEWTDM/XQVLRT2qekBnbk
+Ax49o6XAknkV43FovmFHZDH2ZJuGw5RlhF+cyiArBu2ePWBA7cI/6GXF8K0XaHU8
+8bep59OOQpvd3aPtCwyEtYAc8a4RhA==
+=w/bo
+-----END PGP SIGNATURE-----
+
+--cjtm3kxypm6xhqbb--
 

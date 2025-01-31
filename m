@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-14749-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14750-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A468FA23E64
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:36:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E71FA23E77
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ABFB18864F6
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A0831611FA
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97761C5486;
-	Fri, 31 Jan 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E421CAA96;
+	Fri, 31 Jan 2025 13:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CdEiIr2a"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARyFZPhu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687A1E4AB;
-	Fri, 31 Jan 2025 13:36:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66DD1C8FB5;
+	Fri, 31 Jan 2025 13:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738330613; cv=none; b=sZ0xslfyEi+KkRthwIb7l09J0/HyMOwNUegCnW0c1UnAhrgi/lOV4XofTGkqhhXbD8JkQE7o96vHQSta5DMlJqKFG92h7pndcRbDi09sYj+32cQ8FD/Ll0XjbUH1TswXSwvyG5gwM/aIM8naJbvxEOOGNsyE8G8GhqtPS07rH/w=
+	t=1738330643; cv=none; b=QEePsZI+HbbftHMAxM0Ihr0szDVZpW1xe9jJQ/e/bk4EKfJW1qFfjZ8cS+/r/XzU+6lEhIHzxmSeIiT63GUURtTo2fo4q84mDD7uAvmpX5rUSpyowYYnYBo7mjgzglbDQBpjqd7B4m73HCa3mDSVGBlCibyAqZY8rVVOmpNXT6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738330613; c=relaxed/simple;
-	bh=DJRPvpIQK0LG7sCK+/WcdDN1yXWavai5+ZLaoyd3Rqs=;
+	s=arc-20240116; t=1738330643; c=relaxed/simple;
+	bh=LbHCUrEdhbojNKZ/RR5Lpsxq1m/GASPMuuAZHnVP2S8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OPmbsznOQsKplc6o0PRUU0eRJs130h3EYdDe3ACSVChGtne2bysW+bnMw8FaYeo2CiYk7GwtIRN7U/Qv5vktd3pLR36YZ0MFgIAuey7mbTUMIEH21ns6oan+d87U6sW1zhWDcfL0oxUOp6IiP5T08I/VzBxwOtYrQgY5IVTclII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CdEiIr2a; arc=none smtp.client-ip=209.85.208.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=SumXtjS+ASSHVsnxlJeftYWqj2lSIv+PBTibGf5FeqZ8frNKKsGUQQxA/a3NE8/lNaavPiPZed4pVu3yr7glwXpe0bS4+TQFVYNxxbPRXmwHzQAupBoTp6S5EumxCmScET0DePMbM5c7igjsv3916H2izbWhIXSJitsD1ot9TMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARyFZPhu; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30036310158so15564781fa.0;
-        Fri, 31 Jan 2025 05:36:51 -0800 (PST)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-30613802a04so18269571fa.2;
+        Fri, 31 Jan 2025 05:37:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738330610; x=1738935410; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738330640; x=1738935440; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rHjZJjhlTmTfO7AepzA0fuoarBMFQAvtRywIjm0RXDU=;
-        b=CdEiIr2astDKEYVTKsls56K4M6sEe5Em47xEk/ZBRdXTsPOCFuRP066akHYdYWQnla
-         zLA51faSSlpFCKPBUOicOemxmFE73poIXo59PkHvcv9EoeCxmVXJ9CVVOi9AnzdY3dka
-         CF/EjGoYHkqz4BzdwNbv349aKdsejJQPL/Pr3TxdOR7/CWtxwx3kO4ym9Rec2HKVch+Q
-         3veh0/rH30YVPGfeZmxXLgAXL/60+ZP1dayKW1VHjMXSTML1HuN6ffzd1C0yytmSRvso
-         L3yYKFK+4Er4mp9MUkJdKiWhgHSqVehWqcJHiY7ELgDANcVC9t7T9/F0PCwvL6saeqre
-         +Tyw==
+        bh=d+5jra0SH2uQt8IrloFdsrAify0lpNpYCVPtA+7/PaI=;
+        b=ARyFZPhuCpRceLALYxF2gLT9JrxlFiLDPvUyWfwf2RC3GeSFHb81f8y3okuV0T1DSw
+         c8Uz9YvG0X3nE0uJ+0MOoDGHWX0SJXQPaFSFlHmIfIHe3oOAfaF/jh+WXYpQDQvZURiD
+         DBPv63z6UNkboyDvDI/es/7v6PmwfVZI61bd1WJnjMNSH2wHU1dYkViBc5/clIbX7i60
+         eIADBBLKUc+sKsI40d8cXvzTJCixBYmDwy8DuJ/yMvNYGmcIRnTdjhhV/rk4g3WK7JBU
+         rNMYbt65wTlxdQPlcBaOcqbUKBcRdn8mTEzdL27/oNyaJgaF1VylF3GW3puhL4xw7BaY
+         eh3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738330610; x=1738935410;
+        d=1e100.net; s=20230601; t=1738330640; x=1738935440;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rHjZJjhlTmTfO7AepzA0fuoarBMFQAvtRywIjm0RXDU=;
-        b=FmLonNIRrGkavg00RuJiGBs9xYxiy4qBL+Q6JRrA7HxGfqPnzB30wEbytGhbiQgvPb
-         TaBPpJ+epxg5eYHRqEdfN6A/C1+K2cg/x3DZ//pr8KnI28miiwNb8X06GwZlNfuoVLPP
-         Hdpji2wJ82+xqcVBXE64JVIkViwZXpBibQdzeNLzusnGSgGArrb0Cpg17T4feVu5cfWx
-         n61Y0Er0WCV/8JbnB3dBEil8ykfOggFH3FqEXjDTlC99dhUb7rrNmRr/lkmEcxjz2mNT
-         DImfG6dZ7PunESnT9WzniOtLJt6cqWyRwXDwWdvE9LLjglcyOCmfIpl3Qjfs77EEmbdH
-         imxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYEdbtaQ9fK9eaU11xyAdzF7hQUey6p4pl03hChzg6GekFDfjkFApwgc3c4rIogFsypmia5skY4FIF@vger.kernel.org, AJvYcCVDHMiTr2XB6ww246DY6Dxczeli79cpb6YXq/QSBK3Vfz+p/KMtxaZSBqxidDR9/b4h2Bh/58oWdCQ0d8lZ@vger.kernel.org, AJvYcCXm3gf/xFywgUY1Heg0+hxplP6u6Z3zkL709m3pHdHtrJRl4P7+ASBZbvn+iCSi59RCQ/5KyKv9CY6D6w==@vger.kernel.org, AJvYcCXn5o5kNGlAd3WKL414oGmqIKCaOtDqaDQjzxG8PKio4e/xXTrtIMZQSf9GFNxUCHzXczSgUj4oLUwN@vger.kernel.org
-X-Gm-Message-State: AOJu0YzESOarvgcJ4QsriB/VgfWjNuOZ9vGLtTHLRAf2P4dEuD1ul8QA
-	WxC7Y2/bD8mOCf8vDB85yEiwFkPYOyaz6o4UwAh4poF/ZA4W9qm3
-X-Gm-Gg: ASbGncvPmOXe+U1rcViP02nYm/Y+dBwcQiY1z/H9CkCx/gQnIEjBq/XeaLayKpaevqz
-	POROW8gYVqygC6pD6zng7DRYyqscjHWLokOD9WlYjK++Hb2aCVc/BXgL2DyFCXm3vdHMCGgtB4g
-	oyj5YhuklHopR7KNizt8d8jXvUWIHiPHzXuzrtO5LOh/SFU2Y3lXjgw53gQPyHH/wuzC9gtSE3P
-	jWV/G1U4oaJ2ovleBQ9jSnOXhCPDjF8UvAO7WvJJW2hPi3d57RxjeF94t7OzKmCEEDlaVCfIaRY
-	MQU7ComGU40awh1Aw9pFa0Z1vye/0UrCk/+8rtu8VaPV5AA=
-X-Google-Smtp-Source: AGHT+IEQ0bw+FMqpnnG1HQlqpnFBJ5xouoypPekLv04MRrk3htGFQBFUIqOaT6KT3/bnqro69xlfsA==
-X-Received: by 2002:a05:651c:2121:b0:302:1fce:3938 with SMTP id 38308e7fff4ca-307968d42c1mr39290581fa.11.1738330609310;
-        Fri, 31 Jan 2025 05:36:49 -0800 (PST)
+        bh=d+5jra0SH2uQt8IrloFdsrAify0lpNpYCVPtA+7/PaI=;
+        b=KTXMSfIGasmkoJCHMfZ2BSc04zwaQYwcJfTjFRFYs9s59b17AW+DZ59CyfJxY4S0b8
+         PWXxexKI8qPVmGiokOFyhT1IawSM9lZ8ZZo8CmgLhG7iZPMGe4tbktPTbqgw3n+P6wHi
+         Q00R8usogp6HjU9Nek/OB8vi+2Bv2zcTTIpr8nIsvTdkb/ENjHncD6GiSCt4hh8wvYTH
+         eaI7+nFuSCao/ohb0VyptWcvAB6MpLo8pg9cEUa2CR/+Aigm6z2pOmj23Wscc7PFmPoO
+         xLdzkqw7XXpxVB0OpENa98UwMsk211+HnMJTUv+lO9uhWO+waS38Bq4+XymeE72vZLKl
+         qf5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURoVXz8nkuFSch4TShRcI9D6RgYzGVVITyoH20Yu0mUfBMDKbVCcaNbAajkk8mcqLWXSBYDKT/abRf@vger.kernel.org, AJvYcCW86T9jU0xnOM2iC1iitSq3QR0I6OM77psNhYHpzpcl/xwkMOFSL/5Vaf4csaYS/X7VMa3Nz4yC5Zyprw==@vger.kernel.org, AJvYcCW9G/QrgxPSsEiWiqB0z53lIO8JxZ+y0Ybb3NsSgSRPUO6I0tyB5urSq3LHV1IKsS+rRRwYjha9Eh1Re5Km@vger.kernel.org, AJvYcCXAKyge0CmgaoRM+ksJ+xDmSw9+pUB/aysJy4V5xZ/rwcWNsq5ADTARBUHHU7tXLCzCcIFoJatf1rSt@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxirKi5hl+1D/u2d9GxcW8CxWxrnBZS8OA1c5uCa2XvFavxDhR
+	8An0RVSjbYbN+WIQssBz1ptvuULImdWoY7DRUFTD7NJSYgBLhIV0
+X-Gm-Gg: ASbGncv/RVx6BDIytv/u76TIGX3qb7JYo5zA+8hutqu84ZvYYlCe1EstlsFqeaTno07
+	34u3ig2zZEPhtP4gHmRuxvhGrnQ149bm7Xhyyv3jpIjxk0TjBscsN9HRS2YY+Hl5tWoc/gMf2Jx
+	x1PFGFTRowSyHCHcm35OyFTPHRG6+gnIVSlfbU+c5g+gjS4Eg17HGaafYXzHXW9nLLCIpQ1FSF3
+	EVjyMyuJDIvxUxccyxSiYM7YaxkRt+RqAxZOSBMj6knsnUQ7fGxM4rewWJcfZuC5Jvur6cYbjgI
+	rZLHBs/iMGT/wqPbtJREgpPaYx83dLtgkYB4KjItDzAxBG0=
+X-Google-Smtp-Source: AGHT+IEZVmENbSjG/r2sUas2lBFwtK4YregPz+jUi4RWXqrXWLW1kIijOfmxTUWeA+ggD/8MDycmAA==
+X-Received: by 2002:a2e:bd16:0:b0:302:40ec:a1bc with SMTP id 38308e7fff4ca-307968e10ffmr37536271fa.30.1738330639355;
+        Fri, 31 Jan 2025 05:37:19 -0800 (PST)
 Received: from mva-rohm (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a3423fa1sm6104581fa.92.2025.01.31.05.36.46
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a3069d54sm5496371fa.1.2025.01.31.05.37.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 05:36:46 -0800 (PST)
-Date: Fri, 31 Jan 2025 15:36:40 +0200
+        Fri, 31 Jan 2025 05:37:17 -0800 (PST)
+Date: Fri, 31 Jan 2025 15:37:06 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -89,8 +89,8 @@ Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [RFC PATCH 1/5] dt-bindings: ROHM BD79124 ADC/GPO
-Message-ID: <90f58229e4ebc5aadd6a38a0671563978e7de4f5.1738328714.git.mazziesaccount@gmail.com>
+Subject: [RFC PATCH 2/5] mfd: Add ROHM BD79124 ADC/GPO
+Message-ID: <cc30cf6859b5e5a7320282709f428cd42717ac6b.1738328714.git.mazziesaccount@gmail.com>
 References: <cover.1738328714.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -99,164 +99,295 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Tqzf0yeGqtO+Siil"
+	protocol="application/pgp-signature"; boundary="ZCYcIh57x3OhomXz"
 Content-Disposition: inline
 In-Reply-To: <cover.1738328714.git.mazziesaccount@gmail.com>
 
 
---Tqzf0yeGqtO+Siil
+--ZCYcIh57x3OhomXz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Add binding document for the ROHM BD79124 ADC / GPO.
+Add core driver for the ROHM BD79124 ADC / GPO.
 
-ROHM BD79124 is a 8-channel, 12-bit ADC. The input pins can also be used
-as general purpose outputs. Switching between ADC and GPO is described
-using as a pinmux.
+The core driver launches the sub-drivers for the pinmux/GPO and for the
+IIO ADC. It also provides the regmap, and forwards the IRQ resource to
+the ADC.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 ---
- .../devicetree/bindings/mfd/rohm,bd79124.yaml | 111 ++++++++++++++++++
- 1 file changed, 111 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/mfd/rohm,bd79124.yaml
+ drivers/mfd/Kconfig              |  12 +++
+ drivers/mfd/Makefile             |   1 +
+ drivers/mfd/rohm-bd79124.c       | 165 +++++++++++++++++++++++++++++++
+ include/linux/mfd/rohm-bd79124.h |  32 ++++++
+ 4 files changed, 210 insertions(+)
+ create mode 100644 drivers/mfd/rohm-bd79124.c
+ create mode 100644 include/linux/mfd/rohm-bd79124.h
 
-diff --git a/Documentation/devicetree/bindings/mfd/rohm,bd79124.yaml b/Docu=
-mentation/devicetree/bindings/mfd/rohm,bd79124.yaml
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index ae23b317a64e..f024256fb180 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -2113,6 +2113,18 @@ config MFD_ROHM_BD71828
+ 	  also a single-cell linear charger, a Coulomb counter, a real-time
+ 	  clock (RTC), GPIOs and a 32.768 kHz clock gate.
+=20
++config MFD_ROHM_BD79124
++	tristate "Rohm BD79124 core driver"
++	depends on I2C
++	select REGMAP_I2C
++	help
++	  Say yes here to build support for the ROHM BD79124 ADC core. The
++	  ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
++	  also an automatic measurement mode, with an alarm interrupt for
++	  out-of-window measurements. The window is configurable for each
++	  channel. The ADC inputs can optionally be used as general purpose
++	  outputs.
++
+ config MFD_ROHM_BD957XMUF
+ 	tristate "ROHM BD9576MUF and BD9573MUF Power Management ICs"
+ 	depends on I2C=3Dy
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index e057d6d6faef..c7d64e933a7d 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -270,6 +270,7 @@ obj-$(CONFIG_MFD_SC27XX_PMIC)	+=3D sprd-sc27xx-spi.o
+ obj-$(CONFIG_RAVE_SP_CORE)	+=3D rave-sp.o
+ obj-$(CONFIG_MFD_ROHM_BD71828)	+=3D rohm-bd71828.o
+ obj-$(CONFIG_MFD_ROHM_BD718XX)	+=3D rohm-bd718x7.o
++obj-$(CONFIG_MFD_ROHM_BD79124)	+=3D rohm-bd79124.o
+ obj-$(CONFIG_MFD_ROHM_BD957XMUF)	+=3D rohm-bd9576.o
+ obj-$(CONFIG_MFD_ROHM_BD96801)	+=3D rohm-bd96801.o
+ obj-$(CONFIG_MFD_STMFX) 	+=3D stmfx.o
+diff --git a/drivers/mfd/rohm-bd79124.c b/drivers/mfd/rohm-bd79124.c
 new file mode 100644
-index 000000000000..0d2958e82780
+index 000000000000..c35ab0e03b0b
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/mfd/rohm,bd79124.yaml
-@@ -0,0 +1,111 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/mfd/rohm,bd79124.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
++++ b/drivers/mfd/rohm-bd79124.c
+@@ -0,0 +1,165 @@
++// SPDX-License-Identifier: GPL-2.0-only
++//
++// Copyright (C) 2025 ROHM Semiconductors
++//
++// ROHM BD79124 ADC / GPO driver
 +
-+title: ROHM BD79124 ADC/GPO
++#include <linux/err.h>
++#include <linux/i2c.h>
++#include <linux/module.h>
++#include <linux/regmap.h>
++#include <linux/regulator/consumer.h>
 +
-+maintainers:
-+  - Matti Vaittinen <mazziesaccount@gmail.com>
++#include <linux/mfd/core.h>
++#include <linux/mfd/rohm-bd79124.h>
 +
-+description: |
-+  The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-+  an automatic measurement mode, with an alarm interrupt for out-of-window
-+  measurements. ADC input pins can be also configured as general purpose
-+  outputs.
++static struct resource adc_alert;
 +
-+properties:
-+  compatible:
-+    const: rohm,bd79124
++enum {
++	CELL_PINMUX,
++	CELL_ADC,
++};
 +
-+  reg:
-+    description:
-+      I2C slave address.
-+    maxItems: 1
++static struct mfd_cell bd79124_cells[] =3D {
++	[CELL_PINMUX]	=3D { .name =3D "bd79124-pinmux", },
++	[CELL_ADC]	=3D { .name =3D "bd79124-adc", },
++};
 +
-+  interrupts:
-+    maxItems: 1
++/* Read-only regs */
++static const struct regmap_range bd79124_ro_ranges[] =3D {
++	{
++		.range_min =3D BD79124_REG_EVENT_FLAG,
++		.range_max =3D BD79124_REG_EVENT_FLAG,
++	}, {
++		.range_min =3D BD79124_REG_RECENT_CH0_LSB,
++		.range_max =3D BD79124_REG_RECENT_CH7_MSB,
++	},
++};
 +
-+  gpio-controller: true
++static const struct regmap_access_table bd79124_ro_regs =3D {
++	.no_ranges	=3D &bd79124_ro_ranges[0],
++	.n_no_ranges	=3D ARRAY_SIZE(bd79124_ro_ranges),
++};
 +
-+  "#gpio-cells":
-+    const: 1
-+    description:
-+      The pin number.
++static const struct regmap_range bd79124_volatile_ranges[] =3D {
++	{
++		.range_min =3D BD79124_REG_RECENT_CH0_LSB,
++		.range_max =3D BD79124_REG_RECENT_CH7_MSB,
++	}, {
++		.range_min =3D BD79124_REG_EVENT_FLAG,
++		.range_max =3D BD79124_REG_EVENT_FLAG,
++	}, {
++		.range_min =3D BD79124_REG_EVENT_FLAG_HI,
++		.range_max =3D BD79124_REG_EVENT_FLAG_HI,
++	}, {
++		.range_min =3D BD79124_REG_EVENT_FLAG_LO,
++		.range_max =3D BD79124_REG_EVENT_FLAG_LO,
++	}, {
++		.range_min =3D BD79124_REG_SYSTEM_STATUS,
++		.range_max =3D BD79124_REG_SYSTEM_STATUS,
++	},
++};
 +
-+  vdd-supply: true
++static const struct regmap_access_table bd79124_volatile_regs =3D {
++	.yes_ranges	=3D &bd79124_volatile_ranges[0],
++	.n_yes_ranges	=3D ARRAY_SIZE(bd79124_volatile_ranges),
++};
 +
-+  iovdd-supply: true
++static const struct regmap_range bd79124_precious_ranges[] =3D {
++	{
++		.range_min =3D BD79124_REG_EVENT_FLAG_HI,
++		.range_max =3D BD79124_REG_EVENT_FLAG_HI,
++	}, {
++		.range_min =3D BD79124_REG_EVENT_FLAG_LO,
++		.range_max =3D BD79124_REG_EVENT_FLAG_LO,
++	},
++};
 +
-+patternProperties:
-+  "^channel@[0-9a-f]+$":
-+    type: object
-+    $ref: /schemas/iio/adc/adc.yaml#
-+    description: Represents ADC channel.
++static const struct regmap_access_table bd79124_precious_regs =3D {
++	.yes_ranges	=3D &bd79124_precious_ranges[0],
++	.n_yes_ranges	=3D ARRAY_SIZE(bd79124_precious_ranges),
++};
 +
-+    properties:
-+      reg:
-+        items:
-+          minimum: 1
-+          maximum: 8
++static const struct regmap_config bd79124_regmap =3D {
++	.reg_bits		=3D 16,
++	.val_bits		=3D 8,
++	.read_flag_mask		=3D BD79124_I2C_MULTI_READ,
++	.write_flag_mask	=3D BD79124_I2C_MULTI_WRITE,
++	.max_register		=3D BD79124_REG_MAX,
++	.cache_type		=3D REGCACHE_MAPLE,
++	.volatile_table		=3D &bd79124_volatile_regs,
++	.wr_table		=3D &bd79124_ro_regs,
++	.precious_table		=3D &bd79124_precious_regs,
++};
 +
-+    required:
-+      - reg
++static int bd79124_probe(struct i2c_client *i2c)
++{
++	int ret;
++	struct regmap *map;
++	struct device *dev =3D &i2c->dev;
++	int *adc_vref;
 +
-+    additionalProperties: false
++	adc_vref =3D devm_kzalloc(dev, sizeof(*adc_vref), GFP_KERNEL);
++	if (!adc_vref)
++		return -ENOMEM;
 +
-+  "-pins$":
-+    type: object
-+    $ref: /schemas/pinctrl/pinmux-node.yaml
++	/*
++	 * Better to enable regulators here so we don't need to worry about the
++	 * order of sub-device instantiation. We also need to deliver the
++	 * reference voltage value to the ADC driver. This is done via
++	 * the MFD driver's drvdata.
++	 */
++	*adc_vref =3D devm_regulator_get_enable_read_voltage(dev, "vdd");
++	if (*adc_vref < 0)
++		return dev_err_probe(dev, ret, "Failed to get the Vdd\n");
 +
-+    properties:
-+      function:
-+        enum: [gpo, adc]
++	dev_set_drvdata(dev, adc_vref);
 +
-+      groups:
-+        description:
-+          List of pin groups affected by the functions specified in this
-+          subnode.
-+        items:
-+          enum: [ain0, ain1, ain2, ain3, ain4, ain5, ain6, ain7]
++	ret =3D devm_regulator_get_enable(dev, "iovdd");
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
 +
-+      pins:
-+        items:
-+          enum: [ain0, ain1, ain2, ain3, ain4, ain5, ain6, ain7]
++	map =3D devm_regmap_init_i2c(i2c, &bd79124_regmap);
++	if (IS_ERR(map))
++		return dev_err_probe(dev, PTR_ERR(map),
++				     "Failed to initialize Regmap\n");
 +
-+    additionalProperties: false
++	if (i2c->irq) {
++		adc_alert =3D DEFINE_RES_IRQ_NAMED(i2c->irq, "thresh-alert");
++		bd79124_cells[CELL_ADC].resources =3D &adc_alert;
++		bd79124_cells[CELL_ADC].num_resources =3D 1;
++	}
 +
-+required:
-+  - compatible
-+  - reg
-+  - iovdd-supply
-+  - vdd-supply
++	ret =3D devm_mfd_add_devices(dev, PLATFORM_DEVID_AUTO, bd79124_cells,
++				   ARRAY_SIZE(bd79124_cells), NULL, 0, NULL);
++	if (ret)
++		dev_err_probe(dev, ret, "Failed to create subdevices\n");
 +
-+additionalProperties: false
++	return ret;
++}
 +
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/leds/common.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+        adc: adc@10 {
-+            compatible =3D "rohm,bd79124";
-+            reg =3D <0x10>;
-+            interrupt-parent =3D <&gpio1>;
-+            interrupts =3D <29 8>;
-+            vdd-supply =3D <&dummyreg>;
-+            iovdd-supply =3D <&dummyreg>;
++static const struct of_device_id bd79124_of_match[] =3D {
++	{ .compatible =3D "rohm,bd79124" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, bd79124_of_match);
 +
-+            adcpins: adc-pins {
-+                pins =3D "ain0", "ain1", "ain5", "ain7";
-+                function =3D "adc";
-+            };
-+            gpopins: gpo-pins {
-+                groups =3D "ain2", "ain3", "ain4", "ain6";
-+                function =3D "gpo";
-+            };
-+        };
-+    };
++static const struct i2c_device_id bd79124_id[] =3D {
++	{ "bd79124", },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, bd79124_id);
++
++static struct i2c_driver bd79124_driver =3D {
++	.driver =3D {
++		.name =3D "bd79124",
++		.of_match_table =3D bd79124_of_match,
++	},
++	.probe =3D bd79124_probe,
++	.id_table =3D bd79124_id,
++};
++module_i2c_driver(bd79124_driver);
++
++MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
++MODULE_DESCRIPTION("Core Driver for ROHM BD79124");
++MODULE_LICENSE("GPL");
+diff --git a/include/linux/mfd/rohm-bd79124.h b/include/linux/mfd/rohm-bd79=
+124.h
+new file mode 100644
+index 000000000000..505faeb6f135
+--- /dev/null
++++ b/include/linux/mfd/rohm-bd79124.h
+@@ -0,0 +1,32 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright 2021 ROHM Semiconductors.
++ *
++ * Author: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
++ */
++
++#ifndef _MFD_BD79124_H
++#define _MFD_BD79124_H
++
++#define BD79124_I2C_MULTI_READ		0x30
++#define BD79124_I2C_MULTI_WRITE		0x28
++#define BD79124_REG_MAX			0xaf
++
++#define BD79124_REG_SYSTEM_STATUS	0x0
++#define BD79124_REG_GEN_CFG		0x01
++#define BD79124_REG_OPMODE_CFG		0x04
++#define BD79124_REG_PINCFG		0x05
++#define BD79124_REG_GPO_VAL		0x06
++#define BD79124_REG_SEQUENCE_CFG	0x10
++#define BD79124_REG_MANUAL_CHANNELS	0x11
++#define BD79124_REG_AUTO_CHANNELS	0x12
++#define BD79124_REG_ALERT_CH_SEL	0x14
++#define BD79124_REG_EVENT_FLAG		0x18
++#define BD79124_REG_EVENT_FLAG_HI	0x1a
++#define BD79124_REG_EVENT_FLAG_LO	0x1c
++#define BD79124_REG_HYSTERESIS_CH0	0x20
++#define BD79124_REG_EVENTCOUNT_CH0	0x22
++#define BD79124_REG_RECENT_CH0_LSB	0xa0
++#define BD79124_REG_RECENT_CH7_MSB	0xaf
++
++#endif
 --=20
 2.48.1
 
 
---Tqzf0yeGqtO+Siil
+--ZCYcIh57x3OhomXz
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmec0egACgkQeFA3/03a
-ocWyGggAvnVxmeOWL4XttH1jZ+fw9cSnIqoUYFPdd9tFC2kUTMzl2Um8dge8qoDX
-/oZ9KX3q3wcBzH94ysu1appA2+27Jf6VLcEj5mEZhbSVCM7Yv9N3svvkWoV9+KgM
-EffBFuIMCvYOS6z+2+Q3xDFfCVq624phTHV5ZSU7PxIu7yQ3irG/0cltCY5/BSGV
-VnWvXvbBT8gTvAR/XLnSxd9KRiuew5S/Yp8nQMacmb5oU9FyLuQbYBidZ8sWFHDT
-vLOwUigHx3LL6lqA2ZKVJYDmQEq+enW/1SYeADSoh7mFG1MSg9xzX5wK6xygStK7
-fNPhiVEb6I+TSYjIo1izYbBrKieFRw==
-=Plev
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmec0gIACgkQeFA3/03a
+ocUY2QgAkM6qEm1sViic5TZYHjrGfuLkUZKJ0lcOE+YmLtGAfmoRj4M6Rpw+T6Lm
+PVqHq/tso/L9b4Ew58Cu5NiIyVhIp/CIeALxQMLyym8GS1mt7YBrPHFLHwsy/F5B
+dL+KIzE07hmM7bS/14X8BYPjFps0CK8xFDDaokxB8QlWQo3ixHbg5HsO7pey9qKK
+RHzkhTD6uMNJxDkYrBM1y1Dbbe6jzWa/DI8FIP+f0DY5y6BMrQB+CWllm7Ht7iVG
+P2J7HMA2fR1r2sO8um93Dr4bCE6OI9XCrsa+GGQfrAx5O48KZcBcd/p9GJbHrA8O
+MYrZSC3qkQPqOZCAFTmQaxTT6+prEw==
+=4avQ
 -----END PGP SIGNATURE-----
 
---Tqzf0yeGqtO+Siil--
+--ZCYcIh57x3OhomXz--
 

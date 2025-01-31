@@ -1,158 +1,178 @@
-Return-Path: <linux-iio+bounces-14753-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14756-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421ECA23E8A
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:40:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FF5A23E9F
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32513AA863
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:38:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74A487A3730
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5441C5D69;
-	Fri, 31 Jan 2025 13:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LBWNGqmW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6BD1CAA92;
+	Fri, 31 Jan 2025 13:47:37 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from weierstrass.telenet-ops.be (weierstrass.telenet-ops.be [195.130.137.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A3B1C4A2D;
-	Fri, 31 Jan 2025 13:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B641C5D70
+	for <linux-iio@vger.kernel.org>; Fri, 31 Jan 2025 13:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738330740; cv=none; b=peWWx6yb/pKEtvuOqlc2rmoF2QGcPYiPM/f/3JWWpdQBikwyGkD+Lpqnei6ocGLt9EWm78SCHqddPoewU3m2Qjg1EQNhd9UGw7gL6Y2Ap9jzI68QUYqT/qGklksbLlalCX7Xzfj5O4xho8w2KI6FfZPx5p5NCGZ3dWs8iHlk23c=
+	t=1738331257; cv=none; b=SAd1+mXhMxkvp9JR7jXFxjc51sKEAc3rkthKyIGxhoUaY/O3rywppw+KkZ1xjr312CCU42NK8AqrbnG42vcpOdRfMNws1TkGWniSTfjG0O1nN/A7ke6a4u0ijQtQdirn/BrXqnUvOJsY0FrKB+4Llw+6qMjyx/jIy7S+Xt7VS+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738330740; c=relaxed/simple;
-	bh=FtgVvQJ66p7mlppcA77ZjwjToj8ifzoL0t1H7yx2hmo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iepj9YVBdT+PvD+aqumiQ6j2k24j/fKy/jlXvFQLg1cG3HgzmTzokFJCvrgTyqzsnjdwpcV6MjpjimE3wKJDc5CYWUmAuQNdxC05xVQ7exRu6ZXiy5UvFZI1XqOUyPlDcxHwM7rgh/1dS48LvhkiCrx6Tldd7tm7P7RJ+jZLso8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LBWNGqmW; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3072f8dc069so17857621fa.3;
-        Fri, 31 Jan 2025 05:38:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738330736; x=1738935536; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=84Xs63QsOvkGnZtwAVo6Ip/KDUwY/ag3iPDIK7CB1Ww=;
-        b=LBWNGqmW4YINzXn0nNi6U4IiRZqATQJMciwyVmi0Ica4ESFDIop9dQSiTniUJ7pEbA
-         sTXaRKrZuzPyzbtRdshSclBz+CqazbWHho0Dc8oaZ5XKniCVFDPNj2nx9i9ReccHIv64
-         hbzdWyhlHC61f3NwUkoboUFHyH2ZiW2yE1w9wso8pp1xEFYZIjy+rdo9HcjU4BIdLdOz
-         UvELQmDrIktSuzFO42EZY+68fzh+mCu/pG4WTl9CK87rvhjfjy3L+5Ub/Bt0vRKi357B
-         zuDxP8jNZG42AfUasjwPUqf5XUx+cjZ2PKVZFSwvD78Fkqetrzrco/Y7hO8G7+RarzuL
-         Mf0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738330736; x=1738935536;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=84Xs63QsOvkGnZtwAVo6Ip/KDUwY/ag3iPDIK7CB1Ww=;
-        b=pqyA14swHKLD5r5U4wnnNGHGZttoeYuhIzNRQeNzrJIZkY5vwZKGnGFQ4kp7QxnSaW
-         LJZArmrSxuu24Ca4a3SXimbFeFl+ZE/mP1XnnGXQpyUGPFoYcjN4ZPmcGrmlaGl/gqcH
-         fyz72oIuY32+u8AiaGZ1BqXPQCTuXRnfUOZTsVzV9Kz76W4jo0ogx27GFofhN00/tqNz
-         ADRlUDo94KY6n/nOGZthJPMUFlkE6rKdtSP/DkTg1cprW0bbDd0vcluQdMZJLjYxYlbB
-         QWd4EiTJSAm20agUDHFCilHUeSobYNGIK8mndqo8DydPk5sLdPJCzBRnBURMY95jHZzu
-         R1KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV29VP/uVyE+j5cwOTuXGu7azJYY/QKE5fL+RHMqvYl4Lzr+mPJe8gSaf3zLKg3rlFlsMU9fMKRD6Il@vger.kernel.org, AJvYcCVXT3dHhmu6VwmSgh3vp4HgmTW4OFg6vv2Se5ejJk4jrWmhuQgNg2hhdEX+/LNxR2zhu+87SGOSuOEz@vger.kernel.org, AJvYcCVbEqcyWajx7m9nzbOkePx943flanxRTDIVGoeJ/9AXinSOb9Uc+5m0F+FfiS2Sqh5aweLtO8SGIxGL9A==@vger.kernel.org, AJvYcCW1Fi5LC1frsAE6yffwX36nJ65SdtDJ4E2bM+yXQypH44/Tad8sW6Rx0XldUW91CPY2LH+IvI4Z5sPO07mm@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQvFxiDzctRCuE1AlEXPLWACKA/z+pezh4xmRFvXeMAKcBaWzF
-	cNw2eSayZpOXJT7kM8BufPPEUwzXOnLq0XFT/8m0oJZsCFHkq0Ot
-X-Gm-Gg: ASbGncsNSrWdkblvFShVOHnIw4B1b6EoHz+AuDb5rksNdtd97EwuohYiYY8wPmfDcod
-	rLzX5IS+oHwjLnx/HM0HSuT4yivqxssBfyeVN5bRhDqUFnf/CuOlnqL3oWRc7DYogLbbJhL7LpZ
-	bfmCoidmQcA2ZPTNIiFkoagAT7aBwA+qmBZmztT5L7bIU0A0Tx1xvr/2grECGDlbKFIRTYduavB
-	XciO8qtUQYszYSECi7m/nokJVn0IrWY3VR/yGZAbDeZZpKdgMdyPve4HoXbKsMe32RgPszJvPJ/
-	kRsxCDEjJsyEeIFP4uzfzciWJVvRgNcq66aP60476AYOqAw=
-X-Google-Smtp-Source: AGHT+IFu6ST6J+wp9Aosz0qs5Y5gW+bsbTLdcpz3NmH1HifLED0DOLGg5lNq2F/y6f3zo5eFT2N1Qg==
-X-Received: by 2002:a05:651c:903:b0:300:33b1:f0e7 with SMTP id 38308e7fff4ca-307968d3606mr39259361fa.10.1738330736253;
-        Fri, 31 Jan 2025 05:38:56 -0800 (PST)
-Received: from mva-rohm (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a3428055sm5600751fa.98.2025.01.31.05.38.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 05:38:54 -0800 (PST)
-Date: Fri, 31 Jan 2025 15:38:45 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	s=arc-20240116; t=1738331257; c=relaxed/simple;
+	bh=xc3M33C0iwXkHtkGreXFYtXp9BYNda0pGb+ISZTOV/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uVHq+cFlRZ4MnhfYFdl6Aq0h/mcI8EowLQcOGFBE/tbCVUc0VFli/vmk0K1QesSIxTNkkNgssQyCTIgLQRL4hOBPfIBZyFrF5X2AUleajCNB9cdVCWeAOij3E17X8pL1swk+LQXVu1IkaZObdtm468p+gYAkhC9cKArXjvboOww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=glider.be
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
+	by weierstrass.telenet-ops.be (Postfix) with ESMTPS id 4Ykxz84cC5z4x5Gs
+	for <linux-iio@vger.kernel.org>; Fri, 31 Jan 2025 14:47:32 +0100 (CET)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:a916:3147:9f19:c260])
+	by baptiste.telenet-ops.be with cmsmtp
+	id 7pmw2E00W0naHe801pmwxH; Fri, 31 Jan 2025 14:47:24 +0100
+Received: from rox.of.borg ([192.168.97.57])
+	by ramsan.of.borg with esmtp (Exim 4.97)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tdrM6-0000000FHxr-1qQW;
+	Fri, 31 Jan 2025 14:46:56 +0100
+Received: from geert by rox.of.borg with local (Exim 4.97)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1tdrMG-0000000DFVN-1Vog;
+	Fri, 31 Jan 2025 14:46:56 +0100
+From: Geert Uytterhoeven <geert+renesas@glider.be>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [RFC PATCH 5/5] MAINTAINERS: Add ROHM BD79124 ADC/GPO
-Message-ID: <7b767eede329fc9194925817a7350a76786478a5.1738328714.git.mazziesaccount@gmail.com>
-References: <cover.1738328714.git.mazziesaccount@gmail.com>
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Alex Elder <elder@ieee.org>
+Cc: linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-gpio@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org,
+	linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v2 0/3] Non-const bitfield helpers
+Date: Fri, 31 Jan 2025 14:46:50 +0100
+Message-ID: <cover.1738329458.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="o6j3hbpst1Vid1XP"
-Content-Disposition: inline
-In-Reply-To: <cover.1738328714.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
 
+	Hi all,
 
---o6j3hbpst1Vid1XP
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is an updated subset of a patch series I sent more than 3 years
+ago[1].
 
-Add undersigned as a maintainer for the ROHM BD79124 ADC/GPO driver.
+<linux/bitfield.h> contains various helpers for accessing bitfields, as
+typically used in hardware registers for memory-mapped I/O blocks.
+These helpers ensure type safety, and deduce automatically shift values
+from mask values, avoiding mistakes due to inconsistent shifts and
+masks, and leading to a reduction in source code size.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+The existing FIELD_{GET,PREP}() macros are limited to compile-time
+constants.  However, it is very common to prepare or extract bitfield
+elements where the bitfield mask is not a compile-time constant.
+To avoid this limitation, the AT91 clock driver introduced its own
+field_{prep,get}() macros.  Hence my v1 series aimed to make them
+available for general use, and convert several drivers to the existing
+FIELD_{GET,PREP}() and the new field_{get,prep}() helpers.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a87ddad78e26..19314bee95b2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20292,6 +20292,14 @@ S:	Supported
- F:	drivers/power/supply/bd99954-charger.c
- F:	drivers/power/supply/bd99954-charger.h
-=20
-+ROHM BD79124 ADC / GPO IC
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/adc/rohm-bd79124-adc.c
-+F:	drivers/mfd/rohm-bd79124.c
-+F:	drivers/pinctrl/pinctrl-bd79124.c
-+F:	include/linux/mfd/rohm-bd79124.h
-+
- ROHM BH1745 COLOUR SENSOR
- M:	Mudit Sharma <muditsharma.info@gmail.com>
- L:	linux-iio@vger.kernel.org
---=20
-2.48.1
+Due to some pushback (mostly centered around using the typed
+{u*,be*,le*,...}_get_bits() macros instead, which of course would
+require making them work with non-constant masks first, too), this
+series was never applied, and became buried deep in my TODO haystack...
+However, several people still liked the idea: since v1, multiple copies
+of the field_{prep,get}() macros appeared upstream, and one more is
+queued for v6.15.
 
+Hence I think it's time to revive and consolidate...
 
---o6j3hbpst1Vid1XP
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes compared to v1:
+  - Cast val resp. reg to the mask type,
+  - Fix 64-bit use on 32-bit architectures,
+  - Convert new upstream users:
+      - drivers/crypto/intel/qat/qat_common/adf_gen4_pm_debugfs.c
+      - drivers/gpio/gpio-aspeed.c
+      - drivers/iio/temperature/mlx90614.c
+      - drivers/pinctrl/nuvoton/pinctrl-ma35.c
+      - sound/usb/mixer_quirks.c
+  - Convert new user queued in renesas-devel for v6.15:
+      - drivers/soc/renesas/rz-sysc.c
+  - Drop the last 14 RFC patches.
+    They can be updated/resubmitted/applied later.
 
------BEGIN PGP SIGNATURE-----
+I can take all three patches through the Renesas tree, and provide an
+immutable branch with the first patch for ther interested parties.
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmec0mUACgkQeFA3/03a
-ocWq2ggAha7RpicLCvSh1r6rcYwfhY5aGV4xKWdqbD4LSkdGH5vGmpt/8CZXI+5e
-sa4djP7yNXCNcRyEzalVDALiw5YuXlAaF9VJ/Fy886h86DXbLw6Oq+tizzCZIpT7
-bRusRxliMB/lVyg5DjZng1aAQsvkSApT/QqvqJaBIE1ZElsEXhegmhh0mET8R9Xa
-cg1dPOZCPXTMyq8fNWHcGnR4v2IdMs9ziXSVv/yQnAgLeI0OXt0QlMAL5IyVxrqk
-TVCI9RP0heeFuoks+a6tzXOeliy9CZP0yNjTErKYb2mlKgFi9SEd4TkhrF6iizA9
-sOI7QaOcjq8lKjJQrp+sM5jMAulO2Q==
-=cWFO
------END PGP SIGNATURE-----
+Thanks for your comments!
 
---o6j3hbpst1Vid1XP--
+[1] "[PATCH 00/17] Non-const bitfield helper conversions"
+    https://lore.kernel.org/all/cover.1637592133.git.geert+renesas@glider.be
+
+Geert Uytterhoeven (3):
+  bitfield: Add non-constant field_{prep,get}() helpers
+  clk: renesas: Use bitfield helpers
+  soc: renesas: Use bitfield helpers
+
+ drivers/clk/at91/clk-peripheral.c             |  1 +
+ drivers/clk/at91/pmc.h                        |  3 --
+ drivers/clk/renesas/clk-div6.c                |  6 ++--
+ drivers/clk/renesas/rcar-gen3-cpg.c           | 15 +++-----
+ drivers/clk/renesas/rcar-gen4-cpg.c           |  9 ++---
+ .../qat/qat_common/adf_gen4_pm_debugfs.c      |  8 +----
+ drivers/gpio/gpio-aspeed.c                    |  5 +--
+ drivers/iio/temperature/mlx90614.c            |  5 +--
+ drivers/pinctrl/nuvoton/pinctrl-ma35.c        |  4 ---
+ drivers/soc/renesas/renesas-soc.c             |  4 +--
+ drivers/soc/renesas/rz-sysc.c                 |  3 +-
+ include/linux/bitfield.h                      | 34 +++++++++++++++++++
+ sound/usb/mixer_quirks.c                      |  4 ---
+ 13 files changed, 52 insertions(+), 49 deletions(-)
+
+-- 
+2.43.0
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
 

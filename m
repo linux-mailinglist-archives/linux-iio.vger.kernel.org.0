@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-14751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B739A23E82
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:39:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4139A23E7B
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 14:38:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4FEE3AA115
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A8A1888E27
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 645611C548A;
-	Fri, 31 Jan 2025 13:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508701C54BE;
+	Fri, 31 Jan 2025 13:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWmeDqJe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZA2XY7F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7A1C5486;
-	Fri, 31 Jan 2025 13:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E815D1C5486;
+	Fri, 31 Jan 2025 13:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738330688; cv=none; b=WZvRY9JwfK4VLteT2nF/duYy2nQ7IsrzYA1wq9OPZTrIaTvfBgfQkxLm8Qk1ewyXZE2krSfoJ08LZ5+qdgzCUFgFuQB0BV6/Cg0omfI9kKhIUxcEWVZPvRLoU5+tExQiQdvtJpN8hML+C9wr/q6GR1JghhD70te3gzPCnmYnkmg=
+	t=1738330711; cv=none; b=qHg4ko7d+nvphqM/wgvxVHh1sHNtNbjatSlN+9pvDi5CVP/syCYDVnlRwfoW1v0gj4y2/wADPBC3o30sLO8Jw+TDut6kDxFygqdkR/wEtAVXTeAH1t8ueC/xvjH/gBd6ZZRlsMIQ15QYLeczDh35mPCWvaAQ/8TQjFEajx12pvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738330688; c=relaxed/simple;
-	bh=Jhnc9C162SBMnlh8Aw9W4SJkW5VhUFUMCZAxJk18hW8=;
+	s=arc-20240116; t=1738330711; c=relaxed/simple;
+	bh=qVDJEPeeNE98djPQLV/AnekWmCXKylcLB4/S6HfXhX8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uq8Nz1NGQhLEmUvbkO0qQuioDGHVI6N5SEGwehm5B7ohT/eocpKWhheNd4UtXLbEUu4HSSmWT45o/v4P6qbiaR03wLYs/8fHRc9POMqG/bubTmMpU70Ta9vCXKbTAUWFDyCh9vkj77kyOoijMjghc3LKoCDLe3h1r3NCHmthxb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWmeDqJe; arc=none smtp.client-ip=209.85.167.47
+	 Content-Type:Content-Disposition:In-Reply-To; b=hwt8wr7+HGivQiU+bp0qFe7jwzHfK2oBI/IAw/uxHBHwGjY6fwss73reIKwGKM0N80Ob7vHL5YyrVsQHc9lvEzUoYXBsJaKwvV5cHyJhAaeBIxj0RrOl4oj24/iAO2k+9qFA4fKlO27D6NAkvsTQHTAm9Emg7O1mwq1fExCEJlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZA2XY7F; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-53e384e3481so1767507e87.2;
-        Fri, 31 Jan 2025 05:38:04 -0800 (PST)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53e3c47434eso2123323e87.3;
+        Fri, 31 Jan 2025 05:38:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738330683; x=1738935483; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738330707; x=1738935507; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oChDXhqHKkUhDSAVlgwGEcs7Wy72o9JPn+1bew9OjO8=;
-        b=NWmeDqJeas/D3bPhNBmo25fMEOd/Wudlw9bzRe1phzquMns0pJnyr4p7oH4jDpofHt
-         O6ma8jq7+NGMDDOJ3kSmftyeIZ9o36L/Obr8GRrm9TwCwFy5ZqYUXj6oEY9mfCQjp0Gs
-         IfdCz8YJVijFo2YK8NSTU3UICZvwz96GyB6burNSRo5zhjek1KvWA1EOS9NJilI7Ie9a
-         /wWwXzXrHCmzobTdp7hqsl1ycq/kR4eJCvytDmFLMU2gjJM4dkEjEp9OLldvQAx2pPXg
-         NkMPAHy2Z5umx9U6fVDG1yaqsN0BN4pE0SOtAip8s7RubSlXpAE0BrnbsT5ngLHMz3+6
-         9RwQ==
+        bh=xks8nqaxfbDP9RkUFe4/pjsT9Ei+JEQ7nDHf+BKbGpg=;
+        b=mZA2XY7FhU245m8VMKOlbt7uvT6WZTpIEwsWceKwpIWaoqTdorwECv0th6MoW+/irs
+         cg84Pzj4XNhvK5T71quvVkgnrEar4v6U/ovZFU7suLBsfkGeyE6+5nYmF4tK3ZIIm88Z
+         /RspwoPQyxQUuarcQLAvLeLxw0h5sjfDsL8KXkU7m7Lu/kRTnEm7tV6rIcw4tJO/G4Mx
+         mzynJTBkTD6iI0NRr34Dixl3PVSnNpOwsjrIKwlnGpz1pB19xaPsX4ifdjYCS2R4Swsa
+         xKR9JmaEo+yzpf0aiy5ey/z6SLA0XqF1KEDAKfGP9Wc170rA0y1HfQ+h7BxaoO5R5t5d
+         v7CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738330683; x=1738935483;
+        d=1e100.net; s=20230601; t=1738330707; x=1738935507;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oChDXhqHKkUhDSAVlgwGEcs7Wy72o9JPn+1bew9OjO8=;
-        b=ILI7fzIa8Mb9lrCNoeguq5QnSRuD7aO+WSxsEd6sLRlLGVRBNuF51D84HnrrUf/baw
-         RD4kVMoAsBkEQVU9HDr8UDzMOz2FOQ/Uwu7oFx2LeQKb4tQujAsZ2wl5gFXqITOXf7Xs
-         Gz4ul3fVxtCmgfrcyu+hgCzz7B62L1fpRYAqObVVRyKth4CmEWY/NMgsbgJs0phYUx0e
-         sta2gVqbEJb6WxCVEKH/ktNfJDf6Ra/UEWTt71Pz7T4NrNQpRc4KmwUKYgcQznY4ghoM
-         0neWSOusi8Oc0vApDwxm6oLTPGdzHIjkxdK/90HmyMfTU9ZMDRhWzSeMJUdrboSg+b/f
-         S6SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWpHC7IW3eYjuue2GHV5/JLt7W6Osc5gzJENQ7Im/umvNiPTw1LHyeZr1TNG/8dDfKTm6SiB7DjicMk@vger.kernel.org, AJvYcCX/PJhlZ8NGU+FAOpE8OMH8K240EmBM8lLyjYNLYdYPz18iWbBYGDNCkEy9t1UHlTMlsSvTETGDtJ7+ww==@vger.kernel.org, AJvYcCXHRsOoXjOWWuIuwFA+FdvuHnBG8ZMYow/9S9VK6vZggkO0rdbOdnrH3lI+Bl3D24YALX7HwWn0yt7Re04A@vger.kernel.org, AJvYcCXkl+ok6vslZuxZmJYWlFjN5Rckp6g5woC/c7RrOgvCuKPEaDwgqI3sMRybfsqGJntUmWb3sVP39H1X@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8sHVHpsU7yL87SuFli4DoOgr8UGY6ONNiue8f+RmuxnDMnLfO
-	/u/p9RTZi9JxdNA8y5BAKcJFHCyUWU0wbNuSbGTseKd+2nA5Aads
-X-Gm-Gg: ASbGnctrZaxafj2rnn21dsFNNVVjYL4QdzIx3peeB1ffDHfEO5S0eO8Q7qmmOeEJ3uO
-	t/0ohq+QGK3nPpEKQlU93lJxf3L2wj4CLbUtU85ywtOg9UnHrM87FWDrUdrto0cUJ9zttdoVMoE
-	ifVquPcWH5YHxyRoK1zpIKozX8BqIODLHoCpU3ja36c4zdYzGNmAc/0zP2WU1ye27nUew0xZe3M
-	w2HrqxQ6s6n3KNvRCEpiWwlBjCOeWXA9oQvITmMQspcdq2BICJIWRpC37XR8vfp/LYVv334uff2
-	6o4/4pZqx0rJ6IyGRQbnG0PiR7Fm3BlJ6qagEiE99BK7A4o=
-X-Google-Smtp-Source: AGHT+IFuwFzi2QvcmYBgAjDpfnthnUqAYoaocfqDGvVvfJUHpQIZzJd93tu4deUe/+1CTeVR2YFUdQ==
-X-Received: by 2002:a05:6512:38d1:b0:540:358d:d9b5 with SMTP id 2adb3069b0e04-543e4ba64a1mr2876542e87.0.1738330682742;
-        Fri, 31 Jan 2025 05:38:02 -0800 (PST)
+        bh=xks8nqaxfbDP9RkUFe4/pjsT9Ei+JEQ7nDHf+BKbGpg=;
+        b=WPR4J2U7diJEhOKYLVpmI+JZ2CsKiJ53sYHwAngXuS++DoNA7eIxgG6eyTvS6rWFYR
+         cnF7YpbUAXg25nhVe+KOUTXB7Eq6QjAueZJ1S9paXE/8D7hhjrVHr2KLYoR71Cx/Xkh1
+         NyLtuLsh8s/FscPyoHlDXQwoTtk3+605Utsj0NrybYlEh37Lf89tWEWNm6KTfrceGb+o
+         GM1pIk5DtRg6wtMrSbX/1wWDIfMCyv9XqGOW150BCH7nlVQzue5iMqhQInqjBsn+D0pa
+         7VYg48Q5xRXyEzZQcV7280Xy+4escgFOAEKF3DDAtpEVV996hCLTXWSlfBL8bqqiJLJw
+         8TFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLvkeTeXy+vREYLL13F1Ckq2Vba732xNsIOWhzKcJ1URUeP+kJjSN00kJ914aDTn1QykHJScyn0YD5yg==@vger.kernel.org, AJvYcCX+qOb2gDbiTWXvrBAp8iGtCLQnfxDTmYypvqtva1r+m/IO7MzJ/db17afI+BkmUFFhzjWJqTcn+ZuJ@vger.kernel.org, AJvYcCXGwMo6LWrJTWFYT20s+ZR3aKVHi04u656nRz+vj3V0/hh4HfnTyEZ4V36jrALOsiv+A9uVVyyELqk1@vger.kernel.org, AJvYcCXeRpxbuHRDkgVg9bhQ/x8l9wOmfSA4mD14E1xeW2dUnajSLW4UcyKSE/OD6FnIQM8j/6k4FUmxe0uF1tUM@vger.kernel.org
+X-Gm-Message-State: AOJu0YyY0UkESSUNb/0/0/zZpZatqJyzNI2JsuBIBwTi5rCMMfFqnw88
+	j0a2AgBuR+GocM1KOPjN1Uk3PG5XppDqmtRYzH8lZiYNElEp3xD/
+X-Gm-Gg: ASbGncvAgfv+2nuU2RtrEtF3T941K6eaYv/a4Y2PV+QZD08cNQsO3VcU1BCdO/PLgi2
+	Tyb74rjmFTarXFIrWvW75urDgXDY83UbAdGV/QqF4x2CZKwsRCb7+zk3ENeHLEmOgxQ3gqmRPI6
+	GDDYrhee7aUpfkHxRFq9eIhtmVrQCKqOWL0DzgU+uGO/UYSRLUFFlO8B4X97IppSrzJUvmKKXO2
+	68CwcbH297KvKxXEeTl1gIA0dm4g3ucqV0PTT7ZmrzzFijN9Cq+fkGxJQjPIZH00EBft2TorFvQ
+	KSHWI9ajk9zp1mP3yGbL2ITvqVu9L3ECGoDiQqkPrHNgajo=
+X-Google-Smtp-Source: AGHT+IEIVvrLzfycbwJtNgTwvGjmij6z7XlZ28AzUTj5xyjJOnyBbOvoTLskpc54B25Mb/DMF2bEsg==
+X-Received: by 2002:a05:6512:1089:b0:542:6d01:f55c with SMTP id 2adb3069b0e04-543e4bdf58bmr4285653e87.3.1738330706640;
+        Fri, 31 Jan 2025 05:38:26 -0800 (PST)
 Received: from mva-rohm (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebebec5esm486551e87.236.2025.01.31.05.37.58
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebdf1046sm479993e87.10.2025.01.31.05.38.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 05:38:00 -0800 (PST)
-Date: Fri, 31 Jan 2025 15:37:48 +0200
+        Fri, 31 Jan 2025 05:38:24 -0800 (PST)
+Date: Fri, 31 Jan 2025 15:38:15 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -89,8 +89,8 @@ Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
 	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: [RFC PATCH 3/5] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <e44851669ce7e91d1295ab7352535c93b89d35bf.1738328714.git.mazziesaccount@gmail.com>
+Subject: [RFC PATCH 4/5] pinctrl: Support ROHM BD79124 pinmux / GPO
+Message-ID: <3d85fe979fca352bed4d9841e3233c055dfaf154.1738328714.git.mazziesaccount@gmail.com>
 References: <cover.1738328714.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -99,998 +99,349 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="B5xHhQjeBAxx0fyd"
+	protocol="application/pgp-signature"; boundary="JI/5detke+jV38o3"
 Content-Disposition: inline
 In-Reply-To: <cover.1738328714.git.mazziesaccount@gmail.com>
 
 
---B5xHhQjeBAxx0fyd
+--JI/5detke+jV38o3
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-an automatic measurement mode, with an alarm interrupt for out-of-window
-measurements. The window is configurable for each channel.
+The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The AIN pins can be
+used as ADC inputs, or as general purpose outputs.
 
-The I2C protocol for manual start of the measurement and data reading is
-somewhat peculiar. It requires the master to do clock stretching after
-sending the I2C slave-address until the slave has captured the data.
-Needless to say this is not well suopported by the I2C controllers.
-
-Thus the driver does not support the BD79124's manual measurement mode
-but implements the measurements using automatic measurement mode relying
-on the BD79124's ability of storing latest measurements into register.
-
-The driver does also support configuring the threshold events for
-detecting the out-of-window events.
-
-The BD79124 keeps asserting IRQ for as long as the measured voltage is
-out of the configured window. Thus the driver disables the event when
-first event is handled. This prevents the user-space from choking on the
-events - but it also requires the user space to reconfigure and
-re-enable the monitored event when it wants to keep monitoring for new
-occurrences.
-
-It is worth noting that the ADC input pins can be also configured as
-general purpose outputs. The pin mode should be configured using pincmux
-driver.
+Support changing pin function (GPO / ADC) and the gpo output control.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
 ---
 
-Regarding disabling the event upon reception - is this totally strange?
-Is regular userspace compeletely unprepared for this, and better
-prepared for handling large amounts of continuous events?
+NOTE: This patch is not properly tested. More thorough testing is to be
+done prior v2 if this pinmux approach makes sense.
 
-The BD79124 should not cause a total CPU-blocking IRQ storm because the
-driver uses the autonomous sequencer mode - which has minimum of 0.75
-millisecond delay between measurements. So, new IRQs can be raised with
-this interval. (The 0.75 mS includes handling and acking / status reading
-delays - so there is still not much time for things done outside of the
-IRQ handling...)
----
- drivers/iio/adc/Kconfig            |  10 +
- drivers/iio/adc/Makefile           |   1 +
- drivers/iio/adc/rohm-bd79124-adc.c | 890 +++++++++++++++++++++++++++++
- 3 files changed, 901 insertions(+)
- create mode 100644 drivers/iio/adc/rohm-bd79124-adc.c
+ drivers/pinctrl/Kconfig           |  11 ++
+ drivers/pinctrl/Makefile          |   1 +
+ drivers/pinctrl/pinctrl-bd79124.c | 276 ++++++++++++++++++++++++++++++
+ 3 files changed, 288 insertions(+)
+ create mode 100644 drivers/pinctrl/pinctrl-bd79124.c
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 849c90203071..195a61ba5cf4 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1188,6 +1188,16 @@ config RN5T618_ADC
- 	  This driver can also be built as a module. If so, the module
- 	  will be called rn5t618-adc.
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 95a8e2b9a614..7dd9bb0d1ab4 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -145,6 +145,17 @@ config PINCTRL_AW9523
 =20
-+config ROHM_BD79124
-+	tristate "Rohm BD79124 ADC driver"
+ 	  Say yes to enable pinctrl and GPIO support for the AW9523(B).
+=20
++config PINCTRL_BD79124
++	tristate "Rohm BD79124 ADC/GPO"
 +	depends on MFD_ROHM_BD79124
++	select PINMUX
++	select GPIOLIB
 +	help
-+	  Say yes here to build support for the ROHM BD79124 ADC. The
-+	  ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-+	  also an automatic measurement mode, with an alarm interrupt for
-+	  out-of-window measurements. The window is configurable for each
-+	  channel.
++	  The Rohm BD79124 is a 12-bit, 8-channel, SAR ADC. The analog input
++	  pins can also be configured to be used as general purpose outputs.
 +
- config ROCKCHIP_SARADC
- 	tristate "Rockchip SARADC driver"
- 	depends on ARCH_ROCKCHIP || COMPILE_TEST
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index ee19afba62b7..7049d984682d 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -107,6 +107,7 @@ obj-$(CONFIG_QCOM_VADC_COMMON) +=3D qcom-vadc-common.o
- obj-$(CONFIG_RCAR_GYRO_ADC) +=3D rcar-gyroadc.o
- obj-$(CONFIG_RICHTEK_RTQ6056) +=3D rtq6056.o
- obj-$(CONFIG_RN5T618_ADC) +=3D rn5t618-adc.o
-+obj-$(CONFIG_ROHM_BD79124) +=3D rohm-bd79124-adc.o
- obj-$(CONFIG_ROCKCHIP_SARADC) +=3D rockchip_saradc.o
- obj-$(CONFIG_RZG2L_ADC) +=3D rzg2l_adc.o
- obj-$(CONFIG_SC27XX_ADC) +=3D sc27xx_adc.o
-diff --git a/drivers/iio/adc/rohm-bd79124-adc.c b/drivers/iio/adc/rohm-bd79=
-124-adc.c
++	  Say yes to enable the pinmux and GPOs.
++
+ config PINCTRL_BM1880
+ 	bool "Bitmain BM1880 Pinctrl driver"
+ 	depends on OF && (ARCH_BITMAIN || COMPILE_TEST)
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index fba1c56624c0..0caf6dc3d2c1 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_PINCTRL_AT91PIO4)	+=3D pinctrl-at91-pio4.o
+ obj-$(CONFIG_PINCTRL_AW9523)	+=3D pinctrl-aw9523.o
+ obj-$(CONFIG_PINCTRL_AXP209)	+=3D pinctrl-axp209.o
+ obj-$(CONFIG_PINCTRL_BM1880)	+=3D pinctrl-bm1880.o
++obj-$(CONFIG_PINCTRL_BD79124)	+=3D pinctrl-bd79124.o
+ obj-$(CONFIG_PINCTRL_CY8C95X0)	+=3D pinctrl-cy8c95x0.o
+ obj-$(CONFIG_PINCTRL_DA850_PUPD) +=3D pinctrl-da850-pupd.o
+ obj-$(CONFIG_PINCTRL_DA9062)	+=3D pinctrl-da9062.o
+diff --git a/drivers/pinctrl/pinctrl-bd79124.c b/drivers/pinctrl/pinctrl-bd=
+79124.c
 new file mode 100644
-index 000000000000..7c95a1de1e71
+index 000000000000..8d25b1c5345f
 --- /dev/null
-+++ b/drivers/iio/adc/rohm-bd79124-adc.c
-@@ -0,0 +1,890 @@
++++ b/drivers/pinctrl/pinctrl-bd79124.c
+@@ -0,0 +1,276 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * ROHM ADC driver for BD79124 ADC/GPO device
-+ * https://fscdn.rohm.com/en/products/databook/datasheet/ic/data_converter=
-/dac/bd79124muf-c-e.pdf
++ * ROHM BD79124 ADC / GPO pinmux.
 + *
 + * Copyright (c) 2025, ROHM Semiconductor.
++ *
 + */
 +
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/byteorder/generic.h>
 +#include <linux/device.h>
-+#include <linux/delay.h>
 +#include <linux/err.h>
-+#include <linux/interrupt.h>
-+#include <linux/irqreturn.h>
++#include <linux/gpio/driver.h>
 +#include <linux/module.h>
 +#include <linux/mod_devicetable.h>
 +#include <linux/platform_device.h>
 +#include <linux/regmap.h>
 +#include <linux/types.h>
 +
-+#include <linux/iio/events.h>
-+#include <linux/iio/iio.h>
++#include <linux/pinctrl/pinctrl.h>
++#include <linux/pinctrl/pinmux.h>
 +#include <linux/mfd/rohm-bd79124.h>
-+
-+#define BD79124_ADC_BITS 12
-+#define BD79124_MASK_CONV_MODE GENMASK(6, 5)
-+#define BD79124_MASK_AUTO_INTERVAL GENMASK(1, 0)
-+#define BD79124_CONV_MODE_MANSEQ 0
-+#define BD79124_CONV_MODE_AUTO 1
-+#define BD79124_INTERVAL_075 0
-+#define BD79124_INTERVAL_150 1
-+#define BD79124_INTERVAL_300 2
-+#define BD79124_INTERVAL_600 3
-+
-+#define BD79124_MASK_DWC_EN BIT(4)
-+#define BD79124_MASK_STATS_EN BIT(5)
-+#define BD79124_MASK_SEQ_START BIT(4)
-+#define BD79124_MASK_SEQ_MODE GENMASK(1, 0)
-+#define BD79124_MASK_SEQ_MANUAL 0
-+#define BD79124_MASK_SEQ_SEQ 1
-+
-+#define BD79124_MASK_HYSTERESIS GENMASK(3, 0)
-+#define BD79124_LOW_LIMIT_MIN 0
-+#define BD79124_HIGH_LIMIT_MAX GENMASK(11, 0)
++#include "pinctrl-utils.h"
 +
 +/*
-+ * The high limit, low limit and last measurement result are each stored in
-+ * 2 consequtive registers. 4 bits are in the high bits of the 1.st regist=
-er
-+ * and 8 bits in the next register.
++ * The driver expects pins top have 1 to 1 mapping to the groups.
++ * Eg, pin 'ID 0' is AIN0, and can be directly mapped to the group "ain0",=
+ which
++ * also uses group ID 0. The driver mix and match the pin and group IDs. T=
+his
++ * works because we don't have any specific multi-pin groups. If I knew ty=
+pical
++ * use cases better I might've been able to create some funtionally meanin=
+gful
++ * groups - but as I don't, I just decided to create per-pin groups for to=
+ggling
++ * and individual pin to ADC-input or GPO mode. I believe this gives the
++ * flexibility for generic use-cases.
 + *
-+ * These macros return the address of the 1.st reg for the given channel
++ * If this is a false assumption and special groups are needed, then the p=
+in <=3D>
++ * group mapping in this driver must be reworked. Meanwhile just keep the =
+pin
++ * and group IDs matching!
 + */
-+#define BD79124_GET_HIGH_LIMIT_REG(ch) (BD79124_REG_HYSTERESIS_CH0 + (ch) =
-* 4)
-+#define BD79124_GET_LOW_LIMIT_REG(ch) (BD79124_REG_EVENTCOUNT_CH0 + (ch) *=
- 4)
-+#define BD79124_GET_RECENT_RES_REG(ch) (BD79124_REG_RECENT_CH0_LSB + (ch) =
-* 2)
++static const struct pinctrl_pin_desc bd79124_pins[] =3D {
++	PINCTRL_PIN(0, "ain0"),
++	PINCTRL_PIN(1, "ain1"),
++	PINCTRL_PIN(2, "ain2"),
++	PINCTRL_PIN(3, "ain3"),
++	PINCTRL_PIN(4, "ain4"),
++	PINCTRL_PIN(5, "ain5"),
++	PINCTRL_PIN(6, "ain6"),
++	PINCTRL_PIN(7, "ain7"),
++};
 +
-+/*
-+ * The hysteresis for a channel is stored in the same register where the
-+ * 4 bits of high limit reside.
-+ */
-+#define BD79124_GET_HYSTERESIS_REG(ch) BD79124_GET_HIGH_LIMIT_REG(ch)
++static const char * const bd79124_pin_groups[] =3D {
++	"ain0",
++	"ain1",
++	"ain2",
++	"ain3",
++	"ain4",
++	"ain5",
++	"ain6",
++	"ain7",
++};
++
++static int bd79124_get_groups_count(struct pinctrl_dev *pcdev)
++{
++	return ARRAY_SIZE(bd79124_pin_groups);
++}
++
++static const char *bd79124_get_group_name(struct pinctrl_dev *pctldev,
++					   unsigned int group)
++{
++	return bd79124_pin_groups[group];
++}
 +
 +enum {
-+	BD79124_CH_0,
-+	BD79124_CH_1,
-+	BD79124_CH_2,
-+	BD79124_CH_3,
-+	BD79124_CH_4,
-+	BD79124_CH_5,
-+	BD79124_CH_6,
-+	BD79124_CH_7,
-+	BD79124_MAX_NUM_CHANNELS
++	BD79124_FUNC_GPO,
++	BD79124_FUNC_ADC,
++	BD79124_FUNC_AMOUNT
 +};
 +
-+struct bd79124_data {
-+	s64 timestamp;
-+	struct regmap *map;
++static const char * const bd79124_functions[BD79124_FUNC_AMOUNT] =3D {
++	[BD79124_FUNC_GPO] =3D "gpo",
++	[BD79124_FUNC_ADC] =3D "adc",
++};
++
++struct bd79124_mux_data {
 +	struct device *dev;
-+	int vmax;
-+	int alarm_monitored[BD79124_MAX_NUM_CHANNELS];
-+	/*
-+	 * The BD79124 is configured to run the measurements in the background.
-+	 * This is done for the event monitoring as well as for the read_raw().
-+	 * Protect the measurement starting/stopping using a mutex.
-+	 */
-+	struct mutex mutex;
++	struct regmap *map;
++	struct pinctrl_dev *pcdev;
++	struct gpio_chip gc;
 +};
 +
-+struct bd79124_raw {
-+	u8 bit0_3; /* Is set in high bits of the byte */
-+	u8 bit4_11;
-+};
-+#define BD79124_RAW_TO_INT(r) ((r.bit4_11 << 4) | (r.bit0_3 >> 4))
-+
-+/*
-+ * The high and low limits as well as the recent result values are stored =
-in
-+ * the same way in 2 consequent registers. The first register contains 4 b=
-its
-+ * of the value. These bits are stored in the high bits [7:4] of register,=
- but
-+ * they represent the low bits [3:0] of the value.
-+ * The value bits [11:4] are stored in the next register.
-+ *
-+ * Read data from register and convert to integer.
-+ */
-+static int bd79124_read_reg_to_int(struct bd79124_data *d, int reg,
-+				   unsigned int *val)
++static int bd79124_pmx_get_functions_count(struct pinctrl_dev *pcdev)
 +{
-+	int ret;
-+	struct bd79124_raw raw;
-+
-+	ret =3D regmap_bulk_read(d->map, reg, &raw, sizeof(raw));
-+	if (ret)
-+		dev_dbg(d->dev, "bulk_read failed %d\n", ret);
-+	*val =3D BD79124_RAW_TO_INT(raw);
-+
-+	return ret;
++	return BD79124_FUNC_AMOUNT;
 +}
 +
-+/*
-+ * The high and low limits as well as the recent result values are stored =
-in
-+ * the same way in 2 consequent registers. The first register contains 4 b=
-its
-+ * of the value. These bits are stored in the high bits [7:4] of register,=
- but
-+ * they represent the low bits [3:0] of the value.
-+ * The value bits [11:4] are stored in the next regoster.
-+ *
-+ * Conver the integer to register format and write it using rmw cycle.
-+ */
-+static int bd79124_write_int_to_reg(struct bd79124_data *d, int reg,
-+				    unsigned int val)
++static const char *bd79124_pmx_get_function_name(struct pinctrl_dev *pcdev,
++						  unsigned int selector)
 +{
-+	struct bd79124_raw raw;
-+	int ret, tmp;
-+
-+	raw.bit4_11 =3D (u8)(val >> 4);
-+	raw.bit0_3 =3D (u8)(val << 4);
-+
-+	ret =3D regmap_read(d->map, reg, &tmp);
-+	if (ret)
-+		return ret;
-+
-+	raw.bit0_3 |=3D (0xf & tmp);
-+
-+	return regmap_bulk_write(d->map, reg, &raw, sizeof(raw));
++	return bd79124_functions[selector];
 +}
 +
-+static const struct iio_event_spec bd79124_events[] =3D {
-+	{
-+		.type =3D IIO_EV_TYPE_THRESH,
-+		.dir =3D IIO_EV_DIR_RISING,
-+		.mask_separate =3D BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type =3D IIO_EV_TYPE_THRESH,
-+		.dir =3D IIO_EV_DIR_FALLING,
-+		.mask_separate =3D BIT(IIO_EV_INFO_VALUE) |
-+				 BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		.type =3D IIO_EV_TYPE_THRESH,
-+		.dir =3D IIO_EV_DIR_EITHER,
-+		.mask_separate =3D BIT(IIO_EV_INFO_HYSTERESIS),
-+	},
-+};
-+
-+#define BD79124_CHAN(idx) {						\
-+	.type =3D IIO_VOLTAGE,						\
-+	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),			\
-+	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),		\
-+	.indexed =3D 1,							\
-+	.channel =3D idx,							\
-+}
-+
-+#define BD79124_CHAN_EV(idx) {						\
-+	.type =3D IIO_VOLTAGE,						\
-+	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),			\
-+	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),		\
-+	.indexed =3D 1,							\
-+	.channel =3D idx,							\
-+	.event_spec =3D bd79124_events,					\
-+	.num_event_specs =3D ARRAY_SIZE(bd79124_events),			\
-+}
-+
-+static const struct iio_chan_spec bd79124_channels[] =3D {
-+	BD79124_CHAN_EV(0),
-+	BD79124_CHAN_EV(1),
-+	BD79124_CHAN_EV(2),
-+	BD79124_CHAN_EV(3),
-+	BD79124_CHAN_EV(4),
-+	BD79124_CHAN_EV(5),
-+	BD79124_CHAN_EV(6),
-+	BD79124_CHAN_EV(7),
-+};
-+
-+static const struct iio_chan_spec bd79124_channels_noirq[] =3D {
-+	BD79124_CHAN(0),
-+	BD79124_CHAN(1),
-+	BD79124_CHAN(2),
-+	BD79124_CHAN(3),
-+	BD79124_CHAN(4),
-+	BD79124_CHAN(5),
-+	BD79124_CHAN(6),
-+	BD79124_CHAN(7),
-+};
-+
-+/*
-+ * The BD79124 supports muxing the pins as ADC inputs or as a general purp=
-ose
-+ * output. This muxing is handled by a pinmux driver. Here we just check t=
-he
-+ * settings from the register, and disallow using the pin if pinmux is set=
- to
-+ * GPO.
-+ *
-+ * NOTE: This driver does not perform any locking to ensure the pinmux sta=
-ys
-+ * toggled to ADC for the duration of the whatever operation is being done.
-+ * It is responsibility of the user to configure the pinmux.
-+ */
-+static bool bd79124_chan_is_adc(struct bd79124_data *d, unsigned int offse=
-t)
++static int bd79124_pmx_get_function_groups(struct pinctrl_dev *pcdev,
++		unsigned int selector,
++		const char * const **groups,
++		unsigned int * const num_groups)
 +{
-+	int ret, val;
-+
-+	ret =3D regmap_read(d->map, BD79124_REG_PINCFG, &val);
-+	/* If read fails, don't allow using as AIN (to be on a safe side) */
-+	if (ret)
-+		return 0;
-+
-+	return !(val & BIT(offset));
-+}
-+
-+static int bd79124_read_event_value(struct iio_dev *idev,
-+				    const struct iio_chan_spec *chan,
-+				    enum iio_event_type type,
-+				    enum iio_event_direction dir,
-+				    enum iio_event_info info, int *val,
-+				    int *val2)
-+{
-+	struct bd79124_data *d =3D iio_priv(idev);
-+	int ret, reg;
-+
-+	if (chan->channel >=3D BD79124_MAX_NUM_CHANNELS)
-+		return -EINVAL;
-+
-+	/* ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan->channel))
-+		return -EBUSY;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		if (dir =3D=3D IIO_EV_DIR_RISING)
-+			reg =3D BD79124_GET_HIGH_LIMIT_REG(chan->channel);
-+		else if (dir =3D=3D IIO_EV_DIR_FALLING)
-+			reg =3D BD79124_GET_LOW_LIMIT_REG(chan->channel);
-+		else
-+			return -EINVAL;
-+
-+		ret =3D bd79124_read_reg_to_int(d, reg, val);
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+
-+	case IIO_EV_INFO_HYSTERESIS:
-+		reg =3D BD79124_GET_HYSTERESIS_REG(chan->channel);
-+		ret =3D regmap_read(d->map, reg, val);
-+		if (ret)
-+			return ret;
-+		/* Mask the non hysteresis bits */
-+		*val &=3D BD79124_MASK_HYSTERESIS;
-+		/*
-+		 * The data-sheet says the hysteresis register value needs to be
-+		 * sifted left by 3 (or multiplied by 8, depending on the
-+		 * page :] )
-+		 */
-+		*val <<=3D 3;
-+
-+		return IIO_VAL_INT;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bd79124_start_measurement(struct bd79124_data *d, int chan)
-+{
-+	int val, ret, regval;
-+
-+	/* ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan))
-+		return -EBUSY;
-+
-+	/* See if already started */
-+	ret =3D regmap_read(d->map, BD79124_REG_AUTO_CHANNELS, &val);
-+	if (val & BIT(chan))
-+		return 0;
-+
-+	/* Stop the sequencer */
-+	ret =3D regmap_clear_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+				BD79124_MASK_SEQ_START);
-+	if (ret)
-+		return ret;
-+
-+	/* Add the channel to measured channels */
-+	ret =3D regmap_write(d->map, BD79124_REG_AUTO_CHANNELS, val | BIT(chan));
-+	if (ret)
-+		return ret;
-+
-+	/* Restart the sequencer */
-+	ret =3D regmap_set_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+			      BD79124_MASK_SEQ_START);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Start the measurement at the background. Don't bother checking if
-+	 * it was started, regmap has cache
-+	 */
-+	regval =3D FIELD_PREP(BD79124_MASK_CONV_MODE, BD79124_CONV_MODE_AUTO);
-+
-+	return regmap_update_bits(d->map, BD79124_REG_OPMODE_CFG,
-+				BD79124_MASK_CONV_MODE, regval);
-+}
-+
-+static int bd79124_stop_measurement(struct bd79124_data *d, int chan)
-+{
-+	int val, ret;
-+
-+	/* Ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan))
-+		return -EBUSY;
-+
-+	/* If alarm is requested for the channel we won't stop measurement */
-+	if (d->alarm_monitored[chan])
-+		return 0;
-+
-+	/* See if already stopped */
-+	ret =3D regmap_read(d->map, BD79124_REG_AUTO_CHANNELS, &val);
-+	if (!(val & BIT(chan)))
-+		return 0;
-+
-+	/* Stop the sequencer */
-+	ret =3D regmap_clear_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+				BD79124_MASK_SEQ_START);
-+
-+	/* Clear the channel from the measured channels */
-+	ret =3D regmap_write(d->map, BD79124_REG_AUTO_CHANNELS,
-+			   (~BIT(chan)) & val);
-+	if (ret)
-+		return ret;
-+
-+	/* Stop background conversion if it was the last channel */
-+	if (!((~BIT(chan)) & val)) {
-+		int regval =3D FIELD_PREP(BD79124_MASK_CONV_MODE,
-+					BD79124_CONV_MODE_MANSEQ);
-+
-+		ret =3D regmap_update_bits(d->map, BD79124_REG_OPMODE_CFG,
-+					 BD79124_MASK_CONV_MODE, regval);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Restart the sequencer */
-+	return regmap_set_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+			       BD79124_MASK_SEQ_START);
-+}
-+
-+static int bd79124_read_event_config(struct iio_dev *idev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir)
-+{
-+	struct bd79124_data *d =3D iio_priv(idev);
-+	int val, ret, reg, disabled;
-+
-+	if (chan->channel >=3D BD79124_MAX_NUM_CHANNELS)
-+		return -EINVAL;
-+
-+	/* ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan->channel))
-+		return -EBUSY;
-+
-+	ret =3D regmap_read(d->map, BD79124_REG_ALERT_CH_SEL, &val);
-+	if (ret)
-+		return ret;
-+
-+	/* The event is disabled if alerts for the channel are disabled */
-+	if (!(val & BIT(chan->channel)))
-+		return 0;
-+
-+	/*
-+	 * If alerts are on, then the event may be disabled if limit is set to
-+	 * the one extreme. (HW does not support disabling rising/falling
-+	 * thresholds independently. Hence we resort to setting high limit to
-+	 * MAX, or low limit to 0 to try effectively disable thresholds).
-+	 */
-+	if (dir =3D=3D IIO_EV_DIR_RISING) {
-+		reg =3D BD79124_GET_HIGH_LIMIT_REG(chan->channel);
-+		disabled =3D BD79124_HIGH_LIMIT_MAX;
-+	} else if (dir =3D=3D IIO_EV_DIR_FALLING) {
-+		reg =3D BD79124_GET_LOW_LIMIT_REG(chan->channel);
-+		disabled =3D BD79124_LOW_LIMIT_MIN;
-+	} else {
-+		return -EINVAL;
-+	}
-+	ret =3D bd79124_read_reg_to_int(d, reg, &val);
-+	if (ret)
-+		return ret;
-+
-+	return val !=3D disabled;
-+}
-+
-+static int bd79124_disable_event(struct bd79124_data *d,
-+				 enum iio_event_direction dir, int channel)
-+{
-+	int dir_bit =3D BIT(dir), reg;
-+	unsigned int limit;
-+
-+	d->alarm_monitored[channel] &=3D (~dir_bit);
-+	/*
-+	 * Set thresholds either to 0 or to 2^12 - 1 as appropriate to prevent
-+	 * alerts and thus disable event generation.
-+	 */
-+	if (dir =3D=3D IIO_EV_DIR_RISING) {
-+		reg =3D BD79124_GET_HIGH_LIMIT_REG(channel);
-+		limit =3D BD79124_HIGH_LIMIT_MAX;
-+	} else if (dir =3D=3D IIO_EV_DIR_FALLING) {
-+		reg =3D BD79124_GET_LOW_LIMIT_REG(channel);
-+		limit =3D BD79124_LOW_LIMIT_MIN;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * Stop measurement if there is no more events to monitor.
-+	 * We don't bother checking the retval because the limit
-+	 * setting should in any case effectively disable the alarm.
-+	 */
-+	if (!d->alarm_monitored[channel]) {
-+		bd79124_stop_measurement(d, channel);
-+		regmap_clear_bits(d->map, BD79124_REG_ALERT_CH_SEL,
-+			       BIT(channel));
-+	}
-+
-+	return bd79124_write_int_to_reg(d, reg, limit);
-+}
-+
-+/* Do we need to disable the measurement for the duration of the limit con=
-f ? */
-+static int bd79124_write_event_config(struct iio_dev *idev,
-+				      const struct iio_chan_spec *chan,
-+				      enum iio_event_type type,
-+				      enum iio_event_direction dir, bool state)
-+{
-+	struct bd79124_data *d =3D iio_priv(idev);
-+	int dir_bit =3D BIT(dir);
-+
-+	guard(mutex)(&d->mutex);
-+
-+	if (chan->channel >=3D BD79124_MAX_NUM_CHANNELS)
-+		return -EINVAL;
-+
-+	/* ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan->channel))
-+		return -EBUSY;
-+
-+	if (state) {
-+		int ret;
-+
-+		/* Set channel to be measured */
-+		ret =3D bd79124_start_measurement(d, chan->channel);
-+		if (ret)
-+			return ret;
-+
-+		d->alarm_monitored[chan->channel] |=3D dir_bit;
-+
-+		/* Add the channel to the list of monitored channels */
-+		ret =3D regmap_set_bits(d->map, BD79124_REG_ALERT_CH_SEL,
-+				      BIT(chan->channel));
-+		if (ret)
-+			return ret;
-+
-+		/*
-+		 * Enable comparator. Trust the regmap cache, no need to check
-+		 * if it was already enabled.
-+		 *
-+		 * We could do this in the hw-init, but there may be users who
-+		 * never enable alarms and for them it makes sense to not
-+		 * enable the comparator at probe.
-+		 */
-+		return regmap_set_bits(d->map, BD79124_REG_GEN_CFG,
-+				      BD79124_MASK_DWC_EN);
-+	}
-+
-+	return bd79124_disable_event(d, dir, chan->channel);
-+}
-+
-+static int bd79124_write_event_value(struct iio_dev *idev,
-+				     const struct iio_chan_spec *chan,
-+				     enum iio_event_type type,
-+				     enum iio_event_direction dir,
-+				     enum iio_event_info info, int val,
-+				     int val2)
-+{
-+	struct bd79124_data *d =3D iio_priv(idev);
-+	int reg;
-+
-+	if (chan->channel >=3D BD79124_MAX_NUM_CHANNELS)
-+		return -EINVAL;
-+
-+	/* ensure pinmux is set to ADC */
-+	if (!bd79124_chan_is_adc(d, chan->channel))
-+		return -EBUSY;
-+
-+	switch (info) {
-+	case IIO_EV_INFO_VALUE:
-+		if (dir =3D=3D IIO_EV_DIR_RISING)
-+			reg =3D BD79124_GET_HIGH_LIMIT_REG(chan->channel);
-+		else if (dir =3D=3D IIO_EV_DIR_FALLING)
-+			reg =3D BD79124_GET_LOW_LIMIT_REG(chan->channel);
-+		else
-+			return -EINVAL;
-+
-+		return bd79124_write_int_to_reg(d, reg, val);
-+
-+	case IIO_EV_INFO_HYSTERESIS:
-+			reg =3D BD79124_GET_HYSTERESIS_REG(chan->channel);
-+			val >>=3D 3;
-+
-+		return regmap_update_bits(d->map, reg, BD79124_MASK_HYSTERESIS,
-+					  val);
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int bd79124_read_last_result(struct bd79124_data *d, int chan,
-+				    int *result)
-+{
-+	struct bd79124_raw raw;
-+	int ret;
-+
-+	ret =3D regmap_bulk_read(d->map, BD79124_GET_RECENT_RES_REG(chan), &raw,
-+			       sizeof(raw));
-+	if (ret)
-+		return ret;
-+
-+	*result =3D BD79124_RAW_TO_INT(raw);
++	*groups =3D &bd79124_pin_groups[0];
++	*num_groups =3D ARRAY_SIZE(bd79124_pin_groups);
 +
 +	return 0;
 +}
 +
-+static int bd79124_single_chan_seq(struct bd79124_data *d, int chan, int *=
-old)
++static int bd79124_pmx_set(struct pinctrl_dev *pcdev, unsigned int func,
++			   unsigned int group)
 +{
-+	int ret;
++	struct bd79124_mux_data *d =3D pinctrl_dev_get_drvdata(pcdev);
 +
-+	/* Stop the sequencer */
-+	ret =3D regmap_clear_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+				BD79124_MASK_SEQ_START);
-+	if (ret)
-+		return ret;
++	/* We use 1 to 1 mapping for grp <=3D> pin */
++	if (func =3D=3D BD79124_FUNC_GPO)
++		return regmap_set_bits(d->map, BD79124_REG_PINCFG, BIT(group));
 +
++	return regmap_clear_bits(d->map, BD79124_REG_PINCFG, BIT(group));
++}
++
++/*
++ * Check that the pinmux has set this pin as GPO before allowing it to be =
+used.
++ * NOTE: There is no locking in the pinctrl driver to ensure the pin _stay=
+s_
++ * appropriately muxed. It is the responsibility of the device using this =
+GPO
++ * (or ADC) to reserve the pin from the pinmux.
++ */
++static bool bd79124_is_gpo(struct bd79124_mux_data *d, unsigned int offset)
++{
++	int ret, val;
++
++	ret =3D regmap_read(d->map, BD79124_REG_PINCFG, &val);
 +	/*
-+	 * It may be we have some channels monitored for alarms so we want to
-+	 * cache the old config and return it when the single channel
-+	 * measurement has been completed. Read the old config.
++	 * If read fails, don't allow setting GPO value as we don't know if
++	 * pin is used as AIN. (In which case we might upset the device being
++	 * measured - although I suppose the BD79124 would ignore the set value
++	 * if pin is used as AIN - but better safe than sorry, right?
 +	 */
-+	ret =3D regmap_read(d->map, BD79124_REG_AUTO_CHANNELS, old);
 +	if (ret)
-+		return ret;
++		return 0;
 +
-+	ret =3D regmap_write(d->map, BD79124_REG_AUTO_CHANNELS, BIT(chan));
-+	if (ret)
-+		return ret;
-+
-+	/* Restart the sequencer */
-+	return regmap_set_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+			      BD79124_MASK_SEQ_START);
++	return (val & BIT(offset));
 +}
 +
-+static int bd79124_single_chan_seq_end(struct bd79124_data *d, int old)
++static int bd79124gpo_direction_get(struct gpio_chip *gc, unsigned int off=
+set)
 +{
-+	int ret;
++	struct bd79124_mux_data *d =3D gpiochip_get_data(gc);
 +
-+	/* Stop the sequencer */
-+	ret =3D regmap_clear_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+				BD79124_MASK_SEQ_START);
-+	if (ret)
-+		return ret;
-+
-+	ret =3D regmap_write(d->map, BD79124_REG_AUTO_CHANNELS, old);
-+	if (ret)
-+		return ret;
-+
-+	/* Restart the sequencer */
-+	return regmap_set_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+			      BD79124_MASK_SEQ_START);
-+}
-+
-+static int bd79124_read_raw(struct iio_dev *idev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long m)
-+{
-+	struct bd79124_data *d =3D iio_priv(idev);
-+	int ret;
-+
-+	if (chan->channel >=3D BD79124_MAX_NUM_CHANNELS)
++	if (!bd79124_is_gpo(d, offset))
 +		return -EINVAL;
 +
-+	switch (m) {
-+	case IIO_CHAN_INFO_RAW:
-+	{
-+		int old_chan_cfg, tmp;
-+		int regval =3D FIELD_PREP(BD79124_MASK_CONV_MODE,
-+					BD79124_CONV_MODE_AUTO);
-+
-+		guard(mutex)(&d->mutex);
-+
-+		/* ensure pinmux is set to ADC */
-+		if (!bd79124_chan_is_adc(d, chan->channel))
-+			return -EBUSY;
-+
-+		/*
-+		 * Start the automatic conversion. This is needed here if no
-+		 * events have been enabled.
-+		 */
-+		ret =3D regmap_update_bits(d->map, BD79124_REG_OPMODE_CFG,
-+			BD79124_MASK_CONV_MODE, regval);
-+		if (ret)
-+			return ret;
-+
-+		ret =3D bd79124_single_chan_seq(d, chan->channel, &old_chan_cfg);
-+		if (ret)
-+			return ret;
-+
-+		/*
-+		 * The maximum conversion time is 6 uS. Ensure the sample is
-+		 * ready
-+		 */
-+		udelay(6);
-+
-+		ret =3D bd79124_read_last_result(d, chan->channel, val);
-+		/* Try unconditionally returning the chan config */
-+		tmp =3D bd79124_single_chan_seq_end(d, old_chan_cfg);
-+		if (tmp)
-+			dev_err(d->dev,
-+				"Failed to return config. Alarms may be disabled\n");
-+
-+		if (ret)
-+			return ret;
-+
-+		return IIO_VAL_INT;
-+	}
-+	case IIO_CHAN_INFO_SCALE:
-+		*val =3D d->vmax / 1000;
-+		*val2 =3D BD79124_ADC_BITS;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	default:
-+		return -EINVAL;
-+	}
++	return GPIO_LINE_DIRECTION_OUT;
 +}
 +
-+static const struct iio_info bd79124_info =3D {
-+	.read_raw =3D bd79124_read_raw,
-+	.read_event_config =3D &bd79124_read_event_config,
-+	.write_event_config =3D &bd79124_write_event_config,
-+	.read_event_value =3D &bd79124_read_event_value,
-+	.write_event_value =3D &bd79124_write_event_value,
++static void bd79124gpo_set(struct gpio_chip *gc, unsigned int offset, int =
+value)
++{
++	struct bd79124_mux_data *d =3D gpiochip_get_data(gc);
++
++	if (!bd79124_is_gpo(d, offset)) {
++		dev_dbg(d->dev, "Bad GPO mux mode\n");
++		return;
++	}
++
++	if (value)
++		regmap_set_bits(d->map, BD79124_REG_GPO_VAL, BIT(offset));
++
++	regmap_clear_bits(d->map, BD79124_REG_GPO_VAL, BIT(offset));
++}
++
++static void bd79124gpo_set_multiple(struct gpio_chip *gc, unsigned long *m=
+ask,
++				   unsigned long *bits)
++{
++	int ret, val;
++	struct bd79124_mux_data *d =3D gpiochip_get_data(gc);
++
++	/* Ensure all GPIOs in 'mask' are set to be GPIOs */
++	ret =3D regmap_read(d->map, BD79124_REG_PINCFG, &val);
++	if (ret)
++		return;
++
++	if ((val & *mask) !=3D *mask) {
++		dev_dbg(d->dev, "Invalid mux config. Can't set value.\n");
++		/* Do not set value for pins configured as ADC inputs */
++		*mask &=3D val;
++	}
++
++	regmap_update_bits(d->map, BD79124_REG_GPO_VAL, *mask, *bits);
++}
++
++/* Template for GPIO chip */
++static const struct gpio_chip bd79124gpo_chip =3D {
++	.label			=3D "bd79124-gpo",
++	.get_direction		=3D bd79124gpo_direction_get,
++	.set			=3D bd79124gpo_set,
++	.set_multiple		=3D bd79124gpo_set_multiple,
++	.can_sleep		=3D true,
++	.ngpio			=3D 8,
++	.base			=3D -1,
 +};
 +
-+static irqreturn_t bd79124_event_handler(int irq, void *priv)
-+{
-+	int ret, i_hi, i_lo, i;
-+	struct iio_dev *idev =3D priv;
-+	struct bd79124_data *d =3D iio_priv(idev);
++static const struct pinmux_ops bd79124_pmxops =3D {
++	.get_functions_count =3D bd79124_pmx_get_functions_count,
++	.get_function_name =3D bd79124_pmx_get_function_name,
++	.get_function_groups =3D bd79124_pmx_get_function_groups,
++	.set_mux =3D bd79124_pmx_set,
++};
 +
-+	/*
-+	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
-+	 * subsystem to disable the offending IRQ line if we get a hardware
-+	 * problem. This behaviour has saved my poor bottom a few times in the
-+	 * past as, instead of getting unusably unresponsive, the system has
-+	 * spilled out the magic words "...nobody cared".
-+	 */
-+	ret =3D regmap_read(d->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
-+	if (ret)
-+		return IRQ_NONE;
++static const struct pinctrl_ops bd79124_pctlops =3D {
++	.get_groups_count =3D bd79124_get_groups_count,
++	.get_group_name =3D bd79124_get_group_name,
++	.dt_node_to_map =3D pinconf_generic_dt_node_to_map_all,
++	.dt_free_map =3D pinctrl_utils_free_map,
++};
 +
-+	ret =3D regmap_read(d->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	if (!i_lo && !i_hi)
-+		return IRQ_NONE;
-+
-+	for (i =3D 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
-+		u64 ecode;
-+
-+		if (BIT(i) & i_hi) {
-+			ecode =3D IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
-+					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
-+
-+			iio_push_event(idev, ecode, d->timestamp);
-+			/*
-+			 * The BD79124 keeps the IRQ asserted for as long as
-+			 * the voltage exceeds the threshold. It may not serve
-+			 * the purpose to keep the IRQ firing and events
-+			 * generated in a loop because it may yield the
-+			 * userspace to have some problems when event handling
-+			 * there is slow.
-+			 *
-+			 * Thus, we disable the event for the channel. Userspace
-+			 * needs to re-enable the event.
-+			 *
-+			 * We don't check the result as there is not much to do.
-+			 * Also, this should not lead to total IRQ storm
-+			 * because the BD79124 is running in autonomous mode,
-+			 * which means there is by minimum 0.75 mS idle time
-+			 * between changing the channels. That should be
-+			 * sufficient to show some life on system, even if the
-+			 * event handling couldn't keep up.
-+			 */
-+			bd79124_disable_event(d, IIO_EV_DIR_RISING, i);
-+		}
-+		if (BIT(i) & i_lo) {
-+			ecode =3D IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
-+					IIO_EV_TYPE_THRESH, IIO_EV_DIR_FALLING);
-+
-+			iio_push_event(idev, ecode, d->timestamp);
-+		}
-+	}
-+
-+	ret =3D regmap_write(d->map, BD79124_REG_EVENT_FLAG_HI, i_hi);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	ret =3D regmap_write(d->map, BD79124_REG_EVENT_FLAG_LO, i_lo);
-+	if (ret)
-+		return IRQ_NONE;
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static irqreturn_t bd79124_irq_handler(int irq, void *priv)
-+{
-+	struct iio_dev *idev =3D priv;
-+	struct bd79124_data *d =3D iio_priv(idev);
-+
-+	d->timestamp =3D iio_get_time_ns(idev);
-+
-+	return IRQ_WAKE_THREAD;
-+}
-+
-+static int bd79124_hw_init(struct bd79124_data *d)
-+{
-+	int ret, regval;
-+
-+	/* Stop auto sequencer */
-+	ret =3D regmap_clear_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+				BD79124_MASK_SEQ_START);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable writing the measured values to the regsters */
-+	ret =3D regmap_set_bits(d->map, BD79124_REG_GEN_CFG,
-+				 BD79124_MASK_STATS_EN);
-+	if (ret)
-+		return ret;
-+
-+	/* Set no channels to be auto-measured */
-+	ret =3D regmap_write(d->map, BD79124_REG_AUTO_CHANNELS, 0x0);
-+	if (ret)
-+		return ret;
-+
-+	/* Set no channels to be manually measured */
-+	ret =3D regmap_write(d->map, BD79124_REG_MANUAL_CHANNELS, 0x0);
-+	if (ret)
-+		return ret;
-+
-+	/* Set the measurement interval to 0.75 mS */
-+
-+	regval =3D FIELD_PREP(BD79124_MASK_AUTO_INTERVAL, BD79124_INTERVAL_075);
-+	ret =3D regmap_update_bits(d->map, BD79124_REG_OPMODE_CFG,
-+			BD79124_MASK_AUTO_INTERVAL, regval);
-+	if (ret)
-+		return ret;
-+
-+	/* Sequencer mode to auto */
-+	ret =3D regmap_set_bits(d->map, BD79124_REG_SEQUENCE_CFG,
-+			      BD79124_MASK_SEQ_SEQ);
-+	if (ret)
-+		return ret;
-+
-+	regval =3D FIELD_PREP(BD79124_MASK_CONV_MODE, BD79124_CONV_MODE_MANSEQ);
-+	/* Don't start the measurement */
-+	return regmap_update_bits(d->map, BD79124_REG_OPMODE_CFG,
-+			BD79124_MASK_CONV_MODE, BD79124_CONV_MODE_MANSEQ);
-+
-+}
-+
-+#define BD79124_VDD_MAX 5250000
-+#define BD79124_VDD_MIN 2700000
++static const struct pinctrl_desc bd79124_pdesc =3D {
++	.name =3D "bd79124-pinctrl",
++	.pins =3D &bd79124_pins[0],
++	.npins =3D ARRAY_SIZE(bd79124_pins),
++	.pmxops =3D &bd79124_pmxops,
++	.pctlops =3D &bd79124_pctlops,
++};
 +
 +static int bd79124_probe(struct platform_device *pdev)
 +{
-+	struct bd79124_data *d;
-+	struct iio_dev *idev;
-+	int ret, irq, *parent_data;
++	struct bd79124_mux_data *d;
++	int ret;
 +
-+	idev =3D devm_iio_device_alloc(&pdev->dev, sizeof(*d));
-+	if (!idev)
++	d =3D devm_kzalloc(&pdev->dev, sizeof(*d), GFP_KERNEL);
++	if (!d)
 +		return -ENOMEM;
-+
-+	d =3D iio_priv(idev);
-+
-+	parent_data =3D dev_get_drvdata(pdev->dev.parent);
-+	if (!parent_data)
-+		return dev_err_probe(&pdev->dev, -EINVAL,
-+				     "reference voltage missing\n");
-+
-+	/*
-+	 * Recommended VDD voltage from the data-sheet:
-+	 * Analog/Digital Supply Voltage VDD 2.70 - 5.25 V
-+	 */
-+	d->vmax =3D *parent_data;
-+	if (d->vmax < BD79124_VDD_MIN || d->vmax > BD79124_VDD_MAX) {
-+		return dev_err_probe(d->dev, -EINVAL,
-+				     "VDD (%d) out of range [%d - %d]\n",
-+				     d->vmax, BD79124_VDD_MIN, BD79124_VDD_MAX);
-+
-+		return -EINVAL;
-+	}
-+
-+	irq =3D platform_get_irq_byname_optional(pdev, "thresh-alert");
-+	if (irq < 0) {
-+		if (irq =3D=3D -EPROBE_DEFER)
-+			return irq;
-+
-+		idev->channels =3D &bd79124_channels_noirq[0];
-+		idev->num_channels =3D ARRAY_SIZE(bd79124_channels_noirq);
-+		dev_dbg(d->dev, "No IRQ found, events disabled\n");
-+	} else {
-+		idev->channels =3D &bd79124_channels[0];
-+		idev->num_channels =3D ARRAY_SIZE(bd79124_channels);
-+	}
-+
-+	idev->info =3D &bd79124_info;
-+	idev->name =3D "bd79124";
-+	idev->modes =3D INDIO_DIRECT_MODE;
 +
 +	d->dev =3D &pdev->dev;
 +	d->map =3D dev_get_regmap(d->dev->parent, NULL);
 +	if (!d->map)
 +		return dev_err_probe(d->dev, -ENODEV, "No regmap\n");
 +
-+	mutex_init(&d->mutex);
++	d->gc =3D bd79124gpo_chip;
 +
-+	ret =3D bd79124_hw_init(d);
++	ret =3D devm_pinctrl_register_and_init(d->dev->parent,
++			(struct pinctrl_desc *)&bd79124_pdesc, d, &d->pcdev);
 +	if (ret)
-+		return ret;
++		return dev_err_probe(d->dev, ret, "pincontrol registration failed\n");
++	ret =3D pinctrl_enable(d->pcdev);
++	if (ret)
++		return dev_err_probe(d->dev, ret, "pincontrol enabling failed\n");
 +
-+	if (irq > 0) {
-+		ret =3D devm_request_threaded_irq(d->dev, irq, bd79124_irq_handler,
-+					&bd79124_event_handler, IRQF_ONESHOT,
-+					"adc-thresh-alert", idev);
-+		if (ret)
-+			return dev_err_probe(d->dev, ret,
-+					     "Failed to register IRQ\n");
-+	}
++	ret =3D devm_gpiochip_add_data(d->dev, &d->gc, d);
++	if (ret)
++		return dev_err_probe(d->dev, ret, "gpio init Failed\n");
 +
-+	return devm_iio_device_register(d->dev, idev);
++	return 0;
 +}
 +
-+static const struct platform_device_id bd79124_adc_id[] =3D {
-+	{ "bd79124-adc", },
++static const struct platform_device_id bd79124_mux_id[] =3D {
++	{ "bd79124-pinmux", },
 +	{ }
 +};
-+MODULE_DEVICE_TABLE(platform, bd79124_adc_id);
++MODULE_DEVICE_TABLE(platform, bd79124_mux_id);
 +
-+static struct platform_driver bd79124_driver =3D {
++static struct platform_driver bd79124_mux_driver =3D {
 +	.driver =3D {
-+		.name =3D "bd79124-adc",
++		.name =3D "bd79124-pinmux",
 +		/*
 +		 * Probing explicitly requires a few millisecond of sleep.
 +		 * Enabling the VDD regulator may include ramp up rates.
@@ -1098,31 +449,31 @@ old)
 +		.probe_type =3D PROBE_PREFER_ASYNCHRONOUS,
 +	},
 +	.probe =3D bd79124_probe,
-+	.id_table =3D bd79124_adc_id,
++	.id_table =3D bd79124_mux_id,
 +};
-+module_platform_driver(bd79124_driver);
++module_platform_driver(bd79124_mux_driver);
 +
 +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-+MODULE_DESCRIPTION("Driver for ROHM BD79124 ADC");
++MODULE_DESCRIPTION("Pinmux/GPO Driver for ROHM BD79124");
 +MODULE_LICENSE("GPL");
 --=20
 2.48.1
 
 
---B5xHhQjeBAxx0fyd
+--JI/5detke+jV38o3
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmec0iwACgkQeFA3/03a
-ocWoYQgAoEzDdeNziJZVdeW1bqUxcWDCF3vxiYNtx0pNbwVtdHiQvKKcGA6AanxK
-MIh7kcqp5AtZHFkqE5ZemapHtCvq800HAaD/H0Feq5dVAGOAjRYLybpvLH8t/Idc
-7Cm+GPuOx+hcWkRTjcRe9YmSaTHneZhDJ6T/9glhEC4UbtAMAyTQkTXI5uUaGllk
-GsbTo45MEviW0QjlnHcr43Gsmd3GatgiDz1DuvwuCGB2CbR1CE7O0ZFR/7bJ9ZHh
-G6WcjRzeMjbcryCo0pzU3SH8j6vu9USz8cLMut97aUe3aWKUXr2eO/LLydaM+h17
-KmWwwkqzYDn2vOeOT0DoUlMVIOoJQg==
-=pk70
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmec0kcACgkQeFA3/03a
+ocUDkwf+O8HC/go+3KsKiruRYIknCumacgHXfC6kMgdJJVzCSM1SySzg+9FJsCm1
+z1jNFushEkPEwNhrvbd9BsiDBZBym/qA0Er3aR+NDTo9Z9gJpGYjDdz2C+FWW07t
+NGAy+A7VNi19zdS16SgCZCZgLulTuctecMSONwA2sy+kyPwceaohy644WLXzJVox
+gvJd+Rxgf8ut2o/zoJIM9YGMtz2p0Un2TYjB8XNotlvF4kvywI0O/3vDXArq8mzX
+Q4bb4AWb38zKrvx8kNlvD46TU1jMNFazYdCG/GEAKlUMAmm0QfQU971IkEpmgH8q
+QQNFDZrey6GBS5CkW1NUBSZ/OHT+2Q==
+=JB44
 -----END PGP SIGNATURE-----
 
---B5xHhQjeBAxx0fyd--
+--JI/5detke+jV38o3--
 

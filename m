@@ -1,387 +1,169 @@
-Return-Path: <linux-iio+bounces-14773-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14774-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF042A242DA
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 19:39:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF11A2431B
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 20:03:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B3C6165729
-	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 18:39:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9E7B188A99F
+	for <lists+linux-iio@lfdr.de>; Fri, 31 Jan 2025 19:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100791F237C;
-	Fri, 31 Jan 2025 18:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676BB1F1902;
+	Fri, 31 Jan 2025 19:03:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FEbWMdyb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B88153565;
-	Fri, 31 Jan 2025 18:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600BF14AD3F;
+	Fri, 31 Jan 2025 19:03:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738348777; cv=none; b=c1cZeEkyF9OTvKUcNvSFJiI5XLO6m+IVSANev7gJZBqXW2ir4tEpkS0udAFxUXmAUNRJ/gmECUL+jnMJNVo4Zlkvd/6HMK0gfP6sqYbsh3I4CyH7cYsIcR/jFH4ODozsWYfXW7YZuTqaVFKCNE0ggIgfrW/wk6K1Q+xywzoaw+I=
+	t=1738350221; cv=none; b=l6PjQxJrUFpyOzomIfskBDbNLg0VUMOpLCG4iX44LOJpgQhEsdLswm7dPbK9oUifcZL31XwDeWo5SuyjGdFbTi+D3dEeypJOBnWNXc5dRylVxZJDxhzfGUd3BPgU2YaSui4AEDXTagco4UaCC7dE3KLzI9ROwQ6asI/Iqc9wdfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738348777; c=relaxed/simple;
-	bh=U+vC4MgC6keMoKoFempovO8KBmgpjEzhh9HDD3e8CTM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=usS9HGtNNFqQQ8tovkJUl9QZoPic24B9Im+dnKPOeWrCCBDgFKWw1hjPUTu0EF7psFJQ8HdZuXKurPw8QJ36ty3zKLEDqOrvUNUL52Lsp18lhwo5lt+M4L+nVbeVhSy5v2rOkesvRQxoTdnVvkv5BKfHem5nlYRUrcgV32VK9OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yl4RG4LRTz6K60m;
-	Sat,  1 Feb 2025 02:38:50 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id DC65D140A70;
-	Sat,  1 Feb 2025 02:39:32 +0800 (CST)
-Received: from localhost (10.195.244.178) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 31 Jan
- 2025 19:39:31 +0100
-Date: Fri, 31 Jan 2025 18:39:30 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-CC: Alisa-Dariana Roman <alisa.roman@analog.com>, David Lechner
-	<dlechner@baylibre.com>, <linux-iio@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, "Michael
- Hennerich" <Michael.Hennerich@analog.com>, Jonathan Cameron
-	<jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>
-Subject: Re: [PATCH v3 3/3] docs: iio: add AD7191
-Message-ID: <20250131183930.00003f52@huawei.com>
-In-Reply-To: <20250129143054.225322-4-alisa.roman@analog.com>
-References: <20250129143054.225322-1-alisa.roman@analog.com>
-	<20250129143054.225322-4-alisa.roman@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1738350221; c=relaxed/simple;
+	bh=uzxZezk1KcRSDBfkDDnaI/05Lxa4t4IjBjpskgW0ogQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cFrVh35kF14rcJ9hspgD4X2aaBZvW+tmJ/6T3gbokwcYGvfYN5G//Im0/YCaSnolWUP68cuV90ahlZGCXx2b7AGkNNXFphYmla/wOFkxFoo+rWYPJu1SDjgf42V0sG40VSbl0mnjbq3QRikynpsEglug9RKApbzgLfZJ9UQ5x0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FEbWMdyb; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38be3bfb045so2387097f8f.0;
+        Fri, 31 Jan 2025 11:03:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738350217; x=1738955017; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pglTObOFT5rBCszltvVnpJmzw8D/oeXug/disPOkEu0=;
+        b=FEbWMdybdt3UQYzjd//UkZvWxH3FJ/AEOIInsiVqs3hDhy2UtmLBfsF0at46OrTpAZ
+         adGbpzVJ4JjIFTKAuLg6N43lrttuoQi4i43ZTKnwfaMfqOEak+FrbB7yX64xPn8RtQfs
+         uBABEquQptUUTT9GEfsdBl6J5g6++VC1PzCO5JLvMOyHu/9SXR+CruJLujv7ubjFImtp
+         5jd/IrurwKUMzvg7aJRnziM/6vN98rWM7ST/9if0r5vblw10nJs6Gls5xy139G1Y7b1y
+         vlGO5qRLX4D8tGzVCqWbCGW+Z6aRlbbSWYCHK7Aud/LaGGOOTbCN1rpWPl4iALfqa8lF
+         CkOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738350217; x=1738955017;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pglTObOFT5rBCszltvVnpJmzw8D/oeXug/disPOkEu0=;
+        b=gNGIK1WqK0S6DXd7MKYJYb0+6bYY3e4ERxfZrEac2PxuAobwEeecowOCTCvOQU0XMG
+         EZz7Rfu8swnLUSvb1bk5EonQaNXlJ7pbPnIB8jjNBL0evYlVHVZ9P3GiB3OzpZXdMgLt
+         2oeAggXb1pTlb7Avf6sZR5Fdl/I0V9KYa/edxZ7qoNBWwfscH4ly+gHvqmqIo6ZMSzv0
+         Z+hwBFAEbc/S2lGRSH3tK4Bls0zFX9C/U41n7eZruv9QxDAlgWtW2OchrbSBSywD1uRJ
+         9o0bm3JH4ZyxrXjkEq6ihzGB8vxdlUHOyKYK5IUfWlY6DcCKGbkO6ihQ8HvqkDY6gSm9
+         yrGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU272tjlm/WTtnn4kL/ZocT8ievOATnWCiu1JmlZLXyu9C9ZKsg62PgvJMxf3T42wNxf303aqPDV4pbwgzX@vger.kernel.org, AJvYcCUcNeZLAGt/uq2/l6gF9qrZEDyOOILQWqtzNY4A4m/KPVpQajCuB6vFdhpp1ko+C0xpbn9JTP26/wQ=@vger.kernel.org, AJvYcCVAq3+kFFMVezT1Vs9wpPng3pjLYNI5vNYcwcvzlFCL4uE//jPLA8GY+H2wWjTI3mUCsoyOrVOUecOsA0cvOFPXVmk=@vger.kernel.org, AJvYcCVc+DrnT1EWf3cOeJBCqpN52uqkXtf60Xv35YGeF934NJTOvD1X8KF7DuKRLNDDulWVU/fxQlnwzHvOhQ==@vger.kernel.org, AJvYcCWCyPa9p7qioCoHwtF0tg3FcxF5semsglRDBMQeHM9JBv67h1bWZ+hHs5Se/VHZSvOHBU9iEDYAlApDYNWB@vger.kernel.org, AJvYcCXET6HV3yHXnpdfnAevKRuTJAbiFemNiGnFXkl4bt5kB/H6nEHJ4SWz2saiuZg3Q0MCJp7NOEC61CQPD4o=@vger.kernel.org, AJvYcCXoDrRBvmQMOtHrBCAmB8CWvdtadB9vwco7oQkK/O0RTrYXqy7910kz6x9q7xObyy2UBM/cZNX+xw6R@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX83mbmefnGf/2B/022rRiusROqxAMrZuksYQenKRnSVD9EbZd
+	rE0j1BRyrFg2OOy8iF0MlGkxFjfMASGihCzOeMlgONAgAf+PCBp7
+X-Gm-Gg: ASbGncv8py/3dJd8r5ME77JpKSl23J2hmNld88EBkt4jYuVXFwgzaZykeIdBmDN2MXl
+	qHC6w9Vd6W/2aTbCvT94r7uX5wY1GHsbJDViqr8NdqlCNiovqUHMut0gCAcW84di5N7dpzTBgpI
+	QX2mdmrztgxBUmKtgLGm79XCRHyNpZQHXcWWezf7hfFPqcuenpZ48bkxZrkmrDxKj7WjhyiybAE
+	W6DUOaTaGrU1pjhRBvGuLcF7y85GJNX2iGEIJUMcD6w9neDNdMFivOoqLSJ4I2QjfbKhrMd3sAj
+	HVGgmm1PBEoYSI6TefgpnsHttefKv91o2WGUxABXJ6ADQS8JiudWqQ==
+X-Google-Smtp-Source: AGHT+IGOWalHkw0VQDuZrFgGWdO/5t7oYMe9eAr7RV/AmNQsKEb7LjEGNkj8XpJngRC9CG3jrtAtQg==
+X-Received: by 2002:a5d:5f56:0:b0:386:3d27:b4f0 with SMTP id ffacd0b85a97d-38c60f26459mr3846706f8f.14.1738350217335;
+        Fri, 31 Jan 2025 11:03:37 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e23d444bsm64691365e9.8.2025.01.31.11.03.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2025 11:03:36 -0800 (PST)
+Date: Fri, 31 Jan 2025 19:03:35 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre
+ Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea
+ <claudiu.beznea@tuxon.dev>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, "David S . Miller"
+ <davem@davemloft.net>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
+ Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang
+ <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, Yury Norov
+ <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Johannes
+ Berg <johannes@sipsolutions.net>, Jakub Kicinski <kuba@kernel.org>, Alex
+ Elder <elder@ieee.org>, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-crypto@vger.kernel.org, qat-linux@intel.com,
+ linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
+ linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH treewide v2 1/3] bitfield: Add non-constant
+ field_{prep,get}() helpers
+Message-ID: <20250131190335.4c18fb3c@pumpkin>
+In-Reply-To: <1824412519cb8791ab428065116927ee7b77cf35.1738329459.git.geert+renesas@glider.be>
+References: <cover.1738329458.git.geert+renesas@glider.be>
+	<1824412519cb8791ab428065116927ee7b77cf35.1738329459.git.geert+renesas@glider.be>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jan 2025 16:29:04 +0200
-Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
+On Fri, 31 Jan 2025 14:46:51 +0100
+Geert Uytterhoeven <geert+renesas@glider.be> wrote:
 
-> Add documentation for AD7191 driver.
->=20
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-Hi Alisa-Dariana,
+> The existing FIELD_{GET,PREP}() macros are limited to compile-time
+> constants.  However, it is very common to prepare or extract bitfield
+> elements where the bitfield mask is not a compile-time constant.
+> 
+> To avoid this limitation, the AT91 clock driver and several other
+> drivers already have their own non-const field_{prep,get}() macros.
+> Make them available for general use by consolidating them in
+> <linux/bitfield.h>, and improve them slightly:
+>   1. Avoid evaluating macro parameters more than once,
+>   2. Replace "ffs() - 1" by "__ffs()",
+>   3. Support 64-bit use on 32-bit architectures.
+...
+> diff --git a/include/linux/bitfield.h b/include/linux/bitfield.h
+> index 63928f1732230700..c62324a9fcc81241 100644
+> --- a/include/linux/bitfield.h
+> +++ b/include/linux/bitfield.h
+> @@ -203,4 +203,38 @@ __MAKE_OP(64)
+>  #undef __MAKE_OP
+>  #undef ____MAKE_OP
+>  
+> +/**
+> + * field_prep() - prepare a bitfield element
+> + * @_mask: shifted mask defining the field's length and position
+> + * @_val:  value to put in the field
+> + *
+> + * field_prep() masks and shifts up the value.  The result should be
+> + * combined with other fields of the bitfield using logical OR.
+> + * Unlike FIELD_PREP(), @_mask is not limited to a compile-time constant.
+> + */
+> +#define field_prep(_mask, _val)						\
 
-Please could you build this with make html_docs
+You don't need an _ prefix on the 'parameters' - it doesn't gain anything.
 
-It needs to be added to the index as well to build.
+> +	({								\
+> +		typeof(_mask) __mask = (_mask);				\
 
-Then check formatting of titles and bullet points etc. Looks like
-a few bits of formatting of the rst aren't quite right but I haven't
-built it to be sure of that.
+Use: __auto_type __mask = (_mask);
 
-Content looks fine to me.
+> +		unsigned int __shift = sizeof(_mask) <= 4 ?		\
+> +				       __ffs(__mask) : __ffs64(__mask);	\
+> +		(((typeof(_mask))(_val) << __shift) & (__mask));	\
 
-Thanks,
+There are a lot of () in that line, perhaps:
 
-Jonathan
+		__auto_type(__mask) = (_mask);
+		typeof (__mask) __val = (_val);
+		unsigned int __shift = ...;
 
-> ---
->  Documentation/iio/ad7191.rst | 230 +++++++++++++++++++++++++++++++++++
->  1 file changed, 230 insertions(+)
->  create mode 100644 Documentation/iio/ad7191.rst
->=20
-> diff --git a/Documentation/iio/ad7191.rst b/Documentation/iio/ad7191.rst
-> new file mode 100644
-> index 000000000000..78aa5fefe128
-> --- /dev/null
-> +++ b/Documentation/iio/ad7191.rst
-> @@ -0,0 +1,230 @@
-> +.. SPDX-License-Identifier: GPL-2.0-only
-> +
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +AD7191 driver
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Device driver for Analog Devices AD7191 ADC.
-> +
-> +Supported devices
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +* `AD7191 <https://www.analog.com/AD7191>`_
-> +
-> +The AD7191 is a high precision, low noise, 24-bit =CE=A3-=CE=94 ADC with=
- integrated PGA.
-> +It features two differential input channels, an internal temperature sen=
-sor,and
-> +configurable sampling rates.
-> +
-> +Device Configuration
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Pin Configuration
-> +----------------
-> +
-> +The driver supports both pin-strapped and GPIO-controlled configurations=
- for ODR
-> +(Output Data Rate) and PGA (Programmable Gain Amplifier) settings. These
-> +configurations are mutually exclusive - you must use either pin-strapped=
- or GPIO
-> +control for each setting, not both.
-> +
-> +ODR Configuration
-> +^^^^^^^^^^^^^^^^
-> +
-> +The ODR can be configured either through GPIO control or pin-strapping:
-> +
-> +- When using GPIO control, specify the "odr-gpios" property in the devic=
-e tree
-> +- For pin-strapped configuration, specify the "adi,odr-value" property i=
-n the
-> +device tree
+		(__val << __shift) & __mask;
 
-This doesn't look like correct rst for bullet points. Please
-build the docs and sanity check this.  I believe it needs to be aligned
-and you may nee some blank lines in a few places.
+Note the typeof (__mask) - avoids line-length 'bloat' when the arguments are non-trivial.
 
-> +
-> +Available ODR settings:
-> +  - 120 Hz (ODR1=3D0, ODR2=3D0)
-> +  - 60 Hz (ODR1=3D0, ODR2=3D1)
-> +  - 50 Hz (ODR1=3D1, ODR2=3D0)
-> +  - 10 Hz (ODR1=3D1, ODR2=3D1)
-> +
-> +PGA Configuration
-> +^^^^^^^^^^^^^^^
-> +
-> +The PGA can be configured either through GPIO control or pin-strapping:
-> +
-> +- When using GPIO control, specify the "pga-gpios" property in the devic=
-e tree
-> +- For pin-strapped configuration, specify the "adi,pga-value" property i=
-n the
-> +device tree
-> +
-> +Available PGA gain settings:
-> +  - 1x (PGA1=3D0, PGA2=3D0)
-> +  - 8x (PGA1=3D0, PGA2=3D1)
-> +  - 64x (PGA1=3D1, PGA2=3D0)
-> +  - 128x (PGA1=3D1, PGA2=3D1)
-> +
-> +Clock Configuration
-> +-----------------
-> +
-> +The AD7191 supports both internal and external clock sources:
-> +
-> +- When CLKSEL pin is tied LOW: Uses internal 4.92MHz clock (no clock pro=
-perty
-> +needed)
-> +- When CLKSEL pin is tied HIGH: Requires external clock source
-> +  - Can be a crystal between MCLK1 and MCLK2 pins
-> +  - Or a CMOS-compatible clock driving MCLK2 pin
-> +  - Must specify the "clocks" property in device tree when using externa=
-l clock
-> +
-> +SPI Interface Requirements
-> +------------------------
-> +
-> +The AD7191 has specific SPI interface requirements:
-> +
-> +- The DOUT/RDY output is dual-purpose and requires SPI bus locking
-> +- DOUT/RDY must be connected to an interrupt-capable GPIO
-> +- The SPI controller's chip select must be connected to the PDOWN pin of=
- the ADC
-> +- When CS (PDOWN) is high, the device powers down and resets internal ci=
-rcuitry
-> +- SPI mode 3 operation (CPOL=3D1, CPHA=3D1) is required
-> +
-> +Power Supply Requirements
-> +-----------------------
-> +
-> +The device requires the following power supplies:
-> +
-> +- AVdd: Analog power supply
-> +- DVdd: Digital power supply
-> +- Vref: Reference voltage supply (external)
-> +
-> +All power supplies must be specified in the device tree.
-> +
-> +Device Attributes
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-
-Not enough =3D
-
-Check all these as well after make html_docs
-
-
-> +
-> +The AD7191 provides several attributes through the IIO sysfs interface:
-> +
-> +Voltage Input Differential Channels
-> +---------------------------------
-> +
-> ++-------------------+---------------------------------------------------=
--------+
-> +| Attribute         | Description                                       =
-       |
-> ++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D+
-> +| raw               | Raw ADC output value                              =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +| scale             | Scale factor to convert raw value to voltage      =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +| offset            | Voltage offset                                    =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +| sampling_frequency| Current sampling frequency setting                =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +
-> +Temperature Sensor
-> +----------------
-> +
-> ++-------------------+---------------------------------------------------=
--------+
-> +| Attribute         | Description                                       =
-       |
-> ++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D+
-> +| raw               | Raw temperature sensor output value               =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +| scale             | Scale factor to convert raw value to temperature  =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +| offset            | Temperature calibration offset                    =
-       |
-> ++-------------------+---------------------------------------------------=
--------+
-> +
-> +Available Attributes
-> +------------------
-> +
-> +The following attributes show available configuration options:
-> +
-> +- sampling_frequency_available: List of supported sampling frequencies
-> +- scale_available: List of supported scale factors (based on PGA setting=
-s)
-> +
-> +Channel Configuration
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The device provides three channels:
-> +
-> +1. Temperature Sensor
-> +   - 24-bit unsigned
-> +   - Internal temperature measurement
-> +   - Temperature in millidegrees Celsius
-> +
-> +2. Differential Input (AIN1-AIN2)
-> +   - 24-bit unsigned
-> +   - Differential voltage measurement
-> +   - Configurable gain via PGA
-> +
-> +3. Differential Input (AIN3-AIN4)
-> +   - 24-bit unsigned
-> +   - Differential voltage measurement
-> +   - Configurable gain via PGA
-> +
-> +Device Tree Bindings
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +Required Properties
-> +-----------------
-> +
-> +- compatible: Should be "adi,ad7191"
-> +- reg: SPI chip select number
-> +- spi-max-frequency: Maximum SPI clock frequency
-> +- spi-cpol: Must be present (set to 1)
-> +- spi-cpha: Must be present (set to 1)
-> +- interrupts: Interrupt mapping for DOUT/RDY pin
-> +- avdd-supply: Analog power supply
-> +- dvdd-supply: Digital power supply
-> +- vref-supply: Reference voltage supply
-> +- temp-gpios: GPIO for temperature channel selection
-> +- chan-gpios: GPIO for input channel selection
-> +
-> +Optional Properties
-> +-----------------
-> +
-> +- clocks: Required when using external clock (CLKSEL=3D1), must be absen=
-t for
-> +internal clock
-> +- adi,odr-value: Pin-strapped ODR configuration (120, 60, 50, or 10)
-> +- adi,pga-value: Pin-strapped PGA configuration (1, 8, 64, or 128)
-> +- odr-gpios: GPIOs for ODR control (mutually exclusive with adi,odr-valu=
-e)
-> +- pga-gpios: GPIOs for PGA control (mutually exclusive with adi,pga-valu=
-e)
-> +
-> +Example Device Tree
-> +-----------------
-> +
-> +.. code-block:: dts
-> +
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    spi {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        ad7191@0 {
-> +            compatible =3D "adi,ad7191";
-> +            reg =3D <0>;
-> +            spi-max-frequency =3D <1000000>;
-> +
-> +            /* Required SPI mode 3 */
-> +            spi-cpol;
-> +            spi-cpha;
-> +
-> +            /* Interrupt for DOUT/RDY pin */
-> +            interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
-> +            interrupt-parent =3D <&gpio>;
-> +
-> +            /* Power supplies */
-> +            avdd-supply =3D <&avdd>;
-> +            dvdd-supply =3D <&dvdd>;
-> +            vref-supply =3D <&vref>;
-> +
-> +            /* Optional external clock */
-> +            clocks =3D <&ad7191_mclk>;
-> +
-> +            /* Configuration - either use GPIO control or pin-strapped v=
-alues */
-> +            adi,pga-value =3D <1>;
-> +            odr-gpios =3D <&gpio 23 GPIO_ACTIVE_HIGH>,
-> +                       <&gpio 24 GPIO_ACTIVE_HIGH>;
-> +
-> +            /* Required GPIO controls */
-> +            temp-gpios =3D <&gpio 22 GPIO_ACTIVE_HIGH>;
-> +            chan-gpios =3D <&gpio 27 GPIO_ACTIVE_HIGH>;
-> +        };
-> +    };
-> +
-> +Buffer Support
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +This driver supports IIO triggered buffers. See Documentation/iio/iio_de=
-vbuf.rst
-> +for more information about IIO triggered buffers.
-
+	David
 

@@ -1,64 +1,63 @@
-Return-Path: <linux-iio+bounces-14811-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14812-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E823CA24928
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:53:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE704A2492E
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1711882DCC
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:53:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8891A7A2D1F
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CF91ADC76;
-	Sat,  1 Feb 2025 12:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9171ADC8E;
+	Sat,  1 Feb 2025 12:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fta73RwZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNYq/Ac+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E07C10E0;
-	Sat,  1 Feb 2025 12:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07FF1ADC73;
+	Sat,  1 Feb 2025 12:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738414409; cv=none; b=OimxbAAp7ususJ3hPyDmFaq/AsWmRK2H0UNOw6dvt9IgjYnf+KiozPm0q+UH94BenxiikYvn/mz9sob9izGigfxeawvckBPXIND4u8RoiPCwcOS6oUG8pVsm2/jW35M6UCYnxzLEpeceoQOq6SDgGHu8akt5IFJOeUKk5nuFEOg=
+	t=1738414504; cv=none; b=kocDT3Tlblf/pqUpKygklppbEDG5pB/0+wx+Wu30QUsP+IDKeWfChT8z+/tTWRjFNqi29yvnej31vV/EoKqu+3NaOiI3j5oEnZjVJYSPpXgeXFYtT7mSUU4ZISVkbnA2KbiVb0l9YB1dd6I1LYCwLRFxFxNAZQRp3SzxSjhZ5Fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738414409; c=relaxed/simple;
-	bh=UlXlR9Nv9rAHTE8B8SLPx7a4dgN5Xrsk3AQ4atBfvOY=;
+	s=arc-20240116; t=1738414504; c=relaxed/simple;
+	bh=eCES1Z/1uV7L527XljFvvxlBq42bS1bT6ieWP/yy1ZU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oOYb6vzTLDCh0JoO25xrxu6b+G1JLYEPdq0+GI4nS1FR5WnGqK3QnSJzNRgyENH/npnol0T7DABP8ve+w7OOpRAwYCiPw99nJiPKbM7IhZqQ6yvNdgILpaSkhX5GjsOC7NswKQAm6hDgFFIYHSXDdDsTcBVszESNdw1NUI9MMQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fta73RwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD69C4CED3;
-	Sat,  1 Feb 2025 12:53:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WGYQQOcVH07PB0iWt8cIBpNP29KWY8nDhOM3tYL2pVxhn7FuRwhvbhigXp5BJThVRes4JkmXN6M1WZXdC3O//YWm+SM2mFH2uxUJYfTFXybHlv3zZxrqGukSMyHff7vj/Tm3cGN1Winl4yLcofa9PygjWpih1tmzFsxY51WBM34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNYq/Ac+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9F2C4CED3;
+	Sat,  1 Feb 2025 12:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738414408;
-	bh=UlXlR9Nv9rAHTE8B8SLPx7a4dgN5Xrsk3AQ4atBfvOY=;
+	s=k20201202; t=1738414504;
+	bh=eCES1Z/1uV7L527XljFvvxlBq42bS1bT6ieWP/yy1ZU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fta73RwZiDqwVCJiawPUaiHkhkUbjdzSopvXZJdGtkX68pUCSfhjXJRTvNznrkR6l
-	 EpDrxcbMwTHH+OSbKOyTBqacY5YUrgICfDJ7vdBkQo3mthfuj4ltT5Ho0NVqLNvkyJ
-	 QOL0voKc1L4wZsWHmBVuI+eSK++U2KYQ2R866w6I68tvzVrTMRjOsLixxdv4xrcoj1
-	 S0RTb8DjkZxuL88pPvxv/ffMEh1bY9LnCXCe6Do/siJjCyNKraOtI4Ios/mbB7ckMO
-	 /7Cpa+mHl4WpPeP6LJwBUs36IY+c/wKzBgyXOO+AlIVns78F7OxTyUM+59HJgGzLiF
-	 x44cRd/4z+eag==
-Date: Sat, 1 Feb 2025 12:53:17 +0000
+	b=qNYq/Ac+dVqzfRkUtT+4NrE7vfiWeGYvv6rxzKDB3k2OItx7XY/W1QhSfnLjM9/8c
+	 ZQSPwQJ1T2K2jxBA0X8qzpsP2K2sxucjMmpnGl3cl10CTqrSrBaqLsBy188Oq4s059
+	 SKViLkAsjhICLE9Y+eDQN8NZ7dWBCiDdcUhD6xXgqCRT9C9qoj+VoBvqMvB6Gq9wtm
+	 k9l9j525TbCAx2AmTAjbF28CybtAqVu03CtuW7oew8u897UBK2DMUj+/YOhEqvd7QW
+	 ipOUK1jESrc/N/Zi6QCeAlEaVkf7HT5nURjlOpiFbbgumIKwgQzsozdAXTvzKPCE4r
+	 9nm+KuGmh46RQ==
+Date: Sat, 1 Feb 2025 12:54:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Alexandru Ardelean <aardelean@baylibre.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Guillaume Stols
- <gstols@baylibre.com>
-Subject: Re: [PATCH v3 08/10] iio: adc: ad7606: change r/w_register
- signature
-Message-ID: <20250201125317.1de8d599@jic23-huawei>
-In-Reply-To: <2f604280-f4dd-494f-9f54-83e8f613b64f@baylibre.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+ Guillaume Stols <gstols@baylibre.com>, Conor Dooley <conor+dt@kernel.org>,
+ linux-kernel@vger.kernel.org, Alexandru Ardelean <aardelean@baylibre.com>,
+ Michael Hennerich <michael.hennerich@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ devicetree@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH v3 01/10] dt-bindings: iio: dac: adi-axi-adc: fix ad7606
+ pwm-names
+Message-ID: <20250201125457.7291d054@jic23-huawei>
+In-Reply-To: <173816901148.2210648.7229249527612652632.robh@kernel.org>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
-	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-8-c3aec77c0ab7@baylibre.com>
-	<2f604280-f4dd-494f-9f54-83e8f613b64f@baylibre.com>
+	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-1-c3aec77c0ab7@baylibre.com>
+	<173816901148.2210648.7229249527612652632.robh@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,31 +68,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 31 Jan 2025 15:31:18 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, 29 Jan 2025 10:43:31 -0600
+"Rob Herring (Arm)" <robh@kernel.org> wrote:
 
-> On 1/29/25 5:03 AM, Angelo Dureghello wrote:
-> > From: Guillaume Stols <gstols@baylibre.com>
+> On Wed, 29 Jan 2025 12:03:02 +0100, Angelo Dureghello wrote:
+> > From: Angelo Dureghello <adureghello@baylibre.com>
 > > 
-> > The register read/write with IIO backend will require to claim the
-> > direct mode, and doing so requires passing the corresponding iio_dev
-> > structure.
-> > So we need to modify the function signature to pass the iio_dev
-> > structure.
+> > Fix make dt_binding_check warning:
 > > 
-> > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> > ---  
-> I don't think calling iio_device_claim_direct_mode() inside there reg_read/write
-> functions is the right place to do that. It should be done at a higher level (in
-> case we need to combine multiple reads/writes in an atomic operation). So I
-> think we should drop this patch.
+> > DTC [C] Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dtb
+> > .../adc/adi,axi-adc.example.dtb: adc@0: pwm-names: ['convst1'] is too short
+> >     from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
+> > 
+> > Add "minItems" to pwm-names, it allows to use one single pwm when
+> > connected to both adc conversion inputs.
+> > 
+> > Fixes: 7c2357b10490 ("dt-bindings: iio: adc: ad7606: Add iio backend bindings")
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> > ---
+> >  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> >   
+> 
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 > 
 
-I think this is a tricky corner if it is only needed when the backend is
-involved. Not sure what the best answer is as we probably don't want the
-higher levels having to comprehend that it is sometimes needed and sometimes
-not.  Maybe fine to add it in all cases, but that sounds like it risks an
-ABI change.
+Applied to the fixes-togreg branch of iio.git.
+Seems unlikely this will cause us any merge conflicts other than some trivial
+line changes so that shouldn't delay the rest of the series.
 
 Jonathan
 

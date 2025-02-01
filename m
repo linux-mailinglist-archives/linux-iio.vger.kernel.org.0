@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-14813-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14814-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B54A24931
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:57:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B76A2494B
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 14:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15EE4163E11
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:57:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F0818871D0
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EC31ADC8A;
-	Sat,  1 Feb 2025 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D751ADC8B;
+	Sat,  1 Feb 2025 13:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijJ6IcKH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX0I9L1j"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7210E0;
-	Sat,  1 Feb 2025 12:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8552C9A;
+	Sat,  1 Feb 2025 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738414658; cv=none; b=UxeFX1Tmkc5h5mNdk2FSP2dyXtsYS/BQcvjqDcdZrw4GIl0bpvOcASksQzHmuLcxKqPjXRXfscwkE/j8s4azp14h129pGXt3jQ0H5DLqCLavjW21kxtrMkOBlMZQxdN11ejsCixxopH6jtiAKr+SxQoh9bBrHUegpnc+GqTip4M=
+	t=1738415274; cv=none; b=Nm4KQTyB6Mimx4Vas6A8GfymYdj3Nbmghg23wAG2pGUCSS9uyBURV3lCRxXa5CLnlY66Z51NL/ZXls+DTKtrCRvcktN6ew6Pv0ymdQ5aTzDMyBBvY2zMEPH36aAewgkz1rTi2FlYZnlVJqD4RWKmG6swqFxAjC4E2gz3WQ2QJ08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738414658; c=relaxed/simple;
-	bh=qulMGWEaxKDR3NmNZoY7QPtBJBUJqndbnaNhe/PRuJ0=;
+	s=arc-20240116; t=1738415274; c=relaxed/simple;
+	bh=3c7EcwI17Vg+HCQNijPdYh0mZTvVumFobex0FajJWqc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JlNK4vBBrJqLvJUiENpNvrLsLA8HmXWHxcY6FknD8WLeZyln8nTdmdEF1DFM4xSSF0avM2N/GZ2hK5ndEi/AQmKPTpvk+AWZ2HQ/7OdR/jCMs+FE3v6y665uo1oyl8j0QTdEG18KwRnuouqV1j+rGswPwRgy69H2k/cYk4OOIno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijJ6IcKH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E73C4CED3;
-	Sat,  1 Feb 2025 12:57:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n1ZTVtq6m36j13i9CvVVED0tdAIBePnXluvFeDEVP+thMz2yL38wxL3INEFqoIOjbLSvwuwssI1qIBNfhZudtAoSOnoqFgdXZUHlgPYEuostacwQHFESytL9lUgnfPOBLhvk9nPzYULexoAVISA+4yFYl5wYG10fuEWJSyFRuNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX0I9L1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0C9C4CED3;
+	Sat,  1 Feb 2025 13:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738414657;
-	bh=qulMGWEaxKDR3NmNZoY7QPtBJBUJqndbnaNhe/PRuJ0=;
+	s=k20201202; t=1738415273;
+	bh=3c7EcwI17Vg+HCQNijPdYh0mZTvVumFobex0FajJWqc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ijJ6IcKHHMeGeSk7qpqsyV7mwD87joxKXaUuLunMKugg8kfcet3BF2Yzc8z2bJwvu
-	 FOwKuFyVY4S6U136az91EOHDK6BKjWHHZd7ehRawF+uzISbfRI4jnrm4h3YQDXoqFS
-	 DKNTzSdeFLCOfBNlPenevLhBaHOOnDCe+TI3YtF8f4ssOyB21NS5s3S6PVtANc8sFj
-	 hedAoVxF4vAJHR3jabiS42xbb2P1HrJlewhM4xL5Q7nmsXgcsdxRj+imNL8uNBsyGz
-	 pDdNHiRSf+F7V49muiLoWwoPuW/oJe2d4khTMLTtISXoRslHRL1xyFo6d8La23h0i4
-	 F7P9s/tQzs54A==
-Date: Sat, 1 Feb 2025 12:57:30 +0000
+	b=VX0I9L1jxycCbH8JMonWKlTJfoTJ7saOW9Lr528nxgWl35aTa0dQA82BLOW3r5dRq
+	 OwrEFGtYXD7x9BbUulwre7SqX2mUdqkSIT4Se3QbxMm1+vgXrAGcnfl0Srw+sTeScl
+	 o565Z0dxpbDo+7cHso8ugvRhb6mInn3+P8HuUe4pHQ4UE+K2N4ozr6qKSWtuEhKj67
+	 xgiDtmUBefxUW//Jy/wVV4T5Uy7y2QVPJwTrpLhCljfmoCDvfwgRMAfpBwLdhW+JnY
+	 a9nPtcuautxLf01WOa3rM0LYWxc46hvS4VPOklEG0c+dERwuE8CJtVaX1Zngnl8C65
+	 /qepJEiUHBggA==
+Date: Sat, 1 Feb 2025 13:07:43 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
@@ -52,11 +52,12 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
  linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Guillaume Stols
  <gstols@baylibre.com>
-Subject: Re: [PATCH v3 03/10] iio: adc: ad7606: fix wrong scale available
-Message-ID: <20250201125730.1794a852@jic23-huawei>
-In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com>
+Subject: Re: [PATCH v3 07/10] iio: adc: adi-axi-adc: add support for AD7606
+ register writing
+Message-ID: <20250201130743.5ac0b86d@jic23-huawei>
+In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
-	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com>
+	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,51 +68,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jan 2025 12:03:04 +0100
-Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
-> 
-> Fix wrong scale available list since only one value is returned:
-> 
-> ...
-> iio:device1: ad7606b (buffer capable)
->     8 channels found:
->            voltage0:  (input, index: 0, format: le:S16/16>>0)
->            2 channel-specific attributes found:
->                  attr  0: scale value: 0.305176
->                  attr  1: scale_available value: 0.076293
-> Fix as:
->            voltage0:  (input, index: 0, format: le:S16/16>>0)
->            2 channel-specific attributes found:
->                  attr  0: scale value: 0.305176
->                  attr  1: scale_available value: 0.076293 0.152588 0.305176
-> 
-> Fixes: 97c6d857041d ("iio: adc: ad7606: rework scale-available to be static")
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Applied to the fixes-togreg branch of iio.git
+> +static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+> +{
+> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> +	u32 buf;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	/*
+> +	 * The address is written on the highest weight byte, and the MSB set
+> +	 * at 1 indicates a read operation.
+> +	 */
+> +	buf = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
+> +	axi_adc_raw_write(back, &buf, sizeof(buf));
+> +	axi_adc_raw_read(back, val, 4);
 
-Thanks,
+sizeof(*val)
 
-Jonathan
+> +
+> +	/* Write 0x0 on the bus to get back to ADC mode */
+> +	buf = 0;
+> +	axi_adc_raw_write(back, &buf, sizeof(buf));
+> +	return 0;
+> +}
 
-> ---
->  drivers/iio/adc/ad7606.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index d8e3c7a43678..d39354afd539 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -1047,7 +1047,7 @@ static int ad7606_read_avail(struct iio_dev *indio_dev,
->  
->  		cs = &st->chan_scales[ch];
->  		*vals = (int *)cs->scale_avail;
-> -		*length = cs->num_scales;
-> +		*length = cs->num_scales * 2;
->  		*type = IIO_VAL_INT_PLUS_MICRO;
->  
->  		return IIO_AVAIL_LIST;
-> 
 
 

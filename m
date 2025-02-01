@@ -1,158 +1,118 @@
-Return-Path: <linux-iio+bounces-14841-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14842-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC20A24AF0
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 18:09:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C113A24AF4
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 18:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3183E3A6EEE
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:09:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5814C1632DB
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834EA1C5F0C;
-	Sat,  1 Feb 2025 17:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64211C8FB5;
+	Sat,  1 Feb 2025 17:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAeKtwlF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lkOCJJXN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E10AAD27;
-	Sat,  1 Feb 2025 17:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A85AD27;
+	Sat,  1 Feb 2025 17:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738429779; cv=none; b=QE524XOtlAL2o27vFzasOCJb0QHCGT6wMGt+c16sjtVAfN8jLaW0usCqXemRxLLYaq3xwVeJu5/9cPl1ZUkLO6/WrwKIUTQvwnV+0P67Cqmbn4YXsu/VnAESUuYud3sYLaEI38zVHJEWSlKaPfcfz5jGE2R1dlYLGn8HqOn/YJU=
+	t=1738429987; cv=none; b=IF4gq+U+SoEqtMGhrt6IJjuotS26JeotTU2p8ZJ1tHFGrGxBjdg1jBRj2yTg4pT38BEaZBkb3kJ2SXp4+UCVKKjfz7kNrXxvgFhQjg62+sfTxqutYS7+xVB+2Kh2T5v7TArSsVH7dBOFOUNaJEbkO4lS6XzLApJhj11E42oW3mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738429779; c=relaxed/simple;
-	bh=93jzYYYwy+f3AOZkq4YAuvBQig70r3Qr6WNPyLJkaEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L0RODR7U1jqMwSmPVlLak/tR2DPX88H6UrB+exPK4s+FOJzQ7QM1s5RD09D6wY+YS8ccWnK1hYrU/pBAMEoaBDovV92ZP1UlcmBgvtt2sFhDr0JWdcPO8pZXONV3JvygM2yYOuxXY33vXuA8nJp00mqJG6Zyy8tbJA0bHqeDovw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAeKtwlF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E74FC4CED3;
-	Sat,  1 Feb 2025 17:09:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738429778;
-	bh=93jzYYYwy+f3AOZkq4YAuvBQig70r3Qr6WNPyLJkaEs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SAeKtwlFotM/7I7sIYbXlKiTWHseKlJC7z/k9gfe01DyeWY67Lbrpio/Zd+Z4FK7h
-	 tyKIRaT3TMyVZVBn8FgMZmRfNSqffvI/p/wg6JrpJaya7fle5q60CVBGpDcKCzcsdk
-	 J8vva6uJwqmgD57UyGu3vfOtCLmRQXrH/4DNrVZ9MPxjE3vdn3GvEl2Kcujr9wdAjz
-	 xMUZ9YIGpbb+vdyBYOYkm+KOmOSz6H0ODr6Tw5Mg21Nd88Z9uMt4P2YT+MIZAlbX4f
-	 Um4iPQCr69KYY7bZY7Evv87kbTDmvHlsJkjtdrHqnDKbNDhvVrgB75tgYbzT5aoBpL
-	 OdCwTDQv8RvaA==
-Date: Sat, 1 Feb 2025 17:09:33 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v1 07/12] iio: accel: adxl345: show tap status and
- direction
-Message-ID: <20250201170933.26b8625c@jic23-huawei>
-In-Reply-To: <20250128120100.205523-8-l.rubusch@gmail.com>
-References: <20250128120100.205523-1-l.rubusch@gmail.com>
-	<20250128120100.205523-8-l.rubusch@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738429987; c=relaxed/simple;
+	bh=ZgpLENp2T47kA9bzWkanIuL41p+MuHv9NzVMyor84Gs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ckHWrrTtkAEeDDyMfhA+N2eF7PBVbSUkaFQ+orzyCxfHLAqJQZ1Mhl66xjtkFRaP4FHLaim3OV+48d4/zLkXpe5zY+3We1ZkMcFbUXP9Loemp/Kdc1mQHzVjCK4gASe8dFQa2raRTcVlrvfUvAiY9BYDStsm1buGflNgr9hVwyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lkOCJJXN; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54021daa6cbso3228058e87.0;
+        Sat, 01 Feb 2025 09:13:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738429984; x=1739034784; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6K0EqS/vi4s3kTIfhJVCkKXeeRA4qKMD7JM5EWUMGzk=;
+        b=lkOCJJXNyCFSQHLqphZ28hulOIG4JwdnRqPZ3B0LpJWeVrrlUo+uqur3BhV63cGk6F
+         C143KdpENEOJt1CYKDtD0FqcpSxGM/OO2B5Tm+2jwm7h7tCseJGe/04nQzTdb8KoII3T
+         /y1Gbm5Ef22pYyiW2WsFmC5IWaMbsvVmLelAVVtnhC0OzB786fifXr/+8D6RLAqO97Jj
+         +bzYLBgVJNfBEuJq4AhBcRyZp9tpH0ZxSTE60LB+funpYgzN5gqHsQhzyzhDMelOEPbU
+         8g23f1fUTdVu5kZinWvMZy3+uuKsJepDYtKRj35jBBFLk0Aj6y2qNV2m0eGYsLkmqxdy
+         1TCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738429984; x=1739034784;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6K0EqS/vi4s3kTIfhJVCkKXeeRA4qKMD7JM5EWUMGzk=;
+        b=fMZ1CuECC+SGexBl3PrXXEou33641cG6O3GeWpMmqMlm9SYZ+TeReAGfOAIgx+lRmi
+         cKq9pVZgjt8TZN3mYEeOwiAzfGJt9/THHnKO9dheLz1xL0jo4fgVtX00zW5ObEGrzTeP
+         AHFqeg5wGKY4cJeaTN3E8B4lViKJc/w65t4a5X1u2hzbeqDlrxADGm6VxDlkd8M9goT1
+         4gkyIdFomJO9hDfib60FZVYsk4ViRmD4Li+jpA+y0bEtQl4CwEraw4bU/geoGqJpS6y0
+         ZhYPr3IEVouhjcGWK2yNwHccPxX8EwelvSukEEION/HWKiuN9tVVt8SHyDKUdMkIlYtX
+         A9Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1mIz+P6BbnzaUPC4s7NM4ulj0A5xQgvmKZXQREp3+/z6m6xQHw0b+/NQhWxwCLx5UV5b21rzzcE+2@vger.kernel.org, AJvYcCUpZa/UnTDmP4EAbycOL7NfSlR3lLTHNTYH/nNnd827/Lp3F2NZFqn0AhmN+n4ZJ1no1ZsLGXVpBRitMV5x@vger.kernel.org, AJvYcCVATxPhsAFHjezHqyEEZojkste8Cc256SOf8fGo5p/AIYdyR/8RExDblo5+6Iyz49rY5zdHkFUox4pS@vger.kernel.org, AJvYcCWerZkUPVBtD2R9Pxjj8kLOwU2yNZhe8LgZ88sA8lLOIQlXlHq6+dYnViJNBRWTJehitJtlwlD5QYzAqQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYyfD2Hge/4r4krSqySBesHVipWByOOlLTjE9YblqrfO+nEs5M
+	rA03AkFMZ+x7UcZM5JtjygENEU7y2caLfRQDKaCZ4baOD2nlHdft1L1HgQ==
+X-Gm-Gg: ASbGnctrRF2IdanLKlp+uP9lnOnQIK6TUAH70G8HgPih9slXla9ZyDmU56s/g8cAJN4
+	C8/5n9yh1oXZplSfdHJYSOIwuTMpF4SEx0xVQgWdT4tiXjr5ah7q/yM0B2NCyu3ytRndbBnFST8
+	/+d32iVsZbO7TXxa6FZfFtv+W0N0++ZL+8PYDK6CZZHvbnw5SivWk/RdqhjMDZ10XI8KcjK5JBk
+	fZ/zVVSgGQk8r9uiSzZDWcSDXc1MP4FtnjfUUumCvxlnsmnggTTioRUO88s/TsDAiBE/Y3sT3wZ
+	qUE5Zx4J2KmiOnIknOhrKdUqJuuhV2ttd2ujQP03WiobXsrr8KgaUasS
+X-Google-Smtp-Source: AGHT+IFoyCfmxJJGD5H8LiOmJTOE68QwGKbi5E7qU0uTk0aNzZcpk5fbdX/0inUZd8X6JzC+9lcryA==
+X-Received: by 2002:ac2:599b:0:b0:540:2543:1b19 with SMTP id 2adb3069b0e04-543e4c02e0emr4577702e87.24.1738429983420;
+        Sat, 01 Feb 2025 09:13:03 -0800 (PST)
+Received: from [192.168.1.110] (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebdf100fsm793370e87.9.2025.02.01.09.12.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 01 Feb 2025 09:13:01 -0800 (PST)
+Message-ID: <9123ef67-2c93-4874-9d71-d2918086ebd3@gmail.com>
+Date: Sat, 1 Feb 2025 19:12:59 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] Support ROHM BD79124 ADC/GPO
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+ <20250131170840.00002dc8@huawei.com>
+ <5cc01bc7-95b7-4a58-86d7-d4293e0e9966@gmail.com>
+ <20250201163051.1d54cdd7@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250201163051.1d54cdd7@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Jan 2025 12:00:55 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On 01/02/2025 18:30, Jonathan Cameron wrote:
+>
+> Enjoy the rest of Fosdem
 
-> Provide information in the iio tap event about the tap direction. This
-> can be verified using 'iio_event_monior adxl345'. Reading out the
-> ACT_TAP_STATUS register is also in preparation for activity events.
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+Thanks! Just watching the live streams though :(
 
-So, this confuses me a little.  You have separate controls on
-enabling the directions but only a single bit to indicate that a tap
-was detected. Can only one be enabled at time?  If not how does
-reporting only one direction make sense?
-
-That aside, why not squash this with the previous patch?
-
-
-Jonathan
-
-
-> ---
->  drivers/iio/accel/adxl345_core.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 0d991f3ec10c..7831ec511941 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -800,17 +800,26 @@ static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
->  	.predisable = adxl345_buffer_predisable,
->  };
->  
-> -static int adxl345_get_status(struct adxl345_state *st, unsigned int *int_stat)
-> +static int adxl345_get_status(struct adxl345_state *st, unsigned int *int_stat,
-> +			      enum iio_modifier *act_tap_dir)
->  {
->  	unsigned int regval;
->  	bool check_tap_stat;
->  
-> +	*act_tap_dir = IIO_NO_MOD;
->  	check_tap_stat = FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, st->tap_axis_ctrl) > 0;
->  
->  	if (check_tap_stat) {
->  		/* ACT_TAP_STATUS should be read before clearing the interrupt */
->  		if (regmap_read(st->regmap, ADXL345_REG_ACT_TAP_STATUS, &regval))
->  			return -EINVAL;
-> +
-> +		if (FIELD_GET(ADXL345_Z_EN, regval) > 0)
-> +			*act_tap_dir = IIO_MOD_Z;
-> +		else if (FIELD_GET(ADXL345_Y_EN, regval) > 0)
-> +			*act_tap_dir = IIO_MOD_Y;
-> +		else if (FIELD_GET(ADXL345_X_EN, regval) > 0)
-> +			*act_tap_dir = IIO_MOD_X;
->  	}
->  
->  	return regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, int_stat);
-> @@ -835,7 +844,8 @@ static int adxl345_fifo_push(struct iio_dev *indio_dev,
->  	return 0;
->  }
->  
-> -static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat)
-> +static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
-> +			      enum iio_modifier act_tap_dir)
->  {
->  	s64 ts = iio_get_time_ns(indio_dev);
->  	int ret;
-> @@ -843,7 +853,7 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat)
->  	if (FIELD_GET(ADXL345_INT_SINGLE_TAP, int_stat)) {
->  		ret = iio_push_event(indio_dev,
->  				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> -							IIO_MOD_X_OR_Y_OR_Z,
-> +							act_tap_dir,
->  							IIO_EV_TYPE_GESTURE,
->  							IIO_EV_DIR_SINGLETAP),
->  				     ts);
-> @@ -866,12 +876,13 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
->  	struct iio_dev *indio_dev = p;
->  	struct adxl345_state *st = iio_priv(indio_dev);
->  	int int_stat;
-> +	enum iio_modifier act_tap_dir;
->  	int samples;
->  
-> -	if (adxl345_get_status(st, &int_stat))
-> +	if (adxl345_get_status(st, &int_stat, &act_tap_dir))
->  		return IRQ_NONE;
->  
-> -	if (adxl345_push_event(indio_dev, int_stat) == 0)
-> +	if (adxl345_push_event(indio_dev, int_stat, act_tap_dir) == 0)
->  		return IRQ_HANDLED;
->  
->  	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+Yours,
+	-- Matti
 
 

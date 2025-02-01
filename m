@@ -1,63 +1,62 @@
-Return-Path: <linux-iio+bounces-14812-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14813-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE704A2492E
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:55:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B54A24931
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8891A7A2D1F
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:54:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15EE4163E11
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9171ADC8E;
-	Sat,  1 Feb 2025 12:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EC31ADC8A;
+	Sat,  1 Feb 2025 12:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNYq/Ac+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijJ6IcKH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07FF1ADC73;
-	Sat,  1 Feb 2025 12:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7210E0;
+	Sat,  1 Feb 2025 12:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738414504; cv=none; b=kocDT3Tlblf/pqUpKygklppbEDG5pB/0+wx+Wu30QUsP+IDKeWfChT8z+/tTWRjFNqi29yvnej31vV/EoKqu+3NaOiI3j5oEnZjVJYSPpXgeXFYtT7mSUU4ZISVkbnA2KbiVb0l9YB1dd6I1LYCwLRFxFxNAZQRp3SzxSjhZ5Fk=
+	t=1738414658; cv=none; b=UxeFX1Tmkc5h5mNdk2FSP2dyXtsYS/BQcvjqDcdZrw4GIl0bpvOcASksQzHmuLcxKqPjXRXfscwkE/j8s4azp14h129pGXt3jQ0H5DLqCLavjW21kxtrMkOBlMZQxdN11ejsCixxopH6jtiAKr+SxQoh9bBrHUegpnc+GqTip4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738414504; c=relaxed/simple;
-	bh=eCES1Z/1uV7L527XljFvvxlBq42bS1bT6ieWP/yy1ZU=;
+	s=arc-20240116; t=1738414658; c=relaxed/simple;
+	bh=qulMGWEaxKDR3NmNZoY7QPtBJBUJqndbnaNhe/PRuJ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WGYQQOcVH07PB0iWt8cIBpNP29KWY8nDhOM3tYL2pVxhn7FuRwhvbhigXp5BJThVRes4JkmXN6M1WZXdC3O//YWm+SM2mFH2uxUJYfTFXybHlv3zZxrqGukSMyHff7vj/Tm3cGN1Winl4yLcofa9PygjWpih1tmzFsxY51WBM34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNYq/Ac+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9F2C4CED3;
-	Sat,  1 Feb 2025 12:55:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JlNK4vBBrJqLvJUiENpNvrLsLA8HmXWHxcY6FknD8WLeZyln8nTdmdEF1DFM4xSSF0avM2N/GZ2hK5ndEi/AQmKPTpvk+AWZ2HQ/7OdR/jCMs+FE3v6y665uo1oyl8j0QTdEG18KwRnuouqV1j+rGswPwRgy69H2k/cYk4OOIno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijJ6IcKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E73C4CED3;
+	Sat,  1 Feb 2025 12:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738414504;
-	bh=eCES1Z/1uV7L527XljFvvxlBq42bS1bT6ieWP/yy1ZU=;
+	s=k20201202; t=1738414657;
+	bh=qulMGWEaxKDR3NmNZoY7QPtBJBUJqndbnaNhe/PRuJ0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qNYq/Ac+dVqzfRkUtT+4NrE7vfiWeGYvv6rxzKDB3k2OItx7XY/W1QhSfnLjM9/8c
-	 ZQSPwQJ1T2K2jxBA0X8qzpsP2K2sxucjMmpnGl3cl10CTqrSrBaqLsBy188Oq4s059
-	 SKViLkAsjhICLE9Y+eDQN8NZ7dWBCiDdcUhD6xXgqCRT9C9qoj+VoBvqMvB6Gq9wtm
-	 k9l9j525TbCAx2AmTAjbF28CybtAqVu03CtuW7oew8u897UBK2DMUj+/YOhEqvd7QW
-	 ipOUK1jESrc/N/Zi6QCeAlEaVkf7HT5nURjlOpiFbbgumIKwgQzsozdAXTvzKPCE4r
-	 9nm+KuGmh46RQ==
-Date: Sat, 1 Feb 2025 12:54:57 +0000
+	b=ijJ6IcKHHMeGeSk7qpqsyV7mwD87joxKXaUuLunMKugg8kfcet3BF2Yzc8z2bJwvu
+	 FOwKuFyVY4S6U136az91EOHDK6BKjWHHZd7ehRawF+uzISbfRI4jnrm4h3YQDXoqFS
+	 DKNTzSdeFLCOfBNlPenevLhBaHOOnDCe+TI3YtF8f4ssOyB21NS5s3S6PVtANc8sFj
+	 hedAoVxF4vAJHR3jabiS42xbb2P1HrJlewhM4xL5Q7nmsXgcsdxRj+imNL8uNBsyGz
+	 pDdNHiRSf+F7V49muiLoWwoPuW/oJe2d4khTMLTtISXoRslHRL1xyFo6d8La23h0i4
+	 F7P9s/tQzs54A==
+Date: Sat, 1 Feb 2025 12:57:30 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
- Guillaume Stols <gstols@baylibre.com>, Conor Dooley <conor+dt@kernel.org>,
- linux-kernel@vger.kernel.org, Alexandru Ardelean <aardelean@baylibre.com>,
- Michael Hennerich <michael.hennerich@analog.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- devicetree@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-Subject: Re: [PATCH v3 01/10] dt-bindings: iio: dac: adi-axi-adc: fix ad7606
- pwm-names
-Message-ID: <20250201125457.7291d054@jic23-huawei>
-In-Reply-To: <173816901148.2210648.7229249527612652632.robh@kernel.org>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alexandru
+ Ardelean <aardelean@baylibre.com>, David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Guillaume Stols
+ <gstols@baylibre.com>
+Subject: Re: [PATCH v3 03/10] iio: adc: ad7606: fix wrong scale available
+Message-ID: <20250201125730.1794a852@jic23-huawei>
+In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
-	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-1-c3aec77c0ab7@baylibre.com>
-	<173816901148.2210648.7229249527612652632.robh@kernel.org>
+	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-3-c3aec77c0ab7@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,34 +67,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 29 Jan 2025 10:43:31 -0600
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
+On Wed, 29 Jan 2025 12:03:04 +0100
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On Wed, 29 Jan 2025 12:03:02 +0100, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Fix make dt_binding_check warning:
-> > 
-> > DTC [C] Documentation/devicetree/bindings/iio/adc/adi,axi-adc.example.dtb
-> > .../adc/adi,axi-adc.example.dtb: adc@0: pwm-names: ['convst1'] is too short
-> >     from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad7606.yaml#
-> > 
-> > Add "minItems" to pwm-names, it allows to use one single pwm when
-> > connected to both adc conversion inputs.
-> > 
-> > Fixes: 7c2357b10490 ("dt-bindings: iio: adc: ad7606: Add iio backend bindings")
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> >  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >   
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
+> Fix wrong scale available list since only one value is returned:
 > 
+> ...
+> iio:device1: ad7606b (buffer capable)
+>     8 channels found:
+>            voltage0:  (input, index: 0, format: le:S16/16>>0)
+>            2 channel-specific attributes found:
+>                  attr  0: scale value: 0.305176
+>                  attr  1: scale_available value: 0.076293
+> Fix as:
+>            voltage0:  (input, index: 0, format: le:S16/16>>0)
+>            2 channel-specific attributes found:
+>                  attr  0: scale value: 0.305176
+>                  attr  1: scale_available value: 0.076293 0.152588 0.305176
+> 
+> Fixes: 97c6d857041d ("iio: adc: ad7606: rework scale-available to be static")
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Applied to the fixes-togreg branch of iio.git
 
-Applied to the fixes-togreg branch of iio.git.
-Seems unlikely this will cause us any merge conflicts other than some trivial
-line changes so that shouldn't delay the rest of the series.
+Thanks,
 
 Jonathan
+
+> ---
+>  drivers/iio/adc/ad7606.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index d8e3c7a43678..d39354afd539 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -1047,7 +1047,7 @@ static int ad7606_read_avail(struct iio_dev *indio_dev,
+>  
+>  		cs = &st->chan_scales[ch];
+>  		*vals = (int *)cs->scale_avail;
+> -		*length = cs->num_scales;
+> +		*length = cs->num_scales * 2;
+>  		*type = IIO_VAL_INT_PLUS_MICRO;
+>  
+>  		return IIO_AVAIL_LIST;
+> 
+
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-14814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B76A2494B
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 14:08:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B0AA24957
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 14:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7F0818871D0
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:08:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E758B1639B4
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D751ADC8B;
-	Sat,  1 Feb 2025 13:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC9F1ADC99;
+	Sat,  1 Feb 2025 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX0I9L1j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P+LJk11N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8552C9A;
-	Sat,  1 Feb 2025 13:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F9E1885AD;
+	Sat,  1 Feb 2025 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738415274; cv=none; b=Nm4KQTyB6Mimx4Vas6A8GfymYdj3Nbmghg23wAG2pGUCSS9uyBURV3lCRxXa5CLnlY66Z51NL/ZXls+DTKtrCRvcktN6ew6Pv0ymdQ5aTzDMyBBvY2zMEPH36aAewgkz1rTi2FlYZnlVJqD4RWKmG6swqFxAjC4E2gz3WQ2QJ08=
+	t=1738415696; cv=none; b=HI8db5GE+1eTEEp2sWGjhDU1BOpHcuZCgfVJ/MqXCkOyehFBUdhquh+MbzW2kGiFmzg0EmLU1Q+8hwHqGtF/81U7i3elQ6FB2x2K9wf0qWdJKf1H7vCRPKKkMZYemDTscKUr5Yserwl7xrtUJirGh+qCsUcNYZAUa1To5x6vXKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738415274; c=relaxed/simple;
-	bh=3c7EcwI17Vg+HCQNijPdYh0mZTvVumFobex0FajJWqc=;
+	s=arc-20240116; t=1738415696; c=relaxed/simple;
+	bh=Cn2nZHnSTH+FBfATcC78w8zbQW6SSI1lGefI8uphhok=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n1ZTVtq6m36j13i9CvVVED0tdAIBePnXluvFeDEVP+thMz2yL38wxL3INEFqoIOjbLSvwuwssI1qIBNfhZudtAoSOnoqFgdXZUHlgPYEuostacwQHFESytL9lUgnfPOBLhvk9nPzYULexoAVISA+4yFYl5wYG10fuEWJSyFRuNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX0I9L1j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0C9C4CED3;
-	Sat,  1 Feb 2025 13:07:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tGUnBSYyzw51ZyOrHliSuXs59MfTX6SsWLHLkiMCykczkbLWQ8CT71mNUQZwsfOTSzZkH0iUfOAGmBbHWxRSjqqaClI4kgTcOjLTbDQ4IcnFnrct7MY3Shg8VWpWcAHugwSMJmq9Mhd5pcF950EZo/7ZPjZdGOz762xsPOY+Sh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P+LJk11N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832D1C4CED3;
+	Sat,  1 Feb 2025 13:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738415273;
-	bh=3c7EcwI17Vg+HCQNijPdYh0mZTvVumFobex0FajJWqc=;
+	s=k20201202; t=1738415696;
+	bh=Cn2nZHnSTH+FBfATcC78w8zbQW6SSI1lGefI8uphhok=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VX0I9L1jxycCbH8JMonWKlTJfoTJ7saOW9Lr528nxgWl35aTa0dQA82BLOW3r5dRq
-	 OwrEFGtYXD7x9BbUulwre7SqX2mUdqkSIT4Se3QbxMm1+vgXrAGcnfl0Srw+sTeScl
-	 o565Z0dxpbDo+7cHso8ugvRhb6mInn3+P8HuUe4pHQ4UE+K2N4ozr6qKSWtuEhKj67
-	 xgiDtmUBefxUW//Jy/wVV4T5Uy7y2QVPJwTrpLhCljfmoCDvfwgRMAfpBwLdhW+JnY
-	 a9nPtcuautxLf01WOa3rM0LYWxc46hvS4VPOklEG0c+dERwuE8CJtVaX1Zngnl8C65
-	 /qepJEiUHBggA==
-Date: Sat, 1 Feb 2025 13:07:43 +0000
+	b=P+LJk11NQmPW5dxhdcfXbVeM4/0Kb8UrBF3QM7acTl9KoXifxqNmiDu9vIKSGYorl
+	 zFhbxSpXm8ZHJBM6/N/NOFJwHHGkBO2/e7cUqja0lVj0whgyAExHqV5Guf69HkNeTc
+	 rdlwbaV0SCNwg5sx6Q6eQUswprRxQJ0bIy2AZSTXwzHM1a3dDMS/MV3dWbzqIm6nH3
+	 fqiELVadQPWo4ylVU5Hm1UTDR94yHPctm4luS/nc00VnuqeCqz8YzyjWkTXzR6a0p1
+	 KA9iikFA7zLGeYIL9udIt4pK+e6lOcYbDMYCda2HTLx+MgldbSwkPsKScKZ0wy/Z7D
+	 XIbxSk/4ZjJFQ==
+Date: Sat, 1 Feb 2025 13:14:45 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Angelo Dureghello <adureghello@baylibre.com>
 Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
@@ -52,12 +52,12 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
  linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Guillaume Stols
  <gstols@baylibre.com>
-Subject: Re: [PATCH v3 07/10] iio: adc: adi-axi-adc: add support for AD7606
- register writing
-Message-ID: <20250201130743.5ac0b86d@jic23-huawei>
-In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com>
+Subject: Re: [PATCH v3 10/10] iio: adc: ad7606: add support for writing
+ registers when using backend
+Message-ID: <20250201131445.12ceb7e9@jic23-huawei>
+In-Reply-To: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-10-c3aec77c0ab7@baylibre.com>
 References: <20250129-wip-bl-ad7606_add_backend_sw_mode-v3-0-c3aec77c0ab7@baylibre.com>
-	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com>
+	<20250129-wip-bl-ad7606_add_backend_sw_mode-v3-10-c3aec77c0ab7@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,30 +68,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Wed, 29 Jan 2025 12:03:11 +0100
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> +static int ad7606_bus_reg_read(struct iio_backend *back, u32 reg, u32 *val)
+> From: Guillaume Stols <gstols@baylibre.com>
+> 
+> Add the logic for effectively enabling the software mode for the
+> iio-backend, i.e. enabling the software mode channel configuration and
+> implementing the register writing functions.
+> 
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> Co-developed-by: Angelo Dureghello <adureghello@baylibre.com>
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+
+A few trivial things inline.
+
+> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+> index 64733b607aa8..19d93ae49e1d 100644
+> --- a/drivers/iio/adc/ad7606_par.c
+> +++ b/drivers/iio/adc/ad7606_par.c
+> @@ -19,6 +19,7 @@
+
+>  
+> -static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned long *scan_mask)
+> +static const struct iio_chan_spec ad7606b_bi_sw_channels[] = {
+> +	AD7606_BI_SW_CHANNEL(0),
+> +	AD7606_BI_SW_CHANNEL(1),
+> +	AD7606_BI_SW_CHANNEL(2),
+> +	AD7606_BI_SW_CHANNEL(3),
+> +	AD7606_BI_SW_CHANNEL(4),
+> +	AD7606_BI_SW_CHANNEL(5),
+> +	AD7606_BI_SW_CHANNEL(6),
+> +	AD7606_BI_SW_CHANNEL(7),
+> +};
+> +
+> +static int ad7606_par_bus_update_scan_mode(struct iio_dev *indio_dev,
+> +					   const unsigned long *scan_mask)
+>  {
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+>  	unsigned int c, ret;
+> @@ -48,7 +61,8 @@ static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned
+>  	return 0;
+>  }
+>  
+> -static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio_dev)
+> +static int ad7606_par_bus_setup_iio_backend(struct device *dev,
+> +					    struct iio_dev *indio_dev)
+>  {
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+>  	unsigned int ret, c;
+> @@ -86,9 +100,56 @@ static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio
+>  	return 0;
+>  }
+>  
+> +static int ad7606_par_bus_reg_read(struct iio_dev *indio_dev, unsigned int addr)
 > +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> +	u32 buf;
-> +
-> +	guard(mutex)(&st->lock);
-> +
-> +	/*
-> +	 * The address is written on the highest weight byte, and the MSB set
-> +	 * at 1 indicates a read operation.
-> +	 */
-> +	buf = FIELD_PREP(ADI_AXI_REG_ADDRESS_MASK, reg) | ADI_AXI_REG_READ_BIT;
-> +	axi_adc_raw_write(back, &buf, sizeof(buf));
-> +	axi_adc_raw_read(back, val, 4);
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	int val, ret;
+> +	struct ad7606_platform_data *pdata =  st->dev->platform_data;
+Bonus space before st that shouldn't be there.
 
-sizeof(*val)
+I'd also reorder this to have int val, ret last.
 
 > +
-> +	/* Write 0x0 on the bus to get back to ADC mode */
-> +	buf = 0;
-> +	axi_adc_raw_write(back, &buf, sizeof(buf));
-> +	return 0;
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = pdata->bus_reg_read(st->back, addr, &val);
+> +
+> +	iio_device_release_direct_mode(indio_dev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return val;
 > +}
+> +
+> +static int ad7606_par_bus_reg_write(struct iio_dev *indio_dev,
+> +				    unsigned int addr, unsigned int val)
+> +{
+> +	struct ad7606_state *st = iio_priv(indio_dev);
+> +	struct ad7606_platform_data *pdata =  st->dev->platform_data;
 
+Same bonus space.
+
+> +	int ret;
+> +
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = pdata->bus_reg_write(st->back, addr, val);
+> +
+> +	iio_device_release_direct_mode(indio_dev);
+> +
+> +	return ret;
+> +}
 
 

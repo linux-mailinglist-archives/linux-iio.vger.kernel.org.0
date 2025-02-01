@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-14801-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14802-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30107A2487E
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:18:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2B9A24881
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96C51164EA4
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 11:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F00A3A4C77
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 11:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FD785947;
-	Sat,  1 Feb 2025 11:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA39146D55;
+	Sat,  1 Feb 2025 11:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+gFj+0C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UjjgUJXO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C035A76025;
-	Sat,  1 Feb 2025 11:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089224A3E;
+	Sat,  1 Feb 2025 11:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738408701; cv=none; b=Q3i1LymyKAIPBhIGbjfRju0vHC3GSip9RIXcQCHN4Y+2qmrlSmy/rJ6Y7n27NicchJAVfjfcKpvRC/6GKi3FCytMgrl2yZyYgk8eEkZEkJnOy+rfEYSsENm+Kq0BoDxybvXCJjM+gRkDY9hEZmofu1+Lf/9gM9X4Fh/ea31og4Q=
+	t=1738408833; cv=none; b=VPWN65M3ufOZ9YC2n6QlAp9V8/WHkO5qslMEz5MrhXxlZ/gfPWCgb2f6NJmfPnAe7gYI2g/Cg4g331kLugld5PMpo0HGLmfUi/PecbLFPppRf1lXcGg4GBMvqFvZxW1944YlWvFHTVmbFQvYr+KCKICkTImnndgafFi5vbve1ZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738408701; c=relaxed/simple;
-	bh=ZaroXdXtz1raiJgxpMVyXxuW1Om0COFMaHRq6VN/CP0=;
+	s=arc-20240116; t=1738408833; c=relaxed/simple;
+	bh=EPGKkzRGnArATFcQrMGpntjK1Jx5rNPGp2FvZq3TkqY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mskoOBPTFTtyKULCKa8V53T1OcnjbB+cVz+rOPGutwZf09eRC8EkGur3ENtrgq9SxXeDMu1pppicZTZxCuY7rc38wifY6I7hmTPArNj1kMBtxlrT5BFodYGOTHgNbbAlEl3wKNxBrRPk61VZJjtcHCcpdVmTEYUZY0Mjg1mW/rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+gFj+0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8D5C4CED3;
-	Sat,  1 Feb 2025 11:18:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k58dDQUmnO4Pn11TcayZUPufEo56f2PZG1FhDEt06Ny13DzekVLC8Ak+zBEJ5mH7UXkfW2rwh4jZt09bf1LlzE4XtHaUNKWaae9/ScXiA2UYnOhyVlLeFVp0wgCpNuaA56Vy+XSa8ErmCsphLuKsZW2addRh7ar907tQpItKLLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UjjgUJXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D21F0C4CED3;
+	Sat,  1 Feb 2025 11:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738408701;
-	bh=ZaroXdXtz1raiJgxpMVyXxuW1Om0COFMaHRq6VN/CP0=;
+	s=k20201202; t=1738408832;
+	bh=EPGKkzRGnArATFcQrMGpntjK1Jx5rNPGp2FvZq3TkqY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=a+gFj+0C0VkZ1h/xsarulecAg5XLysCUvkjhOd046CTvCc/b5oZqenOxnTS4Ijlqu
-	 gy+Pj9nO/qBS/0E4BFe2BF6ef8J8y/q5d0vvhg8ho5GwP5OQ29gaFBPFO6EPycIW6m
-	 F7K9nRHzIXdWbtV600SzQSH98DmJHh4gDY2Fn7WjjpXCThAMtunjwZy7RjzRD4jEJL
-	 n07Ho9OFKUnh8gUAukUG2Ta75tVX931z+wSdIEXwzBV6la50rmo76awKH+sYEXJacg
-	 z5VasSj9QlyITeyFFVLxWkPntNH1hAAsRTNj80knPPOFZyD7Ol5146nD0Zd5wZ2gfD
-	 sa/mg5CWP85qg==
-Date: Sat, 1 Feb 2025 11:18:13 +0000
+	b=UjjgUJXOtnYWZes/IxmqH2k+gOBVeFKrp7N3b0itki6rMSn0myagJ202YNo83Ey6w
+	 Djxu15lHpDfgaM1lcoBZV6hHrWKtbCdyA2u2Q3mONel1yHyTtW2ngqQmQXftudnB2k
+	 D6WiSQq/xaIoFWGidJ2OWtATcdl1iQMgwlIHBjc8MojHZL42y89/7VQFbj+EV5c/ys
+	 m9R95q8JJ8+bT8pP/XHMSQGqf7wwv0+aotICs107cUtR8XilZHaUSFRE2PvlP3FGzr
+	 YtpsGKSJVy8p5KHI7HCy00ys6CqzaxavENj2FfJrqE3bOLbIgJ9cuflIkX+5blbhtE
+	 xjaLXjrzkgI6Q==
+Date: Sat, 1 Feb 2025 11:20:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sam Winchenbach <swinchenbach@arka.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>,
- "lars@metafoo.de" <lars@metafoo.de>, "Michael.Hennerich@analog.com"
- <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v2] iio: filter: admv8818: Force initialization of SDO
-Message-ID: <20250201111813.6b8cbf5b@jic23-huawei>
-In-Reply-To: <SA1P110MB106911327A8819E9AF67E676BCE2A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
-References: <SA1P110MB106911327A8819E9AF67E676BCE2A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Mihail Chindris <mihail.chindris@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: dac: ad3552r: clear reset status flag
+Message-ID: <20250201112024.45fca2ea@jic23-huawei>
+In-Reply-To: <20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com>
+References: <20250125-wip-bl-ad3552r-clear-reset-v2-1-aa3a27f3ff8c@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,68 +63,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 25 Jan 2025 14:54:44 +0000
-Sam Winchenbach <swinchenbach@arka.org> wrote:
+On Sat, 25 Jan 2025 17:24:32 +0100
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> When a weak pull-up is present on the SDO line, regmap_update_bits fails
-> to write both the SOFTRESET and SDOACTIVE bits because it incorrectly
-> reads them as already set.
-
-I can see this as a valid micro optimization but I'm struggling a bit
-on how you can use the device if the pull up is weak enough that
-you can't read data back from it. Does the reset in some way
-solve that?
-
-Having asked for the fixes tag, I'm less sure on whether this is a fix.
-
-Antoniu, I'd also like your input on this one!
-
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Since the soft reset disables the SDO line, performing a
-> read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line
-> doesn't make sense. This change directly writes to the register instead
-> of using regmap_update_bits.
+> Clear reset status flag, to keep error status register clean after reset
+> (ad3552r manual, rev B table 38).
 > 
-> Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+> Reset error flag was left to 1, so debugging registers, the "Error
+> Status Register" was dirty (0x01). It is important to clear this bit, so
+> if there is any reset event over normal working mode, it is possible to
+> detect it.
 > 
+> Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Applied to the fixes-togreg branch of iio.git and marked for stable
+inclusion.
 
-No blank line here.  Fixes is part of the tags block that various scripts
-scan.
+Thanks,
 
-> Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-> ---
->  drivers/iio/filter/admv8818.c | 14 ++++----------
->  1 file changed, 4 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-> index 195e58bc4..9cd1eee84 100644
-> --- a/drivers/iio/filter/admv8818.c
-> +++ b/drivers/iio/filter/admv8818.c
-> @@ -577,21 +577,15 @@ static int admv8818_init(struct admv8818_state *st)
->  	struct spi_device *spi = st->spi;
->  	unsigned int chip_id;
->  
-> -	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> -				 ADMV8818_SOFTRESET_N_MSK |
-> -				 ADMV8818_SOFTRESET_MSK,
-> -				 FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
-> -				 FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
-> +	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> +			   ADMV8818_SOFTRESET_N_MSK | ADMV8818_SOFTRESET_MSK);
->  	if (ret) {
->  		dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
->  		return ret;
->  	}
->  
-> -	ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> -				 ADMV8818_SDOACTIVE_N_MSK |
-> -				 ADMV8818_SDOACTIVE_MSK,
-> -				 FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
-> -				 FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
-> +	ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> +			   ADMV8818_SDOACTIVE_N_MSK | ADMV8818_SDOACTIVE_MSK);
->  	if (ret) {
->  		dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
->  		return ret;
-
+Jonathan
 

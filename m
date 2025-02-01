@@ -1,206 +1,139 @@
-Return-Path: <linux-iio+bounces-14818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94B0A249A0
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:01:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524CFA249A9
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27E3C165FDA
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 15:01:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E37E3A4BDA
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 15:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474581BEF6F;
-	Sat,  1 Feb 2025 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0431C07EA;
+	Sat,  1 Feb 2025 15:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FOJ/i8Vd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGPUdHf2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E02910E0;
-	Sat,  1 Feb 2025 15:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95DE017BA5;
+	Sat,  1 Feb 2025 15:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738422060; cv=none; b=tGkDFTL3mQIcXtm0jolRnHiDjtw4zvnj9fFNyc3VOfZ7f/tjTYPWtt4SZg6VsRr9cDH3AlREQfnLiA2Wbc0hAeNCEWfuIDVkgbqtrVcASezcaOVNPv3cke0rzEXE10QKR3yCCBlhr4SJ221N8BcHksPCAstYFAM2PzoSmbkvOJg=
+	t=1738422650; cv=none; b=TDfoJZMH+ontQUhMWk6gX9Pp3JrPDWKO/AFe43WMAATfjcQoDuBT8wKzNr54SL5GWJ7fYJUegOFPBVmM4MCHJjZ0MPWcBYdrjoK+en05B6fkqnNFv8N9QNJ6VBEJfwhWWRDvsChY5bJyw8GtQlABKLGwBgNWal0OyRSBea0iHg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738422060; c=relaxed/simple;
-	bh=+lZqbCxkWke635XqavrkZMlw/Rnvka0GW+o4jhgxnV8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=txDHV6pM5RCRjvspkGm9WGBsluHIEGs3zPEHMuL/hu9/Na/PFJ7sWPmAXjHoxDlXIwVbJUXD5NyMQcEgTuWc0TMl7M3a39qqghRGER8UlGuvI1My6jcRCFjjtT1xiSNM4pxzriEXikIQFU1ODYXti3X9IqvRYijUDkNa9HIl5CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FOJ/i8Vd; arc=none smtp.client-ip=209.85.208.173
+	s=arc-20240116; t=1738422650; c=relaxed/simple;
+	bh=ESxYJN8LO93DuQxER3WQlpFWAbMknpRPqKYoTwe3w58=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JMj5/uPWiWi4c5v+CAqs4HOfcFn3pfLva+TpWccfY+ApWO7x/7nlnIePG03xdDGzU6YdKblotQ5aa50MB8/1v85R6BAoyvXNKblyMaIBwFAcJWvUW3KT8LFw4WUyigYgmqHVJ9TsxzviNICACrNzWymPSN2nwXutPD2EtlNqnjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGPUdHf2; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3003c0c43c0so31010861fa.1;
-        Sat, 01 Feb 2025 07:00:57 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5dc0522475eso5972012a12.1;
+        Sat, 01 Feb 2025 07:10:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738422056; x=1739026856; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=duwl8rJVSi2r0WT/BOYdGT25dza0Yk8q97PWBB1CxxQ=;
-        b=FOJ/i8VdonlpBTlYlHH4vIpf/+3ruOBmpLxYZuHlvx6nFIwkHY3ZsXA/UDEAtQ+Jey
-         jfR9OA6RF2X5t78Ys9C3ZBO0x2FTcJY52dARICHNx3DLNti38r5SJ/IyPhKgD9T/dUYg
-         q1Lii1RVwATyM3XFEWWX+aUun8/SRsB/i6AjyJ/cRSv5ICnqI0HnH/FShrDnc1N2jHBq
-         WyITluQe7E1HdpE8uZ+yU7zMBXi6YNCa5bN1+2eFhm2UxFytmsOtEHTF7/erqEmrtYoQ
-         VUTQ5oU97GhzqxYchCE7n4Nk5E6ynTDuEnZSzPSWZZWuXICy5/eMZxxlKC3Y9eYdclU6
-         WUkg==
+        d=gmail.com; s=20230601; t=1738422647; x=1739027447; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ESxYJN8LO93DuQxER3WQlpFWAbMknpRPqKYoTwe3w58=;
+        b=gGPUdHf2xZdF8NN+44IcfpTUoeazH5N25wqLVCSLAgs+0s4NFSTCTfpUVwkzbIVrYz
+         cKcwNByN/YEFIZ7iRWv/dhcCtLGMt/+NywlRN5STaUl0NlAK/xpAchg5aBPXfKLqMM7v
+         5/S/rM6huqDESNW3/fYTD3JfRK0zXyx4jV1h6JQ87Zy/gv9+khEKS35i9LUu8rXad/HP
+         5k8DJ/+1hnHrIE/tYUe3RURagrBH8PM4ciEHIdv8lkqTTVz4jqs4IWE8dkRjKUpK5UZu
+         oJMozPvNVdSN7u2pluFc/MkzE1O9p/K3ht5qy/A9dptT/rTSQ9Q5nlPeJL7UeJRElxph
+         uK3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738422056; x=1739026856;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=duwl8rJVSi2r0WT/BOYdGT25dza0Yk8q97PWBB1CxxQ=;
-        b=cnWjMMVtxg3hEhBsODYZxv7GkldPw6ioDWRZylBZmiiWSQy4OicO7o5lshpuGy+oXF
-         Nj2enjqxCb8594zND7028nK7xpD/zirYHDlii71Obj5Sf3nr1AJ8s/gJbkTyKRPiGi5M
-         PIzCZ5l2AHDpan3bqyThD3i5eXV6Tk3/jMR3uXVEuNe9mVJVmFgguaDhHJORT40Rdqxp
-         TGVvUvuSdTXrx6WNi6bUaoH7q4PDExhZ7FD0LwW5tXEkUU+CTe+BiN3IEeCZKvmFvg97
-         pr9S4eM7GSpNOEC38nagfSqdYHCUOulQUsiIkEVBl7njzMRrGmyu6rN5IJ4rHKlAM/hR
-         MOyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULBDMQU9c7R/O82Yblfsqq6WEvBc0iBIEOlURG9mYB9kEv0Kv+/vG9/Xxe+UAlxmpGUNBXHHT9HeTa@vger.kernel.org, AJvYcCV90QFX2VwUTAnq9WqJGEu9Vz3oclCIl54UVWCR79B3F7Be4E8uoOmYYNnON34VDqR057o5pYBlsQFrZvzv@vger.kernel.org, AJvYcCXZWfvKNF5Lawk0WAmzcnmmfNSTxiAvp5JSDqoSKh4Yt1/eLFz65DoEY2qkPfNvvQ5tg4YtsD9iSQjB@vger.kernel.org, AJvYcCXaiQllAsm18DfropJpwfRG+zly1yySzCF5Us+HjrWSlhr73RI76nZZ+4xHSFv8je+A4qq7qytEBh35bw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyURz1nMu9TMFDbSMQ4tEgmS6u2PAn0uoB+MDbEczQ9x2Bdg5WX
-	L6kmZeQnbH6jZm2+IqkpaGKl8f1H2z0+o6muo5CShWHSFlXNY4SJ
-X-Gm-Gg: ASbGncvGAe0JBncZOQh2bOum7ErE9WbZj2qIY9QaMzlSMg8/XtB4wKuTLJsl3i2UoKp
-	ZCoyoDtJGF4GZtdDCpjB3mKxVImU+U6PW+wpbrhkET4H0gA4+rFWi0f+nXTfLb8Kll7+ACuqEcu
-	U1cUVLWrOK7nl1BGcJSzHHqCw6z/CJKKmCcrc/NMGZmb7Ir/tJ66sUgkn6mVVBJpL5yBEp1Iqrn
-	9cNDqakPmfYlbtdrC1EbQFHFSUKKosuqa7f/Dpz6hCxEAQXBLwx6I/lcFXDTsJHLhKyp8cII89J
-	wodaMxzqbctVe1zJjrxlF2jMBnbXhK57HX/0UMHWxvvjvGO4TmEKiOdQ
-X-Google-Smtp-Source: AGHT+IGwjsayJLnDJxH5AwpF9t8KSRh+v6rolaVhrQlXeaCIlau6+z77XJKfcH/dMjk2d7nunAUwoQ==
-X-Received: by 2002:a05:651c:b2a:b0:2ff:c86b:5b4f with SMTP id 38308e7fff4ca-307968ef606mr57303421fa.21.1738422055682;
-        Sat, 01 Feb 2025 07:00:55 -0800 (PST)
-Received: from [192.168.1.110] (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a3097f27sm8847811fa.45.2025.02.01.07.00.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 01 Feb 2025 07:00:54 -0800 (PST)
-Message-ID: <5cc01bc7-95b7-4a58-86d7-d4293e0e9966@gmail.com>
-Date: Sat, 1 Feb 2025 17:00:51 +0200
+        d=1e100.net; s=20230601; t=1738422647; x=1739027447;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ESxYJN8LO93DuQxER3WQlpFWAbMknpRPqKYoTwe3w58=;
+        b=cs2i4TyRSXlZfdwkg8CArN6mFzaLS0DkXYKzfarzsOg8SFUMtGcqysRTkpXVeShv/S
+         hWGB/nqNZklNz0uoVNsgxKtSWBP+K7ZiQBh/qK8j0BCruwSWoRrWRNvBAseSiXxcCsdz
+         8ANEeUMdD5DMEC80mpcDN84T5GF1TUjPfiyPVcQ8IRU0ulHUhLHAulpV8//nWmJYki7j
+         jZ0p3vm1V79QSF2gO0d0syOzd+Ty7eIOT6nK5rY3hjdpceU2H4y1YM3aWDZ2IRpkTNEZ
+         5kqs8wGJGGVaWgjqnBno8h+SO5iUY3i73MooxX9p4WqAo9s5SYxhQAJHk8oe48MJGPY+
+         Q/TA==
+X-Forwarded-Encrypted: i=1; AJvYcCUmrfHfvOq3xCjeft8Lw0Hs2sfwD8V+Jke75Ma6qUW03OTFUmHWp3FAjao9M13VnJYbXhT5y+KF@vger.kernel.org, AJvYcCUwnwWIyPSQyAxAFgQr7oEGzzfEmb+yNdO1BUjjHg+PdVbjQkqAy+r9QJouoqNCoWYm9+6UnG3izoHq@vger.kernel.org, AJvYcCV0iJKLhZKFSq5f0QVhfaPRfh6anZ4MMcBOsYn8zGZvrPDsXMQ9MSMBO5urlvwV9ccvZocijjd914A+jlRK@vger.kernel.org, AJvYcCWG/4wVpbFxIp5/XmrGNxolOjtWnvIUe2kOJ8KpxVFxzOhudWRxx/i577qefHofcvVAYz0HjyPKbsED@vger.kernel.org, AJvYcCWSBxX4FgO4eePytX/HwvY0VZsAxYArm/ux0XvXvlefoOtVFAkTErO0fMRqD4gsZPUfROdSdciRtNpp@vger.kernel.org, AJvYcCX5FqFv8NLIVM+7w1i2FjpXKFBhSNfsTL0keVxF+TAqMP1eDoSziccNib/+8d/1XUJdV55b9/kCDz+fVvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydu85pT5ZCARVXdRJZRPscYcLVOoyuXRv8TSaxXGBwKg7vT4W+
+	PXxX7+NQ+0qma2oXYIe6AUMvqQGO3pbTwwho66RvxvReGxADslbIZzm8igfLJwUQNxRpVya50J1
+	7TsCurefQKY7LgFmF6z2ysfe6eOQPSs1M
+X-Gm-Gg: ASbGnculrt4VTrwkNWHSDHMj9Lc+a0FbBsYI6U7Yjjbt/PwYvX6gdPvInf7/5/nwz3U
+	KEtDjy66XN0isI/13i3r8eSqvIAgZVpz0pnFrM7fQlfRCHwHcImLrlzz+LLHrO0Uzlw27rujq
+X-Google-Smtp-Source: AGHT+IHPgrNaOXTa7GqWwitfxkRWBG3TvzNWPR4XUMDvIyq00cafe/hSAsbw9bgwxCrxOiMYuV7eQGbqzKnExEBm6ts=
+X-Received: by 2002:a17:907:7296:b0:aa6:73ae:b3b3 with SMTP id
+ a640c23a62f3a-ab6cfd10a18mr1638424866b.32.1738422646569; Sat, 01 Feb 2025
+ 07:10:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] Support ROHM BD79124 ADC/GPO
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
-References: <cover.1738328714.git.mazziesaccount@gmail.com>
- <20250131170840.00002dc8@huawei.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250131170840.00002dc8@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com> <CAMRc=MdwQL8dWU5zF5fp+KUbC2RA2Q264by8HGXMg2k1rxhsTA@mail.gmail.com>
+In-Reply-To: <CAMRc=MdwQL8dWU5zF5fp+KUbC2RA2Q264by8HGXMg2k1rxhsTA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 1 Feb 2025 17:10:10 +0200
+X-Gm-Features: AWEUYZkrnYfcY0HPvRPT8411yweedOSpoNuc0S9BpdhPvgLvzrOaZ1BtCHgoJXY
+Message-ID: <CAHp75VdjLWsQJ6CFGdSSEHR=e53h60LGfBcS0mYjeMjzUJuKJQ@mail.gmail.com>
+Subject: Re: [PATCH 00/13] gpiolib: add gpiods_set_array_value_cansleep
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: David Lechner <dlechner@baylibre.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org, 
+	Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Jonathan,
+On Sat, Feb 1, 2025 at 12:36=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.pl>=
+ wrote:
+>
+> On Fri, 31 Jan 2025 21:24:40 +0100, David Lechner <dlechner@baylibre.com>=
+ said:
+> > This series was inspired by some minor annoyance I have experienced a
+> > few times in recent reviews.
+> >
+> > Calling gpiod_set_array_value_cansleep() can be quite verbose due to
+> > having so many parameters. In most cases, we already have a struct
+> > gpio_descs that contains the first 3 parameters so we end up with 3 (or
+> > often even 6) pointer indirections at each call site. Also, people have
+> > a tendency to want to hard-code the first argument instead of using
+> > struct gpio_descs.ndescs, often without checking that ndescs >=3D the
+> > hard-coded value.
+> >
+> > So I'm proposing that we add a gpiods_set_array_value_cansleep()
+> > function that is a wrapper around gpiod_set_array_value_cansleep()
+> > that has struct gpio_descs as the first parameter to make it a bit
+> > easier to read the code and avoid the hard-coding temptation.
+> >
+> > I've just done gpiods_set_array_value_cansleep() for now since there
+> > were over 10 callers of this one. There aren't as many callers of
+> > the get and atomic variants, but we can add those too if this seems
+> > like a useful thing to do.
 
-Thanks a ton for the help! :)
+> This looks good to me except for one thing: the function prefix. I would
+> really appreciate it if we could stay within the existing gpiod_ namespac=
+e and
+> not add a new one in the form of gpiods_.
+>
+> Maybe: gpiod_multiple_set_ or gpiod_collected_set...?
 
-On 31/01/2025 19:08, Jonathan Cameron wrote:
-> On Fri, 31 Jan 2025 15:34:43 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Support ROHM BD79124 ADC.
->>
->> Quite usual stuff. 12-bit, 8-channel ADC with threshold monitoring.
->>
->> Except that:
->>   - each ADC input pin can be configured as a general purpose output.
->>   - manually starting an ADC conversion and reading the result would
->>     require the I2C _master_ to do clock stretching(!) for the duration
->>     of the conversion... Let's just say this is not well supported.
->>   - IC supports 'autonomous measurement mode' and storing latest results
->>     to the result registers. This mode is used by the driver due to the
->>     "peculiar" I2C when doing manual reads.
->>
->> I sent this as an RFC because I implemented the pin purposing (GPO/ADC)
->> using pinmux - which I've never done for upstream stuff before. Hence
->> it's better to ask if this makes sense, or if there is better way to go.
->> Anyways, resulted drivers spread to 3 subsystems (MFD, pinctrl and IIO)
-> In principle nothing against pin mux for this.
-> There are other options though if pin mux ends up being too complex.
-> 
-> - provide ADC channels in the binding channel@x etc.
-> Anything else is freely available as a GPIO.
-> Normal GPIO bindings etc for those.
-> 
-> The channel bit is common on SoC ADC anyway where we don't want to
-> expose channels that aren't wired out.
++1 here, i.e. I like the idea, but the naming needs to be amended.
 
-Thanks for the insight on how things are usually done :)
-
-I think the only reason for having all the channels visible in IIO, 
-could be, if there was a need to provide a runtime configuration.
-
-> For combined ADC GPIO chips we normally don't bother with an MFD.
-> Just host the gpio driver in the ADC one unless there is a strong
-> reasons someone will put this down for GPIO usage only.
-
-I don't really know about that. I don't like arguing, yet I seem to do 
-that all the time XD
-
-I personally like using MFD and having smaller drivers in relevant 
-subsystems, because it tends to keep the drivers leaner - and allows 
-re-use of drivers when some of the hardware blocks are re-used. In some 
-cases this results (much) cleaner drivers.
-
-(Let's assume they did "new" ADC, and just dropped the GPO from it. With 
-the MFD the deal is to add new compatible, and have an MFD cell array 
-without the pinctrl/GPO matching this new device. And lets imagine they 
-later add this ADC to a PMIC. We add yet another MFD cell array for this 
-new device, with a cell for the regulators, power-supply and the ADC... 
-The same platform subdevice can be re-used to drive ADC (well, with 
-added register offsets)).
-
-Allright. I believe you have more experience on this area than I do, but 
-I definitely think MFD has it's merits also for ADCs - they do tend to 
-put ADCs to all kinds of devices (like in PMICs after all, although 
-maybe not with 8 channels and less often without an accumulator).
-
->> Furthermore, the GPO functionality has not been (properly) tested. I'll
->> do more testing for v2 if this pinmux approach is appropriate.
-
-I took a better look at the pinctrl docs while listening the FOSDEM 
-talks :) (Which inevitably means I missed a few things from some of the 
-presentations, and also didn't really properly understand what I was 
-reading. "Multipasking..." like some rude Finns might say.)
-
-Anyways, I think the pinctrl should have some out-of-the-box support for 
-use-cases where pin(s) can be used for GPIO, and for an another 
-function. (I think, I saw functions which take care of the pins having 
-right state for GPIO use). I don't think I properly used those features.
-
->> Furthermore, because the ADC uses this continuous autonomous measuring,
->> and because the IC keeps producing new 'out of window' IRQs if
->> measurements are out of window - the driver disables the event when
->> sending one. This prevents generating storm of events, but it also
->> requires users to reconfigure / re-enable an event if they wish to
->> continue monitoring after receiving one. Again I am not sure if this is
->> the best way to handle such HW - so better to ask for an opinion than a
->> nose bleed, right? Maybe the next version will no longer be a RFC :)
-> 
-> Oddly I thought we had ABI for this but not finding it.
-> We basically want a thing that lets us say don't allow a repeat event
-> for X seconds. Then we set a timer and reenable the interrupt after that
-> time.  I think there are drivers doing this but can't find one right
-> now :(  It's close to _timeout used for gesture detection.
-
-So, a good old timer for doing unmasking. I think this makes sense if 
-the existing users of ADCs aren't prepared for the events to get 
-disabled by driver. Thanks! I'll follow this suggestion :)
-
-Yours,
-   -- Matti
+--=20
+With Best Regards,
+Andy Shevchenko
 

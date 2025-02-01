@@ -1,71 +1,60 @@
-Return-Path: <linux-iio+bounces-14809-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14810-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FABA24918
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:46:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AE3A2491D
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 13:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE98164EDE
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:46:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B81621886751
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 12:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB42F1ADC6F;
-	Sat,  1 Feb 2025 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCFD1AC88B;
+	Sat,  1 Feb 2025 12:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EppRzHBu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpCwiArC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C634A3E;
-	Sat,  1 Feb 2025 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCBF10E0;
+	Sat,  1 Feb 2025 12:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738413971; cv=none; b=YTgos9kmLCWcOQIpRysHEiV3IrmaqSHnlB6+pnstUvQAGeJPcj0gKMiFzdUDJv7hq3ydZGxyAViCwPt3SNn5HGzyZ+7AxAmkUPZ0IiQo7+IBM8FVhE0lhKYaRESCdZF2bHWgyfK+WdW3VU96MZ7Qrwq0EtNWCMfy7oNzUbKsz0U=
+	t=1738414061; cv=none; b=iuGnedyzgIggPnElm9qSNl96zJ6PMLgH4VIU+utVVgo7q9Gho416nwPtrAd7akUjZX82zlXVmF420FpdlSkGjgJ7GXpDIEfvuWb5Irrj4rbzH7eq1pBQZfe/Ry2RyAr7pQqmkJEjeS8Uj29vZchE625o+ZAspnlunjzRr33diUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738413971; c=relaxed/simple;
-	bh=7ko/gQUGt0pizGv4D1amPrClqwB81WnRx5o5PwUX/x8=;
+	s=arc-20240116; t=1738414061; c=relaxed/simple;
+	bh=UKPyLuJDQ7LBUqpJghi/mho9AX/9KRkS6LiXnA+hlQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dztp0DPcwrJS1WG7DXYOVCcWQS43xl9dI5nKy9nDTU2oOt8Gpxr6ERAeXLa1iZF/lzkeBSra0XdjGgWQgLov25jwZUR5p72L62Yycg3WX/e/D87r4+G2vDvgGkOBHQAiBRfel+txE2U09OCSeguOGkB30RxTy0f4oCAavlkiW3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EppRzHBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6729C4CED3;
-	Sat,  1 Feb 2025 12:46:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UAcSPHTe0eZ04oOGhgvbjI7XaEsCNLjVe/cDAGShPAf3szDywWuzzwjpPnsyfxU7GdPJGRJ8Q4p5RFEytEkIpCMDfE/o1XeA+rKyfSxjW0hPyakyli5VOp+kzPigizGqSj3c7lSq1vEPQn72jVISRmY8Mugd/t63sc2q+BirB+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpCwiArC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D27C4CEE2;
+	Sat,  1 Feb 2025 12:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738413971;
-	bh=7ko/gQUGt0pizGv4D1amPrClqwB81WnRx5o5PwUX/x8=;
+	s=k20201202; t=1738414061;
+	bh=UKPyLuJDQ7LBUqpJghi/mho9AX/9KRkS6LiXnA+hlQQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EppRzHBuNDbnUhTthJlTexKX37xf80XHABBRneVyeZM1cxBQORR7mVi+r/jBBMIaM
-	 c8sRXLMF41a635MSBk1QaAFGSd9J2kxPrwCDZH6VrTOM+2RFg7EcRSpar4VOW1yjKt
-	 Jd4MKZYnVXQr71prex5I3ZGdWAe/P/h3mOp93GmGuKOLsRWXWnoEeQOzZIEjKF39dU
-	 aQ9/bOi5qEsCBx8QZEknphdEfnCBgWbfZ6adjxMDFEUKv+WEi+Zyem093AhhzSaC9j
-	 b62gMYM+7dK9a8VwA6Klc0kHSOgIAk/q0U4Y9vBHAsS9wYzfJkbAMNRoDlbTGk6NZK
-	 eafamWqbrngLQ==
-Date: Sat, 1 Feb 2025 12:45:54 +0000
+	b=HpCwiArC7WGsu4TaxzZkl0M1l4CBNzLQfBWync8jNfSq6HCWDbOFba/fozCoVbKZ9
+	 b2anEfIBXD4UM+rx3HjFR9QOll2qakr4eJUbqXi6/N+yD8VVsC9eGFhzVY/ovFgLN7
+	 SU7wVO5Lu42wz061jKyxEQ2d9C4ljGmpfxmkWKZ+AgAEjBMBEci3jZDA/xGdTUWc2m
+	 k4D+N63yYCrgBtTlmIm64M0Mum7y73CVSEU5Uy6Ytk//gvNxVBWEX5MMTQsN/8QJRy
+	 Npi4t7TImvTwfnh6taIu4btJcp4qBSMcXLRjATQsnEHA9jEdqDnfFDa7tr1W6N2XMt
+	 HKC4MbIB8+P6Q==
+Date: Sat, 1 Feb 2025 12:47:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Ulf
- Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Heiner
- Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I
- <kishon@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Jaroslav
- Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
- netdev@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-sound@vger.kernel.org
-Subject: Re: [PATCH 00/13] gpiolib: add gpiods_set_array_value_cansleep
-Message-ID: <20250201124554.7e64d016@jic23-huawei>
-In-Reply-To: <2715ead8-cf6d-4b44-b6e3-343cb6489eca@baylibre.com>
-References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com>
-	<4ad45123-134a-4544-ad0a-24371105d96f@lunn.ch>
-	<2715ead8-cf6d-4b44-b6e3-343cb6489eca@baylibre.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Jonathan Cameron	
+ <Jonathan.Cameron@huawei.com>, Icenowy Zheng <icenowy@aosc.io>, "Peter
+ Zijlstra (Intel)" <peterz@infradead.org>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich  <Michael.Hennerich@analog.com>, =?UTF-8?B?T25kxZllag==?= Jirman
+  <megi@xff.cz>
+Subject: Re: [PATCH v1 0/3] iio: drop useless assignment of cache_type
+Message-ID: <20250201124732.2086afb0@jic23-huawei>
+In-Reply-To: <a63a6a52102fc918ef60ed5ced0505729387a4fc.camel@gmail.com>
+References: <20250129152546.1798306-1-andriy.shevchenko@linux.intel.com>
+	<a63a6a52102fc918ef60ed5ced0505729387a4fc.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,45 +62,35 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 31 Jan 2025 14:51:52 -0600
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 30 Jan 2025 08:30:47 +0000
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On 1/31/25 2:38 PM, Andrew Lunn wrote:
-> >> So I'm proposing that we add a gpiods_set_array_value_cansleep()
-> >> function that is a wrapper around gpiod_set_array_value_cansleep()
-> >> that has struct gpio_descs as the first parameter to make it a bit
-> >> easier to read the code and avoid the hard-coding temptation.  
-> >  
-> > This looks reasonable.
-> > 
-> > How do you plan to get it merged, since you cross a lot of subsystems
-> > here.
-> > 
-> > 	Andrew  
-> 
-> Since these are mostly small changes and most of the touched drivers aren't
-> seeing much action, I think it would be OK for as much as possible to go through
-> the GPIO tree.
-> 
-> We might need an immutable branch from that though since I know that iio: adc:
-> ad7606 is currently being actively worked on.
-Looks good to me (subject to requested name change from Bartosz)
-I'd suggest an immutable with patch 1 then up to each subsystem
-maintainer to pick that up or wait for next cycle.
+> On Wed, 2025-01-29 at 17:24 +0200, Andy Shevchenko wrote:
+> > Default value is REGCACHE_NONE, no need to assign it explicitly.
+> > Fix all IIO drivers that do that.
+> >=20
+> > Andy Shevchenko (3):
+> > =C2=A0 iio: light: adux1020: Drop unneeded assignment for cache_type
+> > =C2=A0 iio: magnetometer: af8133j: Drop unneeded assignment for cache_t=
+ype
+> > =C2=A0 iio: pressure: zpa2326: Drop unneeded assignment for cache_type
+> >=20
+> > =C2=A0drivers/iio/light/adux1020.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+| 1 -
+> > =C2=A0drivers/iio/magnetometer/af8133j.c | 1 -
+> > =C2=A0drivers/iio/pressure/zpa2326_i2c.c | 1 -
+> > =C2=A0drivers/iio/pressure/zpa2326_spi.c | 1 -
+> > =C2=A04 files changed, 4 deletions(-)
+> >  =20
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Applied.
 
-Always hard to predict what else will get worked on at this stage
-of a cycle.
+Thanks,
 
 Jonathan
-
-
-> 
-> If there are any patches leftover that don't get acked to go through the GPIO
-> tree, I can resubmit them after the next kernel release cycle since none of
-> this is urgent anyway.
-> 
 
 

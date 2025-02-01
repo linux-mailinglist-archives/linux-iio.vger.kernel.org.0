@@ -1,204 +1,134 @@
-Return-Path: <linux-iio+bounces-14827-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14828-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1F2A24A0E
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:50:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB4CA24A20
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A74CA165018
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 15:50:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26C447A224D
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C9D1C3BEE;
-	Sat,  1 Feb 2025 15:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20241C5D5D;
+	Sat,  1 Feb 2025 16:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QRE0VTK6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lcgn+w5P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FC0182;
-	Sat,  1 Feb 2025 15:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04361C5D4F;
+	Sat,  1 Feb 2025 16:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738425040; cv=none; b=amjOBdBxkeAQ8K4yp/gHzAHFYtHYBBS62MTgYGySwGfhAeVD/o+fBsOq2MXEVK1ralAI38hcd/bT+V7iIszrXGlxI9SeSxuvA7rFcok87/gbnZXqgokYJkk9ucwRud7iy1snRN+D8aMsWbRmkttjvyZOMM0k3iCaH3mR4kSVROc=
+	t=1738425868; cv=none; b=hNw8MLdCxkv0LFa1Zzprr6NEASAimPO73B18hCKPds7SMl2s2R5zQKy86d0y1wt03iMBQnTH5xj+BUz8peSGqjXvROSDVpwioy3ydfpCt9lwz/wuVND1WUigNfKpHaONJuQzUylVUep3dPVODHfLVtxbEsKLMvDPizxso0DNKrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738425040; c=relaxed/simple;
-	bh=aksvLma06eyni1rchA3DyQtJYprBqJ4isNSzP2QRvcY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YU4Myj+63BnZO1IsLdrMYsCh3lm03Th+N0wm08gIdkM1TcEmXd3yvkU9/NxbFlhWQaVprB1O8fstnkZCb/iLhdzgblkhxfb8Csm8PgbARYARYsqUJ+Dumi0SttCYL7A9oflPMpLL95w9GOXdpotqNJRuNIDBrsvayceuRnXm9/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QRE0VTK6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76610C4CED3;
-	Sat,  1 Feb 2025 15:50:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738425039;
-	bh=aksvLma06eyni1rchA3DyQtJYprBqJ4isNSzP2QRvcY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QRE0VTK6Rc/IUXI7Z/g3dfEqoVs1KhutWjf5sbJz/sDxr2+x7nlZWdBRQ4TsSeFh1
-	 FbXQYPP2zbknSXPI2RHyv7Bl7lRiRykR/hOuKOk2TI4DZokS4gcHOm4+yF+c40IhzF
-	 q3tv3DWVtStVTGlZ/v13ROVc2mKQPO5+4/+ePd8AZjaAAQI6o06I29ZHQC6dpRSrRB
-	 EkjihmKPKizs16AEkqteAHnAiU3Ac0lMwstsKWDgcH3l5khTUHoJbcZm33tBuc5G5Z
-	 U6asa1bT1JhJA2jCLJj/xC3+q4unr5PbNLlWMLVqcIZqyVXM9Aku4TMiM7lAcXGbbw
-	 Aso0LzzIzX1gA==
-Date: Sat, 1 Feb 2025 15:50:29 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Sergiu Cuciurean
- <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
- <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <jonath4nns@gmail.com>, <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v2 12/16] iio: adc: ad7768-1: Add GPIO controller
- support
-Message-ID: <20250201155029.650a7769@jic23-huawei>
-In-Reply-To: <4067fc67ef617edbaea0de21241d59d6ff8eaf98.1737985435.git.Jonathan.Santos@analog.com>
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
-	<4067fc67ef617edbaea0de21241d59d6ff8eaf98.1737985435.git.Jonathan.Santos@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738425868; c=relaxed/simple;
+	bh=I4MzQGJ/XOlvmg1qM+M5R17X2i7Dg0JfSmlnBulmUM0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bhhg6OSB1frEVEgkr1uTdTHxZ11IF4DFY0pk0Xe/IP+RdzggfeTNiX7NsvdFg9L+dNOetg03eYzp2VrMGPcUW8Jl1ddHSNZtHiTsv6aabJFqY6iLLwvZLovoBeJ5QmFHG08GQb5MIfb+QQ81MacLimRiIASzgYKMaLr8Xe+KG3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lcgn+w5P; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5401be44b58so3219848e87.0;
+        Sat, 01 Feb 2025 08:04:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738425865; x=1739030665; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=G/FHkEyEgm2mZD4oKyZRqvHHFUf2hu9d5AgxmkFkN0E=;
+        b=Lcgn+w5P1N8gSVgcRLSRL7UCBs5WcecymLjPn/phHf0WUlxKy6LCxo3kueBREC4Ao/
+         NYhqzRIXykrQBW5XjqaFVgjTdkaGyIlUbFAas2QViAfYTULJnzasUm2Utm2UAR0UNVlV
+         Tw0Ce46l+DT4flPX4y6uQ0j2zgOWlBMSOC3DzHi6tUHadJQ2Like0HpNLO038hJBfPla
+         BYrDfbxdvECXx/0eVF/qISccgD3HFkQzDLu8DicxogE34KUnlOeepX1VhKlfbSYupr7k
+         Pjj8kZpt4fLzBDoqJ6Exse4kloEcNajFyuWR1rkrJv7JfvK+WOabpc7AruqdYB/yYWV6
+         zFLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738425865; x=1739030665;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G/FHkEyEgm2mZD4oKyZRqvHHFUf2hu9d5AgxmkFkN0E=;
+        b=C99FJ2vHztFBVX1LmFRl34yIZF2/WKwMRdL+yeede7gNyeti34c1UzefGCEQKb1B3a
+         PztcDmSU2mBM3gdCi4FdbnCGaBVx8LGM/XbWhjD+F0DWh31lH9ucnic/Pm9kUjeKlmBv
+         /FdwnUT04pzXobTeL0wjXUiAcGtHWLUCTDScpu3q+v071/elaH04B7XPoNkoZAWB+rvT
+         fiOmergYZLx81ee9JTP7/uB7OsUkLLwrpYHCayErXS5nGIGv/QEXrlK3aghVgi9hOfwU
+         m+ZdIe0JtuZmzrLTLL+FrPDk+7+3fyD8kLciW1CjJoj3ls0surGrOuPri774+jY1cdde
+         0YMA==
+X-Forwarded-Encrypted: i=1; AJvYcCV7tX2k3e+jbSo7j3BLEF0ARAup9RtKLSCHTjsYRbzysJC1QD5VWM0b5OYo9VOq36TszKxdKKZ060cs@vger.kernel.org, AJvYcCVwUy58uppuvcrUQ8K03QD94aV1US6i2ZGUmmi2N6ktBsIpa13qCFAfSNHAKlp5M18YvTIrt3rvs6qVhYZf@vger.kernel.org, AJvYcCXtGPSkESdObLci74sIHIQDbXKXzPmU11szYzQ4e8g9sf9xvUakPxiuQKjHuFXjAEkB5l7H5RBSEpdZ3g==@vger.kernel.org, AJvYcCXvp6SYcihgewexTSneuZMhztMEsBZYRfxKHsta8LLdD8BvagXl3HKcSlxH2P8SzybdPRgDFvzTCXbR@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKQMsXkfxFRFx8A1INxs2Z9S7Rbx6bTJjewuoarxXTPRuO9X2n
+	0BBGxYtAZ27i4TEAqbSfovVJ5W4Cm7TG/l7+nHcGXUdGtvwSa/tN
+X-Gm-Gg: ASbGnct2FRfP5oDWw4fqb5n9fNCpyWkdQwRe5lBXSdqrmEmb92V6wGulLS5SBOoKqmK
+	A1K/TK4qWNOVyxeXpl9TedEbMG1YaC9mRPYrJz8eJgRcPRJJHwPR+Cg9sZxxiIfhxJyXVzO4ck5
+	XUo6Gu5DESI32WH1/HlktIKVM6seS6gi1PQryQqgGKuoNKjCFetWni16jt7Hf5UPZTj5CQNxWff
+	0+zMh80nEKflb+0p08nQrEgxLgTp7TBtvw2YgDrNNj4tj7rmEaCEynjbp+Cg9gjsIVorMAv6Uf2
+	Jb7LSsZgkZ7KvIZApCCfPonbdXyvAwbvq9n15ORueigxICH+GEcdgDb7
+X-Google-Smtp-Source: AGHT+IEHgoBRAFDpT9ajz7rHokftbme9Oe99VBKzXpPXpyz0eK0jMQNt2qgRHPVoygEZHpYt4EeRLw==
+X-Received: by 2002:a05:6512:3501:b0:540:1e5e:3876 with SMTP id 2adb3069b0e04-543e4c3fcc9mr4511664e87.52.1738425864690;
+        Sat, 01 Feb 2025 08:04:24 -0800 (PST)
+Received: from [192.168.1.110] (85-23-190-22.bb.dnainternet.fi. [85.23.190.22])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebebec13sm777072e87.229.2025.02.01.08.04.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 01 Feb 2025 08:04:22 -0800 (PST)
+Message-ID: <d3c2d681-4f92-4e09-8c81-c050723c25e8@gmail.com>
+Date: Sat, 1 Feb 2025 18:04:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/5] mfd: Add ROHM BD79124 ADC/GPO
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+ <cc30cf6859b5e5a7320282709f428cd42717ac6b.1738328714.git.mazziesaccount@gmail.com>
+ <20250131171436.00002583@huawei.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250131171436.00002583@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Mon, 27 Jan 2025 12:13:45 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+On 31/01/2025 19:14, Jonathan Cameron wrote:
+> On Fri, 31 Jan 2025 15:37:06 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
-> The AD7768-1 has the ability to control other local hardware (such as gain
-> stages),to power down other blocks in the signal chain, or read local
-> status signals over the SPI interface.
-> 
-> This change exports the AD7768-1's four gpios and makes them accessible
-> at an upper layer.
-> 
-> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-As David observed, the direct mode release calls are missing.
+>> Add core driver for the ROHM BD79124 ADC / GPO.
+>>
+>> The core driver launches the sub-drivers for the pinmux/GPO and for the
+>> IIO ADC. It also provides the regmap, and forwards the IRQ resource to
+>> the ADC.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> As per response in cover letter. This is a common device combination and so
+> far I don't think we ever bothered with an MFD. Lots of ADCs provide
+> GPIO chips as well so I'd just squash it into the ADC driver.
 
-Also, there are a few places where you wrap lines much shorter than needed.
+You may be right with this. I still need to digest this a bit as I 
+explaned in the cover letter discussion :)
 
-> +static int ad7768_gpio_direction_output(struct gpio_chip *chip,
-> +					unsigned int offset, int value)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return regmap_update_bits(st->regmap,
-> +				  AD7768_REG_GPIO_CONTROL,
-> +				  BIT(offset),
-> +				  AD7768_GPIO_OUTPUT(offset));
-Again, wrap less.
+All of your inline comments were valid and I agree with them. Noticing 
+the single IC limitation was great!
 
-> +}
-> +
-> +static int ad7768_gpio_get(struct gpio_chip *chip, unsigned int offset)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-You aren't releasing it.  That should have deadlocked the second time
-you called this.
+I'll address all the findings if I keep the MFD approach.
 
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap, AD7768_REG_GPIO_CONTROL, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (val & BIT(offset))
-> +		ret = regmap_read(st->regmap, AD7768_REG_GPIO_WRITE, &val);
-> +	else
-> +		ret = regmap_read(st->regmap, AD7768_REG_GPIO_READ, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return !!(val & BIT(offset));
-> +}
-> +
-> +static void ad7768_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-As above, needs a matching release.  May mean you want to factor
-out the guts of this as a helper function so you can still do
-direct returns on error.
+Yours,
+	-- Matti
 
-> +	if (ret)
-> +		return;
-> +
-> +	ret = regmap_read(st->regmap, AD7768_REG_GPIO_CONTROL, &val);
-> +	if (ret < 0)
-> +		return;
-> +
-> +	if (val & BIT(offset))
-> +		regmap_update_bits(st->regmap,
-> +				   AD7768_REG_GPIO_WRITE,
-> +				   BIT(offset),
-> +				   (value << offset));
-	Wrap a little less and drop the unnecessary brackets.
-
-		regmap_update_bits(st->regmap, AD7768_REG_GPIO_WRITE,
-				   BIT(offset), value << offset);
-Also, check return value?
-
-> +}
-> +
-
-> +
-> +static int ad7768_gpio_init(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regmap_write(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +			   AD7768_GPIO_UNIVERSAL_EN);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	st->gpio_avail_map = AD7768_GPIO_CONTROL_MSK;
-> +	st->gpiochip.label = "ad7768_1_gpios";
-> +	st->gpiochip.base = -1;
-> +	st->gpiochip.ngpio = 4;
-> +	st->gpiochip.parent = &st->spi->dev;
-> +	st->gpiochip.can_sleep = true;
-> +	st->gpiochip.direction_input = ad7768_gpio_direction_input;
-> +	st->gpiochip.direction_output = ad7768_gpio_direction_output;
-> +	st->gpiochip.get = ad7768_gpio_get;
-> +	st->gpiochip.set = ad7768_gpio_set;
-> +	st->gpiochip.request = ad7768_gpio_request;
-> +	st->gpiochip.owner = THIS_MODULE;
-Might not be worth it but I'd be tempted to do
-
-	st->gpiochip = (struct gpio_chip) {
-		.label = "ad7768_1_gpios",
-		.base = -1,
-		.ngpio = 4,
-...
-	};
-perhaps.  This one is entirely up to your preference.
-> +
-> +	return gpiochip_add_data(&st->gpiochip, indio_dev);
-> +}
-> +
 

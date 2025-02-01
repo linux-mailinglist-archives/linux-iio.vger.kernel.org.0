@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-14837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D3CA24A78
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:38:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C273A24A98
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:43:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222BC166512
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:38:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B88083A60DF
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2141C5D78;
-	Sat,  1 Feb 2025 16:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3811C5F0F;
+	Sat,  1 Feb 2025 16:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLpHOprM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fw2llv6y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0311C5D68;
-	Sat,  1 Feb 2025 16:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A071C548A;
+	Sat,  1 Feb 2025 16:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738427878; cv=none; b=u0OQ3CRR6PE47lINvNLycRajOSCjSZuEJYU5qcsNjfz9L27b5BCE5kEUQqacUiO8gEd2KmqVe7rHHXBIzYDTGV5hU6OCSFVN0PBhpq6W/5XezU5MY12Kp68ale3m5EZkO7oFiOwWFPw3+ToyNC2Kb0/3oCa9e+o64OZndRwT3jA=
+	t=1738428225; cv=none; b=uhNsSj9E+ukU8R1ARZfeLOPMjMVJNH0nz0WejD1JXiN8qlb/j25YPYRbV6v7w5F0LtVtm/SW4e+vR6BI5mS7YbjTJy5P2cxZbNAg//ElxeeMPgnLxN8YBy92PMwkdTtFMEZlXa9/baPrnHpI4S+4VURDyH3Hxcy1T/XKWoQZEPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738427878; c=relaxed/simple;
-	bh=+1uXDoqh7n4l1Ik5RnjCTzuNqrOVLeidvJ5uh8kJTk4=;
+	s=arc-20240116; t=1738428225; c=relaxed/simple;
+	bh=GnrOUZhTL7gypNtyaTHEjj8pXk55RWK/byJMlNWWfQI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AyAqnl5tkLzMaPd0pLsZPUO6WaY7IxwKsWpjAlKZ7xv2+RuwfNttYm48A3OG7/m8zrESMfGK15Et7JT+mCyd9NLcL/rUgLL6TgOm68FONOOiR0JfwoG5vZw8nGInmSgfjOBJQHGU94g8ZTrJ1VY7ke/iBB/JHY3ZpEYbJil29mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLpHOprM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E172C4CED3;
-	Sat,  1 Feb 2025 16:37:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V7W+xiUWOmr85yZ0X62lbFreAT18qrDlN0/qJNeNWo4o7UbwSRvPrGNJfNANVxRalJbd68WpufOMbvfVUnWkVr9dkpFV5x7nHI5cHk5S8K67El8ZwWFZ+JUzQjm5YqVEqjggjxVB0G6xHZe6ETlBTzf+3DXK0i2K2GjVnygtbgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fw2llv6y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC95DC4CED3;
+	Sat,  1 Feb 2025 16:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738427878;
-	bh=+1uXDoqh7n4l1Ik5RnjCTzuNqrOVLeidvJ5uh8kJTk4=;
+	s=k20201202; t=1738428224;
+	bh=GnrOUZhTL7gypNtyaTHEjj8pXk55RWK/byJMlNWWfQI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OLpHOprMI/N4nqh5nNUM1EQmcmzRTCC71fdSSG4zqka76OcU4lHazhkFfMJUiIFCy
-	 Skl0QO21rzCKZkFUQp9RUxmp1VRcS94BQu72sAy6D6VWkuoZnzG9/TuIu5jFbZH27/
-	 9fW8xySSgObJ8ZxmjBbGJK/nrTtFQateUBJ1eg6RmPigymNEyzYvFiKAYQyBjn3j7r
-	 iLm2rd1G+ZcmYYHaRFNZ9QFNhe4vLIcBFgpg4ElEJLgcSY2G/T4PSx78ZK5/XUKg/H
-	 bbdB31Bid/195oiT9rP36gOI4opGzJNLgsb821bhgMAa4jAgLju8ZhsryayBz4LPVO
-	 CCc6esCnj9N0w==
-Date: Sat, 1 Feb 2025 16:37:53 +0000
+	b=Fw2llv6y9S9h5k0u94HM4x7qBObO+CeqA/HyawhpNdARA78iGMlti9JrJfmF7ZLmP
+	 TKeYO3K28yYNVwO9OQQGNJyMR73t4pp31IL4MHQnfoQGOU2hve89aBuZgjpvLrp6fN
+	 c9SdG2oJroQHClFI84XtjfDsXsXs0cZs6EnMGDO7qj6wKTvK6XjlCNsSUPczsMPY1x
+	 hINYM0AGxEGxSGaF3SxF52MUfbkwF2J2zNqLQ4NdZBwIezoppPH8AV48Y9A+lBORv9
+	 icKFomi2Pqsi+cziHFMO0zbZIv0uHsSY8NGtDqQCCp83zJ1f4WE2+MRNFNPOjqAxha
+	 B/YGlpN8+MMlw==
+Date: Sat, 1 Feb 2025 16:43:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v1 02/12] iio: accel: adxl345: reorganize measurement
- enable
-Message-ID: <20250201163753.24a63a06@jic23-huawei>
-In-Reply-To: <20250128120100.205523-3-l.rubusch@gmail.com>
+Subject: Re: [PATCH v1 04/12] iio: accel: adxl345: reorganize irq handler
+Message-ID: <20250201164338.3359f306@jic23-huawei>
+In-Reply-To: <20250128120100.205523-5-l.rubusch@gmail.com>
 References: <20250128120100.205523-1-l.rubusch@gmail.com>
-	<20250128120100.205523-3-l.rubusch@gmail.com>
+	<20250128120100.205523-5-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,94 +62,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 28 Jan 2025 12:00:50 +0000
+On Tue, 28 Jan 2025 12:00:52 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> In order to have this function generically available a position at the
-> top makes more sense. In upcomming patches for particular features the
-> function needs to be available, to turn off measuring while changing
-> settings, and turn it on again afterwards.
+> Reorganize the IRQ handler. Move the overrun handling to the bottom.
+> Overrun leads to reset the interrupt register. This also happens at
+> evaluation of a particular interrupt event. So, actually it makes more
+> sense to evaluate the event if possible, and only fall back to pure
+> overrun handling as a last resort. Further simplify fetching the
+> interrupt status function. Both is in preparation to build interrupt
+
+Both are preparatory steps to build
+
+> handling up for the handling of different detected events, implemented
+> in follow up patches.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+
 > ---
->  drivers/iio/accel/adxl345_core.c | 54 ++++++++++++++++----------------
->  1 file changed, 27 insertions(+), 27 deletions(-)
+>  drivers/iio/accel/adxl345_core.c | 23 ++++++++---------------
+>  1 file changed, 8 insertions(+), 15 deletions(-)
 > 
 > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index ffdb03ed7a25..142f12117627 100644
+> index 8fbf0a43746f..7ee50a0b23ea 100644
 > --- a/drivers/iio/accel/adxl345_core.c
 > +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -163,6 +163,33 @@ static const unsigned long adxl345_scan_masks[] = {
->  	0
+> @@ -491,16 +491,9 @@ static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
+>  	.predisable = adxl345_buffer_predisable,
 >  };
 >  
-> +/**
-> + * adxl345_set_measure_en() - Enable and disable measuring.
-> + *
-> + * @st: The device data.
-> + * @en: Enable measurements, else standby mode.
-> + *
-> + * For lowest power operation, standby mode can be used. In standby mode,
-> + * current consumption is supposed to be reduced to 0.1uA (typical). In this
-> + * mode no measurements are made. Placing the device into standby mode
-> + * preserves the contents of FIFO.
-> + *
-> + * Return: Returns 0 if successful, or a negative error value.
-> + */
-> +static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
-> +{
-> +	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
-> +
-> +	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-> +}
-> +
-> +static void adxl345_powerdown(void *ptr)
-> +{
-> +	struct adxl345_state *st = ptr;
-> +
-> +	adxl345_set_measure_en(st, false);
-> +}
-Why move powerdown?  This looks to be a devm callback, if that's all it used for
-leave that down near wherever it is used.
-Moving set_measure_en makes sense, just not this user of it.
-
-> +
->  static int adxl345_set_interrupts(struct adxl345_state *st)
+> -static int adxl345_get_status(struct adxl345_state *st)
+> +static int adxl345_get_status(struct adxl345_state *st, unsigned int *int_stat)
 >  {
->  	int ret;
-> @@ -301,33 +328,6 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
->  	}
+> -	int ret;
+> -	unsigned int regval;
+> -
+> -	ret = regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
+> -	if (ret < 0)
+> -		return ret;
+> -
+> -	return FIELD_GET(ADXL345_REG_INT_SOURCE_MSK, regval);
+
+Maybe worth commenting in the patch description that this is the whole register
+anyway.  Makes it obvious why this isn't a functional change.
+
+Also delete that MSK value as it is rather pointless!
+> +	return regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, int_stat);
 >  }
 >  
-> -/**
-> - * adxl345_set_measure_en() - Enable and disable measuring.
-> - *
-> - * @st: The device data.
-> - * @en: Enable measurements, else standby mode.
-> - *
-> - * For lowest power operation, standby mode can be used. In standby mode,
-> - * current consumption is supposed to be reduced to 0.1uA (typical). In this
-> - * mode no measurements are made. Placing the device into standby mode
-> - * preserves the contents of FIFO.
-> - *
-> - * Return: Returns 0 if successful, or a negative error value.
-> - */
-> -static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
-> -{
-> -	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
+>  static int adxl345_fifo_push(struct iio_dev *indio_dev,
+> @@ -536,14 +529,10 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+>  	int int_stat;
+>  	int samples;
+>  
+> -	int_stat = adxl345_get_status(st);
+> -	if (int_stat <= 0)
+> +	if (adxl345_get_status(st, &int_stat))
+>  		return IRQ_NONE;
+>  
+> -	if (int_stat & ADXL345_INT_OVERRUN)
+> -		goto err;
 > -
-> -	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-> -}
-> -
-> -static void adxl345_powerdown(void *ptr)
-> -{
-> -	struct adxl345_state *st = ptr;
-> -
-> -	adxl345_set_measure_en(st, false);
-> -}
-> -
->  static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
->  "0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200"
->  );
+> -	if (int_stat & ADXL345_INT_WATERMARK) {
+> +	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+>  		samples = adxl345_get_samples(st);
+>  		if (samples < 0)
+>  			goto err;
+> @@ -551,6 +540,10 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+>  		if (adxl345_fifo_push(indio_dev, samples) < 0)
+>  			goto err;
+>  	}
+> +
+> +	if (FIELD_GET(ADXL345_INT_OVERRUN, int_stat))
+> +		goto err;
+> +
+>  	return IRQ_HANDLED;
+>  
+>  err:
 
 

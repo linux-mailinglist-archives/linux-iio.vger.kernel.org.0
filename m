@@ -1,146 +1,161 @@
-Return-Path: <linux-iio+bounces-14833-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14834-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69230A24A49
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:22:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDCD8A24A5B
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 17:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5A29165D0B
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:22:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BD093A4FBE
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Feb 2025 16:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B161C5D71;
-	Sat,  1 Feb 2025 16:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B4A1C5D66;
+	Sat,  1 Feb 2025 16:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="k4gk33Oj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HV3YMCpE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA291C3C1F
-	for <linux-iio@vger.kernel.org>; Sat,  1 Feb 2025 16:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411C31C1F1F;
+	Sat,  1 Feb 2025 16:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738426943; cv=none; b=G5eTfN692QsBZhxocUkpVHYISI4vnligq8zxw3w9Oo9PEIxpzhf/1ogAhR+yqpYKUhFUl3/WGcetyU7NacAaKq/+1VvnavxT005+T2Ib7tYgVbAy04608cRn4qIfmks4mbxUM+NpUpU+xGqDqxdBIf/59fqcBm3EN0kmY4W0ij8=
+	t=1738427204; cv=none; b=SNVEvHi24zwzehOXmr6GcFz9K5RDnSea6K0xmDNl+mnpWkg5hjjsJPMglRXgECYp0mTvAS1xFPFwDcWrOIlDOpc2ZMW7qTN8DLqfSU46b05TzeqKE29YZNbrVysWF2QPztwjFYc7j5WNs2+wI55000L7k3961Gbu5wLcKTNxZ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738426943; c=relaxed/simple;
-	bh=gc2yB9uwC+CfjzlaXN3vOgLBSMdhCziTLFTpp/igtbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AsrmW4M1Wi+sBmln5myp0DwHumREAmcQhwRYRiO22/QTyoC/EdrystHXKUI/HZg9bPqVYj7gCQIUnx/RjpLmB4FgTW6nxLdwqzKByZpwIJRbQd8Ww0+DyQUHPjnfAL6ATFtrFjAQgKZ71jsD0nED5gR4VuyS24GoDs1S9FOKaF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=k4gk33Oj; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-540201cfedbso2673461e87.3
-        for <linux-iio@vger.kernel.org>; Sat, 01 Feb 2025 08:22:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1738426940; x=1739031740; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gc2yB9uwC+CfjzlaXN3vOgLBSMdhCziTLFTpp/igtbI=;
-        b=k4gk33OjrqZyZ8vAYmHFC6SVUZiZQtw7U/YUtZ4FvXExY4btcCxRNryyrCPvrcImcM
-         BHNCZMu4UDoo3CByDYH6ItDBUJB05WadJ+Xb9rKpYOD5HUQwLOzpigmQPjk8SpGqe6hd
-         8Gv6ou3vWTgqU8TJzgKNS/71JZk6vOgM1h2KEwCgWRc/qHMzMafQwOnBGS+bhjSOkSiY
-         oG9BbUOwNPPALUvi5Mf1S5xLjxJplPK5U/QBOu+TyAlA4HtMJloqZ8I5kcdc+syux9/O
-         O/FY2K/YloMAggAv3CyC3tHmb7XLxT75vc79S8wzDAcyKUlA405fJaa4LvO2QvU8qOsD
-         6qUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738426940; x=1739031740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gc2yB9uwC+CfjzlaXN3vOgLBSMdhCziTLFTpp/igtbI=;
-        b=YVmveRypkhrakKNexv0gQJ4pkPgMU+Du88/Cbq9KT43DIGMZjHUo+tc2lvhSJVUETP
-         BxFg+/0JPyf72EEdRP/Bs+IlIsNRofw36Ek5S2fRXqCM06KwlAcsd5X0ad0J0SGE0Own
-         kyDXETCGeCBxCtMQeBAocE2KfCFsNm9oYGA8vw1qriPwc6OgnUt8sySOUrslGmDcty6F
-         aAExSr6aOluUNOTRcN2CWd64nZEcaFCJjNj5t/hGLDv3cyL8/t89L6mgokBrNes29Zwf
-         ZkTDLECq0okgxn1i66KTSg30Mx+hZCSVme1WkLOaw1YkBGa9GOVdnXkzCJwL8dxJphTt
-         Thxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXF+ZMj68BWP+uITBueo8nqOUOX+fODp3b1B0Yj9VOOh0M5LWZsjVMdCC76fG8AdC/57k4X9+yf21A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu0OBWHcpkxLgvRfNFDKRNEz1wi6GL81/Icb3uy34cILCXVjGm
-	LugJ4//PfiXtHJW0/LZrTpQHai0SHSWX561FGn76EL7ecdxvHXlcg9TLQy2lw38gb3CpwaXg78f
-	7kVxbxcsqGpvmqtPbt23dDO+judgR1+9xDU05OQ==
-X-Gm-Gg: ASbGncsHINUG+7c3rX4fEFjsw0L5QnqR5jvxyhCkRLxDY9M6/ywqtsZyuFv3doDaCwQ
-	ImCnaStlJskoEMiRKfFXjOYNFXbwvI8xo4VrrbJv/oDHEFba2cgb2VIB9OcM4xuKpEUSvAZ6c
-X-Google-Smtp-Source: AGHT+IEMrH29lOkWTlWC69aY0dD2xb+wCJlnehQsFFcBgOS7bovj0ZbCV4vzNowRaHEyenGDcRs81QzQOyPr/8xF7gY=
-X-Received: by 2002:a05:6512:12c7:b0:53e:239b:6097 with SMTP id
- 2adb3069b0e04-543e4c3fd4cmr5485244e87.50.1738426939852; Sat, 01 Feb 2025
- 08:22:19 -0800 (PST)
+	s=arc-20240116; t=1738427204; c=relaxed/simple;
+	bh=GrQn/vAlhRLico+evNaO6oFN5ihzECkatA5KFLG8epU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Y5bmonTfeOlBJBcHlt2VXexceWMBeYmJfQGkeCmv6TYgRrgDeS+CHgVVtR3iQ4D3yjYphHLk4G6PNMDa3wP2dyuDOjtdej2TDUSduRenjdOy9wk3QoP8VKlXCEubhR84Zs6eHXyUQj9dTXi/J1JvQjGOEXHp5QDdWZb36kTR44U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HV3YMCpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EBBC4CED3;
+	Sat,  1 Feb 2025 16:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738427203;
+	bh=GrQn/vAlhRLico+evNaO6oFN5ihzECkatA5KFLG8epU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HV3YMCpE0fMsqjf8JOo6uBiUl/hLYUT2UK7xHIh/quoXBmLxDhdAlCvSJ7/VngWUm
+	 wfi6eCv/X4YMj4fnF3ASioL4EHzw21SaW/NEcEDOGLzNwAfBCkqMy7wUVqaPWvCG8o
+	 6KMkbk9+Gon4xhivbE6NlCydzbuwGDhbSgZ9+rB9NGvQ6rN8wzznF0P6gKg5zYk9+u
+	 d/ZKs46jep5fZ/3yfrMH/nCvqCyQtaQU9WYZb3v0pi86Gg2SAyMuvMPoQrqaavUe6z
+	 89mxzLm2Qf7A032mg11iy/2U1FdZm9tO0GT3jss2NnDxRffVrkKFXt/7D1mb737rNl
+	 1zyGf4iwbJN1A==
+Date: Sat, 1 Feb 2025 16:26:31 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lee Jones <lee@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Linus
+ Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>, David
+ Lechner <dlechner@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-gpio@vger.kernel.org, Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [RFC PATCH 3/5] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250201162631.2eab9a9a@jic23-huawei>
+In-Reply-To: <566f15dc-8901-4377-8407-8eac8a54bfe4@gmail.com>
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+	<e44851669ce7e91d1295ab7352535c93b89d35bf.1738328714.git.mazziesaccount@gmail.com>
+	<20250131174118.0000209a@huawei.com>
+	<566f15dc-8901-4377-8407-8eac8a54bfe4@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com>
- <CAMRc=MdwQL8dWU5zF5fp+KUbC2RA2Q264by8HGXMg2k1rxhsTA@mail.gmail.com>
- <9931433b-5cde-4819-ac96-eea4f1f0f1f2@baylibre.com> <CAMRc=McEdcDs01BAKN5vg9POg_xxJBY1k8bfgiDN60C1-e_jow@mail.gmail.com>
- <072be5a9-e0fb-4073-85b3-4a8efcafae09@baylibre.com>
-In-Reply-To: <072be5a9-e0fb-4073-85b3-4a8efcafae09@baylibre.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Sat, 1 Feb 2025 17:22:08 +0100
-X-Gm-Features: AWEUYZndtirbEg_aYtJ6wt5WMFYJObSWPO3NsWCnNmAFKxLlbxMM9F8rxlAsWp4
-Message-ID: <CAMRc=Meq_Gfhcjzx0vCL0JPzfnOcijFgB6AuqtsqgGn1eOTMVg@mail.gmail.com>
-Subject: Re: [PATCH 00/13] gpiolib: add gpiods_set_array_value_cansleep
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org, 
-	Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Feb 1, 2025 at 5:17=E2=80=AFPM David Lechner <dlechner@baylibre.com=
-> wrote:
->
-> On 2/1/25 10:14 AM, Bartosz Golaszewski wrote:
-> > On Sat, Feb 1, 2025 at 5:09=E2=80=AFPM David Lechner <dlechner@baylibre=
-.com> wrote:
-> >>
-> >> On 2/1/25 4:36 AM, Bartosz Golaszewski wrote:
-> >>>
-> >>> This looks good to me except for one thing: the function prefix. I wo=
-uld
-> >>> really appreciate it if we could stay within the existing gpiod_ name=
-space and
-> >>> not add a new one in the form of gpiods_.
-> >>>
-> >>> Maybe: gpiod_multiple_set_ or gpiod_collected_set...?
-> >>>
-> >>> Bartosz
-> >>
-> >> I was waiting for someone to complain about the naming. ;-)
-> >>
-> >> I was going for as short as possible, but OK, the most obvious prefix =
-to me
-> >> would be `gpio_descs_...` (to match the first parameter). Any objectio=
-ns to
-> >> that?
-> >>
-> >
-> > Yes, objection! As far as any exported interfaces go: in my book
-> > "gpio_" is the prefix for legacy symbols we want to go away and
-> > "gpiod_" is the prefix for current, descriptor-based API. Anything
-> > else is a no-go. I prefer a longer name that starts with gpiod_ over
-> > anything that's shorter but doesn't.
-> >
-> > Bartosz
->
-> Oops, that was a typo. I meant to write gpiod_descs_.
+On Sat, 1 Feb 2025 17:38:20 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-Eh... the D in gpioD already stands for "GPIO Descriptor" but if
-there's no better option in your opinion than I guess I can live with
-that.
+> On 31/01/2025 19:41, Jonathan Cameron wrote:
+> > On Fri, 31 Jan 2025 15:37:48 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >   
+> >> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> >> an automatic measurement mode, with an alarm interrupt for out-of-window
+> >> measurements. The window is configurable for each channel.
+> >>
+> >> The I2C protocol for manual start of the measurement and data reading is
+> >> somewhat peculiar. It requires the master to do clock stretching after
+> >> sending the I2C slave-address until the slave has captured the data.
+> >> Needless to say this is not well suopported by the I2C controllers.  
+> > 
+> >  From what I recall that is in the I2C spec, so in theory should be supported.
+> > Ah well.  
+> 
+> Could be I am mistaken then. Or, maybe I just misused the term "master 
+> to do clock stretching".
+> 
+> I know that it is not rare the slave device is keeping the clock down 
+> for extended period (in this case so that the measurement would be 
+> completed) - but at least I am not aware of any APIs which could be used 
+> to cause the _master_ side to keep the SCL low for an extended period 
+> after receiving the ACK (after sending the slave address). In this case 
+> it would require this driver to be able to set a time for how long the 
+> master would keep SCL low after sensing the slave address, before 
+> sending the "command" bytes.
+> 
+> |S|ADDRESS+R|a|STRETCH|8-bit-i2c-frame|A|8-bit-i2c-frame|A|STRETCH|8-bit-i2c...
+> 
+> Above denotes this "master stretching". CAPITALs are initiated by 
+> master, lowercase by slave. S, is start, a is ack and R is read-bit.
 
-Bart
+Ah. That is indeed more unusual. You were correct that i was thinking
+of the client side doing the stretching!
+
+> 
+> If there is a standard way to implement this in Linux side, then I might 
+> consider using it as it'd allowed much higher capture rates.
+Not that I'm aware of. 
+
+Wolfram, have you seen anything like this?
+
+> 
+> >> It is worth noting that the ADC input pins can be also configured as
+> >> general purpose outputs. The pin mode should be configured using pincmux
+> >> driver.  
+> > 
+> > We shouldn't be presenting channels that are configure for GPIOs as
+> > ADC channels.  It is very rare that there is a usecase for any
+> > dynamic switching.  
+> 
+> Thanks :) If the dynamic switching is rare, then you're definitely 
+> right. I need to see if using the pinmux still makes sense, and if we 
+> can implement this while using (separate) pinmux driver.
+> 
+> > Normally it's a case of what is wired and
+> > so static.  
+> 
+> I should implement a device which can be controlled via it's analog 
+> output line :) If nothing else then a device shutting down when it's 
+> output is pulled low ;)
+> 
+> ...Well, I have no real use-case for dynamic config either.
+> 
+> >  Hence build the iio_chan_spec array for just the
+> > channels you want, not the the lot.  Channel sub nodes in the
+> > DT are how we most commonly specify what is wired.  
+> 
+> Hmm. That'd mean the ADC channels _must_ be defined in DT in order to be 
+> usable(?) Well, if this is the usual way, then it should be well known 
+> by users. Thanks.
+
+Yes. We basically have two types of binding wrt to channels.
+1) Always there - no explicit binding, but also no way to describe
+   anything specific about the channels.
+2) Subnode per channel with stuff from adc.yaml and anything device
+   specific.  Only channels that that have a node are enabled.
+
+There are a few drivers that for historical reasons support both
+options with 'no channels' meaning 'all channels'.
+
+J
 

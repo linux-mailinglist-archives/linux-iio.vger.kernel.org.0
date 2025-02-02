@@ -1,147 +1,147 @@
-Return-Path: <linux-iio+bounces-14864-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14865-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC12A24EC2
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2025 16:15:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F5FA24F12
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2025 18:09:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C80593A569F
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2025 15:15:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D331639DA
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Feb 2025 17:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31B71D63CA;
-	Sun,  2 Feb 2025 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E135D1F428F;
+	Sun,  2 Feb 2025 17:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twGCzp4P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Szytbsn5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE6381A3;
-	Sun,  2 Feb 2025 15:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DEC1FB3;
+	Sun,  2 Feb 2025 17:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738509336; cv=none; b=nelY2kcSq8pquZHoDE/05il3S7VpF3cUIMo3mDi7leQryc6KaylRCsh/ohqcUslmyaOs7d2oa+TMpweFa7tOlmjxp54H4KzvwxR218nYPrIQe025XJ+bwh2oRG2p9DbPPxMRToAjvZ18LXSQ1VXdzA1Zrf36Qlsn8kRTl98rApU=
+	t=1738516190; cv=none; b=Teja86/oWS38BwaxodpNnwMg0jV7Du5ZPb1kDi23mDayVWL6vPKwA84mHA6yHr/cw4Cw1O8wet2Jt3f488g0YHrHSNvpKin2EPPk8xDmuK7fnXGHh5qWNOyr/Y0pbY4qVbi9Iwwqa+qCr/5UGc7JQXxsXPiOTZZB/xCUZyE0/28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738509336; c=relaxed/simple;
-	bh=uAU7bmuKNbRNKUiGAVgwp9nVJvHKcC9CZxd/CiHOYgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FupYiZN8824D0L7n1hAd0nLY5FmDYJ13RbGW390ZQ/R5LMtTy93gEI0JS1HwvImP5N2Ej+0448OInJFgFS3w1y1v2pgoB6AF8HoezkFSM73FgrvdGmJ+cc+7ULhyI4mlddhmu9hukjBBndLDUeXBf5adEXqjrLVVGtz9refCvEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twGCzp4P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C67C4CED1;
-	Sun,  2 Feb 2025 15:15:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738509334;
-	bh=uAU7bmuKNbRNKUiGAVgwp9nVJvHKcC9CZxd/CiHOYgg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=twGCzp4Pbyz9jCPmZ1oeAMGhN5YODbpg7gGbhidD406ocxIpMMH1bNo+/br1L6Xup
-	 IqbKYZMRoXI/I0FjkCrf1hkkeAIKlajw8Fw81lkvRgjUNlAp4+Af1/ozoylAcRcolI
-	 buq1AAuwSB3CEDWZPJ+nLSxRPVULUzPnQ7C83GRMtpLQzNUfLErDhDBhi12l+t9wNv
-	 1PKJY8UKD72wdSM/r4jt7tbptxxqELO/HbshFMSdiqypQuj74a/s+CtFQ9IMV+hE9r
-	 a2UNcNoGIM+OjVHhNNnhE/kfvNIi365Ylz/aiJZe2AojxqbRsADgYM6TLcXrW3HHEK
-	 Z8kAnrk0jPv2w==
-Date: Sun, 2 Feb 2025 15:15:26 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Sam Winchenbach <swinchenbach@arka.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "antoniu.miclaus@analog.com" <antoniu.miclaus@analog.com>,
- "lars@metafoo.de" <lars@metafoo.de>, "Michael.Hennerich@analog.com"
- <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH v2] iio: filter: admv8818: Force initialization of SDO
-Message-ID: <20250202151526.457eab08@jic23-huawei>
-In-Reply-To: <SA1P110MB1069C9854F796B755E5E24C7BCEBA@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
-References: <SA1P110MB106911327A8819E9AF67E676BCE2A@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
-	<20250201111813.6b8cbf5b@jic23-huawei>
-	<SA1P110MB1069C9854F796B755E5E24C7BCEBA@SA1P110MB1069.NAMP110.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1738516190; c=relaxed/simple;
+	bh=df6BcYVR2vRlNLlHLxs5/iga5oJDC0yq9+DSnTI+kUs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=Upaq3U9qiBHx7h6XVvcU0mTB64/R6dl78UdRZvaj/zvlBGMpiOrOtasD/lk4DG//MKnESjThIRjkjTfppLVJnxOlGJei1Vjmq6oxWR/upPGrsg0+cZBNN4bPYg1goA4czr+ia46d5z2e4CcpEXE/gbEgVLCh8H3eb8vvt6YdJQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Szytbsn5; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-385de9f789cso2760862f8f.2;
+        Sun, 02 Feb 2025 09:09:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738516187; x=1739120987; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AUfnIb7i9zp0poNHv6A+PgqlAHuBKpjMn6IWAlduoFM=;
+        b=Szytbsn5aEc7KFEo9PClEdGv3DIx+0YklqHsiFVEB3RmwOsBMEzhLWE9xMFPMvn0Ud
+         EcfNi13xJqLlilDNqujutaZcHPvysymwGkxBF6q3WMQhjyf9cqfskrPEHGdvR3SUa9Nb
+         61LFpyjtyeQN+ZHvBeHa/pyhLb7/n5TX7JLAWEvjc7bjuHqKFxj+9j/WSR3ejXhyF5V+
+         7XM7Yw1ImOVdnVG5ymkBR84gnCGhX8NLOLZKpNjFVzCwCsKy/2/oXu+oM8EIa+cbIy9E
+         GLlmKaBdJ8UoeVrgizg/6RJEncoRVfdyl7FOwhtVuFPJDpxbgJRVzhWEPKLtEWSDQpI6
+         G6Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738516187; x=1739120987;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AUfnIb7i9zp0poNHv6A+PgqlAHuBKpjMn6IWAlduoFM=;
+        b=MQim5qDXrCsZKtpEfETjMZaxn2hZjGBW/BYyIsoeJ+4bVKCRMajcyfhfIYtikZN6Sn
+         u8EYu9YkdsEHLPEXVFPESeZPPVZEZ+bbWFvdHcXahuFDSejJx9XxJ1hU4nsHewqek52S
+         LT07Uu+9cqOHxLQvb7Q2ij/shuDvSIHKjXDmiQGPJign3y+chbGpbyAQmv1XEUBAZ5La
+         QhrkShwfAB1NmnU7dnVKNLjHLGDIUkcW7Q70PU9Ta/RsUY5UsDuwnD7exDi22ZhOX4e/
+         ThzPj/wktzBS+De5ZSNbymSDjK7lMOYnBJWV9wZu7Z5r47uba7WiZ96ivgplVtTssJ0a
+         pnWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwR0/LfWNhAkdUqttjG4x2iot7UoDS2kMOdpMrvE5de9EfeHkilOzZT60LceSDmDQpuoJbFc2Bsusm5ueF@vger.kernel.org, AJvYcCXoG3ZtjzcgLxWd68dcNtTAQt+qFhWREvS99VETC6IcwaxAvGrlruUyw0yfctt7+N2ZkDGgPfhHGoQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTgCVMKOEd9A4eYfPvbFi4mGJi3ve+1HQs4eJk45xk4s+XASPn
+	GR3jK6fu2j9GZFCUOtx7JQKSGkN4nO7IH/txLVabVKEgy3MJP099
+X-Gm-Gg: ASbGncvOTS7ma9L93DGQscs+hCyGf48ptWqQ8yRXVD1Ed9FLf2YdClSNEoTLYARA5/c
+	64cABC6nRI7OIaWDbrkfCZJ4I8s2IVYdoHLLGYoaOUnazCfB9Bq3lKsoWIzj0it0PPz0Vc+BmnU
+	7Mn7JV3LPbim+7fj4asnM4/1/1pQvZHVditmDRAYeIMKrwcpjDcuROTUamVdfHYuBzs3MQADOwZ
+	aEHCDCGh7/H1/bWRd8Wal2HZCOm01WtjThakOZX5R4yASRxLjtGCMBARXDV/bZuqYfhjBPRWeoW
+	R0V3zuHYLIDH3GMZdrQW78l1kA==
+X-Google-Smtp-Source: AGHT+IH+D526eus/CIM6agZGKLuQJGVo2Tifk/Ud4iNtFnIrNCK/PvF9vFjdTsmgQfFP3gDK8ZOlEw==
+X-Received: by 2002:a5d:47ae:0:b0:385:f6de:6266 with SMTP id ffacd0b85a97d-38c5195cbe3mr15242738f8f.24.1738516186705;
+        Sun, 02 Feb 2025 09:09:46 -0800 (PST)
+Received: from localhost ([164.15.244.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438dcc1317fsm163608295e9.8.2025.02.02.09.09.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Feb 2025 09:09:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 02 Feb 2025 18:09:45 +0100
+Message-Id: <D7I4JY638HIU.1OH0ECMRKC7K7@gmail.com>
+Subject: Re: [PATCH] iio: light: Add check for array bounds in
+ veml6075_read_int_time_ms
+Cc: "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
+ <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Shuah Khan"
+ <skhan@linuxfoundation.org>
+To: "Karan Sanghavi" <karansanghvi98@gmail.com>, "Jonathan Cameron"
+ <jic23@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>
+From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
+X-Mailer: aerc 0.18.2
+References: <20250202-outofboundsread1573409-v1-1-5e3dd97a24a6@gmail.com>
+In-Reply-To: <20250202-outofboundsread1573409-v1-1-5e3dd97a24a6@gmail.com>
 
-On Sat, 1 Feb 2025 14:00:58 +0000
-Sam Winchenbach <swinchenbach@arka.org> wrote:
+On Sun Feb 2, 2025 at 11:49 AM CET, Karan Sanghavi wrote:
+> The array contains only 5 elements, but the index calculated by
+> veml6075_read_int_time_index can range from 0 to 7,
+> which could lead to out-of-bounds access. The check prevents this issue.
+>
+> Coverity Issue
+> CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
+> overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
+> elements at element index 7 (byte offset 31) using
+> index int_index (which evaluates to 7)
+>
+> Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor d=
+river")
+> Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+> ---
+>  drivers/iio/light/veml6075.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
+> index 05d4c0e9015d..a892330582f4 100644
+> --- a/drivers/iio/light/veml6075.c
+> +++ b/drivers/iio/light/veml6075.c
+> @@ -210,7 +210,7 @@ static int veml6075_read_int_time_ms(struct veml6075_=
+data *data, int *val)
+>
+>  	guard(mutex)(&data->lock);
+>  	int_index =3D veml6075_read_int_time_index(data);
+> -	if (int_index < 0)
+> +	if (int_index < 0 || int_index >=3D ARRAY_SIZE(veml6075_it_ms))
+>  		return int_index;
+>
+>  	*val =3D veml6075_it_ms[int_index];
+>
+> ---
+> base-commit: df4b2bbff898227db0c14264ac7edd634e79f755
+> change-id: 20250202-outofboundsread1573409-378997439be1
+>
+> Best regards,
 
-> > > When a weak pull-up is present on the SDO line, regmap_update_bits 
-> > > fails to write both the SOFTRESET and SDOACTIVE bits because it 
-> > > incorrectly reads them as already set.  
-> > 
-> > I can see this as a valid micro optimization but I'm struggling a bit on how you can use the device if the pull up is weak enough that you can't read data back from it. Does the reset in some way solve that?
-> > 
-> > Having asked for the fixes tag, I'm less sure on whether this is a fix.
-> > 
-> > Antoniu, I'd also like your input on this one!
-> >   
-> 
-> On power-up the device is configured without SDO enabled. This, alone, makes the read-modify-write during initialization incorrect - It is not possible to read from the device seeing it is not driving the output.
-> 
-> If the SPI bus, like in our situation, has a weak pull-up the situation is compounded. When the device initializes it reads backs all 1's as part of the read-modify-write sequence, falsely determines that the soft-reset bit is already set and skips resetting the device. The next step is to enable the SDO line. It reads back all 1's, falsely determines that the SDO is enabled and then skips writing to enable it. This leaves the device in a non-functioning state.
-> 
-> By writing directly to register it will always perform the reset, and it will always enable SDO regardless of the invalid values read back during initialization.
-Ah ok.  So it's a bug with or without appropriate pull up.
-Just happens to be worse if that is missing.
-> 
-> > >
-> > > Since the soft reset disables the SDO line, performing a 
-> > > read-modify-write operation on ADI_SPI_CONFIG_A to enable the SDO line 
-> > > doesn't make sense. This change directly writes to the register 
-> > > instead of using regmap_update_bits.
-> > >
-> > > Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-> > >  
-> > 
-> > No blank line here.  Fixes is part of the tags block that various scripts scan.  
-> 
-> Is this the blank line after the fixes? I need to do some research to understand the tag block.
-Yes - The block of all tags needs to be contiguous. No blank lines.
 
-Greg has a script that moans about this, not sure if it also runs on linux-next
+Hi Karan,
 
-Jonathan
-> 
-> >   
-> > > Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-> > > ---
-> > >  drivers/iio/filter/admv8818.c | 14 ++++----------
-> > >  1 file changed, 4 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/filter/admv8818.c 
-> > > b/drivers/iio/filter/admv8818.c index 195e58bc4..9cd1eee84 100644
-> > > --- a/drivers/iio/filter/admv8818.c
-> > > +++ b/drivers/iio/filter/admv8818.c
-> > > @@ -577,21 +577,15 @@ static int admv8818_init(struct admv8818_state *st)
-> > >       struct spi_device *spi = st->spi;
-> > >       unsigned int chip_id;
-> > >
-> > > -     ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> > > -                              ADMV8818_SOFTRESET_N_MSK |
-> > > -                              ADMV8818_SOFTRESET_MSK,
-> > > -                              FIELD_PREP(ADMV8818_SOFTRESET_N_MSK, 1) |
-> > > -                              FIELD_PREP(ADMV8818_SOFTRESET_MSK, 1));
-> > > +     ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> > > +                        ADMV8818_SOFTRESET_N_MSK | 
-> > > + ADMV8818_SOFTRESET_MSK);
-> > >       if (ret) {
-> > >               dev_err(&spi->dev, "ADMV8818 Soft Reset failed.\n");
-> > >               return ret;
-> > >       }
-> > >
-> > > -     ret = regmap_update_bits(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> > > -                              ADMV8818_SDOACTIVE_N_MSK |
-> > > -                              ADMV8818_SDOACTIVE_MSK,
-> > > -                              FIELD_PREP(ADMV8818_SDOACTIVE_N_MSK, 1) |
-> > > -                              FIELD_PREP(ADMV8818_SDOACTIVE_MSK, 1));
-> > > +     ret = regmap_write(st->regmap, ADMV8818_REG_SPI_CONFIG_A,
-> > > +                        ADMV8818_SDOACTIVE_N_MSK | 
-> > > + ADMV8818_SDOACTIVE_MSK);
-> > >       if (ret) {
-> > >               dev_err(&spi->dev, "ADMV8818 SDO Enable failed.\n");
-> > >               return ret;  
+Thanks for your patch. That could never happen because the device does
+not support those values: it only delivers values between 0 and 4 for
+that field because it does not support more integration times.
 
+Even though the check does not do anything in reality, it does not hurt
+either, and I would like to avoid future noise from coverity.
+
+Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 

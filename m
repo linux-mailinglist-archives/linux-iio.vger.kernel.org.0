@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-14954-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14955-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B47A26707
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 23:43:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27830A26764
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 00:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4355C165ED0
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 22:43:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B18AC3A50C4
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 23:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C242116F7;
-	Mon,  3 Feb 2025 22:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4189B2116FF;
+	Mon,  3 Feb 2025 23:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="f+6XVLDT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TR1u7KMd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807BE210F5A
-	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 22:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF95211487
+	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 23:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738622533; cv=none; b=QN7ULOLbiqpi7oAYPTO0usU7ISAThf29KdbHmcrQHTVPWLrTVFLZyI2lHXvtZQVRutpUMn+Op1eOkiC3zRviyqbh3q7qCPx2beBEdd5FDWUVnf+DNKgokIYSDAtoZoLCXHLIFhCa0y2tCMasOR5IivCCkKvIt0vlt37ffARAg6M=
+	t=1738623684; cv=none; b=GRl3WVVP+9qMW1BNoXVg7zsQFmLFdAFDeBbCt1jE4B3bKEwoqoTApjaCdz/U0bWLj+e6HNznUDcIy4eHyALSPVhDdLnnab+o10m25E0bNCCajRkZRAs2VCdKkYzycbiOGdu/u+HzgI1BDv65SsKs7aqBv7aUPkOGm4Pr+T7/cJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738622533; c=relaxed/simple;
-	bh=SXY/ut4HPZGjQfV0TdHI+owQ/8IPFSL6uBL1jYm5kIQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=lPhsSuhqOqBe6x7c6c/7akll5PK5r2wGduqzCzmXKiCjbMKDhHnnz1qRxEdTJY8wDYitxaJNO00lPG9UdelA6pxmob85DDYVUVfC0azWERuvL1lR9jVkx5b39Xh+Bo7w0fL2rD7hOQc6QxMbyjCJTQ9Qi8zJnuyul0A0MbqB6/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=f+6XVLDT; arc=none smtp.client-ip=209.85.167.174
+	s=arc-20240116; t=1738623684; c=relaxed/simple;
+	bh=JX6YgyI3XB5KZmwCC3kBcbBo+cVpHlL6lsPqGTgoxeA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EPacwnsQXRmM+IGTqE+vuF3/TOO58S6W2X9NbFLSPJrHPTFEAsKZdeEOoLQdpbbUgyu+O39xNRT29KkfgdBb5fygS/sIqmKHX4yMoQ5nlc2SoxSjTPYUKkfFk48Q7+Qr2K/FTgQk/XBGSZeJIC/tEQb8jrLGCK48J/IL4kzJMDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TR1u7KMd; arc=none smtp.client-ip=209.85.160.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3eb8db8ae9aso2080148b6e.1
-        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 14:42:11 -0800 (PST)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-29fb5257e05so1435545fac.0
+        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 15:01:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738622530; x=1739227330; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738623681; x=1739228481; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SJnIfOP7+jSlUs29FECy5//ffpMPbLe/6pSEbA38u3M=;
-        b=f+6XVLDTnechdqBluVSaw5ZSyuaeMkrWSCzOIU0YoBMQyd87gOtCjssN32aN+ldeTf
-         Pqh8ZBTqzNfmbgqz8hLrf9IbtyuDBZUxTWVY+fqhFSHs5igqV7RjkcH7Y5SfBThQ1NTt
-         SzNIzm6rbA39f7faGwOlb9dJlqlzH741aSKQE3djTpu4XuWwdeeO/UYTHQ1H+J2WM+js
-         ThAahDQZCxFRBTEMnq3hBwH0xepC+q9gT3cezWS2iVYCsDliAiqK/tP2BwYEnLqCp5y+
-         Z4GnsPhmf3k+bEox8ce/qAQWKkQ+E0UGsmCcpAGFrm5FZPiB85WjnAW9bnFJr2PiSY1h
-         VYKw==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q48N32/BZzAOoxhPyz3+9vdM39rBTv/9Tu2+c8AC5Nc=;
+        b=TR1u7KMdbhzMYP9oF0mbItwasEVKnR3dcvon5gwbwTryxzXJxf/p6WhbNNPjyf2MA1
+         cHEtllG4Z+HxCbHULwOmw3NXlrVOIAr83ucKd2YW9E8p1LnWCjwu7C9TMeZzmHZDQV4n
+         qVmtqIOD8nSAdF52CtzDHMo8fQD8nh7RGVyH3VzqlMHToDtQzpATsiA3VWLF+6gEiL9j
+         GyJRtYBLNLzFvw8n4re2GJwr2Zga+nv1JJDQoHan2UjMwEvhFLxWYx9DqrrQs4PO+8g+
+         kMUg1dFTXHUzuhwn8dZHFXDSwlyjt8fMFcEWCVVQhPKhS1d4BDtzq3Jc+KNAxoNe32IF
+         I6uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738622530; x=1739227330;
+        d=1e100.net; s=20230601; t=1738623681; x=1739228481;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SJnIfOP7+jSlUs29FECy5//ffpMPbLe/6pSEbA38u3M=;
-        b=bXClYGrJ8yxzEUbFwSiPMKS9VmS+REnvLTTv+pWlsYkJhwbJGYDg3nfmbxcfCQJPM8
-         pddtwlfDmvJVzGrHjco5DiBqAfSU3v8CG/nmko2ZInd7u8Wf/AWnEXi7f53Sw3bTfPVM
-         wFQTl9lb9Q7avDb1d+e4ZYKwPDVr13F7p60hclXnIMJUJvXpXYb0xvBvaRVi8n6h3nV6
-         MU/KdVwl70MsB7DFvTTml69S8i8ebRzf0Ufq2GPvAOR7horF4PiCuWnulkELALGMepdz
-         wW482s7x5txzhjj+t3ugXREqZKSMnvODVt2E8OMSPQItgRdgE5xDRx6fNS6cYxkeE1tX
-         /86w==
-X-Forwarded-Encrypted: i=1; AJvYcCU+abTlUCj3/aCJhMVxNckhYLrlgq9finOHiGFMqqE2KcSeIhWf9522chK+8bi6DbbdMbQdpBKIECU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0ZaW7CqDOgnIQ5ohbfCwxQzWGdMTlDX/dC80OfVzorrxOU/fs
-	5d9uk82uaqc16qZUpJEuIr+Djn8FqKILhE6zOKaA2ZexKkC4Ckhx0cwNUoHV7Gs=
-X-Gm-Gg: ASbGnct9bPJXW2Cb9u7EcPKdXotTsPiLV5px0blEaB1jjYx81c42eYt56PC4TAUChkl
-	K30uUY9RNTx+5OFMqPM6o4tqNSUhA3FHXcwz6Xb/Vyso/LXca6i0KW4NTycL/9bKmrmmu8wlIXu
-	GYeVQ3MVkzmikqrvHtoa6raWfndgmbn0jnzsxBTMrkTY5iFgyeiZzn7CkJlvTR1BKhBhQXSssTv
-	72tsCdYfggH8Ji25fOR7VrAAV/h6k77PBrpN4/ZfaGAFOeIUUuiVHbaCr3nJHCAm/TZOZ/pvPe3
-	oDREJB1z7Cg/GulphcxMN0c7Hq7f0qYyz41S2eag+eUd9oJC7ajg
-X-Google-Smtp-Source: AGHT+IGPg3Ki4+QlI+PnxMX8N884nW9RTygynBG8qVyReXZuEsEhrg1HOrCB1+xLT/4DE7U7CBVGQQ==
-X-Received: by 2002:a05:6808:2f16:b0:3e7:df63:15bc with SMTP id 5614622812f47-3f323a184cdmr15101787b6e.12.1738622530456;
-        Mon, 03 Feb 2025 14:42:10 -0800 (PST)
+        bh=Q48N32/BZzAOoxhPyz3+9vdM39rBTv/9Tu2+c8AC5Nc=;
+        b=dHzM2/6Woei1ijurJt80Z9tVgPtz2Lp/+aJrHx+Fv7vqkKfjYyqkxkZbJsQpeBlM77
+         vUStY9E8L2SMEAEvOLxgVX83W6/DTfStTZA1AizcZArOYz4BJF/Ax8f4632Phzvd5txJ
+         UsZjOhr2O2597tJLSaeIHZTnHvB50/HyDwa9KlZmKu7GW087lIcyzXZTKwpAYxNwivz0
+         BSzVD7ovuYOOpd2V6cj/R7g7q7dZy3kj4gDjRBLngWo02oygC9q3R1IZM8I+/YCbaKPD
+         eJVhtlbO3U8R3GG/bWfD5WlDRvAuSMJcYeZzHX8V+ZjudUrgdEqP70PmVH48oEN55MHQ
+         VNMw==
+X-Forwarded-Encrypted: i=1; AJvYcCUEO/kO5A1RUIOpKcyA3FJgUAi39NjUxn3fkxEzhx/UK8H7LjsY8lRBjXR37De8bU1zMXhx0xSo0Xo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiDqovcSch32agamWHK84X6WN18/p4/4IeTgCsfEhTR0gFmkST
+	0vrJbftncb2EVq5W37jfcaQgH//Ob01kc4ibdpAEYaKeMBU9ajw3E+K+4OCAxDs=
+X-Gm-Gg: ASbGncsX5PbXEweVUG7zXYhnx7U1ry88TdQ2NjLbnq+B5Y3YqetyaGd5tR8klNl2HbM
+	YD+b0FThoZISLiTbrm7fzrNLcoQmXsvtw16j4h6wIYMpT8Fqrt1PcYOnIh/583P0vFrSCD8Qh9e
+	G2oZAb1UZoYX/dx3+HkjoAwNPisJDPqEaqdhSj8JzebK8mCYCzpX0NE+5hHK/9/k2H36oBNmQEy
+	r628YOCga4pOEZw9LW2mWcxv3XskynZfmFNPypoTHzL6eM3HEazpgueF5TJgU0YOyk8zjgB5DOr
+	YjOjrcoc4+j6hgm9ol0su+MXgCWF1nDoz7fIk+IiDxFvxwhzeEmJ
+X-Google-Smtp-Source: AGHT+IFvQHZNew9RMVh3oMkAV8tgG3NqgZ2zFveyRCk4EzbOqbrzrj7jrDhOfm9blPA9OWsKbsUncQ==
+X-Received: by 2002:a05:6870:3127:b0:29e:55ae:6170 with SMTP id 586e51a60fabf-2b32f26ff66mr16402322fac.29.1738623681468;
+        Mon, 03 Feb 2025 15:01:21 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f333523efcsm2731729b6e.8.2025.02.03.14.42.08
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b356196935sm3599125fac.17.2025.02.03.15.01.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2025 14:42:09 -0800 (PST)
-Message-ID: <c5722215-b720-49ab-9f0e-00b01eb4679d@baylibre.com>
-Date: Mon, 3 Feb 2025 16:42:08 -0600
+        Mon, 03 Feb 2025 15:01:20 -0800 (PST)
+Message-ID: <9f209ff0-e56c-47a1-8df0-603d30d36ccb@baylibre.com>
+Date: Mon, 3 Feb 2025 17:01:18 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,158 +81,144 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 8/8] iio: adc: ad4851: add ad485x driver
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+Subject: Re: [PATCH v4 3/3] docs: iio: add AD7191
+To: Alisa-Dariana Roman <alisadariana@gmail.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>,
+ Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Ramona Gradinariu <ramona.bolboaca13@gmail.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pwm@vger.kernel.org
-References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
- <20250127105726.6314-9-antoniu.miclaus@analog.com>
+ linux-doc@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+References: <20250203133254.313106-1-alisa.roman@analog.com>
+ <20250203133254.313106-4-alisa.roman@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250127105726.6314-9-antoniu.miclaus@analog.com>
+In-Reply-To: <20250203133254.313106-4-alisa.roman@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/27/25 4:57 AM, Antoniu Miclaus wrote:
-> Add support for the AD485X a fully buffered, 8-channel simultaneous
-> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
-> differential, wide common-mode range inputs.
+On 2/3/25 7:31 AM, Alisa-Dariana Roman wrote:
+> Add documentation for AD7191 driver.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
+>  Documentation/iio/ad7191.rst | 250 +++++++++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst  |   1 +
+>  2 files changed, 251 insertions(+)
+>  create mode 100644 Documentation/iio/ad7191.rst
+> 
+> diff --git a/Documentation/iio/ad7191.rst b/Documentation/iio/ad7191.rst
+> new file mode 100644
+> index 000000000000..b55f3c13e45a
+> --- /dev/null
+> +++ b/Documentation/iio/ad7191.rst
+> @@ -0,0 +1,250 @@
+> +.. SPDX-License-Identifier: GPL-2.0-only
+> +
+> +==============
+> +AD7191 driver
+> +==============
+> +
+> +Device driver for Analog Devices AD7191 ADC.
+> +
+> +==================
+> +Supported devices
+> +==================
+> +
+> +* `AD7191 <https://www.analog.com/AD7191>`_
+> +
+> +The AD7191 is a high precision, low noise, 24-bit Σ-Δ ADC with integrated PGA.
+> +It features two differential input channels, an internal temperature sensor, and
+> +configurable sampling rates.
+> +
+> +=====================
+> +Device Configuration
+> +=====================
+> +
 
-I think we have the important bits sorted now (i.e. userspace-facing stuff).
-Just noticed a few minor things in the latest revision.
+I would call this section the `Devicetree/wiring` section since devicetree has
+to do with how the chip is wired up.
+
+The existing `Device Tree Bindings` section at the end pretty much just repeats
+the DT bindings .yml doc, so we could drop that section from this doc.
+
+What you have written in this section already covers it very well.
+
+> +--------------------
+> +Pin Configuration
+> +--------------------
+
+I think it looks the nicest when the --- exactly line up with the text and I
+think that is the usual kernel style as well.
+
+Example:
+
+-----------------
+Pin Configuration
+-----------------
+
+Same applies to the rest of the doc.
 
 
-> +static int ad4851_setup(struct ad4851_state *st)
-> +{
-> +	unsigned int product_id;
-> +	int ret;
-> +
-> +	if (st->pd_gpio) {
-> +		/* To initiate a global reset, bring the PD pin high twice */
-> +		gpiod_set_value(st->pd_gpio, 1);
-> +		fsleep(1);
-> +		gpiod_set_value(st->pd_gpio, 0);
-> +		fsleep(1);
-> +		gpiod_set_value(st->pd_gpio, 1);
-> +		fsleep(1);
-> +		gpiod_set_value(st->pd_gpio, 0);
-> +		fsleep(1000);
-> +	} else {
-> +		ret = regmap_set_bits(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
-> +				      AD4851_SW_RESET);
-> +		if (ret)
-> +			return ret;
+> +===================
+> +Device Attributes
+> +===================
 
-Do we also need fsleep() after software reset?
+There isn't really anything unusual about attributes on this chip compared to
+typical ADCs, so I would be OK if we left out this section. If we do keep it
+though, I think we should write out the full attribute name since some are
+separate, some shared_by_type and some shared_by_all, so they have different
+prefixes.
 
-> +	}
+> +
+> +The AD7191 provides several attributes through the IIO sysfs interface:
+> +
+> +-----------------------------------
+> +Voltage Input Differential Channels
+> +-----------------------------------
+> +
+> ++-------------------+----------------------------------------------------------+
+> +| Attribute         | Description                                              |
+> ++===================+==========================================================+
+> +| raw               | Raw ADC output value                                     |
+> ++-------------------+----------------------------------------------------------+
+> +| scale             | Scale factor to convert raw value to voltage             |
+> ++-------------------+----------------------------------------------------------+
+> +| offset            | Voltage offset                                           |
+> ++-------------------+----------------------------------------------------------+
+> +| sampling_frequency| Current sampling frequency setting                       |
+> ++-------------------+----------------------------------------------------------+
+> +
+> +--------------------
+> +Temperature Sensor
+> +--------------------
+> +
+> ++-------------------+----------------------------------------------------------+
+> +| Attribute         | Description                                              |
+> ++===================+==========================================================+
+> +| raw               | Raw temperature sensor output value                      |
+> ++-------------------+----------------------------------------------------------+
+> +| scale             | Scale factor to convert raw value to temperature         |
+> ++-------------------+----------------------------------------------------------+
+> +| offset            | Temperature calibration offset                           |
+> ++-------------------+----------------------------------------------------------+
+> +
+> +--------------------
+> +Available Attributes
+> +--------------------
+> +
+> +The following attributes show available configuration options:
+> +
+> +- sampling_frequency_available: List of supported sampling frequencies
+> +- scale_available: List of supported scale factors (based on PGA settings)
 > +
 
-...
-
-> +static int ad4851_parse_channels(struct iio_dev *indio_dev,
-> +				 const struct iio_chan_spec ad4851_chan)
-> +{
-> +	struct ad4851_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->spi->dev;
-> +	struct iio_chan_spec *channels;
-> +	unsigned int num_channels, reg;
-> +	unsigned int index = 0;
-> +	int ret;
-> +
-> +	num_channels = device_get_child_node_count(dev);
-> +	if (num_channels > AD4851_MAX_CH_NR)
-> +		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
-> +				     num_channels);
-> +
-> +	channels = devm_kcalloc(dev, num_channels, sizeof(*channels), GFP_KERNEL);
-> +	if (!channels)
-> +		return -ENOMEM;
-> +
-> +	indio_dev->channels = channels;
-> +	indio_dev->num_channels = num_channels;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		ret = fwnode_property_read_u32(child, "reg", &reg);
-> +		if (reg >= AD4851_MAX_CH_NR)
-> +			return dev_err_probe(dev, ret,
-> +					     "Invalid channel number\n");
-
-Need to check ret first, otherwise reg may be unintialized.
-
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Missing channel number\n");
-> +		*channels = ad4851_chan;
-> +		channels->scan_index = index++;
-> +		channels->channel = reg;
-> +
-> +		if (fwnode_property_present(child, "diff-channels")) {
-> +			channels->channel2 = reg + st->info->max_channels;
-> +			channels->differential = 1;
-> +		}
-> +
-> +		channels++;
-> +
-> +		st->bipolar_ch[reg] = fwnode_property_read_bool(child, "bipolar");
-> +
-> +		if (st->bipolar_ch[reg]) {
-> +			channels->scan_type.sign = 's';
-> +		} else {
-> +			ret = regmap_write(st->regmap, AD4851_REG_CHX_SOFTSPAN(reg),
-> +					   AD4851_SOFTSPAN_0V_40V);
-> +			if (ret)
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad4857_parse_channels(struct iio_dev *indio_dev)
-> +{
-> +	const struct iio_chan_spec ad4851_chan = AD4857_IIO_CHANNEL;
-> +
-> +	return ad4851_parse_channels(indio_dev, ad4851_chan);
-> +}
-> +
-> +static int ad4858_parse_channels(struct iio_dev *indio_dev)
-> +{
-> +	struct ad4851_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->spi->dev;
-> +	struct iio_chan_spec *ad4851_channels;
-> +	const struct iio_chan_spec ad4851_chan = AD4858_IIO_CHANNEL;
-> +	int ret;
-> +
-> +	ad4851_channels = (struct iio_chan_spec *)indio_dev->channels;
-> +
-> +	ret = ad4851_parse_channels(indio_dev, ad4851_chan);
-> +	if (ret)
-> +		return ret;
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		ad4851_channels->has_ext_scan_type = 1;
-> +		if (fwnode_property_present(child, "bipolar")) {
-
-fwnode_property_read_bool() 
-
-(to be consistent with same check in ad4851_parse_channels())
-
-> +			ad4851_channels->ext_scan_type = ad4851_scan_type_20_b;
-> +			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_b);
-> +
-> +		} else {
-> +			ad4851_channels->ext_scan_type = ad4851_scan_type_20_u;
-> +			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_u);
-> +		}
-> +		ad4851_channels++;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
+One of these days, we should probably write a generic page on the common
+attributes raw/scale/offset and somewhat common sampling_frequency/
+oversampling_ratio (probably a few more that I'm forgetting). :-)
 

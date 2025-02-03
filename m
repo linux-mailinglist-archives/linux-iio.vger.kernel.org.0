@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-14953-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14954-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F8FA266FD
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 23:42:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B47A26707
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 23:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 894FC3A54E3
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 22:42:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4355C165ED0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 22:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA782139B5;
-	Mon,  3 Feb 2025 22:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C242116F7;
+	Mon,  3 Feb 2025 22:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aPQPmJ15"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="f+6XVLDT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394CE211461
-	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 22:39:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807BE210F5A
+	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 22:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738622384; cv=none; b=kf4VtXDng6uPr63+yce1qqbrDJo+1HUgnLlOswmMhsTugayR/RvnT5QyYFIrP/CqCzmYnh8lE28vrSiY9e0FiKzabhoTwkkBPp4pMGfjC/qvbfr6uRozxobUo9Vxc003H8x5dhx6JuIWbhGLUg1g3S4ZvADDB1eho7SlofXugWE=
+	t=1738622533; cv=none; b=QN7ULOLbiqpi7oAYPTO0usU7ISAThf29KdbHmcrQHTVPWLrTVFLZyI2lHXvtZQVRutpUMn+Op1eOkiC3zRviyqbh3q7qCPx2beBEdd5FDWUVnf+DNKgokIYSDAtoZoLCXHLIFhCa0y2tCMasOR5IivCCkKvIt0vlt37ffARAg6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738622384; c=relaxed/simple;
-	bh=1Q81xARcDqJnn1HJ52uZiPtHrThD/Lg7LAxKl0LKqW4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EFvdBslBKOa6zznQxp+f+TfQJ3BoeQLkASHyi7B1DP1PzFZYGBLCYHiCj2dUlYVd2BcznB89DZwRe/hlyZDb4Wg0b5BptbKTOAmktdni3k1GeziNxZR4wgXV64dABYoYa1t5YNtPJFI9RK3J6X44SaLfOTm6c8zyghVRZmIewRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aPQPmJ15; arc=none smtp.client-ip=209.85.160.47
+	s=arc-20240116; t=1738622533; c=relaxed/simple;
+	bh=SXY/ut4HPZGjQfV0TdHI+owQ/8IPFSL6uBL1jYm5kIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=lPhsSuhqOqBe6x7c6c/7akll5PK5r2wGduqzCzmXKiCjbMKDhHnnz1qRxEdTJY8wDYitxaJNO00lPG9UdelA6pxmob85DDYVUVfC0azWERuvL1lR9jVkx5b39Xh+Bo7w0fL2rD7hOQc6QxMbyjCJTQ9Qi8zJnuyul0A0MbqB6/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=f+6XVLDT; arc=none smtp.client-ip=209.85.167.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-29fae583cc8so2502664fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 14:39:41 -0800 (PST)
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3eb8db8ae9aso2080148b6e.1
+        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 14:42:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738622381; x=1739227181; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738622530; x=1739227330; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7FuOTM/5uq/stUm6NdRcMUJvmEyi2R5GtNjpDeIV2Ho=;
-        b=aPQPmJ15Elz6EyybHgCejqIswr6xI/YwwhsV8o9hsaPsktE38IzMJsNBUtTxo0lHVJ
-         d5/bzL9Ol2TeAbPw4QQ+erQ9PXa4CCrjw0qexljVFSd6gW90iQ2ila46nIgpMRPkoTZB
-         pnczcpTCKki/Ohld+kjX4wDf7uVrNEY2kueUCJ7hSO/ig3iiyr3VUnU1LryALo2uOuFH
-         2lfdmn0wq1uG4fOasqrbW3QP9Fc5MbVxPu8iE8/OFd6/tTh2jjNviByNj91xjtMl3ypm
-         +r8dceFYWeC0RZhEsSs4hnqv/7Wn/9qivtGIHpVtMBlnW0bAoGhvCtMFN1oPY9ihyOmc
-         07DA==
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SJnIfOP7+jSlUs29FECy5//ffpMPbLe/6pSEbA38u3M=;
+        b=f+6XVLDTnechdqBluVSaw5ZSyuaeMkrWSCzOIU0YoBMQyd87gOtCjssN32aN+ldeTf
+         Pqh8ZBTqzNfmbgqz8hLrf9IbtyuDBZUxTWVY+fqhFSHs5igqV7RjkcH7Y5SfBThQ1NTt
+         SzNIzm6rbA39f7faGwOlb9dJlqlzH741aSKQE3djTpu4XuWwdeeO/UYTHQ1H+J2WM+js
+         ThAahDQZCxFRBTEMnq3hBwH0xepC+q9gT3cezWS2iVYCsDliAiqK/tP2BwYEnLqCp5y+
+         Z4GnsPhmf3k+bEox8ce/qAQWKkQ+E0UGsmCcpAGFrm5FZPiB85WjnAW9bnFJr2PiSY1h
+         VYKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738622381; x=1739227181;
+        d=1e100.net; s=20230601; t=1738622530; x=1739227330;
         h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7FuOTM/5uq/stUm6NdRcMUJvmEyi2R5GtNjpDeIV2Ho=;
-        b=sRT2Q2DgtvUseyncIKpeCS+yWIo6l57wyVnVH7JCSgYyTjrwfCEXSvqWKKMuLIBrb3
-         qsbs9Ab1Z8SUiSW5Xv/wrsBG5jbbtcJS3ic1zHha/VqunsAt7UXye5E93HKjwc7lBxsw
-         DGKVxHMKsyiTJgwMAqIQyHHeRCafhOcnJHNgL5h9UlPn5ESuEF4Mrwwd1lJ3nvaf9IXj
-         MwBE1dFHMT/EiQiryynDC8DtOCNrWcU0I44CLfUXVY3uRIuPNhDzSjtXTNlzBmlnXe+m
-         vA2jietcDxCZPdsEVaNLoXNccE26eQtn2JEPly8/xf1l2/gnwNnYU2Wlmgu37/KKpoj+
-         LC4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUcq1bXKr/ZnsSZniDsi5M9zcmHg/kCKmk63BTVPrmYnwl3Q9QLbtztb3iSbGy2L0MUucHYVAOw7n4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2dkOSUNnw5QE2Qy4VdsFxTzOsIltIlZDLZ1CfmE7G7dHei2l+
-	R0a/cXSX524IuOCrTukid1AjBNWIgkHyLyoef/VwiutdwLKrQ1RAFlzSGsQ2594=
-X-Gm-Gg: ASbGnctD2nJB0/GcArkhibrXDrG3SWkV8Govwj27Z6E5VbSm40TdmQF89eBCGUcHLvy
-	deLB+9OqzOBNB06UicYEJmd21SiNyi+HgBVIPufDx6wfkZYSP1H3OxnS6ky+wYLJlQgnwCGIKMb
-	Nu+Dh7vlc7ZgSIYD6OfbCAp23m0OOlf6+2by6PwwtnzUeI2m4Ba1AWg6T7raakgXef4NYtWsz0n
-	iHLOUM0trD6XAXomzdYFSrJTZQyVx1qEK04BjlnwLM/tGQM+vVbh/7c/vvU01zkPUx9/xDm+0c2
-	a3/i3HfsJwj5yhcgv5LJU0xtBxsExvn1Br0/fqzqzQjsm0JJ7cPt
-X-Google-Smtp-Source: AGHT+IGaQH53OWXI018UHR+o3pOTGmyURoCZWzCbG0RQLmUMPYxUrDO3psb2lp4Kuy+CvmoE1eZtzw==
-X-Received: by 2002:a05:6870:1b14:b0:29d:efe8:5a49 with SMTP id 586e51a60fabf-2b3e7450705mr688192fac.3.1738622381243;
-        Mon, 03 Feb 2025 14:39:41 -0800 (PST)
+        bh=SJnIfOP7+jSlUs29FECy5//ffpMPbLe/6pSEbA38u3M=;
+        b=bXClYGrJ8yxzEUbFwSiPMKS9VmS+REnvLTTv+pWlsYkJhwbJGYDg3nfmbxcfCQJPM8
+         pddtwlfDmvJVzGrHjco5DiBqAfSU3v8CG/nmko2ZInd7u8Wf/AWnEXi7f53Sw3bTfPVM
+         wFQTl9lb9Q7avDb1d+e4ZYKwPDVr13F7p60hclXnIMJUJvXpXYb0xvBvaRVi8n6h3nV6
+         MU/KdVwl70MsB7DFvTTml69S8i8ebRzf0Ufq2GPvAOR7horF4PiCuWnulkELALGMepdz
+         wW482s7x5txzhjj+t3ugXREqZKSMnvODVt2E8OMSPQItgRdgE5xDRx6fNS6cYxkeE1tX
+         /86w==
+X-Forwarded-Encrypted: i=1; AJvYcCU+abTlUCj3/aCJhMVxNckhYLrlgq9finOHiGFMqqE2KcSeIhWf9522chK+8bi6DbbdMbQdpBKIECU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0ZaW7CqDOgnIQ5ohbfCwxQzWGdMTlDX/dC80OfVzorrxOU/fs
+	5d9uk82uaqc16qZUpJEuIr+Djn8FqKILhE6zOKaA2ZexKkC4Ckhx0cwNUoHV7Gs=
+X-Gm-Gg: ASbGnct9bPJXW2Cb9u7EcPKdXotTsPiLV5px0blEaB1jjYx81c42eYt56PC4TAUChkl
+	K30uUY9RNTx+5OFMqPM6o4tqNSUhA3FHXcwz6Xb/Vyso/LXca6i0KW4NTycL/9bKmrmmu8wlIXu
+	GYeVQ3MVkzmikqrvHtoa6raWfndgmbn0jnzsxBTMrkTY5iFgyeiZzn7CkJlvTR1BKhBhQXSssTv
+	72tsCdYfggH8Ji25fOR7VrAAV/h6k77PBrpN4/ZfaGAFOeIUUuiVHbaCr3nJHCAm/TZOZ/pvPe3
+	oDREJB1z7Cg/GulphcxMN0c7Hq7f0qYyz41S2eag+eUd9oJC7ajg
+X-Google-Smtp-Source: AGHT+IGPg3Ki4+QlI+PnxMX8N884nW9RTygynBG8qVyReXZuEsEhrg1HOrCB1+xLT/4DE7U7CBVGQQ==
+X-Received: by 2002:a05:6808:2f16:b0:3e7:df63:15bc with SMTP id 5614622812f47-3f323a184cdmr15101787b6e.12.1738622530456;
+        Mon, 03 Feb 2025 14:42:10 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b35619ec30sm3589105fac.14.2025.02.03.14.39.39
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f333523efcsm2731729b6e.8.2025.02.03.14.42.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2025 14:39:40 -0800 (PST)
-Message-ID: <b1c35782-f717-4fe5-8a00-7f13b341b5dd@baylibre.com>
-Date: Mon, 3 Feb 2025 16:39:38 -0600
+        Mon, 03 Feb 2025 14:42:09 -0800 (PST)
+Message-ID: <c5722215-b720-49ab-9f0e-00b01eb4679d@baylibre.com>
+Date: Mon, 3 Feb 2025 16:42:08 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,77 +81,158 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] gpiolib: add gpiods_set_array_value_cansleep
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
- netdev@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-sound@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
- Andy Shevchenko <andy@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com>
- <CAMRc=MdwQL8dWU5zF5fp+KUbC2RA2Q264by8HGXMg2k1rxhsTA@mail.gmail.com>
- <9931433b-5cde-4819-ac96-eea4f1f0f1f2@baylibre.com>
- <CAMRc=McEdcDs01BAKN5vg9POg_xxJBY1k8bfgiDN60C1-e_jow@mail.gmail.com>
- <072be5a9-e0fb-4073-85b3-4a8efcafae09@baylibre.com>
- <CAMRc=Meq_Gfhcjzx0vCL0JPzfnOcijFgB6AuqtsqgGn1eOTMVg@mail.gmail.com>
- <CAHp75Ve+iwrm8dx49+6C7xFJgTQrh3XumKVzKvnYY=00J-j43A@mail.gmail.com>
+Subject: Re: [PATCH v11 8/8] iio: adc: ad4851: add ad485x driver
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
+ <20250127105726.6314-9-antoniu.miclaus@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <CAHp75Ve+iwrm8dx49+6C7xFJgTQrh3XumKVzKvnYY=00J-j43A@mail.gmail.com>
+In-Reply-To: <20250127105726.6314-9-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 2/1/25 1:47 PM, Andy Shevchenko wrote:
-> On Sat, Feb 1, 2025 at 6:22 PM Bartosz Golaszewski <brgl@bgdev.pl> wrote:
->> On Sat, Feb 1, 2025 at 5:17 PM David Lechner <dlechner@baylibre.com> wrote:
->>> On 2/1/25 10:14 AM, Bartosz Golaszewski wrote:
->>>> On Sat, Feb 1, 2025 at 5:09 PM David Lechner <dlechner@baylibre.com> wrote:
->>>>> On 2/1/25 4:36 AM, Bartosz Golaszewski wrote:
+On 1/27/25 4:57 AM, Antoniu Miclaus wrote:
+> Add support for the AD485X a fully buffered, 8-channel simultaneous
+> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
+> differential, wide common-mode range inputs.
 > 
-> ...
-> 
->>>>>> This looks good to me except for one thing: the function prefix. I would
->>>>>> really appreciate it if we could stay within the existing gpiod_ namespace and
->>>>>> not add a new one in the form of gpiods_.
->>>>>>
->>>>>> Maybe: gpiod_multiple_set_ or gpiod_collected_set...?
->>>>>
->>>>> I was waiting for someone to complain about the naming. ;-)
->>>>>
->>>>> I was going for as short as possible, but OK, the most obvious prefix to me
->>>>> would be `gpio_descs_...` (to match the first parameter). Any objections to
->>>>> that?
->>>>
->>>> Yes, objection! As far as any exported interfaces go: in my book
->>>> "gpio_" is the prefix for legacy symbols we want to go away and
->>>> "gpiod_" is the prefix for current, descriptor-based API. Anything
->>>> else is a no-go. I prefer a longer name that starts with gpiod_ over
->>>> anything that's shorter but doesn't.
->>>
->>> Oops, that was a typo. I meant to write gpiod_descs_.
->>
->> Eh... the D in gpioD already stands for "GPIO Descriptor" but if
->> there's no better option in your opinion than I guess I can live with
->> that.
-> 
-> gpiod_set_many_value_cansleep() ?
-> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
 
-OK, taking all these suggestions into consideration along with having recently
-come across regmap_multi_reg_write(), I think I'll go with:
+I think we have the important bits sorted now (i.e. userspace-facing stuff).
+Just noticed a few minor things in the latest revision.
 
-gpiod_multi_set_value_cansleep()
+
+> +static int ad4851_setup(struct ad4851_state *st)
+> +{
+> +	unsigned int product_id;
+> +	int ret;
+> +
+> +	if (st->pd_gpio) {
+> +		/* To initiate a global reset, bring the PD pin high twice */
+> +		gpiod_set_value(st->pd_gpio, 1);
+> +		fsleep(1);
+> +		gpiod_set_value(st->pd_gpio, 0);
+> +		fsleep(1);
+> +		gpiod_set_value(st->pd_gpio, 1);
+> +		fsleep(1);
+> +		gpiod_set_value(st->pd_gpio, 0);
+> +		fsleep(1000);
+> +	} else {
+> +		ret = regmap_set_bits(st->regmap, AD4851_REG_INTERFACE_CONFIG_A,
+> +				      AD4851_SW_RESET);
+> +		if (ret)
+> +			return ret;
+
+Do we also need fsleep() after software reset?
+
+> +	}
+> +
+
+...
+
+> +static int ad4851_parse_channels(struct iio_dev *indio_dev,
+> +				 const struct iio_chan_spec ad4851_chan)
+> +{
+> +	struct ad4851_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->spi->dev;
+> +	struct iio_chan_spec *channels;
+> +	unsigned int num_channels, reg;
+> +	unsigned int index = 0;
+> +	int ret;
+> +
+> +	num_channels = device_get_child_node_count(dev);
+> +	if (num_channels > AD4851_MAX_CH_NR)
+> +		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
+> +				     num_channels);
+> +
+> +	channels = devm_kcalloc(dev, num_channels, sizeof(*channels), GFP_KERNEL);
+> +	if (!channels)
+> +		return -ENOMEM;
+> +
+> +	indio_dev->channels = channels;
+> +	indio_dev->num_channels = num_channels;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (reg >= AD4851_MAX_CH_NR)
+> +			return dev_err_probe(dev, ret,
+> +					     "Invalid channel number\n");
+
+Need to check ret first, otherwise reg may be unintialized.
+
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Missing channel number\n");
+> +		*channels = ad4851_chan;
+> +		channels->scan_index = index++;
+> +		channels->channel = reg;
+> +
+> +		if (fwnode_property_present(child, "diff-channels")) {
+> +			channels->channel2 = reg + st->info->max_channels;
+> +			channels->differential = 1;
+> +		}
+> +
+> +		channels++;
+> +
+> +		st->bipolar_ch[reg] = fwnode_property_read_bool(child, "bipolar");
+> +
+> +		if (st->bipolar_ch[reg]) {
+> +			channels->scan_type.sign = 's';
+> +		} else {
+> +			ret = regmap_write(st->regmap, AD4851_REG_CHX_SOFTSPAN(reg),
+> +					   AD4851_SOFTSPAN_0V_40V);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad4857_parse_channels(struct iio_dev *indio_dev)
+> +{
+> +	const struct iio_chan_spec ad4851_chan = AD4857_IIO_CHANNEL;
+> +
+> +	return ad4851_parse_channels(indio_dev, ad4851_chan);
+> +}
+> +
+> +static int ad4858_parse_channels(struct iio_dev *indio_dev)
+> +{
+> +	struct ad4851_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->spi->dev;
+> +	struct iio_chan_spec *ad4851_channels;
+> +	const struct iio_chan_spec ad4851_chan = AD4858_IIO_CHANNEL;
+> +	int ret;
+> +
+> +	ad4851_channels = (struct iio_chan_spec *)indio_dev->channels;
+> +
+> +	ret = ad4851_parse_channels(indio_dev, ad4851_chan);
+> +	if (ret)
+> +		return ret;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		ad4851_channels->has_ext_scan_type = 1;
+> +		if (fwnode_property_present(child, "bipolar")) {
+
+fwnode_property_read_bool() 
+
+(to be consistent with same check in ad4851_parse_channels())
+
+> +			ad4851_channels->ext_scan_type = ad4851_scan_type_20_b;
+> +			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_b);
+> +
+> +		} else {
+> +			ad4851_channels->ext_scan_type = ad4851_scan_type_20_u;
+> +			ad4851_channels->num_ext_scan_type = ARRAY_SIZE(ad4851_scan_type_20_u);
+> +		}
+> +		ad4851_channels++;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
 

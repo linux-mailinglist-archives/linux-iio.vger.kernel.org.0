@@ -1,196 +1,119 @@
-Return-Path: <linux-iio+bounces-14914-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14915-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93192A258E9
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 13:03:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F20A25901
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 13:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EF781881A0A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 12:03:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6A5B1651D3
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 12:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06883204094;
-	Mon,  3 Feb 2025 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D00F2040A8;
+	Mon,  3 Feb 2025 12:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="df2rOXWn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lQWOE/JJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436151FCF4F;
-	Mon,  3 Feb 2025 12:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB64920127F;
+	Mon,  3 Feb 2025 12:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738584209; cv=none; b=rfjoSWpiDMZoIg/25tzvFw5z4rjC871IPWbXm3MhPJqmEv1FLkrRNOVfmhkS/YkwkCg7tHmUzvMsI7LCThZSaa/AgRsleLWQ5zI84bSDawvkcAITROZt8esz+K+Dr4w8DdGRsBWl3oJik+KF4pHsMl/wI7gvKL6bonkGdPLC0vE=
+	t=1738584675; cv=none; b=aUXxz5DkcLwZxAKhjSGQjnex2gpHFzsFZRHq6kHPeRd/jS7EsAJnWQwRhNB4tZVw3e8+/KfOoUV0q3O77/Il9/v093wM1YjuN/f/pSawGYtjd2b/aqoeR6Joj7W5qehkclFaJCvV/bIjLtTRDTQpjYOmq3hUZcY38Z6nEnG25FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738584209; c=relaxed/simple;
-	bh=FamOOCUFm3NRarEU1KK0g2LOZ/2bn3n/zihztU6lesM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDsrWgcuu+4mGou67NrBFps20xOhrLS3hApShaM3bYGsWl0tJfsFDGssGeApgFKQ9unAYi8oquXphss7a7liN13zQRzcQ+yuLiH30lsIlMU0DCE92QWTL4J4VUAdOZ+Skv3npRX6VGxZ/sv6iaDJgP46zRjAZhgWzhMqLy9lCh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=df2rOXWn; arc=none smtp.client-ip=209.85.222.175
+	s=arc-20240116; t=1738584675; c=relaxed/simple;
+	bh=QJSfw0ibffczpv3ZVDja1neQo0fo+tjFi3CxupB7wBg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MIZnEbg1pV37N3YU/Lf6oCZoeD2AQwyPV6J49v84CJYfvptar7H9VpkAH6pOeAT+rs1Km5KdG0bsnHZsbNUaIn/z8f1+68Tr5CO25HZPTuP4ohFlbCGLv4CTbd/IRDHYuieeaS/3U1U/9Pscja+5cuaErCLtSNbXmZityqY9vmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lQWOE/JJ; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7b6fcf01742so40841485a.2;
-        Mon, 03 Feb 2025 04:03:27 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ab6fb2940d4so618418766b.1;
+        Mon, 03 Feb 2025 04:11:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738584207; x=1739189007; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1738584672; x=1739189472; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Pi6lD+pIbfx374l0CnUPRRk4Jv13XwUAHByC02hR2sg=;
-        b=df2rOXWnBx9LMpAdaMXBJvX1m6Ohnsj3R0sB5ACknfMi8L5B8bWll2a6zs6j1irJ1E
-         B1k3+ZKVnkR6hhGafiJ0Nk8poSGqT8eNpVJDQPxAdouPScaIDu5uU1L6o52+ihU7lDnF
-         Z5huQRkn91Dlb+rGewn0zS3BXFqEDVEualWbRP90xTA2HyMkf893ydhzftaOxMTHMrk9
-         CjeMciD46gql0U/fF10B0c0RdkvfRCO6ben+dq8haPf2CY/sD+u1yZuCYfHk/yxIRSdv
-         e0EIV0wvklSZLUQBwcRuUyEulcsBASN9K2YIyOOVEWAPwUWYhvV8/99SxnDDhyCfHHuh
-         f9Yg==
+        bh=vC3+WjLhlpstTgR2X3bUINeiUZ7D7J/mU9HK8P5Il04=;
+        b=lQWOE/JJlcdjat++l0KrI7Dyx7R/wQPV/2zT1jb9cikcNxcklRTcJug0n57k7nYBzb
+         TRJYx5gYtI4qmXIxQDzq2e9ERqiQjkOOoh+0jDqJmW5YFEHMgNBQ6xHk7KYglf/JlWVy
+         LIPIVoA+ZrRsUgKkjT38MU+BCknW7m5P7i9gAMDG7bF+PTH2/u5dFUoklJTIuA1e01Cl
+         vlGraL7USPLef/Eh6oQbUltSkSZQPlUP3Fyqu4GNraMbHJjxirpf5h0PC65bskxcHg3N
+         RAz9ACdriWCo440OzkyQ5irTH+mOVA/sA+yGp/U53OTLY46TuxyATjPVtMnGQc9mLuT9
+         skrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738584207; x=1739189007;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1738584672; x=1739189472;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Pi6lD+pIbfx374l0CnUPRRk4Jv13XwUAHByC02hR2sg=;
-        b=S/t+FZN/HWbzq7Z11A/mYWwfwDo5q46uZO45fhDw7KkMRjwT2wLsvg9g5ktQzbHCP6
-         CX4oum+9QxIZrXj3CDhoORRILAv4NUfTagfyI7z3iZZtKMM97FKnfP7W01FrbCxt44E1
-         pfptU6m5EKVAbeOjgUaWtx9Bm13KubWNCjnLjNhIa2KaGsh217OpCrPO8KRym880u+cR
-         8ukQGzzuKSLoJChcRyH7zic+hqClZkIM1F9tmdu9PyXhVoAaFSnrFcia36uE+ZbOvb9u
-         uzXZO+jDG1eGFLGg3N2NL55oRkXSBMltK0EEJVQjPO7ytKWgMVoE+mdI/AfELFbcWCPT
-         +aHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVASO9sMHj9UemWyXrUMvbVSQHDVHkG/u/IkBHftlcpSGN1PM5BziTWteWJKeDpoAMtoER+uF3QAT5+1Pr6@vger.kernel.org, AJvYcCVPB/feUINfQNoL3ZfIiriYaAtDm3qPDGfOfpWXKaRlwfhaPb0O/Jo75cNkmq84l6qFR01ezXQo0s9S@vger.kernel.org, AJvYcCWokuNXHyO6u0znO8dlfU5aeVGtGP4Xo8GdJ0a7OzQT+up4OzhIydjn571aS3saRb56oGDOV4UJ/X4N@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2rVtkgid6JNVMRbsQ/FsTne3vBk8HqyY5d2cVpsHYoB+psjeG
-	NHL4p7M48sWifv+Vgv+wK6Fz3bt0xO87sXDk3lDgXa121kYiI398RDwNn1b4UlU=
-X-Gm-Gg: ASbGncunvlV9G67YjNwCgxbOW4680wcOMOQO81VBoKeJAsFBnA3nk2Cft8AyxY8l6Dv
-	/gQo6zEGYucr2iucmpuUVc30m0wrnP88X3TU3DO851UvZYlhbzzM0yNYhsR0CahOf/oVVE7eigg
-	cmI8OKl+cxi7q3r5+BMw9fHrE+67AYWQSrWgTWVA53zvs1aCgK+TB1ILHtUmQS0e1IogE2v8sBz
-	gONWXUSZ541X5RaepMMBtqsEAq1U9ow8nsEWI/iTULlSertulZM5OmfcfKC335qmW1p/4Zaxt3v
-	XugStRr+dW7i87+DlxJ/Aj7b84beCzvPTb++
-X-Google-Smtp-Source: AGHT+IFoAGBvXqmeHO1EF/ECKXnY77Xf5B6XwoV6dB0M6LSTKJWD748ue/S2nHch2ISm+35takjgrQ==
-X-Received: by 2002:a05:620a:394b:b0:7be:3cf2:5b46 with SMTP id af79cd13be357-7bffcd08abcmr1159991085a.8.1738584207012;
-        Mon, 03 Feb 2025 04:03:27 -0800 (PST)
-Received: from JSANTO12-L01.ad.analog.com ([189.121.203.94])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c00a8bb957sm517156785a.14.2025.02.03.04.03.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 04:03:26 -0800 (PST)
-Date: Mon, 3 Feb 2025 09:03:21 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v2 10/16] iio: adc: ad7768-1: Move buffer allocation to a
- separate function
-Message-ID: <Z6CwiaEhudvbbbT7@JSANTO12-L01.ad.analog.com>
-Reply-To: 20250201153539.5617b5b8@jic23-huawei.smtp.subspace.kernel.org
-References: <cover.1737985435.git.Jonathan.Santos@analog.com>
- <e39115cee88524f05c8a628b0d3836928c6cc190.1737985435.git.Jonathan.Santos@analog.com>
- <20250201153539.5617b5b8@jic23-huawei>
+        bh=vC3+WjLhlpstTgR2X3bUINeiUZ7D7J/mU9HK8P5Il04=;
+        b=Kjn4xov1Tx2b/z8j0FrayrY0rsfYewM/XnwKRPSf7XbwhN+QKPElqa5f1pop3emxlV
+         2YIH8ZUWlRZKOwwuU7SjQxK9mbw2JhBAjfccjStQ82XFH7Y4nGWG0+KKJJJhz0NAUqo7
+         pVU7B6ev7FDc7Z0asdL+/Fk4Fg2cSyKRAbInv39UaXhzDVkMvdlcxjd9hn0vNQW6LuFq
+         VOu/ULYjCMqkAwTbkgWosY9ZZFzOAW20DOe+kxHF6JTSwjIlBioxfRy7lA4szIbidZA6
+         MtqKRXDQYxvCm0iqaU8as3YZYYF3Ry7vayK2xyZ9WeOusx+FgdXvTT6cjCUr2OPhewDP
+         /WUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHKGvhUbkNYcOXyRil3pLt/NsehFEQHU9BKKVhdjO+1HIgurtN3NQCrf5ZpoFrXN/sTb6j6IC+/kE4@vger.kernel.org, AJvYcCULJtjdd/pwaXRhAw11+AQA8Dn6gn5ydG6RVA6RYqh27Pc5D2jC73aWtkN4Thgz1OsdSffbcMR82yCD@vger.kernel.org, AJvYcCVHq1n+qAKqomWif3mj3YSN+3avimmx5HTQfgycna7dL3RC623xEKVClSs1UcG6+Glf+gAoE17U4XLbOU+j@vger.kernel.org, AJvYcCVnxD83y24YqZRin5danHyXj+9ZaAdXKpG0q2n77ZcQM/756cRcp88IicOMzEewP98ZY8lPSKPEx8nXz+M=@vger.kernel.org, AJvYcCX5bZSMjXbqXcUTODn4iYAijehUmuYm8b3LwvkArjKK17p5L1gRgSPX6gNv2Drh6n/xST3UFMrB@vger.kernel.org, AJvYcCXnS1Wg3y78e8t9cX1klcQiHF4Uzl93cIzBXKa79ED8554JbWAN557MW5/5Ci+vwDyBfCjjDi1wftuQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHQQDkdAhX5Wt2o05tvvUYK5pckvQuVhisuP+iuIlb5fOsXluH
+	iprGJBhwUJN88NX8KiGwrUNbS1TSLx/0/Tsl2KWq4rOMU5g/PZPYCzpXPzEHz8Mkwp56GLHdIeq
+	YikjefmTrd7lJ8+kv7jgr0V7kbsA=
+X-Gm-Gg: ASbGncv9BcF8HBd0bji2UkwCOHmpbWHAj1UexDyVcwE177AXJRP8h2Sjcx99+qRsiC1
+	cXHG1/9AxubbP2xKtrzKipchDRq+TLgFuoLiktDjedopfyf8dn5gz5vPz3JJQ0zwnKpWoZJ7qNj
+	4=
+X-Google-Smtp-Source: AGHT+IEl0shu0wyCbYmjiWbZ8xSkp39SyMbNA10oWwjLNUg4dYl7AJ/ctOStbBTvln5XQSzLfDgbhCKUVzpxgJe5YOM=
+X-Received: by 2002:a17:906:1707:b0:ab3:a18e:c8b6 with SMTP id
+ a640c23a62f3a-ab6e0c3105fmr1897817666b.10.1738584671668; Mon, 03 Feb 2025
+ 04:11:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250201153539.5617b5b8@jic23-huawei>
+References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com>
+ <20250131-gpio-set-array-helper-v1-2-991c8ccb4d6e@baylibre.com> <CAMuHMdVqNiquGdEs16GMTA6DPCko=TX84XWJygAorTnQk=+PUA@mail.gmail.com>
+In-Reply-To: <CAMuHMdVqNiquGdEs16GMTA6DPCko=TX84XWJygAorTnQk=+PUA@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 3 Feb 2025 14:10:34 +0200
+X-Gm-Features: AWEUYZk_mY3onXi_-WCfb4vPsGEHZy7b021-vFp4QXXzEaG2YFkuGveLah_lXTQ
+Message-ID: <CAHp75VcUiNVFktAL8zFSf-8tw_J1vJp+D_4Z-hYDqRp4S9C7ZA@mail.gmail.com>
+Subject: Re: [PATCH 02/13] auxdisplay: seg-led-gpio: use gpiods_set_array_value_cansleep
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: David Lechner <dlechner@baylibre.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02/01, Jonathan Cameron wrote:
-> On Mon, 27 Jan 2025 12:13:19 -0300
-> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
-> 
-> > From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> > 
-> > This change moves the buffer allocation in a separate function, making
-> > space for adding another type of iio buffer if needed.
-> > 
-> > Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Jonathan, this one needs your sign off to reflect that you handled
-> the patch as part of it's path to upstream.  I can't apply
-> anything that is missing such SoB.
-> 
+On Mon, Feb 3, 2025 at 12:35=E2=80=AFPM Geert Uytterhoeven <geert@linux-m68=
+k.org> wrote:
+> On Fri, 31 Jan 2025 at 21:24, David Lechner <dlechner@baylibre.com> wrote=
+:
+> > Reduce verbosity by using gpiods_set_array_value_cansleep() instead of
+> > gpiods_set_array_value_cansleep().
+>   ^^^^^^
+>   gpiod
+>
+> Am I really the first to notice you got this wrong in each and every patc=
+h? ;-)
 
-Sorry about that, I am fixing the SoBs for v3.
+Who reads the commit messages? :-)
 
-> 
-> > ---
-> > v2 Changes:
-> > * Interrupt and completion moved out from ad7768_triggered_buffer_alloc(). 
-> > ---
-> >  drivers/iio/adc/ad7768-1.c | 44 ++++++++++++++++++++++----------------
-> >  1 file changed, 26 insertions(+), 18 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index 5e2093be9b92..8487b9a06609 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> > @@ -599,6 +599,31 @@ static const struct regmap_config ad7768_regmap_config = {
-> >  	.max_register = AD7768_REG_MCLK_COUNTER,
-> >  };
-> >  
-> > +static int ad7768_triggered_buffer_alloc(struct iio_dev *indio_dev)
-> > +{
-> > +	struct ad7768_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> > +
-> > +	st->trig = devm_iio_trigger_alloc(indio_dev->dev.parent, "%s-dev%d",
-> > +					  indio_dev->name,
-> > +					  iio_device_id(indio_dev));
-> > +	if (!st->trig)
-> > +		return -ENOMEM;
-> > +
-> > +	st->trig->ops = &ad7768_trigger_ops;
-> > +	iio_trigger_set_drvdata(st->trig, indio_dev);
-> > +	ret = devm_iio_trigger_register(indio_dev->dev.parent, st->trig);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	indio_dev->trig = iio_trigger_get(st->trig);
-> > +
-> > +	return devm_iio_triggered_buffer_setup(indio_dev->dev.parent, indio_dev,
-> > +					       &iio_pollfunc_store_time,
-> > +					       &ad7768_trigger_handler,
-> > +					       &ad7768_buffer_ops);
-> > +}
-> > +
-> >  static int ad7768_probe(struct spi_device *spi)
-> >  {
-> >  	struct ad7768_state *st;
-> > @@ -669,20 +694,6 @@ static int ad7768_probe(struct spi_device *spi)
-> >  		return ret;
-> >  	}
-> >  
-> > -	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-> > -					  indio_dev->name,
-> > -					  iio_device_id(indio_dev));
-> > -	if (!st->trig)
-> > -		return -ENOMEM;
-> > -
-> > -	st->trig->ops = &ad7768_trigger_ops;
-> > -	iio_trigger_set_drvdata(st->trig, indio_dev);
-> > -	ret = devm_iio_trigger_register(&spi->dev, st->trig);
-> > -	if (ret)
-> > -		return ret;
-> > -
-> > -	indio_dev->trig = iio_trigger_get(st->trig);
-> > -
-> >  	init_completion(&st->completion);
-> >  
-> >  	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
-> > @@ -696,10 +707,7 @@ static int ad7768_probe(struct spi_device *spi)
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> > -					      &iio_pollfunc_store_time,
-> > -					      &ad7768_trigger_handler,
-> > -					      &ad7768_buffer_ops);
-> > +	ret = ad7768_triggered_buffer_alloc(indio_dev);
-> >  	if (ret)
-> >  		return ret;
-> >  
-> 
+--=20
+With Best Regards,
+Andy Shevchenko
 

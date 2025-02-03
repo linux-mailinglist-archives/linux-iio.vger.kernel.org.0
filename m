@@ -1,187 +1,200 @@
-Return-Path: <linux-iio+bounces-14938-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14939-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6AAA2601F
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:32:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E91A26054
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:39:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE7BB16750A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:32:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60ECC7A17A2
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC6720B7E0;
-	Mon,  3 Feb 2025 16:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB62120B204;
+	Mon,  3 Feb 2025 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="idGHTcRQ"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Og7buhXF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2065.outbound.protection.outlook.com [40.107.236.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4D720AF8E;
-	Mon,  3 Feb 2025 16:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738600305; cv=none; b=tPycJOQQXF18fu0A8sVbWHze0K3dEyML0d6I1lUOIZ1gThybcvXR34gD9r+B5RRteuQPDeiFW208cktLKayehWS6TUTZC1pGW/W4woj7b8j95HheDSc5yw0tAnCg0OZn7O+0c5SFhK3bXImGmJ/EEKUsAjH7GXjdT37SY5xrMAg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738600305; c=relaxed/simple;
-	bh=pGb/zDE/OUDnW3AJ+/h1+wUKS5rddQcaYnC3FG1Jen0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vvx4hbsX9lGCKuUC+1gSI4fyJ+SQSo0d16yDsvVARlwPXtT3NV9BUlxUExxyQ3PG4sl9aw0NEXR4w4zKjp3XXMncJZHlU89Fdxhmqkq0uOVU2lNnulnQ1zRLsZmq9r/911+U7ffhhzToXq81EavWIO86qPambcAhvqNnJgcdoz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=idGHTcRQ; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 6E7D2A0E19;
-	Mon,  3 Feb 2025 17:31:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=HK4s81J1k83QEgvXWPtd
-	0kbv6ClLvjUueZlqzkVxOI8=; b=idGHTcRQINOpTLzJwksjtJJDi4dieWUuSG+v
-	gcYcbDKv3TiaHEIYmC8rW+iFS3oCDIoFtIQVHBbySXMk0P3SoFYMs48c1Uj/uSYl
-	EhqmTJ2pzfVLYzuY5flTsnmT8kXNTKlWYsjBmI1PrApj6FTlcy+Z+ywEc0i4qEIR
-	6ydIRymdwJ/NBCEvAXb/gr6mrRUBoUIYzsOfnv7JB1eEt/9AWXa5D/VvVbHT03X+
-	XgnIat6UDbOb5e7WRc1TfzJglnxk1EVvbFvqCrIOObME6yaawX473zbWHWvtb7aJ
-	+nmKygQTiK9lwl/saAvKQUFb0jxnYN+GQgXnQiRDTXi5Kzv1cC4oorjKy/g9Ou44
-	sysmA3h7PDW8iWC1npMiTL92dDSl3ELQQSvmWjOo4ZUciME/bUeWh5b8pqQ6C+LL
-	yqGlrSHhNNTV1PFDIGYl+BiopL5XC6iqKnzpjH7sLiuZZFXl1AIIofdzuWKmqSjG
-	tCQCJzhkKVLiiTELy0Dc8ZpdtyT9MIMx3EifRMvST/VNT1ZCTYT0/rVG/3EP95P4
-	kFGsZw1RAxzAefT4tJgKDtYB4dSlbfbRysX343AP0oBoZz+9qwFtjxxiv3SO8+R3
-	i6PTgG5SNEePWOrisksBSj9qceUxmy8Ma20F00okcxUax2Eee/x8FY4PXjArzMWV
-	cfs0OF8=
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Kamel
- Bouhara" <kamel.bouhara@bootlin.com>, William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH v2 2/2] counter: microchip-tcb-capture: Add capture extensions for registers RA-RC
-Date: Mon, 3 Feb 2025 17:29:53 +0100
-Message-ID: <20250203162955.102559-2-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250203162955.102559-1-csokas.bence@prolan.hu>
-References: <20250203162955.102559-1-csokas.bence@prolan.hu>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD612080FD;
+	Mon,  3 Feb 2025 16:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.65
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738600764; cv=fail; b=mX3ZYPF0gAHEvhzOcs894o7QAsvDghm8cYhyXWANEUmNrWp8HUalZ6C+kZOjOoOHQy0V3ixoO03CXWTHm+hD+Q1oWPN7K4sVrbCg9W9z/ZbLxdylFqgskmae18LuwQLiNCLQ/w3778SBY1qAGrWjhartcKE7Yk91jbR7b65M6OQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738600764; c=relaxed/simple;
+	bh=NtgvXicW8DllxHCFVc+qXu3UYT6RjWPVYssNClQ0tqA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ob/AjBPIL7bLlWuXSOWkrrPE5EfBTI95hHrXpqX0pRChbKwdk6V/u06Bv6vLwNNeIgY5w/xoaKnoY9keaeQKT4m5SKKIG60KD69g2U80Mtav/Msj/m3Dsr1xPUzAiH7qdETbUHHZBOVzD2dFdfYoECbinJ+e8NDUk6xvaPOK9pU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Og7buhXF; arc=fail smtp.client-ip=40.107.236.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mPfOGpcOcwYjl3zA3O72cDmjhHaEeh2ugeqqgf2SrziEglDwuw/RubzgaI28qCFtvAC6NAnVzQis2L9MdUcSoRkb+AY3e9ORw5s/DtNDJz3I05bRGD03NWiNsbbnyol3LfCn1fvZJrNXrcPqNrGj51iqnDNbGsV1db6z2kMv9E8EhdyQtBWo2GSzHydJJK0CBw25T+aN0v2xWBiXqnWdvnpgy+ItdHFh2x9z6sK3Zkk8juTgXx7XIrwITzL2dv5S3TOy0FC6ZKFJalpXiF69akC/jFLGUc+r77Y2tqrTSfTanjxAQYIcCA03OhQzrS87kluGdW2063Haun44NJo0tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GMQc94gA4RuTHwJ+H56qNlZxhgA90xOSrP1iV38eZDc=;
+ b=pnffvB6TuO9xxlea0qXxVOknUVYtGC0qNui0LB9DGYkWfH4WMWeOt038uYsNDx0OCOeIgu0gYlz6dMZgs12vNlHszmQ+tEjdtUYOtiadTqgkVjCorwH8D6Gd78FgzFuvU279Cnr2+GL7nSaBHHMsQlJC7v99vQITKBp2bT7E9k7IU2xpB0ciYrvC193SpNQ1Oq4qErq3Mzu4KcNLwRubvoCh0TTKUGycbNQXGUONlvrSGeyWfqRNpdSzkXpvGt7a9KkksGeCBMxJS4AHhOuhKpx8UpMSArcUL64CUGNx7mlXV7CAf3/37D9m0J6kE+XRTgS9t47HKixRkMEo2cpWfA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GMQc94gA4RuTHwJ+H56qNlZxhgA90xOSrP1iV38eZDc=;
+ b=Og7buhXFpczM+LhtxpAg8dtRQHaXprPT4ehpU/3IyGPcsnBZ9e6bYKRTvxuCM4ycOMpIC9c1j2/1ao4pupEFoCpayjNuMQcutVBd/k1bJ9Klt3YJ/7fzMeF/JFiBBJnOo4sSbl94ku2NQ/zt7QijgKkGP5w42MyFy1Q+7ipYZfA=
+Received: from SA0PR12CA0021.namprd12.prod.outlook.com (2603:10b6:806:6f::26)
+ by DS7PR12MB6311.namprd12.prod.outlook.com (2603:10b6:8:94::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.25; Mon, 3 Feb
+ 2025 16:39:19 +0000
+Received: from SN1PEPF00036F43.namprd05.prod.outlook.com
+ (2603:10b6:806:6f:cafe::92) by SA0PR12CA0021.outlook.office365.com
+ (2603:10b6:806:6f::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Mon,
+ 3 Feb 2025 16:39:19 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SN1PEPF00036F43.mail.protection.outlook.com (10.167.248.27) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 16:39:19 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 3 Feb
+ 2025 10:39:15 -0600
+From: Michal Simek <michal.simek@amd.com>
+To: <linux-kernel@vger.kernel.org>, <monstr@monstr.eu>,
+	<michal.simek@xilinx.com>, <git@xilinx.com>
+CC: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, "Conor
+ Dooley" <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Harini Katakam
+	<harini.katakam@amd.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan Cameron
+	<jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Lars-Peter
+ Clausen" <lars@metafoo.de>, Mark Brown <broonie@kernel.org>, Michael Tretter
+	<m.tretter@pengutronix.de>, Michael Turquette <mturquette@baylibre.com>,
+	Mubin Sayyed <mubin.sayyed@amd.com>, Nicolas Ferre
+	<nicolas.ferre@microchip.com>, Niklas Cassel <cassel@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Shyam Pandey
+	<radhey.shyam.pandey@amd.com>, Stephen Boyd <sboyd@kernel.org>, Vinod Koul
+	<vkoul@kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE
+ BINDINGS" <devicetree@vger.kernel.org>, "open list:DMA GENERIC OFFLOAD ENGINE
+ SUBSYSTEM" <dmaengine@vger.kernel.org>, "moderated list:ARM/ZYNQ
+ ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, "open list:COMMON CLK
+ FRAMEWORK" <linux-clk@vger.kernel.org>, "open list:LIBATA SUBSYSTEM (Serial
+ and Parallel ATA drivers)" <linux-ide@vger.kernel.org>, "open list:XILINX AMS
+ DRIVER" <linux-iio@vger.kernel.org>, "open list:SPI SUBSYSTEM"
+	<linux-spi@vger.kernel.org>, "open list:USB SUBSYSTEM"
+	<linux-usb@vger.kernel.org>, "open list:NETWORKING DRIVERS"
+	<netdev@vger.kernel.org>
+Subject: [PATCH 0/2] arm64: zynqmp: Move firmware constants from binding to platform
+Date: Mon, 3 Feb 2025 17:39:09 +0100
+Message-ID: <cover.1738600745.git.michal.simek@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1362; i=michal.simek@amd.com; h=from:subject:message-id; bh=NtgvXicW8DllxHCFVc+qXu3UYT6RjWPVYssNClQ0tqA=; b=owGbwMvMwCR4yjP1tKYXjyLjabUkhvQFH/XO9aSdvRt6edPv2Vp+/kZ8dWIMGz6mbFlxdOK8Z cs29Les74hlYRBkYpAVU2SRtrlyZm/ljCnCFw/LwcxhZQIZwsDFKQATCbnEMJv9X03yK0ZNMcH6 vO2TFxv4/nzZ/JNhvs+iIwIrey9Z/9rWeONr5s5lRVMu+gAA
+X-Developer-Key: i=michal.simek@amd.com; a=openpgp; fpr=67350C9BF5CCEE9B5364356A377C7F21FE3D1F91
 Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1738600299;VERSION=7984;MC=3773513757;ID=183986;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852667064
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF00036F43:EE_|DS7PR12MB6311:EE_
+X-MS-Office365-Filtering-Correlation-Id: b13da256-9f65-4880-4245-08dd44714e69
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?gRRc5v6PqVw/xUB/0pO5QmPVMVs5BLUNXEhz0u3D6rsQCtHp3IjUz6ajjk2O?=
+ =?us-ascii?Q?dfgkyo8D0/vmZqhChzjLO7jSvDA+JjSdDQdY57DdD2yvfopsCYwPhoh7SHdO?=
+ =?us-ascii?Q?4VeuRzKcaOl0EfGovAE3IVXeQhHe1RoDlnZXvKJJ5v3SGnQtLBfj4apfio4V?=
+ =?us-ascii?Q?1z8EJkH/oAyQ6UDqyqq22JOjmvWawZVLswLxAyA1bbRD5i556+1rmEWG5MNL?=
+ =?us-ascii?Q?HvtTgdizLCvjaLO4qL+Wmsna8f5Vi13bbWjWdDHJGnSzHNU199txzk1nIROT?=
+ =?us-ascii?Q?sun166WQFquGiAIp5KVsMswnhcHT21Zs9c1aHcL+mosOEUeyDRKkwQcM7m7t?=
+ =?us-ascii?Q?a87lFRXzfn3o0byFhR/ioMXD/fSYj1j9NU66aAXYwKJutPo+0ZdudjJyWFyB?=
+ =?us-ascii?Q?8k0efBNU2H6XQorzdn2T64boKbiaIwQ60XrtN9kqvuHZBzOx7pwDXU2Eedjl?=
+ =?us-ascii?Q?UH4Cajz0r72mdDjPUlhsjBiySXvs2SiprF4XxmnbtrfwyZWl9f9ioBmpNyL+?=
+ =?us-ascii?Q?BtFAxItfSXAnzizMvsqeIdpYygbXlADfRN14ohed8uvV9n+gJpBast7OVNR3?=
+ =?us-ascii?Q?QQjCYW+CXyi8Aqi4Na2S/xu6wHnDyeXxjvgBJ86Aam6SRbphAluLw5TF10fL?=
+ =?us-ascii?Q?dUYLY8PX57JC0sjQwpmsnYWS+jbMgrmZw7qtwG8xGqq4p8BIHotomC/tbYaW?=
+ =?us-ascii?Q?gWY6fYd7CCteyXJ2T/5IGlwJYHw71Ol16zBZFpkfIcRF+6toE3BBrVzlaR5H?=
+ =?us-ascii?Q?/pR0VCX+cQhk4IvoS6VilxBKitoniEcoFLFrUROnep9eIbNbeQGadXm+vxXh?=
+ =?us-ascii?Q?gcc1DPhCqlRPjZPA+8aBs8Hnb/uKZ5fBb+gi//uVQe6ONCGXjMIc4LF65Yx8?=
+ =?us-ascii?Q?EYsMnTwmYToKsuPLIS0FVzkq+xcqHi+aNmCbjB9U7p5x9oVZ4zFcNNrpoN+T?=
+ =?us-ascii?Q?3A8SWOE2hOKIityDXZJnhtTaUHnHSADegI3Y+7ZzLTuTt9G10q58HoByy6/f?=
+ =?us-ascii?Q?hC3lQ245ZXGg9s1lfj1JtkA7E8Kr4rIQpqLBv3/rfbiJDzm5eu2XTRPBgLbw?=
+ =?us-ascii?Q?wyzbqxeUa6CwO2zpC+w0ouoyDBJI4hNaHdGWpZLNHoluXChuqm6UnFatfqWr?=
+ =?us-ascii?Q?qtjFnywyxMuUFFigmJOpSgFt0WePNvojyBIElqoZyWXPoNgR8IMps7/qGtVe?=
+ =?us-ascii?Q?57WNiiDCYvkVgS5lHz+HyNnso1OlpwBtoWyL6/5UPb0QYjeq7q99l/NZ0+vF?=
+ =?us-ascii?Q?JjW+pguEuuS+dze/1Cc5Ftf4SIhnMnMJTQL1povml5wTd2LYbuDV31CkA+7G?=
+ =?us-ascii?Q?t+zpOl4taLTPefIEPdHrUIIqzCEuLVP/J7qL6rLIMZ6WbwiBnR4A71JeheS2?=
+ =?us-ascii?Q?a9DXrTSldw24lFPG892bxq9R/cl4bBWZ8QzDvXnn3GhO+HshJZ2DM7/kUkTi?=
+ =?us-ascii?Q?waJdjcVTX9VYpN2OtBzIr9944EMCvsqAulIs6twYQ5XBtb+XsYfWIKR+4QQ7?=
+ =?us-ascii?Q?1YTxJjh6e6bXzTU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 16:39:19.3211
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b13da256-9f65-4880-4245-08dd44714e69
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF00036F43.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6311
 
-TCB hardware is capable of capturing the timer value to registers RA and
-RB. On top, it is capable of triggering on compare against a third
-register, RC. Add these registers as extensions.
+Hi,
 
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
- drivers/counter/microchip-tcb-capture.c | 65 ++++++++++++++++++++++++-
- 1 file changed, 64 insertions(+), 1 deletion(-)
+Based on discussion done long time ago
+https://lore.kernel.org/all/5353872c-56a3-98f9-7f22-ec1f6c2ccdc8@linaro.org/
+it is better to deprecate firmware contants which are not used in any code
+and it's only purpose is to use macros in dt files.
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 316755c7659a..a25b54493c7f 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -20,7 +20,8 @@
- 				 ATMEL_TC_ETRGEDG_RISING | ATMEL_TC_LDBDIS | \
- 				 ATMEL_TC_LDBSTOP)
- 
--#define ATMEL_TC_DEF_IRQS	(ATMEL_TC_ETRGS | ATMEL_TC_COVFS)
-+#define ATMEL_TC_DEF_IRQS	(ATMEL_TC_ETRGS | ATMEL_TC_COVFS | \
-+				 ATMEL_TC_LDRAS | ATMEL_TC_LDRBS)
- 
- #define ATMEL_TC_QDEN			BIT(8)
- #define ATMEL_TC_POSEN			BIT(9)
-@@ -252,6 +253,62 @@ static int mchp_tc_count_read(struct counter_device *counter,
- 	return 0;
- }
- 
-+static int mchp_tc_count_cap_read(struct counter_device *counter,
-+				  struct counter_count *count, size_t idx, u64 *val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+	u32 cnt;
-+
-+	switch (idx) {
-+	case 0:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), &cnt);
-+		break;
-+	case 1:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), &cnt);
-+		break;
-+	case 2:
-+		regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), &cnt);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	*val = cnt;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_cap_write(struct counter_device *counter,
-+				   struct counter_count *count, size_t idx, u64 val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+
-+	if (val > U32_MAX)
-+		return -ERANGE;
-+
-+	switch (idx) {
-+	case 0:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), val);
-+		break;
-+	case 1:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), val);
-+		break;
-+	case 2:
-+		regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), val);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(mchp_tc_cnt_cap_array, 3);
-+
-+static struct counter_comp mchp_tc_count_ext[] = {
-+	COUNTER_COMP_ARRAY_CAPTURE(mchp_tc_count_cap_read, mchp_tc_count_cap_write,
-+				   mchp_tc_cnt_cap_array),
-+};
-+
- static struct counter_count mchp_tc_counts[] = {
- 	{
- 		.id = 0,
-@@ -260,6 +317,8 @@ static struct counter_count mchp_tc_counts[] = {
- 		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
- 		.synapses = mchp_tc_count_synapses,
- 		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-+		.ext = mchp_tc_count_ext,
-+		.num_ext = ARRAY_SIZE(mchp_tc_count_ext),
- 	},
- };
- 
-@@ -314,6 +373,10 @@ static irqreturn_t mchp_tc_isr(int irq, void *dev_id)
- 
- 	if (sr & ATMEL_TC_ETRGS)
- 		counter_push_event(counter, COUNTER_EVENT_CHANGE_OF_STATE, 0);
-+	if (sr & ATMEL_TC_LDRAS)
-+		counter_push_event(counter, COUNTER_EVENT_CAPTURE, 0);
-+	if (sr & ATMEL_TC_LDRBS)
-+		counter_push_event(counter, COUNTER_EVENT_CAPTURE, 1);
- 	if (sr & ATMEL_TC_COVFS)
- 		counter_push_event(counter, COUNTER_EVENT_OVERFLOW, 0);
- 
+There is no reason to be the part of dt bindings but it should be kept
+there with adding deprecated warning.
+
+I want to see if this is the right way to go. If yes, I will also do the
+same changes in other headers which contain only constans which are not
+used in any code.
+
+Thanks,
+Michal
+
+
+Michal Simek (2):
+  arm64: zynqmp: Use DT header for firmware constants
+  dt-bindings: xilinx: Deprecate header with firmware constants
+
+ .../bindings/ata/ceva,ahci-1v84.yaml          |   4 +-
+ .../dma/xilinx/xlnx,zynqmp-dma-1.0.yaml       |   3 +-
+ .../bindings/iio/adc/xlnx,zynqmp-ams.yaml     |   3 +-
+ .../devicetree/bindings/net/cdns,macb.yaml    |   7 +-
+ .../bindings/spi/spi-zynqmp-qspi.yaml         |   3 +-
+ .../devicetree/bindings/usb/dwc3-xilinx.yaml  |   3 +-
+ arch/arm64/boot/dts/xilinx/xlnx-zynqmp-clk.h  | 126 ++++++++++++++++++
+ .../arm64/boot/dts/xilinx/zynqmp-clk-ccf.dtsi |   2 +-
+ include/dt-bindings/clock/xlnx-zynqmp-clk.h   |   7 +
+ 9 files changed, 142 insertions(+), 16 deletions(-)
+ create mode 100644 arch/arm64/boot/dts/xilinx/xlnx-zynqmp-clk.h
+
 -- 
-2.48.1
-
+2.43.0
 
 

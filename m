@@ -1,172 +1,126 @@
-Return-Path: <linux-iio+bounces-14932-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14933-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064E5A25F11
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:43:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C4D7A25F7D
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DD16162A71
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 15:43:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 659187A2786
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAA69209F5A;
-	Mon,  3 Feb 2025 15:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619B720ADD7;
+	Mon,  3 Feb 2025 16:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="E6vkO1BK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TjlS5vL1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out.smtpout.orange.fr (out-71.smtpout.orange.fr [193.252.22.71])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065951FFC69;
-	Mon,  3 Feb 2025 15:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.22.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC96020A5F2;
+	Mon,  3 Feb 2025 16:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738597411; cv=none; b=E4ol8BjCZ++pH0XU+LATyRNx7zA74PuHbbvcowhVoaV4thTvph5jT7zGh5EE8wvvHGgPjrUcPqVVe/CbkeAWlHp8jjOWcyMLIFDrb3aDfEimImu0gR5pSrHmCIixPUf2t0ULtiUa230Iny8avodK8xR1i18i0KV47H4tVIjyjG0=
+	t=1738598762; cv=none; b=kE/PgpeRhXbMyidgHWcVutSRMuwV+p16a0ToLcatOGF79r99InVFDY9ZEscDLLDDIU+QZsOu1G2P7YoVEVbkiGwp0KTqaXkrCtCE7ESUBPmcY07jobyNHsI5Tnqa5FKZRajxtlJayIjvqSvsPa45FN7v0qpuJGzfQHzF4AQNYPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738597411; c=relaxed/simple;
-	bh=jOOv4bWa7lwO2nXyPXwBxnGGClSHOQVZio/1vYoQaLw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gVVT5muqfgwed5sQG7AlvcfrFtlamOkEKVtWN9o99V9akx7wVfX4JEfdXu+FMQZd/tgabbiHh+kpTd+UPyNxzqv6/mhwRxBCf7xjTyoISH6KatftBUvPjKz02vgXresTCN2Fyzsj84DnLHZKt6aVG9fMXCpx3vtlWMSmEZtGTf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=E6vkO1BK; arc=none smtp.client-ip=193.252.22.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [172.16.82.72] ([124.33.176.97])
-	by smtp.orange.fr with ESMTPA
-	id eyaCtfZi6inFieyaHt4JBP; Mon, 03 Feb 2025 16:42:19 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1738597339;
-	bh=RZsvS79FyvH7npVg4P4SWlQ3ou2VaFduLz7By9FNQMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=E6vkO1BKyl9ZpZ/TIQbXnlfLL271wV2srdURu+fgQIsPEjIDixSMulc1y5cgOUdvQ
-	 iU0xocdrubJQbaGqdM4S1eETa1X3VnmbyIlCpIe+a4qtacRIMNgrbIBohfYQ/Cbs11
-	 4XcRUGo4AdWzSsrodY9VqO3xRb+ccURkqfTphOk6wf42jjzptRkf6Ew7LUPb8/7xmB
-	 4nxFwkSmDXyg1SOWrja+h9uckxzLz1buRrs02RmLyeg90pT9qhR9xDfFtDYVrbgxVL
-	 8i8tQrSryz9UIKkC0YPWmVq5f1paxeJQ4qhOnmIpEQ2eQwpF8/yY2k5burgk4+LioO
-	 cQ9XcwAjHlJHA==
-X-ME-Helo: [172.16.82.72]
-X-ME-Auth: bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 03 Feb 2025 16:42:19 +0100
-X-ME-IP: 124.33.176.97
-Message-ID: <16e1568d-8747-41e0-91b9-ce23c5592799@wanadoo.fr>
-Date: Tue, 4 Feb 2025 00:41:55 +0900
+	s=arc-20240116; t=1738598762; c=relaxed/simple;
+	bh=WF3iTpTaDpemLGXBFGUlmr3VNu1X3//xIGFLNaCWevs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=J0w/vzc/wFpFCAsdqFa+UrphtxvNokT1zwCYMFRA12uIpq/KP9drIVL4IUhM8FplagCb/z7OoAwVH4y23rXGXhPqyxQkNA6rVMwuolEk5wYwlpenHPr56vz5YxPzPbgrlUsal5bptZyH1cbQWWxrwbYb8gB9GiaMnuBYkYeVOGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TjlS5vL1; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2ee8aa26415so7916329a91.1;
+        Mon, 03 Feb 2025 08:06:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738598760; x=1739203560; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ig/wadxR03TolZsEmoz1h9uCBqHgHNfI3FvNUfDw7A4=;
+        b=TjlS5vL1L3Zrug3Eh9l500ddmTE9J643sVP/YbV2/m445cpcJriGs+aZIPk2oLXDGt
+         5594Ts69clV62AIQsXQBEXKHvH78dE7SjIB3rv6shiHF13DRKLJaRWA23dtmTHH4X/Ey
+         frhuY37BuCGZjMwK8zxfzuFD5u4/UzDTFJYtR9jJxnlx/XWjl7n/WJLP67O5P7gR/OqK
+         NGNFfUlGql+i9bR0P3MXh1C28rFuWUgyDq3nSUbsiv9j5cSEKtsCp8pgT2k/29Q9DuSs
+         PI8E2bMIIMCvsG9zU8s2A/u1sPoHF/s97mPvttZ9HQksY1jo2sMuMqebgYP4v2f7JoTk
+         tQUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738598760; x=1739203560;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ig/wadxR03TolZsEmoz1h9uCBqHgHNfI3FvNUfDw7A4=;
+        b=PrwYvUyjc2N4XhXPoWGuSs9aopdY/K9qSYqb/QB7kX0+wDkrufV4VivBOeuMRLFjIX
+         O1NGRlGJS0NtSby8GFt8PzchIYq3zlN6LDqgqxIw8uqKklBNjOHsVon9WPDTXY2j9J5J
+         MWqpmLSaVe73eQfa+rNuFvq+nrDZTQp9J0LNbPP1pP6HzlzVnghhtvTc1N9j9D7sk4hP
+         +rBySmycYS+Ews4JorrYoto67zWIWBW2xzpRMbl7CSrm2XsuXzR39c+F/2nkYfg7oobM
+         9aCBZjQ9FYQMUmdAOZlWN+ZcSVa2qizu3n5iG+1DJTasWKdQuC5iKdvPj92riYAjMax4
+         WNCg==
+X-Forwarded-Encrypted: i=1; AJvYcCW5kKXM/I9POsG/a+aB22okgXVDQF5eoERNOl28o9h6vk6tjQbcgZPZXR2eag1+zdSFqOKLfSzHbBfPiX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxKDuFjx2lURZXMBxeRsYYeUtsxF1ZHmsVT9XBmuHDKaCjuer5
+	D4KjjWLLz7cOu56tWtBIJFMkybCux5GbVxnJp1U+ueoC1RdBjymPTiPzZnrw8iQ=
+X-Gm-Gg: ASbGncsAWbtihmKUc3g12TD9JC3IrqzgGDgZBGfj9Zyv7Y6H76fy9yDUcNkDQrFNJw5
+	vuX0sgwNfLp1hs6Lgt57q4FlTIKa5SrOhGXyWZpqT0trNRWBFID3Be+RzJ4GQvCeCuQkeqjDyRw
+	KdvmDt6Jo8baBsTOBgYhAe4X3KOFyM+rb9zg13Q0ZLyUCa7Vgc4NbJ0HFFeFDPu2e6IkdY5cc1d
+	3aD6HesZQjdl8mxKlwbzHLLIThXfeUqGPHsuP4le1KKc6gEJfIXxh6KyI824ksqrukgEqZliWTc
+	yvXLTyWDiqepsg==
+X-Google-Smtp-Source: AGHT+IFuDsJ0WA8LxSnhDCRc21v3vfqkG0OHp+h4ubDAQsMhCq4oJjXSaP1St8X0eHEZxlJ/30tBgQ==
+X-Received: by 2002:a17:90b:53c7:b0:2ee:7870:8835 with SMTP id 98e67ed59e1d1-2f83ac83791mr38446474a91.33.1738598759816;
+        Mon, 03 Feb 2025 08:05:59 -0800 (PST)
+Received: from Emma ([2401:4900:1c97:4d02:5054:ff:fe53:2787])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83bd0a2e1sm12698835a91.26.2025.02.03.08.05.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 08:05:59 -0800 (PST)
+Date: Mon, 3 Feb 2025 16:05:56 +0000
+From: Karan Sanghavi <karansanghvi98@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Karan Sanghavi <karansanghvi98@gmail.com>
+Subject: [PATCH v2] iio: light: Add check for array bounds in
+ veml6075_read_int_time_ms
+Message-ID: <Z6DpZDJPDtiDzxDU@Emma>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH treewide v2 1/3] bitfield: Add non-constant
- field_{prep,get}() helpers
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- Yury Norov <yury.norov@gmail.com>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, qat-linux@intel.com,
- linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
- linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Jacky Huang <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>
-References: <cover.1738329458.git.geert+renesas@glider.be>
- <1824412519cb8791ab428065116927ee7b77cf35.1738329459.git.geert+renesas@glider.be>
- <e20a177a-30cd-4088-89e1-b479aba1356c@wanadoo.fr> <Z5-xMUqrDuaE8Eo_@thinkpad>
- <74cab7d1ec31e7531cdda0f1eb47acdebd5c8d3f.camel@sipsolutions.net>
- <45920591-e1d6-4337-a906-35bb5319836c@wanadoo.fr>
- <CAMuHMdXZKNtAmiMP8uuSngZMsDLGcYwrLS0xNWzN4UfLaccdyA@mail.gmail.com>
-Content-Language: en-US
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Autocrypt: addr=mailhol.vincent@wanadoo.fr; keydata=
- xjMEZluomRYJKwYBBAHaRw8BAQdAf+/PnQvy9LCWNSJLbhc+AOUsR2cNVonvxhDk/KcW7FvN
- LFZpbmNlbnQgTWFpbGhvbCA8bWFpbGhvbC52aW5jZW50QHdhbmFkb28uZnI+wrIEExYKAFoC
- GwMFCQp/CJcFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AWIQTtj3AFdOZ/IOV06OKrX+uI
- bbuZwgUCZx41XhgYaGtwczovL2tleXMub3BlbnBncC5vcmcACgkQq1/riG27mcIYiwEAkgKK
- BJ+ANKwhTAAvL1XeApQ+2NNNEwFWzipVAGvTRigA+wUeyB3UQwZrwb7jsQuBXxhk3lL45HF5
- 8+y4bQCUCqYGzjgEZx4y8xIKKwYBBAGXVQEFAQEHQJrbYZzu0JG5w8gxE6EtQe6LmxKMqP6E
- yR33sA+BR9pLAwEIB8J+BBgWCgAmFiEE7Y9wBXTmfyDldOjiq1/riG27mcIFAmceMvMCGwwF
- CQPCZwAACgkQq1/riG27mcJU7QEA+LmpFhfQ1aij/L8VzsZwr/S44HCzcz5+jkxnVVQ5LZ4B
- ANOCpYEY+CYrld5XZvM8h2EntNnzxHHuhjfDOQ3MAkEK
-In-Reply-To: <CAMuHMdXZKNtAmiMP8uuSngZMsDLGcYwrLS0xNWzN4UfLaccdyA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 03/02/2025 at 22:59, Geert Uytterhoeven wrote:
-> Hi Vincent,
-> 
-> On Mon, 3 Feb 2025 at 14:37, Vincent Mailhol <mailhol.vincent@wanadoo.fr> wrote:
->> On 03/02/2025 at 16:44, Johannes Berg wrote:
->>> On Sun, 2025-02-02 at 12:53 -0500, Yury Norov wrote:
->>>>> Instead of creating another variant for
->>>>> non-constant bitfields, wouldn't it be better to make the existing macro
->>>>> accept both?
->>>>
->>>> Yes, it would definitely be better IMO.
->>>
->>> On the flip side, there have been discussions in the past (though I
->>> think not all, if any, on the list(s)) about the argument order. Since
->>> the value is typically not a constant, requiring the mask to be a
->>> constant has ensured that the argument order isn't as easily mixed up as
->>> otherwise.
->>
->> If this is a concern, then it can be checked with:
->>
->>   BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask) &&
->>                    __builtin_constant_p(_val),
->>                    _pfx "mask is not constant");
->>
->> It means that we forbid FIELD_PREP(non_const_mask, const_val) but allow
->> any other combination.
-> 
-> Even that case looks valid to me. Actually there is already such a user
-> in drivers/iio/temperature/mlx90614.c:
-> 
->     ret |= field_prep(chip_info->fir_config_mask, MLX90614_CONST_FIR);
-> 
-> So if you want enhanced safety, having both the safer/const upper-case
-> variants and the less-safe/non-const lower-case variants makes sense.
+The array contains only 5 elements, but the index calculated by
+veml6075_read_int_time_index can range from 0 to 7,
+which could lead to out-of-bounds access. The check prevents this issue.
 
-So, we are scared of people calling FIELD_PREP() with the arguments in
-the wrong order:
+Coverity Issue
+CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
+overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
+elements at element index 7 (byte offset 31) using
+index int_index (which evaluates to 7)
 
-  FIELD_PREP(val, mask)
+Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+---
+ drivers/iio/light/veml6075.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-thus adding the check that mask must be a compile time constant.
-
-But if we introduce a second function, don't we introduce the risk of
-having people use the lower case variant instead of the upper case variant?
-
-  field_prep(incorrect_const_mask, val)
-
-I am not sure to follow the logic of why having two functions is the
-safer choice. Whatever the solution you propose, there will be a way to
-misuse it. Let me ask, what is the most likely to happen:
-
-  1. wrong parameter order
-  2. wrong function name
-
-?
-
-If you have the conviction that people more often do mistake 1. then I
-am fine with your solution. Otherwise, if 1. and 2. have an equally
-likelihood, then I would argue to go with the simplicity of the single
-function.
-
-
-Yours sincerely,
-Vincent Mailhol
+diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
+index 05d4c0e9015d..21de193ca09d 100644
+--- a/drivers/iio/light/veml6075.c
++++ b/drivers/iio/light/veml6075.c
+@@ -210,8 +210,8 @@ static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)
+ 
+ 	guard(mutex)(&data->lock);
+ 	int_index = veml6075_read_int_time_index(data);
+-	if (int_index < 0)
+-		return int_index;
++	if (int_index < 0 || int_index >= ARRAY_SIZE(veml6075_it_ms))
++		return -EINVAL;
+ 
+ 	*val = veml6075_it_ms[int_index];
+ 
+-- 
+2.43.0
 
 

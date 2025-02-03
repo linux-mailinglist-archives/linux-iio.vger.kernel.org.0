@@ -1,125 +1,101 @@
-Return-Path: <linux-iio+bounces-14890-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14891-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A61BA253F5
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:14:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01895A255CA
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 10:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A82D16481A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 08:14:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8519F3A27DF
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A60215195;
-	Mon,  3 Feb 2025 08:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4971FF1CC;
+	Mon,  3 Feb 2025 09:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DJZupebz"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jiprw07e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF7D1FBEB2;
-	Mon,  3 Feb 2025 08:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6441D5176;
+	Mon,  3 Feb 2025 09:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738570255; cv=none; b=LL2tOUFv7wF8l5RA9bDKJs5fX8q4EgKbpE+Ct3cjVA3XfcpP1g5ZcVeBEiWPoQNNXjAr2HU64zeu8bM/eAwcy7c4X0WbBAfUpxSX7BD211CHELVWd6P5kNWE62HrEFGiDx8QEYcr/i5SnZyympDvtLxx6Lis/cc2UU/H5St2Ja4=
+	t=1738574793; cv=none; b=cxFCsS3PSubBYxGjA8kDT5tZfPzM/qVu0+ieWeMbdYIc6jds3Ep7fWxWI/f4c+mHZEn15trXba8kIgjHZ0tlqqHgW3iXjf9TaSAWAYnJC0L/YrFlKdWaFhI499Ge9OhDFkwvfuRYYTZTnbLyDqkDvLy98nFKUzdh86I2IMoRiWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738570255; c=relaxed/simple;
-	bh=SphjoMu5QyKhAhaOtzkRUUaDVbtlBQlqGuY3h1dWhso=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qtn23ZThqjALTvyTso1pUk26cyCYvoKeqQotjOq/t+ofvV2A4YswgnHflo9HVXr977jHLi/gDubCwBD3GaWuTSqRo/dVG42HPh2UsNBAW8bB8P9hf8L1CcruLX/1cGzOlkjm+Nl4aNioDO12SGZU0XxmIR0g11nRMEmVgJY8IsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DJZupebz; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1738574793; c=relaxed/simple;
+	bh=lWbhg0d58hHvnjbqc+RnU2QJLblhj1IYghf/LLx0eas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dihK2Jmsj7NLWnFOVPMbIxdeXLu6iXPu8nIs2w/i3FdBvhXuSAhRKcNJhEBCt1W148ebU64P4IaNN6n9f/Xf0XV/ooQKFTtt8yVwK7z0C663K5/jAS0tpcChMEjAQdnDNYb+srGO7epWuwBQeY+rbaoXxEUg+G9KSHSD8+oYS7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jiprw07e; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738570253; x=1770106253;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=SphjoMu5QyKhAhaOtzkRUUaDVbtlBQlqGuY3h1dWhso=;
-  b=DJZupebzRh2HBT/Fg3ECb/LgkGDXk8yrj++l0KBjJ5FBpEOGOSsDqyJp
-   qS2yvo3fzdZ6k1MGLazPdE9jIJ2tLch/XZ4Vdxiu3BSCY45xI2sPVZZEb
-   E6MbF1Io7I2btwWLyK1KXbeDzR48/ZCozKmAtLQSf1hOvMSpZ3Rhom89/
-   /OfbMIEXKe2OdQX/7BjecvTncd41wlvGZRXier39Ze1Rel1BGB6y1fO8c
-   wdjZH5AFeAKvfCsUdSnYGkEuG5IheWJeg83Yv0dbbcBx7IrwgcC+nPQxF
-   WjZpZmMbt1BkFoyMUXtppxmWa8HBuk/dKptRoeYdPEMe+kM6pVZksQDaO
-   A==;
-X-CSE-ConnectionGUID: yoZCEj5iSr+qM+Aj/bstaw==
-X-CSE-MsgGUID: ZLG72tpBT3icBAMy/lLXOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="49654339"
+  t=1738574792; x=1770110792;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lWbhg0d58hHvnjbqc+RnU2QJLblhj1IYghf/LLx0eas=;
+  b=jiprw07eMWdpI3a0TK96gfv0YjVE1C1R27ZcrgCXJuTpBaXHT2A0+yLc
+   E8GvYj79n/ILrp965zz0KveYi2Mpk92xPhClK6auZKQibkh968ks2Xtpc
+   gUafMqDYAExQFmZ0eWL7ORu/PQ2D5YiUY+4Fq4V4j3wGdpH7U4vMY9PpD
+   Ajeypc03WBxXuWujrlQ9yq4TgKuYZCSXzocej5QIOqjXqEw20iuEZvH7i
+   6Hpwl9s2vE+1D1/KGl3q4wQFeHWWrfkDeOfF2ZqlTXz6mU9zUoBlCR2/v
+   5A7jOnAbRpzYP629ZpX35tOiPmubmnYE1PtiMR1YM7QvI1/MuQn01NPhB
+   Q==;
+X-CSE-ConnectionGUID: OOiHB/i2SIa7dXqrVK1eqg==
+X-CSE-MsgGUID: 9+XEzN25TvKLFkeJG98EdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="42810423"
 X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="49654339"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 00:10:53 -0800
-X-CSE-ConnectionGUID: EqeDqQ/aS92vll0bqveLrw==
-X-CSE-MsgGUID: /Xo1xFGQSxGQMSk7XBXw3w==
+   d="scan'208";a="42810423"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:26:31 -0800
+X-CSE-ConnectionGUID: t42ZCSeaRJmMha3tkpO8Mw==
+X-CSE-MsgGUID: Tk29/M9ZT127P8BKJrxz0Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="110788994"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by fmviesa009.fm.intel.com with ESMTP; 03 Feb 2025 00:10:49 -0800
-From: Raag Jadav <raag.jadav@intel.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	linus.walleij@linaro.org,
-	mika.westerberg@linux.intel.com,
-	andriy.shevchenko@linux.intel.com,
-	dmitry.torokhov@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	sre@kernel.org,
-	jic23@kernel.org,
-	przemyslaw.kitszel@intel.com
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v3 20/20] ASoC: uniphier: use devm_kmemdup_array()
-Date: Mon,  3 Feb 2025 13:39:02 +0530
-Message-Id: <20250203080902.1864382-21-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250203080902.1864382-1-raag.jadav@intel.com>
-References: <20250203080902.1864382-1-raag.jadav@intel.com>
+   d="scan'208";a="115261751"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:26:30 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tesip-00000007mfw-2CT5;
+	Mon, 03 Feb 2025 11:26:27 +0200
+Date: Mon, 3 Feb 2025 11:26:27 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Antoni Pokusinski <apokusinski01@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: magnetometer: si7210: fix magnetic field
+ measurement scale
+Message-ID: <Z6CLw5h5EwDGanl-@smile.fi.intel.com>
+References: <20250202100709.143411-1-apokusinski01@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250202100709.143411-1-apokusinski01@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Convert to use devm_kmemdup_array() which is more robust.
+On Sun, Feb 02, 2025 at 11:07:10AM +0100, Antoni Pokusinski wrote:
+> Applying the current scale value to the raw magnetic field measurements
+> gives the result in mT.
+> 
+> Fix the scale by increasing it 10 times, so that the final result after
+> applying the scale is in Gauss.
 
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
----
- sound/soc/uniphier/aio-cpu.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+No objections against this change, just wondering since these are
+the ABI changes (correct?) how should we really handle them in case
+some of the user space stuff already relies on 'bad' values?
 
-diff --git a/sound/soc/uniphier/aio-cpu.c b/sound/soc/uniphier/aio-cpu.c
-index 470f129166a4..44f4053e5584 100644
---- a/sound/soc/uniphier/aio-cpu.c
-+++ b/sound/soc/uniphier/aio-cpu.c
-@@ -762,14 +762,10 @@ int uniphier_aio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	chip->num_plls = chip->chip_spec->num_plls;
--	chip->plls = devm_kcalloc(dev,
--				  chip->num_plls,
--				  sizeof(struct uniphier_aio_pll),
--				  GFP_KERNEL);
-+	chip->plls = devm_kmemdup_array(dev, chip->chip_spec->plls, chip->num_plls,
-+					sizeof(struct uniphier_aio_pll), GFP_KERNEL);
- 	if (!chip->plls)
- 		return -ENOMEM;
--	memcpy(chip->plls, chip->chip_spec->plls,
--	       sizeof(struct uniphier_aio_pll) * chip->num_plls);
- 
- 	for (i = 0; i < chip->num_aios; i++) {
- 		struct uniphier_aio *aio = &chip->aios[i];
 -- 
-2.34.1
+With Best Regards,
+Andy Shevchenko
+
 
 

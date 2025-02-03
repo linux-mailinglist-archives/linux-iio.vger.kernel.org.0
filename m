@@ -1,76 +1,81 @@
-Return-Path: <linux-iio+bounces-14891-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14892-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01895A255CA
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 10:26:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AEEAA25640
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 10:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8519F3A27DF
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:26:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF79B1645E4
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4971FF1CC;
-	Mon,  3 Feb 2025 09:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844EB1FFC55;
+	Mon,  3 Feb 2025 09:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jiprw07e"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NSxH4Fyo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6441D5176;
-	Mon,  3 Feb 2025 09:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C544B1FECC2;
+	Mon,  3 Feb 2025 09:49:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738574793; cv=none; b=cxFCsS3PSubBYxGjA8kDT5tZfPzM/qVu0+ieWeMbdYIc6jds3Ep7fWxWI/f4c+mHZEn15trXba8kIgjHZ0tlqqHgW3iXjf9TaSAWAYnJC0L/YrFlKdWaFhI499Ge9OhDFkwvfuRYYTZTnbLyDqkDvLy98nFKUzdh86I2IMoRiWI=
+	t=1738576142; cv=none; b=bsfSucEZY2vppHkq9iHQFXEdm1+RZkp3epnPDFCIInzKrwUspm54qsqJAwNPz0FH6BIQhW5u6mE7qzPkzSUC+IcPnmXzocIWeZ9z6YFz4Te1E7JWILCDTYTeKYzIZczLR9TKmmDQ6Jfq8BcbBxGaO3lSwSkaa+QlbHyBFkNWwtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738574793; c=relaxed/simple;
-	bh=lWbhg0d58hHvnjbqc+RnU2QJLblhj1IYghf/LLx0eas=;
+	s=arc-20240116; t=1738576142; c=relaxed/simple;
+	bh=zWGrZS1Fj/UWGsQmGsxasXV1/TVm5sUBsUTBhpui6aI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dihK2Jmsj7NLWnFOVPMbIxdeXLu6iXPu8nIs2w/i3FdBvhXuSAhRKcNJhEBCt1W148ebU64P4IaNN6n9f/Xf0XV/ooQKFTtt8yVwK7z0C663K5/jAS0tpcChMEjAQdnDNYb+srGO7epWuwBQeY+rbaoXxEUg+G9KSHSD8+oYS7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jiprw07e; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=U6UMWY9k90VnJ2+wQwpg+nGXsgnTtTygYakwViPTRfrqmXBXifNxHRGgkDPmfsM8XxVsWVfxkFBXrBNs5AplYTMbtZ3Hwc6cjbyujWJuSxQXZtzl6Bdu7dKTQmp7wrTITMgEwZfzw38ZX8NPW9Y+npIRi8iTjCDDqSOORKbZshk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NSxH4Fyo; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738574792; x=1770110792;
+  t=1738576142; x=1770112142;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lWbhg0d58hHvnjbqc+RnU2QJLblhj1IYghf/LLx0eas=;
-  b=jiprw07eMWdpI3a0TK96gfv0YjVE1C1R27ZcrgCXJuTpBaXHT2A0+yLc
-   E8GvYj79n/ILrp965zz0KveYi2Mpk92xPhClK6auZKQibkh968ks2Xtpc
-   gUafMqDYAExQFmZ0eWL7ORu/PQ2D5YiUY+4Fq4V4j3wGdpH7U4vMY9PpD
-   Ajeypc03WBxXuWujrlQ9yq4TgKuYZCSXzocej5QIOqjXqEw20iuEZvH7i
-   6Hpwl9s2vE+1D1/KGl3q4wQFeHWWrfkDeOfF2ZqlTXz6mU9zUoBlCR2/v
-   5A7jOnAbRpzYP629ZpX35tOiPmubmnYE1PtiMR1YM7QvI1/MuQn01NPhB
+  bh=zWGrZS1Fj/UWGsQmGsxasXV1/TVm5sUBsUTBhpui6aI=;
+  b=NSxH4FyouSpJaYLnIJD7lhf/+hxJTPXukKC8Z+qhJ8k6/oo6lzkCT3FO
+   19LehAcZIY/yiF/fbJ8LV9I68nGyYB76sYnOcaELPZ2BhdZnn+1667V+U
+   UgX6qHwBCM09kSF89q3KRRioZY5pHQgcQK+Q97nmmp404yrSiLhcOwHRC
+   osGq0TVHyxuBbL5UIxuHEu7L9M/qVuJ7pbz3XuXYcGVOvz8DTl47jGUNu
+   z9NlRtPoDzUC4ui+VqSkTW7FmBLUzADkGJRjchYfjLZJrYtvbSa+6OCUR
+   Vl39JdJjQY9kjzWrikDO3jSa79G50O5GZp5/YX1px3wEyVZTyJRJygBxj
    Q==;
-X-CSE-ConnectionGUID: OOiHB/i2SIa7dXqrVK1eqg==
-X-CSE-MsgGUID: 9+XEzN25TvKLFkeJG98EdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="42810423"
+X-CSE-ConnectionGUID: YtLSqG1UQyerYepsKkMF0g==
+X-CSE-MsgGUID: Gs/DId3rQESWPIyW3PHysg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="50052859"
 X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="42810423"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:26:31 -0800
-X-CSE-ConnectionGUID: t42ZCSeaRJmMha3tkpO8Mw==
-X-CSE-MsgGUID: Tk29/M9ZT127P8BKJrxz0Q==
+   d="scan'208";a="50052859"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:49:01 -0800
+X-CSE-ConnectionGUID: kd1tWlm7RnKODLNnZVynIg==
+X-CSE-MsgGUID: tHzNomfkRlyabZ+PaOXD+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="115261751"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="147441315"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:26:30 -0800
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 01:48:56 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tesip-00000007mfw-2CT5;
-	Mon, 03 Feb 2025 11:26:27 +0200
-Date: Mon, 3 Feb 2025 11:26:27 +0200
+	id 1tet4W-00000007mz6-3yhl;
+	Mon, 03 Feb 2025 11:48:52 +0200
+Date: Mon, 3 Feb 2025 11:48:52 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Antoni Pokusinski <apokusinski01@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: magnetometer: si7210: fix magnetic field
- measurement scale
-Message-ID: <Z6CLw5h5EwDGanl-@smile.fi.intel.com>
-References: <20250202100709.143411-1-apokusinski01@gmail.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, linus.walleij@linaro.org,
+	mika.westerberg@linux.intel.com, dmitry.torokhov@gmail.com,
+	lgirdwood@gmail.com, broonie@kernel.org, sre@kernel.org,
+	jic23@kernel.org, przemyslaw.kitszel@intel.com,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-sound@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 00/20] Split devres APIs to device/devres.h and
+ introduce devm_kmemdup_array()
+Message-ID: <Z6CRBDpXpPha07mf@smile.fi.intel.com>
+References: <20250203080902.1864382-1-raag.jadav@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,19 +84,38 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250202100709.143411-1-apokusinski01@gmail.com>
+In-Reply-To: <20250203080902.1864382-1-raag.jadav@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Feb 02, 2025 at 11:07:10AM +0100, Antoni Pokusinski wrote:
-> Applying the current scale value to the raw magnetic field measurements
-> gives the result in mT.
+On Mon, Feb 03, 2025 at 01:38:42PM +0530, Raag Jadav wrote:
+> This series
 > 
-> Fix the scale by increasing it 10 times, so that the final result after
-> applying the scale is in Gauss.
+> 1. Splits device/devres.h for the users that are only interested in devres APIs.
+>    Original work by Andy Shevchenko:
+>    https://lore.kernel.org/r/20241203195340.855879-1-andriy.shevchenko@linux.intel.com
+> 
+> 2. Introduces a more robust and cleaner devm_kmemdup_array() helper and uses it
+>    across drivers.
+> 
+> The idea behind embedding both work into a single series is to reduce conflicts
+> and dependencies while merging.
+> 
+> v2: Use size_mul() for multiplication (Dmitry)
+>     Update commit message (Dmitry)
+> 
+> v3: Embed devres.h work by Andy
 
-No objections against this change, just wondering since these are
-the ABI changes (correct?) how should we really handle them in case
-some of the user space stuff already relies on 'bad' values?
+>     Add more users of devm_kmemdup_array()
+
+I understand the desire to cover as much as possible, but it becomes much
+harder to coordinate. My proposal stays the same, i.e. I may take the GPIO/pin
+control related (and already ACKed!) changes via Intel pin control tree and
+the rest may use that immutable tag as needed.
+
+What we need is an Ack for the first patch from Greg and perhaps I can take
+IIO, if Jonathan gives an Ack.
+
+>     Update tags and rebase
 
 -- 
 With Best Regards,

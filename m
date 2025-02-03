@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-14920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC19DA25AFA
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 14:34:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCD2A25AFF
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 14:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3F3918826A4
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 13:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890A01887624
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 13:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112F4205AC4;
-	Mon,  3 Feb 2025 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865CA205AD9;
+	Mon,  3 Feb 2025 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dwg1Lq+Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VHBy5bHc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26D720550C;
-	Mon,  3 Feb 2025 13:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CC2205AD6;
+	Mon,  3 Feb 2025 13:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738589604; cv=none; b=QOTABn/W2jBeKYrLW4jcCV1mhkkf7UzXLXLa+ZbF37TBNTxk0zT6HilnWQkdOHqag8Cffv0s9eUQXMPleqgiCbXF8x7+h3pFc5m/uA3t0Kehcv/czGRi63SXkhNLX2t5i2zkbVvZpk08m9KP+sl6EcLnGHd/98k1aBLfnyYuqEQ=
+	t=1738589608; cv=none; b=kkfv4OFUx4UblayuC/DBoTXE0JARGHB57UVQMx326gNiYxH/NfepXIJyopxnQF9yDp9k0OAfXvpoxCIk42KJG52UbxgRdv6XmsSdAluzcAms99bk2UJAxABclkdpAKc6R9TAyR8eKQZVjiM9NO5Kv4Y1veNUtFdsuMNWCOl71Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738589604; c=relaxed/simple;
-	bh=SkFjQjgJE3oZO4ezVvkZfwrgzDVnmWatD49mjqkhits=;
+	s=arc-20240116; t=1738589608; c=relaxed/simple;
+	bh=/69qSVw2mt8KfjLhzS5MmaFzZLWPptj0ThUivJaGWac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5DV3j/0p6/V/VYeV7tT6QlMcMBGlX7lIVHX6LI/VNQz9f4mePEQLVJ78FN0XVXfwVewkbiJg0cnvsWUgCpJp6scT3bxOM/ouJFACgSwGk7vo/zxbuWAnI32EDgmg8zn5yuDyY1sCFvkYubGzUkyEdiwZl/UqW1eMCFsEQwh65g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dwg1Lq+Q; arc=none smtp.client-ip=209.85.221.46
+	 MIME-Version; b=gGWnhg8QOiNib3Ps/8m3R3CBoPC5x7xY6vkKqA8zjba2rEs8k2zQbhEpxvRRKj2N9xdlddfhFf8QwY/1T5PSKpEdWdeoV/E0OBhmENfAUijiGqsE0iIsTi4H3vxZ3DU/eOubHlENFvhz/g0E0VyLrQRbQG4qL/R5cVOIh38xW2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VHBy5bHc; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-38be3bfb045so3613738f8f.0;
-        Mon, 03 Feb 2025 05:33:22 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43625c4a50dso30428425e9.0;
+        Mon, 03 Feb 2025 05:33:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738589601; x=1739194401; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738589604; x=1739194404; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9WTLDIS5bYX32+4MLomiG7L53TP48mbQ9J9cSaSb0N4=;
-        b=Dwg1Lq+QwpNaPTgL79Dn7LLxDkH/CGJG0DCeHsQqxOECGh8LvsYJBJfDKJeAzpIPk5
-         2u3NiDwxnASdfpw2LbhblqdPt2rLesXEJV2iUJqYEK5NpwHWtPl36LNoKVHiWMXjXPnf
-         WBcW3mKw1Wb/k0Bnh3RC1Mb3ZJoBZ+nAolSzLGK6uvkPuNeuMMjL5s2tF93QZnYWCbjq
-         67VnWefnXsKgAdd6w281FojWBBVHDZo71MvR1n1TxfjfgeR60NwxOtaTrZQQabNmdYdv
-         MJ+OXqeDd5sPi3hrx/RktkLHJT4q9GIUvXgtdWydPeguEgA2YCvF1WWPUF97Qz3bEaUM
-         p7og==
+        bh=brQsFXC2ztSn0b1Pfab1Tp2oUc8wb3J3/jIWe8DQBMg=;
+        b=VHBy5bHc9Na/T7E/mrNWDCQz0EvQ5ZUBbN3TI0XKDYsyBtWYPiY/4vgPJgR4iEUqVl
+         dOSaCAn/tj7EtXrZlBUXmv/oFSmqRzUuD0vBEu9zVux9Q9uwKPaXeUBsQ0I0k6r8cJR2
+         6vBP91vO6kD/k5deUcVsT2XxGtwlXi0StQsE4s4jhRB5A/52TH/IUeqnr19aEyDlbB2d
+         AKUneFkW9jsx/mAQYBNmuaBP3GQK0zIiWqCVyG0TOGbdjSlPyr1xnbZ774XDxVs3zJRg
+         AMZGc1zyTjAHlDmaJSW/rhaBxPjHwfgZlS4HLXP+kLfCVsnymZnau7KvtrzpbEJnpg8r
+         AvxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738589601; x=1739194401;
+        d=1e100.net; s=20230601; t=1738589604; x=1739194404;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9WTLDIS5bYX32+4MLomiG7L53TP48mbQ9J9cSaSb0N4=;
-        b=J0TwG4Gn/anXZCg1tvH4Nxbvqngz/drlofwBt50A32plkX0kQTNHiER2sNMVkozCp9
-         jE/U47BfFK8+VloGbGKac3BJCWTepD+BUU5XlkvPIoCtwZsgk08hE6IXDu+gBonjNu+Y
-         uvNWqB6uIjgix7Y+7rpJBLBXhNwKnhr+A6LcGblDmwK3QYKlm1FGpxu5Xp+ctF4bb4r9
-         4ZdQ5w6NG/dGvP9A55UOSeOAK7csZBLcN0lGeZnSlouGMoA5wkrXKgo0HI2kJJYCfb1d
-         jPtsTs/A0OkgBx7TIz+zC5Mn7WSuqv9vk+RGLVhmW4YCtgUQ2HIX8FUuWHh8ctQI/WNV
-         we2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVmLcS50uStJbnRfKoA76MnZGFZ0umai6zZpTX0NVcARHEwLGw9mEKZxJMtiM/hF9A9CCgRkLFWCrgw@vger.kernel.org, AJvYcCWnB36/8XE+7GyKBL9HfES/3Sc7fY58XlwbBxxZPLo0rDG8hK6fwnyf1SoKhYWQ+WS1FYdN7kOhMfkVop/N@vger.kernel.org, AJvYcCXYUshtpePV657XvL99EzapPgbcz7Y2MNc6NboJY+HX/xNzSHkwtUGLSMMC1aw4QMKH0oMR2/xjmbyB@vger.kernel.org, AJvYcCXz2m2LbpYwsN/9jdl+jCNYt27ztBZ2rDSW3oNs/arVK94r+fJfN3Br5hA7EL+hPZ8w3siJUgpVjzxT@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZe9V6UzR7xZmhoW6rQ3NPQaIC4EIivIz5YfZR6fSSrSFAC8XH
-	5TVGx5j2RwfgK/0kAeG7hpKa7Qru01y5nGB57D4Lp6b8DT0UETAw
-X-Gm-Gg: ASbGncsqT5WRuckdY4T+p9qGv/hEANKdYMmudCmeON4Dxr+eQV1OYLDMgWZMXzPSwJc
-	5rRuy9KCTYmAFSvtFfyi9iCWpbfMZTdMg3VRvow4/TO7AKofIJBO9O58JxGKMPWaRl94WVPIHSJ
-	JSn7VOkFRgiTWrIW4wUIZ7getXNSTRvP5Eku0qAltWPhdRPwvaiKZQXbTaq/Y4IdTWWibDqgkWw
-	Mb3EYbjUXmEyrMKEHrasU8Ao9q6IltWZ907igolIx/PKRjDdEVQjPhoago9TZNb+V6WSf7PbdwW
-	jbHMYpXAikM=
-X-Google-Smtp-Source: AGHT+IEYQnRNGAnusL17nBNVlmKwfaaJN+R9cOrrXhtpAe25KwLzlXn/94b23fqIkKAjQ5S6ACI+9g==
-X-Received: by 2002:a05:6000:1a85:b0:38a:88d0:1c9c with SMTP id ffacd0b85a97d-38c5a98f74dmr13952866f8f.17.1738589601102;
-        Mon, 03 Feb 2025 05:33:21 -0800 (PST)
+        bh=brQsFXC2ztSn0b1Pfab1Tp2oUc8wb3J3/jIWe8DQBMg=;
+        b=v5EMMeIuKKbLUYLbKMBn3l6dRte7neenaK/sOaIczXFGU8Vq3okhpFaSXUfZUssrpm
+         hVkpHIg6UBsT3WYhWbleHszkPy0RTLXGZW6lEtkVGleALNDhdDZ8TtCoiqWP1xBIpeCq
+         V0akw6OX0PScOmZsvtVXqVNviBhmkRDPpFCYZQQm/9enuZgF3wKJklHAGimmSo4bZ8CQ
+         D8nIOx2Dk0DjqZy/7WhmJxHb2c0lK2wbFaHgQAolyTWm2E7VA215F7eoSEs/hyJ6OAsV
+         sXj9bA6teHOa7zS5oQtQRGhwCJneQq6EZYBB0ZJJZsi7jt1wXFkbyxr9rIyGxUJKe6hi
+         3vSw==
+X-Forwarded-Encrypted: i=1; AJvYcCV36kP//otPYSt96ir5ErvbU5rRRr59hNp4AzpHX7Xn7mrLkfGSm4D2+WiW6X4YelOqaOG4X8a+Xh22O65z@vger.kernel.org, AJvYcCX1ai/++S0L1F4KKa0RRAFg1dILyyQ5B8QXhFLBzVldnzYg5Jqg/Va/DzxIeWEtE3A5vEZdsoroPlMK@vger.kernel.org, AJvYcCXZW6iv9BXc4Zr36DqlMDIjGOXWhGc0pbHwQ3JlD6HUcv29qrxA1iD3OQ8mSp+HLVlotZ5VxMipqRs3@vger.kernel.org, AJvYcCXvhl/WABgJj4bPeYNrtUctbISq3P3aivr6Qe2Bmfk/Z2rhiFKlb/ebpE3rUA+EujaNeMXHXlbDRQ67@vger.kernel.org
+X-Gm-Message-State: AOJu0YwytzQuIW0wy68d0bOyOndGNXqAEsE2zmc00qKMyjmRKqvUUejS
+	7mtcWGNfHBYRrowOdvY0vYOJhvHINnJYUDk9MtdAGbvl4OZ2mJdG
+X-Gm-Gg: ASbGnctd9l3EAdv/or8JZMl/jeNUHKBdpAIhMHajhgCd5dS/BITeVrBMvzwmWzct+aG
+	j2k1R2Lx3Jmb8063XZ5fzHdu3wU+VsN9H8VsL/yMEUVfg5Vd2mpdR7WcpjpiwwhM9O0nGy2nksa
+	5glLwCHjl2E9VJgrpgUSQCsSIouw9AfK7ndVG2obgPlSU/Q01jZQcxZ9jHd55n8q/fwNQXI1Nar
+	pwBIoX3p32vl+LM2s3zkgCKF/Q+Ti025xoVIPk+kFdTg4MC4ZRDj3/YXkFi0A/tpbY6lVNx8NtW
+	UHbgA+oC5Ow=
+X-Google-Smtp-Source: AGHT+IFe/p4h5BipEVIrPh96lZbC8enPomXd2xwQS+cCQNMSgsdS5v1satea2Gg0hGesXLP6AWVgMw==
+X-Received: by 2002:a05:6000:1888:b0:385:f195:2a8 with SMTP id ffacd0b85a97d-38c5195f5d4mr16568632f8f.30.1738589603864;
+        Mon, 03 Feb 2025 05:33:23 -0800 (PST)
 Received: from spiri.. ([82.77.155.91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1d1d03sm12970190f8f.99.2025.02.03.05.33.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c1d1d03sm12970190f8f.99.2025.02.03.05.33.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 05:33:20 -0800 (PST)
+        Mon, 03 Feb 2025 05:33:23 -0800 (PST)
 From: Alisa-Dariana Roman <alisadariana@gmail.com>
 X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
 To: "Rob Herring (Arm)" <robh@kernel.org>,
@@ -89,9 +89,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH v4 1/3] dt-bindings: iio: adc: add AD7191
-Date: Mon,  3 Feb 2025 15:31:26 +0200
-Message-ID: <20250203133254.313106-2-alisa.roman@analog.com>
+Subject: [PATCH v4 2/3] iio: adc: ad7191: add AD7191
+Date: Mon,  3 Feb 2025 15:31:27 +0200
+Message-ID: <20250203133254.313106-3-alisa.roman@analog.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250203133254.313106-1-alisa.roman@analog.com>
 References: <20250203133254.313106-1-alisa.roman@analog.com>
@@ -110,186 +110,624 @@ programmable gain, internal temperature sensor and simultaneous
 50Hz/60Hz rejection.
 
 Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 ---
- .../bindings/iio/adc/adi,ad7191.yaml          | 149 ++++++++++++++++++
- MAINTAINERS                                   |   7 +
- 2 files changed, 156 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
+ MAINTAINERS              |   1 +
+ drivers/iio/adc/Kconfig  |  10 +
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad7191.c | 559 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 571 insertions(+)
+ create mode 100644 drivers/iio/adc/ad7191.c
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
-new file mode 100644
-index 000000000000..801ed319ee82
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
-@@ -0,0 +1,149 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+# Copyright 2025 Analog Devices Inc.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7191.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD7191 ADC
-+
-+maintainers:
-+  - Alisa-Dariana Roman <alisa.roman@analog.com>
-+
-+description: |
-+  Bindings for the Analog Devices AD7191 ADC device. Datasheet can be
-+  found here:
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7191.pdf
-+  The device's PDOWN pin must be connected to the SPI controller's chip select
-+  pin.
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7191
-+
-+  reg:
-+    maxItems: 1
-+
-+  spi-cpol: true
-+
-+  spi-cpha: true
-+
-+  clocks:
-+    maxItems: 1
-+    description:
-+      Must be present when CLKSEL pin is tied HIGH to select external clock
-+      source (either a crystal between MCLK1 and MCLK2 pins, or a
-+      CMOS-compatible clock driving MCLK2 pin). Must be absent when CLKSEL pin
-+      is tied LOW to use the internal 4.92MHz clock.
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  avdd-supply:
-+    description: AVdd voltage supply
-+
-+  dvdd-supply:
-+    description: DVdd voltage supply
-+
-+  vref-supply:
-+    description: Vref voltage supply
-+
-+  odr-gpios:
-+    description:
-+      ODR1 and ODR2 pins for output data rate selection. Should be defined if
-+      adi,odr-value is absent.
-+    minItems: 2
-+    maxItems: 2
-+
-+  adi,odr-value:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Should be present if ODR pins are pin-strapped. Possible values:
-+      120 Hz (ODR1=0, ODR2=0)
-+      60 Hz (ODR1=0, ODR2=1)
-+      50 Hz (ODR1=1, ODR2=0)
-+      10 Hz (ODR1=1, ODR2=1)
-+      If defined, odr-gpios must be absent.
-+    enum: [120, 60, 50, 10]
-+
-+  pga-gpios:
-+    description:
-+      PGA1 and PGA2 pins for gain selection. Should be defined if adi,pga-value
-+      is absent.
-+    minItems: 2
-+    maxItems: 2
-+
-+  adi,pga-value:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      Should be present if PGA pins are pin-strapped. Possible values:
-+      Gain 1 (PGA1=0, PGA2=0)
-+      Gain 8 (PGA1=0, PGA2=1)
-+      Gain 64 (PGA1=1, PGA2=0)
-+      Gain 128 (PGA1=1, PGA2=1)
-+      If defined, pga-gpios must be absent.
-+    enum: [1, 8, 64, 128]
-+
-+  temp-gpios:
-+    description: TEMP pin for temperature sensor enable.
-+    maxItems: 1
-+
-+  chan-gpios:
-+    description: CHAN pin for input channel selection.
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - avdd-supply
-+  - dvdd-supply
-+  - vref-supply
-+  - spi-cpol
-+  - spi-cpha
-+  - temp-gpios
-+  - chan-gpios
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+  - oneOf:
-+      - required:
-+          - adi,odr-value
-+      - required:
-+          - odr-gpios
-+  - oneOf:
-+      - required:
-+          - adi,pga-value
-+      - required:
-+          - pga-gpios
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+            compatible = "adi,ad7191";
-+            reg = <0>;
-+            spi-max-frequency = <1000000>;
-+            spi-cpol;
-+            spi-cpha;
-+            clocks = <&ad7191_mclk>;
-+            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-+            interrupt-parent = <&gpio>;
-+            avdd-supply = <&avdd>;
-+            dvdd-supply = <&dvdd>;
-+            vref-supply = <&vref>;
-+            adi,pga-value = <1>;
-+            odr-gpios = <&gpio 23 GPIO_ACTIVE_HIGH>, <&gpio 24 GPIO_ACTIVE_HIGH>;
-+            temp-gpios = <&gpio 22 GPIO_ACTIVE_HIGH>;
-+            chan-gpios = <&gpio 27 GPIO_ACTIVE_HIGH>;
-+        };
-+    };
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 98a3c1e46311..262beced3143 100644
+index 262beced3143..1340c27d9e5a 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1302,6 +1302,13 @@ W:	http://ez.analog.com/community/linux-device-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
- F:	drivers/iio/adc/ad7091r*
+@@ -1308,6 +1308,7 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
++F:	drivers/iio/adc/ad7191.c
  
-+ANALOG DEVICES INC AD7191 DRIVER
-+M:	Alisa-Dariana Roman <alisa.roman@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/adc/adi,ad7191.yaml
-+
  ANALOG DEVICES INC AD7192 DRIVER
  M:	Alisa-Dariana Roman <alisa.roman@analog.com>
- L:	linux-iio@vger.kernel.org
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 849c90203071..70a662846aa2 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -112,6 +112,16 @@ config AD7173
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad7173.
+ 
++config AD7191
++	tristate "Analog Devices AD7191 ADC driver"
++	depends on SPI
++	select AD_SIGMA_DELTA
++	help
++	  Say yes here to build support for Analog Devices AD7191.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called ad7191.
++
+ config AD7192
+ 	tristate "Analog Devices AD7192 and similar ADC driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index ee19afba62b7..54335c613988 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_AD7091R5) += ad7091r5.o
+ obj-$(CONFIG_AD7091R8) += ad7091r8.o
+ obj-$(CONFIG_AD7124) += ad7124.o
+ obj-$(CONFIG_AD7173) += ad7173.o
++obj-$(CONFIG_AD7191) += ad7191.o
+ obj-$(CONFIG_AD7192) += ad7192.o
+ obj-$(CONFIG_AD7266) += ad7266.o
+ obj-$(CONFIG_AD7280) += ad7280a.o
+diff --git a/drivers/iio/adc/ad7191.c b/drivers/iio/adc/ad7191.c
+new file mode 100644
+index 000000000000..4a9e66853294
+--- /dev/null
++++ b/drivers/iio/adc/ad7191.c
+@@ -0,0 +1,559 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * AD7191 ADC driver
++ *
++ * Copyright 2025 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/clk.h>
++#include <linux/device.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
++#include <linux/interrupt.h>
++#include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
++#include <linux/mutex.h>
++#include <linux/property.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++#include <linux/types.h>
++#include <linux/units.h>
++
++#include <linux/iio/adc/ad_sigma_delta.h>
++#include <linux/iio/iio.h>
++
++#define ad_sigma_delta_to_ad7191(sigmad)	\
++	container_of((sigmad), struct ad7191_state, sd)
++
++#define AD7191_TEMP_CODES_PER_DEGREE	2815
++
++#define AD7191_EXT_CLK_ENABLE		0
++#define AD7191_INT_CLK_ENABLE		1
++
++#define AD7191_CHAN_MASK		BIT(0)
++#define AD7191_TEMP_MASK		BIT(1)
++
++enum ad7191_channel {
++	AD7191_CH_AIN1_AIN2,
++	AD7191_CH_AIN3_AIN4,
++	AD7191_CH_TEMP,
++};
++
++/*
++ * NOTE:
++ * The AD7191 features a dual-use data out ready DOUT/RDY output.
++ * In order to avoid contentions on the SPI bus, it's therefore necessary
++ * to use SPI bus locking.
++ *
++ * The DOUT/RDY output must also be wired to an interrupt-capable GPIO.
++ *
++ * The SPI controller's chip select must be connected to the PDOWN pin
++ * of the ADC. When CS (PDOWN) is high, it powers down the device and
++ * resets the internal circuitry.
++ */
++
++struct ad7191_state {
++	struct ad_sigma_delta		sd;
++	struct mutex			lock; /* Protect device state */
++
++	struct gpio_descs		*odr_gpios;
++	struct gpio_descs		*pga_gpios;
++	struct gpio_desc		*temp_gpio;
++	struct gpio_desc		*chan_gpio;
++
++	u16				int_vref_mv;
++	u32				scale_avail_gpio[4][2];
++	u32				scale_avail_pinstrap[1][2];
++	const u32			(*scale_avail)[2];
++	size_t				scale_avail_size;
++	u32				scale_index;
++	u32				samp_freq_avail_gpio[4];
++	u32				samp_freq_avail_pinstrap[1];
++	const u32			*samp_freq_avail;
++	size_t				samp_freq_avail_size;
++	u32				samp_freq_index;
++
++	struct clk			*mclk;
++};
++
++static int ad7191_set_channel(struct ad_sigma_delta *sd, unsigned int address)
++{
++	struct ad7191_state *st = ad_sigma_delta_to_ad7191(sd);
++	u8 temp_gpio_val, chan_gpio_val;
++
++	if (!FIELD_FIT(AD7191_CHAN_MASK | AD7191_TEMP_MASK, address))
++		return -EINVAL;
++
++	chan_gpio_val = FIELD_GET(AD7191_CHAN_MASK, address);
++	temp_gpio_val = FIELD_GET(AD7191_TEMP_MASK, address);
++
++	gpiod_set_value(st->chan_gpio, chan_gpio_val);
++	gpiod_set_value(st->temp_gpio, temp_gpio_val);
++
++	return 0;
++}
++
++static int ad7191_set_cs(struct ad_sigma_delta *sigma_delta, int assert)
++{
++	struct spi_transfer t = {
++		.len = 0,
++		.cs_change = assert,
++	};
++	struct spi_message m;
++
++	spi_message_init_with_transfers(&m, &t, 1);
++
++	return spi_sync_locked(sigma_delta->spi, &m);
++}
++
++static int ad7191_set_mode(struct ad_sigma_delta *sd,
++			   enum ad_sigma_delta_mode mode)
++{
++	struct ad7191_state *st = ad_sigma_delta_to_ad7191(sd);
++
++	switch (mode) {
++	case AD_SD_MODE_CONTINUOUS:
++	case AD_SD_MODE_SINGLE:
++		return ad7191_set_cs(&st->sd, 1);
++	case AD_SD_MODE_IDLE:
++		return ad7191_set_cs(&st->sd, 0);
++	default:
++		return -EINVAL;
++	}
++}
++
++static const struct ad_sigma_delta_info ad7191_sigma_delta_info = {
++	.set_channel = ad7191_set_channel,
++	.set_mode = ad7191_set_mode,
++	.has_registers = false,
++};
++
++static int ad7191_init_regulators(struct iio_dev *indio_dev)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->sd.spi->dev;
++	int ret;
++
++	ret = devm_regulator_get_enable(dev, "avdd");
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable specified AVdd supply\n");
++
++	ret = devm_regulator_get_enable(dev, "dvdd");
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable specified DVdd supply\n");
++
++	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to get Vref voltage\n");
++
++	st->int_vref_mv = ret / 1000;
++
++	return 0;
++}
++
++static int ad7191_config_setup(struct iio_dev *indio_dev)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++	struct device *dev = &st->sd.spi->dev;
++	/* Sampling frequencies in Hz, see Table 5 */
++	const int samp_freq[4] = { 120, 60, 50, 10 };
++	/* Gain options, see Table 7 */
++	const int gain[4] = { 1, 8, 64, 128 };
++	int odr_value, odr_index, pga_value, pga_index, i, ret;
++	u64 scale_uv;
++
++	st->samp_freq_index = 0;
++	st->scale_index = 0;
++
++	ret = device_property_read_u32(dev, "adi,odr-value", &odr_value);
++	if (ret == -EINVAL) {
++		st->odr_gpios = devm_gpiod_get_array(dev, "odr", GPIOD_OUT_LOW);
++		if (IS_ERR(st->odr_gpios))
++			return dev_err_probe(dev, PTR_ERR(st->odr_gpios),
++					     "Failed to get odr gpios.\n");
++
++		for (i = 0; i < ARRAY_SIZE(samp_freq); i++)
++			st->samp_freq_avail_gpio[i] = samp_freq[i];
++
++		st->samp_freq_avail = st->samp_freq_avail_gpio;
++		st->samp_freq_avail_size = ARRAY_SIZE(st->samp_freq_avail_gpio);
++	} else {
++		for (i = 0; i < ARRAY_SIZE(samp_freq); i++) {
++			if (odr_value != samp_freq[i])
++				continue;
++			odr_index = i;
++		}
++
++		st->samp_freq_avail_pinstrap[0] = samp_freq[odr_index];
++
++		st->samp_freq_avail = st->samp_freq_avail_pinstrap;
++		st->samp_freq_avail_size = ARRAY_SIZE(st->samp_freq_avail_pinstrap);
++
++		st->odr_gpios = NULL;
++	}
++
++	ret = device_property_read_u32(dev, "adi,pga-value", &pga_value);
++	if (ret == -EINVAL) {
++		st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
++		if (IS_ERR(st->pga_gpios))
++			return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
++					     "Failed to get pga gpios.\n");
++
++		for (i = 0; i < ARRAY_SIZE(st->scale_avail_gpio); i++) {
++			scale_uv = ((u64)st->int_vref_mv * NANO) >>
++				(indio_dev->channels[0].scan_type.realbits - 1);
++			do_div(scale_uv, gain[i]);
++			st->scale_avail_gpio[i][1] = do_div(scale_uv, NANO);
++			st->scale_avail_gpio[i][0] = scale_uv;
++		}
++
++		st->scale_avail = st->scale_avail_gpio;
++		st->scale_avail_size = ARRAY_SIZE(st->scale_avail_gpio);
++	} else {
++		for (i = 0; i < ARRAY_SIZE(gain); i++) {
++			if (pga_value != gain[i])
++				continue;
++			pga_index = i;
++		}
++
++		scale_uv = ((u64)st->int_vref_mv * NANO) >>
++			(indio_dev->channels[0].scan_type.realbits - 1);
++		do_div(scale_uv, gain[pga_index]);
++		st->scale_avail_pinstrap[0][1] = do_div(scale_uv, NANO);
++		st->scale_avail_pinstrap[0][0] = scale_uv;
++
++		st->scale_avail = st->scale_avail_pinstrap;
++		st->scale_avail_size = ARRAY_SIZE(st->scale_avail_pinstrap);
++
++		st->pga_gpios = NULL;
++	}
++
++	st->temp_gpio = devm_gpiod_get(dev, "temp", GPIOD_OUT_LOW);
++	if (IS_ERR(st->temp_gpio))
++		return dev_err_probe(dev, PTR_ERR(st->temp_gpio),
++				     "Failed to get temp gpio.\n");
++
++	st->chan_gpio = devm_gpiod_get(dev, "chan", GPIOD_OUT_LOW);
++	if (IS_ERR(st->chan_gpio))
++		return dev_err_probe(dev, PTR_ERR(st->chan_gpio),
++				     "Failed to get chan gpio.\n");
++
++	return 0;
++}
++
++static int ad7191_clock_setup(struct ad7191_state *st)
++{
++	struct device *dev = &st->sd.spi->dev;
++
++	st->mclk = devm_clk_get_optional_enabled(dev, "mclk");
++	if (IS_ERR(st->mclk))
++		return dev_err_probe(dev, PTR_ERR(st->mclk),
++				     "Failed to get mclk.\n");
++
++	return 0;
++}
++
++static int ad7191_setup(struct iio_dev *indio_dev, struct device *dev)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = ad7191_init_regulators(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = ad7191_config_setup(indio_dev);
++	if (ret)
++		return ret;
++
++	return ad7191_clock_setup(st);
++}
++
++static int ad7191_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan, int *val,
++			   int *val2, long m)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++
++	switch (m) {
++	case IIO_CHAN_INFO_RAW:
++		return ad_sigma_delta_single_conversion(indio_dev, chan, val);
++	case IIO_CHAN_INFO_SCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE: {
++			guard(mutex)(&st->lock);
++			*val = st->scale_avail[st->scale_index][0];
++			*val2 = st->scale_avail[st->scale_index][1];
++			return IIO_VAL_INT_PLUS_NANO;
++		}
++		case IIO_TEMP:
++			*val = 0;
++			*val2 = NANO / AD7191_TEMP_CODES_PER_DEGREE;
++			return IIO_VAL_INT_PLUS_NANO;
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_OFFSET:
++		*val = -(1 << (chan->scan_type.realbits - 1));
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			return IIO_VAL_INT;
++		case IIO_TEMP:
++			*val -= 273 * AD7191_TEMP_CODES_PER_DEGREE;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = st->samp_freq_avail[st->samp_freq_index];
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7191_set_gain(struct ad7191_state *st, int gain_index)
++{
++	unsigned long value = gain_index;
++
++	st->scale_index = gain_index;
++
++	return gpiod_set_array_value_cansleep(st->pga_gpios->ndescs,
++					      st->pga_gpios->desc,
++					      st->pga_gpios->info, &value);
++}
++
++static int ad7191_set_samp_freq(struct ad7191_state *st, int samp_freq_index)
++{
++	unsigned long value = samp_freq_index;
++
++	st->samp_freq_index = samp_freq_index;
++
++	return gpiod_set_array_value_cansleep(st->odr_gpios->ndescs,
++					      st->odr_gpios->desc,
++					      st->odr_gpios->info, &value);
++}
++
++static int __ad7191_write_raw(struct ad7191_state *st,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long mask)
++{
++	int i;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE: {
++		if (!st->pga_gpios)
++			return -EPERM;
++		guard(mutex)(&st->lock);
++		for (i = 0; i < ARRAY_SIZE(st->scale_avail_gpio); i++) {
++			if (val2 != st->scale_avail_gpio[i][1])
++				continue;
++			return ad7191_set_gain(st, i);
++		}
++		return -EINVAL;
++	}
++	case IIO_CHAN_INFO_SAMP_FREQ: {
++		if (!st->odr_gpios)
++			return -EPERM;
++		guard(mutex)(&st->lock);
++		for (i = 0; i < ARRAY_SIZE(st->samp_freq_avail_gpio); i++) {
++			if (val != st->samp_freq_avail_gpio[i])
++				continue;
++			return ad7191_set_samp_freq(st, i);
++		}
++		return -EINVAL;
++	}
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7191_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int val, int val2,
++			    long mask)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = iio_device_claim_direct_mode(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = __ad7191_write_raw(st, chan, val, val2, mask);
++
++	iio_device_release_direct_mode(indio_dev);
++
++	return ret;
++}
++
++static int ad7191_write_raw_get_fmt(struct iio_dev *indio_dev,
++				    struct iio_chan_spec const *chan, long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return IIO_VAL_INT_PLUS_NANO;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7191_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan, const int **vals,
++			     int *type, int *length, long mask)
++{
++	struct ad7191_state *st = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (int *)st->scale_avail;
++		*type = IIO_VAL_INT_PLUS_NANO;
++		*length = st->scale_avail_size * 2;
++		return IIO_AVAIL_LIST;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*vals = (int *)st->samp_freq_avail;
++		*type = IIO_VAL_INT;
++		*length = st->samp_freq_avail_size;
++		return IIO_AVAIL_LIST;
++	}
++
++	return -EINVAL;
++}
++
++static const struct iio_info ad7191_info = {
++	.read_raw = ad7191_read_raw,
++	.write_raw = ad7191_write_raw,
++	.write_raw_get_fmt = ad7191_write_raw_get_fmt,
++	.read_avail = ad7191_read_avail,
++	.validate_trigger = ad_sd_validate_trigger,
++};
++
++static const struct iio_chan_spec ad7191_channels[] = {
++	{
++		.type = IIO_TEMP,
++		.address = AD7191_CH_TEMP,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_OFFSET),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 24,
++			.storagebits = 32,
++			.endianness = IIO_BE,
++		},
++	},
++	{
++		.type = IIO_VOLTAGE,
++		.differential = 1,
++		.indexed = 1,
++		.channel = 1,
++		.channel2 = 2,
++		.address = AD7191_CH_AIN1_AIN2,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_OFFSET),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 1,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 24,
++			.storagebits = 32,
++			.endianness = IIO_BE,
++		},
++	},
++	{
++		.type = IIO_VOLTAGE,
++		.differential = 1,
++		.indexed = 1,
++		.channel = 3,
++		.channel2 = 4,
++		.address = AD7191_CH_AIN3_AIN4,
++		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++				      BIT(IIO_CHAN_INFO_OFFSET),
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
++		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
++		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE),
++		.scan_index = 2,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 24,
++			.storagebits = 32,
++			.endianness = IIO_BE,
++		},
++	},
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
++static int ad7191_probe(struct spi_device *spi)
++{
++	struct device *dev = &spi->dev;
++	struct ad7191_state *st;
++	struct iio_dev *indio_dev;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	ret = devm_mutex_init(dev, &st->lock);
++	if (ret)
++		return ret;
++
++	indio_dev->name = "ad7191";
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = ad7191_channels;
++	indio_dev->num_channels = ARRAY_SIZE(ad7191_channels);
++	indio_dev->info = &ad7191_info;
++
++	ret = ad_sd_init(&st->sd, indio_dev, spi, &ad7191_sigma_delta_info);
++	if (ret)
++		return ret;
++
++	ret = devm_ad_sd_setup_buffer_and_trigger(dev, indio_dev);
++	if (ret)
++		return ret;
++
++	ret = ad7191_setup(indio_dev, dev);
++	if (ret)
++		return ret;
++
++	return devm_iio_device_register(dev, indio_dev);
++}
++
++static const struct of_device_id ad7191_of_match[] = {
++	{
++		.compatible = "adi,ad7191",
++	},
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad7191_of_match);
++
++static const struct spi_device_id ad7191_id_table[] = {
++	{ "ad7191" },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad7191_id_table);
++
++static struct spi_driver ad7191_driver = {
++	.driver = {
++		.name = "ad7191",
++		.of_match_table = ad7191_of_match,
++	},
++	.probe = ad7191_probe,
++	.id_table = ad7191_id_table,
++};
++module_spi_driver(ad7191_driver);
++
++MODULE_AUTHOR("Alisa-Dariana Roman <alisa.roman@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD7191 ADC");
++MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
 -- 
 2.43.0
 

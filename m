@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-14877-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14878-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFE6A253B2
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:10:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF6CA253C1
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 09:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D41F1884606
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 08:10:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A071F3A54F2
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 08:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCAE72066E1;
-	Mon,  3 Feb 2025 08:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B99207667;
+	Mon,  3 Feb 2025 08:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kvJwihDP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fkQsWXmr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3871FBE9F;
-	Mon,  3 Feb 2025 08:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547511FBE9F;
+	Mon,  3 Feb 2025 08:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738570179; cv=none; b=HrwK5IJZldgStlVWVL5YVagF5fOsjQ857innn3CVk1OkasIHw4zQBXLIVDf1mPbzFwuUi/1czfCRv12xe8tHgxFdUd+5rmhhI3BnuW6L/IR2f3RUDWM49FQlhQ6hf0rTKHa+m/ShQCm1FTu+Ydkfgk/aFehwIqXSBlZg6ens3go=
+	t=1738570185; cv=none; b=j4CzSv8zo/aw8sJcUyseh1lDgstlS+UvzFkXi74yqz6lzcz/mYFelWGiPvo2xQuqjsEF3HeMQ0xvFmipZDvgnL8KxoXeErCpqww3ti9Cq4/77BF0ONcXFzXdUMW0fm+UxQZOf3ckr+2dOPk5DOmb0V0E3hfSxm3g7eIkppOVO8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738570179; c=relaxed/simple;
-	bh=Xuc7hS1zlRLuER1FWLMZl/k1Q9r5SbWrqebmKseTUQU=;
+	s=arc-20240116; t=1738570185; c=relaxed/simple;
+	bh=CMhnUnr4463VNOt0ws9aGEqOeemLByI7HN+Yah3gnW8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DzIpifQZWLo+wh2oXR3ewGC0zWrxQv3G1OaLFCA1qGja5y3CL5qyZpZQM6jXDvQyEUScGHGBl+/AH+C5QpwvKp4nxElKUkyz+TRznguHbLR7uSBYOuA1sC93jwVm9w+6VFOQSMZuaZa8YKC9ErBiYBeNx/sINdyWVXIjynMmG9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kvJwihDP; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=s3d8TkC43lM9BDOIbpLu5aPmfUoYSnNhpapsBJN502P+KiTaSUaFE5nunIOOiUZakCmnM0XXpcXw/2B0lgH0ACc35Jg1qAFLE46N2ZDzwgI2DxCyOtHe3uRtNOZAPGFUgPrkWmtKjGjW48Lwu3wkDPROfKNKg97er49mbWeExWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fkQsWXmr; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738570178; x=1770106178;
+  t=1738570183; x=1770106183;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Xuc7hS1zlRLuER1FWLMZl/k1Q9r5SbWrqebmKseTUQU=;
-  b=kvJwihDPg9hkAe4z/rh4FR7+DUIV+nMymPxw6MokmfwqcrsuqRcyrXc7
-   2FnwvOa5FJlZIT/XSNjqeOfh7zi6yAnZQZqjtlYvcq88kwkrpUuwn9A0E
-   dZQaDfPBzO4uEYTMZdaphbRYhc5LzSXhcKzIGcE7CtRrfSiF+GhoIprVK
-   kJKScLcpKgxYud/J3BCl+7a5LTg6p64dANbi21E5se71oKl4WIKD63eOu
-   fu6vEB8zF7w33PbBH+3LB6PFJ4tmurtXDgFu3Ih6u7/zGfYIiZPAHhAWP
-   hv/0GDUYj3NS/92j8uUcot9Ka4yYj1zr4GuwjnoL4VeviN+0RHKPoaj3A
-   g==;
-X-CSE-ConnectionGUID: PaquM5LvQ26CKAJvCtov+Q==
-X-CSE-MsgGUID: +GmVyVOsTYyfP6Ihq05C/g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="49654150"
+  bh=CMhnUnr4463VNOt0ws9aGEqOeemLByI7HN+Yah3gnW8=;
+  b=fkQsWXmrKJUwqAUiiB+oc1aYhTNabaNw7nKF6f4zu0o7p9quoOV01DC2
+   Rcy+M4wBJD37XHCZ4AfSmAamZmMyb7Es9qVIg2lPKAE+THDpHFl3W5QP6
+   7/xF//OpihLqEr6HVxdfWhe0Mb6g3b8uSdiVZJGwTNMXUjG3h1KadH5BX
+   yUy+ntaBgrphuyfk6nEvzi0NqArHCwuA7uvu9rBt4MJQejJJ5p7io9jFC
+   4AbKcRony4EBdf2wFZriLc+pODTCK9o+PiWc3TX29TyhEyOveMZz7f06f
+   HZ/3ibLIeYPuvdclYZ8Gp6Yd68xJdzYdKcOrty4i4S4bdPGOYZbxuNZR4
+   A==;
+X-CSE-ConnectionGUID: MiAjEDxVR2O/W8ojKfTPog==
+X-CSE-MsgGUID: QMfYacZwSGWcuyy9C0vqZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="49654158"
 X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="49654150"
+   d="scan'208";a="49654158"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 00:09:37 -0800
-X-CSE-ConnectionGUID: BroHsbuYSGubbNWU+KivtA==
-X-CSE-MsgGUID: 9jn97e1XQjuDJEs7LwLDHA==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2025 00:09:43 -0800
+X-CSE-ConnectionGUID: 6hPJyCMDQ+21KZuVA15zLA==
+X-CSE-MsgGUID: IF1gma4CTWi05kIbDRGugA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
-   d="scan'208";a="110788509"
+   d="scan'208";a="110788522"
 Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by fmviesa009.fm.intel.com with ESMTP; 03 Feb 2025 00:09:34 -0800
+  by fmviesa009.fm.intel.com with ESMTP; 03 Feb 2025 00:09:39 -0800
 From: Raag Jadav <raag.jadav@intel.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -77,9 +77,9 @@ Cc: linux-gpio@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v3 07/20] pinctrl: tangier: use devm_kmemdup_array()
-Date: Mon,  3 Feb 2025 13:38:49 +0530
-Message-Id: <20250203080902.1864382-8-raag.jadav@intel.com>
+Subject: [PATCH v3 08/20] pinctrl: pxa2xx: use devm_kmemdup_array()
+Date: Mon,  3 Feb 2025 13:38:50 +0530
+Message-Id: <20250203080902.1864382-9-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250203080902.1864382-1-raag.jadav@intel.com>
 References: <20250203080902.1864382-1-raag.jadav@intel.com>
@@ -94,35 +94,37 @@ Content-Transfer-Encoding: 8bit
 Convert to use devm_kmemdup_array() which is more robust.
 
 Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/pinctrl/intel/pinctrl-tangier.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pxa/pinctrl-pxa2xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-tangier.c b/drivers/pinctrl/intel/pinctrl-tangier.c
-index d3baf0f4eea0..e9a742ddf1f9 100644
---- a/drivers/pinctrl/intel/pinctrl-tangier.c
-+++ b/drivers/pinctrl/intel/pinctrl-tangier.c
-@@ -524,7 +524,6 @@ static int tng_pinctrl_probe(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 	struct tng_family *families;
- 	struct tng_pinctrl *tp;
--	size_t families_len;
- 	void __iomem *regs;
- 	unsigned int i;
- 
-@@ -543,8 +542,8 @@ static int tng_pinctrl_probe(struct platform_device *pdev,
- 	 * Make a copy of the families which we can use to hold pointers
- 	 * to the registers.
- 	 */
--	families_len = size_mul(sizeof(*families), tp->nfamilies);
--	families = devm_kmemdup(dev, tp->families, families_len, GFP_KERNEL);
-+	families = devm_kmemdup_array(dev, tp->families, tp->nfamilies,
-+				      sizeof(*families), GFP_KERNEL);
- 	if (!families)
+diff --git a/drivers/pinctrl/pxa/pinctrl-pxa2xx.c b/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
+index 9e34b92ff5f2..9fd7a8fb2bc4 100644
+--- a/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
++++ b/drivers/pinctrl/pxa/pinctrl-pxa2xx.c
+@@ -281,9 +281,8 @@ static int pxa2xx_build_functions(struct pxa_pinctrl *pctl)
+ 		for (df = pctl->ppins[i].functions; df->name; df++)
+ 			if (!pxa2xx_find_function(pctl, df->name, functions))
+ 				(functions + pctl->nfuncs++)->name = df->name;
+-	pctl->functions = devm_kmemdup(pctl->dev, functions,
+-				       pctl->nfuncs * sizeof(*functions),
+-				       GFP_KERNEL);
++	pctl->functions = devm_kmemdup_array(pctl->dev, functions, pctl->nfuncs,
++					     sizeof(*functions), GFP_KERNEL);
+ 	if (!pctl->functions)
  		return -ENOMEM;
  
+@@ -314,7 +313,8 @@ static int pxa2xx_build_groups(struct pxa_pinctrl *pctl)
+ 						pctl->ppins[j].pin.name;
+ 		func = pctl->functions + i;
+ 		func->ngroups = ngroups;
+-		func->groups = devm_kmemdup(pctl->dev, gtmp, ngroups * sizeof(*gtmp), GFP_KERNEL);
++		func->groups = devm_kmemdup_array(pctl->dev, gtmp, ngroups,
++						  sizeof(*gtmp), GFP_KERNEL);
+ 		if (!func->groups)
+ 			return -ENOMEM;
+ 	}
 -- 
 2.34.1
 

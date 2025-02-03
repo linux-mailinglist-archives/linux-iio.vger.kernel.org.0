@@ -1,243 +1,135 @@
-Return-Path: <linux-iio+bounces-14943-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F18A2611B
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 18:15:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBF4A26353
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 20:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629B21882FAF
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:15:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12DCE163FDA
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 19:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975120C48F;
-	Mon,  3 Feb 2025 17:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80AE20B807;
+	Mon,  3 Feb 2025 19:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iXwGmjk9"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="qSLstqN7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9646020B808
-	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 17:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE966205507;
+	Mon,  3 Feb 2025 19:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738602906; cv=none; b=HW7qekSXq3YRFqhS2MQdzLebnOyNs/TJrn1HvRpJQvStAN7BKAOLrA/zxNF98+WaPxsGoc+DrlMOuKtPoPBZzyDTJRwKl/hNapb0DN8H1tmSTjCZgB+CSnWDI+auMzSjqHSNFUVS4Dyo4BHvRos9ONxcLOpG03U/7gfdf/A1nIc=
+	t=1738609893; cv=none; b=rJM1AkAzaF/3ih6AY7TuAiQx7yZrw/dFXt3GJbqUttpdv+KnhYLjjI2TdmLFo2TMwC3QuOvaRDPQD82YfVr8Vgy7gISE0qLaqxQWpUX6iGB6MnRncbwIc88PoOuVnE6j5a/zLizF7tDO8gAYKAfZ4n1B599TL1dI7lXj1PPZVMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738602906; c=relaxed/simple;
-	bh=g51urvsmbno3RV0RLA1p29HSiAegCakkuz2f9qWDbvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJAsCg8r/JBZF5Pl4eHQj0JC+BD4pAM7rqTWX9TOo1zTiYR7RwJj1LpI776imvq/32FXOTcQd24aLgcsBRwjY5+hfWlRFo1tM9XK8BOFCTsdqTYr3+CXWumNXWARMFe6NhjFjB3EvQwxpNlMgj5CCqJDqP7MgWaQH40Ipmy5dgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iXwGmjk9; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f796586so55216815e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 09:15:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738602902; x=1739207702; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oYXrzKfPW50nAFT/gfCn1I4J1t5Ff+uXK1Iu+P5YNBs=;
-        b=iXwGmjk9ulEHv1tzLWlTrZTa8K++Z+uhnFXGEDalLKnIHl2S8MJZqgH8LdMblLtCM0
-         O8fcBe197FCYWP6PxvAuBbF/qBMONO0IcLNhrpNnivKqyWbqjl/sA5IlRoXGxk+9TR5/
-         DPsaRaU+vDBDrWcTcLYp+p/c4pgDhgo1dYgRVTJLf1IVtowG0PQ0t5bM2BoGFkRuYEYU
-         Dpe9eytKMxaNu9c+5FPMGNNlAFzGA1gFSeN7hKm2eFYyjn4i4lyXJGRFblBWehCgVATS
-         keoei2SiFqQ2zMX5V/HgO6ZKOZ8kM88I1qtbHH/rYwpfSmZ8PgHoeYzW3r6QhSYRVQkc
-         Zdaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738602902; x=1739207702;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oYXrzKfPW50nAFT/gfCn1I4J1t5Ff+uXK1Iu+P5YNBs=;
-        b=vYhuRpuArXQS1IR5skgVEBLzTj7VTmWF5D9B2Dr9iL7gmaL+6Q1AUqWM12yhgxEwwj
-         wI7Z9KX+v3xKesVT02IOlpZUb9qvkqXHClQ+07eI9FJB+GLEi3CV1TKM2SV8oxIGaESF
-         ooM3UrT/y5vL7v6gRy+a+qDQ9VF5+yHazdQjnpVu0yw+PZv/X91rzcvV9IRdLWyUZway
-         NjeYKs/tfT9ujwQ9RqEi/seSSTjDUvL4I4o+ZOpq0bHg5n6LlKwXSQ2unCdgc+RV0R9i
-         0W5E34Y4t0A11pBUWENNL6MofNjvoCnZJ6qgzIaeCBbMwRCD9I3poRV6EVH9DEoLdEHD
-         soYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxXq2MQjxrrtimd2uS784GbpQzFgSrliBIBJ/aMYFNi8wuKChkLxbJLyTyCp0nbiKURDh0epgWt4o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVKuzZJ/rI3HvNfnwDOm7OS50ThKpYWDDW5hm6UKpRzl5BohIt
-	g/75SxL7BflHc+YOMqyPnFbJCdS1zTpMxMiprjRNXWX4MbgEQttVR8ANA9E6tWI=
-X-Gm-Gg: ASbGncskfHVyc1sqOfxDtwk3Alyt5M65KfktKY394XAMstUEFEVgRcIdZUBVEQeN83k
-	sdNVodN4G4YTR4t5//2kHlexRWstrENpzexvrg6z6XBPYKDZiZX+FeNglfHCmVB5zksMDQY6wDU
-	FeRNKyXnnIpYaNuZ9QzJyfWHP+E/sor1O5PcCGx3n/fB5fITvwJxM9kae9lrIXDSGxlOSL5Z1w5
-	XzFJTOs43G03sAoID0fFAW+VMztrDB2rGensBJ0ofG2Jvt4o1RylI8UG+1GXOYq80MO/X+38lM2
-	aNVW2emLuGH1+bSqGHv8G9MybVlxQIiXBBrBrQY3NMIAq2f+RUfgaN0AypBE
-X-Google-Smtp-Source: AGHT+IGZ6LCRbN/g81Cdu9GtP64OfXpVD+fsXx17T0qUhX8zW9Lzx5y/7TysN4A3BVS6rPTzVu1K9A==
-X-Received: by 2002:a05:600c:1e02:b0:434:a802:e9a6 with SMTP id 5b1f17b1804b1-438dc3c22acmr249674495e9.7.1738602901802;
-        Mon, 03 Feb 2025 09:15:01 -0800 (PST)
-Received: from dfj (host-95-244-234-244.retail.telecomitalia.it. [95.244.234.244])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c0ec02bsm13527921f8f.13.2025.02.03.09.15.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 09:15:01 -0800 (PST)
-Date: Mon, 3 Feb 2025 18:13:46 +0100
-From: Angelo Dureghello <adureghello@baylibre.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>, 
-	David Lechner <dlechner@baylibre.com>, "jic23@kernel.org" <jic23@kernel.org>, 
-	"robh@kernel.org" <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, 
-	"Sa, Nuno" <Nuno.Sa@analog.com>
-Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: set data format
-Message-ID: <y3vqe5x4vien7yub5hpynhltzske6ryoxq4bvzqkhyibburq7m@lujzg45ajbxh>
-References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
- <20250127105726.6314-6-antoniu.miclaus@analog.com>
- <08d8e97d-752d-4fa7-95f0-d828ef80f7b8@baylibre.com>
- <CY4PR03MB33993EE62F4E1B3939F213B29BF52@CY4PR03MB3399.namprd03.prod.outlook.com>
- <20250203152517.000028ca@huawei.com>
+	s=arc-20240116; t=1738609893; c=relaxed/simple;
+	bh=wsMMIMq1C/N6bJhF4VtiDEOlnNV12lE/8UIo0noR294=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ddH5EsTPv4uKQn70csn6YoNjI904zyCSfeo5t4MiOpuU2oIrQ+GANLq7XCRxzEnyf72COsef415zKcLFMBT3gNA3HV2BQPhklsEeDk7Y2ohaxFIP6vYEH8Pav6Q7IWCo0IhdjDHN54KV0p+WEpUBfx1IgsAtZ3ojXAx/l3hjr9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=qSLstqN7; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 513I2RtG029876;
+	Mon, 3 Feb 2025 14:11:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=qViXkyLZy/s+CobQAADEY7NcJWf
+	8zZntyNQPukceM3E=; b=qSLstqN735cu9aPwgatQdnRAfMMtncsEqi1NS5y5ONF
+	lVffxbvZxsUraqB3dSYVFLdVYo9LrZIC2q4PQ+fJyKdyWvMnc5IHhu/72ZqDjVhV
+	B+xJilwHTDDHcWtRPtw+a14SHZPsPm8SWUQwxv4xhLTMZLI2xrpSQK1wKBBGQDde
+	bkgKUzRnV9dcmwoadWfivoZtQiFijVSbGKGNghH8k6lAvJPavP3Elq0DP6W/au2j
+	owmYf0mL/qYrJPPfjNYq5/h/Awq2lKzK7wXWGsrrKTYuzDElhNu9Ig10lRL7Ve6y
+	5KxIWiUzW09w9ZvNqJnmh1R481n2R7bbwALb3aAQyXw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 44k2qtr8bg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 14:11:03 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 513JB2gh051995
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 3 Feb 2025 14:11:02 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 3 Feb 2025
+ 14:11:02 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 3 Feb 2025 14:11:02 -0500
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 513JAmuB026369;
+	Mon, 3 Feb 2025 14:10:50 -0500
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <cosmin.tanislav@analog.com>, <jic23@kernel.org>, <lars@metafoo.de>,
+        <marcelo.schmitt@analog.com>, <dlechner@baylibre.com>,
+        <granquet@baylibre.com>, <u.kleine-koenig@baylibre.com>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v3 0/3] Re-add filter_type/filter_mode
+Date: Mon, 3 Feb 2025 16:10:44 -0300
+Message-ID: <cover.1738608986.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203152517.000028ca@huawei.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: cZx1c8T1fiA7lMCl29w2TS1lAHZhSr4Q
+X-Proofpoint-ORIG-GUID: cZx1c8T1fiA7lMCl29w2TS1lAHZhSr4Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-03_08,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ bulkscore=0 phishscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030139
 
-On 03.02.2025 15:25, Jonathan Cameron wrote:
-> On Mon, 3 Feb 2025 11:02:58 +0000
-> "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
-> 
-> >  
-> > > On 1/27/25 4:57 AM, Antoniu Miclaus wrote:  
-> > > > Add support for selecting the data format within the AXI ADC ip.
-> > > >
-> > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > > > ---
-> > > > no changes in v11.
-> > > >  drivers/iio/adc/adi-axi-adc.c | 46  
-> > > +++++++++++++++++++++++++++++++++++  
-> > > >  1 file changed, 46 insertions(+)
-> > > >
-> > > > diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> > > > index d2e1dc63775c..3c213ca5ff8e 100644
-> > > > --- a/drivers/iio/adc/adi-axi-adc.c
-> > > > +++ b/drivers/iio/adc/adi-axi-adc.c
-> > > > @@ -45,6 +45,12 @@
-> > > >  #define ADI_AXI_ADC_REG_CTRL			0x0044
-> > > >  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
-> > > >
-> > > > +#define ADI_AXI_ADC_REG_CNTRL_3			0x004c
-> > > > +#define   AD485X_CNTRL_3_PACKET_FORMAT_MSK	GENMASK(1, 0)
-> > > > +#define   AD485X_PACKET_FORMAT_20BIT		0x0
-> > > > +#define   AD485X_PACKET_FORMAT_24BIT		0x1
-> > > > +#define   AD485X_PACKET_FORMAT_32BIT		0x2
-> > > > +
-> > > >  #define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
-> > > >  #define   ADI_AXI_ADC_DRP_LOCKED		BIT(17)
-> > > >
-> > > > @@ -312,6 +318,45 @@ static int axi_adc_interface_type_get(struct  
-> > > iio_backend *back,  
-> > > >  	return 0;
-> > > >  }
-> > > >
-> > > > +static int axi_adc_data_size_set(struct iio_backend *back, unsigned int size)
-> > > > +{
-> > > > +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> > > > +	unsigned int val;
-> > > > +
-> > > > +	switch (size) {
-> > > > +	/*
-> > > > +	 * There are two different variants of the AXI AD485X IP block, a 16-bit
-> > > > +	 * and a 20-bit variant.
-> > > > +	 * The 0x0 value (AD485X_PACKET_FORMAT_20BIT) is corresponding  
-> > > also to  
-> > > > +	 * the 16-bit variant of the IP block.
-> > > > +	 */
-> > > > +	case 16:
-> > > > +	case 20:
-> > > > +		val = AD485X_PACKET_FORMAT_20BIT;
-> > > > +		break;
-> > > > +	case 24:
-> > > > +		val = AD485X_PACKET_FORMAT_24BIT;
-> > > > +		break;
-> > > > +	/*
-> > > > +	 * The 0x2 (AD485X_PACKET_FORMAT_32BIT) corresponds only to  
-> > > the 20-bit  
-> > > > +	 * variant of the IP block. Setting this value properly is ensured by
-> > > > +	 * the upper layers of the drivers calling the axi-adc functions.
-> > > > +	 * Also, for 16-bit IP block, the 0x2  
-> > > (AD485X_PACKET_FORMAT_32BIT)  
-> > > > +	 * value is handled as maximum size available which is 24-bit for this
-> > > > +	 * configuration.
-> > > > +	 */
-> > > > +	case 32:
-> > > > +		val = AD485X_PACKET_FORMAT_32BIT;
-> > > > +		break;
-> > > > +	default:
-> > > > +		return -EINVAL;
-> > > > +	}
-> > > > +
-> > > > +	return regmap_update_bits(st->regmap,  
-> > > ADI_AXI_ADC_REG_CNTRL_3,  
-> > > > +				  AD485X_CNTRL_3_PACKET_FORMAT_MSK,
-> > > > +  
-> > > FIELD_PREP(AD485X_CNTRL_3_PACKET_FORMAT_MSK, val));  
-> > > > +}
-> > > > +
-> > > >  static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
-> > > >  						 struct iio_dev *indio_dev)
-> > > >  {
-> > > > @@ -360,6 +405,7 @@ static const struct iio_backend_ops adi_axi_adc_ops  
-> > > = {  
-> > > >  	.test_pattern_set = axi_adc_test_pattern_set,
-> > > >  	.chan_status = axi_adc_chan_status,
-> > > >  	.interface_type_get = axi_adc_interface_type_get,
-> > > > +	.data_size_set = axi_adc_data_size_set,
-> > > >  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
-> > > >  	.debugfs_print_chan_status =  
-> > > iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),  
-> > > >  };  
-> > > 
-> > > Why was [1] not addressed?
-> > > 
-> > > [1]: https://urldefense.com/v3/__https://lore.kernel.org/linux-
-> > > iio/9c262f599fb9b42feac99cfb541723a0a6f50e6b.camel@gmail.com/__;!!A
-> > > 3Ni8CS0y2Y!6uVytAwWUCsEazOUTACecMQkbMuHBF95sbla50CbTUFkZkyxS
-> > > -S7jMOCczpoyKCjtAKvMOyrt0ukYwcXC_l5q60$  
-> > 
-> > Indeed it was not addressed. I remained with the impression that adding part prefix
-> > in the macro definitions was enough. I will add the compatible string support.
-> > Although I have a question in order to minimize the number of versions to be sent
-> > In the future. Should I add a separate patch for the compatible support (which
-> > will not add value independently) or should I include it in this patch which adds
-> > custom function for data format for the AD485x IP core?
-> 
-> Binding docs update needs to be a separate patch.
-> 
-> Also, we should probably only set axi_adc_data_size_set in iio_backend_ops for
-> that ID.  So you'll need to pick from two copies of adi_axi_adc_ops
-> which probably means two iio_backend_info structures.
-> That data_size_set callback should not be set for cases that don't use it
-> (so the generic IP if I understand this correctly).
-> 
-> Similar to that part of:
-> https://lore.kernel.org/all/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com/
-> 
-> Hmm. This is looking like a messy merge.
-> 
-> Angelo, Antoniu,
-> 
-> Please figure out between you an order to the series so who is going to have
-> to rebase.  If this one goes first, may be worth pulling part of
-> patch 6 from Angelo's set to introduce struct axi_adc_info with what
-> this patch needs (just the backend_info pointer and maybe version?)
->
+Better document sysfs ABI for ADC digital filter configuration.
+Also update ad4130 driver to support the standardized IIO ABI for digital filter
+configuration.
 
-Hi,
+Change log v2 -> v3
+- Added in_voltageY-voltageZ_filter_type to main IIO ADI doc too.
+- Added filter_type attributes to ad4130 driver so it also supports the
+  standardized ABI for digital filter configuration.
+- No longer dropping AD4130 specific filter_type_available options from sysfs-bus-iio.
+- Re-add sysfs-bus-iio-adc-ad4130 just mentioning the ABI at sysfs-bus-iio instead
+  of repeating the doc.
 
-yes, above suggestion seems good to me.
-I go on with my patchset, than i can rebase in case this go first.
+Change log v1 -> v2
+- Split into 3 patches.
+- Re-added sysfs-bus-iio-adc-ad4130 to keep filter_mode separate from filter_type.
+- Removed in_voltage-voltage_filter_mode_available from sysfs-bus-iio.
+- Added deprecation notes in sysfs-bus-iio-adc-ad4130 asking to use filter_type
+  for new drivers and referencing sysfs-bus-iio.
+- Improved commit message with explanation about use of filter type attributes.
+- Dropped AD4130 specific filter_type_available options from sysfs-bus-iio.
 
-Regards,
-angelo
- 
-> Thanks,
-> 
-> Jonathan
-> 
+Link to v2: https://lore.kernel.org/linux-iio/cover.1736261047.git.marcelo.schmitt@analog.com/
+Link to v1: https://lore.kernel.org/linux-iio/b2132bd3ca1d64cdd8d5afab1f1f33c574718b50.1732901318.git.marcelo.schmitt@analog.com/
+
+
+Marcelo Schmitt (3):
+  Documentation: ABI: IIO: Add filter_type documentation
+  iio: adc: ad4130: Add filter_type attributes
+  Documentation: ABI: IIO: Re-add sysfs-bus-iio-adc-ad4130
+
+ Documentation/ABI/testing/sysfs-bus-iio       |  9 ++++++++-
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      | 20 +++++++++++++++++++
+ MAINTAINERS                                   |  1 +
+ drivers/iio/adc/ad4130.c                      |  3 +++
+ 4 files changed, 32 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+
+
+base-commit: 9b75dd1b7d6b98699a104c6b1eec0c8817e5fd4b
+-- 
+2.47.2
+
 

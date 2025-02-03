@@ -1,323 +1,243 @@
-Return-Path: <linux-iio+bounces-14942-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14943-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB57A260A3
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:57:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F18A2611B
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 18:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3FD71644F1
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:57:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 629B21882FAF
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A1020B7EC;
-	Mon,  3 Feb 2025 16:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975120C48F;
+	Mon,  3 Feb 2025 17:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=softing.com header.i=@softing.com header.b="t26R+heU"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iXwGmjk9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from FR5P281CU006.outbound.protection.outlook.com (mail-germanywestcentralazon11022076.outbound.protection.outlook.com [40.107.149.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48601194AEC;
-	Mon,  3 Feb 2025 16:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.149.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738601847; cv=fail; b=YEWmOTS1gLq0Q1izs52B/Ev7mgJmX5W3wXF7Cwj+azGuuZH93QRDQLjXBkzimtC1ID84mUSb4qS1r3sYyqxaECQC5puNfHSL22t1K3iQwdtuKS3BK2Sy6NMXaY7VcI5G/PYYLVmZfHQeJ7GNgL+OmnMQMRlvHYCBMHjsAZwUoZk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738601847; c=relaxed/simple;
-	bh=iKFHJgx/5CFVGEBPRBx7X49u0+Tr/5r2RupgXv91+/s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=myA9XupQ7DskszZnsEI+ZQ3rzMkz3j9yCu2xFLBLYXyJitYC+D2ut5idGWXZQtQlrycFqJtyU6WKsE9C7l3VxRAHsNnWta5peoloRXY5ZpUZi6Oe9ctFEV4DEVbXbUbXEV8ZAvQSIUE0lB7ok50octwOFCBscBSnl6olOCKasH4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Softing.com; spf=pass smtp.mailfrom=Softing.com; dkim=pass (2048-bit key) header.d=softing.com header.i=@softing.com header.b=t26R+heU; arc=fail smtp.client-ip=40.107.149.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Softing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Softing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D2X//O2uu4v1gAZmbKHAdc9BjlgWGIFG+IxwIMLS/oP0LMrBdfVa5zIDNQGUfOCKG9azytiEQSShbhXT8uFkBkXEcrg7J2MVoDf3HNBGCDtbRepzrRCjHAQ1Yj9pFqwtDt24D8DT4J6NeJIIsnBcMEAO/3B8LWUhVvn7ZLAKkZE8aczys8FbbzDsChuxW7g6lUaaBTdxI5DD4N48cphs+/L2ee9hPJue0L2MFBPBzH8GoQzOZUrG+BJx/RxrauqXnfFHOqQauioEuRzU3SdTnAEzAYj3+Y+7MB4elAZLnKJPh5sQF4+c0AKxkxt6ZnjElteL+0cX0toe8Eb9FH6GSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vw6l5WuM7WuYlqnpSInk3ZQOGmBcvvokRB5D+Pkzwms=;
- b=OYIlQM0yVFeeXLbKUTwk+3NtW6aoj45o6IU1b1XpaHaZE1HK/zjQmc8WID1QI241qcGlsdFGN9CvZfPTTwlEIjwpQpj5DT8Z5Mh3UnDBe0GvRLaUMZR0Hp5dnyGdGoQ5Rr38rKfaZ4ADFSvZYhvMY+y7gtwzB5TRw/aButlJT7fRelrAqn4p9774c2+wd0z698SJCwB8/xPM4CBVKB8Wnennu+FbZEw5TTmlc12L41ka5wt6KbquEq5mw8TJdWkhtwshqabfaDSvqkRUXShf1z0Ai76vFhnDvfVcC0chhS3x1x9C1jm7UGlc1b04XZXG2zXi2EWTQlY8JKppVs2zNw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=softing.com; dmarc=pass action=none header.from=softing.com;
- dkim=pass header.d=softing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=softing.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vw6l5WuM7WuYlqnpSInk3ZQOGmBcvvokRB5D+Pkzwms=;
- b=t26R+heUh+xFrYa1Sk36rp4Uo/SwDdqNrznQOcqGSvSZAA1tUsOKwphpN5YvKM5Zatz1qRH3WaSpAdcpnCP3VxbOb2GDOe9tCP4P6tTHV+g5wZzi8AVB0dl1w7EaIQG4rLQzgSkmaMK19nHoh1F4xsjt4aSg7SW/BNyyNt07th9kN8RCVovG2gFxad8wKW5qx/z92cUD1yQ0/0cU1JXhE3bPj2LRi74hUfueVpUC3BlMTRGP2OHaIH5jhu0AG0xcTS43z5qPl6WIM2RcqdC9ERw2yy3U9jMCOtJ9FyA4/jMYk0IlN+gAy4g4idQ7SAou6dCzlIJk1hCT+veBasDFcQ==
-Received: from BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:43::7) by
- FR3PPFA67B257C9.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d18:2::175) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
- 2025 16:57:19 +0000
-Received: from BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
- ([fe80::8de2:b2ba:4092:939a]) by BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
- ([fe80::8de2:b2ba:4092:939a%7]) with mapi id 15.20.8398.025; Mon, 3 Feb 2025
- 16:57:19 +0000
-From: "Sperling, Tobias" <Tobias.Sperling@Softing.com>
-To: Jonathan Cameron <jic23@kernel.org>, Tobias Sperling via B4 Relay
-	<devnull+tobias.sperling.softing.com@kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: AW: [PATCH 2/2] iio: adc: Add driver for ADS7128 / ADS7138
-Thread-Topic: [PATCH 2/2] iio: adc: Add driver for ADS7128 / ADS7138
-Thread-Index: AQHbPPFyoU64h9XPOU+xSgAMQsFXvbLGYqWAgG/U6gA=
-Date: Mon, 3 Feb 2025 16:57:19 +0000
-Message-ID:
- <BE1P281MB24209585E1552B80272D5448EFF52@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-References: <20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com>
-	<20241122-adc_ml-v1-2-0769f2e1bbc1@softing.com>
- <20241124124205.02453a0c@jic23-huawei>
-In-Reply-To: <20241124124205.02453a0c@jic23-huawei>
-Accept-Language: de-DE, en-US
-Content-Language: de-DE
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=Softing.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BE1P281MB2420:EE_|FR3PPFA67B257C9:EE_
-x-ms-office365-filtering-correlation-id: c9411666-917f-4ce4-5d23-08dd4473d200
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|10070799003|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?o1WZYMsVs75ST6WZGXLDLfKlnppPWz1kvAjH7VPG5eFO8f+cHU/vnnpMNics?=
- =?us-ascii?Q?VwUZP/osjIx7h5EchXqfDXaUVqJJTm5Yu/BwfqFrjdDsSwKlRSthiyi0UzVa?=
- =?us-ascii?Q?hoT72bOuEY0gqmwJv3dFR4z258gaS2filCh88y969fn9TEt5BGrEYMnVlvLK?=
- =?us-ascii?Q?PzxBOwGKRhilundK1PczB+he4o2v02hmXZzkOF/qSgncDVuLY99amG9VIfrI?=
- =?us-ascii?Q?Whe8Aos3R3xbAlunTLminOLoDc3vJqTM4AOWpNni3JL70+IbXAi4kX83KUSe?=
- =?us-ascii?Q?NTnsaHGZZTfehzI/12mMdUX6WBG97+vPOu6yuib52m6sjs8YVLWzvNkBPOXA?=
- =?us-ascii?Q?N0xcAPRQB4ZEfyrRrPnF5KKfjoSaN/yaa8ROR6xctBpR1yUwHm62800jyG5z?=
- =?us-ascii?Q?4YgD5+PYqZoeykOMwkpAkQxbzIbSZs8rWq0UEPhn1SmI4PBOGPQbq68HrLMG?=
- =?us-ascii?Q?ioe/Anzf/MWDvZobGjoAV9XaptNfRtX3tmVKy/Nu/ojOhW4R7mrr0z3iMVFK?=
- =?us-ascii?Q?lGBj7coE92BwsfxHfzmxyz9XTqyjsEs4tJAUK23hpL4bmeZDj9MVD26YCCNB?=
- =?us-ascii?Q?dMcBe9QjumZUuNAc3ki4mpOqaRAJLbJJYqumNQ19RXl8rur4niQj+EKwN+om?=
- =?us-ascii?Q?0XVjhWEzwU1MyURxybKG0pcyt14wm+0Nwzo59mq1he7Wn0GXB466Cbm3BR5I?=
- =?us-ascii?Q?s4NMMbUYUs6T7Lg+RTd7TJ2ZBsWdpZoQJotb6JopDNqy+vF8rPTFZ1Tr7Gxi?=
- =?us-ascii?Q?pYTAh1RIsSpwsCt3wG6zYfZlgN7/9PrvcIFDmjD1O8or5Ko7TmTpBUZwxHpM?=
- =?us-ascii?Q?ps8WEnwNyWlBaoPRcW1U380jWCg9J8zWJfGZSXcaPqOppWFq400r4xu2z1Op?=
- =?us-ascii?Q?I5mVmuEic+IW8nkj/FWQlMzqYcdQylwNok1gcfyNX+gtO4WJQPT7UZlRqZlV?=
- =?us-ascii?Q?ajBiSvHeNBTfj/jJZ1BTuhhPCmebrzRz1z2cc8oImt0zyy37P6cL3ZGyJRlp?=
- =?us-ascii?Q?I1+X2DvGWqi1K0CDuFWFpSkDY+Yr0E6pViJzTUzqNUxvefjuL/ByT8kSsop4?=
- =?us-ascii?Q?s9nezzu5uqpK+VnRdf2U74YtX/L4yglL51b+lSojvBb18io3OVlVFYbit/IR?=
- =?us-ascii?Q?MW/nzyExl6oh3XJMPFCeK3CsLZXRTsTGjjxQ3qIZsYCrmGaBNN3004mo4YyX?=
- =?us-ascii?Q?XrAjdBCEqbR3MURuohU2DcoUydkimeRwgt+H0Ha1IuLcqT+X/2vqJ2cA/7hc?=
- =?us-ascii?Q?V23GHHCFCH5z0Cs1BZyd8G8Kw8Ra9+4Rtl0senyLV4YxuDGVaW+m4K6IVoiG?=
- =?us-ascii?Q?MR6bSoPYwteiOoNxM4Gwwz0MARRILZ72RDtoRtMPIpXws5+NcByge8lsJkeb?=
- =?us-ascii?Q?O5RRQynnOdibOp3Iv4TR5gkGVnxf2+syvdWecChgGd9ZGnpSCx/3UooYrLag?=
- =?us-ascii?Q?T/7f6rUVo5zCXOzMTlmw9F422ujwo5My?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?WLAj6niHVkwbSNxZk9FYnHPaQk2A7dSYSK+WNPUl13fTpVb6W14GWpTlgr5w?=
- =?us-ascii?Q?iG65UqXxUP4wouCHphCtfA3xwAChrb4TaFnSX1NpLp1uZ3bVAsm6T0oKw5Qd?=
- =?us-ascii?Q?MtAK1CgSzthKyOrSkjCXeYm7ZskaH0kW13OyqFIel9tGFtRc9rGlpyXeSlcz?=
- =?us-ascii?Q?fw6wS1QAkcmw3DiUCo8Trwns5RfBLfx5NP0Umh9ZpqYzbvGipJ7bvQQ6qgie?=
- =?us-ascii?Q?N20O/GZyy9SybRxS6AW7hDEw3Yg/rVSGO/kQEjeORBt6917gmOSXkXsuN6VR?=
- =?us-ascii?Q?FRuJpn0HliCeAL4q8WFra065mRA2R/25xwK50J3iTDpRZLsV4QWZg+p3MwrQ?=
- =?us-ascii?Q?HZ3JbhcRXAKoz9lxzxlWIJZPcBo/juuX58aw0vmh+WHUjfPR45aP2y+8a4dc?=
- =?us-ascii?Q?1Ibr16OxP1X+zPQYxW+pH/goeubVsaDOP27L6d6rnGZIHmAweV/lv7N85Ox+?=
- =?us-ascii?Q?jNO/eU7E6UH3mtUTPZAr6gF+lzPXFLAMJBeMx4VojADe60Mlz8+0t5CWP5Jx?=
- =?us-ascii?Q?+vleBA8uAt7IkNOYUBkXxvAmnNNik3uvDgWC9rAqURjaeGnMh0xv058HaVBI?=
- =?us-ascii?Q?4QVqldTL/Aako2w1s1WSUjywvv+0Lb7eNsadYJgV/je676LO3Sw8AIE+KNMI?=
- =?us-ascii?Q?NrHiAljBJNlh5oEH4N4foVuIYeo2rDWsWVIgxiMN4evZqPE0fWd15Hc//PZF?=
- =?us-ascii?Q?U1TknerllpW6rkx2rzVDrePHg64XHeuHnQ3Pvrgbt7j8BqAT/islRN8CIeQM?=
- =?us-ascii?Q?56CeRRQbOCPhGXV5UUHR6e/TCyvK0zN2UZm3sL7hNIYP92WCstYPsyJ0I0cW?=
- =?us-ascii?Q?OWC0ZQZ0VCpxRWcNjP7igPD3tVJgMkzWrj0MMZ8MB7mJmu8XLFYZWrzJmjMF?=
- =?us-ascii?Q?XWTa6f3U7X3GpowWr51HzhT/3Fg+CglY3cOZN/syFYJtliZ0ABMvm03eQp8U?=
- =?us-ascii?Q?sOmTahTHfAN4EQzRF3BJUogWDPFmQ2x/OgoWn+tNI9hx9T4Zf4tSwb3WtkJW?=
- =?us-ascii?Q?XFEwZXFwedTzVmcX+bSQmxHYXz+710wLv7CQes4V4jGfk4DuWog8u5PGbDaQ?=
- =?us-ascii?Q?19WU0fGxdEgj3SPhLqa7wX+lfIUZ0NdNfE7XLEFnVKG0yhGpG8/CUh9M4ElY?=
- =?us-ascii?Q?ETkUOUB+YqqOvdxtAZhDW+gtaebi6NF4sMoIO8JskVZGWHngToFppN9tL/67?=
- =?us-ascii?Q?FXVeGe4WHqAD3J6YEwtEVHPqtcEjVbrXjSTflhZt4XkMpiWoV9XRgG46xacC?=
- =?us-ascii?Q?3Xs3LSP9fRJCFAbrxb//LseMpW9dzqAhfG4RjxlLopEruXPUJmeLAKTIj5gt?=
- =?us-ascii?Q?vOK3lI1JV7wQplpddZl8xh9tIsADjJpcV1Am0AtPM1lGAh23vNauSQ8nYGwe?=
- =?us-ascii?Q?D2RkI/F2LrEZnrS3lK8zLBmyGRjN3nJAxOASzO/uA0uT8xeM5hEv2ECyOseW?=
- =?us-ascii?Q?NI6AxdRGqqDDFPuw2cFqrUD3MFktGgRRviUWAVSz3HVQFL/AY3ewjY668COQ?=
- =?us-ascii?Q?KnOSSMHrILe31AeNxm+UN76aW9K4wvlhlkqe/ZhhShiDQ6Qj9IsmQVLp+jf6?=
- =?us-ascii?Q?nwf+9Eh9K2zS3j98+pgOEneLCvaWaQ+5rWf6qjgHmaRGBLOkU6Lmk4+fm4gO?=
- =?us-ascii?Q?lZVPGiFAmE7maKJTXqeGnNAC5QivYr9mJD4GrytVpbp6+WzdT1eHXWODdG46?=
- =?us-ascii?Q?PnMRJw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9646020B808
+	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 17:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738602906; cv=none; b=HW7qekSXq3YRFqhS2MQdzLebnOyNs/TJrn1HvRpJQvStAN7BKAOLrA/zxNF98+WaPxsGoc+DrlMOuKtPoPBZzyDTJRwKl/hNapb0DN8H1tmSTjCZgB+CSnWDI+auMzSjqHSNFUVS4Dyo4BHvRos9ONxcLOpG03U/7gfdf/A1nIc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738602906; c=relaxed/simple;
+	bh=g51urvsmbno3RV0RLA1p29HSiAegCakkuz2f9qWDbvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jJAsCg8r/JBZF5Pl4eHQj0JC+BD4pAM7rqTWX9TOo1zTiYR7RwJj1LpI776imvq/32FXOTcQd24aLgcsBRwjY5+hfWlRFo1tM9XK8BOFCTsdqTYr3+CXWumNXWARMFe6NhjFjB3EvQwxpNlMgj5CCqJDqP7MgWaQH40Ipmy5dgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iXwGmjk9; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4361f796586so55216815e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 09:15:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738602902; x=1739207702; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oYXrzKfPW50nAFT/gfCn1I4J1t5Ff+uXK1Iu+P5YNBs=;
+        b=iXwGmjk9ulEHv1tzLWlTrZTa8K++Z+uhnFXGEDalLKnIHl2S8MJZqgH8LdMblLtCM0
+         O8fcBe197FCYWP6PxvAuBbF/qBMONO0IcLNhrpNnivKqyWbqjl/sA5IlRoXGxk+9TR5/
+         DPsaRaU+vDBDrWcTcLYp+p/c4pgDhgo1dYgRVTJLf1IVtowG0PQ0t5bM2BoGFkRuYEYU
+         Dpe9eytKMxaNu9c+5FPMGNNlAFzGA1gFSeN7hKm2eFYyjn4i4lyXJGRFblBWehCgVATS
+         keoei2SiFqQ2zMX5V/HgO6ZKOZ8kM88I1qtbHH/rYwpfSmZ8PgHoeYzW3r6QhSYRVQkc
+         Zdaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738602902; x=1739207702;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oYXrzKfPW50nAFT/gfCn1I4J1t5Ff+uXK1Iu+P5YNBs=;
+        b=vYhuRpuArXQS1IR5skgVEBLzTj7VTmWF5D9B2Dr9iL7gmaL+6Q1AUqWM12yhgxEwwj
+         wI7Z9KX+v3xKesVT02IOlpZUb9qvkqXHClQ+07eI9FJB+GLEi3CV1TKM2SV8oxIGaESF
+         ooM3UrT/y5vL7v6gRy+a+qDQ9VF5+yHazdQjnpVu0yw+PZv/X91rzcvV9IRdLWyUZway
+         NjeYKs/tfT9ujwQ9RqEi/seSSTjDUvL4I4o+ZOpq0bHg5n6LlKwXSQ2unCdgc+RV0R9i
+         0W5E34Y4t0A11pBUWENNL6MofNjvoCnZJ6qgzIaeCBbMwRCD9I3poRV6EVH9DEoLdEHD
+         soYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUxXq2MQjxrrtimd2uS784GbpQzFgSrliBIBJ/aMYFNi8wuKChkLxbJLyTyCp0nbiKURDh0epgWt4o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVKuzZJ/rI3HvNfnwDOm7OS50ThKpYWDDW5hm6UKpRzl5BohIt
+	g/75SxL7BflHc+YOMqyPnFbJCdS1zTpMxMiprjRNXWX4MbgEQttVR8ANA9E6tWI=
+X-Gm-Gg: ASbGncskfHVyc1sqOfxDtwk3Alyt5M65KfktKY394XAMstUEFEVgRcIdZUBVEQeN83k
+	sdNVodN4G4YTR4t5//2kHlexRWstrENpzexvrg6z6XBPYKDZiZX+FeNglfHCmVB5zksMDQY6wDU
+	FeRNKyXnnIpYaNuZ9QzJyfWHP+E/sor1O5PcCGx3n/fB5fITvwJxM9kae9lrIXDSGxlOSL5Z1w5
+	XzFJTOs43G03sAoID0fFAW+VMztrDB2rGensBJ0ofG2Jvt4o1RylI8UG+1GXOYq80MO/X+38lM2
+	aNVW2emLuGH1+bSqGHv8G9MybVlxQIiXBBrBrQY3NMIAq2f+RUfgaN0AypBE
+X-Google-Smtp-Source: AGHT+IGZ6LCRbN/g81Cdu9GtP64OfXpVD+fsXx17T0qUhX8zW9Lzx5y/7TysN4A3BVS6rPTzVu1K9A==
+X-Received: by 2002:a05:600c:1e02:b0:434:a802:e9a6 with SMTP id 5b1f17b1804b1-438dc3c22acmr249674495e9.7.1738602901802;
+        Mon, 03 Feb 2025 09:15:01 -0800 (PST)
+Received: from dfj (host-95-244-234-244.retail.telecomitalia.it. [95.244.234.244])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c5c0ec02bsm13527921f8f.13.2025.02.03.09.15.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 09:15:01 -0800 (PST)
+Date: Mon, 3 Feb 2025 18:13:46 +0100
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>, 
+	David Lechner <dlechner@baylibre.com>, "jic23@kernel.org" <jic23@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, 
+	"Sa, Nuno" <Nuno.Sa@analog.com>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: set data format
+Message-ID: <y3vqe5x4vien7yub5hpynhltzske6ryoxq4bvzqkhyibburq7m@lujzg45ajbxh>
+References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
+ <20250127105726.6314-6-antoniu.miclaus@analog.com>
+ <08d8e97d-752d-4fa7-95f0-d828ef80f7b8@baylibre.com>
+ <CY4PR03MB33993EE62F4E1B3939F213B29BF52@CY4PR03MB3399.namprd03.prod.outlook.com>
+ <20250203152517.000028ca@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: softing.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9411666-917f-4ce4-5d23-08dd4473d200
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Feb 2025 16:57:19.1585
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: fe3606fa-d397-4238-9997-68dcd7851f64
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: sXcvDzPWBsX64Fj08CJnb0Ysl1KisB59DfR6AhCcbHZ8Ghuc3sK/eseronOuBTUFfhrGiH2wkz4OICAPWusdc8p/Cfaom+9KkG7wib0lYu8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3PPFA67B257C9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250203152517.000028ca@huawei.com>
 
-Hi Jonathan,
-thanks for the great feedback, I tried to improve all the mentioned things,=
- just
-some comments/questions inline.
+On 03.02.2025 15:25, Jonathan Cameron wrote:
+> On Mon, 3 Feb 2025 11:02:58 +0000
+> "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
+> 
+> >  
+> > > On 1/27/25 4:57 AM, Antoniu Miclaus wrote:  
+> > > > Add support for selecting the data format within the AXI ADC ip.
+> > > >
+> > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > ---
+> > > > no changes in v11.
+> > > >  drivers/iio/adc/adi-axi-adc.c | 46  
+> > > +++++++++++++++++++++++++++++++++++  
+> > > >  1 file changed, 46 insertions(+)
+> > > >
+> > > > diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> > > > index d2e1dc63775c..3c213ca5ff8e 100644
+> > > > --- a/drivers/iio/adc/adi-axi-adc.c
+> > > > +++ b/drivers/iio/adc/adi-axi-adc.c
+> > > > @@ -45,6 +45,12 @@
+> > > >  #define ADI_AXI_ADC_REG_CTRL			0x0044
+> > > >  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
+> > > >
+> > > > +#define ADI_AXI_ADC_REG_CNTRL_3			0x004c
+> > > > +#define   AD485X_CNTRL_3_PACKET_FORMAT_MSK	GENMASK(1, 0)
+> > > > +#define   AD485X_PACKET_FORMAT_20BIT		0x0
+> > > > +#define   AD485X_PACKET_FORMAT_24BIT		0x1
+> > > > +#define   AD485X_PACKET_FORMAT_32BIT		0x2
+> > > > +
+> > > >  #define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
+> > > >  #define   ADI_AXI_ADC_DRP_LOCKED		BIT(17)
+> > > >
+> > > > @@ -312,6 +318,45 @@ static int axi_adc_interface_type_get(struct  
+> > > iio_backend *back,  
+> > > >  	return 0;
+> > > >  }
+> > > >
+> > > > +static int axi_adc_data_size_set(struct iio_backend *back, unsigned int size)
+> > > > +{
+> > > > +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> > > > +	unsigned int val;
+> > > > +
+> > > > +	switch (size) {
+> > > > +	/*
+> > > > +	 * There are two different variants of the AXI AD485X IP block, a 16-bit
+> > > > +	 * and a 20-bit variant.
+> > > > +	 * The 0x0 value (AD485X_PACKET_FORMAT_20BIT) is corresponding  
+> > > also to  
+> > > > +	 * the 16-bit variant of the IP block.
+> > > > +	 */
+> > > > +	case 16:
+> > > > +	case 20:
+> > > > +		val = AD485X_PACKET_FORMAT_20BIT;
+> > > > +		break;
+> > > > +	case 24:
+> > > > +		val = AD485X_PACKET_FORMAT_24BIT;
+> > > > +		break;
+> > > > +	/*
+> > > > +	 * The 0x2 (AD485X_PACKET_FORMAT_32BIT) corresponds only to  
+> > > the 20-bit  
+> > > > +	 * variant of the IP block. Setting this value properly is ensured by
+> > > > +	 * the upper layers of the drivers calling the axi-adc functions.
+> > > > +	 * Also, for 16-bit IP block, the 0x2  
+> > > (AD485X_PACKET_FORMAT_32BIT)  
+> > > > +	 * value is handled as maximum size available which is 24-bit for this
+> > > > +	 * configuration.
+> > > > +	 */
+> > > > +	case 32:
+> > > > +		val = AD485X_PACKET_FORMAT_32BIT;
+> > > > +		break;
+> > > > +	default:
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +
+> > > > +	return regmap_update_bits(st->regmap,  
+> > > ADI_AXI_ADC_REG_CNTRL_3,  
+> > > > +				  AD485X_CNTRL_3_PACKET_FORMAT_MSK,
+> > > > +  
+> > > FIELD_PREP(AD485X_CNTRL_3_PACKET_FORMAT_MSK, val));  
+> > > > +}
+> > > > +
+> > > >  static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+> > > >  						 struct iio_dev *indio_dev)
+> > > >  {
+> > > > @@ -360,6 +405,7 @@ static const struct iio_backend_ops adi_axi_adc_ops  
+> > > = {  
+> > > >  	.test_pattern_set = axi_adc_test_pattern_set,
+> > > >  	.chan_status = axi_adc_chan_status,
+> > > >  	.interface_type_get = axi_adc_interface_type_get,
+> > > > +	.data_size_set = axi_adc_data_size_set,
+> > > >  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+> > > >  	.debugfs_print_chan_status =  
+> > > iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),  
+> > > >  };  
+> > > 
+> > > Why was [1] not addressed?
+> > > 
+> > > [1]: https://urldefense.com/v3/__https://lore.kernel.org/linux-
+> > > iio/9c262f599fb9b42feac99cfb541723a0a6f50e6b.camel@gmail.com/__;!!A
+> > > 3Ni8CS0y2Y!6uVytAwWUCsEazOUTACecMQkbMuHBF95sbla50CbTUFkZkyxS
+> > > -S7jMOCczpoyKCjtAKvMOyrt0ukYwcXC_l5q60$  
+> > 
+> > Indeed it was not addressed. I remained with the impression that adding part prefix
+> > in the macro definitions was enough. I will add the compatible string support.
+> > Although I have a question in order to minimize the number of versions to be sent
+> > In the future. Should I add a separate patch for the compatible support (which
+> > will not add value independently) or should I include it in this patch which adds
+> > custom function for data format for the AD485x IP core?
+> 
+> Binding docs update needs to be a separate patch.
+> 
+> Also, we should probably only set axi_adc_data_size_set in iio_backend_ops for
+> that ID.  So you'll need to pick from two copies of adi_axi_adc_ops
+> which probably means two iio_backend_info structures.
+> That data_size_set callback should not be set for cases that don't use it
+> (so the generic IP if I understand this correctly).
+> 
+> Similar to that part of:
+> https://lore.kernel.org/all/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com/
+> 
+> Hmm. This is looking like a messy merge.
+> 
+> Angelo, Antoniu,
+> 
+> Please figure out between you an order to the series so who is going to have
+> to rebase.  If this one goes first, may be worth pulling part of
+> patch 6 from Angelo's set to introduce struct axi_adc_info with what
+> this patch needs (just the backend_info pointer and maybe version?)
+>
+
+Hi,
+
+yes, above suggestion seems good to me.
+I go on with my patchset, than i can rebase in case this go first.
 
 Regards,
-Tobi
-
-> > +static const struct ads71x8_freq_bits ads71x8_samp_freq[] =3D {
-> > +	{163, 0x1F}, {244, 0x1E}, {326, 0x1D}, {488, 0x1C}, {651, 0x1B},
-> > +	{977, 0x1A}, {1302, 0x19}, {1953, 0x18}, {2604, 0x17}, {3906, 0x16},
-> > +	{5208, 0x15}, {7813, 0x14}, {10417, 0x13}, {15625, 0x12}, {20833, 0x1=
-1},
-> > +	{31250, 0x10}, {41667, 0x09}, {62500, 0x08}, {83333, 0x07},
-> > +	{125000, 0x06}, {166667, 0x05}, {250000, 0x04}, {333333, 0x03},
-> > +	{500000, 0x02}, {666667, 0x01}, {1000000, 0x0}
-> Format this as something like.
-> 	{ 163, 0x1F }, { 244, 0x1E }, { 326, 0x1D }, { 488, 0x1C },
-> 	{ 651, 0x1B }, { 977, 0x1A }, { 1302, 0x19 }, { 1953, 0x18 },
->=20
-> So with more spaces and with a power of 2 entries on each line to make it=
- easy
-> for people to work out the matching.
->=20
-> Once you use read_avail as requested below, you may well just want to use
-> the index of the array for the second field and have a simple array of va=
-lue
-> assuming no holes that I'm missing.
-
-There would have been some holes, as some register values lead to the same =
-frequency.
-I just changed this to repeat these values then in the list. Should be fine=
- now and the
-array's index can be used now.
-
-> > +static ssize_t ads71x8_read_stats(struct iio_dev *indio_dev, uintptr_t=
- priv,
-> > +	const struct iio_chan_spec *chan, char *buf)
-> > +{
-> > +	struct ads71x8_data *data =3D iio_priv(indio_dev);
-> > +	int ret;
-> > +	u8 values[2];
-> > +
-> > +	switch (priv) {
-> > +	case ADS71x8_STATS_MIN:
-> > +		ret =3D ads71x8_i2c_read_block(data->client,
-> > +			ADS71x8_REG_MIN_LSB_CH(chan->channel), values,
-> > +			ARRAY_SIZE(values));
-> > +		if (ret < 0)
-> > +			return ret;
-> > +		break;
-> > +	case ADS71x8_STATS_MAX:
-> > +		ret =3D ads71x8_i2c_read_block(data->client,
-> > +			ADS71x8_REG_MAX_LSB_CH(chan->channel), values,
-> > +			ARRAY_SIZE(values));
-> > +		if (ret < 0)
-> > +			return ret;
-> > +		break;
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return sprintf(buf, "%d\n", ((values[1] << 8) | values[0]));
->=20
-> I've no ideas what this is, so needs docs.
-
-See comment below regarding custom ABI.
-
-> That last bit is a get_unaligned_le16() though so use that to make it
-> explicit what is going on.
-
-> > +};
-> > +
-> > +static const struct attribute_group ads71x8_attribute_group =3D {
-> > +	.attrs =3D ads71x8_attributes,
-> > +};
-> > +
-> > +static const struct iio_info ti_ads71x8_info =3D {
-> > +	.attrs =3D &ads71x8_attribute_group,
-> > +	.read_raw =3D &ads71x8_read_raw,
-> > +	.write_raw =3D &ads71x8_write_raw,
-> > +	.read_event_value =3D &ads71x8_read_event,
-> > +	.write_event_value =3D &ads71x8_write_event,
-> > +	.read_event_config =3D &ads71x8_read_event_config,
-> > +	.write_event_config =3D &ads71x8_write_event_config,
-> Definitely worth thinking about whether the device can be used to
-> some degree at least without interrupts.  It is annoyingly common
-> for board designers to not wire them.
->=20
-> If it is easy to support (without events) from the start that
-> is a nice to have. If more complex we can leave it until we know
-> of actual hardware.
-
-In general, this driver could be used without interrupts. What remains
-is the reading of the ADC values, which probably is sufficient most of
-the time.
-Is this what you had in mind?
-
-> > +static const struct iio_chan_spec_ext_info ads71x8_ext_info[] =3D {
-> > +	{"stats_min", IIO_SEPARATE, ads71x8_read_stats, NULL,
-> ADS71x8_STATS_MIN},
-> > +	{"stats_max", IIO_SEPARATE, ads71x8_read_stats, NULL,
-> ADS71x8_STATS_MAX},
-> > +	{},
-> 	{ "stats_min", ...
-> 	{ }
->=20
-> No comma for terminating entries as we don't want it to be easy to add mo=
-re
-> after them.
->=20
-> However, the fields in this structure are non obvious, so
-> 	{
-> 		.name =3D "stats_min",
-> etc
-> preferred.
->=20
-> This is custom ABI, so I'd expect to see a file under
-> Documentation/ABI/testing/sysfs-bus-iio-*
-> that explains what these are.
->=20
-> Adding custom ABI however is a hard thing, so provide plenty of informati=
-on
-> to see if these are justified or not.
-> Superficially they sound like debugfs things rather than suitable for sys=
-fs.
-
-In the current configuration the IC is automatically making some statistics=
- about
-the minimal and maximum value that were seen on each channel, which can be
-read back by this ABI.
-This as quick info, do you think it makes sense to add this as custom ABI?
-
-Otherwise, making this part of the debugfs, I guess you are talking about
-granting access via debugfs_reg_access of the iio_info, don't you?
-And this then also needs docu in "Documentation/ABI/testing/debugfs-bus-iio=
--*",
-doesn't it?
-
-> > +static int ads7138_init_hw(struct ads71x8_data *data)
-> > +{
-> > +	int ret =3D 0;
-> Always set, so don't init here.
->=20
-> > +
-> > +	data->vref_regu =3D devm_regulator_get(&data->client->dev, "avdd");
-> > +	if (IS_ERR(data->vref_regu))
-> > +		data->vref_regu =3D NULL;
-> What is intent here? If you don't have a regulator you'll get a stub
-> which isn't an error. If you get an error for another reason, something
-> is very wrong, so error out. I may just be a deferral though so you
-> may end up successfully probing later.
-
-Changed this to devm_regulator_get_optional() as I wanted the supply to be
-optionally. If available it will be used to return the actual scale value.
+angelo
+ 
+> Thanks,
+> 
+> Jonathan
+> 
 

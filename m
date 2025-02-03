@@ -1,341 +1,203 @@
-Return-Path: <linux-iio+bounces-14940-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14941-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4696A2605D
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:40:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27639A26082
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 17:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E6A166B7F
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:40:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF6F81886ED0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 16:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ADE20CCDA;
-	Mon,  3 Feb 2025 16:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8DF20B7E8;
+	Mon,  3 Feb 2025 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="CcM+krmB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VFak/j1Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2085.outbound.protection.outlook.com [40.107.101.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C81820B1EF;
-	Mon,  3 Feb 2025 16:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738600774; cv=fail; b=o1R2YGfKrQFIABj21Kpe84MyQw9iJj/H+e5nUL2KXqrkuivUCKe6pdIKQOp6QwLMHZ/cusuIvOGti0tKWsAzXBlaiEiTzKdXUK7CahBepKG38owQrCULT7d1b/tQphJLA7h8vRoJNxGJkBgEjPooknAa4tfD3B8hNiLrq6lO3Uk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738600774; c=relaxed/simple;
-	bh=+jSQf/Gr4acmyLhhyPaP/EXiwN+V2xT0LlYFWxHtJdg=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DRTyRUf1ANgVlMELGmn5L9jlfHoF5pmwgCIwB0kBSoL5gplDN4jei/8ta9Yg7N+K6ljmzvMpdKwyeAxMywY6IUNYaVR1aMdOQBnY4EXCr5i3bgZnuAGIbNZtVmcxdIG7MbbtsWPubuqp4D/C6vZ+PlyzK+DfdW1Dpw/aO4peFPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=CcM+krmB; arc=fail smtp.client-ip=40.107.101.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UjGJrhKszhFzGYioHDhYBojx1CO2CvOUuWgOMHuRzBmavfrFlFObgngyAmMY1+xlfGzrgGfIuKUISuCjgeslBwtZkGhyOgJshWN6rA+vtVnsdi+OiMWKCtWA60h4Hw1KFzrQY9WPnnfFLvff/2QZxuhIDGa0+zdFtgX+PWV0pjj+M6LQeoWqFVZVm0Xnjp/C/CwwEVAFsDsuCQ26zQ57xv9r5mZ31cxrnFvEsGR3iJTkp9Uy2B4KIm8s1iTaz1dSghKEy9akO01lcwgbvKWxirokaHt4RYaNaJpByDsxaNafwU9Vyv3KWmBDk1EbyUFoltxcglMlCo9cymKNWETUPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Oxo7EEfcw0Pt1miinnT6cq3B2NNPzlz1Sa2Mok5SOy0=;
- b=H5FiySKuSGbKt/WL/oZw0eVQed0XpC2nrdJ14JJnuJqDjKwz29eTf2/xpg1fFJQDbQXkIiVLYHLCy0tUgV/ZryEWo0NC+6V/ODjNHlfyLxVYxSCSNI3Brt/GnNd/a7LWcsVX/lmKs8goAiNwcuw/AqPbgkpN1awMjKysdeUoOXAri1z6pgWFPii8IoQZh46k6SrWzK+OpdlHS4UHHsFXXjnFrtmnfjEkECS+smD9g0Zj6OHNydenNV6nuJs0I9vKkpzPwqcyBsbLZrkfvD+WDoB1UzcKORuJbpRlRhVVgoSzW9QSnrym3+hyDtl4ne4SjEmBtCMxYudLpwkM2V8jvw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Oxo7EEfcw0Pt1miinnT6cq3B2NNPzlz1Sa2Mok5SOy0=;
- b=CcM+krmBp03UPKd1zafcvvPJ8i4bi4HMCLw7H14GhaILssvEiUsQeYM9S45zDcMnfDSJT5yrUoN2yxWk29NdsZM/Ig35iPgdodI3rXH5tSG8zYdZw4xbJI3wOSYH67pKgBTC0KRVdBOUX6DKpTgzp2sRMZDQNwbXpHBgsFUI+jA=
-Received: from SJ0PR13CA0178.namprd13.prod.outlook.com (2603:10b6:a03:2c7::33)
- by MW4PR12MB7334.namprd12.prod.outlook.com (2603:10b6:303:219::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.24; Mon, 3 Feb
- 2025 16:39:26 +0000
-Received: from SN1PEPF00036F41.namprd05.prod.outlook.com
- (2603:10b6:a03:2c7:cafe::3c) by SJ0PR13CA0178.outlook.office365.com
- (2603:10b6:a03:2c7::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8398.24 via Frontend Transport; Mon,
- 3 Feb 2025 16:39:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00036F41.mail.protection.outlook.com (10.167.248.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8398.14 via Frontend Transport; Mon, 3 Feb 2025 16:39:25 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 3 Feb
- 2025 10:39:23 -0600
-From: Michal Simek <michal.simek@amd.com>
-To: <linux-kernel@vger.kernel.org>, <monstr@monstr.eu>,
-	<michal.simek@xilinx.com>, <git@xilinx.com>
-CC: Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, "Conor
- Dooley" <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, Harini Katakam
-	<harini.katakam@amd.com>, Jakub Kicinski <kuba@kernel.org>, Jonathan Cameron
-	<jic23@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, "Lars-Peter
- Clausen" <lars@metafoo.de>, Mark Brown <broonie@kernel.org>, Michael Tretter
-	<m.tretter@pengutronix.de>, Michael Turquette <mturquette@baylibre.com>,
-	Mubin Sayyed <mubin.sayyed@amd.com>, Nicolas Ferre
-	<nicolas.ferre@microchip.com>, Niklas Cassel <cassel@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Shyam Pandey
-	<radhey.shyam.pandey@amd.com>, Stephen Boyd <sboyd@kernel.org>, Vinod Koul
-	<vkoul@kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE
- BINDINGS" <devicetree@vger.kernel.org>, "open list:DMA GENERIC OFFLOAD ENGINE
- SUBSYSTEM" <dmaengine@vger.kernel.org>, "moderated list:ARM/ZYNQ
- ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, "open list:COMMON CLK
- FRAMEWORK" <linux-clk@vger.kernel.org>, "open list:LIBATA SUBSYSTEM (Serial
- and Parallel ATA drivers)" <linux-ide@vger.kernel.org>, "open list:XILINX AMS
- DRIVER" <linux-iio@vger.kernel.org>, "open list:SPI SUBSYSTEM"
-	<linux-spi@vger.kernel.org>, "open list:USB SUBSYSTEM"
-	<linux-usb@vger.kernel.org>, "open list:NETWORKING DRIVERS"
-	<netdev@vger.kernel.org>
-Subject: [PATCH 2/2] dt-bindings: xilinx: Deprecate header with firmware constants
-Date: Mon, 3 Feb 2025 17:39:11 +0100
-Message-ID: <2a6f0229522327939e6893565e540b75f854a37b.1738600745.git.michal.simek@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1738600745.git.michal.simek@amd.com>
-References: <cover.1738600745.git.michal.simek@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D972063CC;
+	Mon,  3 Feb 2025 16:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1738601285; cv=none; b=XcTpDsNddU3IUO2yvHQBcRObP3fEGdVzTI4PLtUI+vP4jml5PiBllJJHFPDLj1Y5J8B8LqZrLsuVQH9Yd7oiL6SlEEaBza/JFIy7KltykKU+OqxKEsIwkQDei5ELr5H2o/OCB/cm49E09KNH6SPKY7sSujF/TzSK53zeNJgzHM4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1738601285; c=relaxed/simple;
+	bh=KsQAqNFBlCnRQ0Q1Ww9rKgZbgaipv1/rUQJ1vcpzy8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RHcrfVFx9f3nkhhMktE3w+8Z1kaCTLAKpoDzUZfXw/hOP69/qw/s4h56PPWp4rYWrQJwBFL6Pv7tucAZ/zRBx3uHFjKn2/zRdCyrqeuSma9ebQ7KugLGPalx17HjxZZ8r5qrEOZ7xAut/utCVyWI/BsDZeruQ+rLeSFazPij8y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VFak/j1Q; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2ee76befe58so7995336a91.2;
+        Mon, 03 Feb 2025 08:48:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738601283; x=1739206083; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yPAYDZWhZdvT52ze2ZOmieMRhyI6YJK1D7vMTJGJV3Q=;
+        b=VFak/j1QQn9eqWpMCfprLZRAQvJYeLtwMPSW3t+Hl9xEo7gv8nm8NtkAUq/vjWlcB1
+         k+9wvy9/nnkVuarYEz8/vwky0zaRJxjJUfVb5+ZpcRZ4w/l3lnRRdpjS86aL8W3tJwYL
+         p0e3AGfPh9xD17WyesmahD0vHsEpcF5EtNE0X0a1rVoGkLtQSOYextSwqxqLKm7wAzFC
+         xaGFWcEXKuCr9EJYxMEzYKISXAi58jYvDW0m3BzlgUWza4YGHUPRyGflkh2ysq2o+0s8
+         HLQHbKHqUex7UQaEzpJ+8+xsdiy3x6Iqiu2tu/mGMePhCFDcHeVATtpuyRTk0l9x/gTa
+         bbbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738601283; x=1739206083;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yPAYDZWhZdvT52ze2ZOmieMRhyI6YJK1D7vMTJGJV3Q=;
+        b=UZ6EYeHTApIsiGvD/qsHRPdK9DIpQTuT8u42RQAHZTR8kCdO5FdDma9rrAG0yszKje
+         Evbpijx55ZDWvsy6V84fQ8fbRC2OKphA3mczw2DtdHKigtPqYzj6oMyOBmJxUz1+0Se5
+         iWzfovJVB2hwGoYizRjc7cTaNyOzDAE95DTRLKscqS08Y3H2KTtcO/xOSCUfrJcQnbXB
+         EYxykrtUHm9mKkPyOpG8R5I2sFReFCiDy1M8McjFsYSjaeNjY+4tz9GeYXFBRtC4WeqB
+         kUSDqgx+v33sMNYYeZGMlqoFtHRQSeZCgqAJToIJlOIAKFQKISQQUOyNvC7YLP56adRE
+         wXuw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUY19bS/ZEWxR4yBiIHSCOtUYLMMJEvr0kg1sYCoQeag7cWKHynJ7W/dvv7kHLhRuntP5VaQamlwDIVhY=@vger.kernel.org, AJvYcCUmxMZCZPR/J/irL78+bM8npSxcQSRUNlclvcByecUsChG2xOG8NZmLhtkz7YVX2/hqd2GcEyp9YQQ=@vger.kernel.org, AJvYcCVaQ94QCECD6CsaVQcpmpDOtJDofTxgxpXkRZyNzkZR8kLFx7F5o6DYY4QPb6qsPty6AfOZYXJMAmAUoZGxlndCxic=@vger.kernel.org, AJvYcCWqAnBLub6psTdytPFGkZ0o8x+IocXqluD+Y/8binoGLYkJa8dwnld7JxEnmrU61bdeygXRJdgY3qMGjw==@vger.kernel.org, AJvYcCX/g/1O+m+dvfkoO+EB1tQ33l7H6nD7i1lSu6fciuavWqJOjCSTo1mx8qdCzHoIJE8LZdDX9CWP6VYuSQRg@vger.kernel.org, AJvYcCXTo1Tj6PeUDgRjMyzRKCU5D514rXIdFijHCc42hLhbZkFtZB5ucBBTo77IkCJW0S6UTPUud28O6xgZ@vger.kernel.org, AJvYcCXWgMs09BCPi9mnCUvLPB/FjLnjjGsRBQSEMWdQ34sYSLrG10WX7M28Dg9jvklhg3gpRxLABHBQzT8d6Tcg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+tCWLwELb8usKdgEpi3lWf3l9mQpZjxHZsuJAurvG23ZwXlF3
+	TGAIIcBJNnRBaNmus+PuCkmxN/MlgbelIv1e3YDGCcSIqEKlM1wR
+X-Gm-Gg: ASbGncv2h++5K+eZ1aEQdWC1obF/67WtcALH/k+WBeKhLjb5+ocuuKbFQ0o0vfDg57Y
+	TD7OfDOOE5V8d6TvDyDOtwWmrwngC2BQpDYuALp3PNQHjxrG7oLxZ3fvLHaQiEeE85ygYOxPw2I
+	L2NpgmXa6kYP0pGN20MnaLCi7nc2FQYYASVwnlloeMba0Ig5fqUBSKXxB6KRbnJF4bEWE1pY34s
+	BoInwJXaNpxnsvZ3fVGKmgcVgwqRVEkWli4IZi4R3NFAswiNdnc35cDtiQ4vKFwT7wyVq4Zal6+
+	s+8DuZUwf0LAqXBRbRbuMLlwekxoH1XCbT19AlY=
+X-Google-Smtp-Source: AGHT+IHh9exrF+8QB08CxBY/dutMFmF0pU/5zhM+ZnTaly80R74kffODtDWK+nW0lOwVLaaD6ED6FA==
+X-Received: by 2002:a17:90b:53d0:b0:2ee:45fd:34f2 with SMTP id 98e67ed59e1d1-2f83abb8f42mr30994632a91.6.1738601283227;
+        Mon, 03 Feb 2025 08:48:03 -0800 (PST)
+Received: from localhost (maglev-oncall.nvidia.com. [216.228.125.128])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f8489adf7csm9341363a91.13.2025.02.03.08.48.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 08:48:02 -0800 (PST)
+Date: Mon, 3 Feb 2025 11:48:00 -0500
+From: Yury Norov <yury.norov@gmail.com>
+To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-renesas-soc@vger.kernel.org, linux-crypto@vger.kernel.org,
+	qat-linux@intel.com, linux-gpio@vger.kernel.org,
+	linux-aspeed@lists.ozlabs.org, linux-iio@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S . Miller" <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Crt Mori <cmo@melexis.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jacky Huang <ychuang3@nuvoton.com>,
+	Shan-Chun Hung <schung@nuvoton.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>, Alex Elder <elder@ieee.org>
+Subject: Re: [PATCH treewide v2 1/3] bitfield: Add non-constant
+ field_{prep,get}() helpers
+Message-ID: <Z6DzQHebEKBb12Wo@thinkpad>
+References: <cover.1738329458.git.geert+renesas@glider.be>
+ <1824412519cb8791ab428065116927ee7b77cf35.1738329459.git.geert+renesas@glider.be>
+ <e20a177a-30cd-4088-89e1-b479aba1356c@wanadoo.fr>
+ <Z5-xMUqrDuaE8Eo_@thinkpad>
+ <74cab7d1ec31e7531cdda0f1eb47acdebd5c8d3f.camel@sipsolutions.net>
+ <45920591-e1d6-4337-a906-35bb5319836c@wanadoo.fr>
+ <CAMuHMdXZKNtAmiMP8uuSngZMsDLGcYwrLS0xNWzN4UfLaccdyA@mail.gmail.com>
+ <16e1568d-8747-41e0-91b9-ce23c5592799@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7990; i=michal.simek@amd.com; h=from:subject:message-id; bh=+jSQf/Gr4acmyLhhyPaP/EXiwN+V2xT0LlYFWxHtJdg=; b=owGbwMvMwCR4yjP1tKYXjyLjabUkhvQFH/Uly/cozLT9NHXTtG1/olc/PZ9V9//Hv5glty+4q Knascs864hlYRBkYpAVU2SRtrlyZm/ljCnCFw/LwcxhZQIZwsDFKQATuV/DsGDCusSzjI3JTXEl EqJSuSXFkvKNPAzzzH/aVt9wrLdf/6J8u45mwpq7vZ7hAA==
-X-Developer-Key: i=michal.simek@amd.com; a=openpgp; fpr=67350C9BF5CCEE9B5364356A377C7F21FE3D1F91
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F41:EE_|MW4PR12MB7334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3be94396-7605-45b6-08ec-08dd44715230
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|30052699003|82310400026|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LJeZFRk2OOQH/3mRw/ckgthqDs+08DXHUorvEYlAwwHF93rutjEWXqTy7Ijc?=
- =?us-ascii?Q?AXddcQbiKfthM+BGebr+TZ8NrfRJ0tJp0jK4EhU26xGyxz2X5bsuhjBi8vOX?=
- =?us-ascii?Q?22iqhW9O3DCuoRRgv7ZTmbuiF7BZkxIfRxLGp2NMBw8BrO7XwqOWbn3TF1yy?=
- =?us-ascii?Q?0IpRRiAMK7zHAVP7/lQhHW7Wi7ZF+uz2Y0mYVrB6lOgCdcks+jqyl616MN9y?=
- =?us-ascii?Q?I1tz4pyKlgcC74NMGoQvWvSHsvxeYoJs+bbq3FkS/3zdH3qqlL145pYaKmkK?=
- =?us-ascii?Q?9nFdRH4IhsNKbGIOUgLtVtUWOKmALkprrVhpJk0baBNtOsYJIxbGVnp5lM/P?=
- =?us-ascii?Q?Z5SyMxuIUMXtm6Cx9tot/1uyjhVDYhdtFMVpo+4A5lbzsilhUQAUC/F/dqZV?=
- =?us-ascii?Q?xa8a5mSA2rszfXPhPMwK+EGghjeNwpAQAR6Tz1ZmUaTDBRC2oVThvxoJHTOq?=
- =?us-ascii?Q?KR+StkYTXGA0ipwJe1YOgZk8yPpqRBkB+TMArtrXXK0M5R46HT2MMP59rNcP?=
- =?us-ascii?Q?/Y7LN9Nc79vogKzidPZb5FqBnoZfMB5w+M6z3TwF72i8xWBgboI66uDsyrAV?=
- =?us-ascii?Q?nTcIAfTKHc4ts0irG+kpysaQGaaipPHleZelM3d64bMio4FToqMHsSW5qPFr?=
- =?us-ascii?Q?51W8PS0dnzKbE24eXzZV+Ws2dkMn3th4wjvIp0OFYMKW5FrKIvQVvUghypdw?=
- =?us-ascii?Q?HzmLd5uK6X5DwHoznly+3R60S0HR0ZPvLbViPwFTB5Moqf3UvY5iHTze040W?=
- =?us-ascii?Q?IctjcKTrpnBf3x+K3HfEm09CRKcfJg6Wz9ovwcVaisNQMpLYbkOvI6vyVI9i?=
- =?us-ascii?Q?W4G96v++JmXb1EnyVraBYVYwRMHSCjSlTi3O/YhDjXXsP0EvQYd4/QiXGxic?=
- =?us-ascii?Q?3WEoCWBL9J1iu0Og0qKCLPsq+JKuz98Pzlo9vAXMgmwdUgJH+ceXbJNLhGIV?=
- =?us-ascii?Q?kRJcwWyQSggkRg607VOVpKlQHqovCrEWFk94iU/X2vwP/D0mKmCH3+DKZxeW?=
- =?us-ascii?Q?H+STjSV5LhtPYBAl542cUPhl2rTwMfLwvT/Vd6RDJsEvQnEsp7V4IARVPawx?=
- =?us-ascii?Q?8x6cprIllX+rsJW0SnE/5IXVDFN1pZHukiYVizEm5O6dj6bT0nOvJLha1lDX?=
- =?us-ascii?Q?D5shoXUsMwqp/jvKwXop905emIaM7N1960OTm4M9v7AqTG/+na1pt4W8XUVx?=
- =?us-ascii?Q?RzOyOcSvfw7F5skjQ5Jm9lpQ2jyribCZXIGZNBiTPYXSDX+yTY68tP91Q8Wt?=
- =?us-ascii?Q?wBqpNmAiMCGrb3ShGSSDv1sXbephPAMM1+baHLNGfOq/xZA6IImt3e9HLrlq?=
- =?us-ascii?Q?mK75xNjpO+A89ccqAQ8FSzFTs8O2SzIzGyzLf0Pr2vpcpAaXv+CujzBlYFWA?=
- =?us-ascii?Q?j53u7j/IBuzW5Huf+Xx5ER7zHZPVhFr2PDzcceA6UcgDpdKTUe8pFlCYmqP0?=
- =?us-ascii?Q?cQwaSvrGyP5uClYU0v5pytAPkJ/bOOGyZtswAxEyu/YmLH2EoxlgAg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(30052699003)(82310400026)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2025 16:39:25.6570
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3be94396-7605-45b6-08ec-08dd44715230
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF00036F41.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7334
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16e1568d-8747-41e0-91b9-ce23c5592799@wanadoo.fr>
 
-Firmware contants do not fit the purpose of bindings because they are not
-independent IDs for abstractions. They are more or less just contants which
-better to wire via header with DT which is using it.
-That's why add deprecated message to dt binding header and also update
-existing dt bindings not to use macros from the header  and replace them by
-it's value. Actually value is not relevant because it is only example.
+On Tue, Feb 04, 2025 at 12:41:55AM +0900, Vincent Mailhol wrote:
+> On 03/02/2025 at 22:59, Geert Uytterhoeven wrote:
+> > Hi Vincent,
+> > 
+> > On Mon, 3 Feb 2025 at 14:37, Vincent Mailhol <mailhol.vincent@wanadoo.fr> wrote:
+> >> On 03/02/2025 at 16:44, Johannes Berg wrote:
+> >>> On Sun, 2025-02-02 at 12:53 -0500, Yury Norov wrote:
+> >>>>> Instead of creating another variant for
+> >>>>> non-constant bitfields, wouldn't it be better to make the existing macro
+> >>>>> accept both?
+> >>>>
+> >>>> Yes, it would definitely be better IMO.
+> >>>
+> >>> On the flip side, there have been discussions in the past (though I
+> >>> think not all, if any, on the list(s)) about the argument order. Since
+> >>> the value is typically not a constant, requiring the mask to be a
+> >>> constant has ensured that the argument order isn't as easily mixed up as
+> >>> otherwise.
+> >>
+> >> If this is a concern, then it can be checked with:
+> >>
+> >>   BUILD_BUG_ON_MSG(!__builtin_constant_p(_mask) &&
+> >>                    __builtin_constant_p(_val),
+> >>                    _pfx "mask is not constant");
+> >>
+> >> It means that we forbid FIELD_PREP(non_const_mask, const_val) but allow
+> >> any other combination.
+> > 
+> > Even that case looks valid to me. Actually there is already such a user
+> > in drivers/iio/temperature/mlx90614.c:
+> > 
+> >     ret |= field_prep(chip_info->fir_config_mask, MLX90614_CONST_FIR);
+> > 
+> > So if you want enhanced safety, having both the safer/const upper-case
+> > variants and the less-safe/non-const lower-case variants makes sense.
 
-The similar changes have been done by commit 9d9292576810 ("dt-bindings:
-pinctrl: samsung: deprecate header with register constants").
+I agree with that. I just don't want the same shift-and operation to be
+opencoded again and again.
 
-Signed-off-by: Michal Simek <michal.simek@amd.com>
----
+What I actually meant is that I'm OK with whatever number of field_prep()
+macro flavors, if we make sure that they don't duplicate each other. So
+for me, something like this would be the best solution:
 
- Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml  | 4 +---
- .../bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml           | 3 +--
- .../devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml       | 3 +--
- Documentation/devicetree/bindings/net/cdns,macb.yaml       | 7 +++----
- Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml | 3 +--
- Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml     | 3 +--
- include/dt-bindings/clock/xlnx-zynqmp-clk.h                | 7 +++++++
- 7 files changed, 15 insertions(+), 15 deletions(-)
+ #define field_prep(mask, val) \
+       (((typeof(_mask))(_val) << __bf_shf(_mask)) & (_mask))
 
-diff --git a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
-index 9952e0ef7767..6ad78429dc74 100644
---- a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
-+++ b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
-@@ -163,11 +163,9 @@ additionalProperties: false
+ #define FIELD_PREP(mask, val)                                         \
+         (                                                             \
+                 FIELD_PREP_INPUT_CHECK(_mask, _val,);                 \
+                 field_prep(mask, val);                                \
+         )
  
- examples:
-   - |
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
-     #include <dt-bindings/interrupt-controller/irq.h>
-     #include <dt-bindings/power/xlnx-zynqmp-power.h>
-     #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
-     #include <dt-bindings/phy/phy.h>
- 
-     sata: ahci@fd0c0000 {
-@@ -175,7 +173,7 @@ examples:
-         reg = <0xfd0c0000 0x200>;
-         interrupt-parent = <&gic>;
-         interrupts = <0 133 IRQ_TYPE_LEVEL_HIGH>;
--        clocks = <&zynqmp_clk SATA_REF>;
-+        clocks = <&zynqmp_clk 22>;
-         ceva,p0-cominit-params = /bits/ 8 <0x0F 0x25 0x18 0x29>;
-         ceva,p0-comwake-params = /bits/ 8 <0x04 0x0B 0x08 0x0F>;
-         ceva,p0-burst-params = /bits/ 8 <0x0A 0x08 0x4A 0x06>;
-diff --git a/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml b/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
-index ac3198953b8e..b5399c65a731 100644
---- a/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
-+++ b/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
-@@ -75,7 +75,6 @@ additionalProperties: false
- 
- examples:
-   - |
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
- 
-     fpd_dma_chan1: dma-controller@fd500000 {
-       compatible = "xlnx,zynqmp-dma-1.0";
-@@ -84,7 +83,7 @@ examples:
-       interrupts = <0 117 0x4>;
-       #dma-cells = <1>;
-       clock-names = "clk_main", "clk_apb";
--      clocks = <&zynqmp_clk GDMA_REF>, <&zynqmp_clk LPD_LSBUS>;
-+      clocks = <&zynqmp_clk 19>, <&zynqmp_clk 31>;
-       xlnx,bus-width = <128>;
-       dma-coherent;
-     };
-diff --git a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-index 8cbad7e792b6..a403392fb263 100644
---- a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
-@@ -193,7 +193,6 @@ additionalProperties: false
- 
- examples:
-   - |
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
- 
-     bus {
-         #address-cells = <2>;
-@@ -204,7 +203,7 @@ examples:
-             interrupt-parent = <&gic>;
-             interrupts = <0 56 4>;
-             reg = <0x0 0xffa50000 0x0 0x800>;
--            clocks = <&zynqmp_clk AMS_REF>;
-+            clocks = <&zynqmp_clk 70>;
-             #address-cells = <1>;
-             #size-cells = <1>;
-             #io-channel-cells = <1>;
-diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-index 3c30dd23cd4e..8d69846b2e09 100644
---- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
-+++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
-@@ -197,7 +197,6 @@ examples:
-     };
- 
-   - |
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
-     #include <dt-bindings/power/xlnx-zynqmp-power.h>
-     #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
-     #include <dt-bindings/phy/phy.h>
-@@ -210,9 +209,9 @@ examples:
-                     interrupt-parent = <&gic>;
-                     interrupts = <0 59 4>, <0 59 4>;
-                     reg = <0x0 0xff0c0000 0x0 0x1000>;
--                    clocks = <&zynqmp_clk LPD_LSBUS>, <&zynqmp_clk GEM1_REF>,
--                             <&zynqmp_clk GEM1_TX>, <&zynqmp_clk GEM1_RX>,
--                             <&zynqmp_clk GEM_TSU>;
-+                    clocks = <&zynqmp_clk 31>, <&zynqmp_clk 105>,
-+                             <&zynqmp_clk 51>, <&zynqmp_clk 50>,
-+                             <&zynqmp_clk 44>;
-                     clock-names = "pclk", "hclk", "tx_clk", "rx_clk", "tsu_clk";
-                     #address-cells = <1>;
-                     #size-cells = <0>;
-diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
-index 04d4d3b4916d..02cf1314367b 100644
---- a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
-@@ -65,14 +65,13 @@ allOf:
- 
- examples:
-   - |
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
-     soc {
-       #address-cells = <2>;
-       #size-cells = <2>;
- 
-       qspi: spi@ff0f0000 {
-         compatible = "xlnx,zynqmp-qspi-1.0";
--        clocks = <&zynqmp_clk QSPI_REF>, <&zynqmp_clk LPD_LSBUS>;
-+        clocks = <&zynqmp_clk 53>, <&zynqmp_clk 82>;
-         clock-names = "ref_clk", "pclk";
-         interrupts = <0 15 4>;
-         interrupt-parent = <&gic>;
-diff --git a/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml b/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
-index 00f87a558c7d..b5843f4d17d8 100644
---- a/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
-+++ b/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
-@@ -101,7 +101,6 @@ examples:
-     #include <dt-bindings/dma/xlnx-zynqmp-dpdma.h>
-     #include <dt-bindings/power/xlnx-zynqmp-power.h>
-     #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
--    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
-     #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
-     #include <dt-bindings/phy/phy.h>
-     axi {
-@@ -113,7 +112,7 @@ examples:
-             #size-cells = <0x2>;
-             compatible = "xlnx,zynqmp-dwc3";
-             reg = <0x0 0xff9d0000 0x0 0x100>;
--            clocks = <&zynqmp_clk USB0_BUS_REF>, <&zynqmp_clk USB3_DUAL_REF>;
-+            clocks = <&zynqmp_clk 32>, <&zynqmp_clk 34>;
-             clock-names = "bus_clk", "ref_clk";
-             power-domains = <&zynqmp_firmware PD_USB_0>;
-             resets = <&zynqmp_reset ZYNQMP_RESET_USB1_CORERESET>,
-diff --git a/include/dt-bindings/clock/xlnx-zynqmp-clk.h b/include/dt-bindings/clock/xlnx-zynqmp-clk.h
-index cdc4c0b9a374..f0f7ddd3dcbd 100644
---- a/include/dt-bindings/clock/xlnx-zynqmp-clk.h
-+++ b/include/dt-bindings/clock/xlnx-zynqmp-clk.h
-@@ -9,6 +9,13 @@
- #ifndef _DT_BINDINGS_CLK_ZYNQMP_H
- #define _DT_BINDINGS_CLK_ZYNQMP_H
- 
-+/*
-+ * These bindings are deprecated, because they do not match the actual
-+ * concept of bindings but rather contain pure firmware values.
-+ * Instead include the header in the DTS source directory.
-+ */
-+#warning "These bindings are deprecated. Instead use the header in the DTS source directory."
-+
- #define IOPLL			0
- #define RPLL			1
- #define APLL			2
--- 
-2.43.0
+#define FIELD_PREP_CONST(_mask, _val)                                  \
+        (                                                              \
+                FIELD_PREP_CONST_INPUT_CHECK(mask, val);
+                FIELD_PREP(mask, val); // or field_prep()
+        )
 
+We have a similar macro GENMASK() in linux/bits.h. It is implemented
+like this:
+
+ #define GENMASK_INPUT_CHECK(h, l) BUILD_BUG_ON_ZERO(const_true((l) > (h)))
+ #define GENMASK(h, l) \
+         (GENMASK_INPUT_CHECK(h, l) + __GENMASK(h, l))
+
+And it works just well. Can we end up with a similar approach here?
+
+> So, we are scared of people calling FIELD_PREP() with the arguments in
+> the wrong order:
+>
+>   FIELD_PREP(val, mask)
+> 
+> thus adding the check that mask must be a compile time constant.
+
+Don't be scared. Kernel coding implies that people get used to read
+function declarations and comments on top of them before using
+something.
+
+Thansk,
+Yury
 

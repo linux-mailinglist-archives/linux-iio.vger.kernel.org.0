@@ -1,104 +1,133 @@
-Return-Path: <linux-iio+bounces-14979-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14980-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D9FA275D9
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 16:30:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40168A27637
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 16:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD9427A1A75
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 15:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 832283A9915
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 15:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27225214810;
-	Tue,  4 Feb 2025 15:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F96D21579C;
+	Tue,  4 Feb 2025 15:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxFt1+76"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NN5UQJkz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7272147F9;
-	Tue,  4 Feb 2025 15:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786DE21517B
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 15:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738683014; cv=none; b=J1uA4ouxV8o92N1UXB9e6Op15WtEDwLZGMMcpUUU0qu+xBiZ+NceFxmSv2IXuNF1hD18NH3mhyZpa+3o30VKc3cKn+BMvpTr2EJsxAaDc4UCweOtq20Kfz7vIbcvvBIMG6aRR1YwzWIFqEp36IXtAz9SsIDdAcvUlRMh4uuCf0A=
+	t=1738683484; cv=none; b=BZ8w9JAvDHt1K1NOdaWz4xqbx2KqYFJpxf8Ubq737OOb4/hG3EkSk7UTT2NxEz8RY9+6HkxSB7iF1HkIrHvfvC3c9Nc2ytpmiPpPAZXSwOYllqXye7PCya/lQOAPfFAHR5Wl2X5FVzQCezlFVNXBMzekrz8qEnJjUBW7Dz6yMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738683014; c=relaxed/simple;
-	bh=w12EPpGUmvzDudWzppT/O+ACvWWy08Cbo3XC+tGv3iY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GZvmOOkrKGR2+i9/Hlr9Boq6eMQ41tlm6K3U7jvap+Z/Tz/V4npUmtwKsCAN38aQysqM5/0Ydmb+i62mPzZAbJA5fUs2u2GxjyjPg0JlinCjFIEiohg6eY2qtk3uGllLDq+8SvWz+9QnrAQetsLrYTh2G0omlzR/BZMQMpGFGiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxFt1+76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F517C4CEE2;
-	Tue,  4 Feb 2025 15:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738683014;
-	bh=w12EPpGUmvzDudWzppT/O+ACvWWy08Cbo3XC+tGv3iY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rxFt1+76LToM21A8s0ynlnAIwt78hr6Di4Rj31ycjaxNsQldtEz4HGEKhDCpZBIoU
-	 Xq7Uyz1X4dOfpnShEge2okV+AlHBJXtcWuP46mvOedK7nxngJBLhC9mfqClLlHO4AK
-	 m+iBiNjJZnet6vZuKO6jTDzRyc/CYRlBuu40fbiQTidRQ+FjMq4imH0KziZHiC07Vs
-	 yHXFoZLweaKE9xL0bnUKC6Uai0BGtZPAOhRb+gLgYbIyPKjDVAV9MTomKE5Jk+0r3r
-	 Z1Ki34lpSJDD3f7NpPDeqiev2aYna2qG+7mqi/vzbvodKXpJ1+Z96jQ2BaoarLuvEX
-	 +0olbUxhCUEmw==
-Date: Tue, 4 Feb 2025 07:30:11 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
- linux-crypto@vger.kernel.org, qat-linux@intel.com,
- linux-gpio@vger.kernel.org, linux-aspeed@lists.ozlabs.org,
- linux-iio@vger.kernel.org, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michael Turquette <mturquette@baylibre.com>,
- Stephen Boyd <sboyd@kernel.org>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Alexandre Belloni
- <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Giovanni Cabiddu <giovanni.cabiddu@intel.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
- Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
- <brgl@bgdev.pl>, Joel Stanley <joel@jms.id.au>, Andrew Jeffery
- <andrew@codeconstruct.com.au>, Crt Mori <cmo@melexis.com>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Jacky Huang
- <ychuang3@nuvoton.com>, Shan-Chun Hung <schung@nuvoton.com>, Yury Norov
- <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Johannes
- Berg <johannes@sipsolutions.net>, Alex Elder <elder@ieee.org>
-Subject: Re: [PATCH treewide v2 1/3] bitfield: Add non-constant
- field_{prep,get}() helpers
-Message-ID: <20250204073011.5f6ca125@kernel.org>
-In-Reply-To: <e20a177a-30cd-4088-89e1-b479aba1356c@wanadoo.fr>
-References: <cover.1738329458.git.geert+renesas@glider.be>
-	<1824412519cb8791ab428065116927ee7b77cf35.1738329459.git.geert+renesas@glider.be>
-	<e20a177a-30cd-4088-89e1-b479aba1356c@wanadoo.fr>
+	s=arc-20240116; t=1738683484; c=relaxed/simple;
+	bh=ltZ949oM+lMRV7UBAxtOUIjP4ivNHQ9d0hi0WriRce8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y3OBbViOkSl43eIcw5lbHkikd8Bpn2mYs14zP/7hiH3xZ6QiJkm7R1dxgnYcFxHNP9z3OZFLUKmEdI1ZGPCbrmzYy7ghwVG62wyVig786KX+E8oFHTqo7bPFFKJ5jz/Vyqe5FY+vcoIoyuiAPk3OCgILuLBkl2+pvL22ikUG8t0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NN5UQJkz; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e58a7e02514so5512285276.1
+        for <linux-iio@vger.kernel.org>; Tue, 04 Feb 2025 07:38:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738683481; x=1739288281; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jVMfm8ZhSAvtr5Dot2F5GueOESbiJOB9RRL5JCbpZyU=;
+        b=NN5UQJkzSiz6IcxyAbcgc8IiV5ZkupT6U310HuXW4brkLUc5nDuzAipx5IP46ct4gd
+         EpyHisjAgdO+AnSGAlHo3RPO4wV1QEVBMkSNP0oxEpCNirBeuLGQ2ydqn5gsJLyNGYpf
+         KinFAh3wjqvzfw+ndKa/L2JOouFYVOzOG6qf099WTnigAqNL1KIvo8y7IZ5l8otHJsST
+         L0wNbuojoah+F5eaDOn3wOkbTF0VluC7NSMO1Ncv9IrkJVkWiyUR/plsL88NnZ01XA/z
+         SYRlRtV9lS5ABP/W6POaMQ2TIJQMGuBeAY04VpokBgral376cUrNsjvBdy9/shF7fsd9
+         KkDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738683481; x=1739288281;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jVMfm8ZhSAvtr5Dot2F5GueOESbiJOB9RRL5JCbpZyU=;
+        b=N5teelWtcaGWN7zttCYsvgWYpzjFgFA+if52AJocMo3CG/tDkA2tlDbD0He9L/RKWD
+         N8vXC7Ows60GwI6R0Ni4EbzWc8sAg2r6moi9G07rwfm2d0O/QJxFgDwRLExIhYDEbSgg
+         NKEzcw+94OVTohMpNbzP9o3TmkDMm9pMd87exr/Gqa/tbHJ4inAZQxAb9JZgjOq40mKM
+         fZG1wKSysJrUWHQV8jheOgtC2hyRwzPx/+MvXoDzcfxcdrSFmibBXP37bKUzTG19vd2X
+         VseCKI5rZfibThCdy13M7PMHK9R3t6rfFLpoudqxn8xnOR7lhE6fMHPj6KOWTWFqQ+O6
+         yD4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVkMdcFwx4dk5jN6evPMMWadUfbrX/tVh5bkzzvZyMzzt4fLmzNPgcH/bPDSzqnGhCI2912w639KF0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8QPRiXl+7qFCCoJBVnU/drPmROSXha+6nxSTD7BLM+THGv5hn
+	1ziLUHjJYBvatSLApyFW727jFMdzqG3UZxFa9RUJW3quih89VihvMUePgpTMLaGsJvMz17Z0QQb
+	NiVfPgrLnvtQbUdOxRZ1Ysnh77psS9Y5jygADkw==
+X-Gm-Gg: ASbGncuWM0PllSgkybm5i0ZCvd6izGHKmE1olr2vQjFDioOCuwrRm6MTw6fI6jIo0UP
+	iinbSiIUrANqB7wNb+i1wIkwILLhZRhUzKxnxk+wv7anBN2g/IYgjTq+NqX3uuQtdRki8PBBMHg
+	==
+X-Google-Smtp-Source: AGHT+IHvgaaPpDS+6zz+NW+qWTxfxKZ5xGI5mBb28CNf8euDfNNskCLrVmo+9LeT8cifH6u3mLCbOQvZ3PdCNlYInak=
+X-Received: by 2002:a05:6902:2409:b0:e5b:22a9:fd44 with SMTP id
+ 3f1490d57ef6-e5b22a9fedamr351835276.27.1738683481129; Tue, 04 Feb 2025
+ 07:38:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com> <20250131-gpio-set-array-helper-v1-9-991c8ccb4d6e@baylibre.com>
+In-Reply-To: <20250131-gpio-set-array-helper-v1-9-991c8ccb4d6e@baylibre.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Tue, 4 Feb 2025 16:37:25 +0100
+X-Gm-Features: AWEUYZk_FOEufbv4XIOWWo19tqsP-vJZAmqSGiOD8X2-D-NUV7n8lB7W5hF96hc
+Message-ID: <CAPDyKFqnEtnCRcu963t1cBqjHvz2nV+Ymahtpef+ZoCD9-C2Ew@mail.gmail.com>
+Subject: Re: [PATCH 09/13] mmc: pwrseq_simple: use gpiods_set_array_value_cansleep
+To: David Lechner <dlechner@baylibre.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
+	Andy Shevchenko <andy@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 2 Feb 2025 17:26:04 +0900 Vincent Mailhol wrote:
-> On 31/01/2025 at 22:46, Geert Uytterhoeven wrote:
-> > The existing FIELD_{GET,PREP}() macros are limited to compile-time
-> > constants.  However, it is very common to prepare or extract bitfield
-> > elements where the bitfield mask is not a compile-time constant.  
-> 
-> Why is it that the existing FIELD_{GET,PREP}() macros must be limited to
-> compile time constants?
+On Fri, 31 Jan 2025 at 21:25, David Lechner <dlechner@baylibre.com> wrote:
+>
+> Reduce verbosity by using gpiods_set_array_value_cansleep() instead of
+> gpiods_set_array_value_cansleep().
+>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Hard no, some high performance networking drivers use this on 
-the fastpath. We want to make sure that the compiler doesn't
-do anything stupid, and decomposes the masks at build time.
+Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-The macros work just fine for a *lot* of code:
+Kind regards
+Uffe
 
-$ git grep -E 'FIELD_(PREP|GET)\(' | wc -l
-22407
-
-BTW aren't u32_get_bits(), u32_replace_bits() etc. not what 
-you need in the first place? I think people don't know about
-those, with all due respect the way they are coded up looks 
-like an IOCCC submission..
+> ---
+>  drivers/mmc/core/pwrseq_simple.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/mmc/core/pwrseq_simple.c b/drivers/mmc/core/pwrseq_simple.c
+> index 37cd858df0f4d7123683e1fe23a4c3fcd7817d13..b3a6d053c826741005f1484ad81df30b6bf75bbc 100644
+> --- a/drivers/mmc/core/pwrseq_simple.c
+> +++ b/drivers/mmc/core/pwrseq_simple.c
+> @@ -54,8 +54,7 @@ static void mmc_pwrseq_simple_set_gpios_value(struct mmc_pwrseq_simple *pwrseq,
+>                 else
+>                         bitmap_zero(values, nvalues);
+>
+> -               gpiod_set_array_value_cansleep(nvalues, reset_gpios->desc,
+> -                                              reset_gpios->info, values);
+> +               gpiods_set_array_value_cansleep(reset_gpios, values);
+>
+>                 bitmap_free(values);
+>         }
+>
+> --
+> 2.43.0
+>
 

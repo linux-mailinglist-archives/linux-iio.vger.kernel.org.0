@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC79FA27C69
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:04:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D208A27C6C
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5B0A1883516
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DE703A3A94
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DBC2147E9;
-	Tue,  4 Feb 2025 20:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A172063F9;
+	Tue,  4 Feb 2025 20:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nojIAGML"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDTO68TT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2D614B094
-	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5227C2063FD
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699492; cv=none; b=HbE9wIFUxjQ4YmJcHbc2H4x8LNURQrwEzB0MroQPFIwvGy1xCchZNwQdBV3Gey+dXF+rd6oENcowC6ayYQ9JoReVkPW4Ee8QJs00RQeNn1hWEomlxxsY3XJpXCRE042LXWmWT96UCJpJjiEHFDebkyUvoWFALwVjNpmMe0TsSnk=
+	t=1738699497; cv=none; b=C9HWNQZg75bhgytAEttOX7+7EDQjTem1LzO4yONOA2TM4XUnD6WQ9RCCoWXW1G1T5R1I66EePztboeotetlJlxW76ZibYTbHUIMKGrfNp05bIAO7MaJPUXOYoM/LpKLY+TyjsJSsgw2IptLsZSNm/oVRYJeIlLGvNQKZhXVMWr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699492; c=relaxed/simple;
-	bh=Nxp50hUA+/KtmNZKJDIGXuw9CLN+asgaJyDs60V6Fa0=;
+	s=arc-20240116; t=1738699497; c=relaxed/simple;
+	bh=IqM7rr8s7Lgno6Y5qG0cYwimP4qr7aOPjOp483MBSbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzyTh+ZoKt3U6b4u7550rqFOXhILKQWF2g3k0z2c6TZ7xlWg16Xh09x7IrnDxlPfZSt8IJF1EqKCZOJUwOq/ShGFIs+wxfF9DVY7z3KSuODEZkeN/0pmdnbEfwB/sU+cxK2c652PRdN1rK1l+kAPU4XVwyIrh4Q3riZ0rgQoZ+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nojIAGML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C96C4CEDF;
-	Tue,  4 Feb 2025 20:04:46 +0000 (UTC)
+	 MIME-Version; b=nNrez/BYERctFGHEOnUSj5QuxhtgyEIgB/pnC+7IR25PNqW4u+av7nr6jap4xgEAXZNJMBouSkz2fjpxsmkojdUHrmBzMUlncbxfp1eEUP8zRSNp2HJyucnyhQyrhZJ17+/nuIZDRrokAtAuJG+YfdJhAFjf6EY66u7xd1NUrW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDTO68TT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611DCC4CEE3;
+	Tue,  4 Feb 2025 20:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738699491;
-	bh=Nxp50hUA+/KtmNZKJDIGXuw9CLN+asgaJyDs60V6Fa0=;
+	s=k20201202; t=1738699497;
+	bh=IqM7rr8s7Lgno6Y5qG0cYwimP4qr7aOPjOp483MBSbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nojIAGMLJJVV367hrW3yIUZbDCDHbRaZ9G0jP0JSq50+1Xa4Ik0n2y6w1KIyulD6x
-	 Na6OmmZjgv6dPKGBRsQruTOC5NFW8XVOkaHGSTr6m3GlSzjRLH0uySwflDOcOOEtJr
-	 MS4E5WbW5nojaTh77/fEYTxLh3tKl2HhVm0DA97aN7uF+HSzHDgCbup+gAKPYkr2e7
-	 YujTyY/uKsT5J9LMLTI2iVwoSlU1XwhwNbsgY4FJR7gdiM9Q/Aaix8z8IpO+VStFIl
-	 JEpkhIgjOQv4GfZpVdhSEesE9zDeTiKathxTLm3iS/bzo5LY1MiSwwEQLggdZvr4Hn
-	 hKGcNpbi6N4nA==
+	b=WDTO68TTVeSwAUYIat9Gx+j+E4zU7B+JF2cyvPUhImo65OC7BTTdk9sIDuLW36pUd
+	 VtR1oBDmEzhlWQVZW51QmH23dqRAYxV92+aWDGIb77TluzIIy4pj+BwGM0b9D4OuTu
+	 QUhor2VBFtoXTi/JH2IXpiCMec+wCRwzT0ktlDQpCoUweWuc7Xz1mj8R9NgxZKydxN
+	 7begCqIJgilbyS4dfBq6hVKGMRhUZbrGkysm1wrIKEG607WdaNJC1djlO/31qb69bk
+	 8wlqSq3gaPIacM+8Yq/x7SzS09ebGBzkfuF1IZjRbqG7PCm5+d29SF0oMB3I6GZJET
+	 9oKPzDQDHDO/Q==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
@@ -61,9 +61,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Antoni Pokusinski <apokusinski01@gmail.com>,
 	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 22/27] iio: dac: ad3552r-hs: Stop using iio_device_claim_direct_scoped()
-Date: Tue,  4 Feb 2025 20:02:44 +0000
-Message-ID: <20250204200250.636721-23-jic23@kernel.org>
+Subject: [PATCH 23/27] iio: dac: ad8460: Stop using iio_device_claim_direct_scoped()
+Date: Tue,  4 Feb 2025 20:02:45 +0000
+Message-ID: <20250204200250.636721-24-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250204200250.636721-1-jic23@kernel.org>
 References: <20250204200250.636721-1-jic23@kernel.org>
@@ -85,41 +85,52 @@ Move directly to the new claim/release_direct() that allow sparse
 to check for unbalanced context.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>
 ---
- drivers/iio/dac/ad3552r-hs.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/iio/dac/ad8460.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index c1dae58c1975..cd8dabb60c55 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -129,16 +129,19 @@ static int ad3552r_hs_write_raw(struct iio_dev *indio_dev,
- 				int val, int val2, long mask)
+diff --git a/drivers/iio/dac/ad8460.c b/drivers/iio/dac/ad8460.c
+index 535ee3105af6..6e45686902dd 100644
+--- a/drivers/iio/dac/ad8460.c
++++ b/drivers/iio/dac/ad8460.c
+@@ -264,9 +264,12 @@ static ssize_t ad8460_write_toggle_en(struct iio_dev *indio_dev, uintptr_t priva
+ 	if (ret)
+ 		return ret;
+ 
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+-		return ad8460_enable_apg_mode(state, toggle_en);
+-	unreachable();
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	ret = ad8460_enable_apg_mode(state, toggle_en);
++	iio_device_release_direct(indio_dev);
++	return ret;
+ }
+ 
+ static ssize_t ad8460_read_powerdown(struct iio_dev *indio_dev, uintptr_t private,
+@@ -421,14 +424,17 @@ static int ad8460_write_raw(struct iio_dev *indio_dev,
+ 			    long mask)
  {
- 	struct ad3552r_hs_state *st = iio_priv(indio_dev);
+ 	struct ad8460_state *state = iio_priv(indio_dev);
 +	int ret;
  
  	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 		/* For RAW accesses, stay always in simple-spi. */
--		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--			return st->data->bus_reg_write(st->back,
--				    AD3552R_REG_ADDR_CH_DAC_16B(chan->channel),
--				    val, 2);
--		}
--		unreachable();
-+		ret = st->data->bus_reg_write(st->back,
-+			AD3552R_REG_ADDR_CH_DAC_16B(chan->channel),
-+			val, 2);
-+
-+		iio_device_release_direct(indio_dev);
-+		return ret;
- 	default:
- 		return -EINVAL;
- 	}
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+-			iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+-				return ad8460_set_sample(state, val);
+-			unreachable();
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
++			ret = ad8460_set_sample(state, val);
++			iio_device_release_direct(indio_dev);
++			return ret;
+ 		case IIO_CURRENT:
+ 			return regmap_write(state->regmap, AD8460_CTRL_REG(0x04),
+ 					    FIELD_PREP(AD8460_QUIESCENT_CURRENT_MSK, val));
 -- 
 2.48.1
 

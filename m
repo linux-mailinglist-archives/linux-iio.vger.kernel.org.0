@@ -1,146 +1,157 @@
-Return-Path: <linux-iio+bounces-14962-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14963-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD808A2701C
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 12:18:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85604A270A2
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 12:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62E6F161E0F
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 11:18:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D56116545D
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 11:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8772063E1;
-	Tue,  4 Feb 2025 11:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BD520C47E;
+	Tue,  4 Feb 2025 11:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YQ4NrwM4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="t1ScWaHS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-ed1-f65.google.com (mail-ed1-f65.google.com [209.85.208.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DC720127B
-	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 11:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DD820B1EC
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 11:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738667923; cv=none; b=F/JW2jL+vcraMoAL6U6NEYMFX3poA6Le+sQZOCqnBvb4+9miG5zoMl/nxGuZbJJSoMcZQ8O2gfbZ47/THcVhNcQS1r6IRV5PSBS0hFRQQ5uDnhYOB4WlSHNs7HSh1dA8AO0vt3tM8mzHTNxYUpIVJHfxbUCokHB+Ktjuu2ACD5E=
+	t=1738669837; cv=none; b=jqNQ3XPPY6xXw13Ss9AyKQ03YkPWOwVprH7iMKmKfujNY5cEtNkvsibwcj25/7e8K5VE5PKP27mLo6bUOsOhaBZDkfCZvBOLMOd3TLDTcF85o1e1cM0NEgQAm6iYyqRESuI+7hB8Wa+ov6EBMpW1pDlWmlzc4LeWKWoeD/AnRWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738667923; c=relaxed/simple;
-	bh=FeMzTB4TxHFBb04KkfAYzM+GWfZ2x73P89kK6WTaw00=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dk6pTgjb82m7LJqngfInnHoxnB4ml7T7H7abeOVte3agQuTxadEj8uS9DkTwQ13+QjNQZlKJ4xr4UlkkNr0w6Se+BOLOdv/c+ASeTh07TQPYxne7FLh0mW0bL6236Hfg/mAaU0N3ioCY7JT0Jyr6LWNE4/lR7ZJtQKyrCkGFskg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YQ4NrwM4; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4361815b96cso37510335e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 04 Feb 2025 03:18:41 -0800 (PST)
+	s=arc-20240116; t=1738669837; c=relaxed/simple;
+	bh=tQ1K1FUEH9Prrzkvqp1E5aMOd7QRsMSiOy67GBtJxOk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y7qBAvQkPItMM7MqipOnQE1/WMpo4+7+Ym4CZwjc+/TcqPPWdJQNp0I9A5EviP+O24/BJ4LB945e5QDBl0uV/KLJ1JvtRfYHkYKO4rpZKuGIJjIW/VZTL5sGJYWw5h+1EH2o2HR9t9p/pmGkuUV41wR2GpEMqeCTndWB0qj8H3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=t1ScWaHS; arc=none smtp.client-ip=209.85.208.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f65.google.com with SMTP id 4fb4d7f45d1cf-5d3d479b1e6so7701323a12.2
+        for <linux-iio@vger.kernel.org>; Tue, 04 Feb 2025 03:50:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738667920; x=1739272720; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5mhP8LiKBikXG8aVOM0BH6UI86v72MZsLtTtmlwEH4U=;
-        b=YQ4NrwM4Ghj/tkdN5XGyvJtMsLCt0obLdeDiwLul+60dTzLzPtkN178guv5/jD78Lu
-         b2eMM/q5vMFk3tyALAVS1/kYAINzrxFSlWfpY1LsDoStLQijHOydMJb/YWehBT1T6RoR
-         nuiXcPeknv9IsBdhkuJiHPJPXv1NS/na4MWKQa2kFqcy7j8hZWIJIqWUCbe88ky6y+1q
-         zRc3YFVglM4CqSfwa98f8L5GknMnEuyijnPJ12POWgRoHqc8fWdLTF3le9Qs3y64Qyjp
-         03SufLzx0Psy4ELySAlezH6TnpERCvaDdycf01O7qthTekYJxgb6MtbL4Iy4dGpkRZ1C
-         jpUA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738669832; x=1739274632; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=w8Z2b75njmPnz2OfBJEcJJjid7zHz8pgd99qOfTvtzs=;
+        b=t1ScWaHSUxy65wlHkbrD3ueL4qLwI9nFVaAUDvtLnRahby+6pe3zayx9T9sZc9i2F7
+         SRA8IweOGiO/3gQempcLF3Bwfalciw+/Tk8l7yp/f2ngiBx78be8cMu14/08F14Z5Q94
+         hz7ssPAQZUWtcjvCrdu3ZbU9XT2n95+0izh/cwFYWUTd0+17gWjOHN5xtzXv92MdR5qw
+         +mTE4KeVdU6bRNAo7S2Cyss/3ZrR0ZwogZt+wiGgF5vfMN9C1u9fD8Qao0LjlKId24HO
+         Phtip+8dtk8b20sez8XoxLFVfDeBsLDrO6hdm52k26Ka1o3KDiw6jENHBCP770K4m+b1
+         vtSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738667920; x=1739272720;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mhP8LiKBikXG8aVOM0BH6UI86v72MZsLtTtmlwEH4U=;
-        b=Sv23Srhhaql8VQdckPhmtu8CBdUCXkvFxCaJpA1TspHUlfLsiLYnZBwif/0wFDIGVQ
-         cpgTzjXnjPf0R0A59Mx2gWFNrt7gub8liL8v1DgnKpKLmjRUGxYjoetCckNvXUPUR73h
-         F7UCeVEhOUhuwcMTHI5mlSzSulsHu3Kxp4t5PbaOcUUpC4wszMhAKuVDJ7L23TM1lMJw
-         TGkI5gGr+0kapuew9eVyv9MmQbI8FW2q4f6ZvfjisKxe0bD0UTtT3LpokM3EA4rOA0cI
-         FAYxVU4jZXSe3qbZvsWPnkVGnPU/OcmSYgDC3bEMNTn8y/aAdeEobKOPr5GzdyI/QXYH
-         22PA==
-X-Gm-Message-State: AOJu0YzHegeypc1j9D/ccjeGTf3+JwHBRBMj1knGEyYBw+ZZy+vX+qs3
-	synGd8bav92ZvMByl1PzbBOjInfwMw/OMWvn28GJHY+8cqwqXpLPZLksdmSWUfM=
-X-Gm-Gg: ASbGncvSGmM286LziJm4H3fEa1mrBgP5jkAPZooeiGT5S9iRhWVXTicDTwFBIGPHaFT
-	H7vciZ/qsevbAZhfnkEMPDgZb5mf2nq2lkEDc0pWZdciP65bD767azUZymn9HdgfNwU/0I3cBNm
-	tiWKvj5DyLjE2QEN2lx3ay5glMaKF6Bhpo/7MeMXSm515jdMDozIqkN8WfXPIrxt/d9rqVWGLTJ
-	YhLoD6xp9K4vV2EWmaiVi/5Ir2zx/hvZxtNK2OHx7N7tG17B3/i7DyUg1BQQ2aul28tZTTp5pfW
-	sP5C64cYUYP1KKe10K3Z
-X-Google-Smtp-Source: AGHT+IFzl7/y6Jwc7f2kOr5FQm6oExyIULb06HdYpzPespKWBnXCKBwh2RzZYpUEYbMOms/34IE/kg==
-X-Received: by 2002:a05:600c:c17:b0:436:51bb:7a52 with SMTP id 5b1f17b1804b1-438dc3bd7e3mr237072185e9.7.1738667920155;
-        Tue, 04 Feb 2025 03:18:40 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-438dcc26b15sm221638245e9.11.2025.02.04.03.18.39
+        d=1e100.net; s=20230601; t=1738669832; x=1739274632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=w8Z2b75njmPnz2OfBJEcJJjid7zHz8pgd99qOfTvtzs=;
+        b=fNpW7XLdvT2tgBSvSSsdO01ycRRk8q0kF6DLMZTKOLN01zJj2CkrONCY4a2MxOhOGu
+         //p5vqPVWcLvC3m7Ib1q6QM/dSiq9EWn/RnUrYZIasabfofacf2dHZGx3FbFa6WAr3tt
+         nNKLcx/IEuP0E3SH7JMMXL6SKGNSREcGJ36oFX1r9NplLyT3AX736f/T+cu90Oc2IhmJ
+         ttYNaP4/NdLQAmbqZxjVKR3u1zhE88dvQ8tpgTNMEPedXIwf+yAG2MgXx8e7gkpq7HSW
+         ePwY/MqrU7EL/uSav6/l3qdwaFi9mlhX7Npi3o0QtHcyeTImfC93Ocj6bRnwnI7yW3Ga
+         fxPw==
+X-Gm-Message-State: AOJu0Yx81LVY9miuORsXAO64kQRI2IToWVJ+U/ESdyTrO42kv+7h6X8v
+	wNCDY2JEqGq4nVW6WABsUnzMKY1+/tenjiL2B9rCJmWitnLuFfzJE75lZcmouQs=
+X-Gm-Gg: ASbGncvEpst61Ue/8LQvRqRcv67ZuX/Zi3ALiyWlmiINuvpRHhznkxChoo/yUMLQAHi
+	pX0nT4rMZOjmlC8sKzYQeQ/aWM4KlBGIKnh/8y9zOqtL0PQRqz2jSmSMd63VicicrZDkQVvJy7R
+	X+k/l9bbD9fbNrT0YYrrhYJWKx5hDYibE10gnGx+/+rfXfgutWBZjVN18OdgQ5amg7Zm/DONXHq
+	yNPVeaf1Q6fW7Ju1z6KbkScWN3baTFUTWMZYlEqtm7HkwTH82zM+lah7bSAQxIgQI5EsTzZNaKg
+	UR6K95ZLqxUkL7k0nNZJKICc5bQmsHySrrK9iPLf2HA/22uqk6+iwlvcXg==
+X-Google-Smtp-Source: AGHT+IGgXgC4wk9xkBuVUSWP8c22FsU5qnsVpArvfz5yBEUrkJSvFPDarJdqAYn0+ivmHCFRw0e8nw==
+X-Received: by 2002:a05:6402:510f:b0:5dc:5ada:e0c7 with SMTP id 4fb4d7f45d1cf-5dc5efec13emr72192583a12.26.1738669831428;
+        Tue, 04 Feb 2025 03:50:31 -0800 (PST)
+Received: from localhost (p200300f65f018b0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f01:8b04::1b9])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7008b2c04sm704834066b.33.2025.02.04.03.50.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 03:18:39 -0800 (PST)
-Date: Tue, 4 Feb 2025 14:18:36 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
+        Tue, 04 Feb 2025 03:50:31 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [bug report] iio: magnetometer: add Allegro MicroSystems ALS31300
- 3-D Linear Hall Effect driver
-Message-ID: <db435a8b-7546-4d16-9a15-ee44dac849c9@stanley.mountain>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH] iio: adc: ad7124: Really disable all channels at probe time
+Date: Tue,  4 Feb 2025 12:50:23 +0100
+Message-ID: <20250204115023.265813-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2282; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=tQ1K1FUEH9Prrzkvqp1E5aMOd7QRsMSiOy67GBtJxOk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnof7/vKlINUZclvoGk7g8N22KTPD2vfs3AUynn 7r7MJPmkuGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ6H+/wAKCRCPgPtYfRL+ TiaBB/9gFSNG5KTdkMDNrnZVOkWwwA+h+xH3qBlLMRDFaq4ifY+gZp/VTMNvhvp5MZmoCHPG5bU k0P2tp5mXerKmZrlvSqI6laEwpc1QYLtKULWUmlown5jjtdFpAdeRwLPS6zPJEwOL1g9Ac+nzBE 1eK7/ob7o8Z5HHrv7SfbzrN2o3wMMlZTjzdrYhBQfuWPqUkuAl4/mrAuNVxV/uTGYs0PN6aPOio Hvb0wRqEvMMNYD5SZudQGJruq57TdNhYWEiSOcnrdKLzfGdwkSkZ9UNFCtn6B8cD13uFcO84bNo fcsW3ApI2uPhbxhc/2wD7/09l5vq6SpPB9OeQsPABzCG4q7q
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Hello Neil Armstrong,
+If one or more of the 16 channels are enabled and the driver is not
+aware of that, unexpected things happen because different channels are
+used than intended. To prevent that, all channels should be disabled at
+probe time. In Commit 4be339af334c ("iio: adc: ad7124: Disable all
+channels at probe time") I intended do that, however only the channels
+that are potentially used by the driver and not all channels are
+disabled since then. So disable all 16 channels and not only the used
+ones.
 
-Commit 3c9b6fd74188 ("iio: magnetometer: add Allegro MicroSystems
-ALS31300 3-D Linear Hall Effect driver") from Oct 30, 2024
-(linux-next), leads to the following Smatch static checker warning:
+Also fix the same issue in the .disable_all() callback.
 
-	drivers/iio/magnetometer/als31300.c:248 als31300_trigger_handler()
-	warn: check that 'scan.timestamp' doesn't leak information
+Fixes: 4be339af334c ("iio: adc: ad7124: Disable all channels at probe time")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
 
-drivers/iio/magnetometer/als31300.c
-    226 static irqreturn_t als31300_trigger_handler(int irq, void *p)
-    227 {
-    228         struct iio_poll_func *pf = p;
-    229         struct iio_dev *indio_dev = pf->indio_dev;
-    230         struct als31300_data *data = iio_priv(indio_dev);
-    231         struct {
-    232                 u16 temperature;
-    233                 s16 channels[3];
-    234                 aligned_s64 timestamp;
-    235         } scan;
-    236         s16 x, y, z;
-    237         int ret;
-    238         u16 t;
-    239 
-    240         ret = als31300_get_measure(data, &t, &x, &y, &z);
-    241         if (ret)
-    242                 goto trigger_out;
-    243 
-    244         scan.temperature = t;
-    245         scan.channels[0] = x;
-    246         scan.channels[1] = y;
-    247         scan.channels[2] = z;
---> 248         iio_push_to_buffers_with_timestamp(indio_dev, &scan,
-    249                                            pf->timestamp);
+this patch is based on v6.14-rc1 + the patch "iio: adc: ad7124: Micro-optimize
+channel disabling"
+(https://lore.kernel.org/linux-iio/20250120140708.1093655-2-u.kleine-koenig@baylibre.com)
+that Jonathan claimed to have taken already.
 
-So I guess we had some CVEs recently with regards to
-iio_push_to_buffers_with_timestamp() so this was added as a "must be
-initialized" thing.  The "aligned_s64 timestamp" struct member is
-sometimes initialized in iio_push_to_buffers_with_timestamp() but not
-always.  So this seems like a valid static checker warning?
+Best regards
+Uwe
 
-These are simple enoug to fix if we add a "scan = {};" initializer
-but the IIO function is slightly new to me so I thought I would consult.
-There was also one in trigger_handler().
+ drivers/iio/adc/ad7124.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-drivers/media/pci/mgb4/mgb4_trigger.c:99 trigger_handler()
-warn: check that 'scan' doesn't leak information (struct has a hole after 'data')
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 2fdeb3247952..6bc418d38820 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -550,11 +550,10 @@ static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
+ 
+ static int ad7124_disable_all(struct ad_sigma_delta *sd)
+ {
+-	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
+ 	int ret;
+ 	int i;
+ 
+-	for (i = 0; i < st->num_channels; i++) {
++	for (i = 0; i < 16; i++) {
+ 		ret = ad7124_disable_one(sd, i);
+ 		if (ret < 0)
+ 			return ret;
+@@ -1017,11 +1016,10 @@ static int ad7124_setup(struct ad7124_state *st)
+ 		 * set all channels to this default value.
+ 		 */
+ 		ad7124_set_channel_odr(st, i, 10);
+-
+-		/* Disable all channels to prevent unintended conversions. */
+-		ad_sd_write_reg(&st->sd, AD7124_CHANNEL(i), 2, 0);
+ 	}
+ 
++	ad7124_disable_all(&st->sd);
++
+ 	ret = ad_sd_write_reg(&st->sd, AD7124_ADC_CONTROL, 2, st->adc_control);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to setup CONTROL register\n");
 
-    250 
-    251 trigger_out:
-    252         iio_trigger_notify_done(indio_dev->trig);
-    253 
-    254         return IRQ_HANDLED;
-    255 }
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+prerequisite-patch-id: c8d3727852b9c3bb4dcd2f16508bebbd093a3768
+-- 
+2.47.1
 
-regards,
-dan carpenter
 

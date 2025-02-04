@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-14995-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14996-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84BAA27C52
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:03:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BFFA27C55
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76ADE1650E5
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:03:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B25C47A1EEF
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1555D1FA15E;
-	Tue,  4 Feb 2025 20:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E081E9B27;
+	Tue,  4 Feb 2025 20:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tzvbGM7d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lL7+agg+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64C81CEEBB
-	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DBB14B094
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699388; cv=none; b=Qe0pGBPMXoFWvSE3lQHdknSvwZueoLxX8IAaBinRbjgPNQVHzKvBYSR42w/qz+v55tjCJG4/9dkxVce2Xy557jWQWefNWYuu97+EC/1Q/2NjT4iTpOAkuxLyy+331I3BEH4kOnjw6RpYxhmdjs3EnZftNU+LWw2gbECvkfJYs2g=
+	t=1738699393; cv=none; b=JT1JLo8PvHDUx0kisHDI/MxM+vWYKeLnhn9K4WVyQmfG/v9H1dduNPgn2alB4+VgOi+c72II/KxBaV/ylzBXvoBrLw3E81/VHYhI5e659HeNX0+ksgfXDFO+y+0kUdYMlOoj0/NokPLXbuVFYqbT5UBiNOG3GgYCU0EMrMvbR2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699388; c=relaxed/simple;
-	bh=IQXZ9uesiy3SKg/FgVYHBeGKICU2SVFd1r1iTn5DSwo=;
+	s=arc-20240116; t=1738699393; c=relaxed/simple;
+	bh=4XpQ7+x9bi8nk6ozv376eH+cFSKOzVefVFmWGSraiL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Di/Ttvc61CE0+rsXj90fHWaCk9JYKpYQXmdOEaWEg9r+nquviNUis3uLajiueC556DqYL+tKJ1KnoF7XDtSK6tg9lhL6TKVymprEmWu8veXTTrZgNZc1VC0v9Hv6geJOtV+6TuhlF8UZon8OOmLeHD3vF0TyxGYS1scj9Fz5EdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tzvbGM7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FF4C4CEE2;
-	Tue,  4 Feb 2025 20:03:03 +0000 (UTC)
+	 MIME-Version; b=lWf0gs/RyWHC1uSMFmrI/1rP7B5wX4Bpn0hreWR33p9W+3/ShourGz9fAwSi8BNUP9kcPDYrVn9hKyaQ1gVxJWv2eyaIBLhloKnbIAWguaSF/yVHjDeUwrWvqjekrNk3YI/nlW8gCy3sO3dGiTdJgXUgX9K35YT8Z1qIyGp5yD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lL7+agg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1FBC4CEDF;
+	Tue,  4 Feb 2025 20:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738699388;
-	bh=IQXZ9uesiy3SKg/FgVYHBeGKICU2SVFd1r1iTn5DSwo=;
+	s=k20201202; t=1738699393;
+	bh=4XpQ7+x9bi8nk6ozv376eH+cFSKOzVefVFmWGSraiL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzvbGM7dLi5DIkUExtl09itx7N+/jGpQvQYS9RLahapKxGyGZZ5k0N2c/nhPALUtn
-	 rMTaZOvvrHpOgeOBlBUEwhnkejDT8sWfg0oh2yuNMKvolmVvaV2obXkicIsX6Opv4F
-	 ecdoNLaQ3DX0Umfrri5DlrRsjdLd9ROOCu96WVPyT9pNayabebeMP17fUsmTf5vuAn
-	 qxrhis9SD7X9NPpOqC8lQGpQ09eeeX89KKQ3HJnQXLLfwbMHlYtnzkTQpJaPP9vzxE
-	 RB1JhtgvTuhNOoxqzCwf+w2k5hvAdvJ6E6+Wdr82/8sM9IvSEAmas8d95DjqBn3bqx
-	 SKXu5X3KsCZNA==
+	b=lL7+agg+CtYO5VfAi13HUe0KLhIVxfz7jQ0UnhV8DowFNpokSagd4kVF6Dm7XT8aJ
+	 ge8mWgXFLRXrjdyfBZqwa9Jpxf3udkSBJQXCSwZRUYMsuybCB69nSKJIlGY/GD7KKN
+	 vNY4lC32fseTKVkSCwCxwq7/VMg2qLK9m091obqgJUFXTu1dGH5iykNH3x8Btr/avG
+	 zY6piccDt930rKviC8iRcIqynJP4bE6Mun/72lwA7eJVw7iYTCe425+VDMv5R1TW7W
+	 y3aDCXqqkMXIBotbJn44aaJVFq6GeVmnbrx8AoljWiGN1b9q5SNJc2b0JNrMrWhNLk
+	 HyE9xKqtJ0YPA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
@@ -61,9 +61,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Antoni Pokusinski <apokusinski01@gmail.com>,
 	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 01/27] iio: core: Rework claim and release of direct mode to work with sparse.
-Date: Tue,  4 Feb 2025 20:02:23 +0000
-Message-ID: <20250204200250.636721-2-jic23@kernel.org>
+Subject: [PATCH 02/27] iio: chemical: scd30: Use guard(mutex) to allow early returns
+Date: Tue,  4 Feb 2025 20:02:24 +0000
+Message-ID: <20250204200250.636721-3-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250204200250.636721-1-jic23@kernel.org>
 References: <20250204200250.636721-1-jic23@kernel.org>
@@ -77,78 +77,169 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Initial thought was to do something similar to __cond_lock()
+Auto cleanup based release of the lock allows for simpler code flow in a
+few functions with large multiplexing style switch statements and no
+common operations following the switch.
 
-	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
-+ Appropriate static inline iio_device_release_direct_mode()
-
-However with that, sparse generates false positives. E.g.
-
-drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock
-
-So instead, this patch rethinks the return type and makes it more
-'conditional lock like' (which is part of what is going on under the hood
-anyway) and return a boolean - true for successfully acquired, false for
-did not acquire.
-
-To allow a migration path given the rework is now non trivial, take a leaf
-out of the naming of the conditional guard we currently have for IIO
-device direct mode and drop the _mode postfix from the new functions giving
-iio_device_claim_direct() and iio_device_release_direct()
-
-Whilst the kernel supports __cond_acquires() upstream sparse does not
-yet do so.  Hence rely on sparse expanding a static inline wrapper
-to explicitly see whether __acquire() is called.
-
-Note that even with the solution here, sparse sometimes gives false
-positives. However in the few cases seen they were complex code
-structures that benefited from simplification anyway.
-
+Suggested-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
 ---
-v1: (Non RFC). Drop the __cond_acquires and __releases markings
-   as sparse support is not yet available.
----
- include/linux/iio/iio.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/iio/chemical/scd30_core.c | 63 ++++++++++++++-----------------
+ 1 file changed, 28 insertions(+), 35 deletions(-)
 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 56161e02f002..fe33835b19cf 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -662,6 +662,31 @@ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
- int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
- void iio_device_release_direct_mode(struct iio_dev *indio_dev);
+diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
+index d613c54cb28d..7a864b52adf1 100644
+--- a/drivers/iio/chemical/scd30_core.c
++++ b/drivers/iio/chemical/scd30_core.c
+@@ -6,6 +6,7 @@
+  */
+ #include <linux/bits.h>
+ #include <linux/completion.h>
++#include <linux/cleanup.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -198,112 +199,104 @@ static int scd30_read_raw(struct iio_dev *indio_dev, struct iio_chan_spec const
+ 			  int *val, int *val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 	u16 tmp;
  
-+/*
-+ * Helper functions that allow claim and release of direct mode
-+ * in a fashion that doesn't generate many false positives from sparse.
-+ * Note this must remain static inline in the header so that sparse
-+ * can see the __acquire() marking. Revisit when sparse supports
-+ * __cond_acquires()
-+ */
-+static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
-+{
-+	int ret = iio_device_claim_direct_mode(indio_dev);
-+
-+	if (ret)
-+		return false;
-+
-+	__acquire(iio_dev);
-+
-+	return true;
-+}
-+
-+static inline void iio_device_release_direct(struct iio_dev *indio_dev)
-+{
-+	iio_device_release_direct_mode(indio_dev);
-+	__release(indio_dev);
-+}
-+
- /*
-  * This autocleanup logic is normally used via
-  * iio_device_claim_direct_scoped().
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		if (chan->output) {
+ 			*val = state->pressure_comp;
+-			ret = IIO_VAL_INT;
+-			break;
++			return IIO_VAL_INT;
+ 		}
+ 
+ 		ret = iio_device_claim_direct_mode(indio_dev);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = scd30_read(state);
+ 		if (ret) {
+ 			iio_device_release_direct_mode(indio_dev);
+-			break;
++			return ret;
+ 		}
+ 
+ 		*val = state->meas[chan->address];
+ 		iio_device_release_direct_mode(indio_dev);
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 0;
+ 		*val2 = 1;
+-		ret = IIO_VAL_INT_PLUS_MICRO;
+-		break;
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = scd30_command_read(state, CMD_MEAS_INTERVAL, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = 0;
+ 		*val2 = 1000000000 / tmp;
+-		ret = IIO_VAL_INT_PLUS_NANO;
+-		break;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		ret = scd30_command_read(state, CMD_TEMP_OFFSET, &tmp);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		*val = tmp;
+-		ret = IIO_VAL_INT;
+-		break;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
+ 			   int val, int val2, long mask)
+ {
+ 	struct scd30_state *state = iio_priv(indio_dev);
+-	int ret = -EINVAL;
++	int ret;
+ 
+-	mutex_lock(&state->lock);
++	guard(mutex)(&state->lock);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (val)
+-			break;
++			return -EINVAL;
+ 
+ 		val = 1000000000 / val2;
+ 		if (val < SCD30_MEAS_INTERVAL_MIN_S || val > SCD30_MEAS_INTERVAL_MAX_S)
+-			break;
++			return -EINVAL;
+ 
+ 		ret = scd30_command_write(state, CMD_MEAS_INTERVAL, val);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		state->meas_interval = val;
+-		break;
++		return 0;
+ 	case IIO_CHAN_INFO_RAW:
+ 		switch (chan->type) {
+ 		case IIO_PRESSURE:
+ 			if (val < SCD30_PRESSURE_COMP_MIN_MBAR ||
+ 			    val > SCD30_PRESSURE_COMP_MAX_MBAR)
+-				break;
++				return -EINVAL;
+ 
+ 			ret = scd30_command_write(state, CMD_START_MEAS, val);
+ 			if (ret)
+-				break;
++				return ret;
+ 
+ 			state->pressure_comp = val;
+-			break;
++			return 0;
+ 		default:
+-			break;
++			return -EINVAL;
+ 		}
+-		break;
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		if (val < 0 || val > SCD30_TEMP_OFFSET_MAX)
+-			break;
++			return -EINVAL;
+ 		/*
+ 		 * Manufacturer does not explicitly specify min/max sensible
+ 		 * values hence check is omitted for simplicity.
+ 		 */
+-		ret = scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++		return scd30_command_write(state, CMD_TEMP_OFFSET / 10, val);
++	default:
++		return -EINVAL;
+ 	}
+-	mutex_unlock(&state->lock);
+-
+-	return ret;
+ }
+ 
+ static int scd30_write_raw_get_fmt(struct iio_dev *indio_dev, struct iio_chan_spec const *chan,
 -- 
 2.48.1
 

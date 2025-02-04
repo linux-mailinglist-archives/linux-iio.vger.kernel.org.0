@@ -1,137 +1,267 @@
-Return-Path: <linux-iio+bounces-15022-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15018-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9DCA27C79
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:05:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE38A27C73
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 670F77A225D
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F235D7A2090
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A951A2063F9;
-	Tue,  4 Feb 2025 20:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CD4218AC4;
+	Tue,  4 Feb 2025 20:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijjsQbCL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATqxfuIi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DBA14B094
-	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43FC14B094;
+	Tue,  4 Feb 2025 20:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699525; cv=none; b=K31KOkuuaIZ/iBzU5sTH/2KbTSEdnUaI7GS/QeXHJxHEErqzGQplIan6saCsSIVFqVVOti7wQN/glhz+jmHH0ANlqWMnCIXOWK2da3MVRa8I2rrz2UIvFy3bVupsd1Aj6jq6QU3SaAhYf6lN/MsKYGretzop30JS3dDxHAssiEk=
+	t=1738699499; cv=none; b=ikzxlCo5P5d2rydWolcUF+zZVUgmvmVqSfEsw+43hsiADjjFiAAjP1y6+O4HLqpgyTef9tTH9Km4poDYLK3IGmLgqZVDFLeo6H3KHkC1WgUshDKOyahH13FsfDY3xiZlesqK0zl0VUDkpR2t8JJXp+YBOgiM0yDw5aEKy1snNY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699525; c=relaxed/simple;
-	bh=j704jEM6zRl8dthwMF87HDqSIh2q28YaY8n1BVqvnxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qw0NmM4++a//BgT4nI6qQELOMbD+pSQQWmp3jzYSlxwAHc2SKCupsBzPHae+wmCrzE0tl3IEDoTc3n5hkaY6hOEAv1KaSbklAta0JYZ/JzDCCH/1Llb4WDbJxwt3fRwoy9dD0QMdfs43Ddz0nUTU3Cws7zs8Qf6kbCNRdgoIMRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijjsQbCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1F2C4CEDF;
-	Tue,  4 Feb 2025 20:05:18 +0000 (UTC)
+	s=arc-20240116; t=1738699499; c=relaxed/simple;
+	bh=6y3E8+OpE5ZmqjX7Om9uPkD+ZQQXyu1GMUrqnd3TjQk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JHa0/pwhn3IvK/N+IniLqc3WgNTcsXkpHQ+K62FGBmNpOU2fEZscyZz7zjSeWhQNQ2LXupQMlOTifcH+xqdvSFe2J9TWiO5eOTnD6OOH0PH7a1mqpIpOA0HHsutsAqfA6KwM2/k9flKcoAbTCoU/LOpaGO8MK7PX1JcpuQGPcd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATqxfuIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF3FC4CEE2;
+	Tue,  4 Feb 2025 20:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738699524;
-	bh=j704jEM6zRl8dthwMF87HDqSIh2q28YaY8n1BVqvnxE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijjsQbCLbSYa4N+/U4AUW5PuTkzRsZ9BQQ0B6mRvM4FB148/YWt8LccharDb0i5RU
-	 RwuRBkGQPBANyFCz/5h3HpzsfweWaRJBZfFSIccvAiXRjhB+KREGqcsxF3mtUezLYl
-	 0ST4XfyfDPh8B4VLG5nnRVqNIRpjzbZJ+iqJyHDyCsGBeT+FAVNt8uDLro+prERfIf
-	 BDyoL/k/EIN0VDfJEDeawLixn8x/ZQXlvv2fwUKGnEwpNR8JaTaSUDfEI6pIOF5bWC
-	 Y4AqLVa7+DYAs9g7f4a6P7fNZBwXfwxZquwV5dKqTungZoNDvXaK8eviJMBViDokCu
-	 Fyl00NkUdLcjw==
+	s=k20201202; t=1738699499;
+	bh=6y3E8+OpE5ZmqjX7Om9uPkD+ZQQXyu1GMUrqnd3TjQk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ATqxfuIih0h8cjA2h0bfzeW8/14cKwjo0aYg/EDyMiNfuHEuMgbIUArMXwpxbH8tQ
+	 Da4cVQL4P8+pftQUNXCfpHfx7R/c8T5y9fXpFVdrQBkPwgdoDHoEsw5o2N/iwNbzt8
+	 snOmZS5hwa+n4hlL3owOGHovG/7gC5BR91zkSxLubTB/2goLFqeTbHt28F5FnmdKY4
+	 hCflsbEgNgW4l3dpav/XeOnh8UfB9jdhSJ/P2ICbj8kqOcpTDEmCzBb1u2EZeyPCm/
+	 PCiZB/g/1ohi/zf1NFeXq1TtDI49Zm/hGspFF4kYcp0temKz7YcZ9Fx3qzuE1DJICk
+	 QRfqRdleBGwGQ==
+Date: Tue, 4 Feb 2025 20:04:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: Mudit Sharma <muditsharma.info@gmail.com>,
-	Julien Stephan <jstephan@baylibre.com>,
-	Mariel Tinaco <Mariel.Tinaco@analog.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Gustavo Silva <gustavograzs@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Gwendal Grignou <gwendal@chromium.org>,
-	Antoni Pokusinski <apokusinski01@gmail.com>,
-	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 27/27] iio: Drop iio_device_claim_direct_scoped() and related infrastructure
-Date: Tue,  4 Feb 2025 20:02:49 +0000
-Message-ID: <20250204200250.636721-28-jic23@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250204200250.636721-1-jic23@kernel.org>
-References: <20250204200250.636721-1-jic23@kernel.org>
+To: Michal Simek <michal.simek@amd.com>
+Cc: <linux-kernel@vger.kernel.org>, <monstr@monstr.eu>,
+ <michal.simek@xilinx.com>, <git@xilinx.com>, Anand Ashok Dumbre
+ <anand.ashok.dumbre@xilinx.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, "Conor Dooley"
+ <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, Harini Katakam
+ <harini.katakam@amd.com>, Jakub Kicinski <kuba@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>,
+ Mark Brown <broonie@kernel.org>, Michael Tretter
+ <m.tretter@pengutronix.de>, Michael Turquette <mturquette@baylibre.com>,
+ Mubin Sayyed <mubin.sayyed@amd.com>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Niklas Cassel <cassel@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Shyam Pandey
+ <radhey.shyam.pandey@amd.com>, Stephen Boyd <sboyd@kernel.org>, Vinod Koul
+ <vkoul@kernel.org>, "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE
+ BINDINGS" <devicetree@vger.kernel.org>, "open list:DMA GENERIC OFFLOAD
+ ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>, "moderated list:ARM/ZYNQ
+ ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, "open list:COMMON CLK
+ FRAMEWORK" <linux-clk@vger.kernel.org>, "open list:LIBATA SUBSYSTEM (Serial
+ and Parallel ATA drivers)" <linux-ide@vger.kernel.org>, "open list:XILINX
+ AMS DRIVER" <linux-iio@vger.kernel.org>, "open list:SPI SUBSYSTEM"
+ <linux-spi@vger.kernel.org>, "open list:USB SUBSYSTEM"
+ <linux-usb@vger.kernel.org>, "open list:NETWORKING DRIVERS"
+ <netdev@vger.kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: xilinx: Deprecate header with firmware
+ constants
+Message-ID: <20250204200446.32bfb3f8@jic23-huawei>
+In-Reply-To: <2a6f0229522327939e6893565e540b75f854a37b.1738600745.git.michal.simek@amd.com>
+References: <cover.1738600745.git.michal.simek@amd.com>
+	<2a6f0229522327939e6893565e540b75f854a37b.1738600745.git.michal.simek@amd.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 3 Feb 2025 17:39:11 +0100
+Michal Simek <michal.simek@amd.com> wrote:
 
-Scoped conditional automated cleanup turned out to be harder to work
-with than expected. Despite several attempts to find a better solution
-non have surfaced. As such rip it out of the IIO code.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- include/linux/iio/iio.h | 27 ---------------------------
- 1 file changed, 27 deletions(-)
-
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index fe33835b19cf..f8541468d391 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -9,7 +9,6 @@
- 
- #include <linux/device.h>
- #include <linux/cdev.h>
--#include <linux/cleanup.h>
- #include <linux/slab.h>
- #include <linux/iio/types.h>
- /* IIO TODO LIST */
-@@ -687,32 +686,6 @@ static inline void iio_device_release_direct(struct iio_dev *indio_dev)
- 	__release(indio_dev);
- }
- 
--/*
-- * This autocleanup logic is normally used via
-- * iio_device_claim_direct_scoped().
-- */
--DEFINE_GUARD(iio_claim_direct, struct iio_dev *, iio_device_claim_direct_mode(_T),
--	     iio_device_release_direct_mode(_T))
--
--DEFINE_GUARD_COND(iio_claim_direct, _try, ({
--			struct iio_dev *dev;
--			int d = iio_device_claim_direct_mode(_T);
--
--			if (d < 0)
--				dev = NULL;
--			else
--				dev = _T;
--			dev;
--		}))
--
--/**
-- * iio_device_claim_direct_scoped() - Scoped call to iio_device_claim_direct.
-- * @fail: What to do on failure to claim device.
-- * @iio_dev: Pointer to the IIO devices structure
-- */
--#define iio_device_claim_direct_scoped(fail, iio_dev) \
--	scoped_cond_guard(iio_claim_direct_try, fail, iio_dev)
--
- int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
- void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
- 
--- 
-2.48.1
+> Firmware contants do not fit the purpose of bindings because they are not
+> independent IDs for abstractions. They are more or less just contants which
+> better to wire via header with DT which is using it.
+> That's why add deprecated message to dt binding header and also update
+> existing dt bindings not to use macros from the header  and replace them by
+> it's value. Actually value is not relevant because it is only example.
+> 
+> The similar changes have been done by commit 9d9292576810 ("dt-bindings:
+> pinctrl: samsung: deprecate header with register constants").
+> 
+> Signed-off-by: Michal Simek <michal.simek@amd.com>
+For IIO
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> 
+>  Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml  | 4 +---
+>  .../bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml           | 3 +--
+>  .../devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml       | 3 +--
+>  Documentation/devicetree/bindings/net/cdns,macb.yaml       | 7 +++----
+>  Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml | 3 +--
+>  Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml     | 3 +--
+>  include/dt-bindings/clock/xlnx-zynqmp-clk.h                | 7 +++++++
+>  7 files changed, 15 insertions(+), 15 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
+> index 9952e0ef7767..6ad78429dc74 100644
+> --- a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
+> +++ b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
+> @@ -163,11 +163,9 @@ additionalProperties: false
+>  
+>  examples:
+>    - |
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>      #include <dt-bindings/interrupt-controller/irq.h>
+>      #include <dt-bindings/power/xlnx-zynqmp-power.h>
+>      #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>      #include <dt-bindings/phy/phy.h>
+>  
+>      sata: ahci@fd0c0000 {
+> @@ -175,7 +173,7 @@ examples:
+>          reg = <0xfd0c0000 0x200>;
+>          interrupt-parent = <&gic>;
+>          interrupts = <0 133 IRQ_TYPE_LEVEL_HIGH>;
+> -        clocks = <&zynqmp_clk SATA_REF>;
+> +        clocks = <&zynqmp_clk 22>;
+>          ceva,p0-cominit-params = /bits/ 8 <0x0F 0x25 0x18 0x29>;
+>          ceva,p0-comwake-params = /bits/ 8 <0x04 0x0B 0x08 0x0F>;
+>          ceva,p0-burst-params = /bits/ 8 <0x0A 0x08 0x4A 0x06>;
+> diff --git a/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml b/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
+> index ac3198953b8e..b5399c65a731 100644
+> --- a/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
+> +++ b/Documentation/devicetree/bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml
+> @@ -75,7 +75,6 @@ additionalProperties: false
+>  
+>  examples:
+>    - |
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>  
+>      fpd_dma_chan1: dma-controller@fd500000 {
+>        compatible = "xlnx,zynqmp-dma-1.0";
+> @@ -84,7 +83,7 @@ examples:
+>        interrupts = <0 117 0x4>;
+>        #dma-cells = <1>;
+>        clock-names = "clk_main", "clk_apb";
+> -      clocks = <&zynqmp_clk GDMA_REF>, <&zynqmp_clk LPD_LSBUS>;
+> +      clocks = <&zynqmp_clk 19>, <&zynqmp_clk 31>;
+>        xlnx,bus-width = <128>;
+>        dma-coherent;
+>      };
+> diff --git a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> index 8cbad7e792b6..a403392fb263 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/xlnx,zynqmp-ams.yaml
+> @@ -193,7 +193,6 @@ additionalProperties: false
+>  
+>  examples:
+>    - |
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>  
+>      bus {
+>          #address-cells = <2>;
+> @@ -204,7 +203,7 @@ examples:
+>              interrupt-parent = <&gic>;
+>              interrupts = <0 56 4>;
+>              reg = <0x0 0xffa50000 0x0 0x800>;
+> -            clocks = <&zynqmp_clk AMS_REF>;
+> +            clocks = <&zynqmp_clk 70>;
+>              #address-cells = <1>;
+>              #size-cells = <1>;
+>              #io-channel-cells = <1>;
+> diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> index 3c30dd23cd4e..8d69846b2e09 100644
+> --- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> +++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> @@ -197,7 +197,6 @@ examples:
+>      };
+>  
+>    - |
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>      #include <dt-bindings/power/xlnx-zynqmp-power.h>
+>      #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
+>      #include <dt-bindings/phy/phy.h>
+> @@ -210,9 +209,9 @@ examples:
+>                      interrupt-parent = <&gic>;
+>                      interrupts = <0 59 4>, <0 59 4>;
+>                      reg = <0x0 0xff0c0000 0x0 0x1000>;
+> -                    clocks = <&zynqmp_clk LPD_LSBUS>, <&zynqmp_clk GEM1_REF>,
+> -                             <&zynqmp_clk GEM1_TX>, <&zynqmp_clk GEM1_RX>,
+> -                             <&zynqmp_clk GEM_TSU>;
+> +                    clocks = <&zynqmp_clk 31>, <&zynqmp_clk 105>,
+> +                             <&zynqmp_clk 51>, <&zynqmp_clk 50>,
+> +                             <&zynqmp_clk 44>;
+>                      clock-names = "pclk", "hclk", "tx_clk", "rx_clk", "tsu_clk";
+>                      #address-cells = <1>;
+>                      #size-cells = <0>;
+> diff --git a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
+> index 04d4d3b4916d..02cf1314367b 100644
+> --- a/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
+> +++ b/Documentation/devicetree/bindings/spi/spi-zynqmp-qspi.yaml
+> @@ -65,14 +65,13 @@ allOf:
+>  
+>  examples:
+>    - |
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>      soc {
+>        #address-cells = <2>;
+>        #size-cells = <2>;
+>  
+>        qspi: spi@ff0f0000 {
+>          compatible = "xlnx,zynqmp-qspi-1.0";
+> -        clocks = <&zynqmp_clk QSPI_REF>, <&zynqmp_clk LPD_LSBUS>;
+> +        clocks = <&zynqmp_clk 53>, <&zynqmp_clk 82>;
+>          clock-names = "ref_clk", "pclk";
+>          interrupts = <0 15 4>;
+>          interrupt-parent = <&gic>;
+> diff --git a/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml b/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
+> index 00f87a558c7d..b5843f4d17d8 100644
+> --- a/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
+> +++ b/Documentation/devicetree/bindings/usb/dwc3-xilinx.yaml
+> @@ -101,7 +101,6 @@ examples:
+>      #include <dt-bindings/dma/xlnx-zynqmp-dpdma.h>
+>      #include <dt-bindings/power/xlnx-zynqmp-power.h>
+>      #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
+> -    #include <dt-bindings/clock/xlnx-zynqmp-clk.h>
+>      #include <dt-bindings/reset/xlnx-zynqmp-resets.h>
+>      #include <dt-bindings/phy/phy.h>
+>      axi {
+> @@ -113,7 +112,7 @@ examples:
+>              #size-cells = <0x2>;
+>              compatible = "xlnx,zynqmp-dwc3";
+>              reg = <0x0 0xff9d0000 0x0 0x100>;
+> -            clocks = <&zynqmp_clk USB0_BUS_REF>, <&zynqmp_clk USB3_DUAL_REF>;
+> +            clocks = <&zynqmp_clk 32>, <&zynqmp_clk 34>;
+>              clock-names = "bus_clk", "ref_clk";
+>              power-domains = <&zynqmp_firmware PD_USB_0>;
+>              resets = <&zynqmp_reset ZYNQMP_RESET_USB1_CORERESET>,
+> diff --git a/include/dt-bindings/clock/xlnx-zynqmp-clk.h b/include/dt-bindings/clock/xlnx-zynqmp-clk.h
+> index cdc4c0b9a374..f0f7ddd3dcbd 100644
+> --- a/include/dt-bindings/clock/xlnx-zynqmp-clk.h
+> +++ b/include/dt-bindings/clock/xlnx-zynqmp-clk.h
+> @@ -9,6 +9,13 @@
+>  #ifndef _DT_BINDINGS_CLK_ZYNQMP_H
+>  #define _DT_BINDINGS_CLK_ZYNQMP_H
+>  
+> +/*
+> + * These bindings are deprecated, because they do not match the actual
+> + * concept of bindings but rather contain pure firmware values.
+> + * Instead include the header in the DTS source directory.
+> + */
+> +#warning "These bindings are deprecated. Instead use the header in the DTS source directory."
+> +
+>  #define IOPLL			0
+>  #define RPLL			1
+>  #define APLL			2
 
 

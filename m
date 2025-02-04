@@ -1,171 +1,237 @@
-Return-Path: <linux-iio+bounces-14968-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14969-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CFAA272B2
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 14:25:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D73A27389
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 14:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E5A3A6A43
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 13:24:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64EF63A1345
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 13:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80106212D70;
-	Tue,  4 Feb 2025 12:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F861216616;
+	Tue,  4 Feb 2025 13:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="axQdsfKS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="im+TqnAe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12ED20CCD2;
-	Tue,  4 Feb 2025 12:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856B521660D;
+	Tue,  4 Feb 2025 13:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738673962; cv=none; b=W4WBp3MNfuwjeea97bO0hpGkWY1SkMxhMkLVhECLYCVFo7tfC0PWjIqxHsZUlXqBXB/czGLjNMhpfqDquA/pKfHC4zcUexWshwyxODplNffX8EKqHEJ7oC684B/aFLNkoi5Gu929VXxIwoCP4+9W2Ajsya2oTvfrxZ8G44A5Hd0=
+	t=1738676456; cv=none; b=maEA5NRC5WPMbAK39OWUVn62OdliOGp4mzJ1tTjdxZdFeONhNhFUtUcijBfeKDe/8+AReJBbhEW6I4+yHaK9UtyeHjbBkbF56fz5W/ZJGmJ2rJrVMArHFyY0CGv9+5Wr3OXWQudyzhoxP8d5rNignyPVpu8ErxJr6UFByeruexA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738673962; c=relaxed/simple;
-	bh=3Hh2XQY/1a4amJk/a1M5JR3lj03KpXSUbkYezYOzE6w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6lE96ZLEzhgNpp5+u1eLggeqeJYx+gER8AnqZyEikPAa6KBDyvGWCf8P+vbtXxCcAmCKg4j/WCCZXm6598fVa7osX7kC+iI54ahxF/X4/Oz9gPveHN8M2oS/AshH56K3Pwo6GZP33CnkL81P/EEN90YCpaEawflyjtqtseJh30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=axQdsfKS; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1738676456; c=relaxed/simple;
+	bh=DWfZZyNiHrlfTSKF/UZWhyhu1z/qId1iFLKooHKvS2c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a4U8PPCakvNXAXirroX+PLnXNlKQMop/1+8N3R24q5YDVnI1jArtXzL4aCVKOLNXc0lxDXuV0msL/Pk3iOXQPjMw+tdGMcOZWZuYHlBNfIqDqmcGtDH6bU37MSuCe+ni7obnb8rIXxheyvuBRRARze3tuFGhA5/zKcLhpy4xHJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=im+TqnAe; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2164b1f05caso93121885ad.3;
-        Tue, 04 Feb 2025 04:59:20 -0800 (PST)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e5b18d5293aso90185276.0;
+        Tue, 04 Feb 2025 05:40:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738673960; x=1739278760; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uLMswBPWS28FbLa5AdxCx/rsraoYZatSFNO8qcs8OEg=;
-        b=axQdsfKSIxcLN1D5GzdMTpfcjwjhMsSSSfJbKJY4PZhVS3i/KiO8BHX5dHqnDnkvzP
-         hOhOKt5wOh923HtWGVMPt6e+zd4wSHmBlbqn6uM2dfm5Sf8sYJlIQ7Os4BIDJ/q9WHqe
-         KpVdEYal4PneACk3Q1MiD4q1/HNAKdkSwCZ7/bpBYv0SFnutWikz53Kq7d2H8rmrgqBD
-         4X3mGNVFfRngYzDZi/tLXTCaJVGPRmVA3CBX8jIqSGaqZ4sWvF4RZfli+myfjst1q0fc
-         QyOTIy12FXOPBWGynGEMoZOGDreo9zylZQF2R6T1EUqqsF2qitd4uIvHh0hYd6h+9SPL
-         8EKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738673960; x=1739278760;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1738676453; x=1739281253; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uLMswBPWS28FbLa5AdxCx/rsraoYZatSFNO8qcs8OEg=;
-        b=ZA3uCGGnzk4jGZQm9WW9IpcKvt9ZFHNF1brZgItDhKsOIW+rRQ7YXwoCdsGV525uXW
-         RZCWaVJhY2+g7OXp4ZYiopLzGIvJZM9cqYmMf40+IMmLLTWoXQTiH9Rm2/IIVf6atH7E
-         HYhMW9Uc2MKJNA8LDADdPO5SmxJkxTCrzsvsyjiuWMzW2ym1SWyyR4KyhVeV5C6I5nvL
-         RmNXwEtcUE9/ZODng0MRUtC/J/qJfyA3Gc28VGfjG+MuWukIOPMVDDx4vo6GK7Y93RIB
-         F7vMZCkFUR0yt91rxVcyt+6t+grTr2ABFcndE0TEp6V97nxy7bfNPF0Dl+W36dKeEugd
-         3vEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKM7KL8S5Bug1XCXN4lIgyrCX+3ifUmFSDBZX7p6d2QyrxTzPsWp17JwQ2pgs3Q47d9yO8KWIXoZg=@vger.kernel.org, AJvYcCW0b5Fw7dL1e8l69MHUcdFV+X7p952azwJxm+eFR8tfcBCy47Uhi5mZe6zHk8NZgfma67vUNG4a82l62Lh8@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF0p0w4nmISn1XktktCd+C4Z3G6Cp4q15dx/SWcPAz8AKjr77k
-	lwFo5B+iafuw9X+Xe20gppkmLBuT6HJwgJdmXHKOortTi2fV0vgS
-X-Gm-Gg: ASbGncuTbUkFFvqvS+6cWWN1qTuAcLxhcJ6kC7PEMS7K2F9CsKWfBIBtjDWvIqCRySR
-	D+I7AD/JJ0tF7aJ9XLWb0JNyf3VdZOQxSfij67n3NezQGM0EOrZRbnV68jJgWxwC4c7uR+0DS7G
-	Umg4VqDWoFGJg3drs/LURr9JXU4HcPRiiO/16F7TLYRTJBWEJJnKANW9u7VJxxtLj9N3Av959eA
-	gwuxQcSqmI8K6sZzJWfagCjIlttfTGzGqoVb7dwxdQebnFqU9KgmDRQ2N/QFp7dfCMoTYwk8rsH
-	BIHSPZ6obDc2EEEhSFp6Dp+ZIA==
-X-Google-Smtp-Source: AGHT+IHE8gLhOia4qIQSjZxI3q0IKSbVDFXuuLhSdp/igsnknqxkocybARimRCyDA8YCk3dDP9vJWg==
-X-Received: by 2002:a05:6a00:1986:b0:72f:d7ce:4ff8 with SMTP id d2e1a72fcca58-72fd7ce505fmr27940160b3a.22.1738673959764;
-        Tue, 04 Feb 2025 04:59:19 -0800 (PST)
-Received: from localhost ([2804:30c:4042:6b00:ec80:71ac:dccc:2753])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72fe631bec8sm10361101b3a.1.2025.02.04.04.59.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Feb 2025 04:59:19 -0800 (PST)
-Date: Tue, 4 Feb 2025 10:00:03 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, cosmin.tanislav@analog.com,
-	jic23@kernel.org, lars@metafoo.de, granquet@baylibre.com,
-	u.kleine-koenig@baylibre.com
-Subject: Re: [PATCH v3 3/3] Documentation: ABI: IIO: Re-add
- sysfs-bus-iio-adc-ad4130
-Message-ID: <Z6IPU2rSg7M4lydK@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1738608986.git.marcelo.schmitt@analog.com>
- <0d73303f2bca3312ccf2abfeb2c654c228fa7f60.1738608986.git.marcelo.schmitt@analog.com>
- <322c34f8-a920-41d1-b77c-09537554ad04@baylibre.com>
+        bh=ClM3trTgrmbKmLvwXodhqkaYvA9BOpUueVIT9cvEspM=;
+        b=im+TqnAePWgMVro7UCQJ4E2eRi4OkQih9Nx9DbG3l3e+WW5NB44F/xCe0VXKmOmcWP
+         UYYuNg5UKloWnuparlORhydPgqEQ/yOJWcEAG8GHXDb2VIwbWh2hKqLccpieQcc6hS1I
+         cVsBOj9ZzB+X0JH5hU1FZllqsstqvsBw9P50wb0WWqlxK/5VkNNFiU4ZMkcob35nq45K
+         dCrWk2C15qjG+GFyNEIg3VP+EOJhDnpC7C4oUzb5YQbuchESUjYRZgRdHqOrD5qHIgz1
+         EQY3fwxmG/ynkIPfLeabrDURYvkfR/qLWgpvscTxy/OP0BBPdYMw13cmIIbftZT4Dm3u
+         YuRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738676453; x=1739281253;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClM3trTgrmbKmLvwXodhqkaYvA9BOpUueVIT9cvEspM=;
+        b=ZW10aNtqg9j70leF3jslCeC+wDbNL2inGago45/HPJOw05wCFWovvdnz699y3zvZ2l
+         5rcMF2L5aGd20lxKu5ruArL2OkYnPXaWzC5Zbx330SYFyEEQHMIx+XUWdG8DbjsthEhh
+         GBTP9gl9XJtBpmAWXAf8Ks9uApClHyjmwUFtB+VNEv9s0BKwkPzk9C/kOkxVsPKgQm4N
+         SInbouVi/q9aMnM1n5dKPWPfK4lM1wUnWzx7K19iamCGMicAYo7vEM6sVFPMq+HMH+ii
+         uM55MgMsFFP8VkT5u2ozhDiQU9IZtazELJDwQ7aqO/jnqqRlc5ymMJeX6LRMZyKKoJs4
+         IbDg==
+X-Forwarded-Encrypted: i=1; AJvYcCUj5rkOEE5+P9O9fN82SIH9L2sGvs7I798iarOICSWVDtMNeyfur9imWOeB+4JPd73PkcX7OboJN/cc12Tx@vger.kernel.org, AJvYcCXjKH1DAKUzUFBXxUbLBUrGIam95SjGOsQ3R5TmQHvZqDHsebjfHSTJNLW1AuGtV+C3Ovtb3YZP1jU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBBAF33SmKNfTzoF9o5qeqsjopn6JTkzyLQjbI1mOcv7m9nm0E
+	/iSP53h3aXPdbCYUR1CK7NN81iSUGBi0ZJXfyc9VlZaCXQGOw04ZfNo9ACFpmesyeCdJMJ2Im5t
+	y14rZlG5j9RXfeMClkX2Ht0i74RDXx0LR
+X-Gm-Gg: ASbGncszHyEadlOXE4P49bS7MQEDtcjy6DxE4nhBzfTJTVME+wpOlnCRUWC+hiz/KaD
+	zqD31yKiOD/JhaXIJKlriQyawP+iTd7rudwJEumnmWpW1DHgreKJUvQMQrzeSluMK9f/NEujT
+X-Google-Smtp-Source: AGHT+IGQSkb8yrVXg43IjaZ/x4VRVzF+oV+A6PDQ0N38ImKOiBKWcvv/wEMmUeyD7TYBpCjdjSWbQvQ7MxsKo9yA0P0=
+X-Received: by 2002:a05:6902:2483:b0:e5a:9c77:7419 with SMTP id
+ 3f1490d57ef6-e5b12dc8fb1mr1433477276.0.1738676453282; Tue, 04 Feb 2025
+ 05:40:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <322c34f8-a920-41d1-b77c-09537554ad04@baylibre.com>
+References: <20250128120100.205523-1-l.rubusch@gmail.com> <20250201174818.26dcc646@jic23-huawei>
+In-Reply-To: <20250201174818.26dcc646@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Tue, 4 Feb 2025 14:40:17 +0100
+X-Gm-Features: AWEUYZlQ6QCoIAjG8w5y4RG7CuIa4zGJUAeQiTQDSE5BvDRTWz0a4OEhZPDEQj0
+Message-ID: <CAFXKEHbuJkG1Ptjz03-ZhfLQB6PuYk47BMKKPTN9mFnXsnF3kw@mail.gmail.com>
+Subject: Re: [PATCH v1 00/12] iio: accel: adxl345: add interrupt based sensor events
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 02/03, David Lechner wrote:
-> On 2/3/25 1:11 PM, Marcelo Schmitt wrote:
-> > The ad4130 driver exports in_voltageY-voltageZ_filter_mode and
-> > in_voltage-voltage_filter_mode_available attributes to user space. A
-> > previous patch merged the documentation for those attributes with the
-> > documentation for filter_type/filter_type_available into sysfs-bus-iio.
-> > Filter mode and filter type refer to the same feature which is the digital
-> > filter applied over ADC samples. However, since datasheets use the term
-> > `filter type` and ad4130 driver is the only one using filter_mode,
-> > deprecate the filter_mode ABI in favor of filter_type and keep the docs
-> > separate to avoid confusion and intricate attribute descriptions.
-> > 
-> 
-> 
-> > The digital filter helps shape the noise rejection bandwidth and is
-> > supposed to be adjusted according to the signal of interest. Depending on
-> > the particular ADC design, the digital filter configuration may have an
-> > impact on the output data rate (ODR) (which is equivalent to the sampling
-> > frequency for SAR ADCs - `sampling_frequency` ABI), 3dB cutoff frequency of
-> > the filter (`_low_pass_3db_frequency` attributes), or settling time.
-> > 
-> > Digital filters are a common feature among sigma-delta ADCs and
-> > IIO drivers set digital filters according to different attributes.
-> > ad4130 and ad7779 filter options are supported through dedicated
-> > filter_mode/filter_type attributes in sysfs.
-> > ad7768-1 and ad7173 set the sinc filters according to the
-> > sampling_frequency attribute. No filter_type attribute.
-> > ad7124 sets the digital filter according to a filter_low_pass_3db_frequency
-> > attribute so it doesn't export filter type attributes to user space.
-> 
-> These last two paragraphs seems a bit excessive and could be dropped.
-> 
-> > 
-> > Fixes: 01bb12922b60 ("Documentation: ABI: added filter mode doc in sysfs-bus-iio")
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Hi Jonathan, please find my answers below.
+
+On Sat, Feb 1, 2025 at 6:48=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Tue, 28 Jan 2025 12:00:48 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add several interrupt based sensor detection events:
+> > - single tap
+> > - double tap
+> > - free fall
+> > - activity
+> > - inactivity
+> >
+> > All the needed parameters for each and methods of adjusting them, and
+> > forward a resulting IIO event for each to the IIO channel.
+>
+> So my main feedback here is to be much more reluctant to add new ABI.
+> Anything you add is unused by all existing code and if it is unique
+> to a driver probably never going to be used by anyone other than you.
+>
+> We have a bunch of accelerometers in tree and as they go wrt to events
+> this one isn't even particularly complex.  The existing ABI covers
+> their events reasonably well so take a look at how they do it.  Often
+> it's a case of mapping names for the application of an event (free fall
+> detection, activity detection etc) to what what they are actually detecti=
+ng.
+> Those generalize a lot better across different sensor types.  It's almost
+> always a threshold of some type. The tap / double tap are more complex
+> but we put quite a lot of effort into coming up with a general
+> description a year or so back.  There may new things but most of the
+> ABI is already there.
+>
+Please, understand my patches in "v1" rather as a huge set of questions,
+than a proposal of reinventing the IIO ABI :)
+My intention is actually not to extend/rewrite the ABI. It rather shows my =
+lack
+of knowledge combined with the curiosity of how to actually use the
+(IIO) APIs for
+such implementation. I know this is still tedious, but I'm sure it will bec=
+ome
+better.
+
+My dilemma was/is the following: I did an initial implementation more simil=
+ar
+to e.g. ADXL380 for such events, and the sca3000.c for the freefall event.
+IMHO the names for the sysfs handles were not at all intuitively mappable t=
+o the
+fields I liked to operate, such as tap duration, window, latent, etc.
+The other alternative I saw, was setting up sysfs myself, IMHO clearer nami=
+ng
+but actually not really using IIO's event_config/event_value.
+
+Personally, I don't have any preference. If there really is no way to chang=
+e
+naming of the sysfs handles, then it's probably a question of
+documentation. If I
+can make it more intuitive for a user who knows the sensor, but not
+the internals
+of IIO, then I'd prefer to use the names referred and documented in the sen=
+sor's
+datasheet.
+
+In summary, I see your point. So, I redo this patch set as I did in the ini=
+tial
+approach to show better what I mean. Probably I'm just using it in a wrong =
+way.
+Thank you for the feedback so far, I'll try to use it where it still applie=
+s.
+
+> >
+> > The sensor has further features still not covered:
+> > - g-ranges scaled by different ODRs, especially for activity / inactivi=
+ty
+> >   threshold is not covered so far. There seems to be a particularity wi=
+th
+> >   the ADXL345 as annotated on some analog FAQ.
+> >
+> > - Various thinks like low power, sleep mode, etc. are (still) not cover=
+ed
+> >   here, others (ACDC bit, selftest, etc.) currently are hard coded or n=
+ot
+> >   covered.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 > > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio       |  1 -
-> >  .../ABI/testing/sysfs-bus-iio-adc-ad4130      | 20 +++++++++++++++++++
-> >  MAINTAINERS                                   |  1 +
-> >  3 files changed, 21 insertions(+), 1 deletion(-)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index ff9cc09360dc..e4fd99c92d81 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -2277,7 +2277,6 @@ Description:
-> >  		representing the sensor unique ID number.
-> >  
-> >  What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
-> > -What:		/sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_mode_available
-> 
-> Instead of removing the line, I think we need to replace it with:
-> 
-> /sys/bus/iio/devices/iio:deviceX/in_voltage-voltage_filter_type_available
-> 
-> (change mode to type)
-> 
-> This attribute is used in the previous patch.
+> > Questions:
+> > - Do I need a mutex/lock protection as this is the case e.g. in the ADX=
+L367
+> >   or the ADXL380?
+> >   Actually, I understand those cases as protecting access to the state
+> >   object by different channels, temperature and accelerometer. I'm unsu=
+re
+> >   if this is a correct understanding, where for the ADXL345 there shoul=
+d
+> >   not be any issue. At most, a currently displayed value on sysfs is
+> >   (still) not updated. So, IMHO I can rely on the internal protections =
+in
+> >   regmap no further mutex is needed. Please, can you give me a feedback
+> >   here?
+>
+> If you have an read modify write actions triggered by sysfs writes they
+> can race (not serialization between different file writes).
+> That's why you tend to need the mutex.
+>
+This explains it clearly, ty.
 
-Ah yes, good catch.
-Will do. And will also reorder the patches so it gets documented before being used.
+> >
+> > - FIELD_PREP/FIELD_GET: I'd like to use arrays of enum indexed elements
+> >   to allow for more generic function implementation passing just a "typ=
+e"
+> >   field, e.g. at single tap/double tap or activity/inactivity handling.
+> >   When it comes to filtering out bits using FIELD_GET/FIELD_PREP, it sa=
+ys
+> >   that this enum array element is not "const enough". Is there a
+> >   work-around?
+> I don't have it to hand but there is a patch set trying to add non
+> const versions of these that went to my other email.
+>
+> For now just carry a local version as we don't want to end up waiting
+> for that patch to merge.
 
-Thanks,
-Marcelo
+I understand. I'll do another implementation approach, I'll see. Good to kn=
+ow,
+anyway.
 
-> 
-> 
-> >  KernelVersion:	6.1
-> >  Contact:	linux-iio@vger.kernel.org
-> >  Description:
-> With those changes...
-> 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
+
+> >
+> > Lothar Rubusch (12):
+> >   iio: accel: adxl345: migrate constants to core
+> >   iio: accel: adxl345: reorganize measurement enable
+> >   iio: accel: adxl345: add debug register access
+> >   iio: accel: adxl345: reorganize irq handler
+> >   iio: accel: adxl345: improve access to the interrupt enable register
+> >   iio: accel: adxl345: add single tap feature
+> >   iio: accel: adxl345: show tap status and direction
+> >   iio: accel: adxl345: add double tap feature
+> >   iio: accel: adxl345: add double tap suppress bit
+> >   iio: accel: adxl345: add freefall feature
+> >   iio: accel: adxl345: add activity feature
+> >   iio: accel: adxl345: add inactivity feature
+> >
+> >  drivers/iio/accel/adxl345.h      |   86 ---
+> >  drivers/iio/accel/adxl345_core.c | 1150 ++++++++++++++++++++++++++++--
+> >  2 files changed, 1099 insertions(+), 137 deletions(-)
+> >
+>
 

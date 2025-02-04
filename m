@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15014-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15015-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C22A27C68
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:04:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9800A27C6B
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 21:04:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BCBB1884B2A
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37A697A225D
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 20:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221D52063F9;
-	Tue,  4 Feb 2025 20:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D482063DB;
+	Tue,  4 Feb 2025 20:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwF4eYGu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0WNONTR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D530314B094
-	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164014B094
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 20:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738699481; cv=none; b=Pui/S3zd4X3PE+8GQrcops1y6qQpe5dbbbpmRyY532VeWl+qZ6/IbkEqyR7PTxuMmiHrTvP0DYbhyK49bjzCuGCB4YWBK4urV/DtxklXPqyFalSQ56W1Y594LxPQuGXucyU2jv19PprgB4FbF1h5mhQxo5QV/Nm/f7YqbhzlFIk=
+	t=1738699487; cv=none; b=m7MOa8IDrtQr0DIkrW7bO+9M6bqGTvRFFaZEPleG6yGtVipJZvFhzONYKwhaHyDuxjB0t97ijVv9poCLu25v8pQb3VVqnOVrA+bUNL8u9nUORlaihiya7jfL3K7omew5UyDhM4VEcDxkSyPkFsuqTtlAhC/4itrivavtzVv8S3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738699481; c=relaxed/simple;
-	bh=b8qf5o8/lc7Hbk5D9Hk0uqj6i/6AWvOGVFKenRdE82s=;
+	s=arc-20240116; t=1738699487; c=relaxed/simple;
+	bh=naa36Kw/w9Q2w+OlD+qDpDcinPo6Sk3StWJlaf/fk2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyO67J5vxMPmd2GEkd79UDVHMGzaMZ5vDSf70d+8bBtWsNqwlEIvw6oxN0dOFae2jQmGwesXaOqimxKLq+eZl7EUr3kfjAcPlSnFN3c/ISN+BGAzTHFhhCqKBT8/olFbFIoFY2BBIcxg3elwcIcicnWEeJTO8SHidDP9PgOr5Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwF4eYGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22857C4CEDF;
-	Tue,  4 Feb 2025 20:04:36 +0000 (UTC)
+	 MIME-Version; b=bMfkAhS6kKUmbQY3h0VnFT4P0nk/DIQpd2fSodB7eSU7FcACMrvGh5N9sBa0Cq3l8zgehsdmyjqhvo1ylrqWxK6r16A5tUSN6vOiMI2O1gaA5+9Ew/b4S//ktWPru4KqGDZGhJ33sKRCWyZuf/A8mP28GBkC7MelN+BYEOcldUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0WNONTR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C1FC4CEE2;
+	Tue,  4 Feb 2025 20:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738699481;
-	bh=b8qf5o8/lc7Hbk5D9Hk0uqj6i/6AWvOGVFKenRdE82s=;
+	s=k20201202; t=1738699486;
+	bh=naa36Kw/w9Q2w+OlD+qDpDcinPo6Sk3StWJlaf/fk2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwF4eYGuOckxkaR9o0STyD8vs0TMfeItqk6S+/Q8Qmi6CcZFsb2fS1jtN6vAOAiL1
-	 VwOkV6MsYmVi+ROXPL9k3r4r1//9O0i5LBlTVWr+sKDZNWEx2/PRD6Ds7dxH18cNV+
-	 jwQd40dqVOgJteZ648US6nGk6Jf5CEvg7Fwlz+4lAx5LpZDdjg6T/lhQ6sCNc8FBvQ
-	 8cOSlNksUGXX3aDwnnjt9iNCpJGlboncYeESKNgyg7n6qu+qmruGOZUnO4yrcBUpRy
-	 LJ14jhv5iS1MAc7dCCM5Og4UUt3bYeziHkEZXoCIMW6M47W7eNIoqMvUyc5MoeOd6a
-	 pRnSoigxrLvKg==
+	b=m0WNONTRIEqcbbxDcM6Gkbp6YHtxtziYUyFgLAuJmht/RWB/8H0Y1NDeRt+pRys6/
+	 LrBNo0AHUgmhk2G28NCpyopzXrsr6Pn4gozQUPzABsn5bRg1zkqXa/ML6hbhqEeWV/
+	 36oE2+G3xeNOOGm24A2CmYjZ2xT1XWovEszQ1rTXwMpHi0phAstb5hbXylnXw5wHLJ
+	 5cueNY31wmFb2c7yRSxB74s1IIM44YEInt7rEFOVgZSebH1QZlAak6bcEYfTAL9AkE
+	 cxHYX2IAEInKMqTH1E0D3Fq6zM51KIdGVM7nfv/6MEfJh30/ICwj8/o1HzxvSgLw7O
+	 dc1qrJKaq6g0g==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
@@ -61,9 +61,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Antoni Pokusinski <apokusinski01@gmail.com>,
 	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 20/27] iio: addac: ad74413r: Stop using iio_device_claim_direct_scoped()
-Date: Tue,  4 Feb 2025 20:02:42 +0000
-Message-ID: <20250204200250.636721-21-jic23@kernel.org>
+Subject: [PATCH 21/27] iio: chemical: ens160: Stop using iio_device_claim_direct_scoped()
+Date: Tue,  4 Feb 2025 20:02:43 +0000
+Message-ID: <20250204200250.636721-22-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250204200250.636721-1-jic23@kernel.org>
 References: <20250204200250.636721-1-jic23@kernel.org>
@@ -82,48 +82,65 @@ to be more trouble that it is worth in terms of false positive compiler
 warnings and hard to read code.
 
 Move directly to the new claim/release_direct() that allow sparse
-to check for unbalanced context. Includes moving a mutex lock
-into a function rather than around it to simplify the error handling.
+to check for unbalanced context.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Nuno Sa <nuno.sa@analog.com>
+Cc: Gustavo Silva <gustavograzs@gmail.com>
 ---
- drivers/iio/addac/ad74413r.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/iio/chemical/ens160_core.c | 32 ++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
-index daea2bde7acf..f14d12b03da6 100644
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -826,6 +826,8 @@ static int _ad74413r_get_single_adc_result(struct ad74413r_state *st,
- 	unsigned int uval;
+diff --git a/drivers/iio/chemical/ens160_core.c b/drivers/iio/chemical/ens160_core.c
+index 48d5ad2075b6..152f81ff57e3 100644
+--- a/drivers/iio/chemical/ens160_core.c
++++ b/drivers/iio/chemical/ens160_core.c
+@@ -100,25 +100,35 @@ static const struct iio_chan_spec ens160_channels[] = {
+ 	IIO_CHAN_SOFT_TIMESTAMP(2),
+ };
+ 
++static int __ens160_read_raw(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     int *val)
++{
++	struct ens160_data *data = iio_priv(indio_dev);
++	int ret;
++
++	guard(mutex)(&data->mutex);
++	ret = regmap_bulk_read(data->regmap, chan->address,
++			       &data->buf, sizeof(data->buf));
++	if (ret)
++		return ret;
++	*val = le16_to_cpu(data->buf);
++	return IIO_VAL_INT;
++}
++
+ static int ens160_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val, int *val2, long mask)
+ {
+-	struct ens160_data *data = iio_priv(indio_dev);
  	int ret;
  
-+	guard(mutex)(&st->lock);
-+
- 	reinit_completion(&st->adc_data_completion);
- 
- 	ret = ad74413r_set_adc_channel_enable(st, channel, true);
-@@ -865,12 +867,14 @@ static int ad74413r_get_single_adc_result(struct iio_dev *indio_dev,
- 					  unsigned int channel, int *val)
- {
- 	struct ad74413r_state *st = iio_priv(indio_dev);
-+	int ret;
- 
--	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--		guard(mutex)(&st->lock);
--		return _ad74413r_get_single_adc_result(st, channel, val);
--	}
--	unreachable();
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
-+
-+	ret = _ad74413r_get_single_adc_result(st, channel, val);
-+	iio_device_release_direct(indio_dev);
-+	return ret;
- }
- 
- static void ad74413r_adc_to_resistance_result(int adc_result, int *val)
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			guard(mutex)(&data->mutex);
+-			ret = regmap_bulk_read(data->regmap, chan->address,
+-					       &data->buf, sizeof(data->buf));
+-			if (ret)
+-				return ret;
+-			*val = le16_to_cpu(data->buf);
+-			return IIO_VAL_INT;
+-		}
+-		unreachable();
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
++		ret = __ens160_read_raw(indio_dev, chan, val);
++		iio_device_release_direct(indio_dev);
++		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		switch (chan->channel2) {
+ 		case IIO_MOD_CO2:
 -- 
 2.48.1
 

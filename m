@@ -1,352 +1,161 @@
-Return-Path: <linux-iio+bounces-14956-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-14958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24972A2681A
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 00:56:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB60A26DC6
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 09:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 683F61658AD
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Feb 2025 23:56:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B3651885EA4
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Feb 2025 08:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE95F211711;
-	Mon,  3 Feb 2025 23:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6BD207A0E;
+	Tue,  4 Feb 2025 08:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aRTFx9+s"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="QhySt0hM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6464720E71D
-	for <linux-iio@vger.kernel.org>; Mon,  3 Feb 2025 23:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F1C207640
+	for <linux-iio@vger.kernel.org>; Tue,  4 Feb 2025 08:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738626999; cv=none; b=lADRrs3tGmAUMsdwcDWdQfetnkQcQHsLpYDEqsjfHlMMPDxyjKuxZ+ZBL+BqolAYcI4senHWEbiazSUmTsFtXp5fxIs3m2dNqwak/jrFoo3jFUvxb0NySBtXrDv2eqkF0WC+d7bm32DMZQQEnij5uq6PbABE8mMrV3qyVinBmLw=
+	t=1738659156; cv=none; b=dhAM/W0x7rJv6WeXkFwD749nwNxDuruV6JovJBrZEvBbFpreyisTDsil/kTEEMX1O7dXd1iBLGjgMyllF8A0y4Nkq22rjyuW8Ma6Iu6FwkzClQQ3WH7QWuk9Vh6mWYNV+0m19t0O/7szklfp/KS3z0B8xbrcpP6p3vmNhnk5XfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738626999; c=relaxed/simple;
-	bh=6bfY8esdXKtLqUQd1fhPDdkAXXiFdyuuVoqjvQgGpVo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UIUsTvxr006pT46Re1k8SVOZb1OQdOV7US+jVOQuSSgAY3ttzcR9qeT0I1ddoEIwpllWqR7JRSDkVzCIWFLaU8JA837BasMEGbzNcRFDCjE6NPwdzlzdBrOqIdBUnhXYnaW6wv0W9kPMcQR+YTNgq35SSh3qSjrM+1QSRDpSHAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aRTFx9+s; arc=none smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3ebadbb14dcso2121787b6e.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Feb 2025 15:56:36 -0800 (PST)
+	s=arc-20240116; t=1738659156; c=relaxed/simple;
+	bh=HutRJSMeJRnt/VeA6fBVfyfIzPoRWNej7hPpS/LJnd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B5miEs8O+qq+mfm88bP1RPVspOOa0jZA5fOXHFd+FpH7ti3K2zTFffKKXr48C+p2Zk63lzo1tARZ2ZZEKCoA20vvBVACTH91ro4xvZITu7zwDyPCNT2RXGLhDNAzSG+fuE0hrnTRpexJV8VkW59IOM4dr+2lx873YmNqER0jYmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=QhySt0hM; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30613802a04so51689901fa.2
+        for <linux-iio@vger.kernel.org>; Tue, 04 Feb 2025 00:52:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738626995; x=1739231795; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/xu2q60ftFjil+2WyZ+3K18tmew3edKyX9djWiudgYE=;
-        b=aRTFx9+s0MjeFRsivw+cyxKArgJ7YwGUJptaF7MmyKdS0vwiHsVUKCJ68pvAgv+4Ne
-         XBNeIrqfpzb1hbc6MVQvOlblJ5yLIxrsl5cbbMSI/YcwTEpOUZf3zAPAOeaH6QXMgIHu
-         wBdaadknnkF/6eMDA3U6+aJ7eEEKtc6OuBQMebsjqf2Gxql2QoKzmFTU35djxcwWBxn/
-         EfJ1Gk3XxKd38MMQbRwepE8NNkLKOoOYKhaYeMXcTihzRrHlwgtjPk6cUMUwTRqPPdCb
-         2Fe/c3Belojg2MHZH6fJHrktS/PX2FPebdX/hhfmvdrbk3AetHVnfFvhaSB5pD1U5G9G
-         sMxA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1738659152; x=1739263952; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HutRJSMeJRnt/VeA6fBVfyfIzPoRWNej7hPpS/LJnd8=;
+        b=QhySt0hMEJ0xvBA2+3D7NGwSBvsVzp33uDy7u2SBmZWVPuA/oVJKLlEyrFPUaMBEfa
+         xYGbBZCPgniM2k7OgdysO0kkVCgiDDElacQMcmi3VTrEeYZiKVOj9RfKjIdxJzv3gtUB
+         hQi4DbDpbG7I9V70l+ZxsMvRk8z02OtAnKx2vhIUnTY7UUkXtO1Oa3boVysr3xybcyqH
+         KRZ5lG8b8oRI4vacsT1F1TCtFwLEs8E67a9NHol6nqP6Z3bH7y2U2bbd6L5GOs7Kt/JA
+         ZaodQoPoTB4qzCaFPqSXjysyyU3lLuulcf2gyMHqDtVlVWhpFYG5+8SCJO9soFJeHpBP
+         wQFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738626995; x=1739231795;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/xu2q60ftFjil+2WyZ+3K18tmew3edKyX9djWiudgYE=;
-        b=YXZD5ptdlcFLW/aZcsfCm1S/ig3EuM2AjkDSyYLQYqaHwGSSkXAZkV+iQBBcX3Vdt0
-         FNaYQClNxcvfDrLqQp+xKJA2VPbmDpeD/Sw1jBhX9HZbZQSJDGqqt8QlMDNDTxdoyU/l
-         SAnzGAcSkXOjoD3jMsRSiCx26F0K8bD8zO3MO3By8EChsixyjcCc5ZL73vU6ZCa/XAhO
-         KQeV4AgPGGMxpBK1ic/h0CPNsPNyjQEEtaQpqHfiFTrFoQJynHwsOIBQrqpZV82Z3Pbf
-         pGi6LLJjnkgXs/iKX7vSSLvoaPgM/MQ3ZehLt3URdrOLwlVSdjNj4K0lZOKCnAL818oj
-         xTfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVM8JztXpIbHayfxuBMLWs3vJLsmI5+0tiLj/hNnZV4jEjMtNoUx4OCOtRSZw/8VQ7J5Z4ZNIMhyVs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2+HvP7x0MjkVj+DLs1A1IuJCz6pi2LqP8w1MYOXKcNhH2jTxv
-	KVUjhx7/6BZP9/kooYWDjvExgkq2ww909LVPUc65txl3vMc63CQ+jJC1VvM/j+o=
-X-Gm-Gg: ASbGncthZETO4AEv4ra2GKEdR4Zxz5FgrUXvDYU1cOeB75ohAiaUrOExvhOGrNGYZwu
-	K3W/UOnbPIO7qNo4BBlhRdW5yizKYZmI5JveTAgTlG4jFocBZo6kPeB+KUQQRGCIo7J3jE9stjJ
-	EzkmacBpcUKCl+kvpiOyF8O9Sk8cuwRTMTPe2+FWjOG7pEKbPRbYkDJOhYzK8/lvpUyCECFgrqb
-	X3skQ9qSo744TYET2WJ512JQ+xbnxbuJKNDstbdxrvEJnQuUJ9wmmWcRX+d7RtWtA4fRgfuwwm3
-	BlT/LUUk6pDp2nvmv81Ooc2nfv0PttVssoi818VJuDWuRS0h61xV
-X-Google-Smtp-Source: AGHT+IHLl4B1e5FWZOT9Bo5mYCa5NQELHRFmSzg8P8PhZmuN4UoXnvrT9yW4CejfgIHVoT9bJuRkBQ==
-X-Received: by 2002:a05:6808:308a:b0:3f1:f540:e6db with SMTP id 5614622812f47-3f323a56073mr15363987b6e.17.1738626995299;
-        Mon, 03 Feb 2025 15:56:35 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fc104cc33dsm2919764eaf.14.2025.02.03.15.56.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2025 15:56:33 -0800 (PST)
-Message-ID: <3f03b03d-9f41-4683-a284-df48afbee83e@baylibre.com>
-Date: Mon, 3 Feb 2025 17:56:32 -0600
+        d=1e100.net; s=20230601; t=1738659152; x=1739263952;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HutRJSMeJRnt/VeA6fBVfyfIzPoRWNej7hPpS/LJnd8=;
+        b=R5RzFLStBvo61XVhvAAH4slNwGDYj0+AWRHz0AS70Y3lajOtyR6CJcdCxicEWQ3RVh
+         t2aoNiJWsFnX+JWJwqElymNYzNchrY9N+th+QUI5cTQkV3oUfQlfEdb2y2ir0gFXo0Z1
+         fOjp+RYo9M7LgWG3lazZP6cI9Y4Y3r9k+fOmWCNpOyXXIH81fpxPGJhptsEAneqUGShu
+         jKy8ZGLiXRrhZGuDKex+6PqpWEhqP2DD/Fja/w4jg1w/0EyY0enUf3l5pjyFDkFsktFy
+         8hz67/etRWUb+ENosdW01UKlWrrzy2JtPInPM5lABX4lzpz/NszByKBLS4NM0JLcIWhk
+         PfXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVIDylrS7CmFUonHoSpMjZpAxe+i6a3BDd1o3qHfT2tptn/72e1PnNrx8iWVniQuesOKArkDLK4k2s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJLvnnSAwBZm7/HmZz49JrazonAZ7x8nLVdWN9y1D3trbZLGND
+	7/zrFjML0Op474WYVP4KAyuSohhBzsBk6ps1F5ihO+y0LF1/Dl6ToPfXLnToHMFqBJrz/WKkaOh
+	qC9yIjXmssegMtwolWMfGr8p0B3VuWNCc2aE9mA==
+X-Gm-Gg: ASbGncvV6GHKg7kErwbQWJ7BJXQJz7U1GQT3KmWncGlQLCvAb+tp8HfBa/4yQdjw8Z1
+	ezNZfFJjJeDl904HaXkg3VkWaaOBEm3gkASCBkaRId+lmA6FM2m0ujBKHyTdq3+QUgYMFXREfpC
+	zVpxVdU4IemTpD7P7Serq6iVoW6JPT
+X-Google-Smtp-Source: AGHT+IF3lsa7S5YwWpfcQVRJJ5PSQIykvInkMIj9GBvAH9xqe0CZdk0yaxGhiayetNv5EouQr4rP2NIVzzgLrFTtrHU=
+X-Received: by 2002:a2e:a90d:0:b0:300:15d9:c625 with SMTP id
+ 38308e7fff4ca-3079684af3emr90981231fa.14.1738659151822; Tue, 04 Feb 2025
+ 00:52:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/3] iio: adc: ad7191: add AD7191
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
- "Rob Herring (Arm)" <robh@kernel.org>,
- Alisa-Dariana Roman <alisa.roman@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Ramona Gradinariu <ramona.bolboaca13@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>
-References: <20250203133254.313106-1-alisa.roman@analog.com>
- <20250203133254.313106-3-alisa.roman@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250203133254.313106-3-alisa.roman@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com>
+ <CAMRc=MdwQL8dWU5zF5fp+KUbC2RA2Q264by8HGXMg2k1rxhsTA@mail.gmail.com>
+ <9931433b-5cde-4819-ac96-eea4f1f0f1f2@baylibre.com> <CAMRc=McEdcDs01BAKN5vg9POg_xxJBY1k8bfgiDN60C1-e_jow@mail.gmail.com>
+ <072be5a9-e0fb-4073-85b3-4a8efcafae09@baylibre.com> <CAMRc=Meq_Gfhcjzx0vCL0JPzfnOcijFgB6AuqtsqgGn1eOTMVg@mail.gmail.com>
+ <CAHp75Ve+iwrm8dx49+6C7xFJgTQrh3XumKVzKvnYY=00J-j43A@mail.gmail.com> <b1c35782-f717-4fe5-8a00-7f13b341b5dd@baylibre.com>
+In-Reply-To: <b1c35782-f717-4fe5-8a00-7f13b341b5dd@baylibre.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 4 Feb 2025 09:52:20 +0100
+X-Gm-Features: AWEUYZkoSkw9yp224bcw4kgu34MNb3lBM2F-Kpo3dstTt1XbKUZR_n5bPczpQE0
+Message-ID: <CAMRc=MdzeY7p8O2ovJ-Z9u-KzqfeEG7BxRvKHBHPrsFYDFAryA@mail.gmail.com>
+Subject: Re: [PATCH 00/13] gpiolib: add gpiods_set_array_value_cansleep
+To: David Lechner <dlechner@baylibre.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org, 
+	Linus Walleij <linus.walleij@linaro.org>, Andy Shevchenko <andy@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
+	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/3/25 7:31 AM, Alisa-Dariana Roman wrote:
-> AD7191 is a pin-programmable, ultra-low noise 24-bit sigma-delta ADC
-> designed for precision bridge sensor measurements. It features two
-> differential analog input channels, selectable output rates,
-> programmable gain, internal temperature sensor and simultaneous
-> 50Hz/60Hz rejection.
-> 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
+On Mon, Feb 3, 2025 at 11:39=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+>
+> On 2/1/25 1:47 PM, Andy Shevchenko wrote:
+> > On Sat, Feb 1, 2025 at 6:22=E2=80=AFPM Bartosz Golaszewski <brgl@bgdev.=
+pl> wrote:
+> >> On Sat, Feb 1, 2025 at 5:17=E2=80=AFPM David Lechner <dlechner@baylibr=
+e.com> wrote:
+> >>> On 2/1/25 10:14 AM, Bartosz Golaszewski wrote:
+> >>>> On Sat, Feb 1, 2025 at 5:09=E2=80=AFPM David Lechner <dlechner@bayli=
+bre.com> wrote:
+> >>>>> On 2/1/25 4:36 AM, Bartosz Golaszewski wrote:
+> >
+> > ...
+> >
+> >>>>>> This looks good to me except for one thing: the function prefix. I=
+ would
+> >>>>>> really appreciate it if we could stay within the existing gpiod_ n=
+amespace and
+> >>>>>> not add a new one in the form of gpiods_.
+> >>>>>>
+> >>>>>> Maybe: gpiod_multiple_set_ or gpiod_collected_set...?
+> >>>>>
+> >>>>> I was waiting for someone to complain about the naming. ;-)
+> >>>>>
+> >>>>> I was going for as short as possible, but OK, the most obvious pref=
+ix to me
+> >>>>> would be `gpio_descs_...` (to match the first parameter). Any objec=
+tions to
+> >>>>> that?
+> >>>>
+> >>>> Yes, objection! As far as any exported interfaces go: in my book
+> >>>> "gpio_" is the prefix for legacy symbols we want to go away and
+> >>>> "gpiod_" is the prefix for current, descriptor-based API. Anything
+> >>>> else is a no-go. I prefer a longer name that starts with gpiod_ over
+> >>>> anything that's shorter but doesn't.
+> >>>
+> >>> Oops, that was a typo. I meant to write gpiod_descs_.
+> >>
+> >> Eh... the D in gpioD already stands for "GPIO Descriptor" but if
+> >> there's no better option in your opinion than I guess I can live with
+> >> that.
+> >
+> > gpiod_set_many_value_cansleep() ?
+> >
+>
+> OK, taking all these suggestions into consideration along with having rec=
+ently
+> come across regmap_multi_reg_write(), I think I'll go with:
+>
+> gpiod_multi_set_value_cansleep()
 
-...
+Sounds good.
 
-> +struct ad7191_state {
-> +	struct ad_sigma_delta		sd;
-> +	struct mutex			lock; /* Protect device state */
-> +
-> +	struct gpio_descs		*odr_gpios;
-> +	struct gpio_descs		*pga_gpios;
-> +	struct gpio_desc		*temp_gpio;
-> +	struct gpio_desc		*chan_gpio;
-> +
-> +	u16				int_vref_mv;
-> +	u32				scale_avail_gpio[4][2];
-> +	u32				scale_avail_pinstrap[1][2];
-> +	const u32			(*scale_avail)[2];
-
-This feels a bit reduant to have two arrays and then a pointer to one of those
-arrays. We could just have a single static const array of 4 and use that in both
-cases. (also see further comments later)
-
-> +	size_t				scale_avail_size;
-> +	u32				scale_index;
-> +	u32				samp_freq_avail_gpio[4];
-> +	u32				samp_freq_avail_pinstrap[1];
-> +	const u32			*samp_freq_avail;
-
-ditto
-
-> +	size_t				samp_freq_avail_size;
-> +	u32				samp_freq_index;
-> +
-> +	struct clk			*mclk;
-> +};
-> +
-> +static int ad7191_set_channel(struct ad_sigma_delta *sd, unsigned int address)
-> +{
-> +	struct ad7191_state *st = ad_sigma_delta_to_ad7191(sd);
-> +	u8 temp_gpio_val, chan_gpio_val;
-> +
-> +	if (!FIELD_FIT(AD7191_CHAN_MASK | AD7191_TEMP_MASK, address))
-> +		return -EINVAL;
-> +
-> +	chan_gpio_val = FIELD_GET(AD7191_CHAN_MASK, address);
-> +	temp_gpio_val = FIELD_GET(AD7191_TEMP_MASK, address);
-> +
-> +	gpiod_set_value(st->chan_gpio, chan_gpio_val);
-> +	gpiod_set_value(st->temp_gpio, temp_gpio_val);
-> +
-> +	return 0;
-> +}
-> +
-...
-
-> +
-> +static int ad7191_config_setup(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7191_state *st = iio_priv(indio_dev);
-> +	struct device *dev = &st->sd.spi->dev;
-> +	/* Sampling frequencies in Hz, see Table 5 */
-> +	const int samp_freq[4] = { 120, 60, 50, 10 };
-
-As per my earlier suggestion, we can make this static const...
-
-> +	/* Gain options, see Table 7 */
-> +	const int gain[4] = { 1, 8, 64, 128 };
-
-ditto
-
-> +	int odr_value, odr_index, pga_value, pga_index, i, ret;
-> +	u64 scale_uv;
-> +
-> +	st->samp_freq_index = 0;
-> +	st->scale_index = 0;
-> +
-> +	ret = device_property_read_u32(dev, "adi,odr-value", &odr_value);
-
-Shoud also check if (ret && ret != -EINVAL) first to catch other errors like
-someone put a string in the .dts instead of a u32.
-
-> +	if (ret == -EINVAL) {
-> +		st->odr_gpios = devm_gpiod_get_array(dev, "odr", GPIOD_OUT_LOW);
-> +		if (IS_ERR(st->odr_gpios))
-> +			return dev_err_probe(dev, PTR_ERR(st->odr_gpios),
-> +					     "Failed to get odr gpios.\n");
-> +
-> +		for (i = 0; i < ARRAY_SIZE(samp_freq); i++)
-> +			st->samp_freq_avail_gpio[i] = samp_freq[i];
-> +
-> +		st->samp_freq_avail = st->samp_freq_avail_gpio;
-> +		st->samp_freq_avail_size = ARRAY_SIZE(st->samp_freq_avail_gpio);
-
-...then here instead of copying...
-
-		st->samp_freq_avail = samp_freq;
-		st->samp_freq_avail_size = ARRAY_SIZE(samp_freq);
-
-> +	} else {
-> +		for (i = 0; i < ARRAY_SIZE(samp_freq); i++) {
-> +			if (odr_value != samp_freq[i])
-> +				continue;
-> +			odr_index = i;
-
-missing break;?
-
-Also, should we error if match not found? Otherwise we could have uninitalized
-odr_index;
-
-> +		}
-> +
-> +		st->samp_freq_avail_pinstrap[0] = samp_freq[odr_index];
-> +
-> +		st->samp_freq_avail = st->samp_freq_avail_pinstrap;
-> +		st->samp_freq_avail_size = ARRAY_SIZE(st->samp_freq_avail_pinstrap);
-> +
-
-and here...
-
-		st->samp_freq_avail = &samp_freq[odr_index];
-		st->samp_freq_avail_size = 1;
-
-> +		st->odr_gpios = NULL;
-> +	}
-> +
-> +	ret = device_property_read_u32(dev, "adi,pga-value", &pga_value);
-
-ditto about error checking
-
-> +	if (ret == -EINVAL) {
-> +		st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
-> +		if (IS_ERR(st->pga_gpios))
-> +			return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
-> +					     "Failed to get pga gpios.\n");
-> +
-> +		for (i = 0; i < ARRAY_SIZE(st->scale_avail_gpio); i++) {
-> +			scale_uv = ((u64)st->int_vref_mv * NANO) >>
-> +				(indio_dev->channels[0].scan_type.realbits - 1);
-> +			do_div(scale_uv, gain[i]);
-> +			st->scale_avail_gpio[i][1] = do_div(scale_uv, NANO);
-> +			st->scale_avail_gpio[i][0] = scale_uv;
-> +		}
-> +
-> +		st->scale_avail = st->scale_avail_gpio;
-> +		st->scale_avail_size = ARRAY_SIZE(st->scale_avail_gpio);
-> +	} else {
-> +		for (i = 0; i < ARRAY_SIZE(gain); i++) {
-> +			if (pga_value != gain[i])
-> +				continue;
-> +			pga_index = i;
-> +		}
-> +
-> +		scale_uv = ((u64)st->int_vref_mv * NANO) >>
-> +			(indio_dev->channels[0].scan_type.realbits - 1);
-> +		do_div(scale_uv, gain[pga_index]);
-> +		st->scale_avail_pinstrap[0][1] = do_div(scale_uv, NANO);
-> +		st->scale_avail_pinstrap[0][0] = scale_uv;
-> +
-> +		st->scale_avail = st->scale_avail_pinstrap;
-> +		st->scale_avail_size = ARRAY_SIZE(st->scale_avail_pinstrap);
-> +
-> +		st->pga_gpios = NULL;
-> +	}
-
-and ditto about st->scale_avail and pinstrap matching for loop
-
-> +
-> +	st->temp_gpio = devm_gpiod_get(dev, "temp", GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->temp_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(st->temp_gpio),
-> +				     "Failed to get temp gpio.\n");
-> +
-> +	st->chan_gpio = devm_gpiod_get(dev, "chan", GPIOD_OUT_LOW);
-> +	if (IS_ERR(st->chan_gpio))
-> +		return dev_err_probe(dev, PTR_ERR(st->chan_gpio),
-> +				     "Failed to get chan gpio.\n");
-> +
-> +	return 0;
-> +}
-> +
-
-...
-
-> +
-> +static int ad7191_set_gain(struct ad7191_state *st, int gain_index)
-> +{
-> +	unsigned long value = gain_index;
-> +
-> +	st->scale_index = gain_index;
-> +
-> +	return gpiod_set_array_value_cansleep(st->pga_gpios->ndescs,
-> +					      st->pga_gpios->desc,
-> +					      st->pga_gpios->info, &value);
-> +}
-
-Depending on timing, we might be able to take advantage of [1].
-
-But it isn't merged yet and needs another revision and you are very fast, so
-don't wait on it. ;-)
-
-[1]: https://lore.kernel.org/linux-iio/20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com/
-
-
-> +
-> +static const struct iio_chan_spec ad7191_channels[] = {
-> +	{
-> +		.type = IIO_TEMP,
-> +		.address = AD7191_CH_TEMP,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_OFFSET),
-> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-
-Should this one be info_mask_separate?
-
-Since this is a multiplexed ADC and not simelutaneous sampling, I would expect
-that if the ORD pins are set to 10Hz (0.1s period), then a buffered read with
-all channels enabled would take 0.3s to do the 3 samples (effective sample rate
-of 3.33Hz), but if only one channel was enabled in the buffer, then it only
-takes 0.1s to do all of the samples (effective sample rate is 10Hz).
-
-The iio convention is to use info_mask_separate for the sampling_frequency
-attribute to indicate that the rate only applies to each individual channel
-and not the combined rate to do one "set" of samples for all enabled channels.
-
-A sampling_frequency attribute that was shared_by_all would mean that on each
-period equivlent to this rate, all samples are read no matter how many channels
-were enabled for a buffered read.
-
-> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
-> +		.scan_type = {
-> +			.sign = 'u',
-> +			.realbits = 24,
-> +			.storagebits = 32,
-> +			.endianness = IIO_BE,
-> +		},
-> +	},
-
-
+Bart
 

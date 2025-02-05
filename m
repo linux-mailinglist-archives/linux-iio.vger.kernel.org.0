@@ -1,209 +1,159 @@
-Return-Path: <linux-iio+bounces-15043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EC6A28D40
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 14:59:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FECA2920F
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 15:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FAE818817B6
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 13:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C06873ABB95
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 14:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6202155725;
-	Wed,  5 Feb 2025 13:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CA18C01E;
+	Wed,  5 Feb 2025 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MPq5ypkO"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L5sPwDkC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9603C1527B4;
-	Wed,  5 Feb 2025 13:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9971FC7C2
+	for <linux-iio@vger.kernel.org>; Wed,  5 Feb 2025 14:47:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738763904; cv=none; b=Foc5gLIZ4FQ1o+ur4OFQzwYjraDgn/lG3t76BUU6Y6/xXE99wsgexq/XEy7XumIPXDv1vmgI7Dy/59pO1lZiSvN1X9BfCGb2hL779LYYq3O21djLubqs9JMsCT9+rDgL2pGq56jcw7S9yt9UeCxw/d49/J03euMpFSLTBkEzM74=
+	t=1738766835; cv=none; b=LPjRR9fZDeIU5Qx8s3D7mFAo3ZjV474Dxbbb5QzISS9E8oqLn/b9QWxeAKQHPrd56XxnYz/5AjXxVIZbVZ2F4hdmsB363fu8tUUIsPJI9tjBJBch7Ojb5IVs2NjtrrkUfO9VU0AnoIcNKucTKnPstZVZ1KXs3Y86ExGs3u/dRqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738763904; c=relaxed/simple;
-	bh=ROO/Xyq7zGw20kDjrzJCf2zSIBVZG52NjTL0INzaWrA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mqymAchvlR20EMxEdCgZmnRBGLZlcNPHIRiP7PBNe1yKnuIOg3UuBFUHyjY89XzwVD5yQdB+kN/5IXIsL3acS2FBgsbEYSpCkezFOpLE1HtAIsyw31yWXNaqb1liI3/xd4ykT4R1zECeZ7iGhxlcuhdBxKeXPyxcJJZWLArB8vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MPq5ypkO; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5426fcb3c69so6126526e87.3;
-        Wed, 05 Feb 2025 05:58:22 -0800 (PST)
+	s=arc-20240116; t=1738766835; c=relaxed/simple;
+	bh=oRdogc/geZIJX57rsZrmG1KYxuk6eFV4e76AwSeXXw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=goAncuRwt/qV32kcU55lat/J1JF8EaXlldd4KvtlobOC7KvSGLhjkIGeWZXaxkxHOEIoSbb3UihLH3NqiyjrNeDj7/kC62BY+gI6B6t/QuTpjooQeeU6I9zQVVnmVrWmuoSel0iDCjlarZrfjGjE9YygxB7fQ/SkcGAq7gW17K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L5sPwDkC; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4361c705434so51058225e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2025 06:47:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738763900; x=1739368700; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ar1iEi8LuD+VTnNSkZdX82pmybq0djpG13KHykZ13Zk=;
-        b=MPq5ypkOiN4yK2Z63k+EsC9dSv5kCjN90ZFEIK03ukvLt/6wRiBZCyjJVTSlCg9m+g
-         u+znto8LdB+etiAQie+n5BPvt1BrHK9papyxSVCluPvWWo0hMt/tlNao2tx/KDxJqvVg
-         c1crBeKYaN2Lo6wcYavW3VlPAH56xnLjtlJ/A/X+9OiSqSnsfJ8kEbIK8YVMn8bWnBO4
-         xnkyjCdt0lfoiNKiuJ0MYV+YomzvR322QI9Ne0hT/QfyX2uNlt1eNsi6IywMuYPZ+Tqy
-         dxOncvgN1D/USiOGNXtpE8HuWHUoKDcUPZUJ89NhMydAFeXSWYbeick2uGNp0lPPkzQm
-         XxmQ==
+        d=linaro.org; s=google; t=1738766831; x=1739371631; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nGYOIUhB5NlCoFWrNkjS8/LO2NSNaMVzUTIEOw9/la0=;
+        b=L5sPwDkCT+QyULYpxoMldsQhPIrKwy7MyNZbtRVQh1SyGrg0zVK0y01sjrrVDmIcHT
+         vepTEIQXeffrYk3u+IqsBcSq6RpbNjrarwCh3OGAP0Fa1mirLLM3QNnpMnHlu5jCgg0P
+         AKHf0PBnl5YwVBpgpaakUUUGQaes+pUN++QpELPVShxIHNGe64xkmtHdMZeZ/pVmPv0c
+         BaxuRV4voIw+sS8tEjtNHtLJXpoN9PAUtF2nJMfetNIJXStpeDq9wwVj959BjY6hFONG
+         CpgR2e3MMG3mu1K69+Toiv4xSDA7TBMyeOscwBPIkDWXKBcAvdj07/sYPI1seb6GHEK2
+         lTxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738763900; x=1739368700;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ar1iEi8LuD+VTnNSkZdX82pmybq0djpG13KHykZ13Zk=;
-        b=ajvYAHvB0nurQaDfWQvt8VTPdA0uBH5Q8IUXhtoac5odlhYLOGUbd72+9slRY/TthP
-         gKpmZrIwE42dG66+hfUaCsRDF5pT2d43IMUW7jyDR3bl3vai1SYp9XJrdEB6RWV8nWdr
-         ITba11fUmNS+q0AWk+fXHJFw+S3FkxJ1rvA5hUYIAiK+dv/4qLkXPfuVWTR4zSvNpFIs
-         LFW6IfpEwKkCFi5P5tM6xLA24g93GJK8Tgb5NEjmngJTiuku5p1ipvM/lIO7ajQv3KmD
-         RSF9+3iLJAtErFaCpy+/JpvU3chEClbApez72j0ONqTgtAQkQKZKxS6pGNy6jarY+vqK
-         BAOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUSJxSB07UcBw9wXloJquPLe2VpVLGeWkpAkX+O2SZPpDhZUIoaAr/2/5c1ucO4R6FDDRMPzqkaoA4Nuwmf@vger.kernel.org, AJvYcCUpJIvaQXyx8lwzTi3v5kl4i8vcDnEXwdf6BwMjcv0Sbxxqa0egj4gZOYU7TJ8aaXfyRvyB5ux6nNabcQ==@vger.kernel.org, AJvYcCVFnTPhy0IH+h2sRTo2DG6NMTDavS+Sa9c2NbxyRgNbqmwPJxQKgUdf8WwLbPVt/kFVBox7/vqh3vLO@vger.kernel.org, AJvYcCXxVtT2bj6sEpdNZ0F+OM5oR6XP76ptn0KTlajm/2c9rx3EabsbfDMRjIc1wLvlwRJTHNo/kRHHxGM1@vger.kernel.org
-X-Gm-Message-State: AOJu0Yws5BoH5vCdukFjhgE/cOV8xsUL8cV4gvep1WTQzdoKtdBjxEfv
-	XSvFtYPtBRK3BY2PpSZn9PoaSXZ5ALq4WP1jFOoNMDLN/Yq0tGFh
-X-Gm-Gg: ASbGncvIKJHGJe3N+4sAbhPkaD53Bh0M5rEf2NwlYVdtGCy2h+QSoadl+9zGOr5QzZF
-	V86JbBmLsnb5VpcMHsQE3rlyA/SceUjnmyxOqQ6gxWsQkRoTPl+0EuwCgNcbHWJeEv/vYeEjaXu
-	xJcjX0TL1l2+Yz1G7jURam0U0SRVSnUcqk4nxiQgqVl9yGFmgvS8ujJZfjC4LCOU4lEoGts2wY8
-	UY2TAnI5yq4FDteC9Qp7fQlsdQsJwMEbE/aRlE07gFhPCR5WCa2RenzhZa9ORwtI4i+MLNeLQWJ
-	+LSXVkDepiY12lLCusgZr5PrQ15b
-X-Google-Smtp-Source: AGHT+IHrPWFfESDy3MF+EVv4iQLpEI4ETPkzkJJamYZ4dmEkxgNT17VUpb3qygUijPvGYprd3/Y31A==
-X-Received: by 2002:a05:6512:1598:b0:540:1b2d:8ef3 with SMTP id 2adb3069b0e04-54405a68f77mr925982e87.52.1738763900285;
-        Wed, 05 Feb 2025 05:58:20 -0800 (PST)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-543ebe0fe60sm1934030e87.82.2025.02.05.05.58.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 05:58:19 -0800 (PST)
-Message-ID: <8353a96d-fe39-45c2-b6da-e8083a6bdcd8@gmail.com>
-Date: Wed, 5 Feb 2025 15:58:18 +0200
+        d=1e100.net; s=20230601; t=1738766831; x=1739371631;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nGYOIUhB5NlCoFWrNkjS8/LO2NSNaMVzUTIEOw9/la0=;
+        b=rvL59PmOTwb2NSoh7zT6A29slGt+frlkZwT0hyjSjpZt7fms3vz2Wcx8MUshP/enE6
+         sd1O2fv8/NdRI35vnK1jrCN68Y7TTtHrPMhIn0/rLSBgndnGNvaRzCvF4jHrTEHw9Sx9
+         KaiICvF/5kuVuVXAKQXAmInKYqg20pv/CGYknJXhMIWkxI1t0y6oH3LT4WLTvoJf4Lkm
+         0i2mpK9laf077er8iH1GjaRih9Vi1/HY0GY0zCiaW0TX90TXAmS8vpYwaOivbHt2QksE
+         JK/G4GnFgSzfiCqv9IQBwEQAPjv3hitE74KFUyXPwFOkKQvzCSv5jamrTXzUsXhx6+mb
+         Cn5A==
+X-Forwarded-Encrypted: i=1; AJvYcCW273K0eVYZJf6IDcy4gU/36wYBE5qBLZ/7b71jjBlxHxGtX1ob0uTgQV+337frZqeQvpnvHbafW9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoYMJWMSeRzW10cqcGBmSD8jJh1zc3P3LCNHp0/LKYejAqWGy/
+	Vtfkk8PxkUiUUvmZJOs0nhJxmPXvYcGT7AVUM1yanta5TzPjNWTXgim0RESWcVYPG9eH9iGnVxu
+	T
+X-Gm-Gg: ASbGnctcLcQCJYkOObUIMqdF2H+mPXFtZouTWFxeqWIyfT8aF3m6I3xcSEBg82qkyqA
+	bE9AmTDS/wtFL3koZf+WvOZz5o9tgiJNQH/xIvxz9n+hrcG3I92Y76Ih+CF0BVsBfavaa/pNNX/
+	LKg7EK09FbSeYozxYf4Ip4rAM7bDbXlpgz+KdfDqbATp4UMqtCSO1HfXrbB8i5lav9NnswzXDly
+	cCF5CMAK9xmnOpLyBAZlU7lBgHsIrJ+77DF6xsUPWWgmQuQIDXmlFtj0szVgM5JdE8NbYiPtVHO
+	k6o6Ts4j43+xuzueKzaS
+X-Google-Smtp-Source: AGHT+IGg9aS421ExdsmlVfrZyolwGp6cb02wFEnpJuIdjKHi2yIK7E7fI2dYgeXkm0hm9LsM6bqqSA==
+X-Received: by 2002:a05:600c:310b:b0:42c:b16e:7a22 with SMTP id 5b1f17b1804b1-4390d434872mr26859105e9.12.1738766831414;
+        Wed, 05 Feb 2025 06:47:11 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-38db4a84dc3sm2346003f8f.50.2025.02.05.06.47.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Feb 2025 06:47:11 -0800 (PST)
+Date: Wed, 5 Feb 2025 17:47:07 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, linux-iio@vger.kernel.org,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: Re: [bug report] iio: magnetometer: add Allegro MicroSystems
+ ALS31300 3-D Linear Hall Effect driver
+Message-ID: <117cccfb-fa19-4849-8c37-989ea1911429@stanley.mountain>
+References: <db435a8b-7546-4d16-9a15-ee44dac849c9@stanley.mountain>
+ <20250204193304.6cdcc9d7@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 3/5] iio: adc: Support ROHM BD79124 ADC
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Linus Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-gpio@vger.kernel.org
-References: <cover.1738328714.git.mazziesaccount@gmail.com>
- <e44851669ce7e91d1295ab7352535c93b89d35bf.1738328714.git.mazziesaccount@gmail.com>
- <20250131174118.0000209a@huawei.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250131174118.0000209a@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250204193304.6cdcc9d7@jic23-huawei>
 
-On 31/01/2025 19:41, Jonathan Cameron wrote:
-> On Fri, 31 Jan 2025 15:37:48 +0200
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Tue, Feb 04, 2025 at 07:33:04PM +0000, Jonathan Cameron wrote:
+> On Tue, 4 Feb 2025 14:18:36 +0300
+> Dan Carpenter <dan.carpenter@linaro.org> wrote:
 > 
->> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
->> an automatic measurement mode, with an alarm interrupt for out-of-window
->> measurements. The window is configurable for each channel.
->>
-
-Hi Jonathan,
-
-I just sent the v2, where I (think I) addressed all comments except ones 
-below. Just wanted to point out what was not changed and why :)
-
-...
-
+> > Hello Neil Armstrong,
+> > 
+> > Commit 3c9b6fd74188 ("iio: magnetometer: add Allegro MicroSystems
+> > ALS31300 3-D Linear Hall Effect driver") from Oct 30, 2024
+> > (linux-next), leads to the following Smatch static checker warning:
+> > 
+> > 	drivers/iio/magnetometer/als31300.c:248 als31300_trigger_handler()
+> > 	warn: check that 'scan.timestamp' doesn't leak information
+> > 
+> > drivers/iio/magnetometer/als31300.c
+> >     226 static irqreturn_t als31300_trigger_handler(int irq, void *p)
+> >     227 {
+> >     228         struct iio_poll_func *pf = p;
+> >     229         struct iio_dev *indio_dev = pf->indio_dev;
+> >     230         struct als31300_data *data = iio_priv(indio_dev);
+> >     231         struct {
+> >     232                 u16 temperature;
+> >     233                 s16 channels[3];
+> >     234                 aligned_s64 timestamp;
+> >     235         } scan;
+> >     236         s16 x, y, z;
+> >     237         int ret;
+> >     238         u16 t;
+> >     239 
+> >     240         ret = als31300_get_measure(data, &t, &x, &y, &z);
+> >     241         if (ret)
+> >     242                 goto trigger_out;
+> >     243 
+> >     244         scan.temperature = t;
+> >     245         scan.channels[0] = x;
+> >     246         scan.channels[1] = y;
+> >     247         scan.channels[2] = z;
+> > --> 248         iio_push_to_buffers_with_timestamp(indio_dev, &scan,  
+> >     249                                            pf->timestamp);
+> > 
+> > So I guess we had some CVEs recently with regards to
+> > iio_push_to_buffers_with_timestamp() so this was added as a "must be
+> > initialized" thing.  The "aligned_s64 timestamp" struct member is
+> > sometimes initialized in iio_push_to_buffers_with_timestamp() but not
+> > always.  So this seems like a valid static checker warning?
+> Hi Dan,
 > 
->> +struct bd79124_raw {
->> +	u8 bit0_3; /* Is set in high bits of the byte */
->> +	u8 bit4_11;
->> +};
->> +#define BD79124_RAW_TO_INT(r) ((r.bit4_11 << 4) | (r.bit0_3 >> 4))
-> You could do this as an endian conversion and a single shift I think.
-> Might be slightly simpler.
-
-I kept this struct with bytes matching the register spec. Doing the 
-endian conversion and then shifting would probably have worked, but my 
-head hurts when I try thinking how the bits settle there. Especially if 
-this is done on a big-endian machine. I can rework this for v3 if you 
-feel very strongly about this.
-
-...
-
+> It's a false positive. When it's not initialized it is also never
+> used.  No code beyond that iio_push_to_buffers_with_timestamp() can
+> assume there is even data there. In the common case of it being a
+> kfifo the elements aren't big enough to store the timestamp if
+> it's not enabled. So it never gets to userspace.
 > 
->> +static irqreturn_t bd79124_event_handler(int irq, void *priv)
->> +{
->> +	int ret, i_hi, i_lo, i;
->> +	struct iio_dev *idev = priv;
->> +	struct bd79124_data *d = iio_priv(idev);
->> +
->> +	/*
->> +	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
->> +	 * subsystem to disable the offending IRQ line if we get a hardware
->> +	 * problem. This behaviour has saved my poor bottom a few times in the
->> +	 * past as, instead of getting unusably unresponsive, the system has
->> +	 * spilled out the magic words "...nobody cared".
-> *laughs*.  Maybe the comment isn't strictly necessary but it cheered
-> up my Friday.
->> +	 */
->> +	ret = regmap_read(d->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
->> +	if (ret)
->> +		return IRQ_NONE;
->> +
->> +	ret = regmap_read(d->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
->> +	if (ret)
->> +		return IRQ_NONE;
->> +
->> +	if (!i_lo && !i_hi)
->> +		return IRQ_NONE;
->> +
->> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
->> +		u64 ecode;
->> +
->> +		if (BIT(i) & i_hi) {
-> Maybe cleaner as a pair of
-> 
-> for_each_set_bit() loops.
+> The other bugs were around holes in the structure.  Those can
+> get to userspace.  On my todo list is a patch to add
+> a size parameter to that function so we can verify the passed
+> buffer is big enough, but that won't change how the data is used.
 > 
 
-I kept the original for 2 reasons.
+Got it.  Thanks, Jonathan!
 
-1. the main reason is that the for_each_set_bit() would want the value 
-read from a register to be in long. Regmap wants to use int. Solving 
-this produced (in my 'humblish' opinion) less readable code.
-
-2. The current implementation has only one loop, which should perhaps be 
-a tiny bit more efficient.
-
->> +			ecode = IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
->> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
->> +
->> +			iio_push_event(idev, ecode, d->timestamp);
->> +			/*
->> +			 * The BD79124 keeps the IRQ asserted for as long as
->> +			 * the voltage exceeds the threshold. It may not serve
->> +			 * the purpose to keep the IRQ firing and events
->> +			 * generated in a loop because it may yield the
->> +			 * userspace to have some problems when event handling
->> +			 * there is slow.
->> +			 *
->> +			 * Thus, we disable the event for the channel. Userspace
->> +			 * needs to re-enable the event.
-> 
-> That's not pretty. So I'd prefer a timeout and autoreenable if we can.
-
-And I did this, but with constant 1 sec 'grace time' instead of 
-modifiable time-out. I believe this suffices and keeps it simpler.
+regards,
+dan carpenter
 
 
-Yours,
-	-- Matti
 

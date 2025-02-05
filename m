@@ -1,76 +1,77 @@
-Return-Path: <linux-iio+bounces-15035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF6E0A28BBA
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 14:34:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9B7A28BBC
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 14:34:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C145B7A0796
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 13:33:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9942718886C6
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 13:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2314D78F35;
-	Wed,  5 Feb 2025 13:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B90E126BFF;
+	Wed,  5 Feb 2025 13:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZi6TbfF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CMbP0meZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360CDBA38;
-	Wed,  5 Feb 2025 13:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BA86328;
+	Wed,  5 Feb 2025 13:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738762456; cv=none; b=BhturkJ0I1mT2PFyBOdhtcxV0DDx8HW0Ddhr9NgJnrcE4FoN1BFHwmTgXhe94LvYbJT3Kz7WMn7gB74Om22MpuQ0U55oKnAEB+pFbsX95NgPeTCwYr8w8AmaY5j+jU93rtICRZdqYzyFf2DCOFBT/w8ksfWHzh2jhl1cyOPvIig=
+	t=1738762479; cv=none; b=a78fVRfCtOxmZapai/Rbdry0vu8vcRkNJipVoBP0pCm9vfYRukTqx805H3fopJqj8986KvLuiWifN/DE+8M85Y6It8UeFbF1wL4GnHXcvyz8TdxR4fskp/L8+up2MHAaFdXCprqxbej8A8cVEcyc4dIHv0pP4PazWTaI3SuIBHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738762456; c=relaxed/simple;
-	bh=wH4INXj/yB0WM/MEDaiNTA3ukKzNoRefwQpOnYhO1Xw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=i/UOWw1ofQ+tThQKjdCSbNEj+IAAO9KcQnzX9HGwVbFPxhe5in7E1AJS5v/jqcjm/cqTEi9I1PGb/eqDyEcHfoxbQNGSUaXXgNP22KYQGtbfL9lBzx7Q0hf67vgPbfRtSfQ07zp0kBHzz0+FxI4pMplVhLgVQbw/wBu6DrVh+J8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZi6TbfF; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1738762479; c=relaxed/simple;
+	bh=QYyo/FHbFYMbk/asRpef5Q7eAX3O1AFDLqu97FKYJgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UYQRJxDQ14cxym3/TyRcb6ZL+uNo2LwmMvbuAoldcMCnL2K3Nq8fAQYcjekqSjow8EOG5/iQTfQLCuwhHm76TfdQarLKmG1F5KctzHR4ylwCvH6qdNkUv2Z7waw+VYYz/yKEUWuGqYr0UtpY4nSdOlAKnlqFYQjDuNvCkLdct2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CMbP0meZ; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-53ff1f7caaeso6765012e87.0;
-        Wed, 05 Feb 2025 05:34:14 -0800 (PST)
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-30034ad2ca3so52395521fa.1;
+        Wed, 05 Feb 2025 05:34:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738762453; x=1739367253; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5VPHMQHSk22iK7PExkQd64RNhGObJs9x65xSMyDKB8=;
-        b=KZi6TbfFp9vS1BOpcl3goZMcx+jwnI6nTSpKh4Gqft7vxWE+bxW7c+ZiUtC5X36ytH
-         Bkli6tl6ltzySHWPNuI/j7pgfq7Byb4R+2qnxm8zJ638DC/uhc+mMTK1vhgFEoThFOao
-         62vaio4F5NTKgzulTBd0AvC0+UkpN2g9VBnjfO0r1z3+Ubd8CD8C5QnN0IyeBpP08FUu
-         TjFbTplWk96gkfgbtxEDhXodeRXJjVcV2n6DXhx25V8rEGjur9QJhbmDjCXJvdrngiPj
-         Zdn101xFOre1KTk0ROTYIrMw16FvKowScDa3SHLJoxZCzpMiYX0TflZB8RtP1c0u/YGH
-         IKIA==
+        d=gmail.com; s=20230601; t=1738762476; x=1739367276; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XgJySmC9K5gh6Gsa4LTSVYRV3LnuSU0bHaNrJJQ8n3k=;
+        b=CMbP0meZ0JaRzg0CtYbQYFnUpMjPBhpWdAXtzaCaiK8dBCLeQfl2Db5UfgjQzncuUn
+         QbunmgoUOIifyhAVo/P6Ijps9RotiSGqNynx4WzxuYDNukioySTB3kR7dD0KNj8dfdVD
+         M/G01mO5ZQBZvrgL0qPI7FAxolXjJBcylhGW6ZQJtO9agUCX/pidPE/9wgJ7pUivDCnT
+         pfJPaVvsYp+bSSCH3hoCqLB9mcKPEEobHZkMhBJxkuLO8ms2aLrQOyDe3biN58HlO5v5
+         ZAGv7xMGfbjoxsWh1ENg+/YLziX0ahKdMq0kHHTFtN07J5IzUshBeoCz+KRFBP7CTMat
+         +HRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738762453; x=1739367253;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5VPHMQHSk22iK7PExkQd64RNhGObJs9x65xSMyDKB8=;
-        b=ZYpJQI0LPrMJqxrd668KTJO6fHwyWkzCpxAIDoJM7es/D5u6ktB143exm06w/m+/9O
-         HJDTxbztXQbmR3CqLZeF2jfzLKkXpKzttB0ZZr3LM1Tf3xcOEipsX5tpmd7NgBe4ZW5g
-         Jb1CtUNWCzetbEGd9xcbgRnQHXyHqaKX0LG5NZyunMdFW+bA061i2QZcEkTZ4DTlng+2
-         jy9hVwwe2uRhRCMhMx9HyCM7S/mczn+8qFDXOESpG1ea742HhUs8AoTy7/+kqF6XmuXA
-         QreIZ4110qpBV+VpydPRzU9aoKXC+dw+DOuHhrBNbIEEcrna90LGWrnjM6hVtAa1vC1k
-         jQtw==
-X-Forwarded-Encrypted: i=1; AJvYcCU6dlO3/XPId7Ewx43KmY/TpNORBLBNFPf/5VwkvTvhTd6d2gRmorJQBS/ZFx4FyP1pjwcPAGLjDQ+v@vger.kernel.org, AJvYcCVwI/VMMmnUNTvzLEJ+OPW6DxN7suB46KA5PgnDeJJ+AwC7O9qCQCMU3Vp+5WscTODwGA+2ui+czNGJq5OA@vger.kernel.org, AJvYcCWN5OrqjzzGHBBnvT20hySOi5w47SvpiTfC8n5lrtajm9GA2dfxzyamUfhQkJV1NqwFjHMOmjCYZkDK@vger.kernel.org
-X-Gm-Message-State: AOJu0YytiimxUzTGKMq7QVjGCHK03F8gM4RHAqhXezR2vQCax0J4EbV3
-	oZsJBEwD6kqeeI/3Tfi3VGYEcgX9xub0OPetKlwWNDpRewIucLaU
-X-Gm-Gg: ASbGncvtJJs6gugcTnjfxOogDagWhfrSjI7dJ3CFUWa+5tfBzvgWSgpTQ0BpuiWDVSC
-	HuX3AwSHnbu9xAeD5U7ckXL0qtq+1HfCwd5ItFmH3nTyL1rGTFeODeuC8vkAKVutnlhGTEULzpO
-	lqqpUiZZxwDwQtcWy/vNqPygUmwMICN6zZytqofAYqc3kEFredGsXzsGVDrlgbwAQ3IUWDzgi+w
-	D+f3yOPFVhdnLJuWmlz3z9taWW8xaEDSwl1DqgyCDWLjtrbU93pvu0KxAMtjiqYah0Db3zyb+IP
-	RV3ghzAblOjHUuuUsw==
-X-Google-Smtp-Source: AGHT+IHhu6wOkBIE1LKIVbgMbbrlaOtezxn+bPEt7EXhlFYg7ZXgjUABVFFMnRCx1ZOfE7a/bqUsBA==
-X-Received: by 2002:a05:6512:3f07:b0:542:29b1:969a with SMTP id 2adb3069b0e04-54405a1edcfmr787845e87.4.1738762452832;
-        Wed, 05 Feb 2025 05:34:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738762476; x=1739367276;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XgJySmC9K5gh6Gsa4LTSVYRV3LnuSU0bHaNrJJQ8n3k=;
+        b=scAD41N7bIlBXO0CW31NSO7CUECbYtvvHU/6Bplm2lys1w458y5cNiTDsi9JKQATku
+         /hHPvnMyMSsTOpiYgvRHCVqIIKYq2PpL8HrCsbNEAWNzNTBdKW1GxE8VL5LBQq+sxZ7h
+         udNvFykYnexkyiBYQHKwSxtutfLWtWDFMFkF3SqUfBsuVGLkjOiAyPZbWUq6K1f03Vys
+         WJz67oWEModynp/wKzujAlEJrj4LW1sEyTqgNzqmx2yHMEbrvlorWxXF0WLL3cqa7JCd
+         sYVZFGodQ1osUcleqXwivFMTqvLxzi/NcXlMqQsViRMYo6Rx5dw8wsYPZlWOzU1RYQ47
+         FiCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUG0bBCroA7T0DH2/yKQNOm37UjroV8SmT9SWEKlyhNNuF9+xeg/Imde1qM3TdTl6uKR7h+ktKUCY5jNcKx@vger.kernel.org, AJvYcCVk5iQlMpGbb9HABtSQq0jvyFtqT+N+8c9mTafO76QiEK71/Kmlk0PAnXGkIusnpl3gcO8C939Q3hIs@vger.kernel.org, AJvYcCVt+vl4pbefRJNbx2l3wH16+mEUnQ9Vyx+upckV74vFxob2VDvFcd8NdQaxqhlECHwpkztDMQrUJ+X0@vger.kernel.org
+X-Gm-Message-State: AOJu0YydT3+vNErmMSv6UTJQapN1ImyuPhJLSOrln/nSyHUMIbLnouoB
+	MWc4RWvy2CLUZSo9UQqX9rVkquansOxKoUnmi9dTvMROnjFOmTT8
+X-Gm-Gg: ASbGncv4NLO6jYKSRihciSidr/EoOKRSLS33e9wpvFrHpSGg2ECH/MPmq0lCvbD7jn8
+	B0+BkT17wJ2FNlBF4QzyUQBMOyjyPtjxGyE3iyTenakLNVGQrp2BJe9Jxx6Lt/57W0wiHRJKrgF
+	p+Xphjo2fZFsHcCw3Jv9VP1Kcclwb273XHLUfuMBr+8oy4emwHK4P5zQbweWt6FkhcRBc91Kjka
+	jsUwvwxYmUETlCeOqgfipEgpGaAZJKHtHdQWKYxafiuANte1HfMLJTBJnljEtQJko/mhD6K/JzL
+	Yi5a+xY/2/rXjVzcXA==
+X-Google-Smtp-Source: AGHT+IG8c7efCTwjbXvONBdjVeyk/YNlgHGXfYF46uq7psk7lZj7EwQZzsbRh+1xREmSrUrPkJKfUA==
+X-Received: by 2002:a05:651c:b08:b0:2ff:c242:29c8 with SMTP id 38308e7fff4ca-307cf386eaamr10046331fa.35.1738762475266;
+        Wed, 05 Feb 2025 05:34:35 -0800 (PST)
 Received: from mva-rohm ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5440c35d995sm15389e87.121.2025.02.05.05.34.08
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a308869esm21460511fa.35.2025.02.05.05.34.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Feb 2025 05:34:10 -0800 (PST)
-Date: Wed, 5 Feb 2025 15:34:01 +0200
+        Wed, 05 Feb 2025 05:34:34 -0800 (PST)
+Date: Wed, 5 Feb 2025 15:34:29 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -82,8 +83,9 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 0/5] Support ROHM BD79124 ADC/GPO
-Message-ID: <cover.1738761899.git.mazziesaccount@gmail.com>
+Subject: [PATCH v2 1/5] dt-bindings: ROHM BD79124 ADC/GPO
+Message-ID: <4e6cd143d3e896587528a415c8623ecd610fac55.1738761899.git.mazziesaccount@gmail.com>
+References: <cover.1738761899.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -91,82 +93,172 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OnNu6bMdQyqB6LDC"
+	protocol="application/pgp-signature"; boundary="qRQuqB26klp9g2e6"
 Content-Disposition: inline
+In-Reply-To: <cover.1738761899.git.mazziesaccount@gmail.com>
 
 
---OnNu6bMdQyqB6LDC
+--qRQuqB26klp9g2e6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Support ROHM BD79124 ADC.
+Add binding document for the ROHM BD79124 ADC / GPO.
 
-Quite usual stuff. 12-bit, 8-channel ADC with threshold monitoring.
+ROHM BD79124 is a 8-channel, 12-bit ADC. The input pins can also be used
+as general purpose outputs.
 
-Except that:
- - each ADC input pin can be configured as a general purpose output.
- - manually starting an ADC conversion and reading the result would
-   require the I2C _master_ to do clock stretching(!) for the duration
-   of the conversion... Let's just say this is not well supported.
- - IC supports 'autonomous measurement mode' and storing latest results
-   to the result registers. This mode is used by the driver due to the
-   "peculiar" I2C when doing manual reads.
-
-Furthermore, the ADC uses this continuous autonomous measuring,
-and the IC keeps producing new 'out of window' IRQs if measurements are
-out of window - the driver disables the event for 1 seconds when sending
-it to user. This prevents generating storm of events
-
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+---
 Revision history:
 RFC v1 =3D> v2:
- - Drop MFD and pinmux.
- - Automatically re-enable events after 1 second.
- - Export fwnode parsing helpers for finding the ADC channels.
-
+ - drop MFD and represent directly as ADC
+ - drop pinmux and treat all non ADC channel pins as GPOs
 ---
-
-Matti Vaittinen (5):
-  dt-bindings: ROHM BD79124 ADC/GPO
-  iio: adc: add helpers for parsing ADC nodes
-  iio: adc: Support ROHM BD79124 ADC
-  MAINTAINERS: Add IIO ADC helpers
-  MAINTAINERS: Add ROHM BD79124 ADC/GPO
-
- .../bindings/iio/adc/rohm,bd79124.yaml        |  114 ++
- MAINTAINERS                                   |   12 +
- drivers/iio/adc/Kconfig                       |   15 +
- drivers/iio/adc/Makefile                      |    2 +
- drivers/iio/adc/industrialio-adc.c            |  151 +++
- drivers/iio/adc/rohm-bd79124.c                | 1149 +++++++++++++++++
- include/linux/iio/adc-helpers.h               |   22 +
- 7 files changed, 1465 insertions(+)
+ .../bindings/iio/adc/rohm,bd79124.yaml        | 114 ++++++++++++++++++
+ 1 file changed, 114 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
 yaml
- create mode 100644 drivers/iio/adc/industrialio-adc.c
- create mode 100644 drivers/iio/adc/rohm-bd79124.c
- create mode 100644 include/linux/iio/adc-helpers.h
 
-
-base-commit: 5bc55a333a2f7316b58edc7573e8e893f7acb532
+diff --git a/Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml b/=
+Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml
+new file mode 100644
+index 000000000000..50889dc6b9a8
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml
+@@ -0,0 +1,114 @@
++# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/rohm,bd79124.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ROHM BD79124 ADC/GPO
++
++maintainers:
++  - Matti Vaittinen <mazziesaccount@gmail.com>
++
++description: |
++  The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
++  an automatic measurement mode, with an alarm interrupt for out-of-window
++  measurements. ADC input pins can be also configured as general purpose
++  outputs.
++
++properties:
++  compatible:
++    const: rohm,bd79124
++
++  reg:
++    description:
++      I2C slave address.
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  gpio-controller: true
++
++  "#gpio-cells":
++    const: 1
++    description:
++      The pin number.
++
++  vdd-supply: true
++
++  iovdd-supply: true
++
++  "#address-cells":
++    const: 1
++
++  "#size-cells":
++    const: 0
++
++patternProperties:
++  "^channel@[0-9a-f]+$":
++    type: object
++    $ref: /schemas/iio/adc/adc.yaml#
++    description: Represents ADC channel.
++
++    properties:
++      reg:
++        description: AIN pin number
++        minimum: 0
++        maximum: 7
++
++    required:
++      - reg
++
++    additionalProperties: false
++
++required:
++  - compatible
++  - reg
++  - iovdd-supply
++  - vdd-supply
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/leds/common.h>
++    i2c {
++        #address-cells =3D <1>;
++        #size-cells =3D <0>;
++        adc: adc@10 {
++            compatible =3D "rohm,bd79124";
++            reg =3D <0x10>;
++
++            interrupt-parent =3D <&gpio1>;
++            interrupts =3D <29 8>;
++
++            vdd-supply =3D <&dummyreg>;
++            iovdd-supply =3D <&dummyreg>;
++
++            #address-cells =3D <1>;
++            #size-cells =3D <0>;
++
++            channel@0 {
++                reg =3D <0>;
++            };
++            channel@1 {
++                reg =3D <1>;
++            };
++            channel@2 {
++                reg =3D <2>;
++            };
++            channel@3 {
++                reg =3D <3>;
++            };
++            channel@4 {
++                reg =3D <4>;
++            };
++            channel@5 {
++                reg =3D <5>;
++            };
++            channel@6 {
++                reg =3D <6>;
++            };
++        };
++    };
 --=20
 2.48.1
 
 
---OnNu6bMdQyqB6LDC
+--qRQuqB26klp9g2e6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmejaL4ACgkQeFA3/03a
-ocX5kggAwHsYuEgX1nBpTUfwU7QJoTiUUC6wrOKMAoD/78sE5zheMMUhmqGM8d7P
-9LZlV1ZHDZiTkAf+vacILf+ryMy2qkGaTh5gRIAXyznlDMWQ2bvAnz/GTX2TwvSX
-qeM7zUx4p+7r+vsNAQyHwmbfY98wYOJrBH9K+6IefCxrnx8h+dIyA0usfA6Q4D8a
-UPBjw+nOTLuRF42fT1ZsIaNf5XpWcYdSR5tSA7ErunBX2pyyE983chdeHoWDS9Zi
-jBXEzzXW0NvVwCnoM1wE272xp7EuzrPKd8yDO58voXw4rnb09hovRxJOcHrfuqEk
-y8FzBY9T1wA7ZPt7GFAEJ6lveE95IA==
-=ZtbX
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmejaOUACgkQeFA3/03a
+ocUUegf/SbncO0VOWa4EjHwz/klqaoC/R3YQkyGQOpqv6IwBiRVaT5eAmVPV33oL
+H8LYlt/Gwg58weQebwrI+42G9B2g5t6vi8wGrdd/TDa+KHDOVUlJXS2uIV5mlydK
+puKfiFo3KhwYUTe+wPV7tMInKUb3vV8Tm1VRoH3f9f8Wt9gCj7UAo4172PBHLvfk
+MvSx089gOU1PQOJH/zyU91bhUVMQwrdtByqsS2BuRngYhBigkYGhNSPWuso+SQuY
+LqtLUjsNPmf/rHXIHwEHhHHfGuBQayOY4ooghlhoqPPG+rh2D/K5NziYhspIBs7Y
+ew8OZCrBswoIuIEj3zw5HrO9Pmb7EA==
+=I6XS
 -----END PGP SIGNATURE-----
 
---OnNu6bMdQyqB6LDC--
+--qRQuqB26klp9g2e6--
 

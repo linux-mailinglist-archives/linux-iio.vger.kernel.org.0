@@ -1,99 +1,121 @@
-Return-Path: <linux-iio+bounces-15025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7BFA28001
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 01:11:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13140A2834C
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 05:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25BF13A668E
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 00:11:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98574166341
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 04:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95056376;
-	Wed,  5 Feb 2025 00:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB98213257;
+	Wed,  5 Feb 2025 04:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T8rXBf2j"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="cL60qL2u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB01163;
-	Wed,  5 Feb 2025 00:11:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF4D17F7;
+	Wed,  5 Feb 2025 04:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738714291; cv=none; b=Kf+EHpX92HVpCuF4N4veMxEjzExczLd7+0Fe3TeMehj4MsEv4tgyRYpGgff8XSVMZtyVr05sR5oARDkwvQhYVDMvnxdAN1qZXBezpNNMig6ztUnuuW9fopywxQjL4uFHIhQpOPpestbfFgUPI//8OJ5h6D5iGgajG+pL/118Elw=
+	t=1738729167; cv=none; b=foTDhNkqzgrHMEQRwfZpbsbnz5ggG9lKo1RIBA6flZy8t/qbekgNgYQgU8/puIsqbGSsXGK6by41YhMvZv5H0QKgfv8eSE0WWkuDDgF9Ir/t2cFVnt3zwMIWfiJw1cHwUBo6IjGRr7c6rM+yk3aJFz2qIryQNIXY8vgofyJjYRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738714291; c=relaxed/simple;
-	bh=zI0sTmEJ9TsR8yXL29aZxtEc9FgdgtkaVcTEpXxeYyE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VTD+I0n36wRBR3irak9IhbTvznLhyngCmP16Y97UYjIeebzj473t4Y3TN1FoTWGlTXZtija4gsZI6117sxYnutDIswNCp5QmQC8E/q6rZYW1ywo4sdzS2oAMplJU6oHde20DVzbguzIT9s++O+lSKLhxjw2QdknZ//yKgH6E68A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T8rXBf2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F4CC4CEE4;
-	Wed,  5 Feb 2025 00:11:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738714290;
-	bh=zI0sTmEJ9TsR8yXL29aZxtEc9FgdgtkaVcTEpXxeYyE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T8rXBf2jA29IML9QMwaRxwtYMXdZyvIP/7PhCn6zdVTrFV7WP5/Fh/xmgYyt56NXC
-	 WgRD80QjCrDxIwMIBOAOuwbV8jjPIynSOeGypKle33Yh0gT7obi5YfYJ02njgQrvEf
-	 PitphPmBmVY1HCVIy5tgE2Ar7Bf9Wc04dGIuuXkEUHM1M6YBhCcjJDHY0iWXfdbS7K
-	 YEOKH1nd8155Uld0aW3/hfrAOu1O4XgPaXBouypI9GEJSD/bl0BEpImoHF2ua5iQfc
-	 66gBLlMFlEJGUcGpCYjn9RSvlg6KyaEzlExI9ewDBqTWM0SqqV+UHZdJqR589Ue7EN
-	 ewTr9NRea69vQ==
-Date: Wed, 5 Feb 2025 09:11:26 +0900
-From: William Breathitt Gray <wbg@kernel.org>
-To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
-Cc: linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Kamel Bouhara <kamel.bouhara@bootlin.com>
-Subject: Re: [PATCH v2 2/2] counter: microchip-tcb-capture: Add capture
- extensions for registers RA-RC
-Message-ID: <Z6KsrhUYoYF8n10J@ishi>
-References: <20250203162955.102559-1-csokas.bence@prolan.hu>
- <20250203162955.102559-2-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1738729167; c=relaxed/simple;
+	bh=kEp82TZcTFzdsH3ySV9d4fygaV26WlGKIZz5L3vog10=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=rUK3/7RRhI1CeaXqtQ/PSHl+GsNinyB+1uZo/n6W8sdHqWDRY9H1AMrtlkDv4BAdLUpb6T4SsvOiHhINkzEQw200MIemDmo4V1hRJxgJlDUXgsDmZAhZw535ZrAhn+8rms51x5vD85eri/eAWF6yNWK1chlgq7DzuB+19XirXPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=cL60qL2u; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1738729166; x=1770265166;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=kEp82TZcTFzdsH3ySV9d4fygaV26WlGKIZz5L3vog10=;
+  b=cL60qL2u4nQj3lk2gzIs0pcUZjB6Qqjxz6SjzZoC7WpIUflI2BChY4Fs
+   ImkAJpg7z5q12G2YSbrzFiqBLpN++Jwqt3ci/8DstAFNG7lXxveHeU+4k
+   OeSp/AUbWywSIokfGY6jIWd+19JjPMcCLwy+/1PzwSCUsr/xczg5yh5k4
+   Rthtfig6jHAfbf2IPpHZPvsYQjmBDjtGW3yjeCR1VNY8VJk+IzNVeJhbj
+   nm7HJ6w/xbLD1n1bkGgB6jicax+SX86tUsnl7yNeWBvmIvwhqIkND1Dud
+   UxMitBbc7KrHkOz8HtXapWvBY1MC2pPhAenME1QS4w7IqHtSNmpoz1iyA
+   w==;
+X-CSE-ConnectionGUID: 2PqXhkWGQbSMV5Mi2wf2oQ==
+X-CSE-MsgGUID: HinrJpVLRrauwdmn8wS93g==
+X-IronPort-AV: E=Sophos;i="6.13,260,1732604400"; 
+   d="scan'208";a="37284659"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Feb 2025 21:19:25 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 4 Feb 2025 21:18:50 -0700
+Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Tue, 4 Feb 2025 21:18:46 -0700
+From: Dharma Balasubiramani <dharma.b@microchip.com>
+Date: Wed, 5 Feb 2025 09:48:45 +0530
+Subject: [PATCH] dt-bindings: iio: light: fix missing type definition
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="a6voB7vV2r6plo90"
-Content-Disposition: inline
-In-Reply-To: <20250203162955.102559-2-csokas.bence@prolan.hu>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20250205-brcm-binding-v1-1-a996a840d2d6@microchip.com>
+X-B4-Tracking: v=1; b=H4sIAKTmomcC/x3MQQqAIBBA0avIrBNUULGrRIvUyWaRhUIE4t2Tl
+ m/xf4OKhbDCzBoUfKjSlQfkxCAcW07IKQ6DEkoLJTT3JZzcU46UE7fSm+iciMYijOQuuNP775a
+ 19w+cauLjXgAAAA==
+To: Mikael Gonella-Bolduc <m.gonella.bolduc@gmail.com>, Jonathan Cameron
+	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Dharma Balasubiramani
+	<dharma.b@microchip.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738729126; l=1139;
+ i=dharma.b@microchip.com; s=20240209; h=from:subject:message-id;
+ bh=kEp82TZcTFzdsH3ySV9d4fygaV26WlGKIZz5L3vog10=;
+ b=KTRjWvKAPsdG4LpG06pf7j96uYK8YoKgCTYboPncyNHAEmtbaXAhAE8a83QuYcMV8smWAJnhp
+ HMdf/2T8UcmDRBaQEZ8Xiub3QhYV+hqCLle1PRLkajs8b9Ia9mniNm6
+X-Developer-Key: i=dharma.b@microchip.com; a=ed25519;
+ pk=kCq31LcpLAe9HDfIz9ZJ1U7T+osjOi7OZSbe0gqtyQ4=
 
+Add the missing type definition for ps-cancellation-current-picoamp property.
 
---a6voB7vV2r6plo90
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Fixes: 47736b32d1b8 ("dt-bindings: iio: light: Add APDS9160 binding")
+Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
+---
+ Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Mon, Feb 03, 2025 at 05:29:53PM +0100, Bence Cs=F3k=E1s wrote:
-> TCB hardware is capable of capturing the timer value to registers RA and
-> RB. On top, it is capable of triggering on compare against a third
-> register, RC. Add these registers as extensions.
->=20
-> Signed-off-by: Bence Cs=F3k=E1s <csokas.bence@prolan.hu>
+diff --git a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+index bb1cc4404a55..f9c35c29fe04 100644
+--- a/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
++++ b/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml
+@@ -37,6 +37,7 @@ properties:
+     maximum: 63
+ 
+   ps-cancellation-current-picoamp:
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       Proximity sensor crosstalk cancellation current in picoampere.
+       This parameter adjusts the current in steps of 2400 pA up to 276000 pA.
 
-What is the difference between RA and RB (your code looks like they
-represent two distinct event channels, so I want to confirm)? Is RC a
-threshold value set by the user, or is it another captured timer value?
-The capture extension represents Count value specifically, so I want to
-make sure we're using the right extension for these components.
+---
+base-commit: 40b8e93e17bff4a4e0cc129e04f9fdf5daa5397e
+change-id: 20250205-brcm-binding-71b6d990d67e
 
-William Breathitt Gray
+Best regards,
+-- 
+Dharma Balasubiramani <dharma.b@microchip.com>
 
---a6voB7vV2r6plo90
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ6KsrgAKCRC1SFbKvhIj
-K6VNAQCk32TT8lWMH4Lv4X9PvkCeWYw6WUYjQPmRiEjrTjy5UQEAogdky3058O5y
-SsjhwyTWpveB3B+stA0GPxnW7Z0WAAc=
-=pptR
------END PGP SIGNATURE-----
-
---a6voB7vV2r6plo90--
 

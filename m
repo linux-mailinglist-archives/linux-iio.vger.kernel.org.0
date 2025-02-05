@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-15056-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15057-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0BCA29D24
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 00:05:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B6DA29D87
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 00:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946E818888DF
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 23:05:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BF403A70DA
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 23:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFD3215F42;
-	Wed,  5 Feb 2025 23:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72D721CA11;
+	Wed,  5 Feb 2025 23:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2dGtLIr3"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="aKPVi75/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368FF1519B4
-	for <linux-iio@vger.kernel.org>; Wed,  5 Feb 2025 23:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592CE215778
+	for <linux-iio@vger.kernel.org>; Wed,  5 Feb 2025 23:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738796725; cv=none; b=mxaKDtTuDThfNzuYokhvi54gm0AMA1nDRZfEVbTBC9ocLBOVi0d7gSfXwBulBYahbOfBzGWuf016/TsbYRFmQU2wJYUaXXazMowVSvpmthAdWSaiB0CS2pP5I5IetyCe13nAY4mHcelPb1zaYblArV5t0GcYi4bga9fw8nFQ1XU=
+	t=1738798130; cv=none; b=g6MCwd77rkHZZW64GFMvLeaKIEnY0xXwftH3i5UzT287eCs7nuhzsTrLrPMZivJ1Of6u6vgUPXiulAH8s+LI4mJIHzRdUugBMd1U5gDQrTdZM4F0fnrEe1e0XJchG8kNO4O7/82ikkndKg7EBteGErrTLNRzSLzAj2SaSE6wwD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738796725; c=relaxed/simple;
-	bh=DFPuS8nDF3sXhv0PNgDQpLqiZWJCMuHGmBbrB2FDm24=;
+	s=arc-20240116; t=1738798130; c=relaxed/simple;
+	bh=0EzAPAbElsLsVGFInVwzdFJhP9tAB61CEcoVn2BONPk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NUj3bhPYIZ63NuFiCzhzZjLYnD130In9Kxw2clJmffFExIt/bp71bdIrte9F751dyHLHk59M+ShQhzDLNTYnpeRPKDlw2NFuYnLkQ1iCZ4SXj58JYk/3WP7dnArxZge3XM9jQYztm4h0UUGg9XsnvaE3ly/EXsMv5NXEgm6F2yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2dGtLIr3; arc=none smtp.client-ip=209.85.161.53
+	 In-Reply-To:Content-Type; b=Ju2NM+5mHALRw2LFSdqVxuG+wGz8ACiT7orDV5XL944B+Q+tfCuGnvsMUkdKKOXLP4Ihinh//a+r4yvgVwN8zyRq1ojJCC7um38+u9XCklLT0A8S4Wrq26jXNP/XSL4nyTAyG1L2sWOEhvM2Oc5BgPd/2P6WyLbTXG3xf4Vpkrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=aKPVi75/; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5f2b21a0784so98070eaf.1
-        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2025 15:05:22 -0800 (PST)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3ebadbb14dcso152804b6e.3
+        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2025 15:28:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738796722; x=1739401522; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738798126; x=1739402926; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=DkZdhNJnSBxSkpZTkd+nshswhFICF4G7BFSlkeMlSvQ=;
-        b=2dGtLIr3v/HN2zO+xjw69JTDBrVtNCWVTciS8yLLIBkoHuVrlGW7yFhrcAZs8Z4tDq
-         H4bxWOstz2MzSlhd33YYtYU3/CyKaSHnvpgsZqse3w2F2SG+SMKgIU76mDjt1Ps2QI7q
-         8seA1qtiy+ZUyZqhw8OK2z7wDfA6qY2O4ZdTC5qIMSgqxK3krN8D87ieXz0GREMaEUR4
-         X04rKobsli+i/2LXFlbXRcAhFpWIsiJoopJIXw9KMsRd+7XAV+MFBZHc+G4gKOR2jALZ
-         8aakuQiFbVhWHgQ3GxdY+Boxj8A+Hg+UHwURiS1K2cgUwzzkCLZpWvUX+CEQptiigKDY
-         7ZUg==
+        bh=3TqTxkp+S9AKdmaVffatqfNq4mqc2luDLtoiQq2r9VI=;
+        b=aKPVi75/71Itw000j1UNdhTRgQr0p2Zwa162V8/FjSqdVy0Poer/oAjl03qHiq44/i
+         qc4EAnfEQvNMl5HGZO+NopQLROkg1BY592yv3l1txoBQGVyr1mHTA6Ne2HTzYWURDfeV
+         EZgYxZSsaEyrWv+aBPjNWBOs2IXdinlCIS8WaaZCj1OqKaMFy5PkSijmGR3pC4h/dA5h
+         e4b4WeWujdo7/Gi1ap0JNwdIy0tWi/kcecbFVmr7yINsBd6lNqVQWy3528wrggbZTM9O
+         uelvSGG6ttp2R+ey5L/4bmoIqlbrJLmM2Hee3emJ4+YG5G/+jrNbmfCHSUDp2sf4DDv0
+         EGew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738796722; x=1739401522;
+        d=1e100.net; s=20230601; t=1738798126; x=1739402926;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DkZdhNJnSBxSkpZTkd+nshswhFICF4G7BFSlkeMlSvQ=;
-        b=SottZQdBeGByWUuWolyXg6ZJPHaQyBx4Rts0vDMtg6ehMGeRFmvFG2afuUddgUe8XJ
-         r34CJRGALnGqyg2QYdEl9cunlu0tyV0nMZMGDF7eHSkj/BeYC+LOwvNBg0Q8DrJxsM7A
-         0Jce/sJkFdg7Rmrw3JBoXWvNLXfdDK4YcI/gM97ApAuReDtcRhDsi3iv/X74+0RGFriR
-         MKFF5I2OlMQaM/ngCX40nqbZFyMxJT9pLtlRcnVrJDlsaWHGyuAshnAU7eT8HYLzz4Pz
-         7fkpCcBC5ciMVihPPnzXcjgG6pcZL46Q259fxPsxN+nCCKQzOmrVKUrsJem/sykMHJ9G
-         2fHA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/AklylwjvGc25k+zscU8kcp/DFL6Rd4a88PQJZpsn8C/Eav0OWa0Ppn963hqt+ddvr6znHWDrDoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEpuc6pxgU+jeYWniirqgzdEhOGCjick11oVTvhIKZZNpAAMWj
-	jkonQVNd9pIAjdyBYWbbqFqw1lluSbHZShvMpC5VEDdTwIjAEAooHTBV+rtPURc=
-X-Gm-Gg: ASbGncvdrvVRT5jBVv3rM931It+kiGlsLL/QeiV50xS6ZGa2iBkeJpsmV3WOEvkpDj6
-	pukEoXBghQR4USOPioHouApCTMtntfvZh2HVqobo8w9dPDm9s/fGxOrPecqMO7l3HMnrgCs5rza
-	WbOxA3EyALzeFpBXna+MpK0n1/UcDBg5FzNpCy4s2CLXJrv1CVON5xKRb0iraMvd0pQLtQVOYWP
-	ml5pnntNTYIMfOMv38Gkw35HaNYryyddViikMwINz79ux26T4SlkTcagcfn2s3Q3m+ABxAqiScx
-	5nq7EKa13jyQVxbY3swlOodA7+EVeWYKGT6Gto8Iwcd7D3Ohak1l
-X-Google-Smtp-Source: AGHT+IHJHtUndAVv28oCwY29tstSdTS5ef4IojgPV9DYh4p8oA2JyzkdArgBdaSrE+xgyioOBF6hYg==
-X-Received: by 2002:a05:6870:b149:b0:2b7:d3f1:dc72 with SMTP id 586e51a60fabf-2b805134aa2mr3278549fac.29.1738796722136;
-        Wed, 05 Feb 2025 15:05:22 -0800 (PST)
+        bh=3TqTxkp+S9AKdmaVffatqfNq4mqc2luDLtoiQq2r9VI=;
+        b=PhnA2o+KVvf/Zt2he32KWvSFQ8DB/WFJg1iTYYFnQxSIBT5ld23X+V+X/YcecGeA2q
+         lDdAbim4n5ZQSYrCnfsc4adj+5h2oTvopmYb7dYZaPomfEiFZIqmCMcf+EQl2o+Hu1ro
+         9TdGGqIL0TlwtjJoUv+UinsyYaRLmCzcNkxsrz3AGVXLSdUOhlYsPz3Atp9WxszF/uCR
+         v0I7t59DEVzVk7Y1VQxni0TPgeROk4ZRw8RjbKlP6FsMClRtWvEt780MzGTNvHVBpev2
+         q01rBPglVUbNlWnmaqBvPboonWcJvO1BKdSrMa40p/X6jtik4/rdPC0Uoq1rBASv0sqc
+         l8qw==
+X-Forwarded-Encrypted: i=1; AJvYcCUWtOj1CQW1HbYQxj/5Cx7rG+rF4lqQa9MvIdFvrZS33442Vjxm/91LGrSPWr7bBRp+Vn80QgJhEWo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtjCSMbizvhVMN+gzdZFwdFZ1wRVpuIVOzRWhZUBGo+0xxp+YT
+	RUxfLz6i53pTcx2RqcAekQYlH1WH6IBhw8QbXbDUSlXhoGC8Ysbs3vJmfjG48Js=
+X-Gm-Gg: ASbGncsfcYdRQH2xeO0YjALalFCnIFERFjcLTvFH2PKQrVsxZFXzemM5Nt4ylEGmwe1
+	uD82Qxt1toId4LHIkPCXUXvAqC/8dnM7xDwAle0rmfbwDld4zmXsbGlvpXhhHt43hrCxMAxMuuy
+	weloFmBJzAh5u8aZ35vEEl6IJkhUd/igcDQEmSoWmqj+k1huHML6NrmaQm2WvQzzi4OH3dwx4aF
+	OYNdqMh/lUXUkAMPw4KYYkzYQi0oua1K/6kDlEHHYhMdEG7hkmPS+89KlJM3AB7RJCBiT0zCHqN
+	BpEZShxBGxBbhA0V8WQRf4u1hC8yD1hmpKcXR9eR9Bu6lJ3tPy98
+X-Google-Smtp-Source: AGHT+IHueH4Fqz21RYHypIIor041CsVTsWiHnTfaBtoozr/+H4z09+QY1xbWPTKxUKY3zI5U44sHbA==
+X-Received: by 2002:a05:6808:201c:b0:3f1:cd30:d691 with SMTP id 5614622812f47-3f37c1d82a0mr3144489b6e.37.1738798126357;
+        Wed, 05 Feb 2025 15:28:46 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b82581511dsm29322fac.0.2025.02.05.15.05.19
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f333660e78sm3802679b6e.35.2025.02.05.15.28.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 15:05:20 -0800 (PST)
-Message-ID: <ec9602c7-b874-464d-986b-89523d919289@baylibre.com>
-Date: Wed, 5 Feb 2025 17:05:18 -0600
+        Wed, 05 Feb 2025 15:28:44 -0800 (PST)
+Message-ID: <896ab8aa-3cd6-4e78-9374-8883bacd1fff@baylibre.com>
+Date: Wed, 5 Feb 2025 17:28:42 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/27] iio: chemical: scd30: Use guard(mutex) to allow
- early returns
+Subject: Re: [PATCH 11/27] iio: adc: ad4695: Stop using
+ iio_device_claim_direct_scoped()
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
  Julien Stephan <jstephan@baylibre.com>,
@@ -100,37 +100,37 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
  Tomasz Duszynski <tomasz.duszynski@octakon.com>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20250204200250.636721-1-jic23@kernel.org>
- <20250204200250.636721-3-jic23@kernel.org>
+ <20250204200250.636721-12-jic23@kernel.org>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250204200250.636721-3-jic23@kernel.org>
+In-Reply-To: <20250204200250.636721-12-jic23@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 2/4/25 2:02 PM, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Auto cleanup based release of the lock allows for simpler code flow in a
-> few functions with large multiplexing style switch statements and no
-> common operations following the switch.
+> This complex cleanup.h use case of conditional guards has proved
+> to be more trouble that it is worth in terms of false positive compiler
+> warnings and hard to read code.
 > 
-> Suggested-by: David Lechner <dlechner@baylibre.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Tomasz Duszynski <tomasz.duszynski@octakon.com>
-> ---
->  drivers/iio/chemical/scd30_core.c | 63 ++++++++++++++-----------------
->  1 file changed, 28 insertions(+), 35 deletions(-)
-> 
-> diff --git a/drivers/iio/chemical/scd30_core.c b/drivers/iio/chemical/scd30_core.c
-> index d613c54cb28d..7a864b52adf1 100644
-> --- a/drivers/iio/chemical/scd30_core.c
-> +++ b/drivers/iio/chemical/scd30_core.c
-> @@ -6,6 +6,7 @@
->   */
->  #include <linux/bits.h>
->  #include <linux/completion.h>
-> +#include <linux/cleanup.h>
+> Move directly to the new claim/release_direct() that allow sparse
+> to check for unbalanced context.  In some cases code is factored
+> out to utility functions that can do a direect return with the
 
-Alphabetical order?
+s/direect/direct/
+
+> claim and release around the call.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/iio/adc/ad4695.c | 240 ++++++++++++++++++++++-----------------
+
+FYI, we still have a patch [1] hanging out in patchwork waiting for dependencies
+that will have a merge conflict with this. Should be able to pick up that patch
+since -rc1 and then rebase this one on it. Or we can do it the other way around.
+
+[1]: https://patchwork.kernel.org/project/linux-iio/patch/20250109-ad4695-oversampling-v2-1-a46ac487082c@baylibre.com/
 
 

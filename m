@@ -1,128 +1,143 @@
-Return-Path: <linux-iio+bounces-15047-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15048-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF93A29637
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 17:27:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F80DA299A1
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 20:00:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58E5A188335F
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 16:27:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7AC1688F3
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 19:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151DE1D9A79;
-	Wed,  5 Feb 2025 16:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF091684B0;
+	Wed,  5 Feb 2025 19:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Eeqnleog"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="N3kRNtGl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAEA1B6CE3;
-	Wed,  5 Feb 2025 16:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4769613AC1
+	for <linux-iio@vger.kernel.org>; Wed,  5 Feb 2025 19:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738772835; cv=none; b=WNA0WuGznMlBDtGB1rXGQD8+8hCzcORkCztD4EBTo5BFWsc3yeROF4E6isn2B6tMyDPJjaOZIcC44w9/NMpoNtsW5S5WtlHQRr5L8KzlByLBE1cDRSJ7qkzv8UwFkcdsabZFJroTk1ody2qUrojLKSl0MVVZCHytHkZ7lxpNuH8=
+	t=1738782028; cv=none; b=ZDslqarx4/qHJ39c+BOVgGbQKrqlQz8I3hCYn8oWB9PMagLTnryJvCSFgIYH6oH4/vCCl5TLS/AlKqFNlnY4C9sm+jAoE5n7i0/fjZmNoTB4fDoGmzwg9hvDUo5P8xrdiSRQHXPGeI2o1BRMOWRxmzBOBqnClTiRwykd5TBj0+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738772835; c=relaxed/simple;
-	bh=kMFmV0IehhGOWygBpPpcYAxC51tino8AxCfonOIIqPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MTgzFOc9o5Dg6L1uxKHvjzDoQOhbi/yr60KMOAEa+eWCEgVImqMhiFjjaplewsZDexRNEgEOq83ftR7/DECNQCPIahv2W4jI6/wTDpcdS2QbBjog18vpvfxTpwW8z3T7BpGp9kTMegObK95FTl8qNS7Uv3mugHMABMmLD3GdzbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Eeqnleog; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738772834; x=1770308834;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kMFmV0IehhGOWygBpPpcYAxC51tino8AxCfonOIIqPg=;
-  b=Eeqnleoga2Q45nQL2sqOaTSNja4TMC9NsI+qCIFls3KckGk7fEl9z/NM
-   YOsS3l7q/Utwv//buxi4lpAYNDtxjTp/Qdveq16dJ7b0x3rE/wk2i4Fhc
-   z5a5xQx51ufWySFuIa5SyRdQ1vOtSd1lWMCdM2cp1l8vZXGEez+34QKue
-   txXhfdXh+/+H4Uh9JtK8snweAmPakPF8A9bRI1+8X00oqZcAv0VLRYiwn
-   8cGI+lJ/pRW5JmmJb+q1g7NAoS80XqgMwPm6zanUZJMSKuv+gmaMj5Gty
-   LafXZXlTjQfsxOtYL/Jujo7Ylbyw3D1ZYurWYkFTJSsajHxwqMDQdTBnb
-   A==;
-X-CSE-ConnectionGUID: kpJ8X0gtQSKq8lmrFLY5Og==
-X-CSE-MsgGUID: PzcyMN75Q+OplXhhPIN2xA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39245291"
-X-IronPort-AV: E=Sophos;i="6.13,262,1732608000"; 
-   d="scan'208";a="39245291"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2025 08:27:13 -0800
-X-CSE-ConnectionGUID: F55qeeNmQcmnG0H6IgCGsQ==
-X-CSE-MsgGUID: N9UgH9j7TG2lpT+LvpkA3Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,262,1732608000"; 
-   d="scan'208";a="115994605"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 05 Feb 2025 08:27:09 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tfiF1-000vmJ-0I;
-	Wed, 05 Feb 2025 16:27:07 +0000
-Date: Thu, 6 Feb 2025 00:27:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Raag Jadav <raag.jadav@intel.com>, gregkh@linuxfoundation.org,
-	rafael@kernel.org, linus.walleij@linaro.org,
-	mika.westerberg@linux.intel.com, andriy.shevchenko@linux.intel.com,
-	dmitry.torokhov@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
-	sre@kernel.org, jic23@kernel.org, przemyslaw.kitszel@intel.com
-Cc: oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	linux-sound@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-iio@vger.kernel.org, Raag Jadav <raag.jadav@intel.com>
-Subject: Re: [PATCH v3 01/20] driver core: Split devres APIs to
- device/devres.h
-Message-ID: <202502060025.XJwUub6I-lkp@intel.com>
-References: <20250203080902.1864382-2-raag.jadav@intel.com>
+	s=arc-20240116; t=1738782028; c=relaxed/simple;
+	bh=DVZNausarlkBr6HpOTgLxmSO8rKQ9d7P8BI+zLFnbdI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=piEev3B7m8ErgKfKjUU+SYd4PdsnMGRAIqQwO41LqGOAPxz4YJhKwnfq2egM++0PtmJ91wq/b0D3WSHH3V0GfnWoFVUmvjP24HoJQ9GajZ+yfYQ63Ug9C/7LRmGnb35QmKwuLj5IGvYMS28uFFtkfOBjyNq6FtFdnLjfDbKqZJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=N3kRNtGl; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-51e902b58c0so36267e0c.0
+        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2025 11:00:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1738782025; x=1739386825; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5+8f5NTb3fsKuo4wsCGreRm0kUNpOc1zPp0/mIECJ8k=;
+        b=N3kRNtGl7KWRmvy1LDo+dVYYigUdUCpJO4zG++Fp4z+fHi9YsaV5Ic2j0zMyhNorqt
+         l0Q5VYoRhlUjlvPqvGtG8DeMKH0dFBGfMhdW31okPaU8auqFfEJmv3J2ZuNWCtkHYd4M
+         iJrZYpldcdpAMlE4/JdVYHufwujZ0I8ralSDg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738782025; x=1739386825;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5+8f5NTb3fsKuo4wsCGreRm0kUNpOc1zPp0/mIECJ8k=;
+        b=rGiqlJuPeEURImpqmgYOyCGmupFHs5/4cyXUFK7z6iCDeyGmHnhuUgOmhKQD4/C59Z
+         Es31K2SVlrOi1/8uGKvKoYYsCOxpiQIgVhCMcGuhbKp0dzHbADTfCSbbXkk6k2b1SEPo
+         l75by9AHRrXqesmfYN27MaO/mtcfiASVOtpZIlpLvVJlKIIXSsPO5G6kpFPvGsk/n6NW
+         cgYcvo9Vl5oLZchwxstvm90hg7Qkrmsgf6vJ4DOKSDT7glZ0Aywd5idjRL6YsSHQb4Ty
+         4bedrwarXMhDFCjz4ua4uDb6m31Uk4jKslUx4OAfN8LeZn5kqitvlbMOXUX8L2sI3+2H
+         bW4Q==
+X-Gm-Message-State: AOJu0YyANYBKjKSgCApRm2XzU/ATqbYaTOGbivJYSQXTS/U/tuJevLvA
+	hHw+OpOlvP8ZRVYnJNg8Gy648wAlCXdLQMJP2r9tLNXSrRCB7H2ga1sZgrDFrZjPMf8JnlN3dbO
+	LjMs/SX65ww8jDSZone3IZG4f/DyQZVuWJA3N50Ed+yBr/bs4WvR1
+X-Gm-Gg: ASbGncsgQqcrTjay/rorWfgXMhQoaHfytM6ClU91FnQghsG/wNTYVps1jDUTpGp349v
+	BMKeY4jVs2xZ9GvgvJJnrRpmiwiU/Rs87FEQnNXL6B5EICY6eb2QxwAny65oCXgwqdXg93OZmmd
+	TdIlpw65jVJNEELTsVQSH97XI=
+X-Google-Smtp-Source: AGHT+IGBQEHB+W2DqU412BBuOJKBUBJQ/jFdIXBueK1PNeoaBISDGJVlYA2wimGd76m4r1g8O5BBPEdQBdemlTcyDv8=
+X-Received: by 2002:a05:6122:2495:b0:51e:9efb:a23a with SMTP id
+ 71dfb90a1353d-51f0c48272amr3065522e0c.5.1738782024956; Wed, 05 Feb 2025
+ 11:00:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203080902.1864382-2-raag.jadav@intel.com>
+References: <20250204200250.636721-1-jic23@kernel.org> <20250204200250.636721-7-jic23@kernel.org>
+In-Reply-To: <20250204200250.636721-7-jic23@kernel.org>
+From: Gwendal Grignou <gwendal@chromium.org>
+Date: Wed, 5 Feb 2025 11:00:13 -0800
+X-Gm-Features: AWEUYZm11uVtWQT406zD7uf-ggayszWbXmQsYI5Rpy03tWjND42kP3TuDH7WdyU
+Message-ID: <CAPUE2uu8VhrnZ42LhUwJtN5WD0932WmbwCyJXiM9jbjVQuvt9w@mail.gmail.com>
+Subject: Re: [PATCH 06/27] iio: proximity: sx9324: Stop using iio_device_claim_direct_scoped()
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio <linux-iio@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Raag,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on 2014c95afecee3e76ca4a56956a936e23283f05b]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Raag-Jadav/driver-core-Split-devres-APIs-to-device-devres-h/20250203-161554
-base:   2014c95afecee3e76ca4a56956a936e23283f05b
-patch link:    https://lore.kernel.org/r/20250203080902.1864382-2-raag.jadav%40intel.com
-patch subject: [PATCH v3 01/20] driver core: Split devres APIs to device/devres.h
-config: um-randconfig-r112-20250205 (https://download.01.org/0day-ci/archive/20250206/202502060025.XJwUub6I-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project 355d0b186f178668b103068537e517f3d52ad639)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250206/202502060025.XJwUub6I-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502060025.XJwUub6I-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   drivers/net/pcs/pcs-xpcs-plat.c: note: in included file (through include/linux/device.h):
->> include/linux/device/devres.h:106:23: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@
-   include/linux/device/devres.h:106:23: sparse:     expected void [noderef] __iomem *
-   include/linux/device/devres.h:106:23: sparse:     got void *
-
-vim +106 include/linux/device/devres.h
-
-   102	
-   103	static inline
-   104	void __iomem *devm_ioremap_resource(struct device *dev, const struct resource *res)
-   105	{
- > 106		return ERR_PTR(-EINVAL);
-   107	}
-   108	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Tue, Feb 4, 2025 at 12:03=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>
+> This complex cleanup.h use case of conditional guards has proved
+> to be more trouble that it is worth in terms of false positive compiler
+> warnings and hard to read code.
+>
+> Move directly to the new claim/release_direct() that allow sparse
+> to check for unbalanced context
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Gwendal Grignou <gwendal@chromium.org>
+Reviewed-by: Gwendal Grignou <gwendal@chromium.org>
+> ---
+>  drivers/iio/proximity/sx9324.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/iio/proximity/sx9324.c b/drivers/iio/proximity/sx932=
+4.c
+> index f7819dd2775c..73d972416c01 100644
+> --- a/drivers/iio/proximity/sx9324.c
+> +++ b/drivers/iio/proximity/sx9324.c
+> @@ -429,16 +429,23 @@ static int sx9324_read_raw(struct iio_dev *indio_de=
+v,
+>                            int *val, int *val2, long mask)
+>  {
+>         struct sx_common_data *data =3D iio_priv(indio_dev);
+> +       int ret;
+>
+>         switch (mask) {
+>         case IIO_CHAN_INFO_RAW:
+> -               iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+> -                       return sx_common_read_proximity(data, chan, val);
+> -               unreachable();
+> +               if (!iio_device_claim_direct(indio_dev))
+> +                       return -EBUSY;
+> +
+> +               ret =3D sx_common_read_proximity(data, chan, val);
+> +               iio_device_release_direct(indio_dev);
+> +               return ret;
+>         case IIO_CHAN_INFO_HARDWAREGAIN:
+> -               iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+> -                       return sx9324_read_gain(data, chan, val);
+> -               unreachable();
+> +               if (!iio_device_claim_direct(indio_dev))
+> +                       return -EBUSY;
+> +
+> +               ret =3D sx9324_read_gain(data, chan, val);
+> +               iio_device_release_direct(indio_dev);
+> +               return ret;
+>         case IIO_CHAN_INFO_SAMP_FREQ:
+>                 return sx9324_read_samp_freq(data, val, val2);
+>         default:
+> --
+> 2.48.1
+>
 

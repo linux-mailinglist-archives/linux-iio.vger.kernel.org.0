@@ -1,124 +1,213 @@
-Return-Path: <linux-iio+bounces-15051-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15052-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082DAA299AC
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 20:04:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48401A29A6A
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 20:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90AB2169E57
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 19:04:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 594F47A3AE0
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Feb 2025 19:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8821FECB5;
-	Wed,  5 Feb 2025 19:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296920C026;
+	Wed,  5 Feb 2025 19:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RuhOPjtA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDykrvRI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659C9944F
-	for <linux-iio@vger.kernel.org>; Wed,  5 Feb 2025 19:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68B7155335;
+	Wed,  5 Feb 2025 19:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738782286; cv=none; b=jeFTxVSCyU9u5jylVw/XWBkdJPleMsMb6Q0NswwvalXU13j7QV34XROOToF0ezm/T80Lw/MxMl+gWK5qCLIpXpWRs5gbR3s6SWgMIcsfV1s0kfonNvEHWgMUNCN42QnybVfTVsaPd9r5ajMlfARjX8vC64XhAPclJ8oYTXdQVW8=
+	t=1738785163; cv=none; b=uYo2USIc9ArQOy+amGX0+s6YpdMw1wvdCirYKHVFvT4jcZevJHgAzCHxMgdVApwjJS7zayIZgCh+wqJ2tRUClm/Yr5KQFGf38M6lMgkcff4p253jepb4JHNRt9Y+0QPXBBzj1AUvG0bEcc3b9Rjuf/dr3CW11ewbyvVJA41w1eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738782286; c=relaxed/simple;
-	bh=RxNVALwyVubnb46RhavBKviuMf6Kil3QuuTLAp93B+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CsHvfATxr5WSOHpJW2fMLVUf9LZeO11Den6fbgUH4mlWeOAZzgksXkO8VximG21HRhMhIqDE6MuVY1h/gohHlPaXYVXuQoHUAy/+Gqj+E8e6cph95PWYNkG9DxpYxrhn08CCHkiFPgnHhm6YK2tsRYdcpggRhetAk9DBUAv0AG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RuhOPjtA; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-467bc28277eso1320901cf.1
-        for <linux-iio@vger.kernel.org>; Wed, 05 Feb 2025 11:04:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738782282; x=1739387082; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RxNVALwyVubnb46RhavBKviuMf6Kil3QuuTLAp93B+8=;
-        b=RuhOPjtA8JcB+38VcYTDMuLF3wAkeXH5U/dPNzUDfhcEsAYZG5FmKQhFEsbU9kL0aI
-         ho9akk64IdbwkHeC/MZ82rSqCG8RYFBm/m+L1bw+lYa8V1KfxIa8SjWUN069BxTeq38y
-         +tEXHYBoycVAOdJ7zyvT9h4erjQbeMOjV7OFzxCcucNzCWzXKcAsVNYgA9ZkRdAWktiK
-         oPph9A/OmStYVFF0NnKseX4Swgrp3CHuBvc1563FdR2KD32/dTutDxRORUnrVFc7wfME
-         kbmRAJxromix+amBqfuyEEk45TLI2J6sKc2BtwD8+mbu5fMu68HxFUk/akNk2E672oy+
-         HJJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738782282; x=1739387082;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RxNVALwyVubnb46RhavBKviuMf6Kil3QuuTLAp93B+8=;
-        b=KHpJaqlwNFKy/T42SWIj3SFZUYPCOa8tU+MuaLPFYnhXVaExQjZbbYT/0DFlfnXDh1
-         XG4XpXK0nuQeGuOvdYzwuWrSq9sZCCqXaxRICv45P+nQRES1i45bSc0UNGpbzh21arcD
-         4zhRximvgVwOVRE5VvR2Yz5kRcTBG8LnfLVkB8ihEhVb64iEfQU5SANabqqMyHi+7UNO
-         QcwJcbA1wuh+QnTj7wvp9s0c+8CUvurnrEYxr1QMd3vokcTc63lDg2cZZdEpIWFs5UsB
-         EOhwrv/G8JOwqXQ1qfS6YVhSN7Nsm+HDl80eeoj+qoqa9AXSgZuapNggFa6BwOL6YX7S
-         hXuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVk/JvaH1NPTHySQtpI7ms9VThCKOmaLf3hiN6kMRyW0c9Wm5qNy3f5Tr8GQnck76U5a/TxIZVYPro=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt1jfElIGDzZ4B14sOpkaSEtcEMu34isE9nAGqcu/6GbpsO38Y
-	dfrQpMIa1J4jidxnkgLTt4/dsqbDhA5R80m4E/dYXlNTQrswbs/1heRNDKV24WE=
-X-Gm-Gg: ASbGncu/aRHyghP2PNv0BzxV7/dV+XD/FzK810YjXS+xmypEyYH+3jA40ygmFTbU3RC
-	uK1A0X3JfiDDVMAbvLqxXY7MIbnqPiIKTpmOyY0mVi+Xd7lG7s8SOPOZI0c96HXnOAKUe+lB7lP
-	Wsh7OC2LUxFvflGFZCDO6Jja9MiKm166h3LZfug7sOvFOGqEw5PljPToYjLTJs8XlEMUynkeRQV
-	6uwujGHdNgH3NxKGM5p9W/AI9Bqd4PqXIImmpjYm9xxr9GrIqH90Ud1jpplNHB5sB2gO1AEYstC
-	ryKnV+xnDXXq7TtixUHG3S9M4kj8nm+y+om8db+Nj03ca0s8BRu6g378fgg=
-X-Google-Smtp-Source: AGHT+IGXcywJk0REnE5QaO9od5+htPtcYJ6vjJqAeCxg9vdAySJInwEg8QoUKbbuMSQdQ9bydkf/bA==
-X-Received: by 2002:ac8:7f54:0:b0:467:4b94:cfaf with SMTP id d75a77b69052e-4702831f0f9mr52065611cf.51.1738782282151;
-        Wed, 05 Feb 2025 11:04:42 -0800 (PST)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46fdf0ce770sm72472081cf.19.2025.02.05.11.04.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Feb 2025 11:04:41 -0800 (PST)
-Message-ID: <040225aa-1fff-4c73-803f-134338273ca0@baylibre.com>
-Date: Wed, 5 Feb 2025 14:04:39 -0500
+	s=arc-20240116; t=1738785163; c=relaxed/simple;
+	bh=Bv6VrTP0baa+38fXseu4H6lY+zxHwgylRB0FdkDUSv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aYPFi0qA328nLsbRRc+l5flrBGt8v/I1nf95aHkkyIKJtKkXyjaOGri/dRtKG3AYVdJ96p3ylVhzZ/1ght2HV6SJEMm92fOOoRk7qGeoEtYCGwXtCXMqJpGCNE/c4kk0doAsGKvIfKEBJOCYNMtAtHKbWNpfIRjMPYTAc2pzmVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDykrvRI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805E4C4CED1;
+	Wed,  5 Feb 2025 19:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738785163;
+	bh=Bv6VrTP0baa+38fXseu4H6lY+zxHwgylRB0FdkDUSv0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sDykrvRIMHbvX2mkngYAekcdYAG5dkg+dAn3mJ2JH1XFIT9ma3sgfRLwhaJuxO7Ju
+	 F9+udl/dTzHzQ14BLhanNF81ncBD8jux3Ete2Hk3iOA1Z+NCusnqGtu48Fxw7+F99V
+	 8GEylz8uYSUIAWMgzDyZUu/91RETYGwprdnEI9Pe9nkffkJ0jbxcTQvnpxnAZ4J3rf
+	 gUWl+jcgEwJgrcnJq3l0E8kQLvCy8D9Q0MQZqZkLPwN1vX9Y2YU1C5uw1zLI180r56
+	 eyy7K+q4urdcy9FzmGLhjqrih5+Kouj7FV62nX+xizjCIsCzqqtqWmXPd24fyd+9Nm
+	 4X1NZcgc0Q20Q==
+Date: Wed, 5 Feb 2025 19:52:37 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Robert Budai <robert.budai@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Alexandru Ardelean <alexandru.ardelean@analog.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>, Nuno Sa <nuno.sa@analog.com>,
+	Ramona Gradinariu <ramona.gradinariu@analog.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	David Lechner <dlechner@baylibre.com>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 4/6] dt-bindings: iio: Add adis16550 bindings
+Message-ID: <20250205-styling-chirpy-79eae9437b3b@spud>
+References: <20250204143612.85939-1-robert.budai@analog.com>
+ <20250204143612.85939-5-robert.budai@analog.com>
+ <20250204-helium-marbled-a0863a0a18a8@spud>
+ <15065d0cd19f39d92ce860cd03802c368df74b34.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 13/27] iio: adc: ad7625: Stop using
- iio_device_claim_direct_scoped()
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: Mudit Sharma <muditsharma.info@gmail.com>,
- Julien Stephan <jstephan@baylibre.com>,
- Mariel Tinaco <Mariel.Tinaco@analog.com>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- ChiYuan Huang <cy_huang@richtek.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Guillaume Stols <gstols@baylibre.com>, David Lechner
- <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Gwendal Grignou <gwendal@chromium.org>,
- Antoni Pokusinski <apokusinski01@gmail.com>,
- Tomasz Duszynski <tomasz.duszynski@octakon.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250204200250.636721-1-jic23@kernel.org>
- <20250204200250.636721-14-jic23@kernel.org>
-Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20250204200250.636721-14-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qKt5HoGX5mxGGLac"
+Content-Disposition: inline
+In-Reply-To: <15065d0cd19f39d92ce860cd03802c368df74b34.camel@gmail.com>
 
 
-On 2025-02-04 15:02, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This complex cleanup.h use case of conditional guards has proved
-> to be more trouble that it is worth in terms of false positive compiler
-> warnings and hard to read code.
->
-> Move directly to the new claim/release_direct() that allow sparse
-> to check for unbalanced context.
->
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Trevor Gamblin <tgamblin@baylibre.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+--qKt5HoGX5mxGGLac
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Feb 05, 2025 at 04:11:51PM +0000, Nuno S=E1 wrote:
+> On Tue, 2025-02-04 at 19:25 +0000, Conor Dooley wrote:
+> > On Tue, Feb 04, 2025 at 04:36:08PM +0200, Robert Budai wrote:
+> > > Document the ADIS16550 device devicetree bindings.
+> > >=20
+> > > Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > Signed-off-by: Robert Budai <robert.budai@analog.com>
+> > > ---
+> > >=20
+> > > v6:
+> > > - applied blank line suggestions
+> > > - added clock-frequency dependency change suggestions
+> > > - yamllint corrections
+> > >=20
+> > > =A0.../bindings/iio/imu/adi,adis16550.yaml=A0=A0=A0=A0=A0=A0 | 83 +++=
+++++++++++++++++
+> > > =A0MAINTAINERS=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 9 ++
+> > > =A02 files changed, 92 insertions(+)
+> > > =A0create mode 100644
+> > > Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > >=20
+> > > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.=
+yaml
+> > > b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > new file mode 100644
+> > > index 000000000000..8750bb937979
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > @@ -0,0 +1,83 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/imu/adi,adis16550.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Analog Devices ADIS16550 and similar IMUs
+> > > +
+> > > +maintainers:
+> > > +=A0 - Nuno Sa <nuno.sa@analog.com>
+> > > +=A0 - Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > +=A0 - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > +
+> > > +properties:
+> > > +=A0 compatible:
+> > > +=A0=A0=A0 enum:
+> > > +=A0=A0=A0=A0=A0 - adi,adis16550
+> > > +
+> > > +=A0 reg:
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 spi-cpha: true
+> > > +=A0 spi-cpol: true
+> > > +
+> > > +=A0 spi-max-frequency:
+> > > +=A0=A0=A0 maximum: 15000000
+> > > +
+> > > +=A0 vdd-supply: true
+> > > +
+> > > +=A0 interrupts:
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 reset-gpios:
+> > > +=A0=A0=A0 description:
+> > > +=A0=A0=A0=A0=A0 Must be the device tree identifier of the RESET pin.=
+ If specified,
+> > > +=A0=A0=A0=A0=A0 it will be asserted during driver probe. As the line=
+ is active low,
+> > > +=A0=A0=A0=A0=A0 it should be marked GPIO_ACTIVE_LOW.
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 clocks:
+> > > +=A0=A0=A0 description: If not provided, then the internal clock is u=
+sed.
+> > > +=A0=A0=A0 maxItems: 1
+> > > +
+> > > +=A0 clock-frequency:
+> > > +=A0=A0=A0 description: Clock frequency in Hz when an external clock =
+is used.
+> > > +=A0=A0=A0 oneOf:
+> > > +=A0=A0=A0=A0=A0 - minimum: 1
+> > > +=A0=A0=A0=A0=A0=A0=A0 maximum: 128
+> > > +=A0=A0=A0=A0=A0 - minimum: 3000
+> > > +=A0=A0=A0=A0=A0=A0=A0 maximum: 4500
+> >=20
+> > I don't get why this is a property, to be honest. When you've got an
+> > external clock, why isn't the frequency obtained from the clock provider
+> > node?
+> >=20
+>=20
+> The main purpose of this property is actually to show/document the constr=
+ains of
+> the external clock. We can very well just error out in the driver (and we=
+ do
+> that) and not have this property. I mentioned this property to Robert some
+> revisions ago and I also pointed out that I wasn't really sure if it shou=
+ld be
+> used or not=A0(I guess this is more for fixed clock providers...). IIRC, =
+I did
+> asked for some advice/comments but we got none so I assume Robert just de=
+cided
+> to use it and see what you guys had to say about it.
+
+NGL, this is one of the kinda of things where if you're relying on
+dt-bindings to avoid cocking up your board design, things have already
+gotten pretty badly wrong! That said, "clock-frequency" is a
+property for cpus, fixed-frequency clock providers and i2c buses, you'd
+need a vendor prefix and a unit suffix here IMO. Also, I don't really
+think that it actually does anything at all, given it does not constrain the
+clock you're linking to with the clocks property. This may as well just be
+a comment in the description of the clocks property, for all that it does.
+
+--qKt5HoGX5mxGGLac
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ6PBhQAKCRB4tDGHoIJi
+0jALAP9HiOmol4F0aUFuG4sftrs9MLQ+t4nmrapcxBFu3CQq9QD/XltVxGmoV5j0
+Hh57FFzdGdKr5OdxpNhJMsJo9aQ6OQw=
+=jbCM
+-----END PGP SIGNATURE-----
+
+--qKt5HoGX5mxGGLac--
 

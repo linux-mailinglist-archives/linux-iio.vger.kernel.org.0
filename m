@@ -1,202 +1,182 @@
-Return-Path: <linux-iio+bounces-15087-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15089-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897D7A2B560
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 23:43:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A592A2B58B
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 23:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19AE51672AC
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 22:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1E23A68E8
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 22:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80C922FF5C;
-	Thu,  6 Feb 2025 22:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCB023AE6E;
+	Thu,  6 Feb 2025 22:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oHW/sIwY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="e7YtTFBj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FF7423C380;
-	Thu,  6 Feb 2025 22:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C0222FF39
+	for <linux-iio@vger.kernel.org>; Thu,  6 Feb 2025 22:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738881810; cv=none; b=qJkD9k4E0LCSeBjKOhOYaEttgkMtMhltISHF0RPOjYChVJlwaNvBODxLw5lp4iRZJ4ZbELuMW4FfbMVKCHVC5/X5PLS233unXkGrlTEZLzqAlWyLrYWwtqha+pJEhraWwmGxwBDcRRxrFVeD6m8oP5XFicaN87zNkdWOT6qcDnM=
+	t=1738882106; cv=none; b=f5iEFfzMHDA250bta09TTzc4IG6tBh076r15NuBYBh5kAPMYCDLGsARtAT3eF1iUcJkWXs3GWlZ5FFoxRcW7NOHoWDA9L/2Kuo3Oe9OuFKJgGmh6VAQtv4J46uK7/CKabA9nfclPzSKxXiNINeUX/9t2E7OzQOJzINLVEerC6R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738881810; c=relaxed/simple;
-	bh=RRyeWgDKYUXqPj9AK9HawjmXCxmssH+oPCpVBdzfC7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KYgYO+Flx8R3+XPiqbGvhL9RsGfIOnO5yqsBO5FE9R+OrR+7OqVdTJl/qEMi+4jrpnolkB/ILtNQ9DlXW44G04p1EVMKdY0KqfWPYfpzPwTG2rAE0R4yhJ8LnppUmNLx5zEXWNUNB7z5Ky5oH7bgZYfnP+YqUcpEB2Ih525vLBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oHW/sIwY; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738881809; x=1770417809;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RRyeWgDKYUXqPj9AK9HawjmXCxmssH+oPCpVBdzfC7s=;
-  b=oHW/sIwYCprRUbWd+acRPAhnKPN1Gda3bpn269k4oUsSW4PMo6PwT7uW
-   1NGnp/GYrLLGR9E0WqESjGPx7HYXMrywIXblKQSbp5jhxNHLqEOXUkZK4
-   WeuXT4pf1nEPb8m3+0ntxI+dtlH5XABaDTvmjh4jpVc7Y/tNiXVXcxFPL
-   K+9i9roEygKoHSexS8U2JZW9z8AZ6tGjwgQzJOpFoA0pxwZ3hWCjFSuV/
-   SDOHm5CP3PMjtcystucew4QUCsvN0FdNQpRixoSnH/JeBoh3CLgHo/8SA
-   vGdmXVL8udH1sgAIJCJ5/R/wODyAYOFWu/OVgdnCJW+o/+yRdg9WaZwGT
-   Q==;
-X-CSE-ConnectionGUID: JEsPmPcGSLiIDbXUDDo5og==
-X-CSE-MsgGUID: NT+8PkpNTSWZb5ioeZALMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39385323"
-X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
-   d="scan'208";a="39385323"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 14:43:28 -0800
-X-CSE-ConnectionGUID: jROx22NBQcGGvRMsd4YqeA==
-X-CSE-MsgGUID: tiD9h/EPS9SDj5QwMK+YGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,265,1732608000"; 
-   d="scan'208";a="111181311"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 06 Feb 2025 14:43:24 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tgAag-000xTb-17;
-	Thu, 06 Feb 2025 22:43:22 +0000
-Date: Fri, 7 Feb 2025 06:42:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <202502070654.5T9Nk6dN-lkp@intel.com>
-References: <4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1738882106; c=relaxed/simple;
+	bh=zis4tQ7I07460hkbbniR15rXPSwxoQBpcub6c24O+rE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=X1iKGrgdVBNu1XsVAIu1hwj1VE8qp5w1JIuQop95Uf/Eaw0/NRKa0l/su+rdVx4ukeGZ9ola4qmHkqHrONAy77ygB6BTcTd0WTUXp+O9HZsntXdSq1++18TPrBWBJL0IWYeLnYq/XYVYTkwlzGha+/YrhhrNr80ua7gqPmlyKHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=e7YtTFBj; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-71e1e051e50so403205a34.0
+        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2025 14:48:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738882101; x=1739486901; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nTjUVrGhE9LEkuAZwVXSbsr3BolYrhi8U68+FxZFaxQ=;
+        b=e7YtTFBjy0uRy0vsgSxptxwfBMUs7cm3Q81BJzZuEGoce04DXOj2iKHnO/iJuLCXA0
+         kHgWo5/x4hdC7kcSBkBGAxaFnvlBY8JDgW/o/o/oVwTtw3RfUkUZjk3rF8FujoWHmwYU
+         Gd94Ko8GUAu+qr8VG7ANeqeIQ+G0ij6tTn2YSUWcTy/OwbA3H9Ss2nQ/rZ+ey5w+A+6Z
+         8/J34qev7ibdViIyGLwB9NaMt51bgRSdoSVAtYiiKZtdpvwi7iOSl34DkzWunPa0wUzD
+         V31wdC0bPvpK43WMpk6fgEvCVTQsFqu0pQbCNjeJZdg1BcwG30KxoUrLHuM6WrUd1ThY
+         welA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738882101; x=1739486901;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nTjUVrGhE9LEkuAZwVXSbsr3BolYrhi8U68+FxZFaxQ=;
+        b=o9xT1KhiyxZv2FHxpCCU8WmWIDCdEwwVidwTptGaWeupJPj5oEXYpgZM6Ed1eCai0n
+         JCGAbVFVyyzRp4Ig6l1BO9BfscSEarvflX5FPMxSZRrgDcgcvgOlxxcAQ0QG8z7WkdC7
+         Ki0eQvTFEXzgMkOMvO1NkJ6eJkjSJfH2rz/KYConT6caHF9vMnXOniarOuZBvebx2uCx
+         eC5X5x99sZu4WkO9tscsC0O+fVkmPeEW+Lv2CktsH+prjbDY9rFiE/bKmOGVnKnj3BXL
+         vS0emq/8zkMMsajdFuO1vUAhEXs1NI531eID4InG7oiBPSiCEc6YCcspulAMjyvGUXLI
+         R/Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCUm9jOnUfs9ac0tmtQ8EjETDMl6u9+zh5Bb17Kartp033Jcz2cA7bKpUvcJ00O5X2kPzUB8qGGl5x4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIjHSjQ6mLuGDe2qwLPL3tQDhEXMwwQnOzGMUkjw5Ocv1dm2T7
+	QEUgk6O/Y3lEv3RoQkAg79YGoR2bgI38KWcZOkntHxz6KOE66/HmJZDNWE++oVk=
+X-Gm-Gg: ASbGncsyQ5TZkCsKt6kRvGUUqtvb3JZFgBecUJHrgxqG27YBnWi/bfYuwe7/3PStaHy
+	GKQeLf7y8owl+guHFpRrtE85TxvSDcaiz1GOdYZcYws3AnCCwLiEMxZznM9OiNwP1BfopCvItO3
+	euX7u8uXTrAA7NMs1mDrbF8zFzJDBSgCy6kCQyt9FxPWZsuRqC0qZuOMutUFGfXCS6xmMkIw0DR
+	DMPBdxN9pSHu0PJ8RaNLM8LqeJZXyE6GKuv5kxV5FRFx0ddR/Cb4VpwRc7CFwDslOAv3usp7fcR
+	pcrI/3EKlEF8slGB7rHmLQ0o6S3ZodchL6Nc/J4fQMcZbBU=
+X-Google-Smtp-Source: AGHT+IEe89bED7ukyh1rQCd1X1Mi1wrPA7ENfU7mpvKe6wSKoopBL7B45Hnhs3EJFS2hj21RE4OaAw==
+X-Received: by 2002:a05:6830:6204:b0:71d:fe93:2570 with SMTP id 46e09a7af769-726b883e93emr835305a34.14.1738882101425;
+        Thu, 06 Feb 2025 14:48:21 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-726af95bbb5sm510986a34.41.2025.02.06.14.48.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 14:48:21 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH v2 00/13] gpiolib: add gpiod_multi_set_value_cansleep
+Date: Thu, 06 Feb 2025 16:48:14 -0600
+Message-Id: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC48pWcC/4WNSw6CQBAFr0JmbZv5oIIr72FYzKeFTpAhPYRIy
+ NzdkQu4rEpevV0kZMIk7tUuGFdKFKcC+lQJP9ipR6BQWGipL1IZBf1MERIuYJntBgOOMzK4UFu
+ jG3OTwYiynRlf9Dm6z67wQGmJvB03q/rZf8VVgYS2Vb7x3tXhig9nt5Ec49nHt+hyzl9lqEWmv
+ QAAAA==
+X-Change-ID: 20250131-gpio-set-array-helper-bd4a328370d3
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-sound@vger.kernel.org, David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
 
-Hi Matti,
+This series was inspired by some minor annoyance I have experienced a
+few times in recent reviews.
 
-kernel test robot noticed the following build warnings:
+Calling gpiod_set_array_value_cansleep() can be quite verbose due to
+having so many parameters. In most cases, we already have a struct
+gpio_descs that contains the first 3 parameters so we end up with 3 (or
+often even 6) pointer indirections at each call site. Also, people have
+a tendency to want to hard-code the first argument instead of using
+struct gpio_descs.ndescs, often without checking that ndescs >= the
+hard-coded value.
 
-[auto build test WARNING on 5bc55a333a2f7316b58edc7573e8e893f7acb532]
+So I'm proposing that we add a gpiod_multi_set_value_cansleep()
+function that is a wrapper around gpiod_set_array_value_cansleep()
+that has struct gpio_descs as the first parameter to make it a bit
+easier to read the code and avoid the hard-coding temptation.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/dt-bindings-ROHM-BD79124-ADC-GPO/20250205-214127
-base:   5bc55a333a2f7316b58edc7573e8e893f7acb532
-patch link:    https://lore.kernel.org/r/4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount%40gmail.com
-patch subject: [PATCH v2 3/5] iio: adc: Support ROHM BD79124 ADC
-config: i386-randconfig-004-20250207 (https://download.01.org/0day-ci/archive/20250207/202502070654.5T9Nk6dN-lkp@intel.com/config)
-compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250207/202502070654.5T9Nk6dN-lkp@intel.com/reproduce)
+I've just done gpiod_multi_set_value_cansleep() for now since there
+were over 10 callers of this one. There aren't as many callers of
+the get and atomic variants, but we can add those too if this seems
+like a useful thing to do.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502070654.5T9Nk6dN-lkp@intel.com/
+Maintainers, if you prefer to have this go through the gpio tree, please
+give your Acked-by:, otherwise I will resend what is left after the next
+kernel release.
 
-All warnings (new ones prefixed by >>):
+---
+Changes in v2:
+- Renamed new function from gpiods_multi_set_value_cansleep() to
+  gpiod_multi_set_value_cansleep()
+- Fixed typo in name of replaced function in all commit messages.
+- Picked up trailers.
+- Link to v1: https://lore.kernel.org/r/20250131-gpio-set-array-helper-v1-0-991c8ccb4d6e@baylibre.com
 
->> drivers/iio/adc/rohm-bd79124.c:1072:29: warning: variable 'ret' is uninitialized when used here [-Wuninitialized]
-    1072 |                 return dev_err_probe(dev, ret, "Failed to get the Vdd\n");
-         |                                           ^~~
-   drivers/iio/adc/rohm-bd79124.c:1057:9: note: initialize the variable 'ret' to silence this warning
-    1057 |         int ret;
-         |                ^
-         |                 = 0
-   1 warning generated.
+---
+David Lechner (13):
+      gpiolib: add gpiod_multi_set_value_cansleep()
+      auxdisplay: seg-led-gpio: use gpiod_multi_set_value_cansleep
+      bus: ts-nbus: validate ts,data-gpios array size
+      bus: ts-nbus: use gpiod_multi_set_value_cansleep
+      gpio: max3191x: use gpiod_multi_set_value_cansleep
+      iio: adc: ad7606: use gpiod_multi_set_value_cansleep
+      iio: amplifiers: hmc425a: use gpiod_multi_set_value_cansleep
+      iio: resolver: ad2s1210: use gpiod_multi_set_value_cansleep
+      mmc: pwrseq_simple: use gpiod_multi_set_value_cansleep
+      mux: gpio: use gpiod_multi_set_value_cansleep
+      net: mdio: mux-gpio: use gpiod_multi_set_value_cansleep
+      phy: mapphone-mdm6600: use gpiod_multi_set_value_cansleep
+      ASoC: adau1701: use gpiod_multi_set_value_cansleep
 
+ drivers/auxdisplay/seg-led-gpio.c           |  3 +--
+ drivers/bus/ts-nbus.c                       | 10 ++++++----
+ drivers/gpio/gpio-max3191x.c                | 18 +++++++-----------
+ drivers/iio/adc/ad7606.c                    |  3 +--
+ drivers/iio/adc/ad7606_spi.c                |  3 +--
+ drivers/iio/amplifiers/hmc425a.c            |  3 +--
+ drivers/iio/resolver/ad2s1210.c             |  8 ++------
+ drivers/mmc/core/pwrseq_simple.c            |  3 +--
+ drivers/mux/gpio.c                          |  4 +---
+ drivers/net/mdio/mdio-mux-gpio.c            |  3 +--
+ drivers/phy/motorola/phy-mapphone-mdm6600.c |  4 +---
+ include/linux/gpio/consumer.h               |  7 +++++++
+ sound/soc/codecs/adau1701.c                 |  4 +---
+ 13 files changed, 31 insertions(+), 42 deletions(-)
+---
+base-commit: df4b2bbff898227db0c14264ac7edd634e79f755
+change-id: 20250131-gpio-set-array-helper-bd4a328370d3
 
-vim +/ret +1072 drivers/iio/adc/rohm-bd79124.c
-
-  1049	
-  1050	static int bd79124_probe(struct i2c_client *i2c)
-  1051	{
-  1052		struct bd79124_data *data;
-  1053		struct iio_dev *iio_dev;
-  1054		const struct iio_chan_spec *template;
-  1055		struct iio_chan_spec *cs;
-  1056		struct device *dev = &i2c->dev;
-  1057		int ret;
-  1058	
-  1059		iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-  1060		if (!iio_dev)
-  1061			return -ENOMEM;
-  1062	
-  1063		data = iio_priv(iio_dev);
-  1064		data->dev = dev;
-  1065		data->map = devm_regmap_init_i2c(i2c, &bd79124_regmap);
-  1066		if (IS_ERR(data->map))
-  1067			return dev_err_probe(dev, PTR_ERR(data->map),
-  1068					     "Failed to initialize Regmap\n");
-  1069	
-  1070		data->vmax = devm_regulator_get_enable_read_voltage(dev, "vdd");
-  1071		if (data->vmax < 0)
-> 1072			return dev_err_probe(dev, ret, "Failed to get the Vdd\n");
-  1073	
-  1074		ret = devm_regulator_get_enable(dev, "iovdd");
-  1075		if (ret < 0)
-  1076			return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
-  1077	
-  1078		ret = devm_delayed_work_autocancel(dev, &data->alm_enable_work,
-  1079						   bd79124_alm_enable_worker);
-  1080		if (ret)
-  1081			return ret;
-  1082	
-  1083		if (i2c->irq) {
-  1084			template = &bd79124_chan_template;
-  1085		} else {
-  1086			template = &bd79124_chan_template_noirq;
-  1087			dev_dbg(dev, "No IRQ found, events disabled\n");
-  1088		}
-  1089		ret = devm_iio_adc_device_alloc_chaninfo(dev, template, &cs);
-  1090		if (ret < 0)
-  1091			return ret;
-  1092	
-  1093		iio_dev->channels = cs;
-  1094		iio_dev->num_channels = ret;
-  1095		iio_dev->info = &bd79124_info;
-  1096		iio_dev->name = "bd79124";
-  1097		iio_dev->modes = INDIO_DIRECT_MODE;
-  1098	
-  1099		data->gc = bd79124gpo_chip;
-  1100		data->gc.parent = dev;
-  1101	
-  1102		mutex_init(&data->mutex);
-  1103	
-  1104		ret = bd79124_hw_init(data);
-  1105		if (ret)
-  1106			return ret;
-  1107	
-  1108		ret = devm_gpiochip_add_data(data->dev, &data->gc, data);
-  1109		if (ret)
-  1110			return dev_err_probe(data->dev, ret, "gpio init Failed\n");
-  1111	
-  1112		if (i2c->irq > 0) {
-  1113			ret = devm_request_threaded_irq(data->dev, i2c->irq,
-  1114						bd79124_irq_handler,
-  1115						&bd79124_event_handler, IRQF_ONESHOT,
-  1116						"adc-thresh-alert", iio_dev);
-  1117			if (ret)
-  1118				return dev_err_probe(data->dev, ret,
-  1119						     "Failed to register IRQ\n");
-  1120		}
-  1121	
-  1122		return devm_iio_device_register(data->dev, iio_dev);
-  1123	}
-  1124	
-
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+David Lechner <dlechner@baylibre.com>
+
 

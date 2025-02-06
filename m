@@ -1,137 +1,138 @@
-Return-Path: <linux-iio+bounces-15066-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15067-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBACBA2A34D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 09:37:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42979A2A358
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 09:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55CA51691A9
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E6A1889329
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7804222577C;
-	Thu,  6 Feb 2025 08:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EAF225A3D;
+	Thu,  6 Feb 2025 08:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ivrbQ/e5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U1IeleN6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399F32248B0
-	for <linux-iio@vger.kernel.org>; Thu,  6 Feb 2025 08:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331A22488E;
+	Thu,  6 Feb 2025 08:39:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738831061; cv=none; b=F0KblTawoAYh4ankvr3fgSFFpgq22w899XrMNgzilVb8iz37q/9IufKgScg/8sqAsOisZcsX70vl65gdBbQ54/fzzrA/asaq9a90nl9MdhgSogjnnhs+i5fNKbcvxqBKXPQpzJ0eMdfGH8aJAyQgDHbDpwnx/nCb7TZHAh+5iqQ=
+	t=1738831166; cv=none; b=ZQAhgheTbIUq5SfajI9OeBoXsDds4xjnkflrP9LELFPg2CodW8srI703Gt8BEmqW5d+zK+CIG2FbORzW/wNqDr86rePMMDTodHHaNsLssxuzi0cAskOfz9P2w1zTq9dBFJ8bqJWDBLlz5EDAKoC/EA43bOaIkNAqdl7hUU2t3oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738831061; c=relaxed/simple;
-	bh=b61mwkGmKa7qLwio/HyZKSIj9qw2WfofAWA65lWGS5Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TgcrjrN3jH04gakLN/vaqPw/3bo14JPOFEc4FlcNHkbHJxLUNP2PVw6IO0/rL+/0jwlclAyWTbmeffrut+KbUojCGI8Dkq4ptJwF96yndzZgSOmW5J1kArLK7wYZHACCbsdtgYVUQJ/2jhqz6gvKKHLUR1n9bxkR2COr9BfGK8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ivrbQ/e5; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38a8b17d7a7so241598f8f.2
-        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2025 00:37:36 -0800 (PST)
+	s=arc-20240116; t=1738831166; c=relaxed/simple;
+	bh=oKu+cB+CM3wATBLp/5s34qObsyhrmghUZM1r+46ZaOk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iS4vGH7j2w+liHprW1oaDUFrzTZL05K2JJyLlPkZPfFiKHZJVyEJ9G1K6OlMz3hqy2Od1pTx8c8m48fb3ZvPYF4yDSkKqbk33Kt0l0zv5VKpxRRAxUkLuLOZ+hsrfXJsfFNNMfDGadQCWtIYsJBIid9iupJm7WjIa+wOUz1e+l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U1IeleN6; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-304e4562516so5897681fa.1;
+        Thu, 06 Feb 2025 00:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738831055; x=1739435855; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6cGRhVGZQ/G+JhIHlnkJGdUnMYCYKnsKq6xNumw1bc8=;
-        b=ivrbQ/e5ShXADrc6AAc8BkSjaLLbr6Ez1K0/SiFxe5Z6vEmVZLSqv01sdDzBkhYCDP
-         5iAHuGn+VJpKEuGcgQpAHa67XiGjykeI6YboOUtUAXJpyjDn7GmB3eT2qf933RT77Wrr
-         EHMmIyOInibBXdCfQK+QSTtEIU0RChvXxmII7ZCa3QUfKBEy8EW4luHK2GzlXbJ03uy5
-         XRdmm15AIm6VrL4ahemVS+TCsu/AWSPo83lL0fneINAJjwne0916U7Wo5SpZjjEI4Od9
-         xYaAzvAXDYfzB+14gh68FQ4/YPKcyQxPS+UFArANUlgmtexYm3YX8+ji3ankmvk3cxDG
-         FV+Q==
+        d=gmail.com; s=20230601; t=1738831163; x=1739435963; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2Oq/sm/m7Gr6yeLfF6pPWW8J+P9gaFDWDMTmeX0qou8=;
+        b=U1IeleN6TaIgRthTiA8L/ttB5vEhqDFgMVNa0LuJkm1EtvbY6SwGh4dmIKmtprrbci
+         Wfyg5Rgq+YLQiMbwhONres8TA7lajCC6nyJ/v3+Ea9Si4zkdnm7fZzxyXRpNG1+cV3Om
+         SbN8S07V17irY/51UAwJzM2ZTQkrsmN/NVoJwDgErrwnxdqIoQG4Xt7FWX1zZE1t9cEL
+         nM2TUAL2KCLOap2fuIgOYb3lDA8jAtrsVHnk2eBtIHk0aEYSK+eyWcjHOLUXMODozTfl
+         BmEwCBo+aamQLh90MrtKzFrI58c6n/RPd5bpykzEXfWtTe5eDc4jSN2SdGucai3Y8Wg3
+         6tRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738831055; x=1739435855;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6cGRhVGZQ/G+JhIHlnkJGdUnMYCYKnsKq6xNumw1bc8=;
-        b=aeX1ikktg685HG3QFv3h7VpmXzWCmA7260f8ofrUdWB11XdkVQstwoHx4OwesYpDSd
-         LmNs/UqNF+PEqmUTc0+kdet6KPNcYTS2aTv7g1osJ3B8r6E0AvLA6/aF7wYztU1R6pTW
-         obQLy26RyldcwmpLx8X61x2ZNxk69+sYPijqWa0S/Nh9PBeYxguhPNzi+jccRwqHGsPT
-         Qr3hm7dJQIpjt0NpbKav2MzRxNgy2W2yg4do2M+4xS2wc0aB1x3tEpkh83K63fKyrRPk
-         t7Px9sBF8giJ5LcKF5iJwTuJZeWfSS2k0QbOBKnGcf39k5WLRRfxqqfGuLQe22gnoXUD
-         zKEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXhllJga2x4hAlIuTS4UDI7ZIEE8Z13Al86wnpH0Jh3mLjA7cLXhx1w250KQM/IhE9wJcP5VvUbYus=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzA4gACaEBM6Xe5enxddbhkvt8EDt5RzK1GyvL+Na0fnzeX9RTx
-	3FsW+QaewGYDCSght92k6sKlKULx1qh416vJtAFf9w+IKV19Uoi/GKlmzqo4aP0=
-X-Gm-Gg: ASbGncv10y7NF4zhWWuRTOvBvM0OKH91VSgT/mhQavVm63CIb9sQyetnxD2osHOngkU
-	cmC47Z+XsylFXGXG47TZepoYFsbt3lC9jkEVqKFehJNqqrqm1sPCIvGy31JdYxyZyAnVG/m+2Zm
-	h/I5QlcEh0fY50KK2EWsgG4xNlh0kJ4z+aQIIIc2QnqipHfj/2iEwptfumAED6y6thQm+D7zyVE
-	EX2iAXp/YmLzneIxCQhxzKkP49rGEzbJWmuHm9YarSZdaaFAjACM9u92vWwnr6QSNmM/jk6jC/x
-	bP0FxLgYEiuIP2UN2vy3XQj0pFemSyma8gN9qGmtrScr65KpV2o2R9VgvUw849XrjN5Tkt8=
-X-Google-Smtp-Source: AGHT+IFEG8qEl6QSztrpodBzSY7VlToA8lHWWeoXxXNowmla1vTj/PrZ5CLSg0ktKg2rUsp7PG4yPg==
-X-Received: by 2002:a5d:6d09:0:b0:38a:88b8:97a9 with SMTP id ffacd0b85a97d-38db4861134mr4288492f8f.2.1738831055250;
-        Thu, 06 Feb 2025 00:37:35 -0800 (PST)
-Received: from [127.0.1.1] (host-95-244-234-244.retail.telecomitalia.it. [95.244.234.244])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391da9648dsm11948095e9.7.2025.02.06.00.37.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 00:37:34 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Thu, 06 Feb 2025 09:36:14 +0100
-Subject: [PATCH] iio: dac: adi-axi-dac: drop io_mode check
+        d=1e100.net; s=20230601; t=1738831163; x=1739435963;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Oq/sm/m7Gr6yeLfF6pPWW8J+P9gaFDWDMTmeX0qou8=;
+        b=mYH4kKzsxK4gwvDuLZeUN9IEUc3iQDk6j2paHxQzAB+4v8sm84ti9dyp/LO7YOycAH
+         1mAHJcJNPDVyvx6T6y22mhbPS1xSP69Sx3WvQaHN1WoNutpqtIeGrhixJLXi1gPrHIfv
+         JucG4FoXqqM3j9KXI9vV6TJtn199vO1pEMGUoq7wUtHoi5SxoswSVWZp4tPmAJxr/0bA
+         dEYkHJteURUGgy+1c1u0fYCVY4xMIL/lBzZGBBL8DoBBvvQSS8KiL2wy/mkOPQ4PaCpw
+         /fb401/hwLjB4swbLRNv1h4SgKzjPVrjenuazP0YutHocTuLbqe1MeXq2JfSWlv+wdVv
+         TWtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2unCghnhMNMc8rl2RNJ3uTbhAlLknajlCpz0jn/A5sjSDP226deVtX58jGyoZaB9bBduMXHZMfXSf@vger.kernel.org, AJvYcCUrJQfRZsn41t8IG0NscQLT2r9Cg6U2jXqL2lwcfYJb3VegaVkyu5tQMlSr/6SVol6NccWmaaiA9XqsGED9@vger.kernel.org, AJvYcCV/ZTiNMuSTHXASulqfIGHAMN+HcIXW4pU+89kF7dDQFaWKQOVHxCXdpWrLEp+NYIxhF6iWm/bdO8Z0@vger.kernel.org
+X-Gm-Message-State: AOJu0YyyZXam5o72G29RLbCTJBpLfhwC+DXR2If5wTThX25jwz8Mq8hw
+	ecL3ts2F5kIBYv8eSHTEgTdx+QyH5bKlwTyILPLvKMIT4PvAJm55
+X-Gm-Gg: ASbGncsyk8NU96IZGLVp/77h6ASSaOBe9dwEKDNHTwCvCHBuBQOexarew8cAVHYRiCQ
+	OeYMH8MY8YbC0fGVvDPgQqqqCxn9DI+pABPfHvTw+V38c9m9ly3gytMjMGAb+/g5C5wnBhSAYXQ
+	S+9m8x41fAE8wDI6x/hR0WUyqoOXajm34TlFULObGtt7DLUuyw3imI+/RcQEEFRkEtDHrrNgrrS
+	mbC8ORNBQZoTXMmXdqluWV+JXqbvA9nn6SAoKoCZLWUczxft9W7iR1rBnMR8A4MJvAacG/YiBNX
+	lm1G9lF6irUoaHxry6GdAYIfZ+BO
+X-Google-Smtp-Source: AGHT+IEYT2mKibkqI11HshmhDNKvwHktb+wJ7DD6s9zM7WziIbbzxX7sOKY1KNQNHSenFypF6uFd0A==
+X-Received: by 2002:a2e:b610:0:b0:302:49b6:dfaf with SMTP id 38308e7fff4ca-307da58cb07mr7598521fa.20.1738831162629;
+        Thu, 06 Feb 2025 00:39:22 -0800 (PST)
+Received: from [172.16.183.207] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307de2f6995sm692861fa.107.2025.02.06.00.39.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Feb 2025 00:39:21 -0800 (PST)
+Message-ID: <76858097-10a8-403d-83a1-f70064f97a6c@gmail.com>
+Date: Thu, 6 Feb 2025 10:39:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] dt-bindings: ROHM BD79124 ADC/GPO
+To: Conor Dooley <conor@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1738761899.git.mazziesaccount@gmail.com>
+ <4e6cd143d3e896587528a415c8623ecd610fac55.1738761899.git.mazziesaccount@gmail.com>
+ <20250205-stalemate-shorthand-5a29fbc4081f@spud>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250205-stalemate-shorthand-5a29fbc4081f@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-1-863a4b2af4ea@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAH10pGcC/x3NQQrCQAxA0auUrA3EyFTwKuIincYaKDMlKbVQe
- ncHl2/z/wGhbhrw6A5w3SyslobrpYP8kTIp2tgMTJyIqcevLTjMKOMtJXaU3XAjNKu4aqxWJsz
- icw2kO2mWoZfEAi23uL5t/6+er/P8AWZr9qR6AAAA
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.1
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On 05/02/2025 22:03, Conor Dooley wrote:
+> On Wed, Feb 05, 2025 at 03:34:29PM +0200, Matti Vaittinen wrote:
+>> Add binding document for the ROHM BD79124 ADC / GPO.
+>>
+>> ROHM BD79124 is a 8-channel, 12-bit ADC. The input pins can also be used
+>> as general purpose outputs.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>> ---
+>> Revision history:
+>> RFC v1 => v2:
+>>   - drop MFD and represent directly as ADC
+>>   - drop pinmux and treat all non ADC channel pins as GPOs
+>> ---
 
-Drop mode check, producing the following robot test warning:
+...
 
-smatch warnings:
-drivers/iio/dac/adi-axi-dac.c:731 axi_dac_bus_set_io_mode()
-  warn: always true condition '(mode >= 0) => (0-u32max >= 0)'
+>> +patternProperties:
+>> +  "^channel@[0-9a-f]+$":
+> 
+> You can only have 8 channels, there's no need for this to be so
+> permissive, right?
+> Otherwise, this looks good enough to me.
 
-The range check results not useful since these are the only
-plausible modes for enum ad3552r_io_mode.
+Thanks Conor!
 
-Fixes: 493122c53af1 ("iio: dac: adi-axi-dac: add bus mode setup")
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/dac/adi-axi-dac.c | 3 ---
- 1 file changed, 3 deletions(-)
+Indeed, I think we only need to accept channel@0 .. channel@7. Thanks!
+(And reason for this being permissive is ... drum roll ... copy-paste :) 
+That's my main method of creating the yaml bindings. Swearing, sweating, 
+copying and running the 'make dt_binding_check'
+:rolleyes:
 
-diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-index ac4c96c4ccf3..bcaf365feef4 100644
---- a/drivers/iio/dac/adi-axi-dac.c
-+++ b/drivers/iio/dac/adi-axi-dac.c
-@@ -728,9 +728,6 @@ static int axi_dac_bus_set_io_mode(struct iio_backend *back,
- 	struct axi_dac_state *st = iio_backend_get_priv(back);
- 	int ival, ret;
- 
--	if (!(mode >= AD3552R_IO_MODE_SPI && mode <= AD3552R_IO_MODE_QSPI))
--		return -EINVAL;
--
- 	guard(mutex)(&st->lock);
- 
- 	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
+I'll wait for a while for comments to the other patches and fix this for 
+v3 :)
 
----
-base-commit: c667ed738d7d1a01e9b946ef47cae113b0a05bee
-change-id: 20250206-wip-bl-ad3552r-axi-v0-iio-testing-carlos-070ecab6a52a
-
-Best regards,
--- 
-Angelo Dureghello <adureghello@baylibre.com>
-
+Yours,
+	-- Matti
 

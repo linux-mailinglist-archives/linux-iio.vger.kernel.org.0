@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-15077-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15075-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20918A2ACD8
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546A9A2ACDA
 	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 16:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45E81188688C
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 15:42:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E977161F8D
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 15:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023D1231CA2;
-	Thu,  6 Feb 2025 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DB522F391;
+	Thu,  6 Feb 2025 15:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OaMa6WbE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c72r3VMK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4754228CB7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46891E5B80;
 	Thu,  6 Feb 2025 15:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738856555; cv=none; b=OY9cw4j6NvCUjSVN3T5gDqxNluKSSYKqQwe92ynenCYfmzGrTSdNZ0TzFCDvd6TwWx6lv5pGE4cKCYf+gNHfKsdR28vVTPurwjRYtm1wN2yBuDnev+Fibj6efNU2WPUcP/wbs8EhGRYqLcoBhfn/wOVK4ZkitnbS7bIqqk3sbLU=
+	t=1738856555; cv=none; b=mKyY3ul0wNUhny9ibkd3cil5fW4B67P6PPn+EUJ0UUGjZZ/Qo/a0i974xVYmkaegmhstIZ1PnRgtWqLEbKLu70RoUd60F60+TgvYXL5v49oUonTdrAoh/qcCGrgKX0ZrbLkUQ7mHcW4We4PsjNfEEe4YW5WNsYSTjh1vqA5+Oak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1738856555; c=relaxed/simple;
-	bh=1fOQzDV6HZJ2nN25yLU7hZ1P3TPmArQ54K7qLHm0wt0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=D0NgjkXTSJjOQIBBx6dsGlMI0T0zDo/nb7aw8/J9iM33fGhXGG+mkadCoMEbsprXs8XOm0mVW4RibyFUP+UF7v6z+Qd8Sfv0a+ljMxGLlgdONgnD9RT+6eMNsd1NMM5yQc5wifZxVaWhey7wwQsEBmzAK5O7CU4MliFtyOfh6Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OaMa6WbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 12586C4CEDD;
+	bh=hh8ljTGGcNCDtm/Ly7NCy34l8GzC+LqKQozyf6EJ+hU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=INj472j/S8DM5dbsKTTa21PTB5Zh4arnBMnf7n1vP0tYzDZvjG9jgbJa7eqyS7NKzr0Phm0TEeoChCjDmWJw1meP7Yf8TZaPrSz4gAKmEM6fDhsOM0I58v4YW49PM02WiqqGwyX+Flw/932SMeRJ8EmhQ7Zz3ZmPCZFBZbTNIjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c72r3VMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 29BB8C4CEDF;
 	Thu,  6 Feb 2025 15:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1738856555;
-	bh=1fOQzDV6HZJ2nN25yLU7hZ1P3TPmArQ54K7qLHm0wt0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=OaMa6WbEdZSXs9whDxmywhoKlZ0JJeQ5stHvw2RxNRbhiNh9vjojCjCsARSMNFIza
-	 p5C8SvU936Jv9FD04FQ4dk17aNdZ38eAgyqNQ+LACMV+Yqg4VHHhHbwKsohJCJWEFI
-	 MlvBNgUOOCOrQsShzx+hI2MFA3sbtfTvLVUzckZar22ir2oqEzOBgjFLC0F64ZUjDS
-	 sb4pXD4owcpNuPi1h9oH/Dy9sXz3WJ9XYMEYPtHlPlpvFvboR9V5sesAHumALvtHS2
-	 WWrHOxrdDFBR/bb+Tu9K4pt6ZKi4Yc2W0bv88r8CoV8QBMJFGjRoQ9mDxgxDVdgRzT
-	 97lW4BNgpLIRQ==
+	bh=hh8ljTGGcNCDtm/Ly7NCy34l8GzC+LqKQozyf6EJ+hU=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=c72r3VMKS0AfgfIRqnV39abeI3FSYCkG/18eDPHiKHsHu/KbzUei/kycRc75qN2yI
+	 P9Y8fksVs57blmq8WV9zwtDtaqRCD+SkZslUCEn4wSpwhhJKqxzHeSkcKkRChSLp0T
+	 fLTUbyoEnxMUM1AlerNA0E3b0ndyug9OSSBF+a7eRdA23wLd+qqOoJVKbWGR0K6Jqj
+	 JfQfN4XouxfIEnnr5JUVUruJy3L7HDo7RYrzNAzJ5Zfi0G8NWl3VDHCRPxCrjSJhoq
+	 Ie4qm5N4muvX1KDrTIJXeSVIghd4HdCK98Vmb8ncp2hQHTBk17M4NKHO2MT2mktbKp
+	 e5TZFvXW+cUpQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6BCDC02194;
-	Thu,  6 Feb 2025 15:42:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 15097C02198;
+	Thu,  6 Feb 2025 15:42:35 +0000 (UTC)
 From: Tobias Sperling via B4 Relay <devnull+tobias.sperling.softing.com@kernel.org>
-Subject: [PATCH v3 0/2] Support for TI ADS7128 and ADS7138 ADCs
-Date: Thu, 06 Feb 2025 16:41:47 +0100
-Message-Id: <20250206-adc_ml-v3-0-1d0bd3483aa2@softing.com>
+Date: Thu, 06 Feb 2025 16:41:48 +0100
+Subject: [PATCH v3 1/2] dt-bindings: iio: adc: Introduce ADS7138
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,11 +55,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADvYpGcC/2WM0QqCMBSGXyXOdYvt2KZ21XtEhM6jHkgXm4xCf
- PemUBBdfj//980QyDMFOO1m8BQ5sBsTZPsd2L4aOxLcJAaUeFQKUVSNvQ130ShLhaFC12ghnR+
- eWn5uocs1cc9hcv61daNa179EVEIKmZuyRVJ1bdU5uHbisTtYN8AaifgRtUSZfUVMYlHpMjdG2
- qzUv+KyLG+d9ek51wAAAA==
-X-Change-ID: 20241122-adc_ml-d1ce86e85b2c
+Message-Id: <20250206-adc_ml-v3-1-1d0bd3483aa2@softing.com>
+References: <20250206-adc_ml-v3-0-1d0bd3483aa2@softing.com>
+In-Reply-To: <20250206-adc_ml-v3-0-1d0bd3483aa2@softing.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -70,11 +68,11 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 X-Mailer: b4 0.15-dev-355e8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738856545; l=2986;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738856545; l=2570;
  i=tobias.sperling@softing.com; s=20241122; h=from:subject:message-id;
- bh=1fOQzDV6HZJ2nN25yLU7hZ1P3TPmArQ54K7qLHm0wt0=;
- b=EDhZjivm2O9mwyFHeORx+WauW1U4nzeS00mqk6I26KR0A+OjgJ+GiRdQyBsQO8xhOha5mygZE
- sXkn1loYnQtA73o2cnWWJCiCFgFHqyWz0OKd+GDYQrgOFyj6jlu8g4P
+ bh=OmyOmU49Tz1XrsAj9x+7MhVBICvzllgrTbFg4A067Vw=;
+ b=HtdO/4QK6WW5DkmJDKjLdFYKyNCOOgjadEFB+aTgWm5C9Dge4Z/AYXERkwMyoeGJ0d7cINqxh
+ Z5XmFk0g7KZDU7EK/XFsF28L4ZmsZ29cxaiFmjxYd4Tjh6DDJKgIBOB
 X-Developer-Key: i=tobias.sperling@softing.com; a=ed25519;
  pk=v7hgaMHsrA9ul4UXkBVUuwusS9PF3uHW/CC+gABI65E=
 X-Endpoint-Received: by B4 Relay for tobias.sperling@softing.com/20241122
@@ -82,76 +80,91 @@ X-Endpoint-Received: by B4 Relay for tobias.sperling@softing.com/20241122
 X-Original-From: Tobias Sperling <tobias.sperling@softing.com>
 Reply-To: tobias.sperling@softing.com
 
-This patch series adds support for Texas Instruments ADS7128 and
-ADS7138, which are 12-bit, 8 channel analog-to-digital converters (ADCs)
-with build-in digital window comparator (DWC), using the I2C interface.
+From: Tobias Sperling <tobias.sperling@softing.com>
 
-The driver exposes the interfaces to read the raw values, as well as the
-minimum and maximum value for each channel. In addition several settings
-can be configured, like the DWC, sampling frequency or an averaging
-filter/oversampling. Interrupts triggered by the DWC, if configured, are
-then exposed as IIO events.
-
+Add documentation for the driver of ADS7128 and ADS7138 12-bit, 8-channel
+analog-to-digital converters. These ADCs have a wide operating range and
+a wide feature set. Communication is based on the I2C interface.
 ADS7128 differs in the addition of further hardware features, like a
-root-mean-square (RMS) and a zero-crossing-detect (ZCD) module, which
-are not yet supported by the driver.
+root-mean-square (RMS) and a zero-crossing-detect (ZCD) module.
 
-Regarding the I2C interface the chips using opcodes to define the way
-how the registeres are accessed, like single or multiple register(s)
-read/write or setting/clearing only bits.
-
----
-Changes in v3:
-- Make interrupt optional.
-- Replace SET_RUNTIME_PM_OPS() with RUNTIME_PM_OPS() to prevent warning.
-- Rework read_avail for sampling frequency to show each frequency only
-  once.
-- Use IIO_CHAN_INFO_PEAK and IIO_CHAN_INFO_TROUGH instead of ext_info.
-- Link to v2: https://lore.kernel.org/r/20250203-adc_ml-v2-0-8a597660c395@softing.com
-
-Changes in v2:
-- Improved commit messages.
-- dt-bindings: drop info about what driver supports, make 'avdd-supply'
-  optional.
-- General rework of driver regarding indentation and code style.
-- General code improvements to make code shorter and improve
-  readability, like remove 'goto's, order of declarations, ...
-- Use kernel macros and functions, like FIELD_*, guard(), ...
-- Rework i2c functions to return 0 in case of success and use
-  i2c_master_send() if possible.
-- Use struct for chip data instead of enum.
-- Add comment to what the lock is used for and make sure it's used in
-  these cases.
-- Use read_avail of iio_info and extend to return also the available
-  values for OSR.
-- Rework to only accept values of the availability list.
-- Use devm_* if possible and therefore drop 'remove' callback.
-- Rebase to kernel 6.13 and adjust to API changes.
-- Link to v1:
-  https://lore.kernel.org/r/20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com
-
-Changes in v1 (to patch series without b4):
-- dt-bindings: Extended description
-
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
-
 ---
-Tobias Sperling (2):
-      dt-bindings: iio: adc: Introduce ADS7138
-      iio: adc: Add driver for ADS7128 / ADS7138
+ .../devicetree/bindings/iio/adc/ti,ads7138.yaml    | 62 ++++++++++++++++++++++
+ 1 file changed, 62 insertions(+)
 
- .../devicetree/bindings/iio/adc/ti,ads7138.yaml    |  62 ++
- drivers/iio/adc/Kconfig                            |  10 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/ti-ads7138.c                       | 746 +++++++++++++++++++++
- 4 files changed, 819 insertions(+)
----
-base-commit: 05dbaf8dd8bf537d4b4eb3115ab42a5fb40ff1f5
-change-id: 20241122-adc_ml-d1ce86e85b2c
+diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml b/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..c73057df6d8a56230a69978a7f673045f17a276b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/ti,ads7138.yaml
+@@ -0,0 +1,62 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/ti,ads7138.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Texas Instruments ADS7128/ADS7138 analog-to-digital converter (ADC)
++
++maintainers:
++  - Tobias Sperling <tobias.sperling@softing.com>
++
++description: |
++  The ADS7128 and ADS7138 chips are 12-bit, 8 channel analog-to-digital
++  converters (ADC) with build-in digital window comparator (DWC), using the
++  I2C interface.
++  ADS7128 differs in the addition of further hardware features, like a
++  root-mean-square (RMS) and a zero-crossing-detect (ZCD) module.
++
++  Datasheets:
++    https://www.ti.com/product/ADS7128
++    https://www.ti.com/product/ADS7138
++
++properties:
++  compatible:
++    enum:
++      - ti,ads7128
++      - ti,ads7138
++
++  reg:
++    maxItems: 1
++
++  avdd-supply:
++    description:
++      The regulator used as analog supply voltage as well as reference voltage.
++
++  interrupts:
++    description:
++      Interrupt on ALERT pin, triggers on low level.
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@10 {
++            compatible = "ti,ads7138";
++            reg = <0x10>;
++            avdd-supply = <&reg_stb_3v3>;
++            interrupt-parent = <&gpio2>;
++            interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
++        };
++    };
++...
 
-Best regards,
 -- 
-Tobias Sperling <tobias.sperling@softing.com>
+2.34.1
 
 
 

@@ -1,138 +1,118 @@
-Return-Path: <linux-iio+bounces-15067-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15068-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42979A2A358
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 09:39:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30D1A2A4D0
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 10:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E6A1889329
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:39:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 264AC3A978C
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 09:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EAF225A3D;
-	Thu,  6 Feb 2025 08:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1322F22618B;
+	Thu,  6 Feb 2025 09:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U1IeleN6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="licLhQ5e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331A22488E;
-	Thu,  6 Feb 2025 08:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C09226171
+	for <linux-iio@vger.kernel.org>; Thu,  6 Feb 2025 09:39:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738831166; cv=none; b=ZQAhgheTbIUq5SfajI9OeBoXsDds4xjnkflrP9LELFPg2CodW8srI703Gt8BEmqW5d+zK+CIG2FbORzW/wNqDr86rePMMDTodHHaNsLssxuzi0cAskOfz9P2w1zTq9dBFJ8bqJWDBLlz5EDAKoC/EA43bOaIkNAqdl7hUU2t3oc=
+	t=1738834760; cv=none; b=IxLjMOn/GClmQnmyOEJJvUnwdIUO7W9uwdWIrSoOkE2/5Jg/Dc3QEAXZsXRTwvgZOms2ymRfT2oGk6IAaKkSvXDRP6OmIJeqQ6nUDtcvwGYLX4TLklw5LI2tAM2GDxUgQxj+h8LAySxlmp0b1ETx+qI/8mrbIOFXsAkOKxkDk98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738831166; c=relaxed/simple;
-	bh=oKu+cB+CM3wATBLp/5s34qObsyhrmghUZM1r+46ZaOk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iS4vGH7j2w+liHprW1oaDUFrzTZL05K2JJyLlPkZPfFiKHZJVyEJ9G1K6OlMz3hqy2Od1pTx8c8m48fb3ZvPYF4yDSkKqbk33Kt0l0zv5VKpxRRAxUkLuLOZ+hsrfXJsfFNNMfDGadQCWtIYsJBIid9iupJm7WjIa+wOUz1e+l0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U1IeleN6; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-304e4562516so5897681fa.1;
-        Thu, 06 Feb 2025 00:39:24 -0800 (PST)
+	s=arc-20240116; t=1738834760; c=relaxed/simple;
+	bh=QxqCdZ87Rgx4ITls+sBoaB5NXU+rg+6sFyys6kqsgrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d0+VKr2wOi3enNvtH1e4ucN0nPzRu3u8aqDBKbvKXWWYhhC2Zefj4ZhElXeWE2QvhuYraT1Ea+yZPVnBuk64gGUnG2JeqEOJn5ZwD+mDST5ht2dLdEjYyTwHheqEMjFwkbH671pK2HwUnLi5Mr7pTU1KxJV9QYGi32Y2V86SN5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=licLhQ5e; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-54021daa6cbso765674e87.0
+        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2025 01:39:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738831163; x=1739435963; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2Oq/sm/m7Gr6yeLfF6pPWW8J+P9gaFDWDMTmeX0qou8=;
-        b=U1IeleN6TaIgRthTiA8L/ttB5vEhqDFgMVNa0LuJkm1EtvbY6SwGh4dmIKmtprrbci
-         Wfyg5Rgq+YLQiMbwhONres8TA7lajCC6nyJ/v3+Ea9Si4zkdnm7fZzxyXRpNG1+cV3Om
-         SbN8S07V17irY/51UAwJzM2ZTQkrsmN/NVoJwDgErrwnxdqIoQG4Xt7FWX1zZE1t9cEL
-         nM2TUAL2KCLOap2fuIgOYb3lDA8jAtrsVHnk2eBtIHk0aEYSK+eyWcjHOLUXMODozTfl
-         BmEwCBo+aamQLh90MrtKzFrI58c6n/RPd5bpykzEXfWtTe5eDc4jSN2SdGucai3Y8Wg3
-         6tRw==
+        d=linaro.org; s=google; t=1738834757; x=1739439557; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QxqCdZ87Rgx4ITls+sBoaB5NXU+rg+6sFyys6kqsgrM=;
+        b=licLhQ5eluAjHoFsYIbW48leUXFFrxtQZp+uT7wowm2HOsPHZS0jcfoTUJMckdz5Q3
+         Jfh9DeT40HqnUK7zLqMjbUzW8IFVc9DT7Sk5w19tf+M5zO+J+Fe20wmBeVrjdtdcT0q9
+         GrYRgeOfHC7Hll22udPz93wCAAbfvD8Qy0ck4ZdggdcHHnGnOWchX4fJ+IYU1Zl1QN1z
+         a2WMRH25KGl11EIFVZRTPTytWmkSF03w0a5/of72MmZSLewa/4qLD6cvOg7RvDYHxGF+
+         r2Ii5U59SwZfrL9joMoskb2bze8zTD2EXP3ZSRIIYUiiLj2Z9w+YpYl2C10IU8A/r81w
+         qkiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738831163; x=1739435963;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Oq/sm/m7Gr6yeLfF6pPWW8J+P9gaFDWDMTmeX0qou8=;
-        b=mYH4kKzsxK4gwvDuLZeUN9IEUc3iQDk6j2paHxQzAB+4v8sm84ti9dyp/LO7YOycAH
-         1mAHJcJNPDVyvx6T6y22mhbPS1xSP69Sx3WvQaHN1WoNutpqtIeGrhixJLXi1gPrHIfv
-         JucG4FoXqqM3j9KXI9vV6TJtn199vO1pEMGUoq7wUtHoi5SxoswSVWZp4tPmAJxr/0bA
-         dEYkHJteURUGgy+1c1u0fYCVY4xMIL/lBzZGBBL8DoBBvvQSS8KiL2wy/mkOPQ4PaCpw
-         /fb401/hwLjB4swbLRNv1h4SgKzjPVrjenuazP0YutHocTuLbqe1MeXq2JfSWlv+wdVv
-         TWtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2unCghnhMNMc8rl2RNJ3uTbhAlLknajlCpz0jn/A5sjSDP226deVtX58jGyoZaB9bBduMXHZMfXSf@vger.kernel.org, AJvYcCUrJQfRZsn41t8IG0NscQLT2r9Cg6U2jXqL2lwcfYJb3VegaVkyu5tQMlSr/6SVol6NccWmaaiA9XqsGED9@vger.kernel.org, AJvYcCV/ZTiNMuSTHXASulqfIGHAMN+HcIXW4pU+89kF7dDQFaWKQOVHxCXdpWrLEp+NYIxhF6iWm/bdO8Z0@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyZXam5o72G29RLbCTJBpLfhwC+DXR2If5wTThX25jwz8Mq8hw
-	ecL3ts2F5kIBYv8eSHTEgTdx+QyH5bKlwTyILPLvKMIT4PvAJm55
-X-Gm-Gg: ASbGncsyk8NU96IZGLVp/77h6ASSaOBe9dwEKDNHTwCvCHBuBQOexarew8cAVHYRiCQ
-	OeYMH8MY8YbC0fGVvDPgQqqqCxn9DI+pABPfHvTw+V38c9m9ly3gytMjMGAb+/g5C5wnBhSAYXQ
-	S+9m8x41fAE8wDI6x/hR0WUyqoOXajm34TlFULObGtt7DLUuyw3imI+/RcQEEFRkEtDHrrNgrrS
-	mbC8ORNBQZoTXMmXdqluWV+JXqbvA9nn6SAoKoCZLWUczxft9W7iR1rBnMR8A4MJvAacG/YiBNX
-	lm1G9lF6irUoaHxry6GdAYIfZ+BO
-X-Google-Smtp-Source: AGHT+IEYT2mKibkqI11HshmhDNKvwHktb+wJ7DD6s9zM7WziIbbzxX7sOKY1KNQNHSenFypF6uFd0A==
-X-Received: by 2002:a2e:b610:0:b0:302:49b6:dfaf with SMTP id 38308e7fff4ca-307da58cb07mr7598521fa.20.1738831162629;
-        Thu, 06 Feb 2025 00:39:22 -0800 (PST)
-Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307de2f6995sm692861fa.107.2025.02.06.00.39.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Feb 2025 00:39:21 -0800 (PST)
-Message-ID: <76858097-10a8-403d-83a1-f70064f97a6c@gmail.com>
-Date: Thu, 6 Feb 2025 10:39:19 +0200
+        d=1e100.net; s=20230601; t=1738834757; x=1739439557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QxqCdZ87Rgx4ITls+sBoaB5NXU+rg+6sFyys6kqsgrM=;
+        b=F6STrfLCgZSNkubadjIY7npPLhpeEV/PHoEmm8CsMT2pngkN5gMNbIeFyYqtrVheXw
+         2N+TcqJupI7ActvbR/19hm1cXKI7o/VCqODx432+nEJyOSOSKLOesHr+1RIRmb2tZdMZ
+         YwtYTbrjuqKaFGRNVCz9T0UTdXIjbbDupL+CY8ymNjbJstBgj8asnsWPEUVQx1vfzgkX
+         6MbwyaAXLhuRrnB3evl0fr5hnlcazjwj1YMuyhsQK7EaKChu7ZxEnFHIu4oxG0TcMZma
+         V1cfAHYwsFvuAXBsFhIADtzodKExHJbyezB8ufNyjJUQ3xwA+KkFr+wOzgjGcRXXPFxY
+         gKkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmA/vtFUT9i66rI5LZ6eZ0KyaTFX4LNKXQx5RsHflRCFNaKfG7LkKQYnoDCfzuwxeQ1BKLaozETAY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHm44alfShNDivWXTFlNWqVFNax+FB7s2B+0GW1gOjw7VlcfIr
+	0ljjizEMlUeYIlNzyNC+UC78QLBBzSAXwBEpidpXeh3OoSIrh6SeEkAIrTRNAUrrVuw2Nlgvu43
+	NOXekFszezWHZ9gKYnaqYMt/oy3VelB7obpS7ww==
+X-Gm-Gg: ASbGnctlMgziOFEo6Ri66g9ZcZdjjNT/f2ZOByUyAO6cX7UszGKXF9T8RY1Nem+t2lA
+	PHVBbEZKGa7CUpo3Qn9J1a5rfB72VQlpCxYEJ3W1rLUo+rQD0an62PyHerpC8aB+53ZYT1Ho=
+X-Google-Smtp-Source: AGHT+IHy2erTOylDXjPHhr46b25AbKpq4hR75UITsDiNv3fd/IuGBDeoE5/TCxFr0JD6443xhniX9GkOIwD7QR0zOhc=
+X-Received: by 2002:a05:6512:1385:b0:543:c3d9:418b with SMTP id
+ 2adb3069b0e04-54405a0c5f6mr1856455e87.16.1738834756940; Thu, 06 Feb 2025
+ 01:39:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] dt-bindings: ROHM BD79124 ADC/GPO
-To: Conor Dooley <conor@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1738761899.git.mazziesaccount@gmail.com>
- <4e6cd143d3e896587528a415c8623ecd610fac55.1738761899.git.mazziesaccount@gmail.com>
- <20250205-stalemate-shorthand-5a29fbc4081f@spud>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250205-stalemate-shorthand-5a29fbc4081f@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+ <3d85fe979fca352bed4d9841e3233c055dfaf154.1738328714.git.mazziesaccount@gmail.com>
+ <6867812e-7269-4686-9fc2-55afd9fa91bf@gmail.com>
+In-Reply-To: <6867812e-7269-4686-9fc2-55afd9fa91bf@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 6 Feb 2025 10:39:05 +0100
+X-Gm-Features: AWEUYZlG4xyNl-aquwRcbpurNNF0W3dgBH-PwD4_WNVA671mh_9EE2XioA6hXcg
+Message-ID: <CACRpkdaP6biD8ueeezBDw1P3LP6ARoJw0zfkmxC-QKK0fw79YQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/5] pinctrl: Support ROHM BD79124 pinmux / GPO
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lee Jones <lee@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, 
+	David Lechner <dlechner@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
+	Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli <matteomartelli3@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 05/02/2025 22:03, Conor Dooley wrote:
-> On Wed, Feb 05, 2025 at 03:34:29PM +0200, Matti Vaittinen wrote:
->> Add binding document for the ROHM BD79124 ADC / GPO.
->>
->> ROHM BD79124 is a 8-channel, 12-bit ADC. The input pins can also be used
->> as general purpose outputs.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> ---
->> Revision history:
->> RFC v1 => v2:
->>   - drop MFD and represent directly as ADC
->>   - drop pinmux and treat all non ADC channel pins as GPOs
->> ---
+On Wed, Feb 5, 2025 at 2:40=E2=80=AFPM Matti Vaittinen <mazziesaccount@gmai=
+l.com> wrote:
+> On 31/01/2025 15:38, Matti Vaittinen wrote:
+> > The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The AIN pins can be
+> > used as ADC inputs, or as general purpose outputs.
+> >
+> > Support changing pin function (GPO / ADC) and the gpo output control.
+> >
+> > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> > ---
+> >
+> > NOTE: This patch is not properly tested. More thorough testing is to be
+> > done prior v2 if this pinmux approach makes sense.
+>
+> Just a note to reviewers - I dropped the pinmux from v2. No need to
+> review this any further.
 
-...
-
->> +patternProperties:
->> +  "^channel@[0-9a-f]+$":
-> 
-> You can only have 8 channels, there's no need for this to be so
-> permissive, right?
-> Otherwise, this looks good enough to me.
-
-Thanks Conor!
-
-Indeed, I think we only need to accept channel@0 .. channel@7. Thanks!
-(And reason for this being permissive is ... drum roll ... copy-paste :) 
-That's my main method of creating the yaml bindings. Swearing, sweating, 
-copying and running the 'make dt_binding_check'
-:rolleyes:
-
-I'll wait for a while for comments to the other patches and fix this for 
-v3 :)
+Why? Gave up on the idea or want to pursue it later?
 
 Yours,
-	-- Matti
+Linus Walleij
 

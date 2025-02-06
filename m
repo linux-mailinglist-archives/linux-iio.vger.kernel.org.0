@@ -1,122 +1,116 @@
-Return-Path: <linux-iio+bounces-15072-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15073-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875CEA2A76E
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 12:25:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848A0A2AC32
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 16:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B518F162C17
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 11:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A582188A787
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 15:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E923C2288EE;
-	Thu,  6 Feb 2025 11:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C1F1EDA04;
+	Thu,  6 Feb 2025 15:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f52nrzr2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B9E20C473;
-	Thu,  6 Feb 2025 11:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5DA1A5B9B;
+	Thu,  6 Feb 2025 15:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738841135; cv=none; b=UD+ShUcUZeKH4L9hcZp3LoZatR7aNoUn+hFf8wh4mJdTIRzUcNG6q9ailiZvsOmyYawh+gg5D5yIw8TEmMAU/AMW3cH5ieLDVqXqu6IN0Q/zdRCa9LsqYGDFGLL1yqLI2qAHZT29Yo28RiRzAyVbFMEcPveR09g/N5nsri6csVk=
+	t=1738854778; cv=none; b=TzD3S7jQs549Cgg85wCR4149cZ3AXYzKLeL0jGtFQn6XTfQsPh91iehjucutw97GvHzV9h/cpPs+2XGKTCCm1lUrw6Wxmx8WiT53+XRQ91djW4ATYH58+wKoAA+wH5j3dxr7AbqlTYdBPMPxrB8d7HDNPFHMl2HNaFAixGdC6Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738841135; c=relaxed/simple;
-	bh=u8X0ml4wIaixcmWe/gklqLTQjMm8ZM1CyLHtSksZ8Nw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K3hnv9S6/bEauZGGDrzqI5+8cq/64gf+Co89heubSDiD5GMmKCz+dAP+fXY7eQ+Ph2TlNzZCmr7PWvzxsXpdIvXK2ISy34xy178gMvASffehcPObYACcQbE6DSrRXMOpix1CWOxp+dlU4ygYcduS1kf7g4Sjtiaih0VH5IaMkbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YpZTs6YKcz6H8VQ;
-	Thu,  6 Feb 2025 19:23:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0247F140520;
-	Thu,  6 Feb 2025 19:25:31 +0800 (CST)
-Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 6 Feb
- 2025 12:25:30 +0100
-Date: Thu, 6 Feb 2025 11:25:28 +0000
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: "Sperling, Tobias" <Tobias.Sperling@Softing.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: Add driver for ADS7128 / ADS7138
-Message-ID: <20250206112528.00005910@huawei.com>
-In-Reply-To: <BE1P281MB2420B7C7A95A913B486A2228EFF42@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-References: <20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com>
-	<20241122-adc_ml-v1-2-0769f2e1bbc1@softing.com>
-	<20241124124205.02453a0c@jic23-huawei>
-	<BE1P281MB24209585E1552B80272D5448EFF52@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-	<20250204144309.000043e6@huawei.com>
-	<BE1P281MB2420B7C7A95A913B486A2228EFF42@BE1P281MB2420.DEUP281.PROD.OUTLOOK.COM>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1738854778; c=relaxed/simple;
+	bh=RJROzD70sbLf/RKSEZXXu1DnnrsB6KPPwD5H/f13nuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jK3zRy5ODLgAG1YA3FzqmhmGBUbQU8PNtDINiqFihWIURpZ1JN++vIiy02qhKZ99xaFBxDa62cw6dh+Yxb8FLtlyDSkyaNpYQhWaG51zNk7o0DXwoiE+8vGJNyA9MtAvXcM7ACy/nSm9AcC4oXjKLuBX0JtTgK7EhGHnBlKYBAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f52nrzr2; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738854777; x=1770390777;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RJROzD70sbLf/RKSEZXXu1DnnrsB6KPPwD5H/f13nuM=;
+  b=f52nrzr2l5lXIl6xecjDZfjGNXcMBCkYmXCxofG0qaSvVVLmopY1OICG
+   9QVaajw39e33DxMzLHkAgr5T5baBSJSc83zt93lx4ZMrB3F2zvGQFxZEG
+   sydeLk7wHTbwhqZnZJgVsAw9oTv48W9Gds23NekLSOEN+IE2EUq/+ieNV
+   ZM6AyLT2GQNpxk8TJTz28AHc2r9gai4zfacsXXErIn4HzbzH4oNc+aZkZ
+   nXK1OIyfarn7qQL28qdiVOoZtZ5Z6vRVQl6hDVbFlHndWenRgoj1+C4gq
+   rrz2bsxDW7JKoXs9dt17v0M74J1mvB9ZLvGi4K+5jhRWU0FIlqPg8UWvo
+   A==;
+X-CSE-ConnectionGUID: to4Rh9/9TJOMcTF0upm9wA==
+X-CSE-MsgGUID: pDztWKraTVan9eY/lD7nBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="50448752"
+X-IronPort-AV: E=Sophos;i="6.13,264,1732608000"; 
+   d="scan'208";a="50448752"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 07:12:56 -0800
+X-CSE-ConnectionGUID: QnALr2VzTZyFg9bpJmXmjA==
+X-CSE-MsgGUID: 2xYi5FCITu6xcFHgfqxkaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="142128361"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 07:12:52 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tg3Yf-00000008l6g-2fnM;
+	Thu, 06 Feb 2025 17:12:49 +0200
+Date: Thu, 6 Feb 2025 17:12:49 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: kernel test robot <lkp@intel.com>, gregkh@linuxfoundation.org,
+	rafael@kernel.org, linus.walleij@linaro.org,
+	mika.westerberg@linux.intel.com, dmitry.torokhov@gmail.com,
+	lgirdwood@gmail.com, broonie@kernel.org, sre@kernel.org,
+	jic23@kernel.org, przemyslaw.kitszel@intel.com,
+	oe-kbuild-all@lists.linux.dev, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v3 01/20] driver core: Split devres APIs to
+ device/devres.h
+Message-ID: <Z6TRcWCKe__oxCUV@smile.fi.intel.com>
+References: <20250203080902.1864382-2-raag.jadav@intel.com>
+ <202502060025.XJwUub6I-lkp@intel.com>
+ <Z6RS-A2FFjYuPoyn@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z6RS-A2FFjYuPoyn@black.fi.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, 4 Feb 2025 15:50:18 +0000
-"Sperling, Tobias" <Tobias.Sperling@Softing.com> wrote:
+On Thu, Feb 06, 2025 at 08:13:12AM +0200, Raag Jadav wrote:
+> On Thu, Feb 06, 2025 at 12:27:03AM +0800, kernel test robot wrote:
 
-> Just one more question, as I've received a mail from the kernel test robot.
-> It reported two warnings regarding following unused functions
-> ads71x8_runtime_suspend() and ads71x8_runtime_resume().
-> I guess this is due PM not being used necessarily. So do I still have to use
-> #ifdef CONFIG_PM or what did I miss there?
+> >    102	
+> >    103	static inline
+> >    104	void __iomem *devm_ioremap_resource(struct device *dev, const struct resource *res)
+> >    105	{
+> >  > 106		return ERR_PTR(-EINVAL);
+> >    107	}
+> >    108	
 > 
-> static int ads71x8_runtime_suspend(struct device *dev)
-> {
->         struct iio_dev *indio_dev = dev_get_drvdata(dev);
->         struct ads71x8_data *data = iio_priv(indio_dev);
-> 
->         return ads71x8_set_conv_mode(data, ADS71x8_MODE_MANUAL);
-> }
-> 
-> static int ads71x8_runtime_resume(struct device *dev)
-> {
->         struct iio_dev *indio_dev = dev_get_drvdata(dev);
->         struct ads71x8_data *data = iio_priv(indio_dev);
-> 
->         return ads71x8_set_conv_mode(data, ADS71x8_MODE_AUTO);
-> }
-> 
-> static const struct dev_pm_ops ads71x8_pm_ops = {
->         SET_RUNTIME_PM_OPS(ads71x8_runtime_suspend, ads71x8_runtime_resume, NULL)
+> Andy, are we expecting this?
 
-Using SET_RUNTIME_PM_OPS() breaks the chain of references. Use
-RUNTIME_PM_OPS() instead.
+Oh, no, it's sparse error, but easy to fix. Need to have
 
+		return IOMEM_ERR_PTR(-EINVAL);
 
-> };
-> 
-> ....
-> 
-> static struct i2c_driver ads71x8_driver = {
->         .driver = {
->                 .name = "ads7138",
->                 .of_match_table = ads71x8_of_match,
->                 .pm = pm_ptr(&ads71x8_pm_ops),
+-- 
+With Best Regards,
+Andy Shevchenko
 
->         },
->         .id_table = ads71x8_device_ids,
->         .probe = ads71x8_probe,
-> };
-> module_i2c_driver(ads71x8_driver);
-> 
->
 
 

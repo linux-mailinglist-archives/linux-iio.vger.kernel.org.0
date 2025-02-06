@@ -1,143 +1,137 @@
-Return-Path: <linux-iio+bounces-15065-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15066-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0DDA2A267
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:38:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBACBA2A34D
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 09:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FD616176A
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 07:38:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55CA51691A9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8757D224898;
-	Thu,  6 Feb 2025 07:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7804222577C;
+	Thu,  6 Feb 2025 08:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm2+cq1C"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ivrbQ/e5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD00200B9F;
-	Thu,  6 Feb 2025 07:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399F32248B0
+	for <linux-iio@vger.kernel.org>; Thu,  6 Feb 2025 08:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738827517; cv=none; b=RrcBuuf0NsCV+WaH4W4haEIDGq3ltgqk+t1WJdIMsk9h6toy98kAXTUDP0+UOjWiAGRW+BS9/MOr5rfqQhcBaNcG8wQ0zH9gLPtyyjQpQdzITCgo4dK2qjIZq3PrsMHnO1QuMK83kmDNRAJXKqnzE8lw8lKTN9CFda/sBZSAqMc=
+	t=1738831061; cv=none; b=F0KblTawoAYh4ankvr3fgSFFpgq22w899XrMNgzilVb8iz37q/9IufKgScg/8sqAsOisZcsX70vl65gdBbQ54/fzzrA/asaq9a90nl9MdhgSogjnnhs+i5fNKbcvxqBKXPQpzJ0eMdfGH8aJAyQgDHbDpwnx/nCb7TZHAh+5iqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738827517; c=relaxed/simple;
-	bh=ZveI/hkfecp+mslVjj9PQ+ggQSUCl0WC4w4q9caS0Dk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hXGiGs11YIXoHlshhTak6poO+X1DxRjjyw0HZX4a3nIVqTr8Gp6FukLnc7aWXAqTZmQj7k8tIdr0996JU3so2aluIrOcRNGhgn931siEgGQdOpQpLr8zglKhm/cwK/+ZMiA13traV+qss+JgF/NhSKAa+i7t2OugyPi4iVkemOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm2+cq1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A29C4CEDD;
-	Thu,  6 Feb 2025 07:38:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738827516;
-	bh=ZveI/hkfecp+mslVjj9PQ+ggQSUCl0WC4w4q9caS0Dk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Hm2+cq1CMPN/gvf7qjhr5rXOSbn7xFmp4D9idW1wEnP5xQNWCgN4sfhSDmsFSVz0s
-	 UnP6Nj/D/tAatdx3NamDWD1H8lX3NPZq79hBAwsnZcPRwKFmF8fFOF2FGv9+OVKT9o
-	 ChuRoszhPYPuam4drBYV9G9Woe8JQ0MXMp1c2xIUVO3kZQH3t7sBhjhgybEqDpa9Iv
-	 JVOhZb1PFG2DSpZCyPDZre8LBMu3sSBrx6SpU8CQS/lWZLo3ALYVGUCn4CmfRyCudF
-	 SMx3cjFX18pjfTia0twRHLko+bohEnof/9xcUAXz7KQ8BiTAv4PKmltYC7lkWcSSmt
-	 htGYbxUvUFklA==
-Message-ID: <fc4c51e9-bd5a-4056-8e56-dd29ac0b4eca@kernel.org>
-Date: Thu, 6 Feb 2025 08:38:32 +0100
+	s=arc-20240116; t=1738831061; c=relaxed/simple;
+	bh=b61mwkGmKa7qLwio/HyZKSIj9qw2WfofAWA65lWGS5Q=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TgcrjrN3jH04gakLN/vaqPw/3bo14JPOFEc4FlcNHkbHJxLUNP2PVw6IO0/rL+/0jwlclAyWTbmeffrut+KbUojCGI8Dkq4ptJwF96yndzZgSOmW5J1kArLK7wYZHACCbsdtgYVUQJ/2jhqz6gvKKHLUR1n9bxkR2COr9BfGK8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ivrbQ/e5; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38a8b17d7a7so241598f8f.2
+        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2025 00:37:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738831055; x=1739435855; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6cGRhVGZQ/G+JhIHlnkJGdUnMYCYKnsKq6xNumw1bc8=;
+        b=ivrbQ/e5ShXADrc6AAc8BkSjaLLbr6Ez1K0/SiFxe5Z6vEmVZLSqv01sdDzBkhYCDP
+         5iAHuGn+VJpKEuGcgQpAHa67XiGjykeI6YboOUtUAXJpyjDn7GmB3eT2qf933RT77Wrr
+         EHMmIyOInibBXdCfQK+QSTtEIU0RChvXxmII7ZCa3QUfKBEy8EW4luHK2GzlXbJ03uy5
+         XRdmm15AIm6VrL4ahemVS+TCsu/AWSPo83lL0fneINAJjwne0916U7Wo5SpZjjEI4Od9
+         xYaAzvAXDYfzB+14gh68FQ4/YPKcyQxPS+UFArANUlgmtexYm3YX8+ji3ankmvk3cxDG
+         FV+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738831055; x=1739435855;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6cGRhVGZQ/G+JhIHlnkJGdUnMYCYKnsKq6xNumw1bc8=;
+        b=aeX1ikktg685HG3QFv3h7VpmXzWCmA7260f8ofrUdWB11XdkVQstwoHx4OwesYpDSd
+         LmNs/UqNF+PEqmUTc0+kdet6KPNcYTS2aTv7g1osJ3B8r6E0AvLA6/aF7wYztU1R6pTW
+         obQLy26RyldcwmpLx8X61x2ZNxk69+sYPijqWa0S/Nh9PBeYxguhPNzi+jccRwqHGsPT
+         Qr3hm7dJQIpjt0NpbKav2MzRxNgy2W2yg4do2M+4xS2wc0aB1x3tEpkh83K63fKyrRPk
+         t7Px9sBF8giJ5LcKF5iJwTuJZeWfSS2k0QbOBKnGcf39k5WLRRfxqqfGuLQe22gnoXUD
+         zKEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXhllJga2x4hAlIuTS4UDI7ZIEE8Z13Al86wnpH0Jh3mLjA7cLXhx1w250KQM/IhE9wJcP5VvUbYus=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzA4gACaEBM6Xe5enxddbhkvt8EDt5RzK1GyvL+Na0fnzeX9RTx
+	3FsW+QaewGYDCSght92k6sKlKULx1qh416vJtAFf9w+IKV19Uoi/GKlmzqo4aP0=
+X-Gm-Gg: ASbGncv10y7NF4zhWWuRTOvBvM0OKH91VSgT/mhQavVm63CIb9sQyetnxD2osHOngkU
+	cmC47Z+XsylFXGXG47TZepoYFsbt3lC9jkEVqKFehJNqqrqm1sPCIvGy31JdYxyZyAnVG/m+2Zm
+	h/I5QlcEh0fY50KK2EWsgG4xNlh0kJ4z+aQIIIc2QnqipHfj/2iEwptfumAED6y6thQm+D7zyVE
+	EX2iAXp/YmLzneIxCQhxzKkP49rGEzbJWmuHm9YarSZdaaFAjACM9u92vWwnr6QSNmM/jk6jC/x
+	bP0FxLgYEiuIP2UN2vy3XQj0pFemSyma8gN9qGmtrScr65KpV2o2R9VgvUw849XrjN5Tkt8=
+X-Google-Smtp-Source: AGHT+IFEG8qEl6QSztrpodBzSY7VlToA8lHWWeoXxXNowmla1vTj/PrZ5CLSg0ktKg2rUsp7PG4yPg==
+X-Received: by 2002:a5d:6d09:0:b0:38a:88b8:97a9 with SMTP id ffacd0b85a97d-38db4861134mr4288492f8f.2.1738831055250;
+        Thu, 06 Feb 2025 00:37:35 -0800 (PST)
+Received: from [127.0.1.1] (host-95-244-234-244.retail.telecomitalia.it. [95.244.234.244])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391da9648dsm11948095e9.7.2025.02.06.00.37.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Feb 2025 00:37:34 -0800 (PST)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Date: Thu, 06 Feb 2025 09:36:14 +0100
+Subject: [PATCH] iio: dac: adi-axi-dac: drop io_mode check
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: iio: light: fix missing type definition
-To: Dharma.B@microchip.com
-Cc: m.gonella.bolduc@gmail.com, jic23@kernel.org, lars@metafoo.de,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250205-brcm-binding-v1-1-a996a840d2d6@microchip.com>
- <20250205-enormous-wise-copperhead-c1c0a9@krzk-bin>
- <1e1ff244-098b-4b3b-b430-8bed9ca8188c@microchip.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <1e1ff244-098b-4b3b-b430-8bed9ca8188c@microchip.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250206-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-1-863a4b2af4ea@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAH10pGcC/x3NQQrCQAxA0auUrA3EyFTwKuIincYaKDMlKbVQe
+ ncHl2/z/wGhbhrw6A5w3SyslobrpYP8kTIp2tgMTJyIqcevLTjMKOMtJXaU3XAjNKu4aqxWJsz
+ icw2kO2mWoZfEAi23uL5t/6+er/P8AWZr9qR6AAAA
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.1
 
-On 06/02/2025 03:41, Dharma.B@microchip.com wrote:
-> On 05/02/25 5:07 pm, Krzysztof Kozlowski wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
->>
->> On Wed, Feb 05, 2025 at 09:48:45AM +0530, Dharma Balasubiramani wrote:
->>> Add the missing type definition for ps-cancellation-current-picoamp property.
->>
->> It is not missing. You are using some older schema probably.
-> 
-> Sorry, if I miss something here..
-> 
-> There is no $Ref or type for ps-cancellation-current-picoamp property
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-There is a ref in dtschema.
+Drop mode check, producing the following robot test warning:
 
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml#n39
-> 
-> I checked in other bindings as well.
-> 
-> I get the following warning while make dtbs_check or dt_binding_check
-> 
-> Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml: 
-> ps-cancellation-current-picoamp: missing type definition
-> 
-> Should I need to update anything?
+smatch warnings:
+drivers/iio/dac/adi-axi-dac.c:731 axi_dac_bus_set_io_mode()
+  warn: always true condition '(mode >= 0) => (0-u32max >= 0)'
 
-As I said - older schema, so yes, you need to update your dtschema or
-wait for new release.
+The range check results not useful since these are the only
+plausible modes for enum ad3552r_io_mode.
+
+Fixes: 493122c53af1 ("iio: dac: adi-axi-dac: add bus mode setup")
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+ drivers/iio/dac/adi-axi-dac.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+index ac4c96c4ccf3..bcaf365feef4 100644
+--- a/drivers/iio/dac/adi-axi-dac.c
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -728,9 +728,6 @@ static int axi_dac_bus_set_io_mode(struct iio_backend *back,
+ 	struct axi_dac_state *st = iio_backend_get_priv(back);
+ 	int ival, ret;
+ 
+-	if (!(mode >= AD3552R_IO_MODE_SPI && mode <= AD3552R_IO_MODE_QSPI))
+-		return -EINVAL;
+-
+ 	guard(mutex)(&st->lock);
+ 
+ 	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
+
+---
+base-commit: c667ed738d7d1a01e9b946ef47cae113b0a05bee
+change-id: 20250206-wip-bl-ad3552r-axi-v0-iio-testing-carlos-070ecab6a52a
 
 Best regards,
-Krzysztof
+-- 
+Angelo Dureghello <adureghello@baylibre.com>
+
 

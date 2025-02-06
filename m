@@ -1,123 +1,143 @@
-Return-Path: <linux-iio+bounces-15064-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15065-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F43A2A1CC
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:09:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0DDA2A267
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 08:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54092167AFF
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 07:09:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FD616176A
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 07:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6642522488E;
-	Thu,  6 Feb 2025 07:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8757D224898;
+	Thu,  6 Feb 2025 07:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPEfgNcM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm2+cq1C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D853FC0A;
-	Thu,  6 Feb 2025 07:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD00200B9F;
+	Thu,  6 Feb 2025 07:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738825792; cv=none; b=m1aPQHd80eUGAG33BUcEuwpFXZ0T4xhyKaGDDop55oU34T0UTsWugDD/iSS9jqZ7oraitQqAVBumSntCvd44D7feptf76Fiwn/zX+hyAGuMlglYEacj47gCRBT++OLPmbRhc1Rdfm4gh/Ga3cpC2pEFSy5Wyd0Z6NPo5a6uV3RE=
+	t=1738827517; cv=none; b=RrcBuuf0NsCV+WaH4W4haEIDGq3ltgqk+t1WJdIMsk9h6toy98kAXTUDP0+UOjWiAGRW+BS9/MOr5rfqQhcBaNcG8wQ0zH9gLPtyyjQpQdzITCgo4dK2qjIZq3PrsMHnO1QuMK83kmDNRAJXKqnzE8lw8lKTN9CFda/sBZSAqMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738825792; c=relaxed/simple;
-	bh=N5Xf48CCCLxk/fLOZMF3/waP8FdFK9yVMOKxJzMj3us=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P7yidX71ymnAqRMUK+ZyNjxP+IdTswLyghxlYOU6mdZuWWqQErVPlhCJZfTnIA3DcqFcpdQ/1R494gbVAqCldeywiWd18tpwVhjZ2XrIh8VHUX9xLKYn3ZTjMY0RBQSCPeynvT+QGqRPmOGU2Yf7PAASVtPHuTmxqVWluq67wzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPEfgNcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 76C51C4CEDD;
-	Thu,  6 Feb 2025 07:09:51 +0000 (UTC)
+	s=arc-20240116; t=1738827517; c=relaxed/simple;
+	bh=ZveI/hkfecp+mslVjj9PQ+ggQSUCl0WC4w4q9caS0Dk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hXGiGs11YIXoHlshhTak6poO+X1DxRjjyw0HZX4a3nIVqTr8Gp6FukLnc7aWXAqTZmQj7k8tIdr0996JU3so2aluIrOcRNGhgn931siEgGQdOpQpLr8zglKhm/cwK/+ZMiA13traV+qss+JgF/NhSKAa+i7t2OugyPi4iVkemOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm2+cq1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A29C4CEDD;
+	Thu,  6 Feb 2025 07:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738825791;
-	bh=N5Xf48CCCLxk/fLOZMF3/waP8FdFK9yVMOKxJzMj3us=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=hPEfgNcMmTd2nLYO92k7fnNhL8jliQTrD+BFMT3a9d4cVc7GqKIA+MYfVJOWA4Mq9
-	 5SyeL2Sceef6CyUCrcmmuolNayb7nGNAi3ehate/k5elAE/qfT+mlVbSl0Gy97jPXW
-	 pfVwiLBtxuPe3Ju5TcJuw1StA/H+226xqlEvbo7om5n1t63sh80iOsT4ilp6oq1w5O
-	 wChZv+0OT5GgIkVrt9UP8srUOtVgQQWLAMTb5WqY/Sz/4OOYP6w7G5bNG6gp0I0blF
-	 VRHt9/84lY6MY4iX6bYo6jRPUQnuwPX7S5xVuHaJ1qwYwdaW3pNtkzx+JJKVSJ7ekH
-	 TBYs5u8a6+4CA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64661C02198;
-	Thu,  6 Feb 2025 07:09:51 +0000 (UTC)
-From: Cryolitia PukNgae via B4 Relay <devnull+Cryolitia.gmail.com@kernel.org>
-Date: Thu, 06 Feb 2025 15:09:42 +0800
-Subject: [PATCH] iio: imu: bmi270: Match ACPI ID found on newer GPD
- firmware
+	s=k20201202; t=1738827516;
+	bh=ZveI/hkfecp+mslVjj9PQ+ggQSUCl0WC4w4q9caS0Dk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Hm2+cq1CMPN/gvf7qjhr5rXOSbn7xFmp4D9idW1wEnP5xQNWCgN4sfhSDmsFSVz0s
+	 UnP6Nj/D/tAatdx3NamDWD1H8lX3NPZq79hBAwsnZcPRwKFmF8fFOF2FGv9+OVKT9o
+	 ChuRoszhPYPuam4drBYV9G9Woe8JQ0MXMp1c2xIUVO3kZQH3t7sBhjhgybEqDpa9Iv
+	 JVOhZb1PFG2DSpZCyPDZre8LBMu3sSBrx6SpU8CQS/lWZLo3ALYVGUCn4CmfRyCudF
+	 SMx3cjFX18pjfTia0twRHLko+bohEnof/9xcUAXz7KQ8BiTAv4PKmltYC7lkWcSSmt
+	 htGYbxUvUFklA==
+Message-ID: <fc4c51e9-bd5a-4056-8e56-dd29ac0b4eca@kernel.org>
+Date: Thu, 6 Feb 2025 08:38:32 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: light: fix missing type definition
+To: Dharma.B@microchip.com
+Cc: m.gonella.bolduc@gmail.com, jic23@kernel.org, lars@metafoo.de,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ Jonathan.Cameron@huawei.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250205-brcm-binding-v1-1-a996a840d2d6@microchip.com>
+ <20250205-enormous-wise-copperhead-c1c0a9@krzk-bin>
+ <1e1ff244-098b-4b3b-b430-8bed9ca8188c@microchip.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <1e1ff244-098b-4b3b-b430-8bed9ca8188c@microchip.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-bmi270-gpd-acpi-v1-1-db638cfb9a3c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIADVgpGcC/x3MQQqAIBBA0avErBvQoRK6SrRInWwWmShEIN09a
- fkW/1conIULzF2FzLcUuWKD7jtwxxYDo/hmIEWjIjWhPYWMwpA8bi4Jeh68Jut4nAy0KmXe5fm
- Py/q+HxuTkRdhAAAA
-X-Change-ID: 20250206-bmi270-gpd-acpi-de4d12bce567
-To: Alex Lanzano <lanzano.alex@gmail.com>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yao Zi <ziyao@disroot.org>, Cryolitia PukNgae <Cryolitia@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1657;
- i=Cryolitia@gmail.com; h=from:subject:message-id;
- bh=vGeYvEdVrXEykpDXoY202pSht7dfgKW3Zo+sT/kvXh0=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgprQTBEQUFvV1k1Z21DYUprZlR3Qnl5WmlBR
- 2VrWUR1Z0F6MnBiUHAzYzJlV0U4bTVTSjVWL0VRRmJIQzJFM2xOCk5VanFnUVNaUTRoMUJBQVdD
- Z0FkRmlFRXFCdzdrWDUwaW12VUg0UzhZNWdtQ2FKa2ZUd0ZBbWVrWURzQUNna1EKWTVnbUNhSmt
- mVHdwNlFFQTVZODYrTnBvV1pKQmFxYVlQS1JCa1JEU09qaVdqZHdYWDB3ZVE4dk1qMHNBL1JqRQ
- pPMm5uYjZtcjVZbFgvNWp0bUJRMXRxdTZZVU9ySERlSXo5NjZCK1lQCj0zVFB5Ci0tLS0tRU5EI
- FBHUCBNRVNTQUdFLS0tLS0K
-X-Developer-Key: i=Cryolitia@gmail.com; a=openpgp;
- fpr=1C3C6547538D7152310C0EEA84DD0C0130A54DF7
-X-Endpoint-Received: by B4 Relay for Cryolitia@gmail.com/default with
- auth_id=186
-X-Original-From: Cryolitia PukNgae <Cryolitia@gmail.com>
-Reply-To: Cryolitia@gmail.com
 
-From: Cryolitia PukNgae <Cryolitia@gmail.com>
+On 06/02/2025 03:41, Dharma.B@microchip.com wrote:
+> On 05/02/25 5:07 pm, Krzysztof Kozlowski wrote:
+>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+>>
+>> On Wed, Feb 05, 2025 at 09:48:45AM +0530, Dharma Balasubiramani wrote:
+>>> Add the missing type definition for ps-cancellation-current-picoamp property.
+>>
+>> It is not missing. You are using some older schema probably.
+> 
+> Sorry, if I miss something here..
+> 
+> There is no $Ref or type for ps-cancellation-current-picoamp property
 
-Some GPD devices ship a buggy firmware that describes on-device BMI260 with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40[1], let's match the correct ID to detect the device. The buggy ID "BMI0160" is kept as well to maintain compatibility with older firmwares.
+There is a ref in dtschema.
 
----
-Some GPD devices ship a buggy firmware that describes on-device BMI260 with ACPI ID "BMI0160". Since this is fixed in BIOS update v0.40[1], let's match the correct ID to detect the device. The buggy ID "BMI0160" is kept as well to maintain compatibility with older firmwares.
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml#n39
+> 
+> I checked in other bindings as well.
+> 
+> I get the following warning while make dtbs_check or dt_binding_check
+> 
+> Documentation/devicetree/bindings/iio/light/brcm,apds9160.yaml: 
+> ps-cancellation-current-picoamp: missing type definition
+> 
+> Should I need to update anything?
 
-Link: http://download.softwincn.com/WIN%20Max%202024/Max2-7840-BIOS-V0.41.zip
-
-[1]. See the update nodes in the archive file above
-
-Signed-off-by: Cryolitia PukNgae <Cryolitia@gmail.com>
----
- drivers/iio/imu/bmi270/bmi270_i2c.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/iio/imu/bmi270/bmi270_i2c.c b/drivers/iio/imu/bmi270/bmi270_i2c.c
-index 44699ab589097eaa0eec5f2172245496ed031185..f66ae01e301df24f1e563e059da8cc531fc173eb 100644
---- a/drivers/iio/imu/bmi270/bmi270_i2c.c
-+++ b/drivers/iio/imu/bmi270/bmi270_i2c.c
-@@ -40,6 +40,8 @@ static const struct i2c_device_id bmi270_i2c_id[] = {
- static const struct acpi_device_id bmi270_acpi_match[] = {
- 	/* GPD Win Mini, Aya Neo AIR Pro, OXP Mini Pro, etc. */
- 	{ "BMI0160",  (kernel_ulong_t)&bmi260_chip_info },
-+	/* GPD Win Max 2 2023(sincice BIOS v0.40), etc. */
-+	{ "BMI0260",  (kernel_ulong_t)&bmi260_chip_info },
- 	{ }
- };
- 
-
----
-base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
-change-id: 20250206-bmi270-gpd-acpi-de4d12bce567
+As I said - older schema, so yes, you need to update your dtschema or
+wait for new release.
 
 Best regards,
--- 
-Cryolitia PukNgae <Cryolitia@gmail.com>
-
-
+Krzysztof
 

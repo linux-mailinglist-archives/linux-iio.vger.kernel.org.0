@@ -1,158 +1,177 @@
-Return-Path: <linux-iio+bounces-15127-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15128-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3852AA2C799
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 16:45:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BFBA2C8E1
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 17:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8AE73AD2C3
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 15:44:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB7A188D959
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 16:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8069B2451D3;
-	Fri,  7 Feb 2025 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D976518FC72;
+	Fri,  7 Feb 2025 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jX6Z1EkM"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="mtEJ1Sr2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D500E23F27E;
-	Fri,  7 Feb 2025 15:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2A918E03A
+	for <linux-iio@vger.kernel.org>; Fri,  7 Feb 2025 16:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738942991; cv=none; b=PM/h/how+57tO1It0l9o7odv07eEUG0tsUKjx7hd8wv6pSXyfOGimA6zOU/nwp6ucn7B15eZBs5caB7JlByx9ynOHJSqPzqzTIyWevOOJiIifrck505wQ1t4RCHxfVXJIotDDNSxI3LPkErSZBXZFGOaEg1gGeYawLuAdTwWB+Y=
+	t=1738945759; cv=none; b=ND9ar2jlQ2pVqPohx+EsrOCuvmhWRvvNhuPgjv3QVbt3h4I2EuGdXw9l/zCIc4OjgcAbFrpW/0TYAqIhEzYe77bdl+9xIeRtWOUkRgo62KObdEh1eei/N3IXBBt9Gljc5pErerz/hYotaNPv51vVUe4mEQqvGEg+yscUB5kWwnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738942991; c=relaxed/simple;
-	bh=V/mJbsV2FpS/yrn+vg3Hob7Vj8vsVhpVXGKAdYRI+5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQVFXIF+wvidEPLH50Wzxi+hDY3OZmAGrOGvjh5qk2L4RWWgIuYXbECV+rYX3ssnMZG4PC+SyYCiEUpDE81dUtETg1Tsdd3NUn0Gw0wppkAXxtSDaBpbS2G1cEHiqeoSUWQg8WxHxuFI+xk66M/U0tJ2qLvNkb9uDbN9kRvNcH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jX6Z1EkM; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-21f5268cf50so13446825ad.1;
-        Fri, 07 Feb 2025 07:43:09 -0800 (PST)
+	s=arc-20240116; t=1738945759; c=relaxed/simple;
+	bh=57uHeJssUhSTwboeRjLbjHP/8gebXbxQ08iLQ68S9QU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BSJp/p6Tt01lvSQyP7bgQsY8JTMHj6jcWSoxNwF73k8wZUWxVxJChM+3Qujj/M+n9ppbRKoVxvQ37S9v3fAzNUxlzg6CceHfSr/4QOJPEEEUT5r0CG5A3cPxU5HfmRbqyfxMouUeS260s69ZKqUiCM2qcmZtm36sLOeraavXe+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=mtEJ1Sr2; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3eb87127854so583334b6e.2
+        for <linux-iio@vger.kernel.org>; Fri, 07 Feb 2025 08:29:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738942989; x=1739547789; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UxhLoK7XAPc7+07p+MzQjz273lZ6TnGYiS+xzwBXJJs=;
-        b=jX6Z1EkM6hvx+zqfG4Jk8J4qv8Ahcwp3Qc6KaJf5Cr8DCYajF6YUT/pUVTnIObhkjH
-         ljHB64kpEnwRU2dcOKm8WuinRBXAGji18YcPFkmmtWBeAAsCWROdbyHb7KIKUmOt26os
-         gr/6IL3ZrCcagTXKd4FtfkgMIW3F63Kt2Jm9Vzn2K2DvGPBYGodmeQiOoY9n1/UFOzwz
-         rcHjVXF4MRLMOXyUC/WM/djIIJEIMZqn1RYNnee0VKeE4PTo/5tg99ByoyOEjSw8Iiv6
-         f67HLcLcOMEBOFVZcRutLL0uhf/otB8b8v7f9gQKdNHvdSuvnkKACKvfx/bKo4eAICsh
-         A9og==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738945755; x=1739550555; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k5z98lSfe6WwRG+wC0Tg6PRqMgic/o2qF3h3J+ulLEk=;
+        b=mtEJ1Sr2l7/lIK8nvmtXf2sOSfDvQGnL/msUKLZ4fK99Rd4clSOcYOIj0eFfGaLOdX
+         PhbPZ29bbmJC0xUP5e0yRlFjkXShnUq/dnZ/WcJcZ9M7t7eYficY5G1lTOMk0+/DyFz7
+         e7suiMpue9zPF6ivH9gxewbO9CUN2xj5AcJLrNAWv/c297UzMkAI7UiZLl1csBec2nzX
+         TKEh6k+Px2lri8jnJt3ooEj+r4MH63cF5+lZ0wLdUaKwV8lZvZ4i9cjd0QcxPZu2haAn
+         qI9z/jykdLqcHLrqXuxBKAy1uKVNi2IOwAJY0Rl1NN0AWeZ68C+NE4/maNTj/grV7fSA
+         H/KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738942989; x=1739547789;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1738945755; x=1739550555;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UxhLoK7XAPc7+07p+MzQjz273lZ6TnGYiS+xzwBXJJs=;
-        b=kqOQA5PW+tA2xQHDDT0qbljm74/nBi5tXFyRAEXCqhL2eSbG2GyxTgTC52DC72w+NX
-         6QlEPUTVbuQE99tBH7pJoD/VipxoK/NgskBfGswtzCB6HS6jJFE8XxdLr7hhGdUzMqHI
-         YR+asq3cdHCMzM3BORElwQjKn6JGP3qL3dFFLhrkH4vizlkdDwYeWt0M7sSgbmNmKZIC
-         tWD51ZTdX+x3uAx/b4uI0y/+d/luA2l4AJugNKj7zU1S5pDwTIvGhZzJV93YIane1fAB
-         aaW3hr2nTHVQ75vPH1s9magE04aEXxbME8dz6jA9NBEGip4qr3noGqFB4sf7fHZXWMWT
-         I8og==
-X-Forwarded-Encrypted: i=1; AJvYcCUv6X5YyW5AXTHhVEdLm+LA9ey99R6eZs1nGhIfNZPStcaGDUdrBCgjZojkFX+99RJ6eEloUev6bpQQUI8=@vger.kernel.org, AJvYcCV8YxcrmZldtl02mXnNsJAWGPVhhk/M8qLcL3+DIwSvD2FLrx8JUurp7x++6nOezOU06h40K81bzbih@vger.kernel.org, AJvYcCVWeTB/D8/ifaXQSK62Uj1Td8qNX+CGqMaDQpN01HxvtgDL1YqyBd1DPBP0NYzSdxUVa3/QN5n7Sczvi6WP@vger.kernel.org, AJvYcCWsOn9mldbwmvTJhK3O/m32CSggMm6sOuo+wA6T2GLv1ElmNhCkL3amiqHmWd1ZB36Zc7FtAeA0@vger.kernel.org, AJvYcCXhXqqJ9ZOxkw8FrUs6lQEIrzrZim9UGokFxqL0Kd5gmmgBQl5sGwZOGV+tMVaK4HnZW/SZnn9fJX5W@vger.kernel.org, AJvYcCXo2gvcNogiQe0Bw23U5E92Ki/SlFzzzVSB+3Yzc6Lj9iYqbrdQfzuI8ULdLyap9pyVuBhbsxnPyb/2@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHjjNm5PvJkSAd31vtLXiYY2MZiYbTu0GJfurJSkKRnb2WFE4T
-	TUxvF1euBbRyB4ncBb/cKzy5ryPgtf+E0UlythUgLuMcvXMW7bJQpLpmytHX
-X-Gm-Gg: ASbGncsyaFazJVTwVL03mlfnq8L22tM3Eqi5ADevJm4SLcCKwfLSn384o9/KEb0MyDM
-	zQgj70IOMkil/smqWSQk3UGcDcdIcFE/cv+l6hIoGvArIR224x8I1ZdNqDtUderaAN+Ginob6zR
-	NFlTlKcbDkJjyw3qofLq7UsgJFMzL//EvxOHU8ftVkUcQkhEVqGP1oCzTRLFmNUP7HyUIwdNk7t
-	eDr2SjjxUJHROBl6HzXMixrYuTq3uktyE31UdPaFM2x6F9UJDvK9o2vcFXgrDc6uEJ3AnTdIq2m
-	20kFJevC2uL6nxs=
-X-Google-Smtp-Source: AGHT+IHksggvra53OzUJzI4zoRynwjPKZIRBW8flE8pNvut2OPynffqKQreS+fTXcRUSXiaAn6xL3A==
-X-Received: by 2002:a17:902:ce8c:b0:215:4a4e:9262 with SMTP id d9443c01a7336-21f4e1cc2e9mr47245225ad.8.1738942987478;
-        Fri, 07 Feb 2025 07:43:07 -0800 (PST)
-Received: from localhost ([216.228.125.131])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21f368ce622sm31799335ad.241.2025.02.07.07.43.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 07:43:06 -0800 (PST)
-Date: Fri, 7 Feb 2025 10:43:04 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
-	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 04/13] bus: ts-nbus: use gpiod_multi_set_value_cansleep
-Message-ID: <Z6YqCOP2lVseW-i4@thinkpad>
-References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
- <20250206-gpio-set-array-helper-v2-4-1c5f048f79c3@baylibre.com>
- <CAHp75Vf+3pc84vV-900Ls64hM1M7Ji6Dmy8FPwL=n0=sJFSuVA@mail.gmail.com>
- <CAHp75Vdt5EU83mJrB7Sb_pgRNbhvCQ=F2Lyq7mQLAvV-w6cqEA@mail.gmail.com>
- <b1459947-18ec-4835-8891-5251d8f8c95e@baylibre.com>
+        bh=k5z98lSfe6WwRG+wC0Tg6PRqMgic/o2qF3h3J+ulLEk=;
+        b=vxTDsX+daTiz8opbQPcnsMvFkpLD8oPpgCgJVKuazhlkaYocEpAbqCGHs5B/uiheZB
+         te/MvPFQnjFUmIK/x92LDSxbH5vwe1hPYenEQ3++XMrlCv/kiZvpsVblXLBd3ggZRP7l
+         IQowMYDnJDSSWkKL/XLG6wrGnLmJjaT5MKYW9ulBbnDMLMSt9OiOEpkRoJnfz3J5aPWx
+         B7k/WqYd2zhLEqViGu4AkPs54jc4DhoQ8iahoxeL7T3E0Stx4ZpmUzci8g+1usuj2Y5D
+         YqEA+vTKP7NchdZx+LlTXjelhnCjri1Y8M9go1aKHOqFPGHd1/mJr/7aCJf+tnu1Rq34
+         aIzA==
+X-Forwarded-Encrypted: i=1; AJvYcCUHEdLBluU1KOmUFwECx23gu4H5PIHnMuzs/d2p0gmNpdA1parrpnau6PSRvEewktbrZ90eRt4cVRk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRCoXvFXW6z6fC6XdgqyGLSEWM3zlFfZjOv/V1vavgETXDuc+f
+	f0dCa14k0tcjuDCbjH9AwjXGztES3E5Op1P2hpY8fCZ/dY3HuVU1Sixxgb+y4y0=
+X-Gm-Gg: ASbGncs7x4dmtx1rxJbwa0phRa7/+3uroLzQMiH14xVUXjrmRGWDmzH18Wn2m4Ud0m5
+	NnhIpgPeJxNF3b6YWExRW3kLujdY6wDFL1gT4SWBE7xg4aAz4vyI2Sd1t3vC4mJsSNafSpctnOM
+	VTVRzm/Xh79Q8UbHFEJlDh2xmp1XTM0K6dO6/1qhUp58HXShgNNohSvCWQsM6OmBFg+u74ac4gr
+	u8NbdEUGO9CfoCKTrTQEW48edYew7k1amGWXJvSNNF5WNkzT/tyLhy3i6+1IZXuTIrSc/pidbiV
+	bqaPCF6FPe3cn0emWhN//IRpSxOcabL+G+IuiFmzK5MIiAz5MtBx
+X-Google-Smtp-Source: AGHT+IG7StedQ5Vnf2T8W9EtvcPrRVDItpyl7T3DBHEMIV0RzDgNrv3XTiomaadolzmBwJACvP6VXg==
+X-Received: by 2002:a05:6808:30a3:b0:3e3:bd1c:d584 with SMTP id 5614622812f47-3f3922d9a38mr2709674b6e.9.1738945755147;
+        Fri, 07 Feb 2025 08:29:15 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f389ed6220sm756084b6e.15.2025.02.07.08.29.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2025 08:29:13 -0800 (PST)
+Message-ID: <74ec33db-6721-4b86-86a6-e18b0a01fc47@baylibre.com>
+Date: Fri, 7 Feb 2025 10:29:11 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b1459947-18ec-4835-8891-5251d8f8c95e@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] gpiolib: add gpiod_multi_set_value_cansleep()
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
+References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
+ <20250206-gpio-set-array-helper-v2-1-1c5f048f79c3@baylibre.com>
+ <CAMuHMdU5tt5_t2SfYO3OUsHenu_0PhpKeLHktNdCx-W6zCEymw@mail.gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <CAMuHMdU5tt5_t2SfYO3OUsHenu_0PhpKeLHktNdCx-W6zCEymw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 07, 2025 at 09:23:56AM -0600, David Lechner wrote:
-> On 2/7/25 6:17 AM, Andy Shevchenko wrote:
-> > +Yury.
-> > 
-> > On Fri, Feb 7, 2025 at 2:15 PM Andy Shevchenko
-> > <andy.shevchenko@gmail.com> wrote:
-> >> On Fri, Feb 7, 2025 at 12:48 AM David Lechner <dlechner@baylibre.com> wrote:
-> > 
-> > ...
-> > 
-> >>>  static void ts_nbus_write_byte(struct ts_nbus *ts_nbus, u8 byte)
-> >>>  {
-> >>> -       struct gpio_descs *gpios = ts_nbus->data;
-> >>>         DECLARE_BITMAP(values, 8);
-> >>>
-> >>>         values[0] = byte;
-> >>>
-> >>> -       gpiod_set_array_value_cansleep(8, gpios->desc, gpios->info, values);
-> >>> +       gpiod_multi_set_value_cansleep(ts_nbus->data, values);
-> >>
-> >> As I said before, this is buggy code on BE64. Needs to be fixed.
-> > 
-> > Or isn't? Do we have a test case in bitmap for such a case?
-> > 
-> >>>  }
-> > 
-> > 
+On 2/7/25 3:10 AM, Geert Uytterhoeven wrote:
+> Hi David,
 > 
-> Maybe not the best style, but I don't think it is buggy. Bitmaps are always
-> handled in long-sized chunks and not cast to bytes so endianness doesn't affect
-> it. I didn't see an explicit test, but bitmap_read() and bitmap_write() use
-> array access like this so indirectly it is being tested.
+> On Thu, 6 Feb 2025 at 23:48, David Lechner <dlechner@baylibre.com> wrote:
+>> Add a new gpiod_multi_set_value_cansleep() helper function with fewer
+>> parameters than gpiod_set_array_value_cansleep().
+>>
+>> Calling gpiod_set_array_value_cansleep() can get quite verbose. In many
+>> cases, the first arguments all come from the same struct gpio_descs, so
+>> having a separate function where we can just pass that cuts down on the
+>> boilerplate.
+>>
+>> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> 
+> Thanks for your patch!
+> 
+>> --- a/include/linux/gpio/consumer.h
+>> +++ b/include/linux/gpio/consumer.h
+>> @@ -655,4 +655,11 @@ static inline void gpiod_unexport(struct gpio_desc *desc)
+>>
+>>  #endif /* CONFIG_GPIOLIB && CONFIG_GPIO_SYSFS */
+>>
+>> +static inline int gpiod_multi_set_value_cansleep(struct gpio_descs *descs,
+>> +                                                unsigned long *value_bitmap)
+>> +{
+>> +       return gpiod_set_array_value_cansleep(descs->ndescs, descs->desc,
+>> +                                             descs->info, value_bitmap);
+> 
+> I am wondering whether this needs a check for !IS_ERR_OR_NULL(descs),
+> to handle the !CONFIG_GPIOLIB and gpiod_get_array_optional() cases?
 
-Not a bug, but direct addressing to bitmap elements is discouraged.
-I'd suggest using bitmap_write(values, byte, 0, 8) instead.
+I don't think it is strictly needed, but could be convenient for future use
+cases. If we add it, should it be:
 
-Thanks,
-Yury
+	if (IS_ERR_OR_NULL(descs))
+		return PTR_ERR(descs);
+
+or:
+
+	if (!descs)
+		return -EINVAL;
+
+	if (IS_ERR(descs))
+		return PTR_ERR(descs);
+
+?
+
+For comparison, gpiod_set_array_value_cansleep() will return -EINVAL if the
+first argument is NULL.
+
+> 
+> Slightly related: shouldn't gpiod_put_array() (both the implementation
+> and the !CONFIG_GPIOLIB dummy) allow the caller to pass NULL, to
+> streamline the gpiod_get_array_optional() case?
+> 
+>> +}
+>> +
+>>  #endif
+> 
+> Gr{oetje,eeting}s,
+> 
+>                         Geert
+> 
+
 

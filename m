@@ -1,140 +1,113 @@
-Return-Path: <linux-iio+bounces-15101-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15102-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A847FA2B5C6
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 23:52:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B19C2A2B872
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 02:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC3C167897
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Feb 2025 22:52:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0CBE1888FBC
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 01:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B139024060F;
-	Thu,  6 Feb 2025 22:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB6E13D8A0;
+	Fri,  7 Feb 2025 01:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="3d8s6bOu"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="wVohw3de";
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="wVohw3de"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC7623FC57
-	for <linux-iio@vger.kernel.org>; Thu,  6 Feb 2025 22:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88D14C6E
+	for <linux-iio@vger.kernel.org>; Fri,  7 Feb 2025 01:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738882122; cv=none; b=Zegr7I7x6IMVp0eJg5CGZaTADJur7bcat5H8p5pfGtWAfRf0AHWcZLcYwtUVxVd9U/mSHkTSzwkv613TUWIV0fXuqLzBOjB2l7obro3y1U7KaKx0O1Gyd59phS/a3cxD82rGjxRNSyojD23sSkHeIPYpJAIROrdRZZQgSrlLDQQ=
+	t=1738893160; cv=none; b=MC5FdSLhg4aYJFBoIhjLTnOya1lwdUycrFrE6HbSO4SN18BjQji0jBgnPO+KSEPsh8r015sA1Rv0/wuBcFJt/F9+FUsgfeGZcAYxVjbV+khhz2umzE3NsaZ1lPQ/FLKgXCeHfJsNXLD7q8UdF4b3RbeQ79BA86/ovrpZpv9MUzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738882122; c=relaxed/simple;
-	bh=SREiuK3L9rZlfmn2CRPkgp1zixwI3ho4VDIygOej2Dw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=djSdRIriz5xqG7dGmT+HXZMGlylmdxajitBKXlyBZjCmYbeoQLLe/SZa8mCQsR9ZPc88xDwccoqS7Uq4mG1XJAdYWeXMnh52N+XTqFvX1ZaWK4ns2cGEa3jbTf5IxqvsE6DI5E5JdIf8hiJ+jJ0jJH871Sea+Jimo9h83K70gG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=3d8s6bOu; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-71e10e6a1ceso461107a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 06 Feb 2025 14:48:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738882119; x=1739486919; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Zrl0lG0s99SDBuGZ/+AcMLJIAJmPLy1NCd/dBoX8jU8=;
-        b=3d8s6bOucWMdaoYvNt0o9ANhpGoZ8C427iKTKgI76bTHXp9+xlOcMknn6M9/irBoHV
-         nksFkUy5g7dk2r+aT8r5Wx15FhnIPzzraKfbBSWHmfzbJ+eUY3B/pY56TQU2xouTA2LN
-         Vr+dhX50lwrQrCydJKGi0eQuZXeXfCm5BYc3W/Cy4BvTMCozQ4iImUZ5VfL403WpkJmG
-         +eUzou/GvavA8Zh2VtAQmAtBgduaJd9HFjMyCPE9Fm6iy4wic4oDzhZJC14LWYjdn/Qb
-         JFVxWz21CfUGF6uZwXo0357IZHuLwyMGehza6M1gc5KXCv6L1kz+rrw+kJrP0vLjxP0Q
-         3TUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738882119; x=1739486919;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Zrl0lG0s99SDBuGZ/+AcMLJIAJmPLy1NCd/dBoX8jU8=;
-        b=lWL5Ppfjzqkt0g+hth9V2ImBmsxfWe/bDtJQEyiHmpDtrL96mywAOS+udYdRvjFRzN
-         1Ztv1BNytMk+1NJ5V2z9bz6GqyJTx22d5tIX5hpAhQ+pf5Eammipb15d/X+3eG1rcLxK
-         eH8e6Wf18FkOGn/ap6VH6/GnvKbvh+Foim9QaS6cwFTowSEfpmPfwEdBY9k07RgQabCW
-         OYKAlA37aPLoUWvMeDnhlim/T0ocmmRYHD9w0tZHcXcBhOd5nqEbfnWOgLQch3N/QfLG
-         NzSV4X5hmXWFJ+GWWqpQmzevw89bPYksKvju1BIE5Uhf5MUieelM30wOn+3Co8PIrEbO
-         eyLA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMtvpYWacQL7G3mcYLJHK5ZEysLMoJ4LPwW0SHOZUeuHbicx63DDxn9x0/RyHjq9kFYT4U1jLaE6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/vn/Ekg2+6wW4edlWT8UMyxRO2doY/JboL3rwCtrp4CeZydGD
-	7hyZ9VPJh+3xxqiyWIUkP9INn6Xo25F8wcRGHyYmUux+VGmvDtRPE/cr2U4BGlE=
-X-Gm-Gg: ASbGncu5YfUGJQEDLvYZQ/6iHfmmbMOZnLQ2ym9lyuq6qcWzpqS4DexZvwrL4ROMKT+
-	5coDtcua9VsB5n/UbQ57cgCoYVJK82huxRploOJTa9SLrJ0CqCp0wkO1ERsohdLgI553qv273oL
-	ynVxlT7JrBkMorJsYkRTZVwj9bk7C9eJ3HnVw12ERannjwTkQ/rkMVwWxUJGtjnyI3nFcYaoh3Z
-	toNXEjlQIYqh+Zl7l5JRLpMSgA95XPlVuWTmo1MfBJEJzp3eRk9hO9kKEFIL77HLlCNUCmrgvwG
-	awedS+0xdLSvotBiSMJoE0VD6ju2t2IFKG7eoykGeOsyvbE=
-X-Google-Smtp-Source: AGHT+IF6EkhBBGtZyNdnec2UQucqxt5fakVdlz2IO8AnBCKVXc9lOTpKIIPxZD3f0MWNAAb4im2E5A==
-X-Received: by 2002:a05:6830:6819:b0:710:f38a:191c with SMTP id 46e09a7af769-726b87c732bmr566366a34.11.1738882119510;
-        Thu, 06 Feb 2025 14:48:39 -0800 (PST)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-726af95bbb5sm510986a34.41.2025.02.06.14.48.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 14:48:39 -0800 (PST)
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 06 Feb 2025 16:48:27 -0600
-Subject: [PATCH v2 13/13] ASoC: adau1701: use
- gpiod_multi_set_value_cansleep
+	s=arc-20240116; t=1738893160; c=relaxed/simple;
+	bh=r0kZrHvJRwXYn7/S+H4LU9u8Ge0Wn6JBgeoq/b8xAZ4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QxxzM/7LQSUNxqE5Aai7nmYhGmiIQeApw5Kezihs0LTgiwBx5GdwlMOg6uJbPa2JvWjP2vTgjcXDmv4EKSfnGqYInNIopds28sly7Gz600OZO4Q0c7cnD5R4jSVaWmgGwbV16X6+PIN2yMq6k3vPLii10e83OqKLZmKr8RSbvXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=wVohw3de; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=wVohw3de; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1738893153;
+	bh=b5tsJ9IVoLzPvlvNaZRaTYlZIQYgWiHP9Z3oKbMUjRE=; l=576;
+	h=Date:From:To:Subject:Message-ID:MIME-Version;
+	b=wVohw3ded4x0nHYo1T1wk/5rluTnnhEQIcTWxR2r6OOPfLX36p2QQAA+49Gzo3+C/
+	 kzknQVUAO4BlVxwwVS1AMm3yhJXfWzLx/WjLFi1vfhrhbefuuthOC7AVlebz95iuJK
+	 OuoUtOBgzCszkWdUrgH7RXCKtqo24PlPS57RPfSMIMWLhD2vDPKiA3A4h2iyHhaGBY
+	 nHSpYQW8faZj7qTZzSIM7lx2wUlUviA7+1Dz5ow0kQgS1uHGazLfRyR0ixjiM03iLX
+	 aN/opEHDgt8IU0m88NLglJsA5DtpCm1Jp3lHPxu/IWStnY8eFbHEyxIk4lTDO28hFZ
+	 EJXsu6ssv9GEQ==
+Received: from 192.168.8.21
+	by mg.richtek.com with MailGates ESMTP Server V3.0(1128086:0:AUTH_RELAY)
+	(envelope-from <prvs=112852FFD6=cy_huang@richtek.com>); Fri, 07 Feb 2025 09:52:33 +0800 (CST)
+X-MailGates: (compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1738893153;
+	bh=b5tsJ9IVoLzPvlvNaZRaTYlZIQYgWiHP9Z3oKbMUjRE=; l=576;
+	h=Date:From:To:Subject:Message-ID:MIME-Version;
+	b=wVohw3ded4x0nHYo1T1wk/5rluTnnhEQIcTWxR2r6OOPfLX36p2QQAA+49Gzo3+C/
+	 kzknQVUAO4BlVxwwVS1AMm3yhJXfWzLx/WjLFi1vfhrhbefuuthOC7AVlebz95iuJK
+	 OuoUtOBgzCszkWdUrgH7RXCKtqo24PlPS57RPfSMIMWLhD2vDPKiA3A4h2iyHhaGBY
+	 nHSpYQW8faZj7qTZzSIM7lx2wUlUviA7+1Dz5ow0kQgS1uHGazLfRyR0ixjiM03iLX
+	 aN/opEHDgt8IU0m88NLglJsA5DtpCm1Jp3lHPxu/IWStnY8eFbHEyxIk4lTDO28hFZ
+	 EJXsu6ssv9GEQ==
+Received: from 192.168.10.46
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(3140704:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Fri, 07 Feb 2025 09:47:29 +0800 (CST)
+Received: from ex3.rt.l (192.168.10.46) by ex3.rt.l (192.168.10.46) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 7 Feb
+ 2025 09:47:29 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex3.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1544.11 via Frontend
+ Transport; Fri, 7 Feb 2025 09:47:29 +0800
+Date: Fri, 7 Feb 2025 09:48:16 +0800
+From: ChiYuan Huang <cy_huang@richtek.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: <linux-iio@vger.kernel.org>, Mudit Sharma <muditsharma.info@gmail.com>,
+	Julien Stephan <jstephan@baylibre.com>, Mariel Tinaco
+	<Mariel.Tinaco@analog.com>, Angelo Dureghello <adureghello@baylibre.com>,
+	Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>, Trevor Gamblin
+	<tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, David Lechner
+	<dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>, Marcelo
+ Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou <gwendal@chromium.org>,
+	Antoni Pokusinski <apokusinski01@gmail.com>, Tomasz Duszynski
+	<tomasz.duszynski@octakon.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 17/27] iio: adc: rtq6056: Stop using
+ iio_device_claim_direct_scoped()
+Message-ID: <Z6VmYH/nt8rZFjvJ@git-send.richtek.com>
+References: <20250204200250.636721-1-jic23@kernel.org>
+ <20250204200250.636721-18-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250206-gpio-set-array-helper-v2-13-1c5f048f79c3@baylibre.com>
-References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
-In-Reply-To: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
- Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
- netdev@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-sound@vger.kernel.org, David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20250204200250.636721-18-jic23@kernel.org>
 
-Reduce verbosity by using gpiod_multi_set_value_cansleep() instead of
-gpiod_set_array_value_cansleep().
+On Tue, Feb 04, 2025 at 08:02:39PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> This complex cleanup.h use case of conditional guards has proved
+> to be more trouble that it is worth in terms of false positive compiler
+> warnings and hard to read code.
+> 
+> Move directly to the new claim/release_direct() that allow sparse
+> to check for unbalanced context
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: ChiYuan Huang <cy_huang@richtek.com>
 
-Acked-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- sound/soc/codecs/adau1701.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/sound/soc/codecs/adau1701.c b/sound/soc/codecs/adau1701.c
-index 291249e0a2a32df7dde81904dce2f6be143fc2d7..6876462d8bdbb41d551f776c2d7fe6ed46115fa1 100644
---- a/sound/soc/codecs/adau1701.c
-+++ b/sound/soc/codecs/adau1701.c
-@@ -325,9 +325,7 @@ static int adau1701_reset(struct snd_soc_component *component, unsigned int clkd
- 			__assign_bit(1, values, 1);
- 			break;
- 		}
--		gpiod_set_array_value_cansleep(adau1701->gpio_pll_mode->ndescs,
--				adau1701->gpio_pll_mode->desc, adau1701->gpio_pll_mode->info,
--				values);
-+		gpiod_multi_set_value_cansleep(adau1701->gpio_pll_mode, values);
- 	}
- 
- 	adau1701->pll_clkdiv = clkdiv;
-
--- 
-2.43.0
-
+Reviewed-by: ChiYuan Huang <cy_huang@richtek.com>
 

@@ -1,103 +1,140 @@
-Return-Path: <linux-iio+bounces-15149-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15150-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D68DA2CE0B
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 21:20:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953A0A2CE73
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 21:51:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB86A3A3118
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 20:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385CF16B956
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 20:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84FE1A0BFD;
-	Fri,  7 Feb 2025 20:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FD71ADFFB;
+	Fri,  7 Feb 2025 20:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZKSn+A7I"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HHF9C7Tv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567E23C8C7;
-	Fri,  7 Feb 2025 20:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9F471747
+	for <linux-iio@vger.kernel.org>; Fri,  7 Feb 2025 20:51:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738959635; cv=none; b=s/K5ZVA5+8L1mpLFn1nxEQ5P0HeqZN5X9pGv0conYjUiTq7y/cnwrLQeA0tcQiRyDU0n5slkSpqkpqIpfXIR/T4mkYHfIlSNgVPgyBwUtXgGemU08t/jzmkA3B9Er4t9u/OQZvaJsC/luSX0mmqtelNCH+UUdphbUBP2qYnW4hk=
+	t=1738961505; cv=none; b=LF9V2yKIrvBauJz44jbsGx9OFegyWoQGHLzOtY3ik2LJiq0dYMNV/G9tmbsm/J1x13ggK47xr8aOnKR9nfWCATpsyvS9tLmlqdBlwAuRH7fq9bmO637vKJEyFFbX9zxH39FjbzhSB4T2H9ZJnY2Bd+wOJMpW3Z0LN7I6w0+H9ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738959635; c=relaxed/simple;
-	bh=MLjnC+mynJL2UmCIr8H5tB9W8MhrU4FrF7Oz9XY2KwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mzdOF0ewYtGUjEcc8qDYqV8wFH7qccb1cEUu7bMOuspeL4BQVVKL8QcEikRQgm+IbzIrtHWDJrrEyDv4v17mgIWxGsgHyqvbttavx0+ziTc7Lfg6Jo2Dr4tFZNzzWHfiDL/dc1SUF8HAFBWniwIFfrxjyTykFBSebFs7hVG5jqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZKSn+A7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F5C4CED1;
-	Fri,  7 Feb 2025 20:20:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738959633;
-	bh=MLjnC+mynJL2UmCIr8H5tB9W8MhrU4FrF7Oz9XY2KwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZKSn+A7IFh24bVSH8hJWECHIoGjfn5iYv6bUluFevl+J9oK9eDLBl5q46UB+Po2Hq
-	 tPHknN1reWjwMkeZOkhefM0l2RQmidagoL/AFI9mYxsSZXFmcEL7iQAzHFCOSLqZfh
-	 gGc1B5w2iXrUPXwEJvfuG8ucb3UnmVntaAuQ3FsqvkLDEcUEGrdg7LqQM+ykxQjX14
-	 5yjgzTcPfUyT6OjikmKvP3LeTI+eDc/OMEYIbz4ryr4fqPBZJ6oKZbvcTCsR80c7XD
-	 IQmuTtalEyNRwohZAGBerJAa0PUBAEzDLqxcfYP/E2DRZFCJpHFAZv5Mi1pSudIUOT
-	 soC8vxNPa/O0g==
-Date: Fri, 7 Feb 2025 20:20:27 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	David Jander <david@protonic.nl>,
-	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v8 14/17] iio: adc: ad4695: Add support for SPI offload
-Message-ID: <11b7f0fd-88ae-46c3-93b5-f7a0166e82be@sirena.org.uk>
-References: <20250207-dlech-mainline-spi-engine-offload-2-v8-0-e48a489be48c@baylibre.com>
- <20250207-dlech-mainline-spi-engine-offload-2-v8-14-e48a489be48c@baylibre.com>
+	s=arc-20240116; t=1738961505; c=relaxed/simple;
+	bh=j0K3veYgNs9ITuGH6rfEbzVZGYKqSl9G/AaRQDM6RO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BcDl43PYcrAh4ji6yjrkwT7RsLZ90xNAR2ZhSR79ZyT/z19XaxT3lU4OV+lRQTV3sRiVWjZBKqzClElgenCGlPqpMbzglpPtMJ9+X0Uob81M6zM++iEjhEwFWR9sPf73moK93Sjb+osfKfXx0MaZY1meSr41r8w2lrjBCIt+lIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HHF9C7Tv; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-71e3005916aso770770a34.2
+        for <linux-iio@vger.kernel.org>; Fri, 07 Feb 2025 12:51:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1738961502; x=1739566302; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VQGQcdGFinvFOpfGuSYGng0xGWMSfOVhvommmb2mfPo=;
+        b=HHF9C7TvC5v3O5qwMl077YKeKLExv/7juTO/sfK/IO9KN6nXmt935uSSPkBheIBR0a
+         xGQv9RnuYT509ER2xjN4t5gmuGU0dNEebvg6BB4H0SuP4nRo1Rl8OUYHopu4TbiPH8rk
+         2tXRGmIKGMu95eCN7gX+XJ9LMoHr0x2Fc/WCdAx348jQifRZz8GRkKE1re0iUyoS7tJ/
+         WrzIhMCoW17SIGvj1g/0n5Zf0aZzpAdCRIIE+5TFVrFdFN32kXobFFbf2Djb/dYHapHn
+         A6YMgBSRnmz7S0yFO7ZMeuQir1XEGSm1iyruTzkyUSkV98Lit1494ANl2exYhiNK8dYQ
+         lzUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738961502; x=1739566302;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VQGQcdGFinvFOpfGuSYGng0xGWMSfOVhvommmb2mfPo=;
+        b=TLjsw+d980Gy/QnD+sogN9AtjAu4NS7adINpe2F2euQnLHigK/40aplTvZenEsZ5Zo
+         O6BjC8uVZPW0w8UiNxux2EmZchv8PAJxiOlHiPIBwJFgN83uHMDFYiaA9UvjD2LDnREI
+         dYMxSUF2bdkj4o090JFauD87ynYYhjWJLqs9SGLqWrcHO8TRIrUEvBOIfueGu9jzmhZq
+         /2yyDj7rAQCZeewxrg2jNSzo4c1V9TNz1kToIKvEqtcJqgP/K4NbWxzE9mBOYBTCZ6C+
+         1V6m9Wy5A0vo1Yc/xCYJYyjLf3qp+LUGteFF/xNevVTBnInpBEEczQYA4FHCNkq9CSDV
+         KMlg==
+X-Forwarded-Encrypted: i=1; AJvYcCX19LhOYOq2cRawf/FsFkFv/kw/WipyE3sFhUMurzzV3sVOp5bF5/3rfUoNAoKXKYt1UqgR4oM2EVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxvrf5Eaj+Lg82KFSMgeUXfvfxmfvGWxKAUUAz5HsExeJ5y6hrv
+	LpSw1ttInNdvmmSh+BpS591XIQiGiLcYY7Wf+WZ/FWN07jwp0APppk1JOGhMdLY=
+X-Gm-Gg: ASbGncsb9tdZfpQ6sF66+8pjnVYomBEju0tGs3ZAQ38oDiylkfeVo5PgCgmONIC5G4o
+	xegtB7C2JKbyGi2joh3c6LeNkZC7JVFCxQmetTYXQLUl61ERo7OWzgLsJZiQ2x2QGYXk55xsQkx
+	QWxsfbirsRAlZsCXgAq2bhLGMt/C1hlb4z4Ej579r9RVOlXL0u9E+MxK8kLnSkjcSe4X8pzaHbW
+	lNWrYVqtfCPZU4OmCgVq0aAOU1qTwxLwPurSf6EMFVQyuS4Cm0Qa9AHPaQAaqEerWwvOB6fqzbU
+	4Wij+7Mnb3fDNRtrvXJs5sTbpn1po1lih+e0x0PdDkB2vguxpVFL
+X-Google-Smtp-Source: AGHT+IG7PscmiUU5iaoZJFTzcARWpAGODDHZRUMCO99df9PiCQJBs76r9w1AoVJ5tFHypQESPlOSMA==
+X-Received: by 2002:a05:6830:438a:b0:71d:f343:5f5b with SMTP id 46e09a7af769-726b8829061mr3412971a34.12.1738961501979;
+        Fri, 07 Feb 2025 12:51:41 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-726afa4d2b7sm1006099a34.63.2025.02.07.12.51.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Feb 2025 12:51:41 -0800 (PST)
+Message-ID: <dd263ac6-1843-493c-90ea-d303eae561e5@baylibre.com>
+Date: Fri, 7 Feb 2025 14:51:40 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PH/cu5q3o2YSgbcb"
-Content-Disposition: inline
-In-Reply-To: <20250207-dlech-mainline-spi-engine-offload-2-v8-14-e48a489be48c@baylibre.com>
-X-Cookie: MMM-MM!!  So THIS is BIO-NEBULATION!
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 9/9] iio: adc: ad4851: add ad485x driver
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pwm@vger.kernel.org
+References: <20250207140918.7814-1-antoniu.miclaus@analog.com>
+ <20250207140918.7814-10-antoniu.miclaus@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250207140918.7814-10-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 2/7/25 8:09 AM, Antoniu Miclaus wrote:
+> Add support for the AD485X a fully buffered, 8-channel simultaneous
+> sampling, 16/20-bit, 1 MSPS data acquisition system (DAS) with
+> differential, wide common-mode range inputs.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
 
---PH/cu5q3o2YSgbcb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+...
 
-On Fri, Feb 07, 2025 at 02:09:11PM -0600, David Lechner wrote:
+> +static int ad4851_parse_channels_common(struct iio_dev *indio_dev,
+> +					struct iio_chan_spec **chans,
+> +					const struct iio_chan_spec ad4851_chan)
+> +{
+> +	struct ad4851_state *st = iio_priv(indio_dev);
+> +	struct device *dev = &st->spi->dev;
+> +	struct iio_chan_spec *channels, *chan_start;
+> +	unsigned int num_channels, reg;
+> +	unsigned int index = 0;
+> +	int ret;
+> +
+> +	num_channels = device_get_child_node_count(dev);
+> +	if (num_channels > AD4851_MAX_CH_NR)
+> +		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
+> +				     num_channels);
+> +
+> +	channels = devm_kcalloc(dev, num_channels, sizeof(*channels), GFP_KERNEL);
+> +	if (!channels)
+> +		return -ENOMEM;
+> +
+> +	chan_start = channels;
+> +
+> +	device_for_each_child_node_scoped(dev, child) {
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret)
+> +			return dev_err_probe(dev, ret,
+> +					     "Missing channel number\n");
+> +		if (reg >= AD4851_MAX_CH_NR)
+> +			return dev_err_probe(dev, ret,
 
-> Add support for SPI offload to the ad4695 driver. SPI offload allows
-> sampling data at the max sample rate (500kSPS or 1MSPS).
+ret will be == 0 here, so need to replace with -EINVAL.
 
-This doesn't apply (against -rc1) so I'll skip all the IIO stuff.
-
---PH/cu5q3o2YSgbcb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmemawsACgkQJNaLcl1U
-h9C6jwf9HUgpmIWlGPn0UR+YhcWnVkyyoaE7eIKkym6mjxeWKRneyLtLTjXp9JQL
-LKLtUDQvr/xtHX3BCQYDMYHqERwCIEgbbjdqz3U+4JWlnt9wCHcTz5ipucBiLKjY
-kQKvHD8jUORwWI1VJHijeL9JMnEwqgAn9q26KDuC+/uiCIQnswML31TaNbtoaBhk
-0MF7N0LSEpcU7dvZDEyOFQk3Uwgx5o1Gjjj1MF8M9y7UgfEMREikDivqaxDyWjZt
-h1j0AwznPbj9+aWGLnkQ090VwtCrn5KhHr/cgh/l4Dgr0HOTGPaaa57QZuHFoYYF
-gdPJ2RDl9eIE0H6n14xNw7lN6L0/lQ==
-=9/2D
------END PGP SIGNATURE-----
-
---PH/cu5q3o2YSgbcb--
+> +					     "Invalid channel number\n");
 

@@ -1,83 +1,83 @@
-Return-Path: <linux-iio+bounces-15106-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15107-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D01A2BEDF
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 10:11:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FB4A2BF09
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 10:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2145D18896AC
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 09:11:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE7216A75B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 09:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA5D225414;
-	Fri,  7 Feb 2025 09:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24061DDA34;
+	Fri,  7 Feb 2025 09:17:20 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
+Received: from mail-il1-f175.google.com (mail-il1-f175.google.com [209.85.166.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4321D618E;
-	Fri,  7 Feb 2025 09:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7621D5AD8;
+	Fri,  7 Feb 2025 09:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738919479; cv=none; b=fmYrvDM5JrBpsQ5K2CrgL/IoJR8npja/LZtz3s52n6exjOmfiA3MVVnC1Y/urCIzGHEOazk++1U8rM/F9+2Me7/JY4PG2oECE8L+dq/rkAJnb0HSowWjC1Rxs9Og652nw66E1oGzAy0X5Gy8yUgGlfR9n6PFwnv/qC00f32/Nys=
+	t=1738919840; cv=none; b=C6gAQLfzR8sVOnmNE9ynzbRVuEoohS6IGxjpUdx+WlnKs1PvVaJTZoWWH/VVc2rF224k1gS5naHO3kB2mq/B6NEnrj4MjSVKuJgTH3o94MEkzAn1EymUboS7aK9ry1tb43gS9WocBfid47RQdZa/beGeoljCEnVW2mgm1U5J5x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738919479; c=relaxed/simple;
-	bh=u61PcvQYvGjXqoKlF75HIDoW1zfSqi+e4jVbsPkHMQI=;
+	s=arc-20240116; t=1738919840; c=relaxed/simple;
+	bh=gZaXz7XL6hd/UGWpNon4f9PYF3b0mzV4TxHZOcz4Sak=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ompPuE8xTyWfcdusCcLxW93BEq5f+EN90MAOktkv2wTuy1GChnFM0799MPD52MiYPV4uAMy2KqVDFFZZ4kuAzEkM7wUT/nR5P4anoSnbr8fjA5/fc7NnvcAFPrE5Rbz6yyvOngusHJsiccDd1NkOuwBvtpRGikGwBSoVjZfZVmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.178
+	 To:Cc:Content-Type; b=QZ3plTTDndS84yz4CkwbScFetHCdaKSff+AsZXIPJuQyQIYxO1zrkfenOELMSEe5oSyLYdVk5tLnaqqX9wz10xjtUKhrYeoeShFXxvhl0TCPcehBc0KuB5HQGeYt/nztfgC2bkSDLzHJNH2ERbkyuA2/W4eDkPB8zMxcwC1ZTKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.166.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-3ce886a2d5bso16622965ab.1;
-        Fri, 07 Feb 2025 01:11:15 -0800 (PST)
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3ce873818a3so15935775ab.1;
+        Fri, 07 Feb 2025 01:17:18 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738919475; x=1739524275;
+        d=1e100.net; s=20230601; t=1738919837; x=1739524637;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vXaXKdHLoKk2Bg/TFRHcL35cN8BOIB//KM9g1NizCeg=;
-        b=hfvAeUTwlk/2A+rCIyzt1PoPKA5lN1MK1BL6wosEZHeUPwVS05BSAkK4w8pJ+irJxb
-         G7ZXRCL/QEGkzAWpCUVpnq/+cbogtzpw/amTy3tKtYfTh/ym7NdRrIz+wRlw5TCiAz7b
-         Vmb+p8TYm3nOrcXzmZ/x5Djap38XK1fyTicBmLGyttpgvioIP9uLCJgCzQe3FcC3WA9c
-         M2DnlgvAD/6ei3jmXq5QMUKsbNW3fKuRwH8PznQ2MJZWuIGUqKJh+7B6pHXbciIfDNfk
-         uW/MXievSsOtauncDr+Gl3C+KaN4b+sBRQ66P4ZLzxj8OeAEOg01VtR1Md6tH96OUEJm
-         OZ/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUJQNGfJIfPkRlkGCKhHRu4X+yUcg7ipVvN7dBehpFKNgap9LSho29I1o2eGYHpAA8hPJxzzJeExxxYy9tw@vger.kernel.org, AJvYcCUKWC4lfNmoHF5Sureb2vB1IdHcYVNh2/I4nLL++PxFzZks6gbCX0Vq4xphfxyl1/+iGxxq8fOt6e9VL8I=@vger.kernel.org, AJvYcCUUKxRZA+v7emcz8l6KlmPIwFCswgGK5ZeKmdgCmTUUMs1HgXbC/X2rEafM5o73/Qv2rCVZ9KZh9mEV@vger.kernel.org, AJvYcCV03gkTNiJT3xhzN59FL3LybE3CuFRyz7AGoqmRVU9bIWqqw0pHgCNndoZjgnpvjbPTMN1OlLvKGr4q@vger.kernel.org, AJvYcCVRbQuVSOcJJHyzS/x3dtyzn+Bz7o/w12tFKW5BqgdT/itt0qqtL1KiauQV1mWpvNpk6K28XuwBp79s@vger.kernel.org, AJvYcCXUjPyz5ZQPoipatz7YMtSTaJguaG894CHoQ6HLbrG9R/kCaaz6rIubjTQ2ZGoJhlmTEbWgVdVK@vger.kernel.org
-X-Gm-Message-State: AOJu0YyF6rUy4sq6Fe8DaQT9Q+9MRGIaU1TABNtR12RyQK6peqCjJD2g
-	Yt2zfK4FqwXqMWkf7jGB8qNQp4lHhG4nKUtOBHLAEDKkzj962Sv/yVwB6qi3
-X-Gm-Gg: ASbGncsZfedorOGy8b2zSaFT2BsI+1Yty4g7FFSnHrilQZSUKWecuNX5Am5AX3ppQWK
-	rjZrXcUQKL8VIAktOToUE3WACLUsgdU/DtzT/ftFk5jzF5PPNqipQYtup2/aTcVD1Opgf46N03q
-	E+Q5h9itk2IfpEUGbPWmy1edo1ZiMtTq3z39iB2ygVMN7nUovlITR7q4hVOBks18bBvImED2H2k
-	n663ZictBqwOVZHJXew0HatwoUj7mF17M137ZLBQJ+ZKUdoKsnCsaq/VHroBRT+ebBmMyOYcpAD
-	hdcDC4Jax0ht0m+XkwyEhFvrl1agP10QtEbkWNX7KaIJ9Biu4OIKf7cYGQ==
-X-Google-Smtp-Source: AGHT+IFkY09aibSPf1/gpIlUnx6Qdvk0iARD9BLTGhOSqcq0FflVzJ8fTSgviMpRL59x4GveJtKc8w==
-X-Received: by 2002:a05:6e02:1c0e:b0:3d0:28d3:e4ba with SMTP id e9e14a558f8ab-3d13dfa700amr19512425ab.18.1738919474810;
-        Fri, 07 Feb 2025 01:11:14 -0800 (PST)
-Received: from mail-il1-f171.google.com (mail-il1-f171.google.com. [209.85.166.171])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4eccfa0322asm642257173.60.2025.02.07.01.11.14
+        bh=o4kJhOPtCECyINUZkXDqpO81cp9u410vUEkFnMeAGRE=;
+        b=psVmUxRbc7tPvjHIlZY9iE1kQfF2KVBfNj1bHv+Dw5tbAlmHLIPUpXEwJjoYdxllNG
+         mhQU/KiKPAzqtPmVhHjUDWcEIxVMlE0Yp3qnNyGTE92DrnzlT4/3jWCN4PtSTWQaWmG1
+         7uuGsr3ZHJfL3d8livOkBfu8KxH8VqxxfTJqkLxQOTaNI4wnSrIk7QVVxFnNFUZdmIwI
+         RQdoaoGgMPlZqERuQgJRjwWpbOeyKJYUha+uKUJzpRUIPygCJLKPoe2TD8TquRGoS2ZS
+         n69qg9p4NY0uz8aekY83rPacoBlI+kfq5ekbKgFJhJndH08WzILBi3JvRwi+EtY+wHmu
+         TTvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7aV51ddKRCrXKtzObRnPgOlCuoWEPKfzLw12VWkuXUP3Z0o5Zm3VVn6ymOLB/vuiIUVjMELGcavsL@vger.kernel.org, AJvYcCVtjtVaaFLkRoQPdcGaoloBn2RbxGtgKYfNMzQDxFn026UwUhXZ3oXBoCrJCwdjw3ut2Hsp7N4WxWrMRKrt@vger.kernel.org, AJvYcCVwHuRta5+BpcmmbUyqmnIYLF4BlcfLEYR/jQJIfYKuTqnyD+Nlbvwg1kiqqZTYmySx3W5LrW4XJa3Y@vger.kernel.org, AJvYcCX+vy/T2iO+hOeWf3pSYXepiPluQ4x1zp2Sj1tGhPJy1KhJplXrWeASZNgH6cAVieg1vwIeqicS7Lfz@vger.kernel.org, AJvYcCXdTZAW8YRE7pv9dsNbSqyf22zW/F/RN460WObUCULaAeF2oWP673EkDB95EclwPLpXh0na/SGcVKniil4=@vger.kernel.org, AJvYcCXwxOj8zyWmWutsyWjU5VgFrekoEgFVA7nPQU4I3ZOY0Zs3tLIE+Z54cV1ccHv7RzMd13GESPF/@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE5ubkR5bOmMhuK4aEcs0gxBnNnkFpEL8Obb2ukt0OcSJuX/Q6
+	whpiZcshV1uZy3ezOSrLrODGqOcHntfBnj/15q/ldBU+kcmEE3/dgxcPexBC
+X-Gm-Gg: ASbGnct6GMwQzXLSjcBjT3RR2fW1DaZxkCSajpGuDAbIcGKwOwDsoihfs4KPmXmMlF6
+	dywMSH2WcNqHJYP/c/FlWVdU1oeiutdBRgmC5Wr6F8kWCC+2FKwxVS5blKk7Km0YLFDUZXtNXTG
+	1EqyoBsZeTBAqjzgBwj1/GbAn1ntQpxDYJ5GX8upGdC+PaOC+sM8+F5SguwtQwp+ep2D+Q7/VSR
+	Kt516lK2DhsuU1G7MXxpfkTjdfDSJmC6ob3fpwpTU0QRC06R/dMigB322zl9jhFYDPiPhwIf5s9
+	AnrIJGpDV6oay9GKvKyNI1zXby5icsijzjhM8X3i08imWdmWWIo3qg==
+X-Google-Smtp-Source: AGHT+IG043XEt5V/lr+jQskxWxCFLSi7BiNG4a20ljNVDAJMmu20cN9bDvLVgzdiBOpI7glFiTGhAA==
+X-Received: by 2002:a05:6e02:160d:b0:3d0:618c:1b17 with SMTP id e9e14a558f8ab-3d13dd38108mr20902755ab.7.1738919837393;
+        Fri, 07 Feb 2025 01:17:17 -0800 (PST)
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com. [209.85.166.53])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4eccfacfee0sm673185173.82.2025.02.07.01.17.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Feb 2025 01:11:14 -0800 (PST)
-Received: by mail-il1-f171.google.com with SMTP id e9e14a558f8ab-3cfcf8b7455so13598995ab.3;
-        Fri, 07 Feb 2025 01:11:14 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV8Hw4ojbNL12uqG+c2M6mead8QB/BDeyBs7da6BK6122NKkEA9IhXSF1Z8FuovhBhv7JVQX5+DsecI@vger.kernel.org, AJvYcCVUyPcHvFN8dxr2MbFdaZW5ByG4QyuARlp4J//bmYWVEpvQwULsH7bipcffsHBacLQWi13UjPPLXvGcCUo=@vger.kernel.org, AJvYcCWRxx/cLuJ+2CoocQnwsYx/8NU1B5OOmtHvNSO9iEDnVA50GzVcnwQ8MPad7nThCsgBkNvKwdh3Gvy0@vger.kernel.org, AJvYcCXWFkEcfqqjpBajkcQqb+4ETmeMlWlQz9A1xSwMLksEpGT4hW3z+AjCq+Ud5K5SH84LTZ+l4YR6@vger.kernel.org, AJvYcCXii3TQp4lD/bD7Vl4E9PGlnUafvSf/g5H8Dc2dIGwOno/6Pzdzxfg7k59gAHUrvaNg0JNCdrJjAwHeSUJA@vger.kernel.org, AJvYcCXniRzRN6bTGwDjv8vVqDbQD38CTJKb8iaCYKpI7kzmo4i+Hia71HKCdlHwftA/bUIwa+YlblmuTHSp@vger.kernel.org
-X-Received: by 2002:a05:6102:5088:b0:4b2:4877:30bd with SMTP id
- ada2fe7eead31-4ba85e54e05mr1293360137.12.1738919086507; Fri, 07 Feb 2025
- 01:04:46 -0800 (PST)
+        Fri, 07 Feb 2025 01:17:16 -0800 (PST)
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-844e9b8b0b9so143334439f.0;
+        Fri, 07 Feb 2025 01:17:16 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUEIPycsT2k50iQZgTDK8nsrVcE5vEIWJ2pL81Gp5Kghr9N/cSIPopfbQXUbqSqFxXk09irH9SST5v5@vger.kernel.org, AJvYcCUGjMfKX6bUWXjrzz8lMsj2LZZvsoqowBjF5bOSTDhppNIiw56OdEGNoDGQ8n00g/EloPUy1O0/7f3FabGu@vger.kernel.org, AJvYcCUUM/0e52LemMCo1O20BgFnDAn5IFEb6ot2DY8JxmnHHypZQk+MaA35gaPEGlZHnFfnmvaEgt8F3LSt@vger.kernel.org, AJvYcCUy8XA7RemWYcsi0p6GovRiCNH4UoRAZtgQR46Dprpcnv5ySWnewZml++KbhroXXiaE7XwqJ9ij@vger.kernel.org, AJvYcCW/SY1G7CH3gKqRSLlrWlK4UYw0QHETlMKBrP4ZjVmOLe7K1drfonFbQPcr477IYKHjVBHiQ1hjKOXh/Dg=@vger.kernel.org, AJvYcCWNUFvyaRae7OB0+yS/NL3qf2aZYIRftmwqPZBiCwoGKMXv3aRtDhS7fjSVtHvlgpeq0gwqKf8dFVVb@vger.kernel.org
+X-Received: by 2002:a05:6102:41a0:b0:4b2:5d63:ff72 with SMTP id
+ ada2fe7eead31-4ba85e7d7e5mr1354232137.13.1738919445022; Fri, 07 Feb 2025
+ 01:10:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com> <20250206-gpio-set-array-helper-v2-2-1c5f048f79c3@baylibre.com>
-In-Reply-To: <20250206-gpio-set-array-helper-v2-2-1c5f048f79c3@baylibre.com>
+References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com> <20250206-gpio-set-array-helper-v2-1-1c5f048f79c3@baylibre.com>
+In-Reply-To: <20250206-gpio-set-array-helper-v2-1-1c5f048f79c3@baylibre.com>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 7 Feb 2025 10:04:34 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdU-aUcBJgPoJRGqzBY-Bz2m4vqcbNdNtKJNVO7-uoYjLw@mail.gmail.com>
-X-Gm-Features: AWEUYZm7zUNXfbynKkUkF501_SJvA4QZJWomDWGGkRSnLChv7AsYMrm87FyiXfA
-Message-ID: <CAMuHMdU-aUcBJgPoJRGqzBY-Bz2m4vqcbNdNtKJNVO7-uoYjLw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/13] auxdisplay: seg-led-gpio: use gpiod_multi_set_value_cansleep
+Date: Fri, 7 Feb 2025 10:10:33 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdU5tt5_t2SfYO3OUsHenu_0PhpKeLHktNdCx-W6zCEymw@mail.gmail.com>
+X-Gm-Features: AWEUYZmj9DYQSOmgGzGXyOkOE57CQ_wkxVouudAJc-ubVAUCMSn97Ipr2XIc-m4
+Message-ID: <CAMuHMdU5tt5_t2SfYO3OUsHenu_0PhpKeLHktNdCx-W6zCEymw@mail.gmail.com>
+Subject: Re: [PATCH v2 01/13] gpiolib: add gpiod_multi_set_value_cansleep()
 To: David Lechner <dlechner@baylibre.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
 	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
@@ -94,15 +94,44 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl
 	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
+Hi David,
+
 On Thu, 6 Feb 2025 at 23:48, David Lechner <dlechner@baylibre.com> wrote:
-> Reduce verbosity by using gpiod_multi_set_value_cansleep() instead of
-> gpiod_set_array_value_cansleep().
+> Add a new gpiod_multi_set_value_cansleep() helper function with fewer
+> parameters than gpiod_set_array_value_cansleep().
 >
-> Acked-by: Andy Shevchenko <andy@kernel.org>
+> Calling gpiod_set_array_value_cansleep() can get quite verbose. In many
+> cases, the first arguments all come from the same struct gpio_descs, so
+> having a separate function where we can just pass that cuts down on the
+> boilerplate.
+>
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Thanks for your patch!
+
+> --- a/include/linux/gpio/consumer.h
+> +++ b/include/linux/gpio/consumer.h
+> @@ -655,4 +655,11 @@ static inline void gpiod_unexport(struct gpio_desc *desc)
+>
+>  #endif /* CONFIG_GPIOLIB && CONFIG_GPIO_SYSFS */
+>
+> +static inline int gpiod_multi_set_value_cansleep(struct gpio_descs *descs,
+> +                                                unsigned long *value_bitmap)
+> +{
+> +       return gpiod_set_array_value_cansleep(descs->ndescs, descs->desc,
+> +                                             descs->info, value_bitmap);
+
+I am wondering whether this needs a check for !IS_ERR_OR_NULL(descs),
+to handle the !CONFIG_GPIOLIB and gpiod_get_array_optional() cases?
+
+Slightly related: shouldn't gpiod_put_array() (both the implementation
+and the !CONFIG_GPIOLIB dummy) allow the caller to pass NULL, to
+streamline the gpiod_get_array_optional() case?
+
+> +}
+> +
+>  #endif
 
 Gr{oetje,eeting}s,
 

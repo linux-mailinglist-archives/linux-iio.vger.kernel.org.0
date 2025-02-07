@@ -1,86 +1,86 @@
-Return-Path: <linux-iio+bounces-15110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCDAA2C249
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 13:14:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A38A0A2C26D
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 13:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F09B23A85FD
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 12:14:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19B3416AA31
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Feb 2025 12:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D30B1DFDA2;
-	Fri,  7 Feb 2025 12:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70FF1F868F;
+	Fri,  7 Feb 2025 12:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HCGPztX/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A48hSoYg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367021DE89A;
-	Fri,  7 Feb 2025 12:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CFE1EEA31;
+	Fri,  7 Feb 2025 12:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738930443; cv=none; b=BoAStyfuukijzEbk1rLAFiMrfv7gbGKj2qRWoeYhpPx9/PjIPbzinJiMQBN3klt2yl0mY+uJMamzpDBe/uVkGunkdCnu6hjfCr7AcGpBYCYhEuv4xXhaynLBxHABDyDHdcrQsWu5ZakXLWtAeOKStahq2EDBnOSVt+q0sD6/NoI=
+	t=1738930572; cv=none; b=kMZYcVrgU/74/hdpVjLEBulzQEcMAtG9B31KuK0801ityO7go0UJtV9iHqGtNJsZ/Lut/s3fNEkeeu6Qla9Q1pFmyKGp26/Xlt5wOKfSOQSa0IjJL6dpmj3UBwVDORFmEjij8/ochfSTmYvn4ZIANRqRFgQY0Jk+2VX+D9R49YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738930443; c=relaxed/simple;
-	bh=/W9c9p++17eMgUahRKE4oI34+Q3vrWjGJDtabku3InI=;
+	s=arc-20240116; t=1738930572; c=relaxed/simple;
+	bh=JlB9XCGsIfAuQG6oPM8hPbAuSsvLUl++6wUNiU+N9BE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HV95zm60ca3/ZlShqVnqe/GrS9CDa3uNPm4KxJgv9bq+0tu4olN3PZ8pHrOTvCKUnZxHLTz5ungJuWUN09VslcjifTOS0G3ULM8P9OWYa7WkbNLBTd9XQDVTmnZkZfsB35fRLY/0RMcSCY14PCOep5n7u4V0+AlAo81s6cmlyjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HCGPztX/; arc=none smtp.client-ip=209.85.218.45
+	 To:Cc:Content-Type; b=IA8ETHqF2cLnB3cNJhw15/m7C5b396R2HFqBCf6Lv6qEMurMq1hNO870bD2/EhrPYfl3K45cnHe9zqwm2biBQHKwE/wKD1GXPPBgnBs+CjJtJpLY0vhK8Sc/HhepmZIAOjyvSu7qi8Hx8+w7qXCkZeBp8NBk9+j0PstrUdCvBlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A48hSoYg; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ab6fb1851d4so403975266b.0;
-        Fri, 07 Feb 2025 04:14:01 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-aaec111762bso475783466b.2;
+        Fri, 07 Feb 2025 04:16:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738930439; x=1739535239; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1738930568; x=1739535368; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MF6gElV2cDQ91CKc9Ejq8GVQ8GLozgvPR2NnTRy0mAE=;
-        b=HCGPztX/4M3sm635Ol+QH2dLGwK+QtCo7bKR9JPm+nvtjwZ9iF/g+JaVPb8X0C79zj
-         GGeept7HST07ESbYq2vkIlQijmlNmLRICvCQauFM8LXvLL75X5e81hpZpU4ts/DbEv/W
-         7NJeobejZSEDy6uIhLFgIakV2kHL8+YQU49xL3mVR5y9MEXtuHn7m5PdoaiOMkf5AQxR
-         7odlSRT/cFChXK6VWZucgD4IovzbRNB/LUsqOASe4K415SAWTy0B/Z+4wEneDi8ZtrXx
-         YraLTJpKybMRHKMxQjhJzVpqOckiK/pUE7CHS4wn1lIYvxEtkJUIgipVeaH2m6CGVH2p
-         nZ2A==
+        bh=+t7YbbTGCWBeY8Yz9MUpE9tRyJq8TnnQgwbUuUnBgUU=;
+        b=A48hSoYgzXXN9x81/xnUSvaStwMRwrr9K5euAbIZQM4CBr804Rg2PZfsb1YMiOItl/
+         L5AWy/VyIhidq+dzVoWRSuMeAwmU0A9SDeGeU79YgSHAbNeUPE9sT0x8YoKBUcQux5VY
+         uJhk1bCYZrnUv97wocSR5rtgbLQVAcm2O/yZ3sotQpEJ6q6Tkw1Nai2TkrrRrn0ONqC4
+         ZwB7tKxigHa6wrC1Xec7+rtM4Usqzi3tq1F/fJbzkZV+QPLQFk+YmBZdvSeOxBAEqZSW
+         iU6O5DHvmpe95HnyqG+/KNOUeqdeXC6Tlo3T0/ytSqYsuC4nu+kxxY5OvzzIhABqQ1T6
+         vGlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738930439; x=1739535239;
+        d=1e100.net; s=20230601; t=1738930568; x=1739535368;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MF6gElV2cDQ91CKc9Ejq8GVQ8GLozgvPR2NnTRy0mAE=;
-        b=iIZ3V19X6G7ypgdBSfek/RiXbKNBnpAP5bqIA2F84NhPbwqkaIsMgTtJxdPXf762IC
-         zn/ylyJoT0S3bjboWRdUo9qN8o/D6yVz4gAutZ9l+EOaluV3kZOi3kAa1T6aq2jf0i0W
-         SaNbM32xGB9Q58KTaODVlZHtc95dqMtywWisQM2e9AGIxz3UT9r71LOtCf/umlX789Kb
-         x7nDJJYdJCE/PpfKSZSdCZAHxezXB4sMZwpW8qPMtnnc1dW5TDnRorga5E3cZyZu9ONd
-         YmZNyFszAzaT4Rw/9AIJXzTvh+C7h1r6k6Q3oYUk3xkVWELU/WxYIjU8MgEO6rJ6V+sr
-         EKhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0v1onIj4YNEC7zrJrnIOWflIg/KP8V9BPkJw7wZWK8xAx9/cpAu9fQ6L2f29sIdKNozAXwB6iXiYU@vger.kernel.org, AJvYcCUUW0+X6oFRl+0XKRvC3J6se5kb/1Hlb5XHWtg7+ksGtJ30yd9OHg4KWttnRgRoYWjeBg9p5OMpx+ddAco=@vger.kernel.org, AJvYcCUbsyfgvCrXA8/gP4QF7g/t4szZwZqvZF7vwFirFrX+4eiTdcHYpY+4yaDQW83+EzkJciMc2cLkpTKP@vger.kernel.org, AJvYcCUkVvD+6+T2pgGb8mTCbL/UCM0jRmAUtk0s9uPt/CBCDAhNm0eVsh4dYwKF5AvIKHVM/7rOmR6B6AVJzXp1@vger.kernel.org, AJvYcCVDKIVv51i9gk3PRfhvUSIkwcBHFyHkn60nMTcIp7/FncXL/QYiyi7ncMbN68KiV45z6SEk4wClNz3u@vger.kernel.org, AJvYcCXtNz329S2emB6ibud/wAJKa2/VB+touivPQ481TjLHRMPgKcC3bq7F0CKMZv55UYaoL1KyeonR@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0uLi8f3aHOOrtdnSIer6yeGbyTY86T6die/baBODtCA7dvPox
-	FaLYV7UHv0DBJJfAX2stfX94pFi6lu2Hp3bcia/yrSzuclMuEHQMm5sdQOkfE9qaXahAs/corUm
-	GiU1vYnR4bFqxSplXXSigSGaqpyM=
-X-Gm-Gg: ASbGncsT0DFTtRdfyZUoM/F26IRJXJioQ0S5pGhntI3dIpvg8dimhkzs/1DYewSYD2X
-	xoFatAa5tq1tXtbZFqDaU9ELd9RjdTdM2uABBYYuuwndovE9MkIoDAXxeb3haSk07SqRNS3hfJC
-	s=
-X-Google-Smtp-Source: AGHT+IEcQ5RnwktITKDyFNQPm/ZlJAT6Jq4e+AddpJ4slMbkkGXOrIfWiA+9GZp7vOfbRBsKaL82KDhPv8+MGVLOCTU=
-X-Received: by 2002:a17:907:2ce3:b0:ab6:f4eb:91aa with SMTP id
- a640c23a62f3a-ab76e896c0cmr758141266b.10.1738930439333; Fri, 07 Feb 2025
- 04:13:59 -0800 (PST)
+        bh=+t7YbbTGCWBeY8Yz9MUpE9tRyJq8TnnQgwbUuUnBgUU=;
+        b=G987gV2R+vfsjqGlBOTP+CpwDoYeR0x2oM04RGvhQ38kxruP6rrGA26tYe3tRn10hP
+         z4s7l9ngNDcUaiaJmoz+LWuch5vilj6VFAF63xukQjFwaTDaoStt3UeLtTF5We/hmH6F
+         B1q0sKVKzc1bv1btQmpZQZz+HIcuAtSZBEsxIkBYq7hdsZPUIJAb98UlvY2Hvbz1XClg
+         8xv4dNmxXSgOxTp4cnn0JSKAbmq1OItsDbSgJDDkMAAfFCFOC9LntEDLBhmuff9fQH6R
+         JNovipjWpHJejSyOin3rS9ofT8RwMoICk6Ceq/rllZOJa6C++qm69N3d5erH+zod100D
+         /S0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUPx8CcMWkksKPfKWfQt34p2EfEWp3GOLaY06eIAQ4WrrnFH4jL+7kZ0bvMRl+nyWtBaQOD76P5RJRTheyh@vger.kernel.org, AJvYcCUSPaRvTFyZEOsxUk4c73H6Ux4WKDCOWPkZI47uzxbMFVcByuEt2Yje3KRoqK8fw8V3kdxMxjxcy71IwCk=@vger.kernel.org, AJvYcCWI/rWhXo+UIQMNSOaZfLDEDLqQFuSANfVK4CgDroi1XWt4YsHymQY5o4WNzOCIin7bv22OOWcUwYT2@vger.kernel.org, AJvYcCWkGVGVvpBDB6PavS6br6h5Qx1VIS8/qwKGbfpwUeDfs3wJBeAssvFU36LksLFoAd91Q6oX8pZMz487@vger.kernel.org, AJvYcCX/J7juq5YwrEicUYoa3l1U7TXva9QwUubTtu40xnALnShpj6A/TfhhjDHZSz2Oaf6HkX1kGsZI@vger.kernel.org, AJvYcCXXLNARs4EOu2t/0VI56s/NZ4bPDa423EmrIluPMSjE60fr73WmBxbbE/jxcOh9KtgtUDHB8wcuE7HO@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ11ZilniV3jtddr9boPbed+km7ZBkK0SSPefY5zLrhpjnTYQ6
+	o+/JqN43EDW5JYN1dqrpoL3SKuSqRVAU7tGPCj3JkJLgPsf0RWditmq+RTtdnJz+IPRNJ360l+5
+	m0zBFrUjnx93y8VvYo+akyPtw6wc=
+X-Gm-Gg: ASbGncvpSfkUBNd1UX/yiLyJn1Z9graFDzxnBkDEq7gIcJD6dr/+HIYMtIvUp4YR+N9
+	W8pR5jXr40hxEL8rny7o81+Svcsxqv/bNnrqH/j96MlSRJ4FVcocqNgwqzwAjfDHE14Edju/gPQ
+	k=
+X-Google-Smtp-Source: AGHT+IGY8znJApXKyzNb+yL9ibPgJG8qFDYxsiWeqr7W6flQ5pAjwP3vanOtbgv+SGqsPEwWi8YSAChgGT8YNAOWEow=
+X-Received: by 2002:a17:907:c285:b0:aaf:ab71:67b6 with SMTP id
+ a640c23a62f3a-ab789ba4ff8mr319772166b.31.1738930568122; Fri, 07 Feb 2025
+ 04:16:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com> <20250206-gpio-set-array-helper-v2-6-1c5f048f79c3@baylibre.com>
-In-Reply-To: <20250206-gpio-set-array-helper-v2-6-1c5f048f79c3@baylibre.com>
+References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com> <20250206-gpio-set-array-helper-v2-4-1c5f048f79c3@baylibre.com>
+In-Reply-To: <20250206-gpio-set-array-helper-v2-4-1c5f048f79c3@baylibre.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Fri, 7 Feb 2025 14:13:23 +0200
-X-Gm-Features: AWEUYZnW5RxxBc3bDqX_OpBL8hmNResFkWKqXoGA9bw_WE1ro5fEYdWUTUuFnFw
-Message-ID: <CAHp75Vfb7EgHkHtqm4b0QnG=uWwszpWwFe8MLDPRSifKtQFAcA@mail.gmail.com>
-Subject: Re: [PATCH v2 06/13] iio: adc: ad7606: use gpiod_multi_set_value_cansleep
+Date: Fri, 7 Feb 2025 14:15:32 +0200
+X-Gm-Features: AWEUYZkm6IxNZqqUJoiO-KsN95M7hZUbEuaDl83yrJ0VJFqM30bkmEisJ4jKvJE
+Message-ID: <CAHp75Vf+3pc84vV-900Ls64hM1M7Ji6Dmy8FPwL=n0=sJFSuVA@mail.gmail.com>
+Subject: Re: [PATCH v2 04/13] bus: ts-nbus: use gpiod_multi_set_value_cansleep
 To: David Lechner <dlechner@baylibre.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
 	Andy Shevchenko <andy@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
@@ -102,21 +102,35 @@ On Fri, Feb 7, 2025 at 12:48=E2=80=AFAM David Lechner <dlechner@baylibre.co=
 m> wrote:
 >
 > Reduce verbosity by using gpiod_multi_set_value_cansleep() instead of
-> gpiod_set_array_value().
+> gpiod_set_array_value_cansleep().
 >
-> These are not called in an atomic context, so changing to the cansleep
-> variant is fine.
+> ts_nbus->data->ndescs is validated to be 8 during probe, so will have
+> the same value as the hard-coded 8 that is removed by this change.
 
 ...
 
->         if (st->gpio_os) {
-> -               gpiod_set_array_value(st->gpio_os->ndescs,
-> -                                     st->gpio_os->desc, st->gpio_os->inf=
-o, os);
-> +               gpiod_multi_set_value_cansleep(st->gpio_os, os);
->         }
+>  static void ts_nbus_reset_bus(struct ts_nbus *ts_nbus)
 
-Now I do not see any justification to leave {}.
+>         values[0] =3D 0;
+> +       gpiod_multi_set_value_cansleep(ts_nbus->data, values);
+
+...
+
+>  static void ts_nbus_write_byte(struct ts_nbus *ts_nbus, u8 byte)
+>  {
+> -       struct gpio_descs *gpios =3D ts_nbus->data;
+>         DECLARE_BITMAP(values, 8);
+>
+>         values[0] =3D byte;
+>
+> -       gpiod_set_array_value_cansleep(8, gpios->desc, gpios->info, value=
+s);
+> +       gpiod_multi_set_value_cansleep(ts_nbus->data, values);
+
+As I said before, this is buggy code on BE64. Needs to be fixed.
+
+>  }
+
 
 --=20
 With Best Regards,

@@ -1,59 +1,67 @@
-Return-Path: <linux-iio+bounces-15156-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15157-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D822A2D623
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 13:57:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A159CA2D628
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 14:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7785D188CB76
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 12:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 346AE167D13
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 13:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531BB246349;
-	Sat,  8 Feb 2025 12:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C73E246344;
+	Sat,  8 Feb 2025 13:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ju0DQVie"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7aN/YpT"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A66119F101;
-	Sat,  8 Feb 2025 12:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4251A3157;
+	Sat,  8 Feb 2025 13:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739019460; cv=none; b=seTdsCfW4C1I4prpRUjX92OQbPtiDYKWWd0o5j+BukYWI+vaQQj0OmNfFwoTP2hNjl0nAEbKprtbyCxOmSd50i5PGa4ep5g7dFYvAu9S63paYY1WNRhipTV0STq17UPVRE4ddc5eSvH9RTB5o0SDSJqxXVs5z3URQlQMLsaZ+lc=
+	t=1739019716; cv=none; b=WXFMLQiLjMicejfbXjSoDWLlI4NSsVTV4jk3HVwAGIICHpIacUnDG1A796Jhp2oEW8d/sdcuX7AWsNAmRim4We5CGOZCvj5P5tmC81+F28HMMhL0A15hs/tSCTfDagl+nV87DNg6qg025/N++zNTIuyAFMcBZXijScwEWUl2g6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739019460; c=relaxed/simple;
-	bh=Zka+OzwmFgDte5OLmQ4mhALoPsxT7ivBjfyEsSpZcIw=;
+	s=arc-20240116; t=1739019716; c=relaxed/simple;
+	bh=V5vec8PpiED22t7ygC/hZpyml2vl0CPM6zxX4o5lAo4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S2n9ZCzMYrHk0NVFGB90Faw/DnC+Bm3ZXSBYuwrj5XeYRejKW8mRuP0aPvODYY0Xz91vVnPMZyxQikcizpY/Mrnk9jdh26D+CHH2ldrqXHz949BVljxEhaI6+sONHlLIVsrxqUlDsNBascXPXiB8wZfiF5gOQ11ZZp3Cg4WzugA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ju0DQVie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3D4C4CED6;
-	Sat,  8 Feb 2025 12:57:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LwW5YmwGpeQVWGN+HAK4LA0urqihZJ+GxRyAyKQT/OZxL7QjczYV3ccijBWvD7Onu3RpFbFlOxZmOCAkl1q7oUfpGjNcurvyopS2cKwekVJXd59NRsmjDy4cfnRp6plgZEyYJY4J3ESiiIAhvfDgKSuJ0Z7cqGpmMdVOUduCPiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7aN/YpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA33C4CED6;
+	Sat,  8 Feb 2025 13:01:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739019459;
-	bh=Zka+OzwmFgDte5OLmQ4mhALoPsxT7ivBjfyEsSpZcIw=;
+	s=k20201202; t=1739019715;
+	bh=V5vec8PpiED22t7ygC/hZpyml2vl0CPM6zxX4o5lAo4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ju0DQViedXMjG6gJHs/atYn3kFxxA03Uml7e5BoIr3RINHMA4uguWe1SFNy9S7IPN
-	 ya530ZxP1vsi8Y+0MsNXgUDWqmz+IAgnl+5KcHrSnExojObWBMLCqOTxQye2boobip
-	 u8gmuMTavCLLpTGt4FQQir9ZuqrJWhOyUuK9vYr7iiAP/L8EX+98snXQzpASYOWgxg
-	 Z2QjS8ldr/7nYH8QZv7ybroG3wK8QyLjVleOhXyCeP25/7aEy1eKJRVhi9BUvBEPPI
-	 Nc3WGWpoNQ9+9s3qVAdM4Sy+gILKjl2+O/D0vegQYlHchkwa03DD2dYkGcRy55p4H+
-	 5ZJKqpNZKSiAQ==
-Date: Sat, 8 Feb 2025 12:57:32 +0000
+	b=c7aN/YpTGmUqOuiAL7IEqm6XILmeXLuLqIEv+29lD52lckTMVMLxkfaF8yyuSX/AR
+	 c4I4/J/5qLXirmvBFIjonruZCoJKIbIfIBjIQ78cWDxNu3T7oINSo5epVZKkt+pHsS
+	 t8whEmZbxJOPg/QpwBVnX1y+QvCgaKY/xVOWvCnXkdUjAa70f2VM9eKr9cidm4dzCW
+	 Nr6qIfu9VX6BQGNVHcdftRQmKAoIlhJrvdzgUHMpakbzg2Zdz0kmBfzTTc/533A2UK
+	 0KYQuuiuNNMdUQzWp5yS0jhKZZYYszUMokcQ8XAExSo25Nz4Ug0NcXFaUpuufxQFKJ
+	 s9EWens109G7Q==
+Date: Sat, 8 Feb 2025 13:01:43 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v1 00/12] iio: accel: adxl345: add interrupt based
- sensor events
-Message-ID: <20250208125732.2a41961a@jic23-huawei>
-In-Reply-To: <CAFXKEHbuJkG1Ptjz03-ZhfLQB6PuYk47BMKKPTN9mFnXsnF3kw@mail.gmail.com>
-References: <20250128120100.205523-1-l.rubusch@gmail.com>
-	<20250201174818.26dcc646@jic23-huawei>
-	<CAFXKEHbuJkG1Ptjz03-ZhfLQB6PuYk47BMKKPTN9mFnXsnF3kw@mail.gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lee Jones <lee@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Linus
+ Walleij <linus.walleij@linaro.org>, Nuno Sa <nuno.sa@analog.com>, David
+ Lechner <dlechner@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli
+ <matteomartelli3@gmail.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-gpio@vger.kernel.org
+Subject: Re: [RFC PATCH 3/5] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250208130143.121058d6@jic23-huawei>
+In-Reply-To: <8353a96d-fe39-45c2-b6da-e8083a6bdcd8@gmail.com>
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+	<e44851669ce7e91d1295ab7352535c93b89d35bf.1738328714.git.mazziesaccount@gmail.com>
+	<20250131174118.0000209a@huawei.com>
+	<8353a96d-fe39-45c2-b6da-e8083a6bdcd8@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,107 +69,136 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 4 Feb 2025 14:40:17 +0100
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Wed, 5 Feb 2025 15:58:18 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Hi Jonathan, please find my answers below.
+> On 31/01/2025 19:41, Jonathan Cameron wrote:
+> > On Fri, 31 Jan 2025 15:37:48 +0200
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> >  =20
+> >> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> >> an automatic measurement mode, with an alarm interrupt for out-of-wind=
+ow
+> >> measurements. The window is configurable for each channel.
+> >> =20
 >=20
-> On Sat, Feb 1, 2025 at 6:48=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
-> wrote:
-> >
-> > On Tue, 28 Jan 2025 12:00:48 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > =20
-> > > Add several interrupt based sensor detection events:
-> > > - single tap
-> > > - double tap
-> > > - free fall
-> > > - activity
-> > > - inactivity
-> > >
-> > > All the needed parameters for each and methods of adjusting them, and
-> > > forward a resulting IIO event for each to the IIO channel. =20
-> >
-> > So my main feedback here is to be much more reluctant to add new ABI.
-> > Anything you add is unused by all existing code and if it is unique
-> > to a driver probably never going to be used by anyone other than you.
-> >
-> > We have a bunch of accelerometers in tree and as they go wrt to events
-> > this one isn't even particularly complex.  The existing ABI covers
-> > their events reasonably well so take a look at how they do it.  Often
-> > it's a case of mapping names for the application of an event (free fall
-> > detection, activity detection etc) to what what they are actually detec=
-ting.
-> > Those generalize a lot better across different sensor types.  It's almo=
-st
-> > always a threshold of some type. The tap / double tap are more complex
-> > but we put quite a lot of effort into coming up with a general
-> > description a year or so back.  There may new things but most of the
-> > ABI is already there.
-> > =20
-> Please, understand my patches in "v1" rather as a huge set of questions,
-> than a proposal of reinventing the IIO ABI :)
-> My intention is actually not to extend/rewrite the ABI. It rather shows m=
-y lack
-> of knowledge combined with the curiosity of how to actually use the
-> (IIO) APIs for
-> such implementation. I know this is still tedious, but I'm sure it will b=
-ecome
-> better.
+> Hi Jonathan,
 >=20
-> My dilemma was/is the following: I did an initial implementation more sim=
-ilar
-> to e.g. ADXL380 for such events, and the sca3000.c for the freefall event.
-> IMHO the names for the sysfs handles were not at all intuitively mappable=
- to the
-> fields I liked to operate, such as tap duration, window, latent, etc.
-> The other alternative I saw, was setting up sysfs myself, IMHO clearer na=
-ming
-> but actually not really using IIO's event_config/event_value.
+> I just sent the v2, where I (think I) addressed all comments except ones=
+=20
+> below. Just wanted to point out what was not changed and why :)
 >=20
-> Personally, I don't have any preference. If there really is no way to cha=
-nge
-> naming of the sysfs handles, then it's probably a question of
-> documentation. If I
-> can make it more intuitive for a user who knows the sensor, but not
-> the internals
-> of IIO, then I'd prefer to use the names referred and documented in the s=
-ensor's
-> datasheet.
+> ...
+>=20
+> >  =20
+> >> +struct bd79124_raw {
+> >> +	u8 bit0_3; /* Is set in high bits of the byte */
+> >> +	u8 bit4_11;
+> >> +};
+> >> +#define BD79124_RAW_TO_INT(r) ((r.bit4_11 << 4) | (r.bit0_3 >> 4)) =20
+> > You could do this as an endian conversion and a single shift I think.
+> > Might be slightly simpler. =20
+>=20
+> I kept this struct with bytes matching the register spec. Doing the=20
+> endian conversion and then shifting would probably have worked, but my=20
+> head hurts when I try thinking how the bits settle there. Especially if=20
+> this is done on a big-endian machine. I can rework this for v3 if you=20
+> feel very strongly about this.
 
-ABI has to be consistent across lots of different device types.  Things
-that on accelerometers mean freefall are totally different for ADCs etc.
-That's one of the challenges of an ABI that is meant to cover many devices.
-There is also the challenge that one devices idea of how to detect what see=
-ms
-like a common thing can be totally different to another with controls
-that don't line up at all.  By targetting what is actually being measured
-rather than what the device datasheet says it is for, we tend to get better
-generalisation and more meaningful control parameters.  It gets fiddly
-around things that are sort of dumb classifiers like tap detectors
-or more complex activity classifiers as we don't always get useful
-documentation on what the controls are doing.
+The key is that an endian conversion is always the same as OR + SHIFT
+because that is being done in the system endiannes.
 
-Many users will make use of userspace libraries. If they are focused on
-just accelerometers they get to present an interface to the next layer
-up that is accelerometer specific.
+Doesn't matter that much, but we may see follow up patches switching
+this over to the endian handlers.
 
+=46rom datasheet point of view it tends to depend on whether they show
+an illustration of a bulk read or not to whether it's described
+as a multi byte value, or as bits in smaller registers.
 
 >=20
-> In summary, I see your point. So, I redo this patch set as I did in the i=
-nitial
-> approach to show better what I mean. Probably I'm just using it in a wron=
-g way.
-> Thank you for the feedback so far, I'll try to use it where it still appl=
-ies.
+> ...
+>=20
+> >  =20
+> >> +static irqreturn_t bd79124_event_handler(int irq, void *priv)
+> >> +{
+> >> +	int ret, i_hi, i_lo, i;
+> >> +	struct iio_dev *idev =3D priv;
+> >> +	struct bd79124_data *d =3D iio_priv(idev);
+> >> +
+> >> +	/*
+> >> +	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
+> >> +	 * subsystem to disable the offending IRQ line if we get a hardware
+> >> +	 * problem. This behaviour has saved my poor bottom a few times in t=
+he
+> >> +	 * past as, instead of getting unusably unresponsive, the system has
+> >> +	 * spilled out the magic words "...nobody cared". =20
+> > *laughs*.  Maybe the comment isn't strictly necessary but it cheered
+> > up my Friday. =20
+> >> +	 */
+> >> +	ret =3D regmap_read(d->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
+> >> +	if (ret)
+> >> +		return IRQ_NONE;
+> >> +
+> >> +	ret =3D regmap_read(d->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
+> >> +	if (ret)
+> >> +		return IRQ_NONE;
+> >> +
+> >> +	if (!i_lo && !i_hi)
+> >> +		return IRQ_NONE;
+> >> +
+> >> +	for (i =3D 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
+> >> +		u64 ecode;
+> >> +
+> >> +		if (BIT(i) & i_hi) { =20
+> > Maybe cleaner as a pair of
+> >=20
+> > for_each_set_bit() loops.
+> >  =20
+>=20
+> I kept the original for 2 reasons.
+>=20
+> 1. the main reason is that the for_each_set_bit() would want the value=20
+> read from a register to be in long. Regmap wants to use int. Solving=20
+> this produced (in my 'humblish' opinion) less readable code.
+>=20
+> 2. The current implementation has only one loop, which should perhaps be=
+=20
+> a tiny bit more efficient.
 
-Feel free to send out an ABI RFC in cases where it's not obvious.  That
-can save some time by getting at least outline agreement on the direction
-before code is ready.
+OK.
+>=20
+> >> +			ecode =3D IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
+> >> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
+> >> +
+> >> +			iio_push_event(idev, ecode, d->timestamp);
+> >> +			/*
+> >> +			 * The BD79124 keeps the IRQ asserted for as long as
+> >> +			 * the voltage exceeds the threshold. It may not serve
+> >> +			 * the purpose to keep the IRQ firing and events
+> >> +			 * generated in a loop because it may yield the
+> >> +			 * userspace to have some problems when event handling
+> >> +			 * there is slow.
+> >> +			 *
+> >> +			 * Thus, we disable the event for the channel. Userspace
+> >> +			 * needs to re-enable the event. =20
+> >=20
+> > That's not pretty. So I'd prefer a timeout and autoreenable if we can. =
+=20
+>=20
+> And I did this, but with constant 1 sec 'grace time' instead of=20
+> modifiable time-out. I believe this suffices and keeps it simpler.
 
+We might want to present that value to userspace anyway at somepoint, but
+a fixed value is fine.
 
 Jonathan
+
+>=20
+>=20
+> Yours,
+> 	-- Matti
+
 

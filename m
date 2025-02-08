@@ -1,39 +1,39 @@
-Return-Path: <linux-iio+bounces-15186-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15187-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E52DA2D8E0
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 22:17:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F84A2D8E3
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 22:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA343A4471
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 21:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E985E188932F
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 21:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDD0244199;
-	Sat,  8 Feb 2025 21:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFCE2441BF;
+	Sat,  8 Feb 2025 21:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="PvowEm3K"
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="dg7Nqf7A"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E0A259495;
-	Sat,  8 Feb 2025 21:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 660282441A4;
+	Sat,  8 Feb 2025 21:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739049409; cv=none; b=P5vJZul0pyMonAFzrMgemJ2SEg9h6NYkE1Gq5QuBVJgsME3Kk9W8Nb9Ugt8KsPR5moxaSHyP8xuCIg+5qn5t7Clv1rksLkgOKbOL5iJvsr4V3TU3Q8FFR0bFR2UE/vdGz9Hi8DmO1yB0aNroDCppUbdcVI/r3lSLN9zqc9WXsrM=
+	t=1739049411; cv=none; b=D6Nugn23da/utv2y988zK8OphDZdTzhrov2GheD2OdAsFpRETFZVYcN3QR3V71HYUt4GsbP9UwLHRYfCgASVe3jTHU+KfoJev7JSj1REbGkVWiQsHvYhu0S7w5UB4ie8SGUdUK/qfOlvelOPw0ZsQ3moMPLU9b6HRxMra7IGuqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739049409; c=relaxed/simple;
-	bh=1DwIyy54oq3GtrslZGG67YWoUVERHo+OBWEqaKgfwU8=;
+	s=arc-20240116; t=1739049411; c=relaxed/simple;
+	bh=vPyN0byjiX1ogFw2gBtCFjfv8lniT3rcPJVsAzn2rcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3H48VruyKseMLdSrDZaxCnVlE/FTNy+8NRIOXVdHpUo0znyuki8qGRHa4HqBrboa4StZjnMChdtCrObMv3tYhhqPeeSF4na6Ctm+vkmSbhkMFtBzSCjY/shY/PIQcGFG+M87XNag2Hg7A8PFVVBsTXUdW2k4H6xx1B1WYN5YUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=PvowEm3K; arc=none smtp.client-ip=206.189.193.133
+	 MIME-Version; b=B/pPhtnJBSbhTcMjovsWymXRucRcx7d2FVnYbC+Zj79sB/uO/uMsug08wGdgbHiXjqKpfqWUBBTzCurNM1LjP3I/Nv8D5piWHgmthQbtB4riO3Ida0180Re2RnQ7sE91LbC0K01IVy/h+LHrUMjKxlI7MkSoYMuzZHklWb9MbJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=dg7Nqf7A; arc=none smtp.client-ip=206.189.193.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
 Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id 41DA541B6C;
-	Sat,  8 Feb 2025 21:16:46 +0000 (UTC)
+	by a.peacevolution.org (Postfix) with ESMTPA id 68D9841B6E;
+	Sat,  8 Feb 2025 21:16:48 +0000 (UTC)
 From: Aren Moynihan <aren@peacevolution.org>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -57,9 +57,9 @@ Cc: Aren Moynihan <aren@peacevolution.org>,
 	Ondrej Jirman <megi@xff.cz>,
 	Dragan Simic <dsimic@manjaro.org>,
 	phone-devel@vger.kernel.org
-Subject: [PATCH v5 7/8] iio: light: stk3310: log error if reading the chip id fails
-Date: Sat,  8 Feb 2025 16:13:25 -0500
-Message-ID: <20250208211325.992280-9-aren@peacevolution.org>
+Subject: [PATCH v5 8/8] arm64: dts: allwinner: pinephone: add power supplies to stk3311
+Date: Sat,  8 Feb 2025 16:13:26 -0500
+Message-ID: <20250208211325.992280-10-aren@peacevolution.org>
 In-Reply-To: <20250208211325.992280-2-aren@peacevolution.org>
 References: <20250208211325.992280-2-aren@peacevolution.org>
 Precedence: bulk
@@ -73,48 +73,42 @@ Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom
 X-Spam-Level: **
 X-Spamd-Bar: ++
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1739049407;
+	s=dkim; t=1739049409;
 	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding:in-reply-to:references;
-	bh=45gtTJDlNvmrcpI0uTOgi/HT7BpeWEr5O9jUnaiYis4=;
-	b=PvowEm3KOzHYGeXxZ6TEv1hgvVo7/DZGuF81b1qlWtKuhbR6twW2IE1oZFpkLIpFA2cDND
-	t5f1OOGcLx33hz5tshto7afJxdWsUZzSmGfd6HfMDN2W96YVOqDdXQ1MedZA71+a6M6umR
-	hRSwSZQmo9f1vJxcqXr8Bi0c6t+hHXs=
+	bh=I6BlN6EJ3tr8v9Bkl3osVeEnBo4ZKpH0ucFgYQMPJag=;
+	b=dg7Nqf7Akrsc0TvG+ztOY/9QZ6wccJ6QE7qJRpYGOMcGJPPS7Y5JaoJMf1fAuFpSteeaOq
+	arynTZbN1Idv+KM0sP0slzwJwemq+0i0I8mj/ZCqgWVIAiJlki7KXnv4sFhtrK3t0+ZnzP
+	WUh6z1s7yRZN4jbah+9X5ULbSKhNR/Q=
 
-If the chip isn't powered, this call is likely to return an error.
-Without a log here the driver will silently fail to probe. Potential
-errors include ENXIO (when the chip isn't powered) and ETIMEDOUT (when
-the i2c bus isn't powered).
+From: Ondrej Jirman <megi@xff.cz>
 
-This function is only called from stk3310_probe, and this condition
-should return an error, which fits what dev_err_probe is designed for.
+This allows the driver to properly handle powering this device, and
+disable power during suspend.
 
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
 Signed-off-by: Aren Moynihan <aren@peacevolution.org>
 ---
 
 Notes:
-    Changes in v4:
-     - get a struct device ahead of time so it can be passed as "dev"
-       instead of "&client->dev"
-    
     Changes in v2:
-     - use dev_err_probe
+     - add leda-supply
 
- drivers/iio/light/stk3310.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-index 9d517d51f6bae..3a06852cb0ab4 100644
---- a/drivers/iio/light/stk3310.c
-+++ b/drivers/iio/light/stk3310.c
-@@ -496,7 +496,7 @@ static int stk3310_init(struct iio_dev *indio_dev)
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+index a2ceb08a91950..d70fbc06b8d23 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+@@ -278,6 +278,8 @@ light-sensor@48 {
+ 		reg = <0x48>;
+ 		interrupt-parent = <&pio>;
+ 		interrupts = <1 0 IRQ_TYPE_EDGE_FALLING>; /* PB0 */
++		vdd-supply = <&reg_ldo_io0>;
++		leda-supply = <&reg_dldo1>;
+ 	};
  
- 	ret = regmap_read(data->regmap, STK3310_REG_ID, &chipid);
- 	if (ret < 0)
--		return ret;
-+		return dev_err_probe(dev, ret, "failed to read chip id\n");
- 
- 	ret = stk3310_check_chip_id(chipid);
- 	if (ret < 0)
+ 	/* Accelerometer/gyroscope */
 -- 
 2.48.1
 

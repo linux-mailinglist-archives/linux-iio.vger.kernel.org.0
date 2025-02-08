@@ -1,205 +1,134 @@
-Return-Path: <linux-iio+bounces-15181-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15190-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549D8A2D790
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 17:52:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63868A2D8F0
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 22:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89E48166D05
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 16:52:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9283C1889A55
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 21:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E23241CBB;
-	Sat,  8 Feb 2025 16:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDE41F3B94;
+	Sat,  8 Feb 2025 21:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9zpoczF"
+	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="LsMjVCFw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992A4241C8C;
-	Sat,  8 Feb 2025 16:52:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8A2244E9E;
+	Sat,  8 Feb 2025 21:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739033537; cv=none; b=Keehv+G2iwI8r+X3/ULEQo3ElSILmbR3RrR1vLeFnPYmL4xz3RA9bDRS+cUEN0P/SEK9f+W9Bxabsm7DLyr66+9X5bj3peAUiFTKHagM+Jxq5/TqlP+azG5fAfqI/RqbsokYhCBssIzR/8dDFsrgSawMiyseCLwlBldnRC2C+Z8=
+	t=1739050001; cv=none; b=XZFSySJI0scaN7oJuvoWeMmlK9KmdPSB5vLOlRgy+0KBh7IuWqdtf33dhTPdqdsglbIVUhes8SB/6r3OEC64ROsfKPDH7UMmv2s0Bwh/eQqacI1RtmGPZt4QGbgGd+U0xKeBOXpXt29J/Fcz+H2XrX5aWqG7rbxyE+2pATJBuEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739033537; c=relaxed/simple;
-	bh=XctkP6Ri4RWMm2KQrzkn+GGWoMNk2euuCy/Hed9WVIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U6/kS3s5H75DMvtM5fMpcJpbSEWaxD2fmfxqTve7D/7xNa/s79hjaPTF2EUDTOVvzg8Ix740Jlf1r/HKHzEpYbAsvwhn1/s4HcjMb2fZAfVX63LsfCITnUVPpnAR4psC+f3WRbT14MLcrjGvoTJJItu3oZf1ZGWG02FSFtU96ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9zpoczF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C11C4CED6;
-	Sat,  8 Feb 2025 16:52:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739033537;
-	bh=XctkP6Ri4RWMm2KQrzkn+GGWoMNk2euuCy/Hed9WVIc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p9zpoczF6R+S2ek2CmHno08S9F5QLqXcsGqKeLt0vHXxu2N5ugSnjd/f6vgbLTuiK
-	 57Iz4e/O2kc2+kMgb1NkHXfuihG9niWX1vaLTu35cO5CxXUk/+BxdXlptqHZ6Tacy2
-	 vJcyErOil551Sr4btL+PVp0aDksCRZIcB1q2gvZmC66imBnIU7+9Wq2a2mu03RuTtQ
-	 qkql0isHd1b5mDivto2NkoBtSajz4IPoPSJpxoG3uZ/CaBdXOcUgDddLcaOK8XegUi
-	 5Uku4T3LbOhsxMIevgMr4LZLBHYAVdWIGvsnbT//cVx9046LIN3v2c2PHijKmV4Mdm
-	 hDCEo9FpWHeCQ==
-Date: Sat, 8 Feb 2025 16:52:08 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <20250208165208.3560237f@jic23-huawei>
-In-Reply-To: <4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
-References: <cover.1738761899.git.mazziesaccount@gmail.com>
-	<4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739050001; c=relaxed/simple;
+	bh=sYQ5qlKk18c0A4Z5LLru+uwYh/WhPZ5cQ0bbtmlDVSo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L2VsPqM0PKvYWoTXGmlgEiRJhkCuZFgJh3D9432moz84vVg8k+zO0DcxacK/lsNY/z2u8D/ZPoR47+NVXUqkk+u7jNc+g+BlrnVGDFOAABLjnVjvHy6rls3wKjfIRvH+KcE2NkEHcU4LE8Pz7Y8S8XdeQhu8HJmzTpS4HUEe4Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=LsMjVCFw; arc=none smtp.client-ip=206.189.193.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+	by a.peacevolution.org (Postfix) with ESMTPA id B852C41B41;
+	Sat,  8 Feb 2025 21:16:28 +0000 (UTC)
+From: Aren Moynihan <aren@peacevolution.org>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>
+Cc: Aren Moynihan <aren@peacevolution.org>,
+	Kaustabh Chakraborty <kauschluss@disroot.org>,
+	=?UTF-8?q?Barnab=C3=A1s=20Cz=C3=A9m=C3=A1n?= <trabarni@gmail.com>,
+	Julien Stephan <jstephan@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-sunxi@lists.linux.dev,
+	Ondrej Jirman <megi@xff.cz>,
+	Dragan Simic <dsimic@manjaro.org>,
+	phone-devel@vger.kernel.org
+Subject: [PATCH v5 0/8] iio: light: stk3310: support powering off during suspend
+Date: Sat,  8 Feb 2025 16:13:18 -0500
+Message-ID: <20250208211325.992280-2-aren@peacevolution.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
+X-Spam-Level: ****
+X-Spamd-Bar: ++++
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
+	s=dkim; t=1739049390;
+	h=from:subject:date:message-id:to:cc:mime-version:content-transfer-encoding;
+	bh=2g66zt0j6YYPcgcDMhWi6vl+EYuVn16VPhbMythEXg8=;
+	b=LsMjVCFwIJa0HVwKJ1MEfttPkxVQeapgp9+l2aCgIXIAXgykqVD5fHvKFiBzXjKkwrdkQ3
+	KWcxtuV/We+qHesd72LHuukYRimqg69tT4PfsM0B+uBOukQQdpL6Xjws4ojfCEusID4sWX
+	lw9Kv40lzjrzWkV7ItsbqWaYXJfFkEE=
 
-On Wed, 5 Feb 2025 15:38:16 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+In the Pine64 PinePhone, the stk3310 chip is powered by a regulator that
+is disabled at system boot and can be shut off during suspend. To ensure
+that the chip properly initializes, both after boot and suspend, we need
+to manage this regulator.
 
-> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-> an automatic measurement mode, with an alarm interrupt for out-of-window
-> measurements. The window is configurable for each channel.
-> 
-> The I2C protocol for manual start of the measurement and data reading is
-> somewhat peculiar. It requires the master to do clock stretching after
-> sending the I2C slave-address until the slave has captured the data.
-> Needless to say this is not well suopported by the I2C controllers.
-> 
-> Thus the driver does not support the BD79124's manual measurement mode
-> but implements the measurements using automatic measurement mode relying
-> on the BD79124's ability of storing latest measurements into register.
-> 
-> The driver does also support configuring the threshold events for
-> detecting the out-of-window events.
-> 
-> The BD79124 keeps asserting IRQ for as long as the measured voltage is
-> out of the configured window. Thus the driver masks the received event
-> for a fixed duration (1 second) when an event is handled. This prevents
-> the user-space from choking on the events
-> 
-> The ADC input pins can be also configured as general purpose outputs.
-> Those pins which don't have corresponding ADC channel node in the
-> device-tree will be controllable as GPO.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Additionally if the chip is shut off in suspend, we need to make sure
+that it gets reinitialized with the same parameters after resume.
 
-Hi Matti,
+Changes in v5:
+ - inline STK3310_REGFIELD macro
+ - extract a separate dev variable instead of using &client->dev or
+   &data->client->dev
+ - make log / error message format consistent (no period and a newline
+   at the end)
+ - add error handling for devm_mutex_init
 
-Just a few really trivial comments though this wasn't my most thorough
-of reviews as ran out of time / energy today!
+Major changes in v4:
+ - replace mutex_init with devm_mutex_init
+ - code style cleanup
 
-Jonathan
+Major changes in v3:
+ - Use bulk regulators instead of two individual ones
+ - Replace stk3310_remove with devm callbacks
 
-> diff --git a/drivers/iio/adc/rohm-bd79124.c b/drivers/iio/adc/rohm-bd79124.c
-> new file mode 100644
-> index 000000000000..ea93762a24cc
-> --- /dev/null
-> +++ b/drivers/iio/adc/rohm-bd79124.c
-> @@ -0,0 +1,1149 @@
+Major changes in v2:
+ - Add handling of the IR LED. I was hesitant to include this as it is
+   the same as pull-up regulator for the i2c bus on the hardware I have,
+   so I can't test it well. I think leaving it out is more likely to
+   cause issues than including it.
+ - Convert stk3310 to use dev_err_probe for errors.
+ - Always enable / disable regulators and rely on dummy devices if
+   they're not specified.
+ - more listed in individual patches
 
+Aren Moynihan (7):
+  dt-bindings: iio: light: stk33xx: add vdd and leda regulators
+  iio: light: stk3310: handle all remove logic with devm callbacks
+  iio: light: stk3310: implement vdd and leda supplies
+  iio: light: stk3310: simplify and inline STK3310_REGFIELD macro
+  iio: light: stk3310: refactor to always make dev a variable
+  iio: light: stk3310: use dev_err_probe where possible
+  iio: light: stk3310: log error if reading the chip id fails
 
-> +static int bd79124_write_event_value(struct iio_dev *iio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     enum iio_event_info info, int val,
-> +				     int val2)
-> +{
-> +	struct bd79124_data *data = iio_priv(iio_dev);
-> +	int reg;
-> +
-> +	if (chan->channel >= BD79124_MAX_NUM_CHANNELS)
-> +		return -EINVAL;
-> +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (dir == IIO_EV_DIR_RISING) {
-> +			guard(mutex)(&data->mutex);
-> +
-> +			data->alarm_r_limit[chan->channel] = val;
-> +			reg = BD79124_GET_HIGH_LIMIT_REG(chan->channel);
-> +		} else if (dir == IIO_EV_DIR_FALLING) {
-> +			guard(mutex)(&data->mutex);
-> +
-> +			data->alarm_f_limit[chan->channel] = val;
-> +			reg = BD79124_GET_LOW_LIMIT_REG(chan->channel);
-> +		} else {
-> +			return -EINVAL;
-> +		}
-> +		/*
-> +		 * We don't want to enable the alarm if it is not enabled or
-> +		 * if it is suppressed. In that case skip writing to the
-> +		 * register.
-> +		 */
-> +		if (!(data->alarm_monitored[chan->channel] & BIT(dir)) ||
-> +		    data->alarm_suppressed[chan->channel] & BIT(dir))
-> +			return 0;
-> +
-> +		return bd79124_write_int_to_reg(data, reg, val);
-> +
-> +	case IIO_EV_INFO_HYSTERESIS:
-> +			reg = BD79124_GET_HYSTERESIS_REG(chan->channel);
-> +			val >>= 3;
-Odd indent.
-> +
-> +		return regmap_update_bits(data->map, reg, BD79124_MASK_HYSTERESIS,
-> +					  val);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
+Ondrej Jirman (1):
+  arm64: dts: allwinner: pinephone: add power supplies to stk3311
 
+ .../bindings/iio/light/stk33xx.yaml           |   4 +
+ .../dts/allwinner/sun50i-a64-pinephone.dtsi   |   2 +
+ drivers/iio/light/stk3310.c                   | 254 ++++++++++++------
+ 3 files changed, 178 insertions(+), 82 deletions(-)
 
-> +static void bd79124_re_enable_lo(struct bd79124_data *data, unsigned int channel)
-> +{
-> +	int ret, evbit = BIT(IIO_EV_DIR_FALLING);
-> +
-> +	if (!(data->alarm_suppressed[channel] & evbit))
-> +		return;
-> +
-> +	data->alarm_suppressed[channel] &= (~evbit);
-> +
-> +	if (!(data->alarm_monitored[channel] & evbit))
-> +		return;
-> +
-> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_LOW_LIMIT_REG(channel),
-> +				       data->alarm_f_limit[channel]);
-> +	if (ret)
-> +		dev_warn(data->dev, "Low limit enabling failed for channel%d\n",
-> +			 channel);
-> +}
-> +
-> +static void bd79124_re_enable_hi(struct bd79124_data *data, unsigned int channel)
-> +{
-> +	int ret, evbit = BIT(IIO_EV_DIR_RISING);
-> +
-> +	if (!(data->alarm_suppressed[channel] & evbit))
-> +		return;
-> +
-> +	data->alarm_suppressed[channel] &= (~evbit);
-> +
-> +	if (!(data->alarm_monitored[channel] & evbit))
-> +		return;
-This lot is very similar to the lo variant. Can we combine them or
-use some helper for both?
-> +
-> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_HIGH_LIMIT_REG(channel),
-> +				       data->alarm_r_limit[channel]);
-> +	if (ret)
-> +		dev_warn(data->dev, "High limit enabling failed for channel%d\n",
-> +			 channel);
-> +}
+-- 
+2.48.1
 
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-15161-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15162-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0FCA2D643
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 14:22:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD2DA2D646
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 14:23:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 052997A3E25
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 13:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82370188D265
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 13:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD4C2475DE;
-	Sat,  8 Feb 2025 13:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3D12475E1;
+	Sat,  8 Feb 2025 13:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QdRDYhww"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YooG0lsD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776181D8A0D;
-	Sat,  8 Feb 2025 13:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38018246335;
+	Sat,  8 Feb 2025 13:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739020948; cv=none; b=A2MR0xYtdaEPi/8I7nAIEY2/TaJEeHDe5e+pm+1TRbu9tpWkfs16eUhPYqftejyLtOD/E9TaoV/uYVPWM32ucx/l+8ernjhpK47nREbcaWUd2NZZrzLaNIwcRH+Nd7nZJIwgfiaSsTSySXbQv0o1CjeliJQSwttNwlKwprsB+oY=
+	t=1739020973; cv=none; b=JI/9vtGd5PJeo10Jbp2sdW2HNAR2hIb5gnSe9zXEbcsyRWhHjalohRD1c6thCZv5SHL4Oz1gXdzZAiloYNnXo5xPUJgfoHaUeXPA+iCrSzXX+2sg5oyoMJ2fqZI5ZzNpZ83oLip1b0YS1pFVsQHSoWgbmej4uboiTKWj1YGc38M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739020948; c=relaxed/simple;
-	bh=1cUfUnnzPkSdrT1BvYm7O95VixubILLavQwSf9m20To=;
+	s=arc-20240116; t=1739020973; c=relaxed/simple;
+	bh=ojenjl2TOOXMH1n1g02fuLQBKwZVi3ZrnouzCMKji6k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DpCw3GyhGFAADgwcC62AP2tUwBwATM/MIiOS1ne5TuSh92SNLGGjFFUyRP/fJ/BnyZ6yF5Ex7X/OB+tlzlJjnROPIZi+VzX/IZNq665B7/LIiJGgrEH0top3HlwdHnDV+FC2manqhfe15fqlYXg4YbmsmaLfTzUgLW00GMhQo7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QdRDYhww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1978FC4CED6;
-	Sat,  8 Feb 2025 13:22:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ljuvEbejVdNUQqx4IbcAfpPlyXyytOHdiQUMIZERnTbTwhEl2cXUJoQPj9DakNFmIIudPCW+cE4EcPaCCBw+aR/0kn7pYhb+h2tXMCKZDnEF9luCqzibnqzfrxEYQxUtnExfsSCRQXL3yebaean0vi6r5zP8yzUYHLsZDRH+cj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YooG0lsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D02C4CED6;
+	Sat,  8 Feb 2025 13:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739020947;
-	bh=1cUfUnnzPkSdrT1BvYm7O95VixubILLavQwSf9m20To=;
+	s=k20201202; t=1739020972;
+	bh=ojenjl2TOOXMH1n1g02fuLQBKwZVi3ZrnouzCMKji6k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QdRDYhwwbY9vABNWN9TC+jkJ1dj+PKkgmoeyjRzSGaTaO4ypPrIP6ADmDo05RMi3j
-	 hKejsHUowRJ78SXsYHrAHMXltXUHm0LHZuHOz7gpB5X/DIO0n3gE4KnO/EZhnNl7NL
-	 wQ4ojKCuj3Cmq42okjlKXbq4LRTxAIZvXZA+/SyBbZzGPmL26MIEzH8H8UBBrb6yo9
-	 b9E/rldcVCBOtIQma+UIw1J+Vihnd29SwWeVS6rMBwWzRru+jsI9igvo85jt1kA4uu
-	 bgCenS7ZlUwUEH7j5PGmcZNQ/SY/WuWQpx92ddbvuqljUu41lZbZfl1ZgWgv03TWSR
-	 o0BL4CO6gxUCQ==
-Date: Sat, 8 Feb 2025 13:22:11 +0000
+	b=YooG0lsDGwowoGFiTayI1bEM7oj2dmbC7j957GRinvghGX+R2Wwb6D5opUyRhER7f
+	 Sp1TVi2PgmEA6n7eU8CEhSY+DW9Q7a3HdWvIFU81wto1N0YXKmTgV7Z4uYVXFfbTYK
+	 7lC70ybLWbHTSVy/joIdF9yDccHtjG19z5Qzg3vJUJVeexBppd6F3FXtdl2WqGhXcU
+	 5WIcdPrrGSgzWZ8C5WUYl5/fp34wmWW1WWePhPpHRo+3YbHI7Jvr9V8t7FCwQ1rwH0
+	 yO0EPPME5K6MST3m3/3Bz4SRiVutNdeFZr/iv67e2R+fbzkGsevTSGtykYR96a/s37
+	 GrN4Dz90GtdRg==
+Date: Sat, 8 Feb 2025 13:22:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
@@ -60,12 +60,12 @@ Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
  linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
  netdev@vger.kernel.org, linux-phy@lists.infradead.org,
  linux-sound@vger.kernel.org
-Subject: Re: [PATCH v2 07/13] iio: amplifiers: hmc425a: use
+Subject: Re: [PATCH v2 08/13] iio: resolver: ad2s1210: use
  gpiod_multi_set_value_cansleep
-Message-ID: <20250208132211.794c6f87@jic23-huawei>
-In-Reply-To: <20250206-gpio-set-array-helper-v2-7-1c5f048f79c3@baylibre.com>
+Message-ID: <20250208132232.47b848e9@jic23-huawei>
+In-Reply-To: <20250206-gpio-set-array-helper-v2-8-1c5f048f79c3@baylibre.com>
 References: <20250206-gpio-set-array-helper-v2-0-1c5f048f79c3@baylibre.com>
-	<20250206-gpio-set-array-helper-v2-7-1c5f048f79c3@baylibre.com>
+	<20250206-gpio-set-array-helper-v2-8-1c5f048f79c3@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,41 +76,50 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 06 Feb 2025 16:48:21 -0600
+On Thu, 06 Feb 2025 16:48:22 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
 > Reduce verbosity by using gpiod_multi_set_value_cansleep() instead of
-> gpiod_set_array_value_cansleep().
+> gpiod_set_array_value().
 > 
-> Passing NULL as the 3rd argument to gpiod_set_array_value_cansleep()
-> only needs to be done if the array was constructed manually, which is
-> not the case here. This change effectively replaces that argument with
-> st->gpios->array_info. The possible side effect of this change is that
-> it could make setting the GPIOs more efficient.
+> These are not called in an atomic context, so changing to the cansleep
+> variant is fine.
 > 
 > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-If it goes through the gpio tree
+If this goes through GPIO
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  drivers/iio/amplifiers/hmc425a.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/iio/resolver/ad2s1210.c | 8 ++------
+>  1 file changed, 2 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hmc425a.c
-> index 2ee4c0d70281e24c1c818249b86d89ebe06d4876..d9a359e1388a0f3eb5909bf668ff82102286542b 100644
-> --- a/drivers/iio/amplifiers/hmc425a.c
-> +++ b/drivers/iio/amplifiers/hmc425a.c
-> @@ -161,8 +161,7 @@ static int hmc425a_write(struct iio_dev *indio_dev, u32 value)
+> diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
+> index b681129a99b6cf399668bf01a1f5a15fbc4f95b8..7f18df790157f1e411fb70de193a49f0677c999f 100644
+> --- a/drivers/iio/resolver/ad2s1210.c
+> +++ b/drivers/iio/resolver/ad2s1210.c
+> @@ -182,8 +182,7 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
 >  
->  	values[0] = value;
+>  	bitmap[0] = mode;
 >  
-> -	gpiod_set_array_value_cansleep(st->gpios->ndescs, st->gpios->desc,
-> -				       NULL, values);
-> +	gpiod_multi_set_value_cansleep(st->gpios, values);
->  	return 0;
+> -	return gpiod_set_array_value(gpios->ndescs, gpios->desc, gpios->info,
+> -				     bitmap);
+> +	return gpiod_multi_set_value_cansleep(gpios, bitmap);
 >  }
 >  
+>  /*
+> @@ -1473,10 +1472,7 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
+>  
+>  		bitmap[0] = st->resolution;
+>  
+> -		ret = gpiod_set_array_value(resolution_gpios->ndescs,
+> -					    resolution_gpios->desc,
+> -					    resolution_gpios->info,
+> -					    bitmap);
+> +		ret = gpiod_multi_set_value_cansleep(resolution_gpios, bitmap);
+>  		if (ret < 0)
+>  			return dev_err_probe(dev, ret,
+>  					     "failed to set resolution gpios\n");
 > 
 
 

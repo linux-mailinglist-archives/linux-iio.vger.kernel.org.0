@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-15180-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15181-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B066CA2D77D
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 17:42:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549D8A2D790
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 17:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 354553A0F9D
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 16:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89E48166D05
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2E51F3BB2;
-	Sat,  8 Feb 2025 16:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E23241CBB;
+	Sat,  8 Feb 2025 16:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLXTDyiu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p9zpoczF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC4F1F1815;
-	Sat,  8 Feb 2025 16:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992A4241C8C;
+	Sat,  8 Feb 2025 16:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739032881; cv=none; b=LFUA3ijK7M2Ggg7PIbGGIPejkgxdALjVQ9bVUyAo/jmp8ap4eZGOeJhCl5XhH8HA9WlHnSAx7GOYN09PrbHLreujU/vSeVB9/LKF8uCxScEJfHaWnEDh0vEpG/fjkJQcLCVDbJl3iYjuF1wR4qh5mL74VnyshmHfU6eZl+cHLg0=
+	t=1739033537; cv=none; b=Keehv+G2iwI8r+X3/ULEQo3ElSILmbR3RrR1vLeFnPYmL4xz3RA9bDRS+cUEN0P/SEK9f+W9Bxabsm7DLyr66+9X5bj3peAUiFTKHagM+Jxq5/TqlP+azG5fAfqI/RqbsokYhCBssIzR/8dDFsrgSawMiyseCLwlBldnRC2C+Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739032881; c=relaxed/simple;
-	bh=nE2tps/OVvhnykdbqvtmJDT1Kbp5Ql+WK68Y3AyNji0=;
+	s=arc-20240116; t=1739033537; c=relaxed/simple;
+	bh=XctkP6Ri4RWMm2KQrzkn+GGWoMNk2euuCy/Hed9WVIc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bR92rK/yTuor378LT7PGWLU549i3a5wLl7T0Q9riXjwyV2CWQV0Uz51nti1mjECddVHk28C4xv+X466Ej8AtKLd0LSE7IdRspAQl6SazcaKrxo7hq1EspVjyTcv7EX7qVfTqhKTpIycNzFMwCum+1UR3yeVk/yvYQXEQola8yiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLXTDyiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F80C4CEDF;
-	Sat,  8 Feb 2025 16:41:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U6/kS3s5H75DMvtM5fMpcJpbSEWaxD2fmfxqTve7D/7xNa/s79hjaPTF2EUDTOVvzg8Ix740Jlf1r/HKHzEpYbAsvwhn1/s4HcjMb2fZAfVX63LsfCITnUVPpnAR4psC+f3WRbT14MLcrjGvoTJJItu3oZf1ZGWG02FSFtU96ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p9zpoczF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C11C4CED6;
+	Sat,  8 Feb 2025 16:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739032880;
-	bh=nE2tps/OVvhnykdbqvtmJDT1Kbp5Ql+WK68Y3AyNji0=;
+	s=k20201202; t=1739033537;
+	bh=XctkP6Ri4RWMm2KQrzkn+GGWoMNk2euuCy/Hed9WVIc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NLXTDyiuBf4xcEWxy2Xhb4NhDoRuX0waAGg+XFhlqGMaF1jex0ELZ2YWV75lZu7lE
-	 MS8PVjDSykTeBMnAj+ZixT38dz8mz3h1b6eKAj0MQRFrrbO3V26Q4SjryBhvZx7oEO
-	 R9JF2UhE6V57nC3SFFlTOMlqxS+H4pIYWPg2Qp65C/fVyStJF1nEhdyJu2suhbrYTV
-	 1eJeut4uSEwekhYtfEw/3I1OrklYwzQgU6qPryf0qceL+PIiFY2ToABzZ4NcQq1dPm
-	 Lm8lorUqCxqOSC06hjqG4tzz3wsgITY8JfzsSrDVUALBXDfUiwNVf58Xy4FhN5+GWR
-	 elcTqchIQgFDg==
-Date: Sat, 8 Feb 2025 16:41:11 +0000
+	b=p9zpoczF6R+S2ek2CmHno08S9F5QLqXcsGqKeLt0vHXxu2N5ugSnjd/f6vgbLTuiK
+	 57Iz4e/O2kc2+kMgb1NkHXfuihG9niWX1vaLTu35cO5CxXUk/+BxdXlptqHZ6Tacy2
+	 vJcyErOil551Sr4btL+PVp0aDksCRZIcB1q2gvZmC66imBnIU7+9Wq2a2mu03RuTtQ
+	 qkql0isHd1b5mDivto2NkoBtSajz4IPoPSJpxoG3uZ/CaBdXOcUgDddLcaOK8XegUi
+	 5Uku4T3LbOhsxMIevgMr4LZLBHYAVdWIGvsnbT//cVx9046LIN3v2c2PHijKmV4Mdm
+	 hDCEo9FpWHeCQ==
+Date: Sat, 8 Feb 2025 16:52:08 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -50,11 +50,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250208164111.28ec9f2d@jic23-huawei>
-In-Reply-To: <337895af7418a8e4b20b5a9322344b68082508ae.1738761899.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 3/5] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250208165208.3560237f@jic23-huawei>
+In-Reply-To: <4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
 References: <cover.1738761899.git.mazziesaccount@gmail.com>
-	<337895af7418a8e4b20b5a9322344b68082508ae.1738761899.git.mazziesaccount@gmail.com>
+	<4781e1b1f074ca6c84ecc084b152885d08e826cc.1738761899.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,253 +65,141 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 5 Feb 2025 15:34:51 +0200
+On Wed, 5 Feb 2025 15:38:16 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> There are ADC ICs which may have some of the AIN pins usable for other
-> functions. These ICs may have some of the AIN pins wired so that they
-> should not be used for ADC.
+> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> an automatic measurement mode, with an alarm interrupt for out-of-window
+> measurements. The window is configurable for each channel.
 > 
-> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> add corresponding channels@N nodes in the device tree as described in
-> the ADC binding yaml.
+> The I2C protocol for manual start of the measurement and data reading is
+> somewhat peculiar. It requires the master to do clock stretching after
+> sending the I2C slave-address until the slave has captured the data.
+> Needless to say this is not well suopported by the I2C controllers.
 > 
-> Add couple of helper functions which can be used to retrieve the channel
-> information from the device node.
+> Thus the driver does not support the BD79124's manual measurement mode
+> but implements the measurements using automatic measurement mode relying
+> on the BD79124's ability of storing latest measurements into register.
+> 
+> The driver does also support configuring the threshold events for
+> detecting the out-of-window events.
+> 
+> The BD79124 keeps asserting IRQ for as long as the measured voltage is
+> out of the configured window. Thus the driver masks the received event
+> for a fixed duration (1 second) when an event is handled. This prevents
+> the user-space from choking on the events
+> 
+> The ADC input pins can be also configured as general purpose outputs.
+> Those pins which don't have corresponding ADC channel node in the
+> device-tree will be controllable as GPO.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> Revision history:
-> RFC v1 => v2:
->  - New patch
-> 
-> I think it might be nice to have helpers for fetching also the other
-> generic (non vendor specific) ADC properties (as listed in the
-> Documentation/devicetree/bindings/iio/adc/adc.yaml) - but as I don't
-> have use for those in BD79124 driver (at least not for now), I don't
-> imnplement them yet. Anyways, this commit creates a place for such
-> helpers.
 
-There is often a mix of vendor specific and not in channel nodes.
-Hence I'm not sure how widely this will be and it is driver
-specific which of the standard things make sense.
+Hi Matti,
 
-So before I'd consider a helper like this I'd want to see it alongside
-a bunch of users including some of the complex ones so that we know
-it generalizes well enough.  It doesn't make sense to introduce
-it otherwise - just keep the code in the specific drivers instead.
-
-It's an interesting idea, but not a trivial one :)
+Just a few really trivial comments though this wasn't my most thorough
+of reviews as ran out of time / energy today!
 
 Jonathan
 
-
-> ---
->  drivers/iio/adc/Kconfig            |   3 +
->  drivers/iio/adc/Makefile           |   1 +
->  drivers/iio/adc/industrialio-adc.c | 151 +++++++++++++++++++++++++++++
->  include/linux/iio/adc-helpers.h    |  22 +++++
->  4 files changed, 177 insertions(+)
->  create mode 100644 drivers/iio/adc/industrialio-adc.c
->  create mode 100644 include/linux/iio/adc-helpers.h
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 849c90203071..37b70a65da6f 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -6,6 +6,9 @@
->  
->  menu "Analog to digital converters"
->  
-> +config IIO_ADC_HELPER
-> +	tristate
-> +
->  config AB8500_GPADC
->  	bool "ST-Ericsson AB8500 GPADC driver"
->  	depends on AB8500_CORE && REGULATOR_AB8500
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index ee19afba62b7..956c121a7544 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -57,6 +57,7 @@ obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
->  obj-$(CONFIG_GEHC_PMC_ADC) += gehc-pmc-adc.o
->  obj-$(CONFIG_HI8435) += hi8435.o
->  obj-$(CONFIG_HX711) += hx711.o
-> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
->  obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
->  obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp-adc.o
->  obj-$(CONFIG_IMX93_ADC) += imx93_adc.o
-> diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industrialio-adc.c
+> diff --git a/drivers/iio/adc/rohm-bd79124.c b/drivers/iio/adc/rohm-bd79124.c
 > new file mode 100644
-> index 000000000000..366e4c8eb6c7
+> index 000000000000..ea93762a24cc
 > --- /dev/null
-> +++ b/drivers/iio/adc/industrialio-adc.c
-> @@ -0,0 +1,151 @@
+> +++ b/drivers/iio/adc/rohm-bd79124.c
+> @@ -0,0 +1,1149 @@
 
 
-> +
-> +/**
-> + * iio_adc_device_get_channels - get ADC channel IDs
-
-This sounds far too like the inkern interfaces.  Need to associate it instead
-with the fwnode / properties stuff.
-
-> + *
-> + * Scan the device node for ADC channel information. Return an array of found
-> + * IDs. Caller need to allocate the memory for the array and provide maximum
-
-Caller needs to provide the memory
-
-> + * number of IDs the array can store.
-> + *
-> + * @dev:		Pointer to the ADC device
-> + * @channels:		Array where the found IDs will be stored.
-> + * @max_channels:	Number of IDs that fit in the array.
-> + *
-> + * Return:		Number of found channels on succes. Negative value to
-> + *			indicate failure.
-> + */
-> +int iio_adc_device_get_channels(struct device *dev, int *channels,
-> +				int max_channels)
+> +static int bd79124_write_event_value(struct iio_dev *iio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir,
+> +				     enum iio_event_info info, int val,
+> +				     int val2)
 > +{
-> +	struct fwnode_handle *fwnode, *child;
-> +	int num_chan = 0, ret;
+> +	struct bd79124_data *data = iio_priv(iio_dev);
+> +	int reg;
 > +
-> +	fwnode = dev_fwnode(dev);
-> +	if (!fwnode) {
-
-As before, I'd relax this until we need to do it. We may never do so.
-
-> +		fwnode = dev_fwnode(dev->parent);
-> +		if (!fwnode)
-> +			return -ENODEV;
-> +	}
-> +	fwnode_for_each_child_node(fwnode, child) {
-> +		if (fwnode_name_eq(child, "channel")) {
-
-As below. I'd flip the logic here and use a continue
-
-> +			u32 ch;
+> +	if (chan->channel >= BD79124_MAX_NUM_CHANNELS)
+> +		return -EINVAL;
 > +
-> +			if (num_chan == max_channels)
-> +				return -EINVAL;
+> +	switch (info) {
+> +	case IIO_EV_INFO_VALUE:
+> +		if (dir == IIO_EV_DIR_RISING) {
+> +			guard(mutex)(&data->mutex);
 > +
-> +			ret = fwnode_property_read_u32(child, "reg", &ch);
-> +			if (ret)
-> +				return ret;
+> +			data->alarm_r_limit[chan->channel] = val;
+> +			reg = BD79124_GET_HIGH_LIMIT_REG(chan->channel);
+> +		} else if (dir == IIO_EV_DIR_FALLING) {
+> +			guard(mutex)(&data->mutex);
 > +
-> +			/*
-> +			 * We assume the channel IDs start from 0. If it seems
-> +			 * this is not a sane assumption, then we can relax
-> +			 * this check or add 'allowed ID range' parameter.
-> +			 *
-> +			 * Let's just start with this simple assumption.
-> +			 */
-> +			if (ch > max_channels)
-> +				return -ERANGE;
-> +
-> +			channels[num_chan] = ch;
-> +			num_chan++;
-			channel[num_chan++] = ch;
-
-So it is clear how the two are coupled.
-
+> +			data->alarm_f_limit[chan->channel] = val;
+> +			reg = BD79124_GET_LOW_LIMIT_REG(chan->channel);
+> +		} else {
+> +			return -EINVAL;
 > +		}
+> +		/*
+> +		 * We don't want to enable the alarm if it is not enabled or
+> +		 * if it is suppressed. In that case skip writing to the
+> +		 * register.
+> +		 */
+> +		if (!(data->alarm_monitored[chan->channel] & BIT(dir)) ||
+> +		    data->alarm_suppressed[chan->channel] & BIT(dir))
+> +			return 0;
+> +
+> +		return bd79124_write_int_to_reg(data, reg, val);
+> +
+> +	case IIO_EV_INFO_HYSTERESIS:
+> +			reg = BD79124_GET_HYSTERESIS_REG(chan->channel);
+> +			val >>= 3;
+Odd indent.
+> +
+> +		return regmap_update_bits(data->map, reg, BD79124_MASK_HYSTERESIS,
+> +					  val);
+> +	default:
+> +		return -EINVAL;
 > +	}
-> +
-> +	return num_chan;
-> +
 > +}
-> +EXPORT_SYMBOL_GPL(iio_adc_device_get_channels);
-> +
-> +/**
-> + * devm_iio_adc_device_alloc_chaninfo - allocate and fill iio_chan_spec for adc
-> + *
-> + * Scan the device node for ADC channel information. Allocate and populate the
-> + * iio_chan_spec structure corresponding to channels that are found. The memory
-> + * for iio_chan_spec structure will be freed upon device detach. Try parent
-> + * device node if given device has no fwnode associated to cover also MFD
-> + * devices.
 
-I'd leave that parent node check until we need it (unless you need it for
-this one!).  Feels like infra structure that might never be used.
-That would let us for now use the device_for_each_child_node()
-handling.
 
-> + *
-> + * @dev:	Pointer to the ADC device
-> + * @template:	Template iio_chan_spec from which the fields of all found and
-> + *		allocated channels are initialized.
-> + * @cs:		Location where pointer to allocated iio_chan_spec should be
-> + *		stored
-> + *
-> + * Return:	Number of found channels on succes. Negative value to indicate
-> + *		failure.
-> + */
-> +int devm_iio_adc_device_alloc_chaninfo(struct device *dev,
-> +				       const struct iio_chan_spec *template,
-> +				       struct iio_chan_spec **cs)
+> +static void bd79124_re_enable_lo(struct bd79124_data *data, unsigned int channel)
 > +{
-> +	struct fwnode_handle *fwnode, *child;
-> +	struct iio_chan_spec *chan;
-> +	int num_chan = 0, ret;
+> +	int ret, evbit = BIT(IIO_EV_DIR_FALLING);
 > +
-> +	fwnode = dev_fwnode(dev);
-> +	if (!fwnode) {
-> +		fwnode = dev_fwnode(dev->parent);
-> +		if (!fwnode)
-> +			return -ENODEV;
-> +	}
+> +	if (!(data->alarm_suppressed[channel] & evbit))
+> +		return;
 > +
-> +	num_chan = iio_adc_fwnode_num_channels(fwnode);
-> +	if (num_chan < 0)
-> +		return num_chan;
+> +	data->alarm_suppressed[channel] &= (~evbit);
 > +
-> +	*cs = devm_kcalloc(dev, num_chan, sizeof(**cs), GFP_KERNEL);
-> +	if (!*cs)
-> +		return -ENOMEM;
+> +	if (!(data->alarm_monitored[channel] & evbit))
+> +		return;
 > +
-> +	chan = &(*cs)[0];
-> +
-> +	fwnode_for_each_child_node(fwnode, child) {
-> +		if (fwnode_name_eq(child, "channel")) {
-Flip logic probably and use a continue to reduce indent of
-the next bit (which may well get a lot more complex in future).
-
-> +			u32 ch;
-> +
-> +			ret = fwnode_property_read_u32(child, "reg", &ch);
-> +			if (ret)
-> +				return ret;
-
-In general the association between reg and channel is more complex.
-We need to deal with a reasonable subset of cases (single-channel, diff-channels
-etc) where it isn't the case that chan == chan->channel.
-
-> +
-> +			*chan = *template;
-> +			chan->channel = ch;
-> +
-> +			if (num_chan > 1)
-> +				chan->indexed = 1;
-
-I think set this whatever, probably in the template.
-I don't want to see the interface change just because a given DT says
-only one channel is connected.
-
-> +
-> +			chan++;
-> +		}
-> +	}
-> +
-> +	return num_chan;
+> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_LOW_LIMIT_REG(channel),
+> +				       data->alarm_f_limit[channel]);
+> +	if (ret)
+> +		dev_warn(data->dev, "Low limit enabling failed for channel%d\n",
+> +			 channel);
 > +}
-> +EXPORT_SYMBOL_GPL(devm_iio_adc_device_alloc_chaninfo);
 > +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-> +MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
-
+> +static void bd79124_re_enable_hi(struct bd79124_data *data, unsigned int channel)
+> +{
+> +	int ret, evbit = BIT(IIO_EV_DIR_RISING);
+> +
+> +	if (!(data->alarm_suppressed[channel] & evbit))
+> +		return;
+> +
+> +	data->alarm_suppressed[channel] &= (~evbit);
+> +
+> +	if (!(data->alarm_monitored[channel] & evbit))
+> +		return;
+This lot is very similar to the lo variant. Can we combine them or
+use some helper for both?
+> +
+> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_HIGH_LIMIT_REG(channel),
+> +				       data->alarm_r_limit[channel]);
+> +	if (ret)
+> +		dev_warn(data->dev, "High limit enabling failed for channel%d\n",
+> +			 channel);
+> +}
 
 

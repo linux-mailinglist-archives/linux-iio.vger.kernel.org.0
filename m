@@ -1,66 +1,70 @@
-Return-Path: <linux-iio+bounces-15170-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15171-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1A4A2D6E9
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 16:37:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239CFA2D6EE
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 16:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 062253A7F9E
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 15:37:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34A8D1889EA8
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Feb 2025 15:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6E12500AB;
-	Sat,  8 Feb 2025 15:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F79B2500AB;
+	Sat,  8 Feb 2025 15:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vif3bfRS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KlIe/8c4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469A1248189;
-	Sat,  8 Feb 2025 15:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED2213EFE3;
+	Sat,  8 Feb 2025 15:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739029044; cv=none; b=Ns1MSTKDwpAK/p1SaMWAI2cKwFbT7ybe0qqbc8iCbQ7BXgXa8xJQ28kTlBrfiSbnuqnAJzpZ4kTX8TV5Y35ObePgEom3EGXLTNshFNbW4U6eoh+/Ljti4H2CNtmzWbU8NbhKJEhmMYvOGjEPpX8Lr4YLCNIpxDqxSi1rNDK/Vdg=
+	t=1739029135; cv=none; b=LPhYhh5KF/As8xgAlglyKZzQV58oCikH96pOA/4Z1sUcmr+atTlewN5OAuK2eXTYrUgwNyjOMnvKyqKBmPJMlWcVd1maUCa7OitfT8lB788cNqqtq/uP35Dkz7uGc/4L7HCDyg8uOFC0YcCtscNE5SOwMRn44EcljNixKJWcCGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739029044; c=relaxed/simple;
-	bh=Of+FGUU0azeEe6zTrINmA8le2Fyns8jIwH2YV16Evw0=;
+	s=arc-20240116; t=1739029135; c=relaxed/simple;
+	bh=XNM/6f1VoE8anSwil56NQFr75jRiQ8aJ2WPeJxzFQdI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J4EIiyk1dvzFvxKhj9OjPipgs/TzKy3z1D4BPZTGSNINxBzyQ/s8+6nnrO67xVl92KJykZbwyM5w4HnxyxQBEychYQYLXFwwYSzneSnSTVRtNQFMi6GSn5FgjFBJ92AmEc+5mFNZyX03M9Fbn6Lit5bi7KvgH7BYlGMdd3bGxd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vif3bfRS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC23C4CED6;
-	Sat,  8 Feb 2025 15:37:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AJcTGcFJR/+2KO+h3B5gTnDJ9iryMlWGvM9s2peqB33Y8o7+Ggl2v9WGcjc7AVsND3VutS5fYowSSS4k8BwlOquLKrmqbV/eSYJFKaZAF1fxaswXSEK8Dkv0aCrcOsZHw+Ze05iZIspaJ1be2ExtC+cs00pPcWAsKlV8sJmrgX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KlIe/8c4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10DA2C4CED6;
+	Sat,  8 Feb 2025 15:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739029043;
-	bh=Of+FGUU0azeEe6zTrINmA8le2Fyns8jIwH2YV16Evw0=;
+	s=k20201202; t=1739029135;
+	bh=XNM/6f1VoE8anSwil56NQFr75jRiQ8aJ2WPeJxzFQdI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vif3bfRSrPNw2Umvi9C0qjS5yIc4f5Z3n9moXOcAtztVXReVQLp8hhq6rDc29yWQH
-	 lzovMkJ7Optg9TPz4jDXGqEUU0+S6xnIHL4LKlip6Zdpo1FADS4QnIVAFV0u1GLZ0c
-	 5GqCbjtz2zhmuPUnewe5kFNcE6PCR3eeAoj/eP7qFeWhT81TQnpXtUIadrRhLn0yp6
-	 D/QAeftRnMyFdJij9MUmjsuVK+k8qVpjPDpPA69Xm+AcE9MUbCeD34/p+NIIwGvh+O
-	 EI3K4WjuNMbJCu0w9spHcvREVewZ7YMxVqQYxoYKHjcNWk74RzRfVHJxMs2vgAHqrm
-	 JanDAaqLRQKeQ==
-Date: Sat, 8 Feb 2025 15:37:11 +0000
+	b=KlIe/8c4mq6aMpjIVAOTmKedtplOY/9X9GSlmYuu8nQ++AtOVSndQsBVwOWE5d/6T
+	 vKk5rvmiPkpijNhNKt+YsO6K4RWOpo0Qf2nDCSNyrGn0AA2hBW6X2KYU6D3oi7Hl42
+	 v75lBOCz4zfRffB4Xg7ATMBRgs9k2D/q+Vhk8aXwO2PFrt3PYmkw7rSToPiu8Gres1
+	 tVq+HUkjBGzvWq2jINFGx3BMcFkwFev7A9lnH+3HJ/2EYK9i3aifLTQwhI+UQvSxip
+	 y5LKBe5q2VxcyoRuJ4dnxmgENjAd3QqH2By+DKEBfeN+5xP94okIZV+ZPEgik5vYzy
+	 t1YUgUzA9VyzQ==
+Date: Sat, 8 Feb 2025 15:38:43 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Robert Budai <robert.budai@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Alexandru Ardelean
+To: Conor Dooley <conor@kernel.org>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Robert Budai
+ <robert.budai@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Alexandru Ardelean
  <alexandru.ardelean@analog.com>, Rob Herring <robh+dt@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
  <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Nuno Sa
  <nuno.sa@analog.com>, Ramona Gradinariu <ramona.gradinariu@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, David Lechner
- <dlechner@baylibre.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>, Paul
- Cercueil <paul@crapouillou.net>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v6 5/6] iio: imu: adis16550: add adis16550 support
-Message-ID: <20250208153711.1e0215d1@jic23-huawei>
-In-Reply-To: <20250204143612.85939-6-robert.budai@analog.com>
+ Trevor Gamblin <tgamblin@baylibre.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, Paul Cercueil <paul@crapouillou.net>, David
+ Lechner <dlechner@baylibre.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 4/6] dt-bindings: iio: Add adis16550 bindings
+Message-ID: <20250208153843.0353baa9@jic23-huawei>
+In-Reply-To: <20250205-styling-chirpy-79eae9437b3b@spud>
 References: <20250204143612.85939-1-robert.budai@analog.com>
-	<20250204143612.85939-6-robert.budai@analog.com>
+	<20250204143612.85939-5-robert.budai@analog.com>
+	<20250204-helium-marbled-a0863a0a18a8@spud>
+	<15065d0cd19f39d92ce860cd03802c368df74b34.camel@gmail.com>
+	<20250205-styling-chirpy-79eae9437b3b@spud>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,176 +75,131 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 4 Feb 2025 16:36:09 +0200
-Robert Budai <robert.budai@analog.com> wrote:
+On Wed, 5 Feb 2025 19:52:37 +0000
+Conor Dooley <conor@kernel.org> wrote:
 
-> The ADIS16550 is a complete inertial system that includes a triaxis
-> gyroscope and a triaxis accelerometer. Each inertial sensor in the
-> ADIS16550 combines industry leading MEMS only technology with signal
-> conditioning that optimizes dynamic performance. The factory calibration
-> characterizes each sensor for sensitivity, bias, and alignment. As a
-> result, each sensor has its own dynamic compensation formulas that
-> provide accurate sensor measurements.
+> On Wed, Feb 05, 2025 at 04:11:51PM +0000, Nuno S=C3=A1 wrote:
+> > On Tue, 2025-02-04 at 19:25 +0000, Conor Dooley wrote: =20
+> > > On Tue, Feb 04, 2025 at 04:36:08PM +0200, Robert Budai wrote: =20
+> > > > Document the ADIS16550 device devicetree bindings.
+> > > >=20
+> > > > Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > > Signed-off-by: Robert Budai <robert.budai@analog.com>
+> > > > ---
+> > > >=20
+> > > > v6:
+> > > > - applied blank line suggestions
+> > > > - added clock-frequency dependency change suggestions
+> > > > - yamllint corrections
+> > > >=20
+> > > > =C2=A0.../bindings/iio/imu/adi,adis16550.yaml=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 83 +++++++++++++++++++
+> > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 9 ++
+> > > > =C2=A02 files changed, 92 insertions(+)
+> > > > =C2=A0create mode 100644
+> > > > Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis1655=
+0.yaml
+> > > > b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > > new file mode 100644
+> > > > index 000000000000..8750bb937979
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+> > > > @@ -0,0 +1,83 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/iio/imu/adi,adis16550.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Analog Devices ADIS16550 and similar IMUs
+> > > > +
+> > > > +maintainers:
+> > > > +=C2=A0 - Nuno Sa <nuno.sa@analog.com>
+> > > > +=C2=A0 - Ramona Gradinariu <ramona.gradinariu@analog.com>
+> > > > +=C2=A0 - Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > +
+> > > > +properties:
+> > > > +=C2=A0 compatible:
+> > > > +=C2=A0=C2=A0=C2=A0 enum:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,adis16550
+> > > > +
+> > > > +=C2=A0 reg:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 spi-cpha: true
+> > > > +=C2=A0 spi-cpol: true
+> > > > +
+> > > > +=C2=A0 spi-max-frequency:
+> > > > +=C2=A0=C2=A0=C2=A0 maximum: 15000000
+> > > > +
+> > > > +=C2=A0 vdd-supply: true
+> > > > +
+> > > > +=C2=A0 interrupts:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 reset-gpios:
+> > > > +=C2=A0=C2=A0=C2=A0 description:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Must be the device tree identifier =
+of the RESET pin. If specified,
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 it will be asserted during driver p=
+robe. As the line is active low,
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 it should be marked GPIO_ACTIVE_LOW.
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 clocks:
+> > > > +=C2=A0=C2=A0=C2=A0 description: If not provided, then the internal=
+ clock is used.
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 clock-frequency:
+> > > > +=C2=A0=C2=A0=C2=A0 description: Clock frequency in Hz when an exte=
+rnal clock is used.
+> > > > +=C2=A0=C2=A0=C2=A0 oneOf:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - minimum: 1
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maximum: 128
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - minimum: 3000
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maximum: 4500 =20
+> > >=20
+> > > I don't get why this is a property, to be honest. When you've got an
+> > > external clock, why isn't the frequency obtained from the clock provi=
+der
+> > > node?
+> > >  =20
+> >=20
+> > The main purpose of this property is actually to show/document the cons=
+trains of
+> > the external clock. We can very well just error out in the driver (and =
+we do
+> > that) and not have this property. I mentioned this property to Robert s=
+ome
+> > revisions ago and I also pointed out that I wasn't really sure if it sh=
+ould be
+> > used or not=C2=A0(I guess this is more for fixed clock providers...). I=
+IRC, I did
+> > asked for some advice/comments but we got none so I assume Robert just =
+decided
+> > to use it and see what you guys had to say about it. =20
 >=20
-> Co-developed-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Signed-off-by: Robert Budai <robert.budai@analog.com>
+> NGL, this is one of the kinda of things where if you're relying on
+> dt-bindings to avoid cocking up your board design, things have already
+> gotten pretty badly wrong! That said, "clock-frequency" is a
+> property for cpus, fixed-frequency clock providers and i2c buses, you'd
+> need a vendor prefix and a unit suffix here IMO. Also, I don't really
+> think that it actually does anything at all, given it does not constrain =
+the
+> clock you're linking to with the clocks property. This may as well just be
+> a comment in the description of the clocks property, for all that it does.
 
-A few minor comments inline given you will need to do a v7 for
-the DT feedback.  Otherwise I might just have tweaked these
-whilst applying.
+I'd just drop it.=20
 
-
-> diff --git a/drivers/iio/imu/adis16550.c b/drivers/iio/imu/adis16550.c
-> new file mode 100644
-> index 000000000000..b20dc850346f
-> --- /dev/null
-> +++ b/drivers/iio/imu/adis16550.c
-> @@ -0,0 +1,1156 @@
-
-> +
-> +struct adis16550 {
-> +	const struct adis16550_chip_info *info;
-> +	struct adis adis;
-> +	unsigned long clk_freq_hz;
-> +	u32 sync_mode;
-> +	struct spi_transfer xfer[2];
-> +	u8 buffer[ADIS16550_BURST_DATA_LEN + sizeof(u32)] __aligned(IIO_DMA_MIN=
-ALIGN);
-> +	__be32 din[2] __aligned(IIO_DMA_MINALIGN);
-> +	__be32 dout[2] __aligned(IIO_DMA_MINALIGN);
-
-In most cases only one such marking is needed.  Devices tend not to interfe=
-re
-with themselves and we tend not to be changing values from software in one =
-of
-the buffer DMA is targetting whilst the device is using the others.
-
-So we normally just mark the first one of a set like this.  That avoids
-adding a lot of padding when it is not needed.
-
-> +};
+Jonathan
 
 
-> +
-> +static int adis16550_set_gyro_filter_freq(struct adis16550 *st, int freq=
-_hz)
-> +{
-> +	u8 en =3D 0;
-> +
-> +	if (freq_hz)
-> +		en =3D 1;
-Could save a line or two without greatly affecting readability.
-Same thing applies in at least one other place.
-
-	u8 en =3D freq_hz ? 1 : 0;
-
-
-> +
-> +	return __adis_update_bits(&st->adis, ADIS16550_REG_CONFIG,
-> +				  ADIS16550_GYRO_FIR_EN_MASK,
-> +				  FIELD_PREP(ADIS16550_GYRO_FIR_EN_MASK, en));
-> +}
-
-> +
-> +static irqreturn_t adis16550_trigger_handler(int irq, void *p)
-> +{
-
-> +	memcpy(data, &buffer[3], (ADIS16550_SCAN_ACCEL_Z -
-> +						ADIS16550_SCAN_GYRO_X + 2) *
-> +						sizeof(__be32));
-Strange alignment.
-	memcpy(data, &buffer[3],
-	       (ADIS16550_SCAN_ACCEL_Z - ADIS16550_SCAN_GYRO_X + 2) *
-	       sizeof(__be32));
-
-Is about the best I could come up with.
-Good to add a comment on why the + 2 as well.
-
-> +	iio_push_to_buffers_with_timestamp(indio_dev, data, pf->timestamp);
-> +done:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +	return IRQ_HANDLED;
-> +}
-
-
-
-> +static int adis16550_probe(struct spi_device *spi)
-> +{
-> +	u16 burst_length =3D ADIS16550_BURST_DATA_LEN;
-> +	struct device *dev =3D &spi->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct adis16550 *st;
-> +	struct adis *adis;
-> +	int ret;
-> +
-> +	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	st =3D iio_priv(indio_dev);
-> +	st->info =3D spi_get_device_match_data(spi);
-> +	if (!st->info)
-> +		return -EINVAL;
-> +	adis =3D &st->adis;
-> +	indio_dev->name =3D st->info->name;
-> +	indio_dev->channels =3D st->info->channels;
-> +	indio_dev->num_channels =3D st->info->num_channels;
-> +	indio_dev->available_scan_masks =3D adis16550_channel_masks;
-> +	indio_dev->info =3D &adis16550_info;
-> +	indio_dev->modes =3D INDIO_DIRECT_MODE;
-> +
-> +	st->adis.ops =3D &adis16550_ops;
-> +	st->xfer[0].tx_buf =3D st->buffer + burst_length;
-> +	st->xfer[0].len =3D 4;
-> +	st->xfer[0].cs_change =3D 1;
-> +	st->xfer[0].delay.value =3D 8;
-> +	st->xfer[0].delay.unit =3D SPI_DELAY_UNIT_USECS;
-> +	st->xfer[1].rx_buf =3D st->buffer;
-> +	st->xfer[1].len =3D burst_length;
-> +
-> +	spi_message_init_with_transfers(&adis->msg, st->xfer, 2);
-> +
-> +	ret =3D devm_regulator_get_enable(dev, "vdd");
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +			      "Failed to get vdd regulator\n");
-
-Totally trivial but preference is to align after ( unless the line ends
-up too long. In those cases it is fine to indent just one tab more than
-the line above.
-
-Here it actually fits on one line anyway as it's exactly 80 chars.
-
-		return dev_err_probe(dev, ret, "Failed to get vdd regulator\n");
-
-> +
-> +	ret =3D adis_init(&st->adis, indio_dev, spi, &adis16550_data);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D __adis_initial_startup(&st->adis);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D adis16550_config_sync(st);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev,
-> +						 adis16550_trigger_handler);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D devm_iio_device_register(dev, indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	adis16550_debugfs_init(indio_dev);
-> +
-> +	return 0;
-> +}
 

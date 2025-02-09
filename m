@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15202-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15203-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8638A2DFC6
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 19:08:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0462AA2DFC7
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 19:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F5F3A60A2
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 18:07:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C16518853BC
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 18:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BEA1E1A25;
-	Sun,  9 Feb 2025 18:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2271E0DBA;
+	Sun,  9 Feb 2025 18:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIPvzdhV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/RLcYs9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B3F1E1A2B
-	for <linux-iio@vger.kernel.org>; Sun,  9 Feb 2025 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651CE1E04B9
+	for <linux-iio@vger.kernel.org>; Sun,  9 Feb 2025 18:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739124469; cv=none; b=If3JaCZw1INIr3X6BzH6GTJtsOMl36x6K7iWVzYtTFae/9f/CAzAG8fzRjFON58v58zYLoWgWnb1SEWdXeflanwzZMsQK4kXw/KWAD4sxnMw2ZRm4pqa+C3mM4xNVUDZWtWapMrIfej/6Pb8MAyYc32hR0ZGIMl4Wy2f0sBD3hY=
+	t=1739124476; cv=none; b=sMX2ETc1ybuQsfGnbxlt1krVO6/ohNoa0dLhPf+vbA+wZ+vUPIiUOD1ZpQQ0a/jf5jmqFTZXcIqTImfFFCqPO9wzHxWHsO8hB8XOw/4/q4MczHIbpzCno01ZT6bYcCPPAnUI8Iz25X/nQivFp9KmD4Biavyot7pX9iwdZ9vq6gI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739124469; c=relaxed/simple;
-	bh=DLpIYt/ksN5P4PN4RcM/NnL8kBMSpcEAcUbw/tgDVSQ=;
+	s=arc-20240116; t=1739124476; c=relaxed/simple;
+	bh=4IpfLRZ5I0wsh95AQTJdt9kBCJhifdBhs6msRsfrKbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGtaDubK6kC5hc5J9dRbqZlbLDZHhgU0RrTf1tb6CPbgmQH54XKg/eLDzXWNVwwUkd88JgzfCO9Eg+NbU+3N8iXLHTyD+GlvY5WnfIhHsZAe10alS8CQmNH7221uWiejuAtYM/daoM/tGBqYr1ZaWizFnr/VI5JJ/Np5HXx2i8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIPvzdhV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CF6C4CEDF;
-	Sun,  9 Feb 2025 18:07:41 +0000 (UTC)
+	 MIME-Version; b=MFHBZ0ebVee3lvL5DifY5r13xz+FSZxq+vuHW/DZtMr6bNARCYbXP8TnHCGXVHmg8XkIhoUKU/xJLRcIBXQ5Wa7iNLSafrstHACzJGh6KMgRg7/6biTjmkLV+C+Y4XuOAku//XsX/wQH8FN7e0cqDeJYlq4or1pCt7C0QYOlRfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/RLcYs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31065C4CEE5;
+	Sun,  9 Feb 2025 18:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739124468;
-	bh=DLpIYt/ksN5P4PN4RcM/NnL8kBMSpcEAcUbw/tgDVSQ=;
+	s=k20201202; t=1739124475;
+	bh=4IpfLRZ5I0wsh95AQTJdt9kBCJhifdBhs6msRsfrKbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIPvzdhVANgg6/rH5oMfrRyN4NspD9tYURnDEFWa6Jcl902EYNRodAohH3Ff/Eqyr
-	 JV8qcQqeMWVc4GZMDi29wI/H/566Ook9pSO02hvj5/Cp0HU6QZkmW6NfbOjmKPhe09
-	 eP0vOL30wvf0pIfe3/gSgIcxTjFKxTsxAx1dW6fLvAUq+EkZadsQ8Vo7gh7Lp0STIG
-	 G6l4bxwUNi8GVcESPCVnkHfsl7iRPplsyauvnMjC151XKEbrSVsFHIPPKASA0hA6Dz
-	 HrSYcUhjcrnJygjn8hbmjNDsNYDKOA2ND54aXCTdHGv/PeSD6hhAWXUXJqC7FM8vKF
-	 XdRUF7Fpptrxw==
+	b=k/RLcYs9/0m6wJb0y2v+vi0lZeEuqyvc6DrWvknuMkvgHaLFHpnKZj5XiG6ZajA/7
+	 DhYef50MHr51eQDsivddsWtSh9jZk7ZKmg3Xb89m4tTZ6cBnePEKPJOA7en/tWqoCY
+	 VewnuCGHsNXZ7JJtElVQ7d30sK+BthJPaX9hpN8KmVWG1MxD4NyK/FB92G6Hodcnzz
+	 tlTTYj1qjYCnqMkxGNZGitsILg8c9mPePOt32XAtPRHghoiHxtHtViPiCOHGUiQ/WQ
+	 Ddf0pMrEPOw/u6lYSiHkOGZJPThWRHHdZSdpGZs2dvC/U69PqBDHF+V4DYk/991zeZ
+	 iK4KX4t/LnbxQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
@@ -61,9 +61,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Antoni Pokusinski <apokusinski01@gmail.com>,
 	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 09/27] iio: adc: ad4000: Stop using iio_device_claim_direct_scoped()
-Date: Sun,  9 Feb 2025 18:06:06 +0000
-Message-ID: <20250209180624.701140-10-jic23@kernel.org>
+Subject: [PATCH v2 10/27] iio: adc: ad4130: Stop using iio_device_claim_direct_scoped()
+Date: Sun,  9 Feb 2025 18:06:07 +0000
+Message-ID: <20250209180624.701140-11-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250209180624.701140-1-jic23@kernel.org>
 References: <20250209180624.701140-1-jic23@kernel.org>
@@ -84,105 +84,53 @@ warnings and hard to read code.
 Move directly to the new claim/release_direct() that allow sparse
 to check for unbalanced context.
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Tested-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: Cosmin Tanislav <demonsingur@gmail.com>
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad4000.c | 60 +++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 23 deletions(-)
+ drivers/iio/adc/ad4130.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-index 1d556a842a68..4fe8dee48da9 100644
---- a/drivers/iio/adc/ad4000.c
-+++ b/drivers/iio/adc/ad4000.c
-@@ -535,12 +535,16 @@ static int ad4000_read_raw(struct iio_dev *indio_dev,
- 			   int *val2, long info)
+diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
+index acc241cc0a7a..061eeb9b1f8d 100644
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -1067,13 +1067,11 @@ static int _ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
+ static int ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
+ 			      int *val)
  {
- 	struct ad4000_state *st = iio_priv(indio_dev);
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		struct ad4130_state *st = iio_priv(indio_dev);
++	struct ad4130_state *st = iio_priv(indio_dev);
+ 
+-		guard(mutex)(&st->lock);
+-		return _ad4130_read_sample(indio_dev, channel, val);
+-	}
+-	unreachable();
++	guard(mutex)(&st->lock);
++
++	return _ad4130_read_sample(indio_dev, channel, val);
+ }
+ 
+ static int ad4130_read_raw(struct iio_dev *indio_dev,
+@@ -1083,10 +1081,16 @@ static int ad4130_read_raw(struct iio_dev *indio_dev,
+ 	struct ad4130_state *st = iio_priv(indio_dev);
+ 	unsigned int channel = chan->scan_index;
+ 	struct ad4130_setup_info *setup_info = &st->chans_info[channel].setup;
 +	int ret;
  
  	switch (info) {
  	case IIO_CHAN_INFO_RAW:
--		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
--			return ad4000_single_conversion(indio_dev, chan, val);
--		unreachable();
+-		return ad4130_read_sample(indio_dev, channel, val);
 +		if (!iio_device_claim_direct(indio_dev))
 +			return -EBUSY;
 +
-+		ret = ad4000_single_conversion(indio_dev, chan, val);
++		ret = ad4130_read_sample(indio_dev, channel, val);
 +		iio_device_release_direct(indio_dev);
 +		return ret;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = st->scale_tbl[st->span_comp][0];
- 		*val2 = st->scale_tbl[st->span_comp][1];
-@@ -585,36 +589,46 @@ static int ad4000_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
- }
- 
--static int ad4000_write_raw(struct iio_dev *indio_dev,
--			    struct iio_chan_spec const *chan, int val, int val2,
--			    long mask)
-+static int __ad4000_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val2)
- {
- 	struct ad4000_state *st = iio_priv(indio_dev);
- 	unsigned int reg_val;
- 	bool span_comp_en;
- 	int ret;
- 
--	switch (mask) {
--	case IIO_CHAN_INFO_SCALE:
--		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--			guard(mutex)(&st->lock);
-+	guard(mutex)(&st->lock);
-+
-+	ret = ad4000_read_reg(st, &reg_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	span_comp_en = val2 == st->scale_tbl[1][1];
-+	reg_val &= ~AD4000_CFG_SPAN_COMP;
-+	reg_val |= FIELD_PREP(AD4000_CFG_SPAN_COMP, span_comp_en);
- 
--			ret = ad4000_read_reg(st, &reg_val);
--			if (ret < 0)
--				return ret;
-+	ret = ad4000_write_reg(st, reg_val);
-+	if (ret < 0)
-+		return ret;
- 
--			span_comp_en = val2 == st->scale_tbl[1][1];
--			reg_val &= ~AD4000_CFG_SPAN_COMP;
--			reg_val |= FIELD_PREP(AD4000_CFG_SPAN_COMP, span_comp_en);
-+	st->span_comp = span_comp_en;
-+	return 0;
-+}
- 
--			ret = ad4000_write_reg(st, reg_val);
--			if (ret < 0)
--				return ret;
-+static int ad4000_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val, int val2, long mask)
-+{
-+	int ret;
- 
--			st->span_comp = span_comp_en;
--			return 0;
--		}
--		unreachable();
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
-+		ret = __ad4000_write_raw(indio_dev, chan, val2);
-+		iio_device_release_direct(indio_dev);
-+		return ret;
- 	default:
- 		return -EINVAL;
- 	}
+ 	case IIO_CHAN_INFO_SCALE: {
+ 		guard(mutex)(&st->lock);
+ 		*val = st->scale_tbls[setup_info->ref_sel][setup_info->pga][0];
 -- 
 2.48.1
 

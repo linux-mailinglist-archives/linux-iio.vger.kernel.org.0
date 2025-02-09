@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15203-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15204-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0462AA2DFC7
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 19:08:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79536A2DFC8
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 19:08:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C16518853BC
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 18:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B4F218853A4
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Feb 2025 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2271E0DBA;
-	Sun,  9 Feb 2025 18:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6691DED7B;
+	Sun,  9 Feb 2025 18:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/RLcYs9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aw9IIqm/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651CE1E04B9
-	for <linux-iio@vger.kernel.org>; Sun,  9 Feb 2025 18:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54051E0DE3
+	for <linux-iio@vger.kernel.org>; Sun,  9 Feb 2025 18:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739124476; cv=none; b=sMX2ETc1ybuQsfGnbxlt1krVO6/ohNoa0dLhPf+vbA+wZ+vUPIiUOD1ZpQQ0a/jf5jmqFTZXcIqTImfFFCqPO9wzHxWHsO8hB8XOw/4/q4MczHIbpzCno01ZT6bYcCPPAnUI8Iz25X/nQivFp9KmD4Biavyot7pX9iwdZ9vq6gI=
+	t=1739124483; cv=none; b=sPLmcq/quZ9Y9bsCEDU2QPKCIWYdGKvPl8FUQnbVZtzeBHD5vLabyJTFaIhMEpXoB3riR7f7Q4VQYDAyn9TTW0qgKXPs+oKfG5yQpM6NvFdtHY8A339V2+n3ZLhtS/n47pPRahlehWgmeQJJCDIhN5QJqMxEaxlIISXp9uRvKfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739124476; c=relaxed/simple;
-	bh=4IpfLRZ5I0wsh95AQTJdt9kBCJhifdBhs6msRsfrKbg=;
+	s=arc-20240116; t=1739124483; c=relaxed/simple;
+	bh=r06e45w7y/RPqT4Lo6jKZ9NpHEA4wvNPwLkvlBKkcXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFHBZ0ebVee3lvL5DifY5r13xz+FSZxq+vuHW/DZtMr6bNARCYbXP8TnHCGXVHmg8XkIhoUKU/xJLRcIBXQ5Wa7iNLSafrstHACzJGh6KMgRg7/6biTjmkLV+C+Y4XuOAku//XsX/wQH8FN7e0cqDeJYlq4or1pCt7C0QYOlRfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/RLcYs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31065C4CEE5;
-	Sun,  9 Feb 2025 18:07:48 +0000 (UTC)
+	 MIME-Version; b=XDhO+fN2WnO0nUfpdx7otwseamFhQKeyNQRP+F2wMKeLXH9GMpVore63LAILILkVQClRXuD8MJH95EgYd69j9EkB7fiDHdyifHzSPLdXrokqHPIGdiZ4PCS2IEfHtK0wanKL2J2lWtuquEyoxZ8iXbLHnmMvgQg2+yi3QRCiEO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aw9IIqm/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C119C4CEDD;
+	Sun,  9 Feb 2025 18:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739124475;
-	bh=4IpfLRZ5I0wsh95AQTJdt9kBCJhifdBhs6msRsfrKbg=;
+	s=k20201202; t=1739124483;
+	bh=r06e45w7y/RPqT4Lo6jKZ9NpHEA4wvNPwLkvlBKkcXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/RLcYs9/0m6wJb0y2v+vi0lZeEuqyvc6DrWvknuMkvgHaLFHpnKZj5XiG6ZajA/7
-	 DhYef50MHr51eQDsivddsWtSh9jZk7ZKmg3Xb89m4tTZ6cBnePEKPJOA7en/tWqoCY
-	 VewnuCGHsNXZ7JJtElVQ7d30sK+BthJPaX9hpN8KmVWG1MxD4NyK/FB92G6Hodcnzz
-	 tlTTYj1qjYCnqMkxGNZGitsILg8c9mPePOt32XAtPRHghoiHxtHtViPiCOHGUiQ/WQ
-	 Ddf0pMrEPOw/u6lYSiHkOGZJPThWRHHdZSdpGZs2dvC/U69PqBDHF+V4DYk/991zeZ
-	 iK4KX4t/LnbxQ==
+	b=aw9IIqm/93DH2ybNsA4mffJVb+VhNxVbPhXDCBRVd/6vk16A6K5QtjmWhSTJwq5ak
+	 fJwB/veFft9N5Ja4oly3w8yV141nOkTujpUS1LFPGMyRf7C5eWwXqkUsCo/fYftl7W
+	 TQ8w0x4lUknq0lnsKsFa1qxaqiQXB3hFsXXxQN0TKRkbtwDFVWSdYnoAV8qWwQenBr
+	 AgUKP0+xXYruVdbGlSAv4TPN3DL+aEkb+Z8aNaG7xyY7QCAqcryDlCAV9XEO2vsMYH
+	 3oBIxwvXs6N1uAm/HpjVRIvsBci/jpZ50L3xz8C2kO+loqsqZJhpq9Z8KTgokJO+uz
+	 DZXTb3N7kauEg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Mudit Sharma <muditsharma.info@gmail.com>,
@@ -61,9 +61,9 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>,
 	Antoni Pokusinski <apokusinski01@gmail.com>,
 	Tomasz Duszynski <tomasz.duszynski@octakon.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 10/27] iio: adc: ad4130: Stop using iio_device_claim_direct_scoped()
-Date: Sun,  9 Feb 2025 18:06:07 +0000
-Message-ID: <20250209180624.701140-11-jic23@kernel.org>
+Subject: [PATCH v2 11/27] iio: adc: ad4695: Stop using iio_device_claim_direct_scoped()
+Date: Sun,  9 Feb 2025 18:06:08 +0000
+Message-ID: <20250209180624.701140-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250209180624.701140-1-jic23@kernel.org>
 References: <20250209180624.701140-1-jic23@kernel.org>
@@ -82,55 +82,322 @@ to be more trouble that it is worth in terms of false positive compiler
 warnings and hard to read code.
 
 Move directly to the new claim/release_direct() that allow sparse
-to check for unbalanced context.
+to check for unbalanced context.  In some cases code is factored
+out to utility functions that can do a direct return with the
+claim and release around the call.
 
-Cc: Cosmin Tanislav <demonsingur@gmail.com>
 Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad4130.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+v2: Typo in commit description (David).
+Note there are several sets current in flight that touch this driver.
+I'll rebase as necessary depending on what order the dependencies resolve.
+---
+ drivers/iio/adc/ad4695.c | 240 ++++++++++++++++++++++-----------------
+ 1 file changed, 133 insertions(+), 107 deletions(-)
 
-diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
-index acc241cc0a7a..061eeb9b1f8d 100644
---- a/drivers/iio/adc/ad4130.c
-+++ b/drivers/iio/adc/ad4130.c
-@@ -1067,13 +1067,11 @@ static int _ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
- static int ad4130_read_sample(struct iio_dev *indio_dev, unsigned int channel,
- 			      int *val)
- {
--	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
--		struct ad4130_state *st = iio_priv(indio_dev);
-+	struct ad4130_state *st = iio_priv(indio_dev);
- 
--		guard(mutex)(&st->lock);
--		return _ad4130_read_sample(indio_dev, channel, val);
--	}
--	unreachable();
-+	guard(mutex)(&st->lock);
-+
-+	return _ad4130_read_sample(indio_dev, channel, val);
+diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+index 13cf01d35301..4bb22f4d739b 100644
+--- a/drivers/iio/adc/ad4695.c
++++ b/drivers/iio/adc/ad4695.c
+@@ -738,6 +738,25 @@ static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
+ 	return spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
  }
  
- static int ad4130_read_raw(struct iio_dev *indio_dev,
-@@ -1083,10 +1081,16 @@ static int ad4130_read_raw(struct iio_dev *indio_dev,
- 	struct ad4130_state *st = iio_priv(indio_dev);
- 	unsigned int channel = chan->scan_index;
- 	struct ad4130_setup_info *setup_info = &st->chans_info[channel].setup;
++static int __ad4695_read_info_raw(struct ad4695_state *st,
++				  struct iio_chan_spec const *chan,
++				  int *val)
++{
++	u8 realbits = chan->scan_type.realbits;
 +	int ret;
++
++	ret = ad4695_read_one_sample(st, chan->address);
++	if (ret)
++		return ret;
++
++	if (chan->scan_type.sign == 's')
++		*val = sign_extend32(st->raw_data, realbits - 1);
++	else
++		*val = st->raw_data;
++
++	return IIO_VAL_INT;
++}
++
+ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val, int *val2, long mask)
+@@ -750,19 +769,12 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
  
- 	switch (info) {
+ 	switch (mask) {
  	case IIO_CHAN_INFO_RAW:
--		return ad4130_read_sample(indio_dev, channel, val);
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			ret = ad4695_read_one_sample(st, chan->address);
+-			if (ret)
+-				return ret;
+-
+-			if (chan->scan_type.sign == 's')
+-				*val = sign_extend32(st->raw_data, realbits - 1);
+-			else
+-				*val = st->raw_data;
+ 
+-			return IIO_VAL_INT;
+-		}
+-		unreachable();
 +		if (!iio_device_claim_direct(indio_dev))
 +			return -EBUSY;
-+
-+		ret = ad4130_read_sample(indio_dev, channel, val);
++		ret = __ad4695_read_info_raw(st, chan, val);
 +		iio_device_release_direct(indio_dev);
 +		return ret;
- 	case IIO_CHAN_INFO_SCALE: {
- 		guard(mutex)(&st->lock);
- 		*val = st->scale_tbls[setup_info->ref_sel][setup_info->pga][0];
+ 	case IIO_CHAN_INFO_SCALE:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+@@ -800,45 +812,45 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_CALIBSCALE:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+-			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-				ret = regmap_read(st->regmap16,
+-					AD4695_REG_GAIN_IN(chan->scan_index),
+-					&reg_val);
+-				if (ret)
+-					return ret;
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
++			ret = regmap_read(st->regmap16,
++					  AD4695_REG_GAIN_IN(chan->scan_index),
++					  &reg_val);
++			iio_device_release_direct(indio_dev);
++			if (ret)
++				return ret;
+ 
+-				*val = reg_val;
+-				*val2 = 15;
++			*val = reg_val;
++			*val2 = 15;
+ 
+-				return IIO_VAL_FRACTIONAL_LOG2;
+-			}
+-			unreachable();
++			return IIO_VAL_FRACTIONAL_LOG2;
+ 		default:
+ 			return -EINVAL;
+ 		}
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+-			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-				ret = regmap_read(st->regmap16,
+-					AD4695_REG_OFFSET_IN(chan->scan_index),
+-					&reg_val);
+-				if (ret)
+-					return ret;
+-
+-				tmp = sign_extend32(reg_val, 15);
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
++			ret = regmap_read(st->regmap16,
++					  AD4695_REG_OFFSET_IN(chan->scan_index),
++					  &reg_val);
++			iio_device_release_direct(indio_dev);
++			if (ret)
++				return ret;
+ 
+-				*val = tmp / 4;
+-				*val2 = abs(tmp) % 4 * MICRO / 4;
++			tmp = sign_extend32(reg_val, 15);
+ 
+-				if (tmp < 0 && *val2) {
+-					*val *= -1;
+-					*val2 *= -1;
+-				}
++			*val = tmp / 4;
++			*val2 = abs(tmp) % 4 * MICRO / 4;
+ 
+-				return IIO_VAL_INT_PLUS_MICRO;
++			if (tmp < 0 && *val2) {
++				*val *= -1;
++				*val2 *= -1;
+ 			}
+-			unreachable();
++
++			return IIO_VAL_INT_PLUS_MICRO;
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -847,64 +859,75 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 	}
+ }
+ 
+-static int ad4695_write_raw(struct iio_dev *indio_dev,
+-			    struct iio_chan_spec const *chan,
+-			    int val, int val2, long mask)
++static int __ad4695_write_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long mask)
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+ 	unsigned int reg_val;
+ 
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		switch (mask) {
+-		case IIO_CHAN_INFO_CALIBSCALE:
+-			switch (chan->type) {
+-			case IIO_VOLTAGE:
+-				if (val < 0 || val2 < 0)
+-					reg_val = 0;
+-				else if (val > 1)
+-					reg_val = U16_MAX;
+-				else
+-					reg_val = (val * (1 << 16) +
+-						   mul_u64_u32_div(val2, 1 << 16,
+-								   MICRO)) / 2;
+-
+-				return regmap_write(st->regmap16,
+-					AD4695_REG_GAIN_IN(chan->scan_index),
+-					reg_val);
+-			default:
+-				return -EINVAL;
+-			}
+-		case IIO_CHAN_INFO_CALIBBIAS:
+-			switch (chan->type) {
+-			case IIO_VOLTAGE:
+-				if (val2 >= 0 && val > S16_MAX / 4)
+-					reg_val = S16_MAX;
+-				else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
+-					reg_val = S16_MIN;
+-				else if (val2 < 0)
+-					reg_val = clamp_t(int,
+-						-(val * 4 + -val2 * 4 / MICRO),
+-						S16_MIN, S16_MAX);
+-				else if (val < 0)
+-					reg_val = clamp_t(int,
+-						val * 4 - val2 * 4 / MICRO,
+-						S16_MIN, S16_MAX);
+-				else
+-					reg_val = clamp_t(int,
+-						val * 4 + val2 * 4 / MICRO,
+-						S16_MIN, S16_MAX);
+-
+-				return regmap_write(st->regmap16,
+-					AD4695_REG_OFFSET_IN(chan->scan_index),
+-					reg_val);
+-			default:
+-				return -EINVAL;
+-			}
++	switch (mask) {
++	case IIO_CHAN_INFO_CALIBSCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (val < 0 || val2 < 0)
++				reg_val = 0;
++			else if (val > 1)
++				reg_val = U16_MAX;
++			else
++				reg_val = (val * (1 << 16) +
++					   mul_u64_u32_div(val2, 1 << 16,
++							   MICRO)) / 2;
++
++			return regmap_write(st->regmap16,
++					    AD4695_REG_GAIN_IN(chan->scan_index),
++					    reg_val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_CHAN_INFO_CALIBBIAS:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (val2 >= 0 && val > S16_MAX / 4)
++				reg_val = S16_MAX;
++			else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
++				reg_val = S16_MIN;
++			else if (val2 < 0)
++				reg_val = clamp_t(int,
++						  -(val * 4 + -val2 * 4 / MICRO),
++						  S16_MIN, S16_MAX);
++			else if (val < 0)
++				reg_val = clamp_t(int,
++						  val * 4 - val2 * 4 / MICRO,
++						  S16_MIN, S16_MAX);
++			else
++				reg_val = clamp_t(int,
++						  val * 4 + val2 * 4 / MICRO,
++						  S16_MIN, S16_MAX);
++
++			return regmap_write(st->regmap16,
++					    AD4695_REG_OFFSET_IN(chan->scan_index),
++					    reg_val);
+ 		default:
+ 			return -EINVAL;
+ 		}
++	default:
++		return -EINVAL;
+ 	}
+-	unreachable();
++}
++
++static int ad4695_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	int ret;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++	ret = __ad4695_write_raw(indio_dev, chan, val, val2, mask);
++	iio_device_release_direct(indio_dev);
++
++	return ret;
+ }
+ 
+ static int ad4695_read_avail(struct iio_dev *indio_dev,
+@@ -954,26 +977,29 @@ static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev,
+ 				     unsigned int *readval)
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+-
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		if (readval) {
+-			if (regmap_check_range_table(st->regmap, reg,
+-						     &ad4695_regmap_rd_table))
+-				return regmap_read(st->regmap, reg, readval);
+-			if (regmap_check_range_table(st->regmap16, reg,
+-						     &ad4695_regmap16_rd_table))
+-				return regmap_read(st->regmap16, reg, readval);
+-		} else {
+-			if (regmap_check_range_table(st->regmap, reg,
+-						     &ad4695_regmap_wr_table))
+-				return regmap_write(st->regmap, reg, writeval);
+-			if (regmap_check_range_table(st->regmap16, reg,
+-						     &ad4695_regmap16_wr_table))
+-				return regmap_write(st->regmap16, reg, writeval);
+-		}
++	int ret = -EINVAL;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	if (readval) {
++		if (regmap_check_range_table(st->regmap, reg,
++					     &ad4695_regmap_rd_table))
++			ret = regmap_read(st->regmap, reg, readval);
++		if (regmap_check_range_table(st->regmap16, reg,
++					     &ad4695_regmap16_rd_table))
++			ret = regmap_read(st->regmap16, reg, readval);
++	} else {
++		if (regmap_check_range_table(st->regmap, reg,
++					     &ad4695_regmap_wr_table))
++			ret = regmap_write(st->regmap, reg, writeval);
++		if (regmap_check_range_table(st->regmap16, reg,
++					     &ad4695_regmap16_wr_table))
++			ret = regmap_write(st->regmap16, reg, writeval);
+ 	}
++	iio_device_release_direct(indio_dev);
+ 
+-	return -EINVAL;
++	return ret;
+ }
+ 
+ static const struct iio_info ad4695_info = {
 -- 
 2.48.1
 

@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-15224-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15225-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AF0A2E460
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:50:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6AFA2E466
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7517C3A5158
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:49:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 868523A4B28
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC871B2186;
-	Mon, 10 Feb 2025 06:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105A91B424F;
+	Mon, 10 Feb 2025 06:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jCUZMhTt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KSVSJUHj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E95D1AF0DB;
-	Mon, 10 Feb 2025 06:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352CB1AF0DB;
+	Mon, 10 Feb 2025 06:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739170173; cv=none; b=GLKGA0tlpjPtVXOy9RGlRoxt84u192ViTHDg/rdUrjtMqbDoE41AaAMz25pGLxnyWeYqdqymTslhhiC0FQFBkpG5/+FG+8J53Rb3aP0nyszovKf0ZoDZB0IYhN3iI66Ak+GN/KbxSKKroAwMBqsI3bNbgO+/HPIOoXD2dIr0+g4=
+	t=1739170178; cv=none; b=AZXwIBJSYRpUitPsN0dHQ5NWYVy9yketgCgBPZrdeUGRnALvWCdiVd0HEm1KGL22GddaQGgsk/rBM3H13C80fcqNRZp/lFHtzPk1RSw9DufU+ZCk5gbGqKc7o4kA/l40+9+Le4ab9naFz6XTLLeEMvb8/6SMx1riBb7yL3viG0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739170173; c=relaxed/simple;
-	bh=67RSFInZFm0DdSiUI+c1fBuDjIAFg7k6SbR7C8UNsAs=;
+	s=arc-20240116; t=1739170178; c=relaxed/simple;
+	bh=yZUkpezDWb6PWJ0o7eQG3RTvuXmRTg1DIwLHbE6Jk/k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oGEZda+/nRBfEtgsXq2SSqLwaWBh7ZLeXYXSa9DnljKjjyPfU+ObOwwrKtuqk8lL6e1wTzZ/ptVskViBGwJNU6HWs6wiLuE+H94NRJx1kO5N8dWpUaL/QLSTuz7WCG8mN1jcUhzPcw7XHS7VqlJjeDL+9Vn9qfgbVflqKzajgYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jCUZMhTt; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=Dai432PtX+NBc19vTkxruP5B7Mw4tHKxQBhu2dU/IepDEZVMop6IYVfCToAY3x3Tvs6CyQrbPKlRKUejWCzsHlCUPQw8MAZBRaP5Cy7f7/682t56iHTY6oap1kl+rtFMKkyH7MJvvUGgu59XRHYSs36Jmyc3PsUCrGVNfbb8gZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KSVSJUHj; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739170173; x=1770706173;
+  t=1739170178; x=1770706178;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=67RSFInZFm0DdSiUI+c1fBuDjIAFg7k6SbR7C8UNsAs=;
-  b=jCUZMhTtIPCs+XmMtZlQ8nnRdgMGVQh1ofGOXjz0Mh3ew51ugYhHnBQ5
-   p/GEgXf2pSgGRDh+JQxylZoiUOFJiJW39V6mvmYJZ9gJbXCfTxp5buBx3
-   kft0jiv3AVDelT0forIDMYMx/u4MMgyms7llZbFkUyTFPuuE71/8WZS/3
-   wNQcwMfiHK3oq+1jDODm5fBfSQVUKxL1owSNae2LRgdcMEyJsU71TeMMz
-   +MDCf9cLTYUPZKqOtzsNzoJ+t2MG1mpwcxKo0rg+HXKLrpvBOC/K+etjY
-   QJ7JPiAfuOQgffyL4s9n8zQRC02Vjq/Zgx6+YMvql1Wq7zN0REZ5aL70l
-   g==;
-X-CSE-ConnectionGUID: jVwkTU1gQ9eCs1Ri02OBOQ==
-X-CSE-MsgGUID: k6JDt/sKTP+CGWGUngUuRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499297"
+  bh=yZUkpezDWb6PWJ0o7eQG3RTvuXmRTg1DIwLHbE6Jk/k=;
+  b=KSVSJUHjvMmVcJluP6iPyh61pHIn0JGnGd+NBDIOJnZ0L/Qaads5P3jn
+   plE+z0UQUb/PYtnCaIEg/vsKpMY5gzVN60lDN4dx5+TVe89fOZzde+Y60
+   vQRITmtywGWLwaSjTkUXe604q2nGXZowixrXSEFrhS8CSeKMy3Mc/lBXo
+   QaJCPllcva/Hbo4RUk/6H0D4xnnezru6p7jTIFVhdg7DLUcA5QkyUvIPr
+   DCiCn5HSnwGp70jFfO9ekrDxFt0GZZAMsVzURwETzgd/sOiMgKcxRo1iL
+   zqVl+H0tyfv4tRRFO2clPwgR2/6ML1r4ZFQNdlZkXmy0EIfBm3Gdqacuq
+   A==;
+X-CSE-ConnectionGUID: fEVCVri0SMiCVDUs+goCNQ==
+X-CSE-MsgGUID: m9NuUVOaQwCa0siREiKkoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499303"
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="43499297"
+   d="scan'208";a="43499303"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:49:32 -0800
-X-CSE-ConnectionGUID: eTf7Cd0dSOyC17dl+jrboA==
-X-CSE-MsgGUID: ebPmSzptRhuwsw107IT2Kg==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:49:37 -0800
+X-CSE-ConnectionGUID: vrD5siRwSFWTIdSrJpq8/A==
+X-CSE-MsgGUID: uwIr33ewT4aOepm0opVtrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="117122402"
+   d="scan'208";a="117122423"
 Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:49:26 -0800
+  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:49:32 -0800
 From: Raag Jadav <raag.jadav@intel.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -76,11 +76,10 @@ Cc: linux-gpio@vger.kernel.org,
 	linux-sound@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-iio@vger.kernel.org,
-	Raag Jadav <raag.jadav@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v4 02/20] iio: imu: st_lsm9ds0: Replace device.h with what is needed
-Date: Mon, 10 Feb 2025 12:18:48 +0530
-Message-Id: <20250210064906.2181867-3-raag.jadav@intel.com>
+	Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH v4 03/20] devres: Introduce devm_kmemdup_array()
+Date: Mon, 10 Feb 2025 12:18:49 +0530
+Message-Id: <20250210064906.2181867-4-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210064906.2181867-1-raag.jadav@intel.com>
 References: <20250210064906.2181867-1-raag.jadav@intel.com>
@@ -92,44 +91,33 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Introduce '_array' variant of devm_kmemdup() which is more robust and
+consistent with alloc family of helpers.
 
-Instead of including a huge device.h with tons of dependencies
-include only what driver actually uses.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+Reviewed-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c | 2 +-
- drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/device/devres.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-index 0732cfa258c4..8cc071463249 100644
---- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-+++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c
-@@ -7,7 +7,7 @@
-  * Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-  */
+diff --git a/include/linux/device/devres.h b/include/linux/device/devres.h
+index 4ec4c658879a..634af06ec775 100644
+--- a/include/linux/device/devres.h
++++ b/include/linux/device/devres.h
+@@ -80,6 +80,11 @@ void devm_kfree(struct device *dev, const void *p);
  
--#include <linux/device.h>
-+#include <linux/device/devres.h>
- #include <linux/err.h>
- #include <linux/gfp_types.h>
- #include <linux/i2c.h>
-diff --git a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-index 43ec57c1e604..806e55f75f65 100644
---- a/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-+++ b/drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c
-@@ -7,7 +7,7 @@
-  * Author: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-  */
+ void * __realloc_size(3)
+ devm_kmemdup(struct device *dev, const void *src, size_t len, gfp_t gfp);
++static inline void *devm_kmemdup_array(struct device *dev, const void *src,
++				       size_t n, size_t size, gfp_t flags)
++{
++	return devm_kmemdup(dev, src, size_mul(size, n), flags);
++}
  
--#include <linux/device.h>
-+#include <linux/device/devres.h>
- #include <linux/err.h>
- #include <linux/gfp_types.h>
- #include <linux/module.h>
+ char * __malloc
+ devm_kstrdup(struct device *dev, const char *s, gfp_t gfp);
 -- 
 2.34.1
 

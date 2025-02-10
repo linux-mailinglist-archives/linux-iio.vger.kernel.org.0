@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-15249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51F9A2EA59
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 12:02:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5E7A2EA5D
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 12:02:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0927E168583
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 11:02:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AA793A6EBF
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 11:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A361E0E05;
-	Mon, 10 Feb 2025 11:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F6511E32BE;
+	Mon, 10 Feb 2025 11:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lheq0JzT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d7UeFGUy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEABF1DF98B;
-	Mon, 10 Feb 2025 11:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5E31E04BD;
+	Mon, 10 Feb 2025 11:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739185298; cv=none; b=uM6hkCEC946IqKgTtCbGoGY4EMIvsb5JLozrml+h2liUuIS6aFtEKF1PU3uzlptjCSgnXAIakuJQoaHlXbhJmoxQ79LrpU9MUGHRoowwRiqWw2qXsAZa5orQt2IKVprDZbbdCAju0uiuOp1nFAqiD9g/NlFRzKAyV1+tokW6hxc=
+	t=1739185299; cv=none; b=UYsx4dYvxW16SwH6PahIxcCgquWhEAvtGfuQoody18EJparJXdje/n2txUYLlg3CVICk3GyN+BdpRKHeCUu5eL7nQfaHpy/WSHuaP01gT4b+eg1SHIWHrSC+TeRgX/mpkwxp1I4E/NwLPY4I8LmHyU3+sYwgDtO22OQVMBa5yxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739185298; c=relaxed/simple;
-	bh=4lgqPxMFIxcu6DJtyKvsa6jPFpK3C+Ewcmj6hhpH5wg=;
+	s=arc-20240116; t=1739185299; c=relaxed/simple;
+	bh=Ttjnz9CEb4H/zKxyDBnQf37YaeAwFYqFGMLzqwJ1KfA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sOz2z3Caq1Hfgh8LLfAQYpj5n+F0EHHi00DX9CdfMpPQT+j/D/ef7qv/uHnHmFy4PDUnyU2Bt+/4+tpw15DOw1Udl4uc0F+6qvlQSAxft6wN5WvQjwzNToAj0XEXKLpNC5F5/571znMM3IABhmLEScGqzGzR1HCURwBmlUDDonM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lheq0JzT; arc=none smtp.client-ip=209.85.218.49
+	 MIME-Version; b=TswKaQbOTpi+8a96q0WD/EtjaFIrCLKrPpNGhzPTL/rDBvBUKPVTNl0RBYbL+ZKfONj27wnvXWg/eoDeBwkK+DnWGo3FHK0xnvlqBwyi5A5aTZb/mxFlZtdoAUJPLMjaYIO0I3/kfKZpNp5UjMvr3XFY1niZntZHyJewxkqzeAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d7UeFGUy; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ab7b35a004aso22180666b.0;
-        Mon, 10 Feb 2025 03:01:36 -0800 (PST)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ab7c4350826so8205766b.3;
+        Mon, 10 Feb 2025 03:01:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739185295; x=1739790095; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739185296; x=1739790096; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4OpRgAIuBhfsxGTEjf/p9nsoY6yTj5Mb2FMWgMOeJw4=;
-        b=Lheq0JzT5+60TiPa6DpCrdE8RrLRtC/LdXgmlpbeBYPtJEqx0gBzUxWHEjx69zNH0a
-         My79yWP4fvi2ytcimfHn/hmAVWtxVmJBpeAJrYyzne8wIlNX/QpIri2ToEF0rBpOmFK7
-         Nl02Wi2ivZrlo99XnOTLN2BzEMOLXLf9WBigHeNCBFqP1bD7gfpMnTTkJdctIX9Yz05s
-         vqCu93WKUcpGJe2uqr8a1WpMG0xG5w1sPVsPuOvY0TFBRSG0MsK01wvbPkmb6g6XH5QN
-         hhvWTCYE81osqH+9yHSGbQO+UdT4+uIElThEDJ5rKdqHL2b2tf2ow3bNrwXL1hEdr2+R
-         7gKA==
+        bh=LUUYm/3eJ6K4O4SEkRHQKdWxE/3N+ctQ4MV2sEbJtcE=;
+        b=d7UeFGUyHVr4k6y9TPWO4iRmVjldfE5+6Cnm6a284Iq15KGhystkCreX0YFcGt15a1
+         2/z3SYULBgYaYZha286W6lIKw0RVMAPXzKvk+6bCVw48ULvsxnPpKGZf8/PbbVmThTKn
+         YXu0b0x+WLlXTNb5rTaXZI6NTelVQcRmnijUjovY8sNdViirerxPJfqdG6kVVtCP/7Ts
+         xLYO3zR/2pwUpfvM8Im6FvQZ2fbuWhikampbqOYTYvdNYNXOsNSfoZaf22Iho83AIf28
+         Ojt/67V3a/Pk1hyoQZsKnveScdLL1WOJNTotPLgP3VKGKVadyNYtAh2y+CCQwXsR8vml
+         rS3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739185295; x=1739790095;
+        d=1e100.net; s=20230601; t=1739185296; x=1739790096;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4OpRgAIuBhfsxGTEjf/p9nsoY6yTj5Mb2FMWgMOeJw4=;
-        b=O4qNzae1xh9ttA2+pCx09X9MaFzUEnCVrTlrTlT6djfqtwcUYiS+LYP2l9KSjgkh38
-         ciF8bhuuoms+BdBCKHh4Quam3O0cM9si5cpB/C1eswJnbKjh5nlHFtUBUJ7YVgO4Ysr7
-         Ilwo3OTSDeFKZaGmt+CN5qJEEzqZFuxodBSEMPPUIHqosxZlF/dgZ07gaBFXtA/urHrS
-         MSwJ/KEreqjT4BhOy/i9hQyfNxuqxpjZbF1ce0HqdWNidoBOVn1v+/q6mRA6AiAYkMQN
-         aAAo0j+OffRZkrOuWdAyngGCamyv11196Fm1OaRrqQ0KBzumVSGl80c5Zjqsb1caJ7El
-         vQag==
-X-Forwarded-Encrypted: i=1; AJvYcCWPwXeNONZzI/uKvZaD73a7/7BxuiCOhk6TXqUILfsHc/0nHq9qm59x1FkK7AGOUoCD+Oze8irjfE/9k0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzriI5pzBQekSekuifRSHlju+3cELVBVkvFwcPH6Aj/GwCopKwG
-	2mIjl2rhz4vTwSSXf61Ox6jqxqwgRYwYkvSJGSMiQ+sJ0+BxBkX+
-X-Gm-Gg: ASbGnctYow/SMgQoJMd+cClNXiY3WQDXlCOy4jW7BckPxzKDlT5sfhkr+9v4YCb1ku9
-	1H8u82WfeMB/nszPaovKzQFz3+JqbOji3YHHMl7WFwn7qOMrjAfjBgvaLrG2T9cbKKOXhXECcdb
-	5T8trJcxXDTDEjgK/UuVR6+OB+TWh81V/jXUpsArv8fLHE0Pj6o/lwsUG2z9BPUKbbnZpSTTJFc
-	AhiM2Ad8lnP9KgwkPx8Tl9X5lu5q2pDRh74AekAZ/zoQK1cZurGnhYmKkDi3LZeSH3oq2ATaB4J
-	tsBDA0u3oh7f5Lqo3J3sRRTNXZqgilr3OM5nWCrgP6li3gu/aLS5WeHbSN9tWAYjtsFZBw==
-X-Google-Smtp-Source: AGHT+IHCN8FAOnf074W91FqLK2TJl4jo1arYJwYdZdC+yUBSlpwUlylD99NqUWtXXh70SuLS9ddJJQ==
-X-Received: by 2002:a17:906:891:b0:ab7:cb76:1b0e with SMTP id a640c23a62f3a-ab7cb768dedmr53984866b.9.1739185295058;
-        Mon, 10 Feb 2025 03:01:35 -0800 (PST)
+        bh=LUUYm/3eJ6K4O4SEkRHQKdWxE/3N+ctQ4MV2sEbJtcE=;
+        b=wiMMixz15YtZwvJnDSFZyl2rPHV57+UGYuD59K8xnxhBQURQlhn4ghEkTuRO84f/vr
+         I03qbKHrO/FW0auqI4q3H5shSdCuHO3jldsYygi0ZS9STX4HvjdF9L/JYMkHCZVgmfzS
+         VUNPWLaUZ5RNe08J9+zRu5W+VHjrravw9Y4K2HJcxrHaMsDGph6CueIM3aAQ2nD7DbaS
+         o5WNN6NEF/2hf6Q5s+/eFz85wKXNlLoGJMciuuiviLL0z+4DXZmkY2Ks1kHSYonWsedg
+         NqTCndnMSuJPlI76FSjuVdkX8gV8Qhee0wutzjQefSG277U/CRnVctcy6Ogvu0FfbeOT
+         Liog==
+X-Forwarded-Encrypted: i=1; AJvYcCVNDpmTQINfUVR4fGAgNg34bVYDu3mECWA7/uT6mneHsToyM/aV23yD/XiL0pt7O4kL69QQysWA2cR/efI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxTm+LUzuHB338TVX7WN3F2Wx09hK4FhU27NuphsBiTiM9MseW
+	lAG0MvAdoknJnyw80OsJL1QpXXPbPEll3S4CWtkFl9qCjebjvYgzHz0UTQ==
+X-Gm-Gg: ASbGncs95DDxfm3KGrFV0mwQiOUG2qEqDZdMpGrDnZyrLMga/XW7N0RN4mPEZGjIF2F
+	VpMXAwxrzhKB9FY3Bj3siOwODeNc7qyOWVa58noekDcTFzZXf0sse1hp47UhHbNkJuFO/TBIayi
+	0NXaVrVJNmshII56rxyRQTbcwHJK86VI3KQbfszrpx1vA1P+a7hGQ6b08aJyvMDLo8Y1JuR/ofr
+	V+e5BpRV1Qzj5a7MxtciiNwVL9acALPjYcSvOWU07FxNsTZ5ph52HjYkeuMQAqD/wWLMUxA87VW
+	00vIyvyoJZatiOKRSY0d4b3ktDqt3DYKehY8MlJ2pdjTgmk/4BOx8qgAU0UQp/b1MSE6Vw==
+X-Google-Smtp-Source: AGHT+IHjj5Y0omCrE5Yx3J43H+N0Jh92ZtUKt8kOk0+UARkJyK/on6u3N4vsH4HMhh6wgTiOMl7cWQ==
+X-Received: by 2002:a17:907:3f18:b0:ab7:cd83:98bb with SMTP id a640c23a62f3a-ab7cd839b0amr54944766b.5.1739185296106;
+        Mon, 10 Feb 2025 03:01:36 -0800 (PST)
 Received: from d9dabf0abd47.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7a5a78369sm486987266b.136.2025.02.10.03.01.34
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7a5a78369sm486987266b.136.2025.02.10.03.01.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 03:01:34 -0800 (PST)
+        Mon, 10 Feb 2025 03:01:35 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -80,9 +80,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v2 02/14] iio: accel: adxl345: add debug register access
-Date: Mon, 10 Feb 2025 11:01:07 +0000
-Message-Id: <20250210110119.260858-3-l.rubusch@gmail.com>
+Subject: [PATCH v2 03/14] iio: accel: adxl345: reorganize irq handler
+Date: Mon, 10 Feb 2025 11:01:08 +0000
+Message-Id: <20250210110119.260858-4-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250210110119.260858-1-l.rubusch@gmail.com>
 References: <20250210110119.260858-1-l.rubusch@gmail.com>
@@ -94,44 +94,94 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the possibility to verify the content of the configuration
-registers of the sensor in preparation for upcomming feature
-implementations.
+Reorganize the IRQ handler. Move the overrun handling to the bottom.
+Overrun leads to reset the interrupt register. This also happens at
+evaluation of a particular interrupt event. First evaluate an event
+if possible, then fall back to overrun handling. Additionally simplify
+fetching the interrupt status function.
+
+Both is in preparation to build interrupt handling up for the handling
+of different detected events, implemented in follow up patches.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/iio/accel/adxl345.h      |  1 -
+ drivers/iio/accel/adxl345_core.c | 26 +++++++++-----------------
+ 2 files changed, 9 insertions(+), 18 deletions(-)
 
+diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
+index 517e494ba555..bc6d634bd85c 100644
+--- a/drivers/iio/accel/adxl345.h
++++ b/drivers/iio/accel/adxl345.h
+@@ -43,7 +43,6 @@
+ #define ADXL345_REG_INT_ENABLE		0x2E
+ #define ADXL345_REG_INT_MAP		0x2F
+ #define ADXL345_REG_INT_SOURCE		0x30
+-#define ADXL345_REG_INT_SOURCE_MSK	0xFF
+ #define ADXL345_REG_DATA_FORMAT		0x31
+ #define ADXL345_REG_XYZ_BASE		0x32
+ #define ADXL345_REG_DATA_AXIS(index)				\
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index c24692c51893..468d562de227 100644
+index 468d562de227..2928c1c0760f 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -202,6 +202,16 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
+@@ -107,8 +107,7 @@ static int adxl345_set_interrupts(struct adxl345_state *st)
+ 	 * interrupts to the INT1 pin, whereas bits set to 1 send their respective
+ 	 * interrupts to the INT2 pin. The intio shall convert this accordingly.
+ 	 */
+-	int_map = FIELD_GET(ADXL345_REG_INT_SOURCE_MSK,
+-			    st->intio ? st->int_map : ~st->int_map);
++	int_map = st->intio ? st->int_map : ~st->int_map;
  
-+static int adxl345_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-+			      unsigned int writeval, unsigned int *readval)
-+{
-+	struct adxl345_state *st = iio_priv(indio_dev);
-+
-+	if (readval)
-+		return regmap_read(st->regmap, reg, readval);
-+	return regmap_write(st->regmap, reg, writeval);
-+}
-+
- static int adxl345_set_watermark(struct iio_dev *indio_dev, unsigned int value)
- {
- 	struct adxl345_state *st = iio_priv(indio_dev);
-@@ -467,6 +477,7 @@ static const struct iio_info adxl345_info = {
- 	.read_raw	= adxl345_read_raw,
- 	.write_raw	= adxl345_write_raw,
- 	.write_raw_get_fmt	= adxl345_write_raw_get_fmt,
-+	.debugfs_reg_access = &adxl345_reg_access,
- 	.hwfifo_set_watermark = adxl345_set_watermark,
+ 	ret = regmap_write(st->regmap, ADXL345_REG_INT_MAP, int_map);
+ 	if (ret)
+@@ -404,16 +403,9 @@ static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
+ 	.predisable = adxl345_buffer_predisable,
  };
  
+-static int adxl345_get_status(struct adxl345_state *st)
++static int adxl345_get_status(struct adxl345_state *st, unsigned int *int_stat)
+ {
+-	int ret;
+-	unsigned int regval;
+-
+-	ret = regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, &regval);
+-	if (ret < 0)
+-		return ret;
+-
+-	return FIELD_GET(ADXL345_REG_INT_SOURCE_MSK, regval);
++	return regmap_read(st->regmap, ADXL345_REG_INT_SOURCE, int_stat);
+ }
+ 
+ static int adxl345_fifo_push(struct iio_dev *indio_dev,
+@@ -449,14 +441,10 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ 	int int_stat;
+ 	int samples;
+ 
+-	int_stat = adxl345_get_status(st);
+-	if (int_stat <= 0)
++	if (adxl345_get_status(st, &int_stat))
+ 		return IRQ_NONE;
+ 
+-	if (int_stat & ADXL345_INT_OVERRUN)
+-		goto err;
+-
+-	if (int_stat & ADXL345_INT_WATERMARK) {
++	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
+ 		samples = adxl345_get_samples(st);
+ 		if (samples < 0)
+ 			goto err;
+@@ -464,6 +452,10 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ 		if (adxl345_fifo_push(indio_dev, samples) < 0)
+ 			goto err;
+ 	}
++
++	if (FIELD_GET(ADXL345_INT_OVERRUN, int_stat))
++		goto err;
++
+ 	return IRQ_HANDLED;
+ 
+ err:
 -- 
 2.39.5
 

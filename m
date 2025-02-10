@@ -1,233 +1,250 @@
-Return-Path: <linux-iio+bounces-15278-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15279-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC98DA2F2DB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 17:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3416A2F305
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 17:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7711166513
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 16:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4499716460C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 16:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE5F2566EE;
-	Mon, 10 Feb 2025 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977E82580EA;
+	Mon, 10 Feb 2025 16:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tik90vAc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lW9b5+py"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D002A2566C5
-	for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 16:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221D32580CD
+	for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 16:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739203984; cv=none; b=q9Pu8ns1JyIGXhb5IUIi8JvVw5MpV1Tpm1i+Uo27NgARk/1IrlLJuC8+uat+aC8Nz9IQ5xVu/V+kLAtH714TC9zOUicwatB+Lpf2NeaoobSFMi49vHXr61L2UQOnXPepaSxdvHvS7CEdmS9l5atv0IcmXut22+F69JpgQMeero8=
+	t=1739204302; cv=none; b=GRSQa8DJomCyL881FppZEgTgxh4L3fhvnUe9y5LnDVeHWfrHASh9IQoeq/Cs+Gfnt8+WQqi4SL1zG7oOD71zCseyYRxNLKrXhleXezE4TBUWDcWDLAA+lum/4Nqq7/wBS1GlNW/fE9XlcfU0M8MPr7loebPkpHuNzEfaQQZZbbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739203984; c=relaxed/simple;
-	bh=oXABJ0HRSJUsqBxjQdzjmuSA2Zskw28HlIrTxxdX42Q=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ppFjjEUZtbVeEVxgBvuUHWiLnErNM6eV4s6RSovVjEezOMfDqSp+c+7gpfX6oQ5f2aEZz4vTGF2D+mLXj1z+wzFaUOdhe/wzhUklUWUzkfDsBUqqUozuRbTRvU5GHj7g3MLQT2g5P/W5gPI8TZceUPcC4mfz7VWIYGAp7vAAQI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tik90vAc; arc=none smtp.client-ip=209.85.128.49
+	s=arc-20240116; t=1739204302; c=relaxed/simple;
+	bh=besRNeHJT7xqfYb5uKHuNlYZxzWOS6Do+dRJvjqEIr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CuKUdunx57E9Q+GYDaphFkVfVYheHqJyjNbM8DyvB/lF07fQExO/E19ZN1ZsW3uD8rRpQCRvPJeqWX9EQ8MTgftpuiUQfr0Sbh/PJIYai01tkNW0eQN8zMGjGWA24ANkc+RygjrLkAC20432wAzeXO5lW3z3OnfCLT1peh2xl64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lW9b5+py; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4362f61757fso45439155e9.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 08:13:01 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ab78d9c5542so567928066b.1
+        for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 08:18:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739203980; x=1739808780; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eyom0qjvxfr0PUA0BRn3wccZvWvBCP/teSac2W2vzoA=;
-        b=tik90vAcy+RxqL5CV/R71IdcYZdoghkq6KHkA0ol1xpFDU+yc5Xms/E1J30sGUPQX6
-         S5UPbiNNjY/idtUNiokvcy7qCBSeNCUDVbaQby2S1cbgsNQhSMPUL3Q60Lkd9U8X2KNm
-         N9HAsPgClRGZ4c3O9ekS4A0u1Bco651eTuEpK+58cj0k6fHUuXsYzAkWSWTD1pEbrBq6
-         iocfkHFktzlvkebERSz1Kd62GVM9XmPlzkEnFx4YDfzakwFta9BIPDqYOARQ4ogBqeYq
-         j+0Ae/N8zJK2QbNxWudiITcvLEdbFdv6zNFdmTUIW/yK3Hgfi4RfD83O7noQ+iVR2W08
-         8ZPw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739204297; x=1739809097; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yg5LLUjdjjPvXo+kEmWGKdPDo5dG0M8KkYaCsN9kciQ=;
+        b=lW9b5+pyMvfH12lIjeC8I1cwPuHYyukcKFWR6qBvPNQS3K5vIeEBN7nWklHsLGWVK8
+         y1X8UEnsLqNOH4r9ZfJIYJVxh05/nwGG6V2TFypOXF2+SMBebEECYOi1cCA3MnoZQWTs
+         ooektOHYcXHdl1W4ex/E9OhWpqCDE446tTnVaASAoNSjJnBBniudXgDKQRiqyaxTmwEy
+         pAyekLGgB/qA3bA8O6YkBkDCUgVuYiIVrff6rSVgRtCXdG5+gFinlvwWDv4loftHoPZB
+         S5+z8hhxm8kKmqDCqRPFF6W3w99VdekvTvvIaa7V47CmSqg6+uUnmBwvpHMcdSUHoE75
+         Ejgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739203980; x=1739808780;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eyom0qjvxfr0PUA0BRn3wccZvWvBCP/teSac2W2vzoA=;
-        b=w0hBMZnvazBkHXTB1/yLKRkhdD/fooBSh3mmD6HRVEEjVUEroGR4rZ6OZVgsUT3icK
-         4LYOU31u6i7h/PuEgGMn14vzWI7ll2B6Ka2dOiDjNMtamxZwesZR+wm+TtErBieg6lpy
-         0GlGENHoyP95jZvJp7JO19nxHFnglqXzB+IfJFNFqkLA9ZL0146pud5sRt+NIJTxBGvr
-         iEwNLznecBWhts2JuhXifDFI2LuE69wuSC6kEHjcTOc/yeK1KE1fP4pj+in/YWc6cKVB
-         4yyrM0Sr6x2PcPc57dFqOKW6cJI/ZQfcZQYZyLdiSDQujmwLNRKl5CAOSh/I7p/Ni3iK
-         h8cw==
-X-Forwarded-Encrypted: i=1; AJvYcCU/1UsJ/0UibZ9phBOjG7C7+TqNiOZPxlxvIR6jWcVE8HXoHCmot4AuLiI1lv9e7M2Sus6uTphSwNE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYUwXbsN2vb0LVfEKbniml/2zpEssMZwrDAKMjoy7F+z+uGLfE
-	kMUXWIxA0E/VfaMrwVjWWYW/YDPsIuxxll4d37V3AJlgQX8ipqSdum0PdIaghTY=
-X-Gm-Gg: ASbGnctY0UcrVqJHrczj3UGwWcE5htnNBEg60Xjnf11ktTkFMsmq6x7BZTSNfniPqTV
-	EDABjJNBgfTeQcuH7SLvRv9D1K293Wt2nKVS3oGcJ8A87vk72Lx1uE72xzj30SpPPTZ3JAtzdoH
-	57Z1BvLo69JP/BT10iuEJjBZR5j+oKguDdH2RyGl83aGQnbgHN49V1wC7JBN2yoGcKFHqBwv1as
-	WpI06hCTLR4+7CBoAWHP9Gimp2sLMAL5JE27KkFp3GaRiJbGqwUKcGMmLsyBE62Ze3Qx4HCSRSv
-	USloj76cvaRY3/dk814WioHRbAsIeqRyVz5WI/JNf1C2DBHoYxMMzqqZxe8kYJA=
-X-Google-Smtp-Source: AGHT+IFHtByCSdx1O2bm7wTfO3oeSSWSD9kC3YKcmPVh+qEYF/LbA5lZmoVVo4nuzwDXSawJXU4XQw==
-X-Received: by 2002:a05:600c:3c84:b0:435:32e:8270 with SMTP id 5b1f17b1804b1-43924991e0cmr117634675e9.14.1739203979907;
-        Mon, 10 Feb 2025 08:12:59 -0800 (PST)
-Received: from [127.0.1.1] (host-87-8-15-130.retail.telecomitalia.it. [87.8.15.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dc9ffcdsm146637945e9.15.2025.02.10.08.12.58
+        d=1e100.net; s=20230601; t=1739204297; x=1739809097;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yg5LLUjdjjPvXo+kEmWGKdPDo5dG0M8KkYaCsN9kciQ=;
+        b=Ei7bR+GTtMVLibSXFiGQ3slyACY3A9OlJVdMbfMnFWVj+Eq9yxPZ0PrtEN5kqw5frF
+         HfTWXUjldm0oYRmfL9hTeOOyQcx2RS7RKZV8NPktmYzv26eEWEt090ryQlPc0mO1o8YU
+         lN9C74yIP3rEndFN1apJ1w9VYLrvlgyTBCDgKOLj9VdiXzrV+EXKqm2dJi0xSUc5Qbwn
+         FyrSYvXolWCAOUCXrjRb48dJ6CZH4z6Ov++/TH1LxOzxXvPK+PUAq4/1tSgPeR7L0BAd
+         7FZhvPEPszQMbMqSoHPGdOxlEpqQbw7BYftKn3cyDLpr7OBmjboUBvGaZyh79o8FZ3Vq
+         0HVg==
+X-Forwarded-Encrypted: i=1; AJvYcCWLe0vRM9iaJbaIqbHkrBzI48sWpAYOmBtmQ7jU+9FnfNiS8OHLVyviIrC0x2zDgW7SpU5bPQG05Kw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzuwhqxmr0VKh6RetFN8Id6lKbEvfDvC2r3FRiJfBzcyXOr6OrN
+	L4730xN0W+jlXzVlzLdiUsDy/y3p1cKRg/SuUaaJZqb9H7mv+1pF14M57Jm3I0mTl5yWNbtaSrt
+	A
+X-Gm-Gg: ASbGncty9jJTugX0bIrw4IgEmp/MIA3WavVpd5uO1kVTnFkMOuDQxTGCN6SPxKCRD2j
+	MxTuG8fp/J/+m1I+KbUowZs3S6y2QdypBT31RIV9qZ99moJIyF2AriFpD7jae+pzpLwWfR4viRH
+	/e4BqCE6t3mVHbsp+lXIPDzcQvK95tM/TbuTEePiD7jth4l4Jgpn6/PLj4Fh9fougtAyvA8YYsy
+	3Aktn2SyRjnWeE7E9TcfE2A/PgF73EoMrnlbOoyPxZQc4c4mLdhVfFAEiZyIL8rSbLjlalQv65M
+	AoPEDhwDXLhNWFQkSh21awRujpkmWykxwfuY4QA180/I5uXOJKXq
+X-Google-Smtp-Source: AGHT+IEFxvSi01mPcsN5/DWt+q8dGob9WMf5sr35JDwrIqiJd2YPbauAQ6jPapa824lM0WBiNVlM9g==
+X-Received: by 2002:a17:907:1b28:b0:aac:619:e914 with SMTP id a640c23a62f3a-ab789aad2d1mr1778763366b.16.1739204297350;
+        Mon, 10 Feb 2025 08:18:17 -0800 (PST)
+Received: from dfj (host-87-8-15-130.retail.telecomitalia.it. [87.8.15.130])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab7c0907e77sm253674066b.98.2025.02.10.08.18.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Feb 2025 08:12:59 -0800 (PST)
+        Mon, 10 Feb 2025 08:18:16 -0800 (PST)
+Date: Mon, 10 Feb 2025 17:16:49 +0100
 From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Mon, 10 Feb 2025 17:10:59 +0100
-Subject: [PATCH v4 9/9] iio: adc: ad7606: add support for writing registers
- when using backend
+To: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	David Lechner <dlechner@baylibre.com>, "jic23@kernel.org" <jic23@kernel.org>, 
+	"robh@kernel.org" <robh@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>, 
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-pwm@vger.kernel.org" <linux-pwm@vger.kernel.org>, 
+	"Sa, Nuno" <Nuno.Sa@analog.com>
+Subject: Re: [PATCH v11 5/8] iio: adc: adi-axi-adc: set data format
+Message-ID: <ucxlvvrejjeagopcqdwawgcv43c4uywmkubt4a5apxlbbnbzkw@takqoc4njft7>
+References: <20250127105726.6314-1-antoniu.miclaus@analog.com>
+ <20250127105726.6314-6-antoniu.miclaus@analog.com>
+ <08d8e97d-752d-4fa7-95f0-d828ef80f7b8@baylibre.com>
+ <CY4PR03MB33993EE62F4E1B3939F213B29BF52@CY4PR03MB3399.namprd03.prod.outlook.com>
+ <20250203152517.000028ca@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250210-wip-bl-ad7606_add_backend_sw_mode-v4-9-160df18b1da7@baylibre.com>
-References: <20250210-wip-bl-ad7606_add_backend_sw_mode-v4-0-160df18b1da7@baylibre.com>
-In-Reply-To: <20250210-wip-bl-ad7606_add_backend_sw_mode-v4-0-160df18b1da7@baylibre.com>
-To: Michael Hennerich <michael.hennerich@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Alexandru Ardelean <aardelean@baylibre.com>, 
- David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Guillaume Stols <gstols@baylibre.com>, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250203152517.000028ca@huawei.com>
 
-From: Guillaume Stols <gstols@baylibre.com>
 
-Add the logic for effectively enabling the software mode for the
-iio-backend, i.e. enabling the software mode channel configuration and
-implementing the register writing functions.
+Hi Antoniu,
 
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Co-developed-by: Angelo Dureghello <adureghello@baylibre.com>
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/adc/ad7606.h     | 15 +++++++++++++
- drivers/iio/adc/ad7606_par.c | 52 ++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 63 insertions(+), 4 deletions(-)
+On 03.02.2025 15:25, Jonathan Cameron wrote:
+> On Mon, 3 Feb 2025 11:02:58 +0000
+> "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com> wrote:
+> 
+> >  
+> > > On 1/27/25 4:57 AM, Antoniu Miclaus wrote:  
+> > > > Add support for selecting the data format within the AXI ADC ip.
+> > > >
+> > > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > > > ---
+> > > > no changes in v11.
+> > > >  drivers/iio/adc/adi-axi-adc.c | 46  
+> > > +++++++++++++++++++++++++++++++++++  
+> > > >  1 file changed, 46 insertions(+)
+> > > >
+> > > > diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> > > > index d2e1dc63775c..3c213ca5ff8e 100644
+> > > > --- a/drivers/iio/adc/adi-axi-adc.c
+> > > > +++ b/drivers/iio/adc/adi-axi-adc.c
+> > > > @@ -45,6 +45,12 @@
+> > > >  #define ADI_AXI_ADC_REG_CTRL			0x0044
+> > > >  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
+> > > >
+> > > > +#define ADI_AXI_ADC_REG_CNTRL_3			0x004c
+> > > > +#define   AD485X_CNTRL_3_PACKET_FORMAT_MSK	GENMASK(1, 0)
+> > > > +#define   AD485X_PACKET_FORMAT_20BIT		0x0
+> > > > +#define   AD485X_PACKET_FORMAT_24BIT		0x1
+> > > > +#define   AD485X_PACKET_FORMAT_32BIT		0x2
+> > > > +
+> > > >  #define ADI_AXI_ADC_REG_DRP_STATUS		0x0074
+> > > >  #define   ADI_AXI_ADC_DRP_LOCKED		BIT(17)
+> > > >
+> > > > @@ -312,6 +318,45 @@ static int axi_adc_interface_type_get(struct  
+> > > iio_backend *back,  
+> > > >  	return 0;
+> > > >  }
+> > > >
+> > > > +static int axi_adc_data_size_set(struct iio_backend *back, unsigned int size)
+> > > > +{
+> > > > +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+> > > > +	unsigned int val;
+> > > > +
+> > > > +	switch (size) {
+> > > > +	/*
+> > > > +	 * There are two different variants of the AXI AD485X IP block, a 16-bit
+> > > > +	 * and a 20-bit variant.
+> > > > +	 * The 0x0 value (AD485X_PACKET_FORMAT_20BIT) is corresponding  
+> > > also to  
+> > > > +	 * the 16-bit variant of the IP block.
+> > > > +	 */
+> > > > +	case 16:
+> > > > +	case 20:
+> > > > +		val = AD485X_PACKET_FORMAT_20BIT;
+> > > > +		break;
+> > > > +	case 24:
+> > > > +		val = AD485X_PACKET_FORMAT_24BIT;
+> > > > +		break;
+> > > > +	/*
+> > > > +	 * The 0x2 (AD485X_PACKET_FORMAT_32BIT) corresponds only to  
+> > > the 20-bit  
+> > > > +	 * variant of the IP block. Setting this value properly is ensured by
+> > > > +	 * the upper layers of the drivers calling the axi-adc functions.
+> > > > +	 * Also, for 16-bit IP block, the 0x2  
+> > > (AD485X_PACKET_FORMAT_32BIT)  
+> > > > +	 * value is handled as maximum size available which is 24-bit for this
+> > > > +	 * configuration.
+> > > > +	 */
+> > > > +	case 32:
+> > > > +		val = AD485X_PACKET_FORMAT_32BIT;
+> > > > +		break;
+> > > > +	default:
+> > > > +		return -EINVAL;
+> > > > +	}
+> > > > +
+> > > > +	return regmap_update_bits(st->regmap,  
+> > > ADI_AXI_ADC_REG_CNTRL_3,  
+> > > > +				  AD485X_CNTRL_3_PACKET_FORMAT_MSK,
+> > > > +  
+> > > FIELD_PREP(AD485X_CNTRL_3_PACKET_FORMAT_MSK, val));  
+> > > > +}
+> > > > +
+> > > >  static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+> > > >  						 struct iio_dev *indio_dev)
+> > > >  {
+> > > > @@ -360,6 +405,7 @@ static const struct iio_backend_ops adi_axi_adc_ops  
+> > > = {  
+> > > >  	.test_pattern_set = axi_adc_test_pattern_set,
+> > > >  	.chan_status = axi_adc_chan_status,
+> > > >  	.interface_type_get = axi_adc_interface_type_get,
+> > > > +	.data_size_set = axi_adc_data_size_set,
+> > > >  	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+> > > >  	.debugfs_print_chan_status =  
+> > > iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),  
+> > > >  };  
+> > > 
+> > > Why was [1] not addressed?
+> > > 
+> > > [1]: https://urldefense.com/v3/__https://lore.kernel.org/linux-
+> > > iio/9c262f599fb9b42feac99cfb541723a0a6f50e6b.camel@gmail.com/__;!!A
+> > > 3Ni8CS0y2Y!6uVytAwWUCsEazOUTACecMQkbMuHBF95sbla50CbTUFkZkyxS
+> > > -S7jMOCczpoyKCjtAKvMOyrt0ukYwcXC_l5q60$  
+> > 
+> > Indeed it was not addressed. I remained with the impression that adding part prefix
+> > in the macro definitions was enough. I will add the compatible string support.
+> > Although I have a question in order to minimize the number of versions to be sent
+> > In the future. Should I add a separate patch for the compatible support (which
+> > will not add value independently) or should I include it in this patch which adds
+> > custom function for data format for the AD485x IP core?
+> 
+> Binding docs update needs to be a separate patch.
+> 
+> Also, we should probably only set axi_adc_data_size_set in iio_backend_ops for
+> that ID.  So you'll need to pick from two copies of adi_axi_adc_ops
+> which probably means two iio_backend_info structures.
+> That data_size_set callback should not be set for cases that don't use it
+> (so the generic IP if I understand this correctly).
+> 
+> Similar to that part of:
+> https://lore.kernel.org/all/20250129-wip-bl-ad7606_add_backend_sw_mode-v3-7-c3aec77c0ab7@baylibre.com/
+> 
+> Hmm. This is looking like a messy merge.
+> 
+> Angelo, Antoniu,
+> 
+> Please figure out between you an order to the series so who is going to have
+> to rebase.  If this one goes first, may be worth pulling part of
+> patch 6 from Angelo's set to introduce struct axi_adc_info with what
+> this patch needs (just the backend_info pointer and maybe version?)
+>
 
-diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
-index a35b526f3915..71a30525eaab 100644
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -96,6 +96,21 @@
- 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),  \
- 		0, 0, 16)
- 
-+#define AD7606_BI_SW_CHANNEL(num)			\
-+	AD760X_CHANNEL(num,				\
-+		/* mask separate */			\
-+		BIT(IIO_CHAN_INFO_SCALE),		\
-+		/* mask type */				\
-+		0,					\
-+		/* mask all */				\
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |		\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-+		/* mask separate available */		\
-+		BIT(IIO_CHAN_INFO_SCALE),		\
-+		/* mask all available */		\
-+		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),	\
-+		16)
-+
- struct ad7606_state;
- 
- typedef int (*ad7606_scale_setup_cb_t)(struct iio_dev *indio_dev,
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index 64733b607aa8..335fb481bfde 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -19,6 +19,7 @@
- #include <linux/iio/iio.h>
- 
- #include "ad7606.h"
-+#include "ad7606_bus_iface.h"
- 
- static const struct iio_chan_spec ad7606b_bi_channels[] = {
- 	AD7606_BI_CHANNEL(0),
-@@ -31,7 +32,19 @@ static const struct iio_chan_spec ad7606b_bi_channels[] = {
- 	AD7606_BI_CHANNEL(7),
- };
- 
--static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned long *scan_mask)
-+static const struct iio_chan_spec ad7606b_bi_sw_channels[] = {
-+	AD7606_BI_SW_CHANNEL(0),
-+	AD7606_BI_SW_CHANNEL(1),
-+	AD7606_BI_SW_CHANNEL(2),
-+	AD7606_BI_SW_CHANNEL(3),
-+	AD7606_BI_SW_CHANNEL(4),
-+	AD7606_BI_SW_CHANNEL(5),
-+	AD7606_BI_SW_CHANNEL(6),
-+	AD7606_BI_SW_CHANNEL(7),
-+};
-+
-+static int ad7606_par_bus_update_scan_mode(struct iio_dev *indio_dev,
-+					   const unsigned long *scan_mask)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	unsigned int c, ret;
-@@ -48,7 +61,8 @@ static int ad7606_bi_update_scan_mode(struct iio_dev *indio_dev, const unsigned
- 	return 0;
- }
- 
--static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio_dev)
-+static int ad7606_par_bus_setup_iio_backend(struct device *dev,
-+					    struct iio_dev *indio_dev)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	unsigned int ret, c;
-@@ -86,9 +100,39 @@ static int ad7606_bi_setup_iio_backend(struct device *dev, struct iio_dev *indio
- 	return 0;
- }
- 
-+static int ad7606_par_bus_reg_read(struct ad7606_state *st, unsigned int addr)
-+{
-+	struct ad7606_platform_data *pdata = st->dev->platform_data;
-+	int val, ret;
-+
-+	ret = pdata->bus_reg_read(st->back, addr, &val);
-+	if (ret)
-+		return ret;
-+
-+	return val;
-+}
-+
-+static int ad7606_par_bus_reg_write(struct ad7606_state *st, unsigned int addr,
-+				    unsigned int val)
-+{
-+	struct ad7606_platform_data *pdata = st->dev->platform_data;
-+
-+	return pdata->bus_reg_write(st->back, addr, val);
-+}
-+
-+static int ad7606_par_bus_sw_mode_config(struct iio_dev *indio_dev)
-+{
-+	indio_dev->channels = ad7606b_bi_sw_channels;
-+
-+	return 0;
-+}
-+
- static const struct ad7606_bus_ops ad7606_bi_bops = {
--	.iio_backend_config = ad7606_bi_setup_iio_backend,
--	.update_scan_mode = ad7606_bi_update_scan_mode,
-+	.iio_backend_config = ad7606_par_bus_setup_iio_backend,
-+	.update_scan_mode = ad7606_par_bus_update_scan_mode,
-+	.reg_read = ad7606_par_bus_reg_read,
-+	.reg_write = ad7606_par_bus_reg_write,
-+	.sw_mode_config = ad7606_par_bus_sw_mode_config,
- };
- 
- static int ad7606_par16_read_block(struct device *dev,
+i separated the info struct part in a separate patch,
+you can eventually get it from here:
 
--- 
-2.47.0
+https://lore.kernel.org/linux-iio/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-4-160df18b1da7@baylibre.com/T/#u
+ 
+Regards,
+angelo
 
+> Thanks,
+> 
+
+
+
+> Jonathan
+> 
 

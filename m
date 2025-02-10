@@ -1,79 +1,78 @@
-Return-Path: <linux-iio+bounces-15298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7BBA2FAD9
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 21:42:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E96A2FB13
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 21:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E210A3A4673
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 20:42:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D15797A1AD3
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 20:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC2A264615;
-	Mon, 10 Feb 2025 20:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B0119F47E;
+	Mon, 10 Feb 2025 20:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yjrkPaox"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I07Jfy4K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273B9264603
-	for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 20:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D60F26460F
+	for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 20:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739220126; cv=none; b=uRVYzCtDO1fypi5nHjURclFsVApjW9AWG0KHVf3RoaJqEo/x9bxyQ0FovTDMeOMePUJ9A8p8yuosYNbODllmmyvLs+tTAFleMLvsx/4m3yzq19CfHvoiMk+3bCm207R5Vmnsdi+gUV9ZIILNGN+9zdCx2F3hf0NtVGV+LPxZ9zI=
+	t=1739220693; cv=none; b=nj6yAfKAT4TkNRvwbnOxAzergfY5FA0fZviKgdBb+pz1Hdgr1nGXnpSe0fx1+4WGZHfJaWQl/lv8QHN6xXs67Tahdn65SMX+YlXfsFVYYnCup1WrDLN851dj64LQiebtWO58/XbrZxG3Y8to/aFOhlsu8nAua2JoUPjCsH5HkE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739220126; c=relaxed/simple;
-	bh=LZK52sN6xKz5e0cxi1jyEskOoHVCK0oOXBq8lcjmYI0=;
+	s=arc-20240116; t=1739220693; c=relaxed/simple;
+	bh=9Tts8bN+Vg2rVmzEoo3WT6QiqIuEvhCfD+wFxC4C/Jo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=a1YsEQsk62syysnCR30ckbU46Cmuwjl1IEScNLjN3qDeR/+Nw2H/H6+09tsVIYVYWb/xX/v4PW97bx0mn+wKUaQE5/a0PCzfoR99bYWgIaUIFzVksF2cNvb0wZyRRdTwamqgu7Bg8hQc+gJH2hNrq9XczjXdv4gXBQp8LKkjq2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yjrkPaox; arc=none smtp.client-ip=209.85.222.171
+	 In-Reply-To:Content-Type; b=IcVNM5sUqxxRgFIk2lYR6LoYD+UVwTk1jfvnblwVfVL7dFkkB+hcXqsn3dKxinSGKy1BK3wj4CUILiibcgFHhxG23qjlFYyIjvfScCPyyATvx+sqNfqtoU3YUW6Uy868nYtj5lVtqEIw5329RoP1kKOkVzOHXtPXIAIVIj6Yn3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I07Jfy4K; arc=none smtp.client-ip=209.85.210.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7c05b91245fso95284685a.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 12:42:02 -0800 (PST)
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-726ccb2126bso1214960a34.0
+        for <linux-iio@vger.kernel.org>; Mon, 10 Feb 2025 12:51:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739220122; x=1739824922; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739220690; x=1739825490; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=aWIqkfiAlllX+sdfSqusAXqRIO/gfWorBPQNzhmxr6s=;
-        b=yjrkPaoxjWtBxU61ItyKHkOOh5F2hQafUXVfxx8Hp+aPzWfdqxrHcLNxTs64FK9fgz
-         7Gc7p2GjoCg5pxP8vSOGaCJ8FerF4v3cF5cFS08OOJ5M5wQEk28ZS0tV3+FOL+xj3Jv5
-         XCt07GBPCzII700EU8jptDhrLD3gSzwAE2VlKkHXhVMkbFTzca78SsqUyyzuc8WWQjUX
-         2Rn+oUZNL6Fe4p3dWY3QiMZFnddT04f1AQ54lT/7p7Pi8LNrUVHiX/RQsJEugPS/9MFQ
-         Y3+Hi5zVB7E8FRo8iINtJAUMPcce2Qfzj3xeLC/9LR+Fh3NbEOdddwor0CUsSHr43r8W
-         AcrQ==
+        bh=pK7AXEk3/gHFbkZZyPXrZYFNc/hvV4Yc2BS6Eez02IA=;
+        b=I07Jfy4Kjq2r6YSoOVR26jWRn+Bn8cPqLaX6uFnLJASNQNaxDP6TGtjdzbQ+H/WkbL
+         nBbG6paq+YUXNhxkSVpZE9O+1wGJvJsuFfSTkn7iqlKqxAFe8zn4kuHvEss1dsDQAO+6
+         27LZ4pJH5OwNK3bQuzB8APCd4MZFvyv/JOPNeoKDiToMHpeVFZ28KQ1FAuaAUClHXBAj
+         jsCmwX/4x93UA1DUnJDYtnVvtc2LTnch6LrBxFj042F/Yeu2LwcoGHcjao9maqZNB/Q5
+         fGC+vkOA1w5o5uNXlq8KvAh8323Ye41eSi1eIera4MMhTf0y/AX25Qm2ETlZBCNY+MFk
+         Jy4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739220122; x=1739824922;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20230601; t=1739220690; x=1739825490;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aWIqkfiAlllX+sdfSqusAXqRIO/gfWorBPQNzhmxr6s=;
-        b=ZBJJbWv4QyIBonH/65kUY6osimlnZwcAY1W5a2e34uhlsW34ZtK1L9lgKbeyEC42LD
-         77ow/Xr5pIeLD0pZMuQr7zDgebF/a+1bh4fd2AM9I2QxGOZC73QN6t5Og9qKckKXnzSp
-         EEF2h7v/tO2mtYucqnkisTHemj712EX0LXK9XJbs68EYY4sp4NOsm8WsNGMEa9SgqD2H
-         IRVouMgfXAyCwCmtg+NSvBVjnLHr1QLCwC3FxGqv9QJx0YoZu4tCqg8uGtJvTs1gX6aG
-         PIafEObl8IYv8+O1T/IalYtyr5Zb7Nab0CEnLv2ZkFAjRIOGJQhmpkUh2t0ANKgnchPa
-         ft6A==
-X-Forwarded-Encrypted: i=1; AJvYcCUdsrIuUT1tueaPyrLPXC6kYVuNf3cUDm8+lKLHsrJrxX9gs/hMc2vxkirw+unN1G0f6OIJMzLI1+I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUWoynO5oMO3nNFpegN95sZFEshrf4KQjgbPqfQH/+Let8UGvA
-	FF21O1Yqb6waxkB26HXK5a8QWpwpyWEV403Zb4hC6V53GY1Q0499wO2NzM6MAxg=
-X-Gm-Gg: ASbGncvdiSu1NyxvxT3/b+2rGpgIEIVqrpAnSypaQskZjNcxU9c4XgLsBguTxuC5kfd
-	8kuAMeyq/38vqufF5I04EB6cpb6kbGyOZ0s1rUorX0naLZUS0gJfysuqt1HDrJ0r3T4Oy0+2xCZ
-	WfAEJBbwLtLE/JksHsKgj5oicOsi7pYtyAXd5ePhJxHzr5WtzEcPd40mTZMk0Xo5M/6Fg0E16m0
-	6rr6sduCYoOfS5Ao0hEuohXNyWQmp7v6Tpr9T002Az/OKHRLcSN+VDq2D5p5SHjI43kWLDtLgvc
-	dPWWq+aeUXxv9oZAG3nQJilVDqDuS8XOCHqII2kqsNGhIXPhNQEiGMhtH5g=
-X-Google-Smtp-Source: AGHT+IEMjXJvDef9P4rap26kwWYFjE5BNIyxGYznn1+Pr0PfR68QMcTrO7XUW+fLRJcbcMtrdSheew==
-X-Received: by 2002:a05:620a:25c9:b0:7b6:dc74:82ac with SMTP id af79cd13be357-7c047ba6246mr1979567385a.1.1739220121869;
-        Mon, 10 Feb 2025 12:42:01 -0800 (PST)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041decf43sm574544985a.7.2025.02.10.12.42.00
+        bh=pK7AXEk3/gHFbkZZyPXrZYFNc/hvV4Yc2BS6Eez02IA=;
+        b=g6ZxXKDC3W+Mq4QyC3ZbEe8/2S2EpHv3t6Lsf4JKG9f3npbCbX0n19RliMyXQ0K0RJ
+         9+vd5e9AVxQcAoE9eauYh2svrECJcL3G1gjprlTgeDEQ3I/5chy3qmz/+59fhDjUqQFW
+         utL1TUKdR2/mpr4/iLi9xDmgaor+s/HR/uxQptMp9h5hsCL3m2SsaaNbAUufwOtl0aLi
+         g0Lp7kNlPUqId/muOcMWYg2GI/rA+o7tod4oO+SUWX5uN1x1tYOSTuVPe59SXM+SXv2u
+         AUQP0P98gl5WaCq27F+43flbw+gHvu+0h/vZ83QPiCEKzQjn0gtpLrI7KooFvm1yHwzK
+         ZxdQ==
+X-Gm-Message-State: AOJu0Yzp5aLfA5ODTehjNlz2Q2q23y57elEuf4RFJSiSve3j+cS3VFRn
+	ZlXjvHbu1sE7K87FOxSF/LahVFw3boCTp2gZhwjFFFwuCztZXzuLER8OqrUlOs0=
+X-Gm-Gg: ASbGncv8bVz3mzYYQIa3Obaa+O4Mv46otgRAm6Wjs6qKGGoIjB6EYgzYpPFpsTJuJsN
+	PBalWfj2WYHmp8t0J7kKDdlBzBd5e2+C5+c0/nr1fUx+x3fm6voUkq0voOqOL8UTUCMVfE5Z5iQ
+	b0olNHGMQa3zkK6FqAI5DsdqunHdGASUd8PDgRI9pRKMm7aTzx/1jU4yMJtJoo/b0RncHRRsiww
+	7SqA18oE2vvcAmyIx+RWCos5BMZRXJdK3qSi2yCMPZ9f2QeU+iy/td4IQfAEF9w/qJxozGShfQb
+	JbJk9kkI1qucSKDmT4txwvrIsHDfmVOGHEAugIp0h2L+Mtz1KccK
+X-Google-Smtp-Source: AGHT+IFXJEk9MmUBU7EcXTekFZ1M/oOWVBHRM0C0GSQlAeJ7h505gqEEuTCNxJAioGvI8djE5kEKCg==
+X-Received: by 2002:a05:6830:3917:b0:71d:ed5f:f181 with SMTP id 46e09a7af769-726b88957c6mr9514423a34.22.1739220690448;
+        Mon, 10 Feb 2025 12:51:30 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-726afa4fa41sm2598776a34.68.2025.02.10.12.51.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2025 12:42:01 -0800 (PST)
-Message-ID: <c03ec6fb-8cde-47b6-82e5-e91723dd7af3@baylibre.com>
-Date: Mon, 10 Feb 2025 15:41:59 -0500
+        Mon, 10 Feb 2025 12:51:30 -0800 (PST)
+Message-ID: <425af129-f13d-44d5-8d49-c928265d635f@baylibre.com>
+Date: Mon, 10 Feb 2025 14:51:29 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,117 +80,39 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] iio: adc: ad4695: add offload-based oversampling
- support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+Subject: Re: [PATCH v2 0/2] iio: adc: ad4695: add oversampling support
+To: Trevor Gamblin <tgamblin@baylibre.com>,
  Michael Hennerich <michael.hennerich@analog.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+ Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
 References: <20250109-ad4695-oversampling-v2-0-a46ac487082c@baylibre.com>
- <20250109-ad4695-oversampling-v2-1-a46ac487082c@baylibre.com>
- <e3fd7f56675908a60d8ce6bcb6ad4f05b828e132.camel@gmail.com>
- <efba6746-47a6-484f-ade5-f1e17246ac68@baylibre.com>
- <20250210190338.484c463e@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20250210190338.484c463e@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250109-ad4695-oversampling-v2-0-a46ac487082c@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 1/9/25 12:47 PM, Trevor Gamblin wrote:
+> Add driver logic and documentation for the oversampling feature of the
+> AD469x parts from Analog Devices. For now, this only works with offload
+> support, and takes advantage of that mode's higher performance to make
+> oversampling possible on multiple channels with varying sampling
+> frequencies. Some significant rework of the driver had to be done in
+> order to conditionally support this feature, including use of
+> iio_scan_types to help determine the appropriate spi message
+> configurations depending on oversampling ratio.
+> 
+> This series depends on David's recent SPI engine changes for adding
+> offload support:
+> 
+> https://lore.kernel.org/all/20241211-dlech-mainline-spi-engine-offload-2-v6-0-88ee574d5d03@baylibre.com/
+> 
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> ---
 
-On 2025-02-10 14:03, Jonathan Cameron wrote:
-> On Mon, 13 Jan 2025 11:49:49 -0500
-> Trevor Gamblin <tgamblin@baylibre.com> wrote:
->
->> On 2025-01-13 09:35, Nuno Sá wrote:
->>> On Thu, 2025-01-09 at 13:47 -0500, Trevor Gamblin wrote:
->>>> Add support for the ad4695's oversampling feature when SPI offload is
->>>> available. This allows the ad4695 to set oversampling ratios on a
->>>> per-channel basis, raising the effective-number-of-bits from 16
->>>> (OSR == 1) to 17 (4), 18 (16), or 19 (64) for a given sample (i.e. one
->>>> full cycle through the auto-sequencer). The logic for reading and
->>>> writing sampling frequency for a given channel is also adjusted based on
->>>> the current oversampling ratio.
->>>>
->>>> The non-offload case isn't supported as there isn't a good way to
->>>> trigger the CNV pin in this mode. Support could be added in the future
->>>> if a use-case arises.
->>>>
->>>> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
->>>> ---
->>> LGTM, just one small thing inline... Either way:
->>>
->>> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->>>   
->>>>    drivers/iio/adc/ad4695.c | 333 ++++++++++++++++++++++++++++++++++++++++++----
->>>> -
->>>>    1 file changed, 303 insertions(+), 30 deletions(-)
->>>>
->>>> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
->>>> index c8cd73d19e86..0caaeaa310ed 100644
->>>> --- a/drivers/iio/adc/ad4695.c
->>>> +++ b/drivers/iio/adc/ad4695.c
->>>> @@ -79,6 +79,7 @@
->>>>    #define   AD4695_REG_CONFIG_IN_MODE			  BIT(6)
->>>>    #define   AD4695_REG_CONFIG_IN_PAIR			  GENMASK(5, 4)
->>>>    #define   AD4695_REG_CONFIG_IN_AINHIGHZ_EN		  BIT(3)
->>>> +#define   AD4695_REG_CONFIG_IN_OSR_SET			  GENMASK(1, 0)
->>>>    #define AD4695_REG_UPPER_IN(n)				(0x0040 | (2 * (n)))
->>>>    #define AD4695_REG_LOWER_IN(n)				(0x0060 | (2 * (n)))
->>>>    #define AD4695_REG_HYST_IN(n)				(0x0080 | (2 * (n)))
->>>> @@ -127,6 +128,7 @@ struct ad4695_channel_config {
->>>>    	bool bipolar;
->>>>    	enum ad4695_in_pair pin_pairing;
->>>>    	unsigned int common_mode_mv;
->>>> +	unsigned int oversampling_ratio;
->>>>    };
->>>>      
->>> ...
->>>   
->>>> +
->>>> +static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
->>>> +{
->>>> +	int val_calc, scale;
->>>> +
->>>> +	switch (osr) {
->>>> +	case 4:
->>>> +		scale = 4;
->>>> +		break;
->>>> +	case 16:
->>>> +		scale = 2;
->>>> +		break;
->>>> +	case 64:
->>>> +		scale = 1;
->>>> +		break;
->>>> +	default:
->>>> +		scale = 8;
->>>> +		break;
->>>> +	}
->>>> +
->>>> +	val = clamp_t(int, val, S32_MIN / 8, S32_MAX / 8);
->>>> +
->>> Why not clamp()? AFAICS, we have the same type on all the arguments. I also
->>> think clamp*() macros got the same improvements as min/max() ones which means
->>> that using the ones with explicit casts are not so often needed anymore. My
->>> understanding is also that those macros are not that encouraged as it's easy to
->>> go wrong with the casts.
->> I have no preference, this is just a recent habitual use of clamp_t(). If
->> clamp() is preferred I can send a v3. Or maybe Jonathan can tweak it
->> when it is
-> I've left it as clamp_T for now.  We can always follow up with a series
-> to tidy these up general.
->
-> Series applied though a bit provisionally as the SPI offload set needed
-> a few tweaks that might get changed.
->
-> Pushed out as testing for now.
->
-> Thanks,
->
-> Jonathan
-Thank you!
+Tested-by: David Lechner <dlechner@baylibre.com>
 
 

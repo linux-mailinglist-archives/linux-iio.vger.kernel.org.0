@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15267-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15268-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC64CA2F285
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 17:07:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 255ABA2F28C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 17:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FA8F7A15A2
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 16:06:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 501357A2770
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 16:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E50D247DF9;
-	Mon, 10 Feb 2025 16:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64DB247DF7;
+	Mon, 10 Feb 2025 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnA+7RNv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J31+ezEO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841E247DC9;
-	Mon, 10 Feb 2025 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782CB24F581;
+	Mon, 10 Feb 2025 16:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739203621; cv=none; b=N7z6ZgYRXXPARy24MZ1Tbx9z8bfo74kjeHen1HkKkvekXFSSxMI2IEI4KQTOM1g5NZmlmhCw59g9kJxnEz+Mszf/h7Jrqh+SdyPnZ0xjLZOQ7pB/FNHe3kCulQROTR3SVVLnEVV+i4CjdQ7680HFCe8sFkikeRmFNBdRObyPxTg=
+	t=1739203624; cv=none; b=dZyucIXyFgJgcnRMoeBE5EfmbszxrCEGy1fTrhWt7u9peK8hJhafGoDOtAUB0cPP9mCakerclvP1LalTFS1ZfET3g4wfc/9vCPpBEbi0Hf7Eu1bo2fCfaWY9lmeF4nExbJ1f7hUeLGGVPcsVSCw/lzZOg3+86olH4wLG7e3L7kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739203621; c=relaxed/simple;
-	bh=kMzVySL+KsPyifhKYjl79ydoeIFGhKb0gqHpGEZiRg8=;
+	s=arc-20240116; t=1739203624; c=relaxed/simple;
+	bh=SRw1k0y7hlo/yKZBQQG2C4q1HQF4yRbq7z7c9vCQa3w=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=V8MoIp22c34LsactqYwTfiCzntG3S/fh1ac9sDHb7OYXVibfRnnbJBt/i8Cxn7sWp7TgI5mRMAk762WQtM7k5ZRL8dKXoR5NkB0tFt85Db0dt6nO47FLiOWzOulrYLuTWOlQYBJDKEtmGN14kzLtKJpobOMOo9whd1SYnPcXGRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnA+7RNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69884C4CEE5;
-	Mon, 10 Feb 2025 16:06:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g0RazudOcwrOIkeWMNHfYLIliB9s0RYIQMxmrhFgY+yEmdKtJXoq0xWUBmVjVnmZdvPGcv0JlAKn7eHo8vs5DJvm2BBwWqpH0p9IGsa3SgPCM7aWw+dMYsIrmENSu3C2GS+GZNRYa4gD7mvJrzjI2LNbiFEvOPCfuQBqTdS6lFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J31+ezEO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25046C4CEE7;
+	Mon, 10 Feb 2025 16:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739203620;
-	bh=kMzVySL+KsPyifhKYjl79ydoeIFGhKb0gqHpGEZiRg8=;
+	s=k20201202; t=1739203624;
+	bh=SRw1k0y7hlo/yKZBQQG2C4q1HQF4yRbq7z7c9vCQa3w=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=UnA+7RNv2SqFH+w5fTdNOqktNxbt8gG1JajPB2UBwblQCu2pxM5/Ad6XD+38AkU5M
-	 gWX0tZv0mNlDEJUL6+JzAj2COee89n6d3aQrVlyYPlhk2KOVZHnlm0e7OHFbF/f20h
-	 XdLsscxK6r6IVMWL5AOhOIPOeb5701gCaDwzyGbrR0DhFoVpNrGW2gCXRGTum15hZh
-	 /vhrOTKP6YB2Cr1cjizu5TZyNeJ2ah3enHO/3J8qvJCnd90PwqjhoH7IMEwDhRVv0b
-	 GPAlYW5Du17PDvLjOMpCtJQcdn56OYffkcmO1ysWBfXZ3wN8llr12IuDA7BxpMyba5
-	 Oy761P9ZUWi2A==
+	b=J31+ezEOgxu409oZ9mNTPJ4US64p6hPYNfqvOSdnI7GyHsyI3tVygykx7FHcuXU9B
+	 0HXWxckwuv0mggKb5Ro2cCIdlXyPN5oIQQlXMNtjrrC9kdVLtIpXBB5DaDMHqFq8V0
+	 H9IpEv/20U3iQidnte8tiW7L6JQLlEVnZGDPyhI86LDvCat7eS2TyHl32sV6Gu9OOI
+	 94PsHDSGsLr7eScDcaS3ffXp/CFmfUZKarukeUvYYEoZqECQSQqJFnonl8/PtvdAut
+	 6wr5tPRK0t4d48FagU8OUsBZqk0Op2t41h677XOfHu7BBbGe6bx6q/Mfl56i22v4te
+	 kNo0Wuh4iJOvg==
 From: Mark Brown <broonie@kernel.org>
 To: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -52,15 +52,14 @@ Cc: =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>, 
  Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Axel Haslam <ahaslam@baylibre.com>
-In-Reply-To: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
-References: <20250113-dlech-mainline-spi-engine-offload-2-v7-0-e0860c81caae@baylibre.com>
-Subject: Re: (subset) [PATCH v7 00/17] spi: axi-spi-engine: add offload
+In-Reply-To: <20250207-dlech-mainline-spi-engine-offload-2-v8-0-e48a489be48c@baylibre.com>
+References: <20250207-dlech-mainline-spi-engine-offload-2-v8-0-e48a489be48c@baylibre.com>
+Subject: Re: (subset) [PATCH v8 00/17] spi: axi-spi-engine: add offload
  support
-Message-Id: <173920361716.57731.16678374643709028298.b4-ty@kernel.org>
-Date: Mon, 10 Feb 2025 16:06:57 +0000
+Message-Id: <173920362087.57731.5305051508878680047.b4-ty@kernel.org>
+Date: Mon, 10 Feb 2025 16:07:00 +0000
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -71,19 +70,14 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.15-dev-1b0d6
 
-On Mon, 13 Jan 2025 15:00:05 -0600, David Lechner wrote:
-> We've got Reviewed-by's from all of the relevant maintainers now other
-> than SPI, so up to you Mark to say what you want to do with this.
+On Fri, 07 Feb 2025 14:08:57 -0600, David Lechner wrote:
+> Only very minor fixes in this revision.
 > 
-> If we think this is good enough to go in, the SPI patches should be
-> applying fine since this is based on a recent linux-next. But the IIO
-> patches will need some care. There are dependencies on both the
-> iio/fixes-togreg and the iio/testing branches as well as a couple of
-> patches that haven't been applied yet because they are waiting for other
-> dependencies [1]. Given the timing in the merge cycle, if Mark picks up
-> the SPI patches and they make it into 3.14, then Jonathan can pick up
-> the IIO patches after the 3.14 merge window closes. Or we can wait until
-> then for everything to go in at once.
+> Also, now that trees are rebased on v6.14-rc1 we no longer have
+> dependencies for the IIO patches. So Mark can pick up all of the
+> patches if we want to go that way. In any case though, Jonathan will
+> need an immutable branch since we have other IIO patches in-flight
+> building on top of this series.
 > 
 > [...]
 

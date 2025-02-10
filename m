@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-15233-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15234-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0055A2E48D
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:52:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551CDA2E494
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:52:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884EA165261
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:52:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874D83A75E2
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89E11C2DC8;
-	Mon, 10 Feb 2025 06:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E1D1C3BFC;
+	Mon, 10 Feb 2025 06:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GEvA3ksp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FyHPZdwc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1351D1B4247;
-	Mon, 10 Feb 2025 06:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C97C134BD;
+	Mon, 10 Feb 2025 06:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739170222; cv=none; b=aEDdm1utF3MQ/SHFVl8fvP7Kx9Q7yWLyaTmhq3OJiShqUzxFegRZCxPNojTO4jeGDj5s86VtdDlr0E11aPS5kVj5gD//c7fMDmdEwvEwn3QpsiWspPXU5kY0VtdhoIsT2ILHAVRqYJFSxhXFMXy9R1gOsj8lf09sYoSTCCoajDM=
+	t=1739170228; cv=none; b=q1IzN1YdfTZukavnaHmX/b5OEuFRe+iWP23Weyu832TLwxqp5JfRBF0PkjnPhCpsFBmV/2raZk3fs+v5bMo+ve27J/3TCXRqyFPFopLCNRiN0WeT45PcLpFIeJa1X8cL2iO0duo6KfbEuFdEjPkRnp7eiIu2aJstkx53pze8ZTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739170222; c=relaxed/simple;
-	bh=A43sWN4sdLq3tQc+IB25Ps/3Ig8snwsi8Gmk90X6cpQ=;
+	s=arc-20240116; t=1739170228; c=relaxed/simple;
+	bh=LiGS3+6W4VSmf7HQmdSuxLihLsGhBnmgTm1eWOTnPMo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UCk2y9lw6QfJ0R9RzT6GLTFUvK6VAChBi+N7eyLiq4Met1kZ9oMVwlfI/RctQcVcXNLsdIYTJJ2UHAglV/9X+9kajU8xZNfWrEk269Ka1XrOo+ulqgubc9mgL/SJsbdGHvWwYKd6Z2YEhnwlsc1Jl3rgYUvJtPSPoUHYBLHpCH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GEvA3ksp; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=uGafuUlgd1V8NtV2qUsRSV3tPeUrLr6B4lllDNXKVXHRMlakBiwVSNTQSvro+/Wfjk0pG8RicJZFQOsChu9k5LTRvDt3qdbrhJBPMgPuVMmMOVfnxhKwfjn7nakEQmtzULivsPki4zzmlupj0Sbx5oQ2DqaWXJ0BQnwA69m7bGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FyHPZdwc; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739170222; x=1770706222;
+  t=1739170227; x=1770706227;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=A43sWN4sdLq3tQc+IB25Ps/3Ig8snwsi8Gmk90X6cpQ=;
-  b=GEvA3kspBf/QXizartks/llrGmqgFxynuxZCcPiMmE5yjHXgGDO19rWE
-   hzw7rgMgk+i5mOtJClSpgpFnI7bD8zlz54Kpl6xXjyH2gKrA3cjFZUib+
-   tFdZReS0OST8Z+z805CM4sBUCrF6I+uA7fEfJh0UkkXix3jFuX2pDff+p
-   r+B+2h+0PbMgW5P9GuEzH525XIDYORaQI7/vy1uqdJLmz6KlgBzVQzSWb
-   oL84jr8rH9FqIqtNVb1Q2jPDpJCKkKTBH3ahKRUOc4OBUfCRtyUwWy4LU
-   CuYpgtqpgaIr8xZu13rT088ZhXpshzsD3VhKQaM/3S9Kv18OkZRp9CfO4
-   A==;
-X-CSE-ConnectionGUID: E710izjbSq2yHzYLYoT06g==
-X-CSE-MsgGUID: LNaOf3RiRJKcaFBTvuY2Kg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499391"
+  bh=LiGS3+6W4VSmf7HQmdSuxLihLsGhBnmgTm1eWOTnPMo=;
+  b=FyHPZdwcy6BOPym7wtTZMFNYen2KvK6dotxSf3346edWyBrEKbTLAt9i
+   sbr+TLNhBQl+71gxzfyIZ0hQeZbFMu0oenpgyru4M7kJT6+8ColHWvDV+
+   hjn1Cu6gor/QQMdYh0AX/YR1BOJD/qqx93tRoSnm1N31iUZp+UaXznp2M
+   klPKzFkJwOzjQE/uDIofxYkR8GytUVATZxyZQ87g8FTBVE6C4klMA/Q0L
+   fxVt/JflncaUf/EMSwdslZDhGRSJuWPndcpJz3DwTSoJdX9C8cuDB5K/s
+   A3xcVDqT468hRSB/n3n2s4LeoHzXW9Q2uvRTJgJqhkYED8OMYTls7UXT6
+   Q==;
+X-CSE-ConnectionGUID: MoIZezM2SHiAThtQNMk36Q==
+X-CSE-MsgGUID: lQBj5PPZT3i1cl5JZaYspw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499401"
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="43499391"
+   d="scan'208";a="43499401"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:50:21 -0800
-X-CSE-ConnectionGUID: Lg6IrC95Tp6+J/HKNqFazA==
-X-CSE-MsgGUID: 00l51m7rSr2f6sjRR3brpA==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:50:27 -0800
+X-CSE-ConnectionGUID: PAEd5n4GSk6eKlzTH6Bxug==
+X-CSE-MsgGUID: fLt5yuIASf2LEp5CGw7Lfw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="117122577"
+   d="scan'208";a="117122596"
 Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:50:16 -0800
+  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:50:21 -0800
 From: Raag Jadav <raag.jadav@intel.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -77,9 +77,9 @@ Cc: linux-gpio@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v4 11/20] regulator: devres: use devm_kmemdup_array()
-Date: Mon, 10 Feb 2025 12:18:57 +0530
-Message-Id: <20250210064906.2181867-12-raag.jadav@intel.com>
+Subject: [PATCH v4 12/20] regulator: cros-ec: use devm_kmemdup_array()
+Date: Mon, 10 Feb 2025 12:18:58 +0530
+Message-Id: <20250210064906.2181867-13-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210064906.2181867-1-raag.jadav@intel.com>
 References: <20250210064906.2181867-1-raag.jadav@intel.com>
@@ -91,27 +91,27 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert to use devm_kmemdup_array() which is more robust.
+Convert to use devm_kmemdup_array() and while at it, make the size robust
+against type changes.
 
 Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 ---
- drivers/regulator/devres.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/regulator/cros-ec-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/devres.c b/drivers/regulator/devres.c
-index 36164aec30e8..ab238579879c 100644
---- a/drivers/regulator/devres.c
-+++ b/drivers/regulator/devres.c
-@@ -332,9 +332,8 @@ int devm_regulator_bulk_get_const(struct device *dev, int num_consumers,
- 				  const struct regulator_bulk_data *in_consumers,
- 				  struct regulator_bulk_data **out_consumers)
- {
--	*out_consumers = devm_kmemdup(dev, in_consumers,
--				      num_consumers * sizeof(*in_consumers),
--				      GFP_KERNEL);
-+	*out_consumers = devm_kmemdup_array(dev, in_consumers, num_consumers,
-+					    sizeof(*in_consumers), GFP_KERNEL);
- 	if (*out_consumers == NULL)
+diff --git a/drivers/regulator/cros-ec-regulator.c b/drivers/regulator/cros-ec-regulator.c
+index fb9643ed7a49..fb0767b33a36 100644
+--- a/drivers/regulator/cros-ec-regulator.c
++++ b/drivers/regulator/cros-ec-regulator.c
+@@ -138,8 +138,8 @@ static int cros_ec_regulator_init_info(struct device *dev,
+ 	data->num_voltages =
+ 		min_t(u16, ARRAY_SIZE(resp.voltages_mv), resp.num_voltages);
+ 	data->voltages_mV =
+-		devm_kmemdup(dev, resp.voltages_mv,
+-			     sizeof(u16) * data->num_voltages, GFP_KERNEL);
++		devm_kmemdup_array(dev, resp.voltages_mv, data->num_voltages,
++				   sizeof(resp.voltages_mv[0]), GFP_KERNEL);
+ 	if (!data->voltages_mV)
  		return -ENOMEM;
  
 -- 

@@ -1,100 +1,136 @@
-Return-Path: <linux-iio+bounces-15245-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15246-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49C8A2E85E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 10:56:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6398A2E8A6
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 11:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7F216766F
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 09:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25C943AB7CF
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 10:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191D11C5D4A;
-	Mon, 10 Feb 2025 09:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925951C700E;
+	Mon, 10 Feb 2025 10:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="hRAudKGe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IvR2Eok/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766291C5D5B;
-	Mon, 10 Feb 2025 09:56:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FDC1C5F35;
+	Mon, 10 Feb 2025 10:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739181402; cv=none; b=tkKxoIBTV47UJUNbrCdRk4JKY5qGK3SbY17ulrOXXGiiKsiQ5nsZSLsMk/+oYHM2ET6GVfedecic81/nnP3CBDfbNkCuK8FCZkV+icjsYLywXPnJDnn+/5TFoKF6X7PwTod5whfxMK+ZuC9LOuYYqcH9PoK7yWWJQN3vjAzYFTo=
+	t=1739181949; cv=none; b=XRwVdn6W2JPjMw96ln8D99b/4OveblOPqIpVwLG3B7KLbsgqFSEh7JoxshfgRO9WkF7S6M+/2ky3AzFzT9rivXBfGK2Yd2svMbM9hT6VJRO/5bw2hGXj6DA2205KXA7e7C1YFamw9/NCSPFq79j7dvcc/Va6QzxC85WCiRXaSLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739181402; c=relaxed/simple;
-	bh=LE/yuK4WFKe2B+rhYa4Jh8rrgBO2L53TsJK3jDfjoEU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=hmZNlfFthw6i9SOK+AAgsTmLalMoVyWPh5TLFrctjg3lJJWGywBZ/zdqDF02QdF78odgysJcGzOnLSqM7tTkz/DQDnGvXYcLi7apP/htQBthqAvRmkjM6l3tAkL0Qqng7N0M5VPS4wmQEfJ9IZol20IYzE0+hXkFm92W/4B72DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=hRAudKGe; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 45ED0A0ACA;
-	Mon, 10 Feb 2025 10:56:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=tw4BfBkwY6f1HptDNeIv
-	DAsYszDKfqvDXkBqqINUxlM=; b=hRAudKGelQQFHre0UjsRkMQGqidGMWp8U0gp
-	ngrD0r6MPpPADTnuB10DYMqgqavqQMlMTbYdbc0q3KLL8kFDWZ3tz7auFC6Si0U9
-	NtUHUtr5IXnDWt3iGPh0Q07bPRjTxk+nQlB30wtoSrweqqgWy7Tp35d8XBBjlxO5
-	UamZs+9nYsFnDL1CVZ2Q8RMwwyD37QPnFD3gf/sjieDHd0oJMUNhcJhtFBHK/y5L
-	0cawL1vyTTN4y+rJxI3fEcKz0xNs5Tbxr865hD/FLl0uketDEqs6a81AxotE7Zaf
-	aRkNHd0tLUCms3lLpoR5X1Uunop25oC1hsTxEV45NjP4mbDsWg6nuubivZYaAdQj
-	Qfxt84Ihj2wpIzF042vYRzzmxvDidwbGG0uxjiferJU/tj0Ef6/UwcdVC3Za3afk
-	2T8ScnvMhpdLHsGF5llRGertsUgdCCIxjHRwssAYh/xSKUQxXtnXIU/lXKe0nIRx
-	oxALyHmIguq0oPR90lHHiH+VJkCyIE2sebDArG2jEuS7rjeLzqcAbR0q+po9ChiH
-	tl/ypUcxVktdZmpqLiQe3KIxjI5FoDV5UOyIxeMpbSm/LIg3/Dq9a1S4TzF18V+p
-	BWLDIqlb5sxXnir4On5OA/IEdFwIAveMe1wBtP25RXZLm8woup2dlLjowWGblF/C
-	tunTwj0=
-Message-ID: <4c8a847d-b506-4235-9941-06e0d403cb62@prolan.hu>
-Date: Mon, 10 Feb 2025 10:56:34 +0100
+	s=arc-20240116; t=1739181949; c=relaxed/simple;
+	bh=PCoRhO+JWlsKe6qwvAJDqDUYtB2ZTHQCOJGFhwZaBNk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=F5i2taVg3QolekxuSici6++6gwn5BnYyB+gy3kjur8KndFG/zEGH87cDOIdamO/PWE5xEkgoNduZGl2DqOTkGx7ouWP9+PmVa0v1rr6Vaxjd+e2rq/8L1VZhrmB5TJZkyw1d6RvdyD+HLD1oZ73shWG4HX6VTC69TQtr0ODXX+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IvR2Eok/; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-38dcae0d6dcso1533002f8f.1;
+        Mon, 10 Feb 2025 02:05:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739181946; x=1739786746; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PCoRhO+JWlsKe6qwvAJDqDUYtB2ZTHQCOJGFhwZaBNk=;
+        b=IvR2Eok/8Bcky1uoLMvdgjATXRwlab0RO3wl2EQiULXefZ/YeEGzIYDWVYAp201SGQ
+         M8JzS0puCbaPBGCmFWhmm+tW1lQHL59DLJ9B1d0fatjSsTFD+K0VergntPpIXkvQXN23
+         bB3W1y3BIsefaDDEanB9enfclUInYtYbd75MKdP1JUw2hQpDOREWbJeU6fy9vYTk/5Wd
+         vA9pJua8jq5ujbTfjGb4XO6FiGPjAeHtVcVo5wbsjVeaocn2DdcA2ac577P6EUfYA0Vh
+         J7MTRmk+V4UrIMRK8UNm1TOlsMlKXVv+ttLnPjFyxbYV0hok4xNLfHrRjs9zSy8+zsba
+         YNqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739181946; x=1739786746;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PCoRhO+JWlsKe6qwvAJDqDUYtB2ZTHQCOJGFhwZaBNk=;
+        b=ZFUC5p/MUXIKOaqYwpct/jK5JBBjPz6EE+/EOmcFkEeyPhVDSaUREJWB28LovvnUO+
+         BrW7dk9DUArjs17Nf2/FMU2xUhS6cbfY80qh+ExsYuCWoA2p5sGYUn+g/DMp6pdry/aM
+         EKKkEaVZ0BEugd9cJLOvRHxsxI3ojBToqdHnT02BIb0CvuIW9/DcvbcVivoUKHelH4uB
+         DJYnvtmgz1+JjG0hVdi2U/RbeesbEgzlXUwJz8zRR/r6fHP2TJPYAVH7CQ95aYBbp754
+         MLJmvqupKEruEQJs4wWoAknljjWod0/M9Z7VhpELqwpdOZI214vDqrV7MHBPLIarT2HJ
+         G24g==
+X-Forwarded-Encrypted: i=1; AJvYcCUxemZ5RyGOCH6W5ilhljHGh391gaLMnZqsNutYYuAr/jCBq3zTznLJDrRAtMUo0yVg/v6sBXj9T6U=@vger.kernel.org, AJvYcCVX+XtjZlBYncLX7Sh34YrwVWqSDrP9QBf9RkSgYuhXX2MjlboHyNvNon9lpkwpyPFigpP31s1MCAZfEBLJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGwOIJsEPENWc2iEQmdJv9rgrJJtSCxZx6/h8a15fpCCQUyFWO
+	GKw2kerDQZCz9lJVuq1MC5IzZFi4M1H1tVh4jxHOyTpbFmGdNjQ4
+X-Gm-Gg: ASbGncsvUP8lWHQ2gM4MPqLsVLdMbqkIe6iirPmQkZtt03P736rnsvELOEV/eUBv91L
+	SJtFxStVtQBys7P0XIZoI1NV0DG9ItKBPo8UZa6eVBcsbz5peMuQfQVhGGHUFSeDSFstIqHf74t
+	Dnik9NtU5HnYWZJ79V0Qq2m1UOmr/drp+IH9u9caM31OlVBC3xv3ZjRAfItQLwObrPd/zZPFDpL
+	DgZK7RtXHOB9gYmgfgRHAbXx89PnormzJnsLN+PMXRhDCuc5D5gutNVmXh07DCBoYTEClwxFK7+
+	0sAyLg21dAiJCrw9M8fhYsVNVMIHYdBlotqqrwgyC6i4KRnT7/c9C3LC4kIdIoM=
+X-Google-Smtp-Source: AGHT+IHfOQVgrCgUJvx7tanWvrGOS0jm6pbwsmdfcnOKwS9Vvu9ZeNpiXggYOCegxLt1hGLqRJUUfw==
+X-Received: by 2002:a5d:5987:0:b0:38d:d759:3dea with SMTP id ffacd0b85a97d-38dd7593ff6mr5236614f8f.26.1739181945606;
+        Mon, 10 Feb 2025 02:05:45 -0800 (PST)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4391dca34a8sm139844435e9.16.2025.02.10.02.05.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Feb 2025 02:05:45 -0800 (PST)
+Message-ID: <2ae962c19bc9d180dabf52e256a1d6bf215f9bf0.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: adi-axi-dac: drop io_mode check
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, Angelo Dureghello
+	 <adureghello@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich	
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, Jonathan
+ Cameron	 <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Mon, 10 Feb 2025 10:05:47 +0000
+In-Reply-To: <20250208154521.193da461@jic23-huawei>
+References: 
+	<20250206-wip-bl-ad3552r-axi-v0-iio-testing-carlos-v1-1-863a4b2af4ea@baylibre.com>
+	 <20250208154521.193da461@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] counter: microchip-tcb-capture: Add capture
- extensions for registers RA-RC
-To: <Dharma.B@microchip.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <kamel.bouhara@bootlin.com>, <wbg@kernel.org>
-References: <20250205104957.95236-1-csokas.bence@prolan.hu>
- <20250205104957.95236-3-csokas.bence@prolan.hu>
- <37bf1294-a9c4-4a6b-9e5a-b8bc54ed87e9@microchip.com>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <37bf1294-a9c4-4a6b-9e5a-b8bc54ed87e9@microchip.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D9485261776A
 
-Hi,
+On Sat, 2025-02-08 at 15:45 +0000, Jonathan Cameron wrote:
+> On Thu, 06 Feb 2025 09:36:14 +0100
+> Angelo Dureghello <adureghello@baylibre.com> wrote:
+>=20
+> > From: Angelo Dureghello <adureghello@baylibre.com>
+> >=20
+> > Drop mode check, producing the following robot test warning:
+> >=20
+> > smatch warnings:
+> > drivers/iio/dac/adi-axi-dac.c:731 axi_dac_bus_set_io_mode()
+> > =C2=A0 warn: always true condition '(mode >=3D 0) =3D> (0-u32max >=3D 0=
+)'
+> >=20
+> > The range check results not useful since these are the only
+> > plausible modes for enum ad3552r_io_mode.
+> >=20
+> > Fixes: 493122c53af1 ("iio: dac: adi-axi-dac: add bus mode setup")
+> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> Ah. I missed this.=C2=A0 Anyhow made the same change directly so all is w=
+ell
+> than ends well!
+>=20
 
-On 2025. 02. 07. 9:19, Dharma.B@microchip.com wrote:
-> The registers RA/B/C are 32 bit registers, hence use of u64 is unnecessary.
+Hi Angelo, Jonathan,
 
-Correct, but the definition of COUNTER_COMP_ARRAY_CAPTURE 
-(include/linux/counter.h:623) is:
+I wanted to reply to this one when I saw it but I haven't done right away a=
+nd
+then totally forgot. Sorry about that!
 
-	#define COUNTER_COMP_ARRAY_CAPTURE(_read, _write, _array) \
-		COUNTER_COMP_COUNT_ARRAY_U64("capture", _read, _write, _array)
+I don't really agree with the "fix" in this patch. AFAIU, smatch is complai=
+ning
+since the enum is apparently defaulting to an unsigned type which means doi=
+ng
+the >=3D 0 check is useless. But we should keep the upper bound...
 
-> The regmap_read() returns an error code, which is currently ignored. If
-> regmap_read() fails, cnt remains uninitialized, potentially returning
-> garbage data.
-
-Will fix.
-
-Thanks,
-Bence
+- Nuno S=C3=A1
 
 

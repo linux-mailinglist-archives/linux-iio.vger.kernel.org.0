@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-15227-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15228-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016CCA2E46E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:50:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5E2A2E474
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 07:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 547C118861CD
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:51:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D7AA7A223B
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Feb 2025 06:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129B01B87F4;
-	Mon, 10 Feb 2025 06:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F091BC9F4;
+	Mon, 10 Feb 2025 06:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MZ36aXnW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLBlALwX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6331ADC8D;
-	Mon, 10 Feb 2025 06:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDF51922F5;
+	Mon, 10 Feb 2025 06:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739170189; cv=none; b=rngSPrGm20I1Gq6ysTRnWPPHgKr+Ek8EPnIs0d8KcFEf8HseywpHgMrWZ5zbiUTYyvsCxdQ37GSNnuI+zAS2DiUUM/PdgC2Jby27KFiSWQYV6jIXaMdiToqNrzOzpz8UsjAPdYSmW4zuwt1dKn37oCrzsYew3GIvJRPriFaDHXI=
+	t=1739170195; cv=none; b=oTjsC3F3PUbd2kF+Q39+CqdY0lbRC7XXyq6BifG794VRMiSnMjGI4Rotw5UmaUFuPrAB8rWJjaLcU4bxyeOQGZWOn/w2ShU8MAkt0/1b3B9smDm85LqVfZDgMYYlUtGBn/WaB5ZgfQqJKhoGhV38JyzSjyrqB3dvoi95y6ENhds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739170189; c=relaxed/simple;
-	bh=NZrOpoIR0kcwzhW5RiAR7w3SpFSD3n21/pIeM0wBqjI=;
+	s=arc-20240116; t=1739170195; c=relaxed/simple;
+	bh=PhbQs8p9waBKbeb44Xnob2Y5LcrbeI9vuKmKrB6wy2g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S0pspEIR8o+u1r8zv7lhmhA8cIh/WC+bnh68dPZMInKHT8+N+uMfoXtiUxUczuIdIv4FxnNbvr2t0ea87RKMxNXX5ogvlXBai9f4blkaL6n9TIW8GLCN5E/VLFm+/kAjSv1xMRkGrfYrfGknvbzuclaPvNwPJP60OkgvhpQ20Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MZ36aXnW; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=mswyth9VkWIF9IqqrBXpK0Xu8W9xiZBTqzAzWcq8/V8mX2oOVXtYnbYGVpo1H622GZb8iyzqblzMEyxd7YDEEW3PFeBu9gqyFbh8B2tRQJeMhse22TIhIz1Ajrb7Fr0Isi/XpOymEpFCOnHqIEzjbIZXmMGQkbT846Gn5Gfo9vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLBlALwX; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739170189; x=1770706189;
+  t=1739170194; x=1770706194;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=NZrOpoIR0kcwzhW5RiAR7w3SpFSD3n21/pIeM0wBqjI=;
-  b=MZ36aXnWjK7nmm/gNyVICO9TwJDdEG8chNVomAC97RB8PrvTsUpz9AT6
-   cDbzMQ5SaRrjcYo5rgEc0xifwf/CvytnUcYl0nBKs5kaCBAeFzaU5sKER
-   dzPEMzPdlZvkgaxjMy0J/ZMHrd/M0mAxkCZCH/ZXcCiCX8Xqz23VFzV8q
-   +Vjejj7sLl3tLybfHbdMGn/HDK8fei+/4EJ+PjqUPk4fy0Xtcs+dJucu8
-   VelcC6WkOUOw+DRrU+Np5eVJZMhbNuVK3mNgn4J6ZA3Pcl/N7GXUTydO4
-   VMstFxYyQLTVOceTAysHxG1nZDS/LEady+czjwuSXC/s7nWZTNTJcBsCh
-   g==;
-X-CSE-ConnectionGUID: Ce6M/7KfRX2faHiVDBN6Mg==
-X-CSE-MsgGUID: FNgY+MOFQdyUmkwewlb6nw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499338"
+  bh=PhbQs8p9waBKbeb44Xnob2Y5LcrbeI9vuKmKrB6wy2g=;
+  b=PLBlALwX1ZxBd+lNr4auPKL5FU02mbv90LOrgKQvG/u8Uf2dnoegh24m
+   zGGTY1Qlb624Q/as86TN6eIoOwriC79e9QxAPDvhPmaih216e16YCXdOa
+   lEJeLMd1eIEVhaJtoa2j9F7OyPWROJruTjSlmoDMhWEy7tr37H50E2vW9
+   5Mpq/q4I0Cvd2bL3X10lZ2qV51Q15RjPA4Mtq6/95GplCbrITMD0GF4Yc
+   ZempcDt7pgztCpaqbCfR92+emZds5rDzfKWs34Cub5si4se9US8zqHoCY
+   v00NGhZsaHIXKlBEM9p/o9mdp9A0JtR3QTU+PqHLQNfIWU35OaTVWIE0+
+   Q==;
+X-CSE-ConnectionGUID: baD5DDPUQEmSrRsJ7jsgyw==
+X-CSE-MsgGUID: PalWhvlESLuNbhpX9rI/Aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11340"; a="43499344"
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="43499338"
+   d="scan'208";a="43499344"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:49:48 -0800
-X-CSE-ConnectionGUID: hm7soczWSCy4NSeEe6nnUQ==
-X-CSE-MsgGUID: iew0Pi8ITduN6ADbQ8mFNA==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2025 22:49:54 -0800
+X-CSE-ConnectionGUID: VJ3ipuFDQDy0GDjb9C8G8w==
+X-CSE-MsgGUID: obIty8Q3TfmVkW8mgoAv+Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,273,1732608000"; 
-   d="scan'208";a="117122446"
+   d="scan'208";a="117122456"
 Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:49:43 -0800
+  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2025 22:49:48 -0800
 From: Raag Jadav <raag.jadav@intel.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -77,9 +77,9 @@ Cc: linux-gpio@vger.kernel.org,
 	linux-pm@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v4 05/20] pinctrl: baytrail: copy communities using devm_kmemdup_array()
-Date: Mon, 10 Feb 2025 12:18:51 +0530
-Message-Id: <20250210064906.2181867-6-raag.jadav@intel.com>
+Subject: [PATCH v4 06/20] pinctrl: cherryview: use devm_kmemdup_array()
+Date: Mon, 10 Feb 2025 12:18:52 +0530
+Message-Id: <20250210064906.2181867-7-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250210064906.2181867-1-raag.jadav@intel.com>
 References: <20250210064906.2181867-1-raag.jadav@intel.com>
@@ -91,37 +91,31 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Copy communities using devm_kmemdup_array() instead of doing it manually.
+Convert to use devm_kmemdup_array() and while at it, use source size
+instead of destination.
 
 Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/pinctrl/intel/pinctrl-baytrail.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pinctrl/intel/pinctrl-cherryview.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-baytrail.c b/drivers/pinctrl/intel/pinctrl-baytrail.c
-index c4458ac539ff..969137c4cb06 100644
---- a/drivers/pinctrl/intel/pinctrl-baytrail.c
-+++ b/drivers/pinctrl/intel/pinctrl-baytrail.c
-@@ -1560,16 +1560,14 @@ static int byt_set_soc_data(struct intel_pinctrl *vg,
- 	vg->soc = soc;
+diff --git a/drivers/pinctrl/intel/pinctrl-cherryview.c b/drivers/pinctrl/intel/pinctrl-cherryview.c
+index c673e262e1db..69b18ce0f685 100644
+--- a/drivers/pinctrl/intel/pinctrl-cherryview.c
++++ b/drivers/pinctrl/intel/pinctrl-cherryview.c
+@@ -1631,9 +1631,8 @@ static int chv_pinctrl_probe(struct platform_device *pdev)
+ 	pctrl->soc = soc_data;
  
- 	vg->ncommunities = vg->soc->ncommunities;
--	vg->communities = devm_kcalloc(vg->dev, vg->ncommunities,
--				       sizeof(*vg->communities), GFP_KERNEL);
-+	vg->communities = devm_kmemdup_array(vg->dev, vg->soc->communities, vg->ncommunities,
-+					     sizeof(*vg->soc->communities), GFP_KERNEL);
- 	if (!vg->communities)
+ 	pctrl->ncommunities = pctrl->soc->ncommunities;
+-	pctrl->communities = devm_kmemdup(dev, pctrl->soc->communities,
+-					  pctrl->ncommunities * sizeof(*pctrl->communities),
+-					  GFP_KERNEL);
++	pctrl->communities = devm_kmemdup_array(dev, pctrl->soc->communities, pctrl->ncommunities,
++						sizeof(*pctrl->soc->communities), GFP_KERNEL);
+ 	if (!pctrl->communities)
  		return -ENOMEM;
  
- 	for (i = 0; i < vg->soc->ncommunities; i++) {
- 		struct intel_community *comm = vg->communities + i;
- 
--		*comm = vg->soc->communities[i];
--
- 		comm->pad_regs = devm_platform_ioremap_resource(pdev, 0);
- 		if (IS_ERR(comm->pad_regs))
- 			return PTR_ERR(comm->pad_regs);
 -- 
 2.34.1
 

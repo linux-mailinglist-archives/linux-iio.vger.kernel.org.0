@@ -1,120 +1,156 @@
-Return-Path: <linux-iio+bounces-15321-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15322-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B1EA30498
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 08:36:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A34DA304A0
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 08:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6735B3A3A56
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 07:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E756D3A4FE5
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 07:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0591EDA0A;
-	Tue, 11 Feb 2025 07:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B58D1EDA32;
+	Tue, 11 Feb 2025 07:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="sMNLxJoO";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="L3PrASUn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAE11EB186;
-	Tue, 11 Feb 2025 07:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794951E5B99;
+	Tue, 11 Feb 2025 07:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739259370; cv=none; b=UfuqLro+YyLiqu7kncg72Abz4wn1+2wJQEzE571MjKp/bsgyYQ0Oi/JJJXMoMIpYrY0MKqH+bq1ZCRm1o7sEjul/de1TcO9964UXWxNHauoPmklFR6qCkNX9YpHwa6UbYj5Kq+4g630ukf0zIhAXWjTzDHZHc8EnyKUEa+CPcBQ=
+	t=1739259431; cv=none; b=tFu7n5snpImcH7OCZX4mMK7gRTwQhEPgVDKYcOb5Z7SW5tBrMFNts8+lOBR0WKGnWbSbWwvj66Ze+niJd8LAjOdJv/Bw8szP4fpftFBJXq3d+bmBGFkM+kcAX5BlpWBLTIVjUidF6LNnO3hDGSKnd27bIFHS6fBLfqQU5YtFNjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739259370; c=relaxed/simple;
-	bh=ca9qHkrngL3pZjIQUsPXDFnGS5wTD5NqFcVTg825OqQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ACm9WPqY4cWJoigST/Gns/UtFyxeGOcz0AQ0gyBdDQj0BTbO9zP5ynckw4YsZ6vo5+IBBixVLDOtuEnE2aN+lgbVYYGsra5TZJlE1PW+uRKLstuIGgway+rWOtS25291KbmBuBLUWlp3Mb0uY+lCP9v+KdwW+Yb0YHY9itg2964=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-866f0d69843so2839387241.3;
-        Mon, 10 Feb 2025 23:36:07 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739259364; x=1739864164;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v4rL6fRpPDW3WWAnvPDGJsUVffkkAT6CPBcGQAburtc=;
-        b=IjCQCuDLwRcOSFOLv2XBVUPIC7LM7UPQ2rt9+biA3Eq9/BU1SFLzTFzVWoTsJ8Auaa
-         09EfbP5mdx0BCZWT1aydakQyOmxGbOiZcNEC0yyH7KKrCUi1ZVR7WudYSAe+AVGrpd+l
-         gjSBjYkHv6MHJGQBrCE+e94DV8yRpyGM6zGvRERya34RL/9cDvSmfEJ4xrTi8yqgyMiP
-         V3/gA9Nd9078zDqLm60FC7p3r9RXu1auF4urVmiaGWfEFiJUoXdtbU0g3OHfs3vBNB8o
-         JDHi6CobSYnSQ7UjX7FHo7LD+yrXQrDy0PSlBbz+ABjCUhkx8WGlcO83IyrlD1daJS9G
-         2Teg==
-X-Forwarded-Encrypted: i=1; AJvYcCUu2s9tK68BWK66zYL+zJh0M5SsPqEdzmHn30Y7FWyI2ka8ULSBmXWDNOZlW0ydiJDCcPhCQgaF37d2wYBC@vger.kernel.org, AJvYcCV4nMmbydhW60EY8ivDbl+4MaVajgnbTVGrlTae2VWjIYbc2Q11gB2Yo3I658QBMRpyvuNkC3r/ogKj@vger.kernel.org, AJvYcCVmB7yfD0rMA7UysIiF64ma0X2nIXE5gLwd20nAQrOWinW7Y06Iw/UdinxRp3Ihba4X7o5fqusA@vger.kernel.org, AJvYcCWdwuab1uXU4rVW1R59AiqpyHjvmxa+EB0lVovXslfIe1LGt7/d2H8zJzja3PUyFN2jGblmMrq/UmXNTZs=@vger.kernel.org, AJvYcCX8NZb3kS42V6UpVR8cNg6nvYx0tRNRMZCKk6jUAO9dHtLWk9u9rAjXhfUq9tM3LTuTChvpI4wsK2fp@vger.kernel.org, AJvYcCXgx3xBK2mtkA8G6cIV/l1pIZIRT5TjsunMr8XdRp4yatTC/KhyivlcVmWE+KWhu9f75hZPvx4uyOEf@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx88uvnu4sYV79zRyfMdM3lyM/X4jJZp3UgYWc07+xMbpVYrkEx
-	rtMJv1Hr/eDffDzdwoXnxwhVSkXKTMEUBU2feHmpyAg9z3ykScQ9En06YrbE
-X-Gm-Gg: ASbGnctsyU7at4vXDHYGb0+TEGT2uguqgFm26YaTBmVSi0MVZsaCjeiOOMip2rCHHUz
-	3TutCLaHkFs8sX8kRvrepCKDmOoAqjaQS1WqVTcLdJkbfFHcNApmyLsBUC+xMwN+ANDhceX8zwP
-	2+nIdrX09N3v5rf2iHMoysDfhM2DObtuCfqMnRs+ti5aFLl4ya9olQYuRiIwYWNTxZFjKWcPsuN
-	gmJUjHSR2xEi9Uy6poJ8avXc/0eSQonHdzkgRocuOWpgL9RQy1IqxBcCw0X5oauow2W4gnUnyri
-	h6jcZ+c2r3605fWgCQIewAZCSjSe1XgWPFIvTpJGienAFZ+Kx1cJ7Y+UEA==
-X-Google-Smtp-Source: AGHT+IH64OMvNI//DHpqIhBXMfnM3nyG8byXREG186/r6xJVCGhlgNO0z9wcmRT5dF5guMFstYW10w==
-X-Received: by 2002:a05:6102:2ad2:b0:4bb:dc3c:1b71 with SMTP id ada2fe7eead31-4bbdc3c2999mr2831244137.13.1739259363945;
-        Mon, 10 Feb 2025 23:36:03 -0800 (PST)
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com. [209.85.221.169])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4bbbebc1fa0sm891895137.15.2025.02.10.23.36.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2025 23:36:02 -0800 (PST)
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5203e0d0139so1197419e0c.1;
-        Mon, 10 Feb 2025 23:36:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU+kKNVvHLE2TTHJH5UfWbOsVz9muNHonu5dCRZzdFKsKUyZr5FAbq7AEe9UcURNu6pveFMYGLnNZho@vger.kernel.org, AJvYcCUcwtAIrcYbnU91dowQJWRxG/47CVPCU5f9nddEkXwaIwCggJVxhL9CUQm+K4Y038GUWe/1XQQNRLA4@vger.kernel.org, AJvYcCUjf+3CsH2Z2UZr5HFghS8YMRUx1GWrjica4Rg5ddFCIPf4woAie+G7Pg6d2Lh9s88bZVh//mQdyUkjK5I=@vger.kernel.org, AJvYcCVVHf3ee+qZhIBFB/drNez6MsADke/1F+Qax3Oyb6PQ3+AfCeF9Isn7CQDKr6AL+qPxzcb6Ui6Q/Ev3@vger.kernel.org, AJvYcCWDmpd2eZQ0DV0Rq+wdnMMSw+NVxYSoRIEfC8NFz5aMgBtFwAkZ7J6gLCcZHU1lFO57KJlwDWx2@vger.kernel.org, AJvYcCX49hiBd4gA6pGNwslE80tPwtcXHY2VBRxyj6Lysa1xo9ORhQWfwHCYCJyKUjMmxHqEEl7vX+X94BoM2Hvp@vger.kernel.org
-X-Received: by 2002:a05:6122:1d44:b0:520:61ee:c7f9 with SMTP id
- 71dfb90a1353d-52061eecb62mr56803e0c.7.1739259362582; Mon, 10 Feb 2025
- 23:36:02 -0800 (PST)
+	s=arc-20240116; t=1739259431; c=relaxed/simple;
+	bh=DrE5VvGmUMugsbU7+khXZE2WAcu+eIw10jA8iDZj2j4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=g2PMHitjZJscmn4YsokyIkkFhljfJegcjYlDRK2/3ibbNBN+ea4xGZUPF92NcKKhDdtqVIqvfjSja8cm2YsjocQRBS92MuhuDB9HJ8K7bcJP/GkoSYm818z0zLFvxIIxZgJiHS2RgzKR6VxaQ75/Yw1QNkHuvE8E2t/xYGO6Ags=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=sMNLxJoO; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=L3PrASUn; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 621D511401C3;
+	Tue, 11 Feb 2025 02:37:08 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Tue, 11 Feb 2025 02:37:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1739259428;
+	 x=1739345828; bh=znUeiowfjiS4zFeHT0A4IPaer583HuycpFbIPbnWhFA=; b=
+	sMNLxJoOJjcDGL/GDNPyovxAgmRYGCXW8dGfAOMtDLAHhd1NeuzW+l6TcRZJUjrQ
+	NSbpUy5x9hP1CsErAYlzmZABNoBrDsehM8vzfc6ItXP1Hu7qKlQ3Zo/9esGAU3hN
+	/3lh2vOJTZg93rr6QeRquRnDIBwW9ixt+E/wp5k65xggJUNMU05fuXdNuPU3/+LE
+	y8C7khe3BYqvlZjsNM8RYfcFUg/57SojkgHtTKbFzSINt1kugiPRCUCHVjOJ5p5Y
+	1+9wbu9AWScusqY42mdvfvzaVIMRaop6bNnOZZhWcs3wf92N7SSG9nrE0dJ/47YJ
+	fBQv9+O4unGcN9gXJXqrsQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739259428; x=
+	1739345828; bh=znUeiowfjiS4zFeHT0A4IPaer583HuycpFbIPbnWhFA=; b=L
+	3PrASUnzdNzVdRTF+MnhOhxI7OQfjHae8oaQWTWtWmC5edizDoQz1hcAUIrNqWZq
+	NwmqgrZ68IzrLzqxrBBMRgHKV0RreyZbJUyYQLuDqU1DKod4WkcZa+lMoL0L/e+J
+	iafmwXGp6VEz3jK0bMqS+PGla65Gc0q/R20HdFyirOOzCID0oJ6Sg7ZEmUG0OWpk
+	ToPQt1Fws0JmaG/Wjb1EpaO5AFiM/DDztsRUVL5RDXuctZITURcdp/MtHSJFm4lL
+	pdMyJlXAQTF0S016lpJ2Vs+AUagfWXpPT3LT4MAfjoyAEPTZRG39SpuYHgvLw+D5
+	sgjleOrKV53g5WakvVp4g==
+X-ME-Sender: <xms:I_6qZ1ckZjtXKPSWwiJV1FG59uv3zLq1r0lARt_v0MXgvoCO2jpbCg>
+    <xme:I_6qZzO_TUn_gQsg9FTPGneuD26Ry3S13EGFzP-ljYJqt1TOzilSP4LHF-cGZah9m
+    uGim2WDq8pJVGReq6k>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegtdegudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedv
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughmihhtrhihrdhtohhrohhkhh
+    hovhesghhmrghilhdrtghomhdprhgtphhtthhopehlghhirhgufihoohgusehgmhgrihhl
+    rdgtohhmpdhrtghpthhtoheplhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopehprh
+    iivghmhihslhgrfidrkhhithhsiigvlhesihhnthgvlhdrtghomhdprhgtphhtthhopehr
+    rggrghdrjhgruggrvhesihhnthgvlhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrvg
+    eskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:I_6qZ-iSRoTxQV9ltzT1BmYpzHsQEtk6iHzU5JGmyY1GBUD15BOylA>
+    <xmx:I_6qZ-9ozJz_b77BRmlfLS9JSnzBYv9n71HtSOLdpD9YY-Q51dNVcA>
+    <xmx:I_6qZxss56NY0uXH7OXQLzb5cAK9Ns4N2MqnIP1EZEUiJJbcGvhzWA>
+    <xmx:I_6qZ9Gl2A4ou3EQcFiN-j8eN79o4SclFO4X7gqQpd5xuDYQv-ij7Q>
+    <xmx:JP6qZ1RJkzZG1PZINfYwT1hkKW4hklM4hcrIJRp0NFpDX_z-glquoKjp>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AA8C02220072; Tue, 11 Feb 2025 02:37:07 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com> <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
-In-Reply-To: <20250210-gpio-set-array-helper-v3-1-d6a673674da8@baylibre.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 11 Feb 2025 08:35:51 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXFXbzeus6yzeBsjOvTsD+AOLKjyRySCYo4YkjSZByZAQ@mail.gmail.com>
-X-Gm-Features: AWEUYZkcG2r9GXDExtVTd3MXygmVQFQr3aQqn2D5K57fCGs7Av6ow06VQ5r6ees
-Message-ID: <CAMuHMdXFXbzeus6yzeBsjOvTsD+AOLKjyRySCYo4YkjSZByZAQ@mail.gmail.com>
-Subject: Re: [PATCH v3 01/15] gpiolib: add gpiod_multi_set_value_cansleep()
-To: David Lechner <dlechner@baylibre.com>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Andy Shevchenko <andy@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
-	Heiner Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, 
-	Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Date: Tue, 11 Feb 2025 08:36:47 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
+ "kernel test robot" <lkp@intel.com>
+Cc: "Raag Jadav" <raag.jadav@intel.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Mika Westerberg" <mika.westerberg@linux.intel.com>,
+ "Dmitry Torokhov" <dmitry.torokhov@gmail.com>, lgirdwood@gmail.com,
+ "Mark Brown" <broonie@kernel.org>, "Sebastian Reichel" <sre@kernel.org>,
+ "Jonathan Cameron" <jic23@kernel.org>,
+ "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
+ oe-kbuild-all@lists.linux.dev,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Message-Id: <7c42e438-22f9-40d9-bb8e-24feb7d58e64@app.fastmail.com>
+In-Reply-To: <Z6oZ9dnYrlp5djiQ@smile.fi.intel.com>
+References: <20250210064906.2181867-2-raag.jadav@intel.com>
+ <202502102201.zLWaJC6V-lkp@intel.com> <Z6oZ9dnYrlp5djiQ@smile.fi.intel.com>
+Subject: Re: [PATCH v4 01/20] driver core: Split devres APIs to device/devres.h
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Feb 2025 at 23:37, David Lechner <dlechner@baylibre.com> wrote:
-> Add a new gpiod_multi_set_value_cansleep() helper function with fewer
-> parameters than gpiod_set_array_value_cansleep().
+On Mon, Feb 10, 2025, at 16:23, Andy Shevchenko wrote:
+> +Cc: Arnd
 >
-> Calling gpiod_set_array_value_cansleep() can get quite verbose. In many
-> cases, the first arguments all come from the same struct gpio_descs, so
-> having a separate function where we can just pass that cuts down on the
-> boilerplate.
 >
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> TBH I have no quick idea how to address this. It seems that io.h 
+> includes device.h
+> for no reason (but I haven't checked that carefully). OTOH, we need only
+> IOMEM_IS_ERR() definition which can simply be moved from io.h to err.h 
+> as the
+> former includes the latter and the definition depends only on 
+> compiler_types.h.
+>
+> Arnd?
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Removing linux/device.h from asm/io.h is probably the right step,
+it really has no business in there and no other architecture
+includes it. I don't see an IOMEM_IS_ERR() definition, do you 
+mean EEH_POSSIBLE_ERROR?
 
-Gr{oetje,eeting}s,
+Most of asm/eeh.h probably shouldn't be included by asm/io.h
+either, my guess is that we can get away with the
+eeh_{s,}{b,w,l,q}{_be} helpers, eeh_memcpy_fromio() and
+eeh_check_failure(), which have no dependency on 'struct
+device' in the header.
 
-                        Geert
+Removing a giant header inclusion from another one likely causes
+build regressions in drivers that should have included the
+header (linux/device.h or something included by that) themselves,
+so ideally there should be some separate build testing of
+powerpc kernels.
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+      Arnd
 

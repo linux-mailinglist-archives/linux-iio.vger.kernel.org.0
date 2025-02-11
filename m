@@ -1,209 +1,137 @@
-Return-Path: <linux-iio+bounces-15349-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15350-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AD1A30FA0
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 16:24:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9294BA31449
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 19:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8979C7A413C
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 15:23:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4138616731F
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 18:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA535253329;
-	Tue, 11 Feb 2025 15:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B050253B5D;
+	Tue, 11 Feb 2025 18:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="FPFj6iAr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z38cMeTI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8D425332B;
-	Tue, 11 Feb 2025 15:21:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B5F26158B;
+	Tue, 11 Feb 2025 18:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739287305; cv=none; b=Wksh+IU0dXthbTuZkuEr8tAUhl13II2MsjQrXO+EMnndVuIuIo7D2r679Y7cmU3zfKrgfOn7jmyBDRgHaYTJqTqQw6Sae+8kSDY41R3N7X95HQN/dkN1J0InpN7Gym9dFruK4lgpJ1v3LkhnKdZSqsM8YRV0LYNGEZPU2AgGG8M=
+	t=1739299491; cv=none; b=rgVq4wB53HwIMFAueZCE3J0rWpE8tXhHYpmY8tQfu0goxDamrde2p2K4l1B8f3/A79p39v5FJ6NUOiFQqcHpaYq7z065QK/bscEkZkFghzVugZy51NCg5FFahVO/CnaOE3Sg5YFJDLrCBc2ksUM4ZsVEVTyvq18MuveyN91K1Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739287305; c=relaxed/simple;
-	bh=DXlJ2gD3TVkjoDWGgoF+1jJVOlRv3qrm/nlLABCC77s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M/HEySssutvo7wD9FBdhiN0bs8obKI1qVZb9Gbffwl/dLpYyMLTUQxrI+7IQGfdsstuKbWROjLwRN1fesjquOA/Cu+xmXZYL5qkZ/s3o1ZGgtwN3f+hGgKOzZSt0VJWJHqUrsYHYqaa2+4TJHdmCChE3IOvwMso3EKnFqFU/qqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=FPFj6iAr; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 45F36A0ABF;
-	Tue, 11 Feb 2025 16:21:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=lnd07H6K+00qVcWwkSgQ
-	RGOualEQLbdZn+x//xQ7Mmg=; b=FPFj6iAr5CU+JBBscEX1n0uy+yx+lEAonj+v
-	2zw2W4hL5lJtZ2nravuyVwLZGoBLRpDMGt/zbnYBX0zKu+nZctQrcfMuEE05zY6x
-	Hvn/lIg5OgenPiqx1d5+4tdM5LFbd0trQCXHHlhlyK5MQbdakaTMlqjEoezv4vPe
-	iT60+rzfj7hYDfNO1CHxcT5TnbKF/HYFC9lcydls3JDIvFSAzQgi1/lgIh/MVP2O
-	TEbUsbq9dLybLyfRXmhENSeZFdMEK1kBf4j90uvXWJdahefi7EBk7AeBvV0vqxrk
-	Ut208byCxGEjByjJvQ62OMq1vHWbG7eaLsc8l1yKxjvSz2BM6y5n6JneYBJxnyoG
-	T+vv4HPTO7SJz6TF6hMPByr0CVoBsZdSvgGc9iWZ8m/XvDeqzDdhVZk/vavhY0h5
-	X42icnZJuUU5Y66TwuBa/ouFxtibV3uxoOAl16K0RuRS8B/oRWACGp5GdbOyiUVp
-	Bez3bCP00I2NgAupoDo9U9C5eY2/HmaHVFqxeNpzeW2Tcc6KmwwDBUfcl71oGG7o
-	sN7nxuTGha0oaCz5m/WIZ0/X1tbjjcX8z7CDl6d9izqhNkFJ748Tt1NSeFo229vE
-	lkVC3E2IkC1Ph5OnLh69/4wP+RsgH3X1CVc3Q6U1bXWfzCiap9JSiDTI7bnor2+B
-	SopXbyI=
-From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>,
-	<Dharma.B@microchip.com>, Kamel Bouhara <kamel.bouhara@bootlin.com>, "William
- Breathitt Gray" <wbg@kernel.org>
-Subject: [PATCH v4 2/2] counter: microchip-tcb-capture: Add capture extensions for registers RA-RC
-Date: Tue, 11 Feb 2025 16:19:15 +0100
-Message-ID: <20250211151914.313585-7-csokas.bence@prolan.hu>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250211151914.313585-3-csokas.bence@prolan.hu>
-References: <20250211151914.313585-3-csokas.bence@prolan.hu>
+	s=arc-20240116; t=1739299491; c=relaxed/simple;
+	bh=ghRP+gbuDImmJVKfK6iB47GOeRo/vdl5Vcb10WIKFQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z5qg1kPLXi40MF37vmtyg34itDDVSllnIVkLua1MBCJOFxaUKvf+++jQHDCftObYuvWdJgIja+PSamT3fa+LU3pTB3icE0ZSUQVHFNSZ06ok4lJ4OyKvds6wh5RhUal0navaNjcbv7Ro08/IlsP7A/JWyYjv7UGVUDiAkK6ml24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z38cMeTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32128C4CEDD;
+	Tue, 11 Feb 2025 18:44:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739299490;
+	bh=ghRP+gbuDImmJVKfK6iB47GOeRo/vdl5Vcb10WIKFQo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Z38cMeTIrsRh5tu+xqU2wkig5A7UiGan1ekOmWhmPUsiFDONHpIrL8wkko8rcztF/
+	 qLkFw5NqoH4FfQvINlZc7mF6MUx4PyVLsrRrzGnziSglK9FRgqW2iav61WHcGdqETF
+	 McEYisAtrC9xaGTRYAG0Htt6JPP9D7ZDwhV0zlGEOK/qYz/9JhT40FEtu31Ghfl8Se
+	 HSTaJzIgoh8758KSVNgX0Nuc1xqxbkarsUzS1RRASPDXjOrFlUpZERpwZmCl2FHjYt
+	 fVXA+uxCfgTLTGb3AZhcEaUFhsOn+FfikIYWSuERqCd29EFZzqZMDbPjQQeiLSL1+l
+	 48f1mnJiAl2Xg==
+Date: Tue, 11 Feb 2025 18:44:46 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Hermes Zhang <chenhuiz@axis.com>
+Cc: Hermes Zhang <Hermes.Zhang@axis.com>, jic23@kernel.org, robh@kernel.org,
+	lars@metafoo.de, krzk+dt@kernel.org,
+	Conor Dooley <conor+dt@kernel.org>, kernel@axis.com,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] dt-bindings: iio: chemical: sensirion,senxx: Add
+ yaml description
+Message-ID: <20250211-whiff-handsfree-a21486cf67c7@spud>
+References: <20250206061521.2546108-1-Hermes.Zhang@axis.com>
+ <20250206061521.2546108-3-Hermes.Zhang@axis.com>
+ <20250206-italics-reproduce-35d554c38751@spud>
+ <21dd4902-7d24-6d1a-1144-2dfd7cabe9e2@axis.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1739287300;VERSION=7985;MC=3490347217;ID=762887;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
-X-ESET-Antispam: OK
-X-EsetResult: clean, is OK
-X-EsetId: 37303A29ACD94852617160
-
-TCB hardware is capable of capturing the timer value to registers RA and
-RB. On top, it is capable of triggering on compare against a third
-register, RC. Add these registers as extensions.
-
-Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
----
-
-Notes:
-    Changes in v2:
-    * Add IRQs
-    Changes in v3:
-    * Move IRQs to previous patch
-    Changes in v4:
-    * Return the status of the regmap_*() operations
-    * Add names for the extension numbers
-
- drivers/counter/microchip-tcb-capture.c       | 62 +++++++++++++++++++
- .../linux/counter/microchip-tcb-capture.h     |  9 +++
- 2 files changed, 71 insertions(+)
-
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index cc12c2e2113a..369f69aaf14f 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -254,6 +254,66 @@ static int mchp_tc_count_read(struct counter_device *counter,
- 	return 0;
- }
- 
-+static int mchp_tc_count_cap_read(struct counter_device *counter,
-+				  struct counter_count *count, size_t idx, u64 *val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+	u32 cnt;
-+	int ret;
-+
-+	switch (idx) {
-+	case COUNTER_MCHP_EXCAP_RA:
-+		ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), &cnt);
-+		break;
-+	case COUNTER_MCHP_EXCAP_RB:
-+		ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), &cnt);
-+		break;
-+	case COUNTER_MCHP_EXCAP_RC:
-+		ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), &cnt);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	if (!ret)
-+		*val = cnt;
-+
-+	return ret;
-+}
-+
-+static int mchp_tc_count_cap_write(struct counter_device *counter,
-+				   struct counter_count *count, size_t idx, u64 val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+	int ret;
-+
-+	if (val > U32_MAX)
-+		return -ERANGE;
-+
-+	switch (idx) {
-+	case COUNTER_MCHP_EXCAP_RA:
-+		ret = regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RA), val);
-+		break;
-+	case COUNTER_MCHP_EXCAP_RB:
-+		ret = regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RB), val);
-+		break;
-+	case COUNTER_MCHP_EXCAP_RC:
-+		ret = regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), val);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	return ret;
-+}
-+
-+static DEFINE_COUNTER_ARRAY_CAPTURE(mchp_tc_cnt_cap_array, 3);
-+
-+static struct counter_comp mchp_tc_count_ext[] = {
-+	COUNTER_COMP_ARRAY_CAPTURE(mchp_tc_count_cap_read, mchp_tc_count_cap_write,
-+				   mchp_tc_cnt_cap_array),
-+};
-+
- static struct counter_count mchp_tc_counts[] = {
- 	{
- 		.id = 0,
-@@ -262,6 +322,8 @@ static struct counter_count mchp_tc_counts[] = {
- 		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
- 		.synapses = mchp_tc_count_synapses,
- 		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-+		.ext = mchp_tc_count_ext,
-+		.num_ext = ARRAY_SIZE(mchp_tc_count_ext),
- 	},
- };
- 
-diff --git a/include/uapi/linux/counter/microchip-tcb-capture.h b/include/uapi/linux/counter/microchip-tcb-capture.h
-index b91d8954f06e..0bef1c9d1535 100644
---- a/include/uapi/linux/counter/microchip-tcb-capture.h
-+++ b/include/uapi/linux/counter/microchip-tcb-capture.h
-@@ -12,6 +12,9 @@
-  * Count 0
-  * \__  Synapse 0 -- Signal 0 (Channel A, i.e. TIOA)
-  * \__  Synapse 1 -- Signal 1 (Channel B, i.e. TIOB)
-+ * \__  Extension capture0    (RA register)
-+ * \__  Extension capture1    (RB register)
-+ * \__  Extension capture2    (RC register)
-  * 
-  * It also supports the following events:
-  *
-@@ -30,6 +33,12 @@ enum counter_mchp_signals {
- 	COUNTER_MCHP_SIG_TIOB,
- };
- 
-+enum counter_mchp_capture_extensions {
-+	COUNTER_MCHP_EXCAP_RA,
-+	COUNTER_MCHP_EXCAP_RB,
-+	COUNTER_MCHP_EXCAP_RC,
-+};
-+
- enum counter_mchp_event_channels {
- 	COUNTER_MCHP_EVCHN_CV = 0,
- 	COUNTER_MCHP_EVCHN_RA = 0,
--- 
-2.48.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="phNxZwqCbmj0chLs"
+Content-Disposition: inline
+In-Reply-To: <21dd4902-7d24-6d1a-1144-2dfd7cabe9e2@axis.com>
 
 
+--phNxZwqCbmj0chLs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sat, Feb 08, 2025 at 03:07:08PM +0800, Hermes Zhang wrote:
+> Hi,
+>=20
+> On 2025/2/7 2:20, Conor Dooley wrote:
+> > diff --git a/Documentation/devicetree/bindings/iio/chemical/sensirion,s=
+enxx.yaml b/Documentation/devicetree/bindings/iio/chemical/sensirion,senxx.=
+yaml
+> > new file mode 100644
+> > index 000000000000..4d998eabe441
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/chemical/sensirion,senxx.ya=
+ml
+> > filename matching a compatible please.
+> So sensirion,sen66.yaml?
+> > +  https://sensirion.com/media/documents/6791EFA0/62A1F68F/Sensirion_Da=
+tasheet_Environmental_Node_SEN5x.pdf
+> > +  https://sensirion.com/media/documents/FAFC548D/6731FFFA/Sensirion_Da=
+tasheet_SEN6x.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - sensirion,sen50
+> > +      - sensirion,sen54
+> > +      - sensirion,sen55
+> > +      - sensirion,sen60
+> > +      - sensirion,sen65
+> > +      - sensirion,sen66
+> > I'd like a note in the commit message as to how all of these devices are
+> > different please.
+> Sure, will fix in v2.
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +required:
+> > > +  - compatible
+> > > +  - reg
+> > No supplies needed for this device? Seems like you would need at least
+> > one, no?
+>=20
+> You mean the vdd-supply? The chip require a e.g. 3.3v VDD, but in our HW,=
+ we
+> have no gpio/regulator to control it, connect directly by the HW, should I
+> still need to have one vdd-supply here?
+
+Might not be controllable in your case, but if the device needs power
+=66rom somewhere it should have one in the binding.
+
+--phNxZwqCbmj0chLs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ6uangAKCRB4tDGHoIJi
+0v+LAQDUHgR6IiHcxmIJj3tANEKTn/Kdnt0M3QU7xolt80zJ0AEA8P4k1xW4qYIm
+1PfYq9yqfP2LSUqg4Q2S4XiTG8/klQ8=
+=FNxR
+-----END PGP SIGNATURE-----
+
+--phNxZwqCbmj0chLs--
 

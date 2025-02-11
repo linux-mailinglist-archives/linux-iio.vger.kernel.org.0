@@ -1,84 +1,64 @@
-Return-Path: <linux-iio+bounces-15318-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15320-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE53A30375
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 07:23:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFACA30384
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 07:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68DC16762F
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 06:23:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 345CE7A2E25
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 06:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B42D1E9B23;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17C81EBA03;
 	Tue, 11 Feb 2025 06:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyPX0pA5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOUv8xbi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EC71E5B66;
-	Tue, 11 Feb 2025 06:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749331E9B3D;
+	Tue, 11 Feb 2025 06:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739254995; cv=none; b=bptohdqSzKNYrGZsWhya4KaGo5qVB6xDL8rMrt+P3Vk7Y14t5LFQrddyXOY0Iar9I+vfPs2vpaHPC3slSn/hhpwkvBhZgJQN48SozAK/tsUI9Offevkmo1SV4Jc4VSLhFYc8NicfgIoRPFwEJm/5K9G1KMp8wqAnAXBzL00jWEc=
+	t=1739254995; cv=none; b=Duw1G+5s/AVRRbxoEmh4pl6zEP0ktQjEhFRIsUnXgMT0KU06iSWAdkRfU2DQHicbaz2muC3yo7AsIv0Pxd57rEN5ZGZN6YRa+uPyUexjLsePFoBa1DYnHENIMZwvAZfEGwE0bwclkUCH0Lw+7cRxSb4pY3hPggvpO+FABxRg+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739254995; c=relaxed/simple;
-	bh=OO6X48oMD1uFUOD5elmk8YCfoS/Rml763B+Am/9mOOc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lPxmSF2DPx7DaGYOIHKy6GysOrp+Zv2aGHSqCWKinRc30H0tQxtjADjisM1ZI+Uh5dHNFnN9pTPnpqPuXbh88rjpkFLxQN5bOKUv06zzfcg8o/VSSwVlKiKcGrUDo0ngYdLqy9cw4hkK9xijw76D7fAbItWMrggBLFsXwRGMdjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyPX0pA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE8DC4CEDD;
+	bh=QXk/JHBxUK/Ths9qSQMqY9AnKVsl6SgMJq6d9H2BT/U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YflDUGS+ILXCbJ7uWZCwtY8eEmEvOStCDydZL5Bp4w0mlh16khkw3MdwAmhSmRt0AAGvNE9zS+SdUsjZ/HVbpgtPrLe4b2QHE9eh59wlcUr+EJSmE3MPMGL7YfHu06HShTOx7avuJoj0OAU8LyLFlVozuduUzjpRmP8fff6dXYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOUv8xbi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BA6C4AF09;
 	Tue, 11 Feb 2025 06:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1739254994;
-	bh=OO6X48oMD1uFUOD5elmk8YCfoS/Rml763B+Am/9mOOc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iyPX0pA5AG6JuBzDJhoXbZm+u09Ly/vfgxYiqyrlnGOKVFWTfN0tWWiye88LDOJmE
-	 c8JfHUTrSEZmaEtOvb/llUXNoV2N1SOezBdAxjaxY9MWPyYTi7d1a/ZJk4hCw5MV0y
-	 f+ESJmKKg+iFde9Y624LY1xVA0zJCa7XK+SO6clqtDSfwIcScP3r4rg0nLgaheFUKg
-	 +JU00b3Xt7KGFVF/+alS8Y5/JgNy7eBzsy+E3IdHJdCPGpK1f1K6aTwfofhNil67UR
-	 gqEmNdJH7Tpyg22fEsFX4yPqk9j9y5quz3jbQjxqM/ctDs0YsMovmUbLJESmPvJd8m
-	 nX60ELz6H60WQ==
+	bh=QXk/JHBxUK/Ths9qSQMqY9AnKVsl6SgMJq6d9H2BT/U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KOUv8xbi9st74/o9+AtogiTH40aS0q0hLloHaZz1sRq0DuFfWVK6OEkHJ0YMRWqmh
+	 tdTAAyL2pHaiBMzpTNF7kmcuACYWZH/8EwqX4IOLF5ydzhEuzVINSRZfxm/jwzJAwX
+	 Y2TgNR9A5fQhIEN0rKhEWxt62lMyAfswm7KTMAmK1O6t6yFa24HARZK0Ca4/fnRWJg
+	 6QfX5g8mF7V4SsCc8pzg7vWgO4ykROcaHQKTR8IfiSBkafucV0Eb6fHxCnSMLlxHy0
+	 S3x+5UYu+kdFn1kfX3yMcpb9s7fiX/bmshKsezlmZqyYpzI0uW19bo/hPmEqQFHGsF
+	 QN7Y+3FxthBUw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.98)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1thjfs-00000008YBE-2xQJ;
+	id 1thjfs-00000008YBX-3XNq;
 	Tue, 11 Feb 2025 07:23:12 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Alex Shi <mchehab+huawei@kernel.org>,
-	Andreas Noever <andreas.noever@gmail.com>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	Carlos Bilbao <mchehab+huawei@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Hu Haowen <2023002089@link.tyut.edu.cn>,
-	Jakub Kicinski <mchehab+huawei@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Jamet <michael.jamet@intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sean Young <sean@mess.org>,
-	Simon Horman <mchehab+huawei@kernel.org>,
-	Will Deacon <mchehab+huawei@kernel.org>,
+	"Mauro Carvalho Chehab" <mchehab+huawei@kernel.org>,
 	William Breathitt Gray <mchehab+huawei@kernel.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Yehezkel Bernat <YehezkelShB@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
 	linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	workflows@vger.kernel.org
-Subject: [PATCH 0/9] Extend automarkup support for ABI symbols
-Date: Tue, 11 Feb 2025 07:22:54 +0100
-Message-ID: <cover.1739254867.git.mchehab+huawei@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5/9] docs: arm: generic-counter: Allow creating cross-references for ABI
+Date: Tue, 11 Feb 2025 07:22:59 +0100
+Message-ID: <5faafb98c331e0c99433f36dd72badcc540a1baa.1739254867.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1739254867.git.mchehab+huawei@kernel.org>
+References: <cover.1739254867.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,37 +68,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Now that ABI creates a python dictionary, use automarkup to create cross
-references for ABI symbols as well. 
+Now that Documentation/ABI is processed by automarkup, let it
+generate cross-references for the corresponding ABI file.
 
-Mauro Carvalho Chehab (9):
-  docs: media: Allow creating cross-references for RC ABI
-  docs: automarkup: drop legacy support
-  docs: thunderbolt: Allow creating cross-references for ABI
-  docs: arm: asymmetric-32bit: Allow creating cross-references for ABI
-  docs: arm: generic-counter: Allow creating cross-references for ABI
-  docs: iio: Allow creating cross-references ABI
-  docs: networking: Allow creating cross-references statistics ABI
-  docs: submit-checklist: Allow creating cross-references for ABI README
-  docs: translations: Allow creating cross-references for ABI README
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ Documentation/driver-api/generic-counter.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- Documentation/admin-guide/thunderbolt.rst     |  2 +-
- Documentation/arch/arm64/asymmetric-32bit.rst |  2 +-
- Documentation/driver-api/generic-counter.rst  |  4 +-
- Documentation/driver-api/iio/core.rst         |  2 +-
- Documentation/iio/iio_devbuf.rst              |  2 +-
- Documentation/networking/statistics.rst       |  2 +-
- Documentation/process/submit-checklist.rst    |  2 +-
- Documentation/sphinx/automarkup.py            | 47 ++++++++-----------
- .../it_IT/process/submit-checklist.rst        |  2 +-
- .../sp_SP/process/submit-checklist.rst        |  2 +-
- .../zh_CN/process/submit-checklist.rst        |  2 +-
- .../zh_TW/process/submit-checklist.rst        |  2 +-
- .../userspace-api/media/rc/rc-sysfs-nodes.rst |  2 +-
- 13 files changed, 32 insertions(+), 41 deletions(-)
-
+diff --git a/Documentation/driver-api/generic-counter.rst b/Documentation/driver-api/generic-counter.rst
+index 71ccc30e586b..e826f16ea43d 100644
+--- a/Documentation/driver-api/generic-counter.rst
++++ b/Documentation/driver-api/generic-counter.rst
+@@ -467,7 +467,7 @@ Counter sysfs
+ Translates counter data to the standard Counter sysfs interface format
+ and vice versa.
+ 
+-Please refer to the ``Documentation/ABI/testing/sysfs-bus-counter`` file
++Please refer to the Documentation/ABI/testing/sysfs-bus-counter file
+ for a detailed breakdown of the available Generic Counter interface
+ sysfs attributes.
+ 
+@@ -483,7 +483,7 @@ Sysfs Interface
+ Several sysfs attributes are generated by the Generic Counter interface,
+ and reside under the ``/sys/bus/counter/devices/counterX`` directory,
+ where ``X`` is to the respective counter device id. Please see
+-``Documentation/ABI/testing/sysfs-bus-counter`` for detailed information
++Documentation/ABI/testing/sysfs-bus-counter for detailed information
+ on each Generic Counter interface sysfs attribute.
+ 
+ Through these sysfs attributes, programs and scripts may interact with
 -- 
 2.48.1
-
 
 

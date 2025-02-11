@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-15336-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31610A30AAE
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 12:47:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907F2A30AC6
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 12:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58EE4163E22
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 11:47:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F6D3A37C9
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 11:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261F71FA165;
-	Tue, 11 Feb 2025 11:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56AE1F8BBF;
+	Tue, 11 Feb 2025 11:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LrAPiguR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n31hD8Ni"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B071F8BBF;
-	Tue, 11 Feb 2025 11:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3E1F0E2C;
+	Tue, 11 Feb 2025 11:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739274430; cv=none; b=q/zfDBmpm9r0hPo3tWxLYnldmdSVdSXlTkdIt2w76MTim/+vGTWuYUUTRTyTAaMGjyiUk5WMQUualuZvIT6GbBNWNYNWyPtFpSwly6D/JRF901h4KDv8JbV828l5WsXAdcBgFVtQeH/3NRglcQ32Bg0ZS3v/PqXwV6XINAWevFA=
+	t=1739274623; cv=none; b=iA8CedXiiIcuA3q2I0fH7A0K7YwZoeeAk4hqOE+Q6EJcEJLlz76x+H01PiNQQ1uu406+uflTrN+HmmvrAoVkJmLdphYikwwhutNxX4TpHFg5Fe1ykoyTLLkxz1JJXkH+RibxCTw3mLSXqLwKR7YkpiyX/RqQZtW60m+UAcUimS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739274430; c=relaxed/simple;
-	bh=9P8Tde5jB2r72hlwt6Vi7jp/JBFV2fMps/hiNYBEKog=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HuwIxWfr3ujG0PYtxYBMD2BNzMgrPoXHPLhLE23wPC/RftZQ8/+xm7JB3/IuwC0LLvwANewvxsJ/p3DV5d8A0yiVlmb0Vissx7N2vWN2XOHIFDpEf8UUnCTGtL05TocmYWwacoKW9D9Yr9VfgxFEyToxOnq9vD/MIIZ2dZ3zeL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LrAPiguR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87F1C4CEDD;
-	Tue, 11 Feb 2025 11:46:59 +0000 (UTC)
+	s=arc-20240116; t=1739274623; c=relaxed/simple;
+	bh=z7ig8G4ja3AfMZ4xQnC35j6cgjQp78dfBzJxrAhKF54=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=MuL14YYbfE+29zwl6b5e6466c1Gd1IW2RQSiZRGPli9AyxkzrXViSb0NhpQ+1oUZG2q53SnAP8POljAUEWqSJOmOhLoALuiWT6b8Pif34mNkZ8GR1jRti85kcTCglIOBbBnMcVV+nS+ouDfRoYVKOKqeYWYaUaHtX8ypr4sEeCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n31hD8Ni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BB9C4CEDD;
+	Tue, 11 Feb 2025 11:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739274430;
-	bh=9P8Tde5jB2r72hlwt6Vi7jp/JBFV2fMps/hiNYBEKog=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LrAPiguRFji4Iub4YvaRSXBQ/ylWezYiMsifYZ6WcRRo5KbmsJHJQOCsT5GXkhKxS
-	 6I+/9/KRfTtuMMegsTn9ICnMviNmjkqUqCcMMz+Rbr4RHooWeR+yG8AqbOFt0mKWwk
-	 pHWMPewICo4ATe5+RQ1MB1jVAO7GJvRjBNEa/HE2MkOOdTbDxA4qZQMklP93uYrInn
-	 /ETx9QK+iDDhNL4o7z2X8yiaNMxqTiZTyYNyDB7Zk1DRUj6uZXToxv2hl5+BmiVsmW
-	 dpwinirrsHRMa3NZUn2zObL7EhNkC1MBrpgndPljOUbsu//fbg4PPsth0bqnh26kjc
-	 ksOdkJflgeGpQ==
-Message-ID: <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
-Date: Tue, 11 Feb 2025 12:46:57 +0100
+	s=k20201202; t=1739274622;
+	bh=z7ig8G4ja3AfMZ4xQnC35j6cgjQp78dfBzJxrAhKF54=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=n31hD8Ni6DJMrh3nvJ1L2L0R95t7dSJ06VWF5Fr+txvM/0hrpfR9el8L6QX1nzn/G
+	 9SlcGjMifj8ijihhSKnWYo0jvfz69UDyGACNXOPxr4XagmbkhA1W6rkJmjGJKDco3p
+	 QgsVihqJXeT5o0tTeTUYbI+N8gcM8FMV9q4FnnZw0+upNI5hTd7oDpPj0ZNvr/oQ+E
+	 DkoBtMtihVvUpXOiQXLqQpuHaeYP03vveVJaypBhtgpzuvwZNA950w8CYLfSNMZEt1
+	 FNNKwxhoXwCShlUwjzJZ3VwkvyjTiXiMkGJnBvniZxBtHUvhnnsmL6t9vLHKjzcIXn
+	 IzstWRa2ang3w==
+Message-ID: <c85903c6-6a89-4382-bfa2-2fed95f0cbc0@kernel.org>
+Date: Tue, 11 Feb 2025 12:50:12 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,6 +52,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC v2 1/5] dt-bindings: thermal: Add MBG thermal monitor
  support
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
  Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
@@ -73,7 +74,7 @@ References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
  <20241212-mbg-v2-support-v2-1-3249a4339b6e@quicinc.com>
  <ojukpywkhu72cimujmijzidf26654g5vkjaj477imcf4suz2o6@cmow62jcqsfz>
  <7a5db383-914c-4c1e-846e-5d68cc6a7765@quicinc.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -118,37 +119,41 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <7a5db383-914c-4c1e-846e-5d68cc6a7765@quicinc.com>
+In-Reply-To: <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/02/2025 12:15, Satya Priya Kakitapalli wrote:
+On 11/02/2025 12:46, Krzysztof Kozlowski wrote:
+> On 11/02/2025 12:15, Satya Priya Kakitapalli wrote:
+>>
+>> On 12/13/2024 2:08 PM, Krzysztof Kozlowski wrote:
+>>> On Thu, Dec 12, 2024 at 09:41:20PM +0530, Satya Priya Kakitapalli wrote:
+>>>> +
+>>>> +required:
+>>>> +  - compatible
+>>>> +  - reg
+>>>> +  - interrupts
+>>>> +  - io-channels
+>>>> +  - io-channel-names
+>>> Binding looks ok, but this wasn't tested due to unneeded dependency.
+>>> Please decouple from dependency, so automation can properly test it.
+>>
+>>
+>> The dependency is needed because this mbg peripheral is present on only 
+>> targets which have GEN3 ADC5, for which the bindings support is added in 
+>> the series [1]
+>>
+>>
+>> [1] 
+>> https://lore.kernel.org/linux-arm-msm/c4ca0a4c-e421-4cf6-b073-8e9019400f4c@quicinc.com/
 > 
-> On 12/13/2024 2:08 PM, Krzysztof Kozlowski wrote:
->> On Thu, Dec 12, 2024 at 09:41:20PM +0530, Satya Priya Kakitapalli wrote:
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - interrupts
->>> +  - io-channels
->>> +  - io-channel-names
->> Binding looks ok, but this wasn't tested due to unneeded dependency.
->> Please decouple from dependency, so automation can properly test it.
+> Sure. Then this cannot be merged due to resulting test failure.
 > 
-> 
-> The dependency is needed because this mbg peripheral is present on only 
-> targets which have GEN3 ADC5, for which the bindings support is added in 
-> the series [1]
-> 
-> 
-> [1] 
-> https://lore.kernel.org/linux-arm-msm/c4ca0a4c-e421-4cf6-b073-8e9019400f4c@quicinc.com/
+> Please don't post new versions before this can be actually tested and
+> applied.
 
-Sure. Then this cannot be merged due to resulting test failure.
-
-Please don't post new versions before this can be actually tested and
-applied.
+Heh, you responded *after two months*, to an old email so even previous
+discussion is gone from my inbox.
 
 Best regards,
 Krzysztof

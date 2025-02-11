@@ -1,160 +1,159 @@
-Return-Path: <linux-iio+bounces-15337-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907F2A30AC6
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 12:50:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08923A30ADC
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 12:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F6D3A37C9
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 11:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E0477A1A35
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 11:55:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56AE1F8BBF;
-	Tue, 11 Feb 2025 11:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8521FA854;
+	Tue, 11 Feb 2025 11:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n31hD8Ni"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="BOdRE3La";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Dj0NE2f9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F3E1F0E2C;
-	Tue, 11 Feb 2025 11:50:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E821F8AF8;
+	Tue, 11 Feb 2025 11:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739274623; cv=none; b=iA8CedXiiIcuA3q2I0fH7A0K7YwZoeeAk4hqOE+Q6EJcEJLlz76x+H01PiNQQ1uu406+uflTrN+HmmvrAoVkJmLdphYikwwhutNxX4TpHFg5Fe1ykoyTLLkxz1JJXkH+RibxCTw3mLSXqLwKR7YkpiyX/RqQZtW60m+UAcUimS8=
+	t=1739274995; cv=none; b=CzT0s0xNSM6o5XqbidNkIoYvhFgZJ58Ruv9itg/uLTeXFaDLTsAJVYyk1Nv27e4m7B2pvcqEX98y3drb9zVCCM9v6gXcppvmdTZZyAhMpD4I2x6vKfY1QPKvlzcZyrFU+bY8e6DNAVtHEnqI0gZki6rOmQA8ZaKSRzSbD6E7zuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739274623; c=relaxed/simple;
-	bh=z7ig8G4ja3AfMZ4xQnC35j6cgjQp78dfBzJxrAhKF54=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MuL14YYbfE+29zwl6b5e6466c1Gd1IW2RQSiZRGPli9AyxkzrXViSb0NhpQ+1oUZG2q53SnAP8POljAUEWqSJOmOhLoALuiWT6b8Pif34mNkZ8GR1jRti85kcTCglIOBbBnMcVV+nS+ouDfRoYVKOKqeYWYaUaHtX8ypr4sEeCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n31hD8Ni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BB9C4CEDD;
-	Tue, 11 Feb 2025 11:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739274622;
-	bh=z7ig8G4ja3AfMZ4xQnC35j6cgjQp78dfBzJxrAhKF54=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=n31hD8Ni6DJMrh3nvJ1L2L0R95t7dSJ06VWF5Fr+txvM/0hrpfR9el8L6QX1nzn/G
-	 9SlcGjMifj8ijihhSKnWYo0jvfz69UDyGACNXOPxr4XagmbkhA1W6rkJmjGJKDco3p
-	 QgsVihqJXeT5o0tTeTUYbI+N8gcM8FMV9q4FnnZw0+upNI5hTd7oDpPj0ZNvr/oQ+E
-	 DkoBtMtihVvUpXOiQXLqQpuHaeYP03vveVJaypBhtgpzuvwZNA950w8CYLfSNMZEt1
-	 FNNKwxhoXwCShlUwjzJZ3VwkvyjTiXiMkGJnBvniZxBtHUvhnnsmL6t9vLHKjzcIXn
-	 IzstWRa2ang3w==
-Message-ID: <c85903c6-6a89-4382-bfa2-2fed95f0cbc0@kernel.org>
-Date: Tue, 11 Feb 2025 12:50:12 +0100
+	s=arc-20240116; t=1739274995; c=relaxed/simple;
+	bh=rd29cpkgIwrU7/mh++kq6VmSBZdKxSQR4Rl/ZCGILEM=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Iuym5OYRipWyXXmSgGCHinWia+9CZGpdt3vEx3wEZ6f4/9Btssv4rrAgyNtaUHuvjQpgrio2c9tucVWUegfRgs4tgIjjnkPuc1FK6Yc23+ff8fn/KGaIlT2XyINxbC6piHbTRGwSh4lqmKIsV6KQCOrd1srHDLa4TYLA7fcfMiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=BOdRE3La; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Dj0NE2f9; arc=none smtp.client-ip=103.168.172.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id ABA8413808C3;
+	Tue, 11 Feb 2025 06:56:32 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Tue, 11 Feb 2025 06:56:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1739274992;
+	 x=1739361392; bh=SCgFKCz0WVFlk+/nGWCfvkfQS3PqNaxn3RNPH9+mh7c=; b=
+	BOdRE3LaNTDlQADqs5Hkyc0y7uE6jlOpYdk72QHjqA3KEpUXPc2790a5yTzTGEc6
+	Zr/+8Xe0dhc/Tz9MgNlp5wbRMfY0BoAmdOZfzxg0X28OgC2tEKax9a4DT7SYy8mO
+	EoIy5GrlU4/8xaKMG6eqEAICm7+QGvHvY8Z8ex8czbEA0yn+/Rv4eQ6Y9xojZlyO
+	YXP5i0OdOHdsehprYT2+ksC4ICkW6eXshnB8Qur2hNp5uj54i6m8u5t9+01Yzhbv
+	CKAjOOJOqjy37PZNTUBXoFaPEtwlcvrjY/KQj9m4I/q9nl9+YtKAXr1rqynz4GhG
+	IkHIl/nUcchALoUnvdMoOw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739274992; x=
+	1739361392; bh=SCgFKCz0WVFlk+/nGWCfvkfQS3PqNaxn3RNPH9+mh7c=; b=D
+	j0NE2f9eUybBDBypcXB0Gfr24ZHt7WcVOxeVohAZmLBADkM5pDpBpntNC5/NeGrM
+	TZn1DQNz83Gjw1Dcc1YKO9CmBigcqKE1JGyC3a3iH/OtRjbVqpLhtDLvUsJEvJky
+	td6QB3+QvNo4KYCFsHA3+OJdrk6dXm1mJx/YYLd1orbS3aCszO6URTp6dWSx+rVa
+	CXReLM09E+r4bbyvkEtfdv/dVAr70XnVU9BlMV+BKDQCMHc08CJOl4r3mb2fMLUm
+	u2zObocPX+AwbuoxCRk9SmAzm1TYr9u5TtxYXSyt1Uo7d98bD45Yv9Lbpmd2VrpY
+	BVTGugO0qHLamCmIB5A3A==
+X-ME-Sender: <xms:8DqrZyI6N5j27bQ0fsKkQT0JRPOSxt0UVyH-NRT8Eo80-VEvcrxX7g>
+    <xme:8DqrZ6JoDMm2ZDrHAl7RRE8bOM1rKWHM08TNqLleu3CQS8jBhEP8BSxTdbiUJq071
+    FFGa5Xh84tsIYVzCDw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegtdelgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
+    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
+    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
+    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedv
+    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughmihhtrhihrdhtohhrohhkhh
+    hovhesghhmrghilhdrtghomhdprhgtphhtthhopehlghhirhgufihoohgusehgmhgrihhl
+    rdgtohhmpdhrtghpthhtoheplhhkphesihhnthgvlhdrtghomhdprhgtphhtthhopehprh
+    iivghmhihslhgrfidrkhhithhsiigvlhesihhnthgvlhdrtghomhdprhgtphhtthhopehr
+    rggrghdrjhgruggrvhesihhnthgvlhdrtghomhdprhgtphhtthhopegsrhhoohhnihgvse
+    hkvghrnhgvlhdrohhrghdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhrvg
+    eskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:8DqrZytxAqlN6V9ootafxgtKy8n_5mIlmoC3PP1rtvg5YyxKtr832A>
+    <xmx:8DqrZ3Y9Pgo2Ue7-eGtuG9QM9Mxj_xw2jfwWHmRP4Uv-rHAGtD47HQ>
+    <xmx:8DqrZ5bzw4AXGhO8JrtwHxoRRRT4nJi83FYFnP31nMsJps87YOgfcg>
+    <xmx:8DqrZzAXdgPM9jr1Ft_sAe1Mn_YlatD3ZiSQMCFfUd0Zh3D98dvROA>
+    <xmx:8DqrZ1P1831GY0oWJVBAkqiyOEjQYHiHgePr2JAYS3uj3q6SN0AL5Irz>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 4443E2220072; Tue, 11 Feb 2025 06:56:32 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 1/5] dt-bindings: thermal: Add MBG thermal monitor
- support
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>,
- Lukasz Luba <lukasz.luba@arm.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Stephen Boyd <sboyd@kernel.org>, Amit Kucheria <amitk@kernel.org>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Ajit Pandey
- <quic_ajipan@quicinc.com>, Imran Shaik <quic_imrashai@quicinc.com>,
- Taniya Das <quic_tdas@quicinc.com>, Jagadeesh Kona <quic_jkona@quicinc.com>,
- quic_kamalw@quicinc.com, quic_jprakash@quicinc.com,
- linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+Date: Tue, 11 Feb 2025 12:56:11 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
+Cc: "kernel test robot" <lkp@intel.com>, "Raag Jadav" <raag.jadav@intel.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Rafael J . Wysocki" <rafael@kernel.org>,
+ "Linus Walleij" <linus.walleij@linaro.org>,
+ "Mika Westerberg" <mika.westerberg@linux.intel.com>,
+ "Dmitry Torokhov" <dmitry.torokhov@gmail.com>, lgirdwood@gmail.com,
+ "Mark Brown" <broonie@kernel.org>, "Sebastian Reichel" <sre@kernel.org>,
+ "Jonathan Cameron" <jic23@kernel.org>,
+ "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
+ oe-kbuild-all@lists.linux.dev,
+ "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-pm@vger.kernel.org,
  linux-iio@vger.kernel.org
-References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
- <20241212-mbg-v2-support-v2-1-3249a4339b6e@quicinc.com>
- <ojukpywkhu72cimujmijzidf26654g5vkjaj477imcf4suz2o6@cmow62jcqsfz>
- <7a5db383-914c-4c1e-846e-5d68cc6a7765@quicinc.com>
- <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Message-Id: <49396042-31f0-4d8e-aa54-d89093ab5709@app.fastmail.com>
+In-Reply-To: <Z6s2cGMM9R6SZ9Le@smile.fi.intel.com>
+References: <20250210064906.2181867-2-raag.jadav@intel.com>
+ <202502102201.zLWaJC6V-lkp@intel.com> <Z6oZ9dnYrlp5djiQ@smile.fi.intel.com>
+ <7c42e438-22f9-40d9-bb8e-24feb7d58e64@app.fastmail.com>
+ <Z6sYAxRIeCzw12nY@smile.fi.intel.com>
+ <c1184a91-e216-423d-b956-d4b22116a171@app.fastmail.com>
+ <Z6siYlWfvfUvNLpX@smile.fi.intel.com>
+ <279d9f32-a1c9-41aa-b15a-e1485877b2d5@app.fastmail.com>
+ <Z6s2cGMM9R6SZ9Le@smile.fi.intel.com>
+Subject: Re: [PATCH v4 01/20] driver core: Split devres APIs to device/devres.h
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 
-On 11/02/2025 12:46, Krzysztof Kozlowski wrote:
-> On 11/02/2025 12:15, Satya Priya Kakitapalli wrote:
->>
->> On 12/13/2024 2:08 PM, Krzysztof Kozlowski wrote:
->>> On Thu, Dec 12, 2024 at 09:41:20PM +0530, Satya Priya Kakitapalli wrote:
->>>> +
->>>> +required:
->>>> +  - compatible
->>>> +  - reg
->>>> +  - interrupts
->>>> +  - io-channels
->>>> +  - io-channel-names
->>> Binding looks ok, but this wasn't tested due to unneeded dependency.
->>> Please decouple from dependency, so automation can properly test it.
->>
->>
->> The dependency is needed because this mbg peripheral is present on only 
->> targets which have GEN3 ADC5, for which the bindings support is added in 
->> the series [1]
->>
->>
->> [1] 
->> https://lore.kernel.org/linux-arm-msm/c4ca0a4c-e421-4cf6-b073-8e9019400f4c@quicinc.com/
-> 
-> Sure. Then this cannot be merged due to resulting test failure.
-> 
-> Please don't post new versions before this can be actually tested and
-> applied.
+On Tue, Feb 11, 2025, at 12:37, Andy Shevchenko wrote:
+>
+> The problem this series solves at the beginning is that not all the consumers
+> of device.h needs it, in many cases the device/devres.h (or subset of
+> device/*.h) is enough to include. While solving this, it appears that
+> the current code uses ERR_PTR() instead of IOMEM_ERR_PTR() in devm_*io*() APIs
+> and kernel test robot found this and complained about. While solving
+> this new issue, LKP found another issue that is circular dependency.
+> But the original code only wants to have an access to IOMEM_ERR_PTR() which
+> is in io.h and can be moved to err.h AFAICS. Does this sound reasonable?
 
-Heh, you responded *after two months*, to an old email so even previous
-discussion is gone from my inbox.
+Yes, that sounds fine to me. I agree that not including linux/io.h
+from device/devres.h is a good idea, same as no longer including
+linux/device.h from asm/io.h. Moving IOMEM_ERR_PTR() as you
+describe is the right idea.
 
-Best regards,
-Krzysztof
+Side note: I looked at large-scale header file cleanups in the past,
+and in general the result of that was that the best way to reduce the
+indirect inclusions is by splitting data structure definitions from
+inline functions that use those data structures. The definition of
+"struct device" clearly has too many dependencies, and to make
+this one better. There has actually been some good preparatory work
+done by Kent Overstreet a while ago that moves structures out
+(e.g. work_struct and mutex), but not yet struct device and
+struct kobject, which are needed in many other headers. The tricky
+part that needs to happen to actually make it useful later on is
+to replace all the unnecessary indirect includes with the minimal
+ones, and that is a huge amount of work.
+
+     Arnd
 

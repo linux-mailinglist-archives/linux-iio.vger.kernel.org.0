@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-15329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA88A3075F
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 10:41:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6011DA30768
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 10:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00D157A2566
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 09:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2F8316243B
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 09:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC87A1F153A;
-	Tue, 11 Feb 2025 09:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE841F2392;
+	Tue, 11 Feb 2025 09:42:58 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF8E1F12F8;
-	Tue, 11 Feb 2025 09:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70141F236B;
+	Tue, 11 Feb 2025 09:42:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739266876; cv=none; b=XTBrjzBg4Qt4MVuRUee9OGVfdvnWRZn/mtuUVvU2dvLq8gHnkr/HhzmpSZMfDTqjI6XFw1ltzaLp317BNsPbbWwPYp+tZ7vDMtobZbCNs2zf0KSrcYH+qGjRSZJ9TU1wL3l0akpcOvSvM6jyXS9pBfI8GH+rKmHXUvAyq8yy7kI=
+	t=1739266978; cv=none; b=Ts7be3aYMhvRWD0p4ba3Fa6GXyH+7rSbk20M44lM+Ev6FbK5sLhy9xs01La8Nj0VjQt6/cUIvarxAt8reFyDyoKL7YZ/sqmGuw4Cd6R79ZgUdagVF8KoMhyB7ah+MTkPhvwmp+nt6UgxCX1t+hH0DxQuq8EviF6fJ/P8vqbc9Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739266876; c=relaxed/simple;
-	bh=IkAWydMGs1r5rb0BA93bcr9XHfndvLruvy5SdIueU3E=;
+	s=arc-20240116; t=1739266978; c=relaxed/simple;
+	bh=S+OWZYhmuRFerVGPqqcaVFrGlk+WLVmiJ239vssrjiM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X75kak0Nz9T7ddrFJLGi2H52EPUtzRPEUahPfjvwczfO/zhjJnTOfC2eUWiqxot/9+88vszbiQ95tvJ97SdxXrPFcG0W2CXXf5gw8yggPkPDRbLFbFnx6m+j95IH97+ChOn6Gnl3kL/dLhpN04SHMaCbXv0RCE0g1M36JsP/y7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=uW3vC4ZBL+NxlP8UUBPtD1ihYrkwNL1FQJQf29zhSEjcLQQbXF/H1qgVPs+X+grfEAPXd2xy6hbIebv8xKA9anJtFuKAPbUpnVSe/zm/drtGwYDGXH2+0+D4wgff0wfFn1/2jvm1ui2mDPaZfi6ivkGVW4XP6e9XlUbhU4DCYik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: izygP/I+T8W8FPtZp56Vmg==
-X-CSE-MsgGUID: F4+jS7SXTxSxelIc1J6FJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="50510266"
+X-CSE-ConnectionGUID: lo5SNZqLRQGrU+UiaS7b4A==
+X-CSE-MsgGUID: kz54OLZJTeqAwDMLG1MhGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="50512950"
 X-IronPort-AV: E=Sophos;i="6.13,277,1732608000"; 
-   d="scan'208";a="50510266"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 01:41:10 -0800
-X-CSE-ConnectionGUID: M4q0L3FITbuvBztdQMvbJg==
-X-CSE-MsgGUID: Cg7Uozc6SoWKjkvUHvaTwQ==
+   d="scan'208";a="50512950"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 01:42:56 -0800
+X-CSE-ConnectionGUID: aYZy757oTGGgjCvr/1BDnw==
+X-CSE-MsgGUID: 05tIZ9H+StaAmIWpBPA8UQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="143364716"
+X-IronPort-AV: E=Sophos;i="6.13,277,1732608000"; 
+   d="scan'208";a="112427591"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 01:41:03 -0800
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 01:42:50 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andy@kernel.org>)
-	id 1thmlH-0000000ASZ3-2ikX;
-	Tue, 11 Feb 2025 11:40:59 +0200
-Date: Tue, 11 Feb 2025 11:40:59 +0200
+	id 1thmmz-0000000ASai-3bzO;
+	Tue, 11 Feb 2025 11:42:45 +0200
+Date: Tue, 11 Feb 2025 11:42:45 +0200
 From: Andy Shevchenko <andy@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Linus Walleij <linus.walleij@linaro.org>,
@@ -72,10 +72,11 @@ Cc: Linus Walleij <linus.walleij@linaro.org>,
 	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
 	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH v3 05/15] bus: ts-nbus: use bitmap_get_value8()
-Message-ID: <Z6sbK96JEBpWoFWy@smile.fi.intel.com>
+Subject: Re: [PATCH v3 06/15] gpio: max3191x: use
+ gpiod_multi_set_value_cansleep
+Message-ID: <Z6sblZMR-D_B_ncX@smile.fi.intel.com>
 References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
- <20250210-gpio-set-array-helper-v3-5-d6a673674da8@baylibre.com>
+ <20250210-gpio-set-array-helper-v3-6-d6a673674da8@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,26 +85,18 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250210-gpio-set-array-helper-v3-5-d6a673674da8@baylibre.com>
+In-Reply-To: <20250210-gpio-set-array-helper-v3-6-d6a673674da8@baylibre.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Feb 10, 2025 at 04:33:31PM -0600, David Lechner wrote:
-> Use bitmap_get_value8() instead of accessing the bitmap directly.
+On Mon, Feb 10, 2025 at 04:33:32PM -0600, David Lechner wrote:
+> Reduce verbosity by using gpiod_multi_set_value_cansleep() instead of
+> gpiod_set_array_value_cansleep().
 > 
-> Accessing the bitmap directly is not considered good practice. We now
-> have a helper function that can be used instead, so let's use it.
+> Also add max3191x_ namespace prefix to the driver's helper function
+> since we are changing the function signature anyway.
 
-Thank you, LGTM (one minor thing you may address,
-or keep it as in the current variant of the patch),
-
+With renamed function looks much better, thanks,
 Reviewed-by: Andy Shevchenko <andy@kernel.org>
-
-...
-
-> +#include <linux/bitmap.h>
->  #include <linux/bitops.h>
-
-bitmap.h implies bitops.h
 
 -- 
 With Best Regards,

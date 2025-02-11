@@ -1,58 +1,62 @@
-Return-Path: <linux-iio+bounces-15363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15364-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D396CA31622
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 20:56:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29792A3162D
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 20:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6ADC7A100A
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 19:55:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBFE818898C9
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 19:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFAE26158E;
-	Tue, 11 Feb 2025 19:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5758C26561F;
+	Tue, 11 Feb 2025 19:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jnUrUTwd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KdZVgMh6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED9426561B;
-	Tue, 11 Feb 2025 19:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFF9265605;
+	Tue, 11 Feb 2025 19:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739303734; cv=none; b=SuumyQaE9Gf/HuSvKe9xtxZ330l60xjTIkiMc4xEkw9HO9z2cPlG+XnUNfLgyrCi81PUbIg8Z7Bsw3pkSJ7axD0lIMx1rLiuAYZwPl7Tz2OQbd/7tID7GrFFAuxu3j+dZjxXIHm5egZHdT+RcIgT2+m+CVJzFGKHc/Q/gBOXrHU=
+	t=1739303837; cv=none; b=B0U7kE6wQgxsYouUhBprOs0sQQq1Wj2IhIMKQxRxbLmGGeeHliJCy/LCLzOYqSNUGBLDFF7MN+GzEA1v+IZCdnpZW7VYYtdLamBtcWPHz1kdIV1Y86WTfBv0njw2qz9j61uCkGZYlwXFyTVHcR8qVS4QQqosFdPxQRqy1zxW+5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739303734; c=relaxed/simple;
-	bh=YGBeiYvY6N2eP4tvuDNUETpII967sPU2WGuLJGNSh2Y=;
+	s=arc-20240116; t=1739303837; c=relaxed/simple;
+	bh=IV9T9bitTlYtN5sne85kozOsvatYZdCUdUerPTORWek=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OhocRANJWfJ0sbNArXVohrHqPAi4Je2cEvXGvYIuTjPttz8Z/wx3TpV8WJwBBN+oHdtL2FPnNo7UC/m5/46n5mFREdeid4RWBeI7F3bpDn/pJJhvAc/3vSOHbqgd7uJPv5guQ4DEbawhfgfEAGBGjvUtRnvVPQKKJ8+NDDkXpp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jnUrUTwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29610C4CEDD;
-	Tue, 11 Feb 2025 19:55:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PG8VIan50FBKMilGyMp2AwvANNMcNQat0keHhJfM6GDldDfZX5nvf2QkttNEOFg00FR2OHlTRlTLD8ArhPSaN37t9situ70gnz8iXQ3ehGy5qm9O4eKBnlg4ie7ykNThgLN8jJDx+fnZkTurnpGfcfJk5UpHyKHAFGrcgtCuN58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KdZVgMh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA8EC4CEDD;
+	Tue, 11 Feb 2025 19:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739303734;
-	bh=YGBeiYvY6N2eP4tvuDNUETpII967sPU2WGuLJGNSh2Y=;
+	s=k20201202; t=1739303836;
+	bh=IV9T9bitTlYtN5sne85kozOsvatYZdCUdUerPTORWek=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jnUrUTwdUq0tunyCQMWU7mEttGn6BiLTOrCWBHEMkRmGTnauyS1HYPMYwcWYzhTcp
-	 LnnFJdQpgcLjt1xYZZDHELBDAr61kHyLwNvteUH42uMAlx1dNmZdvqGNvOTRNbRURp
-	 2exb/6WJGwEeAslt5nuRoAhxlzF5veEd7K5MIH+w04cAQqgceoISNwyPL+RkB6fSfW
-	 jLPx2ba08oI8pNJHM/K441C6ZdLA7/d2Q6PQhRtr1zRhjvBmjvg7AW93sUOBMptYl6
-	 8DXVVyipI8IJ0LCpGYROGVxnZS4495oDXOFUKFdzugWiYzBsACi6mBINVgE2WCi2+0
-	 dpswlQxmHAXyA==
-Date: Tue, 11 Feb 2025 19:55:26 +0000
+	b=KdZVgMh6n7bFBpRHaiVtvwzlDjSFrhY03C12fyEtCAcjxowLFtwOL1uG5jMq0wphS
+	 XwUg+gwK14l7QnfeabLwPfsZ+Yv5BZK0E4IwfI1Xn1Uy0FiOt9Gt1ZG02jObIJ11L8
+	 /w/d+o/AhOrNSkhSRfsMQVSBm+67qI5c+cMdTj7xAZdP+Rzqg0APeLHNxU78vhx/E5
+	 v94UiDb4GgkfjtMiby31jcNYD/gIeB+ZfxOIA9D8J/TleFY/s6ZXIrdb8tajeAP7En
+	 P8gIGuggZXEbXJ9lwfMJ8TiANZMyUvay4uaLYxyaQRs15cHkbVjheKB8E5bxMxn0p4
+	 3JY5NrAizYlgg==
+Date: Tue, 11 Feb 2025 19:57:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v12 6/9] iio: adc: adi-axi-adc: set data format
-Message-ID: <20250211195526.4e04c875@jic23-huawei>
-In-Reply-To: <20250208162209.2d43bae3@jic23-huawei>
-References: <20250207140918.7814-1-antoniu.miclaus@analog.com>
-	<20250207140918.7814-7-antoniu.miclaus@analog.com>
-	<20250208162209.2d43bae3@jic23-huawei>
+To: Angelo Dureghello <adureghello@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alexandru
+ Ardelean <aardelean@baylibre.com>, David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Guillaume Stols
+ <gstols@baylibre.com>
+Subject: Re: [PATCH v4 0/9] add support for Software mode on AD7606's iio
+ backend driver
+Message-ID: <20250211195706.5b3565ba@jic23-huawei>
+In-Reply-To: <20250210-wip-bl-ad7606_add_backend_sw_mode-v4-0-160df18b1da7@baylibre.com>
+References: <20250210-wip-bl-ad7606_add_backend_sw_mode-v4-0-160df18b1da7@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,47 +67,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 8 Feb 2025 16:22:09 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Mon, 10 Feb 2025 17:10:50 +0100
+Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> On Fri, 7 Feb 2025 16:09:15 +0200
-> Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+> The previous series added iio_backend mode, but the configuration for this
+> mode was only possible through GPIOs (Hardware mode). Here, we add support
+> for configuring the chip using its registers (Software mode).
 > 
-> > Add support for selecting the data format within the AXI ADC ip.
-> > 
-> > Add separate complatible string for the custom AD485X IP and implement
-> > the necessary changes.
-> > 
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> > ---
-> > changes in v12:
-> >  - add separate compatible for ad485x AXI IP core.
-> >  drivers/iio/adc/adi-axi-adc.c | 99 +++++++++++++++++++++++++++++++----
-> >  1 file changed, 90 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> > index d2e1dc63775c..272d82c6e887 100644
-> > --- a/drivers/iio/adc/adi-axi-adc.c
-> > +++ b/drivers/iio/adc/adi-axi-adc.c
-> > @@ -45,6 +45,12 @@
-> >  #define ADI_AXI_ADC_REG_CTRL			0x0044
-> >  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
-> >  
-> > +#define ADI_AXI_ADC_REG_CNTRL_3			0x004c
-> > +#define   AD485X_CNTRL_3_PACKET_FORMAT_MSK	GENMASK(1, 0)  
-> Sorry I missed this until now, but normal IIO thing is no wild cards
-> in naming (been bitten too often!)
+> The bus access is based on Angelo's ad3552 implementation, that is we have
+> a particular compatible for the backend (here axi-adc) version supporting
+> the ad7606's register writing, and the ad7606 is defined as a child node
+> of the backend in the devicetree. Small changes are added to make the code
+> a bit more straightforward to understand, and more compact.
 > 
-> So I'd like to see these named after a specific part.
-Having realized this is named after the IP naming (which
-indeed uses the wild card), maybe we could
-prefix with AXI_ perhaps to make that association more obvious?
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> Co-developed-by: Angelo Dureghello <adureghello@baylibre.com>
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+Applied to the togreg branch of iio.git.  Briefly pushed that out as testing
+to let 0-day take a first look.
+Thanks,
 
-
-> 
-> 
-> 
-> 
-
+Jonathan
 

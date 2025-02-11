@@ -1,163 +1,147 @@
-Return-Path: <linux-iio+bounces-15342-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15343-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A099A30CC0
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 14:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BED5BA30E12
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 15:21:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06C6164682
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 13:24:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE1B1662C1
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 14:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27902206BB;
-	Tue, 11 Feb 2025 13:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10AA24CEE5;
+	Tue, 11 Feb 2025 14:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nIJPjNon"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J+30KbHg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3EF1FDE35
-	for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 13:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC21126BD81;
+	Tue, 11 Feb 2025 14:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739280269; cv=none; b=IV5jyZys2bxGslRHxWqQG9QCVjGimP4LaYM7YGW/5H3Ebaxk1cCr4R0fW1jsIImGXLVhwBVlyrbazPrBkr8RTf+85xaqb2xUTJw9aW/i113eBHmezo8w5XtNrz+wjdWBA8WkT1wuRT/4yz/tWyH8USMhHgYc7JFh3WR6HtuV1z0=
+	t=1739283660; cv=none; b=kSkRjctjPITU4PfdY6ERWFKNelXQfkxRG4vji21YH2GdfLbpAUuCKFFWcW/6LQ0BUugqPHChGozh3cCbhRI4CAc9Jv4vEzZwCGP7pWrpV0XXnufJkeqRCTRF+kg4koh3xnYYUPefFjZril+cy/Kda7hx8Er4o4KhpBHzJqN7zQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739280269; c=relaxed/simple;
-	bh=faoFeqrYKEAf9svlTJWzo4t+5/zdVdV4o0bV7POm6C8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WRuWutnLM0enf7tshKq3Eqv0e6jkj3pqW7PiwZgvzQkzZncKMoBW+/rz3f5VuQ4ei0REapn/cBBsftUjPluYL5adSW1rdnCkgzdjXWM1oLRJ9/4D+CyhnpPQcADpg4gT8vTj43ZSYfdDs9Z0VKv484x+nZTq/3Nilk5CveylEN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nIJPjNon; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51B77Wvw006113
-	for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 13:24:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	sQVfGCv09vBoDVQrh4Ze9mUczCoghiYMGRI0q2XkcrI=; b=nIJPjNonXVIHRGvn
-	VYTMpCDZc8Wz0AG0xRHsPUAyBgR8KxmaLnTpHvQy4egNSJQXf3Eegxvatmf3Qe++
-	43SEXFG7/Tifn2Nq2oGkGebHMX8lHb+lUk9kePBs+KxnfgXo8AVlQwpgCmrx2nKX
-	565eQMG12nov8zLuwYbNOTsw/EdKJ/EPNm1O02Gq7+dbm4i+FseXDdlYnSXOBINM
-	pAa8fNMPVjYav3iVG8K6MLgYRGlOGcTa2YEFSbTuDD5y1yeIrH2MEpjzSO7PcnEZ
-	sHQkPHk2uKjOgArQrY8ipN0xA3uijyvx07Bspg9rTUp/rn69QB/An8hwJuvCqm2k
-	IC+GYA==
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com [209.85.160.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44qe5mv7pm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 13:24:26 +0000 (GMT)
-Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-471921f2436so2330271cf.2
-        for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 05:24:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739280266; x=1739885066;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sQVfGCv09vBoDVQrh4Ze9mUczCoghiYMGRI0q2XkcrI=;
-        b=j0Mdad8LnHpHziq9MAYphXZQ+Y/QPFYbPXSAg7zRzVEBcGmJzic2750LVZpHuM/I/T
-         ghKt/ZMb6TeCx9uuixvBwCpOZTBnnaiKFfDZJUP5lo3uOVwpTkicohJN00jdz4zIUsVk
-         rmayfh2EYw03tPIJPTQHXwqVzaW+QkCkZn0TBS1h/FzOSXpezLmiiDp2vtKXmDRYr+Es
-         h3FS8eNagRkCA0O0wUYQTbhki9122gF9P1gfbY9T5ZjcK/jnm8DwTaCZfDUpAkLOUPYr
-         F2MnkS4yoPO+j0bwOhkI91UF2TATOsYYGoqZzBbmpKEr1IXCRVoTJktRtuQZusa5KPfN
-         /DUw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHwTTSbZ3DqbS362eRlwohMefbR2TK1assWxzjhi1xhG4cJ5HrpIwRYugJuP0mEDWVMpiELbEcVqQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgBc1iaWEfCjbuuoame/W1E3R5CVpmaiKGXb0C0aGvdQfggPgS
-	xcdOLQivjc3WaHf9k5af4ayemUJk6etNC7rBsDnLVfZxEDkqH9CiYOsxSRDMtThPaiDTf/hqYY8
-	pwCCBy2yqLmzhAAM15rpzbEd0i2rLJ0WeLxUWMyqHWzfSRiWbGogNFXJdFvo=
-X-Gm-Gg: ASbGncuajQcz4Q0hCS+xFTdWr3hAul22S4zMyDvFBShL25S+Pjb7OCIdyS+RS6P959e
-	ojkZDSquzo6goAftP2G0wWI1WP/mmFthd2c6KtvWuELXkEtgugjxzWDDObh2v2l2P/EHK8G3zLS
-	41m7lgDroDgRnwKRnyTzTgxlnj7kzSImr8Y2ddfWmyoFG5kswhhSvaxHJMDJO46QMGrFoTYjVNl
-	bGPj7CfPI1MFkp4KjD8gGxlvRvhFlHXT0jWakWHGNHmLOwxAzoWBzaw6QKrGCfKIrsgVVOl9gjn
-	BajWXNFD2hhwIk7ghKREyFM0UdtIzuP//dNxa6779K5SyvAYEm7hV6FjvNA=
-X-Received: by 2002:a05:620a:19a3:b0:7bf:ff64:3370 with SMTP id af79cd13be357-7c069d8278fmr124540185a.15.1739280266071;
-        Tue, 11 Feb 2025 05:24:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGuDMhfu4vsIuZpH9egkjC6KW9vClwfQVhdNexGYBZzWrK+zKQWg/bT3kho4XEZz7VPxtBwww==
-X-Received: by 2002:a05:620a:19a3:b0:7bf:ff64:3370 with SMTP id af79cd13be357-7c069d8278fmr124537185a.15.1739280265736;
-        Tue, 11 Feb 2025 05:24:25 -0800 (PST)
-Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5de61830117sm6150225a12.6.2025.02.11.05.24.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Feb 2025 05:24:24 -0800 (PST)
-Message-ID: <ed47db4c-42d2-4fb2-9b48-733443c62a70@oss.qualcomm.com>
-Date: Tue, 11 Feb 2025 14:24:20 +0100
+	s=arc-20240116; t=1739283660; c=relaxed/simple;
+	bh=OYsXNePOc28HVCwdFOtd1/2ZJAauSegfz82bvBw887Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZKDKXqMqToBFhMqzOzn2NjQuOHcmndplSkH8Xf/cXacB7671xwecGwV2+d5wP/esFRmeX3FvK7C0qvc2mjmLUyTAdOGaAhyzYtrNCic5HnTAZtjd3jdFpOAZn7WxOPjAiKs3c0e4tqIagaAzSHZGr4KzYQYo4xSf3okTzwcll3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J+30KbHg; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739283659; x=1770819659;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=OYsXNePOc28HVCwdFOtd1/2ZJAauSegfz82bvBw887Q=;
+  b=J+30KbHgKTTvQYEaDG+dnZCF2E5BPmPIAW+asR+KcfjKv7cRhVwDVxBD
+   1+SaMv5oizz9bBiD4k3pSiB7tuDd7l5IwWtXNPzpuL4njBBLWI5+zLs4G
+   dTK0nusEPDp9u47jfdYl/caxb5Ew7D8vAUJ7nrmUcas0JNqF9pSJ/THgA
+   rCxCkB7Ej/BDAoSZsol43DdylLt7KhBVw/I5nImLrovAsQYa74QURcAGE
+   /peajsmam02x0ZJmzI2O83NjqzAhujwUrhsI/hhFgibKl1VEocaFDCSst
+   vht0gUDfp43uPccHByNWFP5IPnS93uQz3Tr6tgwCgY0yJaC99Dqm1Nw0i
+   g==;
+X-CSE-ConnectionGUID: H0pWMYZRSF6AfDfOBmN6sw==
+X-CSE-MsgGUID: BljAkxR6QBuNqtjyMhiZmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="57441068"
+X-IronPort-AV: E=Sophos;i="6.13,277,1732608000"; 
+   d="scan'208";a="57441068"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 06:20:57 -0800
+X-CSE-ConnectionGUID: hy+Y1dg0QiW7iXFxXF5slQ==
+X-CSE-MsgGUID: r7ETOtSSQ6u5ydEmJV737A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113009984"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 06:20:54 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1thr86-0000000AWdo-1xHY;
+	Tue, 11 Feb 2025 16:20:50 +0200
+Date: Tue, 11 Feb 2025 16:20:50 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v8 01/17] spi: add basic support for SPI offloading
+Message-ID: <Z6tcwg7QgQwytoSb@smile.fi.intel.com>
+References: <20250207-dlech-mainline-spi-engine-offload-2-v8-0-e48a489be48c@baylibre.com>
+ <20250207-dlech-mainline-spi-engine-offload-2-v8-1-e48a489be48c@baylibre.com>
+ <Z6otFlsmEikIbI__@black.fi.intel.com>
+ <27d2a88c-b44a-4712-b066-b999e41774f0@baylibre.com>
+ <b1dcbb19-190a-45e7-8e94-cb5ef65f1f1b@sirena.org.uk>
+ <Z6pim_nLct33LzfN@smile.fi.intel.com>
+ <b000d3fd-754a-43e8-ab10-82677eeee1d2@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 5/5] arm64: dts: qcom: sa8775p-pmics: Add support
- for MBG TM
-To: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Amit Kucheria <amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: Ajit Pandey <quic_ajipan@quicinc.com>,
-        Imran Shaik <quic_imrashai@quicinc.com>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        Jagadeesh Kona <quic_jkona@quicinc.com>, quic_kamalw@quicinc.com,
-        quic_jprakash@quicinc.com, linux-arm-msm@vger.kernel.org,
-        linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
- <20241212-mbg-v2-support-v2-5-3249a4339b6e@quicinc.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20241212-mbg-v2-support-v2-5-3249a4339b6e@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: q1EjlsC4EF9KacWBgDFHrJd1w5WWRNPk
-X-Proofpoint-ORIG-GUID: q1EjlsC4EF9KacWBgDFHrJd1w5WWRNPk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-11_05,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 clxscore=1015 suspectscore=0 mlxscore=0
- lowpriorityscore=0 phishscore=0 impostorscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502110088
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b000d3fd-754a-43e8-ab10-82677eeee1d2@sirena.org.uk>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 12.12.2024 5:11 PM, Satya Priya Kakitapalli wrote:
-> Add support for MBG TEMP peripheral for pm8775 sail pmics on SA8775P.
+On Tue, Feb 11, 2025 at 01:00:08PM +0000, Mark Brown wrote:
+> On Mon, Feb 10, 2025 at 10:33:31PM +0200, Andy Shevchenko wrote:
+> > On Mon, Feb 10, 2025 at 05:48:00PM +0000, Mark Brown wrote:
+> > > On Mon, Feb 10, 2025 at 11:11:23AM -0600, David Lechner wrote:
 > 
-> Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-> ---
->  arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi | 116 ++++++++++++++++++++++++++++
->  1 file changed, 116 insertions(+)
+> > > > In this case, we specifically split up the headers so that the only time you
+> > > > would ever include this header is if you need to call functions in this
+> > > > namespace (i.e. struct definitions are in linux/spi/offload/types.h which
+> > > > doesn't import the namespace). So this doesn't actually seem like a problem
+> > > > to me.
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> index e87f95e9ba9f59e3f067af0d5565b8e3ed4b37fc..eade5784f18629dc9f7ebf0257551bf96bea9a4c 100644
-> --- a/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sa8775p-pmics.dtsi
-> @@ -89,6 +89,58 @@ trip1 {
->  				};
->  			};
->  		};
-> +
-> +		pm8775-mbg0-thermal {
-> +			polling-delay-passive = <100>;
-> +			thermal-sensors = <&pmm8654au_0_mbg_temp>;
-> +
-> +			trips {
-> +				trip0 {
-> +					temperature = <115000>;
-> +					hysteresis = <5000>;
-> +					type = "passive";
+> > > Indeed - I can't see any case where a user would need the header without
+> > > needing the namespace.
+> 
+> > You are looking from the other end. What I'm telling is that anyone who adds
+> > a header, automatically gets a namespace. What's the point to have namespace
+> > if it won't easily prevent from (ab)using it in the code. I consider putting
+> > MODULE_IMPORT_NS() in the headers a bit weird.
+> 
+> Sure, but there's no case where anyone should ever be adding the header
+> without adding the namespace which does rather sound like the sort of
+> thing where you should just move the namespace addition to the header.
 
-These could possibly be 'critical' if 115C is the TjMAX or near it
+$ git grep -lw MODULE_IMPORT_NS | wc -l
+651
 
-Konrad
+$ git grep -lw MODULE_IMPORT_NS | grep '\.h$'
+
+drivers/base/firmware_loader/sysfs.h
+drivers/iio/adc/ltc2497.h
+drivers/pwm/pwm-dwc.h
+^^^ These ones are probably fine as they are not in include/
+
+include/kunit/visibility.h
+include/linux/module.h
+include/linux/pwm.h
+
+I believe these three are misuses of MODULE_IMPORT_NS(). Because one may add
+a header just as a "proxy" one (copy'n'paste, for example) and we know that is
+real as we saw a lot of code that has semi-random header inclusion blocks.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

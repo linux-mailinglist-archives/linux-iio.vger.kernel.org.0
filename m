@@ -1,80 +1,82 @@
-Return-Path: <linux-iio+bounces-15373-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7728FA319AF
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 00:47:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B65A319AD
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 00:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D8E3A7A5E
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 23:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D351612CF
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 23:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7D126A08F;
-	Tue, 11 Feb 2025 23:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8DC26A0A3;
+	Tue, 11 Feb 2025 23:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="qZ82eL/O"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="v2oU4++m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262E268FEE;
-	Tue, 11 Feb 2025 23:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9099272935;
+	Tue, 11 Feb 2025 23:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739317594; cv=none; b=G8hqnhnz0B8+FS752ZSjU486U4F91PJ0am5OboyQ+smFkIpyG18muJ/r7ISOfy6lhjjn1VejUNiT0M8T0ihhzw8LCzqEa4u6Fbp6WwoaEIidV/uU10l4vIY11GW0LEqYkW6Ed96ogUDuynGJfiRVurCFnOMOs169euOCqXD59EU=
+	t=1739317603; cv=none; b=EEBUBuJWUB47J0kVyl/ray9AXrhRYOU+RpMrj3Cv328Gzs4qtJhlhbMe4P5xBDafnhJ0Z1gxkHPzj/mIKJeDANk78uvRJX/x4SjNS5WagIrsokdGEvzxYTfDvLrNTH0WX0l1aePTILc15LGrqsnwuwAGHpY2wAO8cy+lAMDv3X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739317594; c=relaxed/simple;
-	bh=dk11KWQbyxf+KzJS8aYIAh3CE0Kh/l9sVLzYcmT6jls=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K7RpGIyrliUOjaJsIFa4h2k0Gnc/sxUW/DJC011YATRHHWhusl3y7n/iVu0n9xgezlnLj0J8XCFUVDC6Qh/ySdsfv1rVgzdchq9Ra2HY/EpmIJbVzj/daTVOkTmJU1UtQAjgNjmBxsRGc42ghwY6NNBinN+gSUVaKhQmpVBMWeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=qZ82eL/O; arc=none smtp.client-ip=148.163.135.77
+	s=arc-20240116; t=1739317603; c=relaxed/simple;
+	bh=2L1VG3f3/yfeQnF7C87Nj0tNYvw2/uGw161yDG2RQlE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ssP2m1vC+UiioCWOt8pII65QRiTo+WxYdWOFXdlH4TVpkIf2uY6r5tzCY1Vl2LFfulgDGFSdWdvfubLiX8u/AoUUjAv/S7tX21dPVTem1B8TqDA/CTymd27+8zwi7ZKwUIM3zsCJkqWF1701hQ5CxUT94jB3UjcVqnNrgbLnl7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=v2oU4++m; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BK0bDR014127;
-	Tue, 11 Feb 2025 18:46:15 -0500
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BIkZNL002761;
+	Tue, 11 Feb 2025 18:46:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=kCoYyWpLAjZeie4mU2JKL3RDK1j
-	XLmGZP/wib7tTW4M=; b=qZ82eL/OJtGAUCDct6P8NWt+SDISJBmPOsTqm7T3Ivt
-	yPJapKcIxRf/5YoZ6PSgWi2ht3esunfVlrGb38RMXLOHpWZDLd0M0easbzb0Npdp
-	RNr7FClwh0En42hOk17D3+0zInZw1HxCLFhPJT+ythxxGTWcgtrJOHCt1VR1Ybib
-	RFlIdttt1jOzi6FBUFrRKUb6RdQlfxR4o1F1FXPUksTeEzMNYRa8Sju+8HtXShbA
-	Ox9ZynCXKpwkZRIV2MSEr8jv9efgTpL1rR0zA63FA7FhnQ9ZpJODxGO34UN9SmlP
-	K699ZZpflEKfQMZdG/uIlu+i2od4dOd6RgLHFy3J0Cw==
+	:mime-version:subject:to; s=DKIM; bh=ZpEPm7Dn+k7PDa9/OCfdREi70ru
+	1OlRRpBCS4VhQgMk=; b=v2oU4++mJoU8+BA5ZVS+Dx1KeM9KHg0h1CR4fgUsRQt
+	SGN9Dwo+crlHt6Nkn9u7SuE7ZnpkHw7ViUZaWILE+aez6HFR6YqfM2j2mtmsaMqs
+	dg1MqlfhfZRLplV8QgG7NSzD58muz9GQBkodGB4zytoIC4ZVFzlWu+G1sAY+jOmX
+	eDW2C8mKGmKFkR1agjgQobqsWQ66b1fTOiVlacULbQGgAyLJMk1VDs0pwLQPTxeO
+	U8HBSCb+kbc94Y6+a9bRsmFnK2cMEaYhYBKrusfBrLyuaZ1RRE4ag5IlccYe1JyL
+	Gk/Rx9pp901YQF4kZRYu3Pq+jw2PyCDQyZT7Hge22lw==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44p529y7nf-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 44r857j5pw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Feb 2025 18:46:13 -0500 (EST)
+	Tue, 11 Feb 2025 18:46:26 -0500 (EST)
 Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 51BNk6Kq016911
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 51BNkP6s016941
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 11 Feb 2025 18:46:06 -0500
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+	Tue, 11 Feb 2025 18:46:25 -0500
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
  ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 11 Feb 2025 18:46:06 -0500
+ 15.2.986.14; Tue, 11 Feb 2025 18:46:25 -0500
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 11 Feb 2025 18:46:06 -0500
+ 15.2.986.14; Tue, 11 Feb 2025 18:46:25 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 11 Feb 2025 18:46:06 -0500
+ Transport; Tue, 11 Feb 2025 18:46:24 -0500
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 51BNjrIi009712;
-	Tue, 11 Feb 2025 18:45:55 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 51BNkB5N009859;
+	Tue, 11 Feb 2025 18:46:14 -0500
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
+CC: Sergiu Cuciurean <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
         <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
         <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
-        <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v3 00/17] iio: adc: ad7768-1: Add features, improvements, and fixes
-Date: Tue, 11 Feb 2025 20:45:52 -0300
-Message-ID: <20250211234552.1007753-1-Jonathan.Santos@analog.com>
+        <marcelo.schmitt1@gmail.com>, David Lechner <dlechner@baylibre.com>,
+        Jonathan Santos
+	<Jonathan.Santos@analog.com>
+Subject: [PATCH v3 01/17] iio: adc: ad7768-1: Fix conversion result sign
+Date: Tue, 11 Feb 2025 20:46:11 -0300
+Message-ID: <20250211234611.1007865-1-Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -85,81 +87,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 5bT_UhXQ1NqFzK8Rxh7eRWAMFRXES6rX
-X-Authority-Analysis: v=2.4 cv=FabNxI+6 c=1 sm=1 tr=0 ts=67abe146 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=DcVhKpCQim4X3dEw7YsA:9 a=oVHKYsEdi7-vN-J5QA_j:22
-X-Proofpoint-GUID: 5bT_UhXQ1NqFzK8Rxh7eRWAMFRXES6rX
+X-Proofpoint-GUID: ywiHzsbsFks9Q5324K0WfNOmEie6wCC1
+X-Proofpoint-ORIG-GUID: ywiHzsbsFks9Q5324K0WfNOmEie6wCC1
+X-Authority-Analysis: v=2.4 cv=U5VoDfru c=1 sm=1 tr=0 ts=67abe152 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=T2h4t0Lz3GQA:10 a=gAnH3GRIAAAA:8 a=IpJZQVW2AAAA:8 a=yJendyViJHfIK-yCp0oA:9 a=oVHKYsEdi7-vN-J5QA_j:22
+ a=IawgGOuG5U0WyFbmm1f5:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-11_10,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- mlxscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
- spamscore=0 impostorscore=0 priorityscore=1501 phishscore=0
- mlxlogscore=909 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ impostorscore=0 clxscore=1015 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0 bulkscore=0
+ spamscore=0 mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
  definitions=main-2502110158
 
-This patch series introduces some new features, improvements,
-and fixes for the AD7768-1 ADC driver. 
+From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 
-The goal is to support all key functionalities listed in the device
-datasheet, including filter mode selection, common mode voltage output
-configuration and GPIO support. Additionally, this includes fixes 
-for SPI communication and for IIO interface, and also code improvements
-to enhance maintainability and readability.
+The ad7768-1 ADC output code is two's complement, meaning that the voltage
+conversion result is a signed value.. Since the value is a 24 bit one,
+stored in a 32 bit variable, the sign should be extended in order to get
+the correct representation.
+
+Also the channel description has been updated to signed representation,
+to match the ADC specifications.
+
+Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
-Changes in v3:
-* Fixed irregular or missing SoBs.
-* Moved MOSI idle state patch to the start of the patch, as the other fix.
-* fixed dt-binding errors.
-* Trigger-sources is handled in a different way, as an alternative to sync-in-gpio.
-  (this way we avoid breaking old applications).
-* VCM output is controlled by the regulator framework.
-* Added a second regmap for 24-bit register values.
-* Add new preparatory patch replacing the manual attribute declarations for
-  the read_avail from struct iio_info.
-* included sinc3+rej60 filter type.
-* Addressed review comments, see individual pacthes.
-* Link to v2: https://lore.kernel.org/linux-iio/cover.1737985435.git.Jonathan.Santos@analog.com/T/#u
+v3 Changes:
+* Added missing SoB.
 
-Changes in v2:
-* Removed synchronization over SPI property and replaced it for trigger-sources.
-* Added GPIO controller documentation.
-* VCM output control changed from an IIO attribute to a devicetree property (static value).
-* Converted driver to use regmap and dropped spi_read_reg and spi_write_reg pacthes.
-* replaced decimation_rate attribute for oversampling_ratio and dropped device specific documentation patch.
-* Added low pass -3dB cutoff attribute.
-* Addressed review comments, see individual pacthes.
-* Link to v1: https://lore.kernel.org/linux-iio/cover.1736201898.git.Jonathan.Santos@analog.com/T/#t
+v2 Changes:
+* Patch moved to the start of the patch series.
 ---
-Jonathan Santos (13):
-  iio: adc: ad7768-1: set MOSI idle state to prevent accidental reset
-  dt-bindings: iio: adc: ad7768-1: add trigger-sources property
-  dt-bindings: iio: adc: ad7768-1: Document GPIO controller
-  dt-bindings: iio: adc: ad7768-1: document regulator provider property
-  Documentation: ABI: add wideband filter type to  sysfs-bus-iio
-  iio: adc: ad7768-1: remove unnecessary locking
-  iio: adc: ad7768-1: convert driver to use regmap
-  iio: adc: ad7768-1: add regulator to control VCM output
-  iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
-  iio: adc: ad7768-1: add support for Synchronization over SPI
-  iio: adc: ad7768-1: replace manual attribute declaration
-  iio: adc: ad7768-1: add filter type and oversampling ratio attributes
-  iio: adc: ad7768-1: add low pass -3dB cutoff attribute
+ drivers/iio/adc/ad7768-1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Sergiu Cuciurean (4):
-  iio: adc: ad7768-1: Fix conversion result sign
-  iio: adc: ad7768-1: Add reset gpio
-  iio: adc: ad7768-1: Move buffer allocation to a separate function
-  iio: adc: ad7768-1: Add GPIO controller support
-
- Documentation/ABI/testing/sysfs-bus-iio       |    2 +
- .../bindings/iio/adc/adi,ad7768-1.yaml        |   59 +-
- drivers/iio/adc/ad7768-1.c                    | 1068 ++++++++++++++---
- 3 files changed, 949 insertions(+), 180 deletions(-)
-
-
-base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
-prerequisite-patch-id: 8b531bca46f7c7ea1c0f6d232d162fd05fda52f7
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index 113703fb7245..c3cf04311c40 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+ 		.channel = 0,
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 'u',
++			.sign = 's',
+ 			.realbits = 24,
+ 			.storagebits = 32,
+ 			.shift = 8,
+@@ -371,7 +371,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+ 
+ 		ret = ad7768_scan_direct(indio_dev);
+ 		if (ret >= 0)
+-			*val = ret;
++			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
+ 
+ 		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
 -- 
 2.34.1
 

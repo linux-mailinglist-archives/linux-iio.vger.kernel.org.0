@@ -1,172 +1,166 @@
-Return-Path: <linux-iio+bounces-15372-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15373-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD50A3187E
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 23:21:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7728FA319AF
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 00:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E43C1888C69
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 22:21:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D8E3A7A5E
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Feb 2025 23:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0313268FE9;
-	Tue, 11 Feb 2025 22:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7D126A08F;
+	Tue, 11 Feb 2025 23:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A0lCuePj"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="qZ82eL/O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D443E268FD7
-	for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 22:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262E268FEE;
+	Tue, 11 Feb 2025 23:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739312479; cv=none; b=QVIFtl2o0TjJJBg44Fa4dh9YyKQY/kO0Qwy64zUnIjAburaNgPHO6Jhh7Ogx77GyQDpWJNSPTC4oKwJHKHJX+VMPS2lm2XxH0X7B0bIx7LujYvpJwMO9yis+CCEWHihcmvr6ylEiKfJC9NylTUQu/htEFi/OL0mnbyiJ/NG1XAs=
+	t=1739317594; cv=none; b=G8hqnhnz0B8+FS752ZSjU486U4F91PJ0am5OboyQ+smFkIpyG18muJ/r7ISOfy6lhjjn1VejUNiT0M8T0ihhzw8LCzqEa4u6Fbp6WwoaEIidV/uU10l4vIY11GW0LEqYkW6Ed96ogUDuynGJfiRVurCFnOMOs169euOCqXD59EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739312479; c=relaxed/simple;
-	bh=a1YSwYfSHtvwJzBZ4RED+1zkCwMf/mzH1nEkn7wsbQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dWA7F64gBsEwlDtXq02c1OQmPh3rbpPnAo48hZ7cFvBgw8qwIk1Gz12YRpd/fN+8VXWoS4tlR/V5IZR027cU/hpWmF3x7OrTAnyBNkfl9Hl4rIBPvGFARVL6HtGrUSwo4eBQXYKSbIsvdX4gpoPOiA/2dyk/SkYzUrb1/pUR4Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A0lCuePj; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21f72fac367so47025ad.0
-        for <linux-iio@vger.kernel.org>; Tue, 11 Feb 2025 14:21:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739312477; x=1739917277; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EjzryGBicQVImcaUwF8Kk/J08SYkgXHEDzMrm9AaCFM=;
-        b=A0lCuePjEqndR/u2jYv1ql0b3NvLNdLV39OTn9zzp/SpH9Ffo0nZSbQDyt2SFhEULR
-         Vw83RJhOLHVFlvbSdhTnJeULok+zImblUmaOLqceK1kTq+2TJ3OyrqOPv2mW0VYkASOn
-         Iu4y+Tbbev0jRVYBn8CC0H8miYzZCa8y27YrcXxu1XC84A1wnCFLCW4hwdLDpX1BNW+l
-         L1d2FXTfkDzvvFUeo2aKHyVHkHYNEeU9L0O+PZCWPahzQyVUgorJ3g3TdlEovSrCEA+V
-         h8bZfytDmrox3TENLcuhozy2bWIxy7Fm4WUA1Ib0Qd8lmED6HjAXmi5+C0iAEyLe1DZv
-         0KXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739312477; x=1739917277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EjzryGBicQVImcaUwF8Kk/J08SYkgXHEDzMrm9AaCFM=;
-        b=kup/G4Mo3P15Kqh4yVyFkUtSyBShGpf8GS802pc7TC6C3L+mTkSe3RiINARiFeOg+1
-         YsVgMbCFcKLro5NRjc+KnD6rtez9CcWK7xQ8Fh24xg3zyK2Yx5gS/rDyEPeAG/OeHlH4
-         CFe/n2N8PFMlB09FxIc7I4e422lupGj+hAg33MPt4tu8hF9fx9etRDUK4lzWgUW/p5Wa
-         1Jtx+lxFORptMcnE3/Im1a1od0zzDE/m3Oq6gKjI6zxJdld3tgWyanNCsnqJY8IxTv0W
-         ptXCekmFzpuG+TJDNEGrhe1LIf0TlKN3P8cAbJBriZ1vNyAKKH8uCWekK9inXBcxhyz8
-         kd/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXNHXrnygoEeZ8C+o7Z9+h6lu/lMVq/sADwVXqlWB6C0jh/EvuC6/QR66V81XjSjH2piAczbaWAMYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6YY5OomiuQJAL6/6grGUt6+FkUOFq4n4KEzTjzV3eFvK1sKQH
-	uCsbUj0XV8G2i5brzA9tTAo5Xs2YSeOQO54EcRYJ7avpCZrwl+FWqR0QQENqPA==
-X-Gm-Gg: ASbGncvVlUsRZajkGKiTbL0hk5po9S5mCYKhh53KpfOtNtmM8lRQyh5NjrN3dTByuOy
-	5baHwD/xOn7+qqDRNT2N/+fPKaYl+LCjOLPkMRXlTuyWlezHQrV1gEVQP7OWKQcRIoTL2QqaFeZ
-	e+mzlnCLLKtz8hRiC884YFFMCDNXLT8A1QzmdHzAHI/dWkfmqxnNTklmTyRaezNHYlEBTtJytKH
-	Hn5sA/cgKiSVLThtpiLhoTU9YhZcTWnz9TNWM9krh90k7PLTUEyNAZ8bxnRxCn5oF4qGHkXWuPu
-	alsnFmgx1caoOl9RiNYpu04Fku1dGk+Hm7Oxkf0m6H+Yvv0Y6TbX
-X-Google-Smtp-Source: AGHT+IE9Eyuod2lYAzKcb7DlMkAvrPxHPMFUvHM7quPOLgjcn1Gu3gW3iwUvOBgkIXWv8Gbuo0K2Ag==
-X-Received: by 2002:a17:903:1664:b0:21a:87e8:3897 with SMTP id d9443c01a7336-220bc76be3amr773775ad.4.1739312476858;
-        Tue, 11 Feb 2025 14:21:16 -0800 (PST)
-Received: from google.com ([2a00:79e0:2e14:7:951b:5f7b:9042:f9d1])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf9aaf7c9sm46982a91.46.2025.02.11.14.21.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 14:21:16 -0800 (PST)
-Date: Tue, 11 Feb 2025 14:21:11 -0800
-From: Brian Norris <briannorris@google.com>
-To: Ajay Agarwal <ajayagarwal@google.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Vincent Whitchurch <vincent.whitchurch@axis.com>,
-	"jic23@kernel.org" <jic23@kernel.org>,
-	"linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	Brian Norris <briannorris@chromium.org>
-Subject: Re: PM runtime_error handling missing in many drivers?
-Message-ID: <Z6vNV8dDDPdWUKLS@google.com>
-References: <20220620144231.GA23345@axis.com>
- <5caa944f-c841-6f74-8e43-a278b2b93b06@suse.com>
- <20220708110325.GA5307@axis.com>
- <4ca77763-53d0-965a-889e-be2eafadfd2f@intel.com>
- <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com>
- <CAJZ5v0j0mgOcfKXRzyx12EX8CYLzowXrM8DGCH9XvQGnRNv0iw@mail.gmail.com>
- <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
- <CAJZ5v0ijy4FG84xk_n8gxR_jS0xao246eVbnFj-dXzwz=8S9NQ@mail.gmail.com>
- <Z6lzWfGbpa7jN1QD@google.com>
+	s=arc-20240116; t=1739317594; c=relaxed/simple;
+	bh=dk11KWQbyxf+KzJS8aYIAh3CE0Kh/l9sVLzYcmT6jls=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K7RpGIyrliUOjaJsIFa4h2k0Gnc/sxUW/DJC011YATRHHWhusl3y7n/iVu0n9xgezlnLj0J8XCFUVDC6Qh/ySdsfv1rVgzdchq9Ra2HY/EpmIJbVzj/daTVOkTmJU1UtQAjgNjmBxsRGc42ghwY6NNBinN+gSUVaKhQmpVBMWeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=qZ82eL/O; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BK0bDR014127;
+	Tue, 11 Feb 2025 18:46:15 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=kCoYyWpLAjZeie4mU2JKL3RDK1j
+	XLmGZP/wib7tTW4M=; b=qZ82eL/OJtGAUCDct6P8NWt+SDISJBmPOsTqm7T3Ivt
+	yPJapKcIxRf/5YoZ6PSgWi2ht3esunfVlrGb38RMXLOHpWZDLd0M0easbzb0Npdp
+	RNr7FClwh0En42hOk17D3+0zInZw1HxCLFhPJT+ythxxGTWcgtrJOHCt1VR1Ybib
+	RFlIdttt1jOzi6FBUFrRKUb6RdQlfxR4o1F1FXPUksTeEzMNYRa8Sju+8HtXShbA
+	Ox9ZynCXKpwkZRIV2MSEr8jv9efgTpL1rR0zA63FA7FhnQ9ZpJODxGO34UN9SmlP
+	K699ZZpflEKfQMZdG/uIlu+i2od4dOd6RgLHFy3J0Cw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44p529y7nf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Feb 2025 18:46:13 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 51BNk6Kq016911
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 11 Feb 2025 18:46:06 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 11 Feb 2025 18:46:06 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Tue, 11 Feb 2025 18:46:06 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Tue, 11 Feb 2025 18:46:06 -0500
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 51BNjrIi009712;
+	Tue, 11 Feb 2025 18:45:55 -0500
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
+        <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v3 00/17] iio: adc: ad7768-1: Add features, improvements, and fixes
+Date: Tue, 11 Feb 2025 20:45:52 -0300
+Message-ID: <20250211234552.1007753-1-Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z6lzWfGbpa7jN1QD@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: 5bT_UhXQ1NqFzK8Rxh7eRWAMFRXES6rX
+X-Authority-Analysis: v=2.4 cv=FabNxI+6 c=1 sm=1 tr=0 ts=67abe146 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=DcVhKpCQim4X3dEw7YsA:9 a=oVHKYsEdi7-vN-J5QA_j:22
+X-Proofpoint-GUID: 5bT_UhXQ1NqFzK8Rxh7eRWAMFRXES6rX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-11_10,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ mlxlogscore=909 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502110158
 
-Hi Ajay,
+This patch series introduces some new features, improvements,
+and fixes for the AD7768-1 ADC driver. 
 
-On Mon, Feb 10, 2025 at 09:02:41AM +0530, Ajay Agarwal wrote:
-> On Wed, Jul 27, 2022 at 06:31:48PM +0200, Rafael J. Wysocki wrote:
-> > On Wed, Jul 27, 2022 at 10:08 AM Oliver Neukum <oneukum@suse.com> wrote:
-> > > On 26.07.22 17:41, Rafael J. Wysocki wrote:
-> > > > Well, in general suspending or resuming a device is a collaborative
-> > > > effort and if one of the pieces falls over, making it work again
-> > > > involves fixing up the failing piece and notifying the others that it
-> > > > is ready again.  However, that part isn't covered and I'm not sure if
-> > > > it can be covered in a sufficiently generic way.
-> > >
-> > > True. But that still cannot solve the question what is to be done
-> > > if error handling fails. Hence my proposal:
-> > > - record all failures
-> > > - heed the record only when suspending
-> > 
-> > I guess that would boil down to moving the power.runtime_error update
-> > from rpm_callback() to rpm_suspend()?
-> Resuming this discussion. One of the ways the device drivers are
-> clearing the runtime_error flag is by calling pm_runtime_set_suspended
-> [1].
-> 
-> To me, it feels weird that a device driver calls pm_runtime_set_suspended
-> if the runtime_resume() has failed. It should be implied that the device
-> is in suspended state if the resume failed.
-> 
-> So how really should the runtime_error flag be cleared? Should there be
-> a new API exposed to device drivers for this? Or should we plan for it
-> in the framework itself?
+The goal is to support all key functionalities listed in the device
+datasheet, including filter mode selection, common mode voltage output
+configuration and GPIO support. Additionally, this includes fixes 
+for SPI communication and for IIO interface, and also code improvements
+to enhance maintainability and readability.
+---
+Changes in v3:
+* Fixed irregular or missing SoBs.
+* Moved MOSI idle state patch to the start of the patch, as the other fix.
+* fixed dt-binding errors.
+* Trigger-sources is handled in a different way, as an alternative to sync-in-gpio.
+  (this way we avoid breaking old applications).
+* VCM output is controlled by the regulator framework.
+* Added a second regmap for 24-bit register values.
+* Add new preparatory patch replacing the manual attribute declarations for
+  the read_avail from struct iio_info.
+* included sinc3+rej60 filter type.
+* Addressed review comments, see individual pacthes.
+* Link to v2: https://lore.kernel.org/linux-iio/cover.1737985435.git.Jonathan.Santos@analog.com/T/#u
 
-While the API naming is unclear, that's exactly what
-pm_runtime_set_suspended() is about. Personally, I find it nice when a
-driver adds the comment "clear runtime_error flag", because otherwise
-it's not really obvious why a driver has to take care of "suspending"
-after a failed resume. But that's not the biggest question here, IMO.
+Changes in v2:
+* Removed synchronization over SPI property and replaced it for trigger-sources.
+* Added GPIO controller documentation.
+* VCM output control changed from an IIO attribute to a devicetree property (static value).
+* Converted driver to use regmap and dropped spi_read_reg and spi_write_reg pacthes.
+* replaced decimation_rate attribute for oversampling_ratio and dropped device specific documentation patch.
+* Added low pass -3dB cutoff attribute.
+* Addressed review comments, see individual pacthes.
+* Link to v1: https://lore.kernel.org/linux-iio/cover.1736201898.git.Jonathan.Santos@analog.com/T/#t
+---
+Jonathan Santos (13):
+  iio: adc: ad7768-1: set MOSI idle state to prevent accidental reset
+  dt-bindings: iio: adc: ad7768-1: add trigger-sources property
+  dt-bindings: iio: adc: ad7768-1: Document GPIO controller
+  dt-bindings: iio: adc: ad7768-1: document regulator provider property
+  Documentation: ABI: add wideband filter type to  sysfs-bus-iio
+  iio: adc: ad7768-1: remove unnecessary locking
+  iio: adc: ad7768-1: convert driver to use regmap
+  iio: adc: ad7768-1: add regulator to control VCM output
+  iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
+  iio: adc: ad7768-1: add support for Synchronization over SPI
+  iio: adc: ad7768-1: replace manual attribute declaration
+  iio: adc: ad7768-1: add filter type and oversampling ratio attributes
+  iio: adc: ad7768-1: add low pass -3dB cutoff attribute
 
-The real reson I pointed you at this thread was because I think it's
-useful to pursue the proposal above: to avoid setting a persistent
-"runtime_error" for resume failures. This seems to just create a pitfall
-for clients, as asked by Vincent and Oliver upthread.
+Sergiu Cuciurean (4):
+  iio: adc: ad7768-1: Fix conversion result sign
+  iio: adc: ad7768-1: Add reset gpio
+  iio: adc: ad7768-1: Move buffer allocation to a separate function
+  iio: adc: ad7768-1: Add GPIO controller support
 
-And along this line, there are relatively few drivers that actually
-bother to reset this error flag ever (e.g., commit f2bc2afe34c1
-("accel/ivpu: Clear runtime_error after pm_runtime_resume_and_get()
-fails")).
+ Documentation/ABI/testing/sysfs-bus-iio       |    2 +
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |   59 +-
+ drivers/iio/adc/ad7768-1.c                    | 1068 ++++++++++++++---
+ 3 files changed, 949 insertions(+), 180 deletions(-)
 
-So to me, we should simply answer Rafael's question:
 
-(repeated:)
-> > I guess that would boil down to moving the power.runtime_error update
-> > from rpm_callback() to rpm_suspend()?
+base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
+prerequisite-patch-id: 8b531bca46f7c7ea1c0f6d232d162fd05fda52f7
+-- 
+2.34.1
 
-Yes, I think so. (Although I'm not sure if this leaves undesirable spam
-where persistent .runtime_resume() failures occur.)
-
-...and then write/test/submit such a patch, provided it achieves the
-desired results.
-
-Unless of course one of the thread participants here has some other
-update in the intervening 2.5 years, or if Rafael was simply asking the
-above rhetorically, and wasn't actually interested in fielding such a
-change.
-
-Brian
 

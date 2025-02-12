@@ -1,163 +1,153 @@
-Return-Path: <linux-iio+bounces-15395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15393-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2311EA31EB8
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:25:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A77A31EAF
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFED1166D50
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729CD3A619A
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EFC1FDE22;
-	Wed, 12 Feb 2025 06:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B32C1FBE9D;
+	Wed, 12 Feb 2025 06:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PalzXJ9Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cszXoyma"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B461FCD0F;
-	Wed, 12 Feb 2025 06:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244381DF751;
+	Wed, 12 Feb 2025 06:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739341528; cv=none; b=WcHsF/F37gn6x9iGZh6AU3/CMKK+X9WyzrKHn/L3NKTkX7jsGm5yrjLKG1xxZv+gWkwiD5Y5VIE/F7DepBkRyw+8iFelzf8/ETEujioqP/vyX9ZVE6asUFMFYpglg67nq5Pmd9344Np8ggBw00hhuThsxeotW0nDcH5LmNsKPQg=
+	t=1739341523; cv=none; b=s17t3LzvHS29L//cMbKL0z1K+owPDekH4zXQIUjlXRKXK87MzkMlQlmg/sWOWICVK4YG0pzQUozHliq8vYMiIoiXuSFIFhKhVAZ70+Ofvp7lRR2hLMjSKb7pmffMPx4dkYwpScbY4Rb+7pnkFoiVJkLgLrMvD7Gv/8IVT9WSziE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739341528; c=relaxed/simple;
-	bh=3KVKWftS4v9GkHuIDUYvEWJA8wL+ta7vL74qDteO7js=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=gpfhuntcXJq3/YIxule7c0zM3BQV1t7C/EgeZwY8RWWCHRUEw2Qn5rijqWIiPUVLYSCCY5pFawH9qQoqmRtcqJb2CjRR+4rLJPdBQIXxTgJqEzpJ7T0DrvZNEY+xZmtV8MC/RMH9UU6TPwxvoMJoU3HIAlz32jYMVGygo9NecPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PalzXJ9Y; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51BKXtGR024202;
-	Wed, 12 Feb 2025 06:25:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	obAcn0wLmydAzYC4ajDkNvD0xynlCwHkkiRAYv1Vxec=; b=PalzXJ9Y97SyU5Yg
-	0EjzK/0EqHEvCeCZ32H+vfSvUasPWifm+GF1RnuZwVFsDjd7+1IStT7NpWYHhik5
-	8gQC3VR3ZHo1SyJ5rzPCoHZtS9FpbqMIPfSE+iycCTkzfjwGxmhojkqDkqic5yUc
-	0U1mIPCiHG/xqHYNwsjhfTD4r7mwF/9hc8S7CpEWYeZxMstMIz01p7r7V8bbWBGc
-	julwEpuESY8aKGRTPE/ZgcvpSOFKNHetgiIwiboV5VchFuUk1nIlV87Iy4viNEQM
-	4mqebk4oO9D3d3us+zPSQfVJqGTMtK8sWJWe0wGQ4/zuZIXHV0lmoYsE946e4tAH
-	3EtKsw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44p0gv24wg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Feb 2025 06:24:59 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 51C6Owik026154
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Feb 2025 06:24:58 GMT
-Received: from [10.110.45.95] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 11 Feb
- 2025 22:24:50 -0800
-Message-ID: <aec622a8-bc3f-4ecb-a020-72f1634b7bed@quicinc.com>
-Date: Wed, 12 Feb 2025 11:54:45 +0530
+	s=arc-20240116; t=1739341523; c=relaxed/simple;
+	bh=3GczVSezF6lGkia8zxOIs0eEQ/zlXmjuOU3QyuA85dI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Awhw+MquITzQQ8aTKDbMr9vHps2g11VvkyiLgd94dIFayUdRe89VT8ra6onzL7uHput8+5BU+o13sKrBaAkoNPFO8OWTLO6sv2vaW9iw64KrBFMinm4ficsFCTbFqpXrlKUwXOYWTQOodQ3L0AiJGbdWKAGL3FEiasygadPHuU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cszXoyma; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739341521; x=1770877521;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3GczVSezF6lGkia8zxOIs0eEQ/zlXmjuOU3QyuA85dI=;
+  b=cszXoymajda8ZkEtFF5YT/nvKik5eusHjEUQmB5vM9LJxUVuqCnIFyJC
+   IhnO9mzRXiDAq2NDb31p+WRbfacTRWT3NVQmoMwGLaZNF8vspiijgOlRy
+   Pi59M3tnSV//7WXOqupPDym1syyi/K++dUCh8otIKbrKgViiStR7wO/lf
+   zm8FZec400/fqSEkJFmnLCwvKdnvwG/tdzWKJWkaDZ/izZUuuT5dZQWyX
+   zMwO0S9MwN9Lk8JEWgFYlFEsynUbBKHFy8XPB0iOCdTMZRDrwZ0pl2fGq
+   fAreY6EwZUZfq3m2wtZH5gC1TMijQzx0XIxdo2NOEQULem5uZXd8NGDZb
+   w==;
+X-CSE-ConnectionGUID: KhLnZAcKRoySfMON43uzLw==
+X-CSE-MsgGUID: OlAbBpZYTiGTmTUnugbmJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40005141"
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="40005141"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 22:25:20 -0800
+X-CSE-ConnectionGUID: JKNa1+JKRrGMelK3GFrn9w==
+X-CSE-MsgGUID: Woal9iMTT/ylqywzPRsLMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
+   d="scan'208";a="117811933"
+Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
+  by fmviesa004.fm.intel.com with ESMTP; 11 Feb 2025 22:25:16 -0800
+From: Raag Jadav <raag.jadav@intel.com>
+To: arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	linus.walleij@linaro.org,
+	mika.westerberg@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	dmitry.torokhov@gmail.com,
+	jic23@kernel.org,
+	przemyslaw.kitszel@intel.com
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH v5 00/12] Split devres APIs to device/devres.h and introduce devm_kmemdup_array()
+Date: Wed, 12 Feb 2025 11:55:01 +0530
+Message-Id: <20250212062513.2254767-1-raag.jadav@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 1/5] dt-bindings: thermal: Add MBG thermal monitor
- support
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano
-	<daniel.lezcano@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>, Lukasz Luba
-	<lukasz.luba@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jonathan Cameron
-	<jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Lee Jones
-	<lee@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>, Amit Kucheria
-	<amitk@kernel.org>,
-        Thara Gopinath <thara.gopinath@gmail.com>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Ajit Pandey <quic_ajipan@quicinc.com>,
-        Imran Shaik
-	<quic_imrashai@quicinc.com>,
-        Taniya Das <quic_tdas@quicinc.com>,
-        "Jagadeesh
- Kona" <quic_jkona@quicinc.com>, <quic_kamalw@quicinc.com>,
-        <quic_jprakash@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-References: <20241212-mbg-v2-support-v2-0-3249a4339b6e@quicinc.com>
- <20241212-mbg-v2-support-v2-1-3249a4339b6e@quicinc.com>
- <ojukpywkhu72cimujmijzidf26654g5vkjaj477imcf4suz2o6@cmow62jcqsfz>
- <7a5db383-914c-4c1e-846e-5d68cc6a7765@quicinc.com>
- <fcd718be-fe8a-466f-bd2b-7b75d5f8dd6c@kernel.org>
- <c85903c6-6a89-4382-bfa2-2fed95f0cbc0@kernel.org>
-Content-Language: en-US
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-In-Reply-To: <c85903c6-6a89-4382-bfa2-2fed95f0cbc0@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: tLL0HZPILgFGv8Z41KvAkM3OKCPn4gyD
-X-Proofpoint-GUID: tLL0HZPILgFGv8Z41KvAkM3OKCPn4gyD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-12_02,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 phishscore=0
- clxscore=1015 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
- mlxlogscore=999 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502120048
+Content-Transfer-Encoding: 8bit
+
+This series
+
+1. Splits device/devres.h for the users that are only interested in devres APIs.
+   Original work by Andy Shevchenko:
+   https://lore.kernel.org/r/20241203195340.855879-1-andriy.shevchenko@linux.intel.com
+
+2. Introduces a more robust and cleaner devm_kmemdup_array() helper and uses it
+   across drivers.
+
+The idea behind embedding both work into a single series is to make the review
+process easier and reduce conflicts while merging.
+
+Current proposal is to merge initial patches with an immutable tag (volunteered
+by Andy) for other subsystems to use. Feel free to share a better alternative.
+
+v2: Use size_mul() for multiplication (Dmitry)
+    Update commit message (Dmitry)
+
+v3: Embed devres.h work by Andy
+    Add more users of devm_kmemdup_array()
+    Update tags and rebase
+
+v4: Use IOMEM_ERR_PTR() to fix sparse warnings (Andy)
+    Use source size and make it robust against type changes (Andy)
+
+v5: Move IOMEM_ERR_PTR() to err.h (Andy)
+    Reduce distribution to pinctrl/iio/input patches
+
+Andy Shevchenko (2):
+  driver core: Split devres APIs to device/devres.h
+  iio: imu: st_lsm9ds0: Replace device.h with what is needed
+
+Raag Jadav (10):
+  err.h: move IOMEM_ERR_PTR() to err.h
+  devres: Introduce devm_kmemdup_array()
+  pinctrl: intel: copy communities using devm_kmemdup_array()
+  pinctrl: baytrail: copy communities using devm_kmemdup_array()
+  pinctrl: cherryview: use devm_kmemdup_array()
+  pinctrl: tangier: use devm_kmemdup_array()
+  pinctrl: pxa2xx: use devm_kmemdup_array()
+  iio: adc: xilinx-xadc-core: use devm_kmemdup_array()
+  input: sparse-keymap: use devm_kmemdup_array()
+  input: ipaq-micro-keys: use devm_kmemdup_array()
+
+ drivers/iio/adc/xilinx-xadc-core.c          |   4 +-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c |   2 +-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c |   2 +-
+ drivers/input/keyboard/ipaq-micro-keys.c    |   5 +-
+ drivers/input/sparse-keymap.c               |   3 +-
+ drivers/pinctrl/intel/pinctrl-baytrail.c    |   6 +-
+ drivers/pinctrl/intel/pinctrl-cherryview.c  |   5 +-
+ drivers/pinctrl/intel/pinctrl-intel.c       |   6 +-
+ drivers/pinctrl/intel/pinctrl-tangier.c     |   5 +-
+ drivers/pinctrl/pxa/pinctrl-pxa2xx.c        |   8 +-
+ include/linux/device.h                      | 119 +-----------------
+ include/linux/device/devres.h               | 129 ++++++++++++++++++++
+ include/linux/err.h                         |   3 +
+ include/linux/io.h                          |   2 -
+ 14 files changed, 152 insertions(+), 147 deletions(-)
+ create mode 100644 include/linux/device/devres.h
 
 
-On 2/11/2025 5:20 PM, Krzysztof Kozlowski wrote:
-> On 11/02/2025 12:46, Krzysztof Kozlowski wrote:
->> On 11/02/2025 12:15, Satya Priya Kakitapalli wrote:
->>> On 12/13/2024 2:08 PM, Krzysztof Kozlowski wrote:
->>>> On Thu, Dec 12, 2024 at 09:41:20PM +0530, Satya Priya Kakitapalli wrote:
->>>>> +
->>>>> +required:
->>>>> +  - compatible
->>>>> +  - reg
->>>>> +  - interrupts
->>>>> +  - io-channels
->>>>> +  - io-channel-names
->>>> Binding looks ok, but this wasn't tested due to unneeded dependency.
->>>> Please decouple from dependency, so automation can properly test it.
->>>
->>> The dependency is needed because this mbg peripheral is present on only
->>> targets which have GEN3 ADC5, for which the bindings support is added in
->>> the series [1]
->>>
->>>
->>> [1]
->>> https://lore.kernel.org/linux-arm-msm/c4ca0a4c-e421-4cf6-b073-8e9019400f4c@quicinc.com/
->> Sure. Then this cannot be merged due to resulting test failure.
->>
->> Please don't post new versions before this can be actually tested and
->> applied.
-> Heh, you responded *after two months*, to an old email so even previous
-> discussion is gone from my inbox.
+base-commit: 0eee258cdf172763502f142d85e967f27a573be0
+-- 
+2.34.1
 
-
-Sorry about that, I initially misunderstood it was regarding the b4 deps 
-I created. I wanted to confirm before posting new version yesterday, 
-hence clarified about the dependency.
-
-
-> Best regards,
-> Krzysztof
 

@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-15438-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15439-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F83DA32407
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 11:56:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229FDA32415
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 11:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA415188443E
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 10:56:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E630188B206
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 10:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AFE209F35;
-	Wed, 12 Feb 2025 10:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3771D209F3C;
+	Wed, 12 Feb 2025 10:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BjI8xcfI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O/X1Adqi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCF0209691;
-	Wed, 12 Feb 2025 10:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9D0206F2C;
+	Wed, 12 Feb 2025 10:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739357768; cv=none; b=f71TnFG+yHEQrCzeEXgpn7xowyr6ltx1Sw8TdyxP9GsWFqxoa7q7C2cVU8Tjl3SzjSDKhpuEL1hJrNDEMaBk3Tdf74uOn9ZHm3wTj1gGTzPhmVyFsuIXYClzWTwK5QNoOAZXfrq61T+8Dsel/F9UWqOQIIBaskCsMmgMLQOeCY4=
+	t=1739357890; cv=none; b=Ba0X+J7rzCr5ZVTt7Iy8sPyecPyLBjpvlWm2/4MvUA9cr08+cTL1PnmG0zvhLHB0gILyVYjtzr0IJvj1XUH5dnKf7wnFCJ3L9XSleE96GAi8r5he7c60H2nrBlvEHFXsOquohiXvWkbsTfts8GeWBSBzAzD/hPT2EYDpbfTh/BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739357768; c=relaxed/simple;
-	bh=2r6FCD9tYnKCQgTgvsOVi2Kr4w/PAVQ+9aVyTlNzHHo=;
+	s=arc-20240116; t=1739357890; c=relaxed/simple;
+	bh=+z2XvD2jfED7TixE7ouV+IiMt8A2lUXzW0REOLFZMxM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I0B8xE+ngTxs5lyaJj+Z8TcKWjH7HnyMNII5XJ3mLv79FhjVEq2+Q9KbgnTgA4GdvoZIaATAj8AzmwmZgq8IPBVdfsYcNeOk6y22pedHneICKM6gERRxo/G9Vty4S1Yh3Utlio7W4BvJEs6wzwBlUFWy0TiULxjwufbxHMS6x14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BjI8xcfI; arc=none smtp.client-ip=198.175.65.21
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZdoCBFt8zEnn7HzR9MLvin2iSZg7bBPJvpuApqNXNriioBK/I9SHFyLyQTEnOQL9Q9A7uW6InxXF8r7/gyS6PXAqEug7XzwZ/3f99KDQWOgtjGTnJM7/Mfevzi2zr61fnMO/ux0FVGEWQGB4+1ULyx6b9snHnahq35RV4G1gp4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O/X1Adqi; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739357767; x=1770893767;
+  t=1739357889; x=1770893889;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=2r6FCD9tYnKCQgTgvsOVi2Kr4w/PAVQ+9aVyTlNzHHo=;
-  b=BjI8xcfIym1W51kz7DWHmTiVxv4AEVv6q+hFwZyb5lm/c5CynLzc8gw0
-   MVUy4SZeEMLFHg+po/uml6XhyqLp57jhqPA4nedKwMGXygofIYZ6dBU5k
-   8LlHI+bsdNpvEF06GZv0LpW27Q8nk135KNr0AAo7fHBLrXgn8/tpfuigI
-   CVUbDqkMWMwvnpdmy45goj2xedk4naW8MdWAKxu1/xap05AnnuhwJ25JR
-   Lc0eKSmlzCOmBPEp3ssyCHg6n4QXxyu4RKqfVdwxJG9HMM5b3Emfq/39q
-   SU+53Rengy2jNonryNIGCmZP1i71llxeJjWbvTvGfS79RUe5JxCVFBuBC
-   g==;
-X-CSE-ConnectionGUID: qL2HY3TVRu+YW8UhrYn1EQ==
-X-CSE-MsgGUID: DQcIkJkHTGOAW0JjlmePDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39932018"
+  bh=+z2XvD2jfED7TixE7ouV+IiMt8A2lUXzW0REOLFZMxM=;
+  b=O/X1AdqiymFiEC5aPbAg4zrUdmlPu+XJ7+rAF46m0FzY6LYL32t1WoWi
+   OxceSI38PDSnSJ9zl22IMCnDujfntjyHRzni3wA2kJhZHW7IRiWyFxOew
+   EiMexYLQazG1Yrl1vvBi4BPYgkYz9DhhasdFTyJ1rqH2vlnvYE4v7xu3D
+   nrHtffhVljCIx7YEZhxqh0WbxKw2fNSKs3rg3vfqk7obNYmqu2HKsjMYy
+   aelbDqyzr5iFPzJxur+MWblSUtaYTUJdXaJz/5G4OHJ/89TatIO1dG8LT
+   yFSNM7TWjIq6ZDwxg+cjOVKMCkujWngHKvcjy1byBAOLbHbrqsSxGyhyj
+   A==;
+X-CSE-ConnectionGUID: ptNvhZjQQxK5gTOusFjw6Q==
+X-CSE-MsgGUID: iKbD3aUXQS6NpoRJZpw1vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39932272"
 X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="39932018"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:56:06 -0800
-X-CSE-ConnectionGUID: /G4BxvpUQfCcCLUxRAdjrA==
-X-CSE-MsgGUID: IkewcdcZTYuh3nm6eRM76g==
+   d="scan'208";a="39932272"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:58:09 -0800
+X-CSE-ConnectionGUID: ZCIVHWtYRQ+/zz/ylBdfnw==
+X-CSE-MsgGUID: vdPeYeeFT7KVQt2EtKQp9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="117802484"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="149977759"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:56:01 -0800
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 02:58:05 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1tiAPO-0000000AoJz-0anG;
-	Wed, 12 Feb 2025 12:55:58 +0200
-Date: Wed, 12 Feb 2025 12:55:57 +0200
+	id 1tiARN-0000000AoM3-0RBJ;
+	Wed, 12 Feb 2025 12:58:01 +0200
+Date: Wed, 12 Feb 2025 12:58:00 +0200
 From: Andy Shevchenko <andriy.shevchenko@intel.com>
 To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
 Cc: Mark Brown <broonie@kernel.org>, David Lechner <dlechner@baylibre.com>,
@@ -79,7 +79,7 @@ Cc: Mark Brown <broonie@kernel.org>, David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Linus Walleij <linus.walleij@linaro.org>
 Subject: Re: [PATCH v8 01/17] spi: add basic support for SPI offloading
-Message-ID: <Z6x-PVheAMz8dA6l@smile.fi.intel.com>
+Message-ID: <Z6x-uBWEsoAIV2n-@smile.fi.intel.com>
 References: <b1dcbb19-190a-45e7-8e94-cb5ef65f1f1b@sirena.org.uk>
  <Z6pim_nLct33LzfN@smile.fi.intel.com>
  <b000d3fd-754a-43e8-ab10-82677eeee1d2@sirena.org.uk>
@@ -121,14 +121,12 @@ On Wed, Feb 12, 2025 at 09:52:37AM +0100, Uwe Kleine-König wrote:
 > linter that tells you that this source file doesn't use any symbols from
 > <linux/of_irq.h> and it should #include <linux/of.h> directly instead to
 > make use of symbols defined there.
-> 
-> > > Maybe the unused namespace even makes it easier to spot that issue.
-> > 
-> > Do we have an existing tools for that?
-> 
-> There is https://lore.kernel.org/all/20250123110951.370759-2-u.kleine-koenig@baylibre.com/
 
-But it was rejected.  So, the answer is "we currently do not have tools".
+There were already few attempts to untangle the dependency hell we have in LK
+project, but all seems to fail. The infamous one by Ingo stale, however a few
+patches (out of more than 2200!) made upstream.
+
+So, any tooling for that will be warmly accepted!
 
 -- 
 With Best Regards,

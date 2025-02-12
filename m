@@ -1,60 +1,57 @@
-Return-Path: <linux-iio+bounces-15415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EC1A31F91
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 08:00:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B34A31FD3
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 08:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7133F16934B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22F03A1DBF
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B2C1FF1D2;
-	Wed, 12 Feb 2025 07:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5862040A7;
+	Wed, 12 Feb 2025 07:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u1Vd4BWp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLrMKbRa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDC41E9B04;
-	Wed, 12 Feb 2025 07:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1224202C26;
+	Wed, 12 Feb 2025 07:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739343607; cv=none; b=ERVd4+Q2h8WGJPNNQ6zlyKPu2oROBocNILSKdmyqw354f1dw2NoYFtnwM06JBL6YYeF41K6Go9pe8+Hw9nP23ygtIhiy46Z6RleiDCv826kZpQBQYv3/F2PHJm3zNcLm4MnXUNrAvNodQ4owi/QaSHB+jx0Ao+YhK/szvR/tHew=
+	t=1739344662; cv=none; b=EW2XUaLBT813kEqTEWBXP1/WNGbdWFa7+WnzSjDpmqOVPAyn4YRTyzfAtzBv3kpLvoYHeyak5rp1cVMIfsgR7mK+oEQddkKviP5o1B3pAiwV0yhcs6lf3z5Xvqyk6BgybiUFjEhQRtdftVcmSZBiNCPZLyDxHe7J75OoyGmd1iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739343607; c=relaxed/simple;
-	bh=omI212O59QFslgZhVoctWrZt+GTeQzBaQFpXb9I54+s=;
+	s=arc-20240116; t=1739344662; c=relaxed/simple;
+	bh=M0TCl9ruWebYVpXDJMwU6dNYVy2BWrny5aV2GLhyWvQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PqUXH8optofw2+BEWuE3AFicjPXiPdb+x6urlKNZS26/TjiP+5zkiIVZE115XD0HlkKA0Bg39xiuuRXPUPg0Qu/2hXKuBzkQQ+0IrCVNjoBrxFR9WUDPfLHB5Ques5sFT6hyOgXi/wbdR2CNdgBGyP/pgkE3eBbSH8ByLi5pMY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u1Vd4BWp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3824DC4CEDF;
-	Wed, 12 Feb 2025 07:00:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lizZsLjyQfepJp4aaE7ge6KAjDuTnl6DdW7bH8Vz/7oQ+2vICzKCjqfWHDBZytD5d/8hTRfS3XfFU+DXYVJA+J4FIZBERsdouBpLLRT1oRxKv9nCdm1rHcEafeNIgjoH9xW5pC//DpIBZq58+ytrNLvXxSUEzBsywXStMfLR9xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLrMKbRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B07C4CEDF;
+	Wed, 12 Feb 2025 07:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739343607;
-	bh=omI212O59QFslgZhVoctWrZt+GTeQzBaQFpXb9I54+s=;
+	s=k20201202; t=1739344661;
+	bh=M0TCl9ruWebYVpXDJMwU6dNYVy2BWrny5aV2GLhyWvQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u1Vd4BWpfSll5RkmGK4nVvzOkBxM8p0V7Cym06iUvEOCRTGAb1bNlKBN0dBzfyVd2
-	 VwkBLawGgvuPpXe9X4Raku4RVloDCsir4dZSVzbTTc08SAAukuCYeRczzz5GpP+MSd
-	 VPvVIxLHGun7ZyUNlrx/SxxZ0Pj/ZyWvjWLGbTa+C9fzQelQlK2ciPVaCD74/rcTuY
-	 NiAeh4pU/Z9YUOalB+eaZ92Ba3l5A19LFN+2QLX1IJ6bipgnFugGa88BEukycYOCqR
-	 xUIjsCpjfA8eahc+ocQ39u38vReztB972raOtNUjY5eQj5c40RMg+SrFXdTNr3Fmzk
-	 PlIko8Uprx0cw==
-Date: Wed, 12 Feb 2025 08:00:03 +0100
+	b=kLrMKbRaETei6Rm9BsZLwh7ulvGsFzKWxATUwGYPGTTnUXOIJg9AUacaAhvNHypVe
+	 sA6alhnFUbx64MGolpEsPwgBhpIhXPzaVWgbPWwmvfcfSt1SyEz1OV8ah6Th396gLE
+	 NokReo+OcGmB+0NcRnfXBlSpuM1yAgIVdWZ3zr0gFJEih16NQTw82jxpAqJU5tkV9I
+	 lIi/RpbCez4+Z6WsKEAhzWQ6AT/VK9oSbhrQHayewwdiCt+R48ZOahTzHk2EaHG/fN
+	 nE6o6Ruj5ptLGZEY5xwIQlUvId7BDvWO9fWvEiM0fAeobSu7RA3Yw2optKRByDo+xL
+	 foTwh8QwdN7Dw==
+Date: Wed, 12 Feb 2025 08:17:37 +0100
 From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Robert Budai <robert.budai@analog.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, 
-	Ramona Gradinariu <ramona.gradinariu@analog.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v7 4/6] dt-bindings: iio: Add adis16550 bindings
-Message-ID: <20250212-arcane-quick-mackerel-15ba6b@krzk-bin>
-References: <20250211175706.276987-1-robert.budai@analog.com>
- <20250211175706.276987-5-robert.budai@analog.com>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, jonath4nns@gmail.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v3 05/17] dt-bindings: iio: adc: ad7768-1: document
+ regulator provider property
+Message-ID: <20250212-dazzling-glaring-shrimp-9530e6@krzk-bin>
+References: <20250211234717.1008325-1-Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,64 +60,30 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250211175706.276987-5-robert.budai@analog.com>
+In-Reply-To: <20250211234717.1008325-1-Jonathan.Santos@analog.com>
 
-On Tue, Feb 11, 2025 at 07:57:01PM +0200, Robert Budai wrote:
-> +  spi-max-frequency:
-> +    maximum: 15000000
-> +
-> +  vdd-supply: true
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    description:
-> +      Must be the device tree identifier of the RESET pin. If specified,
+On Tue, Feb 11, 2025 at 08:47:16PM -0300, Jonathan Santos wrote:
+> The AD7768-1 provides a buffered common-mode voltage output
+> on the VCM pin that can be used to bias analog input signals.
+> 
+> Add regulators property to enable the use of the VCM output,
+> referenced here as vcm_output, by any other device.
+> 
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+> v3 Changes:
+> * VCM is now provided as a regulator within the device, instead of a 
+>   custom property.
+> 
+> v2 Changes:
+> * New patch in v2.
 
-Few nits here because you did not implement previous feedback:
+There is some mess in this posting. Nothing looks threaded and b4 does
+not see entire posting.
 
-s/Must be the device tree identifier of//
-It cannot be anything else, right? So:
-
-Active low RESET pin.
-
-Second sentence is implementation detail, what if my krzkOS does not do
-it in probe? Is binding incorrect in such case? No, so drop.
-
-> +      it will be asserted during driver probe. As the line is active low,
-> +      it should be marked GPIO_ACTIVE_LOW.
-
-Line should be marked depending on the board layout. If there is
-inverter, it won't be GPIO_ACTIVE_LOW. Just say this is active low.
-
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    description: If not provided, then the internal clock is used.
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - spi-cpha
-> +  - spi-cpol
-> +  - spi-max-frequency
-> +  - vdd-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-
-And now we get back to previous feedback which was not implemented.
-Please share the filename which follows such style/syntax without blank
-lines, so I can fix it and people will not take it as an example.
-
-> +additionalProperties: false
-
-Here as well.
-
-> +examples:
+Sorry, don't make it complicated to us. Send proper submission - see
+numorous guides or submitting-patches - so reviewing will be
+straightforward.
 
 Best regards,
 Krzysztof

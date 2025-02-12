@@ -1,148 +1,126 @@
-Return-Path: <linux-iio+bounces-15409-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15410-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1112DA31F3A
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:42:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55AD8A31F5D
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60DD21888207
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:42:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 629F43A70E1
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179D01FCFCC;
-	Wed, 12 Feb 2025 06:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14D41FBCB9;
+	Wed, 12 Feb 2025 06:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="R6fagGky";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XPf4LlXq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QL4x2ZU4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19B1FC114;
-	Wed, 12 Feb 2025 06:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170C6146A68;
+	Wed, 12 Feb 2025 06:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739342535; cv=none; b=I9ZIsSt5CfrhmCTDrvR2XjT1F5UqXrZaQR4umttMC4SOtiOUPmqHZIxpFJuzX+QM0Wx5+8Jv/nO4bGOB1IIiFmqZKJc9lWur9rKEjIIM/FQ6u3pC2ZhAkBL+U/oWZ2WsyCMr9awtGQM4DOtLKA/CR0sPANoNlZYNwAoDANqin1o=
+	t=1739342860; cv=none; b=RVWYM2AUosVTkHHaZmyfRGVRb7WL2X3G1rOGuV8HOx95pUihgXRq2vx/v33oiKbSifKGRcP0o8OvAsJiaJdfZkpuduEBG3m9AAc5yVCXfkiZ047ppX8FTY5UzzYeXTWejxTbcf65qzY5ZAFFy/nmOPuFuwA2A6nudeV0QsOHWss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739342535; c=relaxed/simple;
-	bh=J9+lbUJeMTLyE3XBLqGE5vHG21bWIh11YuVz0u/YmE0=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gE2O/xRaI3+s2iUYpaphIxbsXHOl1XBxWTV1iiaSKzDTTcc80gESv0Gwb6wh/ES1Q5liUkkPbep9V6ESWHwz32AK21kZAl9szZnHZd41eo1LL3Qib4EnMdER/rPS7pIiFy7B3oHdC83swcZF1ie0LNmuDSFumlPoxg4XeMh5rlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=R6fagGky; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XPf4LlXq; arc=none smtp.client-ip=202.12.124.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id C08CF11401BC;
-	Wed, 12 Feb 2025 01:42:12 -0500 (EST)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-10.internal (MEProxy); Wed, 12 Feb 2025 01:42:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1739342532;
-	 x=1739428932; bh=NJ9jDy4M2IixYsn/6MZ1R985FuHiTyNQJDBfOGPI6og=; b=
-	R6fagGky/QjAPTJ0If3NT0IY1nJPH+mFRhxVp2o3fb5mHb0/d84d9GACwjUDJzul
-	3ztaAXX1Mh1xD0MAI+eL4QlCXfFSrF84oZsht6nYW7rByFaWDg3mK4YkOGpG3Y13
-	MekidPb6llSl8tU3o5oLgtULErLx6+lrf0H3AGBNF8lCZj4RDlaymrYQiQsBA0N7
-	kuJzmjPRXh0CnijQC0PI/QhgQtHEU/+E0ukYJlgInEmYwuJIOM93evLGADgwV9uF
-	v7hUHnXnraxg9J21wPkB7T+nGDFMldf2ivMdEs6PTpu8wybe1NrPs1sVxRRjBWbf
-	u5oWDgoGdiTYox9AjaqHeQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1739342532; x=
-	1739428932; bh=NJ9jDy4M2IixYsn/6MZ1R985FuHiTyNQJDBfOGPI6og=; b=X
-	Pf4LlXqnjrPYE/tDO1Lyt0yY7CB0MlDk6BzD0XRxr3JWAmA7qkbGkVfikCEdvuAC
-	5wUH51GnsDCX0WBAc7FhDg4I8IumubNxKQJ2+Q3CazSB2Ueg7OWl8+tTQVi5uF23
-	PIsFIsxFrWplj3aOoUCfgh+jGJzzJPgy62pWyExQxUSurlw5z3xLMZJ8h02iaKWL
-	VpmFT96L1JbA94jFX7Nu/pzGdj+u0S3bc74hZ+wNqpH2lw9DirxShOsa3Wds0odk
-	L01SSr/eVsZ6PLIOJrclMufOcYILHjbcbCBgaiIJ6C+gMIdnGWLK1EVhFMPv2xdL
-	5TFhpp6D6c1zsXlphAczw==
-X-ME-Sender: <xms:xEKsZ2r8mm7m77PEayUrozeecv6M6q2_Ku5VZw4F-QYtU_otYlrWsQ>
-    <xme:xEKsZ0rRcjwS5fQwGI9xUOE_lj4dlEUNJ4UFEq2SxPeo-Wqyw1SjFh7r5SrD3EP4I
-    xYMrt-GuLDjXmXVEYg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfedulecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredt
-    tdenucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusg
-    druggvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteef
-    gffgvedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopedu
-    fedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepughmihhtrhihrdhtohhrohhkhh
-    hovhesghhmrghilhdrtghomhdprhgtphhtthhopehprhiivghmhihslhgrfidrkhhithhs
-    iigvlhesihhnthgvlhdrtghomhdprhgtphhtthhopehrrggrghdrjhgruggrvhesihhnth
-    gvlhdrtghomhdprhgtphhtthhopehjihgtvdefsehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopehrrghfrggvlheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhushdrfi
-    grlhhlvghijheslhhinhgrrhhordhorhhgpdhrtghpthhtoheprghnughrihihrdhshhgv
-    vhgthhgvnhhkoheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopehmihhkrg
-    drfigvshhtvghrsggvrhhgsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohep
-    ghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhg
-X-ME-Proxy: <xmx:xEKsZ7Pwg_gkg4C4aBYZpjULmsxBkPYr3ytvVD2BWRNO8dkxH0DyQw>
-    <xmx:xEKsZ166Vb707-yYTgsBxm0wlxshnnsMSFEXemvr2xI130O6vGyU5g>
-    <xmx:xEKsZ16S3J7IEDT1YmDsxiyZQIoXtqZeHwxkGusv--piAeOv9fGhMQ>
-    <xmx:xEKsZ1hi-cIapV8d_E1f9j8qTCyFe-3MPhKKDr90CyLcNVGEBy72hQ>
-    <xmx:xEKsZ9y87fhkDhiAzkLXIpLwfltWeNx6sOp-xJ8YoLmDRbMhTLO1hOqh>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1C2371C20066; Wed, 12 Feb 2025 01:42:12 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1739342860; c=relaxed/simple;
+	bh=taHTvKoWTF7BQ5WW8HRGbtCKUPrDALj7zBFaw0w4D0w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LteWL0GT7TR2YqJIqstkq0egkzKfzsYjAxeyn0vQeFi3d9tYNxa6ZuHOYD83cS+nXFBZHAIoSGpZ77gEIiGaTz34v840ru/kvhf6ghplkCJoVoJBkgMg8ealTnWDBGUBgVJmXrPXHCIWRT9qtOkJwqvd9oVtu5UdU8ewYWyhlF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QL4x2ZU4; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-543d8badc30so6685651e87.0;
+        Tue, 11 Feb 2025 22:47:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739342857; x=1739947657; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=e2YsuTCPphVGemqecyPUG5geUpzSnDZxeT/5yx0AbGM=;
+        b=QL4x2ZU421cpVE5dhLjEZRpOoqwwDXvuEr8jKmbS6gQH6MRNBNNhfz0CgLyo8WNTIB
+         Aw2uJoDiX6e3TbwZj0oR3inlt2EVKYNr+UcCXlWXAbAWBEPdX30ZnktlsvJ0LoIeeuTd
+         25l7wNM5Kpw7PWdqwx9F8d31Yx9kMxQgAMibYp6tJi1d+BMx5DJ5FLW/cmU8WJURSswC
+         pIpnE7oBpONEWohLU8UqEoRRfhE2riGB4Nrq90XidICFylUHlrIjaeiq3VWIshfTLgoO
+         X83x1gTgv3tkKhgHvQb5fqi3h1QbmT4u5+npBWQ5dkZ+Uu0AWY9NdztgqB0IZNcdvdEf
+         qbmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739342857; x=1739947657;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e2YsuTCPphVGemqecyPUG5geUpzSnDZxeT/5yx0AbGM=;
+        b=Xy8YQOcxCkNaxpgtHKTGRgEEtkJnyv3ac/l5e4e+zKf6PYoCaf354612n08ncYOuiX
+         atkwLgQuAkDXIK2fmxunhv5a3FPjQV1wkDOxgY2y0nYMz2ssE9K9ju5P4GDFkbzYkoYH
+         GqyCYFw2y68QZNv75egXxcVF78Teb7RyPzUmFRZJvpb6gYyFIEA3Pccu3zyi0ZF+aLjH
+         RUBIwPAYc11Ac+9e/wp1sYwo1jbhYrQu+Kk9M6agyHwujRmCJ1Z/u3s17pG2SlCNMQRE
+         hRoIxTAI98ueJeAUiNztOX/a66QJcWWFQ8QAnJE1X7zjiDl3naN2EcZNO8Rl58fleEK+
+         AJrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUVTznUh5H69xIpXpQHPpb3qG1DinyDxgdD1r3JaWYd3JepFGxoudGhUbMYtj7O1WE3+K23JdY+mW3FMfzj@vger.kernel.org, AJvYcCWVt1vM4YiUqyjcFQYKax8Ro+mNbnPXI4PGnB/TWBoNhq5g6nOtCRXqWMtygJNL+tiiUyIf7X717An8@vger.kernel.org, AJvYcCX2OpZKPumh7bYmLtcBd+yIGATkcfmWxJjrplSseLSnO0/TOidNTkiUCu9WJiplWEQjZJbddX/53GzH23o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg+q/wnbkd/UDZNmCDKxnXBO77p1TvjtJT6RnJ66rWGlSCE1Ka
+	+K6dnYq7HMzer0kd0AAL48kkXu08yXetX59UOka5nIp/+ro3C8+x
+X-Gm-Gg: ASbGncuIKgDPch2zOIIUDLMdY5XrIBDUpgpak+MUyAsycQKFpSMnOlEmLhCQRzqZtyy
+	koMl50vOld3dobQSYYcDkf4KezoE7fcww1643mKubVXCt93S4oKEdBlgFuN1ZvcXUi8iDmQYOIn
+	Azj4H2yJf4iOdRWwuHujaZg46fiai6bjj07kkm3u71j7AS7TGboQpqzdaMBONBggupI7FqlRm3+
+	IKXeUhdMpJGj9cFSgHdqePulvevVJYtcgPFOFaNSDbLkiQ3QZsUD7CnYm0NLatC00Rwdzrgdhsq
+	oIlyVSo=
+X-Google-Smtp-Source: AGHT+IHIgsC2KuIYoI+i/oR54Zj2+nWE2GIveGKb7lMgC3jlfrosajr8ytXqlJ6wSJwC6q17EXoyEg==
+X-Received: by 2002:a05:6512:2389:b0:545:bda:f10 with SMTP id 2adb3069b0e04-5451810fdecmr406848e87.21.1739342856798;
+        Tue, 11 Feb 2025 22:47:36 -0800 (PST)
+Received: from xeon.. ([188.163.112.51])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5450e09e9dbsm748600e87.120.2025.02.11.22.47.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Feb 2025 22:47:36 -0800 (PST)
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v1 0/3] iio: light: add al3000a als support
+Date: Wed, 12 Feb 2025 08:46:54 +0200
+Message-ID: <20250212064657.5683-1-clamor95@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 12 Feb 2025 07:41:47 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Raag Jadav" <raag.jadav@intel.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Rafael J . Wysocki" <rafael@kernel.org>,
- "Linus Walleij" <linus.walleij@linaro.org>,
- "Mika Westerberg" <mika.westerberg@linux.intel.com>,
- "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
- "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
- "Jonathan Cameron" <jic23@kernel.org>,
- "Przemek Kitszel" <przemyslaw.kitszel@intel.com>
-Cc: "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
- linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
- linux-iio@vger.kernel.org
-Message-Id: <4ea5bd29-3d42-440b-bbea-203479116b48@app.fastmail.com>
-In-Reply-To: <20250212062513.2254767-3-raag.jadav@intel.com>
-References: <20250212062513.2254767-1-raag.jadav@intel.com>
- <20250212062513.2254767-3-raag.jadav@intel.com>
-Subject: Re: [PATCH v5 02/12] driver core: Split devres APIs to device/devres.h
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 12, 2025, at 07:25, Raag Jadav wrote:
-> From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->
-> device.h is a huge header which is hard to follow and easy to miss
-> something. Improve that by splitting devres APIs to device/devres.h.
->
-> In particular this helps to speedup the build of the code that includes
-> device.h solely for a devres APIs.
->
-> While at it, cast the error pointers to __iomem using IOMEM_ERR_PTR()
-> and fix sparse warnings.
->
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-> ---
->  include/linux/device.h        | 119 +-------------------------------
->  include/linux/device/devres.h | 124 ++++++++++++++++++++++++++++++++++
+AL3000a is an illuminance sensor found in ASUS TF101 tablet.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Svyatoslav Ryhel (3):
+  dt-bindings: iio: light: al3010: add al3000a support
+  iio: light: Add support for AL3000a illuminance sensor
+  ARM: tegra: tf101: Add al3000a illuminance sensor node
 
-Splitting this out makes a lot of sense conceptually, though
-I don't think it will actually help with build speed: In order
-to see real benefits, we'd need to remove the linux/device.h
-inclusion from other headers that are frequently included,
-but those don't really rely on the devres interfaces.
+ .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
+ .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
+ drivers/iio/light/Kconfig                     |  10 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/al3000a.c                   | 214 ++++++++++++++++++
+ 5 files changed, 240 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/light/al3000a.c
 
-    Arnd
+-- 
+2.43.0
+
 

@@ -1,67 +1,67 @@
-Return-Path: <linux-iio+bounces-15461-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15462-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FDCA32E50
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 19:17:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE25A32E54
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 19:18:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051A7168383
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 18:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86DEC161254
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 18:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE4A262164;
-	Wed, 12 Feb 2025 18:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40DE5260A2C;
+	Wed, 12 Feb 2025 18:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="m5Jq2m8Q"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="pTFKGVis"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380A8260A4F;
-	Wed, 12 Feb 2025 18:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613A0260A29;
+	Wed, 12 Feb 2025 18:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739384216; cv=none; b=t5+yP0HPBE/HVt00ZLidloEwrEAo78/dcqd8YG7E5QonCGt8kWfR4USxQ3iIMf6nAmWtedRXOn5PTRnmsUV5sacKl6++E+LcygFSIyWpuGAihKRpvE+aQpPAzvJbNrR5qJLJ+lfHsimPHPMf4UOjbAbVG33WydpgUNht1SoR1pk=
+	t=1739384226; cv=none; b=IVwwI372/rzLh1FuD65PhiWyOE+PStKC6cPgbn1xmZmaneiRTpggGS1L4JUp+sVhjPm7f6Xchy2YupGds43gxS3ShTZ4tBVIy20fAM4zG9yhzk3bwpDZG3ukx0qZP03X2UPyH9SlQSnrYH7eIhTQis2lW2epR+PyePKQ6kBNZak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739384216; c=relaxed/simple;
-	bh=mQIXLH4fE5iyN5DNQS/iTb2+vSgH2O60G5i2mzCiw68=;
+	s=arc-20240116; t=1739384226; c=relaxed/simple;
+	bh=T3Y0CqcpuCH1sUhoXlnPnkdMUZWO3lk5BT1V1r5nnk0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JVQpeKRN1H4PGgVkVpvGrK7yXZ2mthud5Fk0TSDhB1qbEtbjwIeSZ1zHiEeN8enyUBYlISJLgFNKIX+YIE1VwaQrBY+3oqGMTA02LCD/ip95ePGQLEbSTnzFsXR8Dd+2u0mwZ1XjtkDsCKGLiAUYOcHGYW9BdGNT8KmOLV2YKgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=m5Jq2m8Q; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=JIqS8BxM/KShM81KCT5N9aYio37kMwJ7aQgSYLX3KY6SjRAy+Ro7XTx0w+MEip16dhj8csAc45+8KwEucP0FOKygiypJfiWFsHGnJ4cfQwKuwUTuHifX3avl52GiQcTsuGFwd3FBQe2Br6ZEBO6Lb44Wt8UelruR374eG+6qKVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=pTFKGVis; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CFHXJq023492;
-	Wed, 12 Feb 2025 13:16:41 -0500
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CH5JpM014127;
+	Wed, 12 Feb 2025 13:16:50 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=uHa0E
-	wpXnQlJrC56BiW8qeA0fzYz2O0g85hoK9rrtbU=; b=m5Jq2m8QkQi68LYnsuHSl
-	QXGpULaNGOuXg9H+kIljIn5e4161DEt2Q+43ACZX6++oOjKg2vY1holvpcCHhXB0
-	deAlExiBPsLE5aKDPkhYfxG0WjFfHsAvpFKgPxUNYHkS87hMcKdTYhQ1nrtE8df/
-	KV+q/OJGafrHtD3uXrjxjjwZltU7dOaoxyZuzGUqHYhAKSCoDhdhwnrm2QeJMYsU
-	Fcf+N1nGQrgAMm2dRhDHuD/Y/SdQKkgpl7jk5mIwHGoavLBll/mjdlkD1esxWXY1
-	8XRxxYG2IdCSb8WYr3TWrOA/AIC8k4cXlTJOw3mWV1rvmGaoAw4qVWrp3VvLulTy
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=GFR1C
+	ULRNZ0vSKSYHuNnKDbDlt7Tscij1M+x+ohJk64=; b=pTFKGVismhYJiIOg4DDmf
+	vfpV3XmjC4YWkGuSGgTbv9Aizphp7mn4yPQ2LdtEw+frXD0s4XwsPHtmrjBLQQ3d
+	Tc/DBGZfW26XlAmlV37/E9kRFoCIm6d8sqUdLUVom8pfUQasxNxRKIIhy26Jha1D
+	1e1Y7/Qtzn3TYMAGzeA/vtWJIAyGaT+Vu4auxv3wR6iH/h13d8TaU1tRnQrkJWKg
+	PKfyTsXnDXsAaRu86lc/nbR6R0hxNFbiHZUaVbAcFSuV49XBQ2pGlkc5w1IyUg/F
+	IpWojLE6pOPzGzvEwxqt1LOK8CyIoWVpcL1qGakSA4b+0JZL1llwXblAqygkcblI
 	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44rnspk2hk-1
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 44p52a3n6e-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Feb 2025 13:16:41 -0500 (EST)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 51CIGdrJ041120
+	Wed, 12 Feb 2025 13:16:50 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 51CIGng9046439
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 12 Feb 2025 13:16:39 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+	Wed, 12 Feb 2025 13:16:49 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 12 Feb
- 2025 13:16:39 -0500
+ 2025 13:16:49 -0500
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 12 Feb 2025 13:16:39 -0500
+ Transport; Wed, 12 Feb 2025 13:16:49 -0500
 Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 51CIGQnb017457;
-	Wed, 12 Feb 2025 13:16:28 -0500
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 51CIGZLE017460;
+	Wed, 12 Feb 2025 13:16:38 -0500
 From: Jonathan Santos <Jonathan.Santos@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
@@ -70,9 +70,9 @@ CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
         <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
         <conor+dt@kernel.org>, <jonath4nns@gmail.com>,
         <marcelo.schmitt1@gmail.com>, <dlechner@baylibre.com>
-Subject: [PATCH RESEND v3 04/17] dt-bindings: iio: adc: ad7768-1: Document GPIO controller
-Date: Wed, 12 Feb 2025 15:16:26 -0300
-Message-ID: <d055d21a2a1e4e1d64c457d38e3cf6630d4183bc.1739368121.git.Jonathan.Santos@analog.com>
+Subject: [PATCH RESEND v3 05/17] dt-bindings: iio: adc: ad7768-1: document regulator provider property
+Date: Wed, 12 Feb 2025 15:16:35 -0300
+Message-ID: <78c7d5d139d6c158423804f0e6c81cbfe9717b1b.1739368121.git.Jonathan.Santos@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1739368121.git.Jonathan.Santos@analog.com>
 References: <cover.1739368121.git.Jonathan.Santos@analog.com>
@@ -85,65 +85,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Authority-Analysis: v=2.4 cv=RZxqC0tv c=1 sm=1 tr=0 ts=67ace589 cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=T2h4t0Lz3GQA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=FDCdkw0c5cjSjuxHnEwA:9 a=oVHKYsEdi7-vN-J5QA_j:22
-X-Proofpoint-GUID: kkOxGi_3HykObgR3ks5V5stSVvVnUQzV
-X-Proofpoint-ORIG-GUID: kkOxGi_3HykObgR3ks5V5stSVvVnUQzV
+X-Proofpoint-ORIG-GUID: vFqKpD9BzPiN9L5ZUQW7Li5QzryQRe4C
+X-Authority-Analysis: v=2.4 cv=FabNxI+6 c=1 sm=1 tr=0 ts=67ace592 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=T2h4t0Lz3GQA:10 a=gAnH3GRIAAAA:8 a=J1-tWBq05h-qFn0eaeUA:9 a=oVHKYsEdi7-vN-J5QA_j:22
+X-Proofpoint-GUID: vFqKpD9BzPiN9L5ZUQW7Li5QzryQRe4C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-12_05,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- adultscore=0 suspectscore=0 malwarescore=0 priorityscore=1501
- mlxlogscore=999 lowpriorityscore=0 phishscore=0 clxscore=1015 spamscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ mlxscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0
+ spamscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ mlxlogscore=999 classifier=spam authscore=0 authtc=n/a authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
  definitions=main-2502120132
 
-The AD7768-1 ADC exports four bidirectional GPIOs accessible
-via register map.
+The AD7768-1 provides a buffered common-mode voltage output
+on the VCM pin that can be used to bias analog input signals.
 
-Document GPIO properties necessary to enable GPIO controller for this
-device.
+Add regulators property to enable the use of the VCM output,
+referenced here as vcm_output, by any other device.
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 ---
 v3 Changes:
-* none.
+* VCM is now provided as a regulator within the device, instead of a 
+  custom property.
 
 v2 Changes:
 * New patch in v2.
 ---
- .../devicetree/bindings/iio/adc/adi,ad7768-1.yaml      | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../bindings/iio/adc/adi,ad7768-1.yaml        | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-index 4bcc9e20fab9..e2f9782b5fc8 100644
+index e2f9782b5fc8..38f7bb0a0e20 100644
 --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
-@@ -72,6 +72,14 @@ properties:
-   "#trigger-source-cells":
-     const: 0
+@@ -59,6 +59,19 @@ properties:
+       in any way, for example if the filter decimation rate changes.
+       As the line is active low, it should be marked GPIO_ACTIVE_LOW.
  
-+  gpio-controller: true
++  regulators:
++    type: object
++    description:
++      list of regulators provided by this controller.
 +
-+  "#gpio-cells":
-+    const: 2
-+    description: |
-+      The first cell is for the GPIO number: 0 to 3.
-+      The second cell takes standard GPIO flags.
++    properties:
++      vcm_output:
++        $ref: /schemas/regulator/regulator.yaml#
++        type: object
++        unevaluatedProperties: false
 +
- required:
-   - compatible
-   - reg
-@@ -126,6 +134,8 @@ examples:
-             spi-max-frequency = <2000000>;
-             spi-cpol;
-             spi-cpha;
-+            gpio-controller;
-+            #gpio-cells = <2>;
-             vref-supply = <&adc_vref>;
-             interrupts = <25 IRQ_TYPE_EDGE_RISING>;
-             interrupt-parent = <&gpio>;
++    additionalProperties: false
++
+   reset-gpios:
+     maxItems: 1
+ 
+@@ -152,6 +165,14 @@ examples:
+                 reg = <0>;
+                 label = "channel_0";
+             };
++
++            regulators {
++              vcm_reg: vcm_output {
++                regulator-name = "vcm_output";
++                regulator-min-microvolt = <900000>;
++                regulator-max-microvolt = <2500000>;
++              };
++            };
+         };
+     };
+ ...
 -- 
 2.34.1
 

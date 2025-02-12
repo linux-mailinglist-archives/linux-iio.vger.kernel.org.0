@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-15455-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15456-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127F9A32D86
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 18:32:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC87A32D92
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 18:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAB9E163D4C
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 17:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4959E3A7D1B
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 17:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703E25A351;
-	Wed, 12 Feb 2025 17:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0358C25A333;
+	Wed, 12 Feb 2025 17:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d8IwQx5v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pv9hbJOF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A54271829;
-	Wed, 12 Feb 2025 17:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E48B256C70;
+	Wed, 12 Feb 2025 17:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739381570; cv=none; b=QHbfTZDt+vZiNrnf0eURwyGrO8j4b+AmKfCVRKfat6K3F5WoabL8uBNYJShgOcjXk1OrEXZeK5Lxm0HhLBjis0fULcznwhgSE4wpyKotUzk2HaaojeWPS1ZvZcR1xfVbpCABXPcL7e70F/0/3koHLk8JE5ivNcb83tPoZzwGMHM=
+	t=1739381661; cv=none; b=b/9R22eChwFIgafOfhmXCss2RXj2ALiLZffu3EEl/HCeFYX4wTmF/saGwNymeS+M1JM1QK0+3y6xFg/3i/U63e1HwHQ4vERI6/Z2VIviabkgm2A5qA00kPmQoYDgYcSYoOWqXzgoT+OCaycDF9OzSPAJ5s4SA1ULgUjHpmq/nxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739381570; c=relaxed/simple;
-	bh=TsAUZDN7dw/ozl9tzhSbG2kUks+xD1sddY6H6S783ic=;
+	s=arc-20240116; t=1739381661; c=relaxed/simple;
+	bh=tpEXLf1sOsIjYYF2jiTHF8Z5OELiNJ77sVQ7ndJer8Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bvhMnTF5WZfWfjKfxjQq8eoW0+9IVW+EI/RSOrzqGJP3Wj21r2WQTZ50FuCxXeWG+r/Di5WSh681WFzwCmlVQ/Amzh5cZYhIc7jbbYlLzIQjjf42sHoxXwGf7kqEtRFPx8VVDKVwGI3h2MTq+hLmUk6GBjDOO+GCAxvNbKEaSqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d8IwQx5v; arc=none smtp.client-ip=198.175.65.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhXCxmMRx5A5Pca+giRJEV1JJQnDVvmXmjjmSr5CmkaC1mRfWtqGWCTrtY+PuoV5WK6tl2ALpnzArMQS+RTsY6m7n39ntKlATBY3y2DSC2ueTqq1DeRe70BflN0a6vM2SaNWbpb1uTdmJUjp3+3hMGoaoRqPF3nLHhI5Po2/KxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pv9hbJOF; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739381568; x=1770917568;
+  t=1739381660; x=1770917660;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:content-transfer-encoding:in-reply-to;
-  bh=TsAUZDN7dw/ozl9tzhSbG2kUks+xD1sddY6H6S783ic=;
-  b=d8IwQx5vYRSvj5olKnmWXaXg594i3QfA9NlT37OyIPcJKz7YLB2Qbwvz
-   sYq0QC9PIQTip3ST3lZxvAkMy7mrfK5O3nL2vILoTCDWhYvy8kfKY8o1y
-   FQg57HcSp6kxkEgdfYKCjIzm/CWQnhOdG6DkmrS3se/sL93SrHQUDC1Ld
-   x2ib3zqxNb4v0Sj6rCZncs1XB0hf8aN73E6veY4PELQcNwzzA8Zutm7y5
-   uX1veO3pU75HC5GlzmWNDNO/jaN7h3v2OChLLWSEijM/zyA/pUNJfU1dT
-   Q0J/7wp2LvspDl1muVgbX4wCiDmux6NpRWmRe8l+BpKEexKvjW7Bo9pBT
-   A==;
-X-CSE-ConnectionGUID: YjMzeyO3SQe4w7xWlUIykQ==
-X-CSE-MsgGUID: z8geW/MQR0ueqB9BarC9aA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="62520857"
+  bh=tpEXLf1sOsIjYYF2jiTHF8Z5OELiNJ77sVQ7ndJer8Q=;
+  b=Pv9hbJOFalDUfHjm/6PYBVoE+ryHU5txkLsYpDp8nZsNnjpVcgGQSwe7
+   02POlh9Rl9HKR5/rQ4HQN+fo6PQGF5T7rLEwtElyNxegREuXqig9cY1TB
+   QTpdvmVtyt06mxnDxcfVk+ytm07WExCp//A5xoyKTrGkgLsiZw15KCccP
+   NhilzUHi1YzSEhxujZxnR5E1Gc9OHI6wzNGu0vLzO7EMNJUDszcOmkaRE
+   Laakjovqhfro753JsKiGMXfRStu6w4y4NvY+zgI1sCAlGuplnorWXDgy0
+   Rpn86NWPfbLnHR1SJwkeFgZVb6iQFzluNSRpU3drHGrDrZRNDUMmpKbPT
+   Q==;
+X-CSE-ConnectionGUID: r1NFPBa0SPeXP8FF+p1r+g==
+X-CSE-MsgGUID: ohYBPn6XTCKtZ/tKnpfncw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11343"; a="50273374"
 X-IronPort-AV: E=Sophos;i="6.13,280,1732608000"; 
-   d="scan'208";a="62520857"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 09:32:47 -0800
-X-CSE-ConnectionGUID: pBozJAGsQ2GYbDJd89JYmA==
-X-CSE-MsgGUID: SwvQ+c5+Tm6OzSEl8XKpdw==
+   d="scan'208";a="50273374"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 09:34:18 -0800
+X-CSE-ConnectionGUID: Ae8cs+FITvm9nz9eCjoNgg==
+X-CSE-MsgGUID: szzSN6DhTCm3Bj/0Tlv1hA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="117831698"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113795531"
 Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 09:32:42 -0800
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 09:34:14 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.98)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tiGbH-0000000AuIS-1VRs;
-	Wed, 12 Feb 2025 19:32:39 +0200
-Date: Wed, 12 Feb 2025 19:32:39 +0200
+	id 1tiGck-0000000AuJf-0Ew8;
+	Wed, 12 Feb 2025 19:34:10 +0200
+Date: Wed, 12 Feb 2025 19:34:09 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
@@ -84,13 +84,13 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-tegra@vger.kernel.org
 Subject: Re: [PATCH v1 2/3] iio: light: Add support for AL3000a illuminance
  sensor
-Message-ID: <Z6zbN4fjD1YUQlDI@smile.fi.intel.com>
+Message-ID: <Z6zbkXi9koucyqe0@smile.fi.intel.com>
 References: <20250212064657.5683-1-clamor95@gmail.com>
  <20250212064657.5683-3-clamor95@gmail.com>
  <Z6ywGgofzU1bvm0H@smile.fi.intel.com>
  <CAPVz0n1UuZPCb3Jdj_fK3Ut7WKBgtvj7aROqJ4YeYVMutuyv7A@mail.gmail.com>
  <Z6zIAGLot3YQLo9S@smile.fi.intel.com>
- <CAPVz0n1Mf02GvSBd_TOuNiuCVTTOx4-228qkdf-JL_eqGCh2MA@mail.gmail.com>
+ <CAPVz0n0YFXUugt1E5siZSYbCBcp6LdNv136eTWGQTbLAXE4pxQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -100,66 +100,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPVz0n1Mf02GvSBd_TOuNiuCVTTOx4-228qkdf-JL_eqGCh2MA@mail.gmail.com>
+In-Reply-To: <CAPVz0n0YFXUugt1E5siZSYbCBcp6LdNv136eTWGQTbLAXE4pxQ@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Feb 12, 2025 at 06:36:37PM +0200, Svyatoslav Ryhel wrote:
+On Wed, Feb 12, 2025 at 07:28:01PM +0200, Svyatoslav Ryhel wrote:
 > ср, 12 лют. 2025 р. о 18:10 Andy Shevchenko
 > <andriy.shevchenko@linux.intel.com> пише:
-> > On Wed, Feb 12, 2025 at 05:20:04PM +0200, Svyatoslav Ryhel wrote:
-> > > ср, 12 лют. 2025 р. о 16:28 Andy Shevchenko
-> > > <andriy.shevchenko@linux.intel.com> пише:
-> > > > On Wed, Feb 12, 2025 at 08:46:56AM +0200, Svyatoslav Ryhel wrote:
 
 ...
 
-> > > > > +#include <linux/i2c.h>
-> > > > > +#include <linux/module.h>
-> > > >
-> > > > > +#include <linux/of.h>
-> > > >
-> > > > No of*.h in the new code, please.
-> > > >
-> > > > > +#include <linux/regulator/consumer.h>
-> > > >
-> > > > Too small headers to be included. You use much more.
-> > >
-> > > Is there a check which determines the amount of headers I must include
-> > > and which headers are mandatory to be included and which are forbidden
-> > > to inclusion. Maybe at least a list? Thanks
-> >
-> > No check, there is IWYU principle.
-> >
-> > https://include-what-you-use.org/
-> >
-> > The tool is not (yet?) suitable for the Linux kernel project and Jonathan,
-> > who is the maintainer of IIO code, had even tried it for real some time ago.
+> I will apply all your suggestions. Thank you.
 > 
-> So it is not adopted by the Linux kernel.
-> Lets return to this once it will be adopted.
+> Regards other patch series, may you please contain all advice inside
+> patch series since it is quite hard to track between them. For future
+> patches, I will try to avoid listed issues. Thank you.
 
-I understand you want to push your way, but here is the thing. This is a
-community of people and review is not something that comes for free. People,
-who are reviewing a code, want to make sure the code follows not only
-documented style, etc., but also common sense and the future maintenance.
-When a contributor comes and drops something into Linux Kernel project
-it adds a lot of work on maintainers' shoulders and other contributors
-who may be in progress of solving the other tasks. I specifically sent
-you a link where the tool and the principle is _explained_. So, it's not
-about the tool, it's about the whole project to become better and easier
-to maintain. You are a new guy in the development as you stated, so,
-please try to see how this all works.
-
-Of course, the last word here is Jonathan's as he is the maintainer of IIO,
-but I truly believe he will suggest you to follow my advice and not otherwise.
-
-> > > > > +#include <linux/iio/iio.h>
-> > > > > +#include <linux/iio/sysfs.h>
-
-...
-
-I assume the non-commented parts you are satisfied with and they will be
-addressed as suggested. Thank you!
+Sure, it was just a hint. I will check the other series as well when
+I have time and motivation.
 
 -- 
 With Best Regards,

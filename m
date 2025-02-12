@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-15405-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15406-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5D7A31EDD
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:28:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA3A31EE1
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44E4B18898B0
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:28:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74E9188945B
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC5E7202C22;
-	Wed, 12 Feb 2025 06:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725D3202C46;
+	Wed, 12 Feb 2025 06:26:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QFizWxMM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W88bWC5J"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D624F20126C;
-	Wed, 12 Feb 2025 06:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0B11FECA5;
+	Wed, 12 Feb 2025 06:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739341565; cv=none; b=LZOyR/fKILv6Y79px0pCrPoTZObE90aEERyZV39deNNV+/TKOUjRyU29ODYN7YaIrAXX2k9G1j2eUEbt1tKvxxcAv8JVyPZSjJwJJtJwSKJv3jsfkFAwBekQ+uRWHo0pb6amrlXp3rsuz55DOaGHlGZ8sWiAdzZW7HFeAL/YRdQ=
+	t=1739341569; cv=none; b=WVjWEqEtgxkkzetC3H0C1eHUqvDsgAZxYLYez7NXvFZzOE6idv9pCgFlW9hR8dUDrP4QjkE4mlQe20bh2LzeaeBYxZAG+CVtGDYRNA4GwJFgfxdxUUzDmR6w096UpMc8BdWOQmgZpJrbJs5Etp294JtMqnehNgQ1arUGs5fNJnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739341565; c=relaxed/simple;
-	bh=lUStIRYPZjB0P64Z7kGwVsTZ33TcqKuazW93nUPcXMw=;
+	s=arc-20240116; t=1739341569; c=relaxed/simple;
+	bh=tKd11dX8so6573A0u2H006iFssbu+bQR5O6pj8pFlEg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=P6nfutxrAiqfPPYro0x/UXmBH0XdBKbOwyQG9RrBx/VkPRqxPwr5mZAFChnKAy2MkFRDXCdoslN0x9KIkDjPBrr8ia7WNBF4HYE3CSbdIPTWrcH3NjtWW48Ms5sv9mSeQtvR1oE5Xnr9SgwGjJdKW+Negko02PQiOq9lRgWbcr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QFizWxMM; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=heh0/jHwjpd/xya0FLqCCQJJ7XyhjDd7hN39CS/SCG0bHNoagHE8a41kWPEqxLBSaDIFOJATaZparH89sxW6ZS+wZMRaeVqs1hJjnLy3isx9nafyB67gti2wDEHib6f67p/tsMnB1VbqO0/E96VkOVRQamSsTlLgYon0K7aUoFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W88bWC5J; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739341564; x=1770877564;
+  t=1739341568; x=1770877568;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lUStIRYPZjB0P64Z7kGwVsTZ33TcqKuazW93nUPcXMw=;
-  b=QFizWxMMV/eVZbM0cJ86fZjTCvj94P3h22ROgJjTg86o6Bww2WVLq1Wx
-   5+SJOfORk9Ocshb3COYgdGqWJPpaKqsH3+FDMrkedruajGA7FwA/YAHKa
-   P0n9LgUgEiXbet54d0ttWqibuWn75bKOh9DJseKqlfRrB2gqxpE/U8qcq
-   uPBH2fTI40EPhFbFYNXZYjFYVkqOzMgL4wjAwOnCGAih7YQyvv0gVU+Fl
-   YNG67UI3zeIZ4MFG2EocYU14lSjcSxnmKZfclEN8GmwEMxeqaajjXPMuL
-   CiieQP2yLlDd4x2V904W1uZLJv2Jt2Wlnf9dKkbA3MMnd06jpsayup+g2
-   A==;
-X-CSE-ConnectionGUID: TqfdWQtFTN6Ihe1vUDFYdw==
-X-CSE-MsgGUID: ZqOCNMNHQgyLfdzj7Yweug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40005243"
+  bh=tKd11dX8so6573A0u2H006iFssbu+bQR5O6pj8pFlEg=;
+  b=W88bWC5JkSl8VoVgMwOp5b6XKKJsnrTgXA+C43D/o7jJxkazNB/1qnYL
+   ejwiFXoX+AiiVMP9+uO2rC2ypognyK4ux5Ynj+GlhZZp/5X4cJllCP00K
+   UsvKbSAk5oTQEALVnkErJWvTSQ6e9XdW8zlk2jmXR41dFCN/lXMtD/gw2
+   vnLfL0LdqL+yhcANLy6guxOQ0y5D1S3dPh6LujiYUx+HwD5Lji2nQ3zh1
+   axN1Ayjwe0QetpXFcQEXxHl4xiUGczOtcMc854e1H/0c+vR4EECsS9g/d
+   NseKjPhDaFABfBot3Q7CSVe6WMWfe437ypcSo0hrZs1VGd6k933wyzM6z
+   g==;
+X-CSE-ConnectionGUID: 2O4CXHSZS9u6vAAIbfAyKw==
+X-CSE-MsgGUID: ArXUJoUpTmOLIfJEeSfOkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="40005252"
 X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="40005243"
+   d="scan'208";a="40005252"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 22:26:03 -0800
-X-CSE-ConnectionGUID: mpSuVEjIT2S0ZZ56e5vkaQ==
-X-CSE-MsgGUID: p3javzktQbePDcr8SCvusA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 22:26:07 -0800
+X-CSE-ConnectionGUID: 8ds+cfntTI+MByDkEBXUiw==
+X-CSE-MsgGUID: R4/vkoXzSPaZDNne193kjA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.13,279,1732608000"; 
-   d="scan'208";a="117812205"
+   d="scan'208";a="117812235"
 Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by fmviesa004.fm.intel.com with ESMTP; 11 Feb 2025 22:26:00 -0800
+  by fmviesa004.fm.intel.com with ESMTP; 11 Feb 2025 22:26:04 -0800
 From: Raag Jadav <raag.jadav@intel.com>
 To: arnd@arndb.de,
 	gregkh@linuxfoundation.org,
@@ -73,9 +73,9 @@ Cc: linux-gpio@vger.kernel.org,
 	linux-input@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v5 11/12] input: sparse-keymap: use devm_kmemdup_array()
-Date: Wed, 12 Feb 2025 11:55:12 +0530
-Message-Id: <20250212062513.2254767-12-raag.jadav@intel.com>
+Subject: [PATCH v5 12/12] input: ipaq-micro-keys: use devm_kmemdup_array()
+Date: Wed, 12 Feb 2025 11:55:13 +0530
+Message-Id: <20250212062513.2254767-13-raag.jadav@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250212062513.2254767-1-raag.jadav@intel.com>
 References: <20250212062513.2254767-1-raag.jadav@intel.com>
@@ -87,28 +87,28 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert to use devm_kmemdup_array() and while at it, use source size
-instead of destination.
+Convert to use devm_kmemdup_array() which is more robust.
 
 Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 ---
- drivers/input/sparse-keymap.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/input/keyboard/ipaq-micro-keys.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/sparse-keymap.c b/drivers/input/sparse-keymap.c
-index 25bf8be6e711..96f23ae57d5a 100644
---- a/drivers/input/sparse-keymap.c
-+++ b/drivers/input/sparse-keymap.c
-@@ -176,8 +176,7 @@ int sparse_keymap_setup(struct input_dev *dev,
- 	for (e = keymap; e->type != KE_END; e++)
- 		map_size++;
+diff --git a/drivers/input/keyboard/ipaq-micro-keys.c b/drivers/input/keyboard/ipaq-micro-keys.c
+index 58631bf7ce55..ca7ec054b1ce 100644
+--- a/drivers/input/keyboard/ipaq-micro-keys.c
++++ b/drivers/input/keyboard/ipaq-micro-keys.c
+@@ -102,9 +102,8 @@ static int micro_key_probe(struct platform_device *pdev)
  
--	map = devm_kmemdup(&dev->dev, keymap, map_size * sizeof(*map),
+ 	keys->input->keycodesize = sizeof(micro_keycodes[0]);
+ 	keys->input->keycodemax = ARRAY_SIZE(micro_keycodes);
+-	keys->codes = devm_kmemdup(&pdev->dev, micro_keycodes,
+-			   keys->input->keycodesize * keys->input->keycodemax,
 -			   GFP_KERNEL);
-+	map = devm_kmemdup_array(&dev->dev, keymap, map_size, sizeof(*keymap), GFP_KERNEL);
- 	if (!map)
++	keys->codes = devm_kmemdup_array(&pdev->dev, micro_keycodes, keys->input->keycodemax,
++					 keys->input->keycodesize, GFP_KERNEL);
+ 	if (!keys->codes)
  		return -ENOMEM;
  
 -- 

@@ -1,75 +1,77 @@
-Return-Path: <linux-iio+bounces-15410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AD8A31F5D
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:47:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AE08A31F61
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 629F43A70E1
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:47:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5F9168AA8
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 06:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14D41FBCB9;
-	Wed, 12 Feb 2025 06:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1588E1FF1C5;
+	Wed, 12 Feb 2025 06:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QL4x2ZU4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y6t6K2FM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170C6146A68;
-	Wed, 12 Feb 2025 06:47:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252031FCCEC;
+	Wed, 12 Feb 2025 06:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739342860; cv=none; b=RVWYM2AUosVTkHHaZmyfRGVRb7WL2X3G1rOGuV8HOx95pUihgXRq2vx/v33oiKbSifKGRcP0o8OvAsJiaJdfZkpuduEBG3m9AAc5yVCXfkiZ047ppX8FTY5UzzYeXTWejxTbcf65qzY5ZAFFy/nmOPuFuwA2A6nudeV0QsOHWss=
+	t=1739342862; cv=none; b=DyfApgHLtmffZ+JAHNI9Vpg2+VRFwzNeZtaOcz8Jm0CwOfkXI3UiESbxKZnmLm8gYIW3Tnbrssc0Nn04z4dVY3ZZnfutK+ldQWCKPMfvLC+6CW39khQ1raeaKFzj2ruHMe0ca7YbiTZDHo2vg8onRjCEBafY+DXLMmJQi3lWrGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739342860; c=relaxed/simple;
-	bh=taHTvKoWTF7BQ5WW8HRGbtCKUPrDALj7zBFaw0w4D0w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LteWL0GT7TR2YqJIqstkq0egkzKfzsYjAxeyn0vQeFi3d9tYNxa6ZuHOYD83cS+nXFBZHAIoSGpZ77gEIiGaTz34v840ru/kvhf6ghplkCJoVoJBkgMg8ealTnWDBGUBgVJmXrPXHCIWRT9qtOkJwqvd9oVtu5UdU8ewYWyhlF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QL4x2ZU4; arc=none smtp.client-ip=209.85.167.42
+	s=arc-20240116; t=1739342862; c=relaxed/simple;
+	bh=VNEtPE//Y6ApZRqAlJlvQD/C3ULc3yjTy7pgU2PxF2E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GbNxI1aX2nQHGm+klJ/MWX9Q5U0FE4tfyJXL517JXaiNby9aZw7yJgymfmCxoze01/LkVEyIWFlwT41BaT5Q6D6Ec0zqMWYU0XB9BpJHZguWJyJIv89McXjxMrZR7oMye8HQkNJVU1nNKBrbwU5f8TK1y2xrvCYwj0FQxkgY8WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y6t6K2FM; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-543d8badc30so6685651e87.0;
-        Tue, 11 Feb 2025 22:47:38 -0800 (PST)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5450abbdce0so3138329e87.3;
+        Tue, 11 Feb 2025 22:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739342857; x=1739947657; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e2YsuTCPphVGemqecyPUG5geUpzSnDZxeT/5yx0AbGM=;
-        b=QL4x2ZU421cpVE5dhLjEZRpOoqwwDXvuEr8jKmbS6gQH6MRNBNNhfz0CgLyo8WNTIB
-         Aw2uJoDiX6e3TbwZj0oR3inlt2EVKYNr+UcCXlWXAbAWBEPdX30ZnktlsvJ0LoIeeuTd
-         25l7wNM5Kpw7PWdqwx9F8d31Yx9kMxQgAMibYp6tJi1d+BMx5DJ5FLW/cmU8WJURSswC
-         pIpnE7oBpONEWohLU8UqEoRRfhE2riGB4Nrq90XidICFylUHlrIjaeiq3VWIshfTLgoO
-         X83x1gTgv3tkKhgHvQb5fqi3h1QbmT4u5+npBWQ5dkZ+Uu0AWY9NdztgqB0IZNcdvdEf
-         qbmw==
+        d=gmail.com; s=20230601; t=1739342859; x=1739947659; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dZz4D2aU+XXjDEm9LXRnDorXwSfp8zcN3/oLLPufqII=;
+        b=Y6t6K2FMm/K2X40HoFQ7/e5rmzXsbjdIOWDCxdIRc76924OevGWqv20EtvwjYbofO5
+         3yHelHiST0DIpOtTh0gk8PsZmgbj0DlOI9Kmx7V/mIfpEsyYtZ360iovyIwW+3aDTgwL
+         v20ZbLfVws2WNngBJwRqSEox17i6kDqRtsyUE7EqHpLYngQ8/1LEnTUIqiOIBb8bVpfp
+         3WYdx8JP4NMdV9KauBpWt3mwq7YlNIa+QzjEnHLFvMEmB0OykMf2eHXBwO72hqjwyTiE
+         14D5Fo6plde6Y0RF4FpWTqgtawE/GNNabYXdFasPbdhuf3Jsuu4XTwDg8JCAupbJcV5a
+         5E4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739342857; x=1739947657;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e2YsuTCPphVGemqecyPUG5geUpzSnDZxeT/5yx0AbGM=;
-        b=Xy8YQOcxCkNaxpgtHKTGRgEEtkJnyv3ac/l5e4e+zKf6PYoCaf354612n08ncYOuiX
-         atkwLgQuAkDXIK2fmxunhv5a3FPjQV1wkDOxgY2y0nYMz2ssE9K9ju5P4GDFkbzYkoYH
-         GqyCYFw2y68QZNv75egXxcVF78Teb7RyPzUmFRZJvpb6gYyFIEA3Pccu3zyi0ZF+aLjH
-         RUBIwPAYc11Ac+9e/wp1sYwo1jbhYrQu+Kk9M6agyHwujRmCJ1Z/u3s17pG2SlCNMQRE
-         hRoIxTAI98ueJeAUiNztOX/a66QJcWWFQ8QAnJE1X7zjiDl3naN2EcZNO8Rl58fleEK+
-         AJrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVTznUh5H69xIpXpQHPpb3qG1DinyDxgdD1r3JaWYd3JepFGxoudGhUbMYtj7O1WE3+K23JdY+mW3FMfzj@vger.kernel.org, AJvYcCWVt1vM4YiUqyjcFQYKax8Ro+mNbnPXI4PGnB/TWBoNhq5g6nOtCRXqWMtygJNL+tiiUyIf7X717An8@vger.kernel.org, AJvYcCX2OpZKPumh7bYmLtcBd+yIGATkcfmWxJjrplSseLSnO0/TOidNTkiUCu9WJiplWEQjZJbddX/53GzH23o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzg+q/wnbkd/UDZNmCDKxnXBO77p1TvjtJT6RnJ66rWGlSCE1Ka
-	+K6dnYq7HMzer0kd0AAL48kkXu08yXetX59UOka5nIp/+ro3C8+x
-X-Gm-Gg: ASbGncuIKgDPch2zOIIUDLMdY5XrIBDUpgpak+MUyAsycQKFpSMnOlEmLhCQRzqZtyy
-	koMl50vOld3dobQSYYcDkf4KezoE7fcww1643mKubVXCt93S4oKEdBlgFuN1ZvcXUi8iDmQYOIn
-	Azj4H2yJf4iOdRWwuHujaZg46fiai6bjj07kkm3u71j7AS7TGboQpqzdaMBONBggupI7FqlRm3+
-	IKXeUhdMpJGj9cFSgHdqePulvevVJYtcgPFOFaNSDbLkiQ3QZsUD7CnYm0NLatC00Rwdzrgdhsq
-	oIlyVSo=
-X-Google-Smtp-Source: AGHT+IHIgsC2KuIYoI+i/oR54Zj2+nWE2GIveGKb7lMgC3jlfrosajr8ytXqlJ6wSJwC6q17EXoyEg==
-X-Received: by 2002:a05:6512:2389:b0:545:bda:f10 with SMTP id 2adb3069b0e04-5451810fdecmr406848e87.21.1739342856798;
-        Tue, 11 Feb 2025 22:47:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739342859; x=1739947659;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dZz4D2aU+XXjDEm9LXRnDorXwSfp8zcN3/oLLPufqII=;
+        b=sxjH1lK3r/sAC1qwbcUpMXW4w/Wix/nH29CVqcBJdL8GVZ+2IA80RH/itcvTEsD/Ix
+         7U2wwuKN26X0OUwUPS5/G54JJCnnlNEeUtVD7DwZmuDOqxbOCXj7cu6JoPcsR5XJLNWC
+         BuBngnhE6HTYJe73LdNDeOmwOHHfBpzBmT+kQuDv953ZaxEULbrB4sjDSW2wNpqacJ8T
+         aa6OM2h08OznbrCAuMtSEjd9yRh4n9RYPCr3jBb83w8NLmoKilrWgNeoH6V06pNyF94y
+         kp+IxD8EvKYfBlLs6g2VTyi89FLdWTQOvQk4fdbBAvXeXMuc9KR/O3ItDhmRgTI+wjCn
+         Xb0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCURbzrVAGT5jHFwoVcwfuaLCREmKuMYreh1VCOLxiddLMhxeAoDbOJDABAcGW+lN9/d0SgJpr3QSWYez0A=@vger.kernel.org, AJvYcCVTjdstefCTtsPwFpBZLEm8UGp5Hr1rgP2tsEMPRTLekzyQgVW8GLQmFGCATJe3KhefC0B9k8SBwGo3rspY@vger.kernel.org, AJvYcCVkTF318dZfwhBLf3nf3m20ZyrZPqYWwqS2OwYwV0lI11O/qWv5Vy7Hu6bYnykhL+Xi5nENyQBlQSnW@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTn7c/CxpkPfzZKllBLVGWiQSBhWtDBlFczeIFG9DhMq2xyZiS
+	9X42SBreKyv9WRx7dxKl9ZnpB1DHEMuv1eujnTWmyYEfDuxZekVV
+X-Gm-Gg: ASbGnctElHhsgeDoET4ONmMAgg+WL4jjyf5YU9s5A+7XXAWLfrB4m5qzForlNVR9L6n
+	VEJBTW8OZD1zg5tpRc375390VgVZVZ91D6QU+rO6NPlQceW7DYNdmofIH1ONw+wx4gkgeFrtLYw
+	aEzRM9WKK7Vkdq4+9ENUzScAWnY7g4gFeQdFm79QlqAyWKimonYE1ePBSqs2Dz0v2eaG/387TJ4
+	/8Rxm0RsbvvRNflYAt63KU947UjeTcOyQfWup0hhjjuFOCs9V7bMCDlartXeiF++kPiC3A8Xl8S
+	9qXtWvA=
+X-Google-Smtp-Source: AGHT+IGdun2u8roJofjFUyx9Xc7MVpMOWtcswrCnii/u8a+9juoQYmHBcq33axe8EWS7cu0siD6yng==
+X-Received: by 2002:a05:6512:39c8:b0:545:f9c:a81f with SMTP id 2adb3069b0e04-5451826ea22mr533195e87.6.1739342858847;
+        Tue, 11 Feb 2025 22:47:38 -0800 (PST)
 Received: from xeon.. ([188.163.112.51])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5450e09e9dbsm748600e87.120.2025.02.11.22.47.34
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5450e09e9dbsm748600e87.120.2025.02.11.22.47.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Feb 2025 22:47:36 -0800 (PST)
+        Tue, 11 Feb 2025 22:47:38 -0800 (PST)
 From: Svyatoslav Ryhel <clamor95@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -93,10 +95,12 @@ Cc: linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-tegra@vger.kernel.org
-Subject: [PATCH v1 0/3] iio: light: add al3000a als support
-Date: Wed, 12 Feb 2025 08:46:54 +0200
-Message-ID: <20250212064657.5683-1-clamor95@gmail.com>
+Subject: [PATCH v1 1/3] dt-bindings: iio: light: al3010: add al3000a support
+Date: Wed, 12 Feb 2025 08:46:55 +0200
+Message-ID: <20250212064657.5683-2-clamor95@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250212064657.5683-1-clamor95@gmail.com>
+References: <20250212064657.5683-1-clamor95@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -105,21 +109,37 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-AL3000a is an illuminance sensor found in ASUS TF101 tablet.
+AL3000a is an ambient light sensor quite closely related to
+exising AL3010 and can re-use exising schema for AL3010.
 
-Svyatoslav Ryhel (3):
-  dt-bindings: iio: light: al3010: add al3000a support
-  iio: light: Add support for AL3000a illuminance sensor
-  ARM: tegra: tf101: Add al3000a illuminance sensor node
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+---
+ .../devicetree/bindings/iio/light/dynaimage,al3010.yaml     | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
- .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
- .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
- drivers/iio/light/Kconfig                     |  10 +
- drivers/iio/light/Makefile                    |   1 +
- drivers/iio/light/al3000a.c                   | 214 ++++++++++++++++++
- 5 files changed, 240 insertions(+), 2 deletions(-)
- create mode 100644 drivers/iio/light/al3000a.c
-
+diff --git a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
+index a3a979553e32..6db4dfd5aa6c 100644
+--- a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
++++ b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
+@@ -4,14 +4,16 @@
+ $id: http://devicetree.org/schemas/iio/light/dynaimage,al3010.yaml#
+ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+-title: Dyna-Image AL3010 sensor
++title: Dyna-Image AL3000a/AL3010 sensor
+ 
+ maintainers:
+   - David Heidelberg <david@ixit.cz>
+ 
+ properties:
+   compatible:
+-    const: dynaimage,al3010
++    enum:
++      - dynaimage,al3010
++      - dynaimage,al3000a
+ 
+   reg:
+     maxItems: 1
 -- 
 2.43.0
 

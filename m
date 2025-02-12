@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-15420-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15421-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA61A3204F
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 08:53:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08610A32053
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 08:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B621889E2A
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:53:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D833160EE7
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 07:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48797204F79;
-	Wed, 12 Feb 2025 07:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C80C205509;
+	Wed, 12 Feb 2025 07:52:41 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from ssh248.corpemail.net (ssh248.corpemail.net [210.51.61.248])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B459F1DACB1;
-	Wed, 12 Feb 2025 07:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C803204C29;
+	Wed, 12 Feb 2025 07:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.51.61.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739346760; cv=none; b=iOr4xTIVmSuVReRz7zohHmowh5W5flN+cV+6J6VroCCZcpqoDLojdsX8oUHQNJqkBalSBS+ln26CwZvQyM6ykfQmW2qU7hm/4AgqKJ3raUGseCvhPB6vm6pKq0sGRxuPNFQI10jV09UkmRc0QZ2iRCegcAJaxZ864ICxqKpUypE=
+	t=1739346761; cv=none; b=CYsdQ8ODAa3rgDmwymiVpw8GRJ0RqTq1WsEQgRZR3iFH/agw2DRQxDGoWVp/tkum6fuLZTcLb39B5Euo3iVyriJ6ZdKC76S+zdQWcvX+i41BfadM0xuJWce9jinCr0ssTGMV/cI7pP3H0RaKfAwaGKOM8RwYX9HQS1NjIUEuAZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739346760; c=relaxed/simple;
-	bh=pabkowy5KiKUWx2QVW0U0p9gAJRVu2PeEwkOYWY0Am8=;
+	s=arc-20240116; t=1739346761; c=relaxed/simple;
+	bh=TnbBYhm8H1OhuDao0dJq2j9mGUrhsIFx/IZfBsY2Hdc=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V7LJhIjFnxAy8ySNyQlUQo5m5WrgUE55C3zzef4jr46AXUmniWdzcnR/UcejSuN0Fe8fIScxDj+cWzfR/1M0w69G1VDyoolK4PWqG2xwV6jRA7FXyb58jZ65S9MjtbGDxZ9AYpSvUr7iwdPXtxLXXiLiffwC6LyF/xe6pWf7IzU=
+	 MIME-Version:Content-Type; b=R/6u+2acQLm+K3Si8Zrk0yv5MOEAWJQz8lmJbKjL8696VxYUGQi2Hn0HBjYWIzsMP2l2dsweJpl0K+iOwqHbOwyDj6vuz3zWBRD7pkxh/6eZqMt0MvIQfGYA2yQFajSUrPw8DlskhyMSGkik4b6GdNne3O+sYyLU3JkFAHZHBCs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com; spf=pass smtp.mailfrom=inspur.com; arc=none smtp.client-ip=210.51.61.248
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=inspur.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inspur.com
 Received: from ssh248.corpemail.net
-        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id JZM00031;
+        by ssh248.corpemail.net ((D)) with ASMTP (SSL) id JZM00131;
         Wed, 12 Feb 2025 15:52:31 +0800
 Received: from localhost.localdomain (10.94.15.56) by
  jtjnmail201609.home.langchao.com (10.100.2.9) with Microsoft SMTP Server id
- 15.1.2507.39; Wed, 12 Feb 2025 15:52:32 +0800
+ 15.1.2507.39; Wed, 12 Feb 2025 15:52:33 +0800
 From: Bo Liu <liubo03@inspur.com>
 To: <dan@dlrobertson.com>, <jic23@kernel.org>
 CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Bo Liu
 	<liubo03@inspur.com>
-Subject: [PATCH 3/4] iio: accel: bmi088: convert to use maple tree register cache
-Date: Wed, 12 Feb 2025 02:52:22 -0500
-Message-ID: <20250212075223.4164-4-liubo03@inspur.com>
+Subject: [PATCH 4/4] iio: accel: kx022a: convert to use maple tree register cache
+Date: Wed, 12 Feb 2025 02:52:23 -0500
+Message-ID: <20250212075223.4164-5-liubo03@inspur.com>
 X-Mailer: git-send-email 2.18.2
 In-Reply-To: <20250212075223.4164-1-liubo03@inspur.com>
 References: <20250212075223.4164-1-liubo03@inspur.com>
@@ -64,22 +64,31 @@ more appropriate for modern systems than those made by the rbtree cache.
 
 Signed-off-by: Bo Liu <liubo03@inspur.com>
 ---
- drivers/iio/accel/bmi088-accel-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/kionix-kx022a.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/bmi088-accel-core.c b/drivers/iio/accel/bmi088-accel-core.c
-index 9206fbdbf520..36e5d06ffd33 100644
---- a/drivers/iio/accel/bmi088-accel-core.c
-+++ b/drivers/iio/accel/bmi088-accel-core.c
-@@ -145,7 +145,7 @@ const struct regmap_config bmi088_regmap_conf = {
- 	.val_bits = 8,
- 	.max_register = 0x7E,
- 	.volatile_table = &bmi088_volatile_table,
+diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+index 5aeb3b951ac5..3a56ab00791a 100644
+--- a/drivers/iio/accel/kionix-kx022a.c
++++ b/drivers/iio/accel/kionix-kx022a.c
+@@ -149,7 +149,7 @@ static const struct regmap_config kx022a_regmap_config = {
+ 	.rd_noinc_table = &kx022a_nir_regs,
+ 	.precious_table = &kx022a_precious_regs,
+ 	.max_register = KX022A_MAX_REGISTER,
 -	.cache_type = REGCACHE_RBTREE,
 +	.cache_type = REGCACHE_MAPLE,
  };
- EXPORT_SYMBOL_NS_GPL(bmi088_regmap_conf, "IIO_BMI088");
  
+ /* Regmap configs kx132 */
+@@ -260,7 +260,7 @@ static const struct regmap_config kx132_regmap_config = {
+ 	.rd_noinc_table = &kx132_nir_regs,
+ 	.precious_table = &kx132_precious_regs,
+ 	.max_register = KX132_MAX_REGISTER,
+-	.cache_type = REGCACHE_RBTREE,
++	.cache_type = REGCACHE_MAPLE,
+ };
+ 
+ struct kx022a_data {
 -- 
 2.31.1
 

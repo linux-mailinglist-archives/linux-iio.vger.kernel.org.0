@@ -1,485 +1,167 @@
-Return-Path: <linux-iio+bounces-15490-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15491-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37419A34544
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 16:14:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CD9A348B5
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 16:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DFAC189ACA4
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 15:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D14216112E
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 15:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C93200B89;
-	Thu, 13 Feb 2025 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04E31CDA3F;
+	Thu, 13 Feb 2025 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XE0xrHhI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEHQRma0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7870200105;
-	Thu, 13 Feb 2025 15:03:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955E9152532;
+	Thu, 13 Feb 2025 15:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739459023; cv=none; b=MvxuxyRhb3t8KKCsCSt7DWhogvoM0/UBDaoC2X1PqDLwHUIuvnofVNQnAa6ghg/wIeMvXvk4ndVV60az71USd12OYI+0+fsrNqmePr+JoVqG917sC7qv4vLntbnzXKwADZUpHE+EK1c2ZD3pvK4P3H4iEHBYIEcE2BFycaz9lRs=
+	t=1739462354; cv=none; b=O50KfH16jsDi9xaLtNutCeaTNKYrjbIZpOe2V1SALPF1ZEFvKS75aa9A6wSMTVvO7tKraK9lRvlnQnj5HBpOlCxs/gxMA3NTVdYe/3gZWsVbpixTyVjOV6q+Sz189S02DfEprPNcQ+T1PnP0bkRVZ+oqEhd2WX10DZ2un8O0Cfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739459023; c=relaxed/simple;
-	bh=bKy2/Khn0wBJ7ch0tZ8a2XFADxRpJkeSdk6pKJhI8Lc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o3RVgsrir+4UslHS/gKR7+8sVx9T28w/7aUxLrxgOVFVfP674bbkqBJBLRl9goWI2TqvcSSXPA6YtKNokPlQ/ygo2Brp2+Gu9UJyn/3RxGlKseHKBmnAi0HOaWkfOO6YLA8o9uSoBi0He2hDIGQGKprUesYiGjyIjMn04UnRjzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XE0xrHhI; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38f286b5281so317332f8f.1;
-        Thu, 13 Feb 2025 07:03:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739459020; x=1740063820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=il270moocRQxXWx9sDop2wPY9i++i0FF/XAOD2V/4TY=;
-        b=XE0xrHhIPMVYgfiT98LnTbdlMBtl849KMxHmRlaVogSu1mGZiCdYq7NxrfY7QF4jJx
-         ZoM7HvkxGt+v76DYAe0XiSNaVRrR9KOcDzJv+M1mO0xEMle+a9fhvvkde2XNYbXEwLOe
-         4z7uEXoTUh4/osy3Qjz2fAtmKklQvkx1PAyd89DdwK/Zy4C3CQTAJ8RFPtz7dC54v/8a
-         Tu4xs3xwGQH0qctVUyYIR15/+9dKIUrM16XB/GiWFrIV3P/9Z5SdkEfi/o5PFE3mf4BI
-         5tfXWRiYdP9pr0HlXSKxI6y6XrBa2u2EhElUabTBnzSqbQf4xNee2XTbDEm+dhnk/r+M
-         LRHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739459020; x=1740063820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=il270moocRQxXWx9sDop2wPY9i++i0FF/XAOD2V/4TY=;
-        b=pxPOthir2Y0bz1QvBwnz5U3PJejJWbtiFU1hSeL5aqwFLjOdxV/wc7ER+0dex/KlPC
-         a7Y+KfjlPGt0pi3+M5b4qIBOsF7WpFbyo6vSQBCml7cT9sfIx/zvQUmwHLUkW2KfwffZ
-         b5jZQZnPWc/IAvOfd6vaMFNO+t44M5anfIQ1lIGun/3ACckgWRfOJAWhhnm04qxnx8ZM
-         QK1FX42iwT86V389eSQcJ7S6s2mBLi5RskP6Yh07bl++pmfnrl+f7T7Bbw17w16llXh9
-         o/CaEOj+oyMKY931gBP7SfWpiSD5GTNnRbOEnqnRY8X6dIR0bUb+sOpBK5mHfTjcuSVq
-         VaGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUi5tsB4Ql0H+NnqDug6DiNpT2B6ZSD6mNIveljugGwqZtIUgT9udMowQeuT6Gi0RermXwruFHT4cFTKg==@vger.kernel.org, AJvYcCX5Ssoc7K2/3fo9qx8glCxWoRctYJaTXfg97jlWzd1fR+vHqcflLhQ2nwRa0KXweheUtTQDFO5JqybP@vger.kernel.org, AJvYcCX6kDLLqXIjX9ieaOTtwbhAQLFvjTZn4CneTKR7PmrYVQUeghvojg9lO2SXe9bHl7PmU2g2P5l2lDqxLbQ=@vger.kernel.org, AJvYcCXGwBweVBsck9LBLy60nsZ1sxXhab+qy1DNWHnndM3F+5ggzXmhrJEQ4/33Ipr2v4ZIIYqhRKYG7HyC@vger.kernel.org, AJvYcCXcgl0w1G6/pd6kaWVkscwjWhyYqca2VqGpVFgFBg3GS1ywDPlWUZgyoYv4P7eKZcyLAESEE8QY5W1fMLlg@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy43WRFMxfsB7v6im4xWlR1mZejggVBxsEqoPnSN3gEkwBD1blX
-	IprDNU1McppeMiCbg/wS3zXRKZCPexfoYAEiGf8iGpPY2tK0CUClhtIGvzdh3v8joQcjwZEWNmE
-	/tTBrOw0DAacY8i03dc1c2hVftIA=
-X-Gm-Gg: ASbGncuVckvyGSl9C24EEK8/MbLitFO1irg6hFxH8DJeX4gZv8ltYavNA/fuUZ178vA
-	H62MGVQuy36/VWBcn2/5AU0rGusa4xU9QQM0Mb/9LfeLJg958OYTxVZKMqQmWOnTF+sd921tDGQ
-	==
-X-Google-Smtp-Source: AGHT+IE8DKcyHRlcVZTAi4KF6Sh5KbjMdfB2KDTubvGG7HEDVbAuM4dGu6BtK52l5l2xucBK9g38u/USqfRqqkbnJB4=
-X-Received: by 2002:a05:6000:184b:b0:38d:b113:eb8 with SMTP id
- ffacd0b85a97d-38dea26ecebmr7135274f8f.20.1739459019532; Thu, 13 Feb 2025
- 07:03:39 -0800 (PST)
+	s=arc-20240116; t=1739462354; c=relaxed/simple;
+	bh=jhNefGtsRWXyhnxG+bgW4pvnMHzaSA4ko0O4FWE8Lp8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=grgAoPXmAq9G2qZP8928JqxIjDR3kZX3sbtrCwyN3Uoe6JUsnyowBmCtSFLHVbZ3SSXSrNiyODuXqaZ+93OwoGGxPQoPfFMl7murnX6DYcDt1llkosVCAnTlBIOdTUiC8MgwsBkHqvi6efKxa72kMnxGqhOmF4Y89Qf9fq0/vO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEHQRma0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6631CC4CED1;
+	Thu, 13 Feb 2025 15:59:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739462354;
+	bh=jhNefGtsRWXyhnxG+bgW4pvnMHzaSA4ko0O4FWE8Lp8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ZEHQRma01gw+Qyo9YZZLw6S9xt+9nwhj2+sR/54HPKZYiHpRI+K4RMoMNxh5ADfBd
+	 8jHh5+zhT21n+fAWngs0kXilDBUKI1DyGb0vf4DpXWj72kQLtOdCblgUEGLARDL0Ik
+	 bse6xYa+6/uPJRCCFYjF90JOch67MwjHvDha3fLlu0828wUYJB7SDiEW8fiUGV84Q2
+	 XcbddIQC+qJRoNoEI1Km81B4JftRfRLu2Krh/5rsgROOKeISJLhUSOOfz9gdqylMCS
+	 26ehjAOFFpqay+P4gbv3yv+05wt5nkHTLtbBT4965WvGzPGoJhvh0FiIeFLdq/c1gL
+	 r5V56n7Agy9kA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5AA10C021A4;
+	Thu, 13 Feb 2025 15:59:14 +0000 (UTC)
+From: Tobias Sperling via B4 Relay <devnull+tobias.sperling.softing.com@kernel.org>
+Subject: [PATCH v4 0/2] Support for TI ADS7128 and ADS7138 ADCs
+Date: Thu, 13 Feb 2025 16:58:56 +0100
+Message-Id: <20250213-adc_ml-v4-0-66b68f8fdb8c@softing.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212075845.11338-1-clamor95@gmail.com> <20250212075845.11338-3-clamor95@gmail.com>
- <Z64IPpW5Uhad4HjU@smile.fi.intel.com>
-In-Reply-To: <Z64IPpW5Uhad4HjU@smile.fi.intel.com>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Thu, 13 Feb 2025 17:03:27 +0200
-X-Gm-Features: AWEUYZmUj-krca9nu8UVllaTPCZQMTjt3IELvxYIQkmFcH7UwZphBSmDpexxcjA
-Message-ID: <CAPVz0n3TTrkfARQNWfhgJd0sNnUTTdX8vx8hnHDZMq+p9aK_wA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/2] mfd: lm3533: convert to use OF
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, 
-	Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMAWrmcC/2XM3wqCMBTH8VeJXbfYztzUrnqPiNg/dZAuNhmF+
+ O5NISm8/B3O5zuhaIOzEZ0PEwo2uej8kEdxPCDdyaG12Jm8ERAoKAXA0uh7/8CGalsJW3EFGuX
+ nZ7CNe62h6y3vzsXRh/faTXS57hKJYoJJKeoGLFVK00v0zeiG9qR9j5ZIgi/kBAjbIGRYSV6XQ
+ hDNar6H7BeKDbIMqSHKsKJiUsI/nOf5A4mGyXsQAQAA
+X-Change-ID: 20241122-adc_ml-d1ce86e85b2c
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Tobias Sperling <tobias.sperling@softing.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.15-dev-355e8
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739462353; l=3437;
+ i=tobias.sperling@softing.com; s=20241122; h=from:subject:message-id;
+ bh=jhNefGtsRWXyhnxG+bgW4pvnMHzaSA4ko0O4FWE8Lp8=;
+ b=B3z1r3JT8BOwrbjqgQHDiTpNwRX4k7kpMRgT340opHRRc/PdyFaaou2pXeCZ7WNTV4i3guKAr
+ jUc15Bon+6RDLBG9MQsEkvlFx9fWcPhZ6j3HE6rH+De+VE6qvtXTq/e
+X-Developer-Key: i=tobias.sperling@softing.com; a=ed25519;
+ pk=v7hgaMHsrA9ul4UXkBVUuwusS9PF3uHW/CC+gABI65E=
+X-Endpoint-Received: by B4 Relay for tobias.sperling@softing.com/20241122
+ with auth_id=281
+X-Original-From: Tobias Sperling <tobias.sperling@softing.com>
+Reply-To: tobias.sperling@softing.com
 
-=D1=87=D1=82, 13 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:57 Andy=
- Shevchenko
-<andriy.shevchenko@linux.intel.com> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Wed, Feb 12, 2025 at 09:58:42AM +0200, Svyatoslav Ryhel wrote:
-> > Add ability to fill pdata from device tree. Common stuff is
-> > filled from core driver and then pdata is filled per-device
-> > since all cells are optional.
->
-> ...
->
-> >  #include <linux/module.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/mfd/core.h>
->
-> > +#include <linux/of.h>
->
-> Is it used? In any case, please no OF-centric APIs in a new (feature) cod=
-e.
->
-> >  #include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/uaccess.h>
->
-> ...
->
-> > +static int lm3533_pass_of_node(struct platform_device *pdev,
->
-> pass_of_node sounds a bit awkward.
-> Perhaps you thought about parse_fwnode ?
->
-> > +                            struct lm3533_als_platform_data *pdata)
-> > +{
-> > +     struct device *parent_dev =3D pdev->dev.parent;
-> > +     struct device *dev =3D &pdev->dev;
-> > +     struct fwnode_handle *node;
-> > +     const char *label;
-> > +     int val, ret;
-> > +
-> > +     device_for_each_child_node(parent_dev, node) {
-> > +             fwnode_property_read_string(node, "compatible", &label);
-> > +
-> > +             if (!strcmp(label, pdev->name)) {
->
-> This is a bit strange. Why one need to compare platform device instance (=
-!)
-> name with compatible which is part of ABI. This looks really wrong approa=
-ch.
-> Needs a very good explanation on what's going on here.
->
-> Besides that the label is usually filled by LEDS core, why do we need to =
-handle
-> it in a special way?
->
-> > +                     ret =3D fwnode_property_read_u32(node, "reg", &va=
-l);
-> > +                     if (ret) {
-> > +                             dev_err(dev, "reg property is missing: re=
-t %d\n", ret);
-> > +                             return ret;
-> > +                     }
-> > +
-> > +                     if (val =3D=3D pdev->id) {
->
-> > +                             dev->fwnode =3D node;
-> > +                             dev->of_node =3D to_of_node(node);
->
-> No direct access to fwnode in struct device, please use device_set_node()=
-.
->
-> > +                     }
-> > +             }
-> > +     }
-> > +
-> > +     return 0;
-> > +}
->
-> ...
->
-> >       pdata =3D dev_get_platdata(&pdev->dev);
-> >       if (!pdata) {
-> > -             dev_err(&pdev->dev, "no platform data\n");
-> > -             return -EINVAL;
-> > +             pdata =3D devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KE=
-RNEL);
-> > +             if (!pdata)
-> > +                     return -ENOMEM;
-> > +
-> > +             ret =3D lm3533_pass_of_node(pdev, pdata);
-> > +             if (ret)
-> > +                     return dev_err_probe(&pdev->dev, ret,
-> > +                                          "failed to get als device no=
-de\n");
->
-> With
->
->         struct device *dev =3D &pdev->dev;
->
-> at the top of the function will help a lot in making the code neater and =
-easier
-> to read.
->
-> > +             lm3533_parse_als(pdev, pdata);
-> >       }
->
-> ...
->
-> >  #include <linux/leds.h>
-> >  #include <linux/mfd/core.h>
-> >  #include <linux/mutex.h>
->
-> > +#include <linux/of.h>
->
-> Cargo cult? "Proxy" header? Please follow IWYU principle.
->
-> >  #include <linux/platform_device.h>
-> > +#include <linux/property.h>
-> >  #include <linux/slab.h>
->
-> ...
->
-> > +static void lm3533_parse_led(struct platform_device *pdev,
-> > +                          struct lm3533_led_platform_data *pdata)
-> > +{
-> > +     struct device *dev =3D &pdev->dev;
-> > +     int val, ret;
-> > +
-> > +     ret =3D device_property_read_string(dev, "default-trigger",
-> > +                                       &pdata->default_trigger);
-> > +     if (ret)
-> > +             pdata->default_trigger =3D "none";
->
-> Isn't this done already in LEDS core?
->
-> > +     /* 5000 - 29800 uA (800 uA step) */
-> > +     ret =3D device_property_read_u32(dev, "max-current-microamp", &va=
-l);
-> > +     if (ret)
-> > +             val =3D 5000;
-> > +     pdata->max_current =3D val;
-> > +
-> > +     /* 0 - 0x3f */
-> > +     ret =3D device_property_read_u32(dev, "pwm", &val);
-> > +     if (ret)
-> > +             val =3D 0;
-> > +     pdata->pwm =3D val;
-> > +}
->
-> ...
->
-> > +static int lm3533_pass_of_node(struct platform_device *pdev,
-> > +                            struct lm3533_led_platform_data *pdata)
->
-> I think I already saw exactly the same piece of code. Please make sure
-> you have no duplications.
->
-> > +}
->
-> ...
->
-> >       pdata =3D dev_get_platdata(&pdev->dev);
-> >       if (!pdata) {
-> > -             dev_err(&pdev->dev, "no platform data\n");
-> > -             return -EINVAL;
-> > +             pdata =3D devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KE=
-RNEL);
-> > +             if (!pdata)
-> > +                     return -ENOMEM;
-> > +
-> > +             ret =3D lm3533_pass_of_node(pdev, pdata);
-> > +             if (ret)
-> > +                     return dev_err_probe(&pdev->dev, ret,
-> > +                                          "failed to get led device no=
-de\n");
-> > +
-> > +             lm3533_parse_led(pdev, pdata);
->
-> Ditto.
->
-> >       }
->
-> ...
->
-> > -     led->cdev.name =3D pdata->name;
-> > +     led->cdev.name =3D dev_name(&pdev->dev);
->
-> Are you sure it's a good idea?
->
-> ...
->
-> > -     if (!pdata->als)
-> > +     if (!pdata->num_als)
-> >               return 0;
-> >
-> > -     lm3533_als_devs[0].platform_data =3D pdata->als;
-> > -     lm3533_als_devs[0].pdata_size =3D sizeof(*pdata->als);
-> > +     if (pdata->num_als > ARRAY_SIZE(lm3533_als_devs))
-> > +             pdata->num_als =3D ARRAY_SIZE(lm3533_als_devs);
->
-> Looks like you want
->
->         pdata->num_als =3D clamp(pdata->num_als, 0, ARRAY_SIZE(lm3533_als=
-_devs));
->         if (!pdata->num_als)
->                 return 0;
->
-> instead of the above. You would need minmax.h for that.
->
-> ...
->
-> > +     if (pdata->leds) {
->
-> This is strange. I would expect num_leds =3D=3D 0 in this case
->
-> > +             for (i =3D 0; i < pdata->num_leds; ++i) {
-> > +                     lm3533_led_devs[i].platform_data =3D &pdata->leds=
-[i];
-> > +                     lm3533_led_devs[i].pdata_size =3D sizeof(pdata->l=
-eds[i]);
-> > +             }
-> >       }
->
-> ...
->
-> > +static void lm3533_parse_nodes(struct lm3533 *lm3533,
-> > +                            struct lm3533_platform_data *pdata)
-> > +{
-> > +     struct fwnode_handle *node;
-> > +     const char *label;
-> > +
-> > +     device_for_each_child_node(lm3533->dev, node) {
-> > +             fwnode_property_read_string(node, "compatible", &label);
-> > +
-> > +             if (!strcmp(label, lm3533_bl_devs[pdata->num_backlights].=
-name))
-> > +                     pdata->num_backlights++;
-> > +
-> > +             if (!strcmp(label, lm3533_led_devs[pdata->num_leds].name)=
-)
-> > +                     pdata->num_leds++;
-> > +
-> > +             if (!strcmp(label, lm3533_als_devs[pdata->num_als].name))
-> > +                     pdata->num_als++;
-> > +     }
-> > +}
->
-> Oh, I don't like this approach. If you have compatible, you have driver_d=
-ata
-> available, all this is not needed as it may be hard coded.
->
-> ...
->
-> >       if (!pdata) {
->
-> I would expect actually that legacy platform data support will be simply =
-killed
-> by this patch(es). Do we have in-kernel users? If so, they can be easily
-> converted to use software nodes, otherwise we even don't need to care.
->
-> > -             dev_err(lm3533->dev, "no platform data\n");
-> > -             return -EINVAL;
-> > +             pdata =3D devm_kzalloc(lm3533->dev, sizeof(*pdata), GFP_K=
-ERNEL);
-> > +             if (!pdata)
-> > +                     return -ENOMEM;
-> > +
-> > +             ret =3D device_property_read_u32(lm3533->dev,
-> > +                                            "ti,boost-ovp",
-> > +                                            &pdata->boost_ovp);
-> > +             if (ret)
-> > +                     pdata->boost_ovp =3D LM3533_BOOST_OVP_16V;
-> > +
-> > +             ret =3D device_property_read_u32(lm3533->dev,
-> > +                                            "ti,boost-freq",
-> > +                                            &pdata->boost_freq);
-> > +             if (ret)
-> > +                     pdata->boost_freq =3D LM3533_BOOST_FREQ_500KHZ;
-> > +
-> > +             lm3533_parse_nodes(lm3533, pdata);
-> > +
-> > +             lm3533->dev->platform_data =3D pdata;
-> >       }
->
-> ...
->
-> > +static const struct of_device_id lm3533_match_table[] =3D {
-> > +     { .compatible =3D "ti,lm3533" },
-> > +     { },
->
-> No comma in the terminator entry.
->
-> > +};
->
-> ...
->
-> > +static void lm3533_parse_backlight(struct platform_device *pdev,
->
-> pdev is not actually used, just pass struct device *dev directly.
-> Same comment to other functions in this change. It will make code more
-> bus independent and reusable.
->
-> > +                                struct lm3533_bl_platform_data *pdata)
-> > +{
-> > +     struct device *dev =3D &pdev->dev;
-> > +     int val, ret;
-> > +
-> > +     /* 5000 - 29800 uA (800 uA step) */
-> > +     ret =3D device_property_read_u32(dev, "max-current-microamp", &va=
-l);
-> > +     if (ret)
-> > +             val =3D 5000;
-> > +     pdata->max_current =3D val;
->
-> > +     /* 0 - 255 */
-> > +     ret =3D device_property_read_u32(dev, "default-brightness", &val)=
-;
-> > +     if (ret)
-> > +             val =3D LM3533_BL_MAX_BRIGHTNESS;
-> > +     pdata->default_brightness =3D val;
->
-> Isn't handled by LEDS core?
->
-> > +     /* 0 - 0x3f */
-> > +     ret =3D device_property_read_u32(dev, "pwm", &val);
-> > +     if (ret)
-> > +             val =3D 0;
-> > +     pdata->pwm =3D val;
-> > +}
->
-> ...
->
-> > +static int lm3533_pass_of_node(struct platform_device *pdev,
-> > +                            struct lm3533_bl_platform_data *pdata)
-> > +{
->
-> 3rd dup?
->
-> > +}
->
-> ...
->
-> >       pdata =3D dev_get_platdata(&pdev->dev);
-> >       if (!pdata) {
-> > -             dev_err(&pdev->dev, "no platform data\n");
-> > -             return -EINVAL;
-> > +             pdata =3D devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KE=
-RNEL);
-> > +             if (!pdata)
-> > +                     return -ENOMEM;
-> > +
-> > +             ret =3D lm3533_pass_of_node(pdev, pdata);
-> > +             if (ret)
-> > +                     return dev_err_probe(&pdev->dev, ret,
-> > +                                          "failed to get backlight dev=
-ice node\n");
-> > +
-> > +             lm3533_parse_backlight(pdev, pdata);
-> >       }
->
-> Ditto.
->
-> > -     bd =3D devm_backlight_device_register(&pdev->dev, pdata->name,
-> > -                                     pdev->dev.parent, bl, &lm3533_bl_=
-ops,
-> > -                                     &props);
-> > +     bd =3D devm_backlight_device_register(&pdev->dev, dev_name(&pdev-=
->dev),
->
-> I'm not sure the dev_name() is a good idea. We usually try to rely on the
-> predictable outcome, something like what "%pfw" prints against a certain =
-fwnode.
->
-> > +                                         pdev->dev.parent, bl,
-> > +                                         &lm3533_bl_ops, &props);
->
-> ...
->
-> Also I feel that this change may be split to a few separate logical chang=
-es.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+This patch series adds support for Texas Instruments ADS7128 and
+ADS7138, which are 12-bit, 8 channel analog-to-digital converters (ADCs)
+with build-in digital window comparator (DWC), using the I2C interface.
 
-Acknowledged, thank you.
+The driver exposes the interfaces to read the raw values, as well as the
+minimum and maximum value for each channel. In addition several settings
+can be configured, like the DWC, sampling frequency or an averaging
+filter/oversampling. Interrupts triggered by the DWC, if configured, are
+then exposed as IIO events.
+
+ADS7128 differs in the addition of further hardware features, like a
+root-mean-square (RMS) and a zero-crossing-detect (ZCD) module, which
+are not yet supported by the driver.
+
+Regarding the I2C interface the chips using opcodes to define the way
+how the registeres are accessed, like single or multiple register(s)
+read/write or setting/clearing only bits.
+
+---
+Changes in v4:
+- dt-bindings: make avdd-supply mandatory.
+- Replace wildcard names with ads7138 or ADS7138 respectively.
+- Improve code style (add comments, indentation, placing of brackets,
+  helper struct for dev)
+- Rename _setclear_bit() and use it for single writes.
+- Use DEFINE_RUNTIME_DEV_PM_OPS.
+- Make avdd mandatory and verify it's not a stub.
+- Link to v3: https://lore.kernel.org/r/20250206-adc_ml-v3-0-1d0bd3483aa2@softing.com
+
+Changes in v3:
+- Make interrupt optional.
+- Replace SET_RUNTIME_PM_OPS() with RUNTIME_PM_OPS() to prevent warning.
+- Rework read_avail for sampling frequency to show each frequency only
+  once.
+- Use IIO_CHAN_INFO_PEAK and IIO_CHAN_INFO_TROUGH instead of ext_info.
+- Link to v2: https://lore.kernel.org/r/20250203-adc_ml-v2-0-8a597660c395@softing.com
+
+Changes in v2:
+- Improved commit messages.
+- dt-bindings: drop info about what driver supports, make 'avdd-supply'
+  optional.
+- General rework of driver regarding indentation and code style.
+- General code improvements to make code shorter and improve
+  readability, like remove 'goto's, order of declarations, ...
+- Use kernel macros and functions, like FIELD_*, guard(), ...
+- Rework i2c functions to return 0 in case of success and use
+  i2c_master_send() if possible.
+- Use struct for chip data instead of enum.
+- Add comment to what the lock is used for and make sure it's used in
+  these cases.
+- Use read_avail of iio_info and extend to return also the available
+  values for OSR.
+- Rework to only accept values of the availability list.
+- Use devm_* if possible and therefore drop 'remove' callback.
+- Rebase to kernel 6.13 and adjust to API changes.
+- Link to v1:
+  https://lore.kernel.org/r/20241122-adc_ml-v1-0-0769f2e1bbc1@softing.com
+
+Changes in v1 (to patch series without b4):
+- dt-bindings: Extended description
+
+Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
+
+---
+Tobias Sperling (2):
+      dt-bindings: iio: adc: Introduce ADS7138
+      iio: adc: Add driver for ADS7128 / ADS7138
+
+ .../devicetree/bindings/iio/adc/ti,ads7138.yaml    |  63 ++
+ drivers/iio/adc/Kconfig                            |  10 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ti-ads7138.c                       | 749 +++++++++++++++++++++
+ 4 files changed, 823 insertions(+)
+---
+base-commit: 05dbaf8dd8bf537d4b4eb3115ab42a5fb40ff1f5
+change-id: 20241122-adc_ml-d1ce86e85b2c
+
+Best regards,
+-- 
+Tobias Sperling <tobias.sperling@softing.com>
+
+
 

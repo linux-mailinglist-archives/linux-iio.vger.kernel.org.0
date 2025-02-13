@@ -1,141 +1,127 @@
-Return-Path: <linux-iio+bounces-15485-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15486-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1569A33AD8
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 10:16:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0B0A33E7B
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 12:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196451697CB
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 09:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71BC0188BB62
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 11:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F5920E700;
-	Thu, 13 Feb 2025 09:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A905F21D3F9;
+	Thu, 13 Feb 2025 11:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUxn6nTh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xe5GaG9z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C8720C49E;
-	Thu, 13 Feb 2025 09:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1E2214A67
+	for <linux-iio@vger.kernel.org>; Thu, 13 Feb 2025 11:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739437952; cv=none; b=tT6t99v4jfCr0FBHc52O35jqv8M5yEkbl35cPeTbxbsZdMlQ2j1sYw1Eq7dNHrGXJpU/5UU/ibx9om5sIeZSHNYgHOA1jb1fFrb2NsGl17hzmX5x7DIor7eqYjhlkNB3EtJWmA5pmSSFmdcsQDs2sYbsGjiFpEwDWcLVCnD5jts=
+	t=1739447599; cv=none; b=W+HphaulTSCwjW2aKYzKLjE0gulF11ZfFoj6Y8UdGdeIW/qcVf8fvyukx1yoMiIFOKSrm4aY9KZ0KmaK75s6EZHj2mSEELZmc71lz25wGEVpygV3yJQtYDECn0abx4BB6M+8jWiwi5+xD9hQuEo8wIHAmKQUT2zKeix66DLsMpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739437952; c=relaxed/simple;
-	bh=yLddpAR4+uHNaBfR84/0dHce0z/yGb9TvcOzbtkoKUI=;
+	s=arc-20240116; t=1739447599; c=relaxed/simple;
+	bh=FBAEzgfozo3sMyPEiMssFYNAXN9icWZt28ooDZsRqQQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nQxVkxjxB6rps6sFU+TfGTtL28RB3zvi7GAR7lQrxMO7BOj9vU5w4eqABKAPlEVGUq9myLGvdLuPwP0/3lk5DB8Ughjdoc9u66Dd6PCmSlmHxy1joGdjNfZB0AvceOMzqhrXfAjQLKXWjs2XdPKt4knAx5/zUUneDOLUmAveY9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUxn6nTh; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-43946b5920cso3724635e9.1;
-        Thu, 13 Feb 2025 01:12:30 -0800 (PST)
+	 To:Cc:Content-Type; b=G0sgqsqnPUpnLDUjv7jbyX6QYWXIGLgje2qPzQD+2ScEpdJUpv7FxrlcifggDJ8/KlPDTVTM1VPA3/slRd1qGI6IlhQ9P4h0ue1aUWEQIZ3ciI5j07wEBhicUICrVYidIewly5ohWEqHDGiaiD++0LLV4U5JLIIZQjWNiA8Wbr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xe5GaG9z; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-54298ec925bso1029726e87.3
+        for <linux-iio@vger.kernel.org>; Thu, 13 Feb 2025 03:53:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739437949; x=1740042749; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1739447594; x=1740052394; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Tg1JP0auLt2hGreWRb8PL7qoComGrRDHQlIsTeKF7VE=;
-        b=fUxn6nThMhkaowpzeUlUhRdy876YqU+QJaOkjvp097n5uKLxHFKzXD7Y8PGZTHJGDI
-         r63PL2zP8RtBwlla8ASkyCV349z5lh6ThXSk2f4hVKLcK50jBXhOxNW47Q0J+gKa+bwu
-         qhvkyD3BkrXZ5RaqeQtbzdmWcXaRbMkgrOsSbISvdsoBraTxbzRag5MjOmMLECSq1Wr5
-         293cij+RKi0v4Bd5AgRiRnT1LQI82dAVPwkHkfmZ2enGf3SEAnEsG6Urgm07XL6p8xR9
-         7DHpflb+bs8IfmkNnNb8etdI3k/RyFsePLEBkOchGyayFZKAZg9M36bR8ZW/9gX7w5mE
-         TRrQ==
+        bh=FBAEzgfozo3sMyPEiMssFYNAXN9icWZt28ooDZsRqQQ=;
+        b=Xe5GaG9z8ovLTQZj9Fquy9D/vPxpVaO17WfohTBBdpOW9TGa5WFuAG/HUA0MsEW4OA
+         gFvj/ywPu7V8Xs7t+JjoU5jAyJTaymZn/6WrF5mIDB5bqkAeQCtgG1R/ds4XihUhZfL0
+         iPMVh/DGb9rW0PMB/dxVtli6/iqHGcSoYI35MvytMQ/41NoEkTs6fM99v6ejuyTMGnxT
+         Xu6hvBwrx94qo+mUlfQ9ISovdHuAIsNqXBTWA87qkyB9fUkVHdp0dMSlxv3mCJKene/u
+         78fctLVm2CO3oLKgUj7vHinqvoVKwedNJKJdL8YOORF4NvkOgo/zwztfUJfHn3nqZ178
+         sC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739437949; x=1740042749;
+        d=1e100.net; s=20230601; t=1739447594; x=1740052394;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Tg1JP0auLt2hGreWRb8PL7qoComGrRDHQlIsTeKF7VE=;
-        b=MAB1NrBhMxMKGoD8KdPOBh/ughTGMHRnp2QPztzg4S72XOOe87uVgdFFC2q6cAyNXo
-         TaBhEiLTTdfFgvhDUVTKM05RGoIf/Vw2xZWIWL/qQI611CK4ShV7LaP/ceEr/bPlZM/G
-         ODjZJnxvLuzWLehMxPutGOXSyKoJg5lc0/Y0AtETZeTOhr3vk7zsaNsmrbS0taW35JnZ
-         PfxAWw8sLeBkLa4FGZQxVW2qPVfSl8GwOmYak02OrMFJGXBBKT8tdxljuahKImZGoRPA
-         JJWvWeA70I1nKrZ01HcgGF9H4j1zGBgeg4LvRkopTac/W8f/O0oIhNq6XHA3QRWJZ3KL
-         4lZg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0+8mneDkp1qVqoL9YHaxV4b+LAqLFXpZEjEgWeg9tHyAEoj7KOJhKiZ2U/091uFPb1EapfdAXMCF/@vger.kernel.org, AJvYcCUnbdqA9YLi341g+TLdM7GSgLPtcHy26BmsEAZ3mhy5etpcwetOFa2ogybOgVrXjjfLeXS8wezQF/va7czY@vger.kernel.org, AJvYcCV1uYuD6ATSjNYEkAmZH/UV2eI4PvEgHb+U8ICwQQyRMBjKxEv7Iztsx+bBEHmhXXzvsB4YGXqxyPrB@vger.kernel.org, AJvYcCVbFYvLAUZx7WSOLRBSr6N3UXQqZtid/eyeAG1EAoGkdgYQWJRuJc3DUCGpor46CxFYWhNYOcEFheGdyfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxe2Tk1CVWUjtUV01K01iHk9yXK9ZkOQhKcCTFaKDLq15CrT1nP
-	jWBeBS2bTjp4vVIYmJW090RrTDjuuhRqWeDfrOt+JOsPEKEpoXC8MSJiYOTF5opCxkaatNQMI1u
-	qEGeDdjo4v2APFEZ1lu2pr4mEwMM=
-X-Gm-Gg: ASbGncu8bdAUArFSjnFdwd97WE93/je+VMxXMb+MJGRvw/gG77aMx2aBzpoocfCYSLy
-	8pip8P2x9jPG3eF7qHC0iSNYOvSNcYV4XzqXxnV+QIoNR1BuWU8wZgiA9hZVIZfU1LicsDtG3mw
-	==
-X-Google-Smtp-Source: AGHT+IEIXiFHGpQVqWcQkS8ro0yUEuPnyaUHznDC/xhn3mOMYppaKdBfxc4IehqBFdtdLKysYuxZvKa7oxsPHk5SNG0=
-X-Received: by 2002:a05:600c:45ce:b0:436:e3ea:4447 with SMTP id
- 5b1f17b1804b1-439601a9bc9mr30373085e9.30.1739437948788; Thu, 13 Feb 2025
- 01:12:28 -0800 (PST)
+        bh=FBAEzgfozo3sMyPEiMssFYNAXN9icWZt28ooDZsRqQQ=;
+        b=XX4iku5LxbmFvbKKd4y9XxGvGGB9dO1JZuEzo6wL86ITJ9cAZEdqtBo/zgBbCj43g8
+         HNcut+mYVqCP/TVPvQeWKoY0jrrFC1q4dvC1nNE7IwXO0/F14y+mWSj5quCTPuq/0tdy
+         ag6yyJlokUFdc536VCjLrVmOuzy0wF5obyFLpWrGfX0kXiIiaiCoJ2I5uqB18n66CSS1
+         kiaF90++qDFiJ0hb2acftqKXmn563eSTat82P80nIOJ9SgHYgO46tA89OclG5WpX0PhO
+         JpPofI8yKIWaFlxvvHYMDmCWOTFjMbgSQkrrfNH1N2FhC7M/7nbG3bV1/BUgmd53uDIw
+         gjrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULz83IUrS/bkWcAD6SXqgZnYfoWECTQUwiDBC8fM789su94SdyQ3SVL4sTwUCYOqhs5QzdXP/ga+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQto+2lp0i0F1yJW10GaZs4sh3qHA3X4vRxWOFWqCp9F+KYnYh
+	H3Ty74iKI/RVLWxnNlhRG7+uqNFw1ZiBFgqiA9x7NTpXy8TUOZ958+KXp0x+wu9hBFIkmEqoMcj
+	4BQfKzu531mQ0C1bpjKF6yantk/Shtc0Q5oAndw==
+X-Gm-Gg: ASbGnctmwf6gFE2dOraUwFDVUMS3KgL2DV74PWhO+kk/U4duXE+GHjhcBOe75VobMxh
+	bnP7yOLNzx2TNvojnLNHOZ6Fehky6viJIqvt1RfhUXhTZfZyrun4kDZ6on3Syq3bDjTiFvEID
+X-Google-Smtp-Source: AGHT+IFrJk2Lgcl9qLARw4zO2zXacUNTi5I8H/0MVApdZGwthvQgZMRi+CUpERAkupPLyPdAt6bDp9Kyi9iApJcwghU=
+X-Received: by 2002:a05:6512:3da8:b0:545:c7d:1790 with SMTP id
+ 2adb3069b0e04-5451810cbbfmr1856800e87.22.1739447593668; Thu, 13 Feb 2025
+ 03:53:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250212064657.5683-1-clamor95@gmail.com> <20250212064657.5683-2-clamor95@gmail.com>
- <20250213-eminent-antique-koala-5a68fd@krzk-bin>
-In-Reply-To: <20250213-eminent-antique-koala-5a68fd@krzk-bin>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Thu, 13 Feb 2025 11:12:16 +0200
-X-Gm-Features: AWEUYZnFHGmvApSVhe437rJ4JjjYpQhXvUgc0fkqXWr4PnY20ptTukWJUhLNQ3o
-Message-ID: <CAPVz0n1fDGEi0fV+CegKo7GWjv4piPqYyDd6Mo1j2mtXSp8w6g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: light: al3010: add al3000a support
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Emil Gedenryd <emil.gedenryd@axis.com>, 
-	Arthur Becker <arthur.becker@sentec.com>, Mudit Sharma <muditsharma.info@gmail.com>, 
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
-	Ivan Orlov <ivan.orlov0322@gmail.com>, David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org
+References: <cover.1738328714.git.mazziesaccount@gmail.com>
+ <3d85fe979fca352bed4d9841e3233c055dfaf154.1738328714.git.mazziesaccount@gmail.com>
+ <6867812e-7269-4686-9fc2-55afd9fa91bf@gmail.com> <CACRpkdaP6biD8ueeezBDw1P3LP6ARoJw0zfkmxC-QKK0fw79YQ@mail.gmail.com>
+ <a52933a2-8b87-4e49-a346-91266fe3b675@gmail.com>
+In-Reply-To: <a52933a2-8b87-4e49-a346-91266fe3b675@gmail.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Thu, 13 Feb 2025 12:53:02 +0100
+X-Gm-Features: AWEUYZngO0EMbmgu4N_VovTQxYF2iqEGDA2eFPLTfNLuuRjhlejPGJ-q9RrmeE0
+Message-ID: <CACRpkdYMytiXoXrjTX3ts6ce1T6Xf4rSyk=sDP9fYz730Q-3bQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/5] pinctrl: Support ROHM BD79124 pinmux / GPO
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lee Jones <lee@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, 
+	David Lechner <dlechner@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
+	Trevor Gamblin <tgamblin@baylibre.com>, Matteo Martelli <matteomartelli3@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-=D1=87=D1=82, 13 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 11:11 Krzy=
-sztof Kozlowski <krzk@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Wed, Feb 12, 2025 at 08:46:55AM +0200, Svyatoslav Ryhel wrote:
-> > AL3000a is an ambient light sensor quite closely related to
-> > exising AL3010 and can re-use exising schema for AL3010.
-> >
-> > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > ---
-> >  .../devicetree/bindings/iio/light/dynaimage,al3010.yaml     | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/light/dynaimage,al30=
-10.yaml b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> > index a3a979553e32..6db4dfd5aa6c 100644
-> > --- a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.yaml
-> > @@ -4,14 +4,16 @@
-> >  $id: http://devicetree.org/schemas/iio/light/dynaimage,al3010.yaml#
-> >  $schema: http://devicetree.org/meta-schemas/core.yaml#
-> >
-> > -title: Dyna-Image AL3010 sensor
-> > +title: Dyna-Image AL3000a/AL3010 sensor
-> >
-> >  maintainers:
-> >    - David Heidelberg <david@ixit.cz>
-> >
-> >  properties:
-> >    compatible:
-> > -    const: dynaimage,al3010
-> > +    enum:
-> > +      - dynaimage,al3010
-> > +      - dynaimage,al3000a
->
-> If this stays here, keep alphabetical order.
->
+On Thu, Feb 6, 2025 at 11:09=E2=80=AFAM Matti Vaittinen
+<mazziesaccount@gmail.com> wrote:
 
-Acknowledged, thank you.
-
-> Best regards,
-> Krzysztof
+> I just realized I should've shared the link to the v2 - which may not
+> include all the recipients (because it no longer touches all the
+> subsystems - and the get_maintainer.pl probably reduced the list of
+> recipients). So, for anyone interested, here's the v2:
 >
+> https://lore.kernel.org/all/cover.1738761899.git.mazziesaccount@gmail.com=
+/
+
+Well it touches (uses) the gpio subsystem so the GPIO maintainers
+should have been on CC...
+
+This is one of the shortcomings of get_maintainers.pl really (also what
+b4 is using): it does not know that if you use some specific APIs from
+some specific .h files then some specific maintainers need to be on
+CC.
+
+It's because there is no hard rule: <linux/slab.h> - who cares? It's not
+like the memory management people want to look at every user of
+kmalloc()... <linux/gpio/driver.h> - this is a different story because
+it's possible to get the semantics wrong.
+
+That said, I looked at the patch in lore:
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+for patch 4/5!
+
+Linus
 

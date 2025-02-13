@@ -1,383 +1,177 @@
-Return-Path: <linux-iio+bounces-15478-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15479-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573EFA33017
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 20:49:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464CFA3342A
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 01:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 203E0188BA64
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Feb 2025 19:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8AD5167F0F
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 00:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A711FFC7D;
-	Wed, 12 Feb 2025 19:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A4F4F218;
+	Thu, 13 Feb 2025 00:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nInCXglg"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UEnWYm6G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F11FF7AC;
-	Wed, 12 Feb 2025 19:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17E92F44;
+	Thu, 13 Feb 2025 00:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739389767; cv=none; b=lyiSsYF0dKFS09Izj0ectUzMSB8E+NivnguAKO6QgNWd5jv39FIcU4zfUcKWZVrLy+0BMkurwgW2JtpWSvVVWU8pko7djefd15ttESWF8dAehIua786yYdpXdB6GgRKDLWHbdMbH9XiiUMn1NfK+S2frRk8Gw5MZwJZv43IUFdg=
+	t=1739407261; cv=none; b=EageJZ8JTITu1V6z5eZMnPrCvkkaGzpSpvg68bDIUC5JpAuz4cV5b5Js5xbALiihImL8yHzLx101CDrkXOADGTINTldiE/b73KcXZQLsg3OBkMFP3gakacWvfQyOWb1fH84BEpdu7LPmlbsWCTgAMB2MidwhEG7vpMGexlOeozw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739389767; c=relaxed/simple;
-	bh=ukMwm41SBfxitfaLU4ZcbtM2grba8h6Qwy+0LGZgnBg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fFMvQcjdkFMOTrpSFrwCdRGPj1tk5d+tcxDNG92sICLcxw8aJ+fJhBGNmEr0P/cEh71jsyXKBn4quANYJe5V4DXFtDzgYSkbau12H0EkP9BM6sTHpY32MgWpIxdNy0/1KJDvmpz0HG+b9lzvtzl7AGW6n05uMq5cg2IPrxVEaGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nInCXglg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BFBC4CEDF;
-	Wed, 12 Feb 2025 19:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739389767;
-	bh=ukMwm41SBfxitfaLU4ZcbtM2grba8h6Qwy+0LGZgnBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nInCXglgnks801jxB2IDu+Ejnmawpyz+w5xbfLDo22xAgmk+x1oHbSk2bDxkI6HW1
-	 pf4kKcc6PoVloU9v8xZvv8r8UfseSRSaJkrxBHGDurhtxVCHHbaTwDCT37Ow1W2EZf
-	 5+84Bx6xZgGI56Qi2x/yH6PFqomnlYf111TyyjzCRURyMmzqX0O8xqgS5+gW8SUnxQ
-	 Bknm/ouBRGDe+QT4xu6yCs5K/T3fLBCZSpewBIg1O7ajJROHqPCczrl5lPM4fy36m+
-	 5OVD+E896ms5MSG2MU7mwFh/hwhHwNiGaQrb9iGVhlfsCOUahlkmVBW6be5DfZx4dN
-	 1P2VaZhY8J8OQ==
-Date: Wed, 12 Feb 2025 19:49:21 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] dt-bindings: mfd: Document TI LM3533 MFD
-Message-ID: <20250212-reprint-underfed-fd723ebf3df3@spud>
-References: <20250212075845.11338-1-clamor95@gmail.com>
- <20250212075845.11338-2-clamor95@gmail.com>
+	s=arc-20240116; t=1739407261; c=relaxed/simple;
+	bh=/5BdimO5ChYxqdyBHcKxk64mNtH5uMwvVg3cjZH2rKw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DcNAM9MAHppBk82uBdLd9NKjYo6hL8ahSN1O0U8fDI0djDkFfcDhYZUf8/tTYWWawvo7nVRCnoGSOzG39DvZUYW3r8S2eErbB44Q9wzTBS5C5WeI8a7Tbkna1m5kB3ETefrUl1RYhhwOIL7H+u1y6R2fEf9mu+pUfXaToZEPCOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UEnWYm6G; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CKG8FP004594;
+	Thu, 13 Feb 2025 00:39:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kvPsau
+	XDyf47SKQKq4L7sX8eCJo/Sjkz/am1Ygpjog8=; b=UEnWYm6GywtAWklet8Kgpk
+	ry9C4dDxYoUnjlmbMhR0g8vGlzqt9nrrYlr4pT4ZH/HFnl+aUieYO9JL0FaV0Z2X
+	wgnsvrixboTeC4h3j7FLogqEFZHRQqvix/eL8cCK2Ohx0ukW8Mgs4enLAb/QXKed
+	VHf0IriPmvQU0LL44IJypBnfxnTjiGkgyDoX6VdWGBzB420z/iDMFHPM7E6e13Cj
+	VfefLAUgEiGzBKNAz19wwzO3mdB2I/np6ENZCNvI2pgs8XbKcNCg3/flpn8DJAt/
+	g0RNpy4h0c26wxoO9h3vCnPGRgWEL2uboa5tLC5aq+yuCQ90coVWd+e2UlBVHyxA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44rhqaefkc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:48 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51D0Yq7p011254;
+	Thu, 13 Feb 2025 00:39:47 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44rhqaefka-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51CNV6bh016749;
+	Thu, 13 Feb 2025 00:39:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pk3kbmxf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:46 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51D0diJD39125320
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Feb 2025 00:39:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2372E20040;
+	Thu, 13 Feb 2025 00:39:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9747620043;
+	Thu, 13 Feb 2025 00:39:43 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Feb 2025 00:39:43 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.36.5.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 0DEA2600D7;
+	Thu, 13 Feb 2025 11:39:26 +1100 (AEDT)
+Message-ID: <835f0504d85398707997b7fe96b4f1a44179ff9a.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/9] Extend automarkup support for ABI symbols
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Bagas Sanjaya
+	 <bagasdotme@gmail.com>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet	
+ <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+        "David S. Miller"	
+ <davem@davemloft.net>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Avadhut
+ Naik	 <avadhut.naik@amd.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Eric Dumazet	 <edumazet@google.com>,
+        Hu Haowen
+ <2023002089@link.tyut.edu.cn>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg	
+ <mika.westerberg@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>, Sean
+ Young	 <sean@mess.org>,
+        Yanteng Si <si.yanteng@linux.dev>,
+        Yehezkel Bernat	
+ <YehezkelShB@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael
+ Ellerman	 <mpe@ellerman.id.au>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>,
+        James Morse	 <james.morse@arm.com>,
+        "Nysal Jan K.A" <nysal@linux.ibm.com>,
+        Tom Lendacky	
+ <thomas.lendacky@amd.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Frederic Barrat
+ <fbarrat@linux.ibm.com>,
+        Madhavan Srinivasan	 <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy	
+ <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        workflows@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 13 Feb 2025 11:39:20 +1100
+In-Reply-To: <20250212135808.58d2f032@foz.lan>
+References: <cover.1739254867.git.mchehab+huawei@kernel.org>
+		<Z6yFG_NntQfkwYli@archie.me> <20250212135808.58d2f032@foz.lan>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="2sr14TLGCRJiRmsH"
-Content-Disposition: inline
-In-Reply-To: <20250212075845.11338-2-clamor95@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OZ4Ih_TXKxH9HgohVnb0WeQrzyi138qF
+X-Proofpoint-GUID: _CytR_Qn18YZDyX1vFuvKdYXq73CWqPh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-12_08,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 mlxlogscore=609 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502130002
 
-
---2sr14TLGCRJiRmsH
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Feb 12, 2025 at 09:58:41AM +0200, Svyatoslav Ryhel wrote:
-> Add bindings for the LM3533 - a complete power source for
-> backlight, keypad, and indicator LEDs in smartphone handsets.
-> The high-voltage inductive boost converter provides the
-> power for two series LED strings display backlight and keypad
-> functions.
+On Wed, 2025-02-12 at 13:58 +0100, Mauro Carvalho Chehab wrote:
+> > WARNING: Documentation/ABI/testing/sysfs-class-cxl not found
 >=20
-> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> ---
->  .../devicetree/bindings/mfd/ti,lm3533.yaml    | 221 ++++++++++++++++++
->  include/dt-bindings/mfd/lm3533.h              |  19 ++
->  2 files changed, 240 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/mfd/ti,lm3533.yaml
->  create mode 100644 include/dt-bindings/mfd/lm3533.h
+> I need to double-check verify this one, as it didn't appear on
+> my tests. Are you getting it against docs-next or linux-next?
 >=20
-> diff --git a/Documentation/devicetree/bindings/mfd/ti,lm3533.yaml b/Docum=
-entation/devicetree/bindings/mfd/ti,lm3533.yaml
-> new file mode 100644
-> index 000000000000..d0307e5894f8
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/mfd/ti,lm3533.yaml
-> @@ -0,0 +1,221 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/mfd/ti,lm3533.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TI LM3533 Complete Lighting Power Solution
-> +
-> +description: |
-> +  The LM3533 is a complete power source for backlight,
-> +  keypad, and indicator LEDs in smartphone handsets. The
-> +  high-voltage inductive boost converter provides the
-> +  power for two series LED strings display backlight and
-> +  keypad functions.
-> +  https://www.ti.com/product/LM3533
-> +
-> +maintainers:
-> +  - Johan Hovold <jhovold@gmail.com>
-> +
-> +properties:
-> +  compatible:
-> +    const: ti,lm3533
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +  enable-gpios:
-> +    description: GPIO to use to enable/disable the backlight (HWEN pin).
-> +    maxItems: 1
-> +
-> +  ti,boost-ovp:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Boost OVP select (16V, 24V, 32V, 40V)
-> +    enum: [ 0, 1, 2, 3 ]
-> +    default: 0
-> +
-> +  ti,boost-freq:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      Boost frequency select (500KHz or 1MHz)
-> +    enum: [ 0, 1 ]
-> +    default: 0
 
-Properties like these should be in units, so some standard voltage-based
-one for the boost and in hertz for the second. See property-units.yaml
-in dt-schema.
+This is moved to obsolete/ by 5731d41af924b which was merged in rc1,
+and will be moved again to removed/ by [0].
 
-> +required:
-> +  - compatible
-> +  - reg
-> +  - '#address-cells'
-> +  - '#size-cells'
-> +  - enable-gpios
-> +
-> +patternProperties:
-> +  "^backlight@[01]$":
-> +    type: object
-> +    description:
-> +      Properties for a backlight device.
-> +
-> +    properties:
-> +      compatible:
-> +        const: lm3533-backlight
+Andrew
 
-Missing vendor prefix
+[0]
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20250203072801.3655=
+51-3-ajd@linux.ibm.com/
 
-> +
-> +      reg:
-> +        description: |
-> +          The control bank that is used to program the two current sinks=
-=2E The
-> +          LM3533 has two control banks (A and B) and are represented as =
-0 or 1
-> +          in this property. The two current sinks can be controlled
-> +          independently with both banks, or bank A can be configured to =
-control
-> +          both sinks with the led-sources property.
-> +        minimum: 0
-> +        maximum: 1
-> +
-> +      max-current-microamp:
-> +        description:
-> +          Maximum current in =B5A with a 800 =B5A step.
-> +        enum: [ 5000, 5800, 6600, 7400, 8200, 9000, 9800,
-> +                10600, 11400, 12200, 13000, 13800, 14600,
-> +                15400, 16200, 17000, 17800, 18600, 19400,
-> +                20200, 21000, 21800, 22600, 23400, 24200,
-> +                25000, 25800, 26600, 27400, 28200, 29000,
-> +                29800 ]
-> +        default: 5000
-> +
-> +      default-brightness:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          Default brightness level on boot.
-> +        minimum: 0
-> +        maximum: 255
-> +        default: 255
-> +
-> +      pwm:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          Default pwm level on boot.
-> +        minimum: 0
-> +        maximum: 63
-> +        default: 0
-
-Why is default-brightness /and/ a default for pwm needed? If the pwm
-drives the backlight, wouldn't you only need one of these two?
-
-If it stays, I think it needs a rename to be more clear about what it is
-doing. "pwm" is very close to "pwms", the property used for phandles to
-pwm providers but the use is rather different.
-
-backlight/common.yaml has standard properties that you could be using,
-so I'd expect to see a ref here, rather than redefining your own
-version.
-
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +  "^led@[0-3]$":
-> +    type: object
-> +    description:
-> +      Properties for a led device.
-> +
-> +    properties:
-> +      compatible:
-> +        const: lm3533-leds
-
-Ditto here re: compatible.
-
-> +
-> +      reg:
-> +        description:
-> +          4 led banks
-> +        minimum: 0
-> +        maximum: 3
-> +
-> +      max-current-microamp:
-> +        description:
-> +          Maximum current in =B5A with a 800 =B5A step.
-> +        enum: [ 5000, 5800, 6600, 7400, 8200, 9000, 9800,
-> +                10600, 11400, 12200, 13000, 13800, 14600,
-> +                15400, 16200, 17000, 17800, 18600, 19400,
-> +                20200, 21000, 21800, 22600, 23400, 24200,
-> +                25000, 25800, 26600, 27400, 28200, 29000,
-> +                29800 ]
-> +        default: 5000
-> +
-> +      default-trigger:
-> +        $ref: /schemas/types.yaml#/definitions/string
-> +        description: |
-> +          This parameter, if present, is a string defining
-> +          the trigger assigned to the LED. Check linux,default-trigger.
-> +
-> +      pwm:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          Default pwm level on boot.
-> +        minimum: 0
-> +        maximum: 63
-> +        default: 0
-
-Same applies here, leds/common.yaml has some of these already.
-
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +  "^light-sensor@[0]$":
-
-Not a pattern if it can only have 1 outcome.
-
-> +    type: object
-> +    description:
-> +      Properties for an illumination sensor.
-> +
-> +    properties:
-> +      compatible:
-> +        const: lm3533-als
-> +
-> +      reg:
-> +        const: 0
-> +
-> +      resistor-value:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description: |
-> +          PWM resistor value a linear step in currents
-> +          of 10 =B5A per code based upon 2V/R_ALS.
-> +        minimum: 1
-> +        maximum: 127
-> +        default: 1
-> +
-
-I'd expect a resistor to be measured in ohms of some sort,
-hard to tell what the increments actually are here, they don't appear to
-be a real unit. Are they register values?
-
-This and all other custom properties need to have a vendor prefix on
-them btw.
-
-> +      pwm-mode:
-> +        type: boolean
-> +        description: Mode in which ALS is running
-
-Are there multiple pwm modes? Or is this trying to say that, if set, the
-sensor is in pwm mode? Hard to tell from the description here, sorry.
-
-Cheers,
-Conor.
-
-
-> +
-> +    required:
-> +      - compatible
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/mfd/lm3533.h>
-> +
-> +    i2c {
-> +        #address-cells =3D <1>;
-> +        #size-cells =3D <0>;
-> +
-> +        led-controller@36 {
-> +            compatible =3D "ti,lm3533";
-> +            reg =3D <0x36>;
-> +
-> +            enable-gpios =3D <&gpio 110 GPIO_ACTIVE_HIGH>;
-> +
-> +            ti,boost-ovp =3D <LM3533_BOOST_OVP_24V>;
-> +            ti,boost-freq =3D <LM3533_BOOST_FREQ_500KHZ>;
-> +
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <0>;
-> +
-> +            backlight@0 {
-> +                compatible =3D "lm3533-backlight";
-> +                reg =3D <0>;
-> +
-> +                max-current-microamp =3D <23400>;
-> +                default-brightness =3D <113>;
-> +                pwm =3D <0x00>;
-> +            };
-> +        };
-> +    };
-
-
---2sr14TLGCRJiRmsH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ6z7QQAKCRB4tDGHoIJi
-0mXKAP9Pxfv/6EGnQDex8gDTpQhlgAtjZZaGN8P0Ck+ynf1ulwEA8UhnY1kpky8h
-CSf4ymU5K1BBdq8/Ycg+1y5t2JyZyAI=
-=lDN7
------END PGP SIGNATURE-----
-
---2sr14TLGCRJiRmsH--
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 

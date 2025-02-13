@@ -1,123 +1,162 @@
-Return-Path: <linux-iio+bounces-15504-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15505-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8B0A34DA8
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 19:27:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB10A34F27
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 21:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F31816BC66
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 18:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28DA16DDE2
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 20:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F4D245011;
-	Thu, 13 Feb 2025 18:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F14824BC19;
+	Thu, 13 Feb 2025 20:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyYidiRl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqdZwsfx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CED24290E;
-	Thu, 13 Feb 2025 18:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58132222DE;
+	Thu, 13 Feb 2025 20:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739471196; cv=none; b=PfUQT8z8wLgGit+B6xmm1+2yGE8WR6iW0HeHLf0I81nSNutFbHYCs3pdBV09MojtjciTmCJqvuUppPonmKdbw5lpxOPcLUqFkI6An5Vd1PwXMZJKZ58onjc8ZEAxndYFMdLHjgzo/mUXhJ9+/6KvU/vzI/zcWjFMsOKcoASkTW4=
+	t=1739477733; cv=none; b=XxedS2Ad6IAUwDySCl5mgvog7jFBRo5VuVY+J/AxhcZITwtPDYQbEk+vCen2SugVeBqUYX6KSzDM72/vbJVjhhK0tSW1tc1B7U4+/nQUPeEe9m0D/BMkwQWr5Rn4QngcYDQ7DqbflaHic3+lhTdg6gof3F8Br9FnESYK9zENk/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739471196; c=relaxed/simple;
-	bh=NhDUxXj3oz4V8+R+gygt7nMUyVRevYRPQIQD8pzOLW4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=IswPCtzf0KD8PDyFDqqdfUynTkYliqz3sBviD0vApmLsZAKuEb0NoXZxUCIpTD0x3krvp4o4j9j8LVETz7h2GGYt5iGRQIR/sJXTiX7rm7dStjIlHmPHgZycWwbWKdpVAkcHuynlbrrUKfFRloBhX3QVH8zt30D9bsm5W6tw9RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyYidiRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A484EC4CED1;
-	Thu, 13 Feb 2025 18:26:30 +0000 (UTC)
+	s=arc-20240116; t=1739477733; c=relaxed/simple;
+	bh=gFS8GPR4Ajl60UP7+4KVw9gDH4TZ0PhIA+MKoUXArxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ml4M4yEPNAPXsipqUw65uv+IYHENcdt53D2Od1wV6Y5/9raUZsydxzaIt26tDvCbcc5BkEI+9U5rSH/SSa9oCTDiadFN1yIJ7AyNZDcTqoDmrS665o+4lJ+MAyYQgoLurYK6eIV9VsrJe445HbBSbiPGqDYSRu+Cwn8TH3Bt1PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqdZwsfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39819C4CED1;
+	Thu, 13 Feb 2025 20:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739471196;
-	bh=NhDUxXj3oz4V8+R+gygt7nMUyVRevYRPQIQD8pzOLW4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=HyYidiRl96qMUK43IQ2LEvdRgb7aV2nlKM2bLVVDdT0GLa2JiVVRRAqipVkb81xry
-	 FdB0y8AmenVdTI0LN6gNC315LwkL3WSjmGtmhbcYovNNpe4KcQUg6K80R+fSwNuSWN
-	 9Tvvdp9lXYLjA1wILVrcbu/9C54cWychEQaQ74rEDmEnNQYDHRUsjVkHjtYl2JnlRW
-	 k5b17R/FcBYhJkhchj9LuznGmJfEBUgCluEvJ4dyafeIi6pf+g6ZcpK7kyx08UM8a6
-	 mqHLPtCYVJmEpLmWGvO6BQDxpInUEMGAKW0soThrDxe0H28Ac2jqWQcqtOClR8v1mY
-	 v/NAMI419dweg==
-From: Mark Brown <broonie@kernel.org>
-To: Linus Walleij <linus.walleij@linaro.org>, 
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
- Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
- Takashi Iwai <tiwai@suse.com>, David Lechner <dlechner@baylibre.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
- netdev@vger.kernel.org, linux-phy@lists.infradead.org, 
- linux-sound@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-In-Reply-To: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
-References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
-Subject: Re: (subset) [PATCH v3 00/15] gpiolib: add
- gpiod_multi_set_value_cansleep
-Message-Id: <173947119037.339941.1732579278867629226.b4-ty@kernel.org>
-Date: Thu, 13 Feb 2025 18:26:30 +0000
+	s=k20201202; t=1739477733;
+	bh=gFS8GPR4Ajl60UP7+4KVw9gDH4TZ0PhIA+MKoUXArxY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TqdZwsfx82xJagVlpspFyy/Vqw95aHWlQwiSyeXIdxGnjLmYIMhY9zqVEA+DoEkY4
+	 lcDlxACjZbZmLgFNIlt9Ic2vOKl/55wjlk8re2mb/TUUQGNz58EYUwWf8QXmPN/+rK
+	 Wogs0dSQiqmX5ixXI1DeRb7X7BPfxILNLZn/8nGD2EMu+G+3qMmMm0lqjN8SC3YiJh
+	 4LSMSWX8nax7zC6KcxhBb2PCP4xlaIths1HfnKr1/3Y/vsS9y18Bdt6oUU0dW0hXok
+	 1WsvsGjcng0HOhvXddBUxeF5NBXUermedA2vQUJwBlr8ideBdv4vsOXs4kdHZ0PWh4
+	 jauAh15stszMQ==
+Date: Thu, 13 Feb 2025 20:15:27 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] dt-bindings: iio: light: al3010: add al3000a
+ support
+Message-ID: <20250213-reflex-earlobe-ebbeaece6fad@spud>
+References: <20250212064657.5683-1-clamor95@gmail.com>
+ <20250212064657.5683-2-clamor95@gmail.com>
+ <20250212-unwritten-compile-7011777a11b3@spud>
+ <CAPVz0n0xR_nGPdWn800H=HhMCPqnRUhqP-s1P4eMhtpZdxpxzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="7dqWvGhGUC+okugZ"
+Content-Disposition: inline
+In-Reply-To: <CAPVz0n0xR_nGPdWn800H=HhMCPqnRUhqP-s1P4eMhtpZdxpxzg@mail.gmail.com>
 
-On Mon, 10 Feb 2025 16:33:26 -0600, David Lechner wrote:
-> This series was inspired by some minor annoyance I have experienced a
-> few times in recent reviews.
-> 
-> Calling gpiod_set_array_value_cansleep() can be quite verbose due to
-> having so many parameters. In most cases, we already have a struct
-> gpio_descs that contains the first 3 parameters so we end up with 3 (or
-> often even 6) pointer indirections at each call site. Also, people have
-> a tendency to want to hard-code the first argument instead of using
-> struct gpio_descs.ndescs, often without checking that ndescs >= the
-> hard-coded value.
-> 
-> [...]
 
-Applied to
+--7dqWvGhGUC+okugZ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Wed, Feb 12, 2025 at 09:39:06PM +0200, Svyatoslav Ryhel wrote:
+> =D1=81=D1=80, 12 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 21:20 Co=
+nor Dooley <conor@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
+> >
+> > On Wed, Feb 12, 2025 at 08:46:55AM +0200, Svyatoslav Ryhel wrote:
+> > > AL3000a is an ambient light sensor quite closely related to
+> > > exising AL3010 and can re-use exising schema for AL3010.
+> >
+> > Quite close you say, but the driver is entirely different it seems. How
+> > closely related is the hardware itself?
+> >
+>=20
+> Well, I can simply duplicate al3010 or al3320a schema if re-using
+> schema is not allowed. AL3000a has no available datasheet online.
+> Downstream code for al3000a and al3010 seems to have same principles,
+> apart from light measurements.
 
-Thanks!
+It's probably more of a question as to why you're duplicating the driver
+for them, rather than telling you not to put both bindings together.
+That said, information on what's actually different is helpful in the
+binding, to explain why you're not using a fallback compatible etc.
 
-[15/15] ASoC: adau1701: use gpiod_multi_set_value_cansleep
-        commit: ad0fbcebb5f6e093d433a0873758a2778d747eb8
+>=20
+> > >
+> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> > > ---
+> > >  .../devicetree/bindings/iio/light/dynaimage,al3010.yaml     | 6 ++++=
+--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/light/dynaimage,al=
+3010.yaml b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.ya=
+ml
+> > > index a3a979553e32..6db4dfd5aa6c 100644
+> > > --- a/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.ya=
+ml
+> > > +++ b/Documentation/devicetree/bindings/iio/light/dynaimage,al3010.ya=
+ml
+> > > @@ -4,14 +4,16 @@
+> > >  $id: http://devicetree.org/schemas/iio/light/dynaimage,al3010.yaml#
+> > >  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> > >
+> > > -title: Dyna-Image AL3010 sensor
+> > > +title: Dyna-Image AL3000a/AL3010 sensor
+> > >
+> > >  maintainers:
+> > >    - David Heidelberg <david@ixit.cz>
+> > >
+> > >  properties:
+> > >    compatible:
+> > > -    const: dynaimage,al3010
+> > > +    enum:
+> > > +      - dynaimage,al3010
+> > > +      - dynaimage,al3000a
+> > >
+> > >    reg:
+> > >      maxItems: 1
+> > > --
+> > > 2.43.0
+> > >
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+--7dqWvGhGUC+okugZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+-----BEGIN PGP SIGNATURE-----
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ65S3gAKCRB4tDGHoIJi
+0pBLAP9DAfvM0GW8mfJUiDrGHRO8QboPxmy+oxCqMZyJ3p0YuwD/VCGGvaVtnZ7a
+l9NBlucIVYIqUW1e7vIi8IqvOfjpdgs=
+=U7G9
+-----END PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+--7dqWvGhGUC+okugZ--
 

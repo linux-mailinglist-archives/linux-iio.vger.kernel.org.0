@@ -1,136 +1,123 @@
-Return-Path: <linux-iio+bounces-15503-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15504-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4DBA34D13
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 19:09:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8B0A34DA8
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 19:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DBB51891241
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 18:08:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F31816BC66
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 18:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8286B245B12;
-	Thu, 13 Feb 2025 18:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F4D245011;
+	Thu, 13 Feb 2025 18:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qm9yNc2T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyYidiRl"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CFF24290C;
-	Thu, 13 Feb 2025 18:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CED24290E;
+	Thu, 13 Feb 2025 18:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739469855; cv=none; b=qd38jjys2Lehv+B5mWdd9PFOzEQBpSJ4OVO5D5tQjM85HvHsreLLZJvkcrw0oGH77F+ttHT786L0nI8hV0YML7patLn0Ocxe8uZ9+h33BMl5txlIXgn0dX2Y9rv023v74KQVR4JwctP3b5pcvYyEHb4DEBXDgOd8Typ3xotSn7o=
+	t=1739471196; cv=none; b=PfUQT8z8wLgGit+B6xmm1+2yGE8WR6iW0HeHLf0I81nSNutFbHYCs3pdBV09MojtjciTmCJqvuUppPonmKdbw5lpxOPcLUqFkI6An5Vd1PwXMZJKZ58onjc8ZEAxndYFMdLHjgzo/mUXhJ9+/6KvU/vzI/zcWjFMsOKcoASkTW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739469855; c=relaxed/simple;
-	bh=F3mVXg5snyDpxEsavZ/5IjthjylA1qbTG8dFGI27YYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uXtazYKQiWlGmstBigXdYwRrMFPTIAvBstJZVg90mC9XWSJh4XwE8GyXf9/F9C2PCREbRdHMiojTrRbW2sr7ictL7Kfm1N0fQf5lL//OBrPbyVKVv2ZUKab6UgviEFfRGaOYjwmbHOFY1lpyG51k+95tcZUuzpq2Jb1WZcS/nJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qm9yNc2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FC6C4CED1;
-	Thu, 13 Feb 2025 18:04:08 +0000 (UTC)
+	s=arc-20240116; t=1739471196; c=relaxed/simple;
+	bh=NhDUxXj3oz4V8+R+gygt7nMUyVRevYRPQIQD8pzOLW4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=IswPCtzf0KD8PDyFDqqdfUynTkYliqz3sBviD0vApmLsZAKuEb0NoXZxUCIpTD0x3krvp4o4j9j8LVETz7h2GGYt5iGRQIR/sJXTiX7rm7dStjIlHmPHgZycWwbWKdpVAkcHuynlbrrUKfFRloBhX3QVH8zt30D9bsm5W6tw9RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyYidiRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A484EC4CED1;
+	Thu, 13 Feb 2025 18:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739469854;
-	bh=F3mVXg5snyDpxEsavZ/5IjthjylA1qbTG8dFGI27YYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qm9yNc2T/FZRL+nWkoWqyuclWyXIxj7RSCvd8Il+j9Mcr0q18gifQlmhE4Jqn/QtT
-	 SHV5jzlLb+lJgNVOXSn63z76y+Ab9cQ/uBggC1lAEVvOvpJMRDdlJ7eNAqOL0k0vD3
-	 8EmxbuLba8Z//xg/3GRX+7JX5hhPxSeMBAyFgX04i1TWpJYrULPt6OqVD+JM1wqM6C
-	 jZ+/gP3k681pGkaYyHLuoIN3tn66OHhTGDdamLv9vrL3kdfMV/4mOLV+/STaB37IOb
-	 odPhRLQZz0kNZMUsQ0bLZiVqKnrdXn1A3kIG5447I5PAaxpI+lgX6UV3+FiuroBz6m
-	 k5bnVgDCx1VrA==
-Date: Thu, 13 Feb 2025 18:04:05 +0000
+	s=k20201202; t=1739471196;
+	bh=NhDUxXj3oz4V8+R+gygt7nMUyVRevYRPQIQD8pzOLW4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=HyYidiRl96qMUK43IQ2LEvdRgb7aV2nlKM2bLVVDdT0GLa2JiVVRRAqipVkb81xry
+	 FdB0y8AmenVdTI0LN6gNC315LwkL3WSjmGtmhbcYovNNpe4KcQUg6K80R+fSwNuSWN
+	 9Tvvdp9lXYLjA1wILVrcbu/9C54cWychEQaQ74rEDmEnNQYDHRUsjVkHjtYl2JnlRW
+	 k5b17R/FcBYhJkhchj9LuznGmJfEBUgCluEvJ4dyafeIi6pf+g6ZcpK7kyx08UM8a6
+	 mqHLPtCYVJmEpLmWGvO6BQDxpInUEMGAKW0soThrDxe0H28Ac2jqWQcqtOClR8v1mY
+	 v/NAMI419dweg==
 From: Mark Brown <broonie@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Kishon Vijay Abraham I <kishon@kernel.org>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
-	netdev@vger.kernel.org, linux-phy@lists.infradead.org,
-	linux-sound@vger.kernel.org,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
+ Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>, 
+ Heiner Kallweit <hkallweit1@gmail.com>, 
+ Russell King <linux@armlinux.org.uk>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, David Lechner <dlechner@baylibre.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-phy@lists.infradead.org, 
+ linux-sound@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+In-Reply-To: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
 Subject: Re: (subset) [PATCH v3 00/15] gpiolib: add
  gpiod_multi_set_value_cansleep
-Message-ID: <a98d8255-6267-4c4f-9b75-8f3fbdaadc90@sirena.org.uk>
-References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
- <173935301204.11039.10193374588878813157.b4-ty@linaro.org>
- <801b5364-129f-42e9-bf9a-a90d9eeb4629@baylibre.com>
- <CAMRc=MeXTvPnEPjOmPd5Vw0FYKHzndsB0SVjQErA4CY_0MGsMQ@mail.gmail.com>
- <7989a6a0-b761-416c-ad97-69bd23fdc2c4@sirena.org.uk>
- <CAMRc=Mea5imComkraP=v9TKsxLDoBm4XtbLL1QxCbhJ8d4uxcA@mail.gmail.com>
+Message-Id: <173947119037.339941.1732579278867629226.b4-ty@kernel.org>
+Date: Thu, 13 Feb 2025 18:26:30 +0000
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="8dqGeFBusm2eevtX"
-Content-Disposition: inline
-In-Reply-To: <CAMRc=Mea5imComkraP=v9TKsxLDoBm4XtbLL1QxCbhJ8d4uxcA@mail.gmail.com>
-X-Cookie: Take it easy, we're in a hurry.
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 
+On Mon, 10 Feb 2025 16:33:26 -0600, David Lechner wrote:
+> This series was inspired by some minor annoyance I have experienced a
+> few times in recent reviews.
+> 
+> Calling gpiod_set_array_value_cansleep() can be quite verbose due to
+> having so many parameters. In most cases, we already have a struct
+> gpio_descs that contains the first 3 parameters so we end up with 3 (or
+> often even 6) pointer indirections at each call site. Also, people have
+> a tendency to want to hard-code the first argument instead of using
+> struct gpio_descs.ndescs, often without checking that ndescs >= the
+> hard-coded value.
+> 
+> [...]
 
---8dqGeFBusm2eevtX
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Thu, Feb 13, 2025 at 06:58:04PM +0100, Bartosz Golaszewski wrote:
-> On Thu, Feb 13, 2025 at 6:53=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
-rote:
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-> > If people are acking things that generally means they're expecting them
-> > to go along with the rest of the series.  When you didn't apply the ASoC
-> > patch I did actually put into CI but it was a bit surprising that you
-> > seemed to be expecting that.
+Thanks!
 
-> There was no clear consensus. Some patches are still not acked.
+[15/15] ASoC: adau1701: use gpiod_multi_set_value_cansleep
+        commit: ad0fbcebb5f6e093d433a0873758a2778d747eb8
 
-What I would do in that situation is apply the patches that were acked
-and leave the rest.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-> No worries, I will take the acked ones. I didn't see any b4
-> notifications from your side yet, so I assume the patches are still
-> pending?
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-Yes, like I say they're in CI.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
---8dqGeFBusm2eevtX
-Content-Type: application/pgp-signature; name="signature.asc"
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
------BEGIN PGP SIGNATURE-----
+Thanks,
+Mark
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeuNBUACgkQJNaLcl1U
-h9D7XAf/ZOJbznj+kR0nWMA9aMwpcy+sZtOGrPU2NlEuXbE9T6iSncOwANVAM/WG
-qy0hFl8VWIWtR5k6vSTQqcIXIDfpzlG9WivypRx4LeCZf2k0NwqoTffiijgvzYzG
-4+n/G6f1+tWy4gMxAWSiCWihVjnY6OzIdnwZ/h1OyIk1udqQlKCgJ3/wPbCh5HzM
-nWQdusaZRMBjQrHhbtzsWbTuilCb5US2Hu0/eDDjxo1ebJizZm2oIr8mcdu51rSf
-YlLi5/GlFwwo+ItSnnbI8Dl7BbrcLWr3MOXyLOSISKN4jA/VT+MKUU/NHl5FvsrX
-4fwSx/1bsqjSeBP6FjEdoniRW8UjPw==
-=t6DC
------END PGP SIGNATURE-----
-
---8dqGeFBusm2eevtX--
 

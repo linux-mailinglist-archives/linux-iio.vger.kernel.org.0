@@ -1,174 +1,133 @@
-Return-Path: <linux-iio+bounces-15501-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15502-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B74A34C97
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 18:58:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22767A34C99
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 18:58:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D36BE1624F6
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 17:58:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FA58188CF58
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Feb 2025 17:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A417524166F;
-	Thu, 13 Feb 2025 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB9A24290E;
+	Thu, 13 Feb 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nL7iWe8L"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="gh7HbCjo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A359E23A9BF;
-	Thu, 13 Feb 2025 17:58:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7D324168F
+	for <linux-iio@vger.kernel.org>; Thu, 13 Feb 2025 17:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739469495; cv=none; b=G4475mm8US+cyKyMrM261TxiwrH1cNUkfFiEBlwtywTg/09PkNq9yZrFwoFRsHJn3oawRDctUmseq2oqEmLLD7fNATMaSZsr1iMcMk/d4KNzIVguXoPs7zfP2kTCpEWUyLT4FhjXUav9K6dJrWfZlgGvWYbamBfVEcKUB9t9Itk=
+	t=1739469499; cv=none; b=gMFvtpj/3d9qbnuibR0joGSOnNXMVmWnUvLTypJsV0P6YKTggFokCzXwJTbGJDvASQ4FEK5Vwyx4RLKVGKaSTypigX+HhGCrKvCOwG9yzLO4inS5i0ilNYZOdnXA76AFmg4PR1/Dh2A+4OpDqgynjItf7Uf4sVMcXwsVw5HgY0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739469495; c=relaxed/simple;
-	bh=xWOXLkZUDipVXkBEWn6lKA+dhIt25ilw4tSep9BV2AI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iF5XwEfEQtoEXdfHW9Qot9GpFxvjTue+56M/kQU7D/QdyrvAjqjVgpGPUaQwkCrJSmYKTR0mqcQlrRS+ABy2vXOlWdk0aSy8q9NEs8bqeZHSnaNuvBjSi3jQIJDXIWR9s1KBe1wg0P22XT16d7sVhUFJGD3/VQ4N2pBKPgV3Fww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nL7iWe8L; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739469494; x=1771005494;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xWOXLkZUDipVXkBEWn6lKA+dhIt25ilw4tSep9BV2AI=;
-  b=nL7iWe8LRuaaE9XtsEcgHVtkJqusZwn078EcJfVJ1ID0soWE8WODa1du
-   9N/sHArAJdd1KLeVrHkSVoTA9MO870iIGOgvrxcBdCk7lHiBLgY7U/VMq
-   Cz8f8jRZpYXbDcpJtedBIZahWbcsERPBLqHVtQDp6Sj0qjziO8eqnFQ9j
-   VH4OcLRO7uFH65/NsEXo0x8x9hC4I+RVR4V/HZw2fBYGn6vuvzZfghqQa
-   AWAZGHQNoe+m5hz7QdLvSTFDcndqQwD4c/Ys8ZwV/yhBouowydsNRf2t1
-   YMa4kg89l/IqwY0tqzLuvxcLvNZ01qEJVIjKnD8J0wGiLA31CymLIOeu6
-   A==;
-X-CSE-ConnectionGUID: 4S1JRYt2TK6htlOC44dRpA==
-X-CSE-MsgGUID: LWXmXoRXSSWwfnjClGvfXQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11344"; a="40066666"
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="40066666"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2025 09:58:13 -0800
-X-CSE-ConnectionGUID: xIa7/2r4Ru+OWWqzhiIL+w==
-X-CSE-MsgGUID: FRsG1AacQQO4aUWK4apTMQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,282,1732608000"; 
-   d="scan'208";a="118223746"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 13 Feb 2025 09:58:08 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tidTS-0018XD-0N;
-	Thu, 13 Feb 2025 17:58:06 +0000
-Date: Fri, 14 Feb 2025 01:57:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Robert Budai <robert.budai@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Ramona Gradinariu <ramona.gradinariu@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v7 3/6] iio: imu: adis: Add DIAG_STAT register
-Message-ID: <202502140107.SF1UwFxM-lkp@intel.com>
-References: <20250211175706.276987-4-robert.budai@analog.com>
+	s=arc-20240116; t=1739469499; c=relaxed/simple;
+	bh=T4wEjSRsVSrhRrn2h8DgpJJyTxIWuEpOmyBwmIva9Tw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Iw1zs6b+a44rs5/7CDlXgVrBXUcnFLBQBWQumfnzru3ZggQSJ0WNgg/T87ULToUaxKPwq0gNYp2/Xm8TZqEAZ/hMrS2cCNPBKgA6IfObSZJJ4RrD8tbOtWTeEqjgX1vGj9TdCZjjvr+FXtRViBhTkk7p1KVSRBm3PelKVOnBmBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=gh7HbCjo; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-54524740032so201882e87.3
+        for <linux-iio@vger.kernel.org>; Thu, 13 Feb 2025 09:58:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1739469495; x=1740074295; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1hJUq2FWMpiTubsUgXvXpT/cz5xlZO2FuryQMryqjCg=;
+        b=gh7HbCjoFmLKwD37kRFalbMy9C8mdaurTyq5yYYJejuNI0lKcrL/NKfzoW9VsjDPDd
+         7D4oPc75wZilDRIPWymRHPlb9xApBTn7klBmHMw+4c+xfwRy/awKxTzLZT2n7T6tCRJF
+         cwvRNR9rGoVyW2j0xWjD/czYlIDaE2LDNcvLLTKVMF3tYsqJ2ArpRPa2gAUUrmeMRJtM
+         UGfda+74pne77pvtLM/a/ke+kgg21rAR69cmnyCBCq9TK8SZ48MMTNB5DacIBQ1xri9c
+         FQX0sVHk8Yv70n6abXdyGaZ+b3iyDyNLoej9GzfaXkaKFCaPKd6sOc9Qx2qZba8BoFOs
+         zo9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739469495; x=1740074295;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1hJUq2FWMpiTubsUgXvXpT/cz5xlZO2FuryQMryqjCg=;
+        b=WaE3Z2A2Du2LCYFW2DHLgWvqAt4ppC2om7YvEOVPHkoCtrz3qjnRh0ERmVNODRZwkF
+         aeGZxiKolTv134nQYG+oDmXEuR5xnq5V9Qgp47I6C/RZ6vNoNa1ZE8eyboVagu9/pWx0
+         rjmj64PlQczoyCwB2oVVSxz51XQUS6FoNJnjEy5UJ/T9oX/PPwjIgpQKK3BTI228UWkX
+         ZFqnHidI4eI4feEt5AF5RpW6CJp35z5SoxFnJEiHShylWhwD92CHAl61mDjwrNehpDnb
+         ZY6DlEPK5lK56W89Fdbm8HYDNxg/oOWAZZedq7mULuYBGvix7N08iPIkat06L5zp+J2/
+         rMfg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+80Il3k4pyuJzRl6wd7oBIQ7VEPh/KkipTSUAo6yabvSqY9QYahUTIp+EQxMtGciboNL09avi5fc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyuh64vsRgzh+I7Z41GJOl1k1K/x/S4Sj77Bq0mIEoqxljNs2Hr
+	5pLvDHbdTkVD7mLSNsmngXAhNXRui0fIbOIpnRpzkq58bbnUySHmblxujUq0oNkxCaA+te5bl6C
+	3QpvalSrDhrmyb+WjkehGn9ZFBIDG2wR4RzGVVg==
+X-Gm-Gg: ASbGncsLD7DL2xElgozTvwEM1sT3jZKh7kwVwolhEW9ww79GW6Td9H0ilLyJVR81Fw3
+	C6oPZZcxeg8V0dH2ucsZPW2hpZZCv8H2iWJeWGAltxv0DGrYxU7FS00sYA0S1Dx+J0ooEXenGPd
+	zMiJaiIrJMDCIpVfKahRvjmihd88cH
+X-Google-Smtp-Source: AGHT+IGvl6mW9n7No7hloQAm0sjQgh6h7QTx9ok6twfTZlsAcsr3IPTDtYgCtgjq9SBpATIzjmWo0SWAoAL/h4h3bA0=
+X-Received: by 2002:a05:6512:230d:b0:545:8f7:8597 with SMTP id
+ 2adb3069b0e04-5451dd953bdmr1828407e87.16.1739469495145; Thu, 13 Feb 2025
+ 09:58:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250211175706.276987-4-robert.budai@analog.com>
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
+ <173935301204.11039.10193374588878813157.b4-ty@linaro.org>
+ <801b5364-129f-42e9-bf9a-a90d9eeb4629@baylibre.com> <CAMRc=MeXTvPnEPjOmPd5Vw0FYKHzndsB0SVjQErA4CY_0MGsMQ@mail.gmail.com>
+ <7989a6a0-b761-416c-ad97-69bd23fdc2c4@sirena.org.uk>
+In-Reply-To: <7989a6a0-b761-416c-ad97-69bd23fdc2c4@sirena.org.uk>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Thu, 13 Feb 2025 18:58:04 +0100
+X-Gm-Features: AWEUYZmrRaL2YjTM2r-jpirYN5EOkISNS2cmGOX2GIxOe7L0RqWQ7r8Dpd66z_c
+Message-ID: <CAMRc=Mea5imComkraP=v9TKsxLDoBm4XtbLL1QxCbhJ8d4uxcA@mail.gmail.com>
+Subject: Re: (subset) [PATCH v3 00/15] gpiolib: add gpiod_multi_set_value_cansleep
+To: Mark Brown <broonie@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Andy Shevchenko <andy@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, 
+	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-mmc@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-phy@lists.infradead.org, linux-sound@vger.kernel.org, 
+	Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Robert,
+On Thu, Feb 13, 2025 at 6:53=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Thu, Feb 13, 2025 at 06:42:19PM +0100, Bartosz Golaszewski wrote:
+> > On Thu, Feb 13, 2025 at 6:25=E2=80=AFPM David Lechner <dlechner@baylibr=
+e.com> wrote:
+>
+> > > Do you plan to pick up the other patches that have been acked
+> > > as well? It seems like most folks were OK with everything going
+> > > though the gpio tree since the changes are small.
+>
+> > Jonathan requested a branch so I made one and sent out a PR. I figured
+> > people would just pick the relevant patches into their respective
+> > trees? For patches that won't be in next by rc5 - I will take them if
+> > Acked - just remind me.
+>
+> If people are acking things that generally means they're expecting them
+> to go along with the rest of the series.  When you didn't apply the ASoC
+> patch I did actually put into CI but it was a bit surprising that you
+> seemed to be expecting that.
 
-kernel test robot noticed the following build warnings:
+There was no clear consensus. Some patches are still not acked.
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.14-rc2 next-20250213]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+No worries, I will take the acked ones. I didn't see any b4
+notifications from your side yet, so I assume the patches are still
+pending?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Robert-Budai/iio-imu-adis-Add-custom-ops-struct/20250212-040235
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250211175706.276987-4-robert.budai%40analog.com
-patch subject: [PATCH v7 3/6] iio: imu: adis: Add DIAG_STAT register
-config: arc-randconfig-r112-20250213 (https://download.01.org/0day-ci/archive/20250214/202502140107.SF1UwFxM-lkp@intel.com/config)
-compiler: arceb-elf-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20250214/202502140107.SF1UwFxM-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502140107.SF1UwFxM-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/imu/adis.c:319:42: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected unsigned short [usertype] *val @@     got unsigned short [usertype] status_16 @@
-   drivers/iio/imu/adis.c:319:42: sparse:     expected unsigned short [usertype] *val
-   drivers/iio/imu/adis.c:319:42: sparse:     got unsigned short [usertype] status_16
->> drivers/iio/imu/adis.c:319:42: sparse: sparse: non size-preserving integer to pointer cast
-
-vim +319 drivers/iio/imu/adis.c
-
-   298	
-   299	/**
-   300	 * __adis_check_status() - Check the device for error conditions (unlocked)
-   301	 * @adis: The adis device
-   302	 *
-   303	 * Returns 0 on success, a negative error code otherwise
-   304	 */
-   305	int __adis_check_status(struct adis *adis)
-   306	{
-   307		unsigned int status;
-   308		int diag_stat_bits;
-   309		u16 status_16;
-   310		int ret;
-   311		int i;
-   312	
-   313		if (adis->data->diag_stat_size)
-   314			ret = adis->ops->read(adis, adis->data->diag_stat_reg, &status,
-   315					      adis->data->diag_stat_size);
-   316		else
-   317		{
-   318			ret = __adis_read_reg_16(adis, adis->data->diag_stat_reg,
- > 319						 status_16);
-   320			status = status_16;
-   321		}
-   322		if (ret)
-   323			return ret;
-   324	
-   325		status &= adis->data->status_error_mask;
-   326	
-   327		if (status == 0)
-   328			return 0;
-   329	
-   330		diag_stat_bits = BITS_PER_BYTE * (adis->data->diag_stat_size ?
-   331						  adis->data->diag_stat_size : 2);
-   332	
-   333		for (i = 0; i < diag_stat_bits; ++i) {
-   334			if (status & BIT(i)) {
-   335				dev_err(&adis->spi->dev, "%s.\n",
-   336					adis->data->status_error_msgs[i]);
-   337			}
-   338		}
-   339	
-   340		return -EIO;
-   341	}
-   342	EXPORT_SYMBOL_NS_GPL(__adis_check_status, "IIO_ADISLIB");
-   343	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Bart
 

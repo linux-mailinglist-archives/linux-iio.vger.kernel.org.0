@@ -1,159 +1,136 @@
-Return-Path: <linux-iio+bounces-15546-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15547-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5D8A3690A
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 00:22:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24358A36D51
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 11:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A8B7171459
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Feb 2025 23:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1BC3B0125
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 10:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23AE1FCFD4;
-	Fri, 14 Feb 2025 23:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12E619E97C;
+	Sat, 15 Feb 2025 10:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OBDZtdyJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S7sJS+Ph"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D0C1FC7CD
-	for <linux-iio@vger.kernel.org>; Fri, 14 Feb 2025 23:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7AC748F;
+	Sat, 15 Feb 2025 10:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739575355; cv=none; b=WDD/vNUy2cBL/qmAMLSNZENWsZX4mgaSWDviKDrF32O2z7IwXf1Ij+kNnm5Jzf2He8PrGchFOv4wA4X1thIjERaaUyLEv8XXHqqpM+9Lpp4D7UVTIazcWgKbeD8ziWFXiCiOERrAEEtqkRmEtNtQUQLoJ9zVd0Piffl2cSWhltA=
+	t=1739615547; cv=none; b=ezUHrJl39Hz/wkQzlWAk+Y4REw6Ea5lWhnmKBXf5ysm8OKdEhpTvuHJk+sRJ9Gm5Hmrrlk1ZIxTma7tKZy3hbsfPTMwSOWSs7JXItPaV4CfrNMt5I5Sf6dODlS7Ysx3KsNK4/csK2beAICXufiVeaHY9Wxw4R8/ZcCyi9/KiLBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739575355; c=relaxed/simple;
-	bh=pPXxk7x2My9xLVR9K8CXlSChtd6DwTCfsKgijzf+gsE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ucUsHAgapofZ1jY4z76qYrEegbl75VBuKntdp52+wORqtPl974fSmmGtGyti6nWpjlb3UgrgmRFWIJbNxq/qTgS48vydmG6GodSjN437O24hKk0CDEnmU0+py6WhLGlkyo83BdJv2vBHlA82NonlgNohXsQR/yoOnYysQm75EH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OBDZtdyJ; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-307d1ab59c6so26086101fa.1
-        for <linux-iio@vger.kernel.org>; Fri, 14 Feb 2025 15:22:33 -0800 (PST)
+	s=arc-20240116; t=1739615547; c=relaxed/simple;
+	bh=PBgr8FLz5oLAqGvU0Ww9gruaAbHJmlB0I5+cST1gO04=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dLvrD7pRLRDcCfGwYPOPJHB23vCN61QlSwvqfe6+dbilYhj/FKBfKIp3zU1tWvv9vGF24gvS7oc7LGECE1N0/TzXEQA2CzDM89ZyTVyZBS3B+6L9flRnHwMv49tJJzUAaRInM/JTRIzhobiHU/amJxFoExZ0dzpMwlEYSIUnQBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S7sJS+Ph; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5450681b606so2821494e87.0;
+        Sat, 15 Feb 2025 02:32:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739575352; x=1740180152; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pPXxk7x2My9xLVR9K8CXlSChtd6DwTCfsKgijzf+gsE=;
-        b=OBDZtdyJ4d/E+ur1M3Tgx2Qw/mNwPFaYwJ38XVG+zU+YDoK8xrPe94knh2OzVjdgt9
-         zKV8+BuiVeb8mjW+fG2v6Iiwey5cK2PATaFGf1ICCB3XOj8kWWqmJG3/8U5i/Oglrkpj
-         jrOAhsrSxu0vtvWR6qeroXIVLocievGEBe1OwfjkTMPCvUudmZYnxPtrfmS6JuLq+frZ
-         vYhEzB35RaNTJlyBfESrMIWxwRWo1GU31MMCx+3j3HRAUbbhkgFQzYxAO7CF4YhDiK1q
-         5XboGfcCyPrYH5S9ZeQzBBVcYAm+kwi/rMotsmVd/uFAuUIN73Ze+zTIIf+vhouWLUEq
-         R3tg==
+        d=gmail.com; s=20230601; t=1739615544; x=1740220344; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+IFODiovVbi6js9JilOujPK29SFBBxZbaFpvul0+tsA=;
+        b=S7sJS+PhERUdjraYQxlrVbOkq8L4cRCHfYtxsfup4qudbUAMw+nKK+nIGVgXC3VUCp
+         X+jDr+KpEUzr9IaBqq8ae/XnI4jAk0CReJCAk2awAruFbCOw3qSI7au1EyXnUg9cXF4J
+         vl3Hn8if86Pab3XBX36gjjVX/iZ77EVA3xiYUsFIXoS8p07BeBmVtVrlPnR1MoPdBCqe
+         nmlCWGDy0baehxtqhI58W77WOC/9lvb/VMYt+4dIbd6c7lDvFEj9HPEvFLtDcBOo0oYY
+         ZPmIBHM5q5V2ik1Rq57+1sZyOnKj/vRZBja8oPDftPkUFNxYNQlpqQPGsA8MA82p5PTN
+         7vpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739575352; x=1740180152;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pPXxk7x2My9xLVR9K8CXlSChtd6DwTCfsKgijzf+gsE=;
-        b=uBQZhI01EvkLJdksoekQ6rqp2ID1+LpfRV6sfbL1bOExmvowINi5YNi2q0l54xZ37P
-         NZjoXquIdf0ySRee7l4YzylDNjD9xcEu4VDOvs0m5qh/sko5+elcCYNxk4XNgyeRFF+5
-         P4C3pS55vUStehMTg3DO++x7+jG8TzHZydRdu2ZtwuJc6LmVYafBu7mmkgWiFv5K5d2w
-         Y93kOwmeDlrjKmnQgDusMvyKKP5fdYfzwP7cmOoG+2L9OjDhb+WfO4Wyk0zDxabi8MZQ
-         Y6KBaozn68rOMFTB3XpQLHp8mvPFtoMTrwcCAg6blxy5+v38/g0/xzZg7Y4gDkk7KwmV
-         RDQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVtuOabmE3PiaJCbFfeGHijHBdygFWR+9xPva+n28a41P2e71nbxoh8xuDHTRBUWlwqYfpcmVHscrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcaSm9WBSnF8ff7GglegjQ9KPs8Cxtukhqobl6rmqFdPnrFppw
-	XBU3q0TmWqqllrcqcRCz2i4D3WKinTeGSQczlj0c+X/LYsREGoImgOn8Z2UnQ83Q26saDd+jaGN
-	fLQQjRagk/UzUc8PsZWORXLfBA/s4osebG/lYvQ==
-X-Gm-Gg: ASbGncuDjJMhMFV6uHQbwQI1TP0Wbb4YcDvABvNNVnAZ+tgiuz9xLvyGfcE68lWBKmU
-	B2WzcCUgVUCCHulnkpy8Yl7i1WLcTToFLvzO9ZruTKmXz9H/gaOWQOtuzrlRbcg6k1Q9VI9Fp
-X-Google-Smtp-Source: AGHT+IFCZppwGEdjNtyl7ODyKVY01soCR8dNMEESTZbrHvR4pUct3wzFqBQ7B0wq3Q534KzSfMqIBbfBb/GCa/7i7Z0=
-X-Received: by 2002:a2e:9397:0:b0:308:f860:7e8 with SMTP id
- 38308e7fff4ca-30927a63f50mr4179131fa.20.1739575351788; Fri, 14 Feb 2025
- 15:22:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739615544; x=1740220344;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+IFODiovVbi6js9JilOujPK29SFBBxZbaFpvul0+tsA=;
+        b=dzOLb5uoQteqbQGxoZ8BmrjvubiPipfQB4jO5CWcnpKK2WorotGsyqC+g4h8+ieQEZ
+         NzDOD0/ab269vvBgfmBqWyqWAEJyHWtxcIQP++ycCPFYMEgpJWMKNA65FOwKRno8z4Ub
+         Ecm1fMW9xrjvkmpssiBneKcUcBY/VfKYyYhPz4JdtjKf8566C+S1yte6VGZj73LbMnG5
+         LqIVsv+6iarNz/R4ryfSyh1QIOCpAjFFvgKlRNW6P5qg5Ajv84L3lKMjQa5S4ZW9SmPr
+         w/fYn52S7N16zBDSrml/fITGrILj68QxY8AFbQCE+qAhGmk1OO0lZGoxxqFJGyd19V11
+         /MCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUBrZIH77uwHBo2We4A7I5rUyXsyODWIr1muurubXRHqlhsde0EWSHxU05Fs9pKxIBnVaZoPNID8WNMfVgh@vger.kernel.org, AJvYcCUDz+6CYLnxlM6hCihB2yq1vHZC24B1nbkCVxOJqxVjDjioRuT4Js9uX2T+wkMAb1xMwcn12edzIq93etc=@vger.kernel.org, AJvYcCVX8VFkHyUwENx9FZUKL7A/iMmqpgN1EsUN+jarH5WZSlPnhoivDORCFRPEfW4pyRnZ7VzTKvE8AvEG@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyc8QU6BFcZc693icb7jO8h8b4kSX5UJy/WwnRTOtetyPG25vz8
+	gJtqAwrJv2AYF7Su9gm7OguhUIynoudthV5CIvuj5k4oRethmLhQ
+X-Gm-Gg: ASbGnctp4dcVkc9oVYtgmijssB9gKke/TDkW9DL0XA/h5wNiwcqrYZwiOcj8DQXs9Zx
+	1JobabzmCzMG6Ky+NyukvJA4mii1C3WgwNMZ68fmdgYKlbYXijn8TGuV0g1CpdC9u6ay6gaVjpN
+	SImiwxk45yDON9oNqU4zu1toniFAnqcchTvchOKz+5WCPaItfJFqe+KpjyTe+LF5/QuwMc91VJQ
+	MrZ6cI6tr8Z2LSd5Au2F5lyHOpfTqKIl0C0dlsECjlCFN507KfL9cvNzf8s5FMcicZHGliZNo9Z
+	ubRRmNE=
+X-Google-Smtp-Source: AGHT+IH113Zt+sUzS2Ps9oWib8/GKvxz3e6n6frTNjstX8eVnnrEEQKhdQnxlnIAeaOGJTRH+rvo2Q==
+X-Received: by 2002:a05:6512:4025:b0:545:ea9:1a11 with SMTP id 2adb3069b0e04-5452fe2738amr746168e87.5.1739615543524;
+        Sat, 15 Feb 2025 02:32:23 -0800 (PST)
+Received: from xeon.. ([188.163.112.51])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-309298dc5eesm2201571fa.95.2025.02.15.02.32.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 15 Feb 2025 02:32:22 -0800 (PST)
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v2 0/3] iio: light: add al3000a als support
+Date: Sat, 15 Feb 2025 12:31:56 +0200
+Message-ID: <20250215103159.106343-1-clamor95@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250213-for_upstream-v2-0-ec4eff3b3cd5@analog.com>
- <20250213-for_upstream-v2-2-ec4eff3b3cd5@analog.com> <CACRpkdZR8X17Bn-i2anqjxf0Gk60V175F7Xfwytkhy7_K+LsSA@mail.gmail.com>
- <880631da17a6d8ed4afe5a8c453fd4f7d0e4fca5.camel@gmail.com>
-In-Reply-To: <880631da17a6d8ed4afe5a8c453fd4f7d0e4fca5.camel@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 15 Feb 2025 00:22:20 +0100
-X-Gm-Features: AWEUYZlCgILVTBH640MzYpGgtGlpknzKmD0qMEIE1z0T6Iw6f5ZqTnHVDhruggg
-Message-ID: <CACRpkda+CDRMYKmjw7kewenkteLhPYb040E4B=ZG6pgdy=65pg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] gpio: gpio-adg1414: New driver
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>, 
-	Jonathan Cameron <jic23@kernel.org>
-Cc: Kim Seer Paller <kimseer.paller@analog.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-gpio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-iio <linux-iio@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Let's check with Jonathan Cameron (IIO maintainer) on this as well.
-He might have ideas.
+AL3000a is an illuminance sensor found in ASUS TF101 tablet.
 
-For reference, the datasheet:
-https://www.analog.com/media/en/technical-documentation/data-sheets/adg1414=
-.pdf
+---
+Changes on switching from v1 to v2:
+- sort compatible alphabetically in schema
+- clarify commit descriptions
+- convert to use regmap
+- arrangle lux conversion table in rows of 8
+- add more used headers
+- improve code formatting 
+---
 
-(By the way: add the datasheet to a special Datasheet: tag in the
-commit please!)
+Svyatoslav Ryhel (3):
+  dt-bindings: iio: light: al3010: add al3000a support
+  iio: light: Add support for AL3000a illuminance sensor
+  ARM: tegra: tf101: Add al3000a illuminance sensor node
 
-On Fri, Feb 14, 2025 at 2:17=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
-> On Fri, 2025-02-14 at 00:25 +0100, Linus Walleij wrote:
+ .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
+ .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
+ drivers/iio/light/Kconfig                     |  10 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/al3000a.c                   | 221 ++++++++++++++++++
+ 5 files changed, 247 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/light/al3000a.c
 
-> > Now, the kernel does not have switch subsystem I think,
-> > so this is something like a special case, so we might be
-> > compelled to make an exception, if the users will all be in
->
-> Exactly, since we could not find anything, the best fit seemed like the g=
-pio
-> subsystem. I was the one suggesting it since a new subsystem for a simple=
- device
-> like this looked excessive. If we had more devices that would fit such a =
-class
-> of devices, maybe it would make more sense to start thinking on such a
-> subsystem?
->
-> > say userspace and make use of this switch for factory lines
-> > or similar.
->
-> Kim should know better again (about usecases) but I would also assume thi=
-s is
-> for userspace use.
+-- 
+2.43.0
 
-Actually the GPIO documentation Documentation/driver-api/gpio/using-gpio.rs=
-t
-even talks about this for userspace use cases:
-
-"The userspace ABI is intended for one-off deployments. Examples are protot=
-ypes,
-factory lines, maker community projects, workshop specimen, production tool=
-s,
-industrial automation, PLC-type use cases, door controllers, in short a pie=
-ce
-of specialized equipment that is not produced by the numbers, requiring
-operators to have a deep knowledge of the equipment and knows about the
-software-hardware interface to be set up. They should not have a natural fi=
-t
-to any existing kernel subsystem and not be a good fit for an operating sys=
-tem,
-because of not being reusable or abstract enough, or involving a lot of non
-computer hardware related policy."
-
-If this is the usecase, like controlling an external switch for such things=
-,
-using the GPIO subsystem might actually be reasonable in my opinion,
-(even if the DT bindings end up in their own category).
-
-If the switches control stuff related to computer machinery (i.e. integrate=
-d
-into a laptop to switch on/off the fans...) then no. So it depends on how
-and where it will be used.
-
-Yours,
-Linus Walleij
 

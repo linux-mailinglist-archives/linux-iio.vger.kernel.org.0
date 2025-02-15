@@ -1,417 +1,417 @@
-Return-Path: <linux-iio+bounces-15551-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15552-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B3EA36EB4
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 15:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BDCA36EC7
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 15:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF9F0169789
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 14:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E683170E6A
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Feb 2025 14:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54FB41B532F;
-	Sat, 15 Feb 2025 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A556A1D79A9;
+	Sat, 15 Feb 2025 14:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b="Xs87Nwkz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gcom4IAP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ixit.cz (ip-89-177-23-149.bb.vodafone.cz [89.177.23.149])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED2523CE;
-	Sat, 15 Feb 2025 14:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.177.23.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ECE13DDAE;
+	Sat, 15 Feb 2025 14:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739628780; cv=none; b=PBKgNqgY6Mb5zizKKv9UbCgA9fTNZf8Z22s4vk14yiAQpRtJAlBdaROEFl1KyqRdV/894DO/iyOF5/zKu3FQ4gTWXlvoKp8mA1kdZc3wyOa44aCUAr8hYimrFeG89CYCVOm68NpsOIGaaL+nc296Kvz69DfulsPp1QbOsVgbQdA=
+	t=1739629340; cv=none; b=FK92E8LyjsoZ9WIoBpcwSSIehdKvbySgMTkp/Uczu3wUNw1a/H68/zcELolGKBGdts7sauSAvNfRg6a/qkd5sAYsU4+1Nv6K438i8VsHeIQZbpvE6XJje8o+oIa0Grm7+w4vMFiEKz/xnsavGFHwqBOj5LL/X1pbT/7Wgu3a8bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739628780; c=relaxed/simple;
-	bh=U0xKFCEJrC+Mr4BS7xANqFJUU0XLRCKnekW93NrV92k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bn3Qww6tJtCoVEHgQH4YdgDjQTL2IxKJO8EJIqe5bzibWDWYrPvYch6dXWVqAZuTshzWnqgUVMDDar/dY+7N3AqUSOE5+VinL+PrdVt31RYC38LSc6IfRdWuMdJUyqWqgUb5Mb0ZLQKKTfwTggveaw6HUmvISL80sk08ulgVlN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz; spf=pass smtp.mailfrom=ixit.cz; dkim=pass (1024-bit key) header.d=ixit.cz header.i=@ixit.cz header.b=Xs87Nwkz; arc=none smtp.client-ip=89.177.23.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ixit.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ixit.cz
-Received: from [10.0.0.200] (unknown [10.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ixit.cz (Postfix) with ESMTPSA id B23A41639E7;
-	Sat, 15 Feb 2025 15:12:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ixit.cz; s=dkim;
-	t=1739628768;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=3dmO342TrNpWXsF7gNwCYRAYy784U9uDerJyfnmnQJ4=;
-	b=Xs87NwkzfynHqyb+GEacuvtVFnNvD7IY7n+V1v/AKEXGsgGPAiHBUNwDncF9S30SnjAXyr
-	5rOmcevj3Plmn8CobL4C5jxCiGIHtpRJXS7sCTOBroTCGOJw0ORozo/ZAYkNPDMhWNJKck
-	Cdku8QeTFhrW/ITiLwvHN1glEs2sjgI=
-Message-ID: <1597453a-31fc-49eb-8b69-efeb8805c67a@ixit.cz>
-Date: Sat, 15 Feb 2025 15:12:46 +0100
+	s=arc-20240116; t=1739629340; c=relaxed/simple;
+	bh=6fJ8zHaER+DuRqytlQHjD9/7h0lZh1Y1voiqfDeb9Eo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hCkNn81hXTJP8iHlPmXuz9tG3s/6zebzDt+p3kqaAKg25K/zvS/3BBpf17svoFlWLf0nFcnriPEaFYlxgQ/7CY2Lc34lvtz+r2/jJTrwcRo7K59LSFNICsyoNd9iQdSPyjGkwNFhHYdk5HzbHx9WsTx+Bs4uf+7PD/E6O58PnRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gcom4IAP; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38f325ddbc2so777557f8f.1;
+        Sat, 15 Feb 2025 06:22:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739629337; x=1740234137; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4mA/QXoXjm/VEX8mtdfBVbYH7PcUqVqZV/G4AVhQ0KM=;
+        b=Gcom4IAPmYWMv7KMo9A59kW98xhgQK0AbBw9gZTNXJTmqM9MsNl/eIYs2SUm2/Tfkz
+         vve4EWipxzyJ14NdfZuDPBuiC8xVb6B2SOuoSv7xhT7DNJMx2f9vUF6XfOWZPUqCTqy/
+         LxaspLtN7tnsm2Ym8mi8pqHDAwq8Z2Agf2sEu52xfVkRctkK9R/VxQgnP7LWUjPkjHCB
+         2g76NtGxLGn5SoodEvILlnWIZYbTy7qhTdBU1Yix3aedIBFud7bAf3qnU2Q1lB1ELi7r
+         Vqu0Lx0IM9f2k1S3e9EHlN7256ck05Z1VGmDVO9HzhCTJ5Z+TkTKkC3WH6XBMvkLmCzS
+         LJbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739629337; x=1740234137;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4mA/QXoXjm/VEX8mtdfBVbYH7PcUqVqZV/G4AVhQ0KM=;
+        b=bPNfVYovZyIf6thztw5yJtC/QW33yBAc15p1gPb+mlPcufTfeCgBZuVbcSA7CNk/Nb
+         Rym3zcTwIF+VTgmNr+Ve9Bbksb9K8KEMtxKxnVUi1HLng0RpI/TTcNovKxWop3D77p9f
+         tmXdctNlveJvgcLAeB4yZPt/4oROAhhJd0uV9w8yrSSnSb4aS7Rx6p/HcLsxesqoP0Mi
+         Gf6BL4dPIJO/VQ9DWiHc9oqBvdRlnYzM8GlF0WpDuzDMSmG97yVrc+/P073zC6uytgh6
+         C21CjChS7swAeIXsnmKI7XbfJt90EOvDf+SCX+S1IGIGAVE6n32SNQHowQ77wXdvyoZ9
+         sEzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeNS6QRKpoFIVE4IaME8O0fwqyRxsaTNmadiTvirPJj9EY/uBcLdSP+VeBOrfPxGaLpS4rTtWVoiHN@vger.kernel.org, AJvYcCUx89O2KRzguRH9WxnYIzUivHX8K4QAqTmEQfoSlTYvRgjg6SOAFhlPaUK+G/nxN5YL5u5OLL8C3lwV8MdT@vger.kernel.org, AJvYcCVLjcin3ign28OiZcu8iPX152BFIuZJ3xHf38Fj8kunTbwbSUQsrWDlyZ2clSzrsXUm2zrKpzxITu5H@vger.kernel.org, AJvYcCW2YWrdGxnBbX351nNHO/q/a1eTwjXY5fe2s5E5/sjO+TOPu2LfoHmvn96cSYbxVgYeUDz+7uUyH3GJsac=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZc93e07re9KBP1+DiggfY1R76z+ctOyDj10zUtwpACmVk+8Q9
+	9hYtr+iR4VUy91Y9Tc91EH0puvgD5r9T4rTjVWNxFke0RDEJSmREoeXMoUgeOZFc6mvEW8P2Ptq
+	EJyL4lRkWVCTXuhqFi4vwtdI49PM=
+X-Gm-Gg: ASbGncuQYbycFJVpKhbSWWLRkuUgE38K93X9d4NXFgEvBA3GkC9lxwqYyVbv9M6QUIY
+	Ls7BfXUP5oSbGTZGJskGFSGbTR15qtvz5rhIo3s2EYeV24Ojy1AhXrsItjg0VvRIqNHptP/YnaQ
+	==
+X-Google-Smtp-Source: AGHT+IGgTNm98v+pbR9qnQiZnlt235288hQCip6r7Wkf15mQLQvOkt8aXUuMnlWWa78TqdHhIEIDsPKpPq16dRYTZKE=
+X-Received: by 2002:a05:6000:4007:b0:38f:2b59:b550 with SMTP id
+ ffacd0b85a97d-38f34167df2mr2768661f8f.50.1739629336414; Sat, 15 Feb 2025
+ 06:22:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH v2 2/3] iio: light: Add support for AL3000a illuminance
- sensor
-To: Svyatoslav Ryhel <clamor95@gmail.com>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Emil Gedenryd <emil.gedenryd@axis.com>,
- Arthur Becker <arthur.becker@sentec.com>,
- Mudit Sharma <muditsharma.info@gmail.com>,
- Per-Daniel Olsson <perdaniel.olsson@axis.com>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
- Ivan Orlov <ivan.orlov0322@gmail.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org
-References: <20250215103159.106343-1-clamor95@gmail.com>
- <20250215103159.106343-3-clamor95@gmail.com>
-Content-Language: en-US
-From: David Heidelberg <david@ixit.cz>
-Autocrypt: addr=david@ixit.cz; keydata=
- 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
-In-Reply-To: <20250215103159.106343-3-clamor95@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250215103159.106343-1-clamor95@gmail.com> <20250215103159.106343-3-clamor95@gmail.com>
+ <1597453a-31fc-49eb-8b69-efeb8805c67a@ixit.cz>
+In-Reply-To: <1597453a-31fc-49eb-8b69-efeb8805c67a@ixit.cz>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+Date: Sat, 15 Feb 2025 16:22:05 +0200
+X-Gm-Features: AWEUYZmHa9pO9VfnLmYNuUWHpXt4I13oLrd7sTGxxt-V__hdk_gySc6k3867mqw
+Message-ID: <CAPVz0n1T_jXXDhm6gF7gDDqZ=b6abR1Tqk=5kLo=Ws4FF2EVJw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: light: Add support for AL3000a illuminance sensor
+To: David Heidelberg <david@ixit.cz>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Emil Gedenryd <emil.gedenryd@axis.com>, 
+	Arthur Becker <arthur.becker@sentec.com>, Mudit Sharma <muditsharma.info@gmail.com>, 
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
+	Ivan Orlov <ivan.orlov0322@gmail.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+=D1=81=D0=B1, 15 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:12 Davi=
+d Heidelberg <david@ixit.cz> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+>
+>
+> On 15/02/2025 11:31, Svyatoslav Ryhel wrote:
+> > AL3000a is a simple I2C-based ambient light sensor, which is
+> > closely related to AL3010 and AL3320a, but has significantly
+> > different way of processing data generated by the sensor.
+> >
+> > Tested-by: Robert Eckelmann <longnoserob@gmail.com>
+> > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> > ---
+> >   drivers/iio/light/Kconfig   |  10 ++
+> >   drivers/iio/light/Makefile  |   1 +
+> >   drivers/iio/light/al3000a.c | 221 +++++++++++++++++++++++++++++++++++=
++
+> >   3 files changed, 232 insertions(+)
+> >   create mode 100644 drivers/iio/light/al3000a.c
+> >
+> > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> > index e34e551eef3e..142f7f7ef0ec 100644
+> > --- a/drivers/iio/light/Kconfig
+> > +++ b/drivers/iio/light/Kconfig
+> > @@ -43,6 +43,16 @@ config ADUX1020
+> >        To compile this driver as a module, choose M here: the
+> >        module will be called adux1020.
+> >
+> > +config AL3000A
+> > +     tristate "AL3000a ambient light sensor"
+> > +     depends on I2C
+> > +     help
+> > +       Say Y here if you want to build a driver for the Dyna Image AL3=
+000a
+> > +       ambient light sensor.
+> > +
+> > +       To compile this driver as a module, choose M here: the
+> > +       module will be called al3000a.
+> > +
+> >   config AL3010
+> >       tristate "AL3010 ambient light sensor"
+> >       depends on I2C
+> > diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> > index 11a4041b918a..17030a4cc340 100644
+> > --- a/drivers/iio/light/Makefile
+> > +++ b/drivers/iio/light/Makefile
+> > @@ -7,6 +7,7 @@
+> >   obj-$(CONFIG_ACPI_ALS)              +=3D acpi-als.o
+> >   obj-$(CONFIG_ADJD_S311)             +=3D adjd_s311.o
+> >   obj-$(CONFIG_ADUX1020)              +=3D adux1020.o
+> > +obj-$(CONFIG_AL3000A)                +=3D al3000a.o
+> >   obj-$(CONFIG_AL3010)                +=3D al3010.o
+> >   obj-$(CONFIG_AL3320A)               +=3D al3320a.o
+> >   obj-$(CONFIG_APDS9300)              +=3D apds9300.o
+> > diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
+> > new file mode 100644
+> > index 000000000000..58d4336dd081
+> > --- /dev/null
+> > +++ b/drivers/iio/light/al3000a.c
+> > @@ -0,0 +1,221 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +#include <linux/array_size.h>
+> > +#include <linux/bitfield.h>
+> > +#include <linux/device.h>
+> > +#include <linux/err.h>
+> > +#include <linux/i2c.h>
+> > +#include <linux/mod_devicetable.h>
+> > +#include <linux/module.h>
+> > +#include <linux/pm.h>
+> > +#include <linux/regmap.h>
+> > +#include <linux/regulator/consumer.h>
+> > +#include <linux/types.h>
+> > +
+> > +#include <linux/iio/iio.h>
+> > +#include <linux/iio/sysfs.h>
+> > +
+> > +#define AL3000A_DRV_NAME             "al3000a"
+> > +#define AL3000A_REG_SYSTEM           0x00
+> > +#define AL3000A_REG_DATA             0x05
+> > +
+> > +#define AL3000A_CONFIG_ENABLE                0x00
+> > +#define AL3000A_CONFIG_DISABLE               0x0b
+> > +#define AL3000A_CONFIG_RESET         0x0f
+> > +#define AL3000A_GAIN_MASK            GENMASK(5, 0)
+> > +
+> > +/*
+> > + * This are pre-calculated lux values based on possible output of sens=
+or
+> > + * (range 0x00 - 0x3F)
+> > + */
+> > +static const u32 lux_table[] =3D {
+> > +     1, 1, 1, 2, 2, 2, 3, 4,                                 /* 0 - 7 =
+*/
+> > +     4, 5, 6, 7, 9, 11, 13, 16,                              /* 8 - 15=
+ */
+> > +     19, 22, 27, 32, 39, 46, 56, 67,                         /* 16 - 2=
+3 */
+> > +     80, 96, 116, 139, 167, 200, 240, 289,                   /* 24 - 3=
+1 */
+> > +     347, 416, 499, 600, 720, 864, 1037, 1245,               /* 32 - 3=
+9 */
+> > +     1495, 1795, 2155, 2587, 3105, 3728, 4475, 5373,         /* 40 - 4=
+7 */
+> > +     6450, 7743, 9296, 11160, 13397, 16084, 19309, 23180,    /* 48 - 5=
+5 */
+> > +     27828, 33408, 40107, 48148, 57803, 69393, 83306, 100000 /* 56 - 6=
+3 */
+> > +};
+> > +
+> > +static const struct regmap_config al3000a_regmap_config =3D {
+> > +     .reg_bits =3D 8,
+> > +     .val_bits =3D 8,
+> > +     .max_register =3D AL3000A_REG_DATA,
+> > +};
+> > +
+> > +struct al3000a_data {
+> > +     struct regmap *regmap;
+> > +     struct regulator *vdd_supply;
+> > +};
+> > +
+> > +static const struct iio_chan_spec al3000a_channels[] =3D {
+> > +     {
+> > +             .type =3D IIO_LIGHT,
+> > +             .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> > +                                   BIT(IIO_CHAN_INFO_SCALE),
+> > +     },
+> > +};
+> > +
+> > +static int al3000a_set_pwr(struct al3000a_data *data, bool pwr)
+> > +{
+> > +     struct device *dev =3D regmap_get_device(data->regmap);
+> > +     u8 val =3D pwr ? AL3000A_CONFIG_ENABLE : AL3000A_CONFIG_DISABLE;
+> > +     int ret;
+> > +
+> > +     if (pwr) {
+> > +             ret =3D regulator_enable(data->vdd_supply);
+> > +             if (ret < 0) {
+> > +                     dev_err(dev, "failed to enable vdd power supply\n=
+");
+> > +                     return ret;
+> > +             }
+> > +     }
+> > +
+> > +     ret =3D regmap_write(data->regmap, AL3000A_REG_SYSTEM, val);
+> > +     if (ret < 0) {
+> > +             dev_err(dev, "failed to write system register\n");
+> > +             return ret;
+> > +     }
+> > +
+> > +     if (!pwr) {
+> > +             ret =3D regulator_disable(data->vdd_supply);
+> > +             if (ret < 0) {
+> > +                     dev_err(dev, "failed to disable vdd power supply\=
+n");
+> > +                     return ret;
+> > +             }
+> > +     }
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static void al3000a_set_pwr_off(void *_data)
+> > +{
+> > +     struct al3000a_data *data =3D _data;
+> > +
+> > +     al3000a_set_pwr(data, false);
+> > +}
+> > +
+> > +static int al3000a_init(struct al3000a_data *data)
+> > +{
+> > +     int ret;
+> > +
+> > +     ret =3D al3000a_set_pwr(data, true);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     ret =3D regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CO=
+NFIG_RESET);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     ret =3D regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CO=
+NFIG_ENABLE);
+> > +     if (ret < 0)
+> > +             return ret;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +static int al3000a_read_raw(struct iio_dev *indio_dev,
+> > +                         struct iio_chan_spec const *chan, int *val,
+> > +                         int *val2, long mask)
+> > +{
+> > +     struct al3000a_data *data =3D iio_priv(indio_dev);
+> > +     int ret, gain;
+> > +
+> > +     switch (mask) {
+> > +     case IIO_CHAN_INFO_RAW:
+> > +             ret =3D regmap_read(data->regmap, AL3000A_REG_DATA, &gain=
+);
+> > +             if (ret < 0)
+> > +                     return ret;
+> > +
+> > +             *val =3D lux_table[gain & AL3000A_GAIN_MASK];
+>
+> Why did you chosen to do post-processing in the RAW channel instead
+> doing it in INFO_SCALE (same as al3010 does)?
+>
 
+From my observation INFO_SCALE will just perform multiplication of RAW
+to SCALE. In this case values which are read are not actual raw values
+of illumination. Next is my assumption (since there is no datasheet),
+but values obtained from register are similar to values from adc
+thermal sensors, they need be converted via reference table to get
+actual data.
 
-On 15/02/2025 11:31, Svyatoslav Ryhel wrote:
-> AL3000a is a simple I2C-based ambient light sensor, which is
-> closely related to AL3010 and AL3320a, but has significantly
-> different way of processing data generated by the sensor.
-> 
-> Tested-by: Robert Eckelmann <longnoserob@gmail.com>
-> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> ---
->   drivers/iio/light/Kconfig   |  10 ++
->   drivers/iio/light/Makefile  |   1 +
->   drivers/iio/light/al3000a.c | 221 ++++++++++++++++++++++++++++++++++++
->   3 files changed, 232 insertions(+)
->   create mode 100644 drivers/iio/light/al3000a.c
-> 
-> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> index e34e551eef3e..142f7f7ef0ec 100644
-> --- a/drivers/iio/light/Kconfig
-> +++ b/drivers/iio/light/Kconfig
-> @@ -43,6 +43,16 @@ config ADUX1020
->   	 To compile this driver as a module, choose M here: the
->   	 module will be called adux1020.
->   
-> +config AL3000A
-> +	tristate "AL3000a ambient light sensor"
-> +	depends on I2C
-> +	help
-> +	  Say Y here if you want to build a driver for the Dyna Image AL3000a
-> +	  ambient light sensor.
-> +
-> +	  To compile this driver as a module, choose M here: the
-> +	  module will be called al3000a.
-> +
->   config AL3010
->   	tristate "AL3010 ambient light sensor"
->   	depends on I2C
-> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> index 11a4041b918a..17030a4cc340 100644
-> --- a/drivers/iio/light/Makefile
-> +++ b/drivers/iio/light/Makefile
-> @@ -7,6 +7,7 @@
->   obj-$(CONFIG_ACPI_ALS)		+= acpi-als.o
->   obj-$(CONFIG_ADJD_S311)		+= adjd_s311.o
->   obj-$(CONFIG_ADUX1020)		+= adux1020.o
-> +obj-$(CONFIG_AL3000A)		+= al3000a.o
->   obj-$(CONFIG_AL3010)		+= al3010.o
->   obj-$(CONFIG_AL3320A)		+= al3320a.o
->   obj-$(CONFIG_APDS9300)		+= apds9300.o
-> diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
-> new file mode 100644
-> index 000000000000..58d4336dd081
-> --- /dev/null
-> +++ b/drivers/iio/light/al3000a.c
-> @@ -0,0 +1,221 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/pm.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/types.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +
-> +#define AL3000A_DRV_NAME		"al3000a"
-> +#define AL3000A_REG_SYSTEM		0x00
-> +#define AL3000A_REG_DATA		0x05
-> +
-> +#define AL3000A_CONFIG_ENABLE		0x00
-> +#define AL3000A_CONFIG_DISABLE		0x0b
-> +#define AL3000A_CONFIG_RESET		0x0f
-> +#define AL3000A_GAIN_MASK		GENMASK(5, 0)
-> +
-> +/*
-> + * This are pre-calculated lux values based on possible output of sensor
-> + * (range 0x00 - 0x3F)
-> + */
-> +static const u32 lux_table[] = {
-> +	1, 1, 1, 2, 2, 2, 3, 4,					/* 0 - 7 */
-> +	4, 5, 6, 7, 9, 11, 13, 16,				/* 8 - 15 */
-> +	19, 22, 27, 32, 39, 46, 56, 67,				/* 16 - 23 */
-> +	80, 96, 116, 139, 167, 200, 240, 289,			/* 24 - 31 */
-> +	347, 416, 499, 600, 720, 864, 1037, 1245,		/* 32 - 39 */
-> +	1495, 1795, 2155, 2587, 3105, 3728, 4475, 5373,		/* 40 - 47 */
-> +	6450, 7743, 9296, 11160, 13397, 16084, 19309, 23180,	/* 48 - 55 */
-> +	27828, 33408, 40107, 48148, 57803, 69393, 83306, 100000 /* 56 - 63 */
-> +};
-> +
-> +static const struct regmap_config al3000a_regmap_config = {
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.max_register = AL3000A_REG_DATA,
-> +};
-> +
-> +struct al3000a_data {
-> +	struct regmap *regmap;
-> +	struct regulator *vdd_supply;
-> +};
-> +
-> +static const struct iio_chan_spec al3000a_channels[] = {
-> +	{
-> +		.type = IIO_LIGHT,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
-> +	},
-> +};
-> +
-> +static int al3000a_set_pwr(struct al3000a_data *data, bool pwr)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	u8 val = pwr ? AL3000A_CONFIG_ENABLE : AL3000A_CONFIG_DISABLE;
-> +	int ret;
-> +
-> +	if (pwr) {
-> +		ret = regulator_enable(data->vdd_supply);
-> +		if (ret < 0) {
-> +			dev_err(dev, "failed to enable vdd power supply\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, val);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to write system register\n");
-> +		return ret;
-> +	}
-> +
-> +	if (!pwr) {
-> +		ret = regulator_disable(data->vdd_supply);
-> +		if (ret < 0) {
-> +			dev_err(dev, "failed to disable vdd power supply\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void al3000a_set_pwr_off(void *_data)
-> +{
-> +	struct al3000a_data *data = _data;
-> +
-> +	al3000a_set_pwr(data, false);
-> +}
-> +
-> +static int al3000a_init(struct al3000a_data *data)
-> +{
-> +	int ret;
-> +
-> +	ret = al3000a_set_pwr(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CONFIG_RESET);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CONFIG_ENABLE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int al3000a_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int *val,
-> +			    int *val2, long mask)
-> +{
-> +	struct al3000a_data *data = iio_priv(indio_dev);
-> +	int ret, gain;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_read(data->regmap, AL3000A_REG_DATA, &gain);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = lux_table[gain & AL3000A_GAIN_MASK];
-
-Why did you chosen to do post-processing in the RAW channel instead 
-doing it in INFO_SCALE (same as al3010 does)?
-
-Except this, LGTM.
-
-Documentation and DT patch:
-
-Reviewed-by: David Heidelberg <david@ixit.cz>
-> +
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 1;
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info al3000a_info = {
-> +	.read_raw	= al3000a_read_raw,
-> +};
-> +
-> +static int al3000a_probe(struct i2c_client *client)
-> +{
-> +	struct al3000a_data *data;
-> +	struct device *dev = &client->dev;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	data->regmap = devm_regmap_init_i2c(client, &al3000a_regmap_config);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(data->regmap),
-> +				     "cannot allocate regmap\n");
-> +
-> +	data->vdd_supply = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(data->vdd_supply))
-> +		return dev_err_probe(dev, PTR_ERR(data->vdd_supply),
-> +				     "failed to get vdd regulator\n");
-> +
-> +	indio_dev->info = &al3000a_info;
-> +	indio_dev->name = AL3000A_DRV_NAME;
-> +	indio_dev->channels = al3000a_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(al3000a_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = al3000a_init(data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to init ALS\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, al3000a_set_pwr_off, data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to add action\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-> +
-> +static int al3000a_suspend(struct device *dev)
-> +{
-> +	struct al3000a_data *data = iio_priv(dev_get_drvdata(dev));
-> +
-> +	return al3000a_set_pwr(data, false);
-> +}
-> +
-> +static int al3000a_resume(struct device *dev)
-> +{
-> +	struct al3000a_data *data = iio_priv(dev_get_drvdata(dev));
-> +
-> +	return al3000a_set_pwr(data, true);
-> +}
-> +
-> +static DEFINE_SIMPLE_DEV_PM_OPS(al3000a_pm_ops, al3000a_suspend, al3000a_resume);
-> +
-> +static const struct of_device_id al3000a_of_match[] = {
-> +	{ .compatible = "dynaimage,al3000a" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, al3000a_of_match);
-> +
-> +static struct i2c_driver al3000a_driver = {
-> +	.driver = {
-> +		.name = AL3000A_DRV_NAME,
-> +		.of_match_table = al3000a_of_match,
-> +		.pm = pm_sleep_ptr(&al3000a_pm_ops),
-> +	},
-> +	.probe = al3000a_probe,
-> +};
-> +module_i2c_driver(al3000a_driver);
-> +
-> +MODULE_AUTHOR("Svyatolsav Ryhel <clamor95@gmail.com>");
-> +MODULE_DESCRIPTION("al3000a Ambient Light Sensor driver");
-> +MODULE_LICENSE("GPL");
-
--- 
-David Heidelberg
-
+> Except this, LGTM.
+>
+> Documentation and DT patch:
+>
+> Reviewed-by: David Heidelberg <david@ixit.cz>
+> > +
+> > +             return IIO_VAL_INT;
+> > +     case IIO_CHAN_INFO_SCALE:
+> > +             *val =3D 1;
+> > +
+> > +             return IIO_VAL_INT;
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+> > +
+> > +static const struct iio_info al3000a_info =3D {
+> > +     .read_raw       =3D al3000a_read_raw,
+> > +};
+> > +
+> > +static int al3000a_probe(struct i2c_client *client)
+> > +{
+> > +     struct al3000a_data *data;
+> > +     struct device *dev =3D &client->dev;
+> > +     struct iio_dev *indio_dev;
+> > +     int ret;
+> > +
+> > +     indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
+> > +     if (!indio_dev)
+> > +             return -ENOMEM;
+> > +
+> > +     data =3D iio_priv(indio_dev);
+> > +     i2c_set_clientdata(client, indio_dev);
+> > +
+> > +     data->regmap =3D devm_regmap_init_i2c(client, &al3000a_regmap_con=
+fig);
+> > +     if (IS_ERR(data->regmap))
+> > +             return dev_err_probe(dev, PTR_ERR(data->regmap),
+> > +                                  "cannot allocate regmap\n");
+> > +
+> > +     data->vdd_supply =3D devm_regulator_get(dev, "vdd");
+> > +     if (IS_ERR(data->vdd_supply))
+> > +             return dev_err_probe(dev, PTR_ERR(data->vdd_supply),
+> > +                                  "failed to get vdd regulator\n");
+> > +
+> > +     indio_dev->info =3D &al3000a_info;
+> > +     indio_dev->name =3D AL3000A_DRV_NAME;
+> > +     indio_dev->channels =3D al3000a_channels;
+> > +     indio_dev->num_channels =3D ARRAY_SIZE(al3000a_channels);
+> > +     indio_dev->modes =3D INDIO_DIRECT_MODE;
+> > +
+> > +     ret =3D al3000a_init(data);
+> > +     if (ret < 0)
+> > +             return dev_err_probe(dev, ret, "failed to init ALS\n");
+> > +
+> > +     ret =3D devm_add_action_or_reset(dev, al3000a_set_pwr_off, data);
+> > +     if (ret < 0)
+> > +             return dev_err_probe(dev, ret, "failed to add action\n");
+> > +
+> > +     return devm_iio_device_register(dev, indio_dev);
+> > +}
+> > +
+> > +static int al3000a_suspend(struct device *dev)
+> > +{
+> > +     struct al3000a_data *data =3D iio_priv(dev_get_drvdata(dev));
+> > +
+> > +     return al3000a_set_pwr(data, false);
+> > +}
+> > +
+> > +static int al3000a_resume(struct device *dev)
+> > +{
+> > +     struct al3000a_data *data =3D iio_priv(dev_get_drvdata(dev));
+> > +
+> > +     return al3000a_set_pwr(data, true);
+> > +}
+> > +
+> > +static DEFINE_SIMPLE_DEV_PM_OPS(al3000a_pm_ops, al3000a_suspend, al300=
+0a_resume);
+> > +
+> > +static const struct of_device_id al3000a_of_match[] =3D {
+> > +     { .compatible =3D "dynaimage,al3000a" },
+> > +     { /* sentinel */ }
+> > +};
+> > +MODULE_DEVICE_TABLE(of, al3000a_of_match);
+> > +
+> > +static struct i2c_driver al3000a_driver =3D {
+> > +     .driver =3D {
+> > +             .name =3D AL3000A_DRV_NAME,
+> > +             .of_match_table =3D al3000a_of_match,
+> > +             .pm =3D pm_sleep_ptr(&al3000a_pm_ops),
+> > +     },
+> > +     .probe =3D al3000a_probe,
+> > +};
+> > +module_i2c_driver(al3000a_driver);
+> > +
+> > +MODULE_AUTHOR("Svyatolsav Ryhel <clamor95@gmail.com>");
+> > +MODULE_DESCRIPTION("al3000a Ambient Light Sensor driver");
+> > +MODULE_LICENSE("GPL");
+>
+> --
+> David Heidelberg
+>
 

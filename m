@@ -1,69 +1,57 @@
-Return-Path: <linux-iio+bounces-15565-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15566-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A33BA374DD
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 15:55:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E658EA374E1
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 15:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F983AE91F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 14:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B632E16D557
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 14:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A72198A29;
-	Sun, 16 Feb 2025 14:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CF9198E92;
+	Sun, 16 Feb 2025 14:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lQsuj3F+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jikGf2L6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D099A4C70;
-	Sun, 16 Feb 2025 14:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160534C70;
+	Sun, 16 Feb 2025 14:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739717699; cv=none; b=Iq7scnU/JDSqdJBoLfTC6BNsD7lAu6XyqwsbwXWvDQ7euB4IWndDT/u+6pa8+S4yG1jAWMjCMVsvVD+TkmlbH7ywKV9bcCI4wCVPtF56CCq2PdtrnOyiwtMtq491RCbPRtDGiaw+F6SXv9nPAPphGPnfEJRRDqztZh75rRUrCCg=
+	t=1739717808; cv=none; b=b6McRet0hFfZ2s69tX+Q/cKiN1dsLKBzk2PjivFZFXTWrsi9qXemA5nugP+VyHYlt/O/oMElqbQTH6QA/TesNq04kUSJyvFehGc+/DjjhcMDI/XSQd283FFw3eyVR87zluQfwYuAiwFcuuYpXUhJL2CN6Dx5AAGIjyUApc4ifD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739717699; c=relaxed/simple;
-	bh=9f8rzWvduNY+7bRO9iB/ca+18IPqyBQE8f8ONtMYrgc=;
+	s=arc-20240116; t=1739717808; c=relaxed/simple;
+	bh=udOKYh63bVmyVt1N98zIrhAr/2ta25BD0RnVWl+EyNk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FzjAbXo7Nfy4858qvTQQEaX+yYp2XtMpqREY9xrlw7pecuruOop45C35eeN4LrbTynwhPLzPHJzva3m1ucmDgwWH5vMO9EYuNiRNMAkBXCmt4u1diQ4b8dxc5M0uOv/K7NjYPCfxpmDbe12njOj+xeHWi56kkr4SDD4jwmXVd+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lQsuj3F+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A978C4CEDD;
-	Sun, 16 Feb 2025 14:54:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YUU4rO+8BK6tbXo35C2xrrx1rqm3M5AhdzNymCjvLXqVrJf/bsCkVNXx7af2qes7V+UM19M4VyhcJ6Us7+SriExWnWuIu6+XHgZcw1Y2SGY3YFwH2I6T2+UBoUfXpqM4zL2Qnw1T4kzdMc8O4X2NnjMrgqHI1sX84y1Q6izGNkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jikGf2L6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5878BC4CEDD;
+	Sun, 16 Feb 2025 14:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739717698;
-	bh=9f8rzWvduNY+7bRO9iB/ca+18IPqyBQE8f8ONtMYrgc=;
+	s=k20201202; t=1739717807;
+	bh=udOKYh63bVmyVt1N98zIrhAr/2ta25BD0RnVWl+EyNk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lQsuj3F+ohzwxWnGNTwx4fu3ID1izTBdRanYWr89gw7ff7AdZc6a5QEPWmJpRcYXW
-	 L7uTFDfSntE/rM3n00q7l01u/Ixr/+TCut0RNQunAkx0j4TsSziWOPYyhi3WXMXK/f
-	 E7gC59oh+QU0mkpOyMiFuuHPUE3o3yOloh8bK6p+aXlem+vYW+hHJ25tAEE68ErphF
-	 F6sFXZwI8BZYElR8KTwkyCbFcx13O+jIsmTEU9Jme2vgKKdrAe0fRweDAF9CSlPqPl
-	 lMdDuKIzBV2jS8EtxT32HrSYnO5/nYZv/pi0Y6QUf1l/ep+bw6SbMHdXMDsdMrCJpy
-	 PY7w83zfbHaBA==
-Date: Sun, 16 Feb 2025 14:54:45 +0000
+	b=jikGf2L6LNE+8i3d/7niK5UDh0bGHNREER5WxEn68JESW2Rgqhc2f2Uo+55END7v1
+	 xcxqyhe6oe8Sr3nsoEzVBSncI17C5RgRtGzP9NSvBtQe6NOAE/WBryxtKTxkTjhvTs
+	 vqtd5nM94cw0dzzEz9Q0pFvSemtpFR3RQ35Pmno2RIOOe6SEnW0OFFG0zqd7fP7BLD
+	 20Mb7seH0N0O2ZAJ7gaQrhbykAgAhb9Om3+5eZY3PeqftFJC41khJ2MBiYmNgbRAX5
+	 6quFlEeb3j8znswWI8xqXpnqPuPRWxQrSwGdM9wt3jzEcQV5Tbq6+qv1bApNVXjEGR
+	 M6VxTxl2aoWnA==
+Date: Sun, 16 Feb 2025 14:56:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
- Hunter <jonathanh@nvidia.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Emil Gedenryd
- <emil.gedenryd@axis.com>, Arthur Becker <arthur.becker@sentec.com>, Mudit
- Sharma <muditsharma.info@gmail.com>, Per-Daniel Olsson
- <perdaniel.olsson@axis.com>, Subhajit Ghosh
- <subhajit.ghosh@tweaklogic.com>, Ivan Orlov <ivan.orlov0322@gmail.com>,
- David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: light: Add support for AL3000a illuminance
- sensor
-Message-ID: <20250216145445.1278b6ae@jic23-huawei>
-In-Reply-To: <20250215103159.106343-3-clamor95@gmail.com>
-References: <20250215103159.106343-1-clamor95@gmail.com>
-	<20250215103159.106343-3-clamor95@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-pwm@vger.kernel.org>
+Subject: Re: [PATCH v13 5/9] dt-bindings: iio: adc: add ad485x axi variant
+Message-ID: <20250216145639.38ed6420@jic23-huawei>
+In-Reply-To: <20250214131955.31973-6-antoniu.miclaus@analog.com>
+References: <20250214131955.31973-1-antoniu.miclaus@analog.com>
+	<20250214131955.31973-6-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,240 +62,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 15 Feb 2025 12:31:58 +0200
-Svyatoslav Ryhel <clamor95@gmail.com> wrote:
+On Fri, 14 Feb 2025 15:19:51 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> AL3000a is a simple I2C-based ambient light sensor, which is
-> closely related to AL3010 and AL3320a, but has significantly
-> different way of processing data generated by the sensor.
+> Add a new compatible and related bindigns for the fpga-based
+> AD485x AXI IP core, a variant of the generic AXI ADC IP.
 > 
-> Tested-by: Robert Eckelmann <longnoserob@gmail.com>
-> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> The AXI AD485x IP is a very similar HDL (fpga) variant of the
+> generic AXI ADC IP, intended to control ad485x familiy.
+> 
+> Although this is not preffered, the wildcard naming is used to
 
-Hi,
+preferred
 
-A few really minor comments inline.  A nice small driver :)
+If nothing else comes up I'll fix that up whilst applying.
 
-Jonathan
-
-
-> diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
-> new file mode 100644
-> index 000000000000..58d4336dd081
-> --- /dev/null
-> +++ b/drivers/iio/light/al3000a.c
-> @@ -0,0 +1,221 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/array_size.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/pm.h>
-> +#include <linux/regmap.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/types.h>
-> +
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-The iio/sysfs.h header is a bit of a legacy thing.  Ideally we will
-eventually get rid of it.  In this driver, you are correctly not using
-anything it provides so drop this include.
-
-> +
-> +static const struct iio_chan_spec al3000a_channels[] = {
-> +	{
-> +		.type = IIO_LIGHT,
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE),
-As below. I'm a little confused on units, but this may want to just
-be BIT(IIO_CHAN_INFO_PROCESSED)
-> +	},
-> +};
-> +
-> +static int al3000a_set_pwr(struct al3000a_data *data, bool pwr)
-> +{
-> +	struct device *dev = regmap_get_device(data->regmap);
-> +	u8 val = pwr ? AL3000A_CONFIG_ENABLE : AL3000A_CONFIG_DISABLE;
-> +	int ret;
-> +
-> +	if (pwr) {
-
-The two flows are different enough I'd split this into power on and power
-off functions.  Will be a few lines longer but slightly easier to read.
-
-> +		ret = regulator_enable(data->vdd_supply);
-> +		if (ret < 0) {
-> +			dev_err(dev, "failed to enable vdd power supply\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, val);
-> +	if (ret < 0) {
-> +		dev_err(dev, "failed to write system register\n");
-> +		return ret;
-> +	}
-> +
-> +	if (!pwr) {
-> +		ret = regulator_disable(data->vdd_supply);
-> +		if (ret < 0) {
-> +			dev_err(dev, "failed to disable vdd power supply\n");
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void al3000a_set_pwr_off(void *_data)
-> +{
-> +	struct al3000a_data *data = _data;
-> +
-> +	al3000a_set_pwr(data, false);
-> +}
-> +
-> +static int al3000a_init(struct al3000a_data *data)
-> +{
-> +	int ret;
-> +
-> +	ret = al3000a_set_pwr(data, true);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CONFIG_RESET);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = regmap_write(data->regmap, AL3000A_REG_SYSTEM, AL3000A_CONFIG_ENABLE);
-
-regmap functions return <= 0 in all cases. So you can just do if (ret)
-or in cases like this save a few lines with
-
-	return regmap_write();
-
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
-> +}
-> +
-> +static int al3000a_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan, int *val,
-> +			    int *val2, long mask)
-> +{
-> +	struct al3000a_data *data = iio_priv(indio_dev);
-> +	int ret, gain;
-> +
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		ret = regmap_read(data->regmap, AL3000A_REG_DATA, &gain);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		*val = lux_table[gain & AL3000A_GAIN_MASK];
-
-I may have misinterpreted the other thread.  IS this value in lux?
-If it is make this channel IIO_CHAN_INFO_PROCESSED instead.
-
-> +
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		*val = 1;
-
-Either way, default scale is 1 so this should not be expressed at all.
-
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static const struct iio_info al3000a_info = {
-> +	.read_raw	= al3000a_read_raw,
-
-I'd not put a tab in the middle.  Single space is fine.
-This sort of alignment is a pain for long term maintenance anyway
-as we get very noisy patches realigning things.
-It makes even less sense with only one item!
-
-> +};
-> +
-> +static int al3000a_probe(struct i2c_client *client)
-> +{
-> +	struct al3000a_data *data;
-> +	struct device *dev = &client->dev;
-> +	struct iio_dev *indio_dev;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	data->regmap = devm_regmap_init_i2c(client, &al3000a_regmap_config);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(data->regmap),
-> +				     "cannot allocate regmap\n");
-> +
-> +	data->vdd_supply = devm_regulator_get(dev, "vdd");
-> +	if (IS_ERR(data->vdd_supply))
-> +		return dev_err_probe(dev, PTR_ERR(data->vdd_supply),
-> +				     "failed to get vdd regulator\n");
-> +
-> +	indio_dev->info = &al3000a_info;
-> +	indio_dev->name = AL3000A_DRV_NAME;
-
-As there is no actual reason why this name should necessarily match the
-name of the driver I'd prefer to see the string expressed directly in both
-places.  That avoids giving the wrong impression as the driver gains support
-for additional devices and generally makes things slightly easier to review.
-
-> +	indio_dev->channels = al3000a_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(al3000a_channels);
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	ret = al3000a_init(data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to init ALS\n");
-> +
-> +	ret = devm_add_action_or_reset(dev, al3000a_set_pwr_off, data);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "failed to add action\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
-> +
-> +static DEFINE_SIMPLE_DEV_PM_OPS(al3000a_pm_ops, al3000a_suspend, al3000a_resume);
-> +
-> +static const struct of_device_id al3000a_of_match[] = {
-> +	{ .compatible = "dynaimage,al3000a" },
-> +	{ /* sentinel */ }
-> +};
-> +MODULE_DEVICE_TABLE(of, al3000a_of_match);
-
-Also provide the i2c_device_id table as it's used for autoprobing of the
-driver (long story for why we still need that!)
-
-> +
-> +static struct i2c_driver al3000a_driver = {
-> +	.driver = {
-> +		.name = AL3000A_DRV_NAME,
-> +		.of_match_table = al3000a_of_match,
-> +		.pm = pm_sleep_ptr(&al3000a_pm_ops),
-> +	},
-> +	.probe = al3000a_probe,
-> +};
-> +module_i2c_driver(al3000a_driver);
-> +
-> +MODULE_AUTHOR("Svyatolsav Ryhel <clamor95@gmail.com>");
-> +MODULE_DESCRIPTION("al3000a Ambient Light Sensor driver");
-> +MODULE_LICENSE("GPL");
+> match the published firmware under the same name.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v13:
+>  - adjust commit body and add comment on wildcard matching the published
+>    firmware.
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> index e1f450b80db2..f1b470f74069 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> @@ -19,11 +19,13 @@ description: |
+>    memory via DMA.
+>  
+>    https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> +  https://analogdevicesinc.github.io/hdl/library/axi_ad485x/index.html
+>  
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,axi-adc-10.0.a
+> +      - adi,axi-ad485x
+>  
+>    reg:
+>      maxItems: 1
 
 

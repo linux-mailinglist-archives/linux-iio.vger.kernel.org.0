@@ -1,58 +1,68 @@
-Return-Path: <linux-iio+bounces-15608-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15609-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37806A3766F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 19:00:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44B6A37682
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 19:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AE6F3AEE20
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:00:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A3CC3AFC40
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845618A92D;
-	Sun, 16 Feb 2025 18:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E29319D07A;
+	Sun, 16 Feb 2025 18:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIMdZms5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P10WC2Ih"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F2625771;
-	Sun, 16 Feb 2025 18:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A2938385
+	for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2025 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739728823; cv=none; b=oCkcI+64HIlq35ds9x54HX5DctSfoSbQNUgSZ9Y1GN9QdhxXqOoKfDRJRiJ6hKf8fwsklue4l5B7Ih/YARrHG9OWklJUVnDDnEy75zBmjMefChW+htcypPS9oGQFnGsUU0G9EpeZNIpvIN1nHClTLmA4yrvMdkEASQgw9IVT+Kc=
+	t=1739729960; cv=none; b=rS6aU5j9+Cw+Bzi0Y8ipDBvkm7aylYN0UgoNVu7nBDr+6btONUTASNa6WoTX4g8X+d7i7B4QUqeMVK+nCMQTPdbfQa1DtEJjiGcFFe/YTEkqMwRsU+4zDduYzeoA9Y8hWwXzHx1zki0QYScVDsoiIonkU4LWNC8N/N5w3spOeWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739728823; c=relaxed/simple;
-	bh=diIO3ITDoU7AktJFiSmDVWriGSibTVn0llDzkSO25Ms=;
+	s=arc-20240116; t=1739729960; c=relaxed/simple;
+	bh=QbqchZD8bbSZUVPjjRgz2YN6Co3adI8u3qwMwKFKRR0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bgx/NPUiKBDEH7IGFBw2iPNq84My2m5q9u+ProYew27sx8/jxORZHtq1aydWeP3EwOskSmd2TVtzBirNfi+zyvTqN8gUcWJQwgh8NF3F1kalett53IplhCq0ygQ/Mcad9FCvLzjnVDd5VnLLeFGD8OtXVEsEJzVsluDhJpB/5JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIMdZms5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5298CC4CEDD;
-	Sun, 16 Feb 2025 18:00:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TKLV5M7D4BjetTPmIc0Lh8y2DAsuLaYisp3oQPqQZ4R2aUnDxuLXfgPgSVxM1c609Zk6EP54PIKmhakIpAEWWc5Dl5zGbUiHh8OX+oFtd5h0OMq5Uc0ySUVvOgnJ/VPaR+g4pn3BaECOm9IcMUbGMFU9dVaLy5xiLUON6gr/Bw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P10WC2Ih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4053FC4CEDD;
+	Sun, 16 Feb 2025 18:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739728822;
-	bh=diIO3ITDoU7AktJFiSmDVWriGSibTVn0llDzkSO25Ms=;
+	s=k20201202; t=1739729959;
+	bh=QbqchZD8bbSZUVPjjRgz2YN6Co3adI8u3qwMwKFKRR0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NIMdZms5lWeG8dIDKm8bhY22lqDJUm2YErtH8uW7HX0OfYUkM+3+wd+4u6/ppB0iL
-	 nkfff5r0uVoIZjYrTWafNvoiLaxkwcLHeHxVO36PpDPPn8J91coUcNvkG5bKJnsIa1
-	 L4OUP6VHbIjcpTHKZhpUhj9B/vGNvUZ/68Jt0/ywSYM2xd7STd3g0mGpBJJN/InULV
-	 YYE6xLXiQ2RL7ijUBvsNMq62SlNjFSsWk/YC1ZnUSL4WF+n+rKj1brcjV2oO9/OE+H
-	 tRbLPEQ8JNdhaLK+OzQ+yU4MZStpHFEzqX5kRkiCIP+8A8zX1M13yJ5WBmdJi9szxa
-	 OK51pagyYacQQ==
-Date: Sun, 16 Feb 2025 18:00:15 +0000
+	b=P10WC2IhQh8Lvdd9r3GLwGxsYs+To86YR8uhftr9twnIavK9f4gs+uVVngtKBtL70
+	 68NoDnuhkV4oc1lBvniLZm9nvxDxERGzYzjSCMHXa+gUNhykIWlpDWhG1nfc01btvY
+	 uOXL3hCXk7vvleo1WnGaZ2S22v20tUhP4aWg9JmU1Vf8Ies1fWowwUM2s3AVL7wg/b
+	 e8x9B+4UZCvDislta8Y+ovw1mSNtTQscTpShFC65fTWbKVu+uY9S1NyU+DsbKCO9BD
+	 aFpS972c0GLB53O7Yy5X/mXsBQY7E5xEg+4zZTBggZ2ihETd0wkmomoTKSFGNVl57M
+	 rbAydEIa4vKrw==
+Date: Sun, 16 Feb 2025 18:19:07 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v2 14/14] docs: iio: add documentation for adxl345
- driver
-Message-ID: <20250216180015.17787b22@jic23-huawei>
-In-Reply-To: <20250210110119.260858-15-l.rubusch@gmail.com>
-References: <20250210110119.260858-1-l.rubusch@gmail.com>
-	<20250210110119.260858-15-l.rubusch@gmail.com>
+To: linux-iio@vger.kernel.org
+Cc: Mudit Sharma <muditsharma.info@gmail.com>, Julien Stephan
+ <jstephan@baylibre.com>, Mariel Tinaco <Mariel.Tinaco@analog.com>, Angelo
+ Dureghello <adureghello@baylibre.com>, Gustavo Silva
+ <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>, =?UTF-8?B?Sm8=?=
+ =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, ChiYuan Huang <cy_huang@richtek.com>, Ramona
+ Alexandra Nechita <ramona.nechita@analog.com>, Trevor Gamblin
+ <tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, David
+ Lechner <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou
+ <gwendal@chromium.org>, Antoni Pokusinski <apokusinski01@gmail.com>, Tomasz
+ Duszynski <tomasz.duszynski@octakon.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 11/27] iio: adc: ad4695: Stop using
+ iio_device_claim_direct_scoped()
+Message-ID: <20250216181907.40d36bf7@jic23-huawei>
+In-Reply-To: <20250209180624.701140-12-jic23@kernel.org>
+References: <20250209180624.701140-1-jic23@kernel.org>
+	<20250209180624.701140-12-jic23@kernel.org>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,146 +73,701 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Feb 2025 11:01:19 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Sun,  9 Feb 2025 18:06:08 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> The documentation describes the ADXL345 driver, IIO interface,
-> interface usage and configuration.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Hi Lothar,
+> This complex cleanup.h use case of conditional guards has proved
+> to be more trouble that it is worth in terms of false positive compiler
+> warnings and hard to read code.
+> 
+> Move directly to the new claim/release_direct() that allow sparse
+> to check for unbalanced context.  In some cases code is factored
+> out to utility functions that can do a direct return with the
+> claim and release around the call.
+> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
+> v2: Typo in commit description (David).
+> Note there are several sets current in flight that touch this driver.
+> I'll rebase as necessary depending on what order the dependencies resolve.
+I've done this rebase and applied on the testing branch of iio.git.
 
-I was running out of time so this was a little more superficial review than I would
-have liked to have done.  I've commented on a few bits that I was confuse about in the driver.
-Document is showing how useful these are :)
+Would appreciate a sanity check if anyone has time though!
+
+New code is as follows.  The one corner I was not sure on was
+that for calibbias reading the direct mode claim was held for a long
+time.  That seems to be unnecessary as we have a copy of osr anyway
+in that function used for other purposes.
+
+diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+index 3a1a6f96480f..9dbf326b6273 100644
+--- a/drivers/iio/adc/ad4695.c
++++ b/drivers/iio/adc/ad4695.c
+@@ -1029,6 +1029,25 @@ static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
+ 	return spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+ }
+ 
++static int __ad4695_read_info_raw(struct ad4695_state *st,
++				  struct iio_chan_spec const *chan,
++				  int *val)
++{
++	u8 realbits = chan->scan_type.realbits;
++	int ret;
++
++	ret = ad4695_read_one_sample(st, chan->address);
++	if (ret)
++		return ret;
++
++	if (chan->scan_type.sign == 's')
++		*val = sign_extend32(st->raw_data, realbits - 1);
++	else
++		*val = st->raw_data;
++
++	return IIO_VAL_INT;
++}
++
+ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 			   struct iio_chan_spec const *chan,
+ 			   int *val, int *val2, long mask)
+@@ -1049,19 +1068,12 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-			ret = ad4695_read_one_sample(st, chan->address);
+-			if (ret)
+-				return ret;
+-
+-			if (scan_type->sign == 's')
+-				*val = sign_extend32(st->raw_data, realbits - 1);
+-			else
+-				*val = st->raw_data;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 
+-			return IIO_VAL_INT;
+-		}
+-		unreachable();
++		ret = __ad4695_read_info_raw(st, chan, val);
++		iio_device_release_direct(indio_dev);
++		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+@@ -1099,63 +1111,62 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_CALIBSCALE:
+ 		switch (chan->type) {
+ 		case IIO_VOLTAGE:
+-			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-				ret = regmap_read(st->regmap16,
+-					AD4695_REG_GAIN_IN(chan->scan_index),
+-					&reg_val);
+-				if (ret)
+-					return ret;
+-
+-				*val = reg_val;
+-				*val2 = 15;
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
++			ret = regmap_read(st->regmap16,
++					  AD4695_REG_GAIN_IN(chan->scan_index),
++					  &reg_val);
++			iio_device_release_direct(indio_dev);
++			if (ret)
++				return ret;
++			*val = reg_val;
++			*val2 = 15;
+ 
+-				return IIO_VAL_FRACTIONAL_LOG2;
+-			}
+-			unreachable();
++			return IIO_VAL_FRACTIONAL_LOG2;
+ 		default:
+ 			return -EINVAL;
+ 		}
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+-		switch (chan->type) {
+-		case IIO_VOLTAGE:
+-			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-				ret = regmap_read(st->regmap16,
+-					AD4695_REG_OFFSET_IN(chan->scan_index),
+-					&reg_val);
+-				if (ret)
+-					return ret;
+-
+-				tmp = sign_extend32(reg_val, 15);
+-
+-				switch (cfg->oversampling_ratio) {
+-				case 1:
+-					*val = tmp / 4;
+-					*val2 = abs(tmp) % 4 * MICRO / 4;
+-					break;
+-				case 4:
+-					*val = tmp / 2;
+-					*val2 = abs(tmp) % 2 * MICRO / 2;
+-					break;
+-				case 16:
+-					*val = tmp;
+-					*val2 = 0;
+-					break;
+-				case 64:
+-					*val = tmp * 2;
+-					*val2 = 0;
+-					break;
+-				default:
+-					return -EINVAL;
+-				}
+-
+-				if (tmp < 0 && *val2) {
+-					*val *= -1;
+-					*val2 *= -1;
+-				}
+-
+-				return IIO_VAL_INT_PLUS_MICRO;
++		switch (chan->type)
++		case IIO_VOLTAGE: {
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
++			ret = regmap_read(st->regmap16,
++					  AD4695_REG_OFFSET_IN(chan->scan_index),
++					  &reg_val);
++			iio_device_release_direct(indio_dev);
++			if (ret)
++				return ret;
+////THIS IS THE BIT I WOuLD LIKE EYES on.
++
++			tmp = sign_extend32(reg_val, 15);
++
++			switch (osr) {
++			case 1:
++				*val = tmp / 4;
++				*val2 = abs(tmp) % 4 * MICRO / 4;
++				break;
++			case 4:
++				*val = tmp / 2;
++				*val2 = abs(tmp) % 2 * MICRO / 2;
++				break;
++			case 16:
++				*val = tmp;
++				*val2 = 0;
++				break;
++			case 64:
++				*val = tmp * 2;
++				*val2 = 0;
++				break;
++			default:
++				return -EINVAL;
++			}
++
++			if (tmp < 0 && *val2) {
++				*val *= -1;
++				*val2 *= -1;
+ 			}
+-			unreachable();
++
++			return IIO_VAL_INT_PLUS_MICRO;
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -1255,72 +1266,83 @@ static unsigned int ad4695_get_calibbias(int val, int val2, int osr)
+ 	return clamp_t(int, val_calc, S16_MIN, S16_MAX);
+ }
+ 
+-static int ad4695_write_raw(struct iio_dev *indio_dev,
+-			    struct iio_chan_spec const *chan,
+-			    int val, int val2, long mask)
++static int __ad4695_write_raw(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long mask)
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+ 	unsigned int reg_val;
+ 	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+ 
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		switch (mask) {
+-		case IIO_CHAN_INFO_CALIBSCALE:
+-			switch (chan->type) {
+-			case IIO_VOLTAGE:
+-				if (val < 0 || val2 < 0)
+-					reg_val = 0;
+-				else if (val > 1)
+-					reg_val = U16_MAX;
+-				else
+-					reg_val = (val * (1 << 16) +
+-						   mul_u64_u32_div(val2, 1 << 16,
+-								   MICRO)) / 2;
+-
+-				return regmap_write(st->regmap16,
+-					AD4695_REG_GAIN_IN(chan->scan_index),
+-					reg_val);
+-			default:
+-				return -EINVAL;
+-			}
+-		case IIO_CHAN_INFO_CALIBBIAS:
+-			switch (chan->type) {
+-			case IIO_VOLTAGE:
+-				reg_val = ad4695_get_calibbias(val, val2, osr);
+-				return regmap_write(st->regmap16,
+-					AD4695_REG_OFFSET_IN(chan->scan_index),
+-					reg_val);
+-			default:
+-				return -EINVAL;
+-			}
+-		case IIO_CHAN_INFO_SAMP_FREQ: {
+-			struct pwm_state state;
+-			/*
+-			 * Limit the maximum acceptable sample rate according to
+-			 * the channel's oversampling ratio.
+-			 */
+-			u64 max_osr_rate = DIV_ROUND_UP_ULL(st->chip_info->max_sample_rate,
+-							    osr);
+-
+-			if (val <= 0 || val > max_osr_rate)
+-				return -EINVAL;
++	switch (mask) {
++	case IIO_CHAN_INFO_CALIBSCALE:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			if (val < 0 || val2 < 0)
++				reg_val = 0;
++			else if (val > 1)
++				reg_val = U16_MAX;
++			else
++				reg_val = (val * (1 << 16) +
++					   mul_u64_u32_div(val2, 1 << 16,
++							   MICRO)) / 2;
+ 
+-			guard(mutex)(&st->cnv_pwm_lock);
+-			pwm_get_state(st->cnv_pwm, &state);
+-			/*
+-			 * The required sample frequency for a given OSR is the
+-			 * input frequency multiplied by it.
+-			 */
+-			state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, val * osr);
+-			return pwm_apply_might_sleep(st->cnv_pwm, &state);
++			return regmap_write(st->regmap16,
++					    AD4695_REG_GAIN_IN(chan->scan_index),
++					    reg_val);
++		default:
++			return -EINVAL;
+ 		}
+-		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-			return ad4695_set_osr_val(st, chan, val);
++	case IIO_CHAN_INFO_CALIBBIAS:
++		switch (chan->type) {
++		case IIO_VOLTAGE:
++			reg_val = ad4695_get_calibbias(val, val2, osr);
++			return regmap_write(st->regmap16,
++					    AD4695_REG_OFFSET_IN(chan->scan_index),
++					    reg_val);
+ 		default:
+ 			return -EINVAL;
+ 		}
++	case IIO_CHAN_INFO_SAMP_FREQ: {
++		struct pwm_state state;
++		/*
++		 * Limit the maximum acceptable sample rate according to
++		 * the channel's oversampling ratio.
++		 */
++		u64 max_osr_rate = DIV_ROUND_UP_ULL(st->chip_info->max_sample_rate,
++						    osr);
++
++		if (val <= 0 || val > max_osr_rate)
++			return -EINVAL;
++
++		guard(mutex)(&st->cnv_pwm_lock);
++		pwm_get_state(st->cnv_pwm, &state);
++		/*
++		 * The required sample frequency for a given OSR is the
++		 * input frequency multiplied by it.
++		 */
++		state.period = DIV_ROUND_UP_ULL(NSEC_PER_SEC, val * osr);
++		return pwm_apply_might_sleep(st->cnv_pwm, &state);
++	}
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		return ad4695_set_osr_val(st, chan, val);
++	default:
++		return -EINVAL;
+ 	}
+-	unreachable();
++}
++
++static int ad4695_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	int ret;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++	ret = __ad4695_write_raw(indio_dev, chan, val, val2, mask);
++	iio_device_release_direct(indio_dev);
++
++	return ret;
+ }
+ 
+ static int ad4695_read_avail(struct iio_dev *indio_dev,
+@@ -1417,26 +1439,29 @@ static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev,
+ 				     unsigned int *readval)
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+-
+-	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		if (readval) {
+-			if (regmap_check_range_table(st->regmap, reg,
+-						     &ad4695_regmap_rd_table))
+-				return regmap_read(st->regmap, reg, readval);
+-			if (regmap_check_range_table(st->regmap16, reg,
+-						     &ad4695_regmap16_rd_table))
+-				return regmap_read(st->regmap16, reg, readval);
+-		} else {
+-			if (regmap_check_range_table(st->regmap, reg,
+-						     &ad4695_regmap_wr_table))
+-				return regmap_write(st->regmap, reg, writeval);
+-			if (regmap_check_range_table(st->regmap16, reg,
+-						     &ad4695_regmap16_wr_table))
+-				return regmap_write(st->regmap16, reg, writeval);
+-		}
++	int ret = -EINVAL;
++
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
++
++	if (readval) {
++		if (regmap_check_range_table(st->regmap, reg,
++					     &ad4695_regmap_rd_table))
++			ret = regmap_read(st->regmap, reg, readval);
++		if (regmap_check_range_table(st->regmap16, reg,
++					     &ad4695_regmap16_rd_table))
++			ret = regmap_read(st->regmap16, reg, readval);
++	} else {
++		if (regmap_check_range_table(st->regmap, reg,
++					     &ad4695_regmap_wr_table))
++			ret = regmap_write(st->regmap, reg, writeval);
++		if (regmap_check_range_table(st->regmap16, reg,
++					     &ad4695_regmap16_wr_table))
++			ret = regmap_write(st->regmap16, reg, writeval);
+ 	}
++	iio_device_release_direct(indio_dev);
+ 
+-	return -EINVAL;
++	return ret;
+ }
+ 
+ static int ad4695_get_current_scan_type(const struct iio_dev *indio_dev,
+
 
 Jonathan
 
+> ---
+>  drivers/iio/adc/ad4695.c | 240 ++++++++++++++++++++++-----------------
+>  1 file changed, 133 insertions(+), 107 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+> index 13cf01d35301..4bb22f4d739b 100644
+> --- a/drivers/iio/adc/ad4695.c
+> +++ b/drivers/iio/adc/ad4695.c
+> @@ -738,6 +738,25 @@ static int ad4695_read_one_sample(struct ad4695_state *st, unsigned int address)
+>  	return spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+>  }
+>  
+> +static int __ad4695_read_info_raw(struct ad4695_state *st,
+> +				  struct iio_chan_spec const *chan,
+> +				  int *val)
+> +{
+> +	u8 realbits = chan->scan_type.realbits;
+> +	int ret;
 > +
-> +Particular IIO events will be triggered by the corresponding interrupts. The
-> +sensor driver supports no or one active INT line, where the sensor has two
-> +possible INT IOs. Configure the used INT line in the devicetree. If no INT line
-> +is configured, the sensor falls back to FIFO bypass mode and no events are
-> +possible, only X, Y and Z axis measurements are possible.
+> +	ret = ad4695_read_one_sample(st, chan->address);
+> +	if (ret)
+> +		return ret;
 > +
-> +The following table shows the ADXL345 related device files, found in the
-> +specific device folder path ``/sys/bus/iio/devices/iio:deviceX/events``.
+> +	if (chan->scan_type.sign == 's')
+> +		*val = sign_extend32(st->raw_data, realbits - 1);
+> +	else
+> +		*val = st->raw_data;
 > +
-> ++---------------------------------------------+-----------------------------------------+
-> +| Event handle                                | Description                             |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_doubletap_en               | Enable double tap detection on all axis |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_doubletap_reset_timeout    | Double tap window in [us]               |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_doubletap_suppressedbit_en | Enable double tap suppress bit          |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_doubletap_tap2_min_delay   | Double tap latent in [us]               |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_singletap_timeout          | Single tap duration in [us]             |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_gesture_singletap_value            | Single tap threshold value in 62.5/LSB  |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_mag_falling_en                     | Enable free fall detection              |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_mag_falling_period                 | Free fall time in [us]                  |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_mag_falling_value                  | Free fall threshold value in 62.5/LSB   |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_mag_referenced_falling_en          | Set 1 to couple inactivity AC, 0 for DC |
+> +	return IIO_VAL_INT;
+> +}
+> +
+>  static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+>  			   int *val, int *val2, long mask)
+> @@ -750,19 +769,12 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -			ret = ad4695_read_one_sample(st, chan->address);
+> -			if (ret)
+> -				return ret;
+> -
+> -			if (chan->scan_type.sign == 's')
+> -				*val = sign_extend32(st->raw_data, realbits - 1);
+> -			else
+> -				*val = st->raw_data;
+>  
+> -			return IIO_VAL_INT;
+> -		}
+> -		unreachable();
+> +		if (!iio_device_claim_direct(indio_dev))
+> +			return -EBUSY;
+> +		ret = __ad4695_read_info_raw(st, chan, val);
+> +		iio_device_release_direct(indio_dev);
+> +		return ret;
+>  	case IIO_CHAN_INFO_SCALE:
+>  		switch (chan->type) {
+>  		case IIO_VOLTAGE:
+> @@ -800,45 +812,45 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_CALIBSCALE:
+>  		switch (chan->type) {
+>  		case IIO_VOLTAGE:
+> -			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -				ret = regmap_read(st->regmap16,
+> -					AD4695_REG_GAIN_IN(chan->scan_index),
+> -					&reg_val);
+> -				if (ret)
+> -					return ret;
+> +			if (!iio_device_claim_direct(indio_dev))
+> +				return -EBUSY;
+> +			ret = regmap_read(st->regmap16,
+> +					  AD4695_REG_GAIN_IN(chan->scan_index),
+> +					  &reg_val);
+> +			iio_device_release_direct(indio_dev);
+> +			if (ret)
+> +				return ret;
+>  
+> -				*val = reg_val;
+> -				*val2 = 15;
+> +			*val = reg_val;
+> +			*val2 = 15;
+>  
+> -				return IIO_VAL_FRACTIONAL_LOG2;
+> -			}
+> -			unreachable();
+> +			return IIO_VAL_FRACTIONAL_LOG2;
+>  		default:
+>  			return -EINVAL;
+>  		}
+>  	case IIO_CHAN_INFO_CALIBBIAS:
+>  		switch (chan->type) {
+>  		case IIO_VOLTAGE:
+> -			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -				ret = regmap_read(st->regmap16,
+> -					AD4695_REG_OFFSET_IN(chan->scan_index),
+> -					&reg_val);
+> -				if (ret)
+> -					return ret;
+> -
+> -				tmp = sign_extend32(reg_val, 15);
+> +			if (!iio_device_claim_direct(indio_dev))
+> +				return -EBUSY;
+> +			ret = regmap_read(st->regmap16,
+> +					  AD4695_REG_OFFSET_IN(chan->scan_index),
+> +					  &reg_val);
+> +			iio_device_release_direct(indio_dev);
+> +			if (ret)
+> +				return ret;
+>  
+> -				*val = tmp / 4;
+> -				*val2 = abs(tmp) % 4 * MICRO / 4;
+> +			tmp = sign_extend32(reg_val, 15);
+>  
+> -				if (tmp < 0 && *val2) {
+> -					*val *= -1;
+> -					*val2 *= -1;
+> -				}
+> +			*val = tmp / 4;
+> +			*val2 = abs(tmp) % 4 * MICRO / 4;
+>  
+> -				return IIO_VAL_INT_PLUS_MICRO;
+> +			if (tmp < 0 && *val2) {
+> +				*val *= -1;
+> +				*val2 *= -1;
+>  			}
+> -			unreachable();
+> +
+> +			return IIO_VAL_INT_PLUS_MICRO;
+>  		default:
+>  			return -EINVAL;
+>  		}
+> @@ -847,64 +859,75 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  	}
+>  }
+>  
+> -static int ad4695_write_raw(struct iio_dev *indio_dev,
+> -			    struct iio_chan_spec const *chan,
+> -			    int val, int val2, long mask)
+> +static int __ad4695_write_raw(struct iio_dev *indio_dev,
+> +			      struct iio_chan_spec const *chan,
+> +			      int val, int val2, long mask)
+>  {
+>  	struct ad4695_state *st = iio_priv(indio_dev);
+>  	unsigned int reg_val;
+>  
+> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -		switch (mask) {
+> -		case IIO_CHAN_INFO_CALIBSCALE:
+> -			switch (chan->type) {
+> -			case IIO_VOLTAGE:
+> -				if (val < 0 || val2 < 0)
+> -					reg_val = 0;
+> -				else if (val > 1)
+> -					reg_val = U16_MAX;
+> -				else
+> -					reg_val = (val * (1 << 16) +
+> -						   mul_u64_u32_div(val2, 1 << 16,
+> -								   MICRO)) / 2;
+> -
+> -				return regmap_write(st->regmap16,
+> -					AD4695_REG_GAIN_IN(chan->scan_index),
+> -					reg_val);
+> -			default:
+> -				return -EINVAL;
+> -			}
+> -		case IIO_CHAN_INFO_CALIBBIAS:
+> -			switch (chan->type) {
+> -			case IIO_VOLTAGE:
+> -				if (val2 >= 0 && val > S16_MAX / 4)
+> -					reg_val = S16_MAX;
+> -				else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
+> -					reg_val = S16_MIN;
+> -				else if (val2 < 0)
+> -					reg_val = clamp_t(int,
+> -						-(val * 4 + -val2 * 4 / MICRO),
+> -						S16_MIN, S16_MAX);
+> -				else if (val < 0)
+> -					reg_val = clamp_t(int,
+> -						val * 4 - val2 * 4 / MICRO,
+> -						S16_MIN, S16_MAX);
+> -				else
+> -					reg_val = clamp_t(int,
+> -						val * 4 + val2 * 4 / MICRO,
+> -						S16_MIN, S16_MAX);
+> -
+> -				return regmap_write(st->regmap16,
+> -					AD4695_REG_OFFSET_IN(chan->scan_index),
+> -					reg_val);
+> -			default:
+> -				return -EINVAL;
+> -			}
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (val < 0 || val2 < 0)
+> +				reg_val = 0;
+> +			else if (val > 1)
+> +				reg_val = U16_MAX;
+> +			else
+> +				reg_val = (val * (1 << 16) +
+> +					   mul_u64_u32_div(val2, 1 << 16,
+> +							   MICRO)) / 2;
+> +
+> +			return regmap_write(st->regmap16,
+> +					    AD4695_REG_GAIN_IN(chan->scan_index),
+> +					    reg_val);
+> +		default:
+> +			return -EINVAL;
+> +		}
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		switch (chan->type) {
+> +		case IIO_VOLTAGE:
+> +			if (val2 >= 0 && val > S16_MAX / 4)
+> +				reg_val = S16_MAX;
+> +			else if ((val2 < 0 ? -val : val) < S16_MIN / 4)
+> +				reg_val = S16_MIN;
+> +			else if (val2 < 0)
+> +				reg_val = clamp_t(int,
+> +						  -(val * 4 + -val2 * 4 / MICRO),
+> +						  S16_MIN, S16_MAX);
+> +			else if (val < 0)
+> +				reg_val = clamp_t(int,
+> +						  val * 4 - val2 * 4 / MICRO,
+> +						  S16_MIN, S16_MAX);
+> +			else
+> +				reg_val = clamp_t(int,
+> +						  val * 4 + val2 * 4 / MICRO,
+> +						  S16_MIN, S16_MAX);
+> +
+> +			return regmap_write(st->regmap16,
+> +					    AD4695_REG_OFFSET_IN(chan->scan_index),
+> +					    reg_val);
+>  		default:
+>  			return -EINVAL;
+>  		}
+> +	default:
+> +		return -EINVAL;
+>  	}
+> -	unreachable();
+> +}
+> +
+> +static int ad4695_write_raw(struct iio_dev *indio_dev,
+> +			    struct iio_chan_spec const *chan,
+> +			    int val, int val2, long mask)
+> +{
+> +	int ret;
+> +
+> +	if (!iio_device_claim_direct(indio_dev))
+> +		return -EBUSY;
+> +	ret = __ad4695_write_raw(indio_dev, chan, val, val2, mask);
+> +	iio_device_release_direct(indio_dev);
+> +
+> +	return ret;
+>  }
+>  
+>  static int ad4695_read_avail(struct iio_dev *indio_dev,
+> @@ -954,26 +977,29 @@ static int ad4695_debugfs_reg_access(struct iio_dev *indio_dev,
+>  				     unsigned int *readval)
+>  {
+>  	struct ad4695_state *st = iio_priv(indio_dev);
+> -
+> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -		if (readval) {
+> -			if (regmap_check_range_table(st->regmap, reg,
+> -						     &ad4695_regmap_rd_table))
+> -				return regmap_read(st->regmap, reg, readval);
+> -			if (regmap_check_range_table(st->regmap16, reg,
+> -						     &ad4695_regmap16_rd_table))
+> -				return regmap_read(st->regmap16, reg, readval);
+> -		} else {
+> -			if (regmap_check_range_table(st->regmap, reg,
+> -						     &ad4695_regmap_wr_table))
+> -				return regmap_write(st->regmap, reg, writeval);
+> -			if (regmap_check_range_table(st->regmap16, reg,
+> -						     &ad4695_regmap16_wr_table))
+> -				return regmap_write(st->regmap16, reg, writeval);
+> -		}
+> +	int ret = -EINVAL;
+> +
+> +	if (!iio_device_claim_direct(indio_dev))
+> +		return -EBUSY;
+> +
+> +	if (readval) {
+> +		if (regmap_check_range_table(st->regmap, reg,
+> +					     &ad4695_regmap_rd_table))
+> +			ret = regmap_read(st->regmap, reg, readval);
+> +		if (regmap_check_range_table(st->regmap16, reg,
+> +					     &ad4695_regmap16_rd_table))
+> +			ret = regmap_read(st->regmap16, reg, readval);
+> +	} else {
+> +		if (regmap_check_range_table(st->regmap, reg,
+> +					     &ad4695_regmap_wr_table))
+> +			ret = regmap_write(st->regmap, reg, writeval);
+> +		if (regmap_check_range_table(st->regmap16, reg,
+> +					     &ad4695_regmap16_wr_table))
+> +			ret = regmap_write(st->regmap16, reg, writeval);
+>  	}
+> +	iio_device_release_direct(indio_dev);
+>  
+> -	return -EINVAL;
+> +	return ret;
+>  }
+>  
+>  static const struct iio_info ad4695_info = {
 
-That interface doesn't work align with the normal ABI.
-
-
-Should be a selection of either mag_referenced_falling_en or another event to
-pick between AC and DC. I assume thresh_falling_en though i'll admit to being a little
-lost in what this hardware is doing!
-
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_mag_referenced_rising_en           | Set 1 to couple activity AC, 0 for DC   |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_thresh_falling_en                  | Enable inactivity detection             |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_thresh_falling_period              | Inactivity time in seconds              |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_thresh_falling_value               | Inactivity threshold value in 62.5/LSB  |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_thresh_rising_en                   | Enable activity detection               |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_thresh_rising_value                | Activity threshold value in 62.5/LSB    |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_x_gesture_singletap_en             | Enable single tap detection on X axis   |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_y_gesture_singletap_en             | Enable single tap detection on Y axis   |
-> ++---------------------------------------------+-----------------------------------------+
-> +| in_accel_z_gesture_singletap_en             | Enable single tap detection on Z axis   |
-> ++---------------------------------------------+-----------------------------------------+
-> +
-> +Find a detailed description of a particular functionality in the sensor
-> +datasheet.
-> +
-> +Setting the ODR explicitly will result in estimated adjusted default values
-> +for the inactivity time detection, where higher frequencies shall default to
-> +longer wait periods, and vice versa. It is also possible to explicetly
-> +configure inactivity wait times, if the defaulting approach does not match
-> +application requirements. Setting 0 here, will fall back to default setting.
-> +
-> +The g range configuration also tries to estimate activity and inactivity
-> +thresholds when switching to another g range. The default range will be
-> +factorized by the relation of old range divided by new range. The value never
-> +becomes 0 and will be at least 1 and at most 255 i.e. 62.5g/LSB according to
-> +the datasheet. Nevertheless activity and inactivity thresholds can be
-> +overwritten by explicit values.
-> +
-> +When activity and inactivity events are enabled, the driver automatically will
-> +set link bit and autosleep bit. The link bit serially links the activity and
-> +inactivity functions. 
-
-So this is a sort of hysteresis?  We may want to describe that more directly.
-
-> On the other side, the autosleep function switches the
-> +sensor to sleep mode if the inactivity function is enabled. This will reduce
-> +current consumption to the sub-12.5Hz rate.
-> +
-> +In dc-coupled operation, the current acceleration magnitude is compared
-> +directly with THRESH_ACT and THRESH_INACT registers to determine whether
-> +activity or inactivity was detected. In ac-coupled operation for activity
-> +detection, the acceleration value at the start of activity detection is taken
-> +as a reference value. New samples are then compared to this reference value.
-
-That applies for activity - the inactivity description is rather more confusing.
-
-> +
-> +Single tap detection can be configured according to the datasheet by specifying
-> +threshold and duration. If only the single tap is in use, the single tap
-> +interrupt is triggered when the acceleration goes above threshold (i.e. DUR
-> +start) and below the threshold, as long as duration is not exceeded. If single
-> +tap and double tap are in use, the single tap is triggered when the doulbe tap
-> +event has been either validated or invalidated.
-> +
-> +For double tap configure additionally window and latency in [us]. Latency
-> +starts counting when the single tap goes below threshold and is a waiting
-> +period, any spikes here are ignored for double tap detection. After latency,
-> +the window starts. Any rise above threshold, with a consequent fall below
-> +threshold within window time, rises a double tap signal when going below
-> +threshold.
-> +
-> +A double tap event can be invalidated in three ways: If the suppress bit is set,
-> +any acceleration spike above the threshold already during the latency time
-> +invalidates the double tap detection immediately, i.e. during latence must not
-> +occur spikes for double tap detection with suppress bit set.
-> +A double tap event is invalidated if acceleration lies above the threshold at
-> +the start of the window time for the double tap detection.
-> +Additionally a double tap event can be invalidated if an acceleration exceeds
-> +the time limit for taps, set by duration register, since also for the double
-> +tap the same value for duration counts, i.e. when rising above threshold the
-> +fall below threshold has to be within duration time.
-> +
-> +A free fall event will be detected if the signal goes below the configured
-> +threshold, for the configured time [us].
-> +
-> +Note, that activity/inactivy, as also freefall is recommended for 12.5 Hz ODR
-> +up to 400 Hz.
-> +
->
 

@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-15607-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15608-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD70CA37667
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:54:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37806A3766F
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 19:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7668616B429
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:54:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AE6F3AEE20
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7299019D884;
-	Sun, 16 Feb 2025 17:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845618A92D;
+	Sun, 16 Feb 2025 18:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opne2cLH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NIMdZms5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3092EAE4;
-	Sun, 16 Feb 2025 17:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F2625771;
+	Sun, 16 Feb 2025 18:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739728476; cv=none; b=N1869AysOkScE5RHr+jvfISSykXTHug4wvxrLAGaWxzrtAzPy+8i7rKxejTsYQgVrlKbDCvZe/H2vTNT6o0JP5fVxMEZFIU3VumR4MtuUXE+0ocuVG0FmIDn7xH+2sRtt8/QkwUZidp8dAS1Iv7UUzQUM+dqTiaFh7nc1XiOfqI=
+	t=1739728823; cv=none; b=oCkcI+64HIlq35ds9x54HX5DctSfoSbQNUgSZ9Y1GN9QdhxXqOoKfDRJRiJ6hKf8fwsklue4l5B7Ih/YARrHG9OWklJUVnDDnEy75zBmjMefChW+htcypPS9oGQFnGsUU0G9EpeZNIpvIN1nHClTLmA4yrvMdkEASQgw9IVT+Kc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739728476; c=relaxed/simple;
-	bh=wHlcJwuBFGmMIbZkTGtUDa1ND9mOVzGHQ1jRKquPGY0=;
+	s=arc-20240116; t=1739728823; c=relaxed/simple;
+	bh=diIO3ITDoU7AktJFiSmDVWriGSibTVn0llDzkSO25Ms=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PfB+hyGR5efeZ92qnc/Mlsq81gRpdz5U7YKozOrz97nEzarS+vkTpsko6Yu0D2eX/TKNWmItL6dZMhIyI4uX3Hi8M6B0r2tXFwU0kMKVXA8lmBcAMtfIKXnCVLyWTo2474Bf6AmIHim6bHTq8RMYU15ixJwqRgcT2W8cGJLmxgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=opne2cLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BFFC4CEDD;
-	Sun, 16 Feb 2025 17:54:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bgx/NPUiKBDEH7IGFBw2iPNq84My2m5q9u+ProYew27sx8/jxORZHtq1aydWeP3EwOskSmd2TVtzBirNfi+zyvTqN8gUcWJQwgh8NF3F1kalett53IplhCq0ygQ/Mcad9FCvLzjnVDd5VnLLeFGD8OtXVEsEJzVsluDhJpB/5JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NIMdZms5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5298CC4CEDD;
+	Sun, 16 Feb 2025 18:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739728475;
-	bh=wHlcJwuBFGmMIbZkTGtUDa1ND9mOVzGHQ1jRKquPGY0=;
+	s=k20201202; t=1739728822;
+	bh=diIO3ITDoU7AktJFiSmDVWriGSibTVn0llDzkSO25Ms=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=opne2cLHfCfBJB5qNQbw7/9VD6UoGNzKjc1sHnRe7S9z3pCIKPqxs8MU38Gf+iz6Z
-	 ZqLcbWYVJz9owg0E/jo3coKZlQrgYq3YJTohLpCSku2cWSBDM6E1eSK1gbTUpwdgwg
-	 08CrfyQfX2v8k4/knUlEd//FrOv5ekgOgTiBGGsmARb/rKpbCbGQ+6/qBbqb42KjJ6
-	 0gZEAsDafjH3ddBo+2DOQrKD/1x9aEIL9UIUI72wR434T5YircV6XZipKUabn9sfDr
-	 gu09kGr/Mv9QgTwCLUL88CkQNwk3eCKEzFQSJbSXRLA+C06pQWTq8ipfAwSskvdu80
-	 UB9N7vpgDUcqQ==
-Date: Sun, 16 Feb 2025 17:54:27 +0000
+	b=NIMdZms5lWeG8dIDKm8bhY22lqDJUm2YErtH8uW7HX0OfYUkM+3+wd+4u6/ppB0iL
+	 nkfff5r0uVoIZjYrTWafNvoiLaxkwcLHeHxVO36PpDPPn8J91coUcNvkG5bKJnsIa1
+	 L4OUP6VHbIjcpTHKZhpUhj9B/vGNvUZ/68Jt0/ywSYM2xd7STd3g0mGpBJJN/InULV
+	 YYE6xLXiQ2RL7ijUBvsNMq62SlNjFSsWk/YC1ZnUSL4WF+n+rKj1brcjV2oO9/OE+H
+	 tRbLPEQ8JNdhaLK+OzQ+yU4MZStpHFEzqX5kRkiCIP+8A8zX1M13yJ5WBmdJi9szxa
+	 OK51pagyYacQQ==
+Date: Sun, 16 Feb 2025 18:00:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 13/14] iio: accel: adxl345: add coupling detection
- for activity/inactivity
-Message-ID: <20250216175427.70cc3be1@jic23-huawei>
-In-Reply-To: <20250210110119.260858-14-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 14/14] docs: iio: add documentation for adxl345
+ driver
+Message-ID: <20250216180015.17787b22@jic23-huawei>
+In-Reply-To: <20250210110119.260858-15-l.rubusch@gmail.com>
 References: <20250210110119.260858-1-l.rubusch@gmail.com>
-	<20250210110119.260858-14-l.rubusch@gmail.com>
+	<20250210110119.260858-15-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,190 +63,146 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Feb 2025 11:01:18 +0000
+On Mon, 10 Feb 2025 11:01:19 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Add coupling activity/inactivity detection by the AC/DC bit. This is an
-> addititional enhancement for the detection of activity states and
-> completes the activity / inactivity feature of the ADXL345.
+> The documentation describes the ADXL345 driver, IIO interface,
+> interface usage and configuration.
+> 
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+Hi Lothar,
 
-Give a little more info here.  This is a somewhat unusual feature.
-The AC description is odd terminology as it is really about
-referencing to when the event is enabled, nothing is alternating.
-
-The activity one is fairly simple.  The inactivity seems not.
-I'm not entirely sure what the value used as reference is:
-
-"Similarly, in ac-coupled operation for inactivity detection,
-a reference value is used for comparison and is updated whenever
-the device exceeds the inactivity threshold. After the reference
-value is selected, the device compares the magnitude of the
-difference between the reference value and the current acceleration
-with THRESH_INACT. If the difference is less than the value in
-THRESH_INACT for the time in TIME_INACT, the device is considered
-inactive and the inactivity interrupt is triggered."
-
-What is it updated to?  Is it updated to effectively the maximum
-activity value? Or just a snap shot of whatever triggered the
-inactivity be left (so takes into account which axis the
-activity occurred on.)
-
-I've no idea.
-
-The definition we have for mag referenced is vague enough
-to incorporate this so not a problem if we can't figure out
-exactly what it is!
+I was running out of time so this was a little more superficial review than I would
+have liked to have done.  I've commented on a few bits that I was confuse about in the driver.
+Document is showing how useful these are :)
 
 Jonathan
 
+> +
+> +Particular IIO events will be triggered by the corresponding interrupts. The
+> +sensor driver supports no or one active INT line, where the sensor has two
+> +possible INT IOs. Configure the used INT line in the devicetree. If no INT line
+> +is configured, the sensor falls back to FIFO bypass mode and no events are
+> +possible, only X, Y and Z axis measurements are possible.
+> +
+> +The following table shows the ADXL345 related device files, found in the
+> +specific device folder path ``/sys/bus/iio/devices/iio:deviceX/events``.
+> +
+> ++---------------------------------------------+-----------------------------------------+
+> +| Event handle                                | Description                             |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_doubletap_en               | Enable double tap detection on all axis |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_doubletap_reset_timeout    | Double tap window in [us]               |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_doubletap_suppressedbit_en | Enable double tap suppress bit          |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_doubletap_tap2_min_delay   | Double tap latent in [us]               |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_singletap_timeout          | Single tap duration in [us]             |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_gesture_singletap_value            | Single tap threshold value in 62.5/LSB  |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_mag_falling_en                     | Enable free fall detection              |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_mag_falling_period                 | Free fall time in [us]                  |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_mag_falling_value                  | Free fall threshold value in 62.5/LSB   |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_mag_referenced_falling_en          | Set 1 to couple inactivity AC, 0 for DC |
+
+That interface doesn't work align with the normal ABI.
 
 
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  drivers/iio/accel/adxl345_core.c | 77 ++++++++++++++++++++++++++++++++
->  1 file changed, 77 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 7de869fac799..411ae7bf6b97 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -36,7 +36,9 @@
->  #define ADXL345_REG_TAP_AXIS_MSK	GENMASK(2, 0)
->  #define ADXL345_REG_TAP_SUPPRESS_MSK	BIT(3)
->  #define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
-> +#define ADXL345_REG_ACT_ACDC_MSK	BIT(7)
->  #define ADXL345_REG_INACT_AXIS_MSK	GENMASK(2, 0)
-> +#define ADXL345_REG_INACT_ACDC_MSK	BIT(3)
->  #define ADXL345_POWER_CTL_INACT_MSK	(ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK)
->  
->  enum adxl345_axis {
-> @@ -86,6 +88,11 @@ static const unsigned int adxl345_act_thresh_reg[2] = {
->  	[ADXL345_INACTIVITY] = ADXL345_REG_THRESH_INACT,
->  };
->  
-> +static const unsigned int adxl345_act_acdc_msk[2] = {
-> +	[ADXL345_ACTIVITY] = ADXL345_REG_ACT_ACDC_MSK,
-> +	[ADXL345_INACTIVITY] = ADXL345_REG_INACT_ACDC_MSK,
-> +};
-> +
->  static const unsigned int adxl345_act_axis_msk[2] = {
->  	[ADXL345_ACTIVITY] = ADXL345_REG_ACT_AXIS_MSK,
->  	[ADXL345_INACTIVITY] = ADXL345_REG_INACT_AXIS_MSK,
-> @@ -178,9 +185,11 @@ struct adxl345_state {
->  	enum adxl345_range range;
->  
->  	u32 act_axis_ctrl;
-> +	bool act_ac;
->  	u8 act_threshold;
->  
->  	u32 inact_axis_ctrl;
-> +	bool inact_ac;
->  	u8 inact_threshold;
->  	u8 inact_time_s;
->  
-> @@ -237,6 +246,18 @@ static struct iio_event_spec adxl345_events[] = {
->  			BIT(IIO_EV_INFO_VALUE) |
->  			BIT(IIO_EV_INFO_PERIOD),
->  	},
-> +	{
-> +		/* activity, activity - ac bit */
-> +		.type = IIO_EV_TYPE_MAG_REFERENCED,
-> +		.dir = IIO_EV_DIR_RISING,
-> +		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-> +	},
-> +	{
-> +		/* activity, inactivity - ac bit */
-> +		.type = IIO_EV_TYPE_MAG_REFERENCED,
-> +		.dir = IIO_EV_DIR_FALLING,
-> +		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-> +	},
->  };
->  
->  #define ADXL345_CHANNEL(index, reg, axis) {					\
-> @@ -334,6 +355,35 @@ static int adxl345_write_act_axis(struct adxl345_state *st,
->  	return 0;
->  }
->  
-> +static int adxl345_is_act_inact_ac(struct adxl345_state *st,
-> +				   enum adxl345_activity_type type, bool *ac)
-> +{
-> +	if (type == ADXL345_ACTIVITY)
-> +		*ac = st->act_ac;
-> +	else
-> +		*ac = st->inact_ac;
-> +
-> +	return 0;
-> +}
-> +
-> +static int adxl345_set_act_inact_ac(struct adxl345_state *st,
-> +				    enum adxl345_activity_type type, bool ac)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL,
-> +				 adxl345_act_acdc_msk[type], ac);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (type == ADXL345_ACTIVITY)
-> +		st->act_ac = ac;
-> +	else
-> +		st->inact_ac = ac;
-> +
-> +	return 0;
-> +}
-> +
->  static int adxl345_is_act_inact_en(struct adxl345_state *st,
->  				   enum adxl345_activity_type type, bool *en)
->  {
-> @@ -959,6 +1009,21 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
->  		if (ret)
->  			return ret;
->  		return int_en;
-> +	case IIO_EV_TYPE_MAG_REFERENCED:
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			ret = adxl345_is_act_inact_ac(st, ADXL345_ACTIVITY, &int_en);
-> +			if (ret)
-> +				return ret;
-> +			return int_en;
-> +		case IIO_EV_DIR_FALLING:
-> +			ret = adxl345_is_act_inact_ac(st, ADXL345_INACTIVITY, &int_en);
-> +			if (ret)
-> +				return ret;
-> +			return int_en;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -1008,6 +1073,16 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
->  		}
->  	case IIO_EV_TYPE_MAG:
->  		return adxl345_set_ff_en(st, state);
-> +	case IIO_EV_TYPE_MAG_REFERENCED:
-> +		switch (dir) {
-> +		case IIO_EV_DIR_RISING:
-> +			return adxl345_set_act_inact_ac(st, ADXL345_ACTIVITY, state);
-> +		case IIO_EV_DIR_FALLING:
-> +			return adxl345_set_act_inact_ac(st, ADXL345_INACTIVITY, state);
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -1619,6 +1694,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	 */
->  	st->act_axis_ctrl = ADXL345_REG_ACT_AXIS_MSK;
->  	st->inact_axis_ctrl = ADXL345_REG_INACT_AXIS_MSK;
-> +	st->inact_ac = 0;			/*    0 [dc]              */
-> +	st->act_ac = 0;
->  	st->int_map = 0x00;			/* reset interrupts */
->  
->  	/* Init with reasonable values */
+Should be a selection of either mag_referenced_falling_en or another event to
+pick between AC and DC. I assume thresh_falling_en though i'll admit to being a little
+lost in what this hardware is doing!
 
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_mag_referenced_rising_en           | Set 1 to couple activity AC, 0 for DC   |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_thresh_falling_en                  | Enable inactivity detection             |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_thresh_falling_period              | Inactivity time in seconds              |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_thresh_falling_value               | Inactivity threshold value in 62.5/LSB  |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_thresh_rising_en                   | Enable activity detection               |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_thresh_rising_value                | Activity threshold value in 62.5/LSB    |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_x_gesture_singletap_en             | Enable single tap detection on X axis   |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_y_gesture_singletap_en             | Enable single tap detection on Y axis   |
+> ++---------------------------------------------+-----------------------------------------+
+> +| in_accel_z_gesture_singletap_en             | Enable single tap detection on Z axis   |
+> ++---------------------------------------------+-----------------------------------------+
+> +
+> +Find a detailed description of a particular functionality in the sensor
+> +datasheet.
+> +
+> +Setting the ODR explicitly will result in estimated adjusted default values
+> +for the inactivity time detection, where higher frequencies shall default to
+> +longer wait periods, and vice versa. It is also possible to explicetly
+> +configure inactivity wait times, if the defaulting approach does not match
+> +application requirements. Setting 0 here, will fall back to default setting.
+> +
+> +The g range configuration also tries to estimate activity and inactivity
+> +thresholds when switching to another g range. The default range will be
+> +factorized by the relation of old range divided by new range. The value never
+> +becomes 0 and will be at least 1 and at most 255 i.e. 62.5g/LSB according to
+> +the datasheet. Nevertheless activity and inactivity thresholds can be
+> +overwritten by explicit values.
+> +
+> +When activity and inactivity events are enabled, the driver automatically will
+> +set link bit and autosleep bit. The link bit serially links the activity and
+> +inactivity functions. 
+
+So this is a sort of hysteresis?  We may want to describe that more directly.
+
+> On the other side, the autosleep function switches the
+> +sensor to sleep mode if the inactivity function is enabled. This will reduce
+> +current consumption to the sub-12.5Hz rate.
+> +
+> +In dc-coupled operation, the current acceleration magnitude is compared
+> +directly with THRESH_ACT and THRESH_INACT registers to determine whether
+> +activity or inactivity was detected. In ac-coupled operation for activity
+> +detection, the acceleration value at the start of activity detection is taken
+> +as a reference value. New samples are then compared to this reference value.
+
+That applies for activity - the inactivity description is rather more confusing.
+
+> +
+> +Single tap detection can be configured according to the datasheet by specifying
+> +threshold and duration. If only the single tap is in use, the single tap
+> +interrupt is triggered when the acceleration goes above threshold (i.e. DUR
+> +start) and below the threshold, as long as duration is not exceeded. If single
+> +tap and double tap are in use, the single tap is triggered when the doulbe tap
+> +event has been either validated or invalidated.
+> +
+> +For double tap configure additionally window and latency in [us]. Latency
+> +starts counting when the single tap goes below threshold and is a waiting
+> +period, any spikes here are ignored for double tap detection. After latency,
+> +the window starts. Any rise above threshold, with a consequent fall below
+> +threshold within window time, rises a double tap signal when going below
+> +threshold.
+> +
+> +A double tap event can be invalidated in three ways: If the suppress bit is set,
+> +any acceleration spike above the threshold already during the latency time
+> +invalidates the double tap detection immediately, i.e. during latence must not
+> +occur spikes for double tap detection with suppress bit set.
+> +A double tap event is invalidated if acceleration lies above the threshold at
+> +the start of the window time for the double tap detection.
+> +Additionally a double tap event can be invalidated if an acceleration exceeds
+> +the time limit for taps, set by duration register, since also for the double
+> +tap the same value for duration counts, i.e. when rising above threshold the
+> +fall below threshold has to be within duration time.
+> +
+> +A free fall event will be detected if the signal goes below the configured
+> +threshold, for the configured time [us].
+> +
+> +Note, that activity/inactivy, as also freefall is recommended for 12.5 Hz ODR
+> +up to 400 Hz.
+> +
+>
 

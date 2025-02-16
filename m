@@ -1,63 +1,61 @@
-Return-Path: <linux-iio+bounces-15580-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15581-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02D1CA3759B
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:16:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD36A375AA
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:21:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E825163088
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 16:15:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C761884A9B
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 16:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2FD19ADA2;
-	Sun, 16 Feb 2025 16:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FD5199FA2;
+	Sun, 16 Feb 2025 16:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DzzzP1yV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba0Ts5BV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A32019ABC3;
-	Sun, 16 Feb 2025 16:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417A21B808;
+	Sun, 16 Feb 2025 16:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739722509; cv=none; b=WyMXEa61KKM+8sXLbTrkzT/ON33BlDO9oanlnIM/5uG0Pc0rCTSyCUZOtO2Kg9a8kRS0Xrg7ypjPmBdYRSL9bxn3o/ir6GYw1J+hBKRAivPC+Y0AJx+idKOGE4rcLA0oUDfWDegC927sn0Q2VqSjlA0GLzjojIsVBeyJhdcBhx8=
+	t=1739722901; cv=none; b=YcDHgN+Fsm7oB+o9+jDo6fj98rSpHXznL1qGti2L/juFCOMMwHAUk8Afzl83mlZgKknGF30gbqtNvtfY7y4UB+BI2vwnkLALxO/5CMMCda5ONhIbFbaRucJFwxoVGPqr8Q+dQV88unasvoJIMY/OsWlZL/JZFQrOPjaS7JzoGGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739722509; c=relaxed/simple;
-	bh=cN6cpr4EL2mJeOn4Fl/18etOSqcDsy+IcC7FKlJp72s=;
+	s=arc-20240116; t=1739722901; c=relaxed/simple;
+	bh=fT2zYqJ6YLeX9QSBNjyLADGTECUTNaknokkdN6W1JFE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HLoeQg+0WEZtTtM5QxknNS199avRaSzpHT53xDUu8B5hhdSezsr7+URunLoK0FyGXOrQmx9tqCSH+9gGp/Ybxe/VecrAaKnzrX0xx/r63biHNDPTZJWORydPsAd9IbGxVONWzFO0eFqC7EhzsTVDZ/LyEtwZ2Owc/XhQ/iAKRA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DzzzP1yV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B44C4CEDD;
-	Sun, 16 Feb 2025 16:15:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Th55akttqFfJ4H6+xIH2Vxoy7qZfvkjIAf+3W/rFTSLA4NvTBLu5LGjZE/Vf+TGzERwaNiuX2blmZ4B+CNSYFtoHIfmT+dwXa6gxpVwEVxMXSsXrlbp1LhXZ5BRpm5D169Zt8K4X6Xh30+dsDX2vY4mWGq++jlls1D4nOhGiu4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba0Ts5BV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A940C4CEDD;
+	Sun, 16 Feb 2025 16:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739722509;
-	bh=cN6cpr4EL2mJeOn4Fl/18etOSqcDsy+IcC7FKlJp72s=;
+	s=k20201202; t=1739722900;
+	bh=fT2zYqJ6YLeX9QSBNjyLADGTECUTNaknokkdN6W1JFE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DzzzP1yVCXJ4+fHZ1/dlOCY6NdTM/TBHYaJmR+JMsgxEhI1Peqs1BImqS5hTPOeU/
-	 HqQDrVkaxpwzlFT+zZZSGsVgbnbDdt7ayTCKsfd07yJetnnXoEP06rKaa8EpTjTWhN
-	 2w0S4s8lFhinBNtWGJLQq2wmagGRZ2CmpFdSqBMio3q5UqvngXMGN5EBezC1Uqm678
-	 +G6dBZP46dqW2K5w12mq0YQh14scRcAmuLZg8RHWHBlYraS8DAdTgyk/hXoO9qGPaC
-	 wLotDB7v7QLca9Vx39Fp4/88x7F7HYVG3dKhloyyfDNI7VOiiuknz4AQL8xYC/iAZl
-	 ArAUVh2wKhPKA==
-Date: Sun, 16 Feb 2025 16:14:58 +0000
+	b=Ba0Ts5BVlDLjr2cniFRNNRjBTB7Xai2R/EIDFg1mvKBXWa4sV4yqZuxMF/7H+SQCc
+	 u5ay3x3Q1xX09FKUDRhQXyzgWinQmXGpyyhHM5JBVsSCQPn+RzdG+UeZzeNTf+FA6h
+	 dC7R8h2LjAuMCyv9ZkavCJyz86R3yiF6C2gK2QIGFyKSyQc3SmI4zkM9oZXORvqzzq
+	 SEed9CF+ccUyo318XGJ3oNYEzUrBKzdh+Fvf5dZdZ1E7bltHpuZfTG/hJ5BUZFuNLz
+	 ZuMGqyeyzniD81LcDS4S7ViVK3qjJN+beXG/Q37NwD1+LkMzX5SZCqTauwo7N2lJ7N
+	 uDasgv3X3l70w==
+Date: Sun, 16 Feb 2025 16:21:30 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Sergiu Cuciurean
- <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
+ <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
  <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
  <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
  <jonath4nns@gmail.com>, <marcelo.schmitt1@gmail.com>,
- <dlechner@baylibre.com>, Linus Walleij <linus.walleij@linaro.org>, Bartosz
- Golaszewski <brgl@bgdev.pl>, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH RESEND v3 12/17] iio: adc: ad7768-1: Add GPIO controller
- support
-Message-ID: <20250216161458.0f9029e9@jic23-huawei>
-In-Reply-To: <62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
+ <dlechner@baylibre.com>
+Subject: Re: [PATCH RESEND v3 15/17] iio: adc: ad7768-1: replace manual
+ attribute declaration
+Message-ID: <20250216162130.0de4f148@jic23-huawei>
+In-Reply-To: <ea5d5ef777d4d7d15471369813c1613990fee862.1739368121.git.Jonathan.Santos@analog.com>
 References: <cover.1739368121.git.Jonathan.Santos@analog.com>
-	<62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
+	<ea5d5ef777d4d7d15471369813c1613990fee862.1739368121.git.Jonathan.Santos@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,245 +66,135 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Feb 2025 15:18:04 -0300
+On Wed, 12 Feb 2025 15:18:48 -0300
 Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Use read_avail callback from struct iio_info to replace the manual
+> declaration of sampling_frequency_available attribute.
 > 
-> The AD7768-1 has the ability to control other local hardware (such as gain
-> stages),to power down other blocks in the signal chain, or read local
-> status signals over the SPI interface.
-> 
-> This change exports the AD7768-1's four gpios and makes them accessible
-> at an upper layer.
-> 
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-
-Similar to previous.  +CC the gpio driver maintainers.
-Whilst small part of this much larger driver, good to make sure
-they have visibility and can choose whether to review or not.
-
-+CC Linus, Bartosz and the linux-gpio list.
-Probably also worth calling out in this patch description the reason we can't set
-the GPIO state when in buffered mode as that won't be obvious to
-anyone just reviewing the GPIO part of the driver.
-
 > ---
 > v3 Changes:
-> * Fixed SoB order.
-> * Added mising iio_device_release_direct_mode().
-> * Simplified some regmap writes.
-> * Removed ad7768_gpio_request() callback.
-> * Fixed line wrapping.
-> 
-> v2 Changes:
-> * Replaced mutex for iio_device_claim_direct_mode().
-> * Use gpio-controller property to conditionally enable the
->   GPIO support.
-> * OBS: when the GPIO is configured as output, we should read 
->   the current state value from AD7768_REG_GPIO_WRITE.
+> * New patch in v3.
 > ---
->  drivers/iio/adc/ad7768-1.c | 143 ++++++++++++++++++++++++++++++++++++-
->  1 file changed, 141 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad7768-1.c | 58 +++++++++++++++++---------------------
+>  1 file changed, 26 insertions(+), 32 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index a359cd8fceca..afcc8678cf83 100644
+> index 716cf3582577..8aea38c154fe 100644
 > --- a/drivers/iio/adc/ad7768-1.c
 > +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -9,6 +9,8 @@
->  #include <linux/delay.h>
->  #include <linux/device.h>
->  #include <linux/err.h>
-> +#include <linux/gpio.h>
-> +#include <linux/gpio/driver.h>
->  #include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> @@ -86,6 +88,16 @@
->  #define AD7768_REG_ANALOG2_VCM_MSK	GENMASK(2, 0)
->  #define AD7768_REG_ANALOG2_VCM(x)	FIELD_PREP(AD7768_REG_ANALOG2_VCM_MSK, x)
->  
-> +/* AD7768_REG_GPIO_CONTROL */
-> +#define AD7768_GPIO_UNIVERSAL_EN	BIT(7)
-> +#define AD7768_GPIO_CONTROL_MSK		GENMASK(3, 0)
-> +
-> +/* AD7768_REG_GPIO_WRITE */
-> +#define AD7768_GPIO_WRITE_MSK		GENMASK(3, 0)
-> +
-> +/* AD7768_REG_GPIO_READ */
-> +#define AD7768_GPIO_READ_MSK		GENMASK(3, 0)
-> +
->  #define AD7768_RD_FLAG_MSK(x)		(BIT(6) | ((x) & 0x3F))
->  #define AD7768_WR_FLAG_MSK(x)		((x) & 0x3F)
->  
-> @@ -170,6 +182,7 @@ struct ad7768_state {
->  	struct regulator *vref;
->  	struct regulator_dev *vcm_rdev;
->  	struct clk *mclk;
-> +	struct gpio_chip gpiochip;
+> @@ -187,6 +187,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+>  		.indexed = 1,
+>  		.channel = 0,
+>  		.scan_index = 0,
+> @@ -207,6 +208,7 @@ struct ad7768_state {
 >  	unsigned int mclk_freq;
+>  	unsigned int dec_rate;
 >  	unsigned int samp_freq;
+> +	unsigned int samp_freq_avail[ARRAY_SIZE(ad7768_clk_config)];
 >  	struct completion completion;
-> @@ -349,6 +362,124 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
+>  	struct iio_trigger *trig;
+>  	struct gpio_desc *gpio_sync_in;
+> @@ -564,28 +566,6 @@ static int ad7768_set_freq(struct ad7768_state *st,
 >  	return 0;
 >  }
 >  
-> +static int ad7768_gpio_direction_input(struct gpio_chip *chip, unsigned int offset)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_clear_bits(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +				BIT(offset));
-> +	iio_device_release_direct_mode(indio_dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int ad7768_gpio_direction_output(struct gpio_chip *chip,
-> +					unsigned int offset, int value)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_set_bits(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +			      BIT(offset));
-> +	iio_device_release_direct_mode(indio_dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static int ad7768_gpio_get(struct gpio_chip *chip, unsigned int offset)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(st->regmap, AD7768_REG_GPIO_CONTROL, &val);
-> +	if (ret)
-> +		goto err_release;
-> +
-> +	/*
-> +	 * If the GPIO is configured as an output, read the current value from
-> +	 * AD7768_REG_GPIO_WRITE. Otherwise, read the input value from
-> +	 * AD7768_REG_GPIO_READ.
-> +	 */
-> +	if (val & BIT(offset))
-> +		ret = regmap_read(st->regmap, AD7768_REG_GPIO_WRITE, &val);
-> +	else
-> +		ret = regmap_read(st->regmap, AD7768_REG_GPIO_READ, &val);
-> +	if (ret)
-> +		goto err_release;
-> +
-> +	ret = !!(val & BIT(offset));
-> +err_release:
-> +	iio_device_release_direct_mode(indio_dev);
-> +
-> +	return ret;
-> +}
-> +
-> +static void ad7768_gpio_set(struct gpio_chip *chip, unsigned int offset, int value)
-> +{
-> +	struct iio_dev *indio_dev = gpiochip_get_data(chip);
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	unsigned int val;
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return;
-> +
-> +	ret = regmap_read(st->regmap, AD7768_REG_GPIO_CONTROL, &val);
-> +	if (ret)
-> +		goto err_release;
-> +
-> +	if (val & BIT(offset))
-> +		regmap_update_bits(st->regmap, AD7768_REG_GPIO_WRITE,
-> +				   BIT(offset), value << offset);
-> +
-> +err_release:
-> +	iio_device_release_direct_mode(indio_dev);
-> +}
-> +
-> +static int ad7768_gpio_init(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	ret = regmap_write(st->regmap, AD7768_REG_GPIO_CONTROL,
-> +			   AD7768_GPIO_UNIVERSAL_EN);
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->gpiochip = (struct gpio_chip) {
-> +		.label = "ad7768_1_gpios",
-> +		.base = -1,
-> +		.ngpio = 4,
-> +		.parent = &st->spi->dev,
-> +		.can_sleep = true,
-> +		.direction_input = ad7768_gpio_direction_input,
-> +		.direction_output = ad7768_gpio_direction_output,
-> +		.get = ad7768_gpio_get,
-> +		.set = ad7768_gpio_set,
-> +		.owner = THIS_MODULE,
-> +	};
-> +
-> +	return gpiochip_add_data(&st->gpiochip, indio_dev);
-> +}
-> +
->  static int ad7768_set_freq(struct ad7768_state *st,
->  			   unsigned int freq)
->  {
-> @@ -492,8 +623,9 @@ static const struct iio_info ad7768_info = {
->  	.debugfs_reg_access = &ad7768_reg_access,
->  };
->  
-> -static int ad7768_setup(struct ad7768_state *st)
-> +static int ad7768_setup(struct iio_dev *indio_dev)
->  {
-> +	struct ad7768_state *st = iio_priv(indio_dev);
->  	int ret;
->  
->  	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
-> @@ -526,6 +658,13 @@ static int ad7768_setup(struct ad7768_state *st)
->  	if (IS_ERR(st->gpio_sync_in))
->  		return PTR_ERR(st->gpio_sync_in);
->  
-> +	/* Only create a Chip GPIO if flagged for it */
-> +	if (device_property_read_bool(&st->spi->dev, "gpio-controller")) {
-> +		ret = ad7768_gpio_init(indio_dev);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
->  	/* Set the default sampling frequency to 32000 kSPS */
->  	return ad7768_set_freq(st, 32000);
+> -static ssize_t ad7768_sampling_freq_avail(struct device *dev,
+> -					  struct device_attribute *attr,
+> -					  char *buf)
+> -{
+> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> -	struct ad7768_state *st = iio_priv(indio_dev);
+> -	unsigned int freq;
+> -	int i, len = 0;
+> -
+> -	for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++) {
+> -		freq = DIV_ROUND_CLOSEST(st->mclk_freq,
+> -					 ad7768_clk_config[i].clk_div);
+> -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", freq);
+> -	}
+> -
+> -	buf[len - 1] = '\n';
+> -
+> -	return len;
+> -}
+> -
+> -static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(ad7768_sampling_freq_avail);
+> -
+>  static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+>  			   int *val, int *val2, long info)
+> @@ -633,6 +613,29 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  	return -EINVAL;
 >  }
-> @@ -845,7 +984,7 @@ static int ad7768_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
 >  
-> -	ret = ad7768_setup(st);
-> +	ret = ad7768_setup(indio_dev);
->  	if (ret < 0) {
->  		dev_err(&spi->dev, "AD7768 setup failed\n");
->  		return ret;
+> +static int ad7768_read_avail(struct iio_dev *indio_dev,
+> +			     struct iio_chan_spec const *chan,
+> +			     const int **vals, int *type, int *length,
+> +			     long info)
+> +{
+> +	struct ad7768_state *st = iio_priv(indio_dev);
+> +	int i;
+> +
+> +	switch (info) {
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++)
+> +			st->samp_freq_avail[i] = DIV_ROUND_CLOSEST(st->mclk_freq,
+> +								   ad7768_clk_config[i].clk_div);
+There are some complex race conditions around these available arrays, so in
+general it is better to make it obvious when they are static after
+init vs actually dynamic.  In this case I think we can fill this
+in the moment we know mclk_freq?  If so please move the calculation into
+probe() and just reference it here.
+
+How to close the race condition is an ongoing topic but I don't think
+that problem applies here anyway!
+
+Jonathan
+
+> +
+> +		*vals = (int *)st->samp_freq_avail;
+> +		*length = ARRAY_SIZE(ad7768_clk_config);
+> +		*type = IIO_VAL_INT;
+> +		return IIO_AVAIL_LIST;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +}
+> +
+>  static int ad7768_write_raw(struct iio_dev *indio_dev,
+>  			    struct iio_chan_spec const *chan,
+>  			    int val, int val2, long info)
+> @@ -655,15 +658,6 @@ static int ad7768_read_label(struct iio_dev *indio_dev,
+>  	return sprintf(label, "%s\n", st->labels[chan->channel]);
+>  }
+>  
+> -static struct attribute *ad7768_attributes[] = {
+> -	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
+> -	NULL
+> -};
+> -
+> -static const struct attribute_group ad7768_group = {
+> -	.attrs = ad7768_attributes,
+> -};
+> -
+>  static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
+>  					const struct iio_chan_spec *chan)
+>  {
+> @@ -674,8 +668,8 @@ static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
+>  }
+>  
+>  static const struct iio_info ad7768_info = {
+> -	.attrs = &ad7768_group,
+>  	.read_raw = &ad7768_read_raw,
+> +	.read_avail = &ad7768_read_avail,
+>  	.write_raw = &ad7768_write_raw,
+>  	.read_label = ad7768_read_label,
+>  	.get_current_scan_type = &ad7768_get_current_scan_type,
 
 

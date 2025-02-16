@@ -1,206 +1,150 @@
-Return-Path: <linux-iio+bounces-15596-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15597-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E0FA37632
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:11:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2C7A3763A
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADA0516F0BE
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:11:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D2793AAA86
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380941993BD;
-	Sun, 16 Feb 2025 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892723CF58;
+	Sun, 16 Feb 2025 17:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5EUEH45"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="p9Js3g/J"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59A7C2EF;
-	Sun, 16 Feb 2025 17:11:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7C3D299
+	for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2025 17:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739725901; cv=none; b=Z5DPOO1Z+EB4Zaen/u4Qie6UhF5gTfTDmJZslESDNKMs63RgK5GJXea1FT72DeMTJ0KyJq6LCAHS1C5lelJDAefhEgTnmqA2rMKNUsacbqZPKOP8Cn+rIy2hKsWQWPXTmG7KV6Kx7/kATxe3qOzAroyhzp2XhwozBR08f8bVo60=
+	t=1739726228; cv=none; b=Ohn9YAcIR/A36kEmjHwojKFkZhg7500SWXoVaP6/fJGWW0+fvx82WYkPYCEiNzjrXGaGMgypxOti3Ct+uzS4HlK92sPj9EpnBFHvRG/liYmpB6O6NTEjEQ4355qEoCpwmJNKfoEKx6pSJiZj6SoiaxuA/kWKe/xpzhVG3V+GLqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739725901; c=relaxed/simple;
-	bh=E3tM1vECsfCNDcVKuUmehQ1xAbFy3el7aesQvhH+k9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iAej/2HcOM0uEIpAk5DHAw5nREjuSKFamNweJV82XCEyg76f5i3LRPsuHb1eI7I5qs7nBmMIoTtuV1udaiA7PZgF4H7ySvAz3s8HBOg0a0/X/n2DXe9uGj+bZFrx29bndiLd3ZH5GAQa0Sqp0R4utuJp4VmymRmiU5F8uuJ4Fjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5EUEH45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C922C4CEDD;
-	Sun, 16 Feb 2025 17:11:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739725900;
-	bh=E3tM1vECsfCNDcVKuUmehQ1xAbFy3el7aesQvhH+k9U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d5EUEH45FgIT0tSYCP+/dp+hDPvoqH2cgVpcdfKjF7xJajbfN/BtvB9J+85qvoAiQ
-	 ZcbloqGjoyyI6t+C0+ywv0irkGFXXcywQFtj/KIWvhvlBPJQ2484LwsEfRyCbPGH4e
-	 nGWgagkX+sxG1s77xbtZ3QhLFpIAQd/c/QBEgdnBSCR061osm3/qx6mQeOagWpC6c6
-	 Kvocnxv7x0p/drZGLZYK8MXU81kyHKB548b9qBQikSSN8QZx8hLfJur4jRZwHPg+UO
-	 LABq9C+6MtuFoBZPVDr1txsonojHCuQeeaYRt9e8M5fu916OSwrnGSOW1Kg+W4oA6r
-	 vCtq8u2sGFBvw==
-Date: Sun, 16 Feb 2025 17:11:32 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v2 04/14] iio: accel: adxl345: refac set_interrupts and
- IRQ map
-Message-ID: <20250216171132.46445edc@jic23-huawei>
-In-Reply-To: <20250210110119.260858-5-l.rubusch@gmail.com>
-References: <20250210110119.260858-1-l.rubusch@gmail.com>
-	<20250210110119.260858-5-l.rubusch@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739726228; c=relaxed/simple;
+	bh=HOF6dl4Fu7JFVDJ9qQtLf3vrKdU1fxZSPDCaVFz1VrU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FhAihh/g17iIIec/GCEudMiwX3PUEQDnXjivPVvQv+Dbil9HtTHynw8NYlLnLDTkM2+iDv0AVqhbA0A2fwJ46L5alIYPDYITlTU501z4Y9Lc789dD1JA18vF29W0Q9O2rMKKQvZhWZDePnaPFP5O1oJa1oqtS2t/ITKReLtaics=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=p9Js3g/J; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aaf3c3c104fso588697366b.1
+        for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2025 09:17:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739726223; x=1740331023; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOF6dl4Fu7JFVDJ9qQtLf3vrKdU1fxZSPDCaVFz1VrU=;
+        b=p9Js3g/JgoIBcKp+rZxmOs7a7A+S72p/lfmCQjTmcchKOlFznF143Fb7KNS4chavjo
+         zpI+qNLfEfB0Be/39WT6MJeGjnr2p/0PoVDwaTLpbL0MuQN3E4cPBAr6m/i7VkWtdoZD
+         9aFUyZkL1t+nZFcYJidp5fOK5y+n9FTt3vI1GLhQBvMaGUQWGxFYkfnkl4tJ88Hsq7+p
+         JDy3aZS+7Cqlgdn0SAY7PM87Dlcatk42jChbWBdzx9RaMYpr4tFRjPfC7b2LxvZdFPqR
+         EyLlQCKIEYJmrDQSZb9uBJeZHXSYuyJq2xbqM1NEg6Y4o75Gwg7KH/Ydq5KL+rYbzo82
+         iyTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739726223; x=1740331023;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HOF6dl4Fu7JFVDJ9qQtLf3vrKdU1fxZSPDCaVFz1VrU=;
+        b=VtskqwGT3ZQtLK/D343jirjvAJ+iZ1pzVP8S5acxpEnKaJZi7LBuZrhs46+qsg5g6E
+         VKAPi/UdbnxRrn2U2NWRuTofHIZq9gqgxIXGG/XEqepE2ZBJF/oiZ8McslejoYIGpUyf
+         JzHncn+PPDhgOQxuPky0OLtEzmtIPAl6unZbLkwuSSXjKSHlzeMVDlBJtPDqg250Czcm
+         TMmslXbE2k3JZ+SNgAq0sPpd82LZWgjTF33zKXiIZ0+kvhYxuh7lvOgFAPdkcgaFkCc7
+         bN0w3UMug1G80wSyBPK/9zrJmjE2C2gDLZu+DO1P04cXUF45S+CPN2sAf9e4pkQIsv4q
+         Py/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWueuwBK4wWMEontRRJ4sEGRYts0xSPAS2L4bYJoqitgjmRfNovjKx7APm/VAFCUQkrzhdTWHXHIyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYDTtAX0xo2Qp7ejH+XXPF6E39M6uuDTnhDFf0awYricmnuBHL
+	3q4CI6s/TxvT1yC+czTNosJrrNRP2I5w2vkc5NZxY5UB51nZ2+Jeurx1RvLt+2Wiy4e3WMgGymf
+	s0DU=
+X-Gm-Gg: ASbGncs8CDJTKiVGYNoz44i2OBDmi8Rt7ED3tMvA9KrUVO7sKnZ2thooefJHyJHq/pY
+	Llp4MVQh6VxDOb15biTXxzS8Qkg/pZy3qPYID+1i8kWFnBtgpfTNO0dkKMUC6Hvu7ikQwfzXGyU
+	lOTqRoKXFKY2rLxBj9hW44cGQcRoSR01/Qdyghpe6kl1eNpQ/mpNNyFMgEZte7f/fa5qFlpErLG
+	M+9ixbZRRfjnsXXvVXbFDoszLONZLq+5CcHBmK9WMtMXsxG0vCUEepFjHEP9C+WHK3hy61qx2v/
+	HKDH1JDHHmMu631+mOzr
+X-Google-Smtp-Source: AGHT+IFaRjebA3Fmbwd1zbdg56J5VXESPx83AftZHkq+OsPhUnwpYH2WxZDI51NPC+HF4Mt3l9zxag==
+X-Received: by 2002:a17:907:1c21:b0:ab7:84bc:3233 with SMTP id a640c23a62f3a-abb70b39c8emr697299766b.28.1739726222611;
+        Sun, 16 Feb 2025 09:17:02 -0800 (PST)
+Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aba5323226asm737953666b.8.2025.02.16.09.17.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 09:17:02 -0800 (PST)
+Date: Sun, 16 Feb 2025 18:17:00 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v1 2/3] iio: adc: ad_sigma_delta: Disable channel after
+ calibration
+Message-ID: <slnxc6h4tkjzgjv7ory3xmhgzalyjtacde3lvgevaahjhcjg7s@jl55meuxwmvi>
+References: <20250212105322.10243-5-u.kleine-koenig@baylibre.com>
+ <20250212105322.10243-7-u.kleine-koenig@baylibre.com>
+ <20250216163600.42211c3d@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-
-On Mon, 10 Feb 2025 11:01:09 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
-
-> Split the current set_interrupts() functionality. Separate writing the
-> interrupt map from writing the interrupt enable register.
-> 
-> Move writing the interrupt map into the probe(). The interrupt map will
-> setup which event finally will go over the INT line. Thus, all events
-> are mapped to this interrupt line now once at the beginning.
-> 
-> On the other side the function set_interrupts() will now be focussed on
-> enabling interrupts for event features. Thus it will be renamed to
-> write_interrupts() to better distinguish from further usage of get/set
-> in the conext of the sensor features.
-> 
-> Also, add the missing initial reset of the interrupt enable register.
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-
-After this cleanup (which is good) I wonder why we need to store
-intmap at all?  Can we not just get it back from the regmap cache
-in the few places we need it (mostly as RMW updates I think).
-
-Jonathan
-
-> ---
->  drivers/iio/accel/adxl345_core.c | 46 +++++++++++++++-----------------
->  1 file changed, 22 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index 2928c1c0760f..910ad21279ed 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -14,10 +14,10 @@
->  #include <linux/regmap.h>
->  #include <linux/units.h>
->  
-> -#include <linux/iio/iio.h>
-> -#include <linux/iio/sysfs.h>
->  #include <linux/iio/buffer.h>
-> +#include <linux/iio/iio.h>
->  #include <linux/iio/kfifo_buf.h>
-> +#include <linux/iio/sysfs.h>
-
-Unrelated change.  Should not be in this patch
-
->  
->  #include "adxl345.h"
->  
-> @@ -96,26 +96,6 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
->  	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
->  }
->  
-> -static int adxl345_set_interrupts(struct adxl345_state *st)
-> -{
-> -	int ret;
-> -	unsigned int int_enable = st->int_map;
-> -	unsigned int int_map;
-> -
-> -	/*
-> -	 * Any bits set to 0 in the INT map register send their respective
-> -	 * interrupts to the INT1 pin, whereas bits set to 1 send their respective
-> -	 * interrupts to the INT2 pin. The intio shall convert this accordingly.
-> -	 */
-> -	int_map = st->intio ? st->int_map : ~st->int_map;
-> -
-> -	ret = regmap_write(st->regmap, ADXL345_REG_INT_MAP, int_map);
-> -	if (ret)
-> -		return ret;
-> -
-> -	return regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, int_enable);
-> -}
-> -
->  static int adxl345_read_raw(struct iio_dev *indio_dev,
->  			    struct iio_chan_spec const *chan,
->  			    int *val, int *val2, long mask)
-> @@ -376,7 +356,7 @@ static int adxl345_buffer_postenable(struct iio_dev *indio_dev)
->  	struct adxl345_state *st = iio_priv(indio_dev);
->  	int ret;
->  
-> -	ret = adxl345_set_interrupts(st);
-> +	ret = regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, st->int_map);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -395,7 +375,7 @@ static int adxl345_buffer_predisable(struct iio_dev *indio_dev)
->  		return ret;
->  
->  	st->int_map = 0x00;
-
-Maybe you deal with this in a later patch, but in general, why do we need a cached value?
-Maybe we should rely on regmap caching to get it back from the register cheaply wherever
-it is needed.
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="rmneyz64wldiauz5"
+Content-Disposition: inline
+In-Reply-To: <20250216163600.42211c3d@jic23-huawei>
 
 
-> -	return adxl345_set_interrupts(st);
-> +	return regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, st->int_map);
->  }
->  
->  static const struct iio_buffer_setup_ops adxl345_buffer_ops = {
-> @@ -514,6 +494,8 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  		return -ENODEV;
->  	st->fifo_delay = fifo_delay_default;
->  
-> +	st->int_map = 0x00;			/* reset interrupts */
-> +
->  	indio_dev->name = st->info->name;
->  	indio_dev->info = &adxl345_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
-> @@ -521,6 +503,11 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	indio_dev->num_channels = ARRAY_SIZE(adxl345_channels);
->  	indio_dev->available_scan_masks = adxl345_scan_masks;
->  
-> +	/* Reset interrupts at start up */
-> +	ret = regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, st->int_map);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (setup) {
->  		/* Perform optional initial bus specific configuration */
->  		ret = setup(dev, st->regmap);
-> @@ -571,6 +558,17 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	}
->  
->  	if (st->intio != ADXL345_INT_NONE) {
-> +		/*
-> +		 * Any bits set to 0 in the INT map register send their respective
-> +		 * interrupts to the INT1 pin, whereas bits set to 1 send their respective
-> +		 * interrupts to the INT2 pin. The intio shall convert this accordingly.
-> +		 */
-> +		regval = st->intio ? 0xff : 0;
-> +
-> +		ret = regmap_write(st->regmap, ADXL345_REG_INT_MAP, regval);
-> +		if (ret)
-> +			return ret;
-> +
->  		/* FIFO_STREAM mode is going to be activated later */
->  		ret = devm_iio_kfifo_buffer_setup(dev, indio_dev, &adxl345_buffer_ops);
->  		if (ret)
+--rmneyz64wldiauz5
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v1 2/3] iio: adc: ad_sigma_delta: Disable channel after
+ calibration
+MIME-Version: 1.0
 
+Hello Jonathan,
+
+On Sun, Feb 16, 2025 at 04:36:00PM +0000, Jonathan Cameron wrote:
+> On Wed, 12 Feb 2025 11:53:23 +0100
+> Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com> wrote:
+>=20
+> > The function ad_sd_calibrate() enables the channel to calibrate at
+> > function entry but doesn't disable it on exit. This is problematic
+> > because if two (or more) channels are calibrated in a row, the second
+> > calibration isn't executed as intended as the first (still enabled)
+> > channel is recalibrated and after the first irq (i.e. when the
+> > calibration of the first channel completed) the calibration is aborted.
+> >=20
+> > To fix this, disable the calibrated channel after calibration.
+> >=20
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> Whilst you said don't look in reply to patch 3 I ignored you. ;)
+>=20
+> This feels like it deserves a fixes tag.
+
+Maybe. The ad7124 driver currently doesn't use this function. And if the
+described behaviour isn't relevant for the other chips, that's fine.
+
+Needs some more research.
+
+Best regards
+Uwe
+
+--rmneyz64wldiauz5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmeyHYkACgkQj4D7WH0S
+/k7i2wgAlWsH7dLrT+JYsoUJV+9cygdmrDfZV49/rd1fOUScm5raOH3JxLdTeqbU
+xE7gKLP9MXxGDc0+JbSgK3PWqKgheijW/9FcCl0AaIzAg6g0y1mLe8Y1zB6ogEaA
+ZfrRmUrV9opSga8L6FD5DNmyic73+1LeZPYOnVr/g6tbjCreF7kXsyhNdDClkaG9
+9SBo+PXFxj+Xza9MkQTwzUvPC9IHkqGnOZEhFzPshnm18U4Xq4T8TMJ441DXdiCm
+YJgo1DDLouppRuVhOY2dEwm3leGOxXEsY6uTsLcLM/DbIfQJ26L4ricPqOCnZGjr
+SeFz9ThFBjjXsWpWPugLV4bv8JK5sw==
+=Yo0J
+-----END PGP SIGNATURE-----
+
+--rmneyz64wldiauz5--
 

@@ -1,231 +1,174 @@
-Return-Path: <linux-iio+bounces-15610-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15611-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ACCBA3770C
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 20:00:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE353A37716
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 20:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7593AA65A
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 19:00:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2B4C7A175E
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 19:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4AB19D8B2;
-	Sun, 16 Feb 2025 19:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F0F1A238E;
+	Sun, 16 Feb 2025 19:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XaWysHzN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VEY7xmFB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3C919C574
-	for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2025 19:00:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E04119ABC2;
+	Sun, 16 Feb 2025 19:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739732449; cv=none; b=nqDUbYNOEthtjTrzTFu6bCuHCfVl/0bx2j3bSv6u07Qcpt0hrLCoPWKe3X7aJKahomUbOk/JfYAATvY/XU0t12dBye6kdg7b+anVV1fGhxL5DN9Nhb4o4MHB7Zg58EfE+35Eqj00kXOqgdk5132kgAGrVx0/M3JgVsdvhhdoIL8=
+	t=1739732990; cv=none; b=HXAGnvzzlQkPPYHIjSVkawnSpIEyuGDXyOqBqSn9FTnbtWVfBkygB2HqX7XKQVRB293b3J4mAS0UdA20ppVcQLK6JVI6mmj+HBZUaHgT3GHKNYlTD5lu/UzTQoobn+cmpi7PFBeTwEOfaRBVtYiKO6N5fkp1kbLKA2Ua1w/+lBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739732449; c=relaxed/simple;
-	bh=nk4XPLj2vMfOsn5+Rh9CmoJtv2ZkwUvSj7f+EABpVqk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XSMFLCH0nW89HtpOE8nHQC7SOn/KcNIc2upFkEfs5GEi4wMKCZr4zgm9ngZNnqFgqNUuQXrluSjzR0hTdPhS2njeUuYzaavnSlECN8m0lkd1Piciz3WXfCTXIuhpF/tK6Tpo0J+IuuHHZhgm5E7owb9j3XfOsyQJp4xVh8tIcKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XaWysHzN; arc=none smtp.client-ip=209.85.160.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2bca6017608so756963fac.0
-        for <linux-iio@vger.kernel.org>; Sun, 16 Feb 2025 11:00:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739732446; x=1740337246; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pcVfD6Xa3G9lo1tt04Nxgx0oAC4nyMM+qAjYpd/F8ow=;
-        b=XaWysHzNnpcuY/uI0rmJNrty2ciqoMviXbmwDT6uqp3qrPG4O4gGZrEzXnSq4SSnkX
-         HIdqcwArRMwd25pKO78Oij1qtXAEq2vNplGebKc0tNQbEQEiZRd4OYhj35MdnsLJRJd7
-         unNjtaPmvKbY1RFJKMLSCPEbKmEH44XwjPE1XVByQqHHOgCzwLg5yH4htFXRh3M+nYZC
-         GMiYxkHrEBQGaIcRVBZxQibEp6OLkwhBHOF9tWeGibZ4Cx+iOCqO40hUP4Hu13Y29WtZ
-         +m8M1c1/CRp6l9CbcdLzoSu4OG+YqbgE39DSAIxixtTcWv1zpYxYlQI9WZrOXGAybarG
-         48Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739732446; x=1740337246;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pcVfD6Xa3G9lo1tt04Nxgx0oAC4nyMM+qAjYpd/F8ow=;
-        b=Zs4k8YrEutwxOV9EAkxOh/d9QKbHhVQsvdoLCCRlRt6Qwdh720sMHe6R8hwRCHWnKF
-         gRVsUQPFtn7jiRdcACPZsaxN7SI7qSv58ZQkYey1bykYwXIaRwmFMofRRihyO3U0Adjt
-         XtMhgGgeZU71qFMLy7W9Z5665V6QH1g1Hn5EvAARXObpEl5h1VUoV3M3G6nAC2j+f0+a
-         9AL4QPY5E4JgYphfeNyFYstz1gaZzyn40jhPRMrsPtMos5IchNZiyb45UF6NV/G7bfxv
-         cnqyC7i6wyh2l1NJq8Qjl4acLvXdU8MLLKupeozY/amWVAD9GY1ascWdiG1t8neKp9lh
-         NOlA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTaxLFZn1A+l1MeeLw7CcRLsO0suGlS9yCFyb0DopaoBGcJVNzsYcwth4noIQtA7KMCOpzw61nfsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLZNkGSoLHhkVoY+l0BxBaiL/EB6xjKPWoKqkOFPvQMK5v68mc
-	oXIT7L4KM32ZMyM0kobZRtBLn879yGgPPKIkFUl6cyj85pgYJWZWYqt7ia3NZhw=
-X-Gm-Gg: ASbGnctwjUpxnIaajlcDlodChw5ClhJ8WeOesThNLkfHJlZ0ROqZi42apaYvXtGD70m
-	AFUfZARX9umehFkJE5Fpy79MhNQYqW26sBLKdxC0oCBteIAtK3nLZt/346AoUZDxU36rPx71vdG
-	Ltep8xP6A7hu4bxSBb2ZhSdAELyHh84edmvGq+yl6NtFTiGUvUUCkTQP0c53a/+pUlcthA8bMSS
-	YPEyM+z6xpaIzqu1XGCZ/Azz12/1KN3KyH95skH4DK1GJ7JxFWxZaXoE9dUdQawQjtXiKrwUeoc
-	ZNcNKQK9xf5WAqUtiij2chUZKjjRv36prURNFqnCSe6oU086zrAv
-X-Google-Smtp-Source: AGHT+IFtgmYi6g/fodUnLHijtbEFjNdELYrMSwxx47OC5josAT5QSsSkYzufqQAX8o92aIhNJUcaxw==
-X-Received: by 2002:a05:6870:80c6:b0:29e:32e7:5f17 with SMTP id 586e51a60fabf-2bc99d3fc88mr4044479fac.28.1739732445932;
-        Sun, 16 Feb 2025 11:00:45 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b9548df81esm3423325fac.29.2025.02.16.11.00.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Feb 2025 11:00:44 -0800 (PST)
-Message-ID: <6db4821e-9cfe-4256-a357-51a00a50d083@baylibre.com>
-Date: Sun, 16 Feb 2025 13:00:42 -0600
+	s=arc-20240116; t=1739732990; c=relaxed/simple;
+	bh=43PE+ybG5ai0fUI2JHrGDr+HV775T2akdlm+svW1kak=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IoLshK6352PacgfLIGZyeaxpCiENCYTWE78Hh0XnUKl1k7MlTt6YXjrZzguY3dHIdE0rTStmK+q98ZKnehg+6eD4eAeEy6rVrIuUNQkdViWNx9G00iljQ0qzoRJWzs1ejIbbM6eChj2cnpFcoNFnXxvp1BfBU10+kpHB2yEDxUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VEY7xmFB; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739732989; x=1771268989;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=43PE+ybG5ai0fUI2JHrGDr+HV775T2akdlm+svW1kak=;
+  b=VEY7xmFBWWf7LK0QwAlykE6fB13KxHNb6Nghasvap70CD8ys6ar8FDKV
+   2lqmw0QYiIUGZaIlIyWH5qbE3IhH1DE29G6DJFu92tHmWUN/En2fbXqLm
+   F3TMNYd3c2apCycrdE6RlP/iCxRKE0sbckmXJDMZwHb9rme3jKMqA2x7P
+   4QcbHGN2QCBRa34u/V0PkVTtZy/cAhcz3RBYDzv+iOqOMT6ymvmWxedE+
+   R9l7hAUM8JD5cJvoVJeotg4B2vatCMPA9PyuqfLKY0wGSj8In1RhzRjRX
+   +njLMUMKLfnfSAeD2w0CxytMBRIFSeJAPhorFMHlWYr60IS/Dc48ZZBIN
+   w==;
+X-CSE-ConnectionGUID: mC0xVXLCS1OaXdKV1S3KAQ==
+X-CSE-MsgGUID: J77sd33ES4ySkRkSaB1+1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11347"; a="65773639"
+X-IronPort-AV: E=Sophos;i="6.13,291,1732608000"; 
+   d="scan'208";a="65773639"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2025 11:09:48 -0800
+X-CSE-ConnectionGUID: njlfmQXoREanvy8Syb5NEQ==
+X-CSE-MsgGUID: 1GY4+8dWSIqT3AFVwTJAUg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,291,1732608000"; 
+   d="scan'208";a="113811061"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa006.fm.intel.com with ESMTP; 16 Feb 2025 11:09:43 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tjk1M-001CAl-2r;
+	Sun, 16 Feb 2025 19:09:40 +0000
+Date: Mon, 17 Feb 2025 03:09:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v3 2/3] iio: light: Add support for AL3000a illuminance
+ sensor
+Message-ID: <202502170243.eNwe0AL0-lkp@intel.com>
+References: <20250216162721.124834-3-clamor95@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/27] iio: adc: ad4695: Stop using
- iio_device_claim_direct_scoped()
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: Mudit Sharma <muditsharma.info@gmail.com>,
- Julien Stephan <jstephan@baylibre.com>,
- Mariel Tinaco <Mariel.Tinaco@analog.com>,
- Angelo Dureghello <adureghello@baylibre.com>,
- Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
- =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- ChiYuan Huang <cy_huang@richtek.com>,
- Ramona Alexandra Nechita <ramona.nechita@analog.com>,
- Trevor Gamblin <tgamblin@baylibre.com>, Guillaume Stols
- <gstols@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>,
- Gwendal Grignou <gwendal@chromium.org>,
- Antoni Pokusinski <apokusinski01@gmail.com>,
- Tomasz Duszynski <tomasz.duszynski@octakon.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250209180624.701140-1-jic23@kernel.org>
- <20250209180624.701140-12-jic23@kernel.org>
- <20250216181907.40d36bf7@jic23-huawei>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250216181907.40d36bf7@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250216162721.124834-3-clamor95@gmail.com>
 
-On 2/16/25 12:19 PM, Jonathan Cameron wrote:
-> On Sun,  9 Feb 2025 18:06:08 +0000
-> Jonathan Cameron <jic23@kernel.org> wrote:
-> 
->> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>
->> This complex cleanup.h use case of conditional guards has proved
->> to be more trouble that it is worth in terms of false positive compiler
->> warnings and hard to read code.
->>
->> Move directly to the new claim/release_direct() that allow sparse
->> to check for unbalanced context.  In some cases code is factored
->> out to utility functions that can do a direct return with the
->> claim and release around the call.
->>
->> Reviewed-by: David Lechner <dlechner@baylibre.com>
->> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> ---
->> v2: Typo in commit description (David).
->> Note there are several sets current in flight that touch this driver.
->> I'll rebase as necessary depending on what order the dependencies resolve.
-> I've done this rebase and applied on the testing branch of iio.git.
-> 
-> Would appreciate a sanity check if anyone has time though!
-> 
-> New code is as follows.  The one corner I was not sure on was
-> that for calibbias reading the direct mode claim was held for a long
-> time.  That seems to be unnecessary as we have a copy of osr anyway
-> in that function used for other purposes.
-> 
+Hi Svyatoslav,
 
-...
+kernel test robot noticed the following build errors:
 
->  	case IIO_CHAN_INFO_CALIBBIAS:
-> -		switch (chan->type) {
-> -		case IIO_VOLTAGE:
-> -			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> -				ret = regmap_read(st->regmap16,
-> -					AD4695_REG_OFFSET_IN(chan->scan_index),
-> -					&reg_val);
-> -				if (ret)
-> -					return ret;
-> -
-> -				tmp = sign_extend32(reg_val, 15);
-> -
-> -				switch (cfg->oversampling_ratio) {
-> -				case 1:
-> -					*val = tmp / 4;
-> -					*val2 = abs(tmp) % 4 * MICRO / 4;
-> -					break;
-> -				case 4:
-> -					*val = tmp / 2;
-> -					*val2 = abs(tmp) % 2 * MICRO / 2;
-> -					break;
-> -				case 16:
-> -					*val = tmp;
-> -					*val2 = 0;
-> -					break;
-> -				case 64:
-> -					*val = tmp * 2;
-> -					*val2 = 0;
-> -					break;
-> -				default:
-> -					return -EINVAL;
-> -				}
-> -
-> -				if (tmp < 0 && *val2) {
-> -					*val *= -1;
-> -					*val2 *= -1;
-> -				}
-> -
-> -				return IIO_VAL_INT_PLUS_MICRO;
-> +		switch (chan->type)
-> +		case IIO_VOLTAGE: {
-> +			if (!iio_device_claim_direct(indio_dev))
-> +				return -EBUSY;
-> +			ret = regmap_read(st->regmap16,
-> +					  AD4695_REG_OFFSET_IN(chan->scan_index),
-> +					  &reg_val);
-> +			iio_device_release_direct(indio_dev);
-> +			if (ret)
-> +				return ret;
-> ////THIS IS THE BIT I WOuLD LIKE EYES on.
+[auto build test ERROR on robh/for-next]
+[also build test ERROR on linus/master v6.14-rc2 next-20250214]
+[cannot apply to jic23-iio/togreg]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Looks fine to me.
+url:    https://github.com/intel-lab-lkp/linux/commits/Svyatoslav-Ryhel/dt-bindings-iio-light-al3010-add-al3000a-support/20250217-002927
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+patch link:    https://lore.kernel.org/r/20250216162721.124834-3-clamor95%40gmail.com
+patch subject: [PATCH v3 2/3] iio: light: Add support for AL3000a illuminance sensor
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20250217/202502170243.eNwe0AL0-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250217/202502170243.eNwe0AL0-lkp@intel.com/reproduce)
 
-> +
-> +			tmp = sign_extend32(reg_val, 15);
-> +
-> +			switch (osr) {
-> +			case 1:
-> +				*val = tmp / 4;
-> +				*val2 = abs(tmp) % 4 * MICRO / 4;
-> +				break;
-> +			case 4:
-> +				*val = tmp / 2;
-> +				*val2 = abs(tmp) % 2 * MICRO / 2;
-> +				break;
-> +			case 16:
-> +				*val = tmp;
-> +				*val2 = 0;
-> +				break;
-> +			case 64:
-> +				*val = tmp * 2;
-> +				*val2 = 0;
-> +				break;
-> +			default:
-> +				return -EINVAL;
-> +			}
-> +
-> +			if (tmp < 0 && *val2) {
-> +				*val *= -1;
-> +				*val2 *= -1;
->  			}
-> -			unreachable();
-> +
-> +			return IIO_VAL_INT_PLUS_MICRO;
->  		default:
->  			return -EINVAL;
->  		}
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202502170243.eNwe0AL0-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from drivers/iio/light/al3000a.c:4:
+>> drivers/iio/light/al3000a.c:202:26: error: 'al3010_id' undeclared here (not in a function); did you mean 'al3000a_id'?
+     202 | MODULE_DEVICE_TABLE(i2c, al3010_id);
+         |                          ^~~~~~~~~
+   include/linux/module.h:250:15: note: in definition of macro 'MODULE_DEVICE_TABLE'
+     250 | extern typeof(name) __mod_device_table__##type##__##name                \
+         |               ^~~~
+>> include/linux/module.h:250:21: error: '__mod_device_table__i2c__al3010_id' aliased to undefined symbol 'al3010_id'
+     250 | extern typeof(name) __mod_device_table__##type##__##name                \
+         |                     ^~~~~~~~~~~~~~~~~~~~
+   drivers/iio/light/al3000a.c:202:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
+     202 | MODULE_DEVICE_TABLE(i2c, al3010_id);
+         | ^~~~~~~~~~~~~~~~~~~
+--
+   In file included from include/linux/device/driver.h:21,
+                    from include/linux/device.h:32,
+                    from al3000a.c:4:
+   al3000a.c:202:26: error: 'al3010_id' undeclared here (not in a function); did you mean 'al3000a_id'?
+     202 | MODULE_DEVICE_TABLE(i2c, al3010_id);
+         |                          ^~~~~~~~~
+   include/linux/module.h:250:15: note: in definition of macro 'MODULE_DEVICE_TABLE'
+     250 | extern typeof(name) __mod_device_table__##type##__##name                \
+         |               ^~~~
+>> include/linux/module.h:250:21: error: '__mod_device_table__i2c__al3010_id' aliased to undefined symbol 'al3010_id'
+     250 | extern typeof(name) __mod_device_table__##type##__##name                \
+         |                     ^~~~~~~~~~~~~~~~~~~~
+   al3000a.c:202:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
+     202 | MODULE_DEVICE_TABLE(i2c, al3010_id);
+         | ^~~~~~~~~~~~~~~~~~~
+
+
+vim +202 drivers/iio/light/al3000a.c
+
+   197	
+   198	static const struct i2c_device_id al3000a_id[] = {
+   199		{"al3000a", },
+   200		{}
+   201	};
+ > 202	MODULE_DEVICE_TABLE(i2c, al3010_id);
+   203	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

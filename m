@@ -1,200 +1,144 @@
-Return-Path: <linux-iio+bounces-15581-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15582-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD36A375AA
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:21:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE96A375B2
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23C761884A9B
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 16:21:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2008A169024
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 16:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FD5199FA2;
-	Sun, 16 Feb 2025 16:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC64C19ABC2;
+	Sun, 16 Feb 2025 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ba0Ts5BV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QenDqNEl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417A21B808;
-	Sun, 16 Feb 2025 16:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EE0191499;
+	Sun, 16 Feb 2025 16:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739722901; cv=none; b=YcDHgN+Fsm7oB+o9+jDo6fj98rSpHXznL1qGti2L/juFCOMMwHAUk8Afzl83mlZgKknGF30gbqtNvtfY7y4UB+BI2vwnkLALxO/5CMMCda5ONhIbFbaRucJFwxoVGPqr8Q+dQV88unasvoJIMY/OsWlZL/JZFQrOPjaS7JzoGGo=
+	t=1739723264; cv=none; b=lAr3gUvKNfn811GnQlu4O+oztML9MiEz4SZ2SaZS7L1XvHPgOqWCIxDaK57/i3tYccoQ6vEqR7zNRmeMSZHsvLK8v6N4kw6Ww3UkrpiJcwV3pCk090ynmoe4ze7P4eBzlZJHYEQpz8nHYhDJw62vSqocCqKmR14Aa6ISnuo5Sn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739722901; c=relaxed/simple;
-	bh=fT2zYqJ6YLeX9QSBNjyLADGTECUTNaknokkdN6W1JFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Th55akttqFfJ4H6+xIH2Vxoy7qZfvkjIAf+3W/rFTSLA4NvTBLu5LGjZE/Vf+TGzERwaNiuX2blmZ4B+CNSYFtoHIfmT+dwXa6gxpVwEVxMXSsXrlbp1LhXZ5BRpm5D169Zt8K4X6Xh30+dsDX2vY4mWGq++jlls1D4nOhGiu4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ba0Ts5BV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A940C4CEDD;
-	Sun, 16 Feb 2025 16:21:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739722900;
-	bh=fT2zYqJ6YLeX9QSBNjyLADGTECUTNaknokkdN6W1JFE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Ba0Ts5BVlDLjr2cniFRNNRjBTB7Xai2R/EIDFg1mvKBXWa4sV4yqZuxMF/7H+SQCc
-	 u5ay3x3Q1xX09FKUDRhQXyzgWinQmXGpyyhHM5JBVsSCQPn+RzdG+UeZzeNTf+FA6h
-	 dC7R8h2LjAuMCyv9ZkavCJyz86R3yiF6C2gK2QIGFyKSyQc3SmI4zkM9oZXORvqzzq
-	 SEed9CF+ccUyo318XGJ3oNYEzUrBKzdh+Fvf5dZdZ1E7bltHpuZfTG/hJ5BUZFuNLz
-	 ZuMGqyeyzniD81LcDS4S7ViVK3qjJN+beXG/Q37NwD1+LkMzX5SZCqTauwo7N2lJ7N
-	 uDasgv3X3l70w==
-Date: Sun, 16 Feb 2025 16:21:30 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lars@metafoo.de>,
- <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <jonath4nns@gmail.com>, <marcelo.schmitt1@gmail.com>,
- <dlechner@baylibre.com>
-Subject: Re: [PATCH RESEND v3 15/17] iio: adc: ad7768-1: replace manual
- attribute declaration
-Message-ID: <20250216162130.0de4f148@jic23-huawei>
-In-Reply-To: <ea5d5ef777d4d7d15471369813c1613990fee862.1739368121.git.Jonathan.Santos@analog.com>
-References: <cover.1739368121.git.Jonathan.Santos@analog.com>
-	<ea5d5ef777d4d7d15471369813c1613990fee862.1739368121.git.Jonathan.Santos@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1739723264; c=relaxed/simple;
+	bh=yTLzjAo+KcqoWNduSSE0mzD0ceiO5DTQAXIIndfLujA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TbxIQXo1vMhVMWfQr6BeLQimrb0kXBKYdQ8Iqsz5Y1LL7JYLXNxqvJxwSbl8g9gRPEP0IVbzFgM9CNo2ZZs1C33000ASOzgCJ6xGFD8jgItRJWY1v9L2j7RKz9245Do6ER9rt77EtlVGGpUe/ek0WYq1bCk1nA028DzniEJXVFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QenDqNEl; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5452c2805bcso2327512e87.2;
+        Sun, 16 Feb 2025 08:27:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739723261; x=1740328061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zauf5zxFWWLZSth2HbJwJMsQ216gUntGDkfuE30UgBk=;
+        b=QenDqNElfw31q077uHvoZEGgovnipnCbeMVXPJykoa4mmr7Nqh27zDZz3wrIKAUQEI
+         if9Hc9iEdIv89enY+oW788SgARSXHC07v5YqkaVfpf9eF3p8kb+EQWhXQfRsEvjICApI
+         tyBDdVtSt2PU3ugSD/G2roqF1YM3/qPbnFm6vQOzr545OhO05XgDn6E4o9A+oNIBo8fC
+         1xMlwR5w6f/TXKVCaOlvm7rNEq/pt46UXIVg/xEgwCJdJyX61p67PhuDQNWMvP//VsGd
+         1a1vGekeS7lZfPdnohs4n74byuJyKu09SRcHfMv6DE26PYsY8cyLIbhSsAiDN6N+Dzme
+         vALQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739723261; x=1740328061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zauf5zxFWWLZSth2HbJwJMsQ216gUntGDkfuE30UgBk=;
+        b=h3vov2RDlCyUBYO8TEH+4gEo8OsUoP0cP9NE9Cm3eI/CzCbKmSdnZ5jwgTgrqgsmpU
+         5Kr14Tsuhx9WPSQRG7t0WFjT+4LYNZeJN98j4WIu9Zq0VhenfEQGf70adMItlG/CnNiZ
+         FBhFKbdVY3CDFc56Fs/uaBpB6rMUXu2JzYNy11/JZDQ3aZbVi2r2gZE/GrSl0hJTwqbG
+         z/PAHqjnsz9AksmK6PXw3fsDs4qls+hCgPWyEavegjKdxMDa2C0XTUyhj0/bXkjmnA0C
+         5zYonN4XVI+z5sm1atvvWMYlVD8KYIO8fqQYijw1oiiAWbVLC5rOCJVLnQijutPNyCsW
+         48Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCULb9Y5X4KN7AqSE4r82rSO9NcDGQ2DkoaH1Y4fWGpkykLT5wJv2na6QaotM1pUJCRt+TEOQogrxBFOB38=@vger.kernel.org, AJvYcCUUqrOGFts8PXWN3Efovdbfe1jm/s1HbmOnfoeJwRIHnPdO/MQf4HscJmcSIEN7/edRY4ukt34z2eS8ilTB@vger.kernel.org, AJvYcCXhpbCoYnXhxqy0e/Xeddh2lLpbrfNaBPYCBRH0ihgBTAKu/ypkgEy9KGIxB3B4JEazz4yiGMPSf0qZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKFw7Bn697nKS5G0GrTgek73RSFGlo276QV4NoUuT0D2ZawqY2
+	Bw8EOksQADtC+yuKETaf3hI0kzhEutK44CDpWOWGaqTtqwxWiTrH
+X-Gm-Gg: ASbGnctr16Pm8TmGCtL6CUgoeUdxiQUtQlq4AoZcDr7lk9gSmJaHk2LroCzS7OpFsBK
+	gw52LhI+o5xTqRw4O1+OVwueQJoI51QXeMi5pEs6bk3ti5GP2p1nf9FStsKubs4lPo4gFNbhfjJ
+	UeGDrtDvYREYLeD9vbHIuds2v9v1Aa1IQi+vchu6aYSzgM7bbjwr8NaijxXgiUTyVp4MLiZwrY7
+	KeJPBHMg7YC+mpKY2yD+d8XwbMUnXD0+kDbect41PVvQby//V/ElDv2R3depl5RZ7BaujlzTQiy
+	uNkl8Q==
+X-Google-Smtp-Source: AGHT+IEfyw19KqgBgbX8BnoR8UCxGSSP+RtIOF9FWGWE9j0G1d3J+HWE+7CvgJ0oLl3OVIOTDVIE1w==
+X-Received: by 2002:a05:6512:1189:b0:545:3dd:aa5f with SMTP id 2adb3069b0e04-5452fe92491mr1764798e87.36.1739723260558;
+        Sun, 16 Feb 2025 08:27:40 -0800 (PST)
+Received: from xeon.. ([188.163.112.51])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5456468c28csm481835e87.122.2025.02.16.08.27.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 08:27:40 -0800 (PST)
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Emil Gedenryd <emil.gedenryd@axis.com>,
+	Arthur Becker <arthur.becker@sentec.com>,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Ivan Orlov <ivan.orlov0322@gmail.com>,
+	David Heidelberg <david@ixit.cz>
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-tegra@vger.kernel.org
+Subject: [PATCH v3 0/3]  iio: light: add al3000a als support
+Date: Sun, 16 Feb 2025 18:27:18 +0200
+Message-ID: <20250216162721.124834-1-clamor95@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 12 Feb 2025 15:18:48 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+AL3000a is an illuminance sensor found in ASUS TF101 tablet.
 
-> Use read_avail callback from struct iio_info to replace the manual
-> declaration of sampling_frequency_available attribute.
-> 
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
-> v3 Changes:
-> * New patch in v3.
-> ---
->  drivers/iio/adc/ad7768-1.c | 58 +++++++++++++++++---------------------
->  1 file changed, 26 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 716cf3582577..8aea38c154fe 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -187,6 +187,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
->  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),
->  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-> +		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
->  		.indexed = 1,
->  		.channel = 0,
->  		.scan_index = 0,
-> @@ -207,6 +208,7 @@ struct ad7768_state {
->  	unsigned int mclk_freq;
->  	unsigned int dec_rate;
->  	unsigned int samp_freq;
-> +	unsigned int samp_freq_avail[ARRAY_SIZE(ad7768_clk_config)];
->  	struct completion completion;
->  	struct iio_trigger *trig;
->  	struct gpio_desc *gpio_sync_in;
-> @@ -564,28 +566,6 @@ static int ad7768_set_freq(struct ad7768_state *st,
->  	return 0;
->  }
->  
-> -static ssize_t ad7768_sampling_freq_avail(struct device *dev,
-> -					  struct device_attribute *attr,
-> -					  char *buf)
-> -{
-> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> -	struct ad7768_state *st = iio_priv(indio_dev);
-> -	unsigned int freq;
-> -	int i, len = 0;
-> -
-> -	for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++) {
-> -		freq = DIV_ROUND_CLOSEST(st->mclk_freq,
-> -					 ad7768_clk_config[i].clk_div);
-> -		len += scnprintf(buf + len, PAGE_SIZE - len, "%d ", freq);
-> -	}
-> -
-> -	buf[len - 1] = '\n';
-> -
-> -	return len;
-> -}
-> -
-> -static IIO_DEV_ATTR_SAMP_FREQ_AVAIL(ad7768_sampling_freq_avail);
-> -
->  static int ad7768_read_raw(struct iio_dev *indio_dev,
->  			   struct iio_chan_spec const *chan,
->  			   int *val, int *val2, long info)
-> @@ -633,6 +613,29 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
->  	return -EINVAL;
->  }
->  
-> +static int ad7768_read_avail(struct iio_dev *indio_dev,
-> +			     struct iio_chan_spec const *chan,
-> +			     const int **vals, int *type, int *length,
-> +			     long info)
-> +{
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int i;
-> +
-> +	switch (info) {
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++)
-> +			st->samp_freq_avail[i] = DIV_ROUND_CLOSEST(st->mclk_freq,
-> +								   ad7768_clk_config[i].clk_div);
-There are some complex race conditions around these available arrays, so in
-general it is better to make it obvious when they are static after
-init vs actually dynamic.  In this case I think we can fill this
-in the moment we know mclk_freq?  If so please move the calculation into
-probe() and just reference it here.
+---
+Changes on switching from v2 to v3:
+- droped linux/iio/sysfs.h
+- set driver name directly
+- switched to IIO_CHAN_INFO_PROCESSED
+- split al3000a_set_pwr into 2 functions
+- added i2c_device_id
+- improved code formatting 
 
-How to close the race condition is an ongoing topic but I don't think
-that problem applies here anyway!
+Changes on switching from v1 to v2:
+- sort compatible alphabetically in schema
+- clarify commit descriptions
+- convert to use regmap
+- arrangle lux conversion table in rows of 8
+- add more used headers
+- improve code formatting 
+---
 
-Jonathan
+Svyatoslav Ryhel (3):
+  dt-bindings: iio: light: al3010: add al3000a support
+  iio: light: Add support for AL3000a illuminance sensor
+  ARM: tegra: tf101: Add al3000a illuminance sensor node
 
-> +
-> +		*vals = (int *)st->samp_freq_avail;
-> +		*length = ARRAY_SIZE(ad7768_clk_config);
-> +		*type = IIO_VAL_INT;
-> +		return IIO_AVAIL_LIST;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
->  static int ad7768_write_raw(struct iio_dev *indio_dev,
->  			    struct iio_chan_spec const *chan,
->  			    int val, int val2, long info)
-> @@ -655,15 +658,6 @@ static int ad7768_read_label(struct iio_dev *indio_dev,
->  	return sprintf(label, "%s\n", st->labels[chan->channel]);
->  }
->  
-> -static struct attribute *ad7768_attributes[] = {
-> -	&iio_dev_attr_sampling_frequency_available.dev_attr.attr,
-> -	NULL
-> -};
-> -
-> -static const struct attribute_group ad7768_group = {
-> -	.attrs = ad7768_attributes,
-> -};
-> -
->  static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
->  					const struct iio_chan_spec *chan)
->  {
-> @@ -674,8 +668,8 @@ static int ad7768_get_current_scan_type(const struct iio_dev *indio_dev,
->  }
->  
->  static const struct iio_info ad7768_info = {
-> -	.attrs = &ad7768_group,
->  	.read_raw = &ad7768_read_raw,
-> +	.read_avail = &ad7768_read_avail,
->  	.write_raw = &ad7768_write_raw,
->  	.read_label = ad7768_read_label,
->  	.get_current_scan_type = &ad7768_get_current_scan_type,
+ .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
+ .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
+ drivers/iio/light/Kconfig                     |  10 +
+ drivers/iio/light/Makefile                    |   1 +
+ drivers/iio/light/al3000a.c                   | 223 ++++++++++++++++++
+ 5 files changed, 249 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/iio/light/al3000a.c
+
+-- 
+2.43.0
 
 

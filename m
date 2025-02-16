@@ -1,63 +1,61 @@
-Return-Path: <linux-iio+bounces-15593-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15594-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD193A37615
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:56:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99956A3761B
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D32E16C438
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 16:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59753188E8D4
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0521019CCF5;
-	Sun, 16 Feb 2025 16:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B733D19D071;
+	Sun, 16 Feb 2025 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWWL35/y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjOK0BAh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91CC450FE;
-	Sun, 16 Feb 2025 16:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B729450FE;
+	Sun, 16 Feb 2025 16:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739725010; cv=none; b=JRJc+Qv2oOsbHCKCzXwQ/nSsK4GFW00MIPSz1DEy0DKx2u4kNeLVpyb3IPbv080CcU71wavmGINOd3MKT4pm7HwHRPpGbd7Woybm8YxXWHJR/Tg+45xTP1oG6hZm6GRuhYFhQx7nbzgcTgi6zk2aBMB3Yu9FDirUpWPJG5j/WkI=
+	t=1739725188; cv=none; b=c9RC1m3h34kdDIwPBPV8ke4V/T6mgZRC9e5eK0HTasMxwzZGskg6vExMXSjKJpV4NO6uTrCCyXpWyAfcatxa8q1YiOneSrubN1tK6Q2gv11ONEGztMPisggo1O+0rv542WB+RmRDPD5i51b0eJV7xScqsWnRuX+Cz7XU/8MN+8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739725010; c=relaxed/simple;
-	bh=lyYWlIL5pV+P204PWq9RJs+b2lncRmWinTLyKexeKLQ=;
+	s=arc-20240116; t=1739725188; c=relaxed/simple;
+	bh=SC/tuAOm11oCVUJiOo+McB3iHWTWiP1gMTvFuGu89bk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AThv2TAFwm94dyA0Nxyb0npCSP7YR6+giWKVcTqn6S6cMaDD+wyyhwlkAJFftLNEU+iXqLLuNOE9UD3PMRmYIcywAIInvln9D5NhlhQ6Aw45FD4A8fvNZ9gVFgzJQsZ7PGF4tPPxkhvbZpn+PVEPAOF5B0myAjVMAXB0DO3pbSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWWL35/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1F1C4CEDD;
-	Sun, 16 Feb 2025 16:56:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MpK9qa5+sJ4bzrg/bmD5rt5sJ5TMrKNMVDEl4WY7f2WWc6qzo56ik7F35n1kl8kr22ANwvXar7afpK+ief+lHpv9FumFTkAYnm6Ua0hpLmTzrBxZRIiXAf2RNhfFFgsPvnL+j7mHpEwV4CYV+fz7vTy2IOh4kZ4YSGCWF1BoCno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjOK0BAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70575C4CEDD;
+	Sun, 16 Feb 2025 16:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739725010;
-	bh=lyYWlIL5pV+P204PWq9RJs+b2lncRmWinTLyKexeKLQ=;
+	s=k20201202; t=1739725187;
+	bh=SC/tuAOm11oCVUJiOo+McB3iHWTWiP1gMTvFuGu89bk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rWWL35/yPTnPOWL0B4OV5ivtP906jfLlk95gZBFEFPD1KEU7LxzPTLRF2cbiw4t/f
-	 g0IZb/wjC1GLREddI86c3DLrjgnQKARWX++ZbObj7wcz9TBg9L5A+ok85ter9WYEna
-	 r1UcfKL2SdvZdEOrekLomhS+jedss3VxXE1r0erQIeqTS2ehhUyrAmozCvOwtdwSI7
-	 o2Z71IZuu7Vb10KpVXo+1ia0k89Dsvl/hLv79p7Npad1GL90eD9o7MQI2iGNDy42j+
-	 5XFugBKU2eD5fABH/Jiz49YaiN6l15LXqmEYRt8D7k+B9jfJiYK7bAgWZQXj88nxOM
-	 W95aP2wUQL9Gg==
-Date: Sun, 16 Feb 2025 16:56:40 +0000
+	b=LjOK0BAhP4tBI99Nx5vy4ZiuXj1NO3gslpAEUnCkgPVmaZbtVzp+7U0Gc0QARywLo
+	 hN70p05uB7/X2PfK05gNdKRgjq+A7ZkmI5wJWzLRYfCVXNT4xFBdGw+5QtUY03ToSm
+	 nw3+phcjHe8Slp0xIE1PFgySsx735f7meh+Qtx7uwlG1IvEdyjVrXi0hB92wZZQm24
+	 VIG7vofvWX6djtnOKo47FwpFtU7FqK3St46CzRF6vTOfdp01F4+wO3iz5OZeeEE7dR
+	 cxpAlsOluSe7u5qWo6f36DTqYASC84d4Ut6Vj1+HUN3inYk9Lo9xBlqxADFihM21t0
+	 SY3xdX+a08lRw==
+Date: Sun, 16 Feb 2025 16:59:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Robert Budai <robert.budai@analog.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Ramona Gradinariu
- <ramona.gradinariu@analog.com>, Antoniu Miclaus
- <antoniu.miclaus@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH v7 6/6] docs: iio: add documentation for adis16550
- driver
-Message-ID: <20250216165640.2e89f617@jic23-huawei>
-In-Reply-To: <20250211175706.276987-7-robert.budai@analog.com>
-References: <20250211175706.276987-1-robert.budai@analog.com>
-	<20250211175706.276987-7-robert.budai@analog.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: arnd@arndb.de, gregkh@linuxfoundation.org, rafael@kernel.org,
+ linus.walleij@linaro.org, mika.westerberg@linux.intel.com,
+ andriy.shevchenko@linux.intel.com, dmitry.torokhov@gmail.com,
+ przemyslaw.kitszel@intel.com, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v5 10/12] iio: adc: xilinx-xadc-core: use
+ devm_kmemdup_array()
+Message-ID: <20250216165939.4780c4f4@jic23-huawei>
+In-Reply-To: <20250212062513.2254767-11-raag.jadav@intel.com>
+References: <20250212062513.2254767-1-raag.jadav@intel.com>
+	<20250212062513.2254767-11-raag.jadav@intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,59 +66,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 11 Feb 2025 19:57:03 +0200
-Robert Budai <robert.budai@analog.com> wrote:
+On Wed, 12 Feb 2025 11:55:11 +0530
+Raag Jadav <raag.jadav@intel.com> wrote:
 
-> Add documentation for adis16550 driver which describes the driver device
-> files and shows how the user may use the ABI for various scenarios
-> (configuration, measurement, etc.).
+> Convert to use devm_kmemdup_array() and while at it, use source size
+> instead of destination.
 > 
-> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Signed-off-by: Robert Budai <robert.budai@analog.com>
-One minor comment inline.
+> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
+
+Seems fine to me.
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
 > ---
->  Documentation/iio/adis16550.rst | 376 ++++++++++++++++++++++++++++++++
->  Documentation/iio/index.rst     |   1 +
->  2 files changed, 377 insertions(+)
->  create mode 100644 Documentation/iio/adis16550.rst
+>  drivers/iio/adc/xilinx-xadc-core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/iio/adis16550.rst b/Documentation/iio/adis16550.rst
-> new file mode 100644
-> index 000000000..f929c460a
-> --- /dev/null
-> +++ b/Documentation/iio/adis16550.rst
-> @@ -0,0 +1,376 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +================
-> +ADIS16550 driver
-> +================
-> +
-> +This driver supports Analog Device's IMUs on SPI bus.
-> +
-> +1. Supported devices
-> +====================
-> +
-> +* `ADIS16550 <https://www.analog.com/ADIS16550>`_
-> +
-> +The ADIS16550 is a complete inertial system that includes a triaxis gyroscope
-> +and a triaxis accelerometer. The factory calibration characterizes each sensor for
-> +sensitivity, bias, and alignment. As a result, each sensor has its own dynamic
-> +compensation formulas that provide accurate sensor measurements.
-> +
-> +1. Device attributes
+> diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
+> index cfbfcaefec0f..e1f8740ae688 100644
+> --- a/drivers/iio/adc/xilinx-xadc-core.c
+> +++ b/drivers/iio/adc/xilinx-xadc-core.c
+> @@ -1245,8 +1245,8 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, unsigned int *conf, int irq)
+>  		channel_templates = xadc_us_channels;
+>  		max_channels = ARRAY_SIZE(xadc_us_channels);
+>  	}
+> -	channels = devm_kmemdup(dev, channel_templates,
+> -				sizeof(channels[0]) * max_channels, GFP_KERNEL);
+> +	channels = devm_kmemdup_array(dev, channel_templates, max_channels,
+> +				      sizeof(*channel_templates), GFP_KERNEL);
+>  	if (!channels)
+>  		return -ENOMEM;
+>  
 
-1 Again?
-
-> +====================
-...
-
-> +
-> +3. Device buffers
-> +=================
-
-> +4. IIO Interfacing Tools
-> +========================
 

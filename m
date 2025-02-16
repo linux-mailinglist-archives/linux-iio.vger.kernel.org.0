@@ -1,63 +1,64 @@
-Return-Path: <linux-iio+bounces-15559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E42FA374B4
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 15:31:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21258A374C0
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 15:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A80863ADC7A
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 14:31:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9F9F1890B1F
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 14:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F12195381;
-	Sun, 16 Feb 2025 14:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC2F198A06;
+	Sun, 16 Feb 2025 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4TzT68C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmLrW4fj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4579218DB2B;
-	Sun, 16 Feb 2025 14:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744D9194A67;
+	Sun, 16 Feb 2025 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739716263; cv=none; b=LyuAK0oFVQA5YVAZdOFnDRwgUWI4ARZmGFRJ7tlhGGnTjH7Ghi5muzCDuYR2UkfO6ap3FGE2uN1wDXBt4jbTOZxiU4Uzj38rFu3yTvMORPVMytoprkhHz9YKMdIf3MtQ1KjZGA/ZXJeKiG86ZoofnwhC5OfJkT5Y1lSjO0y0KE8=
+	t=1739716845; cv=none; b=sCyBDO8GjAEg+WMho5rF7sfLS4J1RP8nT1TtRzOHc9qidBh1XUZw+TjbaA4RAF7vjunpEflWRR9erOXu/VTRH5McW7dConQGbksftb0FJ1bHdDf4lLZYCMFBSU1tFw1JpEVpODhjj9+gBU4YIX2Gd8VmLqeETkIDerA/+idcM48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739716263; c=relaxed/simple;
-	bh=3olusQxlP2lV5Ne2h6cljoQ1pOoB5XyJHYVk4XIXQUg=;
+	s=arc-20240116; t=1739716845; c=relaxed/simple;
+	bh=x3aFXyhGS+U6X3HUjZO8xlvr8jPhcUkEQ3Hk37j9GNc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OqR8l4hONmeSTwt3zsoNxvuX28URmLJu3hqocN1XqVhG4QJK1W/DAvibNMpV7lky+wKCAQ5TJ1RL2WwiW7lSdg3dqW/mzDqFI41ltu39WbSOzLi5JKKiB323I2VPeaP33QqWVzz9JNfosU9k+AukUHne/lQCE9eWS7RA+9zr07E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4TzT68C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE32BC4CEDD;
-	Sun, 16 Feb 2025 14:30:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qW7qshatFgjCyAbmXsLrOSSGBce5MxATN7z57moOvJ+doANdWlTqFJMY5G9coQhndf34XWKZYM6UyknNPHCqye7TXqK223gI9xCGRgnGnYgREQebsCaZ3Jv6GRyiaizEZVOFf25gfd3lgdrpHriqGPK/HSlI2CXZdZQkq+4S8js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FmLrW4fj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1413C4CEDD;
+	Sun, 16 Feb 2025 14:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739716262;
-	bh=3olusQxlP2lV5Ne2h6cljoQ1pOoB5XyJHYVk4XIXQUg=;
+	s=k20201202; t=1739716844;
+	bh=x3aFXyhGS+U6X3HUjZO8xlvr8jPhcUkEQ3Hk37j9GNc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k4TzT68CAkXwVqBa35Yq+TjiwuvYfFJ7jMxhPzLvnZsJUUnWlbBnJnh/3UaF0XiHf
-	 qBi/9ZghtKhdxXApECAMTcuut06w8DcTBdudoCyqsaH1YPVcil8Z1JvSz8f4N/k0Xh
-	 W9EnQIDcPUyQrhpCGa4DSuug2uHS4Co0G2es6a71Q3Xgbw2tsxmita0Na1zd8up/tc
-	 4F0RGFqWAMS4khZirBgBOE0tgzvGK/0jWmoE2zM3O/bF+4YDnWzzC6MGvpCGgma/6c
-	 BUgwxS8wfU33Mwq6o7XrrBPzIWCt6stM2gwASiiicuwT1DJrsSuyXr4/+ylPq5OYtm
-	 FJ59DJMmYO1Pg==
-Date: Sun, 16 Feb 2025 14:30:52 +0000
+	b=FmLrW4fjCmyZFZr1YzTzhQQn46h4frr/4RKLRlUYWYOEjHvSwmJUlZp2CgHJ8YZ+8
+	 8oTMm3l/zAHH4nQ0+vsGOlZdjgR7lgUpAAsyJVuysP1iLBY+Srk3/9megO+4YW3l0v
+	 kuL5kqYjYjBjeLH1jrR+K43/suqFQ3FxcF80vF7d/4tztaMOntanyuqSQFSk5fU6x4
+	 qkuBgqLAKcsD5y/VD1dBENmjbMaJasuWPY9rQiuxdceU0/1f0YjlYVdBdtuDA0lSCo
+	 Zxbh5G9/BWuQeRtCfEaoZFVLFDSemCavP8Pt1VA51S1JVv66krp/SZ5EtXq5ORG/jF
+	 VvgqcSInyKysA==
+Date: Sun, 16 Feb 2025 14:40:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Kim Seer Paller
- <kimseer.paller@analog.com>, Bartosz Golaszewski <brgl@bgdev.pl>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, linux-gpio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-iio
- <linux-iio@vger.kernel.org>, Peter Rosin <peda@axentia.se>
-Subject: Re: [PATCH v2 2/2] gpio: gpio-adg1414: New driver
-Message-ID: <20250216143052.6f21ace0@jic23-huawei>
-In-Reply-To: <CACRpkda+CDRMYKmjw7kewenkteLhPYb040E4B=ZG6pgdy=65pg@mail.gmail.com>
-References: <20250213-for_upstream-v2-0-ec4eff3b3cd5@analog.com>
-	<20250213-for_upstream-v2-2-ec4eff3b3cd5@analog.com>
-	<CACRpkdZR8X17Bn-i2anqjxf0Gk60V175F7Xfwytkhy7_K+LsSA@mail.gmail.com>
-	<880631da17a6d8ed4afe5a8c453fd4f7d0e4fca5.camel@gmail.com>
-	<CACRpkda+CDRMYKmjw7kewenkteLhPYb040E4B=ZG6pgdy=65pg@mail.gmail.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, Daniel
+ Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Helge
+ Deller <deller@gmx.de>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@baylibre.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-leds@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] mfd: lm3533: convert to use OF
+Message-ID: <20250216144033.47852a60@jic23-huawei>
+In-Reply-To: <20250212075845.11338-3-clamor95@gmail.com>
+References: <20250212075845.11338-1-clamor95@gmail.com>
+	<20250212075845.11338-3-clamor95@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,83 +66,131 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 15 Feb 2025 00:22:20 +0100
-Linus Walleij <linus.walleij@linaro.org> wrote:
+On Wed, 12 Feb 2025 09:58:42 +0200
+Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> Let's check with Jonathan Cameron (IIO maintainer) on this as well.
-> He might have ideas.
->=20
-> For reference, the datasheet:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/adg14=
-14.pdf
->=20
-> (By the way: add the datasheet to a special Datasheet: tag in the
-> commit please!)
->=20
-> On Fri, Feb 14, 2025 at 2:17=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.c=
-om> wrote:
-> > On Fri, 2025-02-14 at 00:25 +0100, Linus Walleij wrote: =20
->=20
-> > > Now, the kernel does not have switch subsystem I think,
-> > > so this is something like a special case, so we might be
-> > > compelled to make an exception, if the users will all be in =20
-> >
-> > Exactly, since we could not find anything, the best fit seemed like the=
- gpio
-> > subsystem. I was the one suggesting it since a new subsystem for a simp=
-le device
-> > like this looked excessive. If we had more devices that would fit such =
-a class
-> > of devices, maybe it would make more sense to start thinking on such a
-> > subsystem?
-> > =20
-> > > say userspace and make use of this switch for factory lines
-> > > or similar. =20
-> >
-> > Kim should know better again (about usecases) but I would also assume t=
-his is
-> > for userspace use. =20
->=20
-> Actually the GPIO documentation Documentation/driver-api/gpio/using-gpio.=
-rst
-> even talks about this for userspace use cases:
->=20
-> "The userspace ABI is intended for one-off deployments. Examples are prot=
-otypes,
-> factory lines, maker community projects, workshop specimen, production to=
-ols,
-> industrial automation, PLC-type use cases, door controllers, in short a p=
-iece
-> of specialized equipment that is not produced by the numbers, requiring
-> operators to have a deep knowledge of the equipment and knows about the
-> software-hardware interface to be set up. They should not have a natural =
-fit
-> to any existing kernel subsystem and not be a good fit for an operating s=
-ystem,
-> because of not being reusable or abstract enough, or involving a lot of n=
-on
-> computer hardware related policy."
->=20
-> If this is the usecase, like controlling an external switch for such thin=
-gs,
-> using the GPIO subsystem might actually be reasonable in my opinion,
-> (even if the DT bindings end up in their own category).
->=20
-> If the switches control stuff related to computer machinery (i.e. integra=
-ted
-> into a laptop to switch on/off the fans...) then no. So it depends on how
-> and where it will be used.
+> Add ability to fill pdata from device tree. Common stuff is
+> filled from core driver and then pdata is filled per-device
+> since all cells are optional.
+> 
+> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
 
-Maybe, treat them as a weird mux? A switch is similar to a mux with only
-one connected path.  +CC Peter.=20
+Focusing on just the IIO bit. (backlog of review is a bit high
+for me this weekend!)
 
-Jonathan
+> ---
+>  drivers/iio/light/lm3533-als.c      | 58 ++++++++++++++++++++-
+>  drivers/leds/leds-lm3533.c          | 69 +++++++++++++++++++++++--
+>  drivers/mfd/lm3533-core.c           | 79 ++++++++++++++++++++++++-----
+>  drivers/video/backlight/lm3533_bl.c | 72 ++++++++++++++++++++++++--
+>  include/linux/mfd/lm3533.h          |  1 +
+>  5 files changed, 256 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/iio/light/lm3533-als.c b/drivers/iio/light/lm3533-als.c
+> index 99f0b903018c..21fc5f215c80 100644
+> --- a/drivers/iio/light/lm3533-als.c
+> +++ b/drivers/iio/light/lm3533-als.c
+> @@ -16,7 +16,9 @@
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/mfd/core.h>
+> +#include <linux/of.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/slab.h>
+>  #include <linux/uaccess.h>
+>  
+> @@ -826,6 +828,50 @@ static const struct iio_info lm3533_als_info = {
+>  	.read_raw	= &lm3533_als_read_raw,
+>  };
+>  
+> +static void lm3533_parse_als(struct platform_device *pdev,
+> +			     struct lm3533_als_platform_data *pdata)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	int val, ret;
+> +
+> +	/* 1 - 127 (ignored in PWM-mode) */
+> +	ret = device_property_read_u32(dev, "resistor-value", &val);
+> +	if (ret)
+> +		val = 1;
+For defaults that apply on any error, the pattern
 
->=20
-> Yours,
-> Linus Walleij
+	val = 1;
+	device_property_read_u32(dev, "resistor-value", &val);
+is cleaner.
+
+What are the units? If it's a resistor then they should be ohms
+or similar and that should be part of the naming.
+
+You should be taking whatever the value is in ohms and mapping
+it to appropriate r_select in this function.
+
+> +	pdata->r_select = val;
+> +
+> +	pdata->pwm_mode = device_property_read_bool(dev, "pwm-mode");
+> +}
+> +
+> +static int lm3533_pass_of_node(struct platform_device *pdev,
+> +			       struct lm3533_als_platform_data *pdata)
+> +{
+> +	struct device *parent_dev = pdev->dev.parent;
+> +	struct device *dev = &pdev->dev;
+> +	struct fwnode_handle *node;
+> +	const char *label;
+> +	int val, ret;
+> +
+> +	device_for_each_child_node(parent_dev, node) {
+
+This devices should have direct access to the correct child node.
+Otherwise something odd is going on...
+
+> +		fwnode_property_read_string(node, "compatible", &label);
+> +
+> +		if (!strcmp(label, pdev->name)) {
+> +			ret = fwnode_property_read_u32(node, "reg", &val);
+> +			if (ret) {
+> +				dev_err(dev, "reg property is missing: ret %d\n", ret);
+
+use return dev_err_probe() for these.
+
+> +				return ret;
+> +			}
+> +
+> +			if (val == pdev->id) {
+> +				dev->fwnode = node;
+> +				dev->of_node = to_of_node(node);
+> +			}
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int lm3533_als_probe(struct platform_device *pdev)
+>  {
+>  	const struct lm3533_als_platform_data *pdata;
+> @@ -840,8 +886,16 @@ static int lm3533_als_probe(struct platform_device *pdev)
+>  
+>  	pdata = dev_get_platdata(&pdev->dev);
+>  	if (!pdata) {
+> -		dev_err(&pdev->dev, "no platform data\n");
+> -		return -EINVAL;
+> +		pdata = devm_kzalloc(&pdev->dev, sizeof(*pdata), GFP_KERNEL);
+> +		if (!pdata)
+> +			return -ENOMEM;
+> +
+> +		ret = lm3533_pass_of_node(pdev, pdata);
+> +		if (ret)
+> +			return dev_err_probe(&pdev->dev, ret,
+> +					     "failed to get als device node\n");
+> +
+> +		lm3533_parse_als(pdev, pdata);
+>  	}
+>  
+>  	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*als));
 
 

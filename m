@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-15602-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15603-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378FEA3764F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:38:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87598A3765A
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 18:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0A7168FFA
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E3E3B0EAC
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Feb 2025 17:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E236619D881;
-	Sun, 16 Feb 2025 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C8019D881;
+	Sun, 16 Feb 2025 17:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4nUsyBp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWel6brK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA6119A298;
-	Sun, 16 Feb 2025 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA2642070;
+	Sun, 16 Feb 2025 17:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739727493; cv=none; b=T/UCCjj5e5/hVvQfr3ZMaKqQ4a0+KXbxbZnAcPvi5cBN2SdQDp6ky9SihQYhst8CE9ORAzN3Bf1oP8x9fQnAmKpGneShk+wEGj9I436ilC/LOEUEU2XVESFWEFYcxpyXn+M17qHneGGVIGVP9UtQcy1KO0J5OY9oiNSCXZupD8Y=
+	t=1739727669; cv=none; b=vAW5BKVyxQTfGpih/EmyQnPDeXPUp7o7ikBi4E/dKHyZDDWTDBCcm1L47kpsCgExKGIYW/cMZ9TQ/XKhmEku35EEPb7N28z2UQf7llAQdJgyPItpDaGuA4dDMvplkjL4pfKRyzLXhwHlv/8NlkcgKgQakcz//2vcAE8VfUVEbRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739727493; c=relaxed/simple;
-	bh=DbUMcXFKtHfM50Yjw/Uc2hXibnawpUKWpR41+KNiiKM=;
+	s=arc-20240116; t=1739727669; c=relaxed/simple;
+	bh=6RNYKQuP+TjxgyMPY35CewBj9PCs9JmqzBQdsvqdgxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gPtPmnkm4+R8wmyAAToma02bYZilmQpSod7SxKq8u4cw0PD3iSaVQPRzflqsm6Q0ManOmo3dAPYAfRr0Ak2aJNl6LLthLFigKaJyUYPzlQSRUOrhizGBd5+krgjTLoCBYm3UKC+QQ8cw+WRFTnGXj0zc04eRQYp1Ak2eLfQGCcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4nUsyBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57503C4CEDD;
-	Sun, 16 Feb 2025 17:38:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gYR0C0d+baHdrthGiphdEOWHFW48/Q2CPw2VfWXNfX2M30zLTpHGLHI3AJDcjaaCJtyYpfOqxBj1QccHs+etkQF8t+l8E11ZyMe/AlWFSByYQePuzw6nBUPscxgkSMFYZjs2f5uDTCB7MX2T/VYxVZ495R7EZVgFGH80291rMJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWel6brK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68E6C4CEDD;
+	Sun, 16 Feb 2025 17:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739727493;
-	bh=DbUMcXFKtHfM50Yjw/Uc2hXibnawpUKWpR41+KNiiKM=;
+	s=k20201202; t=1739727668;
+	bh=6RNYKQuP+TjxgyMPY35CewBj9PCs9JmqzBQdsvqdgxo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=i4nUsyBpUXhtE/9YqJJ++JiujSDLehXLPYDL/zH0yaQkej2FIHCZyI4MK88AGB33j
-	 TqXMRnUFW/wY0sIAylMT8yIuTFdTsKanQ9Z2Kg4ZywoQrmnjt4bmt7Qrv6deYn5yjK
-	 Xc6Sk2+nOTq1z2eI+iVekSq5So8P24dszPmOIStjyNJ/wsq0Egz1hUqqeEeZQqFMDa
-	 cYBiQYgWHIV30/RD3lTpfJhEsJ9dwr+hEtTz5GVUYncUPy8o9S6v5K/lJm3xlnEkI7
-	 8GJ22Pye/a09CzgLXO72YWWzJcMYKcGEmCUJVzGPUtzSa9SsGuTedh6pRr9670VxRN
-	 OSB632/jMvUMg==
-Date: Sun, 16 Feb 2025 17:38:05 +0000
+	b=VWel6brKc9IinaYi5TVwJrWuIDYwwKxXa61P6lrj+7UbDwRpHp8Fzb8CVYqegDf34
+	 4E1NQqE/OgcMJxr+CPnh3XecpeGaBkInJpov4xWChrpZBBHpLgh7mlntGRSacqDbbP
+	 zblCUuforYEtn7sWtNKU11oIkMn/SNWMKXAvZez5PiAA1C2Zw4oSnowcP9trRABmrG
+	 ag8SucSxiEESjZdUHjs90oAjgvk5WxIqkCTCsVq76HiYkwG3f8b/nUI6Y6Q5Uul0ZN
+	 UWhQXqQs56sggolLQhT5EgWBxzcNDIYjUxRiFqaJj72pZ0ELnUkn2HUDJ1LfxuICGp
+	 h0gdc9UF1RIdQ==
+Date: Sun, 16 Feb 2025 17:41:00 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v2 09/14] iio: accel: adxl345: extend sample frequency
- adjustments
-Message-ID: <20250216173805.3b629a61@jic23-huawei>
-In-Reply-To: <20250210110119.260858-10-l.rubusch@gmail.com>
+Subject: Re: [PATCH v2 10/14] iio: accel: adxl345: add g-range configuration
+Message-ID: <20250216174100.73b0bece@jic23-huawei>
+In-Reply-To: <20250210110119.260858-11-l.rubusch@gmail.com>
 References: <20250210110119.260858-1-l.rubusch@gmail.com>
-	<20250210110119.260858-10-l.rubusch@gmail.com>
+	<20250210110119.260858-11-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,93 +62,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Feb 2025 11:01:14 +0000
+On Mon, 10 Feb 2025 11:01:15 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Introduce enums and functions to work with the sample frequency
-> adjustments. Let the sample frequency adjust via IIO and configure
-> a reasonable default.
+> Introduce means to configure and work with the available g-ranges
+> keeping the precision of 13 digits.
 > 
-> Replace the old static sample frequency handling. The patch is in
-> preparation for activity/inactivity handling.
+> This is in preparation for the activity/inactivity feature.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+A few really trivial comments on this one.
 
-I noticed now that we don't actually have regmap caching enabled.
-I think it will make things sufficiently simpler that it is worth
-doing even though you have to specify which registers are volatile etc.
-
-
-> +
-> +static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
-> +{
-> +	int ret;
-> +
-> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
-> +				 ADXL345_BW_RATE_MSK,
-> +				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->odr = odr;
-Why do we need to keep a copy cached? Seems like we can get it from
-regmap cache easily enough?
-
-> +
-> +	return 0;
-> +}
-
-> @@ -488,7 +572,12 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
->  			     int val, int val2, long mask)
->  {
->  	struct adxl345_state *st = iio_priv(indio_dev);
-> -	s64 n;
-> +	enum adxl345_odr odr;
-> +	int ret;
-> +
-> +	ret = adxl345_set_measure_en(st, false);
-
-Please add some more on why this is now necessary to the patch description.
-
-> +	if (ret)
-> +		return ret;
+> ---
+>  drivers/iio/accel/adxl345_core.c | 92 ++++++++++++++++++++++++++++++--
+>  1 file changed, 89 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+> index 08ad71875c5e..ea7bfe193d31 100644
+> --- a/drivers/iio/accel/adxl345_core.c
+> +++ b/drivers/iio/accel/adxl345_core.c
+> @@ -86,6 +86,13 @@ enum adxl345_odr {
+>  	ADXL345_ODR_3200HZ,
+>  };
 >  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_CALIBBIAS:
-> @@ -496,20 +585,24 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
->  		 * 8-bit resolution at +/- 2g, that is 4x accel data scale
->  		 * factor
->  		 */
-> -		return regmap_write(st->regmap,
-> -				    ADXL345_REG_OFS_AXIS(chan->address),
-> -				    val / 4);
-> +		ret = regmap_write(st->regmap,
-> +				   ADXL345_REG_OFS_AXIS(chan->address),
-> +				   val / 4);
-> +		break;
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		n = div_s64(val * NANOHZ_PER_HZ + val2,
-> -			    ADXL345_BASE_RATE_NANO_HZ);
-> -
-> -		return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
-> -					  ADXL345_BW_RATE,
-> -					  clamp_val(ilog2(n), 0,
-> -						    ADXL345_BW_RATE));
-> +		ret = adxl345_find_odr(st, val, val2, &odr);
-> +		if (ret)
-> +			return ret;
-> +		ret = adxl345_set_odr(st, odr);
-> +		break;
-> +	default:
-> +		return -EINVAL;
->  	}
+> +enum adxl345_range {
+> +	ADXL345_2G_RANGE = 0,
+> +	ADXL345_4G_RANGE,
+> +	ADXL345_8G_RANGE,
+> +	ADXL345_16G_RANGE,
+> +};
+> +
+>  /* Certain features recommend 12.5 Hz - 400 Hz ODR */
+>  static const int adxl345_odr_tbl[][2] = {
+>  	[ADXL345_ODR_0P10HZ]	= {   0,  97000},
+> @@ -106,6 +113,33 @@ static const int adxl345_odr_tbl[][2] = {
+>  	[ADXL345_ODR_3200HZ]	= {3200, 0},
+>  };
 >  
-> -	return -EINVAL;
+> +/*
+> + * Full resolution frequency table:
+> + * (g * 2 * 9.80665) / (2^(resolution) - 1)
+> + *
+> + * resolution := 13 (full)
+> + * g := 2|4|8|16
+> + *
+> + *  2g at 13bit: 0.004789
+> + *  4g at 13bit: 0.009578
+> + *  8g at 13bit: 0.019156
+> + * 16g at 16bit: 0.038312
+> + */
+> +static const int adxl345_fullres_range_tbl[][2] = {
+> +	[ADXL345_2G_RANGE]  = {0, 4789},
+
+I'm slowly trying to standardize a few more corners of the kernel style for IIO at least.
+This hits one of them. So if you don't mind adding spaces after { and before }
+it will one day save me time on a cleanup series.
+
+> +	[ADXL345_4G_RANGE]  = {0, 9578},
+> +	[ADXL345_8G_RANGE]  = {0, 19156},
+> +	[ADXL345_16G_RANGE] = {0, 38312},
+> +};
+
+
+> @@ -1252,6 +1335,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+>  	 * undesired behavior.
+>  	 */
+>  	ret = adxl345_set_odr(st, ADXL345_ODR_200HZ);
 > +	if (ret)
 > +		return ret;
-> +
-> +	return adxl345_set_measure_en(st, true);
->  }
 
+Trivial but I'd put a blank line here for slightly improved readability.
+
+> +	ret = adxl345_set_range(st, ADXL345_16G_RANGE);
+>  	if (ret)
+>  		return ret;
+>  
 
 

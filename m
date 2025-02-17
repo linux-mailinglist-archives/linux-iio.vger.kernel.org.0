@@ -1,146 +1,184 @@
-Return-Path: <linux-iio+bounces-15671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C86A38565
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:05:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 805B3A385C8
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08B0818927E3
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:05:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2984188B619
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5811722259D;
-	Mon, 17 Feb 2025 14:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB444212FA2;
+	Mon, 17 Feb 2025 14:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zdv2T8vQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPfzpXqU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D75221575;
-	Mon, 17 Feb 2025 14:04:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C17B21D598
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801044; cv=none; b=SnC9jrSSs+2T7cr+GYrCeIqM6UquDutmTHmVFyi3ayxWuu19bzPBIy9iHmNaKoi0w0IVzmFp4xZ5Vq3vkCRiZ12XMCMx505Hs4vcb++cedfZ7i9fxESPXIe6Iep96jnwBMOgizoEypM56HKmzY/qYEk9Gf6X0++7coHEGp6PJlA=
+	t=1739801806; cv=none; b=G6KuUaKjsQ922EElMDUxxBIQ15tSe1p3t2EYm59+YDU6TD6rKZmWQW4HGXMWu40a7Cv7HeoPpYR1NhBj2WQNRQM7b2hDUv4jZaJRqA5YQikN6SCF0cbLKtVAdyrA4sTmrEqcXhJolBNa3QB19GYm97pfeICKxm6LEjafSwGHHfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801044; c=relaxed/simple;
-	bh=9aREkL79Xsxr+96x5qn8It6s9YMe1H0v50kaLPRH6JQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2sBy5pqrFQAgqMc2J17aTza+2xQtfHKVxfFP2oS1HocVZvOqsd1dqPxK1zFF6ZO514MTLX63Nrm5npcUZ+L6VOAZ0jIYb0T5OFoM+2K7D0HpE6J8HIni/6yFBdzIfLxaEiKrWOGBZ4EXESru08W+dg0a7Ub+JGCu3DliZTY9kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zdv2T8vQ; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5452ed5b5b2so2704842e87.0;
-        Mon, 17 Feb 2025 06:04:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739801040; x=1740405840; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4wiMhV2MLOmdVTuzdxdM8/it2VeMkuWUBOlinnhDCGM=;
-        b=Zdv2T8vQ6g+vXjX0iy+U1eFUmxp9Y+lbt5r6+ynbQV90PfBWJfkGo0p+w/X+cjGVCC
-         rvcY1gEi6o1I7WRYpxSMkKkyHMAJ9r/9HaF4YGFMt4NziK7MIr7GZJKjuAm79aZmSoAX
-         IbQft953fpDb0Idhu1/sLzQv8Pehw24ukJ8CxzUX0UEjyAgV7pSI50seyRAZB6RvDv2U
-         Dddlht+gTrn1IUNEI20qS6XRxI0RnYi+2ckMBfxfG5sk3lFimXb0dqePfrNtOmyuJoNa
-         foyOgSlVpQky8hMWTodNUVYjJu7746EXB1Qp700c8ma3hul7bVZwxLtPC0F5QRc2ab8K
-         7Ktw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739801040; x=1740405840;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4wiMhV2MLOmdVTuzdxdM8/it2VeMkuWUBOlinnhDCGM=;
-        b=nBIiJaIwRxWK79+GpnJ0k1hIiBd9yrmFepGPopW4GFji8713mouLz9n2hlyPvNmjCK
-         fF6LG6f79BAtXtbPKAqfoyoS2+mr50gRj+3655WOlkaTBOmfYa7Fn/H8+i/SJ2IHyYK2
-         IAwkdMmfZ8kEHm9EYAJQJkjYRh1MVoJgpy0BE4Qe6j/uXTKY9bb4/YA/6CPZfgzRs4vl
-         IjJsh05bi9P/N9SZ5MqmNzZ1DjbRI+mtyTisod1ym7WPB3zrVaw7/TnlZD3aMvfEsHl3
-         61NM85QnhIX0z5M/NxIgAN/sUd8UQglnmCTnzMHhaM5z7gOEtg/+asL/Rp0oj2sIG13M
-         sQ4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUFfY8bVWh/JQWjCOacgQ/EtTgrgr6I0t0Rcr6heIDJOebJKe81qEnIrGKvFQdPr6KIkW8z4u2VG8kH@vger.kernel.org, AJvYcCWeSbf5k3poEfrkQbSFRqoKcR+bK7dTjYHV3bZiwl9rB7djvCF1mPD0TCKsgfpVrHk3v3NtbI1G3wJzyIo=@vger.kernel.org, AJvYcCXQ1hZM4V46gyNuNWyoujBLC1rRRyMVFfKi4W0dLEET93mMSI4dajubFsrL2WKBLBkKW2ltHNLO0sX79MGL@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6dPbqWewTkwa3umw9f99SpP1L+KxE2lui4FwcVK7oy5kgBILc
-	i9npU+06pnUAdIEQTLODqC82MuC/oEt/Ki5sl0fft2QUsCR6LhXH
-X-Gm-Gg: ASbGncuxkYcajfWlDGA7p2gu6tLIKs+XhtFWZP6LsTwxOMxrmf5f+LQE0LCbvOuaHJv
-	augYgkH1tY2T8WTI4C9Ko5AzRoFHmUP12nRWlUm2W7yKLXVx0VA+0KX8WAmErtwP/ODJsl/HA8O
-	2Kdy12wc38hezeoI7eA/guWeDyTImmefgPnec9JEyPRe9i24dj67WyWrQCr8zjcgawY6HM+nrFd
-	eL40jxSDGthZlrp5imYXtqGJNB9N66wPt0l7U9pS3ocWqaRNEGKyAFD9I2b02Dqhj00ZKzBqmKg
-	H+s2vww=
-X-Google-Smtp-Source: AGHT+IE2I2XaCaDXYttBWppjwztZE3XPtmV+/ckyma+vkI0gasU124OBkpUB+WCyZpcQozD76oi6mg==
-X-Received: by 2002:a05:6512:b12:b0:545:ea9:1a24 with SMTP id 2adb3069b0e04-5452fe2e78cmr2849929e87.14.1739801040284;
-        Mon, 17 Feb 2025 06:04:00 -0800 (PST)
-Received: from xeon.. ([188.163.112.51])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-309306d5f48sm8919601fa.57.2025.02.17.06.03.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 06:03:59 -0800 (PST)
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
-	Arthur Becker <arthur.becker@sentec.com>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	David Heidelberg <david@ixit.cz>
-Cc: linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH v4 3/3] ARM: tegra: tf101: Add al3000a illuminance sensor node
-Date: Mon, 17 Feb 2025 16:03:36 +0200
-Message-ID: <20250217140336.107476-4-clamor95@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250217140336.107476-1-clamor95@gmail.com>
-References: <20250217140336.107476-1-clamor95@gmail.com>
+	s=arc-20240116; t=1739801806; c=relaxed/simple;
+	bh=duHF+YnUsljzLCfyZThw0z+/i4q1Acv5f53Nt0ayupI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bBzqVhHaIlH1P7XyylNnsiWqtRZU3uqelV4s2pj29XcUAIq4WhKp+eFLexwSjtOiJ+d+n0zI438JuUrGUBDNr5/WXpyC+AchsaYgKVw7o81UYd7onFC9JcBUwoUfI/Bt4HetNZ6C7ab6O+ZPq+hB/idZNvdn9UiG0IcFm6gPRFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPfzpXqU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CAFC4CEE7;
+	Mon, 17 Feb 2025 14:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739801806;
+	bh=duHF+YnUsljzLCfyZThw0z+/i4q1Acv5f53Nt0ayupI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HPfzpXqUSpbVM6A0vSdFuo9VaadkdTyaLOPR7DOa8zcqXIRoQuW3W5VEjuZIA63lY
+	 uZ5dtXGgjB4fq2Br09fo7fy9f/ShfbMdeXb0aC3Mja7zUFx9rIAsnO91zqQ74ZXWPg
+	 z6A56ZNYRE4Or+p2SAG8JUB6knYI8GVRTX4JdWdFVZSsOIqh4KRFl7nqn+/ihbJfdO
+	 z2liy3lVxW3v1SY+vKnMXX1cRIlXRQf4xqnsC7If9nbwiUqsTUxBQglL1EY+A9Raio
+	 xcrUh55kTQi7oq8b3bA074CR38WRUFCanugdWco2QWlIfP5eM5s7yt4K/4R0gwUY0+
+	 CNFAqI0WdnJCw==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org
+Cc: David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Phil Reid <preid@electromag.com.au>,
+	Marek Vasut <marek.vasut+renesas@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Marek Vasut <marex@denx.de>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/29] IIO: ADCs: Sparse friendly claim of direct mode
+Date: Mon, 17 Feb 2025 14:16:00 +0000
+Message-ID: <20250217141630.897334-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Bind al3000a illuminance sensor found in ASUS TF101
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Tested-by: Robert Eckelmann <longnoserob@gmail.com>
-Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com>
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
----
- arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Note that a number of the drivers touched in this series have no
+obvious active maintainer, so it would be much appreciated if anyone
+has time to take a look! It is a large series so feel free to review
+any you have time to look at rather than feeling you need to look
+at the whole thing!
 
-diff --git a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-index 975ec24195ca..fcf3d6dd64a2 100644
---- a/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-+++ b/arch/arm/boot/dts/nvidia/tegra20-asus-tf101.dts
-@@ -1123,6 +1123,17 @@ smart-battery@b {
- 				sbs,poll-retry-count = <10>;
- 				power-supplies = <&mains>;
- 			};
-+
-+			/* Dynaimage ambient light sensor */
-+			light-sensor@1c {
-+				compatible = "dynaimage,al3000a";
-+				reg = <0x1c>;
-+
-+				interrupt-parent = <&gpio>;
-+				interrupts = <TEGRA_GPIO(Z, 2) IRQ_TYPE_LEVEL_HIGH>;
-+
-+				vdd-supply = <&vdd_1v8_sys>;
-+			};
- 		};
- 	};
- 
+This is effectively part 3 of what will probably be around 5 series
+focused on moving from iio_device_claim/release_direct_mode() to
+iio_device_claim/release_direct(). The new form is more consistent
+with conditional locking semantics and sparse markings have been
+added that let us detect miss-balance between claim and release.
+
+More details can be found in the cover letter of the first series:
+https://lore.kernel.org/all/20250209180624.701140-1-jic23@kernel.org/
+
+This series focuses on the ADC drivers.
+
+Jonathan Cameron (29):
+  iio: adc: vf610: Move claim of direct mode to caller of
+    vf610_read_sample and use guard(mutex)
+  iio: adc: vf610: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ti-ads1100: Use guard(mutex) to allow direct returns
+  iio: adc: ti-ads1100: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ti-ads1015: Use guard(mutex) and factor out code for
+    INFO_RAW
+  iio: adc: ti-ads1015: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: stm32-dfsdm: Factor out core of reading INFO_RAW
+  iio: adc: stm32-dfsdm: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad4030: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad7192: Factor out core of ad7192_write_raw() to simplify
+    error handling.
+  iio: adc: ad7192: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad7768-1: Move setting of val a bit later to avoid
+    unnecessary return value check
+  iio: adc: ad7768-1: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad7606: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad7791: Factor out core of ad7791_write_raw() to simplify
+    error handling
+  iio: adc: ad7791: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad7793: Factor out core of ad7793_write_raw() to simplify
+    error handling
+  iio: adc: ad7793: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad799x: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: ad_sigma_delta: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: at91-sama5d2: Move claim of direct mode up a level and use
+    guard()
+  iio: adc: at91-sama5d2: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: max1027: Move claim of direct mode up one level and use
+    guard()
+  iio: adc: max1027: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: max11410: Factor out writing of sampling frequency to
+    simplify errro paths.
+  iio: adc: max11410: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: mxs-lradc: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: rcar: Switch to sparse friendly
+    iio_device_claim/release_direct()
+  iio: adc: Switch to sparse friendly iio_device_claim/release_direct()
+
+ drivers/iio/adc/ad4030.c           |  21 ++--
+ drivers/iio/adc/ad7173.c           |   9 +-
+ drivers/iio/adc/ad7192.c           | 119 ++++++++++----------
+ drivers/iio/adc/ad7266.c           |   7 +-
+ drivers/iio/adc/ad7298.c           |   7 +-
+ drivers/iio/adc/ad7380.c           |  56 +++++-----
+ drivers/iio/adc/ad7476.c           |   7 +-
+ drivers/iio/adc/ad7606.c           |  14 ++-
+ drivers/iio/adc/ad7768-1.c         |  10 +-
+ drivers/iio/adc/ad7791.c           |  31 +++---
+ drivers/iio/adc/ad7793.c           |  80 +++++++-------
+ drivers/iio/adc/ad7887.c           |   7 +-
+ drivers/iio/adc/ad7923.c           |   7 +-
+ drivers/iio/adc/ad7944.c           |   7 +-
+ drivers/iio/adc/ad799x.c           |  14 ++-
+ drivers/iio/adc/ad_sigma_delta.c   |   7 +-
+ drivers/iio/adc/at91-sama5d2_adc.c |  54 +++++-----
+ drivers/iio/adc/dln2-adc.c         |   7 +-
+ drivers/iio/adc/max1027.c          |  37 +++----
+ drivers/iio/adc/max11410.c         |  72 ++++++-------
+ drivers/iio/adc/mxs-lradc-adc.c    |  14 ++-
+ drivers/iio/adc/rcar-gyroadc.c     |   9 +-
+ drivers/iio/adc/stm32-adc.c        |   7 +-
+ drivers/iio/adc/stm32-dfsdm-adc.c  |  76 +++++++------
+ drivers/iio/adc/ti-adc084s021.c    |   9 +-
+ drivers/iio/adc/ti-adc108s102.c    |   7 +-
+ drivers/iio/adc/ti-ads1015.c       | 168 ++++++++++++-----------------
+ drivers/iio/adc/ti-ads1100.c       |  44 +++-----
+ drivers/iio/adc/ti-ads1298.c       |   7 +-
+ drivers/iio/adc/ti-ads131e08.c     |  14 ++-
+ drivers/iio/adc/ti-tlc4541.c       |   7 +-
+ drivers/iio/adc/vf610_adc.c        |  36 +++----
+ 32 files changed, 440 insertions(+), 531 deletions(-)
+
 -- 
-2.43.0
+2.48.1
 
 

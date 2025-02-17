@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15662-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15663-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56AF4A38543
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:02:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BAA9A38546
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68C733A37D5
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:01:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2358D7A1D4D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D60E13A86C;
-	Mon, 17 Feb 2025 14:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF3A21CC42;
+	Mon, 17 Feb 2025 14:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLnXQC5T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHTMId9p"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFAA33DF
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF1B21C177
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739800915; cv=none; b=gm++rsGjJ7yNajWtE7bW4kcJMbMjTrJyt6JJwcIMn7ivDhkEFENPb4XJzUBVB2At4ZFcrPyYDcp0XxumRlt/RueCHNNZh4OnsQo/Yms2D5PUbmmZWSD244nXmr2261vFhw24wDBzGX7dBdPMDS/3t/5yMRFxcW8k+9GQAYIhKyw=
+	t=1739800919; cv=none; b=Jz6yOSTp5LqwcROkV4JifYJQVih6Y4NErH0W/baQCLBm5C7Fcu8OyY9D1HpfUs8IxECX4Tljkqa9Mu/mP4uf8s6+MYc2NYUDcmweN838vwtrtFvD/TjBBpYBASI98e7ySKKm48td0/0bryGAn3MRRXIUTtNT6UXIWsGhnDSpkpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739800915; c=relaxed/simple;
-	bh=TJoaSjvpYQoqgTt+vD4XOI0TBbWlYvKyeZoU82p+YWg=;
+	s=arc-20240116; t=1739800919; c=relaxed/simple;
+	bh=8OnohwFxfDI7bGeLRnQHXh5mTMkLAajhDEx2poQ7OkA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDGxN9BIfAeuCRh+Cl7UnsiAz6/Zes/dTdL+As52iCh7WiTXU/N73804zxKQSyf8dgL1E7TrjZuFX6G6VETTZephkpnysSwXmbQjl6CM0EWQ5XOyeK3EN5HyJLdRlK6B6E8jrdt24ktea3E3rtG0bjeK6+Lsh9lgS5xxCSq3IdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLnXQC5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C874BC4CED1;
-	Mon, 17 Feb 2025 14:01:52 +0000 (UTC)
+	 MIME-Version; b=MZwTobSRYVUUDykAPHsaA5OtkYz+z0Rjrj6bNNEL+FL3DB3CYz/4mz3mK/Nc6inM/PWNANWhcpblwDI5yHGj/rLxY15QGCtzyvVJLEY/ox5Dj+1LHl2TnFaWo8B5WtaTG5IxGpjYOrtx8q2k09ULsxmF9ODKtBlpoo/OICdA/k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHTMId9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB7AC4CED1;
+	Mon, 17 Feb 2025 14:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739800914;
-	bh=TJoaSjvpYQoqgTt+vD4XOI0TBbWlYvKyeZoU82p+YWg=;
+	s=k20201202; t=1739800918;
+	bh=8OnohwFxfDI7bGeLRnQHXh5mTMkLAajhDEx2poQ7OkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLnXQC5ThaE4SSPvR2u3wxJ3/N9nnJmH6MV3V044d0qnlAnps7AauV+pi/TrKDBf6
-	 Cu8xsRz1edsasUKRHDW2eLgCELvMgg6qvywhWHBEQq1+RQGFVkxviCGOQrB6KAss+Q
-	 RekDIFVQjVVvZR/Y9aCiOnsX4H+/EVf83UgRPmXshe3xsTuC8slB1op7NM+dURnlbr
-	 2pyU8ObdEU5ROdFE8owno20x88appSIUcorGf7JRPq/q0P/cXoGgx/4mbJe2QvUc4M
-	 SLEYspQqkhtL4PIy27NVHYXDSRW/2mTNSdYC4+JHM8lAqjwbv5V9XIoE/+Nx3zkcRo
-	 xQU8r3J+mo+zQ==
+	b=gHTMId9pzNXagsmO2hXVqLbUL0V0AMw3k5nnTG4rnRKiuSYtViNAmfUtaQd58aE0f
+	 wkabTXTL6UbJ7S+NhAFpWC4pGE2JatydQG8csGk5gXitxRJBQ/jw1BiHefe3tJ9BRo
+	 6hkNAPSi27RamfWhgRE+bgoP0z2ES43TUiUSDqbNaYUXkfntwAHfb+Au75T497ts+g
+	 NWEQ9M8tCpsSjwKZqBwvhBnDcf5QfejPP8gs49Jas7yJxY2bp9Nlx77hwE4B/p4hQ/
+	 bGE1UkdeZm7TCLft8DPrpYXKTWEsKqqm+eJix+SMM+odq2jG2Ebptlv6/HPpqiy1ph
+	 vNFvi84lPl0qw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -48,9 +48,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Antoniu Miclaus <antoniu.miclaus@analog.com>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 3/8] iio: accel: mma8452: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 17 Feb 2025 14:01:30 +0000
-Message-ID: <20250217140135.896574-4-jic23@kernel.org>
+Subject: [PATCH 4/8] iio: accel: kx022a: Factor out guts of write_raw() to allow direct returns
+Date: Mon, 17 Feb 2025 14:01:31 +0000
+Message-ID: <20250217140135.896574-5-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217140135.896574-1-jic23@kernel.org>
 References: <20250217140135.896574-1-jic23@kernel.org>
@@ -64,53 +64,129 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new functions allow sparse to find failures to release
-direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
+Create a new utility function for the actions taken when direct mode
+is held. This allows for direct returns, simplifying the code flow.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
 ---
- drivers/iio/accel/mma8452.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/accel/kionix-kx022a.c | 66 ++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/iio/accel/mma8452.c b/drivers/iio/accel/mma8452.c
-index 8ce4ddadc559..05f5482f366e 100644
---- a/drivers/iio/accel/mma8452.c
-+++ b/drivers/iio/accel/mma8452.c
-@@ -497,14 +497,13 @@ static int mma8452_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 
- 		mutex_lock(&data->lock);
- 		ret = mma8452_read(data, buffer);
- 		mutex_unlock(&data->lock);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 
-@@ -781,12 +780,11 @@ static int mma8452_write_raw(struct iio_dev *indio_dev,
- {
- 	int ret;
- 
--	ret = iio_device_claim_direct_mode(indio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(indio_dev))
-+		return -EBUSY;
- 
- 	ret = __mma8452_write_raw(indio_dev, chan, val, val2, mask);
--	iio_device_release_direct_mode(indio_dev);
-+	iio_device_release_direct(indio_dev);
- 	return ret;
+diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+index 3a56ab00791a..727e007c5fc1 100644
+--- a/drivers/iio/accel/kionix-kx022a.c
++++ b/drivers/iio/accel/kionix-kx022a.c
+@@ -510,26 +510,13 @@ static int kx022a_write_raw_get_fmt(struct iio_dev *idev,
+ 	}
  }
  
+-static int kx022a_write_raw(struct iio_dev *idev,
+-			    struct iio_chan_spec const *chan,
+-			    int val, int val2, long mask)
++static int __kx022a_write_raw(struct iio_dev *idev,
++			      struct iio_chan_spec const *chan,
++			      int val, int val2, long mask)
+ {
+ 	struct kx022a_data *data = iio_priv(idev);
+ 	int ret, n;
+ 
+-	/*
+-	 * We should not allow changing scale or frequency when FIFO is running
+-	 * as it will mess the timestamp/scale for samples existing in the
+-	 * buffer. If this turns out to be an issue we can later change logic
+-	 * to internally flush the fifo before reconfiguring so the samples in
+-	 * fifo keep matching the freq/scale settings. (Such setup could cause
+-	 * issues if users trust the watermark to be reached within known
+-	 * time-limit).
+-	 */
+-	ret = iio_device_claim_direct_mode(idev);
+-	if (ret)
+-		return ret;
+-
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		n = ARRAY_SIZE(kx022a_accel_samp_freq_table);
+@@ -538,20 +525,19 @@ static int kx022a_write_raw(struct iio_dev *idev,
+ 			if (val == kx022a_accel_samp_freq_table[n][0] &&
+ 			    val2 == kx022a_accel_samp_freq_table[n][1])
+ 				break;
+-		if (n < 0) {
+-			ret = -EINVAL;
+-			goto unlock_out;
+-		}
++		if (n < 0)
++			return -EINVAL;
++
+ 		ret = kx022a_turn_off_lock(data);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = regmap_update_bits(data->regmap,
+ 					 data->chip_info->odcntl,
+ 					 KX022A_MASK_ODR, n);
+ 		data->odr_ns = kx022a_odrs[n];
+ 		kx022a_turn_on_unlock(data);
+-		break;
++		return ret;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		n = data->chip_info->scale_table_size / 2;
+ 
+@@ -559,26 +545,44 @@ static int kx022a_write_raw(struct iio_dev *idev,
+ 			if (val == data->chip_info->scale_table[n][0] &&
+ 			    val2 == data->chip_info->scale_table[n][1])
+ 				break;
+-		if (n < 0) {
+-			ret = -EINVAL;
+-			goto unlock_out;
+-		}
++		if (n < 0)
++			return -EINVAL;
+ 
+ 		ret = kx022a_turn_off_lock(data);
+ 		if (ret)
+-			break;
++			return ret;
+ 
+ 		ret = regmap_update_bits(data->regmap, data->chip_info->cntl,
+ 					 KX022A_MASK_GSEL,
+ 					 n << KX022A_GSEL_SHIFT);
+ 		kx022a_turn_on_unlock(data);
+-		break;
++		return ret;
+ 	default:
+-		ret = -EINVAL;
+-		break;
++		return -EINVAL;
+ 	}
++}
++
++static int kx022a_write_raw(struct iio_dev *idev,
++			    struct iio_chan_spec const *chan,
++			    int val, int val2, long mask)
++{
++	int ret;
++
++	/*
++	 * We should not allow changing scale or frequency when FIFO is running
++	 * as it will mess the timestamp/scale for samples existing in the
++	 * buffer. If this turns out to be an issue we can later change logic
++	 * to internally flush the fifo before reconfiguring so the samples in
++	 * fifo keep matching the freq/scale settings. (Such setup could cause
++	 * issues if users trust the watermark to be reached within known
++	 * time-limit).
++	 */
++	ret = iio_device_claim_direct_mode(idev);
++	if (ret)
++		return ret;
++
++	ret = __kx022a_write_raw(idev, chan, val, val2, mask);
+ 
+-unlock_out:
+ 	iio_device_release_direct_mode(idev);
+ 
+ 	return ret;
 -- 
 2.48.1
 

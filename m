@@ -1,158 +1,112 @@
-Return-Path: <linux-iio+bounces-15708-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15709-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2BA8A3869C
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:36:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFBFA38680
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C2B1631B1
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:34:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF13E7A355C
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D56221546;
-	Mon, 17 Feb 2025 14:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A640224881;
+	Mon, 17 Feb 2025 14:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="REXlLDW2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4d1Znh9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBD521A953;
-	Mon, 17 Feb 2025 14:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2502206AA;
+	Mon, 17 Feb 2025 14:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739802840; cv=none; b=RfKZfIm2II0GX9DuEQ/23+WvmyIY3pTUdkwTMnJnxkwzWpZdxotLuQtElUYxc7CEUkGqQflh9RzLX3AcGXKSZTehCrWUziyaDE7tyhDVH0MPCedNtoxLa0OPKs62gRoapLWPo3PNMMfTUUr201cyJzAzlFv5EXgJVk9Axj+jI9A=
+	t=1739802846; cv=none; b=rph7Vdp11KH36Y0+s57ZITRSFQPi/OaAP6uO3fEqabc4EqkM9wcGMurC5QZOi0cxpKlu3LLzR/fnq7ernELOjJGBGrBKHZjknR80WtnZ4h4zfdDut1kl2QrRydV8frNe0XW4hXY1L5PpKopJyT4M8MuJVTsgYt1BG1W8J/1inkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739802840; c=relaxed/simple;
-	bh=s4FZcldSfuvs/OAiBQjChQlCVE02/dSY8r/d3fNaChQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UUzvUcqzp2MGAvXUd7vjhwkqz7i9MCwdUGfk0aj4il6dUF/s7Wpvu4wj5bU2tHJjsW8T5JJ+Ed2Dhtel1MsbLJjRzLxZZbb/gD7guSzBOlPC5wY2hxRgV+jmO7OChlcLSqD7b+XQB6ZN/UB8pw+gIqRrFvoojVAV2PBZ7LkDuNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=REXlLDW2; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4394345e4d5so30279895e9.0;
-        Mon, 17 Feb 2025 06:33:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739802837; x=1740407637; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f3eDcVTpKoU3IaebilmiBpD0xiEz596IPX2MkPMQ7FA=;
-        b=REXlLDW2MUSBve2NxQ9Zt8/8GmpHZwRzUhm3pWMq7M7kMibmQnBqR76Mhfd9oD9n+W
-         3W5DgbkKlMa2pmP+xbJoHi2MrULZcceLlIeppQTzr4jsgEHHkdkdOrczhpdS4rYHAM9+
-         6QRH5K9Wht32XvBJgnHpmpOtewKRKrK70KmnAWnCXA7vjosEB8ID/m3l2F/k98Z3gKRE
-         xc8hUadkd7sfBF7aUaUIP+LYOjFv3GL+YA2rAcfqug2QbABXAjLt89vfGTdmMkusl3Mj
-         wMl8xUNFSZB1+KCnHZEEq31E379dF0mcrQXDZyt2FZVX3AQZV7tB5ifUMFkNq4G3bhI3
-         bncA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739802837; x=1740407637;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f3eDcVTpKoU3IaebilmiBpD0xiEz596IPX2MkPMQ7FA=;
-        b=uOT58X99nw9PzUHAoaBGCzJjaSsPj1bIvTQsyYKLx76t77sPfO/bSeePL4iY68RZil
-         3bTy464M5HvJ5mmTRPchoPEiA8OYlYXfiqgPvU5Ua8WG/q/FryM8B76f0KXB2Bx6/69R
-         Vg+dTEmKt/SdRb+GmkuqVKqzPFoysbovyYqfslSgek3qNJVTkxqxkLpR1o8g+88343/c
-         ZK1+Tj6uTSKy6ClvC68yoh/s6/i8NWpNvtOf5yivnNfMXsXUx3x0TzqlInd42DdteWGU
-         12+7stEToMWB4fP8mH+iRLlQGPH2bwqymqA7TO7W6YeT2CVVE3H2xxWN90BME4orIg7i
-         g++w==
-X-Forwarded-Encrypted: i=1; AJvYcCUH2RXABnliDM+eiD6pMhEYDTHklMovUYIt2KGwUzVz4VqFA5VyFm8v2IUhSuXPIEhv0aUvFjDKoX5StCE=@vger.kernel.org, AJvYcCUvseboXT9QMcvMrakNTcrNlKXmAV9dhIkPtnwPQFEX+oqIvLL8/nDIQ3XX1oh2cfdzeBqwaWpeWnFP@vger.kernel.org, AJvYcCXxONeiFpT1V63QDbGNNllj7EvcOJvnGVr+yOz+IuxfzBYmP+UFPerVqAqFcgaoT83fKD2uM7FR5dnoI7cC@vger.kernel.org, AJvYcCXxUvhcSGpDpNqXfOSVPgIsxcB0Xa7keRVFfvFEvSKwtxZy3N2PYutqg82GI2b6zkbUyTL1VmIZkgvx@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbCEwxvnyJ+REI1w89TyuU1GvyACQb+oGUoVx8CW2VOJXuVtG7
-	kB+qPT8BoPxxXHnzghfL06GNhoGwFXc+XHCTRPmP/5c69iRX9Pqrtr3MpB8DxlEoNHd4eSNIMkR
-	oTUB5BlHzw5NkmMxKRgY/T5s9hIo=
-X-Gm-Gg: ASbGncvm4KOz7/ZpK3EjHPhZ6EfWiz+I1IO6AV7HzxiYiSCDeOy5U9G4yB0HsLxsO3K
-	8PDuHTxaAlupE4Rt2kpASuhWzf93ThDcEVnUnuBdiUyrgdjU0WK9+CM+7PEhTXhMEBW/28V6pxQ
-	==
-X-Google-Smtp-Source: AGHT+IEuERBuQnmdvYeQnbEgjpz5oivYR2/NeU+ZeDZj6y5f79re8Qc/hjfZmskbo4J7XhuGBCBKQIQ5nW0sf7jKqYI=
-X-Received: by 2002:a05:600c:4e88:b0:439:8bb3:cf8e with SMTP id
- 5b1f17b1804b1-4398bb3d119mr16449985e9.20.1739802836742; Mon, 17 Feb 2025
- 06:33:56 -0800 (PST)
+	s=arc-20240116; t=1739802846; c=relaxed/simple;
+	bh=XY2i7Z29CGAJyZKZqHFlYtn1pUICHedIw7cetxRZ664=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=POuXV/D8i7i4d4dYy5hWn3bCJIenmY0yG9/3rEqmSIor2j2DfctZQ9EnQYKsw6TvZh84mOevCydWKoLUE/Hp/8IxwUutMt2CjOzayy/nTOCEyF4lOoswnnrZiISvkRcujPpuAojihstw1iVS/sivcy6OYiuwfLS+mXMZhZP6rac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4d1Znh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563F9C4CED1;
+	Mon, 17 Feb 2025 14:34:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739802845;
+	bh=XY2i7Z29CGAJyZKZqHFlYtn1pUICHedIw7cetxRZ664=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=I4d1Znh95QpR8t2oVRecTwi1sfhGF8p51KwkAYCHatAqQH4MDa6JXDoMO7QJN+jtb
+	 rYKrw40qNsLEiBA30PhBVaLjaSFgIWBoSk6i/2XJhFtITFE73U5Enc19JKuUNhtTQD
+	 veLLeNB/sB/zpD8rZ1SghjKrVgBBD+gaDb/iQdj1sfBL067jccp2nIfPnumTUbY0sJ
+	 qpTqCK5E5mf4fS80HoAhC937pWgPhFB0w5BKn3W1TwAWWPkp3GeBMfjCdvmROmNfgw
+	 wfs8xNCe983soniHHMzo1uRJ4tRMT9VlQOkOnPwvlRCDkkPvoYtm6dHVNmhl/MdnjT
+	 ltp1jGatypeFQ==
+Date: Mon, 17 Feb 2025 14:33:54 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Robert Budai <robert.budai@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno Sa <nuno.sa@analog.com>, "Ramona
+ Gradinariu" <ramona.gradinariu@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Rob Herring <robh@kernel.org>, "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>
+Subject: Re: [RESEND PATCH v8 0/6] Add support for ADIS16550
+Message-ID: <20250217143354.0d1c4a2d@jic23-huawei>
+In-Reply-To: <20250217105753.605465-1-robert.budai@analog.com>
+References: <20250217105753.605465-1-robert.budai@analog.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250217140336.107476-1-clamor95@gmail.com> <20250217143006.1f043a0e@jic23-huawei>
-In-Reply-To: <20250217143006.1f043a0e@jic23-huawei>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Mon, 17 Feb 2025 16:33:45 +0200
-X-Gm-Features: AWEUYZnoYmWGH7uRDOTDGMyupdg6fWLMPQSMtlg1TZj4Q1o16qSOkRPpRU7P2Zg
-Message-ID: <CAPVz0n1FKe_ujAHyn=f1+12pV4r3GZpaZKPZe+caE79L3dn9tg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/3] iio: light: add al3000a als support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Thierry Reding <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen <mazziesaccount@gmail.com>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Emil Gedenryd <emil.gedenryd@axis.com>, 
-	Arthur Becker <arthur.becker@sentec.com>, Mudit Sharma <muditsharma.info@gmail.com>, 
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>, Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>, 
-	Ivan Orlov <ivan.orlov0322@gmail.com>, David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-=D0=BF=D0=BD, 17 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:30 Jona=
-than Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Mon, 17 Feb 2025 16:03:33 +0200
-> Svyatoslav Ryhel <clamor95@gmail.com> wrote:
->
-> > AL3000a is an illuminance sensor found in ASUS TF101 tablet.
-> Hi Svyatoslav,
->
-> Just a small request.  Please reduce rate of sending new versions.
-> That tends to give time for discussions on earlier versions to progress
-> and for more reviewers to see the current version.
->
-> I'd suggest at least 3-4 days between versions.  It's great to
-> responsive to reviewers of course!
->
-> Jonathan
->
->
+On Mon, 17 Feb 2025 12:57:44 +0200
+Robert Budai <robert.budai@analog.com> wrote:
 
-Once you are satisfied with amount of time patch will hang, let me
-know, I will upload new version. Thank you.
+> The ADIS16550 is a complete inertial system that includes a triaxis gyroscope
+> and a triaxis accelerometer. Each inertial sensor in the ADIS16550 combines
+> industry leading MEMS only technology with signal conditioning that optimizes
+> dynamic performance. The factory calibration characterizes each sensor for
+> sensitivity, bias, and alignment. As a result, each sensor has its own dynamic
+> compensation formulas that provide accurate sensor measurements.
+> 
+Hi Robert,
 
-> >
-> > ---
-> > Changes on switching from v3 to v4:
-> > - return write function directly
-> > - clean up and fix i2c_device_id
-> >
-> > Changes on switching from v2 to v3:
-> > - droped linux/iio/sysfs.h
-> > - set driver name directly
-> > - switched to IIO_CHAN_INFO_PROCESSED
-> > - split al3000a_set_pwr into 2 functions
-> > - added i2c_device_id
-> > - improved code formatting
-> >
-> > Changes on switching from v1 to v2:
-> > - sort compatible alphabetically in schema
-> > - clarify commit descriptions
-> > - convert to use regmap
-> > - arrangle lux conversion table in rows of 8
-> > - add more used headers
-> > - improve code formatting
-> > ---
-> >
-> > Svyatoslav Ryhel (3):
-> >   dt-bindings: iio: light: al3010: add al3000a support
-> >   iio: light: Add support for AL3000a illuminance sensor
-> >   ARM: tegra: tf101: Add al3000a illuminance sensor node
-> >
-> >  .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
-> >  .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
-> >  drivers/iio/light/Kconfig                     |  10 +
-> >  drivers/iio/light/Makefile                    |   1 +
-> >  drivers/iio/light/al3000a.c                   | 209 ++++++++++++++++++
-> >  5 files changed, 235 insertions(+), 2 deletions(-)
-> >  create mode 100644 drivers/iio/light/al3000a.c
-> >
->
+The cover letter of any RESEND should always start with why you are doing so.
+If this was for the tiny fixup you mentioned it should have been v9 and
+not have been sent for a few days at least.  If everything else is fine
+I don't mind making that sort of fixup whilst applying anyway!
+
+Jonathan
+
+
+> Robert Budai (6):
+>   iio: imu: adis: Add custom ops struct
+>   iio: imu: adis: Add reset to custom ops
+>   iio: imu: adis: Add DIAG_STAT register
+>   dt-bindings: iio: Add adis16550 bindings
+>   iio: imu: adis16550: add adis16550 support
+>   docs: iio: add documentation for adis16550 driver
+> 
+>  .../bindings/iio/imu/adi,adis16550.yaml       |   74 ++
+>  Documentation/iio/adis16550.rst               |  376 ++++++
+>  Documentation/iio/index.rst                   |    1 +
+>  MAINTAINERS                                   |   10 +
+>  drivers/iio/imu/Kconfig                       |   13 +
+>  drivers/iio/imu/Makefile                      |    1 +
+>  drivers/iio/imu/adis.c                        |   35 +-
+>  drivers/iio/imu/adis16550.c                   | 1149 +++++++++++++++++
+>  include/linux/iio/imu/adis.h                  |   34 +-
+>  9 files changed, 1680 insertions(+), 13 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
+>  create mode 100644 Documentation/iio/adis16550.rst
+>  create mode 100644 drivers/iio/imu/adis16550.c
+> 
+
 

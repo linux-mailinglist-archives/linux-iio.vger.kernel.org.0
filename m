@@ -1,72 +1,77 @@
-Return-Path: <linux-iio+bounces-15654-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15655-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD78FA383E0
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:07:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C398A38438
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A33C173B7E
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 13:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF690188276A
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 13:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5415221C172;
-	Mon, 17 Feb 2025 13:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5137C21C19D;
+	Mon, 17 Feb 2025 13:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j46GGvSN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WLtC95GD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FDB21ADC1
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 13:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE89921B1B4;
+	Mon, 17 Feb 2025 13:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739797505; cv=none; b=lQi8gPecGdQxqnfO68k+ktsvYkBkDmLlgrgmvDNqI1W2SlD9UwqJoxXorxafgt2h66QwY0DNvJNEBi9TiS8QOdOqqeodhzycTKak04zlCGeXkzOI5cbXZFUi9IxACG1XgN5QI9HbHaVQM9qMHFA7cwEpdjFStt7Z02cyNrjhg3k=
+	t=1739797888; cv=none; b=GzxWQBlSRrEmjeztLKRvmDM1ZMgwsrNImyX97Yry5J09ztxwzb/JMX+6t6IRPnj68YXGtdWDzKv6oE+duCzceDucZF07FNBspDWVNPWIWpSt5wl6bS1o0v0Kdmqiz4NsbKwNmmUT1IUeZXzItL1qwHWBES1bXWGoMH6vSro10uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739797505; c=relaxed/simple;
-	bh=t2l66dpfrRzsj/UMYpm+PmQl5Rwk6OWjU44Cbw1alrQ=;
+	s=arc-20240116; t=1739797888; c=relaxed/simple;
+	bh=1PiBDGXviXFsoAeEznRpjkJuqVWjReFh5mfoR8+tPJo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bK1E8n4UT6+sYhsZZL6f/gk8LT914UQBOMlSTQqNElAaFYFNaSPBveL1wlVQuhSLmfh+sG1467UtW42jTi6eLr4vDIjy/HXf7nzUb5jl+WJsmJj5nWU2tyG/xwaCBSysCUuzZzEfV/iaRfh4FvBHR2VxPOKxQJWcjCegYNSmFtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j46GGvSN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDEAC4CEE2;
-	Mon, 17 Feb 2025 13:04:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HzyIOBOT0PbYJe+ILGoJ48YZHiqhF2QMfDa7B8OoWKk+hXxIUMx2sAqHQwUaopJj0pyq57ShR6dhce0MmOZs+s6JLuSTfO3opIe7IJtF8MtCjRrpD6IhB973Nd0av49jcaRFYM37E8yv4uRaJbD4SOP8ocglDOqroeWpRxFLgfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WLtC95GD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40C3C4CED1;
+	Mon, 17 Feb 2025 13:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739797504;
-	bh=t2l66dpfrRzsj/UMYpm+PmQl5Rwk6OWjU44Cbw1alrQ=;
+	s=k20201202; t=1739797887;
+	bh=1PiBDGXviXFsoAeEznRpjkJuqVWjReFh5mfoR8+tPJo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=j46GGvSN97TJGkGkF6+gXi/XYu8pu0M2u0a/yx6rowrpsDbCnGvsCf2HDJWWOrLPv
-	 PCi/zYiKgVhJ8D4rpfAtQhgKx03uLga9mS0/KCtSvHYCBHD2bduIb52pH3Wg20mc5h
-	 av60q1r3k5V88ovk4hVuvDEZ5Y3f0fv7e85PCFwcJzqU5oaUq/Ndq8ijWxIWLNQx+P
-	 tAlZqIKSOCd/Z0jiW7kG/CNEf5Zf56vSfOX1pv7Oi5EmHGyrpXmmuM1DnXE4h0G2Ka
-	 VfN5sype5TNhWVWjVl1uzoAVkva5Vvvc2Pao4QyWSyXs6NU92ANVeIQC7QEBqR2hrU
-	 B198fyj+V0RVg==
-Date: Mon, 17 Feb 2025 13:04:52 +0000
+	b=WLtC95GDNZ/X0s+hfQucYzO3kU+Rh5UgXxg+E6+ek+M4ridMVG6kAEleF01gndwVH
+	 8kbjGK8bw3shQpq+zR5Sq5mTGyLenbNNTpk6vPcSBAERAm/YqIrevEy6deAw2gYd51
+	 +6Z0P/gt6AH2RWzUjQCrhRXFdo7ErlgscBvdmNbqoywYjXZQybziAkfobxVGYS3OxT
+	 5cOCBqcqHwvqlDolpX+gjqdLDpktZKKuSPwD6bYWh/ueX9jKkMRNJsJfc3krmttNSP
+	 0x5gToctYLmU18WiDPJ6s/4/w8DzpdAuT9WEgRG5brTf7wwxDY2ymWUYBFwU8gqN7U
+	 PmtYI/xK+DYfA==
+Date: Mon, 17 Feb 2025 13:11:10 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org, Mudit
- Sharma <muditsharma.info@gmail.com>, Julien Stephan	
- <jstephan@baylibre.com>, Mariel Tinaco <Mariel.Tinaco@analog.com>, Angelo
- Dureghello <adureghello@baylibre.com>, Gustavo Silva
- <gustavograzs@gmail.com>, Nuno Sa	 <nuno.sa@analog.com>, =?UTF-8?B?Sm8=?=
- =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=	
- <joao.goncalves@toradex.com>, ChiYuan Huang <cy_huang@richtek.com>, Ramona
- Alexandra Nechita <ramona.nechita@analog.com>, Trevor Gamblin
- <tgamblin@baylibre.com>, Guillaume Stols	 <gstols@baylibre.com>, Cosmin
- Tanislav <demonsingur@gmail.com>, Marcelo Schmitt	
- <marcelo.schmitt@analog.com>, Gwendal Grignou <gwendal@chromium.org>,
- Antoni Pokusinski <apokusinski01@gmail.com>, Tomasz Duszynski
- <tomasz.duszynski@octakon.com>, Jonathan Cameron	
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 11/27] iio: adc: ad4695: Stop using
- iio_device_claim_direct_scoped()
-Message-ID: <20250217130452.3a95e8a4@jic23-huawei>
-In-Reply-To: <a8b34cb7270ab2045894a978797023a8c7fafd63.camel@gmail.com>
-References: <20250209180624.701140-1-jic23@kernel.org>
-	<20250209180624.701140-12-jic23@kernel.org>
-	<20250216181907.40d36bf7@jic23-huawei>
-	<6db4821e-9cfe-4256-a357-51a00a50d083@baylibre.com>
-	<a8b34cb7270ab2045894a978797023a8c7fafd63.camel@gmail.com>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Andy Shevchenko <andy@kernel.org>, Geert
+ Uytterhoeven <geert@linux-m68k.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, Ulf Hansson
+ <ulf.hansson@linaro.org>, Peter Rosin <peda@axentia.se>, Andrew Lunn
+ <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>, Kishon Vijay
+ Abraham I <kishon@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, David
+ Lechner <dlechner@baylibre.com>, Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>, linux-gpio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
+ linux-phy@lists.infradead.org, linux-sound@vger.kernel.org, Jonathan
+ Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: (subset) [PATCH v3 00/15] gpiolib: add
+ gpiod_multi_set_value_cansleep
+Message-ID: <20250217131110.5803b68b@jic23-huawei>
+In-Reply-To: <CAMRc=Meq639NMz6TuOw=xQ_A8VDwA5OXoXU47JNt7x0C7jDtGQ@mail.gmail.com>
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
+	<173952845012.57797.11986673064009251713.b4-ty@linaro.org>
+	<CAHp75VcjAFEdaDQAMXVMO96uxwz5byWZvybhq2fdL9ur4WP3rg@mail.gmail.com>
+	<CAMRc=MefPRs-REL=OpuUFJe=MVbmeqqodp+wCxLCE8CQqdL4gQ@mail.gmail.com>
+	<20250216142313.743af564@jic23-huawei>
+	<CAMRc=Meq639NMz6TuOw=xQ_A8VDwA5OXoXU47JNt7x0C7jDtGQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -77,148 +82,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Feb 2025 10:48:03 +0000
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Sun, 16 Feb 2025 16:55:04 +0100
+Bartosz Golaszewski <brgl@bgdev.pl> wrote:
 
-> On Sun, 2025-02-16 at 13:00 -0600, David Lechner wrote:
-> > On 2/16/25 12:19 PM, Jonathan Cameron wrote: =20
-> > > On Sun,=C2=A0 9 Feb 2025 18:06:08 +0000
-> > > Jonathan Cameron <jic23@kernel.org> wrote:
-> > >  =20
-> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > >=20
-> > > > This complex cleanup.h use case of conditional guards has proved
-> > > > to be more trouble that it is worth in terms of false positive comp=
-iler
-> > > > warnings and hard to read code.
-> > > >=20
-> > > > Move directly to the new claim/release_direct() that allow sparse
-> > > > to check for unbalanced context.=C2=A0 In some cases code is factor=
-ed
-> > > > out to utility functions that can do a direct return with the
-> > > > claim and release around the call.
-> > > >=20
-> > > > Reviewed-by: David Lechner <dlechner@baylibre.com>
-> > > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > ---
-> > > > v2: Typo in commit description (David).
-> > > > Note there are several sets current in flight that touch this drive=
-r.
-> > > > I'll rebase as necessary depending on what order the dependencies r=
-esolve. =20
-> > > I've done this rebase and applied on the testing branch of iio.git.
-> > >=20
-> > > Would appreciate a sanity check if anyone has time though!
-> > >=20
-> > > New code is as follows.=C2=A0 The one corner I was not sure on was
-> > > that for calibbias reading the direct mode claim was held for a long
-> > > time.=C2=A0 That seems to be unnecessary as we have a copy of osr any=
-way
-> > > in that function used for other purposes.
-> > >  =20
-> >=20
-> > ...
-> >  =20
-> > > =C2=A0	case IIO_CHAN_INFO_CALIBBIAS:
-> > > -		switch (chan->type) {
-> > > -		case IIO_VOLTAGE:
-> > > -			iio_device_claim_direct_scoped(return -EBUSY,
-> > > indio_dev) {
-> > > -				ret =3D regmap_read(st->regmap16,
-> > > -					AD4695_REG_OFFSET_IN(chan- =20
-> > > >scan_index), =20
-> > > -					&reg_val);
-> > > -				if (ret)
-> > > -					return ret;
-> > > -
-> > > -				tmp =3D sign_extend32(reg_val, 15);
-> > > -
-> > > -				switch (cfg->oversampling_ratio) {
-> > > -				case 1:
-> > > -					*val =3D tmp / 4;
-> > > -					*val2 =3D abs(tmp) % 4 * MICRO / 4;
-> > > -					break;
-> > > -				case 4:
-> > > -					*val =3D tmp / 2;
-> > > -					*val2 =3D abs(tmp) % 2 * MICRO / 2;
-> > > -					break;
-> > > -				case 16:
-> > > -					*val =3D tmp;
-> > > -					*val2 =3D 0;
-> > > -					break;
-> > > -				case 64:
-> > > -					*val =3D tmp * 2;
-> > > -					*val2 =3D 0;
-> > > -					break;
-> > > -				default:
-> > > -					return -EINVAL;
-> > > -				}
-> > > -
-> > > -				if (tmp < 0 && *val2) {
-> > > -					*val *=3D -1;
-> > > -					*val2 *=3D -1;
-> > > -				}
-> > > -
-> > > -				return IIO_VAL_INT_PLUS_MICRO;
-> > > +		switch (chan->type)
-> > > +		case IIO_VOLTAGE: {
-> > > +			if (!iio_device_claim_direct(indio_dev))
-> > > +				return -EBUSY;
-> > > +			ret =3D regmap_read(st->regmap16,
-> > > +					=C2=A0 AD4695_REG_OFFSET_IN(chan- =20
-> > > >scan_index), =20
-> > > +					=C2=A0 &reg_val);
-> > > +			iio_device_release_direct(indio_dev);
-> > > +			if (ret)
-> > > +				return ret;
-> > > ////THIS IS THE BIT I WOuLD LIKE EYES on. =20
-> >=20
-> > Looks fine to me. =20
+> On Sun, Feb 16, 2025 at 3:23=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > On Fri, 14 Feb 2025 15:37:48 +0100
+> > Bartosz Golaszewski <brgl@bgdev.pl> wrote:
+> > =20
+> > > On Fri, Feb 14, 2025 at 3:35=E2=80=AFPM Andy Shevchenko
+> > > <andy.shevchenko@gmail.com> wrote: =20
+> > > >
+> > > > On Fri, Feb 14, 2025 at 12:21=E2=80=AFPM Bartosz Golaszewski <brgl@=
+bgdev.pl> wrote: =20
+> > > > > On Mon, 10 Feb 2025 16:33:26 -0600, David Lechner wrote: =20
+> > > > > > This series was inspired by some minor annoyance I have experie=
+nced a
+> > > > > > few times in recent reviews. =20
+> > > >
+> > > > ...
+> > > > =20
+> > > > > [07/15] iio: adc: ad7606: use gpiod_multi_set_value_cansleep
+> > > > >         commit: 8203bc81f025a3fb084357a3d8a6eb3053bc613a
+> > > > > [08/15] iio: amplifiers: hmc425a: use gpiod_multi_set_value_cansl=
+eep
+> > > > >         commit: e18d359b0a132eb6619836d1bf701f5b3b53299b
+> > > > > [09/15] iio: resolver: ad2s1210: use gpiod_multi_set_value_cansle=
+ep
+> > > > >         commit: 7920df29f0dd3aae3acd8a7115d5a25414eed68f
+> > > > > [10/15] iio: resolver: ad2s1210: use bitmap_write
+> > > > >         commit: a67e45055ea90048372066811da7c7fe2d91f9aa =20
+> > > >
+> > > > FWIW, Jonathan usually takes care of patch queue on weekends.
+> > > > But whatever, it's not my business after all :-)
+> > > > =20
+> > >
+> > > Too many conflicting suggestions. I just picked up all Acked patches.=
+ =C2=AF\_(=E3=83=84)_/=C2=AF =20
+> >
+> > Resolution of any issues 'should' be easy enough. Let's keep an eye on =
+how
+> > it goes as other series hit Linux next.  Might be a little work to be d=
+one there
+> > and by Linus in next merge window.
+> >
+> > Jonathan
+> > =20
 >=20
-> +1
-Thanks to you both for the quick replies.
+> I'm totally fine with removing the iio commits from my queue if you
+> prefer to take them.
+>=20
+Hi Bartosz,
 
-Added Nuno's tags (and the fixlet on the first path - doh!)
+That's probably going to prove slightly less painful, so please do.
+I'll merge in that immutable tag and pick them up once you've dropped them.
 
 Jonathan
 
->=20
-> - Nuno S=C3=A1
-> >  =20
-> > > +
-> > > +			tmp =3D sign_extend32(reg_val, 15);
-> > > +
-> > > +			switch (osr) {
-> > > +			case 1:
-> > > +				*val =3D tmp / 4;
-> > > +				*val2 =3D abs(tmp) % 4 * MICRO / 4;
-> > > +				break;
-> > > +			case 4:
-> > > +				*val =3D tmp / 2;
-> > > +				*val2 =3D abs(tmp) % 2 * MICRO / 2;
-> > > +				break;
-> > > +			case 16:
-> > > +				*val =3D tmp;
-> > > +				*val2 =3D 0;
-> > > +				break;
-> > > +			case 64:
-> > > +				*val =3D tmp * 2;
-> > > +				*val2 =3D 0;
-> > > +				break;
-> > > +			default:
-> > > +				return -EINVAL;
-> > > +			}
-> > > +
-> > > +			if (tmp < 0 && *val2) {
-> > > +				*val *=3D -1;
-> > > +				*val2 *=3D -1;
-> > > =C2=A0			}
-> > > -			unreachable();
-> > > +
-> > > +			return IIO_VAL_INT_PLUS_MICRO;
-> > > =C2=A0		default:
-> > > =C2=A0			return -EINVAL;
-> > > =C2=A0		} =20
->=20
+> Bartosz
 
 

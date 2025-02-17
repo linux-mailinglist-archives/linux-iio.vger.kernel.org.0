@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15686-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15687-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1CE7A38619
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:24:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8715BA3861C
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1A9A17594A
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:19:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C80F164CAC
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC7721B1BC;
-	Mon, 17 Feb 2025 14:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258AF22370C;
+	Mon, 17 Feb 2025 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyGgHvEN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqNqJgxm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5EF2253EA
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84EF2206AA
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801887; cv=none; b=W0gCRAn/CVG4YV2m2FHSoHTYxQq1WbjOnNyvvGLmoh8cEb1KwvbX0EPnhmPh/ODQxyQkNp0vbjZhp6z5CYIen5ZZnZdVZcFaKHV64ccG8UgODh6jWQYV53uDKLBkmJljnpYrZ49r1h4iPfg/ZWXwLp953mA6DVJIlweiCUGVaxc=
+	t=1739801892; cv=none; b=Nk8IArj6uy1PfwWAbVvp7fWQ+7MpJWfC8vEuBS8XrHt6k3iXvZhXvAu5h46dZXXpf2duQ9NnvD4lGHlL5svHNV75Db/jDWrrXHQC1ofN5hVPPHxSuQF6B8066GeGKtop6n6r8etEg0ferAvmwc2azrJRidOcKvAkN0oLJBkIUjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801887; c=relaxed/simple;
-	bh=C/HQQyOzuOQLBbRNHNdTKQbUq2bADVZRuKhUYAro1bI=;
+	s=arc-20240116; t=1739801892; c=relaxed/simple;
+	bh=V/UozWdSXxTY+UKLtlabaLKmFIIJyiKmzYb3lz6yCes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gIOUMV8/V90WPfAs/3k90fJyOW8PvQKFjmshWTup4/TvJdulkkvmOwG827rbOOOgp/LPziyTbpFgUD+yQvLDrA8iaEEwCxB3AOeg5mJ7bS2VreqtHqwi6cofaF0a9O6L+YPK7NflMqohKP7rAIM5clDsMG72L2jHYfwe1jAyJQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyGgHvEN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF85C4CEE4;
-	Mon, 17 Feb 2025 14:18:01 +0000 (UTC)
+	 MIME-Version; b=WYIPiy12E0BUuJvMdS07TlutSAcCs33VDkKfkw/BAIVjXcQ0rZKcORhP4oj+dqQnojDoPscHZaiCAr5t2UapPYXIb23Z2yrxM1pcvjE6pd2CxbUPJrSFYMspwu/DvBhQDgsxt3YEKC1kNjmO9R5U1PJL9uyhS4+AnCN0Y+/xlKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqNqJgxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E35BC4CED1;
+	Mon, 17 Feb 2025 14:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739801887;
-	bh=C/HQQyOzuOQLBbRNHNdTKQbUq2bADVZRuKhUYAro1bI=;
+	s=k20201202; t=1739801892;
+	bh=V/UozWdSXxTY+UKLtlabaLKmFIIJyiKmzYb3lz6yCes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyGgHvENVy8m0vYJGnUM7Z2gM2FgMVaftD6v0zJAi20yDnCiwxRpBw9vqloHcbpDP
-	 rw1cHAceit1wreafj6hW3JgdzbiEhv9R+OTbwTAdrMPSk3OIICWUwEO+7MTlIZd3OL
-	 DOeefXY/hL8bDxjB2ttZdl/EdiNdjZFZ73rO9Gse+ng6AXHliP1FHVsQs7tbB00rwo
-	 iAhK7O7b9e5eXNcWRTWGJQHYW+JVyBzbTq/e1cg5wVsi65CkpYy6eQZdJq2AtUYmIL
-	 Y0e/9hvO4AUwqwOiAvfoziA3GO3GkCTnRBwTgZLFkUjhLDizHXYbKRUXFlKKp8Wfuh
-	 qLsYS9BQULFOA==
+	b=gqNqJgxmL/5fbBp6NG2ZXOLDBQnTq5Mi2hJvh34vdmdWp23xPFLK7TWbMuYtvCMHy
+	 +aT8J5qXS1CGn3kN505ofKMvdzoFAqiHwyE43vLq+TthBVjR0DIH85kQTgbC4WrsD5
+	 8N1mO1M0e8yvmv2HZMHGKXYXwxbgwa93/6lPz7oILZahJ3jRnbbODXpyXfHRdPA3j0
+	 TO1MGpz8rdzflu8VQoBDCYG5qHjmTAIOIcM97uxofumkPFolqhye2e1nNcH9dCnQrg
+	 b1a7jEaEJYY+4J+pIPnB0rSVr1PY0l/oGIdnikgmWKsjih+1jPwPe93xYAx94DPNDi
+	 17ZfkzY1ychdg==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -56,9 +56,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Marek Vasut <marex@denx.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 14/29] iio: adc: ad7606: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 17 Feb 2025 14:16:14 +0000
-Message-ID: <20250217141630.897334-15-jic23@kernel.org>
+Subject: [PATCH 15/29] iio: adc: ad7791: Factor out core of ad7791_write_raw() to simplify error handling
+Date: Mon, 17 Feb 2025 14:16:15 +0000
+Message-ID: <20250217141630.897334-16-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217141630.897334-1-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
@@ -72,52 +72,73 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-These new functions allow sparse to find failures to release
-direct mode reducing chances of bugs over the claim_direct_mode()
-functions that are deprecated.
-
-This driver got partly converted during removal of the _scoped form.
-However some more cases got added in parallel.
+Factor out everything under the direct mode claim allowing direct returns
+in error paths.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7606.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ad7791.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 87908cc51e48..f566248db70a 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -862,11 +862,10 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 		val = (val * MICRO) + val2;
- 		i = find_closest(val, scale_avail_uv, cs->num_scales);
+diff --git a/drivers/iio/adc/ad7791.c b/drivers/iio/adc/ad7791.c
+index 76118fe22db8..e49d4843f304 100644
+--- a/drivers/iio/adc/ad7791.c
++++ b/drivers/iio/adc/ad7791.c
+@@ -310,15 +310,11 @@ static int ad7791_read_raw(struct iio_dev *indio_dev,
+ 	return -EINVAL;
+ }
  
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret < 0)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		cs->range = i;
-@@ -878,11 +877,10 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 		i = find_closest(val, st->oversampling_avail,
- 				 st->num_os_ratios);
+-static int ad7791_write_raw(struct iio_dev *indio_dev,
++static int __ad7791_write_raw(struct iio_dev *indio_dev,
+ 	struct iio_chan_spec const *chan, int val, int val2, long mask)
+ {
+ 	struct ad7791_state *st = iio_priv(indio_dev);
+-	int ret, i;
+-
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++	int i;
  
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret < 0)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 		ret = st->write_os(indio_dev, i);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		st->oversampling = st->oversampling_avail[i];
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+@@ -328,20 +324,30 @@ static int ad7791_write_raw(struct iio_dev *indio_dev,
+ 				break;
+ 		}
+ 
+-		if (i == ARRAY_SIZE(ad7791_sample_freq_avail)) {
+-			ret = -EINVAL;
+-			break;
+-		}
++		if (i == ARRAY_SIZE(ad7791_sample_freq_avail))
++			return -EINVAL;
+ 
+ 		st->filter &= ~AD7791_FILTER_RATE_MASK;
+ 		st->filter |= i;
+ 		ad_sd_write_reg(&st->sd, AD7791_REG_FILTER,
+ 				sizeof(st->filter),
+ 				st->filter);
+-		break;
++		return 0;
+ 	default:
+-		ret = -EINVAL;
++		return -EINVAL;
+ 	}
++}
++
++static int ad7791_write_raw(struct iio_dev *indio_dev,
++	struct iio_chan_spec const *chan, int val, int val2, long mask)
++{
++	int ret;
++
++	ret = iio_device_claim_direct_mode(indio_dev);
++	if (ret)
++		return ret;
++
++	ret = __ad7791_write_raw(indio_dev, chan, val, val2, mask);
+ 
+ 	iio_device_release_direct_mode(indio_dev);
+ 	return ret;
 -- 
 2.48.1
 

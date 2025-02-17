@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-15621-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15622-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1030A38078
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 11:44:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8FBA38081
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 11:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4FE5188BCC1
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 10:44:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40B8516A42E
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 10:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FD221771D;
-	Mon, 17 Feb 2025 10:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885BE21771B;
+	Mon, 17 Feb 2025 10:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PRQMkLID"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bmWwuNl+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5554217701
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 10:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D23A212FBA
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 10:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739789042; cv=none; b=F21IJT3A+M748ddlPCajWVD4Zu64CYITrBzitELag2ZxErR0Ib4ikC1OZbevDcu27eP815gUBvSa85YrEMmGrnnLarhRPD1CB6WLdapxGrlZY+IC8EmrvseWPllzi4/lQ8KCPIn0V5U+xXxQWJRq24prJzn1QsNL5cT75OwZG08=
+	t=1739789110; cv=none; b=ItqygaQnHHRvVA+pPa2dTy6GdeW0mbL+goWBsUUJyfLvgafjRMx1xm8HI2PEzXG7V2ENb/KKVRWb4NMsN0q/Trlj3ih0GtD5145S9UDeMh83Tbq+hWqW8s6S8QWcSlc+DRZpw6GVbTTNuYrDaek41rX1S24gMNtHcdDJZ1A1lmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739789042; c=relaxed/simple;
-	bh=DyQ1tzw7ZzaCXyyj08gQ3k3REkYdNxZ+gcQzG7DRn4E=;
+	s=arc-20240116; t=1739789110; c=relaxed/simple;
+	bh=FgiX/onHYFvn8FkqsORQCrHLg8JJz9QSYGbdJrwUznA=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F6jxI2UPGmoWlABUbvkmOe+0moZ8jbBola0OQDwPfAK7KUMVUbMJqwkHwSbgwUhwL/2xGeWnXTk9f4yjPfXwr/JotHmRXvtfw5N28ciEEV79JLtT0QcyG7rt9JUF3wTS+z5gAlVvkBZNh5TbA4NNkLjjmr6fGfGyCnal3EFV32s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PRQMkLID; arc=none smtp.client-ip=209.85.218.54
+	 Content-Type:MIME-Version; b=QrB+1W2xcHUMbDXPx+h/5Qk7hRfCBXDOBbIl3+BZJl4ZMFLyx0Dkeok/7t4fJ8SGkktaWH9Za3bG/Oo222UfxyxTHilqLfbKaLMVTCMW/cYU4FO5M4WF07ot0A2L4JDMWV/iJDnyyKy4l1PXaGuch0ukC9DusNVeOC9/pbN8/vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bmWwuNl+; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abb892fe379so185147666b.0
-        for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 02:44:00 -0800 (PST)
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-38f2b7ce2f3so2459543f8f.0
+        for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 02:45:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739789039; x=1740393839; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739789107; x=1740393907; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=jxpdAw6sK71WnwLcG+VG8EkKm9q81tY0WJ6JarSotik=;
-        b=PRQMkLIDQLr67EIhaVtEsoj7CqvdsrwmBS/1gJEwXdiuc/r2kbXlNRjHKmjwBzI5dk
-         GtnVadyIHv14OG72vIZFzdVAqQYGcW2wiraV1X+ZK1N63kp1rXglvZT/+HgjqCE2VNnd
-         X+iit4hs1tPLG9TPEoxKXxPdz0SSmPoRkVuwRVt/v1YO5BwseRt36ZQdvD5KiYWlsavu
-         WFDq7s4hP9fAxQwLwPQLxt4RSxz3yB4O5YohloSlVOy5FCTDID8O02RPCp/CJYOshdTO
-         HpUOK3gjPLIaHGKIf4wBEA5pmTy5OjLfX4uzSZZSZJQGw4rwh388AY0KtcRvr9eGRkcz
-         aL2A==
+        bh=byjwumVHgIZtS/iLAJSkpCf/r4C7NvnUyURUHVLhKtU=;
+        b=bmWwuNl+Nid2Z5oRUIWZ5Oahpmq94MAgerWoZGKCorMlwIXIICocRTqpIqHg4lmZH1
+         hyVU+MMFTi7F8wfpM3fJ+k1QvgiSvjLXJMGHSgh26T1HV1GEFQ039ZFbUiQ859l2wOIG
+         U6AVoJcTY1KdzKr870Y9blVF25Hs1dWTBYLKOplNfor/fInShKuRSBbH8yPxCAz0x26w
+         +KgnYjtxyPQOG/hA7j0kDSQ65NfShm+t71Wnb80T1A2VPwhfIvzUiHdpLvehQmm9ik8j
+         DDY72d8gUJJh92HInvv9ZEccx3z/aXxfasWmcoLPK9i6GDd03tqehaLZP0vrObA1ZGq3
+         BRlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739789039; x=1740393839;
+        d=1e100.net; s=20230601; t=1739789107; x=1740393907;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=jxpdAw6sK71WnwLcG+VG8EkKm9q81tY0WJ6JarSotik=;
-        b=aFN1kZia0jWACIdyPFS90K1+SHEBozwjqLCxOCvhXOtBqf/IddgbHLb6FARI0YcbvP
-         eTDQOV9K7zOfV2wNcWjgRa/vLmoQk7OOfjgltyO6vmARa/t2gTXStRuj/3/MHqBn7CWW
-         7MZ5/cUi9KQhfBiIDlqq9vNXyCm17EhCfZKCZIK1fOLQ0W7SR9kJ2LN1o5woteuen+6x
-         KzdGdkJADeID+gEMWU83Ybl1wKgOXCb/EYNjL3vp0BIadpdCp5lIdjetvpl0FlxlPnWx
-         NZG3Y4K60RxEd1ggPKhf0BxwMq1DjJkcQRJmupBuXK99lpx6WekSY6Pil0iGux0atmvP
-         BxKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgs9pu63Ls7RWkLaDTPrQG4I+3HPHSXBaJVoUHKqqPRH5o3+vBTSYmxqmL1vjagDM9HqlJ997qgnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCBdcJW+L8hMSYo+sQTiaK+moG4jqlcOIBR0EUvargXUIL5wv4
-	qFzTYU0/y/CLJpCsHN27ylStrW57xs0a5SnspHqE1wfQQaLCfb06
-X-Gm-Gg: ASbGncutqr3qWdwDZgtx4AAtOkEcXoaywKDO/hrmv8TN0SqyCAUDZc53BkedcpmQZkH
-	fwX+TzR3Z/ZlYBR+xlL2sj3Sae2RlGfBM5Fvsuzp/XgpOoHR88nObTSf6DtSPvNhuZVDfjj35E2
-	udST0GhWFJtnTCTmp3JAGZER/gMnotWZHcIhAgxZOtzvlvBHmkaNlDrFXhhbTBlrUmR3mzhxbdK
-	RdL/ljrJ6e6rsaT6ZatrwXqULA8zHLEk891cLfC4ROkl+P/UQp9G1vYN7F9LUmdag5i2OCdugBw
-	HBxG19NpuZEIusR+/4/RoEXcrlMFzcKEKzC6HK4T3wgZ3+W+gfn0Ppc/mWzTqHs=
-X-Google-Smtp-Source: AGHT+IFN1EWoYKV5IXmIUcd1S6TTIHVZBq+uoR/y/3qxEyuOkGKc1YzT0DE7ghF6cUuOAXrJ/kv+Cw==
-X-Received: by 2002:a05:6402:5201:b0:5dc:d8d2:e38f with SMTP id 4fb4d7f45d1cf-5e03618307amr22090921a12.31.1739789038698;
-        Mon, 17 Feb 2025 02:43:58 -0800 (PST)
+        bh=byjwumVHgIZtS/iLAJSkpCf/r4C7NvnUyURUHVLhKtU=;
+        b=vsGsOalX5NxQSDAthnOARAeFniailZiqPIBl7lpV/3lNRmRQhg1D0pZe252u31wS0x
+         uljh/bS3NVtFf2YR+lWIgy4QlL2isInY8NrKTAHfHxBBWMCU8rB/YreRhgW4o7I9VMni
+         kVurqlD5yOHxNE1WUxAORzyICr3H8FzBH61XRXJhzIng19stvV9dDJPS3m6esanDFLeE
+         o8Xw3em35/qX2HV+p/LeNQDD0bqxU8v1QhFnJeBSHU3/sOE3snqWvbZkW8p7nruu5WYh
+         2AAZT+nzg+Mh43eB05+AtlIKlEW+K/XFpRHqCrgQO+UCps8FnVyggk+wF3lfPdElCn6W
+         cC8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUhPOHk9EeVMlM6Y9yXNj+3RV3LQB4qf6LMxG8xIqPYQMfrzohs4qo5v/a+e+dt/UM9YbdkOyH/wxU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJ8mgH6VMoirMgVARb8ZPiZDHt6U645dfy3uqy7d3t9VU3SiB7
+	v1HOGwgj4hmAFvooPIySryOg47L7MWO59j36Vtg9RAxsKE90/YJS
+X-Gm-Gg: ASbGnctDjEClpYomZjzECNcc95Wvm5vpKF4p7R0Uo4WsJ+cVEVlgSP/j2qry8f3xaHJ
+	vFoAmUkdMgOOjczYWadnwrU/0bpTMqJliF8XlHT3RlA53e8L04SYJE6+0F9Vq1/RqgioUB0Xcm4
+	1iTJ8D/H2F4PgP6JI1jqpweoTmeqRCmbOmhV+/eHNDpcmimbXgedJnnMXahyYZr2V+tVza4XOX+
+	z1+QtjS+Ds5hJKw9VUC2sOGu44pDQnGGntWNVT25GWZu8twEXXlHuuF1GZ+ColK6Mo74+H2en3t
+	25WkYFjt4FA6+bp/oa3l7Bzj/kv0skN+VS/0hVTiwLqY3A7dxFPMr2jm6i8fHdg=
+X-Google-Smtp-Source: AGHT+IFLpJWyqhnDHKcdnq+EFx5Z1elCSPwswJaHPk+YT34RwvA/DeISvtohl1eSbULjFJMPwN6nBQ==
+X-Received: by 2002:adf:f3cb:0:b0:38f:2a7f:b6cd with SMTP id ffacd0b85a97d-38f33f3dba5mr5801864f8f.20.1739789106708;
+        Mon, 17 Feb 2025 02:45:06 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb1e1bef3esm547921466b.146.2025.02.17.02.43.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d5d8bsm11903180f8f.70.2025.02.17.02.45.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 02:43:58 -0800 (PST)
-Message-ID: <9b6484fa86a59bfd980b47970994c47a458109f6.camel@gmail.com>
-Subject: Re: [PATCH v2 08/27] iio: accel: adxl367: Stop using
+        Mon, 17 Feb 2025 02:45:06 -0800 (PST)
+Message-ID: <213e73b197e7d5430248d3f9bdc776c7a9ae313f.camel@gmail.com>
+Subject: Re: [PATCH v2 09/27] iio: adc: ad4000: Stop using
  iio_device_claim_direct_scoped()
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
@@ -90,10 +90,10 @@ Cc: Mudit Sharma <muditsharma.info@gmail.com>, Julien Stephan
  <gwendal@chromium.org>, Antoni Pokusinski <apokusinski01@gmail.com>, Tomasz
  Duszynski	 <tomasz.duszynski@octakon.com>, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>
-Date: Mon, 17 Feb 2025 10:44:01 +0000
-In-Reply-To: <20250209180624.701140-9-jic23@kernel.org>
+Date: Mon, 17 Feb 2025 10:45:08 +0000
+In-Reply-To: <20250209180624.701140-10-jic23@kernel.org>
 References: <20250209180624.701140-1-jic23@kernel.org>
-	 <20250209180624.701140-9-jic23@kernel.org>
+	 <20250209180624.701140-10-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 
@@ -112,330 +112,115 @@ On Sun, 2025-02-09 at 18:06 +0000, Jonathan Cameron wrote:
 > warnings and hard to read code.
 >=20
 > Move directly to the new claim/release_direct() that allow sparse
-> to check for unbalanced context
+> to check for unbalanced context.
 >=20
-> In some cases there is a convenient wrapper function to which
-> the handling can be moved. Do that instead of introducing
-> another layer of wrappers. In others an outer wrapper is added
-> which claims direct mode, runs the original function with the
-> scoped claim logic removed, releases direct mode and then checks
-> for errors.
->=20
-> Cc: Cosmin Tanislav <demonsingur@gmail.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Tested-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/accel/adxl367.c | 194 ++++++++++++++++++++-------------=
+> =C2=A0drivers/iio/adc/ad4000.c | 60 +++++++++++++++++++++++++------------=
 ---
-> =C2=A01 file changed, 106 insertions(+), 88 deletions(-)
+> =C2=A01 file changed, 37 insertions(+), 23 deletions(-)
 >=20
-> diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-> index a48ac0d7bd96..add4053e7a02 100644
-> --- a/drivers/iio/accel/adxl367.c
-> +++ b/drivers/iio/accel/adxl367.c
-> @@ -477,45 +477,42 @@ static int adxl367_set_fifo_watermark(struct
-> adxl367_state *st,
-> =C2=A0static int adxl367_set_range(struct iio_dev *indio_dev,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 enum adxl367_range range)
+> diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
+> index 1d556a842a68..4fe8dee48da9 100644
+> --- a/drivers/iio/adc/ad4000.c
+> +++ b/drivers/iio/adc/ad4000.c
+> @@ -535,12 +535,16 @@ static int ad4000_read_raw(struct iio_dev *indio_de=
+v,
+> =C2=A0			=C2=A0=C2=A0 int *val2, long info)
 > =C2=A0{
-> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> -		struct adxl367_state *st =3D iio_priv(indio_dev);
-> -		int ret;
-> +	struct adxl367_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> =C2=A0
-> -		guard(mutex)(&st->lock);
-> +	guard(mutex)(&st->lock);
-> =C2=A0
-> -		ret =3D adxl367_set_measure_en(st, false);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_measure_en(st, false);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
-> -					 ADXL367_FILTER_CTL_RANGE_MASK,
-> -				=09
-> FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
-> -						=C2=A0=C2=A0=C2=A0 range));
-> -		if (ret)
-> -			return ret;
-> +	ret =3D regmap_update_bits(st->regmap, ADXL367_REG_FILTER_CTL,
-> +				 ADXL367_FILTER_CTL_RANGE_MASK,
-> +				 FIELD_PREP(ADXL367_FILTER_CTL_RANGE_MASK,
-> +					=C2=A0=C2=A0=C2=A0 range));
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		adxl367_scale_act_thresholds(st, st->range, range);
-> +	adxl367_scale_act_thresholds(st, st->range, range);
-> =C2=A0
-> -		/* Activity thresholds depend on range */
-> -		ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
-> -						 st->act_threshold);
-> -		if (ret)
-> -			return ret;
-> +	/* Activity thresholds depend on range */
-> +	ret =3D _adxl367_set_act_threshold(st, ADXL367_ACTIVITY,
-> +					 st->act_threshold);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
-> -						 st->inact_threshold);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D _adxl367_set_act_threshold(st, ADXL367_INACTIVITY,
-> +					 st->inact_threshold);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D adxl367_set_measure_en(st, true);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_measure_en(st, true);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		st->range =3D range;
-> +	st->range =3D range;
-> =C2=A0
-> -		return 0;
-> -	}
-> -	unreachable();
-> +	return 0;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int adxl367_time_ms_to_samples(struct adxl367_state *st, uns=
-igned int
-> ms)
-> @@ -620,23 +617,20 @@ static int _adxl367_set_odr(struct adxl367_state *s=
-t,
-> enum adxl367_odr odr)
-> =C2=A0
-> =C2=A0static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_=
-odr odr)
-> =C2=A0{
-> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> -		struct adxl367_state *st =3D iio_priv(indio_dev);
-> -		int ret;
-> +	struct adxl367_state *st =3D iio_priv(indio_dev);
-> +	int ret;
-> =C2=A0
-> -		guard(mutex)(&st->lock);
-> +	guard(mutex)(&st->lock);
-> =C2=A0
-> -		ret =3D adxl367_set_measure_en(st, false);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_measure_en(st, false);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D _adxl367_set_odr(st, odr);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D _adxl367_set_odr(st, odr);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		return adxl367_set_measure_en(st, true);
-> -	}
-> -	unreachable();
-> +	return adxl367_set_measure_en(st, true);
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int adxl367_set_temp_adc_en(struct adxl367_state *st, unsign=
-ed int
-> reg,
-> @@ -725,32 +719,29 @@ static int adxl367_read_sample(struct iio_dev
-> *indio_dev,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const =
-*chan,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int *val)
-> =C2=A0{
-> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> -		struct adxl367_state *st =3D iio_priv(indio_dev);
-> -		u16 sample;
-> -		int ret;
-> +	struct adxl367_state *st =3D iio_priv(indio_dev);
-> +	u16 sample;
-> +	int ret;
-> =C2=A0
-> -		guard(mutex)(&st->lock);
-> +	guard(mutex)(&st->lock);
-> =C2=A0
-> -		ret =3D adxl367_set_temp_adc_reg_en(st, chan->address, true);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_temp_adc_reg_en(st, chan->address, true);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D regmap_bulk_read(st->regmap, chan->address, &st-
-> >sample_buf,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(st->sample_buf));
-> -		if (ret)
-> -			return ret;
-> +	ret =3D regmap_bulk_read(st->regmap, chan->address, &st->sample_buf,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sizeof(st->sample_buf));
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		sample =3D FIELD_GET(ADXL367_DATA_MASK, be16_to_cpu(st-
-> >sample_buf));
-> -		*val =3D sign_extend32(sample, chan->scan_type.realbits - 1);
-> +	sample =3D FIELD_GET(ADXL367_DATA_MASK, be16_to_cpu(st->sample_buf));
-> +	*val =3D sign_extend32(sample, chan->scan_type.realbits - 1);
-> =C2=A0
-> -		ret =3D adxl367_set_temp_adc_reg_en(st, chan->address, false);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_temp_adc_reg_en(st, chan->address, false);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		return IIO_VAL_INT;
-> -	}
-> -	unreachable();
-> +	return IIO_VAL_INT;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static int adxl367_get_status(struct adxl367_state *st, u8 *status,
-> @@ -852,10 +843,15 @@ static int adxl367_read_raw(struct iio_dev *indio_d=
-ev,
-> =C2=A0			=C2=A0=C2=A0=C2=A0 int *val, int *val2, long info)
-> =C2=A0{
-> =C2=A0	struct adxl367_state *st =3D iio_priv(indio_dev);
+> =C2=A0	struct ad4000_state *st =3D iio_priv(indio_dev);
 > +	int ret;
 > =C2=A0
 > =C2=A0	switch (info) {
 > =C2=A0	case IIO_CHAN_INFO_RAW:
-> -		return adxl367_read_sample(indio_dev, chan, val);
+> -		iio_device_claim_direct_scoped(return -EBUSY, indio_dev)
+> -			return ad4000_single_conversion(indio_dev, chan,
+> val);
+> -		unreachable();
 > +		if (!iio_device_claim_direct(indio_dev))
 > +			return -EBUSY;
-> +		ret =3D adxl367_read_sample(indio_dev, chan, val);
+> +
+> +		ret =3D ad4000_single_conversion(indio_dev, chan, val);
 > +		iio_device_release_direct(indio_dev);
 > +		return ret;
 > =C2=A0	case IIO_CHAN_INFO_SCALE:
-> =C2=A0		switch (chan->type) {
-> =C2=A0		case IIO_ACCEL: {
-> @@ -912,7 +908,12 @@ static int adxl367_write_raw(struct iio_dev *indio_d=
-ev,
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0
-> -		return adxl367_set_odr(indio_dev, odr);
-> +		if (!iio_device_claim_direct(indio_dev))
-> +			return -EBUSY;
-> +
-> +		ret =3D adxl367_set_odr(indio_dev, odr);
-> +		iio_device_release_direct(indio_dev);
-> +		return ret;
-> =C2=A0	}
-> =C2=A0	case IIO_CHAN_INFO_SCALE: {
-> =C2=A0		enum adxl367_range range;
-> @@ -921,7 +922,12 @@ static int adxl367_write_raw(struct iio_dev *indio_d=
-ev,
-> =C2=A0		if (ret)
-> =C2=A0			return ret;
-> =C2=A0
-> -		return adxl367_set_range(indio_dev, range);
-> +		if (!iio_device_claim_direct(indio_dev))
-> +			return -EBUSY;
-> +
-> +		ret =3D adxl367_set_range(indio_dev, range);
-> +		iio_device_release_direct(indio_dev);
-> +		return ret;
-> =C2=A0	}
-> =C2=A0	default:
-> =C2=A0		return -EINVAL;
-> @@ -1069,13 +1075,15 @@ static int adxl367_read_event_config(struct iio_d=
-ev
+> =C2=A0		*val =3D st->scale_tbl[st->span_comp][0];
+> =C2=A0		*val2 =3D st->scale_tbl[st->span_comp][1];
+> @@ -585,36 +589,46 @@ static int ad4000_write_raw_get_fmt(struct iio_dev
 > *indio_dev,
 > =C2=A0	}
 > =C2=A0}
 > =C2=A0
-> -static int adxl367_write_event_config(struct iio_dev *indio_dev,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_type type,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool state)
-> +static int __adxl367_write_event_config(struct iio_dev *indio_dev,
-> +					const struct iio_chan_spec *chan,
-> +					enum iio_event_type type,
-> +					enum iio_event_direction dir,
-> +					bool state)
+> -static int ad4000_write_raw(struct iio_dev *indio_dev,
+> -			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan, int val, int
+> val2,
+> -			=C2=A0=C2=A0=C2=A0 long mask)
+> +static int __ad4000_write_raw(struct iio_dev *indio_dev,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val2)
 > =C2=A0{
-> +	struct adxl367_state *st =3D iio_priv(indio_dev);
-> =C2=A0	enum adxl367_activity_type act;
-> +	int ret;
+> =C2=A0	struct ad4000_state *st =3D iio_priv(indio_dev);
+> =C2=A0	unsigned int reg_val;
+> =C2=A0	bool span_comp_en;
+> =C2=A0	int ret;
 > =C2=A0
-> =C2=A0	switch (dir) {
-> =C2=A0	case IIO_EV_DIR_RISING:
-> @@ -1088,28 +1096,38 @@ static int adxl367_write_event_config(struct iio_=
-dev
-> *indio_dev,
-> =C2=A0		return -EINVAL;
-> =C2=A0	}
-> =C2=A0
-> -	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> -		struct adxl367_state *st =3D iio_priv(indio_dev);
-> -		int ret;
+> -	switch (mask) {
+> -	case IIO_CHAN_INFO_SCALE:
+> -		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> -			guard(mutex)(&st->lock);
 > +	guard(mutex)(&st->lock);
 > +
-> +	ret =3D adxl367_set_measure_en(st, false);
-> +	if (ret)
+> +	ret =3D ad4000_read_reg(st, &reg_val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	span_comp_en =3D val2 =3D=3D st->scale_tbl[1][1];
+> +	reg_val &=3D ~AD4000_CFG_SPAN_COMP;
+> +	reg_val |=3D FIELD_PREP(AD4000_CFG_SPAN_COMP, span_comp_en);
+> =C2=A0
+> -			ret =3D ad4000_read_reg(st, &reg_val);
+> -			if (ret < 0)
+> -				return ret;
+> +	ret =3D ad4000_write_reg(st, reg_val);
+> +	if (ret < 0)
 > +		return ret;
 > =C2=A0
-> -		guard(mutex)(&st->lock);
-> +	ret =3D adxl367_set_act_interrupt_en(st, act, state);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D adxl367_set_measure_en(st, false);
-> -		if (ret)
-> -			return ret;
-> +	ret =3D adxl367_set_act_en(st, act, state ? ADCL367_ACT_REF_ENABLED
-> +				 : ADXL367_ACT_DISABLED);
-> +	if (ret)
-> +		return ret;
-> =C2=A0
-> -		ret =3D adxl367_set_act_interrupt_en(st, act, state);
-> -		if (ret)
-> -			return ret;
-> +	return adxl367_set_measure_en(st, true);
+> -			span_comp_en =3D val2 =3D=3D st->scale_tbl[1][1];
+> -			reg_val &=3D ~AD4000_CFG_SPAN_COMP;
+> -			reg_val |=3D FIELD_PREP(AD4000_CFG_SPAN_COMP,
+> span_comp_en);
+> +	st->span_comp =3D span_comp_en;
+> +	return 0;
 > +}
 > =C2=A0
-> -		ret =3D adxl367_set_act_en(st, act, state ?
-> ADCL367_ACT_REF_ENABLED
-> -					 : ADXL367_ACT_DISABLED);
-> -		if (ret)
-> -			return ret;
-> +static int adxl367_write_event_config(struct iio_dev *indio_dev,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_type type,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum iio_event_direction dir,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool state)
+> -			ret =3D ad4000_write_reg(st, reg_val);
+> -			if (ret < 0)
+> -				return ret;
+> +static int ad4000_write_raw(struct iio_dev *indio_dev,
+> +			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> +			=C2=A0=C2=A0=C2=A0 int val, int val2, long mask)
 > +{
 > +	int ret;
 > =C2=A0
-> -		return adxl367_set_measure_en(st, true);
-> -	}
-> -	unreachable();
-> +	if (!iio_device_claim_direct(indio_dev))
-> +		return -EBUSY;
-> +
-> +	ret =3D __adxl367_write_event_config(indio_dev, chan, type, dir,
-> state);
-> +	iio_device_release_direct(indio_dev);
-> +	return ret;
-> =C2=A0}
-> =C2=A0
-> =C2=A0static ssize_t adxl367_get_fifo_enabled(struct device *dev,
+> -			st->span_comp =3D span_comp_en;
+> -			return 0;
+> -		}
+> -		unreachable();
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_SCALE:
+> +		if (!iio_device_claim_direct(indio_dev))
+> +			return -EBUSY;
+> +		ret =3D __ad4000_write_raw(indio_dev, chan, val2);
+> +		iio_device_release_direct(indio_dev);
+> +		return ret;
+> =C2=A0	default:
+> =C2=A0		return -EINVAL;
+> =C2=A0	}
 
 

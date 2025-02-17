@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15682-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15683-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02171A38633
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:26:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0784A38612
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 082683B6768
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:19:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 092FF163136
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764A7224B0D;
-	Mon, 17 Feb 2025 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AA224B1F;
+	Mon, 17 Feb 2025 14:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IC7S8lJ/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgFFrTy2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3609F224B08
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003E6224B17
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801864; cv=none; b=MEqx1eq3THM8cJHULoJGtg5QhJojqgVWxGS23BgHIig+OF/U+00gM0qo7KNHrM2hUMoESPEfvtZxJ81Us/mhvRJpViscKJqnWl5h8vQUm/QcKFMO0TkvcZ0bUaUj1BF4Af5oSUUfxCD3WB+Ed2uX3UQCJiDaQ5e/vKAzqBlJWJs=
+	t=1739801871; cv=none; b=RiHjX7BRyoxdm60DdPmcNn1s4kUZi07pCNdemPNJuAHInGWIxypH4Ry28JgroMifd3tUo36WaFE6cjbn8P1Bs+Ptyms6jMNN/T+jHRj4oTbNlIPWy3q3mednxX7CFUoPDNb3WN3po71G1I7b0SNdza/crUEepn3NwZYiacNguqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801864; c=relaxed/simple;
-	bh=xKNHcZuBJ1ZmkupmaDblXHFlvC1oQtH9NRZ8n7AsC6g=;
+	s=arc-20240116; t=1739801871; c=relaxed/simple;
+	bh=lBCHWJxoUYFtYnqWzjIChKY2nsdvZpKkFsRNp5YxjnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lm/se+ktQjSx1BJdtG0kz2sMcNTuP4o6AhKfVRJHWfrCehByxXJWgH4eyk9LWp9ba9MyifvOO3eSC/EveWfeTcOs9DugbUZji4YJ1Kn/AJQSUzK0DunQt4xjZix3rC6tJwhA6zHIHcCHNTuQ/OqCK+4p5iLWRkD1Hj/UN3pKrvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IC7S8lJ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3C1C4CED1;
-	Mon, 17 Feb 2025 14:17:38 +0000 (UTC)
+	 MIME-Version; b=attwMKqVqndj9jfjqDchIKkDKXGbizoN1UNYv2+U+tF0bvqeMba7CyyTDQ8/0DhODUhNfesvvc12UuoJrRt77o7F/ijhZTSZom+7RxgN046d903+pBIbRgFGbtkqjr1uF17aIHkmk2agwh9J4ag4dmlfUl0dryDgoN2dVqj/PkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgFFrTy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E683DC4CEE4;
+	Mon, 17 Feb 2025 14:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739801864;
-	bh=xKNHcZuBJ1ZmkupmaDblXHFlvC1oQtH9NRZ8n7AsC6g=;
+	s=k20201202; t=1739801870;
+	bh=lBCHWJxoUYFtYnqWzjIChKY2nsdvZpKkFsRNp5YxjnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IC7S8lJ/lTHLgppe0QZ3MDn4xvWu7mm+5gRABQhnfFcFZo0hNVJPYnqkAU3f+j24W
-	 5/27p5jmnV28YORjTFB93b5ShI4P2WAB+NZMCKJcSHbwOQMfo0GFz7fvHofrhvDCiN
-	 kcLsMnmk5tubKH5OCv2DkM0QIBiKnytMKAFbgZ+gNq0c9ywdnfSya1pQqJK3Y8Gsa/
-	 QCGXpLQUQ5+yHDtBFzBaJ5YHIlPJ2h4pKaGF0q1S63LaNqCMuIMSyre+LqK4zwkso7
-	 x67jQmZlnJK+nmtBoLgIWMzOI789I0ri+tnES95HYqjauzPthDFN2zDdyl0JEYEAFj
-	 5Kk8xNxrCsE1Q==
+	b=LgFFrTy2ENz3t4PxDfHxGruN5gMr6YrwXyLElmU3AX8lglVEbnX9ioiMlyu58YttZ
+	 TScnWjJecB51Fl4zAkU0KCthDn7dmrlJsXOU7al1bZ3mU6eebIAoXW776vWtT06mp4
+	 ux9ME26fupzlNFGqtatnFLu5mmwI4k5TRjd/rWKfVeH3uoAvxZpkdDNRVetq05lR37
+	 2reM7X/q5n5WXO6R19VVW8dJB5tbj9p+Up/ZVjHdDfVaekXnjBXE7MCV/i3p8Yi/Tw
+	 +xj+5MgFh8iA82QnUv+lFEOn6fY/ZZ6h1UKQq/dCJOox5fTMhOpXcbwkPXSeQ8dm0c
+	 WvNXbBdlXSjAA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -56,9 +56,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Marek Vasut <marex@denx.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 10/29] iio: adc: ad7192: Factor out core of ad7192_write_raw() to simplify error handling.
-Date: Mon, 17 Feb 2025 14:16:10 +0000
-Message-ID: <20250217141630.897334-11-jic23@kernel.org>
+Subject: [PATCH 11/29] iio: adc: ad7192: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 17 Feb 2025 14:16:11 +0000
+Message-ID: <20250217141630.897334-12-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217141630.897334-1-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
@@ -72,169 +72,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Factor out everything under the lock, use guard() for the mutex to
-avoid need to manually unlock, and switch sense of matching checks
-in loops to reduce indent.
-
-There are some functional changes in here as well as the code
-no longer updates the filter_freq_available if no change has
-been made to the oversampling ratio.
+These new functions allow sparse to find failures to release
+direct mode reducing chances of bugs over the claim_direct_mode()
+functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: Alisa-Dariana Roman <alisa.roman@analog.com>
 ---
- drivers/iio/adc/ad7192.c | 111 ++++++++++++++++++++-------------------
- 1 file changed, 57 insertions(+), 54 deletions(-)
+ drivers/iio/adc/ad7192.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index e96a5ae92375..785429900da8 100644
+index 785429900da8..f6150b905286 100644
 --- a/drivers/iio/adc/ad7192.c
 +++ b/drivers/iio/adc/ad7192.c
-@@ -7,6 +7,7 @@
- 
- #include <linux/interrupt.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/clk-provider.h>
- #include <linux/device.h>
-@@ -945,80 +946,82 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
- 
--static int ad7192_write_raw(struct iio_dev *indio_dev,
--			    struct iio_chan_spec const *chan,
--			    int val,
--			    int val2,
--			    long mask)
-+static int __ad7192_write_raw(struct iio_dev *indio_dev,
-+			      struct iio_chan_spec const *chan,
-+			      int val,
-+			      int val2,
-+			      long mask)
- {
- 	struct ad7192_state *st = iio_priv(indio_dev);
--	int ret, i, div;
-+	int i, div;
- 	unsigned int tmp;
+@@ -694,9 +694,8 @@ static ssize_t ad7192_set(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
  
 -	ret = iio_device_claim_direct_mode(indio_dev);
 -	if (ret)
 -		return ret;
--
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		ret = -EINVAL;
--		for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++)
--			if (val2 == st->scale_avail[i][1]) {
--				ret = 0;
--				tmp = st->conf;
--				st->conf &= ~AD7192_CONF_GAIN_MASK;
--				st->conf |= FIELD_PREP(AD7192_CONF_GAIN_MASK, i);
--				if (tmp == st->conf)
--					break;
--				ad_sd_write_reg(&st->sd, AD7192_REG_CONF,
--						3, st->conf);
--				ad7192_calibrate_all(st);
--				break;
--			}
--		break;
--	case IIO_CHAN_INFO_SAMP_FREQ:
--		if (!val) {
--			ret = -EINVAL;
--			break;
-+		for (i = 0; i < ARRAY_SIZE(st->scale_avail); i++) {
-+			if (val2 != st->scale_avail[i][1])
-+				continue;
-+
-+			tmp = st->conf;
-+			st->conf &= ~AD7192_CONF_GAIN_MASK;
-+			st->conf |= FIELD_PREP(AD7192_CONF_GAIN_MASK, i);
-+			if (tmp == st->conf)
-+				return 0;
-+			ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
-+			ad7192_calibrate_all(st);
-+			return 0;
- 		}
-+		return -EINVAL;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		if (!val)
-+			return -EINVAL;
- 
- 		div = st->fclk / (val * ad7192_get_f_order(st) * 1024);
--		if (div < 1 || div > 1023) {
--			ret = -EINVAL;
--			break;
--		}
-+		if (div < 1 || div > 1023)
-+			return -EINVAL;
- 
- 		st->mode &= ~AD7192_MODE_RATE_MASK;
- 		st->mode |= FIELD_PREP(AD7192_MODE_RATE_MASK, div);
- 		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
- 		ad7192_update_filter_freq_avail(st);
--		break;
-+		return 0;
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
--		ret = ad7192_set_3db_filter_freq(st, val, val2 / 1000);
--		break;
-+		return ad7192_set_3db_filter_freq(st, val, val2 / 1000);
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
--		ret = -EINVAL;
--		for (i = 0; i < ARRAY_SIZE(st->oversampling_ratio_avail); i++)
--			if (val == st->oversampling_ratio_avail[i]) {
--				ret = 0;
--				tmp = st->mode;
--				st->mode &= ~AD7192_MODE_AVG_MASK;
--				st->mode |= FIELD_PREP(AD7192_MODE_AVG_MASK, i);
--				if (tmp == st->mode)
--					break;
--				ad_sd_write_reg(&st->sd, AD7192_REG_MODE,
--						3, st->mode);
--				break;
--			}
--		ad7192_update_filter_freq_avail(st);
--		break;
-+		for (i = 0; i < ARRAY_SIZE(st->oversampling_ratio_avail); i++) {
-+			if (val != st->oversampling_ratio_avail[i])
-+				continue;
-+
-+			tmp = st->mode;
-+			st->mode &= ~AD7192_MODE_AVG_MASK;
-+			st->mode |= FIELD_PREP(AD7192_MODE_AVG_MASK, i);
-+			if (tmp == st->mode)
-+				return 0;
-+			ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+			ad7192_update_filter_freq_avail(st);
-+			return 0;
-+		}
-+		return -EINVAL;
- 	default:
--		ret = -EINVAL;
-+		return -EINVAL;
+ 	switch ((u32)this_attr->address) {
+ 	case AD7192_REG_GPOCON:
+@@ -719,7 +718,7 @@ static ssize_t ad7192_set(struct device *dev,
+ 		ret = -EINVAL;
  	}
-+}
-+
-+static int ad7192_write_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int val,
-+			    int val2,
-+			    long mask)
-+{
-+	int ret;
-+
-+	ret = iio_device_claim_direct_mode(indio_dev);
-+	if (ret)
-+		return ret;
  
--	mutex_unlock(&st->lock);
-+	ret = __ad7192_write_raw(indio_dev, chan, val, val2, mask);
+-	iio_device_release_direct_mode(indio_dev);
++	iio_device_release_direct(indio_dev);
  
- 	iio_device_release_direct_mode(indio_dev);
+ 	return ret ? ret : len;
+ }
+@@ -1017,13 +1016,12 @@ static int ad7192_write_raw(struct iio_dev *indio_dev,
+ {
+ 	int ret;
  
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
++	if (!iio_device_claim_direct(indio_dev))
++		return -EBUSY;
+ 
+ 	ret = __ad7192_write_raw(indio_dev, chan, val, val2, mask);
+ 
+-	iio_device_release_direct_mode(indio_dev);
++	iio_device_release_direct(indio_dev);
+ 
+ 	return ret;
+ }
 -- 
 2.48.1
 

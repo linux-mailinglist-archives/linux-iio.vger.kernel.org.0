@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15692-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15693-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B65BA38628
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:24:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32B8AA38629
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A87D176862
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:20:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292731768E6
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:20:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2394224888;
-	Mon, 17 Feb 2025 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3965D224890;
+	Mon, 17 Feb 2025 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u5ZWdySt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2vKJwec"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F702236EE
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF1822371E
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801916; cv=none; b=EobezNOqREMrC+E9Z0mZsUdkwD1L+Bjvd5UqW+cLoMNMmQqoUSSuWn1ZgJSW6ehsM0JCEgvMk7s1wk3TVK6lDAmF5wbBWtDuweGnawPTKXdAVfqV6i9oeJJdNZAlXkLHwy5xQBaV8l/W3+CTacIetgWfMDihVxIOuyNL8HCviDA=
+	t=1739801922; cv=none; b=aIpKUwEWstjENN3FMRhpSPuw1mbTR5WX5MN0MIL6zPLPM4gIVS62SMp5mkTnO8e1RyE0sSUOWbhDN0+X79DmyFVbGCx0etWoBl2uQQytmCiFg6mPIKmpJYELTwtvX1/dXzyYOW93n3rOrYMGEAd8ls43QS+eBfDnDSygNE0jObQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801916; c=relaxed/simple;
-	bh=PXkGrB7pjweVW+JqhE+z9Vkn8g6SlqX94PRziIFvEjM=;
+	s=arc-20240116; t=1739801922; c=relaxed/simple;
+	bh=KOYPDKRYsrEDbpMkEzjB16ST2Jtl17WqIPkizlIUV58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWs2S3+UWmqbPbe4/nG884yAZ5rFaTCfGbMGAG07TgbJh288lcrpd+l4aCDylM6DyqjdPhUVIyU+YWNmNfLU/Apk2nIo7lnZwHZ6n/174YUBRLGWllZYxOzekPaV7euLQii6hFXnukF4zBdHpeknl3MUXOiitPCHKvlc8oqplCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u5ZWdySt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6A7C4CED1;
-	Mon, 17 Feb 2025 14:18:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gCTioXJw2v90R47gkaxvMRJ6GtXSprNuU5ezJ4rqY7qz6xVgILyWkilr6inBdjgFSVbbZVm4vt/UhuyT880dTNRhrE7VtZ+PWEciUsb+tLG0Hjx2mcc2kSM5lW7xNKQf9G9SogOIyOQNMkrKTYhBTk2i395oOhXU+zGc9eYLUHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2vKJwec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2674C4CED1;
+	Mon, 17 Feb 2025 14:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739801916;
-	bh=PXkGrB7pjweVW+JqhE+z9Vkn8g6SlqX94PRziIFvEjM=;
+	s=k20201202; t=1739801921;
+	bh=KOYPDKRYsrEDbpMkEzjB16ST2Jtl17WqIPkizlIUV58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5ZWdyStmhKOtEN9bckyqtomzj7l7AEDDHF3jbVb4FQC1VXXlL3I6y6idJ/M5mK9r
-	 BcqLAZqqCiamYD4rbV96Q3ir+54fV/QPrkdttohYf7iHDLvwnfkdM+dLnRbXpldyDA
-	 wxpMB2YSLH1ftwYY2hZzaGmc3S2Ou3iBeNgPFzIJPUyMDrPJ/rsykZpT2NYIJZ1PId
-	 IApK/s6xAF4f5lTFWL3H89iRe5J1RLTdzVjSd8PIxKIPgNfV0pzeVOSQit6IhwZgN1
-	 g1qNzX5feI286+MNz1NIgBLfEUs2zA3+wt7N15tL/6QIioqK6uXw6NKJSU4Ns4ZAwF
-	 T1HUU5H7ASunQ==
+	b=u2vKJwec4HmfOXr/4tt5eGonVa7KhsgQTfnAq9g9AqnS8r6DqEEgDGiETmbXBwslk
+	 m4k05eXeU5l9D4X5bOyQJW4/jThUSeTXJMA7Akx6pABNL2W78NAGWH1Of3AnxNYDij
+	 L7HsoemCYhl3Ptywq4o61yE3luCMrXJTFARUJyNeVScC4QTdDvVsPYLE8i0YOAhwRP
+	 i8MouNKWPTUcSmOBtaYhavZvt2iS6iK+aNeKLXzcnlUTyt5Pg8UBszPsskgdngsbzN
+	 8gUrX/7kUcgQH44345gRfLF/N1JMSCbdrO1If4kOBLHZUiORTFQZnYqopNmtTxzhgE
+	 RacTuA9oUL2+w==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -56,9 +56,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Marek Vasut <marex@denx.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 19/29] iio: adc: ad799x: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 17 Feb 2025 14:16:19 +0000
-Message-ID: <20250217141630.897334-20-jic23@kernel.org>
+Subject: [PATCH 20/29] iio: adc: ad_sigma_delta: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 17 Feb 2025 14:16:20 +0000
+Message-ID: <20250217141630.897334-21-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217141630.897334-1-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
@@ -68,6 +68,7 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -76,41 +77,23 @@ These new functions allow sparse to find failures to release
 direct mode reducing chances of bugs over the claim_direct_mode()
 functions that are deprecated.
 
+This is a complex function with a lot more than the release of direct
+mode to unwind on error. As such no attempt made to factor out
+the inner code.
+
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
+Cc: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
-Kept this one out of the 'simple' category as it is worth considering
-factoring out the code when the claim on direct mode is held. I think
-it isn't quite complex enough to make that useful but if others disagree
-I can do so.
----
- drivers/iio/adc/ad799x.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/ad799x.c b/drivers/iio/adc/ad799x.c
-index aa44b4e2542b..993f4651b73a 100644
---- a/drivers/iio/adc/ad799x.c
-+++ b/drivers/iio/adc/ad799x.c
-@@ -291,13 +291,12 @@ static int ad799x_read_raw(struct iio_dev *indio_dev,
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 		mutex_lock(&st->lock);
- 		ret = ad799x_scan_direct(st, chan->scan_index);
- 		mutex_unlock(&st->lock);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 
- 		if (ret < 0)
- 			return ret;
-@@ -411,9 +410,8 @@ static int ad799x_write_event_config(struct iio_dev *indio_dev,
- 	struct ad799x_state *st = iio_priv(indio_dev);
- 	int ret;
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 10e635fc4fa4..5907c35b98e5 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -386,9 +386,8 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
+ 	unsigned int data_reg;
+ 	int ret = 0;
  
 -	ret = iio_device_claim_direct_mode(indio_dev);
 -	if (ret)
@@ -118,17 +101,17 @@ index aa44b4e2542b..993f4651b73a 100644
 +	if (!iio_device_claim_direct(indio_dev))
 +		return -EBUSY;
  
- 	mutex_lock(&st->lock);
+ 	ad_sigma_delta_set_channel(sigma_delta, chan->address);
  
-@@ -429,7 +427,7 @@ static int ad799x_write_event_config(struct iio_dev *indio_dev,
- 
- 	ret = ad799x_write_config(st, st->config);
- 	mutex_unlock(&st->lock);
+@@ -431,7 +430,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
+ 	sigma_delta->keep_cs_asserted = false;
+ 	sigma_delta->bus_locked = false;
+ 	spi_bus_unlock(sigma_delta->spi->controller);
 -	iio_device_release_direct_mode(indio_dev);
 +	iio_device_release_direct(indio_dev);
- 	return ret;
- }
  
+ 	if (ret)
+ 		return ret;
 -- 
 2.48.1
 

@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0ACBA385E8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:18:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722D2A38608
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC0C41893262
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE867171FBB
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14386221DA4;
-	Mon, 17 Feb 2025 14:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD25B223700;
+	Mon, 17 Feb 2025 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fapjf+89"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kcEb3f26"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7022212FA2
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF6C2236EE
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801847; cv=none; b=pmQ0apMAU1YsevKhpg4jLpcMoogVlbpqv+algUMdw5fn71LXe/q2h3CjByxuXl3T9jJqO15MvlsHamnPdE4/msDGw604qASKuL6+mfVM6bFpRXblmi2MTmuOH4KHilupBWlMGkLrA6bpml9T3sMME4QK38IJ0GaeIasGEPA0LFA=
+	t=1739801853; cv=none; b=q4zF2f4hCFNWWy73WTUDh1A9PX3G/AQeWHgM29H4LIZUTuW9Vbs21xM2ewz8a9BT5p7vi0BdPdx1Banf5Mhpux/ma1vsMWElsW9iz/VXWRsa8TfkxWwW2Lfg9E3ztUBzMbCdhDNsVLKmc4oPS4lXSA5dGhRKgbeDft2HdMXNNO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801847; c=relaxed/simple;
-	bh=csnHw+U3DnGvCZ2RSAdo8qUvmmZTpoEggvKkm5Do0JQ=;
+	s=arc-20240116; t=1739801853; c=relaxed/simple;
+	bh=P/ekOOL/Hm7vsID+46Wh8NlqGhZlNRtf4X/EyKh2ZR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTWaMUBmmbQxVh0LyPlzlRXhOaWwGncy24RrPpP0/4J4B9agOR2NTBipDwLS88o7YQM4wysJ+Ya4NllW6sxf4SFlbKKieFSrOayyu6PBobV39iVi7k/NtuE4n0StjKCvwLQvw1gFzINtn5U/ehW32XcoFT78eDZjXeTFEjbB3gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fapjf+89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC4EC4CEE4;
-	Mon, 17 Feb 2025 14:17:21 +0000 (UTC)
+	 MIME-Version; b=J6o0FFsAYVU5SIWt6IzZNYUOIH/JD9g3q6YpDz8rpv41wVEOZNjcrtTTZUIm4vaeqd5dH9+OwerN35CtzcjGmuSC0QyoElQEFwSHa2bhGmzdvL4DMRjxkZarEvgej8f9bGZx0L6hPQLw394mXheP8Y1FHfN42E6EsbbN01cGriE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kcEb3f26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8C8C4CEEB;
+	Mon, 17 Feb 2025 14:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739801847;
-	bh=csnHw+U3DnGvCZ2RSAdo8qUvmmZTpoEggvKkm5Do0JQ=;
+	s=k20201202; t=1739801853;
+	bh=P/ekOOL/Hm7vsID+46Wh8NlqGhZlNRtf4X/EyKh2ZR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fapjf+89meeGOydvAuyx4F+73VphUbV7qJ9ZC+cBxdTLM+55+sv714ngA1bat48yn
-	 Eto4wtzijQSuWjVOVVkl9gWyjCTvpDnzQIrIQAkBd6VhxOlmUywGt3Hx3XjtKbOe8B
-	 Tp7NWg2lhdNiKU7QCTtqPpJdErgGiJxYOyjL5nIYEv4DAIqBlHu3oBWOWULBbEMy+j
-	 uyXa3pXzkx9PLBOb6Z+p+oxvZJaJCT859MH2N7BgfrbdI4QLeev2gUX8fmlFeAYBvJ
-	 ZFeZLEgFfrAm8hXhUdEVe4l9KXSiyTSicuB1udEQflYX4ZTzQxbKXCeAXsZrLUSVTr
-	 nFxzJXwGnRJVQ==
+	b=kcEb3f26B6F+BOwYpq15o7uGyifcZy6eLWSabLSnAWDxXX4q6MtLFP8lGbpdieLVA
+	 KeOg0QP3NcVGDOUf30l+RZ3cSlxIHWykneh8eBWun8XpoI6gqMNE4Gl2ELYec1aKuY
+	 YHSDMJeyupD59kUQSWO0Wtt7U87JTmS2XJldiHaRQCoiWBseO1F3BLDdNKnbY7xPTQ
+	 Otc4x3qehk34nw939JUFTyVUwEt0mPI/dn+n+X6b8VLSnErNMBrJOsxvnnTJ42F+2+
+	 tOSj3+Zb94mVogSFXwQTq6gGs2O4+lzXunJl6hxMLD4v9PcMZyBT1vbOhDmP+X0oR5
+	 ZhatE5mYy107A==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -56,9 +56,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Marek Vasut <marex@denx.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 07/29] iio: adc: stm32-dfsdm: Factor out core of reading INFO_RAW
-Date: Mon, 17 Feb 2025 14:16:07 +0000
-Message-ID: <20250217141630.897334-8-jic23@kernel.org>
+Subject: [PATCH 08/29] iio: adc: stm32-dfsdm: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 17 Feb 2025 14:16:08 +0000
+Message-ID: <20250217141630.897334-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217141630.897334-1-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
@@ -72,93 +72,72 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This allows the claim on direct mode to be release in one place
-rather than a lot of error paths, simplifying code.
+These new functions allow sparse to find failures to release
+direct mode reducing chances of bugs over the claim_direct_mode()
+functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Olivier Moysan <olivier.moysan@foss.st.com>
 ---
- drivers/iio/adc/stm32-dfsdm-adc.c | 59 +++++++++++++++++++------------
- 1 file changed, 36 insertions(+), 23 deletions(-)
+ drivers/iio/adc/stm32-dfsdm-adc.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
-index fe11b0d8eab3..1cf2594d6872 100644
+index 1cf2594d6872..726ddafc9f6d 100644
 --- a/drivers/iio/adc/stm32-dfsdm-adc.c
 +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
-@@ -1306,6 +1306,38 @@ static int stm32_dfsdm_write_raw(struct iio_dev *indio_dev,
- 	return -EINVAL;
- }
+@@ -1275,9 +1275,8 @@ static int stm32_dfsdm_write_raw(struct iio_dev *indio_dev,
  
-+static int __stm32_dfsdm_read_info_raw(struct iio_dev *indio_dev,
-+				       struct iio_chan_spec const *chan,
-+				       int *val)
-+{
-+	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
-+	int ret = 0;
-+
-+	if (adc->hwc)
-+		ret = iio_hw_consumer_enable(adc->hwc);
-+	if (adc->backend)
-+		ret = iio_backend_enable(adc->backend[chan->scan_index]);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev,
-+			"%s: IIO enable failed (channel %d)\n",
-+			__func__, chan->channel);
-+		return ret;
-+	}
-+	ret = stm32_dfsdm_single_conv(indio_dev, chan, val);
-+	if (adc->hwc)
-+		iio_hw_consumer_disable(adc->hwc);
-+	if (adc->backend)
-+		iio_backend_disable(adc->backend[chan->scan_index]);
-+	if (ret < 0) {
-+		dev_err(&indio_dev->dev,
-+			"%s: Conversion failed (channel %d)\n",
-+			__func__, chan->channel);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
- 				struct iio_chan_spec const *chan, int *val,
- 				int *val2, long mask)
-@@ -1326,30 +1358,11 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
- 		ret = iio_device_claim_direct_mode(indio_dev);
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 
+ 		ret = stm32_dfsdm_compute_all_osrs(indio_dev, val);
+ 		if (!ret) {
+@@ -1287,19 +1286,18 @@ static int stm32_dfsdm_write_raw(struct iio_dev *indio_dev,
+ 			adc->oversamp = val;
+ 			adc->sample_freq = spi_freq / val;
+ 		}
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		return ret;
+ 
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		if (!val)
+ 			return -EINVAL;
+ 
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 
+ 		ret = dfsdm_adc_set_samp_freq(indio_dev, val, spi_freq);
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		return ret;
+ 	}
+ 
+@@ -1355,12 +1353,11 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 
+ 		ret = __stm32_dfsdm_read_info_raw(indio_dev, chan, val);
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
  		if (ret)
  			return ret;
--		if (adc->hwc)
--			ret = iio_hw_consumer_enable(adc->hwc);
--		if (adc->backend)
--			ret = iio_backend_enable(adc->backend[idx]);
--		if (ret < 0) {
--			dev_err(&indio_dev->dev,
--				"%s: IIO enable failed (channel %d)\n",
--				__func__, chan->channel);
--			iio_device_release_direct_mode(indio_dev);
--			return ret;
--		}
--		ret = stm32_dfsdm_single_conv(indio_dev, chan, val);
--		if (adc->hwc)
--			iio_hw_consumer_disable(adc->hwc);
--		if (adc->backend)
--			iio_backend_disable(adc->backend[idx]);
--		if (ret < 0) {
--			dev_err(&indio_dev->dev,
--				"%s: Conversion failed (channel %d)\n",
--				__func__, chan->channel);
--			iio_device_release_direct_mode(indio_dev);
--			return ret;
--		}
-+
-+		ret = __stm32_dfsdm_read_info_raw(indio_dev, chan, val);
- 		iio_device_release_direct_mode(indio_dev);
-+		if (ret)
-+			return ret;
  		return IIO_VAL_INT;
- 
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
 -- 
 2.48.1
 

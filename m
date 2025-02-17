@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-15699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB21A385FD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:21:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7682BA3864C
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:28:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BA327A1DC3
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:20:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CABF3BB362
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE4B22257C;
-	Mon, 17 Feb 2025 14:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4BE21D5AA;
+	Mon, 17 Feb 2025 14:19:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7kabR52"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pXWFLCBO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD212222AE
-	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE55A22257F
+	for <linux-iio@vger.kernel.org>; Mon, 17 Feb 2025 14:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739801957; cv=none; b=lBbZt542cq/WXd4euqTJSLPiz4L4ie7sGp+uuB56iE5R8JK6GNP4shBO1Kw5kUnP2f4u8irYQU0FCUO33/9CPu41vRQAVlkOgAMCI8YKZzQwoPEeeH/vDuQ9ilS9rkEoo5ZdMEZ8HLtqVCaCUs3cO2d/262DdCPvcW4g7MpHz5Y=
+	t=1739801963; cv=none; b=XPWkuSNJB1916D8wWGhrK1LOITVJcR+ybPGP1D/Hbca3/BOqPeTXX3Ft6WpFD5jPIXskpnGAE5FFoxrz2+zUa/4p7hpR3Dk337G6ldlkXR/kJuq7VdTYBtOm/sgTSym/IdwfsFm0q/guadqPq7FLgS7XTgCXEQRE7mX1Vm2OFtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739801957; c=relaxed/simple;
-	bh=gn/KStolaftcyqTZpMGSdcKL5sXvfMwH3wicMc1s1DM=;
+	s=arc-20240116; t=1739801963; c=relaxed/simple;
+	bh=pvDTAzgh9oK6PbkuH8h0QyqpizHrElThmPx1HmLFAUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSPBpKn6fa9W2CJO6oksrDk2wwXaNHRXPomzO3hF+9JiHBIUUPJ5gvLB5Hxm2iuwux+tDzTc8nSeHtOr/x8mFRbIz8fFqxHRGO/3GwENsPBW3MperVT1SwDh2yuL+d410wZ8aQ4W0VV2fOG3kBkpLnXoNB1epxGUAS9zTTBfbu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7kabR52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FA6C4CED1;
-	Mon, 17 Feb 2025 14:19:11 +0000 (UTC)
+	 MIME-Version; b=OW3umraokFx4aDCK/REYMMe3uK/G4Kdixv1Xb8mEmU5wVHarXsabyOd/ZfVSSX2naGDz8LOFY2jiSYJiBipkySBEz8xj96FgK9CXoW6ywVmFSFAmoZcPJk2ULqmCHyIsdKd/bDH/ckjUm9WyAn8mk+0X5LKhsfqGioU0xy0YDLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pXWFLCBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 048B1C4CED1;
+	Mon, 17 Feb 2025 14:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739801957;
-	bh=gn/KStolaftcyqTZpMGSdcKL5sXvfMwH3wicMc1s1DM=;
+	s=k20201202; t=1739801963;
+	bh=pvDTAzgh9oK6PbkuH8h0QyqpizHrElThmPx1HmLFAUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7kabR527IBMi0EctvJ1yENpWjrQu5hpnAZAmu32Ktd3aES6pDVyyIM86+E1m6Rao
-	 +Xi7xxtHp3bJVZOpwTlRsYTe5688IiVEtufBCpz0wrgw3PgkTG3aL9DYf39/DgKhid
-	 Pr2oWwatd4arXS77AwSMyJQ2ceiw2y11RrxS1JsSFWhMhtc7Jj7Kt8bm373PmiNi2+
-	 Yd1P8+UQCBK2YyKsiUGdWSDVDSejFcj6l2PLwe2zCHVjtHczdnnyfb/X3mYn2RtT5/
-	 Uvl144sBDsLZsn944YNMgo+6Ztsb1Kaa171V3eXjfRPBi/+6Rz9a/uBU87UsfLm9Ze
-	 4YltcXOuJWazw==
+	b=pXWFLCBOTlRifp3qEPGyW8rcTbfK16EUnAZ4HHsybCMGrMlY10n7/SOTwA25/dr4k
+	 a30S7aHvNn2hS3+8icEGtl4U1gmmNAvoGkO64yUEWU/yTEzDaL+rxi4nL7+iIaJC1t
+	 G5FsuqEMtkGz+fFJddcOs9wTEoWomlOLtHVhrYMM6tR4GW7/odRcDfgXmoRzTtl1LD
+	 AiAO6R2BUB6LRaFmZCrLq5mP8NSPIyjGD6rv6cSwb4BYPS2uGc122a4v3f6eXL+CJ9
+	 Y4M5tK6G1lcLEmwX4vvfQuL8SvY6p3+Y4G0k+ufHXfReZTb/DpfJ7NlSaHJ6T+wp7E
+	 y/s+9ADs9Z6ZA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -56,9 +56,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Marek Vasut <marex@denx.de>,
 	Frank Li <Frank.Li@nxp.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 26/29] iio: adc: max11410: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Mon, 17 Feb 2025 14:16:26 +0000
-Message-ID: <20250217141630.897334-27-jic23@kernel.org>
+Subject: [PATCH 27/29] iio: adc: mxs-lradc: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Mon, 17 Feb 2025 14:16:27 +0000
+Message-ID: <20250217141630.897334-28-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250217141630.897334-1-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
@@ -78,67 +78,55 @@ functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/max11410.c | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ drivers/iio/adc/mxs-lradc-adc.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
-index 6e06c62715a8..437d9f24b5a1 100644
---- a/drivers/iio/adc/max11410.c
-+++ b/drivers/iio/adc/max11410.c
-@@ -471,9 +471,8 @@ static int max11410_read_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
+index 152cbe265e1a..8f1e6acea53b 100644
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -141,9 +141,8 @@ static int mxs_lradc_adc_read_single(struct iio_dev *iio_dev, int chan,
+ 	 * the same time, yet the code becomes horribly complicated. Therefore I
+ 	 * applied KISS principle here.
+ 	 */
+-	ret = iio_device_claim_direct_mode(iio_dev);
+-	if (ret)
+-		return ret;
++	if (!iio_device_claim_direct(iio_dev))
++		return -EBUSY;
  
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_RAW:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
+ 	reinit_completion(&adc->completion);
  
- 		mutex_lock(&state->lock);
+@@ -192,7 +191,7 @@ static int mxs_lradc_adc_read_single(struct iio_dev *iio_dev, int chan,
+ 	writel(LRADC_CTRL1_LRADC_IRQ_EN(0),
+ 	       adc->base + LRADC_CTRL1 + STMP_OFFSET_REG_CLR);
  
-@@ -481,7 +480,7 @@ static int max11410_read_raw(struct iio_dev *indio_dev,
+-	iio_device_release_direct_mode(iio_dev);
++	iio_device_release_direct(iio_dev);
  
- 		mutex_unlock(&state->lock);
+ 	return ret;
+ }
+@@ -275,9 +274,8 @@ static int mxs_lradc_adc_write_raw(struct iio_dev *iio_dev,
+ 			adc->scale_avail[chan->channel];
+ 	int ret;
  
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
+-	ret = iio_device_claim_direct_mode(iio_dev);
+-	if (ret)
+-		return ret;
++	if (!iio_device_claim_direct(iio_dev))
++		return -EBUSY;
  
- 		if (ret)
- 			return ret;
-@@ -550,9 +549,8 @@ static int max11410_write_raw(struct iio_dev *indio_dev,
- 		if (val != 0 || val2 == 0)
- 			return -EINVAL;
+ 	switch (m) {
+ 	case IIO_CHAN_INFO_SCALE:
+@@ -300,7 +298,7 @@ static int mxs_lradc_adc_write_raw(struct iio_dev *iio_dev,
+ 		break;
+ 	}
  
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
+-	iio_device_release_direct_mode(iio_dev);
++	iio_device_release_direct(iio_dev);
  
- 		/* Convert from INT_PLUS_MICRO to FRACTIONAL_LOG2 */
- 		val2 = val2 * DIV_ROUND_CLOSEST(BIT(24), 1000000);
-@@ -561,16 +559,15 @@ static int max11410_write_raw(struct iio_dev *indio_dev,
- 
- 		st->channels[chan->address].gain = clamp_val(gain, 0, 7);
- 
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 
- 		return 0;
- 	case IIO_CHAN_INFO_SAMP_FREQ:
--		ret = iio_device_claim_direct_mode(indio_dev);
--		if (ret)
--			return ret;
-+		if (!iio_device_claim_direct(indio_dev))
-+			return -EBUSY;
- 
- 		ret = __max11410_write_samp_freq(st, val, val2);
--		iio_device_release_direct_mode(indio_dev);
-+		iio_device_release_direct(indio_dev);
- 
- 		return ret;
- 	default:
+ 	return ret;
+ }
 -- 
 2.48.1
 

@@ -1,72 +1,71 @@
-Return-Path: <linux-iio+bounces-15703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15705-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D75A38605
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:22:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E97A38659
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 15:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A92877A19B0
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:21:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9F817433A
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Feb 2025 14:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F9B221D87;
-	Mon, 17 Feb 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620FA22069A;
+	Mon, 17 Feb 2025 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNMisclN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yv7irP97"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AEB21D58E;
-	Mon, 17 Feb 2025 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CEA21D5B0;
+	Mon, 17 Feb 2025 14:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739802037; cv=none; b=ghsJ84JJbvEjn1pLraskZUSay2mICNNiCKpMoxG6QGKQmfxNSBCqsz4p3XJMdz6KGmJsYXSnJeiJH4TAJCOiuZYoYxlKCUOwEp66Gq+zUWFsgOV6gZn6HeLMV4fRdCl3nknSeeMSekCO1FkF2p2YzL0rdb2ZXMJqVMF40umH+QQ=
+	t=1739802286; cv=none; b=Am1QlfkAr7CNEWAdt61mohFyDpSBm7Prgq7TQE3Mn5P2w9yLDkLQirmGsZ8NEZEVnbi9uAUdyUqZ0IXh0K5dP+S6wWiqVqspQa1vDrRlI5LFYqe+oChm7S0jKRkgGPxC/p+HSY3eELJKVKOG0YxCGMt/pRVnRw6oxZVU9tkI1dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739802037; c=relaxed/simple;
-	bh=WoX4rkGG8IX4/MIvEe5QvsSw6rLdg3EL18aXO3EDuMU=;
+	s=arc-20240116; t=1739802286; c=relaxed/simple;
+	bh=yd9PnR+BwLNDAH7iL0n5kuyPV1fByt9Z80i3v6lRtAc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qZ3eUv5hWzJmHKKKMuxTxfvBfCUACdOQ/pdFazMuqDdub/1mIedZ+/SV1/0KV8V1ZZozEsTlCHdyaFPqQlj3rxeGX7xUle0OJxLRfY5RWlEg7efpQtuuI2k2s6nai05iiNmpuHNBdAeReJVXi2LDCtopGY17PYZOoM0o2F/pzas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNMisclN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B73C4CED1;
-	Mon, 17 Feb 2025 14:20:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WqIrJXAHKSkEfYTN1vVj9g/BFiM4NSMkf83IXSC0oOZueJj+DQQi3xhmfxsvs7Kx8DlgGn5N2JtspTtCZ6+awK2/VRETkNhtrXFtXyK0O0bKVbYuC0yMH/FM0K/+46BhbzlWrvmzTtsAkd5y2F0m79SDv75azYSJDSP+1kkKtbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yv7irP97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A1C4CED1;
+	Mon, 17 Feb 2025 14:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739802036;
-	bh=WoX4rkGG8IX4/MIvEe5QvsSw6rLdg3EL18aXO3EDuMU=;
+	s=k20201202; t=1739802285;
+	bh=yd9PnR+BwLNDAH7iL0n5kuyPV1fByt9Z80i3v6lRtAc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SNMisclN05MapFH/wKCmpUrZeGa+QVxql7qMOrY0rIxLL5MMys4qWhoV8ypiOpsbi
-	 px1sxpeIRv8w+8fMbwvJh7HxHdMoxBVrWlpAEnnuLZCtZ5yHT12xmPlmqWAuryVV45
-	 RUBNyy7pz8AHu9IpL8O50oIFhbwaaZMuMz61GRPI+z+i8O7maWjReDJmqqJWpA3lhM
-	 G6hiidczzudm0qnpPLr5OYuVtp8rpcmGIdF7QoEYQpLNPrAVDiCkdxWJEtvHxTHXnE
-	 X2bZM7D/qdyHIoWm+8H9wd04aXRdKlqPPTRN7CtZUWs6acrGOL80Z8Yedk+QBAn3dz
-	 wdueL70DUbZ7g==
-Date: Mon, 17 Feb 2025 14:20:24 +0000
+	b=Yv7irP97jNj+AxDLGonPN8w1WPI1/tREGBuqeJ0N22uf45XRCZNLs9sxhkvMZO4ce
+	 aKG2cLJ2CPOx4w7GBgoc8acUlSk1ojWPfOLQqfczJLVEnK0wM41qBQyC3y5PF4tszr
+	 nv0pzXe4hkmRyixoRu/E7tiRLIr6VCcJFTLV/gqMUUy3a8UnfWiPUoVXmEhB0wLX2g
+	 y5Pf9l4p2dHsUAKn072S7F4zfZRm/U37sR22zDxV9GfJOJjZpQFfGo+Jtg6KtcU38F
+	 oeIxX0tvYdmmwIyWJ3NoNBtvy/ld3wZJia0q1Q6PPo01rvidRVMrTzezBZ11AOHsrP
+	 QMtTjdfhiH/Cg==
+Date: Mon, 17 Feb 2025 14:24:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: David Heidelberg <david@ixit.cz>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Thierry Reding
- <thierry.reding@gmail.com>, Jonathan Hunter <jonathanh@nvidia.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
+ Hunter <jonathanh@nvidia.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
  <mazziesaccount@gmail.com>, Andy Shevchenko
  <andriy.shevchenko@linux.intel.com>, Emil Gedenryd
  <emil.gedenryd@axis.com>, Arthur Becker <arthur.becker@sentec.com>, Mudit
  Sharma <muditsharma.info@gmail.com>, Per-Daniel Olsson
  <perdaniel.olsson@axis.com>, Subhajit Ghosh
  <subhajit.ghosh@tweaklogic.com>, Ivan Orlov <ivan.orlov0322@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org
+ David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-tegra@vger.kernel.org
 Subject: Re: [PATCH v2 2/3] iio: light: Add support for AL3000a illuminance
  sensor
-Message-ID: <20250217142024.1a7bea7e@jic23-huawei>
-In-Reply-To: <CAPVz0n2s1mxuheAadhFMHnmm6DtdMYzLHaBQDB_TEF--tWktrw@mail.gmail.com>
+Message-ID: <20250217142433.12183a17@jic23-huawei>
+In-Reply-To: <CAPVz0n1529ydFRHn9N3jEsS8Rhdf-c4xECkMd9TDczzBTNuJzA@mail.gmail.com>
 References: <20250215103159.106343-1-clamor95@gmail.com>
 	<20250215103159.106343-3-clamor95@gmail.com>
-	<1597453a-31fc-49eb-8b69-efeb8805c67a@ixit.cz>
-	<CAPVz0n1T_jXXDhm6gF7gDDqZ=b6abR1Tqk=5kLo=Ws4FF2EVJw@mail.gmail.com>
-	<20250216144436.70ff78c3@jic23-huawei>
-	<CAPVz0n2s1mxuheAadhFMHnmm6DtdMYzLHaBQDB_TEF--tWktrw@mail.gmail.com>
+	<20250216145445.1278b6ae@jic23-huawei>
+	<CAPVz0n1529ydFRHn9N3jEsS8Rhdf-c4xECkMd9TDczzBTNuJzA@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,86 +73,45 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, 16 Feb 2025 16:47:52 +0200
-Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> =D0=BD=D0=B4, 16 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:44 Jo=
-nathan Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
+Hi,
+
+> > > +static int al3000a_read_raw(struct iio_dev *indio_dev,
+> > > +                         struct iio_chan_spec const *chan, int *val,
+> > > +                         int *val2, long mask)
+> > > +{
+> > > +     struct al3000a_data *data =3D iio_priv(indio_dev);
+> > > +     int ret, gain;
+> > > +
+> > > +     switch (mask) {
+> > > +     case IIO_CHAN_INFO_RAW:
+> > > +             ret =3D regmap_read(data->regmap, AL3000A_REG_DATA, &ga=
+in);
+> > > +             if (ret < 0)
+> > > +                     return ret;
+> > > +
+> > > +             *val =3D lux_table[gain & AL3000A_GAIN_MASK]; =20
 > >
-> > =20
-> > > > > +
-> > > > > +static int al3000a_read_raw(struct iio_dev *indio_dev,
-> > > > > +                         struct iio_chan_spec const *chan, int *=
-val,
-> > > > > +                         int *val2, long mask)
-> > > > > +{
-> > > > > +     struct al3000a_data *data =3D iio_priv(indio_dev);
-> > > > > +     int ret, gain;
-> > > > > +
-> > > > > +     switch (mask) {
-> > > > > +     case IIO_CHAN_INFO_RAW:
-> > > > > +             ret =3D regmap_read(data->regmap, AL3000A_REG_DATA,=
- &gain);
-> > > > > +             if (ret < 0)
-> > > > > +                     return ret;
-> > > > > +
-> > > > > +             *val =3D lux_table[gain & AL3000A_GAIN_MASK]; =20
-> > > >
-> > > > Why did you chosen to do post-processing in the RAW channel instead
-> > > > doing it in INFO_SCALE (same as al3010 does)?
-> > > > =20
-> > >
-> > > From my observation INFO_SCALE will just perform multiplication of RAW
-> > > to SCALE. In this case values which are read are not actual raw values
-> > > of illumination. Next is my assumption (since there is no datasheet),
-> > > but values obtained from register are similar to values from adc
-> > > thermal sensors, they need be converted via reference table to get
-> > > actual data. =20
-> >
-> > Please add a comment somewhere here to say that we don't know the
-> > relationship of these values to illuminance hence providing
-> > _RAW and _SCALE would not be helpful.
+> > I may have misinterpreted the other thread.  IS this value in lux?
+> > If it is make this channel IIO_CHAN_INFO_PROCESSED instead.
 > > =20
 >=20
-> We do know relationship of these values to illuminance thanks to
-> conversion table provided.
+> This is actually a really good hint, I will check if this works out
+> and if yes, then definitely will use it. Thank you.
 
-Then convention is treat them not as IIO_LIGHT but as IIO_INTENSITY
-which is unit free.  IIO_LIGHT is only for when we know the value
-we are providing to userspace is illuminance and measured in Lux.
+=46rom your other reply it seems we have no idea of the correct scaling.
+If that is the case, then channel type should be IIO_INTENSITY as
+I assume we also have no idea if the light sensitivity curve is
+matched to that required for illuminance (which approximates the
+sensitivity of the human eye).  Various datasheets provide completely
+garbage conversion formulas btw so even if we have data this can
+be problematic. One recent sensor was using a green filter and
+saying illuminance in lux was 1.2 * green which was assuming their
+own definition of white light.
 
 Jonathan
-
-
->=20
-> > > =20
-> > > > Except this, LGTM.
-> > > >
-> > > > Documentation and DT patch:
-> > > >
-> > > > Reviewed-by: David Heidelberg <david@ixit.cz> =20
-> > > > > +
-> > > > > +             return IIO_VAL_INT;
-> > > > > +     case IIO_CHAN_INFO_SCALE:
-> > > > > +             *val =3D 1;
-> > > > > + =20
-> >
-> > Don't do this.  The above lack of known relationship has to be
-> > expressed by not providing the _scale attribute.
-> > =20
-> > > > > +             return IIO_VAL_INT;
-> > > > > +     default:
-> > > > > +             return -EINVAL;
-> > > > > +     }
-> > > > > +}
-> > > > > +
-> > > > > +static const struct iio_info al3000a_info =3D {
-> > > > > +     .read_raw       =3D al3000a_read_raw,
-> > > > > +}; =20
-> >
-> > =20
 
 

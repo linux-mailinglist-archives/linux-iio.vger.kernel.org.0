@@ -1,153 +1,108 @@
-Return-Path: <linux-iio+bounces-15739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B35A3A3D8
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 18:15:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D570A3A453
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 18:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2174E17651C
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 17:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938DE3A1762
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 17:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48FB26FDAC;
-	Tue, 18 Feb 2025 17:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6BA26FDA0;
+	Tue, 18 Feb 2025 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ksu2lZaa"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Q6I0Gcd2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB026FD99;
-	Tue, 18 Feb 2025 17:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B578270EA7
+	for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 17:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739898828; cv=none; b=RCD27ORRQMflzUzqJ0DMWzKGTnc+Os/h2SmZOuVYDLNG546qxsGdXKYKCd8M55DMQzE8pVgM9LqZnxtJVMuPistkagZZO9gbAq5LRT8ANd+eXO270kNvZZXe1AjARifYVClqzx/2cx7hjiJ/GB0FGvbdaxPL6QyZtznbHgC/0NQ=
+	t=1739899754; cv=none; b=MGURtRPF3jCySj2ud4yVbmr50J730sZBjRi/cKtWBGE9Q6qd17AMH5skgR0ED14Dc6Xije3bAYc9Sc20l5YGL4blYUX54SEJr/63LPxA/bLeX4V2sumZcTFoT3AARQXB2L59Hvfdd52e29d00mN/fyQZ0zu8gJVuMtyGbfvYRl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739898828; c=relaxed/simple;
-	bh=zMBG5U0y5k0fAXa5nBTK3Y5aZzrRhzGrNTjaVJUvAHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fIQpcuhl+HvtmNDCF0kPXpRCvfUKJVN/WcpBRPWGLhi03YjdLeH8La36dyTTxUTyeCZGrpPvPfOY95i6k5ph6sAXT8/Tu6vZlY+eZFkgiFteymEWkco5x0s8YvpaHtRe4m+Ss35pHDnY744PPySPG4quywSqjkopw8jhjigECUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ksu2lZaa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C1CC4CEE2;
-	Tue, 18 Feb 2025 17:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739898827;
-	bh=zMBG5U0y5k0fAXa5nBTK3Y5aZzrRhzGrNTjaVJUvAHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ksu2lZaakOto5UkVGseoZ948bXS4+zoqZKlxwoJ7T9LCElMhPfUmxGFfGyZBRANAM
-	 ZI75jXLhiZUABGl0X/E72U03C0eaLuWll1e4h2MwPw/e1Kn2oasNTDtUM5lDNmx4QI
-	 VgsBSfcaeybkLRY5cZj7D7icpWmEZzIHvnkh2296g9EIEg6dXhTmXVSr04DGgwzS5X
-	 QA1p63m0KPbKxBy+RAoJaLwHsb+nzYksUMSsJ3kJx1lLIxVu1IXAzy8VCl/CPQ3UCW
-	 4bvRXOZVlyqzYxUv1edgrvKhY5aWCA3TwVo0Xb9RTMdG7yG1ndRS9EiW+lK8f6phqn
-	 XIa2Qd8sRG3wg==
-Date: Tue, 18 Feb 2025 17:13:41 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Emil Gedenryd <emil.gedenryd@axis.com>,
-	Arthur Becker <arthur.becker@sentec.com>,
-	Mudit Sharma <muditsharma.info@gmail.com>,
-	Per-Daniel Olsson <perdaniel.olsson@axis.com>,
-	Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
-	Ivan Orlov <ivan.orlov0322@gmail.com>,
-	David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] dt-bindings: iio: light: al3010: add al3000a
- support
-Message-ID: <20250218-browse-animator-50e846a616b0@spud>
-References: <20250212064657.5683-1-clamor95@gmail.com>
- <20250212064657.5683-2-clamor95@gmail.com>
- <20250212-unwritten-compile-7011777a11b3@spud>
- <CAPVz0n0xR_nGPdWn800H=HhMCPqnRUhqP-s1P4eMhtpZdxpxzg@mail.gmail.com>
- <20250213-reflex-earlobe-ebbeaece6fad@spud>
- <CAPVz0n1aw1+kKhvGwOUi_58HqRqo0fHxDNRQZt_2O4yJ=ws56w@mail.gmail.com>
+	s=arc-20240116; t=1739899754; c=relaxed/simple;
+	bh=/rN1Sil7ECtewuTQqNEGatfMsR9L2e68Srmfan0MIGM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AAOibRMJtqKR8GeeXlb3//19Ee35xe0rJmU5q4dwstMnc2zODGEujz4VjUVYVDCsHlLs/+yFOmpyy1Elo/LzpxqJ8xLXmh1x9sBpxx/U6uYXyS5fU0vcCiBlCrf45bajDIUXyKv1WAjhT+3Gp2DcDMZCcHNg/THj0gb/hb1IhmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Q6I0Gcd2; arc=none smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-71fbb0d035dso3672636a34.2
+        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 09:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739899750; x=1740504550; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GbiFJU71DsVTxmJ4gj67sONpi3T5q988AYpsTlFS8Jc=;
+        b=Q6I0Gcd2Yem+BHuGlgnnQBCJjK/44s8vqWu7G+3vvmV9XxveuoeYPgA9XpFvm+3wrc
+         NDKZSbVAJ8z/ZB384ljhOYpBDN4pk3jXAv9BHTN7pGVm+cRf5Yf5QCYoHe7Tz6fK32X3
+         i5WNrP51x3Es/Rd0l2CXkq1ohNqu9ZHvf7cgB8T8VS6t6w+jLsvuW+Lgkzs5xGACRVrR
+         4HU6WoHSxC5ngqRfROimjYd+OPT1UlDRQevI5wu/tk7L7RaRG3G217LWvSr7po6lLNnp
+         +6eTTRlBKIqucb+6N+QOF/tob7E2k2qiP38y7vE5nyViziR6ywiCXO8mceFfoTnT9p4E
+         WrCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739899750; x=1740504550;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GbiFJU71DsVTxmJ4gj67sONpi3T5q988AYpsTlFS8Jc=;
+        b=p6n+OcXzX0SS2bfhwIOHVoGB0FDr4trDGtJOHCaJllXJgSBd50gjj78NeY5thKnUT6
+         tCh2AM1wgGjeqPMpgETVDgY4F3RYtd2YEECoGOFAepyfPqIaje89C9L67Ncb4QQD0efC
+         eWAo14eZYniYvuuA8AGdrUrMHKwTpY1hEtAcxBiJ4/P/3Uw3jcVNsX+m2Wi9fKhdB3VY
+         kDR5RtHkPyp7W2pvnMYxbLyo5QRE2kkvJc9gB8wR2m0R91A44WAZSYNrTXxLe6XkBmK1
+         D8yKLekYhzW3l+NBi9OWx/CO3h+hBeLACtjjPc/0HR20BNh+cPIgFmmamQzbcizgM7bN
+         VsRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ8blKRNV6IfScP1MTyHu9NWaor6jqLsmEE2LWYdc3/Y+UKQTWFQsOHp0WKN9H+f9dWw3nXyGNQ4k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvyclK5zFpQhsffs1AOQJhaw6qNygCgxZay/Qi/8otwh0xCozQ
+	9Z4YyaD94FaE6V4M+Ug0TM7zlnG9O+K0YXKIi1xrzZ3/An20TSDZcubSyopm3SLpzYYoBdekODI
+	D
+X-Gm-Gg: ASbGncuHaXOxkzG688PbIaKXB5QqT+fAsCiI0GSiu+BCrgN4ZJkVGKkEoMlzXkUb1rk
+	qSOzlgMvPUeq+9FTyK2fT/qesU+y67s5toZTkbXV/YKEhwtY0So73B5jIz+51OSMTEjdwhteZ34
+	MadUiceK06DfJcBYdPqqa9XavzxhLI38kXqUojsR4ZhB/5ARZaRDW8BNNvwRsLHhBmVrL0CJIWf
+	es83+dy//N0Kc7JUgtT30gxqvWOKIBh97Va3DRykOYlwg4R4UdsqpAVfXTMrIcHyBwG6P2UYRFx
+	lBl/5q5yj7oxun8jA4kwEnS0GqfHhH0SrvfoXl4uMgM1ilgFu6cw
+X-Google-Smtp-Source: AGHT+IHAVduF+3IQNuzvGy++wGxU0HNqdUPsgFljNoxvo1H+nI7m+l+eMk5JpIwngm9/GLO8wTMTNQ==
+X-Received: by 2002:a05:6808:2f14:b0:3f4:1ba:9e82 with SMTP id 5614622812f47-3f401baa0d8mr4851733b6e.15.1739899750509;
+        Tue, 18 Feb 2025 09:29:10 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f4028e7bd9sm916324b6e.18.2025.02.18.09.29.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Feb 2025 09:29:10 -0800 (PST)
+Message-ID: <4bf45120-d9f5-4c31-811b-655962984ba1@baylibre.com>
+Date: Tue, 18 Feb 2025 11:29:08 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="9aHkRpTM7X6bOBao"
-Content-Disposition: inline
-In-Reply-To: <CAPVz0n1aw1+kKhvGwOUi_58HqRqo0fHxDNRQZt_2O4yJ=ws56w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] iio: small fixes and improvements
+To: nuno.sa@analog.com, linux-iio@vger.kernel.org
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+References: <20250218-dev-iio-misc-v1-0-bf72b20a1eb8@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250218-dev-iio-misc-v1-0-bf72b20a1eb8@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 2/18/25 4:31 AM, Nuno Sá via B4 Relay wrote:
+> The first patch is a fix for the backend code dealing with
+> direct_register_access. We need to properly terminate the received
+> string before passing it to sscanf().
+> 
+> The second patch is about using the simple_write_to_buffer() which makes
+> the direct_register_access write side more symmetric with the read side.
+> 
+> ---
 
---9aHkRpTM7X6bOBao
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
-On Fri, Feb 14, 2025 at 08:21:03AM +0200, Svyatoslav Ryhel wrote:
-> =D1=87=D1=82, 13 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 22:15 Co=
-nor Dooley <conor@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
-> >
-> > On Wed, Feb 12, 2025 at 09:39:06PM +0200, Svyatoslav Ryhel wrote:
-> > > =D1=81=D1=80, 12 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 21:2=
-0 Conor Dooley <conor@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
-> > > >
-> > > > On Wed, Feb 12, 2025 at 08:46:55AM +0200, Svyatoslav Ryhel wrote:
-> > > > > AL3000a is an ambient light sensor quite closely related to
-> > > > > exising AL3010 and can re-use exising schema for AL3010.
-> > > >
-> > > > Quite close you say, but the driver is entirely different it seems.=
- How
-> > > > closely related is the hardware itself?
-> > > >
-> > >
-> > > Well, I can simply duplicate al3010 or al3320a schema if re-using
-> > > schema is not allowed. AL3000a has no available datasheet online.
-> > > Downstream code for al3000a and al3010 seems to have same principles,
-> > > apart from light measurements.
-> >
-> > It's probably more of a question as to why you're duplicating the driver
-> > for them, rather than telling you not to put both bindings together.
-> > That said, information on what's actually different is helpful in the
-> > binding, to explain why you're not using a fallback compatible etc.
-> >
->=20
-> Quoting writing-bindings.rst:
-> DON'T refer to Linux or "device driver" in bindings. Bindings should
-> be based on what the hardware has, not what an OS and driver currently
-> support.
-
-No need to quite that back at me, I'm the one usually attempting to
-enforce these things. I just expect more information about the
-similiarties/differences when you're content splitting into two drivers
-but want to reuse the same binding.
-
->=20
-> From all available data, hw configuration of al3000a closely matches
-> al3010 and seems to be part of same sensor lineup. It is not
-> prohibited to add new compatibles to existing schema. Schema does not
-> take in account way of processing data generated by sensor and this is
-> the main difference between al3000a and al3010
-
-Please mention this in your commit message.
-
-Cheers,
-Conor.
-
---9aHkRpTM7X6bOBao
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ7S/xQAKCRB4tDGHoIJi
-0iZLAP9TckPYqEb93zq2HyljnW8ogxHQF5BWPdBZFfXYC7ZbTAEA9FAUL1hTR9S/
-NqdS/aPc+GE5mlLICMyhaTI8PnmoIwA=
-=GuzI
------END PGP SIGNATURE-----
-
---9aHkRpTM7X6bOBao--
 

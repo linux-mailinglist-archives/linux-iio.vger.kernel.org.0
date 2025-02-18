@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-15752-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15753-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507D7A3AC6F
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 00:18:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC80A3AC70
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 00:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F35175369
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 23:18:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCA6217558F
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 23:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16871DDA3D;
-	Tue, 18 Feb 2025 23:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129881DDC1D;
+	Tue, 18 Feb 2025 23:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="c+vgxgop"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dbuC56dg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354BA1CF5E2
-	for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 23:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0DC1DBB3A
+	for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 23:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739920675; cv=none; b=nM+wjUQ1rwEdXCXFruMiQr66YwghG6XUvGLIPT2G7Xxv64+205dMYAIU+8Jf33mEuGiUbK/R48AkDc7G6rMX1HtHUAJ4+ZVsG3Jh7ExAVh0rNzgbCENrJsduUWnJboBR1UXOA/78HErZpjr7LPb+lTAUTq20eiwapDJl13rlVxM=
+	t=1739920675; cv=none; b=sdtsjFIM/veo5pKYwWHRo4Or28xwQHcu7OJ9OM3ffMLU3j9fN4R+xl7QeImTCtjtVsAvkPTlIbGV/3/+KZNrw35YZiI5udb283l6vmCvIzSkGDdEPcRJhlR4BiAZxsrSxKP4Ed6iELa9huRlQKCRyObsqiazC/Cua5iQH+PTPzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739920675; c=relaxed/simple;
-	bh=YtP9jMp1zsEuMGXw+pRfgayF/lnTYJWTTdsWP3y71BU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UO6oH0cww1xW506xj9IavyMnOixWA6FjajYjVf1mjrdp6DQvWk9FitdoYLH7eHWXopXLVh49kIuToyVUSvyQnoNhnMk+XtKt+m9dNSZKBG3dflppf1auO3Qx/fRg8TIMVrJGnM9HIqNNlZM2WV9rbFCEA5ao/QxPNN5Q28U2i7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=c+vgxgop; arc=none smtp.client-ip=209.85.210.47
+	bh=9nCO7nZLKNdiDn/v0csoc01tAaw2I1Nd3kyqboFCUAk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=W5bvGZniptrgvdMtpnJ+S/tbCGLS/L9bMR1/Zx3gT9ARrlRVPrfXFQQ6iy2zxI+7Is/xUCk+B9unHb1t4qkBECGh3eFUmdlvFNMKnyzJc8epJhrUa3jJfxCTmR7PDWHaefy3fDwi883vEeKH3xiEq1wS0ugBGL3UpkpBEiRq/uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dbuC56dg; arc=none smtp.client-ip=209.85.160.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-727250dbf60so180074a34.0
-        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 15:17:52 -0800 (PST)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-2bc607b3190so159876fac.1
+        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 15:17:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739920672; x=1740525472; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K1kVy79PjjwS9vT6eqX/jn2fuQOg4ncGF32yCLYKYdc=;
-        b=c+vgxgopCtJw1KDe23QVBN3XYKS+rIVz7XSU4XDgZt/qJpTeGYWdnKmHJbF0YiNSV9
-         XaYRGHvrfvj107DsldUEmTME0vK95PJWOl6XP2E2+W4+zG+WQcyH7x8q83Gcuo02Qckw
-         2PCuvQTgFq90HJIp3m+H2mN4NWqsQokk18CcvVuFiGBSRb5rRtn8FgPKX+9OwMqEwR4J
-         b8GbOKmZtjrtYaeFWbjLljwa4L0S94tH66vTZySzeTe0+j61b9KSJQROzbP4NhJFnB8L
-         P6Kau9UYc+dWOo7EDKniSqATiBVmsEcEOk+sOl8UaBVnsnZ/WoNcGYRXRv3SCSAKLfmE
-         MnFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739920672; x=1740525472;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739920673; x=1740525473; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=K1kVy79PjjwS9vT6eqX/jn2fuQOg4ncGF32yCLYKYdc=;
-        b=hWLOlg5etHwxPrJft1DJl5/cvzqF/BPCiUP84s/l8UyD+CgItVXlTD+rEhFZiQ2Mgv
-         dSeb+SMqe1QhCYD4QStn5H0JpsTeSMDuYnL4oK+50c+4pEokXCfgrgSimh6e2Ao4qCmu
-         MM/Co1JcMi3BIgcOmOldvDdSuKrJOTSmc2rtknqk/wvOVbU+tzpd8f8HJgpOfCmKuo8W
-         aNguSgZaoAb0GbpeOQF3SkkM8rzedNyDelYgABkdwPMjKIm3IamJJSBnp00d93NlO2JA
-         1N1WOOnzfBH4RNQAwsVf52UvgHEOHazHshgffBKlI+c5mF6DTrAnRjGqVmXO/NnfU+kh
-         9IRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjqDgbClkAEuNEnmzGuosuT6omRQudFtqfIR2tdycaQfUq296ResqR8x7NECDuFEZstpVEGHBqvgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVGzW2VKSEim3okCaPE8EdgNU/4QHOuGaQ06XMFxPD3elSN81H
-	BextFgNhRwyUwk3+KxIPYNFDOP7h64BUzTJkg3ljt+NFIqiqthdH07DW/ukJMbAohPM7yLB1+qf
-	R
-X-Gm-Gg: ASbGncuR0UJlOtRXEYhMldvlr7Cx89ua4/SwXI7ti3cRJeG/ocEXA049O1r4i2sj9US
-	JBjREAILq8ZiVNm6j4wRBsOnHxWkyc9EyBj0YljToVDHwmXCP0lndUYpq0/nJJ3jhNE1+qU0X6p
-	vKzjhKKZhXqnWDFZiJJYaeWzpjwxJkG2A6yNuc8tNmQrDkzhbQUOJxmb12h1S5gy0D2UgLBCPNf
-	HqPYMLAUpOkgTC79oiphzIJ7xjMZdmWj873Ync8Fpo8MEbbqntO5+YfuU/SEtM9NnBHxipF89hH
-	lVATIqDJCMADJGyns6AMqVrln0pAfz6MjzSsnrf8rFZ9/KI=
-X-Google-Smtp-Source: AGHT+IF2i0XRfyPdA91wJLKRW1188YEW171fIRsR6f4XJDZE0cMHbi74c3siOXWTxamWwIe6ApxsEg==
-X-Received: by 2002:a9d:7482:0:b0:727:2731:d5e5 with SMTP id 46e09a7af769-7273711f98bmr1287196a34.12.1739920672122;
+        bh=nolGyY7FaUucKN7S8iQ8H4IDqpOVZJT/2gwczCi4r0I=;
+        b=dbuC56dg55yyn16Rm73Olc050N/MqQzkw6zinFazALLNbMN373UzlvyljEKUcHlOgO
+         CZvh4Er/wlFXZ7DkXhV/yKq10qQOM9Tk2FxzVtNj0Y+WgPGN9XUzS3i3KQORMW/ARYek
+         WsSgA4YreltS6W/YI+1TzSlEfbZuAcPQLXO1iMq3piqGxu2FAc2SQwzx8Zjbsu1S/s/8
+         I0A8sTf2pHVzpMLj8h99h+fqANbjqD9W/Am4tpXgokV9fUVPon+nPQM8QgY4LWiByol1
+         rxeiRM6oEiSZoFbd3yw11WfRkrW1uEViRQK5TY/APiulC6fqQcKshsIAJMWaK4flLD2R
+         Vsog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739920673; x=1740525473;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nolGyY7FaUucKN7S8iQ8H4IDqpOVZJT/2gwczCi4r0I=;
+        b=nUtQoO6YuNKW2ywDuObdRai6IeZLS1+iC12LWh4RKcyY/krpZbltlAxbT04VNBqEBm
+         O2Npl1Ewzh16A363joKmNpf2sQJqHfbVu8U5585rvFgYGu2gdamnodBvCPHTnOVt6p00
+         FnrswO+g2DU7KRJonSRf1onpYnZki+sP1ZHo3Tej6BfYfl6TRh4qhJqC3euzHCE0b2/f
+         2stjDrRZRnclV7p+S3m8A6rL7/GF8ivmOKANIf1ArvmD3/zv7m/X+kIkR0sKO7QDvoVu
+         tKrlZ2qOv0nbaI1OaVXXWJ35T9VhpmzT5JhsoK/8VOlJdUJGmJBWsGslMy/czwv/hBfY
+         uOoA==
+X-Forwarded-Encrypted: i=1; AJvYcCW4QJzTtlecfYFRt1wBpulOil7KcRyuuWStpSV7nLaCXe0knxB86okixgtsMtazlbxdLd8vIYXf+Tc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsQBkoWvBpIHatYTpiWhvALqABD5zGMDLUKPCpVHfxlfETkGTh
+	SLWK2moL/Y4q4ZOw/2cpC6T3afbaJli8/C3mpuPOME47uPGqXX45QIznujBfGTfn2NDObk8PBCS
+	L
+X-Gm-Gg: ASbGncuB8LR3xsIAgmc5oSo+2+jQ/e2a+hnaQKda4s0s3oEwaPywep1uQbmixBIsZcP
+	0kPnm46ZYj6rFyh7sn02lG3U45U2+8/9RKIxNbcVmB0hTtY7umZIWdnQQfwo4zBc5e+2sp7mI4h
+	y3RRXWWl0LZ/t+TkXXLBv2uSVlevB7U5xqsFmhUnb9uCriyXkA9f9khcQCHV9SqaD5q7e3XL5ve
+	Njsr3prMzVFAi8z3Z3uYGVF7DT5Aej1S+4/Xdo6/D4vDbJt9dx14gttnEjPAB+kZTzcVUOI7HQ0
+	LGcS3T8rRhyR6fKSlVFPg/ixyX55VYX9nsnS5l7wOmdka/U=
+X-Google-Smtp-Source: AGHT+IG2YgKjTkE825ZXpPLi2hzrtJ0Hq5GJ4kGNJKGqT9TWnzPIa1gRPXWVcRGRa4yjYFON4NsjQw==
+X-Received: by 2002:a05:6870:2046:b0:2b1:db0e:e22d with SMTP id 586e51a60fabf-2bd0f32bbd2mr1428134fac.0.1739920672901;
         Tue, 18 Feb 2025 15:17:52 -0800 (PST)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7271f7c5ba8sm1803129a34.32.2025.02.18.15.17.50
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7271f7c5ba8sm1803129a34.32.2025.02.18.15.17.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 15:17:51 -0800 (PST)
+        Tue, 18 Feb 2025 15:17:52 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH 0/2] iio: adc: ad4695: fix out of bounds array access
-Date: Tue, 18 Feb 2025 17:17:44 -0600
-Message-Id: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
+Date: Tue, 18 Feb 2025 17:17:45 -0600
+Subject: [PATCH 1/2] iio: adc: ad4695: fix out of bounds array access
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,10 +84,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABgVtWcC/x2NSw7CMAwFr1J5jaUmtOVzFdRF4jjgTYLiFhVVv
- TsWi1nMYt7bQbkJK9y7HRp/RKUWE3fqgF6hPBklmYPv/dh7d0WRiiGRMUy3EbNsWNcFa8ZY15I
- UQ2vhi4GIVfGS3cSRzpHdALb5bmzF/+8xH8cPtGI/WH8AAAA=
-X-Change-ID: 20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-7f16ebc3be14
+Message-Id: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-1-57fef8c7a3fd@baylibre.com>
+References: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
+In-Reply-To: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
 To: Michael Hennerich <michael.hennerich@analog.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
  Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, 
@@ -96,25 +96,105 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-I was doing some more testing and found a bug with the
-in_temp_sampling_frequency attribute being corrupted. This is a patch
-to fix that, plus a bonus patch that cleans up some related code (it
-wasn't strictly part of the fix, hence the separate patch).
+Fix some out of bounds array access of st->channels_cfg in the ad4695
+driver. This array only has elements for voltage channels, but it was
+also being accessed for the temperature channel in a few cases causing
+reading past the end of the array.
 
+In some cases, this was harmless because the value was read but not
+used. However, the in_temp_sampling_frequency attribute shares code
+with the in_voltageY_sampling_frequency attributes and was trying to
+read the oversampling ratio from the st->channels_cfg array. This
+resulted in a garbage value being used in the calculation and the
+resulting in_temp_sampling_frequency value was incorrect.
+
+To fix, make sure we always check that we are dealing with a voltage
+channel before accessing the st->channels_cfg array and use an
+oversampling ratio of 1 for the temperature channel (multiplicative
+identity value) since that channel doesn't support oversampling.
+
+Fixes: 67d63185db79 ("iio: adc: ad4695: add offload-based oversampling support")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (2):
-      iio: adc: ad4695: fix out of bounds array access
-      iio: adc: ad4695: simplify getting oversampling_ratio
+ drivers/iio/adc/ad4695.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
- drivers/iio/adc/ad4695.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
----
-base-commit: ac856912f210bcff6a1cf8cf9cb2f6a1dfe85798
-change-id: 20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-7f16ebc3be14
+diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+index 3a1a6f96480fd383d32397f4d3c979069111c5c9..8721cbd2af34c53f0cea32e307b9ef2da46b0cfb 100644
+--- a/drivers/iio/adc/ad4695.c
++++ b/drivers/iio/adc/ad4695.c
+@@ -1035,12 +1035,14 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+ 	const struct iio_scan_type *scan_type;
+-	struct ad4695_channel_config *cfg = &st->channels_cfg[chan->scan_index];
+-	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
++	struct ad4695_channel_config *cfg;
+ 	unsigned int reg_val;
+ 	int ret, tmp;
+ 	u8 realbits;
+ 
++	if (chan->type == IIO_VOLTAGE)
++		cfg = &st->channels_cfg[chan->scan_index];
++
+ 	scan_type = iio_get_current_scan_type(indio_dev, chan);
+ 	if (IS_ERR(scan_type))
+ 		return PTR_ERR(scan_type);
+@@ -1169,6 +1171,10 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 	case IIO_CHAN_INFO_SAMP_FREQ: {
+ 		struct pwm_state state;
++		unsigned int osr = 1;
++
++		if (chan->type == IIO_VOLTAGE)
++			osr = cfg->oversampling_ratio;
+ 
+ 		ret = pwm_get_state_hw(st->cnv_pwm, &state);
+ 		if (ret)
+@@ -1261,7 +1267,10 @@ static int ad4695_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+ 	unsigned int reg_val;
+-	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
++	unsigned int osr = 1;
++
++	if (chan->type == IIO_VOLTAGE)
++		osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+ 
+ 	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+ 		switch (mask) {
+@@ -1361,7 +1370,10 @@ static int ad4695_read_avail(struct iio_dev *indio_dev,
+ 		},
+ 	};
+ 	struct ad4695_state *st = iio_priv(indio_dev);
+-	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
++	unsigned int osr = 1;
++
++	if (chan->type == IIO_VOLTAGE)
++		osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_CALIBSCALE:
+@@ -1713,7 +1725,7 @@ static int ad4695_probe_spi_offload(struct iio_dev *indio_dev,
+ 
+ 	for (i = 0; i < indio_dev->num_channels; i++) {
+ 		struct iio_chan_spec *chan = &st->iio_chan[i];
+-		struct ad4695_channel_config *cfg = &st->channels_cfg[i];
++		struct ad4695_channel_config *cfg;
+ 
+ 		/*
+ 		 * NB: When using offload support, all channels need to have the
+@@ -1734,6 +1746,8 @@ static int ad4695_probe_spi_offload(struct iio_dev *indio_dev,
+ 		if (chan->type != IIO_VOLTAGE)
+ 			continue;
+ 
++		cfg = &st->channels_cfg[i];
++
+ 		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+ 		chan->info_mask_separate_available |=
+ 			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

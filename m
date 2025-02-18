@@ -1,307 +1,120 @@
-Return-Path: <linux-iio+bounces-15751-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15752-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE0EA3ABAA
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 23:30:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 507D7A3AC6F
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 00:18:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73F2F16A2A1
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 22:30:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29F35175369
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 23:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC791C1F12;
-	Tue, 18 Feb 2025 22:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16871DDA3D;
+	Tue, 18 Feb 2025 23:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4WaTPFP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="c+vgxgop"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2A22862A5;
-	Tue, 18 Feb 2025 22:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354BA1CF5E2
+	for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 23:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739917825; cv=none; b=buW6T10lobNnHsqTAv9mwkYRVkkP7EdD5SAUeIuj45R9i4UeD82XCk8sNhJGdCcqZjeQLw8QDlsemtsjnVQ6xdWAatmyV1btboN2Lg7BuzV4Xchjtb2MMTkX2gP5/puN2tc1UXjoSFnRLBqYbVZJcoBuTJTYbozavp3pXpzL4Ss=
+	t=1739920675; cv=none; b=nM+wjUQ1rwEdXCXFruMiQr66YwghG6XUvGLIPT2G7Xxv64+205dMYAIU+8Jf33mEuGiUbK/R48AkDc7G6rMX1HtHUAJ4+ZVsG3Jh7ExAVh0rNzgbCENrJsduUWnJboBR1UXOA/78HErZpjr7LPb+lTAUTq20eiwapDJl13rlVxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739917825; c=relaxed/simple;
-	bh=axuO/bgb4a9u82P0rvNZOgyAoie76/dMy6HvFmThlgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UDcizju1Wa6rFfpXZclhiDkP5rWR9xPQaaa8mSVlrab1Vmr2C8+73oMC8E+AxzlJLdI8evjPqcs6BBpB0jfahPg8SB3FIagUrUgR8xbXv/tTNAWdfgilXqoRKvpLHTIlgpO9Z0/EQumTuuwlwW53YkXlDQdKx0p2J9N9Iw5neeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4WaTPFP; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e5e02e4db08so111965276.3;
-        Tue, 18 Feb 2025 14:30:22 -0800 (PST)
+	s=arc-20240116; t=1739920675; c=relaxed/simple;
+	bh=YtP9jMp1zsEuMGXw+pRfgayF/lnTYJWTTdsWP3y71BU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UO6oH0cww1xW506xj9IavyMnOixWA6FjajYjVf1mjrdp6DQvWk9FitdoYLH7eHWXopXLVh49kIuToyVUSvyQnoNhnMk+XtKt+m9dNSZKBG3dflppf1auO3Qx/fRg8TIMVrJGnM9HIqNNlZM2WV9rbFCEA5ao/QxPNN5Q28U2i7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=c+vgxgop; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-727250dbf60so180074a34.0
+        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 15:17:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739917822; x=1740522622; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=si1H8XSMOMxRh6bZAdV2fbSzTyyk2PyI/He5XZxEvnE=;
-        b=G4WaTPFPAScnhBKCCEI0P/BGBa42pZPGe16P9NXze9lyGkVtEh0puDwL8I/b6lzF/X
-         NypDHGKVBzSbawyj+qmDQodh24eiVm3J5igCsPthYuoLM2ECuQ/PwtybtggI47kmkLnm
-         9u2cZWNi2X9uIgff/n5bI54rYBafOS74m7lmAxHVPOFkGb8hJBTq6bETpPvMzQp7WolK
-         ATwIcQRAKQTTf5Ry4Ung7Drt/KGRa/b48ckgz4ZT3LP8O//+l+/cTP65J7YX1LHce5qW
-         8gf8gtgv1by5hgMw8KhIc/kGT7eUpe6rqO+gwKKEfwBbEwNvZB1R+g9nD47EyXhnijX8
-         UPmw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739920672; x=1740525472; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=K1kVy79PjjwS9vT6eqX/jn2fuQOg4ncGF32yCLYKYdc=;
+        b=c+vgxgopCtJw1KDe23QVBN3XYKS+rIVz7XSU4XDgZt/qJpTeGYWdnKmHJbF0YiNSV9
+         XaYRGHvrfvj107DsldUEmTME0vK95PJWOl6XP2E2+W4+zG+WQcyH7x8q83Gcuo02Qckw
+         2PCuvQTgFq90HJIp3m+H2mN4NWqsQokk18CcvVuFiGBSRb5rRtn8FgPKX+9OwMqEwR4J
+         b8GbOKmZtjrtYaeFWbjLljwa4L0S94tH66vTZySzeTe0+j61b9KSJQROzbP4NhJFnB8L
+         P6Kau9UYc+dWOo7EDKniSqATiBVmsEcEOk+sOl8UaBVnsnZ/WoNcGYRXRv3SCSAKLfmE
+         MnFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739917822; x=1740522622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=si1H8XSMOMxRh6bZAdV2fbSzTyyk2PyI/He5XZxEvnE=;
-        b=J+47tbL70x2+9EbDdRkfkUwCtYGOw7wPBeMP6UQ6/xr8xWBthG0RBV95yYmQKREvSH
-         YBVYuBTYzQyIMbCdNGdAz11g/k9APeGzPwHB9eVvSvMzFg6jTiJAAnQMQanUANi+q+XU
-         wZwaUQUXd+cqxtWPT4xzybyDyfH7dFFM0oSJRl3Bgjtq+xcnoEp3O7uBG1+2ycSX7+9C
-         3MyLHkd4NAcfltdFn3oC5XdIwR76wdxWDyigwICDmaCQcZ3nWADA/7lowabymu6uhM3U
-         6zgjCoULEPmu/nf9mjXhM6EapVOwOrhDklnh8EhVduhCWtKk7Mb90N6w306tpcIY7ElB
-         vI7g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAzcqfIrDTSCEwTqex8SYIN/c/RrniIvzSuTOCgmGvFiWbVvKkpB6eKQT/aiptf4FRhwHtC39R567i7vCJ@vger.kernel.org, AJvYcCVwvWAg6JcEyMyQ8JPM+1ihXjeApDgIajTcwdbK4127QB2RSS3jUROVb6mi0GeQ5EuM0XzLzU5DsTQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaxObo5TXvaOTNf35pEcPDDY/SAK9QreoPKW/Z2/EB3YA26Vcd
-	pSBZQqVNSbRjb+09xzzgGA7V/R3ztPLiFlU9GFVJAJsADFPeGKhFqjK1LVbXQGEExWmxRNusnXO
-	2uYpqzDmZyXjTw1QYWNaf81q0nEs=
-X-Gm-Gg: ASbGncs/BaSqutWGFpEFzoT/rx3hgDoyqXVcH7+kEx/e/GuS8y/M1R1j5recIUPOiD2
-	RjmegsJvfpXjNQwcZWJxO6eRGi9KlfJQYi3kYQGz9mKljM3ON3A2VH9E78EkmeWF0LGMQtHIm
-X-Google-Smtp-Source: AGHT+IGc4zyuxtJ1p+dDbPgeU4DdVInFhhVT96R3F/yrFDC4NwqlsdxT0BFDjqDYWBym5+lfH9on9qYUUXevhxA2M2c=
-X-Received: by 2002:a05:6902:e87:b0:e5d:e371:78a3 with SMTP id
- 3f1490d57ef6-e5de3717962mr2637263276.9.1739917822030; Tue, 18 Feb 2025
- 14:30:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739920672; x=1740525472;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=K1kVy79PjjwS9vT6eqX/jn2fuQOg4ncGF32yCLYKYdc=;
+        b=hWLOlg5etHwxPrJft1DJl5/cvzqF/BPCiUP84s/l8UyD+CgItVXlTD+rEhFZiQ2Mgv
+         dSeb+SMqe1QhCYD4QStn5H0JpsTeSMDuYnL4oK+50c+4pEokXCfgrgSimh6e2Ao4qCmu
+         MM/Co1JcMi3BIgcOmOldvDdSuKrJOTSmc2rtknqk/wvOVbU+tzpd8f8HJgpOfCmKuo8W
+         aNguSgZaoAb0GbpeOQF3SkkM8rzedNyDelYgABkdwPMjKIm3IamJJSBnp00d93NlO2JA
+         1N1WOOnzfBH4RNQAwsVf52UvgHEOHazHshgffBKlI+c5mF6DTrAnRjGqVmXO/NnfU+kh
+         9IRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjqDgbClkAEuNEnmzGuosuT6omRQudFtqfIR2tdycaQfUq296ResqR8x7NECDuFEZstpVEGHBqvgw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVGzW2VKSEim3okCaPE8EdgNU/4QHOuGaQ06XMFxPD3elSN81H
+	BextFgNhRwyUwk3+KxIPYNFDOP7h64BUzTJkg3ljt+NFIqiqthdH07DW/ukJMbAohPM7yLB1+qf
+	R
+X-Gm-Gg: ASbGncuR0UJlOtRXEYhMldvlr7Cx89ua4/SwXI7ti3cRJeG/ocEXA049O1r4i2sj9US
+	JBjREAILq8ZiVNm6j4wRBsOnHxWkyc9EyBj0YljToVDHwmXCP0lndUYpq0/nJJ3jhNE1+qU0X6p
+	vKzjhKKZhXqnWDFZiJJYaeWzpjwxJkG2A6yNuc8tNmQrDkzhbQUOJxmb12h1S5gy0D2UgLBCPNf
+	HqPYMLAUpOkgTC79oiphzIJ7xjMZdmWj873Ync8Fpo8MEbbqntO5+YfuU/SEtM9NnBHxipF89hH
+	lVATIqDJCMADJGyns6AMqVrln0pAfz6MjzSsnrf8rFZ9/KI=
+X-Google-Smtp-Source: AGHT+IF2i0XRfyPdA91wJLKRW1188YEW171fIRsR6f4XJDZE0cMHbi74c3siOXWTxamWwIe6ApxsEg==
+X-Received: by 2002:a9d:7482:0:b0:727:2731:d5e5 with SMTP id 46e09a7af769-7273711f98bmr1287196a34.12.1739920672122;
+        Tue, 18 Feb 2025 15:17:52 -0800 (PST)
+Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7271f7c5ba8sm1803129a34.32.2025.02.18.15.17.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 15:17:51 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Subject: [PATCH 0/2] iio: adc: ad4695: fix out of bounds array access
+Date: Tue, 18 Feb 2025 17:17:44 -0600
+Message-Id: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250210110119.260858-1-l.rubusch@gmail.com> <20250210110119.260858-8-l.rubusch@gmail.com>
- <20250216172845.2fe98ea1@jic23-huawei>
-In-Reply-To: <20250216172845.2fe98ea1@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Tue, 18 Feb 2025 23:29:46 +0100
-X-Gm-Features: AWEUYZkhScovBLHKmG_u-H8znUgqYyAbGrh-BrwfICH2MLxYTE6gN8YIZ4XB268
-Message-ID: <CAFXKEHY+ozW=r17fdvKYhyWDKkddZxptp5kFKdD9k4mwjutPbQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/14] iio: accel: adxl345: add double tap suppress bit
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABgVtWcC/x2NSw7CMAwFr1J5jaUmtOVzFdRF4jjgTYLiFhVVv
+ TsWi1nMYt7bQbkJK9y7HRp/RKUWE3fqgF6hPBklmYPv/dh7d0WRiiGRMUy3EbNsWNcFa8ZY15I
+ UQ2vhi4GIVfGS3cSRzpHdALb5bmzF/+8xH8cPtGI/WH8AAAA=
+X-Change-ID: 20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-7f16ebc3be14
+To: Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, 
+ Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
 
-Dear Jonathan, find my answer down below.
+I was doing some more testing and found a bug with the
+in_temp_sampling_frequency attribute being corrupted. This is a patch
+to fix that, plus a bonus patch that cleans up some related code (it
+wasn't strictly part of the fix, hence the separate patch).
 
-On Sun, Feb 16, 2025 at 6:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Mon, 10 Feb 2025 11:01:12 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Add the suppress bit feature to the double tap feature.
-> >
-> > Any tap event is defined by a rising signal edge above threshold, i.e.
-> > duration time starts counting; and the falling edge under threshold
-> > within duration time, i.e. then the tap event is issued. This means
-> > duration is used individually for each tap event.
-> >
-> > For double tap detection after a single tap, a latency time needs to be
-> > specified. Usually tap events, i.e. spikes above and returning below
-> > threshold will be ignored within latency. After latency, the window
-> > time starts counting for a second tap detection which has to happen
-> > within a duration time.
-> >
-> > If the suppress bit is not set, spikes within latency time are ignored.
-> > Setting the suppress bit will invalidate the double tap function. The
-> > sensor will thus be able to save the window time for double tap
-> > detection, and follow a more strict definition of what signal qualifies
-> > for a double tap.
->
-> Silly question.  Is there a reason this function would ever be
-> turned off?   Seems like a sensible heuristic that would not stop
-> genuine double taps being detected.  Maybe we just always leave it on?
->
-> Sometimes the best ABI is the one that doesn't exist as userspace
-> can't use it wrong.
->
-> Jonathan
->
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+David Lechner (2):
+      iio: adc: ad4695: fix out of bounds array access
+      iio: adc: ad4695: simplify getting oversampling_ratio
 
-hehehe..  you already mentioned this point, I guess. At least I tried
-to put my understanding of it into the lengthy comment of the patch.
-Well, patches with lengthy comments.... this seems to go into the same
-direction as the wisdom of better limiting userspace interfaces in
-general ;)
+ drivers/iio/adc/ad4695.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
+---
+base-commit: ac856912f210bcff6a1cf8cf9cb2f6a1dfe85798
+change-id: 20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-7f16ebc3be14
 
-TBH you have probably seen far more sensors than me, as I'm doing this
-just as hobbyist to learn and for fun. I only can provide my
-understanding of the particular datasheet.
-I think, to set or not to set this bit changes little. It influences a
-bit how restrictive the latency period is handled at detection.
-Doubletaps are detected with or without having the "suppress" bit set.
-If set, AFAIK it could be harder to detect doubletaps. So to speak,
-you could reduce "noise" in double tapping (?), or if one receives too
-many double taps...(?) perhaps,  ..eh.. legal reasons?! Personally,
-I'd liked to play with this sensor a bit, and I found it then useful
-to have some kind of knob to change a bit and see what happens without
-really messing things up.
-As I'm not too familiar with the accelerometer scene and such kind of
-"power user settings". I'm unsure if there are typical usecases here.
-I would agree that usually one would leave that in one  setting,
-turned on or off (unless he/she enters in obsession with double taps).
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
-Perhaps I'll change this patch so that it's always set or not set (to
-bring it initially into a defined state), but no sysfs is around.
-Let's see. If you think I'd better just drop it entirly, let me know
-then.
-
-Best,
-L
-
->
-> >
-> > This brings in a new ABI functionality.
-> > ---
-> > Q: Perhaps there is already some IIO ABI for it? If not, please let me
-> > know which ABI documentation to extend. There will be a documentation
-> > patch also later in this series.
-> >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > ---
-> >  drivers/iio/accel/adxl345_core.c | 82 ++++++++++++++++++++++++++++++++
-> >  1 file changed, 82 insertions(+)
-> >
-> > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl3=
-45_core.c
-> > index cf35a8f9f432..b6966fee3e3d 100644
-> > --- a/drivers/iio/accel/adxl345_core.c
-> > +++ b/drivers/iio/accel/adxl345_core.c
-> > @@ -34,6 +34,7 @@
-> >  #define ADXL345_INT2                 1
-> >
-> >  #define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
-> > +#define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
-> >
-> >  enum adxl345_axis {
-> >       ADXL345_Z_EN =3D BIT(0),
-> > @@ -81,6 +82,7 @@ struct adxl345_state {
-> >       u32 tap_duration_us;
-> >       u32 tap_latent_us;
-> >       u32 tap_window_us;
-> > +     bool tap_suppressed;
-> >
-> >       __le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned(I=
-IO_DMA_MINALIGN);
-> >  };
-> > @@ -243,6 +245,31 @@ static int adxl345_set_doubletap_en(struct adxl345=
-_state *st, bool en)
-> >       return _adxl345_set_tap_int(st, ADXL345_DOUBLE_TAP, en);
-> >  }
-> >
-> > +static int adxl345_is_suppressed_en(struct adxl345_state *st, bool *en=
-)
-> > +{
-> > +     *en =3D st->tap_suppressed;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static int adxl345_set_suppressed_en(struct adxl345_state *st, bool en=
-)
-> > +{
-> > +     unsigned long regval =3D 0;
-> > +     int ret;
-> > +
-> > +     en ? __set_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval)
-> > +             : __clear_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval);
-> > +
-> > +     ret =3D regmap_update_bits(st->regmap, ADXL345_REG_TAP_AXIS,
-> > +                              ADXL345_REG_TAP_SUPPRESS_MSK, regval);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     st->tap_suppressed =3D en;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> >  static int adxl345_set_tap_threshold(struct adxl345_state *st, u8 val)
-> >  {
-> >       int ret;
-> > @@ -616,6 +643,60 @@ static int adxl345_write_raw_get_fmt(struct iio_de=
-v *indio_dev,
-> >       }
-> >  }
-> >
-> > +static ssize_t in_accel_gesture_doubletap_suppressed_en_show(struct de=
-vice *dev,
-> > +                                                          struct devic=
-e_attribute *attr,
-> > +                                                          char *buf)
-> > +{
-> > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> > +     struct adxl345_state *st =3D iio_priv(indio_dev);
-> > +     bool en;
-> > +     int val, ret;
-> > +
-> > +     ret =3D adxl345_is_suppressed_en(st, &en);
-> > +     if (ret)
-> > +             return ret;
-> > +     val =3D en ? 1 : 0;
-> > +
-> > +     return iio_format_value(buf, IIO_VAL_INT, 1, &val);
-> > +}
-> > +
-> > +static ssize_t in_accel_gesture_doubletap_suppressed_en_store(struct d=
-evice *dev,
-> > +                                                           struct devi=
-ce_attribute *attr,
-> > +                                                           const char =
-*buf, size_t len)
-> > +{
-> > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> > +     struct adxl345_state *st =3D iio_priv(indio_dev);
-> > +     int val, ret;
-> > +
-> > +     ret =3D kstrtoint(buf, 0, &val);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D adxl345_set_measure_en(st, false);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D adxl345_set_suppressed_en(st, val > 0);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     ret =3D  adxl345_set_measure_en(st, true);
-> > +     if (ret)
-> > +             return ret;
-> > +
-> > +     return len;
-> > +}
-> > +static IIO_DEVICE_ATTR_RW(in_accel_gesture_doubletap_suppressed_en, 0)=
-;
-> > +
-> > +static struct attribute *adxl345_event_attrs[] =3D {
-> > +     &iio_dev_attr_in_accel_gesture_doubletap_suppressed_en.dev_attr.a=
-ttr,
-> > +     NULL
-> > +};
-> > +
-> > +static const struct attribute_group adxl345_event_attrs_group =3D {
-> > +     .attrs =3D adxl345_event_attrs,
-> > +};
-> > +
-> >  static void adxl345_powerdown(void *ptr)
-> >  {
-> >       struct adxl345_state *st =3D ptr;
-> > @@ -899,6 +980,7 @@ static irqreturn_t adxl345_irq_handler(int irq, voi=
-d *p)
-> >
-> >  static const struct iio_info adxl345_info =3D {
-> >       .attrs          =3D &adxl345_attrs_group,
-> > +     .event_attrs    =3D &adxl345_event_attrs_group,
-> >       .read_raw       =3D adxl345_read_raw,
-> >       .write_raw      =3D adxl345_write_raw,
-> >       .write_raw_get_fmt      =3D adxl345_write_raw_get_fmt,
->
 

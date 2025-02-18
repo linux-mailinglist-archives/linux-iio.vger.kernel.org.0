@@ -1,112 +1,115 @@
-Return-Path: <linux-iio+bounces-15726-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15727-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55C4A39965
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 11:43:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E341A399B6
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 11:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 100BF3BEA9D
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 10:36:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D659A16A8D5
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Feb 2025 10:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1884B238D25;
-	Tue, 18 Feb 2025 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B93323909E;
+	Tue, 18 Feb 2025 10:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MTnQfGkr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGdJ0xWo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98BD23496A
-	for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 10:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3476822D7B1;
+	Tue, 18 Feb 2025 10:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739874904; cv=none; b=QEKlxk7NytQxOeN5gMo3AHnortlW1qscBTmvlZw6Fenkpc33X/7Z7ZJdnL+6eHFTejvfL1iwibayv3jzOxK2Zkbte95MBT9bWnFYP+6F8T+qJkXJr4hBGL1gkx27tc54hc1qSU4MGAfi7GZixRsoxWh8pBsAuahmYPwHhIIkfFs=
+	t=1739876079; cv=none; b=CAPoGX0nttFuclGDQaeW7Kjqgk1TZcKkd6P0EkQpeJFQuP7KjvQldRp45xz87dSvTLyj1evOMjQUXCjArwtV0PI/unP5Rv48n5v6o86kES+juAot1UDeohDXGzkN0KtCJPd/kct3BG9+yqNCr0OBTUHs/lmEKrAX+eJLAPVocTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739874904; c=relaxed/simple;
-	bh=tnSQHo6voXZ3cLxolMf+gg+L4mY6TL5UrtT+9uOZb/M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E8C8SpYonxQYTrUHXHYxsR/d7mFRNvchvkkTM5QGirfJP4QeJHyZ667edyU7fjEnniKhoP8zI/T5OAZ957D1HdJY4WS2eDHcBZzgLGq1VnN0owd5Zy12wh0sDueFuxITePY3c7P7gyMXvpIWEXNzw9B428OIfgrKuBOuYWCIRCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MTnQfGkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5473FC4CEE4;
-	Tue, 18 Feb 2025 10:35:04 +0000 (UTC)
+	s=arc-20240116; t=1739876079; c=relaxed/simple;
+	bh=RdaxUeKvZh5sL0uJ9BtFySXbqU59fk3zLkq47gAsBp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kGNLHsEKg1XeUDBwxLbFtr8hWw/NF+mQgB4oqcu12Kg/0Jb6u9oMMSGvlPa40KmL1fUoF1hSrN4YCEtdYjjssnVgXK68NMWCXP/RvTuGzNWNmpLBKgNOECczyK4J+JKsPE71Pu5+/kgWx73N6cjnJ1vLAVoBs0HV7XrnZhqHVn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGdJ0xWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED8EC4CEE2;
+	Tue, 18 Feb 2025 10:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739874904;
-	bh=tnSQHo6voXZ3cLxolMf+gg+L4mY6TL5UrtT+9uOZb/M=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=MTnQfGkr6UAv8PPjJfiDWMQt8sQDuASidousEgAgpTlu4AsMUgm+vfl1l5Kb2B7Ue
-	 G/ah70IJDQBR9A0xKN1SZNPzR45CpHTrU03QRmYMjDc+UhyOHf3McS0gZuaisX/OPP
-	 JNVlZpMTaQcyzLBXVhLZZU3jaQFtbHpiL+WuCW2GRQhJy7Z1F15yAcrHfOimDfkPpe
-	 vBF7BoeHQg7vQMPclEOJv2m0xaazDtbsRzzP0upR1kPz4skffZtkUs1VOF5W0ZFXWo
-	 Xzq0i32g+5RCrpUxARyAy7iRUz9CL0uhlsjaapdntf0dCpUgT3YIbjqeovQ08HZ1vp
-	 rFX0rd1WCRexg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44235C02198;
-	Tue, 18 Feb 2025 10:35:04 +0000 (UTC)
-From: =?utf-8?q?Nuno_S=C3=A1_via_B4_Relay?= <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 18 Feb 2025 10:34:57 +0000
-Subject: [PATCH] iio: adc: adi-axi-adc: replace of.h with mod_devicetable.h
+	s=k20201202; t=1739876078;
+	bh=RdaxUeKvZh5sL0uJ9BtFySXbqU59fk3zLkq47gAsBp0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NGdJ0xWorHM+qXxP6z1rSeaxtuPdGwDGjNbPbIrWqn2LZYrgAwf7tfZPrZJfTUp2k
+	 HAQMk4W5ei9khWJkMH+utPXmDd1oRqzwdKNh9yBkDxqo1Kwqm7JawToKHk8S3bNLF5
+	 QMihBcdYKQBetKQdUBAtsQ1mDQE0HTxkQv5d2v8ZgI2LSYNRcy31utnMKWhBXPPncG
+	 ypCuFYUO6ZlKV2AfP3Yxt9Fl9YLBOWK9PtChtQ2AxuKkBcc6dZu/LME9uclFbq9nbh
+	 a0BqbTtPB8mlohh/4vGAClo6rDyAh9d1d6UUrjKeY+V9JAqdWuFSvfb13pdTSf+qOJ
+	 NQ9zKlK53hOGw==
+Date: Tue, 18 Feb 2025 16:24:35 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Michal Simek <michal.simek@amd.com>
+Cc: linux-kernel@vger.kernel.org, monstr@monstr.eu, michal.simek@xilinx.com,
+	git@xilinx.com, Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Harini Katakam <harini.katakam@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Mark Brown <broonie@kernel.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Mubin Sayyed <mubin.sayyed@amd.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Niklas Cassel <cassel@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	"open list:DMA GENERIC OFFLOAD ENGINE SUBSYSTEM" <dmaengine@vger.kernel.org>,
+	"moderated list:ARM/ZYNQ ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	"open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>,
+	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
+	"open list:XILINX AMS DRIVER" <linux-iio@vger.kernel.org>,
+	"open list:SPI SUBSYSTEM" <linux-spi@vger.kernel.org>,
+	"open list:USB SUBSYSTEM" <linux-usb@vger.kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: xilinx: Deprecate header with firmware
+ constants
+Message-ID: <Z7Rm6/DYM67QbXvT@vaman>
+References: <cover.1738600745.git.michal.simek@amd.com>
+ <2a6f0229522327939e6893565e540b75f854a37b.1738600745.git.michal.simek@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250218-dev-axi-adc-fix-headers-v1-1-5ddc79221d8c@analog.com>
-X-B4-Tracking: v=1; b=H4sIAFFitGcC/x2MwQqAIBAFf0X23EIKRfQr0UHbV+2lQiEE8d+Tj
- sMwUyghKhLNplDEq0nvq4HtDG2nvw6wSmNyvRt6ZycWvOyzspeNd818wgti4uBErASxASO1+ol
- o+j8va60fpJ9PmmkAAAA=
-X-Change-ID: 20250218-dev-axi-adc-fix-headers-b2dd1dbd1be6
-To: linux-iio@vger.kernel.org
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739874907; l=903;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=G3VoJon8QjFBAHChuMI22zdjNcH5B5joBOnnLh6sUCU=;
- b=iFj28nRQjkaqZ/g9GRd+6bAwkbm1olOc/3LY6rPl77rdiY77uZ75X9KFDawGK4InHg7KsQdGZ
- gRyU/V7oL8kB1z3u3mvxRg2C6xGwI933wK6cc/Ua4UcpSGUIKf1eLlq
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2a6f0229522327939e6893565e540b75f854a37b.1738600745.git.michal.simek@amd.com>
 
-From: Nuno Sá <nuno.sa@analog.com>
+On 03-02-25, 17:39, Michal Simek wrote:
+> Firmware contants do not fit the purpose of bindings because they are not
+> independent IDs for abstractions. They are more or less just contants which
+> better to wire via header with DT which is using it.
+> That's why add deprecated message to dt binding header and also update
+> existing dt bindings not to use macros from the header  and replace them by
+> it's value. Actually value is not relevant because it is only example.
+> 
+> The similar changes have been done by commit 9d9292576810 ("dt-bindings:
+> pinctrl: samsung: deprecate header with register constants").
+> 
+> Signed-off-by: Michal Simek <michal.simek@amd.com>
+> ---
+> 
+>  Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml  | 4 +---
+>  .../bindings/dma/xilinx/xlnx,zynqmp-dma-1.0.yaml           | 3 +--
 
-Don't use of.h in order to include mod_devicetable.h. Use it directly as
-there no direct dependency on OF.h
+Acked-by: Vinod Koul <vkoul@kernel.org>
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
----
- drivers/iio/adc/adi-axi-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 61ab7dce43be66868f09c41df18d09259db0cee3..068a1f61c6329967e39e8fcde70f0c903aaa6393 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -14,7 +14,7 @@
- #include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
--#include <linux/of.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/platform_device.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-
----
-base-commit: c0f115a8d97599623294c8e9ec28530e19c1e85b
-change-id: 20250218-dev-axi-adc-fix-headers-b2dd1dbd1be6
---
-
-Thanks!
-- Nuno Sá
-
-
+-- 
+~Vinod
 

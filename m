@@ -1,170 +1,221 @@
-Return-Path: <linux-iio+bounces-15789-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15790-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D127A3C01D
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 14:38:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D8FA3C222
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 15:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C27F3A699A
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 13:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C9C3A63C6
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 14:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAAF1E5732;
-	Wed, 19 Feb 2025 13:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10901F2B88;
+	Wed, 19 Feb 2025 14:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EHph9ofT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXgnPNuI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACB01E5718;
-	Wed, 19 Feb 2025 13:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E55D1EFFAF;
+	Wed, 19 Feb 2025 14:27:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739972183; cv=none; b=VJwwMY6iJrOKP99qj6QqthQbtI7AGHyGpU834S8dNgyHYa4/hqm43eEEEuSMfZ+3uEXE5AfgzPtYRpI0lLhGh0ca0gVNV0uMzvYfDDJmYr7fpn1kLsQNPBrujoz6v/5bsS6fTAmR1jK9orvV60X+NIDP/HMwACHNaEhIJBWbMik=
+	t=1739975233; cv=none; b=lNchhz6GlACihDVAkLhJ6OxScdPOjKDSoVGl4kwGwxU0FTBU8MSgz5wkTXLAcuNht5VDcLZstNQV8V3cso2wV+zQd0Ot1z7Ye3oyyywvlItZSIgmk7YVR7mf4eMFhApgJ62u2gIfyLYeTnKNXbGE4bUAbmq4DydOUHjQG9yulT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739972183; c=relaxed/simple;
-	bh=7ihWjXMDbjH1f4hkfj9yu5zjMSN4SJcUGVD62F9f64Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F6P3613P6eq+5a2tpssHQKIS3befUcA6LUF1rQIAphQ4IHBWYaRs3vU7bYArqsti07r5Y/mAP8Yvx2eZh2q0TcA434/Gu85+BHAz7179Orq6R9Z6KU5EZOucccKVheyd8S5LNRbkzVtro9vwB4bnKPEEZa2aS54N+HJTvXT4pcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EHph9ofT; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-30737db1aa9so63425071fa.1;
-        Wed, 19 Feb 2025 05:36:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739972179; x=1740576979; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HSsnV19R3euCe7A+mmLLwP9bRWysONanwRs/f83625E=;
-        b=EHph9ofTvDHNDUiWoC5q9QoZazOKIE+mXp9G1Q9LoaK7hTUOsGe1QfgVmaB6QaQ156
-         ZccPgs6KyZBUT1o59d0GhKl7DgNP/4YlkN/FnhSe8eAq01AWKyP/rHsSNTmazugBg0K7
-         PBRJfTN/vvaISoQeKAuH7pXHMc3KwH1+rc111zvK4ftR+FhGR5DSGlO7l8JTvwgU/xKC
-         5EJFxhxzvXVp7MkQLmOvbRrdaXaboGsYfP7/Itbtc5gLFRn5xTCY/O8ZAvdXmm1QtIap
-         W6wO/7JcHTvRKu9rDQMkrvxlB4R2dhgCifcMTkonhn4kHw+c94PWLCEX5IGpSsR2jBc/
-         FJLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739972179; x=1740576979;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HSsnV19R3euCe7A+mmLLwP9bRWysONanwRs/f83625E=;
-        b=RflRrUdlzLEAYFjHlbQHGnVdSE79TAPWd4CUhuUCivBPVkNwtBnamio48f0UG4h9Na
-         WkGRbFjQuG3czAItUlgpLHCpJ+8FWe4N1WMrYGSrDYjSMP5obmyiz78nBW3l5oH+zp8B
-         cA7bojwC5YiysS46aaOnELX1tsWZV9ozzeFEPQzs1499Ndg8wujoWJ4ZQIkHZ4ADVEZ8
-         D+NERPB9/MLcF/lGsQoJf2QJbflQ1FMpj6fgmxg4V3GwkP5nQ6Ti7qT7wl3B0zwuM+uD
-         GznHG4fA5kBeaD9NUGehhOJKAYTHO4IOz/IgEmRyUAXjdL1hYE+qjy270jITIq9zsNmQ
-         h86g==
-X-Forwarded-Encrypted: i=1; AJvYcCVlAafVaG1XGUPmAWa6lJ3ra7QzrZF2OhXG0F+GAxMEZwcHmadcKY3GEbTh9ZTtLGZHpCNqKDG6Cx96@vger.kernel.org, AJvYcCX1gtrW92ZbAYc5xAOA9FG0Fj+TCoa9D91VdsKk0Tow036k0HEzWKVJlQ2Oiv7KUjTk0HF/O7NkozRj6APy@vger.kernel.org, AJvYcCX6AR8svjcZ73abSVUYw/2fs+9Y2EpfGIA0AIBmFaxw0pv04L+5Ifb2D+2fgM9NI6E58ehKted8QPoi@vger.kernel.org, AJvYcCXnBJrzY47FM7s6JYFUyqDenI8UGvf3udMzLOUiu9dKX4vcGyxLISy97iFjj2badw1J2llMdvy61qToygH2MiH+jA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztFpwL6O4+LO3DopVY7a0X3YusvLDS923Jxs6SwGGwrAznEbw+
-	x8WOlSDzdyHl6hrAMfOhpERB44e514dpagreT3i2hLUvglClSlH8MlEzhg==
-X-Gm-Gg: ASbGncvI10lddu6egYTdZJBK7aideVykkyh1U5YIEAeJpIWUfx84LRzl7NjeEPX+e5M
-	TxCdkH+ILU5N1whDfCZVmWf8+ehEORSAD++AmMCglemYT0wJeU+RhqWg6A78DjWtql3uPDfreEv
-	uFIIpOPJ9ZlMPYruum4ThRMgrk4IQwBV55qWpbmZu1UBO4fZ1Vkw8AsV0b0e6TSERsG7gYSiTo/
-	oZ3Pyh/j/lHaoCLv2AvU4wD18NZ9GX20+0ZbwhJgWlOpm7OGqls6Nw2NC21tNqYJZtkLzuyi6Md
-	V48qT4cqVP8NxA0PCviZPb5lDnJnUULyCqVEAiLIG+AyMeCun1bTKPLvtp1xmNY20vqZpIKT
-X-Google-Smtp-Source: AGHT+IECONOuwKIydK//bT3AGqnTWMmCdF2rv/KJJHD8I1175BIY8l67zp+r+qNFr42gMLhOkEmBmA==
-X-Received: by 2002:a05:651c:2222:b0:308:f4cc:951b with SMTP id 38308e7fff4ca-30a45035a2fmr14037951fa.23.1739972178597;
-        Wed, 19 Feb 2025 05:36:18 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30a258703c9sm13795701fa.7.2025.02.19.05.36.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Feb 2025 05:36:16 -0800 (PST)
-Message-ID: <f1c6078e-39bf-499f-b7ab-17526b3e60a9@gmail.com>
-Date: Wed, 19 Feb 2025 15:36:14 +0200
+	s=arc-20240116; t=1739975233; c=relaxed/simple;
+	bh=vhmxI/qpUsmrpjWohWJgs/TMHfwXta/ulC9P6VHKIyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kiQt0lUALPHcKQkTSCGmrcMoi3a8C7SeszpQFY7CobZVytj82YYR/WYXIm1H/lmsfFRgvPet+Vrhd67+Prmebcgjo86/6JMaXSiQc13QovkQHuq4j2SZ4Ap7yqfrGHPhr1riAUjO7gHftqmiccXNegfVkHTLDj6tuk7UaB8K2Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXgnPNuI; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739975232; x=1771511232;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=vhmxI/qpUsmrpjWohWJgs/TMHfwXta/ulC9P6VHKIyA=;
+  b=PXgnPNuI3Zt8enFDOO6lW3DIwE+Ma37qC2yKch4wE6kvULdyS0RU38HF
+   YW2crhXxV6VvZsKmY9wMydPGG/kuBnr9js9KeNg76anZgzzY4RAMmqIf0
+   w1SHboauqv7Lv9W5eKYF8qXdgqP80uqSIN5Kdp1zZEwm5hDUdvDW0ZCph
+   +fHyozL78MzHM4iFSXZ3DWUFuWOCK6SRNzyNIgauALUfeYYYGxzV2gGBH
+   ypLxWNQ1yM4ykRSqcDjDE6aM8/KwQ9KfVjIs0L9ohmPxAexI5bc2/iZUt
+   E9gSyw2u8MVEN3itNEb+HSYpL77EteB+qgXWIZ2d9WJgITPKpl4g7EnOP
+   A==;
+X-CSE-ConnectionGUID: IXdy6efWSZGse9Jad5BS8w==
+X-CSE-MsgGUID: HCwKoiUcTHqXMHScFXiJ/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="66067582"
+X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
+   d="scan'208";a="66067582"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 06:26:56 -0800
+X-CSE-ConnectionGUID: 5fTf7ojeRZiQzvfXC1fUTQ==
+X-CSE-MsgGUID: zkUoBl+eRPGI1IYoJeFrYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="145620194"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 06:26:52 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tkl2H-0000000D2xx-20EC;
+	Wed, 19 Feb 2025 16:26:49 +0200
+Date: Wed, 19 Feb 2025 16:26:49 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
+	Daniel Thompson <danielt@kernel.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mfd: lm3533: convert to use OF
+Message-ID: <Z7XqKcOUt5niXzpv@smile.fi.intel.com>
+References: <20250218132702.114669-1-clamor95@gmail.com>
+ <20250218132702.114669-3-clamor95@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 6/9] iio: adc: rzg2l_adc: Use adc-helpers
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-References: <cover.1739967040.git.mazziesaccount@gmail.com>
- <25c5d22f6f0cbd1355eee2e9d9103c3ee71cebdc.1739967040.git.mazziesaccount@gmail.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <25c5d22f6f0cbd1355eee2e9d9103c3ee71cebdc.1739967040.git.mazziesaccount@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218132702.114669-3-clamor95@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 19/02/2025 14:31, Matti Vaittinen wrote:
-> The new devm_iio_adc_device_alloc_chaninfo() -helper is intended to help
-> drivers avoid open-coding the for_each_node -loop for getting the
-> channel IDs. The helper provides standard way to detect the ADC channel
-> nodes (by the node name), and a standard way to convert the "reg",
-> "diff-channels", "single-channel" and the "common-mode-channel" to
-> channel identification numbers used in the struct iio_chan_spec.
-> Furthermore, the helper checks the ID is in range of 0 ... num-channels.
-> 
-> The original driver treated all found child nodes as channel nodes. The
-> new helper requires channel nodes to be named channel[@N]. This should
-> help avoid problems with devices which may contain also other but ADC
-> child nodes. Quick grep from arch/* with the rzg2l_adc's compatible
-> string didn't reveal any in-tree .dts with channel nodes named
-> othervice. Also, same grep shows all the .dts seem to have channel IDs
-> between 0..num of channels.
-> 
-> Use the new helper.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> Revision history:
-> v2 => v3:
->   - New patch
-> 
-> I picked the rzg2l_adc in this series because it has a straightforward
-> approach for populating the struct iio_chan_spec. Only other member
-> in the stuct besides the .channel, which can't use a 'template' -data,
-> is the .datasheet_name. This makes the rzg2l_adc well suited for example
-> user of this new helper. I hope this patch helps to evaluate whether these
-> helpers are worth the hassle.
-> 
-> The change is compile tested only!! Testing before applying is highly
-> appreciated (as always!).
-> ---
->   drivers/iio/adc/rzg2l_adc.c | 41 ++++++++++++++++++-------------------
->   1 file changed, 20 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-> index cd3a7e46ea53..3e1c74019785 100644
-> --- a/drivers/iio/adc/rzg2l_adc.c
-> +++ b/drivers/iio/adc/rzg2l_adc.c
-> @@ -11,6 +11,7 @@
+On Tue, Feb 18, 2025 at 03:27:00PM +0200, Svyatoslav Ryhel wrote:
+> Remove platform data and fully relay on OF and device tree
+> parsing and binding devices.
+
+Thanks for following the advice, but the problem with this change as it does
+too much at once. It should be split to a few simpler ones.
+On top of that, this removes MFD participation from the driver but leaves it
+under MFD realm. Moreover, looking briefly at the code it looks like it open
+codes the parts of MFD. The latter needs a very goo justification which commit
+message is missing.
 
 ...
 
->   
-> +static const struct iio_chan_spec rzg2l_adc_chan_template = {
-> +	.type = IIO_VOLTAGE,
+> +static const struct of_device_id lm3533_als_match_table[] = {
+> +	{ .compatible = "ti,lm3533-als" },
+> +	{ },
 
-I just rebased this to v6.14-rc3 and noticed the channel type can no 
-longer come from the template. There are also some other minor changes. 
-I'll fix this in v4 if this same approach is kept.
+No comma for the terminator entry. I think I already pointed that out earlier.
 
-> +	.indexed = 1,
-> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
 > +};
-> +
 
-Yours,
-	-- Matti
+...
+
+> +	device_property_read_string(&pdev->dev, "linux,default-trigger",
+> +				    &led->cdev.default_trigger);
+
+One prerequisite patch you probably want is an introduction of
+
+	struct device *dev = &pdev->dev;
+
+in the respective ->probe() implementations. This, in particular, makes the
+above lines shorter and fit one line.
+
+...
+
+> +static const struct of_device_id lm3533_led_match_table[] = {
+> +	{ .compatible = "ti,lm3533-leds" },
+> +	{ },
+
+As per above.
+
+> +};
+
+...
+
+> +		if (!strcmp(comatible, "ti,lm3533-als"))
+> +			lm3533->have_als = 1;
+
+If you end up having this, it's not the best what we can do. OF ID tables have
+a driver_data field exactly for the cases like this.
+
+...
+
+> +		if (!strcmp(comatible, "ti,lm3533-backlight"))
+> +			lm3533->have_backlights = 1;
+
+Ditto.
+
+...
+
+> +		if (!strcmp(comatible, "ti,lm3533-leds"))
+> +			lm3533->have_leds = 1;
+
+Ditto.
+
+...
+
+> +		ret = lm3533_update(bl->lm3533, LM3533_REG_CTRLBANK_AB_BCONF,
+> +				    1 << (2 * id + 1), 1 << (2 * id + 1));
+
+BIT() and better to use a temporary variable for this calculation.
+
+> +		if (ret)
+> +			return ret;
+
+...
+
+> +		ret = lm3533_update(bl->lm3533, LM3533_REG_OUTPUT_CONF1,
+> +				    id | id << 1, BIT(0) | BIT(1));
+
+		mask = GENMASK();
+		..., id ? mask : 0, mask);
+
+> +		if (ret)
+> +			return ret;
+> +	}
+
+...
+
+> +	bd = devm_backlight_device_register(&pdev->dev, pdev->name, pdev->dev.parent,
+> +					    bl, &lm3533_bl_ops, &props);
+
+
+With the advice from above:
+
+	bd = devm_backlight_device_register(dev, pdev->name, dev->parent, bl, &lm3533_bl_ops,
+					    &props);
+
+
+>  	if (IS_ERR(bd)) {
+>  		dev_err(&pdev->dev, "failed to register backlight device\n");
+>  		return PTR_ERR(bd);
+
+Consider another prerequisite patch (which should come before the firstly
+proposed one):
+
+	struct device *dev = &pdev->dev; // yes, this can go in this change
+	...
+
+	if (IS_ERR(bd))
+		return dev_err_probe(dev, PTR_ERR(bd), "failed to register backlight device\n");
+
+...
+
+> +static const struct of_device_id lm3533_bl_match_table[] = {
+> +	{ .compatible = "ti,lm3533-backlight" },
+> +	{ },
+
+As per above.
+
+> +};
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,128 +1,166 @@
-Return-Path: <linux-iio+bounces-15803-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15804-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A7DA3C82A
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 20:00:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2893FA3C838
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 20:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DB9D3B79DE
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 18:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A887118963A7
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 19:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCB521518A;
-	Wed, 19 Feb 2025 18:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49261F8BBC;
+	Wed, 19 Feb 2025 19:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CUveTSWS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWUlymYt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542F1215068
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 18:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A0C1BC099
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 19:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739991544; cv=none; b=IaVb0dRdQKTfSNr/FYW1QaaXJVIO+sTs/P2Xk8R7+OZpJ+KLsogAHnDg5rXjiCpzKYXZUhEeR5MUTQI8Ixin7/nAlv5IMuJmzaokAPf9u5CkDljEfmNcN5J5NX4kbx2YAaa4mT3KEzlQZaCAe76S1RXCGpK/QgYC/7IEWk+4IRY=
+	t=1739991908; cv=none; b=KvJ+cH4+rO8zt1uYozbLk5ty8WD06+U01yTyJ0PSZo/cx2/UtYz15N9nR+T22GXXrb/g7/41KeOWkNOgOvMVRmDRv8OO1pDlnLetjze+914PRTM+e1YbnicFKRYby4mPK6JxOoe1YF/BOEoKBM38Xi7vipbeI/RVYw41kDTCCV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739991544; c=relaxed/simple;
-	bh=oxIDr8H7+ynD5icMp1L0tohpWoDKxhs52fiB5mW6gUI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jzn3Jqv0LgAf41OYaV8TSaa9Bcp1CHPCBlYPg+zZ9lGnE98Os5J5gKYq8S/aRBcLSCs7rgWC3e3+t78Pr8neSffQ2sBRgq2qibvBWnt6A2pU9Un444jbDcV+NFpqn4JasMR1s72PJWxzOZ0I1d1kqX6mOnFUatoLK6lxp2mFoBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CUveTSWS; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-439846bc7eeso515045e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 10:59:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739991539; x=1740596339; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kygqAvSk2wzyJnjkj1tcZQhsJjKBlVF3GdzFiy8QNlA=;
-        b=CUveTSWSQfDKbfE7CFbBg4jaImltj08rsgh1xhkDMJsEfCHk78JDS+kDqPf+/ZN81h
-         i8HMQ+jefPyaxUjzx7cwztd0ndCeCBOCcxjg22gQq3bhooPUJRxmgwZYaVcnAcUpQqzi
-         TgyznZrV4tiKIiaqt2uELRFbJv/Wz4U4kmOSBx35qiKqt8lDqjRmD+nsOK/e3BCSgPfH
-         DD9gOx62gPXCm3nF1z0RQchQyqSJ0v1xvgP5pYUAWewjlGhNLu3V6lrDGNqw85jOg+qg
-         ZfBQVS4fK/WSBw21iCEoxYGrxjvrZRAWRgjdTT8xYI1/+BdEDZ3dAE2PmePYcv62bpDY
-         IVMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739991539; x=1740596339;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kygqAvSk2wzyJnjkj1tcZQhsJjKBlVF3GdzFiy8QNlA=;
-        b=WszvkLeM3WqwXc0qlez4e7tcH592Ak7Qz3X2zT2cxg8+5n/b7O9AMu/E4VoiXx+K5r
-         aEDe3xFMfaZbhPGO/FrFiEEbSMmlkt35bAUoGZAii/L9E8EEnLn6u118Fcl7doLFRtLO
-         7dGslEZoPjgTjILb2Dac4N58X7Pite8jksmAMNmdRva3EK5dHe4K3nmye9tfYC3XPDvy
-         asR1pNlhn99ck8qzJS8O6QcuVEBNifhnF9c58C0slwv/H9UIRElkuugqbAXJAm0gtGlx
-         ss5D7dkCVccjIHyWBhNhyKtoBxTw4EcUmuNDYj5vRXQ6wMSpSfDShGc0QkBSIhlUOD/g
-         8COQ==
-X-Gm-Message-State: AOJu0YxanmX2VepDGgqnPEYpwsF6lvpZVT0JR+/iaT8oVRa0kY/jn1q1
-	EBhWeD0/ySpa2DOJccGcN3xrxKyQGWU170oQUVLDF5L7NKXK9EEHBphj+EHZszQ=
-X-Gm-Gg: ASbGncv6OADH29/7cotEy4bKjgoSVh4qQlV7cRKf2WtseIA9/0pq2c/zIImGhcfTn+E
-	2Ahgc0ctmGXV9ujAEa6kitx/YJu+n1pahQzWlt2Vaje1lNIEXJxVLWmZoxmK4zq0JWCAU/LH7DE
-	1J1kFvIk/wz66HEYYImtdVJd3bEqY08geIT3X8qd3Lr7gyBX/f/Yxck+Ch1ie1+PE+BcCOWz0RE
-	twif64CnASn+nWIehNMRo4heaiCUwy6Q6gxBXu75CZhWr3Dgmb+nD/veVdJzmO6VHAWbyTPyNCj
-	lJB3UBMcF19L4b3pAI9m+xnKbXMn8Gj0SYG47qG7s8U9puYtRBWmCgf5hAniW+U=
-X-Google-Smtp-Source: AGHT+IEnbJY/mIDaP2qtCLo05g9UW5rHHcHO+JXueHyKnlKuuX8Vac6lYcqM+/9ztHZ3NKRRxRGTAQ==
-X-Received: by 2002:a5d:64e9:0:b0:38f:2c28:687c with SMTP id ffacd0b85a97d-38f5878c9cemr3941389f8f.15.1739991539353;
-        Wed, 19 Feb 2025 10:58:59 -0800 (PST)
-Received: from [127.0.1.1] (host-79-54-50-21.retail.telecomitalia.it. [79.54.50.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b44b2sm18336665f8f.20.2025.02.19.10.58.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 10:58:58 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 19 Feb 2025 19:57:43 +0100
-Subject: [PATCH] iio: dac: adi-axi-dac: add io_mode check
+	s=arc-20240116; t=1739991908; c=relaxed/simple;
+	bh=bCzeIT26kUN4IZ7i5bplkDtzx6uNIBNINIEMfqIFDW8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GYXmllXnSN+1ALar+BpjXF/xIeIJhHQZIIfeQJOYPLAklSI7OHbccLc9XemuFHwv+IyrMm7BwDRyOnNr7JMSMx28kBmQAHglF3M3rZicZheisu1DJOdEE9y+bEm0etkTVKQKBvVLps1ASUnBoRfPfo9fE9xj9/CrHxdf93NZdGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWUlymYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799DFC4CED1;
+	Wed, 19 Feb 2025 19:05:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739991908;
+	bh=bCzeIT26kUN4IZ7i5bplkDtzx6uNIBNINIEMfqIFDW8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=KWUlymYtqlaovvlHRu3KrF6QPQDrCwqZCl9ikU181qJws6PacLSNOs3Wa3AqUDjKs
+	 t3SVXNYzlRUwyiUkd6rLzoSz3uRdQYkf16L+JYxjnIdcmIIesuNdWSnFSlBxNa4sIk
+	 ZpeoUU+U6DpMsCIc3sTOnrZ4tgQS31I4CEJJQeSjn/oUy2Q9N3PH+595jBDxsDlG9i
+	 dXp/YLxWeyjztDqBnKkQErMbW25zg8zqqwxmzGxJZv4t/+2YfDzU9SxnyTtJGkX1wC
+	 YfpkYfeGagPn/uWDzdKNj9gCaYYk9Je7W6uMZ3wkVqzBN161exFQ4ovTSd4n3r/xav
+	 Tgc658whjPuOA==
+Date: Wed, 19 Feb 2025 19:05:00 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, linux-iio@vger.kernel.org, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 5/8] iio: accel: kx022a: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <20250219190500.01457211@jic23-huawei>
+In-Reply-To: <2ad4ca67-5a70-4b7b-b744-d9bd92ce386a@baylibre.com>
+References: <20250217140135.896574-1-jic23@kernel.org>
+	<20250217140135.896574-6-jic23@kernel.org>
+	<0e17116e-6160-4920-83d9-086218245299@gmail.com>
+	<85d97cbe-9d34-462c-a89f-de6fc1ac6e34@baylibre.com>
+	<ead33fc6-48b9-488c-8993-2ca647e59735@gmail.com>
+	<df700bd7c8d3aab89177b122ed9adf0269bde62d.camel@gmail.com>
+	<ade6ee75-7f38-4826-9359-2411165decb5@gmail.com>
+	<2ad4ca67-5a70-4b7b-b744-d9bd92ce386a@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250219-wip-bl-axi-dac-add-enum-check-v1-1-8de9db0b3b1b@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAKYptmcC/x3MTQqDMBAG0KvIrPuBiVi1Vyku8jPVQU0loVUQ7
- 25w+TbvoMRRONGrOCjyX5J8Q4Z6FORGEwaG+GzSpa5LrTpsssLOMLvAGwfjPTj8FriR3YTW2qd
- qdFs3XUX5WCN/ZL//d3+eF/ahDhtvAAAA
-X-Change-ID: 20250219-wip-bl-axi-dac-add-enum-check-8bb617285793
-To: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On Wed, 19 Feb 2025 09:25:00 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-Add safe check to the high bound of the enum values,
+> On 2/19/25 6:21 AM, Matti Vaittinen wrote:
+> > On 19/02/2025 12:51, Nuno S=C3=A1 wrote: =20
+> >> On Wed, 2025-02-19 at 07:36 +0200, Matti Vaittinen wrote: =20
+> >>> On 18/02/2025 17:42, David Lechner wrote: =20
+> >>>> On 2/18/25 1:39 AM, Matti Vaittinen wrote: =20
+> >>>>> On 17/02/2025 16:01, Jonathan Cameron wrote: =20
+> >>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>>
+> >>>>>> These new functions allow sparse to find failures to release
+> >>>>>> direct mode reducing chances of bugs over the claim_direct_mode()
+> >>>>>> functions that are deprecated.
+> >>>>>>
+> >>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>>>> ---
+> >>>>>> =C2=A0=C2=A0=C2=A0 drivers/iio/accel/kionix-kx022a.c | 14 ++++++--=
+------
+> >>>>>> =C2=A0=C2=A0=C2=A0 1 file changed, 6 insertions(+), 8 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/drivers/iio/accel/kionix-kx022a.c
+> >>>>>> b/drivers/iio/accel/kionix-kx022a.c
+> >>>>>> index 727e007c5fc1..07dcf5f0599f 100644
+> >>>>>> --- a/drivers/iio/accel/kionix-kx022a.c
+> >>>>>> +++ b/drivers/iio/accel/kionix-kx022a.c
+> >>>>>> @@ -577,13 +577,12 @@ static int kx022a_write_raw(struct iio_dev *=
+idev,
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * issues if users=
+ trust the watermark to be reached within known
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * time-limit).
+> >>>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> >>>>>> -=C2=A0=C2=A0=C2=A0 ret =3D iio_device_claim_direct_mode(idev);
+> >>>>>> -=C2=A0=C2=A0=C2=A0 if (ret)
+> >>>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
+> >>>>>> +=C2=A0=C2=A0=C2=A0 if (!iio_device_claim_direct(idev))
+> >>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EBUSY; =20
+> >>>>>
+> >>>>> Not really in the scope of this review - but in my opinion the logi=
+c of
+> >>>>> this check is terribly counter intuitive. I mean,
+> >>>>> =20
+> >>>>>> +=C2=A0=C2=A0=C2=A0 if (iio_device_claim_direct(idev))
+> >>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EBUSY; =20
+> >>>>
+> >>>> I'm curious how you read this then. I read this as:
+> >>>>
+> >>>> "If claiming direct mode succeeded, then return an error!" =20
+> >>>
+> >>> I am used to seeing a pattern where function returning zero indicates=
+ a
+> >>> success. I have no statistics but I believe this is true for a vast
+> >>> majority of functions in the kernel. I believe this was the case with
+> >>> the old 'iio_device_claim_direct_mode(idev)' too.
+> >>> =20
+> >>
+> >> Fair enough... Note though this is returning a boolean where true make=
+s total
+> >> sense for the "good" case. I do agree it's not super clear just by rea=
+ding the
+> >> code that the API is supposed to return a boolean. =20
+> >=20
+> > Exactly. Just seeing the call in code was not obvious to me. It require=
+d finding the prototype to understand what happens.
+> >=20
+> > Anyways, I guess this discussion is out of the scope of this patch and =
+if no one else sees this important enough to go and change the iio_device_c=
+laim_direct() - then I am fine with this patch. So, with a bit of teeth gri=
+nding:
+> >=20
+> > Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >=20
+> > Yours,
+> > =C2=A0 -- Matti
+> >=20
+> >  =20
+>=20
+> Would a name like iio_device_try_claim_direct_mode() make it more
+> obvious that it returned a bool instead of int?
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- drivers/iio/dac/adi-axi-dac.c | 3 +++
- 1 file changed, 3 insertions(+)
+FWIW I'd consider this a reasonable change if people in general
+find it more intuitive.  Conveys to those not familiar with the
+fun of IIO that failure is something we kind of expect to happen.
 
-diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-index 009fb987e1afd04c3dbc59a9742f7982744420c2..892d770aec69c4259de777058801c9ab33c79923 100644
---- a/drivers/iio/dac/adi-axi-dac.c
-+++ b/drivers/iio/dac/adi-axi-dac.c
-@@ -728,6 +728,9 @@ static int axi_dac_bus_set_io_mode(struct iio_backend *back,
- 	struct axi_dac_state *st = iio_backend_get_priv(back);
- 	int ival, ret;
- 
-+	if (mode > AD3552R_IO_MODE_QSPI)
-+		return -EINVAL;
-+
- 	guard(mutex)(&st->lock);
- 
- 	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
+Slightly messy to change the patches already applied to my
+tree but cleaner to do so now than later as I haven't pushed=20
+the branch out as togreg yet (it's just the testing branch
+for 0-day).
 
----
-base-commit: 4dd0ce442fa57f5274878c89223362344f28224c
-change-id: 20250219-wip-bl-axi-dac-add-enum-check-8bb617285793
-
-Best regards,
--- 
-Angelo Dureghello <adureghello@baylibre.com>
+Jonathan
+>=20
 
 

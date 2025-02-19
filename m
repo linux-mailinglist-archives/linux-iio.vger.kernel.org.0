@@ -1,108 +1,120 @@
-Return-Path: <linux-iio+bounces-15807-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15808-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8FD5A3C987
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 21:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61996A3CA08
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 21:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928593AE4E6
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 20:20:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318C23B8ED5
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 20:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6837822E406;
-	Wed, 19 Feb 2025 20:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1F423C8CC;
+	Wed, 19 Feb 2025 20:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SLwKh1NL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qrC24Sfz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD08214A64;
-	Wed, 19 Feb 2025 20:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4B21F2C5F
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 20:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739996418; cv=none; b=KFRyc+3PRqdFpFxZOkCl/ntqFdH/RTyaIHg/2JJ3TDJvEWpUaLLGMor1FHa5RbFvvoraMYQ6KqyuHb6WoHnhBvZ1BwTmW0G13I7dt2w0LBAJjfYXB4nAdPyhbxgP+/AhXSFvVascJBWVtYAKFm9kVsfHOkCzdYsbStIT1E8U2wg=
+	t=1739997300; cv=none; b=YYEkyyuqCGaxgGfh5NGbvZhC0fBonVuOscRG221zdc0rKBST9KR8vkKXlJ6S5cocvqCGsJPjYWrjxTs50XCz6MYFHIRH3ezaGwd0rg0go8zOxhvB56duria4/N32BKfytu5KGVJahWblYL+kf1Br2U48zXZ6/hc2QxjXLmqvhSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739996418; c=relaxed/simple;
-	bh=oUcnF6wLVy+xmj8OVpUmP+faVLotvjxceq1mY3aO/So=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h/zQ/A0bIyWu4LjDD47WXHvMm3T4TNlgLwzf+whOWyJ3DOmcoLZNtKfzto844waj2yrEQCyB5nqSJj6Ve0qYzTvo/muJul4stmXTgrPI3+cB/WQEJjvE09//DC2NIctO+7Da97+S6yvi6tZMgV66q5OMQZ3uddCSARGsWqbpZWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SLwKh1NL; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739996417; x=1771532417;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oUcnF6wLVy+xmj8OVpUmP+faVLotvjxceq1mY3aO/So=;
-  b=SLwKh1NL1DwE6Bj7EkPzEWWHnZ0KNUFjPfvHKxAuG7IqiystVLTWdbn/
-   rnDyD894CWXt8rVWQ18z1So5L6Mbzvnlso26EENVou/e24qQQah4rys88
-   NAIsUWaotMENr/haVsROKSTm0n6rm6PL9Uzu6x83WNuPdsCzbNJonMTTf
-   eXhgHV8jBn0+5WBHobiYFTuzuAlMtyw4zL0zYctl1sW29UQjf4cwPY/cU
-   Itn0paSTooeI/1hvAnXpT52niLFGPD4D8opWJt/tCWRVhZYAXlF1Ra6TQ
-   77eEORrX1tUPKw3GSoMFXu/9EiWuTDh27nR5E2LhAV8zT21E+G4MLoaZ/
-   w==;
-X-CSE-ConnectionGUID: 4A3KExFrQn6NS+91mav+fA==
-X-CSE-MsgGUID: 6nSjkFk1QjSXFYaqHLfh/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="50966657"
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="50966657"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 12:20:13 -0800
-X-CSE-ConnectionGUID: pBlNVsujSvyr6QenP15SOg==
-X-CSE-MsgGUID: Nq+u8uC3QQy+wHa6XfpUhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="115020364"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 12:20:08 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tkqY8-0000000D7d9-2wZe;
-	Wed, 19 Feb 2025 22:20:04 +0200
-Date: Wed, 19 Feb 2025 22:20:04 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: kernel test robot <lkp@intel.com>
-Cc: Svyatoslav Ryhel <clamor95@gmail.com>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-leds@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mfd: lm3533: convert to use OF
-Message-ID: <Z7Y89AI8me_MFsEV@smile.fi.intel.com>
-References: <20250218132702.114669-3-clamor95@gmail.com>
- <202502192343.twEQ3SSs-lkp@intel.com>
+	s=arc-20240116; t=1739997300; c=relaxed/simple;
+	bh=tmmB1CJeqQfmQIsT1k2GUWvfj10sMcsKlDITNHP0y0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eZbf5h4ItgtT9RuACB1+RuQq+5JG2XLYuncSGSHV2/uXxDcB6WT+rI0TbJQH9558uhhlDW0Q45NVD8oQmkKo7y23R2zo6oq8cUvLwYCG+C06Tc3qWdWOoXcayF4wtVag5n4JdBOaCzCq0m2wgQ0irUFeZdz7HYGSisQ21xiFJKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qrC24Sfz; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54622829175so233472e87.0
+        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 12:34:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739997297; x=1740602097; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tmmB1CJeqQfmQIsT1k2GUWvfj10sMcsKlDITNHP0y0E=;
+        b=qrC24SfzifPCd/chsOHEE5eg/ij7+Rqoiy1lfyuVqdpLNT2XMPm4sv1zg+JENjtcal
+         9vBYifdKFqZp/DIGw7YhyarKqRZ1g0zwwaO4VAHAnfycUv+bBhsYv+xxFQSUDlQpsvC6
+         TLyTBlOGKaBFx26TOsNB+5vTou9SkZTeg7Oibk4/Z0rG2uAMcJbvBG2aYZVh6jnbYnzb
+         osVBhY939AitIpz7AaMOFo/QUW/DTtz3yUUsBtOASblJRuwZyEuYVsces0O4uQnJ0nzm
+         PC/Jd3yLobueKoVUkyl/20JDTsW4jZpFzRmI2P2MXdS752ZuvXYcoiAs3mfS+QCoyxii
+         yIlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739997297; x=1740602097;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tmmB1CJeqQfmQIsT1k2GUWvfj10sMcsKlDITNHP0y0E=;
+        b=j/TPA+mHx60s4ifU9pv6IGruosvyQsBmvuw+DPQ3fmCJnXq4b1kKX+UpXEdWlNS6tY
+         eGDllW5zZ7qkT8SdpJlM3JxoI5+Fkf4nfQgvOVNMIsGslnD9VCxsBq5AWR2WI/NYyGQr
+         P+7MMUisIduvAXHLArzQIOJwFcZ9w3evkB4i6E8oficholEo8bqYBrEn4YPX5DOX8Wy5
+         aer7YlDNL2MM5tvbJzqOtwMFaPyN0/Nx67RHCTsTmRpDbYstUsJoemICjM+lVzbMiHsz
+         +534/CRM95Ip4v6aEaMZzPTaaUWEcqyO+kmyAKWNe6DhVJZ1D1oR+p1L10OXpmnhNyUc
+         tPpQ==
+X-Gm-Message-State: AOJu0YxYoz7jqy4UJb19claPannufK2/HczRBD7AqSjn5vyY5C1DknCV
+	T60xwVQBi+58g8MrY1fpMBi3a7V1m5jaUfTik6/y84sGfhhMw7A/Y5ex6sHBg/yu1IU7LOIoPG3
+	bAJAidFXRDeZbXJoJJs1djnQV9umAAKviCL+f3A==
+X-Gm-Gg: ASbGncsr7tFh0xmGD4HIw8xFBSmDsA3yTp3q86FXwSav1OrNS81+kaK/Ez8Ex/bZ7tq
+	hkaaaPRtdBvXhoLNqVPg9qb9LlcmIlL/DyrYs2IpSqLcvaOuiFAUslI911bLDJhUPmiQCqckf
+X-Google-Smtp-Source: AGHT+IHbToAtZe/z+uRFGIRnNv1BDrEH+lc1qU1hrhcx1euMXlKTWhbbehSpK2l1rH3kiLuqYPFivyA0U+9MmTz7gF8=
+X-Received: by 2002:a05:6512:3dab:b0:545:2fcf:642d with SMTP id
+ 2adb3069b0e04-5452fe2727cmr6277433e87.6.1739997296872; Wed, 19 Feb 2025
+ 12:34:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202502192343.twEQ3SSs-lkp@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1739368121.git.Jonathan.Santos@analog.com> <62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
+In-Reply-To: <62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 19 Feb 2025 21:34:45 +0100
+X-Gm-Features: AWEUYZmqmEnkA-aLVYEYk2CgVjDlg2QM-jTEjVJlaUmymL8juT9oZ9shwBapvIM
+Message-ID: <CACRpkdaSY7WH191makzPcZqLd-vBsC_f6yagWzBa65MrC+pjKA@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3 12/17] iio: adc: ad7768-1: Add GPIO controller support
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, jic23@kernel.org, 
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	jonath4nns@gmail.com, marcelo.schmitt1@gmail.com, dlechner@baylibre.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 20, 2025 at 12:02:51AM +0800, kernel test robot wrote:
-> Hi Svyatoslav,
-> 
-> kernel test robot noticed the following build errors:
+Hi Jonathan/Sergiu,
 
-It a second time you send not even compiled code.
+thanks for your patch!
 
--- 
-With Best Regards,
-Andy Shevchenko
+On Wed, Feb 12, 2025 at 7:20=E2=80=AFPM Jonathan Santos
+<Jonathan.Santos@analog.com> wrote:
 
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+>
+> The AD7768-1 has the ability to control other local hardware (such as gai=
+n
+> stages),to power down other blocks in the signal chain, or read local
+> status signals over the SPI interface.
+>
+> This change exports the AD7768-1's four gpios and makes them accessible
+> at an upper layer.
+>
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 
+Is it not possible to use the gpio regmap library in this driver
+like we do in drivers/iio/addac/stx104.c?
+
+It cuts down the code size of simple GPIO chips on random
+chips quite a lot.
+
+Yours,
+Linus Walleij
 

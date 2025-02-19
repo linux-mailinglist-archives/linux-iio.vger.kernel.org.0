@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-15755-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15756-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7857A3AEA2
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 02:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7F3A3B0F3
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 06:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63C8D1647C5
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 01:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38C2C173635
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 05:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F91EEAA;
-	Wed, 19 Feb 2025 01:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E591B0F20;
+	Wed, 19 Feb 2025 05:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EVnl/hN5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OvykzmNA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521B1E4AB
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 01:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD0A1AB51F
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 05:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739927390; cv=none; b=um6zNj0EQZFTuE63ZYAk5Wx9iEOaROeLTve7hUAeqmf6fi3r4OiM9ka8EI4Qe6xQGUFdHOrsAWpfNL/eLwZ95+AyL1M/NBMJgXnGPYQD6DtYwIsgi3l1IQ0oa575/Hnox2+fPGRLk3zjZXCr0GwSTC8sZAIlq8KZEQATj256Mmg=
+	t=1739943393; cv=none; b=gGlhM/hCBMmqMkLEHAjAzVYW3maL7w3XMwzehHTtKX3152+ZJZ/2S0t46AMDSvD0PWtrkOZCzZHx3xCXZNGh3AuZiOyjFGHLtJ7g6G8wYlrJ38WlEu/SLoglnZKO6DzjhfalfZchra87s1sOs+gV5xMjEQwCWELaW5JgkEubj1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739927390; c=relaxed/simple;
-	bh=N9HYiKAzIYICHkevEmGii0QS0aosYLi2lJDrliQrdjQ=;
+	s=arc-20240116; t=1739943393; c=relaxed/simple;
+	bh=e1hTBGmpaJrR80X1HQFrSY+G2Tp2v+c8wk2MFt8btm8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kVvRyVXtbcGMFWGAveqcjSfwQ23sMMOvZKdtchqjGAVy2iZVBqePGwTLx30/q8OEU5y9Epc2c8KQEL0VQGRRAB4ISa0Dm0q9TmCl/2BCm3TWoy6ICX0OIYw2lnz9GqVxCz1lr9L3rTpEFxhFHZZGSoL1Pb+DubX7F/+LI2sxn6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EVnl/hN5; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-471dc19a6acso36939301cf.0
-        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 17:09:47 -0800 (PST)
+	 In-Reply-To:Content-Type; b=FaQxp4vd9ZXs+dVs8kjxi92p4BAGhzAovR3N20qbZwmvabxURjU2R/t4TbNiSPjmhcpDZ3U6S71oiHkwDgdioURWi6zrrsSxhRfO441XREODAAaBOKgcIGQS0v782vlMypAGPDyp2lEV8nqwTI5mf8tk7RoMPFHM/S/9X2Razgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OvykzmNA; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5461dab4bfdso3603399e87.3
+        for <linux-iio@vger.kernel.org>; Tue, 18 Feb 2025 21:36:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739927386; x=1740532186; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739943390; x=1740548190; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bhFcj8FNnOMQY209sd3DQ8BUWimeVSt0pBldsBEl40Q=;
-        b=EVnl/hN5WpV0RNCklh8OUnR6IjJMMgXdf11CR+grCtWbi1BcYAHZfs/PkID76Vw0gy
-         kb6eoU4fNGpQPghFuEO8Jxs/t6fEgBW7eIWQ+y/5t8sOFgPua6qMbFdrxQKqvbqiFmS7
-         FgrVEPRqxoewlsaqCqu9xh1sb1OtKnWRoz7M3T0uGUCZzolksKVjFIcoYm0kk4ifIVnj
-         0WEdkHkjnaL4o/x8hzHCDy5bkIrUEhizhsh3OBseVxQ54MuUSX3ybTjV/waMgaTZOwWf
-         shoaBlph/Nm/iHZAW1DUEVhuDG3msOLc7Uhr45cBsdXhDETHFeHp21ndYk/Mxk4EbcIk
-         CWqg==
+        bh=Ei/M5O/VN7vosorEG++K/gmAWADL1M1JxOy1RLnBG9E=;
+        b=OvykzmNAprkG6S5DNbPei1OHsPaWouB+SMhyXV1DH8Hn4r76z9Qedq+fT+bchrEgIx
+         x+V3g1I4sCllsR6bJHjy86uS+WuwIpcXaWiHHX+lXXRJIHiInKhC+G3q9tjoDCRZtz9G
+         ugt8W32fO/cSriX9vrpK80eqy/n8ok3UQVL4IeYhNBWvnybRlvfYAqyid2KcFKNeYcKb
+         Xq7tVO07bffywh0YXhsgmdj19SEzWRFWN/+mkGXZijDSmGfzrD8AkOGKTGB0dbpocLX4
+         eg4Fjg78HuYZDufV2J7KiiglbY6LQHCvP4UxjgUCgElJ1VEfxbqW+zhLR2VXBrPTpXON
+         lBPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739927386; x=1740532186;
+        d=1e100.net; s=20230601; t=1739943390; x=1740548190;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bhFcj8FNnOMQY209sd3DQ8BUWimeVSt0pBldsBEl40Q=;
-        b=dRSkLSBNwrmyAV0UC7yCPrhOlgqwtcxuTFin1iSPyohKtvW/R4bekeUkDexxPMC2fe
-         DlMUahax1ZOQAia83c83vMkNGZRcImREbTb5lNixnqE5SnonIJ9LF5Tcfe2fgrzb+UQ6
-         7K9MefKePbKyRkmb7S7JZnhFRym4tQhhJOQGF4MlEQPONCcJzPi3dxNqQqioyuWTsrzo
-         E3PlAG3nKuK1YWR9JfsmfEDKs/pzZJcdaBI0NQ7jNF6iL86WysSo3MAjXr1NGZDZjOT2
-         ZBMdwdiD2zx8Iv6/K+VrhD98krt8BTdrGsphOzmlez6bXcOsrhh0eYEkQeTERywbqxrP
-         AF4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXO6uVbYwt7pcrB5yD/gqLy5RqqwxtxNKez5YFMqqvanc6v16Eeupr+m+Z5y7nxDHaqHCNk/gT4yw0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx69p3/pxDZJvF/BdyMxwh2KumLtygvUi/8MmKxD7li+gj1MFtn
-	4Xe4+4/Nd4YJgqYh4ehq1zGjEZWV7i5ovCdojjaDdyqWXI7/lM3OH3M7CoKOtYo=
-X-Gm-Gg: ASbGncvDjELdX9IDcyxaWbdKKFhwfvlyRnF8uKwnR1v5cQuBX9U1h2KtFe5Ecm1La43
-	dY9OXSM79SmC+tV0iqYV7KxAEa4gYECCYu38bEUK2H1mSMgQQptUVRahW6zD2tpmG1m1VXHJZVM
-	kXyeL8p3rzYKbpxkn/OOoZhRbHzpMP5Yo8ST/YrbIyoxLd9Vaj5ZO3pGVGiALj+o2pTm8hj6nUB
-	gEacEE880N1h1Gce3pTqN+ct2uXpLC4Fq5IMVmbGKyd+hHZb2j/nlazS5n3/HVsqR5Ygkwtbxbg
-	TUPGi+FrFl35TjOPfSRt0lYkFGIrTRzCsjkts+QKfonZ6YD8d6mj0gfQ2xs=
-X-Google-Smtp-Source: AGHT+IGIImyr8vXM8aoEAFX4jw+veWvhRzvUOjQ6ykQZGmD9QHL01qCTPEVDTI2/NSadsnBmXDnhew==
-X-Received: by 2002:ac8:5d8c:0:b0:472:447:ad6a with SMTP id d75a77b69052e-4720447b020mr53202851cf.36.1739927386536;
-        Tue, 18 Feb 2025 17:09:46 -0800 (PST)
-Received: from [192.168.40.12] (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47201c9eecesm12727831cf.37.2025.02.18.17.09.44
+        bh=Ei/M5O/VN7vosorEG++K/gmAWADL1M1JxOy1RLnBG9E=;
+        b=MIkEWL7vz5/00W0Wa6z90dJFYZfTL9FjmuwWSE/Wl9MBolYB8ABAM79wFZCD3h6x/t
+         VaYuz4Djjq+plvtftLOLImXMhNsJJPb+jYPQvhdOqPG9ITWBNASIYqUeUKclQxftC2GB
+         YJgi0gwcJlCCjHwmKkO1GEDdC7rTO8Grkab8+Y9eZSagSCy5ZAazIe1TpB9JutR40ocK
+         UMUypOof6t4nCdHabHZNPcj8dhXIBcbZao6FrTdOKoZ8I2oTymUy6+VqOabSvLz91Vqu
+         iuYb6X+5x/myiSxU47kja7hNq78CtvKVaY1k4THphp1LVVmn4EqAVaquLNaDIBgTjJTl
+         pOgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqhSWJC3DhbeQ9Vhl4nAx6OU6Cf/amYjg69hxxhOyvTBT9lXLd1FmXcXS63u2ZbfesBWwl9uta77Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWqDfqvd3B/wydZPkSK9vAp/qXpoRh0nbcZoQaFvqMUCCvBzuT
+	YuMZrdJvZ4FSwXJj51aF/Y56Y9hRC2u657IEGdJMxL7/hZBoskbw
+X-Gm-Gg: ASbGnctaVgB0a3SDfqUyZzw3WoXkcZMY3EwSmwOJ8TO3075FRBopHuhzkocNEkGTaqC
+	wLgDqmCeHXaLrWSRwIqICJQliQnMD+lanSHkD+qYwUcZ0Zm8WtQyAJ4HpQGZoT6uBxR1uWoBHRa
+	HqWY+pYQZyP8I5Hk+EzSPvmSBqpXSEo3jTjYkOXcEzl5Fj0YA8aVkEeRdcKh6xTpxAl0fZFd17P
+	0I5l/wytH0B1gFYzjdwtMwv5k3EPGtKt/bIiTXWfJbpa79PQiCD/0QHcqBF94sD+RHEEEe7J2p4
+	fVoxvrvhBDEl8MHi1cWxmutX12kW7RWN56W9sK16OohCMKasMCUibbAE91zzaAXNWZ9Weq20
+X-Google-Smtp-Source: AGHT+IEFp4vucHe3/A71EVKJL6UH17MwBjSH6heI6zBwiiF+Dk9c3Fr1d01rAq3SirdEVi/tHp6x8g==
+X-Received: by 2002:a05:6512:1593:b0:545:cc2:acd7 with SMTP id 2adb3069b0e04-5452fe633d8mr5809891e87.27.1739943389657;
+        Tue, 18 Feb 2025 21:36:29 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-545ae7f3ae5sm1236383e87.25.2025.02.18.21.36.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Feb 2025 17:09:45 -0800 (PST)
-Message-ID: <3f5fe015-20f8-4a88-bf28-86b224bc1349@baylibre.com>
-Date: Tue, 18 Feb 2025 20:09:42 -0500
+        Tue, 18 Feb 2025 21:36:27 -0800 (PST)
+Message-ID: <ead33fc6-48b9-488c-8993-2ca647e59735@gmail.com>
+Date: Wed, 19 Feb 2025 07:36:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,39 +81,72 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] iio: adc: ad4695: fix out of bounds array access
-To: David Lechner <dlechner@baylibre.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
-Content-Language: en-US
-From: Trevor Gamblin <tgamblin@baylibre.com>
-In-Reply-To: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
+Subject: Re: [PATCH 5/8] iio: accel: kx022a: Switch to sparse friendly
+ iio_device_claim/release_direct()
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250217140135.896574-1-jic23@kernel.org>
+ <20250217140135.896574-6-jic23@kernel.org>
+ <0e17116e-6160-4920-83d9-086218245299@gmail.com>
+ <85d97cbe-9d34-462c-a89f-de6fc1ac6e34@baylibre.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <85d97cbe-9d34-462c-a89f-de6fc1ac6e34@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+On 18/02/2025 17:42, David Lechner wrote:
+> On 2/18/25 1:39 AM, Matti Vaittinen wrote:
+>> On 17/02/2025 16:01, Jonathan Cameron wrote:
+>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>
+>>> These new functions allow sparse to find failures to release
+>>> direct mode reducing chances of bugs over the claim_direct_mode()
+>>> functions that are deprecated.
+>>>
+>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+>>> ---
+>>>    drivers/iio/accel/kionix-kx022a.c | 14 ++++++--------
+>>>    1 file changed, 6 insertions(+), 8 deletions(-)
+>>>
+>>> diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+>>> index 727e007c5fc1..07dcf5f0599f 100644
+>>> --- a/drivers/iio/accel/kionix-kx022a.c
+>>> +++ b/drivers/iio/accel/kionix-kx022a.c
+>>> @@ -577,13 +577,12 @@ static int kx022a_write_raw(struct iio_dev *idev,
+>>>         * issues if users trust the watermark to be reached within known
+>>>         * time-limit).
+>>>         */
+>>> -    ret = iio_device_claim_direct_mode(idev);
+>>> -    if (ret)
+>>> -        return ret;
+>>> +    if (!iio_device_claim_direct(idev))
+>>> +        return -EBUSY;
+>>
+>> Not really in the scope of this review - but in my opinion the logic of this check is terribly counter intuitive. I mean,
+>>
+>>> +    if (iio_device_claim_direct(idev))
+>>> +        return -EBUSY;
+> 
+> I'm curious how you read this then. I read this as:
+> 
+> "If claiming direct mode succeeded, then return an error!"
 
-On 2025-02-18 18:17, David Lechner wrote:
-> I was doing some more testing and found a bug with the
-> in_temp_sampling_frequency attribute being corrupted. This is a patch
-> to fix that, plus a bonus patch that cleans up some related code (it
-> wasn't strictly part of the fix, hence the separate patch).
->
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-> ---
-> David Lechner (2):
->        iio: adc: ad4695: fix out of bounds array access
->        iio: adc: ad4695: simplify getting oversampling_ratio
->
->   drivers/iio/adc/ad4695.c | 26 ++++++++++++++++++++------
->   1 file changed, 20 insertions(+), 6 deletions(-)
-> ---
-> base-commit: ac856912f210bcff6a1cf8cf9cb2f6a1dfe85798
-> change-id: 20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-7f16ebc3be14
->
-> Best regards,
+I am used to seeing a pattern where function returning zero indicates a 
+success. I have no statistics but I believe this is true for a vast 
+majority of functions in the kernel. I believe this was the case with 
+the old 'iio_device_claim_direct_mode(idev)' too.
+
+I am not saying this is 'absolutely' bad. I can only tell that _I_ 
+really had to go and look up the implementation of the 
+iio_device_claim_direct() in order to review this change to ensure the 
+return value check was not inverted.
+
+Yours,
+	-- Matti
+
 

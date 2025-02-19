@@ -1,213 +1,155 @@
-Return-Path: <linux-iio+bounces-15798-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15800-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6790A3C433
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 16:55:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90423A3C472
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 17:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4ED57A77BB
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 15:53:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5108B17310B
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 16:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7691F8BCC;
-	Wed, 19 Feb 2025 15:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="W6qIqLHU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32AC1FC0E7;
+	Wed, 19 Feb 2025 16:06:18 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4891FCCF5
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 15:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9964F1EB195
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 16:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739980449; cv=none; b=S9iyuK975TEEJgy+jNRqrq+r1EPTcvw9p/iQZRRBqiJViIJpr9CyQvkbEeJKbUUrnpxzNEV+nJItjFoe0bEIxu8bl1IczBapOVZNwhaHS4W1NwqSQLxBrKGJsFJn+BEy3/zZ1e4wa/cGpp48BSqxfg9UGil0YBzukSYQxpLpPz8=
+	t=1739981178; cv=none; b=nhZejT0jlkb3dxFmzfMvYt1v0VWIiDjUbLrS7hKp4OYtt2eF7UyCDuCx5GDuLqFyYx1AtVBCwiU/hVlo7clVJY8iJQH8i6Q5N5uz5QuS/RUCdYd6eFbrbUeF4nRJKHEKYbIiRLXKLlpwPfldasd54tD6byhWubDCvdfET+GFxSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739980449; c=relaxed/simple;
-	bh=s5MzxyKvsyEYBYrvNz6+0ntDjzoYrdjXYLL8YqFlP6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGsyXrZ6wIfK5kZDYIWwColYX5ccYStqCHN6I2DOAVimK/nLgxe8DLuxLEV7u+ekCqIGxXUhYGU6AOrxn7icb9Sulhg4N7ilO+M5FzggKpbQ3DpCbW306Ta3T5OGOmjDZP6Y6VpD5LehofI05pt8EByuT+tIhgby5TNe/yoGq28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=W6qIqLHU; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-38f22fe889aso5478597f8f.3
-        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 07:54:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1739980444; x=1740585244; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nJmRSUKL8F6ABuVjT69RlXhEUGlr4KIwTwqYJpsm44o=;
-        b=W6qIqLHUCLqNKAxID9EF9zpmA5C8pWmn6raQeJT2isuJY2cbqfNDI5wPwntSNva4Ej
-         Qd7nO9tB4RvoIlnyFDOYtYX52if3kr1YwQEXhE0/PS7JyBVRmk+yZH4GTPzbv6asBAbS
-         jXwWHDtBpUhp7qoj2QieGhHq/5LENETH/xmv500hebUF+Y6GSiGbsFenh6zoIKIb2R8a
-         Mn3nO3UntUj+G9Aud9SPfm5fjpmov5U1DhhCDmt160NStq8ccQ/vFvwBg32yZ4NdsL8m
-         VjQmzo5+5N+zKlgORldpm9uC/XBP217DOwv84fL3Kf8iLeuRaCHkAceemH4STlJOcb9H
-         B9jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739980444; x=1740585244;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nJmRSUKL8F6ABuVjT69RlXhEUGlr4KIwTwqYJpsm44o=;
-        b=DsVdghpEbMoKkcZqvpNzvtQEV0Qe0XEXveMl00XfJMLuPJ9/bEXxM+j56LScE9iOY4
-         voN08sPOqPXq9P+xfHOL7DE6NOUTKB3XncAyhFvHWljxhYvj/RMqxlJV3JZK6VfKFfFf
-         4lZwsJsI9MJrEL78RRZ2LLwN+rTWFka00NCNEqfJyaySgJnU2ClTyTp6PUJ3hp9xCMRr
-         Dz+y3uTLcaTQ/jyYJL+Ilg/W41dzVi1JLUvCnGj3kcmXdG7CshqhLzpWBFjh3bX0nkqh
-         b4lOsgM/RGqUEo4si7njUSWvVY/dXdm/b1+NEHYe0s/IvWJyV6+wCfdbIkGvJQmVmBMQ
-         K4lw==
-X-Forwarded-Encrypted: i=1; AJvYcCWg/S9Gm33qQQUiaGJLPCWXZO/hdNjbpvii4n1Ys4lxsapeMERqzeKs5cx7o0rXepb5LTxWHaRDH+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXKk651FsjB0kKgL8N6qxmGfWZMY0IX1qTBFi4CRRYpqLJW9+q
-	7aGjzgwzkcg6ZHJyfM8Dr6I056oQotozEgHjlYdjDIy3+5ZwSpHWM61dcsCnDms=
-X-Gm-Gg: ASbGncuy4VFjjnyrh6CLqoV1Ja3+ai8UNlJ8l8E86W/TXPZK5xZfbAgEsqEtr1xSX/j
-	LUsTdoC2u2TenJzaYGehiMbrSLhOubhBrwLCbki3JTU7tVf6iTkM4IwJhAfFH0lIBszc6NTsRzX
-	nyVpHq25ikKhOzG9eAGZFvxDJP1FfrVzxdnaCULF2m+slt6WLXdG+iH/ka7YAQSsmzYUN1VEA7r
-	k496J+dyv4mcVmmS9JBoD0ISxloYrjxTGJu8Q+jW/IUGOIChDUvz1GqyUnBOcLh5mtjTW10ZfP9
-	FHljQrmAabABTn8NE4wPrcIyPHBkB62gSRCuAI0FTIDd5l5PakBNSMScaA==
-X-Google-Smtp-Source: AGHT+IEtqiGBsSY128uo+BoAGh9P0Wn+u6ZdCoc9mwYUfBpVWXs+LwP1cHGsV0roi4ZxBlwN3qK3Iw==
-X-Received: by 2002:a5d:47c3:0:b0:38f:3c6c:28ff with SMTP id ffacd0b85a97d-38f3c6c2ce0mr15508564f8f.23.1739980443959;
-        Wed, 19 Feb 2025 07:54:03 -0800 (PST)
-Received: from localhost (p200300f65f083b0400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f08:3b04::1b9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259d5c36sm18402851f8f.67.2025.02.19.07.54.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 07:54:03 -0800 (PST)
-Date: Wed, 19 Feb 2025 16:54:02 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] iio: adc: ad4130: Fix comparison of channel setups
-Message-ID: <vxwfhjbrrs6e3sk7xvrdtshvr3suna45qiluu3zxba3dg2cy3b@gqnvtmlnufdk>
-References: <cover.1739902968.git.u.kleine-koenig@baylibre.com>
- <4d1ba8c9a890393fce38083b01db6ce03df8ac5b.1739902968.git.u.kleine-koenig@baylibre.com>
- <CAHp75VfmYVBpmq1_bChNrZ+pgcHN_eBOYTcnhcxqWvhKxx0G1g@mail.gmail.com>
+	s=arc-20240116; t=1739981178; c=relaxed/simple;
+	bh=Hu0If3mlWBwcmv138spO0M4vIhxxUoBa34IVKQCeJPc=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Qggp/k19enKkikQcPW4M2HRoOItyO0Be/c67SO6ffr+6EvYw+okgROM9TRfj5i5aqQP72THbddWYwmSB6tUvNX6WuXhpMfRxjiXRZYbO4YW797m52H+OiqaMJVQGWT3YuU0eFax1atpOXpnnoOO3JgYjXfchW4nUomflI56khdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Yyh4V3WwXz6H6vL;
+	Thu, 20 Feb 2025 00:02:50 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 501DE140382;
+	Thu, 20 Feb 2025 00:06:13 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 19 Feb
+ 2025 17:06:12 +0100
+Date: Wed, 19 Feb 2025 16:06:11 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+CC: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>, David Lechner
+	<dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>,
+	<linux-iio@vger.kernel.org>, Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH 5/8] iio: accel: kx022a: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <20250219160611.00007916@huawei.com>
+In-Reply-To: <ade6ee75-7f38-4826-9359-2411165decb5@gmail.com>
+References: <20250217140135.896574-1-jic23@kernel.org>
+	<20250217140135.896574-6-jic23@kernel.org>
+	<0e17116e-6160-4920-83d9-086218245299@gmail.com>
+	<85d97cbe-9d34-462c-a89f-de6fc1ac6e34@baylibre.com>
+	<ead33fc6-48b9-488c-8993-2ca647e59735@gmail.com>
+	<df700bd7c8d3aab89177b122ed9adf0269bde62d.camel@gmail.com>
+	<ade6ee75-7f38-4826-9359-2411165decb5@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="agroq5nuknnye377"
-Content-Disposition: inline
-In-Reply-To: <CAHp75VfmYVBpmq1_bChNrZ+pgcHN_eBOYTcnhcxqWvhKxx0G1g@mail.gmail.com>
-
-
---agroq5nuknnye377
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/6] iio: adc: ad4130: Fix comparison of channel setups
-MIME-Version: 1.0
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-On Wed, Feb 19, 2025 at 10:53:54AM +0200, Andy Shevchenko wrote:
-> On Tue, Feb 18, 2025 at 8:31=E2=80=AFPM Uwe Kleine-K=C3=B6nig
-> <u.kleine-koenig@baylibre.com> wrote:
-> >
-> > Checking the binary representation of two structs (of the same type)
-> > for equality doesn't have the same semantic as comparing all members for
-> > equality. The former might find a difference where the latter doesn't in
-> > the presence of padding or when ambiguous types like float or bool are
-> > involved. (Floats typically have different representations for single
-> > values, like -0.0 vs +0.0, or 0.5 * 2=C2=B2 vs 0.25 * 2=C2=B3. The type=
- bool has
-> > at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
-> > true, but memcmp finds a difference.)
-> >
-> > When searching for a channel that already has the configuration we need,
-> > the comparison by member is the one that is needed.
-> >
-> > Convert the comparison accordingly to compare the members one after
-> > another. Also add a BUILD_BUG guard to (somewhat) ensure that when
-> > struct ad4130_setup_info is expanded, the comparison is adapted, too.
->=20
-> ...
->=20
-> > +/*
-> > + * If you make adaptions in this struct, you most likely also have to =
-adapt
->=20
-> adaptations?
+On Wed, 19 Feb 2025 14:21:51 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-ack.
-
-> > +static bool ad4130_setup_info_eq(struct ad4130_setup_info *a,
-> > +                                struct ad4130_setup_info *b)
-> > +{
-> > +       /*
-> > +        * This is just to make sure that the comparison is adapted aft=
-er
-> > +        * struct ad4130_setup_info was changed.
-> > +        */
-> > +       static_assert(sizeof(*a) =3D=3D
-> > +                     sizeof(struct {
-> > +                                    unsigned int iout0_val;
-> > +                                    unsigned int iout1_val;
-> > +                                    unsigned int burnout;
-> > +                                    unsigned int pga;
-> > +                                    unsigned int fs;
-> > +                                    u32 ref_sel;
-> > +                                    enum ad4130_filter_mode filter_mod=
-e;
-> > +                                    bool ref_bufp;
-> > +                                    bool ref_bufm;
-> > +                            }));
+> On 19/02/2025 12:51, Nuno S=E1 wrote:
+> > On Wed, 2025-02-19 at 07:36 +0200, Matti Vaittinen wrote: =20
+> >> On 18/02/2025 17:42, David Lechner wrote: =20
+> >>> On 2/18/25 1:39 AM, Matti Vaittinen wrote: =20
+> >>>> On 17/02/2025 16:01, Jonathan Cameron wrote: =20
+> >>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>
+> >>>>> These new functions allow sparse to find failures to release
+> >>>>> direct mode reducing chances of bugs over the claim_direct_mode()
+> >>>>> functions that are deprecated.
+> >>>>>
+> >>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>>> ---
+> >>>>>  =A0=A0 drivers/iio/accel/kionix-kx022a.c | 14 ++++++--------
+> >>>>>  =A0=A0 1 file changed, 6 insertions(+), 8 deletions(-)
+> >>>>>
+> >>>>> diff --git a/drivers/iio/accel/kionix-kx022a.c
+> >>>>> b/drivers/iio/accel/kionix-kx022a.c
+> >>>>> index 727e007c5fc1..07dcf5f0599f 100644
+> >>>>> --- a/drivers/iio/accel/kionix-kx022a.c
+> >>>>> +++ b/drivers/iio/accel/kionix-kx022a.c
+> >>>>> @@ -577,13 +577,12 @@ static int kx022a_write_raw(struct iio_dev *i=
+dev,
+> >>>>>  =A0=A0=A0=A0=A0=A0=A0 * issues if users trust the watermark to be =
+reached within known
+> >>>>>  =A0=A0=A0=A0=A0=A0=A0 * time-limit).
+> >>>>>  =A0=A0=A0=A0=A0=A0=A0 */
+> >>>>> -=A0=A0=A0 ret =3D iio_device_claim_direct_mode(idev);
+> >>>>> -=A0=A0=A0 if (ret)
+> >>>>> -=A0=A0=A0=A0=A0=A0=A0 return ret;
+> >>>>> +=A0=A0=A0 if (!iio_device_claim_direct(idev))
+> >>>>> +=A0=A0=A0=A0=A0=A0=A0 return -EBUSY; =20
+> >>>>
+> >>>> Not really in the scope of this review - but in my opinion the logic=
+ of
+> >>>> this check is terribly counter intuitive. I mean,
+> >>>> =20
+> >>>>> +=A0=A0=A0 if (iio_device_claim_direct(idev))
+> >>>>> +=A0=A0=A0=A0=A0=A0=A0 return -EBUSY; =20
+> >>>
+> >>> I'm curious how you read this then. I read this as:
+> >>>
+> >>> "If claiming direct mode succeeded, then return an error!" =20
+> >>
+> >> I am used to seeing a pattern where function returning zero indicates a
+> >> success. I have no statistics but I believe this is true for a vast
+> >> majority of functions in the kernel. I believe this was the case with
+> >> the old 'iio_device_claim_direct_mode(idev)' too.
+> >> =20
+> >=20
+> > Fair enough... Note though this is returning a boolean where true makes=
+ total
+> > sense for the "good" case. I do agree it's not super clear just by read=
+ing the
+> > code that the API is supposed to return a boolean. =20
 >=20
-> This can be moved out of the function, but in any case it should not
-> affect code generation I believe.
-
-It can, but I like having it near its usage.
+> Exactly. Just seeing the call in code was not obvious to me. It required=
 =20
-> > +       if (a->iout0_val !=3D b->iout0_val ||
-> > +           a->iout1_val !=3D b->iout1_val ||
-> > +           a->burnout !=3D b->burnout ||
-> > +           a->pga !=3D b->pga ||
-> > +           a->fs !=3D b->fs ||
-> > +           a->ref_sel !=3D b->ref_sel ||
-> > +           a->filter_mode !=3D b->filter_mode ||
-> > +           a->ref_bufp !=3D b->ref_bufp ||
-> > +           a->ref_bufm !=3D b->ref_bufm)
-> > +               return false;
-> > +
-> > +       return true;
-> > +}
+> finding the prototype to understand what happens.
 >=20
-> ...
+> Anyways, I guess this discussion is out of the scope of this patch and=20
+> if no one else sees this important enough to go and change the=20
+> iio_device_claim_direct() - then I am fine with this patch. So, with a=20
+> bit of teeth grinding:
 >=20
-> >                 struct ad4130_slot_info *slot_info =3D &st->slots_info[=
-i];
-> >
-> >                 /* Immediately accept a matching setup info. */
-> > -               if (!memcmp(target_setup_info, &slot_info->setup,
-> > -                           sizeof(*target_setup_info))) {
-> > +               if (ad4130_setup_info_eq(target_setup_info, &slot_info-=
->setup)) {
+> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+
+This is copying what happens for the locks that can fail. I agree
+that it would have been nice to get the advantages of sparse with
+the old interface but from what I recall I got a lot more false positives
+so wanted it to look more lock like.
+
+Jonathan
+
 >=20
-> I don't remember if we discussed the idea of using crc32 to compare
-> the data structures, like it's done for PLD data in USB Type-C cases.
-> https://elixir.bootlin.com/linux/v6.14-rc3/C/ident/pld_crc
+> Yours,
+>    -- Matti
+>=20
+>=20
 
-crc32 works on the binary representation again, right? That's what this
-patch targets to remove.
-
-Best regards
-Uwe
-
---agroq5nuknnye377
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAme1/pcACgkQj4D7WH0S
-/k6hoQf+LzIltl6w+gHyQ04BbMe5z/LvKie9V0TS0Bw+T49OlzHW5RtzjcBIyZoI
-ctI6D5FInLQAK2srYFjg676P4iIYv83sRK1UbyISlwMBGxi5QbCZgVhMNtC5tIJ/
-I4HFL/IVu0Q25bFn/IwzS/A35zIFdmUWg/i/echeA3w69h8mXLUzDj84IkZxAfrO
-Dd1D2p4hVNGvlBNCLWT636411dDbApPE1GumrguP614wGhGJPUA9cxrHMhzxWU5W
-Md72k39OblHkcSAJNPOx0Gi+knmUACu1WJh2s2yOjCkFTDhNQggLWUMXRlIOGggV
-Qwgk19Eyy7bd8cCjM1Fc6N73UQE86A==
-=2cd3
------END PGP SIGNATURE-----
-
---agroq5nuknnye377--
 

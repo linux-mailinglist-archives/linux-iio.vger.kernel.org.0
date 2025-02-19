@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-15772-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15773-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC332A3BC5C
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:04:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62316A3BC5D
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7631E16A74D
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 11:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F0E4164F14
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 11:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146001DDA20;
-	Wed, 19 Feb 2025 11:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643FD1DE4F9;
+	Wed, 19 Feb 2025 11:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGl/Gd1C"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ShB+n4Iz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4BB286291
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 11:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1FA1DDA20
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 11:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739962995; cv=none; b=ounVsx5X/aDR2GmwCxMPL0Bf/uZOJa+aKHje0s7tCLvHlimc+A33rzE52qtqDUf3YRRcklzyhjhmN/NJqMlmXDpzpaiWJB5v5/099vyDh12Ll5n1bUSJVOpAtkGURhKhq/maYZObVo8gR/bGutM++bO/eF9JC6/7hcBKdTJyFd0=
+	t=1739963036; cv=none; b=K+EAv8DEvA+aP2MEvbykqsFM/rxH7/6VGdjXj8NoSkphqDgak6o9kx7ecHBPkaTIvA3iNHn1uT5apA+gQW5tKHH1GMzaHWRmpQdTRDlNG50paEX/Qx8AQPXiOQgkSsWDPKE/aNsCzCASj5Bjxrl8gWq+YRJW8uaRRxyTM0j72+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739962995; c=relaxed/simple;
-	bh=nB4+tadQ3qHMZ4gAdKrs5cQVCPV9gn5Bu+bf25EeUVA=;
+	s=arc-20240116; t=1739963036; c=relaxed/simple;
+	bh=HPVbEEh8CDlR3kNGrwSQinicItfw5x+NT9HIyye6uzk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mvqEpvAbMFJJvjQJd3Q5ZoxaVWMv9OMtJS+UpH7984pB1pBjqh3r/pEaNJ2Pzpp4YKPI95m2fed4VJAo7HRbDFlamYoi8bIgjjmQIvCXkYSR2jPOJTLxHkX6BiynTP8q3f2UJsbxtRMX5ULhbbl4ikkAJj1N73kTOM7MEj65D1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGl/Gd1C; arc=none smtp.client-ip=209.85.128.48
+	 Content-Type:MIME-Version; b=F2a34PC71WIDhMJcEUaGt+GMO/pdA95s6DJABPEWfkR6nBqdKTkRS4+8evhKbrgBlXIT0iRQkMZzzxHBsE99PPGbn35hIF5cKqPvIPRd9px2LIc/dc52rEOof8Jzj1tXEPBb0sq7wv9EP0Vf0UbVsDwc+oJJvMHGcxAdjgjgwEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ShB+n4Iz; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4397e5d5d99so21052465e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 03:03:13 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-38f3913569fso427846f8f.1
+        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 03:03:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739962992; x=1740567792; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739963033; x=1740567833; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Bpc6EsKRAAbuDPOxcTSNeJStRoXLYJMDAOweCZK3DIY=;
-        b=VGl/Gd1CbTavECmWOuBn3K9xio+D0qRson/Dzl6JnmvwKcRsX38ND9Nyrhuo1a6G4w
-         K6ZUgN6XZma68V1gn9fGC/pbh+kappUGbyLTqXM9/viKOKsGGnLXff0jYHLLQWfY6mHH
-         33t/ukLTckEtCXjdLtvaHi2WqX7lB5AbN0m3hOQQAcUs4UTWz7CYyqUOFresHHazJQ8A
-         0RI9UbCjUSnIpFhylFsyf1rNvJ6a6rG5edB96ccRl9HG7IuB02kQ90H3e1o5wAkV/g6t
-         ns7H7D+RusXH6B56ecwXpWBleAbD3HH8GzAy6UsHs81O3Au8/QHeMEevsmo8cR8KRkuW
-         jp5Q==
+        bh=y0Jk8a9jAxkgf3HE6nmlXxOnxRLuQVhTavFKfbEUE8Y=;
+        b=ShB+n4IzZZRF/cqV29LHWaBDmq7I0+v2XgNA1BfYqRXdLmavWufbq9+XzbF56Bihhe
+         1ldoAageCVGos3xFHcxyvLmYWCIfhMUcsha5M6TvZ6UWp2ejRju65Z19JiBqR/XHdtfz
+         IquSaVcqNquowqeA3ekcEtMTb4tYGB7/+v0Dx/bNrJg+PmorMmc4HLkEuF5h3EPksez0
+         cV/5RO2pMPzfdS51Ly7+HeFHdW1mutgsS+rxDBZAxpcOaYRVSC3JRUots8CG/WacmA72
+         c7qWblD6Li+tlBg+dFnt3fInwF3NW2a4X+SHNety3c2FSyJUpH9/EqxIW+VH+JN39oLI
+         1vqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739962992; x=1740567792;
+        d=1e100.net; s=20230601; t=1739963033; x=1740567833;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bpc6EsKRAAbuDPOxcTSNeJStRoXLYJMDAOweCZK3DIY=;
-        b=H05xIdkyBwvLZXmGy2j4ll0Trt4IIxJ1QuPznKNg2oXhxLo+khViwE5zf59FWK6Uck
-         0SfPhg/4r/TrUZ3EO/H6M72yhXTAD3lXll9Upmrt2A+OwlcuroMI/zIRBwDQFbC0zWte
-         8/+ljCzInIha5RrPGbIh3Nj6Gv79TE0RgiP8HZusifSqQdTI1S/V76NekGPKc1dnCTuv
-         UMeqrLc4Cu/zQi4KGZPgG1vA3/wqORhLJKaBYoxyq0ARnCMw5R6gLoQrq1XLxqDUCfVr
-         rxprihV0wm/6XyxkolTTFfF02pc4GBy1rjH3chfJYJgC3S3Yf+ZXN3M+EYwj4xPWQwB8
-         HvDA==
-X-Forwarded-Encrypted: i=1; AJvYcCWu5VslsNnYCbTxboVsxxGUxnOnKNKyrK3Pm34FWa89pMPY27A1JcpgP0rT6JA82AALRB0au1wIR4c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+PhBN5xBjBRc9pYFoPz9syqXf97UuAQ8Vjy3zpEv/mq3T1f4E
-	tNrlEsl+m3T9Z5we2PkUyIcFfX/MJeOd3MRQhRQ/oGyAEcFVHuB0
-X-Gm-Gg: ASbGnctIlvO+/1wpiH7Z1+Nvvin/QjjsJw5p6ZTNclbTLGWWb97xH8iJBdTEhapM0hN
-	b1HrbfZlGKfMMOgFfmjGPDWOPMCyaxsxQ3hTYE1tH3QV2qkkAJ5e9tT8JnKURTCWLl0tY5yqbUH
-	KeA6jR0GnbMXgG+uUPeizvCw6ZRExBZ5UTXP8lDrhrgBgZQjNPnMFvFpWciITE1jxb2XcykDWL3
-	p12HJrkriWG7B3aJdE3Ipor9YdWo8D+TQRycowfjcqMysdON6ul2Z6pCtfjWj94J2lkSh6XZCGu
-	m5PnPjUYIKczb79EzQ1B49+0c/q/vFefzreDV2sB3vzOUVJtXPCBX1PsrArWwBo=
-X-Google-Smtp-Source: AGHT+IHL3ReJcT149LYENWp0Lj8XS4AB2s+Jdx40egC2grZMZtgrlB7oGkL/zLzb4/eVmv9iSnUypw==
-X-Received: by 2002:a05:600c:3ca3:b0:434:eb73:b0c0 with SMTP id 5b1f17b1804b1-4396e6d4b6bmr178827655e9.5.1739962992222;
-        Wed, 19 Feb 2025 03:03:12 -0800 (PST)
+        bh=y0Jk8a9jAxkgf3HE6nmlXxOnxRLuQVhTavFKfbEUE8Y=;
+        b=NO5hGBAx70BMXtLEVAGee/Qr1eCaWX/cMp1bBpRhGH6Tb2srQ/sQLddVUgHNccpb2/
+         17rxP8EGO+yRoX++rmiFpGiHzt+iuiKMFxxvdgz+tw3qs7rMwGubwrwMqoowDdgvTrq/
+         xz3Ewa03YWJPqzGkvRhRuSP89l8agzdOf2689lwapR3ADR5myG1L8rnHjSqPnHptegQF
+         lZ8nwOszwB44vi2iHeAQCil1ArKS+xcdMFPgLJwQ3deOwhI2L2Rp3oNpYGrLnhIk1uwA
+         lI8LS1OYNlF2kqsQwPMQPm+16MKu1LEFXoCG8gDM6IytyOFbYUgDI6PAgHd5C8sFcjN0
+         8EEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXzQIpIy1S361bbCLxbs90n7X8jqSz20OWEqvgewogHbCBvfNzqBL5ftG3GPEu9x5g29MGPKD9C6pU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvIN/Igb1Suv9oQf7rg61b7E1Cq/2K5qVNbuJsruTMM2md1IZW
+	7oXcSBx8lGWsi8czfRQvcFwTgz22nz1lXq+cQ2wh9QfHLB/J+5kc
+X-Gm-Gg: ASbGncuesXu9oT0wfXEj3RCx6jXNTzUzI/t5MHMMjW1TmcHg3iMpOiwNceaeveZLcLp
+	jJnZV5gO5K/z4SiSiRrGJdw7PmNJuJcA5BIlgsSliMta/abG08ng3umaRbo2iKTWzrq+rKje9pZ
+	B/CdFGR1OiF+Iz1OJZa4yb18wM67yWB3rgPaGUIqs1SYLlg5oOMUCQOO6/i66TEQuWm1AKKFpqB
+	cyFQt6xGK1a2fyrD2wk8ZBFKfo6oLPTmTWZLtX2xpwE0Aj5VkHkqCB/8vWZZi5Sebm+1lXk/L0k
+	I0WeqY5JZTFA/GRBZsi/KswNFdcvJZjdHigQS7+JsEM3v/xxELqE3KRGhqP05zw=
+X-Google-Smtp-Source: AGHT+IEoo4qm5YNpz8babu1usQsH3R8xJef/sLC57ocU8M9hNTMEyx1Bln1ko6h76MnF8in9S+DFBQ==
+X-Received: by 2002:adf:c00b:0:b0:38f:3aae:830b with SMTP id ffacd0b85a97d-38f57d95935mr2035722f8f.26.1739963032567;
+        Wed, 19 Feb 2025 03:03:52 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b4118sm17991223f8f.18.2025.02.19.03.03.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258b439dsm17376130f8f.8.2025.02.19.03.03.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 03:03:11 -0800 (PST)
-Message-ID: <c51aa613f1450857455521c286b257b0890b4046.camel@gmail.com>
-Subject: Re: [PATCH 20/29] iio: adc: ad_sigma_delta: Switch to sparse
- friendly iio_device_claim/release_direct()
+        Wed, 19 Feb 2025 03:03:52 -0800 (PST)
+Message-ID: <5d081d6cf9f707dd91f4a800776230d1d35b35d7.camel@gmail.com>
+Subject: Re: [PATCH 25/29] iio: adc: max11410: Factor out writing of
+ sampling frequency to simplify errro paths.
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan	
@@ -85,10 +85,10 @@ Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan
  =?ISO-8859-1?Q?Kleine-K=F6nig?=	 <u.kleine-koenig@baylibre.com>,
  Alisa-Dariana Roman <alisa.roman@analog.com>,  Marek Vasut <marex@denx.de>,
  Frank Li <Frank.Li@nxp.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Wed, 19 Feb 2025 11:03:15 +0000
-In-Reply-To: <20250217141630.897334-21-jic23@kernel.org>
+Date: Wed, 19 Feb 2025 11:03:55 +0000
+In-Reply-To: <20250217141630.897334-26-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
-	 <20250217141630.897334-21-jic23@kernel.org>
+	 <20250217141630.897334-26-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 
@@ -102,50 +102,94 @@ MIME-Version: 1.0
 On Mon, 2025-02-17 at 14:16 +0000, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> These new functions allow sparse to find failures to release
-> direct mode reducing chances of bugs over the claim_direct_mode()
-> functions that are deprecated.
->=20
-> This is a complex function with a lot more than the release of direct
-> mode to unwind on error. As such no attempt made to factor out
-> the inner code.
+> Introduce __max11410_write_samp_freq() helper and use guard() to avoid
+> need for manual unlock of the mutex. This allows direct returns and
+> simplifies the resulting error handling.
 >=20
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 > ---
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/ad_sigma_delta.c | 7 +++----
-> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
+> =C2=A0drivers/iio/adc/max11410.c | 51 ++++++++++++++++++++---------------=
+---
+> =C2=A01 file changed, 27 insertions(+), 24 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/ad_sigma_delta.c
-> b/drivers/iio/adc/ad_sigma_delta.c
-> index 10e635fc4fa4..5907c35b98e5 100644
-> --- a/drivers/iio/adc/ad_sigma_delta.c
-> +++ b/drivers/iio/adc/ad_sigma_delta.c
-> @@ -386,9 +386,8 @@ int ad_sigma_delta_single_conversion(struct iio_dev
-> *indio_dev,
-> =C2=A0	unsigned int data_reg;
-> =C2=A0	int ret =3D 0;
+> diff --git a/drivers/iio/adc/max11410.c b/drivers/iio/adc/max11410.c
+> index 76abafd47404..6e06c62715a8 100644
+> --- a/drivers/iio/adc/max11410.c
+> +++ b/drivers/iio/adc/max11410.c
+> @@ -507,12 +507,37 @@ static int max11410_read_raw(struct iio_dev *indio_=
+dev,
+> =C2=A0	return -EINVAL;
+> =C2=A0}
 > =C2=A0
-> -	ret =3D iio_device_claim_direct_mode(indio_dev);
-> -	if (ret)
-> -		return ret;
-> +	if (!iio_device_claim_direct(indio_dev))
-> +		return -EBUSY;
+> +static int __max11410_write_samp_freq(struct max11410_state *st,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val, int val2)
+> +{
+> +	int ret, i, reg_val, filter;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	ret =3D regmap_read(st->regmap, MAX11410_REG_FILTER, &reg_val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	filter =3D FIELD_GET(MAX11410_FILTER_LINEF_MASK, reg_val);
+> +
+> +	for (i =3D 0; i < max11410_sampling_len[filter]; ++i) {
+> +		if (val =3D=3D max11410_sampling_rates[filter][i][0] &&
+> +		=C2=A0=C2=A0=C2=A0 val2 =3D=3D max11410_sampling_rates[filter][i][1])
+> +			break;
+> +	}
+> +	if (i =3D=3D max11410_sampling_len[filter])
+> +		return -EINVAL;
+> +
+> +	return regmap_write_bits(st->regmap, MAX11410_REG_FILTER,
+> +				 MAX11410_FILTER_RATE_MASK, i);
+> +}
+> +
+> =C2=A0static int max11410_write_raw(struct iio_dev *indio_dev,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val, int val2, long mask)
+> =C2=A0{
+> =C2=A0	struct max11410_state *st =3D iio_priv(indio_dev);
+> -	int i, ret, reg_val, filter, gain;
+> +	int ret, gain;
+> =C2=A0	u32 *scale_avail;
 > =C2=A0
-> =C2=A0	ad_sigma_delta_set_channel(sigma_delta, chan->address);
+> =C2=A0	switch (mask) {
+> @@ -544,29 +569,7 @@ static int max11410_write_raw(struct iio_dev *indio_=
+dev,
+> =C2=A0		if (ret)
+> =C2=A0			return ret;
 > =C2=A0
-> @@ -431,7 +430,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev
-> *indio_dev,
-> =C2=A0	sigma_delta->keep_cs_asserted =3D false;
-> =C2=A0	sigma_delta->bus_locked =3D false;
-> =C2=A0	spi_bus_unlock(sigma_delta->spi->controller);
-> -	iio_device_release_direct_mode(indio_dev);
-> +	iio_device_release_direct(indio_dev);
+> -		mutex_lock(&st->lock);
+> -
+> -		ret =3D regmap_read(st->regmap, MAX11410_REG_FILTER, &reg_val);
+> -		if (ret)
+> -			goto out;
+> -
+> -		filter =3D FIELD_GET(MAX11410_FILTER_LINEF_MASK, reg_val);
+> -
+> -		for (i =3D 0; i < max11410_sampling_len[filter]; ++i) {
+> -			if (val =3D=3D max11410_sampling_rates[filter][i][0] &&
+> -			=C2=A0=C2=A0=C2=A0 val2 =3D=3D max11410_sampling_rates[filter][i][1])
+> -				break;
+> -		}
+> -		if (i =3D=3D max11410_sampling_len[filter]) {
+> -			ret =3D -EINVAL;
+> -			goto out;
+> -		}
+> -
+> -		ret =3D regmap_write_bits(st->regmap, MAX11410_REG_FILTER,
+> -					MAX11410_FILTER_RATE_MASK, i);
+> -
+> -out:
+> -		mutex_unlock(&st->lock);
+> +		ret =3D __max11410_write_samp_freq(st, val, val2);
+> =C2=A0		iio_device_release_direct_mode(indio_dev);
 > =C2=A0
-> =C2=A0	if (ret)
 > =C2=A0		return ret;
 
 

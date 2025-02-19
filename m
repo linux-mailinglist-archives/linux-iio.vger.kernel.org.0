@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-15764-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15765-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93FC3A3BC2B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 11:56:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14986A3BC2C
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 11:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6700B1782A6
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 10:56:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6FF31782A7
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 10:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4307B1DE899;
-	Wed, 19 Feb 2025 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0484C1DE4FA;
+	Wed, 19 Feb 2025 10:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkhnxaKj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lw/Toe6s"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F541CD210
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 10:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326C11BCA11
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 10:56:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739962601; cv=none; b=RRMRQ3lQdeLbvl/yZzsD7i4wO42Pk73nfEWqruZoCwwIXizqwhiOvImhEpwITJn6/IgOod7ZKqSwlkJAExbq/1KNXW1pbbuARIxRV+/jNiY1ATyb8gCnLTmKFowxZD2f6IvrkDU1dWullBPJwreQI7WICHLGlCyVwl85e3H/Ru8=
+	t=1739962617; cv=none; b=Nkme9R2n2f0XT2S1m3gR5e7AVoc3HK36SKGCm3Fc8IZKpVfgTumZS623qqIaerKgrb8l+PufxQBdv4vmS4v77E8ph4p5TzFEhTw1zKopKv5VcXONoWwUimE38CDxd0l6iCVMMlhxmn1KBxV4Y8QCksbcmUu8331COUbtq6qrdOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739962601; c=relaxed/simple;
-	bh=lq0fvMqIkRhEdCz5q8QE+nm48iV/Nc1f0r0vH8oMBk0=;
+	s=arc-20240116; t=1739962617; c=relaxed/simple;
+	bh=OxnJlKD44RNYAQTLKNKq+D/HFahGTeioDEo8SNTdNnw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XkQ/dIbVTY2R0+ky7J0a8yoUKlgHxSsKles2DuVjHw9YImn12XD+1inDg5aRLl48ZKilC9mCzVETOWqvlhk7NrNj9lNoefzdabvpzxs2cU+rzDe5IH2ugFKrJm8es7d1KZ7ph0kMPrrUo5cOempt5ALdGIScq+DwQgF6vAQIEAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkhnxaKj; arc=none smtp.client-ip=209.85.221.45
+	 Content-Type:MIME-Version; b=dsWsSrscbA6dhV7L3SiFyU7+ayS6DIf/HbIn7IBYJ5KQOllCOAiil5mfmd4SPGJjiPEx5iZsxCu7OVrkEUpBAATdGRzamMc1yjIarEK7MZvdAgN6IAhNf6AjaEy5AmydhzwpOg607dA/anEw6Gv0/iNwvRItWllNEoOk6P27H1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lw/Toe6s; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38f265c6cb0so2968000f8f.2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 02:56:38 -0800 (PST)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5ded69e6134so9965486a12.0
+        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 02:56:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739962597; x=1740567397; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739962614; x=1740567414; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=vMqU5ZYDPchHMQm41bgBKwrBrcba4EwCabN8ei3Dv8I=;
-        b=GkhnxaKjvZ0QzplSP0s/cbmKrDfA8fBXVO5aKWNeghUmDbk8e4niEY2vLhuvtYz1Fc
-         EEhBJxL0rmEfR3Ucl7MePAX3+Be3YXIJbKAwxXdvgcCpqz6pFYlpn08SX3opUEi3dQlx
-         xdBBIOIiuLUeUVp+y9dEzNfqjmov5d/Ark/sc20Cj9kZMBTRVXBuPQMLjOQQlLrXno1d
-         swlQ47d7r2NEEnRmMMSQYEckWgJ7rBUgyybjK994PYFtg2zpmd78sccueY9h0fXImxQ2
-         dYx7BfYQbp1ZLmTZcd6L8P2b+TCNWTIVmUH0LmtnoS5KVTtPF91UeqazptwhKFJE88JR
-         SfDg==
+        bh=HccqyeYT+Kcpk4lbP7bYo+X9uUbtb0Sy0gpruCAjdU8=;
+        b=lw/Toe6sl+ulVEUkeNQ6DC3rMxqqup1VwG2mEPt5DESSiuJGlwh1gFkUILfiWrWI+l
+         0RtmNwhvdHnKsqh8+oZ9iZn3TtMskr1PdoESiM1QaKcfCjWGM589DJ59TtBuwn6+vfJb
+         +jGCPre0Xcmof7nyyZo9vMxLiyAye2uTaZovUrKVXKZ7bs2gIBxwZ478ZTsCgZJJ3Zmh
+         xEPR/ibvS5B+FYAJ9QibbQHZ1VynIZWB2FIx/iT7P1Qo/aY+54CmY/NqSzsF8oflzUYu
+         ESVOunDFYeZ+2cCCAucNdjrCtattNE75Xvjc8YscCLY4g9bxkDqGAIOCMin8BXxcm/Yn
+         VWEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739962597; x=1740567397;
+        d=1e100.net; s=20230601; t=1739962614; x=1740567414;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vMqU5ZYDPchHMQm41bgBKwrBrcba4EwCabN8ei3Dv8I=;
-        b=La797lpBo8uC0hrQavVnnVOW3ZSyCLasMyfge7LPJHtixoQKJ2ndeTVgEroPmUVCyF
-         8oyhTM9lpP1lK0ny0bKTMA5yt6/FMLpoj0Hyhn/M0zNsgfJgl8kRXfPfC/ZGNnglmvsm
-         LP0h8FELTTUE9RKGTrR8d0xJ+2x+XRX58R0xeB4j1uzHhhf8ILkNBqcN3wsL1e8gYkrB
-         mDaHOVpr5hsPror+9j3ql/q0XWmF9ejLYbKh0KQW1Mp6e2B1HRQ1A71PltgWhbp1tJ+r
-         ZKAJMfqWenNKcgEUpXb97NFkaMC+28FcRO+n932CZDBOZWZaScXcqGvcsKOS47YJIPt3
-         RdWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhlqVZ1J66GvkjBu532nD7n6lqtJqN/x7XypzHIk8rokjvN1QFc8L9b5Q6APu5BK3am68HxQdbEyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDmNAtLFIAaIdG9TRW4iW0uM1rN5gG0u5WuR1V+inwy+dWPNSz
-	qS3zrowkY2nONpB3//+4UyZERbGB7KjlGn0DX/I4Ej35IHxM0Na3
-X-Gm-Gg: ASbGnctw6CLiVrBGfjWVvSmDn0GUlHFON7XlxiNzMhF3kqbjz1R03CmHgrgGmKN01RZ
-	uICGjFG34vq6CJIMNgsScvuIhTbEDTBJNv6421zfPajPfoRaGnFkmlczR1F3qrObj67MlzEi9Rv
-	9KBP0/Z49EyEn+OcdQYFulxJCt2CC8IkuBPsWBCeAfZER1cMn9INea1dFMNCc4nQ7+Uf+M8GhPq
-	MVM2KxTJztc6OJ0eCEAsT/+72nnYotFoCyMQqHd79xQEyQdmnbVBDb+opSNWd3y8jIFbi5Dt8Fm
-	jiTqDYY23FYbBxF1EHnt6H3Yl4fLGdQJLWVSen4uUdezXWUEiALbORwBv+HQmxg=
-X-Google-Smtp-Source: AGHT+IHb3mFXAU4r2Zmhy6zhNa22k2Jg9GyOwP78Mopj8NEo0r9SCfF2oP2p6qpW/6kPfu8JXvghyg==
-X-Received: by 2002:a05:6000:1568:b0:38f:3de0:d16 with SMTP id ffacd0b85a97d-38f3de00e0amr13821734f8f.52.1739962597460;
-        Wed, 19 Feb 2025 02:56:37 -0800 (PST)
+        bh=HccqyeYT+Kcpk4lbP7bYo+X9uUbtb0Sy0gpruCAjdU8=;
+        b=UZHplSmIPe+RtHK+mGlh3TFalByptuobLPueaBrAxE5skWZcndl2i8ub42CTf7VU4w
+         o3FNBMfCDpOw0MzNYPZVnt/Eb0R2aJW4Pe5tcvqfv4hMbw/SDk8raVHmm7C8KpzlTxXL
+         UGrQYXdQnI4t4w8kTERSCDIXM3B4XFFFkR1rf0E10RyToltfeQelZBE+7UuzQI0EmfGw
+         oY1jnznF/eEObIJlUWOCtzEjHzTwzfpBBL+zm8+zzwAY1B/GrVx/mBasEqTX9YZgCmWh
+         qFMTJ25k8nTtIGVfWQXyGfK6aeCoa4cBTrbCDJq0yoRbZFZda1ZM4YqIgRv6mHNHtajE
+         a7Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVhy0wxPyP+oHsJbOiFftTt63gcolZxkdpz5lX9M07/xt3oZAFJEdv/PHb+AkRw2ITWmkr9WpEzGL0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YycBsafVNQ7R97HA7oXeZWYskHKC3/hN4UYxrVI2mLhpIegU98K
+	eDfO1rISs25LPPvXQMjexYznyIMhLUAQ311L1YZZFjwDKrNZT9UE
+X-Gm-Gg: ASbGncsCGlukh/yKkUS5iU7lKPnTZmpYsFc4sCGBFEitmlPOIcu5+v/waGNPPZuGp+t
+	vxTFZLmKKulM6EjT5iDx92a4lj75taCvVN9+O3qYFnrcIiMTC/kdh38ONiYSY8B/bW2dOrOtk3L
+	8mPecXgPL/LJj5sC8Jwhw3UK7N0Z2+MmYM/rK3iJPOEj6mzyTgWGo8P1Ka3kLOwa5gRCFGmIeBG
+	nQGTuHlRt3yYzdP8gmWz3gRq/8/qdk8pYTrIVRlj3NUcWrNwOzpJaRDMZnDux7L36ed+g+78NEi
+	D0f7pNYFlexFabh6I5zYuslLf0VtIXpuY8L1jU0QzbQeLZgPSWOhgqgpcEwXf44=
+X-Google-Smtp-Source: AGHT+IEw1HoTpcfHgLStDwseeS7KEtDT8oRcT2niHeSKxioEokfd54D02UHOjevt6xb/vnpTTSq8kw==
+X-Received: by 2002:a05:6402:2347:b0:5dc:cfc5:9305 with SMTP id 4fb4d7f45d1cf-5e089cff4bcmr2891247a12.25.1739962614315;
+        Wed, 19 Feb 2025 02:56:54 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43984924201sm86801635e9.6.2025.02.19.02.56.36
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ded709a92bsm9206906a12.63.2025.02.19.02.56.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 02:56:37 -0800 (PST)
-Message-ID: <899e1f46af5972ff87c25d5f38f5283c1960b41f.camel@gmail.com>
-Subject: Re: [PATCH 12/29] iio: adc: ad7768-1: Move setting of val a bit
- later to avoid unnecessary return value check
+        Wed, 19 Feb 2025 02:56:53 -0800 (PST)
+Message-ID: <92eca484b407a5cb22cc998db0892181f89f148f.camel@gmail.com>
+Subject: Re: [PATCH 13/29] iio: adc: ad7768-1: Switch to sparse friendly
+ iio_device_claim/release_direct()
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan	
@@ -85,10 +85,10 @@ Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan
  =?ISO-8859-1?Q?Kleine-K=F6nig?=	 <u.kleine-koenig@baylibre.com>,
  Alisa-Dariana Roman <alisa.roman@analog.com>,  Marek Vasut <marex@denx.de>,
  Frank Li <Frank.Li@nxp.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Wed, 19 Feb 2025 10:56:40 +0000
-In-Reply-To: <20250217141630.897334-13-jic23@kernel.org>
+Date: Wed, 19 Feb 2025 10:56:57 +0000
+In-Reply-To: <20250217141630.897334-14-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
-	 <20250217141630.897334-13-jic23@kernel.org>
+	 <20250217141630.897334-14-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 
@@ -102,36 +102,39 @@ MIME-Version: 1.0
 On Mon, 2025-02-17 at 14:16 +0000, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> The data used is all in local variables so there is no advantage
-> in setting *val =3D ret with the direct mode claim held.
-> Move it later to after error check.
+> These new functions allow sparse to find failures to release
+> direct mode reducing chances of bugs over the claim_direct_mode()
+> functions that are deprecated.
 >=20
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/ad7768-1.c | 3 +--
-> =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
+> =C2=A0drivers/iio/adc/ad7768-1.c | 7 +++----
+> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 113703fb7245..c2ba357b82d8 100644
+> index c2ba357b82d8..ea829c51e80b 100644
 > --- a/drivers/iio/adc/ad7768-1.c
 > +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -370,12 +370,11 @@ static int ad7768_read_raw(struct iio_dev *indio_de=
+> @@ -365,13 +365,12 @@ static int ad7768_read_raw(struct iio_dev *indio_de=
 v,
-> =C2=A0			return ret;
+> =C2=A0
+> =C2=A0	switch (info) {
+> =C2=A0	case IIO_CHAN_INFO_RAW:
+> -		ret =3D iio_device_claim_direct_mode(indio_dev);
+> -		if (ret)
+> -			return ret;
+> +		if (!iio_device_claim_direct(indio_dev))
+> +			return -EBUSY;
 > =C2=A0
 > =C2=A0		ret =3D ad7768_scan_direct(indio_dev);
-> -		if (ret >=3D 0)
-> -			*val =3D ret;
 > =C2=A0
-> =C2=A0		iio_device_release_direct_mode(indio_dev);
+> -		iio_device_release_direct_mode(indio_dev);
+> +		iio_device_release_direct(indio_dev);
 > =C2=A0		if (ret < 0)
 > =C2=A0			return ret;
-> +		*val =3D ret;
-> =C2=A0
-> =C2=A0		return IIO_VAL_INT;
-> =C2=A0
+> =C2=A0		*val =3D ret;
 
 

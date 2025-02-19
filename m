@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-15785-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15786-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1853DA3BE40
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 13:36:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F8BA3BE2B
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 13:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42E83B03F2
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:32:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4701895DBF
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224BF1E0E11;
-	Wed, 19 Feb 2025 12:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633141E25ED;
+	Wed, 19 Feb 2025 12:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CDTxzSnG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/OA+Qfz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8D71DF26A;
-	Wed, 19 Feb 2025 12:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABC71DF974;
+	Wed, 19 Feb 2025 12:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739968337; cv=none; b=o82CuosiJqTI+Z/Vxnt/Fo3B6WMTTOyPnKGIWo5UFChbOfVQKUxJ04S2dC6Y4uaP4INXw0FvAJ8AmOajfaKSGaALM4ukqvepGjsA4RJKgD1c42COQV1hLjixAUALdkU2VkZbfxb7VIpEgrygZkQMI2lgaYajDmwzD3KHaWIGqA4=
+	t=1739968352; cv=none; b=JWbTX9lcHxNyA/8JQ/7NU0ZlVOaj2uFLsR1HOcuMOFLo+H1EmJTHnj9u7vH+eUr4/lxEtJlrR2oEXX3G3Qn9pUNR89zj3hNUu1bcrFsUGvoV3UIlyZdz9oHC5xspdc6+io6Kk+YDxaaHSaGNwgwK0s36edci33fHy+zdQ9sIgyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739968337; c=relaxed/simple;
-	bh=IBbz+wObyAhqTzMziGPirWIFuoReTJvh68cD9yxqDCk=;
+	s=arc-20240116; t=1739968352; c=relaxed/simple;
+	bh=H48Lkeq71Idm7qh8MQ4iHSeWtKwyxrxWrUPyhfQpTto=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KxDYu+iaQWfZtHawTB+yHuhzxTUf+0pfVfHw7kbhRNtnhf8bkRMvbSY2lvFrM2h1dwbGapDZekVTHRyhaCozrf62X0R4pHK88FFBYkMFEko524Vh3zd3shMjAv/EYmLgf7kAprn789D9eH55J5a0+NJdSGtsj9ecYWbVKFCrHzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CDTxzSnG; arc=none smtp.client-ip=209.85.167.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=plRNjXfHtGy4o9Gp937UL/hBG52+HCRIm0ObxLndoTy2x6+eys4SRpv5Bn4/06ZkigNowOksIQkgvwoYT39oIrgzOfUKEUfcXa3gYuS2sml7gJ2teqwF7/UeyuweTp/wL1aTu55TvuuHuXOjjDhcrPzc1N6tY/JR9Q0bDupDRdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/OA+Qfz; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54622940ef7so3351812e87.3;
-        Wed, 19 Feb 2025 04:32:14 -0800 (PST)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30a2dfcfd83so32471981fa.1;
+        Wed, 19 Feb 2025 04:32:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739968333; x=1740573133; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739968348; x=1740573148; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=872sDDSaszSL1+yhyVainkn552F70TCEUEKtazE+wZs=;
-        b=CDTxzSnGy23+3naIwWYEaxwQFE1u/TNZ3nVIN+chfbtMwKQaSwonP3tmnFGO0gLlJN
-         A+a7U80U3CNibHCY7vFy6K11xhKklkgTcv4wjiJed6twmrM2xNbd2o14i5A1tAjuW0lU
-         cTRrGEsJAPKbaWXbhcg/5qm/f4aN9sLYWgWw5do31V1S1o279qQX2aYVlHyRNCDX0Xxb
-         J/ZMYRDkXnuw1AHNFovHRF9khAGpLMlRY2udxNtWQVvVzHmFqNcr0ZjdQIEB8udQEL5u
-         rF1ZWuNuMEIJoExfvHfJsmKhoIKggBZ6/jwOTCKTuXvCtv63KEz+tya3ruMrAVAJGz2B
-         1O+Q==
+        bh=0DYvjW5f0VauVHlYQoEoi+1LNEnpUSDiH5KvYpk6CeA=;
+        b=e/OA+QfzQEH5ZJiXdsVhdvFFAoz4cIkk5u9WZ4dDvanaUPM+BbJBVVxX/OTSZ3HpcL
+         keiT+Q0TCN0gCuXp1k8Uh9rXoud4szV0JzhU7UjujeupWLzC1KW9jcATjoDMMbHtcgrk
+         E0rKytfACS7dgvi+io27akEpp5a9W3Jd67Vl/UXfLLY417Grf+xXVj0iPEx6k/QoEu+I
+         1sZrfJRprMSS1k69OZjDBiJ1WIh3rDinQDsT0ZjcjsvqCsqpZh8eOq8NPjdlLpxEz4cp
+         ytYD970KO1UHfWceBWKzop9In7SKEJ+y4AEjYQ+y6Ze2lzr8oaigsnt/BYJ1lMmi4gSO
+         aekw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739968333; x=1740573133;
+        d=1e100.net; s=20230601; t=1739968348; x=1740573148;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=872sDDSaszSL1+yhyVainkn552F70TCEUEKtazE+wZs=;
-        b=qXuEdPPCfOy6T+nYhYOX4Jid0ef2BvtU1jFUvAuKCSLfw1OECaoSLHVKCOGOk1Cygq
-         St0NnbdF0sdGZq3NG77RVjRpykekYn0WG6yJIQbwXIYCp3jh/i0ej7eiYe2EStOe1B2c
-         SfAdr6z/J8Sux/zdJC0icyIR3RiATroE3P4nxv02rhIbbUJ9KVD30KuuQKUE3JNXTPCn
-         nismSX4N48XZ5eM3jVU8XkWBi8+pH0qZ4C9X2KE5EcTMBQx23NOVxrZAv3u9swjW0pR1
-         gpOeIqpS3mwngXtDcu13urPLSfupdkb9Ewrnw1RFwtn6yjo9FxYciq6/uTeN27OursXl
-         9O4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVeYSslkE/YfGP2yopsqMKHeP+A+p5rTLYpXwG0ExA3S2sNTKKKKyM3gKKwUthaWtL3dSPkLgCwF3dN1xOKe/niXzI=@vger.kernel.org, AJvYcCWW317SxU/JOakvWcyNKTGYfRtEuEhkFvYNs0SjPnAFGmOre+08LlF0h6kBFmIGLb/SAD5GJW3BSlZn@vger.kernel.org, AJvYcCX6bA9cUt4siduePMTBNflhaz0hhWn7+juCJdLCp+au0P/cBNc77r3zLkJRdIuFcGLcSF2/31ghsIhR@vger.kernel.org, AJvYcCXdT3QBlC57XSgCDRlOmRyMEUYBOg58T8Fld6grfwZ9+kOxlcPoDCQ608pTazK9i9MsD6XjPwSvX62Ss8rJ@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0Z9LR52SugG9bd0/0n85dB/N2KViui/UgV8MTf3SFHoJ9dHO1
-	ngjWKwaUkVeZ7WL7qyoPKVLN3LJqZ+5lH1gIcsm1GJetbQKxEKMY
-X-Gm-Gg: ASbGncvECr9KO0FdwtefXKi/CMasV++SPxEiNsplmXi2Xse/gwXRRkLHGmGLUDGucXq
-	0d5jX5h/55K06x2f5MOZQO0gCfWYPnb/XIbl4eX9Uyr9O7jVa39Rw/rqdU2VrUuBnG3SMrVO2Av
-	UsTfKKtzr+pfizGJsNmK9uFzm/qIYS6pcRnDiUkVYq5DEboaLxc5IgDZ0aagyaGKuq6UleeY8S3
-	2OHdfGAR98blluWwxvkSQbx457TSv3KNv4xkd4hp4kE0gaLOJ0C9xXcHGoMztPgpRhXRPWCRjDV
-	19Gl+dWoUfDnu8TMIXT6NQ==
-X-Google-Smtp-Source: AGHT+IET+JJuBMU3Y/6jzse1ZgT54+aygXA9AXNLRXFpXqkVIx7/7mkYzYqgDRV3tj+3kjGQpH/r/A==
-X-Received: by 2002:a05:6512:2249:b0:545:c08:e17b with SMTP id 2adb3069b0e04-5462eef2242mr1448277e87.23.1739968332998;
-        Wed, 19 Feb 2025 04:32:12 -0800 (PST)
+        bh=0DYvjW5f0VauVHlYQoEoi+1LNEnpUSDiH5KvYpk6CeA=;
+        b=BIH1KPJnROumdh+z4Or57q5Ik4wIie7x/aVl9NVWrkbu72Or3daHIwO0MNPUGCVmkk
+         CXL0Bhv5sB2olf0xBFpKeUT9is1Eewcj8+FKTX+re/ltcdBOt5A/QbuRWSvbp0av2Vh+
+         g8vAZWVks74WURjVjm6d9vdVClTjQUxmMI2DTYWA09cROzEm0kuLRUPqcV7E2mIx0R/w
+         hkTSoP2q7oRTb3/Z/9lZlN6KAxHvhW+Hu21GBdinvueK0VmBHCW8IlLjLmSQ7f8lgwFO
+         OD/BvwR+FJ/4fxJ4TRWoh3a3CPUqu+GyIJ0xmb22plWfVB+MQ8mOVwcVy+qL+2T//tnd
+         Wu2g==
+X-Forwarded-Encrypted: i=1; AJvYcCU3etnTrypxRUoP9LmnVDkabWFRYSjTreJH8aOrYAX8zcYl8aHXeODWio5ckSIOptukowK7yG8OgRJRDNHeo/zT8Ms=@vger.kernel.org, AJvYcCUTYi5DlGMNbKP8zlHRx6zjx6k7SUVpGBkdZ1OlFXXmO5Q4az3Sd6GvDHGVcS9trW0byj4FUhXl0vqYXp1f@vger.kernel.org, AJvYcCUeXCt5FYNndsQwS50vgmQhBlsHYlTbzQ4zfrbUEn0jQL56FmS35KdlFNSmNjTU3ltH6uHwemBlgIdd@vger.kernel.org, AJvYcCVK1nMXUcqCyvPnuzxk7NBp1x+ekwrAv9osIl3wVloIFqH3dKCH8vYiTg/3TldXmRcVuaXXjFji5FMY@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnkdztyGrqIJMGXy2Je4BFpOrYuNfmhMQuWnDtnTW+z8Za5ieN
+	jhX9w3onO/0w5n5kuGNjp7uVUmRM2PEpwJyEnrfI7v1ehfIOq0Ux
+X-Gm-Gg: ASbGncsGbWm0G00iY1MutaTYQXWz/Uj1v2F7fYSO3sP5+IwS6Vko8xmJ/Y9UusHz0Os
+	SBpwxmuYZ8kuKtzlIzYdmwRIFZueSVyQOFUhwgPmc8Q4CapIXsVAvTFzNOIl3JvXwVXsD91uGwT
+	gbsH4JR5sBfLEYfS1acv317R73vbSdabQkffchXxBijN/emperOhnijvCDvDI+PLKoLb2LAwrgN
+	8qXUFi0acBDj+MD6CHujJgcsabIgoyT9C+0ajyTqtFH690UQXai31A0w3Ciq6gZtsmb0/Fg7ZHn
+	fchKRTXeLhys9mh1uOuLbg==
+X-Google-Smtp-Source: AGHT+IGpj+sXTk9ydInkrFSzD/8u3Ea569jfA3qPAyfTIDaLYJDMfGIteoPF8DQijF1k+5z6DuXOPg==
+X-Received: by 2002:a2e:9905:0:b0:308:f01f:181f with SMTP id 38308e7fff4ca-30927aff022mr48385981fa.31.1739968348109;
+        Wed, 19 Feb 2025 04:32:28 -0800 (PST)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5452f6efbf5sm1596646e87.18.2025.02.19.04.32.09
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30a344c8900sm9350131fa.22.2025.02.19.04.32.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 04:32:11 -0800 (PST)
-Date: Wed, 19 Feb 2025 14:32:06 +0200
+        Wed, 19 Feb 2025 04:32:27 -0800 (PST)
+Date: Wed, 19 Feb 2025 14:32:23 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -91,9 +91,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v3 8/9] iio: adc: ti-ads7924 Drop unnecessary function
- parameters
-Message-ID: <3155f491753944d6511d058a09f6f6c505d551f9.1739967040.git.mazziesaccount@gmail.com>
+Subject: [PATCH v3 9/9] iio: adc: ti-ads7924: Respect device tree config
+Message-ID: <3279aa9348e7149bfbd433daaa201f2eb5873e1f.1739967040.git.mazziesaccount@gmail.com>
 References: <cover.1739967040.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -102,77 +101,198 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="LHcdoEmAz0cVNgKv"
+	protocol="application/pgp-signature"; boundary="vg9phHNLX0RbBtPD"
 Content-Disposition: inline
 In-Reply-To: <cover.1739967040.git.mazziesaccount@gmail.com>
 
 
---LHcdoEmAz0cVNgKv
+--vg9phHNLX0RbBtPD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Device pointer is the only variable which is used by the
-ads7924_get_channels_config() and which is declared outside this
-function. Still, the function gets the iio_device and i2c_client as
-parameters. The sole caller of this function (probe) already has the
-device pointer which it can directly pass to the function.
+The ti-ads7924 driver ignores the device-tree ADC channel specification
+and always exposes all 4 channels to users whether they are present in
+the device-tree or not. Additionally, the "reg" values in the channel
+nodes are ignored, although an error is printed if they are out of range.
 
-Simplify code by passing the device pointer directly as a parameter
-instead of digging it from the iio_device's private data.
+Register only the channels described in the device-tree, and use the reg
+property as a channel ID.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
 ---
-This commit is compile-tested only! All further testing is appreciated.
+Revision history:
+v2 =3D> v3: New patch
+
+Please note that this is potentially breaking existing users if they
+have wrong values in the device-tree. I believe the device-tree should
+ideally be respected, and if it says device X has only one channel, then
+we should believe it and not register 4. Well, we don't live in the
+ideal world, so even though I believe this is TheRightThingToDo - it may
+cause havoc because correct device-tree has not been required from the
+day 1. So, please review and test and apply at your own risk :)
+
+As a side note, this might warrant a fixes tag but the adc-helper -stuff
+is hardly worth to be backported... (And I've already exceeded my time
+budget with this series - hence I'll leave crafting backportable fix to
+TI people ;) )
+
+This has only been compile tested! All testing is highly appreciated.
 ---
- drivers/iio/adc/ti-ads7924.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/iio/adc/ti-ads7924.c | 80 +++++++++++++++++-------------------
+ 1 file changed, 37 insertions(+), 43 deletions(-)
 
 diff --git a/drivers/iio/adc/ti-ads7924.c b/drivers/iio/adc/ti-ads7924.c
-index 66b54c0d75aa..b1f745f75dbe 100644
+index b1f745f75dbe..a5b8f7c81b8a 100644
 --- a/drivers/iio/adc/ti-ads7924.c
 +++ b/drivers/iio/adc/ti-ads7924.c
-@@ -251,11 +251,8 @@ static const struct iio_info ads7924_info =3D {
+@@ -22,6 +22,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+=20
++#include <linux/iio/adc-helpers.h>
+ #include <linux/iio/iio.h>
+ #include <linux/iio/types.h>
+=20
+@@ -119,15 +120,12 @@
+ #define ADS7924_TOTAL_CONVTIME_US (ADS7924_PWRUPTIME_US + ADS7924_ACQTIME_=
+US + \
+ 				   ADS7924_CONVTIME_US)
+=20
+-#define ADS7924_V_CHAN(_chan, _addr) {				\
+-	.type =3D IIO_VOLTAGE,					\
+-	.indexed =3D 1,						\
+-	.channel =3D _chan,					\
+-	.address =3D _addr,					\
+-	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW), 		\
+-	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),	\
+-	.datasheet_name =3D "AIN"#_chan,				\
+-}
++static const struct iio_chan_spec ads7924_chan_template =3D {
++	.type =3D IIO_VOLTAGE,
++	.indexed =3D 1,
++	.info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),
++	.info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),
++};
+=20
+ struct ads7924_data {
+ 	struct device *dev;
+@@ -182,13 +180,6 @@ static const struct regmap_config ads7924_regmap_confi=
+g =3D {
+ 	.writeable_reg =3D ads7924_is_writeable_reg,
+ };
+=20
+-static const struct iio_chan_spec ads7924_channels[] =3D {
+-	ADS7924_V_CHAN(0, ADS7924_DATA0_U_REG),
+-	ADS7924_V_CHAN(1, ADS7924_DATA1_U_REG),
+-	ADS7924_V_CHAN(2, ADS7924_DATA2_U_REG),
+-	ADS7924_V_CHAN(3, ADS7924_DATA3_U_REG),
+-};
+-
+ static int ads7924_get_adc_result(struct ads7924_data *data,
+ 				  struct iio_chan_spec const *chan, int *val)
+ {
+@@ -251,32 +242,38 @@ static const struct iio_info ads7924_info =3D {
  	.read_raw =3D ads7924_read_raw,
  };
 =20
--static int ads7924_get_channels_config(struct i2c_client *client,
--				       struct iio_dev *indio_dev)
-+static int ads7924_get_channels_config(struct device *dev)
+-static int ads7924_get_channels_config(struct device *dev)
++static const struct iio_adc_props ads7924_chan_props =3D {
++	.required =3D IIO_ADC_CHAN_PROP_TYPE_REG,
++};
++
++static int ads7924_get_channels_config(struct iio_dev *indio_dev,
++				       struct device *dev)
  {
--	struct ads7924_data *priv =3D iio_priv(indio_dev);
--	struct device *dev =3D priv->dev;
- 	struct fwnode_handle *node;
- 	int num_channels =3D 0;
+-	struct fwnode_handle *node;
+-	int num_channels =3D 0;
++	struct iio_chan_spec *chan_array;
++	int num_channels =3D 0, i;
 =20
-@@ -380,7 +377,7 @@ static int ads7924_probe(struct i2c_client *client)
- 	indio_dev->num_channels =3D ARRAY_SIZE(ads7924_channels);
- 	indio_dev->info =3D &ads7924_info;
+-	device_for_each_child_node(dev, node) {
+-		u32 pval;
+-		unsigned int channel;
++	num_channels =3D devm_iio_adc_device_alloc_chaninfo(dev,
++					&ads7924_chan_template, &chan_array,
++					&ads7924_chan_props);
 =20
--	ret =3D ads7924_get_channels_config(client, indio_dev);
-+	ret =3D ads7924_get_channels_config(dev);
+-		if (fwnode_property_read_u32(node, "reg", &pval)) {
+-			dev_err(dev, "invalid reg on %pfw\n", node);
+-			continue;
+-		}
++	if (num_channels < 0)
++		return num_channels;
+=20
+-		channel =3D pval;
+-		if (channel >=3D ADS7924_CHANNELS) {
+-			dev_err(dev, "invalid channel index %d on %pfw\n",
+-				channel, node);
+-			continue;
+-		}
++	if (!num_channels)
++		return -EINVAL;
++
++	for (i =3D 0; i < num_channels; i++) {
++		static const char * const datasheet_names[] =3D {
++			"AIN0", "AIN1", "AIN2", "AIN3"
++		};
++		int ch_id =3D chan_array[i].channel;
+=20
+-		num_channels++;
++		chan_array[i].address =3D ADS7924_DATA0_U_REG + ch_id;
++		chan_array[i].datasheet_name =3D datasheet_names[ch_id];
+ 	}
+=20
+-	if (!num_channels)
+-		return -EINVAL;
++	indio_dev->channels =3D chan_array;
++	indio_dev->num_channels =3D num_channels;
+=20
+ 	return 0;
+ }
+@@ -370,18 +367,15 @@ static int ads7924_probe(struct i2c_client *client)
+=20
+ 	mutex_init(&data->lock);
+=20
+-	indio_dev->name =3D "ads7924";
+-	indio_dev->modes =3D INDIO_DIRECT_MODE;
+-
+-	indio_dev->channels =3D ads7924_channels;
+-	indio_dev->num_channels =3D ARRAY_SIZE(ads7924_channels);
+-	indio_dev->info =3D &ads7924_info;
+-
+-	ret =3D ads7924_get_channels_config(dev);
++	ret =3D ads7924_get_channels_config(indio_dev, dev);
  	if (ret < 0)
  		return dev_err_probe(dev, ret,
  				     "failed to get channels configuration\n");
+=20
++	indio_dev->name =3D "ads7924";
++	indio_dev->modes =3D INDIO_DIRECT_MODE;
++	indio_dev->info =3D &ads7924_info;
++
+ 	data->regmap =3D devm_regmap_init_i2c(client, &ads7924_regmap_config);
+ 	if (IS_ERR(data->regmap))
+ 		return dev_err_probe(dev, PTR_ERR(data->regmap),
 --=20
 2.48.1
 
 
---LHcdoEmAz0cVNgKv
+--vg9phHNLX0RbBtPD
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAme1z0YACgkQeFA3/03a
-ocUemwf9HQbiR77d1KNj4kGgWfMEpDY2y5qIlebPXJe94y1jkU+LPoFK/3yoptzd
-1zmwZZHfvEO8pbuI5ZEkCVEtMIm8oD5KrC63b2fO3tB9AbXnHv/PIa7bGXmp4GRA
-8qgD9c6WVzM0+j2WwUFzFq72g76QBdy+Ge46vYTR3FBmL4sNzrXOBlMYZ2SH/XcA
-xbiF+7BSaInu5Xjlyg3hte9M1kZ99s+LzUDgNbE0Jv73W2vzK0bxqPbVZ+Jv/H30
-hQ0EnHDjiZp1Jxmtcq6tkD4lzqD1OkLpToE3swDtstzlGyp5SXtx2npiiOKIebCO
-XtHxNfk7lMQqw8ZSQdOZ/dCKUPnxWw==
-=p/2t
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAme1z1cACgkQeFA3/03a
+ocVfdAf/dJeRANmjD6kr3+nUZ8APPdoSBvKQHSWTTYvnKXYCZEJYrZk9e+UN3UAo
+82YkKYpUqhArK45Dzjx9OS42+5NLtA2ejvZnApSvg6Zl6Qzth/UNCa0EKgJwLS5F
+E1XAjDOuGlow3lkWtpGalu54LEEKLUMwlq0I18J/MKhrZAlp3yF63+GC5Bt0AwpE
+9wUmQ1L13Hb/zSD+ub50UVmcPDAG3QCPzF5XFqCIJZX4UzDX7m0hh+cMYICn/92q
+fb/f5L9zxO72WukfiX49W81NQ9bfBmyJyYTE3nnoPr2fvMxtq8PAQPqvklzBkF+9
+ZzSYdwAyy4wq0CNST3K+ZG81JWsZoQ==
+=/Rhj
 -----END PGP SIGNATURE-----
 
---LHcdoEmAz0cVNgKv--
+--vg9phHNLX0RbBtPD--
 

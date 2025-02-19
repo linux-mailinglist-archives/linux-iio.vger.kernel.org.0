@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-15769-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20BD0A3BC4B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:00:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2368AA3BC4C
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 12:01:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29B1B7A7B25
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 10:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 064A33B173F
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 11:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA91BC073;
-	Wed, 19 Feb 2025 11:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAC31BD9DB;
+	Wed, 19 Feb 2025 11:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ya2tc+Gr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fa5VY8jn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E70286291
-	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 11:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573B7286291
+	for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 11:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739962843; cv=none; b=NjLPEgE5sErVY1lAoF5vMjeer9z894v8xkE2QhsKimGsAVbjhoXkbX7MQVu3zDob6lwTmztp3GAin9NkvgdPWOyG7ftesY17/dS1VzcZl/0dCtETq38InTq2zbGXxTONQSbGzULlrN7CWhS8oCuySR2b7XledjsuMGQ4kaevHeA=
+	t=1739962870; cv=none; b=Z7YxQ5MdhvqMUBLSq4OFkQFY2aLKf60iS5r8PPxu1UY//EKgL61SXj+MslSRo/zbDuTW8em3ObfoEiLbOf1aYJXsQjLmT1ihPur3AT384rwASpXPS1Y26iy/niHUngD9B5i8Bml7t3ZkjW5c9k10kNfwHxi3EVfEO/bPmHijIQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739962843; c=relaxed/simple;
-	bh=F528N1VukOQNed9kEL4hRW9mkU0oUmSZwiO72odX0uI=;
+	s=arc-20240116; t=1739962870; c=relaxed/simple;
+	bh=E2ZgJ9oZ2t1maMhtKDyNusIAbVVRjqKBtQiTDIFLRAw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UoEMYZ/eFpHDKNS1DN/ihTkY8UrKoFZf0uYHld/gIUdUvvDgcFaSKAL6AbTI8hUR+hy+Pscg6Jc+LLfSHgMPsBumCmZkz9F4LRKsgqclE3VFhleDyG9JVyBMmjL0LibXIXQcE25ND8oz0idudHbmm0ca6BGjZc/r6LH6BKYHMV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ya2tc+Gr; arc=none smtp.client-ip=209.85.208.53
+	 Content-Type:MIME-Version; b=qBTbeKZ9UQYBsIflVzMYIjtlwRGFmTBBKDJnbiJreGqZgGGHpaDB3Cn2cWkDj7CYmUOdJhUsqwFlbI9qmXqEUeG9xQaV8YWGNuR6pGPASV1U0aMRhWb11Jj3TM1DTYwQtY+E8058LLAhc0nAWBKP8IeIjJIKy5xqiJhJLBtnt0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fa5VY8jn; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so6060621a12.3
-        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 03:00:41 -0800 (PST)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4397e5d5d99so21035895e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 19 Feb 2025 03:01:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739962840; x=1740567640; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1739962867; x=1740567667; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=fZ09mQhFL8Z9Uwji5cfuZaHHPaiu3wKMJFPGX03DD/M=;
-        b=Ya2tc+GrFuYo88QgTIw8CkbClbXGO9llAjSaT49/CqcOyGX1e0UqLvn8GYxc6nSdjN
-         u+I8dOhDDKeNXwBycqqAewfhohsH0O1onS4amgJJrYNcbsA/txpq4bZDabrLJ9a1P26T
-         a4m6LfOHrPwcwzfgneKU0+PzUHi7QZMWleRXIPc5CDUHVauQ8nEoV3/bVbSryXYGnjrj
-         BCtdJGtVb4BUmVmsUfeewsGOOeyKeahJvi57FhNbBBNKsLD7NDlgdVkeyA00hJgtB49z
-         xL5lO5qrTlX0x7X/5aTSkTY78xMWG7kZ429veIoVy4P3oQLIdv/Msu8dU3p8vPQoqHDV
-         znwA==
+        bh=/ELlfzTA8gqu7bXglOMCc79B791ypec9k0Uv3IevFEA=;
+        b=Fa5VY8jnmDYiQ5LXYxNnGXCs6LcWDC6Apj4IIU14fcntI+/BX9AF7SR0GqfMSAJ4lA
+         O+XM7cFLuN2OZq4h4uWlxmlFp3VrOjVQbaqnIIN1G0S6mxzD9bGMB1KoJZv1HP1DRh0C
+         eZELsbB2OeKwHZiSLOm0FxHaAMuaqpE9lnm0B8SxSzzpMNB4mFE0fjM/PRnhT35lcLDc
+         9OKzKd5nY3wfokRhdDoD0UwXp/hHOJTYDrCOhMPhI7b7pAlmRrlQqYtal1dxbveJeLHR
+         rZNMK+qOymZBRFpfj7EFGaNw5BzsfEHKJGfbeuwqfqlVuZPSPnYweJMUm9dQVEWVBfzG
+         9Cjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739962840; x=1740567640;
+        d=1e100.net; s=20230601; t=1739962867; x=1740567667;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=fZ09mQhFL8Z9Uwji5cfuZaHHPaiu3wKMJFPGX03DD/M=;
-        b=tcOMJ0VYKEkbIYVVLmp3aI/q1FbQRF8mbT3E9dIXcO1zBIZsPbPDo9L74w1UPTAv5S
-         F8lu4bHZJOlA6TNdn/mPvrd1a8zR7zFA2mj6C12bn514/QT55Mw3GRvDZ+vtDV+JP3PF
-         h+2IYF57cxMVre3Rs5lP5lBFms9SfunTelnlm2g+yT1Dz1MF4iWt8aZkqRev3SKvhlKV
-         tpo1abu7V5KimAfaZmTTeKISM0gTbLf/fcMm9gFZwJqUzR4UAyQ0LapkksTyc7ETxYj0
-         rLqpHYNUWrRCu5Kt/BMOMVVa2OfGbRjzJ5Fe/gUOVKUgN3Tn1C689rBKxgy759s/VAS9
-         IyYw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCqng7b0gTlMrv+YZgkzrjGrvIgbjvdiOqt5gv34SQrYv1XvFzTRQPSlXsyIT6NUQrguNyFCjI1qY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxyi31HuLmK6pzSjash8ZEn97KQ60kxAcMQMVj1pBnz9LCDVIY+
-	/Yic9YOEghe226gJtCpfiZF8ErJgWNMQMheZlrR+M/UeSQ8d5nQb
-X-Gm-Gg: ASbGncvuyRmwCbjvAlRv+nzyf0bdF1GlSkKOeANjNnrDLnUspx7aAJW/UJfuZwka36p
-	4LV6DZ8NII8gRRtiQXkb1C49SvoQRBC9Uds0aQT5q8LFdRufhHxKDcJteqlISCNFQdN3A6rDhn3
-	TDHPZsWWsiXZu4mbkjpWAbPWDpue/z8Ka7jApSMe1fP4eLFzQe/z1dE0lgInLzlLPZAlCGcy6+s
-	em4Xum5iJOq/xZlVMOXfw9LhTcyxNLZjwzyXALHy9I0SkrArwlyrX2JI/cYaMjXRLjG+Fig16cV
-	mg96paSk8ZQIxJZcjBpQQgJNX1UvKf7UYYcgeO4Ak3GnT6e9mpLQkB5X3VxGTNc=
-X-Google-Smtp-Source: AGHT+IHessyvdyvA4Tj2xRue04Ov1CfTi4HoXAQwMsIgrm37SFgFN5Srkg7tygAwPoZOF47RJLgmTg==
-X-Received: by 2002:a05:6402:254a:b0:5de:b438:1fdb with SMTP id 4fb4d7f45d1cf-5e036174763mr41375548a12.30.1739962840193;
-        Wed, 19 Feb 2025 03:00:40 -0800 (PST)
+        bh=/ELlfzTA8gqu7bXglOMCc79B791ypec9k0Uv3IevFEA=;
+        b=mXAuF81dqXkNaWEER5OnlqQ1dw2FQW0KYJChPk+QYabooB4FNousBhKeBPdBdfOQAP
+         eV1xXySfGrzP+whVl+ybPMe5B7frMtAv0Dd41b63gYprFRo3QU0ASP5pk5+jvB3Surc5
+         7aLuQUzhrxtZRyh46a0+7SY1jqrx/elv11O/MFzRlyKApFXpj85cbQj2tj8rbffrILRC
+         r4MZvMxVY9ufgi9F626HKBe3TqBv8Ky4X7VmBTy2gGhCt5s+5/T537ym36mWxqgh/JSg
+         rMSeWy7v0/a8pRd1jqBeDrDJ2AybvcqKKknt88wAbph3NxnYDxT/rcPwggTmgm8AL+ni
+         QKdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVq9napytpI3aiRBrpMC3TpJzbab4Af2R3ZcCpid0CcZO6nRvS6IMES/Ty8cYA7D4SYx/AX+YbWgPU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWIft2Lv6GPxy6SgNiI3Ec5As7kkAK8okpqTyXzYGBYZZZnUul
+	I6o32yQtReByIUeJmV2q782ihhzrbhvQfgeRv2pJdzPYSuf2oFz/
+X-Gm-Gg: ASbGnctvg3uN1dxXwAVPWtuRLJlaJzg3x031KLB00g+1g/7SgMxorSI08czX9PpPrGp
+	X9Il7E2A9AOiccbLt+sb4Gpvfx/ibzaW0Z+sfnLC7kkIc6+C2p+hBuhuc1xUEffRNZ+ywXkELoL
+	8iv6iQPJUlGZMAJ/0ZGZ49TBlJY1wwPMaCATYPWQkIVGh2XFcJqnwVckjAUthjM3ba5DNUOrdSi
+	stmh7d7PYYO33gvhCZIsMWfGOSF/F+q2YxrFPgAWcZ2Z0T52ugJ5eFHdKOICU6DmFPgk6R3ii5C
+	pLGf+9CyPGwQhhPSNc1qB9cQAFE6DePgUPDhNpB0mP6ewbQedbCe8j38mh4CoZg=
+X-Google-Smtp-Source: AGHT+IGWbnZiD+maEsqw7Y8zTDB1UqV2Uv5R4I8eXTULxo4At/7gduFNjbH7Cn7Y99SoaZFTHq/CIw==
+X-Received: by 2002:a05:600c:cc3:b0:439:8185:4ad3 with SMTP id 5b1f17b1804b1-43981854bc6mr101758905e9.27.1739962866534;
+        Wed, 19 Feb 2025 03:01:06 -0800 (PST)
 Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abba19bd1dbsm508421166b.30.2025.02.19.03.00.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43984924201sm86911075e9.6.2025.02.19.03.01.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Feb 2025 03:00:39 -0800 (PST)
-Message-ID: <fe8be83a35aaa3d6abf4ccb32155dcc265554587.camel@gmail.com>
-Subject: Re: [PATCH 17/29] iio: adc: ad7793: Factor out core of
- ad7793_write_raw() to simplify error handling
+        Wed, 19 Feb 2025 03:01:06 -0800 (PST)
+Message-ID: <c55fde275edd15ef3040fa9f03fc2790ace24dc9.camel@gmail.com>
+Subject: Re: [PATCH 18/29] iio: adc: ad7793: Switch to sparse friendly
+ iio_device_claim/release_direct()
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan	
@@ -85,10 +85,10 @@ Cc: David Lechner <dlechner@baylibre.com>, Olivier Moysan
  =?ISO-8859-1?Q?Kleine-K=F6nig?=	 <u.kleine-koenig@baylibre.com>,
  Alisa-Dariana Roman <alisa.roman@analog.com>,  Marek Vasut <marex@denx.de>,
  Frank Li <Frank.Li@nxp.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Date: Wed, 19 Feb 2025 11:00:43 +0000
-In-Reply-To: <20250217141630.897334-18-jic23@kernel.org>
+Date: Wed, 19 Feb 2025 11:01:09 +0000
+In-Reply-To: <20250217141630.897334-19-jic23@kernel.org>
 References: <20250217141630.897334-1-jic23@kernel.org>
-	 <20250217141630.897334-18-jic23@kernel.org>
+	 <20250217141630.897334-19-jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.3 
@@ -102,132 +102,39 @@ MIME-Version: 1.0
 On Mon, 2025-02-17 at 14:16 +0000, Jonathan Cameron wrote:
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 >=20
-> Factor out everything under the direct mode claim allowing direct returns
-> in error paths.=C2=A0 Switch sense of matching in the loop and use a cont=
-inue
-> to reduce code indent and improve readability.
+> These new functions allow sparse to find failures to release
+> direct mode reducing chances of bugs over the claim_direct_mode()
+> functions that are deprecated.
 >=20
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
 
 Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/adc/ad7793.c | 79 +++++++++++++++++++++----------------=
----
-> =C2=A01 file changed, 42 insertions(+), 37 deletions(-)
+> =C2=A0drivers/iio/adc/ad7793.c | 7 +++----
+> =C2=A01 file changed, 3 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/drivers/iio/adc/ad7793.c b/drivers/iio/adc/ad7793.c
-> index 1b50d9643a63..861a3e44e5ad 100644
+> index 861a3e44e5ad..ccf18ce48e34 100644
 > --- a/drivers/iio/adc/ad7793.c
 > +++ b/drivers/iio/adc/ad7793.c
-> @@ -462,64 +462,69 @@ static int ad7793_read_raw(struct iio_dev *indio_de=
-v,
-> =C2=A0	return -EINVAL;
-> =C2=A0}
-> =C2=A0
-> -static int ad7793_write_raw(struct iio_dev *indio_dev,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan=
-,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val2,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 long mask)
-> +static int __ad7793_write_raw(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int val, int val2, long mask)
+> @@ -517,13 +517,12 @@ static int ad7793_write_raw(struct iio_dev *indio_d=
+ev,
 > =C2=A0{
-> =C2=A0	struct ad7793_state *st =3D iio_priv(indio_dev);
-> -	int ret, i;
-> +	int i;
-> =C2=A0	unsigned int tmp;
+> =C2=A0	int ret;
 > =C2=A0
 > -	ret =3D iio_device_claim_direct_mode(indio_dev);
 > -	if (ret)
 > -		return ret;
-> -
-> =C2=A0	switch (mask) {
-> =C2=A0	case IIO_CHAN_INFO_SCALE:
-> -		ret =3D -EINVAL;
-> -		for (i =3D 0; i < ARRAY_SIZE(st->scale_avail); i++)
-> -			if (val2 =3D=3D st->scale_avail[i][1]) {
-> -				ret =3D 0;
-> -				tmp =3D st->conf;
-> -				st->conf &=3D ~AD7793_CONF_GAIN(-1);
-> -				st->conf |=3D AD7793_CONF_GAIN(i);
-> -
-> -				if (tmp =3D=3D st->conf)
-> -					break;
-> -
-> -				ad_sd_write_reg(&st->sd, AD7793_REG_CONF,
-> -						sizeof(st->conf), st->conf);
-> -				ad7793_calibrate_all(st);
-> -				break;
-> -			}
-> -		break;
-> -	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		if (!val) {
-> -			ret =3D -EINVAL;
-> -			break;
-> +		for (i =3D 0; i < ARRAY_SIZE(st->scale_avail); i++) {
-> +			if (val2 !=3D st->scale_avail[i][1])
-> +				continue;
-> +
-> +			tmp =3D st->conf;
-> +			st->conf &=3D ~AD7793_CONF_GAIN(-1);
-> +			st->conf |=3D AD7793_CONF_GAIN(i);
-> +
-> +			if (tmp =3D=3D st->conf)
-> +				return 0;
-> +
-> +			ad_sd_write_reg(&st->sd, AD7793_REG_CONF,
-> +					sizeof(st->conf), st->conf);
-> +			ad7793_calibrate_all(st);
-> +
-> +			return 0;
-> =C2=A0		}
-> +		return -EINVAL;
-> +	case IIO_CHAN_INFO_SAMP_FREQ:
-> +		if (!val)
-> +			return -EINVAL;
+> +	if (!iio_device_claim_direct(indio_dev))
+> +		return -EBUSY;
 > =C2=A0
-> =C2=A0		for (i =3D 0; i < 16; i++)
-> =C2=A0			if (val =3D=3D st->chip_info->sample_freq_avail[i])
-> =C2=A0				break;
+> =C2=A0	ret =3D __ad7793_write_raw(indio_dev, chan, val, val2, mask);
 > =C2=A0
-> -		if (i =3D=3D 16) {
-> -			ret =3D -EINVAL;
-> -			break;
-> -		}
-> +		if (i =3D=3D 16)
-> +			return -EINVAL;
+> -	iio_device_release_direct_mode(indio_dev);
+> +	iio_device_release_direct(indio_dev);
 > =C2=A0
-> =C2=A0		st->mode &=3D ~AD7793_MODE_RATE(-1);
-> =C2=A0		st->mode |=3D AD7793_MODE_RATE(i);
-> =C2=A0		ad_sd_write_reg(&st->sd, AD7793_REG_MODE, sizeof(st->mode),
-> =C2=A0				st->mode);
-> -		break;
-> +		return 0;
-> =C2=A0	default:
-> -		ret =3D -EINVAL;
-> +		return -EINVAL;
-> =C2=A0	}
-> +}
-> +
-> +static int ad7793_write_raw(struct iio_dev *indio_dev,
-> +			=C2=A0=C2=A0=C2=A0 struct iio_chan_spec const *chan,
-> +			=C2=A0=C2=A0=C2=A0 int val, int val2, long mask)
-> +{
-> +	int ret;
-> +
-> +	ret =3D iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret =3D __ad7793_write_raw(indio_dev, chan, val, val2, mask);
-> =C2=A0
-> =C2=A0	iio_device_release_direct_mode(indio_dev);
-> +
 > =C2=A0	return ret;
 > =C2=A0}
-> =C2=A0
 
 

@@ -1,56 +1,62 @@
-Return-Path: <linux-iio+bounces-15814-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15815-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C37A3CCBB
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 23:54:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56091A3CD46
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 00:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D275A7A46FE
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 22:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35AF2176E69
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 23:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFA525B693;
-	Wed, 19 Feb 2025 22:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E807525A2B0;
+	Wed, 19 Feb 2025 23:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CQpr6j3T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBi0WTAN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2125825B674;
-	Wed, 19 Feb 2025 22:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999B61DE3AC;
+	Wed, 19 Feb 2025 23:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740005691; cv=none; b=jumy27e6btE6uxI9UCR0ilaerTfGe0v2YBL/Mxm4NTtrFzAkrPLKe7mtxr9+5EZ1K5JpECMG5DdtOEqBCbUPVdPILJFa3J+Avj1QFuqHr0UsFSOSx/CHMtvSzDhIUXm0a05dWQfWCSfBljIe1YLJ24kapHvsdS8M8aDXDEyAHNU=
+	t=1740007065; cv=none; b=K/udneWfeHUBxNvELnFEfYDfHSYq925+NZEPr2BzusiDGeRHEpB6ZiEvSgp+leQhz0ONgwAbmi66dy+dfVx2lhT7MXRqBGslSPrtg4gbXdCjg/+NNKGFBEgXxEYSS9s5bWFwu+5jzGLdF9noSDFbb7TwJTae6GnIXn9dL/FiRZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740005691; c=relaxed/simple;
-	bh=DH4hbs5EerBNAJz2J89fIqkhJwMcOqyn2uGY2e8uQmw=;
+	s=arc-20240116; t=1740007065; c=relaxed/simple;
+	bh=/sR/RM/+9K4Puu5LwxqGwGFVRF6ohXpNAUKGy0AUT3E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L3tdCYuf+9lByp6Qy27ENlas3i91roSWpBlK4N43JeNK5ZTQifYC2dwypEzMwLia+44dgFBqca3+xZSNVRysuCzaPKwpLBNU8J8YrbSU4SpQ9MT752AVusaJa0jh2IlA1EnbP7sk6qO4KyoHcnfuENGniNNvYpRq7/L46dXFCI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CQpr6j3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA164C4CED1;
-	Wed, 19 Feb 2025 22:54:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sESF/xesW0VH7mHyicZSOzpjgGKsWC+imfDKIa3G6AKdw/7PMYfTPDiR4nUDyFawtsDc6oHF/iC7QEBrl5pjrMjf0855yE4lSOnTPnOJSuvHhckHOZJLNqm/WC6DG+gr6oN9ECusEsEGM8uCjx6Ws2QrRtCiGvNNzzLpcYZToeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBi0WTAN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE613C4CEE0;
+	Wed, 19 Feb 2025 23:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740005691;
-	bh=DH4hbs5EerBNAJz2J89fIqkhJwMcOqyn2uGY2e8uQmw=;
+	s=k20201202; t=1740007064;
+	bh=/sR/RM/+9K4Puu5LwxqGwGFVRF6ohXpNAUKGy0AUT3E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CQpr6j3Tp6tnVuvGFrQvbYy5hPtdLQMcWArX742TesOPv0KWfA/gA185MREQaS92f
-	 ajMn2Di2ssaP2WEwdPww7TmHrwH+ZYhw1LL58qmi3pbzRgu7WI9+rWKE9CR0p6HTdr
-	 5+gNTFF7pe2PiXUMyoACNp60IBXAQJGa+8zCoSAoq1UpL8w0HW9UbcSSlKBVhq1D3j
-	 4KOP+kLAlOxT4+V9lvQhqtgmpaU/EBVtYh1hABjJl8omrJxNjxW/1hl76rr19Dk4k2
-	 0HzPz1nJWioFv93Coo1RpHNpsp0Dv9/wuIQ5Sse9biYYLKX4U3b3MScrURvKrMnRnb
-	 bYi1PU6zA4RbA==
-Date: Wed, 19 Feb 2025 16:54:49 -0600
+	b=QBi0WTANtCHuQ+gNr0a+re90u3Y96eAtgAWJdl7LxDfiPppK/YHz1IF9q10hBXFOc
+	 2azg60d0TO6kwQoBrsns3412AY8r4RGMlFXgd9sMYRzqeGqbgO/vs5nniipuO/l5Qo
+	 xWicTptktSySQ6xA6k/ceex9rUmkA1q9kbesObak4WLlOOgk5f/06eL7K+OSASPOYu
+	 F1S8iTMpISBpEEHBFt3rBMKyPiVf/xCZqRNVw3WgGT0GrcMLdcUqTGZKxXNtmCJ1hn
+	 Lr/2Zg+Fyi0+mEY4zmmBKydLeEfiAQwUtctNuI7pMEPJLqGtrFuWh/bcFyGgzEqYrx
+	 5g8VN1JlJiENQ==
+Date: Wed, 19 Feb 2025 17:17:42 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	jic23@kernel.org, devicetree@vger.kernel.org,
-	linux-pwm@vger.kernel.org, conor+dt@kernel.org
-Subject: Re: [PATCH v13 5/9] dt-bindings: iio: adc: add ad485x axi variant
-Message-ID: <174000568921.3121156.5629879811490736248.robh@kernel.org>
-References: <20250214131955.31973-1-antoniu.miclaus@analog.com>
- <20250214131955.31973-6-antoniu.miclaus@analog.com>
+To: Robert Budai <robert.budai@analog.com>
+Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>,
+	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+	devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [RESEND PATCH v8 4/6] dt-bindings: iio: Add adis16550 bindings
+Message-ID: <174000706255.3157600.13765807090246524556.robh@kernel.org>
+References: <20250217105753.605465-1-robert.budai@analog.com>
+ <20250217105753.605465-5-robert.budai@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,26 +65,26 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250214131955.31973-6-antoniu.miclaus@analog.com>
+In-Reply-To: <20250217105753.605465-5-robert.budai@analog.com>
 
 
-On Fri, 14 Feb 2025 15:19:51 +0200, Antoniu Miclaus wrote:
-> Add a new compatible and related bindigns for the fpga-based
-> AD485x AXI IP core, a variant of the generic AXI ADC IP.
+On Mon, 17 Feb 2025 12:57:48 +0200, Robert Budai wrote:
+> Document the ADIS16550 device devicetree bindings.
 > 
-> The AXI AD485x IP is a very similar HDL (fpga) variant of the
-> generic AXI ADC IP, intended to control ad485x familiy.
-> 
-> Although this is not preffered, the wildcard naming is used to
-> match the published firmware under the same name.
-> 
+> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
 > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> Signed-off-by: Robert Budai <robert.budai@analog.com>
 > ---
-> changes in v13:
->  - adjust commit body and add comment on wildcard matching the published
->    firmware.
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 2 ++
->  1 file changed, 2 insertions(+)
+> 
+> v8:
+> - added extra blank lines
+> - changes reset-gpios description according to suggested changes
+> 
+>  .../bindings/iio/imu/adi,adis16550.yaml       | 74 +++++++++++++++++++
+>  MAINTAINERS                                   | 10 +++
+>  2 files changed, 84 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>

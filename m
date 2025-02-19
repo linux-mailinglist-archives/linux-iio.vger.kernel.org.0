@@ -1,151 +1,163 @@
-Return-Path: <linux-iio+bounces-15802-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15801-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81716A3C66F
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 18:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A508A3C666
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 18:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA061895776
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 17:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C382189B042
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Feb 2025 17:39:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3A02144D7;
-	Wed, 19 Feb 2025 17:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D232F214233;
+	Wed, 19 Feb 2025 17:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f+JeniPh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRfbf6be"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332171F461F;
-	Wed, 19 Feb 2025 17:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A891B415B;
+	Wed, 19 Feb 2025 17:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739986999; cv=none; b=HubQI3/m3yuXBIQe8t6R5SMketIomEgEhoORpDZVaBjh/7/YPVfJrlbmYLJ2O7Ys1i+DHFv2oXrch0gT8Ri6z4VxIm4cZQUsGTQ0zP99CyVoS43Nu+l/SqIBa+qFtU7cuLdR2WuU17TpuQJHtLhTePWZkpE09jtUfXoEpJen7ZE=
+	t=1739986785; cv=none; b=Y2+x5JmDvRoUywTX6jds0VUd4FF3SANhgu3ZJ4uoDy3D9PetWmUTikn+nKnDI7IHRNvyRMTHBMn36/lg7CajNZVphC5HVwI2ufh4XHVWR/vdOsxRT+R0NMxsoLQVwiFKAtbck6mVlJ96tfExPMF9TJSSBdn2hMkpyf9S81UF61U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739986999; c=relaxed/simple;
-	bh=dVqwsB+tDW/tubytCSFMsupA26ImOk8sdT2JruUEV3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=puNgAGl/tQFCyryRpekTM9mEMxg8m2uDcsNuNmQwXTn/rw0IpzbQgBtpWqLGONLD1LGQmihChOzRDSVwhk1Y8DESE2DbLomg30TcDRyCSbfG22zOVs+3/p0JmiRScDQZA+dTig9LiVa2+/dERkFFm55UBHMvb/t/IyLtUYFKWL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=f+JeniPh; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739986997; x=1771522997;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dVqwsB+tDW/tubytCSFMsupA26ImOk8sdT2JruUEV3Y=;
-  b=f+JeniPhzzODmwFbCk/ikiCxbnM6XYyWt4LlfomIC+Nky+y87Gz4HVwn
-   T1B3qEvkq1M844TpSYN58qrL7nkeR7kzolsAzpmLCbuz/Y3IF1BDvaoIZ
-   vcvQk+IiA/KD/yNdrU/m8AFiOfbtrDTBuzOU+z3KgSW3C1mB0fKtFZ1Y/
-   PT8URY1Kh77y1b7SHXMcDFmjYpKcZ2HQO5c89NafZ7bPalHN1g4lhcZA5
-   mhHvVHQYmrLzJIVQtq1x2AshDNXfX3HhRU6TqPArLC0/ksdlTOvRvzSJX
-   L88jc/EIQNw/Ax2FJVixlZeXCqtZPKssvk7zHozlj9uyjSc2rJdX65i0H
-   w==;
-X-CSE-ConnectionGUID: RwHKtmJ/Th6wQqd8KZ5aQQ==
-X-CSE-MsgGUID: PT/c6h9CTNOIDSIWLZn0Hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="40997507"
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="40997507"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Feb 2025 09:43:16 -0800
-X-CSE-ConnectionGUID: +OXqpB3PT8iVUOVncg8zuQ==
-X-CSE-MsgGUID: kxVG89nZRHyvI85adQqrZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,299,1732608000"; 
-   d="scan'208";a="114614079"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 19 Feb 2025 08:04:04 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tkmXb-00038M-04;
-	Wed, 19 Feb 2025 16:03:29 +0000
-Date: Thu, 20 Feb 2025 00:02:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Svyatoslav Ryhel <clamor95@gmail.com>, Lee Jones <lee@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
-	Daniel Thompson <danielt@kernel.org>,
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-leds@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mfd: lm3533: convert to use OF
-Message-ID: <202502192343.twEQ3SSs-lkp@intel.com>
-References: <20250218132702.114669-3-clamor95@gmail.com>
+	s=arc-20240116; t=1739986785; c=relaxed/simple;
+	bh=4It1PU+B7XFgMdBjKT9ybzSCLozjQhDNh/RBMIG7cEc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kh3rPvylTEbJ05WfLf43T3Hy4msBJPCKTAfTl/9sMz5EI4sGhcJr8oORnp8s0w/CvmKBGE6sth5UwvJjK58IxC2voqi23tY/pCaqqkmdHEbPzHAGIhrlJjLqElxKpc0eC+NXYgf2HSO9YME4GVoDl7CAIxz21XcV3BbKUyKhCBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRfbf6be; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-38f378498c9so46975f8f.1;
+        Wed, 19 Feb 2025 09:39:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739986782; x=1740591582; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k8wYliwl6UOtHCOysjfqNPSlzww+g9jxkMxRAdHQVyY=;
+        b=KRfbf6besRefOmK5asTAPiQCBr8k6oyh86ge1SIOIQ3TUZCKWJRhbqvaC8vzS6bxMj
+         GO+saxFmFdgHZAWNeIT7tFZd3ygXpd3KMvXSWYjyWr0W+HNdhZhS4BZ43bk9gVcVv5KE
+         ZxpjdOhDaTEc1FBMLczsoBrg4DrbHI3MiK0OMVBfMtakSrpBRPN+MtRpruh0DGPhoWZL
+         7vZd6uAP7CabyMvbGHzDqt6yHDIIjv59ETWch+3FRG4gxzaRrH4DnglZo1tmcrXsRTW3
+         XvnNjCWrdY0MHan0mxtAOwuDraLoDmcZdhG0q8ccQRiu8YhgRT0QNIVKZc8UZP5sfbW8
+         Axng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739986782; x=1740591582;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=k8wYliwl6UOtHCOysjfqNPSlzww+g9jxkMxRAdHQVyY=;
+        b=A2yhDYMgC2mv7uwXbr3FnT3qHEVvaIOe42oZBehvcdSWvutYpN80ghsPNy/OnuxOKU
+         xBlc8b+kZQairC6G5vM0S5E8e1W9yS0C1peV93kJ8J2V9N934tcf8Sy3a4S3LhiVDU0G
+         hb83bepIKJdCWW7qNZDuagaMPQzSisxFsLUiNl4sGlaocjcRxKCQ4nqzQ1eUZtXA693x
+         3/A1whKlHLxfkljI6hWXl1/0QRsTxqXbSoDFRurY7LrielCDf2IsjZwwmZOdFhfn32Gx
+         /UCeixc4Rsr+OcowTavqWYXa9OAg+oLLrtsRXia4mIWvpaStuIKGpq6ZcAVkvD0ur8KZ
+         0yrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVzvVcn9RllD6x7G5BpG/b3se6C+Y0Xioiy5AbB/furio6+FSnA5h5opon8GCwYJoqOtmtPP/iOD0O5lbpj@vger.kernel.org, AJvYcCWJdd4JaVExH4PkDz/bi/vrxT4BMovmJ9Gi98pUlvScHhzuSEnZ/bqFokwAhpTGxpNgd8w3SX0l6hUv@vger.kernel.org, AJvYcCWTQL3FPICR1eSNuV/Q/5W5qeHDucexjtz9bZeSph+n0LTH/6yus0RzCAp+adwamlyM+/TGJWTgGAjDUcs=@vger.kernel.org, AJvYcCWfSfjTzSUGJ59dR1cgGnQMgv/GUPNudxWTjewqMYIlTptIpLePbQsC90IQmPhnoj6q0FYOsSYchh8lQg==@vger.kernel.org, AJvYcCXGrtWR+C6fJ6Tn7BgoDi7/kZIZKjsA8xc1IOsMJFtHU2b0VVEgRaCeoCUGibjPivZqoNGqzw6qfkxW@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBPLo98pnyiUXTTMRcLD6o5KqWLrnNHVMhwczdSC23jtfLhyG9
+	Ofykl9tj4UzYdeYd9LTGV33UnI4r+HrU5qXueAfq3p9PywK/zA58hxah5+vna1c1BXu82KX5vXs
+	arEqbMYAmKPOnJNMyME8MLYdMEPc=
+X-Gm-Gg: ASbGncvW67Ix4sQq7P+BUvdm3sPQ/gTVc475mLRs4QsQR01GW907a/WMT75YeO2jDoA
+	zonpY6j2jnXAmgf6TQrBHym0OYS518bpuGIHR/2qhK1MqZc14IL3wOpl5k8ikTXt7f8gfk9LX8g
+	==
+X-Google-Smtp-Source: AGHT+IEyS3n7gqj0ex4KbPOptDtwVLwjsOmfhhv3WWfLv9zPiV55DmsbGLPpAuqV+3ItRvWlkBKbfteXPmxuNkeSagE=
+X-Received: by 2002:a05:6000:2c1:b0:38f:474f:f3f3 with SMTP id
+ ffacd0b85a97d-38f474ff5bdmr13969667f8f.13.1739986781750; Wed, 19 Feb 2025
+ 09:39:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250218132702.114669-3-clamor95@gmail.com>
+References: <20250218132702.114669-1-clamor95@gmail.com> <20250218132702.114669-3-clamor95@gmail.com>
+ <Z7XqKcOUt5niXzpv@smile.fi.intel.com> <CAPVz0n1_WQyOHhtEVAh53uhEUhZvqqZSEJh6XALtSrVfkMSLYw@mail.gmail.com>
+ <Z7XzgfHcjyK_UZKv@smile.fi.intel.com> <CAPVz0n2WwAOb1UU7J7aDTdhXXCaAZkCpYjW_nc_CBRgkGWdEOw@mail.gmail.com>
+ <Z7X3ZvQbSe75U-AR@smile.fi.intel.com>
+In-Reply-To: <Z7X3ZvQbSe75U-AR@smile.fi.intel.com>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
+Date: Wed, 19 Feb 2025 19:39:29 +0200
+X-Gm-Features: AWEUYZlErtPnGBIjsmHfQD2f3-JQKBhMt1WzPgDf8uSaX-tKvCIgiy9477XzETE
+Message-ID: <CAPVz0n19D1mS_prvMo-HD3m7U9+iknm49JSj5ydNUHoqjK7gZw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] mfd: lm3533: convert to use OF
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, 
+	Daniel Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Svyatoslav,
+=D1=81=D1=80, 19 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 17:56 Andy=
+ Shevchenko
+<andriy.shevchenko@linux.intel.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+> On Wed, Feb 19, 2025 at 05:13:15PM +0200, Svyatoslav Ryhel wrote:
+> > =D1=81=D1=80, 19 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 17:07 =
+Andy Shevchenko
+> > <andriy.shevchenko@linux.intel.com> =D0=BF=D0=B8=D1=88=D0=B5:
+> > > On Wed, Feb 19, 2025 at 04:36:38PM +0200, Svyatoslav Ryhel wrote:
+> > > > =D1=81=D1=80, 19 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16=
+:27 Andy Shevchenko
+> > > > <andriy.shevchenko@linux.intel.com> =D0=BF=D0=B8=D1=88=D0=B5:
+>
+> ...
+>
+> > > > MFD part is removed since MFD cells binding is unconditional, while
+> > > > the device supports any amount of children grater then one. For
+> > > > example, my  device uses only backlight at bank A, while all other
+> > > > subdevices are not present and used. This patch switches to dynamic
+> > > > bind of children.
+> > >
+> > > MFD does the same. Please, take your time and get familiar with how M=
+FD works.
+> >
+> > It does not. I have tried. If mfd cell binding is missing, driver will
+> > complain and fail.
+>
+> I really don't know what exactly is going on here, you can check it later=
+, but
+> I'm 100% sure that MFD works for only driver that are present. What you a=
+re
+> describing is how component framework is designed.
+>
+> To proove my words you can check drivers/mfd/intel_soc_pmic_*.c and find =
+listed
+> cells that never had a driver in the Linux kernel. They are just placehol=
+ders.
+>
 
-kernel test robot noticed the following build errors:
+This example is not valid since those drivers do not use device tree.
 
-[auto build test ERROR on lee-mfd/for-mfd-next]
-[also build test ERROR on lee-leds/for-leds-next robh/for-next linus/master v6.14-rc3 next-20250219]
-[cannot apply to lee-mfd/for-mfd-fixes]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> ...
+>
+> > > --
+> > > With Best Regards,
+> > > Andy Shevchenko
+>
+> Please, when answering, remove unrelated context from the replies.
+>
+> ...
+>
+> > Let this driver rot for now, I might return to it. At some point
+>
+> Up to you. But thanks for trying!
+>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Svyatoslav-Ryhel/dt-bindings-mfd-Document-TI-LM3533-MFD/20250218-212857
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/lee/mfd.git for-mfd-next
-patch link:    https://lore.kernel.org/r/20250218132702.114669-3-clamor95%40gmail.com
-patch subject: [PATCH v2 2/2] mfd: lm3533: convert to use OF
-config: i386-buildonly-randconfig-003-20250219 (https://download.01.org/0day-ci/archive/20250219/202502192343.twEQ3SSs-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250219/202502192343.twEQ3SSs-lkp@intel.com/reproduce)
+Thank you for suggestions. Once I complete more urgent tasks, I might
+do some tinkering with this driver.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502192343.twEQ3SSs-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/linux/device/driver.h:21,
-                    from include/linux/device.h:32,
-                    from include/linux/iio/iio.h:10,
-                    from drivers/iio/light/lm3533-als.c:15:
->> drivers/iio/light/lm3533-als.c:921:25: error: 'lm3533_match_table' undeclared here (not in a function); did you mean 'lm3533_als_match_table'?
-     921 | MODULE_DEVICE_TABLE(of, lm3533_match_table);
-         |                         ^~~~~~~~~~~~~~~~~~
-   include/linux/module.h:250:15: note: in definition of macro 'MODULE_DEVICE_TABLE'
-     250 | extern typeof(name) __mod_device_table__##type##__##name                \
-         |               ^~~~
-   include/linux/module.h:250:21: error: '__mod_device_table__of__lm3533_match_table' aliased to undefined symbol 'lm3533_match_table'
-     250 | extern typeof(name) __mod_device_table__##type##__##name                \
-         |                     ^~~~~~~~~~~~~~~~~~~~
-   drivers/iio/light/lm3533-als.c:921:1: note: in expansion of macro 'MODULE_DEVICE_TABLE'
-     921 | MODULE_DEVICE_TABLE(of, lm3533_match_table);
-         | ^~~~~~~~~~~~~~~~~~~
-
-
-vim +921 drivers/iio/light/lm3533-als.c
-
-   916	
-   917	static const struct of_device_id lm3533_als_match_table[] = {
-   918		{ .compatible = "ti,lm3533-als" },
-   919		{ },
-   920	};
- > 921	MODULE_DEVICE_TABLE(of, lm3533_match_table);
-   922	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 

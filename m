@@ -1,302 +1,323 @@
-Return-Path: <linux-iio+bounces-15853-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15854-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5985A3DB49
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:29:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5A1A3DB7F
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A30D17A56A
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:29:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C5637AA73E
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519F21F8BBC;
-	Thu, 20 Feb 2025 13:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8231F91E3;
+	Thu, 20 Feb 2025 13:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JbYrHYae"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eaINY0PU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AE9433BE;
-	Thu, 20 Feb 2025 13:28:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912701F8670;
+	Thu, 20 Feb 2025 13:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740058141; cv=none; b=Xs0re0OdTSSrSh/BKW8ckXltobxHz6/YuelfWRRDIpkyCXCXZS9FmqiSOR+9/gphUzDYMxnEonor3TaRIeqH5+awVwYvp1qk7P3ufmZ+p18RhDeIeOT4rqc455tqwA0bWcu8aSIXyxG5n4oKYFl9cmptd1W/RpOdv4r8n34CKWw=
+	t=1740058838; cv=none; b=fx7BXhKJZ92X8wHZ3jbJ+iZgILRTV6MhNQCY6ktH6MV8xTQlos5tY8z1ca26rgFqQnnJZwHTIRgmEEj+j+sRi1M7WnZMivm25BW7QqRx14Ha7ofd15x6Gp+aA+a0q0fAAkbuXdZKq61DbXuE+sYeajJ4ng/wkL2SnFaKZWy3DDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740058141; c=relaxed/simple;
-	bh=aW7P36P7qMNdnr9pUg4pgp/inqglHOgptn1s3sqjY7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPUIjZsl5tzKtVNBilT4osZ7o91y9FRfiBJ3GhnAIkB68I90Pxq3ULcgK3BZNcBh0NLh7dqsqRiXeFnloqQkF4EkgA8Gh/d/sQkFdj1+AWJWM+DPPSBSgJSyFMBcAMoGW+KR4I2Ly6AOKv/BuO+7I3bf2JJX8e8HuddQ0Z7AO9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JbYrHYae; arc=none smtp.client-ip=209.85.160.179
+	s=arc-20240116; t=1740058838; c=relaxed/simple;
+	bh=VL1afRwVzotUlXLnDiyMHBOqDCnsj5I2aXklOFQIuzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fj5NxghOYU7wiCByDhsOAcajH4ts8/7FWntHFtyitYUeHffDzfwudIUVe72w+FDbuFW521q1e7HnLtfloD65qbyFaP17//TLmt+vZ7hYI91OGAkpCY/th6sfR8ukE2aUQ+DrMSukuvZiH4rAqYGc6LuWP74ANLm+cvcMk//3css=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eaINY0PU; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-471feaace60so541291cf.3;
-        Thu, 20 Feb 2025 05:28:59 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3061513d353so9420581fa.2;
+        Thu, 20 Feb 2025 05:40:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740058138; x=1740662938; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ds16pcii8hIi7NE0pveG5m9mk6T8UXD/GemUMCtoarQ=;
-        b=JbYrHYaeNCIvDlBr2wDIR4m8HnQoRMJZ2iDOZCPozrTUV07euAS6eB8efQoPzBeGqE
-         GuKKDIuS8Vh0Dggap9CYEB5AsOCsgKhrOfy3WzE9l+62leojro6BcZmXAxnywyhqlCSZ
-         NrmnOJJNoMwYAv90HMGv8ngGnYRLmwwCNbZrmBRISq14sstMvgAElIr5oO+77a5POMis
-         C0HsihebvzsdfujIaKSPDYRNllL/4nHEzF8DC9l94AMOqQAP5vNR0owGDF6D0IFSGDgG
-         +XEMsXmG8vCCFBcweRK9vjEcXMf8AUKPrVcYqf03iJjmeFUTlSIBhLtZviNvucyEjIVg
-         81Zw==
+        d=gmail.com; s=20230601; t=1740058835; x=1740663635; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=z/3hluGD2/Epc1oOjzN+omEQoU/Qff+JZacIZJPu2mI=;
+        b=eaINY0PU6dk3dmxzuZ7QAzxSZ8/9WZcONg7VXKcoiKj0xhiuCUBqqPzPpR93S7Gsfx
+         unOcOY9YgyTPK/UiKi/ZWX98VQb6mxXxBV3Q0M+j4xs+392GSsJ0exCi3+lhTniY1DDS
+         qxBGahxxSu1PcBYGUiTyr4DthHJe4hWSr1Wrh2DgHZQd7CCY6KnAiYCmgThisdyWms2H
+         oDltPonFI7saVRaQlY3qrtoDpHENtLR0KzQbSauwMYuxkXjW9hqRmUfR61y0EMyVpUxe
+         oaPhNsfZLnecKXeWsX7Cqspcftlx/Rxb7TDkB9EZHYyqRqFrtcxjB8H97ama1UbKKGB6
+         6bjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740058138; x=1740662938;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ds16pcii8hIi7NE0pveG5m9mk6T8UXD/GemUMCtoarQ=;
-        b=WBrc3kjz4CZ8HfOM6VhO4jBiU6Okis7d4J4nAdJKli4ecsu2H86oW6VSb5tcoV5ajQ
-         VdDig8eGJ0vtfxD+rjJlA6noAciBRlnTLaJmjhRpJEdJ4mfJBzluHyYiFLNqU9W2MHZO
-         3o42KdoMujk7c+UzgTVtl9Pp6O4wTrA7FioOgmle0TbVlv9vkVFxRdZUSUYsKbbuu+Pb
-         n0wEzPoAnsY4au5XHEomz9xOcHuoAMdJn/5+glbT7slOJFJcoA6t2eqtmr6NQuH6aygK
-         cPypQt1gh2YaupuHTqh/EW2izoKnAY4HqrqzcS7osNTbDGgcQ2HmcTcF/pm75LAkDcD4
-         F/4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUzQKur05p4KH0zs58JyxeIXRElg7LyrhQ7DnW9c67BqdlCqfnbNjAC3tlA3h0ijy1nfCVuq5FJiyL+@vger.kernel.org, AJvYcCVCby3ExQwxHWQqP3E6Jzu2NipM/lO9UemWHhwMwdEVAMJRMnXzuK9LqJEqJnRyy7tKnjmBk7boicat5qBM@vger.kernel.org, AJvYcCWJ6XrKuVYma7HZqt1dxrI+DQmyB4Z7T3/mlrGV2/9OFFQ+LG5jV4THWn6d4DlPcGhyKC9GLV7vPQ/+@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLYvaKlMlkJX5y/LXR5hMiC3RPWq3UMUEns2/5EccnjZaY9Pj3
-	zDZUQ3Nyd+AhR+N558GMUUZ10Y7LR0xmzbHPJD4As72x1aIJVfl5
-X-Gm-Gg: ASbGncupXLM3yXzWZHtTxI6e94n6EqHypS+5OYOivLJS+T08X9OtsSH9OSVFlND90rL
-	nVnosUi84O3XZ0+GzWuO/H9ckt86k0MbMH2f8ZyCLhsxnDEBTPbVLFd8Ddx4graAMVkt9eT5RXf
-	1CKLTy/9cnlyax21bBLNPyaF8nIoMCdxuZN1JBO+uXMSj5NrKKYwTNCoFPwvM4gBLpy6j8UsdSw
-	HKMTF9Vr4NbGx7nGN+OydXMNCDHLyIDS14TW0ec7/Gby4IhrEOLl2NqJkUeNRR45XSWPOW/LWKy
-	y8kXbslwpLYaGO37TTV18gXb5wdYBQlvxuuz
-X-Google-Smtp-Source: AGHT+IHPZCycB/Wz1WISGCZKdwZHNRLPreMsBCK1H3+677e2/gdlTibb/D6w/+3yimQAmZPY7g+QVw==
-X-Received: by 2002:ac8:5710:0:b0:472:116f:94e1 with SMTP id d75a77b69052e-472116f97aemr22101861cf.11.1740058137951;
-        Thu, 20 Feb 2025 05:28:57 -0800 (PST)
-Received: from JSANTO12-L01.ad.analog.com ([191.255.131.70])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4720d4340f4sm16095391cf.65.2025.02.20.05.28.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 05:28:57 -0800 (PST)
-Date: Thu, 20 Feb 2025 10:28:52 -0300
-From: Jonathan Santos <jonath4nns@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
-	dlechner@baylibre.com, Pop Paul <paul.pop@analog.com>
-Subject: Re: [PATCH RESEND v3 16/17] iio: adc: ad7768-1: add filter type and
- oversampling ratio attributes
-Message-ID: <Z7cuFJQeqQPYpX6d@JSANTO12-L01.ad.analog.com>
-Reply-To: 20250216163153.55a1ae97@jic23-huawei.smtp.subspace.kernel.org
-References: <cover.1739368121.git.Jonathan.Santos@analog.com>
- <2c3ce1701545e435238605342397e45657a0fb2a.1739368121.git.Jonathan.Santos@analog.com>
- <20250216163153.55a1ae97@jic23-huawei>
+        d=1e100.net; s=20230601; t=1740058835; x=1740663635;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z/3hluGD2/Epc1oOjzN+omEQoU/Qff+JZacIZJPu2mI=;
+        b=oLDnzLcso2DuPZ15Aa04gdKEhU2sTnEwzTVTBYYpMydNAvM43ei06iHUfqVukLfVGd
+         6co1CGZooddgb3N4K5gt7db2y45QeRhjP3kyVFlgo+f218gCg2679z6tUmDL6Ab1IhRp
+         sLmlxtpHLelNZMAx86XWg72oQZ+XxCq1GOgEU+IYJHJX8e3IMN4quskYbBMvpCwpmvc5
+         Zf1KtkDfuzrd8JE1FtCyyExMC5Mi4Za9Kpw4AIjiZZXAt6/Tb8TOn2fqeRpfBmXUn0Op
+         kO7Ax1ujXrsF+3H19thJLMfe2QOGBqMURv1ECPsJJFXxO28H2flga1Pd7b5mEN0+0t6J
+         yP/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVmhRpBI3XkOJKtuz4cgpBRkXekF10JsWIvyPJXE3/BWpI/+E7AbXfSOw1TietVhPaDjrdDDmK6oHV3fg5E@vger.kernel.org, AJvYcCWLSDxonpyNoOBVpO3P7oAZL/64HLjDp/VgLzP/e3Dr3MX80WJIk50dKazwn0VuW6wOlpeAuPved77BmDN/kPzmwCE=@vger.kernel.org, AJvYcCWMfaqeiy5gzTQ26ACng9e3hnRRQeECiYXHItCJkr1CpzB/2a/z1V9TlKs1umxv4gGVJ9j97yBJDzwP@vger.kernel.org, AJvYcCWgbqqUAsqE//1HSmN3yYXG2PFNZsppC617EQZZoJWrc+Qfswd13UwIcjcWfoQgcdWay9/PtbiEiB4I@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx1BgwFcdUZCHoTe6K4yMoGJoJGVnbFZlduCS9IgIxXu/Kkk7r
+	mfIo7S9eOTV9qQQdMOK6u9LdsAhtnKJTJWKngqcW//02uUDwz2cK
+X-Gm-Gg: ASbGnctsif/5BvrnEkMoiW5E7pb8xdN15k4gzhk7rZD+VriK8cdg8IWl2mPqX6dHTHH
+	JxEabgqfaX95Nk5qUVvkhVNJwJiKzVxGr7v6Io/Q4quBuMmGB3VT5gc5R7l9XgApMf1XXCenql3
+	CfDqggqhPTrQKZtnNOm2swqYG9tSTz9VfhmNyabUobvTAlZpHdTBBvTV1wM33U44cYQ3hEiKHoi
+	49nTyBlMJ5zZie45b/P1Ze8zYG6OyMQwjCjXagZIWoLWSkBLIWTa9b5RDfX//fWIADdO3aePvDa
+	oC9E5Mqv11vhezTfeFBoGZZw3Bn8VgSsOTk1dGLuaGKIzX5Efze70P6HLChVJfZFi2ipNJpn
+X-Google-Smtp-Source: AGHT+IE9fOsEW40k2P/ApWNjhsvBUHeB5RBB1//MbXn1MZVFPTFngeWOwjgnKakJ6UoD6YMMUW/W8w==
+X-Received: by 2002:a05:6512:31d2:b0:545:296e:ac28 with SMTP id 2adb3069b0e04-5452fe4232emr8815090e87.24.1740058834180;
+        Thu, 20 Feb 2025 05:40:34 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5462fd36f53sm480013e87.185.2025.02.20.05.40.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Feb 2025 05:40:32 -0800 (PST)
+Message-ID: <ec76334b-bb13-4076-811d-9174170dd677@gmail.com>
+Date: Thu, 20 Feb 2025 15:40:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250216163153.55a1ae97@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev
+References: <cover.1739967040.git.mazziesaccount@gmail.com>
+ <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
+ <Z7ZB7RQhyI5Dohrq@smile.fi.intel.com>
+ <b1c1ed68-2f4d-447c-9957-5a1bbc63ef6e@gmail.com>
+ <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 02/16, Jonathan Cameron wrote:
-> On Wed, 12 Feb 2025 15:18:59 -0300
-> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+On 20/02/2025 14:41, Andy Shevchenko wrote:
+> On Thu, Feb 20, 2025 at 09:13:00AM +0200, Matti Vaittinen wrote:
+>> On 19/02/2025 22:41, Andy Shevchenko wrote:
+>>> On Wed, Feb 19, 2025 at 02:30:27PM +0200, Matti Vaittinen wrote:
 > 
-> > Separate filter type and decimation rate from the sampling frequency
-> > attribute. The new filter type attribute enables sinc3, sinc3+rej60
-> > and wideband filters, which were previously unavailable.
-> > 
-> > Previously, combining decimation and MCLK divider in the sampling
-> > frequency obscured performance trade-offs. Lower MCLK divider
-> > settings increase power usage, while lower decimation rates reduce
-> > precision by decreasing averaging. By creating an oversampling
-> > attribute, which controls the decimation, users gain finer control
-> > over performance.
-> > 
-> > The addition of those attributes allows a wider range of sampling
-> > frequencies and more access to the device features.
-> > 
-> > Co-developed-by: Pop Paul <paul.pop@analog.com>
-> > Signed-off-by: Pop Paul <paul.pop@analog.com>
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> As below. We should aim to 'pre bake' the value arrays for
-> get_available() to avoid the potential race conditions of a consumer
-> seeing a partly updated set a parameters change.
+> ...
 > 
-> Better to see a consistent but stale one.
+>>>> obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
+>>>>    obj-$(CONFIG_GEHC_PMC_ADC) += gehc-pmc-adc.o
+>>>>    obj-$(CONFIG_HI8435) += hi8435.o
+>>>>    obj-$(CONFIG_HX711) += hx711.o
+>>>
+>>>> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
+>>>
+>>> Shouldn't this be grouped with other IIO core related objects?
+>>
+>> I was unsure where to put this. The 'adc' subfolder contained no other IIO
+>> core files, so there really was no group. I did consider putting it on top
+>> of the file but then just decided to go with the alphabetical order. Not
+>> sure what is the right way though.
 > 
-> Jonathan
-> 
-> > ---
-> > v3 Changes:
-> > * removed unsed variables.
-> > * included sinc3+rej60 filter type.
-> > * oversampling_ratio moved to info_mask_shared_by_type.
-> > * reordered functions to avoid foward declaration.
-> > * simplified regmap writes.
-> > * Removed locking.
-> > * replaced some helper functions for direct regmap_update_bits
-> >   calls.
-> > * Addressed other nits.
-> > 
-> > v2 Changes:
-> > * Decimation_rate attribute replaced for oversampling_ratio.
-> > ---
-> >  drivers/iio/adc/ad7768-1.c | 359 ++++++++++++++++++++++++++++++-------
-> >  1 file changed, 290 insertions(+), 69 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index 8aea38c154fe..18f1ea0bf66d 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> 
-> > +
-> > +/* Decimation Rate range for each filter type */
-> > +static const int ad7768_dec_rate_range[][3] = {
-> > +	[AD7768_FILTER_SINC5] = { 8, 8, 1024 },
-> > +	[AD7768_FILTER_SINC3] = { 32, 32, 163840 },
-> > +	[AD7768_FILTER_WIDEBAND] = { 32, 32, 1024 },
-> > +	[AD7768_FILTER_SINC3_REJ60] = { 32, 32, 163840 },
-> > +};
-> > +
-> > +/*
-> > + * The AD7768-1 supports three primary filter types:
-> > + * Sinc5, Sinc3, and Wideband.
-> > + * However, the filter register values can also encode
-> wrap at 80 chars.
-> > + * additional parameters such as decimation rates and
-> > + * 60Hz rejection. This utility function separates the
-> > + * filter type from these parameters.
-> > + */
-> 
-> >  
-> > -	return 0;
-> > +static int ad7768_get_fil_type_attr(struct iio_dev *dev,
-> > +				    const struct iio_chan_spec *chan)
-> > +{
-> > +	struct ad7768_state *st = iio_priv(dev);
-> > +	int ret;
-> > +	unsigned int mode;
-> > +
-> > +	ret = regmap_read(st->regmap, AD7768_REG_DIGITAL_FILTER, &mode);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	mode = FIELD_GET(AD7768_DIG_FIL_FIL_MSK, mode);
-> > +
-> > +	/*
-> > +	 * From the register value, get the corresponding
-> > +	 * filter type.
-> 
-> Very short line wrap.  Stick to 80 chars.
-> 
-> > +	 */
-> > +	return ad7768_filter_regval_to_type[mode];
-> >  }
-> 
-> >  
-> > @@ -619,16 +798,25 @@ static int ad7768_read_avail(struct iio_dev *indio_dev,
-> >  			     long info)
-> >  {
-> >  	struct ad7768_state *st = iio_priv(indio_dev);
-> > -	int i;
-> > +	int i, freq_filtered, len = 0;
-> >  
-> >  	switch (info) {
-> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +		*vals = (int *)ad7768_dec_rate_range[st->filter_type];
-> > +		*type = IIO_VAL_INT;
-> > +		return IIO_AVAIL_RANGE;
-> >  	case IIO_CHAN_INFO_SAMP_FREQ:
-> > -		for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++)
-> > -			st->samp_freq_avail[i] = DIV_ROUND_CLOSEST(st->mclk_freq,
-> > -								   ad7768_clk_config[i].clk_div);
-> > +		freq_filtered = DIV_ROUND_CLOSEST(st->mclk_freq, st->oversampling_ratio);
-> 
-> Ah. So now it is dynamic.  This hits the previously mentioned race.
-> A consumer can be holding a copy of this and acting on it whilst holding no
-> locks on this device - thus it can see a mixture of values as this update
-> occurs. To avoid that you need to precompute the combinations +
-> store the lot in arrays.  Then this code should simply be selecting the arrays.
-> A consumer holding a stale one will get a consistent (if wrong) set.
->
-Yes, before the available frequencies were static, but now they depend
-on the oversampling ratio. I can create a helper function to precomput
-and fill this array and call it after configuring the digital filter, 
-where the filter type and OSR is set.
+> I think it would be nice to have it grouped even if this one becomes
+> the first one.
 
-For the previous static case, i call this function in the probe.
-> The < 50 check makes this more complex than normal but they are still static
-> choices I think as long as the input clock doesn't change.
->
+I will move this on top of the file. (If these helpers stay. I think I 
+wrote somewhere - maybe in the cover letter - that people are not sure 
+if this is worth or if every driver should just use the fwnode APIs. 
+Reviewers may want to save energy and do more accurate review only to 
+the next version...)
 
-I will include this in the helper function.
+>>>>    obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
+>>>>    obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp-adc.o
+>>>>    obj-$(CONFIG_IMX93_ADC) += imx93_adc.o
+> 
+> ...
+> 
+>>>> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
+>>>
+>>> No namespace?
+>>
+>> I was considering also this. The IIO core functions don't belong into a
+>> namespace - so I followed the convention to keep these similar to other IIO
+>> core stuff.
+> 
+> But it's historically. We have already started using namespaces
+> in the parts of IIO, haven't we?
 
-> > +		for (i = 0; i < ARRAY_SIZE(ad7768_mclk_div_rates); i++) {
-> > +			st->samp_freq_avail[len] = DIV_ROUND_CLOSEST(freq_filtered,
-> > +								     ad7768_mclk_div_rates[i]);
-> > +			/* Sampling frequency cannot be lower than the minimum of 50 SPS */
-> > +			if (st->samp_freq_avail[len] >= 50)
-> > +				len++;
-> > +		}
-> >  
-> >  		*vals = (int *)st->samp_freq_avail;
-> > -		*length = ARRAY_SIZE(ad7768_clk_config);
-> > +		*length = len;
-> >  		*type = IIO_VAL_INT;
-> >  		return IIO_AVAIL_LIST;
-> >  	default:
-> > @@ -636,20 +824,45 @@ static int ad7768_read_avail(struct iio_dev *indio_dev,
-> >  	}
-> >  }
-> >  
-> > -static int ad7768_write_raw(struct iio_dev *indio_dev,
-> > -			    struct iio_chan_spec const *chan,
-> > -			    int val, int val2, long info)
-> > +static int __ad7768_write_raw(struct iio_dev *indio_dev,
-> > +			      struct iio_chan_spec const *chan,
-> > +			      int val, int val2, long info)
-> >  {
-> >  	struct ad7768_state *st = iio_priv(indio_dev);
-> > +	int ret;
-> >  
-> >  	switch (info) {
-> >  	case IIO_CHAN_INFO_SAMP_FREQ:
-> >  		return ad7768_set_freq(st, val);
-> > +
-> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> > +		ret = ad7768_configure_dig_fil(indio_dev, st->filter_type, val);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		/* Update sampling frequency */
-> > +		return ad7768_set_freq(st, st->samp_freq);
-> >  	default:
-> >  		return -EINVAL;
-> >  	}
-> >  }
-> >  
-> > +static int ad7768_write_raw(struct iio_dev *indio_dev,
-> > +			    struct iio_chan_spec const *chan,
-> > +			    int val, int val2, long info)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret = iio_device_claim_direct_mode(indio_dev);
-> Previously we didn't claim this to set the sampling frequency.
-> That change looks like a potential ABI issue.  I'm fine with it
-> if we should always have this protected.
+Yes. But as I wrote, I don't think adding new namespaces for every 
+helper file with a function or two exported will scale. We either need 
+something common for IIO (or IIO "subsystems" like "adc", "accel", 
+"light", ... ), or then we just keep these small helpers same as most of 
+the IIO core.
+
+>> (Sometimes I have a feeling that the trend today is to try make things
+>> intentionally difficult in the name of the safety. Like, "more difficult I
+>> make this, more experience points I gain in the name of the safety".)
+>>
+>> Well, I suppose I could add a namespace for these functions - if this
+>> approach stays - but I'd really prefer having all IIO core stuff in some
+>> global IIO namespace and not to have dozens of fine-grained namespaces for
+>> an IIO driver to use...
 > 
-> If you are just using it to avoid racing between setting sampling
-> frequency and oversampling ratio then don't use that, use a local
-> lock where the scope can be clearly described.
+> ...
 > 
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	ret = __ad7768_write_raw(indio_dev, chan, val, val2, info);
-> > +	iio_device_release_direct_mode(indio_dev);
-> > +
-> > +	return ret;
-> > +}
+>>>> +	if (!allowed_types || allowed_types & (~IIO_ADC_CHAN_PROP_TYPE_ALL)) {
+>>>
+>>> Unneeded parentheses around negated value.
+>>>
+>>>> +	if (found_types & (~allowed_types)) {
+>>>
+>>> Ditto.
+>>>
+>>>> +		long unknown_types = found_types & (~allowed_types);
+>>>
+>>> Ditto and so on...
+>>>
+>>> Where did you get this style from? I think I see it first time in your
+>>> contributions. Is it a new preferences? Why?
+>>
+>> Last autumn I found out my house was damaged by water. I had to empty half
+>> of the rooms and finally move out for 2.5 months.
+> 
+> Sad to hear that... Hope that your house had been recovered (to some extent?).
+
+Thanks. I finalized rebuilding last weekend. Just moved back and now I'm 
+trying to carry things back to right places... :rolleyes:
+
+>> Now I'm finally back, but
+>> during the moves I lost my printed list of operator precedences which I used
+>> to have on my desk. I've been writing C for 25 years or so, and I still
+>> don't remember the precedence rules for all bitwise operations - and I am
+>> fairly convinced I am not the only one.
+> 
+> ~ (a.k.a. negation) is higher priority in bitops and it's idiomatic
+> (at least in LK project).
+
+I know there are well established, accurate rules. Problem is that I 
+never remember these without looking.
+
+>> What I understood is that I don't really have to have a printed list at
+>> home, or go googling when away from home. I can just make it very, very
+>> obvious :) Helps me a lot.
+> 
+> Makes code harder to read, especially in the undoubtful cases like
+> 
+> 	foo &= (~...);
+
+This is not undoubtful case for me :) And believe me, reading and 
+deciphering the
+
+foo &= (~bar);
+
+is _much_ faster than seeing:
+
+foo &= ~bar;
+
+and having to google the priorities.
+
+>>>> +		int type;
+>>>> +
+>>>> +		for_each_set_bit(type, &unknown_types,
+>>>> +				 IIO_ADC_CHAN_NUM_PROP_TYPES - 1) {
+>>>> +			dev_err(dev, "Unsupported channel property %s\n",
+>>>> +				iio_adc_type2prop(type));
+>>>> +		}
+>>>> +
+>>>> +		return -EINVAL;
+>>>> +	}
+> 
+> ...
+> 
+>>>> +		tmp.required &= (~BIT(IIO_ADC_CHAN_PROP_COMMON));
+>>>
+>>> Redundant outer parentheses. What's the point, please?
+>>
+>> Zero need to think of precedence.
+> 
+> Huh? See above.
+> Everything with equal sign is less precedence than normal ops.
+
+Sure. It's obvious if you remember that "Everything with equal sign is 
+less precedence than normal ops". But as I said, I truly have hard time 
+remembering these rules. When I try "going by memory" I end up having 
+odd errors and suggestions to add parenthesis from the compiler...
+
+By the way, do you know why anyone has bothered to add these 
+warnings/suggestions about adding the parenthesis to the compiler? My 
+guess is that I am not only one who needs the precedence charts ;)
+
+> ...
+> 
+>>>> +		ret = fwnode_property_read_u32(child, "common-mode-channel",
+>>>> +					       &common);
+>>>
+>>> I believe this is okay to have on a single line,
+>>
+>> I try to keep things under 80 chars. It really truly helps me as I'd like to
+>> have 3 parallel terminals open when writing code. Furthermore, I hate to
+>> admit it but during the last two years my near vision has deteriorated... :/
+>> 40 is getting more distant and 50 is approaching ;)
+> 
+> It's only 86 altogether with better readability.
+> We are in the second quarter of 21st century,
+> the 80 should be left in 80s...
+> 
+> (and yes, I deliberately put the above too short).
+
+I didn't even notice you had squeezed the lines :)
+
+But yeah, I truly have problems fitting even 3 80 column terminals on 
+screen with my current monitor. And when working on laptop screen it 
+becomes impossible. Hence I strongly prefer keeping the 80 chars limit.
+
+> ...
+> 
+>>>> +#include <linux/iio/iio.h>
+>>>
+>>> I'm failing to see how this is being used in this header.
+>>
+>> I suppose it was the struct iio_chan_spec. Yep, forward declaration could
+>> do, but I guess there would be no benefit because anyone using this header
+>> is more than likely to use the iio.h as well.
+> 
+> Still, it will be a beast to motivate people not thinking about what they are
+> doing. I strongly prefer avoiding the use of the "proxy" or dangling headers.
+
+Ehh. There will be no IIO user who does not include the iio.h. And, I 
+need the iio_chan_spec here.
+
+> ...
+> 
+>>>> +/*
+>>>> + * Channel property types to be used with iio_adc_device_get_channels,
+>>>> + * devm_iio_adc_device_alloc_chaninfo, ...
+>>>
+>>> Looks like unfinished sentence...
+>>
+>> Intention was to just give user an example of functions where this gets
+>> used, and leave room for more functions to be added. Reason is that lists
+>> like this tend to end up being incomplete anyways. Hence the ...
+> 
+> At least you may add ').' (without quotes) to that to make it clear.
+
+Thanks. I agree, that's a good idea.
+
+And as I said, I suggest saving some of the energy for reviewing the 
+next version. I doubt the "property type" -flags and bitwise operations 
+stay, and it may be all of this will be just meld in the bd79124 code - 
+depending on what Jonathan & others think of it.
+
+Yours,
+	-- Matti
+
 

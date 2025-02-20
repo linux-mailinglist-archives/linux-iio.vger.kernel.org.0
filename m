@@ -1,284 +1,191 @@
-Return-Path: <linux-iio+bounces-15896-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15897-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE383A3E61B
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:52:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B7CA3E625
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE193BD256
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 20:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140C41888B11
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 20:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2534D2641D4;
-	Thu, 20 Feb 2025 20:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC95264616;
+	Thu, 20 Feb 2025 20:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWAIn9Wj"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1dXXBJPK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA091EA7C1;
-	Thu, 20 Feb 2025 20:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692B21E4AB
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 20:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740084733; cv=none; b=YdHL+F5BsJxYV8eKiwTdDxCHSuatDnDciBobUV8xwOYXnnQrzPb+GLR5xStIxmZO65hpkTFk6IJ9uGFQG0rNH3mEq1vOPQSfXfXSc8EcMT2a3CK6bhsLN6MNGPl4wZjYc7q+KyxzPRvnMCS4Qu5lI9dy/a44hlP0t48DSsyvC4U=
+	t=1740084899; cv=none; b=rJFpnCENTT5Q1eaUSunWJ+1+qYiW/AjVLk2cvHk3aBR8IZzwXTSPgsEti45Z3t2Tps9Qoa05AocKWjLOB+dDVfK4AoFfUiCH2IG1t6CpJN/pSCAchiv5PJBUNp9W9a90GJ64Dpmwmv/QRYOFWh7Td6hHHtdxRR4J/5A8UPRXsbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740084733; c=relaxed/simple;
-	bh=k+515vh40KJXvXhm0qOCfbc8Q1g8Mv1d3EsNcsoWfDY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=M2CBPZe18euWNTYmPCrNYCOCKjRBPv0LIK+bBkR8E/qcaL5Sf1uGT7PmgwokB+KmbKFaFIepftmBSY9sWDTEiekyJEu/X2ueqKdL1pkkyuRiw6/hf9o5D73WYjk2tUD1c4glXMOSH8I2COLSYtsX8/6pJOYcoaDNI0+HYTJ0Hk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oWAIn9Wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4384FC4CEE6;
-	Thu, 20 Feb 2025 20:52:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740084733;
-	bh=k+515vh40KJXvXhm0qOCfbc8Q1g8Mv1d3EsNcsoWfDY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=oWAIn9WjrzvoKt/RBuI5aFqc6j7gzgGkdez4A23dF4lQAnUCw4C0DO8Zbdz/8iYRf
-	 MZ3HJZZG3tKO1wi44VEs2XEGzEcEi5t5pbTO+E19E9QliF4/J+ObbGFVyimPyjyMLY
-	 SdzatZsozCJWwwHqpAOwJnXpdF/zTNkah157ZoDkXRI1RIXifdNT7WVzIKxkWRZ2DA
-	 xENe/j6V6JRXd06Db5RBksKIDflj57AopNiCiVsV6GhC3Y096lHhsVksVphDhE74vg
-	 CAnTDblJozXlEIECsfVQMTeY9mZqZFAT/UL7g3dJuFzmRMyi0ZEU1GbujE9yty6hAL
-	 U/tBdsw36+gAw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E6E1C021B5;
-	Thu, 20 Feb 2025 20:52:13 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Thu, 20 Feb 2025 21:52:07 +0100
-Subject: [PATCH 2/2] iio: imu: inv_icm42600: add wakeup functionality for
- Wake-on-Motion
+	s=arc-20240116; t=1740084899; c=relaxed/simple;
+	bh=Xc6o9obrZeidO3IrZs20EkZMwxxHvxTSWqEyw4C1voI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LUfjoClW/qdemcC8PLUZNHywFP9NoiPbF9Sy157w7eEPa8NXYitj4iE05s+LfzNlm2IBfHrGJcJxqbqNSPyL/HXd58z+KPnQUDIOMJza73ps6TNvI3gGL7/j54wYcZ+tZQ0CxZ+dowYvfRGbM5srYzOBxjcPuKCFsLwwfFUTMcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1dXXBJPK; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7272dae0604so720979a34.1
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 12:54:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740084895; x=1740689695; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lmfqNhipvTzpaPHouDLPUPBFfenRqD8FhVYBJFNu3b0=;
+        b=1dXXBJPKyl79MFL5kY+SZTVMp8uVM+kote9OOwmFCgKZymBx6jdSxG8PDQiRLbSRA8
+         tH+rTa1uqbAqzck8hq68ndXav2GgvFsjPdcV3XtjmJkCwuL2xLawOFMQswMJpB0a/67a
+         Zba8pUzG4LM8ucZ3o4Z4NM0lGhYGAnfbrqjeR2H5p4duEGR3wfJZdqEwPeymH7TMOR+y
+         sDk+n/NvSTlK/+2CYwbjl83wPxNd1wGvgyWbuAilVBCYBXDjFdxsa+mIEPU9pmahYppL
+         f1HdT8HaJPAtIZpPTNwwJHTQluH/ByMUCFdOOgB3wV+bKts9xv6E254vB+tiTdxv3tm5
+         08uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740084895; x=1740689695;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmfqNhipvTzpaPHouDLPUPBFfenRqD8FhVYBJFNu3b0=;
+        b=LC8v5OmvV8SKNq0+KCA4LLg0afr3w+gZT+RWX/j7nFEPmxqywXsGtzqH+L4D/CJQKP
+         CQGCz2VslUur9Pi4ir8EVs6bcL0Be3eBkR7AKUd9DUjt5cslYGPpabJrrAPaDB069XbF
+         9uSMetVBsBleXiJU/cFf+fqAhcOPgfbxhvQ3952xa2YJcpUQXfSxbp0agE/3d/VlfTD6
+         VAnxc+yaKpaGbwwkOO3zYmOGZRnspx+aPHaZtTLq2IznHmE6/UE/NWk7xbHgJeKaVTh/
+         fUbpsimIc5STbwLPkW5cMb76PGs/+F1brYlewmImv5Ma15jzQX+Th/P7nJr2LUXTLzhD
+         P08A==
+X-Forwarded-Encrypted: i=1; AJvYcCVYgcYLmXcgNFcQ94Cvjc8/IY2HhDPxJpTRuzEd68mYxGqjTx45hOhPxl6tofI9bH2rxSnEneecbf0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoWkkMaRDpAnycX4JzL6p4qpYWLVLZ8Ys9H25CGcpRkXnG/CdV
+	Odpb5u3UxPaPONWAqJ7wzYO+r+5obgAYH8Aru7fCitOmC0RXmhezu9FdUPW6Ccg=
+X-Gm-Gg: ASbGnctcrJV1kVlnVpqEXplKe4PCSSnyqSILL7JLdq3nP1w09Yg7tS5Jwjn/gpdCbd/
+	sRSszssM7/iDspyUkIfVFGxGvD9flir1UeE6xsFnPuwqJi+1BlymOIcRFftgnsymfy5BIbrdSsm
+	WYUYOrmEkhcQ7AMgYoldh41eiFBW0WwTt27QJTewD6fmBoS8lDs2ogOQ9+Zeg+t3KGg7qVGmaQ0
+	3XuWGk7fV1lwTdq48lTZLsVwW4azvtltuKjp3MS9wgpnX8qELL99hdl6PzBdK83iX5xsq+AE6Zj
+	fW4QQ8iMk9D+Zydzx7XOzrRF7J6FRP8LSVHkjeT+1xx0hEbSfwtX
+X-Google-Smtp-Source: AGHT+IF3mi4w+ioATe/neRX31NhU+G5fVnUO+U3AY+NTTkR/32/joj3J25iUisGaUZnzV5dytcgeCw==
+X-Received: by 2002:a05:6830:3817:b0:727:4439:2079 with SMTP id 46e09a7af769-7274c563e6dmr324973a34.17.1740084895336;
+        Thu, 20 Feb 2025 12:54:55 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7272a3751e0sm2223640a34.58.2025.02.20.12.54.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Feb 2025 12:54:54 -0800 (PST)
+Message-ID: <4052fd7b-dd8c-4a5a-8f82-dd515de14d20@baylibre.com>
+Date: Thu, 20 Feb 2025 14:54:53 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 10/15] iio: resolver: ad2s1210: use bitmap_write
+To: Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Russell King
+ <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>
+Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
+ netdev@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-sound@vger.kernel.org
+References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
+ <20250210-gpio-set-array-helper-v3-10-d6a673674da8@baylibre.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250210-gpio-set-array-helper-v3-10-d6a673674da8@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250220-losd-3-inv-icm42600-add-wom-support-v1-2-9b937f986954@tdk.com>
-References: <20250220-losd-3-inv-icm42600-add-wom-support-v1-0-9b937f986954@tdk.com>
-In-Reply-To: <20250220-losd-3-inv-icm42600-add-wom-support-v1-0-9b937f986954@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1740084731; l=6425;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=8Io0EZ7K8Wv02WRA2dEENs6nrBC8x2QlcG1u9PLvBfA=;
- b=opslEaIOiZYxTBdkrE9ZX8xumphDLqQK/S5q28KGiWwSiCKOmeyNFh7mrLX5WvGz6cMIxwtm9
- vqfww5O9bRzAA/0W3J1wG0/J/H+Ry5kTWK0IccG78C7Zi+0hpVtfNyQ
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On 2/10/25 4:33 PM, David Lechner wrote:
+> Replace bitmap array access with bitmap_write.
+> 
+> Accessing the bitmap array directly is not recommended and now there is
+> a helper function that can be used.
+> 
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/iio/resolver/ad2s1210.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
+> index 7f18df790157f1e411fb70de193a49f0677c999f..04879e6d538bce664469c5f6759d8b1cedea16e9 100644
+> --- a/drivers/iio/resolver/ad2s1210.c
+> +++ b/drivers/iio/resolver/ad2s1210.c
+> @@ -46,6 +46,7 @@
+>   */
+>  
+>  #include <linux/bitfield.h>
+> +#include <linux/bitmap.h>
+>  #include <linux/bits.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/clk.h>
+> @@ -180,7 +181,7 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
+>  	if (!gpios)
+>  		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
+>  
+> -	bitmap[0] = mode;
+> +	bitmap_write(bitmap, mode, 0, 2);
+>  
+>  	return gpiod_multi_set_value_cansleep(gpios, bitmap);
+>  }
+> @@ -1470,7 +1471,7 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
+>  			return dev_err_probe(dev, -EINVAL,
+>  				      "requires exactly 2 resolution-gpios\n");
+>  
+> -		bitmap[0] = st->resolution;
+> +		bitmap_write(bitmap, st->resolution, 0, 2);
+>  
+>  		ret = gpiod_multi_set_value_cansleep(resolution_gpios, bitmap);
+>  		if (ret < 0)
+> 
 
-When Wake-on-Motion is on, enable system wakeup and keep chip on for
-waking up system with interrupt.
+There is actually a bug here pointed out in a similar patch. bitmap_write()
+only modifies the bitmap, so this introduces an unintialized use bug. [1]
+Here, we only use the bits that we set, so runtime behavior would not actually
+be buggy but still best to fully initialize the memory.
 
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h       |  2 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |  3 +
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c  | 89 +++++++++++++++--------
- 3 files changed, 63 insertions(+), 31 deletions(-)
+I'm a bit surprised that my local compiler and iio/testing both didn't catch that
+since GCC 14 caught it in the other driver.
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-index 8dfbeaf1c768d7d25cb58ecf9804446f3cbbd465..baf1dcd714800e84ccd21dc1d1e486849c77a9ae 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -151,6 +151,7 @@ struct inv_icm42600_apex {
-  *  @map:		regmap pointer.
-  *  @vdd_supply:	VDD voltage regulator for the chip.
-  *  @vddio_supply:	I/O voltage regulator for the chip.
-+ *  @irq:		chip irq.
-  *  @orientation:	sensor chip orientation relative to main hardware.
-  *  @conf:		chip sensors configurations.
-  *  @suspended:		suspended sensors configuration.
-@@ -168,6 +169,7 @@ struct inv_icm42600_state {
- 	struct regmap *map;
- 	struct regulator *vdd_supply;
- 	struct regulator *vddio_supply;
-+	int irq;
- 	struct iio_mount_matrix orientation;
- 	struct inv_icm42600_conf conf;
- 	struct inv_icm42600_suspended suspended;
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 8ce2276b3edc61cc1ea26810198dd0057054ec48..4240e8c576f4d07af5434e9a91dfda532f87ffb9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -1149,6 +1149,9 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st)
- 	if (ret)
- 		return ERR_PTR(ret);
- 
-+	/* accel events are wakeup capable */
-+	device_set_wakeup_capable(&indio_dev->dev, true);
-+
- 	return indio_dev;
- }
- 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index c0fd2770d66f02d1965fa07f819fd2db9a1d6bd2..f94bda5dc094d6cc85e3facbd480b830bfbaa3f9 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -751,6 +751,7 @@ int inv_icm42600_core_probe(struct regmap *regmap, int chip, int irq,
- 	mutex_init(&st->lock);
- 	st->chip = chip;
- 	st->map = regmap;
-+	st->irq = irq;
- 
- 	ret = iio_read_mount_matrix(dev, &st->orientation);
- 	if (ret) {
-@@ -829,44 +830,56 @@ EXPORT_SYMBOL_NS_GPL(inv_icm42600_core_probe, "IIO_ICM42600");
- static int inv_icm42600_suspend(struct device *dev)
+[1]: https://lore.kernel.org/linux-gpio/20250217132152.29d86d6c@jic23-huawei/T/#m3163d2c5db5b7376504d8ad6f23716f1119de761
+
+The fix is simple, we can zero-initialize the bitmap.
+
+diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
+index 04879e6d538b..ab860cedecd1 100644
+--- a/drivers/iio/resolver/ad2s1210.c
++++ b/drivers/iio/resolver/ad2s1210.c
+@@ -176,7 +176,7 @@ struct ad2s1210_state {
+ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
  {
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
-+	struct device *accel_dev;
-+	bool wakeup;
-+	int accel_conf;
+ 	struct gpio_descs *gpios = st->mode_gpios;
+-	DECLARE_BITMAP(bitmap, 2);
++	DECLARE_BITMAP(bitmap, 2) = { };
+ 
+ 	if (!gpios)
+ 		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
+@@ -1427,7 +1427,7 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
+ 	struct device *dev = &st->sdev->dev;
+ 	struct gpio_descs *resolution_gpios;
+ 	struct gpio_desc *reset_gpio;
+-	DECLARE_BITMAP(bitmap, 2);
++	DECLARE_BITMAP(bitmap, 2) = { };
  	int ret;
  
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	st->suspended.gyro = st->conf.gyro.mode;
- 	st->suspended.accel = st->conf.accel.mode;
- 	st->suspended.temp = st->conf.temp_en;
--	if (pm_runtime_suspended(dev)) {
--		ret = 0;
--		goto out_unlock;
--	}
-+	if (pm_runtime_suspended(dev))
-+		return 0;
- 
- 	/* disable FIFO data streaming */
- 	if (st->fifo.on) {
- 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
- 				   INV_ICM42600_FIFO_CONFIG_BYPASS);
- 		if (ret)
--			goto out_unlock;
-+			return ret;
- 	}
- 
--	/* disable APEX features */
--	if (st->apex.wom.enable) {
--		ret = inv_icm42600_set_wom(st, false);
--		if (ret)
--			goto out_unlock;
-+	/* keep chip on and wake-up capable if APEX and wakeup on */
-+	accel_dev = &st->indio_accel->dev;
-+	wakeup = (st->apex.on && device_may_wakeup(accel_dev)) ? true : false;
-+
-+	if (!wakeup) {
-+		/* disable APEX features and accel if wakeup disabled */
-+		if (st->apex.wom.enable) {
-+			ret = inv_icm42600_set_wom(st, false);
-+			if (ret)
-+				return ret;
-+		}
-+		accel_conf = INV_ICM42600_SENSOR_MODE_OFF;
-+	} else {
-+		/* keep accel on and setup irq for wakeup */
-+		accel_conf = st->conf.accel.mode;
-+		enable_irq_wake(st->irq);
-+		disable_irq(st->irq);
- 	}
- 
- 	ret = inv_icm42600_set_pwr_mgmt0(st, INV_ICM42600_SENSOR_MODE_OFF,
--					 INV_ICM42600_SENSOR_MODE_OFF, false,
--					 NULL);
-+					 accel_conf, false, NULL);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
--	regulator_disable(st->vddio_supply);
-+	/* disable vddio regulator if chip is sleeping */
-+	if (!wakeup)
-+		regulator_disable(st->vddio_supply);
- 
--out_unlock:
--	mutex_unlock(&st->lock);
--	return ret;
-+	return 0;
- }
- 
- /*
-@@ -878,13 +891,25 @@ static int inv_icm42600_resume(struct device *dev)
- 	struct inv_icm42600_state *st = dev_get_drvdata(dev);
- 	struct inv_icm42600_sensor_state *gyro_st = iio_priv(st->indio_gyro);
- 	struct inv_icm42600_sensor_state *accel_st = iio_priv(st->indio_accel);
-+	struct device *accel_dev;
-+	bool wakeup;
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
--	ret = inv_icm42600_enable_regulator_vddio(st);
--	if (ret)
--		goto out_unlock;
-+	/* check wakeup capability */
-+	accel_dev = &st->indio_accel->dev;
-+	wakeup = (st->apex.on && device_may_wakeup(accel_dev)) ? true : false;
-+
-+	/* restore vddio if cut off or irq state */
-+	if (!wakeup) {
-+		ret = inv_icm42600_enable_regulator_vddio(st);
-+		if (ret)
-+			return ret;
-+	} else {
-+		enable_irq(st->irq);
-+		disable_irq_wake(st->irq);
-+	}
- 
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_active(dev);
-@@ -895,13 +920,15 @@ static int inv_icm42600_resume(struct device *dev)
- 					 st->suspended.accel,
- 					 st->suspended.temp, NULL);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
--	/* restore APEX features */
--	if (st->apex.wom.enable) {
--		ret = inv_icm42600_set_wom(st, true);
--		if (ret)
--			goto out_unlock;
-+	/* restore APEX features if disabled */
-+	if (!wakeup) {
-+		if (st->apex.wom.enable) {
-+			ret = inv_icm42600_set_wom(st, true);
-+			if (ret)
-+				return ret;
-+		}
- 	}
- 
- 	/* restore FIFO data streaming */
-@@ -910,11 +937,11 @@ static int inv_icm42600_resume(struct device *dev)
- 		inv_sensors_timestamp_reset(&accel_st->ts);
- 		ret = regmap_write(st->map, INV_ICM42600_REG_FIFO_CONFIG,
- 				   INV_ICM42600_FIFO_CONFIG_STREAM);
-+		if (ret)
-+			return ret;
- 	}
- 
--out_unlock:
--	mutex_unlock(&st->lock);
--	return ret;
-+	return 0;
- }
- 
- /* Runtime suspend will turn off sensors that are enabled by iio devices. */
-
--- 
-2.48.1
-
+ 	/* should not be sampling on startup */
 
 

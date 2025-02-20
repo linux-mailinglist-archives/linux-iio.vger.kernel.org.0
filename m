@@ -1,68 +1,93 @@
-Return-Path: <linux-iio+bounces-15852-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15853-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 973D7A3DB3F
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:25:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5985A3DB49
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A317AB00A
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:24:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A30D17A56A
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF7D1FA851;
-	Thu, 20 Feb 2025 13:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519F21F8BBC;
+	Thu, 20 Feb 2025 13:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="Af+/tMzD"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JbYrHYae"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-14.pe-b.jellyfish.systems (out-14.pe-b.jellyfish.systems [198.54.127.82])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F419C1F9F79;
-	Thu, 20 Feb 2025 13:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AE9433BE;
+	Thu, 20 Feb 2025 13:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740057903; cv=none; b=ssR1mwDuN6pOEFclZd3MrY7iNZA5ThUfcWTDeDBrVix6LIyhl9zeTboQ6ZY+GoDON7PoHzW6SCCH8u2L61lo+lbN7iXgN4nezzYhZkcnwTyxDLGItiI7W938br+UusE92EVFF0AWyPErL/nFbdpN6Cul5jHBHUcG+HFoK8gjYEo=
+	t=1740058141; cv=none; b=Xs0re0OdTSSrSh/BKW8ckXltobxHz6/YuelfWRRDIpkyCXCXZS9FmqiSOR+9/gphUzDYMxnEonor3TaRIeqH5+awVwYvp1qk7P3ufmZ+p18RhDeIeOT4rqc455tqwA0bWcu8aSIXyxG5n4oKYFl9cmptd1W/RpOdv4r8n34CKWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740057903; c=relaxed/simple;
-	bh=OR+oC+48rwdRC7g1KuDkeii+pjwImLHBaP3XD7j3MTk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=PebgubwoNNNP1J5SqRvlnRr7USbGkkIGZqo3BiMMj+GObTnB6AECmyVi02aoziZxgCHFMVq/i6qCqxbjJfn6K/G9BKcnjfT6aUj5jHJAXyUEHyxblUyAp+A5+6XsG/VcAd8d41MCYjhdjlXiIO9i6Hcv8oYGQMa6QLGgeUEUsCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=Af+/tMzD; arc=none smtp.client-ip=198.54.127.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
-	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4YzDM15mHTzDr6G;
-	Thu, 20 Feb 2025 13:17:17 +0000 (UTC)
-Received: from MTA-07.privateemail.com (unknown [10.50.14.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4YzDM15RPvz3hhVd;
-	Thu, 20 Feb 2025 08:17:17 -0500 (EST)
-Received: from mta-07.privateemail.com (localhost [127.0.0.1])
-	by mta-07.privateemail.com (Postfix) with ESMTP id 4YzDM149qCz3hhTk;
-	Thu, 20 Feb 2025 08:17:17 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1740057437;
-	bh=OR+oC+48rwdRC7g1KuDkeii+pjwImLHBaP3XD7j3MTk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=Af+/tMzDICgrF60qZXNhqyB5Wvh4DehTbsVHDvutDzMFZTCdCe8NuINzDUfULlkNC
-	 6JWmtHS9uvJgZidC8BPnxDhfUrPrIRKA4zt7/X1L2nYoJ78Vo4PoGJc0iNp3da//4h
-	 JtZQCgxzAFocrLbyStgRRYnEd5K+XJ2aiOyvOH2r5k+6DDUL1wratwWVGIL3+MvlFn
-	 g8sj2tYQuXIpHURZGpEM4AeQgY4kdpvA8TuGHOt3hTEVIoelFbWVQF/WBjAiRC6iky
-	 MnRNzQgisfgA282OmxwPk7pfmgBSvLshkJWnSCtQbNPWFv9/72LdYVVNjTuRKsKx0k
-	 3+nJT8sOJ2o9A==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-07.privateemail.com (Postfix) with ESMTPA;
-	Thu, 20 Feb 2025 08:17:11 -0500 (EST)
-Date: Thu, 20 Feb 2025 08:17:11 -0500
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-iio@vger.kernel.org, antoniu.miclaus@analog.com, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org
-Subject: [PATCH v2] iio: filter: admv8818: fix range calculation
-Message-ID: <Z7crV0DV1Fq7wE1Z@65YTFL3.secure.tethers.com>
+	s=arc-20240116; t=1740058141; c=relaxed/simple;
+	bh=aW7P36P7qMNdnr9pUg4pgp/inqglHOgptn1s3sqjY7M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tPUIjZsl5tzKtVNBilT4osZ7o91y9FRfiBJ3GhnAIkB68I90Pxq3ULcgK3BZNcBh0NLh7dqsqRiXeFnloqQkF4EkgA8Gh/d/sQkFdj1+AWJWM+DPPSBSgJSyFMBcAMoGW+KR4I2Ly6AOKv/BuO+7I3bf2JJX8e8HuddQ0Z7AO9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JbYrHYae; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-471feaace60so541291cf.3;
+        Thu, 20 Feb 2025 05:28:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740058138; x=1740662938; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ds16pcii8hIi7NE0pveG5m9mk6T8UXD/GemUMCtoarQ=;
+        b=JbYrHYaeNCIvDlBr2wDIR4m8HnQoRMJZ2iDOZCPozrTUV07euAS6eB8efQoPzBeGqE
+         GuKKDIuS8Vh0Dggap9CYEB5AsOCsgKhrOfy3WzE9l+62leojro6BcZmXAxnywyhqlCSZ
+         NrmnOJJNoMwYAv90HMGv8ngGnYRLmwwCNbZrmBRISq14sstMvgAElIr5oO+77a5POMis
+         C0HsihebvzsdfujIaKSPDYRNllL/4nHEzF8DC9l94AMOqQAP5vNR0owGDF6D0IFSGDgG
+         +XEMsXmG8vCCFBcweRK9vjEcXMf8AUKPrVcYqf03iJjmeFUTlSIBhLtZviNvucyEjIVg
+         81Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740058138; x=1740662938;
+        h=in-reply-to:content-disposition:mime-version:references:reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ds16pcii8hIi7NE0pveG5m9mk6T8UXD/GemUMCtoarQ=;
+        b=WBrc3kjz4CZ8HfOM6VhO4jBiU6Okis7d4J4nAdJKli4ecsu2H86oW6VSb5tcoV5ajQ
+         VdDig8eGJ0vtfxD+rjJlA6noAciBRlnTLaJmjhRpJEdJ4mfJBzluHyYiFLNqU9W2MHZO
+         3o42KdoMujk7c+UzgTVtl9Pp6O4wTrA7FioOgmle0TbVlv9vkVFxRdZUSUYsKbbuu+Pb
+         n0wEzPoAnsY4au5XHEomz9xOcHuoAMdJn/5+glbT7slOJFJcoA6t2eqtmr6NQuH6aygK
+         cPypQt1gh2YaupuHTqh/EW2izoKnAY4HqrqzcS7osNTbDGgcQ2HmcTcF/pm75LAkDcD4
+         F/4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUzQKur05p4KH0zs58JyxeIXRElg7LyrhQ7DnW9c67BqdlCqfnbNjAC3tlA3h0ijy1nfCVuq5FJiyL+@vger.kernel.org, AJvYcCVCby3ExQwxHWQqP3E6Jzu2NipM/lO9UemWHhwMwdEVAMJRMnXzuK9LqJEqJnRyy7tKnjmBk7boicat5qBM@vger.kernel.org, AJvYcCWJ6XrKuVYma7HZqt1dxrI+DQmyB4Z7T3/mlrGV2/9OFFQ+LG5jV4THWn6d4DlPcGhyKC9GLV7vPQ/+@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLYvaKlMlkJX5y/LXR5hMiC3RPWq3UMUEns2/5EccnjZaY9Pj3
+	zDZUQ3Nyd+AhR+N558GMUUZ10Y7LR0xmzbHPJD4As72x1aIJVfl5
+X-Gm-Gg: ASbGncupXLM3yXzWZHtTxI6e94n6EqHypS+5OYOivLJS+T08X9OtsSH9OSVFlND90rL
+	nVnosUi84O3XZ0+GzWuO/H9ckt86k0MbMH2f8ZyCLhsxnDEBTPbVLFd8Ddx4graAMVkt9eT5RXf
+	1CKLTy/9cnlyax21bBLNPyaF8nIoMCdxuZN1JBO+uXMSj5NrKKYwTNCoFPwvM4gBLpy6j8UsdSw
+	HKMTF9Vr4NbGx7nGN+OydXMNCDHLyIDS14TW0ec7/Gby4IhrEOLl2NqJkUeNRR45XSWPOW/LWKy
+	y8kXbslwpLYaGO37TTV18gXb5wdYBQlvxuuz
+X-Google-Smtp-Source: AGHT+IHPZCycB/Wz1WISGCZKdwZHNRLPreMsBCK1H3+677e2/gdlTibb/D6w/+3yimQAmZPY7g+QVw==
+X-Received: by 2002:ac8:5710:0:b0:472:116f:94e1 with SMTP id d75a77b69052e-472116f97aemr22101861cf.11.1740058137951;
+        Thu, 20 Feb 2025 05:28:57 -0800 (PST)
+Received: from JSANTO12-L01.ad.analog.com ([191.255.131.70])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4720d4340f4sm16095391cf.65.2025.02.20.05.28.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 05:28:57 -0800 (PST)
+Date: Thu, 20 Feb 2025 10:28:52 -0300
+From: Jonathan Santos <jonath4nns@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, marcelo.schmitt1@gmail.com,
+	dlechner@baylibre.com, Pop Paul <paul.pop@analog.com>
+Subject: Re: [PATCH RESEND v3 16/17] iio: adc: ad7768-1: add filter type and
+ oversampling ratio attributes
+Message-ID: <Z7cuFJQeqQPYpX6d@JSANTO12-L01.ad.analog.com>
+Reply-To: 20250216163153.55a1ae97@jic23-huawei.smtp.subspace.kernel.org
+References: <cover.1739368121.git.Jonathan.Santos@analog.com>
+ <2c3ce1701545e435238605342397e45657a0fb2a.1739368121.git.Jonathan.Santos@analog.com>
+ <20250216163153.55a1ae97@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -71,365 +96,207 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20250216163153.55a1ae97@jic23-huawei>
 
-Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
-the ADMV8818 datasheet
+On 02/16, Jonathan Cameron wrote:
+> On Wed, 12 Feb 2025 15:18:59 -0300
+> Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+> 
+> > Separate filter type and decimation rate from the sampling frequency
+> > attribute. The new filter type attribute enables sinc3, sinc3+rej60
+> > and wideband filters, which were previously unavailable.
+> > 
+> > Previously, combining decimation and MCLK divider in the sampling
+> > frequency obscured performance trade-offs. Lower MCLK divider
+> > settings increase power usage, while lower decimation rates reduce
+> > precision by decreasing averaging. By creating an oversampling
+> > attribute, which controls the decimation, users gain finer control
+> > over performance.
+> > 
+> > The addition of those attributes allows a wider range of sampling
+> > frequencies and more access to the device features.
+> > 
+> > Co-developed-by: Pop Paul <paul.pop@analog.com>
+> > Signed-off-by: Pop Paul <paul.pop@analog.com>
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> As below. We should aim to 'pre bake' the value arrays for
+> get_available() to avoid the potential race conditions of a consumer
+> seeing a partly updated set a parameters change.
+> 
+> Better to see a consistent but stale one.
+> 
+> Jonathan
+> 
+> > ---
+> > v3 Changes:
+> > * removed unsed variables.
+> > * included sinc3+rej60 filter type.
+> > * oversampling_ratio moved to info_mask_shared_by_type.
+> > * reordered functions to avoid foward declaration.
+> > * simplified regmap writes.
+> > * Removed locking.
+> > * replaced some helper functions for direct regmap_update_bits
+> >   calls.
+> > * Addressed other nits.
+> > 
+> > v2 Changes:
+> > * Decimation_rate attribute replaced for oversampling_ratio.
+> > ---
+> >  drivers/iio/adc/ad7768-1.c | 359 ++++++++++++++++++++++++++++++-------
+> >  1 file changed, 290 insertions(+), 69 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index 8aea38c154fe..18f1ea0bf66d 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> 
+> > +
+> > +/* Decimation Rate range for each filter type */
+> > +static const int ad7768_dec_rate_range[][3] = {
+> > +	[AD7768_FILTER_SINC5] = { 8, 8, 1024 },
+> > +	[AD7768_FILTER_SINC3] = { 32, 32, 163840 },
+> > +	[AD7768_FILTER_WIDEBAND] = { 32, 32, 1024 },
+> > +	[AD7768_FILTER_SINC3_REJ60] = { 32, 32, 163840 },
+> > +};
+> > +
+> > +/*
+> > + * The AD7768-1 supports three primary filter types:
+> > + * Sinc5, Sinc3, and Wideband.
+> > + * However, the filter register values can also encode
+> wrap at 80 chars.
+> > + * additional parameters such as decimation rates and
+> > + * 60Hz rejection. This utility function separates the
+> > + * filter type from these parameters.
+> > + */
+> 
+> >  
+> > -	return 0;
+> > +static int ad7768_get_fil_type_attr(struct iio_dev *dev,
+> > +				    const struct iio_chan_spec *chan)
+> > +{
+> > +	struct ad7768_state *st = iio_priv(dev);
+> > +	int ret;
+> > +	unsigned int mode;
+> > +
+> > +	ret = regmap_read(st->regmap, AD7768_REG_DIGITAL_FILTER, &mode);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	mode = FIELD_GET(AD7768_DIG_FIL_FIL_MSK, mode);
+> > +
+> > +	/*
+> > +	 * From the register value, get the corresponding
+> > +	 * filter type.
+> 
+> Very short line wrap.  Stick to 80 chars.
+> 
+> > +	 */
+> > +	return ad7768_filter_regval_to_type[mode];
+> >  }
+> 
+> >  
+> > @@ -619,16 +798,25 @@ static int ad7768_read_avail(struct iio_dev *indio_dev,
+> >  			     long info)
+> >  {
+> >  	struct ad7768_state *st = iio_priv(indio_dev);
+> > -	int i;
+> > +	int i, freq_filtered, len = 0;
+> >  
+> >  	switch (info) {
+> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> > +		*vals = (int *)ad7768_dec_rate_range[st->filter_type];
+> > +		*type = IIO_VAL_INT;
+> > +		return IIO_AVAIL_RANGE;
+> >  	case IIO_CHAN_INFO_SAMP_FREQ:
+> > -		for (i = 0; i < ARRAY_SIZE(ad7768_clk_config); i++)
+> > -			st->samp_freq_avail[i] = DIV_ROUND_CLOSEST(st->mclk_freq,
+> > -								   ad7768_clk_config[i].clk_div);
+> > +		freq_filtered = DIV_ROUND_CLOSEST(st->mclk_freq, st->oversampling_ratio);
+> 
+> Ah. So now it is dynamic.  This hits the previously mentioned race.
+> A consumer can be holding a copy of this and acting on it whilst holding no
+> locks on this device - thus it can see a mixture of values as this update
+> occurs. To avoid that you need to precompute the combinations +
+> store the lot in arrays.  Then this code should simply be selecting the arrays.
+> A consumer holding a stale one will get a consistent (if wrong) set.
+>
+Yes, before the available frequencies were static, but now they depend
+on the oversampling ratio. I can create a helper function to precomput
+and fill this array and call it after configuring the digital filter, 
+where the filter type and OSR is set.
 
-Search for the minimum error while ensuring that the LPF corner
-frequency is greater than the target, and the HPF corner frequency
-is lower than the target
+For the previous static case, i call this function in the probe.
+> The < 50 check makes this more complex than normal but they are still static
+> choices I think as long as the input clock doesn't change.
+>
 
-This fixes issues where the range calculations were suboptimal.
+I will include this in the helper function.
 
-Below is a generated table of the differences between the old algorithm
-and the new. This is a sweep from 0 to 20 GHz in 10 MHz steps.
-=== HPF ===
-freq = 1750 MHz, 3db: bypass => 1750 MHz
-freq = 3400 MHz, 3db: 3310 => 3400 MHz
-freq = 3410 MHz, 3db: 3310 => 3400 MHz
-freq = 3420 MHz, 3db: 3310 => 3400 MHz
-freq = 3660 MHz, 3db: 3550 => 3656 MHz
-freq = 6600 MHz, 3db: 6479 => 6600 MHz
-freq = 6610 MHz, 3db: 6479 => 6600 MHz
-freq = 6620 MHz, 3db: 6479 => 6600 MHz
-freq = 6630 MHz, 3db: 6479 => 6600 MHz
-freq = 6640 MHz, 3db: 6479 => 6600 MHz
-freq = 6650 MHz, 3db: 6479 => 6600 MHz
-freq = 6660 MHz, 3db: 6479 => 6600 MHz
-freq = 6670 MHz, 3db: 6479 => 6600 MHz
-freq = 6680 MHz, 3db: 6479 => 6600 MHz
-freq = 6690 MHz, 3db: 6479 => 6600 MHz
-freq = 6700 MHz, 3db: 6479 => 6600 MHz
-freq = 6710 MHz, 3db: 6479 => 6600 MHz
-freq = 6720 MHz, 3db: 6479 => 6600 MHz
-freq = 6730 MHz, 3db: 6479 => 6600 MHz
-freq = 6960 MHz, 3db: 6736 => 6960 MHz
-freq = 6970 MHz, 3db: 6736 => 6960 MHz
-freq = 6980 MHz, 3db: 6736 => 6960 MHz
-freq = 6990 MHz, 3db: 6736 => 6960 MHz
-freq = 7320 MHz, 3db: 7249 => 7320 MHz
-freq = 7330 MHz, 3db: 7249 => 7320 MHz
-freq = 7340 MHz, 3db: 7249 => 7320 MHz
-freq = 7350 MHz, 3db: 7249 => 7320 MHz
-freq = 7360 MHz, 3db: 7249 => 7320 MHz
-freq = 7370 MHz, 3db: 7249 => 7320 MHz
-freq = 7380 MHz, 3db: 7249 => 7320 MHz
-freq = 7390 MHz, 3db: 7249 => 7320 MHz
-freq = 7400 MHz, 3db: 7249 => 7320 MHz
-freq = 7410 MHz, 3db: 7249 => 7320 MHz
-freq = 7420 MHz, 3db: 7249 => 7320 MHz
-freq = 7430 MHz, 3db: 7249 => 7320 MHz
-freq = 7440 MHz, 3db: 7249 => 7320 MHz
-freq = 7450 MHz, 3db: 7249 => 7320 MHz
-freq = 7460 MHz, 3db: 7249 => 7320 MHz
-freq = 7470 MHz, 3db: 7249 => 7320 MHz
-freq = 7480 MHz, 3db: 7249 => 7320 MHz
-freq = 7490 MHz, 3db: 7249 => 7320 MHz
-freq = 7500 MHz, 3db: 7249 => 7320 MHz
-freq = 12500 MHz, 3db: 12000 => 12500 MHz
-
-=== LPF ===
-freq = 2050 MHz, 3db: bypass => 2050 MHz
-freq = 2170 MHz, 3db: 2290 => 2170 MHz
-freq = 2290 MHz, 3db: 2410 => 2290 MHz
-freq = 2410 MHz, 3db: 2530 => 2410 MHz
-freq = 2530 MHz, 3db: 2650 => 2530 MHz
-freq = 2650 MHz, 3db: 2770 => 2650 MHz
-freq = 2770 MHz, 3db: 2890 => 2770 MHz
-freq = 2890 MHz, 3db: 3010 => 2890 MHz
-freq = 3010 MHz, 3db: 3130 => 3010 MHz
-freq = 3130 MHz, 3db: 3250 => 3130 MHz
-freq = 3250 MHz, 3db: 3370 => 3250 MHz
-freq = 3260 MHz, 3db: 3370 => 3350 MHz
-freq = 3270 MHz, 3db: 3370 => 3350 MHz
-freq = 3280 MHz, 3db: 3370 => 3350 MHz
-freq = 3290 MHz, 3db: 3370 => 3350 MHz
-freq = 3300 MHz, 3db: 3370 => 3350 MHz
-freq = 3310 MHz, 3db: 3370 => 3350 MHz
-freq = 3320 MHz, 3db: 3370 => 3350 MHz
-freq = 3330 MHz, 3db: 3370 => 3350 MHz
-freq = 3340 MHz, 3db: 3370 => 3350 MHz
-freq = 3350 MHz, 3db: 3370 => 3350 MHz
-freq = 3370 MHz, 3db: 3490 => 3370 MHz
-freq = 3490 MHz, 3db: 3610 => 3490 MHz
-freq = 3610 MHz, 3db: 3730 => 3610 MHz
-freq = 3730 MHz, 3db: 3850 => 3730 MHz
-freq = 3850 MHz, 3db: 3870 => 3850 MHz
-freq = 3870 MHz, 3db: 4130 => 3870 MHz
-freq = 4130 MHz, 3db: 4390 => 4130 MHz
-freq = 4390 MHz, 3db: 4650 => 4390 MHz
-freq = 4650 MHz, 3db: 4910 => 4650 MHz
-freq = 4910 MHz, 3db: 5170 => 4910 MHz
-freq = 5170 MHz, 3db: 5430 => 5170 MHz
-freq = 5430 MHz, 3db: 5690 => 5430 MHz
-freq = 5690 MHz, 3db: 5950 => 5690 MHz
-freq = 5950 MHz, 3db: 6210 => 5950 MHz
-freq = 6210 MHz, 3db: 6470 => 6210 MHz
-freq = 6470 MHz, 3db: 6730 => 6470 MHz
-freq = 6730 MHz, 3db: 6990 => 6730 MHz
-freq = 6990 MHz, 3db: 7250 => 6990 MHz
-freq = 7000 MHz, 3db: 7250 => 7000 MHz
-freq = 7250 MHz, 3db: 7400 => 7250 MHz
-freq = 7400 MHz, 3db: 7800 => 7400 MHz
-freq = 7800 MHz, 3db: 8200 => 7800 MHz
-freq = 8200 MHz, 3db: 8600 => 8200 MHz
-freq = 8600 MHz, 3db: 9000 => 8600 MHz
-freq = 9000 MHz, 3db: 9400 => 9000 MHz
-freq = 9400 MHz, 3db: 9800 => 9400 MHz
-freq = 9800 MHz, 3db: 10200 => 9800 MHz
-freq = 10200 MHz, 3db: 10600 => 10200 MHz
-freq = 10600 MHz, 3db: 11000 => 10600 MHz
-freq = 11000 MHz, 3db: 11400 => 11000 MHz
-freq = 11400 MHz, 3db: 11800 => 11400 MHz
-freq = 11800 MHz, 3db: 12200 => 11800 MHz
-freq = 12200 MHz, 3db: 12600 => 12200 MHz
-freq = 12210 MHz, 3db: 12600 => 12550 MHz
-freq = 12220 MHz, 3db: 12600 => 12550 MHz
-freq = 12230 MHz, 3db: 12600 => 12550 MHz
-freq = 12240 MHz, 3db: 12600 => 12550 MHz
-freq = 12250 MHz, 3db: 12600 => 12550 MHz
-freq = 12260 MHz, 3db: 12600 => 12550 MHz
-freq = 12270 MHz, 3db: 12600 => 12550 MHz
-freq = 12280 MHz, 3db: 12600 => 12550 MHz
-freq = 12290 MHz, 3db: 12600 => 12550 MHz
-freq = 12300 MHz, 3db: 12600 => 12550 MHz
-freq = 12310 MHz, 3db: 12600 => 12550 MHz
-freq = 12320 MHz, 3db: 12600 => 12550 MHz
-freq = 12330 MHz, 3db: 12600 => 12550 MHz
-freq = 12340 MHz, 3db: 12600 => 12550 MHz
-freq = 12350 MHz, 3db: 12600 => 12550 MHz
-freq = 12360 MHz, 3db: 12600 => 12550 MHz
-freq = 12370 MHz, 3db: 12600 => 12550 MHz
-freq = 12380 MHz, 3db: 12600 => 12550 MHz
-freq = 12390 MHz, 3db: 12600 => 12550 MHz
-freq = 12400 MHz, 3db: 12600 => 12550 MHz
-freq = 12410 MHz, 3db: 12600 => 12550 MHz
-freq = 12420 MHz, 3db: 12600 => 12550 MHz
-freq = 12430 MHz, 3db: 12600 => 12550 MHz
-freq = 12440 MHz, 3db: 12600 => 12550 MHz
-freq = 12450 MHz, 3db: 12600 => 12550 MHz
-freq = 12460 MHz, 3db: 12600 => 12550 MHz
-freq = 12470 MHz, 3db: 12600 => 12550 MHz
-freq = 12480 MHz, 3db: 12600 => 12550 MHz
-freq = 12490 MHz, 3db: 12600 => 12550 MHz
-freq = 12500 MHz, 3db: 12600 => 12550 MHz
-freq = 12510 MHz, 3db: 12600 => 12550 MHz
-freq = 12520 MHz, 3db: 12600 => 12550 MHz
-freq = 12530 MHz, 3db: 12600 => 12550 MHz
-freq = 12540 MHz, 3db: 12600 => 12550 MHz
-freq = 12550 MHz, 3db: 12600 => 12550 MHz
-freq = 12600 MHz, 3db: 13000 => 12600 MHz
-freq = 12610 MHz, 3db: 13000 => 12970 MHz
-freq = 12620 MHz, 3db: 13000 => 12970 MHz
-freq = 12630 MHz, 3db: 13000 => 12970 MHz
-freq = 12640 MHz, 3db: 13000 => 12970 MHz
-freq = 12650 MHz, 3db: 13000 => 12970 MHz
-freq = 12660 MHz, 3db: 13000 => 12970 MHz
-freq = 12670 MHz, 3db: 13000 => 12970 MHz
-freq = 12680 MHz, 3db: 13000 => 12970 MHz
-freq = 12690 MHz, 3db: 13000 => 12970 MHz
-freq = 12700 MHz, 3db: 13000 => 12970 MHz
-freq = 12710 MHz, 3db: 13000 => 12970 MHz
-freq = 12720 MHz, 3db: 13000 => 12970 MHz
-freq = 12730 MHz, 3db: 13000 => 12970 MHz
-freq = 12740 MHz, 3db: 13000 => 12970 MHz
-freq = 12750 MHz, 3db: 13000 => 12970 MHz
-freq = 12760 MHz, 3db: 13000 => 12970 MHz
-freq = 12770 MHz, 3db: 13000 => 12970 MHz
-freq = 12780 MHz, 3db: 13000 => 12970 MHz
-freq = 12790 MHz, 3db: 13000 => 12970 MHz
-freq = 12800 MHz, 3db: 13000 => 12970 MHz
-freq = 12810 MHz, 3db: 13000 => 12970 MHz
-freq = 12820 MHz, 3db: 13000 => 12970 MHz
-freq = 12830 MHz, 3db: 13000 => 12970 MHz
-freq = 12840 MHz, 3db: 13000 => 12970 MHz
-freq = 12850 MHz, 3db: 13000 => 12970 MHz
-freq = 12860 MHz, 3db: 13000 => 12970 MHz
-freq = 12870 MHz, 3db: 13000 => 12970 MHz
-freq = 12880 MHz, 3db: 13000 => 12970 MHz
-freq = 12890 MHz, 3db: 13000 => 12970 MHz
-freq = 12900 MHz, 3db: 13000 => 12970 MHz
-freq = 12910 MHz, 3db: 13000 => 12970 MHz
-freq = 12920 MHz, 3db: 13000 => 12970 MHz
-freq = 12930 MHz, 3db: 13000 => 12970 MHz
-freq = 12940 MHz, 3db: 13000 => 12970 MHz
-freq = 12950 MHz, 3db: 13000 => 12970 MHz
-freq = 12960 MHz, 3db: 13000 => 12970 MHz
-freq = 12970 MHz, 3db: 13000 => 12970 MHz
-freq = 13000 MHz, 3db: 13390 => 13000 MHz
-freq = 13390 MHz, 3db: 13810 => 13390 MHz
-freq = 13810 MHz, 3db: 14230 => 13810 MHz
-freq = 14230 MHz, 3db: 14650 => 14230 MHz
-freq = 14650 MHz, 3db: 15070 => 14650 MHz
-freq = 15070 MHz, 3db: 15490 => 15070 MHz
-freq = 15490 MHz, 3db: 15910 => 15490 MHz
-freq = 15910 MHz, 3db: 16330 => 15910 MHz
-freq = 16330 MHz, 3db: 16750 => 16330 MHz
-freq = 16750 MHz, 3db: 17170 => 16750 MHz
-freq = 17170 MHz, 3db: 17590 => 17170 MHz
-freq = 17590 MHz, 3db: 18010 => 17590 MHz
-freq = 18010 MHz, 3db: 18430 => 18010 MHz
-freq = 18430 MHz, 3db: 18850 => 18430 MHz
-freq = 18850 MHz, 3db: bypass => 18850 MHz
-
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
----
-V1 -> V2: Cleaned up the wording of the commit message
----
- drivers/iio/filter/admv8818.c | 94 ++++++++++++++++++++++++-----------
- 1 file changed, 65 insertions(+), 29 deletions(-)
-
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 848baa6e3bbf..b3697146fdd7 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -103,7 +103,7 @@ static const unsigned long long freq_range_lpf[4][2] = {
- 	{2050000000ULL, 3850000000ULL},
- 	{3350000000ULL, 7250000000ULL},
- 	{7000000000, 13000000000},
--	{12550000000, 18500000000}
-+	{12550000000, 18850000000}
- };
- 
- static const struct regmap_config admv8818_regmap_config = {
-@@ -122,43 +122,59 @@ static const char * const admv8818_modes[] = {
- static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- {
- 	unsigned int hpf_step = 0, hpf_band = 0, i, j;
-+	u64 freq_error;
-+	u64 min_freq_error;
-+	u64 freq_corner;
- 	u64 freq_step;
- 	int ret;
- 
- 	if (freq < freq_range_hpf[0][0])
- 		goto hpf_write;
- 
--	if (freq > freq_range_hpf[3][1]) {
-+	if (freq >= freq_range_hpf[3][1]) {
- 		hpf_step = 15;
- 		hpf_band = 4;
- 
- 		goto hpf_write;
- 	}
- 
-+	/* Close HPF frequency gap between 12 and 12.5 GHz */
-+	if (freq >= 12000 * HZ_PER_MHZ && freq < 12500 * HZ_PER_MHZ) {
-+		hpf_step = 15;
-+		hpf_band = 3;
-+
-+		goto hpf_write;
-+	}
-+
-+	min_freq_error = U64_MAX;
- 	for (i = 0; i < 4; i++) {
-+		/* This (and therefore all other ranges) have a corner
-+		 * frequency higher than the target frequency.
-+		 */
-+		if (freq_range_hpf[i][0] > freq)
-+			break;
-+
- 		freq_step = div_u64((freq_range_hpf[i][1] -
- 			freq_range_hpf[i][0]), 15);
- 
--		if (freq > freq_range_hpf[i][0] &&
--		    (freq < freq_range_hpf[i][1] + freq_step)) {
--			hpf_band = i + 1;
-+		for (j = 0; j <= 15; j++) {
-+			freq_corner = freq_range_hpf[i][0] + (freq_step * j);
- 
--			for (j = 1; j <= 16; j++) {
--				if (freq < (freq_range_hpf[i][0] + (freq_step * j))) {
--					hpf_step = j - 1;
--					break;
--				}
-+			/* This (and therefore all other steps) have a corner
-+			 * frequency higher than the target frequency.
-+			 */
-+			if (freq_corner > freq)
-+				break;
-+
-+			freq_error = freq - freq_corner;
-+			if (freq_error < min_freq_error) {
-+				min_freq_error = freq_error;
-+				hpf_step = j;
-+				hpf_band = i + 1;
- 			}
--			break;
- 		}
- 	}
- 
--	/* Close HPF frequency gap between 12 and 12.5 GHz */
--	if (freq >= 12000 * HZ_PER_MHZ && freq <= 12500 * HZ_PER_MHZ) {
--		hpf_band = 3;
--		hpf_step = 15;
--	}
--
- hpf_write:
- 	ret = regmap_update_bits(st->regmap, ADMV8818_REG_WR0_SW,
- 				 ADMV8818_SW_IN_SET_WR0_MSK |
-@@ -186,7 +202,11 @@ static int admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- 
- static int __admv8818_lpf_select(struct admv8818_state *st, u64 freq)
- {
--	unsigned int lpf_step = 0, lpf_band = 0, i, j;
-+	int i, j;
-+	unsigned int lpf_step = 0, lpf_band = 0;
-+	u64 freq_error;
-+	u64 min_freq_error;
-+	u64 freq_corner;
- 	u64 freq_step;
- 	int ret;
- 
-@@ -199,18 +219,34 @@ static int __admv8818_lpf_select(struct admv8818_state *st, u64 freq)
- 		goto lpf_write;
- 	}
- 
--	for (i = 0; i < 4; i++) {
--		if (freq > freq_range_lpf[i][0] && freq < freq_range_lpf[i][1]) {
--			lpf_band = i + 1;
--			freq_step = div_u64((freq_range_lpf[i][1] - freq_range_lpf[i][0]), 15);
--
--			for (j = 0; j <= 15; j++) {
--				if (freq < (freq_range_lpf[i][0] + (freq_step * j))) {
--					lpf_step = j;
--					break;
--				}
--			}
-+	min_freq_error = U64_MAX;
-+	for (i = 3; i >= 0; --i) {
-+		/* At this point the highest corner frequency of
-+		 * all remaining ranges is below the target.
-+		 * LPF corner should be >= the target.
-+		 */
-+		if (freq > freq_range_lpf[i][1])
- 			break;
-+
-+		freq_step = div_u64((freq_range_lpf[i][1] - freq_range_lpf[i][0]), 15);
-+
-+		for (j = 15; j >= 0; --j) {
-+
-+			freq_corner = freq_range_lpf[i][0] + j*freq_step;
-+
-+			/* At this point all other steps in range will
-+			 * place the corner frequency below the target
-+			 * LPF corner should >= the target.
-+			 */
-+			if (freq > freq_corner)
-+				break;
-+
-+			freq_error = freq_corner - freq;
-+			if (freq_error < min_freq_error) {
-+				min_freq_error = freq_error;
-+				lpf_step = j;
-+				lpf_band = i + 1;
-+			}
- 		}
- 	}
- 
--- 
-2.48.1
-
+> > +		for (i = 0; i < ARRAY_SIZE(ad7768_mclk_div_rates); i++) {
+> > +			st->samp_freq_avail[len] = DIV_ROUND_CLOSEST(freq_filtered,
+> > +								     ad7768_mclk_div_rates[i]);
+> > +			/* Sampling frequency cannot be lower than the minimum of 50 SPS */
+> > +			if (st->samp_freq_avail[len] >= 50)
+> > +				len++;
+> > +		}
+> >  
+> >  		*vals = (int *)st->samp_freq_avail;
+> > -		*length = ARRAY_SIZE(ad7768_clk_config);
+> > +		*length = len;
+> >  		*type = IIO_VAL_INT;
+> >  		return IIO_AVAIL_LIST;
+> >  	default:
+> > @@ -636,20 +824,45 @@ static int ad7768_read_avail(struct iio_dev *indio_dev,
+> >  	}
+> >  }
+> >  
+> > -static int ad7768_write_raw(struct iio_dev *indio_dev,
+> > -			    struct iio_chan_spec const *chan,
+> > -			    int val, int val2, long info)
+> > +static int __ad7768_write_raw(struct iio_dev *indio_dev,
+> > +			      struct iio_chan_spec const *chan,
+> > +			      int val, int val2, long info)
+> >  {
+> >  	struct ad7768_state *st = iio_priv(indio_dev);
+> > +	int ret;
+> >  
+> >  	switch (info) {
+> >  	case IIO_CHAN_INFO_SAMP_FREQ:
+> >  		return ad7768_set_freq(st, val);
+> > +
+> > +	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> > +		ret = ad7768_configure_dig_fil(indio_dev, st->filter_type, val);
+> > +		if (ret)
+> > +			return ret;
+> > +
+> > +		/* Update sampling frequency */
+> > +		return ad7768_set_freq(st, st->samp_freq);
+> >  	default:
+> >  		return -EINVAL;
+> >  	}
+> >  }
+> >  
+> > +static int ad7768_write_raw(struct iio_dev *indio_dev,
+> > +			    struct iio_chan_spec const *chan,
+> > +			    int val, int val2, long info)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = iio_device_claim_direct_mode(indio_dev);
+> Previously we didn't claim this to set the sampling frequency.
+> That change looks like a potential ABI issue.  I'm fine with it
+> if we should always have this protected.
+> 
+> If you are just using it to avoid racing between setting sampling
+> frequency and oversampling ratio then don't use that, use a local
+> lock where the scope can be clearly described.
+> 
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = __ad7768_write_raw(indio_dev, chan, val, val2, info);
+> > +	iio_device_release_direct_mode(indio_dev);
+> > +
+> > +	return ret;
+> > +}
 

@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-15828-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15829-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956AFA3D705
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 11:42:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C57A3D710
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 11:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E35216CB59
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 10:42:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 856A43B7404
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 10:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584421F1315;
-	Thu, 20 Feb 2025 10:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604371F151D;
+	Thu, 20 Feb 2025 10:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GyqVRMrn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g8wPpLT8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778AA1CAA9C;
-	Thu, 20 Feb 2025 10:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EF31F03E5;
+	Thu, 20 Feb 2025 10:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740048163; cv=none; b=JiTvBRYqr2kl8TFrrMoE6tsOetFRkIowwOol2sqXHpvmF4GQvB6zRmjif4ekMAeO36gZzO85hwD+3uDSnpmZbGGcdzeYaBDrFpH8GCjXTs2pcbFuS0kSrp6phuUppn94Ro8LCzgk0xVmt3vB1KPh3JkVQZk13il5dXbDhHnSYhs=
+	t=1740048164; cv=none; b=g1xDHOa99OUzVBgCtyIxwyrPOFVmISpgcusf8R5j6BbIFseXaJaYylrtEm6BN48Yf1xRY/mxRKeThGeHhWardr8fueJWqeCKNdGnesb/oCNjWMReu7LV3cJhv2uZi0X7kfkzvZaK5z/cEBGNaRgExGLEfKIPM4oR15fdYYCrIuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740048163; c=relaxed/simple;
-	bh=N5wPUtEL8GafvraaTitozwAcmvfIG4+F6qsLJt/dB1o=;
+	s=arc-20240116; t=1740048164; c=relaxed/simple;
+	bh=4lgqPxMFIxcu6DJtyKvsa6jPFpK3C+Ewcmj6hhpH5wg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SoEjivoFAvbDEVY2/bqQidnSyExojwc9/+zVm4vaiNaXt/l9KcYan9jWcEfGp9EyLh8TkESkFCXy2dpqjA24vmFApSAOA8UHodLbIGERu76sxvXkxe0VK2NWvk43G8bytvo4n7ZvLxrDQnWv5MKqeBbEp33CPRnEdAy8r7UFYPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GyqVRMrn; arc=none smtp.client-ip=209.85.218.43
+	 MIME-Version; b=SmnBA1adFt4ZqlgglewJ4653zBkvpDf9iUy3xshN0kV3gZlVKbyg0XfcWTl/2+nTeHbnY+tbM5H5iPjouqeWOT7PT2dM1FE6JwDK7D/AtCp4BWhT1F9RxhvEGflWftXivsMgJIBtUyngT0ciPK3K02l139p5ExuNewQU/DVdcG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g8wPpLT8; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-abbb16a0565so12153266b.1;
-        Thu, 20 Feb 2025 02:42:41 -0800 (PST)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-abb88d2b67eso9750766b.0;
+        Thu, 20 Feb 2025 02:42:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740048160; x=1740652960; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740048161; x=1740652961; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mvbwv18cfnvcZ2p2D0qtMZqem9sYjjTgAWQthVEWC7o=;
-        b=GyqVRMrne+kYaf7I17TOJSxuixUCOFRX1Rv2dtHYiKQvu5gLk/+ZZ6QkWsiCEu/iBK
-         +F4WZudb30jylzr7rMwsgrYxgkUEHHISWij4Gkwb/Mb6/olkRaxcTd+J5SPs+4SFd3+P
-         MQTLZT90kDKv4z0XbOiQenhAwkrF5Mb5c51dX9xTi1nigq0iphgW6xB1Rd4mxPHBX5/h
-         4d21VaO4mhiL3TOq29IfE6/aVOCBI+X6o4mTdB9omnPQmqsIZjxcdaSlpsbCXx6DQNlJ
-         jDEyAsA37dvAYT5E8hDPkkdsShX8I02dp75gYXRdoAnB0AkagaTpMpHkDxnBUT4KK8ti
-         JYrw==
+        bh=4OpRgAIuBhfsxGTEjf/p9nsoY6yTj5Mb2FMWgMOeJw4=;
+        b=g8wPpLT8jlwW9g3Hm3YMP13TCRKythq4GFmeANtsCnjKjwH09usYs97iLbE/vO+bwJ
+         56N3CGl2zSl1pQ2nNuUYX1rfMXqCqJbylLhrEosJGjrCSkJcvCjKwnJBOxF0B6RB8tvK
+         KMMVFk1BbMq8RTXabEt/ZulIsgA7YuwTHJRdoYbG6FZMK1iT3EqntFxS98/eHD5jiO5x
+         HLoCymBhjpVB2AcVA1qmKUkNHb7XxD/Mw3+mb2giINSqcTJPO5L6XTNR0d0qq2hfMl1O
+         28iXq4p4nQN4iXS6WcYkY5mrGmDCVT4wasEw/CUbhPYfuGCKjw+IzCs9t4u7PGbDYDcd
+         ZA+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740048160; x=1740652960;
+        d=1e100.net; s=20230601; t=1740048161; x=1740652961;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mvbwv18cfnvcZ2p2D0qtMZqem9sYjjTgAWQthVEWC7o=;
-        b=irmLMnU61QSZsOJ6nJne5/EsGfUVkgBwX/91rI74xSMmlrwWl5AKLnfD4qt8D5jNi1
-         xty9WYrKuM1atBxupbk2AIRykd4CW2hpQDCEjWAM2/QpbJr+nL0UjPeFd0FVNqiTv35W
-         f6D+s9uj8imp02lFq5zRw9wBL0SNKnYl1gou7rXM6HQwRtxwKyWOt9wpX5QJCiXOKPEV
-         DwHKldfpAtYD9/TDxE6vk/yWgcBu5kFvv/maJoPCfuMuJuJmi8ntoBJdb9nq/1FcRpus
-         bugOfodwSuqI0BjDg4B+Tch6DX5QSaQ9hFVG31xNsglYTTB5vk8g8FSsstsHtWPXG7gO
-         uzyg==
-X-Forwarded-Encrypted: i=1; AJvYcCUANY+9e6ZkNdNKmNwa9GGcS8vdV3ReAgwzxz8cM2TDYCv6GR8o5zUcfREopJOmY0dgoI7+wSpiZ3RPQ1Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyd377k/Dmfp9Hv5j74dThYnjwOz2RP3QGbYIqYLlmwDD7rFxO
-	BTR+tyy66qXvcCnBt5kjvQ/JM2QdmBNYYYatO9YvQoSH6oKHKgVP
-X-Gm-Gg: ASbGncv6upiyTbXZWCusxG24uC2FoRCeplc3Yz7Nf9A53+1aM8VsFYUnvm9FmNpHcMw
-	e6Q91nZuom1HfTDc08FhNcsWqSRju1kwUL6JVPKf4OrmzlPsATxokaCEhWhBbvIBDH6PunJQTdf
-	8YcGtWnmO0iPrdRNVHdWmqT1G36M59GTpQ+WsNlVeVMITTT0rsJwfcKtTtG0R63YOsldiq2DrBb
-	R3ONS/AyEo4NBhnmV7iLfVpmsSzhgLO3/PgX4QE0/1QH4P9rRm0rDNlulTzhWis+JOMFP8IvwbR
-	cqQ4V/dtRTy638C4aUhlka/zPncAVFJElL3ott/Od1J6g3a3z1lS9W2jmkQiPl0MTrHksA==
-X-Google-Smtp-Source: AGHT+IGUI2g+a2PDsMQXCnov2E7hRm5r7BSy/Cm728dhccNNiZNOm8E99POXf14RkcGPt+8ikOjCYg==
-X-Received: by 2002:a17:907:d8b:b0:ab6:58e4:4fec with SMTP id a640c23a62f3a-abb7093370fmr829356866b.3.1740048159422;
-        Thu, 20 Feb 2025 02:42:39 -0800 (PST)
+        bh=4OpRgAIuBhfsxGTEjf/p9nsoY6yTj5Mb2FMWgMOeJw4=;
+        b=ORgfw7/bTyUYd4O9I91pCtqInULMGWF+uxOhxxzDPbtpB8qwC2WfzmdJAWMyXhvk8M
+         XA2DQruK53FilDH6jEcIyryooUwyDCJFvmQK87kYROC++4SQ+rIUJagSW2cpSO7Pgd6p
+         EZ+mGNntlVbOPnse9OWStAcw9cZmDbeiswZYKUDmQ5HW+YvrU8MYMN+B+O5akG21bKvY
+         xzT/QECdgYtrT/tbiRmoS4ddAZPLkop4WtQlzAS1mQwdlgxn+J3Ds1XyuAp2cO38jpS2
+         k2SQWJRzi2r8Kp9b/4fjwRJwi1VRReBzZncFsp43+wKMMLqJ7kXMCaMGQ2MlKDqkbdLs
+         lpGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU9J5QfbEiGY7NHNU08fauUZkM+8vrE8lPwJVwn9zLIfCQUJeOinEwZonHLnINi3EMP83k1jd12yIMN1EE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPKixKCOLWWMb5VpeOJdFIBgyTn5Lt81vU3sTuKvjOM+L7c7FR
+	Z1O6yAxnALOfKN+yjRdc7tyy2jHjTCIBNWgWt9C1CpksE4kRMzVBkIrzToIq
+X-Gm-Gg: ASbGncumn1FtYm70MzRvk1YsMM8rtAUHCRCO4ZGR8gBGStsibNl+Xda5wFW7BYyzByY
+	1GfvrwcePYwMxPuXJ7TxyYjOn9TyplWJxEOzjBwX7ZU58aY1hYTOnVmymbwOgACAMZ0fXrk2VMW
+	1JfOKZSE2M35c8nNFZ7GsvCf+8hQjcSLXJ4ywdJpaLR8oDi2YtQe7bXEWsRRldX5qCr5Jem7AaI
+	cwW5kW4GpUIXkgYdJFVGb34Js7XvYR8W9vbWSI6MUNOcLp9n9lpiZsU0P45szceQW3yJOENq9Si
+	Zpje+qqpsJj/JZBagdAF4R8vH5Jhdxvm9qz8Cmigb9Mw9RVTWyhKSZQSzWP7G/OYD1mjuA==
+X-Google-Smtp-Source: AGHT+IHnFoe6bIJfsSDBY7fpovozMf7SUh1HcrEqkNrZXuhExvE5KIsUs/T2iEUh7f+0Qg6FZ8yovQ==
+X-Received: by 2002:a17:907:96a2:b0:ab7:cb76:1b0f with SMTP id a640c23a62f3a-abb70e2a93dmr799471366b.12.1740048160491;
+        Thu, 20 Feb 2025 02:42:40 -0800 (PST)
 Received: from 0f997e1ceb21.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbdfcaed55sm246474866b.137.2025.02.20.02.42.38
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbdfcaed55sm246474866b.137.2025.02.20.02.42.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 02:42:39 -0800 (PST)
+        Thu, 20 Feb 2025 02:42:40 -0800 (PST)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -80,9 +80,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v3 01/15] iio: accel: adxl345: reorganize measurement enable
-Date: Thu, 20 Feb 2025 10:42:20 +0000
-Message-Id: <20250220104234.40958-2-l.rubusch@gmail.com>
+Subject: [PATCH v3 02/15] iio: accel: adxl345: add debug register access
+Date: Thu, 20 Feb 2025 10:42:21 +0000
+Message-Id: <20250220104234.40958-3-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250220104234.40958-1-l.rubusch@gmail.com>
 References: <20250220104234.40958-1-l.rubusch@gmail.com>
@@ -94,76 +94,44 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Move the measurement enable function up in order to have it generically
-available.
-
-This is a preparation for upcomming patches. Particular features need
-to have measuring off while changing settings, and turned on again
-afterwards.
+Add the possibility to verify the content of the configuration
+registers of the sensor in preparation for upcomming feature
+implementations.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 40 ++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/iio/accel/adxl345_core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index ed0291bea0f5..c24692c51893 100644
+index c24692c51893..468d562de227 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -76,6 +76,26 @@ static const unsigned long adxl345_scan_masks[] = {
- 	0
- };
- 
-+/**
-+ * adxl345_set_measure_en() - Enable and disable measuring.
-+ *
-+ * @st: The device data.
-+ * @en: Enable measurements, else standby mode.
-+ *
-+ * For lowest power operation, standby mode can be used. In standby mode,
-+ * current consumption is supposed to be reduced to 0.1uA (typical). In this
-+ * mode no measurements are made. Placing the device into standby mode
-+ * preserves the contents of FIFO.
-+ *
-+ * Return: Returns 0 if successful, or a negative error value.
-+ */
-+static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
-+{
-+	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
-+
-+	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
-+}
-+
- static int adxl345_set_interrupts(struct adxl345_state *st)
- {
- 	int ret;
-@@ -214,26 +234,6 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
- 	}
+@@ -202,6 +202,16 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 	return -EINVAL;
  }
  
--/**
-- * adxl345_set_measure_en() - Enable and disable measuring.
-- *
-- * @st: The device data.
-- * @en: Enable measurements, else standby mode.
-- *
-- * For lowest power operation, standby mode can be used. In standby mode,
-- * current consumption is supposed to be reduced to 0.1uA (typical). In this
-- * mode no measurements are made. Placing the device into standby mode
-- * preserves the contents of FIFO.
-- *
-- * Return: Returns 0 if successful, or a negative error value.
-- */
--static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
--{
--	unsigned int val = en ? ADXL345_POWER_CTL_MEASURE : ADXL345_POWER_CTL_STANDBY;
--
--	return regmap_write(st->regmap, ADXL345_REG_POWER_CTL, val);
--}
--
- static void adxl345_powerdown(void *ptr)
++static int adxl345_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++			      unsigned int writeval, unsigned int *readval)
++{
++	struct adxl345_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return regmap_read(st->regmap, reg, readval);
++	return regmap_write(st->regmap, reg, writeval);
++}
++
+ static int adxl345_set_watermark(struct iio_dev *indio_dev, unsigned int value)
  {
- 	struct adxl345_state *st = ptr;
+ 	struct adxl345_state *st = iio_priv(indio_dev);
+@@ -467,6 +477,7 @@ static const struct iio_info adxl345_info = {
+ 	.read_raw	= adxl345_read_raw,
+ 	.write_raw	= adxl345_write_raw,
+ 	.write_raw_get_fmt	= adxl345_write_raw_get_fmt,
++	.debugfs_reg_access = &adxl345_reg_access,
+ 	.hwfifo_set_watermark = adxl345_set_watermark,
+ };
+ 
 -- 
 2.39.5
 

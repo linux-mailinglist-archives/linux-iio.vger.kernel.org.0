@@ -1,323 +1,194 @@
-Return-Path: <linux-iio+bounces-15854-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15855-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5A1A3DB7F
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:40:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A5EA3DB8D
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 14:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C5637AA73E
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:39:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0863719C25D4
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 13:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8231F91E3;
-	Thu, 20 Feb 2025 13:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3361F9A90;
+	Thu, 20 Feb 2025 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eaINY0PU"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Z9a1EfA0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912701F8670;
-	Thu, 20 Feb 2025 13:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750501F76C0;
+	Thu, 20 Feb 2025 13:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740058838; cv=none; b=fx7BXhKJZ92X8wHZ3jbJ+iZgILRTV6MhNQCY6ktH6MV8xTQlos5tY8z1ca26rgFqQnnJZwHTIRgmEEj+j+sRi1M7WnZMivm25BW7QqRx14Ha7ofd15x6Gp+aA+a0q0fAAkbuXdZKq61DbXuE+sYeajJ4ng/wkL2SnFaKZWy3DDc=
+	t=1740059005; cv=none; b=kmxms1c1Y9+/L8x3x6IpnD0bLxAMeqVEM1T1+9FLcRMmfkgKGU3I+OyL5G67li6AstR0XJ7sxsa8IUIXLrVqCkmsqJWpt9RyN47Bo7yGTelo2PVBuJ6K8QBuoso+MGi9ddLrLx/Iu78CuEu7doSpkKNQ+sEKZD8F0jrHB7MonLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740058838; c=relaxed/simple;
-	bh=VL1afRwVzotUlXLnDiyMHBOqDCnsj5I2aXklOFQIuzI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fj5NxghOYU7wiCByDhsOAcajH4ts8/7FWntHFtyitYUeHffDzfwudIUVe72w+FDbuFW521q1e7HnLtfloD65qbyFaP17//TLmt+vZ7hYI91OGAkpCY/th6sfR8ukE2aUQ+DrMSukuvZiH4rAqYGc6LuWP74ANLm+cvcMk//3css=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eaINY0PU; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3061513d353so9420581fa.2;
-        Thu, 20 Feb 2025 05:40:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740058835; x=1740663635; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z/3hluGD2/Epc1oOjzN+omEQoU/Qff+JZacIZJPu2mI=;
-        b=eaINY0PU6dk3dmxzuZ7QAzxSZ8/9WZcONg7VXKcoiKj0xhiuCUBqqPzPpR93S7Gsfx
-         unOcOY9YgyTPK/UiKi/ZWX98VQb6mxXxBV3Q0M+j4xs+392GSsJ0exCi3+lhTniY1DDS
-         qxBGahxxSu1PcBYGUiTyr4DthHJe4hWSr1Wrh2DgHZQd7CCY6KnAiYCmgThisdyWms2H
-         oDltPonFI7saVRaQlY3qrtoDpHENtLR0KzQbSauwMYuxkXjW9hqRmUfR61y0EMyVpUxe
-         oaPhNsfZLnecKXeWsX7Cqspcftlx/Rxb7TDkB9EZHYyqRqFrtcxjB8H97ama1UbKKGB6
-         6bjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740058835; x=1740663635;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z/3hluGD2/Epc1oOjzN+omEQoU/Qff+JZacIZJPu2mI=;
-        b=oLDnzLcso2DuPZ15Aa04gdKEhU2sTnEwzTVTBYYpMydNAvM43ei06iHUfqVukLfVGd
-         6co1CGZooddgb3N4K5gt7db2y45QeRhjP3kyVFlgo+f218gCg2679z6tUmDL6Ab1IhRp
-         sLmlxtpHLelNZMAx86XWg72oQZ+XxCq1GOgEU+IYJHJX8e3IMN4quskYbBMvpCwpmvc5
-         Zf1KtkDfuzrd8JE1FtCyyExMC5Mi4Za9Kpw4AIjiZZXAt6/Tb8TOn2fqeRpfBmXUn0Op
-         kO7Ax1ujXrsF+3H19thJLMfe2QOGBqMURv1ECPsJJFXxO28H2flga1Pd7b5mEN0+0t6J
-         yP/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVmhRpBI3XkOJKtuz4cgpBRkXekF10JsWIvyPJXE3/BWpI/+E7AbXfSOw1TietVhPaDjrdDDmK6oHV3fg5E@vger.kernel.org, AJvYcCWLSDxonpyNoOBVpO3P7oAZL/64HLjDp/VgLzP/e3Dr3MX80WJIk50dKazwn0VuW6wOlpeAuPved77BmDN/kPzmwCE=@vger.kernel.org, AJvYcCWMfaqeiy5gzTQ26ACng9e3hnRRQeECiYXHItCJkr1CpzB/2a/z1V9TlKs1umxv4gGVJ9j97yBJDzwP@vger.kernel.org, AJvYcCWgbqqUAsqE//1HSmN3yYXG2PFNZsppC617EQZZoJWrc+Qfswd13UwIcjcWfoQgcdWay9/PtbiEiB4I@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzx1BgwFcdUZCHoTe6K4yMoGJoJGVnbFZlduCS9IgIxXu/Kkk7r
-	mfIo7S9eOTV9qQQdMOK6u9LdsAhtnKJTJWKngqcW//02uUDwz2cK
-X-Gm-Gg: ASbGnctsif/5BvrnEkMoiW5E7pb8xdN15k4gzhk7rZD+VriK8cdg8IWl2mPqX6dHTHH
-	JxEabgqfaX95Nk5qUVvkhVNJwJiKzVxGr7v6Io/Q4quBuMmGB3VT5gc5R7l9XgApMf1XXCenql3
-	CfDqggqhPTrQKZtnNOm2swqYG9tSTz9VfhmNyabUobvTAlZpHdTBBvTV1wM33U44cYQ3hEiKHoi
-	49nTyBlMJ5zZie45b/P1Ze8zYG6OyMQwjCjXagZIWoLWSkBLIWTa9b5RDfX//fWIADdO3aePvDa
-	oC9E5Mqv11vhezTfeFBoGZZw3Bn8VgSsOTk1dGLuaGKIzX5Efze70P6HLChVJfZFi2ipNJpn
-X-Google-Smtp-Source: AGHT+IE9fOsEW40k2P/ApWNjhsvBUHeB5RBB1//MbXn1MZVFPTFngeWOwjgnKakJ6UoD6YMMUW/W8w==
-X-Received: by 2002:a05:6512:31d2:b0:545:296e:ac28 with SMTP id 2adb3069b0e04-5452fe4232emr8815090e87.24.1740058834180;
-        Thu, 20 Feb 2025 05:40:34 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5462fd36f53sm480013e87.185.2025.02.20.05.40.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 05:40:32 -0800 (PST)
-Message-ID: <ec76334b-bb13-4076-811d-9174170dd677@gmail.com>
-Date: Thu, 20 Feb 2025 15:40:30 +0200
+	s=arc-20240116; t=1740059005; c=relaxed/simple;
+	bh=D2FcBDeuGwHsiFlE5LsVOdNR9u94mmxTJwaL5dNzU5k=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=paF6lo+cXo3bgyda5UIwFNyqKpIIzT+pMJZN4wxm4LwGMZoHTjY0HvqH3uu6u8g9Som13whXhfOFlG4cIFgJfPFvF4idG7sDbbEkboHia7F+eg4tMrVIoOxaf3t0VNC0eVocKUnXNUNOsumBFa78zCLwGZldt0wNdaMqaBO2H1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Z9a1EfA0; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51KBLvUC023645;
+	Thu, 20 Feb 2025 08:43:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=D2FcB
+	DeuGwHsiFlE5LsVOdNR9u94mmxTJwaL5dNzU5k=; b=Z9a1EfA0X/b9e7/b6aGNr
+	TT4NbnRtRhX57eUOBU0QQJrPD0g2H6KwCgPx8RHNoDvKauZIZPJY9I8ApCpueO/U
+	d7TaiC5ONlsWe1CH6uFvPhOcy1TMDYtqFKtO08xt/Qs9Rj2RdQrehgWnTvF43rj1
+	izk5RiGT5XX7FQSZxGGnLRVLBW7nlSKCFPinZB2HntGEO5AY5U4fKiUe3Lh2+bWH
+	t6dcxvn6N3VOSKy9Dw7UaQpnVRaVLZ7bss7tNnpeyZONEQ/mW6FeytGZsSVlNW2D
+	FgvsnFPt8HRvawsRoj32Ojbmy64gAcKytru0GvlnueaMx066w+eTEgSr9PT4WBRK
+	g==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 44x3f40fq6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 08:43:06 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 51KDh5VN043954
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 20 Feb 2025 08:43:05 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 20 Feb
+ 2025 08:43:04 -0500
+Received: from ASHBMBX9.ad.analog.com ([fe80::1cb6:4851:5392:54cf]) by
+ ASHBMBX9.ad.analog.com ([fe80::1cb6:4851:5392:54cf%20]) with mapi id
+ 15.02.0986.014; Thu, 20 Feb 2025 08:43:04 -0500
+From: "Budai, Robert" <Robert.Budai@analog.com>
+To: =?utf-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>,
+        Lars-Peter Clausen
+	<lars@metafoo.de>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "Sa,
+ Nuno" <Nuno.Sa@analog.com>,
+        "Gradinariu, Ramona"
+	<Ramona.Gradinariu@analog.com>,
+        "Miclaus, Antoniu"
+	<Antoniu.Miclaus@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>
+Subject: RE: [RESEND PATCH v8 5/6] iio: imu: adis16550: add adis16550 support
+Thread-Topic: [RESEND PATCH v8 5/6] iio: imu: adis16550: add adis16550 support
+Thread-Index: AQHbgTvPfw471rqSUk6RU/zKwUC+57NQMlsAgAADUNA=
+Date: Thu, 20 Feb 2025 13:43:04 +0000
+Message-ID: <45d64de8a1074788b7c4bffc29788742@analog.com>
+References: <20250217105753.605465-1-robert.budai@analog.com>
+	 <20250217105753.605465-6-robert.budai@analog.com>
+ <aee93ef96e71adf70a48ee5877bd75966d9c78c1.camel@gmail.com>
+In-Reply-To: <aee93ef96e71adf70a48ee5877bd75966d9c78c1.camel@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-dg-rorf: true
+x-adiruleop-newscl: Rule Triggered
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1739967040.git.mazziesaccount@gmail.com>
- <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
- <Z7ZB7RQhyI5Dohrq@smile.fi.intel.com>
- <b1c1ed68-2f4d-447c-9957-5a1bbc63ef6e@gmail.com>
- <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: 403pa-rlJEkUba881PoH13AW3JLeP6Bj
+X-Proofpoint-GUID: 403pa-rlJEkUba881PoH13AW3JLeP6Bj
+X-Authority-Analysis: v=2.4 cv=DuKs+H/+ c=1 sm=1 tr=0 ts=67b7316a cx=c_pps a=3WNzaoukacrqR9RwcOSAdA==:117 a=3WNzaoukacrqR9RwcOSAdA==:17 a=xqWC_Br6kY4A:10 a=ejxIebdwriEA:10 a=IkcTkHD0fZMA:10 a=T2h4t0Lz3GQA:10 a=uherdBYGAAAA:8 a=P-IC7800AAAA:8
+ a=pGLkceISAAAA:8 a=gAnH3GRIAAAA:8 a=VwQbUJbxAAAA:8 a=07d9gI8wAAAA:8 a=0fo_jfcGDxs3koMwgKEA:9 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22 a=oVHKYsEdi7-vN-J5QA_j:22 a=e2CUPOnPG4QKp8I52DXD:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-20_05,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ mlxscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 bulkscore=0
+ adultscore=0 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2502200099
 
-On 20/02/2025 14:41, Andy Shevchenko wrote:
-> On Thu, Feb 20, 2025 at 09:13:00AM +0200, Matti Vaittinen wrote:
->> On 19/02/2025 22:41, Andy Shevchenko wrote:
->>> On Wed, Feb 19, 2025 at 02:30:27PM +0200, Matti Vaittinen wrote:
-> 
-> ...
-> 
->>>> obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
->>>>    obj-$(CONFIG_GEHC_PMC_ADC) += gehc-pmc-adc.o
->>>>    obj-$(CONFIG_HI8435) += hi8435.o
->>>>    obj-$(CONFIG_HX711) += hx711.o
->>>
->>>> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
->>>
->>> Shouldn't this be grouped with other IIO core related objects?
->>
->> I was unsure where to put this. The 'adc' subfolder contained no other IIO
->> core files, so there really was no group. I did consider putting it on top
->> of the file but then just decided to go with the alphabetical order. Not
->> sure what is the right way though.
-> 
-> I think it would be nice to have it grouped even if this one becomes
-> the first one.
-
-I will move this on top of the file. (If these helpers stay. I think I 
-wrote somewhere - maybe in the cover letter - that people are not sure 
-if this is worth or if every driver should just use the fwnode APIs. 
-Reviewers may want to save energy and do more accurate review only to 
-the next version...)
-
->>>>    obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
->>>>    obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp-adc.o
->>>>    obj-$(CONFIG_IMX93_ADC) += imx93_adc.o
-> 
-> ...
-> 
->>>> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
->>>
->>> No namespace?
->>
->> I was considering also this. The IIO core functions don't belong into a
->> namespace - so I followed the convention to keep these similar to other IIO
->> core stuff.
-> 
-> But it's historically. We have already started using namespaces
-> in the parts of IIO, haven't we?
-
-Yes. But as I wrote, I don't think adding new namespaces for every 
-helper file with a function or two exported will scale. We either need 
-something common for IIO (or IIO "subsystems" like "adc", "accel", 
-"light", ... ), or then we just keep these small helpers same as most of 
-the IIO core.
-
->> (Sometimes I have a feeling that the trend today is to try make things
->> intentionally difficult in the name of the safety. Like, "more difficult I
->> make this, more experience points I gain in the name of the safety".)
->>
->> Well, I suppose I could add a namespace for these functions - if this
->> approach stays - but I'd really prefer having all IIO core stuff in some
->> global IIO namespace and not to have dozens of fine-grained namespaces for
->> an IIO driver to use...
-> 
-> ...
-> 
->>>> +	if (!allowed_types || allowed_types & (~IIO_ADC_CHAN_PROP_TYPE_ALL)) {
->>>
->>> Unneeded parentheses around negated value.
->>>
->>>> +	if (found_types & (~allowed_types)) {
->>>
->>> Ditto.
->>>
->>>> +		long unknown_types = found_types & (~allowed_types);
->>>
->>> Ditto and so on...
->>>
->>> Where did you get this style from? I think I see it first time in your
->>> contributions. Is it a new preferences? Why?
->>
->> Last autumn I found out my house was damaged by water. I had to empty half
->> of the rooms and finally move out for 2.5 months.
-> 
-> Sad to hear that... Hope that your house had been recovered (to some extent?).
-
-Thanks. I finalized rebuilding last weekend. Just moved back and now I'm 
-trying to carry things back to right places... :rolleyes:
-
->> Now I'm finally back, but
->> during the moves I lost my printed list of operator precedences which I used
->> to have on my desk. I've been writing C for 25 years or so, and I still
->> don't remember the precedence rules for all bitwise operations - and I am
->> fairly convinced I am not the only one.
-> 
-> ~ (a.k.a. negation) is higher priority in bitops and it's idiomatic
-> (at least in LK project).
-
-I know there are well established, accurate rules. Problem is that I 
-never remember these without looking.
-
->> What I understood is that I don't really have to have a printed list at
->> home, or go googling when away from home. I can just make it very, very
->> obvious :) Helps me a lot.
-> 
-> Makes code harder to read, especially in the undoubtful cases like
-> 
-> 	foo &= (~...);
-
-This is not undoubtful case for me :) And believe me, reading and 
-deciphering the
-
-foo &= (~bar);
-
-is _much_ faster than seeing:
-
-foo &= ~bar;
-
-and having to google the priorities.
-
->>>> +		int type;
->>>> +
->>>> +		for_each_set_bit(type, &unknown_types,
->>>> +				 IIO_ADC_CHAN_NUM_PROP_TYPES - 1) {
->>>> +			dev_err(dev, "Unsupported channel property %s\n",
->>>> +				iio_adc_type2prop(type));
->>>> +		}
->>>> +
->>>> +		return -EINVAL;
->>>> +	}
-> 
-> ...
-> 
->>>> +		tmp.required &= (~BIT(IIO_ADC_CHAN_PROP_COMMON));
->>>
->>> Redundant outer parentheses. What's the point, please?
->>
->> Zero need to think of precedence.
-> 
-> Huh? See above.
-> Everything with equal sign is less precedence than normal ops.
-
-Sure. It's obvious if you remember that "Everything with equal sign is 
-less precedence than normal ops". But as I said, I truly have hard time 
-remembering these rules. When I try "going by memory" I end up having 
-odd errors and suggestions to add parenthesis from the compiler...
-
-By the way, do you know why anyone has bothered to add these 
-warnings/suggestions about adding the parenthesis to the compiler? My 
-guess is that I am not only one who needs the precedence charts ;)
-
-> ...
-> 
->>>> +		ret = fwnode_property_read_u32(child, "common-mode-channel",
->>>> +					       &common);
->>>
->>> I believe this is okay to have on a single line,
->>
->> I try to keep things under 80 chars. It really truly helps me as I'd like to
->> have 3 parallel terminals open when writing code. Furthermore, I hate to
->> admit it but during the last two years my near vision has deteriorated... :/
->> 40 is getting more distant and 50 is approaching ;)
-> 
-> It's only 86 altogether with better readability.
-> We are in the second quarter of 21st century,
-> the 80 should be left in 80s...
-> 
-> (and yes, I deliberately put the above too short).
-
-I didn't even notice you had squeezed the lines :)
-
-But yeah, I truly have problems fitting even 3 80 column terminals on 
-screen with my current monitor. And when working on laptop screen it 
-becomes impossible. Hence I strongly prefer keeping the 80 chars limit.
-
-> ...
-> 
->>>> +#include <linux/iio/iio.h>
->>>
->>> I'm failing to see how this is being used in this header.
->>
->> I suppose it was the struct iio_chan_spec. Yep, forward declaration could
->> do, but I guess there would be no benefit because anyone using this header
->> is more than likely to use the iio.h as well.
-> 
-> Still, it will be a beast to motivate people not thinking about what they are
-> doing. I strongly prefer avoiding the use of the "proxy" or dangling headers.
-
-Ehh. There will be no IIO user who does not include the iio.h. And, I 
-need the iio_chan_spec here.
-
-> ...
-> 
->>>> +/*
->>>> + * Channel property types to be used with iio_adc_device_get_channels,
->>>> + * devm_iio_adc_device_alloc_chaninfo, ...
->>>
->>> Looks like unfinished sentence...
->>
->> Intention was to just give user an example of functions where this gets
->> used, and leave room for more functions to be added. Reason is that lists
->> like this tend to end up being incomplete anyways. Hence the ...
-> 
-> At least you may add ').' (without quotes) to that to make it clear.
-
-Thanks. I agree, that's a good idea.
-
-And as I said, I suggest saving some of the energy for reviewing the 
-next version. I doubt the "property type" -flags and bitwise operations 
-stay, and it may be all of this will be just meld in the bd79124 code - 
-depending on what Jonathan & others think of it.
-
-Yours,
-	-- Matti
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTnVubyBTw6EgPG5vbmFt
+ZS5udW5vQGdtYWlsLmNvbT4NCj4gU2VudDogVGh1cnNkYXksIEZlYnJ1YXJ5IDIwLCAyMDI1IDEw
+OjIyIEFNDQo+IFRvOiBCdWRhaSwgUm9iZXJ0IDxSb2JlcnQuQnVkYWlAYW5hbG9nLmNvbT47IExh
+cnMtUGV0ZXIgQ2xhdXNlbg0KPiA8bGFyc0BtZXRhZm9vLmRlPjsgSGVubmVyaWNoLCBNaWNoYWVs
+IDxNaWNoYWVsLkhlbm5lcmljaEBhbmFsb2cuY29tPjsNCj4gU2EsIE51bm8gPE51bm8uU2FAYW5h
+bG9nLmNvbT47IEdyYWRpbmFyaXUsIFJhbW9uYQ0KPiA8UmFtb25hLkdyYWRpbmFyaXVAYW5hbG9n
+LmNvbT47IE1pY2xhdXMsIEFudG9uaXUNCj4gPEFudG9uaXUuTWljbGF1c0BhbmFsb2cuY29tPjsg
+Sm9uYXRoYW4gQ2FtZXJvbiA8amljMjNAa2VybmVsLm9yZz47IFJvYg0KPiBIZXJyaW5nIDxyb2Jo
+QGtlcm5lbC5vcmc+OyBLcnp5c3p0b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+OyBD
+b25vcg0KPiBEb29sZXkgPGNvbm9yK2R0QGtlcm5lbC5vcmc+OyBKb25hdGhhbiBDb3JiZXQgPGNv
+cmJldEBsd24ubmV0PjsgbGludXgtDQo+IGlpb0B2Z2VyLmtlcm5lbC5vcmc7IGRldmljZXRyZWVA
+dmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnOw0KPiBsaW51eC1k
+b2NAdmdlci5rZXJuZWwub3JnDQo+IFN1YmplY3Q6IFJlOiBbUkVTRU5EIFBBVENIIHY4IDUvNl0g
+aWlvOiBpbXU6IGFkaXMxNjU1MDogYWRkIGFkaXMxNjU1MA0KPiBzdXBwb3J0DQo+IA0KPiBbRXh0
+ZXJuYWxdDQo+IA0KPiBPbiBNb24sIDIwMjUtMDItMTcgYXQgMTI6NTcgKzAyMDAsIFJvYmVydCBC
+dWRhaSB3cm90ZToNCj4gPiBUaGUgQURJUzE2NTUwIGlzIGEgY29tcGxldGUgaW5lcnRpYWwgc3lz
+dGVtIHRoYXQgaW5jbHVkZXMgYSB0cmlheGlzDQo+ID4gZ3lyb3Njb3BlIGFuZCBhIHRyaWF4aXMg
+YWNjZWxlcm9tZXRlci4gRWFjaCBpbmVydGlhbCBzZW5zb3IgaW4gdGhlDQo+ID4gQURJUzE2NTUw
+IGNvbWJpbmVzIGluZHVzdHJ5IGxlYWRpbmcgTUVNUyBvbmx5IHRlY2hub2xvZ3kgd2l0aCBzaWdu
+YWwNCj4gPiBjb25kaXRpb25pbmcgdGhhdCBvcHRpbWl6ZXMgZHluYW1pYyBwZXJmb3JtYW5jZS4g
+VGhlIGZhY3RvcnkgY2FsaWJyYXRpb24NCj4gPiBjaGFyYWN0ZXJpemVzIGVhY2ggc2Vuc29yIGZv
+ciBzZW5zaXRpdml0eSwgYmlhcywgYW5kIGFsaWdubWVudC4gQXMgYQ0KPiA+IHJlc3VsdCwgZWFj
+aCBzZW5zb3IgaGFzIGl0cyBvd24gZHluYW1pYyBjb21wZW5zYXRpb24gZm9ybXVsYXMgdGhhdA0K
+PiA+IHByb3ZpZGUgYWNjdXJhdGUgc2Vuc29yIG1lYXN1cmVtZW50cy4NCj4gPg0KPiA+IENvLWRl
+dmVsb3BlZC1ieTogUmFtb25hIEdyYWRpbmFyaXUgPHJhbW9uYS5ncmFkaW5hcml1QGFuYWxvZy5j
+b20+DQo+ID4gU2lnbmVkLW9mZi1ieTogUmFtb25hIEdyYWRpbmFyaXUgPHJhbW9uYS5ncmFkaW5h
+cml1QGFuYWxvZy5jb20+DQo+ID4gQ28tZGV2ZWxvcGVkLWJ5OiBBbnRvbml1IE1pY2xhdXMgPGFu
+dG9uaXUubWljbGF1c0BhbmFsb2cuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEFudG9uaXUgTWlj
+bGF1cyA8YW50b25pdS5taWNsYXVzQGFuYWxvZy5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogTnVu
+byBTw6EgPG51bm8uc2FAYW5hbG9nLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBSb2JlcnQgQnVk
+YWkgPHJvYmVydC5idWRhaUBhbmFsb2cuY29tPg0KPiA+IC0tLQ0KPiA+DQo+IA0KPiBJIGd1ZXNz
+IGl0IHdvdWxkIG1ha2Ugc2Vuc2UgYSBDby1kZXZlbG9wZWQtYnk6IGZvciBSb2JlcnQ/DQo+IA0K
+PiBBbnl3YXlzLCBhbGwgbG9va3MgZ29vZCBleGNlcHQgZm9yIG9uZSB0aGluZyB0aGF0IEkganVz
+dCBzcG90dGVkLi4uDQo+IA0KPiA+IHY4Og0KPiA+IC0gcmVtb3ZlZCBfX2FsaWduZWQgZnJvbSBz
+dHJ1Y3QgYWRpczE2NTUwLCBhcyBzdWdnZXN0ZWQNCj4gPiAtIGNyYyBidWZmZXIgZXh0cmFjdGlv
+biBpbnRvIHRoZSBjcmMgY2hlY2sgZnVuY3Rpb24NCj4gPiAtIHBhc3NlZCBidWZmZXIgaW50byBj
+cmMgdmFsaWRhdGlvbiBhcyBvcmlnaW5hbCwgX19iZTMyIGFuZCBwZXJmb3JtZWQgY2hlY2sNCj4g
+PiB1c2luZyBiZTMyX3RvX2NwdSBjb252ZXJzaW9uIG9mIHRoZSBidWZmZXINCj4gPiAtIGFkZGVk
+IHRyYWlsaW5nIGNvbW1hIHRvIGxpbmUgOTkzDQo+ID4gLSByZW1vdmVkIHRyYWlsaW5nIGNvbW1h
+IGZyb20gbGluZSA4NzcNCj4gPg0KPiA+IMKgZHJpdmVycy9paW8vaW11L0tjb25maWfCoMKgwqDC
+oCB8wqDCoCAxMyArDQo+ID4gwqBkcml2ZXJzL2lpby9pbXUvTWFrZWZpbGXCoMKgwqAgfMKgwqDC
+oCAxICsNCj4gPiDCoGRyaXZlcnMvaWlvL2ltdS9hZGlzMTY1NTAuYyB8IDExNDkNCj4gKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4gPiDCoDMgZmlsZXMgY2hhbmdlZCwgMTE2
+MyBpbnNlcnRpb25zKCspDQo+ID4gwqBjcmVhdGUgbW9kZSAxMDA2NDQgZHJpdmVycy9paW8vaW11
+L2FkaXMxNjU1MC5jDQo+ID4NCj4gDQo+IC4uLg0KPiANCj4gPg0KPiA+ICtzdGF0aWMgaW50IGFk
+aXMxNjU1MF9zZXRfZnJlcV9oeihzdHJ1Y3QgYWRpczE2NTUwICpzdCwgdTMyIGZyZXFfaHopDQo+
+ID4gK3sNCj4gPiArCXUxNiBkZWM7DQo+ID4gKwlpbnQgcmV0Ow0KPiA+ICsJdTMyIHNhbXBsZV9y
+YXRlID0gc3QtPmNsa19mcmVxX2h6Ow0KPiA+ICsJLyoNCj4gPiArCSAqIFRoZSBvcHRpbWFsIHNh
+bXBsZSByYXRlIGZvciB0aGUgc3VwcG9ydGVkIElNVXMgaXMgYmV0d2Vlbg0KPiA+ICsJICogaW50
+X2NsayAtIDEwMDAgYW5kIGludF9jbGsgKyA1MDAuDQo+ID4gKwkgKi8NCj4gPiArCXUzMiBtYXhf
+c2FtcGxlX3JhdGUgPSBzdC0+aW5mby0+aW50X2NsayAqIDEwMDAgKyA1MDAwMDA7DQo+ID4gKwl1
+MzIgbWluX3NhbXBsZV9yYXRlID0gc3QtPmluZm8tPmludF9jbGsgKiAxMDAwIC0gMTAwMDAwMDsN
+Cj4gPiArDQo+ID4gKwlpZiAoIWZyZXFfaHopDQo+ID4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ID4g
+Kw0KPiA+ICsJYWRpc19kZXZfYXV0b19sb2NrKCZzdC0+YWRpcyk7DQo+ID4gKw0KPiA+ICsJaWYg
+KHN0LT5zeW5jX21vZGUgPT0gQURJUzE2NTUwX1NZTkNfTU9ERV9TQ0FMRUQpIHsNCj4gPiArCQl1
+bnNpZ25lZCBsb25nIHNjYWxlZF9yYXRlID0gbGNtKHN0LT5jbGtfZnJlcV9oeiwgZnJlcV9oeik7
+DQo+ID4gKwkJaW50IHN5bmNfc2NhbGU7DQo+ID4gKw0KPiA+ICsJCWlmIChzY2FsZWRfcmF0ZSA+
+IG1heF9zYW1wbGVfcmF0ZSkNCj4gPiArCQkJc2NhbGVkX3JhdGUgPSBtYXhfc2FtcGxlX3JhdGUg
+LyBzdC0+Y2xrX2ZyZXFfaHogKiBzdC0NCj4gPiA+Y2xrX2ZyZXFfaHo7DQo+ID4gKwkJZWxzZQ0K
+PiA+ICsJCQlzY2FsZWRfcmF0ZSA9IG1heF9zYW1wbGVfcmF0ZSAvIHNjYWxlZF9yYXRlICoNCj4g
+PiBzY2FsZWRfcmF0ZTsNCj4gPiArDQo+ID4gKwkJaWYgKHNjYWxlZF9yYXRlIDwgbWluX3NhbXBs
+ZV9yYXRlKQ0KPiA+ICsJCQlzY2FsZWRfcmF0ZSA9IHJvdW5kdXAobWluX3NhbXBsZV9yYXRlLCBz
+dC0NCj4gPiA+Y2xrX2ZyZXFfaHopOw0KPiA+ICsNCj4gDQo+IEkgd291bGQgaW1hZ2luZSB0aGUg
+YWJvdmUgaXMgdGhlIHNhbWUgZGVhbCBhcyBpbiBvdGhlciBkZXZpY2VzIFsxXSBvciBkbyB5b3UN
+Cj4ga25vdyBmb3IgYSBmYWN0IHRoaXMgb25lIGlzIGRpZmZlcmVudD8gTWF5YmUgaXQncyBzaW1w
+bGUgZW5vdWdoIGZvciBKb25hdGhhbiB0bw0KPiB0d2VhayB3aGlsZSBhcHBseWluZy4uLg0KPiAN
+Cj4gWzFdOg0KPiBodHRwczovL3VybGRlZmVuc2UuY29tL3YzL19faHR0cHM6Ly9lbGl4aXIuYm9v
+dGxpbi5jb20vbGludXgvdjYuMTMuMy9zb3VyY2UNCj4gL2RyaXZlcnMvaWlvL2ltdS9hZGlzMTY0
+NzUuYypMMzY0X187SXchIUEzTmk4Q1MweTJZITdZNzF5UGFRQXhWek5SZA0KPiBPX2pUN3dFejRr
+LQ0KPiBzNno0dEpIT2NFUzg0SFlrcThxTkdzZ0pIN3p4d2pmUE5qTEYzT0VHVkluU29sbzFlbm5M
+VV9td3BtRWJvJA0KPiANCj4gLSBOdW5vIFPDoQ0KDQpbUm9iZXJ0IEJ1ZGFpXSANCk5vIGRpZmZl
+cmVuY2VzIHdlcmUgZm91bmQgaW4gdGhlIHNjYWxlZF9zeW5jIGJlaGF2aW9yIG9mIHRoZSBBRElT
+MTY0NzUgYW5kDQpBRElTMTY1NTAuIEl0IGlzIHNhZmUgdG8gYWRkIGZyb20gbXkgc2lkZS4NCg0K
+QmVzdCByZWdhcmRzLA0KUm9iZXJ0IEINCg==
 

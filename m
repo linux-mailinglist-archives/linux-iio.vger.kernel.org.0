@@ -1,130 +1,300 @@
-Return-Path: <linux-iio+bounces-15884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15885-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 935D4A3E296
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F313A3E300
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7775F4206BC
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1F217C6A1
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CC82116E1;
-	Thu, 20 Feb 2025 17:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gxkzFZ2Q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3AE2139C4;
+	Thu, 20 Feb 2025 17:47:55 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955611D63D9;
-	Thu, 20 Feb 2025 17:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF86213E64;
+	Thu, 20 Feb 2025 17:47:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740072882; cv=none; b=grysV01fq0+zAuA9TVgjckFJIFhHXJQWm1qpJDzV1wCikj0PVoCNd7CFgnRfTNgEbLuW4i3evYF6/zeWEaAedjkhaYdA9FywzORobhIm+YUrofWcRQsmjmKfvB9nMFhHTuPEovI9UJslI3i+cGQaJPm7vtQwN9nePFMuqn/VTHY=
+	t=1740073674; cv=none; b=DnkgUdcYOtTGnWFXo92R3RDHUKoox+ji+9Rj+i1OWtVp9RcV58FegFJww9ND0rSxYTCTpCkD4aU8LWH4yW9sAuytFk9K+40tF4tgTXe7QEkI3NVG2fTOWI/g2ZgfUlVI9FQKayRi/EEoVZ2efLaP2aML/NLeVsBVjMifoLQuC/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740072882; c=relaxed/simple;
-	bh=05wQ9sfrQsEjtwaq9axL/DzVM2WzvUyqUAyTfXyAzPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ANRDySYZwOKARxNJebME9OJpf9RATqWW6N7aQkNhFbiISk16JdKxJ0Z8sslw3Aog7ibYUWD/EQFwVjMBTG6Hl/7Tu3xDi9wxuCci/wUM81cFrtF2j4Soh7iazuR0Cr41RL/XsFy8QL6hDbAQFFOpR6PaAIzj4aMM5u/PP/7fKCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gxkzFZ2Q; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fc0026eb79so2547394a91.0;
-        Thu, 20 Feb 2025 09:34:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740072881; x=1740677681; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OU9Eujl0xKDOpFO6qQE/GZagT7lVu3bO4cc4G/N/cFk=;
-        b=gxkzFZ2QlqhxTMxtz2boYojz6WxZb9251iBQgtu05kaX0o0z0t2rmuu5/Mmk1K160p
-         ItcVq3vV4A0aGDo/nkxsSr1dH6cKGiB65t0yHWQvM4tpUQJeBv+YfNLtB74qKLVfSzXs
-         4Yy82cUYPg/UaBJwbwK4WJDvlPXnSgs99k4R2hK+sVh3qHg16LjNk8GRTbJfnyk/UTlE
-         IBGa6jIaQhglPShwBqLkvZhQrNvmNCPLG+tESxYbOc6XUCDvappwulrT1WzWH17EPtcy
-         F9R5CU+V9LPCfQHElo4JYWY7iq2ELTqzxzXF21c4PrjDsJGBvMa7t2jMQU9NqdkVoE2p
-         rBQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740072881; x=1740677681;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OU9Eujl0xKDOpFO6qQE/GZagT7lVu3bO4cc4G/N/cFk=;
-        b=gUO7Ffs0Otpr1iS7NrILa8hunCbkisB4RNrAu4WdYvQBwbflWAFF3q9yTM1q1pZfrO
-         LgyxvIalMTBVByBU6uy0uhd58qhwQMYbBHxeTLboXSp5lFAOIgNKX7r3j2os7oUfcE7y
-         8rNhZH0R/jSdh3YMmAbw6cZAQvB+SUOy/3l154KAEwzDpaA8FHq7BNwQq1Hnuk7HzSQr
-         eDYB15RamfTDpGHn+5n7/PlTZOROlFao5FBCNFpxgZx357rqDn51eQ4+wQsuCi6mCmt/
-         /ttyvcLUwKvQ7l46iaJojvek62DUpB3ryBsXGaVOvvN2f7Q8lM3ZuihWTRqTzJgWedfU
-         Aglg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJvZudW3UCfR35HZGIYWC+OsvfivP+4X3zQX/SYDoR3VtYZr4dlDsYeiA8jamMu3RLf2WD51bJekRBEqg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpVjm/GQlieFofwZI5s3NrL+2Sm+BVL+3JJlFg50hR5MmFIF37
-	JY6+zB8tBe18wISDeMkln6yZI4i3VdRBsyiLMnlDnn4sAq1gVkzz
-X-Gm-Gg: ASbGncu7eFH7t+mTYYqNSi3dl62a1YZuxKcAevdTpq/b4eDod+NjpfcutI8UDzrGKNq
-	GG9DzxcS6qVUKCCJIglJhcD4HzRMwrHh0gBIRHiNV9ub9sX7kyxfOAiDfUJXrPWKjJ6H2AQ7Eve
-	O4Q8nhKlecGzaIgE2higIyIHIrX0PgBmNtZidvUanU/KlCr4+8ubthx349Xsa4thYfHplpcTzLL
-	SD2y+c46YHWjKDr0/lSmVoGHAA0/DS7t5U/zmfuNe+RC8ZiKZrOncTKx67F73/I3cMaYsrWbZkD
-	YM5oRvCZ7AwgEs5aLIbTd0e3
-X-Google-Smtp-Source: AGHT+IEKS5ZIhQ/Gxp9hLtckbsidsLZKx/wIMICMnKQLLCTfyBSUgYEnE6b7mvTrsLfZfSO28KHeCg==
-X-Received: by 2002:a17:90a:dfc5:b0:2ee:cd83:8fe6 with SMTP id 98e67ed59e1d1-2fcb5ac074amr13552163a91.35.1740072880659;
-        Thu, 20 Feb 2025 09:34:40 -0800 (PST)
-Received: from Emma ([110.226.178.138])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf999b5cesm15564943a91.34.2025.02.20.09.34.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 09:34:40 -0800 (PST)
-Date: Thu, 20 Feb 2025 17:34:36 +0000
-From: Karan Sanghavi <karansanghvi98@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Karan Sanghavi <karansanghvi98@gmail.com>
-Subject: [PATCH v3] iio: light: Add check for array bounds in
- veml6075_read_int_time_ms
-Message-ID: <Z7dnrEpKQdRZ2qFU@Emma>
+	s=arc-20240116; t=1740073674; c=relaxed/simple;
+	bh=kMQJ57kA5Yur3dI+lzKDp2c8T/y2nrCq0BoU1i+qdrw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fV3GmNS4+A9bCtUrHml37zfdN1vqSLkAIhui+xhMWtyWQZPwB1qGMjQznjzluc6Oyc/OYUhkkaO8CY2xzbCCHjbUbN4vEnrVr7NC/eefWPt12zXa8sZzZLnTKGNNhMkxkUsiYE8VF6r0S1pYJw+8bUGqIwnELRq6pxvU/5Q2Tvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YzLKG2Hd5z6HJfV;
+	Fri, 21 Feb 2025 01:46:10 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5DFCD140257;
+	Fri, 21 Feb 2025 01:47:49 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 20 Feb
+ 2025 18:47:48 +0100
+Date: Thu, 20 Feb 2025 17:47:47 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
+	<Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <eraretuya@gmail.com>
+Subject: Re: [PATCH v2 07/14] iio: accel: adxl345: add double tap suppress
+ bit
+Message-ID: <20250220174747.0000157a@huawei.com>
+In-Reply-To: <CAFXKEHY+ozW=r17fdvKYhyWDKkddZxptp5kFKdD9k4mwjutPbQ@mail.gmail.com>
+References: <20250210110119.260858-1-l.rubusch@gmail.com>
+	<20250210110119.260858-8-l.rubusch@gmail.com>
+	<20250216172845.2fe98ea1@jic23-huawei>
+	<CAFXKEHY+ozW=r17fdvKYhyWDKkddZxptp5kFKdD9k4mwjutPbQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
+ frapeml500008.china.huawei.com (7.182.85.71)
 
-The array contains only 5 elements, but the index calculated by
-veml6075_read_int_time_index can range from 0 to 7,
-which could lead to out-of-bounds access. The check prevents this issue.
+On Tue, 18 Feb 2025 23:29:46 +0100
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-Coverity Issue
-CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
-overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
-elements at element index 7 (byte offset 31) using
-index int_index (which evaluates to 7)
+> Dear Jonathan, find my answer down below.
+>=20
+> On Sun, Feb 16, 2025 at 6:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > On Mon, 10 Feb 2025 11:01:12 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Add the suppress bit feature to the double tap feature.
+> > >
+> > > Any tap event is defined by a rising signal edge above threshold, i.e.
+> > > duration time starts counting; and the falling edge under threshold
+> > > within duration time, i.e. then the tap event is issued. This means
+> > > duration is used individually for each tap event.
+> > >
+> > > For double tap detection after a single tap, a latency time needs to =
+be
+> > > specified. Usually tap events, i.e. spikes above and returning below
+> > > threshold will be ignored within latency. After latency, the window
+> > > time starts counting for a second tap detection which has to happen
+> > > within a duration time.
+> > >
+> > > If the suppress bit is not set, spikes within latency time are ignore=
+d.
+> > > Setting the suppress bit will invalidate the double tap function. The
+> > > sensor will thus be able to save the window time for double tap
+> > > detection, and follow a more strict definition of what signal qualifi=
+es
+> > > for a double tap. =20
+> >
+> > Silly question.  Is there a reason this function would ever be
+> > turned off?   Seems like a sensible heuristic that would not stop
+> > genuine double taps being detected.  Maybe we just always leave it on?
+> >
+> > Sometimes the best ABI is the one that doesn't exist as userspace
+> > can't use it wrong.
+> >
+> > Jonathan
+> > =20
+>=20
+> hehehe..  you already mentioned this point, I guess. At least I tried
+> to put my understanding of it into the lengthy comment of the patch.
+> Well, patches with lengthy comments.... this seems to go into the same
+> direction as the wisdom of better limiting userspace interfaces in
+> general ;)
+>=20
+> TBH you have probably seen far more sensors than me, as I'm doing this
+> just as hobbyist to learn and for fun. I only can provide my
+> understanding of the particular datasheet.
+> I think, to set or not to set this bit changes little. It influences a
+> bit how restrictive the latency period is handled at detection.
+> Doubletaps are detected with or without having the "suppress" bit set.
+> If set, AFAIK it could be harder to detect doubletaps. So to speak,
+> you could reduce "noise" in double tapping (?), or if one receives too
+> many double taps...(?) perhaps,  ..eh.. legal reasons?! Personally,
+> I'd liked to play with this sensor a bit, and I found it then useful
+> to have some kind of knob to change a bit and see what happens without
+> really messing things up.
+> As I'm not too familiar with the accelerometer scene and such kind of
+> "power user settings". I'm unsure if there are typical usecases here.
+> I would agree that usually one would leave that in one  setting,
+> turned on or off (unless he/she enters in obsession with double taps).
+>=20
+> Perhaps I'll change this patch so that it's always set or not set (to
+> bring it initially into a defined state), but no sysfs is around.
+> Let's see. If you think I'd better just drop it entirly, let me know
+> then.
+I think default to always set.  We can revisit the ABI question later
+if turns out to have be something people change in practice!
 
-Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor driver")
-Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
----
- drivers/iio/light/veml6075.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Jonathan
 
-diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
-index 05d4c0e9015d..5dd951f6e989 100644
---- a/drivers/iio/light/veml6075.c
-+++ b/drivers/iio/light/veml6075.c
-@@ -201,7 +201,12 @@ static int veml6075_read_int_time_index(struct veml6075_data *data)
- 	if (ret < 0)
- 		return ret;
- 
--	return FIELD_GET(VEML6075_CONF_IT, conf);
-+	int int_index = FIELD_GET(VEML6075_CONF_IT, conf);
-+
-+	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
-+		return -EINVAL;
-+
-+	return int_index;
- }
- 
- static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)
--- 
-2.43.0
+>=20
+> Best,
+> L
+>=20
+> > =20
+> > >
+> > > This brings in a new ABI functionality.
+> > > ---
+> > > Q: Perhaps there is already some IIO ABI for it? If not, please let me
+> > > know which ABI documentation to extend. There will be a documentation
+> > > patch also later in this series.
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > ---
+> > >  drivers/iio/accel/adxl345_core.c | 82 ++++++++++++++++++++++++++++++=
+++
+> > >  1 file changed, 82 insertions(+)
+> > >
+> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
+l345_core.c
+> > > index cf35a8f9f432..b6966fee3e3d 100644
+> > > --- a/drivers/iio/accel/adxl345_core.c
+> > > +++ b/drivers/iio/accel/adxl345_core.c
+> > > @@ -34,6 +34,7 @@
+> > >  #define ADXL345_INT2                 1
+> > >
+> > >  #define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
+> > > +#define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
+> > >
+> > >  enum adxl345_axis {
+> > >       ADXL345_Z_EN =3D BIT(0),
+> > > @@ -81,6 +82,7 @@ struct adxl345_state {
+> > >       u32 tap_duration_us;
+> > >       u32 tap_latent_us;
+> > >       u32 tap_window_us;
+> > > +     bool tap_suppressed;
+> > >
+> > >       __le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned=
+(IIO_DMA_MINALIGN);
+> > >  };
+> > > @@ -243,6 +245,31 @@ static int adxl345_set_doubletap_en(struct adxl3=
+45_state *st, bool en)
+> > >       return _adxl345_set_tap_int(st, ADXL345_DOUBLE_TAP, en);
+> > >  }
+> > >
+> > > +static int adxl345_is_suppressed_en(struct adxl345_state *st, bool *=
+en)
+> > > +{
+> > > +     *en =3D st->tap_suppressed;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static int adxl345_set_suppressed_en(struct adxl345_state *st, bool =
+en)
+> > > +{
+> > > +     unsigned long regval =3D 0;
+> > > +     int ret;
+> > > +
+> > > +     en ? __set_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval)
+> > > +             : __clear_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval);
+> > > +
+> > > +     ret =3D regmap_update_bits(st->regmap, ADXL345_REG_TAP_AXIS,
+> > > +                              ADXL345_REG_TAP_SUPPRESS_MSK, regval);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     st->tap_suppressed =3D en;
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > >  static int adxl345_set_tap_threshold(struct adxl345_state *st, u8 va=
+l)
+> > >  {
+> > >       int ret;
+> > > @@ -616,6 +643,60 @@ static int adxl345_write_raw_get_fmt(struct iio_=
+dev *indio_dev,
+> > >       }
+> > >  }
+> > >
+> > > +static ssize_t in_accel_gesture_doubletap_suppressed_en_show(struct =
+device *dev,
+> > > +                                                          struct dev=
+ice_attribute *attr,
+> > > +                                                          char *buf)
+> > > +{
+> > > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > > +     bool en;
+> > > +     int val, ret;
+> > > +
+> > > +     ret =3D adxl345_is_suppressed_en(st, &en);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +     val =3D en ? 1 : 0;
+> > > +
+> > > +     return iio_format_value(buf, IIO_VAL_INT, 1, &val);
+> > > +}
+> > > +
+> > > +static ssize_t in_accel_gesture_doubletap_suppressed_en_store(struct=
+ device *dev,
+> > > +                                                           struct de=
+vice_attribute *attr,
+> > > +                                                           const cha=
+r *buf, size_t len)
+> > > +{
+> > > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > > +     int val, ret;
+> > > +
+> > > +     ret =3D kstrtoint(buf, 0, &val);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     ret =3D adxl345_set_measure_en(st, false);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     ret =3D adxl345_set_suppressed_en(st, val > 0);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     ret =3D  adxl345_set_measure_en(st, true);
+> > > +     if (ret)
+> > > +             return ret;
+> > > +
+> > > +     return len;
+> > > +}
+> > > +static IIO_DEVICE_ATTR_RW(in_accel_gesture_doubletap_suppressed_en, =
+0);
+> > > +
+> > > +static struct attribute *adxl345_event_attrs[] =3D {
+> > > +     &iio_dev_attr_in_accel_gesture_doubletap_suppressed_en.dev_attr=
+.attr,
+> > > +     NULL
+> > > +};
+> > > +
+> > > +static const struct attribute_group adxl345_event_attrs_group =3D {
+> > > +     .attrs =3D adxl345_event_attrs,
+> > > +};
+> > > +
+> > >  static void adxl345_powerdown(void *ptr)
+> > >  {
+> > >       struct adxl345_state *st =3D ptr;
+> > > @@ -899,6 +980,7 @@ static irqreturn_t adxl345_irq_handler(int irq, v=
+oid *p)
+> > >
+> > >  static const struct iio_info adxl345_info =3D {
+> > >       .attrs          =3D &adxl345_attrs_group,
+> > > +     .event_attrs    =3D &adxl345_event_attrs_group,
+> > >       .read_raw       =3D adxl345_read_raw,
+> > >       .write_raw      =3D adxl345_write_raw,
+> > >       .write_raw_get_fmt      =3D adxl345_write_raw_get_fmt, =20
+> > =20
+>=20
 
 

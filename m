@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-15897-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15898-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B7CA3E625
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:55:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741D3A3E67F
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 22:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140C41888B11
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 20:55:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AB1C421E5E
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC95264616;
-	Thu, 20 Feb 2025 20:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A892144D0;
+	Thu, 20 Feb 2025 21:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1dXXBJPK"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="G9MBe+tY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692B21E4AB
-	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 20:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD931E9B14
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 21:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740084899; cv=none; b=rJFpnCENTT5Q1eaUSunWJ+1+qYiW/AjVLk2cvHk3aBR8IZzwXTSPgsEti45Z3t2Tps9Qoa05AocKWjLOB+dDVfK4AoFfUiCH2IG1t6CpJN/pSCAchiv5PJBUNp9W9a90GJ64Dpmwmv/QRYOFWh7Td6hHHtdxRR4J/5A8UPRXsbk=
+	t=1740086529; cv=none; b=ESuY9nZMtGWub3hIUyBWdneA+outejtL+IU7IiXEv8naSh08wV6mFLg4Zpze0AaPxiAwWXG6qoipa+Lz2g71/ymEeShtSRFdOo5Y1DZ/Ay5Pg+hZ3u0OHnEOwZ4QTPDLlvVdZPEXzmrOSkObv1OMvf5I/Ust0VUEiol0z/Kvgvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740084899; c=relaxed/simple;
-	bh=Xc6o9obrZeidO3IrZs20EkZMwxxHvxTSWqEyw4C1voI=;
+	s=arc-20240116; t=1740086529; c=relaxed/simple;
+	bh=gK/PZJt4q2sG2dHwxcG9hM90AJLo2wr2AMBT39R3psE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LUfjoClW/qdemcC8PLUZNHywFP9NoiPbF9Sy157w7eEPa8NXYitj4iE05s+LfzNlm2IBfHrGJcJxqbqNSPyL/HXd58z+KPnQUDIOMJza73ps6TNvI3gGL7/j54wYcZ+tZQ0CxZ+dowYvfRGbM5srYzOBxjcPuKCFsLwwfFUTMcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1dXXBJPK; arc=none smtp.client-ip=209.85.210.48
+	 In-Reply-To:Content-Type; b=Ty2xTwOo6tfwG8Go7kQY4z7S1zSBTiO6If+NPw6eC6qkyvgZT+Xo/r2kdhVREMKxMCKJa5jFK+DQwwdLIfExLCsch/6dTK0idRM86yH19ZlF07Az9n8Kof5spMtk5bq2KgpD0IO31RhTpjW1VcFX6feH+l1oQ0vaen4PwsPN3Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=G9MBe+tY; arc=none smtp.client-ip=209.85.161.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7272dae0604so720979a34.1
-        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 12:54:56 -0800 (PST)
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5fd0c7be155so576079eaf.1
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 13:22:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740084895; x=1740689695; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740086525; x=1740691325; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lmfqNhipvTzpaPHouDLPUPBFfenRqD8FhVYBJFNu3b0=;
-        b=1dXXBJPKyl79MFL5kY+SZTVMp8uVM+kote9OOwmFCgKZymBx6jdSxG8PDQiRLbSRA8
-         tH+rTa1uqbAqzck8hq68ndXav2GgvFsjPdcV3XtjmJkCwuL2xLawOFMQswMJpB0a/67a
-         Zba8pUzG4LM8ucZ3o4Z4NM0lGhYGAnfbrqjeR2H5p4duEGR3wfJZdqEwPeymH7TMOR+y
-         sDk+n/NvSTlK/+2CYwbjl83wPxNd1wGvgyWbuAilVBCYBXDjFdxsa+mIEPU9pmahYppL
-         f1HdT8HaJPAtIZpPTNwwJHTQluH/ByMUCFdOOgB3wV+bKts9xv6E254vB+tiTdxv3tm5
-         08uA==
+        bh=dRkG5vaOS0lDY9pA5VGqjHoCOhTN4lWgMCGaymcjWZA=;
+        b=G9MBe+tYBa11JrS5TsgQQTahtDvYPHmlPf82vn5wvOCVrTMgoXIypZOz8XaE6aHvv5
+         UTeFyQloANhzvNHQJNC+bXUXzcWDIoESN9hhXNXQ6DLHJEOdB8pj4uCLWSrU/Wp3B5se
+         TNbumdYlvRt/joqJrv2Vs9iKy/onNFkTbiNKQnZRmTrDHsmQBd93ywerXZZ7SuKH/5+e
+         XR3YaIlF7ZhnUzCka6UiRf3R3Qemet7oAmorZMyk6ABea3Ez4Y/8LOnRhYkkJlWrc4Er
+         U9IW4UCVt37HkOT/nmVGq2hLV/Lnyt+As/hySP4bHfOut2Nf4QLeAG020dbNPMLUMyXd
+         mSNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740084895; x=1740689695;
+        d=1e100.net; s=20230601; t=1740086525; x=1740691325;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lmfqNhipvTzpaPHouDLPUPBFfenRqD8FhVYBJFNu3b0=;
-        b=LC8v5OmvV8SKNq0+KCA4LLg0afr3w+gZT+RWX/j7nFEPmxqywXsGtzqH+L4D/CJQKP
-         CQGCz2VslUur9Pi4ir8EVs6bcL0Be3eBkR7AKUd9DUjt5cslYGPpabJrrAPaDB069XbF
-         9uSMetVBsBleXiJU/cFf+fqAhcOPgfbxhvQ3952xa2YJcpUQXfSxbp0agE/3d/VlfTD6
-         VAnxc+yaKpaGbwwkOO3zYmOGZRnspx+aPHaZtTLq2IznHmE6/UE/NWk7xbHgJeKaVTh/
-         fUbpsimIc5STbwLPkW5cMb76PGs/+F1brYlewmImv5Ma15jzQX+Th/P7nJr2LUXTLzhD
-         P08A==
-X-Forwarded-Encrypted: i=1; AJvYcCVYgcYLmXcgNFcQ94Cvjc8/IY2HhDPxJpTRuzEd68mYxGqjTx45hOhPxl6tofI9bH2rxSnEneecbf0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoWkkMaRDpAnycX4JzL6p4qpYWLVLZ8Ys9H25CGcpRkXnG/CdV
-	Odpb5u3UxPaPONWAqJ7wzYO+r+5obgAYH8Aru7fCitOmC0RXmhezu9FdUPW6Ccg=
-X-Gm-Gg: ASbGnctcrJV1kVlnVpqEXplKe4PCSSnyqSILL7JLdq3nP1w09Yg7tS5Jwjn/gpdCbd/
-	sRSszssM7/iDspyUkIfVFGxGvD9flir1UeE6xsFnPuwqJi+1BlymOIcRFftgnsymfy5BIbrdSsm
-	WYUYOrmEkhcQ7AMgYoldh41eiFBW0WwTt27QJTewD6fmBoS8lDs2ogOQ9+Zeg+t3KGg7qVGmaQ0
-	3XuWGk7fV1lwTdq48lTZLsVwW4azvtltuKjp3MS9wgpnX8qELL99hdl6PzBdK83iX5xsq+AE6Zj
-	fW4QQ8iMk9D+Zydzx7XOzrRF7J6FRP8LSVHkjeT+1xx0hEbSfwtX
-X-Google-Smtp-Source: AGHT+IF3mi4w+ioATe/neRX31NhU+G5fVnUO+U3AY+NTTkR/32/joj3J25iUisGaUZnzV5dytcgeCw==
-X-Received: by 2002:a05:6830:3817:b0:727:4439:2079 with SMTP id 46e09a7af769-7274c563e6dmr324973a34.17.1740084895336;
-        Thu, 20 Feb 2025 12:54:55 -0800 (PST)
+        bh=dRkG5vaOS0lDY9pA5VGqjHoCOhTN4lWgMCGaymcjWZA=;
+        b=Xancs7HfB+VoK8zv1FIAiaulDuEsUx4kgBlSLz26Vw/N2Be3n/bAi4/5Cav9WEMqPj
+         lfZGasE+6KDdzH5IZc18VkFdbEEJw2yMirU9JgyoX+wYI6TKcQ1ybZbbk73SsbL456Ct
+         rN9GzZ/Ggyfa4DTfBYsCxbrC96TWsd/hpNTNvHPTc2sVSXZ9i579mEqe/Xs85jy55IGl
+         gktMo005UOWQsyn0+BhFVHcwPQAgBR59mJr5ot2qAICk+eeJvfOSvrmz6P8bNHK7ouBs
+         bWplDTCeR5qWnUl4Oyu8mkpnV0OvXHW5z9Md/6Pj8j+8iXzlKxBEUEaCQmnEwH3mGR6E
+         qUDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXWVhJYRlg79TQp+dU0ZD2pUcjOKgB+p8l7vDXUDgU4+c1FCV33wsR0B128pkeEs5wnlYr4UxHSAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzhue8dUlAWnsnO/+37MInGw4srpOIwsnJrkXNujNgfyBsiHUy1
+	+MKN7Ip/8TYCqXdX0KBcmfyRNUx4WBLTpzxV1C5AxuKBWie1MI96oJ8SQjm5tYAMdxZVQJKerT3
+	P
+X-Gm-Gg: ASbGncsd3bo6h92i0hHeG+M3H/wWg38u6zezplJeqFWgK7rwQmt7+aF5yv01AIdunJx
+	nyw5Cv1U+7xV3dlJdRWKeYdTautQFmLsnr1VzRD5t/nl3I3gHIEPCllfBr5xpAPQGQR4DBBPb4x
+	ZkRZzx/I1YBxpMEkPCOVWwY28D4NvPDxgTPFUQGH99czu6gmh3aDQGX0JV7nLkDHhJpurHJcYau
+	jJUfaSLjTDWU5FTY2Gh/4ShnOQ0N7YAf9zlyuyzWoMvYJw3wAiMoQkwBGLFNkywgvxFSbUIDLus
+	xRioXHgTA/oIN+TZzFVALSVH95lTraPgqTWuOUKeT1nOwF6RNZ5g
+X-Google-Smtp-Source: AGHT+IHtrPQu27iToW6SI7eNT9OONk9gLd1u3ON/T5VT69MV/0pGe9KjerOvTUnPcei575boK3DXTA==
+X-Received: by 2002:a05:6820:1a07:b0:5fa:4c67:b70c with SMTP id 006d021491bc7-5fd19a941e2mr688320eaf.1.1740086524833;
+        Thu, 20 Feb 2025 13:22:04 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7272a3751e0sm2223640a34.58.2025.02.20.12.54.54
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fce04080besm2294468eaf.13.2025.02.20.13.22.01
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 12:54:54 -0800 (PST)
-Message-ID: <4052fd7b-dd8c-4a5a-8f82-dd515de14d20@baylibre.com>
-Date: Thu, 20 Feb 2025 14:54:53 -0600
+        Thu, 20 Feb 2025 13:22:03 -0800 (PST)
+Message-ID: <e7940b89-f884-44a4-b656-383950b6f778@baylibre.com>
+Date: Thu, 20 Feb 2025 15:22:01 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,111 +82,84 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/15] iio: resolver: ad2s1210: use bitmap_write
-To: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>
-Cc: linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-mmc@vger.kernel.org,
- netdev@vger.kernel.org, linux-phy@lists.infradead.org,
- linux-sound@vger.kernel.org
-References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
- <20250210-gpio-set-array-helper-v3-10-d6a673674da8@baylibre.com>
+Subject: Re: [PATCH RESEND v3 05/17] dt-bindings: iio: adc: ad7768-1: document
+ regulator provider property
+To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com,
+ marcelo.schmitt1@gmail.com
+References: <cover.1739368121.git.Jonathan.Santos@analog.com>
+ <78c7d5d139d6c158423804f0e6c81cbfe9717b1b.1739368121.git.Jonathan.Santos@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250210-gpio-set-array-helper-v3-10-d6a673674da8@baylibre.com>
+In-Reply-To: <78c7d5d139d6c158423804f0e6c81cbfe9717b1b.1739368121.git.Jonathan.Santos@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/10/25 4:33 PM, David Lechner wrote:
-> Replace bitmap array access with bitmap_write.
+On 2/12/25 12:16 PM, Jonathan Santos wrote:
+> The AD7768-1 provides a buffered common-mode voltage output
+> on the VCM pin that can be used to bias analog input signals.
 > 
-> Accessing the bitmap array directly is not recommended and now there is
-> a helper function that can be used.
+> Add regulators property to enable the use of the VCM output,
+> referenced here as vcm_output, by any other device.
 > 
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > ---
->  drivers/iio/resolver/ad2s1210.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> v3 Changes:
+> * VCM is now provided as a regulator within the device, instead of a 
+>   custom property.
 > 
-> diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-> index 7f18df790157f1e411fb70de193a49f0677c999f..04879e6d538bce664469c5f6759d8b1cedea16e9 100644
-> --- a/drivers/iio/resolver/ad2s1210.c
-> +++ b/drivers/iio/resolver/ad2s1210.c
-> @@ -46,6 +46,7 @@
->   */
->  
->  #include <linux/bitfield.h>
-> +#include <linux/bitmap.h>
->  #include <linux/bits.h>
->  #include <linux/cleanup.h>
->  #include <linux/clk.h>
-> @@ -180,7 +181,7 @@ static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
->  	if (!gpios)
->  		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
->  
-> -	bitmap[0] = mode;
-> +	bitmap_write(bitmap, mode, 0, 2);
->  
->  	return gpiod_multi_set_value_cansleep(gpios, bitmap);
->  }
-> @@ -1470,7 +1471,7 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
->  			return dev_err_probe(dev, -EINVAL,
->  				      "requires exactly 2 resolution-gpios\n");
->  
-> -		bitmap[0] = st->resolution;
-> +		bitmap_write(bitmap, st->resolution, 0, 2);
->  
->  		ret = gpiod_multi_set_value_cansleep(resolution_gpios, bitmap);
->  		if (ret < 0)
+> v2 Changes:
+> * New patch in v2.
+> ---
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 21 +++++++++++++++++++
+>  1 file changed, 21 insertions(+)
 > 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> index e2f9782b5fc8..38f7bb0a0e20 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> @@ -59,6 +59,19 @@ properties:
+>        in any way, for example if the filter decimation rate changes.
+>        As the line is active low, it should be marked GPIO_ACTIVE_LOW.
+>  
+> +  regulators:
+> +    type: object
+> +    description:
+> +      list of regulators provided by this controller.
+> +
+> +    properties:
+> +      vcm_output:
 
-There is actually a bug here pointed out in a similar patch. bitmap_write()
-only modifies the bitmap, so this introduces an unintialized use bug. [1]
-Here, we only use the bits that we set, so runtime behavior would not actually
-be buggy but still best to fully initialize the memory.
+I think property names are supposed to use - and not _.
 
-I'm a bit surprised that my local compiler and iio/testing both didn't catch that
-since GCC 14 caught it in the other driver.
+ +      vcm-output:
 
-[1]: https://lore.kernel.org/linux-gpio/20250217132152.29d86d6c@jic23-huawei/T/#m3163d2c5db5b7376504d8ad6f23716f1119de761
-
-The fix is simple, we can zero-initialize the bitmap.
-
-diff --git a/drivers/iio/resolver/ad2s1210.c b/drivers/iio/resolver/ad2s1210.c
-index 04879e6d538b..ab860cedecd1 100644
---- a/drivers/iio/resolver/ad2s1210.c
-+++ b/drivers/iio/resolver/ad2s1210.c
-@@ -176,7 +176,7 @@ struct ad2s1210_state {
- static int ad2s1210_set_mode(struct ad2s1210_state *st, enum ad2s1210_mode mode)
- {
- 	struct gpio_descs *gpios = st->mode_gpios;
--	DECLARE_BITMAP(bitmap, 2);
-+	DECLARE_BITMAP(bitmap, 2) = { };
- 
- 	if (!gpios)
- 		return mode == st->fixed_mode ? 0 : -EOPNOTSUPP;
-@@ -1427,7 +1427,7 @@ static int ad2s1210_setup_gpios(struct ad2s1210_state *st)
- 	struct device *dev = &st->sdev->dev;
- 	struct gpio_descs *resolution_gpios;
- 	struct gpio_desc *reset_gpio;
--	DECLARE_BITMAP(bitmap, 2);
-+	DECLARE_BITMAP(bitmap, 2) = { };
- 	int ret;
- 
- 	/* should not be sampling on startup */
+> +        $ref: /schemas/regulator/regulator.yaml#
+> +        type: object
+> +        unevaluatedProperties: false
+> +
+> +    additionalProperties: false
+> +
+>    reset-gpios:
+>      maxItems: 1
+>  
+> @@ -152,6 +165,14 @@ examples:
+>                  reg = <0>;
+>                  label = "channel_0";
+>              };
+> +
+> +            regulators {
+> +              vcm_reg: vcm_output {
+> +                regulator-name = "vcm_output";
+> +                regulator-min-microvolt = <900000>;
+> +                regulator-max-microvolt = <2500000>;
+> +              };
+> +            };
+>          };
+>      };
+>  ...
 
 

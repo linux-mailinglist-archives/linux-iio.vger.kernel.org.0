@@ -1,210 +1,130 @@
-Return-Path: <linux-iio+bounces-15883-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15884-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1145DA3E2C7
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:43:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935D4A3E296
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C475A3BBB15
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:32:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7775F4206BC
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE5F2135BB;
-	Thu, 20 Feb 2025 17:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CC82116E1;
+	Thu, 20 Feb 2025 17:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nbJmFXiM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gxkzFZ2Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C16B1EBA05
-	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 17:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955611D63D9;
+	Thu, 20 Feb 2025 17:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740072737; cv=none; b=aQSGAZd8eYO3XgnFqrlVQjEWIlvMVInEjx6Ea1wjiYSXIKVGSM+deS/0Fumjt62NBdXk1KvMQSz9kQ4WfT9cl8yzYerwH09X9C3xCDMT+xxZ0A6tvzqXFVfEcYJygJLQ0d0UcIar1Was97WXqLsJ9fYlFQHM/oqHZAVDwJbyFDk=
+	t=1740072882; cv=none; b=grysV01fq0+zAuA9TVgjckFJIFhHXJQWm1qpJDzV1wCikj0PVoCNd7CFgnRfTNgEbLuW4i3evYF6/zeWEaAedjkhaYdA9FywzORobhIm+YUrofWcRQsmjmKfvB9nMFhHTuPEovI9UJslI3i+cGQaJPm7vtQwN9nePFMuqn/VTHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740072737; c=relaxed/simple;
-	bh=3sYO6hLTbz1Yx4jhh2H9VLVNmtvcj0Yg/VTm0rvs6nk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j2w3hij9Lt9BSY5e8Fh3t9JpNfSJAWTGJLuri14zsjrvyUODetQ10N+bvjgYIuhJPbafcdQXxq6Z41QlX6GL06ksLskh6TOuh0h0xGJDroLXgAPrMQMjY6IUjYG5XlxZKCaQzme1KVA7u2t+jOpZ/ANFJ5G6SP6SVh8qsv9pezI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nbJmFXiM; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5fce03395d4so1037914eaf.2
-        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 09:32:14 -0800 (PST)
+	s=arc-20240116; t=1740072882; c=relaxed/simple;
+	bh=05wQ9sfrQsEjtwaq9axL/DzVM2WzvUyqUAyTfXyAzPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ANRDySYZwOKARxNJebME9OJpf9RATqWW6N7aQkNhFbiISk16JdKxJ0Z8sslw3Aog7ibYUWD/EQFwVjMBTG6Hl/7Tu3xDi9wxuCci/wUM81cFrtF2j4Soh7iazuR0Cr41RL/XsFy8QL6hDbAQFFOpR6PaAIzj4aMM5u/PP/7fKCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gxkzFZ2Q; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2fc0026eb79so2547394a91.0;
+        Thu, 20 Feb 2025 09:34:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740072733; x=1740677533; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1740072881; x=1740677681; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=AIc+j8TxBrdPej0mz926UOoeIMB5TisIsEjQp/BF3M8=;
-        b=nbJmFXiMhYuFOf79oDrqVL0kUcFacWOkUYIIIVtNWcAouw843PQE6H6udff9h7i+gU
-         K4eFJbkxtrv33IsMJtypin5N4rSk0sdRI+ttHI/mxSDO4A0KnN4PzZ/P3HpBfceM97AN
-         ZSFW8VtWZMDA1DKxgTQ0KjPIWp5/P1usyYosKLxCjuVu4/4KU9tdMgYQyt7hqqGP2/JS
-         XniHexCZveNbWFfTk4e5SAcDRtuwuZtXbx1TAY8A889gGMqIMoOECdNpUlX6+oR1TmrQ
-         ncy6dQ1Cxw4daDyqeZsTLbhTWMqIFz3GX9XN+ELoQoHLWvGmr2inL/N9EN9OVTsJ+xkM
-         tzOA==
+        bh=OU9Eujl0xKDOpFO6qQE/GZagT7lVu3bO4cc4G/N/cFk=;
+        b=gxkzFZ2QlqhxTMxtz2boYojz6WxZb9251iBQgtu05kaX0o0z0t2rmuu5/Mmk1K160p
+         ItcVq3vV4A0aGDo/nkxsSr1dH6cKGiB65t0yHWQvM4tpUQJeBv+YfNLtB74qKLVfSzXs
+         4Yy82cUYPg/UaBJwbwK4WJDvlPXnSgs99k4R2hK+sVh3qHg16LjNk8GRTbJfnyk/UTlE
+         IBGa6jIaQhglPShwBqLkvZhQrNvmNCPLG+tESxYbOc6XUCDvappwulrT1WzWH17EPtcy
+         F9R5CU+V9LPCfQHElo4JYWY7iq2ELTqzxzXF21c4PrjDsJGBvMa7t2jMQU9NqdkVoE2p
+         rBQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740072733; x=1740677533;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1740072881; x=1740677681;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIc+j8TxBrdPej0mz926UOoeIMB5TisIsEjQp/BF3M8=;
-        b=UydnZSkl8l6CTZrAJK5tXANtWrcAWqyQMmY8gXioRG141YvJX7by4rVZMzSX7WjmHy
-         2JVhxvtTnORQD8xWRfhszo4Cnxj8LaS0JuNrY3nQvPhrRevhKLZg+xeuC6teaiXtzDAi
-         c3Q8pH/kLNDiaAQCFGRvNgTwDTTT4zV0hULx/GLXGpUb4iWhb9OeoU9qrdIeLyhhChHW
-         ZgKc8/UKcUTmOi3Xo5kJALv+5GAVBtef4y3z/VKTyKN5ihT7WiRNcwaAU8a57P+hMrXZ
-         wLXQfIcolFuJmYpzYTgVbC8ig+5HtfLYOYzIl0TZY9x14LRK1iERTjDHZR/3+AJyklI/
-         kjGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVMM3Eh+UL1nbIslNaZHeVeHx1YlXBt7aOoinaRb3sInNQEfEinBR+HMQlrh3Ebzvuy8PUUi0ikzGk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6z3gycwbZXFfjW5UubmR7cFflWBEhDm4o7qvfTIAL2Q6dxkyq
-	c1SWiKFzvpk8CSyxblxUOQ1UsUR2g2SFZDtSjFylxEceTUhpqctZlELXw/AFVXw=
-X-Gm-Gg: ASbGncukkjdvzMffD2xZA7O1+Q7LhENf9b4QPeR2hBDjL1Ct6gm1oQ1NgPRJ76/yix7
-	8CKT71xYWx/BrgB4FVqU4is40+jV5jGb2oFox2MApwg5iNx+Hv5PEgMCoJWigMTvminPBWwghwX
-	+gL69j4O36RBWuhNJvBp0vbDisuA0jNPFEgsrLH2DVJjGyNKcxCIH+F/b3oqhYo3e1KZvTQZaVG
-	Mv2kbaDx+J+fOhXxfDD3/ZBx3W7qCHoAvYxc4DrEpAyzuneertJmhKQsMbzyivCoucM1dMH/g8d
-	Q9uIWPq8SWHdxXUhUyjo9mI25iMnks/dGQLFUC1LSv6XTvoA9pvx
-X-Google-Smtp-Source: AGHT+IHr8T5reKexqMOxlmPqVf7GUavXfHMshpa/XldJ83QUP4dtM6xNCp5f26J8xaA/wL6S5nPJuQ==
-X-Received: by 2002:a05:6820:260d:b0:5fc:92b3:2b03 with SMTP id 006d021491bc7-5fd1949807fmr168082eaf.1.1740072733243;
-        Thu, 20 Feb 2025 09:32:13 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7271f7c5ba8sm2752929a34.32.2025.02.20.09.32.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 09:32:12 -0800 (PST)
-Message-ID: <0084eef7-3831-4e62-acf1-6c2dc0e15dd1@baylibre.com>
-Date: Thu, 20 Feb 2025 11:32:10 -0600
+        bh=OU9Eujl0xKDOpFO6qQE/GZagT7lVu3bO4cc4G/N/cFk=;
+        b=gUO7Ffs0Otpr1iS7NrILa8hunCbkisB4RNrAu4WdYvQBwbflWAFF3q9yTM1q1pZfrO
+         LgyxvIalMTBVByBU6uy0uhd58qhwQMYbBHxeTLboXSp5lFAOIgNKX7r3j2os7oUfcE7y
+         8rNhZH0R/jSdh3YMmAbw6cZAQvB+SUOy/3l154KAEwzDpaA8FHq7BNwQq1Hnuk7HzSQr
+         eDYB15RamfTDpGHn+5n7/PlTZOROlFao5FBCNFpxgZx357rqDn51eQ4+wQsuCi6mCmt/
+         /ttyvcLUwKvQ7l46iaJojvek62DUpB3ryBsXGaVOvvN2f7Q8lM3ZuihWTRqTzJgWedfU
+         Aglg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJvZudW3UCfR35HZGIYWC+OsvfivP+4X3zQX/SYDoR3VtYZr4dlDsYeiA8jamMu3RLf2WD51bJekRBEqg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpVjm/GQlieFofwZI5s3NrL+2Sm+BVL+3JJlFg50hR5MmFIF37
+	JY6+zB8tBe18wISDeMkln6yZI4i3VdRBsyiLMnlDnn4sAq1gVkzz
+X-Gm-Gg: ASbGncu7eFH7t+mTYYqNSi3dl62a1YZuxKcAevdTpq/b4eDod+NjpfcutI8UDzrGKNq
+	GG9DzxcS6qVUKCCJIglJhcD4HzRMwrHh0gBIRHiNV9ub9sX7kyxfOAiDfUJXrPWKjJ6H2AQ7Eve
+	O4Q8nhKlecGzaIgE2higIyIHIrX0PgBmNtZidvUanU/KlCr4+8ubthx349Xsa4thYfHplpcTzLL
+	SD2y+c46YHWjKDr0/lSmVoGHAA0/DS7t5U/zmfuNe+RC8ZiKZrOncTKx67F73/I3cMaYsrWbZkD
+	YM5oRvCZ7AwgEs5aLIbTd0e3
+X-Google-Smtp-Source: AGHT+IEKS5ZIhQ/Gxp9hLtckbsidsLZKx/wIMICMnKQLLCTfyBSUgYEnE6b7mvTrsLfZfSO28KHeCg==
+X-Received: by 2002:a17:90a:dfc5:b0:2ee:cd83:8fe6 with SMTP id 98e67ed59e1d1-2fcb5ac074amr13552163a91.35.1740072880659;
+        Thu, 20 Feb 2025 09:34:40 -0800 (PST)
+Received: from Emma ([110.226.178.138])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fbf999b5cesm15564943a91.34.2025.02.20.09.34.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Feb 2025 09:34:40 -0800 (PST)
+Date: Thu, 20 Feb 2025 17:34:36 +0000
+From: Karan Sanghavi <karansanghvi98@gmail.com>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Karan Sanghavi <karansanghvi98@gmail.com>
+Subject: [PATCH v3] iio: light: Add check for array bounds in
+ veml6075_read_int_time_ms
+Message-ID: <Z7dnrEpKQdRZ2qFU@Emma>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/15] bus: ts-nbus: use bitmap_get_value8()
-To: Simon Horman <horms@kernel.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>, Andy Shevchenko <andy@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Ulf Hansson <ulf.hansson@linaro.org>,
- Peter Rosin <peda@axentia.se>, Andrew Lunn <andrew@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
- Kishon Vijay Abraham I <kishon@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, linux-gpio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-mmc@vger.kernel.org, netdev@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-sound@vger.kernel.org,
- Andy Shevchenko <andy.shevchenko@gmail.com>
-References: <20250210-gpio-set-array-helper-v3-0-d6a673674da8@baylibre.com>
- <20250210-gpio-set-array-helper-v3-5-d6a673674da8@baylibre.com>
- <20250220101742.GR1615191@kernel.org>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250220101742.GR1615191@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 2/20/25 4:17 AM, Simon Horman wrote:
-> On Mon, Feb 10, 2025 at 04:33:31PM -0600, David Lechner wrote:
->> Use bitmap_get_value8() instead of accessing the bitmap directly.
->>
->> Accessing the bitmap directly is not considered good practice. We now
->> have a helper function that can be used instead, so let's use it.
->>
->> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> u> Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---
->>  drivers/bus/ts-nbus.c | 5 +++--
->>  1 file changed, 3 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/bus/ts-nbus.c b/drivers/bus/ts-nbus.c
->> index b4c9308caf0647a3261071d9527fffce77784af2..beac67f3b820377f8bb1fc4f4ee77e15ee240834 100644
->> --- a/drivers/bus/ts-nbus.c
->> +++ b/drivers/bus/ts-nbus.c
->> @@ -10,6 +10,7 @@
->>   * TS-4600 SoM.
->>   */
->>  
->> +#include <linux/bitmap.h>
->>  #include <linux/bitops.h>
->>  #include <linux/gpio/consumer.h>
->>  #include <linux/kernel.h>
->> @@ -107,7 +108,7 @@ static void ts_nbus_reset_bus(struct ts_nbus *ts_nbus)
->>  {
->>  	DECLARE_BITMAP(values, 8);
->>  
->> -	values[0] = 0;
->> +	bitmap_set_value8(values, byte, 0);
-> 
-> Hi David,
-> 
-> byte doesn't appear to exist in the scope of this function.
-> 
-> I tried this:
-> 
-> 	bitmap_set_value8(values, 0, 8);
-> 
-> But when compiling with GCC 14.2.0 I see warnings that values
-> is used uninitialised - bitmap_set_value8() appears to rely on
-> it being so.
+The array contains only 5 elements, but the index calculated by
+veml6075_read_int_time_index can range from 0 to 7,
+which could lead to out-of-bounds access. The check prevents this issue.
 
-Ah yes, I see the problem (I don't think this driver compiles with
-allmodconfig so the compiler didn't catch it for me).
+Coverity Issue
+CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
+overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
+elements at element index 7 (byte offset 31) using
+index int_index (which evaluates to 7)
 
-> 
->   CC      drivers/bus/ts-nbus.o
-> In file included from drivers/bus/ts-nbus.c:13:
-> In function ‘bitmap_write’,
->     inlined from ‘ts_nbus_reset_bus’ at drivers/bus/ts-nbus.c:111:2:
-> ./include/linux/bitmap.h:818:12: error: ‘values’ is used uninitialized [-Werror=uninitialized]
->   818 |         map[index] &= (fit ? (~(mask << offset)) : ~BITMAP_FIRST_WORD_MASK(start));
->       |         ~~~^~~~~~~
-> In file included from ./include/linux/kasan-checks.h:5,
->                  from ./include/asm-generic/rwonce.h:26,
->                  from ./arch/x86/include/generated/asm/rwonce.h:1,
->                  from ./include/linux/compiler.h:344,
->                  from ./include/linux/build_bug.h:5,
->                  from ./include/linux/bits.h:22,
->                  from ./include/linux/bitops.h:6,
->                  from ./include/linux/bitmap.h:8:
-> drivers/bus/ts-nbus.c: In function ‘ts_nbus_reset_bus’:
-> drivers/bus/ts-nbus.c:109:24: note: ‘values’ declared here
->   109 |         DECLARE_BITMAP(values, 8);
->       |                        ^~~~~~
-> ./include/linux/types.h:11:23: note: in definition of macro ‘DECLARE_BITMAP’
->    11 |         unsigned long name[BITS_TO_LONGS(bits)]
->       |                       ^~~~
-> 
-> 
->>  
->>  	gpiod_multi_set_value_cansleep(ts_nbus->data, values);
->>  	gpiod_set_value_cansleep(ts_nbus->csn, 0);
->> @@ -151,7 +152,7 @@ static void ts_nbus_write_byte(struct ts_nbus *ts_nbus, u8 byte)
->>  {
->>  	DECLARE_BITMAP(values, 8);
+Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor driver")
+Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+---
+ drivers/iio/light/veml6075.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-We can fix by zero-initialing the bitmap.
-
-	DECLARE_BITMAP(values, 8) = { };
-
-Would you like me to send a new version of the patch?
-
->>  
->> -	values[0] = byte;
->> +	bitmap_set_value8(values, byte, 8);
->>  
->>  	gpiod_multi_set_value_cansleep(ts_nbus->data, values);
->>  }
->>
->> -- 
->> 2.43.0
->>
+diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
+index 05d4c0e9015d..5dd951f6e989 100644
+--- a/drivers/iio/light/veml6075.c
++++ b/drivers/iio/light/veml6075.c
+@@ -201,7 +201,12 @@ static int veml6075_read_int_time_index(struct veml6075_data *data)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return FIELD_GET(VEML6075_CONF_IT, conf);
++	int int_index = FIELD_GET(VEML6075_CONF_IT, conf);
++
++	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
++		return -EINVAL;
++
++	return int_index;
+ }
+ 
+ static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)
+-- 
+2.43.0
 
 

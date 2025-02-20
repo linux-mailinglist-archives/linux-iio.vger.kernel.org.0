@@ -1,152 +1,123 @@
-Return-Path: <linux-iio+bounces-15891-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15892-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DB3A3E581
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:02:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E783EA3E5A2
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0F33170A2C
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 20:02:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8AE177A2E
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 20:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E187F26461E;
-	Thu, 20 Feb 2025 20:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9902641D4;
+	Thu, 20 Feb 2025 20:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BBFLVz83"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="UgiSYnzY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4FC20B1F1;
-	Thu, 20 Feb 2025 20:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837EA20E6EE
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 20:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740081751; cv=none; b=m1LP1c+jo9jNuZcYoKyWjFlMMV+1uQ9aCBjK/qlkymja8AbHXFcceOMWPkUiF1R6E5qGE3x8RwdPTzweMKVgeg4UGFfbmP8K4Feq7AqOOxHTgLXAxNFCGPvwe9a5tnEXAJD+1N93tgV2x50GTnOTjLgVrzk1bVHT1ggtlMvs0qk=
+	t=1740082332; cv=none; b=istnUm9e/QD/2COFuO0bS+fiQm10BK1Jai8ya4M/YJGpke/PvA9aJFlYb6VCqIJ1M8DVnlBY76oFeexdZybEBvV4W8/FAsdh6Ellg2ZM6OnTOXGs3yDK9j0Z519Oro4TqIm7G/9P73j3RlQHKE66hVTf+NRfscTJEZOqfXGu0B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740081751; c=relaxed/simple;
-	bh=/ZP+jJ0lOXjz0kmCIpgDpmDWqvL3ev3Cr0Ir4efdUh8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=vDvkfjyl0AfIxZdwtpedmYi4zMUsYW2eN07nnmb9oxMrm1nKP5GsdAy476tCjdhkb/Ykutwx1gArQfBi0pCilUVe1mg4DQ0QNLcPiXk7GZnMvfCkIWDx4YYQOgMy7a0mAi+/Qz6Teaa26sb9zhT5PJ6xskiEea0F338TnuoZxaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BBFLVz83; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-38f3ac22948so731151f8f.0;
-        Thu, 20 Feb 2025 12:02:29 -0800 (PST)
+	s=arc-20240116; t=1740082332; c=relaxed/simple;
+	bh=LiLaY47ptzEOL9s852ObKqchaffB6bEYE6g2HwhyeVI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ChA4G0Bsb1WI/NqBDFf4cGa0aEJS1HnYLHF6RdUe8wGbbdlg9kna/eb2xRhRJQPQ2KvBwlYiW52yZPKfBZ6KVwDwnwoU7gi7R0yeIsEO2gGKkTaNKzqQnUNyzdcWqPBZ5JQoHvtKEj0h8sIoA8Nu0OgpC6sWSeVRwgMcPXCl7Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=UgiSYnzY; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-2bcceee7b40so799560fac.3
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 12:12:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740081748; x=1740686548; darn=vger.kernel.org;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=csgCb6u5Fodu0zC4/YRtvX7gHnFJEBoqe713JSwv3R8=;
-        b=BBFLVz83yM87Yafogl/sTPFteXkXfB4o9ltHTiyJ5qF8GkHRrdmhg5Se4c1oWdN9KU
-         MjoSYXz0vdHHfB0PWKcQcdGQ3PiYXiJgOXbG5oJ9uUMlBSabwa1pI9hj7+1h/8SiX9vm
-         bxXu3dFB2j450+1zRRLw1v1iQB9s3ePrbIdL5Grw2gzOegGgA19KaTy7KRK3A34tePx3
-         Oroe+qrKapnL6p8XC7DNQrE/YHkWdhsjCVhOS3kk0zldcY9MLAUGMjyHr2E7+s0ft1XT
-         aRqE3/PjKktGXgEbyXdDzlR5bj57uQhNR2ztmoPTKh6qroCrrXW1p/QMSnRG0aTz3cUg
-         OVSQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740082329; x=1740687129; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/P/yPrR/A9HckFg8NDpGWQQ83Dwa//epZsJwfz6xX2o=;
+        b=UgiSYnzYShZXZRMd3K48ATtvBsXPBUVbqFRhPb2DbZaqzwdgF2x5qfxjLGgQrXY73R
+         no8CKY8zjoM8P00AeoYtva1MR32RIjBZDdSQSYZos+CW/+5TAox9gNKZfIGe7eXGipGI
+         V/QrMDA9GfHeLSUCcveosclNTcK3pET+eQPG/bp5ox4AOCPBcJ80fOo7CRycGOIoxZnl
+         MZ2kOnTgZvQOGAIE1QfOZ4gVJz+t1/49Om+fDJeF80gkWQsV68suZFrEY4gW3ytYi/NV
+         Jq6/Wpp1HkMQlASqssUzC0zrr0PHbqDXvtX6ZGo+Y5Wkwdj/5NVOtbUZ4BfHhQ5hdtsd
+         CN+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740081748; x=1740686548;
-        h=in-reply-to:references:from:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=csgCb6u5Fodu0zC4/YRtvX7gHnFJEBoqe713JSwv3R8=;
-        b=gkEnqxZpzT3AXtLcrB2bCW3PdOByCc/vR4sS4A9N44N00+nCmNruIqyF0l+J8K7RSJ
-         wNJIaVlTLelZgxRvNsS22C2uXlKHms2YJt6Ntbf5mbLziHFqOFf+XoUmv813iGyupnTK
-         jsVii8zNOnErH6W76W8Op/en/1nps/tUZH7QdMXwz9PBaSr+lEWBEqfQr/a846WXF8F5
-         E2z+94YBxq8jynRNvG+nMF0Opr6nGr+r0trzbfZjaJaJ1jI50Hi4/KLB0W4fyc6vk2qC
-         w1+b6CJ0l1KZZqV29Te45F/o/sgdbY+Mug8vBHP+leIpVkVXetdXJPtXnc/k3nM+5wER
-         pTAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4Nvu0ZtKuFwIhoz3Ht8JwrGDF2CYMzfNSPFQATvQWNeVEq2NWOE22fkSe495QTppbWBhINaGwcHAfegw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzI/w/rEr/BEPLcJTyfCpITEWsVxU+1v92GAqQLNs8PJY9L2DEt
-	nIm5v4NjiZcT/ELCEYVdR0EQAtZ6iI/wZBWeSgk+Mziis3jsc+98
-X-Gm-Gg: ASbGnct/T5GaHiI2tuknJrTB2lRRoZyf2j+7/JumEZb3t4RXUscZkgQ/igAL06NjUl4
-	RktMMSwRHG6j1iPamfqv9iE90yc0B4Z7Qx1aRB5xmzm9UokXumjhZrJSxc0xW6AgMclTCi6DFUN
-	wyaflF2RZmAwcV0CxUJAl3rpEMA9/tcm496n6W2xMF6gcQeYUueK34D8J2oPulzbkDj+qchYuMj
-	C2Lun0gPj5ZWePryGeGckn198rbaf3HOkh0s7U8WRmu0fryXFYBAc+6DaidnxUiNw/NajExRUaC
-	wcAFWAPMVYYTqLWGHJRhQNaSAoSmQpnTfZV50VKeaCoiETnyEyBEyP/63MgRlAWiC4b9iM7ABW3
-	WNKJvUqAvhywVfph004OBD1qBGDAd3ZTeQ+Q=
-X-Google-Smtp-Source: AGHT+IEtlSicy7Lw8Qz5zNvhBSB31/jGaHs4MFDmY+NzMrbSpW2WeBmjQgXSsvZ2CvsEQjEhN3CFnw==
-X-Received: by 2002:a5d:598d:0:b0:38d:d9b3:5916 with SMTP id ffacd0b85a97d-38f6e7564dfmr448121f8f.1.1740081748088;
-        Thu, 20 Feb 2025 12:02:28 -0800 (PST)
-Received: from localhost (2a02-8389-41cf-e200-4eb5-194a-5112-4af4.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:4eb5:194a:5112:4af4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f25a0fa1esm21259676f8f.100.2025.02.20.12.02.27
+        d=1e100.net; s=20230601; t=1740082329; x=1740687129;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/P/yPrR/A9HckFg8NDpGWQQ83Dwa//epZsJwfz6xX2o=;
+        b=o3fmBLpxcuFUFftt2CrS9n0N44X+hgRdmj+SQt+DM6p43TDc7ICOvfAJZKvNPqT3fZ
+         uYhTrnJMijEYb05z/3yd2lw08SQVfAc5zvY0iXJZAo3EOdgP50pEqLN4dBiZfTPS+yDZ
+         wNQxKDSn5N9XzTuYSIcIxRl5HTCa4uqmSOax8qE4Es5XLMPzZFy2MzBFFwJtzwJyNVnh
+         1FDEYoGwi4ZzfGRgS9TOigCduSTZbIZMKGfZE3/UVPoJRmMR7DcrVGE29DktOzYHJuRG
+         uwEf40Bx0Gw3iosv+nOBSshr4fVXH7cfuu4FRb0fqxn1XA6xA82r7FVeHW4hA14r+YZr
+         6jMg==
+X-Forwarded-Encrypted: i=1; AJvYcCX8n+KNZVD9MOSoXaSXEJJ25WmoIxcGyxlfpRa9D2SjMmmv9uGgFVm1dwz5/+AiP3poPWineOVcQTA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMkFSOw47yhIG7IRYKAIxJMEiLfo1iUzTgJXHfmyQlPSybCSIN
+	FG0NQDMlGCZMk3P++gUlFSQh9J6+ILl3L41BuhHcPi64QW26JgAgfPxizCm8tcwsJHyGuvnXY+8
+	x
+X-Gm-Gg: ASbGncvTToYwKWAn0ZtBZWwe8RcVjaU6wKaeMgZh1RVajjuKqKTSPxdiQJ0F+3m+4G3
+	ClovHTQHR9YXAQn430QBrs8NMBaz9NyNwMeT3GCVmQXlwNJ4AB2xblVda99f8YqEjfVFO/1UIsW
+	ZmgVUH1NV+UfzuFCFM1cAO1QZP0cdrgiJOGmUon93izHbVcKolkOZopkFa049ESHN9JJa5Em03Y
+	KSqQeX/lJvbUPQDQuScNP0hKhb3FFwvDOEwDK+YzrqR0wG61EbKcM6lgC0eP2IixY+g/Qpn+Ma1
+	NsfURKrneXiGxcuNidCSMogdf2bJF4GN0vpKHpLLsK8t5QITCGnc
+X-Google-Smtp-Source: AGHT+IHtNExzuBCpI3aT6N9xaZhGItg913lty18yZz2F1e8Bv7HevKzEtGiBwXMthiOqYSepUFM7xA==
+X-Received: by 2002:a05:6870:1e8e:b0:296:a1fc:91b5 with SMTP id 586e51a60fabf-2bd50c5679fmr373634fac.8.1740082329523;
+        Thu, 20 Feb 2025 12:12:09 -0800 (PST)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b954868591sm6475964fac.12.2025.02.20.12.12.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 12:02:27 -0800 (PST)
+        Thu, 20 Feb 2025 12:12:08 -0800 (PST)
+Message-ID: <bc8b0004-6eef-43c0-a07d-a07d2e332737@baylibre.com>
+Date: Thu, 20 Feb 2025 14:12:06 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/14] Add support for AD4080 ADC
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
+ robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250220135429.8615-1-antoniu.miclaus@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20250220135429.8615-1-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 20 Feb 2025 21:02:26 +0100
-Message-Id: <D7XJHYJJYHGA.2829KPQWL3N8E@gmail.com>
-Subject: Re: [PATCH v3] iio: light: Add check for array bounds in
- veml6075_read_int_time_ms
-Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Shuah
- Khan" <skhan@linuxfoundation.org>
-To: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>, "Karan Sanghavi"
- <karansanghvi98@gmail.com>, "Jonathan Cameron" <jic23@kernel.org>,
- "Lars-Peter Clausen" <lars@metafoo.de>
-From: "Javier Carrasco" <javier.carrasco.cruz@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <Z7dnrEpKQdRZ2qFU@Emma> <D7XJGM6MAB6N.2FYSUN4OJELUA@gmail.com>
-In-Reply-To: <D7XJGM6MAB6N.2FYSUN4OJELUA@gmail.com>
+Content-Transfer-Encoding: 7bit
 
-On Thu Feb 20, 2025 at 9:00 PM CET, Javier Carrasco wrote:
-> On Thu Feb 20, 2025 at 6:34 PM CET, Karan Sanghavi wrote:
-> > The array contains only 5 elements, but the index calculated by
-> > veml6075_read_int_time_index can range from 0 to 7,
-> > which could lead to out-of-bounds access. The check prevents this issue=
-.
-> >
-> > Coverity Issue
-> > CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
-> > overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
-> > elements at element index 7 (byte offset 31) using
-> > index int_index (which evaluates to 7)
-> >
-> > Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor=
- driver")
-> > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-> > ---
-> >  drivers/iio/light/veml6075.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.=
-c
-> > index 05d4c0e9015d..5dd951f6e989 100644
-> > --- a/drivers/iio/light/veml6075.c
-> > +++ b/drivers/iio/light/veml6075.c
-> > @@ -201,7 +201,12 @@ static int veml6075_read_int_time_index(struct vem=
-l6075_data *data)
-> >  	if (ret < 0)
-> >  		return ret;
-> >
-> > -	return FIELD_GET(VEML6075_CONF_IT, conf);
->
-> Please declare the variable at the beginning of the function (there are
-> some integers there already) and rename it to follow the driver
-> convention, it for integration time: it_index
->
-> > +	int int_index =3D FIELD_GET(VEML6075_CONF_IT, conf);
-> > +
-> > +	if (int_index >=3D ARRAY_SIZE(veml6075_it_ms))
-> > +		return -EINVAL;
-> > +
-> > +	return int_index;
-> >  }
-> >
-> >  static int veml6075_read_int_time_ms(struct veml6075_data *data, int *=
-val)
->
-> With that applied:
->
-> Reviewed-by: Javier Carrasco <javier.carrasco@gmail.com>
+On 2/20/25 7:54 AM, Antoniu Miclaus wrote:
+> The AD4080 is a high-speed, low noise, low distortion, 20-bit, Easy
+> Drive, successive approximation register (SAR) analog-to-digital
+> converter (ADC). Maintaining high performance (signal-to-noise and
+> distortion (SINAD) ratio > 90 dBFS) at signal frequencies in excess
+> of 1 MHz enables the AD4080 to service a wide variety of precision,
+> wide bandwidth data acquisition applications. Simplification of the
+> input anti-alias filter design can be accomplished by applying over-
+> sampling along with the integrated digital filtering and decimation to
+> reduce noise and lower the output data rate for applications that do
+> not require the lowest latency of the AD4080.
+> 
+It looks like this was just copied from the datasheet, so not useful
+at all for a cover letter. We can read it in the datasheet.
 
-Fix:
+Instead, please spend some time to explain the interesting and
+unusual things about this driver that will help reviewers understand
+*why* you are doing what you are doing. This is a very complex driver!
 
-Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In particular, on this one, the documentation on the FPGA IP block isn't
+very detailed. So it will be very helpful to know more about how all of
+the sync stuff is supposed to work and what kind of filtering is the
+FPGA doing in addition to the filtering done in the ADC chip.
+
+
+
+
 

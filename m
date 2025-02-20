@@ -1,58 +1,64 @@
-Return-Path: <linux-iio+bounces-15885-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F313A3E300
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:48:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF943A3E306
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 18:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1F217C6A1
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:47:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7394918997D1
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 17:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3AE2139C4;
-	Thu, 20 Feb 2025 17:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DD2213E60;
+	Thu, 20 Feb 2025 17:49:51 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF86213E64;
-	Thu, 20 Feb 2025 17:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F38D2B9AA
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 17:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740073674; cv=none; b=DnkgUdcYOtTGnWFXo92R3RDHUKoox+ji+9Rj+i1OWtVp9RcV58FegFJww9ND0rSxYTCTpCkD4aU8LWH4yW9sAuytFk9K+40tF4tgTXe7QEkI3NVG2fTOWI/g2ZgfUlVI9FQKayRi/EEoVZ2efLaP2aML/NLeVsBVjMifoLQuC/M=
+	t=1740073790; cv=none; b=pMSNlI7EwRGxpEt6buyvxRoUZgC58ylPpZdk2DZDsV8OWSBGnot/UFXlpzC5PODJ6Lj96W57KjE+nfRp0GQM5iVg6e5gIi06X2BPcIFB7lMzz89BpM46m2n6oonhrtHQYNBhHOiMtrnlzOfb03RwNVOjXFN6GwgrkopzogFQddM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740073674; c=relaxed/simple;
-	bh=kMQJ57kA5Yur3dI+lzKDp2c8T/y2nrCq0BoU1i+qdrw=;
+	s=arc-20240116; t=1740073790; c=relaxed/simple;
+	bh=/1Bk29yA0ggig+w51gXm0ILJcPS6DzEsw675uIqK2+0=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fV3GmNS4+A9bCtUrHml37zfdN1vqSLkAIhui+xhMWtyWQZPwB1qGMjQznjzluc6Oyc/OYUhkkaO8CY2xzbCCHjbUbN4vEnrVr7NC/eefWPt12zXa8sZzZLnTKGNNhMkxkUsiYE8VF6r0S1pYJw+8bUGqIwnELRq6pxvU/5Q2Tvw=
+	 MIME-Version:Content-Type; b=kN+P6ywKYfUOxDSaYpnuMSJv0bBjGfh8Akk1r3smKXjU+LQGe+7A9lKXV1uou6nDHBg69cj+t9IFuVZSPiO5/Cj+2a97HWA+Af0B56tHITiClaI1PXoqIzgzJNFqwcKRdX1NGSpbbMpmbpgUNs6GUwAq5fqEZ0od+1oMhPtqxQA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YzLKG2Hd5z6HJfV;
-	Fri, 21 Feb 2025 01:46:10 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YzLLN06tgz6M4hB;
+	Fri, 21 Feb 2025 01:47:08 +0800 (CST)
 Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5DFCD140257;
-	Fri, 21 Feb 2025 01:47:49 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id E23C0140A9C;
+	Fri, 21 Feb 2025 01:49:45 +0800 (CST)
 Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
  (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 20 Feb
- 2025 18:47:48 +0100
-Date: Thu, 20 Feb 2025 17:47:47 +0000
+ 2025 18:49:45 +0100
+Date: Thu, 20 Feb 2025 17:49:44 +0000
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
-	<Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <eraretuya@gmail.com>
-Subject: Re: [PATCH v2 07/14] iio: accel: adxl345: add double tap suppress
- bit
-Message-ID: <20250220174747.0000157a@huawei.com>
-In-Reply-To: <CAFXKEHY+ozW=r17fdvKYhyWDKkddZxptp5kFKdD9k4mwjutPbQ@mail.gmail.com>
-References: <20250210110119.260858-1-l.rubusch@gmail.com>
-	<20250210110119.260858-8-l.rubusch@gmail.com>
-	<20250216172845.2fe98ea1@jic23-huawei>
-	<CAFXKEHY+ozW=r17fdvKYhyWDKkddZxptp5kFKdD9k4mwjutPbQ@mail.gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, David Lechner
+	<dlechner@baylibre.com>, Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	<linux-iio@vger.kernel.org>, Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: Re: [PATCH 5/8] iio: accel: kx022a: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <20250220174944.000046d9@huawei.com>
+In-Reply-To: <cb5dba6e-79cd-4752-a2fb-6cfa1913e2eb@gmail.com>
+References: <20250217140135.896574-1-jic23@kernel.org>
+	<20250217140135.896574-6-jic23@kernel.org>
+	<0e17116e-6160-4920-83d9-086218245299@gmail.com>
+	<85d97cbe-9d34-462c-a89f-de6fc1ac6e34@baylibre.com>
+	<ead33fc6-48b9-488c-8993-2ca647e59735@gmail.com>
+	<df700bd7c8d3aab89177b122ed9adf0269bde62d.camel@gmail.com>
+	<ade6ee75-7f38-4826-9359-2411165decb5@gmail.com>
+	<2ad4ca67-5a70-4b7b-b744-d9bd92ce386a@baylibre.com>
+	<20250219190500.01457211@jic23-huawei>
+	<cb5dba6e-79cd-4752-a2fb-6cfa1913e2eb@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,241 +66,115 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml500010.china.huawei.com (7.191.174.240) To
  frapeml500008.china.huawei.com (7.182.85.71)
 
-On Tue, 18 Feb 2025 23:29:46 +0100
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Thu, 20 Feb 2025 08:31:23 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Dear Jonathan, find my answer down below.
+> On 19/02/2025 21:05, Jonathan Cameron wrote:
+> > On Wed, 19 Feb 2025 09:25:00 -0600
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >  =20
+> >> On 2/19/25 6:21 AM, Matti Vaittinen wrote: =20
+> >>> On 19/02/2025 12:51, Nuno S=E1 wrote: =20
+> >>>> On Wed, 2025-02-19 at 07:36 +0200, Matti Vaittinen wrote: =20
+> >>>>> On 18/02/2025 17:42, David Lechner wrote: =20
+> >>>>>> On 2/18/25 1:39 AM, Matti Vaittinen wrote: =20
+> >>>>>>> On 17/02/2025 16:01, Jonathan Cameron wrote: =20
+> >>>>>>>> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>>>>
+> >>>>>>>> These new functions allow sparse to find failures to release
+> >>>>>>>> direct mode reducing chances of bugs over the claim_direct_mode()
+> >>>>>>>> functions that are deprecated.
+> >>>>>>>>
+> >>>>>>>> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >>>>>>>> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>>>>>> ---
+> >>>>>>>>  =A0=A0=A0 drivers/iio/accel/kionix-kx022a.c | 14 ++++++--------
+> >>>>>>>>  =A0=A0=A0 1 file changed, 6 insertions(+), 8 deletions(-)
+> >>>>>>>>
+> >>>>>>>> diff --git a/drivers/iio/accel/kionix-kx022a.c
+> >>>>>>>> b/drivers/iio/accel/kionix-kx022a.c
+> >>>>>>>> index 727e007c5fc1..07dcf5f0599f 100644
+> >>>>>>>> --- a/drivers/iio/accel/kionix-kx022a.c
+> >>>>>>>> +++ b/drivers/iio/accel/kionix-kx022a.c
+> >>>>>>>> @@ -577,13 +577,12 @@ static int kx022a_write_raw(struct iio_dev=
+ *idev,
+> >>>>>>>>  =A0=A0=A0=A0=A0=A0=A0=A0 * issues if users trust the watermark =
+to be reached within known
+> >>>>>>>>  =A0=A0=A0=A0=A0=A0=A0=A0 * time-limit).
+> >>>>>>>>  =A0=A0=A0=A0=A0=A0=A0=A0 */
+> >>>>>>>> -=A0=A0=A0 ret =3D iio_device_claim_direct_mode(idev);
+> >>>>>>>> -=A0=A0=A0 if (ret)
+> >>>>>>>> -=A0=A0=A0=A0=A0=A0=A0 return ret;
+> >>>>>>>> +=A0=A0=A0 if (!iio_device_claim_direct(idev))
+> >>>>>>>> +=A0=A0=A0=A0=A0=A0=A0 return -EBUSY; =20
+> >>>>>>>
+> >>>>>>> Not really in the scope of this review - but in my opinion the lo=
+gic of
+> >>>>>>> this check is terribly counter intuitive. I mean,
+> >>>>>>>    =20
+> >>>>>>>> +=A0=A0=A0 if (iio_device_claim_direct(idev))
+> >>>>>>>> +=A0=A0=A0=A0=A0=A0=A0 return -EBUSY; =20
+> >>>>>>
+> >>>>>> I'm curious how you read this then. I read this as:
+> >>>>>>
+> >>>>>> "If claiming direct mode succeeded, then return an error!" =20
+> >>>>>
+> >>>>> I am used to seeing a pattern where function returning zero indicat=
+es a
+> >>>>> success. I have no statistics but I believe this is true for a vast
+> >>>>> majority of functions in the kernel. I believe this was the case wi=
+th
+> >>>>> the old 'iio_device_claim_direct_mode(idev)' too.
+> >>>>>    =20
+> >>>>
+> >>>> Fair enough... Note though this is returning a boolean where true ma=
+kes total
+> >>>> sense for the "good" case. I do agree it's not super clear just by r=
+eading the
+> >>>> code that the API is supposed to return a boolean. =20
+> >>>
+> >>> Exactly. Just seeing the call in code was not obvious to me. It requi=
+red finding the prototype to understand what happens.
+> >>>
+> >>> Anyways, I guess this discussion is out of the scope of this patch an=
+d if no one else sees this important enough to go and change the iio_device=
+_claim_direct() - then I am fine with this patch. So, with a bit of teeth g=
+rinding:
+> >>>
+> >>> Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>>
+> >>> Yours,
+> >>>  =A0 -- Matti
+> >>>
+> >>>     =20
+> >>
+> >> Would a name like iio_device_try_claim_direct_mode() make it more
+> >> obvious that it returned a bool instead of int? =20
+> >=20
+> > FWIW I'd consider this a reasonable change if people in general
+> > find it more intuitive.  Conveys to those not familiar with the
+> > fun of IIO that failure is something we kind of expect to happen. =20
 >=20
-> On Sun, Feb 16, 2025 at 6:28=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
-> >
-> > On Mon, 10 Feb 2025 11:01:12 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > =20
-> > > Add the suppress bit feature to the double tap feature.
-> > >
-> > > Any tap event is defined by a rising signal edge above threshold, i.e.
-> > > duration time starts counting; and the falling edge under threshold
-> > > within duration time, i.e. then the tap event is issued. This means
-> > > duration is used individually for each tap event.
-> > >
-> > > For double tap detection after a single tap, a latency time needs to =
-be
-> > > specified. Usually tap events, i.e. spikes above and returning below
-> > > threshold will be ignored within latency. After latency, the window
-> > > time starts counting for a second tap detection which has to happen
-> > > within a duration time.
-> > >
-> > > If the suppress bit is not set, spikes within latency time are ignore=
-d.
-> > > Setting the suppress bit will invalidate the double tap function. The
-> > > sensor will thus be able to save the window time for double tap
-> > > detection, and follow a more strict definition of what signal qualifi=
-es
-> > > for a double tap. =20
-> >
-> > Silly question.  Is there a reason this function would ever be
-> > turned off?   Seems like a sensible heuristic that would not stop
-> > genuine double taps being detected.  Maybe we just always leave it on?
-> >
-> > Sometimes the best ABI is the one that doesn't exist as userspace
-> > can't use it wrong.
-> >
-> > Jonathan
-> > =20
->=20
-> hehehe..  you already mentioned this point, I guess. At least I tried
-> to put my understanding of it into the lengthy comment of the patch.
-> Well, patches with lengthy comments.... this seems to go into the same
-> direction as the wisdom of better limiting userspace interfaces in
-> general ;)
->=20
-> TBH you have probably seen far more sensors than me, as I'm doing this
-> just as hobbyist to learn and for fun. I only can provide my
-> understanding of the particular datasheet.
-> I think, to set or not to set this bit changes little. It influences a
-> bit how restrictive the latency period is handled at detection.
-> Doubletaps are detected with or without having the "suppress" bit set.
-> If set, AFAIK it could be harder to detect doubletaps. So to speak,
-> you could reduce "noise" in double tapping (?), or if one receives too
-> many double taps...(?) perhaps,  ..eh.. legal reasons?! Personally,
-> I'd liked to play with this sensor a bit, and I found it then useful
-> to have some kind of knob to change a bit and see what happens without
-> really messing things up.
-> As I'm not too familiar with the accelerometer scene and such kind of
-> "power user settings". I'm unsure if there are typical usecases here.
-> I would agree that usually one would leave that in one  setting,
-> turned on or off (unless he/she enters in obsession with double taps).
->=20
-> Perhaps I'll change this patch so that it's always set or not set (to
-> bring it initially into a defined state), but no sysfs is around.
-> Let's see. If you think I'd better just drop it entirly, let me know
-> then.
-I think default to always set.  We can revisit the ABI question later
-if turns out to have be something people change in practice!
+> As I replied to David's mail - for me renaming is not likely to make a=20
+> big difference - but maybe it would help someone who is more used to the=
+=20
+> mutex_trylock() and alike. I'd still like to see someone else thinking=20
+> that renaming would help before asking for anyone to go through that hass=
+le.
+Ok. I'll leave it as is for now. I don't mind circling back to this
+eventually. I just don't want to have a mass rename in the middle of
+making the change to the new ABI as it would be really messy.
 
 Jonathan
 
 >=20
-> Best,
-> L
->=20
-> > =20
-> > >
-> > > This brings in a new ABI functionality.
-> > > ---
-> > > Q: Perhaps there is already some IIO ABI for it? If not, please let me
-> > > know which ABI documentation to extend. There will be a documentation
-> > > patch also later in this series.
-> > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > ---
-> > >  drivers/iio/accel/adxl345_core.c | 82 ++++++++++++++++++++++++++++++=
-++
-> > >  1 file changed, 82 insertions(+)
-> > >
-> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
-l345_core.c
-> > > index cf35a8f9f432..b6966fee3e3d 100644
-> > > --- a/drivers/iio/accel/adxl345_core.c
-> > > +++ b/drivers/iio/accel/adxl345_core.c
-> > > @@ -34,6 +34,7 @@
-> > >  #define ADXL345_INT2                 1
-> > >
-> > >  #define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
-> > > +#define ADXL345_REG_TAP_SUPPRESS_MSK BIT(3)
-> > >
-> > >  enum adxl345_axis {
-> > >       ADXL345_Z_EN =3D BIT(0),
-> > > @@ -81,6 +82,7 @@ struct adxl345_state {
-> > >       u32 tap_duration_us;
-> > >       u32 tap_latent_us;
-> > >       u32 tap_window_us;
-> > > +     bool tap_suppressed;
-> > >
-> > >       __le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned=
-(IIO_DMA_MINALIGN);
-> > >  };
-> > > @@ -243,6 +245,31 @@ static int adxl345_set_doubletap_en(struct adxl3=
-45_state *st, bool en)
-> > >       return _adxl345_set_tap_int(st, ADXL345_DOUBLE_TAP, en);
-> > >  }
-> > >
-> > > +static int adxl345_is_suppressed_en(struct adxl345_state *st, bool *=
-en)
-> > > +{
-> > > +     *en =3D st->tap_suppressed;
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > > +static int adxl345_set_suppressed_en(struct adxl345_state *st, bool =
-en)
-> > > +{
-> > > +     unsigned long regval =3D 0;
-> > > +     int ret;
-> > > +
-> > > +     en ? __set_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval)
-> > > +             : __clear_bit(ilog2(ADXL345_TAP_SUPPRESS), &regval);
-> > > +
-> > > +     ret =3D regmap_update_bits(st->regmap, ADXL345_REG_TAP_AXIS,
-> > > +                              ADXL345_REG_TAP_SUPPRESS_MSK, regval);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     st->tap_suppressed =3D en;
-> > > +
-> > > +     return 0;
-> > > +}
-> > > +
-> > >  static int adxl345_set_tap_threshold(struct adxl345_state *st, u8 va=
-l)
-> > >  {
-> > >       int ret;
-> > > @@ -616,6 +643,60 @@ static int adxl345_write_raw_get_fmt(struct iio_=
-dev *indio_dev,
-> > >       }
-> > >  }
-> > >
-> > > +static ssize_t in_accel_gesture_doubletap_suppressed_en_show(struct =
-device *dev,
-> > > +                                                          struct dev=
-ice_attribute *attr,
-> > > +                                                          char *buf)
-> > > +{
-> > > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
-> > > +     bool en;
-> > > +     int val, ret;
-> > > +
-> > > +     ret =3D adxl345_is_suppressed_en(st, &en);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +     val =3D en ? 1 : 0;
-> > > +
-> > > +     return iio_format_value(buf, IIO_VAL_INT, 1, &val);
-> > > +}
-> > > +
-> > > +static ssize_t in_accel_gesture_doubletap_suppressed_en_store(struct=
- device *dev,
-> > > +                                                           struct de=
-vice_attribute *attr,
-> > > +                                                           const cha=
-r *buf, size_t len)
-> > > +{
-> > > +     struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
-> > > +     struct adxl345_state *st =3D iio_priv(indio_dev);
-> > > +     int val, ret;
-> > > +
-> > > +     ret =3D kstrtoint(buf, 0, &val);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     ret =3D adxl345_set_measure_en(st, false);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     ret =3D adxl345_set_suppressed_en(st, val > 0);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     ret =3D  adxl345_set_measure_en(st, true);
-> > > +     if (ret)
-> > > +             return ret;
-> > > +
-> > > +     return len;
-> > > +}
-> > > +static IIO_DEVICE_ATTR_RW(in_accel_gesture_doubletap_suppressed_en, =
-0);
-> > > +
-> > > +static struct attribute *adxl345_event_attrs[] =3D {
-> > > +     &iio_dev_attr_in_accel_gesture_doubletap_suppressed_en.dev_attr=
-.attr,
-> > > +     NULL
-> > > +};
-> > > +
-> > > +static const struct attribute_group adxl345_event_attrs_group =3D {
-> > > +     .attrs =3D adxl345_event_attrs,
-> > > +};
-> > > +
-> > >  static void adxl345_powerdown(void *ptr)
-> > >  {
-> > >       struct adxl345_state *st =3D ptr;
-> > > @@ -899,6 +980,7 @@ static irqreturn_t adxl345_irq_handler(int irq, v=
-oid *p)
-> > >
-> > >  static const struct iio_info adxl345_info =3D {
-> > >       .attrs          =3D &adxl345_attrs_group,
-> > > +     .event_attrs    =3D &adxl345_event_attrs_group,
-> > >       .read_raw       =3D adxl345_read_raw,
-> > >       .write_raw      =3D adxl345_write_raw,
-> > >       .write_raw_get_fmt      =3D adxl345_write_raw_get_fmt, =20
-> > =20
+> Yours,
+> 	-- Matti
 >=20
 
 

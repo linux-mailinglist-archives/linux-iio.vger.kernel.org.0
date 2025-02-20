@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-15899-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15900-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF82A3E688
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 22:29:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386FCA3E6A1
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 22:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87268421801
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABBA93AFDB9
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 21:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0F4264618;
-	Thu, 20 Feb 2025 21:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F40265624;
+	Thu, 20 Feb 2025 21:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="njYD2RKo"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="WL38YEcX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AE71E9B07
-	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 21:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD700264627
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 21:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740086896; cv=none; b=c3Qu4nhkAKjEtuWIrzmOMDdG1hm20df0OeKlVcQlb16rjlwpunJlwUi7+ovQvNCGPOmn5zo8agKnZVke//SR9UGm/pgP/EhqytsUijY0aADxTPUASzAiTeLA22iy45siZqYk+2vy6vJd9/GuqWKUeJwXJ8Hb1ZUc4cP5x80CJq0=
+	t=1740087044; cv=none; b=HzFSUk1ANsaB81ICB1//PBI5nb6OusED8lrw460zI3ceCZt/6+GY8LHLkGGXYP3Xog+jSOOizsWHYR0zb3MicIyNyYBsnlU8VEAG0drDuwRW9HFzW4FRgpuQDucGRlhF+YI3eUXIe84o2JH4wSvIloGg88iEPKYz6jOgNVE7Y+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740086896; c=relaxed/simple;
-	bh=69TZTw72i0WbMFKkXJ+zviVWNEe2WbKT6MwDrizfopk=;
+	s=arc-20240116; t=1740087044; c=relaxed/simple;
+	bh=4IlTTn57fzjGT5neuC60L+1dIx72n+UtfQr5bV/D27w=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j7O0x4mXG9ZOgq2z+wxqlub99mf9MIvVYmQPqJjFr31LmoyYF8wfUB3eVdkppH2bkeLbKk8gbWsR2FX7R1Oxlpijy08BKEVHLIMxfOULUSyh+83a5eT/bPMJRyVZGatRtlX5mdZU8dk13mJDW5I2xzBEh2Yzkoha6r0+pqw0GHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=njYD2RKo; arc=none smtp.client-ip=209.85.210.50
+	 In-Reply-To:Content-Type; b=hkqW+tu1grfVaeo7xqqeiBQ2+gB22BDSjuKERtgTp6iHqUQUDnlWRR2/084X6bSaCLN3W8JehCx7CB0d6rx7go2XxxuWRZjVouKfpNkohnykEVw6Fe70FeCh98HGganSIyONIVJzKBKxX5jXcaYyX588/Wy5KFmMdB3u/9nO114=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=WL38YEcX; arc=none smtp.client-ip=209.85.161.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-724d1724657so1286823a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 13:28:12 -0800 (PST)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5fc0c06e1deso650198eaf.1
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 13:30:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740086892; x=1740691692; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740087041; x=1740691841; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8teI2aiwjM2Kr13WVKdYP+m3dqKKJCEMI2qtWnMC/Ws=;
-        b=njYD2RKoZMEqZSxfNlR9wePX+bJH9hRXaL+IhXX7dTVB21WY55+a4gLTgb9azPIzJL
-         clyCQVgyHULHkwZ6TlgKnaRqVVyeHcA2ek85+zi8+MDVqgbHIH0ZzQXSgiwLzvIodwH5
-         S6Mg49dFtcwSMOxU6L8UDCbIT71guJmbIRkKyF1sANcHIdcX2hKfAaokD0UmxrPDSItM
-         CpEqbTuy5fNySoYvbppWNGiFz6HpBd9TRfhjB7oRgTmNsAn/4B0QZPUaIl7EDZoNXUqa
-         1J/Um7t+dQwWVZTUJ9+8JicFud1HDtB++rNkT/ax3tpu37hznsF3M0EmzJ8GXCg6TH84
-         m+JA==
+        bh=uFd/eiSziPMZWtzl8X1O2OHBJVjEs/2F5XFS5d1bJIM=;
+        b=WL38YEcXKPC5A0lyLdMO7ESMN3vYT7V6skgjG2buZyS3+afeDPTUZht0CCtUF1YJOk
+         Oicd1U730PU7/dz7EA/HsDsY8nJGhqC0Tisr08+LNMhN3ijhaHe8A0vRudxfLW18SA2A
+         +Zr5LvEhyrVhT+AHZHYphBUq+VtTqNIymabTUHMmEjQuWT83mmF7P2J1UHXez1nFb74k
+         ZQnWV3bRZDXRKbBBjv5jQkkN3hcTyp/xH/sjVh+SAytNMSONraBoP1r7uwSlQafQTpZ4
+         caTqmQa/GdrZRZewMS0M2xcjm60HgBhcpKJ+1fwsU88+02wN1Yi4fW1poviJqUDYPPs3
+         8CUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740086892; x=1740691692;
+        d=1e100.net; s=20230601; t=1740087041; x=1740691841;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8teI2aiwjM2Kr13WVKdYP+m3dqKKJCEMI2qtWnMC/Ws=;
-        b=flAbrVlfPv84SSK268KshAwOqeySC4leW2/pC7tPWibKtLXmyYanbGvpM0zGxNbb9V
-         5XzOCCGRDdE9lyPu6IACYPTdksXYGbcfyjz6Nu9BAOpWns5liZcrRLAhtyQn5Pvik0i/
-         jGdYGYsVFIx7nInFrUQ8Pmqtv8ndSDKL+g02v5iPNtFgN2tS1Ia162IxVmhgubv9mJUH
-         5ca8121wXubXr2wLE2AlaUZWDbYy6IzIOIrtuf6Pdx9ihNt/LwvY2koRJ9k2Uhuj1hzS
-         GD444eLokRYAciXLt3+S4E350grdvsxNHBj76wv5+H/4rPcwTtVGVEv1sr2Zagy/2lTN
-         B6XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGvH8BJB2uZriJD9orf2cqGIfjov8M4B4+wLmhxz1Rt8lmjczWB0sgZsiQTk3WAodVY2kQ4WhQkgs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy66BziROq4aPV4xu1IyQsLge3QfVclvLFZMeSZtuxsoheQ9HHU
-	6cKIT+U6Ie3dhocR8bB072YnmhJiIIdWU0duAuoV0mqNNE/R98XvD0HYCnZbNJ0=
-X-Gm-Gg: ASbGncu0V4UpeINQ5/OmAq5eVkwI9P9KdPGXzbHVjLyrqXac1yxkzBSKAbxfR8PIqHx
-	1aM6OcHTD9zUy9nTmoafoFsAVGIrUTrGF5M3TIAIJFA81xrLj7o6fXcyqwWDkAF80/YBkMmleCG
-	vbjr5aBIz8o3hVqAUQ68u7JqwoP5MDl4Ii13mfruqxvd3Fxb9tQh0n+dttvQ4kqU8yrrWAaMVr7
-	1ITpNg4bL9s3eZ6W/wgQVh3obxqKEz/m4W4iu3AQSf3ofJYsQW9jGTxfNk5q6Ls2C9RPzwuuKXv
-	s17hz8HhOdzdmbrtkoXhFbSdaeIeGHPfnNuhvuhtzT+W7tHCOKZg
-X-Google-Smtp-Source: AGHT+IHda5wVskrjkmAKgdPIEC/DmfpBOlo13Gpd3qfbwGemyjoGs3i/euhKGLWCrnuYugHibNPpIQ==
-X-Received: by 2002:a05:6808:13:b0:3f3:b97d:769e with SMTP id 5614622812f47-3f419ef610dmr2889041b6e.7.1740086892179;
-        Thu, 20 Feb 2025 13:28:12 -0800 (PST)
+        bh=uFd/eiSziPMZWtzl8X1O2OHBJVjEs/2F5XFS5d1bJIM=;
+        b=FWrLKj8djH7Q8JCN93t3x5YXtWBG8R5KdpU+TLqxMiKbbUbtKY4KIBX5UZkQwmqFuv
+         hHyCiW/MqmLKo3XjoQszR0oulUVgWWtuWveDiGUbC5CG7Qa/+5MUgM5HsY481BXCKuJr
+         nbJFFuv5VfoLVwsxZWWFqn5LSqFZIrxriTLEgHuU+AaoZ8djPxyu8MswahTJSck9VjhJ
+         pMuESNQoMacAWXr+5uB4mZ7Nr6BGm5ERfYFTYyhNreIFftCLoDdZPQZOWQYfZTzzglTo
+         6VEfXaiDW0Cns1bCsthYUEzkMLUhO2oB8G2ZpknP/dgQOigK+mKl9lGKrYCx4lxD5YuC
+         nH1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVV4/lmEpFNs6CZAWmhRX5ugcFjZnIVZ+nx3JWZlvDrQWbtr5Y4+bSGc36bcIRV7/IktWp2Hj4R/Bk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJpdSYB9EPAsqn0j3SwMH72wtBz5PouTLIGR81AYl6RRHI8m0Q
+	GqLnLVqKM1Cg1nPq6e+hoOpLDKO4UkRZ7lQf3UqECkFg5ZBUwWCA2mtC4QqB3N4=
+X-Gm-Gg: ASbGncuXRikLs29hY1nfNKfJuDTR30yOkoyeChA0OHxQvYn7rdMvAtgvIZS47rqz+JY
+	r0y+g79BOKLnBBpxs6sZWxs0Vdw39/APP0fNCsVyt8xIs/r6XLnaL861Ed4o/oIFgukiyhFBKhN
+	PNFug/yGRJDtKQUhaddtTPs2gNAgN8f1P/adtgNxPbE+02UIkdBdgW+KbFl0XecjTDiUq8sqdR7
+	R4fENEcCzOlNo5OfJ+i6R2RZnGXWZhrMd15TpicL5Q1omzDVo7oyhCmVD3AuMkS7eJuFsgsbO8M
+	wczfl6b6OROl+n/L7PNW+ukv2uFkWdc2fpNVAqpFL0s7lALwdJlC
+X-Google-Smtp-Source: AGHT+IFqWxbZFRA1rz6PvPU2XODqbR9hz70tJhTG/+Dqectftq8EDR8raj5yvtCTiONyxW3BNF1Olg==
+X-Received: by 2002:a05:6820:1612:b0:5fd:50d:49e4 with SMTP id 006d021491bc7-5fd19648f16mr652519eaf.7.1740087040824;
+        Thu, 20 Feb 2025 13:30:40 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f40c3ad34asm1471933b6e.50.2025.02.20.13.28.09
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5fced377d94sm1875193eaf.32.2025.02.20.13.30.37
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 13:28:10 -0800 (PST)
-Message-ID: <42296bf2-2818-4224-9e52-d1fef59d8a76@baylibre.com>
-Date: Thu, 20 Feb 2025 15:28:09 -0600
+        Thu, 20 Feb 2025 13:30:39 -0800 (PST)
+Message-ID: <63e98010-860c-4d66-9cac-4f37d5e08f5c@baylibre.com>
+Date: Thu, 20 Feb 2025 15:30:37 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,8 +81,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 06/17] Documentation: ABI: add wideband filter
- type to sysfs-bus-iio
+Subject: Re: [PATCH RESEND v3 07/17] iio: adc: ad7768-1: remove unnecessary
+ locking
 To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
@@ -90,50 +90,24 @@ Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com,
  marcelo.schmitt1@gmail.com
 References: <cover.1739368121.git.Jonathan.Santos@analog.com>
- <aea512746712f8f6d07d29ec6977609c127fabe0.1739368121.git.Jonathan.Santos@analog.com>
+ <f866c5e181e9e77f4179c44a857cebd60dce32d2.1739368121.git.Jonathan.Santos@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <aea512746712f8f6d07d29ec6977609c127fabe0.1739368121.git.Jonathan.Santos@analog.com>
+In-Reply-To: <f866c5e181e9e77f4179c44a857cebd60dce32d2.1739368121.git.Jonathan.Santos@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2/12/25 12:16 PM, Jonathan Santos wrote:
-> The Wideband Low Ripple filter is used for AD7768-1 Driver.
-> Document wideband filter option into filter_type_available
-> attribute.
+On 2/12/25 12:17 PM, Jonathan Santos wrote:
+> The current locking is only preventing a triggered buffer Transfer and a
+> debugfs register access from happening at the same time. If a register
+> access happens during a buffered read, the action is doomed to fail anyway,
+> since we need to write a magic value to exit continuous read mode.
+> 
+> Remove locking from the trigger handler and use
+> iio_device_claim_direct_mode() instead in the register access function.
 > 
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > ---
-> v3 Changes:
-> * None, since we still did not agree on a better name for this filter type.
-> 
-
-I'm convinced at this point that "wideband" is fine.
-
-> v2 Changes:
-> * Removed FIR mentions.
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index f83bd6829285..9b879e7732cd 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -2291,6 +2291,8 @@ Description:
->  		* "sinc3+pf2" - Sinc3 + device specific Post Filter 2.
->  		* "sinc3+pf3" - Sinc3 + device specific Post Filter 3.
->  		* "sinc3+pf4" - Sinc3 + device specific Post Filter 4.
-> +		* "wideband" - filter with wideband low ripple passband
-> +		  and sharp transition band.
-
-The description could perhaps be made a bit more generic though
-instead of using specifics from the AD7768-1 datasheet. Something
-along the lines of Jonathan's 'flattish to a wide range of frequencies'
-description.
-
->  
->  What:		/sys/.../events/in_proximity_thresh_either_runningperiod
->  KernelVersion:	6.6
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

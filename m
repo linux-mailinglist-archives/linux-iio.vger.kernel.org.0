@@ -1,186 +1,150 @@
-Return-Path: <linux-iio+bounces-15824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35189A3D303
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 09:22:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6446AA3D32C
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 09:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD50C7A40EB
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 08:21:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313E23A7F0B
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 08:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BE01EB191;
-	Thu, 20 Feb 2025 08:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A751EB19A;
+	Thu, 20 Feb 2025 08:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDyeySPp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gl+bv8Gg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5275B1E991B;
-	Thu, 20 Feb 2025 08:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED7B1A7264;
+	Thu, 20 Feb 2025 08:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740039718; cv=none; b=q4g4pz5TsS9yyUF4s5ZnxUOplU3GJuwf9DRZrthFIvY2STc+/zB7c8/Zm5dFamAn1rsNJWjOUCZv3hs5gkW5UgNYyUuQoGAEQUwxivKxhfixw4Y4vhIDkkcwtO6QTWSgSEyb5kxsL6nph1No6hyblOhbKeUggFSvtzXGfutyeyo=
+	t=1740040164; cv=none; b=lOQ2yCMio3Ew2ve2UwkK1M0ljpdXGwupgn8DQLD4plG5c9aBdWApXvUssNrLqX8RqYllKota8i9q7knlWmZ5va0HC70WSnfsTs7lTGZw8rm0IbISBEAAN8ikmkggpizCKohqCKeVNglMOTmY31dnHI/IryUau6MsDLmVy6bsWek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740039718; c=relaxed/simple;
-	bh=SsMajwfrGg3VJCJ6ZPr26vGAegzi7N89NtDYAbZx0IQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bb9DV5xBTMco6lgTwjpgvKYdCBS2c6JoCTryNmHGBDJhjQd6CyhAvK3GRTQuTV1v0q5OScAKy0iYhNVuTWAHIrnO61QcJBginluqYXmFBVAG2/yQwm/EmaR5xom1nARKQlJUr1ngxAW7dw4eCSNk7wPS68pBwmja/2Lx+aHbWuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bDyeySPp; arc=none smtp.client-ip=209.85.208.54
+	s=arc-20240116; t=1740040164; c=relaxed/simple;
+	bh=80cf8zlzFwBqoh821Ay6AOl2kStY62G7PZJrZaBE1w8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g7Aizzo025AwUf+sjSP0KasWQph8KmD1WtBm+hPhqRYuktxAst4y8g9Sxc9OR1ryoedGlWs9hJSxt+sA32L4BwiIHkELc5ppVZ13/vGuGNb5r/YOirQjeq2S34wrOQT7+IOP0e/iPrOlG5iB1zXfCh2HCcb3AR6CrGzFm4uKH+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gl+bv8Gg; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5dedd4782c6so1205033a12.3;
-        Thu, 20 Feb 2025 00:21:55 -0800 (PST)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220c8f38febso11584885ad.2;
+        Thu, 20 Feb 2025 00:29:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740039714; x=1740644514; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lrrXspfQLmbYxP8R0lXUq4D1w3aPsGzOwm5WY8qSB74=;
-        b=bDyeySPpQHyrwePeh501nuDlvBWXE5ikP8VzZ0jHxqrUcxWSOVe6dS0BCPwI6bQO6K
-         vtBx3Pwv5mYpRXJEIczA0fVlBuWqJIR4j5qPQJ58KZ0kWJI+cguj5KNB5m580WGJva3E
-         mF79L7Yg7a4GmMWBrC8coyKP3BQiviO8FJFUgWkNusUHPjDUg9+EyDD8belC4Uhz6AAm
-         BdpBZ/exrl8qRkY+b99VT+LJtodbxcj4VFeLakkKnTvbDZ2c6pjEL5BAiZRRkQwMNrxU
-         L9KXuypjD2WgwH7MiLsUbJbJdAtYTPhuo3Pfxiax08bVUM9pvNgawKt6J0pHUvfPymcv
-         669Q==
+        d=gmail.com; s=20230601; t=1740040162; x=1740644962; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=F56dqNOXtbjyXTzhGsxb0Jrv3YT4/cs1TT3uTV3uBp0=;
+        b=gl+bv8GgRzze0pcM0U4Tlfj9GkliBlC/cXt5H9PVx5jCcqKVvU3LO9GsL3sKRxTDSq
+         IOIMJ4aXZF1vG9B9eBYMVW29uMAi5HP5DokL19JcdcAg5nLYu1uaZlHwfmAg4jPOSMCR
+         Gmu86JAJZ42wsW8Tv2+vYiXjPUlHj89tCaD+6dCaalXr5a9gZo2VGtnc20CilRAeHDrE
+         UdOltKrl/T4SbeRMpR15/BKf296sfh4KW2DX849LuesYbY6oYlbv/GEurBPmIWsTLpQJ
+         3bJ6YjBRjUjNCxBFRGxACiKAAb2FFjnTgWTy0RkYnr5ONfDfELRyUPtgWQ0/61wQWZk3
+         ZkxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740039714; x=1740644514;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lrrXspfQLmbYxP8R0lXUq4D1w3aPsGzOwm5WY8qSB74=;
-        b=neDOWuYJAsp9JfkKEany5igUFWK2zUVVEyGIOsNdid3c1Tup8RvFs6yctcQXM7OmIb
-         ojJTisU8/4uWYFlkPovxR/z0HBsM+/kzkt+E6itn0DfFyGVVjV4Wl7O3mXT5loX+LoD4
-         fY0oRz0RJu6BwV5VOwej8zWGCCeXkT0c8bia0RJpiJntKyNI9BNiwf0WpyVaGZydmHB8
-         YoDVRlOidkSEv8Wvl6UKzG/2Y3KiR5oqaL9+FY/2VAM/ndwoMlR9x02ZnBBCqp03GtRy
-         LyCPuTIGdg/U3JJKL2+NV/lxRY8nij1I3DpFhXhvSOBo0L2Hcr5Wsq3N5pjzJoYyCOiE
-         iuJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUTgqQ66o4sDg4T0tE0cToDsnzjo7bg0YsyAuCtZg13rdo3wlnLeqACLAeL57IS2MkvNSYf63Yi+zLdmXFH@vger.kernel.org, AJvYcCV1teXEXV3JldVxMhCwQw4VPS/4NmbKN9CXgt88VIAfaGrBqFmAX1oPRe8g8W13awtJXz8ZX0I5XOpE@vger.kernel.org, AJvYcCVPVUvmsGmhSJ70yimvaLiKE4JrRmIovYJHZGOCCDdZIkh9N++DE6FIQs7+dYQC+NwHxafC4LRH1ZFM@vger.kernel.org, AJvYcCWKbGyBHQcOV+TEnyHogWmQ37k4Pi8QYuX8Xc9DkWFGtY6GZaqy5qkqSqFaKMqyXf6bCldRz+p8r88a@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGsLfRYTkkk6F6HCzYTmj9rjPKHlH8D82Bwn+6ScB6pZLxVmsV
-	u22EUOkq7Dby0TSWI9AgqRoeSjdHSg0467F/nybSa3IpmOoGkbhl
-X-Gm-Gg: ASbGncsYaBSJ7hWNAdtZzhEKiLG1iUE+y2khdLaQQLw5PsSpwCGLV18cwqrugZXyrGu
-	DxvQkrgT+qQlJoua5vvCqKZsGa0LPiy9ING9cQvGSAqIJPZYoWL7tQphhRDhmyx7l6Yzi0QX+eP
-	j9cnIpJbGYSnE3D8qsgrAKDZerRuTK2a1RqODDOP7rOIfisUiGABG8Pz6M/b50TpRi9zBq1dRV1
-	u6UsBSY/v4HhZ2xkcppGfUibB71SFF+dQqNHJxGZK/hkmPFybFr88zP1y0Jr+TTKiqA+Lv2/gVu
-	8byCNdsDToZyG7LMXzOSBviTjp/BtBYdKMnKpdGBIit0+vKTZRYd4t2eSa4dVzU=
-X-Google-Smtp-Source: AGHT+IFnAgs7LaeLetE3gQxqyKpSoHEV10DFP+3zBkEqkOfu+rvETWAhEz7oKNTkMmV3JRW0/TNHwA==
-X-Received: by 2002:a05:6402:278a:b0:5db:f26d:fff8 with SMTP id 4fb4d7f45d1cf-5e0361cbe0amr19369313a12.22.1740039714170;
-        Thu, 20 Feb 2025 00:21:54 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece2721d9sm11937261a12.56.2025.02.20.00.21.52
+        d=1e100.net; s=20230601; t=1740040162; x=1740644962;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F56dqNOXtbjyXTzhGsxb0Jrv3YT4/cs1TT3uTV3uBp0=;
+        b=PNdnbrLklP8rYBQE03E9GTBqMqQK5ru0qJ/a53Xm/IXSZ/PBnvIypTdL8wkb8aJBYu
+         ak+LANAlHi1IL8hcmW9QnosG4b9uoThfFLjD03veWcsmBGIY5MRltFdKMrhV+7uAKH/X
+         JfxJacyg1K2lLziSOGTF5mhg5AnXmX6vgFHWVL75ajQ/qmWKFMPAD4GtZvxQ3oXdrDm/
+         2WSEvNjv18gwEPUcPgkaqg57lBteaFeElX36SvqC/8/Flt2fVTV9BSxjKRVzvdC+0KM7
+         iTwD71lhiD393s5bV/uv/JieAakvNQUbp1zBIoRZgiROU4LkFJHjKhhyMuTZJKG43RHm
+         K+6g==
+X-Forwarded-Encrypted: i=1; AJvYcCVyqBI147iTC4C9cneBgqWhFYHDzlEsNWviL7AcUEWtoF0m2Srbb4rwtGNU6Xv4ZfHEIsI0cz5/prvSoO1M@vger.kernel.org, AJvYcCWdf6oiJKSzyLfdNwg5dWcSagBkzrCIN4ALTzmll8NzIq6vNjhAveygbarF5qJcEFtVGyS8K2mCLUKf@vger.kernel.org, AJvYcCWjalGba73DTVFwYu2VVKZGNV4vgipKTfTu+MvlWUXyT8k/NJ0aAbQw/T4ilpFDu8G+MMJa4pHGOtQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCgnV0qOkGbWJ7u8xHof2AISi0wClwtSGXz3mg8seyWHEPdjhl
+	35/iFveIm9dc4yfMg7+K3ybojNdmdifp4Fds6V0IQnLNmBqU8znY
+X-Gm-Gg: ASbGncsu65TxpLfuRFI8rBBQYXNNjcfIciSYNbcQbCO831nlA0J35tcRbRpnZHB5ytJ
+	YZQyJj+nd7epVq9G8hM0waXnfvDi+vJ+N6CkU6nYZ+pwHjbqAaX5GXvJAxgXuxsofPmO0f6f+np
+	B+Uu/FMukipn9fs5OyyHq5RFgo8BeuDMhB5ddnBomzWnS+Jb25gPZ4N47uJdh3mVvsa0adsRgXM
+	gEVdVd0nyMjz1tn5YgyNl6INK40Jxw2vUzRPFRdBe+DacNSmCjqImdYMkqwkEOnT1EmlmogM2un
+	ws1LI4ZgYORQVe4=
+X-Google-Smtp-Source: AGHT+IEFoRMxUuPJ5Gn8TKY4GqpAz7yGpt5G5frKd4twOqJcw5bSWSYR4ZnKTlEykRD6+ahXb9c8GA==
+X-Received: by 2002:a05:6a00:190e:b0:730:79bf:c893 with SMTP id d2e1a72fcca58-73417248c3emr2609762b3a.4.1740040161695;
+        Thu, 20 Feb 2025 00:29:21 -0800 (PST)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-732532ce7f1sm11296452b3a.73.2025.02.20.00.29.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 00:21:53 -0800 (PST)
-Message-ID: <aee93ef96e71adf70a48ee5877bd75966d9c78c1.camel@gmail.com>
-Subject: Re: [RESEND PATCH v8 5/6] iio: imu: adis16550: add adis16550 support
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Robert Budai <robert.budai@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- Sa <nuno.sa@analog.com>, Ramona Gradinariu	 <ramona.gradinariu@analog.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>,  Jonathan Cameron	
- <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski	
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet	
- <corbet@lwn.net>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Date: Thu, 20 Feb 2025 08:21:56 +0000
-In-Reply-To: <20250217105753.605465-6-robert.budai@analog.com>
-References: <20250217105753.605465-1-robert.budai@analog.com>
-	 <20250217105753.605465-6-robert.budai@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+        Thu, 20 Feb 2025 00:29:20 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id B98EA4208FB6; Thu, 20 Feb 2025 15:29:17 +0700 (WIB)
+Date: Thu, 20 Feb 2025 15:29:17 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, corbet@lwn.net,
+	dlechner@baylibre.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH v4 1/1] Documentation: iio: Add ADC documentation
+Message-ID: <Z7bn3TEC4faXbzEj@archie.me>
+References: <e6ac2a595f06ba2d5ff0eb86e5895479c9dd797f.1739998491.git.marcelo.schmitt@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="fA1JDFFS27HEYYIl"
+Content-Disposition: inline
+In-Reply-To: <e6ac2a595f06ba2d5ff0eb86e5895479c9dd797f.1739998491.git.marcelo.schmitt@analog.com>
 
-On Mon, 2025-02-17 at 12:57 +0200, Robert Budai wrote:
-> The ADIS16550 is a complete inertial system that includes a triaxis
-> gyroscope and a triaxis accelerometer. Each inertial sensor in the
-> ADIS16550 combines industry leading MEMS only technology with signal
-> conditioning that optimizes dynamic performance. The factory calibration
-> characterizes each sensor for sensitivity, bias, and alignment. As a
-> result, each sensor has its own dynamic compensation formulas that
-> provide accurate sensor measurements.
->=20
-> Co-developed-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Co-developed-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> Signed-off-by: Robert Budai <robert.budai@analog.com>
-> ---
->=20
 
-I guess it would make sense a Co-developed-by: for Robert?
+--fA1JDFFS27HEYYIl
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Anyways, all looks good except for one thing that I just spotted...
-
-> v8:
-> - removed __aligned from struct adis16550, as suggested
-> - crc buffer extraction into the crc check function
-> - passed buffer into crc validation as original, __be32 and performed che=
-ck
-> using be32_to_cpu conversion of the buffer
-> - added trailing comma to line 993
-> - removed trailing comma from line 877
->=20
-> =C2=A0drivers/iio/imu/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 13 +
-> =C2=A0drivers/iio/imu/Makefile=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 1 +
-> =C2=A0drivers/iio/imu/adis16550.c | 1149 ++++++++++++++++++++++++++++++++=
-+++
-> =C2=A03 files changed, 1163 insertions(+)
-> =C2=A0create mode 100644 drivers/iio/imu/adis16550.c
->=20
-
-...
-
->=20
-> +static int adis16550_set_freq_hz(struct adis16550 *st, u32 freq_hz)
-> +{
-> +	u16 dec;
-> +	int ret;
-> +	u32 sample_rate =3D st->clk_freq_hz;
-> +	/*
-> +	 * The optimal sample rate for the supported IMUs is between
-> +	 * int_clk - 1000 and int_clk + 500.
-> +	 */
-> +	u32 max_sample_rate =3D st->info->int_clk * 1000 + 500000;
-> +	u32 min_sample_rate =3D st->info->int_clk * 1000 - 1000000;
+On Wed, Feb 19, 2025 at 06:00:56PM -0300, Marcelo Schmitt wrote:
+> +For a **single-ended bipolar** channel, the analog voltage input can go =
+=66rom
+> +-VREF to +VREF (where -VREF is the voltage reference that has the lower
+> +electrical potential while +VREF is the reference with the higher one). =
+Some ADC
+> +chips derive the lower reference from +VREF, others get it from a separa=
+te
+                                                  "... obtain it ..."
+> +input. Often, +VREF and -VREF are symmetric but they don't need to be so=
+=2E When
+> +-VREF is lower than system ground, these inputs are also called single-e=
+nded
+> +true bipolar. Also, while there is a relevant difference between bipolar=
+ and
+> +true bipolar from the electrical perspective, IIO makes no explicit dist=
+inction
+> +between them.
 > +
-> +	if (!freq_hz)
-> +		return -EINVAL;
-> +
-> +	adis_dev_auto_lock(&st->adis);
-> +
-> +	if (st->sync_mode =3D=3D ADIS16550_SYNC_MODE_SCALED) {
-> +		unsigned long scaled_rate =3D lcm(st->clk_freq_hz, freq_hz);
-> +		int sync_scale;
-> +
-> +		if (scaled_rate > max_sample_rate)
-> +			scaled_rate =3D max_sample_rate / st->clk_freq_hz * st-
-> >clk_freq_hz;
-> +		else
-> +			scaled_rate =3D max_sample_rate / scaled_rate *
-> scaled_rate;
-> +
-> +		if (scaled_rate < min_sample_rate)
-> +			scaled_rate =3D roundup(min_sample_rate, st-
-> >clk_freq_hz);
-> +
+> <snipped>...
+> +In the ADC driver, ``differential =3D 1`` is set into ``struct iio_chan_=
+spec`` for
+> +the channel. Even though, there are three general input types, ``differe=
+ntial``
+> +is only used to distinguish between differential and not differential (e=
+ither
+                                                   "... non-differential ..=
+=2E"
+> +single-ended or pseudo-differential) input types. See
+> +``include/linux/iio/iio.h`` for more information.
 
-I would imagine the above is the same deal as in other devices [1] or do yo=
-u
-know for a fact this one is different? Maybe it's simple enough for Jonatha=
-n to
-tweak while applying...
+Thanks.
 
-[1]: https://elixir.bootlin.com/linux/v6.13.3/source/drivers/iio/imu/adis16=
-475.c#L364
+--=20
+An old man doll... just what I always wanted! - Clara
 
-- Nuno S=C3=A1
+--fA1JDFFS27HEYYIl
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZ7bn3QAKCRD2uYlJVVFO
+o8LZAQCJ0CV0EgB3xzpRqTrsSdpxkbgQtEVnJBOYnClg5YanjwD9EJheU0XodKN1
+1i648/jd8fjfBIgI+eEMegqo/YXBqA4=
+=fjkf
+-----END PGP SIGNATURE-----
+
+--fA1JDFFS27HEYYIl--
 

@@ -1,150 +1,178 @@
-Return-Path: <linux-iio+bounces-15825-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15826-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6446AA3D32C
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 09:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D820BA3D4C8
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 10:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313E23A7F0B
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 08:29:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA9D73AC103
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 09:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A751EB19A;
-	Thu, 20 Feb 2025 08:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A0F1F03CA;
+	Thu, 20 Feb 2025 09:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gl+bv8Gg"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="fWW/2AjN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED7B1A7264;
-	Thu, 20 Feb 2025 08:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC2E1EE7C4
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 09:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740040164; cv=none; b=lOQ2yCMio3Ew2ve2UwkK1M0ljpdXGwupgn8DQLD4plG5c9aBdWApXvUssNrLqX8RqYllKota8i9q7knlWmZ5va0HC70WSnfsTs7lTGZw8rm0IbISBEAAN8ikmkggpizCKohqCKeVNglMOTmY31dnHI/IryUau6MsDLmVy6bsWek=
+	t=1740043840; cv=none; b=oQA5tSJzBGNtudGl+rsb9FCkrbhcha3y+5k8mEmTG798QR0I++CiOn2ScmXAtJ2R+xujCcgBsQ5ypA4gAftQO36bW9+buww0bAVCVf3uwj6TNga/gHoogDvJz7zUxapXpSmJWCmiSFLN0mZ+lCvNDoBPch9+YTppmk2w/3HNUYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740040164; c=relaxed/simple;
-	bh=80cf8zlzFwBqoh821Ay6AOl2kStY62G7PZJrZaBE1w8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g7Aizzo025AwUf+sjSP0KasWQph8KmD1WtBm+hPhqRYuktxAst4y8g9Sxc9OR1ryoedGlWs9hJSxt+sA32L4BwiIHkELc5ppVZ13/vGuGNb5r/YOirQjeq2S34wrOQT7+IOP0e/iPrOlG5iB1zXfCh2HCcb3AR6CrGzFm4uKH+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gl+bv8Gg; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-220c8f38febso11584885ad.2;
-        Thu, 20 Feb 2025 00:29:22 -0800 (PST)
+	s=arc-20240116; t=1740043840; c=relaxed/simple;
+	bh=mJiT3XmfGosfifXl1yjMZDq+iitE9qUOlBFMxJgjgYM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h5KMDtIsO50ti2pSeISVgR0F1nLpTzsV2r0LBwkaDo2mkFADFhIpafZIEZtjNF2rmtdujkMGi0KHtbfOneh0HzOFYuD1rLlYb33E12DvL+4SMdH3PoxQu69jXQnxcIR/z3rPyTAYjlWViI2rDw4cgSKXsJw8YVXnXIJqyRZcgKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=fWW/2AjN; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4399deda4bfso4359695e9.0
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 01:30:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740040162; x=1740644962; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F56dqNOXtbjyXTzhGsxb0Jrv3YT4/cs1TT3uTV3uBp0=;
-        b=gl+bv8GgRzze0pcM0U4Tlfj9GkliBlC/cXt5H9PVx5jCcqKVvU3LO9GsL3sKRxTDSq
-         IOIMJ4aXZF1vG9B9eBYMVW29uMAi5HP5DokL19JcdcAg5nLYu1uaZlHwfmAg4jPOSMCR
-         Gmu86JAJZ42wsW8Tv2+vYiXjPUlHj89tCaD+6dCaalXr5a9gZo2VGtnc20CilRAeHDrE
-         UdOltKrl/T4SbeRMpR15/BKf296sfh4KW2DX849LuesYbY6oYlbv/GEurBPmIWsTLpQJ
-         3bJ6YjBRjUjNCxBFRGxACiKAAb2FFjnTgWTy0RkYnr5ONfDfELRyUPtgWQ0/61wQWZk3
-         ZkxA==
+        d=suse.com; s=google; t=1740043836; x=1740648636; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=X+AyV1ElPPjhQNUEXRx/M9RMpbSIJfQK14iFeHgY7bo=;
+        b=fWW/2AjNilIQwv33XSMtZ0gjPOrBvUd96cH+14EAfl7FycrndoKevrxlePNe3689b3
+         r6i9t0FLlrlbOJoZrWeAXCHx35RDNax06G5TQv1a4tz73lUi9dND+hYlUcn5RN5wr9MA
+         najCDvKnsOwtPhKsTM1OykbVE1ubWRbOkXhIorf6J1upwmAT32QKIewqlM/3ub2470AV
+         9d+1bH7/uCyyLznaN1n5A98T3Ezy77EStDy783uOR6wu9YHllgJ3Uqe702TqtWrn31Yi
+         WL1CL0TndifrRaj2CpuEHRiqvmuEhzP2XARJ9AaFM2GdYE0ZLpI1LPiMNY5FQY0rcC4U
+         5E7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740040162; x=1740644962;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F56dqNOXtbjyXTzhGsxb0Jrv3YT4/cs1TT3uTV3uBp0=;
-        b=PNdnbrLklP8rYBQE03E9GTBqMqQK5ru0qJ/a53Xm/IXSZ/PBnvIypTdL8wkb8aJBYu
-         ak+LANAlHi1IL8hcmW9QnosG4b9uoThfFLjD03veWcsmBGIY5MRltFdKMrhV+7uAKH/X
-         JfxJacyg1K2lLziSOGTF5mhg5AnXmX6vgFHWVL75ajQ/qmWKFMPAD4GtZvxQ3oXdrDm/
-         2WSEvNjv18gwEPUcPgkaqg57lBteaFeElX36SvqC/8/Flt2fVTV9BSxjKRVzvdC+0KM7
-         iTwD71lhiD393s5bV/uv/JieAakvNQUbp1zBIoRZgiROU4LkFJHjKhhyMuTZJKG43RHm
-         K+6g==
-X-Forwarded-Encrypted: i=1; AJvYcCVyqBI147iTC4C9cneBgqWhFYHDzlEsNWviL7AcUEWtoF0m2Srbb4rwtGNU6Xv4ZfHEIsI0cz5/prvSoO1M@vger.kernel.org, AJvYcCWdf6oiJKSzyLfdNwg5dWcSagBkzrCIN4ALTzmll8NzIq6vNjhAveygbarF5qJcEFtVGyS8K2mCLUKf@vger.kernel.org, AJvYcCWjalGba73DTVFwYu2VVKZGNV4vgipKTfTu+MvlWUXyT8k/NJ0aAbQw/T4ilpFDu8G+MMJa4pHGOtQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCgnV0qOkGbWJ7u8xHof2AISi0wClwtSGXz3mg8seyWHEPdjhl
-	35/iFveIm9dc4yfMg7+K3ybojNdmdifp4Fds6V0IQnLNmBqU8znY
-X-Gm-Gg: ASbGncsu65TxpLfuRFI8rBBQYXNNjcfIciSYNbcQbCO831nlA0J35tcRbRpnZHB5ytJ
-	YZQyJj+nd7epVq9G8hM0waXnfvDi+vJ+N6CkU6nYZ+pwHjbqAaX5GXvJAxgXuxsofPmO0f6f+np
-	B+Uu/FMukipn9fs5OyyHq5RFgo8BeuDMhB5ddnBomzWnS+Jb25gPZ4N47uJdh3mVvsa0adsRgXM
-	gEVdVd0nyMjz1tn5YgyNl6INK40Jxw2vUzRPFRdBe+DacNSmCjqImdYMkqwkEOnT1EmlmogM2un
-	ws1LI4ZgYORQVe4=
-X-Google-Smtp-Source: AGHT+IEFoRMxUuPJ5Gn8TKY4GqpAz7yGpt5G5frKd4twOqJcw5bSWSYR4ZnKTlEykRD6+ahXb9c8GA==
-X-Received: by 2002:a05:6a00:190e:b0:730:79bf:c893 with SMTP id d2e1a72fcca58-73417248c3emr2609762b3a.4.1740040161695;
-        Thu, 20 Feb 2025 00:29:21 -0800 (PST)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-732532ce7f1sm11296452b3a.73.2025.02.20.00.29.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Feb 2025 00:29:20 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id B98EA4208FB6; Thu, 20 Feb 2025 15:29:17 +0700 (WIB)
-Date: Thu, 20 Feb 2025 15:29:17 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, corbet@lwn.net,
-	dlechner@baylibre.com, marcelo.schmitt1@gmail.com
-Subject: Re: [PATCH v4 1/1] Documentation: iio: Add ADC documentation
-Message-ID: <Z7bn3TEC4faXbzEj@archie.me>
-References: <e6ac2a595f06ba2d5ff0eb86e5895479c9dd797f.1739998491.git.marcelo.schmitt@analog.com>
+        d=1e100.net; s=20230601; t=1740043836; x=1740648636;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X+AyV1ElPPjhQNUEXRx/M9RMpbSIJfQK14iFeHgY7bo=;
+        b=kLgZPZXg3DKFSAA1EscY9f+zzek9TLxwFc8EqeyJonGN9Khnh+BDqVpOoQd+TdurOh
+         ggz77UBh2TAde1uLQFyNKqI5Z8H3wUD5CoxsBiHdQzMNLvoHah2qXaiVW3K6IMEVOctl
+         1MHciB2g7fvOfiS/0XypiHWWiYXlwkyfrDCb9yzBQQwVkrQd2Bu77QVSlemQCmTwM7vu
+         t6TGU0eBYHEBjGT3MjwRT0ZRgjQKrd6tyF3On2wHN7mIo0VXsSSTA/WzuRnb2NO5kRsr
+         RlDlGOmwNTFWup56ilMT8q8mNdwmIJdWgUb80CoRaAy/iEcaGvhW1jvPfXI/Rjok7k4u
+         oevQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXR6GD2xSEGmHZz2hrvFmm4g383i7nQ7Qo2aglDGJy4zisVMTetlW8puSJbAwt5MAc5LjY1wXQoRA0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjMv8qiIDnpdFoVIpSSMHREfI1iOYOk5k6xPc5k4SvlMettaOe
+	GVGOobW746T+7e5hAv0RqCicl6K1/oyEc1mPLCoFtjwBo8J/J3dGDCxqDCJ5oQs=
+X-Gm-Gg: ASbGncsuU8JyrgM0jIQN6YZSu2HWoYYg7pXQ8+6qm1nXztBAOCHHqt/YP9+ajZaCOur
+	DiB8hLmNRkv4J+4hu+rgmuTiviB4bqXiqPzuxGGvmkTyI9IFFQ4Hl7jby9FgR5prDldj4DpzKe4
+	/DcCXaZxMZP9Z+hTbOANmAIEzm1j+sKk71QVtj5jduiglnw1zuQyvpVlNEt/FAKCLBPzQRzp23T
+	iOFJIhTmemzsMBzX009wbZ9he1cw5GY1DT+FqYeAdVkMB9XUL9tcFVQg7NNDS7iZgaQOPtDHQA0
+	OZWwA3hdVaSouVvibvvh6C3yoikSMyIRkWFpPldiVp3jy+Cis/PwCcTyDw==
+X-Google-Smtp-Source: AGHT+IGsJlbwWX31Qw4w1zUmu7Bk9UHfJExzc1EbOZsajeDzH9je73pVLI7w+d77pplTZTfvLzXlNg==
+X-Received: by 2002:a05:600c:4fd2:b0:439:9e8b:228e with SMTP id 5b1f17b1804b1-439a4baf3a5mr12968635e9.20.1740043836387;
+        Thu, 20 Feb 2025 01:30:36 -0800 (PST)
+Received: from ?IPV6:2001:a61:136c:cf01:505d:b6ac:9103:aec6? ([2001:a61:136c:cf01:505d:b6ac:9103:aec6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258eb141sm19702925f8f.41.2025.02.20.01.30.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Feb 2025 01:30:36 -0800 (PST)
+Message-ID: <50de9721-2dd8-448b-8c11-50b3923450f6@suse.com>
+Date: Thu, 20 Feb 2025 10:30:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fA1JDFFS27HEYYIl"
-Content-Disposition: inline
-In-Reply-To: <e6ac2a595f06ba2d5ff0eb86e5895479c9dd797f.1739998491.git.marcelo.schmitt@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: PM runtime_error handling missing in many drivers?
+To: Brian Norris <briannorris@chromium.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Ajay Agarwal <ajayagarwal@google.com>, Oliver Neukum <oneukum@suse.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Vincent Whitchurch <vincent.whitchurch@axis.com>,
+ "jic23@kernel.org" <jic23@kernel.org>,
+ "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+References: <5caa944f-c841-6f74-8e43-a278b2b93b06@suse.com>
+ <20220708110325.GA5307@axis.com>
+ <4ca77763-53d0-965a-889e-be2eafadfd2f@intel.com>
+ <1937b65c-36c0-5475-c745-d7285d1a6e25@suse.com>
+ <CAJZ5v0j0mgOcfKXRzyx12EX8CYLzowXrM8DGCH9XvQGnRNv0iw@mail.gmail.com>
+ <5c37ee19-fe2c-fb22-63a2-638e3dab8f7a@suse.com>
+ <CAJZ5v0ijy4FG84xk_n8gxR_jS0xao246eVbnFj-dXzwz=8S9NQ@mail.gmail.com>
+ <Z6lzWfGbpa7jN1QD@google.com> <Z6vNV8dDDPdWUKLS@google.com>
+ <CAJZ5v0i83eJWV_kvWxZvja+Js3tKbrwZ8rVVGn7vR=0qLf1mtw@mail.gmail.com>
+ <Z7ZYEp4oqPs12vsP@google.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <Z7ZYEp4oqPs12vsP@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 19.02.25 23:15, Brian Norris wrote:
+> On Wed, Feb 12, 2025 at 08:29:34PM +0100, Rafael J. Wysocki wrote:
+>> The reason why runtime_error is there is to prevent runtime PM
+>> callbacks from being run until something is done about the error,
+>> under the assumption that running them in that case may make the
+>> problem worse.
+> 
+> What makes you think it will make the problem worse? That seems like a
+> rather large assumption to me. What kind of things do you think go
+> wrong, that it requires the framework to stop any future attempts? Just
+> spam (e.g., logging noise, if -EIO is persistent)? Or something worse?e
 
---fA1JDFFS27HEYYIl
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+suspend() is three operations, potentially
 
-On Wed, Feb 19, 2025 at 06:00:56PM -0300, Marcelo Schmitt wrote:
-> +For a **single-ended bipolar** channel, the analog voltage input can go =
-=66rom
-> +-VREF to +VREF (where -VREF is the voltage reference that has the lower
-> +electrical potential while +VREF is the reference with the higher one). =
-Some ADC
-> +chips derive the lower reference from +VREF, others get it from a separa=
-te
-                                                  "... obtain it ..."
-> +input. Often, +VREF and -VREF are symmetric but they don't need to be so=
-=2E When
-> +-VREF is lower than system ground, these inputs are also called single-e=
-nded
-> +true bipolar. Also, while there is a relevant difference between bipolar=
- and
-> +true bipolar from the electrical perspective, IIO makes no explicit dist=
-inction
-> +between them.
-> +
-> <snipped>...
-> +In the ADC driver, ``differential =3D 1`` is set into ``struct iio_chan_=
-spec`` for
-> +the channel. Even though, there are three general input types, ``differe=
-ntial``
-> +is only used to distinguish between differential and not differential (e=
-ither
-                                                   "... non-differential ..=
-=2E"
-> +single-ended or pseudo-differential) input types. See
-> +``include/linux/iio/iio.h`` for more information.
+a) record device state
+b) arm remote wakeup
+c) transition to a lower power state
 
-Thanks.
+I wouldn't trust a device to perform the first two steps
+without error handling either. It is an unnecessary risk.
 
---=20
-An old man doll... just what I always wanted! - Clara
+> And OTOH, there are clearly cases where retrying would be not only
+> acceptable, but expected -- so giving special case to -EAGAIN and
+> -EBUSY, per another branch of this thread, seems wise.
 
---fA1JDFFS27HEYYIl
-Content-Type: application/pgp-signature; name="signature.asc"
+Yes
 
------BEGIN PGP SIGNATURE-----
+> 
+> I'd also note that AFAICT, there is no similar feature in system PM. If
+> suspend() fails, we unwind and report the error ... but still allow
+> future system suspend requests. resume() is even "worse" -- errors are
+> essentially logged and ignored.
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZ7bn3QAKCRD2uYlJVVFO
-o8LZAQCJ0CV0EgB3xzpRqTrsSdpxkbgQtEVnJBOYnClg5YanjwD9EJheU0XodKN1
-1i648/jd8fjfBIgI+eEMegqo/YXBqA4=
-=fjkf
------END PGP SIGNATURE-----
+Suspend requests from runtime PM are different. They happen spontaneously.
+Secondly, failures to suspend in runtime PM are far cheaper.
 
---fA1JDFFS27HEYYIl--
+>> I'm not sure if I see a substantial difference between suspend and
+>> resume in that respect: If any of them fails, the state of the device
+>> is kind of unstable.  In particular, if resume fails and the device
+>> doesn't actually resume, something needs to be done about it or it
+>> just becomes unusable.
+
+Again, if you look at it in an abstract manner, this is a mess. Resume()
+is actually two functions
+
+a) transition to a power state that allows an operation
+b) restore device settings
+
+It is possible for the second step to fail after the first has worked.
+
+> To me, it's about the state of the device. If suspend failed, the device
+> may still be active and functional -- but not power-efficient. If resume
+> failed, the device may be suspended and non-functional.
+> 
+> But anyway, I don't think I require asymmetry; I'm just more interested
+> in unnecessary non-functionality. (Power inefficiency is less important,
+> as in the worst case, we can at least save our data, reboot, and try
+> again.)
+
+You are calling for asymmetry ;-)
+
+If you fail to resume, you will need to return an error. The functions
+are just not equal in terms of consequences. We don't resume for fun.
+We do, however, suspend just because a timer fires.
+
+	Regards
+		Oliver
+
 

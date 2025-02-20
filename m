@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-15904-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15905-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2EE8A3E780
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 23:27:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A5A3E79C
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 23:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B975C3B9C43
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 22:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 538E87AA7FD
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Feb 2025 22:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E0B213E9C;
-	Thu, 20 Feb 2025 22:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA142264634;
+	Thu, 20 Feb 2025 22:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KPzLH7iV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fNKlmkCe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0FA1EE7A8
-	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 22:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CBA1E9B35
+	for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 22:38:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740090449; cv=none; b=WXYh5lWD0qFRjaLLExDgh0VSyFWJCFKzISkQEZuQQMZz38ll9TsNIsoZsjCmU9rxf+GnZsq7/hfwv6NiMgdmy9aW8FmLtl77vebL/srcIThh4iVJfLVzOpeIO4xCYrUWEEgpM5f9fP6MDWUbjsBNnW7JmzwuCLo4ReJOpNCS+iA=
+	t=1740091112; cv=none; b=p2DUUyZ5mhav7iUnSxRYtX1We3iIVd/024DSjc+DEeFOtlHx4AU6SgaD971ZiSp/Cfh4qPK/bf0ce5Q2vqol/xgqWEBwHx8HRqpLmfKJtzS+CMVc98UGCa8L9f7tFFEOYpqW8LKaJ3hz6u216nBCRftIWoOFGOfX4NlinPqclhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740090449; c=relaxed/simple;
-	bh=Wwlx+PMNjFVQG+p5LgCwO5bEhpwUj2L8Wcxf+n7/TkU=;
+	s=arc-20240116; t=1740091112; c=relaxed/simple;
+	bh=sWMtMJhIGgZDkwBs1wdeFaJJtPcHRts5l/4w38T2rfk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qZaEzAY6ck2itUtnCLxVIUjCD03MHptjZb0KIElpq6PCrrJ4zV3/syuiPeCU26atosUnOm1K0RUUaBswLHv2m7vhYW8/8sHh/IhZrOPEv7QqWJRNb67Z1rh3Q7c9ZaBEfGpGTguBHBHikn6q8hQl2j/4XJjVy/h5cQC8V45ocXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KPzLH7iV; arc=none smtp.client-ip=209.85.160.44
+	 In-Reply-To:Content-Type; b=fU1p6AU2XUhUwBTNr5B+oxvWIzDZrvJotZf59wX92aZqzBL9akCrgJ4/tNaic3FZU7QEpnoJ35/95aomiEHmZ8nFJ0kTy9WPG09rQmZKxhvorxNlyPhTNwP34/AurSv/dmTDIIQKbFCbsFjgdsnUV06PWTDz8dhgZZhiDAemDL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fNKlmkCe; arc=none smtp.client-ip=209.85.210.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2a8690dcb35so395865fac.3
-        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 14:27:26 -0800 (PST)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-72716c75f20so434845a34.2
+        for <linux-iio@vger.kernel.org>; Thu, 20 Feb 2025 14:38:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740090446; x=1740695246; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740091108; x=1740695908; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=pCESArWTseHQGpGv7tpeQqcnGXM7p2OA6JgdrilOIUE=;
-        b=KPzLH7iVYauwnVWpKAzd8c+gRI8jqXjZVAi9CYURZRm+LzfNpuJXNW3mUISQNVvHOq
-         KKfd9kbCYUQN9B/ikEQDVVHzAWI7XV+nyHXbosauAIf1U81o4h4NMdQDvGfaw0NkA/6N
-         zCed+5cfix5tupuIhaXHF5xB4CYKiNY/HZlZPr0o/MgrJN/xTr0x8KVCdLaiBKfhwGWB
-         iE92+aMeJp7PJruw2cyqy5xyPGQkphC8QDpqcW2Uj6Wk9gV4B6aC8uVT1nzkhaC7OBXV
-         eDX1Aah/as5lKXknbKr87J8IYW4w86yHgKBGzXW2gKME+buUA8mhSEOl+XvRRRAzfhXa
-         MGyw==
+        bh=pZvnme7tRdTD63uQFjHp0iE5fgweZwPuVbaZo06CSNU=;
+        b=fNKlmkCeOyqBMIADau+YNglc76AOrOmhQDFNSz2eaZF1tODfP5NcxSn9gfc5fwfgMD
+         Tms4gc6lkuE/ydOWKs8DhFxgfTUKg3p/61QmC7O1hQEK5bgc/Ds2Xfja5RFoLWDJavBk
+         HL9KtkCTtVF3G+xhkZFWO/MMm/8rl098PrckC1+GDDeDkl3nIQ+4VzLAZIIM4BE+iDsU
+         Ugkn6xnCwlGdjYyD9WsbS+E484CBFJ8PFWg9l4uuxPP8/JZNdxwr1oHGYgkg8JQ1yKRs
+         Br+9AYo9lhx+akioUQnaKKeeznxd1NYjE9t6uI1auOEGFAxjTmO4d4t/QwrSOkHxzARw
+         Dr/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740090446; x=1740695246;
+        d=1e100.net; s=20230601; t=1740091108; x=1740695908;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pCESArWTseHQGpGv7tpeQqcnGXM7p2OA6JgdrilOIUE=;
-        b=e38LGra3nRcOwqr1W7pBTfLL8BWtfACoMfcqk6saVthpY7Fz15pNqMft24ga/+QDKs
-         1BCtFtuGZyB7fUJ7WUfPfSyjxd9VnSP3GU6VLOr5hlvN7Lc2S34xALIxe16ryvCuvohR
-         xvYB1VqZoglirolaihM6PgSWoAW11ur8XWgaRKxs6fxBHqGbpYjQyM6giKzpunVGfH7B
-         L96HmUoKnhEsco1a8gGyME9aCnjqnN9su0pMdxnu6tQ1P6i4rU9Jt30f3mk4Of6mAvOw
-         GfPVfrUfSCu4z2pv7/lrMTPnpeY/Tc92oXMftybTnPV26OBW12us4XVzJ8jvO7ugJ/NR
-         mqUg==
-X-Gm-Message-State: AOJu0Yy9YrJ0dUIXrAlpmgmrCHUQhUVrsx+diKovsDhNZfQXKYSeTaut
-	GzF656NoPX8o5pjFPrEyON4XJgWnp1VuZip/3Msfo9T0d7VsKUML2tNwfFQgXP+0toHpaV4RKp9
-	g
-X-Gm-Gg: ASbGnctgSZEVAZGFBIAhd39fzLrtCHfgd0XHO9SIpg4HoPdRG6n+ufCb+p+d3rCgTZD
-	7Pz13QgkYGUQgB/G+bXz6P639ZnuunPKCJ2jYZKegBhYKAUFlUFMHgQICqePa3fP4dqItiK3hFM
-	mjkseyIeDof7YazKUI/VfpihbSdcdutXi3iK5XH8CNlcmCTLZkZjEhjSahBEw5F/dsb8vvVn+JZ
-	Mu5CMoIiHaao67sWF3D4QV0W1Z9KSCoyexpEOt5bGFY8Jq+eG+FplFd0a9xfgqiCVTnnpCiOOuT
-	64ghIIATE3PKQsvYbH0QKTz/54f8+gk2sIaFyC2fUiNYEry7je6d
-X-Google-Smtp-Source: AGHT+IEZpgJbx9x8Shte5+BRZ16avAvT1+wdr0Mi+ErzsXsYe5ooaU2WYdYSImpsg2NCEWK5B0Iz2g==
-X-Received: by 2002:a05:6870:6b97:b0:2b8:ec17:66e9 with SMTP id 586e51a60fabf-2bd50cdbd64mr746258fac.11.1740090446165;
-        Thu, 20 Feb 2025 14:27:26 -0800 (PST)
+        bh=pZvnme7tRdTD63uQFjHp0iE5fgweZwPuVbaZo06CSNU=;
+        b=X54TSAE5776FvUQZUQJWUEA+VoZ52ezWx42sQ7fzNDDq3Fq5OJjGB9NAh26MxVPZ3u
+         C2A1EKeGZG0JT3EQw89R9C+MfL19DQ0+68J1RTq/SXJT+1O4qY6+py4dHM2W3PpuX5P9
+         1gc9pp1Rp3KJlaxcDiqYyMNK/nP+9bwDrfY6rF90EZmrMZBH6MZgyoWxQ+UVdgdee0VE
+         qN2ohP/dM/nK6SK+firalv/WZZmDOZLgkt2taql/RVnYfzsN4LkQuGx+/h3CaFI6SCJD
+         gQ/Y4qND6eH2wFGb8za2oJgo/8RH7GWRfe5/hS4ZQkCfocqMFAfaJgbwIgQ6zo9Eg1t2
+         uv2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWNXDJb/14bJfqv6zbijQKIz0Hbu+pH0BgK/sbyJ4NB7MzktNcJSvb1VnCrtiQATPx7obfgYa9Lnxo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvRM3VLQl9y0m8UdrbnIZ/KG59QFY7uAv+GhGXsQlPCaUHBMWp
+	AerQNNQdAxVduMkj/B3CJ9nw+mghdahZeuEeOOaKBxVXyn0hZMwZf5zI4/Y2UzU=
+X-Gm-Gg: ASbGncvWPbhpP/DVbNncF4rdK7k2x1fssdkp8+EvaCe9SZbxJUX9WuTko55PV+Jig7h
+	hlrzlKWnkctjuNo2Q0ON9sb2NfQnAuKQTlWi1hBA9mxnq+w3C/ULWbjASJWKDIFuWpsOdmBn09e
+	SsjDxCaij57Q2sZS/h6IcRRH1jJz+HHMUJ1AHTv13RPP0/riAVAPApW5xeUJVw7Jz1klPifpTXQ
+	lF932IuDG1IMGldepVPHRB1qkEA73KqN6P7d5jt0KhSoRbui7omuv6nmFGVb1xyvd47BnsKvalG
+	iesMgwE0st0YBv27fLgklr9D4k6NSToTyOogXRVjabyD1nG9dO8i
+X-Google-Smtp-Source: AGHT+IEzdfjmrp9J+sxTdexLYB1VUUUSlpEgBRUKFEO5q3qrJomkJEMgCb7UY4Y09D1Vyk3fevqGpw==
+X-Received: by 2002:a05:6830:8d2:b0:727:2751:6b93 with SMTP id 46e09a7af769-7274c25bcedmr785372a34.20.1740091108688;
+        Thu, 20 Feb 2025 14:38:28 -0800 (PST)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2b9548878adsm6600768fac.17.2025.02.20.14.27.23
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72732331fe0sm1729171a34.43.2025.02.20.14.38.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Feb 2025 14:27:24 -0800 (PST)
-Message-ID: <7c5e2364-038b-48a8-ad67-3cf0f2fd2be3@baylibre.com>
-Date: Thu, 20 Feb 2025 16:27:23 -0600
+        Thu, 20 Feb 2025 14:38:28 -0800 (PST)
+Message-ID: <3c54045c-6001-4f13-a421-f7f4844b6ccc@baylibre.com>
+Date: Thu, 20 Feb 2025 16:38:26 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,61 +81,39 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v3 12/17] iio: adc: ad7768-1: Add GPIO controller
- support
-To: Linus Walleij <linus.walleij@linaro.org>,
- Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sergiu Cuciurean
- <sergiu.cuciurean@analog.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, marcelo.schmitt@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- jonath4nns@gmail.com, marcelo.schmitt1@gmail.com
+Subject: Re: [PATCH RESEND v3 13/17] iio: adc: ad7768-1: add multiple scan
+ types to support 16-bits mode
+To: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com,
+ marcelo.schmitt1@gmail.com
 References: <cover.1739368121.git.Jonathan.Santos@analog.com>
- <62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
- <CACRpkdaSY7WH191makzPcZqLd-vBsC_f6yagWzBa65MrC+pjKA@mail.gmail.com>
+ <854d64a0b431e66e70dcfeaf75bc6e40c4c25a78.1739368121.git.Jonathan.Santos@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <CACRpkdaSY7WH191makzPcZqLd-vBsC_f6yagWzBa65MrC+pjKA@mail.gmail.com>
+In-Reply-To: <854d64a0b431e66e70dcfeaf75bc6e40c4c25a78.1739368121.git.Jonathan.Santos@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 2/19/25 2:34 PM, Linus Walleij wrote:
-> Hi Jonathan/Sergiu,
-> 
-> thanks for your patch!
-> 
-> On Wed, Feb 12, 2025 at 7:20 PM Jonathan Santos
-> <Jonathan.Santos@analog.com> wrote:
-> 
->> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
->>
->> The AD7768-1 has the ability to control other local hardware (such as gain
->> stages),to power down other blocks in the signal chain, or read local
->> status signals over the SPI interface.
->>
->> This change exports the AD7768-1's four gpios and makes them accessible
->> at an upper layer.
->>
->> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
->> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
->> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> 
-> Is it not possible to use the gpio regmap library in this driver
-> like we do in drivers/iio/addac/stx104.c?
-> 
-> It cuts down the code size of simple GPIO chips on random
-> chips quite a lot.
-> 
-> Yours,
-> Linus Walleij
+On 2/12/25 12:18 PM, Jonathan Santos wrote:
+> When the device is configured to Sinc5 filter and decimation x8,
+> output data is reduced to 16-bits in order to support 1 MHz of
+> sampling frequency due to clock limitation.
 
-I think the answer is "no" since we need to hold a conditional lock
-while accessing registers. Namely: iio_device_claim_direct_mode()/
-iio_device_release_direct_mode().
+It would be a bit more clear if this said that x8 is only possible
+with sinc5, so we don't have to check the filter type in the code.
+At first, I thought the code was missing that part of the check.
 
-Unless we add some extra stuff to the gpio regmap implementation to
-add optional callbacks to call these. Which could be worth it given
-that quite a few ADCs provide GPIOs like this.
+> 
+> Use multiple scan types feature to enable the driver to switch
+> scan type in runtime, making possible to support both 24-bit and
+> 16-bit resolution.
+> 
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+
+Reviewed-by: David Lechner <dlechner@baylire.com>
 
 

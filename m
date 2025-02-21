@@ -1,250 +1,171 @@
-Return-Path: <linux-iio+bounces-15910-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15911-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062A8A3F182
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 11:11:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FCFA3F498
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 13:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663D0189E2E0
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 10:10:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74CCC7A72D6
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 12:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606CA204F79;
-	Fri, 21 Feb 2025 10:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FB0206F10;
+	Fri, 21 Feb 2025 12:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9F8oyq1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JissSfbD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4140E1F4299;
-	Fri, 21 Feb 2025 10:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EABA1EB1B9;
+	Fri, 21 Feb 2025 12:39:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740132632; cv=none; b=tNnL/LmHaqnRLUEDhUX5Qf+4DRj7IxtxjUAYjG7RTIo/5Auh5Y7U+8Y700VluhHpY3+baW57pC7l9HkfWkZF8SF1qSFOUz6CPb+Q68reIkwFCGk6/IzdZI7rvPUNaF2MtsST+/1b6cnjT6Z9EWICHL3/E6a1/kuO02TYTYDWR0M=
+	t=1740141574; cv=none; b=haDUc6uZ58Qirh4b6/4FQcfB6drvgA/oYACfZQfNyaY+O9Ove97kpvnj71TH/OZmLI3Jk5wBNXL74YqJCtfR0MxlmoyyUWsACVtMSIxjCTJLiggh0oeM346UlS9lEOd/C7RCRjxWgH0YiGDA5bfkDXEEHc75pmXwdeyTIVGeDaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740132632; c=relaxed/simple;
-	bh=GABZIa1yk+ME7OqVVkc9YSIBFoStKBRMFdZ+km85+xA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jc7/fZszjZ8ZNAO4l+lzazrA4QB6WvNVbOlnNJFTR4RZaZSK5n6h0k4lvQmeZIVwkVcPxPD5ZBd/lADp/TPSH1svtTJg8PeDX+igzoLAllvB7/qU63AYtSQC4aDNlH29aNFPSMGxGaEZqtXf/TM4mocUH0IEHO808cabffdyfwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9F8oyq1; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-30737db1aa9so18378171fa.1;
-        Fri, 21 Feb 2025 02:10:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740132628; x=1740737428; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bG0BbpFoyNoqsk135c328imcMJ0+Nr3ev0Mcwuo/rmM=;
-        b=T9F8oyq1hL0rRgqyIbsoObHQs7gYhQLyWFWQffnjgMteATI/nTSAKAs1rVILnj0g9x
-         bbHKMio9ilwgPpAnOJ9XK3ckTqqo707Ebr18C1CPbONQvkXa9jebs4q+YVzzOqL55xUD
-         7OyxOGz0ar03mneTGhR7Ib63zMvX5lbKK2Mk1iYpQSbBi0TSxnD3vVCE4mubMEezXLdI
-         C4iGeg7VN+nerJXOb3jmNMKdgseswV+SCXxrPlToEcQ+1BwwZte8uIHeBxdj7xvXRnB6
-         kObu1p1xtkIjd1M2DwyOBUS5W1V4B2k3sKyG9fs3fRSFUFRgjIKr5c83dmpkYRsnJ0mR
-         3R6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740132628; x=1740737428;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bG0BbpFoyNoqsk135c328imcMJ0+Nr3ev0Mcwuo/rmM=;
-        b=PedEQTvatG8Q5u5DmRt6YOcZcryjo49kOa+OhCw5+nK7t305pHDDKvfxxsvFqT99EP
-         UN9Iz3r71HxzWN6KnUqRI4aX3+kQJdFdunCp28ud0Tn555Q0HZxTTSLHXSxhbJh8mK+I
-         rGO/vdjyQg1uue6fwPj/t7KydToBmVF53QazeUtqDWOe1Kxd0GZxFvj0dtctmVFH6ZsN
-         dAMBUKaOMpX0ekKpaXUO7rlrG5yMKEE00G+QnChp3DHrNsFGqIq1P7cr6lYwvPf428Jm
-         oXmZhKdDpavPpUi6ZSt2GD4Li9yxJptH8sj21zd1dRqYspm0Riq74C0ttVSZi3RKya0a
-         7L9w==
-X-Forwarded-Encrypted: i=1; AJvYcCW/LmlL9ad/qNLiFMiPgR6WCLoV19Sn2kM/vSkiWZ5vTTdFBft0HfYZRn3yOFopjI+oPwLGA5TT3QAT@vger.kernel.org, AJvYcCW/ZjeVFMtU7NLTLmvwFeXquiTTy+cDfauKPq7nRDYDl338LWbq3Iv7NLbsGP9I0js4R1jxDtV2BDTO@vger.kernel.org, AJvYcCWGJX9tbQjcOErhduAIIdsA+w9/S1jDtWJuGb7tlqH/GoUPV6R5sCQpKM/zubIVBb7hZo7VCVA74cd1QLn89wn8Fbs=@vger.kernel.org, AJvYcCWxSI5li4tlr8TMzxFMBk6DOA/KgtuJYJ35aq0C5cCRry7jP6cM9DvCGMWEbfgDTsVcI6JpJjRIqeMn+kaO@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbpJktofVAn+4l8NmDuNieLEHNYLBdeon516m1M3QZEQbQvEGy
-	Ifn1wToaSFEWVF0NjRD+Jsx3Y6vDo/p86gU3dQLTcxNqXzHUDNnI
-X-Gm-Gg: ASbGncsY4keqD3Ok8ABJgIHZ4Lhha4G6+7rfOPZNXzHlCOTEVBPgf897i58BWXK6grQ
-	Jw2TSsq+GRKtpw65MXBK83RVM9CeLsFzfjcYiXPRTbTJb4mqqObSfQ87hjPQXjtd/6ixAwt7K5B
-	RVEMfRJHuWqHs1YoCkJ8kSlNeL/sjxwWDEYgNdf0R0EysQQEL6l57ZjFVjDn9HRw+QU7m45aVJ7
-	xejEw7zATiDN1g7WlEku4a57Uc++sboNUsxWHzvVFp/hVP4rrOcb5Zq28j30KIv5f5m8/Iv5Vdq
-	qt6mhkWaUpRvcwl5E06GmdYgT5yTNjLPfYK/T2uruhL0SdoD2JqNZlR/K+NefMPe624gaO4gPx8
-	2OL1we1A=
-X-Google-Smtp-Source: AGHT+IEF7HCPBupTpoTIufUdFzsU1NW7CnwkRmSqsaZ2XXJ41DlnitRvGydjhmN16iRmcwFrBfhXBA==
-X-Received: by 2002:a05:6512:3f05:b0:542:2e09:639a with SMTP id 2adb3069b0e04-54838edddd1mr724643e87.10.1740132627920;
-        Fri, 21 Feb 2025 02:10:27 -0800 (PST)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5451f105c2fsm2638305e87.117.2025.02.21.02.10.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 02:10:26 -0800 (PST)
-Message-ID: <cb27d8b1-c978-4443-9ad2-96e930701976@gmail.com>
-Date: Fri, 21 Feb 2025 12:10:23 +0200
+	s=arc-20240116; t=1740141574; c=relaxed/simple;
+	bh=THMok0Q/W8DPta8lrac9ilEkwc3iYgKDyZsc/gHSzSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dQfUu+QXQwTGRj/ZhkkcyfO7ypgbAMwS7uqiwhso5zGRVQkPhZO3V4xagC/NFzeW26loCgjW5N0eWsEMv4mpgIILelMNBdXGIhLTZuBG/GTzhocae/KkpFm8Wj7YQPsohFAoQK234QY4dBhxHpbSRvEiRM0QmL1BwSyutspnbBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JissSfbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FF1C4CED6;
+	Fri, 21 Feb 2025 12:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740141574;
+	bh=THMok0Q/W8DPta8lrac9ilEkwc3iYgKDyZsc/gHSzSc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JissSfbDTmOYZeAAw7xb15eGe9FwQuQCmwXurgu7FEgy1Pd0WOYlCIrvhfqyee99A
+	 koDSllkwxwOv62ApilcR4RNmkFUPPAMczBSn9hyXFa5kfdJH0hEDEQSGxLpV4K8QEx
+	 f4+2VBzxhwFnvRYBEBC6RNDxwBSoO3VegWdc+PkPFC0BYKJRyRpl6+wWl6fXrwBuBC
+	 XQ7PlhEKze6yWvYxnwtttVjBaaddf7x5oqHn1F/qUAHNwtiMbdLAlGFmoc57uf5FX2
+	 z5WGzLu1IGwe5+/GvmUUgGSTOcabxEdM9xR6d2SLPfdHbgzw53xKWmpHRT18+ZBySm
+	 WhZjFbks1rx/Q==
+Date: Fri, 21 Feb 2025 21:39:29 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
+Cc: linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kamel Bouhara <kamel.bouhara@bootlin.com>, Dharma.B@microchip.com
+Subject: Re: [PATCH v4 0/2] microchip-tcb-capture: Add Capture, Compare,
+ Overflow etc. events
+Message-ID: <Z7h0AXV1zlgp9Nw-@ishi>
+References: <20250211151914.313585-3-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1739967040.git.mazziesaccount@gmail.com>
- <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
- <Z7ZB7RQhyI5Dohrq@smile.fi.intel.com>
- <b1c1ed68-2f4d-447c-9957-5a1bbc63ef6e@gmail.com>
- <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
- <ec76334b-bb13-4076-811d-9174170dd677@gmail.com>
- <Z7c2cBQpjoc9-Vyu@smile.fi.intel.com>
- <9018e23c-da28-41b0-b774-1598b946a2a1@gmail.com>
- <Z7dCnRzuQTaJXzmb@smile.fi.intel.com>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <Z7dCnRzuQTaJXzmb@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aveAWsj+gpRZ7qux"
+Content-Disposition: inline
+In-Reply-To: <20250211151914.313585-3-csokas.bence@prolan.hu>
 
-On 20/02/2025 16:56, Andy Shevchenko wrote:
-> On Thu, Feb 20, 2025 at 04:21:37PM +0200, Matti Vaittinen wrote:
->> On 20/02/2025 16:04, Andy Shevchenko wrote:
->>> On Thu, Feb 20, 2025 at 03:40:30PM +0200, Matti Vaittinen wrote:
->>>> On 20/02/2025 14:41, Andy Shevchenko wrote:
->>>>> On Thu, Feb 20, 2025 at 09:13:00AM +0200, Matti Vaittinen wrote:
->>>>>> On 19/02/2025 22:41, Andy Shevchenko wrote:
->>>>>>> On Wed, Feb 19, 2025 at 02:30:27PM +0200, Matti Vaittinen wrote:
-> 
-> ...
-> 
->>>>>>>> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
->>>>>>>
->>>>>>> No namespace?
->>>>>>
->>>>>> I was considering also this. The IIO core functions don't belong into a
->>>>>> namespace - so I followed the convention to keep these similar to other IIO
->>>>>> core stuff.
->>>>>
->>>>> But it's historically. We have already started using namespaces
->>>>> in the parts of IIO, haven't we?
->>>>
->>>> Yes. But as I wrote, I don't think adding new namespaces for every helper
->>>> file with a function or two exported will scale. We either need something
->>>> common for IIO (or IIO "subsystems" like "adc", "accel", "light", ... ), or
->>>> then we just keep these small helpers same as most of the IIO core.
->>>
->>> It can be still pushed to IIO_CORE namespace. Do you see an issue with that?
->>
->> No. I've missed the fact we have IIO_CORE O_o. Thanks for pointing it out!
->>
->>> Or a new opaque namespace for the mentioned cases, something like IIO_HELPERS.
->>
->> I am unsure if it really benefits to split this out of the IIO_CORE. I've a
->> feeling it falls into the category of making things harder for user with no
->> apparent reason. But yes, the IIO_CORE makes sense.
-> 
-> Probably I was not clear, I mean to put this under a given namespace. There is
-> no a such, we have currently:
-> 
-> IIO_BACKEND
-> IIO_DMA_BUFFER
-> IIO_DMAENGINE_BUFFER
-> IIO_GTS_HELPER
-> IIO_RESCALE
 
-Ah. So, the IIO core stuff is still not in a namespace. Those listed 
-above are all too specific (I believe, in general, and definitely to 
-carry ADC helpers).
+--aveAWsj+gpRZ7qux
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Adding 'ADC_HELPERS' would just add yet another way too specific one. 
-So, currently there is no suitable namespace for these helpers, and I 
-still believe they fit best to where the rest of the IIO-core stuff is.
+On Tue, Feb 11, 2025 at 04:19:11PM +0100, Bence Cs=F3k=E1s wrote:
+> The TCB has three R/W-able "general purpose" hardware registers:
+> RA, RB and RC. The hardware is capable of:
+> * sampling Counter Value Register (CV) to RA/RB on a trigger edge
+> * sending an interrupt of this change
+> * sending an interrupt on CV change due to trigger
+> * triggering an interrupt on CV compare to RC
+> * stop counting after sampling to RB
+>=20
+> To enable using these features in user-space, an interrupt handler
+> was added, generating the necessary counter events. On top, RA/B/C
+> registers are added as Count Extensions. To aid interoperation, a
+> uapi header was also added, containing the various numeral IDs of
+> the Extensions, Event channels etc.
+>=20
+> Bence Cs=F3k=E1s (2):
+>   counter: microchip-tcb-capture: Add IRQ handling
+>   counter: microchip-tcb-capture: Add capture extensions for registers
+>     RA-RC
+>=20
+>  MAINTAINERS                                   |   1 +
+>  drivers/counter/microchip-tcb-capture.c       | 137 ++++++++++++++++++
+>  .../linux/counter/microchip-tcb-capture.h     |  49 +++++++
+>  3 files changed, 187 insertions(+)
+>  create mode 100644 include/uapi/linux/counter/microchip-tcb-capture.h
 
-If we want really play the namespace game, then the existing IIO stuff 
-should be put in a IIO_CORE-namespace instead of creating more new small 
-ones. I am afraid that adding all existing IIO core to a IIO_CORE 
-namespace and converting all existing users to use the IIO_CORE is not a 
-reasonable request for a person trying to:
+Hi Bence,
 
-1. Write a driver
-2. Add a small helper to aid others (instead of just melding it all in 
-the given new driver - which does not benefit anyone else and just leads 
-to code duplication in the long run...)
+I had some time to read over your description of the three hardware
+registers (RA, RB, and RC)[^1] and I have some suggestions.
 
->>>>>> (Sometimes I have a feeling that the trend today is to try make things
->>>>>> intentionally difficult in the name of the safety. Like, "more difficult I
->>>>>> make this, more experience points I gain in the name of the safety".)
->>>>>>
->>>>>> Well, I suppose I could add a namespace for these functions - if this
->>>>>> approach stays - but I'd really prefer having all IIO core stuff in some
->>>>>> global IIO namespace and not to have dozens of fine-grained namespaces for
->>>>>> an IIO driver to use...
-> 
-> ...
-> 
->>>> foo &= (~bar);
->>>>
->>>> is _much_ faster than seeing:
->>>
->>> Strongly disagree. One need to parse an additional pair of parentheses,
->>> and especially when it's a big statement inside with nested ones along
->>> with understanding what the heck is going on that you need them in the
->>> first place.
->>>
->>> On top of that, we have a common practices in the LK project and
->>> with our history of communication it seems you are trying to do differently
->>> from time to time. Sounds like a rebellion to me :-)
->>
->> I only rebel when I (in my opinion) have a solid reason :)
->>
->>>> foo &= ~bar;
->>>>
->>>> and having to google the priorities.
->>>
->>> Again, this is something a (regular) kernel developer keeps refreshed.
->>> Or even wider, C-language developer.
->>
->> Ha. As I mentioned, I've been writing C on a daily bases for almost 25
->> years. I wonder if you intent to say I am not a kernel/C-language developer?
->> Bold claim.
-> 
-> I'm just surprised by seeing that style from a 25y experienced C developer,
-> that's all.
+First, register RC seems to serve only as a threshold value for a
+compare operation. So it shouldn't be exposed as "capture2", but rather
+as its own dedicated threshold component. I think the 104-quad-8 module
+is the only other driver supporting THRESHOLD events; it exposes the
+threshold value configuration via the "preset" component, but perhaps we
+should introduce a proper "threshold" component instead so counter
+drivers have a standard way to expose this functionality. What do you
+think?
 
-I am not. If something, these 25 years have taught me to understand that 
-even if something is simple and obvious to me, it may not be simple and 
-obvious to someone else. Similarly, something obvious to someone else, 
-is not obvious to me. Hence, I am very careful when telling people that:
+Regarding registers RA and RB, these do hold historic captures of count
+data so it does seem appropriate to expose these as "capture0" and
+"capture1". However, I'm still somewhat confused about why there are two
+registers holding the same sampled CV (or do RA and RB hold different
+values from each other?). Does a single external line trigger the sample
+of CV to both RA and RB, or are there two separate external lines
+triggering the samples independently; or is this a situation where it's
+a single external line where rising edge triggers a sample to RA while
+falling edge triggers a sample to RB?
 
- >>> Again, this is something a (regular) kernel developer keeps refreshed.
- >>> Or even wider, C-language developer.
+Next, the driver right now has three separate event channels, but I
+believe you only need two. The purpose of counter event channels is to
+provide a way for users to differentiate between the same type of event
+being issued from different sources. An example might clarify what I
+mean.
 
-I may however say that "this is something _I_ keep refreshed (as a 
-kernel/C-developer)".
+Suppose a hypothetical counter device has two independent timers. When
+either timer overflows, the device fires off a single interrupt. We can
+consider this interrupt a counter OVERFLOW event. As users we can watch
+for COUNTER_EVENT_OVERFLOW to collect these events. However, a problem
+arises: we know an OVERFLOW event occurred, but we don't know which
+particular timer is the source of the overflow. The solution is to
+dedicate each source to its own event channel so that users can
+differentiate between them (e.g. channel 0 are events sourced from the
+first timer whereas channel 1 are events sourced from the second timer).
 
-As an example,
+Going back to your driver, there seems to be no ambiguity about the
+source of the CHANGE-OF-STATE, THRESHOLD, and OVERFLOW events, so these
+events can all coexist in the same event channel. The only possible
+ambiguity I see is regarding the CAPTURE events, which could be sourced
+by either a sample to RA or RB. Given this, I believe all your events
+could go in channel 0, with channel 1 serving to simply differentiate
+CAPTURE events that are sourced by samples to RB.
 
- >>>> foo &= (~bar);
+Finally, you mentioned that this device supports a PWM mode that also
+makes use of the RA, RB, and RC registers. To prevent globbering the
+registers when in the wrong mode, you should verify the device is in the
+counter capture mode before handling the capture components (or return
+an appropriate "Operation not support" error code when in PWM mode). You
+don't need to worry about adding these checks for now because it looks
+like this driver does not support PWM mode yet, but it's something to
+keep in mind if you do add support for it in the future.
 
-This is something _I_ find very clear and exact, with zero doubt if 
-negation is applied before &=. For _me_ the parenthesis there _help_, 
-and for _me_ the parenthesis cause no confusion when reading the code.
+William Breathitt Gray
 
-I won't go and tell that I'd expect any C or kernel developer to be able 
-to fluently parse "foo &= (~bar)". (Whether I think they should is 
-another matter).
+[^1] https://lore.kernel.org/all/7b581014-a351-4077-8832-d3d347b4fdb5@prola=
+n.hu/
 
-Oh well, let's wait and see what Jonathan thinks of these helpers in 
-general. We can continue the parenthesis discussion when we know whether 
-the code is going to stay.
+--aveAWsj+gpRZ7qux
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Yours,
-	-- Matti
+-----BEGIN PGP SIGNATURE-----
 
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ7h0AQAKCRC1SFbKvhIj
+K83fAPsGi+Iai9Thlz/7m5fGeJ+HhUhcH6iRbjw/UebvTdm15wD9H7R2IsqBSQ7/
+iWgxHOmcexFlizlbeBzgmR2D7MO4PAA=
+=a885
+-----END PGP SIGNATURE-----
+
+--aveAWsj+gpRZ7qux--
 

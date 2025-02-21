@@ -1,394 +1,256 @@
-Return-Path: <linux-iio+bounces-15916-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15917-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B47A3FB8C
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 17:38:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9349A3FBDF
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 17:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B43E3863B7E
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 16:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E511619E413C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 16:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BDC1F8ADB;
-	Fri, 21 Feb 2025 16:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E8120A5E8;
+	Fri, 21 Feb 2025 16:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="b0Pj91FN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ezFa7UoS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A4E1F12EC
-	for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 16:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FFE200BBC;
+	Fri, 21 Feb 2025 16:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740155438; cv=none; b=GFAxwhPYseL2xIFJRhtOKKcUxSFnWFNNxbQpaWl9G7kqVQoohOnHQpfa5UCgKSJEfcUHKvjVCrsUK5dXXBXfo+v6uFDIIK5AriRldXQ//ezGgdsLlrJxq+xt/Cc/HNt7grJcE/ZCOqMB1gedvf9B/q9QG20NR4gX9qUIys0ncvM=
+	t=1740156075; cv=none; b=FwGKtOVZ/Nqu3PZM8nJb8lyVfujalgagTO217o5YoYz3yGFBp2GLwALNdBcQUhPPV6+ThGLIJ60Guf+kFKHiAw0oRDOEUxwWxu72KxxgimktYvlOUJsk4nMROxE5muS3IhvZWklxmm9dvBbW1dkK+0J1qXKglhYS2NM0+08Moh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740155438; c=relaxed/simple;
-	bh=+6KzKBIx6mpHhKg/4+HFnGf1d9EOfmRJxUJwL920QKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NlFOWyACXkrw+vp0ph6MZhOjWnmgLwNWqF/yjexbk80imPuNqZnmTw/gZPZUgGS5UHaufatfLxLLmYi7GE2sh8VK8/7WQSRmQOyyeJlJaBtaBd1WchjkzcmvREpLIusRQFYDDPLjcrICtrxmRTSMSOAO6cP4etNfps3Y/YpcX3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=b0Pj91FN; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-2addd5053c0so1331203fac.1
-        for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 08:30:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740155434; x=1740760234; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yraMqB3V0rz+4If7jNzjsoA2YWqNW4WDNQQZ/DTpC8Q=;
-        b=b0Pj91FN7Pu1DGVS4VwzANKtTaupULKkqROXgkGPqcr4wup/+THnPLIwT19sHQgWF8
-         jpaf9BdTG7mT+O6ndMZL4o7JOgm9SftSBopqd5HK56X/1Y+fQ44aw9kxAmQwHGFK8VXu
-         Xy86Q6DVcFaEAiANhOI8frAqy3wm/pO98XQu+CPU+usJ1m3CMyGlLVzibLbwL2cWzgPR
-         TgifDcNNsD8OJ+7oaPZigeo2b7LhiYRKgW3nEYWlxqzpVDed8JJ+tEUpb9nwU1BbgC2a
-         7sei+/P1o+yTCkRMXnj/imG3+TVauaqz7B2Lnu1nRVvqYoysFzEGebMvMme86+FKDJaU
-         XAjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740155434; x=1740760234;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yraMqB3V0rz+4If7jNzjsoA2YWqNW4WDNQQZ/DTpC8Q=;
-        b=s9VicJk910Omuk2ITe6ITjVPhBjHzTtmlM7zG18Q5/5ApoWVwXvx7yH7jsbcPjcWca
-         tYINr/yEmD3G/bNfZd3TMGrI3SKql/TUZTza90o77+RLbkqWWYlO1er9DMvHnPXQZNQY
-         0vtPPukAnUyUeGRnaY1w36ieESzZAMiivlI4GiqNxr/wvv806yAMkB9ZHlm3m8D1TYw0
-         sHvyhXyIAkufThFDbIUVLYlRMocqlXUafCGk42X98nw6jHq2O/CcKIUCvzyNHtFl7GYx
-         I+8MGtLa20uc7q9QFnXfb/sHJxj/aCKO/Rn5zd164x5pGPcSJK57MFSOBD9l6Oiios1f
-         NnBg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9MB+/lD+tvMyTiq6DAnZAHhfPGgmo1i8UwU+ktubS/ClnQQtyfMzZ/aa1M9plk7cIf8aJsfMFZrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCd2YHtMCgXBLbtuX6HvRdgT/OA6sFIWTjOqIPptaV/Ioz3wZb
-	StPqJoQrdksWlMZXz4ZRyZsCcV3npVJwUTYjoAXIR4ld/9jXKLuv9D7MT9+oJ6A=
-X-Gm-Gg: ASbGncv4SnPOJan7v2CKorWEeKWlDw2LPrsbOnh3coWWTanCEvxtLNB32fAJB5cG384
-	nzBBLTe75zFkCVAd/rAtVx0FPLpfp51ZjK/jRmp6xorrUCTBSk0Ja5VQ9lMkfstwLtv3OQS88cw
-	wUqPiJvrbte6ykG823xXZFaMKHZJjLtHVNbEyYTCzW44bf+f79qrBKBmz3mh6N9Jllw2/KuOo+U
-	UZFHzNGGBJCruE0wcjqrvWnuxe2Om3nyGbaO1rTd+GKVWh1ag3pXQ0DKOWDKotwWxUp2PIXqPPe
-	21MYmK5MaGrs7jzaMq0YFX8N0Iu6w127BeyrHOvTyPrtvRRzKy6YIZDcb/h7d3U=
-X-Google-Smtp-Source: AGHT+IF5/l844C8i/roqudIe6U4obFMxplsc/QWd3Tj6rY2veQmSYaFOHBJtViXOAZab5e5Vr5lyfw==
-X-Received: by 2002:a05:6871:a910:b0:2bc:8c4a:aac2 with SMTP id 586e51a60fabf-2bd50f30260mr2983960fac.27.1740155434450;
-        Fri, 21 Feb 2025 08:30:34 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72737f96190sm1526218a34.11.2025.02.21.08.30.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 08:30:33 -0800 (PST)
-Message-ID: <2edc6e72-245b-4a55-bb5e-6a6ed3abcf27@baylibre.com>
-Date: Fri, 21 Feb 2025 10:30:31 -0600
+	s=arc-20240116; t=1740156075; c=relaxed/simple;
+	bh=WscDxsnPeboOXwOU6QK25fEzgybvqretWJ8oeCzqNCQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WMeaM3BJinPTP2x4rR8+LFOhpws5hGBfIMxPgrCo9Sgu7v0OxTvt635tp60u+z5Xrxcf8iL/zX93mqZwa0+h9Di7NW1pOse2Q/OtQTlIaL8apuAtVp2iw9gRo5h7PcjQp2RopMtS46fbwP7w5FrllafdIwjb39A2TKRIQvkVGuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ezFa7UoS; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740156073; x=1771692073;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WscDxsnPeboOXwOU6QK25fEzgybvqretWJ8oeCzqNCQ=;
+  b=ezFa7UoS4ZmXU7sqSpiasnSFM26jJZGES2jzW+KI67SmUpiSkORwy/dH
+   OAISRtpnlzUtg3SFf54bMLMh2YmIFo9cvnovvaSc/GGVgnOYO8W9d+7FF
+   9EZDSYmBLebClYnOwV6ejVioe2Z9VhF2y7TzbS63uFLk5vc4mN1U79ZCk
+   cx7HO042NT9OW2weOGza1ZRLgtx9UiJWPGBmyzTN3VmMiiqq91aXxdDOw
+   bY/f09g6RnKiBSt/dUo9tVmmLGOtJ0RFBlBTUDAPuj93/LdTg4lCUQZwD
+   Tq9nOMIriETMM24bIEnMDJTQPbAUdaH2egnyyw7v7FVqHGdyXdtEWQbrk
+   A==;
+X-CSE-ConnectionGUID: enbT+JuaTbiv+jjPrx9eTg==
+X-CSE-MsgGUID: Hb+BfkJoRP6H6s9T/+fTBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11352"; a="58390954"
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; 
+   d="scan'208";a="58390954"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 08:41:13 -0800
+X-CSE-ConnectionGUID: UimGude1RQaPxjrN7gVF9g==
+X-CSE-MsgGUID: 7mnoeVakSyWE0PfzvQEy5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,305,1732608000"; 
+   d="scan'208";a="120039765"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2025 08:41:08 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tlW5J-0000000Dh2u-1chT;
+	Fri, 21 Feb 2025 18:41:05 +0200
+Date: Fri, 21 Feb 2025 18:41:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <Z7isoU9hKXlgsu33@smile.fi.intel.com>
+References: <cover.1739967040.git.mazziesaccount@gmail.com>
+ <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
+ <Z7ZB7RQhyI5Dohrq@smile.fi.intel.com>
+ <b1c1ed68-2f4d-447c-9957-5a1bbc63ef6e@gmail.com>
+ <Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
+ <ec76334b-bb13-4076-811d-9174170dd677@gmail.com>
+ <Z7c2cBQpjoc9-Vyu@smile.fi.intel.com>
+ <9018e23c-da28-41b0-b774-1598b946a2a1@gmail.com>
+ <Z7dCnRzuQTaJXzmb@smile.fi.intel.com>
+ <cb27d8b1-c978-4443-9ad2-96e930701976@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] iio: adc: add support for Nuvoton NCT7201
-To: Eason Yang <j2anfernee@gmail.com>, avifishman70@gmail.com,
- tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
- yuenn@google.com, benjaminfair@google.com, jic23@kernel.org,
- lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
- andriy.shevchenko@linux.intel.com, gstols@baylibre.com,
- olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com,
- matteomartelli3@gmail.com, marcelo.schmitt@analog.com,
- alisadariana@gmail.com, joao.goncalves@toradex.com,
- thomas.bonnefille@bootlin.com, ramona.nechita@analog.com,
- herve.codina@bootlin.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com
-Cc: openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250221090918.1487689-1-j2anfernee@gmail.com>
- <20250221090918.1487689-3-j2anfernee@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250221090918.1487689-3-j2anfernee@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cb27d8b1-c978-4443-9ad2-96e930701976@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 2/21/25 3:09 AM, Eason Yang wrote:
-> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
-> 
-> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
-> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
-> independent alarm signals, and the all threshold values could be set for
-> system protection without any timing delay. It also supports reset input
-> RSTIN# to recover system from a fault condition.
-> 
-> Currently, only single-edge mode conversion and threshold events support.
-> 
-> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
-> ---
->  MAINTAINERS               |   1 +
->  drivers/iio/adc/Kconfig   |  11 +
->  drivers/iio/adc/Makefile  |   1 +
->  drivers/iio/adc/nct7201.c | 487 ++++++++++++++++++++++++++++++++++++++
->  4 files changed, 500 insertions(+)
->  create mode 100644 drivers/iio/adc/nct7201.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index fdc4aa5c7eff..389cbbdae1a7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2838,6 +2838,7 @@ F:	arch/arm/mach-npcm/
->  F:	arch/arm64/boot/dts/nuvoton/
->  F:	drivers/*/*/*npcm*
->  F:	drivers/*/*npcm*
-> +F:	drivers/iio/adc/nct7201.c
-
-Same comment as DT bindings, this is ARM/NUVOTON NPCM ARCHITECTURE.
-We need a new section for this chip since it is stand-alone.
-
->  F:	drivers/rtc/rtc-nct3018y.c
->  F:	include/dt-bindings/clock/nuvoton,npcm7xx-clock.h
->  F:	include/dt-bindings/clock/nuvoton,npcm845-clk.h
+On Fri, Feb 21, 2025 at 12:10:23PM +0200, Matti Vaittinen wrote:
+> On 20/02/2025 16:56, Andy Shevchenko wrote:
+> > On Thu, Feb 20, 2025 at 04:21:37PM +0200, Matti Vaittinen wrote:
+> > > On 20/02/2025 16:04, Andy Shevchenko wrote:
+> > > > On Thu, Feb 20, 2025 at 03:40:30PM +0200, Matti Vaittinen wrote:
+> > > > > On 20/02/2025 14:41, Andy Shevchenko wrote:
+> > > > > > On Thu, Feb 20, 2025 at 09:13:00AM +0200, Matti Vaittinen wrote:
+> > > > > > > On 19/02/2025 22:41, Andy Shevchenko wrote:
+> > > > > > > > On Wed, Feb 19, 2025 at 02:30:27PM +0200, Matti Vaittinen wrote:
 
 ...
 
-> diff --git a/drivers/iio/adc/nct7201.c b/drivers/iio/adc/nct7201.c
-> new file mode 100644
-> index 000000000000..c5d1540bcc00
-> --- /dev/null
-> +++ b/drivers/iio/adc/nct7201.c
-> @@ -0,0 +1,487 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * Driver for Nuvoton nct7201 and nct7202 power monitor chips.
-> + *
-> + * Copyright (c) 2024-2025 Nuvoton Technology corporation.
-> + */
-> +
-> +#include <linux/array_size.h>
-> +#include <linux/bits.h>
-> +#include <linux/cleanup.h>
-> +#include <linux/delay.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/i2c.h>
-> +#include <linux/init.h>
+> > > > > > > > > +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
+> > > > > > > > 
+> > > > > > > > No namespace?
+> > > > > > > 
+> > > > > > > I was considering also this. The IIO core functions don't belong into a
+> > > > > > > namespace - so I followed the convention to keep these similar to other IIO
+> > > > > > > core stuff.
+> > > > > > 
+> > > > > > But it's historically. We have already started using namespaces
+> > > > > > in the parts of IIO, haven't we?
+> > > > > 
+> > > > > Yes. But as I wrote, I don't think adding new namespaces for every helper
+> > > > > file with a function or two exported will scale. We either need something
+> > > > > common for IIO (or IIO "subsystems" like "adc", "accel", "light", ... ), or
+> > > > > then we just keep these small helpers same as most of the IIO core.
+> > > > 
+> > > > It can be still pushed to IIO_CORE namespace. Do you see an issue with that?
+> > > 
+> > > No. I've missed the fact we have IIO_CORE O_o. Thanks for pointing it out!
+> > > 
+> > > > Or a new opaque namespace for the mentioned cases, something like IIO_HELPERS.
+> > > 
+> > > I am unsure if it really benefits to split this out of the IIO_CORE. I've a
+> > > feeling it falls into the category of making things harder for user with no
+> > > apparent reason. But yes, the IIO_CORE makes sense.
+> > 
+> > Probably I was not clear, I mean to put this under a given namespace. There is
+> > no a such, we have currently:
+> > 
+> > IIO_BACKEND
+> > IIO_DMA_BUFFER
+> > IIO_DMAENGINE_BUFFER
+> > IIO_GTS_HELPER
+> > IIO_RESCALE
+> 
+> Ah. So, the IIO core stuff is still not in a namespace. Those listed above
+> are all too specific (I believe, in general, and definitely to carry ADC
+> helpers).
+> 
+> Adding 'ADC_HELPERS' would just add yet another way too specific one. So,
+> currently there is no suitable namespace for these helpers, and I still
+> believe they fit best to where the rest of the IIO-core stuff is.
+> 
+> If we want really play the namespace game, then the existing IIO stuff
+> should be put in a IIO_CORE-namespace instead of creating more new small
+> ones. I am afraid that adding all existing IIO core to a IIO_CORE namespace
+> and converting all existing users to use the IIO_CORE is not a reasonable
+> request for a person trying to:
+> 
+> 1. Write a driver
+> 2. Add a small helper to aid others (instead of just melding it all in the
+> given new driver - which does not benefit anyone else and just leads to code
+> duplication in the long run...)
 
-Are we really using something from the init header?
+That's why more specific, but also a bit general might work, like IIO_HELPERS,
+considering that they may be used by many drivers.
 
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/module.h>
-> +#include <linux/mutex.h>
-> +#include <linux/regmap.h>
-> +#include <linux/types.h>
-> +#include <linux/unaligned.h>
-> +
-> +#include <linux/iio/events.h>
-> +#include <linux/iio/iio.h>
-> +
+While it may be not your call, somebody should do the job. Jonathan? :-)
 
-...
-
-> +static int nct7201_read_raw(struct iio_dev *indio_dev,
-> +			    struct iio_chan_spec const *chan,
-> +			    int *val, int *val2, long mask)
-> +{
-> +	u16 volt;
-> +	unsigned int value;
-> +	int err;
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	guard(mutex)(&chip->access_lock);
-
-The regmap should already have an intneral lock, so this mutex seems
-reduandnt in it's current usage.
-
-> +	switch (mask) {
-> +	case IIO_CHAN_INFO_RAW:
-> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN(chan->address), &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = value;
-> +		*val = FIELD_GET(NCT7201_REG_VIN_MASK, volt);
-> +		return IIO_VAL_INT;
-> +	case IIO_CHAN_INFO_SCALE:
-> +		/* From the datasheet, we have to multiply by 0.0004995 */
-> +		*val = 0;
-> +		*val2 = 499500;
-> +		return IIO_VAL_INT_PLUS_NANO;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-> +
-> +static int nct7201_read_event_value(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info,
-> +				    int *val, int *val2)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +	u16 volt;
-> +	unsigned int value;
-> +	int err;
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (info != IIO_EV_INFO_VALUE)
-> +		return -EINVAL;
-> +
-> +	if (dir == IIO_EV_DIR_FALLING) {
-> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
-> +				  &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = value;
-
-Assigning to volt seems reduant. We can just pass value to
-FIELD_GET() below.
-
-> +	} else {
-> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
-> +				  &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = value;
-> +	}
-> +
-> +	*val = FIELD_GET(NCT7201_REG_VIN_MASK, volt);
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int nct7201_write_event_value(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     enum iio_event_info info,
-> +				     int val, int val2)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (info != IIO_EV_INFO_VALUE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (dir == IIO_EV_DIR_FALLING)
-> +		regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
-> +			     FIELD_PREP(NCT7201_REG_VIN_MASK, val));
-
-No error checking? Could just return here directly.
-
-> +	else
-> +		regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
-> +			     FIELD_PREP(NCT7201_REG_VIN_MASK, val));
-> +
-> +	return 0;
-> +}
-> +
+> > > > > > > (Sometimes I have a feeling that the trend today is to try make things
+> > > > > > > intentionally difficult in the name of the safety. Like, "more difficult I
+> > > > > > > make this, more experience points I gain in the name of the safety".)
+> > > > > > > 
+> > > > > > > Well, I suppose I could add a namespace for these functions - if this
+> > > > > > > approach stays - but I'd really prefer having all IIO core stuff in some
+> > > > > > > global IIO namespace and not to have dozens of fine-grained namespaces for
+> > > > > > > an IIO driver to use...
 
 ...
 
-> +static int nct7201_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      bool state)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +	unsigned int mask;
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	mask = BIT(chan->address);
-> +
-> +	if (!state && (chip->vin_mask & mask))
-> +		chip->vin_mask &= ~mask;
-> +	else if (state && !(chip->vin_mask & mask))
-> +		chip->vin_mask |= mask;
+> > > > > foo &= (~bar);
+> > > > > 
+> > > > > is _much_ faster than seeing:
+> > > > 
+> > > > Strongly disagree. One need to parse an additional pair of parentheses,
+> > > > and especially when it's a big statement inside with nested ones along
+> > > > with understanding what the heck is going on that you need them in the
+> > > > first place.
+> > > > 
+> > > > On top of that, we have a common practices in the LK project and
+> > > > with our history of communication it seems you are trying to do differently
+> > > > from time to time. Sounds like a rebellion to me :-)
+> > > 
+> > > I only rebel when I (in my opinion) have a solid reason :)
+> > > 
+> > > > > foo &= ~bar;
+> > > > > 
+> > > > > and having to google the priorities.
+> > > > 
+> > > > Again, this is something a (regular) kernel developer keeps refreshed.
+> > > > Or even wider, C-language developer.
+> > > 
+> > > Ha. As I mentioned, I've been writing C on a daily bases for almost 25
+> > > years. I wonder if you intent to say I am not a kernel/C-language developer?
+> > > Bold claim.
+> > 
+> > I'm just surprised by seeing that style from a 25y experienced C developer,
+> > that's all.
+> 
+> I am not. If something, these 25 years have taught me to understand that
+> even if something is simple and obvious to me, it may not be simple and
+> obvious to someone else. Similarly, something obvious to someone else, is
+> not obvious to me. Hence, I am very careful when telling people that:
+> 
+> >>> Again, this is something a (regular) kernel developer keeps refreshed.
+> >>> Or even wider, C-language developer.
+> 
+> I may however say that "this is something _I_ keep refreshed (as a
+> kernel/C-developer)".
 
-This would be easier to read as:
+True.
 
-	if (state)
-		chip->vin_mask |= mask;
-	else
-		chip->vin_mask &= ~mask;
+> As an example,
+> 
+> >>>> foo &= (~bar);
+> 
+> This is something _I_ find very clear and exact, with zero doubt if negation
+> is applied before &=. For _me_ the parenthesis there _help_, and for _me_
+> the parenthesis cause no confusion when reading the code.
+> 
+> I won't go and tell that I'd expect any C or kernel developer to be able to
+> fluently parse "foo &= (~bar)". (Whether I think they should is another
+> matter).
 
-> +
-> +	if (chip->num_vin_channels <= 8)
-> +		regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1, chip->vin_mask);
+> Oh well, let's wait and see what Jonathan thinks of these helpers in
+> general. We can continue the parenthesis discussion when we know whether the
+> code is going to stay.
 
-No error checking?
+Sure, but it's not only about these helpers, it's about the style in general.
+Spreading unneeded characters in the code seems to me as an attempt to put
+_your_ rules over the subsytem's ones. Whatever, let's Jonathan to judge, we
+will never agree on a keep growing list of things anyway...
 
-> +	else
-> +		regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +				  &chip->vin_mask, sizeof(chip->vin_mask));
-> +
-> +	return 0;
-> +}
-> +
+-- 
+With Best Regards,
+Andy Shevchenko
 
-...
-
-> +static int nct7201_init_chip(struct nct7201_chip_info *chip)
-> +{
-> +	u8 data[2];
-> +	unsigned int value;
-> +	int err;
-> +
-> +	regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +		     NCT7201_BIT_CONFIGURATION_RESET);
-
-Check error return?
-
-> +
-> +	/*
-> +	 * After about 25 msecs, the device should be ready and then
-> +	 * the Power Up bit will be set to 1. If not, wait for it.
-> +	 */
-> +	mdelay(25);
-> +	err = regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value);
-> +	if (err < 0)
-> +		return err;
-> +	if (!(value & NCT7201_BIT_PWR_UP))
-> +		return dev_err_probe(&chip->client->dev, -EIO,
-> +				     "Failed to power up after reset\n");
-> +
-> +	/* Enable Channel */
-> +	if (chip->num_vin_channels <= 8) {
-> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1, data[0]);
-> +		if (err < 0)
-> +			return dev_err_probe(&chip->client->dev, -EIO,
-> +					     "Failed to write NCT7201_REG_CHANNEL_ENABLE_1\n");
-> +	} else {
-> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> +		data[1] = NCT7201_REG_CHANNEL_ENABLE_2_MASK;
-> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +					data, ARRAY_SIZE(data));
-> +		if (err < 0)
-> +			return dev_err_probe(&chip->client->dev, -EIO,
-> +					    "Failed to write NCT7201_REG_CHANNEL_ENABLE_1 and NCT7201_REG_CHANNEL_ENABLE_2\n");
-> +	}
-> +
-> +	value = get_unaligned_le16(data);
-
-Does it matter that data[1] may be uninitialized and contain random value here?
-
-> +	chip->vin_mask = value;
-
-Don't really need the intermediate value assignment here.
-
-> +
-> +	/* Start monitoring if needed */
-> +	err = regmap_read(chip->regmap, NCT7201_REG_CONFIGURATION, &value);
-> +	if (err < 0)
-> +		return dev_err_probe(&chip->client->dev, -EIO,
-> +				     "Failed to read NCT7201_REG_CONFIGURATION\n");
-> +
-> +	regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION, NCT7201_BIT_CONFIGURATION_START);
-> +
-> +	return 0;
-> +}
-> +
 
 

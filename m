@@ -1,203 +1,125 @@
-Return-Path: <linux-iio+bounces-15914-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15915-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB4A3FA1C
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 17:06:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF41A3FA64
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 17:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2906F7AF1EC
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 16:00:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B13C442003A
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 16:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEAE1F3D5D;
-	Fri, 21 Feb 2025 15:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC93C2139DF;
+	Fri, 21 Feb 2025 15:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nCm95x30"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GnTgXy6m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B7F1E1C36
-	for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 15:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE3E2135D8;
+	Fri, 21 Feb 2025 15:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740153420; cv=none; b=qrFtvi32SfJfW20pFSJTnnabprax9LBX8X450+tGTJAtIb9RS3g6zAsVFxe8nx+YupAY3gbyv7f8NCP3hMple29buYl7pKC4rxnyiqBXaLA3KdbnX9f+MHgpQcKKVbW856fgyQB7DMgjdygZujFuuQ5eV/ZDiw4AD8RXTbn3U+w=
+	t=1740153556; cv=none; b=JXFwj6AY16XHv1oaZ7iC6gxFqyx4B52f23THE/SRFqWZ2u5ZMkbxLXL8YdP1919Y5s+hVfcRgg6aOiORKxh3nybFYBaEfYaFanaVI3zBeFDlHZz9Bzy20ffzYSEoskUpHALyVMQN+EtapaUsJumdS7mm+XQEPT4M605fJONDv0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740153420; c=relaxed/simple;
-	bh=q1YypdFaIEW0l2AnCJNdwusc6OIgP+r4ECVjew046co=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AGnwVsoIKqRJibuIYQuKUuALEiec9EXbBGlTxGR1E+kPOb2Grm6oaaB/z6o8WLaQ9s1XO1AZSNZpQfAoo/OKhX8BdERoCG9lnMIkJXz27TU6Wl1aY79X+i4qYV1JEIk5IRM5zSLtOVVYocVM2JXMzYPsSPSgH0zMs1F4yDnWtrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nCm95x30; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-727295a84c3so580556a34.3
-        for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 07:56:56 -0800 (PST)
+	s=arc-20240116; t=1740153556; c=relaxed/simple;
+	bh=6gAzAohx7VpJB3yz5hch1DConeYB/R3aq6rfiP6O4HU=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=k8pfXDxOz3SdH3a45qcsclcbSQtUeA1AGSo/zOykg3z1H9AcPbcXEYJ7eGurYzpmEEYq7JF5LhfhMAxdGaoTCccyDBv1NBXjL79ysKEk7FQV6VIDqRkr4fKABX1DhKCHbki8lUTPOLPWTEL6jsVitctvzEkNDlfTPvb6L2ESs/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GnTgXy6m; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-439350f1a0bso14157405e9.0;
+        Fri, 21 Feb 2025 07:59:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740153415; x=1740758215; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l9F5nxMmTnOLDqUzVG81NMqrRzPg/w7BaJ+m4JpJ2SY=;
-        b=nCm95x303AsBW0HSPMeOs5O4aYC4RiEzac8Y19XfOg50026k8TiRwTskN+Hr3RS7Un
-         ItJ4o7q7ZhU70jwvFzOAqmv4P0smnPmZsyH8GI+PiHzvMmlugXuYkNy0QpWzN15xC5Qi
-         lJlUdy3+5hXozXLA5eHQO34MhuyUuCNkD8mKKV9ylkZ5qEPo4c/qK0VFpLPN34MfXjy7
-         XV6IKIdX+S2WVcwd1ixccgjn4LL5f5plKFwXqmlwoYTnwkEoqJJeVEI2VzWZocRnQeKX
-         zrBjLTZ3fkWXdyLMBPZ7ZQBASLY8U3bGa/pwtd2VnOyRPk4qCowJy8HYWqwljEjGMJcC
-         vhFg==
+        d=gmail.com; s=20230601; t=1740153553; x=1740758353; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6gAzAohx7VpJB3yz5hch1DConeYB/R3aq6rfiP6O4HU=;
+        b=GnTgXy6m5VOKnuvBwfsw6Avt69lUTzLI3yY1hAvAmJ44wSktQ8j0Q6W3hdWMMLZBSe
+         6JOw0YyJNb+wLr0t3bxzPpqnT3c/IK5AT9po4/HVFoiXKez+Znm/lQy9wr1OI/GFt8NK
+         GgTaCpN7kkcd/ALsXCwd+2MnkJBicqqha7vEf60AKI6DnzWcPoptqaskCaZ5gpqtCYfv
+         EMfBP0yKymLWmV/BuoOi4P9oK0vF2KxpLZ7Xa5M7435jSqt1fU4PTHhBMfeob6SARfgi
+         F9xjAAQLjHrq09+XwBVJZ+TAEF7NNMS9jsyzs8YAiiu+WfcIaZJHm5ExtfYQHtvfGNrh
+         0m8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740153415; x=1740758215;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l9F5nxMmTnOLDqUzVG81NMqrRzPg/w7BaJ+m4JpJ2SY=;
-        b=F+aMwY7Z0PkOpy4X+9hKEFZNDGNqNNakAKMRxGfIqhZlR/Ev3R0Wxhk98nty0vJQfq
-         wkUXUO4PSXqyXsQUDvfZB719PXxCjCmteV+HBeY/CF3l+76CyKwIjOes1Nc841YXaTnR
-         KSeNUigVa9pf8GIjRj22MCwOyzQv4QEIMmdYYg7j7h9uzt4XYhv4hstqdPLb9sXiqwTK
-         Gi6D5F+hrwOMfVYmYX+04/LDz79/7FbpIXhqwiq3y/LDMknd34S6GuymyVA6/3mkMjYi
-         /zrfJHrVS8dxa0mTzq1qH8rwpc4tsz36bfe0ykbRYEKxtr5WqWOlFixcpZ5IWJ9q2KXb
-         0uDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNs+W+m4IWm8uXROMLa4f/OIeWt3XCnzSfHIoxI/bkMKJF15Lu/nwhzfEpejY+nPjnATmasypQypQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+mj16UP5OIXLhzuLgQy04dphpRx9Dr+L35BGML6yNMs3vcKMZ
-	4/QXIYfOjjHAfVs3qh7vPbesWcDactcbjTJLGz0DnsYPmrq4BfcnXki7O/pxG+c=
-X-Gm-Gg: ASbGncsaoV3jlcKWY7mDZAzrTGZioF772ih5idaPPSE3xWzCfnLzbH+y6C8xvw1Z4h6
-	MEXT5vVBxAZ2RaaeATZeomV7g+O8sOzTJe3K+NHA44EAkFSaR+/z4NH45Vu7Df9ejbL/H1Y0zq7
-	xNLbXj5hKQKt3LVOnRPTvXfSBqYxrMSc6Ml7PWXrwEPpSEseN1g5ZD+1kAFUrMpiIbBj5kp9fGW
-	jv9o8+qyR1rbgkNP88pNaGp6VKNhS8onn/5/i99zFcylNT/ao0MqGDLX38PbWGQHnMzyqy3X1LU
-	j0TVl5VujBFnATtWAt06vbPxRUrTIPzVqqC+bOTZAOepaBYGTNOzq68K0WggUuU=
-X-Google-Smtp-Source: AGHT+IGwdePluqvFd8Q0eiG58yiq9bE9z1fiRut+KTbsys8KsALDylQjaPnt2SvRTO0/s/20Lz6iig==
-X-Received: by 2002:a05:6830:6685:b0:727:2681:731 with SMTP id 46e09a7af769-7274c27b78bmr3002665a34.26.1740153415309;
-        Fri, 21 Feb 2025 07:56:55 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2bc9edca34esm4833893fac.18.2025.02.21.07.56.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 21 Feb 2025 07:56:53 -0800 (PST)
-Message-ID: <8975b119-fe24-463a-b163-dce702df3cdd@baylibre.com>
-Date: Fri, 21 Feb 2025 09:56:51 -0600
+        d=1e100.net; s=20230601; t=1740153553; x=1740758353;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6gAzAohx7VpJB3yz5hch1DConeYB/R3aq6rfiP6O4HU=;
+        b=bNIRH9wp+08D+qoQQkb1TXRHI52q3W8h0+nrJcdDx0gX89RWrrN9y4raFKYN0G2xRK
+         CNV/MuFrc0VysNI8Od/pVdoN3wUxvL+9XpvDYaHTZ8Ye79bwYnwpH6DaTHX9QX4Lj7R1
+         kfhLsqztLFSkICroep7fcna3I0iU36E8ruAgtET2DksHWOqWLoKvUVFnFnOeAaOrpWsC
+         lgMFvPhtTxmPolW74U++6lOqGojxF6q2LgkMtqN3mzJE0JywbkE2t0Gj8Ug/nqVIUVqc
+         +Vyhpm7znA0QKf/Encl3Hc8P1R5pzGiTHgo1Rx2xwi4zHAlsmar/brOsaK+rHUVTOOZL
+         GwlA==
+X-Forwarded-Encrypted: i=1; AJvYcCU9qbZ4qOfq/HA7xSyUnHoHJJivT8muKMPuRAa4PlN9kPVu5rp7eAQahPM6rp+ajYQZvgwE21DcAC24VbTq@vger.kernel.org, AJvYcCUeXY2fnjpoSGRgschbZql8KYBixFvx3sakb87GFALZBM1jU+iEm67MhQJy95sqARBx+vistSVxZOOi@vger.kernel.org, AJvYcCV2VFSNyokN8NLAqapeTFWDT+GLSOlryItTG/M5j+MQ1dHvEF40J9n9FAInuHTL/A7MYcSrEn2jgurg@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzai8hhFvJ4pLuhC/N9VzV5ZvtQEt5VzTPWY4uewHoKj1N68oqv
+	6BF0dUMps2sa0XiTNClFi6fVZtpcinfsOcaJpb0iTLbi4tJfgoM3ngVK3X1F
+X-Gm-Gg: ASbGncsYQYGrXgX+WDqT22DErP73PQsuwT/EguLyKpEe0ejqDXaYl+pSQevK8nN9S2R
+	sF6GSQ7vvdIkS8YktTGvkLA2VkZvXQGBkS3yNBxbRYLSvtAmJg8zNskqyIjDiQ3jYTAX5azIlxx
+	CTnvHoO4/XFreN/Nvxh1UUXhgCmB1TT9ZO1rqlNdwXgPNC9xrJfGujlnTf4VzP6fiqS79QrfrsO
+	RMz4aXzA3qlGgau9JcboLjC1plCsLhtgnqW5fkbgQYJ1Tqc63YrQ8LK8kT8afUB9QF2qcNw0Ibm
+	mO4k1cyIIm27j62/ftTME9STwAgFHttrvLy1S0+gPuV9E/QNHR8CyBxXke/ECjxCiR0NU0g2JA=
+	=
+X-Google-Smtp-Source: AGHT+IGyo9LXSYGZVER0mW6Wzsx9Ag/v+n4mPHyB14QgX9y4EtaMRhXzFOub0TOfQJf7va5afRLzuA==
+X-Received: by 2002:a05:600c:198f:b0:436:1b86:f05 with SMTP id 5b1f17b1804b1-439ae320521mr32165805e9.11.1740153553011;
+        Fri, 21 Feb 2025 07:59:13 -0800 (PST)
+Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439b02d510bsm21116065e9.9.2025.02.21.07.59.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Feb 2025 07:59:12 -0800 (PST)
+Message-ID: <8595146558aba261658cb5b311fa87ead3dbf71a.camel@gmail.com>
+Subject: Re: [PATCH 05/14] iio: backend: add support for number of lanes
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Antoniu Miclaus	
+ <antoniu.miclaus@analog.com>, jic23@kernel.org, robh@kernel.org, 
+	conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ 	linux-kernel@vger.kernel.org
+Date: Fri, 21 Feb 2025 15:59:16 +0000
+In-Reply-To: <13c5e420-a3ca-468b-8810-3528b24d8664@baylibre.com>
+References: <20250220135429.8615-1-antoniu.miclaus@analog.com>
+	 <20250220135429.8615-6-antoniu.miclaus@analog.com>
+	 <13c5e420-a3ca-468b-8810-3528b24d8664@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add NCT7201 ADCs
-To: Eason Yang <j2anfernee@gmail.com>, avifishman70@gmail.com,
- tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
- yuenn@google.com, benjaminfair@google.com, jic23@kernel.org,
- lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, javier.carrasco.cruz@gmail.com,
- andriy.shevchenko@linux.intel.com, gstols@baylibre.com,
- olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com,
- matteomartelli3@gmail.com, marcelo.schmitt@analog.com,
- alisadariana@gmail.com, joao.goncalves@toradex.com,
- thomas.bonnefille@bootlin.com, ramona.nechita@analog.com,
- herve.codina@bootlin.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com
-Cc: openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250221090918.1487689-1-j2anfernee@gmail.com>
- <20250221090918.1487689-2-j2anfernee@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20250221090918.1487689-2-j2anfernee@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2/21/25 3:09 AM, Eason Yang wrote:
-> Add a binding specification for the Nuvoton NCT7201/NCT7202 up to 12-bit
-> ADCs with I2C interface.
-> 
-> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
-> ---
->  .../bindings/iio/adc/nuvoton,nct7201.yaml     | 57 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 58 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
-> new file mode 100644
-> index 000000000000..830c37fd9f22
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
-> @@ -0,0 +1,57 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/nuvoton,nct7201.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Nuvoton nct7201 and similar ADCs
-> +
-> +maintainers:
-> +  - Eason Yang <j2anfernee@gmail.com>
-> +
-> +description: |
-> +  The NCT7201/NCT7202 is a Nuvoton Hardware Monitor IC, contains up to 12 voltage
-> +  monitoring channels, with SMBus interface, and up to 4 sets SMBus address
-> +  selection by ADDR connection. It also provides ALERT# signal for event
-> +  notification and reset input RSTIN# to recover it from a fault condition.
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - nuvoton,nct7201
-> +      - nuvoton,nct7202
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
+On Thu, 2025-02-20 at 14:20 -0600, David Lechner wrote:
+> On 2/20/25 7:54 AM, Antoniu Miclaus wrote:
+> > Add iio backend support for number of lanes to be enabled.
+> >=20
+> > Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> > ---
+> This is why I was pushing for a similar function to be an iio_backend
+> function in [1]. :-)
+>=20
+> [1]:
+> https://lore.kernel.org/linux-iio/94efa413-5fa9-4014-86c2-331442e9d42e@ba=
+ylibre.com/
+>=20
+> Not sure if that changes what we want to do here, but just pointing it
+> out as a similar case to help us decide what the most useful generic
+> function would be for this.
+>=20
+>=20
 
-Maybe this was brought up before, but no power supply?
+Hmm, yeah, I guess we could have them both in this interface or the API
+suggested in discussion you linked (is octal spi a thing?!) even though it =
+gets
+a bit confusing in the AD3552R case where we have the other interface for b=
+us
+related things.
 
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +
-> +    #include <dt-bindings/gpio/gpio.h>
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +
-> +    i2c {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        adc@1d {
-> +            compatible = "nuvoton,nct7202";
-> +            reg = <0x1d>;
-> +            interrupt-parent = <&gpio3>;
-> +            interrupts = <30 IRQ_TYPE_LEVEL_LOW>;
-> +            reset-gpios = <&gpio3 28 GPIO_ACTIVE_LOW>;
-> +        };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3864d473f52f..fdc4aa5c7eff 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -2831,6 +2831,7 @@ L:	openbmc@lists.ozlabs.org (moderated for non-subscribers)
->  S:	Supported
->  F:	Documentation/devicetree/bindings/*/*/*npcm*
->  F:	Documentation/devicetree/bindings/*/*npcm*
-> +F:	Documentation/devicetree/bindings/iio/adc/nuvoton,nct7201.yaml
-
-This (ARM/NUVOTON NPCM ARCHITECTURE) doesn't look like the right place for
-adding a stand-alone chip. You will need to start a new section like:
-
-NUVOTON NCT7201 IIO DRIVER
-
->  F:	Documentation/devicetree/bindings/rtc/nuvoton,nct3018y.yaml
->  F:	arch/arm/boot/dts/nuvoton/nuvoton-npcm*
->  F:	arch/arm/mach-npcm/
-
+- Nuno S=C3=A1
 

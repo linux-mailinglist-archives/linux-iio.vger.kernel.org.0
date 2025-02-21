@@ -1,200 +1,96 @@
-Return-Path: <linux-iio+bounces-15912-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15913-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15923A3F71E
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 15:24:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F608A3FA08
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 17:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06D117C8BF
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 14:24:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C75B8678C7
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Feb 2025 15:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424FC20F08F;
-	Fri, 21 Feb 2025 14:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8CB1FBEB0;
+	Fri, 21 Feb 2025 15:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="h4+stQVC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZC+y0mkW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1107620F07C;
-	Fri, 21 Feb 2025 14:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A41E7C38
+	for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 15:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740147875; cv=none; b=r0xKiU56H/k/DP/ut0xJ1mtQSEvTf0xULk5L3Alyws1TvQnhbuI6/0+3GcgTqZxRmLNo4KbbPJ1qoKrra4JluWQxuVu22ZIJ7oorbnFox3ksjqMTIwVs0mf9fkfOrOY46LMoAPmKUcdXWhH3AWeWjjN2H7Ogj3Wc27SntTw/v3M=
+	t=1740153253; cv=none; b=NSWuWdqVZNLeZvsMJ3FQwyAgrVBaeh60J2s+nV8wx2JzoLajaLoJufTMeLlCMySYPE9WOUz7bU76OWkDV+nKpFevAa+jMgZOpjBlo0uYZtsxO13d5bFzMCiPdE4N4k2DJot/4qWJCzccBXpoTsXOftGAkiFyx6OmOsmwN3y7T8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740147875; c=relaxed/simple;
-	bh=YKUTgm4oy5vwxcdkG9sPJgJIWxtlrqVDzzsGd4m4+bk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=janZE8jHBXTSkiXg/pGXL+EQysghzIzlWC6eGfUoHGpNJALg6QrTaxIQ6sWQg2uF+vRz+CQmuCWjPbftO8Xb/PANiEiXTuiIsJb+77iLGmibU8xDTKWZNjmsJkZDGLtgwmKGyH5l7+MlsZFqalS4wqPciVR7Ij3sh9KKzF9BebA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=h4+stQVC; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 418FEA0AAA;
-	Fri, 21 Feb 2025 15:14:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=WRlNS+d53iQwEF0PVQZc
-	s6ddeNbr3K+AJbfAJwaHGV8=; b=h4+stQVCGI40++peP5PLy4/+eHfGdXT1hufQ
-	R3BV2RbEHbXIKEtSxxBPlEChGvka+CjLG644oHmGtJZlIXFRzFl4FaZ1Q6h8dWjA
-	igOvY55lsLE0IXPdIdVtHVo32KkxGcAbIfq2NIHPZh5xh24r/PiRVXupv3lLigtB
-	iXd+3PtTxRXOxJ3HLpPheJZst80Pxn2R0oUUpu63t+BuF6C1NEJxiUQNSjL7lKG1
-	lbN+II+20eyN3s4SG9R3BHGYbN7yvxWZPWO2EpZqRuSlvTsI5QuNnifhdl2HdykO
-	MgrdyAJ/0TsHToEBIjguj0DTyEhNsJ1pjs1w+RGDT4hnI7lM79vppgSYYvJemKFc
-	L1s271ynXsNE9TgWU1cq40CnsIK2FctOc6Xpte97YGW1Lg4vLtEOEz3J1z911OI8
-	Aqj9+MbLSxvATy0eWPriJX97D0SK9Hg+j+kuXTRNQTt/rrpVVx6gMqqaZUyhpFIi
-	PSRkEK96EcwZyEtQyP2X73kq9QzdKDVI33W6gUCIZ74O1149NmA2GHf0Fbbi3Aem
-	ONNw+A6Cfv+rIQEq3ux3KcILFkxok3J3MEEXRCApTQU+bFeSDbfT8cyyJssl/Arv
-	4qKhYNw4dQzyAs4eBKfxPuVEYhrvds0+mKUAIB5jCwc1pczg34zEvDqYFas4zIr1
-	57r1Lg0=
-Message-ID: <8fb9f188-3065-4fdc-a9f1-152cc5959186@prolan.hu>
-Date: Fri, 21 Feb 2025 15:14:44 +0100
+	s=arc-20240116; t=1740153253; c=relaxed/simple;
+	bh=1W7rC/ZP8SbUKGe30TkGK1L/Cpk8gS7VpdsBLYjCytQ=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=YIeurm8FBfG/AbDJoHCeZqEh0TY/FqzMnSo23zsrKEyHRQNbnagylX7mi7G7gLMsNR2aek6uOHsaTN0ZnRbXT0rs75O7UfEWJFmeYW13fWGV9pRueSzAZxshMRnpRTJ+nxbMS3shAUO1GW+kTdJ/8LNfAyDjZZ1VFZ61ldTa550=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZC+y0mkW; arc=none smtp.client-ip=209.85.128.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6f74b78df93so21852397b3.0
+        for <linux-iio@vger.kernel.org>; Fri, 21 Feb 2025 07:54:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740153251; x=1740758051; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1W7rC/ZP8SbUKGe30TkGK1L/Cpk8gS7VpdsBLYjCytQ=;
+        b=ZC+y0mkWn6/PuVBONyGofmY1D+UWer2Arfn8/Lf7mTOBHNGwdmky2Q8FQIL3+YDvvS
+         7vvCwbQW7Z29WEyVMV/Y+xXVgoGg0JA6321k2n5QuF83DPn0k5B2xW+86FySbo5Ss3KN
+         H4QMTNWXa9m3V5rPiPKdTAebXqhDmL3BPTggjh2zjsJl7az1ZEEbqd1L1itVGuYsCb4F
+         bi06v7HQq1ZqCA7VQm+ORf9f7l52SuRk9tBF3ZtlJ9Wg4+/xm5Mh400O4q0QSoOg1MA3
+         SgAyRfTOtspDEFB2mUXYcPPL2NR2a/of7huVESG1YGEfy4L1SmVr8o3fqSg+4JhYUBWx
+         Hnrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740153251; x=1740758051;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1W7rC/ZP8SbUKGe30TkGK1L/Cpk8gS7VpdsBLYjCytQ=;
+        b=Gewdmr2jriN2cUU02jWskUxBKnn2Xb5kqdRRUxLbz1cP3ASmzk7GIOa+PuQmGH3mWz
+         JgYskNTrfJHqP0esse+kBTPTP2T7PuJgOls+bmU6UOY5NxM16gdqqTM3dOKi4Gef+7aY
+         SCkKws1aVavKwEmp8bN5jlfOP33AQNHzUOLATySesTOnxBtfH+Y7UNcJnvW+c333nrpd
+         FZDBDuY4PJ7rgoUs6R2MlybgGAbgzvSPiItQlLXotHp06EjMPQ/0JjhGoHUsvJQIwU67
+         AQEE/EyV3AjT6YTVM6cBIRdExbg4/LXt9n5sMgq/ra5ECiu28XV10ivq+NBQ7Zb52jbw
+         APSQ==
+X-Gm-Message-State: AOJu0Yw9odFX8P/dfH3hDrBb0Hbc5h3DGs5SE6bvM6NZuvh1BR4CSaLi
+	s2EE4glXNleCSYrDDF2em1vGKMHzk8wXnheLyaqblk3+JXX3LlZa+k5knx1JowVfPXLJI4mxcQ9
+	+wRUHooiA45XHSRcRpi32ml+lDXJVqyDleCY=
+X-Gm-Gg: ASbGnctqt5uYTsadUx4EH+5uDDbINntc4NxR/60UeSy66uMhXLMv9A/4eJ2z66MjubA
+	80fUEAems5m4s8hm+1raklJg1NT3bawdLsctv9NfEPEQX9kjr0UPIqPZAC9csSBy+Sp/NbxFw4P
+	8Sn4GNGeUt
+X-Google-Smtp-Source: AGHT+IFziKSml93CIVvE2Kzgnp3oT05ztQHJptT+YQAlxTAdthpWu3s7qFdUPf+XfjzDcjUeydbyQ8S5Yk6X+JuiFnc=
+X-Received: by 2002:a05:690c:7488:b0:6f9:938a:57af with SMTP id
+ 00721157ae682-6fbcc25bfd4mr34006487b3.17.1740153251152; Fri, 21 Feb 2025
+ 07:54:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] microchip-tcb-capture: Add Capture, Compare,
- Overflow etc. events
-To: William Breathitt Gray <wbg@kernel.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Kamel Bouhara <kamel.bouhara@bootlin.com>,
-	<Dharma.B@microchip.com>
-References: <20250211151914.313585-3-csokas.bence@prolan.hu>
- <Z7h0AXV1zlgp9Nw-@ishi>
-Content-Language: en-US
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <Z7h0AXV1zlgp9Nw-@ishi>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D9485260706A
+From: Siddharth Menon <simeddon@gmail.com>
+Date: Fri, 21 Feb 2025 21:23:35 +0530
+X-Gm-Features: AWEUYZn8ptd2Rn2CRaF6sA29e7E02IfEnkVw_vKSapwlIj4KMy7ckljXZOoqohM
+Message-ID: <CAGd6pzNTB5f++sbirWxnD1Tq_rjTkBDVmSrpFYsMisEasAq4Rg@mail.gmail.com>
+Subject: GSoC IIO project: Siddharth Menon
+To: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hi William,
+subject: Permission to work on dt bindings for staging drivers
 
-On 2025. 02. 21. 13:39, William Breathitt Gray wrote:
-> On Tue, Feb 11, 2025 at 04:19:11PM +0100, Bence Csókás wrote:
->> The TCB has three R/W-able "general purpose" hardware registers:
->> RA, RB and RC. The hardware is capable of:
->> * sampling Counter Value Register (CV) to RA/RB on a trigger edge
->> * sending an interrupt of this change
->> * sending an interrupt on CV change due to trigger
->> * triggering an interrupt on CV compare to RC
->> * stop counting after sampling to RB
->>
->> To enable using these features in user-space, an interrupt handler
->> was added, generating the necessary counter events. On top, RA/B/C
->> registers are added as Count Extensions. To aid interoperation, a
->> uapi header was also added, containing the various numeral IDs of
->> the Extensions, Event channels etc.
->>
->> Bence Csókás (2):
->>    counter: microchip-tcb-capture: Add IRQ handling
->>    counter: microchip-tcb-capture: Add capture extensions for registers
->>      RA-RC
->>
->>   MAINTAINERS                                   |   1 +
->>   drivers/counter/microchip-tcb-capture.c       | 137 ++++++++++++++++++
->>   .../linux/counter/microchip-tcb-capture.h     |  49 +++++++
->>   3 files changed, 187 insertions(+)
->>   create mode 100644 include/uapi/linux/counter/microchip-tcb-capture.h
-> 
-> Hi Bence,
-> 
-> I had some time to read over your description of the three hardware
-> registers (RA, RB, and RC)[^1] and I have some suggestions.
-> 
-> First, register RC seems to serve only as a threshold value for a
-> compare operation. So it shouldn't be exposed as "capture2", but rather
-> as its own dedicated threshold component. I think the 104-quad-8 module
-> is the only other driver supporting THRESHOLD events; it exposes the
-> threshold value configuration via the "preset" component, but perhaps we
-> should introduce a proper "threshold" component instead so counter
-> drivers have a standard way to expose this functionality. What do you
-> think?
+I am interested in applying for GSoC under the IIO driver project.
 
-Possibly. What's the semantics of the `preset` component BTW? If we can 
-re-use that here as well, that could work too.
+I have a couple of patches that have been merged into the kernel,
+and am now exploring DT bindings.
 
-> Regarding registers RA and RB, these do hold historic captures of count
-> data so it does seem appropriate to expose these as "capture0" and
-> "capture1". However, I'm still somewhat confused about why there are two
-> registers holding the same sampled CV (or do RA and RB hold different
-> values from each other?). Does a single external line trigger the sample
-> of CV to both RA and RB, or are there two separate external lines
-> triggering the samples independently; or is this a situation where it's
-> a single external line where rising edge triggers a sample to RA while
-> falling edge triggers a sample to RB?
+Currently, I am working on Coding Task 1 (sending cleanup patches).
+While running checkpatch.pl, I noticed warnings about undocumented
+DT-compatible strings.
+Would creating the appropriate binding count as a cleanup patch or were
+they left undocumented intentionally because they are staging drivers?
 
-It is exactly the latter. And you can configure which edge should sample 
-which register; you can also set them to the same edge in which case 
-they would (presumably) hold the same value, but as you said, it 
-wouldn't be practical.
-
-> Next, the driver right now has three separate event channels, but I
-> believe you only need two. The purpose of counter event channels is to
-> provide a way for users to differentiate between the same type of event
-> being issued from different sources. An example might clarify what I
-> mean.
-
-Yeah true, I could shove the RC compare event to event channel 0. It 
-just made more sense to have event channels 0, 1, 2 correspond to RA, RB 
-and RC. And it's not like we're short on channels, it's a u8, and we 
-have 5 events; if we wanted to, we could give each a channel and still 
-have plenty left over. I also thought about separating RA capture from 
-channel 0, but I figured it would be fine, as you said, the event type 
-would differentiate among them.
-
-The reason I did not put the RC compare event to channel 0 as well is 
-that I only have the SAMA5D2, and I don't know whether other parts are 
-capable of generating other events related to RC, potentially clashing 
-with other channel 0 use, if we later decide to support them. One 
-channel per event-sourcing register seems like a safe bet; having CV and 
-RA on the same channel still seems to be an acceptable compromise (but 
-again, I don't know about the other parts' capabilities, so it _might_ 
-still lead to clashes).
-
-> Suppose a hypothetical counter device has two independent timers. When
-> either timer overflows, the device fires off a single interrupt. We can
-> consider this interrupt a counter OVERFLOW event. As users we can watch
-> for COUNTER_EVENT_OVERFLOW to collect these events. However, a problem
-> arises: we know an OVERFLOW event occurred, but we don't know which
-> particular timer is the source of the overflow. The solution is to
-> dedicate each source to its own event channel so that users can
-> differentiate between them (e.g. channel 0 are events sourced from the
-> first timer whereas channel 1 are events sourced from the second timer).
-> 
-> Going back to your driver, there seems to be no ambiguity about the
-> source of the CHANGE-OF-STATE, THRESHOLD, and OVERFLOW events, so these
-> events can all coexist in the same event channel. The only possible
-> ambiguity I see is regarding the CAPTURE events, which could be sourced
-> by either a sample to RA or RB. Given this, I believe all your events
-> could go in channel 0, with channel 1 serving to simply differentiate
-> CAPTURE events that are sourced by samples to RB.
-> 
-> Finally, you mentioned that this device supports a PWM mode that also
-> makes use of the RA, RB, and RC registers. To prevent globbering the
-> registers when in the wrong mode, you should verify the device is in the
-> counter capture mode before handling the capture components (or return
-> an appropriate "Operation not support" error code when in PWM mode). You
-> don't need to worry about adding these checks for now because it looks
-> like this driver does not support PWM mode yet, but it's something to
-> keep in mind if you do add support for it in the future.
-
-The `mchp_tc_count_function_write()` function already disables PWM mode 
-by clearing the `ATMEL_TC_WAVE` bit from the Channel Mode Register (CMR).
-
-> William Breathitt Gray
-> 
-> [^1] https://lore.kernel.org/all/7b581014-a351-4077-8832-d3d347b4fdb5@prolan.hu/
-
-Bence
-
+Regards,
+Siddharth Menon
 

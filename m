@@ -1,66 +1,57 @@
-Return-Path: <linux-iio+bounces-15958-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15959-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EE7A409C9
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 16:59:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81FBA409D2
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00ABF19C6A3D
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 15:57:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81C86188D75F
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 16:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BC71D86E6;
-	Sat, 22 Feb 2025 15:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8C51CEEBB;
+	Sat, 22 Feb 2025 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NfE3D0ul"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eUaEQtPb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596CE1CDA3F;
-	Sat, 22 Feb 2025 15:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E41778F2F;
+	Sat, 22 Feb 2025 16:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740239821; cv=none; b=BEIfIZ/GxVe/+c5W1xZZ5WGnFK2NlTOKyU4M82GFsUGsbSkYiZgVh3FtGeyUc3Z5A5g7vMUEB+pUFtHKbY96etSsfJVreVTaAo2ng3/B1YLm5g38qdHKLPEUPdSOSRbRILwqMEFYLSwGQP2dUra8c1daid3th/0WsdKddgoxAEw=
+	t=1740240853; cv=none; b=RY7aFDkuXoA9CnQQ1HEhd0OhR+VADoNuKT9lt78rvyyMtNgWApgDpaPVYrHAu8/H55Ni2bCen3dTFm9VoqfGwGp5gDxSfdTqhJ4Ej16tWoLrVrw1X29S+0HGeeWkQu/mOQzFbrYVU1fHG/428+z3IjUGcS2/3L28W4K9PTGOl6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740239821; c=relaxed/simple;
-	bh=X9W99eyKCCVl+jjs+X+HEG5aWdDTZJ6O9eeXlGZgHIo=;
+	s=arc-20240116; t=1740240853; c=relaxed/simple;
+	bh=2PUB3dGoHzHfpA9fcxe5STpk3/cimK4V30cI/TaJ8L8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b4Ru2QY5xWdlTG72pKeQhvAOo/ZpaETiNClVsfZwaEZu7gp2dj1SHqWLJoRT4xutjiztaP9YM0JldJJKOiUnHXevzx4bQTR5RjfkCXIX7eKmZMB+4vcju/tNChtGgbQVJcB54ZGiJkau5CYYjzEICrO9YZ0O5DmDopPuzUfUhOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NfE3D0ul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658E4C4CEE4;
-	Sat, 22 Feb 2025 15:56:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XgFR7/iBBEXyz1W4kwSUTrmvTaMnjjWbo1B/t86FpjDXjECiFeRYjiVQRIJfu33dTvQs4lMmRDRIWodt46d7DiBKMMDy4VIW8Z1WsKnrubpx/Rhl22u4HXGrQ5D3cVl4MWw8omsYDec4cx4PTdr4OdNdd8mkgCaecuiJUl3Ea3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eUaEQtPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B15C4CEE4;
+	Sat, 22 Feb 2025 16:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740239820;
-	bh=X9W99eyKCCVl+jjs+X+HEG5aWdDTZJ6O9eeXlGZgHIo=;
+	s=k20201202; t=1740240852;
+	bh=2PUB3dGoHzHfpA9fcxe5STpk3/cimK4V30cI/TaJ8L8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NfE3D0ullPSwME2gEhJw0c44jhYZs5BBr7UUwuqFk2V40WucOM3O482iEfGDtes49
-	 a0C6QJFbP92YzLZYDav2t65AW34dqIT0nCD/48QXQXdbBnCLiyIl/OCUsx4Txsx231
-	 rWPSvr9wSpFjmK9fE0gFS6cXEY0D8vzIGPBX6FmVBGyaHVfwN7Mh4J5p9Xbtk6BRWl
-	 cJtxvxTBE6fdwX/+WTy4Fgg1jU3zCEZulclQ+Zr0Fzh6ihG95XM0hFEv9xuzNr7ug3
-	 DInfASsVVhOYEoMxt3NVuaxGWpi+ghgE2BRBbKXfYxYUeCf5m6SBvjjGBHZFBDqLF/
-	 qga1Nx127Iltw==
-Date: Sat, 22 Feb 2025 15:56:46 +0000
+	b=eUaEQtPbI98t3+pLIDby9HlTjoPy36wWs6J1Dj/8CuF7lWKgbc3XXNfylYyl4h5Zx
+	 ArtG89hS2zPHZO6/WsU844XTnfAK89L2cMobdkC6mmaKZdSKY8Ym2ver7Tm5JkZXs0
+	 VOsThmxGsrQ+y9qgKrgO1JeRfYXMFzMs/pGE97ME2HoU6ZtTtJg0l6g6BFNuGsjrV3
+	 mNP65qcErdHgkirN167J2EnWVCOuvFBis4FPdZmrC/r+fD29GApAZllfA0Ycg7pLM6
+	 R2sXHVLhZrc9r+4hPEhRT0npw9yaomRKe3OG9+aOteaENvQsJGkdV1YFBtfZKdnzVt
+	 ++45tSecnhzWg==
+Date: Sat, 22 Feb 2025 16:14:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Eason Yang <j2anfernee@gmail.com>
-Cc: avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
- venture@google.com, yuenn@google.com, benjaminfair@google.com,
- lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, dlechner@baylibre.com, javier.carrasco.cruz@gmail.com,
- andriy.shevchenko@linux.intel.com, gstols@baylibre.com,
- olivier.moysan@foss.st.com, mitrutzceclan@gmail.com, tgamblin@baylibre.com,
- matteomartelli3@gmail.com, marcelo.schmitt@analog.com,
- alisadariana@gmail.com, joao.goncalves@toradex.com,
- thomas.bonnefille@bootlin.com, ramona.nechita@analog.com,
- herve.codina@bootlin.com, chanh@os.amperecomputing.com, KWLIU@nuvoton.com,
- yhyang2@nuvoton.com, openbmc@lists.ozlabs.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] iio: adc: add support for Nuvoton NCT7201
-Message-ID: <20250222155646.7fa6375a@jic23-huawei>
-In-Reply-To: <20250221090918.1487689-3-j2anfernee@gmail.com>
-References: <20250221090918.1487689-1-j2anfernee@gmail.com>
-	<20250221090918.1487689-3-j2anfernee@gmail.com>
+To: Jean-Baptiste Maneyrol via B4 Relay
+ <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
+Cc: jean-baptiste.maneyrol@tdk.com, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: imu: inv_icm42600: add WoM support
+Message-ID: <20250222161406.54b2d348@jic23-huawei>
+In-Reply-To: <20250220-losd-3-inv-icm42600-add-wom-support-v1-1-9b937f986954@tdk.com>
+References: <20250220-losd-3-inv-icm42600-add-wom-support-v1-0-9b937f986954@tdk.com>
+	<20250220-losd-3-inv-icm42600-add-wom-support-v1-1-9b937f986954@tdk.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,300 +62,365 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 21 Feb 2025 17:09:18 +0800
-Eason Yang <j2anfernee@gmail.com> wrote:
+On Thu, 20 Feb 2025 21:52:06 +0100
+Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org> wrote:
 
-> Add Nuvoton NCT7201/NCT7202 system voltage monitor 12-bit ADC driver
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > 
-> NCT7201/NCT7202 supports up to 12 analog voltage monitor inputs and up to
-> 4 SMBus addresses by ADDR pin. Meanwhile, ALERT# hardware event pins for
-> independent alarm signals, and the all threshold values could be set for
-> system protection without any timing delay. It also supports reset input
-> RSTIN# to recover system from a fault condition.
+> Add WoM as accel roc rising x|y|z event.
 > 
-> Currently, only single-edge mode conversion and threshold events support.
-> 
-> Signed-off-by: Eason Yang <j2anfernee@gmail.com>
-Hi Eason
-
-A few comments from me. May well overlap in some places with other feedback.
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Some comments on unrelated bug (that this duplicates) inline.
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/nct7201.c b/drivers/iio/adc/nct7201.c
-> new file mode 100644
-> index 000000000000..c5d1540bcc00
-> --- /dev/null
-> +++ b/drivers/iio/adc/nct7201.c
-> @@ -0,0 +1,487 @@
-
-> +
-> +#define NCT7201_VOLTAGE_CHANNEL(chan, addr)				\
-> +	{								\
-> +		.type = IIO_VOLTAGE,					\
-> +		.indexed = 1,						\
-> +		.channel = chan,					\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),		\
-> +		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
-> +		.address = addr,					\
-> +		.event_spec = nct7201_events,				\
-> +		.num_event_specs = ARRAY_SIZE(nct7201_events),		\
-> +	}
-> +
-> +static const struct iio_chan_spec nct7201_channels[] = {
-> +	NCT7201_VOLTAGE_CHANNEL(1, 0),
-> +	NCT7201_VOLTAGE_CHANNEL(2, 1),
-> +	NCT7201_VOLTAGE_CHANNEL(3, 2),
-> +	NCT7201_VOLTAGE_CHANNEL(4, 3),
-> +	NCT7201_VOLTAGE_CHANNEL(5, 4),
-> +	NCT7201_VOLTAGE_CHANNEL(6, 5),
-> +	NCT7201_VOLTAGE_CHANNEL(7, 6),
-> +	NCT7201_VOLTAGE_CHANNEL(8, 7),
+> ---
+>  drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  47 +++-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  | 264 ++++++++++++++++++++-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   2 +-
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  56 ++++-
+>  4 files changed, 363 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> index 18787a43477b89db12caee597ab040af5c8f52d5..8dfbeaf1c768d7d25cb58ecf9804446f3cbbd465 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
+> @@ -135,6 +135,14 @@ struct inv_icm42600_suspended {
+>  	bool temp;
+>  };
+>  
+> +struct inv_icm42600_apex {
+> +	unsigned int on;
+> +	struct {
+> +		bool enable;
+> +		uint64_t value;
+> +	} wom;
 > +};
 > +
-> +static const struct iio_chan_spec nct7202_channels[] = {
-> +	NCT7201_VOLTAGE_CHANNEL(1, 0),
-> +	NCT7201_VOLTAGE_CHANNEL(2, 1),
-> +	NCT7201_VOLTAGE_CHANNEL(3, 2),
-> +	NCT7201_VOLTAGE_CHANNEL(4, 3),
-> +	NCT7201_VOLTAGE_CHANNEL(5, 4),
-> +	NCT7201_VOLTAGE_CHANNEL(6, 5),
-> +	NCT7201_VOLTAGE_CHANNEL(7, 6),
-> +	NCT7201_VOLTAGE_CHANNEL(8, 7),
-> +	NCT7201_VOLTAGE_CHANNEL(9, 8),
-> +	NCT7201_VOLTAGE_CHANNEL(10, 9),
-> +	NCT7201_VOLTAGE_CHANNEL(11, 10),
-> +	NCT7201_VOLTAGE_CHANNEL(12, 11),
-We normally number channels from 0 which would simplify this but I don't really
-mind if you want to keep the offset of 1.  Maybe just have one macro
-parameter though and do the +1 in the macro.
-> +};
+>  /**
+>   *  struct inv_icm42600_state - driver state variables
+>   *  @lock:		lock for serializing multiple registers access.
+> @@ -151,6 +159,7 @@ struct inv_icm42600_suspended {
+>   *  @buffer:		data transfer buffer aligned for DMA.
+>   *  @fifo:		FIFO management structure.
+>   *  @timestamp:		interrupt timestamps.
+> + *  @apex:		APEX features management.
+>   */
+>  struct inv_icm42600_state {
+>  	struct mutex lock;
+> @@ -164,12 +173,13 @@ struct inv_icm42600_state {
+>  	struct inv_icm42600_suspended suspended;
+>  	struct iio_dev *indio_gyro;
+>  	struct iio_dev *indio_accel;
+> -	uint8_t buffer[2] __aligned(IIO_DMA_MINALIGN);
+> +	uint8_t buffer[3] __aligned(IIO_DMA_MINALIGN);
+>  	struct inv_icm42600_fifo fifo;
+This being after buffer also looks like a problem (see below)
+This needs fixing.  Just  move it before buffer in a separate patch
+and all should be fine.
+>  	struct {
+>  		int64_t gyro;
+>  		int64_t accel;
+>  	} timestamp;
+Maybe this as well.
+> +	struct inv_icm42600_apex apex;
 
-> +static int nct7201_read_event_value(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info,
-> +				    int *val, int *val2)
+That seems unwise. It's in the region that DMA transactions may
+scribble all over.  Move this before buffer or you'll get some
+weird and wonderful bug reports sometime in the future!
+
+>  };
+>  
+>  
+> @@ -253,6 +263,18 @@ struct inv_icm42600_sensor_state {
+>  #define INV_ICM42600_REG_FIFO_COUNT			0x002E
+>  #define INV_ICM42600_REG_FIFO_DATA			0x0030
+>  
+> +#define INV_ICM42600_REG_INT_STATUS2			0x0037
+> +#define INV_ICM42600_INT_STATUS2_SMD_INT		BIT(3)
+> +#define INV_ICM42600_INT_STATUS2_WOM_INT		GENMASK(2, 0)
+> +
+> +#define INV_ICM42600_REG_INT_STATUS3			0x0038
+> +#define INV_ICM42600_INT_STATUS3_STEP_DET_INT		BIT(5)
+> +#define INV_ICM42600_INT_STATUS3_STEP_CNT_OVF_INT	BIT(4)
+> +#define INV_ICM42600_INT_STATUS3_TILT_DET_INT		BIT(3)
+> +#define INV_ICM42600_INT_STATUS3_WAKE_INT		BIT(2)
+> +#define INV_ICM42600_INT_STATUS3_SLEEP_INT		BIT(1)
+> +#define INV_ICM42600_INT_STATUS3_TAP_DET_INT		BIT(0)
+> +
+>  #define INV_ICM42600_REG_SIGNAL_PATH_RESET		0x004B
+>  #define INV_ICM42600_SIGNAL_PATH_RESET_DMP_INIT_EN	BIT(6)
+>  #define INV_ICM42600_SIGNAL_PATH_RESET_DMP_MEM_RESET	BIT(5)
+> @@ -309,6 +331,14 @@ struct inv_icm42600_sensor_state {
+>  #define INV_ICM42600_TMST_CONFIG_TMST_FSYNC_EN		BIT(1)
+>  #define INV_ICM42600_TMST_CONFIG_TMST_EN		BIT(0)
+>  
+> +#define INV_ICM42600_REG_SMD_CONFIG			0x0057
+> +#define INV_ICM42600_SMD_CONFIG_WOM_INT_MODE		BIT(3)
+> +#define INV_ICM42600_SMD_CONFIG_WOM_MODE		BIT(2)
+> +#define INV_ICM42600_SMD_CONFIG_SMD_MODE_OFF		0x00
+> +#define INV_ICM42600_SMD_CONFIG_SMD_MODE_WOM		0x01
+> +#define INV_ICM42600_SMD_CONFIG_SMD_MODE_SHORT		0x02
+> +#define INV_ICM42600_SMD_CONFIG_SMD_MODE_LONG		0x03
+> +
+>  #define INV_ICM42600_REG_FIFO_CONFIG1			0x005F
+>  #define INV_ICM42600_FIFO_CONFIG1_RESUME_PARTIAL_RD	BIT(6)
+>  #define INV_ICM42600_FIFO_CONFIG1_WM_GT_TH		BIT(5)
+> @@ -338,6 +368,11 @@ struct inv_icm42600_sensor_state {
+>  #define INV_ICM42600_INT_SOURCE0_FIFO_FULL_INT1_EN	BIT(1)
+>  #define INV_ICM42600_INT_SOURCE0_UI_AGC_RDY_INT1_EN	BIT(0)
+>  
+> +#define INV_ICM42600_REG_INT_SOURCE1			0x0066
+> +#define INV_ICM42600_INT_SOURCE1_I3C_ERROR_INT1_EN	BIT(6)
+> +#define INV_ICM42600_INT_SOURCE1_SMD_INT1_EN		BIT(3)
+> +#define INV_ICM42600_INT_SOURCE1_WOM_INT1_EN		GENMASK(2, 0)
+> +
+>  #define INV_ICM42600_REG_WHOAMI				0x0075
+>  #define INV_ICM42600_WHOAMI_ICM42600			0x40
+>  #define INV_ICM42600_WHOAMI_ICM42602			0x41
+> @@ -373,6 +408,10 @@ struct inv_icm42600_sensor_state {
+>  #define INV_ICM42600_INTF_CONFIG6_I3C_SDR_EN		BIT(0)
+>  
+>  /* User bank 4 (MSB 0x40) */
+> +#define INV_ICM42600_REG_ACCEL_WOM_X_THR		0x404A
+> +#define INV_ICM42600_REG_ACCEL_WOM_Y_THR		0x404B
+> +#define INV_ICM42600_REG_ACCEL_WOM_Z_THR		0x404C
+> +
+>  #define INV_ICM42600_REG_INT_SOURCE8			0x404F
+>  #define INV_ICM42600_INT_SOURCE8_FSYNC_IBI_EN		BIT(5)
+>  #define INV_ICM42600_INT_SOURCE8_PLL_RDY_IBI_EN		BIT(4)
+> @@ -423,6 +462,8 @@ int inv_icm42600_set_gyro_conf(struct inv_icm42600_state *st,
+>  int inv_icm42600_set_temp_conf(struct inv_icm42600_state *st, bool enable,
+>  			       unsigned int *sleep_ms);
+>  
+> +int inv_icm42600_set_wom(struct inv_icm42600_state *st, bool enable);
+> +
+>  int inv_icm42600_debugfs_reg(struct iio_dev *indio_dev, unsigned int reg,
+>  			     unsigned int writeval, unsigned int *readval);
+>  
+> @@ -437,4 +478,8 @@ struct iio_dev *inv_icm42600_accel_init(struct inv_icm42600_state *st);
+>  
+>  int inv_icm42600_accel_parse_fifo(struct iio_dev *indio_dev);
+>  
+> +void inv_icm42600_accel_handle_events(struct iio_dev *indio_dev,
+> +				      unsigned int status2, unsigned int status3,
+> +				      int64_t timestamp);
+> +
+>  #endif
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> index 388520ec60b5c5d21b16717978ebf330e38aa1fe..8ce2276b3edc61cc1ea26810198dd0057054ec48 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+
+
+> +
+> +static int inv_icm42600_accel_enable_wom(struct iio_dev *indio_dev, bool enable)
 > +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +	u16 volt;
-> +	unsigned int value;
-> +	int err;
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (info != IIO_EV_INFO_VALUE)
-> +		return -EINVAL;
-> +
-> +	if (dir == IIO_EV_DIR_FALLING) {
-> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
-> +				  &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = value;
-> +	} else {
-> +		err = regmap_read(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
-> +				  &value);
-> +		if (err < 0)
-> +			return err;
-> +		volt = value;
-No real point in assigning to volt here, 
-> +	}
-> +
-> +	*val = FIELD_GET(NCT7201_REG_VIN_MASK, volt);
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int nct7201_write_event_value(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir,
-> +				     enum iio_event_info info,
-> +				     int val, int val2)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (info != IIO_EV_INFO_VALUE)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (dir == IIO_EV_DIR_FALLING)
-> +		regmap_write(chip->regmap16, NCT7201_REG_VIN_LOW_LIMIT(chan->address),
-> +			     FIELD_PREP(NCT7201_REG_VIN_MASK, val));
-> +	else
-> +		regmap_write(chip->regmap16, NCT7201_REG_VIN_HIGH_LIMIT(chan->address),
-> +			     FIELD_PREP(NCT7201_REG_VIN_MASK, val));
-Check for error returns.
-> +
-> +	return 0;
-> +}
-> +
-> +static int nct7201_read_event_config(struct iio_dev *indio_dev,
-> +				     const struct iio_chan_spec *chan,
-> +				     enum iio_event_type type,
-> +				     enum iio_event_direction dir)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	return !!(chip->vin_mask & BIT(chan->address));
-> +}
-> +
-> +static int nct7201_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      bool state)
-> +{
-> +	struct nct7201_chip_info *chip = iio_priv(indio_dev);
-> +	unsigned int mask;
-> +
-> +	if (chan->type != IIO_VOLTAGE)
-> +		return -EOPNOTSUPP;
-> +
-> +	mask = BIT(chan->address);
-> +
-> +	if (!state && (chip->vin_mask & mask))
-> +		chip->vin_mask &= ~mask;
-> +	else if (state && !(chip->vin_mask & mask))
-> +		chip->vin_mask |= mask;
-> +
-> +	if (chip->num_vin_channels <= 8)
-> +		regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1, chip->vin_mask);
-> +	else
-> +		regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +				  &chip->vin_mask, sizeof(chip->vin_mask));
-
-Check errors on these writes.
-
-> +
-> +	return 0;
-> +}
-
-> +static int nct7201_init_chip(struct nct7201_chip_info *chip)
-> +{
-> +	u8 data[2];
-> +	unsigned int value;
-> +	int err;
-> +
-> +	regmap_write(chip->regmap, NCT7201_REG_CONFIGURATION,
-> +		     NCT7201_BIT_CONFIGURATION_RESET);
-
-Check for errors on all accesses to the device.  It can get
-fiddly in paths where you are already handling an error but
-that's not the case here.
-
-> +
-> +	/*
-> +	 * After about 25 msecs, the device should be ready and then
-> +	 * the Power Up bit will be set to 1. If not, wait for it.
-
-Wrap to 80 chars.
-
-> +	 */
-> +	mdelay(25);
-> +	err = regmap_read(chip->regmap, NCT7201_REG_BUSY_STATUS, &value);
-> +	if (err < 0)
-> +		return err;
-> +	if (!(value & NCT7201_BIT_PWR_UP))
-> +		return dev_err_probe(&chip->client->dev, -EIO,
-> +				     "Failed to power up after reset\n");
-> +
-> +	/* Enable Channel */
-> +	if (chip->num_vin_channels <= 8) {
-> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> +		err = regmap_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1, data[0]);
-> +		if (err < 0)
-> +			return dev_err_probe(&chip->client->dev, -EIO,
-> +					     "Failed to write NCT7201_REG_CHANNEL_ENABLE_1\n");
-> +	} else {
-> +		data[0] = NCT7201_REG_CHANNEL_ENABLE_1_MASK;
-> +		data[1] = NCT7201_REG_CHANNEL_ENABLE_2_MASK;
-> +		err = regmap_bulk_write(chip->regmap, NCT7201_REG_CHANNEL_ENABLE_1,
-> +					data, ARRAY_SIZE(data));
-> +		if (err < 0)
-> +			return dev_err_probe(&chip->client->dev, -EIO,
-> +					    "Failed to write NCT7201_REG_CHANNEL_ENABLE_1 and NCT7201_REG_CHANNEL_ENABLE_2\n");
-> +	}
-> +
-> +	value = get_unaligned_le16(data);
-> +	chip->vin_mask = value;
-
-Local variable doesn't seem to add any benefits so just assign vin_mask directly.
-
-> +
-> +	/* Start monitoring if needed */
-> +	err = regmap_read(chip->regmap, NCT7201_REG_CONFIGURATION, &value);
-> +	if (err < 0)
-> +		return dev_err_probe(&chip->client->dev, -EIO,
-> +				     "Failed to read NCT7201_REG_CONFIGURATION\n");
-> +
-> +	regmap_set_bits(chip->regmap, NCT7201_REG_CONFIGURATION, NCT7201_BIT_CONFIGURATION_START);
-> +
-> +	return 0;
-> +}
-> +
-> +static int nct7201_probe(struct i2c_client *client)
-> +{
-> +	const struct nct7201_adc_model_data *model_data;
-> +	struct nct7201_chip_info *chip;
-> +	struct iio_dev *indio_dev;
+> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+> +	struct inv_icm42600_sensor_state *accel_st = iio_priv(indio_dev);
+> +	struct device *pdev = regmap_get_device(st->map);
+> +	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+> +	unsigned int sleep_ms = 0;
 > +	int ret;
 > +
-> +	model_data = i2c_get_match_data(client);
-> +	if (!model_data)
-> +		return -EINVAL;
-> +
-> +	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +	chip = iio_priv(indio_dev);
-> +
-> +	chip->regmap = devm_regmap_init_i2c(client, &nct7201_regmap8_config);
-> +	if (IS_ERR(chip->regmap))
-> +		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap),
-> +			"Failed to init regmap\n");
+> +	if (enable) {
 
-Where it doesn't lead to really long lines, align all parameters to just
-after the opening bracket.
+Not a lot of shared logic. Maybe split into enable and siable functions.
 
+> +		ret = pm_runtime_resume_and_get(pdev);
+> +		if (ret)
+> +			return ret;
+> +		scoped_guard(mutex, &st->lock) {
+> +			/* turn on accel sensor */
+> +			conf.mode = accel_st->power_mode;
+> +			conf.filter = accel_st->filter;
+> +			ret = inv_icm42600_set_accel_conf(st, &conf, &sleep_ms);
+> +			if (ret)
+> +				goto error_suspend;
+> +		}
+> +		if (sleep_ms)
+> +			msleep(sleep_ms);
+> +		scoped_guard(mutex, &st->lock) {
+> +			ret = inv_icm42600_set_wom(st, true);
+> +			if (ret)
+> +				goto error_suspend;
+> +			st->apex.on++;
+> +			st->apex.wom.enable = true;
+> +		}
+	return 0;
 
+> +	} else {
+> +		scoped_guard(mutex, &st->lock) {
+> +			st->apex.wom.enable = false;
+> +			st->apex.on--;
+> +			ret = inv_icm42600_set_wom(st, false);
+> +			if (ret)
+> +				goto error_suspend;
+> +			/* turn off accel sensor if not used */
+> +			if (!st->apex.on && !iio_buffer_enabled(indio_dev)) {
+> +				conf.mode = INV_ICM42600_SENSOR_MODE_OFF;
+> +				ret = inv_icm42600_set_accel_conf(st, &conf, &sleep_ms);
+> +				if (ret)
+> +					goto error_suspend;
+> +			}
+> +		}
+> +		if (sleep_ms)
+> +			msleep(sleep_ms);
+
+With return above, you could share this with the error handling.
+
+> +		pm_runtime_mark_last_busy(pdev);
+> +		pm_runtime_put_autosuspend(pdev);
+> +	}
 > +
-> +	chip->regmap16 = devm_regmap_init_i2c(client, &nct7201_regmap16_config);
-> +	if (IS_ERR(chip->regmap16))
-> +		return dev_err_probe(&client->dev, PTR_ERR(chip->regmap16),
-> +			"Failed to init regmap16\n");
+> +	return 0;
 > +
-> +	chip->num_vin_channels = model_data->num_vin_channels;
-> +
-> +	ret = devm_mutex_init(&client->dev, &chip->access_lock);
-> +	if (ret)
-> +		return ret;
-> +
-> +	chip->client = client;
-> +
-> +	ret = nct7201_init_chip(chip);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	indio_dev->name = model_data->model_name;
-> +	indio_dev->channels = model_data->channels;
-> +	indio_dev->num_channels = model_data->num_channels;
-> +	if (client->irq)
-> +		indio_dev->info = &nct7201_info;
-> +	else
-> +		indio_dev->info = &nct7201_info_no_irq;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +
-> +	return devm_iio_device_register(&client->dev, indio_dev);
+> +error_suspend:
+> +	pm_runtime_mark_last_busy(pdev);
+> +	pm_runtime_put_autosuspend(pdev);
+> +	return ret;
 > +}
 
+> +static int inv_icm42600_accel_read_event_value(struct iio_dev *indio_dev,
+> +					       const struct iio_chan_spec *chan,
+> +					       enum iio_event_type type,
+> +					       enum iio_event_direction dir,
+> +					       enum iio_event_info info,
+> +					       int *val, int *val2)
+> +{
+> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+> +	u32 rem;
+> +
+> +	guard(mutex)(&st->lock);
+> +
+> +	/* handle WoM (roc rising) event value */
+> +	if (type == IIO_EV_TYPE_ROC && dir == IIO_EV_DIR_RISING) {
+
+Similar to below. Consider flipping logic.
+
+> +		/* return value in micro */
+> +		*val = div_u64_rem(st->apex.wom.value, 1000000U, &rem);
+> +		*val2 = rem;
+> +		return IIO_VAL_INT_PLUS_MICRO;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int inv_icm42600_accel_write_event_value(struct iio_dev *indio_dev,
+> +						const struct iio_chan_spec *chan,
+> +						enum iio_event_type type,
+> +						enum iio_event_direction dir,
+> +						enum iio_event_info info,
+> +						int val, int val2)
+> +{
+> +	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+> +	struct device *dev = regmap_get_device(st->map);
+> +	uint64_t value;
+> +	unsigned int accel_hz, accel_uhz;
+> +	int ret;
+> +
+> +	/* handle WoM (roc rising) event value */
+> +	if (type == IIO_EV_TYPE_ROC && dir == IIO_EV_DIR_RISING) {
+
+If you don't plan to add other event types soon I'd be tempted to flip
+the logic of this to save in indent and exit early in the error case.
+
+> +		if (val < 0 || val2 < 0)
+> +			return -EINVAL;
+> +		value = (uint64_t)val * 1000000ULL + (uint64_t)val2;
+> +		pm_runtime_get_sync(dev);
+> +		scoped_guard(mutex, &st->lock) {
+> +			ret = inv_icm42600_accel_read_odr(st, &accel_hz, &accel_uhz);
+> +			if (ret >= 0)
+> +				ret = inv_icm42600_accel_set_wom_threshold(st, value,
+> +									   accel_hz, accel_uhz);
+> +		}
+> +		pm_runtime_mark_last_busy(dev);
+> +		pm_runtime_put_autosuspend(dev);
+> +		return ret;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+
+> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> index ef9875d3b79db116f9fb4f6d881a7979292c1792..c0fd2770d66f02d1965fa07f819fd2db9a1d6bd2 100644
+> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
+> @@ -404,6 +404,35 @@ int inv_icm42600_set_temp_conf(struct inv_icm42600_state *st, bool enable,
+>  					  sleep_ms);
+>  }
+>  
+> +int inv_icm42600_set_wom(struct inv_icm42600_state *st, bool enable)
+> +{
+> +	unsigned int val;
+> +	int ret;
+
+Given the set and disable code paths have no shared code, maybe split into
+two functions?
+
+> +
+> +	if (enable) {
+> +		/* enable WoM hardware */
+> +		val = INV_ICM42600_SMD_CONFIG_SMD_MODE_WOM |
+> +		      INV_ICM42600_SMD_CONFIG_WOM_MODE;
+> +		ret = regmap_write(st->map, INV_ICM42600_REG_SMD_CONFIG, val);
+		ret = regmap_write(st->map, INV_ICM42600_REG_SMD_CONFIG,
+				   INV_ICM42600_SMD_CONFIG_SMD_MODE_WOM |
+				   INV_ICM42600_SMD_CONFIG_WOM_MODE);
+Seems not to loose any readabilty and avoids need for local variable.
+
+
+> +		if (ret)
+> +			return ret;
+> +		/* enable WoM interrupt */
+> +		ret = regmap_set_bits(st->map, INV_ICM42600_REG_INT_SOURCE1,
+> +				      INV_ICM42600_INT_SOURCE1_WOM_INT1_EN);
+return regmap_write()
+> +	} else {
+> +		/* disable WoM interrupt */
+> +		ret = regmap_clear_bits(st->map, INV_ICM42600_REG_INT_SOURCE1,
+> +					INV_ICM42600_INT_SOURCE1_WOM_INT1_EN);
+> +		if (ret)
+> +			return ret;
+> +		/* disable WoM hardware */
+> +		val = INV_ICM42600_SMD_CONFIG_SMD_MODE_OFF;
+> +		ret = regmap_write(st->map, INV_ICM42600_REG_SMD_CONFIG, val);
+return regmap_write()
+and no need for val as I don't think that adds any readability advantages here.
+
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+>  int inv_icm42600_debugfs_reg(struct iio_dev *indio_dev, unsigned int reg,
+>  			     unsigned int writeval, unsigned int *readval)
+>  {
+> @@ -543,11 +572,22 @@ static irqreturn_t inv_icm42600_irq_handler(int irq, void *_data)
+>  {
+>  	struct inv_icm42600_state *st = _data;
+>  	struct device *dev = regmap_get_device(st->map);
+> -	unsigned int status;
+> +	unsigned int status, status2, status3;
+>  	int ret;
+>  
+>  	mutex_lock(&st->lock);
+>  
+> +	if (st->apex.on) {
+
+I'd drag the declaration of additional local variables in here.
+
+> +		/* read INT_STATUS2 and INT_STATUS3 in 1 operation */
+> +		ret = regmap_bulk_read(st->map, INV_ICM42600_REG_INT_STATUS2, st->buffer, 2);
+> +		if (ret)
+> +			goto out_unlock;
+> +		status2 = st->buffer[0];
+> +		status3 = st->buffer[1];
+> +		inv_icm42600_accel_handle_events(st->indio_accel, status2, status3,
+> +						 st->timestamp.accel);
+> +	}
+> +
 
 

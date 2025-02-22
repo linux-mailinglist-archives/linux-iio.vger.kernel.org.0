@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-15937-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15938-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F49A4086D
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 13:44:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C86DA40876
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 13:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E87217FE4C
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 12:44:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4D83A9D0F
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 12:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4046D1C3BEE;
-	Sat, 22 Feb 2025 12:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA6E20AF71;
+	Sat, 22 Feb 2025 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDRHqRRY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yk+Z3hC5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B70207A2D;
-	Sat, 22 Feb 2025 12:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E0D20766E;
+	Sat, 22 Feb 2025 12:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740228236; cv=none; b=KhEuOnhr/pyx07zyQAMszIXQCZPzdUeTqjnq19Sa/rSBiik5xOvYpsK+q38FeqpdX9QR92wzocHdIJB4rWrNMpXz/aSrUh4dyoGwKtU1Lji2UrHOEvxlCP2n2ZPg4tNJfvRIaF/ijqEK+O6T0uDBP33o6hmGqzqehm8up8aCNvs=
+	t=1740228829; cv=none; b=sypta5uWovgcI6m8Y7Aras6lcvu5WXk+S25LZYQUoCdnpiTjevRLVDoNyyvTPqSQDjfymIAlY0C5UA8G4th/2vK0fDAUfePXFyuIM2zc1N7qQ6FxXWOCRIvS8BwfO9bha0avOI1MvwN9IZDekkvyjp7eaaw/g5nWn/MQDBukv7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740228236; c=relaxed/simple;
-	bh=2iHP1e50rWeyaCq0VBUun72HKQAa8yqND08z10Xn2Jo=;
+	s=arc-20240116; t=1740228829; c=relaxed/simple;
+	bh=oqJN/sPCZaLoAPPOe7uUHklrzuH3yr710lMdVhi0Qno=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I/1zUDjz71IMlS7FExFyShKzrDSKjvgwR2iwgVf0O2Aq3C90bly1xu5VCrE+GLZHnMf77o+uDEVDWz853KU4vr7nqr6o4kkwB9Ho2DB5BMUDi9sE8PxSpPtnESRzbX9mohwVPsV/1stlmOjmhMBhBlMdAQRL7yTg5DRL9qG3Oiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDRHqRRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B54C4CEE2;
-	Sat, 22 Feb 2025 12:43:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HvHYjBKFctNw7uPJ5EosFlPARhbceqQDvnlKyS9sPsh+SYfiPzkATAo9BTvVo9hZS8NKOZzu5AJdb9bADZjGQsHTk78X1q7O8wOj382v3qIrQ9HEL8pa94vCf/RVfJCsY2bqkUwVFL46AwmDpTWsv4/uQaG28qpKSeejtEDOufo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yk+Z3hC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F202C4CED1;
+	Sat, 22 Feb 2025 12:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740228235;
-	bh=2iHP1e50rWeyaCq0VBUun72HKQAa8yqND08z10Xn2Jo=;
+	s=k20201202; t=1740228828;
+	bh=oqJN/sPCZaLoAPPOe7uUHklrzuH3yr710lMdVhi0Qno=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=vDRHqRRYcEN4DVDiwq/rJDILx9BICeP5HkQ060aPJ05Dc7y01mmSf2YxZD70jxl1c
-	 bUXlg2tlKMRzrtRdmdtmLazBoMQwkYoN9NDcJsfifSA2lMhWSPcaGovZJ73WngHNZT
-	 1YG0Jb/pdvO0tsZ/EBShT63A17HOuamVzz9BjPc4z2ZmCs4wbHPjkZY/unAvddOvQC
-	 qr4xUoidEm/bT1KfdzbaRrF+EfKkwSIKEBhgCB3eIAi02xL7YagPPsQKCSqeIsjIfT
-	 W9K4Sd4+M7iAmMjYcR6cLw+dIm35DwUAjbHYeJXH51xUOBoY24/e4V7cDKXG6Yr1Zm
-	 uon5aGXyT9N7A==
-Date: Sat, 22 Feb 2025 12:43:42 +0000
+	b=Yk+Z3hC5KOE/6MsFx/Z5x2/LnU8vjW5lliJTA2N77BSWBAp6SRN8rnN8efyMb5RkE
+	 zeaupHTMirYMfIyJX8fL6kGp9FieZ+gkX6SnDfPEQQH0mW5HhdPHh9KzNF7GxGtBvx
+	 qF/Mp2wXMPDL+RXIMBQjey4Iop8jHsrpNmufli8OgVk+8Wu5xlnd6fhRloSte4K/84
+	 iH5KWKD1APqjU7+ql+wAAkfKVeu0vJSBfHw5b+Y/oc3m/6BlDeCbGmkkz46aXSxqJG
+	 8qbzIfpYXDPPWFqLtxRgZrfPY9lprNizet8sOfJ/NVuoME9pQauqaZjwHklSEvdIyl
+	 QNR4Ck8t6VZUA==
+Date: Sat, 22 Feb 2025 12:53:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -58,12 +58,12 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
  David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] iio: light: add al3000a als support
-Message-ID: <20250222124342.6bf6d007@jic23-huawei>
-In-Reply-To: <CAPVz0n1FKe_ujAHyn=f1+12pV4r3GZpaZKPZe+caE79L3dn9tg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] iio: light: Add support for AL3000a illuminance
+ sensor
+Message-ID: <20250222125335.177fc746@jic23-huawei>
+In-Reply-To: <20250217140336.107476-3-clamor95@gmail.com>
 References: <20250217140336.107476-1-clamor95@gmail.com>
-	<20250217143006.1f043a0e@jic23-huawei>
-	<CAPVz0n1FKe_ujAHyn=f1+12pV4r3GZpaZKPZe+caE79L3dn9tg@mail.gmail.com>
+	<20250217140336.107476-3-clamor95@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,78 +71,119 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Feb 2025 16:33:45 +0200
+On Mon, 17 Feb 2025 16:03:35 +0200
 Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> =D0=BF=D0=BD, 17 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:30 Jo=
-nathan Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
-> >
-> > On Mon, 17 Feb 2025 16:03:33 +0200
-> > Svyatoslav Ryhel <clamor95@gmail.com> wrote:
-> > =20
-> > > AL3000a is an illuminance sensor found in ASUS TF101 tablet. =20
-> > Hi Svyatoslav,
-> >
-> > Just a small request.  Please reduce rate of sending new versions.
-> > That tends to give time for discussions on earlier versions to progress
-> > and for more reviewers to see the current version.
-> >
-> > I'd suggest at least 3-4 days between versions.  It's great to
-> > responsive to reviewers of course!
-> >
-> > Jonathan
-> >
-> > =20
->=20
-> Once you are satisfied with amount of time patch will hang, let me
-> know, I will upload new version. Thank you.
+> AL3000a is a simple I2C-based ambient light sensor, which is
+> closely related to AL3010 and AL3320a, but has significantly
+> different way of processing data generated by the sensor.
+> 
+> Tested-by: Robert Eckelmann <longnoserob@gmail.com>
+> Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com>
+> Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> Reviewed-by: David Heidelberg <david@ixit.cz>
 
-That approach will never work.   Just use 1 week between versions
-if you need a simple number.
+Whilst I am confused by earlier statements about not
+having information on the conversion to illuminance values, I'm
+going to assume the look up table in here is based on some
+reasonable data from somewhere and hence that this is a sensor
+with appropriate filtering of the light to be able to do a non linear
+conversion from the value read and standard light curves.
+
+As such the IIO_LIGHT channel type is fine for this device.
+
+Applied patches 1 and 2 to the togreg branch of iio.git.
+Note that I'll initially push this out as testing to allow
+the autobuilders to see if they can find any issues that we missed.
+Patch 3 will need to go via the appropriate SoC tree as normal.
 
 Jonathan
 
->=20
-> > >
-> > > ---
-> > > Changes on switching from v3 to v4:
-> > > - return write function directly
-> > > - clean up and fix i2c_device_id
-> > >
-> > > Changes on switching from v2 to v3:
-> > > - droped linux/iio/sysfs.h
-> > > - set driver name directly
-> > > - switched to IIO_CHAN_INFO_PROCESSED
-> > > - split al3000a_set_pwr into 2 functions
-> > > - added i2c_device_id
-> > > - improved code formatting
-> > >
-> > > Changes on switching from v1 to v2:
-> > > - sort compatible alphabetically in schema
-> > > - clarify commit descriptions
-> > > - convert to use regmap
-> > > - arrangle lux conversion table in rows of 8
-> > > - add more used headers
-> > > - improve code formatting
-> > > ---
-> > >
-> > > Svyatoslav Ryhel (3):
-> > >   dt-bindings: iio: light: al3010: add al3000a support
-> > >   iio: light: Add support for AL3000a illuminance sensor
-> > >   ARM: tegra: tf101: Add al3000a illuminance sensor node
-> > >
-> > >  .../bindings/iio/light/dynaimage,al3010.yaml  |   6 +-
-> > >  .../boot/dts/nvidia/tegra20-asus-tf101.dts    |  11 +
-> > >  drivers/iio/light/Kconfig                     |  10 +
-> > >  drivers/iio/light/Makefile                    |   1 +
-> > >  drivers/iio/light/al3000a.c                   | 209 ++++++++++++++++=
-++
-> > >  5 files changed, 235 insertions(+), 2 deletions(-)
-> > >  create mode 100644 drivers/iio/light/al3000a.c
-> > > =20
-> > =20
+> ---
+>  drivers/iio/light/Kconfig   |  10 ++
+>  drivers/iio/light/Makefile  |   1 +
+>  drivers/iio/light/al3000a.c | 209 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 220 insertions(+)
+>  create mode 100644 drivers/iio/light/al3000a.c
+> 
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 29ffa8491927..37f83e1d8893 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -43,6 +43,16 @@ config ADUX1020
+>  	 To compile this driver as a module, choose M here: the
+>  	 module will be called adux1020.
+>  
+> +config AL3000A
+> +	tristate "AL3000a ambient light sensor"
+> +	depends on I2C
+> +	help
+> +	  Say Y here if you want to build a driver for the Dyna Image AL3000a
+> +	  ambient light sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the
+> +	  module will be called al3000a.
+> +
+>  config AL3010
+>  	tristate "AL3010 ambient light sensor"
+>  	depends on I2C
+> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> index f14a37442712..03f10786273a 100644
+> --- a/drivers/iio/light/Makefile
+> +++ b/drivers/iio/light/Makefile
+> @@ -7,6 +7,7 @@
+>  obj-$(CONFIG_ACPI_ALS)		+= acpi-als.o
+>  obj-$(CONFIG_ADJD_S311)		+= adjd_s311.o
+>  obj-$(CONFIG_ADUX1020)		+= adux1020.o
+> +obj-$(CONFIG_AL3000A)		+= al3000a.o
+>  obj-$(CONFIG_AL3010)		+= al3010.o
+>  obj-$(CONFIG_AL3320A)		+= al3320a.o
+>  obj-$(CONFIG_APDS9300)		+= apds9300.o
+> diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
+> new file mode 100644
+> index 000000000000..e2fbb1270040
+> --- /dev/null
+> +++ b/drivers/iio/light/al3000a.c
+> @@ -0,0 +1,209 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +#include <linux/array_size.h>
+> +#include <linux/bitfield.h>
+> +#include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/i2c.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+> +#include <linux/pm.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+> +#include <linux/types.h>
+> +
+> +#include <linux/iio/iio.h>
+> +
+> +#define AL3000A_REG_SYSTEM		0x00
+> +#define AL3000A_REG_DATA		0x05
+> +
+> +#define AL3000A_CONFIG_ENABLE		0x00
+> +#define AL3000A_CONFIG_DISABLE		0x0b
+> +#define AL3000A_CONFIG_RESET		0x0f
+> +#define AL3000A_GAIN_MASK		GENMASK(5, 0)
+> +
+> +/*
+> + * These are pre-calculated lux values based on possible output of sensor
+> + * (range 0x00 - 0x3F)
+> + */
+> +static const u32 lux_table[] = {
+> +	1, 1, 1, 2, 2, 2, 3, 4,					/* 0 - 7 */
+> +	4, 5, 6, 7, 9, 11, 13, 16,				/* 8 - 15 */
+> +	19, 22, 27, 32, 39, 46, 56, 67,				/* 16 - 23 */
+> +	80, 96, 116, 139, 167, 200, 240, 289,			/* 24 - 31 */
+> +	347, 416, 499, 600, 720, 864, 1037, 1245,		/* 32 - 39 */
+> +	1495, 1795, 2155, 2587, 3105, 3728, 4475, 5373,		/* 40 - 47 */
+> +	6450, 7743, 9296, 11160, 13397, 16084, 19309, 23180,	/* 48 - 55 */
+> +	27828, 33408, 40107, 48148, 57803, 69393, 83306, 100000 /* 56 - 63 */
+> +};
 
 

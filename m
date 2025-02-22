@@ -1,68 +1,71 @@
-Return-Path: <linux-iio+bounces-15975-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15976-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C4A40A97
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:24:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3A2A40A9A
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC683B5EF7
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:24:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAA3179759
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B411B2186;
-	Sat, 22 Feb 2025 17:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D191FBEB0;
+	Sat, 22 Feb 2025 17:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4f4GlrY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AW/05HQj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448842F3B
-	for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAB444C7C;
+	Sat, 22 Feb 2025 17:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740245047; cv=none; b=RFWiXn7poUiRx7JwA+n69waP3QN2WJiUXppRCW+Sv4d32N43q7jWwx7udb5hR99HImr+krAihwJq11bYFnZiSGU/SO1gnJ8USOmhzXiXecKJEurOidkkT2DXyiQnB4RDP6ieetZ7vQr4TXGhC1sQOfTvdTwkPHrhuaKBInRdLMI=
+	t=1740245149; cv=none; b=ZDPiR2IHGFsov9nXrQkSxB6sPLb37/d1Rg8qoWDlg+MxRVI5Wy4Zqy5h78HrUPfkJD5+IvQm2mMip3SoXS94ErmFGsz4tuEE2wge9WZdYO584lyBhpPZ1d4A/razd7VySjMveupETu8psoIKESNUIHmMlff3FaUjfJhFzRJCpCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740245047; c=relaxed/simple;
-	bh=N3tnKPD0sGhZuJ6CMpzU/FVR77Gipm+KKLgQplgYwxE=;
+	s=arc-20240116; t=1740245149; c=relaxed/simple;
+	bh=fx3DRTGRkmKbnCXlKZ+ZwK/6h3hhdblLg2AxFF2wD44=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F0AbJwpIdJmmUQmwqZcU318ZYx6oWSHCQqu0matNAeX4X3wetrdfMbATFfr5/rWW+85k3tH6iX15vXeVl4v0+MKrxzBajyfqD97mF3DahMVRweCxqiJGxF9Jin9EtWNNk4CdEYBSrULgV5lE/UVkdbMqB2Oy3s221FPjOEm8uu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4f4GlrY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C875C4CED1;
-	Sat, 22 Feb 2025 17:24:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hKYbDryJVhN9wt2PIdtOaG/YueoV9QhPSYtO0pboY4Zpv4rLkXDxjiPvz1xnqGIHujyLRRk6uRf166jBosaQ1yE9PfhhtU4X1Ijbu46Z46HdFlF+D4qMFs7jJ+16v3It9nyB38SNVY9O0bSd1sgqVkX3sNr4ViGq61kJUNq2R10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AW/05HQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F9EC4CED1;
+	Sat, 22 Feb 2025 17:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740245045;
-	bh=N3tnKPD0sGhZuJ6CMpzU/FVR77Gipm+KKLgQplgYwxE=;
+	s=k20201202; t=1740245148;
+	bh=fx3DRTGRkmKbnCXlKZ+ZwK/6h3hhdblLg2AxFF2wD44=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b4f4GlrY9Lgb7HsXZIcDFUul4gapUVKIPDkSIPtp2ELpAx/ZvxH4azexRpI8ZkoPY
-	 nOWQIyesv/Tev7QkK4NUT2SCi330/QmWNzITq1a3jtFJ9MZOPoLKp3Ya5z5zd8WCbg
-	 Tgy47heoDWHFPJzi1B0Ui0iRBgawlfsu7d98pSccYCO1FRUsGrDpLDWi/UuzLab2vG
-	 TERzl+P0mECc448pVZHMjqC9/33XYAMMCeuCWSRod4N/zUeUv0WCmylilsQ14MkcB2
-	 8xEz8oV4y5/isLTPUsJqfwKzlfgU+OTPqxpB7XJsrX2YiKMXbyCwczHscCabgLByUT
-	 Ozkhfd/B+cAFQ==
-Date: Sat, 22 Feb 2025 17:23:57 +0000
+	b=AW/05HQj1cqYDn0v6OshMq3HXaCIsSmiZJfuXWKkuTBSnKiKRpt4EYiZZrZc937H4
+	 VQMK67wpWr2WRUM/iz2FJnQiciJxIqe3WTrlR6cKX3HAeSpNgaN0OxmHuhCojWmBme
+	 qKAidpYlyNCgX4fGQhszSBH3b6MUwDoyR1nSpQV/hq/gySmIlfIZGkCJLUmHzISdAZ
+	 dE5Xptv+JeDCLapSokeNN8AOXGxY5ohkNjQ0RPeDTPTcgNj7fsCAArHAd+CE5mgCzI
+	 ONx4ZZLLNShIB8ePk8logz262hSp7a12efV9y6nToPrYyrCqcjdJYHOIQJ1M3sEPFQ
+	 b4DE9uxTgRD7Q==
+Date: Sat, 22 Feb 2025 17:25:36 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: linux-iio@vger.kernel.org, Mudit Sharma <muditsharma.info@gmail.com>,
- Julien Stephan <jstephan@baylibre.com>, Mariel Tinaco
- <Mariel.Tinaco@analog.com>, Angelo Dureghello <adureghello@baylibre.com>,
- Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <joao.goncalves@toradex.com>, ChiYuan Huang <cy_huang@richtek.com>, Ramona
- Alexandra Nechita <ramona.nechita@analog.com>, Trevor Gamblin
- <tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, David
- Lechner <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou
- <gwendal@chromium.org>, Antoni Pokusinski <apokusinski01@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 01/27] iio: core: Rework claim and release of direct
- mode to work with sparse.
-Message-ID: <20250222172357.05378fd4@jic23-huawei>
-In-Reply-To: <Z7nyQgjZ36zkO8oD@surfacebook.localdomain>
-References: <20250209180624.701140-1-jic23@kernel.org>
-	<20250209180624.701140-2-jic23@kernel.org>
-	<Z7nyQgjZ36zkO8oD@surfacebook.localdomain>
+To: Svyatoslav Ryhel <clamor95@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
+ Hunter <jonathanh@nvidia.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
+ <mazziesaccount@gmail.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Emil Gedenryd
+ <emil.gedenryd@axis.com>, Arthur Becker <arthur.becker@sentec.com>, Mudit
+ Sharma <muditsharma.info@gmail.com>, Per-Daniel Olsson
+ <perdaniel.olsson@axis.com>, Subhajit Ghosh
+ <subhajit.ghosh@tweaklogic.com>, Ivan Orlov <ivan.orlov0322@gmail.com>,
+ David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-tegra@vger.kernel.org
+Subject: Re: [PATCH v4 2/3] iio: light: Add support for AL3000a illuminance
+ sensor
+Message-ID: <20250222172536.5fb73658@jic23-huawei>
+In-Reply-To: <CAPVz0n3YHgct6x_3-mhzmTOTejLj19xDLm9C8Dqe-GHv8fJBrA@mail.gmail.com>
+References: <20250217140336.107476-1-clamor95@gmail.com>
+	<20250217140336.107476-3-clamor95@gmail.com>
+	<20250222125335.177fc746@jic23-huawei>
+	<CAPVz0n3YHgct6x_3-mhzmTOTejLj19xDLm9C8Dqe-GHv8fJBrA@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,93 +73,146 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 22 Feb 2025 17:51:02 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Sat, 22 Feb 2025 14:56:41 +0200
+Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> Sun, Feb 09, 2025 at 06:05:58PM +0000, Jonathan Cameron kirjoitti:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Initial thought was to do something similar to __cond_lock()
-> > 
-> > 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
-> > + Appropriate static inline iio_device_release_direct_mode()
-> > 
-> > However with that, sparse generates false positives. E.g.
-> > 
-> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock
-> > 
-> > So instead, this patch rethinks the return type and makes it more
-> > 'conditional lock like' (which is part of what is going on under the hood
-> > anyway) and return a boolean - true for successfully acquired, false for
-> > did not acquire.
-> > 
-> > To allow a migration path given the rework is now non trivial, take a leaf
-> > out of the naming of the conditional guard we currently have for IIO
-> > device direct mode and drop the _mode postfix from the new functions giving
-> > iio_device_claim_direct() and iio_device_release_direct()
-> > 
-> > Whilst the kernel supports __cond_acquires() upstream sparse does not
-> > yet do so.  Hence rely on sparse expanding a static inline wrapper
-> > to explicitly see whether __acquire() is called.
-> > 
-> > Note that even with the solution here, sparse sometimes gives false
-> > positives. However in the few cases seen they were complex code
-> > structures that benefited from simplification anyway.  
-> 
-> ...
-> 
-> 
-> > +/*
-> > + * Helper functions that allow claim and release of direct mode
-> > + * in a fashion that doesn't generate many false positives from sparse.
-> > + * Note this must remain static inline in the header so that sparse
-> > + * can see the __acquire() marking. Revisit when sparse supports
-> > + * __cond_acquires()
-> > + */
-> > +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
-> > +{
-> > +	int ret = iio_device_claim_direct_mode(indio_dev);
-> > +
-> > +	if (ret)
-> > +		return false;
-> > +
-> > +	__acquire(iio_dev);
-> > +
-> > +	return true;  
-> 
-> While I understand the intention, I dislike the function return boolean and
-> hide the actual error code, it calls user to misuse and replace boolean false
-> by arbitrary error codes.
-> 
-> Can we rather return an error code, please?
-> (as a side effect it reduces the churn in the followup changes)
-> 
-Hi Andy,
+> =D1=81=D0=B1, 22 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 14:53 Jo=
+nathan Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
+> >
+> > On Mon, 17 Feb 2025 16:03:35 +0200
+> > Svyatoslav Ryhel <clamor95@gmail.com> wrote:
+> > =20
+> > > AL3000a is a simple I2C-based ambient light sensor, which is
+> > > closely related to AL3010 and AL3320a, but has significantly
+> > > different way of processing data generated by the sensor.
+> > >
+> > > Tested-by: Robert Eckelmann <longnoserob@gmail.com>
+> > > Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com>
+> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+> > > Reviewed-by: David Heidelberg <david@ixit.cz> =20
+> >
+> > Whilst I am confused by earlier statements about not
+> > having information on the conversion to illuminance values, I'm
+> > going to assume the look up table in here is based on some
+> > reasonable data from somewhere and hence that this is a sensor
+> > with appropriate filtering of the light to be able to do a non linear
+> > conversion from the value read and standard light curves.
+> >
+> > As such the IIO_LIGHT channel type is fine for this device.
+> > =20
+>=20
+> Thank you, but IIO_INTENSITY may be proper channel as well, after your
+> explanations. If you wish, I may upload v5 with swapping LIGHT with
+> INTENSITY.
 
-I tried - see above.  It plays badly with sparse which is the whole point of
-this exercise. Note that iio_device_claim_direct_mode() only ever returns one
-error code -EBUSY. So reality is it's a boolean and this is a lot close
-to mutex_trylock() than anything else hence the switch to a boolean return.
+Where does the lux_table set of values come from?
+That seems to be key question for this driver.
 
-At the end of the full series (not yet posted) is a patch that gets rid
-of their being any pretence this isn't a yes / no question and can
-return other error values. This intermediate step does leave it looking
-more confusing.
-
-Churn wise if we'd been able to do keep the error return and make sparse
-work I could have just applied this to the original functions and made
-no changes at all to the vast majority of drivers.  Sadly that wasn't
-to be. End result of ending up with a trylock type approach is cleaner
-and more compact even if it's not what we have gotten used to for this
-particular function.
-
-Jonathan
-
-
-> > +}  
-> 
+>=20
+> > Applied patches 1 and 2 to the togreg branch of iio.git.
+> > Note that I'll initially push this out as testing to allow
+> > the autobuilders to see if they can find any issues that we missed.
+> > Patch 3 will need to go via the appropriate SoC tree as normal.
+> >
+> > Jonathan
+> > =20
+> > > ---
+> > >  drivers/iio/light/Kconfig   |  10 ++
+> > >  drivers/iio/light/Makefile  |   1 +
+> > >  drivers/iio/light/al3000a.c | 209 ++++++++++++++++++++++++++++++++++=
+++
+> > >  3 files changed, 220 insertions(+)
+> > >  create mode 100644 drivers/iio/light/al3000a.c
+> > >
+> > > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> > > index 29ffa8491927..37f83e1d8893 100644
+> > > --- a/drivers/iio/light/Kconfig
+> > > +++ b/drivers/iio/light/Kconfig
+> > > @@ -43,6 +43,16 @@ config ADUX1020
+> > >        To compile this driver as a module, choose M here: the
+> > >        module will be called adux1020.
+> > >
+> > > +config AL3000A
+> > > +     tristate "AL3000a ambient light sensor"
+> > > +     depends on I2C
+> > > +     help
+> > > +       Say Y here if you want to build a driver for the Dyna Image A=
+L3000a
+> > > +       ambient light sensor.
+> > > +
+> > > +       To compile this driver as a module, choose M here: the
+> > > +       module will be called al3000a.
+> > > +
+> > >  config AL3010
+> > >       tristate "AL3010 ambient light sensor"
+> > >       depends on I2C
+> > > diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> > > index f14a37442712..03f10786273a 100644
+> > > --- a/drivers/iio/light/Makefile
+> > > +++ b/drivers/iio/light/Makefile
+> > > @@ -7,6 +7,7 @@
+> > >  obj-$(CONFIG_ACPI_ALS)               +=3D acpi-als.o
+> > >  obj-$(CONFIG_ADJD_S311)              +=3D adjd_s311.o
+> > >  obj-$(CONFIG_ADUX1020)               +=3D adux1020.o
+> > > +obj-$(CONFIG_AL3000A)                +=3D al3000a.o
+> > >  obj-$(CONFIG_AL3010)         +=3D al3010.o
+> > >  obj-$(CONFIG_AL3320A)                +=3D al3320a.o
+> > >  obj-$(CONFIG_APDS9300)               +=3D apds9300.o
+> > > diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
+> > > new file mode 100644
+> > > index 000000000000..e2fbb1270040
+> > > --- /dev/null
+> > > +++ b/drivers/iio/light/al3000a.c
+> > > @@ -0,0 +1,209 @@
+> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > > +#include <linux/array_size.h>
+> > > +#include <linux/bitfield.h>
+> > > +#include <linux/device.h>
+> > > +#include <linux/err.h>
+> > > +#include <linux/i2c.h>
+> > > +#include <linux/mod_devicetable.h>
+> > > +#include <linux/module.h>
+> > > +#include <linux/pm.h>
+> > > +#include <linux/regmap.h>
+> > > +#include <linux/regulator/consumer.h>
+> > > +#include <linux/types.h>
+> > > +
+> > > +#include <linux/iio/iio.h>
+> > > +
+> > > +#define AL3000A_REG_SYSTEM           0x00
+> > > +#define AL3000A_REG_DATA             0x05
+> > > +
+> > > +#define AL3000A_CONFIG_ENABLE                0x00
+> > > +#define AL3000A_CONFIG_DISABLE               0x0b
+> > > +#define AL3000A_CONFIG_RESET         0x0f
+> > > +#define AL3000A_GAIN_MASK            GENMASK(5, 0)
+> > > +
+> > > +/*
+> > > + * These are pre-calculated lux values based on possible output of s=
+ensor
+> > > + * (range 0x00 - 0x3F)
+> > > + */
+> > > +static const u32 lux_table[] =3D {
+> > > +     1, 1, 1, 2, 2, 2, 3, 4,                                 /* 0 - =
+7 */
+> > > +     4, 5, 6, 7, 9, 11, 13, 16,                              /* 8 - =
+15 */
+> > > +     19, 22, 27, 32, 39, 46, 56, 67,                         /* 16 -=
+ 23 */
+> > > +     80, 96, 116, 139, 167, 200, 240, 289,                   /* 24 -=
+ 31 */
+> > > +     347, 416, 499, 600, 720, 864, 1037, 1245,               /* 32 -=
+ 39 */
+> > > +     1495, 1795, 2155, 2587, 3105, 3728, 4475, 5373,         /* 40 -=
+ 47 */
+> > > +     6450, 7743, 9296, 11160, 13397, 16084, 19309, 23180,    /* 48 -=
+ 55 */
+> > > +     27828, 33408, 40107, 48148, 57803, 69393, 83306, 100000 /* 56 -=
+ 63 */
+> > > +}; =20
+> > =20
 
 

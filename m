@@ -1,250 +1,211 @@
-Return-Path: <linux-iio+bounces-15982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB4EA40AC0
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:49:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E907EA40BA1
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 21:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39CCF189FE4E
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:49:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1B1D7AB39C
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 20:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7688D207E1C;
-	Sat, 22 Feb 2025 17:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE8C203703;
+	Sat, 22 Feb 2025 20:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uufSI/Kj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SHzqdl14"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2090F1DDE9;
-	Sat, 22 Feb 2025 17:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6371547D2
+	for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 20:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740246534; cv=none; b=P1GwrsSGEeYVofZCNHCBVE+L5IP072iOTNIvSUQriio0dn6VpU+Q7VcPMYlYETPqjbpsr1VrbbwwbILjqFNR0YpZ8nfEyGv+mosFtCW4ZAvD3pATVC37gZSVw6Va6DiSsAGbnczYiBjJhiDBArvcX+9WqVas8kWp0vt0NqMb8WM=
+	t=1740257920; cv=none; b=elWwVgRS77qvN3GmqX4KL0emv7KUclcM0c5TCFoCNgPHH82abJIc/jVv4rgxgl6RFQ9F1Dpy3fX/8PvsgWGx+j7ZVkInG5IAmUS3YlDw5vIsb7CE0CsYlHm0Z9xprDfn39+OGnl3XeaXuR4pZstpb3pzLuGDPOkNTO/5a+iXLVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740246534; c=relaxed/simple;
-	bh=5ybd0CwdvZUfkyyz0Lx7Y9BJ2t0H8wklafTIwBHYZX8=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I3fO0zfIUx3VN8LiO+PO4BCr6V0fRSjnbsT5qRa7fhyPcZEHP19BF6n9vVsp6yfma1kkM2TkeM5dLN484vIrfV1ls+rFA3JeV7Uz66HXF+FjMaOH2q5ifSCfqzmWNnf2BQKzzmIR/79HfayHZCbprskDPhx4Xi3/yjzNe8Jx7F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uufSI/Kj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA5EC4CED1;
-	Sat, 22 Feb 2025 17:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740246533;
-	bh=5ybd0CwdvZUfkyyz0Lx7Y9BJ2t0H8wklafTIwBHYZX8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uufSI/KjoYZSCRhv+C4yr4nbjcz3n9qgwzMQoRwTRyL8B/8ttuiTO1sMXR8737KGU
-	 E3S7Fb6nbxerOzSpnbHY/a8LjQQu9xJJ1fUo+qryOIm0ePD8x+fWfaEAtniCtqqX4V
-	 8VpMGn28m0hSkTmyGttS8fz36s8MLl0w9F4+xe6+QGVv5xHgH+eyD8D8O+hTOtSceH
-	 2arfUBXfpA4pfsR4+bXXs7ThOjPXeiUiuZK347JJIYJM9mJancayUX2wexXgg3miHh
-	 8GD6pUNITa9PUFgmzcN8mG3XMYAfPaDS6PAv2LZpB33d8z1bxYNajoOvrYl5qqCuHM
-	 RnTHIUcGGd7/w==
-Date: Sat, 22 Feb 2025 17:48:42 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
- <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
- <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
- <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Javier
- Carrasco <javier.carrasco.cruz@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250222174842.57c091c5@jic23-huawei>
-In-Reply-To: <Z7isoU9hKXlgsu33@smile.fi.intel.com>
-References: <cover.1739967040.git.mazziesaccount@gmail.com>
-	<6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
-	<Z7ZB7RQhyI5Dohrq@smile.fi.intel.com>
-	<b1c1ed68-2f4d-447c-9957-5a1bbc63ef6e@gmail.com>
-	<Z7ci7tUlRQqZEZSN@smile.fi.intel.com>
-	<ec76334b-bb13-4076-811d-9174170dd677@gmail.com>
-	<Z7c2cBQpjoc9-Vyu@smile.fi.intel.com>
-	<9018e23c-da28-41b0-b774-1598b946a2a1@gmail.com>
-	<Z7dCnRzuQTaJXzmb@smile.fi.intel.com>
-	<cb27d8b1-c978-4443-9ad2-96e930701976@gmail.com>
-	<Z7isoU9hKXlgsu33@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740257920; c=relaxed/simple;
+	bh=dhE9Ph4h+rTvzAaPbZqQi0o2kboktxrtpCx1yJqjlBA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ifhSlRyC9gIlqzyjoLwWXpFRKT1PQTygyTY0pWHl/H3PvVuKFqHgHFHr5cfPe8fQDbpS5qa7VSyY9YBlKQKuW3hyFEIr+jiPwSdCdt4oaHELsXjypkROv+/xiAEjOmWyUooIt+KfOOTjF6+QyFlPleu14j9YxNg0qPRMOnJAF48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SHzqdl14; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-abb79af88afso601558266b.1
+        for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 12:58:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740257917; x=1740862717; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xRg5M5ne5TEFwhTLs989cyfq/RPh3dWfWhmIorBqrmo=;
+        b=SHzqdl14gbZjIGk1u8icfRdPsu/X89qe7hmDg0k9qOOdj/533nSPAkBrbOIwzWSLqW
+         gU04RM9F/3UXj38Xj7jOrqZwXRtXzk/VKceryAl4kYTxbA//FirAizse3NIoC29sXUax
+         3uX808Zq8M+FT/FqGoYYATASBdBwCvaKgUocjrF9QJPWgUtA6d8LDgwWcDMl95Dd8Tfk
+         dANrYA70ji1it31jT8se7BuWZScidIL+S4jsIQtM3yemZNRtUv2SZU/aXIPHQjfac2uS
+         z1I4tnaVEVLhTA0HBMixik2XTLKAgDAT8O9qZr3gbqQpQVA57caCQXGi+GJFV6bVR2nN
+         XFYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740257917; x=1740862717;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xRg5M5ne5TEFwhTLs989cyfq/RPh3dWfWhmIorBqrmo=;
+        b=etLAcGUZ3pZX/4AI0iVLRtgy40wpGf3CCwuWiA8qfhwr28r3Iqw225N0mVunq+9xmL
+         CLgsgu3yvDbkYWvity9i3A54eBB4fZc3gLhJjlnzcQ+O03kjajgJwdsAGZZV1fwrtWsK
+         ceTIpeaAO+858czq1ehRuzZw777RdpCkKXn83bksg2dmH5GtpgxhLzda0KEmUkGQEt6r
+         RoEiLi7j7PJakCyQefVqIDD2yWrjVaoRY8ujfPUepnZsrsSoulXUlsTuqOU9TxmSo2wt
+         A2a4d1MuQG0joNbSYwEjpiLy3OozXrpL2GxoNsHNbW+WmEODunpefjX9U4YqfSnLyeG2
+         5PRg==
+X-Gm-Message-State: AOJu0YwxErHU8VmMWt7A3fnutr/xvhlUba3kP7uMT0WuCwFunPNTV+W7
+	kWnkMArh7c9dcG/73zlutIzREMFfWOFcD+xNURO/bPd+KbP5Pty6JUFxqhQK+hHQKn1jAQb4H80
+	o2/SQr8Jb7VEd2Y38NiphTJ+TmU0=
+X-Gm-Gg: ASbGncsabDAIbxM7A0o2kqrXgvNkk8wZZ/BA4FFBoT4vxyQH1IjJ6WrO/Lf1eOtuypc
+	AGdTwleWb5k3GeDrthpl3cidCq+KSVLL/C5Lst5JlFo5IAZyjBWmWAmwiqgJr0Tw79YYjgdG1RG
+	a3APF6udc=
+X-Google-Smtp-Source: AGHT+IH/rTvQqVdNsNGEER+ZrUVopB/Ee8duQf+oQZgYSunVC/dp9J5u9D9GoV9vr2QwVDvJhF+59EVIPLmObo05MjA=
+X-Received: by 2002:a17:907:1b26:b0:abc:4b2:4d44 with SMTP id
+ a640c23a62f3a-abc099b7fc9mr802686366b.6.1740257916912; Sat, 22 Feb 2025
+ 12:58:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20250209180624.701140-1-jic23@kernel.org> <20250209180624.701140-2-jic23@kernel.org>
+ <Z7nyQgjZ36zkO8oD@surfacebook.localdomain> <20250222172357.05378fd4@jic23-huawei>
+In-Reply-To: <20250222172357.05378fd4@jic23-huawei>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 22 Feb 2025 22:58:00 +0200
+X-Gm-Features: AWEUYZnLUZ3-LGxZ2G40DHLJ6FwmTM4B6HZ2m5g4nEv6cbw_UJ_nDwTPfp3aGx0
+Message-ID: <CAHp75Vf_XPSvTOH_zvfndghjy+bM_6hr=z2JAcE8AYh415SPWw@mail.gmail.com>
+Subject: Re: [PATCH v2 01/27] iio: core: Rework claim and release of direct
+ mode to work with sparse.
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, Mudit Sharma <muditsharma.info@gmail.com>, 
+	Julien Stephan <jstephan@baylibre.com>, Mariel Tinaco <Mariel.Tinaco@analog.com>, 
+	Angelo Dureghello <adureghello@baylibre.com>, Gustavo Silva <gustavograzs@gmail.com>, 
+	Nuno Sa <nuno.sa@analog.com>, =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
+	ChiYuan Huang <cy_huang@richtek.com>, Ramona Alexandra Nechita <ramona.nechita@analog.com>, 
+	Trevor Gamblin <tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, 
+	David Lechner <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>, 
+	Marcelo Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou <gwendal@chromium.org>, 
+	Antoni Pokusinski <apokusinski01@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 21 Feb 2025 18:41:05 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Sat, Feb 22, 2025 at 7:24=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+> On Sat, 22 Feb 2025 17:51:02 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > Sun, Feb 09, 2025 at 06:05:58PM +0000, Jonathan Cameron kirjoitti:
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > Initial thought was to do something similar to __cond_lock()
+> > >
+> > >     do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev=
+); 0; })
+> > > + Appropriate static inline iio_device_release_direct_mode()
+> > >
+> > > However with that, sparse generates false positives. E.g.
+> > >
+> > > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: contex=
+t imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock
+> > >
+> > > So instead, this patch rethinks the return type and makes it more
+> > > 'conditional lock like' (which is part of what is going on under the =
+hood
+> > > anyway) and return a boolean - true for successfully acquired, false =
+for
+> > > did not acquire.
+> > >
+> > > To allow a migration path given the rework is now non trivial, take a=
+ leaf
+> > > out of the naming of the conditional guard we currently have for IIO
+> > > device direct mode and drop the _mode postfix from the new functions =
+giving
+> > > iio_device_claim_direct() and iio_device_release_direct()
+> > >
+> > > Whilst the kernel supports __cond_acquires() upstream sparse does not
+> > > yet do so.  Hence rely on sparse expanding a static inline wrapper
+> > > to explicitly see whether __acquire() is called.
+> > >
+> > > Note that even with the solution here, sparse sometimes gives false
+> > > positives. However in the few cases seen they were complex code
+> > > structures that benefited from simplification anyway.
 
-> On Fri, Feb 21, 2025 at 12:10:23PM +0200, Matti Vaittinen wrote:
-> > On 20/02/2025 16:56, Andy Shevchenko wrote:  
-> > > On Thu, Feb 20, 2025 at 04:21:37PM +0200, Matti Vaittinen wrote:  
-> > > > On 20/02/2025 16:04, Andy Shevchenko wrote:  
-> > > > > On Thu, Feb 20, 2025 at 03:40:30PM +0200, Matti Vaittinen wrote:  
-> > > > > > On 20/02/2025 14:41, Andy Shevchenko wrote:  
-> > > > > > > On Thu, Feb 20, 2025 at 09:13:00AM +0200, Matti Vaittinen wrote:  
-> > > > > > > > On 19/02/2025 22:41, Andy Shevchenko wrote:  
-> > > > > > > > > On Wed, Feb 19, 2025 at 02:30:27PM +0200, Matti Vaittinen wrote:  
-> 
-> ...
-> 
-> > > > > > > > > > +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);  
-> > > > > > > > > 
-> > > > > > > > > No namespace?  
-> > > > > > > > 
-> > > > > > > > I was considering also this. The IIO core functions don't belong into a
-> > > > > > > > namespace - so I followed the convention to keep these similar to other IIO
-> > > > > > > > core stuff.  
-> > > > > > > 
-> > > > > > > But it's historically. We have already started using namespaces
-> > > > > > > in the parts of IIO, haven't we?  
-> > > > > > 
-> > > > > > Yes. But as I wrote, I don't think adding new namespaces for every helper
-> > > > > > file with a function or two exported will scale. We either need something
-> > > > > > common for IIO (or IIO "subsystems" like "adc", "accel", "light", ... ), or
-> > > > > > then we just keep these small helpers same as most of the IIO core.  
-> > > > > 
-> > > > > It can be still pushed to IIO_CORE namespace. Do you see an issue with that?  
-> > > > 
-> > > > No. I've missed the fact we have IIO_CORE O_o. Thanks for pointing it out!
-> > > >   
-> > > > > Or a new opaque namespace for the mentioned cases, something like IIO_HELPERS.  
-> > > > 
-> > > > I am unsure if it really benefits to split this out of the IIO_CORE. I've a
-> > > > feeling it falls into the category of making things harder for user with no
-> > > > apparent reason. But yes, the IIO_CORE makes sense.  
-> > > 
-> > > Probably I was not clear, I mean to put this under a given namespace. There is
-> > > no a such, we have currently:
-> > > 
-> > > IIO_BACKEND
-> > > IIO_DMA_BUFFER
-> > > IIO_DMAENGINE_BUFFER
-> > > IIO_GTS_HELPER
-> > > IIO_RESCALE  
-> > 
-> > Ah. So, the IIO core stuff is still not in a namespace. Those listed above
-> > are all too specific (I believe, in general, and definitely to carry ADC
-> > helpers).
+...
 
-Not yet. On todo list... Trick is working out what the correct break up is.
+> > > +/*
+> > > + * Helper functions that allow claim and release of direct mode
+> > > + * in a fashion that doesn't generate many false positives from spar=
+se.
+> > > + * Note this must remain static inline in the header so that sparse
+> > > + * can see the __acquire() marking. Revisit when sparse supports
+> > > + * __cond_acquires()
+> > > + */
+> > > +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev=
+)
+> > > +{
+> > > +   int ret =3D iio_device_claim_direct_mode(indio_dev);
+> > > +
+> > > +   if (ret)
+> > > +           return false;
+> > > +
+> > > +   __acquire(iio_dev);
+> > > +
+> > > +   return true;
+> >
+> > While I understand the intention, I dislike the function return boolean=
+ and
+> > hide the actual error code, it calls user to misuse and replace boolean=
+ false
+> > by arbitrary error codes.
+> >
+> > Can we rather return an error code, please?
+> > (as a side effect it reduces the churn in the followup changes)
+> >
+> Hi Andy,
+>
+> I tried - see above.  It plays badly with sparse which is the whole point=
+ of
+> this exercise. Note that iio_device_claim_direct_mode() only ever returns=
+ one
+> error code -EBUSY. So reality is it's a boolean and this is a lot close
+> to mutex_trylock() than anything else hence the switch to a boolean retur=
+n.
 
-> > 
-> > Adding 'ADC_HELPERS' would just add yet another way too specific one. So,
-> > currently there is no suitable namespace for these helpers, and I still
-> > believe they fit best to where the rest of the IIO-core stuff is.
+Hmm... You mean that the following (still as a macro)
 
-Just add an IIO namespace.  That would be the one I'd expect a typical
-driver to use.  We can move things into it later. The ones above are
-more obscure functionality.  Avoid the IIO_CORE naming as I'd expect
-that to be stuff the core alone should call and we shouldn't see in drivers.
+static inline int ...
+{
+  int ret;
+  ...
+  if (ret)
+    return ret;
 
-> > 
-> > If we want really play the namespace game, then the existing IIO stuff
-> > should be put in a IIO_CORE-namespace instead of creating more new small
-> > ones. I am afraid that adding all existing IIO core to a IIO_CORE namespace
-> > and converting all existing users to use the IIO_CORE is not a reasonable
-> > request for a person trying to:
-> > 
-> > 1. Write a driver
-> > 2. Add a small helper to aid others (instead of just melding it all in the
-> > given new driver - which does not benefit anyone else and just leads to code
-> > duplication in the long run...)  
-> 
-> That's why more specific, but also a bit general might work, like IIO_HELPERS,
-> considering that they may be used by many drivers.
-> 
-> While it may be not your call, somebody should do the job. Jonathan? :-)
+  __acquire_lock(...);
+  return 0;
+}
 
-It's on the list.  Not that near the top of it, but there to do at somepoint.
+triggers the sparse warning?
 
-> 
-> > > > > > > > (Sometimes I have a feeling that the trend today is to try make things
-> > > > > > > > intentionally difficult in the name of the safety. Like, "more difficult I
-> > > > > > > > make this, more experience points I gain in the name of the safety".)
-> > > > > > > > 
-> > > > > > > > Well, I suppose I could add a namespace for these functions - if this
-> > > > > > > > approach stays - but I'd really prefer having all IIO core stuff in some
-> > > > > > > > global IIO namespace and not to have dozens of fine-grained namespaces for
-> > > > > > > > an IIO driver to use...  
-> 
-> ...
-> 
-> > > > > > foo &= (~bar);
-> > > > > > 
-> > > > > > is _much_ faster than seeing:  
-> > > > > 
-> > > > > Strongly disagree. One need to parse an additional pair of parentheses,
-> > > > > and especially when it's a big statement inside with nested ones along
-> > > > > with understanding what the heck is going on that you need them in the
-> > > > > first place.
-> > > > > 
-> > > > > On top of that, we have a common practices in the LK project and
-> > > > > with our history of communication it seems you are trying to do differently
-> > > > > from time to time. Sounds like a rebellion to me :-)  
-> > > > 
-> > > > I only rebel when I (in my opinion) have a solid reason :)
-> > > >   
-> > > > > > foo &= ~bar;
-> > > > > > 
-> > > > > > and having to google the priorities.  
-> > > > > 
-> > > > > Again, this is something a (regular) kernel developer keeps refreshed.
-> > > > > Or even wider, C-language developer.  
-> > > > 
-> > > > Ha. As I mentioned, I've been writing C on a daily bases for almost 25
-> > > > years. I wonder if you intent to say I am not a kernel/C-language developer?
-> > > > Bold claim.  
-> > > 
-> > > I'm just surprised by seeing that style from a 25y experienced C developer,
-> > > that's all.  
-> > 
-> > I am not. If something, these 25 years have taught me to understand that
-> > even if something is simple and obvious to me, it may not be simple and
-> > obvious to someone else. Similarly, something obvious to someone else, is
-> > not obvious to me. Hence, I am very careful when telling people that:
-> >   
-> > >>> Again, this is something a (regular) kernel developer keeps refreshed.
-> > >>> Or even wider, C-language developer.  
-> > 
-> > I may however say that "this is something _I_ keep refreshed (as a
-> > kernel/C-developer)".  
-> 
-> True.
-> 
-> > As an example,
-> >   
-> > >>>> foo &= (~bar);  
-> > 
-> > This is something _I_ find very clear and exact, with zero doubt if negation
-> > is applied before &=. For _me_ the parenthesis there _help_, and for _me_
-> > the parenthesis cause no confusion when reading the code.
-> > 
-> > I won't go and tell that I'd expect any C or kernel developer to be able to
-> > fluently parse "foo &= (~bar)". (Whether I think they should is another
-> > matter).  
-> 
-> > Oh well, let's wait and see what Jonathan thinks of these helpers in
-> > general. We can continue the parenthesis discussion when we know whether the
-> > code is going to stay.  
-> 
-> Sure, but it's not only about these helpers, it's about the style in general.
-> Spreading unneeded characters in the code seems to me as an attempt to put
-> _your_ rules over the subsytem's ones. Whatever, let's Jonathan to judge, we
-> will never agree on a keep growing list of things anyway...
-> 
-I need to find some time to consider it a bit more and look at other users.
-I'm not keen on this being 'general' if we only have one user in the short
-term.
+> At the end of the full series (not yet posted) is a patch that gets rid
+> of their being any pretence this isn't a yes / no question and can
+> return other error values. This intermediate step does leave it looking
+> more confusing.
+>
+> Churn wise if we'd been able to do keep the error return and make sparse
+> work I could have just applied this to the original functions and made
+> no changes at all to the vast majority of drivers.  Sadly that wasn't
+> to be. End result of ending up with a trylock type approach is cleaner
+> and more compact even if it's not what we have gotten used to for this
+> particular function.
 
-Jonathan
+> > > +}
 
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

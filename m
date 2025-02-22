@@ -1,60 +1,58 @@
-Return-Path: <linux-iio+bounces-15950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492E3A40937
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 15:48:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DC2A40940
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 15:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 615793BA98B
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 14:48:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A14F97A91FF
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 14:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D8018A6A7;
-	Sat, 22 Feb 2025 14:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A77818DF6D;
+	Sat, 22 Feb 2025 14:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sqhcwYUl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rWoCIZef"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4339C1386B4
-	for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 14:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83A713E02D;
+	Sat, 22 Feb 2025 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740235730; cv=none; b=BVj6fWMNOoFlWWXBwCXErtUugqS/3GwGXgC15NwwoipFuNpARTiHxeY2VdkdMT4MjGTsZpw7SWBghq/XhiXVZr1c3RuDfEJrTgfJwYZZIpoi0hbaFtIOkbLLQ8kvEdHaj8cwsGGCI3MAFUkosGc79q+bYRfW2s+TuhEnUUn4s8o=
+	t=1740236329; cv=none; b=Ti8eQmh6IKviO8GNAlicjJMpI/oZZEtn1bNInFVYnQDRbRc9ih5+U7nwMmBy7dv+z/VrP7ovjFiS8oAic19QI09f6TUBly+dlJI8jX9Jeo/OTFkn3VPEIGxk4GWy2kJi0diaQvREnZBw1krDwOjebbYgKy8yS/0lzWlquUvU65c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740235730; c=relaxed/simple;
-	bh=3G9jTFn5PAmChzhooV8K9fR+QkfdqIWOsiZBUBwWuCk=;
+	s=arc-20240116; t=1740236329; c=relaxed/simple;
+	bh=TpfFFU0H5oykoaqQnQwvxN9UPAcGES3SZeFaw9UbrBk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVI4utxl4wiK5B85X+pm3lyuMjGBm0gSh+ySfV2uFoM7qxS0OBB5lv0sOpvv/uhbENLceWv2CzjK431hrrZpi25Nw2P960kNTxhwaWPKTLyvnvACweIgcUkhK3/pKjK3OiLiV4AjYy7gtPwvV7S8nF60aW4oR1p9cVUTu2p75b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sqhcwYUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F78C4CED1;
-	Sat, 22 Feb 2025 14:48:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=T5aaiNx40Jdojt3vG/0QXlS9aT/rrLdJCY+YiFYuoVP+71/EwVkYO7dR2nry6o/UrsL7C/H4xx1wCC+p1wL9xzv4ptMQeqDPp+xZgipB/BPzmb8opoGEX/9sPzJSVGUh0HLj2REXyUHur62yW39XUgisHC3UUQUY1xtfWOtIZlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rWoCIZef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D69C4CED1;
+	Sat, 22 Feb 2025 14:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740235729;
-	bh=3G9jTFn5PAmChzhooV8K9fR+QkfdqIWOsiZBUBwWuCk=;
+	s=k20201202; t=1740236329;
+	bh=TpfFFU0H5oykoaqQnQwvxN9UPAcGES3SZeFaw9UbrBk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sqhcwYUl4GYHxPzrAc4H6dp4DGYMWU1h3Ox9px+yjJV0h7PUqq9mbqYZ6/Q93oMKQ
-	 sEB4ByPtMyo7iSkblC44kSFtB41Um6kY1H49lEu/Db1pgWz6mSQ0f6lvrmquC4iGWm
-	 Fy215qcrHMRZJd12B6VjWzvjH6K992b7hudGF28SfqiNDtq5kb31GPZ2/yhPo4jeKy
-	 MkIREVT6QidxObaAFVDYRDfc4Lu/bn7OXYfj8uI0ScuLtGS98fgR3TLmrblWNzSBQ9
-	 J0O1Gteyl4mgMSL4x++mkNWvF63RGJNreOPL29exWwouaOgmi+A7GcSbQstZZqoduR
-	 ajb/FEEQp/oNA==
-Date: Sat, 22 Feb 2025 14:48:43 +0000
+	b=rWoCIZefOU1UO3nUnPJlW//N842UPntwc1saI3CZZ//rlYphI0/FEff+RwcQyjygs
+	 AaulvRAyWA5dXFMgSl/KaY+N2lhMGEZ3ocZT2rDUVxPSBES+fN2tZM8QuzlFxzYSx8
+	 sJ+plnhCyV4gC290Hu6wlPFSYrkM5QExlXU/t1zXqIvCe+GFhIi9g1rWgcZcdsE4vq
+	 4wJGeT468KKTB/9x+u3H94xKLVmvlyyifFqRenvLD2G32RAb4ugNnYxvTkW6xG4WFB
+	 aknUBAvZXLa0da6/geedGAy87CFyt/YcqvjUeRHxxQMHhzcXbdFK5+cpUx+zkidr/O
+	 5i06gZK5x3qzg==
+Date: Sat, 22 Feb 2025 14:58:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Guillaume Ranquet <granquet@baylibre.com>,
- Cosmin Tanislav <cosmin.tanislav@analog.com>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Michael Walle <michael@walle.cc>, Dumitru
- Ceclan <mitrutzceclan@gmail.com>, Andy Shevchenko <andy@kernel.org>, Nuno
- Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] iio: adc: ad{4130,7124,7173}: A few fixes and
- ad7124 calibration
-Message-ID: <20250222144843.22c1431c@jic23-huawei>
-In-Reply-To: <cover.1739902968.git.u.kleine-koenig@baylibre.com>
-References: <cover.1739902968.git.u.kleine-koenig@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Trevor Gamblin
+ <tgamblin@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: ad4695: fix out of bounds array access
+Message-ID: <20250222145841.06b3417c@jic23-huawei>
+In-Reply-To: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-1-57fef8c7a3fd@baylibre.com>
+References: <20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-0-57fef8c7a3fd@baylibre.com>
+	<20250218-iio-adc-ad4695-fix-out-of-bounds-array-access-v1-1-57fef8c7a3fd@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,62 +60,121 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 18 Feb 2025 19:31:07 +0100
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Tue, 18 Feb 2025 17:17:45 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hello,
->=20
-> this v2 series is a rework of two series:
->=20
-> 	https://lore.kernel.org/iio/20250212105322.10243-5-u.kleine-koenig@bayli=
-bre.com
-> 	https://lore.kernel.org/iio/cover.1738258777.git.u.kleine-koenig@baylibr=
-e.com
->=20
-> ; they overlap thematically and so I put them together in a single
-> series.
+> Fix some out of bounds array access of st->channels_cfg in the ad4695
+> driver. This array only has elements for voltage channels, but it was
+> also being accessed for the temperature channel in a few cases causing
+> reading past the end of the array.
+> 
+> In some cases, this was harmless because the value was read but not
+> used. However, the in_temp_sampling_frequency attribute shares code
+> with the in_voltageY_sampling_frequency attributes and was trying to
+> read the oversampling ratio from the st->channels_cfg array. This
+> resulted in a garbage value being used in the calculation and the
+> resulting in_temp_sampling_frequency value was incorrect.
+> 
+> To fix, make sure we always check that we are dealing with a voltage
+> channel before accessing the st->channels_cfg array and use an
+> oversampling ratio of 1 for the temperature channel (multiplicative
+> identity value) since that channel doesn't support oversampling.
+> 
+> Fixes: 67d63185db79 ("iio: adc: ad4695: add offload-based oversampling support")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+This got a little fiddly as I applied the iio_device_claim_direct() patch
+first and that includes making use of osr in calibbias for the voltage
+channel. I switched that back to accessing it via cfg-> now there isn't a convenient
+global copy in read_raw()
 
-I considered tidying up the things David raised in patch 2 and picking
-the first 4 patches up now, but that doesn't give room for others to apply =
-tags
-if they want to, so I'll wait for v3.
 
+So with that tweak both patches applied to the togreg branch of iio.git
 
->=20
-> Changes since their (implicit) v1:
->=20
->  - Use static_assert instead of BUILD_BUG, add more comments to the "Fix
->    comparison" patches
->  - Make ad7124 internal calibration actually compile
->  - Sort the fix to the front of the series and add a Fixes: tag
->  - Implement system calibration
->  - More comments and commit log improvements
->=20
-> The "Fix comparison" patches trigger a checkpatch warning because the
-> struct members are considered wrongly indented. For me the indention
-> looks right, but I don't feel strong here and happily adapt if
-> requested.
->=20
-> Best regards
-> Uwe
->=20
-> Uwe Kleine-K=C3=B6nig (6):
->   iio: adc: ad_sigma_delta: Disable channel after calibration
->   iio: adc: ad4130: Fix comparison of channel setups
->   iio: adc: ad7124: Fix comparison of channel configs
->   iio: adc: ad7173: Fix comparison of channel configs
->   iio: adc: ad7124: Implement internal calibration at probe time
->   iio: adc: ad7124: Implement system calibration
->=20
->  drivers/iio/adc/ad4130.c         |  41 ++++-
->  drivers/iio/adc/ad7124.c         | 293 ++++++++++++++++++++++++++++---
->  drivers/iio/adc/ad7173.c         |  25 ++-
->  drivers/iio/adc/ad_sigma_delta.c |   1 +
->  4 files changed, 331 insertions(+), 29 deletions(-)
->=20
-> base-commit: ac856912f210bcff6a1cf8cf9cb2f6a1dfe85798
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/adc/ad4695.c | 24 +++++++++++++++++++-----
+>  1 file changed, 19 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad4695.c b/drivers/iio/adc/ad4695.c
+> index 3a1a6f96480fd383d32397f4d3c979069111c5c9..8721cbd2af34c53f0cea32e307b9ef2da46b0cfb 100644
+> --- a/drivers/iio/adc/ad4695.c
+> +++ b/drivers/iio/adc/ad4695.c
+> @@ -1035,12 +1035,14 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad4695_state *st = iio_priv(indio_dev);
+>  	const struct iio_scan_type *scan_type;
+> -	struct ad4695_channel_config *cfg = &st->channels_cfg[chan->scan_index];
+> -	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+> +	struct ad4695_channel_config *cfg;
+>  	unsigned int reg_val;
+>  	int ret, tmp;
+>  	u8 realbits;
+>  
+> +	if (chan->type == IIO_VOLTAGE)
+> +		cfg = &st->channels_cfg[chan->scan_index];
+> +
+>  	scan_type = iio_get_current_scan_type(indio_dev, chan);
+>  	if (IS_ERR(scan_type))
+>  		return PTR_ERR(scan_type);
+> @@ -1169,6 +1171,10 @@ static int ad4695_read_raw(struct iio_dev *indio_dev,
+>  		}
+>  	case IIO_CHAN_INFO_SAMP_FREQ: {
+>  		struct pwm_state state;
+> +		unsigned int osr = 1;
+> +
+> +		if (chan->type == IIO_VOLTAGE)
+> +			osr = cfg->oversampling_ratio;
+>  
+>  		ret = pwm_get_state_hw(st->cnv_pwm, &state);
+>  		if (ret)
+> @@ -1261,7 +1267,10 @@ static int ad4695_write_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad4695_state *st = iio_priv(indio_dev);
+>  	unsigned int reg_val;
+> -	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+> +	unsigned int osr = 1;
+> +
+> +	if (chan->type == IIO_VOLTAGE)
+> +		osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+>  
+>  	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+>  		switch (mask) {
+> @@ -1361,7 +1370,10 @@ static int ad4695_read_avail(struct iio_dev *indio_dev,
+>  		},
+>  	};
+>  	struct ad4695_state *st = iio_priv(indio_dev);
+> -	unsigned int osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+> +	unsigned int osr = 1;
+> +
+> +	if (chan->type == IIO_VOLTAGE)
+> +		osr = st->channels_cfg[chan->scan_index].oversampling_ratio;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_CALIBSCALE:
+> @@ -1713,7 +1725,7 @@ static int ad4695_probe_spi_offload(struct iio_dev *indio_dev,
+>  
+>  	for (i = 0; i < indio_dev->num_channels; i++) {
+>  		struct iio_chan_spec *chan = &st->iio_chan[i];
+> -		struct ad4695_channel_config *cfg = &st->channels_cfg[i];
+> +		struct ad4695_channel_config *cfg;
+>  
+>  		/*
+>  		 * NB: When using offload support, all channels need to have the
+> @@ -1734,6 +1746,8 @@ static int ad4695_probe_spi_offload(struct iio_dev *indio_dev,
+>  		if (chan->type != IIO_VOLTAGE)
+>  			continue;
+>  
+> +		cfg = &st->channels_cfg[i];
+> +
+>  		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+>  		chan->info_mask_separate_available |=
+>  			BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+> 
 
 

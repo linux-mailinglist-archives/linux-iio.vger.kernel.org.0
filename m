@@ -1,398 +1,195 @@
-Return-Path: <linux-iio+bounces-15926-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15927-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E278A405F8
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 08:01:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E815AA407E2
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 12:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C619970028A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 07:01:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1910A19C2F4C
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 11:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD551FFC73;
-	Sat, 22 Feb 2025 07:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D606A2066DE;
+	Sat, 22 Feb 2025 11:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2GipyJY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLklE7wg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8993BA53;
-	Sat, 22 Feb 2025 07:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACA16FC3;
+	Sat, 22 Feb 2025 11:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740207693; cv=none; b=uly2GXVeSNL98rgfIuksq6mJnPZ8WGnOLeFqzFJavnX9u09iSOMBHnkYz62XmxxHbKeiF71lgpBSRi8yMuzvCurMicaYqy5IMx9dFFVuC6nr8m8NEgbYAZsDirX3NGia5ThrGmhexFLR+BJgm2/i+DRJ00s50WLJTwTTh4VHF/g=
+	t=1740223880; cv=none; b=k5b4/urrsD2j8wbpbTYKhNnVCu3wAt+XBgGS44+rftBtxvso3xKqD1F04z/ztMTJyemtDZa91wpfvi2zHuaD3L9a8c+TWhS8uK+rJCHAMohqmqgnnuFEhda6d7KM53hn3hg9UWpo5rNAlz7zLDRpK1nUcMIM/UnXuKtzwCQRmLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740207693; c=relaxed/simple;
-	bh=H4jdMRxo1QjBWmBc/XIad1TOgfrF2BAX7T+Pj7rAqnQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HbX9cF6szgtYm3y6InJWmMVsFu6hxmjHKWVdAw+7sSsrTPeVKFq/CEcHxsdSeb8PfTDcKKDZ5qh7MHQ1/7I0VNNGL9YBQo26yb6jUQ6ZV93GoAVasCo7+BfSvGigOtf7F0iemhDn5/UWB3ATYT7Fpsp7sZGoznDSZQ6AiRR44mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2GipyJY; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38f22fe8762so1413629f8f.2;
-        Fri, 21 Feb 2025 23:01:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740207690; x=1740812490; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YZgaXAfibSbQ7l2mvjMR0J8qG7gm2e4rN1eNLdGzk9c=;
-        b=h2GipyJY/0vYL6L+8RSi+LCRisEdme7gfv7djpQYKgoouwTjmzrLF2a+/9+9PDp1SE
-         9htPhNZKnE/uyYF7JlyIRFWwU/9douozxN4+40uxZPU4JUf9bv+ZbV4mNQlKCcJxhD33
-         wT7xMJ1wmZ6bPOzwlgonVkfs024lGw5z6NSuH6htMuFqbDOlNhWIV41gfKIJ+twDm/KC
-         93XKUQIJ1PLgi2b/vZOhYk2557bdSgsro9a3oyGTVjmsmE85MpJwYB8fcySKYY/+fcNH
-         Gs3W1m85KmeXoXhJp/5EPx7IGqlm+i+Q3w6fpc0C6MA+G+ZcfVq0HbykdLXLQRoiX7wq
-         fYeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740207690; x=1740812490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YZgaXAfibSbQ7l2mvjMR0J8qG7gm2e4rN1eNLdGzk9c=;
-        b=oe4OeZR1Mss42r/Btk9JLxtI/nv/dHgr7FNww8gYn4difcvARTffuE7c3nD+z+gVNf
-         c65JEQY+0xsCIovPpA7Ix/qi4eiKjMimLLL/0P9g28p/G/xVjD8pMiHIYeWDAdgqVKMT
-         tNUnqoDnb9RSQa5qtY1qFCN6OT6UA68bnXkdX6mN13MyqckI+dEaVMBZXfG/gKyKLTOa
-         j4NHf+EGiFIhGrjGoFlX0tzLcndm8HKwJRlT2E6hzUWQNwQmgJnyEtrVHKtl4QVXymqd
-         UISA4lDaJfFRzmwQgPq8JOwbT62G+0mzA4pon25FNHc4RSHMBd/L7h18Ipq8gakaFk0q
-         vS4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUqFpZn9I9oxyMP/ALOg2hVe50LcthHgSLA5r8ZC1dFjmuweISc3Ly6kFjQ4Y0tQE7uq+tmdHuxnQn+@vger.kernel.org, AJvYcCVbzgWnM+BZF9eKc3TGxjaynJEx7E32qw088oH5m+fjkgtytUvv4ZrRtH5Vyy+R9Lb7udnfs6b6diMVbw==@vger.kernel.org, AJvYcCVeYrXRsc2jX8cgq/xjVeJS7ONcRExaFRtp9YkyqbCCaVwr2M+ewq1QN4rWf+++rnFuxZlJOVgm+Cl0@vger.kernel.org, AJvYcCW04x6sfH/G7GTjVzQwnVq9H43TV1jXpnmc8JKAYva2kzXgeHzJYaSgqQeDPgB+SNr4x8Dj25Meb+BQfTso@vger.kernel.org, AJvYcCXwAiTGoi5BoGDhr+PVYPQcv7quh5CsiAZsNqF27/EIQ6TsBMmmx5x+G5G7eokT8rfLwbmuYPQlZsUX02Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwF5QOBPrRcq2ugDYJDN9m9dSOaJ/Y+56gsws5AVNAk8OaBnr0
-	RmL/qRksbjS7nabtF/A0dr8qarzJ343UVAVCifYviY6pTe3eyy4KBP+YG20GwE/ixk3O4A1C6qc
-	ZCKK7MaY7WtjQarUIAYvNIp30sQ4=
-X-Gm-Gg: ASbGncvAwW1EifIIxvr3gxJTdfXK+JxGStqNjDgZx4YslYboW5RZPiklQrheACwRsTt
-	xkXLSY3gOz50zH2D2suowLRfDZO6RjVTVA8eA1zv25H/QhF3DuN+suDk1tbJsDnCnM2EB679xMD
-	ge/41VJ9da
-X-Google-Smtp-Source: AGHT+IEzStifYtOl7w0GKF2BwVUJFZAktJ1NZ9hcUTHRiwa9w046uG0bAkyJ5cymoxomlrlW6FbZ4Gbbv15AaJ4zE1Q=
-X-Received: by 2002:a05:6000:881:b0:38f:2b77:a9f3 with SMTP id
- ffacd0b85a97d-38f6f08b157mr3898361f8f.43.1740207689787; Fri, 21 Feb 2025
- 23:01:29 -0800 (PST)
+	s=arc-20240116; t=1740223880; c=relaxed/simple;
+	bh=cSwTYLOvKfcUp265iaxx2WMETmG/vPuRTNnqNn2a1Ec=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rAa/csuDH5nwiHN5q5WQ7KnJ3YZrnl2crN0ruNgILbLqHM/SmgWI/k7PeqiI5Sey/3sjkDM/HDwWeHXb0yCC0xCZWqeSF23drmYRmGC9C2iBxnMuz217+mVmnzKu80i8sZSSCrdqLj9sH2NKYLD3r0v6S4kh5z97EFVhOunTHZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLklE7wg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869EAC4CED1;
+	Sat, 22 Feb 2025 11:31:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740223880;
+	bh=cSwTYLOvKfcUp265iaxx2WMETmG/vPuRTNnqNn2a1Ec=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XLklE7wgVc28ln6v7NmWTimdBKKVmCp8Z+Pdx7my2rjmHseqgRUnTzj+PUR93fP9g
+	 WivrgtGpbFsr/+7ioyPY1HbokDCeaFuDDJ/Ar/qua1RbwsOlx/X4bbWoDyyVpoxNM7
+	 DeBUCN2grvMXcLv1NMKioWQ0WzH10CC3E8P4/jbf+NixiQ6WvDbobyxHcbfwJHOeJJ
+	 Rkyw03yR09FUz7cWeRQrxlojPdm7sRDcslZi1Sq62fkKjb2mfJK5ZxIkFm096Odp37
+	 MrXvPe7RKAqpa+K5e6HmsLw9iiYv4gSRQnkXhvDp+hfpXW+4WRyAuUjyhaFH3/gZEs
+	 QCPVahq/ySZVQ==
+Date: Sat, 22 Feb 2025 11:31:11 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
+ corbet@lwn.net
+Subject: Re: [PATCH v3 1/1] Documentation: iio: Add ADC documentation
+Message-ID: <20250222113111.4886d3e7@jic23-huawei>
+In-Reply-To: <Z7ZDzg0KHZhfiLo3@debian-BULLSEYE-live-builder-AMD64>
+References: <c21b89367510c3d56d8d17adc24b46c7c63a14b2.1738759798.git.marcelo.schmitt@analog.com>
+	<5084aed7-1b39-4cbd-b136-610bceb05c92@baylibre.com>
+	<Z7ZDzg0KHZhfiLo3@debian-BULLSEYE-live-builder-AMD64>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218132702.114669-1-clamor95@gmail.com> <20250218132702.114669-2-clamor95@gmail.com>
- <20250221203803.GA24813-robh@kernel.org>
-In-Reply-To: <20250221203803.GA24813-robh@kernel.org>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Sat, 22 Feb 2025 09:01:18 +0200
-X-Gm-Features: AWEUYZki6IoNxhM-igHwUWvNu_ZXweCvGGjDZ5X_mIFKa8Wopm6RhDiQcCJNax8
-Message-ID: <CAPVz0n2wRu3X82nrnEac+XP+Q8uQMVwBLhGUaoqOLLf-V5dZfg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mfd: Document TI LM3533 MFD
-To: Rob Herring <robh@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, Daniel Thompson <danielt@kernel.org>, 
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-=D0=BF=D1=82, 21 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 22:38 Rob =
-Herring <robh@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Tue, Feb 18, 2025 at 03:26:59PM +0200, Svyatoslav Ryhel wrote:
-> > Add bindings for the LM3533 - a complete power source for
-> > backlight, keypad, and indicator LEDs in smartphone handsets.
-> > The high-voltage inductive boost converter provides the
-> > power for two series LED strings display backlight and keypad
-> > functions.
-> >
-> > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > ---
-> >  .../devicetree/bindings/mfd/ti,lm3533.yaml    | 231 ++++++++++++++++++
-> >  1 file changed, 231 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/mfd/ti,lm3533.yam=
-l
-> >
-> > diff --git a/Documentation/devicetree/bindings/mfd/ti,lm3533.yaml b/Doc=
-umentation/devicetree/bindings/mfd/ti,lm3533.yaml
-> > new file mode 100644
-> > index 000000000000..83542f0c7bf7
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/mfd/ti,lm3533.yaml
-> > @@ -0,0 +1,231 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/mfd/ti,lm3533.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: TI LM3533 Complete Lighting Power Solution
-> > +
-> > +description: |
->
-> Use '>' rather than '|' if only formatting is paragraphs.
->
+On Wed, 19 Feb 2025 17:49:18 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-yaml check did not complain, fine.
+> A very slow re-spin time from my side but here we go ...
+> I addressed most of the suggestions and am about to send a v4.
+> Replying inline to the points I disagree with.
+> 
+> Thanks,
+> Marcelo
+> 
+> On 02/05, David Lechner wrote:
+> > On 2/5/25 6:53 AM, Marcelo Schmitt wrote:  
+> > > ADC inputs can be classified into a few different types according to how
+> > > they measure the input signal, how restrained the signal is, and number of
+> > > input pins. Even though datasheets tend to provide many details about their
+> > > inputs and measurement procedures, it may not always be clear how to model
+> > > those inputs into IIO channels.
+> > > 
+> > > For example, some differential ADCs can have their inputs configured into
+> > > pseudo-differential channels. In that configuration, only one input
+> > > connects to the signal of interest as opposed to using two inputs of a
+> > > differential input configuration. Datasheets sometimes also refer to
+> > > pseudo-differential inputs as single-ended inputs even though they have
+> > > distinct physical configuration and measurement procedure.
+> > > 
+> > > Document consolidated ADC input types and how they are usually described
+> > > and supported in device tree and IIO, respectively.
+> > > 
+> > > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > > ---  
+> ...
+> > > +There are three general types of ADC inputs (single-ended, differential,
+> > > +pseudo-differential) and two possible polarities (unipolar, bipolar). The input
+> > > +type (single-ended, differential, pseudo-differential) is one channel
+> > > +characteristic, and is completely independent of the polarity (unipolar,
+> > > +bipolar) aspect. A comprehensive article about ADC input types (on which this
+> > > +doc is heavily based on) can be found at
+> > > +https://www.analog.com/en/resources/technical-articles/sar-adc-input-types.html.  
+> > 
+> > It could be worth reiterating here that although there are 3 different input
+> > types, in IIO, differential is only a bool, so there is no special distinction
+> > between single-ended and pseduo-differential (other than possibly having a
+> > common mode voltage input). And unipolar/bipolar is only considered on the
+> > difference between the two inputs and not the individual input, so in IIO there
+> > is no special distinction between bipolar and true biploar - they are modeled
+> > the same.  
+> For v4, I'll be mentioning the differential field meaning and the bipolar / true
+> bipolar (in)disctinction in other subsections bellow. Hope that will make those
+> points more clear.
+> 
+> ...
+> > > +1.2 Differential channels
+> > > +-------------------------
+> > > +  
+> > 
+> > Suggest to insert here:
+> >   
+> > > +A differential voltage measurement,  
+> > 
+> > sometimes also called "fully differential" or "true differential",  
+> 
+> I think adding that would make the sentence harder to read and somewhat incorrect.
+> The differential measurement has to do with how the ADC takes the input signals
+> into account to generate an output code. The "true differential" has to do with
+> the expected limits for the input signals. Fully differential input is yet
+> another thing that I've been avoiding to describe because I think those can be
+> supported as differential bipolar channels.
+> 
+> >   
+> > > digitizes the voltage level at the positive
+> > > +input (IN+) relative to the negative input (IN-) over the -VREF to +VREF span.
+> > > +In other words, a differential channel measures the potential difference between
+> > > +IN+ and IN-, which is often denoted by the IN+ - IN- formula.
+> > > +  
+> ...
+> > > +1.2.2 Differential Unipolar Channels
+> > > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > +
+> > > +For **differential unipolar** channels,   
+> > 
+> > I think it would be nice to have a short first paragraph that just says that
+> > this configuration is quite unusual and that the difference would have to always
+> > be positive. Then follow with the rest of the info for the curious in a separate
+> > paragraph. Then it will be easy for those not interested in the unusual case to
+> > skip over that part.  
+> 
+> I think, reordering would make the explanation harder to follow.
+> Even though currently not using those exact words, it can be inferred that the
+> difference is expected to be always positive:
+> "IN+ is allowed to swing with the measured analog signal and the input setup must
+> guarantee IN+ will not go below IN- (nor IN- will raise above IN+)"
+> The last phrase also somewhat hints that the differential unipolar setup is not usual.
+> "Thus, differential unipolar setups can often be supported as pseudo-differential
+> unipolar channels."
+> 
+> >   
+> > > the analog voltage at the positive input
+> > > +must also be higher than the voltage at the negative input. Thus, the actual
+> > > +input range allowed to a differential unipolar channel is IN- to +VREF. Because
+> > > +IN+ is allowed to swing with the measured analog signal and the input setup must
+> > > +guarantee IN+ will not go below IN- (nor IN- will raise above IN+), most
+> > > +differential unipolar channel setups have IN- fixed to a known voltage that does
+> > > +not fall within the voltage range expected for the measured signal. That leads
+> > > +to a setup that is equivalent to a pseudo-differential channel. Thus,
+> > > +differential unipolar setups can often be supported as pseudo-differential
+> > > +unipolar channels.  
+> > 
+> > I think we should just leave out the sentence about being supported as pseudo-
+> > differential. There is already a different section that describes that and it
+> > would be simpler to just stick with describing the fully differential case here.
+> > The differential bipolar section also only describes the fully differential case
+> > so mentioning pseduo-differential here seems inconsistent.  
+> 
+> I also disagree with that one. A differential unipolar setup is uncommon
+> (at least) so the mention of pseduo-differential is to point to what would be
+> the usual way of supporting those input configurations. Differential bipolar
+> inputs are common so no need to mention other input types when talking about
+> differential bipolar.
+> 
+> Though, I'm fine with changing the explanations if Jonathan prefers so.
 
-> > +  The LM3533 is a complete power source for backlight,
-> > +  keypad, and indicator LEDs in smartphone handsets. The
-> > +  high-voltage inductive boost converter provides the
-> > +  power for two series LED strings display backlight and
-> > +  keypad functions.
->
-> Wrap lines at 80
->
+Generally I'm of the view that getting some good docs in place is more important
+than necessarily getting the perfect ones.  So where I don't feel strongly
+(which I think applies to the remaining discussion) I go with the author choice.
 
-Checkpatch and yaml check do not complain, why? 80 char limit was removed, =
-no?
+Jonathan
 
-> blank line here
->
-> > +  https://www.ti.com/product/LM3533
-> > +
-> > +maintainers:
-> > +  - Svyatoslav Ryhel <clamor95@gmail.com>
-> > +
-> > +properties:
-> > +  compatible:
-> > +    const: ti,lm3533
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  '#address-cells':
-> > +    const: 1
-> > +
-> > +  '#size-cells':
-> > +    const: 0
-> > +
-> > +  enable-gpios:
-> > +    description: GPIO to use to enable/disable the backlight (HWEN pin=
-).
-> > +    maxItems: 1
-> > +
-> > +  ti,boost-ovp-microvolt:
-> > +    description:
-> > +      Boost OVP select (16V, 24V, 32V, 40V)
-> > +    enum: [ 16000000, 24000000, 32000000, 40000000 ]
-> > +    default: 16000000
-> > +
-> > +  ti,boost-freq-hz:
-> > +    description:
-> > +      Boost frequency select (500KHz or 1MHz)
-> > +    enum: [ 500000, 1000000 ]
-> > +    default: 500000
-> > +
-> > +  light-sensor@0:
-> > +    type: object
-> > +    description:
-> > +      Properties for an illumination sensor.
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        const: ti,lm3533-als
-> > +
-> > +      reg:
-> > +        const: 0
-> > +
-> > +      ti,resistor-value-ohm:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: |
->
-> Don't need '|'. Elsewhere too.
->
-> > +          Internal configuration resister value when ALS is in Analog =
-Sensor
-> > +          mode and PWM mode is disabled.
-> > +        minimum: 1575
-> > +        maximum: 200000
-> > +
-> > +      ti,pwm-mode:
-> > +        type: boolean
-> > +        description: |
-> > +          Switch for mode in which ALS is running. If this propertly i=
-s
-> > +          set then ALS is running in PWM mode, internal resistor value=
- is
-> > +          set to high-impedance (0) and resistor-value-ohm propertly i=
-s
-> > +          ignored.
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +
-> > +    additionalProperties: false
->
-> Move this above 'properties'.
->
 
-yaml check did not complain. additionalProperties is always set after
-all properties description, no?
-
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - '#address-cells'
-> > +  - '#size-cells'
-> > +  - enable-gpios
-> > +
-> > +patternProperties:
-> > +  "^backlight@[01]$":
-> > +    type: object
-> > +    description:
-> > +      Properties for a backlight device.
-> > +
-> > +    $ref: /schemas/leds/backlight/common.yaml#
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        const: ti,lm3533-backlight
-> > +
-> > +      reg:
-> > +        description: |
-> > +          The control bank that is used to program the two current sin=
-ks. The
-> > +          LM3533 has two control banks (A and B) and are represented a=
-s 0 or 1
-> > +          in this property. The two current sinks can be controlled
-> > +          independently with both banks, or bank A can be configured t=
-o control
-> > +          both sinks with the led-sources property.
-> > +        minimum: 0
-> > +        maximum: 1
-> > +
-> > +      default-brightness: true
-> > +
-> > +      ti,max-current-microamp:
-> > +        description:
-> > +          Maximum current in =E6=B8=99 with a 800 =E6=B8=99 step.
-> > +        enum: [ 5000, 5800, 6600, 7400, 8200, 9000, 9800,
-> > +                10600, 11400, 12200, 13000, 13800, 14600,
-> > +                15400, 16200, 17000, 17800, 18600, 19400,
-> > +                20200, 21000, 21800, 22600, 23400, 24200,
-> > +                25000, 25800, 26600, 27400, 28200, 29000,
-> > +                29800 ]
-> > +        default: 5000
-> > +
-> > +      ti,pwm-config-mask:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description: |
-> > +          Control Bank PWM Configuration Register mask that allows to =
-configure
-> > +          PWM input in Zones 0-4
-> > +          BIT(0) - PWM Input is enabled
-> > +          BIT(1) - PWM Input is enabled in Zone 0
-> > +          BIT(2) - PWM Input is enabled in Zone 1
-> > +          BIT(3) - PWM Input is enabled in Zone 2
-> > +          BIT(4) - PWM Input is enabled in Zone 3
-> > +          BIT(5) - PWM Input is enabled in Zone 4
-> > +
-> > +      ti,linear-mapping-mode:
-> > +        description: |
-> > +          Enable linear mapping mode. If disabled, then it will use ex=
-ponential
-> > +          mapping mode in which the ramp up/down appears to have a mor=
-e uniform
-> > +          transition to the human eye.
-> > +        type: boolean
-> > +
-> > +      ti,hardware-controlled:
-> > +        description: |
-> > +          Each backlight has its own voltage Control Bank (A and B) an=
-d there are
-> > +          two HVLED sinks which by default are linked to respective Ba=
-nk. Setting
-> > +          this property will link both sinks to a Control Bank of back=
-light where
-> > +          property is defined.
-> > +        type: boolean
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +
-> > +    additionalProperties: false
-> > +
-> > +  "^led@[0-3]$":
-> > +    type: object
-> > +    description:
-> > +      Properties for a led device.
-> > +
-> > +    $ref: /schemas/leds/common.yaml#
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        const: ti,lm3533-leds
-> > +
-> > +      reg:
-> > +        description:
-> > +          4 led banks
-> > +        minimum: 0
-> > +        maximum: 3
-> > +
-> > +      linux,default-trigger: true
-> > +
-> > +      ti,max-current-microamp:
-> > +        description:
-> > +          Maximum current in =E6=B8=99 with a 800 =E6=B8=99 step.
-> > +        enum: [ 5000, 5800, 6600, 7400, 8200, 9000, 9800,
-> > +                10600, 11400, 12200, 13000, 13800, 14600,
-> > +                15400, 16200, 17000, 17800, 18600, 19400,
-> > +                20200, 21000, 21800, 22600, 23400, 24200,
-> > +                25000, 25800, 26600, 27400, 28200, 29000,
-> > +                29800 ]
-> > +        default: 5000
-> > +
-> > +      ti,pwm-config-mask:
-> > +        $ref: /schemas/types.yaml#/definitions/uint32
-> > +        description:
-> > +          Same descryption and function as for backlight.
-> > +
-> > +    required:
-> > +      - compatible
-> > +      - reg
-> > +
-> > +    additionalProperties: false
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        led-controller@36 {
-> > +            compatible =3D "ti,lm3533";
-> > +            reg =3D <0x36>;
-> > +
-> > +            enable-gpios =3D <&gpio 110 GPIO_ACTIVE_HIGH>;
-> > +
-> > +            ti,boost-ovp-microvolt =3D <24000000>;
-> > +            ti,boost-freq-hz =3D <500000>;
-> > +
-> > +            #address-cells =3D <1>;
-> > +            #size-cells =3D <0>;
-> > +
-> > +            backlight@0 {
-> > +                compatible =3D "ti,lm3533-backlight";
-> > +                reg =3D <0>;
-> > +
-> > +                ti,max-current-microamp =3D <23400>;
-> > +                default-brightness =3D <113>;
-> > +                ti,hardware-controlled;
-> > +            };
->
-> Please make the example complete.
->
-> > +        };
-> > +    };
-> > +...
-> > --
-> > 2.43.0
-> >
 

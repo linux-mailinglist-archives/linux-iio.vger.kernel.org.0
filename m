@@ -1,120 +1,180 @@
-Return-Path: <linux-iio+bounces-15948-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15949-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0190A4092A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 15:39:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3F0A40930
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 15:45:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC39B17B05A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 14:39:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE69B17D392
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 14:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D5718A6A7;
-	Sat, 22 Feb 2025 14:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E70216B3A1;
+	Sat, 22 Feb 2025 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPs7DcuS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqnn1A+M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E13070830;
-	Sat, 22 Feb 2025 14:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E783145348
+	for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 14:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740235186; cv=none; b=NiQzEKjJsZGyfcLvdO5VSTUEtf2q0WUKGGpzzDItolj4VjpgvNLeGDLlU/qbKTcsg086qdUrxm0Y23cuLC9xxZVYL9hbodjucl3llxcj5HPcGxL48v9pciNIuSCthN1KA0SxmI3eK8YxTrDeXmPWbDqn+mmhyLEJjvfIALBtI1Q=
+	t=1740235495; cv=none; b=YLAg+lcYvalSKKxZ9AKEIEn1HM9Ht68HWAHrkKAtSHlbt41XvCQZFIM95hUhhT0i/juPFrJx4xw5wQSFtaNtvdDalOTvNRARcV3ZbEnWnT8drIngJ4JpLtdtJgvmbYKQlr6FiOJAM9e2PXh3iXu7FMmzvtUK7h5xgMBU02/H78w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740235186; c=relaxed/simple;
-	bh=PBmt0sYMIFhvFdLPyTV+3bLT9pVncOJVnlGTV+VP3VU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CXB32e+OVN95yX0FsvvG0O7WqhtZ8xvi+sirkKOgbr1oDXCqJpE3i5/nFthvJ9vkG9HkyEYoy3WXTLesSmuGTy1gn5KnRf5kZ+VFmag0aBSk+wdIdDVwrCXXa3rICKroc/NuRe+QQe3+1ZqLjTrcB2/Iiyx9nir/qkAHr89RDek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPs7DcuS; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-38f1e8efef5so1783986f8f.1;
-        Sat, 22 Feb 2025 06:39:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740235183; x=1740839983; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PBmt0sYMIFhvFdLPyTV+3bLT9pVncOJVnlGTV+VP3VU=;
-        b=jPs7DcuSlf/zyV13+3l+tDrD1mUi4714T6WYrpFWy5qi1HEyMz3Gpy4I3GNgnwOsC3
-         2WYZKbQeWhpONX0DBxtSl5cda5gVmM1XI3pxw7vze21fOnt2HGVB7OhRLB8G+BtrrBKP
-         qaoyoB8/YK5MpLin0xv+hanF2DV2ureCd0gZuIvULaqLn1FK0Tqv78f8Dd3czrRZoKTs
-         r/z2JHsF9jwgYbvji9e9y5BI8g2Ec607w0+4xOfbOMQ0RJWz0j09dSpZUDWRaDjRP1nS
-         pGAhcaAEsH+DpeXJQzIdz5zx7ufut88jLJJEBQ3akuS5XJUQKT+abL3OiC1dUMSqogPr
-         rZ3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740235183; x=1740839983;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PBmt0sYMIFhvFdLPyTV+3bLT9pVncOJVnlGTV+VP3VU=;
-        b=TqhiT86QwRreIMGn5CHGgJOHhPn+hLCxBYtpTp3Z2CoM0FuutPXLmxKCbhVBg8ZCvQ
-         5yhIvafBxIwOue0gttFZBRJ7HpnyLHg2UdLjt7tqGUynoGiARzUOneSeG/578rVSiabe
-         pt41+AX8OQpTHh9I/oMkp44wvYHuvJD2fLOP65obtJsJ0cVvNkP7v1YVM2S9NGnC/XlC
-         oP6hkvYc9sHLkKSVCes6l6vlqFfyQMmhz1QkPHuMaxJClvDlBjubYkQlExYs5IuRhZL+
-         oJ/dL44iT/K9R0lgUsq+3UF97Mcai7J8zaKv3+zMtpcGTxKtYbj+Ax0BEERbCzQ7bNfk
-         uRhw==
-X-Forwarded-Encrypted: i=1; AJvYcCUFc5omtoT/9JPp/4UMkX1hoOnkDIgLgWgaCfoFM3PPBtk+TcrIjzN8wQGm2VmrGb7n0RHfK3r9EMuy@vger.kernel.org, AJvYcCUfQe5J15+QWta0prHiNbESpPM3jIT/+u4NHanxFC98tPphhIOQD47JYOZC10W1jk4SW80r7jExazUoQtwi@vger.kernel.org, AJvYcCUlHsuSbq3cTv4VsrH15f1RFZX8du0WtTBgFcIwnjAYhFiHFJHFtuC9byismw3tvUQsiCWTAdg5D+GgMGY=@vger.kernel.org, AJvYcCUthXgKPR1sfiyHYJ6dbTzKw1bumJpD7UjdIUh7JWUKkVFBZC03rrLwJwJcMVyw0WdKkqwBy4p22zwv@vger.kernel.org, AJvYcCXcE0xY2QhRjW8QHUvnYrawMNuwF/XXNhb8/FFQP+OEZB8w5X+uYe1MtmwS/cg4nBe2m2JDSvYfNIrmwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKSWAMNnWy56H3fkgWC8xgXza3scTqpNn7HpaQhsmax/J4A8Ep
-	AV+xM7Bu6SMygHDX+SrY6XaHgxvLWy2fFNYMG+guoIjtyS6hE08/N+cRqRRbDtwAWghJ7bRJBLk
-	o278aVtkYgGrwWtkPlHUtJfSJaO4=
-X-Gm-Gg: ASbGncuYsxSumrKZy5OdfniJDZqj6lUgWYquzJqEIjjr2HhhQb30ArY5gryMzR6I9oI
-	IzNf0gfd/rESvyZrH/NgZ3OVN/HQl23sH54LzCM1LHb70f5iKTZ/kgqz6FYOYgArowoFsC3J9RF
-	l7JY+7ZfNZ
-X-Google-Smtp-Source: AGHT+IHhfsh8L7SoEfSEAPt4i71ayj8NVEs5Jlp8DnbYgaOEu/0ofJ6OfKwdPbxf6QtaA24Nr5hPTMqg2KwgIHxy5SI=
-X-Received: by 2002:a5d:6d03:0:b0:38f:32ac:7e70 with SMTP id
- ffacd0b85a97d-38f6f0c13dcmr5144501f8f.49.1740235183190; Sat, 22 Feb 2025
- 06:39:43 -0800 (PST)
+	s=arc-20240116; t=1740235495; c=relaxed/simple;
+	bh=jvG6erYt4KEE8wjRQ+1V/RTDiCd1wEKtuCmWCYmZ+t8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UT8HKl8K+Mzo8vrArOmxE3wA2QF45Q+4M50LxHtWxQThtudsC3f7/y/aXiResRo0vi84maSPodJflINFYNE5C9tc82j/B3whUL1L9QVbwHsobo7d9fdcCvJT81NNHbaMJk9GXld56igQfB8HOWhx5hto+6NZMvPWnlJtyGhVqjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqnn1A+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BCE5C4CED1;
+	Sat, 22 Feb 2025 14:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740235493;
+	bh=jvG6erYt4KEE8wjRQ+1V/RTDiCd1wEKtuCmWCYmZ+t8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=iqnn1A+MjcjYJiOzhV2d6ZqyDl18BxyTUdVt1g/SqJM/HVVsgoF1JC7Unck9GDfxF
+	 Ox9pelBnyW6C3UoypPmiBKfTEXrTi4l0YAtAIVI93229sd836l8QakbbJo0qlLBsUy
+	 NDz1jVyRPHrfuFyM0cC7GMDh5H8wYhCdKyqYsfEP/6UsbGeJNBFs2isar95jtMdcml
+	 1JjaXddVlM70uC8Y3zRN6QfkErcN3SEGtqLa0REvsmv4qQ17lsKiOTq4w5ojtkMXI5
+	 fvAFNq4ROSXWUjvtE8OxU2l771lYSAsh0T2dZAE/1OMh69QZU5IjHgutZLA4TY9Fyw
+	 UGzylgR6tUO8g==
+Date: Sat, 22 Feb 2025 14:44:49 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] iio: adc: ad7124: Implement internal calibration
+ at probe time
+Message-ID: <20250222144449.43ad5948@jic23-huawei>
+In-Reply-To: <deef14543f8f5ff34076e69d90711bbe719c4d12.1739902968.git.u.kleine-koenig@baylibre.com>
+References: <cover.1739902968.git.u.kleine-koenig@baylibre.com>
+	<deef14543f8f5ff34076e69d90711bbe719c4d12.1739902968.git.u.kleine-koenig@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250218132702.114669-1-clamor95@gmail.com> <20250218132702.114669-2-clamor95@gmail.com>
- <20250222142910.4e6b706d@jic23-huawei>
-In-Reply-To: <20250222142910.4e6b706d@jic23-huawei>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Sat, 22 Feb 2025 16:39:31 +0200
-X-Gm-Features: AWEUYZnZiYzFm0aljnXobt-fG7MOBn3hu3PRi2D5FDNHFhs1inR24Sh-v5qul0w
-Message-ID: <CAPVz0n0up=vkVzryYLauNCM2=hnz-o_ECm+ooXC8y=C2q+T_WQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: mfd: Document TI LM3533 MFD
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, Daniel Thompson <danielt@kernel.org>, 
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-=D1=81=D0=B1, 22 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:29 Jona=
-than Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Tue, 18 Feb 2025 15:26:59 +0200
-> Svyatoslav Ryhel <clamor95@gmail.com> wrote:
->
-> > Add bindings for the LM3533 - a complete power source for
-> > backlight, keypad, and indicator LEDs in smartphone handsets.
-> > The high-voltage inductive boost converter provides the
-> > power for two series LED strings display backlight and keypad
-> > functions.
->
-> Wrap patch descriptions to 75 chars as describe in submitting-patches.rst
->
+On Tue, 18 Feb 2025 19:31:12 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-Alright, though why then checkpatch script has max line length 100 chars?
+> Use the calibration function provided by the ad_sigma_delta shim to
+> calibrate all channels at probe time.
+>=20
+> For measurements with gain 1 (i.e. if CONFIG_x.PGA =3D 0) full-scale
+> calibrations are not supported and the reset default value of the GAIN
+> register is supposed to be used then.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+one passing comment inline.=20
 
-https://github.com/torvalds/linux/commit/bdc48fa11e46f867ea4d75fa59ee87a7f4=
-8be144
+> +static int ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev =
+*indio_dev)
+> +{
+> +	struct device *dev =3D &st->sd.spi->dev;
+> +	int ret, i;
+> +	unsigned int adc_control =3D st->adc_control;
+Maybe factor out from here...
+> +
+> +	/*
+> +	 * Calibration isn't supported at full power, so speed down a bit.
+> +	 * Setting .adc_control is enough here because the control register is
+> +	 * written as part of ad_sd_calibrate() -> ad_sigma_delta_set_mode().
+> +	 */
+> +	if (FIELD_GET(AD7124_ADC_CTRL_PWR_MSK, adc_control) >=3D AD7124_FULL_PO=
+WER) {
+> +		st->adc_control &=3D ~AD7124_ADC_CTRL_PWR_MSK;
+> +		st->adc_control |=3D AD7124_ADC_CTRL_PWR(AD7124_MID_POWER);
+> +	}
+> +
+> +	for (i =3D 0; i < st->num_channels; i++) {
+> +
+> +		if (indio_dev->channels[i].type !=3D IIO_VOLTAGE)
+> +			continue;
+> +
+> +		/*
+> +		 * For calibration the OFFSET register should hold its reset default
+> +		 * value. For the GAIN register there is no such requirement but
+> +		 * for gain 1 it should hold the reset default value, too. So to
+> +		 * simplify matters use the reset default value for both.
+> +		 */
+> +		st->channels[i].cfg.calibration_offset =3D 0x800000;
+> +		st->channels[i].cfg.calibration_gain =3D st->gain_default;
+> +
+> +		/*
+> +		 * Full-scale calibration isn't supported at gain 1, so skip in
+> +		 * that case. Note that untypically full-scale calibration has
+> +		 * to happen before zero-scale calibration. This only applies to
+> +		 * the internal calibration. For system calibration it's as
+> +		 * usual: first zero-scale then full-scale calibration.
+> +		 */
+> +		if (st->channels[i].cfg.pga_bits > 0) {
+> +			ret =3D ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_FULL, i);
+> +			if (ret < 0)
+> +				goto out;
+> +
+> +			/*
+> +			 * read out the resulting value of GAIN
+> +			 * after full-scale calibration because the next
+> +			 * ad_sd_calibrate() call overwrites this via
+> +			 * ad_sigma_delta_set_channel() -> ad7124_set_channel()
+> +			 * ... -> ad7124_enable_channel().
+> +			 */
+> +			ret =3D ad_sd_read_reg(&st->sd, AD7124_GAIN(st->channels[i].cfg.cfg_s=
+lot), 3,
+> +					     &st->channels[i].cfg.calibration_gain);
+> +			if (ret < 0)
+> +				goto out;
+> +		}
+> +
+> +		ret =3D ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_ZERO, i);
+> +		if (ret < 0)
+> +			goto out;
+> +
+> +		ret =3D ad_sd_read_reg(&st->sd, AD7124_OFFSET(st->channels[i].cfg.cfg_=
+slot), 3,
+> +				     &st->channels[i].cfg.calibration_offset);
+> +		if (ret < 0)
+> +			goto out;
+> +
+> +		dev_dbg(dev, "offset and gain for channel %d =3D 0x%x + 0x%x\n", i,
+> +			st->channels[i].cfg.calibration_offset,
+> +			st->channels[i].cfg.calibration_gain);
+> +	}
 
-> >
-> > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+to here as a ad7124_do_calibrate_all() or something like that.
+Then you can do direct returns and it becomes really obvious this function
+is stashing and restoring the adc_control value.
+
+I don't mind that much as the flow is fairly simple.
+
+> +
+> +out:
+> +	st->adc_control =3D adc_control;
+> +
+> +	return ret;
+> +}
+> +
+>  static void ad7124_reg_disable(void *r)
+>  {
+>  	regulator_disable(r);
+> @@ -1132,6 +1241,10 @@ static int ad7124_probe(struct spi_device *spi)
+>  	if (ret < 0)
+>  		return dev_err_probe(dev, ret, "Failed to setup triggers\n");
+> =20
+> +	ret =3D ad7124_calibrate_all(st, indio_dev);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret =3D devm_iio_device_register(&spi->dev, indio_dev);
+>  	if (ret < 0)
+>  		return dev_err_probe(dev, ret, "Failed to register iio device\n");
+
 

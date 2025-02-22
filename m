@@ -1,56 +1,68 @@
-Return-Path: <linux-iio+bounces-15974-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15975-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10809A40A93
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:16:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C4A40A97
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FE6A3B31EB
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:16:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC683B5EF7
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97DB143895;
-	Sat, 22 Feb 2025 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B411B2186;
+	Sat, 22 Feb 2025 17:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HZ1fxIql"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4f4GlrY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44E31DDE9;
-	Sat, 22 Feb 2025 17:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448842F3B
+	for <linux-iio@vger.kernel.org>; Sat, 22 Feb 2025 17:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740244572; cv=none; b=Q3uQD2gMEaPPriH+TPivAe7wIH+6AFxFFsrm4ZczSpmLyWZnrZjp7R6/xC5y83dStCDvhMlHQ3xm9TXhNeYnFje2PP65EiIsaF5b2y0MD4qNFtT38YYmzoi4U7jmPZYde1CMMVLqHngsOsl4hO3u997kdapHQl5MWHgeHGLkvFc=
+	t=1740245047; cv=none; b=RFWiXn7poUiRx7JwA+n69waP3QN2WJiUXppRCW+Sv4d32N43q7jWwx7udb5hR99HImr+krAihwJq11bYFnZiSGU/SO1gnJ8USOmhzXiXecKJEurOidkkT2DXyiQnB4RDP6ieetZ7vQr4TXGhC1sQOfTvdTwkPHrhuaKBInRdLMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740244572; c=relaxed/simple;
-	bh=16NVBIcjXQ/0AnhxVbi9aCTvh05LomfBrrtZhDlhJkU=;
+	s=arc-20240116; t=1740245047; c=relaxed/simple;
+	bh=N3tnKPD0sGhZuJ6CMpzU/FVR77Gipm+KKLgQplgYwxE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rOX6qnF4X2x+BjAndVEr5kxLA8whUDI1zcMMYh2KLmP3Xa/kmwr1Q7qHP1T+KT9Bx1LTE3wJePEQYx4QErWsbqjaMYRT2rOLTkgt92PpHGTxGpD1dnFUpuORLFp/e7oHqUpQLwyEVHadq5CAxSfiZ5yuLVmHlNimx4jZaPorzs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HZ1fxIql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A67C4CED1;
-	Sat, 22 Feb 2025 17:16:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F0AbJwpIdJmmUQmwqZcU318ZYx6oWSHCQqu0matNAeX4X3wetrdfMbATFfr5/rWW+85k3tH6iX15vXeVl4v0+MKrxzBajyfqD97mF3DahMVRweCxqiJGxF9Jin9EtWNNk4CdEYBSrULgV5lE/UVkdbMqB2Oy3s221FPjOEm8uu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b4f4GlrY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C875C4CED1;
+	Sat, 22 Feb 2025 17:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740244572;
-	bh=16NVBIcjXQ/0AnhxVbi9aCTvh05LomfBrrtZhDlhJkU=;
+	s=k20201202; t=1740245045;
+	bh=N3tnKPD0sGhZuJ6CMpzU/FVR77Gipm+KKLgQplgYwxE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HZ1fxIqlUNcPT75QN7ERgw44ZL+QTJTJRnfW0x2R8itRG2mwluIN1IEug9XLu47mX
-	 h2R+VS5eV3l1JGGPNjzY6jG+FYnnZ1YTz3a0lOIPf2HKRmDF1d7kwnKe+/DWe6BSpM
-	 lL3E7iFvsIPjdrXKRxicAXh2LF3VcvA0NQG5ngeFPMz8443h9acecLfBQWh3Jk/haq
-	 QMwLm53iw9aOI70Xh2bQvpQaVqcpJWmNut3Vpab/UGaYwWau9rpvAdvZ4MdZUhuVjs
-	 +NJLOzfXZ05BwGdhSW7Zu0GlHfPMY3RqQAITHW4y52k0uY+jMLQxsbsK5AhL1sBx5z
-	 lugQI7taau+6A==
-Date: Sat, 22 Feb 2025 17:16:07 +0000
+	b=b4f4GlrY9Lgb7HsXZIcDFUul4gapUVKIPDkSIPtp2ELpAx/ZvxH4azexRpI8ZkoPY
+	 nOWQIyesv/Tev7QkK4NUT2SCi330/QmWNzITq1a3jtFJ9MZOPoLKp3Ya5z5zd8WCbg
+	 Tgy47heoDWHFPJzi1B0Ui0iRBgawlfsu7d98pSccYCO1FRUsGrDpLDWi/UuzLab2vG
+	 TERzl+P0mECc448pVZHMjqC9/33XYAMMCeuCWSRod4N/zUeUv0WCmylilsQ14MkcB2
+	 8xEz8oV4y5/isLTPUsJqfwKzlfgU+OTPqxpB7XJsrX2YiKMXbyCwczHscCabgLByUT
+	 Ozkhfd/B+cAFQ==
+Date: Sat, 22 Feb 2025 17:23:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: adi-axi-dac: add io_mode check
-Message-ID: <20250222171607.3dfbe6c6@jic23-huawei>
-In-Reply-To: <20250219-wip-bl-axi-dac-add-enum-check-v1-1-8de9db0b3b1b@baylibre.com>
-References: <20250219-wip-bl-axi-dac-add-enum-check-v1-1-8de9db0b3b1b@baylibre.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: linux-iio@vger.kernel.org, Mudit Sharma <muditsharma.info@gmail.com>,
+ Julien Stephan <jstephan@baylibre.com>, Mariel Tinaco
+ <Mariel.Tinaco@analog.com>, Angelo Dureghello <adureghello@baylibre.com>,
+ Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, ChiYuan Huang <cy_huang@richtek.com>, Ramona
+ Alexandra Nechita <ramona.nechita@analog.com>, Trevor Gamblin
+ <tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, David
+ Lechner <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou
+ <gwendal@chromium.org>, Antoni Pokusinski <apokusinski01@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v2 01/27] iio: core: Rework claim and release of direct
+ mode to work with sparse.
+Message-ID: <20250222172357.05378fd4@jic23-huawei>
+In-Reply-To: <Z7nyQgjZ36zkO8oD@surfacebook.localdomain>
+References: <20250209180624.701140-1-jic23@kernel.org>
+	<20250209180624.701140-2-jic23@kernel.org>
+	<Z7nyQgjZ36zkO8oD@surfacebook.localdomain>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,40 +73,90 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 19 Feb 2025 19:57:43 +0100
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Sat, 22 Feb 2025 17:51:02 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+> Sun, Feb 09, 2025 at 06:05:58PM +0000, Jonathan Cameron kirjoitti:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > 
+> > Initial thought was to do something similar to __cond_lock()
+> > 
+> > 	do_iio_device_claim_direct_mode(iio_dev) ? : ({ __acquire(iio_dev); 0; })
+> > + Appropriate static inline iio_device_release_direct_mode()
+> > 
+> > However with that, sparse generates false positives. E.g.
+> > 
+> > drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c:1811:17: warning: context imbalance in 'st_lsm6dsx_read_raw' - unexpected unlock
+> > 
+> > So instead, this patch rethinks the return type and makes it more
+> > 'conditional lock like' (which is part of what is going on under the hood
+> > anyway) and return a boolean - true for successfully acquired, false for
+> > did not acquire.
+> > 
+> > To allow a migration path given the rework is now non trivial, take a leaf
+> > out of the naming of the conditional guard we currently have for IIO
+> > device direct mode and drop the _mode postfix from the new functions giving
+> > iio_device_claim_direct() and iio_device_release_direct()
+> > 
+> > Whilst the kernel supports __cond_acquires() upstream sparse does not
+> > yet do so.  Hence rely on sparse expanding a static inline wrapper
+> > to explicitly see whether __acquire() is called.
+> > 
+> > Note that even with the solution here, sparse sometimes gives false
+> > positives. However in the few cases seen they were complex code
+> > structures that benefited from simplification anyway.  
 > 
-> Add safe check to the high bound of the enum values,
+> ...
 > 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> ---
-Applied. thanks!
+> 
+> > +/*
+> > + * Helper functions that allow claim and release of direct mode
+> > + * in a fashion that doesn't generate many false positives from sparse.
+> > + * Note this must remain static inline in the header so that sparse
+> > + * can see the __acquire() marking. Revisit when sparse supports
+> > + * __cond_acquires()
+> > + */
+> > +static inline bool iio_device_claim_direct(struct iio_dev *indio_dev)
+> > +{
+> > +	int ret = iio_device_claim_direct_mode(indio_dev);
+> > +
+> > +	if (ret)
+> > +		return false;
+> > +
+> > +	__acquire(iio_dev);
+> > +
+> > +	return true;  
+> 
+> While I understand the intention, I dislike the function return boolean and
+> hide the actual error code, it calls user to misuse and replace boolean false
+> by arbitrary error codes.
+> 
+> Can we rather return an error code, please?
+> (as a side effect it reduces the churn in the followup changes)
+> 
+Hi Andy,
+
+I tried - see above.  It plays badly with sparse which is the whole point of
+this exercise. Note that iio_device_claim_direct_mode() only ever returns one
+error code -EBUSY. So reality is it's a boolean and this is a lot close
+to mutex_trylock() than anything else hence the switch to a boolean return.
+
+At the end of the full series (not yet posted) is a patch that gets rid
+of their being any pretence this isn't a yes / no question and can
+return other error values. This intermediate step does leave it looking
+more confusing.
+
+Churn wise if we'd been able to do keep the error return and make sparse
+work I could have just applied this to the original functions and made
+no changes at all to the vast majority of drivers.  Sadly that wasn't
+to be. End result of ending up with a trylock type approach is cleaner
+and more compact even if it's not what we have gotten used to for this
+particular function.
 
 Jonathan
->  drivers/iio/dac/adi-axi-dac.c | 3 +++
->  1 file changed, 3 insertions(+)
+
+
+> > +}  
 > 
-> diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-> index 009fb987e1afd04c3dbc59a9742f7982744420c2..892d770aec69c4259de777058801c9ab33c79923 100644
-> --- a/drivers/iio/dac/adi-axi-dac.c
-> +++ b/drivers/iio/dac/adi-axi-dac.c
-> @@ -728,6 +728,9 @@ static int axi_dac_bus_set_io_mode(struct iio_backend *back,
->  	struct axi_dac_state *st = iio_backend_get_priv(back);
->  	int ival, ret;
->  
-> +	if (mode > AD3552R_IO_MODE_QSPI)
-> +		return -EINVAL;
-> +
->  	guard(mutex)(&st->lock);
->  
->  	ret = regmap_update_bits(st->regmap, AXI_DAC_CUSTOM_CTRL_REG,
-> 
-> ---
-> base-commit: 4dd0ce442fa57f5274878c89223362344f28224c
-> change-id: 20250219-wip-bl-axi-dac-add-enum-check-8bb617285793
-> 
-> Best regards,
 
 

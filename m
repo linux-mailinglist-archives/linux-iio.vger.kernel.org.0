@@ -1,58 +1,56 @@
-Return-Path: <linux-iio+bounces-15968-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15969-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF99EA40A33
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:45:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A274DA40A44
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:48:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7AD53BD98E
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 16:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F322E188141F
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 16:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41E71EA7EA;
-	Sat, 22 Feb 2025 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E201FF1BF;
+	Sat, 22 Feb 2025 16:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FAfkdkm9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+LNQ+Rt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC7D1C5F37;
-	Sat, 22 Feb 2025 16:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0807378F30;
+	Sat, 22 Feb 2025 16:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740242727; cv=none; b=FBmQRdcn+dI/hd6VWcae/yC1yijvvkfv9pKvMoopiFR6utE95h7L+TZRDh0m/L3SSiKC3+fjHM7chBPKt2f78ysOZxlGlvi0wNfJQFgax3iSa3hGZ1X+EYTzQhNFTDcIuZnDBlpZkAOSF5B+bI8FWhqq7WWO0GpKA4pNz+1uMhQ=
+	t=1740242887; cv=none; b=d/xCCg7/kW83QGf+vdTNdRlKC1G3fjYSb1dSU070aafSZV/G5pzPxGfsMtFTiltPWVy23S5FnmblJib8qcnWvPDV/E+Pl21Ppljyr+aKHpgcg4rDGb3rLq99nYaE3b93psasfiFj42Sag40KwK1VnkBJznfXO6zE3DCisBlVs5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740242727; c=relaxed/simple;
-	bh=vbJCp+e9xPwW5z2JijA383yFH/nOJJDHw1hTpjyQdxs=;
+	s=arc-20240116; t=1740242887; c=relaxed/simple;
+	bh=MNqeln3VUkNUMvXFamT92OsGm8gYf6TpxgYBqet6w3I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QHvSV8r1QDXcxxqRJnuLKQsOY5Yav9lls58r1tOD25X/5l8tOm51RL1eN8MFHpTii5JLtKgrR2HBtIP2/M2BWw1rNJaO+rXmo4YpSy7s9I6jjyRctTb+5nPW1E5D/EVLS11ik2/y94Jn8JhIrCWRXIjGc4jjMgzJjvxOr0G4mDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FAfkdkm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3318AC4CED1;
-	Sat, 22 Feb 2025 16:45:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UKSuaOqFyTaR1llZCksUAAxv5+R/9bG1eQyV9qnfESF0CEXOlWtJVuSpA9X7KkxOLeNkhaRRJIzFn29LV3EMnA+4azKyLDYGT+kqgBT/RZPoTrALkhYxs2vv80ZCiSS1EJVFWi5Hm2X48tINAbtWwHut7V0b+lQybYjzCexy0xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+LNQ+Rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE30C4CED1;
+	Sat, 22 Feb 2025 16:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740242726;
-	bh=vbJCp+e9xPwW5z2JijA383yFH/nOJJDHw1hTpjyQdxs=;
+	s=k20201202; t=1740242886;
+	bh=MNqeln3VUkNUMvXFamT92OsGm8gYf6TpxgYBqet6w3I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FAfkdkm9Sy59BMZ8242k9Gme9cJkPH08yoCdhI3fa4QQZzzhuYy0A39o/at3Iz2xa
-	 hrPCBM7M+3HnixPd6vxb/UVAljxqplEe5ueJEZ5KMvh7PiS7XYi2sAnw/4+ydEn+Yw
-	 Ar3+CRiN4L7QzfxnmK/X5ictuyy8dO8vfks1GICs6Y2nTS4iIPvQkPOHpOyR5kwgIJ
-	 WcOCXFn9MAY0R19iGlu0obkGj9+x/R66o0Sdfd7g40DwASIYnYmUlf8rBOLlMahlGB
-	 utGR+5glAgokGIKxQc+c2NfDFhqe33Pz8o+GicZv3u5aCd94mWG89SvlKMDsaG7Aj4
-	 yWlVzbgC8pP4A==
-Date: Sat, 22 Feb 2025 16:45:19 +0000
+	b=g+LNQ+Rt6GNGW/rZCLD4s7ivITJorUX2uUsQcWHYOVgHODkVvz8WRgpnSczHu2A6H
+	 X7cUx7U2gzvOI4jlqiC8lCOUGBm2/ILcjBZQGTNw8XfqypYCoxGZgj/jOPl97+uNf3
+	 hydT8nMNbtqLx0y63rjJH7AA1lo6zloGej59zU3pMHTTdnfD9UBAa45fphLPnRYv8C
+	 s+8CKb6rqrkAAmxvjFliZq6Ecm8LoZ7Ie7guQR8hRzkdk5yAcTPtcLNiP5gX7YDgnW
+	 Ia5tQ9gVcR7z9T0VlAxKcsx+abUCbb5FenevUiqQ2rcBZcWT9AJemvmGhjHX0Sun/F
+	 agze0wqy+kzXA==
+Date: Sat, 22 Feb 2025 16:47:59 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Karan Sanghavi <karansanghvi98@gmail.com>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v3] iio: light: Add check for array bounds in
- veml6075_read_int_time_ms
-Message-ID: <20250222164519.45c48a52@jic23-huawei>
-In-Reply-To: <20250222164337.0372fb58@jic23-huawei>
-References: <Z7dnrEpKQdRZ2qFU@Emma>
-	<20250222164337.0372fb58@jic23-huawei>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <robh@kernel.org>, <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 01/14] iio: backend: add support for filter config
+Message-ID: <20250222164759.5e98cefd@jic23-huawei>
+In-Reply-To: <20250220135429.8615-2-antoniu.miclaus@analog.com>
+References: <20250220135429.8615-1-antoniu.miclaus@analog.com>
+	<20250220135429.8615-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,57 +61,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 22 Feb 2025 16:43:37 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, 20 Feb 2025 15:54:11 +0200
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> On Thu, 20 Feb 2025 17:34:36 +0000
-> Karan Sanghavi <karansanghvi98@gmail.com> wrote:
-> 
-> > The array contains only 5 elements, but the index calculated by
-> > veml6075_read_int_time_index can range from 0 to 7,
-> > which could lead to out-of-bounds access. The check prevents this issue.
-> > 
-> > Coverity Issue
-> > CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
-> > overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
-> > elements at element index 7 (byte offset 31) using
-> > index int_index (which evaluates to 7)
-> > 
-> > Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor driver")
-> > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
-> > ---  
-> Superficially this looks hardening against malicious or broken hardware.
-> That is fine to add, but not worth backporting or (in my opinion) adding a fixes
-> tag.
-Ah I see Javier asked for the fixes tag.  Ok.  Maybe just add a note that
-the hardware is not expected to return such an out of bounds value.
+> Add backend support for filter enable/disable.
+> This setting can be adjusted within the IP cores interfacing devices.
 
-That will help me to remember we don't need to rush this one upstream!
+Hi Antoniu,
+
+Please add some details on what this filtering actually is.
+There are lots of possibilities. I'm not sure why you'd have
+just an enable on the backend rather than a richer set of controls?
+
+Thanks,
 
 Jonathan
 
+
 > 
-> >  drivers/iio/light/veml6075.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
-> > index 05d4c0e9015d..5dd951f6e989 100644
-> > --- a/drivers/iio/light/veml6075.c
-> > +++ b/drivers/iio/light/veml6075.c
-> > @@ -201,7 +201,12 @@ static int veml6075_read_int_time_index(struct veml6075_data *data)
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > -	return FIELD_GET(VEML6075_CONF_IT, conf);
-> > +	int int_index = FIELD_GET(VEML6075_CONF_IT, conf);
-> > +
-> > +	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
-> > +		return -EINVAL;
-> > +
-> > +	return int_index;
-> >  }
-> >  
-> >  static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)  
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  drivers/iio/industrialio-backend.c | 26 ++++++++++++++++++++++++++
+>  include/linux/iio/backend.h        |  6 ++++++
+>  2 files changed, 32 insertions(+)
 > 
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index d4ad36f54090..ffafe7c73508 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -778,6 +778,32 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * iio_backend_filter_enable - Enable filter
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_filter_enable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, filter_enable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_enable, "IIO_BACKEND");
+> +
+> +/**
+> + * iio_backend_filter_disable - Disable filter
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_filter_disable(struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, filter_disable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_filter_disable, "IIO_BACKEND");
+> +
+>  /**
+>   * iio_backend_ddr_enable - Enable interface DDR (Double Data Rate) mode
+>   * @back: Backend device
+> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+> index e45b7dfbec35..7987d9f1cdb3 100644
+> --- a/include/linux/iio/backend.h
+> +++ b/include/linux/iio/backend.h
+> @@ -100,6 +100,8 @@ enum iio_backend_interface_type {
+>   * @read_raw: Read a channel attribute from a backend device
+>   * @debugfs_print_chan_status: Print channel status into a buffer.
+>   * @debugfs_reg_access: Read or write register value of backend.
+> + * @filter_enable: Enable filter.
+> + * @filter_disable: Disable filter.
+>   * @ddr_enable: Enable interface DDR (Double Data Rate) mode.
+>   * @ddr_disable: Disable interface DDR (Double Data Rate) mode.
+>   * @data_stream_enable: Enable data stream.
+> @@ -150,6 +152,8 @@ struct iio_backend_ops {
+>  					 size_t len);
+>  	int (*debugfs_reg_access)(struct iio_backend *back, unsigned int reg,
+>  				  unsigned int writeval, unsigned int *readval);
+> +	int (*filter_enable)(struct iio_backend *back);
+> +	int (*filter_disable)(struct iio_backend *back);
+>  	int (*ddr_enable)(struct iio_backend *back);
+>  	int (*ddr_disable)(struct iio_backend *back);
+>  	int (*data_stream_enable)(struct iio_backend *back);
+> @@ -190,6 +194,8 @@ int iio_backend_data_sample_trigger(struct iio_backend *back,
+>  int devm_iio_backend_request_buffer(struct device *dev,
+>  				    struct iio_backend *back,
+>  				    struct iio_dev *indio_dev);
+> +int iio_backend_filter_enable(struct iio_backend *back);
+> +int iio_backend_filter_disable(struct iio_backend *back);
+>  int iio_backend_ddr_enable(struct iio_backend *back);
+>  int iio_backend_ddr_disable(struct iio_backend *back);
+>  int iio_backend_data_stream_enable(struct iio_backend *back);
 
 

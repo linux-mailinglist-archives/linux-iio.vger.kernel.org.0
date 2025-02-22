@@ -1,71 +1,66 @@
-Return-Path: <linux-iio+bounces-15976-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15977-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3A2A40A9A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:25:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E55CA40AA2
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 18:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EAA3179759
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A4003B3395
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Feb 2025 17:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D191FBEB0;
-	Sat, 22 Feb 2025 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FFF201025;
+	Sat, 22 Feb 2025 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AW/05HQj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYhhby/4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAB444C7C;
-	Sat, 22 Feb 2025 17:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E541F1506;
+	Sat, 22 Feb 2025 17:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740245149; cv=none; b=ZDPiR2IHGFsov9nXrQkSxB6sPLb37/d1Rg8qoWDlg+MxRVI5Wy4Zqy5h78HrUPfkJD5+IvQm2mMip3SoXS94ErmFGsz4tuEE2wge9WZdYO584lyBhpPZ1d4A/razd7VySjMveupETu8psoIKESNUIHmMlff3FaUjfJhFzRJCpCY=
+	t=1740245249; cv=none; b=SmUgj9SThSG6rTDDj4OpCqJgHXhF3qufkYU4XDyLAW5cr4vCghf8ORYYP/bzd+fU4rplVQ+0kxLcYBqOtqlsLJfXOvYagjDege4Wdsuvp3zfc0ARs+oScCN72hJONG1WyixiQ+7f403XIGwQwjtH5VeF938K9glvDq20ocWl5Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740245149; c=relaxed/simple;
-	bh=fx3DRTGRkmKbnCXlKZ+ZwK/6h3hhdblLg2AxFF2wD44=;
+	s=arc-20240116; t=1740245249; c=relaxed/simple;
+	bh=CL61gAUqhb0sQMX+rTET5exH4siStwJSEMSACoiFGKo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hKYbDryJVhN9wt2PIdtOaG/YueoV9QhPSYtO0pboY4Zpv4rLkXDxjiPvz1xnqGIHujyLRRk6uRf166jBosaQ1yE9PfhhtU4X1Ijbu46Z46HdFlF+D4qMFs7jJ+16v3It9nyB38SNVY9O0bSd1sgqVkX3sNr4ViGq61kJUNq2R10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AW/05HQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F9EC4CED1;
-	Sat, 22 Feb 2025 17:25:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O99vNH2YpNeN5i3dDXGpQ0mC8i07nQMHfCznwaavMRsJkiIFE/fUHFmiqvujZWIb0blSUYfaHicxr6rRlcs9Ho9xpNJnxaWWUtJjxH/ZQQG7nV6+MSrTJZUSO2xXnRZbscVrjYDHmNyhSFS2w+UFcWP6C61zIQLEDfLVDMqGjk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYhhby/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A99C4CED1;
+	Sat, 22 Feb 2025 17:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740245148;
-	bh=fx3DRTGRkmKbnCXlKZ+ZwK/6h3hhdblLg2AxFF2wD44=;
+	s=k20201202; t=1740245249;
+	bh=CL61gAUqhb0sQMX+rTET5exH4siStwJSEMSACoiFGKo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AW/05HQj1cqYDn0v6OshMq3HXaCIsSmiZJfuXWKkuTBSnKiKRpt4EYiZZrZc937H4
-	 VQMK67wpWr2WRUM/iz2FJnQiciJxIqe3WTrlR6cKX3HAeSpNgaN0OxmHuhCojWmBme
-	 qKAidpYlyNCgX4fGQhszSBH3b6MUwDoyR1nSpQV/hq/gySmIlfIZGkCJLUmHzISdAZ
-	 dE5Xptv+JeDCLapSokeNN8AOXGxY5ohkNjQ0RPeDTPTcgNj7fsCAArHAd+CE5mgCzI
-	 ONx4ZZLLNShIB8ePk8logz262hSp7a12efV9y6nToPrYyrCqcjdJYHOIQJ1M3sEPFQ
-	 b4DE9uxTgRD7Q==
-Date: Sat, 22 Feb 2025 17:25:36 +0000
+	b=ZYhhby/4+5agcCxUg89X9BuGaSUpK2vX48Zi2ELbrOmDCXhqRz09VtRY7G2+DiDBC
+	 Nc9lbo+FGDeBIfbYuE4iQKcOtg1B5iZ9uvMNDs4sdnzT+W43hfNxDfbJpIqcofEVqQ
+	 b3gi6tutBAyvMNwU9ZPH6ffIrDXE8DcmqqI9H0FwBJOH7FIOCbcfTfB9WCEl30Tcq3
+	 AANt0zcPRNgdWbJ8jFXyNxGHUohg4UNbEPUSeVZliARRtCNLa/+VkRfKGqHT9LFSfK
+	 72Oqf1cPmMpqz8lMLmD236A5/2ixgYB68+DB3PY++FgwOlHsTP3R50yITxKlOJqW3b
+	 VW71TkE0WbNaA==
+Date: Sat, 22 Feb 2025 17:27:17 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Svyatoslav Ryhel <clamor95@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Thierry Reding <thierry.reding@gmail.com>, Jonathan
- Hunter <jonathanh@nvidia.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Matti Vaittinen
- <mazziesaccount@gmail.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Emil Gedenryd
- <emil.gedenryd@axis.com>, Arthur Becker <arthur.becker@sentec.com>, Mudit
- Sharma <muditsharma.info@gmail.com>, Per-Daniel Olsson
- <perdaniel.olsson@axis.com>, Subhajit Ghosh
- <subhajit.ghosh@tweaklogic.com>, Ivan Orlov <ivan.orlov0322@gmail.com>,
- David Heidelberg <david@ixit.cz>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-tegra@vger.kernel.org
-Subject: Re: [PATCH v4 2/3] iio: light: Add support for AL3000a illuminance
- sensor
-Message-ID: <20250222172536.5fb73658@jic23-huawei>
-In-Reply-To: <CAPVz0n3YHgct6x_3-mhzmTOTejLj19xDLm9C8Dqe-GHv8fJBrA@mail.gmail.com>
-References: <20250217140336.107476-1-clamor95@gmail.com>
-	<20250217140336.107476-3-clamor95@gmail.com>
-	<20250222125335.177fc746@jic23-huawei>
-	<CAPVz0n3YHgct6x_3-mhzmTOTejLj19xDLm9C8Dqe-GHv8fJBrA@mail.gmail.com>
+Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, Daniel
+ Thompson <danielt@kernel.org>, Jingoo Han <jingoohan1@gmail.com>, Helge
+ Deller <deller@gmx.de>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@baylibre.com>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-leds@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: mfd: Document TI LM3533 MFD
+Message-ID: <20250222172717.72b665fd@jic23-huawei>
+In-Reply-To: <CAPVz0n0up=vkVzryYLauNCM2=hnz-o_ECm+ooXC8y=C2q+T_WQ@mail.gmail.com>
+References: <20250218132702.114669-1-clamor95@gmail.com>
+	<20250218132702.114669-2-clamor95@gmail.com>
+	<20250222142910.4e6b706d@jic23-huawei>
+	<CAPVz0n0up=vkVzryYLauNCM2=hnz-o_ECm+ooXC8y=C2q+T_WQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -76,143 +71,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, 22 Feb 2025 14:56:41 +0200
+On Sat, 22 Feb 2025 16:39:31 +0200
 Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 
-> =D1=81=D0=B1, 22 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 14:53 Jo=
+> =D1=81=D0=B1, 22 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 16:29 Jo=
 nathan Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
 > >
-> > On Mon, 17 Feb 2025 16:03:35 +0200
+> > On Tue, 18 Feb 2025 15:26:59 +0200
 > > Svyatoslav Ryhel <clamor95@gmail.com> wrote:
 > > =20
-> > > AL3000a is a simple I2C-based ambient light sensor, which is
-> > > closely related to AL3010 and AL3320a, but has significantly
-> > > different way of processing data generated by the sensor.
-> > >
-> > > Tested-by: Robert Eckelmann <longnoserob@gmail.com>
-> > > Tested-by: Antoni Aloy Torrens <aaloytorrens@gmail.com>
-> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > > Reviewed-by: David Heidelberg <david@ixit.cz> =20
+> > > Add bindings for the LM3533 - a complete power source for
+> > > backlight, keypad, and indicator LEDs in smartphone handsets.
+> > > The high-voltage inductive boost converter provides the
+> > > power for two series LED strings display backlight and keypad
+> > > functions. =20
 > >
-> > Whilst I am confused by earlier statements about not
-> > having information on the conversion to illuminance values, I'm
-> > going to assume the look up table in here is based on some
-> > reasonable data from somewhere and hence that this is a sensor
-> > with appropriate filtering of the light to be able to do a non linear
-> > conversion from the value read and standard light curves.
-> >
-> > As such the IIO_LIGHT channel type is fine for this device.
+> > Wrap patch descriptions to 75 chars as describe in submitting-patches.r=
+st
 > > =20
 >=20
-> Thank you, but IIO_INTENSITY may be proper channel as well, after your
-> explanations. If you wish, I may upload v5 with swapping LIGHT with
-> INTENSITY.
+> Alright, though why then checkpatch script has max line length 100 chars?
+>=20
+> https://github.com/torvalds/linux/commit/bdc48fa11e46f867ea4d75fa59ee87a7=
+f48be144
 
-Where does the lux_table set of values come from?
-That seems to be key question for this driver.
+Because that script is intended to catch when things are very wrong not
+slightly so.  It provides guidance that you should look at and consider
+whether to respond to.  Checking for short wrap is trickier to do as
+perhaps the formatting is intended in some cases.
+
+
+Jonathan
 
 >=20
-> > Applied patches 1 and 2 to the togreg branch of iio.git.
-> > Note that I'll initially push this out as testing to allow
-> > the autobuilders to see if they can find any issues that we missed.
-> > Patch 3 will need to go via the appropriate SoC tree as normal.
-> >
-> > Jonathan
-> > =20
-> > > ---
-> > >  drivers/iio/light/Kconfig   |  10 ++
-> > >  drivers/iio/light/Makefile  |   1 +
-> > >  drivers/iio/light/al3000a.c | 209 ++++++++++++++++++++++++++++++++++=
-++
-> > >  3 files changed, 220 insertions(+)
-> > >  create mode 100644 drivers/iio/light/al3000a.c
 > > >
-> > > diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
-> > > index 29ffa8491927..37f83e1d8893 100644
-> > > --- a/drivers/iio/light/Kconfig
-> > > +++ b/drivers/iio/light/Kconfig
-> > > @@ -43,6 +43,16 @@ config ADUX1020
-> > >        To compile this driver as a module, choose M here: the
-> > >        module will be called adux1020.
-> > >
-> > > +config AL3000A
-> > > +     tristate "AL3000a ambient light sensor"
-> > > +     depends on I2C
-> > > +     help
-> > > +       Say Y here if you want to build a driver for the Dyna Image A=
-L3000a
-> > > +       ambient light sensor.
-> > > +
-> > > +       To compile this driver as a module, choose M here: the
-> > > +       module will be called al3000a.
-> > > +
-> > >  config AL3010
-> > >       tristate "AL3010 ambient light sensor"
-> > >       depends on I2C
-> > > diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
-> > > index f14a37442712..03f10786273a 100644
-> > > --- a/drivers/iio/light/Makefile
-> > > +++ b/drivers/iio/light/Makefile
-> > > @@ -7,6 +7,7 @@
-> > >  obj-$(CONFIG_ACPI_ALS)               +=3D acpi-als.o
-> > >  obj-$(CONFIG_ADJD_S311)              +=3D adjd_s311.o
-> > >  obj-$(CONFIG_ADUX1020)               +=3D adux1020.o
-> > > +obj-$(CONFIG_AL3000A)                +=3D al3000a.o
-> > >  obj-$(CONFIG_AL3010)         +=3D al3010.o
-> > >  obj-$(CONFIG_AL3320A)                +=3D al3320a.o
-> > >  obj-$(CONFIG_APDS9300)               +=3D apds9300.o
-> > > diff --git a/drivers/iio/light/al3000a.c b/drivers/iio/light/al3000a.c
-> > > new file mode 100644
-> > > index 000000000000..e2fbb1270040
-> > > --- /dev/null
-> > > +++ b/drivers/iio/light/al3000a.c
-> > > @@ -0,0 +1,209 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > +#include <linux/array_size.h>
-> > > +#include <linux/bitfield.h>
-> > > +#include <linux/device.h>
-> > > +#include <linux/err.h>
-> > > +#include <linux/i2c.h>
-> > > +#include <linux/mod_devicetable.h>
-> > > +#include <linux/module.h>
-> > > +#include <linux/pm.h>
-> > > +#include <linux/regmap.h>
-> > > +#include <linux/regulator/consumer.h>
-> > > +#include <linux/types.h>
-> > > +
-> > > +#include <linux/iio/iio.h>
-> > > +
-> > > +#define AL3000A_REG_SYSTEM           0x00
-> > > +#define AL3000A_REG_DATA             0x05
-> > > +
-> > > +#define AL3000A_CONFIG_ENABLE                0x00
-> > > +#define AL3000A_CONFIG_DISABLE               0x0b
-> > > +#define AL3000A_CONFIG_RESET         0x0f
-> > > +#define AL3000A_GAIN_MASK            GENMASK(5, 0)
-> > > +
-> > > +/*
-> > > + * These are pre-calculated lux values based on possible output of s=
-ensor
-> > > + * (range 0x00 - 0x3F)
-> > > + */
-> > > +static const u32 lux_table[] =3D {
-> > > +     1, 1, 1, 2, 2, 2, 3, 4,                                 /* 0 - =
-7 */
-> > > +     4, 5, 6, 7, 9, 11, 13, 16,                              /* 8 - =
-15 */
-> > > +     19, 22, 27, 32, 39, 46, 56, 67,                         /* 16 -=
- 23 */
-> > > +     80, 96, 116, 139, 167, 200, 240, 289,                   /* 24 -=
- 31 */
-> > > +     347, 416, 499, 600, 720, 864, 1037, 1245,               /* 32 -=
- 39 */
-> > > +     1495, 1795, 2155, 2587, 3105, 3728, 4475, 5373,         /* 40 -=
- 47 */
-> > > +     6450, 7743, 9296, 11160, 13397, 16084, 19309, 23180,    /* 48 -=
- 55 */
-> > > +     27828, 33408, 40107, 48148, 57803, 69393, 83306, 100000 /* 56 -=
- 63 */
-> > > +}; =20
-> > =20
+> > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com> =20
 
 

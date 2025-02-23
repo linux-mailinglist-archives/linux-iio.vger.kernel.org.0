@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-15986-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15987-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BDCA40FAD
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Feb 2025 17:14:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1046DA40FB4
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Feb 2025 17:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CD41894766
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Feb 2025 16:14:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497DE189443D
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Feb 2025 16:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460B077F11;
-	Sun, 23 Feb 2025 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F6F78F37;
+	Sun, 23 Feb 2025 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rtQ7qqK7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxwrXdvt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D835315D1;
-	Sun, 23 Feb 2025 16:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FAC22612;
+	Sun, 23 Feb 2025 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740327238; cv=none; b=Mpcd3A7yCwvNsvysUG1P5+X9LozU57GotOMb5hVSsc3PphO+uArFNVajVcgEaHlx0YovhoyfjXLBAZI9t8WdF3P2X2MBIqgs83QG8LTc3RAXrmWsNHlV11ffGyZ8f+NrxhPc98IhdpHXTGTGiovFp87u+qTFTxC7imgTv9qM6+Y=
+	t=1740328104; cv=none; b=e852PyNyA0fKxearmtz3VavdDiUi17XsqYRPMkIqe/tS8Y/NL2+1ogn6ogbmrGuNHOYzA45APrR5LAFv1cnfOmAmaJYjn67frRAxFgpX8H/mDr2We+sZXRRgXdm1jRjws+EttwHaAb/bha6jc3wx1G6iulG7AF0PiZ3dpzqiB9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740327238; c=relaxed/simple;
-	bh=sDkNg7EsIX+yFBaP6hmeYuV+cRir/F4DdwT8FyBvT+4=;
+	s=arc-20240116; t=1740328104; c=relaxed/simple;
+	bh=XYxVScXcvZNqU4CkRaD4n7Asm7PHqZX1ixQAz9BuVtk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=abduxdiRfsjmcQB/aWx3CInVUZGwqqb6lNTJl9CNwkfEouVUMHaF1zryzDCqQGzXBSCsL6zHNDTg+WyX9J+GCZ/mFNu/9ZzQyZFK8KxdJNS1bUtDSMyHDWu76T3e23MuA7TvItNCLd3toesB6A/wURVT2aLm6IIymzGRJ3C0O/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rtQ7qqK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9D1C4CEDD;
-	Sun, 23 Feb 2025 16:13:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UkdursR6neid29esZFiix0eNgc9tvdvZhfxxpQhy809Zug8B/BpGa+MnUyMHH0iu8p/tG18J5n292KJyNS67Csvd1ALEnlP7X2LEo7dvthh5nBY8P752D2llI3PqVmFYzabUfraM3FiIj5ahGRVxCNs8q8XaN/EnJMrF/prXY/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxwrXdvt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6302C4CEDD;
+	Sun, 23 Feb 2025 16:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740327236;
-	bh=sDkNg7EsIX+yFBaP6hmeYuV+cRir/F4DdwT8FyBvT+4=;
+	s=k20201202; t=1740328103;
+	bh=XYxVScXcvZNqU4CkRaD4n7Asm7PHqZX1ixQAz9BuVtk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rtQ7qqK78gSBGWcm35497glQNbZaUgh9WYNIAgzDdEzRPmBaASPmBgT0yb9hdU5Nc
-	 BYxGnnDyBdaddfZA/LcdEHFBNJWfIwXeQaUnx0xjn6MJnke1CIDzh7aUt+sTEK69C6
-	 i/JDcufAr6KNHPkQUEI4U7qU74w0uRkiwvLsQIgnew9g1yW80+6TbGIhpa70iDS84B
-	 PjmsXRoQa3DLY+iEfSiiygyX0mCoJ/KNUH2kvaa2I90khny3zWUWfOcgdKm90ImpDW
-	 obRQvNl1eMGK8MLfT7syymWfw3MujmDpEEe9B/zb6Nvw2TpRRtR60HFsUoThZpeZlz
-	 IKZufSF37SyQA==
-Date: Sun, 23 Feb 2025 16:13:38 +0000
+	b=IxwrXdvty+zj5VnmPjlmOEzRlESkVUI32nFAxLY+JkLdEfOhmhsOE0PVn5QlGCimv
+	 8y2P3OsiTTthdsqiWcuNyYxJXkK0RnDJiugxmsumbG+sBcB3WPR9MYl8bG/e8M0rem
+	 ZPBqkop6A3kM0WprHAg09A0UtwZIp5uOKYMWMy6WqPS9dlVNc0KaEhKP0IqcaAnDhy
+	 9/8H85cyT69nHGLtG9aHzXV8o8+Y0wPp7Vk+D4f8zR4Z77itRAhQwu29d1G7HbJCSS
+	 QGHLqz5ldzWRHvuy7CiVt2P5pxVWAXQUsx3pFxwyhUUWGvpdciLD6ABY4T1J85S8Ob
+	 dNRBqOHv5SNKA==
+Date: Sun, 23 Feb 2025 16:28:07 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -55,12 +55,12 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <andriy.shevchenko@linux.intel.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-renesas-soc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250223161338.5c896280@jic23-huawei>
-In-Reply-To: <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
+ linux-sunxi@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v3 3/9] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250223162807.41960b6b@jic23-huawei>
+In-Reply-To: <67b7713724d7591f6321a8f5dfef8cd711f38d34.1739967040.git.mazziesaccount@gmail.com>
 References: <cover.1739967040.git.mazziesaccount@gmail.com>
-	<6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
+	<67b7713724d7591f6321a8f5dfef8cd711f38d34.1739967040.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,572 +71,394 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 19 Feb 2025 14:30:27 +0200
+On Wed, 19 Feb 2025 14:30:43 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> There are ADC ICs which may have some of the AIN pins usable for other
-> functions. These ICs may have some of the AIN pins wired so that they
-> should not be used for ADC.
+> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> an automatic measurement mode, with an alarm interrupt for out-of-window
+> measurements. The window is configurable for each channel.
 > 
-> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> add corresponding channels@N nodes in the device tree as described in
-> the ADC binding yaml.
+> The I2C protocol for manual start of the measurement and data reading is
+> somewhat peculiar. It requires the master to do clock stretching after
+> sending the I2C slave-address until the slave has captured the data.
+> Needless to say this is not well suopported by the I2C controllers.
 > 
-> Add couple of helper functions which can be used to retrieve the channel
-> information from the device node.
+> Thus the driver does not support the BD79124's manual measurement mode
+> but implements the measurements using automatic measurement mode relying
+> on the BD79124's ability of storing latest measurements into register.
+> 
+> The driver does also support configuring the threshold events for
+> detecting the out-of-window events.
+> 
+> The BD79124 keeps asserting IRQ for as long as the measured voltage is
+> out of the configured window. Thus the driver masks the received event
+> for a fixed duration (1 second) when an event is handled. This prevents
+> the user-space from choking on the events
+> 
+> The ADC input pins can be also configured as general purpose outputs.
+> Those pins which don't have corresponding ADC channel node in the
+> device-tree will be controllable as GPO.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
-> ---
-> Revision history:
-> v2 => v3: Mostly based on review comments by Jonathan
->  - Support differential and single-ended channels(*)
->  - Rename iio_adc_device_get_channels() as
->  - Improve spelling
->  - Drop support for cases where DT comes from parent device's node
->  - Decrease loop indent by reverting node name check conditions
->  - Don't set 'chan->indexed' by number of channels to keep the
->    interface consistent no matter how many channels are connected.
->  - Fix ID range check and related comment
-> RFC v1 => v2:
->  - New patch
-> 
-> (*) The support for single-ended and differential channels is 100%
-> untested. I am not convinced it is actually an improvement over the
-> *_simple() helpers which only supported getting the ID from the "reg
+Hi Matti,
 
-Currently it definitely feels too complex.  Partly, whilst I haven't
-tried fleshing out the alternative, it feels like you've tried to make
-it too general.  I really don't like the allowed bitmap as those
-relationships are complex.
+Some fairly superficial review follows. I'm travelling for next few weeks
+so not sure when I'll get time to take a more thorough look.
 
-> In theory they could be used. In practice, while I skimmed through the
-> in-tree ADC drivers which used the for_each_child_node() construct - it
-> seemed that most of those which supported differential inputs had also
-> some other per-channel properties to read. Those users would in any case
-> need to loop through the nodes to get those other properties.
-That doesn't surprise me that much. I'm still not sure there are enough
-'simple' cases (i.e. more than maybe 3) to justify this being shared.
-
-> 
-> If I am once more allowed to go back to proposing the _simple() variant
-> which only covers the case: "chan ID in 'reg' property"... Dropping
-> support for differential and single-ended channels would simplify this
-> helper a lot. It'd allow dropping the sanity check as well as the extra
-> parameters callers need to pass to tell what kind of properties they
-> expect. That'd (in my opinion) made the last patches (to actual ADC
-> drivers) in this series a much more lean and worthy ;)
-
-If you do, call it _se() or something like that.
-
-> 
-> Finally, we could add own functions for differential/single-ended/all
-> channels when the next driver which uses differential or single-ended
-> channels - and which does not need other per-channel properties - lands
-> in tree. That would still simplify the helper API usage for those
-> drivers touched at the end of this series.
-
-This sounds reasonable approach but I still want more than one before
-we bother.
-
-> 
-> I (still) think it might be nice to have helpers for fetching also the
-> other generic (non vendor specific) ADC properties (as listed in the
-> Documentation/devicetree/bindings/iio/adc/adc.yaml) - but as I don't
-> have use for those in BD79124 driver (at least not for now), I don't
-> imnplement them yet. Anyways, this commit creates a place for such
-> helpers.
-Definitely need usecases.
-
-So my current feeling is if you can find a second case that a
-_se() variant works for then I don't mind this being a separate module.
-If not put just what you need in your driver.
-
-Various comments inline.
-> ---
->  drivers/iio/adc/Kconfig            |   3 +
->  drivers/iio/adc/Makefile           |   1 +
->  drivers/iio/adc/industrialio-adc.c | 304 +++++++++++++++++++++++++++++
->  include/linux/iio/adc-helpers.h    |  56 ++++++
->  4 files changed, 364 insertions(+)
->  create mode 100644 drivers/iio/adc/industrialio-adc.c
->  create mode 100644 include/linux/iio/adc-helpers.h
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 849c90203071..37b70a65da6f 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -6,6 +6,9 @@
->  
->  menu "Analog to digital converters"
->  
-> +config IIO_ADC_HELPER
-> +	tristate
-> +
->  config AB8500_GPADC
->  	bool "ST-Ericsson AB8500 GPADC driver"
->  	depends on AB8500_CORE && REGULATOR_AB8500
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index ee19afba62b7..956c121a7544 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -57,6 +57,7 @@ obj-$(CONFIG_FSL_MX25_ADC) += fsl-imx25-gcq.o
->  obj-$(CONFIG_GEHC_PMC_ADC) += gehc-pmc-adc.o
->  obj-$(CONFIG_HI8435) += hi8435.o
->  obj-$(CONFIG_HX711) += hx711.o
-> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
-As per other discussion. Move this to new block at the top.
->  obj-$(CONFIG_IMX7D_ADC) += imx7d_adc.o
->  obj-$(CONFIG_IMX8QXP_ADC) += imx8qxp-adc.o
->  obj-$(CONFIG_IMX93_ADC) += imx93_adc.o
-> diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industrialio-adc.c
+> diff --git a/drivers/iio/adc/rohm-bd79124.c b/drivers/iio/adc/rohm-bd79124.c
 > new file mode 100644
-> index 000000000000..0281d64ae112
+> index 000000000000..5e23bc8d9ce2
 > --- /dev/null
-> +++ b/drivers/iio/adc/industrialio-adc.c
-> @@ -0,0 +1,304 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Helpers for parsing common ADC information from a firmware node.
-> + *
-> + * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-> + */
+> +++ b/drivers/iio/adc/rohm-bd79124.c
+
+
+
 > +
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/property.h>
-> +
-> +#include <linux/iio/adc-helpers.h>
-> +
-> +int iio_adc_device_num_channels(struct device *dev)
+> +static int __bd79124_event_ratelimit(struct bd79124_data *data, int reg,
+> +				     unsigned int limit)
 > +{
-> +	int num_chan = 0;
+> +	int ret;
 > +
-> +	device_for_each_child_node_scoped(dev, child)
-> +		if (fwnode_name_eq(child, "channel"))
-> +			num_chan++;
-> +
-> +	return num_chan;
-
-This function seems easy to generalize to count nodes of particular
-name.  So I'd promote this as a generic property.h helper and
-just use that in here.
-
-
-> +}
-> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
-> +
-> +static const char *iio_adc_type2prop(int type)
-> +{
-> +	switch (type) {
-> +	case IIO_ADC_CHAN_PROP_TYPE_REG:
-> +		return "reg";
-> +	case IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED:
-> +		return "single-channel";
-> +	case IIO_ADC_CHAN_PROP_TYPE_DIFF:
-> +		return "diff-channels";
-> +	case IIO_ADC_CHAN_PROP_COMMON:
-> +		return "common-mode-channel";
-> +	default:
-> +		return "unknown";
-> +	}
-> +}
-> +
-> +/*
-> + * Sanity check. Ensure that:
-> + * - At least some type(s) are allowed
-> + * - All types found are also expected
-> + * - If plain "reg" is not allowed, either single-ended or differential
-> + *   properties are found.
-
-I'd worry this is a combination of fragile and overly separate from
-the parser.  I'd just encode this stuff down there based on accepted type
-of channels.  Two flags, differential and single ended may be enough.
-If single only then reg is expected solution but I don't see a reason to
-ignore single-channel even then as meaning is well defined.
-If differential only - then that property must be present for all channels.
-If both single and differential then need either differential or single-channel.
-
-> + */
-> +static int iio_adc_prop_type_check_sanity(struct device *dev,
-> +		const struct iio_adc_props *expected_props, int found_types)
-> +{
-> +	unsigned long allowed_types = expected_props->allowed |
-> +				      expected_props->required;
-> +
-> +	if (!allowed_types || allowed_types & (~IIO_ADC_CHAN_PROP_TYPE_ALL)) {
-> +		dev_dbg(dev, "Invalid adc allowed prop types 0x%lx\n",
-> +			allowed_types);
-> +
+> +	if (limit > BD79124_HIGH_LIMIT_MAX)
 > +		return -EINVAL;
-> +	}
-> +	if (found_types & (~allowed_types)) {
-> +		long unknown_types = found_types & (~allowed_types);
-> +		int type;
 > +
-> +		for_each_set_bit(type, &unknown_types,
-> +				 IIO_ADC_CHAN_NUM_PROP_TYPES - 1) {
-> +			dev_err(dev, "Unsupported channel property %s\n",
-> +				iio_adc_type2prop(type));
-> +		}
-> +
-> +		return -EINVAL;
-> +	}
+> +	ret = bd79124_write_int_to_reg(data, reg, limit);
+> +	if (ret)
+> +		return ret;
 > +
 > +	/*
-> +	 * The IIO_ADC_CHAN_PROP_TYPE_REG is special. We always require it to
-> +	 * be found in the dt. (If not, we'll error out before calling this
-> +	 * function.) However, listing it in 'allowed' types means the "reg"
-> +	 * alone can be used to indicate the channel ID.
-> +	 *
-> +	 * Thus, we don't add it in the found properties either - so check for
-> +	 * found and allowed properties passes even if user hasn't explicitly
-> +	 * added the 'IIO_ADC_CHAN_PROP_TYPE_REG' to be allowed. (This is the
-> +	 * case if either differential or single-ended property is required).
-> +	 *
-> +	 * Hence, for this check we need to explicitly add the
-> +	 * IIO_ADC_CHAN_PROP_TYPE_REG to 'found' properties to make the check
-> +	 * pass when "reg" is the property which is required to have the
-> +	 * channel ID.
-> +	 *
-> +	 * We could of course always add the IIO_ADC_CHAN_PROP_TYPE_REG in
-> +	 * allowed types and found types - but then we wouldn't catch the case
-> +	 * where user says the "reg" alone is not sufficient.
+> +	 * We use 1 sec 'grace period'. At the moment I see no reason to make
+> +	 * this user configurable. We need an ABI for this if configuration is
+> +	 * needed.
 > +	 */
-> +	if ((~(found_types | IIO_ADC_CHAN_PROP_TYPE_REG)) & expected_props->required) {
-> +		long missing_types;
-> +		int type;
-> +
-> +		missing_types = (~found_types) & expected_props->required;
-> +
-> +		for_each_set_bit(type, &missing_types,
-> +				 IIO_ADC_CHAN_NUM_PROP_TYPES - 1) {
-> +			dev_err(dev, "required channel specifier '%s' not found\n",
-> +				iio_adc_type2prop(type));
-> +		}
-> +
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* Check if we require something else but the "reg" property */
-> +	if (!(allowed_types & IIO_ADC_CHAN_PROP_TYPE_REG)) {
-> +		if (found_types & IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED ||
-> +				found_types & IIO_ADC_CHAN_PROP_TYPE_DIFF)
-> +			return 0;
-> +
-> +		dev_err(dev, "channel specifier not found\n");
-> +
-> +		return -EINVAL;
-> +	}
+> +	schedule_delayed_work(&data->alm_enable_work,
+> +			      msecs_to_jiffies(1000));
 > +
 > +	return 0;
 > +}
 > +
-> +/**
-> + * iio_adc_device_channels_by_property - get ADC channel IDs
-> + *
-> + * Scan the device node for ADC channel information. Return an array of found
-> + * IDs. Caller needs to provide the memory for the array and provide maximum
-> + * number of IDs the array can store.
-
-I'm somewhat confused by this. Feels like you can get same info from the
-iio_chan_spec array generated by the next function.
-
-> + *
-> + * @dev:		Pointer to the ADC device
-> + * @channels:		Array where the found IDs will be stored.
-> + * @max_channels:	Number of IDs that fit in the array.
-> + * @expected_props:	Bitmaps of channel property types (for checking).
-> + *
-> + * Return:		Number of found channels on succes. 0 if no channels
-> + *			was found. Negative value to indicate failure.
-> + */
-> +int iio_adc_device_channels_by_property(struct device *dev, int *channels,
-> +		int max_channels, const struct iio_adc_props *expected_props)
+> +static int bd79124_event_ratelimit_hi(struct bd79124_data *data,
+> +				      unsigned int channel)
 > +{
-> +	int num_chan = 0, ret;
+> +	int reg, limit;
 > +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		u32 ch, diff[2], se;
-> +		struct iio_adc_props tmp;
-> +		int chtypes_found = 0;
+> +	guard(mutex)(&data->mutex);
+> +	data->alarm_suppressed[channel] |= BIT(IIO_EV_DIR_RISING);
 > +
-> +		if (!fwnode_name_eq(child, "channel"))
-> +			continue;
+> +	reg = BD79124_GET_HIGH_LIMIT_REG(channel);
+> +	limit = BD79124_HIGH_LIMIT_MAX;
 > +
-> +		if (num_chan == max_channels)
-> +			return -EINVAL;
+> +	return __bd79124_event_ratelimit(data, reg, limit);
+
+As below.
+
+> +}
 > +
-> +		ret = fwnode_property_read_u32(child, "reg", &ch);
-> +		if (ret)
-> +			return ret;
+> +static int bd79124_event_ratelimit_lo(struct bd79124_data *data,
+> +				      unsigned int channel)
+> +{
+> +	int reg, limit;
 > +
-> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
-> +						     &diff[0], 2);
-> +		if (!ret)
-> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_DIFF;
+> +	guard(mutex)(&data->mutex);
+> +	data->alarm_suppressed[channel] |= BIT(IIO_EV_DIR_FALLING);
 > +
-> +		ret = fwnode_property_read_u32(child, "single-channel", &se);
-> +		if (!ret)
-> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED;
+> +	reg = BD79124_GET_LOW_LIMIT_REG(channel);
+> +	limit = BD79124_LOW_LIMIT_MIN;
 > +
-> +		tmp = *expected_props;
-> +		/*
-> +		 * We don't bother reading the "common-mode-channel" here as it
-> +		 * doesn't really affect on the primary channel ID. We remove
-> +		 * it from the required properties to allow the sanity check
-> +		 * pass here  also for drivers which require it.
-> +		 */
-> +		tmp.required &= (~BIT(IIO_ADC_CHAN_PROP_COMMON));
+> +	return __bd79124_event_ratelimit(data, reg, limit);
+
+I'd put reg and limit inline.  Local variables don't add much as
+their meaning is obvious anyway from what you put in them.
+
+> +}
 > +
-> +		ret = iio_adc_prop_type_check_sanity(dev, &tmp, chtypes_found);
-> +		if (ret)
-> +			return ret;
+> +static irqreturn_t bd79124_event_handler(int irq, void *priv)
+> +{
+> +	int ret, i_hi, i_lo, i;
+> +	struct iio_dev *iio_dev = priv;
+> +	struct bd79124_data *data = iio_priv(iio_dev);
 > +
-> +		if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_DIFF)
-> +			ch = diff[0];
-> +		else if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED)
-> +			ch = se;
+> +	/*
+> +	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
+> +	 * subsystem to disable the offending IRQ line if we get a hardware
+> +	 * problem. This behaviour has saved my poor bottom a few times in the
+> +	 * past as, instead of getting unusably unresponsive, the system has
+> +	 * spilled out the magic words "...nobody cared".
+> +	 */
+> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
+> +	if (ret)
+> +		return IRQ_NONE;
 > +
-> +		/*
-> +		 * We assume the channel IDs start from 0. If it seems this is
-> +		 * not a sane assumption, then we can relax this check or add
-> +		 * 'allowed ID range' parameter.
-> +		 *
-> +		 * Let's just start with this simple assumption.
-> +		 */
-> +		if (ch >= max_channels)
-> +			return -ERANGE;
+> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
+> +	if (ret)
+> +		return IRQ_NONE;
 > +
-> +		channels[num_chan] = ch;
-> +		num_chan++;
+> +	if (!i_lo && !i_hi)
+> +		return IRQ_NONE;
+> +
+> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
+> +		u64 ecode;
+> +
+> +		if (BIT(i) & i_hi) {
+> +			ecode = IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
+> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
+> +
+> +			iio_push_event(iio_dev, ecode, data->timestamp);
+> +			/*
+> +			 * The BD79124 keeps the IRQ asserted for as long as
+> +			 * the voltage exceeds the threshold. It causes the IRQ
+> +			 * to keep firing.
+> +			 *
+> +			 * Disable the event for the channel and schedule the
+> +			 * re-enabling the event later to prevent storm of
+> +			 * events.
+> +			 */
+> +			ret = bd79124_event_ratelimit_hi(data, i);
+> +			if (ret)
+> +				return IRQ_NONE;
+> +		}
+> +		if (BIT(i) & i_lo) {
+> +			ecode = IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
+> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_FALLING);
+> +
+> +			iio_push_event(iio_dev, ecode, data->timestamp);
+> +			ret = bd79124_event_ratelimit_lo(data, i);
+> +			if (ret)
+> +				return IRQ_NONE;
+> +		}
 > +	}
 > +
-> +	return num_chan;
+> +	ret = regmap_write(data->map, BD79124_REG_EVENT_FLAG_HI, i_hi);
+> +	if (ret)
+> +		return IRQ_NONE;
+> +
+> +	ret = regmap_write(data->map, BD79124_REG_EVENT_FLAG_LO, i_lo);
+> +	if (ret)
+> +		return IRQ_NONE;
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static irqreturn_t bd79124_irq_handler(int irq, void *priv)
+> +{
+> +	struct iio_dev *iio_dev = priv;
+> +	struct bd79124_data *data = iio_priv(iio_dev);
+> +
+> +	data->timestamp = iio_get_time_ns(iio_dev);
+> +
+> +	return IRQ_WAKE_THREAD;
+> +}
+> +
+> +struct bd79124_reg_init {
+> +	int reg;
+> +	int val;
+> +};
+> +
+> +static int bd79124_chan_init(struct bd79124_data *data, int channel)
+> +{
+> +	struct bd79124_reg_init inits[] = {
+> +		{ .reg = BD79124_GET_HIGH_LIMIT_REG(channel), .val = 4095 },
+> +		{ .reg = BD79124_GET_LOW_LIMIT_REG(channel), .val = 0 },
+> +	};
+> +	int i, ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(inits); i++) {
+> +		ret = regmap_write(data->map, inits[i].reg, inits[i].val);
+> +		if (ret)
+> +			return ret;
+> +	}
+
+This is shorter as straight line code rather than a loop. I'd unwind
+it.  Fine to bring in a loop 'setter' like this once the benefit is
+significant.
+
+> +
+> +	return 0;
+> +}
+> +
+> +static bool bd79124_is_in_array(int *arr, int num_items, int val)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < num_items; i++)
+> +		if (arr[i] == val)
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+> +static int bd79124_mux_init(struct bd79124_data *data)
+> +{
+> +	int adc_chans[BD79124_MAX_NUM_CHANNELS];
+> +	int num_adc, chan, regval = 0;
+> +
+> +	num_adc = iio_adc_device_channels_by_property(data->dev, &adc_chans[0],
+> +						      BD79124_MAX_NUM_CHANNELS,
+> +						      &expected_props);
+> +	if (num_adc < 0)
+> +		return num_adc;
+> +
+> +	/*
+> +	 * Set a mux register bit for each pin which is free to be used as
+> +	 * a GPO.
+For this I would search the simpler iio_chan_spec array rather than passing
+properties again.  Just look for gaps.  Or do it in the top level probe()
+function and build a bitmap of which channels are ADC ones from the iio_chan_spec
+array and pass that down here.
+
+> +	 */
+> +	for (chan = 0; chan < BD79124_MAX_NUM_CHANNELS; chan++)
+> +		if (!bd79124_is_in_array(&adc_chans[0], num_adc, chan))
+> +			regval |= BIT(chan);
+> +
+> +	return regmap_write(data->map, BD79124_REG_PINCFG, regval);
+> +}
+> +
+> +static int bd79124_hw_init(struct bd79124_data *data)
+> +{
+> +	int ret, regval, i;
+> +
+> +	ret = bd79124_mux_init(data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
+> +		ret = bd79124_chan_init(data, i);
+> +		if (ret)
+> +			return ret;
+> +		data->alarm_r_limit[i] = 4095;
+> +	}
+> +	/* Stop auto sequencer */
+> +	ret = regmap_clear_bits(data->map, BD79124_REG_SEQUENCE_CFG,
+> +				BD79124_MASK_SEQ_START);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Enable writing the measured values to the regsters */
+> +	ret = regmap_set_bits(data->map, BD79124_REG_GEN_CFG,
+> +			      BD79124_MASK_STATS_EN);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set no channels to be auto-measured */
+> +	ret = regmap_write(data->map, BD79124_REG_AUTO_CHANNELS, 0x0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set no channels to be manually measured */
+> +	ret = regmap_write(data->map, BD79124_REG_MANUAL_CHANNELS, 0x0);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Set the measurement interval to 0.75 mS */
+> +	regval = FIELD_PREP(BD79124_MASK_AUTO_INTERVAL, BD79124_INTERVAL_075);
+> +	ret = regmap_update_bits(data->map, BD79124_REG_OPMODE_CFG,
+> +			BD79124_MASK_AUTO_INTERVAL, regval);
+
+Where it doesn't make any other difference, align after (
+
+If you are going shorter, single tab only.
+
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Sequencer mode to auto */
+> +	ret = regmap_set_bits(data->map, BD79124_REG_SEQUENCE_CFG,
+> +			      BD79124_MASK_SEQ_SEQ);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Don't start the measurement */
+> +	regval = FIELD_PREP(BD79124_MASK_CONV_MODE, BD79124_CONV_MODE_MANSEQ);
+What is this for?
+> +
+> +	return regmap_update_bits(data->map, BD79124_REG_OPMODE_CFG,
+> +			BD79124_MASK_CONV_MODE, BD79124_CONV_MODE_MANSEQ);
 > +
 > +}
-> +EXPORT_SYMBOL_GPL(iio_adc_device_channels_by_property);
 > +
-> +/**
-> + * devm_iio_adc_device_alloc_chaninfo - allocate and fill iio_chan_spec for adc
-
-ADC
-
-> + *
-> + * Scan the device node for ADC channel information. Allocate and populate the
-> + * iio_chan_spec structure corresponding to channels that are found. The memory
-> + * for iio_chan_spec structure will be freed upon device detach. Try parent
-> + * device node if given device has no fwnode associated to cover also MFD
-> + * devices.
-> + *
-> + * @dev:		Pointer to the ADC device.
-> + * @template:		Template iio_chan_spec from which the fields of all
-> + *			found and allocated channels are initialized.
-> + * @cs:			Location where pointer to allocated iio_chan_spec
-> + *			should be stored
-> + * @expected_props:	Bitmaps of channel property types (for checking).
-Input parameter so should be after template.
-
-> + *
-> + * Return:	Number of found channels on succes. Negative value to indicate
-> + *		failure.
-
-I wonder if an alloc function would be better returning the pointer and
-providing num_chans via a parameter.
-
-> + */
-> +int devm_iio_adc_device_alloc_chaninfo(struct device *dev,
-> +				const struct iio_chan_spec *template,
-> +				struct iio_chan_spec **cs,
-> +				const struct iio_adc_props *expected_props)
-
-I'm not sure this expected props thing works as often it's a case
-of complex relationships 
-
+> +static int bd79124_probe(struct i2c_client *i2c)
 > +{
-> +	struct iio_chan_spec *chan;
-> +	int num_chan = 0, ret;
-Initialized just after this so don't set num_chan = 0.
-
+> +	struct bd79124_data *data;
+> +	struct iio_dev *iio_dev;
+> +	const struct iio_chan_spec *template;
+> +	struct iio_chan_spec *cs;
+> +	struct device *dev = &i2c->dev;
+> +	int ret;
 > +
-> +	num_chan = iio_adc_device_num_channels(dev);
-> +	if (num_chan < 1)
-> +		return num_chan;
-> +
-> +	*cs = devm_kcalloc(dev, num_chan, sizeof(**cs), GFP_KERNEL);
-> +	if (!*cs)
+> +	iio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> +	if (!iio_dev)
 > +		return -ENOMEM;
 > +
-> +	chan = &(*cs)[0];
+> +	data = iio_priv(iio_dev);
+> +	data->dev = dev;
+> +	data->map = devm_regmap_init_i2c(i2c, &bd79124_regmap);
+> +	if (IS_ERR(data->map))
+> +		return dev_err_probe(dev, PTR_ERR(data->map),
+> +				     "Failed to initialize Regmap\n");
 > +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		u32 ch, diff[2], se, common;
-> +		int chtypes_found = 0;
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "vdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to get the Vdd\n");
 > +
-> +		if (!fwnode_name_eq(child, "channel"))
-> +			continue;
+> +	data->vmax = ret;
 > +
-> +		ret = fwnode_property_read_u32(child, "reg", &ch);
+> +	ret = devm_regulator_get_enable(dev, "iovdd");
+> +	if (ret < 0)
+> +		return dev_err_probe(dev, ret, "Failed to enable I/O voltage\n");
+> +
+> +	ret = devm_delayed_work_autocancel(dev, &data->alm_enable_work,
+> +					   bd79124_alm_enable_worker);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (i2c->irq) {
+> +		template = &bd79124_chan_template;
+> +	} else {
+> +		template = &bd79124_chan_template_noirq;
+> +		dev_dbg(dev, "No IRQ found, events disabled\n");
+> +	}
+> +	ret = devm_iio_adc_device_alloc_chaninfo(dev, template, &cs,
+> +						 &expected_props);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	iio_dev->channels = cs;
+> +	iio_dev->num_channels = ret;
+> +	iio_dev->info = &bd79124_info;
+> +	iio_dev->name = "bd79124";
+> +	iio_dev->modes = INDIO_DIRECT_MODE;
+> +
+> +	data->gc = bd79124gpo_chip;
+> +	data->gc.parent = dev;
+> +
+> +	mutex_init(&data->mutex);
+
+Whilst it doesn't bring huge advantage, now we have devm_mutex_init()
+it seems reasonable to use it and maybe catch a use after free for the lock.
+
+> +
+> +	ret = bd79124_hw_init(data);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_gpiochip_add_data(data->dev, &data->gc, data);
+> +	if (ret)
+> +		return dev_err_probe(data->dev, ret, "gpio init Failed\n");
+> +
+> +	if (i2c->irq > 0) {
+> +		ret = devm_request_threaded_irq(data->dev, i2c->irq,
+> +					bd79124_irq_handler,
+> +					&bd79124_event_handler, IRQF_ONESHOT,
+> +					"adc-thresh-alert", iio_dev);
 > +		if (ret)
-> +			return ret;
-> +
-
-diff channels and single channel take precedence over reg, so check them
-first. If present no need to look for reg can also read it then throw
-it away giving simpler.
-
-		*chan = *template;
-
-		// reg should exist either way.
-		ret = fwnode_property_read_u32(child, "reg", &reg);
-		if (ret)
-			return -EINVAL; //should be a reg whatever.
-
-		ret = fwnode_property_read_u32_array(child, "diff-channels",
-						     diff, ARRAY_SIZE(diff));
-		if (ret == 0) {
-			chan->differential = 1;
-			chan->channel = diff[0];
-			chan->channel2 = diff[1];
-		} else {
-			ret = fwnode_property_read_u32(child, "single-channel", &se);
-			if (ret)
-				se = reg;
-
-			chan->channel = se;
-			//IIRC common mode channel is rare. I'd skip it. That
-			//also makes it a differential channel be it a weird one.
-		}
-					
-
-> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
-> +						     &diff[0], 2);
-> +		if (!ret)
-> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_DIFF;
-> +
-> +		ret = fwnode_property_read_u32(child, "single-channel", &se);
-> +		if (!ret)
-> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED;
-> +
-> +		ret = fwnode_property_read_u32(child, "common-mode-channel",
-> +					       &common);
-> +		if (!ret)
-> +			chtypes_found |= BIT(IIO_ADC_CHAN_PROP_COMMON);
-> +
-> +		ret = iio_adc_prop_type_check_sanity(dev, expected_props,
-> +						     chtypes_found);
-
-If we want to verify this (I'm not yet sure) then do it as you parse the
-properties, not separately.
-
-> +		if (ret)
-> +			return ret;
-> +
-> +		*chan = *template;
-> +		chan->channel = ch;
-> +
-> +		if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_DIFF) {
-> +			chan->differential = 1;
-> +			chan->channel = diff[0];
-> +			chan->channel2 = diff[1];
-> +
-> +		} else if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED) {
-> +			chan->channel = se;
-> +			if (chtypes_found & BIT(IIO_ADC_CHAN_PROP_COMMON))
-> +				chan->channel2 = common;
-> +		}
-> +
-> +		/*
-> +		 * We assume the channel IDs start from 0. If it seems this is
-> +		 * not a sane assumption, then we have to add 'allowed ID ranges'
-> +		 * to the struct iio_adc_props because some of the callers may
-> +		 * rely on the IDs being in this range - and have arrays indexed
-> +		 * by the ID.
-
-Not a requirement in general.  It is more than possible to have a single channel
-provided that is number 7.
-
-> +		 */
-> +		if (chan->channel >= num_chan)
-> +			return -ERANGE;
-> +
-> +		chan++;
+> +			return dev_err_probe(data->dev, ret,
+> +					     "Failed to register IRQ\n");
 > +	}
 > +
-> +	return num_chan;
+> +	return devm_iio_device_register(data->dev, iio_dev);
 > +}
-> +EXPORT_SYMBOL_GPL(devm_iio_adc_device_alloc_chaninfo);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-> +MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
-> diff --git a/include/linux/iio/adc-helpers.h b/include/linux/iio/adc-helpers.h
-> new file mode 100644
-> index 000000000000..f7791d45dbd2
-> --- /dev/null
-> +++ b/include/linux/iio/adc-helpers.h
-> @@ -0,0 +1,56 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +
-> +/* The industrial I/O ADC helpers
-Comment syntax and make it more obvious that while this might be useful
-it isn't something we necessarily expect to be useful to every driver.
-/*
- * Industrial I/O ADC firmware property passing helpers.
- *
-
-> + *
-> + * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-> + */
-> +
-> +#ifndef _INDUSTRIAL_IO_ADC_HELPERS_H_
-> +#define _INDUSTRIAL_IO_ADC_HELPERS_H_
-> +
-> +#include <linux/iio/iio.h>
-> +
-> +struct device;
-> +struct fwnode_handle;
-> +
-> +enum {
-> +	IIO_ADC_CHAN_PROP_REG,
-> +	IIO_ADC_CHAN_PROP_SINGLE_ENDED,
-> +	IIO_ADC_CHAN_PROP_DIFF,
-> +	IIO_ADC_CHAN_PROP_COMMON,
-> +	IIO_ADC_CHAN_NUM_PROP_TYPES
-> +};
-> +
-> +/*
-> + * Channel property types to be used with iio_adc_device_get_channels,
-> + * devm_iio_adc_device_alloc_chaninfo, ...
-> + */
-> +#define IIO_ADC_CHAN_PROP_TYPE_REG BIT(IIO_ADC_CHAN_PROP_REG)
-> +#define IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED BIT(IIO_ADC_CHAN_PROP_SINGLE_ENDED)
-> +#define IIO_ADC_CHAN_PROP_TYPE_SINGLE_COMMON					\
-> +	(BIT(IIO_ADC_CHAN_PROP_SINGLE_ENDED) | BIT(IIO_ADC_CHAN_PROP_COMMON))
-> +#define IIO_ADC_CHAN_PROP_TYPE_DIFF BIT(IIO_ADC_CHAN_PROP_DIFF)
-> +#define IIO_ADC_CHAN_PROP_TYPE_ALL GENMASK(IIO_ADC_CHAN_NUM_PROP_TYPES - 1, 0)
-> +
-> +/**
-> + * iio_adc_chan_props - information of expected device-tree channel properties
-> + *
-> + * @required:	Bitmask of property definitions of required channel properties
-> + * @allowed:	Bitmask of property definitions of optional channel properties.
-> + *		Listing of required properties is not needed here.
-> + */
-> +struct iio_adc_props {
-> +	unsigned long required;
-> +	unsigned long allowed;
-> +};
-> +
-> +int iio_adc_device_num_channels(struct device *dev);
-> +int devm_iio_adc_device_alloc_chaninfo(struct device *dev,
-> +				const struct iio_chan_spec *template,
-> +				struct iio_chan_spec **cs,
-> +				const struct iio_adc_props *expected_props);
-> +
-> +int iio_adc_device_channels_by_property(struct device *dev, int *channels,
-> +				int max_channels,
-> +				const struct iio_adc_props *expected_props);
-> +#endif /* _INDUSTRIAL_IO_ADC_HELPERS_H_ */
 
 

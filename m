@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-16009-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16010-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE0BA422EB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 15:25:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EA0A422B1
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 15:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B7D33B9EA4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:11:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E466188569F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAA91547E9;
-	Mon, 24 Feb 2025 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8767E154C0B;
+	Mon, 24 Feb 2025 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rCYcd7Ig"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k3PbDNng"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1BF1519A5
-	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 14:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640471519A8
+	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 14:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740406259; cv=none; b=cskwFmMLaAESfgDLAtPJVYS8esqqX5Ssdw6HN/9mGfPFqDqZhJyF+JtV1w73vvxpZN2JTKi2dPDDTZBlOu2pOazVPkn48SFjrfP4XD3JkAcwHVShetguCRccrnWZD+FC/G82nlhRiTR7osqTZ46T8LegYoztUPvCdK9WSC75wUM=
+	t=1740406261; cv=none; b=ixD9qPIzDfr1xgeP1PZdboiWQyAqDtXSFeVgrQ0IOdQLg72k/TOgIeZpDtNH4hyrph6O3DkB+w0IXfgalMqzYQtkodQwxK9oey8hFwjSJhvo0s+QtyYFjZIVmC9F9+ZPVGjiJBU6IkHPWIl/COEjRQJbSBNvraLMTTTxd+LMl6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740406259; c=relaxed/simple;
-	bh=jqr9EwXfZY3b+14dJHqEdl3sytYGW0GVhd2OmY7oUBw=;
+	s=arc-20240116; t=1740406261; c=relaxed/simple;
+	bh=tLYHWgOgKFqKV5m8842QnAKRfItLcN1thRf9+nhSm1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BXFKXwMcdq6d2fJtNNjfDg688lvK6cGGtKj1Zxxe/uqL2vJCsJDNrqx4NBiosPlfb9bpeLG1iQYI6A5fU78xMtLakdO9+mHLvkt8xs1o0z5cSHTonP9IBL6cCEW4v7GvYtnKT9UgGYwmH1Q3Ol9/o3Dn4yhBmHSnUOzBy+c6C+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rCYcd7Ig; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version:Content-Type; b=kQ4DjpeEvo99m7wMB9qV98oh0G8KVIAtATNgxUZnBHh2yJfsgBVYNkXFaRKLHTqld0b8kxxsCqkTFFyFtX2yBdgU0BBK64n1w0Ze6cOtCjMH+ruWhogPxjUGqk9KQHpbFs3KftSxlxOPtIDh0RwX4nugSmkslbnZCPg7tF/eLl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k3PbDNng; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-aaf900cc7fbso686183766b.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 06:10:56 -0800 (PST)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so5873771a12.3
+        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 06:10:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740406255; x=1741011055; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740406258; x=1741011058; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IQozffwnOCsYFoqS8k7yOzUIgAbpTEtaLUGEzpJWOM8=;
-        b=rCYcd7Ig/MivcN9fa7nUW33Tr2VY2J1YaALZ4L+JqMjxND7gDcJRIwC6eCMKM8FTgl
-         UhKa/xW5lKrmKNpebuqOUhNIRmJKCsEP4hGmq28qVu60270l1P1viz/rZZCsVRyEvajT
-         d98SuIfz+kgRs1OTtP/KCOZVm6n0BJwmdEC3+Iic8qHxLfbHywBTeenUe7OumLjw9iO3
-         JSzziENreL6wX7mo+XTwsKrHUIE8VpPenLlDmvGmwUkS7dU0ltg/qEyxl5613VQqddsP
-         3cPzcIzZ5YGXrf0Pq2SarSNvzPQC7crQfAYPZLQdNNWA4kI2o2ireuw1WyW66VC8N+xJ
-         kV4Q==
+        bh=AaLxO4ePLEt4WLzLvwC/0MDiuUOe4ZK6pxwDX4VliLQ=;
+        b=k3PbDNngfYGNeGMC/G7ICmNvo/Qp6GweTOnht0dqQRUwMSfK4Sziym1Jdv6tMu3rvj
+         F4XdtqpUsnsWv3sMgpmUvvUTa2Vh0r76vtj9nR3CRCyfmP9nvRRTqkRHSl3jO6twVqSQ
+         3/o/+TyPYbSTsqXkdx0c7qeDOVPOLLEFpwszOB83mUYGXs46FAWBsYHzRDfAMXx499oV
+         1WU/4kdutycN58mb2J5N+Ge0I1ltC1atgy4rw400F7ZeSBCZ/XvD98T6k7pk/Qh6u4cC
+         oEQOhuJx7+y+lXSZxAJLN5cpAADuCWqyBVpU/k2cYoHvSdW0zXka5b7F9mxjmN4KiUTA
+         KWRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740406255; x=1741011055;
+        d=1e100.net; s=20230601; t=1740406258; x=1741011058;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IQozffwnOCsYFoqS8k7yOzUIgAbpTEtaLUGEzpJWOM8=;
-        b=k/e05FkDQ4U7i/c8X60m3VAj2CyvhoNzoJwhHTQBYTT6OGCxdGXBiQVD5PP1VkZKx1
-         UeghXWS02wEzKHZ0cx2CYaglqFtf74YZaSlmHWnHGyEvBneuh7BWZIBwyJHhYfg53BIC
-         SLuhmfsjcRnpR35Ok2p425wx2BLX6nIdTj3XXu6VQypktsT01S8N7UAx2WltA+o2Ibm5
-         bgG9K5fL+oyBeM1YsM5ymH3QkP+2u6mkQmt9FByURay7gmpRKXkjyTY9uhNWo6+KZyXE
-         98gqADhF0UBB1Nv8i1xMPbMNLULssDqRLN7NWgIquNmreAlZzFsUMDpki6M66YwUu49s
-         UkMQ==
-X-Gm-Message-State: AOJu0Yz38fyzWuXF27GIwScHHRQaF9URNgblGP8NGtn7diy/RcUqkK10
-	VFggjPtCNOlVTbGkGEZGP3HtJvgyx/LQXoV0LGpEMJd4lTWXjDf8T7b+PJeeix4=
-X-Gm-Gg: ASbGncsfyFY9X2WjH5DwAHde5z1ZKQrupg5Pa/SLo7aJ0RG8jNjO//QfaLS9Vwgdv8l
-	J62myNskF5ZIaTQr5+zYtsctktrObGPaqTBGcTcvPwEgjhDMGh+hornLYudPgkaFWu08vDBQ5vL
-	i2FzNsGPV4ZH8U/qJInDbUeuhsKpguIRgs2OoiIBRVk6je2FmQIiWHkAZIh8pD2InER0qw+BYEx
-	iDWOONC92pUQWDEoqytW3fVK3/VF0/jgIIX5BHeKKC+pw7MqZFfAa2RUgDx7DJC8n0EN2pdb1nF
-	A8LhgCFv4BVNKnzudHI+1CW46cw6VBI=
-X-Google-Smtp-Source: AGHT+IFi1NtP0KfFAdRz9V0mOEspeZlLIrmEHghRdbLA8GrZXPM3Ny2IwN7IRxxODoh1hmS1tsdAqQ==
-X-Received: by 2002:a17:906:310b:b0:ab7:da56:af95 with SMTP id a640c23a62f3a-abc0d97c68cmr1175026866b.2.1740406255327;
-        Mon, 24 Feb 2025 06:10:55 -0800 (PST)
+        bh=AaLxO4ePLEt4WLzLvwC/0MDiuUOe4ZK6pxwDX4VliLQ=;
+        b=uINJOd6gbPWga1ymCVdTHcjm+pOZI8cI+KYNhIzg9wL8/wzyTUSQWsVuOUihIh/42M
+         243AtADgqoc8DpSzAcbBno2WkNwd3OSqqD1LXo7RmIGAsJmgLhYfGnmR/tnItlI5gdad
+         WI1hMIYRQb7iNWGnbqWzlsSRWtvPtGChHXcz/pylVuQM6Duwg5/5YvQvVib6xlzUahI6
+         q+MPi8ms/7jL1KoYhXijTd/2KihAHrNI1s6YJrglMj3aXuGF7vScY0m7l9Oq+w+Wgvg5
+         /TvUgX/R6qRiqq3Gd8p3nJT1RVbyZdW9NpNttPYKMSk/U8gOuxQ8oEhy1WFmusZ4yovP
+         yqLA==
+X-Gm-Message-State: AOJu0YzodvGdSbwSxE1uljHKoawgbKVrmB027CI5l4M48Cuq9u4eQBv1
+	9NsZAfZkGoZSe1K3K1/F5GZm8Xh7QZNuHsJqFEQ+bLE8g4xzrVOKJ+kQJ2qJIFI=
+X-Gm-Gg: ASbGnctJ0tB1BYC2Bs3IEB7DkBf8Wrj2DwU+O4XxNdUudYJcw5d9aO9vTyB6+vMExOd
+	jlqE78h9+h0xShYXi5lOPu9CwT0NYBb7sZMqHDHj4PmjFnKqmAa3z3XWQrkZKIIdwOUoJYYBp4O
+	CIlolHyfyOlPpR9BJAZWucfMFkMsCJoYDLyaqctT2WJ19SwFUqgzHABnS7Vdv4oWn24ZQvSvXBx
+	iNXXvslgNlySz+rRXif2XnoUa0BYCPIhl2rfYQ9XXH3/m8eLZ5xqVgk492qbweJ2TvhAmamO08e
+	Sodhr4alshGd1Ki78aJA3jitYGgMBoo=
+X-Google-Smtp-Source: AGHT+IE+vXitc8IJLIfaLSuM9Y5853tGT/s/2uAzpLe8iYu5v5eqmpiTXoT3k+Oj7QrkZB0euazhHA==
+X-Received: by 2002:a05:6402:234f:b0:5df:b6e1:4690 with SMTP id 4fb4d7f45d1cf-5e0b7106a9cmr32554123a12.12.1740406257566;
+        Mon, 24 Feb 2025 06:10:57 -0800 (PST)
 Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbeb38e05dsm964484866b.90.2025.02.24.06.10.54
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb80ba68aesm1764405566b.23.2025.02.24.06.10.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 06:10:55 -0800 (PST)
+        Mon, 24 Feb 2025 06:10:57 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -81,9 +81,9 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
 	Nuno Sa <nuno.sa@analog.com>,
 	David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org
-Subject: [PATCH v3 6/7] iio: adc: ad7124: Implement internal calibration at probe time
-Date: Mon, 24 Feb 2025 15:10:17 +0100
-Message-ID:  <46c4a445363fa41458d60faf961f860ab8032027.1740405546.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v3 7/7] iio: adc: ad7124: Implement system calibration
+Date: Mon, 24 Feb 2025 15:10:18 +0100
+Message-ID:  <6a67919839c82ecde5080127216917d67bd77f2f.1740405546.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
 References: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
@@ -94,223 +94,190 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7681; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=jqr9EwXfZY3b+14dJHqEdl3sytYGW0GVhd2OmY7oUBw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnvH3UjHQsB3G4k4lCa0JignuAcXrIby2nGIvoM nDSMbRjes+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ7x91AAKCRCPgPtYfRL+ TvhbB/9UDBKBsf/WxuZo8aV3H3Rivy7BfEA3rO7Mv0MZ/5UA0LoTuTZwq14ZLYbbM5HrNWL8Shg vyJmLWbIIhm4faScWxfigwQk8fjWIBtz1PR/ADi3D2UrFC96nPaEiOir5XqdK9ku0MUDLNfIkzh R+iE3hmYV0Wb3iEkfTwUK7VVyG2QL8kDa9txSB8GigQiZ8K0x7STBBkAGG7hbnimI/hEOUUCVJd G+20U5kGW9y0OiwUQxV42S8/pzv3yGsEyvkr5alitfecGKyddD7N2jUc6OH6w2HxQEdFXyDSR7f 258+DqHcvoQ7pdOuLntilT+msTPxt8HZaqOQr8fdmtplYVV+
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5084; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=tLYHWgOgKFqKV5m8842QnAKRfItLcN1thRf9+nhSm1c=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnvH3WYhjSQsqYMqSAccTtt25slNbbbKK8Oqw5c xDxdUl4vYuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ7x91gAKCRCPgPtYfRL+ TrpQCACNpDF7cIf4azfLveHjTSSHjRTryBBoWusWZlEbKr6D5TLyEvGQ9Fb4Ok+DcoI/pNtM/Wx SQa+Mn1zU6Mm+7V/wv3h+bEK8RKl9i0PP2MYcPJspdNGdlNujCxLfh3It2ntwnWaUjoTHVFZywV +JBrDZW2OsqACf78/qmTAL6u9aCPo7cIk1eXaMYiHdq0q5tTxJXfkYUxYBYxc2L0BCILQulawoz tGTnbYkzt2RQxGR+oXqZ+3yXVucSs7EX3MsviFeuXf5K1STxnI1u7rSuxnpWdQuti6SIudtTQ8g UTOxYhZfzoFj9fFdP812G64AYFo2HWvt646mvXb4dr5muDFV
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-Use the calibration function provided by the ad_sigma_delta shim to
-calibrate all channels at probe time.
-
-For measurements with gain 1 (i.e. if CONFIG_x.PGA = 0) full-scale
-calibrations are not supported and the reset default value of the GAIN
-register is supposed to be used then.
+Allow triggering both zero-scale and full-scale calibration via sysfs in
+the same way as it's done for ad7173.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/iio/adc/ad7124.c | 129 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 126 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7124.c | 140 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 123 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index de90ecb5f630..382f46ff2b51 100644
+index 382f46ff2b51..019d1d3245e7 100644
 --- a/drivers/iio/adc/ad7124.c
 +++ b/drivers/iio/adc/ad7124.c
-@@ -53,6 +53,11 @@
- #define AD7124_ADC_CTRL_MODE_MSK	GENMASK(5, 2)
- #define AD7124_ADC_CTRL_MODE(x)	FIELD_PREP(AD7124_ADC_CTRL_MODE_MSK, x)
- 
-+#define AD7124_MODE_CAL_INT_ZERO	0x5 /* Internal Zero-Scale Calibration */
-+#define AD7124_MODE_CAL_INT_FULL	0x6 /* Internal Full-Scale Calibration */
-+#define AD7124_MODE_CAL_SYS_ZERO	0x7 /* System Zero-Scale Calibration */
-+#define AD7124_MODE_CAL_SYS_FULL	0x8 /* System Full-Scale Calibration */
+@@ -4,6 +4,7 @@
+  *
+  * Copyright 2018 Analog Devices Inc.
+  */
 +
- /* AD7124 ID */
- #define AD7124_DEVICE_ID_MSK		GENMASK(7, 4)
- #define AD7124_DEVICE_ID_GET(x)		FIELD_GET(AD7124_DEVICE_ID_MSK, x)
-@@ -166,6 +171,8 @@ struct ad7124_channel_config {
- 		unsigned int odr;
- 		unsigned int odr_sel_bits;
- 		unsigned int filter_type;
-+		unsigned int calibration_offset;
-+		unsigned int calibration_gain;
- 	);
+ #include <linux/bitfield.h>
+ #include <linux/bitops.h>
+ #include <linux/clk.h>
+@@ -181,6 +182,7 @@ struct ad7124_channel {
+ 	struct ad7124_channel_config cfg;
+ 	unsigned int ain;
+ 	unsigned int slot;
++	u8 syscalib_mode;
  };
  
-@@ -186,6 +193,12 @@ struct ad7124_state {
- 	unsigned int num_channels;
- 	struct mutex cfgs_lock; /* lock for configs access */
- 	unsigned long cfg_slots_status; /* bitmap with slot status (1 means it is used) */
-+
-+	/*
-+	 * Stores the power-on reset value for the GAIN(x) registers which are
-+	 * needed for measurements at gain 1 (i.e. CONFIG(x).PGA == 0)
-+	 */
-+	unsigned int gain_default;
+ struct ad7124_state {
+@@ -202,23 +204,6 @@ struct ad7124_state {
  	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MAX_CONFIGS);
  };
  
-@@ -359,6 +372,8 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
- 				     unsigned int odr;
- 				     unsigned int odr_sel_bits;
- 				     unsigned int filter_type;
-+				     unsigned int calibration_offset;
-+				     unsigned int calibration_gain;
- 			     }));
- 
- 	for (i = 0; i < st->num_channels; i++) {
-@@ -373,7 +388,9 @@ static struct ad7124_channel_config *ad7124_find_similar_live_cfg(struct ad7124_
- 		    cfg->pga_bits == cfg_aux->pga_bits &&
- 		    cfg->odr == cfg_aux->odr &&
- 		    cfg->odr_sel_bits == cfg_aux->odr_sel_bits &&
--		    cfg->filter_type == cfg_aux->filter_type)
-+		    cfg->filter_type == cfg_aux->filter_type &&
-+		    cfg->calibration_offset == cfg_aux->calibration_offset &&
-+		    cfg->calibration_gain == cfg_aux->calibration_gain)
- 			return cfg_aux;
- 	}
- 
-@@ -429,6 +446,14 @@ static int ad7124_write_config(struct ad7124_state *st, struct ad7124_channel_co
- 
- 	cfg->cfg_slot = cfg_slot;
- 
-+	ret = ad_sd_write_reg(&st->sd, AD7124_OFFSET(cfg->cfg_slot), 3, cfg->calibration_offset);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad_sd_write_reg(&st->sd, AD7124_GAIN(cfg->cfg_slot), 3, cfg->calibration_gain);
-+	if (ret)
-+		return ret;
-+
- 	tmp = (cfg->buf_positive << 1) + cfg->buf_negative;
- 	val = AD7124_CONFIG_BIPOLAR(cfg->bipolar) | AD7124_CONFIG_REF_SEL(cfg->refsel) |
- 	      AD7124_CONFIG_IN_BUFF(tmp) | AD7124_CONFIG_PGA(cfg->pga_bits);
-@@ -835,13 +860,22 @@ static int ad7124_soft_reset(struct ad7124_state *st)
- 			return dev_err_probe(dev, ret, "Error reading status register\n");
- 
- 		if (!(readval & AD7124_STATUS_POR_FLAG_MSK))
--			return 0;
-+			break;
- 
- 		/* The AD7124 requires typically 2ms to power up and settle */
- 		usleep_range(100, 2000);
- 	} while (--timeout);
- 
--	return dev_err_probe(dev, -EIO, "Soft reset failed\n");
-+	if (readval & AD7124_STATUS_POR_FLAG_MSK)
-+		return dev_err_probe(dev, -EIO, "Soft reset failed\n");
-+
-+	ret = ad_sd_read_reg(&st->sd, AD7124_GAIN(0), 3, &st->gain_default);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Error reading gain register\n");
-+
-+	dev_dbg(dev, "Reset value of GAIN register is 0x%x\n", st->gain_default);
-+
-+	return 0;
+-static const struct iio_chan_spec ad7124_channel_template = {
+-	.type = IIO_VOLTAGE,
+-	.indexed = 1,
+-	.differential = 1,
+-	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+-		BIT(IIO_CHAN_INFO_SCALE) |
+-		BIT(IIO_CHAN_INFO_OFFSET) |
+-		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+-		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+-	.scan_type = {
+-		.sign = 'u',
+-		.realbits = 24,
+-		.storagebits = 32,
+-		.endianness = IIO_BE,
+-	},
+-};
+-
+ static struct ad7124_chip_info ad7124_chip_info_tbl[] = {
+ 	[ID_AD7124_4] = {
+ 		.name = "ad7124-4",
+@@ -903,6 +888,127 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
+ 	return 0;
  }
  
- static int ad7124_check_chip_id(struct ad7124_state *st)
-@@ -1054,6 +1088,91 @@ static int ad7124_setup(struct ad7124_state *st)
- 	return ret;
- }
- 
-+static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio_dev)
++enum {
++	AD7124_SYSCALIB_ZERO_SCALE,
++	AD7124_SYSCALIB_FULL_SCALE,
++};
++
++static ssize_t ad7124_write_syscalib(struct iio_dev *indio_dev,
++				     uintptr_t private,
++				     const struct iio_chan_spec *chan,
++				     const char *buf, size_t len)
 +{
++	struct ad7124_state *st = iio_priv(indio_dev);
++	struct ad7124_channel *ch = &st->channels[chan->channel];
 +	struct device *dev = &st->sd.spi->dev;
-+	int ret, i;
++	bool sys_calib;
++	int ret, mode;
 +
-+	for (i = 0; i < st->num_channels; i++) {
++	ret = kstrtobool(buf, &sys_calib);
++	if (ret)
++		return ret;
 +
-+		if (indio_dev->channels[i].type != IIO_VOLTAGE)
-+			continue;
++	if (!sys_calib)
++		return len;
 +
-+		/*
-+		 * For calibration the OFFSET register should hold its reset default
-+		 * value. For the GAIN register there is no such requirement but
-+		 * for gain 1 it should hold the reset default value, too. So to
-+		 * simplify matters use the reset default value for both.
-+		 */
-+		st->channels[i].cfg.calibration_offset = 0x800000;
-+		st->channels[i].cfg.calibration_gain = st->gain_default;
++	mode = ch->syscalib_mode;
++	if (mode == AD7124_SYSCALIB_ZERO_SCALE) {
++		ch->cfg.calibration_offset = 0x800000;
 +
-+		/*
-+		 * Full-scale calibration isn't supported at gain 1, so skip in
-+		 * that case. Note that untypically full-scale calibration has
-+		 * to happen before zero-scale calibration. This only applies to
-+		 * the internal calibration. For system calibration it's as
-+		 * usual: first zero-scale then full-scale calibration.
-+		 */
-+		if (st->channels[i].cfg.pga_bits > 0) {
-+			ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_FULL, i);
-+			if (ret < 0)
-+				return ret;
-+
-+			/*
-+			 * read out the resulting value of GAIN
-+			 * after full-scale calibration because the next
-+			 * ad_sd_calibrate() call overwrites this via
-+			 * ad_sigma_delta_set_channel() -> ad7124_set_channel()
-+			 * ... -> ad7124_enable_channel().
-+			 */
-+			ret = ad_sd_read_reg(&st->sd, AD7124_GAIN(st->channels[i].cfg.cfg_slot), 3,
-+					     &st->channels[i].cfg.calibration_gain);
-+			if (ret < 0)
-+				return ret;
-+		}
-+
-+		ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_ZERO, i);
++		ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_SYS_ZERO,
++				      chan->address);
 +		if (ret < 0)
 +			return ret;
 +
-+		ret = ad_sd_read_reg(&st->sd, AD7124_OFFSET(st->channels[i].cfg.cfg_slot), 3,
-+				     &st->channels[i].cfg.calibration_offset);
++		ret = ad_sd_read_reg(&st->sd, AD7124_OFFSET(ch->cfg.cfg_slot), 3,
++				     &ch->cfg.calibration_offset);
 +		if (ret < 0)
 +			return ret;
 +
-+		dev_dbg(dev, "offset and gain for channel %d = 0x%x + 0x%x\n", i,
-+			st->channels[i].cfg.calibration_offset,
-+			st->channels[i].cfg.calibration_gain);
++		dev_dbg(dev, "offset for channel %d after zero-scale calibration: 0x%x\n",
++			chan->channel, ch->cfg.calibration_offset);
++	} else {
++		ch->cfg.calibration_gain = st->gain_default;
++
++		ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_SYS_FULL,
++				      chan->address);
++		if (ret < 0)
++			return ret;
++
++		ret = ad_sd_read_reg(&st->sd, AD7124_GAIN(ch->cfg.cfg_slot), 3,
++				     &ch->cfg.calibration_gain);
++		if (ret < 0)
++			return ret;
++
++		dev_dbg(dev, "gain for channel %d after full-scale calibration: 0x%x\n",
++			chan->channel, ch->cfg.calibration_gain);
 +	}
++
++	return len;
++}
++
++static const char * const ad7124_syscalib_modes[] = {
++	[AD7124_SYSCALIB_ZERO_SCALE] = "zero_scale",
++	[AD7124_SYSCALIB_FULL_SCALE] = "full_scale",
++};
++
++static int ad7124_set_syscalib_mode(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan,
++				    unsigned int mode)
++{
++	struct ad7124_state *st = iio_priv(indio_dev);
++
++	st->channels[chan->channel].syscalib_mode = mode;
 +
 +	return 0;
 +}
 +
-+static int ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev *indio_dev)
++static int ad7124_get_syscalib_mode(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan)
 +{
-+	int ret;
-+	unsigned int adc_control = st->adc_control;
++	struct ad7124_state *st = iio_priv(indio_dev);
 +
-+	/*
-+	 * Calibration isn't supported at full power, so speed down a bit.
-+	 * Setting .adc_control is enough here because the control register is
-+	 * written as part of ad_sd_calibrate() -> ad_sigma_delta_set_mode().
-+	 * The resulting calibration is then also valid for high-speed, so just
-+	 * restore adc_control afterwards.
-+	 */
-+	if (FIELD_GET(AD7124_ADC_CTRL_PWR_MSK, adc_control) >= AD7124_FULL_POWER) {
-+		st->adc_control &= ~AD7124_ADC_CTRL_PWR_MSK;
-+		st->adc_control |= AD7124_ADC_CTRL_PWR(AD7124_MID_POWER);
-+	}
-+
-+	ret = __ad7124_calibrate_all(st, indio_dev);
-+
-+	st->adc_control = adc_control;
-+
-+	return ret;
++	return st->channels[chan->channel].syscalib_mode;
 +}
 +
- static void ad7124_reg_disable(void *r)
- {
- 	regulator_disable(r);
-@@ -1132,6 +1251,10 @@ static int ad7124_probe(struct spi_device *spi)
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to setup triggers\n");
- 
-+	ret = ad7124_calibrate_all(st, indio_dev);
-+	if (ret)
-+		return ret;
++static const struct iio_enum ad7124_syscalib_mode_enum = {
++	.items = ad7124_syscalib_modes,
++	.num_items = ARRAY_SIZE(ad7124_syscalib_modes),
++	.set = ad7124_set_syscalib_mode,
++	.get = ad7124_get_syscalib_mode
++};
 +
- 	ret = devm_iio_device_register(&spi->dev, indio_dev);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to register iio device\n");
++static const struct iio_chan_spec_ext_info ad7124_calibsys_ext_info[] = {
++	{
++		.name = "sys_calibration",
++		.write = ad7124_write_syscalib,
++		.shared = IIO_SEPARATE,
++	},
++	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
++		 &ad7124_syscalib_mode_enum),
++	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE,
++			   &ad7124_syscalib_mode_enum),
++	{ }
++};
++
++static const struct iio_chan_spec ad7124_channel_template = {
++	.type = IIO_VOLTAGE,
++	.indexed = 1,
++	.differential = 1,
++	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++		BIT(IIO_CHAN_INFO_SCALE) |
++		BIT(IIO_CHAN_INFO_OFFSET) |
++		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
++		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
++	.scan_type = {
++		.sign = 'u',
++		.realbits = 24,
++		.storagebits = 32,
++		.endianness = IIO_BE,
++	},
++	.ext_info = ad7124_calibsys_ext_info,
++};
++
+ /*
+  * Input specifiers 8 - 15 are explicitly reserved for ad7124-4
+  * while they are fine for ad7124-8. Values above 31 don't fit
 -- 
 2.47.1
 

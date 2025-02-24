@@ -1,77 +1,77 @@
-Return-Path: <linux-iio+bounces-16025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5038EA42B64
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 19:33:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDEBA42B68
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 19:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D60EE7A3FFB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 18:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94AAF188393D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 18:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87060262D38;
-	Mon, 24 Feb 2025 18:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589AC265CA8;
+	Mon, 24 Feb 2025 18:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eVdv70sQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RKPR8Xn4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B695264613;
-	Mon, 24 Feb 2025 18:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69643264FBA;
+	Mon, 24 Feb 2025 18:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740421960; cv=none; b=kIVqFqndaqYfpjL+2T1T8CuJAFxhA9o3ov8lx2ual6MRIUZ5M6QZEtPpiAiceVGMgRL+/fgYks0v6eaz2MQAki5C0FH1/2ciKskhQGZhf+k8A845zSk35C4VKMg6gU2pX0dfcsQ0rMIsY5DNxwvoV/cwgKDOd7Fj2Viygn7niyg=
+	t=1740421990; cv=none; b=AvEHiD6Os6AoYQcEvrzF1xZXCxYVEH5lpN+t6dYqgoFYVJcNgjEdF0r7tXedRg2w1yzOTgUDQtCVKTN7pvgyx3i2k8qAxvwVAXHOCgbh9OS4Jc/eV2kOd+oI7XBtiPY4fSSIt5/yiu1FFSZA4Gtmata1DNhUUTGcD+HEpwQu5hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740421960; c=relaxed/simple;
-	bh=98uB1rbdWm3A58E80bor3xFULFwAE6GtkDVd4uWUY2w=;
+	s=arc-20240116; t=1740421990; c=relaxed/simple;
+	bh=DxQZnEWKOJxTKJJIiD9R1K0zD2Ow0veeUtytjVV/gKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lJFROk+AX49BHKBFCAEtIUR/NZi5EqFpw6xp6G2FSL478arw8b10FtB3Fja2o/mvFbZusSlScQTbtjsjB/y09bHv4iP7vp7FzWpPllVCiZqY+wWix1h4lXYP0xU5Ftl3vea5Nyxvbd30MWIjksPW4tO6O7LB31D5y59rItMNeKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eVdv70sQ; arc=none smtp.client-ip=209.85.167.43
+	 Content-Type:Content-Disposition:In-Reply-To; b=FjDWDRC1bfWUmRlpXP7ly2GpQyEoyPFzyDdZQgGaUlkiHudqnfDKM6fjJ39d7XKXVHQjYvvJ1+epZBaAH087wc5vHzk0Lsowa1fmIo5gHL3B34TQo16N/ztXcSYIl4i7m7THSPQl+6JL4ROY22blHTcRLwifZOsSwq66/9s+qg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RKPR8Xn4; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54529e15643so5285935e87.1;
-        Mon, 24 Feb 2025 10:32:38 -0800 (PST)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5452c2805bcso5236146e87.2;
+        Mon, 24 Feb 2025 10:33:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740421956; x=1741026756; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740421986; x=1741026786; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N39GuLsH/GHnLWfi6A3DaLvaYCvcqGiUvrrDOML07K8=;
-        b=eVdv70sQCN1jkqLwXhLeGG4uLtshEdmrcIswwawv4e+/XZatwc3yxdabR2N59nLgKy
-         hYJ6QlcBNYG5bM9uvEbsNVRo+b2BSWCx9Dk05dyXzP77fkYfz04+3Mqx6NoIFwnfKNXa
-         lbQHIi6Oi5ZRvIeEowJuLxt6KcUyilHozpYbc57JuDK1jrvs2lISlZdFSBU+zl6CxtTW
-         ZPUK/BWgc1JAY85OGfjdWgd9gPBHIInzbWuFIGAVpfboZxK0nHSCoZGHuZ/2gQfXnsId
-         mTRz2Yfun1i1SyBJfgik7UEJ843WiIh6zN1gtwr0udEFNZ+4MYvWhBtpf6soyV22uyUo
-         L+ag==
+        bh=SSOud79Vzi0uiSwrFzUVnpNiszCNIWd+xmMcmCt0CGY=;
+        b=RKPR8Xn4GjtOiZrIEJHbKNWUzcnJOVlwK6IS2X1tYyFJBq3WriNfjs4iz3j5Xr4sZc
+         lA9/6mC2s6+GZMVGVocRwNETXUQ+VvuKUyepJI4Xo0vkE76hIoJlH8qpQBpgVTQ0yDtb
+         3df2ASkK+AHMKg8hRT6DmLcEfxxXN6WYw+tBpQzfA/qn8GB3FFYaPWe4A5gfRxjpixJH
+         5DDPEfncAg6X6XC/P2rTlNQamXX0NGvpAvVA8pIg6mbOiy3pNQzO1WVjUTD608ugOoGk
+         WpQzGyxL8KW9XOwGJSb+v0tg91PhdPB1CDqOloJfUIofyImI7hXev4q7JySlGKBa6dS0
+         crVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740421956; x=1741026756;
+        d=1e100.net; s=20230601; t=1740421986; x=1741026786;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N39GuLsH/GHnLWfi6A3DaLvaYCvcqGiUvrrDOML07K8=;
-        b=kteTx7xedyVdOS7RLGKVt4ghaVQTysl8ZFkOm8alvpX4G6mhG1we4uZUiUziGPqjSS
-         9YfvaEimIVM2fXI3UCFY1s/GMjqrCRs3+7UxPMEsWktLFMHHj13+UhsU2wIuxfsNikcV
-         FhzdmlT1aEO3bMidBKDLnf8k/S9xhB6P5Fjw7NbTMi1/7plPgrNlSm0fKSjZkhLYJe6+
-         ruBPAJgESQ6ZdFEUzbBaIqSQhAG5HatA+3XSARpPXBJ2fM2zlbevuiodqlXPfjrp9Kq+
-         KvZs5PDQmpG9hCl+uOKzw3UGSYOaWJBiphu6qA7/Gj9ow03gWJgHCvcHBRKf+vKqF+1E
-         kXKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUpWq0560LEtLPAXovHUgEWZNmY/vvnzueZHW/VpbUM3LZg0HAL+zhVP7JGX/v+Cifv33MRVgFGgol7@vger.kernel.org, AJvYcCVDHL0E4mpQhXh1VSU5vcbH3gonZj/DoqNiUt+DlkxvgQe0FIMaRYQBXSirQ/ZqrRNSLN3bfnEo/bJz@vger.kernel.org, AJvYcCW4YsJZ9qthKJdGAl8aYXyBARfddAsg/GI854zv2uCvep4hr9dWkeOmFYqU6k6kEJbmjtsOm4YTlvlNfWm2@vger.kernel.org, AJvYcCWCT3AS2DA5ktoy/ZYeBvL9bQrRPu6+3B2B3vTSp4SRJAuDt5UgDU7vsXbg5hO1H3mi4/UrsSFoQEBaV8I+AWgCeWU=@vger.kernel.org, AJvYcCWcAuJraHyXtsboQWkrksh3hTEHkxTCQuCI1TTgk5D4F0vPB6FISSGAEiqANyN6i2rWd42YaZBSJyhuSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG8ToiI911YIKYIh/CeCJ+CoOhJKCAKDTPZL6Avifu9sjfcwUn
-	V4RBOvmblhVNw034V3kvUOSpBfYzAy0S8RUwg6siJuB/Pp9yxaj1
-X-Gm-Gg: ASbGnctZyiC0PYGZgVelGK3rt6Ngq0IHtibeVArAdBtTlAbJOzd9N8PtIJ6t7xsrdQT
-	p2or8PBjzem1aE8yY25k/8mhUzu3z/DjBr8oMKWT6SVAo+5ONirXIZbK/6egavX5Zcffa7r+chw
-	/pC0XQ8hdNry7qplYevUsxVjv8cYt+VkKy//ksIwNBua7TSRbOAZVsxZKPK6IfVk8VEsQo9X+jr
-	Ui+GDUdTPctQ4GB1mBayxr+DZJsaBlkutGamErZ/kshijYA6ny2fCcgGG8F9I+yJOOKrraEuKjW
-	qTkYKy+PO6wkzbUkq6AKCK+pOUYKmKSA
-X-Google-Smtp-Source: AGHT+IGuoaXIvmZgefmGuVB5f6nZE8zpUKpcTq1FcueeKygwj6PXc2F3VGYVqvK8LafWdWjrrE8P6g==
-X-Received: by 2002:a05:6512:159b:b0:545:fdd:9ef4 with SMTP id 2adb3069b0e04-54838c5e1bfmr4544720e87.8.1740421956169;
-        Mon, 24 Feb 2025 10:32:36 -0800 (PST)
+        bh=SSOud79Vzi0uiSwrFzUVnpNiszCNIWd+xmMcmCt0CGY=;
+        b=iX37VBmqENvbhKa+/IXedm+hjPJ4hWojbxni0j356m+8YFEx2tWf0i6fJxQo6qAnuz
+         wh+plJvmJNH+CRh91eBzWkiUH7LKY/1mue+f1smsA8JwjHRgtpIG/cFn2n2B6pOp83i1
+         s66eVTDZl//cDrx8HrGC+27iSUuAz4samaxdbMXXLHkRAIdlo6fy+lutUSygJsDb+jvL
+         Ss1e6erVrnmu3MKPrh+nzAIzwt1mN3z1aUWHP2qquOTk0K48HCNcH6+qJ0ZxXB9ecZ3C
+         VXG92QNIi3A+shR+LBOzqwfgmw9CQWKbnVN/JOXZJAeGFNcPrHXJ+MNQr3XGARsZVPWE
+         wIWg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHceewn3DAImvaPJfkVtXfO8gX9Pkth2MnTUkMQChHs6cQ5xZynnqWcXppJpveejijjYpZLNZyysf96XJXJ20sNtU=@vger.kernel.org, AJvYcCVcJSupmOFqDlREPDAZdp7dwzPXYAcb6QqQhFgcdLOcPbeNLzP0NGiXW7I34zthZ5sE5p2vSuG8I2/V@vger.kernel.org, AJvYcCVtnV1nSrSr8hl0RGliz4GMgPsZPOhKUb5NCVM+FMQTcEot6yEtGdGPoZGM06/76nkegm44z45hZ+NnDSen@vger.kernel.org, AJvYcCW8b//eejsNFvc7bnnxja66seYShUk74o+IHvIV/Qqpv0R2KRKXOOvBo9x0Q1z8jFqFcq1TvINBQfsPWA==@vger.kernel.org, AJvYcCXHYm7zeOywT0z7R9wTHuTZqhPNCPq/lHEc0TIGVUT0dwIXcHcg4kBegGaYrUT8LeQttmmc6ypFnZDO@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8E9c51BnqETUfz4tTSghrDRcfw8jEiouz8BmUMLwCmTqccmik
+	+PrS9kCS+k/2zaY/Hi3hfZAyrR3skXCU6mktBOicswfS6Svf1dzA
+X-Gm-Gg: ASbGncsgBsDLpQGyrPT+N5aHYSxBXHta2iAVI8ZQmKId7WK2kBELiDSnUnSjtQhHuPY
+	XZ3JL06LO8HeFUsob5UoBVdyOkXGbh0V17/y5W3V/FM/LHR0ZpvDBJt79Jl1X5Srdex3fcGlwuX
+	0NO/V7kQrjcoOWVMrjEp+Nb2aM9UpWrsVBIUSC8/UXL5jKFpkyEkTk67kGyCksNOS1OOVPYQ7Ha
+	LBudPYBPoUQp1E1dfGhk838eR403+XAh8fVJVvum+30Li2B3gm9IoacinObKpZZ8aCFVgPkGUVf
+	6URKWeUp/D0hiSjl7K5pwjaQc9xgTq4s
+X-Google-Smtp-Source: AGHT+IEb7m6b4nDvSqYxkQoqLJkKID/UW05aywoBDG1L44MOe5fbAylNbYH/ooMs67cDj3WL7N982Q==
+X-Received: by 2002:a05:6512:2814:b0:545:60b:f38c with SMTP id 2adb3069b0e04-548510ed080mr34279e87.41.1740421986219;
+        Mon, 24 Feb 2025 10:33:06 -0800 (PST)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54771f058casm1259809e87.188.2025.02.24.10.32.32
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5461e731f02sm2539348e87.192.2025.02.24.10.33.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 10:32:34 -0800 (PST)
-Date: Mon, 24 Feb 2025 20:32:29 +0200
+        Mon, 24 Feb 2025 10:33:05 -0800 (PST)
+Date: Mon, 24 Feb 2025 20:32:59 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
@@ -106,8 +106,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v4 01/10] dt-bindings: ROHM BD79124 ADC/GPO
-Message-ID: <4d390ca96434a8ee35c0c850cfe4fd49e99db653.1740421248.git.mazziesaccount@gmail.com>
+Subject: [PATCH v4 02/10] property: Add device_get_child_node_count_named()
+Message-ID: <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
 References: <cover.1740421248.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -116,175 +116,114 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="OoD2QNHpBXvMQxnR"
+	protocol="application/pgp-signature"; boundary="7y8fnmahBQr1cajK"
 Content-Disposition: inline
 In-Reply-To: <cover.1740421248.git.mazziesaccount@gmail.com>
 
 
---OoD2QNHpBXvMQxnR
+--7y8fnmahBQr1cajK
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Add binding document for the ROHM BD79124 ADC / GPO.
+There are some use-cases where child nodes with a specific name need to
+be parsed. In a few cases the data from the found nodes is added to an
+array which is allocated based on the number of found nodes. One example
+of such use is the IIO subsystem's ADC channel nodes, where the relevant
+nodes are named as channel[@N].
 
-ROHM BD79124 is a 8-channel, 12-bit ADC. The input pins can also be used
-as general purpose outputs.
+Add a helper for counting device's sub-nodes with certain name instead
+of open-coding this in every user.
 
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
 Revision history:
-v2 =3D> v3:
- - Restrict channel numbers to 0-7 as suggested by Conor
-RFC v1 =3D> v2:
- - drop MFD and represent directly as ADC
- - drop pinmux and treat all non ADC channel pins as GPOs
+v3 =3D> v4:
+ - New patch as suggested by Jonathan, see discussion in:
+https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
 ---
- .../bindings/iio/adc/rohm,bd79124.yaml        | 114 ++++++++++++++++++
- 1 file changed, 114 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
-yaml
+ drivers/base/property.c  | 28 ++++++++++++++++++++++++++++
+ include/linux/property.h |  2 ++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml b/=
-Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml
-new file mode 100644
-index 000000000000..503285823376
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/rohm,bd79124.yaml
-@@ -0,0 +1,114 @@
-+# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/rohm,bd79124.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index c1392743df9c..3f85818183cd 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -945,6 +945,34 @@ unsigned int device_get_child_node_count(const struct =
+device *dev)
+ }
+ EXPORT_SYMBOL_GPL(device_get_child_node_count);
+=20
++/**
++ * device_get_child_node_count_named - number of child nodes with given na=
+me
++ *
++ * Scan device's child nodes and find all the nodes with a specific name a=
+nd
++ * return the number of found nodes. Potential '@number' -ending for scann=
+ed
++ * names is ignored. Eg,
++ * device_get_child_node_count(dev, "channel");
++ * would match all the nodes:
++ * channel { }, channel@0 {}, channel@0xabba {}...
++ *
++ * @dev: Device to count the child nodes for
++ *
++ * Return: the number of child nodes with a matching name for a given devi=
+ce.
++ */
++unsigned int device_get_child_node_count_named(const struct device *dev,
++					       const char *name)
++{
++	struct fwnode_handle *child;
++	unsigned int count =3D 0;
 +
-+title: ROHM BD79124 ADC/GPO
++	device_for_each_child_node(dev, child)
++		if (fwnode_name_eq(child, "channel"))
++			count++;
 +
-+maintainers:
-+  - Matti Vaittinen <mazziesaccount@gmail.com>
++	return count;
++}
++EXPORT_SYMBOL_GPL(device_get_child_node_count_named);
 +
-+description: |
-+  The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-+  an automatic measurement mode, with an alarm interrupt for out-of-window
-+  measurements. ADC input pins can be also configured as general purpose
-+  outputs.
-+
-+properties:
-+  compatible:
-+    const: rohm,bd79124
-+
-+  reg:
-+    description:
-+      I2C slave address.
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  gpio-controller: true
-+
-+  "#gpio-cells":
-+    const: 1
-+    description:
-+      The pin number.
-+
-+  vdd-supply: true
-+
-+  iovdd-supply: true
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+patternProperties:
-+  "^channel@[0-7]+$":
-+    type: object
-+    $ref: /schemas/iio/adc/adc.yaml#
-+    description: Represents ADC channel.
-+
-+    properties:
-+      reg:
-+        description: AIN pin number
-+        minimum: 0
-+        maximum: 7
-+
-+    required:
-+      - reg
-+
-+    additionalProperties: false
-+
-+required:
-+  - compatible
-+  - reg
-+  - iovdd-supply
-+  - vdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/leds/common.h>
-+    i2c {
-+        #address-cells =3D <1>;
-+        #size-cells =3D <0>;
-+        adc: adc@10 {
-+            compatible =3D "rohm,bd79124";
-+            reg =3D <0x10>;
-+
-+            interrupt-parent =3D <&gpio1>;
-+            interrupts =3D <29 8>;
-+
-+            vdd-supply =3D <&dummyreg>;
-+            iovdd-supply =3D <&dummyreg>;
-+
-+            #address-cells =3D <1>;
-+            #size-cells =3D <0>;
-+
-+            channel@0 {
-+                reg =3D <0>;
-+            };
-+            channel@1 {
-+                reg =3D <1>;
-+            };
-+            channel@2 {
-+                reg =3D <2>;
-+            };
-+            channel@3 {
-+                reg =3D <3>;
-+            };
-+            channel@4 {
-+                reg =3D <4>;
-+            };
-+            channel@5 {
-+                reg =3D <5>;
-+            };
-+            channel@6 {
-+                reg =3D <6>;
-+            };
-+        };
-+    };
+ bool device_dma_supported(const struct device *dev)
+ {
+ 	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
+diff --git a/include/linux/property.h b/include/linux/property.h
+index e214ecd241eb..a2770197f76b 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -209,6 +209,8 @@ int fwnode_irq_get(const struct fwnode_handle *fwnode, =
+unsigned int index);
+ int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *=
+name);
+=20
+ unsigned int device_get_child_node_count(const struct device *dev);
++unsigned int device_get_child_node_count_named(const struct device *dev,
++					       const char *name);
+=20
+ static inline int device_property_read_u8(const struct device *dev,
+ 					  const char *propname, u8 *val)
 --=20
 2.48.1
 
 
---OoD2QNHpBXvMQxnR
+--7y8fnmahBQr1cajK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAme8uz0ACgkQeFA3/03a
-ocXYDAf/aZy7lHBMV/y8BQfayGuvRMNa+yzPpPHq/dU6XF5PEhMqMJ3UsVOhR+1d
-UGxrDIENa7xyOPAw3ixngeMix77PFLLj/SwSFcDID2NWy5h8HsjTPdIlPZ+/2m+N
-5f7BlMlr7tJYGxTerh8S9zrB2JjLQu15lX9FKyjbGwyjBeLJNLur6WyGPLVKxlKC
-lYtZN4TXAoU1slNTQkNhaOeJA6MBzokAx0R9Le6wvULUuzyEykpl3k2ULVnOXR8/
-zSGA8NBGCgJYExdvpYqYy8x9b8yZec+Lz7/OxFKuylNYCSm0E6K6nNJQY+9V3Pt2
-m0cy3LLxtBGaVFknxcgYneSUA3z7iw==
-=70g3
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAme8u1sACgkQeFA3/03a
+ocXtLggAgT5j/TSPxFsS/2C4xsWLs0/6SO9w6j9Ijy5MvfzcRBrH3Oc7aaWUzbrp
+PPBZZzZYFn8NKT2exitsIOYpDFgQCSbwyf/+CQvoDcTfNw8NoEQwVYLV/oA3C/RZ
+hBb0Rp5giodlJeN6mtzVfLQLTws+HRlrwogLb50yRxNWROlPMTDcAm3Mew6/MxqT
+ULoEVgMmOIAOWFjvOw/HvD1qZnqrmMeIMk+5xyImS0JfN8S6AA8TJecvMLoXtq5y
+e7jQrOztxk58RGrz6XQOmth61X7dQbAFu7SwuqTHeA8MtW4DQkhguM7B5eTOZqXN
+YLmBzoJxbFu5Hh1nAFnl00fE/COr1Q==
+=b5lW
 -----END PGP SIGNATURE-----
 
---OoD2QNHpBXvMQxnR--
+--7y8fnmahBQr1cajK--
 

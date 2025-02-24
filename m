@@ -1,195 +1,572 @@
-Return-Path: <linux-iio+bounces-16001-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16002-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84FF7A41E90
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 13:14:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 611DDA421B6
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 589B2188F38C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 12:09:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18A15188DB9A
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 13:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3292A24EF6C;
-	Mon, 24 Feb 2025 12:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B235C221F20;
+	Mon, 24 Feb 2025 13:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="QI8gFbgB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRM1f+m+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD05245025
-	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 12:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFFD221F36;
+	Mon, 24 Feb 2025 13:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740398785; cv=none; b=LLPTO1iRvQmB8QEgyZtpNFm6yklKkfzJ9/b92c4grYEKyHVv9nb3tBE08Suko3VWw7kXnmWUM7/IID4up9pVPG3ZvH6AnakuVfjh7ORSuMmvolI0OKl6QvU4cvCb7EZ2wDrkuho2O2eQqlOFtiOPurHQyDk6l/H3QQHgDMvJApw=
+	t=1740404739; cv=none; b=VvL+i+6zOFGl0hTbGXMT/geT4xhO6JurS/fpZ7RkB8CNEn55jpkQhnAD7L0QdeuU/FQ07T9yR8Mj0qEcqhEiA3yeExXGwhtx77rbjjQvkX8OMPH3dd6ALUMuBf6xmqKtro5RupZ+gzhpLP06p/sX/5QXowNY9uYNw9wIlVnc/dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740398785; c=relaxed/simple;
-	bh=/OXCCaiMIfBgjpPO5dyE52LobwDitgatoc1I5sb44Ks=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AblUjgznsJVVgR1jvWtVWZMNOz9ceoOrfzh7447omKnRKzMhs/l6sB92OxY5b4R8rFGyuNreKpYBSKlJmnWuht7Nuh9/gCsnuiwotfc1INE+qer20EWiEjhPKptqt9SyOvPuDAuHTK37fwZKAOCdalr+PU+MdnOHeHqfB17HsIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=QI8gFbgB; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abb892fe379so686625766b.0
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 04:06:21 -0800 (PST)
+	s=arc-20240116; t=1740404739; c=relaxed/simple;
+	bh=ZAcnqIPkDkKpS8P4zR8XUx7S53Lqr6fZHaBJvnEeeI4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lMtF6rTZLqJsIN1HJJm79qIxtwfRY+SuEt1lw8Zo1ggR7GurfRmp7IPzV2ohcTRGJhu10FINtsZSHu6kbTiAHf81HSb/aAxWalGq+IvIXIyk4DiDUS4zBWu0hcENq2VVKDTnGQuaVf19JejnLaTF8iC/qv17N+GnkzE8hhBBYP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRM1f+m+; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5462ea9691cso4908410e87.2;
+        Mon, 24 Feb 2025 05:45:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1740398780; x=1741003580; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yn8DuFDyF+SFBNU3jtJDhoU8b7Q3rosoyNz7MlbxIOg=;
-        b=QI8gFbgBFtFuFspJ89KWBVsXxpeilFqMG83TBQWwKEeM6TXEP4kU7+/i9jSnRGVWZk
-         I4fnKP1VaGfeTIUp4IzOx4iz6zKLH13XXr9rQosf3doqjKXbnF73Rn9BTtVEXKclV7/1
-         BDGdRBLCKIRA56Owzz+CXJfDTlr0zYH/CmB3KLiXxECK6ahdFyIDx8Qik7nlWM7bR5PE
-         ewU/F5FjfbnMAUht9tqSQ24nOGZ1XIv0yLTJW/qvDvSNabrpE++X9UrTbEqzD5O7wkjT
-         Gse70GVBOhZpSEC9Ez9meMqn3tOclDbu6eaJqbG/gRhOZkKCXKWOVFPWYH7q8Kjik5O1
-         b0bw==
+        d=gmail.com; s=20230601; t=1740404735; x=1741009535; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x5/3eGTFpkAUPXMyT1iu+VhGadH6TXjZ5FDQpikX2Rk=;
+        b=gRM1f+m+BwdYOQfbwBcMzC6WSjsaMkEGOo1ENKLKAYt8y7aHytlYRt+RyIbqJzXRys
+         URZhbQeNAPocelT26caWbI3vW7VzirmUx9E2w9l2PtMIBIuBwx4Hd9AVCw4vfKpKVM3i
+         yAzKn6YhBQPl48r2S6DqF4ie38XYLD4YZ5SMEBfbYbJZYzZjCi9vhHeLa7r8GnYNh1h9
+         J5c0acyKYyIUkpR/oSvLunoSZJVJm9CmgVW+F2akShK1kPmBx4vqznuqMjZPsHPVj9eR
+         ld7StUjschPNlQq0M1rR9LsmsmyMMnxq7FfOTOujFe3XRYB7++Y4ecn0zfQ9eAx8qiG/
+         jRgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740398780; x=1741003580;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yn8DuFDyF+SFBNU3jtJDhoU8b7Q3rosoyNz7MlbxIOg=;
-        b=vcpLoCKIiLmLHIQuuvoMrq6y16Qm2MX8H0rElHBkMpIuQHhuMPR0qCSI8oXqdTZgte
-         1vMMaGUffIL07Y4VcKPpuRpkb6pd/LxtuzJDxB59iZpdWdm/zE4P6zSaKNCHl87l7XSv
-         lJLIs5/q84A5oPZIFcwOZ9BuyEHN/cRhtVlr8gJgn03PlHbJ+ApppwFZOrndZHIyrHy8
-         b3Gv4lxQl94z7mSifTP9aXScgb8A+xIoD35Y3/wOw4hgp7vmBjN1TjoEDIsePYmZRR/P
-         W9C5pLzsimztymw3CJDzew/RljlDUJs1CWcVOUmiuOoxqLmOInMpL/DdDclJsy5m63PL
-         niTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVGHt59972K+HOsPbN9NkuV9D44AtPYMEbDhfXbshLJ7V9IDhqje+z8ltS0RoxOVqRniIAn6MLtdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz76vIzGmmy6RCT5d+pTAjSvlaRvH5BA0TTXlPoed7JI2rhUflB
-	eMSYz7hOwlu9TfnqyJoYBJR4fDSCD70zJnl3YqpjZvlQOR8NQTi+DVBdv+KrGrk=
-X-Gm-Gg: ASbGncuSaDiuzWAC679uczxsHIRsAYrQ71VBQm4emHH21zxFXqyNZ0ZhhudPCp4Rc2k
-	eclXHi47eKn0vowD5LFtqq4wR/xMnx6cAqKUvXhai0yCkWQVRpbpF4PE0lWL+VU7+F1ykT1Wdsr
-	werF3wG5TmvT0gsJFR9Tqv5CUCJib+io6lyUVlqQdUtXEVzoX1fD+6MsValQo2kmIoz0v/unof+
-	7HbPFgT7YLyh+rl9QkTzPTQcspPsZPK37SZwDzr8ZGbpcsdByGB+NLBS+3RN2zzI1KlaqQkpJD2
-	/pQAl0tWbNhwsFs92Gn7orMLkXV0Pj/haaoI8K7EIBXn62ZgcrdTKNw=
-X-Google-Smtp-Source: AGHT+IF6ufEEXBnwaT978L4U9guhAhq/s+ersstnwG6QXXp3lNvszxpsm0hovWS4qA+ZCTAtcjWuLQ==
-X-Received: by 2002:a05:6402:3585:b0:5d0:c697:1f02 with SMTP id 4fb4d7f45d1cf-5e0b71124e6mr34011616a12.17.1740398780418;
-        Mon, 24 Feb 2025 04:06:20 -0800 (PST)
-Received: from claudiu-X670E-Pro-RS.. ([82.78.167.25])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb978e2c9dsm1598901966b.65.2025.02.24.04.06.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 04:06:19 -0800 (PST)
-From: Claudiu <claudiu.beznea@tuxon.dev>
-X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
-To: prabhakar.mahadev-lad.rj@bp.renesas.com,
-	jic23@kernel.org,
-	lars@metafoo.de
-Cc: claudiu.beznea@tuxon.dev,
-	linux-iio@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH v3 2/2] iio: adc: rzg2l: Cleanup suspend/resume path
-Date: Mon, 24 Feb 2025 14:06:07 +0200
-Message-ID: <20250224120608.1769039-3-claudiu.beznea.uj@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250224120608.1769039-1-claudiu.beznea.uj@bp.renesas.com>
-References: <20250224120608.1769039-1-claudiu.beznea.uj@bp.renesas.com>
+        d=1e100.net; s=20230601; t=1740404735; x=1741009535;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x5/3eGTFpkAUPXMyT1iu+VhGadH6TXjZ5FDQpikX2Rk=;
+        b=sqh7R7tgiJ6L8GTVWQ9+9E+52NjY7S4sFl0X2Ii3bfY3ScsaqtbpxCps9WjLEXSSIf
+         +NIWD+6W67V99BWUMlDGC+tlXBDPCcOt7+/tQU0T+mEZvLQYxyWEviztC3QacVLC6+Ff
+         dKbo0SZiWpZbKmWOJ8v0ONumma98TapYmKmskNAKETHg4Fm3am0A8rZbeh5epXVtrYxU
+         p2UWgnGvcxBl0G64K3zAtdsSkUIeSuwzxPXcsY6tkEmkBp2x/+wcknX5BZAv8HMoyrke
+         +bzp1XoPFob2rzE/yP95TE1bZ5HCgC/YzQP6URvlbP1u1NtEkB3CjyUFZtf8lWs7N67J
+         GnqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUn0v5Eud+8v7STUZsxtnlEFswyX7ykpzxwdm+uycUw9MYz7qK9mhBuN+nulO8YTW4QaAoj1p6E3pH9@vger.kernel.org, AJvYcCUyf8Jf7xd9fagN6hqi/hp8Hg0bX7Zu+WetS0h+u9CtRhCpLb5WcGxO+Zl4mf+RK1YBj2nKpkwlpo6q@vger.kernel.org, AJvYcCV4StavNg9pcO03bIipy1dP0mjxLvNOXIaZx+ghNQFHGJ6OzPyi40ZZ9oiJ2rP27w/wNzzC/r1Jzaw5r4LDE3CVMls=@vger.kernel.org, AJvYcCXtq+ZMn90KW0WU7VToWf8ufOhEi97euPyema0NveVuWvuS0Z5dLJ6noqf9ZADghkDajLkG+2CpNPW18P65@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAEZGiHNY6cu0PVDGr6oIXTAdYMe9qLDSxkopMOvU5SK3LOqAM
+	LoD6gXuUOvm7g2VfOhBFVzrD8dMHN/bHJLM5RkMSnDK3cW5zAaF/
+X-Gm-Gg: ASbGncujNPuCV2c+pKELwR7dKTa0lDZEBEoMN6z/wIM8q1Y3ANUfoIUGjBFgSBCTVzp
+	vF4vkL5Oh1qCjMXySBKvK83ZOIvK5dBVIUxF7Io7cSs92tKSM6uKVKvot3acx9WbTwn5UoczH5/
+	Wb08IgKpPSIbMge2CRA3BenzA+nsSAJY3mUtlSBZFmg9ix+Db6WtiEtR+In0WQmFBQafb3Cg0Zi
+	S+G2rV/YsZ/BbbAYnVT10BcsvrkGUJyrkEs1t6aOcf0cRvVdV7IVPpt1vplM/whMm4uTVzJiSzk
+	cwNgcun0k22HY7c2G50wnqxCt50L2A+JcmQvE68Cp0cv1mi5fjWaiQMt6JTy6mF69U+46fxahuJ
+	nPIqBrkw=
+X-Google-Smtp-Source: AGHT+IFOoS5nfpYZJ3vpou2JCdHFkbmx50ZLluz+et52LkYb/GOEbwao1HkEVqsBaBiBgaG+Ux663Q==
+X-Received: by 2002:a05:6512:3d28:b0:545:1104:616a with SMTP id 2adb3069b0e04-54838edda38mr4499653e87.2.1740404734660;
+        Mon, 24 Feb 2025 05:45:34 -0800 (PST)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-545d1b9c30fsm2708844e87.15.2025.02.24.05.45.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Feb 2025 05:45:32 -0800 (PST)
+Message-ID: <7435fb1f-1ecc-4806-b11e-1ec8e83a22a2@gmail.com>
+Date: Mon, 24 Feb 2025 15:45:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/9] iio: adc: add helpers for parsing ADC nodes
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>,
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+References: <cover.1739967040.git.mazziesaccount@gmail.com>
+ <6c5b678526e227488592d004c315a967b9809701.1739967040.git.mazziesaccount@gmail.com>
+ <20250223161338.5c896280@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250223161338.5c896280@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+On 23/02/2025 18:13, Jonathan Cameron wrote:
+> On Wed, 19 Feb 2025 14:30:27 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> There are ADC ICs which may have some of the AIN pins usable for other
+>> functions. These ICs may have some of the AIN pins wired so that they
+>> should not be used for ADC.
+>>
+>> (Preferred?) way for marking pins which can be used as ADC inputs is to
+>> add corresponding channels@N nodes in the device tree as described in
+>> the ADC binding yaml.
+>>
+>> Add couple of helper functions which can be used to retrieve the channel
+>> information from the device node.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+>>
+>> ---
+>> Revision history:
+>> v2 => v3: Mostly based on review comments by Jonathan
+>>   - Support differential and single-ended channels(*)
+>>   - Rename iio_adc_device_get_channels() as
+>>   - Improve spelling
+>>   - Drop support for cases where DT comes from parent device's node
+>>   - Decrease loop indent by reverting node name check conditions
+>>   - Don't set 'chan->indexed' by number of channels to keep the
+>>     interface consistent no matter how many channels are connected.
+>>   - Fix ID range check and related comment
+>> RFC v1 => v2:
+>>   - New patch
+>>
+>> (*) The support for single-ended and differential channels is 100%
+>> untested. I am not convinced it is actually an improvement over the
+>> *_simple() helpers which only supported getting the ID from the "reg
+> 
+> Currently it definitely feels too complex.  Partly, whilst I haven't
+> tried fleshing out the alternative, it feels like you've tried to make
+> it too general.  I really don't like the allowed bitmap as those
+> relationships are complex.
+> 
+>> In theory they could be used. In practice, while I skimmed through the
+>> in-tree ADC drivers which used the for_each_child_node() construct - it
+>> seemed that most of those which supported differential inputs had also
+>> some other per-channel properties to read. Those users would in any case
+>> need to loop through the nodes to get those other properties.
+> That doesn't surprise me that much. I'm still not sure there are enough
+> 'simple' cases (i.e. more than maybe 3) to justify this being shared.
+> 
+>>
+>> If I am once more allowed to go back to proposing the _simple() variant
+>> which only covers the case: "chan ID in 'reg' property"... Dropping
+>> support for differential and single-ended channels would simplify this
+>> helper a lot. It'd allow dropping the sanity check as well as the extra
+>> parameters callers need to pass to tell what kind of properties they
+>> expect. That'd (in my opinion) made the last patches (to actual ADC
+>> drivers) in this series a much more lean and worthy ;)
+> 
+> If you do, call it _se() or something like that.
 
-There is no need to manually track the runtime PM status in the driver.
-The pm_runtime_force_suspend() and pm_runtime_force_resume() functions
-already call pm_runtime_status_suspended() to check the runtime PM state.
+Due to the all above - I'll drop the differential channel support and 
+used the _se() suffix while always accepting the single-ended property. 
+This is a functional change to the existing callers later in the series 
+though, but I doubt it causes problems.
 
-Additionally, avoid calling pm_runtime_put_autosuspend() during the
-suspend/resume path, as this would decrease the usage counter of a
-potential user that had the ADC open before the suspend/resume cycle.
+>> +
+>> +#include <linux/device.h>
+>> +#include <linux/errno.h>
+>> +#include <linux/property.h>
+>> +
+>> +#include <linux/iio/adc-helpers.h>
+>> +
+>> +int iio_adc_device_num_channels(struct device *dev)
+>> +{
+>> +	int num_chan = 0;
+>> +
+>> +	device_for_each_child_node_scoped(dev, child)
+>> +		if (fwnode_name_eq(child, "channel"))
+>> +			num_chan++;
+>> +
+>> +	return num_chan;
+> 
+> This function seems easy to generalize to count nodes of particular
+> name.  So I'd promote this as a generic property.h helper and
+> just use that in here.
 
-Fixes: cb164d7c1526 ("iio: adc: rzg2l_adc: Add suspend/resume support")
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
----
+I didn't think of that but now that you said it, I agree.
 
-Changes in v3:
-- collected tags
+Oh well, that means another area impacted - let's see what the fwnode 
+peeps say about adding it.
 
-Changes in v2:
-- none
+>> +}
+>> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
+>> +
+>> +static const char *iio_adc_type2prop(int type)
+>> +{
+>> +	switch (type) {
+>> +	case IIO_ADC_CHAN_PROP_TYPE_REG:
+>> +		return "reg";
+>> +	case IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED:
+>> +		return "single-channel";
+>> +	case IIO_ADC_CHAN_PROP_TYPE_DIFF:
+>> +		return "diff-channels";
+>> +	case IIO_ADC_CHAN_PROP_COMMON:
+>> +		return "common-mode-channel";
+>> +	default:
+>> +		return "unknown";
+>> +	}
+>> +}
+>> +
+>> +/*
+>> + * Sanity check. Ensure that:
+>> + * - At least some type(s) are allowed
+>> + * - All types found are also expected
+>> + * - If plain "reg" is not allowed, either single-ended or differential
+>> + *   properties are found.
+> 
+> I'd worry this is a combination of fragile and overly separate from
+> the parser.  I'd just encode this stuff down there based on accepted type
+> of channels.  Two flags, differential and single ended may be enough.
+> If single only then reg is expected solution but I don't see a reason to
+> ignore single-channel even then as meaning is well defined.
 
- drivers/iio/adc/rzg2l_adc.c | 29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
+I could accept both the single-channel and reg - but I think the binding 
+is super clear telling that 'reg' is required and must match the channel 
+ID. So, I feel supporting the single-channel withoout the 
+common-mode-channel or diff-channels is kind of pointless?
 
-diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 7db04416e1cf..5236ca0da167 100644
---- a/drivers/iio/adc/rzg2l_adc.c
-+++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -89,7 +89,6 @@ struct rzg2l_adc {
- 	struct completion completion;
- 	struct mutex lock;
- 	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
--	bool was_rpm_active;
- };
- 
- /**
-@@ -594,14 +593,9 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	};
- 	int ret;
- 
--	if (pm_runtime_suspended(dev)) {
--		adc->was_rpm_active = false;
--	} else {
--		ret = pm_runtime_force_suspend(dev);
--		if (ret)
--			return ret;
--		adc->was_rpm_active = true;
--	}
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	if (ret)
-@@ -610,9 +604,7 @@ static int rzg2l_adc_suspend(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active)
--		pm_runtime_force_resume(dev);
--
-+	pm_runtime_force_resume(dev);
- 	return ret;
- }
- 
-@@ -630,11 +622,9 @@ static int rzg2l_adc_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
--	if (adc->was_rpm_active) {
--		ret = pm_runtime_force_resume(dev);
--		if (ret)
--			goto resets_restore;
--	}
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		goto resets_restore;
- 
- 	ret = rzg2l_adc_hw_init(dev, adc);
- 	if (ret)
-@@ -643,10 +633,7 @@ static int rzg2l_adc_resume(struct device *dev)
- 	return 0;
- 
- rpm_restore:
--	if (adc->was_rpm_active) {
--		pm_runtime_mark_last_busy(dev);
--		pm_runtime_put_autosuspend(dev);
--	}
-+	pm_runtime_force_suspend(dev);
- resets_restore:
- 	reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
- 	return ret;
--- 
-2.43.0
+Besides, reading both reg and single-channel leaves a question: "What if 
+reg and single-channel have different values?" Should we error out? And, 
+if they don't have different values, why bother checking the 
+single-channel at all as reg is anyways required?
 
+This sanity-check becomes obsolete when we only read the 'reg', and 
+ignore everything which does not have (a valid) one.
+
+>> +/**
+>> + * iio_adc_device_channels_by_property - get ADC channel IDs
+>> + *
+>> + * Scan the device node for ADC channel information. Return an array of found
+>> + * IDs. Caller needs to provide the memory for the array and provide maximum
+>> + * number of IDs the array can store.
+> 
+> I'm somewhat confused by this. Feels like you can get same info from the
+> iio_chan_spec array generated by the next function.
+
+I used this in bd79124 for two purposes. First was setting the mux (ADC 
+/ GPO) in the ADC portion of the code. This can indeed be done also by 
+just iterating throuh the iio_chan_spec.
+
+Second use-case was a call from the GPIO driver's valid_mask function. 
+There I used this to detect which channels were reserved for ADC so I 
+was able to build the valid-mask for GPIO core. Using the iio_chan_spec 
+in GPIO code felt like a "no no" to me :) Having this available was 
+quite handy - and I thought there might be other users as well.
+
+Well, the ADC and GPIO now share the same private data (which is a bit 
+ugly in my eyes, but maybe the simplest way to go) - so I can just build 
+the valid-mask for the GPIOs in the ADC initialization where it reads 
+the channels for the mux. That way I can avoid calling the GPIO's 
+valid_mask callback and populate the info before registering the GPIO 
+driver.
+
+Long story short - I'll probably just drop this function.
+
+>> + *
+>> + * @dev:		Pointer to the ADC device
+>> + * @channels:		Array where the found IDs will be stored.
+>> + * @max_channels:	Number of IDs that fit in the array.
+>> + * @expected_props:	Bitmaps of channel property types (for checking).
+>> + *
+>> + * Return:		Number of found channels on succes. 0 if no channels
+>> + *			was found. Negative value to indicate failure.
+>> + */
+>> +int iio_adc_device_channels_by_property(struct device *dev, int *channels,
+>> +		int max_channels, const struct iio_adc_props *expected_props)
+>> +{
+>> +	int num_chan = 0, ret;
+>> +
+>> +	device_for_each_child_node_scoped(dev, child) {
+>> +		u32 ch, diff[2], se;
+>> +		struct iio_adc_props tmp;
+>> +		int chtypes_found = 0;
+>> +
+>> +		if (!fwnode_name_eq(child, "channel"))
+>> +			continue;
+>> +
+>> +		if (num_chan == max_channels)
+>> +			return -EINVAL;
+>> +
+>> +		ret = fwnode_property_read_u32(child, "reg", &ch);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
+>> +						     &diff[0], 2);
+>> +		if (!ret)
+>> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_DIFF;
+>> +
+>> +		ret = fwnode_property_read_u32(child, "single-channel", &se);
+>> +		if (!ret)
+>> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED;
+>> +
+>> +		tmp = *expected_props;
+>> +		/*
+>> +		 * We don't bother reading the "common-mode-channel" here as it
+>> +		 * doesn't really affect on the primary channel ID. We remove
+>> +		 * it from the required properties to allow the sanity check
+>> +		 * pass here  also for drivers which require it.
+>> +		 */
+>> +		tmp.required &= (~BIT(IIO_ADC_CHAN_PROP_COMMON));
+>> +
+>> +		ret = iio_adc_prop_type_check_sanity(dev, &tmp, chtypes_found);
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_DIFF)
+>> +			ch = diff[0];
+>> +		else if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED)
+>> +			ch = se;
+>> +
+>> +		/*
+>> +		 * We assume the channel IDs start from 0. If it seems this is
+>> +		 * not a sane assumption, then we can relax this check or add
+>> +		 * 'allowed ID range' parameter.
+>> +		 *
+>> +		 * Let's just start with this simple assumption.
+>> +		 */
+>> +		if (ch >= max_channels)
+>> +			return -ERANGE;
+>> +
+>> +		channels[num_chan] = ch;
+>> +		num_chan++;
+>> +	}
+>> +
+>> +	return num_chan;
+>> +
+>> +}
+>> +EXPORT_SYMBOL_GPL(iio_adc_device_channels_by_property);
+>> +
+>> +/**
+>> + * devm_iio_adc_device_alloc_chaninfo - allocate and fill iio_chan_spec for adc
+> 
+> ADC
+> 
+>> + *
+>> + * Scan the device node for ADC channel information. Allocate and populate the
+>> + * iio_chan_spec structure corresponding to channels that are found. The memory
+>> + * for iio_chan_spec structure will be freed upon device detach. Try parent
+>> + * device node if given device has no fwnode associated to cover also MFD
+>> + * devices.
+>> + *
+>> + * @dev:		Pointer to the ADC device.
+>> + * @template:		Template iio_chan_spec from which the fields of all
+>> + *			found and allocated channels are initialized.
+>> + * @cs:			Location where pointer to allocated iio_chan_spec
+>> + *			should be stored
+>> + * @expected_props:	Bitmaps of channel property types (for checking).
+> Input parameter so should be after template.
+> 
+>> + *
+>> + * Return:	Number of found channels on succes. Negative value to indicate
+>> + *		failure.
+> 
+> I wonder if an alloc function would be better returning the pointer and
+> providing num_chans via a parameter.
+
+I personally dislike returning pointer for anything which may fail other 
+than by -ENOMEM. I dislike having to add all the the IS_ERR(), 
+PTR_ERR(), ERR_PTR() - boilerplate when handling the errors. So, I'd 
+rather kept the return value as is here if this is not a show stopper 
+for you.
+
+> 
+>> + */
+>> +int devm_iio_adc_device_alloc_chaninfo(struct device *dev,
+>> +				const struct iio_chan_spec *template,
+>> +				struct iio_chan_spec **cs,
+>> +				const struct iio_adc_props *expected_props)
+> 
+> I'm not sure this expected props thing works as often it's a case
+> of complex relationships
+
+Luckily we can drop it altogether by having separate functions for cases 
+where the channel ID is expected to be in "reg", "diff-channels" or 
+"single-channel" [+ "common-mode-channel"].
+
+And, we can introduce the more complex variants only if they are some 
+day needed/usefull.
+
+>> +{
+>> +	struct iio_chan_spec *chan;
+>> +	int num_chan = 0, ret;
+> Initialized just after this so don't set num_chan = 0.
+> 
+>> +
+>> +	num_chan = iio_adc_device_num_channels(dev);
+>> +	if (num_chan < 1)
+>> +		return num_chan;
+>> +
+>> +	*cs = devm_kcalloc(dev, num_chan, sizeof(**cs), GFP_KERNEL);
+>> +	if (!*cs)
+>> +		return -ENOMEM;
+>> +
+>> +	chan = &(*cs)[0];
+>> +
+>> +	device_for_each_child_node_scoped(dev, child) {
+>> +		u32 ch, diff[2], se, common;
+>> +		int chtypes_found = 0;
+>> +
+>> +		if (!fwnode_name_eq(child, "channel"))
+>> +			continue;
+>> +
+>> +		ret = fwnode_property_read_u32(child, "reg", &ch);
+>> +		if (ret)
+>> +			return ret;
+>> +
+> 
+> diff channels and single channel take precedence over reg, so check them
+> first. If present no need to look for reg can also read it then throw
+> it away giving simpler.
+
+I liked to always read the "reg" because (AFAIR) it was marked as 
+required in the binding doc.
+
+> 
+> 		*chan = *template;
+> 
+> 		// reg should exist either way.
+> 		ret = fwnode_property_read_u32(child, "reg", &reg);
+> 		if (ret)
+> 			return -EINVAL; //should be a reg whatever.
+> 
+> 		ret = fwnode_property_read_u32_array(child, "diff-channels",
+> 						     diff, ARRAY_SIZE(diff));
+> 		if (ret == 0) {
+> 			chan->differential = 1;
+> 			chan->channel = diff[0];
+> 			chan->channel2 = diff[1];
+> 		} else {
+> 			ret = fwnode_property_read_u32(child, "single-channel", &se);
+> 			if (ret)
+> 				se = reg;
+> 
+> 			chan->channel = se;
+> 			//IIRC common mode channel is rare. I'd skip it. That
+> 			//also makes it a differential channel be it a weird one.
+
+Yes. There weren't many drivers I found using this. But I have a feeling 
+that those which I checked and which did, didn't set the "differential" 
+-flag in iio_chan_spec for single-ended + common - case.
+
+***
+Out of the curiosity (which means there is no need to reply if you're 
+busy - I assume I can go and look the code to see what the 
+'differential' and 'channel2' modifiers are used for)
+
+What role does the "differential" Vs "single-ended" play for the users? 
+I suppose it sure affects to what channels are reserved/free - but I 
+would assume users were just interested to get the measurement result 
+without caring about whether the signal is measured over differential 
+pair or single-ended to gnd(?).
+***
+
+> 		}
+> 					
+> 
+>> +		ret = fwnode_property_read_u32_array(child, "diff-channels",
+>> +						     &diff[0], 2);
+>> +		if (!ret)
+>> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_DIFF;
+>> +
+>> +		ret = fwnode_property_read_u32(child, "single-channel", &se);
+>> +		if (!ret)
+>> +			chtypes_found |= IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED;
+>> +
+>> +		ret = fwnode_property_read_u32(child, "common-mode-channel",
+>> +					       &common);
+>> +		if (!ret)
+>> +			chtypes_found |= BIT(IIO_ADC_CHAN_PROP_COMMON);
+>> +
+>> +		ret = iio_adc_prop_type_check_sanity(dev, expected_props,
+>> +						     chtypes_found);
+> 
+> If we want to verify this (I'm not yet sure) then do it as you parse the
+> properties, not separately.
+> 
+>> +		if (ret)
+>> +			return ret;
+>> +
+>> +		*chan = *template;
+>> +		chan->channel = ch;
+>> +
+>> +		if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_DIFF) {
+>> +			chan->differential = 1;
+>> +			chan->channel = diff[0];
+>> +			chan->channel2 = diff[1];
+>> +
+>> +		} else if (chtypes_found & IIO_ADC_CHAN_PROP_TYPE_SINGLE_ENDED) {
+>> +			chan->channel = se;
+>> +			if (chtypes_found & BIT(IIO_ADC_CHAN_PROP_COMMON))
+>> +				chan->channel2 = common;
+>> +		}
+>> +
+>> +		/*
+>> +		 * We assume the channel IDs start from 0. If it seems this is
+>> +		 * not a sane assumption, then we have to add 'allowed ID ranges'
+>> +		 * to the struct iio_adc_props because some of the callers may
+>> +		 * rely on the IDs being in this range - and have arrays indexed
+>> +		 * by the ID.
+> 
+> Not a requirement in general.  It is more than possible to have a single channel
+> provided that is number 7.
+
+I think a few of the drivers did assume that the channel indexes start 
+from zero, and go to num_channels - 1. It seemed quite usual that the 
+channel IDs were used to index arrays with NUM_CHANNELS elements. A few 
+did also check that the IDs were in a valid range.
+
+I will add a max_id parameter to the API (and drop the 
+'expected_props'). This should be useful for majority of the callers and 
+help them to omit open-coding this particular check. It should also 
+remind the driver to check the size of found IDs to avoid overflow bugs. 
+As far as I remember at least one of the drivers which I encountered 
+just trusted the DT channel IDs to be within valid range.
+
+I'll allow omitting the check by setting the max_id to -1.
+
+> 
+>> +		 */
+>> +		if (chan->channel >= num_chan)
+>> +			return -ERANGE;
+>> +
+>> +		chan++;
+>> +	}
+>> +
+>> +	return num_chan;
+>> +}
+>> +EXPORT_SYMBOL_GPL(devm_iio_adc_device_alloc_chaninfo);
+>> +
+>> +MODULE_LICENSE("GPL");
+>> +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
+>> +MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
+>> diff --git a/include/linux/iio/adc-helpers.h b/include/linux/iio/adc-helpers.h
+>> new file mode 100644
+>> index 000000000000..f7791d45dbd2
+>> --- /dev/null
+>> +++ b/include/linux/iio/adc-helpers.h
+>> @@ -0,0 +1,56 @@
+>> +/* SPDX-License-Identifier: GPL-2.0-only */
+>> +
+>> +/* The industrial I/O ADC helpers
+> Comment syntax and make it more obvious that while this might be useful
+> it isn't something we necessarily expect to be useful to every driver.
+> /*
+>   * Industrial I/O ADC firmware property passing helpers.
+>   *
+> 
+
+Thanks :)
+
+Yours,
+	-- Matti
 

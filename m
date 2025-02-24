@@ -1,284 +1,167 @@
-Return-Path: <linux-iio+bounces-16010-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16011-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EA0A422B1
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 15:16:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF2BA42965
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 18:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E466188569F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:11:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8467F1885839
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 17:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8767E154C0B;
-	Mon, 24 Feb 2025 14:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17EE2641E9;
+	Mon, 24 Feb 2025 17:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="k3PbDNng"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="FUDrhTvW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640471519A8
-	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 14:10:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5C263F54;
+	Mon, 24 Feb 2025 17:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740406261; cv=none; b=ixD9qPIzDfr1xgeP1PZdboiWQyAqDtXSFeVgrQ0IOdQLg72k/TOgIeZpDtNH4hyrph6O3DkB+w0IXfgalMqzYQtkodQwxK9oey8hFwjSJhvo0s+QtyYFjZIVmC9F9+ZPVGjiJBU6IkHPWIl/COEjRQJbSBNvraLMTTTxd+LMl6k=
+	t=1740417573; cv=none; b=taQ6AGA7jpizzbmr3cyL5OYBTQ4ma3DGza7NDnMj0OpnwQOnfJIztD5KBZmZdSgjT7ifwYCcO5AmETBv6r0GmqNowNlRbCRPkABNjh04v+J/6lpnwJuutL3Qx1GoezAXFYkBx0hzHeS95N7uOFIdeieOi0jX8pJ2hp7rfv0pb5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740406261; c=relaxed/simple;
-	bh=tLYHWgOgKFqKV5m8842QnAKRfItLcN1thRf9+nhSm1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kQ4DjpeEvo99m7wMB9qV98oh0G8KVIAtATNgxUZnBHh2yJfsgBVYNkXFaRKLHTqld0b8kxxsCqkTFFyFtX2yBdgU0BBK64n1w0Ze6cOtCjMH+ruWhogPxjUGqk9KQHpbFs3KftSxlxOPtIDh0RwX4nugSmkslbnZCPg7tF/eLl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=k3PbDNng; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5e033c2f106so5873771a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 06:10:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740406258; x=1741011058; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AaLxO4ePLEt4WLzLvwC/0MDiuUOe4ZK6pxwDX4VliLQ=;
-        b=k3PbDNngfYGNeGMC/G7ICmNvo/Qp6GweTOnht0dqQRUwMSfK4Sziym1Jdv6tMu3rvj
-         F4XdtqpUsnsWv3sMgpmUvvUTa2Vh0r76vtj9nR3CRCyfmP9nvRRTqkRHSl3jO6twVqSQ
-         3/o/+TyPYbSTsqXkdx0c7qeDOVPOLLEFpwszOB83mUYGXs46FAWBsYHzRDfAMXx499oV
-         1WU/4kdutycN58mb2J5N+Ge0I1ltC1atgy4rw400F7ZeSBCZ/XvD98T6k7pk/Qh6u4cC
-         oEQOhuJx7+y+lXSZxAJLN5cpAADuCWqyBVpU/k2cYoHvSdW0zXka5b7F9mxjmN4KiUTA
-         KWRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740406258; x=1741011058;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AaLxO4ePLEt4WLzLvwC/0MDiuUOe4ZK6pxwDX4VliLQ=;
-        b=uINJOd6gbPWga1ymCVdTHcjm+pOZI8cI+KYNhIzg9wL8/wzyTUSQWsVuOUihIh/42M
-         243AtADgqoc8DpSzAcbBno2WkNwd3OSqqD1LXo7RmIGAsJmgLhYfGnmR/tnItlI5gdad
-         WI1hMIYRQb7iNWGnbqWzlsSRWtvPtGChHXcz/pylVuQM6Duwg5/5YvQvVib6xlzUahI6
-         q+MPi8ms/7jL1KoYhXijTd/2KihAHrNI1s6YJrglMj3aXuGF7vScY0m7l9Oq+w+Wgvg5
-         /TvUgX/R6qRiqq3Gd8p3nJT1RVbyZdW9NpNttPYKMSk/U8gOuxQ8oEhy1WFmusZ4yovP
-         yqLA==
-X-Gm-Message-State: AOJu0YzodvGdSbwSxE1uljHKoawgbKVrmB027CI5l4M48Cuq9u4eQBv1
-	9NsZAfZkGoZSe1K3K1/F5GZm8Xh7QZNuHsJqFEQ+bLE8g4xzrVOKJ+kQJ2qJIFI=
-X-Gm-Gg: ASbGnctJ0tB1BYC2Bs3IEB7DkBf8Wrj2DwU+O4XxNdUudYJcw5d9aO9vTyB6+vMExOd
-	jlqE78h9+h0xShYXi5lOPu9CwT0NYBb7sZMqHDHj4PmjFnKqmAa3z3XWQrkZKIIdwOUoJYYBp4O
-	CIlolHyfyOlPpR9BJAZWucfMFkMsCJoYDLyaqctT2WJ19SwFUqgzHABnS7Vdv4oWn24ZQvSvXBx
-	iNXXvslgNlySz+rRXif2XnoUa0BYCPIhl2rfYQ9XXH3/m8eLZ5xqVgk492qbweJ2TvhAmamO08e
-	Sodhr4alshGd1Ki78aJA3jitYGgMBoo=
-X-Google-Smtp-Source: AGHT+IE+vXitc8IJLIfaLSuM9Y5853tGT/s/2uAzpLe8iYu5v5eqmpiTXoT3k+Oj7QrkZB0euazhHA==
-X-Received: by 2002:a05:6402:234f:b0:5df:b6e1:4690 with SMTP id 4fb4d7f45d1cf-5e0b7106a9cmr32554123a12.12.1740406257566;
-        Mon, 24 Feb 2025 06:10:57 -0800 (PST)
-Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb80ba68aesm1764405566b.23.2025.02.24.06.10.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 06:10:57 -0800 (PST)
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org
-Subject: [PATCH v3 7/7] iio: adc: ad7124: Implement system calibration
-Date: Mon, 24 Feb 2025 15:10:18 +0100
-Message-ID:  <6a67919839c82ecde5080127216917d67bd77f2f.1740405546.git.u.kleine-koenig@baylibre.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
-References: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
+	s=arc-20240116; t=1740417573; c=relaxed/simple;
+	bh=YVrfmmpuiZl97lPSQ+Q4oYh5oqB3+D2NaV+FRnSnx34=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iHomqysS4Z8ZzpNtanNZqM3uHpk4bdcV+e9UlpuvZ5FPcTi2/SowQP79Rid4BMeTn5vs4f7Xi7C8lnqAaNK4K539ernIsSjlSY9iqFx/A/psSbGotvj2ob7Pi/vry99V7hPa5rhT+Pxqk6D/TkNCrcL+Ljddq4rXX+y3rdJWWxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=FUDrhTvW; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OCixFa013141;
+	Mon, 24 Feb 2025 18:18:53 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=GTr3MiF+X8E++5/d1k9zNi
+	whyWX8NQucbTgDgyPXgzM=; b=FUDrhTvWnYasctYRtyGBXE9jaB4Bb2fd9efqkz
+	U0icqpJMn4T+2PKvta5rvS3Ovu1JM0cXFy/eTYjh9gqTWmAyR6fyvovwYnJgbFWM
+	bg2RG0PdeEvQs4Cn/iABWV+uMzcoJLfYZ6ovLb9eJcVs8nKsW0ksVFFeYn0Qz1x6
+	pHGP5gRfJLlC4sVthXChcXruHPGgvIT5xI/q4+xDG8jTA5vYzPYDTJf2si1s2Yug
+	GoQuKbknH2VNCz5CJwmkqQPyAJzlR2KFA34H0LMECIX9l5XGM8KE/dHZO4NiJF9a
+	GGtSSqKkrJazdZsg9JOgyjN8h7BhRHZtORuRJIxQ985ml4Tg==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 44y6t20jjm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Feb 2025 18:18:53 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 3B60640044;
+	Mon, 24 Feb 2025 18:17:49 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id BC8145387F7;
+	Mon, 24 Feb 2025 18:07:40 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
+ (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
+ 2025 18:07:40 +0100
+Received: from localhost (10.252.23.75) by SAFDAG1NODE1.st.com (10.75.90.17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 24 Feb
+ 2025 18:07:40 +0100
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To: <wbg@kernel.org>
+CC: <alexandre.torgue@foss.st.com>, <olivier.moysan@foss.st.com>,
+        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>
+Subject: [PATCH] counter: stm32-lptimer-cnt: fix error handling when enabling
+Date: Mon, 24 Feb 2025 18:06:57 +0100
+Message-ID: <20250224170657.3368236-1-fabrice.gasnier@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5084; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=tLYHWgOgKFqKV5m8842QnAKRfItLcN1thRf9+nhSm1c=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnvH3WYhjSQsqYMqSAccTtt25slNbbbKK8Oqw5c xDxdUl4vYuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ7x91gAKCRCPgPtYfRL+ TrpQCACNpDF7cIf4azfLveHjTSSHjRTryBBoWusWZlEbKr6D5TLyEvGQ9Fb4Ok+DcoI/pNtM/Wx SQa+Mn1zU6Mm+7V/wv3h+bEK8RKl9i0PP2MYcPJspdNGdlNujCxLfh3It2ntwnWaUjoTHVFZywV +JBrDZW2OsqACf78/qmTAL6u9aCPo7cIk1eXaMYiHdq0q5tTxJXfkYUxYBYxc2L0BCILQulawoz tGTnbYkzt2RQxGR+oXqZ+3yXVucSs7EX3MsviFeuXf5K1STxnI1u7rSuxnpWdQuti6SIudtTQ8g UTOxYhZfzoFj9fFdP812G64AYFo2HWvt646mvXb4dr5muDFV
-X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_08,2025-02-24_02,2024-11-22_01
 
-Allow triggering both zero-scale and full-scale calibration via sysfs in
-the same way as it's done for ad7173.
+In case the stm32_lptim_set_enable_state() fails to update CMP and ARR,
+a timeout error is raised, by regmap_read_poll_timeout. It may happen,
+when the lptimer runs on a slow clock, and the clock is gated only
+few times during the polling.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Badly, when this happen, STM32_LPTIM_ENABLE in CR register has been set.
+So the 'enable' state in sysfs wrongly lies on the counter being
+correctly enabled, due to CR is read as one in stm32_lptim_is_enabled().
+
+To fix both issues:
+- enable the clock before writing CMP, ARR and polling ISR bits. It will
+avoid the possible timeout error.
+- clear the ENABLE bit in CR and disable the clock in the error path.
+
+Fixes: d8958824cf07 ("iio: counter: Add support for STM32 LPTimer")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 ---
- drivers/iio/adc/ad7124.c | 140 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 123 insertions(+), 17 deletions(-)
+ drivers/counter/stm32-lptimer-cnt.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 382f46ff2b51..019d1d3245e7 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -4,6 +4,7 @@
-  *
-  * Copyright 2018 Analog Devices Inc.
-  */
+diff --git a/drivers/counter/stm32-lptimer-cnt.c b/drivers/counter/stm32-lptimer-cnt.c
+index cf73f65baf60..b249c8647639 100644
+--- a/drivers/counter/stm32-lptimer-cnt.c
++++ b/drivers/counter/stm32-lptimer-cnt.c
+@@ -58,37 +58,43 @@ static int stm32_lptim_set_enable_state(struct stm32_lptim_cnt *priv,
+ 		return 0;
+ 	}
+ 
++	ret = clk_enable(priv->clk);
++	if (ret)
++		goto disable_cnt;
 +
- #include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/clk.h>
-@@ -181,6 +182,7 @@ struct ad7124_channel {
- 	struct ad7124_channel_config cfg;
- 	unsigned int ain;
- 	unsigned int slot;
-+	u8 syscalib_mode;
- };
+ 	/* LP timer must be enabled before writing CMP & ARR */
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ARR, priv->ceiling);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
- struct ad7124_state {
-@@ -202,23 +204,6 @@ struct ad7124_state {
- 	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MAX_CONFIGS);
- };
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_CMP, 0);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
--static const struct iio_chan_spec ad7124_channel_template = {
--	.type = IIO_VOLTAGE,
--	.indexed = 1,
--	.differential = 1,
--	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--		BIT(IIO_CHAN_INFO_SCALE) |
--		BIT(IIO_CHAN_INFO_OFFSET) |
--		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
--		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
--	.scan_type = {
--		.sign = 'u',
--		.realbits = 24,
--		.storagebits = 32,
--		.endianness = IIO_BE,
--	},
--};
--
- static struct ad7124_chip_info ad7124_chip_info_tbl[] = {
- 	[ID_AD7124_4] = {
- 		.name = "ad7124-4",
-@@ -903,6 +888,127 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
- 	return 0;
+ 	/* ensure CMP & ARR registers are properly written */
+ 	ret = regmap_read_poll_timeout(priv->regmap, STM32_LPTIM_ISR, val,
+ 				       (val & STM32_LPTIM_CMPOK_ARROK) == STM32_LPTIM_CMPOK_ARROK,
+ 				       100, 1000);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = regmap_write(priv->regmap, STM32_LPTIM_ICR,
+ 			   STM32_LPTIM_CMPOKCF_ARROKCF);
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+-	ret = clk_enable(priv->clk);
+-	if (ret) {
+-		regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
+-		return ret;
+-	}
+ 	priv->enabled = true;
+ 
+ 	/* Start LP timer in continuous mode */
+ 	return regmap_update_bits(priv->regmap, STM32_LPTIM_CR,
+ 				  STM32_LPTIM_CNTSTRT, STM32_LPTIM_CNTSTRT);
++
++disable_clk:
++	clk_disable(priv->clk);
++disable_cnt:
++	regmap_write(priv->regmap, STM32_LPTIM_CR, 0);
++
++	return ret;
  }
  
-+enum {
-+	AD7124_SYSCALIB_ZERO_SCALE,
-+	AD7124_SYSCALIB_FULL_SCALE,
-+};
-+
-+static ssize_t ad7124_write_syscalib(struct iio_dev *indio_dev,
-+				     uintptr_t private,
-+				     const struct iio_chan_spec *chan,
-+				     const char *buf, size_t len)
-+{
-+	struct ad7124_state *st = iio_priv(indio_dev);
-+	struct ad7124_channel *ch = &st->channels[chan->channel];
-+	struct device *dev = &st->sd.spi->dev;
-+	bool sys_calib;
-+	int ret, mode;
-+
-+	ret = kstrtobool(buf, &sys_calib);
-+	if (ret)
-+		return ret;
-+
-+	if (!sys_calib)
-+		return len;
-+
-+	mode = ch->syscalib_mode;
-+	if (mode == AD7124_SYSCALIB_ZERO_SCALE) {
-+		ch->cfg.calibration_offset = 0x800000;
-+
-+		ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_SYS_ZERO,
-+				      chan->address);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = ad_sd_read_reg(&st->sd, AD7124_OFFSET(ch->cfg.cfg_slot), 3,
-+				     &ch->cfg.calibration_offset);
-+		if (ret < 0)
-+			return ret;
-+
-+		dev_dbg(dev, "offset for channel %d after zero-scale calibration: 0x%x\n",
-+			chan->channel, ch->cfg.calibration_offset);
-+	} else {
-+		ch->cfg.calibration_gain = st->gain_default;
-+
-+		ret = ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_SYS_FULL,
-+				      chan->address);
-+		if (ret < 0)
-+			return ret;
-+
-+		ret = ad_sd_read_reg(&st->sd, AD7124_GAIN(ch->cfg.cfg_slot), 3,
-+				     &ch->cfg.calibration_gain);
-+		if (ret < 0)
-+			return ret;
-+
-+		dev_dbg(dev, "gain for channel %d after full-scale calibration: 0x%x\n",
-+			chan->channel, ch->cfg.calibration_gain);
-+	}
-+
-+	return len;
-+}
-+
-+static const char * const ad7124_syscalib_modes[] = {
-+	[AD7124_SYSCALIB_ZERO_SCALE] = "zero_scale",
-+	[AD7124_SYSCALIB_FULL_SCALE] = "full_scale",
-+};
-+
-+static int ad7124_set_syscalib_mode(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan,
-+				    unsigned int mode)
-+{
-+	struct ad7124_state *st = iio_priv(indio_dev);
-+
-+	st->channels[chan->channel].syscalib_mode = mode;
-+
-+	return 0;
-+}
-+
-+static int ad7124_get_syscalib_mode(struct iio_dev *indio_dev,
-+				    const struct iio_chan_spec *chan)
-+{
-+	struct ad7124_state *st = iio_priv(indio_dev);
-+
-+	return st->channels[chan->channel].syscalib_mode;
-+}
-+
-+static const struct iio_enum ad7124_syscalib_mode_enum = {
-+	.items = ad7124_syscalib_modes,
-+	.num_items = ARRAY_SIZE(ad7124_syscalib_modes),
-+	.set = ad7124_set_syscalib_mode,
-+	.get = ad7124_get_syscalib_mode
-+};
-+
-+static const struct iio_chan_spec_ext_info ad7124_calibsys_ext_info[] = {
-+	{
-+		.name = "sys_calibration",
-+		.write = ad7124_write_syscalib,
-+		.shared = IIO_SEPARATE,
-+	},
-+	IIO_ENUM("sys_calibration_mode", IIO_SEPARATE,
-+		 &ad7124_syscalib_mode_enum),
-+	IIO_ENUM_AVAILABLE("sys_calibration_mode", IIO_SHARED_BY_TYPE,
-+			   &ad7124_syscalib_mode_enum),
-+	{ }
-+};
-+
-+static const struct iio_chan_spec ad7124_channel_template = {
-+	.type = IIO_VOLTAGE,
-+	.indexed = 1,
-+	.differential = 1,
-+	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+		BIT(IIO_CHAN_INFO_SCALE) |
-+		BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-+		BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+	.scan_type = {
-+		.sign = 'u',
-+		.realbits = 24,
-+		.storagebits = 32,
-+		.endianness = IIO_BE,
-+	},
-+	.ext_info = ad7124_calibsys_ext_info,
-+};
-+
- /*
-  * Input specifiers 8 - 15 are explicitly reserved for ad7124-4
-  * while they are fine for ad7124-8. Values above 31 don't fit
+ static int stm32_lptim_setup(struct stm32_lptim_cnt *priv, int enable)
 -- 
-2.47.1
+2.25.1
 
 

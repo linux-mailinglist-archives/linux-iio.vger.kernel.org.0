@@ -1,76 +1,77 @@
-Return-Path: <linux-iio+bounces-16004-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16005-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD25A422C0
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 15:18:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5165A422C6
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 15:19:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43C73178B2C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:11:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B661E3B7DD8
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 14:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8D913D52B;
-	Mon, 24 Feb 2025 14:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C0186340;
+	Mon, 24 Feb 2025 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="24K4xLB+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tQHhhxMt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D5F13A88A
-	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 14:10:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666EF13B2A9
+	for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 14:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740406248; cv=none; b=p/qp2v+xSregl0ts/mO0SQejqSUlrEhZdWA4MhtqHQz3uyxupVmi+xMA95WOWyjGpPW/Nf+F76NLKnluzzNKvRw4UwPFJbBbGMn1zfuQ0ljRguBm0ZeDk5c0MvOdBH/GIvqNT3j1gxrZKfk75g3HXZ0nYbYQhDiXjgQVrM8jQZA=
+	t=1740406251; cv=none; b=fdqdmgndT39PLs9GPLFSD9/xO8uHHhHKsxhAEl3dxJVBjlwmxqkz9BcspC1nI0Ez83XhoHT39oiKgFW2FA/0q3vmYl/Ni+IVdpnETYBCHhLIH8kNjtP8VX59Q3slhUlpJA47GvAAtwC3kxg1DE2enM/N+UWvw5GxiJVkYgiEHwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740406248; c=relaxed/simple;
-	bh=SRKMapFlVg3+8kF9cvHubzekV8X8++YISp0c0O7y6Ac=;
+	s=arc-20240116; t=1740406251; c=relaxed/simple;
+	bh=ec14xnJrpwkJrC/ethpz0fLxzagiTiLZ9fwLcAvPKo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZcmDzSraPQ9JBTwm9meg9hXPia4fgayPFNXmfZXnVUx5yPi2rTDtvjUPuTYo0AU6dC4RqQInwS2kVch53ynvYTARICDxWZtfunOVq9L38sA9Q1cH3bGpE6jdzJZukYlmv+sRY6p/Dhuc+bHqlXwGLaB+PN+rgL/NGSjxabr7lpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=24K4xLB+; arc=none smtp.client-ip=209.85.208.51
+	 MIME-Version:Content-Type; b=dloFivcYfX5DoBiwDjO0md2cWePzLYAERfLtAGKRNp99VglUWKu9tWlkr6k/MTe1/PlHl9EpDMdii71PgiT4K6gLe6wvahFRweCqmIltb1Qgp0XpRCBuYhaTwSBZJAkx4/HSjaEUmZGmNld6lC9NvSozs6POsEAaaoaXzOLldd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tQHhhxMt; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5e0505275b7so7182807a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 06:10:45 -0800 (PST)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-abb9709b5b5so821063166b.2
+        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 06:10:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740406244; x=1741011044; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740406246; x=1741011046; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6E0VFJeeN3DbM9e1x+ou8SemoqItJRlOI3ariJtd6jU=;
-        b=24K4xLB+k3NpmtTXSPvdYvQHGNgXLyPPAgJvAZ/KAoeUdR+rlBbaHB8o5wyyqBnrEA
-         PWwwIb3ICCjVomiW1zS90lT+Hg2ZJXdcqGpKG4R6moqTUvtGebUuJlD7AAbK59DeVW1Z
-         UFaQQwUP4xnSlEFAEzAoQQtdJhTtcDkltNctOUdcTc9NW2Ggge+B/jmidf+pjTtr7RKZ
-         P3wgf2pCEZ3fvSaGPE/8QKP/dl1I7KhQeh1nPMlW6xF8UkkEVR+a7kehCfGCMcHISTeX
-         acsYLfoyp7f1fe29E5vx/NVt4zsm4N7YgML5Zeb/3Ufhe7HANC8/umvsISI+FZ/qmicT
-         t5ig==
+        bh=q3z/kCXdK0L4ldNMK0CvF1cmi0sAxHIrcS5GyQP4Qyg=;
+        b=tQHhhxMtbbBIZTPQRPeP7qaA0a0VGbdBaolxJ+eRgMWpLZMHpoimwIfGdUGtlDY4oY
+         69hS0viWRXf+lUS2U2BWUqOYyJ9MbCNVLjVuSmTpv0mTvi1AA35caKrs1albw5MIn1Yn
+         pbCnml6FGJjAPZnDW5Ax0YPxeBruBUyO5q6dsZAU6oRIATLiHvou6w6jPJz86na5+eTe
+         2l3KkBinnirrpI102/6sn8ZRXRbW0xW4cZqiH080BfMkQUDGKszZ0lCS1jkXMwuq8rZz
+         8F037bLqhdAKQzCXOba1zXdB2/EKXp8s/xv+DBW9IOEWxzftbkvEr5YMDDj+oWkMbTtm
+         7PfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740406244; x=1741011044;
+        d=1e100.net; s=20230601; t=1740406246; x=1741011046;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6E0VFJeeN3DbM9e1x+ou8SemoqItJRlOI3ariJtd6jU=;
-        b=U8RDtSp08FR+vZF3C+qBEACXgIf+keQh+Y1DPIb2aF2z/eUAa9UNrHKN+VxsLauqt+
-         viJAcuiLm6xYifdbb2JOw36p9xdHQdfBaFZ1pFTmGjgeqMnhc1yq16qErDrnqgyhNQ8N
-         /Ck/H5NtEnodIkj98C1ec6XemISeSYG4/UiYK6+YAmEpd9DNxM2kw8UHwUHofY4sYlot
-         fJ7Eme80TexHcmih5V0c56iTixONvmYxfwEp5EdXtJtIeZYNFz0iT2Y7vPMUq0pbM1fp
-         OjBKI3WjxcZGEnc7v8A/4ZZ/PNaVttxGwA1K6aFU0l/stZsailwa/5QmITJnL9WwqRYh
-         gsoQ==
-X-Gm-Message-State: AOJu0YzBhAcDIhNL7evw3z72kf3aJxYFZ2M6w8YaB73g2MDeWu9ZdRVf
-	yJ89kJ39sQSJbpoL+JGCaUx3ZRM6bnA7bj4I0/qh8Qw3PiD7CC5cY2F3zK8cafc=
-X-Gm-Gg: ASbGncts6kTdd0YrtxJh749mJeIBuvwyMjy9owzaHEz2Kl4giKF33bEsqt3F6cmWWed
-	voQj/lReaU8CDngFcXyiBEJgzUgqfjE1o0PWmTtLTo/bcTWkPb0f85RJses4oRtm/NkY9VjmcvE
-	r+idTtYBKin2hvFrrQIQFXcNMbybKBZugngmOTxLyV1EztvQlb4o9C6bWP2ckFbmX4hW+MTaaty
-	Zib51PyMy90EKtmE8dWsT7A9CWxGCruS2bo7InMkJV44zbQ+IabTE+/SGOtSJoT+cZs8VHz5J2U
-	mvoPmE1DfbDPcg8Wpyd7gZIunVgggws=
-X-Google-Smtp-Source: AGHT+IF9hjXLR5IgH2ytyzjW6fpx2H3xfIANXvajOLuVYy7ECx+hR9GEOC/lf9lILFcaiMEFnBzAxA==
-X-Received: by 2002:a05:6402:3592:b0:5da:105b:86c1 with SMTP id 4fb4d7f45d1cf-5e0b7236ee0mr13221532a12.23.1740406243963;
-        Mon, 24 Feb 2025 06:10:43 -0800 (PST)
+        bh=q3z/kCXdK0L4ldNMK0CvF1cmi0sAxHIrcS5GyQP4Qyg=;
+        b=e/POsYyaerxmq5IUz3Rqozkhj/CB5H9twBW9OAgNMTFByrxt0BtDKdFXOVo6sXm4GS
+         En3mX9ZWF9U0B5A+KLa64WcUzfLUgTCy7MapNJPp8dxNqyweX4kWrDiCrCxBt7FAENEd
+         +IGWjsbulIRDsX4U51gM3cwg3dG1kIq8RrvlY/x/2kx7pvPlCTqtlXLJMBsrh+SggeJo
+         eIkCdBTy5o5XU63z5OdwBt1EZ/bD36FzW3GYQHM9lOULFQy3Uj2AfvDFeE6YmP1DcE20
+         ksZezHD0Lk26m3qiDQ94WOXCQMObOOwV9Qvw6XPUmu1lZFgPqb8lRDjcjPa8Y5biJc3e
+         LO9g==
+X-Gm-Message-State: AOJu0YyPzHgS+SX7LnnQ8ihJPr4WZbyQlG1lJ/wfmUi18GT1oZJModfE
+	fpLK0A78XUjvyfnn0xhjyk44LhsZDdqIBQmFPAQYfE6SwHtDXVeBTgBq9ir2EDOpPEr2PeeahNY
+	t
+X-Gm-Gg: ASbGncueXVWje/xymCyPoYKQj1Z6Z4m9a45VcHa2OuqEEMjM31k38TtOn6en64aDLcb
+	BTznYmQH4U4tmu+6Aa5wKRCfBsf56iyWHQ2VzvZ3zzHULmaegKdJ+gu8qulMejVnbHwk+tWyn6d
+	oFJRlrX4MMaj0HHvdnqEUY7hXSliJ/IsvXjckpsDdxq7sCu1yru8L7xXWHskP12ma/owG/xFSlW
+	Li7yBzP7eMKZ6X7lU/VxYC7YVGzskQucSDX8wj17s1BnbYBHsOs2xIHT2XAOuBynSgXNQysAb+h
+	rOTWIebu+oTz7cRhWgsbedGU+Eg7rZ8=
+X-Google-Smtp-Source: AGHT+IEerRa4aomy662kgS2FvwbBpmQRsCYO0ncpqcdejEb2ubM+sRbpqK3FovOpqe/ZYbg0jaiLXA==
+X-Received: by 2002:a17:906:c154:b0:ab7:e567:4fe8 with SMTP id a640c23a62f3a-abc09ab0dffmr1425550766b.25.1740406246315;
+        Mon, 24 Feb 2025 06:10:46 -0800 (PST)
 Received: from localhost ([2a02:8071:b783:6940:36f3:9aff:fec2:7e46])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece1d48c5sm19200919a12.47.2025.02.24.06.10.42
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abbdac1015dsm1082696566b.127.2025.02.24.06.10.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Feb 2025 06:10:43 -0800 (PST)
+        Mon, 24 Feb 2025 06:10:45 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -81,9 +82,9 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
 	Nuno Sa <nuno.sa@analog.com>,
 	David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org
-Subject: [PATCH v3 1/7] iio: adc: ad_sigma_delta: Disable channel after calibration
-Date: Mon, 24 Feb 2025 15:10:12 +0100
-Message-ID:  <078cd5a78b536b368279be49a09f1c5be836db81.1740405546.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v3 2/7] iio: adc: ad4130: Fix comparison of channel setups
+Date: Mon, 24 Feb 2025 15:10:13 +0100
+Message-ID:  <e6f5902a70fb9f6b2981ba7fb1f3582955a836b8.1740405546.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
 References: <cover.1740405546.git.u.kleine-koenig@baylibre.com>
@@ -94,40 +95,101 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1372; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=SRKMapFlVg3+8kF9cvHubzekV8X8++YISp0c0O7y6Ac=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnvH3H4vN6a2TlRtaxZvfozYC6VZFqqNsueMlJH l1mjnTY1ciJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ7x9xwAKCRCPgPtYfRL+ Tl81B/9KiUF0D4CAMS0JiYnnlE5qVeJ8xAKk/D/yu9bF3Yot6cnIoRl6S37rj2ATjzkEVz0pnjJ 3sbaa//bQ4Wvr+D2baANCajGdNXAtXp9/uK5jCw46jz6AQSlLcQG5LYdWpxK9pwHYdXpQB7cs6R YHcg361criw5GEKdW+E1RJOizrD0q0u7NFJb35BGhh9hdmow/52JxVt2shbSHppR5VDKrbJdaPJ vllQXUSH/bTpEInnhCD/m859cnKp69hNOCGLwCszFhRqJiKRI/fWZQK+mOVt40jd4HpdNglqUkU 7tAB4IET5EiBCV/d03DFn+ZBjgoq7aak1Zjj8p26GdXqXQUg
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3350; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=ec14xnJrpwkJrC/ethpz0fLxzagiTiLZ9fwLcAvPKo8=; b=owGbwMvMwMXY3/A7olbonx/jabUkhvQ9tac2pO2reZlW3u+uLNEhPePo1oDd5d/+vbh9bHOW2 WaBvPbqTkZjFgZGLgZZMUUW+8Y1mVZVcpGda/9dhhnEygQyhYGLUwAmcimC/Q//jZVi7H1RLxwS 2z5LCwccfXqu67l/0MaLifd4lyiue3rSOCWCabLQ4oiMdj72hT+mSe/yUGbQ9BdJPyRgJHrx8pp dL9Uv5SlPLzZaK/mZsap2tzc706vJJluiHW92WvX9tOdmXlMyU+jkqXpFwRzR5rc2CX+ey+o0dz YJce8rOrPX9dpEx4V/bYQrf29iLdjIm8nuL39vOz+no46ztav5pIcmGxa23Lrj4juFx/5l8aMMM 9e7vtELzu2PchM8EayW/CfumGWD84ydshwZcqrre7uYph/7vG5TQUM6s9rLGzJiufsZHY91srXt W8dz2yVCS2jRq9KrjJtv/Mxl5N/scSvUP+tkobL9KndtAA==
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-The function ad_sd_calibrate() enables the channel to calibrate at
-function entry but doesn't disable it on exit. This is problematic
-because if two (or more) channels are calibrated in a row, the second
-calibration isn't executed as intended as the first (still enabled)
-channel is recalibrated and after the first irq (i.e. when the
-calibration of the first channel completed) the calibration is aborted.
+Checking the binary representation of two structs (of the same type)
+for equality doesn't have the same semantic as comparing all members for
+equality. The former might find a difference where the latter doesn't in
+the presence of padding or when ambiguous types like float or bool are
+involved. (Floats typically have different representations for single
+values, like -0.0 vs +0.0, or 0.5 * 2² vs 0.25 * 2³. The type bool has
+at least 8 bits and the raw values 1 and 2 (probably) both evaluate to
+true, but memcmp finds a difference.)
 
-This currently affects ad7173 only, as the other drivers using
-ad_sd_calibrate() never have more than one channel enabled at a time.
+When searching for a channel that already has the configuration we need,
+the comparison by member is the one that is needed.
 
-To fix this, disable the calibrated channel after calibration.
+Convert the comparison accordingly to compare the members one after
+another. Also add a static_assert guard to (somewhat) ensure that when
+struct ad4130_setup_info is expanded, the comparison is adapted, too.
 
-Fixes: 031bdc8aee01 ("iio: adc: ad7173: add calibration support")
+This issue is somewhat theoretic, but using memcmp() on a struct is a
+bad pattern that is worth fixing.
+
+Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/iio/adc/ad_sigma_delta.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/ad4130.c | 41 ++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-index 10e635fc4fa4..fbe241b90f37 100644
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -339,6 +339,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delta,
- out:
- 	sigma_delta->keep_cs_asserted = false;
- 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
-+	ad_sigma_delta_disable_one(sigma_delta, channel);
- 	sigma_delta->bus_locked = false;
- 	spi_bus_unlock(sigma_delta->spi->controller);
+diff --git a/drivers/iio/adc/ad4130.c b/drivers/iio/adc/ad4130.c
+index 061eeb9b1f8d..4ab1943c4697 100644
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -223,6 +223,10 @@ enum ad4130_pin_function {
+ 	AD4130_PIN_FN_VBIAS = BIT(3),
+ };
  
++/*
++ * If you make adaptations in this struct, you most likely also have to adapt
++ * ad4130_setup_info_eq(), too.
++ */
+ struct ad4130_setup_info {
+ 	unsigned int			iout0_val;
+ 	unsigned int			iout1_val;
+@@ -591,6 +595,40 @@ static irqreturn_t ad4130_irq_handler(int irq, void *private)
+ 	return IRQ_HANDLED;
+ }
+ 
++static bool ad4130_setup_info_eq(struct ad4130_setup_info *a,
++				 struct ad4130_setup_info *b)
++{
++	/*
++	 * This is just to make sure that the comparison is adapted after
++	 * struct ad4130_setup_info was changed.
++	 */
++	static_assert(sizeof(*a) ==
++		      sizeof(struct {
++				     unsigned int iout0_val;
++				     unsigned int iout1_val;
++				     unsigned int burnout;
++				     unsigned int pga;
++				     unsigned int fs;
++				     u32 ref_sel;
++				     enum ad4130_filter_mode filter_mode;
++				     bool ref_bufp;
++				     bool ref_bufm;
++			     }));
++
++	if (a->iout0_val != b->iout0_val ||
++	    a->iout1_val != b->iout1_val ||
++	    a->burnout != b->burnout ||
++	    a->pga != b->pga ||
++	    a->fs != b->fs ||
++	    a->ref_sel != b->ref_sel ||
++	    a->filter_mode != b->filter_mode ||
++	    a->ref_bufp != b->ref_bufp ||
++	    a->ref_bufm != b->ref_bufm)
++		return false;
++
++	return true;
++}
++
+ static int ad4130_find_slot(struct ad4130_state *st,
+ 			    struct ad4130_setup_info *target_setup_info,
+ 			    unsigned int *slot, bool *overwrite)
+@@ -604,8 +642,7 @@ static int ad4130_find_slot(struct ad4130_state *st,
+ 		struct ad4130_slot_info *slot_info = &st->slots_info[i];
+ 
+ 		/* Immediately accept a matching setup info. */
+-		if (!memcmp(target_setup_info, &slot_info->setup,
+-			    sizeof(*target_setup_info))) {
++		if (ad4130_setup_info_eq(target_setup_info, &slot_info->setup)) {
+ 			*slot = i;
+ 			return 0;
+ 		}
 -- 
 2.47.1
 

@@ -1,79 +1,76 @@
-Return-Path: <linux-iio+bounces-15992-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-15993-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D297DA41A3C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 11:09:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D0C6A41A81
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 11:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AC573BC5B9
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 10:05:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 024197A1568
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Feb 2025 10:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5E52512E3;
-	Mon, 24 Feb 2025 10:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EB224CED2;
+	Mon, 24 Feb 2025 10:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d0bkq428"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PZwVtRh9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3684E250BFD;
-	Mon, 24 Feb 2025 10:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3859A24A07D;
+	Mon, 24 Feb 2025 10:15:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740391407; cv=none; b=ChIu1/tz4+JjPAW8Gk84dX2kHOey1WfrUHKeFZ1nlRzXjL/UUeBb3QcwReS6OXuO02js+HHtCytIGEPHaYfNUGyhzp7JJpSqp+p3Tp3NfmrtB3K1lsfe8CAux0pcfsTy8+9buonvG1GMpYnFuExJTufzFPa+/VQ18WiYmL2Kj+g=
+	t=1740392109; cv=none; b=uiUXWw0PPcnT8LlwACuhV6QGnvXH1VX0Kz2IhI68J+gTBV0SOWKddluxywIgsC3VKq198mVVz0qxIciNhiEIjIib3WI/6o32C731UKvT/zhtwhHO68CcAyHoy4o8AwzZnXUAuGEIFOB12QfZnQZwhmf/DWzC/rJrRm8J6y+Rx7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740391407; c=relaxed/simple;
-	bh=KQ22hIAPpKO2ylb4LULSdWfYR5KIsCrd+boJQZ3jYNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fg9NPp7gB+AC/m9FrhJzhV8Nu6LDRQbL+wXFpBjqiRsI68BjmmPkA2S9a9/zOS6aT5aNgl+M4yIQ+wl/RAzcGoZbhhjGulM8CkL6FotCcmPoWPJG/YqdMFAgx2Mb9t0L3DK0JIlWqXbWCx8iIQ+a9erOwi0dNilThMWkm0a33FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d0bkq428; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1740392109; c=relaxed/simple;
+	bh=X7vkQQ4F5+cSqqlRkpsILI26dm79sHFn/mANLNxxotY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=nTBaNpF1fRqtIg50nX9q0ejWCgD/QJK5qRO4qSNK1wP1ly6u2FSB5JW6QejWSfxRGWGcRUrGtGrfbgAgw/kwr5Y7AgaloUpNHUKe0Sp1naUh7pXmMPSIj9LEiKiRAGHsGdVenX2I4woYmKo3WC2KGqcjDr7qbLWV0D4PqqnBUlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PZwVtRh9; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740391407; x=1771927407;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KQ22hIAPpKO2ylb4LULSdWfYR5KIsCrd+boJQZ3jYNA=;
-  b=d0bkq428NtGl3DzqDa3Cs7O2849pUhkY7dPojf8SlBxakyx/tey5vf1f
-   USQ1vb00lVPac5WY+PYOhb45jdvP2dKLmfzrANpimbD6K3q8Zb5XEgizI
-   cOLtWWKms2xrPkceHxzNmfyR/yC8nsR5xIqd7MLLAtANb6jGXKGTeK0og
-   ObFTzb6LuudBgkLb+YKeyP3EYulJHiiLMD+207f7fdlNBS9W+e8LITUoE
-   1pzMZhjpEmDN93RksuMo6VSIvPWYMkUkhZ8dAtWVVblPOTytMtP6WmCcP
-   KGtpLeesnOE73x03zvjnOc9jqL4usnCy0dLsXgr07+Wfy08qlzYfXG6qs
-   g==;
-X-CSE-ConnectionGUID: KJjfjTDBQWCcHOysW09lcw==
-X-CSE-MsgGUID: iAUwRwQ/QH6hAbXyvxLfWg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="41050692"
+  t=1740392107; x=1771928107;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=X7vkQQ4F5+cSqqlRkpsILI26dm79sHFn/mANLNxxotY=;
+  b=PZwVtRh9DcXTsiuOQAi6AcSZElDLzgrBOPPeXWsEnpvl3A3sZ9fghoDC
+   JHzOBuGvoj1reow8/TmHcjk8JORk3AJLFM5L2fEyz0tmtPBpce2UoaqiL
+   k9PBO0aWWc7rbeBqlxX6tC470Drdb23Fetq90brDb7kHSBz+VJnxP08Xf
+   6rQMdZxhQdPxVkk8HmoFpv4HdhfQcGmXupPCMcSmJ2tsHaaTQVpE8+2X2
+   nr1b8oWCblIZqmjomxjuZmD7OEyQbm7ghMQIE6SH9GAU9t4WHj4S2nxti
+   zlulD76JuYIndM2L0IEx7G+z8dG8ir0biqmAUvZbMhImYn5+PZjnro7sx
+   Q==;
+X-CSE-ConnectionGUID: tOxFqhTVSuKZwxfSpg2jbQ==
+X-CSE-MsgGUID: xPKBFpnzTwCcZkPy9DLWhw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11354"; a="41155833"
 X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
-   d="scan'208";a="41050692"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 02:03:26 -0800
-X-CSE-ConnectionGUID: uj88UQdMR8SCvxpT/Z2gzQ==
-X-CSE-MsgGUID: Cb3A/5pxTMGR+phwiX1iIQ==
+   d="scan'208";a="41155833"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 02:15:06 -0800
+X-CSE-ConnectionGUID: xf1hhCLjQuy7RYUzkPiaEw==
+X-CSE-MsgGUID: C8bHB0NJQtGlmboAve8UyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="121284335"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 02:03:23 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tmVJ2-0000000Eevo-0M9z;
-	Mon, 24 Feb 2025 12:03:20 +0200
-Date: Mon, 24 Feb 2025 12:03:19 +0200
+X-IronPort-AV: E=Sophos;i="6.13,309,1732608000"; 
+   d="scan'208";a="121101900"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Feb 2025 02:15:04 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 4B211172; Mon, 24 Feb 2025 12:15:03 +0200 (EET)
+Date: Mon, 24 Feb 2025 12:15:03 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Linux pin control <linux-gpio@vger.kernel.org>,
 	linux-iio@vger.kernel.org, linux-input@vger.kernel.org
 Cc: Linus Walleij <linus.walleij@linaro.org>,
 	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Cameron <jic23@kernel.org>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [GIT PULL] devres-iio-input-pinctrl-v6.15
-Message-ID: <Z7xD57sjj4sbwMv5@smile.fi.intel.com>
-References: <Z7cqCaME4LxTTBn6@black.fi.intel.com>
+Subject: [GIT PULL] ib-devres-iio-input-pinctrl-v6.15
+Message-ID: <Z7xGpz3Q4Zj6YHx7@black.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,20 +79,111 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z7cqCaME4LxTTBn6@black.fi.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Feb 20, 2025 at 03:11:37PM +0200, Andy Shevchenko wrote:
-> 
-> Hi Linux kernel maintainers,
-> 
-> Here is an immutable tag of the "Split devres APIs to device/devres.h and
-> introduce devm_kmemdup_array()" series [1], please pull if needed.
-> 
-> Link: https://lore.kernel.org/r/20250212062513.2254767-1-raag.jadav@intel.com [1]
+Hi Linux kernel maintainers,
 
-Stephen reported that some of the commits miss my SoB tag (as the committer).
-I will issue another tag with than being fixed.
+Here is an immutable tag of the "Split devres APIs to device/devres.h and
+introduce devm_kmemdup_array()" series [1], please pull if needed.
+
+Link: https://lore.kernel.org/r/20250212062513.2254767-1-raag.jadav@intel.com [1]
+
+Thanks,
+
+With Best Regards,
+Andy Shevchenko
+
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
+
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/pinctrl/intel.git tags/ib-devres-iio-input-pinctrl-v6.15
+
+for you to fetch changes up to 1f4c7f3b3afa90e10903234c86d5bd168c5f23b3:
+
+  Merge patch series "Split devres APIs to device/devres.h and introduce devm_kmemdup_array()" (2025-02-24 12:08:53 +0200)
+
+----------------------------------------------------------------
+ib-devres-iio-input-pinctrl for v6.15
+
+* Split devres APIs to a separate header (linux/device/devres.h)
+* Move IOMEM_ERR_PTR() to err.h to avoid unneeded loops
+* Introduce devm_kmemdup_array()
+* Use devm_kmemdup_array() in input, IIO, and pinctrl subsystems
+
+The following is an automated git shortlog grouped by driver:
+
+baytrail:
+ -  copy communities using devm_kmemdup_array()
+
+cherryview:
+ -  use devm_kmemdup_array()
+
+devres:
+ -  Introduce devm_kmemdup_array()
+
+driver core:
+ -  Split devres APIs to device/devres.h
+
+err.h:
+ -  move IOMEM_ERR_PTR() to err.h
+
+iio:
+ -  adc: xilinx-xadc-core: use devm_kmemdup_array()
+ -  imu: st_lsm9ds0: Replace device.h with what is needed
+
+input:
+ -  ipaq-micro-keys: use devm_kmemdup_array()
+ -  sparse-keymap: use devm_kmemdup_array()
+
+intel:
+ -  copy communities using devm_kmemdup_array()
+
+Merge patch series "Split devres APIs to device/devres.h and introduce devm_kmemdup_array()":
+ - Merge patch series "Split devres APIs to device/devres.h and introduce devm_kmemdup_array()"
+
+pxa2xx:
+ -  use devm_kmemdup_array()
+
+tangier:
+ -  use devm_kmemdup_array()
+
+----------------------------------------------------------------
+Andy Shevchenko (3):
+      driver core: Split devres APIs to device/devres.h
+      iio: imu: st_lsm9ds0: Replace device.h with what is needed
+      Merge patch series "Split devres APIs to device/devres.h and introduce devm_kmemdup_array()"
+
+Raag Jadav (10):
+      err.h: move IOMEM_ERR_PTR() to err.h
+      devres: Introduce devm_kmemdup_array()
+      pinctrl: intel: copy communities using devm_kmemdup_array()
+      pinctrl: baytrail: copy communities using devm_kmemdup_array()
+      pinctrl: cherryview: use devm_kmemdup_array()
+      pinctrl: tangier: use devm_kmemdup_array()
+      pinctrl: pxa2xx: use devm_kmemdup_array()
+      iio: adc: xilinx-xadc-core: use devm_kmemdup_array()
+      input: sparse-keymap: use devm_kmemdup_array()
+      input: ipaq-micro-keys: use devm_kmemdup_array()
+
+ drivers/iio/adc/xilinx-xadc-core.c          |   4 +-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_i2c.c |   2 +-
+ drivers/iio/imu/st_lsm9ds0/st_lsm9ds0_spi.c |   2 +-
+ drivers/input/keyboard/ipaq-micro-keys.c    |   5 +-
+ drivers/input/sparse-keymap.c               |   3 +-
+ drivers/pinctrl/intel/pinctrl-baytrail.c    |   6 +-
+ drivers/pinctrl/intel/pinctrl-cherryview.c  |   5 +-
+ drivers/pinctrl/intel/pinctrl-intel.c       |   6 +-
+ drivers/pinctrl/intel/pinctrl-tangier.c     |   5 +-
+ drivers/pinctrl/pxa/pinctrl-pxa2xx.c        |   8 +-
+ include/linux/device.h                      | 119 +------------------------
+ include/linux/device/devres.h               | 129 ++++++++++++++++++++++++++++
+ include/linux/err.h                         |   3 +
+ include/linux/io.h                          |   2 -
+ 14 files changed, 152 insertions(+), 147 deletions(-)
+ create mode 100644 include/linux/device/devres.h
 
 -- 
 With Best Regards,

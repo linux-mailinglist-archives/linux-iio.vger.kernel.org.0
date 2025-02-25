@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-16038-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16039-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC12A43651
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 08:44:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97DC4A4366B
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 08:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B08188DFC3
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 07:44:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 363607A642D
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 07:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F8256C80;
-	Tue, 25 Feb 2025 07:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD4F25A326;
+	Tue, 25 Feb 2025 07:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XphZY6kN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9gyG2n+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8D42571C7;
-	Tue, 25 Feb 2025 07:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207421DB15B;
+	Tue, 25 Feb 2025 07:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740469464; cv=none; b=MxVVsi2O5AOV7+1YLsNpwnHuNBxo1JK58t6w8H7a9EUo/De0LSSs6GFYSKyMBrocsZZEA4ecsLkdzCvQ3uyyry7MQz5R59Lm12XTF+/NTuD1QM6ypaoSTpCTVsxXPwsAemslSy+vMIMp6bsY48fwSbXRydeoActxo1WRlq/+u6c=
+	t=1740469736; cv=none; b=tM1EagzkLeP1MPT1O8N3V4kj9CvORh7//COJQSChjlyejM6O0B+vhKps0MbNOPEIBsYwdO0UJWlL0GKlJojL6ail5JoPUCcpppqVMA5FKELOxq3IrTrBiJV0OeXGpiTgoayM63bREjz2h/Ee/IstefmnFGhT83RRq29Ch4v7Xwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740469464; c=relaxed/simple;
-	bh=rDDos2mgnkFWN7pXut8SG01S2XetF3htaI4UqKNCY0M=;
+	s=arc-20240116; t=1740469736; c=relaxed/simple;
+	bh=/ncftbb9PfkRY5I1SEo5KWByGpqMh87THSvXX1b1/Ms=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gzWq6BsVX3FKKt0OOXS+GnltA/nn/ojE74xZE+sY2ZSDTgoc0ufbHTHJbf/6Y1hE7TGPR7OuhdH32Ms7zXnAAkI4a6NzSfeA4ONZHqx1MESCPh0fuJTMDCFzy90UuCPOcX7IDFm//KsHH8bQqRV4WSnzTaF+lH6Y+3QWNl/boUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XphZY6kN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC32C4CEDD;
-	Tue, 25 Feb 2025 07:44:21 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=U/4yFpb/Xta9ou1NNik8sHIiRkVJdTz+b4KeRlx03pSGx/jpN5FAOgGPawpyW5yRb8pWfrNXP0Jwx6EmQfWq8KD2ceofVxXiboG51MPU3Y1/+qbB2uB424e5Gp+Sr8WqpEIfwrM926bcXa/p+u7uc2a/j/n2hadTjqXTBlpyrtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9gyG2n+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67958C4CEDD;
+	Tue, 25 Feb 2025 07:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740469464;
-	bh=rDDos2mgnkFWN7pXut8SG01S2XetF3htaI4UqKNCY0M=;
+	s=k20201202; t=1740469735;
+	bh=/ncftbb9PfkRY5I1SEo5KWByGpqMh87THSvXX1b1/Ms=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XphZY6kNgCR6UESOoGX8B8Ic+wS7T3+69QOnF0aTBjcDEz24wsYNucgjCukRR/IR9
-	 UB4Vc77kt8AaJzub4UO/H/qUMt2z7GUcRJ/QIsmEz17qZfI39p++ufDVIwzJl4zlXh
-	 VS2vtBuYTpxZdaACVkuE6el9AZVVvLT4K6uLH+TifkRsx5ULJHumg14Z7HliAopqr4
-	 MZkbAwotp/OubfQ+H2MMygUihujc6dDwYD/0ZKrVIbcHKV6gWw+bfC0Mv5xE3u1DKO
-	 JBmXwtYce+EJafcfTfhsWXimY7NBcayCl5Oofhs+Syf1cGojvqaIbVZ11OhrwvL1vj
-	 0wwnjAMuMmxEQ==
-Message-ID: <fe1b0dde-f899-4303-bd2a-b19098edcae8@kernel.org>
-Date: Tue, 25 Feb 2025 08:42:04 +0100
+	b=R9gyG2n+2ROXnP/X14vbm0q8n+lZHTumKXJ+xYnR3rnd6Kki+WFokVrVDe/VHevZz
+	 524z+obxKDc9qExkVKSXDHccqC6g6NT7TIaJ1dtxwswccxcoRtdqXSwc3WQArKBjrv
+	 vmGvBgOhNjnQsLziIrMi1gtmnKy/rNC1HrnD7HDhy8YMYoEOevt4wGpmZJD0Yae5N+
+	 HREYavAgE4QRHSFMsONHOHl0JCWzx7Iq+25ur3DrmFw5lVb8K+dh6NXYQkMNgEjjMk
+	 e9gN2yAD5xAGNxwhKj4TFhq22nJNoVq5MPx+8Rjk/DzBI3WhXkMXXsCD6+vxoOUwDJ
+	 0sjMYMZgATXsw==
+Message-ID: <f76a3a6c-795e-4fc8-905f-4655115ea99d@kernel.org>
+Date: Tue, 25 Feb 2025 08:48:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,13 +50,18 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>,
- linux-kernel@vger.kernel.org
-Cc: linux-iio@vger.kernel.org, antoniu.miclaus@analog.com, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org
-References: <20250224175056.560111-1-sam.winchenbach@framepointer.org>
- <20250224175056.560111-2-sam.winchenbach@framepointer.org>
+Subject: Re: [PATCH 7/8] arm64: defconfig: enable STM32 LP timers drivers
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, lee@kernel.org,
+ ukleinek@kernel.org, alexandre.torgue@foss.st.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, wbg@kernel.org, jic23@kernel.org,
+ daniel.lezcano@linaro.org, tglx@linutronix.de
+Cc: catalin.marinas@arm.com, will@kernel.org, devicetree@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
+ olivier.moysan@foss.st.com
+References: <20250224180150.3689638-1-fabrice.gasnier@foss.st.com>
+ <20250224180150.3689638-8-fabrice.gasnier@foss.st.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,54 +107,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250224175056.560111-2-sam.winchenbach@framepointer.org>
+In-Reply-To: <20250224180150.3689638-8-fabrice.gasnier@foss.st.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 24/02/2025 18:50, Sam Winchenbach wrote:
-> Adds two properties to add a margin when automatically finding the
-> corner frequencies.
-> 
-> Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
+On 24/02/2025 19:01, Fabrice Gasnier wrote:
+> Enable the STM32 timer drivers: MFD, counter, PWM and trigger as modules.
+> Clocksource is a bool, hence set to y. These drivers can be used on
+> STM32MP25.
 
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
 
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
-
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
-
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
-
-> ---
->  .../devicetree/bindings/iio/filter/adi,admv8818.yaml | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> index b77e855bd594..1be6f1fe4bfc 100644
-> --- a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> +++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> @@ -44,6 +44,16 @@ properties:
->    '#clock-cells':
->      const: 0
->  
-> +  adi,lpf-margin-hz:
-> +    description:
-> +      Sets minimum low-pass corner frequency to the frequency of rf_in plus this value when in auto mode.
-
-Wrap according to coding style.
-
+Which upstream board? If you do not have upstream board, the defconfig
+is pointless for us. It's not defconfig for your downstream forks.
 
 
 Best regards,

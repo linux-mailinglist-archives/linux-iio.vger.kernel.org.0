@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-16050-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16051-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D6AA43C47
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 11:52:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7800AA43C62
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 11:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C501016F64D
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 10:52:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62215172D32
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 10:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EA026738F;
-	Tue, 25 Feb 2025 10:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40B9267B0D;
+	Tue, 25 Feb 2025 10:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLwlHszc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AmtOnomg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4F1266B6A;
-	Tue, 25 Feb 2025 10:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99751267AF1;
+	Tue, 25 Feb 2025 10:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740480734; cv=none; b=fe/qHK6M9c3FPv1QibixXBRJiX5YPz7E0CmnUC4Yx58MGf/06MEPbCiYZrdC6hfrHyj6KO+jfm2EtKr6n5MDAEEvdL4FTSIaacybjOinX+kRqnwfEgHQtIyxZIv6UJF1rG10jyguFP2ZEVWXvBIH/IKXCiJ3fMmkAlBCF33wnzE=
+	t=1740481022; cv=none; b=S6owzvO4wiDgiilFnnmAid+l1V2AfXzOGHaw5c9UhSdO1mdce0s0TaD4S+mxjGx3id0YrkdjrosW7ELWN60me0j/7bWNkun2/OAnVQfIrZz08vlPey+lY8GaQ/gtXjGgWEN2aSxsSkr6bH0CoQiAhPhRp4sfzJSuvdZoo9+tVZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740480734; c=relaxed/simple;
-	bh=uAXx1+xeAFyV+SUI7uXjsB9Thym7OEsMYo16qDBycS0=;
+	s=arc-20240116; t=1740481022; c=relaxed/simple;
+	bh=2YozzQHz8w8HrGbTyvr5eXnrPoFj0GWuc89p5e2auWs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BszqI1TQoLpgLv3zOeg9vyPHyKTmP0EjTyhtfhhV2GXsEa4Dh0Pq5JA/y1GfIhPPOR5niZrLyLMD03TxHngkJqCUGP4wtfMLgxMOqL257EfwjGULccMVg6QYv0oC7iHz+eIlCaOVkwqJlOLtTck1M6lPzI5hVqsmduEmonbVaj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLwlHszc; arc=none smtp.client-ip=209.85.208.179
+	 In-Reply-To:Content-Type; b=nWWoTzG11xsTGGIfnaGFRn2aA8J/ayBgLNOWtiAHKmQz01stiVbFYyu3MD2J4mXArzc1l1TxemhLaS+N5KGyxG51xbVGukupvSisDDmT79510p3FAGqAiohTrCw4vaiWFAElhajudNX9m+0aAXuQri0201e4FH9bxg4AqJ257eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AmtOnomg; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30613802a6bso56879301fa.1;
-        Tue, 25 Feb 2025 02:52:12 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30a2cdb2b98so54619451fa.0;
+        Tue, 25 Feb 2025 02:57:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740480731; x=1741085531; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1740481019; x=1741085819; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Oh6sf/0cKXadcZmQR4PGzWs7fubxPpGtogL6k9WOu9g=;
-        b=FLwlHszcR8Qavp0VPqUWRm7Ru8MpsTKbIOWceB5zX5daQxEVC+yoQl0zJJlYQKP4Fv
-         6QXhrW36xb5iMGMq5Fm2kszYjpdtcCuIub075DsFijZq7erbf6rwaFt/pppSh3axjISu
-         UjyMTUoeB7y0P/XBidExfNF/Qn+R9T+Y0Xa1vp5e9ZM5u/V+edFo/MUAkwW6/WeTFri1
-         f6oZu8EeeDL/ZgFpThkYa7pjdqCgjlXwCmhH1JLPI0cHDbvYb9FOIXN5MKMZRcE8C+Sh
-         a6NGVs9H4r6pSXfnCJ8LxYItK2G5Ij+9XJCwmIjs1sQ5q0uo0/iq3Si2cTMb6QLi+j0G
-         /a6g==
+        bh=7/fHdL9OxTBfJ/OtLlF+A8QVXV0YakMI11nkG7r9zEY=;
+        b=AmtOnomgimrsh+JSqPKhw5JK9ZUgi4WKi4e7lshvrOVz4CDy/LR8MZiZuN12MvGeYt
+         kHEs1CQepDJDivhRX+EpzlH4guuRxck3iH0tZyizsmv+5TfYkIOO39iDF79VVyvvpx70
+         mCs4NrVXlis604mjsef+5grqX8+DviTDjHwBQWRdyweOZ/djRtvWoIhCUOsDwTjaLGJ+
+         ptCmfKczWq6JBxyLObjSn8j8GdBOzLxhxiOIK5RpJ1hflcQJ1cPE49PYkmT6iZnrTWJ9
+         nJjcO6QnTsg3K9lUt71piJGZIB+vfxDZzwAcpYe/QHhaBT0UgZ6k8huxLTDZqJiHSCTk
+         zSCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740480731; x=1741085531;
+        d=1e100.net; s=20230601; t=1740481019; x=1741085819;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Oh6sf/0cKXadcZmQR4PGzWs7fubxPpGtogL6k9WOu9g=;
-        b=LSmyq15lXFxn7bc5KEDlo2AfUuNfFJi2SXAdqfhvdRrh0S15onIGuqiFvLvM921KH2
-         2ZQlTuO/kLvsoNh21UVbfrdCf/3QtYvR86yer83+EaBXrg2tlr/CxmE3GOvhpnCJnJVy
-         YUmORjhRfpHUMO3CeEYf1BK04nLZH9TrPKlUVQ6Yr9ngHKHwi97mzZiJ1I67RuACZZmC
-         yMLqObq3dzYBBp+6LC9xmpTPhy70c4MKeIe2z7veXZXDjcOkpYm/SGA2O5GiT9A0mJBo
-         evwt4gaYklVaXHfu+YUJ4l7YBw+86ykoftAnVNnLInHX1gH3qsJ0EQ4m0j7/QwV5qP+t
-         geXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCViPh8xWJQKhxfLUxpALc5ehG88nD+oT/70MZLSK/Vtjwt4frKCercGuELW/vKpsrvi5HpF8uIVO1fp@vger.kernel.org, AJvYcCVzL1OW9V7EXtK1YubsKtMrUC7h5lbT5BAyn3keFL7ETam6Da/I9nf8DYDKtMAlhmMa9QAE3ruJW1wTww==@vger.kernel.org, AJvYcCWUbvcP1+taRi6gYm7WKhX9EY5woVV2AaYXswEA85OHcwPUBVv03vXS/NFTajJqul8xewrkYpZQQKAQwByY7BOYQiw=@vger.kernel.org, AJvYcCWc54GC2Eh6Y61nReGEczn+0SBKV9+dibnrXRWFWgZD7MjfA/dtzgysBKOVB2ofezTF4FxBR6MZimGOmK5w@vger.kernel.org, AJvYcCXU7RI+ZcFsI8kn3NYO6XtxIb4HgYU+/Gzcoor/SgQi1WbVlVRVid5gMAeflL8VrIjFt3exOztfdnJf@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbDC5y1YFtQyn+RLQFXFCPQXI3230WA/QADhU/Q/kR/5pGz2vR
-	2l6uMWkc7gW+uUwnyQfE1nCGS7ZUSlyD5HhYeABCThGJMxiUCj0e
-X-Gm-Gg: ASbGncujbpzOIBgHidPrFY45YQdjDjjj4OsQf8x5Dz0JN/MXcPgXOiq0YiPnRpr4eds
-	sLgGwMaseHTDl7XNgxppyd8hflRYIY87B2pm3rNQKI9iSsDM9gdp2EszEcJ/laFi3lvNloD/1dM
-	g7NTLAeyDFXwHei8JoFbfcrf6AUYIodj3WHZDMrlrcZir49bn3gfqsPQuwc6SlI0xnDU+lsxvj5
-	R9qSDzMm6h79a3DSkQI0gkmcAOtX0M1DR070b29EegqH21TbVs+zeJgjTp3f60Z96YnUvXR8uTV
-	zrYWoiMfPCfkQbwcq/sU2U4Hr5PdC+unInQE2mY=
-X-Google-Smtp-Source: AGHT+IHos/L3fbLnhOLot3czcjTdpc0kSS3ue5NjEpFQm5GfsKczAy1WAOw0rIcb+pgC1rLfhfv55g==
-X-Received: by 2002:a2e:98da:0:b0:300:de99:fcc7 with SMTP id 38308e7fff4ca-30a80cb8079mr9573441fa.36.1740480730280;
-        Tue, 25 Feb 2025 02:52:10 -0800 (PST)
+        bh=7/fHdL9OxTBfJ/OtLlF+A8QVXV0YakMI11nkG7r9zEY=;
+        b=NRiIf3ZKr1r6CmFnrs+zSP+RddIrY+DkvzA25lcGrRNQaaApPklEV30kN+/40m1//q
+         Ng3Wloz10jqHdIREMI5yKXy5gU2vzMo4E9ZmGWSBDEGI4n4wYePT+nJe+DhoCQxbpcri
+         nfTmr/qL86Kay3OpFSJxGqw6q0BFkFG+Ug6Z4w34wD6N418qfebU0WJeFBwLGssyqfIi
+         dvQPcRkj1PCuushD3JhQtwHUlFP4uq/HXFJee/4apKXW+PdldcUUJu5Vg4KkT5X0V8h7
+         lPTFtBxfnpDARzhcTwgd1jxMXmNMx6NlGeeclbqJHBzHjqOelGsP2KJ2lWZXFh9DVhaR
+         uxJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNiXnu3j9rfCF29jgZpKv4ivIHsfoqAUwVWRejOEnmSvT9Sb0p2/WiDoU6l8v7HhgclJbhaed3hw+j@vger.kernel.org, AJvYcCWYZK6cMig4vBOfob6YTpBkoUTR+qEgynzg1shPul2h4v3fh3dYZBHLsYR2idnnNxpfnpHU76wMfFQabT4d@vger.kernel.org, AJvYcCWiUmxNQEHehTW6LR6iT8keSANbpBQPHHJfOjKmaG0k2QN9Ffen5Z7Fpb1O00VnF3ArPgA67qG+ZG6n7Q==@vger.kernel.org, AJvYcCXpaRy3sDLMnJ589OHQy+9XTo52mjYN+QKxoEAlUrBPrRLeXiznbPq0qE1vt8t0bgULvLsSp2PQq3z3l+ccQm/+uXk=@vger.kernel.org, AJvYcCXxbuy1/K7kiDZQOtGEP+oXDkeLh/q5uenQ8VpEbAhojI0YBMRY+DDw9gfiIggftkyl+3WpIAjfKFZG@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEy0zFQn6+SxLT8BbqPgPxSWMKyV7qM5ttZWpA8J6ax+Gb3+eS
+	dnSCM4MrL5QRqVOUjHpum7eCQ6yIDjmDOPaVdg+50bt1tUlaKvan
+X-Gm-Gg: ASbGnctCbTNCdH/iMEx2QNAwaR3hmJaySAXhVlVCsNWvAYkRSC93fpMIgNkl7ZCBqyF
+	spLlBv7rUoeCNSq22/FTkwy6+bk9oRNlNLh+IsK3wEgBCe1zPjVTAGhaz/klEEfkfZ9iQQhq0AT
+	7H74eiAqbdGFJxuO/mWOnxHDrlS77MF20kooMCwBqbw0nJdVw2n2YXpg3EVCNDfUscJXqTb4/GM
+	+mYY1xJfIh9zMFusa37TxkwL4MO3YiJELjKYfg5TIgOjpxed0+TezzoHwJ8mRgIK5B76VkAg4Uq
+	aEAgr+Q6dy1xdGSlWjAF5y/XfQCs5k4VxMitlT0=
+X-Google-Smtp-Source: AGHT+IH2/CKNaTosFs8GlS0XdmUzabLuIWWzOTmpp5OU7F/me7OdOFzkGeicuNnt7xucX157I9qrZQ==
+X-Received: by 2002:a05:651c:22e:b0:308:f75f:457 with SMTP id 38308e7fff4ca-30a5b18ae70mr54123081fa.12.1740481018475;
+        Tue, 25 Feb 2025 02:56:58 -0800 (PST)
 Received: from [172.16.183.207] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30a81ac3190sm1936591fa.80.2025.02.25.02.52.08
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30a81ae80besm1961621fa.93.2025.02.25.02.56.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 02:52:09 -0800 (PST)
-Message-ID: <f92724d5-e9b9-4cdd-8443-4866946d4568@gmail.com>
-Date: Tue, 25 Feb 2025 12:52:08 +0200
+        Tue, 25 Feb 2025 02:56:57 -0800 (PST)
+Message-ID: <1e0a9915-fe52-4569-9da0-b0761ba8fedb@gmail.com>
+Date: Tue, 25 Feb 2025 12:56:56 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,9 +83,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 02/10] property: Add
  device_get_child_node_count_named()
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>,
@@ -113,54 +113,70 @@ Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 References: <cover.1740421248.git.mazziesaccount@gmail.com>
  <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
  <Z72QAOA9xXbP16K-@kuha.fi.intel.com> <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
- <ad39b453-7e5b-49bd-a4fd-6a4988636130@gmail.com>
- <Z72d7TzZ21WITW3f@smile.fi.intel.com>
 Content-Language: en-US, en-AU, en-GB, en-BW
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <Z72d7TzZ21WITW3f@smile.fi.intel.com>
+In-Reply-To: <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 25/02/2025 12:39, Andy Shevchenko wrote:
-> On Tue, Feb 25, 2025 at 12:29:31PM +0200, Matti Vaittinen wrote:
->> On 25/02/2025 12:21, Andy Shevchenko wrote:
->>> On Tue, Feb 25, 2025 at 11:40:16AM +0200, Heikki Krogerus wrote:
->>>>> +/**
->>>>> + * device_get_child_node_count_named - number of child nodes with given name
->>>>> + *
->>>>> + * Scan device's child nodes and find all the nodes with a specific name and
->>>>> + * return the number of found nodes. Potential '@number' -ending for scanned
->>>>> + * names is ignored. Eg,
->>>>> + * device_get_child_node_count(dev, "channel");
->>>>> + * would match all the nodes:
->>>>> + * channel { }, channel@0 {}, channel@0xabba {}...
->>>>> + *
->>>>> + * @dev: Device to count the child nodes for
-
-...
-
->>>> I did not check how many users are you proposing for this, but if
->>>> there's only one, then IMO this should not be a global function yet.
->>>> It just feels to special case to me. But let's see what the others
->>>> think.
->>>
->>> The problem is that if somebody hides it, we might potentially see
->>> a duplication in the future. So I _slightly_ prefer to publish and
->>> then drop that after a few cycles if no users appear.
->>
->> After taking a very quick grep I spotted one other existing place where we
->> might be able to do direct conversion to use this function.
->>
->> drivers/net/ethernet/freescale/gianfar.c
->>
->> That'd be 2 users.
+On 25/02/2025 12:21, Andy Shevchenko wrote:
+> On Tue, Feb 25, 2025 at 11:40:16AM +0200, Heikki Krogerus wrote:
+>>> +/**
+>>> + * device_get_child_node_count_named - number of child nodes with given name
+>>> + *
+>>> + * Scan device's child nodes and find all the nodes with a specific name and
+>>> + * return the number of found nodes. Potential '@number' -ending for scanned
+>>> + * names is ignored. Eg,
+>>> + * device_get_child_node_count(dev, "channel");
+>>> + * would match all the nodes:
+>>> + * channel { }, channel@0 {}, channel@0xabba {}...
+>>> + *
+>>> + * @dev: Device to count the child nodes for
 > 
-> I haven't checked myself, I believe your judgement, but can you add a (rfc?)
-> patch at the end of this series to show that? With the luckily event of acking
-> by the network people we may have it already done.
+> This has an inconsistent kernel doc structure in comparison to the rest in this
+> file.
 
-Sure. I can add a patch to gianfar when sending the v5 - if this new 
-function is not completely NACK'd before that :)
+Hmm. I'll take a look at the differences for v5.
+
+>>> + * Return: the number of child nodes with a matching name for a given device.
+>>> + */
+>>> +unsigned int device_get_child_node_count_named(const struct device *dev,
+>>> +					       const char *name)
+>>> +{
+>>> +	struct fwnode_handle *child;
+>>> +	unsigned int count = 0;
+>>> +
+>>> +	device_for_each_child_node(dev, child)
+>>> +		if (fwnode_name_eq(child, "channel"))
+>>
+>> s/"channel"/name/ ?
+>>
+>>> +			count++;
+>>> +
+>>> +	return count;
+>>> +}
+>>> +EXPORT_SYMBOL_GPL(device_get_child_node_count_named);
+>>
+>> I did not check how many users are you proposing for this, but if
+>> there's only one, then IMO this should not be a global function yet.
+>> It just feels to special case to me. But let's see what the others
+>> think.
+> 
+> The problem is that if somebody hides it, we might potentially see
+> a duplication in the future. So I _slightly_ prefer to publish and
+> then drop that after a few cycles if no users appear.
+> 
+> Also this misses the test cases.
+
+I'll also take a look at the tests, but I have a bit of an attitude 
+problem what comes to unit testing. Adding tests for the sake of having 
+tests just hinders the development. It makes improving functions less 
+appealing (as tests need to be changed as well) and adds bunch of 
+inertia & maintenance cost. Sure, on complex functions having tests 
+increases the confidence that changes work - but I don't see much value 
+here.
+
+Do we have tests for all the property.h functions?
 
 Yours,
 	-- Matti

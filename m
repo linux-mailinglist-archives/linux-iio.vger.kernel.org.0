@@ -1,235 +1,157 @@
-Return-Path: <linux-iio+bounces-16037-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16038-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EE29A435F2
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 08:10:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC12A43651
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 08:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F54A3B2F2A
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 07:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B08188DFC3
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 07:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB97257AFF;
-	Tue, 25 Feb 2025 07:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02F8256C80;
+	Tue, 25 Feb 2025 07:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kp3TwPVj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XphZY6kN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740A7254875
-	for <linux-iio@vger.kernel.org>; Tue, 25 Feb 2025 07:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8D42571C7;
+	Tue, 25 Feb 2025 07:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740467396; cv=none; b=TsVZasst4zhSCTTQ0mY392eXHFAuAzC2tyNm8huZnO7c4prXB88G2xxP6jhqTXA6zIPdHLNKE0quRK22T1e49pEjLG31yu12xlbw72b5f0Z2OIJkZ+aytDzkfj/j4DjZJFQGO8BQLnslv0QeGUuGtBgswR51xVM8AeynpalMArE=
+	t=1740469464; cv=none; b=MxVVsi2O5AOV7+1YLsNpwnHuNBxo1JK58t6w8H7a9EUo/De0LSSs6GFYSKyMBrocsZZEA4ecsLkdzCvQ3uyyry7MQz5R59Lm12XTF+/NTuD1QM6ypaoSTpCTVsxXPwsAemslSy+vMIMp6bsY48fwSbXRydeoActxo1WRlq/+u6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740467396; c=relaxed/simple;
-	bh=gq2hDrmk1YeTI50inWgLhcrnIfTQFwtUpvKtvwO3404=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JlAaOt1GAg52g0ksIxgJc/9zTUGB5pf/txRMbA0McOmpj8figDfMPWb1oHFKwRcvYNeZE/S3+uhHEfqcsQSzeN3AOCIiVlTaOmsOo5oiJXizooTR2VmgnezxnExHPQINQKK/cwG+s87dQDU7PDequgAIvovObJoSgCKdnMQO364=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kp3TwPVj; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-abbdc4a0b5aso963896966b.0
-        for <linux-iio@vger.kernel.org>; Mon, 24 Feb 2025 23:09:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740467393; x=1741072193; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HOLpm8ui9hQ1cEOnkVdiPSGX9UR5KkvhWPdT9wvRCbQ=;
-        b=Kp3TwPVjcjHtvnFzeaii+y9t1RI7E2BcJZivr8hZhBEJzbG550sCfXb7EmVi5jM81V
-         Rfmm6P7xyJAitnewSm0UblL4EUqGbY+1w8mvyyQOH1/JBTZgkR0/fWFaCarxIL4GVpCo
-         fUlmEVmoOF+cq0BVlTcAagRvtxHwFUh7+kx/VVHE1CqsY1x+Q99AQRy1GHEZ+j9PbEru
-         2xcBVFpc+hUfVtRQJ8mRRvahNe4isun1KeYjv5uX014NRX2t+oFRREodHZo5BoYuF7DV
-         Ype2IALZXM/oMrve68470+usfN24FYhn0UDmtrXUJ7vS/qFFlaCc3izQfhLjGHAi7Jjd
-         FoJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740467393; x=1741072193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HOLpm8ui9hQ1cEOnkVdiPSGX9UR5KkvhWPdT9wvRCbQ=;
-        b=enIwfNdnTYRAVq0ojkwGh4/FNLLN2Mv4K8wlPOuPRgLAd4RGCgwcQ0eDJ27HntIfKc
-         PL80iCpziYK0iQMNaOHPWbXkgzK465Ns8jMukgM0HTjH30mFQAT4+irro3YrUfMq6W5G
-         oiLw+0DZHb0X7EU/QbgqBz70h5HXO9vt3DTnM7Lfs+OQO/aRzxb2gla8lpZlDqujAFVu
-         FVAfKWEfF91ChEeph/vVvllMTfq5YOL5GpO/hDPJP+drNcDsM4u/uuG+TdPOWI71C/xQ
-         R29W1DKTUe8rxuTsjkuF2MzJoAVBVOB2EA43nHcJV0NlA6FW2CUEut2vFkK8HBIYrZWr
-         TUMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUyeab/FjE7nMH8wCv9qxxzmFKjdCPK89Wv+Q6+DFZ96gW5Iuk1A24Nf8i2gMpHZrt/MRRMQAlISOQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDwTp+dpSm2FKy0gOxfGFtzg61k+4vX71rczr4ghD78iGu0OEC
-	b8+spd/4y37ZVbZIwU1aA6ZnXnbxWomqBSly7x+VGfhPmbIMifZkin1Fh1xLLaQbnNcb2mktXKa
-	hXvel23pBACLbOERrtjXolVQBgH8=
-X-Gm-Gg: ASbGncsegDUX6zh/+jmKkFkME5VbzFuOdZdQyJa2kHYspE6yA8aLSjQeDrVhEjfmAc+
-	FoObGtuJ1fkKeWnapO0bTOs++u3XRi4hFtbugNU/hY+5WvJkLD09mlxB40iUqV7IK5sCWeqy50E
-	47un3A7cI=
-X-Google-Smtp-Source: AGHT+IHohN9r415arwI1n6kdXT4GwQgO0dQRX3at5AJ38Vf3fkfHovy0sxMuYwrqIddIZMA63zn7imu4HdenPWTSztI=
-X-Received: by 2002:a17:907:d9f:b0:ab2:f6e5:3f1 with SMTP id
- a640c23a62f3a-abc0ae54e08mr1889252466b.8.1740467392474; Mon, 24 Feb 2025
- 23:09:52 -0800 (PST)
+	s=arc-20240116; t=1740469464; c=relaxed/simple;
+	bh=rDDos2mgnkFWN7pXut8SG01S2XetF3htaI4UqKNCY0M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gzWq6BsVX3FKKt0OOXS+GnltA/nn/ojE74xZE+sY2ZSDTgoc0ufbHTHJbf/6Y1hE7TGPR7OuhdH32Ms7zXnAAkI4a6NzSfeA4ONZHqx1MESCPh0fuJTMDCFzy90UuCPOcX7IDFm//KsHH8bQqRV4WSnzTaF+lH6Y+3QWNl/boUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XphZY6kN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC32C4CEDD;
+	Tue, 25 Feb 2025 07:44:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740469464;
+	bh=rDDos2mgnkFWN7pXut8SG01S2XetF3htaI4UqKNCY0M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XphZY6kNgCR6UESOoGX8B8Ic+wS7T3+69QOnF0aTBjcDEz24wsYNucgjCukRR/IR9
+	 UB4Vc77kt8AaJzub4UO/H/qUMt2z7GUcRJ/QIsmEz17qZfI39p++ufDVIwzJl4zlXh
+	 VS2vtBuYTpxZdaACVkuE6el9AZVVvLT4K6uLH+TifkRsx5ULJHumg14Z7HliAopqr4
+	 MZkbAwotp/OubfQ+H2MMygUihujc6dDwYD/0ZKrVIbcHKV6gWw+bfC0Mv5xE3u1DKO
+	 JBmXwtYce+EJafcfTfhsWXimY7NBcayCl5Oofhs+Syf1cGojvqaIbVZ11OhrwvL1vj
+	 0wwnjAMuMmxEQ==
+Message-ID: <fe1b0dde-f899-4303-bd2a-b19098edcae8@kernel.org>
+Date: Tue, 25 Feb 2025 08:42:04 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250209180624.701140-1-jic23@kernel.org> <20250209180624.701140-2-jic23@kernel.org>
- <Z7nyQgjZ36zkO8oD@surfacebook.localdomain> <20250222172357.05378fd4@jic23-huawei>
- <CAHp75Vf_XPSvTOH_zvfndghjy+bM_6hr=z2JAcE8AYh415SPWw@mail.gmail.com> <20250225062532.0000475e@huawei.com>
-In-Reply-To: <20250225062532.0000475e@huawei.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 25 Feb 2025 09:09:16 +0200
-X-Gm-Features: AWEUYZko26zZxQ-gHkZHQ-iJcuDHMULR2z2VAlyHQYjTft6KocavJ7ms9e7GJU8
-Message-ID: <CAHp75VceUgE-0B02naE8rwvqmvn9C1eKG10gqkqCMs6nkm-_6w@mail.gmail.com>
-Subject: Re: [PATCH v2 01/27] iio: core: Rework claim and release of direct
- mode to work with sparse.
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, 
-	Mudit Sharma <muditsharma.info@gmail.com>, Julien Stephan <jstephan@baylibre.com>, 
-	Mariel Tinaco <Mariel.Tinaco@analog.com>, Angelo Dureghello <adureghello@baylibre.com>, 
-	Gustavo Silva <gustavograzs@gmail.com>, Nuno Sa <nuno.sa@analog.com>, 
-	=?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
-	ChiYuan Huang <cy_huang@richtek.com>, Ramona Alexandra Nechita <ramona.nechita@analog.com>, 
-	Trevor Gamblin <tgamblin@baylibre.com>, Guillaume Stols <gstols@baylibre.com>, 
-	David Lechner <dlechner@baylibre.com>, Cosmin Tanislav <demonsingur@gmail.com>, 
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, Gwendal Grignou <gwendal@chromium.org>, 
-	Antoni Pokusinski <apokusinski01@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
+To: Sam Winchenbach <sam.winchenbach@framepointer.org>,
+ linux-kernel@vger.kernel.org
+Cc: linux-iio@vger.kernel.org, antoniu.miclaus@analog.com, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org
+References: <20250224175056.560111-1-sam.winchenbach@framepointer.org>
+ <20250224175056.560111-2-sam.winchenbach@framepointer.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20250224175056.560111-2-sam.winchenbach@framepointer.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 25, 2025 at 8:25=E2=80=AFAM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
-> On Sat, 22 Feb 2025 22:58:00 +0200
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > On Sat, Feb 22, 2025 at 7:24=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
-org> wrote:
-> > > On Sat, 22 Feb 2025 17:51:02 +0200
-> > > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
-> > > > Sun, Feb 09, 2025 at 06:05:58PM +0000, Jonathan Cameron kirjoitti:
+On 24/02/2025 18:50, Sam Winchenbach wrote:
+> Adds two properties to add a margin when automatically finding the
+> corner frequencies.
+> 
+> Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
 
-...
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
-> > > > > +/*
-> > > > > + * Helper functions that allow claim and release of direct mode
-> > > > > + * in a fashion that doesn't generate many false positives from =
-sparse.
-> > > > > + * Note this must remain static inline in the header so that spa=
-rse
-> > > > > + * can see the __acquire() marking. Revisit when sparse supports
-> > > > > + * __cond_acquires()
-> > > > > + */
-> > > > > +static inline bool iio_device_claim_direct(struct iio_dev *indio=
-_dev)
-> > > > > +{
-> > > > > +   int ret =3D iio_device_claim_direct_mode(indio_dev);
-> > > > > +
-> > > > > +   if (ret)
-> > > > > +           return false;
-> > > > > +
-> > > > > +   __acquire(iio_dev);
-> > > > > +
-> > > > > +   return true;
-> > > >
-> > > > While I understand the intention, I dislike the function return boo=
-lean and
-> > > > hide the actual error code, it calls user to misuse and replace boo=
-lean false
-> > > > by arbitrary error codes.
-> > > >
-> > > > Can we rather return an error code, please?
-> > > > (as a side effect it reduces the churn in the followup changes)
-> > >
-> > > I tried - see above.  It plays badly with sparse which is the whole p=
-oint of
-> > > this exercise. Note that iio_device_claim_direct_mode() only ever ret=
-urns one
-> > > error code -EBUSY. So reality is it's a boolean and this is a lot clo=
-se
-> > > to mutex_trylock() than anything else hence the switch to a boolean r=
-eturn.
-> >
-> > Hmm... You mean that the following (still as a macro)
-> >
-> > static inline int ...
-> > {
-> >   int ret;
-> >   ...
-> >   if (ret)
-> >     return ret;
-> >
-> >   __acquire_lock(...);
-> >   return 0;
-> > }
-> >
-> > triggers the sparse warning?
->
-> Doing it in the ternary form of the same thing did trigger issues on fair=
-ly
-> simple cases.
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
 
-Oh...
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
 
-> I don't recall if I tried this precise combination. The motivation
-> for this form originally being the __cond_acquires() markings (See later)=
-.
-> However, I 'think' based on other false positives including the smaller
-> set that required refactors to avoid triggering in this series, is that
-> sparse isn't coping well with more complex control flows.  So if we
-> assign a local integer variable and then check it, it seems to loose
-> track of what is going on in more cases than if we can do
->
->         if (!trylock())
->                 return;
->
-> I'm not sure on what is going wrong.  However it seems sparse is effectiv=
-ely
-> unmaintained at the moment so even if we could rectify things without the
-> code upstream it gets us nowhere.  Hence my motivation to make this 'look
-> like' existing stuff sparse is checking. The nearest being trylock.
-> It makes me have more warm fuzzy feelings to be the same style of code
-> as the other cases using the same infrastructure, than doing something ne=
-w.
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
 
-Me neither. I haven't looked at the sparse, I don't know how it works.
+> ---
+>  .../devicetree/bindings/iio/filter/adi,admv8818.yaml | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+> index b77e855bd594..1be6f1fe4bfc 100644
+> --- a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+> +++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+> @@ -44,6 +44,16 @@ properties:
+>    '#clock-cells':
+>      const: 0
+>  
+> +  adi,lpf-margin-hz:
+> +    description:
+> +      Sets minimum low-pass corner frequency to the frequency of rf_in plus this value when in auto mode.
 
-> Ideally sparse will eventually wake up again and we can have the __cond_a=
-cquires()
-> markings that we had in v1 and not have to have the implementation in the
-> header. That currently requires trylock type boolean returns.
+Wrap according to coding style.
 
-FWIW, Torvalds recently uploaded a new PoC branch in his sparse tree,
-perhaps he can do something about it at the end of the day. I would Cc
-him to the most needed sparse updates, like __cond_acquires().
 
-> So overall I think this direction makes sense.  Also can't complain that =
-it
-> saves 1 line of code for every instance and removes false pretense that
-> this thing returned a useful error code.
 
-Right, so we have a trylock semantics for time being...
-
-> > > At the end of the full series (not yet posted) is a patch that gets r=
-id
-> > > of their being any pretence this isn't a yes / no question and can
-> > > return other error values. This intermediate step does leave it looki=
-ng
-> > > more confusing.
-> > >
-> > > Churn wise if we'd been able to do keep the error return and make spa=
-rse
-> > > work I could have just applied this to the original functions and mad=
-e
-> > > no changes at all to the vast majority of drivers.  Sadly that wasn't
-> > > to be. End result of ending up with a trylock type approach is cleane=
-r
-> > > and more compact even if it's not what we have gotten used to for thi=
-s
-> > > particular function.
-> >
-> > > > > +}
-
---=20
-With Best Regards,
-Andy Shevchenko
+Best regards,
+Krzysztof
 

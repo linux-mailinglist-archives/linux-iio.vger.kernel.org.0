@@ -1,153 +1,136 @@
-Return-Path: <linux-iio+bounces-16062-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16067-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3185A44451
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 16:27:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A1AFA44C29
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 21:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41E81172A02
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 15:27:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B38837A5D09
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Feb 2025 20:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170E426BD9F;
-	Tue, 25 Feb 2025 15:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A9B213256;
+	Tue, 25 Feb 2025 20:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="RUYgTBkL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qA/yQo2D"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D49268C7D
-	for <linux-iio@vger.kernel.org>; Tue, 25 Feb 2025 15:26:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57299212D9D;
+	Tue, 25 Feb 2025 20:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740497220; cv=none; b=aLpfPshuqD+PS1heqg1M1i2AyB4CLI9V5IiBmeBHH6rPyoaVEi5FxSN25L4q/dSAtCFfGIU+kMiXps7vG9AsinLY+Kp0Cuq70LwSOvvUYYeCSNPDgNsb7iNaAaOIKWoiTAtyN1GsDrLp3M9y59Pv/9D21wNVvRc+NOQSS7fnLh4=
+	t=1740514357; cv=none; b=luRtl1d2A2rVsXM4UNANx2A/NIpCeA3nDmiCVff6By7PmgQRfxEMFHoSPCUBA5tFGI+iojNdCZVcYpe6axolz5VIPI47JvuX6PWkDPra0CNdDW1PA9VxWr2Evx+uQpMWDVZCulmoSQm5kwV8D+REsiDQy2LwnaQfrHw1tkRPLwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740497220; c=relaxed/simple;
-	bh=R3eOfvTKD8GbF+X93jYcj93Ugx4SD0tD0JNmsutwA+I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Z3gdaWxIgZ+2x9kF6Olq6o9fcJ0TtfQsM5d2OhLcADEcAw7AiE9Kl5PJtuRwEujblvC9WQ0UgsZT2EueFL3AcQaim3u3XHzSDNKPb5d5tygdps7OQ7WraX8DaiOOgkSazv87gdqi7xyfGt1v7tjCxCz3CE398rCzs5ybiS8UYaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=RUYgTBkL; arc=none smtp.client-ip=209.85.210.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7272f9d216dso3159612a34.3
-        for <linux-iio@vger.kernel.org>; Tue, 25 Feb 2025 07:26:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740497218; x=1741102018; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZEFMtqXWJ11nWI2h5TBKW+yhwiEH+1Jx79XU7n+Tvio=;
-        b=RUYgTBkLJc5LcVmJKtlOa7wXn18qyGd8nUJcH6hAelS/mZOyWGLFKCBwC0ZAlJ+JyD
-         VsOAwCt80OOkaQYpJ5D+avEDU8rjUh0IOg1wzOZo8plr7Bf+48ebEknTTBIsOoE7bPic
-         glQLOOVc9bgAn7Kb2oXJj+WGuMAptlZ4dy8lj1rQx8K6dw18WLiTDTQHnVX0WrZCY58u
-         QXuNEcKwKLW286CwJPV47//X3nbWmpwM96clBnDNBWeTIIw35HsHT1dFrMv/5aD9tdSF
-         2cH1x0u0TgMd1BsWb2Gsld6GTKXn3s8v2Jz8PpdrezpDlL02hUXe5dQS5vRWZW9eZhtD
-         RqVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740497218; x=1741102018;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZEFMtqXWJ11nWI2h5TBKW+yhwiEH+1Jx79XU7n+Tvio=;
-        b=cA+2zchj/FS209/S385WVbvIwIG4/nBHVb4XmR3kGpjzpmQz3FRuP0rNKV52NwJ6Gs
-         86N7LW6JHpxxQthFXwHx/mKaAII/oeDlqAvDQaEuKwT7Q0V91SnKzp/z0jcSqDF9SNjN
-         j9VpQyZbo3DnSKvWKMqLxZLfHakSoDjOClhcEBP199eiTiZGGIcqHMmel5fJD46RjmB3
-         jEztqyxGxUnP+ZTYlz4Dg3ckjUX7Gt2WcVyQphQLdg/FOkB73PVlRMXLrzkjYDLvs3Mj
-         wSCg+1w0VMoHeSJB/iWkiyy75nE1ISwIL5/XJpJ/qcaE/dX+45/E+4o3X2t0jNbdVMFS
-         LpyA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5P/DuQXzTfdDuArhxASDzno1Tc5ZauDLijLuKWcX+Tvky3UZtREH7EqHxdeX/Cu+Wd9y0qgLElrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBmLmGPJEbtZuVN0tacJGHiBJX5wNMMexJuCrJJ7i7q9QPZ4k1
-	+iVSwYdy+B1NRtFTwGuM8ZMRi73CDOIZBafK+u+EXtH06c7b9ZC36xCrK0fKqmgFiJmpnKz9n14
-	I
-X-Gm-Gg: ASbGncs+pYpiASms5x1bQVlwBSc24cFNHqKPr4P2JmIL4jaWBNFRqpJlfB9BSyiiMIn
-	eFBE6YDpzHZ35wKFIFoX4TvHzhLrOAQWqlAhAaIk6aPq1cBzwFX3+XIkW5nDxvN1k2TitMkGvMs
-	Z4Hazyqo0xMS4hag3ZmeRIY3xSC0cvst/q6nPArH9aEtlQXFP9WbZUZFYba+4rRV5Vrl8gTJzmp
-	JH7V7N8DYX62gpBxVpYr5tglhZy2pkErgNglqXYMlVaOFWPTVuT9M+ZCbGbCiIruaSW8kT98oTC
-	WGwMPGYzP5wLsERWzxkpyRzhDR0SKEapySJQNhk9yE4OveL4P3uYuQiYX+gal+s=
-X-Google-Smtp-Source: AGHT+IFGCyY/0apfFgHzqIrY9A63Ru1cUYpVgHHxAiTBgOOrsAuBzOUsIBrLonLqsT9Pl1DiMc3++w==
-X-Received: by 2002:a05:6830:2b07:b0:727:2e61:c831 with SMTP id 46e09a7af769-7274c235252mr14195332a34.25.1740497218150;
-        Tue, 25 Feb 2025 07:26:58 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-728a42cdcd9sm25002a34.11.2025.02.25.07.26.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Feb 2025 07:26:57 -0800 (PST)
-Message-ID: <d1af7490-5d91-4b30-a86f-8df3a8d17af7@baylibre.com>
-Date: Tue, 25 Feb 2025 09:26:56 -0600
+	s=arc-20240116; t=1740514357; c=relaxed/simple;
+	bh=yTCj5mHCtdBx8pk+52dg55Yg5D96C+PxN6w8CQznwjM=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=gJBsdT2g3+zVzew3Tf39gsq/8dDy3epRsVz/eU6ZEczwi32Y8Xva2GKdM9QQxX6MrRkQ3x4/t3WdAGlVFlL6Rzh1Q7mWZO6jNB/g0gGSfqWvlVqqWIDeMwqV11N5t4sN0srdaH6qWbm6K/+knuhEQKfqb/QX8WJi9udhrvdmWYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qA/yQo2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941DFC4CEDD;
+	Tue, 25 Feb 2025 20:12:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740514356;
+	bh=yTCj5mHCtdBx8pk+52dg55Yg5D96C+PxN6w8CQznwjM=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=qA/yQo2Dj7sATmTqu+FxRMZ65j9/jCkahdI62i/V40ioGuSi2VPnHu+ozuj0hCykM
+	 7SwJsjXxnFwy5gAEVVto5RF/S13qmg4gmUdYBgf6i+zc8r0IROTfT+VESyZEPDRs4H
+	 UxNacRkez6vE1G0S562m0LjxY9fD5f/Qub7y8BpjbWIkVKPsdJlRHbcAXQfPCJ4xLH
+	 DQyQUfZ+U1hwVn5ZH6fcdjIQJJ7uOc1hu6AAK1njsVkcmXuyu5F1ItA39HdEWxd/qN
+	 7p1JfHl5t6QAegMK+0wFDo2wggGt9kTyPga4LZqk3/r281/fkY6jUdkoUe6vqE6OGZ
+	 cdwFm+tgF71yQ==
+Date: Tue, 25 Feb 2025 14:12:34 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 14/14] Documentation: ABI: testing: ad4080 docs
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Antoniu Miclaus <antoniu.miclaus@analog.com>, jic23@kernel.org,
- robh@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250220135429.8615-1-antoniu.miclaus@analog.com>
- <20250220135429.8615-15-antoniu.miclaus@analog.com>
- <8f588f4b88d122815df694660d19672e8ccd3d70.camel@gmail.com>
- <fd3ba169-c5e0-4405-961f-d7c11c68dffb@baylibre.com>
- <3f4bb345c1d76e7521d8bdbf4b4552e727c7dc1c.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <3f4bb345c1d76e7521d8bdbf4b4552e727c7dc1c.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: will@kernel.org, jic23@kernel.org, lee@kernel.org, ukleinek@kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ tglx@linutronix.de, catalin.marinas@arm.com, daniel.lezcano@linaro.org, 
+ linux-iio@vger.kernel.org, wbg@kernel.org, devicetree@vger.kernel.org, 
+ linux-pwm@vger.kernel.org, conor+dt@kernel.org, 
+ alexandre.torgue@foss.st.com, krzk+dt@kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, olivier.moysan@foss.st.com
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20250224180150.3689638-1-fabrice.gasnier@foss.st.com>
+References: <20250224180150.3689638-1-fabrice.gasnier@foss.st.com>
+Message-Id: <174051415125.2971414.5163158019956863310.robh@kernel.org>
+Subject: Re: [PATCH 0/8] Add STM32MP25 LPTIM support: MFD, PWM, IIO,
+ counter, clocksource
 
-On 2/25/25 3:16 AM, Nuno Sá wrote:
-> On Thu, 2025-02-20 at 12:27 -0600, David Lechner wrote:
->> On 2/20/25 8:53 AM, Nuno Sá wrote:
->>> On Thu, 2025-02-20 at 15:54 +0200, Antoniu Miclaus wrote:
 
-...
-
->>>> +
->>>> +What:		/sys/bus/iio/devices/iio:deviceX/sinc_dec_rate
->>>> +Date:		February 2025
->>>> +KernelVersion:
->>>> +Contact:	linux-iio@vger.kernel.org
->>>> +Description:
->>>> +		Set the filter’s decimation rate.
->>>> +
->>>> +What:		/sys/bus/iio/devices/iio:deviceX/sinc_dec_rate_available
->>>> +Date:		February 2025
->>>> +KernelVersion:
->>>> +Contact:	linux-iio@vger.kernel.org
->>>> +Description:
->>>> +		Return the available filter's decimation rates.
->>>> +
->>>> +
->>>
->>> I'm not yet convinced we need the dec_rate custom attr. I'll add more
->>> comments
->>> in the driver.
->>
->> If we do need it, in another driver recently we concluded that
->> decimation rate is the same as oversampling ratio and there is
->> already a standard attribute for oversampling ratio, so we used
->> that.
->>
+On Mon, 24 Feb 2025 19:01:42 +0100, Fabrice Gasnier wrote:
+> This series adds support for STM32MP25 to MFD PWM, IIO, counter and
+> clocksource low-power timer (LPTIM) drivers.
+> This new variant is managed by using a new DT compatible string.
+> It comes with a slightly updated register set, some new features and new
+> interconnect signals inside the SoC.
+> Same feature list as on STM32MP1x is supported currently.
+> The device tree files add all instances in stm32mp251 dtsi file.
 > 
-> Yeah, in theory decimation is about averaging samples. Makes sense to me even
-> though I never thought about using the oversampling ratio attr. I was biased by
-> the IMUs drivers where we configure the dec_rate as part of the sampling
-> frequency attr since these filters directly affect the chip ODR. 
+> Fabrice Gasnier (6):
+>   dt-bindings: mfd: stm32-lptimer: add support for stm32mp25
+>   mfd: stm32-lptimer: add support for stm32mp25
+>   pwm: stm32-lp: add support for stm32mp25
+>   counter: stm32-lptimer-cnt: add support for stm32mp25
+>   arm64: defconfig: enable STM32 LP timers drivers
+>   arm64: dts: st: add low-power timer nodes on stm32mp251
 > 
-> Out of curiosity, how did you handled this in the other driver? I would be
-> tempted to only allow reading the sampling frequency attribute which means that
-> the oversampling ratio attr is the one we can write (which then directly affects
-> sampling frequency).
+> Olivier Moysan (1):
+>   iio: trigger: stm32-lptimer: add support for stm32mp25
 > 
-> - Nuno Sá
+> Patrick Delaunay (1):
+>   clocksource: stm32-lptimer: add stm32mp25 support
+> 
+>  .../bindings/mfd/st,stm32-lptimer.yaml        |  23 +-
+>  arch/arm64/boot/dts/st/stm32mp251.dtsi        | 177 ++++++++++++++
+>  arch/arm64/configs/defconfig                  |   5 +
+>  drivers/clocksource/timer-stm32-lp.c          |   1 +
+>  drivers/counter/stm32-lptimer-cnt.c           |   1 +
+>  drivers/iio/trigger/stm32-lptimer-trigger.c   | 109 +++++++--
+>  drivers/mfd/stm32-lptimer.c                   |  30 ++-
+>  drivers/pwm/pwm-stm32-lp.c                    | 220 +++++++++++++++---
+>  include/linux/iio/timer/stm32-lptim-trigger.h |   9 +
+>  include/linux/mfd/stm32-lptimer.h             |  32 ++-
+>  10 files changed, 554 insertions(+), 53 deletions(-)
+> 
+> --
+> 2.25.1
+> 
+> 
+> 
 
-The other driver is still under review:
 
-https://lore.kernel.org/linux-iio/2c3ce1701545e435238605342397e45657a0fb2a.1739368121.git.Jonathan.Santos@analog.com/
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-It is modifying an existing driver, so in that case, we still have to preserve
-writing to sampling_frequency even if that isn't the ideal way to set it up.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
+
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/st/' for 20250224180150.3689638-1-fabrice.gasnier@foss.st.com:
+
+arch/arm64/boot/dts/st/stm32mp257f-ev1.dtb: timer@46060000: trigger@3:reg:0:0: 3 is greater than the maximum of 2
+	from schema $id: http://devicetree.org/schemas/mfd/st,stm32-lptimer.yaml#
+arch/arm64/boot/dts/st/stm32mp257f-ev1.dtb: timer@46070000: trigger@4:reg:0:0: 4 is greater than the maximum of 2
+	from schema $id: http://devicetree.org/schemas/mfd/st,stm32-lptimer.yaml#
+
+
+
+
+
 

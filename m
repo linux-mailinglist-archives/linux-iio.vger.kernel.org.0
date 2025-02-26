@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-16084-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16085-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C2CA459AF
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 10:13:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9933A45A7C
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 10:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 385657A4D7D
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 09:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66E241888421
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 09:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD987238151;
-	Wed, 26 Feb 2025 09:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A328238153;
+	Wed, 26 Feb 2025 09:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNitsBjT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8TjwwNU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573C92135B7;
-	Wed, 26 Feb 2025 09:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E7D15573A;
+	Wed, 26 Feb 2025 09:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740561076; cv=none; b=USjbDQqC2hqrNKeDV4LncZ6wOz6MD0xGa4tgw/QlUXmJ1eyw59SaxUY/CgmM+VAgWAEPremZcfRg/ej/BZDOM/5De8GHUDO5py0Ztc0SzzdqeXllkI0JkZq/uM4UHCCBgDUSRHai0JP/JDHgJifyO3ntp8sLG7w7US2BMoOOdm8=
+	t=1740562969; cv=none; b=TGktkNwHurxV03jV6wxw8T08G9HrAlAv7ne2dk0oUTiNK5tAe1c263YHYMgsIf96L/sSAslVIFUWyzf3xW4QdrkZyhPMM0Nl0BR0Toi8PGLnsvsk8SOHh04BZzCx3FxY3Hg3o9LhiME6hvZI/er59djQzDK0o8zI9P4h4JISc8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740561076; c=relaxed/simple;
-	bh=1ZvTbvDwad0Vmt92qDKZdx1HWIrDOcqNby1ZaX7/xNU=;
+	s=arc-20240116; t=1740562969; c=relaxed/simple;
+	bh=TXsD6cyaUs1vrboGEfw3swxZlrVrTV10qnITKOu4cqs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IaOI8sNH3GaZ/YZrxfj1KLAaO/R6LCu2pcIuVW/x2oHxdK5OF4+b6/pwrAG/kSEkMAlLYlO4ld2sxqcHZVcYF6C/cV5PxxuaWjYHogaAlpO8v32AFE8FlxteGCCUcjGVroSPq8NI9hOCMpxgKTvLP6dhlyk73tjTAlXtnHwkxwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNitsBjT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFE2C4CED6;
-	Wed, 26 Feb 2025 09:11:08 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=UaaATFu5WK55CYtbVx2SYzPHYnlfszkY2hM/4e6k215t5H5rgVKx1y5DxKuOJ7DgcQFct0EeR/FUnIcS0+5KDjjaqQ4Pm1Of03Uh8z8kQUR3VatNJngG8SaRjloosgvKrgF64xaLxZdgfhtQ8ViMX8yBJxUinCh0rz41RlZu7uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8TjwwNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632BCC4CEE2;
+	Wed, 26 Feb 2025 09:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740561075;
-	bh=1ZvTbvDwad0Vmt92qDKZdx1HWIrDOcqNby1ZaX7/xNU=;
+	s=k20201202; t=1740562969;
+	bh=TXsD6cyaUs1vrboGEfw3swxZlrVrTV10qnITKOu4cqs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=oNitsBjTPg4vEIJ3Ka+qP5JKvEvqjZwIGrJ6DG4WopTC3tvO/XgvQ5i2SIbkYgBo8
-	 L6j6YUqP6qT3usMJ5QJkVAa0EF6Nw9IG+JaPO5T9pCz0X3JnG5x35zru1tNGWUIesY
-	 vMBr3qDhlhJwSPxqiwN3CWHqGAUsyggSVD088XBAdDuTCIG81qTcq4hxZW5DMoZAqM
-	 UCO8vNdBv+iE1ufwrlLMbQSQrl30dXnyXodFOZt+hSpgwE9DmI7wLmYtctx4zatLym
-	 YyKhPmxH+gm2xz8ylRQsDNSzsTIgM0i+MoLfsxq4EaLwhhw+Sib4/O+StgS2Au/uI5
-	 yfQHx/Gd4hyHQ==
-Message-ID: <690befae-335d-4d35-aa32-abd537dfc4ef@kernel.org>
-Date: Wed, 26 Feb 2025 10:11:07 +0100
+	b=R8TjwwNUM3RywPhcrwFEqs/7Yo3Bby9+S0lynM9NHItSSTuYvMRJaI5pjulX6wk9m
+	 YbsMvEhMEXBYPmxjJkpXUOoaPqq+KBen9+WiKVWQzGQo2sYhSuvE/ZOZiUndgPqguV
+	 TapHEdDFASK/lTyhAgIFtfQ3c2pGMXiIgpzRoioROhb88+snUMkQqg6GnMyPDvUBd8
+	 5k/wS+4GMYMLSZj++LlA0yvkZOOYMk+lFxRC9sPmSXY8c0734ZZK7xhMPW7/cRIach
+	 b7nRq8JyhkX5AAI281kW3q/N2jJIkeepd0g+y2w4NR6Zyc1ojBuuu5AQo8YZvWNAdI
+	 v0bYkBRErKZrA==
+Message-ID: <e3713d6c-acf1-45eb-90a6-3a135a281562@kernel.org>
+Date: Wed, 26 Feb 2025 10:42:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,25 +50,25 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 1/5] dt-bindings: iio/adc: Move QCOM ADC bindings to
- iio/adc folder
-To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>,
- "Rob Herring (Arm)" <robh@kernel.org>
-Cc: jic23@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- agross@kernel.org, andersson@kernel.org, dmitry.baryshkov@linaro.org,
- konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
- amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
- rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
- david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
- quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
- lars@metafoo.de, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+Subject: Re: [PATCH V5 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
+ Gen3 ADC
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
+ dmitry.baryshkov@linaro.org, konradybcio@kernel.org,
+ daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
+ thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
+ subbaraman.narayanamurthy@oss.qualcomm.com, david.collins@oss.qualcomm.com,
+ anjelique.melendez@oss.qualcomm.com, quic_kamalw@quicinc.com,
+ rui.zhang@intel.com, lukasz.luba@arm.com, lars@metafoo.de,
+ devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
  quic_skakitap@quicinc.com, neil.armstrong@linaro.org
 References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
- <20250131183242.3653595-2-jishnu.prakash@oss.qualcomm.com>
- <20250202-convivial-stingray-of-promotion-1123b8@krzk-bin>
- <cc328ade-a05e-4b1d-a8f0-55b18b4a0873@oss.qualcomm.com>
+ <20250131183242.3653595-4-jishnu.prakash@oss.qualcomm.com>
+ <20250202-pragmatic-sparkling-spider-ccd90b@krzk-bin>
+ <b5707f37-cc5d-47fb-a8d6-a1da8a9a7ff1@oss.qualcomm.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -114,43 +114,32 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <cc328ade-a05e-4b1d-a8f0-55b18b4a0873@oss.qualcomm.com>
+In-Reply-To: <b5707f37-cc5d-47fb-a8d6-a1da8a9a7ff1@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 26/02/2025 09:51, Jishnu Prakash wrote:
-> Hi Krzysztof,
-> 
-> On 2/2/2025 6:59 PM, Krzysztof Kozlowski wrote:
->> On Sat, Feb 01, 2025 at 12:02:38AM +0530, Jishnu Prakash wrote:
->>> There are several files containing QCOM ADC macros for channel names
->>> right now in the include/dt-bindings/iio folder. Since all of these
->>> are specifically for adc, move the files to the
->>> include/dt-bindings/iio/adc folder.
->>>
->>> Also update all affected devicetree and driver files to fix compilation
->>> errors seen with this move and update documentation files to fix
->>> dtbinding check errors for the same.
->>>
->>> Acked-by: Lee Jones <lee@kernel.org>
->>> Acked-by: Rob Herring <robh@kernel.org>
->>> Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
->>> ---
->>> Changes since v4:
->>> - Updated some more devicetree files requiring this change.
+>>> +
+>>> +  interrupts:
+>>> +    items:
+>>> +      - description: SDAM0 end of conversion (EOC) interrupt
+>>> +      - description: SDAM1 EOC interrupt
+>>> +    minItems: 1
 >>
->> I don't get why this fails building and nothing here nor in cover letter
->> helps me to understand that.
->>
+>> Same question.
 > 
-> I have tried checking multiple ways for anything missing in my build setup, but I'm not getting this error when building in my local workspace. But the error itself looks invalid to me.
+> To explain why "reg" and "interrupts" are flexible:
+> 
+> We need to add one item under each of these properties, per ADC SDAM. The number of PMIC SDAM peripherals allocated for ADC is not correlated with the PMIC used, 
+> it is programmed in FW (PBS) and is fixed per SOC, based on the SOC requirements.
+> 
+> The number of ADC SDAMs used on a given SOC with a given PMIC (like PMK8550) will be fixed, but it is possible for
+> the same PMIC to have 1 of its SDAMs allocated for ADC when used on one SOC and 2 SDAMs allocated for ADC when used on another SOC.  
+> 
+> All boards using a particular (SOC + PMIC) combination will have the same number of ADC SDAMs supported on that PMIC.
 
-So probably false positive / automation issue.
+OK. Parts of above should be captured in commit msg or binding description.
 
-Maybe describe just in case in the changelog that you run full
-dt_binding_check and no errors were reported.
-
-BTW, please wrap your emails.
 
 Best regards,
 Krzysztof

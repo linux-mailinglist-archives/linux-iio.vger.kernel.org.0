@@ -1,185 +1,124 @@
-Return-Path: <linux-iio+bounces-16093-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16094-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01342A46210
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 15:15:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B36A463AE
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 15:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7242177EE8
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 14:15:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17C8F189FB99
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 14:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2816221F2C;
-	Wed, 26 Feb 2025 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3D1218AB4;
+	Wed, 26 Feb 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W8BUmLbT"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="jtp8KYmC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DF0221DBA;
-	Wed, 26 Feb 2025 14:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C2221736
+	for <linux-iio@vger.kernel.org>; Wed, 26 Feb 2025 14:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740579307; cv=none; b=jodeuf1MarLweVjAfYUjR+zrnA+unE6M8G+A/C4cVqBchiZYqB1BNP9g8NLBsIxz9YHG4DJ3l7jWkRBmp4dIregC33tW4+V4Vaz/0Z+P+MLY/d7n+EGHuG/5oew0JvL15nWEyT4unZ/5wgyS0BsY9p55xkADWQ7C2reLUO1/OJ8=
+	t=1740581426; cv=none; b=hXFvD7Hc3QWM0p/qCC4PmghmIIU650v9knZbR6fWBJWvXT7iqLphRb1CRn5aC+tHVc9+h2oH2jqKIAGzj9t4VbDcloVvCbDc3gmMHjO4FrJDKNGpbYYEKIfWhES/zK7+D1SdQoKF8k/HFUYzrtMItuQ1RavGkZN9AoDHqa8MXLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740579307; c=relaxed/simple;
-	bh=DQfqoYcLRD2Zeo+43lklnMk6+hDgT7YZ/1xvKUYxQ1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z93+Nf3Vr4QkJmOaQ5n+CETovQBuox+Y2Cah2BJPF/VkjnpX+pfANWYfVXO1PlpFrvU5257xVqOSnJWeCcjEbkrQVkPx7NB8zENBCwl1ps1Rug2h7YasoKYfkHFqtLbWEk4e2Z/DZL4Ea7Bqt/Og+n5flpUdNxm6ml7L+MGa21A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W8BUmLbT; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740579306; x=1772115306;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=DQfqoYcLRD2Zeo+43lklnMk6+hDgT7YZ/1xvKUYxQ1o=;
-  b=W8BUmLbTeydN+RUrOssfhUFEMxZ7Wmi62FDwyk0sCPtgZhQOONTFJrX4
-   lRwnAx+vTuPdax/XkUXrXVGmFcXI09HbF3DbNm+CJD5Zp5bLyvnojHL4P
-   5UeFkGUBTyFcahCdU44+oCDvZxyrPf/dts3+s5FO+gZjUZICmmp+DrZuE
-   8vs/otl/xS6dwY5ykjCQ0F8/zLH0IKzY7IZM/bLZlfgpA9myZChsxNiZa
-   yfe6+G18xYeujHdNTtQABuqTXBcBurfuoXnXnWqr+suH3dIcEEWK3R3X5
-   XB8qQlP3PQGaD4HQpmMuZ1o7BeV3uvVt/oxpxgffZy3+24sAsnpFHSVLn
-   A==;
-X-CSE-ConnectionGUID: B2KRgDT1QnaEH5Xi7eqCJQ==
-X-CSE-MsgGUID: mxZi/vjDRYmAfMkKd49sOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="52817162"
-X-IronPort-AV: E=Sophos;i="6.13,317,1732608000"; 
-   d="scan'208";a="52817162"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 06:11:23 -0800
-X-CSE-ConnectionGUID: SfzjqrcRQU6U9pWwkoyKjw==
-X-CSE-MsgGUID: DAtu5ZbIRzCICP2T7HfhTg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="121960718"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 06:11:15 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tnI7y-0000000FLJp-1jew;
-	Wed, 26 Feb 2025 16:11:10 +0200
-Date: Wed, 26 Feb 2025 16:11:10 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v4 02/10] property: Add
- device_get_child_node_count_named()
-Message-ID: <Z78g_uiXumn4mvET@smile.fi.intel.com>
-References: <cover.1740421248.git.mazziesaccount@gmail.com>
- <29ec24f1498392cafbecc0e0c0e23e1ce3289565.1740421248.git.mazziesaccount@gmail.com>
- <Z72QAOA9xXbP16K-@kuha.fi.intel.com>
- <Z72Zp8tpnvlFGdQ_@smile.fi.intel.com>
- <ad39b453-7e5b-49bd-a4fd-6a4988636130@gmail.com>
- <Z72d7TzZ21WITW3f@smile.fi.intel.com>
- <893a3c45-537e-47ad-afbd-1e5d3b9abe2c@gmail.com>
- <Z73M3Ua6u1FpgBEK@smile.fi.intel.com>
- <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
+	s=arc-20240116; t=1740581426; c=relaxed/simple;
+	bh=EQukQFpoy1bCTquTWJ0f97VwpieDtmlOfkC2xmR08G0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GREvNOh+ebZ8mMHksS4JAz1PmmVJ5gdXx1sTGHA3kxW68NF2nYVCVzw+LDoueu9D2ZZjXeUQ5RtBhwj7V3cilrQ9FlWdPGs+wAfyu4g62OuRqbblEufBRleEOdq/DmmnF848NOkI2VrrnqvgUJeUx+GiWD3D2uPSxOCbHF+eGU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=jtp8KYmC; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-38f488f3161so3847189f8f.3
+        for <linux-iio@vger.kernel.org>; Wed, 26 Feb 2025 06:50:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740581422; x=1741186222; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=V0cS3BjCebiH0oU2houUoLjoPQfGa9B9aygJMIYRWyk=;
+        b=jtp8KYmCWn3mlTrZGmz3vgEnsu4A5ytnbT6sGZ+i0gGbtbH9P5b/eNBe07als1yGcb
+         CGTEl/PqKl4qEN6ogsM2oUdrZSkQItlaCe5U2XcFLTgxelNzTxLP9h6JJ+brKoLK1YX7
+         CFbS4xoeXaedKKNcovarRIfmaRhPmYcMk0pLI2VqUZFgYn9pYSeybkPgg5Xp7LBgCZod
+         3rEAImEMtmj4KA4NaNzgrR0cPiDwRvwZh+6Dzep8WHn9yvQeVPdCj8w5TH27QZ2yQ8Vc
+         XwWlDsLLXXBZUW8/XKCZDAhMnNqunlSIQ+HU9Up6MGJB7FODq9q2spQDjpEBDx8mRHu8
+         rUMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740581422; x=1741186222;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V0cS3BjCebiH0oU2houUoLjoPQfGa9B9aygJMIYRWyk=;
+        b=iLaLoNX+1nETbbbRJuHb1w9qyxkzG0WIaoYjaI1sdID4c2ayeUeLRqxlBbm6avYxjU
+         kFIQX7U2xSEiyWT5042LaJFlmSHAIgsV4YrqdAno24B2fDv+E7Ctiu+l65uIA3y1T+k1
+         TQ1GYNiYpPTpQYUkOhcCSrAp0Ai6fn9oxpry/v204sQihz/UUg3d3IYe84EbEskF8prL
+         gCjJx6bUDSqnGD1UBwuUmS6bb+iPOG0n/NjGsS76pxcSeHYBzA8a2u+M8P5HrDUFaQQT
+         csq03muRTpDDoHEUestoFTwH6D/hKP/gboXjNFBsHScXY75hquG/cy8/b9p2Sn+/JLpl
+         4DWg==
+X-Gm-Message-State: AOJu0YyMpjEwMDSKaUIp0FNupp7M570zqkAmc8TOICHdHgRmGpsyBRi+
+	xRHSskVIbhqugxjfI1EdJy2eIXiAqiZmngxlFjFbuR+1Z2axnuxK8qtfYhYbTxI=
+X-Gm-Gg: ASbGnctTQEnPG9GJZvuVs+MsOJyOWwUuSsEpHd+noTa6FW1M/QbRFHfGMg1GZARzIXx
+	S2TaMT8e1hRGzlgwOegHn6FIGAaDiqVN87BPvsbf+zzXRU9FKQQ5BJXmewlFMWBko7CZyMm+/z4
+	Cg9VbHe1QBdjsQFcC5XeM6PeDzWP82pP7bktrbo9hmLyKDD5Nht5t6EksVhhl1CIADFeLwnrcrE
+	MIhCA+FpztReqTwGNeygN/gkvAEc1GXI1A+QpCH+belBVpe0m9cDWuv45vED4siX1RKoI+7lkvS
+	uPhYefH7Ra4JTzolbatvaaJAPy74b5dwNPXpWyAx38k2Nd4ueaxfyZ9mKinAtI/jq/XcJNJ6TaD
+	Em1jw4PXeHib+4v1rHSqWx2Y=
+X-Google-Smtp-Source: AGHT+IEJjM76VpVo0v7/LMiu5gepvuHca6Q+JK6FVucSfxbZMKesqh+xseFSt6OsHtbewKkv0+M5Vg==
+X-Received: by 2002:a5d:4bc7:0:b0:38f:338e:3cf0 with SMTP id ffacd0b85a97d-38f707aa445mr11160894f8f.32.1740581421934;
+        Wed, 26 Feb 2025 06:50:21 -0800 (PST)
+Received: from jstephan-bl.local (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43aba549d6asm23747965e9.36.2025.02.26.06.50.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 06:50:21 -0800 (PST)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH 0/3] ad7380: add adaq4381-4 support
+Date: Wed, 26 Feb 2025 15:50:02 +0100
+Message-Id: <20250226-ad7380-add-adaq4381-4-support-v1-0-f350ab872d37@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <720f9c69-ca1f-45cb-9f6e-c8e4703c9aad@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABoqv2cC/x2MQQqDMBAAvyJ77kKyWhP6leIhJqvuRdOkFUH8u
+ 0sPwzCXOaFyEa7wak4ovEuVbdWwjwbiEtaZUZI2kKGnIeoxJNd6o0pK+HStt9hh/eW8lS96S26
+ KLoxj7EEfufAkx///Hq7rBlprY3dvAAAA
+X-Change-ID: 20250226-ad7380-add-adaq4381-4-support-8127fc7abbc6
+To: Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Julien Stephan <jstephan@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On Wed, Feb 26, 2025 at 04:04:02PM +0200, Matti Vaittinen wrote:
-> On 25/02/2025 15:59, Andy Shevchenko wrote:
-> > On Tue, Feb 25, 2025 at 03:29:17PM +0200, Matti Vaittinen wrote:
-> > > On 25/02/2025 12:39, Andy Shevchenko wrote:
-> > > > On Tue, Feb 25, 2025 at 12:29:31PM +0200, Matti Vaittinen wrote:
-> > > > > On 25/02/2025 12:21, Andy Shevchenko wrote:
-> > > > > > On Tue, Feb 25, 2025 at 11:40:16AM +0200, Heikki Krogerus wrote:
+ADAQ4381-4 is the 14 bits version of the ADAQ4380-4. It is compatible
+with the ad7380 driver, so add its support and documentation, in driver,
+doc, and bindings.
 
-...
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+---
+Julien Stephan (3):
+      iio: adc: ad7380: add adaq4381-4 support
+      dt-bindings: iio: adc: ad7380: add adaq4381-4 compatible parts
+      docs: iio: ad7380: add adaq4381-4
 
-> > > > > > > 
-> > > > > > > I did not check how many users are you proposing for this, but if
-> > > > > > > there's only one, then IMO this should not be a global function yet.
-> > > > > > > It just feels to special case to me. But let's see what the others
-> > > > > > > think.
-> > > > > > 
-> > > > > > The problem is that if somebody hides it, we might potentially see
-> > > > > > a duplication in the future. So I _slightly_ prefer to publish and
-> > > > > > then drop that after a few cycles if no users appear.
-> > > > > 
-> > > > > After taking a very quick grep I spotted one other existing place where we
-> > > > > might be able to do direct conversion to use this function.
-> > > > > 
-> > > > > drivers/net/ethernet/freescale/gianfar.c
-> > > > > 
-> > > > > That'd be 2 users.
-> > > > 
-> > > > I haven't checked myself, I believe your judgement,
-> > > 
-> > > I took a better look and you obviously shouldn't believe :) The gianfar used
-> > > of_node instead of the fwnode. So, it'd be a single caller at starters.
-> > 
-> > ...which is the same as dev_of_node(), which means that you can use your
-> > function there.
-> 
-> I'm unsure what you mean. The proposed function
-> device_get_child_node_count_named() takes device pointer. I don't see how
-> dev_of_node() helps converting node to device?
+ .../devicetree/bindings/iio/adc/adi,ad7380.yaml         |  4 ++++
+ Documentation/iio/ad7380.rst                            |  5 +++--
+ drivers/iio/adc/ad7380.c                                | 17 +++++++++++++++++
+ 3 files changed, 24 insertions(+), 2 deletions(-)
+---
+base-commit: faeaa1ec6c63b6676679f321601471772f2a0c9b
+change-id: 20250226-ad7380-add-adaq4381-4-support-8127fc7abbc6
 
-dev_of_node() takes the device pointer and dev_fwnode() takes that as well,
-it means that there is no difference which one to use OF-centric or fwnode
-API in this particular case. Just make sure that the function (and there
-is also a second loop AFAICS) takes struct device *dev instead of struct
-device_node *np as a parameter.
-
-> I think I could actually kill the whole gfar_of_group_count() function and
-> replace it with a direct call to the device_get_child_node_count_named() -
-> but I am not at all convinced that'd be worth including the property.h to a
-> file which is currently using only of_* -stuff. Well, I suppose it can be
-> asked from netdev peeps but I am not convinced they see it as a great idea.
-> 
-> If I misunderstood your meaning - please elaborate.
-
-The driver is quite old and has a lot of room to improve. Briefly looking it
-may be almost fully converted to fwnode, but it's not your call (only if you
-wish). Nevertheless, using agnostic APIs if they reduce code base is fine.
-We have drivers that do OF and fwnode mixed approach (for various reasons,
-one of which is the new API that is absent in OF realm.
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Julien Stephan <jstephan@baylibre.com>
 
 

@@ -1,149 +1,162 @@
-Return-Path: <linux-iio+bounces-16100-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16103-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC44EA467B8
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 18:15:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F58A46CAD
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 21:45:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50EF173BA0
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 17:10:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BB98188CADD
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 20:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF400224893;
-	Wed, 26 Feb 2025 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF42F238168;
+	Wed, 26 Feb 2025 20:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="WlEkZEIM"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="6jTbVLko"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-14.pe-b.jellyfish.systems (out-14.pe-b.jellyfish.systems [198.54.127.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAC121CFFB;
-	Wed, 26 Feb 2025 17:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFB42248B4;
+	Wed, 26 Feb 2025 20:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740589834; cv=none; b=WG9tG3QaWonW1n/nYmrm6+mqKEryXMmAN86InNK+62+5Lgcw/fTjvB2jNYZ0540/z1kPYss9y3LJ+1D+RTiuiDmCyLCMWZGZuRWt9j6igep72KCt1a1hPPIGCyB2MUF+SzsJB1OBUoeivIXGcRXOBjeUoi8XvNGnVZx5Vdxj10c=
+	t=1740602697; cv=none; b=F/K33yNc2/Yrryghf+TamcDAZt4pJcXiiAOJq34ANXRZOAqdFLjd4OA2EajMEcmCrzRpgizYy9vkmUHtYMmG5vFJeU8TVd/IEoHwtJRo9vamKtlP9D5wj1HtDQ0bHiyct96NMoxOV2XlGucz1jejXSshA+5YkpZHf1Oe1Lco828=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740589834; c=relaxed/simple;
-	bh=ET6MnGOAw+tmFtDYLv/Ch2D8SAlnx0O5Qbh8oHJdoso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sCjlrcUsllZoOuyB/0XDc2TxzgC6dDoK4rF24rxo3R0URGFC2wTBKFTxD0E2F8PAGTgC1leF9TuLBUfc186CaGHpYzaIDfrr+qKkh+LstRSo1+xE3y/22gO1bMq6buHTaLkSZen/PofObRvTTKoFAuZO6ncBTTSzfVoHrU0kH3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=WlEkZEIM; arc=none smtp.client-ip=198.54.127.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
-	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4Z31F85lf1zDqfN;
-	Wed, 26 Feb 2025 17:10:20 +0000 (UTC)
-Received: from MTA-05.privateemail.com (unknown [10.50.14.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4Z31F85FvZz3hhVj;
-	Wed, 26 Feb 2025 12:10:20 -0500 (EST)
-Received: from mta-05.privateemail.com (localhost [127.0.0.1])
-	by mta-05.privateemail.com (Postfix) with ESMTP id 4Z31F83yDwz3hhVF;
-	Wed, 26 Feb 2025 12:10:20 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1740589820;
-	bh=ET6MnGOAw+tmFtDYLv/Ch2D8SAlnx0O5Qbh8oHJdoso=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WlEkZEIMW+KffMjCPDH6+idMT3DAJuMMkd3eaQoKDW3VvaRGO0J3tOIXHGGlqJxv1
-	 JisZa8byIBamvcutb6I+rXFqevtlxyFBrmvtPYks7GylmOBh8GGIFN01rUPGrQD5x/
-	 0FuTTdr4OIt5exSvZNGJptZ+tlQD+3pGQw84YnilKTN3hcQH63wzYHR4CulQ4WcemX
-	 Qm9CW9fyg6Rng3J2fBAL+Y9yqLx4Ibi0/dfSh8WsqQztA6FF7n9kAopBo4ZfSZciWj
-	 FlYP2fNjmDH2TBMjX9/ceKw+rFv9fNgHKvji1NBvU7D8D6rAO0qxWEA+qgzZif4TxF
-	 svfud/0j7u+vA==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-05.privateemail.com (Postfix) with ESMTPA;
-	Wed, 26 Feb 2025 12:10:08 -0500 (EST)
-Date: Wed, 26 Feb 2025 12:10:08 -0500
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
-Message-ID: <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
-References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
- <20250225134612.577022-2-sam.winchenbach@framepointer.org>
- <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
+	s=arc-20240116; t=1740602697; c=relaxed/simple;
+	bh=4Bd/ysuMv3oiTg+/PUT+0ertYPOrzIu4H0CiC2mZ1MI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=CaTh+HkBF1xr64UKZEkwPJJqcVqpmAeY9SViJQOra6+cxJMflQR2Kd+bMgazLYZMbeBHvXXbV3BhfvWxfAdqjWn1zvG+S/90cAi4PrrUmn7KFKNhOHV9Fof8dV8eWiu7xZXcNBV67wNCwgpJj+n602NAztlO21jmulbXiiWCAxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=6jTbVLko; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QG2v7O015427;
+	Wed, 26 Feb 2025 21:43:40 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	soQ5BkZDufwYMdgMJdG7Zd6+UrF3nw3Qs6ixs6vY/CM=; b=6jTbVLkocKgNzD6j
+	Y/2AYcivvlHsnAgchC1i19FlTLWjy2/Dl/Dyx+v5WaESHovbd3tpxosNSRjjv6FC
+	zbcDphxZ+h0rc5bJoAAXPFgjoA9PpK7823zFRc/4/jKZ9nknFWX8rEYmmdHexX/7
+	bmUN9BmFoVtFIpAAPMKmY0q+CVneVa7zsksQfphYbUf/KppXC0YQ2hx/My1Buby6
+	HPsOOmfkMvhpAPGEBhyju4qcL1aPWoROj07o6guNinEP2MPtp8dB+8MbWuZTMXWQ
+	KDVrdwQ4+xgiyWoNCccx7fxkUXKKMe7HeCev2w/MBb2eNy3JeGzOHxBJuuO+COPN
+	sppSaw==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 451psuekdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 21:43:39 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 04D6E4008B;
+	Wed, 26 Feb 2025 21:42:20 +0100 (CET)
+Received: by euls16034.sgp.st.com (STMicroelectronics, from userid 89)
+	id 744C145206A; Wed, 26 Feb 2025 19:14:03 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id E4EC05332BB;
+	Wed, 26 Feb 2025 19:14:03 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Feb
+ 2025 19:14:03 +0100
+Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 26 Feb
+ 2025 19:14:02 +0100
+Message-ID: <157348a3-9b22-4196-b4b1-ee8fcc46a84d@foss.st.com>
+Date: Wed, 26 Feb 2025 19:14:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/8] clocksource: stm32-lptimer: add stm32mp25 support
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <lee@kernel.org>, <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <wbg@kernel.org>, <jic23@kernel.org>, <daniel.lezcano@linaro.org>,
+        <tglx@linutronix.de>, <catalin.marinas@arm.com>, <will@kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <olivier.moysan@foss.st.com>
+References: <20250224180150.3689638-1-fabrice.gasnier@foss.st.com>
+ <20250224180150.3689638-5-fabrice.gasnier@foss.st.com>
+ <20250225-purring-herring-of-reputation-1aed2f@krzk-bin>
+ <2df7bdd9-5072-4a9a-b142-1e1e3f20130c@foss.st.com>
+Content-Language: en-US
+In-Reply-To: <2df7bdd9-5072-4a9a-b142-1e1e3f20130c@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-26_06,2025-02-26_01,2024-11-22_01
 
-On Wed, Feb 26, 2025 at 09:03:13AM +0100, Krzysztof Kozlowski wrote:
-> On Tue, Feb 25, 2025 at 08:46:12AM -0500, Sam Winchenbach wrote:
-> > Adds two properties to add a margin when automatically finding the
-> > corner frequencies.
-> > 
-> > Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
-> > ---
-> >  .../bindings/iio/filter/adi,admv8818.yaml          | 14 ++++++++++++++
-> >  1 file changed, 14 insertions(+)
+On 2/25/25 15:57, Fabrice Gasnier wrote:
+> On 2/25/25 13:02, Krzysztof Kozlowski wrote:
+>> On Mon, Feb 24, 2025 at 07:01:46PM +0100, Fabrice Gasnier wrote:
+>>> From: Patrick Delaunay <patrick.delaunay@foss.st.com>
+>>>
+>>> Add the support of the new compatible for STM32MP25 SoC in driver, as
+>>> described in Documentation/devicetree/bindings/mfd/st,stm32-lptimer.yaml
+>>> and used in arch/arm64/boot/dts/st/stm32mp251.dtsi.
+>>>
+>>> Signed-off-by: Patrick Delaunay <patrick.delaunay@foss.st.com>
+>>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+>>> ---
+>>>  drivers/clocksource/timer-stm32-lp.c | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/drivers/clocksource/timer-stm32-lp.c b/drivers/clocksource/timer-stm32-lp.c
+>>> index a4c95161cb22..db055348e2cc 100644
+>>> --- a/drivers/clocksource/timer-stm32-lp.c
+>>> +++ b/drivers/clocksource/timer-stm32-lp.c
+>>> @@ -197,6 +197,7 @@ static int stm32_clkevent_lp_probe(struct platform_device *pdev)
+>>>  
+>>>  static const struct of_device_id stm32_clkevent_lp_of_match[] = {
+>>>  	{ .compatible = "st,stm32-lptimer-timer", },
+>>> +	{ .compatible = "st,stm32mp25-lptimer-timer", },
+>>>  	{},
+>>
+>> Same question.
 > 
-> Bindings are before users (see DT submitting patches), so this should be
-> re-ordered.
+> Oops, I just figured out I have missed a change to this driver, to
+> enable interrupts, in order to comply with the LPTimer spec, starting
+> with STM32MP25.
 > 
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> > index b77e855bd594..2acdbd8d84cb 100644
-> > --- a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
-> > @@ -44,6 +44,18 @@ properties:
-> >    '#clock-cells':
-> >      const: 0
-> >  
-> > +  adi,lpf-margin-hz:
-> > +    description:
-> > +      Sets minimum low-pass corner frequency to the frequency of rf_in plus
-> > +      this value when in auto mode.
-> > +    default: 0
-> > +
-> > +  adi,hpf-margin-hz:
-> > +    description:
-> > +      Sets maximum high-pass corner frequency to the frequency of rf_in minus
-> > +      this value when in auto mode.
+> E.g. with earlier STM32MP13, STM32MP15 or even STM32H7:
+> * The LPTIM_IER register must only be modified when the LPTIM is
+> disabled (ENABLE bit reset to ‘0’)
 > 
-> IIUC, these are two bounds - lower and upper - in relation to something
-> else (like rf_in frequency)? If so, make it an array (naming to be
-> discuss, I assume you know better what's that):
-
-It is true that these are both related to rf_in but both the low and high pass
-filters can operate independently. Logically, IMO, it makes more sense to have
-them as separate controls but I am happy to put them into an array if that is
-the idiomatic approach to situations like this. That said, I am having a
-difficult time getting dt_binding_check to pass when I have an array of uint64.
-
-When listing two items, as in your example below, I get the following:
-adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
-
-I have tried specifying the scheme for each item, setting minItems/maxItems.
-
-Any advice on this would be appreciated.
-Thanks.
-
+> On STM32MP25:
+> * The LPTIMx_DIER register must only be modified when the LPTIM is
+> enabled (ENABLE bit set to 1)
 > 
-> adi,filter-margin-hz:
->   items:
->     - description: low-pass corner frequency to the freq.....
->       minimum: xxxx?
->       maximum: xxxx?
->       default: 0
->     - description: high-pass ....
->       minimum: xxxx?
->       maximum: xxxx?
->       default: 0
+> I'll add this as compatible data in next revision.
+
+This is specific behavior, to the new revision of the LPTimer hardware.
+It can be read from revision/identification registers. So this new
+compatible can be dropped.
+
+I'll remove "st,stm32mp25-lptimer-timer" compatible string in next revision.
+
+Thanks for reviewing,
+BR,
+Fabrice
+
 > 
 > Best regards,
-> Krzysztof
+> Fabrice
 > 
+>>
+>> Best regards,
+>> Krzysztof
+>>
 

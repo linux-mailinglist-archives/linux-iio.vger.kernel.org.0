@@ -1,146 +1,172 @@
-Return-Path: <linux-iio+bounces-16085-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16086-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9933A45A7C
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 10:42:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4824A45DE8
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 12:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66E241888421
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 09:43:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8C46164BB9
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Feb 2025 11:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A328238153;
-	Wed, 26 Feb 2025 09:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DE8218AC8;
+	Wed, 26 Feb 2025 11:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8TjwwNU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkHk6KHt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E7D15573A;
-	Wed, 26 Feb 2025 09:42:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D98A2153F5;
+	Wed, 26 Feb 2025 11:55:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740562969; cv=none; b=TGktkNwHurxV03jV6wxw8T08G9HrAlAv7ne2dk0oUTiNK5tAe1c263YHYMgsIf96L/sSAslVIFUWyzf3xW4QdrkZyhPMM0Nl0BR0Toi8PGLnsvsk8SOHh04BZzCx3FxY3Hg3o9LhiME6hvZI/er59djQzDK0o8zI9P4h4JISc8M=
+	t=1740570919; cv=none; b=IaGc+uwsEyiIAg0yqLUrNOtc3oju1tiZ+qg0WX6bENED63soTJXWlamy5oZDNAWNwspFRwK/NfdG0X3EWDn2d7+fnvph0kQnWF/P+0vkowxxJJB5erlUnKv0RiIxyxZHV9h/LpdQG4esrPNJfqAr7Bxh+e5KTLqYnB1QWLFZIlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740562969; c=relaxed/simple;
-	bh=TXsD6cyaUs1vrboGEfw3swxZlrVrTV10qnITKOu4cqs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UaaATFu5WK55CYtbVx2SYzPHYnlfszkY2hM/4e6k215t5H5rgVKx1y5DxKuOJ7DgcQFct0EeR/FUnIcS0+5KDjjaqQ4Pm1Of03Uh8z8kQUR3VatNJngG8SaRjloosgvKrgF64xaLxZdgfhtQ8ViMX8yBJxUinCh0rz41RlZu7uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8TjwwNU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632BCC4CEE2;
-	Wed, 26 Feb 2025 09:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740562969;
-	bh=TXsD6cyaUs1vrboGEfw3swxZlrVrTV10qnITKOu4cqs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=R8TjwwNUM3RywPhcrwFEqs/7Yo3Bby9+S0lynM9NHItSSTuYvMRJaI5pjulX6wk9m
-	 YbsMvEhMEXBYPmxjJkpXUOoaPqq+KBen9+WiKVWQzGQo2sYhSuvE/ZOZiUndgPqguV
-	 TapHEdDFASK/lTyhAgIFtfQ3c2pGMXiIgpzRoioROhb88+snUMkQqg6GnMyPDvUBd8
-	 5k/wS+4GMYMLSZj++LlA0yvkZOOYMk+lFxRC9sPmSXY8c0734ZZK7xhMPW7/cRIach
-	 b7nRq8JyhkX5AAI281kW3q/N2jJIkeepd0g+y2w4NR6Zyc1ojBuuu5AQo8YZvWNAdI
-	 v0bYkBRErKZrA==
-Message-ID: <e3713d6c-acf1-45eb-90a6-3a135a281562@kernel.org>
-Date: Wed, 26 Feb 2025 10:42:40 +0100
+	s=arc-20240116; t=1740570919; c=relaxed/simple;
+	bh=RYUNTFtx5d0vJ8M91zRbSV93JGEEumEcL7oebwAoRSA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZuAU7lbLGmLa+iRmr3k5YCpgZeb2gCaMpzJQp8WVheRYERo9yDf32k7Y7FweYOZn/I641trPmMx0NlslsGfzUJDPk58PQeARG5nfu6M4Zbf5inpq5dGXc2FLNdbpzsAW1+pcy2atvsUp5xQltXAtQIuGmuEXdYOx7IdmP+oKN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkHk6KHt; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abec8c122e4so376771466b.1;
+        Wed, 26 Feb 2025 03:55:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740570915; x=1741175715; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OqjVCAFTYNlvEyZWFVVY2wWa31+InyULkfvt8ZauBJY=;
+        b=NkHk6KHtzC5w81Wb6AKZ90MYGzBt2kfSmgdby3E1n7ZcL/hm7/AnRqztiIu5f9Y1bM
+         1+MVekMPj8ImOGmhjod2Zo0qdywTUn12fOZtirxs6cHBj8s916JHrw2zj/bAJh0fQFS4
+         X6MZJBDEeSuznOW8mmqe9fUdeUBCpYJQXe69wTKI16d67L6yd98w0wpSFp799dzThnMU
+         hjmXncNiFhgip8L+om74yupqFndbP4LzqEmkNqnzWs7aKZSHLRQIof+SO9OZOQjvL2sE
+         n2sin6YaLr/f7Lq36/wAGq90WXeND/lW9K5j7hj/3+FQH5l3/ihpz7hGIis+R/Dmp8Zi
+         epPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740570915; x=1741175715;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OqjVCAFTYNlvEyZWFVVY2wWa31+InyULkfvt8ZauBJY=;
+        b=dC+rdJpuW1kn/l7laNg4Ecg+0pD6WOzX2ZFo4UrpKDt83fEa1uU0Wv61JlmQcDC7dq
+         8CHbhOAFeW/+L6twBkZcwxFddBWwQLT+rx0pgqAZgRolV2aPSeV7zEp4gQlqOKFl/qtv
+         IaeL4dCxdjO74mOVUK+/EcIribDZa6W5Wc6JGJ46hhMNtZ6PZ57tz59+Ji1SbPbzuZHk
+         9v2vZb+m8WSdqdd371hTazrGb8ZMULEey0s7Q8WGOCxdKlfoQop57xsqa1dhD5eb3QAk
+         o5AkR09+ausYnvRTzojOZi9pOJpSXgc94gG235tPBDSbWCuoAJSKHhm29nz1aXSOLGc+
+         I+3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUft0+9sTk9AlnVwSQ8/d++cgHFSOTlhB06seT6+mv/5hCtUmUERPOBCtzh5XUXIGsanysILhdrOxeDxSpb@vger.kernel.org, AJvYcCXim81xN9MsHSbTpXpnMHLqcvB/cBxI/xmxug/mTpnFn+BNeRf8TH2XJrVRi6PbBox6WxI3zHKwoQVy@vger.kernel.org, AJvYcCXnGYCc2GXo1v4CnVgwVG/9fRdN62ngMYeb15V/xqe6JJAJ38jBjw3n7Gcx7YIIVlCKNyEGf7AAI3C6@vger.kernel.org, AJvYcCXzXK44qlIgFiQf1nv7LYVe6lD0okgfrWKPHQJQWt2z1NflNTUp1ya4628taTO7KPbK2k1fDjvGSi6h@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6ktchCNpzxI2Ke54SAIWHBtahYivafibETXY4xp+Gl8eYCi+Z
+	u6WRDWdRMtb/h3hsW9rO97tSXvf17mkAhp/XxtsbBjN+KZgrnkQc
+X-Gm-Gg: ASbGncvTENbqf1u9Lv/kQVntDjR9XfSZfVOwXxPwFM9PSS/X8kSrMfqZMchJG7slFBr
+	hrgmzenkBSgDOcefq7UDf+o+jyIP6P6fy8sF4TIiiO3cHTlRLyEzUptwCsY4OwKfdPN33LjWFsf
+	ZmmBOthDHFr9VNa1SDHOXlp9iRFkShm3C6cNK0GwaHho6Hsrd+i5cuAh9anmXqXx27GyKSzzSWN
+	H7HRlyqFJ0nZYHEaqAnoZzXA4w5gnb/slBf6pvaX2STKd/4W0wR6LzBzxFSghsW+A/18PI2SbMH
+	bN5SFa5fCXGHadtQ9qtEuA==
+X-Google-Smtp-Source: AGHT+IFXRcdFx0WWrJDXV5o3lCu3jZvdZNKcl+ClAB48ZOpSp4/f7xVCRmpg1SB14Ft/Ri4NJSoCuQ==
+X-Received: by 2002:a17:907:c0f:b0:ab7:87ec:79fa with SMTP id a640c23a62f3a-abeeef706c6mr316437566b.51.1740570914334;
+        Wed, 26 Feb 2025 03:55:14 -0800 (PST)
+Received: from spiri.. ([82.77.155.83])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed205e53fsm307822366b.159.2025.02.26.03.55.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 03:55:13 -0800 (PST)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: Alisa-Dariana Roman <alisa.roman@analog.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH v5 0/3] Add support for AD7191
+Date: Wed, 26 Feb 2025 13:53:39 +0200
+Message-ID: <20250226115451.249361-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V5 3/5] dt-bindings: iio: adc: Add support for QCOM PMIC5
- Gen3 ADC
-To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, agross@kernel.org, andersson@kernel.org,
- dmitry.baryshkov@linaro.org, konradybcio@kernel.org,
- daniel.lezcano@linaro.org, sboyd@kernel.org, amitk@kernel.org,
- thara.gopinath@gmail.com, lee@kernel.org, rafael@kernel.org,
- subbaraman.narayanamurthy@oss.qualcomm.com, david.collins@oss.qualcomm.com,
- anjelique.melendez@oss.qualcomm.com, quic_kamalw@quicinc.com,
- rui.zhang@intel.com, lukasz.luba@arm.com, lars@metafoo.de,
- devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
- quic_skakitap@quicinc.com, neil.armstrong@linaro.org
-References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
- <20250131183242.3653595-4-jishnu.prakash@oss.qualcomm.com>
- <20250202-pragmatic-sparkling-spider-ccd90b@krzk-bin>
- <b5707f37-cc5d-47fb-a8d6-a1da8a9a7ff1@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <b5707f37-cc5d-47fb-a8d6-a1da8a9a7ff1@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 26/02/2025 09:51, Jishnu Prakash wrote:
->>> +
->>> +  interrupts:
->>> +    items:
->>> +      - description: SDAM0 end of conversion (EOC) interrupt
->>> +      - description: SDAM1 EOC interrupt
->>> +    minItems: 1
->>
->> Same question.
-> 
-> To explain why "reg" and "interrupts" are flexible:
-> 
-> We need to add one item under each of these properties, per ADC SDAM. The number of PMIC SDAM peripherals allocated for ADC is not correlated with the PMIC used, 
-> it is programmed in FW (PBS) and is fixed per SOC, based on the SOC requirements.
-> 
-> The number of ADC SDAMs used on a given SOC with a given PMIC (like PMK8550) will be fixed, but it is possible for
-> the same PMIC to have 1 of its SDAMs allocated for ADC when used on one SOC and 2 SDAMs allocated for ADC when used on another SOC.  
-> 
-> All boards using a particular (SOC + PMIC) combination will have the same number of ADC SDAMs supported on that PMIC.
-
-OK. Parts of above should be captured in commit msg or binding description.
+Content-Transfer-Encoding: 8bit
 
 
-Best regards,
-Krzysztof
+Thank you all for your feedback! Here is the updated series of patches!
+
+Kind regards,
+Alisa-Dariana Roman.
+
+---
+
+v4: https://lore.kernel.org/all/20250203133254.313106-1-alisa.roman@analog.com/
+
+v4 -> v5:
+	- use static arrays in the ad7191_config_setup function, instead of keeping
+them in the state structure
+	- added error checking for devicetree parsing of pga-value and odr-value
+	- for now, it doesn't return error when the index corresponding to pga-value
+or odr-value doesn't match, since index is initialized to 0, so it will use the
+first value in this case (the bindings constrain the possbile values for these
+2 properties, so I thought it's ok like this)
+	- use gpiod_multi_set_value_cansleep()
+	- move sampling frequency attribute to mask separate (the avail unmodified)
+	- removed unused argument form ad7191_setup()
+	- removed 2 redundant sections from docs, and renamed one to Devicetree
+	- add ad7191.rst to MAINTAINERS
+
+v3: https://lore.kernel.org/all/20250129143054.225322-1-alisa.roman@analog.com/
+
+v3 -> v4:
+	- addressed all replies for v3
+	- refactored the scale and sampling frequencies configurations to use 2
+different arrays for gpio case vs pinstrap case
+
+v2: https://lore.kernel.org/all/20250122132821.126600-1-alisa.roman@analog.com/
+
+v2 -> v3:
+	- correct binding title
+	- remove clksel_state and clksel_gpio, assume the clksel pin is always
+pinstrapped
+	- rephrase clocks description accordingly
+	- simplify binding constraints
+	- specify in binding description that PDOWN must be connected to SPI's
+controller's CS
+	- add minItems for gpios in bindings
+	- make scope explicit for mutex guard
+	- remove spi irq check
+	- add id_table to spi_driver struct
+	- changed comments as suggested
+	- use spi_message_init_with_transfers()
+	- default returns an error in ad7191_set_mode()
+	- replace hard-coded 2 with st->pga_gpios->ndescs
+	- use gpiod_set_array_value_cansleep()
+	- change .storagebits to 32
+	- check return value for ad_sd_init()
+	- change to adi,odr-value and adi,pga-value, which now accepts the value as
+suggested
+	- modify variables names and refactor the setup of odr and pga gpios,
+indexes and available arrays into ad7191_config_setup(), since they are all
+related
+	- add ad7191.rst
+
+v1: https://lore.kernel.org/all/20241221155926.81954-1-alisa.roman@analog.com/
+
+v1 -> v2:
+	- removed patch adding function in ad_sigma_delta.h/.c
+	- added a function set_cs() for asserting/deasserting the cs
+	- handle pinstrapping cases
+	- refactored all clock handling
+	- updated bindings: corrected and added new things
+	- -> address of the channels is used in set_channel()
+	- addressed all the other changes
+
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-16142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16138-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335E6A48539
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 17:36:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61BEA4854A
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 17:39:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D611895B9A
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 16:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C521179C7C
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 16:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D90F1D5CEE;
-	Thu, 27 Feb 2025 16:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D661B3956;
+	Thu, 27 Feb 2025 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="VvkRzLoc"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="hdzSWwsE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
+Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A21B4155
-	for <linux-iio@vger.kernel.org>; Thu, 27 Feb 2025 16:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7591B0421
+	for <linux-iio@vger.kernel.org>; Thu, 27 Feb 2025 16:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740673799; cv=none; b=UIvL9LC0poF344YAZxvEgKWauzZTYkRVkmDs0ojOXyxqZ6J/s5hHxNHT0/2rQOZEwNwSRvwBp2aIWK2cBGV/Tb+dJ9f/Wut0NaVn+Rq7r6HU+Wm03t7Bad+5FiBx87oSw59D6avbIn2rZGOGy7AUiEMoHK9viY6zif4r9/UZTgk=
+	t=1740673734; cv=none; b=fcJBgjDqtUnV2gfKVTcSAzvAtxRvk0DyCxufDM77eNxTTP/2NwtBkkWgz/DmzPVAp/AmEtESS5jNhdAttUGCwedB8LBZ4wEAtoe8OSSbw2SjiUHRylqv+f5FQvyHTgrb4J5SkJQ7+nT4C5ZST7iC1BuDS5r77ppAx3HDJRZdCqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740673799; c=relaxed/simple;
-	bh=Ci4iEofNi/A3KqnWp1wBtnkAHH9ioysLtvdMsJT1jxc=;
+	s=arc-20240116; t=1740673734; c=relaxed/simple;
+	bh=a/zcFpgi139voyz64iReqrYTVV+s3IIMUJ2peHs5g4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmCthDOdnuztY0yslduWIuPiGjKdR/dFccfhwslyBawXTGQ1ZowCZEpeC8yOrQeCeyj6Qq8qhyD6bNkH2h5GFD01Z5JedB3Mri1W5AVwkiedmmbmB5BoDGnJfgTd9dYljYQYUtK2iHn4HfCUR9mzQi5bqMjEW4EYUqydBBRZaLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=VvkRzLoc; arc=none smtp.client-ip=94.124.121.27
+	 MIME-Version; b=AMDPpNuUrIyOyJaKrdgS8T49Yj2ri+kxQSRPkssB3dhOpZJVtPXu0iqR+MWv+YHS0AYq75enhSSkjOn3r0mY+Z5h6+EmcDVQu6YkrIfjoQ0WKVGciAEe7grP4IgX2fXE95twrs32q1DeXAQVVtqqKPMV7qZNnPDIReQcffqA6SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=hdzSWwsE; arc=none smtp.client-ip=94.124.121.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=protonic.nl; s=202111;
 	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
 	 subject:cc:to:from:from;
-	bh=LREqZWlByDH431/N9Cv4nihXE45uZhdr4aeQQDars7g=;
-	b=VvkRzLocyDRNAt/u0RmcjPF4ncX72ebot1jRHLB+NximQMH/wK4kYWiOUplRLaeAcXLUCDsVC0Fkt
-	 YebA7Q5O4S2pT9LK8+q33lAmXynyr7uRf6GtrN+GGbNFbZIzWO6MPTZsYvH4t97zGJWc1sMT9YTFLH
-	 H18m5+eUirjt3wZ497kMECk4WlMSUaR/j58UDgXn6Xm7Y9uDBfVCxbqU+PeUeY/dQEuoSMSizGsKr2
-	 ffVpyqONoMzTpXAuYg0K8B4sgC4hpZcV23TXTZ0sefJazftN+x09JtljLaj+Sbx1mNHdXlpc4pYNLg
-	 HWVM06WCkMSn8GmnRkfYEYw33Nk871A==
-X-MSG-ID: eaf0501f-f527-11ef-8b43-005056817704
+	bh=VZMl7dfgDBnOPj34RKQWb6JLuMgyfsvA0jrEzLHRme4=;
+	b=hdzSWwsEk2e/OgJCGalnaMBFAj1mTUB5jlR55Q4HBjA3xVne30GnD+BUUqM2Na0EVfGntFzC/QGLg
+	 gu3iUgPjhsCn9GQp0niPp4LbfvBCSSN0O1lIIev1Bo6o0gg9wvEQAUKyh2FaPIOuWzjrUxvrzUEsvM
+	 i/B8pxrRJBpeuhwdtCdxMGWewogAFMKBTNDiq1BJ/QhdPV9WS+MrB7c7Dlne82SxIcTzejUcI5PAim
+	 htcKgEREVw9WXksELnJP1YLyirTAoez8VWeJjAR59Ib2GPvUPAkiRkXj26lNZTGxkaO8iA1k1ClF8f
+	 sJD7HhQFasDcE0JddCmCb96+31uLhzQ==
+X-MSG-ID: eb98a8b1-f527-11ef-a399-00505681446f
 From: David Jander <david@protonic.nl>
 To: linux-kernel@vger.kernel.org
 Cc: linux-iio@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-iio@vger.kernel.org,
 	Jonathan Cameron <jic23@kernel.org>,
 	Oleksij Rempel <o.rempel@pengutronix.de>,
 	David Jander <david@protonic.nl>
-Subject: [RFC PATCH 3/7] motion: Add simple-pwm.c PWM based DC motor controller driver
-Date: Thu, 27 Feb 2025 17:28:19 +0100
-Message-ID: <20250227162823.3585810-4-david@protonic.nl>
+Subject: [RFC PATCH 4/7] Documentation: Add Linux Motion Control documentation
+Date: Thu, 27 Feb 2025 17:28:20 +0100
+Message-ID: <20250227162823.3585810-5-david@protonic.nl>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250227162823.3585810-1-david@protonic.nl>
 References: <20250227162823.3585810-1-david@protonic.nl>
@@ -69,267 +69,612 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a simple DC-motor motion control driver that implements
- - 1 or 2 PWM channels for uni-directional or bi-directional drive
- - Trapezoidal acceleration profiles
- - Time-based movements
- - External trigger support
-
-Tested with TI DRV8873
+Add general- and UAPI documentation for the Linux Motion Control
+subsystem.
 
 Signed-off-by: David Jander <david@protonic.nl>
 ---
- drivers/motion/Kconfig      |  13 ++-
- drivers/motion/Makefile     |   1 +
- drivers/motion/simple-pwm.c | 199 ++++++++++++++++++++++++++++++++++++
- 3 files changed, 212 insertions(+), 1 deletion(-)
- create mode 100644 drivers/motion/simple-pwm.c
+ Documentation/motion/index.rst       |  18 +
+ Documentation/motion/motion-uapi.rst | 555 +++++++++++++++++++++++++++
+ Documentation/subsystem-apis.rst     |   1 +
+ 3 files changed, 574 insertions(+)
+ create mode 100644 Documentation/motion/index.rst
+ create mode 100644 Documentation/motion/motion-uapi.rst
 
-diff --git a/drivers/motion/Kconfig b/drivers/motion/Kconfig
-index 7715301c667e..63c4bdedb12a 100644
---- a/drivers/motion/Kconfig
-+++ b/drivers/motion/Kconfig
-@@ -11,7 +11,6 @@ menuconfig MOTION
- 
- if MOTION
- 
--
- config TMC5240
- 	tristate "TMC5240 stepper motor driver"
- 	depends on SPI
-@@ -23,6 +22,18 @@ config TMC5240
- 	  To compile this driver as a module, choose M here: the
- 	  module will be called tmc5240.
- 
-+config MOTION_SIMPLE_PWM
-+	tristate "Simple PWM base DC motor driver"
-+	depends on PWM
-+	select MOTION_HELPERS
-+	help
-+	  Say Y here is you have a DC motor driver you wish to control
-+	  with 1 or 2 PWM outputs. Typically this is an H-bridge or similar
-+	  driver, like the TI DRV8873 for example.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called "motion-simple-pwm".
-+
- config MOTION_HELPERS
- 	bool
- 	depends on MOTION
-diff --git a/drivers/motion/Makefile b/drivers/motion/Makefile
-index 4f4e31138503..6b13b527fa17 100644
---- a/drivers/motion/Makefile
-+++ b/drivers/motion/Makefile
-@@ -2,3 +2,4 @@
- obj-$(CONFIG_MOTION)		+= motion-core.o
- obj-$(CONFIG_MOTION_HELPERS)	+= motion-helpers.o
- obj-$(CONFIG_TMC5240)		+= tmc5240.o
-+obj-$(CONFIG_MOTION_SIMPLE_PWM)	+= simple-pwm.o
-diff --git a/drivers/motion/simple-pwm.c b/drivers/motion/simple-pwm.c
+diff --git a/Documentation/motion/index.rst b/Documentation/motion/index.rst
 new file mode 100644
-index 000000000000..89626c792235
+index 000000000000..eee1c180478d
 --- /dev/null
-+++ b/drivers/motion/simple-pwm.c
-@@ -0,0 +1,199 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Motion Control Subsystem - Simple speed proportional-PWM based motor driver
-+ *
-+ * Copyright (C) 2024 Protonic Holland
-+ *      David Jander <david@protonic.nl>
-+ */
++++ b/Documentation/motion/index.rst
+@@ -0,0 +1,18 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+#include <asm-generic/errno-base.h>
-+#include <linux/err.h>
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/init.h>
-+#include <linux/platform_device.h>
-+#include <linux/of.h>
-+#include <linux/of_platform.h>
-+#include <linux/motion.h>
-+#include <linux/types.h>
-+#include <linux/pm.h>
-+#include <linux/pwm.h>
-+#include <asm/unaligned.h>
++==============================
++Linux Motion Control Subsystem
++==============================
 +
-+#include "motion-core.h"
-+#include "motion-helpers.h"
++.. toctree::
++   :maxdepth: 1
 +
-+#define MOTPWM_PWM_SCALE 100000
-+#define MOTPWM_TIMER_PERIOD (20 * NSEC_PER_MSEC)
++   motion-uapi
++   motion-drivers
 +
-+struct motpwm {
-+	struct pwm_device *pwms[2];
-+	struct motion_device mdev;
-+	struct platform_device *pdev;
-+	bool pwm_inverted;
-+};
++.. only::  subproject and html
 +
-+static inline int __effective_dc(struct motpwm *mp, unsigned int dc)
-+{
-+	if (mp->pwm_inverted)
-+		return MOTPWM_PWM_SCALE - dc;
-+	return dc;
-+}
++   Indices
++   =======
 +
-+static inline int __motpwm_set_speed_locked(struct motpwm *mp, unsigned int dir,
-+		unsigned int dc, bool enable)
-+{
-+	struct pwm_state ps;
-+	int cidx = !dir;
-+	struct pwm_device *pwm, *cpwm;
++   * :ref:`genindex`
+diff --git a/Documentation/motion/motion-uapi.rst b/Documentation/motion/motion-uapi.rst
+new file mode 100644
+index 000000000000..f57d62bcacb3
+--- /dev/null
++++ b/Documentation/motion/motion-uapi.rst
+@@ -0,0 +1,555 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
-+	dir = !!dir;
-+	pwm = mp->pwms[dir];
-+	cpwm = mp->pwms[cidx];
++===================================
++Linux Motion Control Subsystem UAPI
++===================================
 +
-+	if (cpwm) {
-+		pwm_init_state(cpwm, &ps);
-+		ps.duty_cycle = __effective_dc(mp, 0);
-+		ps.enabled = enable;
-+		pwm_apply_might_sleep(cpwm, &ps);
-+	}
-+	if (!pwm)
-+		return -EINVAL;
++The User-space API for the Linux Motion Control (LMC) subsystem consists of
++a device node ioctl() interface and driver-specific sysfs attributes. The
++devnodes use dynamically allocated MAJOR numbers and are named /dev/motionX
++by default, where X is the ordinal of the device in probe order starting at
++zero. The entries in /sys/class/motion/... can be used to further identify
++each device.
 +
-+	pwm_init_state(pwm, &ps);
-+	pwm_set_relative_duty_cycle(&ps, __effective_dc(mp, dc), MOTPWM_PWM_SCALE);
-+	ps.enabled = enable;
-+	pwm_apply_might_sleep(pwm, &ps);
++If CONFIG_IIO is defined, then also a IIO trigger device is created, that
++can be accessed via /sys/bus/iio/devices/iiotriggerX and the usual IIO API.
 +
-+	return 0;
-+}
++Motion Control Background
++=========================
 +
-+static void motpwm_startup(struct motion_device *mdev)
-+{
-+	dev_info(mdev->dev, "Startup\n");
-+}
++A motion controller device can control one or more actuators (motors), that
++can move individually or synchronously. To accommodate for that, the API
++has two distinct ways of specifying the actuator channel a specific function
++applies to. Some structs take a single channel number as an unsigned integer,
++while others apply to a set of channels represented in the form of a bitmask.
++A "motion" in general can be any type of mechanical movement or displacement.
++This can be carried out by any sort of motor or linear actuator. Types of
++motors can be (but not limited to) brushed- or brushless DC motors, induction
++motors, switched-reluctance motors, stepper motors, etc...
++The mechanical movement can be coupled directly to a position sensor, such as
++a linear encoder for example. Some actuators (such as stepper motors) can be
++absolutely positioned without the need of a sensor.
++A mechanical movement (motion) can be described by a (multi-dimensional-)
++position and its two common time-derivatives, speed and acceleration.
++Depending on the motion controller's capabilities, these can be specified in
++more or less detail. For example a motor connected to a simple on-off switch
++can only be conrolled at zero or maximum speed. If an encoder is present,
++position control becomes possible. A stepper motor controller OTOH, can
++often precisely control all three, position, speed and acceleration, and
++sometimes even higher order time-derivatives, such as jerk.
 +
-+static void motpwm_powerdown(struct motion_device *mdev)
-+{
-+	struct motpwm *mp = container_of(mdev, struct motpwm, mdev);
++.. _motion-profiles:
 +
-+	dev_info(mdev->dev, "Shutdown\n");
-+	__motpwm_set_speed_locked(mp, 0, 0, false);
-+}
++Motion profiles
++===============
 +
-+static int motpwm_check_speed(struct motion_device *mdev, unsigned int dir,
-+		unsigned int speed)
-+{
-+	struct motpwm *mp = container_of(mdev, struct motpwm, mdev);
++Some motion controllers have means of specifying a motion (or acceleration)
++profile. This is generally represented by a curve of speed versus time. The
++most common types of such a curve are triangular, trapezoidal, dual-slope and
++S-curve (or an 8-point approximation thereof).
++A triangular profile is in essence a special case of the trapezoidal profile,
++where constant maximum speed is never reached. LMC supports the following 3
++types of motion profiles:
 +
-+	if (!mp->pwms[!!dir])
-+		return -EINVAL;
++1. Trapezoidal
++--------------
 +
-+	if (speed > MOTPWM_PWM_SCALE)
-+		return -EINVAL;
++A trapezoidal profile is comprised of 3 speed values: Start-, maximum- and
++stop speed. 2 acceleration values determine the start and ending slopes of
++the trapezoid. Start- and stop speed need not be zero, nor equal. Specific
++constraints may depend on the underlying conroller, but often speed below
++a certain value is hard to attain for example with a stepper motor controller
++if the interval time between steps is limited. In addition to the 3 speed
++and 2 acceleration values, a value for minimum constant speed time can also
++be specified. This time value determines the minimum time the movement needs
++to have a constant speed after acceleration, before deceleration begins.
 +
-+	return 0;
-+}
++2. Dual-slope
++-------------
 +
-+static void motpwm_set_speed(struct motion_device *mdev, unsigned int dir,
-+		unsigned int speed)
-+{
-+	struct motpwm *mp = container_of(mdev, struct motpwm, mdev);
++A dual-slope profile, is similar to a trapezoidal profile, but both the
++acceleration and deceleration phase is split in two sections. The transition
++point is determined by a 4th speed value which lies between max(Vs, Ve)
++and Vmax, where Vs, Vmax and Ve are the trapezoidal profile values for
++Start-, maximum- and stop speed respectively. Since there are two segments
++to each acceleration phase, this profile has 4 acceleration values.
 +
-+	__motpwm_set_speed_locked(mp, dir, speed, true);
-+}
++3. S-curve (8-point) profile
++----------------------------
 +
-+static struct motion_timed_speed_ops motpwm_mts_ops = {
-+	.startup = motpwm_startup,
-+	.powerdown = motpwm_powerdown,
-+	.check_speed = motpwm_check_speed,
-+	.set_speed = motpwm_set_speed
-+};
++An 8-point profile (approximation of an S-curve) takes the dual-slope profile
++one step further by adding a second intermediate speed value, which results
++in acceleration and deceleration phases split into 3 segments each. This
++profile type thus has 5 speed values and 6 acceleration values.
 +
-+static int motpwm_probe(struct platform_device *pdev)
-+{
-+	struct motpwm *mp;
-+	struct device *dev = &pdev->dev;
-+	struct fwnode_handle *fwnode = dev_fwnode(dev);
++Units
++=====
 +
-+	mp = devm_kzalloc(dev, sizeof(struct motpwm), GFP_KERNEL);
-+	if (!mp)
-+		return -ENOMEM;
++The LMC subsystem measures all time values in nanoseconds, in the format
++mot_time_t (signed 64-bit integer). This is similar to the current
++imoplementation of ktime_t, so conversion to/from mot_time_t is simple.
++Internally ktime_t is used, but since ktime_t cannot be interfaced to
++user-space directly, the mot_time_t type is defined for use in the user-
++space API, but it currently is equivalent to ktime_t.
 +
-+	mp->pwms[0] = devm_fwnode_pwm_get(dev, fwnode, "left");
-+	if (IS_ERR(mp->pwms[0])) {
-+		int err = PTR_ERR(mp->pwms[0]);
++All position, speed and acceleration values are assumed in machine-units by
++the kernel.
++Machine-units are defined by the respective motion controller hardware.
++For example for a stepper motor controller with 1/256 microstepping,
++one unit of distance is equivalent to one microstep. Each driver can specify
++scaling factors to convert units in user-space if needed. Since speed and
++acceleration values have an implied time component, these conversion factors
++also have an implied time conversion from machine-time units to nanoseconds.
++These conversion factors are each specified by a rational number represented
++by a numerator and a denominator. Both are unsigned 32bit integers.
 +
-+		if (err == -ENODEV)
-+			mp->pwms[0] = NULL;
-+		else
-+			return err;
-+	}
-+	mp->pwms[1] = devm_fwnode_pwm_get(dev, fwnode, "right");
-+	if (IS_ERR(mp->pwms[1])) {
-+		int err = PTR_ERR(mp->pwms[1]);
++Machine units for position, speed and acceleration are signed 32-bit integers,
++but have a type definition as pos_raw_t, speed_raw_t and accel_raw_t
++respectively.
 +
-+		if (err == -ENODEV)
-+			mp->pwms[1] = NULL;
-+		else
-+			return err;
-+	}
-+	if (!mp->pwms[0] && !mp->pwms[1]) {
-+		dev_err(dev, "Need at least one PWM");
-+		return -ENODEV;
-+	}
++Convention of signed position, speed and acceleration:
++Movement of one channel is unidimensional, meaning position can be above or
++below the origin (positive or negative respecively). Consequently, given
++a positive position, a positive speed represents a movement further away
++from the origin (position 0), while a negative speed value represents a
++movement towards the origin. The opposite is valid when starting from a
++negative position value.
++Analogous to what speed does to position, is what acceletation does to speed:
++Given positive speed, positive acceleration increments the speed, and given
++"negative" speed, negative acceleration decrements the speed (increments its
++absolute value).
++For movement profiles, the convention is that profile (acceleration-, speed-)
++values are strictly positive. The direction of movement is solely determined
++by the relative position (i.e. "positive" or "negative" displacement).
 +
-+	mp->pwm_inverted = fwnode_property_read_bool(fwnode, "motion,pwm-inverted");
 +
-+	mp->pdev = pdev;
-+	platform_set_drvdata(pdev, mp);
++IOCTL based interface description
++=================================
 +
-+	mp->mdev.parent = &pdev->dev;
-+	motion_timed_speed_init(&mp->mdev, &motpwm_mts_ops, MOTPWM_PWM_SCALE);
-+	mp->mdev.capabilities.type = MOT_TYPE_DC_MOTOR;
-+	mp->mdev.capabilities.subdiv = 1;
-+	motion_fwnode_get_capabilities(&mp->mdev, fwnode);
++API capabilities interrogation
++------------------------------
 +
-+	return motion_register_device(&mp->mdev);
-+}
++``ioctl(fd, MOT_IOCTL_APIVER, null)``
++ Function return value is the LMC API version number, or -1 on error.
 +
-+static void motpwm_shutdown(struct platform_device *pdev)
-+{
-+	struct motpwm *mp = platform_get_drvdata(pdev);
++``ioctl(fd, MOT_IOCTL_GET_CAPA, struct mot_capabilities *capa)``
++ Returns a struct mot_capabilities filled in.
 +
-+	motion_unregister_device(&mp->mdev);
-+}
++Basic motion control
++--------------------
 +
-+static int motpwm_suspend(struct device *dev)
-+{
-+	return 0;
-+}
++``ioctl(fd, MOT_IOCTL_GET_STATUS, struct mot_status *st)``
++ Takes a struct mot_status with the channel parameter filled in and
++ specifying the channel number for which to retrieve the status.
++ Returns the current speed and position (if supported) in the same
++ struct.
 +
-+static int motpwm_resume(struct device *dev)
-+{
-+	return 0;
-+}
++``ioctl(fd, MOT_IOCTL_BASIC_RUN, struct mot_speed_duration *s)``
++ Takes a struct mot_speed_duration with the channel number, the speed and
++ optionally either a non-zero value of duration or a non-zero value of
++ distance. Note that one of these two values *must* be zero, otherwise
++ an error is returned. If both are zero, then a movement is started
++ with speed abs(speed) and direction the sign of speed for an indefinite
++ amount of time. If duration is non-zero, then the movement is stopped
++ at most after duration (in nanoseconds).
 +
-+static DEFINE_SIMPLE_DEV_PM_OPS(motpwm_pm, motpwm_suspend, motpwm_resume);
++``ioctl(fd, MOT_IOCTL_BASIC_STOP, u32 chmsk)``
++ Takes an unsigned 32-bit integer argument chmsk, which represents a bit-mask
++ of channels. All current movements of all specified channels are stopped at
++ once.
 +
-+static const struct of_device_id motpwm_of_match[] = {
-+	{ .compatible = "motion-simple-pwm" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, motpwm_of_match);
++Feedback control
++----------------
 +
-+static struct platform_driver motpwm_driver = {
-+	.probe = motpwm_probe,
-+	.shutdown = motpwm_shutdown,
-+	.driver = {
-+		.name = "motion-simple-pwm",
-+		.pm = pm_sleep_ptr(&motpwm_pm),
-+		.of_match_table = motpwm_of_match,
-+	},
-+};
++``ioctl(fd, MOT_IOCTL_CONFIG_INPUT, struct mot_input *inp)``
++ Takes a struct mot_input with an index number, a function value and a channel
++ bit-mask among other flags. This configures one of the internal or external
++ feedback inputs of the motion controller for a certain function to act on a
++ set of channels as specified by the chmask bit-mask. A common type of feedback
++ input for example are end-stop switches on a 3D printer. If the function
++ parameter is set to MOT_INP_FUNC_NONE (0) then the specified input is
++ deconfigured.
 +
-+module_platform_driver(motpwm_driver);
++Profile-based control
++---------------------
 +
-+MODULE_AUTHOR("David Jander <david@protonic.nl>");
-+MODULE_DESCRIPTION("Simple PWM based DC motor motion control driver");
-+MODULE_LICENSE("GPL");
++``ioctl(fd, MOT_IOCTL_SET_PROFILE, struct mot_profile *p)``
++ Adjust a motion profile for the specified slot index to the values supplied
++ by this struct. (MOT_MAX_PROFILES-1) is the highest accepted value for index.
++ The only values allowed for na (number of acceleration values) are 2, 4 or 6.
++ The only values allowed for nv (number of speed values) are 3, 4 or 5. A
++ specific driver can restrict these parameters even further. This is
++ communicated in the struct mot_capabilities data.
++
++``ioctl(fd, MOT_IOCTL_GET_PROFILE, struct mot_profile *p)``
++ Takes the index from the provided struct mot_profile and returns a the same
++ struct with the profile values filled in for that index. Returns an erro if
++ the index does not point to a valid profile.
++
++``ioctl(fd, MOT_IOCTL_START, struct mot_start *s)``
++ Takes a struct mot_start, that programs a motion to start immediately or
++ triggered by an event. The motion can be time-based if the duration parameter
++ is non-zero - in this case also the direction parameter is taken into
++ account - or distance-base. In the latter case the duration value must be
++ zero and in the former case, the distance value must be zero. The parameter
++ index specifies a motion profile to use for this movement.
++
++``ioctl(fd, MOT_IOCTL_START, struct mot_start *s)``
++ Takes a struct mot_stop. This struct contains a channel mask parameter chmask,
++ which contains a bit-mask of all channels this command applis to. All motions
++ of selected channels are stopped or prepared to be stopped by an event,
++ following the deceleration path of the selected motion profile that started
++ each respective motion or immediately, depending on the function of the
++ trigger input that has been armed for each respective channel (if applicable).
++
++Unimplemented future functionality
++----------------------------------
++
++``ioctl(fd, MOT_IOCTL_TORQUE_LIMITS, struct mot_torque *t)``
++ Analogous to motion profiles, torque limit curves can augment a motion profile
++ with a time-sectioned or position-sectioned profile of torque limit values.
++ Background for torque limit curves: In some cases, it is desired to limit the
++ torque (or force) of a movement depending on the position. For example when
++ hitting an end-stop. In the case of a sliding door for example, one might
++ require higher torque initially, while limiting torque during the reminder of
++ the movement, in order to detect stalls due to a person standing in the way
++ of the door without causing injuries. Torque control isn't always possible,
++ and sometimes only in a limited fashion. For example, on AC motors, the
++ controller could vary the gain of the V/f curve to reduce or increase the
++ stall or slip limit. Stepper- or BLDC motor could vary the run current limit,
++ or stall detect threshold.
++
++``ioctl(fd, MOT_IOCTL_VECTOR_START, struct mot_vector *v)``
++ Takes a struct mot_vector, that defines a multi-channel coordinated multi-
++ dimensional linear movement along an n-dimensional space vector following a
++ motion profile and optional torque curve. The chmask bit-mask specifies the
++ channels that participate in this movement. The vector dist[] has the same
++ size as the number of bits set in chmask and specifies the nth coordinate
++ of the vector. This would be the prime application for controlling 3D
++ printers, where tight coordination of several axes is required.
++
++Constants used in the ioctl API
++-------------------------------
++
++The following constants are used in different field of the structs provided
++to or returned by the ioctl API:
++
++.. code-block:: C
++
++   /* Trigger inputs and End Stop functions */
++   enum {
++           MOT_INP_FUNC_NONE = 0,
++           MOT_INP_FUNC_STOP,
++           MOT_INP_FUNC_STOP_POS,
++           MOT_INP_FUNC_STOP_NEG,
++           MOT_INP_FUNC_DECEL,
++           MOT_INP_FUNC_DECEL_POS,
++           MOT_INP_FUNC_DECEL_NEG,
++           MOT_INP_FUNC_START,
++           MOT_INP_FUNC_SIGNAL,
++           MOT_INP_FUNC_LAST
++   };
++
++These constants are used in for the field function of struct mot_input.
++This field specicies the function that a specified trigger input or end-stop
++should have on the selected channels. FUNC_STOP means immediately set the
++speed to zero, not following an acceleration curve, whereas FUNC_DECEL means
++stopping by folowwing the deceleration slope(s) specified in the motion
++profile that started the motion. _NEG and _POS restrict the action of the
++trigger to act on backwards (_NEG, into negative distance) or forwards (_POS,
++into positive distance) motion. If this is specified and the controller
++supports this, this will avoid a situation in which an actuator that has
++two end-stops for example at each extreme of the actuation range will stop
++a movement to "the left" when the "right" end-stop is accidentally triggered.
++MOT_INP_FUNC_SIGNAL will only generate an event to user-space or the IIO
++trigger and not affect the motion directly.
++
++.. code-block:: C
++
++   /* Config trigger input edge */
++   #define MOT_EDGE_RISING 0
++   #define MOT_EDGE_FALLING 1
++
++These constants are used for the edge parameter in ioctl structs. It specifies
++the trigger input to be high-active (MOT_EDGE_RISING) or low-active
++(MOT_EDGE_FALLING).
++
++.. code-block:: C
++
++   /* Start/Stop conditions */
++   enum {
++           MOT_WHEN_IMMEDIATE = 0,
++           MOT_WHEN_INT_TRIGGER,
++           MOT_WHEN_EXT_TRIGGER,
++           MOT_WHEN_NEXT,
++           MOT_WHEN_LAST
++   };
++
++Each parameter called "when" in the ioctl structs can potentially take one
++of the MOT_WHEN_xxx values. INT_TRIGGER will execute the corresponding action
++on an internal trigger signal, while EXT_TRIGGER will execute the
++corresponding action on an external trigger signal (GPIO specified in fwnode).
++MOT_WHEN_NEXT makes it possible to prepare a new motion that will start when
++the currently active motion ends. By listening to poll() events of type
++MOT_EVENT_TARGET and then sending the next motion start command with
++MOT_WHEN_NEXT, it is possible to produce an uninterrupted stream of
++consecutive movements. In that case MOT_EVENT_TARGET correspondes to the
++end of the preceding motion that ended when the current "next" motion is
++started, freeing the slot for the new "next" motion after that.
++
++.. code-block:: C
++
++   /* Event types */
++   enum {
++           MOT_EVENT_NONE = 0,
++           MOT_EVENT_TARGET,
++           MOT_EVENT_STOP,
++           MOT_EVENT_INPUT,
++           MOT_EVENT_STALL,
++           MOT_EVENT_ERROR,
++           MOT_EVENT_LAST
++   };
++
++These are constants for the event field of struct mot_event. See below for
++a description of events ingeneral. The type of events reported to user space
++are "target reached" (MOT_EVENT_TARGET), "stopped by internal trigger"
++(MOT_EVENT_STOP), "external trigger" (MOT_EVENT_INPUT) or different fault
++conditions (stall or generic error event). MOT_EVENT_STALL can be produced by
++some motion controllers that can react to motor stalls in a natural way, for
++example in the case of force-based obstacle- or end stop detection.
++
++.. code-block:: C
++
++   #define MOT_DIRECTION_LEFT 0
++   #define MOT_DIRECTION_RIGHT 1
++
++These constants are used for specifying direction of movement. LEFT in this
++case means decreasing position value, while RIGHT is increasing position
++value.
++
++Structs used in the ioctl API
++-----------------------------
++
++.. code-block:: C
++
++   #define MOT_FEATURE_SPEED	BIT(0)
++   #define MOT_FEATURE_ACCEL	BIT(1)
++   #define MOT_FEATURE_ENCODER	BIT(2)
++   #define MOT_FEATURE_PROFILE	BIT(3)
++   #define MOT_FEATURE_VECTOR	BIT(4)
++
++   enum motion_device_type {
++           MOT_TYPE_DC_MOTOR,
++           MOT_TYPE_AC_MOTOR,
++           MOT_TYPE_STEPPER,
++           MOT_TYPE_BLDC,
++           MOT_TYPE_SRM,
++           MOT_TYPE_LINEAR,
++           MOT_TYPE_LAST
++   };
++
++   struct mot_capabilities {
++           __u32 features;
++           __u8 type;
++           __u8 num_channels;
++           __u8 num_int_triggers;
++           __u8 num_ext_triggers;
++           __u8 max_profiles;
++           __u8 max_vpoints;
++           __u8 max_apoints;
++           __u8 reserved1;
++           __u32 subdiv;
++           __u32 speed_conv_mul;
++           __u32 speed_conv_div;
++           __u32 accel_conv_mul;
++           __u32 accel_conv_div;
++           __u32 reserved2;
++   };
++
++The field ``features`` is a bit-mask of MOT_FEATURE_XX flags. The feature
++SPEED means that the motion controller supports adjustable speed. All but the
++most simple (on/off switch) controllers will have this bit set.
++ACCEL means that the motion controller supports specifying acceleration
++values. Not that this is not sufficient to indicate that motion profiles can
++be used.
++ENCODER meaans that the motion controller has a built-in or fixed connected
++position encoder. If this bit is set, the position values returned by
++MOT_IOCTL_GET_STATUS can be assumed to be accurate. I.e. slip and/or skipped
++steps are properly taken into account.
++PROFILE means that the motion controller supports setting motion profiles.
++How many profiles, and how many speed and/or acceleration values are supported
++is inticated by the fields ``max_profiles``, ``max_vpoints`` and
++``max_apoints``.
++The field ``type`` can take any of the values MOT_TYPE_XX and is only
++informative. The fields ``num_channels``, ``num_int_triggers`` and
++``num_ext_triggers`` specify the supported number of channels, internal
++triggers and configured external triggers respectively.
++The field ``subdiv`` can have a different meaning, depending on the type of
++motion controller. For example for stepper motors, this typically indicates
++the microstepping divider. If this number is not 1, this means that the value
++of distance divided by ``subdiv`` will give the amount of machine-natural
++mechanical units of distance (whole steps in case of a stepper motor).
++The 4 different ``_conv_`` fields specify two rational conversion factors for
++speed and acceleration respectively. All unit conversions of speed and
++acceleration are done in user-space. The kernel only provides these numbers
++to user-space as part of physical characteristics of the motion controller.
++If the driver does not specify these values, or they lack a defined meaning,
++all four of these fields will have a value of 1, so no zero-division can
++happen and the conversion is just 1:1.
++
++.. code-block:: C
++
++   struct mot_speed_duration {
++           __u32 channel;
++           speed_raw_t speed;
++           mot_time_t duration;
++           pos_raw_t distance;
++           __u32 reserved[3];
++   };
++
++This struct is used int the ioctl MOT_IOCTL_BASIC_RUN to start a new motion.
++There are different ways of using BASIC_RUN:
++
++ 1. Specify only ``channel`` and ``speed``. All other fields are zero. This
++    starts a new motion for indefinte amount of time.
++
++ 2. Additionally to 1. specify non-zero ``duration``. Starts a timed motion
++    that will stop after the specified time.
++
++ 3. Additionally to 1. specify non-zero ``distance``. Starts a motion until
++    the position specified by distance from starting point is reached.
++
++Non zero values for both ``duration`` and ``distance`` will result in an
++error (-EINVAL).
++
++.. code-block:: C
++
++   struct mot_status {
++           __u32 channel;
++           pos_raw_t position;
++           speed_raw_t speed;
++           __u32 local_inputs;
++   };
++
++This struct is used for the ioctl MOT_IOCTL_GET_STATUS. The caller needs to
++set the field ``channel`` to the channel number it wants to request status
++information from. After a successful call, the field ``speed`` will contain
++the current speed of movement of the channel, and ``position`` will contain
++the actual position if this is supported by the hardware. The field
++``local_inputs`` contains a bit-mask of the state of all internal trigger
++inputs.
++
++.. code-block:: C
++
++   struct mot_input {
++           __u32 index;
++           __u8 external;
++           __u8 edge;
++           __u8 reserved[2];
++           __u32 function;
++           channel_mask_t chmask;
++   };
++
++This struct is used for configuring internal or external trigger inputs. The
++input ``index`` is specific to the flag ``external``. This means that internal
++and external trigger inputs can have the same ``index`` value. The exact
++``index`` value for internal inputs is determined by the driver and should be
++enumerated from 0 onwards. For external GPIO intputs the index number is the
++order in which they appear in the fwnode (DT property "motion,gpios").
++``edge`` indicates the polarity of the input electrical signal,
++MOT_EDGE_FALLING or MOT_EDGE_RISING. Please note, that any GPIO polarity is
++also applied. So if a GPIO input is GPIO_ACTIVE_LOW and ``edge`` is
++MOT_EDGE_FALLING, the resulting trigger will occur on the rising edge of the
++electrical input signal.
++``function`` takes any of the MOT_INP_FUNC_XX values mentioned above.
++``chmask`` is a bit-mask of all motion channels this input will affect.
++
++.. code-block:: C
++
++   struct mot_profile {
++           __u32 index;
++           mot_time_t tvmax;
++           mot_time_t tvzero;
++           __u8 na;
++           __u8 nv;
++           __u8 reserved[2];
++           accel_raw_t acc[MOT_MAX_ACCELPTS];
++           speed_raw_t vel[MOT_MAX_SPEEDPTS];
++   };
++
++Used to define a motion profile. See :ref:`motion-profiles` for a general
++explanation of motion profiles. ``nv`` and ``na`` are the number of valid
++entries in the ``velp[]`` and ``acc[]`` arrays respectively. ``tvmax`` is the
++minimum amount of time the constant (maximum) speed needs to be maintained
++after ending the acceleration phase, and before beginning the deceleration
++phase. ``tvzero`` is the minimum amount of time the speed needs to be 0,
++before a new motion is started in the same direction as the preceding motion.
++In other words, analogous to ``tvmax``, a new acceleration with opposite sign
++of the preceding deceleration. This time value is not applied if the next
++motion is into the opposite direction, since there will be no change in the
++sign of the resulting acceleration.
++
++.. code-block:: C
++
++   struct mot_start {
++           __u32 channel;
++           __u8 direction;
++           __u8 index;
++           __u8 when;
++           __u8 reserved1;
++           mot_time_t duration;
++           pos_raw_t distance;
++           __u32 reserved2;
++   };
++
++Used for the MOT_IOCTL_START ioctl. The ``index`` parameter is the index
++number of the motion profile that will be used for the motion. ``when``
++determines when (under which condition) the motion is started, and takes
++the value of any of the MOT_WHEN_XX constants. Like in the case of struct
++mot_speed_duration, here also ``duration`` and ``distance`` are mutually
++exclusive, meaning that one of both must always be zero.
++
++.. code-block:: C
++
++   struct mot_stop {
++           channel_mask_t chmask;
++           __u8 when;
++           __u8 reserved[3];
++   };
++
++This struct is used to schedule a deceleration of a running motion of all
++channels specified by ``chmask``, by following the deceleration part of their
++respecive motion profiles. ``when`` takes any of the MOT_WHEN_XX constants and
++determines the condition that triggers the deceleration.
++
++Event handling with (e)poll/select
++----------------------------------
++
++When user-space opens the devnode for reading, (e)poll() can be used to wait
++for motion events, using the (E)POLLIN flag. These events can then be read by
++calling read() on the file-descriptor with a buffer size equal to the size of
++struct mot_event. Make sure the file is opened in non-blocking mode for
++for reliable event processing. read() will return -EAGAIN in this case.
++
++.. code-block:: C
++
++   struct mot_event {
++           __u32 channel;
++           __u8 event;
++           __u8 reserved1[3];
++           pos_raw_t position;
++           speed_raw_t speed;
++           mot_time_t timestamp;
++           __u32 input_index;
++           __u32 reserved2;
++   };
++
++``event`` can take any of the MOT_EVENT_XX constants, and is used to determine
++the type of event. The values of ``position``, ``speed`` and ``timestamp`` are
++the corresponding motion position, speed and time at which the event ocurred.
++Not all drivers support reporting a position value. If they don't that field
++will always be zero. ``input_index`` is the index number of the external input
++(in the case of a MOT_EVENT_INPUT event), or the index number of the internal
++input (in the case of a MOT_EVENT_STOP event), that caused the event. For
++other event types than MOT_EVENT_INPUT or MOT_EVENT_STOP, this field has no
++meaning and will be zero.
+diff --git a/Documentation/subsystem-apis.rst b/Documentation/subsystem-apis.rst
+index b52ad5b969d4..0707b297f150 100644
+--- a/Documentation/subsystem-apis.rst
++++ b/Documentation/subsystem-apis.rst
+@@ -90,3 +90,4 @@ Other subsystems
+    peci/index
+    wmi/index
+    tee/index
++   motion/index
 -- 
 2.47.2
 

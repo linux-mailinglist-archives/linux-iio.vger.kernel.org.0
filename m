@@ -1,161 +1,107 @@
-Return-Path: <linux-iio+bounces-16151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16155-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D98A48802
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 19:42:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373E9A48A38
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 22:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB763B5DA5
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 18:41:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE73716704A
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 21:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF69626A0FD;
-	Thu, 27 Feb 2025 18:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABB8225A50;
+	Thu, 27 Feb 2025 21:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b="NBqM4qid"
+	dkim=pass (2048-bit key) header.d=folker-schwesinger.de header.i=@folker-schwesinger.de header.b="etHdWh0w"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.forwardemail.net (smtp.forwardemail.net [121.127.44.59])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www522.your-server.de (www522.your-server.de [195.201.215.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E9825CC6E
-	for <linux-iio@vger.kernel.org>; Thu, 27 Feb 2025 18:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=121.127.44.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D32E1A9B2A;
+	Thu, 27 Feb 2025 21:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.215.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740681695; cv=none; b=mgdlBEtFdgrZlVUmjRHU/WQlH75iMHxzyXp8cmh9ZiZtpTvPCrRvtPTEfgumMVF0Yiba9gJLQw9BUiaaPmfo3aLC2dNvU6LBVl+VaxB/Vw70iVQbLBtyjSM7RbAdCl88RhiwEgD6j/09eNG3zJ077w7h3b+fQ8yaf1w+LiayMBg=
+	t=1740690173; cv=none; b=PfmEV+XsTi8VUS1ZzIcyhKYQJd9weFYCqsHfe51BtjhLvtYmXvYbsrBO07iikYCqyP9Ss7L86zxVpNjUTRlkuCA9dnUFt56RPOGcUOWejV3MJpEq7k0ZvhLniqjfbHObx/qzZUrSGHMdJlhnTT+RbtzTMNRZPZdz4d6MaVkEqeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740681695; c=relaxed/simple;
-	bh=tapKa4ENwa3OBlIjhb4jmk2jsNXPicM6WS6wpGM88bI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc6Gq1BEMt9Cbf7MsgPi8gSRojGUZLCIibMfP2zUpHAYd1vEQlshPX2FEvUj4M9YwL+LsWHP3B4Lwuy+gAO/Dz8QNnBdtZQ7qgW+00ojWvUn4i+UvRbxadHF0OLjtOUNPXUp9OY4X2/O9JgEaec7sInSLDN2xIVuZZwGR4it0f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se; dkim=pass (2048-bit key) header.d=kwiboo.se header.i=@kwiboo.se header.b=NBqM4qid; arc=none smtp.client-ip=121.127.44.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kwiboo.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fe-bounces.kwiboo.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kwiboo.se;
- h=Content-Transfer-Encoding: MIME-Version: References: In-Reply-To:
- Message-ID: Date: Subject: Cc: To: From; q=dns/txt; s=fe-e1b5cab7be;
- t=1740681693; bh=bnDwHn3VE/1QDoX5PmDpHlQdrc4Kek1m+Wmq70y11Yg=;
- b=NBqM4qidq/tKl1rLyHAw6yL8e40xXGp8JWxgtAaFpf3gbe9rTrCYfBVhcJa0+tf3u6evneI0j
- 13OrUozS/vBmwjEJnUUiZOmdXUOOhAVMAX3UOzFTuARsyNkRz3cKTMOlwE0wm3Pe90eblUvf3Xu
- jA3tpNPUcNOjvBHSFCUUVLUROp3LHszgUa+6UEBQs8wE6LhGO+bHAVnTp79xnvgoY9+fTkZeEHV
- /HJDs8Q+ZEhrisx4h7nZrE0Eigfe7QZ1Opkzto8b5zXGkBlJatgaK2VKVx595BHTO8Uheuk7jpm
- 63ju8ROa7hRGbJOInrWx9I5sMLNIxdpc6g4ecd6Jh4xA==
-X-Forward-Email-ID: 67c0b1dabf572996e86214e5
-X-Forward-Email-Sender: rfc822; jonas@kwiboo.se, smtp.forwardemail.net,
- 121.127.44.59
-X-Forward-Email-Version: 0.4.40
-X-Forward-Email-Website: https://forwardemail.net
-X-Complaints-To: abuse@forwardemail.net
-X-Report-Abuse: abuse@forwardemail.net
-X-Report-Abuse-To: abuse@forwardemail.net
-From: Jonas Karlman <jonas@kwiboo.se>
-To: Heiko Stuebner <heiko@sntech.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Yao Zi <ziyao@disroot.org>,
-	linux-rockchip@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Jonas Karlman <jonas@kwiboo.se>
-Subject: [PATCH 4/4] arm64: dts: rockchip: Add adc-keys node to Radxa E20C
-Date: Thu, 27 Feb 2025 18:40:53 +0000
-Message-ID: <20250227184058.2964204-5-jonas@kwiboo.se>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250227184058.2964204-1-jonas@kwiboo.se>
-References: <20250227184058.2964204-1-jonas@kwiboo.se>
+	s=arc-20240116; t=1740690173; c=relaxed/simple;
+	bh=6NYlHZ4xc25oN3QPeOzW7hvvodzJe/fumzzfcMmfcPw=;
+	h=Message-Id:Cc:To:From:Date:Subject; b=gEuhVk+QNFxS3BvpHGt55hmQ8n4vK2HhYfrb5X0FHE2TF1MbHSZkO+BShbLmCs2p1RK4/+LJRz5mZ/CfhjCFRBOHNK5g9+fdmMsT3Xrbu+vr/9pPfLZwi3fVnArKF4DsTfXHyyNwj6oCnSaweffau43I6rhy1D7o0sYz61pc07s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=folker-schwesinger.de; spf=pass smtp.mailfrom=folker-schwesinger.de; dkim=pass (2048-bit key) header.d=folker-schwesinger.de header.i=@folker-schwesinger.de header.b=etHdWh0w; arc=none smtp.client-ip=195.201.215.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=folker-schwesinger.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=folker-schwesinger.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=folker-schwesinger.de; s=default2212; h=Subject:Date:From:To:Cc:Message-Id:
+	Sender:Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References;
+	bh=ct8SrB60d6zDrIGtD5NcucoiPwJRvKTewfeK7626vSE=; b=etHdWh0wVNkty5DRaf7xhYUiZT
+	BVcp/6G62MwKrAy6ofI/EcesilgaG1GMFVp+VkDSbZdS/FS+RuZx9+gY5wWLD+DMapgtbMRhgXDyp
+	A1PbwADor6SrcoCKXkxP9Asj8xXknf6w+gA7MXHQMCtnBIRDe5nYpJ93JyrFRO6Z/jeQwETGUxkl7
+	/60HNHQtGPkAF6HsATWJv0gtKFlySdhMSC6MZRQMvAyrBM1dvLkSK8sKYfEhXyotnJmt87CT7Ql/u
+	ZSN5EsWq/pyd74K0oiukEGh9yYDW9aMjRIw1uFppTYQTdovMhLViliXL8dQeU6OrnaMVNy8GmshlG
+	A4Ea7++Q==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www522.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <dev@folker-schwesinger.de>)
+	id 1tnkhQ-0008jC-2c;
+	Thu, 27 Feb 2025 21:41:41 +0100
+Received: from [170.62.100.249] (helo=localhost)
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <dev@folker-schwesinger.de>)
+	id 1tnkhQ-0002zu-3D;
+	Thu, 27 Feb 2025 21:41:40 +0100
+Message-Id: <D83IPSTKYWNB.1PUBV1530XI86@folker-schwesinger.de>
+Cc: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Folker
+ Schwesinger" <dev@folker-schwesinger.de>
+To: "Jonathan Cameron" <jic23@kernel.org>, "Lars-Peter Clausen"
+ <lars@metafoo.de>, "Nuno Sa" <nuno.sa@analog.com>, "Paul Cercueil"
+ <paul@crapouillou.net>, "Peter Zijlstra" <peterz@infradead.org>
+From: "Folker Schwesinger" <dev@folker-schwesinger.de>
+Date: Thu, 27 Feb 2025 20:27:53 +0100
+Subject: [PATCH] iio: buffer-dma: Fix docstrings
+X-Authenticated-Sender: dev@folker-schwesinger.de
+X-Virus-Scanned: Clear (ClamAV 1.0.7/27562/Thu Feb 27 10:48:50 2025)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Radxa E20C has two buttons, one SARADC maskrom button and one GPIO user
-button.
+Fix a typo in the docstring of iio_dma_buffer_read() and fix what looks
+like a copy-and-paste error in the iio_dma_buffer_write() docstring.
 
-Add support for the maskrom button using a adc-keys node, also add the
-regulators used by SARADC controller.
-
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Folker Schwesinger <dev@folker-schwesinger.de>
 ---
- .../boot/dts/rockchip/rk3528-radxa-e20c.dts   | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ drivers/iio/buffer/industrialio-buffer-dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-index d2cdb63d4a9d..dcc0b2584bbc 100644
---- a/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3528-radxa-e20c.dts
-@@ -6,6 +6,8 @@
-  */
+diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
+index 7ea784304ffb..ee294a775e8a 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dma.c
++++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+@@ -624,7 +624,7 @@ static int iio_dma_buffer_io(struct iio_buffer *buffer, size_t n,
  
- /dts-v1/;
-+
-+#include <dt-bindings/input/input.h>
- #include "rk3528.dtsi"
+ /**
+  * iio_dma_buffer_read() - DMA buffer read callback
+- * @buffer: Buffer to read form
++ * @buffer: Buffer to read from
+  * @n: Number of bytes to read
+  * @user_buffer: Userspace buffer to copy the data to
+  *
+@@ -640,7 +640,7 @@ EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_read, "IIO_DMA_BUFFER");
  
- / {
-@@ -15,6 +17,54 @@ / {
- 	chosen {
- 		stdout-path = "serial0:1500000n8";
- 	};
-+
-+	adc-keys {
-+		compatible = "adc-keys";
-+		io-channels = <&saradc 0>;
-+		io-channel-names = "buttons";
-+		keyup-threshold-microvolt = <1800000>;
-+		poll-interval = <100>;
-+
-+		button-maskrom {
-+			label = "MASKROM";
-+			linux,code = <KEY_SETUP>;
-+			press-threshold-microvolt = <0>;
-+		};
-+	};
-+
-+	vcc_1v8: regulator-1v8-vcc {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc_1v8";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+		vin-supply = <&vcc_3v3>;
-+	};
-+
-+	vcc_3v3: regulator-3v3-vcc {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc_3v3";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc5v0_sys>;
-+	};
-+
-+	vcc5v0_sys: regulator-5v0-vcc-sys {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_sys";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+	};
-+};
-+
-+&saradc {
-+	vref-supply = <&vcc_1v8>;
-+	status = "okay";
- };
- 
- &uart0 {
+ /**
+  * iio_dma_buffer_write() - DMA buffer write callback
+- * @buffer: Buffer to read form
++ * @buffer: Buffer to write to
+  * @n: Number of bytes to read
+  * @user_buffer: Userspace buffer to copy the data from
+  *
+
+base-commit: faeaa1ec6c63b6676679f321601471772f2a0c9b
 -- 
 2.48.1
-
 

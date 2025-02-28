@@ -1,250 +1,132 @@
-Return-Path: <linux-iio+bounces-16161-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16162-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C233A48CD9
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 00:35:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6C5A48D10
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 01:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2599C188C338
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Feb 2025 23:35:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73431168B17
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 00:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9644B276D3D;
-	Thu, 27 Feb 2025 23:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7155738B;
+	Fri, 28 Feb 2025 00:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OVxnFCrQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPSIMBiY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0F2276D23;
-	Thu, 27 Feb 2025 23:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F105182;
+	Fri, 28 Feb 2025 00:13:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740699306; cv=none; b=B4OGldiRbSGunqNCYI5DezEiffPPDOj0kuu6aAPnjENBWazc+nfzcKrRHjVSffL1mNsyRqLf4mG8mPV9PzR7igixb3qKhBm16pSEMXUpxfJo5+f53kFRtrw8sVOrVQ7+szZfi5aMkQ+mFE0p7oRKHbO8NQDqjRxetULhKzOs+oY=
+	t=1740701612; cv=none; b=RgKtU00EectsCMbDoVXYUrf6KTCx15/KEzBkD4/169hGzWWLuSLnHQu2+RuhhvDjfjG51MGYwaCYTE09SeB931upsbwnzGZJs+46tVfMWu2WBNl1Ijw8V2vjm0jjJTN+NF3u/7U3Z2WlV1E3H2I4yOGklRuI8s0hSihNAR/2MyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740699306; c=relaxed/simple;
-	bh=bkqOxOWQQQCLGRepn5os0rxwFT8Ja2Tsk0+nPgxMF3k=;
+	s=arc-20240116; t=1740701612; c=relaxed/simple;
+	bh=VjWpg7dP0s8mbOXJKdWV+Hs+lOOmlqB/DQ6QK29ok7o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MasEG80N0P8W1UGez0uTclmyq7LL0eeVp/iMbOnOPAJh3YaZDUFLkIt61w7H51ULfwFsYdAQCEh92lVP9gzBzTwwmMShumaatpMN/e3YGWQAgHGUF0z7efGdcRe6ISaTQUrBh5hegrlwG4rs5EmVuT+KwuF5soBXqa6Q6+giyZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OVxnFCrQ; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740699303; x=1772235303;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bkqOxOWQQQCLGRepn5os0rxwFT8Ja2Tsk0+nPgxMF3k=;
-  b=OVxnFCrQi5VuGZdkGCfVWiXvhNtab/f9aoizkV3migDpg+6W80C9cFEv
-   lIfmPizXCSxhfRlxZrvX84Xv2pOTipP3jA1wulhrNeKnqVtfMslQW3ipN
-   bgTXnDNljGwv37G8vp+WrsZmePuE43jor5cgnQZmchmmZGFvxluf5v+5C
-   RZTB+5IkQsGa+LHsJNeXIaMTHjdd7W6HMJildbJJTYxP9X6HmubTe4vps
-   PuyN+FsT7d6pKibyaHwfRsryl3C9Jq+wQ/Udfeog3H0KSUL2rHaeW4Qq/
-   8GssrL8dYb/CFdhXHSuH6/cWuKZT/C4CZosJta4ULDVaayNzjM/asXZe0
-   w==;
-X-CSE-ConnectionGUID: tTGGOBKcRpKm59+wFWRXTA==
-X-CSE-MsgGUID: /VBeWWvOQRGxbl0+8YKmew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="41317907"
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="41317907"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 15:35:02 -0800
-X-CSE-ConnectionGUID: LZ4CqSA+TDGa2Oiwl5QCwQ==
-X-CSE-MsgGUID: 2bABavt/QpyPKQ46ixT8Eg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="117356118"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 27 Feb 2025 15:34:59 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tnnP6-000EB8-1f;
-	Thu, 27 Feb 2025 23:34:56 +0000
-Date: Fri, 28 Feb 2025 07:34:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Alisa-Dariana Roman <alisa.roman@analog.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
-	David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: Re: [PATCH v5 2/3] iio: adc: ad7191: add AD7191
-Message-ID: <202502280702.31rbuGw8-lkp@intel.com>
-References: <20250226115451.249361-3-alisa.roman@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tzC55F2/vS6N6XDC6neJZmhoxJzAUkaKWGgvYgp89lZAC0Ram7CFQTbnFNU78L+6HAhkYrDKE5UXBfEeIH/dFtygxbSp+9IWPlahk9R2dzfWb3179RQ5ZnmRXneUgDrkajbNlb/6cAR3DxwKydVRhD4qKHvUA61eZVuDmQjkdj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPSIMBiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F47C4CEDD;
+	Fri, 28 Feb 2025 00:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740701611;
+	bh=VjWpg7dP0s8mbOXJKdWV+Hs+lOOmlqB/DQ6QK29ok7o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FPSIMBiYpk65tkQodTo/Q6a3uAXXcYR/A9MIjM+eaZtBDRB7mS3zYuwI8XBJKliJI
+	 ZQIBtAcV49xzFkH3e9QjkktmvszB/CaIPUZBJUUhuLEQgAjYMKC9wkwMGfo00V4Ae/
+	 MwgX177YXb8sLMGtS3MyHLB73/SS8BvzIPBqEOqi5fzMZ8xwbSwfoCylasr+Xg2LV9
+	 gq0sW7FykZKyCJpc7A08PNzE/+EnNFxOcag/9/bPAdT28B8/s5UrXhrpLbQDrtEuN6
+	 y9CuxIxYz2ZZB9KmRu2uT5vlzgqAuFMOcveNTnSzTJX+vGJWGrKUixNRyBuW1qQNep
+	 0ursar10TjhZQ==
+Date: Fri, 28 Feb 2025 09:13:26 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: =?iso-8859-1?B?Q3Pza+Fz?= Bence <csokas.bence@prolan.hu>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Kamel Bouhara <kamel.bouhara@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Dharma.B@microchip.com,
+	Ludovic Desroches <ludovic.desroches@microchip.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH v4 0/2] microchip-tcb-capture: Add Capture, Compare,
+ Overflow etc. events
+Message-ID: <Z8D_phw3GxvdAO8G@ishi>
+References: <8fb9f188-3065-4fdc-a9f1-152cc5959186@prolan.hu>
+ <Z7vihBqOgP3fBUVq@ishi>
+ <bfa70e78-3cc3-4295-820b-3925c26135cb@prolan.hu>
+ <Z7_xTQeTzD-RH3nH@ishi>
+ <20250227135330.GC182392@tpx1.home>
+ <Z8B1LDT-n2XTTp8q@ishi>
+ <202502271437280a6701d8@mail.local>
+ <Z8CA9RTZWChh9cJW@ishi>
+ <Z8CKQvRjqH9lwzgO@ishi>
+ <077f23f1-3e5f-423c-aa97-ee7fcdf1475d@prolan.hu>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="aSZS/FbNbRmlzwJh"
 Content-Disposition: inline
-In-Reply-To: <20250226115451.249361-3-alisa.roman@analog.com>
-
-Hi Alisa-Dariana,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.14-rc4 next-20250227]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alisa-Dariana-Roman/dt-bindings-iio-adc-add-AD7191/20250226-195853
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20250226115451.249361-3-alisa.roman%40analog.com
-patch subject: [PATCH v5 2/3] iio: adc: ad7191: add AD7191
-config: hexagon-allyesconfig (https://download.01.org/0day-ci/archive/20250228/202502280702.31rbuGw8-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250228/202502280702.31rbuGw8-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502280702.31rbuGw8-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/iio/adc/ad7191.c:217:15: warning: variable 'pga_index' is used uninitialized whenever 'for' loop exits because its condition is false [-Wsometimes-uninitialized]
-     217 |                 for (i = 0; i < ARRAY_SIZE(gain); i++) {
-         |                             ^~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/ad7191.c:224:35: note: uninitialized use occurs here
-     224 |                 st->scale_avail = &scale_buffer[pga_index];
-         |                                                 ^~~~~~~~~
-   drivers/iio/adc/ad7191.c:217:15: note: remove the condition if it is always true
-     217 |                 for (i = 0; i < ARRAY_SIZE(gain); i++) {
-         |                             ^~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/ad7191.c:160:48: note: initialize the variable 'pga_index' to silence this warning
-     160 |         int odr_value, odr_index, pga_value, pga_index, i, ret;
-         |                                                       ^
-         |                                                        = 0
->> drivers/iio/adc/ad7191.c:179:15: warning: variable 'odr_index' is used uninitialized whenever 'for' loop exits because its condition is false [-Wsometimes-uninitialized]
-     179 |                 for (i = 0; i < ARRAY_SIZE(samp_freq); i++) {
-         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/ad7191.c:186:36: note: uninitialized use occurs here
-     186 |                 st->samp_freq_avail = &samp_freq[odr_index];
-         |                                                  ^~~~~~~~~
-   drivers/iio/adc/ad7191.c:179:15: note: remove the condition if it is always true
-     179 |                 for (i = 0; i < ARRAY_SIZE(samp_freq); i++) {
-         |                             ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/iio/adc/ad7191.c:160:26: note: initialize the variable 'odr_index' to silence this warning
-     160 |         int odr_value, odr_index, pga_value, pga_index, i, ret;
-         |                                 ^
-         |                                  = 0
-   drivers/iio/adc/ad7191.c:553:18: error: expected ';' after top level declarator
-     553 | MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
-         |                  ^
-   2 warnings and 1 error generated.
+In-Reply-To: <077f23f1-3e5f-423c-aa97-ee7fcdf1475d@prolan.hu>
 
 
-vim +217 drivers/iio/adc/ad7191.c
+--aSZS/FbNbRmlzwJh
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   150	
-   151	static int ad7191_config_setup(struct iio_dev *indio_dev)
-   152	{
-   153		struct ad7191_state *st = iio_priv(indio_dev);
-   154		struct device *dev = &st->sd.spi->dev;
-   155		/* Sampling frequencies in Hz, see Table 5 */
-   156		static const u32 samp_freq[4] = { 120, 60, 50, 10 };
-   157		/* Gain options, see Table 7 */
-   158		const u32 gain[4] = { 1, 8, 64, 128 };
-   159		static u32 scale_buffer[4][2];
-   160		int odr_value, odr_index, pga_value, pga_index, i, ret;
-   161		u64 scale_uv;
-   162	
-   163		st->samp_freq_index = 0;
-   164		st->scale_index = 0;
-   165	
-   166		ret = device_property_read_u32(dev, "adi,odr-value", &odr_value);
-   167		if (ret && ret != -EINVAL)
-   168			return dev_err_probe(dev, ret, "Failed to get odr value.\n");
-   169	
-   170		if (ret == -EINVAL) {
-   171			st->odr_gpios = devm_gpiod_get_array(dev, "odr", GPIOD_OUT_LOW);
-   172			if (IS_ERR(st->odr_gpios))
-   173				return dev_err_probe(dev, PTR_ERR(st->odr_gpios),
-   174						     "Failed to get odr gpios.\n");
-   175	
-   176			st->samp_freq_avail = samp_freq;
-   177			st->samp_freq_avail_size = ARRAY_SIZE(samp_freq);
-   178		} else {
- > 179			for (i = 0; i < ARRAY_SIZE(samp_freq); i++) {
-   180				if (odr_value != samp_freq[i])
-   181					continue;
-   182				odr_index = i;
-   183				break;
-   184			}
-   185	
-   186			st->samp_freq_avail = &samp_freq[odr_index];
-   187			st->samp_freq_avail_size = 1;
-   188	
-   189			st->odr_gpios = NULL;
-   190		}
-   191	
-   192		mutex_lock(&st->lock);
-   193	
-   194		for (i = 0; i < ARRAY_SIZE(scale_buffer); i++) {
-   195			scale_uv = ((u64)st->int_vref_mv * NANO) >>
-   196				(indio_dev->channels[0].scan_type.realbits - 1);
-   197			do_div(scale_uv, gain[i]);
-   198			scale_buffer[i][1] = do_div(scale_uv, NANO);
-   199			scale_buffer[i][0] = scale_uv;
-   200		}
-   201	
-   202		mutex_unlock(&st->lock);
-   203	
-   204		ret = device_property_read_u32(dev, "adi,pga-value", &pga_value);
-   205		if (ret && ret != -EINVAL)
-   206			return dev_err_probe(dev, ret, "Failed to get pga value.\n");
-   207	
-   208		if (ret == -EINVAL) {
-   209			st->pga_gpios = devm_gpiod_get_array(dev, "pga", GPIOD_OUT_LOW);
-   210			if (IS_ERR(st->pga_gpios))
-   211				return dev_err_probe(dev, PTR_ERR(st->pga_gpios),
-   212						     "Failed to get pga gpios.\n");
-   213	
-   214			st->scale_avail = scale_buffer;
-   215			st->scale_avail_size = ARRAY_SIZE(scale_buffer);
-   216		} else {
- > 217			for (i = 0; i < ARRAY_SIZE(gain); i++) {
-   218				if (pga_value != gain[i])
-   219					continue;
-   220				pga_index = i;
-   221				break;
-   222			}
-   223	
-   224			st->scale_avail = &scale_buffer[pga_index];
-   225			st->scale_avail_size = 1;
-   226	
-   227			st->pga_gpios = NULL;
-   228		}
-   229	
-   230		st->temp_gpio = devm_gpiod_get(dev, "temp", GPIOD_OUT_LOW);
-   231		if (IS_ERR(st->temp_gpio))
-   232			return dev_err_probe(dev, PTR_ERR(st->temp_gpio),
-   233					     "Failed to get temp gpio.\n");
-   234	
-   235		st->chan_gpio = devm_gpiod_get(dev, "chan", GPIOD_OUT_LOW);
-   236		if (IS_ERR(st->chan_gpio))
-   237			return dev_err_probe(dev, PTR_ERR(st->chan_gpio),
-   238					     "Failed to get chan gpio.\n");
-   239	
-   240		return 0;
-   241	}
-   242	
+On Thu, Feb 27, 2025 at 04:56:17PM +0100, Cs=F3k=E1s Bence wrote:
+> Hi,
+>=20
+> On 2025. 02. 27. 16:52, William Breathitt Gray wrote:
+> > Sorry, let me step back for a moment because maybe I'm trying to solve
+> > a problem that might not actually be a problem.
+> >=20
+> > I see functionality settings available in the TC Block Mode Register
+> > (BMR) that can affect multiple TCCs at a time. Are these BMR settings
+> > exposed already to users in someway? If not, do we have a way to
+> > introduce these settings if someone wants them; e.g. would the
+> > AutoCorrection function enable bit be exposed as a sysfs attribute, or
+> > configured in the devicetree?
+> >=20
+> > Finally, if there's not much interest in general for exposing these BMR
+> > settings, then I suppose there is no need to change how things are right
+> > now with the microchip-tcb-capture module and we can just keep it the
+> > way it is. That's my only concern, whether there are users that want to
+> > control these settings but don't have a way right now.
+>=20
+> My knee-jerk answer to this is that if they do, they will bring it up by
+> submitting a patch or bug request. But I'll let others chime in, we only =
+use
+> an extremely small subset of the features of the TCBs.
+>=20
+> Bence
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I think that's a reasonable stance to take. I don't have an elegant
+solution either to this situation, so I'll defer trying to solve it
+until an actual user shows up who needs the functionality. Until then,
+it seems that what we have right now is adequate for the current
+usecases.
+
+William Breathitt Gray
+
+--aSZS/FbNbRmlzwJh
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ8D/pgAKCRC1SFbKvhIj
+Kze+AP0TSQhmivwKtynvIgpJ5od2IRhKMwMjM51kwMuLN/TrgwEAzg47J/c7uToS
+dZ/ygvQQpXY3J5aXOapiR28Wb6kZLgc=
+=D3Ne
+-----END PGP SIGNATURE-----
+
+--aSZS/FbNbRmlzwJh--
 

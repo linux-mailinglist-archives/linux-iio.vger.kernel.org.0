@@ -1,138 +1,147 @@
-Return-Path: <linux-iio+bounces-16169-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16170-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7A78A4936D
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:26:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8919A493EF
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A1341890630
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 08:26:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BA757A79D9
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 08:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09946242924;
-	Fri, 28 Feb 2025 08:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2FA253F3B;
+	Fri, 28 Feb 2025 08:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ckDyDm7s"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="keMuUWZP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B19D209F5B;
-	Fri, 28 Feb 2025 08:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DAD1FE451
+	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 08:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740731204; cv=none; b=eVS5y8yac5ok9XgGMNpmxfyi/VB7+ACAtJ1m6qcoLwhmnS43RlAyqUTUjxup3M2gqnDje/yhCUd3iZrvcBIRuFnEmq9z5BOOXG1vAnnaIgWf7mJBf6UUIIntCOjoRlpr6vle1waJOZt/nlOxqzb+/Mh5myzEad7SJ+LnOy8H07k=
+	t=1740732505; cv=none; b=pK2mnZq6tMKQkdcYj/tGg5UoEQyyPuSm5n3lRPXOr3nF+jd+tArvjvwyJfri2M8Vahkwndtujm+MirOw0aE24m9SM36zk/qgEGdD92U04Df87ySvtT1AehoSvdfo/Ojv21NN3pBTakw2R80sUUi4hRbCUtGhQWsSpEzqgDxm/WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740731204; c=relaxed/simple;
-	bh=c7YMPUbabUYMC0gLFMQRRPcLNjm7M6eGv/SHyYQzSQM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kmrj6WFYmnbVXPfbrnE6hx+gcggSJ1SEHgvyMttBnAAxYv69yAci8WVH1L/9WEUbj24MuOVYX7J4nfBU0YRrGmpzB528W4Q4EGyIKhyxTG/ZFLjEkri2qof8NGeDlarDBrPrqQQkXR+GniB5stauZEsmfLKM4DCRPTfju/QeCbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ckDyDm7s; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-388cae9eb9fso995913f8f.3;
-        Fri, 28 Feb 2025 00:26:42 -0800 (PST)
+	s=arc-20240116; t=1740732505; c=relaxed/simple;
+	bh=5Y4az6HpX0m67GPoqxGohyZ+WCOs21Oqm7I46A/5BDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IiusGzZMer1z8vjHue6skbqjtXAh1hQyef2KM/zNrP7LxQj9RPZ72A2SVVihDNJ5GK0uvNISrRepbBpUXcoMSzl4iKL7YjjWRmry/cO/DSqq0DaEpqQ8tOu90FXcAoBGA9IRPfKHc4XFehkY+zzt8l7jqm2sB2cMz70/I+oUlt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=keMuUWZP; arc=none smtp.client-ip=94.124.121.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740731201; x=1741336001; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=c7YMPUbabUYMC0gLFMQRRPcLNjm7M6eGv/SHyYQzSQM=;
-        b=ckDyDm7ssdgWAL/t4CLOVWp2SQM+lgjjPPGxhhWF9XHm2W4Mfm6PyWfYY3cO53dGiw
-         /ZAnkifqex7Y332IBws1ppub7DLZpFIUR9/IKrZZ8pCbqMB9HKNGFql/mCDyAD3Djzrk
-         t2tscc+tojarjOa+7mH9cWW3fK6Tn0opZFCgwDHDpUZq00wXx2L6uPP6CU1VKoypTTsI
-         9zhQJ0F4beZiPPUFJzafR3qDGsTbjZ1vrvkUiI2ioIiXIggS9S3XVcFk5ggeo/XSnv40
-         Z4MEk7lWmfuiI5UiAmBuUXegne7ULpKo2RBlTx69kEmUvb6eGZ5mZkMZVExH+lOANyyM
-         eqSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740731201; x=1741336001;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c7YMPUbabUYMC0gLFMQRRPcLNjm7M6eGv/SHyYQzSQM=;
-        b=hm2Y++W+/9lE2GCXgTqqJh1PxJ/yKfvVEli6O+hIuGp7dy0rg5fV/3kuHl9Ovc8z75
-         3uibdFfVdxEHhCqbHRYfQGxEFZpQ1L/xHrPkadcCCwhAPrHoiKCl7NDGokYjtY9vWnnQ
-         cqMPI7D18yGMDfM5HBXiEB0HWms7HgahGxyMdKB7+z0Qq1rACy5o3aO7zMZlM2t5idce
-         s7LSsSxQV01mXJJCiLrMud/j8AanjmsX3QmK+MSKsF/8YwqeWHj6jNXnfEQjMaz7eQUQ
-         uCj1+YroNJkvHIGy0S4Cufc3OcS25gEPat/RoBAUvbV0Zp9PEUtgGrFtYudJhRHfCgU/
-         AlMw==
-X-Forwarded-Encrypted: i=1; AJvYcCX62x411JDq9+bhlOrjJ9C5VUhk0sFjYvbJICyGI6BoLKMNypxHZBcN+a0N6Of1Fun79t6fwKE10iTT9SE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwS6SKqr88NuhFpyOFgT1R7nQlGwF5LIszGLmPgoGdwtUuB99hc
-	txwaw88GrKdKvLnHbAMhvOyQnHeZgQ9SWDksmYavE2NPiczIkfgr
-X-Gm-Gg: ASbGncv2O/2BlKmA3GlZFc5fBaMab7yHpaYLD2Z1HWqCyOaOqROjSwSMaTn61sl5ubN
-	2Xp+DgbGFG0O4lpvbxPHpgUbQxKDwp/v6s2FhtlmD1td3B0ZucrX1I2c7aXI5wNqJwkVBzpTjUW
-	3W07xgHx7OF/5Lm5xFNHeMI+Jhpf3fqY5HFNJ94RYQZBNsk5EvPV3IeELEgCan31SeXAOmiUhve
-	xyvfTykQO0UBM8tsjFwWT0vW2gcT8cAbffxCphTtL0mjH/FzZ8xvwvHg8UUVy8OxaEQyqSrjxQ8
-	uXhmvOsQsv81BcEUoOVL5K+fEUwStdsA7vQmd0K3n/xuU+0O9WS/qjEsTSVJRcH4QOU8rGctEQ=
-	=
-X-Google-Smtp-Source: AGHT+IF02T9DCrzPbNmE6I998k6imxNc+Gzw/MUi0LrgoTxdMgRAoQO6UnMNOcZm9UKF+0p3Qy5fGQ==
-X-Received: by 2002:a05:6000:1568:b0:38e:c2de:70d4 with SMTP id ffacd0b85a97d-390eca1fa8fmr1641740f8f.42.1740731200643;
-        Fri, 28 Feb 2025 00:26:40 -0800 (PST)
-Received: from ?IPv6:2001:818:ea8e:7f00:2575:914:eedd:620e? ([2001:818:ea8e:7f00:2575:914:eedd:620e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e4848252sm4487565f8f.69.2025.02.28.00.26.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 00:26:40 -0800 (PST)
-Message-ID: <37a99292819c20e6da5227cd46e9f1250cb67804.camel@gmail.com>
-Subject: Re: [PATCH] iio: buffer-dma: Fix docstrings
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Folker Schwesinger <dev@folker-schwesinger.de>, Jonathan Cameron
-	 <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa
-	 <nuno.sa@analog.com>, Paul Cercueil <paul@crapouillou.net>, Peter Zijlstra
-	 <peterz@infradead.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 28 Feb 2025 08:26:44 +0000
-In-Reply-To: <D83IPSTKYWNB.1PUBV1530XI86@folker-schwesinger.de>
-References: <D83IPSTKYWNB.1PUBV1530XI86@folker-schwesinger.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=ifGH9TUIXn6Zckh2DlBzL0q10eJHl+qybe+rMqZOb9Y=;
+	b=keMuUWZPnJH2Weghw+u/6W/CusmGl770MxkAFbOdTE3rc5Ec7oEIoUcOT6mG6Yew44NWoZTsr2I98
+	 SJAGgHbSo2iSz0ZJdRxckwj3l5lgfSAK4zcLDTnU3h4eb5F2JMgGwrMvHofwMXchSSMzr6+4+2nKnA
+	 FWBSO2Ry29YUm+30aOt8hbBfO6BaVjvAgTAveROxXTNwQhx+IReOOn+l2EaatGLZPH2KrijO0R20lq
+	 pP8Qu/lOD+EFA6jZVyptTIUHgITtSt84nbEzcQK8yQQFscgGZyIaFpXZWhoSK1IWar7O4HWA/US6i0
+	 rYwEyE6TvlqckAs5GneTbQrexcsVFfQ==
+X-MSG-ID: c1f43f4f-f5b0-11ef-8b43-005056817704
+Date: Fri, 28 Feb 2025 09:48:18 +0100
+From: David Jander <david@protonic.nl>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
+ <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>
+Subject: Re: [RFC PATCH 6/7] dt-bindings: motion: Add adi,tmc5240 bindings
+Message-ID: <20250228094818.0aad5491@erd003.prtnl>
+In-Reply-To: <20250228-groovy-lyrical-skunk-751ee3@krzk-bin>
+References: <20250227162823.3585810-1-david@protonic.nl>
+	<20250227162823.3585810-7-david@protonic.nl>
+	<20250228-groovy-lyrical-skunk-751ee3@krzk-bin>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2025-02-27 at 20:27 +0100, Folker Schwesinger wrote:
-> Fix a typo in the docstring of iio_dma_buffer_read() and fix what looks
-> like a copy-and-paste error in the iio_dma_buffer_write() docstring.
->=20
-> Signed-off-by: Folker Schwesinger <dev@folker-schwesinger.de>
-> ---
 
-Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Dear Krzysztof,
 
-> =C2=A0drivers/iio/buffer/industrialio-buffer-dma.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c
-> b/drivers/iio/buffer/industrialio-buffer-dma.c
-> index 7ea784304ffb..ee294a775e8a 100644
-> --- a/drivers/iio/buffer/industrialio-buffer-dma.c
-> +++ b/drivers/iio/buffer/industrialio-buffer-dma.c
-> @@ -624,7 +624,7 @@ static int iio_dma_buffer_io(struct iio_buffer *buffe=
-r,
-> size_t n,
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * iio_dma_buffer_read() - DMA buffer read callback
-> - * @buffer: Buffer to read form
-> + * @buffer: Buffer to read from
-> =C2=A0 * @n: Number of bytes to read
-> =C2=A0 * @user_buffer: Userspace buffer to copy the data to
-> =C2=A0 *
-> @@ -640,7 +640,7 @@ EXPORT_SYMBOL_NS_GPL(iio_dma_buffer_read,
-> "IIO_DMA_BUFFER");
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * iio_dma_buffer_write() - DMA buffer write callback
-> - * @buffer: Buffer to read form
-> + * @buffer: Buffer to write to
-> =C2=A0 * @n: Number of bytes to read
-> =C2=A0 * @user_buffer: Userspace buffer to copy the data from
-> =C2=A0 *
->=20
-> base-commit: faeaa1ec6c63b6676679f321601471772f2a0c9b
+Thanks for reviewing...
+
+On Fri, 28 Feb 2025 08:11:04 +0100
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
+
+> On Thu, Feb 27, 2025 at 05:28:22PM +0100, David Jander wrote:
+> [...]
+> > +
+> > +  enable-supply:
+> > +    description: Optional external enable supply to control SLEEPn pin. Can  
+> 
+> That's odd. regular pins are not supplies. This must be named after
+> physical supplies. There is vdd18, vcc, vcp but nothing about enable
+> supply in datasheet.
+> 
+> > +      be shared between several controllers.  
+> 
+> Second sentence is both redundant and really not relevant to this
+> binding. It's not this binding which decides about sharing.
+
+Good point. I think I should drop the whole property, since it is indeed
+irrelevant. If extra supplies need to be specified, they always can be, right?
+
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - interrupts
+> > +  - clocks
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +  - $ref: /schemas/motion/common.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    spi {
+> > +        #address-cells = <1>;
+> > +        #size-cells = <0>;
+> > +
+> > +        motor@0 {
+> > +            compatible = "adi,tmc5240";
+> > +            reg = <0>;
+> > +            interrupts-extended = <&gpiok 7 0>;  
+> 
+> Include header and use standard defines for flags.
+
+Thanks. I didn't know I could include them here... will fix this.
+
+> 
+> > +            clocks = <&clock_tmc5240>;
+> > +            enable-supply = <&stpsleepn>;
+> > +            spi-max-frequency = <1000000>;  
+> 
+> Where are any other properties from common schema?
+
+The properties in common.yaml are optional. Do I need to explicitly specify
+this somehow (they are not listed under "required:")?
+In fact, the tmc5240 driver has its own known constants for these properties
+that it fills in. One can overrule them here if needed, but I suppose in the
+case of the tmc5240 the regular use-case is not to do that. Should I maybe add
+a second example that overrules the defaults?
+
+Best regards,
+
+-- 
+David Jander
 
 

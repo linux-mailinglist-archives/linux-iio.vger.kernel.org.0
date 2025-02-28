@@ -1,104 +1,262 @@
-Return-Path: <linux-iio+bounces-16184-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16185-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D082A49859
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 12:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7A4A4989E
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 12:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E5A43B99E7
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 11:33:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700083B6958
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 11:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0DC23E34B;
-	Fri, 28 Feb 2025 11:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C416E2620CC;
+	Fri, 28 Feb 2025 11:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4w4V2Sn"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="nKefsDd7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp28.bhosted.nl (smtp28.bhosted.nl [94.124.121.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B601C3BE3;
-	Fri, 28 Feb 2025 11:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316D3260372
+	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 11:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.40
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740742390; cv=none; b=ieymkr30z8JJlRohRuwNOnutBj+WXWd4QvYNOk14FeO90Hubgw86mYOhccNyj2CSOzMaqpU3DVS1HHGKXvwfjRsTbd/tEbkd59AQxEwQAAo1TH0vo3IktU8intsePvv/OvMGzbmqckTP0sZ7v66LQ0doRd2HvWGdC979j38xFaY=
+	t=1740743854; cv=none; b=YrIe+ENBHdGxOIxVpC5tbf3JSTfkfTb6w1WtJSyKLg+sH+fBFfqb7ZkQKts1wxY1GRZFAn6C3hpqG3A7abu0MUJEo9cKC8ugAykxBF0M9T3piKwjd+0qsVPJqtQGIYV8WEACHpaUzjTWwCVXxu1MF7t7l8eQzxGa46w84tY9io4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740742390; c=relaxed/simple;
-	bh=Wk3NLoeyNebR1iWWK4A0do2AqVIQvT0KlwiOC64vi/c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R42lKJQogo+SzMZYt2RjHSP8EUjUhFJysCs8cEZ8dETDkHlzScGZMJuOVG5qKr7bwiPC7Xqw2LPEx5x5KhgM5r6NXA7xp7h60ufK1R7Mlcfeb0UMqqXl+ROf6Pb0Ghf8dmdvWWhsPZbmz6Fac0GE7ZGByMXwPHOnCAQwY8qZa+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4w4V2Sn; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2feb1d7a68fso2738151a91.1;
-        Fri, 28 Feb 2025 03:33:08 -0800 (PST)
+	s=arc-20240116; t=1740743854; c=relaxed/simple;
+	bh=RvFAS78f+99HBNR6SzbLni87srDvuljh18ChZseS+KU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UupCjvCvHhX4A339sSBtBQzWJtf6fi9id7NF/ufTHJyoPyqHv6tJcWAOXOHMRUrwuNtGZZeKG+8hJkwQesWkGG2ks/5KqIVRTFkOSlHwgf5DBJ56h2xvW3S4hQWZfUvehPoVDrszyLvr9zuUzctTC5yRqVEf5n9TKENpcNMqn8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=nKefsDd7; arc=none smtp.client-ip=94.124.121.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740742388; x=1741347188; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wk3NLoeyNebR1iWWK4A0do2AqVIQvT0KlwiOC64vi/c=;
-        b=B4w4V2Sn/iPpIWocsW1rstmLgVa7qiQPUwPKNiY/YyxQ0IWrWwYDuG7lk/x5CBeTzo
-         +uq4IDb3IYYDKBJNO5zWB+S1N+AxF9AlDXTUJQeemqFWuRITDeSes1kcj0Hjkaaq3hLG
-         NMa110BS8BDyikMaNnM3c8daprvEB270WChtyXwr05NyX/3/zvtkOMgAHwbnlHKPeFRl
-         +Ql/9ChnRhoq6OOADE5fpamhaZgOaFC0xL1R3cXlkrMxwgEToj3hsOTpwtHi6uGU1iSD
-         m82lV82P2Cd5bwp19h5qzkC+azKXOGB6vr0vhuHvlaqOARHWVfbX7zhSvtj2gm/9rDjt
-         OQKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740742388; x=1741347188;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wk3NLoeyNebR1iWWK4A0do2AqVIQvT0KlwiOC64vi/c=;
-        b=bYlfZJqoPJk4RrfuBSRzyVDfM/LVPHhGu9AJDZsi9Wi2hKtJNe5unrubkN9EFLWc8C
-         Q8mQ70JE9JDKowg5a35JI9H0vpBTzHUuC87/0bajs9DkFbDxkG2duzVft+5Qt1oD5SEH
-         JgEJgHnUnpiuqBzWhL+niJlbxFDtGH3fLU6FwuvkO89UQEOxjjsUsDNx6GegWDq6OIRc
-         LXJS4frUez4CF5YE3mCTx6aMZPW0e4Fz1ZhAPUPAoQdxbCuuUFCBIcIzAObwpolSE81X
-         5GqmLjBxo9vOsyORDIwSsN6H1fcEoB/gJkq19SXsqlvWIRnXerRPeh0INh+81k0ljDj+
-         rjBg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ9d+wDMnVrRfU0UlzI5SFRWCsp2sHKomuJWiGA2R6ujPflndCbwrZahQueXwO1rPLlA1rgFpgkvk=@vger.kernel.org, AJvYcCXqF/oajePyYCYiMBWNvPvpOA4i3s8KRND2JwBf+nVpK/p/GGxXNSyYZy6MO+TuRC7XIaB6bQTZ3aaYJWwI@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoCjoXqm0XT0rreMMQ1z5LWCdUm8Aq9S6Zqn6HDadIMpzTorOJ
-	IzcfHklmK2oGTRZVf3ObYuLEIOGeUp3dDpKjoN4llD3jmNa+HirDP8eP+4Fy
-X-Gm-Gg: ASbGncvi2vz3rm6WbXgB5yah355JGfArlYaQ0Bj6TR3klVLIA8Hxlu8qDRpgVR9Mf7B
-	v3O/fJ8jtkZUphyeJjifWxW6Q1/9/aG/FJ/0ULaI+xdN9hzSpfzVLwmTC0YYrC4U+LmVm3mxjWv
-	sUsBv1sgKE2EAqyRV8a2ySyuOOj7xYIJuO7qkp7cTEVKFUjFH+EHCT3ceqf7N53bbZhpPWVGr4P
-	Xo2SnVrCWh/PT8Q84WotSKp6bLF+GRj8xLw7+5Px9njNZNRtW4NTRaO8eQI8cZalJC4h7MDVq/J
-	l/wsW7oduDtD2PpsrvVrzb4zqbI=
-X-Google-Smtp-Source: AGHT+IGDl4zxony+vYh3k80V1xozG9YGu1GqiUZd7l8fXP020W+OVECvysFg8dVqbuBRl3s4lyI/yg==
-X-Received: by 2002:a17:90b:3d0a:b0:2f6:be57:49d2 with SMTP id 98e67ed59e1d1-2febab7459bmr5822436a91.17.1740742388119;
-        Fri, 28 Feb 2025 03:33:08 -0800 (PST)
-Received: from danascape.. ([2402:e280:218d:2e5:568f:475:2d46:5965])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223504c5c37sm30704655ad.133.2025.02.28.03.33.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 03:33:07 -0800 (PST)
-From: Saalim Quadri <danascape@gmail.com>
-To: marcelo.schmitt@analog.com
-Cc: dragos.bogdan@analog.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: GSoC Proposal 2025
-Date: Fri, 28 Feb 2025 17:03:04 +0530
-Message-Id: <20250228113304.63160-1-danascape@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=vRFSBkesq/C2LJZo8naM/Q1cNr1mZmsYkaQzEjX9zhk=;
+	b=nKefsDd72p1gTkAq1a7G+hEFjAE5L6lgg8cegGBpZQQzWMszwhaWsbIajEMPMzlnWkeWbY9NztDg9
+	 O+Js9zCsksKfw3Jnfdq4tpLC0VPA7dkeYSco4yWWhISm0kav1YSNJJIygduSKWjmKZHQhk9t2ax9IN
+	 OToCnnLTchBVZnQ0ZkRqaAWze2pWs4aVEYK4pZ5hrPzUQaRoHocx5w/hFB+5SoDf8caOUN6RkzT/+J
+	 06/v612F7A3E9BKf0U4Eo5HnR0KWHNl8hSDeya5zZNzjuNs7ncmY7rkFC8UIk95t8wBnJQ0Jk27SN9
+	 XeeIcsCmpFEcDwhwcTvgNzcPyzq6oMg==
+X-MSG-ID: 2e5f1d48-f5cb-11ef-b5ca-0050568164d1
+Date: Fri, 28 Feb 2025 12:57:27 +0100
+From: David Jander <david@protonic.nl>
+To: Pavel Pisa <ppisa@pikron.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
+ <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>
+Subject: Re: [RFC PATCH 0/7] Add Linux Motion Control subsystem
+Message-ID: <20250228125727.7f892552@erd003.prtnl>
+In-Reply-To: <202502281035.57489.ppisa@pikron.com>
+References: <20250227162823.3585810-1-david@protonic.nl>
+	<202502281035.57489.ppisa@pikron.com>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi everyone, I am Saalim Quadri an undergrad student at Dayananda Sagar College of Engineering, pursuing Electronics and Communications.
-I wish to participate in the GSoC 2025 as a part of the Linux Foundation, IIO Project.
 
-I have been contributing to the Linux Kernel and have more than 10 accepted patches.
-I have also worked with Android Linux Ecosystem in the past years, and have worked on several subsystems, backports and fixes.
+Dear Pavel,
 
-I started looking into https://wiki.linuxfoundation.org/gsoc/2025-gsoc-iio-driver and Analog Devices Inc. and I am interested in writing
-the driver for ADE9113 ADC.
+Thanks a lot for starting the discussion...
 
-In that sense, I would like to know if anyone in the IIO community could provide with some suggestions for my proposal, and a positive impact.
-Any suggestion or hint is appreciated!
+On Fri, 28 Feb 2025 10:35:57 +0100
+Pavel Pisa <ppisa@pikron.com> wrote:
 
-Sincerely,
-Saalim Quadri
+> Hello David and others
+> 
+> On Thursday 27 of February 2025 17:28:16 David Jander wrote:
+> > Request for comments on: adding the Linux Motion Control subsystem to the
+> > kernel.  
+> 
+> I have noticed on Phoronix, that the new system is emerging.
+
+Being featured on Phoronix on day one wasn't on my bingo card for this year, to
+be honest... :-)
+
+> This is area where I have lot (more than 30 years) of experience
+> at my company and I have done even lot with my studnets at university.
+> I have big interest that this interface fits our use neeeds
+> and offers for future integration of our already open-source
+> systems/components.
+
+This is very impressive and I am honored to have gotten your attention. I am
+looking forward to discussing this, although I am not sure whether all of this
+should happen here on LKML?
+
+> This is preliminary reply, I want to find time for more discussion
+> and analysis (which is quite hard during summer term where I have
+> lot of teaching and even ongoing project now).
+> 
+> I would like to discuse even future subsystem evolution
+> which would allow coordinates axes groups creation, smooth
+> segments based on N-th order splines incremental attachment,
+> the path planning and re-planning if the target changes
+> as reaction to camera or other sensor needs etc.
+
+Right now LMC should be able to support hardware that has multiple channels
+(axes) per device. Its UAPI can describe position-based movements and
+time-based movements along any arbitrary combination of those channels using a
+pre-defined speed/acceleration profile.
+
+The profiles can be specified as an arbitrary number of speed and acceleration
+values. The idea is to describe a segmented profile with different
+acceleration values for segments between two different speed values. Simple
+examples are trapezoidal (accelerate from (near-)zero to Vmax with A1, and
+decelerate from Vmax back to zero with D1), dual-slope or S-curve, but the
+UAPI in theory permits an arbitrary number of segments if the underlying
+hardware supports it.
+
+I have some ideas for future extensions to the API that make coordinated
+multi-channel movements a bit easier, but that will not be in the initial push
+of LMC: For example torque-limit profiles for controlled torque movements,
+usable for example in sliding door controllers with AC machines or BLDC
+motors; or an ioctl to send a distance vector to a selected number of channels
+at once and apply a motion profile to the whole coordinated movement. In the
+current version you have to set up the distances and profiles for the
+individual channels and then trigger the start of the motion, which is more
+cumbersome. You can already use the finish event of a preceding motion to
+trigger the next one though.
+
+Another idea that has been floating in my head is to make a "virtual" motion
+device driver that combines individual "real" single-channel hardware drivers
+into one multi-channel device, but I am unsure whether it is really needed. It
+all depends on the latency limit differences between kernel-space and
+user-space whether there is something to gain.
+
+I think it is best to keep this initial version more limited in scope though,
+as long as the needed extensions are possible in the future without breaking
+existing UAPI.
+
+So I propose: Let's craft a draft UAPI (in a different place, not on LKML) that
+can do everything we can come up with and then reduce it to the basics for the
+first version. Otherwise it will get too complex to review, I'm afraid.
+
+> At this moment I have interrest if there is site which
+> would start to collect these ideas and where can be
+> some references added.
+
+I may put this on github and create a wiki there if you think that's a good
+enough place to discuss?
+
+> I think that I have quite some stuff to offer.
+
+That would be great! Looking forward to it :-)
+
+> To have idea about my direction of thinking and needs
+> of interface I would provide some references even
+> to our often commercially sold but mostly conceived
+> as hobby projects.
+
+I'll have to take some time to look into those more closely. My own experience
+as far as FOSS or OSHW concerns includes the reprap Kamaq project:
+
+https://reprap.org/wiki/Kamaq
+
+TL;DR: It is a 3D printer running only Linux and the whole controller software
+is entirely written in python (except for very little Cython/C code).
+This is still my 3D printer on which I satisfy all of my 3D print needs. I
+will need to port it to LMC one day.
+
+> Coordinated axes groups movement with incremental spline
+> segment addition into command queue (our COORDMV componet
+> of PXMC library) is demonstrated on old BOSCH SR 450 SCARA
+> system. The robot has never fully worked at Skoda Auto
+> with original BOSH control unit. But when it has been donated
+> to Czech Technical University, we have build control
+> unit at my copany based on Motorola 68376 MCU in around
+> 2000 year. I have later paid one student to prepare
+> demo in Python to demonstrate the system.
+> 
+> You can click on video
+> 
+>   MARS 8 BigBot and Robot Bosch SR 450 Drawing Roses 
+>   http://pikron.com/pages/products/motion_control.html
+
+Very impressive! Can you explain how the spline-segment information could be
+conveyed to the controller? Does the controller really do an infinitesimal
+spline interpolation, or does it create many small linear vectors?
+
+LMC will try to limit math operations in kernel space as much as possible, so
+hopefully all the calculations can be done in user-space (or on the controller
+if that is the case).
+
+Right now, my way of thinking was that of regular 3D printers which usually
+only implement G0/G1 G-codes (linear interpolation). G2/G3 (circular
+interpolation) doesn't sound practically very useful since it is special but
+not very flexible. Something like generalized spline interpolation sounds more
+valuable, but I hadn't seen any hardware that can do it.
+
+> The related python application is there
+> 
+>   https://github.com/cvut/pyrocon
+> 
+> In the far future, I can imagine that it can connect
+> to proposed LMC API and achieve the same results.
+
+Let's make it so!
+
+>[...]
+> which uses our PXMC motion control library
+> 
+>   https://gitlab.com/pikron/sw-base/pxmc
+> 
+> There is basic documentation for it on its site
+> 
+>   https://pxmc.org/
+>   https://pxmc.org/files/pxmc.pdf
+
+At first glance, this looks like a piece of hardware that would fit as a LMC
+device. What needs to be determined is where the boundaries lie between
+controller firmware, kernel-space and user-space code.
+
+Generally speaking, as a rough guideline, microsecond work is better done in
+the controller firmware if possible. millisecond work can be done in the kernel
+and 10's or more millisecond work can be done in user-space, notwithstanding
+latency limit requirements of course.
+
+>[...]
+> So in general, I think that we have large portfolio
+> of building blocks which would allow to build motion,
+> robotic controllers, communications etc. and I would be happy
+> if they are reused and even some project conceived
+> together with others to join the forces.
+
+This sounds very interesting. Ideally one would end up with LMC capable of
+interfacing all of those devices.
+
+> It would be ideal if the all motion control related
+> resources and links could be somehow collected
+> that wheel is not reinvented unnecessarily.
+
+I completely agree.
+
+> The most of my code is Mozilla, GPL etc... I have
+> right to relicence my company stuff if the license does
+> not fit. On the other hand, I do not intend to follow
+> such offers as of one well funded chip related association,
+> which offered us to relicense all to them with no retain
+> of any control and additional right and they would not
+> take care about the valuable project at all no looking
+> for funding etc... no promise for developmet etc...
+> So there are some limits.
+
+Understandable.
+
+Best regards,
+
+-- 
+David Jander
 

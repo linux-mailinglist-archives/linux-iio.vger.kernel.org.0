@@ -1,130 +1,158 @@
-Return-Path: <linux-iio+bounces-16173-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16174-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82129A49457
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 10:03:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE22A494C2
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 10:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1363A5756
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:03:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEC997A918A
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217B4254B12;
-	Fri, 28 Feb 2025 09:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5172561B4;
+	Fri, 28 Feb 2025 09:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+jq24IX"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="BB53on2S"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5D31A4F1F;
-	Fri, 28 Feb 2025 09:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA4E1EDA2F
+	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 09:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740733388; cv=none; b=SC3aaqb0rES5onUauQaFwnEJ1a2LB+kdn6bynNaMJAHmjZz6Wj3zq5SqBarmFMcj/UtxSFIjwBCCJRAHnRPquXP0RqVKNA2ixhfTdZxrzlE5aCRsIdRyqSKBZQ+aP9G9o5UfrbJvrVw168rBew7fk7fxryaYwxffeQcx9Tdp2dw=
+	t=1740734527; cv=none; b=sMVNPv2qjbrVrN1UrFsAJFZBsmAcpdyBUN52eKuaae0oDxZgaVECO9/3GSAQbIDm7XvvQnTwevOwNWMZ3xJqIkGZG1Ri/t8kbhVKc3kUJMCIyIT8FsubSclzcCogezsDKIUgsztiuNdVXgeV9G3weXNen+ELlLSC1RuAjc4Mdgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740733388; c=relaxed/simple;
-	bh=+XGe0mu0SCo1mxTdfsf+zPYqAxLe/z501wqCSa1WhCo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fBXFOQlXNZ65A1ojVWmaa/cb1rrfWp/X9ugVPR3bOM1DgXx8IoEAtLVKKJSHz1EZ18JFSBdy5cKGPX/fNyEbZQ/WJdhdZHNZ3zmbFsSSetMM4nNDs4BGLp+Z0nr8JlTf6diPkN4uJcEE6Uy1OcfM5Bj+l6brKpQcFH793Q03HaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+jq24IX; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4398738217aso16486575e9.3;
-        Fri, 28 Feb 2025 01:03:06 -0800 (PST)
+	s=arc-20240116; t=1740734527; c=relaxed/simple;
+	bh=9h4g6Xq7+qt9vrg/isJrzGdIn31jXKxf7V2H9WCRPMY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ASyj5QFzwcbM4WqZ9hmHUFcrdHGa+/Qi3uVSbBg4omS91SK7uZHWEWQcMbo+8TyMF5LLKajqOtr8fARYhYvhYaxbaSn9ErqCGwfaLIkx7/afaRoolWCUBwU6ZfVmV+MYNKCT/VAy1zO5uyAAHUUtKIUbcjwV9No5yyeNV4FeXZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=BB53on2S; arc=none smtp.client-ip=94.124.121.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740733385; x=1741338185; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JKm8+XA6ytvbZ7u+350CbkrEfd85KLjixp0jSDomf6Y=;
-        b=h+jq24IXfwJtaZ/ss1+JjKYWiNvIHZ9HLcUmoPx87pGJgu5pCx2HnZ/EYaSjZ+R76F
-         aZVhw/rOogrIjwFNWGNZByJ9NWxEuQw1VZB3K8g9yXJrzZoLPMzVwmH6UfbfMwyQvEUa
-         4l2xzsB0uXJQ5c9PoldBH6L8YZHHBBZjr7ehYyS0/9fRIBd+9bFSSd82gqt3/nNUJE9Q
-         VBnE2DSvrPMBZ3TUBWA9I378ZndCs71Z2txkVrly5NwauWiwV0ZJe8J862mLvKwrPWFl
-         vEzsCLrbK50BKAGT0o83YJaHaUdss1ALFrQbKrxXbybAum6+EeFDTlpBwJ3somEWXuPY
-         OGVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740733385; x=1741338185;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JKm8+XA6ytvbZ7u+350CbkrEfd85KLjixp0jSDomf6Y=;
-        b=gCcOagc5ORX99dtKkylOykpmp0U341q/uvm4omg+4Pr2gLwfpFKJ+sifedyBMw46He
-         BB+RmYmS1mMXSCiBs0k+qoh0UB6Bw58lgSmi0fIxOy0LLkYVp2i98azoipraAAAlIDXZ
-         +37hjt7KS91mkwLEplTcEt9gYa/OcLcF/uKjik+iuJNjWZJEFdLILEHBsnrozol07gYe
-         7wCdnRRVxrvv+KHJpuDwaHj7YwtpWhZWzf8gXaXTCuyTM59eXtEz8jY5W5sRZQrVmXXS
-         vvca3FH3LAQPVvAz38zsL6tgs5bEwqO9e7LrL0hgJGgOVxjPZ7usedUxQ9Nzup0gI84Q
-         Uwyg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGz32dmf+Pwm3GmchTwmjtFomGRfcSBk3Qxoer2S8gxKw+wCj+jN9fNmyouNoOruQREebsL2obqyM=@vger.kernel.org, AJvYcCWd4b6wILZkC1sdAq3bCmEclEDXvHq6qfA0dkQ20QnQywmch/yk1Ywljjx5be2bXAp+9UTzYY+8jnDixTD2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2U/z8DbN7s+wje6pFd+CvVaiOMJkNgx8diGfiRA6zduRIlSdg
-	ydWB2J4mNa+Cpuj+ihBk9mMflqDzwkN2g0mwlo+9uE0HIAtYitg5ToMGQzgjF1k=
-X-Gm-Gg: ASbGncvwrvs1QRIiSKmqshIXHCk8KR6OnyVvpFctBwE+N/VXhRvqLqQA7O+/U5NQNW6
-	sg3l6c0b4om1ZNpGNiG+0b9TWlxR26jLNFWZCpH9kwCh5DSRwLlytELR5V0BZDnJsDUiE2Y4ThC
-	roMP6ZOt9UO9h1wQapfp2WH83SpMfJsqDuQwvd+elnfjbSRNtATFxci3zX6ZtICybWL25uEBSii
-	7QO+9pR/FOsPluWXU4DAXa3KJ4Z+aSaGrejqB2ms96KeykkXgBG0gxivXqARFJqkcikntV1HFK4
-	ApfH1XzJZRhD8egYmKdldMof50c=
-X-Google-Smtp-Source: AGHT+IGZNTyLmyojOEubcETsODxVRtD8NrJGYn+5jdOs3mlebik8+RmbfT6JasWkDn9iNLlOLztzhA==
-X-Received: by 2002:a05:600c:1550:b0:439:6dba:adf2 with SMTP id 5b1f17b1804b1-43ba66e7550mr20923105e9.15.1740733385220;
-        Fri, 28 Feb 2025 01:03:05 -0800 (PST)
-Received: from localhost ([194.120.133.72])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-43aba5870e7sm84188545e9.35.2025.02.28.01.03.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Feb 2025 01:03:03 -0800 (PST)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Kevin Tsai <ktsai@capellamicro.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iio: light: Fix spelling mistake "regist" -> "register"
-Date: Fri, 28 Feb 2025 09:02:28 +0000
-Message-ID: <20250228090228.679535-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.47.2
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=WBBTkblEXBxFsJYPymXDFJAe/vnTFzbtnD/Nx9Tb6DY=;
+	b=BB53on2SKjQ6lG8RncsKGcVUMiRWDwUMORrFQSRaB6f4E7+Yr5nvFrgn4QFlwANrO/R8gmTzPDu4Q
+	 r7jbsdhNvocmYu6nET+d3a7xgifWVXpT4rq44nm5gYXuipymgo1ttyVUlwH418ywCcVed0rFxACq2D
+	 VWPsW2myVCJLismtgz83aTo+MXgod3YTEE4hpDtgNr2DDhyu2Enf6A2DWQdB+caXIaYnJ+r0zhsscX
+	 9gQKxjSCJXC+4qUKgl2bQ4wiZniQKIWQdpDg9xZTuC81vxVh70oSp3aN2i5+ibUkyFWzXfeXvoY4ag
+	 9ZcVM/tQyFo6xHo5PH6KHDld1Y04KuA==
+X-MSG-ID: 77ece18d-f5b5-11ef-a39b-00505681446f
+Date: Fri, 28 Feb 2025 10:22:01 +0100
+From: David Jander <david@protonic.nl>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
+ <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>
+Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
+ bindings
+Message-ID: <20250228102201.590b4be6@erd003.prtnl>
+In-Reply-To: <20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
+References: <20250227162823.3585810-1-david@protonic.nl>
+	<20250227162823.3585810-8-david@protonic.nl>
+	<20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-There are spelling mistakes in dev_err messages. Fix them.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
----
- drivers/iio/light/cm32181.c | 2 +-
- drivers/iio/light/cm36651.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Dear Krzysztof,
 
-diff --git a/drivers/iio/light/cm32181.c b/drivers/iio/light/cm32181.c
-index aeae0566ec12..bb90f738312a 100644
---- a/drivers/iio/light/cm32181.c
-+++ b/drivers/iio/light/cm32181.c
-@@ -492,7 +492,7 @@ static int cm32181_probe(struct i2c_client *client)
- 
- 	ret = devm_iio_device_register(dev, indio_dev);
- 	if (ret) {
--		dev_err(dev, "%s: regist device failed\n", __func__);
-+		dev_err(dev, "%s: register device failed\n", __func__);
- 		return ret;
- 	}
- 
-diff --git a/drivers/iio/light/cm36651.c b/drivers/iio/light/cm36651.c
-index ae3fc3299eec..446dd54d5037 100644
---- a/drivers/iio/light/cm36651.c
-+++ b/drivers/iio/light/cm36651.c
-@@ -683,7 +683,7 @@ static int cm36651_probe(struct i2c_client *client)
- 
- 	ret = iio_device_register(indio_dev);
- 	if (ret) {
--		dev_err(&client->dev, "%s: regist device failed\n", __func__);
-+		dev_err(&client->dev, "%s: register device failed\n", __func__);
- 		goto error_free_irq;
- 	}
- 
+Thanks for reviewing...
+
+On Fri, 28 Feb 2025 08:12:45 +0100
+Krzysztof Kozlowski <krzk@kernel.org> wrote:
+
+> On Thu, Feb 27, 2025 at 05:28:23PM +0100, David Jander wrote:
+> [...]
+> > +description: |  
+> 
+> Do not need '|' unless you need to preserve formatting.
+> 
+> > +   Simple motor control device based on 1 or 2 PWM outputs  
+> 
+> Your schema does not allow 1. Test it.
+
+Ok, that came as a surprise to me. Thanks!
+
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - motion-simple-pwm
+> > +
+> > +  pwms:
+> > +    maxItems: 2  
+> 
+> List and describe items instead.
+> 
+> > +
+> > +  pwm-names:
+> > +    maxItems: 2  
+> 
+> List items instead.
+
+Will do in next iteration. Thanks.
+
+> > +
+> > +  motion,pwm-inverted:
+> > +    $ref: /schemas/types.yaml#/definitions/flag  
+> 
+> And PWM flag does not work?
+
+I have seen PWM controllers that don't seem to support the
+PWM_POLARITY_INVERTED flag and those where it just doesn't work. Should all
+PWM controller drivers always support the PWM_POLARITY_INVERTED flag, even if
+it needs to be inverted in software? If so, there are some drivers that need
+fixing.
+
+> Anyway, there is no "motion" company.
+
+Got it. Dropped all the "motion," prefixes.
+
+> > +    description:
+> > +      If present, this flag indicates that the PWM signal should be inverted.
+> > +      The duty-cycle will be scaled from 100% down to 0% instead 0% to 100%.
+> > +
+> > +required:
+> > +  - compatible
+> > +  - pwms
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/motion/common.yaml#
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    // This example shows how to use the TI DRV8873 or similar motor controllers
+> > +    // with this driver
+> > +    motion-simple-pwm0 {  
+> 
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> 
+> e.g. motor {
+
+Will change. Thanks.
+
+Best regards,
+
 -- 
-2.47.2
-
+David Jander
 

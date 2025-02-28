@@ -1,227 +1,133 @@
-Return-Path: <linux-iio+bounces-16210-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16211-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6C9A4A616
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 23:41:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8522DA4A66D
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 00:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A2DF1776DE
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 22:41:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670181892934
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 23:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027051DED48;
-	Fri, 28 Feb 2025 22:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F0F1DE4FE;
+	Fri, 28 Feb 2025 23:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kL77e3Mw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZOxRYTI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177AE1DE4C7
-	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 22:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03F723F372;
+	Fri, 28 Feb 2025 23:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740782494; cv=none; b=qfjwZ9Rn1BCVm8fzUZEZxb5snG9KxtHrmeX8qGFrnjSy/eJixgYxLy33KLH7QZ1+Hy4uPysHjiUBwZg5qE7eQGD4I29anilElu4jj8pUTF7czxQjknTpyLCXtl1Fm/qjMgdgUdTzWHPW9casbm71JGTtgdCitGQ518jWr3l7G+Q=
+	t=1740783838; cv=none; b=oouLiBNwkTo5dU008PRaNE/4OvmTKU4y5vecP9Ej4IjaaEHDDBIEziatbjxpo7XafN3Vop6XwmYh4PYdmnSeyPojhlEnqsAsPAqQTJ9ybbjMO4YjQWcboTK+LhyZ5c/zZFtFXgKz2xOh9uEvL1UciIQ22f7xBs+krCljvkHy6W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740782494; c=relaxed/simple;
-	bh=FLBHwO+nFllKVwfKJACF4L2HeRUbXtlCor+SO7tOf+w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rd5DxX13IsHUGauNj36iD74luMcR9iKI7v0q9stkChVW5DIcgB3dqguMd3SqU2mKRbTTzeUcHRo2tsuAphdvdUS/o3cxUF/8tQMDKj2paqmNdCaHx+IduDqoygNYK1qS4bXaiz+pWCdgecnr1iFqqKjuxuXlAEJuwZEUEOdjWzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kL77e3Mw; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5fcd509468eso1172479eaf.2
-        for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 14:41:32 -0800 (PST)
+	s=arc-20240116; t=1740783838; c=relaxed/simple;
+	bh=HuoDKu8oWhsbb02agi0QM3ODicADQvb3frWE7+N4Yi4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=NKVvpY+oesVvqrY6cvbnZP0znTmW2v4dpSFTMcx5ePuV+UGoi9rsBTMLLRkOXQ3gKnQf4ih1LW78dcdvH8pR1/Tc1vz8SH1NZPI6Ro+ASjKpSRkxX4gxba0dInUYOF5NgjH9+foK61inlNt+rA1l49/gP8W/GGI21DJJ97qa40o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZOxRYTI; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22382657540so3551775ad.2;
+        Fri, 28 Feb 2025 15:03:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1740782492; x=1741387292; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9VA0oblCg0Xc+d3Sx56RfFjCCmOWiRbgOPbTv313JQ=;
-        b=kL77e3MwsaRLeH+6oezvDPr6jgHY9ZebP82Heqs0OFRIMLkftOrqlbaSAPnA3sxwQd
-         6+ic/j2xMkY3a4uVmOViPSAzAtXXZdYFuY9FzwBge3/3OqM67PMAhUTaJvpW25DVwAiS
-         PMj/PNA8pRhxQdjd6N4UgJYQ+FOR7JZ2Bg6fZDXpAh640wxXx59lWq7qQ9U6N2b3SoSL
-         cdyzvTAfjWh+/OzmCcyhhJ2PvJbU6xtL49/niJYuCRd7/RQNEi0jnU9lGghh9ohwG7gx
-         6S7WC7x0uFc/JF23M+tf9r7aO7i9NR85zZWcUfiMRNYSqTn4qkedhEv/GElu5pKGoQun
-         slDQ==
+        d=gmail.com; s=20230601; t=1740783836; x=1741388636; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dxRs7vpliND5ZFPz559p/qXP+L2Z4Elvy6BRWrTj7DY=;
+        b=QZOxRYTI0sysj0cHFBay20vKzpks0lymWYMFPNtL0qqOAxI2RwRTgZj1By76dNfcce
+         O+evI5I0Ek47Jxey5g+fwebVPXNazYIbbfo5EaHy+zNtrrin+uBaCfXBlfP7bPEhmy+q
+         eM6SbMx3ILzVnxGqXeQdv8n1+H7CSW04/1TDmO8IGRZygJ0CEvqotH77YWBu9TSy8SOR
+         YvBZlvQDqsTkTIdA0tcWdzqDQl16Oy3v7JlRn/t8f4R7O3z0yaNKRnnvNGTX4HvDmWta
+         A1sI8Nr2XJ/TVuDMn6EvGebSvEURG5APOwhfRLq8TcQBGSdIBPvu9VXxjGVTmshl/18S
+         ji8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740782492; x=1741387292;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y9VA0oblCg0Xc+d3Sx56RfFjCCmOWiRbgOPbTv313JQ=;
-        b=nXDc0/BSkR2sBzs5aH73ocMagVxrTigWX9tTbaajGy91v/lpCj2NepOTAUN1U2HLGr
-         yA7HRlLkOKxd7+vLWKEWvel9N8kuugQr5YwiEqUsu1GQ074Jo9hF4MMbuTbq7q1Ui9i8
-         4xW5rsakiiYfTA8LwOLPaYhXT0W6HNDXhf725QFrEmHCAzTe/1TV2go1rEPSYzOCxC8r
-         PaMzwj12KVgDaqTHZ87EGjSa8eAd+T57l9HPiuG5pzs4uMjr4vOW8HLwwK9h4u1T7lrj
-         NlKYeGjP15hT10dgVO1xb98ZGykyTkDqbULVl1JyNnlg2UG+7yUaRXNKwX3qzpod4bPL
-         0XhA==
-X-Gm-Message-State: AOJu0YyH8G3VR3Fsa6/VKDR/3uQDrXX1l7yUPQmb0pFcWnPWZA/RYRaK
-	/z3FbNaIICqFMibiCaKWVIju4Pzdje4s4CiML+IxMSbo3Xx8+L/mTctv8QJQeV0=
-X-Gm-Gg: ASbGncsRJHaqNYlwGXN8MtarUVvge75ty5Oovc+aaQa1PPPa9AULcun2WKeD1Ixj2+h
-	GtqwJM78E8dxFFoScygCedvlkm71pADd9EHMSyHXmDSGlihtfQMvGtL6oOYXgY45fmPy+NtoWS+
-	HHxBT5xVA8c5/mpxPFTUeGXUEiHFCyV8jNZEPzfmh9h9+GRAU7HLQXajXoSgcIjxO76+8fhy0B4
-	VLy6ZwR+oHECvza0J58xteE6R7Q2UtETRuMxhmyJSSfyq9JIbLtyTP+BP/RGIH9giH3DRzpjHhW
-	+jbPgm4u33+3jVi+noC5OHWg5fKrE01PZPPtUD742pFxw1tBJI9chJgJ+83JLE4aoM+EHNE5wNs
-	96XtrYw==
-X-Google-Smtp-Source: AGHT+IEceEwYejaDDNX0Vuw40LNIKav7t/w6trGAq65H0rdXXXH9+Wnxu7YXOtX/U2cJOjXP8F/3TQ==
-X-Received: by 2002:a05:6820:151a:b0:5fd:a01:4834 with SMTP id 006d021491bc7-5feb3668d88mr3486224eaf.7.1740782491972;
-        Fri, 28 Feb 2025 14:41:31 -0800 (PST)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5feaad43e80sm788380eaf.35.2025.02.28.14.41.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 28 Feb 2025 14:41:30 -0800 (PST)
-Message-ID: <8db96db5-c258-4c42-a70a-56fdf24ecdc6@baylibre.com>
-Date: Fri, 28 Feb 2025 16:41:29 -0600
+        d=1e100.net; s=20230601; t=1740783836; x=1741388636;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dxRs7vpliND5ZFPz559p/qXP+L2Z4Elvy6BRWrTj7DY=;
+        b=itrP9wXKCloTtpzX2P/cxbqzNCC6WT8z4mxJ557+58fKg17wHPbS2WMsxMOyRupLMZ
+         pjT/SKj608Bz4+P6tIk4LnMwzKRtSObMIOkOkCGvul25wpGa+AjL1Ob5WhVHsu/kRdmb
+         5YZqvJPbAfGMMt71MgfIr1Wzz3EzhfZpDS3/iTLkRK4WGmrniM4vAocf2CnGxK1pUufe
+         DGspGEUBzSn3n6G+q6F8iR783x2jx2f5kNyJrx2Bfu3X+NaDcHsZIKP8R6T7KlEZzvIq
+         vq5NLbtQJRVAbWia/VdaV8DwLpAfZZrs4xEuHHSvf4wIyuifM9f6DQ5X3szwcXUjwVMZ
+         S8gw==
+X-Forwarded-Encrypted: i=1; AJvYcCUUyhWEZJtnyPz9g5GkzTT7Ttei+hIuo5Gp8zeyz8iv0nm+yZJujeK3Z8LvDiLmUfFPiyZcl9xfwucU3CM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzeF3YyHrq2qGVWOa+iLK9eac6l9zmrEUdM3T2qye2roZSwxccC
+	3KCsqUXxJlwiluANcxTAzAz7N4+TFi0DsntuKDY3yI2bt8L9so5L
+X-Gm-Gg: ASbGncv+CbJHG9h0CCvvDjE9sqOPLT64IKK4XBVANU7Q38HgLfXk06VkyMpGiLl0s9f
+	lENvBnKzeRE0hEyboy4/u+moCKdlyJHhTH52cRjKvTYqo0OFNrT8GXtdlLSJaouptsb3VgxiJ4y
+	Ni9r/94z2TQmIiFV+Dn82HtfA1MBBj7Rz3+Lv3JW+bPpH8j/Du/0uYYO1r9EhJ51nsojzac4GHw
+	YuSVgBrzVevoJ9TdWJbmbCADzkJDTvzNZPKTtxuj6VyQaK+c7k/ltpD+tJ18KJTqv8A1KAUNYxR
+	GCrIwC36jais2pJEIxrD5VKa/8V/Z83f41N+cA==
+X-Google-Smtp-Source: AGHT+IELQB8FCur6rZ5C84nSUjHDY+0Dehzm+1KmH2KHYP0gUaQXaKSJMmM86XXytcV9TslFwUmpWA==
+X-Received: by 2002:a05:6a00:3d47:b0:730:8e97:bd76 with SMTP id d2e1a72fcca58-734ac35f72cmr8010670b3a.9.1740783835524;
+        Fri, 28 Feb 2025 15:03:55 -0800 (PST)
+Received: from [192.168.0.107] ([2804:14d:90a8:854f::10dc])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7ddf230dsm3974875a12.8.2025.02.28.15.03.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 15:03:55 -0800 (PST)
+From: Gustavo Silva <gustavograzs@gmail.com>
+Subject: [PATCH v2 0/3] BMI270 data ready interrupt support
+Date: Fri, 28 Feb 2025 20:03:47 -0300
+Message-Id: <20250228-bmi270-irq-v2-0-3f97a4e8f551@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
- bindings
-To: David Jander <david@protonic.nl>, linux-kernel@vger.kernel.org
-Cc: linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>
-References: <20250227162823.3585810-1-david@protonic.nl>
- <20250227162823.3585810-8-david@protonic.nl>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250227162823.3585810-8-david@protonic.nl>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANNAwmcC/23MQQ6CMBCF4auQWTumHSAGV97DsGjLAJNYkNY0G
+ tK7W1m7/F/yvh0iB+EI12qHwEmirEsJOlXgZrNMjDKUBlLUKtIdWi90UShhw86QdY0eDXMN5fA
+ MPMr7wO596Vniaw2fw076t/5lkkaFumkHRdY6U9vb5I08zm710Oecv9y1qTGkAAAA
+X-Change-ID: 20250219-bmi270-irq-9a2bc41faee3
+To: Alex Lanzano <lanzano.alex@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Gustavo Silva <gustavograzs@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1740783831; l=1149;
+ i=gustavograzs@gmail.com; s=20250111; h=from:subject:message-id;
+ bh=HuoDKu8oWhsbb02agi0QM3ODicADQvb3frWE7+N4Yi4=;
+ b=J34qorUM5/RM1gXGI7dE5favI4WtiFEMtUhuVOYIihni69UZ5FwlxGP2nCh+wic04Gad1o+I0
+ 8Va0d/8JNzDBWcGfkndEQPpDx2uUFhcmNwxDczAe0DA7xA0vFauR/rA
+X-Developer-Key: i=gustavograzs@gmail.com; a=ed25519;
+ pk=g2TFXpo1jMCOCN+rzVoM9NDFNfSMOgVyY0rlyvk4RTM=
 
-On 2/27/25 10:28 AM, David Jander wrote:
-> Add device-tree bindings for simple Linux Motion Control devices that
-> are based on 1 or 2 PWM outputs.
-> 
-> Signed-off-by: David Jander <david@protonic.nl>
-> ---
->  .../bindings/motion/motion-simple-pwm.yaml    | 55 +++++++++++++++++++
->  1 file changed, 55 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/motion/motion-simple-pwm.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/motion/motion-simple-pwm.yaml b/Documentation/devicetree/bindings/motion/motion-simple-pwm.yaml
-> new file mode 100644
-> index 000000000000..409e3aef6f3f
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/motion/motion-simple-pwm.yaml
-> @@ -0,0 +1,55 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/motion/motion-simple-pwm.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Simple PWM based motor controller
+This series adds support for data ready interrupt to the BMI270 driver
+using one of the available interrupt pins.
 
-I think it has been said many times before, in DT, there is no such thing as
-a simple device! It will be much more future-proof if we write bindings for
-actual individual motor controller chips than try to generalize all in a single
-binding. The chip you gave as an example is far from the simplest H-bridge I
-have seen!
+Additionally, this series includes some cleanups to simplify and improve
+consistency across the driver.
 
-> +
-> +maintainers:
-> +  - David Jander <david@protonic>
-> +
-> +description: |
-> +   Simple motor control device based on 1 or 2 PWM outputs
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - motion-simple-pwm
+Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+---
+Changes in v2:
+- Patch 2: Updated the commit message to clarify that the variable
+  'bmi270_data::data' has also been renamed.
+- Patch 2: Fixed some line wraps after renaming variables.
+- Link to v1: https://lore.kernel.org/r/20250219-bmi270-irq-v1-0-145d02bbca3b@gmail.com
 
-This should be e.g. ti,drv8873-q1. This device has much more pins that is given
-in these bindings.
+---
+Gustavo Silva (3):
+      iio: imu: bmi270: move private struct declaration to source file
+      iio: imu: bmi270: rename variable bmi270_device to data
+      iio: imu: bmi270: add support for data ready interrupt trigger
 
-If we find more devices that have similar functionality/pinout we can add them
-to the same bindings, but we will likely find that trying to cram all H-bridges
-into a single binding is too much.
+ drivers/iio/imu/bmi270/bmi270.h      |  17 +-
+ drivers/iio/imu/bmi270/bmi270_core.c | 332 +++++++++++++++++++++++++++++------
+ 2 files changed, 283 insertions(+), 66 deletions(-)
+---
+base-commit: c0f115a8d97599623294c8e9ec28530e19c1e85b
+change-id: 20250219-bmi270-irq-9a2bc41faee3
 
-For starters, every H-bridge chip is going to have one or more power supplies.
-ti,drv8873-q1 would need dvdd-supply and vm-supply properties for the DVDD and
-VM pins.
-
-Many have inputs for disabling the chip, e.g. for power management. And some
-have outputs to indicate faults.
-
-The TI DRV8873 in particular has an nSLEEP, DISABLE, nOL, SR, MODE and nITRIP
-inputs in addition to the IN1 and IN2 that would be connected to the PWMs.
-So we would have properties for all of these to either say how the pin is
-hardwired or a *-gpios property if it needs to be controlled by the driver.
-
-The fault output would generally be an interrupts property.
-
-The IPROPI1 and IPROPI2 output pins look like they would be connected to an
-ADC, so it would make sense to have an io-channels property show that
-connection.
-
-This chip also has a SPI interface. So it needs to have the possibility of
-being a SPI peripheral node.
-
-And even if the Linux driver doesn't implement all of these features, we still
-want the DT bindings to be as complete as possible, so we shouldn't be leaving
-these out, at least for the trivial ones where there is an obvious correct
-binding (which I think is the case for most of what I suggested).
-
-> +
-> +  pwms:
-> +    maxItems: 2
-> +
-> +  pwm-names:
-> +    maxItems: 2
-
-Specifying what is wired up to the IN pins can be tricky. Using two PWMs is
-the most sensible. But I've also seen devices where there was a single PWM
-gated by two gpios. And for very basic H-bridges, there might not even be a
-PWM. Just gpios to turn it on or off.
-
-> +
-> +  motion,pwm-inverted:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      If present, this flag indicates that the PWM signal should be inverted.
-> +      The duty-cycle will be scaled from 100% down to 0% instead 0% to 100%.
-> +
-> +required:
-> +  - compatible
-> +  - pwms
-> +
-> +allOf:
-> +  - $ref: /schemas/motion/common.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    // This example shows how to use the TI DRV8873 or similar motor controllers
-> +    // with this driver
-> +    motion-simple-pwm0 {
-> +      compatible = "motion-simple-pwm";
-> +      pwms = <&hpdcm0_pwm 0 50000 0>,
-> +             <&hpdcm0_pwm 1 50000 0>;
-> +      pwm-names = "left", "right";
-> +      motion,pwm-inverted;
-
-
-> +      motion,speed-conv-mul = <3600>;
-> +      motion,speed-conv-div = <100000>;
-> +      motion,acceleration-conv-mul = <3600>;
-> +      motion,acceleration-conv-div = <100000>;
-
-This H-bridge controller doesn't have any kind of speed sensors that I can see
-so these properties don't make sense to me. The H-bridge can control the voltage
-sent to the motor, but there are more variables involved to convert voltage to
-speed. It isn't a constant.
-
-> +    };
+Best regards,
+-- 
+Gustavo Silva <gustavograzs@gmail.com>
 
 

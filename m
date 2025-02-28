@@ -1,147 +1,116 @@
-Return-Path: <linux-iio+bounces-16170-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16171-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8919A493EF
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:48:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22465A49406
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BA757A79D9
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 08:47:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EF0816DDC6
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 08:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2FA253F3B;
-	Fri, 28 Feb 2025 08:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D37F254847;
+	Fri, 28 Feb 2025 08:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="keMuUWZP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oqv88IH0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DAD1FE451
-	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 08:48:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B312512C3
+	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 08:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740732505; cv=none; b=pK2mnZq6tMKQkdcYj/tGg5UoEQyyPuSm5n3lRPXOr3nF+jd+tArvjvwyJfri2M8Vahkwndtujm+MirOw0aE24m9SM36zk/qgEGdD92U04Df87ySvtT1AehoSvdfo/Ojv21NN3pBTakw2R80sUUi4hRbCUtGhQWsSpEzqgDxm/WQ=
+	t=1740732750; cv=none; b=VXUaw7ttXWOYBlFuIPbvLX1Gco7KZ2EAtRcNnllQovre+qnTA0mNfe7HWn1KDFV9A9rGndI66rU6k7sbFYBQNq1VPncU673VwonEcASczSu06mBWEaoLyQGuNm0dGdXnWCMEJ0n9TKNVDIaB2PAKvr0Zw6XOPTEi84ucqLRgLpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740732505; c=relaxed/simple;
-	bh=5Y4az6HpX0m67GPoqxGohyZ+WCOs21Oqm7I46A/5BDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IiusGzZMer1z8vjHue6skbqjtXAh1hQyef2KM/zNrP7LxQj9RPZ72A2SVVihDNJ5GK0uvNISrRepbBpUXcoMSzl4iKL7YjjWRmry/cO/DSqq0DaEpqQ8tOu90FXcAoBGA9IRPfKHc4XFehkY+zzt8l7jqm2sB2cMz70/I+oUlt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=keMuUWZP; arc=none smtp.client-ip=94.124.121.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+	s=arc-20240116; t=1740732750; c=relaxed/simple;
+	bh=QAZ1XbH09v7b1zWZ0hsXWTy0W7e9HTzyQ7n3BOJSdIM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tVw0mmkwr19WCGdwciPjT3M10yu6CluzLkynQn4ZU9sQc+1sebPFhiDMamp7irMSAC1jrV2FE07K6zEqryoHv6gnyMAgL2Hc6vpBeklPVlTWNW8t5P5bws051wSd2iW1wnVqN0+CB2LF75JbflZCVHCI9oI9tcS4Hk0RpqAUqgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oqv88IH0; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5494bc4d741so945171e87.2
+        for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 00:52:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=ifGH9TUIXn6Zckh2DlBzL0q10eJHl+qybe+rMqZOb9Y=;
-	b=keMuUWZPnJH2Weghw+u/6W/CusmGl770MxkAFbOdTE3rc5Ec7oEIoUcOT6mG6Yew44NWoZTsr2I98
-	 SJAGgHbSo2iSz0ZJdRxckwj3l5lgfSAK4zcLDTnU3h4eb5F2JMgGwrMvHofwMXchSSMzr6+4+2nKnA
-	 FWBSO2Ry29YUm+30aOt8hbBfO6BaVjvAgTAveROxXTNwQhx+IReOOn+l2EaatGLZPH2KrijO0R20lq
-	 pP8Qu/lOD+EFA6jZVyptTIUHgITtSt84nbEzcQK8yQQFscgGZyIaFpXZWhoSK1IWar7O4HWA/US6i0
-	 rYwEyE6TvlqckAs5GneTbQrexcsVFfQ==
-X-MSG-ID: c1f43f4f-f5b0-11ef-8b43-005056817704
-Date: Fri, 28 Feb 2025 09:48:18 +0100
-From: David Jander <david@protonic.nl>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
- <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
- <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>
-Subject: Re: [RFC PATCH 6/7] dt-bindings: motion: Add adi,tmc5240 bindings
-Message-ID: <20250228094818.0aad5491@erd003.prtnl>
-In-Reply-To: <20250228-groovy-lyrical-skunk-751ee3@krzk-bin>
-References: <20250227162823.3585810-1-david@protonic.nl>
-	<20250227162823.3585810-7-david@protonic.nl>
-	<20250228-groovy-lyrical-skunk-751ee3@krzk-bin>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+        d=linaro.org; s=google; t=1740732746; x=1741337546; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QAZ1XbH09v7b1zWZ0hsXWTy0W7e9HTzyQ7n3BOJSdIM=;
+        b=oqv88IH0Fu58PpsE4em94prhjTzhdw48VwmrFHg7CdbdAwbavnegV9HfWzT0PJ3Bt2
+         +l1qTW6k/q7VXv2w7wSW5Ru5PK6aM8LUSQUEBFtQ8qPnaynrKg+d08WypuBImcDgrOC8
+         de+itt/MuoHgovngNLlaU1nKVOrLOXwC7O6OmR1JLEWL/5K/NQQvMw+BmxeYwZmT3yyS
+         arWmpvCXyXb4FmZIdutQYQCRWa5Xluz9xB5BsnuApoq004rt3T/bnidEHGyoKA45EUOA
+         wgXXRg7AHVt+vTLk38T90zT4x7LLETREkmz33fs1qHoMnyEEGNA5I05ubjFbYTWJoPaZ
+         qyWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740732746; x=1741337546;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QAZ1XbH09v7b1zWZ0hsXWTy0W7e9HTzyQ7n3BOJSdIM=;
+        b=bT6GCWYIKT/VDQYD2qPaVtWI4NCI03VbVKaUkWUQmd9wGybr5xdJWQUdfUaPWxaEZc
+         wr8oGu02OIX+Kw8uHcPCRO+4xQc4ILOXC7FClEte2ccClbu3nD6YJpFnzwqPfrOylksQ
+         HMoSDGperdtJIJjKqDQSmhcjc6iwjKd0DXHZvgTKtFIfqMGm2fytiwBW7uMnLlZVtpo/
+         iSitI0U84Ya0j7Tph/6fP4qoCpgr24YnofevoKykez6WPi1SCHlka7ty7yctvjKzqQGl
+         tAqpfCX+S3zR9IjeLo7iBixV4Zn5My4A0EuepWLItfHc8aP1yt1hyrDPhfHiXjgSN1wc
+         /Dpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWU4aKjFI/Xi6ZaRKrgUpvVdUYPcRchy7VhImEgNKwTmGTFIbheA4rjPOug+quQX5IsLGx69vTPfh4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7uEOTtyKOhLwOs0L2Mio41Ne1crLcluJovzqRWbcxZzEKTsFj
+	DH1++iGyb9MhGsM8oiak1qe+2WAlkKRn2t70Plxs4Zagh9ry9eTUV/G4+qi3XMYSXajdyvf795a
+	XMjNX2UZPfQzQZByC4UeYHt7OD4aaAP0NpX94Sg==
+X-Gm-Gg: ASbGncvIUPuShg6lw3RMNx4BmonMUT2NOOgWjLBsvZuTFuPgtYImuoNlNkAPqyhGOk6
+	nxsAKgvXZFKnaBoeTh8IyEcuyUaTrGLCA70g5aoTR6YcL8V93zEN04WG+c/ROJLkdaV6Jtcc7On
+	D1U6j9QF0=
+X-Google-Smtp-Source: AGHT+IFLrniw5jq4oWKYdbCJ1jDPnBqcD2jK1p8/hj2hMot5ls33gsWydkV0WZlBpXGLTrBYBZ2pqZLZjbYdrfBpayU=
+X-Received: by 2002:ac2:4c4f:0:b0:546:2f6f:83d7 with SMTP id
+ 2adb3069b0e04-5494c352318mr1042433e87.46.1740732746436; Fri, 28 Feb 2025
+ 00:52:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1739368121.git.Jonathan.Santos@analog.com>
+ <62cb9786b02adde118db9349617cb796585ceb02.1739368121.git.Jonathan.Santos@analog.com>
+ <CACRpkdaSY7WH191makzPcZqLd-vBsC_f6yagWzBa65MrC+pjKA@mail.gmail.com> <7c5e2364-038b-48a8-ad67-3cf0f2fd2be3@baylibre.com>
+In-Reply-To: <7c5e2364-038b-48a8-ad67-3cf0f2fd2be3@baylibre.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Fri, 28 Feb 2025 09:52:15 +0100
+X-Gm-Features: AQ5f1Jrkm-kow3OXmnSJltTmG8QrhANbAwgPagCFyAFP-qUYHz9z9ilWano5H4U
+Message-ID: <CACRpkdbw3BkpzPQp2PdV8M61V2XXaLcmuOpGTsxSoiQTH7wZXw@mail.gmail.com>
+Subject: Re: [PATCH RESEND v3 12/17] iio: adc: ad7768-1: Add GPIO controller support
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org, 
+	krzk+dt@kernel.org, conor+dt@kernel.org, jonath4nns@gmail.com, 
+	marcelo.schmitt1@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Feb 20, 2025 at 11:27=E2=80=AFPM David Lechner <dlechner@baylibre.c=
+om> wrote:
+> On 2/19/25 2:34 PM, Linus Walleij wrote:
 
-Dear Krzysztof,
+> > Is it not possible to use the gpio regmap library in this driver
+> > like we do in drivers/iio/addac/stx104.c?
+> >
+> > It cuts down the code size of simple GPIO chips on random
+> > chips quite a lot.
+>
+> I think the answer is "no" since we need to hold a conditional lock
+> while accessing registers. Namely: iio_device_claim_direct_mode()/
+> iio_device_release_direct_mode().
 
-Thanks for reviewing...
+Sorry for potentially dumb question, but if this is required to access
+the registers, why is it not done in the regmap abstraction itself?
+It's kind of that stuff regmap is supposed to hide.
 
-On Fri, 28 Feb 2025 08:11:04 +0100
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
-
-> On Thu, Feb 27, 2025 at 05:28:22PM +0100, David Jander wrote:
-> [...]
-> > +
-> > +  enable-supply:
-> > +    description: Optional external enable supply to control SLEEPn pin. Can  
-> 
-> That's odd. regular pins are not supplies. This must be named after
-> physical supplies. There is vdd18, vcc, vcp but nothing about enable
-> supply in datasheet.
-> 
-> > +      be shared between several controllers.  
-> 
-> Second sentence is both redundant and really not relevant to this
-> binding. It's not this binding which decides about sharing.
-
-Good point. I think I should drop the whole property, since it is indeed
-irrelevant. If extra supplies need to be specified, they always can be, right?
-
-> > +
-> > +  clocks:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - interrupts
-> > +  - clocks
-> > +
-> > +allOf:
-> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > +  - $ref: /schemas/motion/common.yaml#
-> > +
-> > +unevaluatedProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +
-> > +        motor@0 {
-> > +            compatible = "adi,tmc5240";
-> > +            reg = <0>;
-> > +            interrupts-extended = <&gpiok 7 0>;  
-> 
-> Include header and use standard defines for flags.
-
-Thanks. I didn't know I could include them here... will fix this.
-
-> 
-> > +            clocks = <&clock_tmc5240>;
-> > +            enable-supply = <&stpsleepn>;
-> > +            spi-max-frequency = <1000000>;  
-> 
-> Where are any other properties from common schema?
-
-The properties in common.yaml are optional. Do I need to explicitly specify
-this somehow (they are not listed under "required:")?
-In fact, the tmc5240 driver has its own known constants for these properties
-that it fills in. One can overrule them here if needed, but I suppose in the
-case of the tmc5240 the regular use-case is not to do that. Should I maybe add
-a second example that overrules the defaults?
-
-Best regards,
-
--- 
-David Jander
-
+Yours,
+Linus Walleij
 

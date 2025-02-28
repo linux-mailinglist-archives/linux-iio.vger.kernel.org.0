@@ -1,204 +1,133 @@
-Return-Path: <linux-iio+bounces-16176-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16177-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D295CA49537
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 10:36:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42084A4956F
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 10:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2ED188DD14
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:36:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20D3B3BAC20
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Feb 2025 09:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF0C2580DD;
-	Fri, 28 Feb 2025 09:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1652525A642;
+	Fri, 28 Feb 2025 09:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOJAru6x"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S2nTcNqb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A95255E23;
-	Fri, 28 Feb 2025 09:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D414225A2D6
+	for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 09:35:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740735344; cv=none; b=YHsxc1ga7wBtOjER5rjc1sdD4X5Ohg+S7eFSzhEAsri/7zOhDBkgyIwTNo75iGhogHq+0o/y60psfgM/ykn4//UIq0WvXvVsDNs5xoKh4G4VG6OtzGorBmt1Qy2EJ+k2x4v830bD0wOSGueHoyQaIzawkkMkBjZotsiU2m/t+sU=
+	t=1740735348; cv=none; b=foaQIbLZk8uDQGRTdt1K74Kt1DQgTxEGZPjveDvoUuDn6pmw+Ii4avOQb3PoPBBLzqvfLy4tOJNOL8YAM5JRRlrh9CZZPtr4wI1TQ1GLCFtQG5dhsylCgaqNpxm5zdLytUTvRvzd6m5xp6s3gluibW4Nmp1cSN/L4UdajClYfZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740735344; c=relaxed/simple;
-	bh=yabPPPhBSb7U866s4OO5WFcpHLHB73EZYfzg0V0ZDTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ubt+tGXCQOrQf1+mnnb/sybJyvcRCXqsvlRPISpvyutgAuMZnKtwoQ7cUEfoUnnO94NLuH174Z+srxETh9p5xc9F7XNHFPO4mrodjZJn1snD1VpC74YUilo444FUTUrNn7fuGhHR+53GNJB6KP0X/YYBInyycKnzrP2A/aW33Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOJAru6x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BDDC4CED6;
-	Fri, 28 Feb 2025 09:35:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740735343;
-	bh=yabPPPhBSb7U866s4OO5WFcpHLHB73EZYfzg0V0ZDTM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JOJAru6xMNSK7CjFBF3aSILu3sYiOQBoKfTkaV1wwYtVICSVttzgdi5GQnBSV3LKL
-	 xW3b8FNdaSYlGNdZbO7FBuZ+c1QWQiMm/l5Dw1EGPyjV+9q41weq50FPKQirmSlJyV
-	 0i+m3X4v/cE6HQbultsf4h8vvpT4rtd318OMXHQ6ama7ijebbBTeoKukm9hbLxMdeT
-	 BIJ/NCg8u2e+D6EoazQUoQf1ylBxj/unywiHkpkeNnRvxjjN0uhoqNdEaUm7RqpA9S
-	 28PrGiTWATkY7AHvvu0x8F5zmpqyptP7FoU7BOe6iYPXejjowbzyzK+L+HyAV6NTIN
-	 iasnTDlZhq/nw==
-Message-ID: <99c437db-6341-4d56-b99e-3ed3f2b8219d@kernel.org>
-Date: Fri, 28 Feb 2025 10:35:38 +0100
+	s=arc-20240116; t=1740735348; c=relaxed/simple;
+	bh=5wwhbu7yvxb8Pu+sWhd2Bfw0yE+/Lbj4gK2wMJKPvhY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Y/c+b7w0dJyA3qpnzLW33Uz3Jek6bdK3ooiA1ernrZ1spV4lonmd2bgi14n0Q5sQsMuxyzzRPNfEZcNtkSXnhV8wnSnGXwVQDxwpTyF4F5rVlOjirYU322eDpV7A19O7YwTV2A5swDZ+0g0r46iYrq2QIg47A7Srs00F5ejv6gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=S2nTcNqb; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-abf3d64849dso29537166b.3
+        for <linux-iio@vger.kernel.org>; Fri, 28 Feb 2025 01:35:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1740735345; x=1741340145; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EAD6FYOZHQiIZ5qOdMszeXmFSAsXwpOb7J/vlvlF0S8=;
+        b=S2nTcNqbD08AgxKWtjNavPRZncz9w+yhc3VXgTadPiS8aT++vZnTP4tb2PZhFSnrtZ
+         rDOk6gXPxctH/P9ZS1C50GLw8m39VJtozc8ifmQLUW1goyKWkmYhPpMAn4eW6rZBHgfW
+         LYqUybHkCSkyL4M9GHWbDp/NNZM3whGS3V5ZSw/qgxpJDqF/UU9y43aQDblTZqG3CXcG
+         FvTAL5/qYiUf9Xh6u2zgyBx5H4uu46ZHQpeV7ilf98Kg3EQpbYoUOK0ikOkZziqbc/ok
+         Nc1pbzhr0YMQRoRmMCgdP7vc0RbbypR4LLDOIc7ho9SLFqG+Yk2ZNT8e3ONtXdNOTIX3
+         AGSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740735345; x=1741340145;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EAD6FYOZHQiIZ5qOdMszeXmFSAsXwpOb7J/vlvlF0S8=;
+        b=Vh4RWmPLRpWvNeLZuWS1GGwd1PEQeMppOQvy7GZkHDLRUXIwzR63yTxzPjlL9lhseJ
+         Fkae/7Z1LQleUdgPCtrPSdzC+RvTOe3uwFHdGNNLogrIYgeL0lWpAbECATtIShIIVemi
+         eImYObF0aO7bxq7ySSDGf9/boawOpu+e4GRmESAtodkwrj1xtTDZV7rB6y1UoiMEjOhn
+         EwV3okMh8XSSElHJyG1NOi+QTiCPoTgckV4Sv138BeFZuZbzKBPSvXt47XvfvHN3QccZ
+         Hpih33v7MFo9Jdt+Z9BlMP9ZuZiXhGglGwngc9RPs2SBZjswLITqolB+WqNryuBvA1fy
+         /oiA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5zKazcr+ToSMcWwyLcJxkhHOAG/2tUQ3pI1rx0b7vCi8dc9H+qRE3PfDpeNqWKlR33cswrWIoFAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY5r4z+CZ991+nBN9NXXiXWR/xEcQBJ1O+QHhmIwcsL1PBS3VX
+	uNx8Pa+3PuiLJl3YgPyp+6V1oKo//PGZlqREhILibHVB5AWMKDR5eZ76xa3Z0hw=
+X-Gm-Gg: ASbGncs08U5EvvoOuCMznLPKaxLb4gn3ngezaxEF4BeioO16Q9t2YWiB0bRZoY3YZD7
+	I3KE9AHvTsb8nrcK8XuFpHt/AmAvICxtYPQh1EcuQy31zEJHzWlCR+AZ4A2rmiFNntqfjFv+KUg
+	NSCsDPULLxJt4CR59uBc9G5XilgFXQ7WMIkDuUUuKg3WrkWhNsY2h5d2GNFcTigmSiYOqeLIuyN
+	VSJUcCMwtsj8JkrARwfSAell+6Gri5WKIwKy6F0iNjvDHhR/K7BLLKUz2EPv77z4XpJGI6ffdoU
+	yDHRQlJNSalwFjtHnmQNwbRd9RcOqWr+FleJz5kwAYm+ooBdYA==
+X-Google-Smtp-Source: AGHT+IGnFx7Ob6v6SoU+/gvpn5S5yHkLF9q6yTrtLPmDhB8HE6n8VTxo2kQ9zk5VwAQD4u4VOZdwTg==
+X-Received: by 2002:a05:6402:50d0:b0:5e0:818a:5f4d with SMTP id 4fb4d7f45d1cf-5e4d6b628aamr6127584a12.28.1740735345024;
+        Fri, 28 Feb 2025 01:35:45 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abf42c16af2sm1976966b.116.2025.02.28.01.35.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Feb 2025 01:35:44 -0800 (PST)
+Date: Fri, 28 Feb 2025 12:35:40 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Esteban Blanc <eblanc@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH next] iio: adc: ad4030: fix error pointer dereference in
+ probe()
+Message-ID: <cc67cee7-9c65-46d2-aae3-f860fc3cc461@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 6/7] dt-bindings: motion: Add adi,tmc5240 bindings
-To: David Jander <david@protonic.nl>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>
-References: <20250227162823.3585810-1-david@protonic.nl>
- <20250227162823.3585810-7-david@protonic.nl>
- <20250228-groovy-lyrical-skunk-751ee3@krzk-bin>
- <20250228094818.0aad5491@erd003.prtnl>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250228094818.0aad5491@erd003.prtnl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
 
-On 28/02/2025 09:48, David Jander wrote:
-> 
-> Dear Krzysztof,
-> 
-> Thanks for reviewing...
-> 
-> On Fri, 28 Feb 2025 08:11:04 +0100
-> Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> 
->> On Thu, Feb 27, 2025 at 05:28:22PM +0100, David Jander wrote:
->> [...]
->>> +
->>> +  enable-supply:
->>> +    description: Optional external enable supply to control SLEEPn pin. Can  
->>
->> That's odd. regular pins are not supplies. This must be named after
->> physical supplies. There is vdd18, vcc, vcp but nothing about enable
->> supply in datasheet.
->>
->>> +      be shared between several controllers.  
->>
->> Second sentence is both redundant and really not relevant to this
->> binding. It's not this binding which decides about sharing.
-> 
-> Good point. I think I should drop the whole property, since it is indeed
-> irrelevant. If extra supplies need to be specified, they always can be, right?
+The intention here was obviously to return an error if devm_regmap_init()
+fails, but the return statement was accidentally left out.  This leads to
+an error pointer dereference when we call:
 
-You should specify all supplies now, because hardware should be fully
-described by binding and DTS.
+	ret = ad4030_detect_chip_info(st);
 
-What's more, the necessary supplies (according to datasheet) should be
-required, not optional.
+Add the return statement.
 
-> 
->>> +
->>> +  clocks:
->>> +    maxItems: 1
->>> +
->>> +required:
->>> +  - compatible
->>> +  - reg
->>> +  - interrupts
->>> +  - clocks
->>> +
->>> +allOf:
->>> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
->>> +  - $ref: /schemas/motion/common.yaml#
->>> +
->>> +unevaluatedProperties: false
->>> +
->>> +examples:
->>> +  - |
->>> +    spi {
->>> +        #address-cells = <1>;
->>> +        #size-cells = <0>;
->>> +
->>> +        motor@0 {
->>> +            compatible = "adi,tmc5240";
->>> +            reg = <0>;
->>> +            interrupts-extended = <&gpiok 7 0>;  
->>
->> Include header and use standard defines for flags.
-> 
-> Thanks. I didn't know I could include them here... will fix this.
-> 
->>
->>> +            clocks = <&clock_tmc5240>;
->>> +            enable-supply = <&stpsleepn>;
->>> +            spi-max-frequency = <1000000>;  
->>
->> Where are any other properties from common schema?
-> 
-> The properties in common.yaml are optional. Do I need to explicitly specify
-> this somehow (they are not listed under "required:")?
+Fixes: ec25cf6f1ee3 ("iio: adc: ad4030: add support for ad4632-16 and ad4632-24")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+There is a second Smatch warning which we may want to fix as well:
 
-The common says default=1, so it is fine to skip them if that default
-makes sense here.
+    drivers/iio/adc/ad4030.c:397 ad4030_get_chan_scale()
+    error: 'scan_type' dereferencing possible ERR_PTR()
 
-Anyway, it's fine.
+There's not error checking on iio_get_current_scan_type().
 
+ drivers/iio/adc/ad4030.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> In fact, the tmc5240 driver has its own known constants for these properties
-> that it fills in. One can overrule them here if needed, but I suppose in the
-> case of the tmc5240 the regular use-case is not to do that. Should I maybe add
-> a second example that overrules the defaults?
+diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+index ab5497c8ea1e..b7caf7e89710 100644
+--- a/drivers/iio/adc/ad4030.c
++++ b/drivers/iio/adc/ad4030.c
+@@ -1014,8 +1014,8 @@ static int ad4030_probe(struct spi_device *spi)
+ 	st->regmap = devm_regmap_init(dev, &ad4030_regmap_bus, st,
+ 				      &ad4030_regmap_config);
+ 	if (IS_ERR(st->regmap))
+-		dev_err_probe(dev, PTR_ERR(st->regmap),
+-			      "Failed to initialize regmap\n");
++		return dev_err_probe(dev, PTR_ERR(st->regmap),
++				     "Failed to initialize regmap\n");
+ 
+ 	st->chip = spi_get_device_match_data(spi);
+ 	if (!st->chip)
+-- 
+2.47.2
 
-Not necessarily, one real-world, complete example is enough.
-
-Best regards,
-Krzysztof
 

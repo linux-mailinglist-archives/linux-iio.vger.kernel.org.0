@@ -1,101 +1,83 @@
-Return-Path: <linux-iio+bounces-16219-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16220-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDF6A4A857
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 04:37:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE28A4AD72
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 19:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3198189C334
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 03:37:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF31E3A9EFA
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 18:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA6E1957FF;
-	Sat,  1 Mar 2025 03:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="emgao7PL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F301E1C09;
+	Sat,  1 Mar 2025 18:55:07 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dtc-mta-out.124133.dattaweb.com (dtc-mta-out.124133.dattaweb.com [200.58.124.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A032CA8
-	for <linux-iio@vger.kernel.org>; Sat,  1 Mar 2025 03:37:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91F6249F9
+	for <linux-iio@vger.kernel.org>; Sat,  1 Mar 2025 18:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=200.58.124.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740800258; cv=none; b=MiVrU2kSMyvo+Kc4Ttz3SnHFdAb+nfWPRVkykD9gU6zlNz+XUP3hGOO99NEKjm1IXzLvioBi9WiU9dKFFV/XXCqLpwQY08E5pUbolwxoAIN3O/KaA/DGDiW4o3MeDcRIYFcKON8uhXUavm/Z7qkHOcqNmF/GRkGaWdzxQxOKqPM=
+	t=1740855307; cv=none; b=JBo9MBLYq0T929y4RIL+y15Le8bHeDm2Z8lrgUhbvMB+fXNZ74BZTTOQ8bFfBBglXfEPOMZWWAzp+xLUgtS0LZU+NgWu8CmqrCL5o45MT9oRuHJtRUb/tNRjwJuIvH6Y3V4xN/WX7Bawp+qdpM5Y4FzsNlwyiBNcqTXGqlZF6o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740800258; c=relaxed/simple;
-	bh=cCfopytUMf3QAzoSoyq5VhDfeIggBrnnUAakUZWY4Do=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XrikYJuH1M8vSvODb6T/pISLYmTGI2WPMMNQTj0hkT70dwblvPIqGF7N0+Djdkjjc+seqoKkcwX+cYuMp2kG3pwThyPDImpgAkhDSs2slyo1WsYqZxlsB/Qzr8IaKFkQTBw0mLK2sgEiYXwWQQ3bp5yy6gxQsoONnaC0TLJgLY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=emgao7PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419F5C4CEDD;
-	Sat,  1 Mar 2025 03:37:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740800257;
-	bh=cCfopytUMf3QAzoSoyq5VhDfeIggBrnnUAakUZWY4Do=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=emgao7PLQEIZEllDd2q6ZXI3TZ9FabPDdutWvD27wCvTep8o8rBBMr3I4Bg5A+2fN
-	 /mfywzoJfdUmiNOCjFaGag/IXD5lAWn+vFUI6kf8aUxmwvFIsbP47GSvOIUCzGHEO1
-	 lnbLR4Q7b4X3jQLB01SPnFBtv8KiC7UelqxCXtBbI06JfPAGuvMkk/aeaKwnTO2BrR
-	 R01Wi7G7AJei7v40Dp6a1X4wErAZfiJEkHQkqNOIXdTBIytKL+Vvymo/I8X67zr8s7
-	 fOOTExnQ6/1Z+e0yZjJLIHvzOR5zjN1M1CVGVrD7SHVg1NIBHCJljXLJR/t7YFi0Qu
-	 kwuobFpabhLHg==
-Date: Sat, 1 Mar 2025 03:37:25 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Nuno =?UTF-8?B?U8Oh?= 
- <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>
-Subject: Re: [PATCH] iio: adc: adi-axi-adc: replace of.h with
- mod_devicetable.h
-Message-ID: <20250301033725.2718db6c@jic23-huawei>
-In-Reply-To: <7416028f78ba0e10e8d1722edd67756e13c3867b.camel@gmail.com>
-References: <20250218-dev-axi-adc-fix-headers-v1-1-5ddc79221d8c@analog.com>
-	<Z7o62qQDyWLk642C@surfacebook.localdomain>
-	<7416028f78ba0e10e8d1722edd67756e13c3867b.camel@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1740855307; c=relaxed/simple;
+	bh=7eJ0sa+yZOuRoPVirhLTEECZ9Wm8/sQD//WL4VbGChg=;
+	h=Message-ID:Content-Type:MIME-Version:Subject:To:From:Date; b=SgzPpgD7wpuFnlbCzGhB4Vke1F1MUqutuGcsGAxqjc7ywvUf5xF/Y81KyGLTcGO47DC8Hha/swwqYPpjsXg2SdrOUMjLEVtgDJBMTLi+kKQvwH+ofsAHLawtcu6nXG0ipzpk2qZKfYmyKk+e1BR5tJZuZ9BPpkC7AsXlIRlIGS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=camuzzichini.com.ar; spf=pass smtp.mailfrom=camuzzichini.com.ar; arc=none smtp.client-ip=200.58.124.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=camuzzichini.com.ar
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=camuzzichini.com.ar
+Received: from sd-901852-w.dattaweb.com (sd-901852-w.dattaweb.com [179.43.116.170])
+	by smarthost02-ded.dattaweb.com (Postfix) with SMTP id 5E1C580631BA
+	for <linux-iio@vger.kernel.org>; Sat,  1 Mar 2025 13:15:46 -0300 (-03)
+Received: from [104.167.223.46] ([104.167.223.46])
+	by sd-901852-w.dattaweb.com
+	; Sat, 1 Mar 2025 13:15:36 -0300
+Message-ID: <A3D902BF-0C3E-45BF-B088-E8666EF97F81@sd-901852-w.dattaweb.com>
+Content-Type: text/plain; charset="iso-8859-1"
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: ADNOC UAE Vendor/Supplies Project -BID-06
+To: linux-iio@vger.kernel.org
+From: "Mr. Adam Ibrahim" <jpchini@camuzzichini.com.ar>
+Date: Sat, 01 Mar 2025 08:15:44 -0800
+Reply-To: contracts@adncprocurementbid.com
 
-On Tue, 25 Feb 2025 09:18:38 +0000
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+Greeting's To You,
 
-> On Sat, 2025-02-22 at 23:00 +0200, Andy Shevchenko wrote:
-> > Tue, Feb 18, 2025 at 10:34:57AM +0000, Nuno S=C3=A1 kirjoitti: =20
-> > > Don't use of.h in order to include mod_devicetable.h. Use it directly=
- as
-> > > there no direct dependency on OF.h =20
-> >=20
-> > ...
-> >  =20
-> > > =C2=A0#include <linux/delay.h>
-> > > =C2=A0#include <linux/module.h>
-> > > =C2=A0#include <linux/mutex.h>
-> > > -#include <linux/of.h>
-> > > +#include <linux/mod_devicetable.h>
-> > > =C2=A0#include <linux/platform_device.h>
-> > > =C2=A0#include <linux/property.h>
-> > > =C2=A0#include <linux/regmap.h> =20
-> >=20
-> > Can we preserve the alpabetical ordering?
-> >  =20
->=20
-> Ups, my bad. Jonathan, should I re-spin or can you directly tweak it?
+We are reaching out to invite your esteemed company to participate in
+the contractors, consultants, maintenance, suppliers, and service
+providers Expression of Interest (EOI) process. This initiative is
+focused on selecting experienced service providers within the UAE for
+upcoming projects in Oil & Gas and construction sectors.
 
-Tweaked. =20
+Our goal is to identify and shortlist qualified companies to receive
+Invitations to Bid (ITB) or Requests for Proposal (RFP) for the
+specified services outlined in the EOI package appendix. This is an
+excellent opportunity to collaborate with Abu Dhabi National Oil Company
+(ADNOC) on our 2025/2026 projects.
 
-Thanks,
+If your company is interested in participating and being shortlisted,
+please confirm your intention by requesting the Vendor Questionnaire and
+EOI package.
 
-Jonathan
+Looking forward to your response.
 
->=20
-> - Nuno S=C3=A1
+Contact Email: contracts@adncprocurementbid.com
+
+Best regards,
+Mr. Adam Ibrahim Abdul
+Senior Project Manager/
+Procurement Support Dept.
+Abu Dhabi National Oil Company (ADNOC)
+ADNOC HQ, P O Box. 898, Corniche Road West, Abu Dhabi, UAE
+United Arab Emirates.
 
 

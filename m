@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-16216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DFBA4A845
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 04:25:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF6B3A4A849
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 04:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1BC73BB682
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 03:25:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2ED517798A
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Mar 2025 03:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682911ADC68;
-	Sat,  1 Mar 2025 03:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181AE1ADC9B;
+	Sat,  1 Mar 2025 03:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qV1yj3pP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSCGl9uL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1D71CD15;
-	Sat,  1 Mar 2025 03:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F031CD15;
+	Sat,  1 Mar 2025 03:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740799542; cv=none; b=ScnnbYWqzmdzoGXE7nkjSnfZJVQ8vmffM9DycY0871rBPwT+RpSLLmAYsnSpB3dXb+UavnZjdzdDCylHML2GZ5rlrKCMph0sA0pP4x+wyZBfKskjUvIf4mHD/NjrCXLNSn/JSXVbiJUuhy1Nc66wfRq3xy8Xjq3dpjzvNxh5Fwo=
+	t=1740799761; cv=none; b=qAvJebN3k5IiClX2OhQhv290w0Nkqgl7rBNs5jIq0oISsRRfxxn84u2YaPcXQjMCX5B/wNmcmXQdm3AEaisVbwEn+8csxUqFkIaeK5NNAOhgKajhD/gCnFO/fmJU0Qaz9iSJYvI1K8Ig9Yik0ygfPgMjJgSMtFhtLnyY99wdh/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740799542; c=relaxed/simple;
-	bh=FmQ/Wz4ZtwGsNlXMLA2I4TgbrEPenZCG9Iv0gdXbVDg=;
+	s=arc-20240116; t=1740799761; c=relaxed/simple;
+	bh=4zNZZHCJxSlrR3g9/cXq860pcRQMkMV544oAepV/mVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uI+aXHhdrVCV1cgBOwZr6u4L9UN6Zod/qpIMXK4nk8ZlvQar017VVd6yXsgmOKKCOoehfgOuDok5afU8eG2UI21aPI3rJrx5luLb59VkR3uwcthIPmMDzpp6FNdJg7u/rNKQWbC56rMb3Zjt8ww+wQ1LSP/6itkHM35BcqUibug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qV1yj3pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A14C4CED6;
-	Sat,  1 Mar 2025 03:25:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XacxifQZBogwBoDWKvpY10UJ33hSakVzka3zCHYlwcQJZNwwTTlsR8Fsyp1pZOJRha1d3LTMwH9YnwYrSIPnydHghhUwG6RWlPeCf00mDIJXNIYSoARDA6K9RLh6nC+BTszSUviJIv1xPKFSQvIsYpM8rVgEUBpC+9kjQpqXmuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSCGl9uL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7A9C4CED6;
+	Sat,  1 Mar 2025 03:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740799541;
-	bh=FmQ/Wz4ZtwGsNlXMLA2I4TgbrEPenZCG9Iv0gdXbVDg=;
+	s=k20201202; t=1740799761;
+	bh=4zNZZHCJxSlrR3g9/cXq860pcRQMkMV544oAepV/mVU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qV1yj3pP/YiTqZmytVT+45Crbjp118n/HZY9xCXrKEDhw6EhxgHtjfA2o8ZdUF12+
-	 ZbIOz258SUZx59KzguFDK05TvwmCAgWyRV2iOzm2Zx2M5WeHOQOSsUR3rJeRR26G9j
-	 vWwoRxzoBRTKWaFrFAp8HenVq+Z0uSLafSMVdOHiDYHg36sCMgNiQUSFbPaAY0h1o6
-	 6WCCeGb5OyzmoNepcX1bJQmEy4U+82W5hnAVDVz0qYLpN17t3CkijlOR0tHcHNF1k9
-	 ry4cRubRiLiX08yUeLpCZosIvSYsZLp7m+uDTzl3ze6ScOZg9eHc77y5kbk1THz1Kl
-	 Q1XbG+Sek+o7A==
-Date: Sat, 1 Mar 2025 03:25:19 +0000
+	b=KSCGl9uLcYH6ad3F4/n1ymWtN4vyqST79ZuUJZLstzzgDx2Vj4YtuGJe7JX40UXyS
+	 ScyPRNjHYUIop+6/hBOR9Nb6VINxAFQiGhalCRORVpi56FOKRZ1vzN+SANcwSu5+M7
+	 HVIbkgNktO/kx6Lv+sMd7e8F3Knls5urquhj9waOlVJ+dpRWwibz594a1XYii3gvvr
+	 kVo1vh/t9axIqdYU6NaBR6zPK3YAs7GSe15MBW20cIydgcuXBUmDr5AfNogwZASehE
+	 YG4jwYTM9s3fKoOmvZ2rK8GvGm9pE4HJwk/yaLtLBJ9DUSKQ1az9vF9E6w3aQcoNzV
+	 oaFED08wEbY+g==
+Date: Sat, 1 Mar 2025 03:29:01 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -55,13 +55,14 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
  quic_skakitap@quicinc.com, neil.armstrong@linaro.org
-Subject: Re: [PATCH V5 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20250301032519.16e77288@jic23-huawei>
-In-Reply-To: <9e14f58f-e345-4bae-b14e-de25fc28d9a8@oss.qualcomm.com>
+Subject: Re: [PATCH V5 5/5] thermal: qcom: add support for PMIC5 Gen3 ADC
+ thermal monitoring
+Message-ID: <20250301032901.7b38fed4@jic23-huawei>
+In-Reply-To: <dafe240f-c531-43f9-8787-bb8ba4ddea49@oss.qualcomm.com>
 References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
-	<20250131183242.3653595-5-jishnu.prakash@oss.qualcomm.com>
-	<20250201121134.53040aae@jic23-huawei>
-	<9e14f58f-e345-4bae-b14e-de25fc28d9a8@oss.qualcomm.com>
+	<20250131183242.3653595-6-jishnu.prakash@oss.qualcomm.com>
+	<20250201122731.2762b1f8@jic23-huawei>
+	<dafe240f-c531-43f9-8787-bb8ba4ddea49@oss.qualcomm.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,138 +73,141 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 26 Feb 2025 14:22:05 +0530
+On Wed, 26 Feb 2025 14:22:24 +0530
 Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
 > Hi Jonathan,
 > 
-> On 2/1/2025 5:41 PM, Jonathan Cameron wrote:
-> > On Sat,  1 Feb 2025 00:02:41 +0530
+> On 2/1/2025 5:57 PM, Jonathan Cameron wrote:
+> > On Sat,  1 Feb 2025 00:02:42 +0530
 > > Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 > >   
-> >> The ADC architecture on PMIC5 Gen3 is similar to that on PMIC5 Gen2,
-> >> with all SW communication to ADC going through PMK8550 which
-> >> communicates with other PMICs through PBS.
+> >> Add support for ADC_TM part of PMIC5 Gen3.
 > >>
-> >> One major difference is that the register interface used here is that
-> >> of an SDAM (Shared Direct Access Memory) peripheral present on PMK8550.
-> >> There may be more than one SDAM used for ADC5 Gen3 and each has eight
-> >> channels, which may be used for either immediate reads (same functionality
-> >> as previous PMIC5 and PMIC5 Gen2 ADC peripherals) or recurring measurements
-> >> (same as ADC_TM functionality).
-> >>
-> >> By convention, we reserve the first channel of the first SDAM for all
-> >> immediate reads and use the remaining channels across all SDAMs for
-> >> ADC_TM monitoring functionality.
-> >>
-> >> Add support for PMIC5 Gen3 ADC driver for immediate read functionality.
-> >> ADC_TM is implemented as an auxiliary thermal driver under this ADC
-> >> driver.
+> >> This is an auxiliary driver under the Gen3 ADC driver, which
+> >> implements the threshold setting and interrupt generating
+> >> functionalities of QCOM ADC_TM drivers, used to support thermal
+> >> trip points.  
+> > 
+> > Very short wrap. For commit descriptions 75 chars is fine.
+> >   
 > >>
 > >> Signed-off-by: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>  
-> > Hi,
-> > 
-> > A few minor things inline.  One general one is keep to under 80 chars
-> > for line wrap unless going over that makes a significant improvement
-> > to readability.
+> > Various minor comments inline.
 > > 
 > > Jonathan
 > >   
 > >> ---
 > >> Changes since v4:
-> >> - Moved out common funtions from newly added .h file into a separate .c
-> >>   file to avoid duplicating them. Updated interrupt name as suggested
-> >>   by reviewer. Updated namespace export symbol statement to have a string
-> >>   as second argument to follow framework change.
-> >>  
+> >> - Fixed a compilation error and updated dependencies in config as suggested
+> >>   by reviewer.  
 > 
 > ...
 > 
+> >>
 > >> +
-> >> +			if (!conv_req)
-> >> +				return 0;
-> >> +		}
+> >> +MODULE_DEVICE_TABLE(auxiliary, adctm5_auxiliary_id_table);
 > >> +
-> >> +		usleep_range(ADC5_GEN3_HS_DELAY_MIN_US, ADC5_GEN3_HS_DELAY_MAX_US);  
-> > fsleep() perhaps as I doubt the extra tolerance that will give will matter
-> > much.  
-> >> +	}
+> >> +static struct adc_tm5_auxiliary_drv adctm5gen3_auxiliary_drv = {
+> >> +	.adrv = {
+> >> +		.id_table = adctm5_auxiliary_id_table,
+> >> +		.probe = adc_tm5_probe,
+> >> +	},
+> >> +	.tm_event_notify = adctm_event_handler,
+> >> +};
 > >> +
-> >> +	pr_err("Setting HS ready bit timed out, sdam_index:%d, status:%#x\n", sdam_index, status);
-> >> +	return -ETIMEDOUT;
-> >> +}
-> >> +EXPORT_SYMBOL(adc5_gen3_poll_wait_hs);  
-> > 
-> > At some point may be worth namespacing all these exports.
-> > Probably not in this series though!  
-> 
-> In the main driver file (qcom-spmi-adc5-gen3.c), I have already exported some functions to a namespace ("QCOM_SPMI_ADC5_GEN3"),
-> which is imported in the auxiliary driver file (qcom-spmi-adc-tm5-gen3.c).
-> 
-> Do you think I should export these functions to the same or a different namespace? Or should we check this later?
-Later is fine.
-
-> >> +void adc5_take_mutex_lock(struct device *dev, bool lock)
+> >> +static int __init adctm5_init_module(void)
 > >> +{
-> >> +	struct iio_dev *indio_dev = dev_get_drvdata(dev->parent);
-> >> +	struct adc5_chip *adc = iio_priv(indio_dev);
-> >> +
-> >> +	if (lock)
-> >> +		mutex_lock(&adc->lock);
-> >> +	else
-> >> +		mutex_unlock(&adc->lock);
+> >> +	return auxiliary_driver_register(&adctm5gen3_auxiliary_drv.adrv);
 > >> +}
-> >> +EXPORT_SYMBOL_NS_GPL(adc5_take_mutex_lock, "QCOM_SPMI_ADC5_GEN3");  
+> >> +
+> >> +static void __exit adctm5_exit_module(void)
+> >> +{
+> >> +	auxiliary_driver_unregister(&adctm5gen3_auxiliary_drv.adrv);
+> >> +}
+> >> +
+> >> +module_init(adctm5_init_module);
+> >> +module_exit(adctm5_exit_module);  
 > > 
-> > This is potentially going to make a mess for sparse.  Might be better to split
-> > it in two so you can had __acquires and __releases markings.
-> > 
-> > If you don't get any warnings with sparse then I guess we are fine.
+> > Can use module_auxiliary_driver() to replace this boilerplate.
+> > The embedded adrv shouldn't stop that working that I can see.
 > >   
 > 
-> I had tried building with sparse in my local workspace and I did not get any errors in this file. Do you think I can keep this unchanged?
-> Also, would any kernel bots run sparse later on this patch, if it's not already done?
-
-Problems around this tend to turn up a bit late in build tests as requires
-particular combinations of features.  Here you may not see problems because
-sparse can't see far enough to understand the locking.
-
-I would still split this into lock / unlock as that matches better
-with common syntax for locks.  We can then add markings
-as necessary later.
-
-> >> +/*  
-> > 
-> > Looks like valid kernel doc, so /** and check it builds fine
-> > with the kernel-doc script.
-> >   
-> >> + * struct adc5_channel_prop - ADC channel property.
-> >> + * @channel: channel number, refer to the channel list.
-> >> + * @cal_method: calibration method.
-> >> + * @decimation: sampling rate supported for the channel.
-> >> + * @sid: slave id of PMIC owning the channel.  
-> > 
-> > In common with most of the kernel, if there is another name that
-> > can be used, I'd prefer avoiding that term.
-> > ID probably fine for example or leave it ambiguous as SID
-> >   
+> I tried to do this, but it does not work with the embedded adrv.
 > 
-> Just to be sure, does this look fine?
 > 
-> @sid: ID of PMIC owning the channel.
-Ok.
+> When I tried this change:
 > 
-> I'll address all your other comments in the next patch series.
+>     -static int __init adctm5_init_module(void)
+>     -{
+>     -       return auxiliary_driver_register(&adctm5gen3_auxiliary_drv.adrv);
+>     -}
+>     -
+>     -static void __exit adctm5_exit_module(void)
+>     -{
+>     -       auxiliary_driver_unregister(&adctm5gen3_auxiliary_drv.adrv);
+>     -}
+>     -
+>     -module_init(adctm5_init_module);
+>     -module_exit(adctm5_exit_module);
+>     +module_auxiliary_driver(adctm5gen3_auxiliary_drv.adrv);
 > 
-When replying with feedback on some items crop out the rest
-of the email just to maintain relevant context.
-Saves time and makes less likely important parts of your reply
-might be missed.
+> 
+> Ideally this should have worked as I see module_auxiliary_driver() takes a single argument of type struct auxiliary_driver. But it failed with errors like this:
+> 
+> 
+>     drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c:474:49: error: expected '=', ',', ';', 'asm' or '__attribute__' before '.' token
+>      module_auxiliary_driver(adctm5gen3_auxiliary_drv.adrv);
+>                                                      ^
+> 
+>     drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c:474:49: error: 'struct adc_tm5_auxiliary_drv' has no member named 'adrv_init'
+>      module_auxiliary_driver(adctm5gen3_auxiliary_drv.adrv);
+>                                                      ^
+> 
+>     drivers/thermal/qcom/qcom-spmi-adc-tm5-gen3.c:474:49: error: 'struct adc_tm5_auxiliary_drv' has no member named 'adrv_exit'
+>      module_auxiliary_driver(adctm5gen3_auxiliary_drv.adrv);
+>                                                      ^
+> 
+> 
+> I think this happens because module_auxiliary_driver() is defined as a macro, like this:
+> 
+>     #define module_auxiliary_driver(__auxiliary_driver) \
+>         module_driver(__auxiliary_driver, auxiliary_driver_register, auxiliary_driver_unregister)
+> 
+> And when the text substitution for the argument is done, we would end up with lines like this in the expansion finally:
+> 
+>     module_init(adctm5gen3_auxiliary_drv.adrv_init);
+>     module_exit(adctm5gen3_auxiliary_drv.adrv_exit);
+> 
+> 
+> I'm facing similar issues, of the input argument being misinterpreted, if I use a pointer to the struct auxiliary_driver member (adrv), and dereference it as argument to module_auxiliary_driver().
+> 
+> I think module_auxiliary_driver() can only take a simple variable name as input, because in all the examples of its usage I found, I see there is a "struct auxiliary_driver" initialization just before the initialized variable is passed to module_auxiliary_driver().
 
-thanks,
+Yes. Thinking more on this it uses that parameter as a source of naming for
+some of the stuff it creates.
+
+Thanks for trying this, and no problem with sticking to you original code
+given this doesn't work :(
 
 Jonathan
 
+
+> 
+> In this auxiliary driver, I need to have adrv embedded within the struct adc_tm5_auxiliary_drv wrapper, as I also need to have the .tm_event_notify member, to expose a callback to the main driver, so I don't think I can change this.
+> 
+> 
+> I'll address your other comments in the next patch series.
+> 
 > Thanks,
 > Jishnu
+> 
+> >   
+> >> +
+> >> +MODULE_DESCRIPTION("SPMI PMIC Thermal Monitor ADC driver");
+> >> +MODULE_LICENSE("GPL");
+> >> +MODULE_IMPORT_NS("QCOM_SPMI_ADC5_GEN3");  
+> >   
+> 
+
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-16225-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16226-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51307A4AF19
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 04:35:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6155A4AF1F
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 04:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0AA23B2A3C
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 03:35:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0BB17A7ED4
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 03:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C262149C51;
-	Sun,  2 Mar 2025 03:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B47A154457;
+	Sun,  2 Mar 2025 03:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGP12Iz1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LICkLh9E"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E50CAD23;
-	Sun,  2 Mar 2025 03:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0E523F383;
+	Sun,  2 Mar 2025 03:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740886530; cv=none; b=cC09R1qEYRo4ujz3ZhP/ipL8U67Dxh9rcjji8Lh1S6z2aGvdp9iVvdBzHL62mHJNcUcCnDSp6GUAPaVXJxT7B5a2atgJE54+l9rpcUjncIbVOoQ810Oeaa0YfVEZp0x6IevR+vbVFtrawtCqgOsm+Bo7L2G+WWPFYF6I/ZttOMM=
+	t=1740886867; cv=none; b=tvm4ZOs3UeZMD9U+Bvnt2B+1dN0rQMh9r4y/i7QcFX2wO3T3wR1BiZxMolZEmU2SYcUEaYkps5g1bIgWbseaB5TiguFVst4VfeSRU0tVRKIZEYu+maiiO1AHHMP5qUoVxlF8SKx1sXQnZDM0xvpDUFHdhLIsM280YdVYGRB2jiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740886530; c=relaxed/simple;
-	bh=qxsEAw46qjaW9vCHp47YORWcbidCY9uP4CuL/3qIW9M=;
+	s=arc-20240116; t=1740886867; c=relaxed/simple;
+	bh=g2PKSkh0Ix0P5C8ybr4GhP9l94eYbu1/YakbGSz2CUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tdNSor95sR6BFJrRCSFqr87iHZ/EVU2YWjbhstTfqGtyU+ywb/tIQs98nZzb4GwgqmGDqNbnnBPsbYGh8Dcn+f4In1q2WtYplfbWsTougRip9fKXSxLa2LdOTFc6mMlxM2PGsoopntKyLZ57hYRj37ErCInnq34Hx+7s9u2pnac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGP12Iz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81831C4CEE2;
-	Sun,  2 Mar 2025 03:35:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ie4N2toYlaLYV4xhaQlxORQIX3mVft6Wo51bR36zQ+3k44ifn3Q7vMZ0aNPZ29/Nx309zikG8Jc3a0bUKunJNzymeBMAPr2o5aEV3Qt4z7Qe3Lixj5/EAQbbGHyRBPrriQeqWJlO5V5FRBEtef8NoicE+uoXULtNwkDY/S9jjBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LICkLh9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7A0C4CEE2;
+	Sun,  2 Mar 2025 03:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740886529;
-	bh=qxsEAw46qjaW9vCHp47YORWcbidCY9uP4CuL/3qIW9M=;
+	s=k20201202; t=1740886865;
+	bh=g2PKSkh0Ix0P5C8ybr4GhP9l94eYbu1/YakbGSz2CUQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZGP12Iz1cL1/g4Z8YJFf7kY3o/fyF3QI9T6frEuW3U6Telq0MfsrCnp+aJm1BcYUN
-	 ge1U0SxitACahHZY7KQTcVLCOEJZ4noEd8S3cAp8yeshBPxv9AyJSl88XZrAcv4BJz
-	 Mr4Rx0+owSS8Uy8UikZRYVY/N+AVgMD4YxqNIGfiPnffT9izzJxzIsGGGcG1KTqheC
-	 m7Za6gbdesYfZPM71ZhL0Ogysdev9nA/tYJutmoruTmShjoZy1siL3RKorHSyp+lpi
-	 yKorheTshyA9yVCkBgD5OZbs/wtBKrirtUBV0CgLeASxsOVzhPOAr0kopdPMG6KVJ4
-	 FkVkoCGr1zckA==
-Date: Sun, 2 Mar 2025 03:35:07 +0000
+	b=LICkLh9EUFCAkx8Xzb2DvtqLTZzOV2Js5TE8phQQXE5TTV1ytkJScVTvG4u0esVWU
+	 c+1ZvtBLpkYZzjk3CLyu6iSUTbSMZn28vTJ5Yu8UGm4IEz7KgG/iulAsskm0G4W4On
+	 91HBeA5AWKAT7rXrabfCudFMh2pEFEwJtR8cUsf+Xg3BH4Mj8vx/uQmuy23h9VRvwC
+	 gfNJvugmRWyOVYhl5QA0b/c6vhidbGh3Gq9GvBcvdHYm+JjhS1R1ddQ82PYSa1mxQf
+	 86ZQ4PITZ8Z1syVR4QRdhhvsTJ7+wnv47xshTZXRmrRsauWwhcS+nZl3/b7BXJnDkJ
+	 5P/vy6EVTClXA==
+Date: Sun, 2 Mar 2025 03:40:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -66,11 +66,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250302033507.7c166743@jic23-huawei>
-In-Reply-To: <23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v4 04/10] iio: adc: rzg2l_adc: Use adc-helpers
+Message-ID: <20250302034042.59d83f53@jic23-huawei>
+In-Reply-To: <5658fbdd886cc7ada278a42c63a140bc14d1277d.1740421248.git.mazziesaccount@gmail.com>
 References: <cover.1740421248.git.mazziesaccount@gmail.com>
-	<23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+	<5658fbdd886cc7ada278a42c63a140bc14d1277d.1740421248.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -81,193 +81,155 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 24 Feb 2025 20:33:16 +0200
+On Mon, 24 Feb 2025 20:33:29 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> There are ADC ICs which may have some of the AIN pins usable for other
-> functions. These ICs may have some of the AIN pins wired so that they
-> should not be used for ADC.
+> The new devm_iio_adc_device_alloc_chaninfo() -helper is intended to help
+> drivers avoid open-coding the for_each_node -loop for getting the
+> channel IDs. The helper provides standard way to detect the ADC channel
+> nodes (by the node name), and a standard way to convert the "reg",
+> "diff-channels", "single-channel" and the "common-mode-channel" to
+> channel identification numbers used in the struct iio_chan_spec.
+
+Needs an update to reflecting naming and functionality simplifications.
+
+> Furthermore, the helper checks the ID is in range of 0 ... num-channels.
 > 
-> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> add corresponding channels@N nodes in the device tree as described in
-> the ADC binding yaml.
-I think it's worth exploring if we can tweak this slightly to make
-that something a driver specifies.  Either skip the unspecified or
-fill them with default values depending on a parameter.
+> The original driver treated all found child nodes as channel nodes. The
+> new helper requires channel nodes to be named channel[@N]. This should
+> help avoid problems with devices which may contain also other but ADC
+> child nodes. Quick grep from arch/* with the rzg2l_adc's compatible
+> string didn't reveal any in-tree .dts with channel nodes named
+> othervice. Also, same grep shows all the .dts seem to have channel IDs
+otherwise
 
-Would make this code cover the existing cases better. 
-Might be a little fiddly as we'd want to maintain ordering so
-the code would need to index slightly differently. I've not tried it
-so maybe not worth it for now.
+(othervice does sound cool though ;)
 
-
+> between 0..num of channels.
 > 
-> Add couple of helper functions which can be used to retrieve the channel
-> information from the device node.
+> Use the new helper.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 > 
 > ---
 > Revision history:
 > v3 => v4:
->  - Drop diff-channel support
->  - Drop iio_adc_device_channels_by_property()
->  - Add IIO_DEVICE namespace
->  - Move industrialio-adc.o to top of the Makefile
->  - Some styling as suggested by Andy
->  - Re-consider included headers
-> v2 => v3: Mostly based on review comments by Jonathan
->  - Support differential and single-ended channels
->  - Rename iio_adc_device_get_channels() as
->    iio_adc_device_channels_by_property()
->  - Improve spelling
->  - Drop support for cases where DT comes from parent device's node
->  - Decrease loop indent by reverting node name check conditions
->  - Don't set 'chan->indexed' by number of channels to keep the
->    interface consistent no matter how many channels are connected.
->  - Fix ID range check and related comment
-> RFC v1 => v2:
+>  - Adapt to 'drop diff-channel support' changes to ADC-helpers
+>  - select ADC helpers in the Kconfig
+>  - Rebased to 6.14-rc3 => channel type can no longer come from the
+>    template.
+> 
+> v2 => v3:
 >  - New patch
 > 
-> iio: adc: helper: drop headers
+> I picked the rzg2l_adc in this series because it has a straightforward
+> approach for populating the struct iio_chan_spec. Only other member
+> in the stuct besides the .channel, which can't use a 'template' -data,
+> is the .datasheet_name. This makes the rzg2l_adc well suited for example
+> user of this new helper. I hope this patch helps to evaluate whether these
+> helpers are worth the hassle.
+This doesn't seem to match driver. It is messing with channel type.
+
+> 
+> The change is compile tested only!! Testing before applying is highly
+> appreciated (as always!).
 > ---
->  drivers/iio/adc/Kconfig            |  3 +
->  drivers/iio/adc/Makefile           |  2 +
->  drivers/iio/adc/industrialio-adc.c | 89 ++++++++++++++++++++++++++++++
->  include/linux/iio/adc-helpers.h    | 22 ++++++++
->  4 files changed, 116 insertions(+)
->  create mode 100644 drivers/iio/adc/industrialio-adc.c
->  create mode 100644 include/linux/iio/adc-helpers.h
+>  drivers/iio/adc/Kconfig     |  1 +
+>  drivers/iio/adc/rzg2l_adc.c | 38 +++++++++++++++++--------------------
+>  2 files changed, 18 insertions(+), 21 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 849c90203071..37b70a65da6f 100644
+> index 37b70a65da6f..e4933de0c366 100644
 > --- a/drivers/iio/adc/Kconfig
 > +++ b/drivers/iio/adc/Kconfig
-> @@ -6,6 +6,9 @@
->  
->  menu "Analog to digital converters"
->  
-> +config IIO_ADC_HELPER
-> +	tristate
-> +
->  config AB8500_GPADC
->  	bool "ST-Ericsson AB8500 GPADC driver"
->  	depends on AB8500_CORE && REGULATOR_AB8500
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index ee19afba62b7..1c410f483029 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -3,6 +3,8 @@
->  # Makefile for IIO ADC drivers
->  #
->  
-> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
-> +
->  # When adding new entries keep the list in alphabetical order
->  obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
->  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
-> diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industrialio-adc.c
-> new file mode 100644
-> index 000000000000..d8e9e6825d2b
-> --- /dev/null
-> +++ b/drivers/iio/adc/industrialio-adc.c
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Helpers for parsing common ADC information from a firmware node.
-> + *
-> + * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-> + */
-> +
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/export.h>
-> +#include <linux/module.h>
-> +#include <linux/property.h>
-> +#include <linux/types.h>
-> +
+> @@ -1222,6 +1222,7 @@ config RICHTEK_RTQ6056
+>  config RZG2L_ADC
+>  	tristate "Renesas RZ/G2L ADC driver"
+>  	depends on ARCH_RZG2L || COMPILE_TEST
+> +	select IIO_ADC_HELPER
+>  	help
+>  	  Say yes here to build support for the ADC found in Renesas
+>  	  RZ/G2L family.
+> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> index 883c167c0670..51c87b1bdc98 100644
+> --- a/drivers/iio/adc/rzg2l_adc.c
+> +++ b/drivers/iio/adc/rzg2l_adc.c
+> @@ -11,6 +11,7 @@
+>  #include <linux/cleanup.h>
+>  #include <linux/completion.h>
+>  #include <linux/delay.h>
 > +#include <linux/iio/adc-helpers.h>
-> +#include <linux/iio/iio.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/io.h>
+> @@ -324,21 +325,30 @@ static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static const struct iio_chan_spec rzg2l_adc_chan_template = {
+> +	.indexed = 1,
+> +	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+> +};
 > +
-> +int iio_adc_device_num_channels(struct device *dev)
-> +{
-> +	return device_get_child_node_count_named(dev, "channel");
-> +}
-> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
-
-Maybe one to promote to a static inline in the header and avoid need for
-the export given it is very simple.
-
+>  static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l_adc *adc)
+>  {
+>  	const struct rzg2l_adc_hw_params *hw_params = adc->hw_params;
+>  	struct iio_chan_spec *chan_array;
+>  	struct rzg2l_adc_data *data;
+> -	unsigned int channel;
+>  	int num_channels;
+> -	int ret;
+>  	u8 i;
+>  
+>  	data = devm_kzalloc(&pdev->dev, sizeof(*data), GFP_KERNEL);
+>  	if (!data)
+>  		return -ENOMEM;
+>  
+> -	num_channels = device_get_child_node_count(&pdev->dev);
+> +	num_channels = devm_iio_adc_device_alloc_chaninfo_se(&pdev->dev,
+> +						&rzg2l_adc_chan_template,
+> +						hw_params->num_channels - 1,
+> +						&chan_array);
+> +	if (num_channels < 0)
+> +		return num_channels;
 > +
-> +/**
-> + * devm_iio_adc_device_alloc_chaninfo_se - allocate and fill iio_chan_spec for ADC
-> + *
-> + * Scan the device node for single-ended ADC channel information. Channel ID is
-> + * expected to be found from the "reg" property. Allocate and populate the
-> + * iio_chan_spec structure corresponding to channels that are found. The memory
-> + * for iio_chan_spec structure will be freed upon device detach.
-> + *
-> + * @dev:		Pointer to the ADC device.
-> + * @template:		Template iio_chan_spec from which the fields of all
-> + *			found and allocated channels are initialized.
-> + * @max_chan_id:	Maximum value of a channel ID. Use -1 if no checking
-> + *			is required.
-> + * @cs:			Location where pointer to allocated iio_chan_spec
-> + *			should be stored.
-> + *
-> + * Return:	Number of found channels on succes. Negative value to indicate
-> + *		failure.
-> + */
-> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
-> +				const struct iio_chan_spec *template,
-> +				int max_chan_id,
-> +				struct iio_chan_spec **cs)
-> +{
-> +	struct iio_chan_spec *chan_array, *chan;
-> +	int num_chan = 0, ret;
-> +
-> +	num_chan = iio_adc_device_num_channels(dev);
-> +	if (num_chan < 1)
-> +		return num_chan;
-> +
-> +	chan_array = devm_kcalloc(dev, num_chan, sizeof(*chan_array),
-> +				  GFP_KERNEL);
-> +	if (!chan_array)
-> +		return -ENOMEM;
-> +
-> +	chan = &chan_array[0];
-> +
-> +	device_for_each_child_node_scoped(dev, child) {
-> +		u32 ch;
-> +
-> +		if (!fwnode_name_eq(child, "channel"))
-> +			continue;
-> +
-> +		ret = fwnode_property_read_u32(child, "reg", &ch);
-> +		if (ret)
-> +			return ret;
-> +
-> +		if (max_chan_id != -1)
-> +			if (ch > max_chan_id)
-> +				return -ERANGE;
-
-Might as well combine.
-		if (max_chan_id != -1 && ch > max_chan_id)
-			return -ERANGE; 
-> +
-> +		*chan = *template;
-> +		chan->channel = ch;
-> +		chan++;
-> +	}
-> +
-> +	*cs = chan_array;
-> +
-> +	return num_chan;
-> +}
-> +EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIVER");
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
-> +MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
+>  	if (!num_channels)
+>  		return dev_err_probe(&pdev->dev, -ENODEV, "no channel children\n");
+>  
+> @@ -346,26 +356,11 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
+>  		return dev_err_probe(&pdev->dev, -EINVAL,
+>  				     "num of channel children out of range\n");
+>  
+> -	chan_array = devm_kcalloc(&pdev->dev, num_channels, sizeof(*chan_array),
+> -				  GFP_KERNEL);
+> -	if (!chan_array)
+> -		return -ENOMEM;
+> -
+> -	i = 0;
+> -	device_for_each_child_node_scoped(&pdev->dev, fwnode) {
+> -		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
+> -		if (ret)
+> -			return ret;
+> -
+> -		if (channel >= hw_params->num_channels)
+> -			return -EINVAL;
+> +	for (i = 0; i < num_channels; i++) {
+> +		int channel = chan_array[i].channel;
+>  
+> -		chan_array[i].type = rzg2l_adc_channels[channel].type;
+> -		chan_array[i].indexed = 1;
+> -		chan_array[i].channel = channel;
+> -		chan_array[i].info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+>  		chan_array[i].datasheet_name = rzg2l_adc_channels[channel].name;
+> -		i++;
+> +		chan_array[i].type = rzg2l_adc_channels[channel].type;
+>  	}
+>  
+>  	data->num_channels = num_channels;
+> @@ -626,3 +621,4 @@ module_platform_driver(rzg2l_adc_driver);
+>  MODULE_AUTHOR("Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>");
+>  MODULE_DESCRIPTION("Renesas RZ/G2L ADC driver");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS("IIO_DRIVER");
 
 

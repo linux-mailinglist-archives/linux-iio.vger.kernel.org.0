@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-16229-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16230-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5702A4AF2E
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 04:48:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BE1A4AF3A
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 05:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 631C03ABAA2
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 03:48:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69127189091B
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Mar 2025 04:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C94155389;
-	Sun,  2 Mar 2025 03:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A0D1A5B97;
+	Sun,  2 Mar 2025 04:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6var03g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRAQ/Bpr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6751C757EA;
-	Sun,  2 Mar 2025 03:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3298632E;
+	Sun,  2 Mar 2025 04:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740887311; cv=none; b=NeOgtashjyLQW7nzQL7jIquiKiplMyFTaqcF/X/fUnRS+RGd2m2MQ+HVQe1++vc+bWuJQ86ZAhIEEX5++W021ilJwok1LHGKSeS2RY8/zpJ4K4E4sdty1EAoAPTdBNrxC2mVTtL8cyzWqsH6pfgkf0rv5aelJJP/eyW33eOaYyE=
+	t=1740888671; cv=none; b=MfuSaHB1j0BCBT+W14vfbdXh+3htUDFEAO7afvHX4PnRA2QIFRnn1TMqkkvZCf1GeQ6WGDFapDIBaXHF3WZeeVArvyaCQH9y72NE8wF7mIgfjVol55tr2hjgjnjlJbJ+v4SvOQA2pTozPlxHWpqtp3Tdpn+vcR9+48pFr9xvKXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740887311; c=relaxed/simple;
-	bh=GCHeyfxkGkvIchus3GM+deq2n2Ej9SrlPO3hBk7T/cE=;
+	s=arc-20240116; t=1740888671; c=relaxed/simple;
+	bh=mhZ4GEcprVucdPj/c25y003/+abJiOOGAR1e9Cvo/NY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F2XmdmUFQI2KLM+FZvGTimB3IQtw6gQnsQ5xAamd3pV5aDG/UpngOOwrxZh8OeRzWpIIMOsLfk2bGYYv/xc4YfQ6aJFQletElhEj/oRjiBOf8ShagVuIlVc8hKme3LUR60rFUsfWMupayOB4/nZJGQ2qpjcyH/LSi8g9Wn7eYVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6var03g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B06C4CEE2;
-	Sun,  2 Mar 2025 03:48:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m6eoQPPkN8Q6+TPi8lubXjoJA0yDK8DSsqnn/OOijCaB6Rb8gIuPyQ3ScD0Sv+X+h67mCZt2JAQAsW1BLd78AA6MKcWnp1vo6QMBx3FQRERDHrk/PPHKTOry1PXDDTc6UxsRgPQ76V7sA187loklDcoAV6Q+2ooeaCdOpS4w9Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRAQ/Bpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D712C4CED6;
+	Sun,  2 Mar 2025 04:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740887310;
-	bh=GCHeyfxkGkvIchus3GM+deq2n2Ej9SrlPO3hBk7T/cE=;
+	s=k20201202; t=1740888670;
+	bh=mhZ4GEcprVucdPj/c25y003/+abJiOOGAR1e9Cvo/NY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=O6var03g/VBNqQQ1++7eZs13WnPx5s47dELYpLjGcVwvwY5aQ/TMqh7dAQQpvBj0Z
-	 m59c5nbUJo7PZd+Ayy9Qt/7g3G3gzNWuLOdVJOXTwxoFPFg4GcdHRdSSCvgh3Fqmta
-	 9+u/tQFtWSJcawg2WYQIO3Vj5Li/+4KUCstdKHj8PQkrbGaosx89c5tKozK8c8awRg
-	 2HbrZeqNTXhpHTaMoAQwJgVmePY9dd/Og79xFsPIEYWdhEMyAz+xbpekzO0hAYq3hB
-	 8SlC/C965imuhmwZY3tuE0w38lCFWgdFX+O7VgTTsC+D0HUOfASDWlvhy6lvWDKsY3
-	 SC2xephK1WgMw==
-Date: Sun, 2 Mar 2025 03:48:07 +0000
+	b=uRAQ/BprkT/fcETMQ/nvto5l6d/mJi22o7WvOY6UsRwn/nB2zaUFub9c4e4HutEhR
+	 FxSc2yd6nJX6ms2tv+vIeelPkGLRoo997BrggpXhZINTGueJF4UWmioOzWaawkqEB2
+	 pTkMX3nkEoGq8HGmAaqik5NYczg2WLPMmBOgR9o6jw4SdLBzJRFCFUGq7yuxo4HtZn
+	 sf2e9Miao8Q7EQkyrF8dkhDWkuN5/64M/VSrdAfByWm15HcEcKb77ZsQsl96Xg2LTV
+	 wvcCxNrLi9itzebjiUPrMZKaWvF1pi8/VqyLlkyZKbM70Q8ddZou8wJ54NLQpP8xPv
+	 dje10SlihUoLg==
+Date: Sun, 2 Mar 2025 04:10:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -65,12 +65,13 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: Re: [PATCH v4 03/10] iio: adc: add helpers for parsing ADC nodes
-Message-ID: <20250302034807.680a3971@jic23-huawei>
-In-Reply-To: <23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, Linus
+ Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v4 08/10] iio: adc: Support ROHM BD79124 ADC
+Message-ID: <20250302041046.7fde3c68@jic23-huawei>
+In-Reply-To: <4d1bf5df8f3b0f760422b6b67fcc8245ebf520e0.1740421249.git.mazziesaccount@gmail.com>
 References: <cover.1740421248.git.mazziesaccount@gmail.com>
-	<23f5ee3e3bf7179930d66c720d5c4c33cdbe8366.1740421248.git.mazziesaccount@gmail.com>
+	<4d1bf5df8f3b0f760422b6b67fcc8245ebf520e0.1740421249.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -81,110 +82,245 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 24 Feb 2025 20:33:16 +0200
+On Mon, 24 Feb 2025 20:34:30 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> There are ADC ICs which may have some of the AIN pins usable for other
-> functions. These ICs may have some of the AIN pins wired so that they
-> should not be used for ADC.
+> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
+> an automatic measurement mode, with an alarm interrupt for out-of-window
+> measurements. The window is configurable for each channel.
 > 
-> (Preferred?) way for marking pins which can be used as ADC inputs is to
-> add corresponding channels@N nodes in the device tree as described in
-> the ADC binding yaml.
+> The I2C protocol for manual start of the measurement and data reading is
+> somewhat peculiar. It requires the master to do clock stretching after
+> sending the I2C slave-address until the slave has captured the data.
+> Needless to say this is not well suopported by the I2C controllers.
 > 
-> Add couple of helper functions which can be used to retrieve the channel
-> information from the device node.
+> Thus the driver does not support the BD79124's manual measurement mode
+> but implements the measurements using automatic measurement mode relying
+> on the BD79124's ability of storing latest measurements into register.
+> 
+> The driver does also support configuring the threshold events for
+> detecting the out-of-window events.
+> 
+> The BD79124 keeps asserting IRQ for as long as the measured voltage is
+> out of the configured window. Thus the driver masks the received event
+> for a fixed duration (1 second) when an event is handled. This prevents
+> the user-space from choking on the events
+> 
+> The ADC input pins can be also configured as general purpose outputs.
+> Those pins which don't have corresponding ADC channel node in the
+> device-tree will be controllable as GPO.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> 
-> ---
-> Revision history:
-> v3 => v4:
->  - Drop diff-channel support
->  - Drop iio_adc_device_channels_by_property()
->  - Add IIO_DEVICE namespace
->  - Move industrialio-adc.o to top of the Makefile
->  - Some styling as suggested by Andy
->  - Re-consider included headers
-> v2 => v3: Mostly based on review comments by Jonathan
->  - Support differential and single-ended channels
->  - Rename iio_adc_device_get_channels() as
->    iio_adc_device_channels_by_property()
->  - Improve spelling
->  - Drop support for cases where DT comes from parent device's node
->  - Decrease loop indent by reverting node name check conditions
->  - Don't set 'chan->indexed' by number of channels to keep the
->    interface consistent no matter how many channels are connected.
->  - Fix ID range check and related comment
-> RFC v1 => v2:
->  - New patch
-> 
-> iio: adc: helper: drop headers
-> ---
->  drivers/iio/adc/Kconfig            |  3 +
->  drivers/iio/adc/Makefile           |  2 +
->  drivers/iio/adc/industrialio-adc.c | 89 ++++++++++++++++++++++++++++++
->  include/linux/iio/adc-helpers.h    | 22 ++++++++
->  4 files changed, 116 insertions(+)
->  create mode 100644 drivers/iio/adc/industrialio-adc.c
->  create mode 100644 include/linux/iio/adc-helpers.h
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 849c90203071..37b70a65da6f 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -6,6 +6,9 @@
->  
->  menu "Analog to digital converters"
->  
-> +config IIO_ADC_HELPER
-> +	tristate
+Some minor stuff inline.
+
+Thanks,
+
+Jonathan
+
 > +
->  config AB8500_GPADC
->  	bool "ST-Ericsson AB8500 GPADC driver"
->  	depends on AB8500_CORE && REGULATOR_AB8500
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index ee19afba62b7..1c410f483029 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -3,6 +3,8 @@
->  # Makefile for IIO ADC drivers
->  #
->  
-> +obj-$(CONFIG_IIO_ADC_HELPER) += industrialio-adc.o
+> +#define BD79124_REG_SYSTEM_STATUS	0x0
+> +#define BD79124_REG_GEN_CFG		0x01
+> +#define BD79124_REG_OPMODE_CFG		0x04
+> +#define BD79124_REG_PINCFG		0x05
+> +#define BD79124_REG_GPO_VAL		0x0B
+> +#define BD79124_REG_SEQUENCE_CFG	0x10
+> +#define BD79124_REG_MANUAL_CHANNELS	0x11
+> +#define BD79124_REG_AUTO_CHANNELS	0x12
+> +#define BD79124_REG_ALERT_CH_SEL	0x14
+> +#define BD79124_REG_EVENT_FLAG		0x18
+> +#define BD79124_REG_EVENT_FLAG_HI	0x1a
+> +#define BD79124_REG_EVENT_FLAG_LO	0x1c
+> +#define BD79124_REG_HYSTERESIS_CH0	0x20
+> +#define BD79124_REG_EVENTCOUNT_CH0	0x22
+> +#define BD79124_REG_RECENT_CH0_LSB	0xa0
+> +#define BD79124_REG_RECENT_CH7_MSB	0xaf
 > +
->  # When adding new entries keep the list in alphabetical order
->  obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
->  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
-> diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industrialio-adc.c
-> new file mode 100644
-> index 000000000000..d8e9e6825d2b
-> --- /dev/null
-> +++ b/drivers/iio/adc/industrialio-adc.c
-> @@ -0,0 +1,89 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Helpers for parsing common ADC information from a firmware node.
-> + *
-> + * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
-> + */
+> +#define BD79124_ADC_BITS 12
+> +#define BD79124_MASK_CONV_MODE GENMASK(6, 5)
+> +#define BD79124_MASK_AUTO_INTERVAL GENMASK(1, 0)
+> +#define BD79124_CONV_MODE_MANSEQ 0
+> +#define BD79124_CONV_MODE_AUTO 1
+> +#define BD79124_INTERVAL_075 0
+
+Can we make these units in these explicit?
+#define BD79124_INTERVAL_MS_0_75 
+maybe?  Nice to avoid need for comments on what the units are where
+you use these.
+
+> +#define BD79124_INTERVAL_150 1
+> +#define BD79124_INTERVAL_300 2
+> +#define BD79124_INTERVAL_600 3
+
 > +
-> +#include <linux/device.h>
-> +#include <linux/errno.h>
-> +#include <linux/export.h>
-> +#include <linux/module.h>
-> +#include <linux/property.h>
-> +#include <linux/types.h>
-> +
-> +#include <linux/iio/adc-helpers.h>
-> +#include <linux/iio/iio.h>
-> +
-> +int iio_adc_device_num_channels(struct device *dev)
+> +static int bd79124_enable_event(struct bd79124_data *data,
+> +		enum iio_event_direction dir, unsigned int channel)
 > +{
-> +	return device_get_child_node_count_named(dev, "channel");
+> +	int dir_bit = BIT(dir);
+> +	int reg;
+> +	u16 *limit;
+> +	int ret;
+> +
+> +	guard(mutex)(&data->mutex);
+> +	/* Set channel to be measured */
+> +	ret = bd79124_start_measurement(data, channel);
+> +	if (ret)
+> +		return ret;
+> +
+> +	data->alarm_monitored[channel] |= dir_bit;
+> +
+> +	/* Add the channel to the list of monitored channels */
+> +	ret = regmap_set_bits(data->map, BD79124_REG_ALERT_CH_SEL,
+> +			      BIT(channel));
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (dir == IIO_EV_DIR_RISING) {
+> +		limit = &data->alarm_f_limit[channel];
+> +		reg = BD79124_GET_HIGH_LIMIT_REG(channel);
+> +	} else {
+> +		limit = &data->alarm_f_limit[channel];
+> +		reg = BD79124_GET_LOW_LIMIT_REG(channel);
+> +	}
+> +	/* Don't write the new limit to the hardware if we are in the
+> +	 * rate-limit period. The timer which re-enables the event will set
+> +	 * the limit.
+> +	 */
+/*
+ * Don't
+
+Check for other cases of this...
+
+
+> +static void bd79124_re_enable_hi(struct bd79124_data *data, unsigned int channel)
+> +{
+> +	int ret, evbit = BIT(IIO_EV_DIR_RISING);
+> +
+> +	if (!(data->alarm_suppressed[channel] & evbit))
+> +		return;
+> +
+> +	data->alarm_suppressed[channel] &= (~evbit);
+
+No brackets around the ~evbit.
+Check for other cases of this.
+Otherwise we'll get some script written 'cleanup'.
+
+
+> +
+> +	if (!(data->alarm_monitored[channel] & evbit))
+> +		return;
+> +
+> +	ret = bd79124_write_int_to_reg(data, BD79124_GET_HIGH_LIMIT_REG(channel),
+> +				       data->alarm_r_limit[channel]);
+> +	if (ret)
+> +		dev_warn(data->dev, "High limit enabling failed for channel%d\n",
+> +			 channel);
 > +}
-> +EXPORT_SYMBOL_GPL(iio_adc_device_num_channels);
-Just noticed, this isn't namespaces which is a bit odd.  I'd drop
-the export anyway in favour of static inline but if you don't match
-the namespace of the next one.
+> +
+> +static void bd79124_alm_enable_worker(struct work_struct *work)
+> +{
+> +	int i;
+> +	struct bd79124_data *data = container_of(work, struct bd79124_data,
+> +						 alm_enable_work.work);
+> +
+> +	guard(mutex)(&data->mutex);
+> +	/*
+> +	 * We should not re-enable the event if user has disabled it while
+> +	 * rate-limiting was enabled.
+> +	 */
+
+Is this comment suggesting something that isn't done or referring to specific
+code?  I think it wants to be in the function above where the decision is made.
+
+> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
+> +		bd79124_re_enable_hi(data, i);
+> +		bd79124_re_enable_lo(data, i);
+> +	}
+> +}
+> +
+
+> +
+
+> +static irqreturn_t bd79124_event_handler(int irq, void *priv)
+> +{
+> +	int ret, i_hi, i_lo, i;
+> +	struct iio_dev *iio_dev = priv;
+> +	struct bd79124_data *data = iio_priv(iio_dev);
+> +
+> +	/*
+> +	 * Return IRQ_NONE if bailing-out without acking. This allows the IRQ
+> +	 * subsystem to disable the offending IRQ line if we get a hardware
+> +	 * problem. This behaviour has saved my poor bottom a few times in the
+> +	 * past as, instead of getting unusably unresponsive, the system has
+> +	 * spilled out the magic words "...nobody cared".
+> +	 */
+> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_HI, &i_hi);
+> +	if (ret)
+> +		return IRQ_NONE;
+> +
+> +	ret = regmap_read(data->map, BD79124_REG_EVENT_FLAG_LO, &i_lo);
+> +	if (ret)
+> +		return IRQ_NONE;
+> +
+> +	if (!i_lo && !i_hi)
+> +		return IRQ_NONE;
+> +
+> +	for (i = 0; i < BD79124_MAX_NUM_CHANNELS; i++) {
+> +		u64 ecode;
+> +
+> +		if (BIT(i) & i_hi) {
+> +			ecode = IIO_UNMOD_EVENT_CODE(IIO_VOLTAGE, i,
+
+> +					IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING);
+Align this to less tabs as per discussion on previous version.
+
+> +
+> +
+> +struct bd79124_reg_init {
+> +	int reg;
+> +	int val;
+> +};
+
+Not used any more.
+
+> +
+> +static int bd79124_chan_init(struct bd79124_data *data, int channel)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_write(data->map, BD79124_GET_HIGH_LIMIT_REG(channel), 4095);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return regmap_write(data->map, BD79124_GET_LOW_LIMIT_REG(channel), 0);
+> +}
+
+> +
+> +static int bd79124_init_mux(struct bd79124_data *data, int gpio_pins)
+> +{
+> +	return regmap_write(data->map, BD79124_REG_PINCFG, gpio_pins);
+
+Maybe squash this inline.  Doesn't seem to add a lot to have the helper.
+
+> +}
+> +
+> +static int bd79124_hw_init(struct bd79124_data *data, int gpio_pins)
+> +{
+...
+
+> +
+> +	/* Set the measurement interval to 0.75 mS */
+
+This lead me to comment on defines.  I'd rather code was fully self
+documenting and remove the comment if we can.  Makes for less chance of it
+becoming out of sync over time.
+
+> +	regval = FIELD_PREP(BD79124_MASK_AUTO_INTERVAL, BD79124_INTERVAL_075);
+> +	ret = regmap_update_bits(data->map, BD79124_REG_OPMODE_CFG,
+> +				 BD79124_MASK_AUTO_INTERVAL, regval);
+> +	if (ret)
+> +		return ret;
+
+
+
+
 

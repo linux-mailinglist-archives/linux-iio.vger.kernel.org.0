@@ -1,560 +1,252 @@
-Return-Path: <linux-iio+bounces-16254-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16255-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B810A4BCD4
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:49:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CE4A4BCF4
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41AF93A784F
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 10:47:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D17FE3A4218
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 10:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223651F4603;
-	Mon,  3 Mar 2025 10:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1081F3FD2;
+	Mon,  3 Mar 2025 10:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="FAgTM+AD"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="X7VxzFcz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05olkn2055.outbound.protection.outlook.com [40.92.89.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058B31F4192
-	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 10:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740998722; cv=none; b=ohrwbJq5hkodEHTlCF41i5bQIqQcjVCKukMLDjk9rV2sd0mMuhcdyxMIIuxAm0XKWybZqKJtnd/QMmnjRDx68EVKaHULT4ufry+WgyRnaOI/kZkJXIDUOnbDYVSORMAnIFEeoWvhIDqMEN5Nr6XSrUUJdUJAH07sfrypMR3CyO8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740998722; c=relaxed/simple;
-	bh=pynGxo4XXmEs7yOlWDF8XBGKq+XhR05TaEZa28BkT+0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mays6S/bdPQHKrZ3F2ATBWEGPSthzXAsSQPGF6JOeOZV1hwJmo3W1blLVYteVTFFn6kOlpkAK1Pi32M2CSmKbmMpztwFobncl306L6COalnDDvcOZz5GQhDbr46mVuSjuqD04IuiEDy3pfCQ15RhFsee3qt72gglXWy4u5s0GA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=FAgTM+AD; arc=none smtp.client-ip=94.124.121.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=Qv3LQFoyzeVaS+B1CyxR62OcrtYUFb1G+ImO7n/MAEM=;
-	b=FAgTM+AD9/uZHGNzyeo7ropgMTrjWuN6tajamIaeZY+HqtdOIyS+14xZKDu1CbAjgTJ9A4vSlZRf+
-	 4dYG6I5yt9Lc9EyKXpxRVGyHnNFMtF3WUs64UxqLwu3pOIJeRl4Me1PqvwXycuDZbv0by7iLAxXH4T
-	 NEzGyOH4mSc2LNFO0bW+P/5WGzse69Rqrf7HVKug/tzKQmMG2Sr3QXaNAp6MM5o1so3Kfl/s14mCEd
-	 7PRM+vKtUU7iWa831fLLt4vpZiCCyY6pm8kNbwM1RwhF9RUI3eqMTNjhaDGsRDkxvM6b3DRPYqZEkP
-	 v40bH4XPP2GK8tC2PZc0K92PvO9TmfA==
-X-MSG-ID: 93bddd82-f81c-11ef-a39b-00505681446f
-Date: Mon, 3 Mar 2025 11:45:08 +0100
-From: David Jander <david@protonic.nl>
-To: Pavel Pisa <ppisa@pikron.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
- <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
- <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Carsten Emde <c.emde@osadl.org>
-Subject: Re: [RFC PATCH 0/7] Add Linux Motion Control subsystem
-Message-ID: <20250303114508.311c28f6@erd003.prtnl>
-In-Reply-To: <202502281623.33695.ppisa@pikron.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 414F11F2BA4;
+	Mon,  3 Mar 2025 10:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.89.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1740999209; cv=fail; b=pBnkcT9pmQjWmwuA4uSAD8zjUgvd9Qjfd1EnJNTzTsCsdSpeiuZun1+GyyrR8Zdmti9GdJoPOHjRhAL8/shsavPrYTGy5LBUGrUn0NE6obXrZPI/vDYKlMFPixkIy0vTnuauYTlc+NE7y/toM3scw2VU73wTY5htCrOJqxhEbFQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1740999209; c=relaxed/simple;
+	bh=U+yMRZ5FBeKps06BqGxZ595lBluzV5o1g/NO9Jmw0AA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=kQrWU75rnhkWFKOVI54Yh/7ykb6/p7G7wGflzdpYsrJS8+U8TYSHA86xOo+FnfigTG7bsanNka8GunSDeLiG9O6BvFxELFWfbehNSxHA9vy7MUpZrvc4Yy+ptXuymndSm5rcuoUe4a37cMq5os8tiAXeEnD1O+7xyGeBGpzsby4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=X7VxzFcz; arc=fail smtp.client-ip=40.92.89.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=boy5pTz/QsWc4QEVg0WvZtjIRBICYVoYWOxH7BLlcPbbr8MlioDLt1+QYr/cCrADi63Cs8+fVF49MGBxXj6Nkd9u3GFDQCdBbwxN2/q1jPVORL0MNpvIVgqspJhmSwdOO3SrR+P5WnI8Ix9D7dmaqt/78yxoVL27JOO8kl5y/Ds61s8xJN/e+GgG8WSMViUY+I5oi3ihOJJt9mygZtndc4uKNJthG7Jjio+6QaCTCnPjsAx50TEMDMeiiNwXxfXgqXhMk+jCB+WJIZdQaWgoFUD63DDc4D1P8J4KPDCWmx5FWKbyvZl0mUNkqM+8MszNnbMoJ/l8iItG6qhyNJ4r8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M5pe0odQwLPzjUmKHk2xNk+hG82Zl1ydLqVR6DxJlqU=;
+ b=Bllt0OUE9vFqC09al6eJSNOqDbY3qT7tQfTJOpFp3WokJ2ueSfmPZt+6Y9y9B65w0MkRU9oK7dM6xYrLpWfb/VZDa8x5Cbxbq8BLI7nTjLFwm0VOyNxWLLogrgA9P40HnyHjPg0LURoBTAdJrUeTpsjTsesLeJ2IwWIpOZUl7KfOriLUt2bYitXyJKzDqvoKMWpj9Ed81AEmF91SnhvGsHy/sBZUjLtgXs4cHGuCsNOc0CoeaKRm3Rhyzia5kawKPItLNezCR1dPi9Sy8wpVAn8ddzRmM4lreOPzghSNV4WfeiNbU6tV04UhIYOXIgempGZ4QrXB69O+1IHn6WGyMQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M5pe0odQwLPzjUmKHk2xNk+hG82Zl1ydLqVR6DxJlqU=;
+ b=X7VxzFcz+vbkPuZlaZ1EdcJk+HTgdfzUPhXY48x5ZUfN6eNY+xXpDFdxOuYkemUU/8s6iY6j0eO8WVwm5PReLPTQfHE4/nQAHmdLbmjrkc/oi+kIB/kmtmgBTYlcHCgmLE2Br33I7OAh1LeftvTTFz6rlrAmrrxxaNDLHLDCmaRhqV34h/8Fc4SqRrEK5HaEyCto/iofIT5lDli+H/in+idIIFM4jJjC/k+r5oPtM/R+4XxeuW90LyyilkzegUd8//VNiqGSBQFox9jQs4btGXaXLLtOgmDZ9jJ6yY091jX8BICgaZ4wava8vNngyMCKPXFDDc67rC/un/hVkFHjHQ==
+Received: from AM7P189MB1009.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:175::17)
+ by AS2P189MB2581.EURP189.PROD.OUTLOOK.COM (2603:10a6:20b:644::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Mon, 3 Mar
+ 2025 10:53:24 +0000
+Received: from AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ ([fe80::e9f1:a878:e797:ee1a]) by AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ ([fe80::e9f1:a878:e797:ee1a%2]) with mapi id 15.20.8489.025; Mon, 3 Mar 2025
+ 10:53:24 +0000
+Message-ID:
+ <AM7P189MB100990908D24EEB89CB0EAD2E3C92@AM7P189MB1009.EURP189.PROD.OUTLOOK.COM>
+Date: Mon, 3 Mar 2025 11:53:22 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
+ bindings
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+ David Jander <david@protonic.nl>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, linux-pwm@vger.kernel.org
 References: <20250227162823.3585810-1-david@protonic.nl>
-	<202502281035.57489.ppisa@pikron.com>
-	<20250228125727.7f892552@erd003.prtnl>
-	<202502281623.33695.ppisa@pikron.com>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+ <20250227162823.3585810-8-david@protonic.nl>
+ <20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
+ <20250228102201.590b4be6@erd003.prtnl>
+ <9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
+ <20250228110931.7bdae7fd@erd003.prtnl>
+ <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
+Content-Language: en-US
+From: Maud Spierings <maud_spierings@hotmail.com>
+In-Reply-To: <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: AM9P195CA0007.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:20b:21f::12) To AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:175::17)
+X-Microsoft-Original-Message-ID:
+ <434b5118-1e2f-47e1-a5c0-f848d1f1ea24@hotmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM7P189MB1009:EE_|AS2P189MB2581:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f99e7c0-af3b-4f42-e9a1-08dd5a419e11
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799006|19110799003|6090799003|461199028|8060799006|5072599009|1602099012|10035399004|440099028|3412199025|4302099013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?djViTzRhZkwvamhFWmNFRWkvMFY1Zlo5MGsvVDRvaWIveTVRZU9pazc3ZnY3?=
+ =?utf-8?B?TXR5K0FVTkhybHdvaVpyQW0zcEVPL3VvM0N5aVovQXJSUW95QzFCSGpVZ1ph?=
+ =?utf-8?B?VE4rV2lXaC9oczZ1aWpsalBqOVJuNkphbGFOY2dsQWUzZ056SEM2VW5XTXlr?=
+ =?utf-8?B?TkZZNXZia2sxSXd5Q1ZRM1JOb1NmY2VGRTFrOVRHYXc5S0p1ejBITkRvRlhw?=
+ =?utf-8?B?LzlkZVE5K0dKRi9icjhFenJOeUtBdUd2NHU2aFUxUG1ZQ2UxbWtwc2JEVmQ0?=
+ =?utf-8?B?dmhkVkZpR1czVHBmVFQ5WWVDb0Rta3JVamJ1Zi9nNzhxYklvNlo0eGFUUkY0?=
+ =?utf-8?B?MVI2R2xqc3BpNi9id3FOSWZYTUdNNXBDam50L1FrS3lhMVF1MnpVUGJvQmdJ?=
+ =?utf-8?B?a0kyVnlHZzh2VjljRE15bHRWUGJnOWpsOUJ3U1J1djZxR3I1VFFtd244dHV1?=
+ =?utf-8?B?N1hsVjJjU2tYY1pmbWNCblJvdVAzZ3hFU1ZnL1gwbmJKSnJld1g3SWFCWXlP?=
+ =?utf-8?B?RUVqdWRnOHlWTGFTdUhUV0VCTnM1NWJqVG1hRFBqQTNuZTJ2TlljVUVPVEZD?=
+ =?utf-8?B?SklDell1VnFDTStkdjhVOVhVSENUS1BtY21jSjlZWFFsQnc1UXZJa0lMWm1X?=
+ =?utf-8?B?cERrNUc5TENyT0JiS1RQOGhvd1hjUnhjb21SZUtRZlJ6d00rY1RhZWZ0Q1A2?=
+ =?utf-8?B?OUU5MUVWd3RKSk9TM3pxdU1PYk1XWGNkMGJNNUxhT053WENZbk9saTlnalB5?=
+ =?utf-8?B?bVJacUcrcVdOMnNXVFpTeUg4M0Q5RXZIdHdkWUF2MmRGYVl5alA3dVNGRTNR?=
+ =?utf-8?B?TmFWZmZXUFRWaGw5YVEweTh5WUlNbU9pcGdWNmE0MlpUUXN1aUMyTGlyQkpz?=
+ =?utf-8?B?cUlIRGdha0NQWkFaWEdSalZYaEVSVFJYN0NuWW5FUDB2cVNJZ3g2K3NOdVpH?=
+ =?utf-8?B?d29ESEFleC9YYWpFUHc2UHJGelpLcTR4cjFodmE5RisvQ2NCQWs1WVVrUExG?=
+ =?utf-8?B?QTh6b2U3Yy8velBEZFFFTFBVU3YxbmV1eElPY0Y2VHFiL2hPa2dPYUY5V3dq?=
+ =?utf-8?B?Qkd2dmpRMXNoOXNGY1dYaFpoSjkwYy9BcVZmS2Q3T2hiaDdvVjZrSlBXeXNJ?=
+ =?utf-8?B?Mnc4R1o4OVFuYWRjVWZYMlB5VHV2cW9YanM1emxvOGgyUXdJUkJJb1hiOEpz?=
+ =?utf-8?B?Z3hWS2lCZWFHSXZ0YmgzODZYRm1mQmV1ZTAvYnBVRGZLZDZzYkk0eUVOOFA5?=
+ =?utf-8?B?VTNxSkEzWTZ4ZmpBa0t1RW5GZ1RQN3FZTkIwc01MckxjYWk0N2FZcnhTRmRV?=
+ =?utf-8?B?ekltdmJlQjNFUmNlakQvbjh1eWhMSXh2TXJ0M21EUTJ1NXIzMUpxMnY4V2NW?=
+ =?utf-8?B?R3dEWFNvNjMvdk1lRmhCaGU1bmFnZjE4ODcwZXNzaHYzeG43SVBtcUplMjV4?=
+ =?utf-8?B?NXIxeS9vUVBEa3lpQUl5Zm9SYmVBcStyZXVyZUJQaDBCaFZEbnZJZk9KWmlI?=
+ =?utf-8?B?V2l6SnAyOWc3NjRsWkN5MnZOc1lNaEhIdVFXdTNXV0IxNGhQbUNyUUxrS2NH?=
+ =?utf-8?B?bUVDVDVUTzNiWHRnYlNYdGlBSVdsYURIY3Q2MHNaaERadUVnbU1BOEc5WlRp?=
+ =?utf-8?B?ZXl0ejNlL2NZWjJnbkFQalRRODdlU0pLMWhBVE4yZGpzYThxWVMvaGRMR3Rn?=
+ =?utf-8?Q?fN35ZkiD/Gi4LGIBFIay?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dVpXcHFzdG1ueXNiM0haQXlSQUpPWHNTRHlOZUhJeHF2eG5oR3RIclNWaGw5?=
+ =?utf-8?B?d2llQzJqQUN1RnFaQksxdEpISW1lSTBtbzF6NFhhN2FhSzcwL2R5bktvclpx?=
+ =?utf-8?B?bldNOVhjcW4zL2lMWmVCemJ3T3V5cEJ5UUtaOTA5QmhaK21vRWovZWxjS3Np?=
+ =?utf-8?B?VHZnc3Y1eUM0elI1cVBPYmJXRThGbFFBQzZrUVJIYUFqbFpWNlIzRjR1UkdE?=
+ =?utf-8?B?UE4ybEZrck81UW1Qd2YzeXRLaExKekx1S1NtV3NtMDR0T01sSm9QckNHVFpC?=
+ =?utf-8?B?ZG91dWNKMmg5bmkyS1Q5TDBIbUhTbG9DbnhjVHZUby9LZ1FuRU5JcFZGWGgx?=
+ =?utf-8?B?S2x1SzRZVmlyRUwrVmpmUHh6bVE2a1VxVm9xbmRJdVpQdE9jZ2k4eCtPMjlv?=
+ =?utf-8?B?QnRiRElYTDZ4RDJEdTNPVUdIcER1elFwRXpNVTZOM1FtNnhJNk1QSlU5NVV6?=
+ =?utf-8?B?K2NUZHk5aXo0WHZWMDUwbm55dGpGbW4zZWRwY2NjMW12WGRrRVl1VjlVWU1D?=
+ =?utf-8?B?UnE2dG5DQk5Fd0JDdzdNWVdIVktiZGZxNzFiblJnZWZoQm1RVXVnQ05LdU54?=
+ =?utf-8?B?S0ZvaHY3Nnd1QURHcDROTmdNSkxyTlE1RnprUGs1UCs1aHBvdy9FK2d0UDlx?=
+ =?utf-8?B?Um1FdElwQjEycnJoWEFUR3RyU3VOYnlzajA3aDFOU1k3dGRRUmtIdHVpU2N0?=
+ =?utf-8?B?Mkk2eitlbG1PaFJ5SXBKYlJXaU5SOGtRUjdiM1lmeURmdGlmNjN0Mm0vbC9i?=
+ =?utf-8?B?SXVqdmlOOVg2RHhzYnB3azhNekZERFNJY0hqLzlRU0VydGQyL1Q0bmN2bHA3?=
+ =?utf-8?B?SlY5VlVZMXd0OEw3N0dZTWpRRzNpSllkUmFhZU9oYUZUQTZ1VUtVc2ZhTURn?=
+ =?utf-8?B?WnRpVk81b1kvVGZ6dS91MkQ3WDZWcGE3ZlhKUzNrNk5pTVlVT1l6OU9Qc0d4?=
+ =?utf-8?B?WEJlQVd1UUFoZ05IeEYxL1NXSUE4VzJESTJVN1hNL29wQzBDWVc4QXRXZmEv?=
+ =?utf-8?B?bDM4OFRnUE9Bdm9SNTlxelF2NGRQZDltNUdOMGdqbW0xQnpxU3lwM3BsUDFU?=
+ =?utf-8?B?cGUySTg3NlhPUXVYVUF3Z05yazFZT0tOQkhodGxIQXFTMHpzeWVTTmFTSi9i?=
+ =?utf-8?B?V0x3eldVVldNeURrdVNGMUZNSndCVCtXNTBnNVVRWXNyUUJ2SGpnY2M4TG8y?=
+ =?utf-8?B?bzBTT053cDRKWmVMalkyZFVOY3l4TFM2V3VIU3RSK3JSQUJPVmdwQjRaVnlN?=
+ =?utf-8?B?eVYwVkZadjIyR0J3M1p1RGlXblRvWWRaMFUvaU9xSEJQLzJZbFBjbG1HcDBR?=
+ =?utf-8?B?S1R2SVFVRXhXZXU5S1R5ZzZtcVZJbXAyQVo0Z2NXVjdHVFJ1MzQ5WElWTGJR?=
+ =?utf-8?B?emdDZldXVGg1QTNlZldCYTU4bWtJR3dIcU16LzRRTU43Mi91bWpjRlduWERn?=
+ =?utf-8?B?MFQxaWc1QnFPdHMyNjdSc09wMHRQMEFlYWRIWjdCck9Pb2hVaTk0aWhsM0hS?=
+ =?utf-8?B?bnYwL3FYUHoyazQ1VlZoZlJ0VkZ0MEgrd1o1d2V1MVFCeG1oeStta3pXU3ZS?=
+ =?utf-8?B?aFlLYXc4YzRQNTU5RUpqOXZpYWtHSURkZ0pTZlJ2WWs1S1RudFBrVUZ4bEsx?=
+ =?utf-8?B?U1VOamkwNHYzN1BwWHZhb3plNlZOUGxKeUtWeFdBN2ZyWDBwZnVwaDluOWJl?=
+ =?utf-8?B?cHBWVmpZYURwdnErQ0o1Wmgzc1NUcHF5V2FKemJTbW04NzdHazAyVDZtaGZ0?=
+ =?utf-8?Q?ptUNKc2i4BpYdDOpCc7nvXHPK6/LaVHSX57KmBu?=
+X-OriginatorOrg: sct-15-20-7719-19-msonline-outlook-3b3e0.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f99e7c0-af3b-4f42-e9a1-08dd5a419e11
+X-MS-Exchange-CrossTenant-AuthSource: AM7P189MB1009.EURP189.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2025 10:53:24.5714
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2P189MB2581
 
 
-Hi Pavel,
-
-On Fri, 28 Feb 2025 16:23:33 +0100
-Pavel Pisa <ppisa@pikron.com> wrote:
-
-> Hello David,
-> 
-> On Friday 28 of February 2025 12:57:27 David Jander wrote:
-> > Dear Pavel,
-> >
-> > Thanks a lot for starting the discussion...
-> >
-> > On Fri, 28 Feb 2025 10:35:57 +0100
-> >
-> > Pavel Pisa <ppisa@pikron.com> wrote:  
-> > > Hello David and others
-> > >
-> > > On Thursday 27 of February 2025 17:28:16 David Jander wrote:  
-> > > > Request for comments on: adding the Linux Motion Control subsystem to
-> > > > the kernel.  
-> > >
-> > > I have noticed on Phoronix, that the new system is emerging.  
-> >
-> > Being featured on Phoronix on day one wasn't on my bingo card for this
-> > year, to be honest... :-)
-> >  
-> > > This is area where I have lot (more than 30 years) of experience
-> > > at my company and I have done even lot with my studnets at university.
-> > > I have big interest that this interface fits our use neeeds
-> > > and offers for future integration of our already open-source
-> > > systems/components.  
-> >
-> > This is very impressive and I am honored to have gotten your attention. I
-> > am looking forward to discussing this, although I am not sure whether all
-> > of this should happen here on LKML?  
-> 
-> We should move somewhere else and invite people from Linux
-> CNC etc...
-
-I agree.
-
-> GitHub project would work well if there is not some reluctance
-> to commercially controlled and closed environment.
-
-I am open to suggestions. I just happen to have a github account and also have
-my code there:
-
-https://github.com/yope/linux/tree/mainline-lmc-preparation
-
-> Gitlab even in Gitlab.com case has option to move to own
-> infrastructure in the future. We have Gitlab at university,
-> companies I work with has Gitlab instances. But I think that
-> we should stay on neutral ground.
-> 
-> The critical is some central hub where links to specific
-> mailinglist etc. can be placed. May it be we can ask
-> Linux foundation to provide wiki space for Linux Motion Control
-> Subsystem same as it is for RT
-> 
->   https://wiki.linuxfoundation.org/realtime/start
-> 
-> We can ask OSADL.org as likely neutral space...
-
-That sounds really great. We were bronze members of OSADL, so maybe that's a
-good idea. I see you added Carsten Emde in CC ;-)
-
-> Or wiki at kernel.org, may it the most neutral...
-> 
->  https://www.wiki.kernel.org/
-
-Yes, that may be even a better place than OSADL.
-
-> I am not in the core teams but may it be there on LKLM
-> somebody would suggest the direction. I can ask people
-> from OSADL, CIPS, RT projects etc. directly...
-> 
-> But I am not the authority and would be happy if somebody
-> steers us.
-> 
-> To not load others, if there is no response then I suggest
-> to limit followup e-mails only to linux-iio and those
-> who already communicated in this thread.
-
-Agree. This will probably be my last reply to this thread with LMKL in CC.
-
-Is there anybody here willing to help with contact information?
-
-> > > This is preliminary reply, I want to find time for more discussion
-> > > and analysis (which is quite hard during summer term where I have
-> > > lot of teaching and even ongoing project now).
-> > >
-> > > I would like to discuse even future subsystem evolution
-> > > which would allow coordinates axes groups creation, smooth
-> > > segments based on N-th order splines incremental attachment,
-> > > the path planning and re-planning if the target changes
-> > > as reaction to camera or other sensor needs etc.  
-> >
-> > Right now LMC should be able to support hardware that has multiple channels
-> > (axes) per device. Its UAPI can describe position-based movements and
-> > time-based movements along any arbitrary combination of those channels
-> > using a pre-defined speed/acceleration profile.
-> >
-> > The profiles can be specified as an arbitrary number of speed and
-> > acceleration values. The idea is to describe a segmented profile with
-> > different acceleration values for segments between two different speed
-> > values. Simple examples are trapezoidal (accelerate from (near-)zero to
-> > Vmax with A1, and decelerate from Vmax back to zero with D1), dual-slope or
-> > S-curve, but the UAPI in theory permits an arbitrary number of segments if
-> > the underlying hardware supports it.  
-> 
-> Yes, when I have read that it reminded me my API between non-RT
-> and RT control task in Linux and IRQs in sysless case of our system.
+On 2/28/25 4:18 PM, Uwe Kleine-König wrote:
+> Hey David,
 >
-> > I have some ideas for future extensions to the API that make coordinated
-> > multi-channel movements a bit easier, but that will not be in the initial
-> > push of LMC: For example torque-limit profiles for controlled torque
-> > movements, usable for example in sliding door controllers with AC machines
-> > or BLDC motors; or an ioctl to send a distance vector to a selected number
-> > of channels at once and apply a motion profile to the whole coordinated
-> > movement. In the current version you have to set up the distances and
-> > profiles for the individual channels and then trigger the start of the
-> > motion, which is more cumbersome. You can already use the finish event of a
-> > preceding motion to trigger the next one though.  
-> 
-> It would worth to have some commands queue for specified
-> (prefigured/setup) xis group.
+> On Fri, Feb 28, 2025 at 11:09:31AM +0100, David Jander wrote:
+>> On Fri, 28 Feb 2025 10:37:48 +0100
+>> Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>
+>>> On 28/02/2025 10:22, David Jander wrote:
+>>>>    
+>>>>>> +
+>>>>>> +  motion,pwm-inverted:
+>>>>>> +    $ref: /schemas/types.yaml#/definitions/flag
+>>>>> And PWM flag does not work?
+>>>> I have seen PWM controllers that don't seem to support the
+>>>> PWM_POLARITY_INVERTED flag and those where it just doesn't work. Should all
+>>>
+>>> Shouldn't the controllers be fixed? Or let's rephrase the question: why
+>>> only this PWM consumer needs this property and none of others need it?
+>> CCing Uwe Kleine-Koenig and linux-pwm mailing list.
+>>
+>> I know that at least in kernel 6.11 the pwm-stm32.c PWM driver doesn't
+>> properly invert the PWM signal when specifying PWM_POLARITY_INVERTED. I agree
+>> this is a probably bug that needs fixing if still present in 6.14-rc. Besides
+>> that, if linux-pwm agrees that every single PWM driver _must_ properly support
+>> this flag, I will drop this consumer flag an start fixing broken PWM drivers
+>> that I encounter. I agree that it makes more sense this way, but I wanted to
+>> be sure.
+> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
+> include:
+>
+> 	pwm-adp5585
+> 	pwm-ntxec
+> 	pwm-raspberrypi-poe
+> 	pwm-rz-mtu3 (software limitation only)
+> 	pwm-sunplus
+> 	pwm-twl-led (not completely sure, that one is strange)
+>
+> . ISTR that there is a driver that does only support inverted polarity,
+> but I don't find it. For an overview I recommend reading through the
+> output of:
 
-I thought about this, and while queuing commands for a 3D printer seems like a
-great idea, since it is strictly feed-forward for the most part, queuing
-commands in the kernel is complicating things a lot when you also want to be
-able to react to real-time events in user-space, like end-stop switches and
-such. I think the current GPIO UAPI with support for epoll events is
-fantastic, and people should use it. :-)
 
-OTOH, I think that the speed and timing accuracy with which one would send
-individual movement commands (vectors or splines) to a motion controller is
-perfectly adequate for user-space, specially if you have the option of a
-1-deep queue like this mechanism of triggering the next movement when the
-current one finishes, which basically gives you the time the current movement
-takes as latency-slack for user-space. I think that is enough, but let me know
-if you disagree. Maybe it is possible to make the N-dimensional vector
-interface (optionally) queued?
+The only one that I know of is the opencores pwm driver that the 
+starfive jh71xx uses, I remember talking with you there. That one does 
+still need a proper review I believe:
+https://lore.kernel.org/all/20250106103540.10079-1-william.qiu@starfivetech.com/
 
-> Our system allows to add segments to the group queue but the
-> timing for segment only specifies shortest time in which it can
-> be executed.
-> 
-> Then there is three passes optimization then.
-> 
-> The first pass is performed at the insertion time. It checks and
-> finds normalized change of speeds  (divided by maximal accel/deccel
-> of given axis) at vertex and finds limiting exes, one which accelerates
-> the most and another which needs to decelerate the most. Then it
-> computes speed discontinuity at the given sample period and it limits
-> maximal final speed of the preceding segment such way, that the speed
-> change is kept under COORDDISCONT multiple of accel/decel step. This
-> way, if the straight segments are almost in line, the small change
-> of the direction is not limiting the speed. The discontinuity is
-> computed same way for the vertex between two N-order spline segments,
-> but optimally computed spline segments can be joint with such
-> discontinuity near to zero. This non RT computation as well as all
-> non-RT a RT one on the control unit side is done in the fixed
-> math (the most 32-bits, sometime 64-bits). Actual code of this
-> pass are the functions pxmc_coordmv_seg_add(), pxmc_coordmv_seg_add_line()
-> and pxmc_coordmv_seg_add_spline()
+It is kind of in a limbo right now
 
-Yes, this maps very well with what I had in mind when designing LMC. I haven't
-thought about supporting engines capable of real-time spline interpolation
-because I hadn't seen one before. I thought that just dividing a spline into
-(many) linear segments would be good enough, but if there are motion engines
-that can handle spline parameters, I guess we should try to support that.
 
-The motion profiles LMC supports have 2 extra parameters for limiting speed
-discontinuities which can be found in many common motion engines: tvmax and
-tvzero.
-
-https://github.com/yope/linux/blob/mainline-lmc-preparation/include/uapi/linux/motion.h#L146
-
-Tvmax is important for situations where the maximum speed of a given profile
-is not reached because the distance is too short. It will make sure there is
-at least some period of constant speed before decelerating again.
-
-Tvzero is important for motions that starts accelerating into an opposite
-direction of a preceding motion, to insert a minimum time at zero velocity.
-
-But I guess you are more than familiar with these, since they are pretty
-common concepts. ;-)
-
->   https://gitlab.com/pikron/sw-base/pxmc/-/blob/master/libs4c/pxmc_coordmv/coordmv_base.c?ref_type=heads#L394
-> 
-> The new segment final vertex limiting speed and planned speed are
-> set to zero.
-> 
-> In the second pass, the queue of segments is examined from the last
-> added one and its initial planned vertex/edge speed is updated,
-> increased up to the minimum of limit give by discontinuity and
-> the limit to decelerate over segment to the planned final speed
-> of the segment. If the start vertex limit is increased then
-> the algorithm proceeds with previous segment
-
-AFAICS, these are all motion planning tasks that should be done in user-space,
-right?
-
->  https://gitlab.com/pikron/sw-base/pxmc/-/blob/master/libs4c/pxmc_coordmv/coordmv_base.c?ref_type=heads#L682
-> 
-> There are some rules and trick to do that long free in the respect
-> to the IRQ executor etc...
-> 
-> Then the actual execution at the sampling frequency advances
-> the normalized parameter going through segment from 0 to 2^32
-> in 2^32 modulo arithmetic. The increase is limited by smallest
-> maximal speed of the axes recomputed over distance to parameter
-> change and maximal allowed accelerations recomputed to the parameter
-> change. Then the final speed is limited by to final deceleration
-> to the end of the segment the pxmc_coordmv_upda() in
-> 
->   https://gitlab.com/pikron/sw-base/pxmc/-/blob/master/libs4c/pxmc_coordmv/coordmv_base.c?ref_type=heads#L351
-
-AFAICS, this is probably better done in the controller itself, right?
-
-The most complex math I feel comfortable doing in kernel space is converting a
-distance-based motion given a trapezoidal acceleration profile (whith its
-limiting factors tvmin and tvmax, see above) into a time based motion:
-
-https://github.com/yope/linux/blob/mainline-lmc-preparation/drivers/motion/motion-helpers.c#L515
-
-This is a helper function for drivers that want to use the internal time-based
-ramp generator.
-
->[...]
-> > Another idea that has been floating in my head is to make a "virtual"
-> > motion device driver that combines individual "real" single-channel
-> > hardware drivers into one multi-channel device, but I am unsure whether it
-> > is really needed. It all depends on the latency limit differences between
-> > kernel-space and user-space whether there is something to gain.  
-> 
-> In the fact this is the similar idea programmed and in use 25 years
-> already. All computation is in 32-bit units specific for the each axis
-> and only in fixed arithmetic. Some problem was fast 64-bit root square
-> at that time.  All has been computed on 21 MHz CPU with 16-bit bus with
-> no caches with instrauctions taking from 2 to many cycles. It was capable
-> to do that for all eight axes plus some other control tasks as flashing
-> lights at specific positions for example for gems inspections by camera
-> connected to PC and then cotrolling their sorting to the right pocket by air
-> streams by MARS 8 control unit when it advanced to given location etc.
-> So some parts of the code has been rewritten to assembly. But today,
-> even on not so fast LPC4088 it can do this and D-Q PMSM motors
-> control without need of assembly optimizations.
-
-I think that if we support different kinds of profiles on N-dimensions with
-support for spline parameters if the hardware supports it, we could solve for
-any use-case without much complexity in the kernel.
-
-> > I think it is best to keep this initial version more limited in scope
-> > though, as long as the needed extensions are possible in the future without
-> > breaking existing UAPI.  
-> 
-> Yes, but I would be happy if the API is designed such way, that
-> it is not obstacle when it would be extended and I have idea
-> what would be such further goal for these applications
-> I have already solved and running for decades at industry
-> level.
-
-That's great. I am confident that with your help, we can make this API as
-universally usable as possible, while still keeping it simple and generic.
-
-> > So I propose: Let's craft a draft UAPI (in a different place, not on LKML)
-> > that can do everything we can come up with and then reduce it to the basics
-> > for the first version. Otherwise it will get too complex to review, I'm
-> > afraid.  
-> 
-> Yes, I agree.
-> 
-> To have some idea of the command set of our system, there is documentation
-> in English for our older system which was capable to control three
-> axes by 8-bit 80552
-> 
->    http://cmp.felk.cvut.cz/~pisa/mars/mars_man_en.pdf
-
-This API looks pretty straight-forward, and should be easy to implement with
-LMC. Controller specific settings in LMC are set using a sysfs attributes
-interface. An example of the settings for the TMC5240:
-
-https://github.com/yope/linux/blob/mainline-lmc-preparation/drivers/motion/tmc5240.c#L311
-
-> > > At this moment I have interrest if there is site which
-> > > would start to collect these ideas and where can be
-> > > some references added.  
-> >
-> > I may put this on github and create a wiki there if you think that's a good
-> > enough place to discuss?  
-> 
-> If there is no feedback with better place to my initial
-> list of options, I am OK with project group on GitHub
-> where the initial project will be located with Wiki
-> and issue tracker to start the communication
-> and I would be happy to participate (as my time, teaching,
-> projects allows).
-
-Sounds good. Let's see if we can get some attention from OSADL or Linux
-Foundation. If you have some contacts there, I'd be great if you could help
-get something set up. If not, we just use github or maybe even gitlab for now.
-
-> > > I think that I have quite some stuff to offer.  
-> >
-> > That would be great! Looking forward to it :-)
-> >  
-> > > To have idea about my direction of thinking and needs
-> > > of interface I would provide some references even
-> > > to our often commercially sold but mostly conceived
-> > > as hobby projects.  
-> >
-> > I'll have to take some time to look into those more closely. My own
-> > experience as far as FOSS or OSHW concerns includes the reprap Kamaq
-> > project:
-> >
-> > https://reprap.org/wiki/Kamaq  
-> 
-> OK, nice target but I would like to support 5 D CNCs with
-> precise machining, haptic human machine systems etc...
-
-Sure!
-
-> with DC, stepper and PMSM motors with vector control
-> high resolution positional feedback etc. We control for
-> example up to 30 kg spherical lenses positioning in
-> the interferometric system with precision of micro fractions.
-> The system allows inspection which thanks to multiple
-> angles reaches lens surface reconstruction at level of
-> nanometres 
-> 
->   https://toptec.eu/export/sites/toptec/.content/projects/finished/measuring-instrument.pdf
-> 
-> We use optical linear sensors combined with 10k per revolution
-> incremental sensors on the cheap stepper motor actuators and
-> precise mechanics.. and more tricks... And I can see use
-> of some cheap linux board, i.e. Zynq, Beagle-V Fire,
-> which I have on my table, there in future...
-
-Yes, this sounds really awesome. It sounds like a great challenge for getting
-LMC into a good enough shape for that sort of applications. It is exactly what
-I had in mind.
-
->[...]
-> As I referenced above, the spines are interpreted at sampling frequency
-> all parameters are represented as 32-bit signed numbers etc...
-> So no conversion to the straight segments. The precise postions
-> are recomputed with even high resolution over IKT, then some
-> intervals of these points are interpolated by spline segments
-> with controlled error and these segments are send to the unit
-> to keep command FIFO full but not overflow it. Unit reports
-> how much space is left...
-> 
-> > LMC will try to limit math operations in kernel space as much as possible,
-> > so hopefully all the calculations can be done in user-space (or on the
-> > controller if that is the case).  
-> 
-> All computation is fixed point only so no problem for the kernel
-> even for interrupt. But yes, on fully preemptive kernel where
-> user space task can be guaranteed to achieve 5 kHz sampling even
-> on cheaper ARM hardware, the interface to the kernel can be
-> only on D-Q PWM command and actual IRC and currents readback.
-> 
-> But if you have API for more intelligent controllers then there
-> s no problem to put there "SoftMAC" to represent dumb ones the
-> same way to userspace.
-
-That's exactly what I thought of. Thanks for the analogy, I am going to
-shamelessly steal it from you if you don't mind ;-)
-
-That's also why I included 2 different drivers as example for LMC: One that
-does all the fast computations in hardware, and one that uses a "SoftMAC", in
-motion-helpers.c to generate time-based speed ramps from acceleration profiles.
-
-But I think we should limit the "SoftMAC" device capabilities to basic
-trapezoidal motion profiles, since it is not the main purpose of LMC to
-convert the Linux kernel into a high-resolution, hard-RT motion-planning
-engine... even if it is a tempting technical challenge to do so ;-)
-
-> > Right now, my way of thinking was that of regular 3D printers which usually
-> > only implement G0/G1 G-codes (linear interpolation). G2/G3 (circular
-> > interpolation) doesn't sound practically very useful since it is special
-> > but not very flexible. Something like generalized spline interpolation
-> > sounds more valuable, but I hadn't seen any hardware that can do it.
-> >  
-> > > The related python application is there
-> > >
-> > >   https://github.com/cvut/pyrocon
-> > >
-> > > In the far future, I can imagine that it can connect
-> > > to proposed LMC API and achieve the same results.  
-> >
-> > Let's make it so!
-> >  
-> > >[...]
-> > > which uses our PXMC motion control library
-> > >
-> > >   https://gitlab.com/pikron/sw-base/pxmc
-> > >
-> > > There is basic documentation for it on its site
-> > >
-> > >   https://pxmc.org/
-> > >   https://pxmc.org/files/pxmc.pdf  
-> >
-> > At first glance, this looks like a piece of hardware that would fit as a
-> > LMC device. What needs to be determined is where the boundaries lie between
-> > controller firmware, kernel-space and user-space code.  
-> 
-> I propose to have that boundary fully configurable.
-> So all can be implemented by software emulation
-> in the kernel if the sampling is under 5 or 10 kHz.
-> The interface from GNU/Linux system to hardware
-> is set PWM A, B, C, read actual IRC and currents.
-
-5-10kHz in the kernel is quite demanding already, although I agree that it is
-possible with many modern SoC's. The question is whether we really want to
-go that far. It is starting to get to levels of stress where really a small
-microcontroller of FPGA would be more adequate, don't you agree?
-
-And also, for what purpose do you want to read currents in real-time in the
-kernel? Isn't that something for closed-loop control inside a uC or FPGA?
-Or do you mean just to report to user-space as a filtered average?
-IRC (encoder feedback) could be implemented with timers that support
-quadrature decoding, and I can certainly envision reading them out in the
-kernel in order to have a simple PID controller adjust duty-cycle setpoint to
-match a motion profile at a lower sample rate (1kHz or lower), but isn't that
-more something for the controller hardware to do? Especially if done at even
-higher sample-rates?
- 
-> Or some part can be moved to external controller
-> or FPGA with coprocessor (the commutation fits
-> in 2 kB of RISC-V C programmed firmware). 
-> I.e. 20  kHz or even faster Park, Clarke
-> transformations. In this case 4 to 10 kHz
-> command port would be D-Q PWM or current set points
-> and back IRC position, D-Q currents.
-> 
-> Or your proposed LMC interface can be delivered
-> allmost directly to more complex controller
-> which would realize whole segments processing.
-
-I think the latter is more suitable for Linux.
-
-Although, given the fact that many embedded Linux SoC's nowadays incorporate
-small microcontroller cores that support the linux remoteproc interface, maybe
-some drivers could make use of that for the hard-RT part. On a STM32MP15x SoC
-for example there are advanced timers and ADC's that are very well suited for
-motor-control applications. They can be used directly from Linux for
-not-so-hard-and-fast RT applications, but potentially also for microsecond
-work in the M4 core.
-Let's first focus on the UAPI, and make the interface able to deal with these
-kind of engines.
-
-> > Generally speaking, as a rough guideline, microsecond work is better done
-> > in the controller firmware if possible. millisecond work can be done in the
-> > kernel and 10's or more millisecond work can be done in user-space,
-> > notwithstanding latency limit requirements of course.  
-> 
-> OK, I agree, the RT_PREEMPT is requiremet and no broken
-> SMI on x86 HW. 1 kHz is enough for DC motors controller
-> robots to go all on Linux. 5 kHz for PMSM D-Q can be
-> done in kernel or even userspace with platform
-> suitable for PREEMPT_RT if without some issues.
-> 
-> Above 10 kHz should go to FPGA or external HW.
-
-Yes, I agree. Although I'd lower the limits a bit to not make the drivers too
-dependent on very specific hardware platforms.
-
-> > >[...]
-> > > So in general, I think that we have large portfolio
-> > > of building blocks which would allow to build motion,
-> > > robotic controllers, communications etc. and I would be happy
-> > > if they are reused and even some project conceived
-> > > together with others to join the forces.  
-> >
-> > This sounds very interesting. Ideally one would end up with LMC capable of
-> > interfacing all of those devices.  
-> 
-> Yes.
-
-Good. Let's do it ;-)
- 
-Best regards,
-
--- 
-David Jander
+>
+> 	for f in drivers/pwm/pwm-*; do
+> 		echo $f;
+> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
+> 		echo;
+> 	done | less
+>
+> . (Note not all drivers have commentary in the right format to unveil
+> their limitations.)
+>
+> For most use-cases you can just do
+>
+> 	.duty_cycle = .period - .duty_cycle
+>
+> instead of inverting polarity, but there is no abstraction in the PWM
+> bindings for that and also no helpers in the PWM framework. The problem
+> is more or less ignored, so if you have a device with
+>
+> 	pwms = <&pwm0 0 PWM_POLARITY_INVERTED>;
+>
+> and the PWM chip in question doesn't support that, the pwm API functions
+> will fail. So the system designer better makes sure that the PWM
+> hardware can cope with the needed polarity.
+>
+> Best regards
+> Uwe
 

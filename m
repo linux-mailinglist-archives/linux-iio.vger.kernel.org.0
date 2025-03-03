@@ -1,135 +1,227 @@
-Return-Path: <linux-iio+bounces-16287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DAFA4C1D0
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:24:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01F8A4C205
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC19F16E55A
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 13:23:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AC1217109F
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 13:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C2212B21;
-	Mon,  3 Mar 2025 13:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFE32135CF;
+	Mon,  3 Mar 2025 13:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b="nDt6q4/K"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="BC8YDrCe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from out-16.pe-b.jellyfish.systems (out-16.pe-b.jellyfish.systems [198.54.127.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5788F1F17E5
-	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 13:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42881EFFB4;
+	Mon,  3 Mar 2025 13:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741008167; cv=none; b=SMyVLVvoxcgkOfBZRd1G5Mgrexc+KOIWtrIW3tANpJ6Exl24wvPjtU9Ksb77M3iFjDgFPOtRvN00sTIdgf1xWeQfZp4g0oraXpNuxQxwZ8y/PxLQIqzL++WIHA47Bxq2ZFqS++5nMaQgUTpIDKjwPG0aU8pTCngGwmYYHml4csU=
+	t=1741008702; cv=none; b=o6hsK9YYy11DnD97wF4NFW8mrXTkvnqDoLkIjGms5BUK4y4qCO7DNJ31AAj6nGjlzmGT9AA9aAoxZKKuEVDMU5BQLQHekcY/vjt2CpNPfVBtyqE+hi1r2ctbJvFFAxYBWpq4OIrsGfR5oK2nkeOWO0bJ7qLt6PVNyw59eee6VW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741008167; c=relaxed/simple;
-	bh=5i9uP2Ze50hwz43llaF1f86tTfk7p6fywziSf77roYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jgaeOvATE1a8dFrC7UoDMTPUGVhaLAzXaQTUz/KEpN7dCR+6S7jGT4kmiPB0oLYf5/amPiKY/7uc+DK7MUve8bfaKuiTKkm+VOPSCpwAzqgIFYcEbf72ypTITAjARTas4ER/qSIe9gGDhrd8HYP9E14x49PEiMeVmY6DCTmMiLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it; spf=pass smtp.mailfrom=4sigma.it; dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b=nDt6q4/K; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=4sigma.it
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390df942558so3499155f8f.2
-        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 05:22:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=4sigma.it; s=google; t=1741008162; x=1741612962; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ECd7n/EGUmOy5J+E/dKH2tzC4YWX/xlVp74bjlxoPQg=;
-        b=nDt6q4/K0N8xzRqLxFMqd6p1ibGHiV7xxPWXT+usVbOPibIx5bWm7/n/dn9DYCj9hj
-         c2H4VCsB/m13egqj5b5paRRnZK9yUobXj1xIDb7HDEuTJ6Dx51+xV7isuyfBODiDWnli
-         NeDXt2m+BisCAEvycr6XqxaD/0VQu9tuMYZFI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741008162; x=1741612962;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ECd7n/EGUmOy5J+E/dKH2tzC4YWX/xlVp74bjlxoPQg=;
-        b=r5DGjuz3yfiqk73qCHgzK4Qx6XPdaRaF1ss7sv5vTCd0rO7rjGsUgg3wmLi/iCjgth
-         +oBgvtITbLYPa5TVyiaoV1y6f6kw0YzAg5SpHAiLQq5ijZh7JSpkCF3d3sqb0iCatkPQ
-         vFwleX1puyBcAstnNLhzTpiz6kRtpx0sqwT09LuqjiV5QI6hgYsN9VAE8hOPu2FxKJs1
-         g5IeX96E1CoOWGuV2O90KYZWzGe7cmRxFAeSaZzQ3GR0wG9bb/0z/suYG1T8KH9OpJfa
-         B2B/roNbOCKHuuNk0wE2eGKmL69ZhSwP9ttDq+MxyffeVOIHVE5OL95tCrWsMJnpaOMl
-         Q4bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWY9/vUnswt1j8++wmzvWXMkxsjOYreQ+F1nDQldsQtiX/54dlaCHPxFeDkjEaCDdG6Kx7MteO6dEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYClDPYlmjDlTRzzusXcq0f/0U25hseIPRuqHKcApOwK4FgPFC
-	iF2J+j3FQD3ve59HuqWS4Mo2df39YMscUZx0JMiltz14uIkoAto/gDVWzjySYg==
-X-Gm-Gg: ASbGncuGgGjMoa2fz8cbn7P6FfQn4pEnn1Bptk+odis3WDSB5jPfee9s7vX/zzVflco
-	f5sHtEPD62cz2xvmUAGDwzH/qRLw7WuNNuK2tDjWdARDU8ctWw6e04n+Q+Bt/Mtc+0GnlrBEZ6A
-	Gi+JzBkc2EncBahdwC2pawImOi3F4o5vp8+5mCmmpTXw+VyYmX2AIthMrWSitPLrJA70Dsc7RPo
-	/zMp+noNmu944TkVykg2wqg8zfN9nAP/kmk+OXbCT6zrsU74oadwD7Pe1ExuUlAezk5qRvVbPql
-	TVX0MSaLhvXEq9H/BI7EDNPEdRs0P1rnsT5SLXWxeOl7u+UWzvn39pSlgafaSZhzPwYD89Sqpqt
-	f2r4cNnM=
-X-Google-Smtp-Source: AGHT+IGakxsdP7cssVmEZsfodi7ojWu3CfAaSJKH4e/l+/9KTp9+UWQBz14kFBtrP7h34XIaqmym6w==
-X-Received: by 2002:a05:6000:2a3:b0:390:f9d0:5ed with SMTP id ffacd0b85a97d-390f9d007fdmr4858802f8f.1.1741008161601;
-        Mon, 03 Mar 2025 05:22:41 -0800 (PST)
-Received: from marvin.localdomain (94-35-64-90.client-mvno.tiscali.it. [94.35.64.90])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b736f770asm166769265e9.6.2025.03.03.05.22.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 05:22:41 -0800 (PST)
-From: Silvano Seva <s.seva@4sigma.it>
-To: lorenzo@kernel.org
-Cc: a.greco@4sigma.it,
-	Silvano Seva <s.seva@4sigma.it>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	linux-iio@vger.kernel.org (open list:ST LSM6DSx IMU IIO DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] iio: imu: st_lsm6dsx: fix possible lockup during FIFO read
-Date: Mon,  3 Mar 2025 14:21:25 +0100
-Message-ID: <20250303132124.52811-2-s.seva@4sigma.it>
-X-Mailer: git-send-email 2.48.1
+	s=arc-20240116; t=1741008702; c=relaxed/simple;
+	bh=UnlZRIn1+XWnSfw2pYOSnNaYsdX5WURIf+Hn25tK/2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q6RhhgY0UqBUoyD4OEUpT+/tap51H+AczqOQzJbamC62qJlJjg7Awa+K8dAk4dX5EhVNoUIovBNtXLDr2mvUqNFUZLjVBi6iCI6joDXTsbazOxlrhtL5lpXhWHAxpVgXX4zZUEar9e/I4Cq9V5lnjmhzwgdV/HeKw4aotruZ4oQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=BC8YDrCe; arc=none smtp.client-ip=198.54.127.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
+Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
+	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4Z608P5BGyzGpYK;
+	Mon, 03 Mar 2025 13:31:33 +0000 (UTC)
+Received: from MTA-07.privateemail.com (unknown [10.50.14.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4Z608P4NQBz3hhVZ;
+	Mon,  3 Mar 2025 08:31:33 -0500 (EST)
+Received: from mta-07.privateemail.com (localhost [127.0.0.1])
+	by mta-07.privateemail.com (Postfix) with ESMTP id 4Z608P32p7z3hhV0;
+	Mon,  3 Mar 2025 08:31:33 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
+	s=default; t=1741008693;
+	bh=UnlZRIn1+XWnSfw2pYOSnNaYsdX5WURIf+Hn25tK/2k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BC8YDrCeBCA/KChWY4EPrqKy7A8fAYwy+Odi1ANXa/vnIoSfJ86AKOezwBHBlU/46
+	 gffQinnck9bZMc20Me2sACxi5KJZSUKoeY5xRqVbofOYv+xPK1EQtg8fA+6ytJlrvG
+	 N+educh4GpHUNmLKFpEHqQBRAXm7Nd8/aleKHc18EJnrvz2pkXzMhhwC+gxU8yPHqF
+	 C5Z6EFIyQBntvKoEPbXztVuQgrdjkrqf6LHsb5UkUaD5BYvQ3jwEbhG5cbPc8ZJFw2
+	 ky9QsmK4nWX4VTQ5gkTzjytiLFL0VDnM0Rvk4gUby1LYO+JQE7U4YfTQ5znWPO6pE8
+	 PaHrEAKa20zZw==
+Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
+	by mta-07.privateemail.com (Postfix) with ESMTPA;
+	Mon,  3 Mar 2025 08:31:20 -0500 (EST)
+Date: Mon, 3 Mar 2025 08:31:20 -0500
+From: Sam Winchenbach <sam.winchenbach@framepointer.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
+Message-ID: <Z8WvKNcCnQI_UYZJ@65YTFL3.secure.tethers.com>
+References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
+ <20250225134612.577022-2-sam.winchenbach@framepointer.org>
+ <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
+ <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
+ <05e56d15-059b-425b-9e55-66993d988f8d@kernel.org>
+ <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
+ <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-Prevent st_lsm6dsx_read_fifo and st_lsm6dsx_read_tagged_fifo functions
-from falling in an infinite loop in case pattern_len is equal to zero and
-the device FIFO is not empty.
+On Mon, Mar 03, 2025 at 09:13:00AM +0100, Krzysztof Kozlowski wrote:
+> On 26/02/2025 23:16, Sam Winchenbach wrote:
+> >>>>> +  adi,hpf-margin-hz:
+> >>>>> +    description:
+> >>>>> +      Sets maximum high-pass corner frequency to the frequency of rf_in minus
+> >>>>> +      this value when in auto mode.
+> >>>>
+> >>>> IIUC, these are two bounds - lower and upper - in relation to something
+> >>>> else (like rf_in frequency)? If so, make it an array (naming to be
+> >>>> discuss, I assume you know better what's that):
+> >>>
+> >>> It is true that these are both related to rf_in but both the low and high pass
+> >>> filters can operate independently. Logically, IMO, it makes more sense to have
+> >>
+> >>
+> >> You mean you can set only low or high pass and keep other as default?
+> >> But what is the default then - something from reset value or "0" means
+> >> disabled?
+> > 
+> > This value isn't setting the corner frequency of the filter, but the minimum
+> > distance the corner must be from the fundamental frequency. So, for example,
+> > if rf_in is 3.35 GHz and you set lpf-margin-hz to 0 then the corner frequency
+> > will be set to 3.35 GHz because that is an exact value supported by the device.
+> > 
+> > If lpf-margin-hz is set to 30 MHz (for example), then corner frequency would be
+> > at least 3.35 GHz + 30 MHz = 3.38 GHz.  3.49 GHz is the closest corner
+> > frequency without going below 3.38 GHz that is supported by the device, so that
+> > is what will be selected.
+> > 
+> > This prevents the situation where your fundamental frequency falls on, or close
+> > to, a corner frequency which could result in 3dB (half power) loss in your
+> > signal.
+> > 
+> > This is all completely indepent of the high-pass filter.
+> 
+> Description is confusing a bit, because it suggests the value sets the
+> corner frequency. It explicitly says this - "sets ... corner frequency"
+> and such meaning for properties we usually associate with the property
+> doing this. Here however corner frequency will be always set to rf_in
+> and you just adjust the value.
+>
 
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+How about: "Sets the minimum distance (in Hz) between the fundamental
+frequency of `rf_in` and the corner frequency of the high-pass, input filter
+when operatred in 'auto' mode. The selected high-pass corner frequency will
+be less than, or equal to, `rf_in` - `hpf-margin-hz`. If not setting is found
+that satisfies this relationship the filter will be put into 'bypass'."
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index 0a7cd8c1aa33..7f343614f8a5 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -395,12 +395,17 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
- 		   ST_LSM6DSX_CHAN_SIZE;
- 	fifo_len = (fifo_len / pattern_len) * pattern_len;
-+	if (!fifo_len)
-+		return 0;
+Perhaps that is a bit more clear on the intention of this parameter?
+
+> > 
+> >>
+> >>> them as separate controls but I am happy to put them into an array if that is
+> >>> the idiomatic approach to situations like this. That said, I am having a
+> >>> difficult time getting dt_binding_check to pass when I have an array of uint64.
+> >>>
+> >>> When listing two items, as in your example below, I get the following:
+> >>> adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
+> >>
+> >> Tricky to say without seeing your code. Magic crystal ball had
+> >> malfunction today.
+> > 
+> > This is the property:
+> > 
+> >   adi,filter-margins-hz:
+> >     items:
+> >       - description: |
+> >           The minimum distance, in Hz, between rf_in and the low-pass corner
+> >           frequency when the device is used in "auto" mode. If the sum of
+> >           rf_in and this value is greater than 18.85 GHz then the low-pass
+> >           filter will be put into bypass mode, otherwise the closest corner
+> >           frequency that is greater than or equal to the sum of rf_in plus this
+> >           value will be used.
+> >         minimum: 0
+> >         maximum: 0xFFFFFFFFFFFFFFFF
+> >         default: 0
+> >       - description: |
+> >           The minimum distance, in Hz, between rf_in and the high-pass corner
+> >           frequency when the device is used in "auto" mode. If the difference
+> >           between rf_in and this value is less than 1.75 GHz then the high-pass
+> >           filter will be put into bypass mode, otherwise the closest corner
+> >           frequency that is less than or equal to the difference of rf_in and
+> >           this value will be used.
+> >         minimum: 0
+> >         maximum: 0xFFFFFFFFFFFFFFFF
+> >         default: 0
+> > 
+> > And this is the example:
+> > 
+> > examples:
+> >   - |
+> >     spi {
+> >       #address-cells = <1>;
+> >       #size-cells = <0>;
+> >       admv8818@0 {
+> >         compatible = "adi,admv8818";
+> >         reg = <0>;
+> >         spi-max-frequency = <10000000>;
+> >         clocks = <&admv8818_rfin>;
+> >         clock-names = "rf_in";
+> >         adi,filter-margins-hz = /bits/ 64 <30000000 30000000>;
+> 
+> 
+> foo-hz is in 32-bit, so basically you have here 4 32-bit numbers which
+> indeed reported by dtschema - property is too long. Drop 64-bit here.
+> 
+
+I was hoping to keep this 64 bits seeing this is a 18 GHz+ filter. I suppose
+I could change this to MHz and just lose a bit of resolution. Does that sound
+like a better approach?
+
+> Device allows multiple LPF/HPF values to be stored in LUT tables and it
+> actually has four independent filters. Shouldn't these be included here?
+> Maybe not LUT tables, but the configuration for all filters?
+>
+
+There are two filters, the input (high-pass) filter, and the output (low-pass)
+filter. Each filter has four banks, each with a different range of frequencies.
+Only one bank can be selected at a time. Each bank has 16 different possible
+cutoff/corner frequencies. That is a total of 64 distinct values for each of
+the two filters.
+
+The issue with setting the corner frequency directly is that in certain
+applications (such as software defined radios) the fundamental frequency
+is adjustable, necessitating that the corner frequencies of the filter are
+adjusted accordingly. When the filter is in "auto" mode it is notified via
+the clock system of frequency changes, so using this information it should be
+possible to select new corner frequencies if you know the minimum distance
+between your fundamental frequency and the corner.
+
+
+It is possible there is either not enough call for this feature, or it goes
+against the designs of the maintainters. If that is the case we should decline
+this patch and we will maintain it in our fork of the kernel.
+
+Thanks,
+-Sam
  
- 	acc_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
- 	gyro_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_GYRO]);
- 	if (hw->iio_devs[ST_LSM6DSX_ID_EXT0])
- 		ext_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_EXT0]);
- 
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw, ST_LSM6DSX_REG_FIFO_OUTL_ADDR,
- 					    hw->buff, pattern_len,
-@@ -623,6 +628,9 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw *hw)
- 	if (!fifo_len)
- 		return 0;
- 
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw,
- 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
--- 
-2.48.1
-
+> Best regards,
+> Krzysztof
 

@@ -1,182 +1,198 @@
-Return-Path: <linux-iio+bounces-16303-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16304-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B0DA4CC72
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 21:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49249A4CDDD
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 23:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 831A3174A66
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 20:04:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654DC172B0B
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 22:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E33234988;
-	Mon,  3 Mar 2025 20:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3067E23278D;
+	Mon,  3 Mar 2025 22:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JHYMXSg+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nG+DH1uY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35A9215065;
-	Mon,  3 Mar 2025 20:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC6B2343AB;
+	Mon,  3 Mar 2025 22:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741032236; cv=none; b=rGx6R4XXo0Pr2HR+rIgpTW0oLeBduC/iIIhAPEEnqkevS5gc/yfJVYrYo+CV2QS/o7ccXgHYFX8opVyUil77XMFH2e6H33vYVzilWYO63EYoaTqBPCUX95hOQK+/t9QeYD7TbEZa5DsyR3lv2uoQwbaPd1e3yB+yQjEDliQ3Cec=
+	t=1741039618; cv=none; b=rak+8+/h9XLkE6SuZXlvD/tKSo/uT9dDQziBzc/rvoiQvaaBegsfMDS+9v2Zwgpa9qYGh5x/5ABk7ICDDuKqbM2WPCkMCKzjMuE5yRFfVA80/iz/o8MUe+U4hwXTnVFMkIk23nuS1yODba0iVfcuzrF6Jpzdi28BtysKvD2ePrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741032236; c=relaxed/simple;
-	bh=UAbB4w7E4m1mLCo3yn77rgKxnrpnomzpIaADSNtpcM0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MjZbVNR8ws/pKi7GA3h5xT8zDR0UYXnt7YobkGlDgejRsE3nrMZPenNSurQiyxcjGWyFOEajDpCtQwQHHEKs536jgTNEpdSeMhA3hb5aqtdN2wc/fEAcRGuHgjMaFNdo+FeVpHN5RP6PVCC+yzFj0gm/EMbtC84KC1Bwavww5/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JHYMXSg+; arc=none smtp.client-ip=209.85.214.170
+	s=arc-20240116; t=1741039618; c=relaxed/simple;
+	bh=JqxhaPx/4PkOgVkCLHhMzASh2FO9a3L/0EsE1pIt20Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L1LSeWbrEohJTwlSrL5tItf8rUPTPZxuAb/d24thkqQ4Cw8fGR7jNxWJSxWEECtwVXsLjL4D6Iivu0iMW/t21katvuSujXxri2svwBzqt9JzsRNrQdfJWi39+PCNdcD0dcMRzXmB23OCzsiBK7LMT6f198JhXMvgzT/gliBsdHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nG+DH1uY; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22339936bbfso71433605ad.1;
-        Mon, 03 Mar 2025 12:03:54 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-22337bc9ac3so94314505ad.1;
+        Mon, 03 Mar 2025 14:06:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741032234; x=1741637034; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QrbUEFY/lf1OjHUcnLJiKmmiRtzC2NeD0FfZjZlPltM=;
-        b=JHYMXSg+kZCPXQS+sy3Alaaj3RCipEOvIOD6ptP7YNTnwBZTPGcDyOfXQMsocJUXrA
-         tphGbyGiYKyUOjMWXrYiRQYzQR6Mh+iTdHEUDVWX+RTHrmDHxpUbnvUmlKU6G5eeWoNN
-         yxtPdf+bTXhBc4VYWdhAoLvbPdWoBz1+711u5McGeRsqX85WDeYE3H3UBGE5ll+WvDuQ
-         FnPlw9OnTaNbXCNpPfVO7UZ6EDzjBZlZH5+exYn8u6H0TevAMOFmsWoSYr1u4ccRPZNo
-         QFCRGqFaDxuLyOnnVVrV5c19L36BAFF2UY5JJzqOo0WLJxltC6lkS+AFP7RzrGJ+nz4A
-         /7/A==
+        d=gmail.com; s=20230601; t=1741039616; x=1741644416; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nyrPi5HAkeHZcWwEBF6xTNbTlSUohW8oencgE4qGFYo=;
+        b=nG+DH1uY2i9pl67ou9XrPKTn13BKTz6ymDFw5ErcbdcQja0GFOFhdMqlv5bX+tTGhg
+         XbyX36BQN2iipvug1h+odU03UvuZ5wwCdKF+8KZ9o4LOFQGsh4N0AI+dmP/C3l0aBDzn
+         IoxJdXyOL0J3EHdyalkRplJV16ouvZ/iaGz+E0AClxU7wiYTAZkCvvgJ0HPFMLAsMIbb
+         9IoCVywEqrxf4sH9j2NeNOO2g4tSb3XcU7yaxHGTJqrSrPS1uKTfYkoLbcPusxLm+6QG
+         QFT7sxw2EyKmWvvMJRiAh+r+KSHyg7iaa6vKOiYBCBwW4hNQVDnrzI6u6TpLhtpjty/b
+         zSWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741032234; x=1741637034;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QrbUEFY/lf1OjHUcnLJiKmmiRtzC2NeD0FfZjZlPltM=;
-        b=RFhCiWOS/UAY0gOKU31T3EL1HfUVJXarpyBmw1DVc22in9MfcgTgHmAVt4v6H8BSF8
-         tynaiND4DCLdUnkNX5TP2BMY3DFHcJdFmHcY5vt4QsRuLnQBiuv+wC58F1zAprBRSRby
-         UugDzsu5rJwMz0RWX428NRIRblX2nRCKEqKfqqfO4SHP9Az2ICuZKNnD5CSvzZWcJMbJ
-         3bX5S3gRrRz7D5QI8gUXsOj8/Er6caN+wdTzReVA3HIs1jOB/2VSXdZTrBdXzF/QByVM
-         55vq5pMNVs9Jngzm8GB+sJVamOuTBbxLAl6A6XFCTX+GTmHiKiM9zJTO4Qmh2BM9Hdg1
-         VbAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbwHhkxw20ai517F4+rFAoL2zz5nPWeAOQY8alKc3yPLmf5YE/sb/mCYQLXegnFhLGob/kbC+KRwufGxJn@vger.kernel.org, AJvYcCWjB9oddvO6ewUhV96pbBgMh3L+X1Ib0qanchiveeYJinXfmhAv3EnAHHcwqeZydKgTiu+EkIvsuzg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCgg8sH6M+uvbSRwf/QFPsjUDAybYjRjljzB8MakZbK94LKqbX
-	DoU2Iosry7LqYEqWtFdVOGco6SRRJqhcxk4Y/2L+l22D0MUWBCYe
-X-Gm-Gg: ASbGncuXBUk0b9np+opgIBjCuXkSRnKRmrxfA4mYoNeec/yAz+XmuSiW6j3+w/N/nNg
-	TZAgFpzFitYM27bty+mAkH4TJR7JMgVZABTYNyymkdvygm+Tnd/Zq3+1bNooK7+kdCXs6oJT4Y+
-	nDiu5O8DyGbYummIv9qoGiLddFbM+bKrFc2QjX7zfNXoVdn70V6NJshB4AjbdhA38xZTkGHTs3N
-	DLnQoSeyMVQsI5+P+CyRlKR5xVoo9lgkjoC0d4Lnp5qyQNzJQ41Kos3R6AmOkyNPa5lxdmlCamn
-	5oq6Op/dN8IVVyZP+mDUaegzI5AEXSJHiWJywj0gyYYsKSmhUyCw5VH7txSV3hTYphNF
-X-Google-Smtp-Source: AGHT+IGBy0TApsj/0F8MuCfPPS47j68Bagj1kWLrrh4wS/ICtMfKU9/DC6Sypb+Zn2+4m3XFwPu+Kg==
-X-Received: by 2002:a05:6a00:b90:b0:736:61c9:f9a6 with SMTP id d2e1a72fcca58-73661ca04c0mr4127339b3a.5.1741032233820;
-        Mon, 03 Mar 2025 12:03:53 -0800 (PST)
-Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:7b03:1e42:d492:fb71])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-734d444a9fasm7266779b3a.60.2025.03.03.12.03.51
+        d=1e100.net; s=20230601; t=1741039616; x=1741644416;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nyrPi5HAkeHZcWwEBF6xTNbTlSUohW8oencgE4qGFYo=;
+        b=f+F/FNOwGVIqaO9lw9ZgWBsRXgkQ28XZkuTbhrtE1uIAjfL8pj0/IT1UoKEZejVNnr
+         BHZaoN6D77VAM8NAP+RRN4ZisT/5fnTPBbT8WPVwNDWEnWYYQqLIenXFHBOO+Ni47SAW
+         GOrNavn7ISVy5TWbbmm6hN37HxaBUjPKWWH4qsYpbwXWgzrP4SRHvpQ4r5VOADB/ckaA
+         /o5b8OTbbNeDX8Zy/y7Y2vPg8R+54qPM+FzV/wwCIPCzenGjNLflQg+iR1OUkF1lWYke
+         ymgXL2uqOubVKUPAE9Juxxgr6oB8JPEZhLU1W5B5OoYPaI0v6b6YkUlXDaFYcqjyEaBf
+         CdMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUV2DDCgcsdb1mill2ziZIBEOOwkvcyFO48gqVYRvJi7ALeb9Zai8TQ5MsQozdMZqJX2pKLoQ8Ue6/iBwcL@vger.kernel.org, AJvYcCXOVZNP0EwC9t2xyRQ+o3xv17W7gsiZzY/lQKLSTKI4B0DVweX73qZBRHrFT8TbD1QSSUXoU1xTOZM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8+FMeZiHGwncHacW/QrxB2vq2Oqu+zo/JK6ISQ/N1aNMO5z6Q
+	EB740f+UGWxfU5SGM1Ap8Qy3w8BbBcjgBZCvjiuPpyGp5dhkagHd
+X-Gm-Gg: ASbGncvxHki9ynlphFH+LwLNpdFqkrkVKo2VfwBEaV5uTCBCZKANLuiBxBEhi5atTiF
+	/McZHTACIypEubktWp9oNmaismXWNlqCySIslOwFyd1+ZTTFCMoBZXjGAUwxh4kEonZULmZfMt+
+	yZPmUZB9N+4BxXQmO9rliT35ZVJmg3ZZRmW8JhDAqWVF+2GB7BeCc/WV0bKjSdd2jeSPOX2SFyu
+	RmNCjern2lOSvU/k9RM0H7e6z23D+WmlTVjCoJ6TYPV2+lIj3ibAcbPBjQ5RpWLCCqynru0lS1Z
+	6JGf1lBbe/qgpDKOrXQyjz7jgE4oczBkFn0HAXjrH9ijfKAzTAnpViU=
+X-Google-Smtp-Source: AGHT+IF210btO6rb30eQ+sEDHAyP6Jb2nAg1Js5HWY+VJpxXxEm3Ip9l6khqtgq0M00D4C6JjlL1cA==
+X-Received: by 2002:a62:f20c:0:b0:736:3184:7fe8 with SMTP id d2e1a72fcca58-73631848087mr13036440b3a.2.1741039615593;
+        Mon, 03 Mar 2025 14:06:55 -0800 (PST)
+Received: from localhost ([2804:30c:1f21:4300:1cf6:c485:6555:b1c5])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-aee7ddf230dsm8757673a12.8.2025.03.03.14.06.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 12:03:53 -0800 (PST)
-From: Saalim Quadri <danascape@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	gregkh@linuxfoundation.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Saalim Quadri <danascape@gmail.com>
-Subject: [RFC] staging: iio: ad9832: Use devm_regulator_get_enable_read_voltage()
-Date: Tue,  4 Mar 2025 01:33:47 +0530
-Message-Id: <20250303200347.23354-1-danascape@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Mon, 03 Mar 2025 14:06:54 -0800 (PST)
+Date: Mon, 3 Mar 2025 19:07:47 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Saalim Quadri <danascape@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+	gregkh@linuxfoundation.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev
+Subject: Re: [RFC] staging: iio: ad9832: Use
+ devm_regulator_get_enable_read_voltage()
+Message-ID: <Z8YoM4ycB0qMQwOG@debian-BULLSEYE-live-builder-AMD64>
+References: <20250303200347.23354-1-danascape@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250303200347.23354-1-danascape@gmail.com>
 
-Use devm_regulator_get_enable_read_voltage() to reduce boiler plate
-code.
+Hello Saalim,
 
-* Here I am particularly confused about regulator_enable(), part where I should
-  use devm_regulator_get_enable() to enable avdd supply?
-* I can resend this as a patch if everything is alright, specifically with
-  devm_regulator_get_enable() for dvdd
+On 03/04, Saalim Quadri wrote:
+> Use devm_regulator_get_enable_read_voltage() to reduce boiler plate
+> code.
+> 
+> * Here I am particularly confused about regulator_enable(), part where I should
+>   use devm_regulator_get_enable() to enable avdd supply?
 
-Signed-off-by: Saalim Quadri <danascape@gmail.com>
----
- drivers/staging/iio/frequency/ad9832.c | 37 +++-----------------------
- 1 file changed, 4 insertions(+), 33 deletions(-)
+I misread the driver yesterday and thought avdd and dvdd regulator voltages were
+being read, but that is not true. devm_regulator_get_enable() is enough for the
+cases where the voltage is not read.
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 140ee4f9c137..9e7975265454 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -74,8 +74,6 @@
- /**
-  * struct ad9832_state - driver instance specific data
-  * @spi:		spi_device
-- * @avdd:		supply regulator for the analog section
-- * @dvdd:		supply regulator for the digital section
-  * @mclk:		external master clock
-  * @ctrl_fp:		cached frequency/phase control word
-  * @ctrl_ss:		cached sync/selsrc control word
-@@ -94,8 +92,6 @@
- 
- struct ad9832_state {
- 	struct spi_device		*spi;
--	struct regulator		*avdd;
--	struct regulator		*dvdd;
- 	struct clk			*mclk;
- 	unsigned short			ctrl_fp;
- 	unsigned short			ctrl_ss;
-@@ -297,11 +293,6 @@ static const struct iio_info ad9832_info = {
- 	.attrs = &ad9832_attribute_group,
- };
- 
--static void ad9832_reg_disable(void *reg)
--{
--	regulator_disable(reg);
--}
--
- static int ad9832_probe(struct spi_device *spi)
- {
- 	struct ad9832_platform_data *pdata = dev_get_platdata(&spi->dev);
-@@ -320,33 +311,13 @@ static int ad9832_probe(struct spi_device *spi)
- 
- 	st = iio_priv(indio_dev);
- 
--	st->avdd = devm_regulator_get(&spi->dev, "avdd");
--	if (IS_ERR(st->avdd))
--		return PTR_ERR(st->avdd);
--
--	ret = regulator_enable(st->avdd);
--	if (ret) {
--		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
--		return ret;
--	}
--
--	ret = devm_add_action_or_reset(&spi->dev, ad9832_reg_disable, st->avdd);
-+	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "avdd");
- 	if (ret)
--		return ret;
--
--	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
--	if (IS_ERR(st->dvdd))
--		return PTR_ERR(st->dvdd);
-+			return dev_err_probe(&spi->dev, ret, "failed to get AVDD voltage\n");
- 
--	ret = regulator_enable(st->dvdd);
--	if (ret) {
--		dev_err(&spi->dev, "Failed to enable specified DVDD supply\n");
--		return ret;
--	}
--
--	ret = devm_add_action_or_reset(&spi->dev, ad9832_reg_disable, st->dvdd);
-+	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
- 	if (ret)
--		return ret;
-+			return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVDD supply\n");
- 
- 	st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
- 	if (IS_ERR(st->mclk))
--- 
-2.34.1
+> * I can resend this as a patch if everything is alright, specifically with
+>   devm_regulator_get_enable() for dvdd
+> 
+If I'm not missing anything else, you'll probably be using
+devm_regulator_get_enable() for both avdd and dvdd. And probably ok to update
+both in a single patch.
 
+Regards,
+Marcelo
+
+> Signed-off-by: Saalim Quadri <danascape@gmail.com>
+> ---
+>  drivers/staging/iio/frequency/ad9832.c | 37 +++-----------------------
+>  1 file changed, 4 insertions(+), 33 deletions(-)
+> 
+> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+> index 140ee4f9c137..9e7975265454 100644
+> --- a/drivers/staging/iio/frequency/ad9832.c
+> +++ b/drivers/staging/iio/frequency/ad9832.c
+> @@ -74,8 +74,6 @@
+>  /**
+>   * struct ad9832_state - driver instance specific data
+>   * @spi:		spi_device
+> - * @avdd:		supply regulator for the analog section
+> - * @dvdd:		supply regulator for the digital section
+>   * @mclk:		external master clock
+>   * @ctrl_fp:		cached frequency/phase control word
+>   * @ctrl_ss:		cached sync/selsrc control word
+> @@ -94,8 +92,6 @@
+>  
+>  struct ad9832_state {
+>  	struct spi_device		*spi;
+> -	struct regulator		*avdd;
+> -	struct regulator		*dvdd;
+>  	struct clk			*mclk;
+>  	unsigned short			ctrl_fp;
+>  	unsigned short			ctrl_ss;
+> @@ -297,11 +293,6 @@ static const struct iio_info ad9832_info = {
+>  	.attrs = &ad9832_attribute_group,
+>  };
+>  
+> -static void ad9832_reg_disable(void *reg)
+> -{
+> -	regulator_disable(reg);
+> -}
+> -
+>  static int ad9832_probe(struct spi_device *spi)
+>  {
+>  	struct ad9832_platform_data *pdata = dev_get_platdata(&spi->dev);
+> @@ -320,33 +311,13 @@ static int ad9832_probe(struct spi_device *spi)
+>  
+>  	st = iio_priv(indio_dev);
+>  
+> -	st->avdd = devm_regulator_get(&spi->dev, "avdd");
+> -	if (IS_ERR(st->avdd))
+> -		return PTR_ERR(st->avdd);
+> -
+> -	ret = regulator_enable(st->avdd);
+> -	if (ret) {
+> -		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = devm_add_action_or_reset(&spi->dev, ad9832_reg_disable, st->avdd);
+> +	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "avdd");
+>  	if (ret)
+> -		return ret;
+> -
+> -	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
+> -	if (IS_ERR(st->dvdd))
+> -		return PTR_ERR(st->dvdd);
+> +			return dev_err_probe(&spi->dev, ret, "failed to get AVDD voltage\n");
+>  
+> -	ret = regulator_enable(st->dvdd);
+> -	if (ret) {
+> -		dev_err(&spi->dev, "Failed to enable specified DVDD supply\n");
+> -		return ret;
+> -	}
+> -
+> -	ret = devm_add_action_or_reset(&spi->dev, ad9832_reg_disable, st->dvdd);
+> +	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
+>  	if (ret)
+> -		return ret;
+> +			return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVDD supply\n");
+>  
+>  	st->mclk = devm_clk_get_enabled(&spi->dev, "mclk");
+>  	if (IS_ERR(st->mclk))
+> -- 
+> 2.34.1
+> 
+> 
 

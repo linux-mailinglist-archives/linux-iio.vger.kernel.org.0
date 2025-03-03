@@ -1,125 +1,134 @@
-Return-Path: <linux-iio+bounces-16376-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC7EA4EA3B
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 18:58:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 960E0A4E8B1
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 18:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AAD38C177B
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 17:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDF219C0F3D
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 17:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B976238D45;
-	Tue,  4 Mar 2025 17:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C96F2853F3;
+	Tue,  4 Mar 2025 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="BC8YDrCe"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fQDbMs8G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
+Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91802C1555
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 17:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 841F0254B14
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 16:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741108960; cv=pass; b=aQ8Wvya1hmtpXQvlZLmz20aOIzRR981izkRecAZWxWcEGa3BViC88XNxGXTj7gYrNXSg0ENB09YBlOD2muV6l6d5gbARAIbdRsVWQ/jKDe2EyAQkypr5pkilAYhSbgpXnu1RCmOlNJL22RaNfwVq5QagzIKuoLJOXPO/ypxPkmw=
+	t=1741107595; cv=pass; b=mWBxWIJkww4ILJVYNBXb86wy4cvoroHdoQzr53InWHreZK2vYKgIApHW61A3PVob2X2jueV0GCyzVEXZtrjINeKIkmLxvak7Yr3GV/Wv0vuOq16BNFy1Rg1K/G9sUCYNmIutX2C2/bgPydUlNkbqQUHwz8QCTrcI2z8fNqnBEJc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741108960; c=relaxed/simple;
-	bh=UnlZRIn1+XWnSfw2pYOSnNaYsdX5WURIf+Hn25tK/2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WKzsBk+ON+lWpDJrIJYdxa/JajGxf14kUhCYG/wjSdmuzTlBSrotkRrgurhbDkOFkZeXDewWe2pwpQ+oob2Wazd+Bh37KyKftuGrFWR0FM+3iFvGXl/jRWdkBPdRzWMSe2rC8o6bCl5yEJN1d4qc0D3wYLDOF+Qyc7VbMsiUl5s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=BC8YDrCe; arc=none smtp.client-ip=198.54.127.93; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; arc=pass smtp.client-ip=160.75.25.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+	s=arc-20240116; t=1741107595; c=relaxed/simple;
+	bh=Oul6vhkXR4va+z/+WhoZ0xRll3TSdgvTz5RPoDjs9Do=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZD5N1nTxIvOarqfhc6lFsfGMN+L0TPiX0+4h6sSANYi+Y1fQE0KixIYUBDOAbyIHV6NF7mxDKA16LibxFyPz5JZTEdBPcttaTPnXkCkL6NW8ourrlE0FdiG9SLabZ4NcwZmIddzWjaJxFC8Ed7wRc6yI2Yh0czYsbsoFEa8SAHo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fQDbMs8G; arc=none smtp.client-ip=205.220.180.131; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; arc=pass smtp.client-ip=160.75.25.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 1C54A408B65B
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 20:22:37 +0300 (+03)
+	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id D09E740CFB88
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 19:59:51 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6h9N45wRzG3k1
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 19:34:48 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6fzR740TzG0nw
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 18:41:07 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 824234272E; Tue,  4 Mar 2025 19:34:43 +0300 (+03)
+	id 36C2142746; Tue,  4 Mar 2025 18:40:42 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=BC8YDrCe
-X-Envelope-From: <linux-kernel+bounces-541822-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fQDbMs8G
+X-Envelope-From: <linux-kernel+bounces-541861-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=BC8YDrCe
-Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id DEDCC41E8B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:36:53 +0300 (+03)
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 733973064C0E
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:36:53 +0300 (+03)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fQDbMs8G
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id 88B3C41CB7
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:57:10 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id 3C3C02DCE3
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 16:57:10 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 848DC3AF605
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:33:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E8661689E7
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86002116F3;
-	Mon,  3 Mar 2025 13:31:46 +0000 (UTC)
-Received: from out-16.pe-b.jellyfish.systems (out-16.pe-b.jellyfish.systems [198.54.127.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E17C2135A5;
+	Mon,  3 Mar 2025 13:56:57 +0000 (UTC)
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42881EFFB4;
-	Mon,  3 Mar 2025 13:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE55A212FB3
+	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 13:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741008702; cv=none; b=o6hsK9YYy11DnD97wF4NFW8mrXTkvnqDoLkIjGms5BUK4y4qCO7DNJ31AAj6nGjlzmGT9AA9aAoxZKKuEVDMU5BQLQHekcY/vjt2CpNPfVBtyqE+hi1r2ctbJvFFAxYBWpq4OIrsGfR5oK2nkeOWO0bJ7qLt6PVNyw59eee6VW4=
+	t=1741010214; cv=none; b=rjUtt5D61v7K7jD5pYLLJ7yGuUSOECtbqS5G2r5c58NhjDz4Cm3lELyG2nVfzrs9+pip+J/f2ntgkVzNJ5qKhhGVcGRDSluRT+Pi3GFo+imRXWjZDny0NlwcZb27B8q7cNjq69U6qLVUZD5zQSe+l7Ah8V3CXaJCJSpgP2dcPjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741008702; c=relaxed/simple;
-	bh=UnlZRIn1+XWnSfw2pYOSnNaYsdX5WURIf+Hn25tK/2k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q6RhhgY0UqBUoyD4OEUpT+/tap51H+AczqOQzJbamC62qJlJjg7Awa+K8dAk4dX5EhVNoUIovBNtXLDr2mvUqNFUZLjVBi6iCI6joDXTsbazOxlrhtL5lpXhWHAxpVgXX4zZUEar9e/I4Cq9V5lnjmhzwgdV/HeKw4aotruZ4oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=BC8YDrCe; arc=none smtp.client-ip=198.54.127.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
-	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4Z608P5BGyzGpYK;
-	Mon, 03 Mar 2025 13:31:33 +0000 (UTC)
-Received: from MTA-07.privateemail.com (unknown [10.50.14.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4Z608P4NQBz3hhVZ;
-	Mon,  3 Mar 2025 08:31:33 -0500 (EST)
-Received: from mta-07.privateemail.com (localhost [127.0.0.1])
-	by mta-07.privateemail.com (Postfix) with ESMTP id 4Z608P32p7z3hhV0;
-	Mon,  3 Mar 2025 08:31:33 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1741008693;
-	bh=UnlZRIn1+XWnSfw2pYOSnNaYsdX5WURIf+Hn25tK/2k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BC8YDrCeBCA/KChWY4EPrqKy7A8fAYwy+Odi1ANXa/vnIoSfJ86AKOezwBHBlU/46
-	 gffQinnck9bZMc20Me2sACxi5KJZSUKoeY5xRqVbofOYv+xPK1EQtg8fA+6ytJlrvG
-	 N+educh4GpHUNmLKFpEHqQBRAXm7Nd8/aleKHc18EJnrvz2pkXzMhhwC+gxU8yPHqF
-	 C5Z6EFIyQBntvKoEPbXztVuQgrdjkrqf6LHsb5UkUaD5BYvQ3jwEbhG5cbPc8ZJFw2
-	 ky9QsmK4nWX4VTQ5gkTzjytiLFL0VDnM0Rvk4gUby1LYO+JQE7U4YfTQ5znWPO6pE8
-	 PaHrEAKa20zZw==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-07.privateemail.com (Postfix) with ESMTPA;
-	Mon,  3 Mar 2025 08:31:20 -0500 (EST)
-Date: Mon, 3 Mar 2025 08:31:20 -0500
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
-Message-ID: <Z8WvKNcCnQI_UYZJ@65YTFL3.secure.tethers.com>
-References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
- <20250225134612.577022-2-sam.winchenbach@framepointer.org>
- <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
- <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
- <05e56d15-059b-425b-9e55-66993d988f8d@kernel.org>
- <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
- <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
+	s=arc-20240116; t=1741010214; c=relaxed/simple;
+	bh=Oul6vhkXR4va+z/+WhoZ0xRll3TSdgvTz5RPoDjs9Do=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h6UwhjttP03X/m0cbOEZB9e47i645Vf8McJxKoQPS1Alx4bU7UXefz1vwvNPJp7leip9g9LpSo/ZokNWmk0yxv9aCcX8Fbdffe0XhIbl3ZSkLqGmsqboaZTcyi3CSMvzUEfXFSWrR0Ww5bHsqUx7xh2pZIzQ6mrGjUgeblqZdwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fQDbMs8G; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523B6x9K030846
+	for <linux-kernel@vger.kernel.org>; Mon, 3 Mar 2025 13:56:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	UHuL7NNx8i87z9rx+SL91u+ZQbG95A3iELLmhhDeB5A=; b=fQDbMs8Gkr0StbCH
+	j1Vag3AkItreSFPe4uNsUjhVeTQNecsBYKieSpUdfKaVQd0PtZlw/1Jr4lUh5IGo
+	OXNvHUGqFOHmD1xQ21JYyWhHwf3MFf0YkT7003hJp1kLqYQilF8sT+lbOQeQTVlo
+	1naZwUkfKUwvySmxwzRfhQWLMF4TqfdRfpmVSaKvEtIuG1EP7EccxRmWr7FYoHDB
+	KZH/PXXKzrMYykw3oFScaSuVWxjmerdjZyqArdsB1ajSpWNHp+mNJVDtLCiKOAi6
+	weFw8aXgWhGh64SNsR3uq+/EUC1FbpfokcZoTWo+sSz8BjuMgZIsDmTp7k5WIQuj
+	TrZadw==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 453t88w4df-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 13:56:51 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-22331df540aso135183825ad.1
+        for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 05:56:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741010210; x=1741615010;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=UHuL7NNx8i87z9rx+SL91u+ZQbG95A3iELLmhhDeB5A=;
+        b=hFsjZHfPL9X440nsUqTSVXoiz5p2MzlCPlaCgGLqAugh40MJ7DAzXU63Hno0CUEo+s
+         bJpasj4KvHvFcEFYWHU4iZYEhpM1oPSjvYqwuXgpSK48pvSc7uSBhlA36zbWKrCaUw75
+         FiywaXwMVDF1s7+AyVxAy77c5thv0VYjQJJ7HaHfASzHd5QolrOzKoJD865ENcool3DO
+         lzGGoJGAd8SBZJDcr4QoqcI0PUXmhOMmfKADq6EBF1yxQbAafBRxcIIQU8M166AHD9mE
+         Joeg+m3eypqdIoFxIRtJquQGU8KPklalG+QuGUJ1yz/oDipDKw6Gs8S/QowC+tcDyWtz
+         qtAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXtN+qgcmVGfwFb0lIr9uLD1Ad23XRGDUnoCZBVreWzIgOw0ZBiStl71HegG2H7KqQHxOp4keNSFHF2BXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWszmVgKE+VhARvVAmcR25upto0k4CWJxoVZhJsDAPUj/4ilDg
+	MTH9KZzokShlXjeGnGVLI3Crd6ipjKW8fqwcY4T6Jv2Q6AP2FmP8q4uimrQrY9dZQOHxJ8BIlt8
+	iubHco72r8ad/cjdJcQo06RLAQIBxP0W4gljxfCyCucF3j7Mej+FhPJgZqbGXFF4=
+X-Gm-Gg: ASbGncsXsGUNcSVF+6DFKJ147+OZXzv0HDJnxme92avRGw89TblxxrmirfpHsyCo7ZI
+	ATIiJM0FJQ74mlD9nD6/BVHdem0e2GfXHcKBY1N8IkU9FrP2QABnEsXzeTJQazW+sjH/23yP5E+
+	yRHQrA6IkqHcD+ZE/+A8whHVYlPG+95vcet2HSebj7NUbbICAUX08XtCa7zaAGBlBYL5lu5foOJ
+	53oRdxdqS5/miE99Xj2wXqFeNZdIMv02GbybljESaMZH/I8whop/BVdlmwnNZgsNwkhl9gHEWyB
+	BDqVbl0xMrJ8xlB2craxhIxL2D08GJOgHoKxhNKWAw==
+X-Received: by 2002:a05:6a00:1895:b0:736:3be3:3d76 with SMTP id d2e1a72fcca58-7363be33e3emr9864320b3a.17.1741010208484;
+        Mon, 03 Mar 2025 05:56:48 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEUiUadUO0TJSNEbJpg+ohvZHRFRRVAl7dtA6ZreELy4A3DZdvPJ97GRjZfVWJgUCtgDVhYkw==
+X-Received: by 2002:a05:6a00:1895:b0:736:3be3:3d76 with SMTP id d2e1a72fcca58-7363be33e3emr9864180b3a.17.1741010206632;
+        Mon, 03 Mar 2025 05:56:46 -0800 (PST)
+Received: from [10.218.7.34] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7363d010101sm4064636b3a.115.2025.03.03.05.56.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Mar 2025 05:56:46 -0800 (PST)
+Message-ID: <449712bb-961e-4ccf-bf74-50dd55315abc@oss.qualcomm.com>
+Date: Mon, 3 Mar 2025 19:26:37 +0530
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -127,156 +136,101 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V5 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+        agross@kernel.org, andersson@kernel.org, dmitry.baryshkov@linaro.org,
+        konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+        amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+        rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+        david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+        quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
+        lars@metafoo.de, devicetree@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        cros-qcom-dts-watchers@chromium.org, quic_skakitap@quicinc.com,
+        neil.armstrong@linaro.org
+References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
+ <20250131183242.3653595-5-jishnu.prakash@oss.qualcomm.com>
+ <20250201121134.53040aae@jic23-huawei>
+ <9e14f58f-e345-4bae-b14e-de25fc28d9a8@oss.qualcomm.com>
+ <20250301032519.16e77288@jic23-huawei>
+Content-Language: en-US
+From: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+In-Reply-To: <20250301032519.16e77288@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: NX1dR6-oc6tpjPo9egELKQAiOGfJge2p
+X-Proofpoint-GUID: NX1dR6-oc6tpjPo9egELKQAiOGfJge2p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-03_07,2025-03-03_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ impostorscore=0 spamscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ priorityscore=1501 mlxlogscore=793 mlxscore=0 clxscore=1015 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503030106
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6h9N45wRzG3k1
+X-ITU-Libra-ESVA-ID: 4Z6fzR740TzG0nw
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741713644.55012@ZezFI5HxBaXe7sievDh4uw
+X-ITU-Libra-ESVA-Watermark: 1741712276.45651@XqUeVBb5UqdlbgXPQjFYcA
 X-ITU-MailScanner-SpamCheck: not spam
 
-On Mon, Mar 03, 2025 at 09:13:00AM +0100, Krzysztof Kozlowski wrote:
-> On 26/02/2025 23:16, Sam Winchenbach wrote:
-> >>>>> +  adi,hpf-margin-hz:
-> >>>>> +    description:
-> >>>>> +      Sets maximum high-pass corner frequency to the frequency of rf_in minus
-> >>>>> +      this value when in auto mode.
-> >>>>
-> >>>> IIUC, these are two bounds - lower and upper - in relation to something
-> >>>> else (like rf_in frequency)? If so, make it an array (naming to be
-> >>>> discuss, I assume you know better what's that):
-> >>>
-> >>> It is true that these are both related to rf_in but both the low and high pass
-> >>> filters can operate independently. Logically, IMO, it makes more sense to have
-> >>
-> >>
-> >> You mean you can set only low or high pass and keep other as default?
-> >> But what is the default then - something from reset value or "0" means
-> >> disabled?
-> > 
-> > This value isn't setting the corner frequency of the filter, but the minimum
-> > distance the corner must be from the fundamental frequency. So, for example,
-> > if rf_in is 3.35 GHz and you set lpf-margin-hz to 0 then the corner frequency
-> > will be set to 3.35 GHz because that is an exact value supported by the device.
-> > 
-> > If lpf-margin-hz is set to 30 MHz (for example), then corner frequency would be
-> > at least 3.35 GHz + 30 MHz = 3.38 GHz.  3.49 GHz is the closest corner
-> > frequency without going below 3.38 GHz that is supported by the device, so that
-> > is what will be selected.
-> > 
-> > This prevents the situation where your fundamental frequency falls on, or close
-> > to, a corner frequency which could result in 3dB (half power) loss in your
-> > signal.
-> > 
-> > This is all completely indepent of the high-pass filter.
-> 
-> Description is confusing a bit, because it suggests the value sets the
-> corner frequency. It explicitly says this - "sets ... corner frequency"
-> and such meaning for properties we usually associate with the property
-> doing this. Here however corner frequency will be always set to rf_in
-> and you just adjust the value.
->
+Hi Jonathan,
 
-How about: "Sets the minimum distance (in Hz) between the fundamental
-frequency of `rf_in` and the corner frequency of the high-pass, input filter
-when operatred in 'auto' mode. The selected high-pass corner frequency will
-be less than, or equal to, `rf_in` - `hpf-margin-hz`. If not setting is found
-that satisfies this relationship the filter will be put into 'bypass'."
-
-Perhaps that is a bit more clear on the intention of this parameter?
-
-> > 
-> >>
-> >>> them as separate controls but I am happy to put them into an array if that is
-> >>> the idiomatic approach to situations like this. That said, I am having a
-> >>> difficult time getting dt_binding_check to pass when I have an array of uint64.
-> >>>
-> >>> When listing two items, as in your example below, I get the following:
-> >>> adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
-> >>
-> >> Tricky to say without seeing your code. Magic crystal ball had
-> >> malfunction today.
-> > 
-> > This is the property:
-> > 
-> >   adi,filter-margins-hz:
-> >     items:
-> >       - description: |
-> >           The minimum distance, in Hz, between rf_in and the low-pass corner
-> >           frequency when the device is used in "auto" mode. If the sum of
-> >           rf_in and this value is greater than 18.85 GHz then the low-pass
-> >           filter will be put into bypass mode, otherwise the closest corner
-> >           frequency that is greater than or equal to the sum of rf_in plus this
-> >           value will be used.
-> >         minimum: 0
-> >         maximum: 0xFFFFFFFFFFFFFFFF
-> >         default: 0
-> >       - description: |
-> >           The minimum distance, in Hz, between rf_in and the high-pass corner
-> >           frequency when the device is used in "auto" mode. If the difference
-> >           between rf_in and this value is less than 1.75 GHz then the high-pass
-> >           filter will be put into bypass mode, otherwise the closest corner
-> >           frequency that is less than or equal to the difference of rf_in and
-> >           this value will be used.
-> >         minimum: 0
-> >         maximum: 0xFFFFFFFFFFFFFFFF
-> >         default: 0
-> > 
-> > And this is the example:
-> > 
-> > examples:
-> >   - |
-> >     spi {
-> >       #address-cells = <1>;
-> >       #size-cells = <0>;
-> >       admv8818@0 {
-> >         compatible = "adi,admv8818";
-> >         reg = <0>;
-> >         spi-max-frequency = <10000000>;
-> >         clocks = <&admv8818_rfin>;
-> >         clock-names = "rf_in";
-> >         adi,filter-margins-hz = /bits/ 64 <30000000 30000000>;
+On 3/1/2025 8:55 AM, Jonathan Cameron wrote:
+> On Wed, 26 Feb 2025 14:22:05 +0530
+> Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 > 
+...
+>>>> +void adc5_take_mutex_lock(struct device *dev, bool lock)
+>>>> +{
+>>>> +	struct iio_dev *indio_dev = dev_get_drvdata(dev->parent);
+>>>> +	struct adc5_chip *adc = iio_priv(indio_dev);
+>>>> +
+>>>> +	if (lock)
+>>>> +		mutex_lock(&adc->lock);
+>>>> +	else
+>>>> +		mutex_unlock(&adc->lock);
+>>>> +}
+>>>> +EXPORT_SYMBOL_NS_GPL(adc5_take_mutex_lock, "QCOM_SPMI_ADC5_GEN3");  
+>>>
+>>> This is potentially going to make a mess for sparse.  Might be better to split
+>>> it in two so you can had __acquires and __releases markings.
+>>>
+>>> If you don't get any warnings with sparse then I guess we are fine.
+>>>   
+>>
+>> I had tried building with sparse in my local workspace and I did not get any errors in this file. Do you think I can keep this unchanged?
+>> Also, would any kernel bots run sparse later on this patch, if it's not already done?
 > 
-> foo-hz is in 32-bit, so basically you have here 4 32-bit numbers which
-> indeed reported by dtschema - property is too long. Drop 64-bit here.
+> Problems around this tend to turn up a bit late in build tests as requires
+> particular combinations of features.  Here you may not see problems because
+> sparse can't see far enough to understand the locking.
+> 
+> I would still split this into lock / unlock as that matches better
+> with common syntax for locks.  We can then add markings
+> as necessary later.
 > 
 
-I was hoping to keep this 64 bits seeing this is a 18 GHz+ filter. I suppose
-I could change this to MHz and just lose a bit of resolution. Does that sound
-like a better approach?
+OK, I can split this into separate lock and unlock functions.
+And for markings, you mean I should add these:
 
-> Device allows multiple LPF/HPF values to be stored in LUT tables and it
-> actually has four independent filters. Shouldn't these be included here?
-> Maybe not LUT tables, but the configuration for all filters?
->
+    __acquires(&adc->lock)
+    __releases(&adc->lock)
 
-There are two filters, the input (high-pass) filter, and the output (low-pass)
-filter. Each filter has four banks, each with a different range of frequencies.
-Only one bank can be selected at a time. Each bank has 16 different possible
-cutoff/corner frequencies. That is a total of 64 distinct values for each of
-the two filters.
-
-The issue with setting the corner frequency directly is that in certain
-applications (such as software defined radios) the fundamental frequency
-is adjustable, necessitating that the corner frequencies of the filter are
-adjusted accordingly. When the filter is in "auto" mode it is notified via
-the clock system of frequency changes, so using this information it should be
-possible to select new corner frequencies if you know the minimum distance
-between your fundamental frequency and the corner.
-
-
-It is possible there is either not enough call for this feature, or it goes
-against the designs of the maintainters. If that is the case we should decline
-this patch and we will maintain it in our fork of the kernel.
+under the lock and unlock functions respectively?
 
 Thanks,
--Sam
- 
-> Best regards,
-> Krzysztof
+Jishnu
+
+>>>> +/*  
+>>>
+>>> Looks like valid kernel doc, so /** and check it builds fine
+>>> with the kernel-doc script.
+>>>   
+
 
 

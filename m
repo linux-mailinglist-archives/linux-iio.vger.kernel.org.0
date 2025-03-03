@@ -1,188 +1,133 @@
-Return-Path: <linux-iio+bounces-16293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915CFA4C33F
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:20:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52653A4C39E
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25DC8172CA6
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D64E218933B0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6B2135D8;
-	Mon,  3 Mar 2025 14:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AE2214225;
+	Mon,  3 Mar 2025 14:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuEyftF6"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dTJX1luz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D57D13BAF1;
-	Mon,  3 Mar 2025 14:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0B621420A
+	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 14:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741011528; cv=none; b=gzE0vgoaH0oF/NOeUs88XzGQFq1UNLk6BrGIgNQkvM9X28qs8qivFcun9jsfFIXFy/COLgpHW+KJxXr/NVVgZ1P0vr93FfXOajmuT3SjSEgS+lYVHlbNo81kJHCrZp/gBErgg6i83jkIudSKIRkLg/hYQJKFYWqtxuGFuXXHKkI=
+	t=1741012805; cv=none; b=qnN58reWjI9Hc9+Zy0Ndu+ADoO0c4VYT6SaT9aT4OW386vLiiop2oDsR2h1ptJT5+7dT7+ApDiW5ue96qrxqXHK/ytx0JfLod6qobVGe56+BaSdGgW5gpw7/igdtjw2BN0k1XCw9efNoAtQ7k0l+CbqIMJAc3ibplD0b/ykBKSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741011528; c=relaxed/simple;
-	bh=lqjp7LIjDhQxWqewy5mV5ckok6buZoX+dvARhvXCRko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=obnB6j1bvY6MEIvdpRKKo5EPnz2LYIkl5EPy6EVSLncLTLmrYcjkPZdwzqlcd6VGQIkksz6jn/rpA4fetO1RkToGZ03s7E1Mljo6sdPtKsA+42pOgKHA3Jg58wzWeNtYbaIQ2Du7sHCsTarbQ72885YhltqqvLeYCp5+EYqIbGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuEyftF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCA2C4CED6;
-	Mon,  3 Mar 2025 14:18:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741011528;
-	bh=lqjp7LIjDhQxWqewy5mV5ckok6buZoX+dvARhvXCRko=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PuEyftF6/98P2YSoT/4dx5CwnIWkCdDWHwsSHGPpVCQdI7A/Qz4YSX+WX/Kc/luQU
-	 rCpXhhOGWAizvCQE+iTUEyI/y1ZTX00Oyj2kGjCxNawQwjg2Cr5Eq+BMG9JV29dwsn
-	 N4EvxuaxfaVRYdC5lQUFhX4TAs/cVp1tXbWpRrkSw+SJUb9IftzGhb4jgtP/XKoX4Y
-	 acPXTU8ONuYyS6hUZBbqxcXtj26VxkXj+rUttuRoPG5mzo4JWh8/hhEhUzQaDAq9oM
-	 i46OI85zxt/voI71Jw6MiSdGgiFvM0Ad4BhfJVkQNf0hPimHMme+Q3kbvisBOLMsz/
-	 2L8vFxvrgC9Tw==
-Message-ID: <c9dc351b-0b81-44c6-a89d-4644f600a41c@kernel.org>
-Date: Mon, 3 Mar 2025 15:18:40 +0100
+	s=arc-20240116; t=1741012805; c=relaxed/simple;
+	bh=huTITU+3NLOlGIQKUO1Q57DNwMMY/Xb18Ro9MUcuAZA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=oSyo91ebKXTfmxTsBm0jzGFEl/AV98tU0QQ0L6kKOOm4c2yG+TijSai5M7ykdCSbz0KjjJLq4PbDQdG2weVyoInq1Ziw2tDIAa4bgCbgiIlKnP2uRAv1MKG3JxCkwDHp0FvtdQLv0atdcMl2ELQ6VROj37elJuYS2AZEKvRQ43c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dTJX1luz; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-38f403edb4eso2599475f8f.3
+        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 06:40:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741012800; x=1741617600; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cCvz2PQitaL3G15KvIJkAOr8tNO1gvVwjPom0Ibxufk=;
+        b=dTJX1luzeTmtWi+dFz9agN48SvJXrKpiLJhBzXIU4vnMm/QGn9sE1ebGiC2PWA4Vm7
+         W+byrAciKvEzUmYrnNZnVTvhN8H0i6Enllf4Um9v5AnDxpbSnnqJEth9ze/KBUntGs7y
+         ZeNQENI8t1kg3TiO/bQgBZDoFe/B66F2AwEy9TOEF3e5i99vVIrwmxG2ZWmkyM3zr1na
+         Ir69Z7r3ylWpWVLJXEzraoDHnMiWiY0ok8UdcNDiQk8wkB8qGfLWqaulKvAtqX6zxxPU
+         nI4N+p0rNJD6T1fInxNHi9IzyP6T5nR1r1P8GgqRZ/N3dlcBrJg93oKDT6vxow5Rif2w
+         xgkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741012800; x=1741617600;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cCvz2PQitaL3G15KvIJkAOr8tNO1gvVwjPom0Ibxufk=;
+        b=oeCwzfhDYX5+q5YTMq6Sv7uZgkb5MiOZ6vhm9Rl6uhzPJK4QvY8QwBXa6a1Lx3eNFd
+         C1gaXSNyktIPG7HSYFDmCq/LfypJcgz+wu81X96VlT/9oGhqAcMI/DdYU5Or2AD6U0OE
+         E18nQBnSDnNv/8KWk7O0tbL2a34lYRnpJIbXsoVLpWibgslHplx7IbO6OVHqO/J+uslQ
+         L+ORQK0CE1+jTiQ0MEZR4kKOCCH87I2MEIdAqfEoKoFP7FRelJf+7K4NlxXUaE0qyEQ9
+         EW6DcIPM8p7f3+LVO2OCUV0grlO/0OsVjZBUrPXI1W3483NdE+ir7nqwsWlDbwWN1tD7
+         9Meg==
+X-Forwarded-Encrypted: i=1; AJvYcCVTG/pUkKlMMjgdjVmzSjhcsQv9V6/lzk9PbBv6Q99TaejYd+Fh0i+FnWeNqLhhSS8OFGdUKS7Bxhg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6ca7cMlKfQNbRnowyErKLPH9Z3W1yTNxf5TIiCcRLR7rxjFY5
+	ImPY3EbwWA/ISTy7AMZqiNp6nUcWia92TqAVarsuJaKydqzez8z83oA7Ao492N0=
+X-Gm-Gg: ASbGnctRHY/KDfFTIY5WjDK42ljVGtF/phz4wIyoCMipUcxeKjwks2+fspw9i9u1hCu
+	1K9Kj75oqDzgtd4KppIsZIb8taXQQUxBi4kH8HrrxGUluDmy9ZDxq81g+spQxtiAeTuc4PwtAVV
+	1B1pEW2LZajJaji7nqGQntGl1HaV0fC9S9NKj4jbH/YhLqMJ33kDqwX8pWoPcbUKJaHqLBFpwFn
+	hchJGSk5/iBZk8/VZDnufsNN///gSLpcCqoDS4/LRBakJhVQ/IQxxR16cXXN+s/jowz+6fycQka
+	y83QeCbZDL7CBTRODgvtNUcGfHVJ8HGCom4+cOl1dEv8AbLju0Z0Zzi0y4wrs2EKwlrn4A2H5+s
+	8XHMSZenp70/NasWCxAC2wMREJ45N
+X-Google-Smtp-Source: AGHT+IFGoay4YJM6YSXz0DZ05o3quafyCNLOWh8vQu4Eq4apk6qCX8ogXLL13gs5Zle+ply0NrLrLg==
+X-Received: by 2002:a05:6000:1f8b:b0:391:ccf:2d1b with SMTP id ffacd0b85a97d-3910ccf2dcdmr2532910f8f.49.1741012800564;
+        Mon, 03 Mar 2025 06:40:00 -0800 (PST)
+Received: from [127.0.1.1] (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b7c43sm14394801f8f.49.2025.03.03.06.40.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 06:40:00 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 03 Mar 2025 14:39:57 +0000
+Subject: [PATCH] MAINTAINERS: remove adi,ad7606.yaml from SEPS525
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
- bindings
-To: David Jander <david@protonic.nl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
- <ukleinek@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>, linux-pwm@vger.kernel.org
-References: <20250227162823.3585810-1-david@protonic.nl>
- <20250227162823.3585810-8-david@protonic.nl>
- <20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
- <20250228102201.590b4be6@erd003.prtnl>
- <9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
- <20250228110931.7bdae7fd@erd003.prtnl>
- <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
- <20250303124034.726ba698@erd003.prtnl>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20250303124034.726ba698@erd003.prtnl>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-v1-1-a4e4f1b824ab@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIADy/xWcC/x2OywrDIBAAfyXsuQs20Qj9ldKD0bVd8BHWEFJC/
+ r3SwxzmNHNCI2Fq8BhOENq5cS1d7rcB/MeVNyGH7jCq0ahJTZgdl61D0lAo153QBe7YWc34dTl
+ hlJqx0drMaDD5gL6WTWpKJLhYG7TXSzTaQY+sQpGP/8DzdV0/McmlB5AAAAA=
+X-Change-ID: 20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-b77d4c4bf54a
+To: linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, 
+ Michael Hennerich <michael.hennerich@analog.com>
+Cc: David Lechner <dlechner@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On 03/03/2025 12:40, David Jander wrote:
->>
->> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
->> include:
->>
->> 	pwm-adp5585
->> 	pwm-ntxec
->> 	pwm-raspberrypi-poe
->> 	pwm-rz-mtu3 (software limitation only)
->> 	pwm-sunplus
->> 	pwm-twl-led (not completely sure, that one is strange)
->>
->> . ISTR that there is a driver that does only support inverted polarity,
->> but I don't find it. For an overview I recommend reading through the
->> output of:
->>
->> 	for f in drivers/pwm/pwm-*; do
->> 		echo $f;
->> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
->> 		echo;
->> 	done | less
->>
->> . (Note not all drivers have commentary in the right format to unveil
->> their limitations.)
->>
->> For most use-cases you can just do
->>
->> 	.duty_cycle = .period - .duty_cycle
-> 
-> Yes, that is exactly what the relevant code in motion/simple-pwm.c does when
-> the "pwm-inverted" flag is present in the DT node.
-> 
->> instead of inverting polarity, but there is no abstraction in the PWM
->> bindings for that and also no helpers in the PWM framework. The problem
->> is more or less ignored, so if you have a device with
->>
->> 	pwms = <&pwm0 0 PWM_POLARITY_INVERTED>;
->>
->> and the PWM chip in question doesn't support that, the pwm API functions
->> will fail. So the system designer better makes sure that the PWM
->> hardware can cope with the needed polarity.
-> 
-> Thanks for clarifying this!
-> 
-> @Krzysztof, do you think that given this situation it is acceptable to include
-> the "pwm-inverted" flag in the dt-schema of the simple PWM motor driver?
+Remove Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml from
+STAGING - SEPS525 LCD CONTROLLER DRIVERS. This was likley a copy/paste
+mistake. There is no bindings file for SEPS525 since it is only in
+staging.
 
-No, because that flag is already supported via PWM_POLARITY_INVERTED.
+The removed file matches Documentation/devicetree/bindings/iio/*/adi,*
+under ANALOG DEVICES INC IIO DRIVERS already so wasn't just misplaced.
 
-Do not tie bindings to specific implementation. If PWM core is changed
-to always handle PWM_POLARITY_INVERTED even if controller does not
-support it, would the binding became outdated?
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+This falls under FBTFT which is currently orphaned, so someone else will
+have to volunteer to pick this up.
+---
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-> 
-> The need for an inverted PWM signal is something very common in the case of
-> H-bridge motor drivers, where the PWM signal represents the actual logical
-> output level of each of the two halves of the bridge. Often the high-side
-> switches are used as the free-wheel position, so that 100% duty-cycle on both
-> channels is actually standstill, while 0% duty-cycle on one channel is full
-> speed in either direction. This isn't always the case though, hence the
-> importance for this to be able to be selected.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8e0736dc2ee0e33544fa373a4978b7dae18c040c..215dbaeedced8473b5b339329b3596a2fbfd13b1 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -22512,7 +22512,6 @@ STAGING - SEPS525 LCD CONTROLLER DRIVERS
+ M:	Michael Hennerich <michael.hennerich@analog.com>
+ L:	linux-fbdev@vger.kernel.org
+ S:	Supported
+-F:	Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+ F:	drivers/staging/fbtft/fb_seps525.c
+ 
+ STAGING - SILICON MOTION SM750 FRAME BUFFER DRIVER
 
-Sure and use existing bindings for that. If implementation has problems,
-fix implementation.
+---
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+change-id: 20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-b77d4c4bf54a
 
 Best regards,
-Krzysztof
+-- 
+David Lechner <dlechner@baylibre.com>
+
 

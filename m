@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-16308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFAFA4CF70
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 00:49:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E40A4CF8B
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 00:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64EB53ACA05
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 23:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EBF71889411
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 23:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D931F3D56;
-	Mon,  3 Mar 2025 23:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE0C1F417A;
+	Mon,  3 Mar 2025 23:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZpAeOByV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eb4BMwjL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD31F0E38;
-	Mon,  3 Mar 2025 23:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF29DF9E6;
+	Mon,  3 Mar 2025 23:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741045765; cv=none; b=TKUJnCXgWFEzupGWPuxIeOTIjhlpUB4DcDEAh+sOnTx1CUf5dsZikuVkxqpcB8vhgiNIrViDlcySXaeoFvAMUVlaTSawRXzh9x5L8Ezj5iotHA8Bhu0MJCJAZpU4nnw9XZ2I2c2xGj7pYG1EpXld/R1R8HQPIWCB6LT5AtrUEiA=
+	t=1741046380; cv=none; b=Z1tUFaLLa7W1ZMrjp3Id/L/sFyz66zQ7rJgKXxeGPa6EYMZRrPlrcA8GR/ziTtiKtDhyNt52h98u6zDkA+wDjlLtZELdHyYIT2fksYoCeyxOwVPPtd/E6u0DAtBAlKOE+4qg2DT4pT3Px867Xr3ujflA6daY8UsB1KN9ue7Jc1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741045765; c=relaxed/simple;
-	bh=oUi0jUhO0onTNNPUZafZGwsnGSvTxM55zWWRbgJAGRE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YhwyJ/7pPO8g0dBK2034khqEeSIN/fzyBTNBplZMKqyHq560y2trKdCgif85AzF5/KHcE19i83rw38uH9f7yzV3PVGAAhcD3r4P/7j9bAlICmZeKwXmuSejZQs+uUGmh1js1wFxZF/Khvj08Cqh8EjLmwaLOZO5U3RpJnQtpeLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZpAeOByV; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1741046380; c=relaxed/simple;
+	bh=04bpoOcPW4nahyQoGffhYfeUl/7cvNwek56IxXN5nLE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZOJQnHDOlOhGV9QeE1uKD7UCn4dLjPDEwmkwAkS1AFPR0/d+R2iMhymtt/3NKgaoN+TWN2nBwuN2JQUOoMdEfSYBhTsuLX6pB3N1FqsD2VkzwJuMPVmxO53mOzLjw6VhbTMQkW8P57fXbGRuUUR3UkWR5F+A0fqREu4yOY4qd4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eb4BMwjL; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2232b12cd36so67719915ad.0;
-        Mon, 03 Mar 2025 15:49:23 -0800 (PST)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2239aa5da08so33309705ad.3;
+        Mon, 03 Mar 2025 15:59:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741045763; x=1741650563; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741046378; x=1741651178; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uYJ1AOOF6Fuast7FuJwQwgJn1W/QJXvpVCQfOQs8dx4=;
-        b=ZpAeOByVEihWEdORJ4naq8Hj75jm5Od2h6bTClAwBAP3SGFxndv4SePRrm/hEyNPhV
-         G+HRJGsbdxq9TSMFJ7RHne4vDBL6bZsA62aW7DklbLfmbPXqwIfnEjeVie4sOJKIpilN
-         MODKY81RQ7s3CmVha1UnOyEI61aP7neYEaOAkCVZH/U4fp7NeP10zI7gjsp7vUIRQUTC
-         jfPFC1HAidnK4MP6OrOeK5TyE98n2Py/mx+oMK4pDjC0oZj/NfWp/DAd8lqybxUvHEBt
-         8SgFJS99ayHRcYywUSvImsZo1j1qyM0cSpiq4zghYG8+OMmao/Q2IllyCjNeiQJKzBlz
-         Xg0w==
+        bh=+Nl5k4lX8ykAjaBSh+OFtZkq9yFs9ZO8ZZS3/cchBXs=;
+        b=Eb4BMwjLNVgxGLZxkvHkNoIp0NdzIsYMeH0xT4a4aApjEPMVBM1HYzX8pKRoMkaJRQ
+         Af80Pv+i0WL8lxpr7EwIYVg6hIa1JaaEAXzTV4UVL7nPNIQiRNEs8zH3yHaBx86uPtr0
+         G37EDMVlrhOXMx2SZWLzqTRPPSDHrJSziLZuu+7oyf7/v4cEkoPF4T9PL2Es6wqEIS9Q
+         NBfXkaONCft1aDPTt37CCHzrcjYJzMy0L2nlw3yFwpMZdjUm0qcYRX5iGDt62PTXaBAm
+         F5dgB03vPr6WcvP/keuxHDamJQQEOCp0Q4rAm1kL49psc+rpTTgJLUbY0dj7cQodQK3w
+         sC/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741045763; x=1741650563;
+        d=1e100.net; s=20230601; t=1741046378; x=1741651178;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uYJ1AOOF6Fuast7FuJwQwgJn1W/QJXvpVCQfOQs8dx4=;
-        b=rWkzU6Lq+nKc+S/YAM7Ake5s2zAJRj3syhe/qOStslURIIkRH7txHAHuhNB2AStc1n
-         y+VwQzZnWy5xc/l8G+j3wdA0DqhEfowogX7Aw9+oZ+cDbwAGAmg5QZjZHhdTL/M94pNV
-         tLm33UDxwaDMIqA6cXRVWqEtp6wHSF5IfSyqJHfQbkL7Hm8DX2th18/UpwMWUXeXzy6J
-         3lTdB2lAj9FptXhtBCjjZpgV3gS7ht1QNd+z4hkUXVL8em+B03jaa8FGM8TUoo2q4Qnr
-         ZXA04vRuIf9FZws55V+yx6orlmpsNWBuGf2AmnrbVZCeyYksolPEdg8YSRsLxZ7uHzRk
-         A2dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUxilFUtIiIx0MeaRxPHOi7NFMIotkevfbk7u2N49xlWP2OEY78SMQ0W1CHxz4F4VUDYw5RFW7L743G@vger.kernel.org, AJvYcCVa5kgTj31a4PqsCLFPWSXyouykjqwP3pLHwzNqwEXRB/vy8kWn09olahr1PUj0ghK3WOfKgBkCXknD@vger.kernel.org, AJvYcCVmbnUKc9tP+MtZqAeruJO4NG6ISgmCCgNG27PACQbXGpS8Vu+vXTjFm63xM8+R0Wk0zKsJBdv71v7SiVet@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLz4fZri65+ehL12EbzPxKft9UAksDvOQz/fYYSC7rE2RNBTay
-	7DwLLQoy+dykK29SedR070rm2gRrnFegz//QKAmXWUa5e9Nk343r
-X-Gm-Gg: ASbGncsBHCEMML0NL1ZnAiNF3QqQSfs8hge+OlE2cxOMmVUspfbN0PuBMDini263wNc
-	3eN0kZvzCTG67nJVirNk94cMRgSNPu4pFzuPz96Gz6vpIA9ypM3F4QOU4bYV1bBX8PuujEejIaR
-	InblB24naFmO9Lj9WmEFxKsJPSuhoylisYbYb5uGw7BzC//cDsCpz8jQHxXiCYEWtH8d2CF8Gpy
-	OFQfe8Hz7jyJzPDVxFXExp+wFpxClWY7QQU6l8+Eo9v0XQI3yR2F+SFNiwqeJNJjAUOtHm0nC2f
-	2b6ztTp0cSlIy3tOfflvnj0k4yg4NTAR6W55+myND4h0ZKZ5e1GciNLDNA5Z+4K3DZ2E
-X-Google-Smtp-Source: AGHT+IGud6PYFMMPUpGldM4VW41ELjduKt3ffPZ3XDhZP9ZtgQhTGW1FAO3MuExVyqDYgDsAPDZcwQ==
-X-Received: by 2002:a05:6a20:3946:b0:1ee:ace8:8181 with SMTP id adf61e73a8af0-1f2f4d1d213mr26375064637.21.1741045762741;
-        Mon, 03 Mar 2025 15:49:22 -0800 (PST)
+        bh=+Nl5k4lX8ykAjaBSh+OFtZkq9yFs9ZO8ZZS3/cchBXs=;
+        b=T72s71oiL89FOGswB3aKhXZ5ZFyhVQGDpM7z0Sqr85eJB06TyGSvne2J5vmqCxBnPq
+         yIJQxq+d/DRfaZXpsjS/M66B5sH4pLY1lLZVXWb0xP5ZtcMt5fZDLfkDprUlXy78svDM
+         kDqG3EO3d3vss/4tbddCZT2ScaN8h0pYdvMRmecMuGDv6F3D8IDDEYar6ShdxxlIrKcc
+         9fReFXwmWjCwL2xGZhyk4OaZ5TAFzIuaJKvweSHBI7fza4xuuEnmb22mciZ/gSYsYjGB
+         EgPFWvij/q+pNcgKiFpbq0P2K3xdQFP1etKpozzKNnXIYJcyFjF2ouZUI9DXQpBEUI+f
+         ppBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUU03s1U68wOjAfeH6QXLZ2P6DbmK/vFl2hBNHzOL1nHP8BjQgmG1dV36DvPgw6ZB2q8RmdWaVzuPMF@vger.kernel.org, AJvYcCUWzPLGNU8xVMS3196Q9qiYIu9ulGaO7GxHA2RYxKJmPoZNHz40BCtT9ci8y7XzMJIiySLUzzj9m68G@vger.kernel.org, AJvYcCUuQMXTdoYNgCMEt7XCvcbOAr3Q+YHdFOz6e6Fo1m2pinzFm7a2R2VFSo0e5xnwprm1go2qwTs3ZIPJX+9F@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKFPin54UOk7AP/GxDPpK25ehZJFgzv7q70ISGJqm6sfq5gsia
+	sI2Jk5UxCr4sxO+ZJgfjuCh3VXvSZx2khQAPQn/tD4bfSG09wVoY
+X-Gm-Gg: ASbGnctB3eAmQy8JNRpvysWFETF8vjDlpobkuU8CyjNoj3CguoFl7LDDwSMX0FGr1lk
+	8mpKKE/+xCLCp0J1ROmASsWOuGf17KujpyrMxIY6hqhffkr9psEy/rff2S+Qn6xS4QPNrDmTlOX
+	n7yZHLrEirbtKT25NFYdNorA3yLtBY4fNEHZm4AWl1YONJmJbRhR/Sulz6TWqqswJU6w+LS8Yb+
+	S2S6BB29GtE1kp8RuIrpuIAVk6YYmC64HXplyoGlQMq+BAYzRZBDHQNuZJZdnDfg5jWCq4GJu+E
+	9CAURcOtt5KGm1tzX9gyfMbzT+Me8ywwKBo3RFe9KLy08ZK+dig9KU3xWqL7skBHv6UG
+X-Google-Smtp-Source: AGHT+IGk+zORULG18C0l/CqE4lIgOVZvq9u81/ReypCKT4mvBK1lYyGlpNr3ONZlH2rHl5CMFl/KhA==
+X-Received: by 2002:a17:902:ce91:b0:223:64bb:f657 with SMTP id d9443c01a7336-2236922352bmr222799545ad.46.1741046377894;
+        Mon, 03 Mar 2025 15:59:37 -0800 (PST)
 Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:7b03:1e42:d492:fb71])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af180155f85sm5689283a12.62.2025.03.03.15.49.19
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22350531e1asm83591775ad.240.2025.03.03.15.59.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 15:49:22 -0800 (PST)
+        Mon, 03 Mar 2025 15:59:37 -0800 (PST)
 From: Saalim Quadri <danascape@gmail.com>
 To: jic23@kernel.org
 Cc: lars@metafoo.de,
@@ -84,9 +84,9 @@ Cc: lars@metafoo.de,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org,
 	Saalim Quadri <danascape@gmail.com>
-Subject: [PATCH] dt-bindings: iio: accel: add binding documentation for ADIS16203
-Date: Tue,  4 Mar 2025 05:19:13 +0530
-Message-Id: <20250303234913.66614-1-danascape@gmail.com>
+Subject: [PATCH v2] dt-bindings: iio: accel: add binding documentation for ADIS16203
+Date: Tue,  4 Mar 2025 05:29:30 +0530
+Message-Id: <20250303235930.68731-1-danascape@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -100,13 +100,16 @@ This patch add device tree binding documentation for ADIS16203.
 
 Signed-off-by: Saalim Quadri <danascape@gmail.com>
 ---
+Changes:
+V1 - V2: change compatible property from enum to const
+
  .../bindings/iio/accel/adi,adis16203.yaml     | 52 +++++++++++++++++++
  1 file changed, 52 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
 
 diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
 new file mode 100644
-index 000000000000..e67e856266f5
+index 000000000000..64370f13e1dc
 --- /dev/null
 +++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
 @@ -0,0 +1,52 @@
@@ -126,7 +129,7 @@ index 000000000000..e67e856266f5
 +
 +properties:
 +  compatible:
-+    enum:
++    const:
 +      - adi,adis16203
 +
 +  reg:

@@ -1,119 +1,145 @@
-Return-Path: <linux-iio+bounces-16370-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16358-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E398A4E6FB
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 17:54:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F1CA4E242
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 16:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7BB24610A3
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 16:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D09A189A7D9
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 14:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC65F294EE0;
-	Tue,  4 Mar 2025 16:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D9A25E837;
+	Tue,  4 Mar 2025 14:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="qphRwrCN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NBRJ9t0/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
+Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05355280A29
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 16:27:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DD525F976
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 14:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=160.75.25.116
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741105624; cv=pass; b=OZWDtAeYNaQIMK0QXpz1zJhUEJyrcUhMmijTiYjv8yisiZ23kc9R+Ny+Zs80ATQFNFFA3iZ0kb9g6E1K6tFDvD+G1d58vOV2Lg1AWFWA2EEo0FJZChyQC3lQL6MT6Ho2Xjn9KfoLS8FNxRx6yONIctNgoMvh87ATfQ/MT88GRds=
+	t=1741100132; cv=fail; b=GFmOwcRvXDaT6kVzXh2Cn8a4+nJxOFjuJ4dafCKLVIxx8hTD2GFJHKhEOg8UMm96P85j5+OEalcHxxHy28MrrgCadLvlLAZIy2H/s32vFwrh4hpPvrQMrx9Q7dw7W6LM78F0PTIkJvBBD1ohv9cmBQySD/Aq4dS53BQLf4f7HKg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741105624; c=relaxed/simple;
-	bh=xjKhMtLA9tK9j8SX+seT9UK5BSImtLHPUuXRUCeDyBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PECa2JtnEpNOlYlsg5SUPpn47B2j5CNJDtiKNVdbxvX5UM1jjQu6oMk5imhfxbiPb+fA/hcSc48HJCwg0dgG1WP+cmYHHFheZjucGoysiFnJa0fWyIEaj/kJIWqBiTa3TCM92+F4oYSYIgrCkDniBfapE4Gjg6BPHQew1mDw88k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN; arc=none smtp.client-ip=94.124.121.26; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; arc=pass smtp.client-ip=160.75.25.115
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+	s=arc-20240116; t=1741100132; c=relaxed/simple;
+	bh=fh6GrYEp0jAU3aoZMjoRqmKSHT8/NkBpRU1jnSOYaN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A1RdSFeRkQJRiw6kXLdMgSAez+9rBGgDbraWIkigvgHbYiuXX9S0oVgqIvXUuT3O0q26FML+5eLw36tckablDzEov0A/DurjAikMQ+622+pTYf3SIDEHcqn4OPf+cd1xk0HfwR84yHG4bEEd6iYuUtz9jermyZ/pfSJiKmDmzAU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=fail (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NBRJ9t0/ reason="signature verification failed"; arc=none smtp.client-ip=209.85.128.44; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; arc=fail smtp.client-ip=160.75.25.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 2A75040D9753
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 19:27:01 +0300 (+03)
+	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 2091840F1CD0
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 17:55:29 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=protonic.nl header.i=@protonic.nl header.a=rsa-sha256 header.s=202111 header.b=qphRwrCN
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=NBRJ9t0/
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gx35HpnzG3GW
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 19:24:07 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6dv14d7xzFxbp
+	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 17:52:13 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id 1BEEF42750; Tue,  4 Mar 2025 19:23:51 +0300 (+03)
+	id B19E042722; Tue,  4 Mar 2025 17:52:07 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN
-X-Envelope-From: <linux-kernel+bounces-541610-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NBRJ9t0/
+X-Envelope-From: <linux-kernel+bounces-541626-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN
-Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id CEB5D42470
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:47:06 +0300 (+03)
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 5DC053064C0B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:47:06 +0300 (+03)
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NBRJ9t0/
+Received: from fgw2.itu.edu.tr (fgw2.itu.edu.tr [160.75.25.104])
+	by le2 (Postfix) with ESMTP id 3B06A42854
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:49:58 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw2.itu.edu.tr (Postfix) with SMTP id C096C2DCE4
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 14:49:57 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B7523A4C44
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:41:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6CF1676A1
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 11:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2EB202F88;
-	Mon,  3 Mar 2025 11:40:41 +0000 (UTC)
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8105420F06A;
+	Mon,  3 Mar 2025 11:48:01 +0000 (UTC)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26EF9201025
-	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 11:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE39520E022
+	for <linux-kernel@vger.kernel.org>; Mon,  3 Mar 2025 11:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741002039; cv=none; b=akcIzpIasZpnpd61PdZNTbo4iBwhXCrv0YD4xnaV91IJbExMW2Bd/kWSU0yO6tXJSdKxna/4YcC0/JzsHY9idt/+PhP6xECJ+NfIQc4ITmI3ArRntpMaPjr2i/Vo6IXMAT+JrJH6MMPICVwxc8ck00ctmPXyvByMjLBCP1CTJE8=
+	t=1741002477; cv=none; b=RfDv53d/frw8NpqcGqUHsLpD5fa+peCjBscUs67PooKI84Pd4JpX+Xzei3zWfiqRP2wa7i8yIMtJmxCzbgEfwh+CrCP40b4mnzeLIp/bkJ2rv04zhTCj/8DF3A0OhzLPMElOAR/tqQmDef7X8Gfq9+MsjCh4hCxZpNWEwlapUjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741002039; c=relaxed/simple;
-	bh=xjKhMtLA9tK9j8SX+seT9UK5BSImtLHPUuXRUCeDyBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AWULaN5Ll8LqoxdqPjmwU3t3VugyIlHTRkOCw4Gqw8CauUau8SqlRIMjRa0QNdEjhxKkERz9h01PluX9sRWybJ0HwE71gw3JrZLzN5m0q0qqeSCV1GM/ya2CB9BKWV7sQVkWlAtaN6r4FkkiXp9RkJK8rStO39FVDOj8Phn+Wr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN; arc=none smtp.client-ip=94.124.121.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+	s=arc-20240116; t=1741002477; c=relaxed/simple;
+	bh=jqr9EwXfZY3b+14dJHqEdl3sytYGW0GVhd2OmY7oUBw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aY1UdanQftltCFRN3yJSNXGQEGQ/2+PzYB2TV66KRrflh1f3D3yKzskh+LslqXRnINawMql0wIuNVEg/rWFU93dAW9wER4F4qo4SiatLii3yG6hSCwwg9FhCFheRWuUAOaaeY61BVNgic+G8OgN6yuw0RvXc5xdkfc5uVXseHAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NBRJ9t0/; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-438a39e659cso29314225e9.2
+        for <linux-kernel@vger.kernel.org>; Mon, 03 Mar 2025 03:47:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=W7xQaIM8KUgQYXUjWEz/yyKUU3dOwVVtoiKveZse1LQ=;
-	b=qphRwrCNarcdXMc+8nT9gMvUDncjj28vFRItzfiNE/jdOd2yOkJll/C0YqOI+M2Lv7xxVV69I4kDC
-	 EabyatzTV4QIi2a/uhHtenSOQTvgnl5afF0HzFmvDBTlBx3REPp83KwvYQxLaqXi/7tk4a3czrMRSI
-	 xgOPVkiNuzqBXgPhGvTeLVEAHDwWVaCBb56qs9Zz5cVnGinA1MkMCkialX23Gp8qC6Mdum9rxl4KCu
-	 3VMeU0juaMaLuz2lcY4aa2AjD6nutiVQVBifdXvBV3CXO1CKO+e2ypMhFdH54HYn4n/U6bDSNx7C9U
-	 Zxl8AX8zA0VD+Ja7BOpB/LKmPsgqzqQ==
-X-MSG-ID: 51c43871-f824-11ef-a39b-00505681446f
-Date: Mon, 3 Mar 2025 12:40:34 +0100
-From: David Jander <david@protonic.nl>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron
- <jic23@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>,
- linux-pwm@vger.kernel.org
-Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
- bindings
-Message-ID: <20250303124034.726ba698@erd003.prtnl>
-In-Reply-To: <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
-References: <20250227162823.3585810-1-david@protonic.nl>
-	<20250227162823.3585810-8-david@protonic.nl>
-	<20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
-	<20250228102201.590b4be6@erd003.prtnl>
-	<9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
-	<20250228110931.7bdae7fd@erd003.prtnl>
-	<tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741002473; x=1741607273; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IQozffwnOCsYFoqS8k7yOzUIgAbpTEtaLUGEzpJWOM8=;
+        b=NBRJ9t0//e8B+CKEW+UUUgx5fjbZqxNGjQXtzkKzqUMs6va+5HtB5fAGU/tqIhv64L
+         d9oeIBN8dmYuNtuXFwDvSjLliIe4syDd0/neJXd8KATVQ4rbeWzOsH354S36oGTSiZKh
+         DA3rwOIkKTWnm/ZJm2xn1sAVqxJ7NTKTE41yhZh9bn3djPqbUIs8u3/XJi4JNLKZfPzb
+         CUWqNQu6ECZe9caabBoP6NlLlEIBGiJrihdE+mF2yzWZNxu3DzoKfsZtG7uoPaeHPpZD
+         ZMuDsH2EmRrnvsTCGL/qw4ZX4t8NAbv1LZ0BUUjIh/ZaE8L645GYIcIOo21oCrp570KS
+         U2ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741002473; x=1741607273;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IQozffwnOCsYFoqS8k7yOzUIgAbpTEtaLUGEzpJWOM8=;
+        b=dyXZnotuoPGoW7u0CfciC8zWoGAJZ4RJ0msd+Ccm4e40ORmI2vMB4Jg1fPz63P0Oys
+         MAh90Ujp+uA/wJrunOsq6YDW8pieTSOBBm4/RPZ1ecqr8nr3+YeMJ6+0c3ywVwzgK2Ja
+         WhNp5dCJxODLlh3cRgv8XOAUomf1n2tAkbkmAQwg2CUuaLhDv3apVo/iPNqWXiY79biE
+         dFGlPP5N1sraRkRMlIqmbfQIwo1jnp6p/xOm03Le2vpQ73HZsWRq6uqZlYSkCYgSBbWB
+         PeqyzVuLpwzya+eMNlZkXsDylAUoEMv6HaZoJefIDzY5AvsWY8A1rbBcjpeiTayU/dzO
+         KMXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUGjah0/tfdoYP2z7NzP1ptl0kZo8kSxt0DricLete4gMFrCm34sUpslyurw6rmZWets+Aj5FYzFPvyTsk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjFUWdp/o+37DUtWA7J/aLIxt8TzT+yxx83eOUlOlOwF7K3M33
+	G08zV++hy3P7FIkvbgXBot+O369hpIr6gxAGDE1oJlrp2vvNA1KFrXZcdppHOEk=
+X-Gm-Gg: ASbGnctKdNhlcdIB7YyS8PUn74SvlOZqREJjBAgdw1mxHOxtxmkFJFGMhmzR4rowBni
+	orF2zVkaoEH5/RR0c8Gw9fTSR6UTh6+JTLLUmin0zNCmwqhzRdzbOjPM/Jvon2YZwMajcLIx9DW
+	fJIjEgz7dAGXpj+OOus0LgIf1F1oCrf4Kp4tfu4SwLsmnajh4Gzl66M7whatdlanXBJspNwmMjL
+	KJLdPfJhtIsTUXWH8LTU/l3lYD1xMdS3mriDA0TCfofaJl/YgCL6a5GZeV/BIj8ij83AfGM2uRs
+	N6XJZYSQZWZDSD62sYvvuqMy3y/onQxttEw+FKm9KBxT8Rj0T6AQjsdz3NWu+ma0JirHPQrWL3B
+	/tR1R39NU/xl+gvAazZV9qNu6tA==
+X-Google-Smtp-Source: AGHT+IHbFpaqCqy7oJ39CyR2Zwl/9NuAfZAB+lM4qcvF3LKM+A/AKR9yfndWp4sIKq8aPZyIHh+KQA==
+X-Received: by 2002:a05:600c:a581:b0:43b:ba80:4393 with SMTP id 5b1f17b1804b1-43bba80467emr32420225e9.3.1741002473131;
+        Mon, 03 Mar 2025 03:47:53 -0800 (PST)
+Received: from localhost (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bc222362dsm23270805e9.0.2025.03.03.03.47.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 03:47:52 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Michael Walle <michael@walle.cc>,
+	Nuno Sa <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 7/8] iio: adc: ad7124: Implement internal calibration at probe time
+Date: Mon,  3 Mar 2025 12:47:05 +0100
+Message-ID: <20250303114659.1672695-17-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250303114659.1672695-10-u.kleine-koenig@baylibre.com>
+References: <20250303114659.1672695-10-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -122,119 +148,248 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7681; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=jqr9EwXfZY3b+14dJHqEdl3sytYGW0GVhd2OmY7oUBw=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnxZbOJ2NHnT28BuDYn5pn9Cy6XUnoy62wNXfb8 1o1Xgxn7j+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ8WWzgAKCRCPgPtYfRL+ TlPWB/9kBA/YalUMm9uRc0QIp6zcwfZVklEnf5cUkfHuLQSemru4lDAKLWuZ+lL+vT0jAF4jV8n 7xZcSv8VR3a2ya5bAuJyImvR6GBMkWGZWlm2oU4J/6/6LKZcuumNLwZW6Ugvm5BmbZjxhkOsPH9 yXwP/ruUPptaJgvRK8Y4JYdMfsSulBDX+ht13pS9YSiNnCotRkmwIrQ3HG7RfqOAq4an1Q0+hSf ZCQHouM5Vd4vmdXvLmrLTJcs8OtNUYwf1/1UTrb3nYROcmrcT5Fwk6DF8Q0/zh4iPFtOM2xUJgv nTWQ6ebaS9bWCUd+OB8Hh9+tmmPqI571CRcOq9pi13xZldqj
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: quoted-printable
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6gx35HpnzG3GW
+X-ITU-Libra-ESVA-ID: 4Z6dv14d7xzFxbp
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741710346.94269@jHhA3pr+KRahSDOq6sDo7Q
+X-ITU-Libra-ESVA-Watermark: 1741704839.48904@DUJJSM5Sujid4DhJiS9SWQ
 X-ITU-MailScanner-SpamCheck: not spam
 
+Use the calibration function provided by the ad_sigma_delta shim to
+calibrate all channels at probe time.
 
-Dear Uwe,
+For measurements with gain 1 (i.e. if CONFIG_x.PGA =3D 0) full-scale
+calibrations are not supported and the reset default value of the GAIN
+register is supposed to be used then.
 
-Thanks for chiming in!
+Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+---
+ drivers/iio/adc/ad7124.c | 129 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 126 insertions(+), 3 deletions(-)
 
-On Fri, 28 Feb 2025 16:18:05 +0100
-Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org> wrote:
-
-> Hey David,
->=20
-> On Fri, Feb 28, 2025 at 11:09:31AM +0100, David Jander wrote:
-> > On Fri, 28 Feb 2025 10:37:48 +0100
-> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >  =20
-> > > On 28/02/2025 10:22, David Jander wrote: =20
-> > > >    =20
-> > > >>> +
-> > > >>> +  motion,pwm-inverted:
-> > > >>> +    $ref: /schemas/types.yaml#/definitions/flag     =20
-> > > >>
-> > > >> And PWM flag does not work?   =20
-> > > >=20
-> > > > I have seen PWM controllers that don't seem to support the
-> > > > PWM_POLARITY_INVERTED flag and those where it just doesn't work. Sh=
-ould all   =20
-> > >=20
-> > >=20
-> > > Shouldn't the controllers be fixed? Or let's rephrase the question: w=
-hy
-> > > only this PWM consumer needs this property and none of others need it=
-? =20
-> >=20
-> > CCing Uwe Kleine-Koenig and linux-pwm mailing list.
-> >=20
-> > I know that at least in kernel 6.11 the pwm-stm32.c PWM driver doesn't
-> > properly invert the PWM signal when specifying PWM_POLARITY_INVERTED. I=
- agree
-> > this is a probably bug that needs fixing if still present in 6.14-rc. B=
-esides
-> > that, if linux-pwm agrees that every single PWM driver _must_ properly =
-support
-> > this flag, I will drop this consumer flag an start fixing broken PWM dr=
-ivers
-> > that I encounter. I agree that it makes more sense this way, but I want=
-ed to
-> > be sure. =20
->=20
-> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
-> include:
->=20
-> 	pwm-adp5585
-> 	pwm-ntxec
-> 	pwm-raspberrypi-poe
-> 	pwm-rz-mtu3 (software limitation only)
-> 	pwm-sunplus
-> 	pwm-twl-led (not completely sure, that one is strange)
->=20
-> . ISTR that there is a driver that does only support inverted polarity,
-> but I don't find it. For an overview I recommend reading through the
-> output of:
->=20
-> 	for f in drivers/pwm/pwm-*; do
-> 		echo $f;
-> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
-> 		echo;
-> 	done | less
->=20
-> . (Note not all drivers have commentary in the right format to unveil
-> their limitations.)
->=20
-> For most use-cases you can just do
->=20
-> 	.duty_cycle =3D .period - .duty_cycle
-
-Yes, that is exactly what the relevant code in motion/simple-pwm.c does when
-the "pwm-inverted" flag is present in the DT node.
-
-> instead of inverting polarity, but there is no abstraction in the PWM
-> bindings for that and also no helpers in the PWM framework. The problem
-> is more or less ignored, so if you have a device with
->=20
-> 	pwms =3D <&pwm0 0 PWM_POLARITY_INVERTED>;
->=20
-> and the PWM chip in question doesn't support that, the pwm API functions
-> will fail. So the system designer better makes sure that the PWM
-> hardware can cope with the needed polarity.
-
-Thanks for clarifying this!
-
-@Krzysztof, do you think that given this situation it is acceptable to incl=
-ude
-the "pwm-inverted" flag in the dt-schema of the simple PWM motor driver?
-
-The need for an inverted PWM signal is something very common in the case of
-H-bridge motor drivers, where the PWM signal represents the actual logical
-output level of each of the two halves of the bridge. Often the high-side
-switches are used as the free-wheel position, so that 100% duty-cycle on bo=
-th
-channels is actually standstill, while 0% duty-cycle on one channel is full
-speed in either direction. This isn't always the case though, hence the
-importance for this to be able to be selected.
-
-Best regards,
-
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index de90ecb5f630..382f46ff2b51 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -53,6 +53,11 @@
+ #define AD7124_ADC_CTRL_MODE_MSK	GENMASK(5, 2)
+ #define AD7124_ADC_CTRL_MODE(x)	FIELD_PREP(AD7124_ADC_CTRL_MODE_MSK, x)
+=20
++#define AD7124_MODE_CAL_INT_ZERO	0x5 /* Internal Zero-Scale Calibration =
+*/
++#define AD7124_MODE_CAL_INT_FULL	0x6 /* Internal Full-Scale Calibration =
+*/
++#define AD7124_MODE_CAL_SYS_ZERO	0x7 /* System Zero-Scale Calibration */
++#define AD7124_MODE_CAL_SYS_FULL	0x8 /* System Full-Scale Calibration */
++
+ /* AD7124 ID */
+ #define AD7124_DEVICE_ID_MSK		GENMASK(7, 4)
+ #define AD7124_DEVICE_ID_GET(x)		FIELD_GET(AD7124_DEVICE_ID_MSK, x)
+@@ -166,6 +171,8 @@ struct ad7124_channel_config {
+ 		unsigned int odr;
+ 		unsigned int odr_sel_bits;
+ 		unsigned int filter_type;
++		unsigned int calibration_offset;
++		unsigned int calibration_gain;
+ 	);
+ };
+=20
+@@ -186,6 +193,12 @@ struct ad7124_state {
+ 	unsigned int num_channels;
+ 	struct mutex cfgs_lock; /* lock for configs access */
+ 	unsigned long cfg_slots_status; /* bitmap with slot status (1 means it =
+is used) */
++
++	/*
++	 * Stores the power-on reset value for the GAIN(x) registers which are
++	 * needed for measurements at gain 1 (i.e. CONFIG(x).PGA =3D=3D 0)
++	 */
++	unsigned int gain_default;
+ 	DECLARE_KFIFO(live_cfgs_fifo, struct ad7124_channel_config *, AD7124_MA=
+X_CONFIGS);
+ };
+=20
+@@ -359,6 +372,8 @@ static struct ad7124_channel_config *ad7124_find_simi=
+lar_live_cfg(struct ad7124_
+ 				     unsigned int odr;
+ 				     unsigned int odr_sel_bits;
+ 				     unsigned int filter_type;
++				     unsigned int calibration_offset;
++				     unsigned int calibration_gain;
+ 			     }));
+=20
+ 	for (i =3D 0; i < st->num_channels; i++) {
+@@ -373,7 +388,9 @@ static struct ad7124_channel_config *ad7124_find_simi=
+lar_live_cfg(struct ad7124_
+ 		    cfg->pga_bits =3D=3D cfg_aux->pga_bits &&
+ 		    cfg->odr =3D=3D cfg_aux->odr &&
+ 		    cfg->odr_sel_bits =3D=3D cfg_aux->odr_sel_bits &&
+-		    cfg->filter_type =3D=3D cfg_aux->filter_type)
++		    cfg->filter_type =3D=3D cfg_aux->filter_type &&
++		    cfg->calibration_offset =3D=3D cfg_aux->calibration_offset &&
++		    cfg->calibration_gain =3D=3D cfg_aux->calibration_gain)
+ 			return cfg_aux;
+ 	}
+=20
+@@ -429,6 +446,14 @@ static int ad7124_write_config(struct ad7124_state *=
+st, struct ad7124_channel_co
+=20
+ 	cfg->cfg_slot =3D cfg_slot;
+=20
++	ret =3D ad_sd_write_reg(&st->sd, AD7124_OFFSET(cfg->cfg_slot), 3, cfg->=
+calibration_offset);
++	if (ret)
++		return ret;
++
++	ret =3D ad_sd_write_reg(&st->sd, AD7124_GAIN(cfg->cfg_slot), 3, cfg->ca=
+libration_gain);
++	if (ret)
++		return ret;
++
+ 	tmp =3D (cfg->buf_positive << 1) + cfg->buf_negative;
+ 	val =3D AD7124_CONFIG_BIPOLAR(cfg->bipolar) | AD7124_CONFIG_REF_SEL(cfg=
+->refsel) |
+ 	      AD7124_CONFIG_IN_BUFF(tmp) | AD7124_CONFIG_PGA(cfg->pga_bits);
+@@ -835,13 +860,22 @@ static int ad7124_soft_reset(struct ad7124_state *s=
+t)
+ 			return dev_err_probe(dev, ret, "Error reading status register\n");
+=20
+ 		if (!(readval & AD7124_STATUS_POR_FLAG_MSK))
+-			return 0;
++			break;
+=20
+ 		/* The AD7124 requires typically 2ms to power up and settle */
+ 		usleep_range(100, 2000);
+ 	} while (--timeout);
+=20
+-	return dev_err_probe(dev, -EIO, "Soft reset failed\n");
++	if (readval & AD7124_STATUS_POR_FLAG_MSK)
++		return dev_err_probe(dev, -EIO, "Soft reset failed\n");
++
++	ret =3D ad_sd_read_reg(&st->sd, AD7124_GAIN(0), 3, &st->gain_default);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Error reading gain register\n");
++
++	dev_dbg(dev, "Reset value of GAIN register is 0x%x\n", st->gain_default=
+);
++
++	return 0;
+ }
+=20
+ static int ad7124_check_chip_id(struct ad7124_state *st)
+@@ -1054,6 +1088,91 @@ static int ad7124_setup(struct ad7124_state *st)
+ 	return ret;
+ }
+=20
++static int __ad7124_calibrate_all(struct ad7124_state *st, struct iio_de=
+v *indio_dev)
++{
++	struct device *dev =3D &st->sd.spi->dev;
++	int ret, i;
++
++	for (i =3D 0; i < st->num_channels; i++) {
++
++		if (indio_dev->channels[i].type !=3D IIO_VOLTAGE)
++			continue;
++
++		/*
++		 * For calibration the OFFSET register should hold its reset default
++		 * value. For the GAIN register there is no such requirement but
++		 * for gain 1 it should hold the reset default value, too. So to
++		 * simplify matters use the reset default value for both.
++		 */
++		st->channels[i].cfg.calibration_offset =3D 0x800000;
++		st->channels[i].cfg.calibration_gain =3D st->gain_default;
++
++		/*
++		 * Full-scale calibration isn't supported at gain 1, so skip in
++		 * that case. Note that untypically full-scale calibration has
++		 * to happen before zero-scale calibration. This only applies to
++		 * the internal calibration. For system calibration it's as
++		 * usual: first zero-scale then full-scale calibration.
++		 */
++		if (st->channels[i].cfg.pga_bits > 0) {
++			ret =3D ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_FULL, i);
++			if (ret < 0)
++				return ret;
++
++			/*
++			 * read out the resulting value of GAIN
++			 * after full-scale calibration because the next
++			 * ad_sd_calibrate() call overwrites this via
++			 * ad_sigma_delta_set_channel() -> ad7124_set_channel()
++			 * ... -> ad7124_enable_channel().
++			 */
++			ret =3D ad_sd_read_reg(&st->sd, AD7124_GAIN(st->channels[i].cfg.cfg_s=
+lot), 3,
++					     &st->channels[i].cfg.calibration_gain);
++			if (ret < 0)
++				return ret;
++		}
++
++		ret =3D ad_sd_calibrate(&st->sd, AD7124_MODE_CAL_INT_ZERO, i);
++		if (ret < 0)
++			return ret;
++
++		ret =3D ad_sd_read_reg(&st->sd, AD7124_OFFSET(st->channels[i].cfg.cfg_=
+slot), 3,
++				     &st->channels[i].cfg.calibration_offset);
++		if (ret < 0)
++			return ret;
++
++		dev_dbg(dev, "offset and gain for channel %d =3D 0x%x + 0x%x\n", i,
++			st->channels[i].cfg.calibration_offset,
++			st->channels[i].cfg.calibration_gain);
++	}
++
++	return 0;
++}
++
++static int ad7124_calibrate_all(struct ad7124_state *st, struct iio_dev =
+*indio_dev)
++{
++	int ret;
++	unsigned int adc_control =3D st->adc_control;
++
++	/*
++	 * Calibration isn't supported at full power, so speed down a bit.
++	 * Setting .adc_control is enough here because the control register is
++	 * written as part of ad_sd_calibrate() -> ad_sigma_delta_set_mode().
++	 * The resulting calibration is then also valid for high-speed, so just
++	 * restore adc_control afterwards.
++	 */
++	if (FIELD_GET(AD7124_ADC_CTRL_PWR_MSK, adc_control) >=3D AD7124_FULL_PO=
+WER) {
++		st->adc_control &=3D ~AD7124_ADC_CTRL_PWR_MSK;
++		st->adc_control |=3D AD7124_ADC_CTRL_PWR(AD7124_MID_POWER);
++	}
++
++	ret =3D __ad7124_calibrate_all(st, indio_dev);
++
++	st->adc_control =3D adc_control;
++
++	return ret;
++}
++
+ static void ad7124_reg_disable(void *r)
+ {
+ 	regulator_disable(r);
+@@ -1132,6 +1251,10 @@ static int ad7124_probe(struct spi_device *spi)
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to setup triggers\n");
+=20
++	ret =3D ad7124_calibrate_all(st, indio_dev);
++	if (ret)
++		return ret;
++
+ 	ret =3D devm_iio_device_register(&spi->dev, indio_dev);
+ 	if (ret < 0)
+ 		return dev_err_probe(dev, ret, "Failed to register iio device\n");
 --=20
-David Jander
+2.47.1
+
 
 

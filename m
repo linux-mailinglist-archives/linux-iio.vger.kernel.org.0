@@ -1,161 +1,183 @@
-Return-Path: <linux-iio+bounces-16268-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16269-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D187A4BF06
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 12:41:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45495A4BF2C
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 12:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1DA03B7F42
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B393B36B8
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FD21FBE9A;
-	Mon,  3 Mar 2025 11:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DE120102C;
+	Mon,  3 Mar 2025 11:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BdLAZTJV"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="qphRwrCN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9157A1F4170;
-	Mon,  3 Mar 2025 11:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F9F20102E
+	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 11:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741001678; cv=none; b=aNqxkUPM+mZUJBVfQjpbKzOmlfB2ime/p8CMPf52WkmWAXTeMWOD/4eVgaHhZcs+ud9fG38GJKBWkeG/1h+EHUFkGMk8jJ865Qg3rKEDJ7YVdyxxIb2gmSjlviHobKaKj9Pcx2NBP82ad2BfVLVq72g7OUqlX/I1D/ZvQV3pVQg=
+	t=1741002038; cv=none; b=bYOtZPo2u7nb3wAE5SQxL7Qk0H2JSmnoqT2RddgrilwoKrgN455v6grUXSj9d62Y+4VyEb8/OyKIDJ0VE2Zm5vxKnpUbtYY57Xr69A+RZ3/HXROYx/kcJxgQv9vigH0jBCgeEQ18N5zGBDpvlW9GfTvyKIhf7U8O02xipH2fqmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741001678; c=relaxed/simple;
-	bh=hIH1EtAXm1ZDL6e1wVVaoeBlRzWdkdD1nTbcRmTz+Y8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QKSFa1KaPzaS4+Xx4v7JWXGR90ya3fir/W6Zh/59iqeS4T1+ycmLUvysh1hvbsESFPPEHdOD4PKYDr9sdL6KsGuFxanc9RAqpBG2lizq1CpoScZeNTK8WafguVO6GkcqvoldzyGTMSljeKspVD1KB/aPaZPicRDWDk4DqlsIrXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BdLAZTJV; arc=none smtp.client-ip=209.85.167.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54964f8ce4bso1072978e87.2;
-        Mon, 03 Mar 2025 03:34:36 -0800 (PST)
+	s=arc-20240116; t=1741002038; c=relaxed/simple;
+	bh=xjKhMtLA9tK9j8SX+seT9UK5BSImtLHPUuXRUCeDyBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MmitAUsLIkT0waeAO6DyCAJ5gGd+KxPGJqWpA0m5s4pda2AjCNML361aLM3PtuTLZkwA1WaoSAwalcgPvbonlNfjCs0D/qsUAKk1naW+EgDv9eA8OWAvT1m2GJjRsaR/gkwhH15Ca83j/aR7YuVpc4bJG4uTSG+BNvk+qyTbUak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN; arc=none smtp.client-ip=94.124.121.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741001675; x=1741606475; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M3bLf2ekL2mjEzD7tkujcNOqagMHRICtK+3JCb+oWjM=;
-        b=BdLAZTJV4ShtJlsbVaJR93jL81ZIG+17P6FJfrETUofCDZKZ1UYxFMZ3L7d5iNxs1X
-         GSLnb+44Qjui9e+cDQnCYnjWsevbvgk4JzgD5RnxrGZ7qSzohzxkQn9fB3o9ZtuwRFhe
-         xhrrwOKcvnZoDAbBRIBxDPreJmkX17v1nto71UY1QXDO+hX8+z+SQH+E26WnQ0np/k4g
-         eSFCfkT4uoeVpBODQ6gePalIiQxIHfbQpZsFmRzxxdVQsrjeGSR6Nd+7mz2m+fl+LLGo
-         kML5r4xe+DBcinmD6BzDhyBI1fd5sELhTNgvN2ra0Khx4r7eEMC3r083Ogld80/2ILvd
-         4vNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741001675; x=1741606475;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M3bLf2ekL2mjEzD7tkujcNOqagMHRICtK+3JCb+oWjM=;
-        b=KBuZsHyzWwiNd5iXuwBWRNf6OZ/e3N0xNavXVgDhUKp31Nvrzd5FfnU23pKNmYEsjh
-         nYvjpcM3DEWz0sjF5Y3TxPwXWxOObiY0QI7/e0aH0KPx8l3Z1Ui5/CJAQ7aPng/SMIDQ
-         HKa9E3RifpQeMLr9BB2vytSCSANLx3FM/KIAUEPGZETQvAww2AIEN9VAxlYTrhjycUtq
-         tTEtXU+C0P0PvE6KEmZ249/sutVfyhu94VTBWQaUf3AsjtqwYTuj9vWi7ctF8xcxB5eh
-         6nSAUkOIoHld5nTobCW8/qcOGdPimdn06n1c6+ZWLC4uAMFL6hOxP4fzYomg6mhbzO6O
-         a0jg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0DNwdfKvVLriaSNYAtVKH+Gs/tc80YmN8CaXgiZjO8IJER/fDreZvp2eI5gwwP2517hh0CwP3FKpOneu8@vger.kernel.org, AJvYcCXGt4cRmWmDTtV7YhYkNS83QUmOiSgwqdQH5kU3uHM90d/U+atSE/yWCNhUKK4m5x+PMLuy58AfUUM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjvjGCk4Krc5SfW05ooJgPObRsS2A/olDHfyshehB0lrk3k7Uh
-	BhwBQUBgfmZYCaQyQaqV0aZvi9d1FLhw04dCQpqmc3/srLjEcxW/
-X-Gm-Gg: ASbGncvzokYuFJndhG01x//wJACkqeIiDR/8GXaTIzP8Y0RgT1+56kllSgfRw2+Q8Dl
-	6G3KMxbc0PERwoJWyQrdKjiXpMeQBLDmTm5dYrQhFGWct9eVHq18ntnQakOhdOrP+YIhsTEYy6M
-	yP/oLV1i0sY9zlzk9xA9Wh7hc8JJwZ/pR+Q/xNCI5NYv0lwBW01e9l3fIObZQ081iI11U+SZlX7
-	6ciyB+56lmwEOdfcbFlFY5LhuKRTTdA3O9SzaKa9UiQUw9fo3VOkaMhOWqZti2Y8GvgZJHsZkln
-	Hk2xArp2Px6ufvw/5bzZ2DqaeN5W7cUDkFLhugCNDYtwUqCgR036zz6OBfzBnxRiI+5HLuSdpwo
-	nznU30EEeWiI=
-X-Google-Smtp-Source: AGHT+IEP82kzQb79FpLajjOBMO2V96WoIqxu0JlVkEgDMCgt2ecdJx0G1lKCMssIMejcLev9HvQw7w==
-X-Received: by 2002:a05:6512:3d0e:b0:545:576:cbca with SMTP id 2adb3069b0e04-5494c129f87mr4424033e87.8.1741001674446;
-        Mon, 03 Mar 2025 03:34:34 -0800 (PST)
-Received: from mva-rohm (mobile-access-2e8451-125.dhcp.inet.fi. [46.132.81.125])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54962415d13sm441244e87.257.2025.03.03.03.34.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 03:34:33 -0800 (PST)
-Date: Mon, 3 Mar 2025 13:34:28 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH v5 09/10] MAINTAINERS: Add ROHM BD79124 ADC/GPO
-Message-ID: <155ab72096f96a0bcd30dea58c681322e825d09b.1740993491.git.mazziesaccount@gmail.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=W7xQaIM8KUgQYXUjWEz/yyKUU3dOwVVtoiKveZse1LQ=;
+	b=qphRwrCNarcdXMc+8nT9gMvUDncjj28vFRItzfiNE/jdOd2yOkJll/C0YqOI+M2Lv7xxVV69I4kDC
+	 EabyatzTV4QIi2a/uhHtenSOQTvgnl5afF0HzFmvDBTlBx3REPp83KwvYQxLaqXi/7tk4a3czrMRSI
+	 xgOPVkiNuzqBXgPhGvTeLVEAHDwWVaCBb56qs9Zz5cVnGinA1MkMCkialX23Gp8qC6Mdum9rxl4KCu
+	 3VMeU0juaMaLuz2lcY4aa2AjD6nutiVQVBifdXvBV3CXO1CKO+e2ypMhFdH54HYn4n/U6bDSNx7C9U
+	 Zxl8AX8zA0VD+Ja7BOpB/LKmPsgqzqQ==
+X-MSG-ID: 51c43871-f824-11ef-a39b-00505681446f
+Date: Mon, 3 Mar 2025 12:40:34 +0100
+From: David Jander <david@protonic.nl>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron
+ <jic23@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ linux-pwm@vger.kernel.org
+Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
+ bindings
+Message-ID: <20250303124034.726ba698@erd003.prtnl>
+In-Reply-To: <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
+References: <20250227162823.3585810-1-david@protonic.nl>
+	<20250227162823.3585810-8-david@protonic.nl>
+	<20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
+	<20250228102201.590b4be6@erd003.prtnl>
+	<9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
+	<20250228110931.7bdae7fd@erd003.prtnl>
+	<tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="wDFfFH4w+vNHhxIE"
-Content-Disposition: inline
-In-Reply-To: <cover.1740993491.git.mazziesaccount@gmail.com>
-
-
---wDFfFH4w+vNHhxIE
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-Add undersigned as a maintainer for the ROHM BD79124 ADC/GPO driver.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-Revision history:
-RFC v1 =3D> v2:
- - Drop MFD and pinmux drivers
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+Dear Uwe,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b96fb864227..2e4416b59930 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20547,6 +20547,11 @@ S:	Supported
- F:	drivers/power/supply/bd99954-charger.c
- F:	drivers/power/supply/bd99954-charger.h
-=20
-+ROHM BD79124 ADC / GPO IC
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/adc/rohm-bd79124.c
-+
- ROHM BH1745 COLOUR SENSOR
- M:	Mudit Sharma <muditsharma.info@gmail.com>
- L:	linux-iio@vger.kernel.org
+Thanks for chiming in!
+
+On Fri, 28 Feb 2025 16:18:05 +0100
+Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org> wrote:
+
+> Hey David,
+>=20
+> On Fri, Feb 28, 2025 at 11:09:31AM +0100, David Jander wrote:
+> > On Fri, 28 Feb 2025 10:37:48 +0100
+> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> >  =20
+> > > On 28/02/2025 10:22, David Jander wrote: =20
+> > > >    =20
+> > > >>> +
+> > > >>> +  motion,pwm-inverted:
+> > > >>> +    $ref: /schemas/types.yaml#/definitions/flag     =20
+> > > >>
+> > > >> And PWM flag does not work?   =20
+> > > >=20
+> > > > I have seen PWM controllers that don't seem to support the
+> > > > PWM_POLARITY_INVERTED flag and those where it just doesn't work. Sh=
+ould all   =20
+> > >=20
+> > >=20
+> > > Shouldn't the controllers be fixed? Or let's rephrase the question: w=
+hy
+> > > only this PWM consumer needs this property and none of others need it=
+? =20
+> >=20
+> > CCing Uwe Kleine-Koenig and linux-pwm mailing list.
+> >=20
+> > I know that at least in kernel 6.11 the pwm-stm32.c PWM driver doesn't
+> > properly invert the PWM signal when specifying PWM_POLARITY_INVERTED. I=
+ agree
+> > this is a probably bug that needs fixing if still present in 6.14-rc. B=
+esides
+> > that, if linux-pwm agrees that every single PWM driver _must_ properly =
+support
+> > this flag, I will drop this consumer flag an start fixing broken PWM dr=
+ivers
+> > that I encounter. I agree that it makes more sense this way, but I want=
+ed to
+> > be sure. =20
+>=20
+> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
+> include:
+>=20
+> 	pwm-adp5585
+> 	pwm-ntxec
+> 	pwm-raspberrypi-poe
+> 	pwm-rz-mtu3 (software limitation only)
+> 	pwm-sunplus
+> 	pwm-twl-led (not completely sure, that one is strange)
+>=20
+> . ISTR that there is a driver that does only support inverted polarity,
+> but I don't find it. For an overview I recommend reading through the
+> output of:
+>=20
+> 	for f in drivers/pwm/pwm-*; do
+> 		echo $f;
+> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
+> 		echo;
+> 	done | less
+>=20
+> . (Note not all drivers have commentary in the right format to unveil
+> their limitations.)
+>=20
+> For most use-cases you can just do
+>=20
+> 	.duty_cycle =3D .period - .duty_cycle
+
+Yes, that is exactly what the relevant code in motion/simple-pwm.c does when
+the "pwm-inverted" flag is present in the DT node.
+
+> instead of inverting polarity, but there is no abstraction in the PWM
+> bindings for that and also no helpers in the PWM framework. The problem
+> is more or less ignored, so if you have a device with
+>=20
+> 	pwms =3D <&pwm0 0 PWM_POLARITY_INVERTED>;
+>=20
+> and the PWM chip in question doesn't support that, the pwm API functions
+> will fail. So the system designer better makes sure that the PWM
+> hardware can cope with the needed polarity.
+
+Thanks for clarifying this!
+
+@Krzysztof, do you think that given this situation it is acceptable to incl=
+ude
+the "pwm-inverted" flag in the dt-schema of the simple PWM motor driver?
+
+The need for an inverted PWM signal is something very common in the case of
+H-bridge motor drivers, where the PWM signal represents the actual logical
+output level of each of the two halves of the bridge. Often the high-side
+switches are used as the free-wheel position, so that 100% duty-cycle on bo=
+th
+channels is actually standstill, while 0% duty-cycle on one channel is full
+speed in either direction. This isn't always the case though, hence the
+importance for this to be able to be selected.
+
+Best regards,
+
 --=20
-2.48.1
-
-
---wDFfFH4w+vNHhxIE
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfFk8QACgkQeFA3/03a
-ocUebgf+KOZVTupqMHJ1wPEqgTrD4SUVuhs8pHOvDFao/DTG8OwV8sgVd0TYCcBO
-zCdoj8i17vb0DbWAGLbp4pccSCaUf/DOcOjISfiTCuoDAz1u0RWCNimOKmMIyU5x
-fKIqmnsFp3jztJHIB6YriEUOlHUEX9eNNZt6A3U39CGs+azqHThxByIWXjykmJwv
-rItqFdGnrhsTXIjaH9icQ4WWYbDXJBGukV9Mr7xqpLfkWZjwWGMlaR18MtjNT+Mt
-d6S9fF0dsUvzLCLXVJV6ZrBer5TV+R4VIZH4mD/iAnPIFsVoRQe6MAwWLJExZ5dO
-h8poDH9Gf18kslPITvMcEsTsBtUfcA==
-=XRnx
------END PGP SIGNATURE-----
-
---wDFfFH4w+vNHhxIE--
+David Jander
 

@@ -1,70 +1,92 @@
-Return-Path: <linux-iio+bounces-16269-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16270-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45495A4BF2C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 12:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 089CFA4BF46
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 12:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22B393B36B8
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF0CD3A4DB2
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 11:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DE120102C;
-	Mon,  3 Mar 2025 11:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61BE20B7FD;
+	Mon,  3 Mar 2025 11:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="qphRwrCN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oD21+jlc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F9F20102E
-	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 11:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8AA20B21F
+	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 11:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741002038; cv=none; b=bYOtZPo2u7nb3wAE5SQxL7Qk0H2JSmnoqT2RddgrilwoKrgN455v6grUXSj9d62Y+4VyEb8/OyKIDJ0VE2Zm5vxKnpUbtYY57Xr69A+RZ3/HXROYx/kcJxgQv9vigH0jBCgeEQ18N5zGBDpvlW9GfTvyKIhf7U8O02xipH2fqmc=
+	t=1741002462; cv=none; b=CwJms4PMjzFibZXGPPFQotqKLzZ3o6AUvaW5Va2l+aarcWGr4pWGNCPzL7AmABlg9B+8SekWo6fiPEf8Q7Xpnq7SBiR0VkU4IbSL5AVY+zCJRqGV0CAPYv8zlaTKntGqrAtDoLR+OMbnVOpGtexb1ry07/iQE/gSc4bJJ8zZprQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741002038; c=relaxed/simple;
-	bh=xjKhMtLA9tK9j8SX+seT9UK5BSImtLHPUuXRUCeDyBc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MmitAUsLIkT0waeAO6DyCAJ5gGd+KxPGJqWpA0m5s4pda2AjCNML361aLM3PtuTLZkwA1WaoSAwalcgPvbonlNfjCs0D/qsUAKk1naW+EgDv9eA8OWAvT1m2GJjRsaR/gkwhH15Ca83j/aR7YuVpc4bJG4uTSG+BNvk+qyTbUak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=qphRwrCN; arc=none smtp.client-ip=94.124.121.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+	s=arc-20240116; t=1741002462; c=relaxed/simple;
+	bh=MSkPPAJbz5sNa+zrMs9bZ7T61hqfW3CG2VTMkft4RA8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F/k/weLKRwaQMZkr36h7ZA3vt4vIn4IgR07eKSLz4PR+flemT8ybvXmIqAuA+9B8xU+dUTGbD3FR9+vZJy4zECrZm6lzP5AEn36uC7ZGGJ/jT3O/evCcg2ae4wrzz2LBnduuNQNrBCGwtNHFNT/rjdn6F57m9REpAUuQywvrlgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oD21+jlc; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-390d98ae34dso3536098f8f.3
+        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 03:47:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=W7xQaIM8KUgQYXUjWEz/yyKUU3dOwVVtoiKveZse1LQ=;
-	b=qphRwrCNarcdXMc+8nT9gMvUDncjj28vFRItzfiNE/jdOd2yOkJll/C0YqOI+M2Lv7xxVV69I4kDC
-	 EabyatzTV4QIi2a/uhHtenSOQTvgnl5afF0HzFmvDBTlBx3REPp83KwvYQxLaqXi/7tk4a3czrMRSI
-	 xgOPVkiNuzqBXgPhGvTeLVEAHDwWVaCBb56qs9Zz5cVnGinA1MkMCkialX23Gp8qC6Mdum9rxl4KCu
-	 3VMeU0juaMaLuz2lcY4aa2AjD6nutiVQVBifdXvBV3CXO1CKO+e2ypMhFdH54HYn4n/U6bDSNx7C9U
-	 Zxl8AX8zA0VD+Ja7BOpB/LKmPsgqzqQ==
-X-MSG-ID: 51c43871-f824-11ef-a39b-00505681446f
-Date: Mon, 3 Mar 2025 12:40:34 +0100
-From: David Jander <david@protonic.nl>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <ukleinek@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, devicetree@vger.kernel.org,
- linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron
- <jic23@kernel.org>, Oleksij Rempel <o.rempel@pengutronix.de>,
- linux-pwm@vger.kernel.org
-Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
- bindings
-Message-ID: <20250303124034.726ba698@erd003.prtnl>
-In-Reply-To: <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
-References: <20250227162823.3585810-1-david@protonic.nl>
-	<20250227162823.3585810-8-david@protonic.nl>
-	<20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
-	<20250228102201.590b4be6@erd003.prtnl>
-	<9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
-	<20250228110931.7bdae7fd@erd003.prtnl>
-	<tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741002459; x=1741607259; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pnRzrlaHobBevveqGGX2+rs0jHyPzhsNBLXm4oRn0jQ=;
+        b=oD21+jlcwmLPSyKeif887lRSZyyFWNCilhZbWoLgHPjsoNH8PqIroWygk48zVBvVf6
+         1byNw76eIQ2Mtzr7Rew61xBjPGzjGOhUikLvC75C5cn9CBJddW633t/B0hQmh0QEGJv4
+         B4kXvYwuCVJynSlkzSZdWujVdatjJ4r4KuVRRWjZS9sbhgrL4oDq1TJm5L+sMpG2LTYg
+         CpnNdFQzpb517YHzK+vjQ83er4vU0+M8TPIyummcfVCVVcH6FEJgFGwNV2R98hpU9s6Q
+         WGhUi6WdfDmllTjsOBSm1IRx0VwgFOry1zwMxH8g6mnNS9d7y2bmgSG5g6x+3oqhLwAz
+         ucJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741002459; x=1741607259;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pnRzrlaHobBevveqGGX2+rs0jHyPzhsNBLXm4oRn0jQ=;
+        b=Vz7Gy8nKCPXOrJLEsD9B8xnkFICiL/z0957ixmWW9qRB5s3vuPiNPp3EP2qPWD0qdY
+         FS/iMMuTebLn0aXvEd3VWim3kjYdHtr8n9EQfMilyRyB2ojp7GJdwnuJqrVWFCJH17Ny
+         IDUAAYkCoyaplblbBiZjHNk1Fxh7pufiNvYevxaG0+jH08vVoSj2UYiiOIpCC31vxw+y
+         FeRco+OoDNbDY176Tg5bV/OD4IN8ujBFdVd6r1sy9fyo+O+bwKVtnRWbv0P0McGZ+CyF
+         atndqaRB3c+Bd2O4WIMJ6D955hVnQymgf3nL+VKoYr3yt7da/hoij76gBFnFpWVnTWT0
+         eKmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWz608qi3qCEmoUNUhY3X4PMoj5OfNuFVYzT4HNhkjyMCjIBaDOrwduOsQNw3QzhVdXdNP4bD4btdI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3ArQc+gwWelEpPOnuV4JF+2K0eFAeA5FSjAkXawgO/rRyvuAe
+	+sqTZN9Ru508L59l+rhuk1LA76A7nieJ6KrkE6UPUGtUdTgFvB9vO6V07ychg+c=
+X-Gm-Gg: ASbGnct+A6ABvEVxhZi1iIMIwEuQ5VmkC8c1T1jsyhpXF33v0Vrj8EAqshDsFakDUYF
+	bmDlXRM7SJUAm3NSHUCtH701d7lTJ1CQPmVP9g9yQifFnzdk1CE8a81BRxNuSRs0UFhTPHBdAyu
+	1u8gv1BN+2DLWL5IOqvmzxqoOCf76HSyJftVFU+O5tFV+6WCFeS4kCI8tSWCQ6viNIN1iNMRTzY
+	ZL07lzZlqcWRYbttXPROLD8NV0yw6Zi5F2mg0PtgTJKRVBM1LDdgGkDXfbzBO3ni6CAzEVkVTQi
+	OvVNaqB5RmtP8vnoOkVC+Xi+BTlJmTAPNVfUMy0tadnh+ns7jubuIxCuTTyCSoskSJyeuKbD9PG
+	QwcY2//oU/Uv/CTE2IoYrrFm3bg==
+X-Google-Smtp-Source: AGHT+IEPelpzjBXle1ODTsLIRQuhO2S9yRtlFcuYLUIVHvjJ1DhOW+bnXxMRk/r9ecJhRnBZwEE36g==
+X-Received: by 2002:a05:6000:401f:b0:38f:2ddd:a1bb with SMTP id ffacd0b85a97d-390ec7ca28cmr11111072f8f.8.1741002458633;
+        Mon, 03 Mar 2025 03:47:38 -0800 (PST)
+Received: from localhost (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485d773sm14145068f8f.81.2025.03.03.03.47.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 03:47:38 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Michael Walle <michael@walle.cc>,
+	Nuno Sa <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/8] iio: adc: ad{4130,7124,7173}: A few fixes and ad7124 calibration
+Date: Mon,  3 Mar 2025 12:46:58 +0100
+Message-ID: <20250303114659.1672695-10-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,112 +94,56 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1626; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=MSkPPAJbz5sNa+zrMs9bZ7T61hqfW3CG2VTMkft4RA8=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnxZazKHwSf+ZqQIxBmP/3eFs2LnAeZXIeXldZj JXjhaC9zLmJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ8WWswAKCRCPgPtYfRL+ TgrwCACGgKQbCedEbUOvstBuXraA6Xx0XQxYnTmj0d2elbQr/e47+ZDrQBWdFRrSUmnRzbcFKNa xgHkKiN91Hjusg86MX58tkcq1Of90geQc/1hzC1CNVy7uWdtQFSDxf60sWiBzq4XjLLtfJ3d6Fy P1NScMBAb/gpeZGMf6mAgIzlzRpIAS++4+0CcsKogjW5pD6+skvNWER3PjEyrojyIiTGEwMeHD3 WXpnB4+j5W1Ry0sMKSIWT2NWK24fBzn/K3i5bMrJlGGwfMyk+jSsnXY7Kb0Fb7HJRQpuwu8h5Nd ai1aURJMDJppAihRB9kv5UMsO8OmidANxImwCvNXfAd4mVXI
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
+
+Hello,
+
+v3 of this series can be found at
+https://lore.kernel.org/linux-iio/cover.1740405546.git.u.kleine-koenig@baylibre.com .
+
+The changes here are:
+
+ - rebase to current iio/togreg (which required a few trivial adaptions
+   due to changes around
+   iio_device_claim_direct/iio_device_claim_direct_mode()
+
+ - patch #5 (ad4130: Adapt internal names to match official filter_type
+   ABI) is new.
+
+ - refactor ad7124_write_syscalib() as suggested by Jonathan to simplify
+   code flow.
+
+ - Rework the two ad7124 calibration patches to grab direct mode.
+   (There is another patch series of mine that fixes two other drivers
+   in this regard. Git handles applying this series just fine on top of
+   this.)
+
+Best regards
+Uwe
+
+Uwe Kleine-König (8):
+  iio: adc: ad_sigma_delta: Disable channel after calibration
+  iio: adc: ad4130: Fix comparison of channel setups
+  iio: adc: ad7124: Fix comparison of channel configs
+  iio: adc: ad7173: Fix comparison of channel configs
+  iio: adc: ad4130: Adapt internal names to match official filter_type
+    ABI
+  iio: adc: ad_sigma_delta: Add error checking for
+    ad_sigma_delta_set_channel()
+  iio: adc: ad7124: Implement internal calibration at probe time
+  iio: adc: ad7124: Implement system calibration
+
+ drivers/iio/adc/ad4130.c         | 121 +++++++-----
+ drivers/iio/adc/ad7124.c         | 315 ++++++++++++++++++++++++++++---
+ drivers/iio/adc/ad7173.c         |  25 ++-
+ drivers/iio/adc/ad_sigma_delta.c |   6 +-
+ 4 files changed, 397 insertions(+), 70 deletions(-)
 
 
-Dear Uwe,
+base-commit: 9cbc49c91d2f50f47f52c458d59253c21d883560
+-- 
+2.47.1
 
-Thanks for chiming in!
-
-On Fri, 28 Feb 2025 16:18:05 +0100
-Uwe Kleine-K=C3=B6nig <ukleinek@kernel.org> wrote:
-
-> Hey David,
->=20
-> On Fri, Feb 28, 2025 at 11:09:31AM +0100, David Jander wrote:
-> > On Fri, 28 Feb 2025 10:37:48 +0100
-> > Krzysztof Kozlowski <krzk@kernel.org> wrote:
-> >  =20
-> > > On 28/02/2025 10:22, David Jander wrote: =20
-> > > >    =20
-> > > >>> +
-> > > >>> +  motion,pwm-inverted:
-> > > >>> +    $ref: /schemas/types.yaml#/definitions/flag     =20
-> > > >>
-> > > >> And PWM flag does not work?   =20
-> > > >=20
-> > > > I have seen PWM controllers that don't seem to support the
-> > > > PWM_POLARITY_INVERTED flag and those where it just doesn't work. Sh=
-ould all   =20
-> > >=20
-> > >=20
-> > > Shouldn't the controllers be fixed? Or let's rephrase the question: w=
-hy
-> > > only this PWM consumer needs this property and none of others need it=
-? =20
-> >=20
-> > CCing Uwe Kleine-Koenig and linux-pwm mailing list.
-> >=20
-> > I know that at least in kernel 6.11 the pwm-stm32.c PWM driver doesn't
-> > properly invert the PWM signal when specifying PWM_POLARITY_INVERTED. I=
- agree
-> > this is a probably bug that needs fixing if still present in 6.14-rc. B=
-esides
-> > that, if linux-pwm agrees that every single PWM driver _must_ properly =
-support
-> > this flag, I will drop this consumer flag an start fixing broken PWM dr=
-ivers
-> > that I encounter. I agree that it makes more sense this way, but I want=
-ed to
-> > be sure. =20
->=20
-> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
-> include:
->=20
-> 	pwm-adp5585
-> 	pwm-ntxec
-> 	pwm-raspberrypi-poe
-> 	pwm-rz-mtu3 (software limitation only)
-> 	pwm-sunplus
-> 	pwm-twl-led (not completely sure, that one is strange)
->=20
-> . ISTR that there is a driver that does only support inverted polarity,
-> but I don't find it. For an overview I recommend reading through the
-> output of:
->=20
-> 	for f in drivers/pwm/pwm-*; do
-> 		echo $f;
-> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
-> 		echo;
-> 	done | less
->=20
-> . (Note not all drivers have commentary in the right format to unveil
-> their limitations.)
->=20
-> For most use-cases you can just do
->=20
-> 	.duty_cycle =3D .period - .duty_cycle
-
-Yes, that is exactly what the relevant code in motion/simple-pwm.c does when
-the "pwm-inverted" flag is present in the DT node.
-
-> instead of inverting polarity, but there is no abstraction in the PWM
-> bindings for that and also no helpers in the PWM framework. The problem
-> is more or less ignored, so if you have a device with
->=20
-> 	pwms =3D <&pwm0 0 PWM_POLARITY_INVERTED>;
->=20
-> and the PWM chip in question doesn't support that, the pwm API functions
-> will fail. So the system designer better makes sure that the PWM
-> hardware can cope with the needed polarity.
-
-Thanks for clarifying this!
-
-@Krzysztof, do you think that given this situation it is acceptable to incl=
-ude
-the "pwm-inverted" flag in the dt-schema of the simple PWM motor driver?
-
-The need for an inverted PWM signal is something very common in the case of
-H-bridge motor drivers, where the PWM signal represents the actual logical
-output level of each of the two halves of the bridge. Often the high-side
-switches are used as the free-wheel position, so that 100% duty-cycle on bo=
-th
-channels is actually standstill, while 0% duty-cycle on one channel is full
-speed in either direction. This isn't always the case though, hence the
-importance for this to be able to be selected.
-
-Best regards,
-
---=20
-David Jander
 

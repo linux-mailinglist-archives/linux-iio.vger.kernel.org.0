@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-16292-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16293-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AABA4C322
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:17:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915CFA4C33F
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 129223ABE56
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25DC8172CA6
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7A72147EE;
-	Mon,  3 Mar 2025 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD6B2135D8;
+	Mon,  3 Mar 2025 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxyMUG4H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PuEyftF6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B7B2144D4;
-	Mon,  3 Mar 2025 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D57D13BAF1;
+	Mon,  3 Mar 2025 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741011367; cv=none; b=qiCsmJ4fxUPnbIsYwx3ndU6ukVDGJOacVl1Spz3GIC9Gc9kkoJhInHDqxQEBxYt8FDY9ugoJ3ljx05O1tRePA4kFVtkmjnq06MjgxwV1aVlKzo4mTIW5/MrMiNSTanCZMvzgBo0Ik8OBqoK96dMf584wsGlUZi0jf7YVDHqM9kU=
+	t=1741011528; cv=none; b=gzE0vgoaH0oF/NOeUs88XzGQFq1UNLk6BrGIgNQkvM9X28qs8qivFcun9jsfFIXFy/COLgpHW+KJxXr/NVVgZ1P0vr93FfXOajmuT3SjSEgS+lYVHlbNo81kJHCrZp/gBErgg6i83jkIudSKIRkLg/hYQJKFYWqtxuGFuXXHKkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741011367; c=relaxed/simple;
-	bh=fIWG9PNPnAaZZc8vm719SkiMppJ/JW5erMwVVYRtNn8=;
+	s=arc-20240116; t=1741011528; c=relaxed/simple;
+	bh=lqjp7LIjDhQxWqewy5mV5ckok6buZoX+dvARhvXCRko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=soqJ/IwbJxWqMGlBJBt2yUJ8sN80kMUZHS+wQaJKrn8f2Tp6qgzfK9pel09fhKRf8R+5zxApSDotzj7cOMhV0+WKl8e0fjLIDELYxF1ue1s0rx2mZfqmNLnMh8U+Jy/QIuPoRlxJNHSv8r+RohZDxAO8eyUDx2kAXj2cN1J6jSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxyMUG4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8380C4CEED;
-	Mon,  3 Mar 2025 14:16:02 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=obnB6j1bvY6MEIvdpRKKo5EPnz2LYIkl5EPy6EVSLncLTLmrYcjkPZdwzqlcd6VGQIkksz6jn/rpA4fetO1RkToGZ03s7E1Mljo6sdPtKsA+42pOgKHA3Jg58wzWeNtYbaIQ2Du7sHCsTarbQ72885YhltqqvLeYCp5+EYqIbGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PuEyftF6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCA2C4CED6;
+	Mon,  3 Mar 2025 14:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741011366;
-	bh=fIWG9PNPnAaZZc8vm719SkiMppJ/JW5erMwVVYRtNn8=;
+	s=k20201202; t=1741011528;
+	bh=lqjp7LIjDhQxWqewy5mV5ckok6buZoX+dvARhvXCRko=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SxyMUG4HKz8fgzM7u4Tzz8+pJGeVh7B/sulgn54jxExXb+kCeQcqGTS5Lbg7M2z3k
-	 jhVJ2y2Yfx2oyLgRgBGEjRtyq6j3sXgRyVQoYVsMgK9Fhkptxc6nCmZ0EfyE4pClfQ
-	 Bwz2cfNJBTFGLfs64ACM+DMz7HTAGE9Ru49YMJpj3dMPYI0qzq3GP8qGy6qnjdsDr1
-	 sUXT5Nawtg7/oFbov/yCxpA21Xf1DBHtankPpofZGQtZPsd+2anGVK8gITm8dmo4vj
-	 EQnUv5+s7TRNc/EjcUv2RVGluzsKdrHqOAyYdnZzv5AngKJxfXFup0pDhh7eP4L8SQ
-	 2G3VldzEq3rDw==
-Message-ID: <b3f98745-39c3-4b1f-a0e6-51e5138d840c@kernel.org>
-Date: Mon, 3 Mar 2025 15:16:00 +0100
+	b=PuEyftF6/98P2YSoT/4dx5CwnIWkCdDWHwsSHGPpVCQdI7A/Qz4YSX+WX/Kc/luQU
+	 rCpXhhOGWAizvCQE+iTUEyI/y1ZTX00Oyj2kGjCxNawQwjg2Cr5Eq+BMG9JV29dwsn
+	 N4EvxuaxfaVRYdC5lQUFhX4TAs/cVp1tXbWpRrkSw+SJUb9IftzGhb4jgtP/XKoX4Y
+	 acPXTU8ONuYyS6hUZBbqxcXtj26VxkXj+rUttuRoPG5mzo4JWh8/hhEhUzQaDAq9oM
+	 i46OI85zxt/voI71Jw6MiSdGgiFvM0Ad4BhfJVkQNf0hPimHMme+Q3kbvisBOLMsz/
+	 2L8vFxvrgC9Tw==
+Message-ID: <c9dc351b-0b81-44c6-a89d-4644f600a41c@kernel.org>
+Date: Mon, 3 Mar 2025 15:18:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,20 +50,25 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>
-Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, antoniu.miclaus@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
- <20250225134612.577022-2-sam.winchenbach@framepointer.org>
- <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
- <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
- <05e56d15-059b-425b-9e55-66993d988f8d@kernel.org>
- <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
- <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
- <Z8WvKNcCnQI_UYZJ@65YTFL3.secure.tethers.com>
+Subject: Re: [RFC PATCH 7/7] dt-bindings: motion: Add motion-simple-pwm
+ bindings
+To: David Jander <david@protonic.nl>, =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?=
+ <ukleinek@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>, linux-pwm@vger.kernel.org
+References: <20250227162823.3585810-1-david@protonic.nl>
+ <20250227162823.3585810-8-david@protonic.nl>
+ <20250228-wonderful-python-of-resistance-d5b662@krzk-bin>
+ <20250228102201.590b4be6@erd003.prtnl>
+ <9a1d75a2-66c0-46b6-91a1-4922b892dfb1@kernel.org>
+ <20250228110931.7bdae7fd@erd003.prtnl>
+ <tm57fsmijq4t4y4dpmtss63ekzpm5oefir5tz4aioxq5dx4or6@lgoqjpxc3axh>
+ <20250303124034.726ba698@erd003.prtnl>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -109,135 +114,74 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <Z8WvKNcCnQI_UYZJ@65YTFL3.secure.tethers.com>
+In-Reply-To: <20250303124034.726ba698@erd003.prtnl>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/03/2025 14:31, Sam Winchenbach wrote:
->>> This prevents the situation where your fundamental frequency falls on, or close
->>> to, a corner frequency which could result in 3dB (half power) loss in your
->>> signal.
->>>
->>> This is all completely indepent of the high-pass filter.
+On 03/03/2025 12:40, David Jander wrote:
 >>
->> Description is confusing a bit, because it suggests the value sets the
->> corner frequency. It explicitly says this - "sets ... corner frequency"
->> and such meaning for properties we usually associate with the property
->> doing this. Here however corner frequency will be always set to rf_in
->> and you just adjust the value.
+>> Some hardwares cannot support PWM_POLARITY_INVERTED. Affected drivers
+>> include:
 >>
-> 
-> How about: "Sets the minimum distance (in Hz) between the fundamental
-> frequency of `rf_in` and the corner frequency of the high-pass, input filter
-> when operatred in 'auto' mode. The selected high-pass corner frequency will
-> be less than, or equal to, `rf_in` - `hpf-margin-hz`. If not setting is found
-> that satisfies this relationship the filter will be put into 'bypass'."
-> 
-> Perhaps that is a bit more clear on the intention of this parameter?
-
-Yes
-
-> 
->>>
->>>>
->>>>> them as separate controls but I am happy to put them into an array if that is
->>>>> the idiomatic approach to situations like this. That said, I am having a
->>>>> difficult time getting dt_binding_check to pass when I have an array of uint64.
->>>>>
->>>>> When listing two items, as in your example below, I get the following:
->>>>> adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
->>>>
->>>> Tricky to say without seeing your code. Magic crystal ball had
->>>> malfunction today.
->>>
->>> This is the property:
->>>
->>>   adi,filter-margins-hz:
->>>     items:
->>>       - description: |
->>>           The minimum distance, in Hz, between rf_in and the low-pass corner
->>>           frequency when the device is used in "auto" mode. If the sum of
->>>           rf_in and this value is greater than 18.85 GHz then the low-pass
->>>           filter will be put into bypass mode, otherwise the closest corner
->>>           frequency that is greater than or equal to the sum of rf_in plus this
->>>           value will be used.
->>>         minimum: 0
->>>         maximum: 0xFFFFFFFFFFFFFFFF
->>>         default: 0
->>>       - description: |
->>>           The minimum distance, in Hz, between rf_in and the high-pass corner
->>>           frequency when the device is used in "auto" mode. If the difference
->>>           between rf_in and this value is less than 1.75 GHz then the high-pass
->>>           filter will be put into bypass mode, otherwise the closest corner
->>>           frequency that is less than or equal to the difference of rf_in and
->>>           this value will be used.
->>>         minimum: 0
->>>         maximum: 0xFFFFFFFFFFFFFFFF
->>>         default: 0
->>>
->>> And this is the example:
->>>
->>> examples:
->>>   - |
->>>     spi {
->>>       #address-cells = <1>;
->>>       #size-cells = <0>;
->>>       admv8818@0 {
->>>         compatible = "adi,admv8818";
->>>         reg = <0>;
->>>         spi-max-frequency = <10000000>;
->>>         clocks = <&admv8818_rfin>;
->>>         clock-names = "rf_in";
->>>         adi,filter-margins-hz = /bits/ 64 <30000000 30000000>;
+>> 	pwm-adp5585
+>> 	pwm-ntxec
+>> 	pwm-raspberrypi-poe
+>> 	pwm-rz-mtu3 (software limitation only)
+>> 	pwm-sunplus
+>> 	pwm-twl-led (not completely sure, that one is strange)
 >>
+>> . ISTR that there is a driver that does only support inverted polarity,
+>> but I don't find it. For an overview I recommend reading through the
+>> output of:
 >>
->> foo-hz is in 32-bit, so basically you have here 4 32-bit numbers which
->> indeed reported by dtschema - property is too long. Drop 64-bit here.
+>> 	for f in drivers/pwm/pwm-*; do
+>> 		echo $f;
+>> 		sed -rn '/Limitations:/,/\*\/?$/p' $f;
+>> 		echo;
+>> 	done | less
 >>
-> 
-> I was hoping to keep this 64 bits seeing this is a 18 GHz+ filter. I suppose
-> I could change this to MHz and just lose a bit of resolution. Does that sound
-> like a better approach?
-
-Does the hardware accept Hz resolution? How many bits do you have in the
-registers per each value?
-
-Anyway, the value was 32-bit even in your original patch and your DTS
-example was not correct.
-
-
-> 
->> Device allows multiple LPF/HPF values to be stored in LUT tables and it
->> actually has four independent filters. Shouldn't these be included here?
->> Maybe not LUT tables, but the configuration for all filters?
+>> . (Note not all drivers have commentary in the right format to unveil
+>> their limitations.)
 >>
+>> For most use-cases you can just do
+>>
+>> 	.duty_cycle = .period - .duty_cycle
 > 
-> There are two filters, the input (high-pass) filter, and the output (low-pass)
-> filter. Each filter has four banks, each with a different range of frequencies.
-> Only one bank can be selected at a time. Each bank has 16 different possible
-> cutoff/corner frequencies. That is a total of 64 distinct values for each of
-> the two filters.
+> Yes, that is exactly what the relevant code in motion/simple-pwm.c does when
+> the "pwm-inverted" flag is present in the DT node.
+> 
+>> instead of inverting polarity, but there is no abstraction in the PWM
+>> bindings for that and also no helpers in the PWM framework. The problem
+>> is more or less ignored, so if you have a device with
+>>
+>> 	pwms = <&pwm0 0 PWM_POLARITY_INVERTED>;
+>>
+>> and the PWM chip in question doesn't support that, the pwm API functions
+>> will fail. So the system designer better makes sure that the PWM
+>> hardware can cope with the needed polarity.
+> 
+> Thanks for clarifying this!
+> 
+> @Krzysztof, do you think that given this situation it is acceptable to include
+> the "pwm-inverted" flag in the dt-schema of the simple PWM motor driver?
 
-Hm, datasheet says:
-"four independently controlled high-
-pass filters (HPFs) and four independently controlled low-pass
-filters (LPFs)"
+No, because that flag is already supported via PWM_POLARITY_INVERTED.
 
-so four each, not one each, but I guess they wanted to say banks as only
-one filter/bank can be active in given time?
+Do not tie bindings to specific implementation. If PWM core is changed
+to always handle PWM_POLARITY_INVERTED even if controller does not
+support it, would the binding became outdated?
 
 > 
-> The issue with setting the corner frequency directly is that in certain
-> applications (such as software defined radios) the fundamental frequency
-> is adjustable, necessitating that the corner frequencies of the filter are
-> adjusted accordingly. When the filter is in "auto" mode it is notified via
-> the clock system of frequency changes, so using this information it should be
-> possible to select new corner frequencies if you know the minimum distance
-> between your fundamental frequency and the corner.
+> The need for an inverted PWM signal is something very common in the case of
+> H-bridge motor drivers, where the PWM signal represents the actual logical
+> output level of each of the two halves of the bridge. Often the high-side
+> switches are used as the free-wheel position, so that 100% duty-cycle on both
+> channels is actually standstill, while 0% duty-cycle on one channel is full
+> speed in either direction. This isn't always the case though, hence the
+> importance for this to be able to be selected.
 
-I am not advocating to set the corner frequency directly, but just
-pointing that your current binding seems incomplete.
-
+Sure and use existing bindings for that. If implementation has problems,
+fix implementation.
 
 Best regards,
 Krzysztof

@@ -1,130 +1,118 @@
-Return-Path: <linux-iio+bounces-16300-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16301-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE2DA4C8CD
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 18:10:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64933A4CACD
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 19:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71976163A68
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 17:03:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F20D3A55FA
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 18:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82142505C7;
-	Mon,  3 Mar 2025 16:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC2122ACD3;
+	Mon,  3 Mar 2025 18:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WXWFBRWn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGABGaEp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A942500C6
-	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 16:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89A82135B8;
+	Mon,  3 Mar 2025 18:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741020378; cv=none; b=OTpYhCMj0bFKhRfi+BqtfQ5//9AdjlzNc5Hdj/8TtNqAOP7jvdgBvbH56u61R1ioSo0cMb+cjpY7mqgsHcwZwVAhjvFHnvqA0VkJKxyDywC+2qB5HJG7Z0WdFMhBuZzRf5Pl1WY2ZnNaiEjnC29HBsxDnRueUwVMZKPFV9S2fq0=
+	t=1741025132; cv=none; b=Skk8Ja93XeBC64EFAckgOzQX+h50QuLCEUc13T1PSVd3faEmrtGwoXAMUZAL3ApHqL0GydA1g+9e7fZlxL/Uezr0nr4NDnYE7ludmcqnhrixqImIu39BE5oQ1dP/SrjFRj0HcP4dpWX4FSnpOuVJgnJU3ynTYxixw2XDCFgdPAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741020378; c=relaxed/simple;
-	bh=vwKffkowRqqKxqcMgwNp2ANqImGns5AjArT8r15Nglc=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=vEtJYQdjgjV7nJsu8rQXLhUkMKEsZEsd7d+iu9X9+jM5p2ajns/cQYEG3VQbAXREzj971USTXlj1fQWbE3BtIUaQ65/lJPbTvCfAOF376J/n52e7b1qKEdBwo5YGNf0rS2y4LBlSL1ELYwLXSwu2VVPmEbjF4AH+cTxA73X4ULo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WXWFBRWn; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1741025132; c=relaxed/simple;
+	bh=VAH4v5bJFlLZrKM681qO/g3XFqUam0Q1Ghkk8lgbyjA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LxTJyb2ghM08nJ5/IJap/XwAyVhE3T5Hf4uUwV0222tVKZv9qRkUYb7mbITV341+sQEGrahh6H/o+acZs9zExYOXJ0mOrs3tFG8ehrsxTdeYBkVTEfRJjHlUb5XUyj+rRbLqHLEhpMUXdRplGUtnOBcngkwG6AmuhvBdTpZlSG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGABGaEp; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2fee05829edso3849554a91.3
-        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 08:46:16 -0800 (PST)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2234bec7192so71783125ad.2;
+        Mon, 03 Mar 2025 10:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741020376; x=1741625176; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vwKffkowRqqKxqcMgwNp2ANqImGns5AjArT8r15Nglc=;
-        b=WXWFBRWn5VDHjrhUV9XCc0ICo5R8bx1ISRCkdQHp5l4/XBs8g8RyJC35dM0cmdWONM
-         ErndR3AkiRgadaj+RBN3eeUR1IFT6Zy4biMiWqbmRC+XNd6jXwruVKx65ACE0IlOw1RS
-         Kvm95OYEPo6CbJPW3OHVCA3ucnR2pMmVr+s+nh3AgEBKxNc0B2UzpyQkbm+jQzIIC19/
-         rhKBPtEzD7lAYh98Fti4l6B2nKyHxUSqDHQW+vk3K4qQCk70TqqC+xxo9k24h0jaEWJn
-         gBcwqCQVnws2sOFp3NAsbWDLGKTSQZ3EYlQx07ggOj9vDPtuZz2a0iuqVlaH6bqxh5Lr
-         DCWg==
+        d=gmail.com; s=20230601; t=1741025130; x=1741629930; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9VkWdnxLuCrqr1vq5T7s75fh5Wv8+/qm0qNVED0OlTU=;
+        b=EGABGaEp9UoqQBqsBfFch0GuyArrjpl2JdDwvb1E5SnAqy2uJO2NrgHcgKF3YwLwm0
+         TwyHsDQ/YSHJUrHHmVMD6c/34/TGO94h6HvzbIKClPplvFcLaDR1p48kQYnNZltMfTis
+         1RycVNVoqE+GVrdP4p+Tj0NeCYs+UCXUyxiNUl64L9u7K28jcLc1xyEGhBDMvcO1tW9F
+         8VWbnlHRPpAUPvgRxNOWZbKM0Vv75STvQz2GqEhsfz7AsTW9/0Owu+PCXsMmllEe/6of
+         glaJiuC6LcsFZdQfGz9rrMAhriRVP/iMHGcfgXsetztcX5CYWjphhQQ6VnZ0HEB/xFLl
+         Wg8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741020376; x=1741625176;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vwKffkowRqqKxqcMgwNp2ANqImGns5AjArT8r15Nglc=;
-        b=j7SaS4moAtob1rHf64hKZmoYOeDNs3Or5VSQG7gjnhfiQFu5PTI4xWVqwe+APb2cHp
-         Wnvan4BKzzy7UkZewXc5oKb9SKLk29UxnApHPeIenoOT1ShdGwCE5cdf80JqrzXb3CtH
-         PoAMO2/gmRYgMoE1cbUREVygvyEjc8gAHR8MEPvO+JpwzJg5u/QwRlHVku14BiCp8VKj
-         nXYE1qDYddtXiWyh2DFZvudC3JaouD+Xk87MeUHiRYrRNA0CyXfBVFys/x0xfw5gyja2
-         bSbtPJQor/2uYnrtYiMb4NwOYzp6BBp8cRaTwYycITUf+7BY6SsoNTOqTp/rBcl3C5rD
-         huGA==
-X-Gm-Message-State: AOJu0YxEk0Dwx1zYfEawn2Z0NH3GZC79cNXpfgTLemh7lpE7JzHOsuIG
-	MKBgurjf0yzIK6Qkp3mrOjW5qL6F6KpMM/FoRW9Tc2kuzgtKQEGd6d0sshOimJaOiZOfR4FuCcS
-	erMJaMnWwhOr9VQhyR1mZPdYgl/I14OUL4Zobww==
-X-Gm-Gg: ASbGncuSy+7S9gv9BuwrtxlwUNVd0hgNou1fXjBFT0dC5U6CX3BvYry43q5M543tcBE
-	W2loiMHM7kfOCtmGVIlcDxz2jmG0awi3tTNhWuibqF8rNGnthXdthFnwjVWBwv9CnKhZJdOBEGA
-	z8L5Gc+8vl/hEyqMCTawa3s2ksFA==
-X-Google-Smtp-Source: AGHT+IGP4+dX5KiTDpTpn2dqRU/l4FVHCxHpdL9g3hGpqplHFRQ6GnCf1WGBp1y4h0Mwo8g1gmNuw+PjDOpsXDV9eFM=
-X-Received: by 2002:a17:90b:3509:b0:2f9:9ddd:68b9 with SMTP id
- 98e67ed59e1d1-2febabd9c6bmr19581637a91.26.1741020376087; Mon, 03 Mar 2025
- 08:46:16 -0800 (PST)
+        d=1e100.net; s=20230601; t=1741025130; x=1741629930;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9VkWdnxLuCrqr1vq5T7s75fh5Wv8+/qm0qNVED0OlTU=;
+        b=ww1jEwUqjH+kvALG8gx+Y6UmaSTHDE2HUULmlH3flg26zC9/B8DAWaEyaRlUu4Z9li
+         0IKFxdSTtL7Wef5lkYqrSzGamcsqWQJpJQRTEIU31FTMLGKT8RijOjuCPz3V1dnPFB5Y
+         PN30Ltx9YuhoZlpnrVscVOm0cL10eKwxt04+VrqKzgCtVbAajJ0/Q8u85WFRq4jUEGH6
+         GIx02qIcbGZdQ+WTm9zX8a2Zr4TQJ+Jb4+wrQvzhACgCg2zJaPTNfq/e6Iwh8QcO8341
+         NbswaCT8Zh3Khd4J25uW8eP7pUayyM2d1+DHZXRye0Mz3fxNg13D+3EuyCMlKdQqMeRO
+         Nc0w==
+X-Forwarded-Encrypted: i=1; AJvYcCU/FTO0kDnrw9jYRXUxnkJ8HWDsqnQjyo+VeD9z4olvHsdG8SlpkqLx7ZSuIO1fzYi97VttuPSa5moAh81H@vger.kernel.org, AJvYcCX0q4WLHti8Ny1w/jEha+mgPm4EHBJAsipvkzJAUmyQCuvUr8cES4cC4upihchG+2HWyxF5Xk09wuM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfI+0C3xTptTHqstrVQTjr+Z4teJULjjs3hpYs/49yskwcNBC7
+	71wnEYPTBNQEP5yOmXKvAhqxCMWAlMEt7vxAPyV0apvadJmLIj2o
+X-Gm-Gg: ASbGnctWd4N6JkkIvlWMmkRyUf4JJrI7BnC0XcwikAf1O9iibMUftCRCPT4yX6adYmU
+	IJdqP2Vcw3LVVOPQqaAFWP3BOW0au5ScFe1/sYO7h0Vym5LSxToGFyxpIAIsJbGU9tgocm7jSEX
+	fWtqYZ/YmUmIMA2o4EuiC0iDDMFoyuHn4o9m1+rUBr84gIEJ7PomzlegvNQ9i6EBJPeip3S/vIg
+	ly0WHyYmX34JlO7tEzV7lp0HEsW6UfKs39r8Na3xFxxdsO8h4XOBc/fPmWsA4VzL5Z5sHDVU5Og
+	z/2UitgmMPclohMk2RWvDPh/7x84vfja3PGJ2sQQuU3rafV4M6UsiiXGEgOXtkgY6PM9
+X-Google-Smtp-Source: AGHT+IEW89lTZAYKBGO7spjOgM6BNdSZ6lApduXyII/5vwtNdJIM/6NiUw7JrWJ1rE0/V8JqintsxA==
+X-Received: by 2002:a17:902:dac4:b0:223:6436:72bf with SMTP id d9443c01a7336-2236921ebeemr275963095ad.44.1741025129900;
+        Mon, 03 Mar 2025 10:05:29 -0800 (PST)
+Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:7b03:1e42:d492:fb71])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501d29cbsm81319975ad.50.2025.03.03.10.05.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 10:05:29 -0800 (PST)
+From: Saalim Quadri <danascape@gmail.com>
+To: jic23@kernel.org
+Cc: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	gregkh@linuxfoundation.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Saalim Quadri <danascape@gmail.com>
+Subject: [PATCH] staging: iio: adis16203: Remove unneeded spi_set_drvdata()
+Date: Mon,  3 Mar 2025 23:35:23 +0530
+Message-Id: <20250303180523.15445-1-danascape@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Prince Kumar <855princekumar@gmail.com>
-Date: Mon, 3 Mar 2025 22:15:38 +0530
-X-Gm-Features: AQ5f1Jo_AFLQBceFU0pXGVMtviDmkSw1iT4apDrSSF5hh6s7otl8IPnjWu2IX80
-Message-ID: <CAMmuoA+1Qi2qnF64nmHobL6hSFdf6GUrX=BjZ=0aGULu75b3GQ@mail.gmail.com>
-Subject: Proposal Discussion: ADE9113 IIO Driver Development for Linux Kernel
-To: linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Dear Linux IIO Maintainers,
+* Since we are making use of devm_iio_device_register(), we no longer
+  need this nor do we have any spi_get_drvdata() in the driver.
 
-I hope you are doing well. I am interested in contributing to the
-Linux Industrial I/O (IIO) subsystem as part of GSoC 2025 under the
-Linux Foundation. I would appreciate your feedback on my project idea
-to ensure it aligns with the community's goals and best practices.
+Signed-off-by: Saalim Quadri <danascape@gmail.com>
+---
+ drivers/staging/iio/accel/adis16203.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Project Proposal: ADE9113 IIO Driver Development
+diff --git a/drivers/staging/iio/accel/adis16203.c b/drivers/staging/iio/accel/adis16203.c
+index c1c73308800c..3faf3c61046a 100644
+--- a/drivers/staging/iio/accel/adis16203.c
++++ b/drivers/staging/iio/accel/adis16203.c
+@@ -267,8 +267,6 @@ static int adis16203_probe(struct spi_device *spi)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 	st = iio_priv(indio_dev);
+-	/* this is only used for removal purposes */
+-	spi_set_drvdata(spi, indio_dev);
+ 
+ 	indio_dev->name = spi->dev.driver->name;
+ 	indio_dev->channels = adis16203_channels;
+-- 
+2.34.1
 
-My goal is to develop a mainline-compatible Linux kernel driver for
-the ADE9113 ADC (or similar SPI-based ADCs), enabling seamless
-integration into the IIO subsystem. The driver will expose sensor data
-via sysfs, libiio, and standard Linux interfaces, making it accessible
-for various applications.
-
-Technical Approach
-1. IIO Driver Implementation:
-Develop a modular and reusable kernel driver for ADE9113, ensuring
-compliance with IIO standards.
-Implement buffered and direct register read/write methods for
-real-time data access.
-
-2. Extensibility & Optimization:
-Design the driver with flexible Device Tree (DT) bindings, allowing
-support for other SPI-based ADCs with similar architectures.
-Explore an MCU-assisted vs. direct SPI approach to evaluate
-performance and CPU overhead trade-offs.
-
-3. Testing & Documentation:
-Provide unit tests using kselftest or libiio to validate the driver.
-Write comprehensive kernel documentation to guide future contributors.
-Ensure compatibility with existing Linux tools for IIO sensor data
-visualization.
-
-Community Involvement & Next Steps
-I have reviewed existing IIO ADC drivers and the Linux IIO framework
-to ensure this proposal aligns with upstream development goals. I
-would greatly appreciate your input on:
-
-Feasibility: Is this project a good fit for IIO and GSoC?
-Driver Design: Are there any best practices or existing reference
-drivers I should study?
-Additional Considerations: Are there specific IIO guidelines I should follow?
-
-I am eager to receive feedback and refine my approach to make a
-meaningful contribution. Looking forward to your thoughts!
-
-Best regards,
-Prince Kumar
 

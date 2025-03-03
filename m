@@ -1,325 +1,135 @@
-Return-Path: <linux-iio+bounces-16286-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16287-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38457A4C19C
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:19:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DAFA4C1D0
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2811B7A6946
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 13:18:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC19F16E55A
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 13:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57BF212FAB;
-	Mon,  3 Mar 2025 13:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C2212B21;
+	Mon,  3 Mar 2025 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="V2VWHjdH"
+	dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b="nDt6q4/K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp15.bhosted.nl (smtp15.bhosted.nl [94.124.121.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE9120E332
-	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 13:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5788F1F17E5
+	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 13:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741007924; cv=none; b=SapvV94qzfpestLSlTOHxY2CdvSKjTmEgteKDaZwIuhFjsMbF1zLK/sUghMyVKIWCOKxrIJx4D7pMJLPuDhMqPk5NMcMznxaX8D6lT80I9+wUWeGtEykm4PyDBZMqoX+/dpy6XO9UScYwFtvj2bRmWJZvc5UkWask8cUhX1D6Lc=
+	t=1741008167; cv=none; b=SMyVLVvoxcgkOfBZRd1G5Mgrexc+KOIWtrIW3tANpJ6Exl24wvPjtU9Ksb77M3iFjDgFPOtRvN00sTIdgf1xWeQfZp4g0oraXpNuxQxwZ8y/PxLQIqzL++WIHA47Bxq2ZFqS++5nMaQgUTpIDKjwPG0aU8pTCngGwmYYHml4csU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741007924; c=relaxed/simple;
-	bh=AMDQ9eFx0aMl37aNjAdud2rQll+8S9hW7w2yT459u9w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fCQ70OD+o6X1nyDnbexohFcKOMQ9CtMx+2oH3xEo9IVdgtPnapq4DeS2lij0c+4GfZSwTWVlkNU+CFgoMOn4cL8/fn5ItK+X8LqkT/QJViHANFMo5EKPl5B45UP7RXHyyz06RtpWVlLHzsep0mMJy2QUSxKtcdlrDWOAvUtK3RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=V2VWHjdH; arc=none smtp.client-ip=94.124.121.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+	s=arc-20240116; t=1741008167; c=relaxed/simple;
+	bh=5i9uP2Ze50hwz43llaF1f86tTfk7p6fywziSf77roYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jgaeOvATE1a8dFrC7UoDMTPUGVhaLAzXaQTUz/KEpN7dCR+6S7jGT4kmiPB0oLYf5/amPiKY/7uc+DK7MUve8bfaKuiTKkm+VOPSCpwAzqgIFYcEbf72ypTITAjARTas4ER/qSIe9gGDhrd8HYP9E14x49PEiMeVmY6DCTmMiLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it; spf=pass smtp.mailfrom=4sigma.it; dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b=nDt6q4/K; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=4sigma.it
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-390df942558so3499155f8f.2
+        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 05:22:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
-	 message-id:subject:cc:to:from:date:from;
-	bh=07jHBQ0Ocr20eMkBHU7wCv3Kb+u8M2gSl1jHl4Krjyw=;
-	b=V2VWHjdH50wFOAzqiqTCz4ucfQSAqCESzCrmKnlGDokUdrXyVCjY95wGlKxQEqab88IbyapJ8HitR
-	 HhPCkTVbdTVmITlaPVwF3DF45rsjZ8KKS9QR1QgL9Z9ZJ5PpeqMyb4Z4Br1b1QGHaU9XuSjwQA5XjL
-	 A9EK9KrVHqZcBBGpkCbhwHNy2zuIXnCvY+Yqh6IJUonUEaNniEQT+LOJaiv8qIBYHv/lxzT4aRN+2w
-	 0Ycn1oeGVIj2B/QPxKjK8H50uESCFnozuiYgwKdA25We/6ZDtA7Zez1CmVi/IbJCfJ/OrJ8aJ40Ipn
-	 ZWeXSYlWcX+QRqZW16a2zXBCEZZ+o4g==
-X-MSG-ID: 04a26b70-f832-11ef-a39b-00505681446f
-Date: Mon, 3 Mar 2025 14:18:37 +0100
-From: David Jander <david@protonic.nl>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
- <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
- <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
- <o.rempel@pengutronix.de>
-Subject: Re: [RFC PATCH 6/7] dt-bindings: motion: Add adi,tmc5240 bindings
-Message-ID: <20250303141837.782e57f7@erd003.prtnl>
-In-Reply-To: <CAMknhBFoRoaXWBL-vDnDrepqw_KJ-VrYeOoGJfjz8q=wDNM6xA@mail.gmail.com>
-References: <20250227162823.3585810-1-david@protonic.nl>
-	<20250227162823.3585810-7-david@protonic.nl>
-	<7b2a8d71-9d83-4d40-903b-ba7ef1c686f3@baylibre.com>
-	<20250303122253.26fec335@erd003.prtnl>
-	<CAMknhBFoRoaXWBL-vDnDrepqw_KJ-VrYeOoGJfjz8q=wDNM6xA@mail.gmail.com>
-Organization: Protonic Holland
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+        d=4sigma.it; s=google; t=1741008162; x=1741612962; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECd7n/EGUmOy5J+E/dKH2tzC4YWX/xlVp74bjlxoPQg=;
+        b=nDt6q4/K0N8xzRqLxFMqd6p1ibGHiV7xxPWXT+usVbOPibIx5bWm7/n/dn9DYCj9hj
+         c2H4VCsB/m13egqj5b5paRRnZK9yUobXj1xIDb7HDEuTJ6Dx51+xV7isuyfBODiDWnli
+         NeDXt2m+BisCAEvycr6XqxaD/0VQu9tuMYZFI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741008162; x=1741612962;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ECd7n/EGUmOy5J+E/dKH2tzC4YWX/xlVp74bjlxoPQg=;
+        b=r5DGjuz3yfiqk73qCHgzK4Qx6XPdaRaF1ss7sv5vTCd0rO7rjGsUgg3wmLi/iCjgth
+         +oBgvtITbLYPa5TVyiaoV1y6f6kw0YzAg5SpHAiLQq5ijZh7JSpkCF3d3sqb0iCatkPQ
+         vFwleX1puyBcAstnNLhzTpiz6kRtpx0sqwT09LuqjiV5QI6hgYsN9VAE8hOPu2FxKJs1
+         g5IeX96E1CoOWGuV2O90KYZWzGe7cmRxFAeSaZzQ3GR0wG9bb/0z/suYG1T8KH9OpJfa
+         B2B/roNbOCKHuuNk0wE2eGKmL69ZhSwP9ttDq+MxyffeVOIHVE5OL95tCrWsMJnpaOMl
+         Q4bw==
+X-Forwarded-Encrypted: i=1; AJvYcCWY9/vUnswt1j8++wmzvWXMkxsjOYreQ+F1nDQldsQtiX/54dlaCHPxFeDkjEaCDdG6Kx7MteO6dEY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYClDPYlmjDlTRzzusXcq0f/0U25hseIPRuqHKcApOwK4FgPFC
+	iF2J+j3FQD3ve59HuqWS4Mo2df39YMscUZx0JMiltz14uIkoAto/gDVWzjySYg==
+X-Gm-Gg: ASbGncuGgGjMoa2fz8cbn7P6FfQn4pEnn1Bptk+odis3WDSB5jPfee9s7vX/zzVflco
+	f5sHtEPD62cz2xvmUAGDwzH/qRLw7WuNNuK2tDjWdARDU8ctWw6e04n+Q+Bt/Mtc+0GnlrBEZ6A
+	Gi+JzBkc2EncBahdwC2pawImOi3F4o5vp8+5mCmmpTXw+VyYmX2AIthMrWSitPLrJA70Dsc7RPo
+	/zMp+noNmu944TkVykg2wqg8zfN9nAP/kmk+OXbCT6zrsU74oadwD7Pe1ExuUlAezk5qRvVbPql
+	TVX0MSaLhvXEq9H/BI7EDNPEdRs0P1rnsT5SLXWxeOl7u+UWzvn39pSlgafaSZhzPwYD89Sqpqt
+	f2r4cNnM=
+X-Google-Smtp-Source: AGHT+IGakxsdP7cssVmEZsfodi7ojWu3CfAaSJKH4e/l+/9KTp9+UWQBz14kFBtrP7h34XIaqmym6w==
+X-Received: by 2002:a05:6000:2a3:b0:390:f9d0:5ed with SMTP id ffacd0b85a97d-390f9d007fdmr4858802f8f.1.1741008161601;
+        Mon, 03 Mar 2025 05:22:41 -0800 (PST)
+Received: from marvin.localdomain (94-35-64-90.client-mvno.tiscali.it. [94.35.64.90])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43b736f770asm166769265e9.6.2025.03.03.05.22.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Mar 2025 05:22:41 -0800 (PST)
+From: Silvano Seva <s.seva@4sigma.it>
+To: lorenzo@kernel.org
+Cc: a.greco@4sigma.it,
+	Silvano Seva <s.seva@4sigma.it>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	linux-iio@vger.kernel.org (open list:ST LSM6DSx IMU IIO DRIVER),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] iio: imu: st_lsm6dsx: fix possible lockup during FIFO read
+Date: Mon,  3 Mar 2025 14:21:25 +0100
+Message-ID: <20250303132124.52811-2-s.seva@4sigma.it>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+Prevent st_lsm6dsx_read_fifo and st_lsm6dsx_read_tagged_fifo functions
+from falling in an infinite loop in case pattern_len is equal to zero and
+the device FIFO is not empty.
 
-Dear David,
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+---
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-On Mon, 3 Mar 2025 13:28:35 +0100
-David Lechner <dlechner@baylibre.com> wrote:
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index 0a7cd8c1aa33..7f343614f8a5 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -395,12 +395,17 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
++	if (!fifo_len)
++		return 0;
+ 
+ 	acc_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_ACC]);
+ 	gyro_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_GYRO]);
+ 	if (hw->iio_devs[ST_LSM6DSX_ID_EXT0])
+ 		ext_sensor = iio_priv(hw->iio_devs[ST_LSM6DSX_ID_EXT0]);
+ 
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++
+ 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
+ 		err = st_lsm6dsx_read_block(hw, ST_LSM6DSX_REG_FIFO_OUTL_ADDR,
+ 					    hw->buff, pattern_len,
+@@ -623,6 +628,9 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw *hw)
+ 	if (!fifo_len)
+ 		return 0;
+ 
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
++
+ 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
+ 		err = st_lsm6dsx_read_block(hw,
+ 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
+-- 
+2.48.1
 
-> (Sorry if you get this twice. I don't have my regular computer today
-> and didn't realize I was sending HTML the first time. Resending in
-> plain text so the lists pick it up.)
->=20
-> On Mon, Mar 3, 2025 at 12:22=E2=80=AFPM David Jander <david@protonic.nl> =
-wrote:
-> >
-> >
-> > Dear David,
-> >
-> > On Fri, 28 Feb 2025 16:38:51 -0600
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
-> > > On 2/27/25 10:28 AM, David Jander wrote: =20
-> > > > Add device-tree bindings for Analog Devices TMC5240 stepper control=
-lers.
-> > > >
-> > > > Signed-off-by: David Jander <david@protonic.nl>
-> > > > ---
-> > > >  .../bindings/motion/adi,tmc5240.yaml          | 60 +++++++++++++++=
-++++
-> > > >  1 file changed, 60 insertions(+)
-> > > >  create mode 100644 Documentation/devicetree/bindings/motion/adi,tm=
-c5240.yaml
-> > > >
-> > > > diff --git a/Documentation/devicetree/bindings/motion/adi,tmc5240.y=
-aml b/Documentation/devicetree/bindings/motion/adi,tmc5240.yaml
-> > > > new file mode 100644
-> > > > index 000000000000..3364f9dfccb1
-> > > > --- /dev/null
-> > > > +++ b/Documentation/devicetree/bindings/motion/adi,tmc5240.yaml
-> > > > @@ -0,0 +1,60 @@
-> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > > > +%YAML 1.2
-> > > > +---
-> > > > +$id: http://devicetree.org/schemas/motion/adi,tmc5240.yaml#
-> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > > > +
-> > > > +title: Analog Devices TMC5240 Stepper Motor controller
-> > > > +
-> > > > +maintainers:
-> > > > +  - David Jander <david@protonic>
-> > > > +
-> > > > +description: |
-> > > > +   Stepper motor controller with motion engine and SPI interface. =
-=20
-> > >
-> > > Please include a link to the datasheet. =20
-> >
-> > Will do.
-> > =20
-> > > > +
-> > > > +properties:
-> > > > +  compatible:
-> > > > +    enum:
-> > > > +      - adi,tmc5240
-> > > > +
-> > > > +  reg:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +  interrupts:
-> > > > +    maxItems: 1 =20
-> > >
-> > > I assume that this is the overvoltage output (OV pin). Would be nice =
-to have
-> > > a description here saying that. There are also NAO and DIAG0/1 output=
- pins, so
-> > > it's a bit ambiguous otherwise. =20
-> >
-> > This is the DIAG0 output pin which on this chip has a dual function as =
-either
-> > a STEP output or an interrupt output. The pin name is a bit misleading,=
- but it
-> > is the "interrupt" function that is meant here. The datasheet documents=
- all
-> > the different events that can trigger this interrupt.
-> > I will add a description to clarify this.
-> > =20
->=20
-> If it makes sense that other pins could possibly ever be connected to
-> interrupts then we can add those and also add interrupt-names (but
-> only if there is more than one possible interrupt).
-
-AFAIK, only DIAG1 would potentially make sense to be connected to an
-interrupt. It can be programmed to go low when the motor position matches t=
-he
-contents of the X_COMPARE/X_COMPARE_REPEAT register setting.
-
-I will add that one if you agree. It will not be mandatory of course.
-
-In any case, if that pin was connected to an interrupt pin right now, it co=
-uld
-already be used as an IIO trigger for example. Just not (yet) via this driv=
-er.
-
->[...]
-> > The resistor connected to the IREF pin (Rref) OTOH does have an implica=
-tion to
-> > the software, as it sets the full-range current of the output stage.
-> >
-> > How should we specify that? Is it adequate to add an optional DT proper=
-ty
-> > "rref" or "rref-ohm" with an int32 value in Ohm? The default value if
-> > unspecified is 12000 Ohm. =20
->=20
-> It looks like there are a few standardized properties, like
-> sense-resistor-ohms if that fits the use case. Otherwise, an
-> vendor-specific ti,rref-ohms would work. FYI, you can find the
-> preferred units at [1].
->=20
-> [1]: https://github.com/devicetree-org/dt-schema/blob/main/dtschema/schem=
-as/property-units.yaml
-
-Ah, thanks! This is helpful.
-
-Will use this for ti,rref-ohms. I guess in this case that would be easier to
-understand than "sense-resistor-ohms", which is also okay, but would require
-reading the description to know what exactly is meant in this context.
-
-> > > And if there are any pins would make sense to connect to a gpio, we c=
-an add
-> > > those even if the driver doesn't use it currently.
-> > > =20
-> > > > +  clocks:
-> > > > +    maxItems: 1
-> > > > +
-> > > > +required:
-> > > > +  - compatible
-> > > > +  - reg
-> > > > +  - interrupts
-> > > > +  - clocks
-> > > > +
-> > > > +allOf:
-> > > > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> > > > +  - $ref: /schemas/motion/common.yaml# =20
-> > >
-> > > If we need to know about what is connected to the output of a motor c=
-ontroller
-> > > I would expect it to be done with child node for each output. That wa=
-y each
-> > > output can be unique, if needed. Basically, similar to iio/adc.yaml i=
-s used to
-> > > provide common properties for channel@ child nodes on iio devices. =20
-> >
-> > This controller chip only has one single output for one stepper motor (4
-> > wires). While technically you could connect something else to those 4 w=
-ires, I
-> > don't think it is the scope of LMC to support that. The chip itself isn=
-'t
-> > designed for that purpose and it would clearly go far beyond the intend=
-ed
-> > purpose of this device.
-> >
-> > That being said, your suggestion of supporting child nodes may actually=
- be a
-> > good idea. Right now, we specify the type of motor (basically nominal- =
-and hold
-> > current settings) in user-space and set the IRUN/IHOLD parameters from
-> > user-space via the sysfs attributes interface. It might make sense to h=
-ave a DT
-> > child node to specify this, although in our current application this is=
- not
-> > very practical, since there are many motor controllers on one board, an=
-d it is
-> > configurable in software (runtime) which motor is connected to which ou=
-tput.
-> >
-> > But I can imagine a situation where it may be fixed and thus can be des=
-cribed
-> > in the DT of a board.
-> >
-> > Then again I don't know if it would be over-complicating things with so=
-mething
-> > like this:
-> >
-> >         motor-controller@0 {
-> >                 ...
-> >                 motor@0 {
-> >                         compatible =3D "nanotec,st4118s1006";
-> >                         irun-ma =3D <1800>;
-> >                         ihold-ma =3D <270>;
-> >                 };
-> >         };
-> >
-> > where we'd possibly have a stepper-motors.c file with a lot of structs =
-and
-> > matching tables for the different motor types.... sounds like overkill =
-to me,
-> > but maybe not? =20
->=20
-> A compatible for motors seems too much. I was just thinking along the
-> lines that 1) if we need to so some scaling or something that depends
-> on a motor constant, then it would make sense to put those constants
-> in the DT and 2) if there is a motor controller with more than one
-> output that could be connected to two or more different sizes of
-> motors with different constants, then we either need child nodes or an
-> array to be able to enter the different constants. Either one would
-> work. So maybe simpler to just use an array instead of child nodes now
-> that I'm thinking about it more.
-
-Well, in the case of the TMC5240 there isn't much more than a single motor
-with possibly some fixed setting of irun/ihold in some cases, but like I sa=
-id,
-in our case it is run-time configurable, so not something fixed to the
-hardware-description. Apart from that, there are the speed- and acceleratio=
-n-
-conversion constants, which per default are the constants stated in the
-datasheet. In some rare cases one might want to overrule them, but that can
-already be done.
-
-LMC does als support multi-channel controllers, and in that case I intend to
-make use of child nodes for the different channels, to be able to specify
-those parameters per motor.
-
-So maybe just leave it as it currently is for the tmc5240?
-
-> > > > +
-> > > > +unevaluatedProperties: false
-> > > > +
-> > > > +examples:
-> > > > +  - |
-> > > > +    spi {
-> > > > +        #address-cells =3D <1>;
-> > > > +        #size-cells =3D <0>;
-> > > > +
-> > > > +        motor@0 { =20
-> > >
-> > > motor-controller@ or actuator-controller@
-> > >
-> > > The chip is the controller/driver, it is not a motor. =20
-> >
-> > Make sense. Will change this.
-> > =20
-> > > > +            compatible =3D "adi,tmc5240";
-> > > > +            reg =3D <0>;
-> > > > +            interrupts-extended =3D <&gpiok 7 0>;
-> > > > +            clocks =3D <&clock_tmc5240>;
-> > > > +            enable-supply =3D <&stpsleepn>;
-> > > > +            spi-max-frequency =3D <1000000>;
-> > > > +        };
-> > > > +    }; =20
-
-Best regards,
-
---=20
-David Jander
 

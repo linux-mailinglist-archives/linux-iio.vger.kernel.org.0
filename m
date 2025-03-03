@@ -1,175 +1,252 @@
-Return-Path: <linux-iio+bounces-16295-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16296-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E11A4C3D2
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:49:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44BEA4C3D3
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 15:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73FFD7A85C1
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:47:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E82C3A484E
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 14:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C60A212FA7;
-	Mon,  3 Mar 2025 14:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11ECC2139B2;
+	Mon,  3 Mar 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="x4nTk59A"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="koh+VS9V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-15.pe-b.jellyfish.systems (out-15.pe-b.jellyfish.systems [198.54.127.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE04F7DA93;
-	Mon,  3 Mar 2025 14:48:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDCC20F07D;
+	Mon,  3 Mar 2025 14:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741013299; cv=none; b=GpRSGs34tcRyQvK0asQE+fwmUwR3RCQbExvz3p7s8N9jD3ymq6vGB422D8wdeo5aunLpGKyLDVOEQpwqIX9PMgmnZzyyC+2fmUgLPBTJ9JHtOoEYsqyan9hAM+DTncWvZPe/EBh18LAoWtfh7cZAjGq+O30qSnxEn+T2DfKwOHk=
+	t=1741013347; cv=none; b=ifaxxV8d9UQvDRzXITrPDddLSUYuIsajlf52wFqgoKKxNbb8Y3A66pN63Fw4HIS6jdkYKPVAcdLDStFSFwKyADR6FHgCnbSkI0S9stUdRLRepyfn/WExCj+qVyw+CHEpfuyzUraaBemcdRn05Qds+zzL4eg/2l6x34lgZnIPYqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741013299; c=relaxed/simple;
-	bh=l+kX2MTcfcF4+A6ZDDJW3gOUltnc5ogqGlhahThBv6s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=ZO/BwQgzHNV/1fnI9JC5so49EpxchLwvqIvYQAp4J9qF6RdVaoiSgI21Gtlq71PweAdoGj3iOsvPX3dnWefB/haWsly+NKEwH+f9zjI6KQIAppyVhBDyL0ncInNpf1GtcR2Cg5R4NWpsiWhBKn4SS152C+zJ6krwcugvYzmZv4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=x4nTk59A; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 523BqxeT032403;
-	Mon, 3 Mar 2025 09:47:49 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=eAq+InRFatcB8I+upMd0/I2BuDO
-	dtHZMZkmyJfVMurI=; b=x4nTk59AMQ4QrZ7is5pktJdEdiClwovAq3erKdxrooy
-	AmFNpPPuWN3/eIYApWf2/T3NiUhzqDAe2B5U9vgUMZkWfaUHzFSrjK5klzB3FtzP
-	HVjmOTc6vPKmtHHRvEFDVQflUeelYobIenDZ4geGDxhYzapD/nc4nzl5h+562Sqb
-	qiyBZEfX3g3mYr221WN++lsXwVso2qQF7HaV3NdO6QBWdOkMo1MAUQ05l2VyTTCN
-	bOQ9ydL6s3y9S6RXKtXbRpPrad4+U1x5kEzVhLi8EBM268s0FP7jWaFCME2dZJ0Q
-	pDBGZDJawMm91B+F8XAsBCzYz55KYx4TM7qHpwcPcCg==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 455bxnrs3y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Mar 2025 09:47:49 -0500 (EST)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 523EllMu009991
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 3 Mar 2025 09:47:48 -0500
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 3 Mar 2025
- 09:47:47 -0500
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 3 Mar 2025 09:47:47 -0500
-Received: from HYB-DlYm71t3hSl.ad.analog.com (HYB-DlYm71t3hSl.ad.analog.com [10.44.3.50])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 523Ela3p021465;
-	Mon, 3 Mar 2025 09:47:38 -0500
-From: Jorge Marques <jorge.marques@analog.com>
-Date: Mon, 3 Mar 2025 15:46:25 +0100
-Subject: [PATCH] iio: Mark iio_dev as const in getter methods
+	s=arc-20240116; t=1741013347; c=relaxed/simple;
+	bh=MNjDfqZLSnlJ4xm1Uqst0rrtX/aws1k1MoBULpesUJY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LFBwtmJUFn7Zv9/hExVqrlqkpD+q1D2R91VQYtnJz417jCFJxl1kURNXCbbF2QYeF0ZRyO9DANZh/AXbh5UuZXFCFYnEd7MnCegl1GjrhjUE5FBPQ9FpKVkGveRiL/jM3ltsBDPf/yUPjk+M9Bwh5ho9si8Lr/9asa+chBf0ouc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=koh+VS9V; arc=none smtp.client-ip=198.54.127.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
+Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
+	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4Z61sk4jcnzDqdL;
+	Mon, 03 Mar 2025 14:48:58 +0000 (UTC)
+Received: from MTA-07.privateemail.com (unknown [10.50.14.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4Z61sk415dz3hhVZ;
+	Mon,  3 Mar 2025 09:48:58 -0500 (EST)
+Received: from mta-07.privateemail.com (localhost [127.0.0.1])
+	by mta-07.privateemail.com (Postfix) with ESMTP id 4Z61sk2f4Vz3hhVR;
+	Mon,  3 Mar 2025 09:48:58 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
+	s=default; t=1741013338;
+	bh=MNjDfqZLSnlJ4xm1Uqst0rrtX/aws1k1MoBULpesUJY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=koh+VS9VmykpFaBULoB0C+NqkdT4+y+b8faO/4u84hvjEjsCOoxjiJzOCwNaP7BMp
+	 fK7EPYV2aiuFmsCZW6esl1kqRLGm5NuPSX5H7FfX8iiZQ8xO/nsMWFPn0BuEP7W8Ra
+	 HMoG0l64MLwxFFP8T73zemkcimD1WJ1V2jvHn/UJ9psPMVAlt35rjj5BxIyeMMAP1n
+	 MS5sQgXWBXBiabN2zukKls18yQkjMspAnMS8RxuYMuo/+r3mXMJNsZhLh5aXvhADHk
+	 ntHjHc+1PuJ3GSvNRhFkurgeE6dWJEbm+5+pjlzh4ZY83ekzr/SrjOUupT3RuMDlpU
+	 MdPDbXpkyGOEA==
+Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
+	by mta-07.privateemail.com (Postfix) with ESMTPA;
+	Mon,  3 Mar 2025 09:48:45 -0500 (EST)
+Date: Mon, 3 Mar 2025 09:48:46 -0500
+From: Sam Winchenbach <sam.winchenbach@framepointer.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
+Message-ID: <Z8XBTnNWUh54FxS6@65YTFL3.secure.tethers.com>
+References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
+ <20250225134612.577022-2-sam.winchenbach@framepointer.org>
+ <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
+ <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
+ <05e56d15-059b-425b-9e55-66993d988f8d@kernel.org>
+ <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
+ <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
+ <Z8WvKNcCnQI_UYZJ@65YTFL3.secure.tethers.com>
+ <b3f98745-39c3-4b1f-a0e6-51e5138d840c@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250303-b4-iio-dev-const-v1-1-c2d9d5fe5ac1@analog.com>
-X-B4-Tracking: v=1; b=H4sIAMDAxWcC/x3MMQqAMAxA0atIZgM1VUGvIg41Rs3SSisiFO9uc
- XzD/xmSRJUEY5Uhyq1Jgy9o6gr4cH4X1LUYyFBnrLG4tKgacJUbOfh0ITP1i+PW0EBQsjPKps+
- /nOb3/QAnfsPPYgAAAA==
-X-Change-ID: 20250303-b4-iio-dev-const-cc26bac40292
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Jorge Marques
-	<jorge.marques@analog.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741013256; l=2674;
- i=jorge.marques@analog.com; s=20250303; h=from:subject:message-id;
- bh=l+kX2MTcfcF4+A6ZDDJW3gOUltnc5ogqGlhahThBv6s=;
- b=Mk5PYJ/Lw7WTo7fbs0GnzymiuJQbUz2rtjhSeOnzV87AnVF2YqKcSrqjyofleXvgofrYvB0+S
- PEKSFajKNWUAw9rMR/63vEk23Aqbne4ikDXD+x0LM9qNtzWtY6hGVT1
-X-Developer-Key: i=jorge.marques@analog.com; a=ed25519;
- pk=NUR1IZZMH0Da3QbJ2tBSznSPVfRpuoWdhBzKGSpAdbg=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: 5NphpABY9T-8umLWhdcUhUF86nlycp8F
-X-Proofpoint-ORIG-GUID: 5NphpABY9T-8umLWhdcUhUF86nlycp8F
-X-Authority-Analysis: v=2.4 cv=Y/ICsgeN c=1 sm=1 tr=0 ts=67c5c115 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=IkcTkHD0fZMA:10 a=Vs1iUdzkB0EA:10 a=gAnH3GRIAAAA:8 a=QG0Klee38qREIk_fXF8A:9 a=QEXdDO2ut3YA:10
- a=oVHKYsEdi7-vN-J5QA_j:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-03_07,2025-03-03_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 impostorscore=0 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=999
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503030113
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b3f98745-39c3-4b1f-a0e6-51e5138d840c@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-get_current_scan_type read-only method allows to support multiple
-scan types per channel, which may also depend on a buffer enabled state.
-Mark iio_dev as const in iio_device_id, iio_device_get_current_mode,
-iio_buffer_enabled read-only methods so they can be used from other
-read-only methods.
+On Mon, Mar 03, 2025 at 03:16:00PM +0100, Krzysztof Kozlowski wrote:
+> On 03/03/2025 14:31, Sam Winchenbach wrote:
+> >>> This prevents the situation where your fundamental frequency falls on, or close
+> >>> to, a corner frequency which could result in 3dB (half power) loss in your
+> >>> signal.
+> >>>
+> >>> This is all completely indepent of the high-pass filter.
+> >>
+> >> Description is confusing a bit, because it suggests the value sets the
+> >> corner frequency. It explicitly says this - "sets ... corner frequency"
+> >> and such meaning for properties we usually associate with the property
+> >> doing this. Here however corner frequency will be always set to rf_in
+> >> and you just adjust the value.
+> >>
+> > 
+> > How about: "Sets the minimum distance (in Hz) between the fundamental
+> > frequency of `rf_in` and the corner frequency of the high-pass, input filter
+> > when operatred in 'auto' mode. The selected high-pass corner frequency will
+> > be less than, or equal to, `rf_in` - `hpf-margin-hz`. If not setting is found
+> > that satisfies this relationship the filter will be put into 'bypass'."
+> > 
+> > Perhaps that is a bit more clear on the intention of this parameter?
+> 
+> Yes
 
-Signed-off-by: Jorge Marques <jorge.marques@analog.com>
----
- drivers/iio/industrialio-core.c | 6 +++---
- include/linux/iio/iio.h         | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+I will update with this wording.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index a2117ad1337d55468c0f21c274fcbedd352c97ff..3b743cc1af6a15c5b9828e2c54d89ab8abb5524d 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -197,7 +197,7 @@ static const char * const iio_chan_info_postfix[] = {
-  *
-  * Returns: Unique ID for the device.
-  */
--int iio_device_id(struct iio_dev *indio_dev)
-+int iio_device_id(const struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+> 
+> > 
+> >>>
+> >>>>
+> >>>>> them as separate controls but I am happy to put them into an array if that is
+> >>>>> the idiomatic approach to situations like this. That said, I am having a
+> >>>>> difficult time getting dt_binding_check to pass when I have an array of uint64.
+> >>>>>
+> >>>>> When listing two items, as in your example below, I get the following:
+> >>>>> adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
+> >>>>
+> >>>> Tricky to say without seeing your code. Magic crystal ball had
+> >>>> malfunction today.
+> >>>
+> >>> This is the property:
+> >>>
+> >>>   adi,filter-margins-hz:
+> >>>     items:
+> >>>       - description: |
+> >>>           The minimum distance, in Hz, between rf_in and the low-pass corner
+> >>>           frequency when the device is used in "auto" mode. If the sum of
+> >>>           rf_in and this value is greater than 18.85 GHz then the low-pass
+> >>>           filter will be put into bypass mode, otherwise the closest corner
+> >>>           frequency that is greater than or equal to the sum of rf_in plus this
+> >>>           value will be used.
+> >>>         minimum: 0
+> >>>         maximum: 0xFFFFFFFFFFFFFFFF
+> >>>         default: 0
+> >>>       - description: |
+> >>>           The minimum distance, in Hz, between rf_in and the high-pass corner
+> >>>           frequency when the device is used in "auto" mode. If the difference
+> >>>           between rf_in and this value is less than 1.75 GHz then the high-pass
+> >>>           filter will be put into bypass mode, otherwise the closest corner
+> >>>           frequency that is less than or equal to the difference of rf_in and
+> >>>           this value will be used.
+> >>>         minimum: 0
+> >>>         maximum: 0xFFFFFFFFFFFFFFFF
+> >>>         default: 0
+> >>>
+> >>> And this is the example:
+> >>>
+> >>> examples:
+> >>>   - |
+> >>>     spi {
+> >>>       #address-cells = <1>;
+> >>>       #size-cells = <0>;
+> >>>       admv8818@0 {
+> >>>         compatible = "adi,admv8818";
+> >>>         reg = <0>;
+> >>>         spi-max-frequency = <10000000>;
+> >>>         clocks = <&admv8818_rfin>;
+> >>>         clock-names = "rf_in";
+> >>>         adi,filter-margins-hz = /bits/ 64 <30000000 30000000>;
+> >>
+> >>
+> >> foo-hz is in 32-bit, so basically you have here 4 32-bit numbers which
+> >> indeed reported by dtschema - property is too long. Drop 64-bit here.
+> >>
+> > 
+> > I was hoping to keep this 64 bits seeing this is a 18 GHz+ filter. I suppose
+> > I could change this to MHz and just lose a bit of resolution. Does that sound
+> > like a better approach?
+> 
+> Does the hardware accept Hz resolution? How many bits do you have in the
+> registers per each value?
+>
+
+This isn't necessarily abour the hardware accepts, more about the tolerance
+of the application. A user could, for example, require that the corner
+frequency is at least 500 kHz from the fundamental, or the user could require the
+corner be at least 6 GHz from the corner. A lot of it depends on the bandwidth
+of the design. Changing this to MHz would be likely be fine. The average user
+would likely specify 10's if not 100's of MHz in this field.
  
-@@ -211,7 +211,7 @@ EXPORT_SYMBOL_GPL(iio_device_id);
-  *
-  * Returns: True, if the buffer is enabled.
-  */
--bool iio_buffer_enabled(struct iio_dev *indio_dev)
-+bool iio_buffer_enabled(const struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 
-@@ -2227,7 +2227,7 @@ EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
-  *				   the opaque @currentmode variable
-  * @indio_dev:			   IIO device structure for device
-  */
--int iio_device_get_current_mode(struct iio_dev *indio_dev)
-+int iio_device_get_current_mode(const struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 56161e02f002cbe3a835cefce0e702c0f9776c81..b9ddfdeaef64dc5df687eac44d3f968bed2fde8e 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -627,9 +627,9 @@ struct iio_dev {
- 	void				*__private priv;
- };
- 
--int iio_device_id(struct iio_dev *indio_dev);
--int iio_device_get_current_mode(struct iio_dev *indio_dev);
--bool iio_buffer_enabled(struct iio_dev *indio_dev);
-+int iio_device_id(const struct iio_dev *indio_dev);
-+int iio_device_get_current_mode(const struct iio_dev *indio_dev);
-+bool iio_buffer_enabled(const struct iio_dev *indio_dev);
- 
- const struct iio_chan_spec
- *iio_find_channel_from_si(struct iio_dev *indio_dev, int si);
+> Anyway, the value was 32-bit even in your original patch and your DTS
+> example was not correct.
+>
 
----
-base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
-change-id: 20250303-b4-iio-dev-const-cc26bac40292
+Was it incorrect because I chose a value less than 2^32? I believe this expands
+to 64 bits:
++        adi,lpf-margin-hz = /bits/ 64 <30000000>;
++        adi,hpf-margin-hz = /bits/ 64 <30000000>;
 
-Best regards,
--- 
-Jorge Marques <jorge.marques@analog.com>
+Is it more appropriate to specify it like this?
+        adi,lpf-margin-hz = <0 0x1c9c380>;
 
+> 
+> > 
+> >> Device allows multiple LPF/HPF values to be stored in LUT tables and it
+> >> actually has four independent filters. Shouldn't these be included here?
+> >> Maybe not LUT tables, but the configuration for all filters?
+> >>
+> > 
+> > There are two filters, the input (high-pass) filter, and the output (low-pass)
+> > filter. Each filter has four banks, each with a different range of frequencies.
+> > Only one bank can be selected at a time. Each bank has 16 different possible
+> > cutoff/corner frequencies. That is a total of 64 distinct values for each of
+> > the two filters.
+> 
+> Hm, datasheet says:
+> "four independently controlled high-
+> pass filters (HPFs) and four independently controlled low-pass
+> filters (LPFs)"
+> 
+> so four each, not one each, but I guess they wanted to say banks as only
+> one filter/bank can be active in given time?
+>
+
+Correct. On the first page you can see that each of the 4 filters is selected
+by a multiplexer/demultiplexer - the 5 options are: bypass (pass the signal)
+band 1, band 2, band 3, band 4. You can see this on p. 30, register 0x20.
+
+Register 0x21 selects which of corner is used on the selected band.
+
+> > 
+> > The issue with setting the corner frequency directly is that in certain
+> > applications (such as software defined radios) the fundamental frequency
+> > is adjustable, necessitating that the corner frequencies of the filter are
+> > adjusted accordingly. When the filter is in "auto" mode it is notified via
+> > the clock system of frequency changes, so using this information it should be
+> > possible to select new corner frequencies if you know the minimum distance
+> > between your fundamental frequency and the corner.
+> 
+> I am not advocating to set the corner frequency directly, but just
+> pointing that your current binding seems incomplete.
+>
+
+I see. Let's see if we can come to an agreement on this then. I think this
+would be a useful feature for others.
+
+Thanks,
+-Sam
+ 
+> 
+> Best regards,
+> Krzysztof
 

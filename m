@@ -1,216 +1,178 @@
-Return-Path: <linux-iio+bounces-16251-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16252-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE0DA4B8E1
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 09:13:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B6A4B946
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 09:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D02B164837
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 08:13:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A15118873F8
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 08:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943CA1C5D76;
-	Mon,  3 Mar 2025 08:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873DC1EF099;
+	Mon,  3 Mar 2025 08:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6u85m+E"
+	dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b="SrRa8Xlq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp16.bhosted.nl (smtp16.bhosted.nl [94.124.121.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4848A13A3F7;
-	Mon,  3 Mar 2025 08:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08561EF08D
+	for <linux-iio@vger.kernel.org>; Mon,  3 Mar 2025 08:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.124.121.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740989586; cv=none; b=X68R5eV1rV1h1gzrytYCDNi2IoxXRAcASW6q5HmmrDyw+xVNCEJSAL4t+CVg0PGx8vNnW3XcXyVeJ1yMnGRgzEs7RdbzOQ9ASKwJPwpKMqyMopE8zv9TqLSbjkJfJsCciAyzJ3V/A5HGVetjhlA90+RcXweuUGy1YQC8JKA7dI8=
+	t=1740990514; cv=none; b=QPwsP3arCfvE758v1ylPJoGtBw9dfeaPhDoFJn7AXJaPp/+Jne2Kv7yMDW48/NtcILSL4OtgyU2DEUGf/8+VUtk1K1xbFcWOG3qPsUe5O9/BPpE38d/mHuFcmSiA90wvXEkgCOzXApK2p8jk7TIXQ4emCZj7Qa1bXzymhST312A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740989586; c=relaxed/simple;
-	bh=9ihAOKn6ZNhaDzfg12Z6+9NZGqg9rcVXIcfZg7IpUaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZU2L31buIGT/Zt0yuNHDc4YB56Yh2rioM1SqFbExfrW9svFvM1a/xSyhtrrwamHu295Lvfb/a2xGBUES9PTyrtkLu2UB2+ynEVr26W8CmqCtmxojvV5s6oo4d1SSlKO8Ww3qWXZenlQyTmJEiEOSu5meik9x4B+L3wiBm5Xh1CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6u85m+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8143C4CED6;
-	Mon,  3 Mar 2025 08:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740989585;
-	bh=9ihAOKn6ZNhaDzfg12Z6+9NZGqg9rcVXIcfZg7IpUaA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=D6u85m+EBq9ZLj1Pg0JuX6T2Y68uywurmz2t89blqKWj8+HcP16bXplru+fexQ14T
-	 YIBwtHftM36+A5dNOxrui45NP6HMuueD77J/rDXNtOWsjId4doq72zu287C9oq0tsU
-	 VpZlbeUAGzUw45s+OdVyUseIRPXRljRZOT7zfOGyBv3CKUutWpX6XD9RuN/3NWmQ/z
-	 Kny1gq2RBdZmWtRzD38WADDN2bpBZe62UPs44OYJpKZMM7acXIkv3jb6FOjX/wt442
-	 0gWfQKVtFGnhTuUEyf4uCz0czQj7c1G/RU1Ht0j/rzBKJjyZBuErMvVaT4DIs9Bti+
-	 FvVdStH4CTVDA==
-Message-ID: <8fef9b19-a1de-4153-a186-1aeee87dea9d@kernel.org>
-Date: Mon, 3 Mar 2025 09:13:00 +0100
+	s=arc-20240116; t=1740990514; c=relaxed/simple;
+	bh=vn4uUAOxHL4xNpWQx1w7T/QzgTeLHfcz3m2pqPNmXeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dIjjIvfDGIR0rQwgD8J6FdsVBGpxMDXpOli3pxu8BItMH47o5q4oDLBbz+Ev58TAa2uE3WH33IArNuUW0mLxnbu2GSg2TthXZ48cwyyHwNVru3/zV/6iBnD7EiT9pZVg+zBnip3LoB8ZXaRhRjmu1hIbDfkYGkl7MEJC+GfO20k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl; spf=pass smtp.mailfrom=protonic.nl; dkim=pass (2048-bit key) header.d=protonic.nl header.i=@protonic.nl header.b=SrRa8Xlq; arc=none smtp.client-ip=94.124.121.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=protonic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonic.nl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=faxAO4aiY4ll+/5SJ/txmaMEq1y/Nw8JWRch36mRZ8o=;
+	b=SrRa8XlqVyxRv2v4tXJ11LoTshnohU9InG0jZIukPC6UV3CwEyN9ZwN16gSCFVfX1Yaj9yX5n11Jm
+	 3Fp1Tm3+42d0ucHilm0Pw5V7WfnZiMpaAFhEKaa+MN9xQI/epKcDohmo+gm22TzHZjSbT8Cp+35pcC
+	 zwSYUfBKVKzFsMIhezky6B4nLIxiornmHL5Tgwzi+x1UPQT3V30EtG9As644o1F2n5F4QpJFQFWcm3
+	 IAqrhWgpUU3ImLMCYTlD2N9avjM2eE5qDPsaYi8xPwysNF8oUJxnUQW5GPUGdhrN16DQkvA77KHCVc
+	 U5qCQmDjUinlmmmYU59VAN7HOmqZRPA==
+X-MSG-ID: 77cb1355-f809-11ef-8b46-005056817704
+Date: Mon, 3 Mar 2025 09:28:21 +0100
+From: David Jander <david@protonic.nl>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
+ <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
+ <nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>, Oleksij Rempel
+ <o.rempel@pengutronix.de>
+Subject: Re: [RFC PATCH 0/7] Add Linux Motion Control subsystem
+Message-ID: <20250303092821.51f7ed11@erd003.prtnl>
+In-Reply-To: <09afc3cc-a307-4662-bd70-0cf83f8f38e0@baylibre.com>
+References: <20250227162823.3585810-1-david@protonic.nl>
+	<09afc3cc-a307-4662-bd70-0cf83f8f38e0@baylibre.com>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: filter: Add lpf/hpf freq margins
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>
-Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, antoniu.miclaus@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250225134612.577022-1-sam.winchenbach@framepointer.org>
- <20250225134612.577022-2-sam.winchenbach@framepointer.org>
- <20250226-sparkling-caped-saluki-b1cbad@krzk-bin>
- <Z79K8Ag4SJYtJTtM@65YTFL3.secure.tethers.com>
- <05e56d15-059b-425b-9e55-66993d988f8d@kernel.org>
- <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Z7-SojPPx3kOVa4y@65YTFL3.secure.tethers.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 26/02/2025 23:16, Sam Winchenbach wrote:
->>>>> +  adi,hpf-margin-hz:
->>>>> +    description:
->>>>> +      Sets maximum high-pass corner frequency to the frequency of rf_in minus
->>>>> +      this value when in auto mode.
->>>>
->>>> IIUC, these are two bounds - lower and upper - in relation to something
->>>> else (like rf_in frequency)? If so, make it an array (naming to be
->>>> discuss, I assume you know better what's that):
->>>
->>> It is true that these are both related to rf_in but both the low and high pass
->>> filters can operate independently. Logically, IMO, it makes more sense to have
->>
->>
->> You mean you can set only low or high pass and keep other as default?
->> But what is the default then - something from reset value or "0" means
->> disabled?
-> 
-> This value isn't setting the corner frequency of the filter, but the minimum
-> distance the corner must be from the fundamental frequency. So, for example,
-> if rf_in is 3.35 GHz and you set lpf-margin-hz to 0 then the corner frequency
-> will be set to 3.35 GHz because that is an exact value supported by the device.
-> 
-> If lpf-margin-hz is set to 30 MHz (for example), then corner frequency would be
-> at least 3.35 GHz + 30 MHz = 3.38 GHz.  3.49 GHz is the closest corner
-> frequency without going below 3.38 GHz that is supported by the device, so that
-> is what will be selected.
-> 
-> This prevents the situation where your fundamental frequency falls on, or close
-> to, a corner frequency which could result in 3dB (half power) loss in your
-> signal.
-> 
-> This is all completely indepent of the high-pass filter.
 
-Description is confusing a bit, because it suggests the value sets the
-corner frequency. It explicitly says this - "sets ... corner frequency"
-and such meaning for properties we usually associate with the property
-doing this. Here however corner frequency will be always set to rf_in
-and you just adjust the value.
+Dear David,
 
-> 
->>
->>> them as separate controls but I am happy to put them into an array if that is
->>> the idiomatic approach to situations like this. That said, I am having a
->>> difficult time getting dt_binding_check to pass when I have an array of uint64.
->>>
->>> When listing two items, as in your example below, I get the following:
->>> adi,admv8818.example.dtb: admv8818@0: adi,filter-margins-hz: [[0, 30000000], [0, 30000000]] is too long
->>
->> Tricky to say without seeing your code. Magic crystal ball had
->> malfunction today.
-> 
-> This is the property:
-> 
->   adi,filter-margins-hz:
->     items:
->       - description: |
->           The minimum distance, in Hz, between rf_in and the low-pass corner
->           frequency when the device is used in "auto" mode. If the sum of
->           rf_in and this value is greater than 18.85 GHz then the low-pass
->           filter will be put into bypass mode, otherwise the closest corner
->           frequency that is greater than or equal to the sum of rf_in plus this
->           value will be used.
->         minimum: 0
->         maximum: 0xFFFFFFFFFFFFFFFF
->         default: 0
->       - description: |
->           The minimum distance, in Hz, between rf_in and the high-pass corner
->           frequency when the device is used in "auto" mode. If the difference
->           between rf_in and this value is less than 1.75 GHz then the high-pass
->           filter will be put into bypass mode, otherwise the closest corner
->           frequency that is less than or equal to the difference of rf_in and
->           this value will be used.
->         minimum: 0
->         maximum: 0xFFFFFFFFFFFFFFFF
->         default: 0
-> 
-> And this is the example:
-> 
-> examples:
->   - |
->     spi {
->       #address-cells = <1>;
->       #size-cells = <0>;
->       admv8818@0 {
->         compatible = "adi,admv8818";
->         reg = <0>;
->         spi-max-frequency = <10000000>;
->         clocks = <&admv8818_rfin>;
->         clock-names = "rf_in";
->         adi,filter-margins-hz = /bits/ 64 <30000000 30000000>;
+Thanks for reviewing!
 
+On Fri, 28 Feb 2025 16:36:31 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-foo-hz is in 32-bit, so basically you have here 4 32-bit numbers which
-indeed reported by dtschema - property is too long. Drop 64-bit here.
+> On 2/27/25 10:28 AM, David Jander wrote:
+> > Request for comments on: adding the Linux Motion Control subsystem to the
+> > kernel.
+> > 
+> > The Linux Motion Control subsystem (LMC) is a new kernel subsystem and
+> > associated device drivers for hardware devices that control mechanical
+> > motion. Most often these are different types of motors, but can also be
+> > linear actuators for example.  
+> 
+> This is something that I played around with when I first got into Linux
+> kernel hacking as a hobbyist. It's something I've always wanted to see get
+> upstreamed, so feel free to cc me on any future revisions of this series.
+> I'm very interested. :-)
 
-Device allows multiple LPF/HPF values to be stored in LUT tables and it
-actually has four independent filters. Shouldn't these be included here?
-Maybe not LUT tables, but the configuration for all filters?
+Cool! Will keep you posted.
+
+> We made drivers for basic DC motors driven by an H-bridge both with and without
+> position feedback and also a driver for hobby-type servo motors. For those
+> interested, there is code [1] and docs [2]. One thing we would do different
+> if doing it over again is use a character device instead of sysfs attributes
+> as the interface for starting/stopping/adjusting actuation.
+> 
+> [1]: https://github.com/ev3dev/lego-linux-drivers/tree/ev3dev-stretch/motors
+> [2]: http://docs.ev3dev.org/projects/lego-linux-drivers/en/ev3dev-stretch/motors.html
+> 
+> > 
+> > This subsystem defines a new UAPI for motion devices on the user-space
+> > side, as well as common functionality for hardware device drivers on the
+> > driver side.
+> > 
+> > The UAPI is based on a ioctl() interface on character devices representing
+> > a specific hardware device. The hardware device can control one or more
+> > actuators (motors), which are identified as channels in the UAPI. It is
+> > possible to execute motions on individual channels, or combined
+> > affecting several selected (or all) channels simutaneously. Examples of
+> > coordinated movements of several channels could be the individual axes
+> > of a 3D printer or CNC machine for example.
+> > 
+> > On the hardware side, this initial set of patches also includes two drivers
+> > for two different kinds of motors. One is a stepper motor controller
+> > device that containes a ramp generator capable of autonomously executing
+> > controlled motions following a multi-point acceleration profile
+> > (TMC5240), as well as a simple DC motor controller driver that can control
+> > DC motors via a half-bridge or full H-bridge driver such as the TI DRV8873
+> > for example.
+> > 
+> > Towards the IIO subsystem, LMC supports generating iio trigger events that
+> > fire at certain motion events, such as passing a pre-programmed position or
+> > when reaching the motion target position, depending on the capabilities of
+> > the hardware device. This enables for example triggering an ADC measurement
+> > at a certain position during a movement.  
+> 
+> I would expect to be using the counter subsystem for position, at least in
+> cases where there is something like a quadrature encoder involved.
+
+I will have to think about it. Since there are some Linux capable SoC's that
+have counter inputs able to do quadrature decoding, it might make sense to
+support that. For now, the TMC5240 controller for example has support for
+encoders and while in this patch-set support for it is minimal, the idea was
+that a motion controller that supports an encoder would just offer the option
+to use the encoder as the authoritative source for position information. So
+let's say you have a DC motor for example. Without an encoder or any other
+means for of speed/position feedback, the best one can do is establish a 1:1
+relationship between duty-cycle and speed, obviating all inaccuracies of doing
+so. So a motion controller using a DC motor would just do that if it has no
+encoder. OTOH, if there is an encoder as a source of position and speed
+information, the driver could work with more accurate data. It all depends, but
+in the end the interface towards the user is the same: move with some speed
+towards some position or for some amount of time.
+
+> > In the future, making use of PREEMPT_RT, even dumb STEP/DIR type stepper
+> > motor controller drivers may be implemented entirely in the kernel,
+> > depending on some characteristics of the hardware (latency jittter,
+> > interrupt latency and CPU speed mainly).
+> > 
+> > The existence of this subsystem may affect other projects, such as
+> > Linux-CNC and Klipper for example.
+> > 
+> > This code is already in use controlling machines with up to 16 stepper
+> > motors and up to 4 DC motors simutaneously. Up to this point the UAPI
+> > has shown to be adequate and sufficient. Careful thought has gone into
+> > the UAPI design to make sure it coveres as many use-cases as possible,
+> > while being versioned and extensible in the future, with backwards
+> > compatibility in mind.
+> > 
+> > David Jander (7):
+> >   drivers: Add motion control subsystem  
+> 
+> Would it be too broad to call this an actuation subsystem instead where motion
+> is just one kind of actuation?
+
+I think it is hard enough already to make a UAPI for motion that is general
+enough to encompass all types of different motors and motion actuators.
+Generalizing even further without a serious risk of shortcomings seems almost
+impossible, but I am open to suggestions.
 
 Best regards,
-Krzysztof
+
+-- 
+David Jander
 

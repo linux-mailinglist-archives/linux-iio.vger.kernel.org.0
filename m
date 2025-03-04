@@ -1,58 +1,56 @@
-Return-Path: <linux-iio+bounces-16345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E54E6A4E074
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 15:17:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA16A4E131
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 15:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C610176541
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 14:15:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97C83BD531
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 14:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74730204F84;
-	Tue,  4 Mar 2025 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918A120C48A;
+	Tue,  4 Mar 2025 14:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utvGqb8X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfy8P4FI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE8C2045B2;
-	Tue,  4 Mar 2025 14:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A3A20B1E8;
+	Tue,  4 Mar 2025 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741097732; cv=none; b=MPQCNErifoIy/1e38whNL2rSZgIJLcc0CBA+ef7Ww0N3CFf0y8JcNY9ypNtiKXOgwei79LbC77y8Y6BQCdp7f+fhe50v4lbgrkA7ffpLxspeCJlw3rv+n/DnbPJ+oQoULZpG8LTB06ISGTQTUVXNnoXDuRH5vEesMzZ/FbK77Fc=
+	t=1741098474; cv=none; b=DM6LoKJ3WByz2g+qver5QdBjgUoFLOj8Q/wUJg1LWioO2uE4VECFhPKT/IYdhhxqshiC94AAICaYQGljoeyPIXEorBSz8T8iWTMt8UykVhJmqLVD31Ira7qHHP1nJWqeunviqiHGy3wDAm5+l/nilKyr1Gx0LcRFsnXlpJ+xHxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741097732; c=relaxed/simple;
-	bh=0nlyLAhLFDgXGjNZzNtBxtJ/fyjkwxl1E+9NxtdXPB4=;
+	s=arc-20240116; t=1741098474; c=relaxed/simple;
+	bh=zwBkiv0jR98E/16OURLG7ddEECe4p2gZPQLDDNbkETY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JJOrHzVh8a6LEYcO1jBczZDLOQp6C8jLXBwD0xpnO4xLqNWI63ChtgQNOT/UPp6Qygk2J6sxPLqYLGyUj2uJzGtwvXUTL0bRxbgeN0/PTX8qp5zGQucFk7hoRycCM1QJMuqLkWy2/L/SGzs/snOZR1y70eKszVzTsK3EaIY7JDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utvGqb8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477A7C4CEE5;
-	Tue,  4 Mar 2025 14:15:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bj3xHQG7P/hWiywKxiS6nbvf3H++O4UBcf6o5tBl14dI405ditGo2bCON6Vud31bVdIShgMi9sXd+p8nGMfAsfWF796STU7Mys3swFhkkyJK3IX2cTeAHKhi+PMwlM5XjvqfPrqT3A/3kBoClZQlBUDbT14D1xu042bzu12paww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfy8P4FI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF688C4CEE5;
+	Tue,  4 Mar 2025 14:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741097731;
-	bh=0nlyLAhLFDgXGjNZzNtBxtJ/fyjkwxl1E+9NxtdXPB4=;
+	s=k20201202; t=1741098473;
+	bh=zwBkiv0jR98E/16OURLG7ddEECe4p2gZPQLDDNbkETY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=utvGqb8XtBmeGnWeLTLQ6sw1qza+LwPM+B0U1hWSazYb1Dgj6sOmFR09ZC24mrILW
-	 F/e11WitfBnssypca9eqo1L43hPkudj3J9RhOCLOQBBtp3UWBEzMpmxrycgERxdfWT
-	 nsftRiYQPYkWPrQai2xI2KjEDX+yVFVO+vEQA03RUadpHCv8nMFktTgGu5NmW2WARi
-	 20SWxGFRwSAQscwp5UW5E79Azm+/l4cewm6o/Wz27WgzSOLby3MGZPBh+sAIwaaNGb
-	 gBc+YYOmR6iE7awjdlpIYelOC/q0vRosCe4DUumO5x4HWEbXF8kK2MHvp6b2OwD5d4
-	 LbP1gc7s8AJXw==
-Date: Tue, 4 Mar 2025 14:15:18 +0000
+	b=cfy8P4FIB6sGg2BeSAzl/qCC9hAIio4DBHuGNnd823DCSYSnCPV+d96oJVXONNaWn
+	 MwuvSOC9fSqxzhieTayC0Smm4BMfDp7Xu+3YqIbnJeAdabFK2eVkP+podTPl0ktZ+B
+	 TseGs1rv78goEpg95cwc+EADppnb5uJqNtS6vioy4y3e6CXpS2eIUHmHiyrmkNl/GW
+	 R4qI0FNuFUS4qoK3lbq3CU5KcXkuHIgbaS0a0p9EzkEZIOZ+vLwWq/cKXmedIzxdaF
+	 6r+9MmTKBoZRUMiNLZB7FCgmiA0c2n8KpHd2iQbnmukZjmKUqdsg6n6hEiWzm25bRm
+	 uBvHQa2ar2Pqw==
+Date: Tue, 4 Mar 2025 14:27:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: sunliming@linux.dev, lars@metafoo.de, Michael.Hennerich@analog.com,
- nuno.sa@analog.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, sunliming@kylinos.cn, kernel test robot
- <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
-Subject: Re: [PATCH] iio: imu: adis: fix uninitialized symbol warning
-Message-ID: <20250304141518.7389ef88@jic23-huawei>
-In-Reply-To: <c5b70fd8-2d03-4179-a8b8-5ee827fff978@stanley.mountain>
-References: <20250304060518.1834910-1-sunliming@linux.dev>
-	<c5b70fd8-2d03-4179-a8b8-5ee827fff978@stanley.mountain>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-fbdev@vger.kernel.org, linux-iio@vger.kernel.org, Michael Hennerich
+ <michael.hennerich@analog.com>
+Subject: Re: [PATCH] MAINTAINERS: remove adi,ad7606.yaml from SEPS525
+Message-ID: <20250304142742.7ea52a67@jic23-huawei>
+In-Reply-To: <20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-v1-1-a4e4f1b824ab@baylibre.com>
+References: <20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-v1-1-a4e4f1b824ab@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,70 +61,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 4 Mar 2025 09:36:56 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Mon, 03 Mar 2025 14:39:57 +0000
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Tue, Mar 04, 2025 at 02:05:18PM +0800, sunliming@linux.dev wrote:
-> > From: sunliming <sunliming@kylinos.cn>
-> > 
-> > Fix below kernel warning:
-> > smatch warnings:
-> > drivers/iio/imu/adis.c:319 __adis_check_status() error: uninitialized symbol 'status_16'.
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Reported-by: Dan Carpenter <error27@gmail.com>
-> > Signed-off-by: sunliming <sunliming@kylinos.cn>  
+> Remove Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml from
+> STAGING - SEPS525 LCD CONTROLLER DRIVERS. This was likley a copy/paste
+> mistake. There is no bindings file for SEPS525 since it is only in
+> staging.
 > 
-> Huh...  Someone is using lei to get their email.  This patch is fine and
-> it's theoretically the correct thing to do.
+> The removed file matches Documentation/devicetree/bindings/iio/*/adi,*
+> under ANALOG DEVICES INC IIO DRIVERS already so wasn't just misplaced.
 > 
-> How the zero-day bot warnings work is the they are first sent to my gmail
-> account and I look them over and either forward them or ignore them.  Here
-> is the code:
-> 
-> drivers/iio/imu/adis.c
->    305  int __adis_check_status(struct adis *adis)
->    306  {
->    307          unsigned int status;
->    308          int diag_stat_bits;
->    309          u16 status_16;
->    310          int ret;
->    311          int i;
->    312  
->    313          if (adis->data->diag_stat_size) {
->    314                  ret = adis->ops->read(adis, adis->data->diag_stat_reg, &status,
->    315                                        adis->data->diag_stat_size);
->    316          } else {
->    317                  ret = __adis_read_reg_16(adis, adis->data->diag_stat_reg,
->    318                                           &status_16);
->    319                  status = status_16;
->    320          }
->    321          if (ret)
->    322                  return ret;
->    323  
-> 
-> So if __adis_read_reg_16() fails, then the next line is an uninitialized
-> read.  But then the if (ret) check means that it's fine at run-time.
-> It's a false positive.  The other thing to consider it the UBSan will
-> also detect the uninitialized read at runtime and splat.  That's still a
-> false positive but it's a headache.  But when I was looking at this, I
-> decided that __adis_read_reg_16() was unlikely to fail in real life so I
-> decided to ignore this warning.
-> 
-> Initializing the variable to zero doesn't change runtime for sane configs
-> because everyone automatically zeroes stack variables these days.  It
-> just silences the Smatch warning.  So I'm fine with this patch.
-> 
-> (This email is for information only in case you were wondering why the
-> bug report was formatted strangely etc).
-> 
-> regards,
-> dan carpenter
-> 
-Thanks!  That explanation has me agreeing that this patch seems to
-make sense as fixing a warning that is reasonable if unlikely to
-cause problems in practice. I've applied it to the togreg branch of iio.git 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+I'll apply it.
 
 Jonathan
+
+> ---
+> This falls under FBTFT which is currently orphaned, so someone else will
+> have to volunteer to pick this up.
+> ---
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 8e0736dc2ee0e33544fa373a4978b7dae18c040c..215dbaeedced8473b5b339329b3596a2fbfd13b1 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -22512,7 +22512,6 @@ STAGING - SEPS525 LCD CONTROLLER DRIVERS
+>  M:	Michael Hennerich <michael.hennerich@analog.com>
+>  L:	linux-fbdev@vger.kernel.org
+>  S:	Supported
+> -F:	Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+>  F:	drivers/staging/fbtft/fb_seps525.c
+>  
+>  STAGING - SILICON MOTION SM750 FRAME BUFFER DRIVER
+> 
+> ---
+> base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+> change-id: 20250303-maintainers-remove-adi-ad7606-yaml-from-seps525-lcd-controller-b77d4c4bf54a
+> 
+> Best regards,
 
 

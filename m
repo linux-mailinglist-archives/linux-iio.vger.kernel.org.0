@@ -1,156 +1,103 @@
-Return-Path: <linux-iio+bounces-16364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16366-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33490A4E40C
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 16:47:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F04E9A4E5D9
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 17:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D09719C3AEE
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 15:42:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F33B28A66B9
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 16:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C1C28D066;
-	Tue,  4 Mar 2025 15:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D397281355;
+	Tue,  4 Mar 2025 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IqVBDmkA"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="h9cleO3a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01B728D04F
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 15:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC8D25D551;
+	Tue,  4 Mar 2025 15:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741102058; cv=none; b=rLKoYffivQgATmY/bnOJwVYba/hTvAz6y1gkhNB6atzxol6+98MtFUgyQjceFTNik0QdDLHAolteKK/h9vQ+b2R433v/g+enwDTVsxmeosx6VwaBH/6qEFN7IHyucTrCclOKkBxOiAsntNPDzsz6unzIup5JPJl2QR75Dw5xrqU=
+	t=1741103547; cv=none; b=mZC+AiDXF9OFUHRVR2vqbunFoxjYmO6u8igwIxK9jfRPVjyA/3/29Sfk4Z3tYqDJSBye5LrgyWX5zEmJ8heIpCECALhH5qfUUEpEbK0Xr3Lf8atOb1mg8pN6Wx8BNBzVZTHmv0PL7oVoBBX4iEBMkcpG/IGoj9ftlliJMBJ9NxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741102058; c=relaxed/simple;
-	bh=uuQKh3mKy6W10Rx5aVL8Bxq79MzsKeJfW6stjMAKKC4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=klXG2OK9dgWX7uzB0is0QY9S6GqF8Er9QGw3wg9LTg7FOrpRYak0EcslITozP0Y5V/iUKXbmeWrYUGkf2KwsgIB31+G/DSUkJDrEsF4eAdq7pZW8YGK5WoJhZPKPzjKzvpLJf6XFQGwBZ/v2SeRZlag6pQGCC9v7ExvkKGepqVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IqVBDmkA; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4394a0c65fcso62304585e9.1
-        for <linux-iio@vger.kernel.org>; Tue, 04 Mar 2025 07:27:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741102055; x=1741706855; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3oa/LjsLwWuUnAPX0dIe4E63CiyKqmPE+fmfAuxCt00=;
-        b=IqVBDmkAihvX59kShKSuCPwosZfRAMCU6ok931WXCJc/JeCzdl8J1hdPY/dTiJ81O/
-         /ROhJIBi5TiaXbE8QJS6HWC7ZWG7iD7vkeloVe8yUfNn04riYjgjmh2hH5cW4zE0NMqC
-         E/0YKZgnP24yX9xhkmvkYwNX2Hra3ot6YTW4gMw8uSdEuCOiYiwVR6/dQxRuO0oBZl06
-         P7hPTMIxHzU/ruaVkvb16bBKgym/eBnwqmm/jJ3Xohhho4wETHKX3xewcCeaPnU2Nckr
-         KQmJXrg28INF7D9JNMTUkq9T6nDbRpvcafcNRKyT2KVpe7zxqYkDpaQFOqQsDmWGJIoK
-         1uTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741102055; x=1741706855;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3oa/LjsLwWuUnAPX0dIe4E63CiyKqmPE+fmfAuxCt00=;
-        b=kIzrJqeYpmxbwFUGZWwRJemZ2brLJ6BWrNy8b4INMXz2b42YkTf+o5KGPkcFGVwoxE
-         JHegEAgf11lKGMIjynAZsDfK6GjzYSBbMTa5YqZTzEK4zeOrRuoRfAv35LGpp8mupDRy
-         a8JsJqGsumzFmv3da7/6FpfMhX/5F2EC6hj5pFeYBpNkYgFQRY20+zTj5mpzXB+1tVaS
-         jnZWiVfrAkk61WY6n2tdqEtSeOuwef7IRWGkN4gZ4uuVvjGl/QTKcgd3hKyIrqjYT+pD
-         0JHP4V+AhASIv1i3e3sMTH3T/ISTndONZgN49UxYyNOtZjio2dH4auCXJGXYYKi41LcO
-         yZ2g==
-X-Gm-Message-State: AOJu0YzC9RV49K8b6ByS0tbXOFYvnc3OvbJwxwKyutLawSqokGgue+EO
-	ZcrePm9VghpHWHh7ssazIKBlyFp6lzsYpTSE8Wz5XDDIQ3duTNCrhgue7wWabPw=
-X-Gm-Gg: ASbGncvICOS1yIy5R9WbqQlTkorYWwT5nC4Jiv7dzt3s43m/YS2ca9qAgP/WaMfDqjH
-	Y5RTI7PodvtL/rZsfsJoyTz1GJNruTOVedR2Xyv4Tj875dQ5YwTBrQVeFd5Fz/3hccz14D1B0Ze
-	Myi/DQY0pCD7ml4eX2pabOrCmKacAmkhcrtXvRYNn37mGfELsw7BvEwT0NeukUtWkKB3CjPUvAC
-	cmWXv1Mct3T3Z3qHaRYwKKH0sfLyswQANwoBg6EA6aTLtae+LRdCmwXSeK4+mdYSzKwX3EIpGIj
-	sxwePODRBC36xufZ+Oi7IJyUKdJ8/TO3oBcObm1bV/BqZ/tSAOxzc8jzJ9GjfsbjWvdLVj4fN16
-	ZBf/Ps/0ahce7aBkHesJMyqiBWGU/002BDg==
-X-Google-Smtp-Source: AGHT+IHyqFt3+P6QFQ7++XK+TXtEDjynFjltHEGg53g+W1SS5peidJaNiu6oFmUx9mlZeW4OoWsj7A==
-X-Received: by 2002:a05:600c:46ce:b0:43b:cf12:2ca6 with SMTP id 5b1f17b1804b1-43bcf122e47mr14088885e9.1.1741102053546;
-        Tue, 04 Mar 2025 07:27:33 -0800 (PST)
-Received: from [10.2.5.157] (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e47b7dcfsm18245580f8f.55.2025.03.04.07.27.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Mar 2025 07:27:33 -0800 (PST)
-From: Angelo Dureghello <adureghello@baylibre.com>
-Date: Tue, 04 Mar 2025 16:25:45 +0100
-Subject: [PATCH v3 2/2] docs: iio: ad7380: add SPI offload support
+	s=arc-20240116; t=1741103547; c=relaxed/simple;
+	bh=XbV8vyaY10cWIL3JE8+j/ixlPNT/ot6WlfTx734vGlU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QCUT68PY5jdNJPtF6TJfkFjwhhhfFHfvA+zVOv2KkESQCWlQONTK2qWs0N4YK0OPtDNvuIRsK7znuCsa8njc38Rg65Bxf229xIRB+RWKB85Y9B7X8WPN08hjPFfoqMpm5lhEbODc/oHhX2BCqE47D/LDI/hwGZ3XZ8D78AS5nIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=h9cleO3a; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 10956A0391;
+	Tue,  4 Mar 2025 16:52:21 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=DonSCwrfl91cmZ8V/r9qwCe7RUFgipzpqhb+J45mutU=; b=
+	h9cleO3a3l+c3MvbQ+71f5S+ixtZrMLrY8Qx4HJLf0gcYmx1R4DgjqcluKWaD+B5
+	0wPiDjOnOPlb8yEAZmazwSYYeBaOFC5tLL3ANZaoi2/G9A0Fbyk08Nt6W9+KJFQg
+	1W+y5Xq4+Wohcgu3TdowC7iZ7AciJwxhcIo3KZvCBaw4R77hQkV9ikv+pojobAP3
+	XJS2o1o+reEurMfAgPPpPfBYKK74MIaRBFMYt/Sgu9cqfUeHTWeMs9GlxhcJ4OqT
+	iaAy961c87gzs/iJHO9Xt0QQBSEfsBGCGjUXLpIxqoC+IcnAu7kTodSQ6bUb0gmR
+	vbqJelcz3moQ+KCIfImYME1kqIls4oLJ/kKKSfP8F6h/2Fr3eCHYkLYDKzIcVQFT
+	vJP7lIgmN7QiZ8ZW91ye4nKUGbFqH85Fz65j9ifZdccSd6UQfjoiFw1bwE9BfWb2
+	qb5e+XWswXi09TdRYa6SkpouZ5ybrd5Fctjkrjp+OHuNsSs3QPgYPPg8X7YXvGRd
+	odZHr1xyob8EIXTOlYjxG/P/5vwqYCVIc8i5XJShGUxFSrB+4g8+qcxy+Vcbu9cj
+	Csw2BJsYfu5S9RY1tt6ok+zDsoR5gxfhEFVmGdeNg1y/L/Jo0/sv4i4r6iuwJDyl
+	d91QNZ32JoobtMvJat7IqyKdUhHjNpZ8snxmMkwvVBc=
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Kamel
+ Bouhara" <kamel.bouhara@bootlin.com>, William Breathitt Gray
+	<wbg@kernel.org>, <Dharma.B@microchip.com>
+Subject: [PATCH v7 0/2] microchip-tcb-capture: Add Capture, Compare, Overflow etc. events
+Date: Tue, 4 Mar 2025 16:51:50 +0100
+Message-ID: <20250304155156.374150-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250304-wip-bl-spi-offload-ad7380-v3-2-2d830f863bd1@baylibre.com>
-References: <20250304-wip-bl-spi-offload-ad7380-v3-0-2d830f863bd1@baylibre.com>
-In-Reply-To: <20250304-wip-bl-spi-offload-ad7380-v3-0-2d830f863bd1@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1741103540;VERSION=7985;MC=3473926107;ID=1544446;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94852637264
 
-Document SPI offload support for the ad7380 driver.
+The TCB has three R/W-able "general purpose" hardware registers:
+RA, RB and RC. The hardware is capable of:
+* sampling Counter Value Register (CV) to RA/RB on a trigger edge
+* sending an interrupt of this change
+* sending an interrupt on CV change due to trigger
+* triggering an interrupt on CV compare to RC
+* stop counting after sampling to RB
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- Documentation/iio/ad7380.rst | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+To enable using these features in user-space, an interrupt handler
+was added, generating the necessary counter events. On top, RA/RB
+registers are added as Count Extensions. To aid interoperation, a
+uapi header was also added, containing the various numeral IDs of
+the Extensions, Event channels etc.
 
-diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
-index cff688bcc2d9601a9faf42d5e9c217486639ca66..12709ce051110e68b6f0c9b9a0baefcc954f2bc0 100644
---- a/Documentation/iio/ad7380.rst
-+++ b/Documentation/iio/ad7380.rst
-@@ -169,6 +169,42 @@ gain is selectable from device tree using the ``adi,gain-milli`` property.
- Refer to the typical connection diagrams section of the datasheet for pin
- wiring.
- 
-+
-+SPI offload support
-+-------------------
-+
-+To be able to achieve the maximum sample rate, the driver can be used with the
-+`AXI SPI Engine`_ to provide SPI offload support.
-+
-+.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/ad738x_fmc/index.html
-+
-+When SPI offload is being used, some attributes will be different.
-+
-+* ``in_voltage-voltage_sampling_frequency`` attribute is added for setting the
-+  sample rate.
-+* ``in_voltage-voltage_sampling_frequency_available`` attribute is added for
-+  querying the max sample rate.
-+* ``timestamp`` channel is removed.
-+* Buffer data format may be different compared to when offload is not used,
-+  e.g. the ``buffer0/in_voltage0-voltage1_type`` and the
-+  ``buffer0/in_voltage2-voltage3_type`` attributes.
-+
-+Effective sample rate for buffered reads
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Using SPI offload, the PWM generator drives the starting of the conversion by
-+executing the pre-recorded SPI transfer at each PWM cycle, asserting CS and
-+reading the previous available sample values for all channels.
-+Default sample rate is set to a quite low frequency, to allow oversampling x32,
-+user is then responsible to adjust ``in_voltage-voltage_sampling_frequency`` for
-+the specific case.
-+
-+For single-ended chips where 2 banks of simultaneous inputs are available, as
-+ad7386, ad7387 and ad7388, if at least one channel from each bank is enabled in
-+a buffered read, the effective sample rate will be 1/2 of what is set as
-+``in_voltage-voltage_sampling_frequency``, this because a separate conversion
-+needs to be done for each bank.
-+
- Unimplemented features
- ----------------------
- 
+Bence Csókás (2):
+  counter: microchip-tcb-capture: Add IRQ handling
+  counter: microchip-tcb-capture: Add capture extensions for registers
+    RA/RB
+
+ MAINTAINERS                                   |   1 +
+ drivers/counter/microchip-tcb-capture.c       | 133 ++++++++++++++++++
+ .../linux/counter/microchip-tcb-capture.h     |  40 ++++++
+ 3 files changed, 174 insertions(+)
+ create mode 100644 include/uapi/linux/counter/microchip-tcb-capture.h
 
 -- 
 2.48.1
+
 
 

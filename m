@@ -1,136 +1,92 @@
-Return-Path: <linux-iio+bounces-16331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED15EA4DC4A
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 12:20:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEA6A4DCD0
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 12:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F044166D19
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 11:18:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CC7C7AC099
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 11:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A32040A6;
-	Tue,  4 Mar 2025 11:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B6E1FFC74;
+	Tue,  4 Mar 2025 11:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="O2Eo/dig"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="1EiI6HaY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2AB1FDE1A;
-	Tue,  4 Mar 2025 11:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124AD1FFC50;
+	Tue,  4 Mar 2025 11:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741086851; cv=none; b=ithq7v9F+DMaZh0p1MrrM/AcipCdNy+23sc9QMv5JBStzbEsPpXRB+QFz+LY4v1AYPRtNuPjMGZHoFdJwt6NpdFxEO3AvRrmju/tktT/7/rqQR8Dtc+NkKrO0eTRK4Cb3z8W1qRFIUQDtswFbwzE2CzsjiguWkAPXgTOgU6NhvY=
+	t=1741088527; cv=none; b=BMxmgSJwcmZSEfL+tzvhXXt06+pwO5r+gTvhUyGZCqQjatdNa+XoiB7ND99zslRDB8SH3JPDDLSZYH3narG3aqKkQ4p15vBY65U5JMZHZjovol72hxcSi56t/fJ+WABfnXt2ygKch7LuEZ21uhW4f1cU/3qK4vO2LoPF6GXabiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741086851; c=relaxed/simple;
-	bh=XOdBksz8Vf2+lJNphsoE9ZmVFjju/xls/RhmovDo7d0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jVqkKFo5STfg2RhlqieYZMVtM5h0vpZ2yyuGxTkpqGShn+p76pc50jfJovHpdwC41P9UauksDgQLXPA9PKW7um/L26Ac/y9EU9M1yPQ7byUAngVkkFwHfHDn/7mlVSH6F3fpNStYZ0u7sbIIg/vP6qxtpaUDXK+FK4FEm7N4WS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=O2Eo/dig; arc=none smtp.client-ip=193.68.50.107
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
-Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
-	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id A114CA028B;
-	Tue,  4 Mar 2025 12:14:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:from:from:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=mail; bh=/mDRp4/mkuaV1Yy1R0fV
-	mKQrTdpMwxGr5IRopCnt1VA=; b=O2Eo/diglpqOv6fh4s2gELtN/AllTdGKIItn
-	ImtH3HyMZhCZ6Xan9Stww5iUxYWZCP1k8w2zigOw1zl0h64hBtqjR07B9YtIyW2E
-	za9el3NCgabIWOEDlZr46F5pvo3BvH+sc05eYO76kx7N8Sj69LzLYWQfpvpRPsZL
-	ezZuQqgP0Prd9us6q4wv/+7uDpC/eZfoOvdzEJ3tMmSzED4uIsvq/i5aW0OwvzLz
-	KUQCo5g5rgLduUQS4l9bPMSdHlX9HSjryd6b62ahtQ686AhPXYdw6zEDjaSYQXAu
-	NoR7bYMu2YCwd9dOaanQLXTThuDJcOmVEQpHpI0qvTZYVUIw6e3UFq4kMuqGrp9K
-	1sc47k1o7D3+6Vx4C4YMTfJd3e0copso+vuyNlpY82edA6crKSAaRZTVbZf/re80
-	5xG9POmujLgAe/vPeDkW+M5cKuh/m+AJnDjLLgz+v+VQyLllMf4uk9yeDgpBfT5q
-	PG3DqdWZSDxSFU//zDaq6dpe4qH9BOFCLnddiM3x+Wlw8eiN+Uq6M6TZtWZC01/L
-	PCmqwv99/kv9XYS7pzoZyroV/garfmCY+I+Z9VzNMWPRoNT7yoXEHlh5W5UlvOI/
-	k2uaO1wP0+irRhZlgkI+R+95yfu4mJIfRNFxFTADwsMZkJ187nsXXcVo4Qjnku60
-	85dx7EA=
-Message-ID: <8cf056d7-22d0-4bf2-8dd6-79a45977bfc1@prolan.hu>
-Date: Tue, 4 Mar 2025 12:14:04 +0100
+	s=arc-20240116; t=1741088527; c=relaxed/simple;
+	bh=uqenW6FxHzjv93IlGq3O4/NtcfxeAquNgX50B3dpRGI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FyjupuW5TdH9qJ5JPCLYu5OyZ3vAwVVoBArJAHKMUlPrcEGE9hxpAZEXF1LuYrD1Dux9aNkaAjUuZbxBJzbHRdDs/CaAGJfOvOWW9CT+m3YVAcW9gQfyRgtgx9awrYbR2LZ7DhunwLrM7VLHerVF3B3xkn9F3HPSLVu8oBLPBT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=1EiI6HaY; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=LlkC1H6GlfM4Hx4kB9R2XcBn/wEpCBfNZPYyj4bbtvs=; b=1EiI6HaYvFggifFfi7bvm1wBKs
+	6jLTW7PCJ7Oi2vW1Zf0AkcO74u/pGgwoED+2iUf225BS+ONodX0g1SV8YxrqrvwKSY8WMt6GozH1P
+	Za4o+/iMmwj1Qw0wEj3pBbdIVFk7WC75pXwxpBQKIeCxbOo7uNOEimr07UiHkNUuq8vtnDXZIHZDN
+	Pr+YjXaNZplYLFekBRhJMCkqBDIcsBz0Ou9tzeI5JAV3Zp0NwfswqRUul9gGRcVAKdO09RvtvpUQX
+	VU6vKqFSwGb4C/efsUkU3OGme/KjRaIgYizLWDGK2QbngJTBqg+e4qWORjjtanbcZYqPjG2+8qE1f
+	tsLW+eyQ==;
+Received: from i53875a38.versanet.de ([83.135.90.56] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1tpQer-0002qO-Nc; Tue, 04 Mar 2025 12:41:57 +0100
+From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
+To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonas Karlman <jonas@kwiboo.se>
+Cc: Yao Zi <ziyao@disroot.org>, linux-rockchip@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Jonas Karlman <jonas@kwiboo.se>
+Subject:
+ Re: [PATCH 1/4] dt-bindings: iio: adc: Add rockchip,rk3528-saradc variant
+Date: Tue, 04 Mar 2025 12:41:56 +0100
+Message-ID: <3748393.44csPzL39Z@diego>
+In-Reply-To: <20250227184058.2964204-2-jonas@kwiboo.se>
+References:
+ <20250227184058.2964204-1-jonas@kwiboo.se>
+ <20250227184058.2964204-2-jonas@kwiboo.se>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/3] include: uapi: counter: Add
- microchip-tcb-capture.h
-To: William Breathitt Gray <wbg@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-iio@vger.kernel.org>, Kamel Bouhara <kamel.bouhara@bootlin.com>
-References: <20250227144023.64530-1-csokas.bence@prolan.hu>
- <20250227144023.64530-2-csokas.bence@prolan.hu> <Z8bNFjh85p2jqK9C@ishi>
-Content-Language: en-US, hu-HU
-From: =?UTF-8?B?Q3PDs2vDoXMgQmVuY2U=?= <csokas.bence@prolan.hu>
-In-Reply-To: <Z8bNFjh85p2jqK9C@ishi>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ATLAS.intranet.prolan.hu (10.254.0.229) To
- ATLAS.intranet.prolan.hu (10.254.0.229)
-X-EsetResult: clean, is OK
-X-EsetId: 37303A2980D94852637266
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-Hi,
-
-On 2025. 03. 04. 10:51, William Breathitt Gray wrote:
-> On Thu, Feb 27, 2025 at 03:40:18PM +0100, Bence Csókás wrote:
->> Add UAPI header for the microchip-tcb-capture.c driver.
->> This header will hold the various event channels, component numbers etc.
->> used by this driver.
->>
->> Signed-off-by: Bence Csókás <csokas.bence@prolan.hu>
+Am Donnerstag, 27. Februar 2025, 19:40:50 MEZ schrieb Jonas Karlman:
+> The Successive Approximation ADC (SARADC) in RK3528 uses the v2
+> controller and support:
+> - 10-bit resolution
+> - Up to 1MS/s sampling rate
+> - 4 single-ended input channels
+> - Current consumption: 0.5mA @ 1MS/s
 > 
-> Oops, I almost missed this one! Make sure I'm included in the To field
-> for the next revision. ;-)
+> Add a rockchip,rk3562-saradc compatible string for the 4 channels of
+> 10-bit resolution supported by SARADC in RK3528.
 > 
-> By the way, b4 is a nifty tool that can save you some work and help you
-> prep patch series for submission.[^1]
+> Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
 
-Yes, I have considered it, but unfortunately it still has quite a few 
-bugs, for example [1], which has mangled my tags before, when a 
-maintainer using it tried to apply one of my patches with it.
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
 
-[1] https://github.com/mricon/b4/issues/52
-
->> +/*
->> + * The driver defines the following components:
->> + *
->> + * Count 0
->> + * \__  Synapse 0 -- Signal 0 (Channel A, i.e. TIOA)
->> + * \__  Synapse 1 -- Signal 1 (Channel B, i.e. TIOB)
->> + */
->> +
->> +enum counter_mchp_signals {
->> +	COUNTER_MCHP_SIG_TIOA,
->> +	COUNTER_MCHP_SIG_TIOB,
->> +};
-> 
-> Are these meant to be used to identify the Signals in the
-> microchip-tcb-capture.c file. You should set the the counter_signal id
-> members to these enum constants then. However, this enum doesn't need to
-> be exposed to userspace in that case.
-
-The thought was to let userspace figure out which 
-`signal%d_action_component_id` to read, but now I see that this is not 
-the way to go.
-
-> If that is the only purpose of enum counter_mchp_signals, then we can
-> omit this patch from the series and you won't need to send it in the
-> next revision.
-
-Alright, I'll drop this enum. Then this header will be empty at the 
-start, save for the block comment. I hope that will be alright.
-
-> William Breathitt Gray
-> 
-> [^1] https://b4.docs.kernel.org/en/latest/
-
-Bence
 
 

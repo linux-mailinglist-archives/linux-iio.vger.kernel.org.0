@@ -1,152 +1,155 @@
-Return-Path: <linux-iio+bounces-16313-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16314-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35963A4D3F2
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 07:37:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1860AA4D436
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 08:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 979313AD9EB
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 06:36:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4549F16E80F
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 07:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBCC1F4607;
-	Tue,  4 Mar 2025 06:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1221F1F4722;
+	Tue,  4 Mar 2025 07:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Et2Uc7rM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XIIKFhwK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5A9347C7
-	for <linux-iio@vger.kernel.org>; Tue,  4 Mar 2025 06:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C176618CBF2;
+	Tue,  4 Mar 2025 07:02:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741070226; cv=none; b=onQFoJDL1/+PJyjWokE6ty2sbY7z5W7znkOfJNeCsl9liSl0MOEKorVo8NI/psiYg9c+WhgawAdaYtxqzzbJyBxSJybGAy5EG3hBbiPCDq5kuEHbmwH5FkDAYAEHrz/p2jO8Uc/23MGp98M3/DZx1DcOvOzid0mkZ+I4zGuqm9o=
+	t=1741071724; cv=none; b=h1fm0l4rzxicWGXGSTRsuAlWoOfSKuHYYS77+GkCRbSVg4GnckP7cusxdX3+6MUoJiFjWmka6sILojHAkbnVFoexIMqjV6IfDlM92RCtwsWP+4MWHNcjgOO4i2jqn+UQvLW6NBMUGiQ62ujG7pixMeH+Bf4igSa7QcuSByxSEkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741070226; c=relaxed/simple;
-	bh=UMt2ZIzD4i/3+qQhSPSHEop7znwVILAj++vRqySJMaA=;
+	s=arc-20240116; t=1741071724; c=relaxed/simple;
+	bh=ZQ5PhUftJ57V/Y5zzJkozL4WSOs8vgmNZIByf0cbzq4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uHx2+BVbejyljECZp+w9yNgY87vGuWMffSs/ZJBHzXzAexGrGqLH8JEm3iep62mOPBvlXfJtWYolkWzTDGsAls1m4P98nfdch1dK2xf7dyjiiymrclN9tctSC6NmV7VUaudIg2gREo3sj6UZl7UYwQ9gjLWhH2Z8HxUsLyaSTao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Et2Uc7rM; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-abf64aa2a80so434977766b.0
-        for <linux-iio@vger.kernel.org>; Mon, 03 Mar 2025 22:37:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741070221; x=1741675021; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MZODVp5qI7foXW09kyVwXfjrHAWYKs/CU5C/Z/8rz1U=;
-        b=Et2Uc7rMNEMbeY3MTcVu7BHRt/ovc+d5j50nEgL0yK1mqGSxV4AuffIizoheIGDMTc
-         iervZE0McyNANe/DwtbasuoVYIph7dOr4Q4Yol2AQy8b2wDcsN6i8op4n/kQmNRiT6sJ
-         qNPta9N5X1I+RriSdEZHfWUjNsLQksZGG4ZCBPXxjXw1k8SCirrVdL/ZvZ8pMirLysr6
-         2Bv1N36dJ+d/R4QpUMhuDrgWtAlOVp5O9CNheieT9oxcaulvslH5pCbeHxXvG8LX7Qq/
-         9qpe61ip7Rg0Vg+G9ib0iis3K9VdYyXq8Zkvkq1dYqXjBZFb/lwnqXZU9PNGNzzv1wRn
-         8Exg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741070221; x=1741675021;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MZODVp5qI7foXW09kyVwXfjrHAWYKs/CU5C/Z/8rz1U=;
-        b=KDPyfEUovli42KRci9trlbwlD0zEsuiqzy5iVJw3+TmC29VYKxIdlItmsW4OQ40La9
-         MsDsL7lttU6zmtJzKXLU4xTVn9JDKXb6IPS3S84eUoaoRw3sEN5oey1Cp2QyVb9rd9V9
-         ldVwmt0NSu1ptinpFZApowdtS1NuVcelSlqurz5JRAV45r99/oCN7m6FjbVYD5Ua4mVB
-         tQbbNh0LiZ23/L+AI2c4GtgQYDPZefVAizxWo1cxt0Jc/ZjnGcN8AadlRNmbv8G1KuOS
-         jRKGex1A6gV8qjRY+iLQZXO6f0/fF1VOQN7Z5T78hy28+40dPdPqMByJD854IAvIv6jk
-         s/1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVoLZZIb8ylVAdOcXEloD5gehFdiIv9j11sOKXO8+QBkGByd3Gl134r4lDPmSvgozKzEQoZDPcgJjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1v9Ny4+hoPX8B+3w8F4zIiHO5ubZKjLTAW42ICRfF+OgrHCmI
-	4kHgBaaXN8XuXsOeO35x+BZfP13PJFiksVfl2Oy4QeKfInk+MLZ0Rhc16mUN13A=
-X-Gm-Gg: ASbGncvN1ET25LCT86Iok1IBEvt5a7kiOnbHYEfdrR4Uhu2g45fvD5aW0z8dClpKKp9
-	GW5uwB+iWys0tdsIAwD3GiIxdHjvOZRj9RaHxMPLLYRko7NoB/jc0shtX+VdDLv2m5uLYHQ9xaI
-	63pzC8kG49fQuykkCt4uu20jPAkz5Tm04N8/0/7/b+UeM6ZBVVKW1BXrRnrgc02761R34OUz2Y/
-	CIoSFjJ5KK7IKOSrvbivchrvR8Czk0MtsjIM+SqEEMXCfg+GGg8rY05Vs/pHGDQ6vL32epj81rG
-	nVTWyocM9VTMDyxAUvjvFmq8jNVZHg4nC4iBqtyXmiIt0SfCsQ==
-X-Google-Smtp-Source: AGHT+IE59zFK0k4FqZlCMkYs0jRqy9akgU6KdZPmbOJsPiyF1i1a53x6V4y4VmoHrSVjObFtMf/iuw==
-X-Received: by 2002:a17:907:94cb:b0:ac1:ea29:4e74 with SMTP id a640c23a62f3a-ac1ea2951afmr373989566b.28.1741070220918;
-        Mon, 03 Mar 2025 22:37:00 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-abf6f85ea15sm367116166b.111.2025.03.03.22.36.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 22:37:00 -0800 (PST)
-Date: Tue, 4 Mar 2025 09:36:56 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: sunliming@linux.dev
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, nuno.sa@analog.com,
-	jic23@kernel.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, sunliming@kylinos.cn,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>
-Subject: Re: [PATCH] iio: imu: adis: fix uninitialized symbol warning
-Message-ID: <c5b70fd8-2d03-4179-a8b8-5ee827fff978@stanley.mountain>
-References: <20250304060518.1834910-1-sunliming@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jLi0LPMdWTfLuWnm0vOrN4+6XEpf4nGJhfzlrg5t6/U+siVtMMmJjCzRcppMTBNLzW4VmuZUSGLKBnXh8wC7JQzefLq98XtkBceZBxvWGirR4tHENbUqtWYKXXJx7UeJZzpvu4Wg2s8oTLFCoQOcsTXA0Ye9W26AuUfMJTaWg1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XIIKFhwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C59CC4CEE9;
+	Tue,  4 Mar 2025 07:02:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741071724;
+	bh=ZQ5PhUftJ57V/Y5zzJkozL4WSOs8vgmNZIByf0cbzq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XIIKFhwKMX5MxV7LyUyuou3YED/sF9lUwEzbeR5T4NZAe6J8YFIEYE+TG55QLq7Af
+	 VoxWFYm/TplcbQwg1nQ8SWKS6b+ebpJks+yziXdxoKrQ2xmY+Kro2p9ojLsjIxEdiN
+	 E6iqEMq6jA2wL41fwv9kFfY5e8wtkK0JmN57j/bJfMWun48tODnvQtWZv4sl50sP9Y
+	 WQfgmKoyULF1N7nfhR0ZUTVyxLgHG8HamoXDerWkyz0yNXBB189TA9JjFC/wq7pJ6n
+	 PsjAjCpSK5fiD8cJiDNYnmzu0STcRcBFO92zc5emznyiNiQdBKKWNcb7oFTdLCneSw
+	 h5KpP00mUgQlw==
+Date: Tue, 4 Mar 2025 16:02:00 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: Bence =?iso-8859-1?B?Q3Pza+Fz?= <csokas.bence@prolan.hu>
+Cc: linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Kamel Bouhara <kamel.bouhara@bootlin.com>
+Subject: Re: [PATCH v6 2/3] counter: microchip-tcb-capture: Add IRQ handling
+Message-ID: <Z8alaOTjZeRuXnUI@ishi>
+References: <20250227144023.64530-1-csokas.bence@prolan.hu>
+ <20250227144023.64530-3-csokas.bence@prolan.hu>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BpBnxHRSyKeOs9ok"
 Content-Disposition: inline
-In-Reply-To: <20250304060518.1834910-1-sunliming@linux.dev>
+In-Reply-To: <20250227144023.64530-3-csokas.bence@prolan.hu>
 
-On Tue, Mar 04, 2025 at 02:05:18PM +0800, sunliming@linux.dev wrote:
-> From: sunliming <sunliming@kylinos.cn>
-> 
-> Fix below kernel warning:
-> smatch warnings:
-> drivers/iio/imu/adis.c:319 __adis_check_status() error: uninitialized symbol 'status_16'.
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Signed-off-by: sunliming <sunliming@kylinos.cn>
 
-Huh...  Someone is using lei to get their email.  This patch is fine and
-it's theoretically the correct thing to do.
+--BpBnxHRSyKeOs9ok
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-How the zero-day bot warnings work is the they are first sent to my gmail
-account and I look them over and either forward them or ignore them.  Here
-is the code:
+On Thu, Feb 27, 2025 at 03:40:19PM +0100, Bence Cs=F3k=E1s wrote:
+> Add interrupt servicing to allow userspace to wait for the following even=
+ts:
 
-drivers/iio/imu/adis.c
-   305  int __adis_check_status(struct adis *adis)
-   306  {
-   307          unsigned int status;
-   308          int diag_stat_bits;
-   309          u16 status_16;
-   310          int ret;
-   311          int i;
-   312  
-   313          if (adis->data->diag_stat_size) {
-   314                  ret = adis->ops->read(adis, adis->data->diag_stat_reg, &status,
-   315                                        adis->data->diag_stat_size);
-   316          } else {
-   317                  ret = __adis_read_reg_16(adis, adis->data->diag_stat_reg,
-   318                                           &status_16);
-   319                  status = status_16;
-   320          }
-   321          if (ret)
-   322                  return ret;
-   323  
+Hi Bence,
 
-So if __adis_read_reg_16() fails, then the next line is an uninitialized
-read.  But then the if (ret) check means that it's fine at run-time.
-It's a false positive.  The other thing to consider it the UBSan will
-also detect the uninitialized read at runtime and splat.  That's still a
-false positive but it's a headache.  But when I was looking at this, I
-decided that __adis_read_reg_16() was unlikely to fail in real life so I
-decided to ignore this warning.
+This is a nitpick but keep the commit description with a maximum of 75
+characters per line so we don't have formatting issues with how they
+wrap.
 
-Initializing the variable to zero doesn't change runtime for sane configs
-because everyone automatically zeroes stack variables these days.  It
-just silences the Smatch warning.  So I'm fine with this patch.
+> @@ -378,6 +444,15 @@ static int mchp_tc_probe(struct platform_device *pde=
+v)
+>  	counter->num_signals =3D ARRAY_SIZE(mchp_tc_count_signals);
+>  	counter->signals =3D mchp_tc_count_signals;
+> =20
+> +	priv->irq =3D of_irq_get(np->parent, 0);
+> +	if (priv->irq =3D=3D -EPROBE_DEFER)
+> +		return -EPROBE_DEFER;
 
-(This email is for information only in case you were wondering why the
-bug report was formatted strangely etc).
+In theory, the error code could be something else if of_irq_get() failed
+for any other reason. Handle all those error cases at once by checking
+IS_ERR(priv->irq) rather than just -EPROBE_DEFER. Then you can just
+return dev_err_probe() with priv->irq for the error code.
 
-regards,
-dan carpenter
+> diff --git a/include/uapi/linux/counter/microchip-tcb-capture.h b/include=
+/uapi/linux/counter/microchip-tcb-capture.h
+> index 7bda5fdef19b..ee72f1463594 100644
+> --- a/include/uapi/linux/counter/microchip-tcb-capture.h
+> +++ b/include/uapi/linux/counter/microchip-tcb-capture.h
+> @@ -12,6 +12,17 @@
+>   * Count 0
+>   * \__  Synapse 0 -- Signal 0 (Channel A, i.e. TIOA)
+>   * \__  Synapse 1 -- Signal 1 (Channel B, i.e. TIOB)
+> + *
+> + * It also supports the following events:
+> + *
+> + * Channel 0:
+> + * - CV register changed
+> + * - CV overflowed
+> + * - RA captured
+> + * Channel 1:
+> + * - RB captured
+> + * Channel 2:
+> + * - RC compare triggered
+>   */
+> =20
+>  enum counter_mchp_signals {
+> @@ -19,4 +30,11 @@ enum counter_mchp_signals {
+>  	COUNTER_MCHP_SIG_TIOB,
+>  };
+> =20
+> +enum counter_mchp_event_channels {
+> +	COUNTER_MCHP_EVCHN_CV =3D 0,
+> +	COUNTER_MCHP_EVCHN_RA =3D 0,
+> +	COUNTER_MCHP_EVCHN_RB,
+> +	COUNTER_MCHP_EVCHN_RC,
+> +};
 
+These would be better as preprocessor defines in case we need to
+introduce new events to channel 1 or 2 in the future. That would allow
+us to insert new events easily to existing channels without having to
+worry about its actual position in an enum list.
+
+One additional benefit is if we do end up introducing more Counts for
+the module. In that situation we would have multiple CV and RA/RB/RC per
+Counter device, but we can easily define a preprocessor macro to
+calculate the channel offset given the Count index. However, with enum
+structure we would have to manually add and maintain redundant defines
+for each Count, which is far less ideal.
+
+William Breathitt Gray
+
+--BpBnxHRSyKeOs9ok
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ8alaAAKCRC1SFbKvhIj
+KwgVAQC3uPc49wX760fObL8equIESUZ04H8MdACkUI4Mi1fhsAD9EpFDTNaLDOaL
+s4w9rvq5ikY9mEWoKsn3ojlscOGeHQ0=
+=nSNc
+-----END PGP SIGNATURE-----
+
+--BpBnxHRSyKeOs9ok--
 

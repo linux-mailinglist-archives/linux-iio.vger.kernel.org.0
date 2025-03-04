@@ -1,137 +1,107 @@
-Return-Path: <linux-iio+bounces-16310-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16311-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C22FA4CFB7
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 01:10:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAAEA4D0B6
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 02:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02FCB7A7BEC
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 00:09:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8896718917E5
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 01:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C153FC7;
-	Tue,  4 Mar 2025 00:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEC482866;
+	Tue,  4 Mar 2025 01:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8rweL6z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8LSoMnO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AB81F92A;
-	Tue,  4 Mar 2025 00:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D489273FD;
+	Tue,  4 Mar 2025 01:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741046991; cv=none; b=Jrc4hszOHWLLMJ18bqCa0DObidmhKIdLfpXo9jb+EdLH4qWAb/wbPiBXXhGCROEFpUtpgzpgg+LafJWtRoxOS6StlqVIwVE11tdVE3+rXlVlf0+pduiFEvZsfHCGwNxw+8r0IJmOEgklBYyNxEqf8x2PKFOq6iS0UNCUY5uu4Bo=
+	t=1741051450; cv=none; b=kcQ7PKagwy24UELTZ/jhGmhMnuMad8ZHJncmhqJXKnMA/0tTO3CHCz1Dhiw2DlZSMiFW+5aY/svfNFkTZ4Y61qgqGFz/Vd8OwEjDANYXEb15XZ17IvEO+oCv/0aZlberJ00ZQaS9mGpdxSvKXnYxTPKsxyQ9nvn/1Gsfnd2oy6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741046991; c=relaxed/simple;
-	bh=HYDy0V16CbXKV+Z0Ebwz9QqNroH1o7OVsMOOPFZOv8o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjypXU5gyzx8AbixocZWMiNSVRsmFe12eXEUFlnphTNgla63GMO2goH6ZGz2TG8izyseh6Vdea+z+SBAqZo7BJ14QPBt+8ViRtI97B6mao3blSzhDdKdkBPctO/B7C/jaWcLHB7YH7WRZEAkieYGGCKHaQ68ObyM1Qb8nxb/+nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8rweL6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92D3C4CEE4;
-	Tue,  4 Mar 2025 00:09:38 +0000 (UTC)
+	s=arc-20240116; t=1741051450; c=relaxed/simple;
+	bh=E2F08/o2OSzuu8jrFvRof23F4wF1UTe9v7R9uNKJugM=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=mcgixihuHdlnr/VQT0vk2+lSM/2qwZGE2nRRqk+fpBESGxY59gR+Lz4XxLTgADvoO+xykhqzbLY+KXVD0ijjtzIRkzlUM9PqFGx0pKukNLGicp1ORQtV3K+aRZP+8jwnxZ1cQpSKyIpbJgx/6ipoQu1A6AkydaDan9vyAzWmCLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u8LSoMnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7ED6C4CEE4;
+	Tue,  4 Mar 2025 01:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741046990;
-	bh=HYDy0V16CbXKV+Z0Ebwz9QqNroH1o7OVsMOOPFZOv8o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=F8rweL6z8sb03sGNJu6P+EjwBBwv8zF1+YLwXCWEPWym0DdxXODtNhIrVss7pzQuF
-	 ht+XrUeCTypcwk4Sf5/2Dzy7AVdsJsTxvhL/IkCKRAu6Ih7aKaE37UZHC8fEo9Y8Dz
-	 +xTRikR0XQQ68mdX1zTebYrZ2ZOM02sYc3MLzCMH2FUmX+WtyUK/DE3YH7UjKlDSU5
-	 xsrniPbzjCkDbNHZ6AGjVKAqTJjXlhnUyXVj77GzEnLIBqi5tRmNIQL9dWUr4NzSvy
-	 zv+ZZz1iKxkpvYuIQLcpoeYNw4i1AbeSiCYNa8YmfH69T6sR9PHknK3KcJOXUvt8zg
-	 bVqlAq6dyNbaw==
-Date: Tue, 4 Mar 2025 00:09:31 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- agross@kernel.org, andersson@kernel.org, dmitry.baryshkov@linaro.org,
- konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
- amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
- rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
- david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
- quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
- lars@metafoo.de, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
- quic_skakitap@quicinc.com, neil.armstrong@linaro.org
-Subject: Re: [PATCH V5 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
-Message-ID: <20250304000931.5be25de1@jic23-huawei>
-In-Reply-To: <449712bb-961e-4ccf-bf74-50dd55315abc@oss.qualcomm.com>
-References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
-	<20250131183242.3653595-5-jishnu.prakash@oss.qualcomm.com>
-	<20250201121134.53040aae@jic23-huawei>
-	<9e14f58f-e345-4bae-b14e-de25fc28d9a8@oss.qualcomm.com>
-	<20250301032519.16e77288@jic23-huawei>
-	<449712bb-961e-4ccf-bf74-50dd55315abc@oss.qualcomm.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1741051449;
+	bh=E2F08/o2OSzuu8jrFvRof23F4wF1UTe9v7R9uNKJugM=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=u8LSoMnOcd05kRsUfZGCFaY1x+Gj/801isMvowIZCnI3uz1CUHEK+dU+svd5YHEVm
+	 10Ru54utTdmBkSyqfGcfMt9vPuWCtCXQx1ieHg7CuJ22bsTMAXg3thcrZWqtHIUp56
+	 5yNxN1JeRyiaWJpla12/uHsY/+sad2oLMDntjPUSTxR5edCA6MIE6YVvLLz/pFdcfU
+	 ERmMJdAUWBRpREHjTRQEif16hFvrGg/mP9jkzXEE506Ly/BS+SEPlgEE2cheRab4sL
+	 TuoKKFKwBrb33Rt5dzPUt6yPFEPOIRt/FLWj9bkB0wS2EFIXUpzKrFURp6XpAJ6siY
+	 6kkR8/vWSfUQw==
+Date: Mon, 03 Mar 2025 19:24:08 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com, 
+ jic23@kernel.org, linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
+ devicetree@vger.kernel.org, gregkh@linuxfoundation.org, conor+dt@kernel.org, 
+ krzk+dt@kernel.org, 21cnbao@gmail.com, lars@metafoo.de
+To: Saalim Quadri <danascape@gmail.com>
+In-Reply-To: <20250303235930.68731-1-danascape@gmail.com>
+References: <20250303235930.68731-1-danascape@gmail.com>
+Message-Id: <174105144819.171181.14482923503787621828.robh@kernel.org>
+Subject: Re: [PATCH v2] dt-bindings: iio: accel: add binding documentation
+ for ADIS16203
 
-On Mon, 3 Mar 2025 19:26:37 +0530
-Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-> Hi Jonathan,
+On Tue, 04 Mar 2025 05:29:30 +0530, Saalim Quadri wrote:
+> This patch add device tree binding documentation for ADIS16203.
 > 
-> On 3/1/2025 8:55 AM, Jonathan Cameron wrote:
-> > On Wed, 26 Feb 2025 14:22:05 +0530
-> > Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
-> >   
-> ...
-> >>>> +void adc5_take_mutex_lock(struct device *dev, bool lock)
-> >>>> +{
-> >>>> +	struct iio_dev *indio_dev = dev_get_drvdata(dev->parent);
-> >>>> +	struct adc5_chip *adc = iio_priv(indio_dev);
-> >>>> +
-> >>>> +	if (lock)
-> >>>> +		mutex_lock(&adc->lock);
-> >>>> +	else
-> >>>> +		mutex_unlock(&adc->lock);
-> >>>> +}
-> >>>> +EXPORT_SYMBOL_NS_GPL(adc5_take_mutex_lock, "QCOM_SPMI_ADC5_GEN3");    
-> >>>
-> >>> This is potentially going to make a mess for sparse.  Might be better to split
-> >>> it in two so you can had __acquires and __releases markings.
-> >>>
-> >>> If you don't get any warnings with sparse then I guess we are fine.
-> >>>     
-> >>
-> >> I had tried building with sparse in my local workspace and I did not get any errors in this file. Do you think I can keep this unchanged?
-> >> Also, would any kernel bots run sparse later on this patch, if it's not already done?  
-> > 
-> > Problems around this tend to turn up a bit late in build tests as requires
-> > particular combinations of features.  Here you may not see problems because
-> > sparse can't see far enough to understand the locking.
-> > 
-> > I would still split this into lock / unlock as that matches better
-> > with common syntax for locks.  We can then add markings
-> > as necessary later.
-> >   
+> Signed-off-by: Saalim Quadri <danascape@gmail.com>
+> ---
+> Changes:
+> V1 - V2: change compatible property from enum to const
 > 
-> OK, I can split this into separate lock and unlock functions.
-> And for markings, you mean I should add these:
+>  .../bindings/iio/accel/adi,adis16203.yaml     | 52 +++++++++++++++++++
+>  1 file changed, 52 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
 > 
->     __acquires(&adc->lock)
->     __releases(&adc->lock)
-> 
-> under the lock and unlock functions respectively?
-yes
 
-> 
-> Thanks,
-> Jishnu
-> 
-> >>>> +/*    
-> >>>
-> >>> Looks like valid kernel doc, so /** and check it builds fine
-> >>> with the kernel-doc script.
-> >>>     
-> 
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml: properties:compatible:const: ['adi,adis16203'] is not of type 'integer', 'string'
+	from schema $id: http://devicetree.org/meta-schemas/keywords.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml: properties:compatible:const: ['adi,adis16203'] is not of type 'string'
+	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml#
+Documentation/devicetree/bindings/iio/accel/adi,adis16203.example.dtb: /example-0/spi/accelerometer@0: failed to match any schema with compatible: ['adi,adis16203']
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250303235930.68731-1-danascape@gmail.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

@@ -1,171 +1,137 @@
-Return-Path: <linux-iio+bounces-16309-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16310-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E40A4CF8B
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 00:59:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C22FA4CFB7
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 01:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EBF71889411
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Mar 2025 23:59:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02FCB7A7BEC
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Mar 2025 00:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE0C1F417A;
-	Mon,  3 Mar 2025 23:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C153FC7;
+	Tue,  4 Mar 2025 00:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eb4BMwjL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F8rweL6z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF29DF9E6;
-	Mon,  3 Mar 2025 23:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AB81F92A;
+	Tue,  4 Mar 2025 00:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741046380; cv=none; b=Z1tUFaLLa7W1ZMrjp3Id/L/sFyz66zQ7rJgKXxeGPa6EYMZRrPlrcA8GR/ziTtiKtDhyNt52h98u6zDkA+wDjlLtZELdHyYIT2fksYoCeyxOwVPPtd/E6u0DAtBAlKOE+4qg2DT4pT3Px867Xr3ujflA6daY8UsB1KN9ue7Jc1Q=
+	t=1741046991; cv=none; b=Jrc4hszOHWLLMJ18bqCa0DObidmhKIdLfpXo9jb+EdLH4qWAb/wbPiBXXhGCROEFpUtpgzpgg+LafJWtRoxOS6StlqVIwVE11tdVE3+rXlVlf0+pduiFEvZsfHCGwNxw+8r0IJmOEgklBYyNxEqf8x2PKFOq6iS0UNCUY5uu4Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741046380; c=relaxed/simple;
-	bh=04bpoOcPW4nahyQoGffhYfeUl/7cvNwek56IxXN5nLE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZOJQnHDOlOhGV9QeE1uKD7UCn4dLjPDEwmkwAkS1AFPR0/d+R2iMhymtt/3NKgaoN+TWN2nBwuN2JQUOoMdEfSYBhTsuLX6pB3N1FqsD2VkzwJuMPVmxO53mOzLjw6VhbTMQkW8P57fXbGRuUUR3UkWR5F+A0fqREu4yOY4qd4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eb4BMwjL; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2239aa5da08so33309705ad.3;
-        Mon, 03 Mar 2025 15:59:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741046378; x=1741651178; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Nl5k4lX8ykAjaBSh+OFtZkq9yFs9ZO8ZZS3/cchBXs=;
-        b=Eb4BMwjLNVgxGLZxkvHkNoIp0NdzIsYMeH0xT4a4aApjEPMVBM1HYzX8pKRoMkaJRQ
-         Af80Pv+i0WL8lxpr7EwIYVg6hIa1JaaEAXzTV4UVL7nPNIQiRNEs8zH3yHaBx86uPtr0
-         G37EDMVlrhOXMx2SZWLzqTRPPSDHrJSziLZuu+7oyf7/v4cEkoPF4T9PL2Es6wqEIS9Q
-         NBfXkaONCft1aDPTt37CCHzrcjYJzMy0L2nlw3yFwpMZdjUm0qcYRX5iGDt62PTXaBAm
-         F5dgB03vPr6WcvP/keuxHDamJQQEOCp0Q4rAm1kL49psc+rpTTgJLUbY0dj7cQodQK3w
-         sC/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741046378; x=1741651178;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+Nl5k4lX8ykAjaBSh+OFtZkq9yFs9ZO8ZZS3/cchBXs=;
-        b=T72s71oiL89FOGswB3aKhXZ5ZFyhVQGDpM7z0Sqr85eJB06TyGSvne2J5vmqCxBnPq
-         yIJQxq+d/DRfaZXpsjS/M66B5sH4pLY1lLZVXWb0xP5ZtcMt5fZDLfkDprUlXy78svDM
-         kDqG3EO3d3vss/4tbddCZT2ScaN8h0pYdvMRmecMuGDv6F3D8IDDEYar6ShdxxlIrKcc
-         9fReFXwmWjCwL2xGZhyk4OaZ5TAFzIuaJKvweSHBI7fza4xuuEnmb22mciZ/gSYsYjGB
-         EgPFWvij/q+pNcgKiFpbq0P2K3xdQFP1etKpozzKNnXIYJcyFjF2ouZUI9DXQpBEUI+f
-         ppBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUU03s1U68wOjAfeH6QXLZ2P6DbmK/vFl2hBNHzOL1nHP8BjQgmG1dV36DvPgw6ZB2q8RmdWaVzuPMF@vger.kernel.org, AJvYcCUWzPLGNU8xVMS3196Q9qiYIu9ulGaO7GxHA2RYxKJmPoZNHz40BCtT9ci8y7XzMJIiySLUzzj9m68G@vger.kernel.org, AJvYcCUuQMXTdoYNgCMEt7XCvcbOAr3Q+YHdFOz6e6Fo1m2pinzFm7a2R2VFSo0e5xnwprm1go2qwTs3ZIPJX+9F@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKFPin54UOk7AP/GxDPpK25ehZJFgzv7q70ISGJqm6sfq5gsia
-	sI2Jk5UxCr4sxO+ZJgfjuCh3VXvSZx2khQAPQn/tD4bfSG09wVoY
-X-Gm-Gg: ASbGnctB3eAmQy8JNRpvysWFETF8vjDlpobkuU8CyjNoj3CguoFl7LDDwSMX0FGr1lk
-	8mpKKE/+xCLCp0J1ROmASsWOuGf17KujpyrMxIY6hqhffkr9psEy/rff2S+Qn6xS4QPNrDmTlOX
-	n7yZHLrEirbtKT25NFYdNorA3yLtBY4fNEHZm4AWl1YONJmJbRhR/Sulz6TWqqswJU6w+LS8Yb+
-	S2S6BB29GtE1kp8RuIrpuIAVk6YYmC64HXplyoGlQMq+BAYzRZBDHQNuZJZdnDfg5jWCq4GJu+E
-	9CAURcOtt5KGm1tzX9gyfMbzT+Me8ywwKBo3RFe9KLy08ZK+dig9KU3xWqL7skBHv6UG
-X-Google-Smtp-Source: AGHT+IGk+zORULG18C0l/CqE4lIgOVZvq9u81/ReypCKT4mvBK1lYyGlpNr3ONZlH2rHl5CMFl/KhA==
-X-Received: by 2002:a17:902:ce91:b0:223:64bb:f657 with SMTP id d9443c01a7336-2236922352bmr222799545ad.46.1741046377894;
-        Mon, 03 Mar 2025 15:59:37 -0800 (PST)
-Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:7b03:1e42:d492:fb71])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22350531e1asm83591775ad.240.2025.03.03.15.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Mar 2025 15:59:37 -0800 (PST)
-From: Saalim Quadri <danascape@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	gregkh@linuxfoundation.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	21cnbao@gmail.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	Saalim Quadri <danascape@gmail.com>
-Subject: [PATCH v2] dt-bindings: iio: accel: add binding documentation for ADIS16203
-Date: Tue,  4 Mar 2025 05:29:30 +0530
-Message-Id: <20250303235930.68731-1-danascape@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1741046991; c=relaxed/simple;
+	bh=HYDy0V16CbXKV+Z0Ebwz9QqNroH1o7OVsMOOPFZOv8o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NjypXU5gyzx8AbixocZWMiNSVRsmFe12eXEUFlnphTNgla63GMO2goH6ZGz2TG8izyseh6Vdea+z+SBAqZo7BJ14QPBt+8ViRtI97B6mao3blSzhDdKdkBPctO/B7C/jaWcLHB7YH7WRZEAkieYGGCKHaQ68ObyM1Qb8nxb/+nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F8rweL6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92D3C4CEE4;
+	Tue,  4 Mar 2025 00:09:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741046990;
+	bh=HYDy0V16CbXKV+Z0Ebwz9QqNroH1o7OVsMOOPFZOv8o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=F8rweL6z8sb03sGNJu6P+EjwBBwv8zF1+YLwXCWEPWym0DdxXODtNhIrVss7pzQuF
+	 ht+XrUeCTypcwk4Sf5/2Dzy7AVdsJsTxvhL/IkCKRAu6Ih7aKaE37UZHC8fEo9Y8Dz
+	 +xTRikR0XQQ68mdX1zTebYrZ2ZOM02sYc3MLzCMH2FUmX+WtyUK/DE3YH7UjKlDSU5
+	 xsrniPbzjCkDbNHZ6AGjVKAqTJjXlhnUyXVj77GzEnLIBqi5tRmNIQL9dWUr4NzSvy
+	 zv+ZZz1iKxkpvYuIQLcpoeYNw4i1AbeSiCYNa8YmfH69T6sR9PHknK3KcJOXUvt8zg
+	 bVqlAq6dyNbaw==
+Date: Tue, 4 Mar 2025 00:09:31 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jishnu Prakash <jishnu.prakash@oss.qualcomm.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ agross@kernel.org, andersson@kernel.org, dmitry.baryshkov@linaro.org,
+ konradybcio@kernel.org, daniel.lezcano@linaro.org, sboyd@kernel.org,
+ amitk@kernel.org, thara.gopinath@gmail.com, lee@kernel.org,
+ rafael@kernel.org, subbaraman.narayanamurthy@oss.qualcomm.com,
+ david.collins@oss.qualcomm.com, anjelique.melendez@oss.qualcomm.com,
+ quic_kamalw@quicinc.com, rui.zhang@intel.com, lukasz.luba@arm.com,
+ lars@metafoo.de, devicetree@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, cros-qcom-dts-watchers@chromium.org,
+ quic_skakitap@quicinc.com, neil.armstrong@linaro.org
+Subject: Re: [PATCH V5 4/5] iio: adc: Add support for QCOM PMIC5 Gen3 ADC
+Message-ID: <20250304000931.5be25de1@jic23-huawei>
+In-Reply-To: <449712bb-961e-4ccf-bf74-50dd55315abc@oss.qualcomm.com>
+References: <20250131183242.3653595-1-jishnu.prakash@oss.qualcomm.com>
+	<20250131183242.3653595-5-jishnu.prakash@oss.qualcomm.com>
+	<20250201121134.53040aae@jic23-huawei>
+	<9e14f58f-e345-4bae-b14e-de25fc28d9a8@oss.qualcomm.com>
+	<20250301032519.16e77288@jic23-huawei>
+	<449712bb-961e-4ccf-bf74-50dd55315abc@oss.qualcomm.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This patch add device tree binding documentation for ADIS16203.
+On Mon, 3 Mar 2025 19:26:37 +0530
+Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
 
-Signed-off-by: Saalim Quadri <danascape@gmail.com>
----
-Changes:
-V1 - V2: change compatible property from enum to const
+> Hi Jonathan,
+> 
+> On 3/1/2025 8:55 AM, Jonathan Cameron wrote:
+> > On Wed, 26 Feb 2025 14:22:05 +0530
+> > Jishnu Prakash <jishnu.prakash@oss.qualcomm.com> wrote:
+> >   
+> ...
+> >>>> +void adc5_take_mutex_lock(struct device *dev, bool lock)
+> >>>> +{
+> >>>> +	struct iio_dev *indio_dev = dev_get_drvdata(dev->parent);
+> >>>> +	struct adc5_chip *adc = iio_priv(indio_dev);
+> >>>> +
+> >>>> +	if (lock)
+> >>>> +		mutex_lock(&adc->lock);
+> >>>> +	else
+> >>>> +		mutex_unlock(&adc->lock);
+> >>>> +}
+> >>>> +EXPORT_SYMBOL_NS_GPL(adc5_take_mutex_lock, "QCOM_SPMI_ADC5_GEN3");    
+> >>>
+> >>> This is potentially going to make a mess for sparse.  Might be better to split
+> >>> it in two so you can had __acquires and __releases markings.
+> >>>
+> >>> If you don't get any warnings with sparse then I guess we are fine.
+> >>>     
+> >>
+> >> I had tried building with sparse in my local workspace and I did not get any errors in this file. Do you think I can keep this unchanged?
+> >> Also, would any kernel bots run sparse later on this patch, if it's not already done?  
+> > 
+> > Problems around this tend to turn up a bit late in build tests as requires
+> > particular combinations of features.  Here you may not see problems because
+> > sparse can't see far enough to understand the locking.
+> > 
+> > I would still split this into lock / unlock as that matches better
+> > with common syntax for locks.  We can then add markings
+> > as necessary later.
+> >   
+> 
+> OK, I can split this into separate lock and unlock functions.
+> And for markings, you mean I should add these:
+> 
+>     __acquires(&adc->lock)
+>     __releases(&adc->lock)
+> 
+> under the lock and unlock functions respectively?
+yes
 
- .../bindings/iio/accel/adi,adis16203.yaml     | 52 +++++++++++++++++++
- 1 file changed, 52 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-new file mode 100644
-index 000000000000..64370f13e1dc
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adis16203.yaml
-@@ -0,0 +1,52 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/accel/adi,adis16203.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices ADIS16203 Programmable 360 Degrees Inclinometer
-+
-+maintainers:
-+  - Barry Song <21cnbao@gmail.com>
-+
-+description: |
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/adis16203.pdf
-+
-+properties:
-+  compatible:
-+    const:
-+      - adi,adis16203
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vdd-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+
-+allOf:
-+  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        accelerometer@0 {
-+            compatible = "adi,adis16203";
-+            reg = <0>;
-+            spi-max-frequency = <2500000>;
-+            interrupt-parent = <&gpio0>;
-+            interrupts = <0 IRQ_TYPE_LEVEL_HIGH>;
-+        };
-+    };
-+...
--- 
-2.34.1
+> 
+> Thanks,
+> Jishnu
+> 
+> >>>> +/*    
+> >>>
+> >>> Looks like valid kernel doc, so /** and check it builds fine
+> >>> with the kernel-doc script.
+> >>>     
+> 
 
 

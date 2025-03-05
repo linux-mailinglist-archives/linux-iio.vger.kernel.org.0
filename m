@@ -1,56 +1,57 @@
-Return-Path: <linux-iio+bounces-16428-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16429-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD33A502C8
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:54:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2890FA50313
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 16:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38E8E3B06BC
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:49:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4CCD188B6BB
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE802500AA;
-	Wed,  5 Mar 2025 14:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A633221F29;
+	Wed,  5 Mar 2025 14:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q62lxyjL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ia/nhP6n"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC9424E4A8;
-	Wed,  5 Mar 2025 14:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4DD24BC1A
+	for <linux-iio@vger.kernel.org>; Wed,  5 Mar 2025 14:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741186179; cv=none; b=h6lsvewqd68Bke7EJM0+ZbghcaHxMXKNqaOOzn/M/sytgtGDI+i2WQ5N3Ntf+JhbFYgkTGYFtVaTwQZCJrEeTw1FWAVXWsBYPFguYTghnWPvT8aGPvMB0IA2SIwmSbHkIajRg19up165c5hOqIxBb6sL9WCrDtbBHq2fAltTj1Y=
+	t=1741186680; cv=none; b=lGqiks+IEXAczUw44KTlDcdRg76irJpRqfEbWAMxiOroXkjfKcui0PVx/+zMJaozZB67A2HCZ2EVcESHN9IwWpMp+OoWL8xWmWX+4wU6+28DYakYuS4edAbzaX9EGMD1BgB/huyvqXeSAh4x2r08WP1NCAV/RRADNKo0fuzANoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741186179; c=relaxed/simple;
-	bh=/2pS9LLpebWQnwTRaJg4p33HB1TGSur25XxkFxt08JU=;
+	s=arc-20240116; t=1741186680; c=relaxed/simple;
+	bh=bw4JDrruB07mBEjsvyL/FMwfNU8Uyd78yfHj0PwStJQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mfwLS4tNv2EvXBVy/NkMbkNnJcY0v+V8EPShuLKNwzVGH7SrlAXhaxSipP5KCsh2U2FviWOr9DZYRg1A8cDvU34WZ+stWUUDkqnl0UfwS5pRYzoVPhCvuM5cC4NfaIF4mkU9RoXu/QqWqr+Lt7TgouFspcT/0kkFiVv/u6uN3Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q62lxyjL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62E4C4CEEA;
-	Wed,  5 Mar 2025 14:49:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pt1zfhpt5oMYXhSAWfr6BUIqvjSs7K3AFlqo5GPichlamkE5/TP47WP/pNZw6OZyl7EJc27JOL1v/7mo9JK/S73WRa2V4cpwVidTOlJaQ6gEpfj3MTinwAinfuVXSrV8v+b+DsvHCfqknR11rQsfRym8PsIW3dfWsMhfJfEj2eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ia/nhP6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15835C4CED1;
+	Wed,  5 Mar 2025 14:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741186179;
-	bh=/2pS9LLpebWQnwTRaJg4p33HB1TGSur25XxkFxt08JU=;
+	s=k20201202; t=1741186679;
+	bh=bw4JDrruB07mBEjsvyL/FMwfNU8Uyd78yfHj0PwStJQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q62lxyjLA1eLIapx51hFTFib1eVwaU7CWiAJ1BLS30Lc1vC9oOOC8Bv2PZfat/YM4
-	 250nIGaagro9AJT8v+0E++7578mwBPWjiKoiWr4D+jItE7Pu5xDt+myStTB8RFFmlq
-	 b9eRLxoqOSp2tcnf23cURKKubUMh08uPpVmCFxbsavD4MWfdhqYuM+bNOWhEaPDa6f
-	 cn122JhqnUoXpNfmezRWbo8vXRNfXH3tGq8WZycvyATevaAQ3aEC6SzeXYwv3hhjTc
-	 gNe12LYwdJz9+A9r9ZPuKN3tfAyZ75vTpxfsOC0v0y3MqCSf8xv7ibgiK72ujlDIVI
-	 pFnUHLFB5U9tQ==
-Date: Wed, 5 Mar 2025 14:49:28 +0000
+	b=ia/nhP6n0uvmS6WfGpEv45uv+K+5VOzdqSGjipsKrR8v/vjk0mZ6na4TlmNvvEqA6
+	 NGG19Ibv/LBKPv+7laaVuMiXKxwBka9COuBJvCpJj7U46EV/AZ1lr3DVa+UrPtKIWw
+	 Tm9fVzTNtFsNmFWldMs9hLjieAKLYrbUnqBY08Dtbnmb7vMkg78dqbS9u+w3Kc73+2
+	 EC+5qZjLgGtvYtf04J9jTb0HovUIDFNJN0tFObdB1CHHYf/8ImtbdRBmQwnBP6Q7qP
+	 yz6gcnbxRunXxR60mfEVXBFeWG32Avd2PqLJxGaf9+NZuhdB7XQYcJVsQey4Gwsonb
+	 oYOS6Teb9APhw==
+Date: Wed, 5 Mar 2025 14:57:49 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gustavo Silva <gustavograzs@gmail.com>
-Cc: Alex Lanzano <lanzano.alex@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: imu: bmi270: fix initial sampling frequency
- configuration
-Message-ID: <20250305144928.1b9b483a@jic23-huawei>
-In-Reply-To: <20250304-bmi270-odr-fix-v1-1-384dbcd699fb@gmail.com>
-References: <20250304-bmi270-odr-fix-v1-1-384dbcd699fb@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Siddharth Menon <simeddon@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: GSoC IIO project: Siddharth Menon
+Message-ID: <20250305145749.413fe30b@jic23-huawei>
+In-Reply-To: <Z8U0lsntJpTuBzyT@debian-BULLSEYE-live-builder-AMD64>
+References: <CAGd6pzNTB5f++sbirWxnD1Tq_rjTkBDVmSrpFYsMisEasAq4Rg@mail.gmail.com>
+	<20250222151143.7ca7f718@jic23-huawei>
+	<CAGd6pzOO_8VV8RPVz81-LE=eisuPjYsRQZAYgyfxwKLjKSM06Q@mail.gmail.com>
+	<Z8U0lsntJpTuBzyT@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,63 +62,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 04 Mar 2025 15:01:02 -0300
-Gustavo Silva <gustavograzs@gmail.com> wrote:
 
-> In the bmi270_configure_imu() function, the accelerometer and gyroscope
-> configuration registers are incorrectly written with the mask
-> BMI270_PWR_CONF_ADV_PWR_SAVE_MSK, which is unrelated to these registers.
 > 
-> As a result, the accelerometer's sampling frequency is set to 200 Hz
-> instead of the intended 100 Hz.
-> 
-> Remove the mask to ensure the correct bits are set in the configuration
-> registers.
-> 
-> Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+> drivers/staging/iio/addac/adt7316*
+> The device can communicate through I2C or SPI so could use regmap API to
+> standardize data transfers in the driver.
+> There was an old patch updating to regmap
+> https://marc.info/?l=linux-iio&m=154853847705361&w=2.
+> Aside from I2C related changes by and minor clean up changes, this driver hasn't
+> got updates in a while.
+> Suggested improvements:
+> - Use regmap to standardize data transfers.
+> - Add devicetree documentation.
+> - Check/change if attributes can use standard ABI and document those that are specific.
 
-Hi Gustavo,
-
-Please reply to this thread with a suitable fixes tag.
-
-Thanks,
+This one is an interesting part - I have one somewhere from trying to help
+on the previous go at cleaning it up.  One issue is that I couldn't manage
+to get a stable SPI connection patched onto the dev board.  It kind of
+worked if I used a long cable and did a rain dance, but not enough to really
+test it.
 
 Jonathan
-
-
-> ---
->  drivers/iio/imu/bmi270/bmi270_core.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/imu/bmi270/bmi270_core.c b/drivers/iio/imu/bmi270/bmi270_core.c
-> index a86be5af5ccb1f010f2282ee31c47f284c1bcc86..2e4469f30d538ca3e9eb9ef8bbc6eaa8b6a144b8 100644
-> --- a/drivers/iio/imu/bmi270/bmi270_core.c
-> +++ b/drivers/iio/imu/bmi270/bmi270_core.c
-> @@ -918,8 +918,7 @@ static int bmi270_configure_imu(struct bmi270_data *data)
->  			      FIELD_PREP(BMI270_ACC_CONF_ODR_MSK,
->  					 BMI270_ACC_CONF_ODR_100HZ) |
->  			      FIELD_PREP(BMI270_ACC_CONF_BWP_MSK,
-> -					 BMI270_ACC_CONF_BWP_NORMAL_MODE) |
-> -			      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-> +					 BMI270_ACC_CONF_BWP_NORMAL_MODE));
->  	if (ret)
->  		return dev_err_probe(dev, ret, "Failed to configure accelerometer");
->  
-> @@ -927,8 +926,7 @@ static int bmi270_configure_imu(struct bmi270_data *data)
->  			      FIELD_PREP(BMI270_GYR_CONF_ODR_MSK,
->  					 BMI270_GYR_CONF_ODR_200HZ) |
->  			      FIELD_PREP(BMI270_GYR_CONF_BWP_MSK,
-> -					 BMI270_GYR_CONF_BWP_NORMAL_MODE) |
-> -			      BMI270_PWR_CONF_ADV_PWR_SAVE_MSK);
-> +					 BMI270_GYR_CONF_BWP_NORMAL_MODE));
->  	if (ret)
->  		return dev_err_probe(dev, ret, "Failed to configure gyroscope");
->  
-> 
-> ---
-> base-commit: 8cca9edca867350e5f8dc65b71e7a6ef4157981e
-> change-id: 20250304-bmi270-odr-fix-620e7f8daa7a
-> 
-> Best regards,
-
 

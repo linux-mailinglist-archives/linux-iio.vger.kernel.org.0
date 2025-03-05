@@ -1,57 +1,55 @@
-Return-Path: <linux-iio+bounces-16414-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16415-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A736DA4FF06
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 13:53:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EF1A4FF15
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 13:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6903E3AD010
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 12:53:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 823017A6D2B
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 12:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5194E245011;
-	Wed,  5 Mar 2025 12:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614F9245029;
+	Wed,  5 Mar 2025 12:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DasqBcYz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NQDM+46I"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 086B51FCF6D;
-	Wed,  5 Mar 2025 12:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8AF1EDA26;
+	Wed,  5 Mar 2025 12:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741179216; cv=none; b=SQkL6IW3fHO90clJ3zXX77zhwRIuDx+5wwMkRCwT7ySZd0fl0p64yZLQ5cPhihOrlihxPfhnaV+1KhQb6FbQCFXClAkHxB9TIyjByhqkqo0icLWLq7lJ3hcI4AJnFXqpJDsvRmdwJBnPDrQjEIGAmcpqH72ePBG+NDhxHFex5Es=
+	t=1741179383; cv=none; b=lBsNN58kBBsYnWwO9LI/uAiNHUHAoofEBG/ru5bN3Ok+HTwBed/vKCTKRWOtPftun1DgnVw4dMb8m+tv4wLsIvkV5syIatPhbebqrkRB2J9p2WeXeCHNpktfkA9QgFiH9ctJjc6pcIjU8c9W6f+BL28v5Afr6vjjvJsMqRAOLq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741179216; c=relaxed/simple;
-	bh=fKa8NCmKVSUhAM+Bn1+AWNVfrf1xS55tuW0rpw0edRc=;
+	s=arc-20240116; t=1741179383; c=relaxed/simple;
+	bh=qc1K/kIkRfZuvwIsAOsONSpdl4JDXrZ3Wf6+6uyvkFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gLwDySn3nFF4+FdfIw/Ojky+wyhWUXMORqu8+h9v0FrwYOcLzTM2zj+SJ2wbr6RFgIdcUBVFpwaeUWbJjskYikM439+Fk/bA/HGOXqgNPwNPWzEInGlpfaedCpKZSBUMYFF0PSI68D95T+ouk+nHzF0PhqUfWOlhx4iTkpv+L1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DasqBcYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B15C4CEE2;
-	Wed,  5 Mar 2025 12:53:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y0QczLbO8Zzydmgx9xnW/+26Jf/R+uzr+dhjN05y6MMFvNlaD1sym96Z3Fw5pfpeq53BZ4+l9/mzth8t1vB/wHXNB2yD69GHnld5lxrAyCFRFUniyd9iP8kYZJYeKTgN/29YBoCZXgqnGWPnkzPEIHUDuDu1iyL0Y410XFJcFzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NQDM+46I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76EAC4CEE2;
+	Wed,  5 Mar 2025 12:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741179214;
-	bh=fKa8NCmKVSUhAM+Bn1+AWNVfrf1xS55tuW0rpw0edRc=;
+	s=k20201202; t=1741179382;
+	bh=qc1K/kIkRfZuvwIsAOsONSpdl4JDXrZ3Wf6+6uyvkFs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DasqBcYz89gn78pbEMAs4btgCMFbKxf8SALRyNGXHP+BVqvpmgXJBhKvgUxm8qDq5
-	 HrK9qD/SgT/LLxqpnk7cAOJa8MFwbG3+J/WT1lxSjaX6I8qsDWunE0fZrM/O9MM7lY
-	 LZwHBLUgkXncH3bnyN1vjFNt7O799Neu3uZQevA3j8lrrHJdYla9G62zGAVwc3vXWF
-	 S6EX+9Ivlg9heY8tJDvyVvudh37cJBEKhe3vV7HpKnbeUIom/VCyARSZ1v3Bu61Zid
-	 xpCQo704IgvfUwki5VOUPMzKaSMDQZ3tb0UCMbF7lwNUnBQNhHwDmZK2DgRjk3WBo3
-	 pRvnwcePrzXwQ==
-Date: Wed, 5 Mar 2025 12:53:22 +0000
+	b=NQDM+46I/jHwoZwUfheBotBKs8XkqR0ggvH9aYun6dbBltHA22JpEcc3sT6F/qNtk
+	 Qv6eugZoNWmEqMbw9H+2hMUmlnxSbkJkRJ8JdiZ9cbf4kBKrjz6prB6hiloT3JRn6a
+	 xXOKXh68BUbJXfuq6BKPphFJlVqqPcxqM3wwSd00VFkf+RFsdkA3hl3yiStiMgOOx7
+	 hbXwbXMGykEfVWWyN2n1KZaZcvr7FSUny2r8JTjzVqrvR9gJFFisgMd6rZfwuHtUkV
+	 tNXtrn+n7HEyjp1i9d02e/Hn9eKvRKrNK2GZF/Gj7PsreV/XvD4EDQbx1mKjLvU5ws
+	 nrcNSehec1/Zg==
+Date: Wed, 5 Mar 2025 12:56:12 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Esteban Blanc <eblanc@baylibre.com>,
- lkp@intel.com, oe-kbuild-all@lists.linux.dev, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org
-Subject: Re: [linux-next:master 3206/7719] drivers/iio/adc/ad4030.c:378
- ad4030_get_chan_scale() error: 'scan_type' dereferencing possible ERR_PTR()
-Message-ID: <20250305125322.4c753886@jic23-huawei>
-In-Reply-To: <03ab29ed-f96f-467e-b5bd-4ccfea780191@stanley.mountain>
-References: <03ab29ed-f96f-467e-b5bd-4ccfea780191@stanley.mountain>
+To: Jorge Marques <jorge.marques@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: Mark iio_dev as const in getter methods
+Message-ID: <20250305125612.28ac7bc9@jic23-huawei>
+In-Reply-To: <20250303-b4-iio-dev-const-v1-1-c2d9d5fe5ac1@analog.com>
+References: <20250303-b4-iio-dev-const-v1-1-c2d9d5fe5ac1@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,68 +60,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 4 Mar 2025 09:22:43 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Mon, 3 Mar 2025 15:46:25 +0100
+Jorge Marques <jorge.marques@analog.com> wrote:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> head:   cd3215bbcb9d4321def93fea6cfad4d5b42b9d1d
-> commit: 949abd1ca5a4342d9fb8c774035222e65dd1cfe4 [3206/7719] iio: adc: ad4030: add averaging support
-> config: openrisc-randconfig-r071-20250304 (https://download.01.org/0day-ci/archive/20250304/202503040954.n6MhjSsV-lkp@intel.com/config)
-> compiler: or1k-linux-gcc (GCC) 14.2.0
+> get_current_scan_type read-only method allows to support multiple
+> scan types per channel, which may also depend on a buffer enabled state.
+> Mark iio_dev as const in iio_device_id, iio_device_get_current_mode,
+> iio_buffer_enabled read-only methods so they can be used from other
+> read-only methods.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202503040954.n6MhjSsV-lkp@intel.com/
-> 
-> smatch warnings:
-> drivers/iio/adc/ad4030.c:378 ad4030_get_chan_scale() error: 'scan_type' dereferencing possible ERR_PTR()
-> 
-> vim +/scan_type +378 drivers/iio/adc/ad4030.c
-> 
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  366  static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  367  				 struct iio_chan_spec const *chan,
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  368  				 int *val,
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  369  				 int *val2)
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  370  {
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  371  	struct ad4030_state *st = iio_priv(indio_dev);
-> 949abd1ca5a4342 Esteban Blanc 2025-02-14  372  	const struct iio_scan_type *scan_type;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  373  
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  374  	if (chan->differential) {
-> 949abd1ca5a4342 Esteban Blanc 2025-02-14  375  		scan_type = iio_get_current_scan_type(indio_dev,
-> 949abd1ca5a4342 Esteban Blanc 2025-02-14  376  						      st->chip->channels);
-> 
-> 
-> Do we need an if (IS_ERR(scan_type)) return;?
-No but it is a bit of chase to establish why not so I think it would be sensible from
-the point of view of resilience and readability to add that check.
+> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
 
-That function can fail with an ERR_PTR() if either the callback it uses returns an error
-(the one in this driver never does) or the value is out of range (I assume with only 2 values
-we manage to avoid that too though I didn't actually check).
+Hi Jorge,
 
-It's not a high performance path to read this so the check would be a good addition but
-I'm not going to rush in the change.  Esteban, would you mind spinning a patch to add
-the check if you agree with the reasoning?
+I'm not against this, but I would like to see this patch as part of
+a series that uses it from a read-only method.
 
-+CC linux-iio for wider visibility.
+Until then this looks like noise unless there is other reasoning.
 
 Thanks,
 
 Jonathan
-
-> 
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  377  		*val = (st->vref_uv * 2) / MILLI;
-> 949abd1ca5a4342 Esteban Blanc 2025-02-14 @378  		*val2 = scan_type->realbits;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  379  		return IIO_VAL_FRACTIONAL_LOG2;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  380  	}
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  381  
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  382  	*val = st->vref_uv / MILLI;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  383  	*val2 = chan->scan_type.realbits;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  384  	return IIO_VAL_FRACTIONAL_LOG2;
-> 0cb8b324852f3e3 Esteban Blanc 2025-02-14  385  }
-> 
-
 
 

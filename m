@@ -1,57 +1,63 @@
-Return-Path: <linux-iio+bounces-16425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799BAA501E3
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB47A5026D
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ACCA1898BB0
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:24:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D401887603
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A8C1624D2;
-	Wed,  5 Mar 2025 14:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE4A24EF61;
+	Wed,  5 Mar 2025 14:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lz4JNaPJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o8paCwND"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7443B24C089;
-	Wed,  5 Mar 2025 14:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0A224BC17;
+	Wed,  5 Mar 2025 14:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741184650; cv=none; b=PcbwQ4mZ+FXnjAXurFgKfdPPkSu4+dMedgKSQb6b7qPUVXTvGen4mbjh2X8RRNJjY9dc7Ji239+/orXO38DwIYXNEx5vX8Y2I+1wOfiBWj2nSrFHIlKy/fxjYXIaDvfG3oJeYphy8EX8JhUugrOX8IJssW2ViuyiDaNFrm0PAXI=
+	t=1741185521; cv=none; b=AWsTIwxlaIkITn0iX09s7kc99SS5LR8Do1xVxRCYVD5vGBRg2f8rLfWjBt1PC42U9MytMRRFrAyWYCBtjktbUt4GcfYsRSRqZgMYOI7nCCajJ1KUeVP4//vHUR9XwRjsrQg1ijVRZAAuzkwk6JtAv82NhG/8xPr+QhfVfULDePI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741184650; c=relaxed/simple;
-	bh=qjIFghAqzxSp38ILvzrPxKS9tuDCzOwCSDS2Csdt7wI=;
+	s=arc-20240116; t=1741185521; c=relaxed/simple;
+	bh=4TB5DOPQd21hKHuqCzgn5hFKWa7l8WTPFGMMoIXKVUE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=enAhVSQ1PLkOO05iqa3Raj2ARFztUXngqizRAVrFiu6Df5pq1Qtt7Y5kZcVO/QiPpRJnNlBhM0gBgqGY7HO3D3vA09EpOvPFJxD1rZ9Uh5j8tL0GJ/gNoT8GzVyMG1+Jd7UwEjlvGuEFIFUSBxGezqVmcTMDnj0+3c4tNgwFNv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lz4JNaPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2496FC4CED1;
-	Wed,  5 Mar 2025 14:24:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dZ4Y7qc+6lD2Kbcu8nxqfVys5aBcM9MWQpkInJe65bLxz7PJoC1plcyjhs4ggcfZJJnClsQXDW9lmmljph22+pmjkxRwmlTIp7FG4p5Y0VKCPUNXG7QlfqQA7aXRIz6byhWubxFe16sf9rYMwzn4zmgl57+nVjFkOCJ5kB3RlKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o8paCwND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3645EC4CED1;
+	Wed,  5 Mar 2025 14:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741184649;
-	bh=qjIFghAqzxSp38ILvzrPxKS9tuDCzOwCSDS2Csdt7wI=;
+	s=k20201202; t=1741185520;
+	bh=4TB5DOPQd21hKHuqCzgn5hFKWa7l8WTPFGMMoIXKVUE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Lz4JNaPJkppbPkN8SgD6IyMXsgyVB1EjCyxqwpgKh5rFtWv+ek95I5nQFyMTCelPT
-	 2fws/6oRqsrkzCSBsq6HhdDJeBO2qQi1BHBuh7KOJCWU+43edpWBhc+Lm1UWrLJ1Di
-	 Po/4UOldqF5cxqE8pogFIFsawg806zjjNqSKCJRrSappM/JzXRXz3kEzD2fPRbyCPh
-	 s+oT2XIRSkbnLwlBS6IRvMrv/By8xEHaaen8oycddqSFaiYLKCfz5wB+rUJUTS1dXu
-	 PDg8TvWMSRjJjUWFxDps5uUXP7xC1PURzRAXRCNYi4rh0e5dUGJAD3of6kmeIPqucO
-	 UYWJbU2I1UQ7Q==
-Date: Wed, 5 Mar 2025 14:23:58 +0000
+	b=o8paCwND1OXZaThX0PBLZWfCWlsxJ85F5H8VUjHQrn9/EBMgPgPJQEDjZ21qk5qTw
+	 OPPlKAEpsUSpBj5gMZ0xgHJ8IGSct0+CTaTYtJRUoUQ1vAjsnpx0QmkszxcTkCQK1f
+	 EnOzHP8+FM9qrjEJ8znAPwUg1mgVaUQo6oWRXHpuHlnLTIAKZqqK6UtHfPM7NqzI8/
+	 /y0k9aiJH+0XHNmZpCESikQdr7fQ4Bej3LtO47+8RIDIbQM02S90xuv6n3G9wD6jWR
+	 mrpLy/4PvwNuBgtTlUV/gSleToWNNn/w2gFGrXeNrd5hh+eYJ5HZJO3K9NL9XwtX0e
+	 JmFDe47NMYz1Q==
+Date: Wed, 5 Mar 2025 14:38:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- antoniu.miclaus@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com
-Subject: Re: [PATCH v2] iio: filter: admv8818: fix range calculation
-Message-ID: <20250305142358.6c916e7c@jic23-huawei>
-In-Reply-To: <Z8hNdR21h7b7V8Kx@65YTFL3.secure.tethers.com>
-References: <Z7crV0DV1Fq7wE1Z@65YTFL3.secure.tethers.com>
-	<20250304233411.3fac7c69@jic23-huawei>
-	<Z8hNdR21h7b7V8Kx@65YTFL3.secure.tethers.com>
+To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Cc: <lee@kernel.org>, <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
+ <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+ <wbg@kernel.org>, <daniel.lezcano@linaro.org>, <tglx@linutronix.de>,
+ <catalin.marinas@arm.com>, <will@kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+ <olivier.moysan@foss.st.com>
+Subject: Re: [PATCH 3/8] iio: trigger: stm32-lptimer: add support for
+ stm32mp25
+Message-ID: <20250305143824.138a2605@jic23-huawei>
+In-Reply-To: <20250224180150.3689638-4-fabrice.gasnier@foss.st.com>
+References: <20250224180150.3689638-1-fabrice.gasnier@foss.st.com>
+	<20250224180150.3689638-4-fabrice.gasnier@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,49 +68,163 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 5 Mar 2025 08:11:17 -0500
-Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
+On Mon, 24 Feb 2025 19:01:45 +0100
+Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 
-> On Tue, Mar 04, 2025 at 11:34:11PM +0000, Jonathan Cameron wrote:
-> > On Thu, 20 Feb 2025 08:17:11 -0500
-> > Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
-> >   
-> > > Corrects the upper range of LPF Band 4 from 18.5 GHz to 18.85 GHz per
-> > > the ADMV8818 datasheet
-> > >   
-> > Hi Sam,
-> > 
-> > Just a trivial process thing.  If you are sending updated code
-> > and there isn't an obvious reason why when someone looks at the
-> > old patch set (e.g. no reviews asking for changes etc) please
-> > reply to that.
-> > 
-> > At times where reviewers (such as me on this occasion) are running
-> > way behind they might look at wrong version otherwise.
-> > 
-> > Jonathan  
+> From: Olivier Moysan <olivier.moysan@foss.st.com>
 > 
-> Hi Jonathan,
+> Add support for STM32MP25 SoC. Use newly introduced compatible to handle
+> this new HW variant. Add new trigger definitions that can be used by the
+> stm32 analog-to-digital converter. Use compatible data to identify them.
 > 
-> Just to clarify, if I update the patches in, for example v2, then I should
-> reply to the v2 email with the new patch set?
-> 
-> That makes sense... it looks like I can use: "--in-reply-to=<Message-id>" with
-> git send-email.
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-No, not that!  That needs to nested mess in complex threads.
-
-A simple reply from an email client to say that you are revisting for
-'x' reason is fine and that you either have or are about to post v3.
-
-Thanks,
+Hi. I'm not really following why you can't use devm calls for the
+trigger probe path and hence why you need the explicit remove.
+Feels like a lot of infrastructure and I can't see why we need it.
 
 Jonathan
 
-> 
-> Sorry for any confusion this may have caused.
-> 
-> Thanks,
-> -Sam
+
+> @@ -54,25 +82,49 @@ bool is_stm32_lptim_trigger(struct iio_trigger *trig)
+>  }
+>  EXPORT_SYMBOL(is_stm32_lptim_trigger);
+>  
+> -static int stm32_lptim_setup_trig(struct stm32_lptim_trigger *priv)
+> +static void stm32_lptim_unregister_triggers(struct stm32_lptim_trigger *priv)
+>  {
+> -	struct iio_trigger *trig;
+> +	struct iio_trigger *tr;
+>  
+> -	trig = devm_iio_trigger_alloc(priv->dev, "%s", priv->trg);
+> -	if  (!trig)
+> -		return -ENOMEM;
+> +	list_for_each_entry(tr, &priv->tr_list, alloc_list)
+> +		iio_trigger_unregister(tr);
+> +}
+> +
+> +static int stm32_lptim_register_triggers(struct stm32_lptim_trigger *priv)
+> +{
+> +	const char * const *cur = priv->triggers;
+> +	int ret;
+>  
+> -	trig->dev.parent = priv->dev->parent;
+> -	trig->ops = &stm32_lptim_trigger_ops;
+> -	iio_trigger_set_drvdata(trig, priv);
+> +	INIT_LIST_HEAD(&priv->tr_list);
+>  
+> -	return devm_iio_trigger_register(priv->dev, trig);
+> +	while (cur && *cur) {
+> +		struct iio_trigger *trig;
+> +
+> +		trig = devm_iio_trigger_alloc(priv->dev, "%s", *cur);
+> +		if  (!trig)
+> +			return -ENOMEM;
+> +
+> +		trig->dev.parent = priv->dev->parent;
+> +		trig->ops = &stm32_lptim_trigger_ops;
+> +		iio_trigger_set_drvdata(trig, priv);
+> +
+> +		ret = iio_trigger_register(trig);
+
+I'm not really following why you can't use devm_iio_trigger_register() here
+and avoid your own tracking with the list below.
+
+
+> +		if (ret)
+> +			return ret;
+> +
+> +		list_add_tail(&trig->alloc_list, &priv->tr_list);
+> +		cur++;
+> +	}
+> +
+> +	return 0;
+>  }
+>  
+>  static int stm32_lptim_trigger_probe(struct platform_device *pdev)
+>  {
+>  	struct stm32_lptim_trigger *priv;
+> +	struct stm32_lptim_cfg const *lptim_cfg;
+>  	u32 index;
+> +	int ret;
+>  
+>  	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+>  	if (!priv)
+> @@ -81,23 +133,42 @@ static int stm32_lptim_trigger_probe(struct platform_device *pdev)
+>  	if (device_property_read_u32(&pdev->dev, "reg", &index))
+>  		return -EINVAL;
+>  
+> -	if (index >= ARRAY_SIZE(stm32_lptim_triggers))
+> +	lptim_cfg = device_get_match_data(&pdev->dev);
+> +
+> +	if (index >= lptim_cfg->nb_triggers)
+>  		return -EINVAL;
+>  
+>  	priv->dev = &pdev->dev;
+> -	priv->trg = stm32_lptim_triggers[index];
+> +	priv->triggers = lptim_cfg->triggers[index];
+> +
+> +	ret = stm32_lptim_register_triggers(priv);
+> +	if (ret) {
+> +		stm32_lptim_unregister_triggers(priv);
+> +		return ret;
+> +	}
+> +
+> +	platform_set_drvdata(pdev, priv);
+> +
+> +	return 0;
+> +}
+> +
+> +static void stm32_lptim_trigger_remove(struct platform_device *pdev)
+> +{
+> +	struct stm32_lptim_trigger *priv = platform_get_drvdata(pdev);
+>  
+> -	return stm32_lptim_setup_trig(priv);
+> +	stm32_lptim_unregister_triggers(priv);
+
+Why not a devm_add_action_or_reset?
+or for that matter a devm_iio_trigger_register() in the first place.
+
+>  }
+>  
+>  static const struct of_device_id stm32_lptim_trig_of_match[] = {
+> -	{ .compatible = "st,stm32-lptimer-trigger", },
+> +	{ .compatible = "st,stm32-lptimer-trigger", .data = (void *)&stm32mp15_lptim_cfg },
+> +	{ .compatible = "st,stm32mp25-lptimer-trigger", .data = (void *)&stm32mp25_lptim_cfg},
+Why cast away a const then pass it to a const void *?
+
+That is I don't think the casts are needed.
+
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(of, stm32_lptim_trig_of_match);
+>  
+>  static struct platform_driver stm32_lptim_trigger_driver = {
+>  	.probe = stm32_lptim_trigger_probe,
+> +	.remove = stm32_lptim_trigger_remove,
+>  	.driver = {
+>  		.name = "stm32-lptimer-trigger",
+>  		.of_match_table = stm32_lptim_trig_of_match,
+> diff --git a/include/linux/iio/timer/stm32-lptim-trigger.h b/include/linux/iio/timer/stm32-lptim-trigger.h
+> index a34dcf6a6001..ce3cf0addb2e 100644
+> --- a/include/linux/iio/timer/stm32-lptim-trigger.h
+> +++ b/include/linux/iio/timer/stm32-lptim-trigger.h
+> @@ -14,6 +14,15 @@
+>  #define LPTIM1_OUT	"lptim1_out"
+>  #define LPTIM2_OUT	"lptim2_out"
+>  #define LPTIM3_OUT	"lptim3_out"
+> +#define LPTIM4_OUT	"lptim4_out"
+> +#define LPTIM5_OUT	"lptim5_out"
+> +
+> +#define LPTIM1_CH1	"lptim1_ch1"
+> +#define LPTIM1_CH2	"lptim1_ch2"
+> +#define LPTIM2_CH1	"lptim2_ch1"
+> +#define LPTIM2_CH2	"lptim2_ch2"
+> +#define LPTIM3_CH1	"lptim3_ch1"
+> +#define LPTIM4_CH1	"lptim4_ch1"
+>  
+>  #if IS_REACHABLE(CONFIG_IIO_STM32_LPTIMER_TRIGGER)
+>  bool is_stm32_lptim_trigger(struct iio_trigger *trig);
 
 

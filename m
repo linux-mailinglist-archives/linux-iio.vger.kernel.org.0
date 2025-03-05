@@ -1,291 +1,337 @@
-Return-Path: <linux-iio+bounces-16423-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16424-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B40BA501A1
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:19:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DB6A501C7
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:24:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08E807A6D4E
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:18:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547B3174633
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8147B15746E;
-	Wed,  5 Mar 2025 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4D024E4B0;
+	Wed,  5 Mar 2025 14:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sh50veTd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HFdDkeg8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAC4C2ED;
-	Wed,  5 Mar 2025 14:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262D1C2ED;
+	Wed,  5 Mar 2025 14:21:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741184333; cv=none; b=GXV+QOEVwX8rAyWrxcDjmNdo8BPwpTBlrqpj7qm5TVMcb7+WiVbgxXdRHYsMWZe6FuVWb8zzpa8WTUxoKZi4gfoEXy2PvQzZfCCHIVOhUmxFXt3otwZtFPdehY1FAKGIUyRTLfqvrF4CBsWaywHygtLu5yBeozwa3SKdMgsSoFo=
+	t=1741184496; cv=none; b=C2LwAdMF0LmChy6EYemKNtJi/1GsOIcm0cxEDmBe2hJcksruUkuIkJRA/Aj8tWtfwv7U1AX3NfSKHJi4V+ikWP9NygZDCHwWQeOoZU/QFC6SoT7PNEQ//68ZnU4iAdMY0WQPTDLBjC5pIGJY0vqTbrx2gMFzY/g5Kepitx2WV08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741184333; c=relaxed/simple;
-	bh=0J92A5LvTsuUoj8S58HAT5l2cuzaDjiqZLtyLWAyTe0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mvVwLFkUNpn17rSq4rzUcU04dmHKY2qRdExeGp14w6yjlpmku4NzyiUpLfkiUadn+ZhTbv4JgnzQ6ChCQOCrPbkgAv8Qici7RrYSTyOmUp2zrpxBs8NvocTpW4vbW61K0mVKzYf37W3v0ba1p1BX05hwKIJNFAbjQwtdpedwtBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sh50veTd; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4394a823036so63108755e9.0;
-        Wed, 05 Mar 2025 06:18:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741184329; x=1741789129; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uVxEKUGPmST9SVCsY1zuL15uHcxYusVnASOLADTY7W0=;
-        b=Sh50veTdbwVEH50375/nXG0ZvMUQ0RzWIyTpp7RJcQheZrRSSHpMBVUftGVS86BHZT
-         eAyPpTziUz+n/ETFwLSKIGK5ntzXrko8MTBg41/qH7B5Gpyst6zX22eWcPbJyM+35/T3
-         ZjD5Xfl2XHYrVROikgHHuanhtZ5VArWIOH9B/HbXLt1tI4MJoC4xdVahpL8OWkQOL1bd
-         kMn1miWeMRWYMsEiZezJFlUcdaWaxJmgVOwnS6BpTg9gJvSog6tVfayLeudeUpF9bPPP
-         5tjRls60oh/+Qr094UrKiabnDTeyQDfI3+ELWSU8+zM9nEYPmqGnBPjYEWf77l+u2OpJ
-         e8gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741184329; x=1741789129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uVxEKUGPmST9SVCsY1zuL15uHcxYusVnASOLADTY7W0=;
-        b=doGm99E360x3SvhumYMdFX9JyjPM3qCt2laADpTXL9hn9Mwku3nS4MB2PAKtcOm1/5
-         N6Ying4ZHfNK0SCVrnGNHTdIeFRRKY/bXYNjjQNyOkq7cjXGWqfzWqOtDTo9DbDc3wsp
-         kLE8DyzKjTdDtxvD8rs23e0Oow/YAUstKhqYXdqQMOUgvs7dD/Wvx5xxfW3ZsqTeQXXp
-         EIcy0SxOvWfVHWcAQTQt8YqXUVWPxVDFABusAVl3WPdChb21OuJ/JAe5+iPRO1JZedF+
-         ZxTJ0ZvrlmbMGVJEotRTU0F9k3RRYeN9Kz/n0r9ZG7837cWuvoEN5ATZYAqZj0kMsEEj
-         gFUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUbtm5lnTVnsAAf1WzMm27GD9sx/Eh7vxLjQQatL1I7pd9bsdrJAHLALVnGiKfsyJZMo6VtFhpWH0SF+qE=@vger.kernel.org, AJvYcCVe4+Kxj1vESgkhoJA7vZ6y77l8mR27iR/Jy/FBZ9KMHjepwXwmpP8/t5tWGWx7cp9bLfXdU1/9mWjw7gbF@vger.kernel.org, AJvYcCWQnQtT3WkO2HZxEXirCE8eA4vh0ldcSH/74HuY+E4oyUUSD0qke7kX+SzzBQz/5BmRl7nr2vMAHH3S@vger.kernel.org, AJvYcCWRM2vOUkbJqe+HevfMYqLlqvaldxTSCcku7TXlg0CbhLNCd/YOSGmDq+NB5mt8S6st3q0EG+CtcQzl@vger.kernel.org, AJvYcCX5gEjJgEwK18u+iKmPiyxud4BjNEgvKtxb1iXg7ATBPzH6e6OA1kvYqUY1MpF4D5o7XgBfc1Xpz/nN9g==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yys+tHfcUM+RTFV173dwROAz/z+ccelLUSAedGYM8g3Y7L834wJ
-	bLyH+mQvWwG/vNZBZLrCXI26A37Mz4Tt+kq+Mc9ubQ+BD0Scw/xG1J+lA3wgX+lYUwWLXtcPAi0
-	ivFpRzu6/n4Z8SPjXwptLf+8uuqw=
-X-Gm-Gg: ASbGncsrhrgp5fdMcgB2GiBt+1yQkwTwodzEYVvFJB+2fGyaMocERjo71Pxxr9dG0WO
-	bMIXa9rGfV7KjVdfjjTWuCtWh5j5PkiKE7b91Y84QTDAe43HxD1H4Q6HOkrzePYo8gTZJa7qtY1
-	Ox6hFH3/6LVRWpu9ucm5CjAW9rNnI=
-X-Google-Smtp-Source: AGHT+IGtt5kKKBiJjBbm2DU1GbYl+vKb+nT4lkgnAmQUxI2KsqJnS5S/wjYJqyjYIYU15T1CQievr7HPF4XKPY8Qlu8=
-X-Received: by 2002:a5d:5986:0:b0:38d:d664:67d8 with SMTP id
- ffacd0b85a97d-3911f7200cbmr2836278f8f.11.1741184329266; Wed, 05 Mar 2025
- 06:18:49 -0800 (PST)
+	s=arc-20240116; t=1741184496; c=relaxed/simple;
+	bh=jvmchGdxVGZyNaODpuI7O279K1I8sOZ+LNSQ2rbqPXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DRP8Zg50Sol8i+i+qxzXdu3KdnuzKcUg32bUr0xvJSqRUq/J/PYi3q/mZsx1JjgFvBAmxc0UT4rgqc+GGlF5BExvvt+puJJqb9QFwSy5pfi9xmbsmb8VoASE84Rd/qdiVWeNX18udC/IxpRoeL4reUGoqG2TVLdv3UlwdhNjgEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HFdDkeg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93567C4CED1;
+	Wed,  5 Mar 2025 14:21:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741184494;
+	bh=jvmchGdxVGZyNaODpuI7O279K1I8sOZ+LNSQ2rbqPXI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HFdDkeg8z5rr3Fue3DZgzCahgYCn6+S26dFM/oXCROCNHPq/q4QHiu/STez0WcVGD
+	 EZxO1pqBuJTu7AXJuUGu3Eo130kDAidx0qZws1ccSkINkdh7dQ30Bqy3VW3CU4xv6Z
+	 0tE2GFISgDSCEUyzMJgYmvea7fJEu1mxtk+9JNNkoGT79M2mHrru0fvjx6eWjUg1Hp
+	 nhjFiap1xObsb5SVhb87A6p5aZy9k0S8MqFxjPUUa0thQuRTOKaowGBLtim179vGFH
+	 hyZUTk0t+JyF9jlNzl1RNh70anXLVTto8XukqbucLkHMtsBgYkq7ONY/kpgKQLJeHe
+	 1X7wkY1bDnu1A==
+Date: Wed, 5 Mar 2025 14:21:22 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Claudiu <claudiu.beznea@tuxon.dev>
+Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
+ linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Claudiu Beznea
+ <claudiu.beznea.uj@bp.renesas.com>, gregkh@linuxfoundation.org, Dmitry
+ Torokhov <dmitry.torokhov@gmail.com>
+Subject: Re: [PATCH v3 1/2] iio: adc: rzg2l_adc: Open a devres group
+Message-ID: <20250305142122.626336c3@jic23-huawei>
+In-Reply-To: <20250224120608.1769039-2-claudiu.beznea.uj@bp.renesas.com>
+References: <20250224120608.1769039-1-claudiu.beznea.uj@bp.renesas.com>
+	<20250224120608.1769039-2-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250224114815.146053-1-clamor95@gmail.com> <20250224114815.146053-3-clamor95@gmail.com>
- <20250228085927.GM824852@google.com> <CAPVz0n0jaR=UM7WbBs3zM-cZzuaPVWBjf4Q7i82hvxtXg2oCzQ@mail.gmail.com>
- <20250305134455.2843f603@jic23-huawei>
-In-Reply-To: <20250305134455.2843f603@jic23-huawei>
-From: Svyatoslav Ryhel <clamor95@gmail.com>
-Date: Wed, 5 Mar 2025 16:18:38 +0200
-X-Gm-Features: AQ5f1JpXA6J5TL49b1DAVq6n5wnuuTukD3GyYGoSYEpxJIiUmzK9BkiZvUPOFTs
-Message-ID: <CAPVz0n3Qt00my1ejoyEgxTRi-mQszHybwhPq70eO=94oxMfECQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] mfd: lm3533: convert to use OF
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lee Jones <lee@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>, Daniel Thompson <danielt@kernel.org>, 
-	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-leds@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-=D1=81=D1=80, 5 =D0=B1=D0=B5=D1=80. 2025=E2=80=AF=D1=80. =D0=BE 15:45 Jonat=
-han Cameron <jic23@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
->
-> On Fri, 28 Feb 2025 11:30:51 +0200
-> Svyatoslav Ryhel <clamor95@gmail.com> wrote:
->
-> > =D0=BF=D1=82, 28 =D0=BB=D1=8E=D1=82. 2025=E2=80=AF=D1=80. =D0=BE 10:59 =
-Lee Jones <lee@kernel.org> =D0=BF=D0=B8=D1=88=D0=B5:
-> > >
-> > > On Mon, 24 Feb 2025, Svyatoslav Ryhel wrote:
-> > >
-> > > > Remove platform data and fully relay on OF and device tree
-> > > > parsing and binding devices.
-> > > >
-> > > > Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-> > > > ---
-> > > >  drivers/iio/light/lm3533-als.c      |  40 ++++---
-> > > >  drivers/leds/leds-lm3533.c          |  46 +++++---
-> > > >  drivers/mfd/lm3533-core.c           | 159 ++++++++----------------=
-----
-> > > >  drivers/video/backlight/lm3533_bl.c |  71 ++++++++++---
-> > > >  include/linux/mfd/lm3533.h          |  35 +-----
-> > > >  5 files changed, 164 insertions(+), 187 deletions(-)
-> > > >
-...
-> > > >       /* ALS input is always high impedance in PWM-mode. */
-> > > > -     if (!pdata->pwm_mode) {
-> > > > -             ret =3D lm3533_als_set_resistor(als, pdata->r_select)=
-;
-> > > > +     if (!als->pwm_mode) {
-> > > > +             ret =3D lm3533_als_set_resistor(als, als->r_select);
-> > >
-> > > You're already passing 'als'.
-> > >
-> > > Just teach lm3533_als_set_resistor that 'r_select' is now contained.
-> > >
-> >
-> > This is not scope of this patchset. I was already accused in too much
-> > changes which make it unreadable. This patchset is dedicated to
-> > swapping platform data to use of the device tree. NOT improving
-> > functions, NOT rewriting arbitrary mechanics. If you feed a need for
-> > this change, then propose a followup. I need from this driver only one
-> > thing, that it could work with device tree. But it seems that it is
-> > better that it just rots in the garbage bin until removed cause no one
-> > cared.
->
-> This is not an unreasonable request as you added r_select to als.
-> Perhaps it belongs in a separate follow up patch.
+On Mon, 24 Feb 2025 14:06:06 +0200
+Claudiu <claudiu.beznea@tuxon.dev> wrote:
 
-I have just moved values used in pdata to private structs of each
-driver. Without changing names or purpose.
+> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+> 
+> On all systems where the rzg2l_adc driver is used, the ADC clocks are part
+> of a PM domain. The code that implements the PM domains support is in
+> drivers/clk/renesas/rzg2l-cpg.c, the functions of interest for this commit
+> being rzg2l_cpg_attach_dev() and rzg2l_cpg_deattach_dev(). The PM
+> domains support is registered with GENPD_FLAG_PM_CLK which, according to
+> the documentation, instructs genpd to use the PM clk framework while
+> powering on/off attached devices.
+> 
+> During probe, the ADC device is attached to the PM domain
+> controlling the ADC clocks. Similarly, during removal, the ADC device is
+> detached from the PM domain.
+> 
+> The detachment call stack is as follows:
+> 
+> device_driver_detach() ->
+>   device_release_driver_internal() ->
+>     __device_release_driver() ->
+>       device_remove() ->
+>         platform_remove() ->
+>           dev_pm_domain_detach()
+> 
+> During driver unbind, after the ADC device is detached from its PM domain,
+> the device_unbind_cleanup() function is called, which subsequently invokes
+> devres_release_all(). This function handles devres resource cleanup.
+> 
+> If runtime PM is enabled via devm_pm_runtime_enable(), the cleanup process
+> triggers the action or reset function for disabling runtime PM. This
+> function is pm_runtime_disable_action(), which leads to the following call
+> stack of interest when called:
+> 
+> pm_runtime_disable_action() ->
+>   pm_runtime_dont_use_autosuspend() ->
+>     __pm_runtime_use_autosuspend() ->
+>       update_autosuspend() ->
+>         rpm_idle()
+> 
+> The rpm_idle() function attempts to runtime resume the ADC device. However,
+> at the point it is called, the ADC device is no longer part of the PM
+> domain (which manages the ADC clocks). Since the rzg2l_adc runtime PM
+> APIs directly modifies hardware registers, the
+> rzg2l_adc_pm_runtime_resume() function is invoked without the ADC clocks
+> being enabled. This is because the PM domain no longer resumes along with
+> the ADC device. As a result, this leads to system aborts.
+> 
+> Open a devres group in the driver probe and release it in the driver
+> remove. This ensures the runtime PM is disabled (though the devres group)
+> after the rzg2l_adc_remove() finishes its execution avoiding the described
+> scenario.
+> 
+> Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
+> Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-> However
-> it is worth remembering the motivation here is that you want get
-> this code upstream, the maintainers don't have that motivation.
++CC Greg KH given the in driver suggestion was his and I think
+this discussion is not necessarily over!  Also Dmitry for his info.
 
-This driver is already upstream and it is useless and incompatible
-with majority of supported devices. Maintainers should encourage those
-who try to help and instead we have what? A total discouragement. Well
-defined path into nowhere.
+> ---
+> 
+> Changes in v3:
+> - open a devres group in probe and release it in remove; the failure
+>   path of probe() was also updated to close the devres group
+> - dropped Ulf's Rb tag as the patch is different now
+> - updated the patch description to match the new approach
+> 
+> Note: a generic approach was proposed in [1] to have this in the platform
+> bus itself but wasn't seen acceptable.
+> 
+> [1] https://lore.kernel.org/all/20250215130849.227812-1-claudiu.beznea.uj@bp.renesas.com/
+> 
 
->
-> Greg KH has given various talks on the different motivations in the
-> past. It maybe worth a watch.
->
->
-> >
-> > > >               if (ret)
-> > > >                       return ret;
-> > > >       }
-> > > > @@ -828,22 +833,16 @@ static const struct iio_info lm3533_als_info =
-=3D {
-> > > >
-> > > >  static int lm3533_als_probe(struct platform_device *pdev)
-> > > >  {
-> > > > -     const struct lm3533_als_platform_data *pdata;
-> > > >       struct lm3533 *lm3533;
-> > > >       struct lm3533_als *als;
-> > > >       struct iio_dev *indio_dev;
-> > > > +     u32 val;
-> > >
-> > > Value of what, potatoes?
-> > >
-> >
-> > Oranges.
->
-> A well named variable would avoid need for any discussion of
-> what it is the value of.
->
+I missed this entirely sorry!  Travelling and far too much unread email
+at the moment :(
 
-This is temporary placeholder used to get values from the tree and
-then pass it driver struct.
+Anyhow, I don't 'love' this solution but it can be made neater and perhaps
+there is a mid way point using a new generic helper that will do the job.
+> Changes in v2:
+> - collected Ulf's tag
+> - add a comment above pm_runtime_enable() explaining the reason
+>   it shouldn't be converted to devres
+> - drop devres calls that request IRQ and register IIO device
+>   as proposed in the review process: Ulf, I still kept you Rb
+>   tag; please let me know otherwise
+> 
+>  drivers/iio/adc/rzg2l_adc.c | 88 ++++++++++++++++++++++++++++---------
+>  1 file changed, 67 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
+> index 883c167c0670..7db04416e1cf 100644
+> --- a/drivers/iio/adc/rzg2l_adc.c
+> +++ b/drivers/iio/adc/rzg2l_adc.c
+> @@ -85,6 +85,7 @@ struct rzg2l_adc {
+>  	struct reset_control *adrstn;
+>  	const struct rzg2l_adc_data *data;
+>  	const struct rzg2l_adc_hw_params *hw_params;
+> +	void *devres_group_id;
+>  	struct completion completion;
+>  	struct mutex lock;
+>  	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
+> @@ -429,60 +430,88 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+In cases like this easiest path (and cleanest code) is
+to rename probe to __rzg2l_adc_probe() or similar and...
+>  	struct device *dev = &pdev->dev;
+>  	struct iio_dev *indio_dev;
+>  	struct rzg2l_adc *adc;
+> +	void *devres_group_id;
+>  	int ret;
+>  	int irq;
+>  
+> -	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+> -	if (!indio_dev)
+Have this code in an outer wrapper rzg2l_adc_probe()
+> +	/*
+> +	 * Open a devres group to allow using devm_pm_runtime_enable()
+> +	 * w/o interfeering with dev_pm_genpd_detach() in the platform bus
+> +	 * remove. Otherwise, durring repeated unbind/bind operations,
+> +	 * the ADC may be runtime resumed when it is not part of its power
+> +	 * domain, leading to accessing ADC registers without its clocks
+> +	 * being enabled and its PM domain being turned on.
+> +	 */
+> +	devres_group_id = devres_open_group(dev, NULL, GFP_KERNEL);
+> +	if (!devres_group_id)
+>  		return -ENOMEM;
+>  
+That then calls __rzg2l_adc_probe() here and if there is an error
+release the groups.  That's the minimum change I'd suggest here.
 
-> >
-> > > >       int ret;
-> > > >
-> > > >       lm3533 =3D dev_get_drvdata(pdev->dev.parent);
-> > > >       if (!lm3533)
-> > > >               return -EINVAL;
-> > > >
-> > > > -     pdata =3D dev_get_platdata(&pdev->dev);
-> > > > -     if (!pdata) {
-> > > > -             dev_err(&pdev->dev, "no platform data\n");
-> > > > -             return -EINVAL;
-> > > > -     }
-> > > > -
-> > > >       indio_dev =3D devm_iio_device_alloc(&pdev->dev, sizeof(*als))=
-;
-> > > >       if (!indio_dev)
-> > > >               return -ENOMEM;
-> > > > @@ -864,13 +863,21 @@ static int lm3533_als_probe(struct platform_d=
-evice *pdev)
-> > > >
-> > > >       platform_set_drvdata(pdev, indio_dev);
-> > > >
-> > > > +     val =3D 200 * KILO; /* 200kOhm */
-> > >
-> > > Better to #define magic numbers; DEFAULT_{DESCRIPTION}_OHMS
-> > >
-> >
-> > Why? that is not needed.
-> If this variable had a more useful name there would be no need for
-> the comment either.
->
->         val_resitor_ohms =3D 200 * KILLO;
->
-> or similar.
->
+Thinking forwards about what to do if we need to do this a lot.
+Maybe we can provide a platform device specific helper for this case
+that takes the 'actual probe' - here the __rzg2l_adc_probe() as
+a parameter and handles the devres groups stuff.  That would
+probably need a suitable devres_group_id in platform device you had
+in your platform bus code proposal or some more fiddly code
+not stash it in the driver specific structures that with the
+iio_priv() dance in IIO would become IIO specific unless we
+put one in struct iio_dev.  It might also be possible to write
+a complex macro that would create the relevant probe/remove()
+when passed both the internal __probe() and __remove and
+a snippet that accesses ((struct bob *)iio_priv(x))->devres_group_id.
 
-So I have to add a "reasonably" named variable for each property I
-want to get from device tree? Why? It seems to be a bit of overkill,
-no? Maybe I am not aware, have variables stopped being reusable?
+Anyhow that's a job for when we have several instances of this.
 
-> >
-> > > > +     device_property_read_u32(&pdev->dev, "ti,resistor-value-ohm",=
- &val);
-> > > > +
-> > > > +     /* Convert resitance into R_ALS value with 2v / 10uA * R */
-> > >
-> > > Because ...
-> > >
-> >
-> > BACAUSE the device DOES NOT understand human readable values, only 0s
-> > and 1s, hence mOhms must be converted into value lm3533 chip can
-> > understand.
-> A comment that gave the motivation would be much more useful than
-> repeating the maths.
->
-> /* Convert resistance to equivalent register value */
->
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+> +	if (!indio_dev) {
+> +		ret = -ENOMEM;
+> +		goto release_group;
+> +	}
+> +
+>  	adc = iio_priv(indio_dev);
+>  
+> +	adc->devres_group_id = devres_group_id;
 
-ok, this is reasonable.
+With above scheme of a wrapper around original probe, this line would need
+to move to the wrapper.
 
-> >
-> > > > +     als->r_select =3D DIV_ROUND_UP(2 * MICRO, 10 * val);
-> > > > +
-> > > > +     als->pwm_mode =3D device_property_read_bool(&pdev->dev, "ti,p=
-wm-mode");
-> > > > +
-> > > >       if (als->irq) {
-> > > >               ret =3D lm3533_als_setup_irq(als, indio_dev);
-> > > >               if (ret)
-> > > >                       return ret;
-> > > >       }
-> > > >
-> > > > -     ret =3D lm3533_als_setup(als, pdata);
-> > > > +     ret =3D lm3533_als_setup(als);
-> > > >       if (ret)
-> > > >               goto err_free_irq;
-> > > >
-> > > > @@ -907,9 +914,16 @@ static void lm3533_als_remove(struct platform_=
-device *pdev)
-> > > >               free_irq(als->irq, indio_dev);
-> > > >  }
-> > > >
-> > > > +static const struct of_device_id lm3533_als_match_table[] =3D {
-> > > > +     { .compatible =3D "ti,lm3533-als" },
-> > > > +     { }
-> > > > +};
-> > > > +MODULE_DEVICE_TABLE(of, lm3533_als_match_table);
-> > > > +
-> > > >  static struct platform_driver lm3533_als_driver =3D {
-> > > >       .driver =3D {
-> > > >               .name   =3D "lm3533-als",
-> > > > +             .of_match_table =3D lm3533_als_match_table,
-> > > >       },
-> > > >       .probe          =3D lm3533_als_probe,
-> > > >       .remove         =3D lm3533_als_remove,
->
-> Anyhow, I'm short on time so only looking at the IIO related part.
->
-> Jonathan
+>  	adc->hw_params = device_get_match_data(dev);
+> -	if (!adc->hw_params || adc->hw_params->num_channels > RZG2L_ADC_MAX_CHANNELS)
+> -		return -EINVAL;
+> +	if (!adc->hw_params || adc->hw_params->num_channels > RZG2L_ADC_MAX_CHANNELS) {
+> +		ret = -EINVAL;
+> +		goto release_group;
+> +	}
+>  
+>  	ret = rzg2l_adc_parse_properties(pdev, adc);
+>  	if (ret)
+> -		return ret;
+> +		goto release_group;
+>  
+>  	mutex_init(&adc->lock);
+>  
+>  	adc->base = devm_platform_ioremap_resource(pdev, 0);
+> -	if (IS_ERR(adc->base))
+> -		return PTR_ERR(adc->base);
+> +	if (IS_ERR(adc->base)) {
+> +		ret = PTR_ERR(adc->base);
+> 	+		goto release_group;
+> +	}
+>  
+>  	adc->adrstn = devm_reset_control_get_exclusive_deasserted(dev, "adrst-n");
+> -	if (IS_ERR(adc->adrstn))
+> -		return dev_err_probe(dev, PTR_ERR(adc->adrstn),
+> -				     "failed to get/deassert adrst-n\n");
+> +	if (IS_ERR(adc->adrstn)) {
+> +		ret = dev_err_probe(dev, PTR_ERR(adc->adrstn),
+> +				    "failed to get/deassert adrst-n\n");
+> +		goto release_group;
+> +	}
+>  
+>  	adc->presetn = devm_reset_control_get_exclusive_deasserted(dev, "presetn");
+> -	if (IS_ERR(adc->presetn))
+> -		return dev_err_probe(dev, PTR_ERR(adc->presetn),
+> -				     "failed to get/deassert presetn\n");
+> +	if (IS_ERR(adc->presetn)) {
+> +		ret = dev_err_probe(dev, PTR_ERR(adc->presetn),
+> +				    "failed to get/deassert presetn\n");
+> +		goto release_group;
+> +	}
+>  
+>  	pm_runtime_set_autosuspend_delay(dev, 300);
+>  	pm_runtime_use_autosuspend(dev);
+>  	ret = devm_pm_runtime_enable(dev);
+>  	if (ret)
+> -		return ret;
+> +		goto release_group;
+>  
+>  	platform_set_drvdata(pdev, indio_dev);
+>  
+>  	ret = rzg2l_adc_hw_init(dev, adc);
+> -	if (ret)
+> -		return dev_err_probe(&pdev->dev, ret,
+> -				     "failed to initialize ADC HW\n");
+> +	if (ret) {
+> +		ret = dev_err_probe(&pdev->dev, ret,
+> +				    "failed to initialize ADC HW\n");
+> +		goto release_group;
+> +	}
+>  
+>  	irq = platform_get_irq(pdev, 0);
+> -	if (irq < 0)
+> -		return irq;
+> +	if (irq < 0) {
+> +		ret = irq;
+> +		goto release_group;
+> +	}
+>  
+>  	ret = devm_request_irq(dev, irq, rzg2l_adc_isr,
+>  			       0, dev_name(dev), adc);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto release_group;
+>  
+>  	init_completion(&adc->completion);
+>  
+> @@ -492,7 +521,23 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+>  	indio_dev->channels = adc->data->channels;
+>  	indio_dev->num_channels = adc->data->num_channels;
+>  
+> -	return devm_iio_device_register(dev, indio_dev);
+> +	ret = devm_iio_device_register(dev, indio_dev);
+> +	if (ret)
+> +		goto release_group;
+> +
+> +	return 0;
+> +
+> +release_group:
+> +	devres_release_group(dev, devres_group_id);
+> +	return ret;
+> +}
+> +
+> +static void rzg2l_adc_remove(struct platform_device *pdev)
+> +{
+> +	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
+> +	struct rzg2l_adc *adc = iio_priv(indio_dev);
+> +
+> +	devres_release_group(&pdev->dev, adc->devres_group_id);
+>  }
+>  
+>  static const struct rzg2l_adc_hw_params rzg2l_hw_params = {
+> @@ -614,6 +659,7 @@ static const struct dev_pm_ops rzg2l_adc_pm_ops = {
+>  
+>  static struct platform_driver rzg2l_adc_driver = {
+>  	.probe		= rzg2l_adc_probe,
+> +	.remove		= rzg2l_adc_remove,
+>  	.driver		= {
+>  		.name		= DRIVER_NAME,
+>  		.of_match_table = rzg2l_adc_match,
+
 

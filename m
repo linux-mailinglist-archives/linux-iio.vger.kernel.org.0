@@ -1,93 +1,108 @@
-Return-Path: <linux-iio+bounces-16430-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16432-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B226CA502EC
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:58:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26F9A50409
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 16:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 652987A4EE7
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 14:57:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06ED172DAB
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Mar 2025 15:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0872248863;
-	Wed,  5 Mar 2025 14:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CD2250BEA;
+	Wed,  5 Mar 2025 15:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmuMJjje"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kBrtU8dU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0625221F29
-	for <linux-iio@vger.kernel.org>; Wed,  5 Mar 2025 14:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC7F205510;
+	Wed,  5 Mar 2025 15:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741186706; cv=none; b=fxsM08JO+3BllXTc0BhB1cSsmI10V8t0fTXmTfvMO8IVqK425MNnkpArrV7GdzbiMy5U3RwBFneNnnK3hWD/1GWFDyYof+A1QWx3kg+4tthhq3MCRBRJ5Rx53SFjMF5at++Dlso7ptdXpr1rulIiUve6kjfSLabPGReAChs+kys=
+	t=1741190361; cv=none; b=OINRLhR04TpPn90a4/G3Vl5kAFIQ2ns/+edxBC06cqbuugO9yOjRdH1EKUvFnajl1rxQLFMtuCq9H/oDfDkEz6MvYlzJttWTvi62lZeFELB3I/7kczbdF22wTA15P3A4h+ucbwrLjBrDHH56WhTGOedupO2ZMd6K9B880ve2ZCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741186706; c=relaxed/simple;
-	bh=11+2hXWIOCvnwbxDVuBqP0czhfBdeye/7HCep7J7QTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qtBRQwesBMsKxWpKrvnJkWb83JGT1Z7U/wJGGC1kGck7tCtar2b6qx7gIc9Cdu6V2SRzkOLgd6q0j6QcOACyqi+AaLOJCF0jRaKDddZ7NDfq6HqCHtWK+PZLNzGGRCqnzCOTUUX+gQZJHTWEUiQJnlhKzptl2Oo2u12wbirGffA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmuMJjje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F278EC4CED1;
-	Wed,  5 Mar 2025 14:58:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741186706;
-	bh=11+2hXWIOCvnwbxDVuBqP0czhfBdeye/7HCep7J7QTc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OmuMJjjetrj0IjQ9tIBE3MqLKZF0lE3w/6xq/8rh8pq0wmAz4mKjadlRRBRYC9qQy
-	 ZteXg6FnVHIg0vQI+V/dLxMLMN32o1AcECiZTK7KEMjo43pWjgfBj7TuIPSIF4B/Nx
-	 gTcUtmOdq100QFrAYTdsBHfH2G78HV+Bj7XGbtunOQ/T2OabPWXljo0ugoELU6Ur7S
-	 cc922T2vgsFMw5eciA1gg8Fw67xCy3yjPj6jwzdT1TL58dDJR3T3j8S13lYX9Rn9Dx
-	 6gQKVE0oAfj/din17sHoBcGeh5aUMgWYeMEXbk5nIEQkSeZHfikDyanYFKcl4H36vM
-	 J/7b6bQ0UEX2g==
-Date: Wed, 5 Mar 2025 14:58:15 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: Nuno Sa <nuno.sa@analog.com>, Rodrigo Carvalho <rodrigorsdc@gmail.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] staging: iio: accel: adis16240: Drop driver for this
- impact sensor
-Message-ID: <20250305145803.30e1cecf@jic23-huawei>
-In-Reply-To: <20250222152021.1039675-1-jic23@kernel.org>
-References: <20250222152021.1039675-1-jic23@kernel.org>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741190361; c=relaxed/simple;
+	bh=mKXMDFy7W/QItIFVlHkupMeSaaEcMfQ0VqQn/kjbiBI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gq0B/5auy0AtQpGoA9galyl2vkmKt6BYVmkAHlfEcfenSuUbHvojb9/q1uVFWHHofigxCNVr9QJ/3YRnlVxkF+UNvydhR9zEixazqlnCeesmc9dJ0z0DDiLKErt0FhkFWr9dDSeOOaDC3VW1APYObPZwRHE8NVJHW9OxDxy7yoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kBrtU8dU; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2232aead377so139065595ad.0;
+        Wed, 05 Mar 2025 07:59:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741190359; x=1741795159; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oiLVkJoOmKKWhZybYIihEffKcwMlU/S4KSLeOk4bur0=;
+        b=kBrtU8dU8WY1VCD1jekyfhpELpSptTUQkptVAofEA2976L59SHmtDXcceg6WYbT2K9
+         I86AsyF6Bl0T/d4VuFj1pIKWIJGqNwBJLZ5T5JlI+TOWjx90GdkjIFarx0tTaGEVx3jS
+         XkV/xYiy2Y2ik3pet2BvcPiPWgGhLUXNEj/1YY+dk1YmzkAvf789jgEcLta2uhBxKgHa
+         LjS2wKOtEHctjZrmdUqwqeJnVX0QxmXx9dzGKBbbqLjkA5SFCfdCLnONxp+HaFIaQ8ne
+         upIlrOI2gvpA0GOaqwcyK8u4np+li69EWNKVbmDjuo0SOvfAeQHUOWZVXwIzYwRHs+/C
+         g7GA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741190359; x=1741795159;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oiLVkJoOmKKWhZybYIihEffKcwMlU/S4KSLeOk4bur0=;
+        b=OgXb8dTru7KHeKg1ThItTIl+gaypFLIzUniYFIqtglNOARiS/Gw031IAGVH93vlx/0
+         q37vFIrfNGyGpNqsmV5/eBMeJle6wS/Nef43YzJZpsjQcBEGrv0VTbklQYOnmfNvC0WP
+         tLIBc70w1euSPsbrb23A4JOQSR2wylBvY1eckH0mNahcnbjjEd2Znu9pTDmsmJP7EUmP
+         yITtS2dGyFNrZiSiDKm557JFgLilz1KeMhFg7SvDNwxc+tdivf0CjPkVOONeIlWbHXlU
+         msGwVYd0Vr01fDqtQT3P09mvad2Nnim/nRDYimeQMfB703Bjq0zO+8GbbgSVj5m1KpJF
+         Vihg==
+X-Gm-Message-State: AOJu0Ywi1hw0JB08FXWP8JWtwmLhRKwoxZ47yN0Urc4jybot9+Iw+mgw
+	PMV7NDzcJ/lIyNdomlkf9/1ykEJOC2d98nVefuWYim1+r8SGpvGoabV1A40G9RE=
+X-Gm-Gg: ASbGncuKG5bZ5hD+qPHT9dFiIhYNfifVCVl2LRuceSCio3hSujLOspNpbb2jPUtw8Xd
+	1V5Bsmcis3TSuJu6G7DfBqXr5Or7o7dU+mBRZALZnYck0YwZwtTb6BDqtSIRc72EJ0IdnOxViDC
+	YLOSEg/rTqJSYGsIwDjrGuo4zEmPoYapROTgHe8+7Sz0gLT3C4x+Ji2++BHYEoFv+Nd4xgLUgnH
+	RKeNWG4M0Hd79NGjnlwepBSfuOCT4orEllw4vY83MMYqnSO+2G+47TJj0f0aumYWLwqGFHku9BT
+	glu4kl5mijjVlkrBcqyQ3aMcUpht4lFRpTufknpDNVOANepzSGseBOK46Wa/tpWAHqU=
+X-Google-Smtp-Source: AGHT+IE5QI2Fa0yoMUE51s3cn5NK1Suq/GDtTYbEyUTc0cC3esYxqKH57yGIYTktDsZr0iSfMPyYSQ==
+X-Received: by 2002:a17:902:ea10:b0:21b:b3c9:38ff with SMTP id d9443c01a7336-223f1cf49f5mr55675635ad.37.1741190359134;
+        Wed, 05 Mar 2025 07:59:19 -0800 (PST)
+Received: from fedora.am.students.amrita.edu ([175.184.253.10])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501f9d96sm114914245ad.54.2025.03.05.07.59.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 07:59:18 -0800 (PST)
+From: Siddharth Menon <simeddon@gmail.com>
+To: linux-iio@vger.kernel.org,
+	marcelo.schmitt1@gmail.com,
+	gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	lars@metafoo.d,
+	Siddharth Menon <simeddon@gmail.com>
+Subject: [PATCH 0/2] iio: accel: adis16203: cleanup and standardization
+Date: Wed,  5 Mar 2025 20:59:10 +0530
+Message-ID: <20250305155712.49833-2-simeddon@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sat, 22 Feb 2025 15:20:21 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+This series improves the adis16203 driver by using standard unit macros
+and removing an unused spi_set_drvdata() call.
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Whilst an interesting part, no one has done significant work on this
-> driver since 2019.  The recent changes are all as a result of adis library
-> improvements having to incorporate this device.
-> 
-> https://www.analog.com/en/products/adis16240.html now lists this part
-> as obsolete so the chances of anyone working on it are likely to be greatly
-> reduced.
-> 
-> So drop it.  We can always bring it back if anyone does have interest in
-> this device and is willing to invest the time to make it suitable for a
-> staging graduation.  How to handle the hardware triggered short bursts
-> of capture has never been resolved and is a somewhat challenging ABI design
-> problem.
-> 
-> Cc: Nuno Sa <nuno.sa@analog.com>
-> Cc: Rodrigo Carvalho <rodrigorsdc@gmail.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Gone.
+Siddharth Menon (2):
+  iio: accel: adis16203: Use units.h macros for voltage values
+  iio: accel: adis16203: Remove spi_set_drvdata()
 
-By which I mean I applied the patch.
+ drivers/staging/iio/accel/adis16203.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Thanks,
+-- 
+2.48.1
 
-Jonathan
 

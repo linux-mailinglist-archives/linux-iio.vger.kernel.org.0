@@ -1,122 +1,120 @@
-Return-Path: <linux-iio+bounces-16444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6173A53EEA
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 01:10:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB486A53EED
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 01:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC2CD16798B
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 00:10:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 104A93A8725
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 00:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3785764D;
-	Thu,  6 Mar 2025 00:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8890136D;
+	Thu,  6 Mar 2025 00:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ix5LhPvx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PjB/8pEH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BE7367;
-	Thu,  6 Mar 2025 00:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3342A2D;
+	Thu,  6 Mar 2025 00:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741219826; cv=none; b=TPsnBgWvnphYw3r1dCnwCsH9W5ZSBUnpoxvKq+uQSC/PchYcBvWz1YIaekKJpMDDtvnBjz1o9LpoaHhqTA5CMjvRm1iqWpxE9Frdp/xfC5Zw4868TYB/9H8DdwQouPDqlo2v0fSJjl7d8cZ+f0GvVE4Cha29H4KVyhU/Oq4T1iY=
+	t=1741219923; cv=none; b=RDnACRfFjVbcqMHTVMPXZf/oFSUXPr+6uJZnZl3h57T5qCcKUzhRwwcMgx7KGiGDd+v6E2GKkZoGtF9iDvlwcWms9T+iZKcHz6wzHWI6Tm4P2NDrXKDjzRc3ZZ5dgu5tcaitAB1J7nX5U8qdVd1SU5r1BDt4QIrj9CEtxbsJP+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741219826; c=relaxed/simple;
-	bh=OUCGPBlwAoOwgIKTnJRCA59xZPdlnRHgy1PAw989xpc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pcawkwW9GTr2eEI2iOnSNns3QNZFFmBx5NIg1ySj3wSZHIKdbn50W8lqyyV/Zg3nJ/UrU+u/J2yFzSO44JE/5jBgpTMLTRXvtBcEZvErh/HHnKuMp2PP2AYNaOEnpMMdTiLzYVPA2lCjM3NAFKrYQ4P4H71lMCR5c+/PqnjbMWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ix5LhPvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6CCC4CED1;
-	Thu,  6 Mar 2025 00:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741219825;
-	bh=OUCGPBlwAoOwgIKTnJRCA59xZPdlnRHgy1PAw989xpc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ix5LhPvxvu2H7LMAi8qs9gKYt7ZK9f8Bpt8V5EZk4K0Oo19TxQYRnVtGJf8oOp2vE
-	 0Ysg6v1G+fWfLqHJFSpkV729xxp5RsV8cGUKu9JdGZIIag+RvZaK+E9qTgKCMeK0uv
-	 bM+6ZUzHFbX4ECMkS87/ZNNIqAxDmz9ystXZrcfOCgVLg5jLE6QEoQl+CRp8NI2m8k
-	 /9j9r+HzBryTUdPGmwW61AfYVj2hudjRwt3CQNxLYzJKTpFfjhiy0FKHlwXK8CHEYV
-	 1gESgCYhAmM5Xh0aXBdvL3/JXR53QmvYGM+vUUZyR9K1jN6dzriof7sr7hsYai/YSl
-	 56DbbdsplIxDQ==
-Date: Thu, 6 Mar 2025 00:10:13 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Guillaume Ranquet <granquet@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Michael Walle <michael@walle.cc>, Nuno Sa <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 9/8] iio: adc: ad7124: Benefit of dev =
- indio_dev->dev.parent in ad7124_parse_channel_config()
-Message-ID: <20250306001013.7cd5d00c@jic23-huawei>
-In-Reply-To: <v7l2skqj65vbku3ebjsfndfj3atl6iqpodamios2do6q6kcagf@whmuir6fwede>
-References: <v7l2skqj65vbku3ebjsfndfj3atl6iqpodamios2do6q6kcagf@whmuir6fwede>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741219923; c=relaxed/simple;
+	bh=QY/dbxRn2hSPG9sYCiIb3RtHikmICWWUJa/v3LRP3ow=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aJ7eLbtAoGt6Ro0Q/2A8y47TV2Ynai7XUCIewc+rZf7llLf1QdDWaaFknRl+CnmglB3j2g6mW60/nSTmP4C+z6fqKjP76/+KBTU0GsPCfkuNS4KSO6LyOUIn6TWXTgQ8xk7EcnbmobiDYXbyinBhvOqIYjjIZAiqhAN6xzxGBXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PjB/8pEH; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2239aa5da08so464775ad.3;
+        Wed, 05 Mar 2025 16:12:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741219921; x=1741824721; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/ZCYeLObjn8U5GWeXbTtQ5qHg8nodz5oZEbI2evLUOg=;
+        b=PjB/8pEHwzHvRaB7HzIamIbfu/8WTkSp2Nt4wZU+fNdfAog3SWIpaRvOP8T/9vEbmi
+         UXGrnLdyYEPEPryu0iYpwb5m7i5zDPxegPix0p/7Yoar69hMCceEHOvr7bT+q162y93V
+         MpuyFuHzjZPq/AreUssPXKIodaebrcxIS0SuqviZu6ZrYsZsjQwvnqUDlmeC2EwkCGG/
+         m7IJnipJFYqRgNA34mAjKOZV8+oh865WFzq9lm4Zcc/H4f75ooTXQSDc85Cv0PzV6NMB
+         D6xZc5CuFqLA5dE5o0woWX55o48YMTfnAZrVw0nP9uo0OdofIr55p2hcxqCAIzvccGtf
+         EEew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741219921; x=1741824721;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/ZCYeLObjn8U5GWeXbTtQ5qHg8nodz5oZEbI2evLUOg=;
+        b=CtKzW7l57vPTRVChumqsOAlknOFQNjPAWyi7wWYV4FnOEW9WDk5DQ1f0s36i/a30YS
+         4wBDgA5kjh1SfoyLTX7n+rlJfltJgZaJjllkfuTpNmOR47WfkvQ1SmyEphxc6DiWiALI
+         eIvEU10gNMcyDRhs1PcWcvc6s2cU/nfHyReb/31onnm7WeJf+TMR4PVCEwMT+E+Fti2E
+         I01SbW+EPLhM8VT0Lm8zXjd2rHssSzfUbB2Tn/AUukVUuVXnJOW/zpkaFxRRUHX7CKeQ
+         Uak0567f6tcuWsn6PZRRBLZTnAGN5ayBTI9+IDl9Vq83Y/oHbF7Hnxvcr1BgFbj8Dnw5
+         ID9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWDKG+JvmvLmr8tsCW7b4H83sfw6/8lQHE0fLahbmvHO8Y6tadcXaFzck5fdjZckSChADPEYBqUiJE/uTjq@vger.kernel.org, AJvYcCXDcr/UZ5l//pGqA9jFm/f1LvxlfBnXnSnohZzATsMN/fReGkAQny5z325kjDcVto73MxXnp3kPebM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJvVAWoCP3y8HIH3T/M0+zA3vcwh0GQ3cibaSa8GNF9gji93NJ
+	a8jBA95BDQoz8g1c/O75kmKM2MwTEjdYFtcqGe4bsTSjDLOZ9Qm2
+X-Gm-Gg: ASbGncvYXkD9J3vbGStJUz4gVRNEx665FQDPCrsWR6qAEZkO/DSW18BGno0PSQOT+nE
+	9um9cPSxa1owSgJee+DE24+JGfFLQjGb1Y5P6Aoeoay7LgMTexUno04JcFbfA+TFsqu16NrxF9Z
+	ERJkU8pIxlXvu3IoFJeBwt1wtLKh+ZpaqQVhmT47iDqNnwpZqiYUtecdmEGq55Nq/EeP84NazkL
+	mK7yARQHIsYkmtKD+MVG/uUrKZ0SdacLfIz0PkKryrOTOn2EzoSx7twk3JgC4ID3tsII+BH2jx+
+	1W6r31eyOlvMzisiL0UvkOUo0BLRm20nw96dm37V614VLWg=
+X-Google-Smtp-Source: AGHT+IG4syzW4hfKzfRcA9XqhvNMuuxQLjzpBCzPV0TJVG9JpYb89BuAofOHLw5MUEjgzgF8AcR+rQ==
+X-Received: by 2002:a05:6a21:7308:b0:1f3:45cc:c6fb with SMTP id adf61e73a8af0-1f349496a41mr9296459637.19.1741219921109;
+        Wed, 05 Mar 2025 16:12:01 -0800 (PST)
+Received: from archlinux ([189.101.161.220])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af281075eb9sm45371a12.9.2025.03.05.16.11.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 16:12:00 -0800 (PST)
+Date: Wed, 5 Mar 2025 21:11:54 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Alex Lanzano <lanzano.alex@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: imu: bmi270: fix initial sampling frequency
+ configuration
+Message-ID: <5se4isw4f6xpbub62tna53ah2qjcf3mwks23ifc2yn4u462lpn@u53frmcgjth2>
+References: <20250304-bmi270-odr-fix-v1-1-384dbcd699fb@gmail.com>
+ <20250305144928.1b9b483a@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250305144928.1b9b483a@jic23-huawei>
 
-On Tue, 4 Mar 2025 10:41:09 +0100
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Wed, Mar 05, 2025 at 02:49:28PM +0000, Jonathan Cameron wrote:
+> On Tue, 04 Mar 2025 15:01:02 -0300
+> Gustavo Silva <gustavograzs@gmail.com> wrote:
+> 
+> > In the bmi270_configure_imu() function, the accelerometer and gyroscope
+> > configuration registers are incorrectly written with the mask
+> > BMI270_PWR_CONF_ADV_PWR_SAVE_MSK, which is unrelated to these registers.
+> > 
+> > As a result, the accelerometer's sampling frequency is set to 200 Hz
+> > instead of the intended 100 Hz.
+> > 
+> > Remove the mask to ensure the correct bits are set in the configuration
+> > registers.
+> > 
+> > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+> 
+> Hi Gustavo,
+> 
+> Please reply to this thread with a suitable fixes tag.
+> 
+> Thanks,
+> 
+> Jonathan
+> 
 
-> Since commit a6eaf02b8274 ("iio: adc: ad7124: Switch from of specific to
-> fwnode based property handling") the function
-> ad7124_parse_channel_config() has a parameter `dev` that holds
-> the value `indio_dev->dev.parent`. Make use of that to shorten two code
-> lines.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> ---
-> Hello,
->=20
-> this is a patch opportunity I noticed while backporting my original
-> series to an older kernel to please my customer.
-> I chose to sneak it into the series in the hope to not offend maintainer
-> tools :-)
-Leads to b4 getting rather confused, but doing the right thing in the end.
-
-Applied.
-
-Thanks,
-
-Jonathan
-
->=20
-> Best regards
-> Uwe
->=20
->  drivers/iio/adc/ad7124.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index 5ab0d3e48c43..53b274ca42ac 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -1061,12 +1061,12 @@ static int ad7124_parse_channel_config(struct iio=
-_dev *indio_dev,
->  	/* Add one for temperature */
->  	st->num_channels =3D min(num_channels + 1, AD7124_MAX_CHANNELS);
-> =20
-> -	chan =3D devm_kcalloc(indio_dev->dev.parent, st->num_channels,
-> +	chan =3D devm_kcalloc(dev, st->num_channels,
->  			    sizeof(*chan), GFP_KERNEL);
->  	if (!chan)
->  		return -ENOMEM;
-> =20
-> -	channels =3D devm_kcalloc(indio_dev->dev.parent, st->num_channels, size=
-of(*channels),
-> +	channels =3D devm_kcalloc(dev, st->num_channels, sizeof(*channels),
->  				GFP_KERNEL);
->  	if (!channels)
->  		return -ENOMEM;
-
+Fixes: 3ea51548d6b2 ("iio: imu: Add i2c driver for bmi270 imu")
 

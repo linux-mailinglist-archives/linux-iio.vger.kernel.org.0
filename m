@@ -1,85 +1,159 @@
-Return-Path: <linux-iio+bounces-16475-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16476-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECEB1A54D06
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 15:09:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669F5A54D67
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 15:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DA981887B0F
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 14:08:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C38927A45F0
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 14:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983D0154430;
-	Thu,  6 Mar 2025 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F0B155757;
+	Thu,  6 Mar 2025 14:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IbBGOB0R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C+0LD8VM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536AC151990;
-	Thu,  6 Mar 2025 14:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865AD8F5E;
+	Thu,  6 Mar 2025 14:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741270114; cv=none; b=s/8n4xOLMGwP54OEDmZEHDFIirhVfnpxv1E/gEYxpmlXXLsg9Xrj2j3GCdhDfl41P0PT5pOrzn05J6agBhYe5itjltWMqZplEcNDHXFTRm8l0dZ5qBDBAGKZp+00D490g2fEvwhhhCrI2Qa3rRbHLJrE8vPTmM+ghjxfsrq0HDQ=
+	t=1741270717; cv=none; b=bojSNIQv3sA4y6KQ18mzUdswB81NZgR2+nLREP9yGqWxi/LFhCB4iOsHSMZhyGeClrAQlVbDqW3BMu5/U8eEba3NMLC8UQ5wXGF0GPXAqPRn86UFUeshW2hxZBBdTa9dS00QTx44vBSSGR9PH3IvMvIyV2pROKif58N4oBkLYbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741270114; c=relaxed/simple;
-	bh=LkIfOHx5/dcrgATekQOsPiV7zPoeugPYPaspJUC3TN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C53zVIj4yyJVE6b0hsEtkTMzUCXRFYb0pgkYj+5snWEEw9TFhACbibE+ShKzxDATawQ9WT0xZyfz4nREncno3mIaP46D+3ByEVWn6YcVxliD1RfKtzwdM1/ByIcQYLxywyyFLxZF1yRdL65rVtfQRZ2uD9aG0zaJeabci2xCfnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IbBGOB0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49D4C4CEE0;
-	Thu,  6 Mar 2025 14:08:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741270113;
-	bh=LkIfOHx5/dcrgATekQOsPiV7zPoeugPYPaspJUC3TN0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IbBGOB0R7RKhs/DksPDnNSPytvTgwWFHcsTcpTedR628UAdd1V7hYr2OoQ1UTTBvW
-	 02xNfRmtsjukygDZ9U43L1V+ZUKF1AYJG6SxQlIJ7KKWZO79EfwGkxPWJQYH7Ttilf
-	 3cFm0gEfLbNCT7erksLlyqRjF6GyCUq8wW7rDPKu3tF3FdWFBhnzQC1ZpeyCrIyZBw
-	 fYJgkFk9mKgfbi0laikEy2b/4+jDbzZ+2cAhTRd9PS3BsOuxBKrnbBlmzWkA/u3aix
-	 wt4PolrAAQV/mMkl4XJJalcoH+8oFj3v/7Bamf309Ggo6+KQE+jEXj5SO2PGZsfoko
-	 9elPEPwaigtaw==
-From: William Breathitt Gray <wbg@kernel.org>
-To: =?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Kamel Bouhara <kamel.bouhara@bootlin.com>,
-	William Breathitt Gray <wbg@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-Date: Thu,  6 Mar 2025 23:08:23 +0900
-Message-ID: <174126995863.355997.16346927228585162675.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org>
-References: <20250305-preset-capture-mode-microchip-tcb-capture-v1-1-632c95c6421e@kernel.org>
+	s=arc-20240116; t=1741270717; c=relaxed/simple;
+	bh=6ZzYkYzOpEN9bsuAjmemPsA5icXhVP/a2gKzg4hlVrY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=un56NOa0o9koSKpkZb18bJ5WUP+TxCEZx3F+Bv9hN5fU0+8tAhOJCcqOj+K78UPg0LaUuBqk2DtUJ2rlyh2rO8ob23z+3SY2iJle4gSs6so1LIr4ImRS+f7t7a4KYfyhoC1e5WkNL+Dq9aGM7HYkT/pxVXzPe/THI1Yf6mnCwKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C+0LD8VM; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22401f4d35aso11826115ad.2;
+        Thu, 06 Mar 2025 06:18:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741270716; x=1741875516; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KQAiVipD09KIKu+Zw/Djodjc8yHCBQiZ4SWTk0XW8CU=;
+        b=C+0LD8VMKsRFxTfoDEGoR3ztl0miPDKkGWdBKNyEqAgLkQFSjaZzXJKAZfDEwgujom
+         iVYbR5oBC9xnNYuaZdYG/zuBhZchliaihc+PVdjHkawsv5ilLuvjKmX/gHYQB8pVCrsO
+         eqNat91SHbbN1N7buVo8QrXz7FFj2+eW5NQqxXmGroRoG+fdSDxHZh6EXCVaeRilDVSZ
+         8eeUmEx7I3yB2Jae5nrZS0PKbJJV3/2ruwF0V2Qyqz8MhCohWqh8ovAKtWY7s3quV7nK
+         iOdmSGjf3Y5lDYJ2W87JSDOt+FBLrY5GiaeZ2V7+kY0zV3lj0zTrGgXgyoqaehbINqXo
+         a/fQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741270716; x=1741875516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KQAiVipD09KIKu+Zw/Djodjc8yHCBQiZ4SWTk0XW8CU=;
+        b=vnTYy6cIeSIsGFbHrH5YGCCawD/1sodey+2QNIblhAXSDEEUeMeHJmuSyf7jAQNvDX
+         XHH0yTDhA3JR4LovH340JYnPjWa97UR+SwcO6jSy36ouSuQ4aVw36tGFDMPOxpBsFqJ3
+         pjIUZ1jldjamwNd0zZWZqWXz9lC8JxWz77hLyL6KWg4IVIFxsLnQgX/C8y3yCRvul73L
+         kf0Vvq8kiHrar0pz2VgddcqlsoCtO/Vr9dfFBaHlczJeVtoRvJPag1yHYrAPGNqqICbZ
+         TNADdHzR2GO+7yU/5+ZDmKRU5K3nC75Io0jLezdiOnB84ZmernJdPIjDFj9sATBFFdqo
+         uvkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXSxuo08pI0n46REGmGTW+S/zewmRzQCjAcv60VMMe+vTAkI7XZvhSBcZdGASEF/Ylv+sFW7I3C1Dc=@vger.kernel.org, AJvYcCXvfxpDqsjL9EnCaBniO8/6U14W4kDPb06Fnnkm4M+cewFTH6B7kBRAUwa/UCT5sabCv/IQ+1Jqm4OsT9OW@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxc/6BfEnZd/NyiJj6U88RqpoSojYeCN+O1+Jthc6HyLTFc2NLB
+	cUME3luzcRrICB3ZZ1bP/0hZN3ljpyc5XqfbYcaEfc6IhCLf+A5i6W6XIwI2RXcOxuqymcsdO8A
+	p/MO+jjNu7XX7LUYxsokTA6VgLgBTGYWkmJZtig==
+X-Gm-Gg: ASbGncsRrUOrt5gyKKxXxW8zwqahZb3N8p8f8jv6+aGGn0QvSLP/RNWB6IQhcB+3Wt+
+	mVmZ3DbypSMTe3aJu0i3tOsc5Yz5RcIb63ssrTHLQcCqCHLBe7sIoZckiL78gd3aC7FMQMipTzN
+	NNU+nkZ6U+Sn+UoaiXWLsu1MLaF5s=
+X-Google-Smtp-Source: AGHT+IFBpyTNHtiMmLFxkbAg/J2sbQ6v2C1nvdphAqmRGoPEzGjVevVePBHeYTX9VAHVhIyAKyCTa2fEOFEk92elhGc=
+X-Received: by 2002:a05:6a00:2e9f:b0:736:34ff:be7 with SMTP id
+ d2e1a72fcca58-73682c86af1mr10680714b3a.15.1741270715643; Thu, 06 Mar 2025
+ 06:18:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=566; i=wbg@kernel.org; h=from:subject:message-id; bh=ZYCqo0M2oAeDQGbSQHEhiD46dBjTRHS0YFHniKGFDv0=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDOknV787fUt35qeoyqI1PbW3rYTOMHd/VktWXLrpzh1po 0snF1RO6yhlYRDjYpAVU2TpNT9798ElVY0fL+Zvg5nDygQyhIGLUwAmkpHAyLBIM/3u+faOSfom QZ+i/j/YcJ73uMP/TxOre9o28EZdFF3F8IfLqeXPV9bY909uN9zx4Y4VDNcLXlDx6e5cnZ0Rkhu vW3IDAA==
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+References: <20250220165001.273325-1-jerrysteve1101@gmail.com>
+ <20250220165001.273325-2-jerrysteve1101@gmail.com> <20250222163752.5eb0d694@jic23-huawei>
+In-Reply-To: <20250222163752.5eb0d694@jic23-huawei>
+From: yjun <jerrysteve1101@gmail.com>
+Date: Thu, 6 Mar 2025 22:18:24 +0800
+X-Gm-Features: AQ5f1Jq-3ZHG-6n7Wd6PynG5qETGYDMfW85-PwZ2GKrWZfGiftXy9zwhYY-k7_8
+Message-ID: <CADOC9A_wwOS_zm1P_=s0n9MOaUC3nqEQQhWoG4vjxvgZHONjfg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: gyro: bmg160_spi: add of_match_table
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+I'm sorry. The commit message was referenced from other similar
+submissions and hasn't been actually verified. I will resubmit the
+patch in V3.
 
-On Wed, 05 Mar 2025 19:01:19 +0900, William Breathitt Gray wrote:
-> Hardware initialize of the timer counter channel does not occur on probe
-> thus leaving the Count in an undefined state until the first
-> function_write() callback is executed. Fix this by performing the proper
-> hardware initialization during probe.
-> 
-> 
-
-Applied to counter-fixes.
-
-[1/1] counter: microchip-tcb-capture: Fix undefined counter channel state on probe
-      commit: c0c9c73434666dc99ee156b25e7e722150bee001
-
-Best regards,
--- 
-William Breathitt Gray <wbg@kernel.org>
+On Sun, Feb 23, 2025 at 12:37=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Fri, 21 Feb 2025 00:50:00 +0800
+> Jun Yan <jerrysteve1101@gmail.com> wrote:
+>
+> > Add of_match_table to bmg160_spi driver.
+> >
+> > This fixes automatic driver loading by userspace
+> > When using the device tree and the driver is built
+> > as a module, devices can be probed.
+> Wrap patch descriptions at 75 chars as mentioned in submitting-patches.rs=
+t
+>
+> >
+> > Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+> Hi.
+>
+> The patch content is fine, but I'm doubtful about the autoloading.
+> Did you actually try this and see a failure without this patch?
+>
+> For SPI autoloading even with device tree compatibles should work without
+> the of_match_table though it will match against the compatible without
+> the bosch, part.  Maybe I missed a change that means that no longer
+> works.
+>
+> I in general don't mind the actual change because it does ensure
+> we have the manufacturer in the match as well so makes future
+> problems less likely.
+>
+> Jonathan
+>
+>
+>
+> > ---
+> >  drivers/iio/gyro/bmg160_spi.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> >
+> > diff --git a/drivers/iio/gyro/bmg160_spi.c b/drivers/iio/gyro/bmg160_sp=
+i.c
+> > index fc2e453527b9..ac04b3b1b554 100644
+> > --- a/drivers/iio/gyro/bmg160_spi.c
+> > +++ b/drivers/iio/gyro/bmg160_spi.c
+> > @@ -41,9 +41,19 @@ static const struct spi_device_id bmg160_spi_id[] =
+=3D {
+> >
+> >  MODULE_DEVICE_TABLE(spi, bmg160_spi_id);
+> >
+> > +static const struct of_device_id bmg160_of_match[] =3D {
+> > +     { .compatible =3D "bosch,bmg160" },
+> > +     { .compatible =3D "bosch,bmi055_gyro" },
+> > +     { .compatible =3D "bosch,bmi088_gyro" },
+> > +     { }
+> > +};
+> > +
+> > +MODULE_DEVICE_TABLE(of, bmg160_of_match);
+> > +
+> >  static struct spi_driver bmg160_spi_driver =3D {
+> >       .driver =3D {
+> >               .name   =3D "bmg160_spi",
+> > +             .of_match_table =3D bmg160_of_match,
+> >               .pm     =3D &bmg160_pm_ops,
+> >       },
+> >       .probe          =3D bmg160_spi_probe,
+>
 

@@ -1,202 +1,103 @@
-Return-Path: <linux-iio+bounces-16466-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16467-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01698A54C5D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 14:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A85A54C7D
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 14:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281F0188E4A2
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 13:39:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E64B188909D
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 13:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247A320E33B;
-	Thu,  6 Mar 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A22120E6F6;
+	Thu,  6 Mar 2025 13:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tJ5Bh73x"
+	dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b="VlfubMQ+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fw2.prolan.hu (fw2.prolan.hu [193.68.50.107])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4382199B9;
-	Thu,  6 Mar 2025 13:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F60220E710;
+	Thu,  6 Mar 2025 13:44:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.68.50.107
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741268360; cv=none; b=aDzZMpiWjudICSXU96oWkvQgLM9/RZwGXEZOGxT2Q1/0z106InSg2Rz6NFDMfhUG3YAegVVCy7efsl8qA4qm6M0yoeCEt53lt+KyfU7S1PNm52FaS2MIAQYHl99FFg9zeW4eRWw8/806LjKp9UWIbiW+F+iYTeHdTbgZ62N3800=
+	t=1741268695; cv=none; b=Q3A8dThcdjyzSDG/HT0toQjH1tKvqJ3va5J70WsMelDNr8DoHQeRaEGrTJd+vtU+XYOMkyhY/rR9/1vCHEKLraI/jHV/AGk6VVjPJ9kWkQYEJwZK69dsG8CTWttBi0BydijvJ7fYWo/61izzxCb7EoRK2EVf/h9jnaP09yDOy1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741268360; c=relaxed/simple;
-	bh=YzzhThIvZFEWn+bU++JkDV+IQNHcf83+t0rSfg/MKbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h3uzLs82m9Zt86P1qMMbPQBXPG2la4PKbM7lYJU4NtHuHzNKa4KdiX6v4XZnccR+mdIBoFIYaCIDM1VvNWWqg3v6QmZEtG7iOuVDUQLJnUVi9zeKpnYBhGx9+KJ83847r42yp/YsND/0jPV9dTeo6NyJ7hf2E4JtesqZwUvs8/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tJ5Bh73x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED29C4CEE0;
-	Thu,  6 Mar 2025 13:39:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741268359;
-	bh=YzzhThIvZFEWn+bU++JkDV+IQNHcf83+t0rSfg/MKbM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tJ5Bh73xjS+Bi8M+dOoczyCIpfCofeGkcW+smkZ2OL21P4tvk3VYTCnpF0SOnbHcy
-	 vI5UVtlxnk1qL18bqiwdSmfFqsWQ/g0vIkfcwOZjhXqtDxia5Cpzo+NP41XaoN5PNy
-	 n3TS2XGXS/kxDLfwJUnNY7fV+kLlug3s6LNUlNmQ=
-Date: Thu, 6 Mar 2025 14:39:16 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: David Jander <david@protonic.nl>
-Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Jonathan Corbet <corbet@lwn.net>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: Re: [RFC PATCH 1/7] drivers: Add motion control subsystem
-Message-ID: <2025030633-covenant-bootlace-7163@gregkh>
-References: <20250227162823.3585810-1-david@protonic.nl>
- <20250227162823.3585810-2-david@protonic.nl>
- <6c6cqaxmsy7miesel4ghdeiea6nrpe4gti4xf5enfyg4uqro5u@vpmtd2t7gydi>
- <20250305164046.4de5b6ef@erd003.prtnl>
- <mzxammninwmak5ti4c6is4pbdx3xzzziiwbxiwrldjyxgae4ok@ocec24vu4txa>
- <2025030611-embezzle-sacrament-00d9@gregkh>
- <20250306092013.1147f27e@erd003.prtnl>
- <2025030638-wavy-napkin-41ab@gregkh>
- <20250306103402.2b9e51d7@erd003.prtnl>
+	s=arc-20240116; t=1741268695; c=relaxed/simple;
+	bh=2vLQvZIclrHC/n1UvIqbeA4KnSm/ZdQsCfKiKVNHHH4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yu7rDrWyG4WSsUzhTnXc7g4QuySEcSanPANXXEUCCgV3aDJy5F5rjFzxgeyopx6OxNn32FZaDcPIvMtBJ3E2QlJIarZwgZcEhoG4Y1QwUK9EpGx9ahjJe62dRw5UMysBT+oblk++FKOYag77+aoFM+2louSL+ZD5/pn+HZBftcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu; spf=pass smtp.mailfrom=prolan.hu; dkim=pass (4096-bit key) header.d=prolan.hu header.i=@prolan.hu header.b=VlfubMQ+; arc=none smtp.client-ip=193.68.50.107
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=prolan.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=prolan.hu
+Received: from proxmox-mailgw.intranet.prolan.hu (localhost.localdomain [127.0.0.1])
+	by proxmox-mailgw.intranet.prolan.hu (Proxmox) with ESMTP id 5C4BEA0433;
+	Thu,  6 Mar 2025 14:44:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=prolan.hu; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:from:from:message-id:mime-version:reply-to:subject:subject:to
+	:to; s=mail; bh=/UxPbmKXr3I3XApnAtyCIoCLXfkY8WP19iA5l9VOJgc=; b=
+	VlfubMQ+0465Ik0rVug7Smjik7/YeRLRztoDu6XBjD0E4Dn4/NqArJ2QorOzFZx9
+	hMPZcvP2bLFrXXoQSxkrDpzF29NjKEvhJ9g/gvUn8EY8ZZyqnPh+RU6SQkRp5PWX
+	sgqBfTlEvns7Tfsliic4x2Lw4o2e7LEB3ox/wRbNqU9WaqA7yeud+/41a/m9nGAr
+	LKI0XMcRS+5SaMFzcTipdCE3BJh1axRsXXxM7QYc/fgKmdsMJqCO+mRfQT2vaMuF
+	a0LXA3EH5IThpbO704+uOilii6SisrEeBg+n8p7N9eoH+vnN7WY9c3q6CGHj89Ev
+	HltDLzzzYq/syuXaK5qgtp7Tr00ZNgKY4hVDj4AQLBJkcTWuH3MaEaCeA5SlAltq
+	l0V/sRY46detqHzyHxTdOCgsEhsnUI/uOJf0OHJtSr7OHoVS0kL2JAuzrRHq213O
+	8LBDnBwmrtWbXgLUKbl+eNDOFVDMyns1iEvrqBL8FORxu5Yv/0oUNXNFDRgOvlrO
+	/624U7qcG2m5Lep2RaISXVh8UIgnZZk1KAmMZjQUkAtkXpr6EPpREImLvY+QV09D
+	RyJUok4J0eZhpL2404wBhKNMQdRTb9BQXdpSGaGivVPxg6KHTMUxWn1ornRKDwh5
+	hT3qjFL5Gahs/qpHXMC1llgnU3JIA8PX4LkOUfl8fUY=
+From: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
+To: <linux-arm-kernel@lists.infradead.org>, <linux-iio@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: =?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>, "Kamel
+ Bouhara" <kamel.bouhara@bootlin.com>, William Breathitt Gray
+	<wbg@kernel.org>, <Dharma.B@microchip.com>
+Subject: [PATCH v8 0/2] microchip-tcb-capture: Add Capture, Compare, Overflow etc. events
+Date: Thu, 6 Mar 2025 14:44:35 +0100
+Message-ID: <20250306134441.582819-1-csokas.bence@prolan.hu>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250306103402.2b9e51d7@erd003.prtnl>
+X-ESET-AS: R=OK;S=0;OP=CALC;TIME=1741268682;VERSION=7985;MC=612642565;ID=1566293;TRN=0;CRV=0;IPC=;SP=0;SIPS=0;PI=3;F=0
+X-ESET-Antispam: OK
+X-EsetResult: clean, is OK
+X-EsetId: 37303A2980D94852637C6A
 
-On Thu, Mar 06, 2025 at 10:34:02AM +0100, David Jander wrote:
-> On Thu, 6 Mar 2025 10:03:26 +0100
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Thu, Mar 06, 2025 at 09:20:13AM +0100, David Jander wrote:
-> > > On Thu, 6 Mar 2025 08:18:46 +0100
-> > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > >   
-> > > > On Thu, Mar 06, 2025 at 12:21:22AM +0100, Uwe Kleine-König wrote:  
-> > > > > Hello David,
-> > > > > 
-> > > > > On Wed, Mar 05, 2025 at 04:40:45PM +0100, David Jander wrote:    
-> > > > > > On Fri, 28 Feb 2025 17:44:27 +0100
-> > > > > > Uwe Kleine-König <u.kleine-koenig@baylibre.com> wrote:    
-> > > > > > > On Thu, Feb 27, 2025 at 05:28:17PM +0100, David Jander wrote:
-> > > > > > > [...]    
-> > > > > > > > +static int motion_open(struct inode *inode, struct file *file)
-> > > > > > > > +{
-> > > > > > > > +	int minor = iminor(inode);
-> > > > > > > > +	struct motion_device *mdev = NULL, *iter;
-> > > > > > > > +	int err;
-> > > > > > > > +
-> > > > > > > > +	mutex_lock(&motion_mtx);      
-> > > > > > > 
-> > > > > > > If you use guard(), error handling gets a bit easier.    
-> > > > > > 
-> > > > > > This looks interesting. I didn't know about guard(). Thanks. I see the
-> > > > > > benefits, but in some cases it also makes the locked region less clearly
-> > > > > > visible. While I agree that guard() in this particular place is nice,
-> > > > > > I'm hesitant to try and replace all mutex_lock()/_unlock() calls with guard().
-> > > > > > Let me know if my assessment of the intended use of guard() is incorrect.    
-> > > > > 
-> > > > > I agree that guard() makes it harder for non-trivial functions to spot
-> > > > > the critical section. In my eyes this is outweight by not having to
-> > > > > unlock in all exit paths, but that might be subjective. Annother
-> > > > > downside of guard is that sparse doesn't understand it and reports
-> > > > > unbalanced locking.
-> > > > >      
-> > > > > > > > +	list_for_each_entry(iter, &motion_list, list) {
-> > > > > > > > +		if (iter->minor != minor)
-> > > > > > > > +			continue;
-> > > > > > > > +		mdev = iter;
-> > > > > > > > +		break;
-> > > > > > > > +	}      
-> > > > > > > 
-> > > > > > > This should be easier. If you use a cdev you can just do
-> > > > > > > container_of(inode->i_cdev, ...);    
-> > > > > > 
-> > > > > > Hmm... I don't yet really understand what you mean. I will have to study the
-> > > > > > involved code a bit more.    
-> > > > > 
-> > > > > The code that I'm convinced is correct is
-> > > > > https://lore.kernel.org/linux-pwm/00c9f1181dc351e1e6041ba6e41e4c30b12b6a27.1725635013.git.u.kleine-koenig@baylibre.com/
-> > > > > 
-> > > > > This isn't in mainline because there is some feedback I still have to
-> > > > > address, but I think it might serve as an example anyhow.
-> > > > >     
-> > > > > > > > [...]
-> > > > > > > > +
-> > > > > > > > +static const struct class motion_class = {
-> > > > > > > > +	.name		= "motion",
-> > > > > > > > +	.devnode	= motion_devnode,      
-> > > > > > > 
-> > > > > > > IIRC it's recommended to not create new classes, but a bus.    
-> > > > > > 
-> > > > > > Interesting. I did some searching, and all I could find was that the chapter
-> > > > > > in driver-api/driver-model about classes magically vanished between versions
-> > > > > > 5.12 and 5.13. Does anyone know where I can find some information about this?
-> > > > > > Sorry if I'm being blind...    
-> > > > > 
-> > > > > Half knowledge on my end at best. I would hope that Greg knows some
-> > > > > details (which might even be "no, classes are fine"). I added him to Cc:    
-> > > > 
-> > > > A class is there for when you have a common api that devices of
-> > > > different types can talk to userspace (i.e. the UAPI is common, not the
-> > > > hardware type).  Things like input devices, tty, disks, etc.  A bus is
-> > > > there to be able to write different drivers to bind to for that hardware
-> > > > bus type (pci, usb, i2c, platform, etc.)
-> > > > 
-> > > > So you need both, a bus to talk to the hardware, and a class to talk to
-> > > > userspace in a common way (ignore the fact that we can also talk to
-> > > > hardware directly from userspace like raw USB or i2c or PCI config
-> > > > space, that's all bus-specific stuff).  
-> > > 
-> > > Thanks for chiming in. Let me see if I understand this correctly: In this
-> > > case, I have a UAPI that is common to different types of motion control
-> > > devices. So I need a class. check.  
-> > 
-> > Correct.
-> > 
-> > > Do I need a bus? If one can conceive other drivers or kernel parts that talk to
-> > > motion drivers, I would need a bus. If that doesn't make sense, I don't. Right?  
-> > 
-> > Correct.
-> > 
-> > > I actually can think of a new motion device that acts as an aggregator of
-> > > several single-channel motion devices into a single "virtual" multi-channel
-> > > device... so do I need also a bus? I suppose...?  
-> > 
-> > Nope, that should just be another class driver.  Think about how input
-> > does this, some input /dev/ nodes are the sum of ALL input /dev/ nodes
-> > together, while others are just for individual input devices.
-> 
-> Understood. Thanks!
-> 
-> > > Then the question remains: why did the chapter about classes vanish?  
-> > 
-> > What are you specifically referring to?  I don't remember deleting any
-> > documentation, did files move around somehow and the links not get
-> > updated?
-> 
-> This:
-> https://www.kernel.org/doc/html/v5.12/driver-api/driver-model/index.html
-> 
-> vs this:
-> https://www.kernel.org/doc/html/v5.13/driver-api/driver-model/index.html
-> 
-> Maybe it moved somewhere else, but I can't find it... I'd have to git bisect
-> or git blame between the two releases maybe.
+The TCB has three R/W-able "general purpose" hardware registers:
+RA, RB and RC. The hardware is capable of:
+* sampling Counter Value Register (CV) to RA/RB on a trigger edge
+* sending an interrupt of this change
+* sending an interrupt on CV change due to trigger
+* triggering an interrupt on CV compare to RC
+* stop counting after sampling to RB
 
-Ah, this was removed in:
-	1364c6787525 ("docs: driver-model: Remove obsolete device class documentation")
-as the information there was totally incorrect, since the 2.5.69 kernel
-release.  "device classes" aren't a thing, "classes" are a thing :)
+To enable using these features in user-space, an interrupt handler
+was added, generating the necessary counter events. On top, RA/RB
+registers are added as Count Extensions. To aid interoperation, a
+uapi header was also added, containing the various numeral IDs of
+the Extensions, Event channels etc.
 
-thanks,
+Bence CsÃ³kÃ¡s (2):
+  counter: microchip-tcb-capture: Add IRQ handling
+  counter: microchip-tcb-capture: Add capture extensions for registers
+    RA/RB
 
-greg k-h
+ MAINTAINERS                                   |   1 +
+ drivers/counter/microchip-tcb-capture.c       | 132 ++++++++++++++++++
+ .../linux/counter/microchip-tcb-capture.h     |  40 ++++++
+ 3 files changed, 173 insertions(+)
+ create mode 100644 include/uapi/linux/counter/microchip-tcb-capture.h
+
+-- 
+2.48.1
+
+
 

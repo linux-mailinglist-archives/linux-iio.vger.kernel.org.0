@@ -1,104 +1,97 @@
-Return-Path: <linux-iio+bounces-16442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A06AA53ED9
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 01:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309ADA53EDC
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 01:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD36516F231
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 00:06:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 699DA16F431
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 00:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8818636D;
-	Thu,  6 Mar 2025 00:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C3A36D;
+	Thu,  6 Mar 2025 00:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeXRo63I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyv0f9Hi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058BAB652;
-	Thu,  6 Mar 2025 00:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DD010E4;
+	Thu,  6 Mar 2025 00:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741219591; cv=none; b=RWQUx39vjd7CGf+q3CGUbPEGqN6WlUqXPmaP/zK11hbyPco+GR9VbTXIQgtXIpF1M+N1INdcvavq+kTuMc+tusZNsPjPR00wafZa4zygNUkrJMJVSGUEBVkzgLb1g+EZeCls4A1A1gtUE/LwoLBD6n1DVfuCOzgzdlnC0GYAzJo=
+	t=1741219651; cv=none; b=CrO4IvAlDc1bd+hB87u7DSgfhBm4MqkpVLwoWXQ/ROrw0hPXm6D/ZgQIGJ9EJMfaLxGsdSrs8HipjSPGEaL9e8kdK1KPA4ZJ3mLMMSxGVkxT03LTc1gcrB2muVs7CblfS/ZQRrc3Hdb+S9d32vEswcE9o1SU06FtyDJ/EdvndCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741219591; c=relaxed/simple;
-	bh=0ZGBEa3nKN9nmtBQzdi4v/JXQ08scUtoe4Ysqoq5BhA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WAiQrs5KMYLk+80xt3gPWlC+laIw/biPJUNmcmkuZIuk4toyMhJQBGdmGygJLOh/r/X534ejvVgx6beoAiHz0JewWeoGUqm3MXy5KXgyn0Vm7ywu30h1+ZBeCGbiUbnJkbgbc4ycNWmMKVn5q5fkH9n1Jw+cMQGpwMStO9lgt2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeXRo63I; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2234daaf269so731995ad.3;
-        Wed, 05 Mar 2025 16:06:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741219589; x=1741824389; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0ZGBEa3nKN9nmtBQzdi4v/JXQ08scUtoe4Ysqoq5BhA=;
-        b=NeXRo63In5O7yZewZNh5GLobykzMpsjexIipOxHmqxnZx2g2ARClxsQEtfrsIJW9a+
-         S0cJANZowJYuQpb0bWqohlLb5noZt+Q2iFqu3fk2Qxy4nfhU787zP3MmyHwqmxaziCau
-         f0vd44f5V2ZbXLD7KuFiXUkHeyQK7HMUZxgR3uSjlMI87LVahSheqxliGiIJparqZgBZ
-         2vs4g80awTFONfVZCnVq08nBqyrdCmJ/nqYKbTMjQ8j+M7zFdNjs7KKKsYxcUPOLKqrx
-         sVm2zNu2UcVixQN/xynRNvrNfwVeXuRofY3OYxKZxTxW7IxrQv27BLn3Oa4KE8LVPHsW
-         bxBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741219589; x=1741824389;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0ZGBEa3nKN9nmtBQzdi4v/JXQ08scUtoe4Ysqoq5BhA=;
-        b=aUs2Kyy6o3zKRHccLZRP0/BKjLATVtwsJ5aMk1N1HoH1M4kND42jUdG9U5ueNdONAU
-         mj4efv+iYBKC331Qr/17ijMm3EqPFrhWWKvfy8lruTuTxCgfQiuBD3h0I2dx1sxZb6Ev
-         1sKJb7xovhtPb9i9WkC5+/fVIfEsBrIRwBk1I/5dOPlMwLcujz+hxmz446t9BmDa5ISY
-         ZjEPA8bMQKJ3Oczo45h/nVzfHPl2kKyB85Yty0UQMsvhk38IZ6v7etvRN/qWB0Lbe4NE
-         wmR3/bmbEbwpUkILZjYNRAG1FhiO1BZVgncKs6F8Wuhs2uxw4mp/rXvZd2OonVcDUJBy
-         Vy2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUQOsBribnAfvQDhRcEcxZ0D8S6Hf6YhtcO//V8UF7qauNI8bIR40BZPnGaBuE3YmZEuOPUl2deg8g=@vger.kernel.org, AJvYcCVMxH1FRbbh3ebOdUF7OlCHww8we9P9w1tFPMz0sCOElJUfFG47+Y8h6iy3Phkzr6MX3UcBH3kUiQxN+AoQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDkscwUrdCkf4KqBh+reVDzTQufoWkuzse03IjdjfxdEPTHKVZ
-	7O+aC7M3MfcJsUUIra8MI6k4LbzQzZAZmdYm6aHLTGtfuD26iO8erMW7RA==
-X-Gm-Gg: ASbGncuf4ng1MiPyIk/tSoWyesQCocQfMHR7q8bZRe5TdcsAn+TLygqeF7KEDlj5awU
-	GTuUr6nsd4XO63AcAUvtPbbvK4xSmKLRL8z1MPzI2p/YK082HePXX1E15VmGzG/Wi8UbsJeb0eB
-	tf9wFqB6JXpO+nfvznkzEyGHtpdyjRxllpyXF7feXjzCTuHZdlPolbwIWUnHG1OwvzGoL3z9af8
-	LTwLuHWpgaesBB+ktHg0AUx8NT3GZOKq0pQJQ0x2G9w+JihKsCohOjrw2gu8ml6y/R2vcXCXVn1
-	gFhQHWixesAkYjmuzPMZo36mfSb4kIeGC+zC5kemjVlU5CgoikvyZMRhfMLyWzLr544=
-X-Google-Smtp-Source: AGHT+IHBhYIgc9aRlGjnY714QzC5qHd23J5//vzpB9xP76OCN0p8RlrjfCAV2hn3Yb5KESvtp5ZSdg==
-X-Received: by 2002:a17:902:da87:b0:21f:c67:a68a with SMTP id d9443c01a7336-223f1ca5a6emr69095285ad.31.1741219589198;
-        Wed, 05 Mar 2025 16:06:29 -0800 (PST)
-Received: from danascape.tail34aafc.ts.net ([2402:e280:218d:2e5:857:3077:7768:d8a9])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73698514ee4sm27463b3a.135.2025.03.05.16.06.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Mar 2025 16:06:28 -0800 (PST)
-From: Saalim Quadri <danascape@gmail.com>
-To: danascape@gmail.com
-Cc: Michael.Hennerich@analog.com,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev
-Subject: Re: [PATCH v2] staging: iio: adis16203: Remove unneeded spi_set_drvdata()
-Date: Thu,  6 Mar 2025 05:36:24 +0530
-Message-Id: <20250306000624.1554112-1-danascape@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250305234949.1548646-1-danascape@gmail.com>
-References: <20250305234949.1548646-1-danascape@gmail.com>
+	s=arc-20240116; t=1741219651; c=relaxed/simple;
+	bh=s4L8LbIbR3L5t3u2JtJZrxB8f91I8axNv8Plf1/vuig=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OkFlyXib9y6Mg3kSPhiIIM6LY/nemY73JbiePllgnhgvfo4fQH1EYI8FqsvJT1WE0li8jKBKStAVBL14VzRoy1dM3wPcQQ5qDSyf3qBcG1VzJnzs5cp7tXJJ7M/DAbViHUrUyW5acD3qhUVhzs5RCAV6sSvqLxuGDZMGfWZwOyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyv0f9Hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1C4C4CED1;
+	Thu,  6 Mar 2025 00:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741219651;
+	bh=s4L8LbIbR3L5t3u2JtJZrxB8f91I8axNv8Plf1/vuig=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Xyv0f9Hi2J6SwJFdMsLyH0V/cSnptot+yps+/3BDidAnMzsOvZ0x7ZtFvHOagRBzx
+	 pghcP+TjM/QIAtd0+AAhbotdocCfstdeyheKUxGJpMnMOjRra1x+KozENU9/Jx7Nv8
+	 AzgrQQVY5SFkYd5LQG9slbReu1bfNqSCmx/6NHBKu5/uXDG2ry5WQkqvOpy4DGB4KE
+	 5Q73Dg7HLmIJ4BAN15YsPQYrEDcPXoIi0lZCFI47TA4AeIYvb2ZBHKgQWuMd2KkklZ
+	 ArQ5TrXxkAcXhSiechyC2uVCQPcz1DStLa5Rs0wYp+TFOkdOlRBtZ+iTu2zTMdpAch
+	 ZHM+Qi2r0GDUQ==
+Date: Thu, 6 Mar 2025 00:07:18 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Guillaume Ranquet <granquet@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Michael Walle <michael@walle.cc>, Nuno Sa <nuno.sa@analog.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 8/8] iio: adc: ad7124: Implement system calibration
+Message-ID: <20250306000718.330c99db@jic23-huawei>
+In-Reply-To: <20250303114659.1672695-18-u.kleine-koenig@baylibre.com>
+References: <20250303114659.1672695-10-u.kleine-koenig@baylibre.com>
+	<20250303114659.1672695-18-u.kleine-koenig@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Sorry, I forgot to add a V2 description
+On Mon,  3 Mar 2025 12:47:06 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
 
-V1 -> V2: Update commit message description
+> Allow triggering both zero-scale and full-scale calibration via sysfs in
+> the same way as it's done for ad7173.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/iio/adc/ad7124.c | 153 ++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 136 insertions(+), 17 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 382f46ff2b51..5ab0d3e48c43 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -4,6 +4,7 @@
+>   *
+>   * Copyright 2018 Analog Devices Inc.
+>   */
+> +
+Stray change.  I'm in that sort of mood so I'll tweak it whilst
+apply.  Rest looks good to me.
 
-Sincerely,
-Saalim Quadri
+Applied to the togreg branch of iio.git and pushed out as testing.
+As the fixes are theoretical(ish) I'll not rush them in.
+
+Thanks,
+
+Jonathan
 

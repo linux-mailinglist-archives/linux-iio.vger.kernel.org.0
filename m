@@ -1,157 +1,124 @@
-Return-Path: <linux-iio+bounces-16461-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16462-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7CD8A544F6
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 09:33:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FD0A54538
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 09:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 964BE188D78B
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 08:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1236C1895CE5
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 08:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F195620766B;
-	Thu,  6 Mar 2025 08:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C17207A3F;
+	Thu,  6 Mar 2025 08:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="K1DXdl/j"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="xAzJdlwn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839352066F0
-	for <linux-iio@vger.kernel.org>; Thu,  6 Mar 2025 08:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EBF207A23;
+	Thu,  6 Mar 2025 08:42:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741249997; cv=none; b=BJgPlnDkIfkxMJb572UAm6qFgCPjijmmKe06mpT4SvGGy01yXytupADIzh5nQIzHubWV3s2KD9oJ4+YFLwZ+UgGnNMV1cas8CdGMHUcT/i8e7cp/WkyCdR03HkJcdLYD5+F7IisFE36LYKIFusO+POcPJDBQTj4CiCvdYpc92EM=
+	t=1741250569; cv=none; b=Bh6+A5bO9yqFjjq1bfn/WxxPJDMaU3cYHatwWQe/bO7NwVrlOeVOx2ebsJzhO07on683xmCwpd7pvHnil0osw/LdL32ssbgEVg3LoDxdOu1cnttPt9OujhO8v4eGqO7Vef0Ro82Q039F/yZyP/v++u0/zWvy9/mEwsKU9RQ6w+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741249997; c=relaxed/simple;
-	bh=hOVOOStkW8jmkt+1hp/0Jr1VkM8lrszPOZ7dkECB3lI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LlLHwBcqBlCRAECrZ598BryDkw42BdkOKMx9bjxQBcxF+V2d6jwElZPKMoUbEFMuUj57vBRl2bJrkw9EQMTMapgOBaSHb5Tky0YBZ6QSpFOL3Z363phpdDW36rmD3voquZw9JDi0HrzfPip2s40m9NLq/cM0a7kGVBbJMHr5cM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=K1DXdl/j; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4394a823036so2914115e9.0
-        for <linux-iio@vger.kernel.org>; Thu, 06 Mar 2025 00:33:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741249994; x=1741854794; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X2EUc1x5Of7vZCQZZ48kByIEQAeOmgrKgZ4g5Ou9HIs=;
-        b=K1DXdl/jLd3lGnBeY+6K9KDo21yVRKd5LmQj11MBIpiigiwvfdb750QwYnfKRzJRGK
-         qV9NWLSPf0KRZoWxkP8ZYFda/IqEYR5RmQGV/zOqxdRf+bAT7k7YkJlDEnwCnEijE93R
-         wHZM9bjjVTrGaeIrUmltDSGLVO9wKSO5fOa/PGum2mWO6GISIr66RbniGALJFr5qjZk1
-         0x2Qj1pvqTxbZz2scScNIEiSsX65GpCrLd3kh7fcClJkyRl+mtUC52t18A0HUGo6/MxU
-         Ukr0Oeh1+5hb+u/0jg/vKSkmXsFuE4IDJt1rP9zg3KstOLMH73vb5OzcbHIv325nvV6A
-         JDCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741249994; x=1741854794;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X2EUc1x5Of7vZCQZZ48kByIEQAeOmgrKgZ4g5Ou9HIs=;
-        b=OQFyjcEGzHM2gXqnrfpaiq/ND/NJi7iUtz23QL8ZwwBYFQv6JyG+HveigE/lj56UST
-         57sBWHm1b6BuRjcuuDiZP4kr/VqkM2i52Xb7ESKN53nCOgvMEt+IGkU8/awLf6472Vcs
-         IoaFEezclOHMFnl+n4GcrbK5AsOOQE+AH146Xq3PlLkw/0Wba6++o5NwAEcWanyX5P8e
-         h9NkRcRJNABO54dCUozTAeSo31DKdMShdNbZgcVrX1McdJ7Qnv9rpA0pnAm0ZT+TeZP6
-         n7pOc8yeJZ+XWYb/NPfk4aQPyOYyicRktrgpco1YNTSNYypgIwqNQQTsT16UMuwhD616
-         jc4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUHLM6aLVp+JOjyAf28d6wETenufQTKVnOoxuILXUl3z6JNQHRofIVlVt6L/O7kEULjavZJhnXgFCA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDQ9S+q0ieCivlymv3j6DHztQGWmfugm1cg+qAA8a3eVskE1Ih
-	QMZLUwJOqJicfizn0p+Jn1AEE2SgtDGd8aDEwaI74pMS+18nIqYc8419TzTYMq8=
-X-Gm-Gg: ASbGnctN5Uy9R5jyPkc90eYWKO03SruaTok8fZC6NHq5hZZ0zKy0Rt01ouSowfhkzZ9
-	NdS+TNsF8zeyQNdVlL5TzlmN4s8mL2+9M1TBtvyNSVf/HL6MbIv438cBOMcP8r+2u3mN5qXSquC
-	DvN1maK1d5JcM6iGpmqDTN+WIXjzYHmW5fWO++4B+6V7jtEmjLMOGFyAgUylWnM64aREHkms/qI
-	JpvgkQ4q8yrFfFBdHJiBv4jdm9FRvK6o/HRDfLXA2d6XLNM9YpOIso7OMwWOdGvSMH+ltJiBEKR
-	2p7OgTxGai2VdModSvgLyeyLeJTSPBsfDrwvQ9CMoVO/JQAYVOaP51Wc4nPHMVN/pYOl5enAk+H
-	SBVgnCjlDRrIg93gjRql0zvSsOw==
-X-Google-Smtp-Source: AGHT+IENVLytuFM3iADZunJAXBOhvQ3LIEDZZsGeB1MuN2juBTFSeQk4BfBlXS8v8nNpLXWbNWI+2g==
-X-Received: by 2002:a05:600c:3544:b0:439:a1f2:50a3 with SMTP id 5b1f17b1804b1-43bd29462e3mr49071765e9.4.1741249993713;
-        Thu, 06 Mar 2025 00:33:13 -0800 (PST)
-Received: from localhost (amontpellier-556-1-148-206.w109-210.abo.wanadoo.fr. [109.210.4.206])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c102e01sm1282552f8f.93.2025.03.06.00.33.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Mar 2025 00:33:13 -0800 (PST)
-Date: Thu, 6 Mar 2025 09:33:11 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	Cosmin Tanislav <cosmin.tanislav@analog.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
-	Guillaume Ranquet <granquet@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Michael Walle <michael@walle.cc>, Nuno Sa <nuno.sa@analog.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 8/8] iio: adc: ad7124: Implement system calibration
-Message-ID: <53jwjqqspaow6npy76vyhkz7stt6abkkwfj7hv7rs4dspazilv@54uua2bpcpk3>
-References: <20250303114659.1672695-10-u.kleine-koenig@baylibre.com>
- <20250303114659.1672695-18-u.kleine-koenig@baylibre.com>
- <20250306000718.330c99db@jic23-huawei>
+	s=arc-20240116; t=1741250569; c=relaxed/simple;
+	bh=Qn0Y3wq34ma88v52Q0vjPttdvRfgoyqUtiMEV5R6AO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=TaaGReAJWXqqdLK8vnSHipnu4YAQqCFs8GalnTKYuknBjxqx/5Q5FUO89dhgLsoCU4PLcWw1lzFsTn4tEL6adT26D5IlRPgdVSplf4GrNsbnEyQLlEJeZrwGSgY1OqePgNaYqjNgYU42SOBFLBPV2fWhzNxzGhxQ4VGZHOpcYDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=xAzJdlwn; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5267Sk7N015077;
+	Thu, 6 Mar 2025 09:42:28 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	mcl6sGfOXxz2wVCK7AnSLNHITansIH0yOzXR+7u97no=; b=xAzJdlwnXlBNm1Wa
+	7Ife+ee+VgwahclxL70yp7tvaLJa4H1ObaqD15ZCyqlBMH8sFnRdZUvn31Mp/SYY
+	A6pIR/FJjc7B6PXCWpy9ykshds9Lejm8g+cCQeGONwjQjacbntQuag08ox4s2mY8
+	ddSQ/IRWGPpgvpnKCy7O/ZJ9kLoESBL6G08fUFrN7asYyBbMFxOJt7yJNxjYNB+k
+	iILuXTz1faI7GfE3vI91cHBsKtfVb54RKddtFw73nEowe2PMhzDlVNnwOq6/WEbb
+	xLIadHIi8b/hnQpaRc5nb2vNJe8YRQrNEGYudS/Re0U0EgUNScrj9SFkBxGHFMvf
+	Xt/NHA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 456krth50w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 09:42:28 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 54F7C40052;
+	Thu,  6 Mar 2025 09:41:17 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node5.st.com [10.75.129.134])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 83009441E5C;
+	Thu,  6 Mar 2025 09:40:12 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE5.st.com
+ (10.75.129.134) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 6 Mar
+ 2025 09:40:12 +0100
+Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 6 Mar
+ 2025 09:40:11 +0100
+Message-ID: <32aad66e-a9ae-493a-8bea-a06e096c88f2@foss.st.com>
+Date: Thu, 6 Mar 2025 09:40:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="braso36kgpzqa6iv"
-Content-Disposition: inline
-In-Reply-To: <20250306000718.330c99db@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/8] iio: trigger: stm32-lptimer: add support for
+ stm32mp25
+To: Jonathan Cameron <jic23@kernel.org>
+CC: <lee@kernel.org>, <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <daniel.lezcano@linaro.org>, <tglx@linutronix.de>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <devicetree@vger.kernel.org>, <wbg@kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <olivier.moysan@foss.st.com>
+References: <20250305094935.595667-1-fabrice.gasnier@foss.st.com>
+ <20250305094935.595667-4-fabrice.gasnier@foss.st.com>
+ <20250305144539.54a75689@jic23-huawei>
+Content-Language: en-US
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20250305144539.54a75689@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_03,2025-03-06_01,2024-11-22_01
 
+On 3/5/25 15:45, Jonathan Cameron wrote:
+> On Wed, 5 Mar 2025 10:49:30 +0100
+> Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
+> 
+>> From: Olivier Moysan <olivier.moysan@foss.st.com>
+>>
+>> Add support for STM32MP25 SoC. Use newly introduced compatible to handle
+>> this new HW variant. Add new trigger definitions that can be used by the
+>> stm32 analog-to-digital converter. Use compatible data to identify them.
+>>
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Hi. Oops I replied to v1 without looking for other versions.
+> From a quick glance feedback still applies here.
 
---braso36kgpzqa6iv
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v4 8/8] iio: adc: ad7124: Implement system calibration
-MIME-Version: 1.0
+Hi Jonathan,
 
-On Thu, Mar 06, 2025 at 12:07:18AM +0000, Jonathan Cameron wrote:
-> On Mon,  3 Mar 2025 12:47:06 +0100
-> Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com> wrote:
->=20
-> > Allow triggering both zero-scale and full-scale calibration via sysfs in
-> > the same way as it's done for ad7173.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-> > ---
-> >  drivers/iio/adc/ad7124.c | 153 ++++++++++++++++++++++++++++++++++-----
-> >  1 file changed, 136 insertions(+), 17 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> > index 382f46ff2b51..5ab0d3e48c43 100644
-> > --- a/drivers/iio/adc/ad7124.c
-> > +++ b/drivers/iio/adc/ad7124.c
-> > @@ -4,6 +4,7 @@
-> >   *
-> >   * Copyright 2018 Analog Devices Inc.
-> >   */
-> > +
-> Stray change.  I'm in that sort of mood so I'll tweak it whilst
-> apply.  Rest looks good to me.
+Thanks for reviewing, I've noticed your review comments on V1, I'll take
+care of these in next revision (v4).
 
-Ack, thanks for cleaning up behind me.
+Best Regards,
+Fabrice
 
-> Applied to the togreg branch of iio.git and pushed out as testing.
-> As the fixes are theoretical(ish) I'll not rush them in.
-
-Also Ack.
-
-Thanks
-Uwe
-
---braso36kgpzqa6iv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfJXcUACgkQj4D7WH0S
-/k7GMggAnd1NKiaoKhZmRgoFkNSYlKr3g05lRuBEs91JFvKNJxoV/UU0ZvqpGSOA
-ecyBpb02lZ1gD8M95AciwtSSAtv8fRJLzvjtmN28A6W0w0ScR7TVvlCdf5HZZy4K
-q8QQHWgLIBp508UFwdCqhLtsCD9UxjQROt7qM25CLj3u/x8qpNpIEpTEL9yHmaRA
-NPssmTPPvd6Z/qSsxLel7QlDoYIyleuRwWT9CmD1FJ8SCKo7zcSLdnm9IAGBsn21
-Jmv16gfyLeFrd7vwQs1G85Z4aPdwDhuojrjeEkSsy6LhEZl5quFCSb5rpmOT9xLV
-w0hS+YekqIIB9SWL9wJweHM0xusgAw==
-=C5a+
------END PGP SIGNATURE-----
-
---braso36kgpzqa6iv--
+> 
 

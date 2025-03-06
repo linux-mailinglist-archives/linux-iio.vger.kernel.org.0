@@ -1,81 +1,78 @@
-Return-Path: <linux-iio+bounces-16489-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16492-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D8DA5565C
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 20:15:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0E3A55800
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 22:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FAB1723A3
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 19:15:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A0537A6EEC
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 21:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F288626FA5B;
-	Thu,  6 Mar 2025 19:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3EE20ADCF;
+	Thu,  6 Mar 2025 21:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="FQFeUlT2"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="jyl8fYeX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-09.pe-a.jellyfish.systems (out-09.pe-a.jellyfish.systems [198.54.127.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076641A2391;
-	Thu,  6 Mar 2025 19:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AAD207E04;
+	Thu,  6 Mar 2025 21:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741288502; cv=none; b=GrzteGhNMrlSaw5VT6KmDegDZY3YRbYB7fEkQcQTbgKizqizL0hrAXrRQ43hNTivu12X3pzh9DTM/YYt/tgrOLl0h+W0hiINenO7pQ65OpUEdBhNYzT+hwUiPYsbSGIbCP+yjGzqTFjoaLaUd2zf2RlVifHOG1mjcLsFtmFmxg8=
+	t=1741294883; cv=none; b=UVzg1siGNDGAOJC0+7Vog/KdlWtj1Vz53foS91NgU48xaCfu3oDDryeObYqT6tIhre0AC05b7+n0WELCqfWKTi1xZA16OJNskT67Vl3Cyvzr4VvR8sNH9hAetpkpDb8tiTR9sMFtA0FzJHUqJYoiC9jCEM56fP2ttNEfoMHF3qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741288502; c=relaxed/simple;
-	bh=nBPkoZ8vNwJqp4riykZFnLWtVfneXz+CoQhXP02bOL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCf0gsDT9EG9XVSmMdBa7sG8dVWnhL2dCt+gTZmlS0U72Mdp5mblgZrI1a2t5V8WbmjN9DrE4bJlIg3Qc7b7aJGjEM55cObjrQ6IKW1hB+sVEFduuUkHFhSDMLmIG6ZfAPAmx3FZdaWl/2jHzqPHQeQ1rT8Zo2kdS0u3OfiRdYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=FQFeUlT2; arc=none smtp.client-ip=198.54.127.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
-	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4Z7zR61wghz9sx5;
-	Thu, 06 Mar 2025 19:06:10 +0000 (UTC)
-Received: from MTA-07.privateemail.com (unknown [10.50.14.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4Z7zR6174Sz2Sd0V;
-	Thu,  6 Mar 2025 14:06:10 -0500 (EST)
-Received: from mta-07.privateemail.com (localhost [127.0.0.1])
-	by mta-07.privateemail.com (Postfix) with ESMTP id 4Z7zR56rNMz3hhVN;
-	Thu,  6 Mar 2025 14:06:09 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1741287970;
-	bh=nBPkoZ8vNwJqp4riykZFnLWtVfneXz+CoQhXP02bOL0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQFeUlT28eIzW2YlCPlppE14abMY3SeLk1Tj1JXWghxfljlIK5Jl0+MUUdO9zSs3c
-	 1kwn2dI0z7XHjJqSaYUDmxQr1ry5cuPpO8rjQNE0Hx665rQNrK3hCGDD42LYYLTA4G
-	 LktsomKq/QO3kE3fXjTMoLiSK0v3yU7Es7ee6o23fxdRnwX5d2njSeWA0HLmMt3Nl4
-	 QN2eOJnJWKm2WjyjKBxjJiEZfu8UYFIPGiPK1M5rypui0PZgoq/t50klpzq5FBhA1C
-	 qXetHZ+ud8lwZMA8HBe+FDy1O27vWB8C6GYsgVAt5x+zU3vYeTI8e0rmbu7kC9IZsR
-	 MSV3kK8S6WAiA==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-07.privateemail.com (Postfix) with ESMTPA;
-	Thu,  6 Mar 2025 14:05:55 -0500 (EST)
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	antoniu.miclaus@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	sam.winchenbach@framepointer.org,
-	bpellegrino@arka.org
-Subject: [PATCH 6/6] iio: filter: admv8818: Support frequencies >= 2^32
-Date: Thu,  6 Mar 2025 14:05:28 -0500
-Message-ID: <20250306190528.152133-2-sam.winchenbach@framepointer.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250306190528.152133-1-sam.winchenbach@framepointer.org>
-References: <20250306183314.150253-1-sam.winchenbach@framepointer.org>
- <20250306190528.152133-1-sam.winchenbach@framepointer.org>
+	s=arc-20240116; t=1741294883; c=relaxed/simple;
+	bh=NlDPOSLI9ZcGj7jD5ktaGo9sbNmgAANX13OGGXnvuPc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E8tnKSbRB4mzZbdUfT+A2XQF1LKEogusLA7TBVHQjlC9qoswp8wA1b1wO95fZ0vlqoRyk7iCbcRqxtA5+TomiYpCwciVf/Ds5ccVar22MoSRvFHq6GiI26We+cipHo9iy9nhyAP9DXq4Ww2k6r4mbhtXtkAe/7dT3y+0wo4lorE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=jyl8fYeX; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 526HfcmD031360;
+	Thu, 6 Mar 2025 16:01:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=vukytWQst32XEtZyJvS/dCkd4lu
+	uefdu1bzysWOHepo=; b=jyl8fYeXLtCCknZzOmZTEyYqsRX0ahFkpwG2UJpV3LD
+	DlHlqX6wYEpRskGAL2w8MFetpae03cSYY8VcJYN+rPlvHWBanlxr8rYrdPXpXAOh
+	aMAFZJK2n8Vyitpi19Ip1ijzSFr6WyI3I8hgG+7nS2kSaDNoSPcIPR2A0EXt/Y7t
+	DYrXBE+ipbP7c37RWY4SmozPxI3nHuzEe3JBXwgZ6g6Zr0aWAwIW6mR9Xf997n1c
+	IuikxlxXQrmfnRwL/3VToVPNcyBOXxHVK4JdHZHTCk5AZ35nLTdi383bDW4iU3sZ
+	9CZ4EMAbQpzgZEjGbTIo8Fkdc7aq1Qvf0VAB7qVD92w==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 456j6dhkm8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 16:01:00 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 526L0Xjd034657
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 6 Mar 2025 16:00:33 -0500
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 6 Mar 2025
+ 16:00:32 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 6 Mar 2025 16:00:32 -0500
+Received: from JSANTO12-L01.ad.analog.com ([10.65.60.206])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 526L0GbK011242;
+	Thu, 6 Mar 2025 16:00:18 -0500
+From: Jonathan Santos <Jonathan.Santos@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>
+CC: Jonathan Santos <Jonathan.Santos@analog.com>, <lars@metafoo.de>,
+        <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
+        <jic23@kernel.org>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+        <conor+dt@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
+        <lgirdwood@gmail.com>, <broonie@kernel.org>, <dlechner@baylibre.com>,
+        <marcelo.schmitt1@gmail.com>, <jonath4nns@gmail.com>
+Subject: [PATCH v4 00/17] iio: adc: ad7768-1: Add features, improvements, and fixes
+Date: Thu, 6 Mar 2025 18:00:15 -0300
+Message-ID: <cover.1741268122.git.Jonathan.Santos@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,67 +80,96 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=R+r5GcRX c=1 sm=1 tr=0 ts=67ca0d0c cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=DcVhKpCQim4X3dEw7YsA:9
+X-Proofpoint-ORIG-GUID: PcJ60qQDPMO0FNkS1t1irkG8-68BlBGv
+X-Proofpoint-GUID: PcJ60qQDPMO0FNkS1t1irkG8-68BlBGv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_07,2025-03-06_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 bulkscore=0 mlxlogscore=862 impostorscore=0
+ clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503060160
 
-From: Brian Pellegrino <bpellegrino@arka.org>
+This patch series introduces some new features, improvements,
+and fixes for the AD7768-1 ADC driver. 
 
-This patch allows writing u64 values to the ADMV8818's high and low-pass
-filter frequencies. It includes the following changes:
+The goal is to support all key functionalities listed in the device
+datasheet, including filter mode selection, common mode voltage output
+configuration and GPIO support. Additionally, this includes fixes 
+for SPI communication and for IIO interface, and also code improvements
+to enhance maintainability and readability.
 
-- Rejects negative frequencies in admv8818_write_raw.
-- Adds a write_raw_get_fmt function to admv8818's iio_info, returning
-  IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
-
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
-Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
 ---
- drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Changes in v4:
+* Added missing `select REGMAP_SPI` and `select REGULATOR` to the device's Kconfig.
+* VCM output regulator property renamed.
+* Added direct mode conditional locks to regulator controller callbacks.
+* Renamed regulator controller.
+* Created helper function to precalculate the sampling frequency table and avoid
+  race conditions.
+* Link to v3: https://lore.kernel.org/linux-iio/cover.1739368121.git.Jonathan.Santos@analog.com/T/#t
 
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index 8cdfae56199b..1228dd5ddb36 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -402,6 +402,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
- 	return ret;
- }
- 
-+static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
-+								struct iio_chan_spec const *chan,
-+								long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
-+	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
-+		return IIO_VAL_INT_64;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int admv8818_write_raw(struct iio_dev *indio_dev,
- 			      struct iio_chan_spec const *chan,
- 			      int val, int val2, long info)
-@@ -410,6 +423,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
- 
- 	u64 freq = ((u64)val2 << 32 | (u32)val);
- 
-+	if ((s64)freq < 0)
-+		return -EINVAL;
-+
- 	switch (info) {
- 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
- 		return admv8818_lpf_select(st, freq);
-@@ -571,6 +587,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
- 
- static const struct iio_info admv8818_info = {
- 	.write_raw = admv8818_write_raw,
-+	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
- 	.read_raw = admv8818_read_raw,
- 	.debugfs_reg_access = &admv8818_reg_access,
- };
+Changes in v3:
+* Fixed irregular or missing SoBs.
+* Moved MOSI idle state patch to the start of the patch, as the other fix.
+* fixed dt-binding errors.
+* Trigger-sources is handled in a different way, as an alternative to sync-in-gpio.
+  (this way we avoid breaking old applications).
+* VCM output is controlled by the regulator framework.
+* Added a second regmap for 24-bit register values.
+* Add new preparatory patch replacing the manual attribute declarations for
+  the read_avail from struct iio_info.
+* included sinc3+rej60 filter type.
+* Addressed review comments, see individual pacthes.
+* Link to v2: https://lore.kernel.org/linux-iio/cover.1737985435.git.Jonathan.Santos@analog.com/T/#u
+
+Changes in v2:
+* Removed synchronization over SPI property and replaced it for trigger-sources.
+* Added GPIO controller documentation.
+* VCM output control changed from an IIO attribute to a devicetree property (static value).
+* Converted driver to use regmap and dropped spi_read_reg and spi_write_reg pacthes.
+* replaced decimation_rate attribute for oversampling_ratio and dropped device specific documentation patch.
+* Added low pass -3dB cutoff attribute.
+* Addressed review comments, see individual pacthes.
+* Link to v1: https://lore.kernel.org/linux-iio/cover.1736201898.git.Jonathan.Santos@analog.com/T/#t
+---
+
+Jonathan Santos (13):
+  iio: adc: ad7768-1: set MOSI idle state to prevent accidental reset
+  dt-bindings: iio: adc: ad7768-1: add trigger-sources property
+  dt-bindings: iio: adc: ad7768-1: Document GPIO controller
+  dt-bindings: iio: adc: ad7768-1: document regulator provider property
+  Documentation: ABI: add wideband filter type to  sysfs-bus-iio
+  iio: adc: ad7768-1: remove unnecessary locking
+  iio: adc: ad7768-1: convert driver to use regmap
+  iio: adc: ad7768-1: add regulator to control VCM output
+  iio: adc: ad7768-1: add multiple scan types to support 16-bits mode
+  iio: adc: ad7768-1: add support for Synchronization over SPI
+  iio: adc: ad7768-1: replace manual attribute declaration
+  iio: adc: ad7768-1: add filter type and oversampling ratio attributes
+  iio: adc: ad7768-1: add low pass -3dB cutoff attribute
+
+Sergiu Cuciurean (4):
+  iio: adc: ad7768-1: Fix conversion result sign
+  iio: adc: ad7768-1: Add reset gpio
+  iio: adc: ad7768-1: Move buffer allocation to a separate function
+  iio: adc: ad7768-1: Add GPIO controller support
+
+ Documentation/ABI/testing/sysfs-bus-iio       |    2 +
+ .../bindings/iio/adc/adi,ad7768-1.yaml        |   59 +-
+ drivers/iio/adc/Kconfig                       |    2 +
+ drivers/iio/adc/ad7768-1.c                    | 1116 ++++++++++++++---
+ 4 files changed, 999 insertions(+), 180 deletions(-)
+
+
+base-commit: 5de07b8a24cf44cdb78adeab790704bf577c2c1d
+prerequisite-patch-id: 8b531bca46f7c7ea1c0f6d232d162fd05fda52f7
 -- 
-2.48.1
+2.34.1
 
 

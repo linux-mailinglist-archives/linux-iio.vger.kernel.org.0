@@ -1,619 +1,104 @@
-Return-Path: <linux-iio+bounces-16486-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16488-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82246A5551C
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 19:35:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFECA5560A
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 19:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B283C189216A
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 18:35:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 875AF162975
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 18:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F5325D541;
-	Thu,  6 Mar 2025 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54DD26B955;
+	Thu,  6 Mar 2025 18:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="iCMPRokJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/2LXghN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-16.pe-b.jellyfish.systems (out-16.pe-b.jellyfish.systems [198.54.127.93])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742CE1DE4EC;
-	Thu,  6 Mar 2025 18:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AE026B088
+	for <linux-iio@vger.kernel.org>; Thu,  6 Mar 2025 18:56:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741286095; cv=none; b=sLuiuv5JI2ewoUUIx3QJsbYOOhDVNO0dGXRsJUD0G2+699sI9OgCvIpJD8FNIbOX8AR7mucos5lrxkOg2i4YZPr4+TVsHytugpJhtj1Qg+dpwYaCYBeW2/mWdsck6QTkWuXfQTaW24SaUzS3xi2LSvpkCO3V+vaqr9CBk7iu7XE=
+	t=1741287386; cv=none; b=GC4C1xidxB0VWOVCaZus0DgXZhOA6iTF0cp3jgnRuHTr8tHsMECCnzpCVM7bDQBR8TeXofBA+zypoH/tHSSP5OWY9OwCQ/bMjDG3MRM9alUIxhrWaKMVt2oyA4lPK8vcxLKo8lQamyGxyTl0f7CKR9qLbvrqTVvIWzf38fY2mUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741286095; c=relaxed/simple;
-	bh=5DdoYI1N24gBpAiXXoKVPC5fmN2nbZKC9ZzPHPUeQjc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzZyZfpd/nw3RqdqPsfKMhXptvrCu9T0W1vki1+OLjTezOBv9Ch3s5UblPIaewQ58/GrFtaGabxNcQ+I3GCJqZYe2lu6XRD0f/A0izwiTtgh/z8YVKD7Km2dlAhrOhUFIeVMG4gNY+hoX60ipSMm1eC11Wy80Z25MNYfnVQsd9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=iCMPRokJ; arc=none smtp.client-ip=198.54.127.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01.privateemail.com [198.54.118.220])
-	by pe-b.jellyfish.systems (Postfix) with ESMTPA id 4Z7yl03mHHzGpKV;
-	Thu, 06 Mar 2025 18:34:52 +0000 (UTC)
-Received: from MTA-05.privateemail.com (unknown [10.50.14.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01.privateemail.com (Postfix) with ESMTPS id 4Z7yl02lBFz3hhVZ;
-	Thu,  6 Mar 2025 13:34:52 -0500 (EST)
-Received: from mta-05.privateemail.com (localhost [127.0.0.1])
-	by mta-05.privateemail.com (Postfix) with ESMTP id 4Z7yl00v7dz3hhbw;
-	Thu,  6 Mar 2025 13:34:52 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1741286092;
-	bh=5DdoYI1N24gBpAiXXoKVPC5fmN2nbZKC9ZzPHPUeQjc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCMPRokJ+5m2WsUIZ6s8QbTU1H/eGsqo56ulaLJmd7lCkhMg7LGPyoTAFYQ2400Ec
-	 4Y/7s2f/L4vWTDJ2K7bhbaPjmUU9x4XglYajSpwfLQqK1TvBReOTLR+YEKjUheKGFW
-	 8c1aw56gXCNGwHxrHk6PAC05Oh1c6s4kPiixAoj33C5nAPGIb1uxEDMecCIm9K4sr1
-	 KMGoXg/o1Y7NWNteelFhxa6dQuL9l6UZBX9FP6YNNZc9Ckg0e0m2e3DggSNs6r8amn
-	 vMJJqYpf6qY4HlkRKTpLCovAJJBtAwFJph4uNBDUoVvoALxzZXIdu7GPQgGkExIR3z
-	 SngsBulQDvNRA==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-05.privateemail.com (Postfix) with ESMTPA;
-	Thu,  6 Mar 2025 13:34:37 -0500 (EST)
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	antoniu.miclaus@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	sam.winchenbach@framepointer.org,
-	bpellegrino@arka.org
-Subject: [PATCH v5 4/6] iio: filter: admv8818: fix range calculation
-Date: Thu,  6 Mar 2025 13:33:12 -0500
-Message-ID: <20250306183314.150253-4-sam.winchenbach@framepointer.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250306183314.150253-1-sam.winchenbach@framepointer.org>
-References: <20250306183314.150253-1-sam.winchenbach@framepointer.org>
+	s=arc-20240116; t=1741287386; c=relaxed/simple;
+	bh=qn6TH2PXifUHjmG0ByfngdDrdMJ9w0HJg1A2XHC9JX4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rG/o1RaIh+Xm3Sd/m/Iwhma732Nq3jtzZaZROPgHe3V8wYcRcUE86+QodE6YXQ1wMBrrJMnkaadjRQcYwbv6hTr51vy5TK+Nao8qlJjkYiJs5wArQXJ9fTog4G2KlgGg+XWPYG8ebkLQ891fgVeaDtaOqD5LXQL7aC2DKBs90oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/2LXghN; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e60cab0f287so708507276.0
+        for <linux-iio@vger.kernel.org>; Thu, 06 Mar 2025 10:56:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741287384; x=1741892184; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lirtugOWcR3f2sQ0CrGMqigxtGw45D1gVWdCKdHV4w0=;
+        b=U/2LXghNqGCqoC4g8iMlLKCZ+W7680GAZJDj1mFYFyBUfc3w+lpw7p02iygiTAf55v
+         OiOgPH/G0wU86wAHhlmLtW6PcY6jNdfaqK25dDZhwrraW5o9O1H46edodaPszysyNjkQ
+         Nw3wvJ4wr08tgwTr+2V1g3UIhJrk2CKeAFYeHLSLUXxkCV5D0KUvwx2sJlLO+D0iXJ3W
+         j2HCW3gCMNIuWmKXjmlXcK8mhVJk7JL21reUYekZ7ohlgS787m/RFhSbXGXd2GYLaAjP
+         S+7vJ/KQRjo9L5FOLH6AGRlRVAEJPLzk/kUYtVs/Ek1QVIKb8J5cMmJIvgrM2DreC2xo
+         9NKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741287384; x=1741892184;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lirtugOWcR3f2sQ0CrGMqigxtGw45D1gVWdCKdHV4w0=;
+        b=e/ICCt3Q2uPoWZexiT9qZ5XKM99BLoYho3w9Sdc1zVOy0LRpIRTeP8+dved6uqW2Wy
+         VEBPHSZ4IewgBW17E694tjeCiKsf/uNLkDxk2xxymibKcEqbbBVSWP0IchdWsjizKmTx
+         0UzxO6IsS7OiiN5DDhvsIqEbavQJZo0t2t1s+D7QrIOgeo1c22AnS8JjjyuRKAqLuhNi
+         rXx8T2AYAbXbd0h7TR5PAv/rL9ohBYcsk9ZvhI9AwAKUBOuuqlwr9j0U6NKLhwISLJ73
+         5QtYNxYh/l38bNtUraqkP8XORNeVVe1A5FOszdExeTtz/B9SraWq8DQLcH8Kx88T2gCw
+         n9Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCV3vNW+tXf3itCmmg+PqsB8fPcYofqwwBlwWfnkyL8L3wgqPJhojb/TyeniyLWZsSU89l3FLCQWmK0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg8q9hBMkHSSd1dCWVB9crmKUGG8IOY4/Q5Th14RLs+06lPyha
+	LNsJWN7PgmV7MF7NG792CLaAWRzaOBBUVQHruHfofjWepkEb8guhSE9Lg28smksRfSbLSmAe5If
+	GtYJ9qpr0mXLbVp2ZeX6TCQhZCBI=
+X-Gm-Gg: ASbGnctCzkZYMV4Sq6/LVllCIBR3IfM3BpgaJkNe6N6H7LxR1p6yEmDhgfq7w6zm0rM
+	8G02QW83BInQxHE29t4eIlNjVuSKq4WTS9kgF/i2bdeiAsbMuDFWha53lywJlrTEX127FWt0ANx
+	CueBGJ/XftMkjgTZOJAIBmxQ==
+X-Google-Smtp-Source: AGHT+IGI9Fm0bopwYG3hS8L7LA2r8v8VYKqWsEiNhr02w+yqDusXjSc+oeC1AvmUNJbAGtc2Iv1RpaAbrH+zsxlLZZA=
+X-Received: by 2002:a05:6902:250f:b0:e60:a16c:d017 with SMTP id
+ 3f1490d57ef6-e635c203662mr577128276.49.1741287384016; Thu, 06 Mar 2025
+ 10:56:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
+References: <CAGd6pzNTB5f++sbirWxnD1Tq_rjTkBDVmSrpFYsMisEasAq4Rg@mail.gmail.com>
+ <20250222151143.7ca7f718@jic23-huawei> <CAGd6pzOO_8VV8RPVz81-LE=eisuPjYsRQZAYgyfxwKLjKSM06Q@mail.gmail.com>
+ <Z8U0lsntJpTuBzyT@debian-BULLSEYE-live-builder-AMD64> <20250305145749.413fe30b@jic23-huawei>
+In-Reply-To: <20250305145749.413fe30b@jic23-huawei>
+From: Siddharth Menon <simeddon@gmail.com>
+Date: Fri, 7 Mar 2025 00:25:46 +0530
+X-Gm-Features: AQ5f1JoMX2OPL4R8Zxov-SPpxQIVGFxo8OMelTRo9_He05nJQLrTtqxrySjD694
+Message-ID: <CAGd6pzMzrJbRBXr2esV1x-TxXjg9zt22y6UdSXgXe7jCO3_raA@mail.gmail.com>
+Subject: Re: GSoC IIO project: Siddharth Menon
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Search for the minimum error while ensuring that the LPF corner
-frequency is greater than the target, and the HPF corner frequency
-is lower than the target
+On Wed, 5 Mar 2025 at 20:28, Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> This one is an interesting part - I have one somewhere from trying to help
+> on the previous go at cleaning it up.  One issue is that I couldn't manage
+> to get a stable SPI connection patched onto the dev board.  It kind of
+> worked if I used a long cable and did a rain dance, but not enough to really
+> test it.
 
-This fixes issues where the range calculations were suboptimal.
+I'll see if I can get my hands on one. Just to clarify, were the issues present
+before, or are you referring specifically to the patch?
 
-Add two new DTS properties to set the margin between the input frequency
-and the calculated corner frequency
+Please share the specific rain dance with me for future reference.
 
-Below is a generated table of the differences between the old algorithm
-and the new. This is a sweep from 0 to 20 GHz in 10 MHz steps.
-=== HPF ===
-freq = 1750 MHz, 3db: bypass => 1750 MHz
-freq = 3400 MHz, 3db: 3310 => 3400 MHz
-freq = 3410 MHz, 3db: 3310 => 3400 MHz
-freq = 3420 MHz, 3db: 3310 => 3400 MHz
-freq = 3660 MHz, 3db: 3550 => 3656 MHz
-freq = 6600 MHz, 3db: 6479 => 6600 MHz
-freq = 6610 MHz, 3db: 6479 => 6600 MHz
-freq = 6620 MHz, 3db: 6479 => 6600 MHz
-freq = 6630 MHz, 3db: 6479 => 6600 MHz
-freq = 6640 MHz, 3db: 6479 => 6600 MHz
-freq = 6650 MHz, 3db: 6479 => 6600 MHz
-freq = 6660 MHz, 3db: 6479 => 6600 MHz
-freq = 6670 MHz, 3db: 6479 => 6600 MHz
-freq = 6680 MHz, 3db: 6479 => 6600 MHz
-freq = 6690 MHz, 3db: 6479 => 6600 MHz
-freq = 6700 MHz, 3db: 6479 => 6600 MHz
-freq = 6710 MHz, 3db: 6479 => 6600 MHz
-freq = 6720 MHz, 3db: 6479 => 6600 MHz
-freq = 6730 MHz, 3db: 6479 => 6600 MHz
-freq = 6960 MHz, 3db: 6736 => 6960 MHz
-freq = 6970 MHz, 3db: 6736 => 6960 MHz
-freq = 6980 MHz, 3db: 6736 => 6960 MHz
-freq = 6990 MHz, 3db: 6736 => 6960 MHz
-freq = 7320 MHz, 3db: 7249 => 7320 MHz
-freq = 7330 MHz, 3db: 7249 => 7320 MHz
-freq = 7340 MHz, 3db: 7249 => 7320 MHz
-freq = 7350 MHz, 3db: 7249 => 7320 MHz
-freq = 7360 MHz, 3db: 7249 => 7320 MHz
-freq = 7370 MHz, 3db: 7249 => 7320 MHz
-freq = 7380 MHz, 3db: 7249 => 7320 MHz
-freq = 7390 MHz, 3db: 7249 => 7320 MHz
-freq = 7400 MHz, 3db: 7249 => 7320 MHz
-freq = 7410 MHz, 3db: 7249 => 7320 MHz
-freq = 7420 MHz, 3db: 7249 => 7320 MHz
-freq = 7430 MHz, 3db: 7249 => 7320 MHz
-freq = 7440 MHz, 3db: 7249 => 7320 MHz
-freq = 7450 MHz, 3db: 7249 => 7320 MHz
-freq = 7460 MHz, 3db: 7249 => 7320 MHz
-freq = 7470 MHz, 3db: 7249 => 7320 MHz
-freq = 7480 MHz, 3db: 7249 => 7320 MHz
-freq = 7490 MHz, 3db: 7249 => 7320 MHz
-freq = 7500 MHz, 3db: 7249 => 7320 MHz
-freq = 12500 MHz, 3db: 12000 => 12500 MHz
-
-=== LPF ===
-freq = 2050 MHz, 3db: bypass => 2050 MHz
-freq = 2170 MHz, 3db: 2290 => 2170 MHz
-freq = 2290 MHz, 3db: 2410 => 2290 MHz
-freq = 2410 MHz, 3db: 2530 => 2410 MHz
-freq = 2530 MHz, 3db: 2650 => 2530 MHz
-freq = 2650 MHz, 3db: 2770 => 2650 MHz
-freq = 2770 MHz, 3db: 2890 => 2770 MHz
-freq = 2890 MHz, 3db: 3010 => 2890 MHz
-freq = 3010 MHz, 3db: 3130 => 3010 MHz
-freq = 3130 MHz, 3db: 3250 => 3130 MHz
-freq = 3250 MHz, 3db: 3370 => 3250 MHz
-freq = 3260 MHz, 3db: 3370 => 3350 MHz
-freq = 3270 MHz, 3db: 3370 => 3350 MHz
-freq = 3280 MHz, 3db: 3370 => 3350 MHz
-freq = 3290 MHz, 3db: 3370 => 3350 MHz
-freq = 3300 MHz, 3db: 3370 => 3350 MHz
-freq = 3310 MHz, 3db: 3370 => 3350 MHz
-freq = 3320 MHz, 3db: 3370 => 3350 MHz
-freq = 3330 MHz, 3db: 3370 => 3350 MHz
-freq = 3340 MHz, 3db: 3370 => 3350 MHz
-freq = 3350 MHz, 3db: 3370 => 3350 MHz
-freq = 3370 MHz, 3db: 3490 => 3370 MHz
-freq = 3490 MHz, 3db: 3610 => 3490 MHz
-freq = 3610 MHz, 3db: 3730 => 3610 MHz
-freq = 3730 MHz, 3db: 3850 => 3730 MHz
-freq = 3850 MHz, 3db: 3870 => 3850 MHz
-freq = 3870 MHz, 3db: 4130 => 3870 MHz
-freq = 4130 MHz, 3db: 4390 => 4130 MHz
-freq = 4390 MHz, 3db: 4650 => 4390 MHz
-freq = 4650 MHz, 3db: 4910 => 4650 MHz
-freq = 4910 MHz, 3db: 5170 => 4910 MHz
-freq = 5170 MHz, 3db: 5430 => 5170 MHz
-freq = 5430 MHz, 3db: 5690 => 5430 MHz
-freq = 5690 MHz, 3db: 5950 => 5690 MHz
-freq = 5950 MHz, 3db: 6210 => 5950 MHz
-freq = 6210 MHz, 3db: 6470 => 6210 MHz
-freq = 6470 MHz, 3db: 6730 => 6470 MHz
-freq = 6730 MHz, 3db: 6990 => 6730 MHz
-freq = 6990 MHz, 3db: 7250 => 6990 MHz
-freq = 7000 MHz, 3db: 7250 => 7000 MHz
-freq = 7250 MHz, 3db: 7400 => 7250 MHz
-freq = 7400 MHz, 3db: 7800 => 7400 MHz
-freq = 7800 MHz, 3db: 8200 => 7800 MHz
-freq = 8200 MHz, 3db: 8600 => 8200 MHz
-freq = 8600 MHz, 3db: 9000 => 8600 MHz
-freq = 9000 MHz, 3db: 9400 => 9000 MHz
-freq = 9400 MHz, 3db: 9800 => 9400 MHz
-freq = 9800 MHz, 3db: 10200 => 9800 MHz
-freq = 10200 MHz, 3db: 10600 => 10200 MHz
-freq = 10600 MHz, 3db: 11000 => 10600 MHz
-freq = 11000 MHz, 3db: 11400 => 11000 MHz
-freq = 11400 MHz, 3db: 11800 => 11400 MHz
-freq = 11800 MHz, 3db: 12200 => 11800 MHz
-freq = 12200 MHz, 3db: 12600 => 12200 MHz
-freq = 12210 MHz, 3db: 12600 => 12550 MHz
-freq = 12220 MHz, 3db: 12600 => 12550 MHz
-freq = 12230 MHz, 3db: 12600 => 12550 MHz
-freq = 12240 MHz, 3db: 12600 => 12550 MHz
-freq = 12250 MHz, 3db: 12600 => 12550 MHz
-freq = 12260 MHz, 3db: 12600 => 12550 MHz
-freq = 12270 MHz, 3db: 12600 => 12550 MHz
-freq = 12280 MHz, 3db: 12600 => 12550 MHz
-freq = 12290 MHz, 3db: 12600 => 12550 MHz
-freq = 12300 MHz, 3db: 12600 => 12550 MHz
-freq = 12310 MHz, 3db: 12600 => 12550 MHz
-freq = 12320 MHz, 3db: 12600 => 12550 MHz
-freq = 12330 MHz, 3db: 12600 => 12550 MHz
-freq = 12340 MHz, 3db: 12600 => 12550 MHz
-freq = 12350 MHz, 3db: 12600 => 12550 MHz
-freq = 12360 MHz, 3db: 12600 => 12550 MHz
-freq = 12370 MHz, 3db: 12600 => 12550 MHz
-freq = 12380 MHz, 3db: 12600 => 12550 MHz
-freq = 12390 MHz, 3db: 12600 => 12550 MHz
-freq = 12400 MHz, 3db: 12600 => 12550 MHz
-freq = 12410 MHz, 3db: 12600 => 12550 MHz
-freq = 12420 MHz, 3db: 12600 => 12550 MHz
-freq = 12430 MHz, 3db: 12600 => 12550 MHz
-freq = 12440 MHz, 3db: 12600 => 12550 MHz
-freq = 12450 MHz, 3db: 12600 => 12550 MHz
-freq = 12460 MHz, 3db: 12600 => 12550 MHz
-freq = 12470 MHz, 3db: 12600 => 12550 MHz
-freq = 12480 MHz, 3db: 12600 => 12550 MHz
-freq = 12490 MHz, 3db: 12600 => 12550 MHz
-freq = 12500 MHz, 3db: 12600 => 12550 MHz
-freq = 12510 MHz, 3db: 12600 => 12550 MHz
-freq = 12520 MHz, 3db: 12600 => 12550 MHz
-freq = 12530 MHz, 3db: 12600 => 12550 MHz
-freq = 12540 MHz, 3db: 12600 => 12550 MHz
-freq = 12550 MHz, 3db: 12600 => 12550 MHz
-freq = 12600 MHz, 3db: 13000 => 12600 MHz
-freq = 12610 MHz, 3db: 13000 => 12970 MHz
-freq = 12620 MHz, 3db: 13000 => 12970 MHz
-freq = 12630 MHz, 3db: 13000 => 12970 MHz
-freq = 12640 MHz, 3db: 13000 => 12970 MHz
-freq = 12650 MHz, 3db: 13000 => 12970 MHz
-freq = 12660 MHz, 3db: 13000 => 12970 MHz
-freq = 12670 MHz, 3db: 13000 => 12970 MHz
-freq = 12680 MHz, 3db: 13000 => 12970 MHz
-freq = 12690 MHz, 3db: 13000 => 12970 MHz
-freq = 12700 MHz, 3db: 13000 => 12970 MHz
-freq = 12710 MHz, 3db: 13000 => 12970 MHz
-freq = 12720 MHz, 3db: 13000 => 12970 MHz
-freq = 12730 MHz, 3db: 13000 => 12970 MHz
-freq = 12740 MHz, 3db: 13000 => 12970 MHz
-freq = 12750 MHz, 3db: 13000 => 12970 MHz
-freq = 12760 MHz, 3db: 13000 => 12970 MHz
-freq = 12770 MHz, 3db: 13000 => 12970 MHz
-freq = 12780 MHz, 3db: 13000 => 12970 MHz
-freq = 12790 MHz, 3db: 13000 => 12970 MHz
-freq = 12800 MHz, 3db: 13000 => 12970 MHz
-freq = 12810 MHz, 3db: 13000 => 12970 MHz
-freq = 12820 MHz, 3db: 13000 => 12970 MHz
-freq = 12830 MHz, 3db: 13000 => 12970 MHz
-freq = 12840 MHz, 3db: 13000 => 12970 MHz
-freq = 12850 MHz, 3db: 13000 => 12970 MHz
-freq = 12860 MHz, 3db: 13000 => 12970 MHz
-freq = 12870 MHz, 3db: 13000 => 12970 MHz
-freq = 12880 MHz, 3db: 13000 => 12970 MHz
-freq = 12890 MHz, 3db: 13000 => 12970 MHz
-freq = 12900 MHz, 3db: 13000 => 12970 MHz
-freq = 12910 MHz, 3db: 13000 => 12970 MHz
-freq = 12920 MHz, 3db: 13000 => 12970 MHz
-freq = 12930 MHz, 3db: 13000 => 12970 MHz
-freq = 12940 MHz, 3db: 13000 => 12970 MHz
-freq = 12950 MHz, 3db: 13000 => 12970 MHz
-freq = 12960 MHz, 3db: 13000 => 12970 MHz
-freq = 12970 MHz, 3db: 13000 => 12970 MHz
-freq = 13000 MHz, 3db: 13390 => 13000 MHz
-freq = 13390 MHz, 3db: 13810 => 13390 MHz
-freq = 13810 MHz, 3db: 14230 => 13810 MHz
-freq = 14230 MHz, 3db: 14650 => 14230 MHz
-freq = 14650 MHz, 3db: 15070 => 14650 MHz
-freq = 15070 MHz, 3db: 15490 => 15070 MHz
-freq = 15490 MHz, 3db: 15910 => 15490 MHz
-freq = 15910 MHz, 3db: 16330 => 15910 MHz
-freq = 16330 MHz, 3db: 16750 => 16330 MHz
-freq = 16750 MHz, 3db: 17170 => 16750 MHz
-freq = 17170 MHz, 3db: 17590 => 17170 MHz
-freq = 17590 MHz, 3db: 18010 => 17590 MHz
-freq = 18010 MHz, 3db: 18430 => 18010 MHz
-freq = 18430 MHz, 3db: 18850 => 18430 MHz
-freq = 18850 MHz, 3db: bypass => 18850 MHz
-
-Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
-Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
----
- drivers/iio/filter/admv8818.c | 199 +++++++++++++++++++++++++---------
- 1 file changed, 146 insertions(+), 53 deletions(-)
-
-diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
-index a059282e0251..8cdfae56199b 100644
---- a/drivers/iio/filter/admv8818.c
-+++ b/drivers/iio/filter/admv8818.c
-@@ -14,6 +14,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/mutex.h>
- #include <linux/notifier.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/spi/spi.h>
- #include <linux/units.h>
-@@ -70,6 +71,16 @@
- #define ADMV8818_HPF_WR0_MSK			GENMASK(7, 4)
- #define ADMV8818_LPF_WR0_MSK			GENMASK(3, 0)
- 
-+#define ADMV8818_BAND_BYPASS       0
-+#define ADMV8818_BAND_MIN          1
-+#define ADMV8818_BAND_MAX          4
-+#define ADMV8818_BAND_CORNER_LOW   0
-+#define ADMV8818_BAND_CORNER_HIGH  1
-+
-+#define ADMV8818_STATE_MIN   0
-+#define ADMV8818_STATE_MAX   15
-+#define ADMV8818_NUM_STATES  16
-+
- enum {
- 	ADMV8818_BW_FREQ,
- 	ADMV8818_CENTER_FREQ
-@@ -90,16 +101,20 @@ struct admv8818_state {
- 	struct mutex		lock;
- 	unsigned int		filter_mode;
- 	u64			cf_hz;
-+	u64			lpf_margin_hz;
-+	u64			hpf_margin_hz;
- };
- 
--static const unsigned long long freq_range_hpf[4][2] = {
-+static const unsigned long long freq_range_hpf[5][2] = {
-+	{0ULL, 0ULL}, /* bypass */
- 	{1750000000ULL, 3550000000ULL},
- 	{3400000000ULL, 7250000000ULL},
- 	{6600000000, 12000000000},
- 	{12500000000, 19900000000}
- };
- 
--static const unsigned long long freq_range_lpf[4][2] = {
-+static const unsigned long long freq_range_lpf[5][2] = {
-+	{U64_MAX, U64_MAX}, /* bypass */
- 	{2050000000ULL, 3850000000ULL},
- 	{3350000000ULL, 7250000000ULL},
- 	{7000000000, 13000000000},
-@@ -121,44 +136,59 @@ static const char * const admv8818_modes[] = {
- 
- static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- {
--	unsigned int hpf_step = 0, hpf_band = 0, i, j;
--	u64 freq_step;
--	int ret;
-+	int band, state, ret;
-+	unsigned int hpf_state = ADMV8818_STATE_MIN, hpf_band = ADMV8818_BAND_BYPASS;
-+	u64 freq_error, min_freq_error, freq_corner, freq_step;
- 
--	if (freq < freq_range_hpf[0][0])
-+	if (freq < freq_range_hpf[ADMV8818_BAND_MIN][ADMV8818_BAND_CORNER_LOW])
- 		goto hpf_write;
- 
--	if (freq > freq_range_hpf[3][1]) {
--		hpf_step = 15;
--		hpf_band = 4;
--
-+	if (freq >= freq_range_hpf[ADMV8818_BAND_MAX][ADMV8818_BAND_CORNER_HIGH]) {
-+		hpf_state = ADMV8818_STATE_MAX;
-+		hpf_band = ADMV8818_BAND_MAX;
- 		goto hpf_write;
- 	}
- 
--	for (i = 0; i < 4; i++) {
--		freq_step = div_u64((freq_range_hpf[i][1] -
--			freq_range_hpf[i][0]), 15);
-+	/* Close HPF frequency gap between 12 and 12.5 GHz */
-+	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
-+		hpf_state = ADMV8818_STATE_MAX;
-+		hpf_band = 3;
-+		goto hpf_write;
-+	}
- 
--		if (freq > freq_range_hpf[i][0] &&
--		    (freq < freq_range_hpf[i][1] + freq_step)) {
--			hpf_band = i + 1;
-+	min_freq_error = U64_MAX;
-+	for (band = ADMV8818_BAND_MIN; band <= ADMV8818_BAND_MAX; band++) {
-+		/*
-+		 * This (and therefore all other ranges) have a corner
-+		 * frequency higher than the target frequency.
-+		 */
-+		if (freq_range_hpf[band][ADMV8818_BAND_CORNER_LOW] > freq)
-+			break;
- 
--			for (j = 1; j <= 16; j++) {
--				if (freq < (freq_range_hpf[i][0] + (freq_step * j))) {
--					hpf_step = j - 1;
--					break;
--				}
-+		freq_step = freq_range_hpf[band][ADMV8818_BAND_CORNER_HIGH] -
-+			    freq_range_hpf[band][ADMV8818_BAND_CORNER_LOW];
-+		freq_step = div_u64(freq_step, ADMV8818_NUM_STATES - 1);
-+
-+		for (state = ADMV8818_STATE_MIN; state <= ADMV8818_STATE_MAX; state++) {
-+			freq_corner = freq_range_hpf[band][ADMV8818_BAND_CORNER_LOW] +
-+				      freq_step * state;
-+
-+			/*
-+			 * This (and therefore all other states) have a corner
-+			 * frequency higher than the target frequency.
-+			 */
-+			if (freq_corner > freq)
-+				break;
-+
-+			freq_error = freq - freq_corner;
-+			if (freq_error < min_freq_error) {
-+				min_freq_error = freq_error;
-+				hpf_state = state;
-+				hpf_band = band;
- 			}
--			break;
- 		}
- 	}
- 
--	/* Close HPF frequency gap between 12 and 12.5 GHz */
--	if (freq >= 12000ULL * HZ_PER_MHZ && freq < 12500ULL * HZ_PER_MHZ) {
--		hpf_band = 3;
--		hpf_step = 15;
--	}
--
- hpf_write:
- 	ret = regmap_update_bits(st->regmap, ADMV8818_REG_WR0_SW,
- 				 ADMV8818_SW_IN_SET_WR0_MSK |
-@@ -170,7 +200,7 @@ static int __admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- 
- 	return regmap_update_bits(st->regmap, ADMV8818_REG_WR0_FILTER,
- 				  ADMV8818_HPF_WR0_MSK,
--				  FIELD_PREP(ADMV8818_HPF_WR0_MSK, hpf_step));
-+				  FIELD_PREP(ADMV8818_HPF_WR0_MSK, hpf_state));
- }
- 
- static int admv8818_hpf_select(struct admv8818_state *st, u64 freq)
-@@ -186,31 +216,52 @@ static int admv8818_hpf_select(struct admv8818_state *st, u64 freq)
- 
- static int __admv8818_lpf_select(struct admv8818_state *st, u64 freq)
- {
--	unsigned int lpf_step = 0, lpf_band = 0, i, j;
--	u64 freq_step;
--	int ret;
-+	int band, state, ret;
-+	unsigned int lpf_state = ADMV8818_STATE_MIN, lpf_band = ADMV8818_BAND_BYPASS;
-+	u64 freq_error, min_freq_error, freq_corner, freq_step;
- 
--	if (freq > freq_range_lpf[3][1])
-+	if (freq > freq_range_lpf[ADMV8818_BAND_MAX][ADMV8818_BAND_CORNER_HIGH])
- 		goto lpf_write;
- 
--	if (freq < freq_range_lpf[0][0]) {
--		lpf_band = 1;
--
-+	if (freq < freq_range_lpf[ADMV8818_BAND_MIN][ADMV8818_BAND_CORNER_LOW]) {
-+		lpf_state = ADMV8818_STATE_MIN;
-+		lpf_band = ADMV8818_BAND_MIN;
- 		goto lpf_write;
- 	}
- 
--	for (i = 0; i < 4; i++) {
--		if (freq > freq_range_lpf[i][0] && freq < freq_range_lpf[i][1]) {
--			lpf_band = i + 1;
--			freq_step = div_u64((freq_range_lpf[i][1] - freq_range_lpf[i][0]), 15);
-+	min_freq_error = U64_MAX;
-+	for (band = ADMV8818_BAND_MAX; band >= ADMV8818_BAND_MIN; --band) {
-+		/*
-+		 * At this point the highest corner frequency of
-+		 * all remaining ranges is below the target.
-+		 * LPF corner should be >= the target.
-+		 */
-+		if (freq > freq_range_lpf[band][ADMV8818_BAND_CORNER_HIGH])
-+			break;
-+
-+		freq_step = freq_range_lpf[band][ADMV8818_BAND_CORNER_HIGH] -
-+			    freq_range_lpf[band][ADMV8818_BAND_CORNER_LOW];
-+		freq_step = div_u64(freq_step, ADMV8818_NUM_STATES - 1);
- 
--			for (j = 0; j <= 15; j++) {
--				if (freq < (freq_range_lpf[i][0] + (freq_step * j))) {
--					lpf_step = j;
--					break;
--				}
-+		for (state = ADMV8818_STATE_MAX; state >= ADMV8818_STATE_MIN; --state) {
-+
-+			freq_corner = freq_range_lpf[band][ADMV8818_BAND_CORNER_LOW] +
-+				      state * freq_step;
-+
-+			/*
-+			 * At this point all other states in range will
-+			 * place the corner frequency below the target
-+			 * LPF corner should >= the target.
-+			 */
-+			if (freq > freq_corner)
-+				break;
-+
-+			freq_error = freq_corner - freq;
-+			if (freq_error < min_freq_error) {
-+				min_freq_error = freq_error;
-+				lpf_state = state;
-+				lpf_band = band;
- 			}
--			break;
- 		}
- 	}
- 
-@@ -225,7 +276,7 @@ static int __admv8818_lpf_select(struct admv8818_state *st, u64 freq)
- 
- 	return regmap_update_bits(st->regmap, ADMV8818_REG_WR0_FILTER,
- 				  ADMV8818_LPF_WR0_MSK,
--				  FIELD_PREP(ADMV8818_LPF_WR0_MSK, lpf_step));
-+				  FIELD_PREP(ADMV8818_LPF_WR0_MSK, lpf_state));
- }
- 
- static int admv8818_lpf_select(struct admv8818_state *st, u64 freq)
-@@ -242,16 +293,28 @@ static int admv8818_lpf_select(struct admv8818_state *st, u64 freq)
- static int admv8818_rfin_band_select(struct admv8818_state *st)
- {
- 	int ret;
-+	u64 hpf_corner_target, lpf_corner_target;
- 
- 	st->cf_hz = clk_get_rate(st->clkin);
- 
-+	/* Check for underflow */
-+	if (st->cf_hz > st->hpf_margin_hz)
-+		hpf_corner_target = st->cf_hz - st->hpf_margin_hz;
-+	else
-+		hpf_corner_target = 0;
-+
-+	/* Check for overflow */
-+	lpf_corner_target = st->cf_hz + st->lpf_margin_hz;
-+	if (lpf_corner_target < st->cf_hz)
-+		lpf_corner_target = U64_MAX;
-+
- 	mutex_lock(&st->lock);
- 
--	ret = __admv8818_hpf_select(st, st->cf_hz);
-+	ret = __admv8818_hpf_select(st, hpf_corner_target);
- 	if (ret)
- 		goto exit;
- 
--	ret = __admv8818_lpf_select(st, st->cf_hz);
-+	ret = __admv8818_lpf_select(st, lpf_corner_target);
- exit:
- 	mutex_unlock(&st->lock);
- 	return ret;
-@@ -278,8 +341,11 @@ static int __admv8818_read_hpf_freq(struct admv8818_state *st, u64 *hpf_freq)
- 
- 	hpf_state = FIELD_GET(ADMV8818_HPF_WR0_MSK, data);
- 
--	*hpf_freq = div_u64(freq_range_hpf[hpf_band - 1][1] - freq_range_hpf[hpf_band - 1][0], 15);
--	*hpf_freq = freq_range_hpf[hpf_band - 1][0] + (*hpf_freq * hpf_state);
-+	*hpf_freq = freq_range_hpf[hpf_band][ADMV8818_BAND_CORNER_HIGH] -
-+		    freq_range_hpf[hpf_band][ADMV8818_BAND_CORNER_LOW];
-+	*hpf_freq = div_u64(*hpf_freq, ADMV8818_NUM_STATES - 1);
-+	*hpf_freq = freq_range_hpf[hpf_band][ADMV8818_BAND_CORNER_LOW] +
-+		    (*hpf_freq * hpf_state);
- 
- 	return ret;
- }
-@@ -316,8 +382,11 @@ static int __admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
- 
- 	lpf_state = FIELD_GET(ADMV8818_LPF_WR0_MSK, data);
- 
--	*lpf_freq = div_u64(freq_range_lpf[lpf_band - 1][1] - freq_range_lpf[lpf_band - 1][0], 15);
--	*lpf_freq = freq_range_lpf[lpf_band - 1][0] + (*lpf_freq * lpf_state);
-+	*lpf_freq = freq_range_lpf[lpf_band][ADMV8818_BAND_CORNER_HIGH] -
-+		    freq_range_lpf[lpf_band][ADMV8818_BAND_CORNER_LOW];
-+	*lpf_freq = div_u64(*lpf_freq, ADMV8818_NUM_STATES - 1);
-+	*lpf_freq = freq_range_lpf[lpf_band][ADMV8818_BAND_CORNER_LOW] +
-+		    (*lpf_freq * lpf_state);
- 
- 	return ret;
- }
-@@ -647,6 +716,26 @@ static int admv8818_clk_setup(struct admv8818_state *st)
- 	return devm_add_action_or_reset(&spi->dev, admv8818_clk_notifier_unreg, st);
- }
- 
-+static int admv8818_read_properties(struct admv8818_state *st)
-+{
-+	struct spi_device *spi = st->spi;
-+	int ret;
-+
-+	ret = device_property_read_u64(&spi->dev, "adi,lpf-margin-hz", &st->lpf_margin_hz);
-+	if (ret == -EINVAL)
-+		st->lpf_margin_hz = 0;
-+	else if (ret < 0)
-+		return ret;
-+
-+	ret = device_property_read_u64(&spi->dev, "adi,hpf-margin-hz", &st->hpf_margin_hz);
-+	if (ret == -EINVAL)
-+		st->hpf_margin_hz = 0;
-+	else if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int admv8818_probe(struct spi_device *spi)
- {
- 	struct iio_dev *indio_dev;
-@@ -678,6 +767,10 @@ static int admv8818_probe(struct spi_device *spi)
- 
- 	mutex_init(&st->lock);
- 
-+	ret = admv8818_read_properties(st);
-+	if (ret)
-+		return ret;
-+
- 	ret = admv8818_init(st);
- 	if (ret)
- 		return ret;
--- 
-2.48.1
-
+Regards,
+Siddharth Menon
 

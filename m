@@ -1,139 +1,151 @@
-Return-Path: <linux-iio+bounces-16457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16458-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB5FA5433C
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 08:06:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2408A54386
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 08:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C2918945DC
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 07:06:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CA3518944AC
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Mar 2025 07:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1375A1DC9B1;
-	Thu,  6 Mar 2025 07:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22141B4234;
+	Thu,  6 Mar 2025 07:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LngcmC5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WecRY+Fx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42121DB375;
-	Thu,  6 Mar 2025 07:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D68018DB04;
+	Thu,  6 Mar 2025 07:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741244756; cv=none; b=sU/ILHgstT/F2YyoiAzXYk9I5wLuVAh5ujSCvabOXAa+LNY5nJT13akC2eVJocs4qJ//95aHkvGrruWOv7AamXFxMydn5qNCsuutbCnqQdX4pz2lRicXZ1trqcSKUddrs5A62rbN20PlihuZ/2kVbJvusTVTMa+PJpqgAymv8GY=
+	t=1741245601; cv=none; b=ZuZY43jLi0dkynYEeRBcvjGFM53jfg0eD9lRMtG0Ud1AbL4KzWBkCqhcTj4dBuoip9tmWyUVPpbY738XdyZ99/YZPCeeofdja05W5cczS5LabDqqySGTWFVUgHaSyEOmRGz1Zjs+sHGkrMK2PCnOm9+kUEUVg+HM1SpYdf59YHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741244756; c=relaxed/simple;
-	bh=0pW/AzRF/RuX+cwE3R6LyUhFONr4bslHUHFeHtCPcU8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=jFAQ3H5yTGeQohiYdOF8bIvHS8iFgO+WO3Jt6+G+fiZwfNMYvjrsQmC6qYb22ittcN7bAaT1T1qIR/rghT1hHRrURTOdJ8JdLEfj2vR/wh1SXKpZETN9V6gRjI9mlpfi8nh9fWAU7HoHxeEKZHLV+XqrVIZ9Puybgmblxkmngmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LngcmC5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D99C4CEED;
-	Thu,  6 Mar 2025 07:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741244756;
-	bh=0pW/AzRF/RuX+cwE3R6LyUhFONr4bslHUHFeHtCPcU8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=LngcmC5hlaMxZxKui39ZWm3OV7a8sOWHNSWyRPVrCBcU5tgJpETNKoILjc2V0v7Ft
-	 B5ARU6Mq3XMQhSytdSe/GTY7/AAgHbFJ9ThhpJwws0kVBImfTYqL54bS6ZnEx2lAPs
-	 NmYMDhSZmJFHtwbXfZo6DxyEvK/qeaJuJb2YQcjR2kTnIKSghdhUU3r0atc8q4c0Ju
-	 D6QVS5goosTY45uzv0oW6QxlCxRCvWKSDbe2uJ5aWBTxHDeYbzeFbcAJz19OC6hvlo
-	 bxz461xpxbEzGUNO+1/VgJe6qo7QTawxnlj/If1wFr9RTY3CW2eZ4cSlv+qkGhxyVy
-	 Ouoyas0f4ld1w==
-From: William Breathitt Gray <wbg@kernel.org>
-Date: Thu, 06 Mar 2025 16:05:44 +0900
-Subject: [PATCH 2/2] counter: microchip-tcb-capture: Add support for RC
- Compare
+	s=arc-20240116; t=1741245601; c=relaxed/simple;
+	bh=qLuqTZiAoEdE5ZqzkuOEquYAHoFjFE1U9aW4fu6/tYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iEa2PKz+1XLXS2mMnFo6QR+E1An0Wb64GPddHudvga5Ky+Qv4ZZr0E27Bw5q+I/bgY8Zu3NZyvQ15AkOVDltMyTUKpvbB08CzYE3huTpnHNiFaJ/RFfkd7Bz4VqwNrp+Xt6lH4gvhyFhkTU9k8ETFkMOuwk0hyANwR1a7XIvogw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WecRY+Fx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503A9C4CEE0;
+	Thu,  6 Mar 2025 07:20:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741245600;
+	bh=qLuqTZiAoEdE5ZqzkuOEquYAHoFjFE1U9aW4fu6/tYE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WecRY+FxXOJFSeHz07hdLmt4UZKnKWvJEscFSOnyndfNaDgAGzNxTPftEKZTK5Yz1
+	 vBy6K9J5miiQnrj2vHPqMW+Jh5qtFA8JuyKnlMmZYpu2XMEs7TefYNNL8UuMwKcbrs
+	 bQqnF/wwWMjzaxAaVtdgsvr0xBSAd5I/LcLozbtw=
+Date: Thu, 6 Mar 2025 08:18:46 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: David Jander <david@protonic.nl>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Subject: Re: [RFC PATCH 1/7] drivers: Add motion control subsystem
+Message-ID: <2025030611-embezzle-sacrament-00d9@gregkh>
+References: <20250227162823.3585810-1-david@protonic.nl>
+ <20250227162823.3585810-2-david@protonic.nl>
+ <6c6cqaxmsy7miesel4ghdeiea6nrpe4gti4xf5enfyg4uqro5u@vpmtd2t7gydi>
+ <20250305164046.4de5b6ef@erd003.prtnl>
+ <mzxammninwmak5ti4c6is4pbdx3xzzziiwbxiwrldjyxgae4ok@ocec24vu4txa>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250306-introduce-compare-component-v1-2-93993b3dca9c@kernel.org>
-References: <20250306-introduce-compare-component-v1-0-93993b3dca9c@kernel.org>
-In-Reply-To: <20250306-introduce-compare-component-v1-0-93993b3dca9c@kernel.org>
-To: csokas.bence@prolan.hu, Kamel Bouhara <kamel.bouhara@bootlin.com>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- William Breathitt Gray <wbg@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2155; i=wbg@kernel.org;
- h=from:subject:message-id; bh=0pW/AzRF/RuX+cwE3R6LyUhFONr4bslHUHFeHtCPcU8=;
- b=owGbwMvMwCW21SPs1D4hZW3G02pJDOknPQN+hHXN4+LN2LD/lehFfe9NrXdmsbyaqhYsbN4xL
- 90pVNC6o5SFQYyLQVZMkaXX/OzdB5dUNX68mL8NZg4rE8gQBi5OAZiIvhDDH449rk1dhyMEJCZL
- Wz9msHgacf+Mt/CddxPzrnw//7RUNJnhf6Fr2Ra7ySGTe6PP/C6+9vOr06yGC2cSWqSZdBeVqnJ
- 4MgMA
-X-Developer-Key: i=wbg@kernel.org; a=openpgp;
- fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <mzxammninwmak5ti4c6is4pbdx3xzzziiwbxiwrldjyxgae4ok@ocec24vu4txa>
 
-In Capture mode, the RC register serves as a compare register for the
-Timer Counter Channel. When a the Counter Value reaches the RC value, a
-RC Compare event occurs (COUNTER_EVENT_THRESHOLD). This patch exposes
-the RC register to userspace as the 'compare' Count extension, thus
-allowing users to configure the threshold condition for these events.
+On Thu, Mar 06, 2025 at 12:21:22AM +0100, Uwe Kleine-König wrote:
+> Hello David,
+> 
+> On Wed, Mar 05, 2025 at 04:40:45PM +0100, David Jander wrote:
+> > On Fri, 28 Feb 2025 17:44:27 +0100
+> > Uwe Kleine-König <u.kleine-koenig@baylibre.com> wrote:
+> > > On Thu, Feb 27, 2025 at 05:28:17PM +0100, David Jander wrote:
+> > > [...]
+> > > > +static int motion_open(struct inode *inode, struct file *file)
+> > > > +{
+> > > > +	int minor = iminor(inode);
+> > > > +	struct motion_device *mdev = NULL, *iter;
+> > > > +	int err;
+> > > > +
+> > > > +	mutex_lock(&motion_mtx);  
+> > > 
+> > > If you use guard(), error handling gets a bit easier.
+> > 
+> > This looks interesting. I didn't know about guard(). Thanks. I see the
+> > benefits, but in some cases it also makes the locked region less clearly
+> > visible. While I agree that guard() in this particular place is nice,
+> > I'm hesitant to try and replace all mutex_lock()/_unlock() calls with guard().
+> > Let me know if my assessment of the intended use of guard() is incorrect.
+> 
+> I agree that guard() makes it harder for non-trivial functions to spot
+> the critical section. In my eyes this is outweight by not having to
+> unlock in all exit paths, but that might be subjective. Annother
+> downside of guard is that sparse doesn't understand it and reports
+> unbalanced locking.
+>  
+> > > > +	list_for_each_entry(iter, &motion_list, list) {
+> > > > +		if (iter->minor != minor)
+> > > > +			continue;
+> > > > +		mdev = iter;
+> > > > +		break;
+> > > > +	}  
+> > > 
+> > > This should be easier. If you use a cdev you can just do
+> > > container_of(inode->i_cdev, ...);
+> > 
+> > Hmm... I don't yet really understand what you mean. I will have to study the
+> > involved code a bit more.
+> 
+> The code that I'm convinced is correct is
+> https://lore.kernel.org/linux-pwm/00c9f1181dc351e1e6041ba6e41e4c30b12b6a27.1725635013.git.u.kleine-koenig@baylibre.com/
+> 
+> This isn't in mainline because there is some feedback I still have to
+> address, but I think it might serve as an example anyhow.
+> 
+> > > > [...]
+> > > > +
+> > > > +static const struct class motion_class = {
+> > > > +	.name		= "motion",
+> > > > +	.devnode	= motion_devnode,  
+> > > 
+> > > IIRC it's recommended to not create new classes, but a bus.
+> > 
+> > Interesting. I did some searching, and all I could find was that the chapter
+> > in driver-api/driver-model about classes magically vanished between versions
+> > 5.12 and 5.13. Does anyone know where I can find some information about this?
+> > Sorry if I'm being blind...
+> 
+> Half knowledge on my end at best. I would hope that Greg knows some
+> details (which might even be "no, classes are fine"). I added him to Cc:
 
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
----
- drivers/counter/microchip-tcb-capture.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+A class is there for when you have a common api that devices of
+different types can talk to userspace (i.e. the UAPI is common, not the
+hardware type).  Things like input devices, tty, disks, etc.  A bus is
+there to be able to write different drivers to bind to for that hardware
+bus type (pci, usb, i2c, platform, etc.)
 
-diff --git a/drivers/counter/microchip-tcb-capture.c b/drivers/counter/microchip-tcb-capture.c
-index 2f096a5b973d18edf5de5a2b33f2f72571deefb7..e32f8d324cb373909e0a093b14d742fa0a93e07e 100644
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -247,6 +247,37 @@ static int mchp_tc_count_read(struct counter_device *counter,
- 	return 0;
- }
- 
-+static int mchp_tc_count_compare_read(struct counter_device *counter, struct counter_count *count,
-+				      u64 *val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+	u32 cnt;
-+	int ret;
-+
-+	ret = regmap_read(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), &cnt);
-+	if (ret < 0)
-+		return ret;
-+
-+	*val = cnt;
-+
-+	return 0;
-+}
-+
-+static int mchp_tc_count_compare_write(struct counter_device *counter, struct counter_count *count,
-+				       u64 val)
-+{
-+	struct mchp_tc_data *const priv = counter_priv(counter);
-+
-+	if (val > U32_MAX)
-+		return -ERANGE;
-+
-+	return regmap_write(priv->regmap, ATMEL_TC_REG(priv->channel[0], RC), val);
-+}
-+
-+static struct counter_comp mchp_tc_count_ext[] = {
-+	COUNTER_COMP_COMPARE(mchp_tc_count_compare_read, mchp_tc_count_compare_write),
-+};
-+
- static struct counter_count mchp_tc_counts[] = {
- 	{
- 		.id = 0,
-@@ -255,6 +286,8 @@ static struct counter_count mchp_tc_counts[] = {
- 		.num_functions = ARRAY_SIZE(mchp_tc_count_functions),
- 		.synapses = mchp_tc_count_synapses,
- 		.num_synapses = ARRAY_SIZE(mchp_tc_count_synapses),
-+		.ext = mchp_tc_count_ext,
-+		.num_ext = ARRAY_SIZE(mchp_tc_count_ext),
- 	},
- };
- 
+So you need both, a bus to talk to the hardware, and a class to talk to
+userspace in a common way (ignore the fact that we can also talk to
+hardware directly from userspace like raw USB or i2c or PCI config
+space, that's all bus-specific stuff).
 
--- 
-2.48.1
+Did that help?
 
+thanks,
+
+greg k-h
 

@@ -1,92 +1,84 @@
-Return-Path: <linux-iio+bounces-16524-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16526-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB611A56967
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 14:52:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 346BCA56A3C
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 15:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD9217567E
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 13:51:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C6A1189AEA9
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 14:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EAD21ADC5;
-	Fri,  7 Mar 2025 13:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502E921B9F1;
+	Fri,  7 Mar 2025 14:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e4kO8eNT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aylFrI/M"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00721ABA6;
-	Fri,  7 Mar 2025 13:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AE021B9CE;
+	Fri,  7 Mar 2025 14:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741355500; cv=none; b=JZxe0Q57i8dXvTt/TD7a3FXKoEoTlfPJkNOAu2zwPRFqFbKJ0+HocXMf8dbUGJJJKhj+z5A72m5BRzKPfJiixWHIHQUFfxpoyJsw4RqdHepLSv3PUXXER+0TvXalUnpnf0QPt+Vo47G7GGC7oKOEe1CVBzH5712V8inwYPNbXYw=
+	t=1741357342; cv=none; b=FOdqOwUOk9Sv6uozHy/QNINQ6CQ4RVY/NbkJlgQbMpDenivBmCbXf/x4q3btNmkh9GJCjPos6fWzucGd6TM+rO31WWYpBX5wB778nuQlKSyXWo67ax9jbr9rISJud/JfqbK+AMQSA4FGxCv0bmcSt1tPQ9zBW/eMGGNnVZ2YkJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741355500; c=relaxed/simple;
-	bh=P92GJowE3+xop7nioIlnBSiVvcN8Lu72zS16CGODbKw=;
+	s=arc-20240116; t=1741357342; c=relaxed/simple;
+	bh=Xq0iwcDh7S4jmFV/WUP4gOkUzHiVYQo8h95MoE9/hh0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ek7dBbc1VB1afpCNDBoUYjIjA9x9ERkIwhEi4h9tYNy7WoRtK34DnJc2weBkDeQp1aVjBOQ5tp3tujcT7yNdgVFkq9OLQ6XcF4h5xpLt3cyEKP9QTdM1RJdQl2MG+UYgTE/byxi35CfgvgpajJrhP79FciFe4fiU8yck8BxvoWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e4kO8eNT; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2ff6cf448b8so3400817a91.3;
-        Fri, 07 Mar 2025 05:51:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741355498; x=1741960298; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GsYXGuW9uswGocW86oiWeIN4F7hDphJu+gAUcgsVqKc=;
-        b=e4kO8eNTyWKGQC4Gr3N944KHw3m4eazWQ9N5ZGJT6vnbsEVZhbl23KlYgdTNckzb67
-         K3ZRLQ3piNmWT1fbdppoQ47WXqCip5Wb+JET6XMoPZP104A4Hsd3e7SXRUdoD4h3gJpu
-         7W56f0cT9HxSWEW0FpuxHBEeV5eeLq/BncMTWP5cfuZ54XRq+TBkHTPt53hdfuy/rfaK
-         dISY9jdQN76KYRGcyMVNUDUWeNw0XVqHDjEQZNjYkrkgqVr02nj36c3q0oKO4Ucx+rJT
-         SRv3hM/2VgWuTvdmIVaWAyVrgmOsqaQ1LCXFaGolUwNvaqnOD/IIHrQTXUObW7CqYGzn
-         KHRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741355498; x=1741960298;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GsYXGuW9uswGocW86oiWeIN4F7hDphJu+gAUcgsVqKc=;
-        b=Frs1RXPL3Ou+cM7jmB/rcb9G/opl7fzmyWJuQZTyEMkDHiMleiqQwtUkulMFC5TQqM
-         E9ddZTZhpIhuHpDarJrb+uF7UsuIyK9PAWsYPtHPxykcU4JKSLMnHtFmpfj0eG8tk0Gf
-         4pO5wX4ygCdQp7kHBbFvcDdQvIiEvdnxlBSrISvN7ZHZWsKYA2t3LRhai2gxM2H149qb
-         7gwdxUC00qFc6UB6atGyOTNl1m0zOZP2iaevgW2SXleXk/DepPlV0uKiqk98UOQnI8TL
-         OEpeCZZYyic8FxLxMGBlU/1TT0Ypq0D+EOEKz3XbNgx5wvol9xmCr0eOubsfixqfPzQH
-         nbMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWG0o2QiLfUiGxk0cCeoS+NYeYpdiQr1Y7ozFG7u9alZPqh3EbLmLeH5dhRHBVb2L5MAV2rs/1vDQ4R@vger.kernel.org, AJvYcCX/EpofVely2XnqF3QnkOWzU1IVh1Qfi44NTyORolBszxB/qMYTxBmAcvNrHcYz+cpvgKrx53KcjAtmKw==@vger.kernel.org, AJvYcCXvFcqtaNniZoBbXU+vKB9blGylv9660sZxBxjKu1ZCvTLUXSyRoBY6Fo5w8zxzwGRffKFGjueCNsoR/AIh@vger.kernel.org
-X-Gm-Message-State: AOJu0YwG4M//lPRMew+QY5VWj8bWjjnwnf7UzcWGh1+Ak8W2v9WtjHyt
-	xoX/o1Up5A0gqX04W2RmJZhyF2e5eSisWZiGe/oAUjryLYQOTTB4
-X-Gm-Gg: ASbGncupIxJz8rluu0QzPM5b1C3reKQhUzAvYpUK5xb0SQF+q5onJsA1ksH6Rwi+xvA
-	WkveOaK8fLQpqCH1qOR0ucD+VE5ckmLvaOsP1ac4MCFpFCJ8gA8QzmDi4WigmF4PegM27jrCZgP
-	g0ogUQ2hlfYM/s6JPqmjhJcPTaNLKKuiIoBus7FWlZR4NDitvrOo172nS6F9uu6Jq5Guiq2m8it
-	O2+589JrZNsK+PYMZ6GdH/9R7ryD2IyzUPwjOL+UvTwn4tnrcKjylFmsEvvF3nqGC5zqwAL92Dn
-	pxo2OdAds9x/ofCzHxRma1liKT6IQoiDyPI9XMIT4KZ7RMfju5e/qw==
-X-Google-Smtp-Source: AGHT+IG111djafDJeUEZJzxG4Q6hK3LuycWp707Rg+oLSJoKZFiWESbFt8TBFWsdR/+ya+3HFFV8Ow==
-X-Received: by 2002:a17:90a:d2c6:b0:2ff:6608:78e2 with SMTP id 98e67ed59e1d1-2ff7cea99b3mr6342874a91.16.1741355498482;
-        Fri, 07 Mar 2025 05:51:38 -0800 (PST)
-Received: from localhost ([2804:30c:1f21:4300:1cf6:c485:6555:b1c5])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2ff693e73b9sm3033124a91.38.2025.03.07.05.51.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 05:51:37 -0800 (PST)
-Date: Fri, 7 Mar 2025 10:52:31 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
-	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
-	lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
-	jonath4nns@gmail.com
-Subject: Re: [PATCH v4 10/17] iio: adc: ad7768-1: Move buffer allocation to a
- separate function
-Message-ID: <Z8r6H40mTKO_QF9Y@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1741268122.git.Jonathan.Santos@analog.com>
- <d078cdcf3a8bdd60ec3b9b6822e9705bf3f98bfa.1741268122.git.Jonathan.Santos@analog.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UPvHRuW8aIaF+r/G69LhMQjMq1jKj22ehCqzfTDJ3ECjfi8wUxBy23BrIrbH87MxRLNhqrM+nYA63Ic9CWWMQ8j+0CjgykbRI4pVWYB/TSwV0S+B7+vTlKyaPeOMdXSh4Hnmr1LTcZYEVkWOUNqPmmQ4I5KVlW1B2OW1t62YPS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aylFrI/M; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741357340; x=1772893340;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Xq0iwcDh7S4jmFV/WUP4gOkUzHiVYQo8h95MoE9/hh0=;
+  b=aylFrI/MiF/8bLt5ceuyurxWJDqHTU8pSZKi5Y33N7y0NWnC+sbeB70b
+   zOs8b9sS5nGSeieMVrdr8O7lPH6VsOU9IxpkljhQP+S7T4YWf4ZW/oCqT
+   SW5bDPxpMWdQmy0oJgzQG0xXyyArCTcmdcIoNh5E+pmCBvNWE05o7o+Fy
+   kXoTkJpark5leyNUQJy3N44Ju8tUIDfeGLCpnztoXm+aCSxURD/7FYfJl
+   L1Hpmiz1yTNkcpb8dvb56YkcEmtB6xSbyfQa/T4XEXNRw9XGcO6IvjgVd
+   2tJ8Xz7dRlV+16WQ/HFmlC3EdjMUEKKVdCIf3JvtTUrVw2EQB0vft9pDJ
+   g==;
+X-CSE-ConnectionGUID: UZK/TksyQCi4r8lFQQzvHw==
+X-CSE-MsgGUID: YIiyeMnVSROIjYRXWZ2/WQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="53042140"
+X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
+   d="scan'208";a="53042140"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 06:22:19 -0800
+X-CSE-ConnectionGUID: 5CF1E6FQR2CSWgcWhZHL5g==
+X-CSE-MsgGUID: 1+VCvBl2Tx+8X9gueM0WGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="150280816"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by fmviesa001.fm.intel.com with ESMTP; 07 Mar 2025 06:22:16 -0800
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tqYac-0000ZH-1A;
+	Fri, 07 Mar 2025 14:22:14 +0000
+Date: Fri, 7 Mar 2025 22:22:00 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jorge Marques <jorge.marques@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	David Lechner <dlechner@baylibre.com>
+Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, Jorge Marques <jorge.marques@analog.com>
+Subject: Re: [PATCH 4/4] iio: adc: add support for ad4052
+Message-ID: <202503080031.APfLdyiz-lkp@intel.com>
+References: <20250306-iio-driver-ad4052-v1-4-2badad30116c@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,104 +87,156 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d078cdcf3a8bdd60ec3b9b6822e9705bf3f98bfa.1741268122.git.Jonathan.Santos@analog.com>
+In-Reply-To: <20250306-iio-driver-ad4052-v1-4-2badad30116c@analog.com>
 
-On 03/06, Jonathan Santos wrote:
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> 
-> This change moves the buffer allocation in a separate function, making
-> space for adding another type of iio buffer if needed.
-> 
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> ---
-LGTM
+Hi Jorge,
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+kernel test robot noticed the following build warnings:
 
-> v4 Changes:
-> * None.
-> 
-> v3 Changes:
-> * Added missing SoB.
-> 
-> v2 Changes:
-> * Interrupt and completion moved out from ad7768_triggered_buffer_alloc(). 
-> ---
->  drivers/iio/adc/ad7768-1.c | 44 ++++++++++++++++++++++----------------
->  1 file changed, 26 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 86f44d28c478..e88e9431bb7a 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -619,6 +619,31 @@ static int ad7768_set_channel_label(struct iio_dev *indio_dev,
->  	return 0;
->  }
->  
-> +static int ad7768_triggered_buffer_alloc(struct iio_dev *indio_dev)
-> +{
-> +	struct ad7768_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	st->trig = devm_iio_trigger_alloc(indio_dev->dev.parent, "%s-dev%d",
-> +					  indio_dev->name,
-> +					  iio_device_id(indio_dev));
-> +	if (!st->trig)
-> +		return -ENOMEM;
-> +
-> +	st->trig->ops = &ad7768_trigger_ops;
-> +	iio_trigger_set_drvdata(st->trig, indio_dev);
-> +	ret = devm_iio_trigger_register(indio_dev->dev.parent, st->trig);
-> +	if (ret)
-> +		return ret;
-> +
-> +	indio_dev->trig = iio_trigger_get(st->trig);
-> +
-> +	return devm_iio_triggered_buffer_setup(indio_dev->dev.parent, indio_dev,
-> +					       &iio_pollfunc_store_time,
-> +					       &ad7768_trigger_handler,
-> +					       &ad7768_buffer_ops);
-> +}
-> +
->  static int ad7768_probe(struct spi_device *spi)
->  {
->  	struct ad7768_state *st;
-> @@ -689,20 +714,6 @@ static int ad7768_probe(struct spi_device *spi)
->  		return ret;
->  	}
->  
-> -	st->trig = devm_iio_trigger_alloc(&spi->dev, "%s-dev%d",
-> -					  indio_dev->name,
-> -					  iio_device_id(indio_dev));
-> -	if (!st->trig)
-> -		return -ENOMEM;
-> -
-> -	st->trig->ops = &ad7768_trigger_ops;
-> -	iio_trigger_set_drvdata(st->trig, indio_dev);
-> -	ret = devm_iio_trigger_register(&spi->dev, st->trig);
-> -	if (ret)
-> -		return ret;
-> -
-> -	indio_dev->trig = iio_trigger_get(st->trig);
-> -
->  	init_completion(&st->completion);
->  
->  	ret = ad7768_set_channel_label(indio_dev, ARRAY_SIZE(ad7768_channels));
-> @@ -716,10 +727,7 @@ static int ad7768_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
->  
-> -	ret = devm_iio_triggered_buffer_setup(&spi->dev, indio_dev,
-> -					      &iio_pollfunc_store_time,
-> -					      &ad7768_trigger_handler,
-> -					      &ad7768_buffer_ops);
-> +	ret = ad7768_triggered_buffer_alloc(indio_dev);
->  	if (ret)
->  		return ret;
->  
-> -- 
-> 2.34.1
-> 
+[auto build test WARNING on aac287ec80d71a7ab7e44c936a434625417c3e30]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jorge-Marques/iio-code-mark-iio_dev-as-const-in-iio_buffer_enabled/20250306-220719
+base:   aac287ec80d71a7ab7e44c936a434625417c3e30
+patch link:    https://lore.kernel.org/r/20250306-iio-driver-ad4052-v1-4-2badad30116c%40analog.com
+patch subject: [PATCH 4/4] iio: adc: add support for ad4052
+config: um-randconfig-r073-20250307 (https://download.01.org/0day-ci/archive/20250308/202503080031.APfLdyiz-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250308/202503080031.APfLdyiz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503080031.APfLdyiz-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/iio/adc/ad4052.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:549:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     549 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:567:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     567 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/iio/adc/ad4052.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:585:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/iio/adc/ad4052.c:14:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from arch/um/include/asm/hardirq.h:5:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:601:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     601 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:616:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     616 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:631:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     631 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:724:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     724 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:737:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     737 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:750:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     750 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:764:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     764 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:778:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     778 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:792:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     792 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+>> drivers/iio/adc/ad4052.c:201:41: warning: unused variable 'ad4052_regmap_rd_table' [-Wunused-const-variable]
+     201 | static const struct regmap_access_table ad4052_regmap_rd_table = {
+         |                                         ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/iio/adc/ad4052.c:214:41: warning: unused variable 'ad4052_regmap_wr_table' [-Wunused-const-variable]
+     214 | static const struct regmap_access_table ad4052_regmap_wr_table = {
+         |                                         ^~~~~~~~~~~~~~~~~~~~~~
+>> drivers/iio/adc/ad4052.c:239:18: warning: unused variable 'ad4052_sample_rate_avail' [-Wunused-const-variable]
+     239 | static const int ad4052_sample_rate_avail[] = {
+         |                  ^~~~~~~~~~~~~~~~~~~~~~~~
+   15 warnings generated.
+
+
+vim +/ad4052_regmap_rd_table +201 drivers/iio/adc/ad4052.c
+
+   200	
+ > 201	static const struct regmap_access_table ad4052_regmap_rd_table = {
+   202		.yes_ranges = ad4052_regmap_rd_ranges,
+   203		.n_yes_ranges = ARRAY_SIZE(ad4052_regmap_rd_ranges),
+   204	};
+   205	
+   206	static const struct regmap_range ad4052_regmap_wr_ranges[] = {
+   207		regmap_reg_range(AD4052_REG_INTERFACE_CONFIG_A, AD4052_REG_DEVICE_CONFIG),
+   208		regmap_reg_range(AD4052_REG_SCRATCH_PAD, AD4052_REG_SCRATCH_PAD),
+   209		regmap_reg_range(AD4052_REG_STREAM_MODE, AD4052_REG_INTERFACE_STATUS),
+   210		regmap_reg_range(AD4052_REG_MODE_SET, AD4052_REG_MON_VAL),
+   211		regmap_reg_range(AD4052_REG_FUSE_CRC, AD4052_REG_DEVICE_STATUS),
+   212	};
+   213	
+ > 214	static const struct regmap_access_table ad4052_regmap_wr_table = {
+   215		.yes_ranges = ad4052_regmap_wr_ranges,
+   216		.n_yes_ranges = ARRAY_SIZE(ad4052_regmap_wr_ranges),
+   217	};
+   218	
+   219	static const struct iio_event_spec ad4052_events[] = {
+   220		{
+   221			.type = IIO_EV_TYPE_THRESH,
+   222			.dir = IIO_EV_DIR_EITHER,
+   223			.mask_shared_by_all = BIT(IIO_EV_INFO_ENABLE)
+   224		},
+   225		{
+   226			.type = IIO_EV_TYPE_THRESH,
+   227			.dir = IIO_EV_DIR_RISING,
+   228			.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
+   229					      BIT(IIO_EV_INFO_HYSTERESIS)
+   230		},
+   231		{
+   232			.type = IIO_EV_TYPE_THRESH,
+   233			.dir = IIO_EV_DIR_FALLING,
+   234			.mask_shared_by_all = BIT(IIO_EV_INFO_VALUE) |
+   235					      BIT(IIO_EV_INFO_HYSTERESIS)
+   236		}
+   237	};
+   238	
+ > 239	static const int ad4052_sample_rate_avail[] = {
+   240		2000000, 1000000, 300000, 100000, 33300,
+   241		10000, 3000, 500, 333, 250, 200,
+   242		166, 140, 125, 111
+   243	};
+   244	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

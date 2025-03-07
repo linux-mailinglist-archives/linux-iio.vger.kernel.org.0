@@ -1,90 +1,91 @@
-Return-Path: <linux-iio+bounces-16520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAECCA568B4
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 14:19:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C854A5691F
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 14:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77263A8312
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 13:19:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5733A3B2319
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 13:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912F6218E82;
-	Fri,  7 Mar 2025 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F6321A426;
+	Fri,  7 Mar 2025 13:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lJ4DltpQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G4ENfnLT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B631A2398;
-	Fri,  7 Mar 2025 13:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F71DEBE;
+	Fri,  7 Mar 2025 13:41:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741353555; cv=none; b=i5UyeMdKTP9O13evZEJ7IENlP3ENfdmi7Ttdrb6Da+KH7Op/zROrI2wzwCN6Kn4zJhpdaJZCyYyiG+22q53hX4c9y1yuALSOzw+71PwxQFazusMr+S6n7ktKTtGcS34BUx6idqwXKNsQ5tQMpdzlPbYrW3GmpkMlouCyVuy0gQw=
+	t=1741354880; cv=none; b=hOZrC1UMAnJYkZRg0F4M5unmv5Bvx+ZCoXn/zBOUfP7dOKFx/koVkZDWxZEjvRJMBjjqSF0snbK8I6OhezX6n7oBA7OwJ8m+AACdrhctfdwcioiw5xm1yX46c7Kq6DcuviAVI/njxvyFJXr018Kdp7sauRZ94RT11JYClWp9Zdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741353555; c=relaxed/simple;
-	bh=0DSn/PTRSgM3reu4DhbsF4DDbxPv1sZrQ+klQptiyhs=;
+	s=arc-20240116; t=1741354880; c=relaxed/simple;
+	bh=N8sYo3uz0FrCRUbMqngY+YYmmopRY57XHjzEdmi1tY0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LfolXa9OQOgDHUc0NWumLN3i4D98H1Acjp+FUx3grzZS/H6SLV1X9DqDDgY/2eN2+WFn+hRDnSG4UapVn3WDmPljE+cIZAYDQkwwEvXjOeSTITXbpdI3buIX6VQSujEWS+KnThjgG0df4d4Ean1zs9VwvyKxdXfLXDo5gLjX0d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lJ4DltpQ; arc=none smtp.client-ip=209.85.214.179
+	 Content-Type:Content-Disposition:In-Reply-To; b=bXiuHSv0R4fe4kVTj+9d2u9pp0AW7UMcYKeHuIjOLcCdjsz6QGXWSSAI+eHdsQgxd9kZW7aFEGxEK/Du1jNdM0PaTXsWE8XFWFuqu8meptTYRV1fugyVMueZo34+V4gBm+MMtW7BaSlWRquCtgl2zAn+NGJ1g8S+FwRpiiCHYvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G4ENfnLT; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2239f8646f6so33908395ad.2;
-        Fri, 07 Mar 2025 05:19:13 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-223a7065ff8so5895965ad.0;
+        Fri, 07 Mar 2025 05:41:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741353553; x=1741958353; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741354877; x=1741959677; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eImNnLSVIdIQFpmVL7ZVYdDntXt9XT8RVIowRhm/nWA=;
-        b=lJ4DltpQv2AZliEiAdTL/AM7ONpY5YH2JOzQUEPDt9QNFS9XHjYjvk2SDeQye8fs64
-         EsKV0nTyJIelj/BRcV87zrGVllegJYzYKtATaWKGdopXhxEZkmD23yWO5gLGSBILIHDD
-         Q3d3rnVFQaFjQSCFbB4f20kt70+txWkOtKCTYiRERmp41u1JaTLHdUMrJpw+hSO7h7xF
-         wMv+nV8h8s151cWaZCnKiwufjWDriGTEnLeRgGw5RJ4k6I+CqKXCusU1z2MLiY4Op5Db
-         LYiTZxi2buwA9C7ah1UVX9gzbkjurpN2ds2WsISmbnR8ifK7d5JpFcHKfGBrK0XFkh4+
-         lOtQ==
+        bh=h38aqFe9Ma4NHWsTUuQBby7UCorGRNLzawB5Rnpg1KI=;
+        b=G4ENfnLTH4tvY2co9QGuN7K2rR1L4r7dXc9OgAm2byrNAvYj84i1bc0xaytPVDWB6L
+         Xla8YFi3DA0q78MXfUEHh5v0W8W3zVxfct/HDLhX73kvGsAOcO4bGH7EG8Q1Os560a9i
+         DvMj63ZWGRRInA+pvSu8BZ8fohR/Q9OeS3R3a09DaMHvnPKRmgBJa1yrTToD0RqoHmYw
+         1bvMAxYKR8GuEZc2jvfbxOPCWvN/YUFNshDYJg1TGEJKNzhw83gOVZmCDVMzm0+IWaT6
+         yTDi6CE4cmLLvOtKCUpObm1bUgatcc7/OhVdM7hxATSh/QypcVhOk9q8ft7kAxDOD6Do
+         E75w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741353553; x=1741958353;
+        d=1e100.net; s=20230601; t=1741354877; x=1741959677;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eImNnLSVIdIQFpmVL7ZVYdDntXt9XT8RVIowRhm/nWA=;
-        b=BHQPOEHG+54nHhz0PlTWQfW3mbtm1YwlKB9U094M56/6CHUj2l55wC90tQ25MgXFJV
-         Tfhs67GmUAzgWrv4FzsCFH525bWif7O8mTfXBp26u54njdoeOQerQGhB/a//fDZzr+qo
-         KPicLZhFj8L+OaUt3yY9iOdSmB+yzFJO616FvUEeIf3ofJeOWeOv1JMXO2O3DcYug4fz
-         MJ6zklcGcDDEInu7OfWNtxBgSxT6PgxsSvCY0wEp7x80hvroO0hjVIaRsxcEb+j3J7ZI
-         ffMnsnQ0UaqbpFJwxmS52nWEYqGfc9cfvkJz8TypEz7qsEM1Dyhgz7cEoUfA2nQfZ1LX
-         lmMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVOkgCBYfBzYXABvp5IjO/DNeSUv0aEl5dPm9ydqmK3/28u1+aMF0VSv0Bhq6AKMELQv3ERfpJfRyDwMKpL@vger.kernel.org, AJvYcCVroVugL6SeSu9ec9tL27mfn8vzK/fy9sua3qSEmwJU1EBOQEKRAP4eblL4pdxS0ekfihsuXbP0DBoO@vger.kernel.org, AJvYcCVtcS1FwZlrFYpKHb9TsSqy7z2g2rSxf2x2sIeifwVCelq7NmbBQbIsUq/rilYxdm3DGtiH5DdsfxrfPg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/d90sOG/SaEy5mRvmh+Yrl8V6orxLlzRhdy06pFljUjuirOQY
-	mk/ohmMkhSOw+vtAPJ2y94FuktjVmZggjue56JQZsgEVGtzBmYu6
-X-Gm-Gg: ASbGncu7riDvL/3JHpQhgVpAN+1wpO6UBCsXWHgAF3QKd4/SoZ/KwsSqsGBRHdK6Sto
-	7xe86B8s1o0TZ8F5FA/XUpnZn6G8hfvPt7l2gL+6Q5kwTNh16W0WLj6i4jXVma3Yl5qbqF9dkY6
-	ovIPNoT7RHdeWz2xEEtG64GcelNpu3Xqg0CKqGL+tjMD5LGdXfVRw/gyWqFXvqmN9O9VnhXJWaw
-	jexk4Ruyig6NXzM1zrPH2+AJCtfhwxoWYsku/WL8Cxh8fjf2C0cDt4kNv0H91JHOS3XvYK6b9DD
-	/I1wTAY71c8xfMZk/X6WsLgyuuMYkFuXe0BvjDbE0c1ONlOT3W+//Q==
-X-Google-Smtp-Source: AGHT+IExqyi822ISn1fcSp/X6enD9IsnsJ0FvV3qlXmYFJJi/+pzoceA+KfV9d1W1JhyORit4JBYHg==
-X-Received: by 2002:a05:6a20:1591:b0:1f3:484e:c55c with SMTP id adf61e73a8af0-1f544c99ea7mr6074059637.35.1741353552772;
-        Fri, 07 Mar 2025 05:19:12 -0800 (PST)
+        bh=h38aqFe9Ma4NHWsTUuQBby7UCorGRNLzawB5Rnpg1KI=;
+        b=pjm6FVI4bfZfRDypFDwvCYZXbuQJQ1+udhy3NUpdEr183Bzs0mv5bBmLfRmlAF+8sY
+         kD0fpwQTedhb8QfIo3CRm0gblj/zs33kAbPdG554uQ76m2lJPWGyILhfTX3ejZ9Ckyft
+         MgMvWDjPYzfn3xktFJkZJeXhGrSImjhbroaIPeZRzp3OMMII+1DJfNhpGY2W5C//HV1L
+         j2n7d98h4JYrlbZpHz5tdinJNFAUanc/i608q4uBBYNpH1HD7OJl74XyVdP3fCQirx6D
+         9gPG5CcxGgmr9MnhU7HBSe4IWSGp81VSfHWBd4LhHj0t7jv5NwtOWiRwVTG2lwLO0kLB
+         1z4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUBf13ovEKM8w3S+1luF7l46fO94UHsbf9jvkpdj+bKUx8HlpUxBstrvsLSAl/GrkcfI9BB+01f0lHC9A==@vger.kernel.org, AJvYcCV4oeeNZkRCe5y1B0nwy72939j4O2P3PzaFASSQsfyzKumjcNUeYF8iU8D9mFkYsdq6lIDSPqGMGgxZJTrI@vger.kernel.org, AJvYcCXIDylVZ7RCyeXMZd7VTyDYW5/hluZTNH7quRJiIQPG8D4GcEA7qWbj0CrELYuz/FpWQFOqwH0BKEoD@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN1pFk9l7iB64xm4Va5KBsyLQJed2WJpOJNf/9zc/LksE7RH2S
+	peDR9jcdlEfDzVUjmoFWI5XCo9dso6/CRusa3kK7A9MZXVan5b1K
+X-Gm-Gg: ASbGncsN9TBGAfLJSE0CiruZdZ4kM3qFFQbe2Ru/mAYkGICYPDtEsx8x4ZGyo5yE37y
+	fajVynOSdBnXjpIc0ulSwT6zTOixuoVVeu/+cd2AuHgPjFRcKU2Avp2CM8nBefTi0VbHqUpDYrc
+	+5tVgy9HYGoNIYwC2TrK8pn3M5SwErFj0SyKuJlFMJBogcnbp8OQr1zSfVcyLqSpuVq41awaEWi
+	cbK/WjzFNfsGNZV3IEe9g1v+l4W088herq3y84bLTQbMYeNHa9YOpXwFsUbP824bVYBCNhFhIFA
+	7Heok+yp4PzkNqE9YwjKpPOKfsTBGXRsX3IFEDzxELsuX/597skGcg==
+X-Google-Smtp-Source: AGHT+IFNfcJHZ+3VSfDlVytA+8MieA2fcDSQnh0iehKMSSKusFnNT8AR7I9mN5SQu5o+C1VqXZA3zA==
+X-Received: by 2002:a05:6a00:2d90:b0:736:48d1:57f7 with SMTP id d2e1a72fcca58-736aa9dc1d5mr5359686b3a.7.1741354877520;
+        Fri, 07 Mar 2025 05:41:17 -0800 (PST)
 Received: from localhost ([2804:30c:1f21:4300:1cf6:c485:6555:b1c5])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-736ade82020sm1346646b3a.17.2025.03.07.05.19.11
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73698206ba4sm3220610b3a.4.2025.03.07.05.41.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 05:19:12 -0800 (PST)
-Date: Fri, 7 Mar 2025 10:20:04 -0300
+        Fri, 07 Mar 2025 05:41:16 -0800 (PST)
+Date: Fri, 7 Mar 2025 10:42:09 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 To: Jonathan Santos <Jonathan.Santos@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
-	brgl@bgdev.pl, lgirdwood@gmail.com, broonie@kernel.org,
-	dlechner@baylibre.com, jonath4nns@gmail.com
-Subject: Re: [PATCH v4 08/17] iio: adc: ad7768-1: convert driver to use regmap
-Message-ID: <Z8ryhMV1lYZeZVCB@debian-BULLSEYE-live-builder-AMD64>
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, marcelo.schmitt@analog.com,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
+	lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
+	jonath4nns@gmail.com
+Subject: Re: [PATCH v4 09/17] iio: adc: ad7768-1: Add reset gpio
+Message-ID: <Z8r3sR740CpZfVFr@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1741268122.git.Jonathan.Santos@analog.com>
- <b0c7976d4bc817b7056ef40e3ce870b42e8a2d80.1741268122.git.Jonathan.Santos@analog.com>
+ <305f0bb4a90aba547de6b46d4c9dcf04a2a4db72.1741268122.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,319 +94,100 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b0c7976d4bc817b7056ef40e3ce870b42e8a2d80.1741268122.git.Jonathan.Santos@analog.com>
+In-Reply-To: <305f0bb4a90aba547de6b46d4c9dcf04a2a4db72.1741268122.git.Jonathan.Santos@analog.com>
 
 On 03/06, Jonathan Santos wrote:
-> Convert the AD7768-1 driver to use the regmap API for register
-> access. This change simplifies and standardizes register interactions,
-> reducing code duplication and improving maintainability.
+> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 > 
-> Create two regmap configurations, one for 8-bit register values and
-> other for 24-bit register values.
+> Depending on the controller, the default state of a gpio can vary. This
+> change excludes the probability that the dafult state of the ADC reset
+> gpio will be HIGH if it will be passed as reference in the devicetree.
+
+The description doesn't seem to match the changes nor the patch title. You are
+essentinally adding support for hardware reset. Change the commit description to
+reflect that.
+
+The default state of GPIOs would not impact device reset because (in theory)
+they weren't being connected to the reset pin prevously.
+
 > 
-> Since we are using regmap now, define the remaining registers from 0x32
-> to 0x34.
-> 
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> Co-developed-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
 > ---
 > v4 Changes:
-> * Add `REGMAP24` to the register macros with 24-bit value.
-> * Add `select REGMAP_SPI` line to the Kconfig.
+> * None.
 > 
 > v3 Changes:
-> * Included a second register map for the 24-bit register values.
-> * Added register tables to separate the 24-bit from the 8-bit values.
+> * fixed SoB order.
+> * increased delay after finishing the reset action to 200us, as the
+>   datasheet recommends.
 > 
 > v2 Changes:
-> * New patch in v2.
+> * Replaced usleep_range() for fsleep() and gpiod_direction_output() for 
+>   gpiod_set_value_cansleep().
+> * Reset via SPI register is performed if the Reset GPIO is not defined. 
 > ---
->  drivers/iio/adc/Kconfig    |   1 +
->  drivers/iio/adc/ad7768-1.c | 151 +++++++++++++++++++++++++------------
->  2 files changed, 104 insertions(+), 48 deletions(-)
+>  drivers/iio/adc/ad7768-1.c | 36 ++++++++++++++++++++++++------------
+>  1 file changed, 24 insertions(+), 12 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 849c90203071..a2fdb7e03a66 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -277,6 +277,7 @@ config AD7766
->  config AD7768_1
->  	tristate "Analog Devices AD7768-1 ADC driver"
->  	depends on SPI
-> +	select REGMAP_SPI
->  	select IIO_BUFFER
->  	select IIO_TRIGGER
->  	select IIO_TRIGGERED_BUFFER
 > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index f5509a0a36ab..04a26e5b7d5c 100644
+> index 04a26e5b7d5c..86f44d28c478 100644
 > --- a/drivers/iio/adc/ad7768-1.c
 > +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -12,6 +12,7 @@
->  #include <linux/gpio/consumer.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/sysfs.h>
->  #include <linux/spi/spi.h>
-> @@ -53,12 +54,15 @@
->  #define AD7768_REG_SPI_DIAG_ENABLE	0x28
->  #define AD7768_REG_ADC_DIAG_ENABLE	0x29
->  #define AD7768_REG_DIG_DIAG_ENABLE	0x2A
-> -#define AD7768_REG_ADC_DATA		0x2C
-> +#define AD7768_REG24_ADC_DATA		0x2C
->  #define AD7768_REG_MASTER_STATUS	0x2D
->  #define AD7768_REG_SPI_DIAG_STATUS	0x2E
->  #define AD7768_REG_ADC_DIAG_STATUS	0x2F
->  #define AD7768_REG_DIG_DIAG_STATUS	0x30
->  #define AD7768_REG_MCLK_COUNTER		0x31
-> +#define AD7768_REG_COEFF_CONTROL	0x32
-> +#define AD7768_REG24_COEFF_DATA		0x33
-> +#define AD7768_REG_ACCESS_KEY		0x34
->  
->  /* AD7768_REG_POWER_CLOCK */
->  #define AD7768_PWR_MCLK_DIV_MSK		GENMASK(5, 4)
-> @@ -153,6 +157,8 @@ static const struct iio_chan_spec ad7768_channels[] = {
->  
->  struct ad7768_state {
->  	struct spi_device *spi;
-> +	struct regmap *regmap;
-> +	struct regmap *regmap24;
->  	struct regulator *vref;
->  	struct clk *mclk;
->  	unsigned int mclk_freq;
-> @@ -175,46 +181,76 @@ struct ad7768_state {
->  	} data __aligned(IIO_DMA_MINALIGN);
->  };
->  
-> -static int ad7768_spi_reg_read(struct ad7768_state *st, unsigned int addr,
-> -			       unsigned int len)
-> -{
-> -	unsigned int shift;
-> -	int ret;
-> +static const struct regmap_range ad7768_regmap_rd_ranges[] = {
-> +	regmap_reg_range(AD7768_REG_CHIP_TYPE, AD7768_REG_DIG_DIAG_ENABLE),
-> +	regmap_reg_range(AD7768_REG_MASTER_STATUS, AD7768_REG_COEFF_CONTROL),
-> +	regmap_reg_range(AD7768_REG_ACCESS_KEY, AD7768_REG_ACCESS_KEY),
-> +};
->  
-> -	shift = 32 - (8 * len);
-> -	st->data.d8[0] = AD7768_RD_FLAG_MSK(addr);
-> +static const struct regmap_access_table ad7768_regmap_rd_table = {
-> +	.yes_ranges = ad7768_regmap_rd_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad7768_regmap_rd_ranges),
-> +};
->  
-> -	ret = spi_write_then_read(st->spi, st->data.d8, 1,
-> -				  &st->data.d32, len);
-> -	if (ret < 0)
-> -		return ret;
-> +static const struct regmap_range ad7768_regmap_wr_ranges[] = {
-> +	regmap_reg_range(AD7768_REG_SCRATCH_PAD, AD7768_REG_SCRATCH_PAD),
-> +	regmap_reg_range(AD7768_REG_INTERFACE_FORMAT, AD7768_REG_GPIO_WRITE),
-> +	regmap_reg_range(AD7768_REG_OFFSET_HI, AD7768_REG_DIG_DIAG_ENABLE),
-> +	regmap_reg_range(AD7768_REG_SPI_DIAG_STATUS, AD7768_REG_SPI_DIAG_STATUS),
-> +	regmap_reg_range(AD7768_REG_COEFF_CONTROL, AD7768_REG_COEFF_CONTROL),
-> +};
->  
-> -	return (be32_to_cpu(st->data.d32) >> shift);
-> -}
-> +static const struct regmap_access_table ad7768_regmap_wr_table = {
-> +	.yes_ranges = ad7768_regmap_wr_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad7768_regmap_wr_ranges),
-> +};
->  
-> -static int ad7768_spi_reg_write(struct ad7768_state *st,
-> -				unsigned int addr,
-> -				unsigned int val)
-> -{
-> -	st->data.d8[0] = AD7768_WR_FLAG_MSK(addr);
-> -	st->data.d8[1] = val & 0xFF;
-> +static const struct regmap_config ad7768_regmap_config = {
-> +	.name = "ad7768-1-8",
-> +	.reg_bits = 8,
-> +	.val_bits = 8,
-> +	.read_flag_mask = BIT(6),
-> +	.rd_table = &ad7768_regmap_rd_table,
-> +	.wr_table = &ad7768_regmap_wr_table,
-> +	.max_register = AD7768_REG_ACCESS_KEY,
-> +	.use_single_write = true,
-> +	.use_single_read = true,
-> +};
->  
-> -	return spi_write(st->spi, st->data.d8, 2);
-> -}
-> +static const struct regmap_range ad7768_regmap24_rd_ranges[] = {
-> +	regmap_reg_range(AD7768_REG24_ADC_DATA, AD7768_REG24_ADC_DATA),
-> +	regmap_reg_range(AD7768_REG24_COEFF_DATA, AD7768_REG24_COEFF_DATA),
-
-So, this device has only two registers that are 24-bit size?
-Also, one of those is the ADC_DATA register which you will probably want
-to read with optimized SPI messages in the future (devm_spi_optimize_message()).
-That makes me wonder if the 24-bit regmap worth's the boiler plate to have it.
-Does the driver access AD7768_REG24_COEFF_DATA after the patches from this
-series is applied? If not, maybe drop the 24-bit regmap and implement ADC_DATA
-with usual spi_message/spi_transfer interfaces?
-
-> +};
->  
-> -static int ad7768_set_mode(struct ad7768_state *st,
-> -			   enum ad7768_conv_mode mode)
-> -{
-> -	int regval;
-> +static const struct regmap_access_table ad7768_regmap24_rd_table = {
-> +	.yes_ranges = ad7768_regmap24_rd_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad7768_regmap24_rd_ranges),
-> +};
->  
-> -	regval = ad7768_spi_reg_read(st, AD7768_REG_CONVERSION, 1);
-> -	if (regval < 0)
-> -		return regval;
-> +static const struct regmap_range ad7768_regmap24_wr_ranges[] = {
-> +	regmap_reg_range(AD7768_REG24_COEFF_DATA, AD7768_REG24_COEFF_DATA),
-> +};
->  
-> -	regval &= ~AD7768_CONV_MODE_MSK;
-> -	regval |= AD7768_CONV_MODE(mode);
-> +static const struct regmap_access_table ad7768_regmap24_wr_table = {
-> +	.yes_ranges = ad7768_regmap24_wr_ranges,
-> +	.n_yes_ranges = ARRAY_SIZE(ad7768_regmap24_wr_ranges),
-> +};
-> +
-> +static const struct regmap_config ad7768_regmap24_config = {
-> +	.name = "ad7768-1-24",
-> +	.reg_bits = 8,
-> +	.val_bits = 24,
-> +	.read_flag_mask = BIT(6),
-> +	.rd_table = &ad7768_regmap24_rd_table,
-> +	.wr_table = &ad7768_regmap24_wr_table,
-> +	.max_register = AD7768_REG24_COEFF_DATA,
-> +};
->  
-> -	return ad7768_spi_reg_write(st, AD7768_REG_CONVERSION, regval);
-> +static int ad7768_set_mode(struct ad7768_state *st,
-> +			   enum ad7768_conv_mode mode)
-> +{
-> +	return regmap_update_bits(st->regmap, AD7768_REG_CONVERSION,
-> +				 AD7768_CONV_MODE_MSK, AD7768_CONV_MODE(mode));
->  }
->  
->  static int ad7768_scan_direct(struct iio_dev *indio_dev)
-> @@ -233,9 +269,10 @@ static int ad7768_scan_direct(struct iio_dev *indio_dev)
->  	if (!ret)
->  		return -ETIMEDOUT;
->  
-> -	readval = ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
-> -	if (readval < 0)
-> -		return readval;
-> +	ret = regmap_read(st->regmap24, AD7768_REG24_ADC_DATA, &readval);
-> +	if (ret)
-> +		return ret;
-> +
+> @@ -166,6 +166,7 @@ struct ad7768_state {
+>  	struct completion completion;
+>  	struct iio_trigger *trig;
+>  	struct gpio_desc *gpio_sync_in;
+> +	struct gpio_desc *gpio_reset;
+>  	const char *labels[ARRAY_SIZE(ad7768_channels)];
 >  	/*
->  	 * Any SPI configuration of the AD7768-1 can only be
->  	 * performed in continuous conversion mode.
-> @@ -259,16 +296,23 @@ static int ad7768_reg_access(struct iio_dev *indio_dev,
->  	if (ret)
->  		return ret;
->  
-> +	ret = -EINVAL;
->  	if (readval) {
-> -		ret = ad7768_spi_reg_read(st, reg, 1);
-> -		if (ret < 0)
-> -			goto err_release;
-> -		*readval = ret;
-> -		ret = 0;
-> +		if (regmap_check_range_table(st->regmap, reg, &ad7768_regmap_rd_table))
-> +			ret = regmap_read(st->regmap, reg, readval);
-> +
-> +		if (regmap_check_range_table(st->regmap24, reg, &ad7768_regmap24_rd_table))
-> +			ret = regmap_read(st->regmap24, reg, readval);
-> +
->  	} else {
-> -		ret = ad7768_spi_reg_write(st, reg, writeval);
-> +		if (regmap_check_range_table(st->regmap, reg, &ad7768_regmap_wr_table))
-> +			ret = regmap_write(st->regmap, reg, writeval);
-> +
-> +		if (regmap_check_range_table(st->regmap24, reg, &ad7768_regmap24_wr_table))
-> +			ret = regmap_write(st->regmap24, reg, writeval);
-> +
->  	}
-> -err_release:
-> +
->  	iio_device_release_direct_mode(indio_dev);
->  
->  	return ret;
-> @@ -285,7 +329,7 @@ static int ad7768_set_dig_fil(struct ad7768_state *st,
->  	else
->  		mode = AD7768_DIG_FIL_DEC_RATE(dec_rate);
->  
-> -	ret = ad7768_spi_reg_write(st, AD7768_REG_DIGITAL_FILTER, mode);
-> +	ret = regmap_write(st->regmap, AD7768_REG_DIGITAL_FILTER, mode);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -322,7 +366,7 @@ static int ad7768_set_freq(struct ad7768_state *st,
->  	 */
->  	pwr_mode = AD7768_PWR_MCLK_DIV(ad7768_clk_config[idx].mclk_div) |
->  		   AD7768_PWR_PWRMODE(ad7768_clk_config[idx].pwrmode);
-> -	ret = ad7768_spi_reg_write(st, AD7768_REG_POWER_CLOCK, pwr_mode);
-> +	ret = regmap_write(st->regmap, AD7768_REG_POWER_CLOCK, pwr_mode);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -449,11 +493,11 @@ static int ad7768_setup(struct ad7768_state *st)
->  	 * to 10. When the sequence is detected, the reset occurs.
->  	 * See the datasheet, page 70.
->  	 */
-> -	ret = ad7768_spi_reg_write(st, AD7768_REG_SYNC_RESET, 0x3);
-> +	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
->  	if (ret)
->  		return ret;
->  
-> -	ret = ad7768_spi_reg_write(st, AD7768_REG_SYNC_RESET, 0x2);
-> +	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
->  	if (ret)
->  		return ret;
->  
-> @@ -508,18 +552,19 @@ static int ad7768_buffer_postenable(struct iio_dev *indio_dev)
->  	 * continuous read mode. Subsequent data reads do not require an
->  	 * initial 8-bit write to query the ADC_DATA register.
->  	 */
-> -	return ad7768_spi_reg_write(st, AD7768_REG_INTERFACE_FORMAT, 0x01);
-> +	return regmap_write(st->regmap, AD7768_REG_INTERFACE_FORMAT, 0x01);
->  }
->  
->  static int ad7768_buffer_predisable(struct iio_dev *indio_dev)
+>  	 * DMA (thus cache coherency maintenance) may require the
+> @@ -487,19 +488,30 @@ static int ad7768_setup(struct ad7768_state *st)
 >  {
->  	struct ad7768_state *st = iio_priv(indio_dev);
-> +	unsigned int unused;
+>  	int ret;
 >  
->  	/*
->  	 * To exit continuous read mode, perform a single read of the ADC_DATA
->  	 * reg (0x2C), which allows further configuration of the device.
->  	 */
-> -	return ad7768_spi_reg_read(st, AD7768_REG_ADC_DATA, 3);
-> +	return regmap_read(st->regmap24, AD7768_REG24_ADC_DATA, &unused);
->  }
+> -	/*
+> -	 * Two writes to the SPI_RESET[1:0] bits are required to initiate
+> -	 * a software reset. The bits must first be set to 11, and then
+> -	 * to 10. When the sequence is detected, the reset occurs.
+> -	 * See the datasheet, page 70.
+> -	 */
+> -	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
+> -	if (ret)
+> -		return ret;
+> +	st->gpio_reset = devm_gpiod_get_optional(&st->spi->dev, "reset",
+> +						 GPIOD_OUT_HIGH);
+> +	if (IS_ERR(st->gpio_reset))
+> +		return PTR_ERR(st->gpio_reset);
 >  
->  static const struct iio_buffer_setup_ops ad7768_buffer_ops = {
-> @@ -590,6 +635,16 @@ static int ad7768_probe(struct spi_device *spi)
->  
->  	st->spi = spi;
->  
-> +	st->regmap = devm_regmap_init_spi(spi, &ad7768_regmap_config);
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
-> +				     "Failed to initialize regmap");
+> -	ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
+> -	if (ret)
+> -		return ret;
+> +	if (st->gpio_reset) {
+> +		fsleep(10);
+> +		gpiod_set_value_cansleep(st->gpio_reset, 0);
+> +		fsleep(200);
+> +	} else {
+> +		/*
+> +		 * Two writes to the SPI_RESET[1:0] bits are required to initiate
+> +		 * a software reset. The bits must first be set to 11, and then
+> +		 * to 10. When the sequence is detected, the reset occurs.
+> +		 * See the datasheet, page 70.
+> +		 */
+> +		ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x3);
+> +		if (ret)
+> +			return ret;
 > +
-> +	st->regmap24 = devm_regmap_init_spi(spi, &ad7768_regmap24_config);
-> +	if (IS_ERR(st->regmap24))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap24),
-> +				     "Failed to initialize regmap24");
-> +
->  	st->vref = devm_regulator_get(&spi->dev, "vref");
->  	if (IS_ERR(st->vref))
->  		return PTR_ERR(st->vref);
+> +		ret = regmap_write(st->regmap, AD7768_REG_SYNC_RESET, 0x2);
+> +		if (ret)
+> +			return ret;
+> +	}
+>  
+>  	st->gpio_sync_in = devm_gpiod_get(&st->spi->dev, "adi,sync-in",
+>  					  GPIOD_OUT_LOW);
 > -- 
 > 2.34.1
 > 

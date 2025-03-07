@@ -1,209 +1,191 @@
-Return-Path: <linux-iio+bounces-16537-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16536-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC316A56B80
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 16:16:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A729A56B7B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 16:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C48AC3ACB9A
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 15:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637F03A7AFE
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Mar 2025 15:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF9F221D92;
-	Fri,  7 Mar 2025 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A06F221544;
+	Fri,  7 Mar 2025 15:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QBA6VD2A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ciNWFTMf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139F822172C
-	for <linux-iio@vger.kernel.org>; Fri,  7 Mar 2025 15:12:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935D221CC54;
+	Fri,  7 Mar 2025 15:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741360343; cv=none; b=EvVZFC23NwJv79iw3VzbHu+shXfnIoA8Yw5efnhZf+P06uOuJoEZ25zrzRx13z5q+VLvgFTKZJGSLk4Z+bPHSEmHsD/uKxh2XYio/uRA7n4XGNvP3vgo6eCsENX/vjXXAF839fbEYQCP8oRbwYpf+tmZbbb/POJLz919nb0xXHI=
+	t=1741360293; cv=none; b=LOgVQ32THdTdiJW/X4VGaMC5d4eIDIQeqVMZT1Ia2DKuZu8SdHbGELnQcvxguQ59iQXu/eXk5y6d85cg542vdlikPCnH1vqNqylxn/BgC87ETtWuxjtJJe5VF4OnTu2sVo9DKtw+uik4nzZlSYC3BbaDdQVRJZDIkXcnN59Al0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741360343; c=relaxed/simple;
-	bh=X8bFjvWIEL6nNohkMOL5h5TzljFrKQZopW+uAVwDnpk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sS8qxrYgIfMWvu7nZOdvTKGcUEanhk4VRV5u1wyYrbEVgmkX33BqAzISsq9YX3E2Ls/3w1IhfeF+Yn8KY0HY+g/kCbwz7q06qbTeGZCc8qXk9EBhetag3IWpjtTt9LF6mcjZWb7xvIfrTwdP/hPllm1UkDxcjAwQe1AqUHAvtKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QBA6VD2A; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-390f69e71c8so1148663f8f.0
-        for <linux-iio@vger.kernel.org>; Fri, 07 Mar 2025 07:12:19 -0800 (PST)
+	s=arc-20240116; t=1741360293; c=relaxed/simple;
+	bh=68PYA1EofC70Yl9+ZYYWiPFB1L+1AgWZwF/BIm3DqIU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMBNZdcvACGz2G4QCj9iaRDdP6LHQdCCifI7hrSJ9BvIf063Eqsm8A5XJ3B0K0snXeFL7/8NxGenHCe0G/HiuBRbpII+MPadfSo2FsmddjzkvxJyTFgxnrzlOJxhpbPZvMswXGtMXZ2sTWSEMy7xrmCUedySl1C5xUumE+NeIdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ciNWFTMf; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-223fb0f619dso40036225ad.1;
+        Fri, 07 Mar 2025 07:11:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741360338; x=1741965138; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3KPjXWWPyK0oX1t83TQ9M25n1uZNpHn3HsSYBqjRW2A=;
-        b=QBA6VD2AunMwKkSaHhn3XdS+lZVP9RJtNwJLVA9jIyJm8pk2KrkZ0YPZNStB1TfI05
-         ARP4m9N0uxq7hXtfkj8yHYTJRvGuqpWEAKhtrqxocT/KzV5L0zSIn3ziWPr0ef4INjCt
-         BcEtMWvK8BoPFqrled1IOzS4G5WfcAnYIQ4wnTfy+oUrukhxt7FUhHBXxByiIWKpW3HP
-         ObES84JtOipmEkbsN/MUCBD4mp0Q7K2Xo08XZrn7By/VPmzrW6+KNRMEn8euM5/xLdJu
-         WlevOkY/lNmp5v3QqjnQrFzrTiWAhczM3TwRdaR0C1JY89mDpEVhfns1R9VsxGoRGOTq
-         0taw==
+        d=gmail.com; s=20230601; t=1741360291; x=1741965091; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Z0smMQNuibFTABZ6w1NkSzGMBPcRi3Tk4bDjmrxiWek=;
+        b=ciNWFTMfK2AKyH+0KifL7CKVCX0AOjNUra7V5iruX44CeXaqGlUPq3fkJAVnSyOA8m
+         I+NgdZEw0E46Bc9fPDpwzUPoWIXXlrRY4KmrDM10uUGEu9WnChZ5BfpDPzdQwTwsrcLC
+         k/NdbAyciEF8dZtxC8r1txZyy3b2OvqxukNdYcwhstgfYHO4iEbOmz6FTL+l+17dwzZq
+         dQJDwBrcEmE8tOSxmp0GWbuha3RjdfhrqcGHqj7KocALAPr8PtCFUrNKHIgrIC0A4rfA
+         twTnXR3ZP23GrlXs6tGULCLNUOGq5Aks/rFaWcuymNdlahsB9a90q/2A3hZT9SX1amZW
+         d1Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741360338; x=1741965138;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1741360291; x=1741965091;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3KPjXWWPyK0oX1t83TQ9M25n1uZNpHn3HsSYBqjRW2A=;
-        b=D5HSPZys5I4d9+8Iok5vmz/S2tdKAwcfwVdNiXU7pr76Vt/3HBmroFUo4q8tamtLoX
-         E+Thi7lNhZTvd3Lf3l5qQ/T5JORJIzDLboioPeryIgBSKZ5tlUxNpIiyuNAsEwGyCq1T
-         8zTnqy0i4a6XbyyKiXF/gYIis/FWcIgPXjiRZQ3F5GzIs0goTT/IDmY7iek81evSjmHW
-         MGzkhdlyYXusRwFV3SqkxLYSixa5njO6xj5m49QpILhHOL+1jjpK6z1jDHdr2I0E8tJK
-         VP4UbAGIFCVFcYJwhCYiuRM71888XZIfZip1rVQUjbEsYaKKGnz/DXM76wHvS6gFllZm
-         Z0rA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnJpuS7V/XV/+S9jb4Xb/JaDqbVP3uPfzIvxGVrts1LiDzSkJgnMzYW7/llLDYoVD39ErgFm7hbnc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXYSOVxVV9zu2TWk66jOsvP5N8rK4HAuACsqdgVwqo7suCVGd8
-	kyN5MCZWRwbfTKoizz6GQH5oJ5B5AXvUqLZRGU7MzdZwUybu3IY5JTaC/bgJqaJ4ZFUlELg+TOV
-	fppE=
-X-Gm-Gg: ASbGncu5q20tehwbrMp+z/dOaeO9o+F78YYsl5K0M9/iwzs6V5+Q71s+pf7Bp3Kn09R
-	U3nXbq8TFGBzV4v6L+ooUaRDzn1fw6Qa/Dwxya5sv/KjMaHspghv+JYECCwKCS8QH4QvMETrq0L
-	6HpY2YX9mjaJ0QKp/RUUV/rhuTToo8cFKQ0K1lTSfJK8PT0rpJB1/6Xqs5kG8cAMxd5Mr1JrF6w
-	kT9AoDFp5TgxL3dfVgVsedlZIzY/lAvxya5MJtdF1ItaatH8qPq2BVrj9Fb/688o/sT6eKeEirv
-	te5QtF+Xj8BUph3MnU/eqDAQ4pAIWbIOB6KKi391Y+mhQglb71kfInW0QXTZr1GFLNngPYKs4/t
-	NBYjanm8D
-X-Google-Smtp-Source: AGHT+IF/RAT3IwHfPoJTNREYxSSMrMjlEJSFksJXdPdttaAQyHvw/bJK7g/nq3YVVLUv/LTreYAVjw==
-X-Received: by 2002:a5d:59ae:0:b0:391:22e2:ccd2 with SMTP id ffacd0b85a97d-391296c2485mr5482638f8f.3.1741360338305;
-        Fri, 07 Mar 2025 07:12:18 -0800 (PST)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3912c104acesm5662531f8f.98.2025.03.07.07.12.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Mar 2025 07:12:17 -0800 (PST)
-Message-ID: <83283a94-6833-4d7d-8d89-6ba42b43b96c@linaro.org>
-Date: Fri, 7 Mar 2025 16:12:16 +0100
+        bh=Z0smMQNuibFTABZ6w1NkSzGMBPcRi3Tk4bDjmrxiWek=;
+        b=Xb6hffvZ1QyA+qKTAc2qOLRF7JLC5WKPzKUNdtysi2ZX5iZf5CX1m/kh7kgEoEqQFU
+         i1LHRjlMhMny60uiwwERqgTV8Pt3Cm3TkIRQHaml2rmHkzduqCH9IhdkvzI8qS1F9Dcn
+         vvbFyGKY3AUiX8csyh3EadxUkxNyzsfJ31ZumiGYcht4ma0V60XzLPYf8ZcCnVd6E04g
+         q279iJM52CUqhlL92++JnbgDG1xPuyUkYPtGk2yUd72jxVYPLS6qw74xyQ5asydIJkjS
+         kMuWyn/kTvR7aj25IPUxtv5gJGWC3pmUV/FTrE49bOVjOuUGjSsKWT1ng/5qcD4svVzb
+         huZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVmlcUEPD/ZMEk83fNT7FGZN7P6XnF7uqRI2tNNkuvfnroBgSKXQ7NXwhrnU7X4lEwleNJTBGkh7Aj1@vger.kernel.org, AJvYcCVnxH9bTPmYVyohiNUwzt952JA9uDGOB19ccv/hSkV31Hbpgk4cXZtG4oa5xJjdB26NGm+ZG2DbCSV8hUXs@vger.kernel.org, AJvYcCWf0B7OyzIqFtST1Q9PP8HTj2T93smDfCNl5E1j9PDvf4T3BVEYdkXZs3w32OyvJpSYIdneq6nNg/9xpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3KOJk4hJ3pAb5EGRsFqKRuj25lujdsEHqSsa6S+Q1XIgvEnad
+	KR/feZpFwltS//BcHWuT/CISWTgo0oH4CSWdNXUE6BoM9DRzcxRz
+X-Gm-Gg: ASbGncuusJ7qpIvKdwAtkehJ9Aeq+an1euwAZn5eDNzHr2ynpXbnoH6oKkCWhJP17iK
+	d00NbLp1qN7ToZ1yXSkLjDznXGdL2UaS1P5Z+Vcx1w31kW/8iBuVGwuJSRVSxqvwN/gQEnntpI/
+	2LGtRVQcB2FzTMJLGJhCzpdHqn4HP6A9H0gPTHhcM/STWKzVyprBniC4ZYRWtN+KwZeeLDNgP+n
+	qtAlwTakpHeeHFTa3ycLCwvzwQiGR9qkTT1hUjUuz7a+Uv8+PYOj8J8HS0sCqB8eNy1NLDxHmju
+	oBR5tr1ipT/Tx/DVQTYmDoCTArmZo+tvdUZzp6O4QnSeZPlcF9KA3g==
+X-Google-Smtp-Source: AGHT+IHrwpXL0L5f6em3IgAisRt8eToY4WUgHZ+JzvFiYSU/OoqGtox7zmG/M0KzUZdedDUwYqS0Jw==
+X-Received: by 2002:a17:903:32ce:b0:224:1074:63af with SMTP id d9443c01a7336-22428bdb76amr63670315ad.34.1741360290644;
+        Fri, 07 Mar 2025 07:11:30 -0800 (PST)
+Received: from localhost ([2804:30c:1f21:4300:1cf6:c485:6555:b1c5])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22410a907adsm31000575ad.160.2025.03.07.07.11.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Mar 2025 07:11:29 -0800 (PST)
+Date: Fri, 7 Mar 2025 12:12:22 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+	lars@metafoo.de, Michael.Hennerich@analog.com,
+	marcelo.schmitt@analog.com, jic23@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, linus.walleij@linaro.org,
+	brgl@bgdev.pl, lgirdwood@gmail.com, broonie@kernel.org,
+	dlechner@baylibre.com, jonath4nns@gmail.com
+Subject: Re: [PATCH v4 17/17] iio: adc: ad7768-1: add low pass -3dB cutoff
+ attribute
+Message-ID: <Z8sM1uW7pxJVmVN6@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1741268122.git.Jonathan.Santos@analog.com>
+ <2aa347a97e7ea974951609b0bdf81cad0b21b993.1741268122.git.Jonathan.Santos@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/8] clocksource: stm32-lptimer: add support for
- stm32mp25
-To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>, lee@kernel.org,
- ukleinek@kernel.org, alexandre.torgue@foss.st.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, jic23@kernel.org, tglx@linutronix.de
-Cc: catalin.marinas@arm.com, will@kernel.org, devicetree@vger.kernel.org,
- wbg@kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
- olivier.moysan@foss.st.com
-References: <20250305094935.595667-1-fabrice.gasnier@foss.st.com>
- <20250305094935.595667-5-fabrice.gasnier@foss.st.com>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <20250305094935.595667-5-fabrice.gasnier@foss.st.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <2aa347a97e7ea974951609b0bdf81cad0b21b993.1741268122.git.Jonathan.Santos@analog.com>
 
-On 05/03/2025 10:49, Fabrice Gasnier wrote:
-> On stm32mp25, DIER (former IER) must only be modified when the lptimer
-> is enabled. On earlier SoCs, it must be only be modified when it is
-> disabled. Read the LPTIM_VERR register to properly manage the enable
-> state, before accessing IER.
+Looks good. Minor comment inline.
+
+On 03/06, Jonathan Santos wrote:
+> Ad7768-1 has a different -3db frequency multiplier depending on
+> the filter type configured. The cutoff frequency also varies according
+> to the current ODR.
 > 
-> Signed-off-by: Patrick Delaunay <patrick.delaunay@foss.st.com>
-> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-> ---
-> Changes in V2:
-> - rely on fallback compatible as no specific .data is associated to the
->    driver. Use version data from MFD core.
-> - Added interrupt enable register access update in (missed in V1)
-> ---
->   drivers/clocksource/timer-stm32-lp.c | 26 ++++++++++++++++++++++----
->   1 file changed, 22 insertions(+), 4 deletions(-)
+> Add a readonly low pass -3dB frequency cutoff attribute to clarify to
+> the user which bandwidth is being allowed depending on the filter
+> configurations.
 > 
-> diff --git a/drivers/clocksource/timer-stm32-lp.c b/drivers/clocksource/timer-stm32-lp.c
-> index a4c95161cb22..96d975adf7a4 100644
-> --- a/drivers/clocksource/timer-stm32-lp.c
-> +++ b/drivers/clocksource/timer-stm32-lp.c
-> @@ -25,6 +25,7 @@ struct stm32_lp_private {
->   	struct clock_event_device clkevt;
->   	unsigned long period;
->   	struct device *dev;
-> +	bool ier_wr_enabled;	/* Enables LPTIMER before writing into IER register */
->   };
->   
->   static struct stm32_lp_private*
-> @@ -37,8 +38,15 @@ static int stm32_clkevent_lp_shutdown(struct clock_event_device *clkevt)
->   {
->   	struct stm32_lp_private *priv = to_priv(clkevt);
->   
-> -	regmap_write(priv->reg, STM32_LPTIM_CR, 0);
-> +	/* Disable LPTIMER either before or after writing IER register (else, keep it enabled) */
-> +	if (!priv->ier_wr_enabled)
-> +		regmap_write(priv->reg, STM32_LPTIM_CR, 0);
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> ---
+
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+
+> v4 Changes:
+> * None
+> 
+> v3 Changes:
+> * None
+> 
+> v2 Changes:
+> * New patch in v2.
+> ---
+>  drivers/iio/adc/ad7768-1.c | 22 ++++++++++++++++++++--
+>  1 file changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> index 664d0b535340..9ba00e9089bd 100644
+> --- a/drivers/iio/adc/ad7768-1.c
+> +++ b/drivers/iio/adc/ad7768-1.c
+> @@ -150,6 +150,17 @@ enum ad7768_scan_type {
+>  	AD7768_SCAN_TYPE_HIGH_SPEED,
+>  };
+>  
+> +/*
+> + * -3dB cutoff frequency multipliers (relative to ODR) for
+> + * each filter type. Values are multiplied by 1000.
+> + */
+> +static const int ad7768_filter_3db_odr_multiplier[] = {
+> +	[AD7768_FILTER_SINC5] = 204,
+> +	[AD7768_FILTER_SINC3] = 261,
+> +	[AD7768_FILTER_SINC3_REJ60] = 261,
+
+Are these constants from ADAQ7768-1 datasheet?
+There it says "the sinc3 filter has a −3 dB bandwidth of 0.2617 × ODR."
+If so, maybe use 262 as SINC3 multiplier?
+
+> +	[AD7768_FILTER_WIDEBAND] = 433,
+> +};
 > +
->   	regmap_write(priv->reg, STM32_LPTIM_IER, 0);
+>  static const int ad7768_mclk_div_rates[4] = {
+>  	16, 8, 4, 2,
+>  };
+> @@ -228,7 +239,8 @@ static const struct iio_chan_spec ad7768_channels[] = {
+>  		.type = IIO_VOLTAGE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
+>  		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |
+> -					    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+> +					    BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+> +					    BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+>  		.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+>  		.info_mask_shared_by_all_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),
+> @@ -762,7 +774,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad7768_state *st = iio_priv(indio_dev);
+>  	const struct iio_scan_type *scan_type;
+> -	int scale_uv, ret;
+> +	int scale_uv, ret, temp;
+>  
+>  	scan_type = iio_get_current_scan_type(indio_dev, chan);
+>  	if (IS_ERR(scan_type))
+> @@ -802,6 +814,12 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>  		*val = st->oversampling_ratio;
+>  
+> +		return IIO_VAL_INT;
 > +
-
-Why not encapsulate the function ?
-
-	regmap_write_ier(struct stm32_lp_private *priv, int value)
-	{
-
-		/* A comment ... */
-		if (!priv->ier_wr_enabled)
-			regmap_write(priv->reg, STM32_LPTIM_CR, 0);
-
-		regmap_write(priv->reg, STM32_LPTIM_IER, value);
-
-		if (!priv->ier_wr_enabled)
-			regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
-	}
-
-
-> +	if (priv->ier_wr_enabled)
-> +		regmap_write(priv->reg, STM32_LPTIM_CR, 0);
+> +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +		temp = st->samp_freq * ad7768_filter_3db_odr_multiplier[st->filter_type];
+> +		*val = DIV_ROUND_CLOSEST(temp, 1000);
 > +
-
->   	/* clear pending flags */
->   	regmap_write(priv->reg, STM32_LPTIM_ICR, STM32_LPTIM_ARRMCF);
->   
-> @@ -51,12 +59,21 @@ static int stm32_clkevent_lp_set_timer(unsigned long evt,
->   {
->   	struct stm32_lp_private *priv = to_priv(clkevt);
->   
-> -	/* disable LPTIMER to be able to write into IER register*/
-> -	regmap_write(priv->reg, STM32_LPTIM_CR, 0);
-> +	if (!priv->ier_wr_enabled) {
-> +		/* Disable LPTIMER to be able to write into IER register */
-> +		regmap_write(priv->reg, STM32_LPTIM_CR, 0);
-> +	} else {
-> +		/* Enable LPTIMER to be able to write into IER register */
-> +		regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
-> +	}
-> +
->   	/* enable ARR interrupt */
->   	regmap_write(priv->reg, STM32_LPTIM_IER, STM32_LPTIM_ARRMIE);
-> +
->   	/* enable LPTIMER to be able to write into ARR register */
-> -	regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
-> +	if (!priv->ier_wr_enabled)
-> +		regmap_write(priv->reg, STM32_LPTIM_CR, STM32_LPTIM_ENABLE);
-> +
->   	/* set next event counter */
->   	regmap_write(priv->reg, STM32_LPTIM_ARR, evt);
->   
-> @@ -151,6 +168,7 @@ static int stm32_clkevent_lp_probe(struct platform_device *pdev)
->   		return -ENOMEM;
->   
->   	priv->reg = ddata->regmap;
-> +	priv->ier_wr_enabled = ddata->version == STM32_LPTIM_VERR_23;
->   	ret = clk_prepare_enable(ddata->clk);
->   	if (ret)
->   		return -EINVAL;
-
-
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
-
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+>  		return IIO_VAL_INT;
+>  	}
+>  
+> -- 
+> 2.34.1
+> 
 

@@ -1,63 +1,62 @@
-Return-Path: <linux-iio+bounces-16542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16543-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D8EA57A61
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 14:15:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77619A57A66
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 14:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE0773B289F
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 13:15:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A482C16CDDD
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 13:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119BD1C3C04;
-	Sat,  8 Mar 2025 13:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515FC1C07E6;
+	Sat,  8 Mar 2025 13:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwYWr4sN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7SrkmgU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F1B137E;
-	Sat,  8 Mar 2025 13:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E9A189F36;
+	Sat,  8 Mar 2025 13:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741439713; cv=none; b=jmD96pIPjI750W8Qsy0kgSTEXQKK1RwTDehHdfeBBXG/DqqUuWik9kInKBywM0BVxi64/GX3T8bna2KMaaLMwFP08jaUmecAibVhrsIPrahWg4z1VgG46TrJpaPj7BnMQvKwl8GxpzVFNbc7A+abuPjV1U0/fnEUQZBrSDl3UaY=
+	t=1741439849; cv=none; b=E1ywBW8HNlLHOYfvLyy/tmX8xCcGa/eS9lUOYWA4imCKVYZoo++GNhDs810ps/QC9at1fwP2ntXhoisPEtsKSqEPAzeEhEENZN6wEIHQWXPU+Lmj1nMa8rP3mlMDCE/pHfPoFMVfp56sdZUcXATvhSAFwFJE5bvBZPI9r3/fYdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741439713; c=relaxed/simple;
-	bh=s8BILcS17WPtk+s6E1t2xrjrEw6KDOLQSM2Go7SuGvs=;
+	s=arc-20240116; t=1741439849; c=relaxed/simple;
+	bh=nJhwyvUuY1byHjPC2rw/pJa/OPhY2PFgEysCZalYMdI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RBHGxTTaVcQsn4C1lp/rNQ8pgbRGZj1ShR2JvC8G4W5/8bD+BaQjm5Eb8NCuCpx2dXeJ6AfOKiS/06d+PxX3DkXE3X6BQrmxqOK/fY9SKjT2PoYd1jgn39IPX7feweWCFgXDQsqH2AzvEicGSNavxwrmOgtfClePcDzaj/xsqb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwYWr4sN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B426C4CEE0;
-	Sat,  8 Mar 2025 13:15:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X8d9tT5xQ15nZX2Us0q2sQ+DkVjfb82VgR8YC1/awCKBwQgR8ojyh+DXywbkYlsB6yOx21FMcJYEy+CdQ6Xucx1IYXqEb9eT99JJUNZyjG59QfukBJi+HfaI5tlUCbIXDdCLR+/S2g8yqFuXyPGTC21ywAH01zlLawCizIyOAPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7SrkmgU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFCEC4CEE0;
+	Sat,  8 Mar 2025 13:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741439713;
-	bh=s8BILcS17WPtk+s6E1t2xrjrEw6KDOLQSM2Go7SuGvs=;
+	s=k20201202; t=1741439848;
+	bh=nJhwyvUuY1byHjPC2rw/pJa/OPhY2PFgEysCZalYMdI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DwYWr4sNoILgvgR8ICvxZMvIUNvYFH/MQpcUO39iexrx6R8v1CTaXD4wPAWF6HJzN
-	 G81XzByT4Ef+R8itR1p++YfO2azd+LZPLp5UXKDxd/e3P/ISuFbPkdXGaX2ES5vJrP
-	 YyuQxVoh6DzvfSv5AIH5H7enlUgKOSgshWg7bITHvH42tS1gEsXnrWrtqMBITKqYdO
-	 IXUtO3CjmNhIEam1MxZE0H31gqGDITXU5P3IMEtOUUG0nECL9GXKDzn2LantlnAV//
-	 FdV+eRLk3WSSR2aARwROlsikdPVzRCjlMXo6UOpiLLzbMkkPP9qeBoT5bsh1Dvug8U
-	 MaP1IiFwlvbww==
-Date: Sat, 8 Mar 2025 13:15:02 +0000
+	b=G7SrkmgUkDogTD9rTqnZjAOvXEDR5mnZO3/7z0qlsOrBCKrM+7NtbCcQ3C2VXk+Q9
+	 VntInERzrcg9vaznHFyVdC4nflBBSw1pAH7Tn7/HoW4kQuopcASUAuD6oY9cVUJAJ/
+	 x+guyLibAi3evdSiImSg7AFaH4saFnzXQeMfTMCCJofbkg1A6/gS105ujZWm9XetPP
+	 oK8djD1WeyEBhlFkqa/Bmb+LoinVTgzT38ybCOnm7G6q/COw0qd0H1+HzGd1lF7KUX
+	 oULWznFWRgY7Z1IUjNKlfoL1cwR736FtPxXhj7/iu+X3/PJDd6dztI+9Q7BGgBjhdL
+	 216gAoUPAu8Qg==
+Date: Sat, 8 Mar 2025 13:17:19 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-gpio@vger.kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
- marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
- lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
- jonath4nns@gmail.com
-Subject: Re: [PATCH v4 02/17] iio: adc: ad7768-1: set MOSI idle state to
- prevent accidental reset
-Message-ID: <20250308131502.69af9479@jic23-huawei>
-In-Reply-To: <Z8rhWLz32fdySDyN@debian-BULLSEYE-live-builder-AMD64>
+To: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+ <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+ <marcelo.schmitt@analog.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+ <conor+dt@kernel.org>, <linus.walleij@linaro.org>, <brgl@bgdev.pl>,
+ <lgirdwood@gmail.com>, <broonie@kernel.org>, <dlechner@baylibre.com>,
+ <marcelo.schmitt1@gmail.com>, <jonath4nns@gmail.com>
+Subject: Re: [PATCH v4 03/17] dt-bindings: iio: adc: ad7768-1: add
+ trigger-sources property
+Message-ID: <20250308131719.719f26f2@jic23-huawei>
+In-Reply-To: <4136b5259df75221fc314bcd4a57ecaeeab41a45.1741268122.git.Jonathan.Santos@analog.com>
 References: <cover.1741268122.git.Jonathan.Santos@analog.com>
-	<c2a2b0f3d54829079763a5511359a1fa80516cfb.1741268122.git.Jonathan.Santos@analog.com>
-	<Z8rhWLz32fdySDyN@debian-BULLSEYE-live-builder-AMD64>
+	<4136b5259df75221fc314bcd4a57ecaeeab41a45.1741268122.git.Jonathan.Santos@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,79 +67,119 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 7 Mar 2025 09:06:48 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Thu, 6 Mar 2025 18:00:56 -0300
+Jonathan Santos <Jonathan.Santos@analog.com> wrote:
 
-> On 03/06, Jonathan Santos wrote:
-> > Datasheet recommends Setting the MOSI idle state to high in order to
-> > prevent accidental reset of the device when SCLK is free running.
-> > This happens when the controller clocks out a 1 followed by 63 zeros
-> > while the CS is held low.
-> > 
-> > Check if SPI controller supports SPI_MOSI_IDLE_HIGH flag and set it.
-> > 
-> > Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-> > ---  
+> In addition to GPIO synchronization, The AD7768-1 also supports
+> synchronization over SPI, which use is recommended when the GPIO
+> cannot provide a pulse synchronous with the base MCLK signal. It
+> consists of looping back the SYNC_OUT to the SYNC_IN pin and send
+> a command via SPI to trigger the synchronization.
 > 
-> LGTM
+> Add a new trigger-sources property to enable synchronization over SPI
+> and future multiple devices support. This property references the
+> main device (or trigger provider) responsible for generating the
+> SYNC_OUT pulse to drive the SYNC_IN of device.
 > 
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Applied on assumption the answer to Marcelo's question doesn't
-result in changes.
+> While at it, add description to the interrupts property.
+> 
+> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+To me this looks fine but there was a discussion with Conor on v3,
+so I'll wait for him to take another look.
 
+Jonathan
+
+> ---
+> v4 Changes:
+> * none
 > 
-> > v4 Changes:
-> > * None.
-> > 
-> > v3 Changes:
-> > * Patch moved closer to the start of the patch set.
-> > 
-> > v2 Changes:
-> > * Only setup SPI_MOSI_IDLE_HIGH flag if the controller supports it, otherwise the driver
-> >   continues the same. I realized that using bits_per_word does not avoid the problem that
-> >   MOSI idle state is trying to solve. If the controller drives the MOSI low between bytes
-> >   during a transfer, nothing happens.  
+> v3 Changes:
+> * Fixed dt-bindings errors.
+> * Trigger-source is set as an alternative to sync-in-gpios, so we
+>   don't break the previous ABI.
+> * increased maxItems from trigger-sources to 2.
 > 
-> When you say nothing happens if the controller drives MOSI low between data
-> bytes you mean the data is still good in that case? Just trying to understand
-> the device behavior.
+> v2 Changes:
+> * Patch added as replacement for adi,sync-in-spi patch.
+> * addressed the request for a description to interrupts property.
+> ---
+>  .../bindings/iio/adc/adi,ad7768-1.yaml        | 28 +++++++++++++++++--
+>  1 file changed, 25 insertions(+), 3 deletions(-)
 > 
-> Thanks,
-> Marcelo
-> 
-> > ---
-> >  drivers/iio/adc/ad7768-1.c | 15 +++++++++++++++
-> >  1 file changed, 15 insertions(+)
-> > 
-> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> > index c3cf04311c40..2e2d50ccb744 100644
-> > --- a/drivers/iio/adc/ad7768-1.c
-> > +++ b/drivers/iio/adc/ad7768-1.c
-> > @@ -574,6 +574,21 @@ static int ad7768_probe(struct spi_device *spi)
-> >  		return -ENOMEM;
-> >  
-> >  	st = iio_priv(indio_dev);
-> > +	/*
-> > +	 * Datasheet recommends SDI line to be kept high when data is not being
-> > +	 * clocked out of the controller and the spi clock is free running,
-> > +	 * to prevent accidental reset.
-> > +	 * Since many controllers do not support the SPI_MOSI_IDLE_HIGH flag
-> > +	 * yet, only request the MOSI idle state to enable if the controller
-> > +	 * supports it.
-> > +	 */
-> > +	if (spi->controller->mode_bits & SPI_MOSI_IDLE_HIGH) {
-> > +		spi->mode |= SPI_MOSI_IDLE_HIGH;
-> > +		ret = spi_setup(spi);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +	}
-> > +
-> >  	st->spi = spi;
-> >  
-> >  	st->vref = devm_regulator_get(&spi->dev, "vref");
-> > -- 
-> > 2.34.1
-> >   
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> index 3ce59d4d065f..4bcc9e20fab9 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7768-1.yaml
+> @@ -26,7 +26,19 @@ properties:
+>    clock-names:
+>      const: mclk
+>  
+> +  trigger-sources:
+> +    description:
+> +      Specifies the device responsible for driving the synchronization pin,
+> +      as an alternative to adi,sync-in-gpios. If the own device node is
+> +      referenced, The synchronization over SPI is enabled and the SYNC_OUT
+> +      output will drive the SYNC_IN pin.
+> +    maxItems: 2
+> +
+>    interrupts:
+> +    description:
+> +      Specifies the interrupt line associated with the ADC. This refers
+> +      to the DRDY (Data Ready) pin, which signals when conversion results are
+> +      available.
+>      maxItems: 1
+>  
+>    '#address-cells':
+> @@ -57,6 +69,9 @@ properties:
+>    "#io-channel-cells":
+>      const: 1
+>  
+> +  "#trigger-source-cells":
+> +    const: 0
+> +
+>  required:
+>    - compatible
+>    - reg
+> @@ -65,7 +80,6 @@ required:
+>    - vref-supply
+>    - spi-cpol
+>    - spi-cpha
+> -  - adi,sync-in-gpios
+>  
+>  patternProperties:
+>    "^channel@([0-9]|1[0-5])$":
+> @@ -89,6 +103,13 @@ patternProperties:
+>  allOf:
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>  
+> +  - oneOf:
+> +      - required:
+> +          - trigger-sources
+> +          - "#trigger-source-cells"
+> +      - required:
+> +          - adi,sync-in-gpios
+> +
+>  unevaluatedProperties: false
+>  
+>  examples:
+> @@ -99,7 +120,7 @@ examples:
+>          #address-cells = <1>;
+>          #size-cells = <0>;
+>  
+> -        adc@0 {
+> +        adc0: adc@0 {
+>              compatible = "adi,ad7768-1";
+>              reg = <0>;
+>              spi-max-frequency = <2000000>;
+> @@ -108,7 +129,8 @@ examples:
+>              vref-supply = <&adc_vref>;
+>              interrupts = <25 IRQ_TYPE_EDGE_RISING>;
+>              interrupt-parent = <&gpio>;
+> -            adi,sync-in-gpios = <&gpio 22 GPIO_ACTIVE_LOW>;
+> +            trigger-sources = <&adc0 0>;
+> +            #trigger-source-cells = <0>;
+>              reset-gpios = <&gpio 27 GPIO_ACTIVE_LOW>;
+>              clocks = <&ad7768_mclk>;
+>              clock-names = "mclk";
 
 

@@ -1,62 +1,63 @@
-Return-Path: <linux-iio+bounces-16541-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16542-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0302A57A5C
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 14:13:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8D8EA57A61
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 14:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA7673B2785
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 13:13:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE0773B289F
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 13:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D391C3C04;
-	Sat,  8 Mar 2025 13:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119BD1C3C04;
+	Sat,  8 Mar 2025 13:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hjm1IRrG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwYWr4sN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5C1EEE6;
-	Sat,  8 Mar 2025 13:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F1B137E;
+	Sat,  8 Mar 2025 13:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741439597; cv=none; b=l/5lPiIRQUeg+Zy7IpUkXYislsB1NjMqOfWr3gAv3WtuUUtOa/jzGuC+lIEXP9ye4RC5MVR6+jNtvhrBojAz1RBpqzHQ9T2YOLtn05ceFddCPg4VGCrI1hIr9tqO1TCU+ieufhnD57URdZQri/V7+Bp/GDEeAD4+MU94FVzDA/c=
+	t=1741439713; cv=none; b=jmD96pIPjI750W8Qsy0kgSTEXQKK1RwTDehHdfeBBXG/DqqUuWik9kInKBywM0BVxi64/GX3T8bna2KMaaLMwFP08jaUmecAibVhrsIPrahWg4z1VgG46TrJpaPj7BnMQvKwl8GxpzVFNbc7A+abuPjV1U0/fnEUQZBrSDl3UaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741439597; c=relaxed/simple;
-	bh=Mu1JYlNbht7PhEkBeODrtPs98Kbx8sXfGcUu/q1sXGk=;
+	s=arc-20240116; t=1741439713; c=relaxed/simple;
+	bh=s8BILcS17WPtk+s6E1t2xrjrEw6KDOLQSM2Go7SuGvs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t6nyQQ4jkRle9lDJcZnvFbCILM0OyuXxDXXOSH5y9CzWsw26+8c70SnOFGBUVOvh7HPTYCGwSfQSGJ/NTWR5ja0V1GZlG5mcKinbPZfJ/Q0lXH9VeFAl9BB30fA9Ws0bU+vR/Qn7AEIxSBr/ikG/zxNZ8bRNO1sIoiZDsDqUTjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hjm1IRrG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9425C4CEE0;
-	Sat,  8 Mar 2025 13:13:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RBHGxTTaVcQsn4C1lp/rNQ8pgbRGZj1ShR2JvC8G4W5/8bD+BaQjm5Eb8NCuCpx2dXeJ6AfOKiS/06d+PxX3DkXE3X6BQrmxqOK/fY9SKjT2PoYd1jgn39IPX7feweWCFgXDQsqH2AzvEicGSNavxwrmOgtfClePcDzaj/xsqb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwYWr4sN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B426C4CEE0;
+	Sat,  8 Mar 2025 13:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741439596;
-	bh=Mu1JYlNbht7PhEkBeODrtPs98Kbx8sXfGcUu/q1sXGk=;
+	s=k20201202; t=1741439713;
+	bh=s8BILcS17WPtk+s6E1t2xrjrEw6KDOLQSM2Go7SuGvs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Hjm1IRrG2xBDwXP5AUrXq28RFJdPyWTKrsXMiLKqT4urLAyjUJiieOpLLYCBuZglQ
-	 EdnIb/0mmY4ROTahbh5I/SLoFD7VZAFyZJe8+q4dEl3X07by8Y4SNo/8lZonROVbSt
-	 QbdaW5FwnUA+8Whwo1QHBDqd4FKnK5mZ7DYnmpqNTHndTxoGxCM/qCq7phuV/Be2d1
-	 jLqpzm1A9AE4AE9b5qEe68i1OR1mmLYorv90R24wM3d0DJL7lGGx4osxdLEVh2/0oI
-	 3gHhAWsAhSDIsh0P4xOoe9lusmROe6H2PlFX4MwCE+HedJwlyAPLOgKp/rWiFBTpe9
-	 dqFkGsHBIhH8w==
-Date: Sat, 8 Mar 2025 13:13:06 +0000
+	b=DwYWr4sNoILgvgR8ICvxZMvIUNvYFH/MQpcUO39iexrx6R8v1CTaXD4wPAWF6HJzN
+	 G81XzByT4Ef+R8itR1p++YfO2azd+LZPLp5UXKDxd/e3P/ISuFbPkdXGaX2ES5vJrP
+	 YyuQxVoh6DzvfSv5AIH5H7enlUgKOSgshWg7bITHvH42tS1gEsXnrWrtqMBITKqYdO
+	 IXUtO3CjmNhIEam1MxZE0H31gqGDITXU5P3IMEtOUUG0nECL9GXKDzn2LantlnAV//
+	 FdV+eRLk3WSSR2aARwROlsikdPVzRCjlMXo6UOpiLLzbMkkPP9qeBoT5bsh1Dvug8U
+	 MaP1IiFwlvbww==
+Date: Sat, 8 Mar 2025 13:15:02 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jonathan Santos <Jonathan.Santos@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-gpio@vger.kernel.org>, Sergiu
- Cuciurean <sergiu.cuciurean@analog.com>, <lars@metafoo.de>,
- <Michael.Hennerich@analog.com>, <marcelo.schmitt@analog.com>,
- <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
- <linus.walleij@linaro.org>, <brgl@bgdev.pl>, <lgirdwood@gmail.com>,
- <broonie@kernel.org>, <dlechner@baylibre.com>,
- <marcelo.schmitt1@gmail.com>, <jonath4nns@gmail.com>
-Subject: Re: [PATCH v4 01/17] iio: adc: ad7768-1: Fix conversion result sign
-Message-ID: <20250308131306.63ee1e6e@jic23-huawei>
-In-Reply-To: <505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
+ lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
+ jonath4nns@gmail.com
+Subject: Re: [PATCH v4 02/17] iio: adc: ad7768-1: set MOSI idle state to
+ prevent accidental reset
+Message-ID: <20250308131502.69af9479@jic23-huawei>
+In-Reply-To: <Z8rhWLz32fdySDyN@debian-BULLSEYE-live-builder-AMD64>
 References: <cover.1741268122.git.Jonathan.Santos@analog.com>
-	<505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com>
+	<c2a2b0f3d54829079763a5511359a1fa80516cfb.1741268122.git.Jonathan.Santos@analog.com>
+	<Z8rhWLz32fdySDyN@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,70 +68,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 6 Mar 2025 18:00:29 -0300
-Jonathan Santos <Jonathan.Santos@analog.com> wrote:
+On Fri, 7 Mar 2025 09:06:48 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+> On 03/06, Jonathan Santos wrote:
+> > Datasheet recommends Setting the MOSI idle state to high in order to
+> > prevent accidental reset of the device when SCLK is free running.
+> > This happens when the controller clocks out a 1 followed by 63 zeros
+> > while the CS is held low.
+> > 
+> > Check if SPI controller supports SPI_MOSI_IDLE_HIGH flag and set it.
+> > 
+> > Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+> > ---  
 > 
-> The ad7768-1 ADC output code is two's complement, meaning that the voltage
-> conversion result is a signed value.. Since the value is a 24 bit one,
-> stored in a 32 bit variable, the sign should be extended in order to get
-> the correct representation.
+> LGTM
 > 
-> Also the channel description has been updated to signed representation,
-> to match the ADC specifications.
-> 
-> Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
-> Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
-I'm going to start picking up the first part of this series now to
-reduce the scale for future versions.
+Applied on assumption the answer to Marcelo's question doesn't
+result in changes.
 
-I have applied this one and marked it for stable. Note that the
-recent iio_device_claim_direct() series changed the handling
-of *val so I applied the equivalent of this by hand.  Please
-check the result in the testing branch of iio.git.
-
-Thanks,
-
-Jonathan
-
-> ---
-> v4 Changes:
-> * none.
 > 
-> v3 Changes:
-> * Added missing SoB.
+> > v4 Changes:
+> > * None.
+> > 
+> > v3 Changes:
+> > * Patch moved closer to the start of the patch set.
+> > 
+> > v2 Changes:
+> > * Only setup SPI_MOSI_IDLE_HIGH flag if the controller supports it, otherwise the driver
+> >   continues the same. I realized that using bits_per_word does not avoid the problem that
+> >   MOSI idle state is trying to solve. If the controller drives the MOSI low between bytes
+> >   during a transfer, nothing happens.  
 > 
-> v2 Changes:
-> * Patch moved to the start of the patch series.
-> ---
->  drivers/iio/adc/ad7768-1.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> When you say nothing happens if the controller drives MOSI low between data
+> bytes you mean the data is still good in that case? Just trying to understand
+> the device behavior.
 > 
-> diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
-> index 113703fb7245..c3cf04311c40 100644
-> --- a/drivers/iio/adc/ad7768-1.c
-> +++ b/drivers/iio/adc/ad7768-1.c
-> @@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
->  		.channel = 0,
->  		.scan_index = 0,
->  		.scan_type = {
-> -			.sign = 'u',
-> +			.sign = 's',
->  			.realbits = 24,
->  			.storagebits = 32,
->  			.shift = 8,
-> @@ -371,7 +371,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
->  
->  		ret = ad7768_scan_direct(indio_dev);
->  		if (ret >= 0)
-> -			*val = ret;
-> +			*val = sign_extend32(ret, chan->scan_type.realbits - 1);
->  
->  		iio_device_release_direct_mode(indio_dev);
->  		if (ret < 0)
+> Thanks,
+> Marcelo
+> 
+> > ---
+> >  drivers/iio/adc/ad7768-1.c | 15 +++++++++++++++
+> >  1 file changed, 15 insertions(+)
+> > 
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index c3cf04311c40..2e2d50ccb744 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> > @@ -574,6 +574,21 @@ static int ad7768_probe(struct spi_device *spi)
+> >  		return -ENOMEM;
+> >  
+> >  	st = iio_priv(indio_dev);
+> > +	/*
+> > +	 * Datasheet recommends SDI line to be kept high when data is not being
+> > +	 * clocked out of the controller and the spi clock is free running,
+> > +	 * to prevent accidental reset.
+> > +	 * Since many controllers do not support the SPI_MOSI_IDLE_HIGH flag
+> > +	 * yet, only request the MOSI idle state to enable if the controller
+> > +	 * supports it.
+> > +	 */
+> > +	if (spi->controller->mode_bits & SPI_MOSI_IDLE_HIGH) {
+> > +		spi->mode |= SPI_MOSI_IDLE_HIGH;
+> > +		ret = spi_setup(spi);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +	}
+> > +
+> >  	st->spi = spi;
+> >  
+> >  	st->vref = devm_regulator_get(&spi->dev, "vref");
+> > -- 
+> > 2.34.1
+> >   
 
 

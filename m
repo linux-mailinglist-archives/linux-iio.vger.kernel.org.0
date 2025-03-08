@@ -1,65 +1,59 @@
-Return-Path: <linux-iio+bounces-16574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD89A57C0C
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 17:44:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08F8A57C2A
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 17:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9830A16CFDE
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:44:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F61516E6B8
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA531E51EF;
-	Sat,  8 Mar 2025 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538F81E9B0E;
+	Sat,  8 Mar 2025 16:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rjQoM39p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iXg6Ifae"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6897E0E4;
-	Sat,  8 Mar 2025 16:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDBE1E8359;
+	Sat,  8 Mar 2025 16:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741452290; cv=none; b=mdT3H/qsKUbMf/tWsdWYC6hWjFQNfxVCd+PtyFR4t4gFcsCd6TzyqtLfLNt1WfPQHgUb3Ymhs9U8A4l/dgiYxwNjfR7vlwy0sGUSKeorFjWsz8B6eI4wzuPxnN9DeizQ9psNxuvwBuel5sMaj3GFN0INPHw3zcpxIvP/ghwKj8A=
+	t=1741452657; cv=none; b=lWBLIhJUcUgP1y3tNwnduEgZx66f/nc3SeC+T9TIra1OxR5CaH1YedVOvnY3J3bmf7SpOIa4rGG+Bl4421As0mObMlCBPZPsq6fN5505XvDdjdSrUmX8qC684PRkAKdIVlU5GJ065UPPtr4AZ9nRCok++fgRALO7lpBuIYLAdNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741452290; c=relaxed/simple;
-	bh=XmWFGdTfcaGqbXLexjd2nltEBEsDhy2zNQyas9t/IKk=;
+	s=arc-20240116; t=1741452657; c=relaxed/simple;
+	bh=zukLuVZquSpBt41C2EFKFn86YAE7G8TH2t/2Y3RItps=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EN4gKdecI+EUyLUlthwtGUImaFCqofyVr9KKXnO9spX6gvbgWo09ACtQsiJ1s6zVn69U+inhkhgXU4Sl/1qidK0SgqKMUllW3XGx6qN2jppqeDl4wKU9rEGwtfsY1KdZgzxV20K/Yz7xwBYhv4e3UZgtlzoznE8fJ/rGmAe8XXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rjQoM39p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896D7C4CEE0;
-	Sat,  8 Mar 2025 16:44:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gEi7/JKS81jKsjhiQwtQfA3v6WqoGFBmcsq4aCZM22LExIknJFOC9w8FqyQqFUkY/XDbHsCtFj/RJ3oqn66TexmULmPRDsfCrO20Hb5g7tPv1Dw2bQxfCb1AqmtKW4F7L4B3Lz0RXulDYportFCCtSc4p3okf4pi6o5Ybtdt1W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iXg6Ifae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33D9C4CEE0;
+	Sat,  8 Mar 2025 16:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741452289;
-	bh=XmWFGdTfcaGqbXLexjd2nltEBEsDhy2zNQyas9t/IKk=;
+	s=k20201202; t=1741452656;
+	bh=zukLuVZquSpBt41C2EFKFn86YAE7G8TH2t/2Y3RItps=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rjQoM39p9uMhfrRfuWgDOe+rZcJNLSthydIs4ouKCgIJibZySOLYXBx1cKTrwMQzr
-	 mf9yL/uMLnP9HhKeYL/PK8VtWAMO4Qx6wyDDpKR/X88PH382z2J1JI/iPc1FNgdmL7
-	 4x9H5zvLiE37rbVRpSyEEevHZmNuQjeRMPeoeETVZzLUSuHF4rIigr0FvgPDap+YIt
-	 dQ7xkBuWNs80AK0IaVYvfG2X0dZK7vYD9Wu1+X96Hy8xXwXRyCkZKkuHYEitSCmoYO
-	 1HpGFoHTS2VAATgiyy99creWdnThyWYSFs88VFWwTajHD270zMxMKB8GWY3dW/Gfdj
-	 S/r2b/okpmcCQ==
-Date: Sat, 8 Mar 2025 16:44:41 +0000
+	b=iXg6IfaewLz89ab7WY7g6PaicLru+znqMziV7Egb7krkpv0fJwEsgMvtExibQW7hN
+	 6huU3GeJUFEqflDdWStDU59BR9spfZR6fQauzepLYFC4mLenvsmdElLuueDiiPdQI0
+	 LmAEhiiKETjCRPs+mUUeo/lWJX6bzJI6SN9WgdgWdAs45IAhnHcixV5srxHdjTUGe0
+	 JPsfClvfokmR0fbE8oVdUSako6znToz/OZCtPYb5UWtS8neEogl9gK9tZ6NbgkIYnu
+	 BEzVdZSzR6D3Ud4++EkPFc3UUm+t5KW6CmlkAhxOYHO0LrSI1+BdEsKVHDTCvnawuJ
+	 NokxTMD1AiOyg==
+Date: Sat, 8 Mar 2025 16:50:48 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, David Lechner
- <dlechner@baylibre.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Guillaume Stols
- <gstols@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, Trevor
- Gamblin <tgamblin@baylibre.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, =?UTF-8?B?Sm/Do28=?=
- Paulo =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v5 07/10] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <20250308164441.00f64ab2@jic23-huawei>
-In-Reply-To: <60a55e4027cf9335b37d4affc11d805a1504cab7.1740993491.git.mazziesaccount@gmail.com>
-References: <cover.1740993491.git.mazziesaccount@gmail.com>
-	<60a55e4027cf9335b37d4affc11d805a1504cab7.1740993491.git.mazziesaccount@gmail.com>
+To: Karan Sanghavi <karansanghvi98@gmail.com>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH v3] iio: light: Add check for array bounds in
+ veml6075_read_int_time_ms
+Message-ID: <20250308165048.408d31ad@jic23-huawei>
+In-Reply-To: <20250222164519.45c48a52@jic23-huawei>
+References: <Z7dnrEpKQdRZ2qFU@Emma>
+	<20250222164337.0372fb58@jic23-huawei>
+	<20250222164519.45c48a52@jic23-huawei>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,139 +64,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 3 Mar 2025 13:33:39 +0200
-Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On Sat, 22 Feb 2025 16:45:19 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-> an automatic measurement mode, with an alarm interrupt for out-of-window
-> measurements. The window is configurable for each channel.
+> On Sat, 22 Feb 2025 16:43:37 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> The I2C protocol for manual start of the measurement and data reading is
-> somewhat peculiar. It requires the master to do clock stretching after
-> sending the I2C slave-address until the slave has captured the data.
-> Needless to say this is not well suopported by the I2C controllers.
+> > On Thu, 20 Feb 2025 17:34:36 +0000
+> > Karan Sanghavi <karansanghvi98@gmail.com> wrote:
+> >   
+> > > The array contains only 5 elements, but the index calculated by
+> > > veml6075_read_int_time_index can range from 0 to 7,
+> > > which could lead to out-of-bounds access. The check prevents this issue.
+> > > 
+> > > Coverity Issue
+> > > CID 1574309: (#1 of 1): Out-of-bounds read (OVERRUN)
+> > > overrun-local: Overrunning array veml6075_it_ms of 5 4-byte
+> > > elements at element index 7 (byte offset 31) using
+> > > index int_index (which evaluates to 7)
+> > > 
+> > > Fixes: 3b82f43238ae ("iio: light: add VEML6075 UVA and UVB light sensor driver")
+> > > Signed-off-by: Karan Sanghavi <karansanghvi98@gmail.com>
+> > > ---    
+> > Superficially this looks hardening against malicious or broken hardware.
+> > That is fine to add, but not worth backporting or (in my opinion) adding a fixes
+> > tag.  
+> Ah I see Javier asked for the fixes tag.  Ok.  Maybe just add a note that
+> the hardware is not expected to return such an out of bounds value.
 > 
-> Thus the driver does not support the BD79124's manual measurement mode
-> but implements the measurements using automatic measurement mode relying
-> on the BD79124's ability of storing latest measurements into register.
-> 
-> The driver does also support configuring the threshold events for
-> detecting the out-of-window events.
-> 
-> The BD79124 keeps asserting IRQ for as long as the measured voltage is
-> out of the configured window. Thus the driver masks the received event
-> for a fixed duration (1 second) when an event is handled. This prevents
-> the user-space from choking on the events
-> 
-> The ADC input pins can be also configured as general purpose outputs.
-> Those pins which don't have corresponding ADC channel node in the
-> device-tree will be controllable as GPO.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Hi Matti
-
-Just a few really trivial comments.  If all else in the
-set was resolved I'd probably have applied with a tweak or two
-
-Thanks,
+> That will help me to remember we don't need to rush this one upstream!
+I guess you don't have time so I made the changes requested and applied.
+(mostly so I can stop tracking the status!)
 
 Jonathan
 
->  obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
-> diff --git a/drivers/iio/adc/rohm-bd79124.c b/drivers/iio/adc/rohm-bd79124.c
-> new file mode 100644
-> index 000000000000..466c7decf8fc
-> --- /dev/null
-> +++ b/drivers/iio/adc/rohm-bd79124.c
-> @@ -0,0 +1,1108 @@
-...
+> 
+> Jonathan
+> 
+> >   
+> > >  drivers/iio/light/veml6075.c | 7 ++++++-
+> > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/iio/light/veml6075.c b/drivers/iio/light/veml6075.c
+> > > index 05d4c0e9015d..5dd951f6e989 100644
+> > > --- a/drivers/iio/light/veml6075.c
+> > > +++ b/drivers/iio/light/veml6075.c
+> > > @@ -201,7 +201,12 @@ static int veml6075_read_int_time_index(struct veml6075_data *data)
+> > >  	if (ret < 0)
+> > >  		return ret;
+> > >  
+> > > -	return FIELD_GET(VEML6075_CONF_IT, conf);
+> > > +	int int_index = FIELD_GET(VEML6075_CONF_IT, conf);
+> > > +
+> > > +	if (int_index >= ARRAY_SIZE(veml6075_it_ms))
+> > > +		return -EINVAL;
+> > > +
+> > > +	return int_index;
+> > >  }
+> > >  
+> > >  static int veml6075_read_int_time_ms(struct veml6075_data *data, int *val)    
+> >   
+> 
+> 
 
-> +
-> +/* Read-only regs */
-
-Given naming this is pretty obvious. I would drop the comment
-and any others that don't add much meaning.
-
-> +static const struct regmap_range bd79124_ro_ranges[] = {
-
-
-
-> +static int bd79124_read_event_value(struct iio_dev *iio_dev,
-> +				    const struct iio_chan_spec *chan,
-> +				    enum iio_event_type type,
-> +				    enum iio_event_direction dir,
-> +				    enum iio_event_info info, int *val,
-> +				    int *val2)
-> +{
-> +	struct bd79124_data *data = iio_priv(iio_dev);
-> +	int ret, reg;
-> +
-> +	if (chan->channel >= BD79124_MAX_NUM_CHANNELS)
-> +		return -EINVAL;
-> +
-> +	switch (info) {
-> +	case IIO_EV_INFO_VALUE:
-> +		if (dir == IIO_EV_DIR_RISING)
-> +			*val = data->alarm_r_limit[chan->channel];
-> +		else if (dir == IIO_EV_DIR_FALLING)
-> +			*val = data->alarm_f_limit[chan->channel];
-> +		else
-> +			return -EINVAL;
-> +
-> +		return IIO_VAL_INT;
-> +
-> +	case IIO_EV_INFO_HYSTERESIS:
-> +		reg = BD79124_GET_HYSTERESIS_REG(chan->channel);
-> +		ret = regmap_read(data->map, reg, val);
-> +		if (ret)
-> +			return ret;
-> +		/* Mask the non hysteresis bits */
-> +		*val &= BD79124_MASK_HYSTERESIS;
-> +		/*
-> +		 * The data-sheet says the hysteresis register value needs to be
-> +		 * sifted left by 3 (or multiplied by 8, depending on the
-> +		 * page :] )
-
-We don't really need this comment on the oddity of the way the datasheet
-describes things in the final driver as effect is same in either case.
-It did make me smile though ;)
-
-
-> +		 */
-> +		*val <<= 3;
-> +
-> +		return IIO_VAL_INT;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-> +
-> +static int bd79124_disable_event(struct bd79124_data *data,
-> +			enum iio_event_direction dir, int channel)
-> +{
-> +	int dir_bit = BIT(dir), reg;
-
-I'd rather this one was split as I find it hard to read lines that
-mix setting of some variables and not others.
-
-> +	unsigned int limit;
-> +
->
-> +static int bd79124_enable_event(struct bd79124_data *data,
-> +		enum iio_event_direction dir, unsigned int channel)
-> +{
-> +	int dir_bit = BIT(dir);
-> +	int reg;
-> +	u16 *limit;
-> +	int ret;
-
-Trivial but might as well but ret and reg on same line.
-
-
-> +
-> +}
-
-
->
 

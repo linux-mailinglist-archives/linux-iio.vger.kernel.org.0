@@ -1,59 +1,72 @@
-Return-Path: <linux-iio+bounces-16568-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16570-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5AAA57BD4
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 17:17:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B68A57BF1
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 17:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1C587A3DEB
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:16:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 931BA1890A95
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA5F1C9B9B;
-	Sat,  8 Mar 2025 16:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13461E5721;
+	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnX+fPQn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSzp+BIy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900BA383A2;
-	Sat,  8 Mar 2025 16:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F341B21B4;
+	Sat,  8 Mar 2025 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741450645; cv=none; b=Xwm5lmRPo3mjQ0UOtRxZ5pVdz3AZErOFNsEBexlC6rtQxrVUOH9Z6XyNAthxcigxoIExVzIqd9cfEFLE2qOZams8O2pRtO29uIK3+xQVg1KPG+R2pn/l356E84mlcII5K14Wz5bo/rvq2veZAVvYH0+gJxN4hN/qoULTPJeyOiw=
+	t=1741451383; cv=none; b=V7gBPrPlqbd9o1xODD8IBPzwIVWnvhyEt/1BSaPrgPcynFloeVrSL6IIageP+YgKKHwQbJeyNfj/h2UL6aqq6fyZiXMDKfMf2lL8w7cf2QpGDMrnVreoLvLLMkfT04bG6LyC0NxjwJeY79m1ziJsn2WV+gwmJBoFzISh2EEo00M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741450645; c=relaxed/simple;
-	bh=xC1dhXRJhNJXV88A2GMTUC68oKasP1pQrkTR0oGtHRM=;
+	s=arc-20240116; t=1741451383; c=relaxed/simple;
+	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G6fUJgU6mgQkuD/vS7enA7OuBuxHcVmgAMZjAZiotu6LPrtpDTun7Y9IzMSgJ0Kf6/2lt+ZZc2dp158vktRVx6+pFXDGKJiA7KGO/zee5I6EYiXDMeny/NVNqfkJDQa/RwyXpN+7CBP+upSWW7qIFG8kwuNAtoYgWfB1KDqo+sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnX+fPQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A921C4CEE0;
-	Sat,  8 Mar 2025 16:17:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u57RRz4rlN//oeRQ7AQh3oZLQW7+rt92lc/5jwSlfUoX3x//v0IAry+0APgVtpKV5yPVTqBb4jvB9i4bLTWsH2XqvlWO3Kw2ozkEt4HVAju6GwU2rVrjQ3pT9TLYuFpC5l5q2g7vrdr6fuWYgR+gWcPvBwNMt672dBA+u/MGyBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSzp+BIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0032C4CEE0;
+	Sat,  8 Mar 2025 16:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741450644;
-	bh=xC1dhXRJhNJXV88A2GMTUC68oKasP1pQrkTR0oGtHRM=;
+	s=k20201202; t=1741451383;
+	bh=SdeY4HUDR25gSwHntex8TgQMRjhWp1R3x/osJlwkf2A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EnX+fPQnSRCyreIT/+/blhaBEZEIbjj2Nqdp5unhGL2Edt9jDPyTRmWUDrU7fUjnw
-	 B5gBHkvsQGWZKFg7j5738FYpcuQTp3q+/fXxOGV5PmhFuF/AQObW5YVKAdxGzKeR78
-	 Kb8CFWkPODcVfnLUpZpjYpdmNqcw1j2pgemSrKY94fYRrgzvfQK3ObI5Xbykh2xMAk
-	 s+wlBG3fUzfwDgx4X9DS+83Pm+EELcHb/WXOYAEYsCFkwnLldIiJ9ui8j6MVnBkWsG
-	 eVXOHpbHWkKZRPlpHFXWZZLTHpjpPsWa36EacnSPGSaM+t5wcUqA5Qi2wzWjupXFGx
-	 be1ludsQWP1rQ==
-Date: Sat, 8 Mar 2025 16:17:17 +0000
+	b=NSzp+BIy+RyYAh5eXPfpEeXytNRO+Yn6QDm61AqJR8JPEZz8lPYUdH5rwAtQ05Xgi
+	 nJ52JT45pfwi6qQmjNAQl3PQm42j3TaIFdCd9qBeOGwEiLP5I4ChuxG/eiUIvHz+gf
+	 vFNeOPjjYakfsWHf3baQaOKsl1voaEzszbfYyZf3MV94dErx1nbWai2CFl3Azkw15j
+	 rPpzaDB7MAis2oreAPGOwD994ClDh/BRvfWkNboiV69CTNipPu/XspI5zRPgzAWTgR
+	 owYLqgaQkKxX174yazNjuFoEFyme0FYmA2oF6DDFWudPFsQy0VFIbtdTW9FkcU73tW
+	 wdzVAijHUAy0A==
+Date: Sat, 8 Mar 2025 16:29:28 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Julien Stephan <jstephan@baylibre.com>
-Subject: Re: [PATCH v3 1/2] iio: ad7380: add support for SPI offload
-Message-ID: <20250308161717.3842cbdf@jic23-huawei>
-In-Reply-To: <20250304-wip-bl-spi-offload-ad7380-v3-1-2d830f863bd1@baylibre.com>
-References: <20250304-wip-bl-spi-offload-ad7380-v3-0-2d830f863bd1@baylibre.com>
-	<20250304-wip-bl-spi-offload-ad7380-v3-1-2d830f863bd1@baylibre.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, Nuno Sa
+ <nuno.sa@analog.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Guillaume Stols <gstols@baylibre.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Trevor Gamblin <tgamblin@baylibre.com>, Matteo
+ Martelli <matteomartelli3@gmail.com>, Alisa-Dariana Roman
+ <alisadariana@gmail.com>, Ramona Alexandra Nechita
+ <ramona.nechita@analog.com>, AngeloGioacchino Del Regno
+ <angelogioacchino.delregno@collabora.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: Re: [PATCH v5 03/10] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <20250308162928.72bd1d1b@jic23-huawei>
+In-Reply-To: <54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
+References: <cover.1740993491.git.mazziesaccount@gmail.com>
+	<e71c63c2f61135f9a8c7884525aab2c48f1e84c2.1740993491.git.mazziesaccount@gmail.com>
+	<CAMknhBGQaqFZJsPAoauZL4S5MYtN05EOQ-BO2vw5gH+Z2RLOhw@mail.gmail.com>
+	<54a031d0-df47-4baa-a23a-1a79c0922542@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,207 +74,178 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 04 Mar 2025 16:25:44 +0100
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Wed, 5 Mar 2025 12:54:33 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> Add support for SPI offload to the ad7380 driver. SPI offload allows
-> sampling data at the max sample rate (2MSPS with one SDO line).
-> 
-> This is developed and tested against the ADI example FPGA design for
-> this family of ADCs [1].
-> 
-> [1]: http://analogdevicesinc.github.io/hdl/projects/ad738x_fmc/index.html
-> 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Hi Angelo
+> Thanks for the review David.
+>=20
+> On 04/03/2025 11:25, David Lechner wrote:
+> > On Mon, Mar 3, 2025 at 12:32=E2=80=AFPM Matti Vaittinen
+> > <mazziesaccount@gmail.com> wrote: =20
+> >>
+> >> There are ADC ICs which may have some of the AIN pins usable for other
+> >> functions. These ICs may have some of the AIN pins wired so that they
+> >> should not be used for ADC.
+> >>
+> >> (Preferred?) way for marking pins which can be used as ADC inputs is to
+> >> add corresponding channels@N nodes in the device tree as described in
+> >> the ADC binding yaml.
+> >>
+> >> Add couple of helper functions which can be used to retrieve the chann=
+el
+> >> information from the device node.
+> >>
+> >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> >>
+> >> --- =20
+>=20
+> >> + *
+> >> + * Return:     Number of found channels on succes. Negative value to =
+indicate =20
+> >=20
+> > s/succes/success/ =20
+>=20
+> Thanks!
+>=20
+> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >> +                                         const struct iio_chan_spec *=
+template,
+> >> +                                         int max_chan_id,
+> >> +                                         struct iio_chan_spec **cs)
+> >> +{
+> >> +       struct iio_chan_spec *chan_array, *chan;
+> >> +       int num_chan =3D 0, ret;
+> >> +
+> >> +       num_chan =3D iio_adc_device_num_channels(dev);
+> >> +       if (num_chan < 1)
+> >> +               return num_chan;
+> >> +
+> >> +       chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_array),
+> >> +                                 GFP_KERNEL);
+> >> +       if (!chan_array)
+> >> +               return -ENOMEM;
+> >> +
+> >> +       chan =3D &chan_array[0];
+> >> +
+> >> +       device_for_each_child_node_scoped(dev, child) {
+> >> +               u32 ch;
+> >> +
+> >> +               if (!fwnode_name_eq(child, "channel"))
+> >> +                       continue;
+> >> +
+> >> +               ret =3D fwnode_property_read_u32(child, "reg", &ch);
+> >> +               if (ret)
+> >> +                       return ret;
+> >> +
+> >> +               if (max_chan_id !=3D -1 && ch > max_chan_id)
+> >> +                       return -ERANGE;
+> >> + =20
+> >=20
+> > Should we use return dev_err_probe() on these to help with debugging a =
+bad dtb?
+> >  =20
+>=20
+> I am not fan of using dev_err_probe() in a 'library code'. This is=20
+> because we never know if there'll be some odd use-case where this is not=
+=20
+> called from the probe.
+>=20
+> All in all, I'd leave adding most of the debugs to the callers -=20
+> especially because we do not expect to have bad device-trees after the=20
+> initial 'development stage' of a board. The board 'development stage'=20
+> should really reveal bugs which prevent the channels from being=20
+> registered - and after the DT is correct, these debug prints become=20
+> unnecessary (albeit minor) binary bloat.
+>=20
+> >> +               *chan =3D *template;
+> >> +               chan->channel =3D ch;
+> >> +               chan++;
+> >> +       }
+> >> +
+> >> +       *cs =3D chan_array;
+> >> +
+> >> +       return num_chan;
+> >> +}
+> >> +EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIV=
+ER"); =20
+> >=20
+> > We can make this less verbose by setting #define
+> > DEFAULT_SYMBOL_NAMESPACE at the start of the file. Then we can just do
+> > EXPORT_SYMBOL_GPL() throughout the rest of the file. =20
+>=20
+> I am not sure what to think of this. I use the good old 'ctrl + ]' in my=
+=20
+> editor when I need to check how a function was supposed to be used. That=
+=20
+> jumps to the spot of code where the function is. I'd like to see the=20
+> namespace mentioned there in order to not accidentally miss the fact the=
+=20
+> function belongs to one.
+>=20
+> OTOH, I do like simplifications. Yet, the added simplification might not=
+=20
+> warrant the namespace not being visible in the function definition.
+>=20
+> > Also, I would prefer if the namespace matched config name (IIO_ADC_HELP=
+ER). =20
+>=20
+> I had some lengthy discussion about this with Andy and Jonathan during=20
+> earlier review versions. In short, I don't like the idea of very=20
+> fragmented namespaces in IIO, which will just complicate the drivers=20
+> without providing any obvious benefit.
+>=20
+> https://lore.kernel.org/all/20250222174842.57c091c5@jic23-huawei/
+>=20
+> >> +
+> >> +int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
+> >> +                                         const struct iio_chan_spec *=
+template,
+> >> +                                         int max_chan_id,
+> >> +                                         struct iio_chan_spec **cs);
+> >> + =20
+> >=20
+> > There are some different opinions on this, but on the last patch I did
+> > introducing a new namespace, the consensus seems to be that putting
+> > the MODULE_IMPORT_NS() in the header file was convenient so that users
+> > of the API don't have to remember to both include the header and add
+> > the import macro.
+> >  =20
+>=20
+> I do like this suggestion, and I believe this would be the balance=20
+> between getting the benefit of hiding part of the symbols - while not=20
+> unnecessarily complicating the callers. I know some people are opposing=20
+> it though. My personal opinion is that having the MODULE_IMPORT_NS() in=20
+> a header would be neatly simplifying the calling code with very little=20
+> harm, especially here where including the header hardly has use-cases=20
+> outside the IIO ADC.
+>=20
+> Unfortunately, the "safety" seems to often be a synonym for just "making=
+=20
+> it intentionally hard". As Finnish people say: "K=C3=A4rsi, k=C3=A4rsi,=20
+> kirkkaamman kruunun saat". :)
+> (Roughly translated as "Suffer, suffer, you will get a brighter crown").
+>=20
+> Let's hear what Jonathan thinks of your suggestion.
 
-A couple of trivial comments inline.
+For this particular case my intent was that all the IIO exports that
+are suitable for use in simple IIO drives will be in this namespace,
+we just haven't started that conversion yet.
 
-This has crossed with Julien adding an extra device to the supported
-set. I could have guessed what the necessary changes were but probably
-better for you to do it and check for any problems.
-
-https://lore.kernel.org/all/20250226-ad7380-add-adaq4381-4-support-v1-1-f350ab872d37@baylibre.com/
-
-Jonathan
-
-> ---
->  drivers/iio/adc/Kconfig  |   2 +
->  drivers/iio/adc/ad7380.c | 509 +++++++++++++++++++++++++++++++++++++++++++----
->  2 files changed, 475 insertions(+), 36 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 27413516216cb3f83cf1d995b9ffc22bf01776a4..c528f4632c0ef6782269d8afa89c17d2046d28a3 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -218,7 +218,9 @@ config AD7298
->  config AD7380
->  	tristate "Analog Devices AD7380 ADC driver"
->  	depends on SPI_MASTER
-> +	select SPI_OFFLOAD
->  	select IIO_BUFFER
-> +	select IIO_BUFFER_DMAENGINE
->  	select IIO_TRIGGER
->  	select IIO_TRIGGERED_BUFFER
->  	help
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index f232ad1a49634baeedc655916bc7a967604a1206..39a5e55fa7e8a6706e15750d07fa4b0fda7175eb 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -15,6 +15,9 @@
->   * ad7386/7/8-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7386-4-7387-4-7388-4.pdf
->   * adaq4370-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4370-4.pdf
->   * adaq4380-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4380-4.pdf
-> + *
-> + * HDL ad738x_fmc: https://analogdevicesinc.github.io/hdl/projects/ad738x_fmc/index.html
-> + *
-
-Pet dislike of mine.  No lines at ends of comment blocks with nothing on them.  The */ provides
-any necessary space.
-
->   */
->  
->  #include <linux/align.h>
-> @@ -29,11 +32,13 @@
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
-> +#include <linux/spi/offload/consumer.h>
->  #include <linux/spi/spi.h>
->  #include <linux/units.h>
->  #include <linux/util_macros.h>
->  
->  #include <linux/iio/buffer.h>
-> +#include <linux/iio/buffer-dmaengine.h>
->  #include <linux/iio/events.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/trigger_consumer.h>
-> @@ -92,6 +97,12 @@
->  #define AD7380_NUM_SDO_LINES		1
->  #define AD7380_DEFAULT_GAIN_MILLI	1000
->  
-> +/*
-> + * Using SPI offload, storagebits is always 32, so can't be used to compute struct
-> + * spi_transfer.len. Using realbits instead.
-> + */
-> +#define AD7380_SPI_BYTES(scan_type)	((scan_type)->realbits > 16 ? 4 : 2)
-> +
->  struct ad7380_timing_specs {
->  	const unsigned int t_csh_ns;	/* CS minimum high time */
->  };
-> @@ -99,6 +110,7 @@ struct ad7380_timing_specs {
->  struct ad7380_chip_info {
->  	const char *name;
->  	const struct iio_chan_spec *channels;
-> +	const struct iio_chan_spec *offload_channels;
->  	unsigned int num_channels;
->  	unsigned int num_simult_channels;
->  	bool has_hardware_gain;
-> @@ -111,6 +123,7 @@ struct ad7380_chip_info {
->  	unsigned int num_vcm_supplies;
->  	const unsigned long *available_scan_masks;
->  	const struct ad7380_timing_specs *timing_specs;
-> +	u32 max_conversion_rate_hz;
->  };
->  
->  static const struct iio_event_spec ad7380_events[] = {
-> @@ -216,6 +229,91 @@ static const struct iio_scan_type ad7380_scan_type_16_u[] = {
->  	},
->  };
->  
-> +/*
-> + * Defining here scan types for offload mode, since with current available HDL
-> + * only a value of 32 for storagebits is supported.
-> + */
-> +
-> +/* Extended scan types for 12-bit unsigned chips, offload support. */
-> +static const struct iio_scan_type ad7380_scan_type_12_u_offload[] = {
-> +	[AD7380_SCAN_TYPE_NORMAL] = {
-> +		.sign = 'u',
-> +		.realbits = 12,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
-> +		.sign = 'u',
-> +		.realbits = 14,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +};
-> +
-> +/* Extended scan types for 14-bit signed chips, offload support. */
-> +static const struct iio_scan_type ad7380_scan_type_14_s_offload[] = {
-> +	[AD7380_SCAN_TYPE_NORMAL] = {
-> +		.sign = 's',
-> +		.realbits = 14,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
-> +		.sign = 's',
-> +		.realbits = 16,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +};
-> +
-> +/* Extended scan types for 14-bit unsigned chips, offload support. */
-> +static const struct iio_scan_type ad7380_scan_type_14_u_offload[] = {
-> +	[AD7380_SCAN_TYPE_NORMAL] = {
-> +		.sign = 'u',
-> +		.realbits = 14,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
-> +		.sign = 'u',
-> +		.realbits = 16,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +};
-> +
-> +/* Extended scan types for 16-bit signed_chips, offload support. */
-> +static const struct iio_scan_type ad7380_scan_type_16_s_offload[] = {
-> +	[AD7380_SCAN_TYPE_NORMAL] = {
-> +		.sign = 's',
-> +		.realbits = 16,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
-> +		.sign = 's',
-> +		.realbits = 18,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +};
-> +
-> +/* Extended scan types for 16-bit unsigned chips, offload support. */
-> +static const struct iio_scan_type ad7380_scan_type_16_u_offload[] = {
-> +	[AD7380_SCAN_TYPE_NORMAL] = {
-> +		.sign = 'u',
-> +		.realbits = 16,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +	[AD7380_SCAN_TYPE_RESOLUTION_BOOST] = {
-> +		.sign = 'u',
-> +		.realbits = 18,
-> +		.storagebits = 32,
-> +		.endianness = IIO_CPU,
-> +	},
-> +};
-
-You could have perhaps used a macro for these to reduce repetition but it
-is perhaps slightly more readable without doing that.
+As such, having it defined from a header for this helper isn't a good
+thing to do.  Generally I prefer to see in driver code what namespaces
+are involved but do understand the other viewpoint. In this case I
+definitely don't think it is appropriate unless we go for a specific namesp=
+ace
+for just this helper.
 
 Jonathan
 
-
+>=20
+> Thanks!
+> 	-- Matti
+>=20
 
 

@@ -1,96 +1,123 @@
-Return-Path: <linux-iio+bounces-16539-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16540-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE10CA576B2
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 01:17:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D040A57A58
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 14:08:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07AAA7A3510
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 00:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8B711687FE
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 13:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A884A1C;
-	Sat,  8 Mar 2025 00:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720A71C3C04;
+	Sat,  8 Mar 2025 13:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eAjLBcPi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G67tpNNr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAB0196;
-	Sat,  8 Mar 2025 00:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202041EEE6;
+	Sat,  8 Mar 2025 13:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741393031; cv=none; b=mR44nuz60gRAtl4eUzVltcY3kML8cHombcRvvzITYmhATG8hVAAbvsp37UOznltMVaTeuIiJyfB5DKo7FjPu3WeXTyu+TEco1rR8dpn/AO45TzFc5L8nIOedbmF6/wrLfrzGv/LANGhDgacdEazunahC4lFTlSEDhjrixr0kQp8=
+	t=1741439323; cv=none; b=UaR8bfuIFhsLDxXK7d//930kqCbFXp29Mp6xnMdHzk3eZkdPkY6+asJUs0oDek5OLdFmTDmTnvGm4UYFi1S4fcIK5RA5hDF/WUQUjG3mjCs8PvZvrDBQuyYV3XAdMrEg3Vfc1rRHGdHJo8SZAgGC7kzZdNecgcrEswnU6/Alii4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741393031; c=relaxed/simple;
-	bh=K48dDGbOfAtjEwZKUeVi9F4L/hg/zp79smFcJIBF2XA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fX/pAjLpvAt9Qwksry5bBR1eKAd7ylfnkIvzljIABhXzJ8IPo4fvJl2ixQyjeN2tbrUGNJsxRVDV/XgxwVjnyZrGgR1czl5OApWPnUWxpuZSpN8JQdqJsADI3LTBNuy6wJNIWcjQbnwFKCRsc5MyP6a9WNdx1Yb7BbWy9kEnzdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eAjLBcPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C87BC4CED1;
-	Sat,  8 Mar 2025 00:17:09 +0000 (UTC)
+	s=arc-20240116; t=1741439323; c=relaxed/simple;
+	bh=LmBiU5PiyOSxhnBucFy1GOl4q8RVr3YecX9BnA5oF8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hzHXseZC55apkpfS0dxMUzsQ96h9E8GA9XH5K5i48+8bYG60WSwX4ZAYsli+HZ9t4MTjap3Rj+XTrz2gbs3y95lBBOW2xp1xbSLa7edAYa0t+hPMCeqa07OkfA71cIqYNL1UkVUqwQQSt/9p+qj50METNtBDjFbgVT54W8Rnv30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G67tpNNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AFAC4CEE0;
+	Sat,  8 Mar 2025 13:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741393030;
-	bh=K48dDGbOfAtjEwZKUeVi9F4L/hg/zp79smFcJIBF2XA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAjLBcPi7Z+cbhJes7xnEuaKTj/9axZCw71jGJLnxQ1z6jI57I/npvgmGQf6EzlX4
-	 PkDsKKx5zlcVHiw5lr4doNT4y9LEiwcRoKXRCA9tLzXEnc9/nGeblHI7aKfXtkvfjy
-	 krULEnxAar/u1eGwjpHr/HrJ4/IT15cl7fBCVlPMKc+YjpqYz8jLp3u0Vz1Zp/2axp
-	 LDhnYwVmjhpcEaeDtYSe+2hOZaX1AMfi7oyskj1I+j5BAqGBXeFBpUBpi1836fCq2M
-	 VMW2lu+DIDUURnnhxL9zVutYqhkttp9FoRPLtUxFGXSWPnWvbCpJLF3O+egIVkak2f
-	 ZO6xuAKBhNLoQ==
-From: William Breathitt Gray <wbg@kernel.org>
-To: linux-arm-kernel@lists.infradead.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <csokas.bence@prolan.hu>
-Cc: William Breathitt Gray <wbg@kernel.org>,
-	Kamel Bouhara <kamel.bouhara@bootlin.com>,
-	Dharma.B@microchip.com
-Subject: Re: [PATCH v8 0/2] microchip-tcb-capture: Add Capture, Compare, Overflow etc. events
-Date: Sat,  8 Mar 2025 09:17:04 +0900
-Message-ID: <174139258236.459919.5227805319293627161.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250306134441.582819-1-csokas.bence@prolan.hu>
-References: <20250306134441.582819-1-csokas.bence@prolan.hu>
+	s=k20201202; t=1741439322;
+	bh=LmBiU5PiyOSxhnBucFy1GOl4q8RVr3YecX9BnA5oF8Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=G67tpNNrPO/XZ5O10xtQtfAwEvKFvLuSqKkYPmJy8duxJEXEFTCVJ6pzFjIc2CLy3
+	 PC3n6c+ReCciGA3wxBuxazLOqprjAdmkFTsiOiPcrbZsx84Dy7LMFRO6h0GfsZkMFK
+	 WeqzipIcaAB6ddnWSVvi+x0QLmyKnKRM7z4IbQMhb2W5TmPgyz78tybqxoGsYHvi1k
+	 p05LmH59qL3AYvFzvUfPsWMDwgfXHGQtIx8f0LCAC2kybijz9W6Q7LYOyp1ONU8Uxe
+	 xu6aRbftirQwTbSDkcMHkEyBj5z2VlU6uM7VLLmKWcbfX8jLOBmtjril+VxMb8iQTO
+	 yqe9+JqHl/QUw==
+Date: Sat, 8 Mar 2025 13:08:31 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Jonathan Santos <Jonathan.Santos@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-gpio@vger.kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ marcelo.schmitt@analog.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, linus.walleij@linaro.org, brgl@bgdev.pl,
+ lgirdwood@gmail.com, broonie@kernel.org, dlechner@baylibre.com,
+ jonath4nns@gmail.com
+Subject: Re: [PATCH v4 11/17] iio: adc: ad7768-1: add regulator to control
+ VCM output
+Message-ID: <20250308130831.4ec56dcf@jic23-huawei>
+In-Reply-To: <Z8sDlsOX0Elauabg@debian-BULLSEYE-live-builder-AMD64>
+References: <cover.1741268122.git.Jonathan.Santos@analog.com>
+	<40c586006b5cee0570ae577db2b58e6e7e36a6e6.1741268122.git.Jonathan.Santos@analog.com>
+	<Z8sDlsOX0Elauabg@debian-BULLSEYE-live-builder-AMD64>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=wbg@kernel.org; h=from:subject:message-id; bh=x07tfBdhBjiiaz1pNHTW16UZFI8p5Ig8SxC5mcIGNt4=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDOmneyqOeDExb1v2ScR/Veduz127go+leDz5eEL02Hclr oq3GcocHaUsDGJcDLJiiiy95mfvPrikqvHjxfxtMHNYmUCGMHBxCsBEyvsY/vBlBVyqyvd7+WL+ g1OT/p9MPHboQM2V6gma3N6Lsg0O/v/E8D/MPzXeWHSTmbDg7nWlrRdvRZ1ZL/nC88DTb4u5l0r +8ucAAA==
-X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Fri, 7 Mar 2025 11:32:54 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-On Thu, 06 Mar 2025 14:44:35 +0100, Bence Csókás wrote:
-> The TCB has three R/W-able "general purpose" hardware registers:
-> RA, RB and RC. The hardware is capable of:
-> * sampling Counter Value Register (CV) to RA/RB on a trigger edge
-> * sending an interrupt of this change
-> * sending an interrupt on CV change due to trigger
-> * triggering an interrupt on CV compare to RC
-> * stop counting after sampling to RB
+> Looks ok. One minor commnet inline.
 > 
-> [...]
+> On 03/06, Jonathan Santos wrote:
+> > The VCM output voltage can be used as a common-mode voltage within the
+> > amplifier preconditioning circuits external to the AD7768-1.
+> > 
+> > This change allows the user to configure VCM output using the regulator
+> > framework.
+> > 
+> > Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>  
+> 
+> Acked-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-Applied to counter-next, thanks!
 
-[1/2] counter: microchip-tcb-capture: Add IRQ handling
-      commit: e5d5813968217b99ef2b83f13353967b218e3841
-[2/2] counter: microchip-tcb-capture: Add capture extensions for registers RA/RB
-      commit: 1adc6240a80278c613f655b71c6c0d447b2d5932
+...
 
-Bence, I've submitted a patchset adding support for the RC Compare as a
-new 'compare' Count extension.[^1] If it works for you, please Ack that
-series and we can hopefully get everything picked up by the 6.15 merge
-window.
+> > diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+> > index e88e9431bb7a..2a6317f5b582 100644
+> > --- a/drivers/iio/adc/ad7768-1.c
+> > +++ b/drivers/iio/adc/ad7768-1.c
+> > @@ -12,8 +12,10 @@
+> >  #include <linux/gpio/consumer.h>
+> >  #include <linux/kernel.h>
+> >  #include <linux/module.h>
+> > +#include <linux/of.h>
+> >  #include <linux/regmap.h>
+> >  #include <linux/regulator/consumer.h>
+> > +#include <linux/regulator/driver.h>
+> >  #include <linux/sysfs.h>
+> >  #include <linux/spi/spi.h>
+> >  
+> > @@ -80,9 +82,15 @@
+> >  #define AD7768_CONV_MODE_MSK		GENMASK(2, 0)
+> >  #define AD7768_CONV_MODE(x)		FIELD_PREP(AD7768_CONV_MODE_MSK, x)
+> >  
+> > +/* AD7768_REG_ANALOG2 */
+> > +#define AD7768_REG_ANALOG2_VCM_MSK	GENMASK(2, 0)
+> > +#define AD7768_REG_ANALOG2_VCM(x)	FIELD_PREP(AD7768_REG_ANALOG2_VCM_MSK, x)  
+> 
+> Should we enforce macro argument evaluation here?
+> #define AD7768_REG_ANALOG2_VCM(x)	FIELD_PREP(AD7768_REG_ANALOG2_VCM_MSK, (x))
+> 
+Yes.  Seems there is another case above as well that needs fixing up.
 
-William Breathitt Gray <wbg@kernel.org>
+> > +
+> >  #define AD7768_RD_FLAG_MSK(x)		(BIT(6) | ((x) & 0x3F))
+> >  #define AD7768_WR_FLAG_MSK(x)		((x) & 0x3F)
+> >  
 
-[^1] https://lore.kernel.org/linux-iio/20250306-introduce-compare-component-v1-0-93993b3dca9c@kernel.org/
 

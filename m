@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-16579-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16581-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0973AA57DE7
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 21:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD47A57DEB
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 21:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93F781892ACA
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 20:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CD41892B0E
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 20:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B5420CCD8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2302120D503;
 	Sat,  8 Mar 2025 20:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vzj8uH4D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYGmCvHP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BD9202C4C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58AB206F2A;
 	Sat,  8 Mar 2025 20:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741464150; cv=none; b=jnFCEw9uKAMUhkLcmXwWKeTM4eIPxlm/KCM7snoIzaTjWZgehUX82HkL28b8wibWh5nGRPms3H/FxEj9JmQrrVcCexX0H3lcEkBcVxsyP3mofktmLlEwcqYoSGgnV3N69mKWtuLHCVPShIABEEmKX/Cau63/VVpV+O/b6jQRJR8=
+	t=1741464150; cv=none; b=uWGVNblt8lLSmYSkqXrASt58hsKaCvCHe1lV6NZVfM8AB9KX1exszAS0F09iYEFTJNtYSGKwd0fof6wLifHKhPUGgnNb3LVOGz7tTkuIa9TOKQmOrBtSycq4K1jOOECAb0yz0iufPGEFy8tmOzVqiKbb24RHgpbr7CsbqRQ0Qrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741464150; c=relaxed/simple;
-	bh=xIt64jlNGpBSjIB98ZPKMCJdRE0k8D6fCTj/Gx8DeCY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SrnjwkpuWhfuEam8PFmtRzUMskgd/oLiUFsbQBztj3ESleWAqgsfHm7/sLwl2lrjIrEY/K8oqSHgvqyjfcFNkMvUNdwPzvLhDyoAAaKWMxmIjRO0Cj+K/nZOyJ3ziUr2N4nDVVFNbeOkhdFI1ngtgP5RufftiiAg4yJSxHLWkT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vzj8uH4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 028DAC4CEE0;
-	Sat,  8 Mar 2025 20:02:29 +0000 (UTC)
+	bh=Vxi1aNedGR1p/1yUmMOJhh1VooIf3jj/6Tq+WoUcTG0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rfSA8XGfRdr644WjqSr7uhj3YL6QWZXbbE/eqbj9f3oKEaH6gth18tuXVFwyT7u5hhKTImnIV8VsyBhhblc7n4EcMYWow4e735b0Z9gsI/E4XNapiQfEX2tAWv0qHJKIY41+igCwL8hgBfGvGDMoarDUWWg5Ndekk1vCvLJMLX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYGmCvHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 22532C4CEE7;
+	Sat,  8 Mar 2025 20:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1741464150;
-	bh=xIt64jlNGpBSjIB98ZPKMCJdRE0k8D6fCTj/Gx8DeCY=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=Vzj8uH4DqiGsFqPjcre5jhca46vkbbQw2Ka1ZVKd4RUPDnibMwEOA40EhmnxNF4YZ
-	 E0xTMWDxDiS3rS9fKQI7PLtbSac+C4/ue42q/uCcrZEaAlTQYD7mondwDiHOMoJDTD
-	 DIai50AGo8SsU7eAc7SewMQ7u/5Kc2vFjpcVYd9zrQEE34OQuaUUx5bZD7HbfrYrMe
-	 Q27hjpHI2j9B38LnoKfqls1qcDPvJP8i5UIAqGXRNdzaASPcwWg5x9/tTgYH2FIZcr
-	 s1GFpk0u7oxNF+fNnBM2x5cHGl3cT3phJptaWmAitsdnScTCHO1ntEx9oZMGc5We36
-	 BXE1pf3IGMAaw==
+	bh=Vxi1aNedGR1p/1yUmMOJhh1VooIf3jj/6Tq+WoUcTG0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=BYGmCvHPtZQzIGiLA3+bEXVWg7WIndlfpyvSGysU/qVf/Rh8SVZ5uBo3ThhiKdeRd
+	 CpS3/VaUw5sEgkFQ5IljQl10EG6kR9D3QdiNyH5B+bkEgY1Hpxi1odp4Q1dY3gRNkm
+	 32jCwgFqkozsF2KKeQp7NhB/xeiaMBpJl3DlK5dWJKb02lnhY81yu2j9YBxxum1o+e
+	 5SfUdAGKhmcb7XNqgAzRu3lXCceSeO8NVohWyfxb8Z6wzCalQ8436urD18Z0qpf/MZ
+	 745tkSGxzOvDsVSMVO+PXRamrH9EvmYqaJBcFmQY9uasQ+En5oORYO92xJJWe2ohdY
+	 vuxlq0hVo2MTg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE379C282EC;
-	Sat,  8 Mar 2025 20:02:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00770C28B28;
+	Sat,  8 Mar 2025 20:02:30 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Subject: [PATCH 0/4] iio: light: Modernize al3010 and al3320a codebase
-Date: Sat, 08 Mar 2025 21:00:57 +0100
-Message-Id: <20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz>
+Date: Sat, 08 Mar 2025 21:00:58 +0100
+Subject: [PATCH 1/4] iio: light: al3320a: Drop deprecated email for Daniel
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,70 +55,60 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAPqhzGcC/x3MQQqAIBBA0avIrBsYlcC6SrQQm2qgVBQiiO6et
- HyL/x+oXIQrjOqBwpdUSbFBdwrC7uPGKEszGDI9WXLoD0uaUCRh4e30Gcm6wN4Oq+sXaF0uvMr
- 9P6f5fT/hyCVUYwAAAA==
-X-Change-ID: 20250308-al3010-iio-regmap-038cea39f85d
+Message-Id: <20250308-al3010-iio-regmap-v1-1-b672535e8213@ixit.cz>
+References: <20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz>
+In-Reply-To: <20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>
 Cc: Svyatoslav Ryhel <clamor95@gmail.com>, 
  Robert Eckelmann <longnoserob@gmail.com>, linux-iio@vger.kernel.org, 
  linux-kernel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=997; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=718; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=xIt64jlNGpBSjIB98ZPKMCJdRE0k8D6fCTj/Gx8DeCY=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBnzKJU2gbWxDF2He66jbsu8mFd4x/eox6lMFhPZ
- 1tgeBFu1ZGJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ8yiVAAKCRBgAj/E00kg
- ciySEACdR5M+iogGs02Zrg1ntWq8dguVm0uAhaOnEkpbobf8rFhLxDwNHDGmnO0XKkPY36okJ7A
- zH2qUWo41lYRtkrPu/t/Q6aLyWtF1hA/b9Wvn1ShpH+aZuv9cweQg7NyRCl9dUWFqqk7Js/vHCP
- xSEUzZ7pFR4Peh9HER7/2Qj/J61tEqRRDdanJmfbokSUGvKajlb1+TC9HsnVkS3aQPLuPMWv3B5
- UXuibBOLV6tZa2YD8zYQX09+rXjd0v5XyMsuJprlFdIDcDxCu9deO0E7sjyp3FKFfvAQgZRRWBT
- pSsalpHOcqcS8KOM0lodG63LQr7yHmZ2rmtAWLnkEBsyMvjvRJvysMK7KFdhR+daGS3k7Y918aq
- S8MqNy6hY9E47uslQZBKRE49K1UTl/010tA5ml7B5YM2Wt5yXgcC2HeBZPA3CTYOiZ31yhyl9wF
- ZtEqhd3qo/3o5XQz/BW8WbxAoZXOTAK31SEbWABLxNMBae8U+4WL9RzJrbNAv5D6yVEz01C8/N7
- PTubS511rlSIwSREyic9WN7vGhKyJCq01+DyqgAT/f89P+1srFZgaVrnoUk0gUKQm4tLsou7wuv
- okH+I/nw9SmsRtCPiPXdxfTVnP8Cy1FUKWnbbBZinOCM29yUm/ON5hGdYSJa1DXgJ5noTjHiXit
- Avhx4fP+Lk2Qm1g==
+ bh=MXlQAzTdWxMSPXOYvO5LE/IyoymDgDTuIpV9wQjHRSE=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBnzKJUrpA+Vsl85k9Ww3JP+vnbuBDlJARo0UKqw
+ 1vhlvIi0N2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ8yiVAAKCRBgAj/E00kg
+ ctATEACy4Yq7TFEh4DDq8NTYkhFhK6h18KSZ0BvGfh5PmB+ooHFDyjK5j7ylSBs/Mlw8iyEwFIG
+ JBV3ENRfcGYFM+LeoD7cSKUfNH67TKv+GPJljp0LD4YEj8iMPQ/fg21lZG9hqez6qdqGqQxwPej
+ XK8ijqON8qhuSXkVDR2Bn5P7+70M+nztt6UkRtDrZSBN1NmhqT7aB2AVrVUF65qjS8HtJRcETgF
+ VzEqEz/neDPTnBjfI99ZgVOV0bm5naIbWnWUzifMpVe21gG4Vhv3UmjIuwwi/nQJs5NMUT1L5Ee
+ liPypRACoJxYYzP2aezFLRZs25Jq8r+LKbWcbTVOOMQ5VUAmtHfW7hFAX5CiZfLvgoN4vitPY/X
+ 3++mTV1n9TePORRA6f/HCSAcDiqeQ4XeceRK2IIr3S7w10dKFiJ/bQFkPmyCupccvGbeXy2vhMF
+ NIiUj2POZr5z1CtsEygeEY75tt2Gbl2RlJ4M0fKKmeXUHekF7wLBh33kv/zg0b3BkDZ16zsU6o4
+ NpPSLpgKwlgRFOq0uRV52IPD8bnGdzzl9V0ONgj+0nAdn6TUtiPuULAoc3AkyeoAh3CEdtvAEAn
+ KHMiVBhSRKtc3pBsY4Ck9rAj/LID2pQ66yhAGEAQ7ok8xuMfZIeS2+hyfn7YP3oqohIziRGJI+u
+ x+Pbx/diuiXI7YA==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
 X-Original-From: David Heidelberg <david@ixit.cz>
 Reply-To: david@ixit.cz
 
-This series targetting improved readability of code
-and modernizing code to match today standards.
+From: David Heidelberg <david@ixit.cz>
 
-Except slightly improved error reporting,
-there shouldn't be any function changes.
-
-Size before:
-72224 al3010.ko
-72744 al3320a.ko
-
-Size after:
-58032 al3010.ko
-58632 al3320a.ko
+He no longer works at Intel.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
-David Heidelberg (4):
-      iio: light: al3320a: Drop deprecated email for Daniel
-      iio: light: al3000a: Use DRV_NAME
-      iio: light: al3010: Implement regmap support
-      iio: light: al3320a: Implement regmap support
+ drivers/iio/light/al3320a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/iio/light/al3000a.c |   6 ++-
- drivers/iio/light/al3010.c  |  95 ++++++++++++++++++++++------------------
- drivers/iio/light/al3320a.c | 103 ++++++++++++++++++++++++--------------------
- 3 files changed, 114 insertions(+), 90 deletions(-)
----
-base-commit: 0a2f889128969dab41861b6e40111aa03dc57014
-change-id: 20250308-al3010-iio-regmap-038cea39f85d
+diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+index 497ea3fe337775b07efdfc56c80beb1aa55e394c..d34a91fdafa0affad4665d995e1f66d2aaa0373b 100644
+--- a/drivers/iio/light/al3320a.c
++++ b/drivers/iio/light/al3320a.c
+@@ -266,6 +266,6 @@ static struct i2c_driver al3320a_driver = {
+ 
+ module_i2c_driver(al3320a_driver);
+ 
+-MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com>");
++MODULE_AUTHOR("Daniel Baluta");
+ MODULE_DESCRIPTION("AL3320A Ambient Light Sensor driver");
+ MODULE_LICENSE("GPL v2");
 
-Best regards,
 -- 
-David Heidelberg <david@ixit.cz>
+2.47.2
 
 
 

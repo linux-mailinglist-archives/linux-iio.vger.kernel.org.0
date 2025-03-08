@@ -1,164 +1,107 @@
-Return-Path: <linux-iio+bounces-16565-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16566-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AD3BA57B78
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:11:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E15A57B90
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 16:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C8913ABCB9
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 15:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A121891184
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Mar 2025 15:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC2A1DE4E1;
-	Sat,  8 Mar 2025 15:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAC81DE3DF;
+	Sat,  8 Mar 2025 15:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rvtYpt2O"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RUk25tfE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5781167DB7;
-	Sat,  8 Mar 2025 15:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D336919DF9A;
+	Sat,  8 Mar 2025 15:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741446661; cv=none; b=uVFrxMwpDlxEgxl94wpE5vs2W1cCN34E6Tj1VeRu7NLKXy8TbEKKZA60s2/tLORXwO21HAKh6WytRD3ZPgpk5sftpCvXCO2OHpu/7BjYnfcChvL0nunS5tRJ1xNUhCJJq41nw5xsaunno6iOuY/jhyZbmdx6jZ/kTOVgVpbM3WA=
+	t=1741447616; cv=none; b=Rd3hkNjNt+gr/0BNDr7yrtxDaiET6w1MjlyaasGtYcgRhyIF8J+pysoFDDwnzSFA4PrwUyUqSDEEthI+qOVdiQDhHM+t5oC4GuKnZkDNNYaTygw88i3bJvyzFcoJ67ITZ9jSHCr0caseY9TULsp3D6nn41Vcv15RKowVDiluRz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741446661; c=relaxed/simple;
-	bh=ArA+yLm4KsLMoiCtKbk73+ZCs0tt3dk6SWQpgTyh7Yk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HtdKKSZeumoa7Bojw/hYqq7D5zMXFMaeJIJKKKdKCSAYL9m/is/UzxOS5wpFueA9BNAGwKwmYtafPcJ1JjWxAbjFJlF4Dazfz5VMCusHvhauGjsTieoQhveQtGEOPcSUbYLrcBcQ8NBDjCxFjMa0NyMuy+aY7+FVYVSWikbA/mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rvtYpt2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DA8C4CEE0;
-	Sat,  8 Mar 2025 15:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741446660;
-	bh=ArA+yLm4KsLMoiCtKbk73+ZCs0tt3dk6SWQpgTyh7Yk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rvtYpt2OnDCsxhUdjByS+dIxKO3hFGcMlVP2T3Q7Gyl819+nyxpzRrw1RwC8PRHwf
-	 Os2Kmjv8d2mbE/vkYxxbilxk4Fn4FpY8cZUSievaMW7h+sHtpJReofCPWrGlaxaqS6
-	 DM1I6bs4YIscBHvZ9JbU31tBwzaPTD+1mvwShY4buRcSqsmmhcjBJZAE+TEByz1t5L
-	 4b3QnH/rtJOQvuCXvCXPc1ZLVBy9rmI6ds87feROih5QmAO863KQgYNyKmXrsCK86r
-	 kAmEG4+movLZrzYPApbMvudx+1EASDWNs35H7AA1k8D9GfTg6BOyX56LKlENj0edKf
-	 /4k/i+vavGlpQ==
-Date: Sat, 8 Mar 2025 15:10:55 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Jorge Marques <jorge.marques@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, David Lechner <dlechner@baylibre.com>,
- <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-doc@vger.kernel.org>
-Subject: Re: [PATCH 2/4] dt-bindings: iio: adc: Add adi,ad4052
-Message-ID: <20250308151055.35cb809e@jic23-huawei>
-In-Reply-To: <20250306-iio-driver-ad4052-v1-2-2badad30116c@analog.com>
-References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
-	<20250306-iio-driver-ad4052-v1-2-2badad30116c@analog.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741447616; c=relaxed/simple;
+	bh=3vxOEq9ddAMxuw7KJc03nllWklo6LUOa8BRntsGAMAA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewldbNuI/FpnObCtY0bKmdyQTM4ofc3eEbyJE0pTu6IxOSslaSJEHwVDOrOn+Z8PYUn0cKG+oRAIGmSK12PvH+FsZEzdxhuWNR4C+fmv4wP+6hQEjd/Lsx0rugxlu35NOuW7nVTWWms/XvUusro8VH7tw3WjfyTEbNN0TGvZZiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RUk25tfE; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2fa8ada6662so6105078a91.1;
+        Sat, 08 Mar 2025 07:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741447614; x=1742052414; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wzgWOzQsD06Jdg1koYMcussDLSHtrzGSYYq8r0KkiT4=;
+        b=RUk25tfEmYkgYdVLI75YIia8uwhh3eHk4P0i8IjiVXKNtm4jToxN38y4irym6Wca6o
+         YcdrCvd6Vuwu6e9pskyFv4W7ZQVV0qKtO5xxLwhQy2PxsHYLXUV8IQ5vdFuTutBoCLNQ
+         /U39OVO/ROIsoqicPG/o5NXZm0P9BuIab6aaE4Xr8/8omr07VEge7veUNnOpAq1Wcymd
+         Qky4aZDJvOEoIHV8xuUdr+Ix0H09UCUTZNXYOSFxnw4h8z6PtwiLHh07fcbNQ5uVyaoT
+         BrDJWXmULcMOx58XgkMeCUvTm6CLbqi8+BvkT/nsrQSTyVDtFEdPs1NsQdC31FwRU71S
+         6oKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741447614; x=1742052414;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wzgWOzQsD06Jdg1koYMcussDLSHtrzGSYYq8r0KkiT4=;
+        b=msZq9UM5SdT1zMjrMU4aDnaqj4Iu4rAxTkrFjz9/JzbxiR/smYxLGBO5IQ5jYd07n3
+         E4DJ22m8GqQ1ZNXpSNy8QhfeIeG4vOM2rm8WSoRxDPzLeftGbAX1hab2hf3WtfQ7YGyX
+         XAP9fLJhKfzZqkJLo/ukEjSg8orlB5ceqmk6HZDPWCnzGko2Cr/b8+SQdhfmu6j2EtSX
+         3ZjxZUrbDjllFUeqgAIaX+/g4fnLRNGEVe0ypxPx7q9CqL4u8eSuzf/+duZGY71xz1sN
+         H1mECt7EsVbt3D4W+iEmbdeLp4zbZM1MIBb3Wk54qUpdmYxyPL+Y3ErIEdHRYOSmnErc
+         bbsg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+O36H36glNtXrxJPyzyXf3Utm2Jz5UQ1aJ5AjiN/WUeXGZRAyVWgMMDDbOsH/sSFTXnZDyx+aI2k=@vger.kernel.org, AJvYcCXq31q8MRFdS1Mz5BznyWa2UV/GIVMsUimaaVnnQa6ZLpNip/S13PYAtYz/oR7j7rQE/DimCMkV90WIR2T9@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2jSHShpBZRzLhjRr6FXmtd2FUCB0cGWPtXSc0ldzA81yyPeck
+	R4EitlD6kKGtRBCXfeHW9KB9Fu888wW1uxG/obF2P9z26eeEeW/C
+X-Gm-Gg: ASbGnctIS0zUk8boZimmTWpMGxdZ7Jz7uft6rZdzKhoWbCTcwsI4YQQW6Qu/C2ZrV2g
+	acBYg8+XtFZ+2CVxQaCQ5cXDC/v7GAJOPsu+gqELWbqWXeszAnGzQ4uAvFxZA9Ggr50DnLrCrgx
+	h3Hr22xf5BgsyvIrhreU9sEQ4BQ1oF9MW9iQhx0ep27Dbq2gKYax4rSAXdssHgJxayQ8Gzk2IM3
+	R1zOilvw0SA1vn2VIukn1DNP1DPI348HOcb11In6ZJtVuKVIs5/GadNvZA1aud3znzSJ6XiViLn
+	E61VTRXzda3mo4zFaSpR6mzUWry8Epvj3Vq5JAWxlp/HxqK/5k1s2E+SOCzhFnplQQ==
+X-Google-Smtp-Source: AGHT+IF4eqo715T2c4Kw+zbMqRLjZA6vez85MP3KA2/4Us1vpR42Ra4NLux0gr2fDOuXuIHooxQaBw==
+X-Received: by 2002:a17:90b:38cd:b0:2fa:17dd:6afa with SMTP id 98e67ed59e1d1-2ff7cea999amr13607119a91.17.1741447614081;
+        Sat, 08 Mar 2025 07:26:54 -0800 (PST)
+Received: from localhost ([2804:30c:1f21:4300:1cf6:c485:6555:b1c5])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-224109ddd8dsm47974305ad.7.2025.03.08.07.26.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Mar 2025 07:26:53 -0800 (PST)
+Date: Sat, 8 Mar 2025 12:27:46 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Saalim Quadri <danascape@gmail.com>
+Cc: dragos.bogdan@analog.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, marcelo.schmitt@analog.com,
+	jic23@kernel.org
+Subject: Re: GSoC Proposal 2025
+Message-ID: <Z8xh8jsz-NYYdmYT@debian-BULLSEYE-live-builder-AMD64>
+References: <Z8U4mr1vO-TWz91c@debian-BULLSEYE-live-builder-AMD64>
+ <20250306003130.1555755-1-danascape@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250306003130.1555755-1-danascape@gmail.com>
 
-On Thu, 6 Mar 2025 15:03:15 +0100
-Jorge Marques <jorge.marques@analog.com> wrote:
+Hello Saalim,
 
-> Add dt-bindings for AD4052 family, devices AD4050/AD4052/AD4056/AD4058,
-> low-power with monitor capabilities SAR ADCs.
-> Contain selectable oversampling and sample rate, the latter for both
-> oversampling and monitor mode.
-> The monitor capability is exposed as an IIO threshold either direction
-> event.
+On 03/06, Saalim Quadri wrote:
+> Thank you very much for the initial pointers,
+> I will try my best to contribute initial patches into IIO.
 > 
-> Signed-off-by: Jorge Marques <jorge.marques@analog.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad4052.yaml    | 80 ++++++++++++++++++++++
->  MAINTAINERS                                        |  6 ++
->  2 files changed, 86 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..4602f1f0184d58f33883852ff6d76933758825f1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4052.yaml
-> @@ -0,0 +1,80 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +# Copyright 2025 Analog Devices Inc.
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4052.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD4052 ADC family device driver
-> +
-> +maintainers:
-> +  - Jorge Marques <jorge.marques@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD4052 Single Channel Precision SAR ADC family
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4050.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4052.pdf
-It's this data sheet that I opened.  Seems it describes things a bit
-different that you have here.
+> Regarding proposal, I wanted to ask, how to get a draft reviewed.
+> Shall I send it here in the same thread, or do I need to send it
+> somewhere else.
 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad4050
-> +      - adi,ad4052
-> +      - adi,ad4056
-> +      - adi,ad4058
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    description:
-> +      Reference clock
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    items:
-> +      - description: threshold events.
-> +      - description: device ready and data ready.
-
-People have a nasty habit of wiring just one. So use
-interrupt-names and let them come in any order.  The driver can require
-both or a specific one if it likes, but in future we may need to make it
-more flexible and the dt-binding should allow that.
-
-They seem to be GP0 and GP1 on datasheet and don't have fixed roles
-like this implies.
-
-> +
-> +  cnv-gpios:
-
-Not the most self explanatory of names. I'd suggest a bit of help
-text for this one.
-
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 62500000
-> +
-> +  vdd-supply: true
-> +  vdd_1_8-supply: true
-As per other thread, supplies like this normally required and this
-one at least doesn't seem to exist in the datasheet I randomly picked.
-
-> +  vio-supply: true
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +
-
+GSoC candidates often ask for proposal reviews on the mailing list.
+However, as part of the mentoring team, I will not review draft IIO driver
+project proposals to avoid favoring applications of any specific candidate.
 

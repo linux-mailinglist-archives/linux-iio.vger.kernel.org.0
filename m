@@ -1,168 +1,176 @@
-Return-Path: <linux-iio+bounces-16645-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16646-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F697A587FD
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 20:55:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3988DA5880B
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 21:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C23C16B03A
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 19:55:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68F9D16A70E
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 20:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0AB21A44E;
-	Sun,  9 Mar 2025 19:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C551B21A45D;
+	Sun,  9 Mar 2025 20:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JqTEi/uc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lY4tCMSi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8340F1DA109;
-	Sun,  9 Mar 2025 19:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118E21DA109;
+	Sun,  9 Mar 2025 20:11:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741550146; cv=none; b=pGyAEkmQ99fH5ldpt7uhNbkMd711eWQFBnMFOlP4fX3QbzOnIar/x4amJqaAddBLfS6jXU+q2f33hTkw99nrzxj2/pDUP/34d0+ZzF3hq2UJS5wYp37e/Asj+4iFE/sEbKkXgFSHhuWoBqIfe55aABGtmdGX7n3EilveIYovMFg=
+	t=1741551097; cv=none; b=PtZ4Sw2e6JeUvpX8Gzq6zyjaNg4CQycwNTIfDTaSKT/QwPzHCJcb/Yb86kcw4mbfmCf3vlk2aUCzJwtxJ148nae2EHrnwkSqkxuacwWduxvwQHw7jucsLF/yQdKL5lC5fETr7WmUJUfjMOt1Gr4+NQKshh4dH6hO8ChJVyAgJio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741550146; c=relaxed/simple;
-	bh=zAPNcUFsX5MrJrlX6bLNUJsHyy42N48ffEZW73+2rUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ifm6GTg2Z+OuNAbNSPR8qkdxM5i7EiYP4Ka0UX+wccYK0rP91fvg2d5DFBSgbrZKyMQgX/N7Mhm+buYObjzcB2Y1EC9QNJj/RysgoXYDiFJWhVMykboukBxYWNmB+hkD4e/pVHLpyZF8GrAi9kPGUydSe+uyYERl7QDAvBsWOOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JqTEi/uc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7F6C4CEE3;
-	Sun,  9 Mar 2025 19:55:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741550146;
-	bh=zAPNcUFsX5MrJrlX6bLNUJsHyy42N48ffEZW73+2rUY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JqTEi/uccPc2B7x4ifj3kLnrDXYgD3cQF7rNBNLDwcagkvL26TaEemWzJVflcHOxY
-	 LJ0t9HR7PSsIaUyORMb3C2lRqAwFCMAiOIb0vgLjQvubvWupkyntj+wY2/uqLd4PMB
-	 0ZPZJlWeBwMXr4O2CpK7Oqf1Vndw/UaiAecqMHv2hra0xZ6NGhB8BozYy1aCa+K3VY
-	 T7pJTI5x8BiW/uI2+pG8lPfFHMYC/5isjtDvRtuUZlYYMvQQz3OnO+OiLzAFUneaeb
-	 C843b9O7Qq3t4AZwOkEq5lcmvfSF46Alo7tUSSpYXmcJzcOrowTMOoZkATQa2bcot3
-	 cFCXuz3yoP0VA==
-Message-ID: <49d6bdfd-a2d3-48e6-aabc-e6674256e5a8@kernel.org>
-Date: Sun, 9 Mar 2025 20:55:39 +0100
+	s=arc-20240116; t=1741551097; c=relaxed/simple;
+	bh=Q/M8NAapKWyYjFf4cnrs1aG5fBikbTR5bGwIx1rcekU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hTRn0EcaU4yZz0vWbFRleSFjatvs8uSfn3CxKU6PajatxELbmKUikAg9pLuGaVbFvISXB72712EOxrguKah3nhhNr+KveSS8sJM1cRsKIlBNKfQK5W2/53x1Dy04jqHi69+WytbUWO6ijpARIFIE5vZsNnyleUAXZIvxEYrINY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lY4tCMSi; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22334203781so82052045ad.0;
+        Sun, 09 Mar 2025 13:11:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741551095; x=1742155895; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PNejAKjgnWESebI83OMmJQdcgreJZfPq0NGeb8QDIKU=;
+        b=lY4tCMSiKmu9LCLGtFODlQSP9fnNHC3ALVszdbazdw+wy1Sm0yu7XAXCe7c3eSvF6P
+         nzvKRznTehoPkDqFIMIaQRysMZKsnQyc6juNlXAzDZG0y0mDOiV+t87xjfOV2eVeqouQ
+         tMfxX1Oz+IaEuw9m/OfGWnC34vv4PQ3/fA5egxvXVS2bp4OrEAEmfjGML6nPYktn40j0
+         iDthToVV60mJRyUyyGj/wdcvHYuyMfaUXeqZrVGDP2FcA3/oLm3j23W87q70tatk4Tba
+         A63L3tSdbLnBFDA72Kh+zO5MahzCTwLtVCABj4SbuEUqamsVL91qO1LIjyLO0J+bfG+v
+         ceBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741551095; x=1742155895;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PNejAKjgnWESebI83OMmJQdcgreJZfPq0NGeb8QDIKU=;
+        b=EHMF/53DkDvAIwHA0amQ3/bwAVfKmkwbCUAoeKCb8lG3K3G+khSB2JSGdKUYYiFZxc
+         SwPfNCsbA7+icoMVFDaGrWIs33l28gkSF534rJ0iLaIoNaVugXcP7Arhy459qg6SlnUB
+         7P2Wdr5Hql8BcrUKTqrhx5bP4FbLw+w5r+tKL7oG65KctKx9S7iaK2fx5Djxyxn0psZz
+         V0zikN1a7JZeI/CcboSiba/i81Dd8OlRmvcnSWRkP+LuIDR/yc/zDwnkziMlEvmoiv6s
+         D0+P4SNSaas1HaJG8J6OQpDphMj5sIoYED6Vu8WwcuaNinw17FQIQ0V7UqtrA4fCzNiJ
+         Kaqg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgEz6v4dMwz23LZq9sXa+x9YCrbXYVVrjZuAM5mnqVYcqqtcH6fZxDCgYcTfnXgihQB1pII73xs+bE@vger.kernel.org, AJvYcCVTRk2z258zQMAwQxr1VSr5YAxFkV2CCIFB/6TysFRcu7c6R+/td1jswX4dgaCPgloq8/9Pngzjc5OC@vger.kernel.org, AJvYcCWdhNVOAAcxHUOgCLWaNMTcQ7cdy4WPVOg+5T5PJIaOmJVq0dWUZ0e7mHsilgMJq74O4z3N/KX22cVOdHQM@vger.kernel.org, AJvYcCXbtpz2JZ6G1X/0WO5RJCJDeGYKvMuCnziZGGMZ7R0QKs2KtvPNSSSH1ziQ1UMSO5+wO3H+U/parcfC@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLD1rHYyD12Ocg77StrhQu45Id5JKBXYklZGPDZUSVc2++aXtu
+	03XineuIJBar6AXmJX5LF09/244y6xKMhHKRPPZmHDQPOVHFg5im
+X-Gm-Gg: ASbGnctLwjbWpswuj5HZev+cGniPxF5rPu4m1M7w4FqlawaILl6nYN7ggkdBNmsmZ/t
+	Y8vrQxnZTp+OV1ngIDpqzdeeJ4mVdnWmNiK56ico6qE/FCDLqOwOWzRFzbVAZmkzgYrVutXZpxY
+	mUEF0uXFyU2+f9ReEPOkiOVtksnfQlwNaeR/6JZ6LA8LR3Plq3XiL+4VrK9ZN7GKE1gvAD0IF8t
+	GVLkhBi8Z5Q39wd10jbBnWx2mrOQMEEEnmY5WYAGWJO7qoCNk7BhBZkWvA1sC074B6KDVVIouCR
+	3xvu7N0iNx/AL8hwi+TK3AO0fZ3nnvG2rosEBjQ/LGXn6gVwec78uqAJOki8M+VYEilc281s
+X-Google-Smtp-Source: AGHT+IH3nC1e4uINKW8r5n+EJqUFHBohM2It53DiNQAen36ckMdbrXoW1M/rkNjgcaet1ChpeYZhrA==
+X-Received: by 2002:a05:6a00:8cc2:b0:736:bced:f4cf with SMTP id d2e1a72fcca58-736bcedf541mr7491933b3a.0.1741551095151;
+        Sun, 09 Mar 2025 13:11:35 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([2a02:2455:1853:7000:fc49:126f:e12d:f79c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736aead3439sm5038874b3a.64.2025.03.09.13.11.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 13:11:34 -0700 (PDT)
+Date: Sun, 9 Mar 2025 21:11:24 +0100
+From: Jorge Marques <gastmaier@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jorge Marques <jorge.marques@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/4] dt-bindings: iio: adc: Add adi,ad4052
+Message-ID: <f427772xllbmabozmr7xbaizetypscasbufyqc3teylwghpagl@5jo4c527avay>
+References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
+ <20250306-iio-driver-ad4052-v1-2-2badad30116c@analog.com>
+ <CAMknhBHeqhkGaSM0S_zahC1ZrKTfoYj87fFEwL362FhhjNOfpA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/6] dt-bindings: iio: filter: Add lpf/hpf freq margins
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>
-Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, antoniu.miclaus@analog.com, jic23@kernel.org,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, bpellegrino@arka.org
-References: <20250306183314.150253-1-sam.winchenbach@framepointer.org>
- <20250307-handsome-merry-alpaca-17da9f@krzk-bin>
- <Z8r45sR7uy0b4UEQ@65YTFL3.secure.tethers.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <Z8r45sR7uy0b4UEQ@65YTFL3.secure.tethers.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMknhBHeqhkGaSM0S_zahC1ZrKTfoYj87fFEwL362FhhjNOfpA@mail.gmail.com>
 
-On 07/03/2025 14:47, Sam Winchenbach wrote:
-> On Fri, Mar 07, 2025 at 09:34:24AM +0100, Krzysztof Kozlowski wrote:
->> On Thu, Mar 06, 2025 at 01:33:09PM -0500, Sam Winchenbach wrote:
->>> Adds two properties to add a margin when automatically finding the
->>> corner frequencies.
->>>
->>> Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>
->>> ---
->>>  .../bindings/iio/filter/adi,admv8818.yaml     | 23 +++++++++++++++++++
->>>  1 file changed, 23 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
->>> index b77e855bd594..3f9c61547a78 100644
->>> --- a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
->>> @@ -44,6 +44,27 @@ properties:
->>>    '#clock-cells':
->>>      const: 0
->>>  
->>> +
->>
->> Unnecessary blank line
->>
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4050.pdf
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad4052.pdf
 > 
-> Noted for v6.
+> The links above don't work for me. Instead...
 > 
->>> +  adi,lpf-margin-hz:
->>> +    description:
->>> +      Sets the minimum distance (in Hz) between the fundamental
->>> +      frequency of `rf_in` and the corner frequency of the low-pass, output
->>> +      filter when operatred in 'auto' mode. The selected low-pass corner
->>> +      frequency will be greater than, or equal to, `rf_in` + `lpf-margin-hz`. If
->>> +      not setting is found that satisfies this relationship the filter will be
->>> +      put into 'bypass'.
->>> +    default: 0
->>
->> hz are 32-bit, not 64-bit, so I think you need:
->>
->>   default: [0, 0]
->>   minItems: 2
->>   maxItems: 2
->>
+> https://www.analog.com/media/en/technical-documentation/data-sheets/ad4050-ad4056.pdf
+> https://www.analog.com/media/en/technical-documentation/data-sheets/ad4052-ad4058.pdf
+Thanks!
+
+> > +  clocks:
+> > +    description:
+> > +      Reference clock
+> > +    maxItems: 1
 > 
-> I think I finally understand - "-hz" is a schema type defined as a uint32. 
+> I don't see any pins in the datasheet about a "reference clock" input.
+> Is this for the CNV pin? If this is for the internal clock, then we
+> don't need a property for it.
+Indeed, this will be removed.
 
-No, it is uint32-array.
+> 
+> > +
+> > +  interrupts:
+> > +    items:
+> > +      - description: threshold events.
+> > +      - description: device ready and data ready.
+> > +
+> 
+> Since there are multiple interrupts, we should also have an
+> interrupt-names property. Also, the interrupts should be named after
+> the pin they are connected to, not the function. So the interrupt
+> names should be "rdy", "gp0", and "gp1".
+Agreed.
 
-> Is that correct? I am really surprised that `dt_binding_check` did not complain about it being 64-bits.  I will update these to `-mhz` and make them uint32 in v6.
+> 
+> > +  cnv-gpios:
+> > +    maxItems: 1
+> 
+> Not necessary, but I would not mind having a description that says
+> that the CNV pin may also be connected to the CS line of the SPI
+> controller if it is not connected to a GPIO.
+Included.
 
-so your code worked fine, because it assumed you will pass two 32-bit
-integers, so two items. That's why I proposed to define the number of
-items, even though it looks odd, but that's result of 32-bit value.
+> 
+> > +
+> > +  spi-max-frequency:
+> > +    maximum: 62500000
+> > +
+> > +  vdd-supply: true
+> 
+> > +  vdd_1_8-supply: true
+> 
+> This one seems redundant and should be dropped.
+> 
+> But there is also a possible separate reference voltage supply, so we
+> should have a ref-supply property.
+> 
+> > +  vio-supply: true
+Yes, I overlooked the supplies, vio, vdd are mandatory, and vref is optional.
+Also noted Jonathan's comment that the aim is to reflect what should 
+be provided, not what Linux does with it.
 
-Maybe we need "-hz-64" or "-64-hz" property suffix?
+> 
+> These chips also have GPIO pins, so we can add the gpio-controller and
+> #gpio-cells properties to the bindings even if we don't implement this
+> in the driver.
+Good to know, added as suggested.
 
-Best regards,
-Krzysztof
+> 
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - interrupts
+> 
+> The chip won't work without vcc-supply and vio-supply so they should
+> be required. ref-supply is clearly optional though.
+Aggreed.
+
 

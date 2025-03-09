@@ -1,157 +1,128 @@
-Return-Path: <linux-iio+bounces-16586-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16587-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8A7A583CE
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 12:33:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C047FA584E9
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 15:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B61A23A9F19
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 11:33:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C3E0168AAF
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 14:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCDA1A2C0E;
-	Sun,  9 Mar 2025 11:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183F71D6DB5;
+	Sun,  9 Mar 2025 14:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VM4MSwqd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G9y8+b/2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A8A2F28;
-	Sun,  9 Mar 2025 11:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8995C4690;
+	Sun,  9 Mar 2025 14:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741520019; cv=none; b=ZsRfew83/dE+hVC2dPDUyedW/n9GFs8Zpm+Z/4++vZ9CSrmMwvv294b9BzxgqPeboBPm9JBxlpivJ7FzB2E1Teo6Z1obarzxRSJj26+YJc/w0gIgd2aEdG6xyTCYwdjLKpLVBKa7scEXD5GeHzW7NcVdP+t7d+3c3rN0gqGBhnQ=
+	t=1741530273; cv=none; b=d4XdGRuW31Wzh2z/2BmerBq1qdnta87N9Px0iJKHExwRPuuVsNX9AVd3l+s6GkmPmCzeEV+TEfVF/xLSSOE4CCBy+zEzbX0HaWbg+LlPJmTZk+NLdj/FMj4QrKhuKEP3Imjp2hFB/18ldjrvTsDtb/N62Babu+PFtEUG5ChzqeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741520019; c=relaxed/simple;
-	bh=RHthkc2j69XzfYIrr4SUtCie38YjQQMGl8Wq9/DxPGk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kegWTL7WioK+pcAG/cIB21Lzk2gS/JrtVEc7NwVMqW0kVTWcBeYacusOiyJBJDjuCTIcmbczbWANq1UXAUTDnycFItXG6jnEeSfAnXq/zVpEnJKeFc0ooVbYvwxG8IuZMLMO1FboDwXvrlQkqCvkq0rm+j+t+ZIVkLGBjO6fz1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VM4MSwqd; arc=none smtp.client-ip=209.85.219.169
+	s=arc-20240116; t=1741530273; c=relaxed/simple;
+	bh=qNPaQ+3fbpLjlpDsZPQdDZ46x/TQwgLgUwhHdcqIHvs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KpTbHWU+htf2chCOXI+PdbL79bXd8i7c+WMRwaB1NaiN/rXu5s53SqeuBwyi2wf8SguU4aFDVO6TamUaYSCTbYoGWn+G4hhCwIfr1Mg6lI8xJ6oSMqHjz6yamn7u75DMmTspXkr50RF7NE1HBH6JPocR7fzqij1NQMjgAxPdvFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G9y8+b/2; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e6372042cc2so87544276.0;
-        Sun, 09 Mar 2025 04:33:37 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-223fd89d036so65162415ad.1;
+        Sun, 09 Mar 2025 07:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741520017; x=1742124817; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hD6dSJWXPovNvfl2xfXR/ZabcRpLCeSb5xx2IJUN7R0=;
-        b=VM4MSwqd2j9ADMyiwMFE6VpqMZGhZpzNvk1XkdIqOEXGc95OHpQ80Muz5oHp6hg1s3
-         FMxoKdbCjG9g2Xx6Ra3vozOfOxBjerjZNu3CJ2YvCLstuMdXtQlwpo555x0qfdTgzT8t
-         EGA8pQKtJrJjgVjzSTtOYuX9fcJEFPm1mttXIouODqRWJDEnFmhgwPT54PJxVL9V/LWU
-         VFZl5yGKwo/thVhjVmzEvKFkCn9MRlZ2oomBx06GXsDFjrihRob5UcZvgmzrKG9VhtQ2
-         QyisV6luakllH+yxWqkjQRyHGswWGURsPVZ+ie+wehTudE+Q7LSD4iUMIzOPreOQJHpP
-         p8xg==
+        d=gmail.com; s=20230601; t=1741530272; x=1742135072; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Mi3TuIgwr9/F4gznHz26TJHlr+MuTIFSEN/eoEIJY8c=;
+        b=G9y8+b/28ZopwpKjalH6msIlWuo7AjBoDOneCDTgef6hMdVN9N6LLh31uYLHv2C0eS
+         aDmF5qETE7tpbRoGBZ3QzIrkuz63jBkjd0unKmKr0jThY8rrtzmero2f4IfWP2lkWNWu
+         0Tqx7k+svnem7eK4+q61jyKa31l1YsGkTNVFb2JPpQu6yPxCEVsCo+2nmkTU1951eXMK
+         ++0FzgC/hIUvhhav11qiMEPwCghadIsypSwVlXvYTNX7gNiIa/2sOZwEGPHf3DPvRpuS
+         exh7CuyG6st9X1VjEEZUC6Kww7N2r7Eu79FYJ5uIsV6qDsNhFu6AKjQhdd73nQsAhk8P
+         K9uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741520017; x=1742124817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hD6dSJWXPovNvfl2xfXR/ZabcRpLCeSb5xx2IJUN7R0=;
-        b=It34Dx17AnEfZY2+n5POgdaxCFhJ3oLPztqz69K9U/tv+wW8MQRgNdhBuTVUlgRJ9c
-         IKnNcSMnGueqWaPm3qbWHLlIscU5otTYFFNyBcCzDYOm9ObbbcCdTt+daLcK1moZ5Xtc
-         12tZIdy2sdV6snhNyMMTW1ZvAJKsNCRZAsBVmF3dY/r16BJRggAXQkV2Ve4p+VP+SEoj
-         qUhWV1UiD31252X3WPk3oF257kLR581o105VoVSlfZlTu/Ap3TBG8/7MW9hmLCtVrVAX
-         06R1KeSz5+bnpVtKSmxiILCjH1amnjNXrSkv4+Uv5tOuuqxwFXSx5lc3p9XYFBKKaF1w
-         IUFw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2D85G7aLYi9okK6h9IvBFkqMRX1V7whCyvEYT/PpBua5g57PGPfrh10X0vbVHN/EU+BJQkKfbaHI=@vger.kernel.org, AJvYcCWEEIAoP2SqfzmGBXLqzdfQJjnwM973VUsh/QOkibrXq0K9N/sqCknofyUJXg/PZhXVTfBMBXlPQKOEZWI8@vger.kernel.org
-X-Gm-Message-State: AOJu0YysxZylniG8vXYHMlxAWre7B/LAV1Ho3pkOXlsvr8cKlRo6ZCBW
-	pgFCxYWu9jEYMck8iyeXGNQ+6M3EFXYpqOztx2gX2nvzNHwkhXfhp8wU0kv9FpptZ3iH0uSaI9K
-	++dVTrF7n23KVSeCGlukkWVU9uWE=
-X-Gm-Gg: ASbGncskSUw8cfMmwS24CZ8KoJ6JiD9MaMGxbLEHHnh03iyZsBm82JiXIcqeA6MSbDh
-	mFbUzQq5mOtnyx2XeKOEMo7BRJY68mrWvKk6qJpPrejMtByunp+LtPy+8bx7V9bDWYB6QgUnYLt
-	fNv4UbMSM/RklVtuPv/nT1ICI57g==
-X-Google-Smtp-Source: AGHT+IGA1Wy//fz7eW7eT/q2jrcjQp0V/XcQS+bPrc/ZNvHnuX6UFWu5yhDiUjJO9e+hykwD1m7ybkneoLXj62lZDVI=
-X-Received: by 2002:a05:6902:330f:b0:e58:1112:c3d3 with SMTP id
- 3f1490d57ef6-e6371da30c7mr2270597276.4.1741520016979; Sun, 09 Mar 2025
- 04:33:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741530272; x=1742135072;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Mi3TuIgwr9/F4gznHz26TJHlr+MuTIFSEN/eoEIJY8c=;
+        b=n9v/1wh+nB2julwo2SUhTw96FdzL8HoCsATCaZEfm9BCuSV4YeSvm1ISVo8uBOb3JS
+         sq9Ga/0mUne9fuF5pUSyWqEGxCsidRQmUcgdj4RCod57YYh7/RZ/Tfbyv6UtoXM10RSf
+         T+fJuct7jFBOtIhlsImGG5k6E5fyMb5f0sWED7FDhmjzhjFJLF63OLEbu/tCqn2X6WPW
+         /XcEHx0e2+lp/xmHg25wxES+/IF0wExChuJoV/aQBQlmHBnA3oiKZBvUqX4BvmeI1pI2
+         ANsF/M1A2zj/7JPTpjXK9XEJoEiRMCw/4D7gZMhUrbhVOnY0jD6PxA28OY1qc4XZE2fV
+         HSag==
+X-Forwarded-Encrypted: i=1; AJvYcCVIBfQwGLfNPai3FZbs4/xyBZVmwNaQe0AMNNHq3CS2k+wackYeZY5b7wm+te9bjnyulbvSsodgk0g=@vger.kernel.org, AJvYcCXgdk1vJSdiVc5yW0JB8AwwhwEniWmIs/RdGPfrtoinTQkPm7HCP8SuDQKk+vC3nsJ7oN/6Nd1TD1V9nN8/@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8Z7GSf+fdAqrb9oIsqz5Bj1KZEabkV+xouw/qE4bxjcK0k2xs
+	UIL2wXbzZcky8UueHPgwan34FIF7CSMLVGr5TpGez8VzFy1VETsv
+X-Gm-Gg: ASbGncvfd1cC1hQ0K5IGWX6CiD766IeKUHRd18TXzJ5ZXKbx2DB0fV6mhKsDuX7itN/
+	ZjUHndXH2mG1bkqwguF/88VEg5BGkukD4CZ9eunIHVNW+EN2sFRfZo/OZheQrj3qodbM4s2aK4h
+	myieA1hx6FgkWORIdd+4ZfSW6Wa88Q387g/cbwjoThfqL41KU++5YyhEFAo9a2d8VsdcNycMLs/
+	WwvfI6ATN2IWhXKuxwFy0XK8RQX+cbWKqGjcMr87oFMaN9+gdWUBhGggpMlUSSFne7L9r2KrarS
+	ukTi4X1J0zg6yjGtHD3yXNmU4xQvycZdbX6zEUK13rqmeZfQc3hx5w==
+X-Google-Smtp-Source: AGHT+IGtXlAF9apJ6qkbzRk74eWQ6PWpTJPLI677ftWm+Y0Eye4qHKkcJgefH5VcGASo0BD+PlAMBQ==
+X-Received: by 2002:a05:6a21:1693:b0:1f5:75a9:5255 with SMTP id adf61e73a8af0-1f575a9eeb9mr1633758637.39.1741530271708;
+        Sun, 09 Mar 2025 07:24:31 -0700 (PDT)
+Received: from localhost ([2804:30c:b31:2d00:277c:5cbe:7f44:752b])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-736d47f9da3sm718913b3a.137.2025.03.09.07.24.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 07:24:30 -0700 (PDT)
+Date: Sun, 9 Mar 2025 11:25:25 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
+	Michael.Hennerich@analog.com, cosmin.tanislav@analog.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] iio: accel: adxl367: fix setting odr for activity
+ time update
+Message-ID: <Z82k1SVjfk0ylXbS@debian-BULLSEYE-live-builder-AMD64>
+References: <20250221203352.41941-1-l.rubusch@gmail.com>
+ <20250222150329.66d6e79b@jic23-huawei>
+ <CAFXKEHZEkNXAPVxZA5raPsA8cNt3A+tbd83kNzJc3wY5OjAsdw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220104234.40958-1-l.rubusch@gmail.com> <20250220104234.40958-5-l.rubusch@gmail.com>
- <20250302114503.26cbcd97@jic23-huawei>
-In-Reply-To: <20250302114503.26cbcd97@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sun, 9 Mar 2025 12:33:01 +0100
-X-Gm-Features: AQ5f1Jp2-UOSg1n58egPOilYte5A-AmTplg8XtN0ymbsi9QW0UjWKlhoAlITO7A
-Message-ID: <CAFXKEHYmWk9tMa5VT_9WKT-j_XvWetjTRu4Lknyv2c3u+UcHNA@mail.gmail.com>
-Subject: Re: [PATCH v3 04/15] iio: accel: adxl345: use regmap cache for INT mapping
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFXKEHZEkNXAPVxZA5raPsA8cNt3A+tbd83kNzJc3wY5OjAsdw@mail.gmail.com>
 
-On Sun, Mar 2, 2025 at 12:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Thu, 20 Feb 2025 10:42:23 +0000
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > Use regmap cache to replace maintaining the member variable intio
-> > for the interrupt mapping state. The interrupt mapping is initialized
-> > when the driver is probed, and it is perfectly cacheable.
+Hi Lothar,
+
+On 03/08, Lothar Rubusch wrote:
+> On Sat, Feb 22, 2025 at 4:03 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > >
-> > The patch will still leave the function set_interrupts(). A follow up
-> > patch takes care of it, when cleaning up the INT enable register
-> > variable.
+> > On Fri, 21 Feb 2025 20:33:52 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
 > >
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > ---
-> >  drivers/iio/accel/adxl345.h      |  4 ++
-> >  drivers/iio/accel/adxl345_core.c | 63 ++++++++++++++++++++------------
-> >  drivers/iio/accel/adxl345_i2c.c  |  2 +
-> >  drivers/iio/accel/adxl345_spi.c  |  2 +
-> >  4 files changed, 48 insertions(+), 23 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> > index bc6d634bd85c..a2a81caa292a 100644
-> > --- a/drivers/iio/accel/adxl345.h
-> > +++ b/drivers/iio/accel/adxl345.h
-> > @@ -8,6 +8,8 @@
-> >  #ifndef _ADXL345_H_
-> >  #define _ADXL345_H_
-> >
-> > +#include <linux/regmap.h>
->
-> Why add this include?
->
-> The file should have a forwards def of
-> struct regmap;
+> > > Fix setting the odr value to update activity time based on frequency
+> > > derrived by recent odr, and not by obsolete odr value.
+> > >
+...
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+...
+> 
+> Hi IIO ML readers - Hi Jonathan,
+> AFAIK there is no tracked bug which I could refer to. Alternatively, I
+> could refer to
+> the commit hash of the original commit which introduced the code this
+> patch is supposed
+> to fix. Is this ok? Could you please help me here with the process?
 
-Sure.
+Yes, the fixes tag should point to the commit that introduced the code that is
+being fixed. So, this this patch should carry the following tag
 
-> which is currently missing.  If you clean that up in this patch that
-> is fine (mention it in the patch description though as it isn't
-> directly related) but I don't see a reason to include regmap.h here.
->
-> Given rest if fine I'll tweak this whilst applying. Applied to the
-> togreg branch of iio.git, pushed out for now as testing for 0-day
-> to poke at it.
->
-> Also move to a newer kernel tree. The changes in export symbol
-> should be causing you build errors for this path. I'll fix that up.
-> Quotes now needed around IIO_ADXL345 in the EXPORT_SYMBOL_NS_GPL()
-> calls. I fixed that up.
+Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
 
-Yes, this gives/gave errors. I'm sorry, I left this in the patch.
-
-FYI, I'm always patching against recent kernel source of your
-"testing" branch of the linux iio repo. Anyway, I'm testing/verifying
-on a semi-automized setup here, involving the particular sensor
-hardware connected to an RPI. Although the self-compiled pi-kernel is
-+/- recent, it usually needs additional tweaks. My pi-kernel still
-uses unquoted symbols here, which I already cover by an auxiliary
-patch (not supposed to go upstream). I missed to update this patch
-here for the added function. Thank you for the hint. Anyway probably a
-good idea to update and rebuild my setup pi-kernel. TY
-
->
-> Jonathan
+Also,
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 

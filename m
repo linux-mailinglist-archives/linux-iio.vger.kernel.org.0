@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-16604-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16605-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 040EBA585F2
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5C4A585F3
 	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 408D3169526
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6DC169528
 	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 16:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176341E1DF4;
-	Sun,  9 Mar 2025 16:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB37F1DFDBB;
+	Sun,  9 Mar 2025 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReoqAITp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q9PnAdrj"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB65A1E0E00
-	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 16:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA5C1DEFCC
+	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 16:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741539546; cv=none; b=ekeyfN/OyYc3zSpQc9Na28fHfrO8Dp/E+AeJTg87cgzijcf1FW+TH6QSSnSjtaM2T21irNLifzx45nTHwrFQmPwhRR7pOrm3ei7t6/4gwyas5hyRQDNYf2zjITtDyGDMnOcbZd2uF5vuUV7I0FbrFlLMKh/ML/W1mkgvx3L+BJ8=
+	t=1741539550; cv=none; b=jCmUH2R9y3Hr6qIYvvJ0Qyv5tx2TkaBBNczYg/3NxRsZQRq/pWdllXXc3aJz2bl+I1h5EA2YhMmc1JpwfG+kMMkLUutp3YfLbpbVO6oiQPGYS1rMnRu9CKQfhIhBTdkGslJAFXe3a+59o+xz6gADyNIcLGVRaxVYt0TXUU2BPQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741539546; c=relaxed/simple;
-	bh=pvDTAzgh9oK6PbkuH8h0QyqpizHrElThmPx1HmLFAUw=;
+	s=arc-20240116; t=1741539550; c=relaxed/simple;
+	bh=FPoYjPbpXT295JyRgIuWbxFSN+OMkaJAqASunXDGbqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHPQDha4fkZUCZTYLQjmilv51gN7JPqKaSZaz0aQ5z6xzwbdYx+/7jflpkvgCMfbzPoSvJmi0ldmeWIBFXEpYgZqZm/1y64oA6aTOjTkPcZGoglgkF8LOva8x3z+uLnGzPcTluuiGfWvb0Hi238hqRnuZ2fbb8AMmI9sf9CPIts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReoqAITp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035A0C4CEE3;
-	Sun,  9 Mar 2025 16:59:02 +0000 (UTC)
+	 MIME-Version; b=G6Y9rhB9QTvB9rKCUHo7NnzMfexzDAAciFmK87qh9+zh+ANnF0Sqc5Mfp3nN+GDyaIdtb6/PHv2RMlYx1xW/0m7OS84K50+dmJqY6vV56/esO6pCQa5PHa74+0UibGPe6FCDf9TvL2m+/Q58EGTkjuFg/EG9QZX9JrBDSNOxMo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q9PnAdrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4C1C4CEE3;
+	Sun,  9 Mar 2025 16:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741539546;
-	bh=pvDTAzgh9oK6PbkuH8h0QyqpizHrElThmPx1HmLFAUw=;
+	s=k20201202; t=1741539550;
+	bh=FPoYjPbpXT295JyRgIuWbxFSN+OMkaJAqASunXDGbqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReoqAITp6nH4kU37KEcAO6EfbgiXEFhaR52TcPKL/X0+OhX5LamDiZEy+uvaX4SSB
-	 ZHoj3AqU3zE42JuZ0XNs2xq8ygn+FmGUZJ2TizmXgd689PPlYyXRW469u2cPBFRcDk
-	 cwtX0GULmzVQkuV9eoD380uQhCvlUt1EATha78zJ/woDG0BZ8i4LCnz8jp1DcgU/TM
-	 PsqviP2/JZ92UA9r7QWCcoLXdbW/nejxgEc+T9D6G5yiUF3tYYTNwHqM8jeH74IgTN
-	 f5rKdIJyZ+kx1DR3ndsS1qb8aCWgrkEiBpzQlJXLugiwLbmjqDBXGHvZXM7MRyecNZ
-	 V/i9O4squsb6w==
+	b=q9PnAdrjS4R4JWzg/Sc2oL5w7Jdddr1WU/VwOV0ivEh9z5S1Jr7ak9B87ia7bG+sw
+	 YL7aW8fgPOR2GEuwXDzCvO3PZ6hGvjVYEi3Imf2r8PTERJAtrPykZg9qyuy1tOJpcN
+	 UDSXLomYo7SnIO0M9SFMJe2H40DthvWLemltI35DyFTjmLu+I3DFFTfpkg/qAdeRny
+	 NEXkIrwPwB0tim7EVg8lgnsdCdUgZ2yG437rE2uh81/t/LuPt+xSRQAQWFBNECnAKd
+	 SJa/xG5H6x4IxQi8ajrY0MMe6WqzkAGRNIxkV1uY6mZ4ctDxCKGO3Eg9XvM07g6+Hq
+	 lot+XeS9GA5qA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: Frank Li <Frank.Li@nxp.com>,
 	Marek Vasut <marek.vasut+renesas@gmail.com>,
@@ -51,9 +51,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 7/8] iio: adc: mxs-lradc: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Sun,  9 Mar 2025 16:58:18 +0000
-Message-ID: <20250309165819.1346684-8-jic23@kernel.org>
+Subject: [PATCH v2 8/8] iio: adc: rcar: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Sun,  9 Mar 2025 16:58:19 +0000
+Message-ID: <20250309165819.1346684-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309165819.1346684-1-jic23@kernel.org>
 References: <20250309165819.1346684-1-jic23@kernel.org>
@@ -72,56 +72,41 @@ direct mode reducing chances of bugs over the claim_direct_mode()
 functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Marek Vasut <marek.vasut+renesas@gmail.com>
 ---
- drivers/iio/adc/mxs-lradc-adc.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/iio/adc/rcar-gyroadc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/mxs-lradc-adc.c b/drivers/iio/adc/mxs-lradc-adc.c
-index 152cbe265e1a..8f1e6acea53b 100644
---- a/drivers/iio/adc/mxs-lradc-adc.c
-+++ b/drivers/iio/adc/mxs-lradc-adc.c
-@@ -141,9 +141,8 @@ static int mxs_lradc_adc_read_single(struct iio_dev *iio_dev, int chan,
- 	 * the same time, yet the code becomes horribly complicated. Therefore I
- 	 * applied KISS principle here.
- 	 */
--	ret = iio_device_claim_direct_mode(iio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(iio_dev))
-+		return -EBUSY;
+diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+index 11170b5852d1..221c075da198 100644
+--- a/drivers/iio/adc/rcar-gyroadc.c
++++ b/drivers/iio/adc/rcar-gyroadc.c
+@@ -199,13 +199,12 @@ static int rcar_gyroadc_read_raw(struct iio_dev *indio_dev,
+ 		if (!consumer)
+ 			return -EINVAL;
  
- 	reinit_completion(&adc->completion);
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
  
-@@ -192,7 +191,7 @@ static int mxs_lradc_adc_read_single(struct iio_dev *iio_dev, int chan,
- 	writel(LRADC_CTRL1_LRADC_IRQ_EN(0),
- 	       adc->base + LRADC_CTRL1 + STMP_OFFSET_REG_CLR);
+ 		ret = rcar_gyroadc_set_power(priv, true);
+ 		if (ret < 0) {
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
+ 			return ret;
+ 		}
  
--	iio_device_release_direct_mode(iio_dev);
-+	iio_device_release_direct(iio_dev);
+@@ -213,7 +212,7 @@ static int rcar_gyroadc_read_raw(struct iio_dev *indio_dev,
+ 		*val &= BIT(priv->sample_width) - 1;
  
- 	return ret;
- }
-@@ -275,9 +274,8 @@ static int mxs_lradc_adc_write_raw(struct iio_dev *iio_dev,
- 			adc->scale_avail[chan->channel];
- 	int ret;
+ 		ret = rcar_gyroadc_set_power(priv, false);
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
  
--	ret = iio_device_claim_direct_mode(iio_dev);
--	if (ret)
--		return ret;
-+	if (!iio_device_claim_direct(iio_dev))
-+		return -EBUSY;
- 
- 	switch (m) {
- 	case IIO_CHAN_INFO_SCALE:
-@@ -300,7 +298,7 @@ static int mxs_lradc_adc_write_raw(struct iio_dev *iio_dev,
- 		break;
- 	}
- 
--	iio_device_release_direct_mode(iio_dev);
-+	iio_device_release_direct(iio_dev);
- 
- 	return ret;
- }
 -- 
 2.48.1
 

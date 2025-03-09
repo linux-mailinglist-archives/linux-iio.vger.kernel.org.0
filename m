@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-16592-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16593-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E90A585CF
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:27:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2187AA585D1
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9545916A774
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 16:27:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7270188D7B0
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 16:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5311B1DE89A;
-	Sun,  9 Mar 2025 16:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE29F1DE2C4;
+	Sun,  9 Mar 2025 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLE73B1p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oylf7/e9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089E31FB3;
-	Sun,  9 Mar 2025 16:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C32542A93;
+	Sun,  9 Mar 2025 16:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741537642; cv=none; b=i1qk7LJXHTkXNHwXqyEvlHD7FPjTyFc9t/E3h5pVK2NzmOFRZBnwjibGiD7NbD34oKkMasrrrE12Nsirvz0lRNL4Kd67ZpbtITKj57nht5aHPDFXtjQbydW7pTr/65khWUg5eFc78d4/STmZ3tlad7Abg138o0Aul7oGdhIHxt4=
+	t=1741537837; cv=none; b=Jlp63HHeUc0zZrC7M2Pv5J0V8q+rcqO8TGuq3awHrhv7CVzIh9FpfHovEbP5Y9/TX0vR4nbPo4ElTERNov+50Ixov9ht1ABLrtgPKQ2SROBlrwhpV6DMpM9+9K8aATGjKz7K0sVDgdGsK3WdaTS0Ft/CipXdt8JlGbxOGgV01Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741537642; c=relaxed/simple;
-	bh=8e/5ur58bSJgjkeEWsX6y+bon511MWJmlit6ItFUr44=;
+	s=arc-20240116; t=1741537837; c=relaxed/simple;
+	bh=8R3PKmNhc66MIFXQf5pCfmUO/9Oc9YhK92/YidFByYc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=En0wJOyaz/Cfsv2VpIIllkso7pHcgdMLJ2xorFA+HrFkFFXljo3PCLh0rs8j7IkTXhX1A7bXMQjscyzmeeq+wgRDbLaBbkR6BfOSAu5KemWXgsgEkpnlVbxzsFuM54XVugDLFFwMJqti1Mc8IQZeeoXAQAbeSa2v2MrbqMJ4ki4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLE73B1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD451C4CEE3;
-	Sun,  9 Mar 2025 16:27:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OQvngxtwcG8JJ9FynLcz5OBCm17yExucwc4hFBWQVmc9gzgY5/XLnSSSLx2KHGkQSsQh9Wftx0Brw5SUm4g+mrggz7ThJLe1TySZYG1PU8wHiTcQOf1ZoGegDnA/N2kNOeQv1wk4gUcR+rrJvp6vUAYCPWDnO0zXSb/c6N2QlwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oylf7/e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F23C4CEE3;
+	Sun,  9 Mar 2025 16:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741537641;
-	bh=8e/5ur58bSJgjkeEWsX6y+bon511MWJmlit6ItFUr44=;
+	s=k20201202; t=1741537837;
+	bh=8R3PKmNhc66MIFXQf5pCfmUO/9Oc9YhK92/YidFByYc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TLE73B1pWA7tLK0ZFvJAd6SZQ0+zb8v7ZZHS+pdowbvX5g8M7qwMBUvVPGlOMtSld
-	 CjAvEU7VkvuZMQ3ufQM9+PELBDa007eVxDCfgJNpQa1+dpIc5WwxjWowcbAiMjZaHH
-	 CK+GuQ5wvLrTl8CYS93+UZ9LJD6GkoCb6B9jYyv5wFhXNVnGUgall9PMnsJF/vgdOq
-	 S1uiGU6HxzseHnYtTAlpMVGaxIJnOlAN/91pldT4SbCQX4AQMVICnyfftg2QL6tUt7
-	 LxS1CIECknIaPNsDLm3lLCd6ZSB7Xcbk38x3K+AGF4R7qb9nBreCt6ppPYIYhSLQ+r
-	 2Mt246D1SOFgQ==
-Date: Sun, 9 Mar 2025 16:27:16 +0000
+	b=oylf7/e94w7pxSoUNi87o3dVYljrWD9gJYT4PFMcgTpLlFVPW824IBqAJHSFS4k86
+	 2YIsY1rhDo0qpfe6stO1X5IhMftQnaBpkZFlEIyRC+KzPm/UmtFfnh6qBonDHEzoRl
+	 ojl1u1KxS4VY35gkDxhcShF+V5fgJRFfowEs128n7W4nOGoNuerBA37J8uGxTU62AE
+	 /eFcQK4BQGBF6rlAZ9B8eehQ3+Z7Pwl7ZzNdsFz9jLH4Z5ZypNcWCfhx6+JIOWnR4z
+	 6U+AEXEMl52ij9dNtDY78cZXAoUrAUH2wJJtWVrH6lFTCkrPvfN/PMtqxaL1u7iyCc
+	 taCw/rb3d6Mnw==
+Date: Sun, 9 Mar 2025 16:30:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: linux-iio@vger.kernel.org, marcelo.schmitt1@gmail.com,
- gregkh@linuxfoundation.org, lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH 0/2] iio: accel: adis16203: cleanup and standardization
-Message-ID: <20250309162716.753286c2@jic23-huawei>
-In-Reply-To: <CAGd6pzO492FA4bijFgkGvusrbqo2mkT=kpkY150Xg-nMfHrpZw@mail.gmail.com>
-References: <20250305155712.49833-2-simeddon@gmail.com>
-	<20250308144357.20f24fa6@jic23-huawei>
-	<20250308144944.668d79b5@jic23-huawei>
-	<CAGd6pzO492FA4bijFgkGvusrbqo2mkT=kpkY150Xg-nMfHrpZw@mail.gmail.com>
+To: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Cc: david@ixit.cz, Lars-Peter Clausen <lars@metafoo.de>, Svyatoslav Ryhel
+ <clamor95@gmail.com>, Robert Eckelmann <longnoserob@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Daniel Baluta
+ <daniel.baluta@nxp.com>
+Subject: Re: [PATCH 1/4] iio: light: al3320a: Drop deprecated email for
+ Daniel
+Message-ID: <20250309163032.732f4d05@jic23-huawei>
+In-Reply-To: <20250308-al3010-iio-regmap-v1-1-b672535e8213@ixit.cz>
+References: <20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz>
+	<20250308-al3010-iio-regmap-v1-1-b672535e8213@ixit.cz>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,29 +61,43 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sun, 9 Mar 2025 11:18:18 +0530
-Siddharth Menon <simeddon@gmail.com> wrote:
+On Sat, 08 Mar 2025 21:00:58 +0100
+David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
 
-> On Sat, 8 Mar 2025 at 20:19, Jonathan Cameron <jic23@kernel.org> wrote:
-> > =20
-> > > I'm not going to apply these because I think you correct
-> > > identified that the device support should just be added
-> > > to the adis16201 driver and this one dropped.
-> > > Good thing you were more awake on this than me ;)
-> > > =20
-> > Sorry - wrong person. =20
->=20
-> Well, I=E2=80=99ll assume these won't be getting applied.
+> From: David Heidelberg <david@ixit.cz>
+> 
+> He no longer works at Intel.
 
-Yes, sorry you wasted your time on this!
+True, but we have .mailmap to account for stale email addresses and I'm
+not sure it's appropriate to drop this one.
+
+Daniel, maybe you want to add a .mailmap entry?
+
+Thanks,
 
 Jonathan
 
->=20
-> Siddharth Menon
->=20
+> 
+> Signed-off-by: David Heidelberg <david@ixit.cz>
+> ---
+>  drivers/iio/light/al3320a.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
+> index 497ea3fe337775b07efdfc56c80beb1aa55e394c..d34a91fdafa0affad4665d995e1f66d2aaa0373b 100644
+> --- a/drivers/iio/light/al3320a.c
+> +++ b/drivers/iio/light/al3320a.c
+> @@ -266,6 +266,6 @@ static struct i2c_driver al3320a_driver = {
+>  
+>  module_i2c_driver(al3320a_driver);
+>  
+> -MODULE_AUTHOR("Daniel Baluta <daniel.baluta@intel.com>");
+> +MODULE_AUTHOR("Daniel Baluta");
+>  MODULE_DESCRIPTION("AL3320A Ambient Light Sensor driver");
+>  MODULE_LICENSE("GPL v2");
+> 
 
 

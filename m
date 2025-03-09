@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-16618-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16619-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16311A58606
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:07:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045EDA58607
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:07:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3A8188C372
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:07:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F66188BEC0
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6141DE3C7;
-	Sun,  9 Mar 2025 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985821DF742;
+	Sun,  9 Mar 2025 17:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wi7wGlzG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="II31LcZ9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCD81E1DF3
-	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5847A4A0C
+	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741540054; cv=none; b=CHXFU5vAYWAi1SlMoJXote+FKTHull0nTv1TEuDmw2/pOb+wh1/uli109JK9FAY9SIFDBLMlRt2Ig9GVItScMUcsjDdGtQWOhWVVyqgMydMum/g+68R/rxTEmnAdwTycfzxsADTpakIPrUAyj4vVvF0nmYGmA0XejhimpHnhrM4=
+	t=1741540059; cv=none; b=XmJw1zrg7gDMDuWHXf6VIEF2IyJCSM0eQhGPW+e4OD/XT/dbZdLl4aLjo4ve92gVqE94OXguAMbH726V4hPDMmmOcgGBOAmFzwUm75s0NWtGe7bKzhwgApCJPOshbirOM14MjfqOmy+W1mZtQOc4kFGgJgqAxiVP139taya06Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741540054; c=relaxed/simple;
-	bh=ykkmCnO2Bvce590xfznrM2tNQdHgae6iWO5sl4XBdqs=;
+	s=arc-20240116; t=1741540059; c=relaxed/simple;
+	bh=R3B6AMjl+xKkxZBZ4aqii1R3GEz91ejCpM08awiT9aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEGJMutMb1g4Q0esDbYvdpfArbIi1K23+sPz1TGdcZNGRBCbvJgsqHCi+Ios0VWSD9v1VlOCQPYuvBZgGTu8mgRNJbH/gi0KnBC2bmyWG83sfYjoGIvnxg2oYm4Uxfmn3JeY5on+G6CHglPHJJIkPrqDMd6go6DYnLzga36pxwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wi7wGlzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44EFC4CEE3;
-	Sun,  9 Mar 2025 17:07:31 +0000 (UTC)
+	 MIME-Version; b=nQncj0v4N+mx/QXpJp85JWk7x6d7pIUbplHzZR3Xb4cjoLJOr/g/xV8BIkW2Rgq3gJKLZSmgSzsPkVf6qHeW2QWje+J5wxkr40Vy+AO8b2tWPsDJz8pAErn1Ad/T2blfxfZ7aV8wjV/f9Jm/tMKDi+DFC3lUxPNjGcWdy+iLiHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=II31LcZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6F9C4CEE3;
+	Sun,  9 Mar 2025 17:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741540053;
-	bh=ykkmCnO2Bvce590xfznrM2tNQdHgae6iWO5sl4XBdqs=;
+	s=k20201202; t=1741540058;
+	bh=R3B6AMjl+xKkxZBZ4aqii1R3GEz91ejCpM08awiT9aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wi7wGlzGOlCT8GYJ6FlfzlA9yQst4a5a4XUfjzhw4eGu0o2Q+/1EeBZrUTOJYbLoh
-	 pClqc+frp4uzhjfC9NqDqSxMFYpydDOJEPc8ZA8pvm9jA/OJcCpNc+7lFJOPyJJp/O
-	 af1zABC1UamdtL2amnLW+XJxqD7WkBC6TtK/Fr+H7IktS7vElWVOKIYhqq58Zh9FIf
-	 HGAFhX/lyDVmqeci0w/fiqBt2XV/H/5KsVTr9HMJeq4d7pzb6bf90TiMvBzopUCqY3
-	 Bx9vBmaoH+mOD1JkxVOdP8ZoYxYGiUwMtCx27cYYIQSTmsBs1upHtIHnvnLhZBzlYS
-	 jpfGDEZWktgSQ==
+	b=II31LcZ9OYKidO2n8LaXLdSGePmUFt6s6qwI38yJh2vt5pIfM5c5PdimSVyd65FGG
+	 MNQW6HgUNHseaSKOO/6Ez0dqKfqsNdHP00Whitc6ErVCDIoonvrFXgT5TJ6nj8fWOs
+	 1OzpTXVH3o/cLC1IQqE4GFqnNNiy6WXSGqqLd3idP0pweA4+UJMQ7LCOYd6TXWhZtW
+	 /KuHvyX9qstx5R156ROgXo8bya753sv75Oc8knjG9JfxrKW0Cs5BiZJ5bizGKNWUIO
+	 XvwPxpSGH1CpDZEbVhVHThNaDI2Hdaokv6L+7cBI8sptHBhTHAEEUlL9pdsgQs2o0K
+	 7EaNGYpxhdFrQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
@@ -52,9 +52,9 @@ To: linux-iio@vger.kernel.org,
 Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 12/18] iio: light: rpr0521: Switch to sparse friendly iio_device_claim/release_direct()
-Date: Sun,  9 Mar 2025 17:06:27 +0000
-Message-ID: <20250309170633.1347476-13-jic23@kernel.org>
+Subject: [PATCH 13/18] iio: light: si1145: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Sun,  9 Mar 2025 17:06:28 +0000
+Message-ID: <20250309170633.1347476-14-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250309170633.1347476-1-jic23@kernel.org>
 References: <20250309170633.1347476-1-jic23@kernel.org>
@@ -74,35 +74,75 @@ functions that are deprecated.
 
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/light/rpr0521.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/light/si1145.c | 25 +++++++++++--------------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/iio/light/rpr0521.c b/drivers/iio/light/rpr0521.c
-index 65c60a1d2f0b..92e7552f3e39 100644
---- a/drivers/iio/light/rpr0521.c
-+++ b/drivers/iio/light/rpr0521.c
-@@ -743,19 +743,17 @@ static int rpr0521_read_raw(struct iio_dev *indio_dev,
- {
- 	struct rpr0521_data *data = iio_priv(indio_dev);
- 	int ret;
--	int busy;
+diff --git a/drivers/iio/light/si1145.c b/drivers/iio/light/si1145.c
+index 66abda021696..4aa02afd853e 100644
+--- a/drivers/iio/light/si1145.c
++++ b/drivers/iio/light/si1145.c
+@@ -633,11 +633,10 @@ static int si1145_read_raw(struct iio_dev *indio_dev,
+ 		case IIO_VOLTAGE:
+ 		case IIO_TEMP:
+ 		case IIO_UVINDEX:
+-			ret = iio_device_claim_direct_mode(indio_dev);
+-			if (ret)
+-				return ret;
++			if (!iio_device_claim_direct(indio_dev))
++				return -EBUSY;
+ 			ret = si1145_measure(indio_dev, chan);
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
- 		if (chan->type != IIO_INTENSITY && chan->type != IIO_PROXIMITY)
+ 			if (ret < 0)
+ 				return ret;
+@@ -750,18 +749,17 @@ static int si1145_write_raw(struct iio_dev *indio_dev,
  			return -EINVAL;
+ 		}
  
--		busy = iio_device_claim_direct_mode(indio_dev);
--		if (busy)
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
 +		if (!iio_device_claim_direct(indio_dev))
- 			return -EBUSY;
++			return -EBUSY;
  
- 		ret = rpr0521_read_info_raw(data, chan, val);
+ 		ret = si1145_param_set(data, reg1, val);
+ 		if (ret < 0) {
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
+ 			return ret;
+ 		}
+ 		/* Set recovery period to one's complement of gain */
+ 		ret = si1145_param_set(data, reg2, (~val & 0x07) << 4);
 -		iio_device_release_direct_mode(indio_dev);
 +		iio_device_release_direct(indio_dev);
- 		if (ret < 0)
- 			return ret;
+ 		return ret;
+ 	case IIO_CHAN_INFO_RAW:
+ 		if (chan->type != IIO_CURRENT)
+@@ -773,19 +771,18 @@ static int si1145_write_raw(struct iio_dev *indio_dev,
+ 		reg1 = SI1145_PS_LED_REG(chan->channel);
+ 		shift = SI1145_PS_LED_SHIFT(chan->channel);
  
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 
+ 		ret = i2c_smbus_read_byte_data(data->client, reg1);
+ 		if (ret < 0) {
+-			iio_device_release_direct_mode(indio_dev);
++			iio_device_release_direct(indio_dev);
+ 			return ret;
+ 		}
+ 		ret = i2c_smbus_write_byte_data(data->client, reg1,
+ 			(ret & ~(0x0f << shift)) |
+ 			((val & 0x0f) << shift));
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		return ret;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return si1145_store_samp_freq(data, val);
 -- 
 2.48.1
 

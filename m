@@ -1,57 +1,89 @@
-Return-Path: <linux-iio+bounces-16642-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16643-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50C8A5872D
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 19:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00782A5878B
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 20:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6625F188C2B4
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6076B188C506
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 19:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8325206F15;
-	Sun,  9 Mar 2025 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5977F1EB5DE;
+	Sun,  9 Mar 2025 19:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dr/OV4YH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0JXbanM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792AA202C4C
-	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 18:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D71216ABC6;
+	Sun,  9 Mar 2025 19:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741544537; cv=none; b=D2XRGDbmFfrBhs2iD7SCpHdUfL5BZT3dXNwxCzEb5fKdzbzRm3YpL39kWcrtVBkizp8jdxiIEpGCuZdIJKYyEGyxBw2NjdQyuLn1lIkowVSHF+xP1xtw1jrf8yU9PaAi8YJ6AmThBeGajwJ+uaMsRku1+v2NSyWsBEPetnmJWCY=
+	t=1741548927; cv=none; b=q5X00xK7XaxhkfBJVxBWdTLfFnjxUjegKqR4iPHh1+aCPPIQIHsCi3tgL/3hcDzkyTqK9C/WX91UgWWUpVZ9txLYeahgHmFcPqntYzdm6wSSI5Q2a6Avb6fJT2uOf4u1qmooIQfu2ayekGUENviTZGFaYQ1TFCbHeAw+gl2PG14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741544537; c=relaxed/simple;
-	bh=KSE9cjrLMi/OJOEeOyOC9VIXoCStaGR8bJg9kr20Dqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PXNfvqe8lzbwv227oSaoymOTlnv5DAFjQ+l5H3VrEPUvUK3YgRCJ3jcFkM9vtzExrX+RofdfnGsKQ1c6ux1onmM0Jgv1j9fXbSZf2rgTfzWYSq54ADlx2etAGEPMh9oBtXL4vioA+G7nLggIcsHR7ZDtxThng+jku2+5kkC0YgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dr/OV4YH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC2DC4CEE3;
-	Sun,  9 Mar 2025 18:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741544536;
-	bh=KSE9cjrLMi/OJOEeOyOC9VIXoCStaGR8bJg9kr20Dqc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dr/OV4YHpd2h9CYEEJIs0zNAQwM1DgQS3HYMIq4EjX8Uw3WZg1UzUpwU8UXDVUDl0
-	 WjlA7nt/z/5RN0I/ZdnvG40FBAJTL9aIpd6/ZLSNKynQcgps+i/qMkP5l3HTTZMPP0
-	 V5kKs5xVb/nKLUrm61bgsU/A1riVsGBdUxiOgUOW215ZzMUVxHvJBB+8iZrv/JGDOM
-	 EBqgpqEOjYI0n+Qjqx5KZnbmhLalVfnBjGjqD+GDULfAUXPZ/GXdtH5PPrRzt2nC07
-	 OeYzdR7hJxeo9GpHp9OsKkg0cpAzg99ShDQSNjJR0mWJGswcxrGIlYwaOFmJXqdVoy
-	 ThloLRfTk2qDQ==
-From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 16/16] iio: magnetometer: Use iio_push_to_buffers_with_ts() to provide length for runtime checks.
-Date: Sun,  9 Mar 2025 18:21:00 +0000
-Message-ID: <20250309182100.1351128-17-jic23@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250309182100.1351128-1-jic23@kernel.org>
-References: <20250309182100.1351128-1-jic23@kernel.org>
+	s=arc-20240116; t=1741548927; c=relaxed/simple;
+	bh=ZjHBkqFvk0zbDOru5sf8uasFrgssx3C0djXgwuAhSdM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G6X7ITBNZCz0H4esBfBv0TGAjBvyDfFyXtVSsz5ljmp8UnV/mOycvGy7TDc/89Z0jHFjgGiGVnGJQ8PfiCuONnRsQVzIxJM5amo/WO0bLRdbRb9C6vcl3qBydyAI4ItLXxzgonib2sMdxVKJn3jT9t1erISaQwNeRLP+mmyi0gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0JXbanM; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4394944f161so3743395e9.3;
+        Sun, 09 Mar 2025 12:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741548924; x=1742153724; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wbUzJmxapgzgWw09oZPaDxkV8e4tUfTsDNLWys7VZTM=;
+        b=g0JXbanMZd0/KW8MROuT/svKRnD6qX/psdvH0dG8e5VwxQ+uwRbg5yAE8EXAdJiwet
+         +SMKoDrOJPEWZFnuV+Oz5w+XjNPFc7qifdzotbFjEd/+hSKFmbvpmFTKhjbWkqTvZb6O
+         IpmD670RTpO8sGXMxfRGyOE13c5bIZ0uODT6+rMgANiPB8aAQ+AME1Y0I5nnl9lc0OAF
+         SzKL5HbqQ4F1OsYzKcPT3S4+m5IEnJlmbsS6MXSxc8kUG3wvD80qGh9PBOw9KVdK2Ntx
+         oA5JkmeEj5NlD+KOL9s+4Jqc8hX51d10VAzs2w8RTbX+kyupTUBjTL6aaum5dfc6XnLM
+         jdrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741548924; x=1742153724;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wbUzJmxapgzgWw09oZPaDxkV8e4tUfTsDNLWys7VZTM=;
+        b=wOzE2lD4cL1UOzTcDJVEbpB++QGzadelBdNWruL8jccv0MVHj2Ks3iUouB/lVfEyb/
+         2PRki1aZhDQENIAaMHLOhi9kSWJe59kF/XJXr6WnX2RQk7jrLRmcNa4qwsKZEBHt7cyF
+         iyhHX10kBIGXVDjKxXeP/IjavPIcjljppG3e7O5tYW1Nr7Z70bsNjR+ds7/bRKTIpQG8
+         BlPrpxGpsOaFJvNSbvLOmU14FSu6B5H+UpewiMyykxqC+C0cZL7jVL4832Gw0Psn3RyB
+         AAKOphSbK+aA5kX0CmSWysZpGRjZThGx0oTROhfBy9l7CrSgsghUvKlfH2YsGzkxwcT3
+         U1Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCWHJJlzqJXdayii79bRNV/5Vq0SHjWV5fAKKgYCeOjmzWqCXsHkQbIMwxyYcOrcEa70Le32s1GZrqyy0K8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy73PvXJ41VmrYEKYmeODBKNvlgSj0GE63czFZ/ZkAxxovR8P24
+	TNkn2F6hsjOgaTthuk9pdWhNaM3Vm/9mRDYZvuKuhlwmvAh+K8sl
+X-Gm-Gg: ASbGncsq0skJ/uvlqfK4c8gpWqXtvn5bfcHoui+AGJzh4qTBglsRBo3XHTKbz4DkVIA
+	9pNIfMq6vbhLjJM51Qyaw0OKSGqs/qelcAUJs4GyfWxZRT75cR+7esdNZ7TU4aE0H71gakUcnRE
+	/007ub0CRPXF8AFerSR1TtKHjyxv5cNKiA1s2EB3sqEbwODN4ApXAiB80YbwSM9bmSVGpgIGZRg
+	DheeEyjDiWOjAT46cfxGgVR/6kVHm4mLil0oQ68RkG6YO+lfNvFw0COIn8nwXTcHSx/zI306YiC
+	CmAkQU3lwAy94A8+bmQ0V1wmU+voZpxknyJqL+dp+et1kionVCSMF59WErBRTS0czsZekzq5Ugj
+	e9Lp7/D/ljtTdJ3Ovp9tyFIw=
+X-Google-Smtp-Source: AGHT+IEpKB4oca4daPbfMLgWEgJ3n/URe5b+sZ7k3jNAaJICC0lsGFxV8py0RS119iFPUhsnZ/Kkkg==
+X-Received: by 2002:a05:600c:5122:b0:439:9c0e:36e6 with SMTP id 5b1f17b1804b1-43ce6ed2670mr14984185e9.3.1741548923472;
+        Sun, 09 Mar 2025 12:35:23 -0700 (PDT)
+Received: from 0e1b0684397b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bd4352e29sm151089595e9.32.2025.03.09.12.35.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 09 Mar 2025 12:35:23 -0700 (PDT)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	cosmin.tanislav@analog.com,
+	jic23@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	l.rubusch@gmail.com,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v2 1/1] iio: accel: adxl367: fix setting odr for activity time update
+Date: Sun,  9 Mar 2025 19:35:15 +0000
+Message-Id: <20250309193515.2974-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -60,176 +92,60 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix setting the odr value to update activity time based on frequency
+derrived by recent odr, and not by obsolete odr value.
 
-This new function allows us to perform debug checks in the helper to ensure
-that the overrun does not occur.  Use it in all the simple cases where
-either a static buffer or a structure is used in the drivers.
+The [small] bug: When _adxl367_set_odr() is called with a new odr value,
+it first writes the new odr value to the hardware register
+ADXL367_REG_FILTER_CTL.
+Second, it calls _adxl367_set_act_time_ms(), which calls
+adxl367_time_ms_to_samples(). Here st->odr still holds the old odr value.
+This st->odr member is used to derrive a frequency value, which is
+applied to update ADXL367_REG_TIME_ACT. Hence, the idea is to update
+activity time, based on possibilities and power consumption by the
+current ODR rate.
+Finally, when the function calls return, again in _adxl367_set_odr() the
+new ODR is assigned to st->odr.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The fix: When setting a new ODR value is set to ADXL367_REG_FILTER_CTL,
+also ADXL367_REG_TIME_ACT should probably be updated with a frequency
+based on the recent ODR value and not the old one. Changing the location
+of the assignment to st->odr fixes this.
+
+Fixes: cbab791c5e2a5 ("iio: accel: add ADXL367 driver")
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 ---
- drivers/iio/magnetometer/af8133j.c       | 3 ++-
- drivers/iio/magnetometer/ak8974.c        | 5 +++--
- drivers/iio/magnetometer/ak8975.c        | 4 ++--
- drivers/iio/magnetometer/als31300.c      | 4 ++--
- drivers/iio/magnetometer/bmc150_magn.c   | 4 ++--
- drivers/iio/magnetometer/hmc5843.h       | 2 +-
- drivers/iio/magnetometer/hmc5843_core.c  | 4 ++--
- drivers/iio/magnetometer/mag3110.c       | 4 ++--
- drivers/iio/magnetometer/rm3100-core.c   | 4 ++--
- drivers/iio/magnetometer/yamaha-yas530.c | 5 +++--
- 10 files changed, 21 insertions(+), 18 deletions(-)
+ drivers/iio/accel/adxl367.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/magnetometer/af8133j.c b/drivers/iio/magnetometer/af8133j.c
-index c1fc339e85b4..192ba2da94e2 100644
---- a/drivers/iio/magnetometer/af8133j.c
-+++ b/drivers/iio/magnetometer/af8133j.c
-@@ -370,7 +370,8 @@ static irqreturn_t af8133j_trigger_handler(int irq, void *p)
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index add4053e7a02..0c04b2bb7efb 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -601,18 +601,14 @@ static int _adxl367_set_odr(struct adxl367_state *st, enum adxl367_odr odr)
  	if (ret)
- 		goto out_done;
+ 		return ret;
  
--	iio_push_to_buffers_with_timestamp(indio_dev, &sample, timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &sample, sizeof(sample),
-+				    timestamp);
++	st->odr = odr;
++
+ 	/* Activity timers depend on ODR */
+ 	ret = _adxl367_set_act_time_ms(st, st->act_time_ms);
+ 	if (ret)
+ 		return ret;
  
- out_done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/ak8974.c b/drivers/iio/magnetometer/ak8974.c
-index 08975c60e325..4fba9f4ded28 100644
---- a/drivers/iio/magnetometer/ak8974.c
-+++ b/drivers/iio/magnetometer/ak8974.c
-@@ -673,8 +673,9 @@ static void ak8974_fill_buffer(struct iio_dev *indio_dev)
- 		goto out_unlock;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &ak8974->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &ak8974->scan,
-+				    sizeof(ak8974->scan),
-+				    iio_get_time_ns(indio_dev));
- 
-  out_unlock:
- 	mutex_unlock(&ak8974->lock);
-diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
-index ef1363126cc2..abe9f4fccf00 100644
---- a/drivers/iio/magnetometer/ak8975.c
-+++ b/drivers/iio/magnetometer/ak8975.c
-@@ -882,8 +882,8 @@ static void ak8975_fill_buffer(struct iio_dev *indio_dev)
- 	data->scan.channels[1] = clamp_t(s16, le16_to_cpu(fval[1]), -def->range, def->range);
- 	data->scan.channels[2] = clamp_t(s16, le16_to_cpu(fval[2]), -def->range, def->range);
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- 	return;
- 
-diff --git a/drivers/iio/magnetometer/als31300.c b/drivers/iio/magnetometer/als31300.c
-index 87b60c4e81fa..d5db4c8343ce 100644
---- a/drivers/iio/magnetometer/als31300.c
-+++ b/drivers/iio/magnetometer/als31300.c
-@@ -245,8 +245,8 @@ static irqreturn_t als31300_trigger_handler(int irq, void *p)
- 	scan.channels[0] = x;
- 	scan.channels[1] = y;
- 	scan.channels[2] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &scan, sizeof(scan),
-+				    pf->timestamp);
- 
- trigger_out:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/bmc150_magn.c b/drivers/iio/magnetometer/bmc150_magn.c
-index 88bb673e40d8..f9c51ceae011 100644
---- a/drivers/iio/magnetometer/bmc150_magn.c
-+++ b/drivers/iio/magnetometer/bmc150_magn.c
-@@ -678,8 +678,8 @@ static irqreturn_t bmc150_magn_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto err;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    pf->timestamp);
- 
- err:
- 	mutex_unlock(&data->mutex);
-diff --git a/drivers/iio/magnetometer/hmc5843.h b/drivers/iio/magnetometer/hmc5843.h
-index ffd669b1ee7c..7a3faf7ffed4 100644
---- a/drivers/iio/magnetometer/hmc5843.h
-+++ b/drivers/iio/magnetometer/hmc5843.h
-@@ -34,7 +34,7 @@ enum hmc5843_ids {
-  * @regmap:		hardware access register maps
-  * @variant:		describe chip variants
-  * @scan:		buffer to pack data for passing to
-- *			iio_push_to_buffers_with_timestamp()
-+ *			iio_push_to_buffers_with_ts()
-  */
- struct hmc5843_data {
- 	struct device *dev;
-diff --git a/drivers/iio/magnetometer/hmc5843_core.c b/drivers/iio/magnetometer/hmc5843_core.c
-index 2fc84310e2cc..fc16ebd314f7 100644
---- a/drivers/iio/magnetometer/hmc5843_core.c
-+++ b/drivers/iio/magnetometer/hmc5843_core.c
-@@ -452,8 +452,8 @@ static irqreturn_t hmc5843_trigger_handler(int irq, void *p)
- 	if (ret < 0)
- 		goto done;
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/mag3110.c b/drivers/iio/magnetometer/mag3110.c
-index 92d4511ed372..ff09250a06e7 100644
---- a/drivers/iio/magnetometer/mag3110.c
-+++ b/drivers/iio/magnetometer/mag3110.c
-@@ -404,8 +404,8 @@ static irqreturn_t mag3110_trigger_handler(int irq, void *p)
- 		data->scan.temperature = ret;
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
--		iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &data->scan, sizeof(data->scan),
-+				    iio_get_time_ns(indio_dev));
- 
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
-diff --git a/drivers/iio/magnetometer/rm3100-core.c b/drivers/iio/magnetometer/rm3100-core.c
-index e5162ee64e01..81da063fb38c 100644
---- a/drivers/iio/magnetometer/rm3100-core.c
-+++ b/drivers/iio/magnetometer/rm3100-core.c
-@@ -515,8 +515,8 @@ static irqreturn_t rm3100_trigger_handler(int irq, void *p)
- 	 * Always using the same buffer so that we wouldn't need to set the
- 	 * paddings to 0 in case of leaking any data.
- 	 */
--	iio_push_to_buffers_with_timestamp(indio_dev, data->buffer,
--					   pf->timestamp);
-+	iio_push_to_buffers_with_ts(indio_dev, data->buffer,
-+				    sizeof(data->buffer), pf->timestamp);
- done:
- 	iio_trigger_notify_done(indio_dev->trig);
- 
-diff --git a/drivers/iio/magnetometer/yamaha-yas530.c b/drivers/iio/magnetometer/yamaha-yas530.c
-index 28012b20c64f..6ff34b3b6a62 100644
---- a/drivers/iio/magnetometer/yamaha-yas530.c
-+++ b/drivers/iio/magnetometer/yamaha-yas530.c
-@@ -674,8 +674,9 @@ static void yas5xx_fill_buffer(struct iio_dev *indio_dev)
- 	yas5xx->scan.channels[1] = x;
- 	yas5xx->scan.channels[2] = y;
- 	yas5xx->scan.channels[3] = z;
--	iio_push_to_buffers_with_timestamp(indio_dev, &yas5xx->scan,
--					   iio_get_time_ns(indio_dev));
-+	iio_push_to_buffers_with_ts(indio_dev, &yas5xx->scan,
-+				    sizeof(yas5xx->scan),
-+				    iio_get_time_ns(indio_dev));
+-	ret = _adxl367_set_inact_time_ms(st, st->inact_time_ms);
+-	if (ret)
+-		return ret;
+-
+-	st->odr = odr;
+-
+-	return 0;
++	return _adxl367_set_inact_time_ms(st, st->inact_time_ms);
  }
  
- static irqreturn_t yas5xx_handle_trigger(int irq, void *p)
+ static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_odr odr)
 -- 
-2.48.1
+2.39.5
 
 

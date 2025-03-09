@@ -1,45 +1,46 @@
-Return-Path: <linux-iio+bounces-16606-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16607-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C201A585FA
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:06:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FEBA585FB
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7466188BECC
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:06:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345093ABC98
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C6C1DE88C;
-	Sun,  9 Mar 2025 17:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA491DE8B8;
+	Sun,  9 Mar 2025 17:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQcsAlJ3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ti60d1PA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6456D1DE4CA
-	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 17:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9CD1DEFD0
+	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 17:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741540006; cv=none; b=QUIrx6nF/+15n48Gj9InzyWrq6Mg3GWg0ChZn7tboqjZ5r7HcUIwYCUwy4Lxq2U5awQgH9l80VIJupzWPM3qj9fmlb+R8oMrHDR9j/zAUgmSTrTryBes3vHXHSqhL+8ufPmuyXGTa3NOTOirY361zHw9F9SIc6k4GrxLrwrQHXg=
+	t=1741540010; cv=none; b=ZIrJkEYnBCLIzsGfq+EuwoAGtmRwXNT0w5upgOSTft6DgNvo9R1QLTgLEmrsF2ugBC67iVP4+5lw0Uja7Djf8UQj4tnSIuN3kyT0+kiYEMGVxd8aHz5omecwkr8LpE+bPMK63pe44+9a0zk3z8ekh4oMcQEhCNmWnIEvQ+0GLec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741540006; c=relaxed/simple;
-	bh=eTnYGbbsH0t0cu5vikmTpukusfYWGyxdOWhUP7qs6FY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GvhXwiHwbA+hYx7OIGKY5iyP7YxXsSgx9koNhRUfnN+zWVQl8Zj4ElhEUyay2ZCkpug99ozn5KHOHpoJsztJ765M1gCXgSaQ8P9rhbsfmNkgOATUnR3KjVJa1UA+Wy4Wu1wjx+LNJXL2Uml9oDtSZYdhi4ekJnZkDnQ4zWBGH3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQcsAlJ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C5DC4CEE3;
-	Sun,  9 Mar 2025 17:06:41 +0000 (UTC)
+	s=arc-20240116; t=1741540010; c=relaxed/simple;
+	bh=k0SxrHoPHzJr884c6rJdiNWgZyDmS6FFwYIu/xA6y1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q4PChyN5eMI5yGUzVq7zesvA8/JIEm/xKJLnFGaXrS52IpW3cecwVbHoyjR6Rjm03Fr40pSa4Xbu2yF3XybQXBTXzvSQTD+v/PstrzWiUHYtNeRBBjj8y7DlqMmeKEoqmsjmyD6yyl3u6ScSDkL4EUarS/2lLqrDyM0pGH8U9zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ti60d1PA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37E8C4CEE5;
+	Sun,  9 Mar 2025 17:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741540005;
-	bh=eTnYGbbsH0t0cu5vikmTpukusfYWGyxdOWhUP7qs6FY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FQcsAlJ32AQ2SwG2DskUBlNqnM87tx0NP02+c4HCrWTcbU4vqnn7PUZ5jKNA1XO/X
-	 n21TYtyV5uvKOm75w5ro3p4hU2as3qBC7WCNHgQv4CAd+Ov1NGd1nNzNx6iFswHs58
-	 OuuqY0TFA29cQ7D6uJW124dKgn5AZU+OJnxWCFQz/wOUVOD9l9ZwEzh61Arc/Xv/rd
-	 DXfqFIpojisjFEdYpA2YXtNPWSj6dGr5gYJ9a7QfMx83583OBhtN3ipkL8s/HGr1lP
-	 D7S+KWP5pkR0CK2RJJ3hEeRtUKqeDyZDpwoYEYkDxXnyhqLzujF+0KPbK+/81FPXpd
-	 qNohCRLD5kxRQ==
+	s=k20201202; t=1741540010;
+	bh=k0SxrHoPHzJr884c6rJdiNWgZyDmS6FFwYIu/xA6y1I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ti60d1PANl0GU8IvzQEjDLfWr39H/nSChM8Yq06ay6u4Dy9JKWj2AvAarfAaf7BRo
+	 Z2LjX2SEcfmkOXA7k2KcjBYRzHlbb+3Wr5D3JeFUIlB3doLyqq5tJPztSImlUneqXr
+	 KRu+8+zPo+7i1dnaAdgz5FTwdMQqgN8ZWdIS/BOyAJlgS+FDGt64hI2AqV3dTA9txS
+	 ipPmBQyP/hcFW4vQccj23Q2K0tVJa/Q1IoccJ6OSf9yGlrm412H1OmaMTj1TTEO4sn
+	 dlOXeEUo4coIVVSdmV7oM/lk44J8xkLCisU3rLBX4mkMUNzeXGgni2qt1tRX+BZhBu
+	 QpJhxSfVwl5pA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
@@ -51,10 +52,12 @@ To: linux-iio@vger.kernel.org,
 Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 00/18] iio: light: Sparse friendly claim of direct mode
-Date: Sun,  9 Mar 2025 17:06:15 +0000
-Message-ID: <20250309170633.1347476-1-jic23@kernel.org>
+Subject: [PATCH 01/18] iio: light: apds9306: Switch to sparse friendly iio_device_claim/release_direct()
+Date: Sun,  9 Mar 2025 17:06:16 +0000
+Message-ID: <20250309170633.1347476-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250309170633.1347476-1-jic23@kernel.org>
+References: <20250309170633.1347476-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,77 +68,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Note that a number of the drivers touched in this series have no
-obvious active maintainer, so it would be much appreciated if anyone
-has time to take a look! It is a large series so feel free to review
-any you have time to look at rather than feeling you need to look
-at the whole thing!
+These new functions allow sparse to find failures to release
+direct mode reducing chances of bugs over the claim_direct_mode()
+functions that are deprecated.
 
-This is effectively part 4 of what will probably be around 7 series
-focused on moving from iio_device_claim/release_direct_mode() to
-iio_device_claim/release_direct(). The new form is more consistent
-with conditional locking semantics and sparse markings have been
-added that let us detect miss-balance between claim and release.
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+---
+ drivers/iio/light/apds9306.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-More details can be found in the cover letter of the first series:
-https://lore.kernel.org/all/20250209180624.701140-1-jic23@kernel.org/
-
-This series focuses on the light sensor drivers.
-
-Jonathan Cameron (18):
-  iio: light: apds9306: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: gp2ap020a00f: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: isl29125: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: as73211: Use guard() and move mode switch into inner
-    write_raw fucntion
-  iio: light: as73211: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: ltr501: Factor out IIO_INFO_RAW leg of read_raw()
-    callback.
-  iio: light: ltr501: Factor out core of write_raw() where direct mode
-    claim is held.
-  iio: light: ltr501: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: opt4060: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: rohm-bu27034: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: rpr0521: Factor out handling of IIO_INFO_RAW and use
-    guard()
-  iio: light: rpr0521: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: si1145: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: st_uvis25: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: tcs3414: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: tcs3472: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: vcnl4000: Switch to sparse friendly
-    iio_device_claim/release_direct()
-  iio: light: vcnl4035: Switch to sparse friendly
-    iio_device_claim/release_direct()
-
- drivers/iio/light/apds9306.c       |   7 +-
- drivers/iio/light/as73211.c        |  42 ++++----
- drivers/iio/light/gp2ap020a00f.c   |   7 +-
- drivers/iio/light/isl29125.c       |   7 +-
- drivers/iio/light/ltr501.c         | 164 +++++++++++++++--------------
- drivers/iio/light/opt4060.c        |   5 +-
- drivers/iio/light/rohm-bu27034.c   |  14 ++-
- drivers/iio/light/rpr0521.c        |  63 ++++++-----
- drivers/iio/light/si1145.c         |  25 ++---
- drivers/iio/light/st_uvis25_core.c |   7 +-
- drivers/iio/light/tcs3414.c        |   9 +-
- drivers/iio/light/tcs3472.c        |   9 +-
- drivers/iio/light/vcnl4000.c       |  78 +++++++-------
- drivers/iio/light/vcnl4035.c       |  42 +++++---
- 14 files changed, 245 insertions(+), 234 deletions(-)
-
+diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+index 69a0d609cffc..fca7e73a905c 100644
+--- a/drivers/iio/light/apds9306.c
++++ b/drivers/iio/light/apds9306.c
+@@ -831,11 +831,10 @@ static int apds9306_read_raw(struct iio_dev *indio_dev,
+ 		 * Changing device parameters during adc operation, resets
+ 		 * the ADC which has to avoided.
+ 		 */
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
++		if (!iio_device_claim_direct(indio_dev))
++			return -EBUSY;
+ 		ret = apds9306_read_data(data, val, reg);
+-		iio_device_release_direct_mode(indio_dev);
++		iio_device_release_direct(indio_dev);
+ 		if (ret)
+ 			return ret;
+ 
 -- 
 2.48.1
 

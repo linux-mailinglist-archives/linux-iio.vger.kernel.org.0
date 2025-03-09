@@ -1,198 +1,211 @@
-Return-Path: <linux-iio+bounces-16625-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16626-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6862A5864E
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:33:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC9FA58720
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 19:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF9D3A7E6E
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 17:32:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 188D9188C063
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Mar 2025 18:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758CC1E32D4;
-	Sun,  9 Mar 2025 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761FF214207;
+	Sun,  9 Mar 2025 18:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y8l0st9r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kyeG96aH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2315813B2A4;
-	Sun,  9 Mar 2025 17:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3554D213E7F
+	for <linux-iio@vger.kernel.org>; Sun,  9 Mar 2025 18:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741541581; cv=none; b=QI7y+Z6g/Zaw+6ly0TefQ8T0BJqJ80XjJoQ7FHYiwiJTY9qonHdIR6jTv3NILjI34JPtSzm0/Rrwa7IOsvLfkCqvyu3oaknGfh01dmEJcHqO+WYbjti/gg9h9QZbwLrvjk9u5qBoI/OXAxNK//N+Srsxf7qJiCHyh01pxN1HM2U=
+	t=1741544500; cv=none; b=jB5tRR+0HPUuBD0dQNt7hMxKXuMR9CB1CIfHz7BghxPr5JCct77rPVE6YMF9eQ59TPXmZziVisqZirKgiJZJ0xaUNrPv9xZU62Qq7T+EUCvFwuJZeEUUbalsXCBbH5SX4MpblRwEpWkhNLSwYarezvr7lkSIDHFrIuZ0gdRty4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741541581; c=relaxed/simple;
-	bh=1UgctfymUV83xC3ix68vRlr3FAGTggR5aGYQLCNzbDI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2EuKmcvUL+YqL4g4yCcnM6Tt4TS3hYai4EaX/GDMl5vDghuScTfDhweG9W2KbHxX4YX2AuGdYgDXwGv0o39TphKNWX6CzqYEx5mXTXXfwP2OerM8kBCehjTne60hv4egfrvJ5HPbOHU7W3DyK0UfbXXiL8SmgTrdNONpWptoC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y8l0st9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D34C4CEE5;
-	Sun,  9 Mar 2025 17:32:55 +0000 (UTC)
+	s=arc-20240116; t=1741544500; c=relaxed/simple;
+	bh=iJcT/5dNyZ3t7rW+elZGvUmvb+h1mww72zlX94LXoNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J9UFb1zF4ZWODRseIY5UTi2RDwVKl9fisfScMqiTLOkBcOQ+ww5fwc6nREHPYvsU0bc2wRx4I1V7bzHI32WEW7hlnfgvCT4G0Ani+tw/yN3iu7iCvZAOkveJtLgYotQKfwtxQPp3IBPgxXMqv8t6eJR2OUq2FK24nc6ByT2ERVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kyeG96aH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19DEC4CEF9;
+	Sun,  9 Mar 2025 18:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741541580;
-	bh=1UgctfymUV83xC3ix68vRlr3FAGTggR5aGYQLCNzbDI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Y8l0st9r5NUNHRLdUc6QAuvfdp7z/SGXIVYgdibKL3oMiKK/TWKbgUu7of3jDgSJT
-	 xa1+UvktOZf0ZyjgzcCB1VpcCY/RKn8nBSglNhwCA4obeuG7RDSB3iWMVUsU7W2DAr
-	 ubx4ZOMoG4vanFDBA+k9aONrtifQ7qKeL9dyoh/2DOjpUR7Wk6u21gPeGBKYjyoX/X
-	 46lReRVXDgt4bRDZ2s5wJ2Yh0XD/nkaAxQxZwLUrTEGDFolP7YD56S7J2kLZKHnK4h
-	 29GCa+GzIk5hMQASMu/mSknKEcaB58Abch9CZMJDhQcOFqqxdb71s6ENh/rUiR6rIX
-	 NxD45unJiPLzQ==
-Date: Sun, 9 Mar 2025 17:32:50 +0000
+	s=k20201202; t=1741544499;
+	bh=iJcT/5dNyZ3t7rW+elZGvUmvb+h1mww72zlX94LXoNY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kyeG96aHYCBzEkBkH6IH3s05ZTH50eeVXXkZ2LsmhlApl8IfnCqqxkYOBC5B9jWnW
+	 DXTYYSQsbfEyo0H+n3nVHnnbtccVmDQ3sh2HSJR7h8NF8IhN4iO1hSDDn+9MPdEwF7
+	 6iWf3hYbRiBGFqb9xeeetfDSXm07m2NHQZaaj1GNTywSo+TqK0/SsS5iEV2CLaCQuK
+	 5KZEqa/1kBrYhtWDPYUv7m4w6ZyrWf1QdU+re+7ANmYRKKCorQl3NjPO44u7g2nAc6
+	 p79qOJC3V2EcpQ5NuO2lroeW027O6RpxqsMEmK79TTzJ6iIE73IcId7xCnQ0CvfWTN
+	 ajmpUV98MUAKA==
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Jander <david@protonic.nl>
-Cc: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, Jonathan Corbet
- <corbet@lwn.net>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org, Nuno Sa
- <nuno.sa@analog.com>, Oleksij Rempel <o.rempel@pengutronix.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [RFC PATCH 1/7] drivers: Add motion control subsystem
-Message-ID: <20250309173250.68956c88@jic23-huawei>
-In-Reply-To: <20250306102540.7f0f6146@erd003.prtnl>
-References: <20250227162823.3585810-1-david@protonic.nl>
-	<20250227162823.3585810-2-david@protonic.nl>
-	<6c6cqaxmsy7miesel4ghdeiea6nrpe4gti4xf5enfyg4uqro5u@vpmtd2t7gydi>
-	<20250305164046.4de5b6ef@erd003.prtnl>
-	<mzxammninwmak5ti4c6is4pbdx3xzzziiwbxiwrldjyxgae4ok@ocec24vu4txa>
-	<20250306102540.7f0f6146@erd003.prtnl>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+To: linux-iio@vger.kernel.org
+Cc: David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <noname.nuno@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 00/16] IIO: Introduce iio_push_to_buffers_with_ts() taking an input buffer length argument.
+Date: Sun,  9 Mar 2025 18:20:44 +0000
+Message-ID: <20250309182100.1351128-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, 6 Mar 2025 10:25:40 +0100
-David Jander <david@protonic.nl> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On Thu, 6 Mar 2025 00:21:22 +0100
-> Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
->=20
-> > Hello David,
-> >=20
-> > On Wed, Mar 05, 2025 at 04:40:45PM +0100, David Jander wrote: =20
-> > > On Fri, 28 Feb 2025 17:44:27 +0100
-> > > Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:   =20
-> > > > On Thu, Feb 27, 2025 at 05:28:17PM +0100, David Jander wrote:
-> > > > [...]   =20
-> > > > > +static int motion_open(struct inode *inode, struct file *file)
-> > > > > +{
-> > > > > +	int minor =3D iminor(inode);
-> > > > > +	struct motion_device *mdev =3D NULL, *iter;
-> > > > > +	int err;
-> > > > > +
-> > > > > +	mutex_lock(&motion_mtx);     =20
-> > > >=20
-> > > > If you use guard(), error handling gets a bit easier.   =20
-> > >=20
-> > > This looks interesting. I didn't know about guard(). Thanks. I see the
-> > > benefits, but in some cases it also makes the locked region less clea=
-rly
-> > > visible. While I agree that guard() in this particular place is nice,
-> > > I'm hesitant to try and replace all mutex_lock()/_unlock() calls with=
- guard().
-> > > Let me know if my assessment of the intended use of guard() is incorr=
-ect.   =20
-> >=20
-> > I agree that guard() makes it harder for non-trivial functions to spot
-> > the critical section. In my eyes this is outweight by not having to
-> > unlock in all exit paths, but that might be subjective. Annother
-> > downside of guard is that sparse doesn't understand it and reports
-> > unbalanced locking. =20
->=20
-> What I was referring to, and what I want to know is, is it okay to mix gu=
-ard()
-> with lock/unlock? I.e. Use guard() when there are multiple exit paths inv=
-olved
-> and revert back to simple lock/unlock if it is just to encase a handful of
-> non-exiting operations?
+When using the IIO buffers, the length of each scan element is always known to
+the IIO core (used for sizing kfifo elements etc) and depends on which channels
+are enabled. Devices often use fixed size structures or arrays.
 
-Mixing is fine.  In some cases scoped_guard() can also make things
-clearer though at the cost of increased indent.
+The core code previously had no way to check that the driver had provided a large
+enough buffer, potentially leading to errors or to non sanitized data being presented
+to userspace. In particular the iio_push_to_buffers_with_timestamp() helper
+has the non obvious requirement for a larger buffer when timestamps are enabled
+than that containing the rest of the channels (under the control of the driver).
+This has lead to bugs in the past and this series aims to make that impossible
+in the future by passing the size of the storage into a new variant of the helper
+iio_push_to_buffers_with_ts() and performing a runtime check.
 
-> >=20
-> > Sad, so a userspace process still has to know some internal things about
-> > the motor it drives. :-\ =20
->=20
-> Unfortunately that is almost impossible to avoid entirely.
-> You can replace one stepper motor driver with another that might have
-> different micro-stepping subdivision, by looking at struct
-> mot_capabilities.subdiv, but a simple brushed DC motor just isn't able to
-> replace a stepper motor in all but the most trivial applications. I also =
-think
-> that burdening the kernel with all sorts of complicated math to model the
-> mechanical conversion factors involved in anything that's connected to the
-> motor drive shaft is overkill. As well as trying to emulate all missing
-> capabilities from a motion device that is lacking that functionality nati=
-vely.
->=20
-> So just like in IIO you cannot just replace one ADC with any other, in LM=
-C you
-> also cannot replace any device with any other.
->=20
-> That's why there is struct mot_capabilities and MOT_IOCTL_GET_CAPA. It en=
-ables
-> user-space to optionally support different devices more easily. It is pro=
-bably
-> best used in conjunction with a LMC user-space library, although I don't =
-want
-> to rely on such a library for being able to use LMC. There is some middle
-> ground here I guess... just like in IIO.
->=20
-> One thing I could try to improve though, is to include some additional
-> information in struct mot_capabilities that tells something more about the
-> nature of the used units, just like the speed_conv and accel_conv constan=
-ts do
-> for time conversion. Something that can be placed in the device tree (pos=
-sibly
-> in a motor child-node connected to the motor-controller) that contains so=
-me
-> conversion constant for distance. That way, if one were to (for example)
-> replace a stepper motor with a BLDC motor + encoder in a new hardware
-> revision, this constant could be used to make the units backwards compati=
-ble.
->=20
-> As background information: A stepper motor controller counts distance in =
-steps
-> and/or micro-steps. There are mot_capabilities.subdiv micro-steps in each
-> step. The amount of angle the actual motor shaft advances with each whole=
- step
-> depends on the motor construction and is often 200 steps per revolution (=
-1.8
-> degrees), but can vary from 4 to 400 steps per revolution depending on the
-> motor. So it is not only the controller that matters but also the type of
-> motor. This suggests the need of motor sub-nodes in the device-tree if one
-> wanted to extend the hardware knowledge further down from the motor drive=
-r.
-> But then there are gear boxes, pulleys, etc... it's basically conversion
-> factors all the way down. How many of them is sensible to bother the kern=
-el
-> with?
+Once all drivers are converted, the expectation is the _with_timestamp()
+version without this check will be removed.
 
-I'd have a motor description that is sufficient to be able to swap steppers
-between hardware versions and present sufficient info to userspace to allow
-a library to hide those differences. That description might well be of
-an aggregate device consisting of motor and whatever mechanics to get you
-to the point you care about (actuator motion).  Hardest bit will be documen=
-ting
-'where' in the system the DT is describing.
+The patches in this series use this helper for a large number of simple cases
+and fix a few minor issues found during the conversion.  This does not cover
+all drivers in each category, leaving more complex cases for future series.
+Some of the remaining cases need substantial refactoring, others look to have
+bugs that need more careful consideration than the cases in this series.
 
-It's not that heavily used but we do have analog front ends in IIO that
-provide a not dissimilar thing to the various potential mechanisms here.
+All comments welcome.  I haven't attempted to cc all the relevant driver
+maintainers as that is a long list!
 
-Jonathan
+Jonathan Cameron (16):
+  iio: introduced iio_push_to_buffers_with_ts() that takes a total_len
+    argument.
+  iio: dummy: Use a fixed structure to build up scan to push to buffers.
+  iio: dummy: Switch to iio_push_to_buffers_with_ts() and provide size
+    of storage
+  iio: adc: ti-ads131e08: Use new iio_push_to_buffers_with_ts() to
+    provide length sanity check.
+  iio: adc: Use iio_push_to_buffers_with_ts() to provide length for
+    runtime checks.
+  iio: accel: Use iio_push_to_buffers_with_ts() to provide length for
+    runtime checks.
+  iio: accel: hid: Use iio_push_to_buffers_with_ts() to provide length
+    for runtime checks.
+  iio: chemical: Use iio_push_to_buffers_with_ts() to provide length for
+    runtime checks.
+  iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
+  iio: temperature: Use iio_push_to_buffers_with_ts() to provide length
+    for runtime checks.
+  iio: resolver: Use iio_push_to_buffers_with_ts() to provide length for
+    runtime checks.
+  iio: proximity: irsd200: Use a struct for scan and
+    iio_push_to_buffers_with_ts()
+  iio: proximity: Use iio_push_to_buffers_with_ts() to provide length
+    for runtime checks.
+  iio: pressure: zpa2326: Use aligned_s64 for the timestamp
+  iio: pressure: Use iio_push_to_buffers_with_ts() to provide length for
+    runtime checks.
+  iio: magnetometer: Use iio_push_to_buffers_with_ts() to provide length
+    for runtime checks.
 
+ drivers/iio/accel/adxl355_core.c              |  4 +--
+ drivers/iio/accel/bma180.c                    |  3 ++-
+ drivers/iio/accel/bma220_spi.c                |  4 +--
+ drivers/iio/accel/bma400_core.c               |  5 ++--
+ drivers/iio/accel/fxls8962af-core.c           |  4 +--
+ drivers/iio/accel/hid-sensor-accel-3d.c       |  2 +-
+ drivers/iio/accel/kxcjk-1013.c                |  4 +--
+ drivers/iio/accel/kxsd9.c                     |  5 ++--
+ drivers/iio/accel/mma7455_core.c              |  5 ++--
+ drivers/iio/accel/mma8452.c                   |  5 ++--
+ drivers/iio/accel/msa311.c                    |  4 +--
+ drivers/iio/accel/mxc4005.c                   |  4 +--
+ drivers/iio/accel/sca3300.c                   |  5 ++--
+ drivers/iio/accel/stk8312.c                   |  2 +-
+ drivers/iio/accel/stk8ba50.c                  |  4 +--
+ drivers/iio/adc/ad4000.c                      |  3 ++-
+ drivers/iio/adc/ad4030.c                      |  5 ++--
+ drivers/iio/adc/ad4695.c                      |  3 ++-
+ drivers/iio/adc/ad7266.c                      |  5 ++--
+ drivers/iio/adc/ad7298.c                      |  5 ++--
+ drivers/iio/adc/ad7380.c                      |  5 ++--
+ drivers/iio/adc/ad7476.c                      |  4 +--
+ drivers/iio/adc/ad7606.c                      |  4 +--
+ drivers/iio/adc/ad7768-1.c                    |  5 ++--
+ drivers/iio/adc/ad7779.c                      |  3 ++-
+ drivers/iio/adc/ad7923.c                      |  4 +--
+ drivers/iio/adc/dln2-adc.c                    |  4 +--
+ drivers/iio/adc/ina2xx-adc.c                  |  3 ++-
+ drivers/iio/adc/max1118.c                     |  2 +-
+ drivers/iio/adc/max11410.c                    |  4 +--
+ drivers/iio/adc/max1363.c                     |  4 +--
+ drivers/iio/adc/mcp3911.c                     |  4 +--
+ drivers/iio/adc/mxs-lradc-adc.c               |  3 ++-
+ drivers/iio/adc/pac1921.c                     |  3 ++-
+ drivers/iio/adc/rockchip_saradc.c             |  3 ++-
+ drivers/iio/adc/rtq6056.c                     |  3 ++-
+ drivers/iio/adc/stm32-adc.c                   |  4 +--
+ drivers/iio/adc/ti-adc081c.c                  |  4 +--
+ drivers/iio/adc/ti-adc0832.c                  |  4 +--
+ drivers/iio/adc/ti-adc084s021.c               |  4 +--
+ drivers/iio/adc/ti-adc12138.c                 |  4 +--
+ drivers/iio/adc/ti-ads1015.c                  |  4 +--
+ drivers/iio/adc/ti-ads1119.c                  |  4 +--
+ drivers/iio/adc/ti-ads124s08.c                |  4 +--
+ drivers/iio/adc/ti-ads131e08.c                |  5 ++--
+ drivers/iio/adc/ti-ads8688.c                  |  4 +--
+ drivers/iio/adc/ti-lmp92064.c                 |  4 +--
+ drivers/iio/adc/ti-tlc4541.c                  |  4 +--
+ drivers/iio/adc/ti-tsc2046.c                  |  5 ++--
+ drivers/iio/adc/vf610_adc.c                   |  7 +++---
+ drivers/iio/chemical/atlas-sensor.c           |  5 ++--
+ drivers/iio/chemical/bme680_core.c            |  4 +--
+ drivers/iio/chemical/ccs811.c                 |  4 +--
+ drivers/iio/chemical/ens160_core.c            |  4 +--
+ drivers/iio/chemical/pms7003.c                |  5 ++--
+ drivers/iio/chemical/scd30_core.c             |  3 ++-
+ drivers/iio/chemical/scd4x.c                  |  3 ++-
+ drivers/iio/chemical/sps30.c                  |  4 +--
+ drivers/iio/dummy/iio_simple_dummy_buffer.c   | 18 ++++++-------
+ drivers/iio/magnetometer/af8133j.c            |  3 ++-
+ drivers/iio/magnetometer/ak8974.c             |  5 ++--
+ drivers/iio/magnetometer/ak8975.c             |  4 +--
+ drivers/iio/magnetometer/als31300.c           |  4 +--
+ drivers/iio/magnetometer/bmc150_magn.c        |  4 +--
+ drivers/iio/magnetometer/hmc5843.h            |  2 +-
+ drivers/iio/magnetometer/hmc5843_core.c       |  4 +--
+ drivers/iio/magnetometer/mag3110.c            |  4 +--
+ drivers/iio/magnetometer/rm3100-core.c        |  4 +--
+ drivers/iio/magnetometer/yamaha-yas530.c      |  5 ++--
+ drivers/iio/pressure/bmp280-core.c            | 25 +++++++++++--------
+ drivers/iio/pressure/hid-sensor-press.c       |  5 ++--
+ drivers/iio/pressure/hsc030pa.c               |  4 +--
+ drivers/iio/pressure/mpl3115.c                |  4 +--
+ drivers/iio/pressure/rohm-bm1390.c            |  3 ++-
+ drivers/iio/pressure/zpa2326.c                |  6 ++---
+ drivers/iio/proximity/as3935.c                |  4 +--
+ drivers/iio/proximity/hx9023s.c               |  4 +--
+ drivers/iio/proximity/irsd200.c               | 12 ++++++---
+ drivers/iio/proximity/mb1232.c                |  4 +--
+ .../iio/proximity/pulsedlight-lidar-lite-v2.c |  5 ++--
+ drivers/iio/proximity/srf08.c                 |  4 +--
+ drivers/iio/proximity/sx_common.c             |  4 +--
+ drivers/iio/proximity/vl53l0x-i2c.c           |  4 +--
+ drivers/iio/resolver/ad2s1210.c               |  3 ++-
+ .../iio/temperature/hid-sensor-temperature.c  |  5 ++--
+ drivers/iio/temperature/maxim_thermocouple.c  |  7 +++---
+ drivers/iio/temperature/tmp006.c              |  4 +--
+ include/linux/iio/buffer.h                    | 13 ++++++++++
+ 88 files changed, 230 insertions(+), 179 deletions(-)
 
->=20
-> Best regards,
->=20
+-- 
+2.48.1
 
 

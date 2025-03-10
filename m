@@ -1,58 +1,69 @@
-Return-Path: <linux-iio+bounces-16699-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16700-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C3CA5A486
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:14:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F01BA5A4D2
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81F9A16725C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:14:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE915174E20
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6665C1E0DD1;
-	Mon, 10 Mar 2025 20:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1D21E22FD;
+	Mon, 10 Mar 2025 20:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxA8UZ2h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="drS22X/D"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5691DF97A;
-	Mon, 10 Mar 2025 20:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5911E0E15;
+	Mon, 10 Mar 2025 20:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741637599; cv=none; b=f/ihDOjv20W0uNrqaDa3+MRxuy89G8uldw2REFG9OkHrB59Ff0ntOBS8MDtZ7B2PrO5XOSMn1ZWuZYoPZdmSkjxkWmxaSQfUD6gTz+7l+kxn+F/5xyQmI2ZYl8EkXt5jzxsuG4sq1HUkOpAWK3qJ6qnJWjifb4kCWTfXwZhQq44=
+	t=1741638013; cv=none; b=GZ1wUwivqcAPCtWkKEKXfTt+913J4UH0F+5GiJvfexuTI/6tez3/UCuC8fQAY1fSAq1AHQv0gI8888cWyi982rqCbPT9aekGo5TWrzR4qnaqDxfudBPfWHmKB+Oov8y5HBV0feNdTcQfcfccfpMD3C4EMQEbyC4tmZ8y56eNkiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741637599; c=relaxed/simple;
-	bh=gtJuGx2pDYIwW9VlUcPfXfeo5t97Lj14Q+23BqsZas4=;
+	s=arc-20240116; t=1741638013; c=relaxed/simple;
+	bh=oiEDLHboG9k635mQYmv0sZ1NLB6XV+uB6u93veYOWYE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GWY2G/eidw6a+POOjDrF0/d7nW5aqGQZhqz+e2KqTB31ZjH+d/iZH6A0SXAqMRpgwg4dw4kqCiQdKsyUSeWwEy06SGXu9ynpFmyYrrghCD0Z4pGTItFQ91rjvCEzE6l/CfKP0udnZUgY608PMQYk+eC2mBKdgCC1fYXy8Fayq0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxA8UZ2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F098C4CEED;
-	Mon, 10 Mar 2025 20:13:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VAv3Bp6zNScH3n1Jzh6YKE/EwwpVbWHi6AqG2goGY+gEyrHCxeJt0n2n/nfNTZw44waEku7NR+2psozfkpKArVpFMx0+UXq72S9thP+R3nYzaOGPhDza1aGf+7dGk9dqiYk6XEUKrscwxnh/Wkz/wQl8xO1cOjkeawF1UxxgrWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=drS22X/D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39574C4CEE5;
+	Mon, 10 Mar 2025 20:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741637598;
-	bh=gtJuGx2pDYIwW9VlUcPfXfeo5t97Lj14Q+23BqsZas4=;
+	s=k20201202; t=1741638012;
+	bh=oiEDLHboG9k635mQYmv0sZ1NLB6XV+uB6u93veYOWYE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uxA8UZ2hSzGB/6zTtZMwQ4gjJbUQ6uJKooCmVZcRv2mNqKRQzlkCsolKDUBvW7nIJ
-	 Qd8jzBRAGbA4HXKmwfgaTwh043r42xnDyK1o34D2RBG2b/wWIqoMzayg7jDUn4NqVv
-	 ciqKw04wxxW9DvbxSqBzr1HfuvPIztOOvn6BYCbZ8AiDQpE2NUtyPzWJ2do9X6ZRIt
-	 A5edK1XHbL2hwdrHqRP125c0nhr/eyGRt9a3dznJp+IeOwDMCPST3vzUxN3WNF0toc
-	 NcA2NMpK//GnUr1WmtcjvDGkTeCj0YOOxKKtpXTbUzaw0A1xWjgdNxmTpFys7kRaNR
-	 vmkyxs+h98XJw==
-Date: Mon, 10 Mar 2025 20:13:11 +0000
+	b=drS22X/DU2o4gwHxWv8swD6uzt8Rv2KL+qVhojMrOAIjTnOlTaMJoMJDbPypfm5Ct
+	 thXU0VWdopO/P87hoVr6Rnc9DcO4GemvFktUBpF+Cwecq+mUb4pbZvZEmQ59E/4Ssy
+	 izSA9FTPrSSe2Lq4AsAOhgQNi1rruiVY0f4oHGu/iw3CGz9Hdg2qcp9J+BxLFcJIzi
+	 2YonFBSAECntGQdSG8fToTqLa0KzOg5viGhOBPVfhtwUWgSiIPBf0X6ZRmcFibaFts
+	 k17dwgbPrvowiKrCQV9OPiaeMwFAcnKKmXbHj/NR5aGvnbf/DkHv5DqG3YluC2CZ8E
+	 1Dx5XD5nHXsRg==
+Date: Mon, 10 Mar 2025 20:19:59 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH v4 0/2] iio: ad7380: add SPI offload support
-Message-ID: <20250310201311.04b56522@jic23-huawei>
-In-Reply-To: <20250310-wip-bl-spi-offload-ad7380-v4-0-b184b37b7c72@baylibre.com>
-References: <20250310-wip-bl-spi-offload-ad7380-v4-0-b184b37b7c72@baylibre.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, Matti Vaittinen
+ <matti.vaittinen@fi.rohmeurope.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Daniel Scally <djrscally@gmail.com>, Heikki Krogerus
+ <heikki.krogerus@linux.intel.com>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>, Claudiu Manoil
+ <claudiu.manoil@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
+Message-ID: <20250310201959.39bad5e1@jic23-huawei>
+In-Reply-To: <Z872bHMRtSglB8pf@smile.fi.intel.com>
+References: <cover.1741610847.git.mazziesaccount@gmail.com>
+	<ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+	<Z872bHMRtSglB8pf@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,48 +74,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Mar 2025 18:39:51 +0100
-Angelo Dureghello <adureghello@baylibre.com> wrote:
 
-> Add SPI offload support for the ad7380 ADC.
 > 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-I've applied this to the togreg branch of iio.git and pushed
-out as testing for 0-day to take a very brief look.
+> > +			if (!fwnode_name_eq(child, name)) { } else  
+> 
+> Ditto.
+> 
+> Note, I believe this won't get v6.15-rc1, so there will be for_each_if()
+> available and these will become
 
-This might well be the last series to make it this cycle depending
-on how busy the rest of my week ends up.
+Unless this cycle goes long (i.e. an rc8) very unlikely I'll sneak
+the series in now due to lack of time to soak in next.
+
+> 
+> #define fwnode_for_each_named_child_node(fwnode, child, name)	\
+> 	fwnode_for_each_child_node(fwnode, child)		\
+> 		for_each_if(fwnode_name_eq(child, name))
+> 
+> and so on...
+
+Nice - first time I've seen this :)
 
 Jonathan
-
-> ---
-> Changes in v2:
-> - fix return value on offload probe,
-> - add documentation patch 2/2.
-> 
-> Changes in v3:
-> - fix tabs erroneously added,
-> - fix documentation syntax error,
-> - add a note for the 4 channels ADC variants.
-> - Link to v2: https://lore.kernel.org/r/20250304-wip-bl-spi-offload-ad7380-v2-0-0fef61f2650a@baylibre.com
-> 
-> Changes in v4:
-> - add offload support to adaq4381-4.
-> - Link to v3: https://lore.kernel.org/r/20250304-wip-bl-spi-offload-ad7380-v3-0-2d830f863bd1@baylibre.com
-> 
-> ---
-> Angelo Dureghello (2):
->       iio: ad7380: add support for SPI offload
->       doc: iio: ad7380: describe offload support
-> 
->  Documentation/iio/ad7380.rst |  18 ++
->  drivers/iio/adc/Kconfig      |   2 +
->  drivers/iio/adc/ad7380.c     | 511 ++++++++++++++++++++++++++++++++++++++++---
->  3 files changed, 495 insertions(+), 36 deletions(-)
-> ---
-> base-commit: 73b788d05b5bd82c40193165583a9dcad2d8410e
-> change-id: 20250220-wip-bl-spi-offload-ad7380-6f1c27cd815d
-> 
-> Best regards,
-
 

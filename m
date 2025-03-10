@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-16709-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16710-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A41A5A534
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87816A5A536
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEDF016F018
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:43:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F07217A76AB
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80681E1023;
-	Mon, 10 Mar 2025 20:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935601E2312;
+	Mon, 10 Mar 2025 20:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="J9QOgRqt"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gN4ONqFq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F371DEFF1
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A731DF268
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741639399; cv=none; b=sbzU/ZWydYi1HivjAcWpO0YixZWp6UpAcW/gnjViRX5MR53TSN7YtssuFcQLwctEjTWUmA0FtVBoakX1pBg5kTTlaHmODHCiTYyvjlo0pJl0o9oLqL54QoeFjIcUbYCWIrSZhyrfoBaWIzVphqPfzBqKOXktxyjM8FGsYtmzBag=
+	t=1741639402; cv=none; b=gY2BdMIH+S+gZySKa0aaYiNPo2lFjdp5nHZIqpH6Cs0lyWGcEpcvw1GJmTpAruWmjOVo3+HYxt3Dhv5atjTmI+XyJHKN3qv6plHIM1cLxUALxBhURhOMMks5mpwo8HuPbPqKtbksDKivg4QjbLJD3kvET0eVWX9YXsPuM4wwsOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741639399; c=relaxed/simple;
-	bh=Hsc2lTWIH/R8fBT/8ZsO+EBhdL1BLa9dPLrp8/P/Dew=;
+	s=arc-20240116; t=1741639402; c=relaxed/simple;
+	bh=fy3YCEIhYXyfAtQCLfJyFl5dLmJOK0fZMwPIbAJdXh4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bpXlwbjrkF8Zusy1+tpDZt2P+mA/5Cmu6Ony+KiQE9+zCdw1BJCXH+Muvd4l2+8FxNBJnW/OO9nkg5evthnjeUYdjUiU/ZjauR8GAElSbEgfLz8DfP0hE7wmzFt5Mu1tLg0cdBe6QbnaLVMmsgenFjWZAgg4O+CSImBEJfoTmzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=J9QOgRqt; arc=none smtp.client-ip=209.85.167.178
+	 In-Reply-To:To:Cc; b=ZdqbcVfn5xVwEniQDNkL3m7J51Vi5ODYGiDhS8nOKagtM44Z9o36GbjdwccR1gMSKvRn/L7/+GN7ISqthkCRliRw5bFlMb3pTkscUu/kQ5sgMoFZp3ByELYg80jLouDglHQQcVPU4e79BogudfuD1Tt1gOjostcTuiA5x3370do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gN4ONqFq; arc=none smtp.client-ip=209.85.161.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3f682a2c3c8so2365920b6e.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:17 -0700 (PDT)
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-601a8b6c133so670483eaf.1
+        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639397; x=1742244197; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639400; x=1742244200; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fJTMB/Yj7akGz6eUAqBxkpGJJmFrHVTQNNCjxXAAAoM=;
-        b=J9QOgRqtmnBKDpKg2GVjW8tgLoTqw5QGLM2A0OdSA+U2f/ycjdk7+4YGc7apmZVrDq
-         7pq5BnufK7wh4WGTlXo85NcMxFMxqxMTZBjDiAtOY3b42uSzIkzO2jFUSXCxhz03e4WD
-         1jiyJIg9o7T9UrdBZV4DZoE6zrK3f4GIvQTZnU6S0POfWZkeNw1q9uGDNJlZo0UliM1D
-         EZkJ1HR0bfGqmirAexTk59rBUzcW95GJOAzHmecs74R4+gF2/z36ISQHrIANJnMaPGu4
-         nE4Af/38SFZrz0s0vBZi5tgPrDiHrekD6FLTFUtLSYGr/h0rXrnFIAdcKC5cRLX3fMYG
-         8vkQ==
+        bh=J1AkfraDMLpclf5PdJvYaweOQN0fYlysTRqs642bX38=;
+        b=gN4ONqFqXpCZXYZa1f04VYSTCT1ByZqOjVf0zFSLbuSlq8bhjV2K2w2u69iYnsuEpC
+         E40T7+kIbg1abNLY6P5PL8KcjfNBbY149mT/3EY4ZyBrIaJgCsP8uzI1YS7I0mB84rey
+         1RvzP3jWSmh+alAbtP9WEYy+hnKSbmpQDvP3WQ0Rcx/2t/hxLMdMhsnZZcDfIpxbP/vl
+         iUe7XZVrGv5WKHmgm4HBh9TRO2hr/xlnsv81eEAPzkyN5uODCTLxmxpiw3z95qR/v/Ld
+         zZRYS7YB6pa7dEum1UEAhxdiH/WWVnOGnmKDiNf1hMHy2Q9uAfGraGynpGDYSPRcHXbc
+         XRgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741639397; x=1742244197;
+        d=1e100.net; s=20230601; t=1741639400; x=1742244200;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fJTMB/Yj7akGz6eUAqBxkpGJJmFrHVTQNNCjxXAAAoM=;
-        b=PMUMDIfGrs010qJoM0reoMpPwY/T6/reccYFaNoZQ2Zz8u1pbw0A72GGkyPT2If+2e
-         TOlV/cIB6ZYfmw4uP99yLoSjbS6UtxZoLXDkUvZR5hvL+OqOQLWFhnae1gDm1NaArqVg
-         JSQXYUDc+c1Y3fjk3OF/rax62CWK3Qm55m+GmJmhmZjRbA0CARnaI1V0OYqeO6i1nHnz
-         deA3hMu58VmAkfOghadKBLLP/VCvQpT2ZJ04pZO2uNO5CSVv03m30s9aTbTp47GkJ/lv
-         FW4y5qWDuQeGnlZGk9fUouoeHroUhj0kiHLm2yUVeQVvjrqjxKd988ROqqVSN4W62O4K
-         ACjg==
-X-Gm-Message-State: AOJu0YzjISq216jqjraR+btykx2X+yZDESHA6PoMOCCj7svY5gLWlpWV
-	IIlHqOgYBaDOGjknKES3gWsozO9JDZ8+bA/5rEWj3kWpFfulAJd6hM3hPDsSc7M=
-X-Gm-Gg: ASbGncuI18oPFsDeFZ7kTM/ypFTNTrFt2g9vlqwPUWyfaSyJYKp4RC2+86BWuLHloMk
-	FUINQ+fsGgOgVLEjMftoeEV/58nkp/yrxIEUMixWSsixAxrOht3icHBi+g2+PzCKNoNX6DvM7gk
-	BzlVKKrCaavEMEX2V5BwkoCT0PACgxInuqguahGWCoYA5AE3Nd0i6ui5+msjWX5u7tWG7MVQtzQ
-	W9KeeuO0iAZ5tNzoW5ONzf1Nz9k/X9TrqeE6N4/EFrazDz6i18d2Nsq7ho14HBSkymIdpS2MlUz
-	4mcZ/fwN+xviedMq5/MHox8oco5YdSooBPzX5Si7AVlwR5TDCU89YtnhdN6qSXBOLp8KU2vdoeX
-	VbA2Io5ZPRKU=
-X-Google-Smtp-Source: AGHT+IE/v8sgTJ1kpxF4TAz8lNU+kyH/TDaACDH4/rifKyICPd/DKFS6AuPRo2wZIJ/52GOdpWETkw==
-X-Received: by 2002:a05:6808:1894:b0:3f8:1df6:413 with SMTP id 5614622812f47-3f81df607d5mr3628760b6e.1.1741639397012;
-        Mon, 10 Mar 2025 13:43:17 -0700 (PDT)
+        bh=J1AkfraDMLpclf5PdJvYaweOQN0fYlysTRqs642bX38=;
+        b=Ehbb14OOD0qUTKTcWBGhdeVIZMlN5cyc5rwCslPFltjpbFy1K8ra+T9/O0Q1MS72/C
+         YYe9MGGNjAhQTqvXe26FGrjn4MwhdmWZrL4Qi/JBgNh4FeCcpQKW/H74fN0fRdS6WwQ9
+         cm2u76Ujb95mLKY1xsLEKW7nDHKBbOJaZX86n9YyJXNNn1tdK2W9Xb+Sppx7MHFmHrXq
+         IbtHTcWEhPM/lHk1Y+V5ZvDy3WPu/WR1d4C83lN46RoUnz5UI5pq/Fe42WLiE7NLcWGF
+         fIaFL61lmd2IKZGFnqL09AoF05E6oxD5usmieGfLjGjf99Kl84yfut8n8GgwnT2VvmGn
+         OEpg==
+X-Gm-Message-State: AOJu0Yw9atYFlBiykxdORvKzaB5yNl22YKc3IzfeokwRYHVjAauN57C4
+	G3HDQEjKfa2tgv3dchXfwyRyq7HBB6jjVpysgpNk5b774xpnckoeKgFK4fxZ8LQ=
+X-Gm-Gg: ASbGncuGjakJeNvrnGo52HAnUbOKc93gf6Jcu99KliCfAPVyHWPh/iceqBEevbxBsVL
+	13mPcW6XI0dUl1lJMT1i/fNlspeZBpiWXTOngovBJio0sbWyAEApEMtyh0jF3en67EAtcmMvhkV
+	dOR5t4UjovjremeARMBfZP3Hu6Wdlvjc0obUcSPpJ5gZ2lgsPTVrxupbXE02ou1vmX37jc7ogme
+	lht+K54Taoz8Mloahxj+TXztocTvJijQ5NSvtyx1Ei4VdDx5+ZGOEIs+d25jpKdgzWHA0jlMvbG
+	Umu3JcCv0MdjwKW/Jff6VZbv9dC3OSyeqE4O9gdf8adgkTEW9Pl057zMytPNHzlG4tpy2m4fUyA
+	s
+X-Google-Smtp-Source: AGHT+IFjnN7xgqA5S6WxW9zh3aoenUjvYW1xuLxTRrObH49wacCSqx5z5F6Kj5S5n7YLILh9oajgoA==
+X-Received: by 2002:a05:6808:4448:b0:3eb:5a58:9b6b with SMTP id 5614622812f47-3fa2bdc5125mr556668b6e.11.1741639399765;
+        Mon, 10 Mar 2025 13:43:19 -0700 (PDT)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.16
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 13:43:16 -0700 (PDT)
+        Mon, 10 Mar 2025 13:43:18 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 10 Mar 2025 15:43:07 -0500
-Subject: [PATCH 4/5] iio: adc: ad4030: don't store scan_type in state
+Date: Mon, 10 Mar 2025 15:43:08 -0500
+Subject: [PATCH 5/5] iio: adc: ad4030: explain rearranging raw sample data
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-4-589e4ebd9711@baylibre.com>
+Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-5-589e4ebd9711@baylibre.com>
 References: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
 In-Reply-To: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -94,86 +94,32 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-Move getting the scan_type to ad4030_conversion(). Previously, we were
-getting the scan_type in two other places, then storing it in the
-state struct before using it in ad4030_conversion(). This was a bit
-fragile against potential future changes since it isn't obvious that
-anything that could potentially change the scan_type would need to
-also update the state struct. Also, the non-obviousness of this led to
-a redundant call to iio_get_current_scan_type() in
-ad4030_single_conversion() since it also calls ad4030_set_mode() which
-in turn calls ad4030_conversion().
-
-To simplify things, just call iio_get_current_scan_type() in
-ad4030_conversion() where the returned struct is actually used and
-don't bother storing it in the state struct.
+Add a comment explaining why the raw sample data is rearranged in the
+in the ad4030_conversion() function. It is not so obvious from the code
+why this is done.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad4030.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/iio/adc/ad4030.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-index c2117c7a296f22aeeec6911c8a8c74ed576296a0..54ad74b96c9f256a67848330f875379edc828b0b 100644
+index 54ad74b96c9f256a67848330f875379edc828b0b..636f9f33e66af73d102722b984dc1230e1417d1e 100644
 --- a/drivers/iio/adc/ad4030.c
 +++ b/drivers/iio/adc/ad4030.c
-@@ -147,7 +147,6 @@ struct ad4030_state {
- 	struct spi_device *spi;
- 	struct regmap *regmap;
- 	const struct ad4030_chip_info *chip;
--	const struct iio_scan_type *current_scan_type;
- 	struct gpio_desc *cnv_gpio;
- 	int vref_uv;
- 	int vio_uv;
-@@ -562,11 +561,6 @@ static int ad4030_set_mode(struct iio_dev *indio_dev, unsigned long mask)
- 		st->mode = AD4030_OUT_DATA_MD_DIFF;
- 	}
+@@ -646,6 +646,12 @@ static int ad4030_conversion(struct iio_dev *indio_dev)
+ 					   &st->rx_data.dual.diff[0],
+ 					   &st->rx_data.dual.diff[1]);
  
--	st->current_scan_type = iio_get_current_scan_type(indio_dev,
--							  st->chip->channels);
--	if (IS_ERR(st->current_scan_type))
--		return PTR_ERR(st->current_scan_type);
--
- 	return regmap_update_bits(st->regmap, AD4030_REG_MODES,
- 				  AD4030_REG_MODES_MASK_OUT_DATA_MODE,
- 				  st->mode);
-@@ -614,15 +608,20 @@ static void ad4030_extract_interleaved(u8 *src, u32 *ch0, u32 *ch1)
- static int ad4030_conversion(struct iio_dev *indio_dev)
- {
- 	struct ad4030_state *st = iio_priv(indio_dev);
--	unsigned char diff_realbytes =
--		BITS_TO_BYTES(st->current_scan_type->realbits);
--	unsigned char diff_storagebytes =
--		BITS_TO_BYTES(st->current_scan_type->storagebits);
-+	const struct iio_scan_type *scan_type;
-+	unsigned char diff_realbytes, diff_storagebytes;
- 	unsigned int bytes_to_read;
- 	unsigned long cnv_nb = BIT(st->avg_log2);
- 	unsigned int i;
- 	int ret;
- 
-+	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
-+	if (IS_ERR(scan_type))
-+		return PTR_ERR(scan_type);
++	/*
++	 * If no common mode voltage channel is enabled, we can use the raw
++	 * data as is. Otherwise, we need to rearrange the data a bit to match
++	 * the natural alignment of the IIO buffer.
++	 */
 +
-+	diff_realbytes = BITS_TO_BYTES(scan_type->realbits);
-+	diff_storagebytes = BITS_TO_BYTES(scan_type->storagebits);
-+
- 	/* Number of bytes for one differential channel */
- 	bytes_to_read = diff_realbytes;
- 	/* Add one byte if we are using a differential + common byte mode */
-@@ -673,11 +672,6 @@ static int ad4030_single_conversion(struct iio_dev *indio_dev,
- 	if (ret)
- 		return ret;
- 
--	st->current_scan_type = iio_get_current_scan_type(indio_dev,
--							  st->chip->channels);
--	if (IS_ERR(st->current_scan_type))
--		return PTR_ERR(st->current_scan_type);
--
- 	ret = ad4030_conversion(indio_dev);
- 	if (ret)
- 		return ret;
+ 	if (st->mode != AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+ 	    st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
+ 		return 0;
 
 -- 
 2.43.0

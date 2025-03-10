@@ -1,127 +1,178 @@
-Return-Path: <linux-iio+bounces-16710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87816A5A536
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF73A5A55A
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F07217A76AB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC733AEE22
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935601E2312;
-	Mon, 10 Mar 2025 20:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D00E1DF24F;
+	Mon, 10 Mar 2025 20:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gN4ONqFq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eW6F9tgz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A731DF268
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A98D1DEFE1;
+	Mon, 10 Mar 2025 20:53:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741639402; cv=none; b=gY2BdMIH+S+gZySKa0aaYiNPo2lFjdp5nHZIqpH6Cs0lyWGcEpcvw1GJmTpAruWmjOVo3+HYxt3Dhv5atjTmI+XyJHKN3qv6plHIM1cLxUALxBhURhOMMks5mpwo8HuPbPqKtbksDKivg4QjbLJD3kvET0eVWX9YXsPuM4wwsOk=
+	t=1741640019; cv=none; b=hRNQ9Z/UA//JshY4liPUtp74wGvkJKy31sw0nyv3Uy0HfR5p1FDKBsUQs/sPmk5mBCdw0UejIs8YV7wd4Cy9wR7Y3CrsqKLHaa5e2zzwKKg/0cpOYWCj65kwZeflaUnCf5sn24w9kFLrAnQ5e7qo2++htXBoi6KFNzzj/BHmwRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741639402; c=relaxed/simple;
-	bh=fy3YCEIhYXyfAtQCLfJyFl5dLmJOK0fZMwPIbAJdXh4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZdqbcVfn5xVwEniQDNkL3m7J51Vi5ODYGiDhS8nOKagtM44Z9o36GbjdwccR1gMSKvRn/L7/+GN7ISqthkCRliRw5bFlMb3pTkscUu/kQ5sgMoFZp3ByELYg80jLouDglHQQcVPU4e79BogudfuD1Tt1gOjostcTuiA5x3370do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gN4ONqFq; arc=none smtp.client-ip=209.85.161.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-601a8b6c133so670483eaf.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:20 -0700 (PDT)
+	s=arc-20240116; t=1741640019; c=relaxed/simple;
+	bh=oWjyctOfAZzqZ28wEHoJvG0ah9LKIBMklEVvWnYtIAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ekWsMP3hdTLZdTfUfb5jsAu0qHYAHX1Xc08zMK9kqlsmIKTjRjpZ2fIijounfOgqIgQRlms4q/hPrs13YN2ssj/r+7jG2V4uSVETR7xrdSNtkk/bccooVa2tQn1DIIaFHCyxInrR4OuZNlKXtmaY0sImf7XdcBhqPm1xvfxbJ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eW6F9tgz; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6fee3632ef1so1409337b3.1;
+        Mon, 10 Mar 2025 13:53:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639400; x=1742244200; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J1AkfraDMLpclf5PdJvYaweOQN0fYlysTRqs642bX38=;
-        b=gN4ONqFqXpCZXYZa1f04VYSTCT1ByZqOjVf0zFSLbuSlq8bhjV2K2w2u69iYnsuEpC
-         E40T7+kIbg1abNLY6P5PL8KcjfNBbY149mT/3EY4ZyBrIaJgCsP8uzI1YS7I0mB84rey
-         1RvzP3jWSmh+alAbtP9WEYy+hnKSbmpQDvP3WQ0Rcx/2t/hxLMdMhsnZZcDfIpxbP/vl
-         iUe7XZVrGv5WKHmgm4HBh9TRO2hr/xlnsv81eEAPzkyN5uODCTLxmxpiw3z95qR/v/Ld
-         zZRYS7YB6pa7dEum1UEAhxdiH/WWVnOGnmKDiNf1hMHy2Q9uAfGraGynpGDYSPRcHXbc
-         XRgw==
+        d=gmail.com; s=20230601; t=1741640016; x=1742244816; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AQJmqf4BapFKGOdAG0jiNyOkcaDWGjY4CREwm8k1wPk=;
+        b=eW6F9tgzq83YTnZw0gTIhlx9QfVCyNN+sOoep1DqrwBCn6+SZSFq5b6Jo15hO9GrXs
+         9LAgKNQfLQuVPcPsDwur/PGjTKIDcZ/0CxO4rnRBvH0xoTeGLCcE8eSa3vISWYFqoO+L
+         wgbzAdeShiF717P+/Mi8ozPk2Kmw2+3i9erN0HIiHad0LyITWSHL1YoGqxN/qSfU2EoS
+         Ne72Vli5zyJKyhEAPSpu/iFfl7hJ8rMrpJkPKo0CPUMXJR5RzA36uNpNHn30xq8wXb4a
+         jXHLLmXr5sihh5e2vxhVgJUgqmVgWwRrqLf5U0UrP27qqwJZSu6CsCzVaZsCzkTp3pO6
+         JdPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741639400; x=1742244200;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1741640016; x=1742244816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=J1AkfraDMLpclf5PdJvYaweOQN0fYlysTRqs642bX38=;
-        b=Ehbb14OOD0qUTKTcWBGhdeVIZMlN5cyc5rwCslPFltjpbFy1K8ra+T9/O0Q1MS72/C
-         YYe9MGGNjAhQTqvXe26FGrjn4MwhdmWZrL4Qi/JBgNh4FeCcpQKW/H74fN0fRdS6WwQ9
-         cm2u76Ujb95mLKY1xsLEKW7nDHKBbOJaZX86n9YyJXNNn1tdK2W9Xb+Sppx7MHFmHrXq
-         IbtHTcWEhPM/lHk1Y+V5ZvDy3WPu/WR1d4C83lN46RoUnz5UI5pq/Fe42WLiE7NLcWGF
-         fIaFL61lmd2IKZGFnqL09AoF05E6oxD5usmieGfLjGjf99Kl84yfut8n8GgwnT2VvmGn
-         OEpg==
-X-Gm-Message-State: AOJu0Yw9atYFlBiykxdORvKzaB5yNl22YKc3IzfeokwRYHVjAauN57C4
-	G3HDQEjKfa2tgv3dchXfwyRyq7HBB6jjVpysgpNk5b774xpnckoeKgFK4fxZ8LQ=
-X-Gm-Gg: ASbGncuGjakJeNvrnGo52HAnUbOKc93gf6Jcu99KliCfAPVyHWPh/iceqBEevbxBsVL
-	13mPcW6XI0dUl1lJMT1i/fNlspeZBpiWXTOngovBJio0sbWyAEApEMtyh0jF3en67EAtcmMvhkV
-	dOR5t4UjovjremeARMBfZP3Hu6Wdlvjc0obUcSPpJ5gZ2lgsPTVrxupbXE02ou1vmX37jc7ogme
-	lht+K54Taoz8Mloahxj+TXztocTvJijQ5NSvtyx1Ei4VdDx5+ZGOEIs+d25jpKdgzWHA0jlMvbG
-	Umu3JcCv0MdjwKW/Jff6VZbv9dC3OSyeqE4O9gdf8adgkTEW9Pl057zMytPNHzlG4tpy2m4fUyA
-	s
-X-Google-Smtp-Source: AGHT+IFjnN7xgqA5S6WxW9zh3aoenUjvYW1xuLxTRrObH49wacCSqx5z5F6Kj5S5n7YLILh9oajgoA==
-X-Received: by 2002:a05:6808:4448:b0:3eb:5a58:9b6b with SMTP id 5614622812f47-3fa2bdc5125mr556668b6e.11.1741639399765;
-        Mon, 10 Mar 2025 13:43:19 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 13:43:18 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 10 Mar 2025 15:43:08 -0500
-Subject: [PATCH 5/5] iio: adc: ad4030: explain rearranging raw sample data
+        bh=AQJmqf4BapFKGOdAG0jiNyOkcaDWGjY4CREwm8k1wPk=;
+        b=NloccpHMLbMOM94eLLmrNfO2DgIXS5QnkbAUPk5Vz1l+Xz13qRcaWrcUQYhvOtghPT
+         S4kmoqMpR1aDzUJjZoZoW0a9zbTVcSe1uSM7490FOS1ImMZoeXATf8CEEU2RzqlVPwK5
+         uucc8uUVio4luituRvvQRWcCdyexM5ha26qgMF5rtFysekVrHVNFnilXLOK7xwsfOhOS
+         VPT6/MkYDCzsZPhjjCBAD/RShC9ZquGw+B8UPhuKFGON6G3wryAQuBwpziZIuVumwv0S
+         06JbaivY0IMddimWzOLljW5RanGs0LLjnm5Kzx5fS1BHlfBBy7So6/RdOEbXqQ0Ux65k
+         8gXg==
+X-Forwarded-Encrypted: i=1; AJvYcCW98OTdQYT3/cBtQ4lwJdKLqkrJ1bodEsy8OasDjvc792zwr/E6FiiNw0/lMzSTxdRHIXktMA3oLoPxWKRX@vger.kernel.org, AJvYcCXRqxRjCCKcjT3tw3jzxuM90Kys6Z7QQc/eQU2XFldJsRIL6LwrfEk7YokUQ/5AE/YWAvgxrIP6wPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIYCwmpeYOohK+idsFUICA5t/XhZ9K0LjFz0kvoeMdnRTpILMS
+	B96YZ64IdbmyNUKfNjOT7uhl/KBy1bkpFKn0UX+o+fTZexEh3fi+dYAUOlh+yv4xIUDJJ9h2QnI
+	08w4QnbgdT0ainvEqsS7o2zFEBq0=
+X-Gm-Gg: ASbGncsQGiDdMxBhNU8E3HTre/Lj1vqIH169XRdwSEpeF0oQGS4+T83mnDgkhUtFJlW
+	DVJYJr0du69hnFlQCoQ8nXvkvcZHnxCXPGap4b4qzy9w8UqRsn3S39UM+l86ydFKNmLzn04Wqr5
+	3dBC3nzwx121oCBGTOLkGaoMwT8g==
+X-Google-Smtp-Source: AGHT+IHs+DO2QF+x6qYrqQUIG520UyB96W2qoPNqT27M7cudtiD2mizo6Lfop72+jk+PccWblhdrd4UF/u5dcrrYZdY=
+X-Received: by 2002:a05:6902:470b:b0:e60:87a0:6219 with SMTP id
+ 3f1490d57ef6-e63b4e4c51dmr623081276.0.1741640016248; Mon, 10 Mar 2025
+ 13:53:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-5-589e4ebd9711@baylibre.com>
-References: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
-In-Reply-To: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Esteban Blanc <eblanc@baylibre.com>, Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>
-X-Mailer: b4 0.14.2
+References: <20250309193515.2974-1-l.rubusch@gmail.com> <20250310201042.0e8f06d7@jic23-huawei>
+In-Reply-To: <20250310201042.0e8f06d7@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 10 Mar 2025 21:53:00 +0100
+X-Gm-Features: AQ5f1JpUtcf7mzG5cibNdqFYPsXsd_4bN6DiPt3VYpdSp_G16QTdHZNX_yO27W4
+Message-ID: <CAFXKEHb1zCpNX_t70dTCM6yBoU=gegcf4bJZyx8iWSEC+ibmMg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] iio: accel: adxl367: fix setting odr for activity
+ time update
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, cosmin.tanislav@analog.com, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add a comment explaining why the raw sample data is rearranged in the
-in the ad4030_conversion() function. It is not so obvious from the code
-why this is done.
+Hi Jonathan,
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad4030.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+On Mon, Mar 10, 2025 at 9:10=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sun,  9 Mar 2025 19:35:15 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Fix setting the odr value to update activity time based on frequency
+> > derrived by recent odr, and not by obsolete odr value.
+> >
+> > The [small] bug: When _adxl367_set_odr() is called with a new odr value=
+,
+> > it first writes the new odr value to the hardware register
+> > ADXL367_REG_FILTER_CTL.
+> > Second, it calls _adxl367_set_act_time_ms(), which calls
+> > adxl367_time_ms_to_samples(). Here st->odr still holds the old odr valu=
+e.
+> > This st->odr member is used to derrive a frequency value, which is
+> > applied to update ADXL367_REG_TIME_ACT. Hence, the idea is to update
+> > activity time, based on possibilities and power consumption by the
+> > current ODR rate.
+> > Finally, when the function calls return, again in _adxl367_set_odr() th=
+e
+> > new ODR is assigned to st->odr.
+> >
+> > The fix: When setting a new ODR value is set to ADXL367_REG_FILTER_CTL,
+> > also ADXL367_REG_TIME_ACT should probably be updated with a frequency
+> > based on the recent ODR value and not the old one. Changing the locatio=
+n
+> > of the assignment to st->odr fixes this.
+> >
+> > Fixes: cbab791c5e2a5 ("iio: accel: add ADXL367 driver")
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> > ---
+> Change log missing, but I assume it's just the Fixes tag.
+> If so, I would have been fine with that just being in a reply
+> to the v1. Anyhow, new patch is fine too so applied to the
+> fixes-togreg branch of iio.git.  I may well queue this up for
+> the merge window rather than send another pull request this cycle.
+>
 
-diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-index 54ad74b96c9f256a67848330f875379edc828b0b..636f9f33e66af73d102722b984dc1230e1417d1e 100644
---- a/drivers/iio/adc/ad4030.c
-+++ b/drivers/iio/adc/ad4030.c
-@@ -646,6 +646,12 @@ static int ad4030_conversion(struct iio_dev *indio_dev)
- 					   &st->rx_data.dual.diff[0],
- 					   &st->rx_data.dual.diff[1]);
- 
-+	/*
-+	 * If no common mode voltage channel is enabled, we can use the raw
-+	 * data as is. Otherwise, we need to rearrange the data a bit to match
-+	 * the natural alignment of the IIO buffer.
-+	 */
-+
- 	if (st->mode != AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
- 	    st->mode != AD4030_OUT_DATA_MD_24_DIFF_8_COM)
- 		return 0;
+Yes, it is actually just the fixes tag and reviewed-by tag. I'm sorry
+for the missing log.
 
--- 
-2.43.0
+Best,
+L
 
+> Thanks
+>
+> Jonathan
+>
+>
+> >  drivers/iio/accel/adxl367.c | 10 +++-------
+> >  1 file changed, 3 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+> > index add4053e7a02..0c04b2bb7efb 100644
+> > --- a/drivers/iio/accel/adxl367.c
+> > +++ b/drivers/iio/accel/adxl367.c
+> > @@ -601,18 +601,14 @@ static int _adxl367_set_odr(struct adxl367_state =
+*st, enum adxl367_odr odr)
+> >       if (ret)
+> >               return ret;
+> >
+> > +     st->odr =3D odr;
+> > +
+> >       /* Activity timers depend on ODR */
+> >       ret =3D _adxl367_set_act_time_ms(st, st->act_time_ms);
+> >       if (ret)
+> >               return ret;
+> >
+> > -     ret =3D _adxl367_set_inact_time_ms(st, st->inact_time_ms);
+> > -     if (ret)
+> > -             return ret;
+> > -
+> > -     st->odr =3D odr;
+> > -
+> > -     return 0;
+> > +     return _adxl367_set_inact_time_ms(st, st->inact_time_ms);
+> >  }
+> >
+> >  static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_odr=
+ odr)
+>
 

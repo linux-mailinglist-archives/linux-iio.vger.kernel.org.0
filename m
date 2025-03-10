@@ -1,128 +1,118 @@
-Return-Path: <linux-iio+bounces-16650-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16651-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2165A58B80
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 06:04:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D98FA58BA1
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 06:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B537169147
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 05:04:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4689F169E24
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 05:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB801B4F17;
-	Mon, 10 Mar 2025 05:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0511C5D53;
+	Mon, 10 Mar 2025 05:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCgdGdM7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q5TZhWVl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94FC23A0
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 05:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFB814F9E2
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 05:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741583063; cv=none; b=Ymh1rDb99HVlPexPsHlCltTcEUaxVIKUYJpWA6pd+OBLoJ8EdwdHsPT7kRTGWKd81A66WtyFBcEQz1T3PVvJB/58G+wbDmWmyQSwFQhxXkkw5YVcw55s7AFWa3Eq+wC4h37cd+LXPNN24URMMlH8F5nbUKgNNh81LE1ACNB/fY4=
+	t=1741584086; cv=none; b=LXxlzMemVkrqh9B3O39TeorfatjAWT2mcpDjBRbMJThtv/15yOL+V1qlX4mUe2sd72IFELCGNeLfZNlKjzMZuqsBE9QsWqHi4UqKF7CtsH19GNpHdqp+u7cS/mMdjjRCaqysfZ1qz4haoYSmGNy/7giZZ9Woa/4Q9M7jkDviCN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741583063; c=relaxed/simple;
-	bh=q6NfNUNQBTSF91c9KKH16Up6ObpUIOb2BUFqTI50ERI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NvWsqDHyYb+a5f6g2x46XRSpQQvXIQ+y0V9BYRy7APqeY2pgdk0OKykKXhQonWT5+QtQvFtEQCBfaOftxOEGbKqyBxDgjz3u9y19m9aJE+1saDEjVUCqsSkkkqx92QSJUX65X5A9Xy2n5GwQspDmkTrQXlaTvU/7oj04Yzb3mNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCgdGdM7; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1741584086; c=relaxed/simple;
+	bh=HYjqS5yx6gJqg5Pn9NLklw7CuLRSdecwqG6AQ/7ReEI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LsHEQP9Ngpu4cuyaH4/Eo0IH6s31RXUhk9fkXFSNDk/s+Q2yIHL7fQ6QhDksGchgLal0p7fYrzn7FwclkYa4A938j0JPAKSdOEdEZCqgLKf62HMQ6i4ELErcKTjqzC+n6p7JopfjyGhFR4MeBMiUakpc01+RMKR/bi+kUT5r5RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q5TZhWVl; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2255003f4c6so17873735ad.0
-        for <linux-iio@vger.kernel.org>; Sun, 09 Mar 2025 22:04:21 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-549a4a4400aso646623e87.0
+        for <linux-iio@vger.kernel.org>; Sun, 09 Mar 2025 22:21:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741583061; x=1742187861; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W/cWYsfP8rkFy5bv2b9tinV7f9VP1wrTOoJi3iFN7uE=;
-        b=CCgdGdM7FDAvitnTAtm3JY3PhCO+f92if4CKax3ynMqsbriEoF4hHZu5bfkfcuR1V4
-         U9LpAMZN4mg7w3R+hVl0ILo0OBd1mZOUdjVkLF+5Ji8tNMgHStvR8bndCaJuVbk57vEi
-         34QeDBJkAyU7Wss2Dcta8lBdYHUeeMbRZPC9yFOFRp4IekMLcWn3uYG+hVqK2hVfoSJE
-         qTmrBgg5dwOeuO2KjNjzTRzQpeepJ7nm8mLIE2Dy4SxdpieomnvWrGIPYNXBHqOIA0WT
-         3oykCIHIiyEnsLMhmIOzYZzGjq0bM2P7yUzZC49pDoq+edZUC/wTyItLR5sNZoDtJ5na
-         2SgQ==
+        d=gmail.com; s=20230601; t=1741584082; x=1742188882; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Xgm5NIKCXFz09LrGYANY4bLgNof6mzektrBqcKtmDy0=;
+        b=Q5TZhWVlhvklg1Xp54RAkQnuWlgzzoKlrKsm1PjWyrUiU/rvrdv9kAR7uvsB0GWtiv
+         Yv5nc3BXkW+h8TWYBBYVetJHna1zYgg3uc1Lh31K6Gfz3d5wjK0gactzIOfVXdAwNUew
+         R2NOi2DsPLC5svCOkMpIlQipYjgNFcfEvbjU8ry5SUWsd7/umS2xwRsZzb6C4ZPCOxom
+         U8+0uweKDDONrE1DSQSnI8suwxWxin2fBPtv1cyY2r85XyYfFvZ79B+rQVFuZg4IlJsY
+         CXn9ds+SdalRZDfO7w/W/9i6+Y2sGYg80gPfypvAWtHl1KwBbe7fPIMmoQHSD3tiGJyX
+         KNjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741583061; x=1742187861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W/cWYsfP8rkFy5bv2b9tinV7f9VP1wrTOoJi3iFN7uE=;
-        b=HuGHtbO8s4d91FppY+PCBvySVlJWRl91A/4YE4YyY3l7EHDLbqdMw+onWguie4KQSV
-         di2WNkK6dGg0Wrj6bCCmg/3A+5laZbteZYjXX81yucZdWM1BLbvxvuWE5bSWy7UNMSwi
-         pTNZoSiQ591SnEmaDK/Sb8BDJIOjiJrF0haOMij9B8gKu2RwZcmzG+SJT8qoPOIkZXxz
-         +JwDBnN6R6YhrHGR+lAV8rPcjgGE81xvE6ltcFX/6wXUIZEWD+6ZmH8mD1Qicjh3nglc
-         SDKomYgEd9dgSKMInQBdSiuq6lhwUCNIEUrPcHciRenZ7d4xrjQe/WWdkpvwnrsh1H6W
-         EA/w==
-X-Gm-Message-State: AOJu0YwaNrAwy5Xxzl4x7I+oOTXCqjyEXysox1kpNWGFVzutyDExDW8C
-	kIJv3cMoto/gbJE9oDSFBG+uLjHGO5h0OW3PXpLGJlgfz9SVOh5l2Y6Ey9Eo+7X+X/x6N6CD0Gh
-	JF9BxQ/5m0OLCbH1dYpy94dxvCLZAZ/NdKyRQ2A==
-X-Gm-Gg: ASbGncuIvn/gXFBFgITIxoKmMViKm+CCQ08UtAKBtBgIYfqsSpbx+FXsUixbtVcZIde
-	4aN0p7m8eOuipozPagoO2t44ci70xVEdWrtnIOTu6PGinQHkl6xNbXFbckGSuyqjARdLtIXZQZq
-	h2E2lsStBM37iCARbCSlagOh3zyQ==
-X-Google-Smtp-Source: AGHT+IFNWP3DNO0vAsmLEwSBQUgVWWfSTh04tx2ie94URN9FyEbho+RFV2mDwvBoGuMfhgz/pSneUfS7ubuz/PzVcO0=
-X-Received: by 2002:a17:902:f68a:b0:223:517c:bfa1 with SMTP id
- d9443c01a7336-22428bdb6d6mr183364745ad.38.1741583060963; Sun, 09 Mar 2025
- 22:04:20 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741584082; x=1742188882;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xgm5NIKCXFz09LrGYANY4bLgNof6mzektrBqcKtmDy0=;
+        b=kU2rh+n5cMWWHDtVxyDNr96m34/PNq1TLLOKJ87D9IkCaz+n1Wsyl4WCgk74ilbDGJ
+         fyuoShvz33qs4a78pLSEE/+Nci3WtOe2jGokA+VbgYr5tQ3pDnwzY7IBoxhCgnoQykIf
+         AZ71kOBJbv/C6Oh63O7M/gYQexFP2ukkjRVXycCwB1+ScRJOTFxddCkR04q3cyfrbN3K
+         vBLHEfmnY1rDqO+Vo2jHT6pXu3XefPW0iVnPi/RNWGrzVHMipSR/xuhtlCE8ZV2XM2Cs
+         x8ZWuCTkeN6PfMedrkkkGfteRUuu2ZxZb+yuQ1XlD5aYYMxa1fezc4AcKvoDp3YIZ500
+         mEcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUB/RRpHMOYEJFmfSzSFuldYW6dColO8djBfofFWaQn5Ks6xeFoJ/fKkx1XcC7fkPjpBUAbtwSw2M4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbheOdo0Yv8JbRAu+zNIUr5EB6ZJxcfNL8DUkXnZyIlvp9wtCv
+	fzUbS8AhmRGD6bNCrmyYYG4jAahQCy8qLu6p/BhtaWL+x0KvITrd
+X-Gm-Gg: ASbGnct3SIzuiPXw2NEPWQeTEWaWux4Asm01qpCtDc0MzAxROp7LFhriRpGckm0aW20
+	ZLIjaOhETMpzRZTCmFnXFCPj8waYzn4LtVr3ISTvnGCiGfFjSjPfE9Llpo5NZNJaORoIHA1Oa8j
+	QizRCOvEFKOLR41tFqI5ZSLuPJtW9O+9bAoJfCfAWkXSRLGnaB2o1KTADPFNctKrnHVPS1O9fko
+	iqsnQtpeVOt9hGoqQCtkyZoKE8TYyYwlPo8WbngRpO/W7+UcCcReRukTGDKvrm5wKWnpOFH/Xih
+	Yx8LwscgwFZZbB4LiD8LZT4lgcisR5fn8PpHNLHNFZCF6//ksgUr/ISLKlhhYYO4+gT+peqNa0w
+	G0hANABHwMOgX/Pl2DKPakjTh4/8uEaZ2GkIZ
+X-Google-Smtp-Source: AGHT+IGVi7hozAfpmMjOxwf/9akHkabj7D6wkRQvaTVfKJQ/f0grYtDe0YYKnF7o/CYoC24dkbgqew==
+X-Received: by 2002:a05:6512:3da3:b0:549:5769:6ae3 with SMTP id 2adb3069b0e04-54990e29bdamr3681046e87.6.1741584081752;
+        Sun, 09 Mar 2025 22:21:21 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae58de8sm1332713e87.91.2025.03.09.22.21.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 09 Mar 2025 22:21:21 -0700 (PDT)
+Message-ID: <c5d8a2cb-560a-4e2d-805c-8a0d321c70bb@gmail.com>
+Date: Mon, 10 Mar 2025 07:21:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMmuoA+1Qi2qnF64nmHobL6hSFdf6GUrX=BjZ=0aGULu75b3GQ@mail.gmail.com>
- <20250309162637.6937c7c6@jic23-huawei>
-In-Reply-To: <20250309162637.6937c7c6@jic23-huawei>
-From: Prince Kumar <855princekumar@gmail.com>
-Date: Mon, 10 Mar 2025 10:33:44 +0530
-X-Gm-Features: AQ5f1JqGrYgCQKfcc8hvVNhMiyWv-2TH0FPjSUuCCzMXfKfrootJwRl7d4Ew61g
-Message-ID: <CAMmuoAJy_GPL-7tfbrgH9U4T4UvUiDoHozw67BqadoV_nAJXog@mail.gmail.com>
-Subject: Re: Proposal Discussion: ADE9113 IIO Driver Development for Linux Kernel
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/18] iio: light: rohm-bu27034: Switch to sparse friendly
+ iio_device_claim/release_direct()
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Astrid Rost <astrid.rost@axis.com>,
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250309170633.1347476-1-jic23@kernel.org>
+ <20250309170633.1347476-11-jic23@kernel.org>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250309170633.1347476-11-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Jonathan,
+On 09/03/2025 19:06, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> These new functions allow sparse to find failures to release
+> direct mode reducing chances of bugs over the claim_direct_mode()
+> functions that are deprecated.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Matti Vaittinen <mazziesaccount@gmail.com>
 
-Thanks for your valuable feedback! Your insights are really helpful in
-refining my approach and ensuring alignment with best practices.
+Acked-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-1. DT Binding Flexibility:
-   I initially considered making the DT binding adaptable for similar
-SPI-based ADCs to potentially support minor hardware variations with
-minimal changes. However, your point about maintainability makes
-sense, and I see that most existing bindings tend to be more specific.
-I=E2=80=99ll revisit this and reconsider whether a part-specific approach
-would be more appropriate. If there are examples of flexible but
-maintainable bindings worth looking into, I=E2=80=99d appreciate any pointe=
-rs.
-
-2. MCU-Assisted vs. Direct SPI:
-   This was more of an exploratory idea rather than a fully defined
-plan. My initial thought was to assess whether offloading certain
-operations to an MCU (e.g., pre-processing or buffering) could offer
-benefits over direct SPI communication with the Linux system. Given
-that this isn=E2=80=99t a typical approach, I=E2=80=99ll take a step back a=
-nd ensure I
-properly evaluate the feasibility and trade-offs before including it
-in the proposal. If there are existing implementations that explore
-similar optimizations, I=E2=80=99d be keen to study them.
-
-3. Reference Drivers & Guidelines:
-   I=E2=80=99ll definitely check out the iio/dummy/ driver for understandin=
-g
-interface testing and take a closer look at recent ADC drivers to
-align with best practices. Also, I=E2=80=99ll make sure to follow the Linux
-kernel coding style closely and avoid unnecessary deviations.
-
-I really appreciate your feedback. It's helping me reconsider certain
-aspects of the plan to ensure it fits well within the IIO framework.
-I'm looking forward to any further insights you might have.
-
-Best regards,
-Prince Kumar
+Yours,
+	--Matti
 

@@ -1,57 +1,64 @@
-Return-Path: <linux-iio+bounces-16690-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16691-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7E2A5A3D6
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:32:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04E3A5A3DC
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC2A71891F17
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 19:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77ED73A5561
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 19:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0AE236A7C;
-	Mon, 10 Mar 2025 19:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B47233D86;
+	Mon, 10 Mar 2025 19:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t4SFELSS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKskT/AX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC9723315A
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 19:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3716E1CAA60;
+	Mon, 10 Mar 2025 19:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741635142; cv=none; b=Ye14cGTUhKg80s8Dnpe0KlqYOoGy00DxirCDYOr7ilfAQ3sT6LeBYvG4yrRVGj3Sj24pA7P0ikG/GfNkz01s63t4cXOTO5v/GliXykxjPkHrTKe23gUAP1mgkyAZBJX2N8bi2xGBWA8MJFe2eZdk9J/HkvTGfQJL+hFFaPn7vxc=
+	t=1741635339; cv=none; b=ehvIDCafMqsBeEpnitS1iqCLiKAZgs0epvXoX11mShjJac0wujR9/1NFW8Flv2wKXJf0QXbXmcTBVLmWa5GQJsWD3v/JcDkIQmrXju3rESa5+viyQPfz9EzV/NJO4Cbmik7nFD5G81FVk62LyQOQ38tUcv3nu1Hq3EC2mmEhAYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741635142; c=relaxed/simple;
-	bh=jVos7i5igW5IuX3DPvgb/WOP7d0ArL3YFgPQSGLFfDo=;
+	s=arc-20240116; t=1741635339; c=relaxed/simple;
+	bh=mqvIm7CQVKu0FB11g1YGAcy3O/ZG5gcTFuHUtGtOHXA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CtvKUa7E543zzoZXs1o+NfEBL8seuedzpTuYCb+MNUZvwO5xn6S74/huPE88JM7ZdzbG8WsBwz+QHTKLiJuS1Bw01Cm6d3xPoUFKUTJhTRpOo+yoY4y+eSCLUVEQIkZI3UsgoFVdHfkWfuWSbRTvPryYJjs7C4/c5y70O421arg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t4SFELSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210EAC4CEED;
-	Mon, 10 Mar 2025 19:32:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E94h+YeuhG4orq7VbGc4vT1qOwiHlsiwHRk1/EDyB3TIWXZhgKMhDnoK5WGdLvlB/mKpaC52CyvgK9Hv+JfHXvyauyLb3VteJ4wiNXkJnGGsWNG21qh8TtVaBENPvLikOapvTlFCOWALp00A2Ax3QI3RIx2HY6ahDHyLlMF0/yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKskT/AX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F14CC4CEE5;
+	Mon, 10 Mar 2025 19:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741635142;
-	bh=jVos7i5igW5IuX3DPvgb/WOP7d0ArL3YFgPQSGLFfDo=;
+	s=k20201202; t=1741635338;
+	bh=mqvIm7CQVKu0FB11g1YGAcy3O/ZG5gcTFuHUtGtOHXA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t4SFELSSqKcXx7f7Dm/lGpPOXliZjYo2jj1RcOV1UweXaGZaoiCdo5TkQ3ah8VSsl
-	 M2ZWUZk5xG3zPzHMnSzTgySixnGsiNoSPUAgYIN79ZpCf7ih9eW/9HHqVdD3mFBAku
-	 m4+uY45LNK5Nd0Bj/Gl3Hi9MYRCW5b0ntfOSRu3E5/D9bKszL53SNb9asRmSrkO0gW
-	 Ka7fX5Fr3c1VE4mYTR6DRbo5CCMVieAsaN0ovZB1BhOrZhRgm1VZNkDRzyOX4RdL52
-	 Anm0J2W4aEEfQq/fobqtFW/03bN92phHY4dHP4JLPrz8dBWOK1DK4XFJ7MxQvqpxH8
-	 e4knfpTQMzODg==
-Date: Mon, 10 Mar 2025 19:32:15 +0000
+	b=cKskT/AX2L6B8zrQve0N9GOi524W0eT7Eh3oPQs7POL4LZp4yyppUCR7PDCMma7zP
+	 dw3yobp4X0gZ7uo32XDZfCTfjyLwN75xK7uctKZOgr9IaELke4rA/wE3W6bYqV8twm
+	 LgpOLV1OpZ5QP04ZhSWpd4pz7VSSHo6qfW1oyYRuakJzHOuqOj5Gun/HSyRFzvtF9n
+	 dhtdWCjXFP39EkQ+j4vO4ynXjOaqK6cxHYg+0Eddyam/2POJHyJ/rSyFhMn4CxJ/uD
+	 R4CAW3af5r7Dx/XcT00wMZpA94AxUOzMm/EU5UDDocanIo5OzqRY8tIBBBW6eVRGSh
+	 gwtt3hNtpsMaw==
+Date: Mon, 10 Mar 2025 19:35:28 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Prince Kumar <855princekumar@gmail.com>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: Proposal Discussion: ADE9113 IIO Driver Development for Linux
- Kernel
-Message-ID: <20250310193215.0f091dc0@jic23-huawei>
-In-Reply-To: <CAMmuoAJy_GPL-7tfbrgH9U4T4UvUiDoHozw67BqadoV_nAJXog@mail.gmail.com>
-References: <CAMmuoA+1Qi2qnF64nmHobL6hSFdf6GUrX=BjZ=0aGULu75b3GQ@mail.gmail.com>
-	<20250309162637.6937c7c6@jic23-huawei>
-	<CAMmuoAJy_GPL-7tfbrgH9U4T4UvUiDoHozw67BqadoV_nAJXog@mail.gmail.com>
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Conor Dooley <conor@kernel.org>, Jorge Marques
+ <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>, David Lechner
+ <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 2/4] dt-bindings: iio: adc: Add adi,ad4052
+Message-ID: <20250310193528.35d35c2e@jic23-huawei>
+In-Reply-To: <sf7hqjyzal2jmbrf72xxj4cewrkq6bsjwlkbinqv2zan57cq3s@hwhfwmabtk5q>
+References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
+	<20250306-iio-driver-ad4052-v1-2-2badad30116c@analog.com>
+	<20250306-promotion-tarmac-bc5172f38f31@spud>
+	<sf7hqjyzal2jmbrf72xxj4cewrkq6bsjwlkbinqv2zan57cq3s@hwhfwmabtk5q>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,54 +66,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Mar 2025 10:33:44 +0530
-Prince Kumar <855princekumar@gmail.com> wrote:
+On Sun, 9 Mar 2025 20:43:55 +0100
+Jorge Marques <gastmaier@gmail.com> wrote:
 
-> Hi Jonathan,
->=20
-> Thanks for your valuable feedback! Your insights are really helpful in
-> refining my approach and ensuring alignment with best practices.
->=20
-> 1. DT Binding Flexibility:
->    I initially considered making the DT binding adaptable for similar
-> SPI-based ADCs to potentially support minor hardware variations with
-> minimal changes. However, your point about maintainability makes
-> sense, and I see that most existing bindings tend to be more specific.
-> I=E2=80=99ll revisit this and reconsider whether a part-specific approach
-> would be more appropriate. If there are examples of flexible but
-> maintainable bindings worth looking into, I=E2=80=99d appreciate any poin=
-ters.
+> > > +  compatible:
+> > > +    enum:
+> > > +      - adi,ad4050
+> > > +      - adi,ad4052
+> > > +      - adi,ad4056
+> > > +      - adi,ad4058  
+> > 
+> > Can you mention in your commit message what differs between these
+> > devices that makes picking one as the "base"/fallback compatible
+> > unsuitable please?  
+> Sure, to be added:
+> 
+>  Each variant of the family differs in speed and resolution, resulting
+>  in different scan types and spi word sizes, that are matched by the
+>  compatible with the chip_info.
+>  The device contains two required interrupts (gp0, gp1) and one optional
+>  gpio (cnv).
 
-The problem with increasing flexibility is that in usually means
-more complex matching rules (see allOf/oneOf statements in existing
-bindings) to ensure we require what is needed for a given specific
-device.  Those are a lot harder to read than separate files but do
-make sense if there are only one or two minor differences between
-a small number of devices.
+Explain why the interrupts are required.  That is unusual.
 
->=20
-> 2. MCU-Assisted vs. Direct SPI:
->    This was more of an exploratory idea rather than a fully defined
-> plan. My initial thought was to assess whether offloading certain
-> operations to an MCU (e.g., pre-processing or buffering) could offer
-> benefits over direct SPI communication with the Linux system. Given
-> that this isn=E2=80=99t a typical approach, I=E2=80=99ll take a step back=
- and ensure I
-> properly evaluate the feasibility and trade-offs before including it
-> in the proposal. If there are existing implementations that explore
-> similar optimizations, I=E2=80=99d be keen to study them.
+Note the driver can be stricter than the binding, so it may make sense
+to require them in the driver, but leave it flexible in the binding.
+If someone has a board without them wired, then they can look at adding
+polling or timing logic to avoid the need for the interrupt lines or
+at reducing functionality of the driver.
 
-There is SPI offload logic in the kernel that will merge this cycle.
-(it's in the IIO tree on git.kernel.org togreg branch
-
-Expanding that to MCU based handling (all implementations are currently
-FPGA based) would be an interesting project. May be too complex to fit
-in the timescale of a GSOC.  Perhaps a valid stretch goal though if the
-rest falls in place quickly.
-
-Jonathan
+> 
+> > > +
+> > > +  vdd-supply: true
+> > > +  vdd_1_8-supply: true  
+> > 
+> > You're allowed to use . in property names, and the _s should be -s.
+> > That said, vdd and vdd 1.8? Shouldn't both have the voltage in them in
+> > that case?  
+> I overlooked the supplies, the correct are vdd, vio as mandatory,
+> and vref is optional.
+> 
+> Jorge
 
 

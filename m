@@ -1,81 +1,80 @@
-Return-Path: <linux-iio+bounces-16708-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16709-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF1EA5A532
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A41A5A534
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C3B3AE276
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEDF016F018
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E031E102D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80681E1023;
 	Mon, 10 Mar 2025 20:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2QBWZ2je"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="J9QOgRqt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A08D1DF972
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F371DEFF1
 	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741639399; cv=none; b=rTY1CcODo2jfFFyhnckUSeH6SiTaZkHEtfIs9oMW6jVSskRO/FwyQC0DMXZq4udggtqzXj4OywzSVwuaG6pFZ8+q8MjBDorubQtr5gDzXF+CdOH1hsiyLCu5hp1rpUglZrygPWgfTXqPqECZRHrHH0B+0BHq/GAAOgFFl1wju7A=
+	t=1741639399; cv=none; b=sbzU/ZWydYi1HivjAcWpO0YixZWp6UpAcW/gnjViRX5MR53TSN7YtssuFcQLwctEjTWUmA0FtVBoakX1pBg5kTTlaHmODHCiTYyvjlo0pJl0o9oLqL54QoeFjIcUbYCWIrSZhyrfoBaWIzVphqPfzBqKOXktxyjM8FGsYtmzBag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741639399; c=relaxed/simple;
-	bh=u5ePsmfcDhDkeOwFNFmtVTRv9Rit4LfnW4jtEHfO+UI=;
+	bh=Hsc2lTWIH/R8fBT/8ZsO+EBhdL1BLa9dPLrp8/P/Dew=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EhtP6BNifxLCbI+ShOVLVCrq2YqJXRhJW3Vqc7rWWZgYQR3QziUN/MCWLZa3aI2ths8EeULOk9KfvvomLwdDwyM6c0qUwp5FlLlM639H7ipQXXiy7VXWXpkGlWkhwZhxx8UKMns5Xfpo5GUc7a0a48bPLzlwXZwYeMiDVyqSKd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2QBWZ2je; arc=none smtp.client-ip=209.85.167.170
+	 In-Reply-To:To:Cc; b=bpXlwbjrkF8Zusy1+tpDZt2P+mA/5Cmu6Ony+KiQE9+zCdw1BJCXH+Muvd4l2+8FxNBJnW/OO9nkg5evthnjeUYdjUiU/ZjauR8GAElSbEgfLz8DfP0hE7wmzFt5Mu1tLg0cdBe6QbnaLVMmsgenFjWZAgg4O+CSImBEJfoTmzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=J9QOgRqt; arc=none smtp.client-ip=209.85.167.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3f3f4890596so2532509b6e.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:16 -0700 (PDT)
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3f682a2c3c8so2365920b6e.1
+        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639396; x=1742244196; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639397; x=1742244197; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OCuzGiRhkz0CBFkmeuLAdFa7ZCDNUYxNv2hZAmPEZO0=;
-        b=2QBWZ2jeRvH+x2Yd4Cnq3fBFXtxl+lCa8ugpxYp0AlArhQ+9lNadxKS/s5m84keVe1
-         EqlzsNQknkQTsyq6OVq31gzv0HXvb1z7p4n+r4p33Yr8ZLS6bWDtPEEGlC4eIE2hgk+3
-         /XK1POM2Kt9QhYhHIfJ8Qy0/ZU/rWoPbrXcZvHFVKm23qOyXG26pGotVOqyZCXNVei2X
-         rskPGKUR3K8uzwYNQpx30afgYf08dabGcvb5WNDqMYuDEpWjwBZ6ST+V0hzwlfSWgLLM
-         DCwSNn1sU3PnKxOoA/8sF+CQJr/KuI8q6Wcx6a3egejludKKaWLsvzLTN2bRUhDaiqgF
-         7hEg==
+        bh=fJTMB/Yj7akGz6eUAqBxkpGJJmFrHVTQNNCjxXAAAoM=;
+        b=J9QOgRqtmnBKDpKg2GVjW8tgLoTqw5QGLM2A0OdSA+U2f/ycjdk7+4YGc7apmZVrDq
+         7pq5BnufK7wh4WGTlXo85NcMxFMxqxMTZBjDiAtOY3b42uSzIkzO2jFUSXCxhz03e4WD
+         1jiyJIg9o7T9UrdBZV4DZoE6zrK3f4GIvQTZnU6S0POfWZkeNw1q9uGDNJlZo0UliM1D
+         EZkJ1HR0bfGqmirAexTk59rBUzcW95GJOAzHmecs74R4+gF2/z36ISQHrIANJnMaPGu4
+         nE4Af/38SFZrz0s0vBZi5tgPrDiHrekD6FLTFUtLSYGr/h0rXrnFIAdcKC5cRLX3fMYG
+         8vkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741639396; x=1742244196;
+        d=1e100.net; s=20230601; t=1741639397; x=1742244197;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OCuzGiRhkz0CBFkmeuLAdFa7ZCDNUYxNv2hZAmPEZO0=;
-        b=uhr34ZFI7wis0FesJup9gH8XZV5iWQ68EhaRBxaartJUghwUC3RvFwStRTWFzyJL9p
-         5zeNYydSYKv6XL+MH2km+S3HqPr1aXFi2v8dzjXVuk9nDVwkXhljS5U/84hq4idwmama
-         0bY7NXL0ti4Mz0nfHDwBjVO6RvIx1CJ8Mv2wGjJYjIj9QAfcYtbIJHjogn2Cr+pgSuHb
-         3GKQgS8dwWOdYtBd3JLsHtpkIaw1TlZ/68PHIbPYUfqgI6bMMShspKLXcgpwC+ewFETe
-         9o0Ur9xrzYQeu/a6YXRfQNSOLqdeITP5wzRBf0MyEc15oacOVTmpWmbTxzu3nRfMdiVa
-         y26w==
-X-Gm-Message-State: AOJu0YyF04eyUIDNC9kcioPxTdqWbL2EzL7WTKiJaWLCNSQrgGaPoBc3
-	qTx/Hzu0AE87fWNRvSRpKCRE9SH9rsIjpr9rsp87QpzpdygzKuanxLww9LijQcI=
-X-Gm-Gg: ASbGncv2P7DV1QWk6lI+oMNY7ckX4goUzsgD7RgTi806vk3a64Sw/vmsBTvlPUw2eEO
-	hYcaelhlq1VRG9nLvtPtp7GIj/WEe5F9n5QzPIyOinYxibTpe03zdnUSuWpi8eWnEzz3jSPKTR2
-	bYfXs5LfLi1kpJy26qcdF9ZxmrLKrzV3uJYi2OWs7vPLegIZQXPlwM8/IpRhextP11xcr/ralUa
-	lZJ3i61WLFrdrWNyCl5/Qrx5JWE095fhyrYEYgWkkwKOau8dQ5pzkfzwLh+0L+w8Vz+mVkYdoCe
-	oDzpj2xY6tUkrtzmJkxK+EHImBnworvFy4wOhZBW9ndziURERT15pXetjamYLQ//vBfvVA+t+PQ
-	1
-X-Google-Smtp-Source: AGHT+IFyOgnLNUP09CaNVpg3/60xdXC/GRP1hdw7pw4FVDHJLFomixKx8H+hEkS0rIe2cI6usE+vUg==
-X-Received: by 2002:a05:6808:384a:b0:3f4:1738:f804 with SMTP id 5614622812f47-3f697afe34amr8586223b6e.4.1741639396306;
-        Mon, 10 Mar 2025 13:43:16 -0700 (PDT)
+        bh=fJTMB/Yj7akGz6eUAqBxkpGJJmFrHVTQNNCjxXAAAoM=;
+        b=PMUMDIfGrs010qJoM0reoMpPwY/T6/reccYFaNoZQ2Zz8u1pbw0A72GGkyPT2If+2e
+         TOlV/cIB6ZYfmw4uP99yLoSjbS6UtxZoLXDkUvZR5hvL+OqOQLWFhnae1gDm1NaArqVg
+         JSQXYUDc+c1Y3fjk3OF/rax62CWK3Qm55m+GmJmhmZjRbA0CARnaI1V0OYqeO6i1nHnz
+         deA3hMu58VmAkfOghadKBLLP/VCvQpT2ZJ04pZO2uNO5CSVv03m30s9aTbTp47GkJ/lv
+         FW4y5qWDuQeGnlZGk9fUouoeHroUhj0kiHLm2yUVeQVvjrqjxKd988ROqqVSN4W62O4K
+         ACjg==
+X-Gm-Message-State: AOJu0YzjISq216jqjraR+btykx2X+yZDESHA6PoMOCCj7svY5gLWlpWV
+	IIlHqOgYBaDOGjknKES3gWsozO9JDZ8+bA/5rEWj3kWpFfulAJd6hM3hPDsSc7M=
+X-Gm-Gg: ASbGncuI18oPFsDeFZ7kTM/ypFTNTrFt2g9vlqwPUWyfaSyJYKp4RC2+86BWuLHloMk
+	FUINQ+fsGgOgVLEjMftoeEV/58nkp/yrxIEUMixWSsixAxrOht3icHBi+g2+PzCKNoNX6DvM7gk
+	BzlVKKrCaavEMEX2V5BwkoCT0PACgxInuqguahGWCoYA5AE3Nd0i6ui5+msjWX5u7tWG7MVQtzQ
+	W9KeeuO0iAZ5tNzoW5ONzf1Nz9k/X9TrqeE6N4/EFrazDz6i18d2Nsq7ho14HBSkymIdpS2MlUz
+	4mcZ/fwN+xviedMq5/MHox8oco5YdSooBPzX5Si7AVlwR5TDCU89YtnhdN6qSXBOLp8KU2vdoeX
+	VbA2Io5ZPRKU=
+X-Google-Smtp-Source: AGHT+IE/v8sgTJ1kpxF4TAz8lNU+kyH/TDaACDH4/rifKyICPd/DKFS6AuPRo2wZIJ/52GOdpWETkw==
+X-Received: by 2002:a05:6808:1894:b0:3f8:1df6:413 with SMTP id 5614622812f47-3f81df607d5mr3628760b6e.1.1741639397012;
+        Mon, 10 Mar 2025 13:43:17 -0700 (PDT)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.13
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 13:43:14 -0700 (PDT)
+        Mon, 10 Mar 2025 13:43:16 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 10 Mar 2025 15:43:06 -0500
-Subject: [PATCH 3/5] iio: adc: ad4030: move setting mode to
- update_scan_mode
+Date: Mon, 10 Mar 2025 15:43:07 -0500
+Subject: [PATCH 4/5] iio: adc: ad4030: don't store scan_type in state
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,7 +83,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-3-589e4ebd9711@baylibre.com>
+Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-4-589e4ebd9711@baylibre.com>
 References: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
 In-Reply-To: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -95,57 +94,86 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.14.2
 
-Move calling ad4030_set_mode() from the buffer preenable callback to
-the update_scan_mode callback. This doesn't change any functionality
-but is more logical since setting the mode is a function of the scan
-mask and doesn't require an "undo" operation when the buffer is
-disabled.
+Move getting the scan_type to ad4030_conversion(). Previously, we were
+getting the scan_type in two other places, then storing it in the
+state struct before using it in ad4030_conversion(). This was a bit
+fragile against potential future changes since it isn't obvious that
+anything that could potentially change the scan_type would need to
+also update the state struct. Also, the non-obviousness of this led to
+a redundant call to iio_get_current_scan_type() in
+ad4030_single_conversion() since it also calls ad4030_set_mode() which
+in turn calls ad4030_conversion().
+
+To simplify things, just call iio_get_current_scan_type() in
+ad4030_conversion() where the returned struct is actually used and
+don't bother storing it in the state struct.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ad4030.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/iio/adc/ad4030.c | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
-index f24b46164a477f9b6b5c93ffeba0a335f7b3de5a..c2117c7a296f22aeeec6911c8a8c74ed576296a0 100644
+index c2117c7a296f22aeeec6911c8a8c74ed576296a0..54ad74b96c9f256a67848330f875379edc828b0b 100644
 --- a/drivers/iio/adc/ad4030.c
 +++ b/drivers/iio/adc/ad4030.c
-@@ -868,6 +868,12 @@ static int ad4030_get_current_scan_type(const struct iio_dev *indio_dev,
- 	return st->avg_log2 ? AD4030_SCAN_TYPE_AVG : AD4030_SCAN_TYPE_NORMAL;
- }
+@@ -147,7 +147,6 @@ struct ad4030_state {
+ 	struct spi_device *spi;
+ 	struct regmap *regmap;
+ 	const struct ad4030_chip_info *chip;
+-	const struct iio_scan_type *current_scan_type;
+ 	struct gpio_desc *cnv_gpio;
+ 	int vref_uv;
+ 	int vio_uv;
+@@ -562,11 +561,6 @@ static int ad4030_set_mode(struct iio_dev *indio_dev, unsigned long mask)
+ 		st->mode = AD4030_OUT_DATA_MD_DIFF;
+ 	}
  
-+static int ad4030_update_scan_mode(struct iio_dev *indio_dev,
-+				   const unsigned long *scan_mask)
-+{
-+	return ad4030_set_mode(indio_dev, *scan_mask);
-+}
-+
- static const struct iio_info ad4030_iio_info = {
- 	.read_avail = ad4030_read_avail,
- 	.read_raw = ad4030_read_raw,
-@@ -875,13 +881,9 @@ static const struct iio_info ad4030_iio_info = {
- 	.debugfs_reg_access = ad4030_reg_access,
- 	.read_label = ad4030_read_label,
- 	.get_current_scan_type = ad4030_get_current_scan_type,
-+	.update_scan_mode  = ad4030_update_scan_mode,
- };
- 
--static int ad4030_buffer_preenable(struct iio_dev *indio_dev)
--{
--	return ad4030_set_mode(indio_dev, *indio_dev->active_scan_mask);
--}
+-	st->current_scan_type = iio_get_current_scan_type(indio_dev,
+-							  st->chip->channels);
+-	if (IS_ERR(st->current_scan_type))
+-		return PTR_ERR(st->current_scan_type);
 -
- static bool ad4030_validate_scan_mask(struct iio_dev *indio_dev,
- 				      const unsigned long *scan_mask)
+ 	return regmap_update_bits(st->regmap, AD4030_REG_MODES,
+ 				  AD4030_REG_MODES_MASK_OUT_DATA_MODE,
+ 				  st->mode);
+@@ -614,15 +608,20 @@ static void ad4030_extract_interleaved(u8 *src, u32 *ch0, u32 *ch1)
+ static int ad4030_conversion(struct iio_dev *indio_dev)
  {
-@@ -895,7 +897,6 @@ static bool ad4030_validate_scan_mask(struct iio_dev *indio_dev,
- }
+ 	struct ad4030_state *st = iio_priv(indio_dev);
+-	unsigned char diff_realbytes =
+-		BITS_TO_BYTES(st->current_scan_type->realbits);
+-	unsigned char diff_storagebytes =
+-		BITS_TO_BYTES(st->current_scan_type->storagebits);
++	const struct iio_scan_type *scan_type;
++	unsigned char diff_realbytes, diff_storagebytes;
+ 	unsigned int bytes_to_read;
+ 	unsigned long cnv_nb = BIT(st->avg_log2);
+ 	unsigned int i;
+ 	int ret;
  
- static const struct iio_buffer_setup_ops ad4030_buffer_setup_ops = {
--	.preenable = ad4030_buffer_preenable,
- 	.validate_scan_mask = ad4030_validate_scan_mask,
- };
++	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
++	if (IS_ERR(scan_type))
++		return PTR_ERR(scan_type);
++
++	diff_realbytes = BITS_TO_BYTES(scan_type->realbits);
++	diff_storagebytes = BITS_TO_BYTES(scan_type->storagebits);
++
+ 	/* Number of bytes for one differential channel */
+ 	bytes_to_read = diff_realbytes;
+ 	/* Add one byte if we are using a differential + common byte mode */
+@@ -673,11 +672,6 @@ static int ad4030_single_conversion(struct iio_dev *indio_dev,
+ 	if (ret)
+ 		return ret;
  
+-	st->current_scan_type = iio_get_current_scan_type(indio_dev,
+-							  st->chip->channels);
+-	if (IS_ERR(st->current_scan_type))
+-		return PTR_ERR(st->current_scan_type);
+-
+ 	ret = ad4030_conversion(indio_dev);
+ 	if (ret)
+ 		return ret;
 
 -- 
 2.43.0

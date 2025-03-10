@@ -1,136 +1,103 @@
-Return-Path: <linux-iio+bounces-16681-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16682-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 573C1A5997C
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 16:15:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1459EA59AD5
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 17:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C6316E79E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 15:15:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C50173A3B73
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B0F22FF41;
-	Mon, 10 Mar 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E55922FE06;
+	Mon, 10 Mar 2025 16:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iJJujxul"
+	dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b="AhYxiKbT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA4122FF33;
-	Mon, 10 Mar 2025 15:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23E622FDE2
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 16:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741619637; cv=none; b=tC5/J3D2Z32+NJM/b8l+AuI6WzwSEEtRiAB6YkHl9oHg1yo0HCJhG0sU4/EjKEYRnq9eY1urrNm2mSuuGMNDbDeYejBL5ODxVQR+I1vROu8cezNSOJJIFB1XKWJDt5l01z7zKMZcuq8nGs/jTfebaCfQZSP4UQPRi1PiQOBlrO4=
+	t=1741623644; cv=none; b=gbHzv+ZQtcZDtifgPfkuurUiYq8m2v20bvy33TjrmwJtOrAecF8j7x503qh0Bod8V5cFq8+AwThApvCETBox0/YTBz2TbJfo6ebN7VgsnppRpQKUxpvOiEBumqKl+p5uZsfMCt3b8Rz9qUYZH83mrYUFCuQ3au3MUI/8JPygMI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741619637; c=relaxed/simple;
-	bh=E8j4pIgtYeVUVyPLYeWsQ6wdM/3mTyY6T0E83ZHYNzU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=BI7kf2Q41HoWGbmm7ljOJ+gHIqhiaRg13xkKM9U67l9GPrpT4AVwVh9bmLEMXP3tiBkVyW029R2y608MywMGKKQXLAqXFfPWEshZWw6SVBESRLLQAtdmd+N+AxI+0/w3oxnjZPDfysGAZ4J/nHFioPPzTjdinmuPmRIXNzD7wX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iJJujxul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71B6C4CEED;
-	Mon, 10 Mar 2025 15:13:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741619637;
-	bh=E8j4pIgtYeVUVyPLYeWsQ6wdM/3mTyY6T0E83ZHYNzU=;
-	h=Date:From:To:Cc:Subject:From;
-	b=iJJujxulFWEs8Br8hqbYISk8Tujo00i169PIPNHrsXDEjwmWTKGeQbbQR1ptqtjOD
-	 BSqcllLruqCfmW26xbmMOR8eY3v1xJDW1t67GDozmSCMt1BKQn2kl2y1TfTDgOyhYt
-	 0lOrjm/qTQVdfe6dVcEPsPb/KlD3uP3AAHsrNboPK0cK8s1dArLABZHjdtvKTtWQLk
-	 IwJCoNBe7esLEi0kl39cBey0pYYsQtY3/r4g++V9TlOav7pjknjitEpEnnW2W/FRH+
-	 M5clvNcj8PVkFFXH/xqg6m9uAXieKswl7vYcgv6SfCT2rShQPMsaeYmHMNxIjGEN5H
-	 0dm9Vr1I8oTPw==
-Date: Mon, 10 Mar 2025 16:13:54 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Silvano Seva <s.seva@4sigma.it>
-Cc: a.greco@4sigma.it, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: fix possible lockup during FIFO
- read
-Message-ID: <Z88Bstpob7Jueugd@lore-desk>
+	s=arc-20240116; t=1741623644; c=relaxed/simple;
+	bh=T6iOa1jZH3wgWTSAzUB8I9yXEJW5ocA2pmnyyr8ieeg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ORciKdksaRTK8oaH6V3WmAFpvWPPoNp4jt9Ko5RBgyKMhAfI+SL0EVsFbmIzvBCk5sJaInEkJYXjGNcHFrC6xR5YnaMc1wJknLSuEFCvl37rxzfuFVWTSnXD7c3r9olf3i4ixRH20hQzzuRhGCsNDcdH2SEn2FtG1lqZBDhKARc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it; spf=pass smtp.mailfrom=4sigma.it; dkim=pass (1024-bit key) header.d=4sigma.it header.i=@4sigma.it header.b=AhYxiKbT; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=4sigma.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=4sigma.it
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6ff07872097so3104537b3.3
+        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 09:20:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=4sigma.it; s=google; t=1741623641; x=1742228441; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T6iOa1jZH3wgWTSAzUB8I9yXEJW5ocA2pmnyyr8ieeg=;
+        b=AhYxiKbTLT4VCSsgd/ZD5OXeuMxASNKAwHr7HvvzaO4vwMZoGbYlrHD6Sa9pGd9CHg
+         7m49janNLJoL1FwCox9pf/Ep/f1IliG3xry20IaT1nuuXwNBRcYulToYfH0BQwImiN0Z
+         hZdfyaZJPHQ4JyoamfqHyT/2dzMLfKjNydcIM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741623641; x=1742228441;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T6iOa1jZH3wgWTSAzUB8I9yXEJW5ocA2pmnyyr8ieeg=;
+        b=fMlI16swTNbpg3F7FlSZr3FVAOAXw/up0/CeWUSZiKNU9JYPOxAObIpEj5suWOIb/U
+         33lYSnZznUdAj95PrC8I0wQerd5QsP8iHfm2KxXLDsqcMRay1oEmdzEutFmaey+sIvNg
+         //P9sBwOBU7YcXNJNrO60qKpMtBTelROg3szFqPRTkzcIXCxOvY6CCOj6sUzzO/ZOpSy
+         60WkwyvN3q+8euvsM6KSDum8H9ebVQ8Udf4SbFBz2CtxT6WsnquDxpQCY+5Q3M3SwMA7
+         qdzDftSI6YQqm6TdP9K0/jqWhv+KHajvMJjDlHudIeutnwUhJgrvuXk2RSpAADzl3GT4
+         VAXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUyCGLmpFU0UIUjwrMLmIsSJLge6tOUYcgQuHWh1ol3iHpHljOqpl0C7suroMOqnMPApEJUu8uwtRQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpZn5yrj9bNS9KvCVSPQC5g+6ykZUmYAbciiWaCb+/lza71mOX
+	2EVF5rNGgK4cKjIvmPBbijlqhvYtg2p9Vaqa04Hqjq2QtwZIpIXr6CxF0fqBLN5C3uUadRbGqEW
+	vGLwmWMydJpBl39qJ1V3fj9G1XZwv6rvxzvFd
+X-Gm-Gg: ASbGncu9ms019Dt2rjGaR2ZZdaJ83Lcf7TdxoiM6JJ9LfodRchwhzd8meIrz2ce+oET
+	LPYEXWvgdZrRxHe2mSUg+3yaGEEVOnM5iU4S2bbqOGtxb/JgmmqjSTpNmXy1Ufa/C+wPo7izhIg
+	Kjbo9jShr/5OWxCxfRto1tX1c4nds=
+X-Google-Smtp-Source: AGHT+IEATwLgs4c10Hn/o/KpnRHaC9/EmHSULlF6S+MyWOY6uz29zZxyL5phU+mos9IlnqhGr01S3PTPa3io7zY2X1g=
+X-Received: by 2002:a05:690c:6109:b0:6f9:56a2:80f9 with SMTP id
+ 00721157ae682-6febf3c2cc9mr176692547b3.27.1741623641365; Mon, 10 Mar 2025
+ 09:20:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="TCV8Nel+ysraon/u"
-Content-Disposition: inline
-
-
---TCV8Nel+ysraon/u
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <Z88Bstpob7Jueugd@lore-desk>
+In-Reply-To: <Z88Bstpob7Jueugd@lore-desk>
+From: Silvano Seva <s.seva@4sigma.it>
+Date: Mon, 10 Mar 2025 17:20:30 +0100
+X-Gm-Features: AQ5f1Jo2J-5qX7H_tLcvyVqMf_OJ7vZ7IojegLdd57E2VU8_5xZ7EmyYnmvUOLQ
+Message-ID: <CALKJsrr6iahFVT-cycrvzkOKQAOvzAxo4trvWvXK0D1cEOy33Q@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: imu: st_lsm6dsx: fix possible lockup during FIFO read
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: a.greco@4sigma.it, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-I guess it was v3 in this case :)
+On Mon, Mar 10, 2025 at 4:13=E2=80=AFPM Lorenzo Bianconi <lorenzo@kernel.or=
+g> wrote:
+>
+> I guess it was v3 in this case :)
+>
+> Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+>
+> Regards,
+> Lorenzo
+>
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Yes, sorry. Is the first patch I submit and I still need to get used
+to some some parts of the workflow.
 
-Regards,
-Lorenzo
-
-> Prevent st_lsm6dsx_read_fifo and st_lsm6dsx_read_tagged_fifo functions
-> from falling in an infinite loop in case pattern_len is equal to zero and
-> the device FIFO is not empty.
->=20
-> Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
-> Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-> Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-> ---
->=20
-> Changes since v1:
-> * st_lsm6dsx_read_fifo: moved check for zero pattern_len before fifo_len =
-assignment
-> * st_lsm6dsx_read_fifo: dropped check for zero fifo_len
-> * added Fixes tags in commit message
->=20
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio=
-/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> index 0a7cd8c1aa33..8a9d2593576a 100644
-> --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-> @@ -392,6 +392,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
->  	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
->  		return 0;
-> =20
-> +	if (!pattern_len)
-> +		pattern_len =3D ST_LSM6DSX_SAMPLE_SIZE;
-> +
->  	fifo_len =3D (le16_to_cpu(fifo_status) & fifo_diff_mask) *
->  		   ST_LSM6DSX_CHAN_SIZE;
->  	fifo_len =3D (fifo_len / pattern_len) * pattern_len;
-> @@ -623,6 +626,9 @@ int st_lsm6dsx_read_tagged_fifo(struct st_lsm6dsx_hw =
-*hw)
->  	if (!fifo_len)
->  		return 0;
-> =20
-> +	if (!pattern_len)
-> +		pattern_len =3D ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-> +
->  	for (read_len =3D 0; read_len < fifo_len; read_len +=3D pattern_len) {
->  		err =3D st_lsm6dsx_read_block(hw,
->  					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
-> --=20
-> 2.48.1
->=20
-
---TCV8Nel+ysraon/u
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCZ88BsgAKCRA6cBh0uS2t
-rO6cAP9lH4mAzcPivWU2YzjjjKdDQnuieoUA6RK+0d++MzaFxwEAsxwK5sOeNt5O
-yeWZot/H9Wz2BM/v71/uWH2P+Iz2cgU=
-=iG3h
------END PGP SIGNATURE-----
-
---TCV8Nel+ysraon/u--
+Thank you,
+Silvano.
 

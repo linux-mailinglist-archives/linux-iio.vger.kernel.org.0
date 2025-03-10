@@ -1,79 +1,80 @@
-Return-Path: <linux-iio+bounces-16705-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16706-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3477A5A52B
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE8EA5A52E
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81442189163F
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:43:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED2081892097
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A711DEFDC;
-	Mon, 10 Mar 2025 20:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9B11DF73B;
+	Mon, 10 Mar 2025 20:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="deu/J9Wa"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="n6hqXagm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015DD17BA5
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2C21DE8AB
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741639391; cv=none; b=MAZGxd6cXdEIZXuJnOo53VwrTc2oyp28HOO+z2jzCEHvgz7BrPyMI/FxR0pk7dCHGKuRNQUvRVrUf2Af+/VXF5mNx1nWwZ2tvDYtGbakAoj52MXZ4YzpPdNG6ioCWoODoScGkyQB/Apl+lbjyobQp2YwgvI2HHckB3y9Hzh5qvM=
+	t=1741639394; cv=none; b=YEgUlXU5BMk7E5rrth79LNQpoY7g3MdIsUNi0a19NFOYEjBW9+4jQEj+IbtvHomBYDcJ9K9CUk85yNWENtlltHhxtQVndDRZmcYi6Pz6dUvmiFddHF+nmfR7GEUwDTH+Fs8RysaD0jKS23WnM77ycdnzJSI4ZVTBBG6bDvLkbnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741639391; c=relaxed/simple;
-	bh=3SrpO+SLfjeGySU4NOt+3eLm43DAaCmZFXhMiw2KWJk=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ny0zVL1By3haNJ6bxtnvs69uHaXh8w+P3HWmgCitYcA751xWPfd6dwI55cPZ5v+jOR7I/CramiwM4rlqCqyX3zsi8lb/uk/7thEfA/lb5MzjmKzrwKzj61M7Zzm9B7UkVY2aqia4DUu5nagDEKt0wZsad4YcUOGoiASkGrrUsNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=deu/J9Wa; arc=none smtp.client-ip=209.85.167.173
+	s=arc-20240116; t=1741639394; c=relaxed/simple;
+	bh=0xf2lfBMlkwq8GDrukDrWvlzGt+OAqJxAVu2qGUaX1U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=g87SY62xafoii3vmLphyYfMOg6/tIi8lF23Ayoe4PcsBInVTW6yaFe6QdjEGrP7PRrJuj8a749Vql/AXMrIe0+zKmwQslCKZHSJ9VyO8UP6FxknRzBwCF6QZhYbIbHkawwJAHeJdOvJ6I2KDyFiphhF42qAF6bAjc7apkBIq9Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=n6hqXagm; arc=none smtp.client-ip=209.85.161.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3f3edbef7d2so1557942b6e.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:08 -0700 (PDT)
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-601a4e037a5so829458eaf.3
+        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 13:43:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639388; x=1742244188; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F1Uwtz0E2eftoKGPgXBkETiGlWCcSKKeqX6BxnxUh5k=;
-        b=deu/J9WapJidEbiYp3rFVm8mLFBXyeIKSgV08pyFQVQdMZQVbZOXHytIF+TE6mperF
-         UiBf1F1Am3SRBGAXjghb8AkF/CqHSK7W8dd6MBRg2KzbvRH2MsUmfZ4ea4Qlpjcl5qVb
-         nzeRPfgz2rMoQUSyNByohDfmDnu0BTi0vmtIisDUB1SViMLKlWwqyqeRYPgQLCmSCZfH
-         98M61rPa7nlQwMtIwL0VnXHCmzW5owyjFKI3orP4Lbg4yxufiVkL4HjAgbxeVFdQ/ajh
-         iYLfsbV4l89+EJHaBu5QmEHc1H2JisCODNqbO4+EdFXSn4IwEJ9x7EGhali9bxfclijX
-         KYpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741639388; x=1742244188;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741639391; x=1742244191; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=F1Uwtz0E2eftoKGPgXBkETiGlWCcSKKeqX6BxnxUh5k=;
-        b=YJv5pq5r5rDzPqzr4Y8c0jq0Wz1Law1Fj974oGxIWL5cJ68M/e7uGn1LeHDOllO5+p
-         Oq99wRG0lFJAF1WekjBwU5iUWpxSUZGojdapG0QNoywk4SDATqQAltGD7zeb3wWLfu0i
-         0QfQZNA1yco4sa0ojtrl3VSe50l2H+aYMZ0isfkeIYkLAo/IvhPucLvgqH6+cBRJn0um
-         noWeQ1yp6zw8WYIQePMYHqwFPg/b1/3f34dwqIjoEQdRvCX5qXkDKgPNlOOlpgOOMQTW
-         xM8IpImK7pT4jaNpRgzo5Au2N2fu+ilSKq88yLbrm+W1Hx5wLz9WLUTwL8kLOIIE51W3
-         LxkQ==
-X-Gm-Message-State: AOJu0YxCKKdnBlgKLOFuIEhdl0nQfK+FJN3FiIC0dRciab8MmRpB3gmH
-	OdGPDA1bYl9MsiQ0jPra8ee9F7qy0nlWPnWZUa74chLgVL24USlfiV39/kE5GUA=
-X-Gm-Gg: ASbGncvYmg1dyLJv7nEyFn6jlcDaYc2nst4zR1oCfzkCDmnEg7oIemuwdwWdEEmovtl
-	9JmSpm+qGQTlyQeBLWQtW/IiaUx2RdYbcsKteX33n0wiW0KSODU80IJaPgJ8pG/dODSRMN5/gRC
-	Bp9i6kl+5zkrVe6bgw5sA7OxUvQYaiKSZ6Z30ZWsTU83BoURVhqQdjec9xRP2IrwZbf1NPbniVP
-	ehrKOOfyguiCZiwosHlNdCQt3jf0sdP/k9tKAPD52KNlau4x7YEtPhB9241zWd6OYdneY1rfFGt
-	GhxENO6WDdN+RCZftnmba96rpB/msbPD9w81zbSnqHOEYEerr04Bxo+HsyAbSwsvGSW4Fztk902
-	A
-X-Google-Smtp-Source: AGHT+IFCUqL25r0cgLNxG0Su4KlpP7XmTF9Z5pKvu36TT/JlzyZ/GaccoxuJ0kue1KZ4WSuhE3fdng==
-X-Received: by 2002:a05:6808:3088:b0:3f4:bc5:d478 with SMTP id 5614622812f47-3fa2b30fb02mr502464b6e.25.1741639387999;
-        Mon, 10 Mar 2025 13:43:07 -0700 (PDT)
+        bh=epdj0pGglcLo1fb3QxJPZQv/lE+WglsZbV58ruZDnRA=;
+        b=n6hqXagmka+4Nw0mNflqhQASedNuAW2+qwbRmRCHJlBVF+i5nNZW+qpNmakA64UrhS
+         Ar/SlCFYpaKCmaTUaX6SBuvUi8EAsSip1URPpIQgOIePIuo1CQ5UjiAKz1X6Ae2pJefd
+         jelbsfld/VB82/6WFOcPJIErttJEzUOprv9OskVwyKm02S/Mxh9CgLaGLdRanmoTz/0x
+         eB1x66dzpBWwDAe7HbLSAJpqVMpHWpQ5ya/KWJHJiuAIjA/VlK1EFIyrQyiS4VH5hN2z
+         uVr1Wk9LhuzzsuaypYD6a9d6PfobF0zUa2UEtPifSK7NIMMtaUTJVRwhltRHjwnlEIFs
+         UAHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741639391; x=1742244191;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=epdj0pGglcLo1fb3QxJPZQv/lE+WglsZbV58ruZDnRA=;
+        b=aOLArsCzoiUkdWRczq47q8qxtd6c8vUyzM255DhZwn645Pij4kzBHlgQ1kGAb2/Gwm
+         GGfkelSHztcuQ1zGkzeN09wtVV17mX66Q6JIbLm9dbWRXEGv9qi2MKUJkxGvwzKMuoLv
+         zCLcLat6gb3EoQD/wn2Q7CnSF2Eg8eeeHiqVeqCuxWaw1MWyLWhbx/1wNRhKemUL+J97
+         uMnwhplIIb8Gg69jy2ZLLPS5y0Au77puOErlGhMR/Ys3yNM3X/cJGiy+WLeYQXvkApks
+         IqUe9mNTz9+eubuJFuSCpmBOsGfSpHdzvco03shn+V8TgO47duJz4v6LVTD3vJYgC8oF
+         Z6xQ==
+X-Gm-Message-State: AOJu0Yw2N0YNS4W2+yk+fVZtiTc1gVZZKE96UkYiCSOJZA7Eg/Og0IZb
+	5jtIUsC/1EGXIemU6sN+4BrkQVIkb9NvNXHu50f3hDMMsq0iayL2AhjsgNIe+5s=
+X-Gm-Gg: ASbGncvT/pL5fmnQFRs1Dqd3jOv+YsoYqCsAS+qaO0fVA9ysOhQu21pWEAfERgE2hPz
+	Oi5Cs+dmgjwRmvaPKubVWHDURNYTIW2UeAAuc0lJxi9ejh4lNoKODmg/p93rrmiuAZFu3O1gwkH
+	iAMNUeiitsP3TARhI4ywLJqNbpTnzXywFtS/fl2w7yz39w7DTDLPcKFVIpemNYHsmGq2ObwR/Y4
+	HDqhVzqB9tEftGTs5djBcuK+uuga4YnDa5/43Cmo6e8qad8fz7X20iE40fJFf7S47O4yXxb9VxR
+	K9zjC4ceJPn0d2agmqJREInjHjr1EgkwAtgAKcOD+cKUWYBdve0P3a8Y/tiiLXZIsx0OmY9sEEk
+	SYt8HqWB4Dlc=
+X-Google-Smtp-Source: AGHT+IF3tmx1kGHFtcRxx4TOJ+aZvJTTIq2iqIl6c/KAO5ngljUPVei58WxV+MNvlmlbqMMyOLaJYQ==
+X-Received: by 2002:a05:6808:1b26:b0:3f7:ff67:1d9a with SMTP id 5614622812f47-3fa2c78e8e6mr559991b6e.36.1741639390752;
+        Mon, 10 Mar 2025 13:43:10 -0700 (PDT)
 Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.06
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3f855f69b1asm764315b6e.30.2025.03.10.13.43.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 13:43:06 -0700 (PDT)
+        Mon, 10 Mar 2025 13:43:09 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
-Subject: [PATCH 0/5] iio: adc: ad4030: scan_type cleanups
-Date: Mon, 10 Mar 2025 15:43:03 -0500
-Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
+Date: Mon, 10 Mar 2025 15:43:04 -0500
+Subject: [PATCH 1/5] iio: adc: ad4030: check scan_type for error
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,10 +83,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANdOz2cC/x2NwQqDMBAFf0X23IWNMWD7K6WHsL7WpRBlU4pF/
- PcGD3OYy8xOFW6odOt2cnyt2lKahEtHOufyAtvUnHrpk8QgbLZwnrQxSBTWGfrmqrnw57eC4c4
- yplEjYgpXpRZaHU/bzsn9cRx/MZClj3QAAAA=
-X-Change-ID: 20250310-iio-adc-ad4030-check-scan-type-err-0858c3e3519c
+Message-Id: <20250310-iio-adc-ad4030-check-scan-type-err-v1-1-589e4ebd9711@baylibre.com>
+References: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
+In-Reply-To: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
@@ -95,29 +95,50 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Dan Carpenter <dan.carpenter@linaro.org>
 X-Mailer: b4 0.14.2
 
-This started as patch to address an unchecked error return of
-iio_get_current_scan_type(). Then while looking at other code related
-to getting the scan_type, I noticed some opportunities to simplify the
-driver a bit by removing some redundant code and clear up some things
-that were not so obvious to me.
+Check scan_type for error ad4030_get_chan_scale(). Currently, this
+should never fail, but it is good practice to always check for errors
+in case of future changes.
 
+Calling iio_get_current_scan_type() is moved out of the if statement
+also to avoid potential issues with future changes instead of assuming
+that the non-differential case does not use extended scan_type.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202503040954.n6MhjSsV-lkp@intel.com/
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (5):
-      iio: adc: ad4030: check scan_type for error
-      iio: adc: ad4030: remove some duplicate code
-      iio: adc: ad4030: move setting mode to update_scan_mode
-      iio: adc: ad4030: don't store scan_type in state
-      iio: adc: ad4030: explain rearranging raw sample data
+ drivers/iio/adc/ad4030.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
- drivers/iio/adc/ad4030.c | 60 +++++++++++++++++++++++++-----------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
----
-base-commit: 66cadadbc94e18070245af7053f115061a73f016
-change-id: 20250310-iio-adc-ad4030-check-scan-type-err-0858c3e3519c
+diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+index 9a020680885d93f4da8922e5cfeecc0c7ce23f4d..af7a817e8273496e8856a5ba1a9c2e66a11f0a84 100644
+--- a/drivers/iio/adc/ad4030.c
++++ b/drivers/iio/adc/ad4030.c
+@@ -390,16 +390,18 @@ static int ad4030_get_chan_scale(struct iio_dev *indio_dev,
+ 	struct ad4030_state *st = iio_priv(indio_dev);
+ 	const struct iio_scan_type *scan_type;
+ 
++	scan_type = iio_get_current_scan_type(indio_dev, st->chip->channels);
++	if (IS_ERR(scan_type))
++		return PTR_ERR(scan_type);
++
+ 	if (chan->differential) {
+-		scan_type = iio_get_current_scan_type(indio_dev,
+-						      st->chip->channels);
+ 		*val = (st->vref_uv * 2) / MILLI;
+ 		*val2 = scan_type->realbits;
+ 		return IIO_VAL_FRACTIONAL_LOG2;
+ 	}
+ 
+ 	*val = st->vref_uv / MILLI;
+-	*val2 = chan->scan_type.realbits;
++	*val2 = scan_type->realbits;
+ 	return IIO_VAL_FRACTIONAL_LOG2;
+ }
+ 
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.0
 
 

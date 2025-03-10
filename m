@@ -1,60 +1,63 @@
-Return-Path: <linux-iio+bounces-16694-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16695-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24EFEA5A44E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:02:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59432A5A450
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBF943AEB93
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39E1F1893673
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697E51E0DE6;
-	Mon, 10 Mar 2025 20:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94151D88D7;
+	Mon, 10 Mar 2025 20:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RIbdkx1r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sb/dLF2/"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2D91DED68;
-	Mon, 10 Mar 2025 20:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63A1CAA8A
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 20:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741636860; cv=none; b=rNUUQIm8aJSua1CJwvzx1F/24+EfpPevA12Yt6DnR5LKGKv8mXmwlB5C8CjC1pywBMpSUveTrg35cBeb/k5lLE6drVyD5DgEPnHs+BvVW2UmwQXnTpbq7YW2q273qvW0eWnMC4RW5KgUFPNpeLhcmekUAOvFaVPIqZCrrMg9fds=
+	t=1741636911; cv=none; b=jAWBtwAMhMhn3L0Xh3QugCpscldjp421abwWd5LxEKirR+yqbPOPYsPDwQ/ow5T5kVcN5WPnegWVzHz85VWNDhzpzIacX4YWiaPvO/T+hiuT/wCAEyflh90y66CtEOmD6Ros9v+sYpnqbJdYHLP2qKxgdy5bl7ert0D0N/ag9so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741636860; c=relaxed/simple;
-	bh=PqhJ6nkwaqXg1KtCFXSLvpzSP921WbawLYG/p2fFBgs=;
+	s=arc-20240116; t=1741636911; c=relaxed/simple;
+	bh=C5fjZk5SaVLvFBGs5YS3Gc6lBiiUI+LEF6zN1olQhbI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I5ic6Jh1qJOin2i2LRSSe396JmxKwk8PPxdi2/qcmFxvkpJFq7asW8DMhnbO6Ocn9UnIGSE1tNCPaJM16TD1yKLjZeQ+HatJK+PEYcPaC/czj2xhktyb40rmeqQTDhOYYAj/WTTIMmqKvs9iP7mtAvBG5VWX/0V4KwFbTMFoZUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RIbdkx1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18558C4CEE5;
-	Mon, 10 Mar 2025 20:00:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t7Spf/Lsm2zeAieS2fgyCfKZ8bCF5BbdnOkinUInCJlV6PyWps/Gb1UKPBrnf0UZes5Ox/6oVH5xkLZmoPvCPtU4xzIxMPbbvvVP13PIn3Vi+tYRzgjIr5gf9tRMjiXfiXOK3Aqo+/hsqJrV781HGtCwolgoykSjr65HiF8H6Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sb/dLF2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D48EC4CEE5;
+	Mon, 10 Mar 2025 20:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741636859;
-	bh=PqhJ6nkwaqXg1KtCFXSLvpzSP921WbawLYG/p2fFBgs=;
+	s=k20201202; t=1741636910;
+	bh=C5fjZk5SaVLvFBGs5YS3Gc6lBiiUI+LEF6zN1olQhbI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RIbdkx1r7ois3i0X5YbZS3WU4c6/PR1Kuh95eikLY7v7yvsPa3h0dYjB5nWSQ4rJd
-	 9HWRY+kzhN+WiG5O7fdDucZjblmLMRmFmqv2hqZx5MmVh5H3qien4FoXQC1Ipji9iH
-	 XMjWezslY4klE4Dfw0osCa4L/FjjdbNW0tagHpXdGp6xD3GmvVkPEfIszZO7dgCYr8
-	 72wqlJvYzASLqAp2IbDwJ7o1O3bYIHc2SS25fljEgHsL+OViv7zplZd/FAYZBXZtQL
-	 EbkaWMewBvZESNHH97FJhcFSqdihWIHAIypPTYmk1i34X6U5tx8CjoU9ayYu/irMqY
-	 OxQV1dG/0yE5g==
-Date: Mon, 10 Mar 2025 20:00:54 +0000
+	b=Sb/dLF2/Q/jdQ7LtsW1eK3NRRXnBfarXJuuJ7Iz76RGDhXkuNgjsyAtBnNLQaAmge
+	 KzxA5FIqgmsVxYot5gNMJtaVhK+0rJlgtwzj4FOJ+qiHUAMFaTU+yUIKTWhfZu5QUi
+	 DSWrIFSiZzLcPDOYORi5bEgfa+S/dLlEGa7EM/oAVphvVzisXPP1bE/L8kyDyRDiOW
+	 JYHA1F3gAVy77w6LpyHxVyvIJ6kkzNic288u+l+sq/q5jmvRRjphASWrC/Mk3XuOsM
+	 XNZ3Vp6GrW/D4IAFeuI24WbvBsezEAfpdZpzvrGKAXSRP9CUFA4iu/KCV/b6650q8M
+	 6tkZsOpsAx0FA==
+Date: Mon, 10 Mar 2025 20:01:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Heidelberg <david@ixit.cz>
-Cc: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Svyatoslav Ryhel
- <clamor95@gmail.com>, Robert Eckelmann <longnoserob@gmail.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/4] iio: light: al3010: Implement regmap support
-Message-ID: <20250310200054.1eea3150@jic23-huawei>
-In-Reply-To: <49dfbb2e-5caf-42c0-8917-baf59b6533dd@ixit.cz>
-References: <20250308-al3010-iio-regmap-v1-0-b672535e8213@ixit.cz>
-	<20250308-al3010-iio-regmap-v1-3-b672535e8213@ixit.cz>
-	<20250309164549.26d4cdfc@jic23-huawei>
-	<49dfbb2e-5caf-42c0-8917-baf59b6533dd@ixit.cz>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, Astrid Rost <astrid.rost@axis.com>, Matti
+ Vaittinen <mazziesaccount@gmail.com>, Per-Daniel Olsson
+ <perdaniel.olsson@axis.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>, Jonathan
+ Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 01/18] iio: light: apds9306: Switch to sparse friendly
+ iio_device_claim/release_direct()
+Message-ID: <20250310200142.1a91a6bc@jic23-huawei>
+In-Reply-To: <5ecd4fc5-a35f-4a2a-87c9-4d0fcb14771e@tweaklogic.com>
+References: <20250309170633.1347476-1-jic23@kernel.org>
+	<20250309170633.1347476-2-jic23@kernel.org>
+	<5ecd4fc5-a35f-4a2a-87c9-4d0fcb14771e@tweaklogic.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,105 +68,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 9 Mar 2025 22:11:57 +0100
-David Heidelberg <david@ixit.cz> wrote:
+On Mon, 10 Mar 2025 17:05:50 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> On 09/03/2025 17:45, Jonathan Cameron wrote:
-> > On Sat, 08 Mar 2025 21:01:00 +0100
-> > David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org> wrote:
-> >   
-> >> From: David Heidelberg <david@ixit.cz>
-> >>
-> >> Modernize and make driver a bit cleaner.
-> >>
-> >> Incorporate most of the feedback given on new AL3000A.  
-> > Hi David,
+> On 10/3/25 03:36, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> > Why does regmap bring benefits here?  This seems to be a like for like
-> > change (no use of additional helpers / caching etc) so I'm not immediately
-> > seeing the advantage.  
-> 
-> As I mentioned in the summary, the change is smaller binary size and 
-> being in sync with al3000a. Since al3xxx series drivers are pretty close 
-> to each other, I believe for future maintenance having them in pair, 
-> where it's possible is beneficial.
-
-Description should be here (briefly) as this is what ends up in
-the git change log.
-
+> > These new functions allow sparse to find failures to release
+> > direct mode reducing chances of bugs over the claim_direct_mode()
+> > functions that are deprecated.
 > > 
-> > Various comments inline. Main one is this is doing several not particularly
-> > closely related changes that belong in separate patches.  
-> 
-> I'm aware I should likely address the changes in smaller chunks, but as 
-> I get this patch tested, it's fairly small patch, so I would believe 
-> it's still bearable size of the change? If not, I'll split changes into 
-> separate patches.
-
-Separate patches still preferred even when the overall changeset
-is not large.  It allows for crisper description and easy review.
-
-...
-
-> >> @@ -119,21 +118,21 @@ static int al3010_read_raw(struct iio_dev *indio_dev,
-> >>   		 * - low byte of output is stored at AL3010_REG_DATA_LOW
-> >>   		 * - high byte of output is stored at AL3010_REG_DATA_LOW + 1
-> >>   		 */
-> >> -		ret = i2c_smbus_read_word_data(data->client,
-> >> -					       AL3010_REG_DATA_LOW);
-> >> -		if (ret < 0)
-> >> +		ret = regmap_read(data->regmap, AL3010_REG_DATA_LOW, &value);
-> >> +		if (ret)
-> >>   			return ret;
-> >> -		*val = ret;
-> >> +
-> >> +		*val = value;
-> >> +
-> >>   		return IIO_VAL_INT;
-> >>   	case IIO_CHAN_INFO_SCALE:
-> >> -		ret = i2c_smbus_read_byte_data(data->client,
-> >> -					       AL3010_REG_CONFIG);
-> >> -		if (ret < 0)
-> >> +		ret = regmap_read(data->regmap, AL3010_REG_CONFIG, &value);
-> >> +		if (ret)
-> >>   			return ret;
-> >>   
-> >> -		ret = FIELD_GET(AL3010_GAIN_MASK, ret);
-> >> -		*val = al3010_scales[ret][0];
-> >> -		*val2 = al3010_scales[ret][1];
-> >> +		value = FIELD_GET(AL3010_GAIN_MASK, value);  
-> > I'm never a big fan of conflating use of one variable for the register value
-> > (where value is a reasonable name) and the field extract from it where
-> > it's not really. scale_idx or something like that would make more sense for
-> > this second case.  
-> 
-> I originally had name gain for this one, but decided to go with generic 
-> value to cover all cases. If you want, I can go back to custom name per 
-> case.
-
-Please do.
-
-> >   
-> >> +		*val = al3010_scales[value][0];
-> >> +		*val2 = al3010_scales[value][1];
-> >>   
-> >>   		return IIO_VAL_INT_PLUS_MICRO;
-> >>   	}
-> >> @@ -145,7 +144,7 @@ static int al3010_write_raw(struct iio_dev *indio_dev,
-> >>   			    int val2, long mask)
-> >>   {
-> >>   	struct al3010_data *data = iio_priv(indio_dev);
-> >> -	int i;
-> >> +	unsigned int i;  
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+> > ---
+> >   drivers/iio/light/apds9306.c | 7 +++----
+> >   1 file changed, 3 insertions(+), 4 deletions(-)
 > > 
-> > Looks like an unrelated change.  Possibly even one that isn't worth making.  
-> 
-> Well, I was at editing and as i is used within array id, it cannot be 
-> signed integer, second it's also compared against u8, so IMHO it make 
-> sense here.
+> > diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> > index 69a0d609cffc..fca7e73a905c 100644
+> > --- a/drivers/iio/light/apds9306.c
+> > +++ b/drivers/iio/light/apds9306.c
+> > @@ -831,11 +831,10 @@ static int apds9306_read_raw(struct iio_dev *indio_dev,
+> >   		 * Changing device parameters during adc operation, resets
+> >   		 * the ADC which has to avoided.
+> >   		 */
+> > -		ret = iio_device_claim_direct_mode(indio_dev);
+> > -		if (ret)
+> > -			return ret;
+> > +		if (!iio_device_claim_direct(indio_dev))
+> > +			return -EBUSY;
+> >   		ret = apds9306_read_data(data, val, reg);
+> > -		iio_device_release_direct_mode(indio_dev);
+> > +		iio_device_release_direct(indio_dev);
+> >   		if (ret)
+> >   			return ret;
+> >     
+> Thank you Jonathan.
+Maybe a tag if it looks fine to you?  Reviewed-by or Acked-by
 
-I wouldn't bother, but if you do want to, it's an unrelated change
-so separate patch.
+Thanks,
 
 Jonathan
 

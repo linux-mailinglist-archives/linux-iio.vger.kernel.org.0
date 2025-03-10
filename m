@@ -1,142 +1,113 @@
-Return-Path: <linux-iio+bounces-16685-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16686-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5848FA59F95
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 18:41:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A435A5A1BE
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 19:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9DD16FE76
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 17:41:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89489173C35
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 18:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCF4233D91;
-	Mon, 10 Mar 2025 17:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C489235BF0;
+	Mon, 10 Mar 2025 18:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KpmEM4VC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FQkr1HSc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892D7223702
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 17:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F562356CC;
+	Mon, 10 Mar 2025 18:12:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741628475; cv=none; b=Mhj/vFqWmPO+L/oXeUly3Ti65ONpdQZ+Aklynn/Nc+wQTjhNttAgc9XW6vTZl9IRKww0vN0es4fLDPHsR5vvy6yRdkOYpnOs+eDOa5Vjfozri9UoCV4AhKTOpEYKskFiXBuL6+VH90fHPWnpSlRA0fP+eXK1/O9eBK9JziHKQb8=
+	t=1741630355; cv=none; b=U9KVoHbnaqs9EPoYgLesvIUvX0jnGku4udNBnfx1sOEk6D2JGyS3I7SpIf+AQUnuKmJDDWZ42/q/1c4ZJOn7szrwQqYe0YYwO7E1tavjktGbGELYCMQGTQUHAu1Z8Yhiec6U3HR9BawzyPIGpWnOeN9cUZOk312avIhParh1nRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741628475; c=relaxed/simple;
-	bh=vap/8qEfDYJND2AdXVA7z71mlnRugvEHBnTI0XUnheM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BzN1QR/4lsfgIx3hwq7qEcIm0/NQ+GvKI+QZ3c8K36+UDzFEj9hbSS2RoEPHE7dXFQAU8+h4NYfIVu48TcnZksnEm6OL5U5QT5bVNEBuicOIyP/isdw75vZ30co+52qcwOit6LWQZL+AM2aNVbi2khsVPS4f/yBxKjNsi5q2WY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KpmEM4VC; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-39141ffa9fcso1482616f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 10:41:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741628472; x=1742233272; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HgWPLY44UYfs7OSbFs+4rgP587/bNJC0XV4YHVYL62k=;
-        b=KpmEM4VCpQxR5yAEKq+3oWWvTUofGix+mTld+3nmxJU/Oh8m214gB29pN9TrR6kkVU
-         RrE3PkbvEuhY4lyeEzjEI8nvzocypDdWn2YS5Xrzy30FjrWcrQi7xTG6fP+oRi/iQWRQ
-         WmAEb34+PFXbiypd6pLQLeHVYztSIv4Ytp9EbSySwjq2XL6YeneNg2wkRrwk9QXiU30a
-         R0GtnUadDcv1oVlF5mb3fNUrxKdX5NLbfmvLZqcXQ2T6Jm/4CbYbOfNgLIc7aDjDPgD1
-         SIaC19V1CgjEBM3IaKMMtD8EadqKE5Q9jh14FsE1MtBR4Jt8GP+bKp/DGKQ88ww5BItn
-         Gbgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741628472; x=1742233272;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HgWPLY44UYfs7OSbFs+4rgP587/bNJC0XV4YHVYL62k=;
-        b=MgOQrOeE7XhQSv/Xbs4HxvYsw6jgcdgsQev6ahqSkdSQqkKNdpPQrMqEyhTJ81A7eu
-         cFlTZcodmE9cSz/dcwD2Q/apJxW5jhSddpKW6O35PfvtRUsL9cE8WhWigiiZ7r7MwOsg
-         uQPdnrgNSsy6TcYe0sutjI+2mLo+11gFKWCQ/1GkrrcGY+w5CURuPxFhIGnqAo2z0Ega
-         hw+5hF1QChjLSgeIIr8kXoazSG9uF8Ic4zQIH8ie6WNHbUnNHOhHP7LQnlvDcejYp1tR
-         ixAO3JI7+UQTgEneWSodjnQR/65y8xwSYfgPb/joYhZZifp0hjHunVRY9/djkfbY1wdX
-         w6Uw==
-X-Gm-Message-State: AOJu0YyYScdpRQtGizeMhW5/DTq5dZNFhQ9JFpXb6XdX5iORdvXtzDtW
-	z0fyA06pMkJ0NBITAe9hlQxGmKkrVxsicd1iyIk8HiAMDnwPhzDgRweKc/siyZs=
-X-Gm-Gg: ASbGncshxP1HviZEtzGlzXPMTV+XFy/pct5L5zyKlj27B1wRfUVODmuXwaHjVyx23Bq
-	LDGMn+duzV6O7tGS3RCLuA5IpftMj7vFZ8o3YLYMW4DNUAja5KnErsZpIZyk++W5hlEn004896M
-	otzR288pR5AZpryFAXb0xKOaRdB7kuk6djRY2hB/CVmmi2jzIrBNj+uw8LoshPWeRtfaJ0f9bWO
-	H8JeoZfbkNfUlwCAJRoZU/QA2T2O6zQIqpVj4xfS49/Un9AS2OqeLQVfDb4wgaSLpoYK4HgZ4Zv
-	yZw17eGjE23waOehjidUccyQ/qwKFNpzPHYYN3kCnOJihnPEl9tjvScqFxeXnp1OBR82bi2kz+8
-	bTjuOTGdYkeFVdb/DsYI=
-X-Google-Smtp-Source: AGHT+IF2E0/FEPYOs2Ol5yXnd/QF0za9bgmKGmRzY5a5rBVIupAH5/HrBOSGOMwS07vxF3l2bXd4bA==
-X-Received: by 2002:a5d:5f94:0:b0:38f:4d20:4a17 with SMTP id ffacd0b85a97d-392641bcf76mr754572f8f.13.1741628471882;
-        Mon, 10 Mar 2025 10:41:11 -0700 (PDT)
-Received: from [127.0.1.1] (host-82-56-170-15.retail.telecomitalia.it. [82.56.170.15])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912bfba8a9sm15597038f8f.9.2025.03.10.10.41.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 10:41:11 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Mon, 10 Mar 2025 18:39:53 +0100
-Subject: [PATCH v4 2/2] doc: iio: ad7380: describe offload support
+	s=arc-20240116; t=1741630355; c=relaxed/simple;
+	bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TLQhCfjN1Nq9A/yjDCQzog4oDPGSsNapzc28nTDU5gEzp2cBdBWZX3l/Cu3Q3nYmsazCQaBcoXh1v+G9/YwQzWAUkfVryZPiAKP8G+yqDMBgHy7ePW49/PMwBzBlBmRFX03H2XzKggnKGkbwWU+uQtkf0qaJVsLw6eyjFXlYz50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FQkr1HSc; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741630354; x=1773166354;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xutUtI8ncSnysxzMFMlH3TgBkjEFcJ6ylYOCCdQt5sY=;
+  b=FQkr1HScr8iBA6xrY2HK29ZJkkmZ6d9ztleZhLQlrUl6IBwrX5IpZcrV
+   opCHADnP3V0nFNg5MYKGDB6oYxCLuVvoBd4gU5HsdwRGwNOqHRfKk5iwR
+   Lu+bMDs1x957FWqZxAgxmGV/IuboTgapqxCXTjQc4tHBfy+NidiZOCpp8
+   uTQopKT0NOpJH03Kdul/AQobOjZdZFBDpB/mvelICgTq82oQhpJjDNlS1
+   FC1clurpE5Y5x3ZRNA2HHM4hHlEzHwFZhsppRogjeW0pNYjtMnRHbgP2v
+   2bl1m2Qwt6Gj9Bv42nFupKYaLC0NCfCNImURa4G6puwkaZmY3LS041jZ5
+   g==;
+X-CSE-ConnectionGUID: GgVKTgTVTAqPCT/Fik9T6Q==
+X-CSE-MsgGUID: B98toNZ5TEmsUSr2aGnzyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="45433458"
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="45433458"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:32 -0700
+X-CSE-ConnectionGUID: XTWVcWlLSdaQ6N8oMqzVWQ==
+X-CSE-MsgGUID: D3Ts7d9eSaqsvtxwU60bpg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
+   d="scan'208";a="120552572"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 11:12:27 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id A1BEB11F7E5;
+	Mon, 10 Mar 2025 20:12:24 +0200 (EET)
+Date: Mon, 10 Mar 2025 18:12:24 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
+Message-ID: <Z88riPwuTvnAy-cj@kekkonen.localdomain>
+References: <cover.1741610847.git.mazziesaccount@gmail.com>
+ <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-wip-bl-spi-offload-ad7380-v4-2-b184b37b7c72@baylibre.com>
-References: <20250310-wip-bl-spi-offload-ad7380-v4-0-b184b37b7c72@baylibre.com>
-In-Reply-To: <20250310-wip-bl-spi-offload-ad7380-v4-0-b184b37b7c72@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- David Lechner <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+Moi,
 
-Add a section to the ad7380 documentation describing how to use the
-driver with SPI offloading.
+On Mon, Mar 10, 2025 at 02:55:53PM +0200, Matti Vaittinen wrote:
+> Please note, the checkpatch.pl was not happy about the for_each...()
+> macros. I tried to make them to follow the existing convention. I am
+> open to suggestions how to improve.
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
- Documentation/iio/ad7380.rst | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/Documentation/iio/ad7380.rst b/Documentation/iio/ad7380.rst
-index 35232a0e3ad730c19b5201b74280bdb6deaa9667..24a92a1c4371db6b59ef47edf06cee860641ebbf 100644
---- a/Documentation/iio/ad7380.rst
-+++ b/Documentation/iio/ad7380.rst
-@@ -178,6 +178,24 @@ Unimplemented features
- - Power down mode
- - CRC indication
- 
-+SPI offload support
-+===================
-+
-+To be able to achieve the maximum sample rate, the driver can be used with the
-+`AXI SPI Engine`_ to provide SPI offload support.
-+
-+.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/pulsar_adc/index.html
-+
-+When SPI offload is being used, some attributes will be different.
-+
-+* ``trigger`` directory is removed.
-+* ``in_voltage0_sampling_frequency`` attribute is added for setting the sample
-+  rate.
-+* ``in_voltage0_sampling_frequency_available`` attribute is added for querying
-+  the max sample rate.
-+* ``timestamp`` channel is removed.
-+* Buffer data format may be different compared to when offload is not used,
-+  e.g. the ``in_voltage0_type`` attribute.
- 
- Device buffers
- ==============
+checkpatch.pl isn't always handling macros as well as it might. (It's just
+hard to parse C using regular expressions and in practice some
+simplifications end up being made.)
 
 -- 
-2.48.1
-
+Sakari Ailus
 

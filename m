@@ -1,65 +1,83 @@
-Return-Path: <linux-iio+bounces-16703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F04A5A4E8
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:26:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA93A5A4F2
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 21:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E83F5172358
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797F217242E
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 20:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4601DE3A8;
-	Mon, 10 Mar 2025 20:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F311DE8AB;
+	Mon, 10 Mar 2025 20:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSvdsQlG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxTlFGHF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEEFEC5;
-	Mon, 10 Mar 2025 20:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44768EC5;
+	Mon, 10 Mar 2025 20:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741638411; cv=none; b=nkFj/nHxp0Vftvmu4bOEItUTgPuWhMKzp6tagm2WZFm8bVXffxf9HVpiSZi/tOu13CDZ74tc04fc0Ff9Y74i+WtOEtzaMHERvKZSWAsYFlmpN5uN4zuPp+pUktGzTdzaCb9ZaIWZl/5oZE6nm2ZjVSBYMI6U6EIRmQiSbsix+mI=
+	t=1741638482; cv=none; b=TX81Ejq29t7HeyYcfaF/KImx88XHcW2RpCa4Ior3DdCrHGrdOemdM30J0mCL2iPCXctWaxpUDfN2olBNPMgt5815SuXzgyQEmm4AITF5Dyf1vO8D9k8kMTbtGoKgXOhEJNyo+jkGlbtOXjkd7m9cPqK7Mqfk13rka1JO+uU7lqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741638411; c=relaxed/simple;
-	bh=6TBv8eUZABNkITVZTddPYa48Ozritmys3dSTxrbdGck=;
+	s=arc-20240116; t=1741638482; c=relaxed/simple;
+	bh=jrIUTRkOVwF4DrP6Op5FQkTYRiWzZRjfoY/yn1onSOU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CBKpMLi8OoFYUItUepNrLt3uVq0nrm1sBdv1IU6PQT1X3cpz1MaQORcrJm8vji26QdWsQRlPzwl9EYnS1XT2wMErSWNEfCZ5q4LHHDaRe+OAf5ybhS4jIFK7NIQKPvGh8gVFzBss2VLjkzEALXBq9/rAJW5vN4ajANMv5OUiFJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSvdsQlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6720C4CEE5;
-	Mon, 10 Mar 2025 20:26:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BVOoL/aPZNYvZ2XGhkC7ruZTaqr3RTvs0Jzxj6eK/p6Bz2seLAX6TLXMkvh/PGPBOW25tsnsp73IqrX9BJiPtaRz7P6O5JVEisJvHlCZVqYcXC+ms8G11JoKNKEy8d9NEW6BhUmRUkP5zMzZJjwR1r8draONWjWNIo3O/mvAGqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxTlFGHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E9CC4CEE5;
+	Mon, 10 Mar 2025 20:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741638411;
-	bh=6TBv8eUZABNkITVZTddPYa48Ozritmys3dSTxrbdGck=;
+	s=k20201202; t=1741638481;
+	bh=jrIUTRkOVwF4DrP6Op5FQkTYRiWzZRjfoY/yn1onSOU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bSvdsQlGcmGFCLbPdeAK4oIeozGaZPIq9L9QmMQSzy82NsHQ0sQuHiTHqr4WkvJgJ
-	 pH6m4rJI6jR7mquxwVkvHRUtImzSwcmlMfrwudfAWhDguJ0adjuyzByHNI8A/FKVxf
-	 TpGCdKpVyVCwRc0vNoG6fZsnNkzQUYODo/IWiBaxfYppGE/Q2qEOqW3G13VVC6G4sH
-	 mQT4OiMQBQ2YrpHcsStxquf8x/mI7Siy575F0VRl2pmDhAvHVNqBpStQGM2wTpU2CU
-	 XCaYxIqHoR4mroxZ3uaCayFmbfYDJO729td5Y2g7bxDevTtf0b4nklugA4frdKNMnq
-	 IZ+JcSoHnFGAQ==
-Date: Mon, 10 Mar 2025 20:26:40 +0000
+	b=BxTlFGHFoOW0phWUqgQyWBIzCHGcDhnWX71cIrTi/V6o/OiL21j07oJLCGyw+KM9b
+	 3ReRfXP2z6sHkLW/fYS14usJ4jMUA8tFPVNPUAhN+ZxdAfy1XPr0YAmsmYh3s+qBui
+	 l2Wg09MH9ZYmq/RERxrvpEx04dsu66PALYPHHmAaXl1yEKkjMIGzESQeeRoKto5vB9
+	 uudFqXko3mnxN3db9MwQRFSZksb8SB6QtcJFypy/s9kCh1WO+iV5BSZT1OZ5cpY3tx
+	 6Lr2DFTSxmYrDwDKk7SRg7EUIcKe4UbqK4DBQxh9+NErcIzOCq2Ql/DTx8UkrUkQ8x
+	 2uGVdAQ1eUAzg==
+Date: Mon, 10 Mar 2025 20:27:38 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>, David Lechner
- <dlechner@baylibre.com>, Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>, Guillaume Stols
- <gstols@baylibre.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, Trevor
- Gamblin <tgamblin@baylibre.com>, Matteo Martelli
- <matteomartelli3@gmail.com>, Alisa-Dariana Roman <alisadariana@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, =?UTF-8?B?Sm/Do28=?=
- Paulo =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, linux-arm-kernel@lists.infradead.org,
+ Samuel Holland <samuel@sholland.org>, Sakari Ailus
+ <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org, Rob Herring
+ <robh@kernel.org>, Herve Codina <herve.codina@bootlin.com>, Thomas
+ Bonnefille <thomas.bonnefille@bootlin.com>, Jernej Skrabec
+ <jernej.skrabec@gmail.com>, Nuno Sa <nuno.sa@analog.com>, Laurent Pinchart
+ <laurent.pinchart@ideasonboard.com>, linux-media@vger.kernel.org, Claudiu
+ Manoil <claudiu.manoil@nxp.com>, devicetree@vger.kernel.org, Marcelo
+ Schmitt <marcelo.schmitt@analog.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-acpi@vger.kernel.org,
+ linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, Eric Dumazet <edumazet@google.com>, Conor
+ Dooley <conor+dt@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Trevor Gamblin
+ <tgamblin@baylibre.com>, Ramona Alexandra Nechita
+ <ramona.nechita@analog.com>, Paul Elder <paul.elder@ideasonboard.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Matteo Martelli
+ <matteomartelli3@gmail.com>, Guillaume Stols <gstols@baylibre.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>, Jakub Kicinski
+ <kuba@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v6 06/10] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <20250310202640.71f7ec1f@jic23-huawei>
-In-Reply-To: <448f1f3cd05a9798e79a3948f95ada3e4c3483f7.1741610847.git.mazziesaccount@gmail.com>
+ Dumitru Ceclan <mitrutzceclan@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, David Lechner <dlechner@baylibre.com>, Chen-Yu
+ Tsai <wens@csie.org>, Daniel Scally <djrscally@gmail.com>
+Subject: Re: [PATCH v6 00/10] Support ROHM BD79124 ADC
+Message-ID: <20250310202738.13301548@jic23-huawei>
+In-Reply-To: <cover.1741610847.git.mazziesaccount@gmail.com>
 References: <cover.1741610847.git.mazziesaccount@gmail.com>
-	<448f1f3cd05a9798e79a3948f95ada3e4c3483f7.1741610847.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,98 +88,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Mar 2025 14:56:47 +0200
+On Mon, 10 Mar 2025 14:53:50 +0200
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The ROHM BD79124 is a 12-bit, 8-channel, SAR ADC. The ADC supports
-> an automatic measurement mode, with an alarm interrupt for out-of-window
-> measurements. The window is configurable for each channel.
+> Support ROHM BD79124 ADC.
 > 
-> The I2C protocol for manual start of the measurement and data reading is
-> somewhat peculiar. It requires the master to do clock stretching after
-> sending the I2C slave-address until the slave has captured the data.
-> Needless to say this is not well suopported by the I2C controllers.
+> This series adds also couple of IIO ADC helper functions for parsing the
+> channel information from the device tree. There are also new helpers
+> included for iterating and counting firmware child nodes with a specific
+> name.
 > 
-> Thus the driver does not support the BD79124's manual measurement mode
-> but implements the measurements using automatic measurement mode relying
-> on the BD79124's ability of storing latest measurements into register.
+> Series does also convert couple of drivers to use these helpers. The
+> rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
 > 
-> The driver does also support configuring the threshold events for
-> detecting the out-of-window events.
+> The gianfar driver under net and the thp7312 under media/i2c are added as
+> first users of the newly added "named child node" -helpers.
 > 
-> The BD79124 keeps asserting IRQ for as long as the measured voltage is
-> out of the configured window. Thus the driver masks the received event
-> for a fixed duration (1 second) when an event is handled. This prevents
-> the user-space from choking on the events
+> There has been some discussion about how useful these ADC helpers are,
+> and whether they should support also differential and single ended channel
+> configurations. This version does not include support for those - with the
+> benefit of reduced complexity and easier to use API.
 > 
-> The ADC input pins can be also configured as general purpose outputs.
-> Those pins which don't have corresponding ADC channel node in the
-> device-tree will be controllable as GPO.
-> 
-> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> NOTE: Patches 4,5,9 and 10 are untested as I lack of relevant HW.
+> They have been compile tested only.
+This probably wants an update.  Also, 00/10? There are only 8 that I can see.
 
-
-The comment below wins the Monday award for the trivial :)
-
-
-> diff --git a/drivers/iio/adc/rohm-bd79124.c b/drivers/iio/adc/rohm-bd79124.c
-> new file mode 100644
-> index 000000000000..f63141daf5e2
-> --- /dev/null
-> +++ b/drivers/iio/adc/rohm-bd79124.c
-
-> +static int bd79124_enable_event(struct bd79124_data *data,
-> +		enum iio_event_direction dir, unsigned int channel)
-> +{
-> +	int dir_bit = BIT(dir);
-> +	int reg, ret;
-> +	u16 *limit;
-> +
-> +	guard(mutex)(&data->mutex);
-> +	/* Set channel to be measured */
-> +	ret = bd79124_start_measurement(data, channel);
-> +	if (ret)
-> +		return ret;
-> +
-> +	data->alarm_monitored[channel] |= dir_bit;
-> +
-> +	/* Add the channel to the list of monitored channels */
-> +	ret = regmap_set_bits(data->map, BD79124_REG_ALERT_CH_SEL,
-> +			      BIT(channel));
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (dir == IIO_EV_DIR_RISING) {
-> +		limit = &data->alarm_f_limit[channel];
-> +		reg = BD79124_GET_HIGH_LIMIT_REG(channel);
-> +	} else {
-> +		limit = &data->alarm_f_limit[channel];
-> +		reg = BD79124_GET_LOW_LIMIT_REG(channel);
-> +	}
-> +	/*
-> +	 * Don't write the new limit to the hardware if we are in the
-> +	 * rate-limit period. The timer which re-enables the event will set
-> +	 * the limit.
-> +	 */
-> +	if (!(data->alarm_suppressed[channel] & dir_bit)) {
-> +		ret = bd79124_write_int_to_reg(data, reg, *limit);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	/*
-> +	 * Enable comparator. Trust the regmap cache, no need to check
-> +	 * if it was already enabled.
-> +	 *
-> +	 * We could do this in the hw-init, but there may be users who
-> +	 * never enable alarms and for them it makes sense to not
-> +	 * enable the comparator at probe.
-> +	 */
-> +	return regmap_set_bits(data->map, BD79124_REG_GEN_CFG,
-> +				      BD79124_MASK_DWC_EN);
-> +
-Stray blank line.
-
-> +}
->
+Jonathan
 

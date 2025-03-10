@@ -1,311 +1,208 @@
-Return-Path: <linux-iio+bounces-16678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16679-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20161A59786
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 15:26:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70BEA5979C
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 15:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38DDA16B8AB
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 14:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39FF33AAC40
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 14:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EEC22B8D1;
-	Mon, 10 Mar 2025 14:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B445322A4FD;
+	Mon, 10 Mar 2025 14:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oD1wPxDG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zjZDxRjw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E3AE229B1F;
-	Mon, 10 Mar 2025 14:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C37419D8A0
+	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 14:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741616760; cv=none; b=FEXvJe2zL1VjqvdG3qKvhvBUJmI6re8wLcY2y1VomAaDnlIA1+4EI6Tm5sdJR5Dct0ZoeP6BwNE4rgrBBcMf0ADnp5cJFaI5s58AbgKWx0Xk6jZlHGsJXCdDEelWnbX+v1z288tJQORrdvtkq+9sNNOPyVvD9xKIe9kaCB936ys=
+	t=1741617110; cv=none; b=J4RZWgP5oEh9v1G6DluyahS6bB/n5aUSVR8r0zD6cJEBTTwwjNu7b4PFWQMXU3cIdv2bwnfrzgZtdGsPonp9/NV/1OVukAvT0h1Fpp1PIXBhT2L49aNMhXIzcTvicBpNHGGg+OMj19a/GR7NmkkPUO8ItRgeuq7aZ7GlHYE84cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741616760; c=relaxed/simple;
-	bh=KTv7qk5oFKTYLjgfXPm/6oQ2B3je70yz0idFkos48O0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bN6z+a/UYVDxMSvTYxPwH8DOT4c9vDtBnEMbPiXYE1i7OsjLsJvZbL1fqLaWtLuvy9wWXTCFRz5Tq9qdGqttSTDoSv43JOmkKD1iDz9SdwhkxHgBY/RpvCzZjFavKmqWoCE7tNUQEgiTxZ5pT8ywewv/whf5RHAhYWVPp+omoBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oD1wPxDG; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741616758; x=1773152758;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=KTv7qk5oFKTYLjgfXPm/6oQ2B3je70yz0idFkos48O0=;
-  b=oD1wPxDGFB8Ple/HMz5XT3EFrAShSiVNsVflzgoF5BnsoRNZ1Pp+8o16
-   NFN8uBDuSRy2TpPh8c79iuD2h+NSR9BvUPS1vZMKqDWMiiYp3Q72Cyhoq
-   4WisPtN6bSHxgMo13tU86c6z2RhpQyf3PEqRZQGkyxlmG2hI+FvSE5m4M
-   3dpwiqkb3ubkQSUuySLg2ukpzvkcTfhDTcNLAWhLbI2H3DydiOMeZur7f
-   POUsygWmXNDkLJo/lsc7GDml6GTOvTrR2QxvFk+vrYudASjgd7NiHZgaE
-   Z1fYiYDVLgFeYZAMyp1EuhOY864UF9/6hreggvJ7TVkuh4s7b9+92+5iy
-   A==;
-X-CSE-ConnectionGUID: am71XqZWSkCUM4sTDE5jpA==
-X-CSE-MsgGUID: x/2sxWncQyaUcUmiYHnBLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="41783035"
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="41783035"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 07:25:57 -0700
-X-CSE-ConnectionGUID: jDa+VHRMR/+nIR3ONdo6JQ==
-X-CSE-MsgGUID: iGz3W6rdQtqyLnR9sIXeUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,236,1736841600"; 
-   d="scan'208";a="124609108"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 07:25:52 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tre4i-00000001HFA-3w1b;
-	Mon, 10 Mar 2025 16:25:48 +0200
-Date: Mon, 10 Mar 2025 16:25:48 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v6 02/10] property: Add functions to iterate named child
-Message-ID: <Z872bHMRtSglB8pf@smile.fi.intel.com>
-References: <cover.1741610847.git.mazziesaccount@gmail.com>
- <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
+	s=arc-20240116; t=1741617110; c=relaxed/simple;
+	bh=Ps//DGpFqXWp3GsLNV4yd8lxmyS5d53siUwV+54hi8g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XVuwoNbMJKr9LtH1A6exuzVU7R3xMxOMqXQrVKKAoCyXF/UgI9YRFGchSRvNmlRnEXMWJ3E38/jddF/VF9PClPH0pw+y/wXa0Xpr9M+3bC16OyVr+Qz2+iH2Xeuj1ONxFBF0jS8z0vvmLDbCS/J/nOhHUsGiBtdR6HB9che2dqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zjZDxRjw; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-72a4793d4e2so1285840a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 07:31:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741617107; x=1742221907; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QnKDL7IGSLQdY1Ps1imHuBBiZbH4iwSQV6FmwECIlQg=;
+        b=zjZDxRjwQKuwZjY/0xjdZUUGpRd3s6FJgyUWIGiXdAV+d9gW/VmDFDdghG5sEG4a8t
+         0WePsyHb+4ZDP0MruABVypM8kWu2hB4E+1mWIaOeDuv+2fTBIqd7UhXZvr1NpU8hGP0Q
+         nCmbC9AU+LButRlxHyVJX9ucMPz61jUM+GEp0UDOiQYAjda/HLL+FYE1uP0fmByXBI/V
+         MT3cD4ZqQiBEhtyqf7Q3PFyZhYPR0AREZ3E60GsqMRcIt59hxBRwBj/92oeVm+FgwmHc
+         9B2Eu6bIGZkQu6Vbq2VdIfL4+6WrWlVlQok0fiermsFzXcmFDpqt+Wot0cXgWSC1Ebbh
+         oDiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741617107; x=1742221907;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QnKDL7IGSLQdY1Ps1imHuBBiZbH4iwSQV6FmwECIlQg=;
+        b=hWsJV6GcJWptQ2gShUBRBzingBrXMBc5trkUUpj9MCJzoDup7wlZ4jY4OVj15b7DTo
+         scqJHfIhHNwSr1vbSxs4RqPYTQlCtLyrvHQJTz2kEDukIrlHgkwZi5glmDXyEIJK+TM3
+         psMCNEp/v1uXDiNHjsvBN29Pr8fPMHk6TUMcaK+7ebFJNalc64dyKHI+CbSl5FDwZpi5
+         PSnuICm8aRftQe9m0A5B5MlsbVI3tM/62I3n4JrsedJWZwScsmDFC9TfB1XJRg8XYT1H
+         ujeOqu2Ctu3TYUrzB34Pg9qDcz0h73VCfkE0gUp9OpL/O/+SEr6MhwhygWxWJId5OykF
+         DOzA==
+X-Forwarded-Encrypted: i=1; AJvYcCULgkWMkWhSspiuNYfN+Ssc3mwgnVkOllPBU8OfZCQrFfqO2I0NkjmzluwuLw+AC8wb+fpIWzrbqPU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCyglHpz5x3qqkHaHW6obHnhuba4Zm4uignryvW55v/suZ1BF7
+	YLpZu+rjVExPyXGmB9vPYAgBq5evPf65GNRX3EWR0r4H3ssS6AB0+mxYeSnNQAM=
+X-Gm-Gg: ASbGnctNTs8l5QWlwJ4V0YNdXpw9TQ8Tif35bvEtNfi59zyhWkauutp6mCJgUkGMB5s
+	fZjkW8RavqsMi9WhCzO+DjiEMFaPWWap3oor4Mxf6On1Q8u49n+I7wGXj2cWvY3qLSSOWXrcICv
+	JOayj/bcWO1YpEr/pFokN2rapCZo/eiGFAeXvyCH58xpB9oTR9NKXI6M18y/9IQGTu7wGb2l3Pj
+	jS5zEnF0FJ0tQBzi8DPOrGBHc76E9l1jRxidHluq/iunbkQUt/CeC4n8SUMShST3Te+utKg8yc7
+	2tiQbg8f5wDWwb+WB8yqmh3Kqzir9nEYVRUsR4dKpxBjqrICr1dOx+V4rUkLsCnQrJg5GJ9ZIrT
+	3UpVhzA==
+X-Google-Smtp-Source: AGHT+IFc5FQqx7D/Eko7oVMCmMY7qbffM3dUKH8YN9GD9Mq5nGldBPuykkjjjWS+hnzU6NmCsbTHdw==
+X-Received: by 2002:a05:6830:6e05:b0:72b:81a8:dea5 with SMTP id 46e09a7af769-72b81a8e17bmr2820014a34.17.1741617107592;
+        Mon, 10 Mar 2025 07:31:47 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72b7a3a2385sm1014002a34.57.2025.03.10.07.31.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 10 Mar 2025 07:31:47 -0700 (PDT)
+Message-ID: <6ca1eafd-276d-421b-8d35-bd3e363803d1@baylibre.com>
+Date: Mon, 10 Mar 2025 09:31:45 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ff924f640feeb87819d40557f12a04e607894682.1741610847.git.mazziesaccount@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/4] docs: iio: new docs for ad4052 driver
+To: Jorge Marques <gastmaier@gmail.com>
+Cc: Jorge Marques <jorge.marques@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
+ <20250306-iio-driver-ad4052-v1-3-2badad30116c@analog.com>
+ <CAMknhBFiZZUtCkTjQ=AVSgwqe=wCkMnqAmaTqvW_X6fm1OKuYA@mail.gmail.com>
+ <e3p2r2fet2spkrxv7x76gunlivrp3vng22wktz4fkww5nkckt7@jpgne4uerr3c>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <e3p2r2fet2spkrxv7x76gunlivrp3vng22wktz4fkww5nkckt7@jpgne4uerr3c>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 10, 2025 at 02:55:53PM +0200, Matti Vaittinen wrote:
-> There are a few use-cases where child nodes with a specific name need to
-> be parsed. Code like:
+On 3/9/25 3:49 PM, Jorge Marques wrote:
+>>> +.. list-table:: Driver attributes
+>>> +   :header-rows: 1
+>>> +
+>>> +   * - Attribute
+>>> +     - Description
+>>> +   * - ``in_voltage0_raw``
+>>> +     - Raw ADC voltage value
+>>> +   * - ``in_voltage0_oversampling_ratio``
+>>> +     - Enable the device's burst averaging mode to over sample using
+>>> +       the internal sample rate.
+>>> +   * - ``in_voltage0_oversampling_ratio_available``
+>>> +     - List of available oversampling values. Value 0 disable the burst
+>>> +       averaging mode.
+>>> +   * - ``sample_rate``
+>>> +     - Device internal sample rate used in the burst averaging mode.
+>>> +   * - ``sample_rate_available``
+>>> +     - List of available sample rates.
+>>
+>> Why not using the standard sampling_frequency[_available] attributes?
+> Because sampling_frequency is the sampling frequency for the pwm trigger
+> during buffer readings.
+> sample_rate is the internal device clock used during monitor and burst
+> averaging modes.
+
+I haven't done a chips with a monitor mode yet where we aren't reading
+the samples, so hopefully Jonathan will chime in here on the usual way
+to handle that.
+
+For the burst averaging mode, I understand the need for a separate attribute
+now. I would suggest to call this the conversion_frequency rather than
+sampling_rate since IIO already defines "sampling" to be the data read
+from the chip to Linux even if it is an averaged value, it still counts
+as one sample.
+
 > 
-> fwnode_for_each_child_node()
-> 	if (fwnode_name_eq())
-> 		...
+>>> +
+>>> +Threshold events
+>>> +================
+>>> +
+>>> +The ADC supports a monitoring mode to raise threshold events.
+>>> +The driver supports a single interrupt for both rising and falling
+>>> +readings.
+>>> +
+>>> +During monitor mode, the device is busy since other transactions
+>>> +require to put the device in configuration mode first.
+>>
+>> This isn't so clear to me. Is this saying that events do not work
+>> while doing a buffered read? Do you need to do need to read the
+>> in_voltage0_raw input to trigger an event?
+>>
+> No, the device monitor mode and trigger mode autonomously samples using the
+> internal clock set with the sample rate property.
+> I rephrased that to:
 > 
-> can be found from a various drivers/subsystems. Adding a macro for this
-> can simplify things a bit.
+>  The feature is enabled/disabled by setting ``thresh_either_en``.
+>  During monitor mode, the device continuously operate in autonomous mode until
+>  put back in configuration mode, due to this, the device returns busy until the
+>  feature is disabled.
+
+This is better, thanks.
+
 > 
-> In a few cases the data from the found nodes is later added to an array,
-> which is allocated based on the number of found nodes. One example of
-> such use is the IIO subsystem's ADC channel nodes, where the relevant
-> nodes are named as channel[@N].
+> The reasoning is that during configuration mode no ADC
+> conversion is done, including if the previous mode was autonomous.
+> If instead of return busy the driver hided this and resumed monitor mode
+> after the access, a hidden (to the user) monitoring down-time would and
+> thresholds crossings could be lost, undermining the feature.
 > 
-> Add a helpers for iterating and counting device's sub-nodes with certain
-> name instead, of open-coding this in every user.
+>>> +SPI offload support
+>>> +===================
+>>> +
+>>> +To be able to achieve the maximum sample rate, the driver can be used with the
+>>> +`AXI SPI Engine`_ to provide SPI offload support.
+>>> +
+>>> +.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/ad4052_ardz/index.html
+>>
+>> This diagram show a PWM connected to the CNV pin on the ADC, but I
+>> didn't see a pwms property in the DT bindings to describe this.
+>>
+> It is not clear to me where the pwm property should be in the DT
+> bindings, since the PWM node now belongs to the offload-capable SPI controller.
 
-Almost good, I doubt we need the exported function for the device as it can be
-derived from the fwnode_*() API by supplying dev_fwnode(dev).
+If the PWM output is connected to the CNV pin of the ADC, then the PWM
+consumer property belongs in the ADC devicetree node.
 
-Perhaps we want also this for the completeness (other comments are below):
+If the PWM output is connected directly to the SPI offload trigger input
+then then it should use the trigger-sources bindings in the SPI controller.
 
- From f52dbbe97ff0cdf835eef29506e482433f0a50a9 Mon Sep 17 00:00:00 2001
- From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
- Date: Mon, 10 Mar 2025 16:20:35 +0200
- Subject: [PATCH 1/1] device property: Split fwnode_get_child_node_count()
+From the diagram in the link you gave, it seems clear to me that the
+PWM is connected to the CNV pin on the ADC and GP1 is connected to the
+SPI offload trigger input on the SPI controller.
 
-The new helper is introduced to allow counting the child firmware nodes
-of their parent without requiring a device to be passed. This also makes
-the fwnode and device property API more symmetrical with the rest.
+So the ADC node gets pwms and #trigger-source-cells properties and the
+SPI controller gets a trigger-sources property that is a phandle to the
+ADC node.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/base/property.c  | 12 ++++++------
- include/linux/property.h |  7 ++++++-
- 2 files changed, 12 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index c1392743df9c..805f75b35115 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -928,22 +928,22 @@ bool fwnode_device_is_available(const struct fwnode_handle *fwnode)
- EXPORT_SYMBOL_GPL(fwnode_device_is_available);
- 
- /**
-- * device_get_child_node_count - return the number of child nodes for device
-- * @dev: Device to count the child nodes for
-+ * fwnode_get_child_node_count - return the number of child nodes for a given firmware node
-+ * @fwnode: Pointer to the parent firmware node
-  *
-- * Return: the number of child nodes for a given device.
-+ * Return: the number of child nodes for a given firmware node.
-  */
--unsigned int device_get_child_node_count(const struct device *dev)
-+unsigned int fwnode_get_child_node_count(const struct fwnode_handle *fwnode)
- {
- 	struct fwnode_handle *child;
- 	unsigned int count = 0;
- 
--	device_for_each_child_node(dev, child)
-+	fwnode_for_each_child_node(fwnode, child)
- 		count++;
- 
- 	return count;
- }
--EXPORT_SYMBOL_GPL(device_get_child_node_count);
-+EXPORT_SYMBOL_GPL(fwnode_get_child_node_count);
- 
- bool device_dma_supported(const struct device *dev)
- {
-diff --git a/include/linux/property.h b/include/linux/property.h
-index e214ecd241eb..bc5bfc98176b 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -208,7 +208,12 @@ DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_T))
- int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
- int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
- 
--unsigned int device_get_child_node_count(const struct device *dev);
-+unsigned int fwnode_get_child_node_count(const struct fwnode_handle *fwnode);
-+
-+static inline unsigned int device_get_child_node_count(const struct device *dev)
-+{
-+	return fwnode_get_child_node_count(dev_fwnode(dev));
-+}
- 
- static inline int device_property_read_u8(const struct device *dev,
- 					  const char *propname, u8 *val)
-
-...
-
-> Please note, the checkpatch.pl was not happy about the for_each...()
-> macros. I tried to make them to follow the existing convention. I am
-> open to suggestions how to improve.
-
-checkpatch is known for false-positives and/or false-negatives.
-
-...
-
-> +/**
-> + * fwnode_get_named_child_node_count - number of child nodes with given name
-> + * @fwnode: Node which child nodes are counted.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan child nodes and count all the nodes with a specific name. Return the
-
-You already have a return section below. Perhaps rephrase somehow?
-
-> + * number of found nodes. Potential '@number' -ending for scanned names is
-
-Not sure how this "'@foo' -ending" part is being rendered in HTML/PDF...
-Also kernel-doc might be not happy with the @ character followed by an
-immediate text as it might be misinterpreted as a reference to a parameter.
-
-> + * ignored. Eg,
-
-E.g.,
-
-(because it's the phrase in Latin: exempli gratia)
-
-> + * device_get_child_node_count(dev, "channel");
-
-Shift right to make sure it's not a text, but a code, better even to use reST
-approach, i.e. (note additional leading space(s) and double colon):
-
- * ignored. E.g.::
- *
- *   fwnode_get_child_node_count(dev, "channel"); // you have a copy'n'paste typo
- *
- * would match all the nodes::
- *
- *   ...
- *
-
-> + * would match all the nodes:
-> + * channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-> + */
-
-...
-
-> +/**
-> + * device_get_named_child_node_count - number of child nodes with given name
-> + * @dev: Device to count the child nodes for.
-> + * @name: String to match child node name against.
-> + *
-> + * Scan device's child nodes and find all the nodes with a specific name and
-> + * return the number of found nodes. Potential '@number' -ending for scanned
-> + * names is ignored. Eg,
-> + * device_get_child_node_count(dev, "channel");
-> + * would match all the nodes:
-> + * channel { }, channel@0 {}, channel@0xabba {}...
-> + *
-> + * Return: the number of child nodes with a matching name for a given device.
-
-Similar comments as per above.
-
-> + */
-
-...
-
-> +#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-> +		fwnode_for_each_child_node(fwnode, child)		\
-
-One TAB too much.
-
-> +			if (!fwnode_name_eq(child, name)) { } else
-
-Ditto.
-
-Note, I believe this won't get v6.15-rc1, so there will be for_each_if()
-available and these will become
-
-#define fwnode_for_each_named_child_node(fwnode, child, name)	\
-	fwnode_for_each_child_node(fwnode, child)		\
-		for_each_if(fwnode_name_eq(child, name))
-
-and so on...
-
-...
-
->  unsigned int device_get_child_node_count(const struct device *dev);
-> +unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
-> +					       const char *name);
-> +unsigned int device_get_named_child_node_count(const struct device *dev,
-> +					       const char *name);
-
-I would add a blank line.
-
-unsigned int device_get_child_node_count(const struct device *dev);
-// here is a blank line
-unsigned int device_get_named_child_node_count(const struct device *dev,
-					       const char *name);
-unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle *fwnode,
-					       const char *name);
-
-But see above the proposed additional patch that you may include in your next
-version.
-
->  static inline int device_property_read_u8(const struct device *dev,
->  					  const char *propname, u8 *val)
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+> 
+>> I didn't have time to read the full datasheet or look at the driver
+>> code yet, but can do that next week.
+> Ok, thank you for the review
+> 
+> Jorge
 
 

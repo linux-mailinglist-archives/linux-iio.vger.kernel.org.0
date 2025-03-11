@@ -1,151 +1,110 @@
-Return-Path: <linux-iio+bounces-16736-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16737-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC99A5CA17
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 17:02:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B896FA5CDEE
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 19:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1F637AD54C
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 15:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57E633A488A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 18:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8F260396;
-	Tue, 11 Mar 2025 15:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB20E263C9B;
+	Tue, 11 Mar 2025 18:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HvVhYvUJ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="gPae2Q20"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7142425E825;
-	Tue, 11 Mar 2025 15:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA4E156F3C
+	for <linux-iio@vger.kernel.org>; Tue, 11 Mar 2025 18:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741708775; cv=none; b=kGjI+MEvRYuggtm9jPrfLtRa+7klih8jeT+iskffwJe9XNql6M0DC4mbg6X/hvkUWG9ZfhtPTLzVnpYmJA/X5LO1609Y5cS+0/oj84/tebp/UjzL96tKDQMqSrJpFvliG2dKD8hxQiUOZc4ojBGwA4TKLMMJWG35geRl7F40yqI=
+	t=1741717811; cv=none; b=ePtJvMEX+DCzzcN2DdCBBhtSXqJU1l1vW04/cIHUq+u2FW07q82rmSpWnPD2aYjujF7VZVIrCyYKtfQx52jyVRlk/7ouVvodjAdMOhgqBu3xRy35D7a1VnxNEnPyh10STq3VMzFPy89ifVT8Z0uXNVyza789t2lzlkoh/J9kZFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741708775; c=relaxed/simple;
-	bh=yZVDAMXDKyayS4W4DCnf2up7ngjkuWd+hjdokyxRVcs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DzjJt6rkDrb+MY2YRvVdmGtpiTRHd5hobkPa7SxoKfLKLk0EFgUQMjgezQ79wzMEvZprU/VjKsoPz+Be8mXWJuj9RxA42/4h3rB3HzHs40on3umRjeuJjftTyYuJNbgSATCg2Qwzpv89O0p7ETgKRrk5+nM6spOSFVkO+fShWVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HvVhYvUJ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-223a7065ff8so13007365ad.0;
-        Tue, 11 Mar 2025 08:59:34 -0700 (PDT)
+	s=arc-20240116; t=1741717811; c=relaxed/simple;
+	bh=Rsfs7gBLTsaonIFFdukwg2rXJ+LbIYSyoCv3NpwMtew=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Iar/ZjFLUHiNALYo+jDDejOduyPNxDixfk35uW/42LHNB/SuW1kIONJ8PcLoshqG/SmG0KzICCl2hVuvvmRp3HQJ3Vu20/YtBHRQpQUPW13J+NPFeem9er5Wo33sRd6kLxceu/P9Z91vbgigMwG1dyU4KUx58VX/cF5uWv6o4is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=gPae2Q20; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-2b8e2606a58so3039811fac.0
+        for <linux-iio@vger.kernel.org>; Tue, 11 Mar 2025 11:30:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741708773; x=1742313573; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tCNydoAFyd6DNeo40itFioPOZBKtU3YX9TRd8RaDHCg=;
-        b=HvVhYvUJPe/hXJJp8AtilxBAOXpXdHxU/m5K11TLrlYJqqV/1iXc3CpXxtJp2mNm6N
-         CQrJEXglPKzGtMaPptiUYFu8rXxpAVYv7vjt2t7TZD0bSixO62iF30sMx2kToMFwbg8+
-         IOHKkzI8inDxPzlBvTodaFqB3jjF8bFWPEXidlF1lnxT/+E2W1LxauTVEEUCIc4/XyLs
-         zSgclzTu/I7dnlf995tUFGGUq1Pw7FIuHh72I+IynbObFTo1r0Pv4JNGTYJ8m33O0Q9w
-         LQ3xRc29NQCwHAOQhLmqyc7avoAE+vt/lMysSwgIdrVlHgl0dyEH+fADqGFq8aij74cP
-         ocsA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741717807; x=1742322607; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S+eHm5686N2Cg7TbPXSmsUG2P4YhpcmZvgbKH0Fmbn8=;
+        b=gPae2Q20cTJKTTlVnBLHXVLbOwhIBL/EOKvM9FlbXhbIytyVFEmbIG8XDn7GiWHMH1
+         rcFJDXOK8/JqehuldTkNoxG7G49Kd4aR24jEnm3g8NgwoW4QzNByHob8Xyak82BvN7EM
+         SbciZeL1WN+WoXsnpa13GVNFZESKYeuMYflzW9VHeQdJCj9g3hm1eV7te2/3dHKe8ClQ
+         oFIPbOASXuZKPhyb9G2v7ivpkX2g0bishRXqWBwZJ62eKBthIlOsAMxL/iJGqTbqJFw3
+         uDL1OfTbCMgaDdsWKAF9JQ4AYNPek02BdX89mHG6LqQu08tCcHJi+Ge9Qv0a/Pwy0F6o
+         LH/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741708773; x=1742313573;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tCNydoAFyd6DNeo40itFioPOZBKtU3YX9TRd8RaDHCg=;
-        b=A1mv8kKGgORHAXwUUUv9VAh0/Y6AniyXlwIdiDt07Mpt17Wz+jvaRwt/BgmNitbntn
-         rW66/5HsfP8Af597xFZYeBQ63ndPDVJtj9IaBZgoXtSiMcm4QIau4RIqd55T7cCEGLCj
-         Rc5cWZReNnIlkm9f4Ck4TjsUoQmw17CGXR8lwi4UiCb4UgwJCR5rZNOi2e8FhsLu34DP
-         /rM+efZuSuG9zTZGXT28BKwisRW0M7rxEkmsVadu3ERJn/NevHguBtL5JoP4+m4lboxl
-         QT30KFU3PMTxpXLmMSnOUawhrVJEsWeFiY/sHgemScscrT1pj8uatmnVUR3FhEdFRUx2
-         Jt7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWx7gM552+fM9hy/uGXSsC77MkkWcRD62O2A9XxBiKn57UPJuDdx8g7YIDgDDc3zl6DgkjVJc3F/0Q=@vger.kernel.org, AJvYcCXMV2Yao5jdKyyZ0wBqnbd3S4pjKX6T2z7zjuZngHDBmtD96qk4rn+DUG2fxFVfC8SDxDUuyjzwJ4oNKwqo@vger.kernel.org
-X-Gm-Message-State: AOJu0YysZ/LFNKvkN1/HiXnhdqXthjKhTpQ9PJujcDpMXwOdsxqDMpmC
-	uiUFu5LIAaCBJzXxzM5GxBbCps1t2vAWtU1CDBxG2UnOUcCyTM5l
-X-Gm-Gg: ASbGncvvB0ss+mv1FqMFmBsVD+wAdA8HYdODGF1PNr8K8EjOP0nCSAdZiDI+/2WadPU
-	JpHqe/p2/fqIH5MV71Iw8nx9tkDDIbl5AbQ35sSteIyRB5xw4NVp1Z8lvmA0lIcj7/Gl6/fdq+y
-	/XONRR6f+/nf0vH3LkKxXnr3+cUD3ej2Sh/bFnGa4SANwtk7rXxsyDIl0jw4+I8Yo6C1tFrQjjw
-	l3dY5yEKkcewNPSjLr1PcL/Q+MuKFlQYLIA1UfdZb4UKdH4JrjYYku8MsXJa7E0BCEiXlGRCexa
-	WuT+6nB/Jg2ji8vCV9h04ykT4mTdZxNR1G1wvzk0VSRyapGzhsAxTtXVNF8zyHSB9bLRnWaGvZy
-	9tsI38lpVZcrR4UA+kHteN6U2tZRn6yhVy6Oofg==
-X-Google-Smtp-Source: AGHT+IGgeHlhqDLZGfH1ls3PTzCaL+VE5RDfOBxEXEDldkVg+Mz0o2RA+RV/kjYMYC0xERB7xuys4A==
-X-Received: by 2002:a05:6a21:9786:b0:1f5:8506:5039 with SMTP id adf61e73a8af0-1f585065599mr10314781637.28.1741708773532;
-        Tue, 11 Mar 2025 08:59:33 -0700 (PDT)
-Received: from test-suraj.qjz2hk5f2gku1a3adsvczrat5c.xx.internal.cloudapp.net ([20.9.134.79])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-af281075eaesm9750549a12.3.2025.03.11.08.59.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Mar 2025 08:59:33 -0700 (PDT)
-From: Suraj Patil <surajpatil522@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Suraj Patil <surajpatil522@gmail.com>,
-	Suraj Patil <your-email@example.com>
-Subject: [PATCH] iio: industrialio-trigger: Fix typos in comments
-Date: Tue, 11 Mar 2025 15:59:27 +0000
-Message-ID: <20250311155927.467523-1-surajpatil522@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1741717807; x=1742322607;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S+eHm5686N2Cg7TbPXSmsUG2P4YhpcmZvgbKH0Fmbn8=;
+        b=RG0zKAE1rDriASWohmnhSqFfzPKqia0+58OY6BmFfskxPa008+Q3fYRNwKWnHcD4TL
+         CrPjtbqeVzDfABN7LzvJUkbr8ycTvf8fXLiP/xrLO/Kzc6MPLNvdzB2Hi9cpUIpAU7JE
+         6c0l/Jr3g6cO3+o4ulAvK0Y+trS1lDjuT5lO3I+TLzbQE0d2/R7FlJXEmWMztoCxittD
+         36MQyG1kMWjsFvOgdJqnLcpSxDBu31M9TVZITt0MX4oSGqQY4zZ4/oAFL5ksCix67LXL
+         SpOm8VFh58kgY6MHnHMepiy5OXUrx5i2zlKtpKVdku11LTqm8LrQcpyNg4ig5jF0/R37
+         6JDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqeqBWVOFRKCPq121z9NCBm+zkbgRgU9CNC2sbmmTdGnFA/3BLW6oaVA5TWnWkmARtoMxRyhVvkcM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJmZvPE+jY7HNSnE1SI/CrV2csTSCuL+uoldHKa/dDCDpd1bnV
+	kMbNrhhJSDy2f8d057/D5RFJMDrGjo767BAbPKNLOogLJ5FKvxCkoD0ukkcfhPU=
+X-Gm-Gg: ASbGncu1XSeQi5ZT4+lSY18YNH5e2TjtzcBNuXLKQQB+wMbDXKoj0peKHPETuEQi++a
+	kTWnGc8B333veQgSxtO6SWPtIaG4VzpriObP7f42Dz2NEZO9SaOvvrC1VteIBVx+bAIoGkLSoDg
+	UXm+1sP8KogJXd8fV4uJngTpURUmcU007w5TILe8XthNU/2HHeRNftqatrtbv6mbchkGRPsPh+/
+	lbfrOZfADG5lgApIhqG2nchoFZPy41zHZcnTKvhVKacO7loYlIMHUBrCeg2hN7Kx5rvnefrGWrt
+	TLGmdmmOpfD/8LzpCf/7WzXtlBUmUKWJtt96IMp3KinkZX77r6vIceY1WOvSawLPPc64SX2RaqJ
+	FLIhKwA==
+X-Google-Smtp-Source: AGHT+IGjIZ0Y/xr0AbOftkLR6zL0Ei9LazTQ/mmO20RpG+AN94hzqN6prpu8QdcjlnoruXu84xWUuQ==
+X-Received: by 2002:a05:6870:7020:b0:2b7:f58d:6dcf with SMTP id 586e51a60fabf-2c2e8771aabmr2601639fac.18.1741717807745;
+        Tue, 11 Mar 2025 11:30:07 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c2d2702b63sm750927fac.15.2025.03.11.11.30.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 11:30:06 -0700 (PDT)
+Message-ID: <6579eac8-45ec-420d-8e45-6d3759f2e7c0@baylibre.com>
+Date: Tue, 11 Mar 2025 13:30:04 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/16] iio: accel: hid: Use iio_push_to_buffers_with_ts()
+ to provide length for runtime checks.
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250309182100.1351128-1-jic23@kernel.org>
+ <20250309182100.1351128-8-jic23@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250309182100.1351128-8-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Fixed multiple occurrences of 'reenable' to 're-enable' in comments.
+On 3/9/25 1:20 PM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> This new function allows us to perform debug checks in the helper to ensure
+> that the overrun does not occur. For this case, the length being provided
+> is already passed into the caller function so reuse that.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-Signed-off-by: Suraj Patil <your-email@example.com>
-Signed-off-by: Suraj Patil <surajpatil522@gmail.com>
----
- drivers/iio/industrialio-trigger.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 54416a384232..21688cd348c6 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -162,11 +162,11 @@ static void iio_reenable_work_fn(struct work_struct *work)
- 	 * This 'might' occur after the trigger state is set to disabled -
- 	 * in that case the driver should skip reenabling.
- 	 */
--	trig->ops->reenable(trig);
-+	trig->ops->re-enable(trig);
- }
- 
- /*
-- * In general, reenable callbacks may need to sleep and this path is
-+ * In general, re-enable callbacks may need to sleep and this path is
-  * not performance sensitive, so just queue up a work item
-  * to reneable the trigger for us.
-  *
-@@ -175,14 +175,14 @@ static void iio_reenable_work_fn(struct work_struct *work)
-  *    the final decrement is still in this interrupt.
-  * 2) The trigger has been removed, but one last interrupt gets through.
-  *
-- * For (1) we must call reenable, but not in atomic context.
-+ * For (1) we must call re-enable, but not in atomic context.
-  * For (2) it should be safe to call reenanble, if drivers never blindly
-- * reenable after state is off.
-+ * re-enable after state is off.
-  */
- static void iio_trigger_notify_done_atomic(struct iio_trigger *trig)
- {
- 	if (atomic_dec_and_test(&trig->use_count) && trig->ops &&
--	    trig->ops->reenable)
-+	    trig->ops->re-enable)
- 		schedule_work(&trig->reenable_work);
- }
- 
-@@ -243,8 +243,8 @@ EXPORT_SYMBOL(iio_trigger_poll_nested);
- void iio_trigger_notify_done(struct iio_trigger *trig)
- {
- 	if (atomic_dec_and_test(&trig->use_count) && trig->ops &&
--	    trig->ops->reenable)
--		trig->ops->reenable(trig);
-+	    trig->ops->re-enable)
-+		trig->ops->re-enable(trig);
- }
- EXPORT_SYMBOL(iio_trigger_notify_done);
- 
--- 
-2.43.0
+Reviewed-by: David Lechner <dlechner@baylibre.com>
 
 

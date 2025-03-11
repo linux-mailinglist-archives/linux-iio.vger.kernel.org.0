@@ -1,111 +1,136 @@
-Return-Path: <linux-iio+bounces-16720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16721-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706A9A5AC81
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 00:21:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADA3A5B413
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 01:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19FCA3A669E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Mar 2025 23:21:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E21172F6C
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 00:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EDDD220699;
-	Mon, 10 Mar 2025 23:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F7B1DA21;
+	Tue, 11 Mar 2025 00:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vsfBF8F7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cU2VX9gc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28871DE3D2
-	for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 23:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B83FBF6
+	for <linux-iio@vger.kernel.org>; Tue, 11 Mar 2025 00:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741648896; cv=none; b=B05XnMZgh4Yi+LBxufiEJ50xNEPg0U/E0Z7IAgPxrJiMZSk6fTQnjyx413EpXO7vUJm0o/0FGIivbXotrPDuzYyDuK8NCdZ/noaUI1mVFVYerfdY1GnLMbERobNt4qjEBqXTGTxQ3gNPyvNmWZhbrc37j4p+kO90BDPodZPs2/4=
+	t=1741653387; cv=none; b=eBLqtDJVGDFnLpLaRtaG1gOMj6Hwi5odgbGRNpkLgJvAyVE5MCjdXsWBscEMeB9B40j/Ggvg0Km9hFf3DzHQmac/gg6dkIpE/Ya2wU+iOQ5gK0QGLQhwI54xhL3o6U73xzqjkCZA3kK/cYx1jPVZZiummmbleAe3Lx53+6+gveo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741648896; c=relaxed/simple;
-	bh=VBK3zZTJ0aQkKsntlwL2ZtaNAXoFRMaf+rBKaPlt+Kc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CKtquK4GWhQ2JI4umfev2aG6R+qDEO18kw2BSD94nTw9gbs0SXnsf01AYdjbie0PdzehxnRDbeL9Koc4uZpBl7oQ6ipFS4pvi3VH76AQkcXb0TREVgnfxEXo6GUkfJkGjbDYPIYQcUgZI0Wq/vEgrv52uQuaVLDPL6XWaq7PQaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vsfBF8F7; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5fa28eaa52cso2459713eaf.2
-        for <linux-iio@vger.kernel.org>; Mon, 10 Mar 2025 16:21:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741648892; x=1742253692; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KQSzHz3wdc8Cq+r02WWOMmxfwnytMXFYfrkpAvPImM0=;
-        b=vsfBF8F7WbCHhJOOunUXBCMhkeFk/9spRumJO+je7OV540O+4cJalaF2D81R4NYhZw
-         RgdSNxu1E82RIfJg1db2KyEHN3PpdoQo7SulUqDqOUcvLkxE50kE2GBtRprcr+S7FxEd
-         JlaTshZHDKh8EhXUnSQDn0Px1NNkBEqo36Kay+DNqmA+0Az+dR2/Em+o5ZRrcbHifIdL
-         /pD3Qnd61ZVXGnh2X8rX37S0NGTyt4i9Sbff0QA//yG0gk6ZICYYha8a91xTGOXZem0E
-         ZOHs2+JlU+RuYKzIKVACifbOWNCHnJ4PjiPDAOuBkOwOSiwSZekgWSKcunTsprgTWtUr
-         EgJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741648892; x=1742253692;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQSzHz3wdc8Cq+r02WWOMmxfwnytMXFYfrkpAvPImM0=;
-        b=DGCXPrWUuiHvRmfK83XEHq1hAcZjxVwUyfG2ox4kxtn15bde+TnYF/GCB8ysIjZP9S
-         oicn9rJl1OifNTlEVGFaLVcXKFV6//VkjALFH45uv0jEW764kowI4yOIx527HlBO4raQ
-         rrtwFeZjq3lwKBioH11EYGadh9/1DqMqfPEtyx0l3cj4n9dZEq82gKEVncmSZkOzB4hs
-         gP/RrArZ2izQGZqL3b7mZwnl2ckKj+5tPy2V6mVUibLgHGny0EtHjLdtqDOx0BA7CDze
-         pW/U5eXHFUvxCt1QNujqZ1tXjWSifRx3rz94KKpqSaaGrJ43gON7Ov6l5FECYh6ktdjr
-         OiGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzDJ2JzMggUGtCCMkS70Z1KWNj1evt4vPSnXZ1QmCGDQF+6skr2hGy3+Aa9qdog7ARRswQEHbZKgk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYDNcTxWhSkZJVYEJFNk6vD93ig2v9pFRtVzb53iCt28tfza4n
-	okts8wgAXXxC7wFmi/GL7cfsawCLLdqc33+GtCZEdPihHTOsK1pkenD3G1nDlws=
-X-Gm-Gg: ASbGncv25HTUBfcKEwzjmwDQVjdw5oxCVPwQ1V2tYrEPiUGQZYakIMy2XLoYW8hHIpl
-	nViZYJ3Ep7Wb6EEZThm+wf3R9Fdpi6U0kBB9XqHoeIsslW54+pQxoELOAWFHYKJPlxZrmUSqKlT
-	n56EzAN1TgbcyJPhhy8gqTSBCe8Hasxm9SHjFaXnxWVV/7FM95MM5EdoHG5b275j4XGDNPlHbKS
-	i+oXN6Ep7hnkY8AV/y7FFXhLxEP0x0mfTgflw9rz9V3fsCnUk3umB18Im8UPNaUMDnVeA00DNBY
-	DLGOyAhTpj7h9bZKD83MvcCQkeUdS3eJhufD6DdELYfay3wpZ0YWKv0hiREDelzXmmKBSlnuVJi
-	IpVvuiw==
-X-Google-Smtp-Source: AGHT+IHf/4iXavlTBzsdYjeJraWSD9jUkRn8CUg1rFOKIO8Ot5TgrgYqitov/Nl2Ib6huENodhhohw==
-X-Received: by 2002:a05:6820:994:b0:600:228a:d800 with SMTP id 006d021491bc7-6004ab5fa66mr6971067eaf.8.1741648892575;
-        Mon, 10 Mar 2025 16:21:32 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-601b4505928sm441770eaf.11.2025.03.10.16.21.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Mar 2025 16:21:31 -0700 (PDT)
-Message-ID: <c1ffdd06-4907-4f6a-8cfa-698be64a1e79@baylibre.com>
-Date: Mon, 10 Mar 2025 18:21:30 -0500
+	s=arc-20240116; t=1741653387; c=relaxed/simple;
+	bh=PFeufA9HP5U8p//dp3QAORScg7WC4w131o4jTDrwQjk=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=hZdAAu/vfLQh/f1ooqiXLDSZWELQVgqRwIoym4DdlS1zPs9K0EeoniFHFDtmXl2kXBYWpimIS38i63w6q2JTu4lG7BX5HhJNcaDf12q5UV5PWqz4dBzB9efhK+8ZFN639B0zvE+c1X2cn5kGG9nixHyVtfGxdaK+GAQG+hOxEzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cU2VX9gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4634AC4CEE5;
+	Tue, 11 Mar 2025 00:36:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741653386;
+	bh=PFeufA9HP5U8p//dp3QAORScg7WC4w131o4jTDrwQjk=;
+	h=Date:From:To:Subject:From;
+	b=cU2VX9gcr+SxOIFc9ZCym7ZNQEA2pnDR7VO2dSbggA5iHQ6trkcwvZ3/tpvPotR3N
+	 gyiwePTC9HYCyIO48OTaB2hpYT52pHaqWHMjPWt7QMI4cpcjOa6EDUlPB3Xu9r+rSE
+	 afWSXnr2dzFS+o/GVnqMm7+439iluDsD2ZPJLiZVlLV2RyyLh2SqL3YlNah6R/8EB/
+	 V90tNGi4zDT8RTVuWf56mWPlCkRreNacD83OiovIazRgVL74+0tOTqs9rCGgtnBJLO
+	 CfstjPyVnv35Ib4rBCI8HzbNiWx2o9/SLeLlaexWSgT4L1j7czA5bRf49qo3Jg0W5E
+	 ptJMikEOFKXlw==
+Date: Tue, 11 Mar 2025 09:36:23 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [GIT PULL] Counter updates for 6.15
+Message-ID: <Z8-Fh9pzgxS1idk2@ishi>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] IIO: ADCs: Sparse friendly claim of direct mode
-To: Jonathan Cameron <jic23@kernel.org>, Frank Li <Frank.Li@nxp.com>,
- Marek Vasut <marek.vasut+renesas@gmail.com>, linux-iio@vger.kernel.org,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-Cc: Marek Vasut <marex@denx.de>, Mike Looijmans <mike.looijmans@topic.nl>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250309165819.1346684-1-jic23@kernel.org>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <20250309165819.1346684-1-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="lU7ASS82GjffM2oe"
+Content-Disposition: inline
 
-On 3/9/25 11:58 AM, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Resend of remaining unreviewed updates in drivers/iio/adc/*
-> 
-> I will eventually just apply these, but I'd much rather someone
-> else took a quick look to check I haven't done anything stupid!
-> 
-Only managed to find one little potential oversight in patch 5/8.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+--lU7ASS82GjffM2oe
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+The following changes since commit 2014c95afecee3e76ca4a56956a936e23283f05b:
+
+  Linux 6.14-rc1 (2025-02-02 15:39:26 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counte=
+r-updates-for-6.15
+
+for you to fetch changes up to ba27a0247b7187af36cb0b1fe7f7a68067ccb555:
+
+  counter: microchip-tcb-capture: Add support for RC Compare (2025-03-10 18=
+:20:32 +0900)
+
+----------------------------------------------------------------
+Counter updates for 6.15
+
+counter:
+ - Introduce the COUNTER_EVENT_DIRECTION_CHANGE event
+ - Introduce the COUNTER_COMP_COMPARE helper macro
+microchip-tcb-cpature:
+ - Add IRQ handling
+ - Add support for capture extensions
+ - Add support for compare extension
+ti-eqep:
+ - Add support for reading and detecting changes in direction
+tools/counter:
+ - Add counter_watch_events executable to .gitignore
+ - Support COUNTER_EVENT_DIRECTION_CHANGE in counter_watch_events tool
+
+----------------------------------------------------------------
+Bence Cs=F3k=E1s (2):
+      counter: microchip-tcb-capture: Add IRQ handling
+      counter: microchip-tcb-capture: Add capture extensions for registers =
+RA/RB
+
+David Lechner (4):
+      tools/counter: gitignore counter_watch_events
+      counter: add direction change event
+      tools/counter: add direction change event to watcher
+      counter: ti-eqep: add direction support
+
+William Breathitt Gray (2):
+      counter: Introduce the compare component
+      counter: microchip-tcb-capture: Add support for RC Compare
+
+ Documentation/ABI/testing/sysfs-bus-counter        |   9 ++
+ MAINTAINERS                                        |   1 +
+ drivers/counter/microchip-tcb-capture.c            | 160 +++++++++++++++++=
+++++
+ drivers/counter/ti-eqep.c                          |  32 +++++
+ include/linux/counter.h                            |   3 +
+ include/uapi/linux/counter.h                       |   2 +
+ include/uapi/linux/counter/microchip-tcb-capture.h |  40 ++++++
+ tools/counter/.gitignore                           |   1 +
+ tools/counter/counter_watch_events.c               |   5 +
+ 9 files changed, 253 insertions(+)
+ create mode 100644 include/uapi/linux/counter/microchip-tcb-capture.h
+
+--lU7ASS82GjffM2oe
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZ8+FhwAKCRC1SFbKvhIj
+K222AQDaFpdNAaWc4CxUnRR83BXNUTSjniTlvMs0UHmOJeG9PwD+MBlQOIcw+v/m
+7vPIklz4ob7ChfUwjX1HjayP2Cj2cgY=
+=ObcE
+-----END PGP SIGNATURE-----
+
+--lU7ASS82GjffM2oe--
 

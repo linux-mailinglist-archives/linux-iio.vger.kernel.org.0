@@ -1,89 +1,120 @@
-Return-Path: <linux-iio+bounces-16739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA3CA5CF05
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 20:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE94CA5CF0A
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 20:11:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A38E17A8CD
-	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 19:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AC8017AD99
+	for <lists+linux-iio@lfdr.de>; Tue, 11 Mar 2025 19:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F40263F45;
-	Tue, 11 Mar 2025 19:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB9125DD07;
+	Tue, 11 Mar 2025 19:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5bAyfUX"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PpOkU9wp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EB225DD07;
-	Tue, 11 Mar 2025 19:10:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6F139E
+	for <linux-iio@vger.kernel.org>; Tue, 11 Mar 2025 19:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741720245; cv=none; b=ODftxbeqMbFctumhdRHvBsIvFBS/CsAjHA9EnLq2Trh7v6T7pkHatxYYBc1GEEOO+r6gO0jkp3Hfmarc/HWMkhrDhqKpurCP5Kp0FOJvxlQ5YjnDUcNS37R9OxhC5hF9nBEX3LAL4XCFaHVuIMssMSsAHrzWWqa4t0vXx4C8A7U=
+	t=1741720283; cv=none; b=hSPD149AT3AokTV3g55x2rOg+Y9nmWwQIy7GtiRD2XoOVg+QsMPPPlSXwwcQ+HFosA3wPHb6bbsZdHBBg215/3Sk14fMt2ehJYzGnFZE/aWpCYyJOyhuSe+yXB/BTx3NvZZW4+i8Mfg4pFTs5gPA0IicB6QsBfCjEmYb7GvTSes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741720245; c=relaxed/simple;
-	bh=6Te1+MCvDxChGIL5AtvWEAM7Dg1EZcHoZRPgaGsrwfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obCM5LWj4CmIyq8wF/JDCtjhQDr43adgtZJV7sknmZzqO2iEnqyp8tVNeqRH5ET4V+PT2Qk9ry3dpGGuf90UlosfFhy33+5e8NYlfXMMuWilQQMcJswvGBqzG5HK+gRTCQ9pCXrpqW3up7xi82l1kr+JkVoIhxNepjGw7QF/2Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5bAyfUX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1EBC4CEE9;
-	Tue, 11 Mar 2025 19:10:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741720244;
-	bh=6Te1+MCvDxChGIL5AtvWEAM7Dg1EZcHoZRPgaGsrwfQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=A5bAyfUXT66apiORTbTCI/dXHJdzgb40oWBL+dqx31VcPjwtjc6KxMoboXnkmtrE5
-	 5MlbRYmxGPgYrU+03UVUTcmZZ/mhlqyGK0lwoQQscqrYwAJAzjFf8q/+kz5iuZmjDw
-	 eriUcB36I8vp1Mixl5CHsPK3MgOOZvKTF+VTlCWP5T9pfmfkAiJPeCBY6DdO5qjO8B
-	 IDBnv96Hy484tiucYsoAv6TnPoDIuw4inEaUzEGkaWckLGqhkFk3YnTMlVDQiInXQi
-	 YCg7vIz+OF3Rd3SktnOiM9M96FRDp9yySgZMNpSEoJD92hkejHdiaQAEv3oyBwMXNm
-	 MTWIop7FZgaQw==
-Date: Tue, 11 Mar 2025 19:10:33 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, "Rob Herring (Arm)" <robh@kernel.org>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Ramona Gradinariu
- <ramona.bolboaca13@gmail.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
- <corbet@lwn.net>
-Subject: Re: [PATCH v6 0/3] Add support for AD7191
-Message-ID: <20250311191033.793d2503@jic23-huawei>
-In-Reply-To: <3fa4136e-b384-4c3b-a58d-773887b87552@baylibre.com>
-References: <20250228141327.262488-1-alisa.roman@analog.com>
-	<3fa4136e-b384-4c3b-a58d-773887b87552@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1741720283; c=relaxed/simple;
+	bh=eMWAif36SDXdKvbeeRErxd6kwLV/chWEGwBaa/THzI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gaHZmbnP9KuI/3E4YKGYNtJb8npIjWyDxeQdv3ARRGWDwhLzKHzp2geO/t6YIRYfKtiFU6j8AJGJ2EPZC6UEK/9DuhMWPtqKpqxGxOPMkTORlhbaFBmETWcgYSiFE5kznl7vNKBUipgShmljbThoearBVOCW3L0bnWM9zfSCd+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PpOkU9wp; arc=none smtp.client-ip=209.85.161.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5f89aa7a101so1908976eaf.2
+        for <linux-iio@vger.kernel.org>; Tue, 11 Mar 2025 12:11:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741720280; x=1742325080; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZF4QxEGRIEKGvT3VCs2VDbeXCp7Ult9VgLDtTsXdT5k=;
+        b=PpOkU9wpGRMm3r9SfgZKOpUlrjVRbXl13YbbJIZDl6zcZ1/KWSxv+i39WOTTCALyEK
+         7ETwTlDC1xbTGQwKW/PQJfLn+bgD6GPBeNWLhJqRkLZcIKLlkmzmP0Y0OxZXfeqTmApo
+         roJZKco+pNPEK6gNeHghmAlExf7Z8Cw6XcacXGQY554kLuF0B/d9uyOaiJc9t0brygXS
+         b5mGoPk1FYHN8lOvOTpY/WyGlupFp5DgyFLRCS+hjLqMada2S0ILY9kXFP/KUjgASpcH
+         AXmd2ppOmd3s+pH7xQox8lo+IR37PL5D5UhskbO6+1ukdoSC5Y34Cj3NHrLomidj+Bt/
+         0HzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741720280; x=1742325080;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZF4QxEGRIEKGvT3VCs2VDbeXCp7Ult9VgLDtTsXdT5k=;
+        b=n/AhtHrki6uNhb2XdwNnPofXng7dFPZrI3+3r98vikm8VqGmPAtgJfx9U76BvwWbko
+         VHuVyxlCTwcLLsKMjSFPwz/0/rLoq0xRJYPxtM+ICIAbR8QlRnpxcRC9p+4gzIBybgfz
+         ISpGP6329dqqKWVil3egC9VJQJ+oANVk+qqCguGJSqCv32jpEALf7vM19bLb7aGichpB
+         8Ozp/JTtSgyR68lA3VrjuwMsEqhjI5PMzn9omodgjXjQMqEvWrnDDjC1QXgWS4sUcjbu
+         vXjjidJ/lNHTjk05t63PnVYpOrqEgnEZttM0IpHP11NmkukA0pK+uXxvUv8LhU1vF9cp
+         X4Lw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcgrXPjIH6+RioDm/NLTZC9X5B7xWWMyThtzrLnTmE/dPZ/gIRqYSsIDJREC9Sdlsf+zWG+iZlGIY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS5WZTCz0pr1QgH5IjG1eSzlIbOeBSZTh6sSEECCIYzI1o4xLo
+	riMnDXKGbtUP3knyBfNXdOoiQ0eAyHoNoLKS4Cmux22oqenH1MvGkCHE15neYDY=
+X-Gm-Gg: ASbGncsBJXRRX0znpy/bxjAjBM0Z85iWfUWITzRRQsCUz72llxIYEdbD/X5++NQduVu
+	WOQOnGUpXQfiUC4c6y/blYmqyzrpe6hmCiHE2IR2j5ZXZkkjzLxKlSwWeaBmIYpRk+mYCSR0ECb
+	nbvsrMeP7FpegM4BD5zQoUPBp22t/WJzVTV+rWcpZGQdJPtLKK3AZnQWUPZ49xbW6YLYMwSSR1K
+	aI+andDQmrz2PgnuoAIqEKCm4qhtisB/s5jCzFk7hY4SyRo0oNMiufDRfJpSGVg63ZobnkMm7TV
+	EyevvsNHyu7NxLft925OhCBK/25RVk1cADS0Baix6JweexVed/s9aDKvxgN0rkFcess5r27biSE
+	tQYcAOA==
+X-Google-Smtp-Source: AGHT+IHX3Vu+RuA3At3lwScTCef/yZid756L+teOLzxiYfRANjt94UlY7ZM2FFUF7jxDIcuGRHqtPg==
+X-Received: by 2002:a05:6820:994:b0:600:2260:315a with SMTP id 006d021491bc7-6004ab3c077mr8773045eaf.6.1741720279779;
+        Tue, 11 Mar 2025 12:11:19 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-60040d1fff3sm2225564eaf.0.2025.03.11.12.11.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 12:11:18 -0700 (PDT)
+Message-ID: <4d1666ef-8683-4d54-bb4b-7d858569c5a3@baylibre.com>
+Date: Tue, 11 Mar 2025 14:11:16 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 17/18] iio: light: vcnl4000: Switch to sparse friendly
+ iio_device_claim/release_direct()
+To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+ Astrid Rost <astrid.rost@axis.com>,
+ Matti Vaittinen <mazziesaccount@gmail.com>,
+ Per-Daniel Olsson <perdaniel.olsson@axis.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20250309170633.1347476-1-jic23@kernel.org>
+ <20250309170633.1347476-18-jic23@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250309170633.1347476-18-jic23@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Mon, 10 Mar 2025 16:01:45 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> On 2/28/25 8:05 AM, Alisa-Dariana Roman wrote:
-> >   
+On 3/9/25 12:06 PM, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Probably too late...
+> These new functions allow sparse to find failures to release
+> direct mode reducing chances of bugs over the claim_direct_mode()
+> functions that are deprecated.
 > 
-> Reviewed-by: David Lechner<dlechner@baylibre.com>
+> Also split the enabling and disabling of thresholds into separate
+> functions given overlap is small.
+
+Should be 2 patches since doing 2 different things?
+
 > 
-Just snuck in (well technically I did push out non rebasing
-then noticed this, but unlikely anyone pulled in that 30 seconds :)
-
-Thanks!
-
-Jonathan
-
-
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Astrid Rost <astrid.rost@axis.com>
+> ---
 

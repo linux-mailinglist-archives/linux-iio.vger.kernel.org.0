@@ -1,262 +1,158 @@
-Return-Path: <linux-iio+bounces-16745-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16746-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936F4A5E05B
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Mar 2025 16:30:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D292AA5E3C0
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Mar 2025 19:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C881D1696CC
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Mar 2025 15:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788B4189FF77
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Mar 2025 18:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BFD24DFF8;
-	Wed, 12 Mar 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A212505CA;
+	Wed, 12 Mar 2025 18:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPja19er"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="KnjDmopl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED7D1E493;
-	Wed, 12 Mar 2025 15:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9388F1E2823
+	for <linux-iio@vger.kernel.org>; Wed, 12 Mar 2025 18:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741793396; cv=none; b=dNYh9qRw/pFfQ5OMfyg2CDgPK89IEVTb6YOivLsRFOamVNK/89A1Va/6+v47/eLX6bTLO8qW303GvQHnsyhuSNJLXTVNfw45RmeuZdoVRHo6NmUfWhogVUK5Tit6cVjKiJqvVtCxtqgSgdI0lellA2WLKVFuEK8+wvKwRI/hjsY=
+	t=1741804738; cv=none; b=k5UUS7wB1MCFC0LrVCOSvP1mMxoZ0ptTFTk2kTrzyiSiQa/09i5q2Bnk12dWh2V1B325OI0IZYLdXCaGcAM4BYBQ4IgaPYQKlsYezGjBPigZ52H8ePXrrxv2EXInPruDlgKtiXwaZsoVlBKHLPj5zeh/tsMHQlmPQh1SPh02Qw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741793396; c=relaxed/simple;
-	bh=FSXBX4j7B7b+XnlTLJ17zxN4ccJzAqSAdocTOkuwjFE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=a68ZYlVaeT11MQY8xFcG3nurOSlsbc1b9bEXmbS9Ybe2Kn/qsAV0FASsBQ3FTojsFy+n21z2ZUkIbtq4Aau1nVzjuGqG0cjSuvZErsCWqGZ10xiqvtWbPzuAp5eDK3hRpaz2SX+pUu7T7NsWxTh+kr1U6wXcL4p+LqmTmkconM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPja19er; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62444C4CEEC;
-	Wed, 12 Mar 2025 15:29:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741793394;
-	bh=FSXBX4j7B7b+XnlTLJ17zxN4ccJzAqSAdocTOkuwjFE=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=FPja19erujvsYrf3tmXvsIjEPGgfu98M/ReHdy+PozpROvc1p5nU5k2hUK5cfXD+O
-	 aQqHao/nMuLNz/jlkuRGxr9LG9Kd327socaBoD+wHIeg7rw/jpa2D12L39l0C4wlNI
-	 TCPy0dQ2bNb6g0WiK4F2B/bmK2+Ekq5WlSjMrmNitt3otjEHYtVma7cS9+FeQyOLa5
-	 4g/12xhCG2FuoTtu3XouKDjHRevREEmmiSatX0XM7OfArf6thntgMpbEww52OVpxrK
-	 dj/93O+KJJNN91g+JKnh2U8mORPjNwBPgtcm2ksmSwLVxWnks+6ldo7DbIWbmGVC6J
-	 M9751FzDikTiQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5116DC28B28;
-	Wed, 12 Mar 2025 15:29:54 +0000 (UTC)
-From: Tobias Sperling via B4 Relay <devnull+tobias.sperling.softing.com@kernel.org>
-Date: Wed, 12 Mar 2025 16:29:40 +0100
-Subject: [PATCH] iio: adc: sort TI drivers alphanumerical
+	s=arc-20240116; t=1741804738; c=relaxed/simple;
+	bh=K6OHUJ/MJMnjJqYQ3RMY3JQFQnpsiuzZgsvsB29joaA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=F6zEt+rkO5uuytg9n/1UffLTDEF9L1W6I4kq6hH8kRVCJnh6I5/tn3c/DWyw2Ls/iMd6DUgOURFJi+JFrCoYkfUODrtl8BOgQ9VSjI3j/SK2kVB/dc30KVSfJA/+o9XUkoRzbUyBn52fLLaFWT3J92fgoSnt+MqGqd4JonJEoQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=KnjDmopl; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43d07ca6a80so721195e9.1
+        for <linux-iio@vger.kernel.org>; Wed, 12 Mar 2025 11:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741804733; x=1742409533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OGkqUlA/hNVsM3wGnwg0HAimPyuChhV2vT9VgL5Lk0w=;
+        b=KnjDmoplxy1mFEuWzuO5FT3GANs81NKkT3CLlK36bnhT+UEQy9uRznEvzgxJHGYADW
+         Pz/CQszkYXrdoYFD+6cvCbKsx1mBVxsf5i/cxz3w6H1C5Oaz5gV50I9myuhMSKfJbsWY
+         9/BpVP66gpYJJxNqaYk1PsopKlRppzeaNUjnTezFJr7jowlVtxSWqGZB1E0WhYVw95nZ
+         +CxOKsxs8Mf0+79PX2QcpNNlOTcJiqdG2DFwWW0AW4avczLX1IfIZt/8lXdDDbxLfOPA
+         xvOd+t/7YzEh0Mc6zSyygZLCDyJtVfpSDp9PylVTEhl7cDhS7p41lmmMTv/tygBPQ8Fq
+         rBOA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741804733; x=1742409533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OGkqUlA/hNVsM3wGnwg0HAimPyuChhV2vT9VgL5Lk0w=;
+        b=LqZKfZUf0yspRIIM/wyDqVUixVAHPSvK4nGs/JL8+WhEnz3O+DZdCKVNIXOnhrz4Wx
+         kITLRjZo/8UXLGCEsG/SdSfc6jYadWe/umvi2Yg0K9eNt0xaLFh2s+WXROzIMn3GkzYY
+         IRM2ov8iBkMaGNHELTBuRy2YmNLA3/Nm0joYiutdsbMz4xMs2Wsd05docXEi9kJMmpn+
+         AQcDzejdD0EWuU8cJcbY3rgk1U5psbueQhxjUzCQfOo8e2kFyD9k6Viz6tAFCzJ3W82k
+         dIVCvHe2DpH8laZwXqOlnZDpr4mNqyRK1pNzUbsmC8m+SMZDtRYzLZ1kd8EFogjQb0t0
+         CViw==
+X-Gm-Message-State: AOJu0Yz+usSHlr2c13LFZ6kjZHj8UwrVGLGSHeAmC88uQzimUKOe56zL
+	pba9TLfUM/Qo3xGnecVamsl2gpN9T9QC197HvQPx08UNJdhDgTGVQybKOjIjyA0=
+X-Gm-Gg: ASbGncvVG40dex01W9XfXohb+f8rr10cQz6ZhFBvjJeSMM1wMMCefm6WTEhzDnNFkW9
+	oXr2m7++pgBqppfGC+/ECwabFR2IsTQ1sCvmEDwpU2+HA5IyZU012iAaXLsqNVJg/gVeepmNvMz
+	3h1EnOL7JapZ0T8ZWdVP2kUk7Unz3DRHWyDp7tzZHFqW52qALJoz+R3owOi4UKHL28xEZwWNGeI
+	V2tIg7sewh6u+5l/o9x4osYcueaKyIFZF+QZf7EmZ2AOae17sNPjklX9HgXlD3Xmjnnvf70Bkrv
+	R2Pjt/F8fSleoRCSnGcOh7xgwJcuI1GQkkqcGl9W21g/R19ls4tDOqBHR2JYcCC7NjBjnCKcObh
+	yuukTAQIHOT8MHz0DcB02cg==
+X-Google-Smtp-Source: AGHT+IFSTUcNjPlNA1hpBd8lWdS+sF0vkogK8YDHdtdi75jRGft1ZXnjbUKe+hGrfGKsPIe/q99/eQ==
+X-Received: by 2002:a05:6000:25e2:b0:391:4094:3806 with SMTP id ffacd0b85a97d-39140943bb4mr13497133f8f.47.1741804732907;
+        Wed, 12 Mar 2025 11:38:52 -0700 (PDT)
+Received: from localhost (p200300f65f14610400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f14:6104::1b9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c01cd62sm21339586f8f.46.2025.03.12.11.38.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 11:38:52 -0700 (PDT)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Alexandru Tachici <alexandru.tachici@analog.com>
+Cc: linux-iio@vger.kernel.org
+Subject: [PATCH 0/2] iio: adc: ad7124: Fix 3dB filter frequency reading
+Date: Wed, 12 Mar 2025 19:38:36 +0100
+Message-ID: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250312-sort_ti_drivers-v1-1-4e8813e662d2@softing.com>
-X-B4-Tracking: v=1; b=H4sIAGOo0WcC/x3MPQqAMAxA4atIZgu1Pw5eRaQUGzWLSiJFKL27x
- fEb3isgyIQCU1eAMZPQdTYMfQfrEc8dFaVmMNp4bQej5OInPBQSU0YWpZ21Y9RjdMZDq27Gjd7
- /OC+1fsa55R5hAAAA
-X-Change-ID: 20250312-sort_ti_drivers-04336a06a425
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Tobias Sperling <tobias.sperling@softing.com>
-X-Mailer: b4 0.15-dev-355e8
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741793385; l=5636;
- i=tobias.sperling@softing.com; s=20241122; h=from:subject:message-id;
- bh=pr36xwj3Tb4zVizwF/veJfHorhZaS8NYWrN5ZPaOFoY=;
- b=qTX1AO98j3b96kwWP2rf/qDe9PH+ILdOpWXtlmNDK2GCf1+oqdC8FkSNGwQlQisyzCGFJuyGZ
- XnxwQLOeCk6Ds+VXUrVDbxr6VXCUUIQuHFhNYoBNK3q0f6RaGxD0XHe
-X-Developer-Key: i=tobias.sperling@softing.com; a=ed25519;
- pk=v7hgaMHsrA9ul4UXkBVUuwusS9PF3uHW/CC+gABI65E=
-X-Endpoint-Received: by B4 Relay for tobias.sperling@softing.com/20241122
- with auth_id=281
-X-Original-From: Tobias Sperling <tobias.sperling@softing.com>
-Reply-To: tobias.sperling@softing.com
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2101; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=K6OHUJ/MJMnjJqYQ3RMY3JQFQnpsiuzZgsvsB29joaA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBn0dStIWj4hBg3cEPxYv+SG0pzTFLQnWVwJXkWq jD6ZwFRZEiJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZ9HUrQAKCRCPgPtYfRL+ TvduB/9TDMdWtPB5gUgDhDky37zhi+BWYqtodsjpV5dKuNanLTuZnWdQAabjxr+vU1NJxZD4elm WPe4l5paRNj+570OmuXU2r94AYmGcUxBQgMzb/foHtvtsFDdAr7geixEY9IDGVe1MOnPkmtyrbX 8xOIfxIJbvC6pT9n8QpUra9TKx1QjaDBF4EMlloScYJAKPOwUB6KBbdQk6JFn3ufzi28W66qqtN ecPf3VdExl5gKzxPVjavVWa1qE8rMeK9nomG5A5Op/vTIYjWuQkdK/AIPeitMKFacRDeLWKkeez zdumn0XO/4UHMt9L8vSRtjg0E8kkwbjVlifSYj8oEDSvj71C
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-From: Tobias Sperling <tobias.sperling@softing.com>
+Hello,
 
-Sort TI drivers again in an alphanumerical manner.
+here comes another fix for the ad7124: The getter function for the
+filter_low_pass_3db_frequency sysfs property used wrong factors to
+calculate the f_{3dB}.
 
-Signed-off-by: Tobias Sperling <tobias.sperling@softing.com>
----
-At some point the order of TI IIO ADC drivers
-was scrambled up and is now brought back to
-alphanumerical order.
----
- drivers/iio/adc/Kconfig | 114 ++++++++++++++++++++++++------------------------
- 1 file changed, 57 insertions(+), 57 deletions(-)
+The first patch is a cleanup I implemented before I noticed the issue. I
+didn't switch their ordering because I was lazy. If I continue to
+discover issues in the ad7124 driver at that rate, swapping for this one
+fix doesn't really matter :-)
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 6529df1a498c2c3b32b3640b5c3a90d8fff33788..75ed633a3c43d176a4e73e341eea3fef890325d0 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1440,18 +1440,6 @@ config TI_ADC084S021
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-adc084s021.
- 
--config TI_ADC12138
--	tristate "Texas Instruments ADC12130/ADC12132/ADC12138"
--	depends on SPI
--	select IIO_BUFFER
--	select IIO_TRIGGERED_BUFFER
--	help
--	  If you say yes here you get support for Texas Instruments ADC12130,
--	  ADC12132 and ADC12138 chips.
--
--	  This driver can also be built as a module. If so, the module will be
--	  called ti-adc12138.
--
- config TI_ADC108S102
- 	tristate "Texas Instruments ADC108S102 and ADC128S102 driver"
- 	depends on SPI
-@@ -1464,6 +1452,18 @@ config TI_ADC108S102
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called ti-adc108s102.
- 
-+config TI_ADC12138
-+	tristate "Texas Instruments ADC12130/ADC12132/ADC12138"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  If you say yes here you get support for Texas Instruments ADC12130,
-+	  ADC12132 and ADC12138 chips.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-adc12138.
-+
- config TI_ADC128S052
- 	tristate "Texas Instruments ADC128S052/ADC122S021/ADC124S021"
- 	depends on SPI
-@@ -1499,6 +1499,16 @@ config TI_ADS1015
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads1015.
- 
-+config TI_ADS1100
-+	tristate "Texas Instruments ADS1100 and ADS1000 ADC"
-+	depends on I2C
-+	help
-+	  If you say yes here you get support for Texas Instruments ADS1100 and
-+	  ADS1000 ADC chips.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads1100.
-+
- config TI_ADS1119
-        tristate "Texas Instruments ADS1119 ADC"
-        depends on I2C
-@@ -1511,6 +1521,41 @@ config TI_ADS1119
-          This driver can also be built as a module. If so, the module will be
-          called ti-ads1119.
- 
-+config TI_ADS124S08
-+	tristate "Texas Instruments ADS124S08"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  If you say yes here you get support for Texas Instruments ADS124S08
-+	  and ADS124S06 ADC chips
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads124s08.
-+
-+config TI_ADS1298
-+	tristate "Texas Instruments ADS1298"
-+	depends on SPI
-+	select IIO_BUFFER
-+	help
-+	  If you say yes here you get support for Texas Instruments ADS1298
-+	  medical ADC chips
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads1298.
-+
-+config TI_ADS131E08
-+	tristate "Texas Instruments ADS131E08"
-+	depends on SPI
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
-+	help
-+	  Say yes here to get support for Texas Instruments ADS131E04, ADS131E06
-+	  and ADS131E08 chips.
-+
-+	  This driver can also be built as a module. If so, the module will be
-+	  called ti-ads131e08.
-+
- config TI_ADS7138
- 	tristate "Texas Instruments ADS7128 and ADS7138 ADC driver"
- 	depends on I2C
-@@ -1532,27 +1577,6 @@ config TI_ADS7924
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads7924.
- 
--config TI_ADS1100
--	tristate "Texas Instruments ADS1100 and ADS1000 ADC"
--	depends on I2C
--	help
--	  If you say yes here you get support for Texas Instruments ADS1100 and
--	  ADS1000 ADC chips.
--
--	  This driver can also be built as a module. If so, the module will be
--	  called ti-ads1100.
--
--config TI_ADS1298
--	tristate "Texas Instruments ADS1298"
--	depends on SPI
--	select IIO_BUFFER
--	help
--	  If you say yes here you get support for Texas Instruments ADS1298
--	  medical ADC chips
--
--	  This driver can also be built as a module. If so, the module will be
--	  called ti-ads1298.
--
- config TI_ADS7950
- 	tristate "Texas Instruments ADS7950 ADC driver"
- 	depends on SPI && GPIOLIB
-@@ -1588,30 +1612,6 @@ config TI_ADS8688
- 	  This driver can also be built as a module. If so, the module will be
- 	  called ti-ads8688.
- 
--config TI_ADS124S08
--	tristate "Texas Instruments ADS124S08"
--	depends on SPI
--	select IIO_BUFFER
--	select IIO_TRIGGERED_BUFFER
--	help
--	  If you say yes here you get support for Texas Instruments ADS124S08
--	  and ADS124S06 ADC chips
--
--	  This driver can also be built as a module. If so, the module will be
--	  called ti-ads124s08.
--
--config TI_ADS131E08
--	tristate "Texas Instruments ADS131E08"
--	depends on SPI
--	select IIO_BUFFER
--	select IIO_TRIGGERED_BUFFER
--	help
--	  Say yes here to get support for Texas Instruments ADS131E04, ADS131E06
--	  and ADS131E08 chips.
--
--	  This driver can also be built as a module. If so, the module will be
--	  called ti-ads131e08.
--
- config TI_AM335X_ADC
- 	tristate "TI's AM335X ADC driver"
- 	depends on MFD_TI_AM335X_TSCADC && HAS_DMA
+Note the setter function is still broken. And it's worse enough that I
+don't know how to fix it at all. The relevant part of the function looks
+as follows:
 
----
-base-commit: 97fe5f8a4299e4b8601ecb62c9672c27f2d2ccce
-change-id: 20250312-sort_ti_drivers-04336a06a425
+	sinc4_3db_odr = DIV_ROUND_CLOSEST(freq * 1000, 230);
+	sinc3_3db_odr = DIV_ROUND_CLOSEST(freq * 1000, 262);
 
-Best regards,
+	if (sinc4_3db_odr > sinc3_3db_odr) {
+		new_filter = AD7124_FILTER_FILTER_SINC3;
+		new_odr = sinc4_3db_odr;
+	} else {
+		new_filter = AD7124_FILTER_FILTER_SINC4;
+		new_odr = sinc3_3db_odr;
+	}
+
+The issues I'm aware of in this function are:
+
+ - the sinc3 factor should be 0.272 not 0.262 (which is fixed for the
+   getter in patch #2)
+ - for freq > 1 the if condition is always true
+ - In the nearly always taken if branch the filter is set to sinc3, but
+   the frequency is set for sinc4. (And vice versa in the else branch.)
+
+Also it's unclear to me why sinc4_3db_odr > sinc3_3db_odr is the test to
+decide between the two branches. Maybe something like
+
+	if (abs(sinc4_3db_odr - current_odr) < abs(sinc3_3db_odr - current_odr))
+		use_sinc4()
+	else
+		use_sinc3()
+
+would make more sense.
+
+I intend to add a filter_type property to the driver next. When this is
+implemented setting the filter_low_pass_3db_frequency shouldn't be
+needed any more and we can either keep the function as is (and
+discourage its use) or just drop it.
+
+Best regards
+Uwe
+
+Uwe Kleine-König (2):
+  iio: adc: ad7124: Make register naming consistent
+  iio: adc: ad7124: Fix 3dB filter frequency reading
+
+ drivers/iio/adc/ad7124.c | 176 +++++++++++++++++++--------------------
+ 1 file changed, 85 insertions(+), 91 deletions(-)
+
+
+base-commit: 8dbeb413806f9f810d97d25284f585b201aa3bdc
 -- 
-Tobias Sperling <tobias.sperling@softing.com>
-
+2.47.1
 
 

@@ -1,180 +1,242 @@
-Return-Path: <linux-iio+bounces-16782-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85778A5FBE8
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:36:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA65A5FC25
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E32043A2FCF
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:35:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AC107AB695
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99A6A267B77;
-	Thu, 13 Mar 2025 16:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A5526A0B9;
+	Thu, 13 Mar 2025 16:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MIbldObm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeHioJ2u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70AB1FBEA8;
-	Thu, 13 Mar 2025 16:35:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A74626138E;
+	Thu, 13 Mar 2025 16:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741883711; cv=none; b=mD05mfuI7uMiwgPGrf/27PSzDOjGbPz+oedD+oZvzMrL4vgjUC4CpsYtjKR58M1We+nxRxlvmtolxWStRX67QDNtq+0/l0HjkPD4LpoF8Gu2hNTooMv/BiD/DOlIlu/ogwmj722UW04eUQ3YnwyHjaj1TjGRPazLiaGugm9GxIU=
+	t=1741883996; cv=none; b=px7/ELaa+f5qVt1Jd28m7KmITlILmzPu2DgrB/LaKg0SFbNElH2agsrPsNKKgaUie4EG1FCQeVwsaMhkPFfJWytddsArGgM30J3IcChrSs0CeJzeafZ/66HDaYcCrjJI7KmD7tksvGErsS+eSQsRNiEr+keG+nhLBkBj0K78+6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741883711; c=relaxed/simple;
-	bh=EUFN0+/92DTuuEPqcXSlkiCvxxoC8sPdnSBFP/qw8JU=;
+	s=arc-20240116; t=1741883996; c=relaxed/simple;
+	bh=kTTXTVPn8NUHqRiIZEKZXhYTmuz1K7M32fm2acNDAS4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qL7pT61C3I1isgG/gSxZVAG+krajrM+9/c3D0AHgH0cb301YNZtxmr0lnTu9E+FOx1roymYz+2JBd27mNPvwhnu8OJulAzA3Z3QALr3VBTV9TsB1OEgaLPt1tambg0n9i5LBHDT0b/TbxwE/uVtBGV994U+JH4Nsghc2SDan71s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MIbldObm; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=UAVrtPbaH5P5lO4eFcPtuNhTk+IgYgglFjgrdIYRAb3TVaHDkO+BeeEJaMjcgCPfNRuEfOBgpqhe2K984KT2WvjaiHZQ5H2cX9rg8MnalLV1b/KWm4eBR+y9sYLI8R/w6rDoOpdg/UmPB9bkupMFmt+DrtMI5YgOyZNrV0MiSsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeHioJ2u; arc=none smtp.client-ip=209.85.219.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e63a7403c4cso137395276.1;
-        Thu, 13 Mar 2025 09:35:09 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e636caf2aa4so145329276.0;
+        Thu, 13 Mar 2025 09:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741883709; x=1742488509; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741883993; x=1742488793; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GAQy2kteC6dBKbppouJhbhTfreKvLdgeuUyc0o14mVQ=;
-        b=MIbldObmlYuOuoz/H3tbiQFzEFGPicRsxm9H19nBIWZ5d+ql2pRHYp8oOlqZrEbT0T
-         zrE06IyS09PLkZHUSHsj2uNokG+s5c5WE3oXNdY2xUhLgDixNNvkfSm75MQ93Sn7h8VH
-         1V2bbY7pbG+HOw/sNBpbrQB89dAqzlFK435kKJH3O7QiYcqQ3QGcoQ9T2lfrFW6rnimY
-         uWXmBerLghyu/QTaFNbHDamd0E8UdzqG8+7xGSsubN1YZcwnHmLTE6qNgCq+PRG2+O/o
-         t4Pv5rmjEvxbNx5FgCheQlH6BfiyM4XY7/8+EB5loY0YioYBzNPYQtXV7kUi2q/DOi3l
-         9NYg==
+        bh=jpMfEfEeQMMLUbXgHwTtp/6maKEVU/1Ktyh/Yj20O60=;
+        b=IeHioJ2uXukzcrdQb+j6lPKHDh2aEA8BlYXLG/xHJuvgMwb9DHef2JMLrquvtiNXTw
+         hMepzkA1uKHyFnbqlqrjt+vUGt9uNp0uljnsGXQNiz82oRSG6Gcido2My9L42SDJPUP3
+         ffDI5VKfY/8OSRdTgPsS5vhoWyOL2uMN7/YgdA787a4O+0FtIHOUKHMLTOLEEdEEBm7J
+         kSRlfliIsJXKjz8z+aBDk0EtXRLZ0Hw/dqeFmMfjc49z/EWEGTFrigsA9HcQjACJNwWg
+         GytqyB8LRpm5ASWJKg/se6oTWFPPL7tcWplFSu/2BaBb+H1KHCOW3edbxOqtXwW5OrYE
+         rUpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741883709; x=1742488509;
+        d=1e100.net; s=20230601; t=1741883993; x=1742488793;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GAQy2kteC6dBKbppouJhbhTfreKvLdgeuUyc0o14mVQ=;
-        b=NeBrlYW8JwDFgcXKfMouJqhNIomPRZoBqorveoLUcZOehO61K3Xa/zWSyeI7sOPOxL
-         R+IzVkuikBahj1KStWu+0FOQAR1D1hkeZJBwrP2o3Yea6fRk76j2q1KN0dDvyNwOzzrP
-         yK3XZDkEFX8Gphh65h4PKE1udimmGaH8B49Gr5Lc9X3fECgTw0J1D1/+s+yudRHr2J/s
-         gylDBAaTkpVhOwv6MQBdAzsNtQR47eXj43XLdsiRN8BVVzARJyZxeVyPg6jHqvTkvdAK
-         eZ3OY5uKegW656OiME0GySng4KwXypRkgFQnlSV1eNzdkgoeaAegExaYr2UsKUoEf6Z0
-         d82g==
-X-Forwarded-Encrypted: i=1; AJvYcCUS6Yy5Ou6DjJN9ptHdzEEjkICu8BpoJmXHfkSVSVduFwpQ6SVB35kqPFmPhTd0xxdfXsS4la/Tk0s=@vger.kernel.org, AJvYcCUwZmtQQrkREe9WyTRZy/XybLoj+5qIeVAMm2ECawor2boCZXRDto6XvnP4KkYT47HobB3zr32KokAxJRvF@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEPGHCnh1rZVMuc80TJKURTxe9Kcc0gCnHMK/oVa08ExC0Y2dO
-	DVcRKuYx8EQ+EnZWamtvfK7aLlVFZqn++0p0t9IOC81IYUo/9tXes+oRWywHxgc5gTYun0kEU6K
-	OvVQMyl78U8U95QNTdL0WF7zO6wy/LuAo
-X-Gm-Gg: ASbGncvUcnuOstc+ryE/Zq6PIkW0bK4x83AuBLQmrBnHW5SN5ELp8mQQCEdoc/QEReU
-	2M+YCRgTaFGvrIHR6swXX8i4+r9+FxLvCgapVMsIZBlvUkfXzB/il6YJzSB+5pQX7GTwJ9KgRs7
-	gzIpUoo1n+18CuoEdlTEfqqm+crQ==
-X-Google-Smtp-Source: AGHT+IE+3wvqQiUCiFN0C9/KB8zVg8TQLZYHVmyKzY8xspOea4xxIMsTYlci9X0Q6ixeThe/iV6Jv2BEGDpgSwwccRk=
-X-Received: by 2002:a05:6902:2e09:b0:e60:a4f4:7f3 with SMTP id
- 3f1490d57ef6-e63b521320bmr7246707276.6.1741883708733; Thu, 13 Mar 2025
- 09:35:08 -0700 (PDT)
+        bh=jpMfEfEeQMMLUbXgHwTtp/6maKEVU/1Ktyh/Yj20O60=;
+        b=fjdoQRdwe8Jiet8JCOCPsJi9LAIBbIIaEeQjJ1ypVGOpmrZu7hFlzXiDXClzzzJOTp
+         rEnQh8pGFyvbSZ4K7wqPM18/psrJ2vLicXGJXDZK5Rz7LEZhyFmO7NVZFXkHg1Atd6co
+         rnFrP82NM/sh93Y4IXyfpdp7SywPD53iWdwLhSQBK2QeprEnq4C1iIhcK8lLz11De0OD
+         7WODRGozLtHj8LKA/mGYJtOpkPMj+ov8o2tvcam31YaBbRCpq5deGYcPN80auAsKpJEw
+         4myox3QJFhIrYHVCUJyRBAL3WqwxFj8LOQJ8JQk/N4chQ1V9najWpcsa2/DhVp+hEi38
+         aemw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDAMWtzCN/+XYbgpBl4EciOMLKZ3JobvYVLXk9CsrU5DyrskILUNabNTNV5poM7ygGii/qTAGvpmA=@vger.kernel.org, AJvYcCXlDw9fGELF7YMSwOWuh36Ds0pQe8XdYioGcHy9hbt8i+JvKODAqE9D1ujPnm6fcvxzirRv0ufH0mq2VZJG@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRJ+3WFTf1r4/PVdsd8dUi4BBSmeCOcJXOVjKlK5l0w8GRWWTk
+	rf0Tl3OmhiQdtogUWn7Vrevok0BLZJs07Njf+V8rmd1rGpn5daZhQMIhCKc7lpOOR5XxFJHnitz
+	n1332tIowHrShOhtT4QapwGlP4bg=
+X-Gm-Gg: ASbGncviMhnYHCEdWQCxr1NDVddDAnDAyWBOdEksVxFE0YEwIyjdmBxygz9M+hXXFXd
+	7kJvS752qt9wYb46yQ27uBSt1Fgw0RWucFKQnVuatHtuFrzMOCSEd/RXbYCM21utuQ+/LzDnLJk
+	AMhS4eqACoclC3F62T9CxYmSec6Q==
+X-Google-Smtp-Source: AGHT+IE0krfPf6hIkHHa9rxku57tVFK/Jsev9YJhQ/qB/W7cUa2X/VyX9hKtLNC3J8STcZ0V+ZQH+EROE85gYb/9xPw=
+X-Received: by 2002:a05:6902:1701:b0:e60:974f:a03e with SMTP id
+ 3f1490d57ef6-e63b51eb164mr7277937276.6.1741883993426; Thu, 13 Mar 2025
+ 09:39:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250220104234.40958-1-l.rubusch@gmail.com> <20250220104234.40958-10-l.rubusch@gmail.com>
- <20250304132320.5caad2d2@jic23-huawei>
-In-Reply-To: <20250304132320.5caad2d2@jic23-huawei>
+References: <20250220104234.40958-1-l.rubusch@gmail.com> <20250220104234.40958-15-l.rubusch@gmail.com>
+ <20250304135917.39ef0071@jic23-huawei>
+In-Reply-To: <20250304135917.39ef0071@jic23-huawei>
 From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Thu, 13 Mar 2025 17:34:32 +0100
-X-Gm-Features: AQ5f1JqiITWP0W_H60EGGtAoCn-Qo5ipt0Bvjn02u-pIc8DoaCY08wjyEx8TUjA
-Message-ID: <CAFXKEHb3GehCyNyLh3Z_8yVPNda9V_8KN_RF+hZvHdW8u9zr0Q@mail.gmail.com>
-Subject: Re: [PATCH v3 09/15] iio: accel: adxl345: add freefall feature
+Date: Thu, 13 Mar 2025 17:39:17 +0100
+X-Gm-Features: AQ5f1JqDvQ9suFRK-JOPQEi1z8ToTfC5DsNr_wSDRZtRwddfjEHdw75T_MnVYYI
+Message-ID: <CAFXKEHZDo=AYFswbM48T7syNzk03rPa0PbLceh3C_HPUkKKxQw@mail.gmail.com>
+Subject: Re: [PATCH v3 14/15] iio: accel: adxl345: add coupling detection for activity/inactivity
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, eraretuya@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 4, 2025 at 2:23=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
+On Tue, Mar 4, 2025 at 2:59=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
 wrote:
 >
-> On Thu, 20 Feb 2025 10:42:28 +0000
+> On Thu, 20 Feb 2025 10:42:33 +0000
 > Lothar Rubusch <l.rubusch@gmail.com> wrote:
 >
-> > Add the freefall detection of the sensor together with a threshold and
-> > time parameter. A freefall event is detected if the measuring signal
-> > falls below the threshold.
-> >
-> > Introduce a freefall threshold stored in regmap cache, and a freefall
-> > time, having the scaled time value stored as a member variable in the
-> > state instance.
+> > Add coupling activity/inactivity detection by the AC/DC bit. This is an
+> > addititional enhancement for the detection of activity states and
+> > completes the activity / inactivity feature of the ADXL345.
 > >
 > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> Hi, one thing inline.
->
-> > @@ -855,6 +958,17 @@ static int adxl345_push_event(struct iio_dev *indi=
-o_dev, int int_stat,
-> >                       return ret;
-> >       }
-> >
-> > +     if (FIELD_GET(ADXL345_INT_FREE_FALL, int_stat)) {
-> > +             ret =3D iio_push_event(indio_dev,
-> > +                                  IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-> > +                                                     IIO_MOD_X_OR_Y_OR=
-_Z,
-> > +                                                     IIO_EV_TYPE_MAG,
-> > +                                                     IIO_EV_DIR_FALLIN=
-G),
-> > +                                  ts);
-> > +             if (ret)
-> > +                     return ret;
-> > +     }
-> > +
->
-> Seems unlikely to be right. Pushed an event without error yet this functi=
-on
-> is returning an error here?
->
-> >       return -ENOENT;
+> > @@ -337,6 +356,69 @@ static int adxl345_write_act_axis(struct adxl345_s=
+tate *st,
+> >       return 0;
 > >  }
 > >
+> > +static int adxl345_is_act_inact_ac(struct adxl345_state *st,
+> > +                                enum adxl345_activity_type type, bool =
+*ac)
+> > +{
+> > +     unsigned int regval;
+> > +     int ret;
+> > +
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regv=
+al);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     if (type =3D=3D ADXL345_ACTIVITY)
+> > +             *ac =3D (FIELD_GET(ADXL345_REG_ACT_ACDC_MSK, regval) > 0)=
+ ? true : false;
+> > +     else
+> > +             *ac =3D (FIELD_GET(ADXL345_REG_INACT_ACDC_MSK, regval) > =
+0) ? true : false;
+> > +
+> Why the ternaries?
+>                 *ac =3D FIELD_GET() > 0;
+> is a boolean right hand side anyway.
+>
+> > +     return 0;
+> > +}
+> > +
+> > +static int adxl345_set_act_inact_ac(struct adxl345_state *st,
+> > +                                 enum adxl345_activity_type type, bool=
+ ac)
+> > +{
+> > +     unsigned int act_inact_ac =3D ac ? 0xff : 0x00;
+> > +
+> > +     /*
+> > +      * A setting of 0 selects dc-coupled operation, and a setting of =
+1
+> false and true rather than 0 / 1?
 
-"it worked on my machine" - Of course, you're right. So, I tried to
-understand why this "worked". In consequence, I think the best
-solution will be to put also fifo handling based on int_stat into this
-function, which I currently made a separate patch, you'll see that in
-v4.
+I don't see where "false" and "true" here has an advantage over 0 and
+1, since the text speaks
+about setting a bit to 1 or 0. Anyway I changed this in v4.
 
-> > @@ -954,6 +1068,7 @@ int adxl345_core_probe(struct device *dev, struct =
-regmap *regmap,
-> >                                        ADXL345_DATA_FORMAT_FULL_RES |
-> >                                        ADXL345_DATA_FORMAT_SELF_TEST);
-> >       unsigned int tap_threshold;
-> > +     unsigned int ff_threshold;
+BTW. in v4 I re-added the comments about the channels for /* single
+tap */ and /* double tap */ although this is possible to see from the
+iio channel. Since I add comments for freefall, for activity, etc. it
+looked cleaner to me, if definitely not ok, let me know please.
+
+> > +      * enables ac-coupled operation. In dc-coupled operation, the cur=
+rent
+> > +      * acceleration magnitude is compared directly with
+> > +      * ADXL345_REG_THRESH_ACT and ADXL345_REG_THRESH_INACT to determi=
+ne
+> > +      * whether activity or inactivity is detected.
+> ...
+> >  static int adxl345_is_act_inact_en(struct adxl345_state *st,
+> >                                  enum adxl345_activity_type type, bool =
+*en)
+> >  {
+> > @@ -695,6 +777,11 @@ static int adxl345_set_odr(struct adxl345_state *s=
+t, enum adxl345_odr odr)
+> >       if (ret)
+> >               return ret;
+> >
+> > +     /* update inactivity time by ODR */
+> > +     ret =3D adxl345_set_inact_time_s(st, 0);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> >       return 0;
+>
+> return adxl345_set_inact_time_s()
+>
+> >  }
+> >
+> > @@ -718,14 +805,54 @@ static int adxl345_find_range(struct adxl345_stat=
+e *st, int val, int val2,
+> >
+> >  static int adxl345_set_range(struct adxl345_state *st, enum adxl345_ra=
+nge range)
+> >  {
+> > +     unsigned int act_threshold, inact_threshold;
+> > +     unsigned int range_old;
+> > +     unsigned int regval;
 > >       int ret;
 > >
-> >       indio_dev =3D devm_iio_device_alloc(dev, sizeof(*st));
-> > @@ -973,6 +1088,9 @@ int adxl345_core_probe(struct device *dev, struct =
-regmap *regmap,
-> >       st->tap_window_us =3D 64;                 /*   64 [0x40] -> .080 =
-   */
-> >       st->tap_latent_us =3D 16;                 /*   16 [0x10] -> .020 =
-   */
-> >
-> > +     ff_threshold =3D 8;                       /*    8 [0x08]         =
-   */
-> > +     st->ff_time_ms =3D 32;                    /*   32 [0x20] -> 0.16 =
-   */
+> > +     ret =3D regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval)=
+;
+> > +     if (ret)
+> > +             return ret;
+> > +     range_old =3D FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
 > > +
-> >       indio_dev->name =3D st->info->name;
-> >       indio_dev->info =3D &adxl345_info;
-> >       indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > @@ -1049,6 +1167,10 @@ int adxl345_core_probe(struct device *dev, struc=
-t regmap *regmap,
-> >               if (ret)
-> >                       return ret;
-> >
-> > +             ret =3D regmap_write(st->regmap, ADXL345_REG_THRESH_FF, f=
-f_threshold);
-> > +             if (ret)
-> > +                     return ret;
+> > +     ret =3D regmap_read(st->regmap,
+> > +                       adxl345_act_thresh_reg[ADXL345_ACTIVITY],
+> > +                       &act_threshold);
+> > +     if (ret)
+> > +             return ret;
 > > +
-> >               /* FIFO_STREAM mode is going to be activated later */
-> >               ret =3D devm_iio_kfifo_buffer_setup(dev, indio_dev, &adxl=
-345_buffer_ops);
-> >               if (ret)
+> > +     ret =3D regmap_read(st->regmap,
+> > +                       adxl345_act_thresh_reg[ADXL345_INACTIVITY],
+> > +                       &inact_threshold);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> >       ret =3D regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+> >                                ADXL345_DATA_FORMAT_RANGE,
+> >                                FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, ra=
+nge));
+> >       if (ret)
+> >               return ret;
+> >
+> > +     act_threshold =3D act_threshold
+> > +             * adxl345_range_factor_tbl[range_old]
+> > +             / adxl345_range_factor_tbl[range];
+> > +     act_threshold =3D min(255, max(1, inact_threshold));
+> > +
+> > +     inact_threshold =3D inact_threshold
+> > +             * adxl345_range_factor_tbl[range_old]
+> > +             / adxl345_range_factor_tbl[range];
+> > +     inact_threshold =3D min(255, max(1, inact_threshold));
+> > +
+> > +     ret =3D regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_A=
+CTIVITY],
+> > +                        act_threshold);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> > +     ret =3D regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_I=
+NACTIVITY],
+> > +                        inact_threshold);
+> > +     if (ret)
+> > +             return ret;
+> return regmap_write()
+> > +
+> >       return 0;
+> >  }
 >
 

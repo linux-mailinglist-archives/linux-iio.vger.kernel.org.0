@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-16794-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16795-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2602A5FCA4
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:52:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D439A5FCAA
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:53:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053B8189F4DC
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:52:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A12F3BC56F
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:52:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5C226B0AA;
-	Thu, 13 Mar 2025 16:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA6F26B97D;
+	Thu, 13 Mar 2025 16:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nqwGGX50"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBavY/Ar"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0C426B082;
-	Thu, 13 Mar 2025 16:51:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEE526A091;
+	Thu, 13 Mar 2025 16:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741884678; cv=none; b=RmrJ9IK+Co7xC/E8ovv9RSVKjUO7Z5Y8hI5tW/5KJ9gozgnBqK+4tBBo/LAn34D2DXR1ZK7ZuzBI5Po2SN1IRDpLc5tXccSOxpRo4tlinuuaUmdyBIV3kXq9T23mK56B5BBMoc8GN5BOMCTOPIK9/PO2lWDElUPq5UIeyKg86KM=
+	t=1741884679; cv=none; b=kmveaTH1oBsAqmpvb774+VfV/DvB+3YT20IZUaOmt6BEjKcx8tOMRX1lasoBpGpYtzi+RMq/luREo5z4cv1z6l5DmXLf+w9HBKGKdbxcOLxSP7Bl94+wZLD8LjnjWmoV/Nl3Kt5c2JtGI5kfSpfAEvZgtx/VKHYHLF1sxegz2Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741884678; c=relaxed/simple;
-	bh=ZgD+ggEIcZvGSmTEh6HZK6oXnQsJrbJ0FFZVMJVYXL4=;
+	s=arc-20240116; t=1741884679; c=relaxed/simple;
+	bh=WDMnfz2lrKlD97BGdcJfElEY9mv6VWuliK7cOcXCBBU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S54922DxspbW9y8ftOlYBk1DbnXbWaK3z7Ul9czHSRquuhFnC0B4KjHX8B+lXOjKbT9G1w4DlOECW1kRH6IzSjrub/XIILN0rB9Uji+tYPI7I2oIZH87GosrgqpqaHb6ApKhqz3rA3RZS/BF3urmWdY99J0SJKarmYifu5c+KoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nqwGGX50; arc=none smtp.client-ip=209.85.218.45
+	 MIME-Version; b=gt/eTmwCXzJkpWyR4RXXIs98mDt/Pkf9DkiuQe1lKOLUZgL6PYYhHQyF0c4QArC7Zb4qKOI3bEw1hKUCb1OoPKvL8AXc+S6xPDJB67i+yYSV8REUxIPnJtygeW1OEdOTmDoXapV1BugX5wwD8hcnNhEZWK6dplqUPuiFMvK2RX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBavY/Ar; arc=none smtp.client-ip=209.85.208.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-ac30d4ee0f5so15650066b.0;
-        Thu, 13 Mar 2025 09:51:14 -0700 (PDT)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5e8484bb895so103064a12.0;
+        Thu, 13 Mar 2025 09:51:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741884673; x=1742489473; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741884674; x=1742489474; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=37rTZ9VYdIOohXqPChjfDU8OspBVgffgmeVDmCtP9bU=;
-        b=nqwGGX50zNAV8TiQBgAKLOORXkE9Sq0/cg+QL9ztNwEFbYjNmgwn/H06ozgliSynfx
-         zVIdlEViyP7vWnA4MeIxE8i1vdmtZKSz3+qbWZhvJnd8SC7BMPINKaETM7m4lXPx2vyT
-         zLjci6pZv9NZL54s6MBMpmI3PjR7soX5OCIgufrAWosKUdfME/tzEdfaXxlpgn8hmVUq
-         sJ4PEbHXmG1cNam3fF0m0TB6KHlb8k73b167/cz/SKJwr7jUzPON6En4RQHMLfGtJe+R
-         vimpq/NbNxrJ8kkeqKiDN4Z1pO6haQZPDMIyZEv09cL4Q7o1PH7DUUmt31cKGKEVSL2y
-         xQkw==
+        bh=KqlCbLOC3QTaQS/vmCmZmcBwbGU9HBbdt6rGZi4UwZE=;
+        b=eBavY/ArppC5kCHWhzioNtoQ43aM3cqUyKNFU0URDtZOfmFa7+d2ZxgZm9CJbSYq5V
+         LNAJFSSbwWxgWmzNG5Frj5MBaSnI96hxaQF8f+ezthhQfES2DC3yxQNdo53vBUXnGUdD
+         wFFxMtEJqrxGfggUaPYlf5fIU4pC/Mc1B/CO9/Wp7UV0AnNmvstbhFyniRtjrTzQhpO3
+         AYChAoLcfoRCkNome+JMyAnX4xC4Cjd1OMyNxMMoj43wkvxMLVT+0hBaqZNZtNm/+cJc
+         YQzY0jo4IVI/uJ9WCUn1XKLyRM6ZCUVsSG3j48kt1ymb7swqUiX5KbEaBzCQhuewX+Rn
+         Hb1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741884673; x=1742489473;
+        d=1e100.net; s=20230601; t=1741884674; x=1742489474;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=37rTZ9VYdIOohXqPChjfDU8OspBVgffgmeVDmCtP9bU=;
-        b=X7qyQtzY9s/vB1XAkaa4wMCr9XeENrIwAkQPnnmsRAIRxYGLqIwOnh4crcT5YtFgBH
-         jPqtg3SzTNNTYhMujJljNROHxm2HOS2kPQP20u8nIeZQr4oUFnr8NyQFEJNmCYDESQJ7
-         2I8Lq/QKrvlHEogUohXlSsqab5MNmNpU4BxOQR7vRnH+F8bO6s3c4U2can6DmdF5N+3i
-         0jf+NbbFbKCMOJnabowVQii9txGczwTx+wORncOlt0g9MG+zRwtnd46emZqXpTVnu9Bx
-         JxUCD3lK88NQNmN1pkStWoDaPSM6dYBgkqQAaysdHyZbPs0ODfbMG0YUENgh+0rZQG/h
-         p+eA==
-X-Forwarded-Encrypted: i=1; AJvYcCV772ElOfWcWr0ULRinf3KeosqO6Gav8LB2/wEqGTZesELKW/HTtsoSvNWD6kwbJ6KUxzhEOEFPGI4eIX4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzKc36hE8eWLh/x9rqZmqBt+9Zt6CTmyk6GTzoiL7PZ+4q8KxY
-	fuAOEfUKKcNKU1I0+hnob7JSWfu4iwR6O61jhquv+tskY4fdZnBD
-X-Gm-Gg: ASbGncsN0DbTXal6S4ToiFNTlKrqI2JqtQZzxB6lp2m53xh+11QZ9g0/soPQprVmQ8u
-	uRRn0VeCoN7CPEO+D4EKtprkrsdto9epLP+zKld6XoB4B02vf+MeFyHJ8NGKksp7QxI5S719W4Y
-	LT6vx98fPx5UkcY48mOIusAaSMvs7VTlvcgRXQ3aAcoDP1Pmj2LXgd2qL+QHCa5UxlouctSUEN2
-	vd0z7h9dg/xq8/mKoVPMTmD9IShIJZaBG95RHPMma4q3S+Jg6iRCFmwogOo083Yjv1vwp/EV1kX
-	6YHZsQxcc64IajOsaoykfH5d5+ZX7bYSocGzd4jcEH+IZlhoJ4zOH5UnK4yua7L+f/GSgXNfS/I
-	K4lbV94enKOVdZG/fKChE1w8=
-X-Google-Smtp-Source: AGHT+IEqHMw42K5AdfCt9I4LgUiwhZagxRJybAE+sFmFjKbjrlgD0n95lQ/SHgKqXkVdimpI54SGOQ==
-X-Received: by 2002:a17:907:7243:b0:abb:e5ac:28b2 with SMTP id a640c23a62f3a-ac271639fa7mr987282066b.13.1741884673355;
-        Thu, 13 Mar 2025 09:51:13 -0700 (PDT)
+        bh=KqlCbLOC3QTaQS/vmCmZmcBwbGU9HBbdt6rGZi4UwZE=;
+        b=Ryodk625B5BOZS5nkYIP0H2BNwn4yEPPpOzZ7WHQHBjuWaa1EgB2uPT/XDdWZf9bCY
+         oGi9FPsiGhL3A4PmGeu3AxYwhTASGMU0oye4HlOZ0ltlh2w3g7XbJs/8rcolphnwXwOj
+         bEm1+7fdoUaxM+hL16sk2UgoCm0g2DKziIElLOz/j9ITJQne9B9ejQqwCDJ7oPTqk++3
+         20OwuZ//xS8XI9sA4chswJ1ZTXpxC5sBBERaYWf9RsRToUpwOamFpL0ZWE8wBN1bG+nM
+         lEFaWu8m4Vw4u/rUzzmpSIr8FQCcMbXzgnpXdc6pflOUe1JAsPqRW4ai2mtFI3bmkp8+
+         FVKg==
+X-Forwarded-Encrypted: i=1; AJvYcCWiUzIwB9XG2VIHWYeZUsE6RNu76r1qQ3yStT1QZbWGsvu1svEmnrim57NkWMczBbb+VeDzZzUY9qb29no=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvJXmzKQbInrPXcsBExPpdIvNQSmYm7QwXJbh+FHhSwrAcKLQ6
+	KgTrIqVNF9i4Ax/EF9k3OWSVBWMvhvUsFtPb/nmunvJAEa7glVCY6CXVqB40
+X-Gm-Gg: ASbGnctl+fwD8JkbQn2Erq6gp78bO28ijdcR7JROQhMJcQkF2AHsrn2t1P8rqqBUFE4
+	oj7Vxv6n+GktGNXQVBz8KNacTPysamIbhlbKlcKi71smqS7VKozw5VMei5vS2m6lwkoMmF7kvM+
+	chqrFj/DGbGOkiP2pQw8oTIPRQrEezwPt7WsrsUxu87d/wCdrG+yk/tn7esync0i+QL8ipc8nIw
+	TEwj7RO/37QfkSMRsyETJMt0PAW6/+VSZMHrQ/ndLYZ8CGmw0cbG3dOyJ8MM9ZQQlKI2tuhztbU
+	qhyxVTMqa1ePUtmv4KYabvUIII6pWb40hUCBqkfBS0YhlPAcjGPt4vtkxo0tJnPaNbgWn5XGaO1
+	7RdSSFXmBjqM4MitG1diHUKk=
+X-Google-Smtp-Source: AGHT+IEZ6EujTvVNuOm3xDoQYokBsKC2xYQzoaOyZl/HM3zu5wgxhTcyVax7PTxjpX2oAxcd3LCjUA==
+X-Received: by 2002:a17:906:f5aa:b0:abf:7a26:c45a with SMTP id a640c23a62f3a-ac2b9e55560mr634227466b.11.1741884674226;
+        Thu, 13 Mar 2025 09:51:14 -0700 (PDT)
 Received: from 0e1b0684397b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3147efb0csm101370866b.65.2025.03.13.09.51.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3147efb0csm101370866b.65.2025.03.13.09.51.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 13 Mar 2025 09:51:13 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
@@ -81,9 +81,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v4 08/14] iio: accel: adxl345: add freefall feature
-Date: Thu, 13 Mar 2025 16:50:43 +0000
-Message-Id: <20250313165049.48305-9-l.rubusch@gmail.com>
+Subject: [PATCH v4 09/14] iio: accel: adxl345: extend sample frequency adjustments
+Date: Thu, 13 Mar 2025 16:50:44 +0000
+Message-Id: <20250313165049.48305-10-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313165049.48305-1-l.rubusch@gmail.com>
 References: <20250313165049.48305-1-l.rubusch@gmail.com>
@@ -95,229 +95,276 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the freefall detection of the sensor together with a threshold and
-time parameter. A freefall event is detected if the measuring signal
-falls below the threshold.
+Introduce enums and functions to work with the sample frequency
+adjustments. Let the sample frequency adjust via IIO and configure
+a reasonable default.
 
-Introduce a freefall threshold stored in regmap cache, and a freefall
-time, having the scaled time value stored as a member variable in the
-state instance.
+Replace the old static sample frequency handling. The patch is in
+preparation for activity/inactivity handling. During adjustment of
+bw registers, measuring is disabled and afterwards enabled again.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 122 +++++++++++++++++++++++++++++++
- 1 file changed, 122 insertions(+)
+ drivers/iio/accel/adxl345.h      |   2 +-
+ drivers/iio/accel/adxl345_core.c | 156 ++++++++++++++++++++++++-------
+ 2 files changed, 124 insertions(+), 34 deletions(-)
 
+diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
+index 7d482dd595fa..6c1f96406136 100644
+--- a/drivers/iio/accel/adxl345.h
++++ b/drivers/iio/accel/adxl345.h
+@@ -69,7 +69,7 @@
+  * BW_RATE bits - Bandwidth and output data rate. The default value is
+  * 0x0A, which translates to a 100 Hz output data rate
+  */
+-#define ADXL345_BW_RATE			GENMASK(3, 0)
++#define ADXL345_BW_RATE_MSK		GENMASK(3, 0)
+ #define ADXL345_BW_LOW_POWER		BIT(4)
+ #define ADXL345_BASE_RATE_NANO_HZ	97656250LL
+ 
 diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index 9e33236c786a..1a2bf0c630c9 100644
+index 1a2bf0c630c9..4c5084497def 100644
 --- a/drivers/iio/accel/adxl345_core.c
 +++ b/drivers/iio/accel/adxl345_core.c
-@@ -78,6 +78,7 @@ struct adxl345_state {
- 	u32 tap_duration_us;
- 	u32 tap_latent_us;
- 	u32 tap_window_us;
-+	u32 ff_time_ms;
- 
- 	__le16 fifo_buf[ADXL345_DIRS * ADXL345_FIFO_SIZE + 1] __aligned(IIO_DMA_MINALIGN);
- };
-@@ -99,6 +100,14 @@ static struct iio_event_spec adxl345_events[] = {
- 			BIT(IIO_EV_INFO_RESET_TIMEOUT) |
- 			BIT(IIO_EV_INFO_TAP2_MIN_DELAY),
- 	},
-+	{
-+		/* free fall */
-+		.type = IIO_EV_TYPE_MAG,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
-+			BIT(IIO_EV_INFO_VALUE) |
-+			BIT(IIO_EV_INFO_PERIOD),
-+	},
+@@ -67,6 +67,45 @@ static const unsigned int adxl345_tap_time_reg[] = {
+ 	[ADXL345_TAP_TIME_DUR] = ADXL345_REG_DUR,
  };
  
- #define ADXL345_CHANNEL(index, reg, axis) {					\
-@@ -379,6 +388,64 @@ static int adxl345_set_tap_latent(struct adxl345_state *st, u32 val_int,
- 	return _adxl345_set_tap_time(st, ADXL345_TAP_TIME_LATENT, val_fract_us);
++enum adxl345_odr {
++	ADXL345_ODR_0P10HZ = 0,
++	ADXL345_ODR_0P20HZ,
++	ADXL345_ODR_0P39HZ,
++	ADXL345_ODR_0P78HZ,
++	ADXL345_ODR_1P56HZ,
++	ADXL345_ODR_3P13HZ,
++	ADXL345_ODR_6P25HZ,
++	ADXL345_ODR_12P50HZ,
++	ADXL345_ODR_25HZ,
++	ADXL345_ODR_50HZ,
++	ADXL345_ODR_100HZ,
++	ADXL345_ODR_200HZ,
++	ADXL345_ODR_400HZ,
++	ADXL345_ODR_800HZ,
++	ADXL345_ODR_1600HZ,
++	ADXL345_ODR_3200HZ,
++};
++
++/* Certain features recommend 12.5 Hz - 400 Hz ODR */
++static const int adxl345_odr_tbl[][2] = {
++	[ADXL345_ODR_0P10HZ]	= {    0,  97000 },
++	[ADXL345_ODR_0P20HZ]	= {    0, 195000 },
++	[ADXL345_ODR_0P39HZ]	= {    0, 390000 },
++	[ADXL345_ODR_0P78HZ]	= {    0, 781000 },
++	[ADXL345_ODR_1P56HZ]	= {    1, 562000 },
++	[ADXL345_ODR_3P13HZ]	= {    3, 125000 },
++	[ADXL345_ODR_6P25HZ]	= {    6, 250000 },
++	[ADXL345_ODR_12P50HZ]	= {   12, 500000 },
++	[ADXL345_ODR_25HZ]	= {   25, 0 },
++	[ADXL345_ODR_50HZ]	= {   50, 0 },
++	[ADXL345_ODR_100HZ]	= {  100, 0 },
++	[ADXL345_ODR_200HZ]	= {  200, 0 },
++	[ADXL345_ODR_400HZ]	= {  400, 0 },
++	[ADXL345_ODR_800HZ]	= {  800, 0 },
++	[ADXL345_ODR_1600HZ]	= { 1600, 0 },
++	[ADXL345_ODR_3200HZ]	= { 3200, 0 },
++};
++
+ struct adxl345_state {
+ 	const struct adxl345_chip_info *info;
+ 	struct regmap *regmap;
+@@ -119,6 +158,7 @@ static struct iio_event_spec adxl345_events[] = {
+ 		BIT(IIO_CHAN_INFO_CALIBBIAS),				\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SAMP_FREQ),		\
+ 	.scan_index = (index),				\
+ 	.scan_type = {					\
+ 		.sign = 's',				\
+@@ -446,14 +486,59 @@ static int adxl345_set_ff_time(struct adxl345_state *st, u32 val_int,
+ 	return regmap_write(st->regmap, ADXL345_REG_TIME_FF, min(regval, 0xff));
  }
  
-+/* freefall */
++static int adxl345_find_odr(struct adxl345_state *st, int val,
++			    int val2, enum adxl345_odr *odr)
++{
++	int i;
 +
-+static int adxl345_is_ff_en(struct adxl345_state *st, bool *en)
++	for (i = 0; i < ARRAY_SIZE(adxl345_odr_tbl); i++) {
++		if (val == adxl345_odr_tbl[i][0] &&
++		    val2 == adxl345_odr_tbl[i][1]) {
++			*odr = i;
++			return 0;
++		}
++	}
++
++	return -EINVAL;
++}
++
++static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
 +{
 +	int ret;
-+	unsigned int regval;
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_INT_ENABLE, &regval);
++	ret = regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
++				 ADXL345_BW_RATE_MSK,
++				 FIELD_PREP(ADXL345_BW_RATE_MSK, odr));
 +	if (ret)
 +		return ret;
-+
-+	*en = FIELD_GET(ADXL345_INT_FREE_FALL, regval) > 0;
 +
 +	return 0;
 +}
 +
-+static int adxl345_set_ff_en(struct adxl345_state *st, bool cmd_en)
++static int adxl345_read_avail(struct iio_dev *indio_dev,
++			      struct iio_chan_spec const *chan,
++			      const int **vals, int *type,
++			      int *length, long mask)
 +{
-+	unsigned int regval, ff_threshold;
-+	const unsigned int freefall_mask = 0x02;
-+	bool en;
-+	int ret;
++	switch (mask) {
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*vals = (int *)adxl345_odr_tbl;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		*length = ARRAY_SIZE(adxl345_odr_tbl) * 2;
++		return IIO_AVAIL_LIST;
++	}
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF, &ff_threshold);
-+	if (ret)
-+		return ret;
-+
-+	en = cmd_en && ff_threshold > 0 && st->ff_time_ms > 0;
-+
-+	regval = en ? ADXL345_INT_FREE_FALL : 0x00;
-+
-+	return regmap_update_bits(st->regmap, ADXL345_REG_INT_ENABLE,
-+				  freefall_mask, regval);
-+}
-+
-+static int adxl345_set_ff_time(struct adxl345_state *st, u32 val_int,
-+			       u32 val_fract_us)
-+{
-+	unsigned int regval;
-+	int val_ms;
-+
-+	/*
-+	 * max value is 255 * 5000 us = 1.275000 seconds
-+	 *
-+	 * Note: the scaling is similar to the scaling in the ADXL380
-+	 */
-+	if (1000000 * val_int + val_fract_us > 1275000)
-+		return -EINVAL;
-+
-+	val_ms = val_int * 1000 + DIV_ROUND_UP(val_fract_us, 1000);
-+	st->ff_time_ms = val_ms;
-+
-+	regval = DIV_ROUND_CLOSEST(val_ms, 5);
-+
-+	/* Values between 100ms and 350ms (0x14 to 0x46) are recommended. */
-+	return regmap_write(st->regmap, ADXL345_REG_TIME_FF, min(regval, 0xff));
++	return -EINVAL;
 +}
 +
  static int adxl345_read_raw(struct iio_dev *indio_dev,
  			    struct iio_chan_spec const *chan,
  			    int *val, int *val2, long mask)
-@@ -491,6 +558,11 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG:
-+		ret = adxl345_is_ff_en(st, &int_en);
-+		if (ret)
-+			return ret;
-+		return int_en;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -514,6 +586,8 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG:
-+		return adxl345_set_ff_en(st, state);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -528,6 +602,7 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
  {
  	struct adxl345_state *st = iio_priv(indio_dev);
- 	unsigned int tap_threshold;
-+	unsigned int ff_threshold;
+ 	__le16 accel;
+-	long long samp_freq_nhz;
+ 	unsigned int regval;
++	enum adxl345_odr odr;
  	int ret;
  
- 	switch (type) {
-@@ -561,6 +636,22 @@ static int adxl345_read_event_value(struct iio_dev *indio_dev,
- 		default:
- 			return -EINVAL;
- 		}
-+	case IIO_EV_TYPE_MAG:
-+		switch (info) {
-+		case IIO_EV_INFO_VALUE:
-+			ret = regmap_read(st->regmap, ADXL345_REG_THRESH_FF,
-+					  &ff_threshold);
-+			if (ret)
-+				return ret;
-+			*val = ff_threshold;
-+			return IIO_VAL_INT;
-+		case IIO_EV_INFO_PERIOD:
-+			*val = st->ff_time_ms;
-+			*val2 = 1000;
-+			return IIO_VAL_FRACTIONAL;
-+		default:
-+			return -EINVAL;
-+		}
+ 	switch (mask) {
+@@ -491,12 +576,10 @@ static int adxl345_read_raw(struct iio_dev *indio_dev,
+ 		ret = regmap_read(st->regmap, ADXL345_REG_BW_RATE, &regval);
+ 		if (ret)
+ 			return ret;
+-
+-		samp_freq_nhz = ADXL345_BASE_RATE_NANO_HZ <<
+-				(regval & ADXL345_BW_RATE);
+-		*val = div_s64_rem(samp_freq_nhz, NANOHZ_PER_HZ, val2);
+-
+-		return IIO_VAL_INT_PLUS_NANO;
++		odr = FIELD_GET(ADXL345_BW_RATE_MSK, regval);
++		*val = adxl345_odr_tbl[odr][0];
++		*val2 = adxl345_odr_tbl[odr][1];
++		return IIO_VAL_INT_PLUS_MICRO;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -507,7 +590,12 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 			     int val, int val2, long mask)
+ {
+ 	struct adxl345_state *st = iio_priv(indio_dev);
+-	s64 n;
++	enum adxl345_odr odr;
++	int ret;
++
++	ret = adxl345_set_measure_en(st, false);
++	if (ret)
++		return ret;
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+@@ -515,20 +603,26 @@ static int adxl345_write_raw(struct iio_dev *indio_dev,
+ 		 * 8-bit resolution at +/- 2g, that is 4x accel data scale
+ 		 * factor
+ 		 */
+-		return regmap_write(st->regmap,
+-				    ADXL345_REG_OFS_AXIS(chan->address),
+-				    val / 4);
++		ret = regmap_write(st->regmap,
++				   ADXL345_REG_OFS_AXIS(chan->address),
++				   val / 4);
++		if (ret)
++			return ret;
++		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		n = div_s64(val * NANOHZ_PER_HZ + val2,
+-			    ADXL345_BASE_RATE_NANO_HZ);
++		ret = adxl345_find_odr(st, val, val2, &odr);
++		if (ret)
++			return ret;
+ 
+-		return regmap_update_bits(st->regmap, ADXL345_REG_BW_RATE,
+-					  ADXL345_BW_RATE,
+-					  clamp_val(ilog2(n), 0,
+-						    ADXL345_BW_RATE));
++		ret = adxl345_set_odr(st, odr);
++		if (ret)
++			return ret;
++		break;
++	default:
++		return -EINVAL;
+ 	}
+ 
+-	return -EINVAL;
++	return adxl345_set_measure_en(st, true);
+ }
+ 
+ static int adxl345_read_event_config(struct iio_dev *indio_dev,
+@@ -754,7 +848,7 @@ static int adxl345_write_raw_get_fmt(struct iio_dev *indio_dev,
+ 	case IIO_CHAN_INFO_CALIBBIAS:
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+-		return IIO_VAL_INT_PLUS_NANO;
++		return IIO_VAL_INT_PLUS_MICRO;
  	default:
  		return -EINVAL;
  	}
-@@ -601,6 +692,18 @@ static int adxl345_write_event_value(struct iio_dev *indio_dev,
- 			break;
- 		}
- 		break;
-+	case IIO_EV_TYPE_MAG:
-+		switch (info) {
-+		case IIO_EV_INFO_VALUE:
-+			ret = regmap_write(st->regmap, ADXL345_REG_THRESH_FF, val);
-+			break;
-+		case IIO_EV_INFO_PERIOD:
-+			ret = adxl345_set_ff_time(st, val, val2);
-+			break;
-+		default:
-+			ret = -EINVAL;
-+		}
-+		break;
- 	default:
- 		ret = -EINVAL;
- 		break;
-@@ -862,6 +965,17 @@ static int adxl345_push_event(struct iio_dev *indio_dev, int int_stat,
- 			return ret;
- 	}
+@@ -767,19 +861,6 @@ static void adxl345_powerdown(void *ptr)
+ 	adxl345_set_measure_en(st, false);
+ }
  
-+	if (FIELD_GET(ADXL345_INT_FREE_FALL, int_stat)) {
-+		ret = iio_push_event(indio_dev,
-+				     IIO_MOD_EVENT_CODE(IIO_ACCEL, 0,
-+							IIO_MOD_X_OR_Y_OR_Z,
-+							IIO_EV_TYPE_MAG,
-+							IIO_EV_DIR_FALLING),
-+				     ts);
-+		if (ret)
-+			return ret;
-+	}
+-static IIO_CONST_ATTR_SAMP_FREQ_AVAIL(
+-"0.09765625 0.1953125 0.390625 0.78125 1.5625 3.125 6.25 12.5 25 50 100 200 400 800 1600 3200"
+-);
+-
+-static struct attribute *adxl345_attrs[] = {
+-	&iio_const_attr_sampling_frequency_available.dev_attr.attr,
+-	NULL
+-};
+-
+-static const struct attribute_group adxl345_attrs_group = {
+-	.attrs = adxl345_attrs,
+-};
+-
+ static int adxl345_set_fifo(struct adxl345_state *st)
+ {
+ 	unsigned int intio;
+@@ -1040,9 +1121,9 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+ }
+ 
+ static const struct iio_info adxl345_info = {
+-	.attrs		= &adxl345_attrs_group,
+ 	.read_raw	= adxl345_read_raw,
+ 	.write_raw	= adxl345_write_raw,
++	.read_avail	= adxl345_read_avail,
+ 	.write_raw_get_fmt	= adxl345_write_raw_get_fmt,
+ 	.read_event_config = adxl345_read_event_config,
+ 	.write_event_config = adxl345_write_event_config,
+@@ -1112,6 +1193,15 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
+ 	indio_dev->num_channels = ARRAY_SIZE(adxl345_channels);
+ 	indio_dev->available_scan_masks = adxl345_scan_masks;
+ 
++	/*
++	 * Using I2C at 100kHz would limit the maximum ODR to 200Hz, operation
++	 * at an output rate above the recommended maximum may result in
++	 * undesired behavior.
++	 */
++	ret = adxl345_set_odr(st, ADXL345_ODR_200HZ);
++	if (ret)
++		return ret;
 +
- 	if (FIELD_GET(ADXL345_INT_WATERMARK, int_stat)) {
- 		samples = adxl345_get_samples(st);
- 		if (samples < 0)
-@@ -968,6 +1082,7 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 					 ADXL345_DATA_FORMAT_FULL_RES |
- 					 ADXL345_DATA_FORMAT_SELF_TEST);
- 	unsigned int tap_threshold;
-+	unsigned int ff_threshold;
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-@@ -987,6 +1102,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 	st->tap_window_us = 64;			/*   64 [0x40] -> .080    */
- 	st->tap_latent_us = 16;			/*   16 [0x10] -> .020    */
- 
-+	ff_threshold = 8;			/*    8 [0x08]            */
-+	st->ff_time_ms = 32;			/*   32 [0x20] -> 0.16    */
-+
- 	indio_dev->name = st->info->name;
- 	indio_dev->info = &adxl345_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-@@ -1063,6 +1181,10 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
- 		if (ret)
- 			return ret;
- 
-+		ret = regmap_write(st->regmap, ADXL345_REG_THRESH_FF, ff_threshold);
-+		if (ret)
-+			return ret;
-+
- 		/* FIFO_STREAM mode is going to be activated later */
- 		ret = devm_iio_kfifo_buffer_setup(dev, indio_dev, &adxl345_buffer_ops);
- 		if (ret)
+ 	/* Reset interrupts at start up */
+ 	ret = regmap_write(st->regmap, ADXL345_REG_INT_ENABLE, 0x00);
+ 	if (ret)
 -- 
 2.39.5
 

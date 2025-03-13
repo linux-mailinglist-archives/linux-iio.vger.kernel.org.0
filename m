@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-16799-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16800-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F9BA5FCAF
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F92A5FCB1
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 17:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9400016D445
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:53:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 522C51730FC
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Mar 2025 16:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D811426BDB2;
-	Thu, 13 Mar 2025 16:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBB5826E17C;
+	Thu, 13 Mar 2025 16:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYreB1kw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zq4iS+qA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A50126C03;
-	Thu, 13 Mar 2025 16:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B183F269D1A;
+	Thu, 13 Mar 2025 16:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741884682; cv=none; b=rVpL6l0MjzHjpTm7wX8e/p6Ux41iD/eeYtwAOARK3PJJb9BUCX2ZcJp4K6LIApyjUe0Ok2WZ0/Rq2n63L8W53vQrDc5tSyX1Cv360j/Itg6RStBV0bdhSByNq8gBPCLvP6N9tFx+w2Yvt+6QfF/u3szcqVRTxqztv5HTB9QZJSA=
+	t=1741884684; cv=none; b=QQEXJxAiGzxsLi9JTCp0rr2wC+xIxZyEvtki2+/vDntnIJSqcq9cEXq/uWkQveCTVKq7mTuE5st6JOMgV+k1hQhJa7IfLOdtILTMa/BtWsClWPZiKkVtb3+OmqLUe7kvQjqry3xlrIYyiLFMzEpUdfXxtIaZNEYCFyigxG23iJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741884682; c=relaxed/simple;
-	bh=C9BDPXAoBdCppIJNKsEUjSpGkbDtTojTxqIZj4vm4Vk=;
+	s=arc-20240116; t=1741884684; c=relaxed/simple;
+	bh=J+gxOK9BmXWp+MSs2VJ9oOXAZgisi21PoNI0mvLG0p4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L2PPsjx0TYHbmyWaP3lQy0H6IBXd0e4DSBKiPrcsA1I2jAbFOLwkVeI51xX6f0cJW4UZbJHUFzNydXS3og3p7evuoFYK3f6exjbJqcIEu0iqvjPPuNgh25yD/KLzWmKgFb0VUBwPKVcE9tbdE4s6Y1eUFVILr0p5up1S6UQ1JVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYreB1kw; arc=none smtp.client-ip=209.85.218.53
+	 MIME-Version:Content-Type; b=HADBXxYDPyqDBUVosuz1Nljd6TLvYAT8RgcmXZ18Q+bsjBQg3nQ8ODRDIo/ixX0cLBNva6u9B41KPypk1/E0njp/tP++qcdsgeh0HMiGg+ts0DWUQQLDqXRdLHZ3HzDdXZFZRMfsNUoB7yRZW8Y4YES+tyjBpW1TDuSmDzAUWWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zq4iS+qA; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-ac24daf5f32so15088966b.0;
-        Thu, 13 Mar 2025 09:51:20 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-abc28af1ba4so16335866b.1;
+        Thu, 13 Mar 2025 09:51:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741884679; x=1742489479; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741884680; x=1742489480; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NXp+p7KoE6pwI0WlNoFYElb0u9k8flDM6qj6UZ8wyYE=;
-        b=XYreB1kwYcf0tiG4DeWtwqP4nUNuMtASfEvrht3xzO2Q2/cri0BQ1g3ybmRgxNiTc8
-         H7bIDuMJXSOqbu/1X+vpoMjDG/fUTITdOiOp35DkhhezMN70LsJRfgi/txSc2CKGGh+L
-         zWDp69C7CpTdmLepXn+NX4pkJu0FaZEKwGgemPaGziBMe9LUjWra1+mODNqmY2jaywMT
-         g5nrSR9w+sUArbyhj4DYGZUc7Cf3P7QFEKb/3ZrlDf5S4VKeKFMwrS3zkwQUWjVgFYbg
-         Yi/p8+y+ov93vSmBfbHJGBDW5+RgqIH8B2AzZkoE1r1hFelp0DEmRn2h6QpyGkEb0ocz
-         ywFA==
+        bh=v27Lnlqr3GEvQfW7w8hZ2MQ04yP2vRncP9MW1QBJDBo=;
+        b=Zq4iS+qAmWJ9opfxwKy7qo4uuRwB/IcJZnq3jTfLM7t6+IZ6mr72903Dw9WwWmEuvm
+         ybZusS891fYE/WQ/lyaDZmQsvK4QF1Cc6FeUeJttbCiwEn9HJ3ap6bfhZ8NNUZ8Mz8Iv
+         kvheJq8fMGLe1u+pp7g2TtziW/peEvlScPoMlKJ0irU7L50FZXcabXL6Mtrsz3DFbbJg
+         8L4b+gAy2p2d5e62POVIGeotxrlcS6k4Jnkhg+SrPQQtV66RDElfuxWTDqEN6IDSRnUZ
+         6x7hDKzqM+LEQWdIM/FNDLFfrJxbsqwOlpA1hiPnw2rorxpDen2UFQdmA5HjDSjEnaoq
+         QW0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741884679; x=1742489479;
+        d=1e100.net; s=20230601; t=1741884680; x=1742489480;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NXp+p7KoE6pwI0WlNoFYElb0u9k8flDM6qj6UZ8wyYE=;
-        b=ceIMCagfR2fO4THZglCZyLCiWwD8LdWwpkyWF1OofmCkrgjuFU4AQwbgCdzoFo07/W
-         nw/OBkudKWgbfG3Q2be+whZ+hPF0khGyoCMMdJAZJZ13Ke5GUDpMEWeSy1vFoKbs9ICm
-         yvcQfrRA+lmSslQINm5BKb8Bj++yjxuKf3uOem6kaFALQTzHoUV9Mx6p18fsBr3b5GF+
-         SjERUOG8aJHJO0fUbxFWABKdNMyUWFKfSA19Cxji9BHRxpNRJnNib2+UJtHKCdo9A9wv
-         5i+0rVKy0w6Yc6Cd0AGZ3qEM9ptsuMxoxchBLBEBk8r5LhAxprcg/PRhfeA5v7I7c/9H
-         /dvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVmWqOvbOvXdBCllQpuE5M6fgEUs+WsQfmUyelT74+ForS4x3+DAIViUjZQvx99KVN7kxolxqa2Hm4Aqpg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3vs3H0+CY0SQDQg+Y1Kw+ahn1G7Wbz2kosSXBuAXFixv1wpgS
-	7BRRpWY9NvHufSWiqUITlCOBnjo8F5uP1XD5gPPIZBm71Uyx/oM1
-X-Gm-Gg: ASbGnctaTNNzSfMAePOvYScCkgnqyeJLRCrBzHlrX+c+qCSZPc/myPKQL9ohiXXffYM
-	0Yl8Qt29N7qTdKLc9DFCDBPoy8SxdsGfCBY8Y5udxbA4SalVdOkSPPjyaxBxBkBVBfmLS8wHj8I
-	SBaVIbp2RQVEHLRFHyGUT3k6dVZZI/A6Kw3I0B3mCP9Bs857ggzxshj0BYknNC8D1jx94eUT1AR
-	2PyXgylt39Yppuqw3fVkYBVj1gHi/+G3B9boJA+USw3TmaIy7EvhYp3qltqb8i2/EhNLioUMCha
-	37HGdDUmTN0pjuG7Kk/98rKkkPyRSDR1K+kfQTMIA0QYbRFJ9Nw02RlctciF5wkV/0qtqHaX4O4
-	K9wSuXotDwqOKBIWtm8YO1Ww=
-X-Google-Smtp-Source: AGHT+IHwxtpnkiH3QDVTQd596RDWVcfAkbC47JC09890A1Eex4towAiTcUVxRgzFmP4Jl/XHi+QZmg==
-X-Received: by 2002:a17:907:c10:b0:ac2:7ce7:cd35 with SMTP id a640c23a62f3a-ac2b9e3a732mr612145466b.10.1741884678575;
-        Thu, 13 Mar 2025 09:51:18 -0700 (PDT)
+        bh=v27Lnlqr3GEvQfW7w8hZ2MQ04yP2vRncP9MW1QBJDBo=;
+        b=mQVGhMsrogcWn55r3bPmzpP4S3ThwWinOpBQm3UBLQMshTITl2xeImayyZ4DdNKUHa
+         E8cPmMO0nGzrCJn5V/kaCRargXs1L7B3HE/bG/p9ybcGoMkdWsy49u+iYlJdbFjmpNn7
+         7z+pPfiD2IKDDNeYPXjAxRglG4ooeX4KARPghWNTkwcGEDl/eYBUVHeAIk8WxCEk4nxy
+         HHuEcwz3lBTL4TGNTrc+cUrPBLJjFrhVhtzN2iBjfZhVg18A8vMyiaXsxs5uAZOUOaj/
+         miry3u6oudwgQIAYW2OBlmYMfQmVIlQov4010RQau41GWV88ElSd795NTPc9yq+2+eZx
+         3O4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX+mnLNEBN9Yj3Tal5PZt1LYDed+cRsN+zOs0TM5KXYJoc3TVqIghdAFGFnBhe/rrolPDMzxiXqHpCs9Ts=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+mLkXxOfaRCnlF97hOs3oJhPHTrsRhl8AU8Ac9OBuHsSMzIoQ
+	0D7sdM62NH7wvFzqASp8iXhKbfy0E03DMrh94M0GD7qX0Y2utbC6
+X-Gm-Gg: ASbGncvjljRXTVZv93Kmn2xhXKPoiy/zCBqgg1NcKO9T5wT7pDO3cLk+452TIwPX4WP
+	AG5paYQE99e5sv/O6bpdt03zVasJERGmZ0czBIQMUEoycDz0tj3OCeIDvYaVsbluFJCg3POuIcY
+	M9pxcNXkwv7oAt8PxFIirfEC/E4npijtf//3ujmWiFXiOtLBEzpqPl5mkCp0/TYJrb1K0ZNgGeR
+	uHwdJKaMgEJ5IfzfcH/+8iqAAQZHOBRvpj00Utc331n3IoIE3WcUMHBh/43tWf7n8Gx4fTq13gO
+	cDgzK9G18hdS6JMMcuhzjbhoVefLKEetkzl1Ue47Ihn1p61DDs4UDDKQE8E6pjuIWBchHdBL18A
+	qY8FacGqosUF7CKibWiy36OQ=
+X-Google-Smtp-Source: AGHT+IFscmnFBU+5Va3zkIMZTOguO1Fp1ikJRvLFGRSGUvwFJeGpGM91yNgKvntkmx5/Em5s7lec7g==
+X-Received: by 2002:a17:907:1c9f:b0:ab7:bb4b:aa49 with SMTP id a640c23a62f3a-ac2b9d5999bmr574146666b.5.1741884679552;
+        Thu, 13 Mar 2025 09:51:19 -0700 (PDT)
 Received: from 0e1b0684397b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3147efb0csm101370866b.65.2025.03.13.09.51.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3147efb0csm101370866b.65.2025.03.13.09.51.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Mar 2025 09:51:18 -0700 (PDT)
+        Thu, 13 Mar 2025 09:51:19 -0700 (PDT)
 From: Lothar Rubusch <l.rubusch@gmail.com>
 To: lars@metafoo.de,
 	Michael.Hennerich@analog.com,
@@ -81,9 +81,9 @@ Cc: linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	eraretuya@gmail.com,
 	l.rubusch@gmail.com
-Subject: [PATCH v4 13/14] iio: accel: adxl345: add coupling detection for activity/inactivity
-Date: Thu, 13 Mar 2025 16:50:48 +0000
-Message-Id: <20250313165049.48305-14-l.rubusch@gmail.com>
+Subject: [PATCH v4 14/14] docs: iio: add documentation for adxl345 driver
+Date: Thu, 13 Mar 2025 16:50:49 +0000
+Message-Id: <20250313165049.48305-15-l.rubusch@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250313165049.48305-1-l.rubusch@gmail.com>
 References: <20250313165049.48305-1-l.rubusch@gmail.com>
@@ -93,243 +93,440 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Add coupling activity/inactivity detection by the AC/DC bit. This is an
-addititional enhancement for the detection of activity states and
-completes the activity / inactivity feature of the ADXL345.
+The documentation describes the ADXL345 driver, IIO interface,
+interface usage and configuration.
 
 Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 ---
- drivers/iio/accel/adxl345_core.c | 150 ++++++++++++++++++++++++++++++-
- 1 file changed, 148 insertions(+), 2 deletions(-)
+ Documentation/iio/adxl345.rst | 416 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 416 insertions(+)
+ create mode 100644 Documentation/iio/adxl345.rst
 
-diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-index c718d529d897..1cbe431cda71 100644
---- a/drivers/iio/accel/adxl345_core.c
-+++ b/drivers/iio/accel/adxl345_core.c
-@@ -36,7 +36,9 @@
- #define ADXL345_REG_TAP_AXIS_MSK	GENMASK(2, 0)
- #define ADXL345_REG_TAP_SUPPRESS_MSK	BIT(3)
- #define ADXL345_REG_ACT_AXIS_MSK	GENMASK(6, 4)
-+#define ADXL345_REG_ACT_ACDC_MSK	BIT(7)
- #define ADXL345_REG_INACT_AXIS_MSK	GENMASK(2, 0)
-+#define ADXL345_REG_INACT_ACDC_MSK	BIT(3)
- #define ADXL345_POWER_CTL_INACT_MSK	(ADXL345_POWER_CTL_AUTO_SLEEP | ADXL345_POWER_CTL_LINK)
- 
- enum adxl345_axis {
-@@ -86,6 +88,11 @@ static const unsigned int adxl345_act_thresh_reg[] = {
- 	[ADXL345_INACTIVITY] = ADXL345_REG_THRESH_INACT,
- };
- 
-+static const unsigned int adxl345_act_acdc_msk[] = {
-+	[ADXL345_ACTIVITY] = ADXL345_REG_ACT_ACDC_MSK,
-+	[ADXL345_INACTIVITY] = ADXL345_REG_INACT_ACDC_MSK,
-+};
+diff --git a/Documentation/iio/adxl345.rst b/Documentation/iio/adxl345.rst
+new file mode 100644
+index 000000000000..683121c1a435
+--- /dev/null
++++ b/Documentation/iio/adxl345.rst
+@@ -0,0 +1,416 @@
++.. SPDX-License-Identifier: GPL-2.0
 +
- static const unsigned int adxl345_act_axis_msk[] = {
- 	[ADXL345_ACTIVITY] = ADXL345_REG_ACT_AXIS_MSK,
- 	[ADXL345_INACTIVITY] = ADXL345_REG_INACT_AXIS_MSK,
-@@ -220,6 +227,18 @@ static struct iio_event_spec adxl345_events[] = {
- 			BIT(IIO_EV_INFO_VALUE) |
- 			BIT(IIO_EV_INFO_PERIOD),
- 	},
-+	{
-+		/* activity, activity - ac bit */
-+		.type = IIO_EV_TYPE_MAG_REFERENCED,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-+	},
-+	{
-+		/* activity, inactivity - ac bit */
-+		.type = IIO_EV_TYPE_MAG_REFERENCED,
-+		.dir = IIO_EV_DIR_FALLING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE),
-+	},
- };
- 
- #define ADXL345_CHANNEL(index, reg, axis) {					\
-@@ -300,6 +319,69 @@ static int adxl345_set_measure_en(struct adxl345_state *st, bool en)
- 
- /* act/inact */
- 
-+static int adxl345_is_act_inact_ac(struct adxl345_state *st,
-+				   enum adxl345_activity_type type, bool *ac)
-+{
-+	unsigned int regval;
-+	int ret;
++===============
++ADXL345 driver
++===============
 +
-+	ret = regmap_read(st->regmap, ADXL345_REG_ACT_INACT_CTRL, &regval);
-+	if (ret)
-+		return ret;
++This driver supports Analog Device's ADXL345/375 on SPI/I2C bus.
 +
-+	if (type == ADXL345_ACTIVITY)
-+		*ac = (FIELD_GET(ADXL345_REG_ACT_ACDC_MSK, regval) > 0);
-+	else
-+		*ac = (FIELD_GET(ADXL345_REG_INACT_ACDC_MSK, regval) > 0);
++1. Supported devices
++====================
 +
-+	return 0;
-+}
++* `ADXL345 <https://www.analog.com/ADXL345>`_
++* `ADXL375 <https://www.analog.com/ADXL375>`_
 +
-+static int adxl345_set_act_inact_ac(struct adxl345_state *st,
-+				    enum adxl345_activity_type type, bool ac)
-+{
-+	unsigned int act_inact_ac = ac ? 0xff : 0x00;
++The ADXL345 is a generic purpose low power, 3-axis accelerometer with selectable
++measurement ranges. The ADXL345 supports the ±2 g, ±4 g, ±8 g, and ±16 g ranges.
 +
-+	/*
-+	 * A setting of false selects dc-coupled operation, and a setting of
-+	 * true enables ac-coupled operation. In dc-coupled operation, the
-+	 * current acceleration magnitude is compared directly with
-+	 * ADXL345_REG_THRESH_ACT and ADXL345_REG_THRESH_INACT to determine
-+	 * whether activity or inactivity is detected.
-+	 *
-+	 * In ac-coupled operation for activity detection, the acceleration
-+	 * value at the start of activity detection is taken as a reference
-+	 * value. New samples of acceleration are then compared to this
-+	 * reference value, and if the magnitude of the difference exceeds the
-+	 * ADXL345_REG_THRESH_ACT value, the device triggers an activity
-+	 * interrupt.
-+	 *
-+	 * Similarly, in ac-coupled operation for inactivity detection, a
-+	 * reference value is used for comparison and is updated whenever the
-+	 * device exceeds the inactivity threshold. After the reference value
-+	 * is selected, the device compares the magnitude of the difference
-+	 * between the reference value and the current acceleration with
-+	 * ADXL345_REG_THRESH_INACT. If the difference is less than the value in
-+	 * ADXL345_REG_THRESH_INACT for the time in ADXL345_REG_TIME_INACT, the
-+	 * device is considered inactive and the inactivity interrupt is
-+	 * triggered. [quoted from p. 24, ADXL345 datasheet Rev. G]
-+	 *
-+	 * In a conclusion, the first acceleration snapshot sample which hit the
-+	 * threshold in a particular direction is always taken as acceleration
-+	 * reference value to that direction. Since for the hardware activity
-+	 * and inactivity depend on the x/y/z axis, so do ac and dc coupling.
-+	 * Note, this sw driver always enables or disables all three x/y/z axis
-+	 * for detection via act_axis_ctrl and inact_axis_ctrl, respectively.
-+	 * Where in dc-coupling samples are compared against the thresholds, in
-+	 * ac-coupling measurement difference to the first acceleration
-+	 * reference value are compared against the threshold. So, ac-coupling
-+	 * allows for a bit more dynamic compensation depending on the initial
-+	 * sample.
-+	 */
-+	return regmap_update_bits(st->regmap, ADXL345_REG_ACT_INACT_CTRL,
-+				 adxl345_act_acdc_msk[type], act_inact_ac);
-+}
++2. Device attributes
++====================
 +
- static int adxl345_is_act_inact_en(struct adxl345_state *st,
- 				   enum iio_modifier axis,
- 				   enum adxl345_activity_type type, bool *en)
-@@ -745,7 +827,8 @@ static int adxl345_set_odr(struct adxl345_state *st, enum adxl345_odr odr)
- 	if (ret)
- 		return ret;
- 
--	return 0;
-+	/* update inactivity time by ODR */
-+	return adxl345_set_inact_time_s(st, 0);
- }
- 
- static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
-@@ -766,15 +849,51 @@ static int adxl345_find_range(struct adxl345_state *st, int val, int val2,
- 
- static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
- {
-+	unsigned int act_threshold, inact_threshold;
-+	unsigned int range_old;
-+	unsigned int regval;
- 	int ret;
- 
-+	ret = regmap_read(st->regmap, ADXL345_REG_DATA_FORMAT, &regval);
-+	if (ret)
-+		return ret;
-+	range_old = FIELD_GET(ADXL345_DATA_FORMAT_RANGE, regval);
++Each IIO device, has a device folder under ``/sys/bus/iio/devices/iio:deviceX``,
++where X is the IIO index of the device. Under these folders reside a set of
++device files, depending on the characteristics and features of the hardware
++device in questions. These files are consistently generalized and documented in
++the IIO ABI documentation.
 +
-+	ret = regmap_read(st->regmap,
-+			  adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-+			  &act_threshold);
-+	if (ret)
-+		return ret;
++The following table shows the ADXL345 related device files, found in the
++specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
 +
-+	ret = regmap_read(st->regmap,
-+			  adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-+			  &inact_threshold);
-+	if (ret)
-+		return ret;
+++-------------------------------------------+----------------------------------------------------------+
++| 3-Axis Accelerometer related device files | Description                                              |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_sampling_frequency               | Currently selected sample rate.                          |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_sampling_frequency_available     | Available sampling frequency configurations.             |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_scale                            | Scale/range for the accelerometer channels.              |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_scale_available                  | Available scale ranges for the accelerometer channel.    |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_x_calibbias                      | Calibration offset for the X-axis accelerometer channel. |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_x_raw                            | Raw X-axis accelerometer channel value.                  |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_y_calibbias                      | y-axis acceleration offset correction                    |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_y_raw                            | Raw Y-axis accelerometer channel value.                  |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_z_calibbias                      | Calibration offset for the Z-axis accelerometer channel. |
+++-------------------------------------------+----------------------------------------------------------+
++| in_accel_z_raw                            | Raw Z-axis accelerometer channel value.                  |
+++-------------------------------------------+----------------------------------------------------------+
 +
- 	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
- 				 ADXL345_DATA_FORMAT_RANGE,
- 				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
- 	if (ret)
- 		return ret;
- 
--	return 0;
-+	act_threshold = act_threshold
-+		* adxl345_range_factor_tbl[range_old]
-+		/ adxl345_range_factor_tbl[range];
-+	act_threshold = min(255, max(1, inact_threshold));
++Channel processed values
++-------------------------
 +
-+	inact_threshold = inact_threshold
-+		* adxl345_range_factor_tbl[range_old]
-+		/ adxl345_range_factor_tbl[range];
-+	inact_threshold = min(255, max(1, inact_threshold));
++A channel value can be read from its _raw attribute. The value returned is the
++raw value as reported by the devices. To get the processed value of the channel,
++apply the following formula:
 +
-+	ret = regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_ACTIVITY],
-+			   act_threshold);
-+	if (ret)
-+		return ret;
++.. code-block:: bash
 +
-+	return regmap_write(st->regmap, adxl345_act_thresh_reg[ADXL345_INACTIVITY],
-+			   inact_threshold);
- }
- 
- static int adxl345_read_avail(struct iio_dev *indio_dev,
-@@ -914,6 +1033,8 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
- {
- 	struct adxl345_state *st = iio_priv(indio_dev);
- 	bool int_en;
-+	bool act_ac;
-+	bool inact_ac;
- 	int ret = -EFAULT;
- 
- 	switch (type) {
-@@ -958,6 +1079,21 @@ static int adxl345_read_event_config(struct iio_dev *indio_dev,
- 		if (ret)
- 			return ret;
- 		return int_en;
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			ret = adxl345_is_act_inact_ac(st, ADXL345_ACTIVITY, &act_ac);
-+			if (ret)
-+				return ret;
-+			return act_ac;
-+		case IIO_EV_DIR_FALLING:
-+			ret = adxl345_is_act_inact_ac(st, ADXL345_INACTIVITY, &inact_ac);
-+			if (ret)
-+				return ret;
-+			return inact_ac;
-+		default:
-+			return -EINVAL;
-+		}
- 	default:
- 		return -EINVAL;
- 	}
-@@ -994,6 +1130,16 @@ static int adxl345_write_event_config(struct iio_dev *indio_dev,
- 		}
- 	case IIO_EV_TYPE_MAG:
- 		return adxl345_set_ff_en(st, state);
-+	case IIO_EV_TYPE_MAG_REFERENCED:
-+		switch (dir) {
-+		case IIO_EV_DIR_RISING:
-+			return adxl345_set_act_inact_ac(st, ADXL345_ACTIVITY, state);
-+		case IIO_EV_DIR_FALLING:
-+			return adxl345_set_act_inact_ac(st, ADXL345_INACTIVITY, state);
-+		default:
-+			return -EINVAL;
-+		}
++        processed value = (_raw + _offset) * _scale
 +
- 	default:
- 		return -EINVAL;
- 	}
++Where _offset and _scale are device attributes. If no _offset attribute is
++present, simply assume its value is 0.
++
+++-------------------------------------+---------------------------+
++| Channel type                        | Measurement unit          |
+++-------------------------------------+---------------------------+
++| Acceleration on X, Y, and Z axis    | Meters per second squared |
+++-------------------------------------+---------------------------+
++
++Sensor events
++-------------
++
++Particular IIO events will be triggered by the corresponding interrupts. The
++sensor driver supports no or one active INT line, where the sensor has two
++possible INT IOs. Configure the used INT line in the devicetree. If no INT line
++is configured, the sensor falls back to FIFO bypass mode and no events are
++possible, only X, Y and Z axis measurements are possible.
++
++The following table shows the ADXL345 related device files, found in the
++specific device folder path ``/sys/bus/iio/devices/iio:deviceX/events``.
++
+++---------------------------------------------+-----------------------------------------+
++| Event handle                                | Description                             |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_gesture_doubletap_en               | Enable double tap detection on all axis |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_gesture_doubletap_reset_timeout    | Double tap window in [us]               |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_gesture_doubletap_tap2_min_delay   | Double tap latent in [us]               |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_gesture_singletap_timeout          | Single tap duration in [us]             |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_gesture_singletap_value            | Single tap threshold value in 62.5/LSB  |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_mag_falling_en                     | Enable free fall detection              |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_mag_falling_period                 | Free fall time in [us]                  |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_mag_falling_value                  | Free fall threshold value in 62.5/LSB   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_mag_referenced_falling_en          | Set 1 to AC-coupled inactivity, 0 for DC|
+++---------------------------------------------+-----------------------------------------+
++| in_accel_mag_referenced_rising_en           | Set 1 to AC-coupled activity, 0 for DC  |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_x_thresh_falling_en                | Enable inactivity detection on X axis   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_y_thresh_falling_en                | Enable inactivity detection on Y axis   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_z_thresh_falling_en                | Enable inactivity detection on Z axis   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_thresh_falling_period              | Inactivity time in seconds              |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_thresh_falling_value               | Inactivity threshold value in 62.5/LSB  |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_x_thresh_rising_en                 | Enable activity detection on X axis     |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_y_thresh_rising_en                 | Enable activity detection on Y axis     |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_z_thresh_rising_en                 | Enable activity detection on Z axis     |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_thresh_rising_value                | Activity threshold value in 62.5/LSB    |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_x_gesture_singletap_en             | Enable single tap detection on X axis   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_y_gesture_singletap_en             | Enable single tap detection on Y axis   |
+++---------------------------------------------+-----------------------------------------+
++| in_accel_z_gesture_singletap_en             | Enable single tap detection on Z axis   |
+++---------------------------------------------+-----------------------------------------+
++
++Find a detailed description of a particular functionality in the sensor
++datasheet.
++
++Setting the ODR explicitly will result in estimated adjusted default values
++for the inactivity time detection, where higher frequencies shall default to
++longer wait periods, and vice versa. It is also possible to explicetly
++configure inactivity wait times, if the defaulting approach does not match
++application requirements. Setting 0 here, will fall back to default setting.
++
++The g range configuration also tries to estimate activity and inactivity
++thresholds when switching to another g range. The default range will be
++factorized by the relation of old range divided by new range. The value never
++becomes 0 and will be at least 1 and at most 255 i.e. 62.5g/LSB according to
++the datasheet. Nevertheless activity and inactivity thresholds can be
++overwritten by explicit values.
++
++When activity and inactivity events are both enabled, the driver automatically
++will implement its hysteresis solution by setting link bit and autosleep bit.
++The link bit serially links the activity and inactivity functions. On the other
++side, the autosleep function switches the sensor to sleep mode if the
++inactivity function is enabled. This will reduce current consumption to the
++sub-12.5Hz rate.
++
++In dc-coupled operation, the current acceleration magnitude is compared
++directly with THRESH_ACT and THRESH_INACT registers to determine whether
++activity or inactivity was detected. In ac-coupled operation for activity
++detection, the acceleration value at the start of activity detection is taken
++as a reference value. New samples are then compared to this reference value.
++Note, ac-coupling and dc-coupling are individually set for activity and/or
++inactivity detection. Activity and inactivity detection are dependent on the
++direction, i.e. the x/y/z axis where this driver generally enables all
++directions. Also, the direction settings are particular to activity and
++inactivity detection, respectively.
++
++Single tap detection can be configured according to the datasheet by specifying
++threshold and duration. If only the single tap is in use, the single tap
++interrupt is triggered when the acceleration goes above threshold (i.e. DUR
++start) and below the threshold, as long as duration is not exceeded. If single
++tap and double tap are in use, the single tap is triggered when the doulbe tap
++event has been either validated or invalidated.
++
++For double tap configure additionally window and latency in [us]. Latency
++starts counting when the single tap goes below threshold and is a waiting
++period, any spikes here are ignored for double tap detection. After latency,
++the window starts. Any rise above threshold, with a consequent fall below
++threshold within window time, rises a double tap signal when going below
++threshold.
++
++Double tap event detection is best described in the datasheet. After a
++single tap event was detected, a double tap event can be detected. Therefore the
++signal must match several criteria, and detection can also considered invalid
++for three reasons:
++* If the suppress bit is set and when still in the tap latency period, any
++measurement of acceleration spike above the tap threshold invalidates double tap
++detection immediately, i.e. during latency must not occur spikes for double tap
++detection when the suppress bit is set.
++* A double tap event is considered invalid, if acceleration lies above the
++threshold at the start of the window time for double tap.
++* Additionally, double tap detection can be considered invalid, if an
++acceleration exceeds the time limit for taps, set by duration register.
++Note, since for double tap the same duration counts, i.e. when rising above
++threshold, a consequent falling below threshold has to be within duration time.
++Also note, the suppress bit is generally set when double tap is enabled.
++
++A free fall event will be detected if the signal goes below the configured
++threshold, for the configured time [us].
++
++Note, that activity/inactivy, as also freefall is recommended for 12.5 Hz ODR
++up to 400 Hz.
++
++Usage examples
++--------------
++
++Show device name:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> cat name
++        adxl345
++
++Show accelerometer channels value:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_raw
++        -1
++        root:/sys/bus/iio/devices/iio:device0> cat in_accel_y_raw
++        2
++        root:/sys/bus/iio/devices/iio:device0> cat in_accel_z_raw
++        -253
++
++Set calibration offset for accelerometer channels:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
++        0
++
++        root:/sys/bus/iio/devices/iio:device0> echo 50 > in_accel_x_calibbias
++        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
++        50
++
++Given the 13-bit full resolution, the available ranges are calculated by the
++following forumla:
++
++.. code-block:: bash
++
++        (g * 2 * 9.80665) / (2^(resolution) - 1) * 100; for g := 2|4|8|16
++
++Scale range configuration:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_scale
++        0.478899
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_scale_available
++        0.478899 0.957798 1.915595 3.831190
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1.915595 > ./in_accel_scale
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_scale
++        1.915595
++
++Set output data rate (ODR):
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_sampling_frequency
++        200.000000
++
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_sampling_frequency_available
++        0.097000 0.195000 0.390000 0.781000 1.562000 3.125000 6.250000 12.500000 25.000000 50.000000 100.000000 200.000000 400.000000 800.000000 1600.000000 3200.000000
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1.562000 > ./in_accel_sampling_frequency
++        root:/sys/bus/iio/devices/iio:device0> cat ./in_accel_sampling_frequency
++        1.562000
++
++Configure one or several events:
++
++.. code-block:: bash
++
++        root:> cd /sys/bus/iio/devices/iio:device0
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./buffer0/in_accel_x_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./buffer0/in_accel_y_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./buffer0/in_accel_z_en
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./scan_elements/in_accel_x_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./scan_elements/in_accel_y_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./scan_elements/in_accel_z_en
++
++        root:/sys/bus/iio/devices/iio:device0> echo 14   > ./in_accel_x_calibbias
++        root:/sys/bus/iio/devices/iio:device0> echo 2    > ./in_accel_y_calibbias
++        root:/sys/bus/iio/devices/iio:device0> echo -250 > ./in_accel_z_calibbias
++
++        root:/sys/bus/iio/devices/iio:device0> echo 24 > ./buffer0/length
++
++        ## activity, threshold [62.5/LSB]
++        root:/sys/bus/iio/devices/iio:device0> echo 6 > ./events/in_accel_thresh_rising_value
++
++        ## inactivity, threshold, [62.5/LSB]
++        root:/sys/bus/iio/devices/iio:device0> echo 4 > ./events/in_accel_thresh_falling_value
++
++        ## inactivity, time [s]
++        root:/sys/bus/iio/devices/iio:device0> echo 3 > ./events/in_accel_thresh_falling_period
++
++        ## singletap, threshold
++        root:/sys/bus/iio/devices/iio:device0> echo 35 > ./events/in_accel_gesture_singletap_value
++
++        ## singletap, duration [us]
++        root:/sys/bus/iio/devices/iio:device0> echo 0.001875  > ./events/in_accel_gesture_singletap_timeout
++
++        ## doubletap, window [us]
++        root:/sys/bus/iio/devices/iio:device0> echo 0.025 > ./events/in_accel_gesture_doubletap_reset_timeout
++
++        ## doubletap, latent [us]
++        root:/sys/bus/iio/devices/iio:device0> echo 0.025 > ./events/in_accel_gesture_doubletap_tap2_min_delay
++
++        ## freefall, threshold [62.5/LSB]
++        root:/sys/bus/iio/devices/iio:device0> echo 8 > ./events/in_accel_mag_falling_value
++
++        ## freefall, time [ms]
++        root:/sys/bus/iio/devices/iio:device0> echo 1.25 > ./events/in_accel_mag_falling_period
++
++        ## activity, enable
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_thresh_rising_en
++
++        ## inactivity, enable
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_thresh_falling_en
++
++        ## freefall, enable
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_mag_falling_en
++
++        ## singletap, enable
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_x_gesture_singletap_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_y_gesture_singletap_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_z_gesture_singletap_en
++
++        ## doubletap, enable
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > ./events/in_accel_gesture_doubletap_en
++
++Verify incoming events:
++
++.. code-block:: bash
++
++        root:# iio_event_monitor adxl345
++        Found IIO device with name adxl345 with device number 0
++        Event: time: 1739063415957073383, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063415963770218, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063416002563061, type: accel(z), channel: 0, evtype: gesture, direction: singletap
++        Event: time: 1739063426271128739, type: accel(x|y|z), channel: 0, evtype: thresh, direction: falling
++        Event: time: 1739063436539080713, type: accel(x|y|z), channel: 0, evtype: thresh, direction: falling
++        Event: time: 1739063438357970381, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063446726161586, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063446727892670, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063446743019768, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063446744650696, type: accel(z), channel: 0, evtype: thresh, direction: rising
++        Event: time: 1739063446763559386, type: accel(z), channel: 0, evtype: gesture, direction: singletap
++        Event: time: 1739063448818126480, type: accel(x|y|z), channel: 0, evtype: thresh, direction: falling
++        ...
++
++3. Device buffers
++=================
++
++This driver supports IIO buffers.
++
++All devices support retrieving the raw acceleration and temperature measurements
++using buffers.
++
++Usage examples
++--------------
++
++Select channels for buffer read:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_x_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_y_en
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_z_en
++
++Set the number of samples to be stored in the buffer:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> echo 10 > buffer/length
++
++Enable buffer readings:
++
++.. code-block:: bash
++
++        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
++
++Obtain buffered data:
++
++.. code-block:: bash
++
++        root:> iio_readdev -b 16 -s 1024 adxl345 | hexdump -d
++        WARNING: High-speed mode not enabled
++        0000000   00003   00012   00013   00005   00010   00011   00005   00011
++        0000010   00013   00004   00012   00011   00003   00012   00014   00007
++        0000020   00011   00013   00004   00013   00014   00003   00012   00013
++        0000030   00004   00012   00013   00005   00011   00011   00005   00012
++        0000040   00014   00005   00012   00014   00004   00010   00012   00004
++        0000050   00013   00011   00003   00011   00012   00005   00011   00013
++        0000060   00003   00012   00012   00003   00012   00012   00004   00012
++        0000070   00012   00003   00013   00013   00003   00013   00012   00005
++        0000080   00012   00013   00003   00011   00012   00005   00012   00013
++        0000090   00003   00013   00011   00005   00013   00014   00003   00012
++        00000a0   00012   00003   00012   00013   00004   00012   00015   00004
++        00000b0   00014   00011   00003   00014   00013   00004   00012   00011
++        00000c0   00004   00012   00013   00004   00014   00011   00004   00013
++        00000d0   00012   00002   00014   00012   00005   00012   00013   00005
++        00000e0   00013   00013   00003   00013   00013   00005   00012   00013
++        00000f0   00004   00014   00015   00005   00012   00011   00005   00012
++        ...
++
++See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
++data is structured.
++
++4. IIO Interfacing Tools
++========================
++
++See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
++interfacing tools.
 -- 
 2.39.5
 

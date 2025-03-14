@@ -1,159 +1,138 @@
-Return-Path: <linux-iio+bounces-16818-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16819-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC915A60B11
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 09:17:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4987A60B4B
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 09:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F08373A55D3
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 08:17:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38EB03AC7FA
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 08:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490991A0706;
-	Fri, 14 Mar 2025 08:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E619DF4B;
+	Fri, 14 Mar 2025 08:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yaLL2TvV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ernyX5Ah"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DB416F0FE
-	for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 08:17:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFE7EAD7;
+	Fri, 14 Mar 2025 08:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741940232; cv=none; b=oyjUk7yjgCD698sePdQhpuRj4cYHx8RmVeu6mDwDAaUz4ypcyYDpJIxh5z1Os/Oqstr1OWG2XyjpUwiMQHZtqr7GoaAeOyUNB+uHhOYTSfFDZChnFancs65iMMtBQ0mgP+z7QQ9vm7pDYvG7XrJY62iIm9BBCZII18G6Yth8neY=
+	t=1741940728; cv=none; b=AtpbLncuKC0vndiTDTV7aFJprSe+wU29+TaAyxhpDwIfA7SyNnLDgMFuTv4pLH0k3r0t7NEN1f3U8NEfAxKl/0rcisgvov27I2tg2tW1UMEXIAx2RtQ2HsI1Wh36RVUxf9RS2jD3cUNLhxUyLiyw+H+l8tt8pMEx4orADQ5v0xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741940232; c=relaxed/simple;
-	bh=sAqNQxxYaR+0Tltp1KviJARJhOXM6KX0a50qQV1JteI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cq1Rdan84NRs8+RXbItfZ6zCSKBGx4gpHuR5UatgYHtNpCUwxnrVXOJiR5H1HXl0YlZgGtumshPfgsNJvsU3dXFHOL4/cbPA2O1OSSjQ/6L652d2pxj/2dlD2UYCkWc+uHLjgaPS2bAWmRz8+jp6PTQTHjdf4FifvdBGuVEVeEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yaLL2TvV; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5e5cded3e2eso2831280a12.0
-        for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 01:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1741940227; x=1742545027; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=klYyfnhFfNhRZigjlZI4YyNSugdGK0OEd2fAAM/BTJ4=;
-        b=yaLL2TvVwIvp4BLB8ODhIdC8+lmLcsLPwZoUWPzoqKyxKEy95vMothF+5fNjevb5u/
-         Z470rAOeqcAt1PcPOZRYcEAz6E5utdsknOVM3ZGDYpHhWhaLZwSyqCB3W/GCMvsOq7DD
-         uePKhTGGNQO8GX722LikDSkn0u8E1sJqXm5igChJgv3sempDajEvohYy3/TzfkhUQiRL
-         CuNURxyQG8XmEVZ45HY08diUl27yX49ZVtOGO2uxu4Yo+Fr+TpAjuSWONY4XM8e1dmpU
-         +Y7shsXgIr3VIv1nj8ECmqSLD075/R3xPljjhSgAdMV+GkZdRZU9mRmOrVU40vReA+Zf
-         3mcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741940227; x=1742545027;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=klYyfnhFfNhRZigjlZI4YyNSugdGK0OEd2fAAM/BTJ4=;
-        b=bijLDYFaM36ootSnk0b9CVNp6hbgys/7RP5bMWMSgGsGELt00LRg0al1SP+onec3kq
-         BYknAy5GgUBvs8gtqVvNt+WShxDAAmh9SBd/e8QMcEVMWu39ZdE3KyinIhIOkizD5AuP
-         O/JZXcgAhkiscQiTxhqR9bHhtibnteTdz2C7+FAE6tR/6xUFJndWQWG1uBBglEVT/Gub
-         0S5FGjTh1TD1L3MQDj1fxqH43OElL4P2fSnjCayKyN6A4zS0ddqnv84c9J4hvCAuby2K
-         x6PU22fKikPHw6BC0F5KNrcjtoD7LqI7JnHM5I5HajKKBc4UcvfeBizDifABs/1SMOy4
-         VhIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXgjGyx6h2HvyaP7qWQzRz8/jcKl8TCqL7h0dbFZzir77QeXe1BVQzElxmLOGID1eBilsbZL2JSZ0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywo5kllFYm2TtXhp690syw68oU7InLvBpnRy3mCXSp3yv4E/OFL
-	ru76MaZQQ0CDGj8jNY4SjwRfrnf77rdzO/+dd88oTBPD5ObkNgUHlh0/ZB3yPcM=
-X-Gm-Gg: ASbGncunoaA2xSsB04KCFJID4l8po5UxOR0TEk2Q6ZF4spWfk0wYfHRU28bA+retWXt
-	d+dPUsnd5WgsoP1APUY5Lc71fEudJglTck7CyfE9C6mVTw0NSStTFq2tGb3Xk+AzUVb4Rvj6CCF
-	ef54DPzfX0dsXgoAhGx8xSOkapm5SG48+//S2kca9KKqTKfL6MXau7JQWYwjS+ntei/07x37C0m
-	v3ODSSNNPX5AcuKV9zQnzLRRCjJ7KfEafAVzg4YcKb7S28OF6UjX3HQXHvnNfU1TL2Ia1JHGI8u
-	YpRtQ0lO23l4C/N5MYq1rAufVPQLBsV8EPh2TG7cWvY/UTI+Gode+chW2uTy45QElRRKVsNWlrH
-	Npgl0K2y5vv8=
-X-Google-Smtp-Source: AGHT+IHjW239zYn26zGx0cVtSMZeNi2VzgrdmIbWOC/MFA4e1w8B4GT2HlMVGrfoMcCu1l8EUKEfXQ==
-X-Received: by 2002:a05:6402:5106:b0:5e5:e78a:c502 with SMTP id 4fb4d7f45d1cf-5e8a13dd5d1mr1404321a12.31.1741940226860;
-        Fri, 14 Mar 2025 01:17:06 -0700 (PDT)
-Received: from localhost (p200300f65f14610400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f14:6104::1b9])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816afdd49sm1703794a12.73.2025.03.14.01.17.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 01:17:06 -0700 (PDT)
-Date: Fri, 14 Mar 2025 09:17:04 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Alexandru Tachici <alexandru.tachici@analog.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Fix 3dB filter frequency reading
-Message-ID: <6bxixvxb3um27njoetnpke7n33d7vse36z5isgxf27xo3algw5@2flduzj7ccsy>
-References: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
- <6d31f9559939ec04066bec612a59bc7ace2ca548.1741801853.git.u.kleine-koenig@baylibre.com>
- <4d3e77deab4741112d7ef45ba331177bbc3879ca.camel@gmail.com>
+	s=arc-20240116; t=1741940728; c=relaxed/simple;
+	bh=0n02eITWIzf/++JmvY0KKczZbmpT4M52h+UOP3gyX1g=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=FuSGHdXI2UcyOf/54kGDkaeD8CZCvjXOOovNTB6NcnLFKeHLkeBLqprkK86/P2gEkTt93ZgZzcbpFq0eekRtxp5kKKayc688uMEkZ6wmA7XLXweTdhyS8QBuEd6FS/1rZ/wrPiz1JO6na81yXvuVrZZkHSwkLKF9XQIEtqorVdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ernyX5Ah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DF0C4CEE3;
+	Fri, 14 Mar 2025 08:25:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741940727;
+	bh=0n02eITWIzf/++JmvY0KKczZbmpT4M52h+UOP3gyX1g=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=ernyX5AhaKGHwsNYKemwwl6b7FOv05dkpRXhpU5QS+zhW5D7DNpEo5YRcsxACotTO
+	 dxDHIIcVX9E10h2Rzz5V4Kq96KUxuFuxvpb0S6mVtXF+Z5vYsWxpHGxjAMzuMDu0+C
+	 StPKm+3Rz0/sbTXytr5TzT6kF9aATfKUbLTLUSjJQbghCxcokeUANygDzT8bohdsFK
+	 XLQ2ubvepmUDzbNSJeQ4CYGwI4QpYthXPSdS9ni+dgdfKPhDzLJQFoe12XoHlUp/vw
+	 jX28yQDa5nkawQdXf1hGV3ASGoxbetnLybGPSphwAt079jT71u8Btk+GbGko8d6bNA
+	 Q7MHme6WdhGsg==
+Date: Fri, 14 Mar 2025 03:25:26 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ayo2quhzmc3yhaek"
-Content-Disposition: inline
-In-Reply-To: <4d3e77deab4741112d7ef45ba331177bbc3879ca.camel@gmail.com>
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Lee Jones <lee@kernel.org>, 
+ Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
+ Liam Girdwood <lgirdwood@gmail.com>, linux-input@vger.kernel.org, 
+ Stephen Boyd <sboyd@kernel.org>, Sean Wang <sean.wang@kernel.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ linux-iio@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>, 
+ linux-mediatek@lists.infradead.org, 
+ Project_Global_Chrome_Upstream_Group@mediatek.com, 
+ linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Chen Zhong <chen.zhong@mediatek.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Sen Chu <shen.chu@mediatek.com>
+To: "Lu.Tang" <Lu.Tang@mediatek.com>
+In-Reply-To: <20250314073307.25092-6-Lu.Tang@mediatek.com>
+References: <20250314073307.25092-1-Lu.Tang@mediatek.com>
+ <20250314073307.25092-6-Lu.Tang@mediatek.com>
+Message-Id: <174194072655.964967.9270640013940045148.robh@kernel.org>
+Subject: Re: [PATCH 5/5] dt-bindings: pmic: mediatek: Add pmic documents
 
 
---ayo2quhzmc3yhaek
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Fix 3dB filter frequency reading
-MIME-Version: 1.0
+On Fri, 14 Mar 2025 15:32:31 +0800, Lu.Tang wrote:
+> Add new pmic mfd and adc documents for mt8196
+> 
+> Signed-off-by: Lu.Tang <Lu.Tang@mediatek.com>
+> ---
+>  .../iio/adc/mediatek,spmi-pmic-auxadc.yaml    |  31 ++++
+>  .../bindings/input/mediatek,pmic-keys.yaml    |   1 +
+>  .../bindings/mfd/mediatek,mt6685.yaml         |  50 +++++
+>  .../bindings/mfd/mediatek,spmi-pmic.yaml      | 173 ++++++++++++++++++
+>  .../pinctrl/mediatek,mt65xx-pinctrl.yaml      |   1 +
+>  5 files changed, 256 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,spmi-pmic-auxadc.yaml
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,mt6685.yaml
+>  create mode 100644 Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.yaml
+> 
 
-On Fri, Mar 14, 2025 at 08:01:13AM +0000, Nuno S=E1 wrote:
-> On Wed, 2025-03-12 at 19:38 +0100, Uwe Kleine-K=F6nig wrote:
-> > The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-> > and for sinc3 the factor is 0.272 according to the data sheets for
-> > ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
-> >=20
-> > Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-> > ---
-> > =A0drivers/iio/adc/ad7124.c | 4 ++--
-> > =A01 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> > index 67d49e6184f7..a3cb47ca3901 100644
-> > --- a/drivers/iio/adc/ad7124.c
-> > +++ b/drivers/iio/adc/ad7124.c
-> > @@ -291,9 +291,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124=
-_state *st,
-> > =A0
-> > =A0	switch (st->channels[channel].cfg.filter_type) {
-> > =A0	case AD7124_FILTER_FILTER_SINC3:
-> > -		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-> > -	case AD7124_FILTER_FILTER_SINC4:
-> > =A0		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
->=20
-> I wonder if we shouldn't fix the sinc3 factor as well? Or at the very lea=
-st mention
-> in the commit message why we're not doing it now. Otherwise it's confusin=
-g and raises
-> questions to state the proper factor in the commit and then look at this =
-diff.
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Huh, I intended to fix that, but it seems I sent out an older version of
-my patch :-\. Will send a v2. Thanks for catching that.
+yamllint warnings/errors:
 
-Best regards
-Uwe
+dtschema/dtc warnings/errors:
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dts:25.17-31: Warning (reg_format): /example-0/spmi/mfd@9:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dts:23.19-28.15: Warning (avoid_default_addr_size): /example-0/spmi/mfd@9: Relying on default #address-cells value
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dts:23.19-28.15: Warning (avoid_default_addr_size): /example-0/spmi/mfd@9: Relying on default #size-cells value
+Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: Warning (unique_unit_address_if_enabled): Failed prerequisite 'avoid_default_addr_size'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/mediatek,mt6685.example.dtb: mfd@9: '#address-cells', '#size-cells', 'reg' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/mfd/mediatek,mt6685.yaml#
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dts:31.17-31: Warning (reg_format): /example-0/spmi/pmic@4:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (pci_device_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (pci_device_bus_num): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (simple_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (i2c_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (spi_bus_reg): Failed prerequisite 'reg_format'
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dts:29.31-109.15: Warning (avoid_default_addr_size): /example-0/spmi/pmic@4: Relying on default #address-cells value
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dts:29.31-109.15: Warning (avoid_default_addr_size): /example-0/spmi/pmic@4: Relying on default #size-cells value
+Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: Warning (unique_unit_address_if_enabled): Failed prerequisite 'avoid_default_addr_size'
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mfd/mediatek,spmi-pmic.example.dtb: pmic@4: '#address-cells', 'reg' do not match any of the regexes: 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/mfd/mediatek,spmi-pmic.yaml#
 
---ayo2quhzmc3yhaek
-Content-Type: application/pgp-signature; name="signature.asc"
+doc reference errors (make refcheckdocs):
 
------BEGIN PGP SIGNATURE-----
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250314073307.25092-6-Lu.Tang@mediatek.com
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfT5f4ACgkQj4D7WH0S
-/k4DOwf/fIw3+8rI4Y67LzSyVLPhPOIanra/tHZWkce514njBd7OJ/XII/b3BSb8
-EbanQ4vVedNkb+S5OVYmPCBw9PagMEt9qaixLioRXuCagyY9InogVXz9PESRoWBn
-4yLWVIWCg4nUVqp0ansA8wrO/Bbyqv9y22RZnVIVC55IhCZXGiGadpGD+rbyIxlB
-NanWWwcVVGJpkceEuRyHMh3uLzDhXf8pi3VHwTCKUPW+dDToJ3uJIqL24uXiw3dw
-kRRX+20Nqp109Op0eppHvlvmRI1QnRcL5WuClZFni8pFQMQki1gN7roXh5CfqqSy
-KX6hEo2RTAfEoOi9ojOAfM1lNOCH4A==
-=pnDR
------END PGP SIGNATURE-----
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
 
---ayo2quhzmc3yhaek--
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

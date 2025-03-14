@@ -1,79 +1,79 @@
-Return-Path: <linux-iio+bounces-16816-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16817-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA538A60AA8
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 09:01:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A783A60ABD
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 09:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2062B17F6C3
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 08:01:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56753169296
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 08:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C801C155A2F;
-	Fri, 14 Mar 2025 08:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE6618D634;
+	Fri, 14 Mar 2025 08:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ze9VQeEF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GKSfu3JL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A638635C
-	for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 08:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABFE12CDBE
+	for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 08:06:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741939261; cv=none; b=dnG2N93kN40tFJUurK8asH84RQZU2Llx2NSsxVanTdF0fZb4i0k4uK8XyKP7UcxV1A0ZLLxvRlHU1DvhGiDT7qp8b9ZtN+UDgXbnSXUMNjP/SkG3kvgWYygFmPlKJ4TrsoIkXON9FMS3gUyEseMmG9TLSyBim+5MV+Yr9JnFRME=
+	t=1741939594; cv=none; b=p8UDJ/6vlUobhPXFLQw70fXHIblJk4dIkbgcqKXB9TpXzSV0zaSlX/9LmIpkrAJRY8Q9B8l0dHh6sRKC/1VaTDrw5Yyy9+7fLrO4DyifYHEW8p+4jVHpQjCNN37V4Z3vWs8E7oGhlkK8jHl6mIzWjIYfPDTWkD5eACnbYuKLe1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741939261; c=relaxed/simple;
-	bh=BhK6GgI0FV/PGqxE/UYn9XlVLwyJbqNy+bgumO4LchM=;
+	s=arc-20240116; t=1741939594; c=relaxed/simple;
+	bh=Np2+ir/YDyqBGLE6/yaW/9ul5aC/JmyUQ2E9dd5YD8w=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dckS/bOO5I21VLVfm6R4Uq1YFYBUAw904eSiby3wqM3kjBcZ0L4eJ0h/LoHuB+gLP/V4pL+P43gSV7gbuPQ+eKe/V3DG8jNJXTWckm0GBhRRS+DQVbgrRZxh41lX/j2tRBW6LKF4nHMZQip2lFyVoNYO6f4H3PEiBAO/eemGzKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ze9VQeEF; arc=none smtp.client-ip=209.85.221.42
+	 Content-Type:MIME-Version; b=h3hm0xz3pASPeXOm03CjVAto0kOqyaqBSJK/RC5wOtAUYQzZ1PS4a16XE+kYRJl5VL+wN9PXD2meRsAv/vAfSqyLMbTHh1H3xRagvDnVOkOJAl7Zk9R2Bbz9o6mKivP+K6T5HaZwNCQ/e6POLUloUOzARS2bZnLetdVblLLjY64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GKSfu3JL; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3914aba1ce4so1588242f8f.2
-        for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 01:00:59 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-39130ee05b0so1784058f8f.3
+        for <linux-iio@vger.kernel.org>; Fri, 14 Mar 2025 01:06:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741939258; x=1742544058; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1741939590; x=1742544390; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ehTQcTsV6Hsd6RKy0xoaogdXSKGU0Gm9uxMCkHv/kqM=;
-        b=Ze9VQeEFwgiVHUDkuVLBQ+A9mfKFFfV24VeFmH35Xw+M8o/ozE3KoSpEBQpPfcgI56
-         Un9tG8CV677YJKVmx85A4kdCcJZl9YTPx3R/+kglUsUw9WXSOIYzVC6DA6TCh8pBYxyM
-         oRvgP1BYrRFxKIa9iBb07qpYxYSCAk7dgDR7ty/H5P1AQcWnxmv8TDHOiA+9FmvAUb0x
-         lOFzSsxRjhuhGeS1G7J1Nzg4yYn1WAtEao5WFkLbFRYI17uBgY4ub5im3fBCAUfDvnN0
-         ZriycyM9V0wYWsdJa2GhzCSsnN+5INuG563nRz4zUjxjxK/WFgpEM4mbiRo85kzvvwtx
-         Lfuw==
+        bh=WcW5nhaDnk/bftEW3wFXti22zmjxrW0wrKPIP7nBta0=;
+        b=GKSfu3JL9PH0Lgtz3TNOCWn8v0UJ9Lm+RcP00rMcOCPWvaK+eOOPS0m3TIgnbl7SSD
+         /MIwB5TeaW0kYs0FHKeUK3u77OiDiPY3NE/IRPOcTi+bUe48o/5b3n8j1YBlctW4UfbP
+         8FDNOtW9o9cKfncy9lYUzRRvW/NNffT10hRuGpwjm7bjYAhs80uj653tZgyIrzfcLAUh
+         YE1Dxb7Rr/x6tfnVBhg3C/FAGq+W5aqvkNGafEG5UDINEvsrjSbVmtcuMlcIoZNsMhrJ
+         KWJlVGh0BRboKsD13EopcrrzGHeUxkrb3FmRkHbRpaZjxxVDVMh5v29+GhI/gfbDwaIg
+         3rMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741939258; x=1742544058;
+        d=1e100.net; s=20230601; t=1741939590; x=1742544390;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ehTQcTsV6Hsd6RKy0xoaogdXSKGU0Gm9uxMCkHv/kqM=;
-        b=CUCqHhXYStNZDBhM4dX6Kvz3fRB/kKqDADKgZZ5DYU7rFU9kpsoqoartglC0r4OLEN
-         5H4wzN5zaJwUlif2zVpkTIQFYSe/R/ofsH4gxoY5iDk99J4OhwvxNG0NPUtVRGmnSDBY
-         KCUWozmm0rzysGz33UqIWoZTx9B0VONCzwt/CtFVzmmvgPhJSOd1kOmUuZRmJ/9zDZWM
-         mXgQnCQVq/Mia3Y3jF5KRS0xNdkS+Ma2uIFmJOjYnz+ZC+yiu0g3v2Tw+bI3RSucy7m2
-         sNEiL7uBECbAPPhMFS/0B7X0puOtA9U82xhNzMDCBjeAd4htj6ivXfNhD00K9DM8fLpa
-         Q1hA==
-X-Gm-Message-State: AOJu0YyzkOXX/TKLk815gBlBAWiWqH05zglRlERuhLzrw4yJi869ePW4
-	D63Il2bZ2uiV/UqntAp15YouGjsmrOFiF3zv9wn5bYeDe9m/lgxDu7xsu3dUFcw=
-X-Gm-Gg: ASbGncsach70kZqivu/nFhrhk01HjGKM09y38vv9ULMsReR+5YqsNfkR6n8F4hTwWQl
-	SA/Fp1a9xO+YxiGfqADyxkf07yBjShUUMg8kcKaKtmklUTMutufIjeDv+OqEY7iBav5liYiU6W2
-	vdQlGiHdAlOxuXdrHzsZDu77NiEQSD3rFptSNSYf0GTuc0AfR0xpHbkVMOudXzt84K/SKpZoXof
-	CRc0v+a0qcMgG2+AqOhsgnO/3FekOPd+G3ae4bw4vi8DnD8tUi8X3a5ENilRVsLLM7X3nm/3TH/
-	avZ0gKpSKGwDxYfPgtHCi6K2A6lL1smru1LVnY7sjTt/1ZjNW04K85645N7YaYG8Mb0cI3jxMW+
-	KDkpbj5802UC0cTLxITM=
-X-Google-Smtp-Source: AGHT+IHq6YddAHwbXkU0lVXshInbMCfED8SIs1HvMQ1j1ZK5ltgd9iy/C3a2pI7navkGJYX9GEh+rA==
-X-Received: by 2002:a5d:64e7:0:b0:391:ba6:c069 with SMTP id ffacd0b85a97d-3971f033c1bmr1739280f8f.44.1741939257985;
-        Fri, 14 Mar 2025 01:00:57 -0700 (PDT)
+        bh=WcW5nhaDnk/bftEW3wFXti22zmjxrW0wrKPIP7nBta0=;
+        b=sWTQmtdKeT2BsOlydzVt9BTft2LZpuJGRtC+V2L27sy2FHI+HoDi+TRcmjsn1Peuw9
+         w9HB1hj7eelhp87zZCqyh5BJ/jUaybUqGVwdeHF/LW5iSDWWiGGXmBXqw1yxJxQikkYW
+         yD5j76xGVUrQtLi43Uhdntlpih9X0Ol70lhP0Ii2rkKFq9A5vJB0dXNBfEYk2XXV7I7U
+         raBArXZ2Eor3ZBnucm1tBZ5vx3az+sm6Fen4IgAlQ80FaeURf3ZCndRSC+jLYC19qaCi
+         CWPrbjXDbaFNexh+FHr4EWleGWhROs9xbYvGUUqvK5vTrSqUWvwK15Eorwt0wlWYMM3L
+         h7LQ==
+X-Gm-Message-State: AOJu0YxgsMUCJ7zCDvZ7+sJc1UnUZ7wL1P3K6K0MTbDc7czQ+mRDqt3O
+	XkW4Yk10ZBtN9NYZyhq3VgZotM6fSZPeqlVoqOuW3298zP87uDr1
+X-Gm-Gg: ASbGncuMs/4DyTm8TXOdSeYVFb7MyeBBPKAqul3QCn+VBwAvjOJuACRekWmX9d7BP/Y
+	Z7nSkkc93TUcEO73IIGxlaxEdY4SQRW+3Y/mZTmehfZYC3S9vGoS1343Gcl8FmrfqoE55WHXQWq
+	DBcgSUbPnjNQfjEtyzdOcCpXLYC3EaldJjCM/+HwiTDI+T+phaohRslwMaU1sdzmSzgHDcq9t3q
+	XFhixEZVFogD3OU7Y4CMTaEgY+pXOrsEqLQ26UYa7Ul0VgflGcVo8JP/e5Bx1dJ2NqVS1ClOsXi
+	NXIGi+YEfly3MFw4U2leTNl6AOW8hnfnThgJLEDDv3ELznw5HpAm9O+y7aMIY6uLpWKqKBdb++o
+	pSzgTBUZZNdE8+52NFyfzx0EYzqjcbw==
+X-Google-Smtp-Source: AGHT+IHUxP92cIx74txTEoSNldn/+MitmD3ADr619kkZa1LITQ2dqqzU1WBR87S8p5slRgmD2CR6gw==
+X-Received: by 2002:adf:a31b:0:b0:390:eb50:37c3 with SMTP id ffacd0b85a97d-3971e0bfa2emr1494080f8f.27.1741939589479;
+        Fri, 14 Mar 2025 01:06:29 -0700 (PDT)
 Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-395c7df413esm4646098f8f.20.2025.03.14.01.00.57
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1ffbcf12sm8925885e9.12.2025.03.14.01.06.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Mar 2025 01:00:57 -0700 (PDT)
-Message-ID: <4d3e77deab4741112d7ef45ba331177bbc3879ca.camel@gmail.com>
-Subject: Re: [PATCH 2/2] iio: adc: ad7124: Fix 3dB filter frequency reading
+        Fri, 14 Mar 2025 01:06:28 -0700 (PDT)
+Message-ID: <62edc1d1b8ed3911e148505fc7ff0d403e53bdad.camel@gmail.com>
+Subject: Re: [PATCH 0/2] iio: adc: ad7124: Fix 3dB filter frequency reading
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>, 
  Lars-Peter Clausen
@@ -81,10 +81,9 @@ To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
  Jonathan Cameron
 	 <jic23@kernel.org>, Alexandru Tachici <alexandru.tachici@analog.com>
 Cc: linux-iio@vger.kernel.org
-Date: Fri, 14 Mar 2025 08:01:13 +0000
-In-Reply-To: <6d31f9559939ec04066bec612a59bc7ace2ca548.1741801853.git.u.kleine-koenig@baylibre.com>
+Date: Fri, 14 Mar 2025 08:06:44 +0000
+In-Reply-To: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
 References: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
-	 <6d31f9559939ec04066bec612a59bc7ace2ca548.1741801853.git.u.kleine-koenig@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
@@ -96,42 +95,82 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Wed, 2025-03-12 at 19:38 +0100, Uwe Kleine-K=C3=B6nig wrote:
-> The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-> and for sinc3 the factor is 0.272 according to the data sheets for
-> ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
+> Hello,
 >=20
-> Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> ---
-> =C2=A0drivers/iio/adc/ad7124.c | 4 ++--
-> =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+> here comes another fix for the ad7124: The getter function for the
+> filter_low_pass_3db_frequency sysfs property used wrong factors to
+> calculate the f_{3dB}.
 >=20
-> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-> index 67d49e6184f7..a3cb47ca3901 100644
-> --- a/drivers/iio/adc/ad7124.c
-> +++ b/drivers/iio/adc/ad7124.c
-> @@ -291,9 +291,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_s=
-tate *st,
-> =C2=A0
-> =C2=A0	switch (st->channels[channel].cfg.filter_type) {
-> =C2=A0	case AD7124_FILTER_FILTER_SINC3:
-> -		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-> -	case AD7124_FILTER_FILTER_SINC4:
-> =C2=A0		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
+> The first patch is a cleanup I implemented before I noticed the issue. I
+> didn't switch their ordering because I was lazy. If I continue to
+> discover issues in the ad7124 driver at that rate, swapping for this one
+> fix doesn't really matter :-)
+>=20
+> Note the setter function is still broken. And it's worse enough that I
+> don't know how to fix it at all. The relevant part of the function looks
+> as follows:
+>=20
+> 	sinc4_3db_odr =3D DIV_ROUND_CLOSEST(freq * 1000, 230);
+> 	sinc3_3db_odr =3D DIV_ROUND_CLOSEST(freq * 1000, 262);
+>=20
+> 	if (sinc4_3db_odr > sinc3_3db_odr) {
+> 		new_filter =3D AD7124_FILTER_FILTER_SINC3;
+> 		new_odr =3D sinc4_3db_odr;
+> 	} else {
+> 		new_filter =3D AD7124_FILTER_FILTER_SINC4;
+> 		new_odr =3D sinc3_3db_odr;
+> 	}
+>=20
+> The issues I'm aware of in this function are:
+>=20
+> =C2=A0- the sinc3 factor should be 0.272 not 0.262 (which is fixed for th=
+e
+> =C2=A0=C2=A0 getter in patch #2)
+> =C2=A0- for freq > 1 the if condition is always true
+> =C2=A0- In the nearly always taken if branch the filter is set to sinc3, =
+but
+> =C2=A0=C2=A0 the frequency is set for sinc4. (And vice versa in the else =
+branch.)
+>=20
 
-I wonder if we shouldn't fix the sinc3 factor as well? Or at the very least=
- mention
-in the commit message why we're not doing it now. Otherwise it's confusing =
-and raises
-questions to state the proper factor in the commit and then look at this di=
-ff.
+Ouch...
 
-- Nuno S=C3=A1
+> Also it's unclear to me why sinc4_3db_odr > sinc3_3db_odr is the test to
+> decide between the two branches. Maybe something like
+>=20
+> 	if (abs(sinc4_3db_odr - current_odr) < abs(sinc3_3db_odr - current_odr))
+> 		use_sinc4()
+> 	else
+> 		use_sinc3()
+>=20
+> would make more sense.
+>=20
 
-> +	case AD7124_FILTER_FILTER_SINC4:
-> +		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-> =C2=A0	default:
-> =C2=A0		return -EINVAL;
-> =C2=A0	}
+I think the below is indeed the proper solution. I know that removing an at=
+tr like
+tis breaks ABI but since this interface is fairly broken anyways maybe it m=
+akes it
+more acceptable. Anyways, just a minor comment for the series. With it:
+
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+
+> I intend to add a filter_type property to the driver next. When this is
+> implemented setting the filter_low_pass_3db_frequency shouldn't be
+> needed any more and we can either keep the function as is (and
+> discourage its use) or just drop it.
+>=20
+> Best regards
+> Uwe
+>=20
+> Uwe Kleine-K=C3=B6nig (2):
+> =C2=A0 iio: adc: ad7124: Make register naming consistent
+> =C2=A0 iio: adc: ad7124: Fix 3dB filter frequency reading
+>=20
+> =C2=A0drivers/iio/adc/ad7124.c | 176 +++++++++++++++++++-----------------=
+---
+> =C2=A01 file changed, 85 insertions(+), 91 deletions(-)
+>=20
+>=20
+> base-commit: 8dbeb413806f9f810d97d25284f585b201aa3bdc
 
 

@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-16845-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16846-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA91FA6175F
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 18:20:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEA5A61761
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 18:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9154C882247
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 17:20:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7DA07AAD96
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Mar 2025 17:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8C02045A2;
-	Fri, 14 Mar 2025 17:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B582046BA;
+	Fri, 14 Mar 2025 17:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="KRE+JmAo"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="dcCJwOwv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378801F957;
-	Fri, 14 Mar 2025 17:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66FD1F957;
+	Fri, 14 Mar 2025 17:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741972792; cv=none; b=IJz70dK0HqcQ1q2AFETrU5UgTyzvtIEqRuA0x/SFcvfgYXehyj5WK89eDcL4UizPXZ+FcHs7h/mwSRsVYXk2/5nol7FjTUPovsWknCF5EIpcvP3LXvSAECuosZUF96ck04cAnXF0PBzrmZtbKMMsVC/lU/rltV64N75JJi32ix4=
+	t=1741972810; cv=none; b=qOwZi0X9TdWNEhEtw4dFv58S6TnjZS139u9TebIVhiomdnROgORS+aXewZScyESV3myFNzD0MrHK+fMkOHm9Ze2WgqYCsSPb7qGeoBeQw+jwfF0SDi1zc5lsbRujT/xIAXlm1f0UymnyjVbiKOvG3VErd7QAfrUA0EbAOJKpyKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741972792; c=relaxed/simple;
-	bh=pLQgLbhzSWeLm1NsYOf8P/JZobH+b4N+xZ2+J0+pBzs=;
+	s=arc-20240116; t=1741972810; c=relaxed/simple;
+	bh=hBCkIy161593SDro4nXEJtezsRYeIUGUIUSdstTYZdU=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mT7LWv9bl0KWYMFEY5xEap568f5ZtSrfsJLEJCFXeQ1kBzsyci2XsToW8iihF8aQJ/4bfnGW5XeWQ6/TeA1+Ca95YMNEA8V5qhjmXY0WUoTkO1HAfQIezkfs+7slOfnjmC6eBhmhm+92KW35iNGgeIQFft+K4XOn+6NK0w6oNYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=KRE+JmAo; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=MFsezXYEwInSD92gRGcjWTggyQm514LTN/kz8MZFWkrz2sXIjpeyuOn/mvL2rVpS1iD1ZVi4akEpzjooyLFq62yezof9k9w9drZroij1qb51e1ocoXT2gFnhnx9rnE7S/YhbnrvbfgLhpEpdj8+ONNiSfSBO1H6j7cYrKGHtfrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=dcCJwOwv; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
 Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EFvxn8016602;
-	Fri, 14 Mar 2025 13:19:36 -0400
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EFvxnB016602;
+	Fri, 14 Mar 2025 13:19:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=rRFmb
-	rbuid/omCXO+ai53evzFI6dNJbBmqCMoDl6dOU=; b=KRE+JmAoqi5o7ao3WIHfw
-	YbjmIaVUunKti8IxCKibwef+CL0n52uO1WxxkZILnRPqrQnLPnynizYGzKGDeTB/
-	r+X1LuLmcBZ2yDJ5VgvXBwHf5qVzSn3xxn4wk8bgiCl1TYyfm1AWGu/AlpYzJa/f
-	m7dezkmSfT+3EStjsTLl7GDIr1UUjQuo9eu0DVcM4eOfv+p/TVcqI9qbap6rU464
-	HBaAAEc+Ug+m6MG2W7XWY8Eux1ZaHOadAsgikuPX1th+wS3q6/47USQ3QMFGMCNh
-	V5K0YSK/skHqdA6ycLnOhGrzD8ggmw6I/PYq5DnyyKzEZGOhukk7OCr0z/pSapJg
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=/44YR
+	xSL9Q8uuoRaHgYdki5Nl3NKnqHtGIMCXJ2oTrg=; b=dcCJwOwvGobsS1uRjnjp+
+	BBm7USoHz1wVvBVyHK/acLrGOoWGvWvb8LZrvaQK9T/wvDxVmOWN3gscOzMy3/1E
+	oJXoK+FCC9O3LQzADjvTRU2xGsa4/vyN7kxvS1igXzB9WRPxLkXJbh+jWzDf3KMF
+	hz++Ht6FOQUPlCM8lrTD6rbg2mpZSYduvNPWKHRsCH+kUS2xLd6khYNerktpZqjx
+	WDXDkkPj7T3ju257Rb/SQHcg3z08ticmygBLrR396lFCDGUhmRsA8lPWfdAkIsj7
+	Gg/WCGkQJQJFI47Qmhqx3wNbwqFcBcrrAUy1v6SQkaEGU6oblHUFHq6g2n0ezEoP
 	Q==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 45cqjg8aap-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 45cqjg8ac2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 13:19:36 -0400 (EDT)
+	Fri, 14 Mar 2025 13:19:54 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 52EHJZIZ037006
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 52EHJqhf037032
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 14 Mar 2025 13:19:35 -0400
+	Fri, 14 Mar 2025 13:19:52 -0400
 Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 14 Mar
- 2025 13:19:35 -0400
+ 2025 13:19:52 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 14 Mar 2025 13:19:35 -0400
+ Transport; Fri, 14 Mar 2025 13:19:52 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 52EHJKjQ005021;
-	Fri, 14 Mar 2025 13:19:23 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 52EHJaCu005028;
+	Fri, 14 Mar 2025 13:19:39 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <linux-iio@vger.kernel.org>, <linux-doc@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
 CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <corbet@lwn.net>, <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v1 3/4] Documentation: iio: ad4000: Add IIO Device characteristics section
-Date: Fri, 14 Mar 2025 14:19:17 -0300
-Message-ID: <5cc6522c55f7e1ac2713e769690748c66813a995.1741970538.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v1 4/4] Documentation: iio: ad4000: Describe offload support
+Date: Fri, 14 Mar 2025 14:19:33 -0300
+Message-ID: <18df335c2dd4c4db3bf27d68cbf1852425114131.1741970538.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1741970538.git.marcelo.schmitt@analog.com>
 References: <cover.1741970538.git.marcelo.schmitt@analog.com>
@@ -82,9 +82,9 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: ZfhIIM1o-yk6zDazNfPV3IYkikftm0n3
-X-Proofpoint-ORIG-GUID: ZfhIIM1o-yk6zDazNfPV3IYkikftm0n3
-X-Authority-Analysis: v=2.4 cv=EL0G00ZC c=1 sm=1 tr=0 ts=67d46528 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=Vs1iUdzkB0EA:10 a=gAnH3GRIAAAA:8 a=Mo4bjoQrprX0_McyEsMA:9
+X-Proofpoint-GUID: jf96dmMTYiPjuqNVVkkWlC_oR6dCucQW
+X-Proofpoint-ORIG-GUID: jf96dmMTYiPjuqNVVkkWlC_oR6dCucQW
+X-Authority-Analysis: v=2.4 cv=EL0G00ZC c=1 sm=1 tr=0 ts=67d4653a cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=Vs1iUdzkB0EA:10 a=wI1k2SEZAAAA:8 a=gAnH3GRIAAAA:8 a=zhJGIpXlanaEhhhmQREA:9 a=6HWbV-4b7c7AdzY24d_u:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-14_06,2025-03-14_01,2024-11-22_01
@@ -95,69 +95,40 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulksco
  authcc= route=outbound adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2503140136
 
-Complement ad4000 IIO driver documentation with considerations about
-``_scale_available`` attribute and table of typical channel attributes.
+When SPI offloading is supported, the IIO device provides different sysfs
+interfaces to allow using the adjusting the sample rate. Document SPI
+offload support for AD4000 and similar devices.
 
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
- Documentation/iio/ad4000.rst | 47 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 47 insertions(+)
+ Documentation/iio/ad4000.rst | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
 diff --git a/Documentation/iio/ad4000.rst b/Documentation/iio/ad4000.rst
-index 5578a9cfd9d5..468d30dc9214 100644
+index 468d30dc9214..2d56b0762570 100644
 --- a/Documentation/iio/ad4000.rst
 +++ b/Documentation/iio/ad4000.rst
-@@ -144,3 +144,50 @@ Set ``adi,sdi-pin`` to ``"cs"`` to select this mode.
-                     ^                    |             |
-                     +--------------------| SCLK        |
-                                          +-------------+
+@@ -191,3 +191,20 @@ Typical voltage channel attributes of a differential AD4000 series device:
+ +-------------------------------------------+------------------------------------------+
+ | ``in_voltage0-voltage1_scale_available``  | Toggles input span compression           |
+ +-------------------------------------------+------------------------------------------+
 +
-+IIO Device characteristics
-+==========================
++SPI offload support
++-------------------
 +
-+The AD4000 series driver supports differential and pseudo-differential ADCs.
++To be able to achieve the maximum sample rate, the driver can be used with the
++`AXI SPI Engine`_ to provide SPI offload support.
 +
-+The span compression feature available in AD4000 series devices can be
-+enabled/disabled by changing the ``_scale_available`` attribute of the voltage
-+channel. Note that span compression configuration requires writing to AD4000
-+configuration register, which is only possible when the ADC is wired in 3-wire
-+turbo mode, and the SPI controller is ``SPI_MOSI_IDLE_HIGH`` capable. If those
-+conditions are not met, no ``_scale_available`` attribute is provided.
++.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/pulsar_adc/index.html
 +
-+Besides that, differential and pseudo-differential voltage channels present
-+slightly different sysfs interfaces.
++When set for SPI offload support, the IIO device will provide different
++interfaces.
 +
-+Pseudo-differential ADCs
-+------------------------
-+
-+Typical voltage channel attributes of a pseudo-differential AD4000 series device:
-+
-++-------------------------------------------+------------------------------------------+
-+| Voltage Channel Attributes                | Description                              |
-++===========================================+==========================================+
-+| ``in_voltage0_raw``                       | Raw ADC output code.                     |
-++-------------------------------------------+------------------------------------------+
-+| ``in_voltage0_offset``                    | Offset to convert raw value to mV.       |
-++-------------------------------------------+------------------------------------------+
-+| ``in_voltage0_scale``                     | Scale factor to convert raw value to mV. |
-++-------------------------------------------+------------------------------------------+
-+| ``in_voltage0_scale_available``           | Toggles input span compression           |
-++-------------------------------------------+------------------------------------------+
-+
-+Differential ADCs
-+-----------------
-+
-+Typical voltage channel attributes of a differential AD4000 series device:
-+
-++-------------------------------------------+------------------------------------------+
-+| Voltage Channel Attributes                | Description                              |
-++===========================================+==========================================+
-+| ``in_voltage0-voltage1_raw``              | Raw ADC output code.                     |
-++-------------------------------------------+------------------------------------------+
-+| ``in_voltage0-voltage1_scale``            | Scale factor to convert raw value to mV. |
-++-------------------------------------------+------------------------------------------+
-+| ``in_voltage0-voltage1_scale_available``  | Toggles input span compression           |
-++-------------------------------------------+------------------------------------------+
++* Either ``in_voltage0_sampling_frequency`` or
++  ``in_voltage0-voltage1_sampling_frequency`` file is provided to allow setting
++  the sample rate.
++* IIO trigger device is not provided (no ``trigger`` directory).
++* ``timestamp`` channel is not provided.
 -- 
 2.47.2
 

@@ -1,55 +1,61 @@
-Return-Path: <linux-iio+bounces-16863-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16864-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850E3A62D25
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 14:00:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30157A62D2C
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 14:04:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA54A17A3B9
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 13:00:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1360A3B7185
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 13:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9D41DB12E;
-	Sat, 15 Mar 2025 13:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACC51F5847;
+	Sat, 15 Mar 2025 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+qQUJlu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mrk8Pk5F"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAAC1FDD;
-	Sat, 15 Mar 2025 13:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962041DF24E;
+	Sat, 15 Mar 2025 13:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742043637; cv=none; b=NsdUzWdY59Zxvufa1DM1bSiDcWlK37nyGHnizb1Q87B7fHRS/yEvKagS4sBD2cy4h1E9SWLvL/KIsiHm4OUPz80kusgpEVxSFLZkojG/KG59mzxH2F3fPONmRdaPz3tC5oC7Sx5iE2zoUkk9eYW+RcMucc59sliKIy8JgEiYEzE=
+	t=1742043887; cv=none; b=MdOdSeDbMSIHL8g3PDuV6VBrFbBCd73wWY35A6jxNjlLgheLVgUrly/100zR1fzW46mAMo/2yfTIQUi6EfboUF/a9lBYZinaY0GTp9dfelrYEWwZBq5yGsxiDFAqyzy+EMeQC4wnH0alFZEb6+/X9364KfJvGh1B89VzdNTC4Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742043637; c=relaxed/simple;
-	bh=2u/3haK34KXboBV2Ha0iRF1xoQYUJwHiolwLD2dwjOY=;
+	s=arc-20240116; t=1742043887; c=relaxed/simple;
+	bh=u6Iel8b2bCzAd8Tww+Qf0dhhEXLDIZmc3KbYsEv1G0g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GAKWd1TDaubhfORJvbQJCwUsiZyaOgkB+rx+CaJMm76y4FChI9RJoIKMUjCKS7dSCCHXhUc0Cc9fof9f/hrn2hKRtMl79wvWBQelUKKi+4lesZawsYpRALFAMDFBs8qczdY4zC6MBZyRm0wIdXqavNN3PHZJNRw84yxQRfyou8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+qQUJlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00081C4CEE5;
-	Sat, 15 Mar 2025 13:00:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RtjX6g0H2rFOBjujEgNCBJUHGMerekAKZkNemuKMP4E5dyY96vJ1jomJ6MjEmT3qBT+p27mihRUvJmxzQDpg9Gqy20lX4pTFGtjKm0SDmVCUPmDYgiFRui7+L+jDoIxWa0Mwn5iTAYEcVzRlmvOrKDkaNg7sCSHYPvITGx7W+c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mrk8Pk5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFFDC4CEE5;
+	Sat, 15 Mar 2025 13:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742043637;
-	bh=2u/3haK34KXboBV2Ha0iRF1xoQYUJwHiolwLD2dwjOY=;
+	s=k20201202; t=1742043887;
+	bh=u6Iel8b2bCzAd8Tww+Qf0dhhEXLDIZmc3KbYsEv1G0g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K+qQUJluJ0S6V1llmo89P/xrIR0dOzlEFGcMlumOCLVHvg2qKg/9lI/rxEO+LM1k0
-	 ONhWGIRWwEMywG08CtsFfzmSvS0rVc2NADdX7+DlpasCrtDkiRHfnJMTqWrHMKSsAF
-	 FLNmlPe4+MBiPyJAi+X4olarHjGqCC4O37Zda4RQoDnGRu+3q8paPFr006XQPGAHuE
-	 9sX3joSFStshc4EChzHzmYOWHAhZ/zqkMKbV9ykjyMX+E00NWrDVz58sDNKXzTGsVy
-	 fu+sQ3gsDYH+d08NQ37DNgJQmq1BNZHObAMLMQu6/fcH4ElSm8MJbjtZ0mcWjcnA1M
-	 nJdbTXrsg4Bvw==
-Date: Sat, 15 Mar 2025 13:00:30 +0000
+	b=Mrk8Pk5F90SugKmQu1VgwcVBUwJbkoEYfwQx5uKwCiLaVJErq5xNP7M4xfYJ8U/6B
+	 IWiCsb3uegOcbtuhIVvN+GCulIk7yubWRrk3M++t5xQL/CK63UdCGs3kCi26vHGLeh
+	 oSWb6L1kArhgtpaVdKFl8Azf0x0C73iV1W9RRHCcCuAvBwxDJjxKdb/in78763tVo7
+	 u3T5PkuAr37vBD9VzG1C67T8DgYV0pKHLSsdJgr0j/m4wn3ew0+FN1Zl6pAjFP/0tC
+	 xF9jhYYLcKD3W20JNUjSzhae6msANv43HRKJ1TuGC1QFWfgGxVf2zXvdKtn9u69vvw
+	 G2Uv0kRZv1WlQ==
+Date: Sat, 15 Mar 2025 13:04:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Suraj Patil <surajpatil522@gmail.com>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Suraj Patil <your-email@example.com>
-Subject: Re: [PATCH] iio: industrialio-trigger: Fix typos in comments
-Message-ID: <20250315130030.6db07f89@jic23-huawei>
-In-Reply-To: <20250311155927.467523-1-surajpatil522@gmail.com>
-References: <20250311155927.467523-1-surajpatil522@gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Esteban Blanc	
+ <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] iio: adc: ad4030: explain rearranging raw sample
+ data
+Message-ID: <20250315130439.63bfa105@jic23-huawei>
+In-Reply-To: <5ee9f7cebe54313dbb4054a7215a5220316bce9c.camel@gmail.com>
+References: <20250310-iio-adc-ad4030-check-scan-type-err-v1-0-589e4ebd9711@baylibre.com>
+	<20250310-iio-adc-ad4030-check-scan-type-err-v1-5-589e4ebd9711@baylibre.com>
+	<5ee9f7cebe54313dbb4054a7215a5220316bce9c.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,73 +63,67 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 11 Mar 2025 15:59:27 +0000
-Suraj Patil <surajpatil522@gmail.com> wrote:
+On Tue, 11 Mar 2025 09:30:32 +0000
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Fixed multiple occurrences of 'reenable' to 're-enable' in comments.
-> 
-> Signed-off-by: Suraj Patil <your-email@example.com>
-> Signed-off-by: Suraj Patil <surajpatil522@gmail.com>
-Please carefully read what your changes are before sending!
-This obviously breaks the code.  
+> On Mon, 2025-03-10 at 15:43 -0500, David Lechner wrote:
+> > Add a comment explaining why the raw sample data is rearranged in the
+> > in the ad4030_conversion() function. It is not so obvious from the code
+> > why this is done.
+> >=20
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > --- =20
+>=20
+> Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+>=20
+> (BTW, for some reason I started to send the tags without first checking t=
+he
+> complete series. So I could have just replied to the cover :facepalm:
 
-Also don't take a code spell checker to literally.
-reenable is fine here.
+I do that sometimes when I know I might not get to the end of the series :)
 
+Just to add to the confusion...
 
-> ---
->  drivers/iio/industrialio-trigger.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index 54416a384232..21688cd348c6 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -162,11 +162,11 @@ static void iio_reenable_work_fn(struct work_struct *work)
->  	 * This 'might' occur after the trigger state is set to disabled -
->  	 * in that case the driver should skip reenabling.
->  	 */
-> -	trig->ops->reenable(trig);
-> +	trig->ops->re-enable(trig);
->  }
->  
->  /*
-> - * In general, reenable callbacks may need to sleep and this path is
-> + * In general, re-enable callbacks may need to sleep and this path is
->   * not performance sensitive, so just queue up a work item
->   * to reneable the trigger for us.
->   *
-> @@ -175,14 +175,14 @@ static void iio_reenable_work_fn(struct work_struct *work)
->   *    the final decrement is still in this interrupt.
->   * 2) The trigger has been removed, but one last interrupt gets through.
->   *
-> - * For (1) we must call reenable, but not in atomic context.
-> + * For (1) we must call re-enable, but not in atomic context.
->   * For (2) it should be safe to call reenanble, if drivers never blindly
-> - * reenable after state is off.
-> + * re-enable after state is off.
->   */
->  static void iio_trigger_notify_done_atomic(struct iio_trigger *trig)
->  {
->  	if (atomic_dec_and_test(&trig->use_count) && trig->ops &&
-> -	    trig->ops->reenable)
-> +	    trig->ops->re-enable)
->  		schedule_work(&trig->reenable_work);
->  }
->  
-> @@ -243,8 +243,8 @@ EXPORT_SYMBOL(iio_trigger_poll_nested);
->  void iio_trigger_notify_done(struct iio_trigger *trig)
->  {
->  	if (atomic_dec_and_test(&trig->use_count) && trig->ops &&
-> -	    trig->ops->reenable)
-> -		trig->ops->reenable(trig);
-> +	    trig->ops->re-enable)
-> +		trig->ops->re-enable(trig);
->  }
->  EXPORT_SYMBOL(iio_trigger_notify_done);
->  
+Series applied to the testing branch of iio.git which I'll rebase after
+rc1 is available.
+
+Thanks
+
+Jonathan
+
+>=20
+> - Nuno S=C3=A1
+>=20
+> > =C2=A0drivers/iio/adc/ad4030.c | 6 ++++++
+> > =C2=A01 file changed, 6 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/adc/ad4030.c b/drivers/iio/adc/ad4030.c
+> > index
+> > 54ad74b96c9f256a67848330f875379edc828b0b..636f9f33e66af73d102722b984dc1=
+230e141
+> > 7d1e 100644
+> > --- a/drivers/iio/adc/ad4030.c
+> > +++ b/drivers/iio/adc/ad4030.c
+> > @@ -646,6 +646,12 @@ static int ad4030_conversion(struct iio_dev *indio=
+_dev)
+> > =C2=A0					=C2=A0=C2=A0 &st->rx_data.dual.diff[0],
+> > =C2=A0					=C2=A0=C2=A0 &st->rx_data.dual.diff[1]);
+> > =C2=A0
+> > +	/*
+> > +	 * If no common mode voltage channel is enabled, we can use the raw
+> > +	 * data as is. Otherwise, we need to rearrange the data a bit to
+> > match
+> > +	 * the natural alignment of the IIO buffer.
+> > +	 */
+> > +
+> > =C2=A0	if (st->mode !=3D AD4030_OUT_DATA_MD_16_DIFF_8_COM &&
+> > =C2=A0	=C2=A0=C2=A0=C2=A0 st->mode !=3D AD4030_OUT_DATA_MD_24_DIFF_8_CO=
+M)
+> > =C2=A0		return 0;
+> >  =20
+>=20
 
 

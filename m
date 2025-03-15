@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-16881-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16882-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49959A631F1
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:53:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC236A631F9
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FA0F3B936C
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20B05174F19
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32496195FEC;
-	Sat, 15 Mar 2025 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685591990AB;
+	Sat, 15 Mar 2025 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dg5fIfn+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eSaINZgb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B04189916;
-	Sat, 15 Mar 2025 18:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FA1189916;
+	Sat, 15 Mar 2025 18:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742064780; cv=none; b=Or148BcmvsfXlFA8caqQv+qFNU9Nv3wk3NnNZR1l3q/6XWtBGsqoeXOSQdcqyf0wuhjnnKOMJwhBSlMVMVwUD3jdUYH3ryhIw1Ie7XD4MhnZ80gWmiQy0ZZJdP09R6vNVekbwAGuU3Pqb1E9WA36ERt8We6U8Ryz1GGyKBu5HS8=
+	t=1742064917; cv=none; b=iZmSVy3BWgbKL+icA4W8oDjay1/Lqdb3mh7f+3twe4C/Jdxsqsu9wmvu+eM+P0sqK/dpJ8zUYxrQn5HDUC/Qo6DJs4d7tYNlxYtnOrWpA4MBkxN55bzcH417PPoybBjUwnJvFJPEy+Suzh3HL7HX8Y0+DWzXw4G5BI4eaPcIbsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742064780; c=relaxed/simple;
-	bh=+xH18GuVnLRJ4VD3Xww6nWNy7yq1eF6vOo1Yux6Whlg=;
+	s=arc-20240116; t=1742064917; c=relaxed/simple;
+	bh=5vA8XtN2p8J55g2czLdjKOjsF4zA2c2ijUOq3nZOfLw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AIB8sfiaVlzVTDtJBzi60WsGhuoJRpt3cPX6tb5yKPEJxm2u+B77qYnIJOKFQvukvGCNIevjSdCC/ZgoJK4DCTIKoeYjrqQHKcHHFC2DLF4lRHh354JQpsZA2loMPVK7OvvewDyZGV+M4WtjD/3oTRnOtwjvWpAj2XZzg5c3zNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dg5fIfn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09BDC4CEE5;
-	Sat, 15 Mar 2025 18:52:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DUWYO4nIUKR9JoxzKOcmqe8RZ9GGz8zUVv0SPYtvxOVF2Yr8i4oNLVMubxey/VyRe7ritAmifDTMk8t3lNn+wzAAuEVhMxtWIeY+oDkGuIKm2HOnqzhJ1Ap4xLBjE+gNwziJQsCndIrBY1DzGKuDlQSM9X9j71tWaw0uaPvjTXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eSaINZgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438D2C4CEE5;
+	Sat, 15 Mar 2025 18:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742064779;
-	bh=+xH18GuVnLRJ4VD3Xww6nWNy7yq1eF6vOo1Yux6Whlg=;
+	s=k20201202; t=1742064916;
+	bh=5vA8XtN2p8J55g2czLdjKOjsF4zA2c2ijUOq3nZOfLw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dg5fIfn+YAmpgfg4aJmCW1bkuPq8AiP7V9HmH69sCKhFbKSCO8wsTkiui9s6L/QzM
-	 BsUz+HPTmTvmLzPwZjp1U3DkgxllF6FLs01EXRb2hfl2GME4njgVvSR8ljQrHdGMQE
-	 p5JiMOiK8WdVS1dKoMigywPcsr8CJLSbf6+EpIW/jKWnneHxe92brqqFhJbA97rz73
-	 J7X2KxuWW/dCzmAVTll7SfBnTajpFHsjqDJjOhB1yptQOvXs21xuu0sL/JRzFe+9YG
-	 NvKh1jDPfGbrnMmPR1idDse3LksON20GEUAvJPuXh1CnPtY/8M3ZK5E2IQp2uBJyXn
-	 qxcYFupcedP9w==
-Date: Sat, 15 Mar 2025 18:52:51 +0000
+	b=eSaINZgbcmEleoPprA5AuY8V87mGTnB+icLPa7WQPn871whhfhtTlCuGk0+y8hdXf
+	 kWQWtcpo9oQv/V+eXxd82MQ39xk6Z18ZMcnc2fZzYB7AAr7/hOBOXLAQW8xXLPy2R0
+	 0+2loMZ9ILepdnpw4HKQ0t9MXHSMTser1uo60m+FstpedX38/DtrvvXcdVL28Tr31M
+	 9RChewxn/j9jfOy5EKe89Ylwz5dQdE42KR9249NNk91aLdAIHSDLwddrao4Yz42203
+	 2/pJ8ZyeL/qYC+tbep8CLLIfG/z6K2NaKiD+htvehA5BrYSCplQX5LPJNOEotV22or
+	 7umUmF1XAMqlA==
+Date: Sat, 15 Mar 2025 18:55:08 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org, Michael Hennerich
@@ -49,11 +49,11 @@ Cc: linux-iio@vger.kernel.org, Michael Hennerich
  <adureghello@baylibre.com>, Alexandru Ardelean <aardelean@baylibre.com>,
  Beniamin Bia <beniamin.bia@analog.com>, Stefan Popa
  <stefan.popa@analog.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/11] iio: adc: ad7606: use devm_mutex_init()
-Message-ID: <20250315185251.63fe37e8@jic23-huawei>
-In-Reply-To: <20250312-iio-adc-ad7606-improvements-v1-5-d1ec04847aea@baylibre.com>
+Subject: Re: [PATCH 06/11] iio: adc: ad7606: fix kernel-doc comments
+Message-ID: <20250315185508.526cbec6@jic23-huawei>
+In-Reply-To: <20250312-iio-adc-ad7606-improvements-v1-6-d1ec04847aea@baylibre.com>
 References: <20250312-iio-adc-ad7606-improvements-v1-0-d1ec04847aea@baylibre.com>
-	<20250312-iio-adc-ad7606-improvements-v1-5-d1ec04847aea@baylibre.com>
+	<20250312-iio-adc-ad7606-improvements-v1-6-d1ec04847aea@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,58 +64,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Mar 2025 20:15:43 -0500
+On Wed, 12 Mar 2025 20:15:44 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> Use devm_mutex_init() in ad7606_probe(). Mutexes should be cleaned up
-> on driver removal.
+> Fix several issues with kernel-doc comments in ad7606.h:
+> * Add missing ":" to @param names.
+> * Add some missing parameters.
+> * Remove some non-existent parameters.
+> * Fix alignment and wrapping.
+> * Fix some spelling.
 > 
-> Also add missing include while we are touching this.
+> `./scripts/kernel-doc -v -none drivers/iio/adc/ad7606*` is happy now.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-
-Just for the record (in case anyone other than us two is watching ;)
-I'm not keen to have large numbers of patches doing this at this
-point as the benefit in debug ability this brings is pretty tiny.
-
-I'm absolutely fine with it in a series making other cleanup
-type changes to a driver though - so fine here!
-
-Note I will probably pick up the fixes soon after rc1 given
-some look pretty important. That means stuff like this may have
-to wait a while for the fixes to circulate around to the char-misc-next branch.
-
-Jonathan
-
 > ---
->  drivers/iio/adc/ad7606.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/ad7606.h | 90 ++++++++++++++++++++++++------------------------
+>  1 file changed, 45 insertions(+), 45 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 440e1e5a9b18570dc6441bff91afbc51d20cbc47..f190269ac8ddd859e94eb24c26f5f010d0951646 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -13,6 +13,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/property.h>
->  #include <linux/pwm.h>
->  #include <linux/regulator/consumer.h>
-> @@ -1332,8 +1333,11 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
->  	st = iio_priv(indio_dev);
->  	dev_set_drvdata(dev, indio_dev);
->  
-> +	ret = devm_mutex_init(dev, &st->lock);
-> +	if (ret)
-> +		return ret;
-> +
->  	st->dev = dev;
-> -	mutex_init(&st->lock);
->  	st->bops = bops;
->  	st->base_address = base_address;
->  	st->oversampling = 1;
-> 
+> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+> index 71a30525eaab512fa811f28fa79268a1a976bc8c..3da78488c8a247dccbff930023f98717d540081a 100644
+> --- a/drivers/iio/adc/ad7606.h
+> +++ b/drivers/iio/adc/ad7606.h
+> @@ -120,17 +120,17 @@ typedef int (*ad7606_sw_setup_cb_t)(struct iio_dev *indio_dev);
+>  /**
+>   * struct ad7606_chip_info - chip specific information
+>   * @channels:		channel specification
+> - * @max_samplerate:	maximum supported samplerate
+> - * @name		device name
+> + * @max_samplerate:	maximum supported sample rate
+> + * @name:		device name
+>   * @num_channels:	number of channels
+> - * @num_adc_channels	the number of channels the ADC actually inputs.
+> + * @num_adc_channels:	the number of channels the ADC actually inputs.
+
+What does that mean?  ADCs don't input channels, they have channels which
+are inputs.  Turns out I don't read the docs closely enough whilst reviewing ;)
+
+
 
 

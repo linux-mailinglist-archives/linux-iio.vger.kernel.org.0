@@ -1,56 +1,60 @@
-Return-Path: <linux-iio+bounces-16879-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16880-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12086A631DA
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:46:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C9CA631DD
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 256081897512
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:47:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D82D6173E1C
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D52515573F;
-	Sat, 15 Mar 2025 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2370192D9A;
+	Sat, 15 Mar 2025 18:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rEOi0PB4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cb4GEsC+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB542F3B
-	for <linux-iio@vger.kernel.org>; Sat, 15 Mar 2025 18:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B007815573F;
+	Sat, 15 Mar 2025 18:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742064407; cv=none; b=ClaFEKwMjuIZTA6+fBtJs0BXDzPThr+V8IZLRep3NHOwJKIpS9E1+i89ZE+DQYIArkWMHYVOSIaCotEcSLLNKt5TJzCyqG3wtfzKAe6XXZ832UgeEgJeHqRaZJGUNuliSPEliwBeNikBX3qTPg5dWUqUkjZg71RGXQpDff8QuQQ=
+	t=1742064512; cv=none; b=hCYxuhZQa2cYZ75KgHlzSChSms/Dz441Ul5q1PFkwdgjxfIqiCRryXExzTs6vgY/OSsFjJV9cEluKWRaQJ/84UQtft2IHYvRnNmJrhPuYKPJyRuYUnD2CGZZ9enyb4ufrusp8uoTfBPVyk4vopgryXQzvs2H/M1OxABoDUMdUy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742064407; c=relaxed/simple;
-	bh=eSK1JqR6yvKdl37pcZbTA+GrXthr/OAFHuIVNiR1Tcw=;
+	s=arc-20240116; t=1742064512; c=relaxed/simple;
+	bh=I2sWxstsdFpKfWRB9vfgVYsGA4jY4+sCJ/SKLr49OGA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jJvlcHMq5EM+4xC0GZhRgvVytd6ueqWLmAqwPBjSkfeMx4XKs8d1xqkYr39CFLdDTMzyLp6kdNq4jt1JbUMQiKt1jFoE652p98Ir1Dsar3QzPbckraYMXPksiA8RaHKA+eLU+Qu+49rROj9n3SgMCWIN+NHPLizP5Wtd9QYSemc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rEOi0PB4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499E1C4CEE5;
-	Sat, 15 Mar 2025 18:46:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VmrXIxhbPtPYapeILZHt/C/3bMYuaUB2QczFgS1LuVFGv7pTAXnO3B119tl0T/wq41eCkeNkXqTGaCd8k0pH9NbW3i23aCNLcfQ85x7a5hR5vLYLXbWkpbak0CHdnTv/apG2HgtiM/MU2wLCeoofe3PWvwqZXWHDD9Nj94YUnaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cb4GEsC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9143C4CEE5;
+	Sat, 15 Mar 2025 18:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742064405;
-	bh=eSK1JqR6yvKdl37pcZbTA+GrXthr/OAFHuIVNiR1Tcw=;
+	s=k20201202; t=1742064512;
+	bh=I2sWxstsdFpKfWRB9vfgVYsGA4jY4+sCJ/SKLr49OGA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rEOi0PB4DCA1myQAY0DVvyCXWI8B0Y5D147E92Wu396EywYhh07/P8TrG/J3UWKuc
-	 NYtHiFsP7dby3fyAStwsS8SZzi1GUIahoCmxEvwi5RR544aZv3JRrkby0oe9I9AUgF
-	 2eNPxD7iOM3fIPphkgGg3bPGue6KvwG9hI8plDBMc3IrhN6/BO9H51DmvpHn+3En9J
-	 eNTGpsdy3qExydqpaKqn8LCTvsCTEEFh8Ac9UqovY+4hkTWuhoeOdR80YQHxFKkZ69
-	 2afAjR8cTUN+ADYxXhqJhF+b1DVKkcA7fe7+mLpZLSSZwYlsHz0Snh5+hjLcNdK/o/
-	 7Hc384Wi2Y4qw==
-Date: Sat, 15 Mar 2025 18:46:38 +0000
+	b=Cb4GEsC+XHM+ipx8v3YZETqqwUxLbUmARdDiIVinKcIGPjRm6EDT1LVM/vypSo7E2
+	 de309eeLEuknsW8UHpIZxSZLcxXHTt0w4VPap/fL6B4UPh8Olsz3f1ZTvfohAEekRa
+	 b3w3hKBtzmwA7vRHCOxVmLZyPUj1R2pRSn26YXp2zY6jQKOIvoTl3BKNz4M/M9xOm6
+	 hxy7yTWNjkXBvMM0l9SNhKpkUKfk4NrZ172ZJMlnr5J/Fm0RgaNDUKEEAliYHn808b
+	 1mWmiG9gJGaQznDSmzWx5YrQoDUVeqAL2DtPj0oKEttuZE2dO2uYQbHsbagevJtxpx
+	 3q5jONAqLDXhQ==
+Date: Sat, 15 Mar 2025 18:48:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Alexandru Tachici
- <alexandru.tachici@analog.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 0/2] iio: adc: ad7124: Fix 3dB filter frequency reading
-Message-ID: <20250315184638.5bac05e1@jic23-huawei>
-In-Reply-To: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
-References: <cover.1741801853.git.u.kleine-koenig@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, Alexandru Ardelean <aardelean@baylibre.com>,
+ Beniamin Bia <beniamin.bia@analog.com>, Stefan Popa
+ <stefan.popa@analog.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/11] iio: adc: ad7606_spi: check error in
+ ad7606B_sw_mode_config()
+Message-ID: <20250315184824.4cd068a7@jic23-huawei>
+In-Reply-To: <20250312-iio-adc-ad7606-improvements-v1-1-d1ec04847aea@baylibre.com>
+References: <20250312-iio-adc-ad7606-improvements-v1-0-d1ec04847aea@baylibre.com>
+	<20250312-iio-adc-ad7606-improvements-v1-1-d1ec04847aea@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,84 +62,46 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Mar 2025 19:38:36 +0100
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Wed, 12 Mar 2025 20:15:39 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hello,
->=20
-> here comes another fix for the ad7124: The getter function for the
-> filter_low_pass_3db_frequency sysfs property used wrong factors to
-> calculate the f_{3dB}.
->=20
-> The first patch is a cleanup I implemented before I noticed the issue. I
-> didn't switch their ordering because I was lazy. If I continue to
-> discover issues in the ad7124 driver at that rate, swapping for this one
-> fix doesn't really matter :-)
+> Add missing error check in ad7606B_sw_mode_config().
+> 
+> Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
 
-Hmm. Even so, please swap if not too ahrd.
+Nice to have, but is there a path in which this happens other than
+in hardware failure? If not probably not worth a fixes tag (which
+tends to make people start backporting things).
 
->=20
-> Note the setter function is still broken. And it's worse enough that I
-> don't know how to fix it at all. The relevant part of the function looks
-> as follows:
->=20
-> 	sinc4_3db_odr =3D DIV_ROUND_CLOSEST(freq * 1000, 230);
-> 	sinc3_3db_odr =3D DIV_ROUND_CLOSEST(freq * 1000, 262);
->=20
-> 	if (sinc4_3db_odr > sinc3_3db_odr) {
-> 		new_filter =3D AD7124_FILTER_FILTER_SINC3;
-> 		new_odr =3D sinc4_3db_odr;
-> 	} else {
-> 		new_filter =3D AD7124_FILTER_FILTER_SINC4;
-> 		new_odr =3D sinc3_3db_odr;
-> 	}
->=20
-> The issues I'm aware of in this function are:
->=20
->  - the sinc3 factor should be 0.272 not 0.262 (which is fixed for the
->    getter in patch #2)
->  - for freq > 1 the if condition is always true
->  - In the nearly always taken if branch the filter is set to sinc3, but
->    the frequency is set for sinc4. (And vice versa in the else branch.)
->=20
-> Also it's unclear to me why sinc4_3db_odr > sinc3_3db_odr is the test to
-> decide between the two branches. Maybe something like
->=20
-> 	if (abs(sinc4_3db_odr - current_odr) < abs(sinc3_3db_odr - current_odr))
-> 		use_sinc4()
-> 	else
-> 		use_sinc3()
->=20
-> would make more sense.
->=20
-> I intend to add a filter_type property to the driver next. When this is
-> implemented setting the filter_low_pass_3db_frequency shouldn't be
-> needed any more and we can either keep the function as is (and
-> discourage its use) or just drop it.
-
-If it is currently broken I'm less fussed about dropping the ABI than I wou=
-ld be
-for even correct but useless ABI.  This falls into the category of unlikely
-anyone will noticed as they should have noticed it wasn't working if
-they were using it!
-
-Jonathan
-
->=20
-> Best regards
-> Uwe
->=20
-> Uwe Kleine-K=C3=B6nig (2):
->   iio: adc: ad7124: Make register naming consistent
->   iio: adc: ad7124: Fix 3dB filter frequency reading
->=20
->  drivers/iio/adc/ad7124.c | 176 +++++++++++++++++++--------------------
->  1 file changed, 85 insertions(+), 91 deletions(-)
->=20
->=20
-> base-commit: 8dbeb413806f9f810d97d25284f585b201aa3bdc
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  drivers/iio/adc/ad7606_spi.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+> index 885bf0b68e7775c5f4a12dfb827f502d5f782e8c..c028e08efe2c82cd97249f98eec50a9a9c06471f 100644
+> --- a/drivers/iio/adc/ad7606_spi.c
+> +++ b/drivers/iio/adc/ad7606_spi.c
+> @@ -174,11 +174,13 @@ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+>  static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+>  {
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> +	int ret;
+>  
+>  	/* Configure device spi to output on a single channel */
+> -	st->bops->reg_write(st,
+> -			    AD7606_CONFIGURATION_REGISTER,
+> -			    AD7606_SINGLE_DOUT);
+> +	ret = st->bops->reg_write(st, AD7606_CONFIGURATION_REGISTER,
+> +				  AD7606_SINGLE_DOUT);
+> +	if (ret)
+> +		return ret;
+>  
+>  	/*
+>  	 * Scale can be configured individually for each channel
+> 
 
 

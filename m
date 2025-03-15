@@ -1,66 +1,61 @@
-Return-Path: <linux-iio+bounces-16872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207AAA63170
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:24:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7AFA63182
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 19:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FD8E3B843E
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:24:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D98987AADCF
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Mar 2025 18:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DDA205511;
-	Sat, 15 Mar 2025 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F98D205AA8;
+	Sat, 15 Mar 2025 18:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgOOtrJ0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ol+8l6tt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993F02045A8;
-	Sat, 15 Mar 2025 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E6D20550D;
+	Sat, 15 Mar 2025 18:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742063052; cv=none; b=NDLPnheT46q54OsCPnJOLTvwYx1Romg/ybqHoOLDVYkCO8F64Ymb+qNW83QH9ozwRqwjOjYcoIKArnrilH1jr+9T9z1cNYNGpnlad7JrRAtq3SkJmV1Mr0h3vpcZCz5FyIcAzGzAOOAEZsdq6yjdRZ98mGN2ckZQyGVW/4axif8=
+	t=1742063176; cv=none; b=rRvzLeXRvHZ/DOH6B/2f9FW9iDifltZL9Pj8T7IZ93/vnPYaxDnvX9IDI3KrNSv12XpGp3EBM0L79PVsXpJDr+6UYD5jk88vM3RTWja1PcchggcQmUxv2yb7O+rk+1fDezFSRJ3ygu3hLw4e3toGOMxDxUoDVJD8EMhlUcHPkWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742063052; c=relaxed/simple;
-	bh=1OSMH1Qhc2HVIdN9lUo5EIcgC/VQXR5nLtIJGdwCXyE=;
+	s=arc-20240116; t=1742063176; c=relaxed/simple;
+	bh=I/4a0rJw9tA+KgKCuIujMstbndmP7r6YI1u1x8qbr/Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DIljA+domFYOb9RJrQ0UIvPobpVQ8nQYeeRkiDuZ9A9PpAhYv+oFBLiw++mlfSP7jBGDVbVTbij8Gjs+kQl6G77EBNTgugsXueIAkwl3DDV9a3M61fV9XvmAfTKR/C60whME1j0B5chgIeQLWYN97q1yXsoPigc5mZq5u8aud28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgOOtrJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BFAC4CEE5;
-	Sat, 15 Mar 2025 18:24:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mMzgFFv+OAOOgTNvpsqmDw3yXZJ+KlJ94+wdqtYVqUa8tinsz632x3lkRJjJS1/ZLKiGNBu4Dse3OkoWga8kH71I18v2LV/8AtTYxviqSG9CE8HWG9JRY8XIqXN8GDgZZDbkeDtPSh1FWPcVRdk4aKJMGn3xqoar8GUZOfZNlGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ol+8l6tt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D07C4CEE5;
+	Sat, 15 Mar 2025 18:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742063052;
-	bh=1OSMH1Qhc2HVIdN9lUo5EIcgC/VQXR5nLtIJGdwCXyE=;
+	s=k20201202; t=1742063175;
+	bh=I/4a0rJw9tA+KgKCuIujMstbndmP7r6YI1u1x8qbr/Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GgOOtrJ04G5i3Wfl+n9/xw1Wu/Brh1HvHBRaiKd9qDbcT1gNslP1tCFL8CRSKn4Ek
-	 pehiJ4/thFy4b6YlCtwdrKwF6cj25sLYkRxXRLK+4cuIIBZr1Rc8Lrrcf1bhafu/wb
-	 V3VThXpOznoB+1eByBZ6Yhc07WRkiEPkCCeeAFULv+QTN95P5+Walvvu0q+mBieMmM
-	 m5yPoLCqT+uSh1ezDG8WhS7eiUODnWPUddqcT68qU86/wRf+hziYzrQH/FQH6N66fs
-	 YgGkrKs5jPBC4noCSX7RqPJvckiqeSL38xcK9omvFH2ZWyY9ExsLHTvGCQAonn9meE
-	 n/uRtIKbDMbXg==
-Date: Sat, 15 Mar 2025 18:24:02 +0000
+	b=Ol+8l6ttjd483XvLnbhHKcqhsfNKqupX31kB2ckWRaU1piS/oacxaxYQYyEI0q0Gz
+	 e0ylj+kGaS9d3DTWq+AbOcJ8qHGisYRV5H4F0wdK3BSZX35lMRWXD5rkS6OZXlPlDO
+	 HCWrMfJplbHbRpmpXSOJqQEth4SQHxltA3iBlbLCjLk2upt0tlY/jGPhL+AD+Vg6lF
+	 cubUNqX2O1he+Z9pg53fcOj39WrSCqNFdTB3f7FrmDyCcxBXwdV9cW2Qed0s8p0PHp
+	 IwC0aXwrfIpNNbJwo45QaaObq43aOz2wHNhKnjyXdITPXP9HFltPfFbcEda/QXGUws
+	 a+Fz8lxJH7Xlw==
+Date: Sat, 15 Mar 2025 18:26:05 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jorge Marques <gastmaier@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Jorge Marques
- <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/4] docs: iio: new docs for ad4052 driver
-Message-ID: <20250315182402.59f3ccf4@jic23-huawei>
-In-Reply-To: <27kqar3ugxjzwss7hzxil2hz3kxaunnkpaaas3nnzemhssf6mo@65xknov7jh7k>
-References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
-	<20250306-iio-driver-ad4052-v1-3-2badad30116c@analog.com>
-	<CAMknhBFiZZUtCkTjQ=AVSgwqe=wCkMnqAmaTqvW_X6fm1OKuYA@mail.gmail.com>
-	<e3p2r2fet2spkrxv7x76gunlivrp3vng22wktz4fkww5nkckt7@jpgne4uerr3c>
-	<6ca1eafd-276d-421b-8d35-bd3e363803d1@baylibre.com>
-	<20250310195629.47ca023f@jic23-huawei>
-	<27kqar3ugxjzwss7hzxil2hz3kxaunnkpaaas3nnzemhssf6mo@65xknov7jh7k>
+To: Sam Winchenbach <sam.winchenbach@framepointer.org>
+Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, antoniu.miclaus@analog.com, robh@kernel.org,
+ krzk+dt@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, bpellegrino@arka.org
+Subject: Re: [PATCH v6 6/6] iio: filter: admv8818: Support frequencies >=
+ 2^32
+Message-ID: <20250315182605.4b0dd8b3@jic23-huawei>
+In-Reply-To: <Z9F7AJTCtFRIPHpw@65YTFL3.secure.tethers.com>
+References: <20250307150216.374643-1-sam.winchenbach@framepointer.org>
+	<20250307150216.374643-6-sam.winchenbach@framepointer.org>
+	<20250308140143.411caf7b@jic23-huawei>
+	<Z9F7AJTCtFRIPHpw@65YTFL3.secure.tethers.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,72 +66,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 14 Mar 2025 18:34:46 +0100
-Jorge Marques <gastmaier@gmail.com> wrote:
+On Wed, 12 Mar 2025 08:16:00 -0400
+Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
 
-> On Mon, Mar 10, 2025 at 07:56:29PM +0000, Jonathan Cameron wrote:
-> > On Mon, 10 Mar 2025 09:31:45 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
+> On Sat, Mar 08, 2025 at 02:01:43PM +0000, Jonathan Cameron wrote:
+> > On Fri,  7 Mar 2025 10:02:16 -0500
+> > Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
 > >   
-> > > On 3/9/25 3:49 PM, Jorge Marques wrote:  
-> > > >>> +   * - ``sample_rate``
-> > > >>> +     - Device internal sample rate used in the burst averaging mode.
-> > > >>> +   * - ``sample_rate_available``
-> > > >>> +     - List of available sample rates.    
-> > > >>
-> > > >> Why not using the standard sampling_frequency[_available] attributes?    
-> > > > Because sampling_frequency is the sampling frequency for the pwm trigger
-> > > > during buffer readings.
-> > > > sample_rate is the internal device clock used during monitor and burst
-> > > > averaging modes.    
+> > > From: Brian Pellegrino <bpellegrino@arka.org>
 > > > 
-> > > I haven't done a chips with a monitor mode yet where we aren't reading
-> > > the samples, so hopefully Jonathan will chime in here on the usual way
-> > > to handle that.
+> > > This patch allows writing u64 values to the ADMV8818's high and low-pass
+> > > filter frequencies. It includes the following changes:
 > > > 
-> > > For the burst averaging mode, I understand the need for a separate attribute
-> > > now. I would suggest to call this the conversion_frequency rather than
-> > > sampling_rate since IIO already defines "sampling" to be the data read
-> > > from the chip to Linux even if it is an averaged value, it still counts
-> > > as one sample.  
-> > 
-> > I should have read on.  I'd like this more closely associated with oversampling.
-> > As per other reply we use sampling_frequency in the events directory for
-> > the monitoring frequency case.  One of our very first drivers did this
-> > (max1363) so it's been in the ABI a long time!
+> > > - Rejects negative frequencies in admv8818_write_raw.
+> > > - Adds a write_raw_get_fmt function to admv8818's iio_info, returning
+> > >   IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
+> > > 
+> > > Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+> > > Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
+> > > Signed-off-by: Sam Winchenbach <sam.winchenbach@framepointer.org>  
+> > I only have that minor comment on patch 5.  If nothing else comes up
+> > and the dt binding ack comes in I may just tidy that up whilst applying.
 > >   
 > 
-> I get the idea but maybe the datasheet sample rate as conversion_frequency
-> and stored as a channel attribute (iio_chan_spec.ext_info) is clear enough.
-
-It's not standard ABI. So no standard userspace code will be aware of it.
-we can add to standard ABI, but only if we can't support a feature with
-what is already defined. Event then we need to keep it consistent with
-existing ABI.
-
-Note that the first step on any ABI is to write documentation for it in 
-Documentation/ABI/testing/sysfs-bus-iio-*
-That can help people understand what is being proposed and allows discussion
-of how to generalize any new ABI to be useful across many drivers.
+> Sounds good. If given the opportunity I would like to submit
+> the patchset once more; I would like to use my work email
+> for author and signoff, and use the framepointer address
+> as an envelope. If I do this, I can update patch 5 as noted.
+> Would that be ok?
 > 
-> The datasheet sample rate affects both the burst averaging mode (oversampling) and
-> monitor mode (threshold events).
+Absolutely. That's fine.
 
-True, but are both occurring at the same time?  My reading of the situation was
-that they weren't but I could be wrong.  If they aren't then just rewrite the register
-to a cached value when you change mode.
-
+> Thanks,
+> -Sam
 > 
-> The max1363 stores as an event attribute (iio_info.event_attr) and requires iio/sysfs.h include.
-> A last option is to store as a general purpose device attribute (iio_info.attrs).
-> As a channel attribute, the driver logic is slightly simpler by using the macros.
-
-Agreed that non standard event attributes are a bit trickier to deal with.  They
-have never been common enough for us to fix that.  However the ABI exists
-and is documented, so that's almost certainly the way to go.
-
-Jonathan
-> 
-> Jorge
+> > > ---
+> > >  drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
+> > >  1 file changed, 17 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+> > > index e9602bfd4af7..9785533d0cdd 100644
+> > > --- a/drivers/iio/filter/admv8818.c
+> > > +++ b/drivers/iio/filter/admv8818.c
+> > > @@ -402,6 +402,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
+> > >  	return ret;
+> > >  }
+> > >  
+> > > +static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
+> > > +								struct iio_chan_spec const *chan,
+> > > +								long mask)
+> > > +{
+> > > +	switch (mask) {
+> > > +	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > > +	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
+> > > +		return IIO_VAL_INT_64;
+> > > +	default:
+> > > +		return -EINVAL;
+> > > +	}
+> > > +}
+> > > +
+> > >  static int admv8818_write_raw(struct iio_dev *indio_dev,
+> > >  			      struct iio_chan_spec const *chan,
+> > >  			      int val, int val2, long info)
+> > > @@ -410,6 +423,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
+> > >  
+> > >  	u64 freq = ((u64)val2 << 32 | (u32)val);
+> > >  
+> > > +	if ((s64)freq < 0)
+> > > +		return -EINVAL;
+> > > +
+> > >  	switch (info) {
+> > >  	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> > >  		return admv8818_lpf_select(st, freq);
+> > > @@ -571,6 +587,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
+> > >  
+> > >  static const struct iio_info admv8818_info = {
+> > >  	.write_raw = admv8818_write_raw,
+> > > +	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
+> > >  	.read_raw = admv8818_read_raw,
+> > >  	.debugfs_reg_access = &admv8818_reg_access,
+> > >  };  
+> >   
 
 

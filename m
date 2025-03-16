@@ -1,109 +1,136 @@
-Return-Path: <linux-iio+bounces-16904-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16911-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37027A63597
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 13:19:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAD4A635F6
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 15:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7823AFAE3
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:19:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7221170616
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04361A3142;
-	Sun, 16 Mar 2025 12:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07A2D1ADC8F;
+	Sun, 16 Mar 2025 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNVZaGZc"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="i48D6J6F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-09.pe-a.jellyfish.systems (out-09.pe-a.jellyfish.systems [198.54.127.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7401718B47C;
-	Sun, 16 Mar 2025 12:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FA11AAE13;
+	Sun, 16 Mar 2025 14:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742127550; cv=none; b=onesSbxZ5NlFXQDPdHmafLqe5VEUonVyI4ts0hAD6xUVZm708VLs0VOEdDbvH7alnrJiD/RnXCopy1hywX72MPMNhfHqPha3vYsPHJba3On939wZ84LIluPO8uf/unE1ZZf09G8KSj1n6DBGBgIzf8MTPtq70RFLY0N4+0Epw10=
+	t=1742133604; cv=none; b=Py7brnQyH2s+52S1mFo9Xqxz4R0Vtm6SOg0i3q5nSiCmih6/R6WrkSK54RDsIOUDlwH2hrABxKEFdp+ltON46/ZrkELbyTNBeEGGT3dNoQ/eZhrg84i3DbDVXaRlIZnjjXdSxJI4xhOjzlOFvY85CdOjCkZuTA3+ur2Uozj4lZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742127550; c=relaxed/simple;
-	bh=WDOxL/RE2tl9pVb3nTkLv25ewYOD88rCDJFDv51Rt60=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=arIKmrpB6oAte5LL1kBg2rnUTExTRvPrSaqqlnul33ncIn4cJnDDsbKbIefjpwJnL2K+JYlE2/FeF0VCDiLdMyJHG3er+PedTVMM1wolQPpGCny6wYU0TGbzikCkMzBkJqh4CjdzBo8mkrWfy3OgWErvC5E9pBE7gsO0n4UCUcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNVZaGZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF0C4CEDD;
-	Sun, 16 Mar 2025 12:19:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742127549;
-	bh=WDOxL/RE2tl9pVb3nTkLv25ewYOD88rCDJFDv51Rt60=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=lNVZaGZcnDmKWO0/IM62w4eJ9ac/Bx23UxURPi0RwrfgtlIbCL6/iDUqHTbnSKAYa
-	 4oCXzcIqnXy6HCYJV6CQC9jVemEys/C9HDMCXewSTFwFJUYKAzhpGhE+eaGYX3QvPg
-	 OF3JH4JZhnu1DgvevbtrrbAObUjKSRTC8dAXcmkDhZtY0c7Ik5hsujsUWZp9YKlxxk
-	 PEPRNbjARhbpKGeEuAPmR1ZSWzT+EDOCw041838kZmUxHgy2FbES8tQxrKbQM901Xi
-	 HQHnvabhDfd4Iho/oRE5G3sKo+1lIidJl+MLXYPdkoO5xru9pS/fExQbxJ+Uwt0MSf
-	 qG8ZpNqXzL2yA==
-Date: Sun, 16 Mar 2025 07:19:08 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1742133604; c=relaxed/simple;
+	bh=EdJSBFycHciE/hpVez5MYlDu+bm8+MG1UwWwOySVc74=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OiNmbkWnhOqSGdGysQJ5lwE7XTNc6NbbNScqYgAaFqtS26iWkFrelSMhbjyGNWSudyCdEbxNPmC5O0QbyhUfr/nITtA0xfByB8POY99HZxZqV3kk+a7tUlKTz/WAi7HbJmQ2wJx1a6VERO2g9zY+KZV2Of+76Ya+hLdxYseHWCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=i48D6J6F; arc=none smtp.client-ip=198.54.127.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
+Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
+	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZFzyc2ZsFz9sHW;
+	Sun, 16 Mar 2025 13:50:48 +0000 (UTC)
+Received: from MTA-12.privateemail.com (unknown [10.50.14.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZFzyc1tHDz2Sd0Q;
+	Sun, 16 Mar 2025 09:50:48 -0400 (EDT)
+Received: from mta-12.privateemail.com (localhost [127.0.0.1])
+	by mta-12.privateemail.com (Postfix) with ESMTP id 4ZFzyc0Srhz3hhRs;
+	Sun, 16 Mar 2025 09:50:48 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
+	s=default; t=1742133048;
+	bh=EdJSBFycHciE/hpVez5MYlDu+bm8+MG1UwWwOySVc74=;
+	h=From:To:Cc:Subject:Date:From;
+	b=i48D6J6FjsPyzGnezRHbIbjsCzbTu6hXJic0KAaSRGHfTyM11Tnmrb1WcpQI++E5X
+	 heWJtySyaR/bGXcXYWvghkIR1pK59WQTXEKdnCzN0o+zJVi4Oxk8EQKed5+ZN/GmUq
+	 rsIGQvnK5kXqa9x9GkLV2+lR7eanm6oGzmdpprtnDA+lFzDv41lSMTsOkPWZRTk5YG
+	 qgENqTYXwUYRfrrjD1xPWA58Qn8gDhG2t0ugJj2DFbbmkfPMf4jJmldfKlyeUpGOOa
+	 7MrCZnTrVnWpUt3Fu3n5zfGuwgSE7+1M8C/xK5Q7ojAyiV7jY0uioog80HdOQ5mNeh
+	 C4vnrl/a4otVA==
+Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
+	by mta-12.privateemail.com (Postfix) with ESMTPA;
+	Sun, 16 Mar 2025 09:50:33 -0400 (EDT)
+From: Sam Winchenbach <sam.winchenbach@framepointer.org>
+To: linux-kernel@vger.kernel.org
+Cc: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	antoniu.miclaus@analog.com,
+	jic23@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	sam.winchenbach@framepointer.org,
+	bpellegrino@arka.org,
+	Sam Winchenbach <swinchenbach@arka.org>
+Subject: [PATCH v7 1/6] dt-bindings: iio: filter: Add lpf/hpf freq margins
+Date: Sun, 16 Mar 2025 09:50:03 -0400
+Message-ID: <20250316135008.155304-1-sam.winchenbach@framepointer.org>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: mazziesaccount@gmail.com, arthur.becker@sentec.com, 
- subhajit.ghosh@tweaklogic.com, linux-iio@vger.kernel.org, 
- conor+dt@kernel.org, linux-kernel@vger.kernel.org, 
- javier.carrasco.cruz@gmail.com, muditsharma.info@gmail.com, 
- devicetree@vger.kernel.org, ivan.orlov0322@gmail.com, lars@metafoo.de, 
- jic23@kernel.org, krzk+dt@kernel.org
-To: Andreas Klinger <ak@it-klinger.de>
-In-Reply-To: <20250316113131.62884-2-ak@it-klinger.de>
-References: <20250316113131.62884-1-ak@it-klinger.de>
- <20250316113131.62884-2-ak@it-klinger.de>
-Message-Id: <174212754864.1517319.13796050097130379689.robh@kernel.org>
-Subject: Re: [PATCH 1/3] dt-bindings: iio: light: veml6046x00: add color
- sensor
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
+From: Sam Winchenbach <swinchenbach@arka.org>
 
-On Sun, 16 Mar 2025 12:31:29 +0100, Andreas Klinger wrote:
-> Add a new compatible for Vishay high accuracy RGBIR color sensor
-> veml6046x00.
-> 
-> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> ---
->  .../iio/light/vishay,veml6046x00.yaml         | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
-> 
+Adds two properties to add a margin when automatically finding the
+corner frequencies.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+---
+ .../bindings/iio/filter/adi,admv8818.yaml     | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.example.dts:33.33-34 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1518: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250316113131.62884-2-ak@it-klinger.de
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+diff --git a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+index b77e855bd594..ff0cb553e871 100644
+--- a/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
++++ b/Documentation/devicetree/bindings/iio/filter/adi,admv8818.yaml
+@@ -44,6 +44,24 @@ properties:
+   '#clock-cells':
+     const: 0
+ 
++  adi,lpf-margin-mhz:
++    description:
++      Sets the minimum distance between the fundamental frequency of `rf_in`
++      and the corner frequency of the low-pass, output filter when operated in
++      'auto' mode. The selected low-pass corner frequency will be greater than,
++      or equal to, `rf_in` + `lpf-margin-hz`. If not setting is found that
++      satisfies this relationship the filter will be put into 'bypass'.
++    default: 0
++
++  adi,hpf-margin-mhz:
++    description:
++      Sets the minimum distance between the fundamental frequency of `rf_in`
++      and the corner frequency of the high-pass, input filter when operated in
++      'auto' mode. The selected high-pass corner frequency will be less than,
++      or equal to, `rf_in` - `hpf-margin-hz`. If not setting is found that
++      satisfies this relationship the filter will be put into 'bypass'.
++    default: 0
++
+ required:
+   - compatible
+   - reg
+@@ -61,6 +79,8 @@ examples:
+         spi-max-frequency = <10000000>;
+         clocks = <&admv8818_rfin>;
+         clock-names = "rf_in";
++        adi,lpf-margin-mhz = <300>;
++        adi,hpf-margin-mhz = <300>;
+       };
+     };
+ ...
+-- 
+2.48.1
 
 

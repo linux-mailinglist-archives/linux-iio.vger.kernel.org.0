@@ -1,117 +1,117 @@
-Return-Path: <linux-iio+bounces-16903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16898-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7335BA6357F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:56:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD49FA63564
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:32:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C070616D820
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 11:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F07189209C
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 11:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFEB1A83EB;
-	Sun, 16 Mar 2025 11:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C8319ABD4;
+	Sun, 16 Mar 2025 11:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="fMY2ZFmA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VfUS/+XG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA4D1A76DA;
-	Sun, 16 Mar 2025 11:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4E06FC5;
+	Sun, 16 Mar 2025 11:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742126151; cv=none; b=RR/dWAdqoq77Ygu6ql/qCGgGd2fdesqGxFDM+MQA9p0zx2YJOa46cp5uDaAiSffbrdhCi8BREc42ECf43qQGzWEkqy0IH7PmXpdUTc+d/n21sDB5MxbKybPHDpYXBIngxSJxPo3EbkXzeagi81c2snZKMdEtb5E4iMtLbPJuRN0=
+	t=1742124747; cv=none; b=gbS18Zoz4ho1lx/mvdgqQIpv/QJ996dA2cs9ma4QfRxYjHb6OoK1a5gtQlcSR3BuGwxgB2XPGeY2MsnQ31bR8r5KSzvTe8R9JYms2SaCt8mccCa6zmW1IeWs7szQ3Ef1MZPAFsIeJQ5M9AaferYWbeOxZ9/uEISQXbtEOQbDUUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742126151; c=relaxed/simple;
-	bh=QbxOt/p54DmSJP4dWQ2+aIefJ2c8bg/B7zel+FD7QxI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t0zG48r+LBsDh4CnvGr8XliM7rG2UL1N1PqSqCP8mJTj2nyQy9U07OOCYIpO1qfKSaTxkwO4brlW9SfMxM72bvmXz5XMkdewbrlIdPP2ep+lssuFS13agCDgV5CVE9O5n3dpJLCYdT7O6iwcRJ/kFbULQ6TcpMyb9QRn8icqDG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=fMY2ZFmA; arc=none smtp.client-ip=78.46.3.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=it-klinger.de; s=default2502; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=aN1Pst06T43cahFdp7DGzY+KntPPtJvnCVY8ZeSWHe4=; b=fMY2ZFmAI9N0ifUS41re2UWNAs
-	7H65faB/7HQTrFXHMjrqRq8e4TujVE/YZPmjfTQGGsXdlKFHypiPxejNBDVS4AZTNU5NhV/PSVThZ
-	Ck8Re54wKuDa9lCn34ssVNuj1h4AG56DHQ9FfPsxSN60fUZAWOmfLTTByq/1mwGjoay5E2Q10V/1e
-	vrDE4Uj/4x3m4O8dUmfhISiJT2bxxzrQgJJl62fq50KQuGNWCEma3kvR2MlRbPir1AKFEjddzsY54
-	oT8OYP8fb1JoZAdAYW4UjbVgxUeYHnXl7yDPhRj1ZPSBHWR4JCild5wqcWE/IZAg7uCFAqz3DID0y
-	T4iWZ65A==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <ak@it-klinger.de>)
-	id 1ttmF1-0005hR-1c;
-	Sun, 16 Mar 2025 12:33:15 +0100
-Received: from [2a0f:6480:1:600:fc64:4dfc:9829:9e5f] (helo=anderl.linuxhotel.de)
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ak@it-klinger.de>)
-	id 1ttmF1-0008s3-1S;
-	Sun, 16 Mar 2025 12:33:15 +0100
-From: Andreas Klinger <ak@it-klinger.de>
-To: jic23@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org
-Cc: lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	javier.carrasco.cruz@gmail.com,
-	mazziesaccount@gmail.com,
-	subhajit.ghosh@tweaklogic.com,
-	muditsharma.info@gmail.com,
-	arthur.becker@sentec.com,
-	ivan.orlov0322@gmail.com,
-	ak@it-klinger.de
-Subject: [PATCH 3/3] MAINTAINER: add maintainer for veml6046x00
-Date: Sun, 16 Mar 2025 12:31:31 +0100
-Message-Id: <20250316113131.62884-4-ak@it-klinger.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250316113131.62884-1-ak@it-klinger.de>
-References: <20250316113131.62884-1-ak@it-klinger.de>
+	s=arc-20240116; t=1742124747; c=relaxed/simple;
+	bh=Lvu7a7eTOzHrg5Cfrf+UF8Gg+804kRfsWOMNQJ9ptxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=djDNBSp5rVYF/0UEoTyUVXSvTPVaw4DrN74VLwa/fscTar33ipfBflaL4VLizo3VPE+43j1b4YL6lQ/PQta1DfDF5AqvGlnFkGv1q+/TEcFpa/g6vlb7C0Hn+m3uyLbf6PZK7vrDvj9blfXmCMA1OCt2yuhDcDYoBWagW2m0xBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VfUS/+XG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFFDC4CEDD;
+	Sun, 16 Mar 2025 11:32:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742124747;
+	bh=Lvu7a7eTOzHrg5Cfrf+UF8Gg+804kRfsWOMNQJ9ptxQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=VfUS/+XG8AXGEyoqG5Xl3Jv/aYgLjUhX5bpU1aJtPZI2eqFjqwIeHzU2p0OnXIS1c
+	 kSxlPxEwt5kxJAY58Kv3TU6Zr6kywNCIwpCWzIlVSnUQvFm/9iPwRxMlVB/RqRD0QX
+	 xK88gVEUrOac1L4MGTZ2FUqF5scYwu5qA6lIIC4F2CiGd4UWf5TJF9xAAcNWkdOVBD
+	 M1qIjuv5JhSik4i18fm3ryuNpR46mT3+Xj8Ad94/XQab1wnGIG9MMTLpcnDfcsAhSr
+	 dn6F2GXoU4ztSWRDN84L7Hrq7XjawsUej+5yVcsvILhgSzFpYWc0NLtd2HjSDDbg1i
+	 /aK8D5IZwiZoQ==
+Date: Sun, 16 Mar 2025 11:32:03 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ eraretuya@gmail.com
+Subject: Re: [PATCH v4 11/14] iio: accel: adxl345: add activity event
+ feature
+Message-ID: <20250316113203.695b69e8@jic23-huawei>
+In-Reply-To: <20250313165049.48305-12-l.rubusch@gmail.com>
+References: <20250313165049.48305-1-l.rubusch@gmail.com>
+	<20250313165049.48305-12-l.rubusch@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Authenticated-Sender: ak@it-klinger.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27579/Sun Mar 16 09:35:38 2025)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add maintainer for Vishay veml6046x00 RGBIR color sensor driver and dt
-binding.
+On Thu, 13 Mar 2025 16:50:46 +0000
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-Signed-off-by: Andreas Klinger <ak@it-klinger.de>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+> Make the sensor detect and issue interrupts at activity. Activity
+> events are configured by a threshold stored in regmap cache. Initialize
+> the activity threshold register to a reasonable default value in probe.
+> The value is taken from the older ADXL345 input driver, to provide a
+> similar behavior. Reset the activity/inactivity direction enabling
+> register in probe. Reset and initialization shall bring the sensor in a
+> defined initial state to prevent dangling settings when warm restarting
+> the sensor.
+> 
+> Activity, ODR configuration together with the range setting prepare the
+> activity/inactivity hystersesis setup, implemented in a follow up patch.
+> 
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c9763412a508..5dc2ada88f2c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25281,6 +25281,12 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/light/vishay,veml6030.yaml
- F:	drivers/iio/light/veml6030.c
- 
-+VISHAY VEML6046X00 RGBIR COLOR SENSOR DRIVER
-+M:	Andreas Klinger <ak@it-klinger.de>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
-+F:	drivers/iio/light/veml6046x00.c
-+
- VISHAY VEML6075 UVA AND UVB LIGHT SENSOR DRIVER
- M:	Javier Carrasco <javier.carrasco.cruz@gmail.com>
- S:	Maintained
--- 
-2.39.5
+A few things inline.
 
+Jonathan
+
+> @@ -1176,7 +1373,8 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+>  	if (ret)
+>  		return IRQ_NONE;
+>  
+> -	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl)) {
+> +	if (FIELD_GET(ADXL345_REG_TAP_AXIS_MSK, axis_ctrl) ||
+> +	    FIELD_GET(ADXL345_REG_ACT_AXIS_MSK, axis_ctrl)) {
+>  		ret = regmap_read(st->regmap, ADXL345_REG_ACT_TAP_STATUS, &regval);
+>  		if (ret)
+>  			return IRQ_NONE;
+> @@ -1187,12 +1385,22 @@ static irqreturn_t adxl345_irq_handler(int irq, void *p)
+>  			tap_dir = IIO_MOD_Y;
+>  		else if (FIELD_GET(ADXL345_X_EN, regval))
+>  			tap_dir = IIO_MOD_X;
+> +
+> +		/* Activity direction is stored in the upper four bits */
+> +		regval >>= act_shift;
+As per feedback on v3 (late feedback that is), just add more defines
+for these bits as the reuse adds connections that are kind of
+coincidence rather than fundamental (bits 'could' have been defined
+in any order or non contiguous) and lead to less readable code.
+> +
+> +		if (FIELD_GET(ADXL345_Z_EN, regval))
+> +			act_dir = IIO_MOD_Z;
+> +		else if (FIELD_GET(ADXL345_Y_EN, regval))
+> +			act_dir = IIO_MOD_Y;
+> +		else if (FIELD_GET(ADXL345_X_EN, regval))
+> +			act_dir = IIO_MOD_X;
+>  	}
+>  
 

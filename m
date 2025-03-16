@@ -1,80 +1,109 @@
-Return-Path: <linux-iio+bounces-16900-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84F2A63569
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:37:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37027A63597
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 13:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B033AAF7B
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 11:37:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7823AFAE3
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786EA19F42C;
-	Sun, 16 Mar 2025 11:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04361A3142;
+	Sun, 16 Mar 2025 12:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sc3hVs8C"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNVZaGZc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3260E18CC1C;
-	Sun, 16 Mar 2025 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7401718B47C;
+	Sun, 16 Mar 2025 12:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742125065; cv=none; b=KKd2q6S4X8lRgyLv8qQJGKzWAIIdVa5ET5+FnGhVZgilmB7T1rx/2KTfyUNyrIHS/J2rlSNikrS0Fb+/+Z0G7Eht6jc6tdJ6RJzisMSoWRlxnytZd4mukhH9r8ZpALTPGnm2PRDOYxhr1B8lPdg0CRS0NLIUW2Xi5TRvhyVZOWs=
+	t=1742127550; cv=none; b=onesSbxZ5NlFXQDPdHmafLqe5VEUonVyI4ts0hAD6xUVZm708VLs0VOEdDbvH7alnrJiD/RnXCopy1hywX72MPMNhfHqPha3vYsPHJba3On939wZ84LIluPO8uf/unE1ZZf09G8KSj1n6DBGBgIzf8MTPtq70RFLY0N4+0Epw10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742125065; c=relaxed/simple;
-	bh=I2iudw03xE9QwY7rkEkGrLFlifCNAI1kgQvUYkt4qvo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TpkbnBbfaHJXQNyIzPsKi+zWC4PEFYtPrGywWPubMaY3RlSLXblpgylUhGL9TXRRLzV0wePcmTjJh4pRJCWVTX8VOOywUug/u+vGYcgzSLtCArH9gduTOXUxw9KybYtCYnfvdJsQSIcRqItrRuPFg402GjRcKL0XSnCYkffRcUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sc3hVs8C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D148DC4CEDD;
-	Sun, 16 Mar 2025 11:37:42 +0000 (UTC)
+	s=arc-20240116; t=1742127550; c=relaxed/simple;
+	bh=WDOxL/RE2tl9pVb3nTkLv25ewYOD88rCDJFDv51Rt60=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=arIKmrpB6oAte5LL1kBg2rnUTExTRvPrSaqqlnul33ncIn4cJnDDsbKbIefjpwJnL2K+JYlE2/FeF0VCDiLdMyJHG3er+PedTVMM1wolQPpGCny6wYU0TGbzikCkMzBkJqh4CjdzBo8mkrWfy3OgWErvC5E9pBE7gsO0n4UCUcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNVZaGZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADDF0C4CEDD;
+	Sun, 16 Mar 2025 12:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742125064;
-	bh=I2iudw03xE9QwY7rkEkGrLFlifCNAI1kgQvUYkt4qvo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sc3hVs8CpGuMPYGFLDIX60BZ/sIqY7fNWDqjhuXmDR4XC7VYoleml3EWuyz5vjlnD
-	 LGe7cLzBG0IpxhK5B7NePlm5yltNfYkBKzHx7cZtq5N1jU7FGiwTpVdvplR08ot/xS
-	 D2aB9agU3okEsSzcAt2QYMI4O9xxLoIlhtfKiTu8EKiIS0GKR6414jR7ovb3bnqKty
-	 AAtqC1FLjgsGGgaI7ugg+3eAC5j+ROEOOia9lAiC1Gcg0fcecPxtq5ynHpfsJB1As4
-	 y2LPbMiHgVJqPN0ZPYfV3fLGjxGB63jKPmVd37y6B2Tkq2rLyAJGAjeBCC9CCYS2Ym
-	 1ang3tQsURjow==
-Date: Sun, 16 Mar 2025 11:37:34 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- eraretuya@gmail.com
-Subject: Re: [PATCH v4 14/14] docs: iio: add documentation for adxl345
- driver
-Message-ID: <20250316113734.75359e11@jic23-huawei>
-In-Reply-To: <20250313165049.48305-15-l.rubusch@gmail.com>
-References: <20250313165049.48305-1-l.rubusch@gmail.com>
-	<20250313165049.48305-15-l.rubusch@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1742127549;
+	bh=WDOxL/RE2tl9pVb3nTkLv25ewYOD88rCDJFDv51Rt60=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=lNVZaGZcnDmKWO0/IM62w4eJ9ac/Bx23UxURPi0RwrfgtlIbCL6/iDUqHTbnSKAYa
+	 4oCXzcIqnXy6HCYJV6CQC9jVemEys/C9HDMCXewSTFwFJUYKAzhpGhE+eaGYX3QvPg
+	 OF3JH4JZhnu1DgvevbtrrbAObUjKSRTC8dAXcmkDhZtY0c7Ik5hsujsUWZp9YKlxxk
+	 PEPRNbjARhbpKGeEuAPmR1ZSWzT+EDOCw041838kZmUxHgy2FbES8tQxrKbQM901Xi
+	 HQHnvabhDfd4Iho/oRE5G3sKo+1lIidJl+MLXYPdkoO5xru9pS/fExQbxJ+Uwt0MSf
+	 qG8ZpNqXzL2yA==
+Date: Sun, 16 Mar 2025 07:19:08 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: mazziesaccount@gmail.com, arthur.becker@sentec.com, 
+ subhajit.ghosh@tweaklogic.com, linux-iio@vger.kernel.org, 
+ conor+dt@kernel.org, linux-kernel@vger.kernel.org, 
+ javier.carrasco.cruz@gmail.com, muditsharma.info@gmail.com, 
+ devicetree@vger.kernel.org, ivan.orlov0322@gmail.com, lars@metafoo.de, 
+ jic23@kernel.org, krzk+dt@kernel.org
+To: Andreas Klinger <ak@it-klinger.de>
+In-Reply-To: <20250316113131.62884-2-ak@it-klinger.de>
+References: <20250316113131.62884-1-ak@it-klinger.de>
+ <20250316113131.62884-2-ak@it-klinger.de>
+Message-Id: <174212754864.1517319.13796050097130379689.robh@kernel.org>
+Subject: Re: [PATCH 1/3] dt-bindings: iio: light: veml6046x00: add color
+ sensor
 
-On Thu, 13 Mar 2025 16:50:49 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> The documentation describes the ADXL345 driver, IIO interface,
-> interface usage and configuration.
+On Sun, 16 Mar 2025 12:31:29 +0100, Andreas Klinger wrote:
+> Add a new compatible for Vishay high accuracy RGBIR color sensor
+> veml6046x00.
 > 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> Signed-off-by: Andreas Klinger <ak@it-klinger.de>
+> ---
+>  .../iio/light/vishay,veml6046x00.yaml         | 49 +++++++++++++++++++
+>  1 file changed, 49 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.yaml
+> 
 
-I took a look through the remaining patches and didn't have
-any comments to add. 
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Looking good for v5 being the last version I think!
+yamllint warnings/errors:
 
-Jonathan
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.example.dts:33.33-34 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1518: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250316113131.62884-2-ak@it-klinger.de
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

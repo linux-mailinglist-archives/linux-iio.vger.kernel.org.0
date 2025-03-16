@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-16896-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16897-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B95FA63556
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:27:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C47A6355F
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 12:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5E707A2764
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 11:26:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF3B16BF83
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Mar 2025 11:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F471A23BD;
-	Sun, 16 Mar 2025 11:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAB51A314F;
+	Sun, 16 Mar 2025 11:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEN5xZRl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7nuvPx+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305984A06;
-	Sun, 16 Mar 2025 11:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BC24A06;
+	Sun, 16 Mar 2025 11:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742124423; cv=none; b=qsqX99Zz9u9EbiMeH/Xb1oJiO96u7FzKd45WnB/+ZXT0W7Fo4O5gW2XYzp6ILVyqORPcsxRU3K6RLJsyHAmVb6rhpkZVnuldga8/R2jt6cvdFRP431uz2tmWPLgQO4ktIR47gN9Kmz99LOS2hlFBFp/GX7w+DhxBbAdRKMzfOOI=
+	t=1742124532; cv=none; b=Cj5iHJAJy3y0jpZ9Ligs9fFIeGxHkkmeXGmw4DDTtiPedNC4tO2CqmokOOv6jI/LRpcYQO7myNKG7e4HEZPrf7phdxHLxHvKYv4zP19oFf7KAfinInP+ivF9OJhzMbRxBYn8gR9FoIsO2AtOphIC6orPVVV2bE/0MBCfpDpwLik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742124423; c=relaxed/simple;
-	bh=39GgW8NFBpkhbqdVPJgxJz5ymMONJWaSBLc/3A5906I=;
+	s=arc-20240116; t=1742124532; c=relaxed/simple;
+	bh=fKaDdLCbrZliNDRDoNchonFwvogX2TuT5tuOtUeU5Zk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I7S5qa+79+8VFLPVNNCd5pjL1cn+4PawxE+PSJ+nELtDzUf3hsMIx6azEvCVDSF+OJ8Y6vS7+VkEEK1LWXqY/quJfZFzDeSqCIcoEbRy98SuKzHLrCTeNcfS5k9lq29XMsm9EXL15lTxw9wWeXkb2zHUnQLcKdmyt0yYw4fFM+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEN5xZRl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BAFC4CEDD;
-	Sun, 16 Mar 2025 11:26:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BVoy6LOP6Ck9vIMyj9bOjfGyZ1quqyDw4WnjRo+e5PdO3jDrNooXZKxSKzBK9Ul/NprsnDjS1vbytP8HpNBMOtZ+2dXaZHt6Cd0H4/lsRuyKFdfXiWBSKpYiveO15BiFVmn3cVGs1Koq0/aNpkMRWK08yFCA+DxuHGABPH1VGko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7nuvPx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80117C4CEDD;
+	Sun, 16 Mar 2025 11:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742124422;
-	bh=39GgW8NFBpkhbqdVPJgxJz5ymMONJWaSBLc/3A5906I=;
+	s=k20201202; t=1742124531;
+	bh=fKaDdLCbrZliNDRDoNchonFwvogX2TuT5tuOtUeU5Zk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CEN5xZRlxNjpebmA3ebZ2r2BQsFMRy0xiRx2Mk10QgsD4OWXZzZAbROhw37fHklUC
-	 CKd3ff6yG+8K6NjFKpG/2CUK1FWpbRcOY+p8tKAvvmkSlhjMt3iHzeIis1qvW/sV6Q
-	 URV7QBSdonYv5YEnEBWLPxA0xtKmUSbZKIgZtI4Xjjpb9NrPObB8KY+Ov8vxZJj0sV
-	 1VYYZ3ydl7j9lU34mQdlbp07CHoMKTYvaMFMne0PWeSQk3Y/ScRY2Es++W8jQ4OCMR
-	 jlEXh95afefSBdkShPOL2CvYlQw2FVE159Ebq4K7/cI0yxbqUMyyzck5QgOLc2evZw
-	 6S+XdFeA2iw+g==
-Date: Sun, 16 Mar 2025 11:26:48 +0000
+	b=p7nuvPx+17QNMkuvDlwMr5DjpS5MQkgyENbsmqPrkuCQzsOn+JyzANEnmN8lCglDz
+	 1kV9DMkZw6QhWdUup78IuYl9+CNyzUGXCGjkqrsVgevXE6IBNkJFHtvgQS1MIsU/uo
+	 btqmIjcKB88s2Kiws553WEDVWnT9ADlNmjc1gFPSn29LFX0VcSzka5Gn+LnRj9fBdL
+	 JQ0BKHsupJLu8TRnTVexJ5b9UVIsUXyO9XPT4YsMSspQs/afNtmQxpTV145KQRTX4K
+	 mBm89Oh2z2Mu8x5I/RJ3/qPN1bY6pWlsLuK39trZFlOZVIqV+tCf57aa2WmP8P4jyr
+	 yYzMez1q6dYJg==
+Date: Sun, 16 Mar 2025 11:28:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  eraretuya@gmail.com
-Subject: Re: [PATCH v4 09/14] iio: accel: adxl345: extend sample frequency
- adjustments
-Message-ID: <20250316112648.6f5351c3@jic23-huawei>
-In-Reply-To: <20250313165049.48305-10-l.rubusch@gmail.com>
+Subject: Re: [PATCH v4 10/14] iio: accel: adxl345: add g-range configuration
+Message-ID: <20250316112839.6124946a@jic23-huawei>
+In-Reply-To: <20250313165049.48305-11-l.rubusch@gmail.com>
 References: <20250313165049.48305-1-l.rubusch@gmail.com>
-	<20250313165049.48305-10-l.rubusch@gmail.com>
+	<20250313165049.48305-11-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,17 +62,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 13 Mar 2025 16:50:44 +0000
+On Thu, 13 Mar 2025 16:50:45 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> Introduce enums and functions to work with the sample frequency
-> adjustments. Let the sample frequency adjust via IIO and configure
-> a reasonable default.
+> Introduce means to configure and work with the available g-ranges
+> keeping the precision of 13 digits.
 > 
-> Replace the old static sample frequency handling. The patch is in
-> preparation for activity/inactivity handling. During adjustment of
-> bw registers, measuring is disabled and afterwards enabled again.
-It's a good feature to have on it's own. I'd drop the reference
-to it being in preparation for the activity stuff. Maybe I'm missing
-some reason it doesn't make sense without that?
+> This is in preparation for the activity/inactivity feature.
+
+As with previous. This seems to be a separate feature to me and
+that comment raises questions that we don't need to raise so
+just drop it.
+
+> 
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+
+
+> +
+> +static int adxl345_set_range(struct adxl345_state *st, enum adxl345_range range)
+> +{
+> +	int ret;
+> +
+> +	ret = regmap_update_bits(st->regmap, ADXL345_REG_DATA_FORMAT,
+> +				 ADXL345_DATA_FORMAT_RANGE,
+> +				 FIELD_PREP(ADXL345_DATA_FORMAT_RANGE, range));
+> +	if (ret)
+> +		return ret;
+
+return regmap_update_bits() unless there is more coming here in later patches.
+
+> +
+> +	return 0;
+> +}
 

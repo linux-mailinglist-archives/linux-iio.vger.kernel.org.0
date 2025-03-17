@@ -1,67 +1,85 @@
-Return-Path: <linux-iio+bounces-16994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB32A65D62
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:58:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67538A65D61
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98C1D7AF691
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B85F172462
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85BC1E7C12;
-	Mon, 17 Mar 2025 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E3E1E51EF;
+	Mon, 17 Mar 2025 18:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riYcWsMq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a5sn9JSn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76FF1E1E08
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 18:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BEC1E1E08
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 18:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742237844; cv=none; b=KmXRq1peUO02myT/Ji2f+WDwujQEiowGgbboIG/EmeeVucvgo6ckhf2BF/GQDexfAzKR16DHkmLU89Za874nmoDYNkmJ/Jxy3ZjH1qWLbqfmBTKjy975UC0kZlUaBCjhtVSMeimymrXBinBvtXfWDbV9VezrnafrOnYDPgzI0X0=
+	t=1742237845; cv=none; b=N0nfq9gkajtfiJUXFj+x/RKDE7KxTtHq/HsZVfMBg821LxGeI9GnWC2WQN9J1x5j5mUSAkXxjtxQEYiiyCaUjWruigpjPmTl3TiOiMmkwgFa8aayq3UKxuWeR50IRe+TBK49/Xhn1rk5HJgsfTyKDiiPGGJKuuw9X9DCWFK6M0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742237844; c=relaxed/simple;
-	bh=7k7TMtRoFg3Za1lsj9YJBAtM0Y6onkF9UBnHuFDW8NY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tLW1rkRRdFiWchggg+2sgVb43tSguH0CBwe5SYMVVDgBil2zh0VJgn0kL4aJNBAmsES7GwHBnRR3Yl0c5dGiWv6z/5gpTPnQydx8id3tkk4AVW45GAP8MI+3oSNk7nNH9iUo7X8/fphc94Fzkp/JOJJprcSRR94iiHB5MqhDDQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riYcWsMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D46C4CEE3;
-	Mon, 17 Mar 2025 18:57:22 +0000 (UTC)
+	s=arc-20240116; t=1742237845; c=relaxed/simple;
+	bh=SodsKJP4OHDr9GiMu8g+NfMXNf+2xAo/g2bHNW6CyBU=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mHG4rW0IHEky8EL63OSV1YYT5+RqmshB1HhPUv8PBbiaQ49oV7qcdZfo5ckC0XDJGBs2HANN8F0Nh0AkGCAJZpeJB4gZziVoI9oUOroAhZuxFUFlKHZf21gh4Einfx4mgz2LHnTvmKhsmU2J67+uYQUIB/6svwbFM+olJRyZIXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a5sn9JSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3E0C1C4CEE3
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 18:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742237844;
-	bh=7k7TMtRoFg3Za1lsj9YJBAtM0Y6onkF9UBnHuFDW8NY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=riYcWsMqYTUgO5xuJCvohvetUqTKrcDTKEt36qkoKS3lCiHXRg4ZKThfnsonrgLQA
-	 J+2793ZF3b1J9sFe8kXXLvKrvnan3ZPAD3zizjSe6IXKvaIW52jD016e5LI1CJvuyg
-	 ZGCNoVO+T42Ib6liqkwnvA3aq1Jvlw/kP9NFinRd7Er1vkTrtX0jsQ1OyHZo6XH52L
-	 DmCBmfLzvzg3eoJ9k59Hr5z+bEu6jEUrgUAmxm+DKI4+t0uhJc9wbF8/sX1jB3+aHq
-	 rjJbI8NW32N6aaSi3VHVsDvYudhDbBI2gaTAgyvAGtY1ZJXp/OOzQ4cjUXwL/8g9vY
-	 siA8UXp6KvhLQ==
-Date: Mon, 17 Mar 2025 18:57:18 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: bugzilla-daemon@kernel.org
-Cc: linux-iio@vger.kernel.org, Srinivas Pandruvada 
- <srinivas.pandruvada@linux.intel.com>
-Subject: Re: [Bug 219890] illuminance sensor is jittering between correct
- value and 0.03lux
-Message-ID: <20250317185718.6055357f@jic23-huawei>
-In-Reply-To: <bug-219890-217253-UhojLJ6ONz@https.bugzilla.kernel.org/>
+	s=k20201202; t=1742237845;
+	bh=SodsKJP4OHDr9GiMu8g+NfMXNf+2xAo/g2bHNW6CyBU=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=a5sn9JSnGxYCKE/7icNWtFTvw8Cl039gdB3klRhowSLsPJhEPKFrIImEQ3nk5/4xO
+	 Em03+wsOyjOETvNoho/ckkNulTCS3L+LBKRO+6kG4LLKGKFVPYHRssjL6YF7OqiDqA
+	 d2pjL0CTASsiWEFyFocVbuudhohFtxGtWYsJrVRWjW7BXSc2tfd1nl/o0Izq8QLYfJ
+	 og7JKjzTrYdF/stJ1pG8Ko6Ze/SGGxXioE5RLRiUUAgOoEvwdtAaltrTcjwXvywQfa
+	 /oKexvlJeG6bCwSu0E8gyx54LmqTLBN9EHfAUYRxyWV6nRpVB/23rFbtUoM3xpHXBw
+	 nGMht+8YtCPKQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 3160EC53BBF; Mon, 17 Mar 2025 18:57:25 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 219890] illuminance sensor is jittering between correct value
+ and 0.03lux
+Date: Mon, 17 Mar 2025 18:57:25 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: jic23@kernel.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-219890-217253-rJnq3XbWLK@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
 References: <bug-219890-217253@https.bugzilla.kernel.org/>
-	<bug-219890-217253-UhojLJ6ONz@https.bugzilla.kernel.org/>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+
+--- Comment #4 from Jonathan Cameron (jic23@kernel.org) ---
 On Mon, 17 Mar 2025 13:02:24 +0000
 bugzilla-daemon@kernel.org wrote:
 
@@ -73,15 +91,19 @@ bugzilla-daemon@kernel.org wrote:
 s Size=20
 > User Date Modified Name lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:dev=
 ice0 ->=20
+>
 > ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
 000E/HID-SENSOR-200041.6.auto/iio:device0=20
 > lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:device1 ->=20
+>
 > ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
 000E/HID-SENSOR-200041.7.auto/iio:device1=20
 > lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger0 ->=20
+>
 > ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
 000E/HID-SENSOR-200041.6.auto/trigger0=20
 > lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger1 ->=20
+>
 > ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
 000E/HID-SENSOR-200041.7.auto/trigger1
 >=20
@@ -98,7 +120,7 @@ Srinivas any idea?
 > > --- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
 > > On Mon, 17 Mar 2025 09:38:50 +0000
 > > bugzilla-daemon@kernel.org wrote:
-> > =20
+> >=20=20
 > >> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
 > >>
 > >>              Bug ID: 219890
@@ -146,8 +168,8 @@ or
 > >> /sys/bus/iio/devices/iio:device0/in_illuminance_raw
 > >>
 > >>
-> >> I checked the behavior on windows to make sure it's not an hardware fa=
-ilure
+> >> I checked the behavior on windows to make sure it's not an hardware
+> failure
 > >> from my sensor.
 > >> While I cannot have direct access to raw sensor data on windows, the
 > >> automatic
@@ -155,7 +177,7 @@ ilure
 > >>
 > >> I didn't found sensor name:
 > >> =E2=9D=AF cat  /sys/bus/iio/devices/iio:device0/name
-> >> als =20
+> >> als=20=20
 > > Two possibles types. It's either a hid sensor or an ACPI class interface
 > > with a sensor wrapped up in firmware.
 > >
@@ -169,9 +191,14 @@ ilure
 > >
 > >
 > >
-> > =20
+> >=20=20
 > >> But if there is other place I could look, let me know.
-> >> =20
->=20
+> >>=20=20
+>
 
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

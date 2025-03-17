@@ -1,110 +1,111 @@
-Return-Path: <linux-iio+bounces-16997-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16998-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7238A65DEB
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 20:29:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDDEA66159
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 23:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6343AD7B5
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:29:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85B127A71E3
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 22:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C741EB1A0;
-	Mon, 17 Mar 2025 19:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C7A202C40;
+	Mon, 17 Mar 2025 22:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQ4nNAtX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c/0atxZP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DC71E8355;
-	Mon, 17 Mar 2025 19:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E2E1FAA
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 22:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742239775; cv=none; b=cvDz5fqFMbQZ4Jo1PwBqj0b2n6LDFyKFMTBKTWJ6lVkGccCdwN3xnaLPnjymfMxjkLAZaq9cW059n0rYpqOnqmqMeJIPWJvesS1HR8Toh2RvIFkVyg2NPowWcyj9qbqFQdqbvVcUCmYRm1UJA0sHMzh/vt7mUwx8YTcRu7Mw4eQ=
+	t=1742249597; cv=none; b=l+IRsjbBue9O5llXuW01d6X1m3jpGdUeaeNFUaIzORUzGEFvxcp8rQw1/0q9ufzXmf6mZtxHhQsPQMVUmIDdEfGGvkzKHz4yQpKipElXWu/NgEFTRnQAHWY2R1CmKxWl4wkpNedv1Yj/b6Z3zlVxV5pJmHDJlRkTQDkt/1g+GeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742239775; c=relaxed/simple;
-	bh=+0esf4PKuDbD6pVNFtzoxcojgN/+ZfEr2+qB5q3FpXk=;
-	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=cOFYTqiC7yRIiwkWeN/JayS4S1aTxJmuJtE51Sf7g54yN5z3F5r+VnioCmGYWQ4gbi6vHZLaVzf3koEJMoW+PFm2yXOLfYDd9tVTNqbgtuhDlr2TgSIaf+GsPGc3RRedwgHeIB3mylScXidLx7XW2Ml4x+WnyDoO7EXOK5nCyQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQ4nNAtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFBDC4CEE3;
-	Mon, 17 Mar 2025 19:29:34 +0000 (UTC)
+	s=arc-20240116; t=1742249597; c=relaxed/simple;
+	bh=UgHbhlG89dEDqZ4i72qxhdCFZUzl8mDEOPgZJCzGLrk=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U8UTFfcotKt6CNaK/7oWKSWbSKRj7ROXbYIKCBsnNNzmOC0p9lguo+dvef/JAkXkumh0YgQwP5Hs/NKRIuHfYtZWOk0OzFxPIVcnKn56lkDnbtvvPC4isUaqVoQI6fTmk8DBU0nrRMlmA9YWxHt1TOrOdTDgS6DaP71gvQV1CeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c/0atxZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B533BC4CEEE
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 22:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742239775;
-	bh=+0esf4PKuDbD6pVNFtzoxcojgN/+ZfEr2+qB5q3FpXk=;
-	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=WQ4nNAtXRKVbC9ZZ2PjUIak6rmDBqyWa9p2gUMNhqfJ+A5BCgSipAtYz5LcMtvEMo
-	 nC9ZF9vYzSqJ1kYy6EYDOvvn+/RrEMR5hWCcP2tFAUxQXgadU07KqAlIliV23Hm0dO
-	 B1XYJ9ZhLDgG5qzRAnLjfgnCvJd47fXDTGMx5moBIBSmiW48tyZLiRi+Eyya6nxzPx
-	 hzg8ldrCcbODT6DIT5q+Hc9f2a9vq8QAyethP0xuL8bSy7Nk+GWCip0m5FEEwqALQf
-	 uL0jsJbC2+RkQQxu359Wf66BV/Grqx7FQBaVPJ7wyi12czxBKdvi2bklgD1bU8ZDRA
-	 /E5xymSnT17xw==
-Date: Mon, 17 Mar 2025 14:29:33 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1742249596;
+	bh=UgHbhlG89dEDqZ4i72qxhdCFZUzl8mDEOPgZJCzGLrk=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=c/0atxZPwpTrE96XlyUsy/d1t3UWDPSYTBRsSSTnCMdgYI8v/bxTF0z0DrgYQNwQ6
+	 +HUrJeGCQUNSp3HenKJjnPDORkBQI8qsnoIMC6HUmme6bnpsYMYtxnsnIAhI8md2NS
+	 3GvQjy5aZ1KK0YPm7vKXExfJRbr0a1NNe0+7ONnLw0uNMaYgWMyKEL1quwmX34RKwM
+	 fU9b2wOKtIBn3DESSq20uJHgGc7zMEEbKAFhmHxLmv7BZaBs9GoovH0g8nsydzK092
+	 lZJh54DqCG68weJkZRtErZ30QyBC3axB6NMUwq7uA5H+egSBxtEV4wmbsPBHaTT0cO
+	 dtJ2HboMrMpxQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id A106BC433E1; Mon, 17 Mar 2025 22:13:16 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 219890] illuminance sensor is jittering between correct value
+ and 0.03lux
+Date: Mon, 17 Mar 2025 22:13:16 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: srinivas.pandruvada@linux.intel.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-219890-217253-MS89o0efNT@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
+References: <bug-219890-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: jic23@kernel.org, tduszyns@gmail.com, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org
-To: Sergio Perez <sergio@pereznus.es>
-In-Reply-To: <20250317175621.593-1-sergio@pereznus.es>
-References: <20250317175621.593-1-sergio@pereznus.es>
-Message-Id: <174223977381.441039.14907108652302034941.robh@kernel.org>
-Subject: Re: [PATCH] [v2] iio: light: bh1750: Add hardware reset support
- via GPIO
+
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+
+Srinivas Pandruvada (srinivas.pandruvada@linux.intel.com) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |srinivas.pandruvada@linux.i
+                   |                            |ntel.com
+
+--- Comment #5 from Srinivas Pandruvada (srinivas.pandruvada@linux.intel.co=
+m) ---
+This is HID sensor.
+I wonder if you read raw attributes, there may be power ON/OFF, if there is
+delay between them then a 0 sample in between.
+
+Can you try
+sudo ./iio_generic_buffer -n als -a -c 1000
 
 
-On Mon, 17 Mar 2025 18:56:21 +0100, Sergio Perez wrote:
-> Some BH1750 sensors require a hardware reset before they can be
-> detected on the I2C bus. This patch adds support for an optional
-> reset GPIO that can be specified in the device tree.
-> 
-> The reset sequence pulls the GPIO low and then high before
-> initializing the sensor, which enables proper detection with
-> tools like i2cdetect.
-> 
-> Signed-off-by: Sergio Perez <sergio@pereznus.es>
-> ---
->  .../devicetree/bindings/iio/light/bh1750.yaml |  7 +++++-
->  drivers/iio/light/bh1750.c                    | 24 ++++++++++++++++++-
->  2 files changed, 29 insertions(+), 2 deletions(-)
-> 
+You have to stop iio sensor proxy service.
+I don't think you can disable, just rename /usr/libexec/iio-sensor-proxy to
+something else for test.
 
-My bot found errors running 'make dt_binding_check' on your patch:
+This tool is under Linux kernel source git under:
+https://elixir.bootlin.com/linux/v6.13.6/source/tools/iio
 
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/light/bh1750.yaml:50:4: [error] no new line character at the end of file (new-line-at-end-of-file)
+--=20
+You may reply to this email to add a comment.
 
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/iio/light/bh1750.example.dts:25.38-39 syntax error
-FATAL ERROR: Unable to parse input tree
-make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/light/bh1750.example.dtb] Error 1
-make[2]: *** Waiting for unfinished jobs....
-make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1522: dt_binding_check] Error 2
-make: *** [Makefile:248: __sub-make] Error 2
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250317175621.593-1-sergio@pereznus.es
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

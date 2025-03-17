@@ -1,80 +1,48 @@
-Return-Path: <linux-iio+bounces-16929-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16930-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1281CA642FA
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 08:11:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B39EDA6436C
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 08:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D9B83A3E67
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 07:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33A7188D8C0
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 07:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780811C6FF3;
-	Mon, 17 Mar 2025 07:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A10214A8F;
+	Mon, 17 Mar 2025 07:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqllYVQp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izr2nYqP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9EA207E1F;
-	Mon, 17 Mar 2025 07:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AE81B0F11
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 07:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742195475; cv=none; b=MAx9Po3kB0TRuWqJ6iDv74PAxW2tnoKfwTPtESnzSxEPthfr9kaZPMn/Av94N42Br3dc9BOYvR4SCrU0FgLuGq6FYS3Z6PDVF+xLX6/WbCE6vfZln6Zy2Jl3kNM1Cfe0dMSXASTribko1K8dt9bMgJo5BKNNwciqOI34wPUg/W0=
+	t=1742196267; cv=none; b=dmzRPEmoQzz9jRzuCNKK1ZuYRRsqcR75s5ExZQQ8Q6j1nr5TqNuVXE5u83N/4lD/c7F9iarz2ekMGq2hc1iPMJsol9XEeok2uQeDMPAOqUbtzwTzIY8Y9b6aedC6AFU6B9LO026kSXXSA4PN0NVbGOFY0c64YQu0TS93PHF5D+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742195475; c=relaxed/simple;
-	bh=bxC9ANzFX9uX0dn0RdpNnhuv0Rw4vLPvZggRh2iBFK0=;
+	s=arc-20240116; t=1742196267; c=relaxed/simple;
+	bh=FuHfL2smwV/D2VfXXIvoMvqjs+G9bMim9aee+Cu3maQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ysuxt37fM38zTdbnCOzhu/BBVUcLCZEwRoKEFeOYupf6fbGrF9rTzkMH8GsXUO7yp9lRmvyJUo/4bLerVyBt6rg9CbtBrIx5WAHFVHjUY1FJLq1/3FQLmLxS6YDw97YjodlY4yqCnHCJQux5LmpWhA7PagN1ak0yz99j1ErjXUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqllYVQp; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-54957f0c657so4198147e87.0;
-        Mon, 17 Mar 2025 00:11:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742195471; x=1742800271; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HalaitR3wNqHBLiZ26kGsVTmgpsmEjHSTSSRfu+eT1s=;
-        b=WqllYVQpsONClsPGWqnm1ycuLzM/kztRJIbXIqz44BIU05hD0vwF4FjrDOAKFOXcj8
-         E1fY2AvgkG5nbI+z5+0H4BVJTNqRLxiVgv2py/Cn37KgFFVFicpfFnnwd/yrN/exQMr1
-         iIKJEkCPx7ZMW3Zh8hsekR2jFz85/la3W2CMTvi8GKeQTo+3bSoqJlSAbBaRx+hwy8K8
-         sgdjvOt2ocoZmxs0hnTNITcBfrJlYBpyYPRnfciH+WBtpCRZmuUVaWgzGpb60bZE+O9k
-         WubHgQ/NQ3WdfYC6MXyesv1CTSGZ8/k9Mm8yT70NGgmkb2uaP0U8ne30VXTdu5FtJfo0
-         Koyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742195471; x=1742800271;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HalaitR3wNqHBLiZ26kGsVTmgpsmEjHSTSSRfu+eT1s=;
-        b=vbomwccoAHQWmaRGQAK9ybF2OxQhLs8Ysb6MRyVLZdo09H6np9/spSqD/snoGzdiqd
-         NZsRCjzMEjzxjv+BXozAhk24e803eUA161JJSe6x/qJiMwE3rZfF4PihAzSQTnoCRALX
-         yE4eXwlgDA9+0f8P1E8y8WWFimjV0qSlWR/hyeI18/ujrniaKqiWxEhemMV4TEjN/muY
-         GttGkuhQMz5NbE41UhEnNagHR+HLBIhytCClfQXJulZg9X51Y3FEILSV8yiwSrPLAhmp
-         R3JWpfGFteCYQOfBfpzdBQyxAmAE9qvTM64rvHnTjVmsUmvf51FA/q8dYJoEmClQu6BG
-         hWjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUKw/y4KkIOijQWUHpTJHDsAjmOsbQaCsMIgPoGCdqxnyjfkkZab5smMLOa0cORo2TPueY4/ZLmXraEsHXL@vger.kernel.org, AJvYcCWPFuDKk9yX6cYb18Td+VhacoIXVEHuM/lqQP/J10xMA/ISFfRKwiQoJB15+2Rc2fy/7MRzA4rDDMA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7htM1QLBPSmQVcutuvtl6B+SIhKH3NXzD0w+JEsGOlAmX0Fno
-	L8eXJKZGJPydYklqa4TGe635F1d5J6sGdRDB7iX6G3XmiZxa6DwD
-X-Gm-Gg: ASbGncvJsqco8M2XYK6EtjhBlVHUsNBNd++BpvqzoaYYUcpXeMnCA3P7iAye2xYCM+X
-	oTHJkjUcv7RXd6G5MuDsqnrpv4KpQeeWjqkQ0N0QQA5zvz8Z2pAMafUNNQBNnEltFEhXDp+RsLg
-	GaOnS8vOIXPupWvaNaFMsamGoYikNPC3xqCPcRPxDjz9R1O1nl90I19tatnCyGbpkgdhO8tCGji
-	ZBeunx9K3GXJXKfSpzh3lFj5T6wCc0EOv8Q+PkQqN8ZBiB/Q42dqg0zOGePKxFA/zwYHopcgiVi
-	Lbwc1sfwEVu/PgtclbHbtUFbXmoLTTBwOgIfj5KFtKFW44e6oz6XYno70hqjeATxmMl2jjlug/d
-	aoeAiiDY7TJMbdYCffDFtxy++HQ==
-X-Google-Smtp-Source: AGHT+IGYn0VINpzgzh6MdKG0thylUkI/oz83FeKBKYjY8VACZiA9L37BUf8dAo+M8/olFMTjah+v2A==
-X-Received: by 2002:a05:6512:118a:b0:549:8f14:a839 with SMTP id 2adb3069b0e04-549c3f23817mr5553692e87.11.1742195471393;
-        Mon, 17 Mar 2025 00:11:11 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba8a761asm1220851e87.229.2025.03.17.00.11.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Mar 2025 00:11:09 -0700 (PDT)
-Message-ID: <50b126c5-248e-4694-9782-4f28d6db5fce@gmail.com>
-Date: Mon, 17 Mar 2025 09:11:08 +0200
+	 In-Reply-To:Content-Type; b=TYAi1S1z1pfFHrHHGGQ4HNGDgm5JwVp1+KlhZ3xi3VKwLI/VC2Y7qjjDoSGiBeaIbJM94yXgERh+BV/O223MEjEm88hu7qC3lH37M+2Tcxx+qGNs01V6MtSRdrfHxnhz9Gjhg0L2HTMbQrZf47dzEc2GhUFUmC80+iJ0viQ0Dt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izr2nYqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD114C4CEE3;
+	Mon, 17 Mar 2025 07:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742196266;
+	bh=FuHfL2smwV/D2VfXXIvoMvqjs+G9bMim9aee+Cu3maQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=izr2nYqP6GF83QXsUTWd+C5FNkgsf9+oV6etydEO6FZi7et4hN7G+bJTbcahd1G5m
+	 6cpXR9xDpBQDDkPlFmC3MagfhzmEu+DLnMjbA/CaoZ7CpNanocTVQHDad5vYYk5c00
+	 GcCnXpaQ96bYgCu4QPaS9uExkIxUXjZyB9FNyWtAdp+c+yP9atRicU9RrN9XOH9O36
+	 6/oa/f/NpSiDkb25NneAi97ss8sP2uB6vwBiV3aEaG8VPpbrJaFVkwcmDA6JCkO+OI
+	 fgDV8VQ5P0NSjs6/v0m3tM5TeiDXIDJmFV9Fngl+OToBaknPIp9Hdpz6eOgBUX2oWI
+	 Qbp3sg0YECejw==
+Message-ID: <01f48f6d-55a4-4dbe-b1ae-ef8c54dcc1ff@kernel.org>
+Date: Mon, 17 Mar 2025 08:24:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,86 +50,156 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/10] iio: adc: sun20i-gpadc: Use adc-helpers
-To: Jonathan Cameron <jic23@kernel.org>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Olivier Moysan <olivier.moysan@foss.st.com>,
- Guillaume Stols <gstols@baylibre.com>,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Trevor Gamblin <tgamblin@baylibre.com>,
- Matteo Martelli <matteomartelli3@gmail.com>,
- Alisa-Dariana Roman <alisadariana@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-sunxi@lists.linux.dev
-References: <cover.1741849323.git.mazziesaccount@gmail.com>
- <df0b2b53affbef5ccb7219328cc15db3ba843737.1741849323.git.mazziesaccount@gmail.com>
- <Z9LQ0O34EUM8WZku@smile.fi.intel.com> <20250316094112.6731bd01@jic23-huawei>
-Content-Language: en-US, en-AU, en-GB, en-BW
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20250316094112.6731bd01@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
+To: Sergio Perez <sergio@pereznus.es>, linux-iio@vger.kernel.org
+Cc: jic23@kernel.org
+References: <20250316145514.627-1-sergio@pereznus.es>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20250316145514.627-1-sergio@pereznus.es>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/03/2025 11:41, Jonathan Cameron wrote:
-> On Thu, 13 Mar 2025 14:34:24 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On 16/03/2025 15:55, Sergio Perez wrote:
+> Some BH1750 sensors require a hardware reset before they can be
+> detected on the I2C bus. This patch adds support for an optional
+> reset GPIO that can be specified in the device tree.
 > 
->> On Thu, Mar 13, 2025 at 09:18:49AM +0200, Matti Vaittinen wrote:
->>> The new devm_iio_adc_device_alloc_chaninfo_se() -helper is intended to
->>> help drivers avoid open-coding the for_each_node -loop for getting the
->>> channel IDs. The helper provides standard way to detect the ADC channel
->>> nodes (by the node name), and a standard way to convert the "reg"
->>> -properties to channel identification numbers, used in the struct
->>> iio_chan_spec. Furthermore, the helper can optionally check the found
->>> channel IDs are smaller than given maximum. This is useful for callers
->>> which later use the IDs for example for indexing a channel data array.
->>>
->>> The original driver treated all found child nodes as channel nodes. The
->>> new helper requires channel nodes to be named channel[@N]. This should
->>> help avoid problems with devices which may contain also other but ADC
->>> child nodes. Quick grep from arch/* with the sun20i-gpadc's compatible
->>> string didn't reveal any in-tree .dts with channel nodes named
->>> otherwise. Also, same grep shows all the in-tree .dts seem to have
->>> channel IDs between 0..num of channels.
->>>
->>> Use the new helper.
->>
->> ...
->>
->>> +	num_channels = devm_iio_adc_device_alloc_chaninfo_se(dev,
->>> +				&sun20i_gpadc_chan_template, -1, &channels);
->>> +	if (num_channels < 0)
->>> +		return num_channels;
->>> +
->>>   	if (num_channels == 0)
->>>   		return dev_err_probe(dev, -ENODEV, "no channel children\n");
->>
->> Note, this what I would expected in your helper to see, i.e. separated cases
->> for < 0 (error code) and == 0, no channels.
->>
->> Also, are all users going to have this check? Usually in other similar APIs
->> we return -ENOENT. And user won't need to have an additional check in case of
->> 0 being considered as an error case too.
-> In a few cases we'll need to do the dance the other way in the caller.
-> So specifically check for -ENOENT and not treat it as an error.
+> The reset sequence pulls the GPIO low and then high before
+> initializing the sensor, which enables proper detection with
+> tools like i2cdetect.
 > 
-> That stems from channel nodes being optionally added to drivers after
-> they have been around a while (usually to add more specific configuration)
-> and needing to maintain old behaviour of presenting all channels with default
-> settings.
+> Update the devicetree binding documentation to include the new
+> reset-gpios property with examples.
 > 
-> I agree that returning -ENOENT is a reasonable way to handle this.
+> Signed-off-by: Sergio Perez <sergio@pereznus.es>
 
-I agree - but I'm going to use -ENODEV instead of -ENOENT because that's 
-what the current callers return if they find no channels. That way the 
-drivers can return the value directly without converting -ENOENT to -ENODEV.
+Please run scripts/checkpatch.pl and fix reported warnings. After that,
+run also `scripts/checkpatch.pl --strict` and (probably) fix more
+warnings. Some warnings can be ignored, especially from --strict run,
+but the code here looks like it needs a fix. Feel free to get in touch
+if the warning is not clear.
 
-Yours,
-	-- Matti
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+
+> ---
+>  .../devicetree/bindings/iio/light/bh1750.yaml |  20 +++-
+>  drivers/iio/light/bh1750.c                    | 113 ++++++++++++------
+
+
+... and please go through your patch and see what happened there.
+>  2 files changed, 95 insertions(+), 38 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/light/bh1750.yaml b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+> index 1a88b3c253d5..d53b221eb84b 100644
+> --- a/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+> @@ -11,6 +11,9 @@ maintainers:
+>  
+>  description: |
+>    Ambient light sensor with an i2c interface.
+> +  
+> +  Some BH1750 sensors require a hardware reset before being properly detected
+> +  on the I2C bus. This can be done using the optional reset-gpios property.
+>  
+>  properties:
+>    compatible:
+> @@ -23,6 +26,10 @@ properties:
+>  
+>    reg:
+>      maxItems: 1
+> +    
+> +  reset-gpios:
+> +    description: GPIO connected to the sensor's reset line (active low)
+> +    maxItems: 1
+>  
+>  required:
+>    - compatible
+> @@ -41,5 +48,16 @@ examples:
+>          reg = <0x23>;
+>        };
+>      };
+> +  - |
+> +    i2c {
+> +      #address-cells = <1>;
+> +      #size-cells = <0>;
+> +
+> +      light-sensor@23 {
+> +        compatible = "rohm,bh1750";
+> +        reg = <0x23>;
+> +        reset-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
+> +      };
+> +    };
+>  
+> -...
+> +...
+> \ No newline at end of file
+
+You have unrelated changed all over the place.
+
+
+Best regards,
+Krzysztof
 

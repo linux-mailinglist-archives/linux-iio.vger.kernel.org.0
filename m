@@ -1,96 +1,124 @@
-Return-Path: <linux-iio+bounces-16969-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16970-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E267A6515B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 14:38:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 554F2A65512
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 16:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6777116360F
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 13:37:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C34D3B1F90
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 15:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59C1230BC6;
-	Mon, 17 Mar 2025 13:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C05932459E9;
+	Mon, 17 Mar 2025 15:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oaCZEbZq"
+	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="lxrKEwQf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from out-14.pe-a.jellyfish.systems (out-14.pe-a.jellyfish.systems [198.54.127.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86350EBE
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 13:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9459B2236FD;
+	Mon, 17 Mar 2025 15:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742218672; cv=none; b=LjAm4cALCR8eEQNvaX7ozAULOWbbl5FDbnIO8ByKsC9ZOcMMAPouWm169ydUqae2MAiTFdyEr8j2xszZ5nahzgm6zyacHe70HBR8Lz93brmhXKXmuJe/Q2oQ03prfmlKJJlYTSI734+jvEGezSXabsg33YxaR7v4DyA4uLSX0Xk=
+	t=1742224075; cv=none; b=UonN6Wdfy4CoinzlDGzfhROkpJ9bqIeLYZWV7hV7IxTKqxr2XqMlJ0NQ7+eNAyRNobJgFGD9XYoNOrpyAYJPDzo//iceBTbKHPeQkWvpEwlY0VC2r9FAIOCf3ubvXs7/I6USYKAp6P7ZRSN/B/MFBNgdRQJ+XWIXNSfe+t7rk34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742218672; c=relaxed/simple;
-	bh=SUGEU1as6cSYPzl5be4LUHuxfZEku6aLFOfe9FzjWUg=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o/rzd7h9wLtAisakIZuPBz53GfFaKRiqJC8tSzCa9/6JvftY8QqRPQc/gSHUGl/cs5dUKn1ymIXu7x7fFkpf+2TG1YrevtmXn2yY/OdFC17wjDxKl+blbfcmFesXuubmZ97ie2REVmz1wxCY96+eeVpnh4bEPw85jFbgxV+Sft0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oaCZEbZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EDB9BC4CEE3
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 13:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742218672;
-	bh=SUGEU1as6cSYPzl5be4LUHuxfZEku6aLFOfe9FzjWUg=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=oaCZEbZqfLyUv0wEowG2OS+HJ7AezxIxmsWGee5C11+1ov6pkgRdGQ9cWircXJgY8
-	 QaMsG2VtB4KlnAh8o/71PrOPRfwBMQIwdYtnuvnOBckjMARZGFqDJG5qNbwdPx4Kw5
-	 NKcQmtg0zTzxagOONVhX9Bl1akwWcMIvbCFIwvBV+4penucfP7KyvfF8HfwY1DbEWw
-	 nCbax+MCBx+9k6cU/MRBvyUcUNNrTLU2UzidoaPNKWgxJBpj/9cKgmQJ3bVIOi2KRe
-	 V4dcycOWf6e3lQKuCNupR2c4orZKLkZI0lt8I1fmIPJVZMYyZ9rVkUHgWIJ5AuC8LK
-	 Tj2oCIdDOm2Sw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id DF7A3C433E1; Mon, 17 Mar 2025 13:37:51 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219890] illuminance sensor is jittering between correct value
- and 0.03lux
-Date: Mon, 17 Mar 2025 13:37:51 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: wysiwyg81@rbox.co
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219890-217253-i1N3avIyxQ@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
-References: <bug-219890-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1742224075; c=relaxed/simple;
+	bh=BpY9UtFe+O2yT1YzwOQ8IV9Bn6Cu3YlhgV1pKejLnRc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V+t9/dSy7AQYKrWZNG6fqY17FywFvmAEwCx94ebw8n5yDyCGnStpxUkUsaRuAjdKJON8Ebsn48frMQD31gwlOseWsqDT1HRGeUfWPetuSFv41kakI1W0/H/h9TvVGgF1a2OyKZXXIWj7FYI4qPodvxQw3XHQO4Sj1Bb4j05reEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=lxrKEwQf; arc=none smtp.client-ip=198.54.127.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
+Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
+	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZGdcy44xLz3xRV;
+	Mon, 17 Mar 2025 15:07:46 +0000 (UTC)
+Received: from MTA-14.privateemail.com (unknown [10.50.14.30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZGdcy3ccYz2Sd0R;
+	Mon, 17 Mar 2025 11:07:46 -0400 (EDT)
+Received: from mta-14.privateemail.com (localhost [127.0.0.1])
+	by mta-14.privateemail.com (Postfix) with ESMTP id 4ZGdcy26Ndz3hhW5;
+	Mon, 17 Mar 2025 11:07:46 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
+	s=default; t=1742224066;
+	bh=BpY9UtFe+O2yT1YzwOQ8IV9Bn6Cu3YlhgV1pKejLnRc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lxrKEwQf87N1KBGepFpyL6lQSLFNPT8rgcmtOLqJi+v2uZ+CbNAtymnCkKTk4isWx
+	 b8IqakvyZtTRZkb3f91xwK+GXJFeQHvWNGN3L58gbLRtTGxgQqFMByjzn9T/bhxJC+
+	 PLlCGtDmqX/GMn13kN8kErJb779jKvraEyjfXJE7Ezy3n0fZxabt1DppZRvNyor95O
+	 kH5/sTh5bvGCihS/6DKE4SXJAzhK0QMkCbDGsGCbN0qrW7ICNTEl4ovP0kaJuMlWQA
+	 mW2aN64hdoOkh7zHfHXZE4M0HM8oor/MvssEa3pG6rMt9YESuwt+2oJP9/6GVezOKZ
+	 Kn6T5nD1wxt0A==
+Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
+	by mta-14.privateemail.com (Postfix) with ESMTPA;
+	Mon, 17 Mar 2025 11:07:31 -0400 (EDT)
+Date: Mon, 17 Mar 2025 11:07:32 -0400
+From: Sam Winchenbach <sam.winchenbach@framepointer.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: linux-kernel@vger.kernel.org, lars@metafoo.de,
+	Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
+	jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, bpellegrino@arka.org,
+	Sam Winchenbach <swinchenbach@arka.org>
+Subject: Re: [PATCH v7 1/6] dt-bindings: iio: filter: Add lpf/hpf freq margins
+Message-ID: <Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
+References: <20250316135008.155304-1-sam.winchenbach@framepointer.org>
+ <20250316-sexy-tested-cheetah-c4a2f8@krzk-bin>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250316-sexy-tested-cheetah-c4a2f8@krzk-bin>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+On Sun, Mar 16, 2025 at 05:38:42PM +0100, Krzysztof Kozlowski wrote:
+> On Sun, Mar 16, 2025 at 09:50:03AM -0400, Sam Winchenbach wrote:
+> > From: Sam Winchenbach <swinchenbach@arka.org>
+> > 
+> > Adds two properties to add a margin when automatically finding the
+> > corner frequencies.
+> > 
+> > Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+> > ---
+> >  .../bindings/iio/filter/adi,admv8818.yaml     | 20 +++++++++++++++++++
+> >  1 file changed, 20 insertions(+)
+> 
+> I don't understand. You got my tag. No changelog here, no cover letter,
+> nothing explains what happened here and why the tag is being removed.
+> 
 
---- Comment #3 from Fred (wysiwyg81@rbox.co) ---
-Hello,
+Apologies,
 
-Sorry for poor presentation of message above, I tried direct email answer, =
-not
-so nice..
+I am still quite new to this workflow, and it deviates significantly
+from my day-to-day work. I mentioned in the previous patch set that I
+would like to update my email address and change:
+"driver core: -> iio: core:"
+I wasn't aware more than that was needed. Sorry for any confusion
+this may have caused.
 
-Let me know if it's too unreadable, I'll try to post again
+In the future what is the preferred way to handle a
+situation like this? I wasn't aware of the cover letter feature but
+that looks like a promising option.
 
---=20
-You may reply to this email to add a comment.
+It looks like another option is to add commentary to each patch.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+I am less certain about your tag being removed - I don't fully
+understand that. Is there a way to preserve that if changes are made
+after you sign-off?
+
+Sorry again about the confusion this caused,
+-Sam
+
+> Best regards,
+> Krzysztof
+> 
 

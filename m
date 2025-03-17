@@ -1,202 +1,147 @@
-Return-Path: <linux-iio+bounces-16952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16953-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EEDA64C1B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 12:17:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462ADA64C61
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 12:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 418007A4A4E
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 11:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE0F9162A81
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 11:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E57C2356B7;
-	Mon, 17 Mar 2025 11:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2BA236436;
+	Mon, 17 Mar 2025 11:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b="cKtWN5YO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xf2CI9VX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www571.your-server.de (www571.your-server.de [78.46.3.230])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE131D79B3;
-	Mon, 17 Mar 2025 11:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.46.3.230
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C032721A436;
+	Mon, 17 Mar 2025 11:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742210248; cv=none; b=cXJ360xRlOHN8hln06qKgqyGuSoI00jTVL1s4HVW+JWQcgVnmqLHIAn4yn8iCVesUMKDzPUy0+qkg90eE8fFKAzj2cEbr0pLY+VDj/a+kkEiuqb8SY3Mc0+3qdQV1aIm/2gRZ4Xkd//RDE9wE3NAO8cMgfwkMGDxfkeChmfctd8=
+	t=1742210654; cv=none; b=Ry5OokO6RdBAAEAlclpjr+YmCvXfk9FTyN83YfTOzb67+LVfgu291UMmZjrm57R9Lu0OQq2S8VY6eArzrVY9cKZjvzpommBvmUQvnZQz9SCNGX/fj3x80JAjjIY9sigH/+AaR3FXo3lB2+HlBfXTbH/RpfwM6Z+lCi+P7Y0OpzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742210248; c=relaxed/simple;
-	bh=uYoF2XU04ed3cUfLW0Zv5oZ4ni4Gbd2nEZjhSx/oo3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UsAVZt/IuB10JEM8RpO+vz1sxwi51Japnu4MYAB/SlTyKxfSGaeIcmxNQXvIc1iFQE8HmuMvrDktCZzgolfnTJZAPHHqGkm+SdEg/9k3SaQpCWjGTmZDFvPoF5v05n9noNVkK+AJ2Ehsy+/z3npLs8mOUzPS+I8u3frhxyh4huk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de; spf=pass smtp.mailfrom=it-klinger.de; dkim=pass (2048-bit key) header.d=it-klinger.de header.i=@it-klinger.de header.b=cKtWN5YO; arc=none smtp.client-ip=78.46.3.230
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=it-klinger.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=it-klinger.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=it-klinger.de; s=default2502; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=XE0nklv5FnGcO0JcWnNv2Mt7qztg3JvxQsyWfUqHEME=; b=cKtWN5YOCkrZIyY9o5Xa0JW0T6
-	fYKwfZ1BbksJSQHb35XcdgRkifJDyPiEFuO8RtmDI1rkEIOKHDrb+GHcKK4qiKircGrC+8w76X9PL
-	ieL2IdKXmYljon5XV8XvQGRNRrqxBdQh87gZp+JSjhVOJ9zPhdac3GjvYzI1XhLoGiBqBBjOMsqKS
-	wgsDBE/npELYE6gd0b6jQqsCwe5eDcTQaEhp3zE2DAd+ZRA9lbhD/Eiebo2qQoA9jjyryJw7K1+88
-	2rWx/qr2ged3Ljm0qqHSqRoGf9YlurbrTQDMBRTEU70qGzB1PfW1DnRPbSbS3o/74BbQV0neKqY+U
-	L5r0U1qA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www571.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <ak@it-klinger.de>)
-	id 1tu8TA-0006DP-20;
-	Mon, 17 Mar 2025 12:17:20 +0100
-Received: from [2a0f:6480:1:600:fc64:4dfc:9829:9e5f] (helo=mail.your-server.de)
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ak@it-klinger.de>)
-	id 1tu8TA-0003Yc-2H;
-	Mon, 17 Mar 2025 12:17:20 +0100
-Date: Mon, 17 Mar 2025 12:17:17 +0100
-From: Andreas Klinger <ak@it-klinger.de>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	lars@metafoo.de, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	javier.carrasco.cruz@gmail.com, mazziesaccount@gmail.com,
-	subhajit.ghosh@tweaklogic.com, muditsharma.info@gmail.com,
-	arthur.becker@sentec.com, ivan.orlov0322@gmail.com
-Subject: Re: [PATCH 1/3] dt-bindings: iio: light: veml6046x00: add color
- sensor
-Message-ID: <Z9gEveqC91o8Ojks@mail.your-server.de>
-References: <20250316113131.62884-1-ak@it-klinger.de>
- <20250316113131.62884-2-ak@it-klinger.de>
- <20250317110012.2ad89cb9@jic23-huawei>
+	s=arc-20240116; t=1742210654; c=relaxed/simple;
+	bh=9VSRDsn8cQ+3Lx01AnMve2V7BPIE0b3DP9zDsnTIZFU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NUq3eiNkwZ/wEtFru4tSZ8CoC4UiyOHOrqGtuYNe9BDxtu4CvTqxtjM2bRGZ1LMRt/WJxJxPZuebWIWVziGZyOyMfbJh9aLYTgq4tLS3l0GLa8wjwgNqgHVUsG9E3/Za8RSOaX9GDBhs38nDAEVBx3lZUxjsqr6YH2IH705kniU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xf2CI9VX; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-549b159c84cso4225290e87.3;
+        Mon, 17 Mar 2025 04:24:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742210651; x=1742815451; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VS+HrgkTs6Sh4C1IWxQ7u0UxOMPmKfPtcnR+6rXGaR4=;
+        b=Xf2CI9VXJcBNip+x9tSwWIezWxzt/e7uXmBQxta6V70yM/MDW0qvDiQsV31EeMLCFW
+         V76qECd+p1n8qGKnC0ouOWFYJ6RF/PbONeeTTaidkfzF/oVyYrD9y27nkRyvk2oa9DXL
+         TD1s2Xlh8B5aCiffVbRvTArKuxL6uHjRhHTpwrFLrumxdguBtkXINku4boQ3zwpN/3cw
+         9znxS+H0+VbMOOy34cJFu8U6QkvowSp1OFgnloVlK2UxD52Lr2D0vdtHzycTgYNJ++G4
+         aHau+KSL3sj+ICc4eCY9ESG8RyMwDI4TQALJcCZTTkciWJcWGGTfKxBGH62wsCy21LRj
+         TxKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742210651; x=1742815451;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=VS+HrgkTs6Sh4C1IWxQ7u0UxOMPmKfPtcnR+6rXGaR4=;
+        b=t2KYTCE1knUpTmk7BAaKGoD2XOWG8NHZtrbkepSlB9jVyNJFC2AVASWTk1MMpjMt6B
+         HszpBmCYoXwPfbGbw4ZCYtIrPoNIxnTsoLdAIIX+SnNejo+yfbfqUAK+0Y0sMsgd2ZOj
+         uJK/x1ev3nL4od85hmlABHRIE8RalpHCUbNXVxsbi5/QurevyEFPMabKeLEkPoypXALx
+         GouMIl52So0DqAYwdAa+9XJbdqXacp/YSu4MRjCLFisk/B+Pt9QRJwkay7HLgZdIK6Li
+         OMUbbK7kUyC9A+K17nkfWJxCBHqIIoG773TceDWT22lmbDFSwcEWiQgjuftmPFtvJZuQ
+         atUg==
+X-Forwarded-Encrypted: i=1; AJvYcCUI56Ntzvlq4UO2bpnZUrp/r71LoDo+IczSGs3DChoTN3XWHqxXfjGhUizCEb7ls3GY5enn77bZA5U=@vger.kernel.org, AJvYcCUfxdCERQzzc5N+Xi5rmFms2k9x8XTOEOnqQGofTnGcEDJFR0y+aEHFrMvaGLWing8pM/4ceruTQVETVwdc@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3KAI5euEFTvNRaelq66glrCTa+JjZEJUUE1M3P15EkO9O3/oa
+	DMFoW4XGQ5li3GblbcKZqf7eFqPGknz2W7/M8BP0Z9mkNRDJ8hXh15pSzw==
+X-Gm-Gg: ASbGnct4PgHZhDQM/N2fd5uv65vJne+rOxk/tz3Au8wmwYenQwcB16VrITcxXm9rvdZ
+	kMA6gockz2eVfWlWuHOr7jrdIInIVPuxwZoZr8zUz5f5qh47Q5gqIHtnuTgs5uPdLZs96EiZEDt
+	JkhAMCnsvBxpIbpLkXxvAWzVPsXyx9CwdAXqLD9Fw8BKwRUsPprmvh4AqNpWp9rDVntoWOkHeiw
+	G3b6bYBIeM8JhU8TJpkHYdIBjYkCcnFWZcVpBEjUKaJ32Gyi+wnSJZC2cY+kCCo9ciEsZoK+T5e
+	lx1rh2586dPxsdKeLQZAwu2fjpgxS+RojbsLDf+TXFD8B9ipa3a4+HhawWfDMJoktnWdLHZShES
+	6Un7j0qXJ7/hz303h4slUB7MPTw==
+X-Google-Smtp-Source: AGHT+IHcZ4qec5A0UCew71hjkOe/BS/LuzF4QMnIyfrkrT3VtIDRI6c0w8aCpffjUu4FDPtSAhlIdQ==
+X-Received: by 2002:a05:6512:2245:b0:545:cc5:be90 with SMTP id 2adb3069b0e04-549c398cf85mr6049930e87.35.1742210650469;
+        Mon, 17 Mar 2025 04:24:10 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703? ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba8821f6sm1261140e87.176.2025.03.17.04.24.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Mar 2025 04:24:09 -0700 (PDT)
+Message-ID: <222c5fa7-283b-48ce-9d01-34ca633674eb@gmail.com>
+Date: Mon, 17 Mar 2025 13:24:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XEGLpz3pfiqoz7zZ"
-Content-Disposition: inline
-In-Reply-To: <20250317110012.2ad89cb9@jic23-huawei>
-X-Authenticated-Sender: ak@it-klinger.de
-X-Virus-Scanned: Clear (ClamAV 1.0.7/27580/Mon Mar 17 10:42:01 2025)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 06/10] iio: adc: Support ROHM BD79124 ADC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Olivier Moysan <olivier.moysan@foss.st.com>,
+ Guillaume Stols <gstols@baylibre.com>,
+ Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Trevor Gamblin <tgamblin@baylibre.com>,
+ Matteo Martelli <matteomartelli3@gmail.com>,
+ Alisa-Dariana Roman <alisadariana@gmail.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <cover.1741849323.git.mazziesaccount@gmail.com>
+ <b6c02a5d75a20bbbf8c3370ccee615d269620117.1741849323.git.mazziesaccount@gmail.com>
+ <20250316110237.0b558248@jic23-huawei>
+Content-Language: en-US, en-AU, en-GB, en-BW
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20250316110237.0b558248@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 16/03/2025 13:02, Jonathan Cameron wrote:
+> On Thu, 13 Mar 2025 09:19:03 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+
+...
+
+>> +static int bd79124_write_int_to_reg(struct bd79124_data *data, int reg,
+>> +				    unsigned int val)
+> ..
+>> +static int bd79124_read_event_config(struct iio_dev *iio_dev,
+>> +				     const struct iio_chan_spec *chan,
+>> +				     enum iio_event_type type,
+>> +				     enum iio_event_direction dir)
+>> +{
+>> +	struct bd79124_data *data = iio_priv(iio_dev);
+>> +
+>> +	if (chan->channel >= BD79124_MAX_NUM_CHANNELS)
+>> +		return -EINVAL;
+>> +
+>> +	return (data->alarm_monitored[chan->channel] & BIT(dir));
+> 
+> Drop the outer brackets as not adding anything.
+
+I just noticed that the integer returned from here is directly provided 
+to the user-space. I don't know the history, but it feels a bit off to 
+me. I mean, I would expect the read from sysfs file "*_en" to return '1' 
+or '0' - not 0x04.
+
+Oh well, I suppose it's too late to change this in the IIO core - but 
+I'll do:
+	return !!(data->alarm_monitored[chan->channel] & BIT(dir));
+
+in v8.
 
 
---XEGLpz3pfiqoz7zZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Jonathan,
-
-
-Jonathan Cameron <jic23@kernel.org> schrieb am Mo, 17. M=C3=A4r 11:00:
-> On Sun, 16 Mar 2025 12:31:29 +0100
-> Andreas Klinger <ak@it-klinger.de> wrote:
->=20
-> > Add a new compatible for Vishay high accuracy RGBIR color sensor
-> > veml6046x00.
-> >=20
-> > Signed-off-by: Andreas Klinger <ak@it-klinger.de>
-> > ---
-> >  .../iio/light/vishay,veml6046x00.yaml         | 49 +++++++++++++++++++
-> >  1 file changed, 49 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/light/vishay,=
-veml6046x00.yaml
-> >=20
-> > diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml604=
-6x00.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.=
-yaml
-> > new file mode 100644
-> > index 000000000000..3207800fc539
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6046x00.ya=
-ml
-> > @@ -0,0 +1,49 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/light/vishay,veml6046x00.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: Vishay VEML6046X00 High accuracy RGBIR color sensor
-> > +
-> > +maintainers:
-> > +  - Andreas Klinger <ak@it-klinger.de>
-> > +
-> > +description:
-> > +  VEML6046X00 datasheet at https://www.vishay.com/docs/80173/veml6046x=
-00.pdf
-> > +
-> > +properties:
-> > +  compatible:
-> > +    enum:
-> > +      - vishay,veml6046x00
-> > +
-> > +  reg:
-> > +    maxItems: 1
-> > +
-> > +  vdd-supply: true
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-> > +  - vdd-supply
-> > +
-> > +additionalProperties: false
-> > +
-> > +examples:
-> > +  - |
-> > +    i2c {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +        color-sensor@29 {
-> > +            compatible =3D "vishay,veml6046x00";
-> > +            reg =3D <0x29>;
-> > +            vdd-supply =3D <&vdd_reg>;
-> > +            interrupt-parent =3D <&gpio2>;
-> > +            interrupts =3D <3 IRQ_TYPE_EDGE_FALLING>;
-> Need an include for this I think.  Make sure to test build your
-> bindings following the instructions in the bot message.
-
-I already sent out an version 2 yesterday which is with the include, tested=
- and
-already reviewed by Krzysztof.
-
-Andreas
-
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> > +        };
-> > +    };
-> > +...
->=20
-
---XEGLpz3pfiqoz7zZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEE7/NrAFtB/Pj7rTUyyHDM+xwPAVEFAmfYBL0ACgkQyHDM+xwP
-AVE2lQv9GdwIjbFFQpSvLsazG5OU3K07IvPqo35rsS/LWbOon1cgXXLdLbpO/qZY
-uz6I/70wIzNxh2TFTKBZZYwMGJW76erVQbnRQV1tb+OLDqYgvGNIa7BAqqsrYGcP
-t1VTvDoiR5+xawWbaeiIaAMtNtaM2jDBJRslmdmx7zwCSsHaTRLCEe83oiuEDlYL
-FmcIQqixuiupDtjdXkj8dTciGUAtpS9pOqihxT/5EOueA6+e8B0LAlhLcKhNKEKD
-qKx5VTwWU8F1gaX/4BawUXhMY9ZmJzuEwMqQkMIWtOYVDTIT/2WMyowrQJ998vQ5
-F0CqB+P9lmnOnrMX7rK8kw6b0qJgNMm1nX3weyE8QSZfhktHyjide90SqREbsENn
-r05jziiGjpCrJwOO0FizygmA/3xs3cr4f6YzGt3viE9tjXmeMpK/6fFjATmReTXP
-DVaduXUwY5v2vj3jnU90aEBJn2gVCrtB/8inSCqAUSH+IBekuLh+K9W3PWrCEVr6
-Ft/LQ0id
-=H3cW
------END PGP SIGNATURE-----
-
---XEGLpz3pfiqoz7zZ--
+Yours,
+	-- Matti
 

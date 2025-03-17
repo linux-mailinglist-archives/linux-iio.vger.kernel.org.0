@@ -1,61 +1,57 @@
-Return-Path: <linux-iio+bounces-16993-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16994-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3812AA65D5B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:57:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB32A65D62
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9291894035
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:57:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98C1D7AF691
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726831E1E1F;
-	Mon, 17 Mar 2025 18:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85BC1E7C12;
+	Mon, 17 Mar 2025 18:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBUaAqNR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="riYcWsMq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E191DDC2C;
-	Mon, 17 Mar 2025 18:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76FF1E1E08
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 18:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742237746; cv=none; b=Xk1VQluYnXk9ZkKjXvltiWZiS9E2kGfeKOlTJIvlWj7RBOluKZscNevy2sEvzvCeaYCtyZEzkJn4sK5GA7R54O9tr6NYKHP0Xb3qZxgDhUDnIugZU0OaIoW3Oiu0MdJ5dmac6odVf56fCvS7V/a7tpFiXpEt6CZqW9zrMlg9x68=
+	t=1742237844; cv=none; b=KmXRq1peUO02myT/Ji2f+WDwujQEiowGgbboIG/EmeeVucvgo6ckhf2BF/GQDexfAzKR16DHkmLU89Za874nmoDYNkmJ/Jxy3ZjH1qWLbqfmBTKjy975UC0kZlUaBCjhtVSMeimymrXBinBvtXfWDbV9VezrnafrOnYDPgzI0X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742237746; c=relaxed/simple;
-	bh=UBSgKTFL1pCFuUwk9CpwgabxBS+GuDSaPy6E3MS1gVw=;
+	s=arc-20240116; t=1742237844; c=relaxed/simple;
+	bh=7k7TMtRoFg3Za1lsj9YJBAtM0Y6onkF9UBnHuFDW8NY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LxTsuvji71aS7CitHNPz43c3E1bpgGwxe3BfGUJQoIm9JIQGpoei9MWPkBqUTVRyp/jOFuyzZpfArZR1PB75v/iVkqFEMkclQsHm2afn+cwtMYocLqwvAaGBtRO46JeUzJtrPdqzpbEKaz6jyXFcwig9wKl+HA8BshDgicQZy8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBUaAqNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C45C4CEE3;
-	Mon, 17 Mar 2025 18:55:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tLW1rkRRdFiWchggg+2sgVb43tSguH0CBwe5SYMVVDgBil2zh0VJgn0kL4aJNBAmsES7GwHBnRR3Yl0c5dGiWv6z/5gpTPnQydx8id3tkk4AVW45GAP8MI+3oSNk7nNH9iUo7X8/fphc94Fzkp/JOJJprcSRR94iiHB5MqhDDQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=riYcWsMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D46C4CEE3;
+	Mon, 17 Mar 2025 18:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742237746;
-	bh=UBSgKTFL1pCFuUwk9CpwgabxBS+GuDSaPy6E3MS1gVw=;
+	s=k20201202; t=1742237844;
+	bh=7k7TMtRoFg3Za1lsj9YJBAtM0Y6onkF9UBnHuFDW8NY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aBUaAqNRiVr3vCE4c8v2VOTJ240MG0+F8pEW7/FtnoHijksbNEEKv2fl+pM5dzdzF
-	 NJnukCASsqmBJrtrJTgbefHsupjUEXmDhg3JMSEYKYnHpfMgB70NsIGcWMhl1z8ucw
-	 yxwcsfgWOFku6LrcFmnd+wuzMMkOA4p2LjHEntfDSFwqm5pmKtw61jLCO9QAMZh4aE
-	 vSfVyU5sDVC5i0z6sH4sui0/Utd/N9T0aHxmX37DyX/ILiC4SkxEkd49tkoBnZw1R/
-	 25nnuuT/ONvGCWcam3GRb0TXgCrpAN91/+1frL8JtBCb7pLjRuvcnf4YSz0yNt99VI
-	 /RW5HpqLuu6RA==
-Date: Mon, 17 Mar 2025 18:55:35 +0000
+	b=riYcWsMqYTUgO5xuJCvohvetUqTKrcDTKEt36qkoKS3lCiHXRg4ZKThfnsonrgLQA
+	 J+2793ZF3b1J9sFe8kXXLvKrvnan3ZPAD3zizjSe6IXKvaIW52jD016e5LI1CJvuyg
+	 ZGCNoVO+T42Ib6liqkwnvA3aq1Jvlw/kP9NFinRd7Er1vkTrtX0jsQ1OyHZo6XH52L
+	 DmCBmfLzvzg3eoJ9k59Hr5z+bEu6jEUrgUAmxm+DKI4+t0uhJc9wbF8/sX1jB3+aHq
+	 rjJbI8NW32N6aaSi3VHVsDvYudhDbBI2gaTAgyvAGtY1ZJXp/OOzQ4cjUXwL/8g9vY
+	 siA8UXp6KvhLQ==
+Date: Mon, 17 Mar 2025 18:57:18 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sam Winchenbach <sam.winchenbach@framepointer.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
- lars@metafoo.de, Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- bpellegrino@arka.org, Sam Winchenbach <swinchenbach@arka.org>
-Subject: Re: [PATCH v7 1/6] dt-bindings: iio: filter: Add lpf/hpf freq
- margins
-Message-ID: <20250317185535.7d00444d@jic23-huawei>
-In-Reply-To: <Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
-References: <20250316135008.155304-1-sam.winchenbach@framepointer.org>
-	<20250316-sexy-tested-cheetah-c4a2f8@krzk-bin>
-	<Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
+To: bugzilla-daemon@kernel.org
+Cc: linux-iio@vger.kernel.org, Srinivas Pandruvada 
+ <srinivas.pandruvada@linux.intel.com>
+Subject: Re: [Bug 219890] illuminance sensor is jittering between correct
+ value and 0.03lux
+Message-ID: <20250317185718.6055357f@jic23-huawei>
+In-Reply-To: <bug-219890-217253-UhojLJ6ONz@https.bugzilla.kernel.org/>
+References: <bug-219890-217253@https.bugzilla.kernel.org/>
+	<bug-219890-217253-UhojLJ6ONz@https.bugzilla.kernel.org/>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,69 +59,119 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Mar 2025 11:07:32 -0400
-Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
+On Mon, 17 Mar 2025 13:02:24 +0000
+bugzilla-daemon@kernel.org wrote:
 
-> On Sun, Mar 16, 2025 at 05:38:42PM +0100, Krzysztof Kozlowski wrote:
-> > On Sun, Mar 16, 2025 at 09:50:03AM -0400, Sam Winchenbach wrote:  
-> > > From: Sam Winchenbach <swinchenbach@arka.org>
-> > > 
-> > > Adds two properties to add a margin when automatically finding the
-> > > corner frequencies.
-> > > 
-> > > Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-> > > ---
-> > >  .../bindings/iio/filter/adi,admv8818.yaml     | 20 +++++++++++++++++++
-> > >  1 file changed, 20 insertions(+)  
-> > 
-> > I don't understand. You got my tag. No changelog here, no cover letter,
-> > nothing explains what happened here and why the tag is being removed.
-> >   
-> 
-> Apologies,
-> 
-> I am still quite new to this workflow, and it deviates significantly
-> from my day-to-day work. I mentioned in the previous patch set that I
-> would like to update my email address and change:
-> "driver core: -> iio: core:"
-> I wasn't aware more than that was needed. Sorry for any confusion
-> this may have caused.
-> 
-> In the future what is the preferred way to handle a
-> situation like this? I wasn't aware of the cover letter feature but
-> that looks like a promising option.
-
-Either add stuff below the --- above as that doesn't end up in the
-eventual git log, or --cover-letter on your git-format-patch and
-put useful things like that in there.
-
-> 
-> It looks like another option is to add commentary to each patch.
-> 
-> I am less certain about your tag being removed - I don't fully
-> understand that. Is there a way to preserve that if changes are made
-> after you sign-off?
-
-Once a tag is given it is up to the patch author to add it to the
-patches for future versions.  That should only be dropped if the
-author thinks there are significant enough changes to warrant a fresh
-review.  If you do drop a tag like that, then the change log
-under --- on the particular patch should clearly state why.
-> 
-> Sorry again about the confusion this caused,
-No problem, takes a while for everyone to get used to a different
-process. There are extensive docs, but it is still easy to miss
-things!
-
-Jonathan
-
-> -Sam
-> 
-> > Best regards,
-> > Krzysztof
-> >   
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+>=20
+> --- Comment #2 from wysiwyg81@rbox.co ---
+> Hello, Did you mean in /sys/bus/iio/devices/ instead of=20
+> /sys/iio/devices/ if so: /sys/bus/iio/devices =E2=9D=AF ls -lh Permission=
+s Size=20
+> User Date Modified Name lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:dev=
+ice0 ->=20
+> ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
+000E/HID-SENSOR-200041.6.auto/iio:device0=20
+> lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:device1 ->=20
+> ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
+000E/HID-SENSOR-200041.7.auto/iio:device1=20
+> lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger0 ->=20
+> ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
+000E/HID-SENSOR-200041.6.auto/trigger0=20
+> lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger1 ->=20
+> ../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.=
+000E/HID-SENSOR-200041.7.auto/trigger1
+>=20
+> (bugzilla seems down currently, so I try direct email answer, hope it=20
+> works, I will check once bugzilla is back).
+Perfect.  So it is definitely a hid sensor.
+Srinivas any idea?
+>=20
+> Best regards,
+>=20
+> On 17/03/2025 13:15, bugzilla-daemon@kernel.org wrote:
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+> >
+> > --- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
+> > On Mon, 17 Mar 2025 09:38:50 +0000
+> > bugzilla-daemon@kernel.org wrote:
+> > =20
+> >> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+> >>
+> >>              Bug ID: 219890
+> >>             Summary: illuminance sensor is jittering between correct v=
+alue
+> >>                      and 0.03lux
+> >>             Product: Drivers
+> >>             Version: 2.5
+> >>            Hardware: All
+> >>                  OS: Linux
+> >>              Status: NEW
+> >>            Severity: normal
+> >>            Priority: P3
+> >>           Component: IIO
+> >>            Assignee: drivers_iio@kernel-bugs.kernel.org
+> >>            Reporter: wysiwyg81@rbox.co
+> >>          Regression: No
+> >>
+> >> Hello,
+> >>
+> >> I have a Lenovo thinkbook 13x gen4.
+> >> Automatic brightness control is flickering in Gnome, so I checked sens=
+or
+> >> with
+> >> monitor-sensor command (iio-sensor-proxy).
+> >>
+> >> it shows following behavior:
+> >> monitor-sensor  --light
+> >>      Waiting for iio-sensor-proxy to appear
+> >> +++ iio-sensor-proxy appeared
+> >> =3D=3D=3D Has ambient light sensor (value: 316,000000, unit: lux)
+> >>      Light changed: 299,000000 (lux)
+> >>      Light changed: 0,030000 (lux)
+> >>      Light changed: 299,000000 (lux)
+> >>      Light changed: 0,030000 (lux)
+> >>      Light changed: 299,000000 (lux)
+> >>      Light changed: 0,030000 (lux)
+> >>      Light changed: 305,000000 (lux)
+> >>
+> >>
+> >> the 0.03 is unexpected has it has never been that dark.
+> >> it seems it's not a iio-sensor-proxy bug as I can see similar behavior=
+ by
+> >> checking directly content of here :
+> >> /sys/bus/iio/devices/iio:device0/in_illuminance_raw
+> >>
+> >>
+> >> I checked the behavior on windows to make sure it's not an hardware fa=
+ilure
+> >> from my sensor.
+> >> While I cannot have direct access to raw sensor data on windows, the
+> >> automatic
+> >> brightness is perfectly smooth: no flickering of any kind.
+> >>
+> >> I didn't found sensor name:
+> >> =E2=9D=AF cat  /sys/bus/iio/devices/iio:device0/name
+> >> als =20
+> > Two possibles types. It's either a hid sensor or an ACPI class interface
+> > with a sensor wrapped up in firmware.
+> >
+> > My guess is hid-sensor.  Can you do an
+> > ls -lh in /sys/iio/devices/
+> > so we can see what the parent is.
+> > +CC Srinivas based on playing guess the sensor.
+> >
+> > Jonathan
+> >
+> >
+> >
+> >
+> > =20
+> >> But if there is other place I could look, let me know.
+> >> =20
+>=20
 
 

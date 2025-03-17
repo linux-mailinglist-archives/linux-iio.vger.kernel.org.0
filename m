@@ -1,226 +1,295 @@
-Return-Path: <linux-iio+bounces-16973-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16974-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 986D1A65690
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 16:53:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EF0A656A2
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 16:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136663B759A
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 15:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A94F617CA0D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 15:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE07F188907;
-	Mon, 17 Mar 2025 15:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048C619C575;
+	Mon, 17 Mar 2025 15:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IdNLgRWV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aJlUpD1f"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25E0187346
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 15:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5D42940D;
+	Mon, 17 Mar 2025 15:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742226407; cv=none; b=I+uoTBug9H3ACjmEHaY9jqedlb3JSGHK5iL+3dS456QQHQ+rAKsMIuUDkeurqQKfdADapFbYQJOgTFw0QPFJGW0qO5vV5VruD7+5BzqkO1hbDxIFMlejiPjRKZ0IA8I0DEaakciZBaiOQUtuEzGsyGjvw04bSk5jgWw0Qr85B2Y=
+	t=1742226621; cv=none; b=UzR3BN3KDaanwXVtzqzWOxX1jskptbSgEPjQSl1IW5le7sp24VFDaIPE5nBYI7TSzf11QUqI64hEyE+fHhxqo9imk+UFr4jl5RERKFdMMZX5HKu6JwIzcnAVws6i9ujKtsfiqH/7pLUD72ZWvAS0nPzfWE2UFXri3nTZsE+aBV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742226407; c=relaxed/simple;
-	bh=nMkcbK7rnWCIpgL+LrcuWEQLQ+oABD8VNGsKOQi3vnw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OJ7bc/sBhYWT0u7VO8BA24wdSptsAVf8evAI5ecVJ+M1lrvVdo4ZzpCHLiwC110TtwgOrfYgirsdw9yar6IQHNTsSfrvLCq76l//lJ2wuayqTkuLyxTfrHBqiP3+JsrGMeTL0c4bN4nMj+irxucx3RVTcIoz5v5KSbCwdcQIsw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IdNLgRWV; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3fa0eb29cebso3227600b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 08:46:44 -0700 (PDT)
+	s=arc-20240116; t=1742226621; c=relaxed/simple;
+	bh=zHMEyzh6bH7Z8CD2gG9sgjQrUTIsPbK+k7YB8FvOlFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LQqWXaqA5eAsIa3X6fg9yZsUPHrcU+Mdzpsa2uLYMssSNY9OCgiGpTw8+6g+xVMcK0/4fYdDUUxmNi9LPn9VCExcDvEXb+pJR8Ka93u2yRmKmANewCbCVhV2WSj5Xi4mB5/65f7PvX6PI4iYE6qOmQqurGdaonrVU9V0aD6bEm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aJlUpD1f; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5497590ffbbso5117682e87.1;
+        Mon, 17 Mar 2025 08:50:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742226403; x=1742831203; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1742226618; x=1742831418; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=xxGNuwSiLEC16juyCY9zxGdn8dvaO0Mb9PTV3kmTytI=;
-        b=IdNLgRWVzk+yncNOIcmy4n0tbYcUdHiWKDJgiQSL1lodSMEEYx5YsP1iJKUax8ikv3
-         257tM57iXPArHFqJMulmt1tVDa6HMUL5CvHyoiQ7r5Wgk/m3+Jhrk4IBr/QcmnyCQ/Np
-         H16aw0lIBHenqj+TcfIq9ibWPvlyOpYwIZrE5vslRLPJqjaB9DGQ2nPLAA+9gF14gOur
-         5ejEcsU2YaV4OTDHmghqt0DC8mLJwe1GqONX4XcWkBKtryMu7JPd7SfY4AoQ03xtp5Xj
-         ojt6JZjZSAz37Jc1yxwWwdiLUFOBUMVjsxDsY22ldLQW8ZZfV+EAAW7rg4Je29T4+qdQ
-         Ew7A==
+        bh=VNOayVZzruF25qo+UUG/I+wNtI3C4q8PUctq82MxRNY=;
+        b=aJlUpD1frpTN4IEdfINVA2VUamB+NN9TnLMMmoKAPbgeX7nuPRQayhqFnpS/9+mWmZ
+         vnlirBupoqWIYdZAVkWmqUPsSqBOECdDMfNtDfMD62sK4u0cucW5B77pSp7X8QoA1F1K
+         tIRMhOs8u0Hgv7zZCGMH6Ok5uHh87bZeMqtQTMLVzbMAzR1yVEfi9qHzUmOwY43eDL/j
+         gPNX193aQd2XcFxyL8/Gngb6GU/V78Nu+Q3TVEp3VJCXy/kJqLb/ayEILSJGyjYZNou7
+         83Olgo6incAu5t2FYN4DfxRs3hfykJ5IsBiIgdJoFEXPeHEF1XI7kL8ZNQ+azlcjAxC7
+         7dcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742226403; x=1742831203;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1742226618; x=1742831418;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xxGNuwSiLEC16juyCY9zxGdn8dvaO0Mb9PTV3kmTytI=;
-        b=ILzqXJ125InEqUkd7Z+iFV24mP6euzkLakq8AvgDRkQfSzQQbwDMLsRZzxV2/XNflG
-         1rnLNspR5EpY1IUP/fJtVumuBhIMWIIYbXjX8MkAhj9M/mSJxwIr8WO/C1j6XhZaKgut
-         Wq0DgRZFEI05RT08n3ffp2sDJA9AxKQNh63VIlj5hdCNqmlCA+oG+z4cBYimUVe9eX7k
-         6daWrEBXtjDz+HLs9Xs8E+9av5NhbpBaEqvApHkiHyd9NJRSR3suNRkGWa2s4tCiOslN
-         d71uJJPVP2lVNspp80mNZJk8TBpRpBE6qxqiu0LB/2iYRWgh+g1Sgoj2YJDxmRWNSb54
-         rqVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZWyzY8xjwN9C835bP16/lSqtKM74q96y43eooVz+OBnfusSrnyF/UqzuxlSStcY0gxTwLknS6/Fw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw22ZIvHJnu20Jt+7XD8wCKb56rRTmyP8JH9+Mgkuk4VjB0og5A
-	Mwr7Ab+fWgq/bobIeGexsw0eB+kBL19yLClLY6QPgBuVuNGGsllyxvBwuooWXwF/RwpTyT6R8yf
-	B9FI=
-X-Gm-Gg: ASbGncssAyvwbWEZ7hH3YkJaBvyfvk8xPfATtSg1L4A7eGWZPD1UF2Kx+yO0bwQAW8H
-	X923hsbHDr9GT5qkojFTrdG96zjB93RNTiRD6ZQoNTuTSZc8t2OKIPVDleKTHxayH1KBFrfNOAf
-	H8+Z9CyEukDr1UaOtH3WW8nkawLaQi4okCxCOeZjRLj10dqpi3mwSG7WDwVGgEslGcZ9bpwGo5F
-	aU0MrWBJ/mSnWKQskaDwjWfi0HOqRjAyKQhB3M/++rlmNSNImIvfpoa7WduG4sqTG5Fz/SYEL1B
-	tKKS0p7gAJYaE8FZOOy3mTyx24qOLulZJZOl09ZmBlcs1OejW/Ag7r8Y2blVkZT7gB+snieh7I/
-	QGyekKw==
-X-Google-Smtp-Source: AGHT+IFFtYd6yezG8t20CQe2zbctBzchEdRc4S/9ladxI0m7POupxKIlYT2EGN1PZGkgE32uracq7w==
-X-Received: by 2002:a05:6808:3509:b0:3f6:a851:fe56 with SMTP id 5614622812f47-3fcbb6c0905mr9258519b6e.12.1742226403596;
-        Mon, 17 Mar 2025 08:46:43 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3fcd5bfff2dsm1861032b6e.32.2025.03.17.08.46.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Mar 2025 08:46:43 -0700 (PDT)
-Message-ID: <60831e04-52c2-446f-8bc5-b5d3e9e5fd40@baylibre.com>
-Date: Mon, 17 Mar 2025 10:46:42 -0500
+        bh=VNOayVZzruF25qo+UUG/I+wNtI3C4q8PUctq82MxRNY=;
+        b=j8c8+S5xtnXkpk96ripzGRVPlvK+Ne1dY7OfTY7Ej4o6FR4unox0iKLuFjb+6Bf5WF
+         21WflnI3/smZKJKMJqP2GoLKtPKIh3rnlFNSNZewvifWmeS+aXtugbsD4We1n1dE1v6Z
+         052vFuQsy1HPHo1kIuYvBfa3Xy2sEFwSSGM//Plab+ytNpaUWGz8Dz5ZzplSaHkhFvYw
+         Emx40BL2YD70ejZkYt20W3a3phgFNxTi9Bd/LM/ylKt0+676FHQleqaaqMsgySqFjAWe
+         aLJAzb3Jki5HP9LttRAjEJOfZS0TBAHqxoBjRe0feQStutWtyNdW92ntR/Gh9EuZpyti
+         3c+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUHHtPBPM3ei7WbGEqnQDZ8RFDGeG1GLLmhfEHFoUiDuh9g/+a4pjCduozHsM/0V/ocm3Fltlg2YgCXRRE=@vger.kernel.org, AJvYcCUISboo1Ca69PpuCMymAOXDKtTGcacfP3wUR4u3L+Rk7gcp6htd9J6sNcnXq6sqslZ5t8F+7hhxZz7E@vger.kernel.org, AJvYcCULncf+czL+REBOyAa9ALmz1+Uo7ehHITnIAi0jr3ASGrfHVeJFizMnnmUCIe/8QHTHDCOcoRWvf/dJ7A==@vger.kernel.org, AJvYcCVR1fZWC9VYCGrdFxloeJ8a51Uqoc0zdCjpES/X5WnSxnJKvZUEaJ61S7/EYkTdjfaAy8i56/V+VEyOpsts@vger.kernel.org, AJvYcCVlKZabuFaruNV+MkvwXlDMG3Z+xSRXckDAHVIiyPHPyxP1MjtWKy/Yzr3xHVKG3PUD4FsUxLHbGj3z@vger.kernel.org, AJvYcCXAMzjl4S03Iz0KsAMFJBT3PfDVkRT1LMQCsTSSIfRb5pAbXLtL/T2Wp1qXeW8YlDCdcS0eB8dW6Cv0qXH+6ak8rSM=@vger.kernel.org, AJvYcCXLiD6SWU88Q02Ag+UQB49UzgH8bZFlTAeZaEVpsMbN9egZPF35Fqysg3GNllCf38MT7ZiWg2Mf@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeLwmwIOqgq44vILdaVTVG1f0sYDWS9dYeD5Tyc8O08QiSyCnl
+	yAjQsatc4n4ICjJljuoU+iMSULC89Td1FGfTN6mvSliMdJTcpBD0
+X-Gm-Gg: ASbGncva3lTQLUTw3TGpIN3CdfPJ3pdzX3u6qT5RkYt8/0c+QdhzDVrNLZF512qMXqB
+	n24JR9Xss/uxDsFWThITKfwk544MaR6XZXGD+ttmFjtvu+EUw6WQPZ1mk3XoeytxEqK6ZgyV5gt
+	KVT0dNQHGTAmURU/tWgc4/J8ioJJ+lhL/fJVRPFSC7HVJyffI2e22ImzCp2Hd+xIlgBWTaTrafC
+	avnK1NAmw2qUIjmXJGtIYxYmZDkO9LKaXpgjAy0UdBnCygYTNuiJ8uZi0HgL98ILmvYIIwuwApb
+	vMQ9dPjp2gVMt8DJLvnFRnEEMIjUrqE2iSmIEIWStJBztDZFeJ4=
+X-Google-Smtp-Source: AGHT+IH2J2dM6NscTQp0mvC9nLmPZNZM8W2TCQNJugI/Z/QfFfc9r6cbqFGCWfHK+HIO1hHmjRXrxw==
+X-Received: by 2002:a05:6512:10c5:b0:545:d70:1d0e with SMTP id 2adb3069b0e04-549c38ef457mr7787694e87.3.1742226617402;
+        Mon, 17 Mar 2025 08:50:17 -0700 (PDT)
+Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba8a9525sm1357222e87.238.2025.03.17.08.50.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 08:50:16 -0700 (PDT)
+Date: Mon, 17 Mar 2025 17:49:43 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Samuel Holland <samuel@sholland.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>, netdev@vger.kernel.org,
+	Rob Herring <robh@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	linux-media@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>, devicetree@vger.kernel.org,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-iio@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-sunxi@lists.linux.dev,
+	Eric Dumazet <edumazet@google.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	David Lechner <dlechner@baylibre.com>, Chen-Yu Tsai <wens@csie.org>,
+	Daniel Scally <djrscally@gmail.com>
+Subject: [PATCH v8 00/10] Support ROHM BD79124 ADC
+Message-ID: <cover.1742225817.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/4] iio: adc: ad4000: Add support for SPI offload
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, corbet@lwn.net
-References: <cover.1741970538.git.marcelo.schmitt@analog.com>
- <301fc83a961c4a2ef2ac980d0baa83d9d89a88c5.1741970538.git.marcelo.schmitt@analog.com>
- <20250317102751.5702fb82@jic23-huawei>
- <Z9hAUs1wPOIAo2nt@debian-BULLSEYE-live-builder-AMD64>
-From: David Lechner <dlechner@baylibre.com>
-Content-Language: en-US
-In-Reply-To: <Z9hAUs1wPOIAo2nt@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 3/17/25 10:31 AM, Marcelo Schmitt wrote:
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BWiCDWUCN81RqMlJ"
+Content-Disposition: inline
 
 
-> ...
->>> +/*
->>> + * This executes a data sample transfer when using SPI offloading for when the
->>> + * device connections are in "3-wire" mode, selected when the adi,sdi-pin device
->>> + * tree property is set to "high". In this connection mode, the ADC SDI pin is
->>> + * connected to VIO and ADC CNV pin is connected to a SPI controller CS (it
->>> + * can't be connected to a GPIO).
->>> + *
->>> + * In order to achieve the maximum sample rate, we only do one transfer per
->>> + * SPI offload trigger. This has the effect that the first sample data is not
->>> + * valid because it is reading the previous conversion result. We also use
->>
->> Say what happens to that invalid sample.  Is it dropped or provided to userspace
->> as if it were valid?  (I hope dropped!)
-> 
-> TL;DR: The invalid sample goes into the buffer as a valid one.
-> 
-> In AD4000 '3-wire' mode, data capture has a latency (delay) of one sample.
-> 
-> The ADC begins sampling data N at CNV rising edge
->           |   +-- CNV (usually SPI CS) is brought low to begin reading the data
->           |   |                                +-- Data N + 1 that will be read
->           |   |                                |   on the next transfer starts 
->           v   v                                v   being sampled at end of transfer N.
->            ___                                  ____            
-> CNV  _____/   \________________________________/    \_____
->                     _     _             _
-> SCLK ______________/ \___/ \_ ...   ___/ \_______________
->                    ___   ___           ___
-> SDO  _____________/___\_/___\ ...   __/___\_______________
->                     ^
->                     |
->              Data from conversion N is output from here on
-> 
-> A better drawing can be found in datasheet page 29, Figure 57.
-> https://www.analog.com/media/en/technical-documentation/data-sheets/ADAQ4003.pdf
-> 
-> In sum, we're always reading a conversion that started at the end of the
-> previous SPI transfer or, in other words, the data comes out with a latency
-> (delay) of one read.
-> 
-> Datasheet somehow mentions that by saying
-> 	When turbo mode is enabled, the conversion result read on SDO corresponds to
-> 	the result of the previous conversion.
-> 
-> I think I can do a dummy SPI transfer on buffer preenable so at least the
-> first data is not invalid. Would that be better?
+--BWiCDWUCN81RqMlJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Not really. There will be a relatively long delay between that conversion
-trigger and when the sample is read. So the data might be slightly less stale
-in that case, but still not particularly useful, e.g. if you are doing any
-kind of signal processing that expects equal time between all samples.
+Support ROHM BD79124 ADC.
 
-On similar chips, like ad7944, we just documented that the first sample does
-not contain valid data and needs to be discarded.
+This series adds also couple of IIO ADC helper functions for parsing the
+channel information from the device tree. There are also new helpers
+included for iterating and counting firmware child nodes with a specific
+name.
 
-> 
->>
->>> + * bits_per_word to ensure the minimum of SCLK cycles are used. And a delay is
->>> + * added to make sure we meet the minimum quiet time before releasing the CS
->>> + * line. Plus the CS change delay is set to ensure that we meet the minimum
->>> + * conversion time before asserting CS again.
->>> + *
->>> + * This timing is only valid if turbo mode is disabled (reading during acquisition).
->>> + */
->>> +static int ad4000_prepare_offload_message(struct ad4000_state *st,
->>> +					  const struct iio_chan_spec *chan)
->>> +
->>
-> ...
->>> +		xfers[1].bits_per_word = chan->scan_type.realbits;
->>>  	xfers[1].delay.value = st->time_spec->t_quiet2_ns;
->>>  	xfers[1].delay.unit = SPI_DELAY_UNIT_NSECS;
->>>  
->>> @@ -719,7 +1007,9 @@ static int ad4000_prepare_4wire_mode_message(struct ad4000_state *st,
->>>  	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
->>>  
->>>  	xfers[1].rx_buf = &st->scan.data;
->>> -	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
->>> +	xfers[1].len = chan->scan_type.realbits > 16 ? 4 : 2;
->>> +	if (chan->scan_type.endianness != IIO_BE)
->>
->> This is odd enough to require a comment.  Why is endianness relevant?
-> 
-> When using SPI offloading (at least with PULSAR-ADC HDL project [1]), ADC data
-> is read by SPI controller and pushed to DMA memory in CPU endianness. I don't
-> know exactly where data gets rearranged in the data path (whether SPI-Engine,
-> the DMA controller, or something else rearranges ADC data into CPU endianess).
-> But I know, from testing with these ADCs and HDL project, that data is correct
-> when read in CPU endianness because it converts back to expected mV values.
-> When IIO buffers were set to IIO_BE and SPI offloading is used, data just looked
-> weird and didn't convert to expected values in mV.
-> 
-> [1]: https://analogdevicesinc.github.io/hdl/projects/pulsar_adc/index.html
-> 
-> Other IIO drivers also set IIO_CPU buffer endianness when using offload support,
-> e.g. ad7944, ad7380.
+Series does also convert couple of drivers to use these helpers. The
+rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
 
-These drivers also use IIO_CPU for the non-SPI offload case though.
+The gianfar driver under net and the thp7312 under media/i2c are added as
+first users of the newly added "named child node" -helpers.
 
-> 
-> They only say buffer would use 32 storagebits when using SPI offload.
-> https://lore.kernel.org/linux-iio/20250207-dlech-mainline-spi-engine-offload-2-v8-10-e48a489be48c@baylibre.com/
-> https://lore.kernel.org/linux-iio/20250220-wip-bl-spi-offload-ad7380-v1-1-838aa873e62a@baylibre.com/#t
-> 
-> I also didn't expect to find out HDL support for 16-bit data width was removed.
-> We used to have a build parameter for 16-bit precision ADCs.
-> https://github.com/analogdevicesinc/hdl/commit/b2dc91b30dae891b6319d88e083f26e726f43ba0#diff-1117c2618353232e5f22aa6a12e8ae976757fa897b3425f470a12123cae26535L13
+There has been some discussion about how useful these ADC helpers are,
+and whether they should support also differential and single ended channel
+configurations. This version does not include support for those - with the
+benefit of reduced complexity and easier to use API.
 
-A while back the HDL engineers mentioned to us that they wanted to standardize
-on 32-bit data words everywhere. While not the most efficient use of memory,
-having fewer options does make things simpler across the entire software stack.
+NOTE: Patches 4,5,9 and 10 are untested as I lack of relevant HW.
+They have been compile tested only.
 
-> 
-> Would something like 'because SPI offloading leads to data being pushed to
-> memory in CPU endianness' be a reasonable comment?
+The ROHM BD79124 ADC itself is quite usual stuff. 12-bit, 8-channel ADC
+with threshold monitoring.
 
-Another way to say it is that SPI offload reads data in complete words and not
-in separate 8-bit xfers (bits_per_word = realbits vs. bits_per_word = 8).
+Except that:
+ - each ADC input pin can be configured as a general purpose output.
+ - manually starting an ADC conversion and reading the result would
+   require the I2C _master_ to do clock stretching(!) for the duration
+   of the conversion... Let's just say this is not well supported.
+ - IC supports 'autonomous measurement mode' and storing latest results
+   to the result registers. This mode is used by the driver due to the
+   "peculiar" I2C when doing manual reads.
+
+Furthermore, the ADC uses this continuous autonomous measuring,
+and the IC keeps producing new 'out of window' IRQs if measurements are
+out of window - the driver disables the event for 1 seconds when sending
+it to user. This prevents generating storm of events
+
+Revision history:
+
+v7 =3D> v8:
+  property helpers:
+    - Fix the example in fwnode_get_named_child_node_count() documentation
+      to use the fwnode_get_named_child_node_count() and not the
+      device_get_named_child_node_count()
+    - Fix the rest of the new macro's indentiations
+  adc helpers:
+    - Treat 0 ADC channels as an error in
+      devm_iio_adc_device_alloc_chaninfo_se().
+  rzg2l_adc / sun20i-gpadc:
+    - Drop zero channels check from the ADC drivers using
+      devm_iio_adc_device_alloc_chaninfo_se()
+  BD79124:
+    - Use unsigned for regmap values
+    - Commit message fine tuning
+    - Check devm_mutex_init() return value
+    - Handle 'ALL pins as ADC or GPO' cleanly in BD79124 driver
+    - BD79124 styling / typofixes
+
+v6 =3D> v7:
+ - Inline device_get_named_child_node_count()
+ - Fix kernel-doc for fwnode_get_named_child_node_count()
+ - Minor styling fixes
+ More accurate changelog in individual patches.
+
+v5 =3D> v6:
+ - Drop applied patch
+ - Add *_for_each_named_child_* iterators
+ - Add a patch converting the thp7312 driver to use the new helper
+ - Styling and minor things pointed by reviewers
+
+v4 =3D> v5: Fixes as per various review comments. Most notably:
+ - Drop the patch making the TI's ADC driver to respect device tree.
+ - Add (RFC) patch converting gianfar driver to use new name child-node
+   counting API as suggested by Andy.
+ - Add fwnode_get_child_node_count_named() as suggested by Rob.
+ - rebase to v6.14-rc5
+ More accurate changelog in individual patches.
+
+v3 =3D> v4:
+ - Drop the ADC helper support for differential channels
+ - Drop the ADC helper for getting only channel IDs by fwnode.
+ - "Promote" the function counting the number of child nodes with a
+   specific name to the property.h (As suggested by Jonathan).
+ - Add ADC helpers to a namespace.
+ - Rebase on v6.14-rc3
+ - More minor changes described in individual patches.
+
+v2 =3D> v3:
+ - Restrict BD79124 channel numbers as suggested by Conor and add
+   Conor's Reviewed-by tag.
+ - Support differential and single-ended inputs
+ - Convert couple of existing drivers to use the added ADC helpers
+ - Minor fixes based on reviews
+Link to v2:
+https://lore.kernel.org/all/cover.1738761899.git.mazziesaccount@gmail.com/
+
+RFC v1 =3D> v2:
+ - Drop MFD and pinmux.
+ - Automatically re-enable events after 1 second.
+ - Export fwnode parsing helpers for finding the ADC channels.
+
+---
+
+Matti Vaittinen (10):
+  dt-bindings: ROHM BD79124 ADC/GPO
+  property: Add functions to iterate named child
+  iio: adc: add helpers for parsing ADC nodes
+  iio: adc: rzg2l_adc: Use adc-helpers
+  iio: adc: sun20i-gpadc: Use adc-helpers
+  iio: adc: Support ROHM BD79124 ADC
+  MAINTAINERS: Add IIO ADC helpers
+  MAINTAINERS: Add ROHM BD79124 ADC/GPO
+  net: gianfar: Use device_get_child_node_count_named()
+  media: thp7312: Use helper for iterating named child nodes
+
+ .../bindings/iio/adc/rohm,bd79124.yaml        |  114 ++
+ MAINTAINERS                                   |   12 +
+ drivers/base/property.c                       |   27 +
+ drivers/iio/adc/Kconfig                       |   17 +
+ drivers/iio/adc/Makefile                      |    3 +
+ drivers/iio/adc/industrialio-adc.c            |   82 ++
+ drivers/iio/adc/rohm-bd79124.c                | 1138 +++++++++++++++++
+ drivers/iio/adc/rzg2l_adc.c                   |   39 +-
+ drivers/iio/adc/sun20i-gpadc-iio.c            |   39 +-
+ drivers/media/i2c/thp7312.c                   |    8 +-
+ drivers/net/ethernet/freescale/gianfar.c      |   17 +-
+ include/linux/iio/adc-helpers.h               |   27 +
+ include/linux/property.h                      |   24 +
+ 13 files changed, 1481 insertions(+), 66 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
+yaml
+ create mode 100644 drivers/iio/adc/industrialio-adc.c
+ create mode 100644 drivers/iio/adc/rohm-bd79124.c
+ create mode 100644 include/linux/iio/adc-helpers.h
 
 
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+--=20
+2.48.1
+
+
+--BWiCDWUCN81RqMlJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfYRI0ACgkQeFA3/03a
+ocXCCQgAzu7d2zrfNNk6cQrDTPa0/2+0UBgC7HZTPhGxEJvxMi4HFI1fuzWLCfaF
+J3FGed5QHehj+ZsdI52fVxJJTYWzecm57BSDhFPSR9sok/maMmQNvAmRYccP6oe5
+zZvTmMshLHwR2FJW1LLWABosZN8FsLyi6WzHVPm6OIk4zbOGshorhaOw0oS5hwgq
+Is1HmpeCufLxSBJKI6PQRzdLkw/hpvUjr7s27EJ//mIqOTBkm4IKi0gFT++9WPVq
++glx3kzTQif6rUmcDw5fwmbmBwSsJINvNfQP9hekKPKP4DAvS+HyPB6RJFFVc7/i
+cz2sVMsoLJQZrcZh96jPzENM2ynhUg==
+=HMoK
+-----END PGP SIGNATURE-----
+
+--BWiCDWUCN81RqMlJ--
 

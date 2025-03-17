@@ -1,179 +1,189 @@
-Return-Path: <linux-iio+bounces-16967-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16968-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228E6A64EE7
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 13:32:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17E6A6501F
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 14:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F171720D9
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 12:32:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71EA01895927
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 13:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376612397B0;
-	Mon, 17 Mar 2025 12:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE15219E8;
+	Mon, 17 Mar 2025 13:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2n+5v0l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyKQeqAi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E286F22257F;
-	Mon, 17 Mar 2025 12:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3E87485
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 13:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742214754; cv=none; b=phDPhFupe+Bkgwv3WyDVr6xEqgcEM/LKVWLpqhwxCSLEiWR9I+GBp1BH5VJ9p3D3oPgk4soZKTIvtsw0oM88aeLyKTeH+Ot/Nr/SfNNIwTwDovwYLcEp/G+R0djgwTq+nVtXMn567AXLomsmjiVvSW9KXKowKd7wdpW360Lnv7A=
+	t=1742216553; cv=none; b=l7ErO9YkJFmRBwUMXhIGlaDWgGjG99/AIiDTfpl2yygqxZOzk1acBHqgGY/Q/rJ/cWc0pa1o5o9oN95Zhja118UpGjLk/7z21BFzMUaebJlfaYFAkzkmR63gLMopjgozZkJSc6kkWLM4gEIKcAJZAEVQygz6G3sTw97Qk41yjx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742214754; c=relaxed/simple;
-	bh=mpj0eN0ZSj2hePIuckNxCH5q4VA4XGLe8rJAIVpQJUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C9UXpWEoE5Ytdc774Ipw3f8kz62sZOylA7TcbQrN+el3IqNaHwyQk5ILTXuu6C9qxktsRG0QaeyuVFK90L5oB7ejkR9jEYXGSns+mlTJ9JwNVafKrDrHdHs+Kogx7jdCIIYQOXLB6OgaEXTT9FvmAtgR9lYs38F15pqsDH+jjyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2n+5v0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A0C5C4CEE3;
-	Mon, 17 Mar 2025 12:32:29 +0000 (UTC)
+	s=arc-20240116; t=1742216553; c=relaxed/simple;
+	bh=rAgM9sXM6UK35pQzCVk9jQ1yC1erSnGrou20ohsDQhw=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jIqSwAJenfDSwUCcEjr/6b0MSnk+FZJGvjvK63L30qV1nGmTOMkIasTk/pXGkNsCs8MKAQGcf5yXsy5thxxLQARMKUsacd50ukcVCzLIQFmYuKjy67DmebCyPUSigrERkGAnRKsROhbRHaFRbSkq1RTQoeSNGuZntSRSCNqHIag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyKQeqAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A7130C4CEE9
+	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 13:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742214753;
-	bh=mpj0eN0ZSj2hePIuckNxCH5q4VA4XGLe8rJAIVpQJUY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V2n+5v0lo0ugDAJNnonNI/LS0hPWcwjIclVlv7fm9E4XxKWldEvumLnziEmTvRv9d
-	 J9EkCdRKZTN9MVybBmgoz1GM5yjJ01qygdA6yBMda90KcZ8DsMANdwZnHWQGHCkxzh
-	 F245TDS1QLGcU+YYT22mdHLujci/YRLF2TABKizDoDiJvPNgCkiBqkGfUpAJdBTg5U
-	 FBN57FIENTQtT2YX4NP4KhKOiAXFFDl0D4qeMigoYAi1yb/VxbJX3UFGzEtfGZOYzz
-	 rQubcIKRuf+JD2vb9A8FAgT6Q0sMqH1Fxc/coOouPei8HHP/1eZ9fosJi5L0BIK3O2
-	 IpC/is1zg5wuQ==
-Date: Mon, 17 Mar 2025 12:32:22 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: <marius.cristea@microchip.com>
-Cc: <lars@metafoo.de>, <robh@kernel.org>, <krzk+dt@kernel.org>,
- <conor+dt@kernel.org>, <oskar.andero@gmail.com>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding support for
- PAC194X
-Message-ID: <20250317123222.1d2a6efd@jic23-huawei>
-In-Reply-To: <20250317090803.30003-2-marius.cristea@microchip.com>
-References: <20250317090803.30003-1-marius.cristea@microchip.com>
-	<20250317090803.30003-2-marius.cristea@microchip.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1742216552;
+	bh=rAgM9sXM6UK35pQzCVk9jQ1yC1erSnGrou20ohsDQhw=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=eyKQeqAiwolFi+xHxpnfr3lzHfTc4onBxT2P53TIE7T1YXNSvXG+R/Cl9AGMGd+Qc
+	 ASJsUHhyfEh0flOi3TBRBVocQBTRd8KM8l6MwKrZkBqR22rjiE+YPDSHtdU8S+20bu
+	 1l3Dmo6o5+vQ6DXFD1RJ61/ffafmHaS+K6MqZaCxP+NsVPR6OXcgqybGXLEfe7Xh5i
+	 E2qp6GmjNMqJwY1De1Y+E/oJpm+MJB0KaHhHrjN1Y8Fen/uZwO4+Aerr80j8OkEtxb
+	 mF8nLKPeAJNhXET1ipRPrV2l9Wc8pcS50+IjWclir21ue+JsoNjx2j+VZ5kPze3Dog
+	 CEeMrt64942JQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 8FA55C4160E; Mon, 17 Mar 2025 13:02:30 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 219890] illuminance sensor is jittering between correct value
+ and 0.03lux
+Date: Mon, 17 Mar 2025 13:02:24 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: wysiwyg81@rbox.co
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-219890-217253-UhojLJ6ONz@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
+References: <bug-219890-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Mar 2025 11:08:02 +0200
-<marius.cristea@microchip.com> wrote:
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
 
-> From: Marius Cristea <marius.cristea@microchip.com>
-> 
-> This is the device tree schema for iio driver for Microchip PAC194X and
-> PAC195X series of Power Monitors with Accumulator.
+--- Comment #2 from wysiwyg81@rbox.co ---
+Hello, Did you mean in /sys/bus/iio/devices/ instead of=20
+/sys/iio/devices/ if so: /sys/bus/iio/devices =E2=9D=AF ls -lh Permissions =
+Size=20
+User Date Modified Name lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:devic=
+e0 ->=20
+../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.00=
+0E/HID-SENSOR-200041.6.auto/iio:device0=20
+lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF iio:device1 ->=20
+../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.00=
+0E/HID-SENSOR-200041.7.auto/iio:device1=20
+lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger0 ->=20
+../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.00=
+0E/HID-SENSOR-200041.6.auto/trigger0=20
+lrwxrwxrwx - root 17 mars 13:43 =EE=97=BF trigger1 ->=20
+../../../devices/pci0000:00/0000:00:14.0/usb3/3-8/3-8:1.0/0003:17EF:F006.00=
+0E/HID-SENSOR-200041.7.auto/trigger1
 
-Wrapping of commit message is a little messy.  Either just have one paragraph
-or add some bland lines to make the paragraph breaks look more intentional.
+(bugzilla seems down currently, so I try direct email answer, hope it=20
+works, I will check once bugzilla is back).
 
-> The PAC194X family supports 9V Full-Scale Range and the PAC195X supports
-> 32V Full-Scale Range.
-> There are two versions of the PAC194X/5X: the PAC194X/5X-1 devices are
-> for high-side current sensing and the PAC194X/5X-2 devices are for
-> low-side current sensing or floating VBUS applications.
-> The PAC194X/5X-1 is named shortly PAC194X/5X.
-> 
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
->  .../bindings/iio/adc/microchip,pac1944.yaml   | 195 ++++++++++++++++++
->  1 file changed, 195 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml b/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
-> new file mode 100644
-> index 000000000000..1997e889e3f6
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
+Best regards,
 
-> +
-> +      microchip,vbus-mode:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          In order to increase measurement resolution and keeping the same
-> +          number the of bits the device has a configurable VBUS full range
-> +          scale (FSR). The range should be set by hardware design and it should
-> +          not be changed during runtime. The bipolar capability for VBUS enables
-> +          accurate offset measurement and correction.
-> +          The VBUS could be configured into the following full scale range
-> +            <0>  -  VBUS has unipolar +32V to 0V FSR (default) for PAC195X
-> +                    or +9V to 0V (default) for PAC194X
-> +            <1>  -  VBUS has bipolar +32V to -32V FSR for PAC195X
-> +                    or +9V to -9V for PAC194X. The actual range is limited to
-> +                    about -200 mV due to the impact of the ESD structures.
-> +            <2>  -  VBUS has bipolar +16V to -16V FSR for PAC195X
-> +                    or +4.5V to -4.5V for PAC194X. The actual range is limited
-> +                    to about -200 mV due to the impact of the ESD structures.
-> +        maximum: 2
+On 17/03/2025 13:15, bugzilla-daemon@kernel.org wrote:
+> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+>
+> --- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
+> On Mon, 17 Mar 2025 09:38:50 +0000
+> bugzilla-daemon@kernel.org wrote:
+>
+>> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+>>
+>>              Bug ID: 219890
+>>             Summary: illuminance sensor is jittering between correct val=
+ue
+>>                      and 0.03lux
+>>             Product: Drivers
+>>             Version: 2.5
+>>            Hardware: All
+>>                  OS: Linux
+>>              Status: NEW
+>>            Severity: normal
+>>            Priority: P3
+>>           Component: IIO
+>>            Assignee: drivers_iio@kernel-bugs.kernel.org
+>>            Reporter: wysiwyg81@rbox.co
+>>          Regression: No
+>>
+>> Hello,
+>>
+>> I have a Lenovo thinkbook 13x gen4.
+>> Automatic brightness control is flickering in Gnome, so I checked sensor
+>> with
+>> monitor-sensor command (iio-sensor-proxy).
+>>
+>> it shows following behavior:
+>> monitor-sensor  --light
+>>      Waiting for iio-sensor-proxy to appear
+>> +++ iio-sensor-proxy appeared
+>> =3D=3D=3D Has ambient light sensor (value: 316,000000, unit: lux)
+>>      Light changed: 299,000000 (lux)
+>>      Light changed: 0,030000 (lux)
+>>      Light changed: 299,000000 (lux)
+>>      Light changed: 0,030000 (lux)
+>>      Light changed: 299,000000 (lux)
+>>      Light changed: 0,030000 (lux)
+>>      Light changed: 305,000000 (lux)
+>>
+>>
+>> the 0.03 is unexpected has it has never been that dark.
+>> it seems it's not a iio-sensor-proxy bug as I can see similar behavior by
+>> checking directly content of here :
+>> /sys/bus/iio/devices/iio:device0/in_illuminance_raw
+>>
+>>
+>> I checked the behavior on windows to make sure it's not an hardware fail=
+ure
+>> from my sensor.
+>> While I cannot have direct access to raw sensor data on windows, the
+>> automatic
+>> brightness is perfectly smooth: no flickering of any kind.
+>>
+>> I didn't found sensor name:
+>> =E2=9D=AF cat  /sys/bus/iio/devices/iio:device0/name
+>> als
+> Two possibles types. It's either a hid sensor or an ACPI class interface
+> with a sensor wrapped up in firmware.
+>
+> My guess is hid-sensor.  Can you do an
+> ls -lh in /sys/iio/devices/
+> so we can see what the parent is.
+> +CC Srinivas based on playing guess the sensor.
+>
+> Jonathan
+>
+>
+>
+>
+>
+>> But if there is other place I could look, let me know.
+>>
 
-There are examples in tree of multirange devices where we specify the pair
-of negative and positive limits.  That makes for easy to read DT by
-avoiding the use of enums.
+--=20
+You may reply to this email to add a comment.
 
-> +
-> +      microchip,vsense-mode:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          In order to decrease the power dissipation on the shunt resistor and
-> +          in the same time to increase measurement resolution by keeping the
-> +          same number the of bits the device has a configurable VSENSE full
-> +          range scale (FSR). The range should be set by hardware design and it
-> +          should not be changed during runtime. 
-> +          The VSENSE could be configured into the following full scale range
-> +            <0>  -  VSENSE has unipolar +100 mV to 0V FSR (default)
-> +            <1>  -  VSENSE has bipolar +100 mV to -100 mV FSR
-> +            <2>  -  VSENSE has bipolar +50 mV to -50 mV FSR
-> +        maximum: 2
-
-Similar to above. Consider allowing <0, 100>, <-100, 100>. <-50, 50>
-I'm curious why you've documented them as positive to negative above.
- 
-> +
-> +      microchip,accumulation-mode:
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        description:
-> +          The Hardware Accumulator may be used to accumulate VPOWER, VSENSE or
-> +          VBUS values for any channel. By setting the accumulator for a channel
-> +          to accumulate the VPOWER values gives a measure of accumulated power
-> +          into a time period, which is equivalent to energy. Setting the
-> +          accumulator for a channel to accumulate VSENSE values gives a measure
-> +          of accumulated current, which is equivalent to charge. This allows the
-> +          accumulator to be used as a coulomb counter. For either VSENSE or
-> +          VBUS, many samples may be accumulated on chip and the result collected
-> +          by the host and divided by the accumulator counter count value to
-> +          yield an average value with a very long integration time to reduce
-> +          noise. This feature is also very useful for system calibration,
-> +          allowing many averages to be accumulated for fast averaging/noise
-> +          reduction.
-> +          This functionality needs to be setup once and must not be changed
-> +          during the runtime, just in case the user wants to measure the charge
-> +          or the energy consumed from board power up till the user has control
-> +          or during a reboot of the system.    
-This one feels like it really isn't a one time thing.
-
-For a few somewhat similarly behaving things (step counts on pedometers for example)
-we have explicit channel enabled attributes.  Here you could just prevent
-any other actions that would break the accumulation after the software has opted
-in to enable a particular energy channel. If you need to fake a reset of similar
-just check the counter and subtract it in software after a channel change.
-      
-> +          The Hardware Accumulator could be configured to accumulate
-> +          VPOWER, VSENSE or VBUS
-> +            <0>  -  Accumulator accumulates VPOWER (default)
-> +            <1>  -  Accumulator accumulates VSENSE
-> +            <2>  -  Accumulator accumulates VBUS
-> +        maximum: 2
-If we do keep it in here then have
-default: 0 and don't specify it in the examples below.
-
-Jonathan
-
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

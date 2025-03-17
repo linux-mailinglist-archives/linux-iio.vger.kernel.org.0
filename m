@@ -1,164 +1,107 @@
-Return-Path: <linux-iio+bounces-16965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16966-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECBEA64E5D
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 13:15:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0294DA64E95
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 13:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE6A1656C9
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 12:15:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FB5188A1F6
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 12:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB382376F7;
-	Mon, 17 Mar 2025 12:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AB1238D2B;
+	Mon, 17 Mar 2025 12:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/hZFUao"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QykA/HDk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D105236445
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 12:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF7D21D3DF;
+	Mon, 17 Mar 2025 12:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742213746; cv=none; b=cHAtXGST9OFbm1/MbuZMeYHogoGsG3UKSiMCVzN5clnJ9EAuy8O9BiX/wtbN8yTo80mlFKFmwsX2S7ExMJsrGGzUGvdcZ38OklUHaC7RySVRhDN3S5b/V/EdUFSyZCVZQaIavDk+ImzrXfPgdIuJUy9+JmZcvMQ5CE65L4tt7XQ=
+	t=1742214057; cv=none; b=IYwmcDT+vuMLlSyaX6+k5zAZN2132PnT8UshNBr4/UMoL+ZaMlB6edD7ZUtyUw+PIr0TZL137JtaeCeS8ralAVNkSlI5qPRnNjK6+f4UnG3E3KPTdzi0AYOl1DB38tZ6ill07YuuneLqL8b7N1tAwXECmYwKFAbuMpHawxzsYxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742213746; c=relaxed/simple;
-	bh=fxkorLjVyxpOK7bk6XxM6/iffyTLs+XiCwC55pE9TOk=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FRy0RBtkdE9obzIRQzwiqE18GA7AGCHeuhL2tyI82wtsOpWrpeye1wiO6JzGZG0V7HTiORyb6YxK9PxCO/BnBiU9otvyF0ZlZYWU6hb0+YtWxSH6FV3jo2Du+dnqDGjSWlOUJWzfEgdjbzi6m/9OZpZLErDkMJMyAMIypBUJlIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/hZFUao; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D67FEC4CEE3
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 12:15:45 +0000 (UTC)
+	s=arc-20240116; t=1742214057; c=relaxed/simple;
+	bh=40vcEAUQB/bv58lTJzX5uqa7lcv5qYAezG282mEVYsc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NZde3esXASJJEoqGtiQ5I0AcBtWghvTPkGqqJAeUusHklVrGhfjPo0FjezWJmgd2il72D3O24ZX1mks1HYTq4TqXhtF3rKbDEpHXlteYtBE0gdBy6tVD+6x6X2EseZXZXTRXzchceE0WCFqMsES73ySqBdvzplnK7TFLTuTm48o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QykA/HDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD8FC4CEE3;
+	Mon, 17 Mar 2025 12:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742213745;
-	bh=fxkorLjVyxpOK7bk6XxM6/iffyTLs+XiCwC55pE9TOk=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=o/hZFUao6KNH+6F3HFPla2ZFjkYW8wxV2RkT9PKV8t+sYB2gjH9PjSxbIqn18WF8y
-	 Q5irfeV3ZyblFOQjsCOndy8EFtyeqrlUOE1xcQzNWw+cGvyjcj7yNitFijlrftKVhR
-	 ThX1y7q2piwFtAmDuHIQdUTaHZOfF+YTV7oNmKHzFoqfpCwRp7R/aM85peg+LIl6R2
-	 LEDigwhX6fZajD/2bU2T1lpwb4RZTLARCeLfEDQrhWRSBSc2oOmOLnRdiiGRMSa4/i
-	 kWaqLB2ClXMGyRfIpoakvex9yNv1n5dzRbI13jqU76fWuzdc/OrEOsZq3BikIyKZgA
-	 1YaRzq2AAZIAQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D1051C4160E; Mon, 17 Mar 2025 12:15:43 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219890] illuminance sensor is jittering between correct value
- and 0.03lux
-Date: Mon, 17 Mar 2025 12:15:37 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jic23@kernel.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219890-217253-Cg8L5IyXY0@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
-References: <bug-219890-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1742214056;
+	bh=40vcEAUQB/bv58lTJzX5uqa7lcv5qYAezG282mEVYsc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=QykA/HDkqJIjV+jEvq04bBLhBvBywSOOZAdkY/1l5Pq0HzBIff/M1Pwyijj7NOCEE
+	 piY3n6lFIQRuJbXUKRlmoseIdeiLDubD5DiNwHRjIKDldUclAwunj7PkmMsmxGOQLp
+	 5JIBTG+tIkGmKdRNS1hz7i3X7TItdN/rbyQb/ireUkPhg2+PEchx4413sozS5stUlQ
+	 xNIaNrPnJmMZuQT9Pvmyjx8p28KaQwS+1E2+VELNUk20Jkrw4lHANvMYtUrp1UQ7xq
+	 PZ3AWcYuo4gKNZCjQPxRJZ+HXWMW44ZiHjbQWH1qGpABM8/tQ9yedqzQuA0JO2uT3w
+	 DE+tzLn5EX0IA==
+Date: Mon, 17 Mar 2025 12:20:44 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Zhang Lixu <lixu.zhang@intel.com>
+Cc: jikos@kernel.org, srinivas.pandruvada@linux.intel.com, lars@metafoo.de,
+ linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: hid-sensor-prox: Add support for 16-bit report
+ size
+Message-ID: <20250317122044.22091c4b@jic23-huawei>
+In-Reply-To: <20250317013634.4117399-1-lixu.zhang@intel.com>
+References: <20250317013634.4117399-1-lixu.zhang@intel.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+On Mon, 17 Mar 2025 09:36:34 +0800
+Zhang Lixu <lixu.zhang@intel.com> wrote:
 
---- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
-On Mon, 17 Mar 2025 09:38:50 +0000
-bugzilla-daemon@kernel.org wrote:
+> On Intel platforms, the HID_USAGE_SENSOR_HUMAN_PROXIMITY report size is 16
+> bits. This patch adds support for handling 16-bit report sizes for the
+> HID_USAGE_SENSOR_HUMAN_PROXIMITY usage in the HID sensor proximity driver.
+> 
+> Previously, the driver only supported 8-bit and 32-bit report sizes. With
+> this change, the driver can now correctly process 16-bit proximity data,
+> ensuring accurate human presence detection on platforms where this report
+> size is used.
+> 
+> Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+> Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Applied. Thanks.
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
->=20
->             Bug ID: 219890
->            Summary: illuminance sensor is jittering between correct value
->                     and 0.03lux
->            Product: Drivers
->            Version: 2.5
->           Hardware: All
->                 OS: Linux
->             Status: NEW
->           Severity: normal
->           Priority: P3
->          Component: IIO
->           Assignee: drivers_iio@kernel-bugs.kernel.org
->           Reporter: wysiwyg81@rbox.co
->         Regression: No
->=20
-> Hello,
->=20
-> I have a Lenovo thinkbook 13x gen4.
-> Automatic brightness control is flickering in Gnome, so I checked sensor =
-with
-> monitor-sensor command (iio-sensor-proxy).
->=20
-> it shows following behavior:
-> monitor-sensor  --light
->     Waiting for iio-sensor-proxy to appear
-> +++ iio-sensor-proxy appeared
-> =3D=3D=3D Has ambient light sensor (value: 316,000000, unit: lux)
->     Light changed: 299,000000 (lux)
->     Light changed: 0,030000 (lux)
->     Light changed: 299,000000 (lux)
->     Light changed: 0,030000 (lux)
->     Light changed: 299,000000 (lux)
->     Light changed: 0,030000 (lux)
->     Light changed: 305,000000 (lux)
->=20
->=20
-> the 0.03 is unexpected has it has never been that dark.
-> it seems it's not a iio-sensor-proxy bug as I can see similar behavior by
-> checking directly content of here :
-> /sys/bus/iio/devices/iio:device0/in_illuminance_raw
->=20
->=20
-> I checked the behavior on windows to make sure it's not an hardware failu=
-re
-> from my sensor.
-> While I cannot have direct access to raw sensor data on windows, the
-> automatic
-> brightness is perfectly smooth: no flickering of any kind.
->=20
-> I didn't found sensor name:
-> =E2=9D=AF cat  /sys/bus/iio/devices/iio:device0/name
-> als
-
-Two possibles types. It's either a hid sensor or an ACPI class interface
-with a sensor wrapped up in firmware.
-
-My guess is hid-sensor.  Can you do an
-ls -lh in /sys/iio/devices/
-so we can see what the parent is.
-+CC Srinivas based on playing guess the sensor.
+If it is reasonably urgent we could slip this in after rc1 as it smells a bit
+fix like.  For now I've queued it for next cycle.
 
 Jonathan
 
+> ---
+>  drivers/iio/light/hid-sensor-prox.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+> index 76b76d12b388..3a7b48803d50 100644
+> --- a/drivers/iio/light/hid-sensor-prox.c
+> +++ b/drivers/iio/light/hid-sensor-prox.c
+> @@ -213,6 +213,9 @@ static int prox_capture_sample(struct hid_sensor_hub_device *hsdev,
+>  	case 1:
+>  		prox_state->human_presence[chan] = *(u8 *)raw_data * multiplier;
+>  		return 0;
+> +	case 2:
+> +		prox_state->human_presence[chan] = *(u16 *)raw_data * multiplier;
+> +		return 0;
+>  	case 4:
+>  		prox_state->human_presence[chan] = *(u32 *)raw_data * multiplier;
+>  		return 0;
+> 
+> base-commit: eea255893718268e1ab852fb52f70c613d109b99
 
-
-
-
->=20
-> But if there is other place I could look, let me know.
->
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

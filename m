@@ -1,187 +1,247 @@
-Return-Path: <linux-iio+bounces-16988-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16989-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C72A65A95
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:24:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC436A65AED
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D41218835A7
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 17:20:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FF65188ADB4
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 17:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468061953BB;
-	Mon, 17 Mar 2025 17:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EDD1A23B7;
+	Mon, 17 Mar 2025 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmLG4a0J"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYFS4Ese"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DB71553A3;
-	Mon, 17 Mar 2025 17:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053C31A00F0;
+	Mon, 17 Mar 2025 17:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742232019; cv=none; b=JFTYu7hDPxJEor1h8jhu0feHAk0qDhNgdgfFJbThb2+hdEEUBI6oYSlasqSWpg1UE4acettrV1/wZx2W5QfRRtfPyiG1o1XrhbxKc6jCZ2oJb9kGbeFDq/vcehz4gcvSrfbWL8aaaFaPO2s+flMY/mTMYeSNf0OFpTtBRwczjHE=
+	t=1742232847; cv=none; b=C8eaY9iAqwpfmSxSHy/cZWz3ShhJn7c+mJ0a2FeJN0NxSJIahYTtOUf+d2PreNVGI56LtV8G4vUl1H7yJmX1dUfpgToBQdlwDqMnjOhmle/IFHukm0j5Zi8Im0tcZ3tPQt4BDh0QlhGqimOGaYDp0qtiJwpe7uc5z1GdnrcuuH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742232019; c=relaxed/simple;
-	bh=r8Jjyg4N4bX0jkWi1/kQS+nKK6mUoA5S9Z59aKSMcw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BqFQDEaH2EE9oNhmxNWnga5MAh5V+rmEH3SWbsyZ6Ssg1VuARatmgKzUp/t2G96wQooidgbnWlRZxbs2OkOSudjCv/cI/4QGACOLcShsbF+hPYiOmf84fwRYSNVaQbFvX2WcRlqR/w6mjTD3EX+Zw6Da1CIK75DaoUZjAtHZQvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YmLG4a0J; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1742232847; c=relaxed/simple;
+	bh=7HBmz3vDnrjI7srclW+onKhbskvr1Kc5hobO+QrYUUo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eWjrgSJEAI+FJpoqMIk2VEb90PFNMzao/zybwJSR07TwMgMcTbOw6s1fNjZrrWXAr2Dz/CuRQwmK9fwILGngFk6FPWrDRLeObp10b6lssHbZxOzWVYu3O4ueZeOCK779j4qmmL63jZsByKTTHc+BVePr1t+WaRqO5HOb70q+vDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYFS4Ese; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ff799d99dcso3889692a91.1;
-        Mon, 17 Mar 2025 10:20:17 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-223f4c06e9fso79808735ad.1;
+        Mon, 17 Mar 2025 10:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742232017; x=1742836817; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZiIzpFKizdM9xv+6JVtSJnmseZQ1sm302MUd2poCzvo=;
-        b=YmLG4a0JiNua1vfIdxPPzi0VsUW/trevjvQ/i5XQmj1jvFWz5BDuRMfoIZrdfLQAz0
-         LiXifUKo4xMMIHxe4akhFG+rGFFeEhdFgpmXhoEJa3+4YRuZCMARnLcW1WM+rAWNv5br
-         EEsW1XUFZdaoL54FsEBZasj79gA5JR31F9YZI2CK2JWD2uZS8qiHnC3Bv+YwPeqn3RjR
-         ig5/XK+v203dDqm06s+CvCK0gUyTfYGH6JT7QZXOTCv8fSCV2rCcRzI0/EnJCi1Is7BO
-         bknMeF9hC8W+Zhds5ujf5UXfpSWAMOS1G2ODxulQVZqFWtrLQQTAWRw5V70k0fZ+r8YC
-         tATg==
+        d=gmail.com; s=20230601; t=1742232845; x=1742837645; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=la1g9socyej0WuROWo23Gm/GJYnN4zFjSn8pewoHcqI=;
+        b=lYFS4Ese5jFlUiVsWCHwWrfgJxqT1Xgk7KEvJuSl3RYtez6PDlJw9pasmg/JP5f0O/
+         p6Ecmp6NAqfeZihz0oels9ApO/Rtp1XdCm2ZV2LKANzbOJbTGH7MdrPDJ5QrsFozldes
+         CKgZczxi8yNAv7R9kqkcIzkJ5rHvqWT1PCF0+Jxi6TDHiwUhc8iDI+6GWGs+Tx837+02
+         c/5f5c4fszCZoYi016Z/Kcu4l6ITLBYIR1H57oitweqXSij3SAEKMwCH705yex2khB33
+         p4xoSuC+jjUR6SWYdf6tj2ozUmM8/EN06YQHibl3aZZGS8235gwSq2jxIvVEGRU8MQuc
+         NTBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742232017; x=1742836817;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZiIzpFKizdM9xv+6JVtSJnmseZQ1sm302MUd2poCzvo=;
-        b=DP/ew8gpz8wiINJYMGOwrOdgU+e9/bSzB293W1zS7i2xAWGjPZcQvUvxV824wAK3BO
-         DGpXxV8vMHSEBtf3rjskSRDJd3j2keRTEd4Ao+hvfcbFcr3lWmnd2wXU1+hcB3ltrKhB
-         t4QG/bDSuzaog64R4I5jh7ynXkZvfLInZ4srn1kzCMLDuffN4kDBpZ24ijpi2gLnX//T
-         BHKfzn+k/p3w5C+udt8bcPpN9sVzglO0QqLpZgNPNb3l/7X29ntYvhA7+wZH5Z49+kyQ
-         RPWC2ZFxlWQdDU3aPWFRWWW5ViPGDhZFaRYOCArsNv9ujDZQLSw/iyNi4TOyy4ne/XVl
-         2unw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5mIkcZJTZIGvHAo1hew0Um66zK/Il55GdPF81ZE5OwIjJNP1N1mTnXvPVHOohA5cOOARI310kzw9dX0QH@vger.kernel.org, AJvYcCUtYTRpmluTKTm8KiMuEiBiNgzSyq22srfP1ZF3T+9dJVtpXVNqJ5buOJOOxujOX7UMLBEJ0cmdsu6C@vger.kernel.org, AJvYcCUyDrMuzL/0s67acANV5+m8vvbV1l0m1GJ7CwetQ4+Gxk6sDTUze4sVAOF1ucYC+nmw0yrTbe7sT58=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3XwMFO+S5G8PmXgO1j/KTX6ASSlYPwbA1qabConr/Sm0K0coY
-	+5ONPIHqxnpbXjhH01waKttiwZXlcLxz0aQYNowIUmNv1OGzdYE8z7pch+6/ejc=
-X-Gm-Gg: ASbGnctP/lQ4EMk0l2lf0hkAm3V+q2+4lIVBbocmMF+u3ZZcaTT7q3VlRKdS95uPCa8
-	6BIKFIemPU8RMbtS6dkiT6DMe85BYlgTtiqFo7eTY0z4L/mdpgYgWkim/1F0g00H4+EZeV9NugF
-	q1OQkF5W7Su9+LeEH/bVgoaVdnSWgovFqvIwh4bK+3gFETyri41GpoyL1xIpeBXrt2zZIsuDuGP
-	0jeeWEIrEinx1ToLoEUCNZ4WncdtRGFGC/ddUqmSq6SH6W79x4r1u45KvKARfKzB8UYmi1T9219
-	KqEUyYweIB+68aGa93KVQz53JZbTkq51bQQWrjTW8MIDisg2Bmb6CA==
-X-Google-Smtp-Source: AGHT+IEOkCuEJ4y6Pz/ka0G+KJKTZOyC+nCXkEkskAiqb7vP1hG++WLS+FAQG98+YjaTGs0pmzRsBg==
-X-Received: by 2002:a17:90b:2dc4:b0:2f2:a664:df1a with SMTP id 98e67ed59e1d1-30151cad150mr17773701a91.2.1742232016547;
-        Mon, 17 Mar 2025 10:20:16 -0700 (PDT)
-Received: from localhost ([2804:30c:b31:2d00:277c:5cbe:7f44:752b])
-        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-30153b994cdsm6328475a91.31.2025.03.17.10.20.15
+        d=1e100.net; s=20230601; t=1742232845; x=1742837645;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=la1g9socyej0WuROWo23Gm/GJYnN4zFjSn8pewoHcqI=;
+        b=Vgp/2Hs1Y6AD/JSNjqh6WUtK3+I9Cn1uD03qbOtRk7uCocbjqfb5jIwO2+mp7lDuIC
+         1jxtto4g84w7ZD3DQkfQOxorRM/o0ZzCY/pCpzaFkaU3U2r5Jd2WN7z747sDnkObABLL
+         Frl7/w65PIFMJWHS83O0T4hLztWB4v5Vhoz8YfpOTpJ0dyoiWBDF/Oau726nI+B6RD4D
+         0YaJ15y3d9L2GIMvm9uPGVGS/Mx2192PRje6+u7DeKCqVtlCIfs0vRAfH8DcSdrPrMDD
+         mp96COsizsC5PmrGY/Xprb+/gcMIhNi9zwNpnim6w0h9NDRPBxbri9F3nZlS+9Hc4NPC
+         h4GA==
+X-Gm-Message-State: AOJu0YwNN0eO1toCmbZVNGnXm1hF5K8+nGt8lrdmZLuH8382wkGX46qW
+	ihKvWN1iQfxzK88epVte0+hhq5AnvUGQq5AGuBL4mnlnuSQv2prED90l6cKkBSMMUg==
+X-Gm-Gg: ASbGnctcC9h3wPzVeNxK43n0BSzejrczzq6xLTPIKfYvAmKTnhhHusauHAkNWCYGUQ2
+	evKN+KKzOmqtqjq7xMBnoBOfaLWfqRO2ou8+bWiZJbags6+B9l6I5n3pc34t3PTyL+VqHCGZ7DI
+	WFkSq6WFKNHr3LXwczQ8PHvHT/XG47ZW0a9Oa03C7B7vQ2QEMURESVFzcYYqUnopjfTbCntpjsa
+	Dm419fkCe+1YlusJro7Lzi8rpmUl7m3Jz4++ZipgHuU3HHOAJyi56y8GJ0bhk/QpvNCeF1tmtY4
+	zsYeYbX6X0TJ+sMgipcNAhY0xEofe94yfea3mDYJkizemxEZyHuNimOZgtdjk1UqFfY=
+X-Google-Smtp-Source: AGHT+IF+I1J9o55YQcVtZfcCu1qe5C4DQ7hZkBTYGyYw5upwuaItMUJu/cYT4LriDUzLLVZZKDBTIA==
+X-Received: by 2002:a17:902:da8d:b0:215:a303:24e9 with SMTP id d9443c01a7336-2262c992542mr3755595ad.3.1742232844875;
+        Mon, 17 Mar 2025 10:34:04 -0700 (PDT)
+Received: from fedora.am.students.amrita.edu ([175.184.253.10])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c6bd4c80sm78141425ad.239.2025.03.17.10.34.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 10:20:15 -0700 (PDT)
-Date: Mon, 17 Mar 2025 14:21:13 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, corbet@lwn.net
-Subject: Re: [PATCH v1 1/4] iio: adc: ad4000: Add support for SPI offload
-Message-ID: <Z9haCda4yF2SZ6gb@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1741970538.git.marcelo.schmitt@analog.com>
- <301fc83a961c4a2ef2ac980d0baa83d9d89a88c5.1741970538.git.marcelo.schmitt@analog.com>
- <20250317102751.5702fb82@jic23-huawei>
- <Z9hAUs1wPOIAo2nt@debian-BULLSEYE-live-builder-AMD64>
- <60831e04-52c2-446f-8bc5-b5d3e9e5fd40@baylibre.com>
+        Mon, 17 Mar 2025 10:34:04 -0700 (PDT)
+From: Siddharth Menon <simeddon@gmail.com>
+To: linux-iio@vger.kernel.org,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Siddharth Menon <simeddon@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v2] iio: frequency: ad9832: Use FIELD_PREP macro to set bit fields
+Date: Mon, 17 Mar 2025 22:55:03 +0530
+Message-ID: <20250317173355.157536-1-simeddon@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60831e04-52c2-446f-8bc5-b5d3e9e5fd40@baylibre.com>
+Content-Transfer-Encoding: 8bit
 
-Hi, comments inline.
+Refactor code to use the FIELD_PREP macro for setting bit fields
+instead of manual bit manipulation.
 
-On 03/17, David Lechner wrote:
-> On 3/17/25 10:31 AM, Marcelo Schmitt wrote:
-> 
-> 
-> > ...
-> >>> +/*
-> >>> + * This executes a data sample transfer when using SPI offloading for when the
-> >>> + * device connections are in "3-wire" mode, selected when the adi,sdi-pin device
-> >>> + * tree property is set to "high". In this connection mode, the ADC SDI pin is
-> >>> + * connected to VIO and ADC CNV pin is connected to a SPI controller CS (it
-> >>> + * can't be connected to a GPIO).
-> >>> + *
-> >>> + * In order to achieve the maximum sample rate, we only do one transfer per
-> >>> + * SPI offload trigger. This has the effect that the first sample data is not
-> >>> + * valid because it is reading the previous conversion result. We also use
-> >>
-> >> Say what happens to that invalid sample.  Is it dropped or provided to userspace
-> >> as if it were valid?  (I hope dropped!)
-> > 
-> > TL;DR: The invalid sample goes into the buffer as a valid one.
-> > 
-> > In AD4000 '3-wire' mode, data capture has a latency (delay) of one sample.
-> > 
-> > The ADC begins sampling data N at CNV rising edge
-> >           |   +-- CNV (usually SPI CS) is brought low to begin reading the data
-> >           |   |                                +-- Data N + 1 that will be read
-> >           |   |                                |   on the next transfer starts 
-> >           v   v                                v   being sampled at end of transfer N.
-> >            ___                                  ____            
-> > CNV  _____/   \________________________________/    \_____
-> >                     _     _             _
-> > SCLK ______________/ \___/ \_ ...   ___/ \_______________
-> >                    ___   ___           ___
-> > SDO  _____________/___\_/___\ ...   __/___\_______________
-> >                     ^
-> >                     |
-> >              Data from conversion N is output from here on
-> > 
-> > A better drawing can be found in datasheet page 29, Figure 57.
-> > https://www.analog.com/media/en/technical-documentation/data-sheets/ADAQ4003.pdf
-> > 
-> > In sum, we're always reading a conversion that started at the end of the
-> > previous SPI transfer or, in other words, the data comes out with a latency
-> > (delay) of one read.
-> > 
-> > Datasheet somehow mentions that by saying
-> > 	When turbo mode is enabled, the conversion result read on SDO corresponds to
-> > 	the result of the previous conversion.
-> > 
-> > I think I can do a dummy SPI transfer on buffer preenable so at least the
-> > first data is not invalid. Would that be better?
-> 
-> Not really. There will be a relatively long delay between that conversion
-> trigger and when the sample is read. So the data might be slightly less stale
-> in that case, but still not particularly useful, e.g. if you are doing any
-> kind of signal processing that expects equal time between all samples.
-> 
-> On similar chips, like ad7944, we just documented that the first sample does
-> not contain valid data and needs to be discarded.
-> 
-Okay, I'll assume that to be acceptable and do the same for this one.
+Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Siddharth Menon <simeddon@gmail.com>
+---
+ Based on feedback from Jonathan and Marcello, I have made the following
+ changes
+ 
+ v1->v2:
+ - removed CMD_SHIFT andADD_SHIFT completely
+ - use GENMASK
+ - store regval into an array and iterate through it
+ drivers/staging/iio/frequency/ad9832.c | 53 ++++++++++++++------------
+ 1 file changed, 28 insertions(+), 25 deletions(-)
 
-...
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index 140ee4f9c137..0c1816505495 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -16,6 +16,8 @@
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+ #include <linux/sysfs.h>
++#include <linux/bitfield.h>
++#include <linux/bits.h>
+ 
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
+@@ -65,11 +67,12 @@
+ #define AD9832_SLEEP		BIT(13)
+ #define AD9832_RESET		BIT(12)
+ #define AD9832_CLR		BIT(11)
+-#define CMD_SHIFT		12
+-#define ADD_SHIFT		8
+ #define AD9832_FREQ_BITS	32
+ #define AD9832_PHASE_BITS	12
+ #define RES_MASK(bits)		((1 << (bits)) - 1)
++#define CMD_MASK_2   GENMASK(15, 12)
++#define ADD_MASK_2   GENMASK(11, 8)
++#define DATA_MASK_2  GENMASK(7, 0)
+ 
+ /**
+  * struct ad9832_state - driver instance specific data
+@@ -131,6 +134,7 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ {
+ 	unsigned long clk_freq;
+ 	unsigned long regval;
++	u8 regval_bytes[4];
+ 
+ 	clk_freq = clk_get_rate(st->mclk);
+ 
+@@ -138,19 +142,14 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ 		return -EINVAL;
+ 
+ 	regval = ad9832_calc_freqreg(clk_freq, fout);
++	put_unaligned_be32(regval, regval_bytes);
+ 
+-	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((regval >> 24) & 0xFF));
+-	st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					((regval >> 16) & 0xFF));
+-	st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+-					((addr - 2) << ADD_SHIFT) |
+-					((regval >> 8) & 0xFF));
+-	st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+-					((addr - 3) << ADD_SHIFT) |
+-					((regval >> 0) & 0xFF));
++	for (int i = 0; i < 4; i++) {
++		st->freq_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK,
++				(i % 2 == 0) ? AD9832_CMD_FRE8BITSW : AD9832_CMD_FRE16BITSW) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, regval_bytes[i]));
++	}
+ 
+ 	return spi_sync(st->spi, &st->freq_msg);
+ }
+@@ -158,15 +157,19 @@ static int ad9832_write_frequency(struct ad9832_state *st,
+ static int ad9832_write_phase(struct ad9832_state *st,
+ 			      unsigned long addr, unsigned long phase)
+ {
++	u8 phase_bytes[2];
++
+ 	if (phase >= BIT(AD9832_PHASE_BITS))
+ 		return -EINVAL;
+ 
+-	st->phase_data[0] = cpu_to_be16((AD9832_CMD_PHA8BITSW << CMD_SHIFT) |
+-					(addr << ADD_SHIFT) |
+-					((phase >> 8) & 0xFF));
+-	st->phase_data[1] = cpu_to_be16((AD9832_CMD_PHA16BITSW << CMD_SHIFT) |
+-					((addr - 1) << ADD_SHIFT) |
+-					(phase & 0xFF));
++	put_unaligned_be16(phase, phase_bytes);
++
++	for (int i = 0; i < 2; i++) {
++		st->phase_data[i] = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK,
++				(i % 2 == 0) ? AD9832_CMD_PHA8BITSW : AD9832_CMD_PHA16BITSW) |
++			FIELD_PREP(AD9832_ADD_MSK, addr - i) |
++			FIELD_PREP(AD9832_DAT_MSK, phase_bytes[i]));
++	}
+ 
+ 	return spi_sync(st->spi, &st->phase_msg);
+ }
+@@ -201,7 +204,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			st->ctrl_ss &= ~AD9832_SELSRC;
+ 		else
+ 			st->ctrl_ss |= AD9832_SELSRC;
+-		st->data = cpu_to_be16((AD9832_CMD_SYNCSELSRC << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SYNCSELSRC) |
+ 					st->ctrl_ss);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -214,7 +217,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			ret = -EINVAL;
+ 			break;
+ 		}
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
+ 					st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -227,7 +230,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 		st->ctrl_fp &= ~AD9832_PHASE(3);
+ 		st->ctrl_fp |= AD9832_PHASE(val);
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_FPSELECT << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_FPSELECT) |
+ 					st->ctrl_fp);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -238,7 +241,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 		else
+ 			st->ctrl_src |= AD9832_RESET;
+ 
+-		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
++		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
+ 					st->ctrl_src);
+ 		ret = spi_sync(st->spi, &st->msg);
+ 		break;
+@@ -396,7 +399,7 @@ static int ad9832_probe(struct spi_device *spi)
+ 	spi_message_add_tail(&st->phase_xfer[1], &st->phase_msg);
+ 
+ 	st->ctrl_src = AD9832_SLEEP | AD9832_RESET | AD9832_CLR;
+-	st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
++	st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
+ 					st->ctrl_src);
+ 	ret = spi_sync(st->spi, &st->msg);
+ 	if (ret) {
+-- 
+2.48.1
 
-> > I also didn't expect to find out HDL support for 16-bit data width was removed.
-> > We used to have a build parameter for 16-bit precision ADCs.
-> > https://github.com/analogdevicesinc/hdl/commit/b2dc91b30dae891b6319d88e083f26e726f43ba0#diff-1117c2618353232e5f22aa6a12e8ae976757fa897b3425f470a12123cae26535L13
-> 
-> A while back the HDL engineers mentioned to us that they wanted to standardize
-> on 32-bit data words everywhere. While not the most efficient use of memory,
-> having fewer options does make things simpler across the entire software stack.
-> 
-Ack
-
-> > 
-> > Would something like 'because SPI offloading leads to data being pushed to
-> > memory in CPU endianness' be a reasonable comment?
-> 
-> Another way to say it is that SPI offload reads data in complete words and not
-> in separate 8-bit xfers (bits_per_word = realbits vs. bits_per_word = 8).
-> 
-Ah sure, I recall the effect of setting .bits_per_word now.
-Will add a comment explaining why the difference in endianness.
-
-Thanks,
-Marcelo
 

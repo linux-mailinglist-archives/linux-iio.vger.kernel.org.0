@@ -1,76 +1,115 @@
-Return-Path: <linux-iio+bounces-16923-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16924-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591BAA63A5D
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 02:32:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 327A8A63A71
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 02:37:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2433A7E03
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 01:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F34F188F179
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 01:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7BF433CB;
-	Mon, 17 Mar 2025 01:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB50E78F43;
+	Mon, 17 Mar 2025 01:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvvtAdcY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kECd/zRq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEF4DF71;
-	Mon, 17 Mar 2025 01:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58AA23AD;
+	Mon, 17 Mar 2025 01:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742175154; cv=none; b=mdvfUByffu2zwOCiI9BYNiUD2yrUaN6WbV0y9tRIos4naFPYqFTEulv8aV6B/zGfgCCr3w+kK/B+JmbsCmU1TUVzBho9Xq8znMLwwW2h2NKBrZsOnKFBJkO6j7f0GLMP8rnBFSNcZd++lcblq+7H1rmpOBXnQljFuz+RxXqbL2M=
+	t=1742175419; cv=none; b=by6dM13SMUilLXsY5H2Rb5Bk1bOXPTi137iGUzEC94PnGhcs6L/DT0AiB2vpgolH2esTVOPPdvjUfSKuYELY4RyIhg/Wdx76lx1Q6ZgXR5697bX1F9MaVGy/a9Y4gbEckFwmXy046CAeycNQ3ecxFZeWu1rF7yUeTzbOIgbcyQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742175154; c=relaxed/simple;
-	bh=s8GEmYzbmS9r1yi+MUIttdEdJaVN5wVHb6I3vPopbTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+Rx2mK/Zk7y85Iw8IoPaDTD+M8buQjVLzan6tYe83yy59anxZ5yyqTufJb59kV8wzHM4XKMqeV7zu2C0ZKswWnK4QturKPWUcucMi1WpeWy4l4M33xy3jmZl41WGKzBSP70shS2P83XfY+E9y8/gbrTyAhcF3mtpV9rzNR9wKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvvtAdcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8C7C4CEDD;
-	Mon, 17 Mar 2025 01:32:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742175154;
-	bh=s8GEmYzbmS9r1yi+MUIttdEdJaVN5wVHb6I3vPopbTQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OvvtAdcY3LePAv0xsm6FdDZcrFUa/xd8jEpteznMBts5AU8E+vF7+GGlMc115YNRH
-	 BQWFNZ3f1wLPIMOhbyvOGwS2qwFRaM0nwE/0Vb3uuT4RTGbDjBq2VdxZOCBNmcCUIY
-	 zoR4yeBN87VjEDsPtPXB8jeH1EnHQClpbX4rWRF7fhsY8MR8upGNGI6KetBB/EUf/n
-	 vZ9eKQCfseOVVmgqaith+zXVjL0vobpGa7Poz9sbCOVkYCtL+LsxMs2nGA8GnLaRF6
-	 YFLhJ6aZg7SfuKgQL2XMYCeVbg0bmRxh7KLMSI3MN77a6jdpYTXThuv/tVuJWESizU
-	 TX3ewDoH0483A==
-Date: Mon, 17 Mar 2025 01:32:30 +0000
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>, linux-iio@vger.kernel.org,
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] iio: cros_ec: Avoid -Wflex-array-member-not-at-end
- warning
-Message-ID: <Z9d7rp-ullvmXKoM@google.com>
-References: <Z9dy43vUUh4goi-Q@kspp>
+	s=arc-20240116; t=1742175419; c=relaxed/simple;
+	bh=6UZEFdgCJ54WqRAxf9tT/iQiD+Qv6fVPWFP9fDbyJRA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PX7CbxthEtggEP3OXl/PpXtCsSqlbBK1JTU7eyclb2+LnNn3jZt0IS0IZxqES7LxUAksokdRzEQ44RXYBD7M1apYwTeM9XYCNL8QjLrBrBOzSKipcU0VQGEE+UKGAcsrCqQ2Z8XBISbxG3wTAga70F7iMHGrV6SftgZ57jkFyk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kECd/zRq; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742175418; x=1773711418;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6UZEFdgCJ54WqRAxf9tT/iQiD+Qv6fVPWFP9fDbyJRA=;
+  b=kECd/zRqDnGhSgShFy067LYWdIMtTgOt9ByEVIUeBxMQMm/QdrGfpE2h
+   tBeAzSjNPfW/ZHd/VN3sBmOf9th6cu+hR+wzcBxMudp2l8M2sedwmT5IO
+   zf5uYvHZ9GjW7bD4/+xH8vJYx6YCJJo7qc43jcLDwz/4Ko2lEeGmiquZB
+   AndZJw4glusm2BA35jp6yJx9RppQ/kKT0s+0aMFzf1F+yNO7loYeVX+p3
+   ZJwhF0gg0UVMY3kw2OTTDr3OD1h9M8u6wJK/iGQiS3h1/+KHkIRSVh+aV
+   otvwLILA2n+lVXBAbiIU9qDpdTW+exIDNhBTRj3K/M8YQm3qyw12pFBMO
+   g==;
+X-CSE-ConnectionGUID: geEQ5cLxRMSqDZOS2V5olQ==
+X-CSE-MsgGUID: jaYRb5BpSPG143WijSGPEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11375"; a="54252440"
+X-IronPort-AV: E=Sophos;i="6.14,252,1736841600"; 
+   d="scan'208";a="54252440"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2025 18:36:56 -0700
+X-CSE-ConnectionGUID: cvy8ZCcWSIS4MMrYXyY53Q==
+X-CSE-MsgGUID: Ed2r1ljBQw+xaRmtb26f4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,252,1736841600"; 
+   d="scan'208";a="121795588"
+Received: from shsensorbuild.sh.intel.com ([10.239.133.18])
+  by orviesa006.jf.intel.com with ESMTP; 16 Mar 2025 18:36:54 -0700
+From: Zhang Lixu <lixu.zhang@intel.com>
+To: jic23@kernel.org,
+	jikos@kernel.org,
+	srinivas.pandruvada@linux.intel.com,
+	lars@metafoo.de,
+	linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: lixu.zhang@intel.com
+Subject: [PATCH] iio: hid-sensor-prox: Add support for 16-bit report size
+Date: Mon, 17 Mar 2025 09:36:34 +0800
+Message-Id: <20250317013634.4117399-1-lixu.zhang@intel.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z9dy43vUUh4goi-Q@kspp>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 17, 2025 at 11:24:59AM +1030, Gustavo A. R. Silva wrote:
->  static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
->  					     u16 cmd_offset, u16 cmd, u32 *mask)
->  {
-> +	DEFINE_RAW_FLEX(struct cros_ec_command, buf, data,
-> +			sizeof(struct ec_response_get_cmd_versions));
+On Intel platforms, the HID_USAGE_SENSOR_HUMAN_PROXIMITY report size is 16
+bits. This patch adds support for handling 16-bit report sizes for the
+HID_USAGE_SENSOR_HUMAN_PROXIMITY usage in the HID sensor proximity driver.
 
-max(sizeof(struct ec_params_get_cmd_versions),
-    sizeof(struct ec_response_get_cmd_versions))?
+Previously, the driver only supported 8-bit and 32-bit report sizes. With
+this change, the driver can now correctly process 16-bit proximity data,
+ensuring accurate human presence detection on platforms where this report
+size is used.
+
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+---
+ drivers/iio/light/hid-sensor-prox.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/iio/light/hid-sensor-prox.c b/drivers/iio/light/hid-sensor-prox.c
+index 76b76d12b388..3a7b48803d50 100644
+--- a/drivers/iio/light/hid-sensor-prox.c
++++ b/drivers/iio/light/hid-sensor-prox.c
+@@ -213,6 +213,9 @@ static int prox_capture_sample(struct hid_sensor_hub_device *hsdev,
+ 	case 1:
+ 		prox_state->human_presence[chan] = *(u8 *)raw_data * multiplier;
+ 		return 0;
++	case 2:
++		prox_state->human_presence[chan] = *(u16 *)raw_data * multiplier;
++		return 0;
+ 	case 4:
+ 		prox_state->human_presence[chan] = *(u32 *)raw_data * multiplier;
+ 		return 0;
+
+base-commit: eea255893718268e1ab852fb52f70c613d109b99
+-- 
+2.40.1
+
 

@@ -1,112 +1,110 @@
-Return-Path: <linux-iio+bounces-16996-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16997-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3FB0A65D7B
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 20:00:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7238A65DEB
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 20:29:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D1007AFB85
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6343AD7B5
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1422B79E1;
-	Mon, 17 Mar 2025 19:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C741EB1A0;
+	Mon, 17 Mar 2025 19:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvE4JTyL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQ4nNAtX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C767A20328
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 19:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DC71E8355;
+	Mon, 17 Mar 2025 19:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742238038; cv=none; b=BFGr3qOr2gxSyGQo5QPKCW8iiOLa/e+MdWmgRazAIJNmujs6Ly+8w613oA0hcky55SZKJn37uNTJ2utvqo/K6aNOmm/8E53UYLxS0v2G1HLZMApAKRQsitsxx3Pw0tu4+Ag46TTzYCvFFRYcNu7mRekIphPdWC7GtSVlu3vM2NA=
+	t=1742239775; cv=none; b=cvDz5fqFMbQZ4Jo1PwBqj0b2n6LDFyKFMTBKTWJ6lVkGccCdwN3xnaLPnjymfMxjkLAZaq9cW059n0rYpqOnqmqMeJIPWJvesS1HR8Toh2RvIFkVyg2NPowWcyj9qbqFQdqbvVcUCmYRm1UJA0sHMzh/vt7mUwx8YTcRu7Mw4eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742238038; c=relaxed/simple;
-	bh=GQZvu+RXZVqKbcpb+bCETaxlbGMMYK7+l0GV2T+p96E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K3HR5KjiLx6/NFVaTocteEZASZucr/rv89OkT747HFWLHWJA2az5sgVbtRUOtKmiPIwwax3qWpA2CIbuG24+l83BFM2xumW8xHP400O85CYy6ZgN0J2bhh3UOkL2t0N8r5bNuxNIrxFpcOJD0MioRSWrtqnj9JBcFBuxImbLHec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvE4JTyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA192C4CEE3;
-	Mon, 17 Mar 2025 19:00:35 +0000 (UTC)
+	s=arc-20240116; t=1742239775; c=relaxed/simple;
+	bh=+0esf4PKuDbD6pVNFtzoxcojgN/+ZfEr2+qB5q3FpXk=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=cOFYTqiC7yRIiwkWeN/JayS4S1aTxJmuJtE51Sf7g54yN5z3F5r+VnioCmGYWQ4gbi6vHZLaVzf3koEJMoW+PFm2yXOLfYDd9tVTNqbgtuhDlr2TgSIaf+GsPGc3RRedwgHeIB3mylScXidLx7XW2Ml4x+WnyDoO7EXOK5nCyQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQ4nNAtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFFBDC4CEE3;
+	Mon, 17 Mar 2025 19:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742238038;
-	bh=GQZvu+RXZVqKbcpb+bCETaxlbGMMYK7+l0GV2T+p96E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tvE4JTyLjdw7QclloI7YspUlTEGLqvwciDtgJafNLHMrEruhyXaDz51VMuQGehkZP
-	 a2vkYv+keAVtFGrSNYnjJ3YBxa21quZBc22WCPsgWfWktJ6VVWuapA1ZoYC1tPj1ic
-	 R8C1HQ+Ujv3NkwRJAGyzdmyvT96paEJBwNQ6STYX5Lx/AMUTdUledlyiL97+mGzINy
-	 K4m9JszFKDXMC+kVTvtFVdKPvWtHa2u+CNih5v9DU2GDocWIcEdiVz3tnhJ5/ispyx
-	 cqSWKXkSx0Ap3KR5nuv8IsU5izPXyoAHijm7/ZvZrLhfmBEUwOJ8NAtoTziq3d9r4/
-	 nJQdsdOxsfndQ==
-Date: Mon, 17 Mar 2025 19:00:31 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <noname.nuno@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7124: Fix 3dB filter frequency
- reading
-Message-ID: <20250317190031.22c822c4@jic23-huawei>
-In-Reply-To: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
-References: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1742239775;
+	bh=+0esf4PKuDbD6pVNFtzoxcojgN/+ZfEr2+qB5q3FpXk=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=WQ4nNAtXRKVbC9ZZ2PjUIak6rmDBqyWa9p2gUMNhqfJ+A5BCgSipAtYz5LcMtvEMo
+	 nC9ZF9vYzSqJ1kYy6EYDOvvn+/RrEMR5hWCcP2tFAUxQXgadU07KqAlIliV23Hm0dO
+	 B1XYJ9ZhLDgG5qzRAnLjfgnCvJd47fXDTGMx5moBIBSmiW48tyZLiRi+Eyya6nxzPx
+	 hzg8ldrCcbODT6DIT5q+Hc9f2a9vq8QAyethP0xuL8bSy7Nk+GWCip0m5FEEwqALQf
+	 uL0jsJbC2+RkQQxu359Wf66BV/Grqx7FQBaVPJ7wyi12czxBKdvi2bklgD1bU8ZDRA
+	 /E5xymSnT17xw==
+Date: Mon, 17 Mar 2025 14:29:33 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 17 Mar 2025 12:52:46 +0100
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
-
-> Hello,
->=20
-> (implicit) v1 of this patch set is available at
-> https://lore.kernel.org/linux-iio/cover.1741801853.git.u.kleine-koenig@ba=
-ylibre.com
-> .
->=20
-> Changes since then:
->=20
->  - Reorder patches to have the cleanup ("Make register naming
->    consistent") last
->  - Drop write support for the filter_low_pass_3db_frequency property
->    which is completely broken.
->  - trivially rebase to todays iio/togreg
->=20
-> I wonder if there is a way to remove the writable permission of the
-> filter_low_pass_3db_frequency sysfs file instead of erroring out when a
-> value is written. Hints welcome.
-
-Unfortunately not. With a lot of hindsight that is a flaw in the way
-we generate sysfs attributes. IIRC when hwmon added similar they
-avoided that trap.  To retrofit it onto IIO now we'd have to have
-some form of complex permissions query or duplicate all the masks
-to allow r and w separately.
-
-Jonathan
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: jic23@kernel.org, tduszyns@gmail.com, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org
+To: Sergio Perez <sergio@pereznus.es>
+In-Reply-To: <20250317175621.593-1-sergio@pereznus.es>
+References: <20250317175621.593-1-sergio@pereznus.es>
+Message-Id: <174223977381.441039.14907108652302034941.robh@kernel.org>
+Subject: Re: [PATCH] [v2] iio: light: bh1750: Add hardware reset support
+ via GPIO
 
 
->=20
-> Best regards
-> Uwe
->=20
-> Uwe Kleine-K=C3=B6nig (3):
->   iio: adc: ad7124: Fix 3dB filter frequency reading
->   iio: adc: ad7124: Remove ability to write
->     filter_low_pass_3db_frequency
->   iio: adc: ad7124: Make register naming consistent
->=20
->  drivers/iio/adc/ad7124.c | 208 ++++++++++++++++-----------------------
->  1 file changed, 84 insertions(+), 124 deletions(-)
->=20
->=20
-> base-commit: 8dbeb413806f9f810d97d25284f585b201aa3bdc
+On Mon, 17 Mar 2025 18:56:21 +0100, Sergio Perez wrote:
+> Some BH1750 sensors require a hardware reset before they can be
+> detected on the I2C bus. This patch adds support for an optional
+> reset GPIO that can be specified in the device tree.
+> 
+> The reset sequence pulls the GPIO low and then high before
+> initializing the sensor, which enables proper detection with
+> tools like i2cdetect.
+> 
+> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+> ---
+>  .../devicetree/bindings/iio/light/bh1750.yaml |  7 +++++-
+>  drivers/iio/light/bh1750.c                    | 24 ++++++++++++++++++-
+>  2 files changed, 29 insertions(+), 2 deletions(-)
+> 
+
+My bot found errors running 'make dt_binding_check' on your patch:
+
+yamllint warnings/errors:
+./Documentation/devicetree/bindings/iio/light/bh1750.yaml:50:4: [error] no new line character at the end of file (new-line-at-end-of-file)
+
+dtschema/dtc warnings/errors:
+Error: Documentation/devicetree/bindings/iio/light/bh1750.example.dts:25.38-39 syntax error
+FATAL ERROR: Unable to parse input tree
+make[2]: *** [scripts/Makefile.dtbs:131: Documentation/devicetree/bindings/iio/light/bh1750.example.dtb] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [/builds/robherring/dt-review-ci/linux/Makefile:1522: dt_binding_check] Error 2
+make: *** [Makefile:248: __sub-make] Error 2
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250317175621.593-1-sergio@pereznus.es
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

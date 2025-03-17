@@ -1,62 +1,61 @@
-Return-Path: <linux-iio+bounces-16992-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16993-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77521A65D48
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:52:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3812AA65D5B
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 19:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BED0A17361E
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:52:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9291894035
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 18:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351361DDC15;
-	Mon, 17 Mar 2025 18:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726831E1E1F;
+	Mon, 17 Mar 2025 18:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVM559R2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aBUaAqNR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3DE143748;
-	Mon, 17 Mar 2025 18:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E191DDC2C;
+	Mon, 17 Mar 2025 18:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742237516; cv=none; b=pZK7YU4y2ez52/hDOb3J/JKIrFtJG57GVhKyS9/fpPMVm09UA0yzpA8WNvVMB4AX0pax4pASQBDiQaeWaXKByMPD4hRDLhnVPWbveJbucqtKe7rbQYGqMvGP6EMnNtJ8WChqQo7SViWwbuTB22Qa9OYE+K026TRsHGLV3yVaRiE=
+	t=1742237746; cv=none; b=Xk1VQluYnXk9ZkKjXvltiWZiS9E2kGfeKOlTJIvlWj7RBOluKZscNevy2sEvzvCeaYCtyZEzkJn4sK5GA7R54O9tr6NYKHP0Xb3qZxgDhUDnIugZU0OaIoW3Oiu0MdJ5dmac6odVf56fCvS7V/a7tpFiXpEt6CZqW9zrMlg9x68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742237516; c=relaxed/simple;
-	bh=zIs0Y0BVAU9E77z/Zzluoby72K6idCnOcy81f26DbrQ=;
+	s=arc-20240116; t=1742237746; c=relaxed/simple;
+	bh=UBSgKTFL1pCFuUwk9CpwgabxBS+GuDSaPy6E3MS1gVw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OjCiQe17wVHnGdZfnZiT8OzQYeA0OMt6LhbS4wDCJp8e92um8+MDW8Xxe32v2JG6Rak4Zqzy46/diknznbPqyFBH+bKb1jcYcAxzRQ1aCE7YBQkdiVm2RTLZdW1KkHkPRgpFAQBa/UHngw66xjnhK3IrkbJ7/KEdSL0cQxVq1nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVM559R2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8611C4CEE3;
-	Mon, 17 Mar 2025 18:51:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LxTsuvji71aS7CitHNPz43c3E1bpgGwxe3BfGUJQoIm9JIQGpoei9MWPkBqUTVRyp/jOFuyzZpfArZR1PB75v/iVkqFEMkclQsHm2afn+cwtMYocLqwvAaGBtRO46JeUzJtrPdqzpbEKaz6jyXFcwig9wKl+HA8BshDgicQZy8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aBUaAqNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C45C4CEE3;
+	Mon, 17 Mar 2025 18:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742237513;
-	bh=zIs0Y0BVAU9E77z/Zzluoby72K6idCnOcy81f26DbrQ=;
+	s=k20201202; t=1742237746;
+	bh=UBSgKTFL1pCFuUwk9CpwgabxBS+GuDSaPy6E3MS1gVw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oVM559R2kPO3CO1hH+pgQNvu5hEbnw4/r9xTQr2jmWwM1Po/1nthbIAlZL8eNhhNt
-	 EFeoLu3jachtwwWZd5pDI/ry4RP5BUzRZrojRIMjs0TSN+7vZVb2kMj0AO6gXWJ1i8
-	 tWpNw3nSA5UF1kHJ7Qvnils2vGCBiTLxX134/BAUCIu48gXjOEf+HCOTTqizi8yAbO
-	 yq/s2w2c9wSoUC9OrNkm7EeXMlz3qno06xEbKcjjOjr/8G2Hibu9aoJdoFkSq77VkI
-	 dM8pxb787jkAYJPm6u/3gJZQyzwGwgmaAyshaKEfvSgTY4PkxtAz9XFnBbZvjlLMq8
-	 zONQlopE7k/3g==
-Date: Mon, 17 Mar 2025 18:51:44 +0000
+	b=aBUaAqNRiVr3vCE4c8v2VOTJ240MG0+F8pEW7/FtnoHijksbNEEKv2fl+pM5dzdzF
+	 NJnukCASsqmBJrtrJTgbefHsupjUEXmDhg3JMSEYKYnHpfMgB70NsIGcWMhl1z8ucw
+	 yxwcsfgWOFku6LrcFmnd+wuzMMkOA4p2LjHEntfDSFwqm5pmKtw61jLCO9QAMZh4aE
+	 vSfVyU5sDVC5i0z6sH4sui0/Utd/N9T0aHxmX37DyX/ILiC4SkxEkd49tkoBnZw1R/
+	 25nnuuT/ONvGCWcam3GRb0TXgCrpAN91/+1frL8JtBCb7pLjRuvcnf4YSz0yNt99VI
+	 /RW5HpqLuu6RA==
+Date: Mon, 17 Mar 2025 18:55:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- Michael.Hennerich@analog.com, corbet@lwn.net
-Subject: Re: [PATCH v1 1/4] iio: adc: ad4000: Add support for SPI offload
-Message-ID: <20250317185144.68dd564e@jic23-huawei>
-In-Reply-To: <Z9haCda4yF2SZ6gb@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1741970538.git.marcelo.schmitt@analog.com>
-	<301fc83a961c4a2ef2ac980d0baa83d9d89a88c5.1741970538.git.marcelo.schmitt@analog.com>
-	<20250317102751.5702fb82@jic23-huawei>
-	<Z9hAUs1wPOIAo2nt@debian-BULLSEYE-live-builder-AMD64>
-	<60831e04-52c2-446f-8bc5-b5d3e9e5fd40@baylibre.com>
-	<Z9haCda4yF2SZ6gb@debian-BULLSEYE-live-builder-AMD64>
+To: Sam Winchenbach <sam.winchenbach@framepointer.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
+ lars@metafoo.de, Michael.Hennerich@analog.com, antoniu.miclaus@analog.com,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ bpellegrino@arka.org, Sam Winchenbach <swinchenbach@arka.org>
+Subject: Re: [PATCH v7 1/6] dt-bindings: iio: filter: Add lpf/hpf freq
+ margins
+Message-ID: <20250317185535.7d00444d@jic23-huawei>
+In-Reply-To: <Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
+References: <20250316135008.155304-1-sam.winchenbach@framepointer.org>
+	<20250316-sexy-tested-cheetah-c4a2f8@krzk-bin>
+	<Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,103 +66,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Mar 2025 14:21:13 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Mon, 17 Mar 2025 11:07:32 -0400
+Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
 
-> Hi, comments inline.
-> 
-> On 03/17, David Lechner wrote:
-> > On 3/17/25 10:31 AM, Marcelo Schmitt wrote:
+> On Sun, Mar 16, 2025 at 05:38:42PM +0100, Krzysztof Kozlowski wrote:
+> > On Sun, Mar 16, 2025 at 09:50:03AM -0400, Sam Winchenbach wrote:  
+> > > From: Sam Winchenbach <swinchenbach@arka.org>
+> > > 
+> > > Adds two properties to add a margin when automatically finding the
+> > > corner frequencies.
+> > > 
+> > > Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+> > > ---
+> > >  .../bindings/iio/filter/adi,admv8818.yaml     | 20 +++++++++++++++++++
+> > >  1 file changed, 20 insertions(+)  
 > > 
+> > I don't understand. You got my tag. No changelog here, no cover letter,
+> > nothing explains what happened here and why the tag is being removed.
 > >   
-> > > ...  
-> > >>> +/*
-> > >>> + * This executes a data sample transfer when using SPI offloading for when the
-> > >>> + * device connections are in "3-wire" mode, selected when the adi,sdi-pin device
-> > >>> + * tree property is set to "high". In this connection mode, the ADC SDI pin is
-> > >>> + * connected to VIO and ADC CNV pin is connected to a SPI controller CS (it
-> > >>> + * can't be connected to a GPIO).
-> > >>> + *
-> > >>> + * In order to achieve the maximum sample rate, we only do one transfer per
-> > >>> + * SPI offload trigger. This has the effect that the first sample data is not
-> > >>> + * valid because it is reading the previous conversion result. We also use  
-> > >>
-> > >> Say what happens to that invalid sample.  Is it dropped or provided to userspace
-> > >> as if it were valid?  (I hope dropped!)  
-> > > 
-> > > TL;DR: The invalid sample goes into the buffer as a valid one.
-> > > 
-> > > In AD4000 '3-wire' mode, data capture has a latency (delay) of one sample.
-> > > 
-> > > The ADC begins sampling data N at CNV rising edge
-> > >           |   +-- CNV (usually SPI CS) is brought low to begin reading the data
-> > >           |   |                                +-- Data N + 1 that will be read
-> > >           |   |                                |   on the next transfer starts 
-> > >           v   v                                v   being sampled at end of transfer N.
-> > >            ___                                  ____            
-> > > CNV  _____/   \________________________________/    \_____
-> > >                     _     _             _
-> > > SCLK ______________/ \___/ \_ ...   ___/ \_______________
-> > >                    ___   ___           ___
-> > > SDO  _____________/___\_/___\ ...   __/___\_______________
-> > >                     ^
-> > >                     |
-> > >              Data from conversion N is output from here on
-> > > 
-> > > A better drawing can be found in datasheet page 29, Figure 57.
-> > > https://www.analog.com/media/en/technical-documentation/data-sheets/ADAQ4003.pdf
-> > > 
-> > > In sum, we're always reading a conversion that started at the end of the
-> > > previous SPI transfer or, in other words, the data comes out with a latency
-> > > (delay) of one read.
-> > > 
-> > > Datasheet somehow mentions that by saying
-> > > 	When turbo mode is enabled, the conversion result read on SDO corresponds to
-> > > 	the result of the previous conversion.
-> > > 
-> > > I think I can do a dummy SPI transfer on buffer preenable so at least the
-> > > first data is not invalid. Would that be better?  
-> > 
-> > Not really. There will be a relatively long delay between that conversion
-> > trigger and when the sample is read. So the data might be slightly less stale
-> > in that case, but still not particularly useful, e.g. if you are doing any
-> > kind of signal processing that expects equal time between all samples.
-> > 
-> > On similar chips, like ad7944, we just documented that the first sample does
-> > not contain valid data and needs to be discarded.
+> 
+> Apologies,
+> 
+> I am still quite new to this workflow, and it deviates significantly
+> from my day-to-day work. I mentioned in the previous patch set that I
+> would like to update my email address and change:
+> "driver core: -> iio: core:"
+> I wasn't aware more than that was needed. Sorry for any confusion
+> this may have caused.
+> 
+> In the future what is the preferred way to handle a
+> situation like this? I wasn't aware of the cover letter feature but
+> that looks like a promising option.
+
+Either add stuff below the --- above as that doesn't end up in the
+eventual git log, or --cover-letter on your git-format-patch and
+put useful things like that in there.
+
+> 
+> It looks like another option is to add commentary to each patch.
+> 
+> I am less certain about your tag being removed - I don't fully
+> understand that. Is there a way to preserve that if changes are made
+> after you sign-off?
+
+Once a tag is given it is up to the patch author to add it to the
+patches for future versions.  That should only be dropped if the
+author thinks there are significant enough changes to warrant a fresh
+review.  If you do drop a tag like that, then the change log
+under --- on the particular patch should clearly state why.
+> 
+> Sorry again about the confusion this caused,
+No problem, takes a while for everyone to get used to a different
+process. There are extensive docs, but it is still easy to miss
+things!
+
+Jonathan
+
+> -Sam
+> 
+> > Best regards,
+> > Krzysztof
 > >   
-> Okay, I'll assume that to be acceptable and do the same for this one.
-
-Hmm. Doesn't really pass the useability 'smell' test but I guess
-if there is precedence and clear docs it should be fine.
-
-> 
-> ...
-> 
-> > > I also didn't expect to find out HDL support for 16-bit data width was removed.
-> > > We used to have a build parameter for 16-bit precision ADCs.
-> > > https://github.com/analogdevicesinc/hdl/commit/b2dc91b30dae891b6319d88e083f26e726f43ba0#diff-1117c2618353232e5f22aa6a12e8ae976757fa897b3425f470a12123cae26535L13  
-> > 
-> > A while back the HDL engineers mentioned to us that they wanted to standardize
-> > on 32-bit data words everywhere. While not the most efficient use of memory,
-> > having fewer options does make things simpler across the entire software stack.
-> >   
-> Ack
-> 
-> > > 
-> > > Would something like 'because SPI offloading leads to data being pushed to
-> > > memory in CPU endianness' be a reasonable comment?  
-> > 
-> > Another way to say it is that SPI offload reads data in complete words and not
-> > in separate 8-bit xfers (bits_per_word = realbits vs. bits_per_word = 8).
-> >   
-> Ah sure, I recall the effect of setting .bits_per_word now.
-> Will add a comment explaining why the difference in endianness.
-
-Great
-
-> 
-> Thanks,
-> Marcelo
 
 

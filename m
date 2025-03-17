@@ -1,140 +1,110 @@
-Return-Path: <linux-iio+bounces-16942-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16943-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC1AA647A3
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 10:38:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE19A649BA
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 11:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3915E16634E
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 09:38:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B80EC188A9D1
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 10:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BED2236FD;
-	Mon, 17 Mar 2025 09:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B80234994;
+	Mon, 17 Mar 2025 10:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QSxD9IXc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mA9jxrVR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050C5221F1B
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 09:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0CB238142;
+	Mon, 17 Mar 2025 10:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742204331; cv=none; b=RSN/VlZsq0b+rWai+R1wzzOqZYMLvQlY3S30afQev7HKnJ1Kziqp4gMwQKwMuYwzZQanGx9tb63U90nr8m0WL/Yv8UxAQ2204+GCIZ3i37gqXQJyQQeZod6O1sOl+Ckde4NVdjXaEWjUZiv5iWubmso8z/BMRvGE+W6cM9Ze6p8=
+	t=1742206818; cv=none; b=mglo8quGuMBJ+JFuQitMPpL+DGqL2awY3p4qq5oYz+SAGtTCqU0oDLK7lPo3c1l05cLvVoPIg47t3uXXl5kyQyghlEjLHUIIjCfgGb2KtiNTalaH2TdxENw0d10ORTmfHavnasQh8Qr6XDvmrCbwTgQeV/S4HYtwu1fFZ77j69w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742204331; c=relaxed/simple;
-	bh=oWwmKbi/HtXoQ4LstbPyv3nh7Xa+NN+hy3hAZLsvFi0=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bB8cvxKnUqkb/3XEST1REXFaJvOKB8BrMKEY/Kv7qog22/egHhvWcINsC2eycT2+ameoJlqFGfiwQEEctmggqmQXggkfFL/1mzQno2iaciAthP0l3kwbqd9q7Qhhc7kKXJ7NEcLy60zVAnt7WF4aId2qDppOJmDeMfi4JG7uMiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QSxD9IXc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6FCF7C4CEEE
-	for <linux-iio@vger.kernel.org>; Mon, 17 Mar 2025 09:38:50 +0000 (UTC)
+	s=arc-20240116; t=1742206818; c=relaxed/simple;
+	bh=AXL3S+UXmXWsnrdSKH8aIWKMQxs3uIqHHvZfQWxskDk=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=qnNDQGbNii1Dgz2pMmCQgcW5x9oejMa8WMcEuEJSVDXarK5jPUUI0TDopxYl1TIuyOLJG7Fz/Mhp9Gh4+EDt9Q02DIlGTQ1rXL6rSVYHi/AcU4MPBxUHFf8mR/vt1gX0AAIlFURznOC0FB/OJA9j5POJ1XhHTywWmz1dfPY90SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mA9jxrVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E603C4CEE3;
+	Mon, 17 Mar 2025 10:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742204330;
-	bh=oWwmKbi/HtXoQ4LstbPyv3nh7Xa+NN+hy3hAZLsvFi0=;
-	h=From:To:Subject:Date:From;
-	b=QSxD9IXcEKc1IUGw9GfgW5Z8fiHL2UV6YKE8wS6JrOUGmaY1wMRopA/mX9qB1dnB3
-	 6xmxXT1q9W9CHRbyS5zE2PlKPPF+CZ60jMLBSYeG35rhzP6sE+wAInmZYrJ/e8QtF8
-	 eX1MrpznYAbnXMK2cBoakb0l6gptSjyr7c+1agz8jeHwK/EEKrZfuqgq8csUFVeFWr
-	 8qcrRPTSZmIvM+zt6grWUkFtLv2GcQkApSWREskj6/6pcs/YJsdLymC76IAIpDxwhk
-	 C/pRyy01ZxKwfKZC1sKPB7N0r1K9BZugBUkIaEzpA9De/hWUvHHOn5ZRe2217g+vM8
-	 4Dg7kweL6Q9Iw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 663F0C433E1; Mon, 17 Mar 2025 09:38:50 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219890] New: illuminance sensor is jittering between correct
- value and 0.03lux
-Date: Mon, 17 Mar 2025 09:38:50 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: wysiwyg81@rbox.co
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression
-Message-ID: <bug-219890-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1742206817;
+	bh=AXL3S+UXmXWsnrdSKH8aIWKMQxs3uIqHHvZfQWxskDk=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=mA9jxrVRoR1MWndHhnSw3bvKK9p6bTvgAoBvai2grcmy2X9VIrYoYPPqEkkJTtAjQ
+	 50SYsqM85E/Ud+17P2Tx93ETXe57vnpCFtdXLvmTpwrMgy2A0YiU61bUcsAvmURMMk
+	 lJH4ItQsVQZcGT5kJSm2Df03ZmLcs/DUROdo9SZGyubjYDDjxzUIF8b1lWk6LzeH1W
+	 AspqOdymfSlsQb+Rmiap/kuO6M9hNX0DDm64QE3cgNiaBklZQ1adMXiTL6GZ4vSvBR
+	 BHkpNg/fbrlOy4o2svb45NEGDKIUtI4zqet9PmpuQWP6j9wfNKmMwKHV0zpqiaSeNV
+	 6cG8JmhL4Qcuw==
+Date: Mon, 17 Mar 2025 05:20:16 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
-
-            Bug ID: 219890
-           Summary: illuminance sensor is jittering between correct value
-                    and 0.03lux
-           Product: Drivers
-           Version: 2.5
-          Hardware: All
-                OS: Linux
-            Status: NEW
-          Severity: normal
-          Priority: P3
-         Component: IIO
-          Assignee: drivers_iio@kernel-bugs.kernel.org
-          Reporter: wysiwyg81@rbox.co
-        Regression: No
-
-Hello,
-
-I have a Lenovo thinkbook 13x gen4.
-Automatic brightness control is flickering in Gnome, so I checked sensor wi=
-th
-monitor-sensor command (iio-sensor-proxy).
-
-it shows following behavior:
-monitor-sensor  --light
-    Waiting for iio-sensor-proxy to appear
-+++ iio-sensor-proxy appeared
-=3D=3D=3D Has ambient light sensor (value: 316,000000, unit: lux)
-    Light changed: 299,000000 (lux)
-    Light changed: 0,030000 (lux)
-    Light changed: 299,000000 (lux)
-    Light changed: 0,030000 (lux)
-    Light changed: 299,000000 (lux)
-    Light changed: 0,030000 (lux)
-    Light changed: 305,000000 (lux)
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: conor+dt@kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, jic23@kernel.org, devicetree@vger.kernel.org, 
+ oskar.andero@gmail.com, krzk+dt@kernel.org, lars@metafoo.de
+To: marius.cristea@microchip.com
+In-Reply-To: <20250317090803.30003-2-marius.cristea@microchip.com>
+References: <20250317090803.30003-1-marius.cristea@microchip.com>
+ <20250317090803.30003-2-marius.cristea@microchip.com>
+Message-Id: <174220681643.3406351.8233477682051642594.robh@kernel.org>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: adding support for
+ PAC194X
 
 
-the 0.03 is unexpected has it has never been that dark.
-it seems it's not a iio-sensor-proxy bug as I can see similar behavior by
-checking directly content of here :
-/sys/bus/iio/devices/iio:device0/in_illuminance_raw
+On Mon, 17 Mar 2025 11:08:02 +0200, marius.cristea@microchip.com wrote:
+> From: Marius Cristea <marius.cristea@microchip.com>
+> 
+> This is the device tree schema for iio driver for Microchip PAC194X and
+> PAC195X series of Power Monitors with Accumulator.
+> The PAC194X family supports 9V Full-Scale Range and the PAC195X supports
+> 32V Full-Scale Range.
+> There are two versions of the PAC194X/5X: the PAC194X/5X-1 devices are
+> for high-side current sensing and the PAC194X/5X-2 devices are for
+> low-side current sensing or floating VBUS applications.
+> The PAC194X/5X-1 is named shortly PAC194X/5X.
+> 
+> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
+> ---
+>  .../bindings/iio/adc/microchip,pac1944.yaml   | 195 ++++++++++++++++++
+>  1 file changed, 195 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml
+> 
 
+My bot found errors running 'make dt_binding_check' on your patch:
 
-I checked the behavior on windows to make sure it's not an hardware failure
-from my sensor.
-While I cannot have direct access to raw sensor data on windows, the automa=
-tic
-brightness is perfectly smooth: no flickering of any kind.
+yamllint warnings/errors:
 
-I didn't found sensor name:
-=E2=9D=AF cat  /sys/bus/iio/devices/iio:device0/name
-als
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/microchip,pac1944.yaml: properties:interrupt-names:items: {'enum': ['alert1', 'alert2']} is not of type 'array'
+	from schema $id: http://devicetree.org/meta-schemas/string-array.yaml#
 
-But if there is other place I could look, let me know.
+doc reference errors (make refcheckdocs):
 
---=20
-You may reply to this email to add a comment.
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250317090803.30003-2-marius.cristea@microchip.com
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

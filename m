@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-16922-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-16923-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02B6A63953
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 01:55:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 591BAA63A5D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 02:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D132E188E218
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 00:55:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A2433A7E03
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Mar 2025 01:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4161A286A1;
-	Mon, 17 Mar 2025 00:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7BF433CB;
+	Mon, 17 Mar 2025 01:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ft8Qyowi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OvvtAdcY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6D81F941;
-	Mon, 17 Mar 2025 00:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEF4DF71;
+	Mon, 17 Mar 2025 01:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742172938; cv=none; b=W7tKlLRG/p/rFp8w17T7V1zTjKhtrcKhlSSjYk41DkS4g3iYUIZ3U1Mb4Dg0Q2H7nAlZH7RTIz+trze0L/qhwT0f2fhilzM9NL0OosacFVn+iiX5CMHrZd773EnnmxNDOgrFBQvdiWywpEF2ks0ALNsOvFSD0C+8fhLC+saI5qA=
+	t=1742175154; cv=none; b=mdvfUByffu2zwOCiI9BYNiUD2yrUaN6WbV0y9tRIos4naFPYqFTEulv8aV6B/zGfgCCr3w+kK/B+JmbsCmU1TUVzBho9Xq8znMLwwW2h2NKBrZsOnKFBJkO6j7f0GLMP8rnBFSNcZd++lcblq+7H1rmpOBXnQljFuz+RxXqbL2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742172938; c=relaxed/simple;
-	bh=PVgQzkmryWOb7mXmc9/WhWRNe5ZnnKuIEC0s4BOLFcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=NxBQZPfguwuuNTC5ZkiOZyi0MBT+01fNYRluuHyG4IWuwD5KfPlgHDT+QictF+rwb/OWyDQPSH6+5zAtynooC6tCWqXoC7/r07bDwsRu6PPv7feN2eJz8e2yQcYgcI+4bY7QoZhafcAKR7GaMD/UZiW+oZ0dViSp6iek2HsLf7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ft8Qyowi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1974C4CEDD;
-	Mon, 17 Mar 2025 00:55:34 +0000 (UTC)
+	s=arc-20240116; t=1742175154; c=relaxed/simple;
+	bh=s8GEmYzbmS9r1yi+MUIttdEdJaVN5wVHb6I3vPopbTQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+Rx2mK/Zk7y85Iw8IoPaDTD+M8buQjVLzan6tYe83yy59anxZ5yyqTufJb59kV8wzHM4XKMqeV7zu2C0ZKswWnK4QturKPWUcucMi1WpeWy4l4M33xy3jmZl41WGKzBSP70shS2P83XfY+E9y8/gbrTyAhcF3mtpV9rzNR9wKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OvvtAdcY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8C7C4CEDD;
+	Mon, 17 Mar 2025 01:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742172937;
-	bh=PVgQzkmryWOb7mXmc9/WhWRNe5ZnnKuIEC0s4BOLFcA=;
-	h=Date:From:To:Cc:Subject:From;
-	b=ft8Qyowib5ZlMK+kXV4IOprCs2RVIN2uLX/adDWp8X919Xzag+w6mLSP2sl4IeGCM
-	 +Is1pk8ee85Z2oZo/OEmOp6+jyuEbTYGkXZCA3Z6L4scuzVkXoPTYpd29n6TI3LHo4
-	 ZgjaRIjWVcoGFgTSnnNBaC61p2owgl6fCGDbKjcPLpWt2u42Tv9+jUwIEWRBzV3vDG
-	 e2A4Bymgz93Z6Y6lVUGOi/nVVjtlNljwUbgE6mLQePupai1OKmce8ffSXY9BdAJ5Ck
-	 cIKrl6LDwMeDWIP3/O1XFJeSeYomWl8aLR56Gle2iMd+/js9XyOHZPahx5e+xqNWVU
-	 6ZPtpQghrI3XQ==
-Date: Mon, 17 Mar 2025 11:25:40 +1030
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>,
+	s=k20201202; t=1742175154;
+	bh=s8GEmYzbmS9r1yi+MUIttdEdJaVN5wVHb6I3vPopbTQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OvvtAdcY3LePAv0xsm6FdDZcrFUa/xd8jEpteznMBts5AU8E+vF7+GGlMc115YNRH
+	 BQWFNZ3f1wLPIMOhbyvOGwS2qwFRaM0nwE/0Vb3uuT4RTGbDjBq2VdxZOCBNmcCUIY
+	 zoR4yeBN87VjEDsPtPXB8jeH1EnHQClpbX4rWRF7fhsY8MR8upGNGI6KetBB/EUf/n
+	 vZ9eKQCfseOVVmgqaith+zXVjL0vobpGa7Poz9sbCOVkYCtL+LsxMs2nGA8GnLaRF6
+	 YFLhJ6aZg7SfuKgQL2XMYCeVbg0bmRxh7KLMSI3MN77a6jdpYTXThuv/tVuJWESizU
+	 TX3ewDoH0483A==
+Date: Mon, 17 Mar 2025 01:32:30 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>
-Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Guenter Roeck <groeck@chromium.org>, linux-iio@vger.kernel.org,
+	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] iio: proximity: cros_ec_mkbp_proximity: Avoid
- -Wflex-array-member-not-at-end warning
-Message-ID: <Z9dzDB1gttXehYGO@kspp>
+Subject: Re: [PATCH][next] iio: cros_ec: Avoid -Wflex-array-member-not-at-end
+ warning
+Message-ID: <Z9d7rp-ullvmXKoM@google.com>
+References: <Z9dy43vUUh4goi-Q@kspp>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,57 +62,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <Z9dy43vUUh4goi-Q@kspp>
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+On Mon, Mar 17, 2025 at 11:24:59AM +1030, Gustavo A. R. Silva wrote:
+>  static int cros_ec_get_host_cmd_version_mask(struct cros_ec_device *ec_dev,
+>  					     u16 cmd_offset, u16 cmd, u32 *mask)
+>  {
+> +	DEFINE_RAW_FLEX(struct cros_ec_command, buf, data,
+> +			sizeof(struct ec_response_get_cmd_versions));
 
-Use the `DEFINE_RAW_FLEX()` helper for an on-stack definition of
-a flexible structure where the size of the flexible-array member
-is known at compile-time, and refactor the rest of the code,
-accordingly.
-
-So, with these changes, fix the following warning:
-
-drivers/iio/proximity/cros_ec_mkbp_proximity.c:63:40: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
-
-This looks pretty much like the following patch for RTC:
-
-https://lore.kernel.org/linux-hardening/Z9PpPg06OK8ghNvm@kspp/
-
-Thanks
-
- drivers/iio/proximity/cros_ec_mkbp_proximity.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/iio/proximity/cros_ec_mkbp_proximity.c b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
-index 667369be0555..4fe3d84e2729 100644
---- a/drivers/iio/proximity/cros_ec_mkbp_proximity.c
-+++ b/drivers/iio/proximity/cros_ec_mkbp_proximity.c
-@@ -59,16 +59,10 @@ static int cros_ec_mkbp_proximity_parse_state(const void *data)
- static int cros_ec_mkbp_proximity_query(struct cros_ec_device *ec_dev,
- 					int *state)
- {
--	struct {
--		struct cros_ec_command msg;
--		union {
--			struct ec_params_mkbp_info params;
--			u32 switches;
--		};
--	} __packed buf = { };
--	struct ec_params_mkbp_info *params = &buf.params;
--	struct cros_ec_command *msg = &buf.msg;
--	u32 *switches = &buf.switches;
-+	DEFINE_RAW_FLEX(struct cros_ec_command, buf, data, sizeof(u32));
-+	struct ec_params_mkbp_info *params = (struct ec_params_mkbp_info *)buf->data;
-+	struct cros_ec_command *msg = buf;
-+	u32 *switches = (u32 *)buf->data;
- 	size_t insize = sizeof(*switches);
- 	int ret;
- 
--- 
-2.43.0
-
+max(sizeof(struct ec_params_get_cmd_versions),
+    sizeof(struct ec_response_get_cmd_versions))?
 

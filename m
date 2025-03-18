@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-17037-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17038-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6803CA67BE0
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 19:25:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2970A67BE2
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 19:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5A9189D2F2
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 18:25:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3AB3175EAA
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 18:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C60C212B34;
-	Tue, 18 Mar 2025 18:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274AC212F9F;
+	Tue, 18 Mar 2025 18:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="orV+1m7w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HgtT0mm9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD59D4C79
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 18:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBA12212B38
+	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 18:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742322341; cv=none; b=Kcm3Jl9d1AXHk7B/1z4sUGfQls50x5hmA/Q81tuQSlo85Ipq2in+E6LFZvR520AUTjvrQPoveHhK1iI4EWbeE5qMch/TBADd0WRXVZTtBRTm6aEH3sIYymjbwhEqY/RfxGc8V8mSeEVqcIh4mouukAakRwarRsu6c7w+z7ycsdY=
+	t=1742322459; cv=none; b=Npj9wHG2r3B9Vz4GB/dJSqYiQcrQcyiWpmX5IAt74dl68jBQ24jfb23HX2nRWU2gjI9V//TM/CsWNVUShhNapV1zvQfwTY0qbT5EwhnBg+fb9Hrm/pog4U89yRb24J57447+SR+w5IP2VkFU5oBJ/ehq3uajT9wQPyZVkonwvtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742322341; c=relaxed/simple;
-	bh=/UZlQRgDJ40Vwbv48N+gBWhPNEF6XQwhWZkzEHY4PQ8=;
+	s=arc-20240116; t=1742322459; c=relaxed/simple;
+	bh=lf137VnVcp21I44m9NQAVewbbub8GACVWaYAVqh9olY=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q7FDDOMsgCbHcolN4rh1jtkYXyDSR4yr7YbbvlEvhpkuEveAv8Gxi2qnkqWPZHi6c24Mk1x4+Q4VkssaaCkknr2/huRx6xuP51sTB3p+/IKFi3FuDZdQk7Qzm5g/4Ebg4PEd7r0L4WMjNEt17cUsC4lfkKywG0xVy8CXqGHNNqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=orV+1m7w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 50AC9C4CEDD
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 18:25:41 +0000 (UTC)
+	 Content-Type:MIME-Version; b=XSs1dCB7O5sghheVm2VtdWC4LTmORCh9ljG0Ydt07jurZ+eopYM08n4BXqW5H/uAXeNNQENLMUDHRFVMqukXlqBs0mRIszHWIpcmtW9dY0OMI+uRNJISIlIR2Cr1CchTEOvzSi1Exab8m1mROpfi5awvZcuy+/ou0U2J0yObWKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HgtT0mm9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 52E78C4CEE9
+	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 18:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742322341;
-	bh=/UZlQRgDJ40Vwbv48N+gBWhPNEF6XQwhWZkzEHY4PQ8=;
+	s=k20201202; t=1742322459;
+	bh=lf137VnVcp21I44m9NQAVewbbub8GACVWaYAVqh9olY=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=orV+1m7wWUw5PdyDJc1sYIVKrAPhxOnNDfTwRVv6qgoIoIyv9c3L9cp8SrPogDu/+
-	 gUiAkqwkwS2NWToMdcRAGjJe73Xm6pm+rJbM/Bd+rYRVTsaM9IVa3CLXLjHLf0gTnE
-	 ucGwJza3zenh/+CbaADB/5cTEkfq1j/n3l0t4Fr7di8OnxEM83QzdaTiJDxscOCyrU
-	 tk9Oqbs9nUZC6pLQQ0+fwWd2lEOKqqtR5iNv/N1qJSLKzEsENRNAtlxPhA0PbqBol7
-	 Yt2O9DYeZpzBfXuqn8hjMpZhaBHHmXFc5rqdu/AXUhl/XJEDsxewz8jsD0IDk6nB6G
-	 kgDWvu+Rs2cDA==
+	b=HgtT0mm99DEV0UHgSQA4l0TrUAc9yvtrcGdxt0xUgVySSG8oL4Nn4B/mLwZgsMPG+
+	 s5inVhxiV01mo/oUJia2LPustSPc6v1KjkoBXXwPOTP7kWcDzgk+uk4/W5Wej0D5/g
+	 yMfJxawZ76+1hoGgJ4+SHi8TAE1T251RgbhmZmR9GbGn8Cgw7ymfKOVlWZOV7o5cEx
+	 haTM3j+AVI6wwL8h3B4KDU/xafw9zfTObbbEjXl0/FpJe33CJ0uYastRU07EodL3Lv
+	 kI/ahtbCv/yN5Q8AhQvFPTwQi8tGoWxkHQEDpEg4L1fNKmikmntoSMwPfxHVSyU1ft
+	 x9TCwrEd6o8Xw==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 419ECC3279F; Tue, 18 Mar 2025 18:25:41 +0000 (UTC)
+	id 39014C41612; Tue, 18 Mar 2025 18:27:39 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linux-iio@vger.kernel.org
 Subject: [Bug 219890] illuminance sensor is jittering between correct value
  and 0.03lux
-Date: Tue, 18 Mar 2025 18:25:41 +0000
+Date: Tue, 18 Mar 2025 18:27:39 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
@@ -62,8 +62,8 @@ X-Bugzilla-Resolution:
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-219890-217253-Kdw67hWDhX@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-219890-217253-ut4wAPJxm5@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
 References: <bug-219890-217253@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,17 +79,22 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
 
---- Comment #11 from Fred (wysiwyg81@rbox.co) ---
-Created attachment 307852
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D307852&action=3Dedit
-logs from iio_generic_buffer
+--- Comment #12 from Fred (wysiwyg81@rbox.co) ---
+Hello,
 
-This are the logs from :
-
+I did:
 echo on | sudo tee
 /sys/bus/platform/devices/HID-SENSOR-200041.6.auto/power/control
 
 sudo ./iio_generic_buffer -N 0 -a -c 1000
+
+I hope it's what you expected?
+
+It's evening now, ambient light is lower than previous.
+Also this time I use a smartphone blinking screen app to add some variation,
+otherwise it would take hours to fill the 1000 samples. hope it's fine.
+
+let me know if I shall do something different.
 
 --=20
 You may reply to this email to add a comment.

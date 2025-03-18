@@ -1,150 +1,240 @@
-Return-Path: <linux-iio+bounces-17053-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17061-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A1EA68015
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 23:54:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047A8A68087
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 00:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A6227A8989
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 22:52:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87FE08816F0
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 23:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D609212FA0;
-	Tue, 18 Mar 2025 22:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120942144D5;
+	Tue, 18 Mar 2025 23:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2ZH0bW/A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWzcBPeB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E47214A94
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 22:52:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5791720FAAB;
+	Tue, 18 Mar 2025 23:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742338355; cv=none; b=fcKLFXmZ2YZyB1wUWylz3haCACi/Yo0rWxb/+h8i8wCbr6HN9FnmY/tZvdyhfks+Zof9vCd7UBobUDg27gmbEu4Bxv0fqXwts507OB6uQFNezoIsoVBAK5a42tTC0++uwPc01v+EK58vTymEx0s5obVaLT0skQ5SGFOU7QV0jYE=
+	t=1742339343; cv=none; b=I0QfxnUc5aGM5xMyPeVKIdR6fOTSNobZgovpr/B1sJPUblVoBh44HsqWpuOcEK288Louj2WWKXGmGnxWq+JDMdlPB3i/r2Yet530SDfLiMkr8BEq+m/FdDV0M1HB3q3hkFNIqpyTnFDerQ2O7o0//EQHlqeUFHxRsFlaZbe+ZfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742338355; c=relaxed/simple;
-	bh=kM+k5AQriGEQF4EjhCiLnSRLo7GvLPAK1dzRegvKVGo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ijxiuEMM1///3FBytRNWGV78wnI/P5Wpa3DP22a93os0n7VCmhlKKr7UgjCagUtmudUNUQMJC0Z27wo3vvZMOh84mv6T7GvB37tmD6Ev50R1vZLWdoVGtAG9aKU13ZqNY/x03ZNRyDYmqI6lC6nttZH0MhWKuHmUqo16eKQftog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2ZH0bW/A; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-72b7a53ceb6so88826a34.0
-        for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 15:52:33 -0700 (PDT)
+	s=arc-20240116; t=1742339343; c=relaxed/simple;
+	bh=12IElAGS0JOyhd0a5BjSSccOOg+P4AcS4hnnhXwKjd4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SQgUStlO4gk0pqgNHT608RZfz1qAmyvl1q7BivBlh2xzD5jaBk3ymWoGKF7Ah4gno7CsYYNLFNtszV5lNr/PvWsp3Ul8Ue9yTIt3xaNuF9QYAMSQYqZ3C1oqc+fe+zJJw7NsW5GnwQkUYsT5U+jMoUh+qapNKTbori68UTyF+v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWzcBPeB; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6fee3632ef1so3732467b3.1;
+        Tue, 18 Mar 2025 16:09:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742338352; x=1742943152; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ttzqhRfuW1j8Jj5xatxxwRwR97+YJSALRqNQY7//6rw=;
-        b=2ZH0bW/AuiC51LZA1APyzO6+1my3EM9ekOKTmPJKZyLG2Ye80yMZCcPBmz1TM0PA90
-         8JfrkUObwbhLTz8U7j5iJk1gco8L3JZXMs2MLWtNMBOYSqeTAHdZneIZ/9pntAkKawA+
-         6PA+3W7FRje8NoywxqdDRdBzocFjkI+LvYWxINWP405zCUqYc/MfBKqbVFMaGCsoI9pA
-         AEMGNU+jFzz6uhXRhiois8HFMsj+mH6aPRc9wB1e5yk+TooJfhNXh+B88tgKAri/P8Er
-         X5NeHfp4SlmkOlXpocA5fWPYhn4yuLD/cAE7ijKApoILK/DxIuP1Lg/bcZau56ZFpPBi
-         C8mA==
+        d=gmail.com; s=20230601; t=1742339340; x=1742944140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xIS/spIxOBDiiXIBqVelLgXqoKj2wc+gtRYIv/Osi60=;
+        b=GWzcBPeBqAnHQarfMpqep9Ki/HLn2LCklbp/IaGcW1RZbf8GrOxklshq4tFf8Ftoqb
+         cQXVju9oeB5kebzwFq0cetXzDL33BA31R6KJqocFy9yTHJsyIrK+jWwR/lS2xi9JhAVS
+         SOSrA5EC6Qa8btMF0QXt4frKFi6OsXtsAeIWpspcEjFO9CQS9TDhGz7J0wYm0a7zc1TJ
+         jvuMGJn+e9m1eyy8bLK4vdiQzbzU7n2XhdQYJgErzP6FZpLblRgtTa63+xhwMCMSxSTE
+         b2F/WH1Tx1ezYF+9fdi8xs96OdLhB9TQnBn+unzC3Bxz4R/cIqHhXpo6bILhkgoAjLll
+         6pXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742338352; x=1742943152;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1742339340; x=1742944140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ttzqhRfuW1j8Jj5xatxxwRwR97+YJSALRqNQY7//6rw=;
-        b=UDWG22WXQa0Ar9HuC9OsRf4JJWgNQ46vJldrlffhuy4vfNem+4bxYihIVvVNSkpWO0
-         yzcws0IviTlnu4/63ykGZupIZPKKxLZ+HmF380GTHxzTN8JJJBLBovgwbJeU137Wm2Nv
-         cLgIWaKqt74TgNbph9F3J9GuCk7XnkFyiAOHaSkVA8T5lj81idpwgjZ+Z7mqJKQC6pgb
-         xotdY52d00WIeuenfKDP4AahO1+VzYQeka695+g8442NzY7DOIV0m9HlsyMklP9CvQmt
-         4a6ZlO9HKboGVOmMa/DMSK2UCIkdkuXgpO2QF1D4yezLjkipYfhoeOPYB6wZGIXPGIbW
-         Lk2g==
-X-Forwarded-Encrypted: i=1; AJvYcCV4Wt6ZftyTIDD29s7wJgLa3VbRqggdsgFKDARbPlkneWel8e20yHwRn6ro4WLtqXjEtKe/MPtAOH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKbIvAMWrO9kSpnzLfcg0UvTxc8e7r6q1XG81yW9d0Az8OTCkW
-	oltmiqoAl5JMLK6yI6xAs5kFxOeUKnAHM926YTogGyC5L1rT6OSbGb33nziMUEY=
-X-Gm-Gg: ASbGncs01ArwS5WhNNKTpdtNlejLnS6+aRzzkwtbvyH05rRZJoO/O+YopjGN5gGDZZk
-	uO0mPbTIKNLT7OrTkP6XSRaDqMMkL0ko6Lp0dDnHwC8++tl2qn6yNCMUk0HkYaGyT5xbhYD168n
-	UKcBVkDEow1rD//l2PKxZ6M1ZymrIS8Dnp24EbBdBVfOta+DYtV8Vs6X6S0aAVuYMc5UwRFiG8O
-	+U5OVr7B57ONlJoJShoqTfmkqOj9vUk0+9ielWlxFot7KkNXKt95fU+8KGBTACSnK3a8jdb++N2
-	iDUdyp4Cpm+T1IpZGNXzgW2jlmuReJNnepoQ5RBdOYcRIvnbCDf0qE4HzIaTm/M5UnN9c2Avj45
-	j
-X-Google-Smtp-Source: AGHT+IF23n+Eb/NK7sCDA9N/jZFII8yjWuc4vEkdMAkKMnop1OrsXpDOG/2CjJ/+bL0dRFjzNPLwWg==
-X-Received: by 2002:a05:6830:381b:b0:72b:974f:de49 with SMTP id 46e09a7af769-72bfc10c94dmr380936a34.7.1742338352458;
-        Tue, 18 Mar 2025 15:52:32 -0700 (PDT)
-Received: from [127.0.1.1] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72bb274e95dsm2191690a34.52.2025.03.18.15.52.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Mar 2025 15:52:32 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 18 Mar 2025 17:52:18 -0500
-Subject: [PATCH v2 10/10] iio: adc: ad7606_par: add ad7606c chips
+        bh=xIS/spIxOBDiiXIBqVelLgXqoKj2wc+gtRYIv/Osi60=;
+        b=Si2X0MIx37rZUC9qDT34pQeDWcCt1/k0rVfW5HZCxnJiv1q8Z2LLWuzLqeFpVzPs7L
+         vlkUfC0hXbR0Y7R6S6V/QgEr59l1VJWKZe4Ko004YdTymh70h+TFfYUqVCQZYPMCk6BQ
+         B15uuulzYvhzUoG44qdV4/QTHIYihHkFfB8GuMKb0sW/+69/DTt/XViqELs83XiEtSmA
+         H48l0gFj7b+fkjd7EtbDk7iQrpbFzj/PaL2LeAI9sKeeydLyeJ3fk//E/fYySiSbxlhq
+         NMOmlU8jLH86+5HCdXXy8ai03EshNtHs9KH5wRi3KB/3S1iroZ82/RjZthsfEqPmTCwD
+         hYAg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGe9wbeHHh2saHuTbqTdvVLeWcib29+tKlkBYdCMEyXQVeVWVSpRVAorArndX5aRAQmQgNgdiqxeeKsUNV@vger.kernel.org, AJvYcCXnGsc0GQxNwq4CYxRVZ2v69hxzalj+p7N9M08gHbjQFAMpKWEHrMWYZDNLwR4Gkm1m1U89Eddythw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxENMK0V5Jksf7rGfUD835gXBittKZ3j7gN8EpSdLX46EvbAhr7
+	OZn9ofJhNLPv5q8x9OdX9HNvdPu1Z7IhY9y0OV+2XSjl8Ese69f/WLj184CfbeW+bOwF2qnNCHq
+	EtKecxedJ1bQyCjGKia2gEpyLcYE=
+X-Gm-Gg: ASbGncsFyS22l3eBkvo9IDsI9Nv5X8jCoexE4cL8XBwljy7er0J6uiZI9C5JSLYVs43
+	DYGsmLQW3BJDBL3L1jC8R8fZaW/sVsDvJOHpYSvJquSFijoZoKnymrPNjxXMPzvpplNIIZXrpdZ
+	SIc2GCfRXGCwpJuoI8t5hLEUDdRg==
+X-Google-Smtp-Source: AGHT+IEjVR47CADf3uWFBHBHIPGWbA0aE2MzkK2cipOon093MUvn5RpZDd72vHAeVIhh+zfubRbSUg4Zd3yWws7ZqsA=
+X-Received: by 2002:a05:690c:d0b:b0:6fd:45f9:5f65 with SMTP id
+ 00721157ae682-7009c1dc93emr4425867b3.8.1742339340100; Tue, 18 Mar 2025
+ 16:09:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250318-iio-adc-ad7606-improvements-v2-10-4b605427774c@baylibre.com>
-References: <20250318-iio-adc-ad7606-improvements-v2-0-4b605427774c@baylibre.com>
-In-Reply-To: <20250318-iio-adc-ad7606-improvements-v2-0-4b605427774c@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, 
- Angelo Dureghello <adureghello@baylibre.com>, 
- Alexandru Ardelean <aardelean@baylibre.com>, 
- Beniamin Bia <beniamin.bia@analog.com>, 
- Stefan Popa <stefan.popa@analog.com>, linux-kernel@vger.kernel.org, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1736; i=dlechner@baylibre.com;
- h=from:subject:message-id; bh=kM+k5AQriGEQF4EjhCiLnSRLo7GvLPAK1dzRegvKVGo=;
- b=owEBgwJ8/ZANAwAKAR+K+IyC93wDAcsmYgBn2fkdBcvwaygKuokVp6uC8fcc9pqtVqrS8+l0n
- OTZJIZxNSiJAkkEAAEKADMWIQSKc9gqah9QmQfzc4gfiviMgvd8AwUCZ9n5HRUcZGF2aWRAbGVj
- aG5vbG9neS5jb20ACgkQH4r4jIL3fAP+aA//QlUhUn2O4TYB3ctNgaiMB+xOE4kflWFSAP6sz1b
- LSLSkg5nyzB+X8UJ1YRDe8lnlX83sHjL7mn9g+8ao1Bd8gABdm6uPB+8sk5WOEXMRg9VHJi8+Yb
- K6SQrzHbD30MxAYa8AsWFLoJWstMajWoibGfrGWMtNyPIAiVriL41/LLeKJmENx5w/mA7idggF/
- Fab57FILLOn2hBcrMNjQJGKBnNQx3Lp87dCMa1TO1ynv1HBv7cOIqIf8To3dP4LymY3f3+SBtQB
- /dA3TgB00z6k1XcxNEco0j1Hvnyz7iMq5VOsvYehI552B3J+mVLKg6Qysff38E6RPMMH0htWVvr
- lsoMTXve5ayIV6sx4WOfAkUSzewwIUmm/N/3sFX56kQbMNvtUr0t1YMCVCMXZueVedhGOhTu+BK
- QNOzSPGaw8jFRYxGIhjr68zHmUqxUI9O5yYdBQv9rWiWoEj6RFyajm9FHcOfryhlVuW99tJWJ08
- PCaXTEMtp1ziOje9Hlts7nd6az2DdEcqLkEelUFz7emkCOiBWb11EifrQngJE8WNi6UUms8+u9/
- OCdc7QEROsVMv+vH6aqJELEVylDkXDI5YYYuXulu8ulSrolTVf2Kq55K7Z6D84qUDlaZndvmHnV
- gscWVFbMWR1ObhSxZft4iWzsfCb/Io2Ywv3Kq9rRugP0=
-X-Developer-Key: i=dlechner@baylibre.com; a=openpgp;
- fpr=8A73D82A6A1F509907F373881F8AF88C82F77C03
+References: <20250313165049.48305-1-l.rubusch@gmail.com> <20250313165049.48305-6-l.rubusch@gmail.com>
+ <20250316112057.638626bd@jic23-huawei>
+In-Reply-To: <20250316112057.638626bd@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Wed, 19 Mar 2025 00:08:24 +0100
+X-Gm-Features: AQ5f1JpIftPJ_Bq2CTCQQSDs8DG8jSji5uxhkTn5lmR1h1EFtQ7YPkCqKKxSJ1U
+Message-ID: <CAFXKEHZ+4OyA4AFPkAayetoK3pWfzf8ubrbozJjcjTqTAnHqFw@mail.gmail.com>
+Subject: Re: [PATCH v4 05/14] iio: accel: adxl345: add single tap feature
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add lookup table entries for ad7606c-16 and ad7606c-18 chips.
+On Sun, Mar 16, 2025 at 12:22=E2=80=AFPM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Thu, 13 Mar 2025 16:50:40 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add the single tap feature with a threshold in 62.5mg/LSB points and a
+> > scaled duration in us. Keep singletap threshold in regmap cache but
+> > the scaled value of duration in us as member variable.
+> >
+> > Both use IIO channels for individual enable of the x/y/z axis. Initiali=
+zes
+> > threshold and duration with reasonable content. When an interrupt is
+> > caught it will be pushed to the according IIO channel.
+> >
+>
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+>
+> Hi Lothar,
+>
+> A few things in here are from the discussion that was continuing
+> on v3 so I may have said more replying to that.
+>
+> Anyhow, for now I'll hold off on applying from this point on as
+> a few more things to respond to inline.
+>
+> Jonathan
+>
+> >
+> >  #include "adxl345.h"
+> > @@ -31,6 +33,33 @@
+> >  #define ADXL345_INT1                 0
+> >  #define ADXL345_INT2                 1
+> >
+> > +#define ADXL345_REG_TAP_AXIS_MSK     GENMASK(2, 0)
+> > +
+> > +enum adxl345_axis {
+> > +     ADXL345_Z_EN =3D BIT(0),
+> > +     ADXL345_Y_EN =3D BIT(1),
+> > +     ADXL345_X_EN =3D BIT(2),
+> > +     /* Suppress double tap detection if value > tap threshold */
+> > +     ADXL345_TAP_SUPPRESS =3D BIT(3),
+> > +};
+> As per feedback (after you sent this!) on v3, I'd drop
+> the last value out of the enum, or just use defines and a u8 for
+> the one place this is used for local variable storage.
+>
+>
+> > @@ -198,6 +387,132 @@ static int adxl345_write_raw(struct iio_dev *indi=
+o_dev,
+> >       return -EINVAL;
+> >  }
+> >
+> > +static int adxl345_read_event_config(struct iio_dev *indio_dev,
+> > +                                  const struct iio_chan_spec *chan,
+> > +                                  enum iio_event_type type,
+> > +                                  enum iio_event_direction dir)
+> > +{
+> > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > +     bool int_en;
+> > +     int ret =3D -EFAULT;
+> Not used?
+>
+> > +
+> > +     switch (type) {
+> > +     case IIO_EV_TYPE_GESTURE:
+> > +             switch (dir) {
+> > +             case IIO_EV_DIR_SINGLETAP:
+> > +                     ret =3D adxl345_is_tap_en(st, chan->channel2,
+> > +                                             ADXL345_SINGLE_TAP, &int_=
+en);
+> > +                     if (ret)
+> > +                             return ret;
+> > +                     return int_en;
+> > +             default:
+> > +                     return -EINVAL;
+> > +             }
+> > +     default:
+> > +             return -EINVAL;
+> > +     }
+> > +}
+>
+> > +static int adxl345_write_event_value(struct iio_dev *indio_dev,
+> > +                                  const struct iio_chan_spec *chan,
+> > +                                  enum iio_event_type type,
+> > +                                  enum iio_event_direction dir,
+> > +                                  enum iio_event_info info,
+> > +                                  int val, int val2)
+> > +{
+> > +     struct adxl345_state *st =3D iio_priv(indio_dev);
+> > +     int ret;
+> > +
+> > +     ret =3D adxl345_set_measure_en(st, false);
+> > +     if (ret)
+> > +             return ret;
+> > +
+> So in my brief reply to the v3 discussion I suggested perhaps
+> factoring out everything from here...
+> > +     switch (type) {
+> > +     case IIO_EV_TYPE_GESTURE:
+> > +             switch (info) {
+> > +             case IIO_EV_INFO_VALUE:
+> > +                     ret =3D regmap_write(st->regmap, ADXL345_REG_THRE=
+SH_TAP,
+> > +                                        min(val, 0xFF));
+> > +                     break;
+> > +             case IIO_EV_INFO_TIMEOUT:
+> > +                     ret =3D adxl345_set_tap_duration(st, val, val2);
+> > +                     break;
+> > +             default:
+> > +                     ret =3D -EINVAL;
+> > +                     break;
+> > +             }
+> > +             break;
+> > +     default:
+> > +             ret =3D -EINVAL;
+> > +             break;
+> > +     }
+> to here, so as to allow simple direct returns.
+>
+> I think that will make the code more readable given the need to reenable
+> measurements and that you want to leave it off on error.
+>
 
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7606_par.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Sorry for replying again on this topic. Pls, find my solution in v5.
 
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index e33b07ab5eace4b78e7cf39ee7e8d9379c9f73e7..634852c4bbd2c531d6c0e02d2f1e62db9008cad9 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -222,6 +222,8 @@ static const struct platform_device_id ad7606_driver_ids[] = {
- 	{ .name	= "ad7606-6", .driver_data = (kernel_ulong_t)&ad7606_6_info, },
- 	{ .name	= "ad7606-8", .driver_data = (kernel_ulong_t)&ad7606_8_info, },
- 	{ .name	= "ad7606b", .driver_data = (kernel_ulong_t)&ad7606b_info, },
-+	{ .name = "ad7606c-16", .driver_data = (kernel_ulong_t)&ad7606c_16_info },
-+	{ .name = "ad7606c-18", .driver_data = (kernel_ulong_t)&ad7606c_18_info },
- 	{ .name	= "ad7607", .driver_data = (kernel_ulong_t)&ad7607_info, },
- 	{ .name	= "ad7608", .driver_data = (kernel_ulong_t)&ad7608_info, },
- 	{ .name	= "ad7609", .driver_data = (kernel_ulong_t)&ad7609_info, },
-@@ -235,6 +237,8 @@ static const struct of_device_id ad7606_of_match[] = {
- 	{ .compatible = "adi,ad7606-6", .data = &ad7606_6_info },
- 	{ .compatible = "adi,ad7606-8", .data = &ad7606_8_info },
- 	{ .compatible = "adi,ad7606b", .data = &ad7606b_info },
-+	{ .compatible = "adi,ad7606c-16", .data = &ad7606c_16_info },
-+	{ .compatible = "adi,ad7606c-18", .data = &ad7606c_18_info },
- 	{ .compatible = "adi,ad7607", .data = &ad7607_info },
- 	{ .compatible = "adi,ad7608", .data = &ad7608_info },
- 	{ .compatible = "adi,ad7609", .data = &ad7609_info },
+After some thinking, I implemented it now using returns directly leaving th=
+e
+measurement on/off as is. I'm unsure if it actually makes sense, after an e=
+rror
+here to turn measurement on again? I can imagine a situation where a wrong
+input might result in an error. Nothing is changed, and measurement
+could/should continue. Now, it will probably stop, in case of wrong
+input. But is
+wrong input actually an issue here?
 
--- 
-2.43.0
+As other alternative, I can think of is to shift measurement on/off
+into the called
+functions directly. I think, this approach was used also in the
+ADXL380 and seems
+to be common. Let me know what you think.
 
+> > +
+> > +     if (ret)
+> > +             return ret; /* measurement stays off */
+> > +
+> > +     return adxl345_set_measure_en(st, true);
+> > +}
+>
 

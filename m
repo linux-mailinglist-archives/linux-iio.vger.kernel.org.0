@@ -1,171 +1,249 @@
-Return-Path: <linux-iio+bounces-17025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E9FFA6772D
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 16:02:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE2BA6779E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 16:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E458D3ADF5E
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 15:00:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31B7E1897417
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 15:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92CD20E702;
-	Tue, 18 Mar 2025 15:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8941920F080;
+	Tue, 18 Mar 2025 15:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b="Z8fAa0BZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H08YjFUM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-09.pe-a.jellyfish.systems (out-09.pe-a.jellyfish.systems [198.54.127.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33DB191F92;
-	Tue, 18 Mar 2025 15:00:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.54.127.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4224C20F068;
+	Tue, 18 Mar 2025 15:16:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742310046; cv=none; b=d5+XiU3BjuRXB67LW0pR3aL/WgMg4lOxf1BVg05UhRpFH64A9NXmHQueAvmXQl0F3voI6Kl4fYSs0MbnanrvqJf7DUkZzntQqidYf54utavBSJE/7uFUV96SS0A5UPJCldhRms09Gu3uBmPX5qB36hKg9PmnIH10GDB/NBBlsnM=
+	t=1742310991; cv=none; b=oOgI93GRVm6jmmc+dL53A5qHjyFqTsPKHyR5qEjJCB9N04CHddCZGL+BTbb9h7ZS6qTXGjvAdQAZzoKoxyCKtIzD/pGEvqmdWosRjDNx2FUSpl4ULfWQfyr3KDVKbDkaRvkGj6PRnUw6hjwFkeC15PQJeo+82SY6CF+EX1ahiC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742310046; c=relaxed/simple;
-	bh=27Pc74ha1MeynY0b4VpFjOnyMErp9nGgnqQ6z090Eto=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cdtopwrPSwdpMSHwIE1P0CU/HFFe/2BiNhyOaJ6LwJtky6iTK37ScfPw5fGTfcrExPj6I34pSWuZ+qeA041vKxE2fYS8wo0VHrB9qqHWgBUP6aetHDP8cvXTO3/wkJNOwjM6nngOtB7QrJTB3t545g3IRBb6XAxAfMxDb48IWEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org; spf=pass smtp.mailfrom=framepointer.org; dkim=pass (2048-bit key) header.d=framepointer.org header.i=@framepointer.org header.b=Z8fAa0BZ; arc=none smtp.client-ip=198.54.127.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=framepointer.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=framepointer.org
-Received: from prod-lbout-phx.jellyfish.systems (new-01-3.privateemail.com [66.29.159.56])
-	by pe-a.jellyfish.systems (Postfix) with ESMTPA id 4ZHFQ86vvPz9sWw;
-	Tue, 18 Mar 2025 15:00:32 +0000 (UTC)
-Received: from MTA-08.privateemail.com (unknown [10.50.14.18])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by NEW-01-3.privateemail.com (Postfix) with ESMTPS id 4ZHFQ85ycJz2Sd0W;
-	Tue, 18 Mar 2025 11:00:32 -0400 (EDT)
-Received: from mta-08.privateemail.com (localhost [127.0.0.1])
-	by mta-08.privateemail.com (Postfix) with ESMTP id 4ZHFQ849Ncz3hhVb;
-	Tue, 18 Mar 2025 11:00:32 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=framepointer.org;
-	s=default; t=1742310032;
-	bh=27Pc74ha1MeynY0b4VpFjOnyMErp9nGgnqQ6z090Eto=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z8fAa0BZYPdG5FK5LYPp00BmnUwoEOFdxyC1NnulMuGjyHEhz5XlJ5F2tPFm+G8fV
-	 5FN1GzBPy8X61zdkf+BkE9BtCeimzn0Gti2dEdKGR75d1w2sMm6EqnmLzyZwKkwngm
-	 sulaLfXP6vYKSmlUrgyDz53ZMs+Ri2OmKQDC5qk619m6P1/xGn3R0SuZvA9koCEp+P
-	 2XSELC/qEKe/t7azSFkJYHQal3l7OER1wHZfp8c596t2TzmLM3eeix4sa8DiK6sVGb
-	 z4EzZAsn5Ph96L0hNIaTXkkJw1ExDC4ZllgDH69BB7mzvAOljkq4F2qOdAGXz/KvK6
-	 sm5rBABRh8esg==
-Received: from 65YTFL3.secure.tethers.com (unknown [152.44.190.141])
-	by mta-08.privateemail.com (Postfix) with ESMTPA;
-	Tue, 18 Mar 2025 11:00:17 -0400 (EDT)
-Date: Tue, 18 Mar 2025 11:00:18 -0400
-From: Sam Winchenbach <sam.winchenbach@framepointer.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com,
-	antoniu.miclaus@analog.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, bpellegrino@arka.org,
-	Sam Winchenbach <swinchenbach@arka.org>
-Subject: Re: [PATCH v7 1/6] dt-bindings: iio: filter: Add lpf/hpf freq margins
-Message-ID: <Z9mKghgKk9vuHUyF@65YTFL3.secure.tethers.com>
-References: <20250316135008.155304-1-sam.winchenbach@framepointer.org>
- <20250316-sexy-tested-cheetah-c4a2f8@krzk-bin>
- <Z9g6tPqhAoTckFBh@65YTFL3.secure.tethers.com>
- <20250317185535.7d00444d@jic23-huawei>
+	s=arc-20240116; t=1742310991; c=relaxed/simple;
+	bh=HAaoy8W1p/d3jl+bDZ7dDoAzsQebQi1OWxgFlqU0/Ns=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MZh7kpJw6C7i17dVDOymd7GkwKPo/aH0IGQQ5Is9Qy2g2/LPp8S9wq9jL6d6Sidf0ARyydrSzOIwni/6UUCCwAtho5U50CF+VjsfXOs3Oc07MkzP6maglr88eiQa4rVm1nUDx5emAg4rZrep7RVgDokwf1ndbmvbwFfzbCI14g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H08YjFUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BADC4CEF6;
+	Tue, 18 Mar 2025 15:16:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742310991;
+	bh=HAaoy8W1p/d3jl+bDZ7dDoAzsQebQi1OWxgFlqU0/Ns=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=H08YjFUMAKjQmWe0Uzin0yDkN517R6wSum17fgcp1yoBtcB9/ZKbxYI6ZHv4iQxI8
+	 pEHyJJ0oE7ZdoqiK54wGoVuFlsGW1iLqZJoCfrnB4f3ZxBu/AdREpAPScTumGKkc2z
+	 EYxc+V6jBkv2eRLdxW+K7JGLAAg7wJPVRhXgW6zfCZEgOMqDuqdbs0AqqtYkfuLg38
+	 7h8EUzYOG699UYl/wg86RnrvKN3ydmVzspjo4fbjKOkIqCsiTYZx5OAxblUoMpvCIo
+	 KyrXsKGUNt8A2WheJ0zpm5mXyUYtqngfKi9XMrh6Yh1n9RAS9fEF37BY27IYT4VInY
+	 9wXLqgyam8bwg==
+Message-ID: <8992a79d-0859-4d7f-9b47-52e20b11260a@kernel.org>
+Date: Tue, 18 Mar 2025 16:16:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
+To: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>,
+ linux-iio@vger.kernel.org
+Cc: tduszyns@gmail.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
+ conor+dt@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250316145514.627-1-sergio@pereznus.es>
+ <01f48f6d-55a4-4dbe-b1ae-ef8c54dcc1ff@kernel.org>
+ <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250317185535.7d00444d@jic23-huawei>
-X-Virus-Scanned: ClamAV using ClamSMTP
 
-On Mon, Mar 17, 2025 at 06:55:35PM +0000, Jonathan Cameron wrote:
-> On Mon, 17 Mar 2025 11:07:32 -0400
-> Sam Winchenbach <sam.winchenbach@framepointer.org> wrote:
+On 18/03/2025 15:16, Sergio Pérez wrote:
+> Hello,
 > 
-> > On Sun, Mar 16, 2025 at 05:38:42PM +0100, Krzysztof Kozlowski wrote:
-> > > On Sun, Mar 16, 2025 at 09:50:03AM -0400, Sam Winchenbach wrote:  
-> > > > From: Sam Winchenbach <swinchenbach@arka.org>
-> > > > 
-> > > > Adds two properties to add a margin when automatically finding the
-> > > > corner frequencies.
-> > > > 
-> > > > Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
-> > > > ---
-> > > >  .../bindings/iio/filter/adi,admv8818.yaml     | 20 +++++++++++++++++++
-> > > >  1 file changed, 20 insertions(+)  
-> > > 
-> > > I don't understand. You got my tag. No changelog here, no cover letter,
-> > > nothing explains what happened here and why the tag is being removed.
-> > >   
-> > 
-> > Apologies,
-> > 
-> > I am still quite new to this workflow, and it deviates significantly
-> > from my day-to-day work. I mentioned in the previous patch set that I
-> > would like to update my email address and change:
-> > "driver core: -> iio: core:"
-> > I wasn't aware more than that was needed. Sorry for any confusion
-> > this may have caused.
-> > 
-> > In the future what is the preferred way to handle a
-> > situation like this? I wasn't aware of the cover letter feature but
-> > that looks like a promising option.
+> El 17/03/2025 a las 8:24, Krzysztof Kozlowski escribió:
+>> On 16/03/2025 15:55, Sergio Perez wrote:
+>>> Some BH1750 sensors require a hardware reset before they can be
+>>> detected on the I2C bus. This patch adds support for an optional
+>>> reset GPIO that can be specified in the device tree.
+>>>
+>>> The reset sequence pulls the GPIO low and then high before
+>>> initializing the sensor, which enables proper detection with
+>>> tools like i2cdetect.
+>>>
+>>> Update the devicetree binding documentation to include the new
+>>> reset-gpios property with examples.
+>>>
+>>> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+>> Please run scripts/checkpatch.pl and fix reported warnings. After that,
+>> run also `scripts/checkpatch.pl --strict` and (probably) fix more
+>> warnings. Some warnings can be ignored, especially from --strict run,
+>> but the code here looks like it needs a fix. Feel free to get in touch
+>> if the warning is not clear.
+
+You keep ignoring paragraphs. Did you read this?
+
+>>
+>> <form letter>
+>> Please use scripts/get_maintainers.pl to get a list of necessary people
+>> and lists to CC. It might happen, that command when run on an older
+>> kernel, gives you outdated entries. Therefore please be sure you base
+>> your patches on recent Linux kernel.
+>>
+>> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+>> people, so fix your workflow. Tools might also fail if you work on some
+>> ancient tree (don't, instead use mainline) or work on fork of kernel
+>> (don't, instead use mainline). Just use b4 and everything should be
+>> fine, although remember about `b4 prep --auto-to-cc` if you added new
+>> patches to the patchset.
+>>
+>> You missed at least devicetree list (maybe more), so this won't be
+>> tested by automated tooling. Performing review on untested code might be
+>> a waste of time.
+>>
+>> Please kindly resend and include all necessary To/Cc entries.
+>> </form letter>
+>>
 > 
-> Either add stuff below the --- above as that doesn't end up in the
-> eventual git log, or --cover-letter on your git-format-patch and
-> put useful things like that in there.
+> Sorry, I had run the scripts/get_maintainer.pl tool and got fewer 
+> recipients than necessary.  I have redone everything in a clean 
+> installation and now I have obtained more recipients.
+
+Please work on latest mainline tree, not some old clones. The cleanness
+of tree does not matter here.
+
 > 
-> > 
-> > It looks like another option is to add commentary to each patch.
-> > 
-> > I am less certain about your tag being removed - I don't fully
-> > understand that. Is there a way to preserve that if changes are made
-> > after you sign-off?
+> Any fixes I make in the patch I send to this same thread or should I 
+> send it with git send-mail? I say this because perhaps I have done it 
+> incorrectly and possibly created 3 versions, I apologize. My latest 
+> version (v3) includes all the suggestions mentioned but due to my 
+
+Not sure, maybe some, but not all. You still did not acknowledge the
+first feedback I repeated here and v3 makes the same mistake.
+
+
+> ignorance of the procedure I thought they should be sent to the list 
+> again as before. Can I delete v2 and v3 and keep only the first version?
+
+You cannot delete things sent to people. That's why you should check
+things prior sending. Everything you send is archives and available for
+everyone, publicly.
+
 > 
-> Once a tag is given it is up to the patch author to add it to the
-> patches for future versions.  That should only be dropped if the
-> author thinks there are significant enough changes to warrant a fresh
-> review.  If you do drop a tag like that, then the change log
-> under --- on the particular patch should clearly state why.
-> > 
-
-Thanks for the guidance - I see the part I missed:
-
-
-"Both Tested-by and Reviewed-by tags, once received on mailing list
-from tester or reviewer, should be added by author to the applicable
-patches when sending next versions. However if the patch has changed
-substantially in following version, these tags might not be
-applicable anymore and thus should be removed. Usually removal of
-someone’s Tested-by or Reviewed-by tags should be mentioned in the
-patch changelog (after the ‘---’ separator)."
-
-In my situation I made a mistake by not including his "Reviewed-by"
-in the changes I pushed up. How does this work if no further changes
-are required? Does it call onto the maintainer to apply the tag when
-merging in the change set?
-
-Is there anything I should do at this point to correct my error?
-
-Thanks,
--Sam
-
-> > Sorry again about the confusion this caused,
-> No problem, takes a while for everyone to get used to a different
-> process. There are extensive docs, but it is still easy to miss
-> things!
+>>> ---
+>>>   .../devicetree/bindings/iio/light/bh1750.yaml |  20 +++-
+>>>   drivers/iio/light/bh1750.c                    | 113 ++++++++++++------
+>>
+>> ... and please go through your patch and see what happened there.
+>>>   2 files changed, 95 insertions(+), 38 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/light/bh1750.yaml b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+>>> index 1a88b3c253d5..d53b221eb84b 100644
+>>> --- a/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+>>> +++ b/Documentation/devicetree/bindings/iio/light/bh1750.yaml
+>>> @@ -11,6 +11,9 @@ maintainers:
+>>>   
+>>>   description: |
+>>>     Ambient light sensor with an i2c interface.
+>>> +
+>>> +  Some BH1750 sensors require a hardware reset before being properly detected
+>>> +  on the I2C bus. This can be done using the optional reset-gpios property.
+>>>   
+>>>   properties:
+>>>     compatible:
+>>> @@ -23,6 +26,10 @@ properties:
+>>>   
+>>>     reg:
+>>>       maxItems: 1
+>>> +
+>>> +  reset-gpios:
+>>> +    description: GPIO connected to the sensor's reset line (active low)
+>>> +    maxItems: 1
+>>>   
+>>>   required:
+>>>     - compatible
+>>> @@ -41,5 +48,16 @@ examples:
+>>>           reg = <0x23>;
+>>>         };
+>>>       };
+>>> +  - |
+>>> +    i2c {
+>>> +      #address-cells = <1>;
+>>> +      #size-cells = <0>;
+>>> +
+>>> +      light-sensor@23 {
+>>> +        compatible = "rohm,bh1750";
+>>> +        reg = <0x23>;
+>>> +        reset-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
+>>> +      };
+>>> +    };
+>>>   
+>>> -...
+>>> +...
+>>> \ No newline at end of file
+>> You have unrelated changed all over the place.
+>>
+>>
+>> Best regards,
+>> Krzysztof
 > 
-> Jonathan
+> Yes, in the patch I have prepared I have solved this problem, it only 
+> adds the exact lines and does not modify anything else.
+
+OK, so this one is solved, what about all the rest?
+
 > 
-> > -Sam
-> > 
-> > > Best regards,
-> > > Krzysztof
-> > >   
-> 
+
+
+Best regards,
+Krzysztof
 

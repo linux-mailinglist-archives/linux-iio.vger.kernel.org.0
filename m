@@ -1,197 +1,221 @@
-Return-Path: <linux-iio+bounces-17033-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17034-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D436BA67A60
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 18:09:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62651A67AF1
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 18:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3509216DFB3
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 17:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECECF19C1508
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 17:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13F8210F5A;
-	Tue, 18 Mar 2025 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF84211A2E;
+	Tue, 18 Mar 2025 17:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b="RfMgRbk8"
+	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="XeGVAgWQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2050.outbound.protection.outlook.com [40.107.247.50])
+Received: from qs51p00im-qukt01080502.me.com (qs51p00im-qukt01080502.me.com [17.57.155.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6825A20FAB6
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 17:09:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.247.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742317745; cv=fail; b=c/R2qMaYRth6dkx8DtTXHV3Sdl1PkMbg5Mt0Qw04fQ98097VScZqT1VtOqjDCMrLmqp5UM8dR7nvBzKuyEZ6KaUl8t95Tld6XIEWyi794xOIeY1EoJqoBNqQReqiwKqDJQScAeUcgBNhEvaHUcGejjdqV46tENu3I/1IjXgAnGQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742317745; c=relaxed/simple;
-	bh=wleL9puHkivi8SLx5CKHDeAxnSeTmT5Wl7PBlUnDuyA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=MtnLxQVo0QSGW00Nd9x29TmO2lOHuLBTrW7I45dmGOICzRRVmVc9V5G79GZ5110rcgb2EB6JZfN9hH9S8npNcScNnvashVReBNsIfTWpcqKgaSaMP21CsBq0PpJUiILm67/0onUW59nnxHtS3Pi5RHTyUp4QCCfjNe9wiHv6FKM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com; spf=pass smtp.mailfrom=axis.com; dkim=pass (1024-bit key) header.d=axis.com header.i=@axis.com header.b=RfMgRbk8; arc=fail smtp.client-ip=40.107.247.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=axis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axis.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EHVg9D3RR7MT9j8Coy/DDVvKt9PO+30t0pwjBMp7OsLULNZwFS1vEJgJVCxcoLuffqRDad3ua+bC4IG1KIA/6mplxIhlrwx+7vG8gTuFL+Ts/4uw8a2UUIeogvhFTeZ8BwH96kBAa0hHudyqEBt0vKJhubEmNv+KUvhkX6iUpTu6BqjlfZ9PrJWIrSaOG3gCrC3F+cplcZaeJ1SG+qkMtJnUDFFnNNAR9xhWrTdgSVZiJxD1fDrzcYXsl+s4V4uJBFFaZ21K3qPaOQPRBQF2LZxrOhjy4Hha7OCYOEMZvOhapCgWZshV5NCgdhCpEZgtpndmDUX3zUgs/EqW1kq5oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a7OUffohjUUcX08lAXVqaz/AWfvuCtOCCLze3XuKc28=;
- b=kwBH3x8nNkzA5hk64bstxsBT76RzPDCPoB4595UggLGv/1s2EB4x9Pm44VyhSAT+L0JbqBG9obMEK1VQ0gSszmpWlAi6gUlI9Z/FtZsKAWKHiU5/O+wLEPoHnsTpTpIGOI/TLxOAtV9ECsfY4xmJgaFSLprOAXNKyu0llhr12V5XzF3Lx6DbRDFWaqSIgyNNeJthdLEBV4XY4gfZrPRa+qXb22KGjeSBCxrxVSBrh6sLzFCpMKX7uvCn9k5hECjO6/7nJstHBb5HujbESqXMWLu1WfAgFPNQJA7CCdXfHnFNX0cOSREufSZj/seFbf7gzsUpV7mgNYEAMmR/6WDHSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=axis.com; dmarc=pass action=none header.from=axis.com;
- dkim=pass header.d=axis.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a7OUffohjUUcX08lAXVqaz/AWfvuCtOCCLze3XuKc28=;
- b=RfMgRbk8C8GKeLCg5Tecv6pMt41HXMizmx5q6t+qi7EhHxMMa8rs32T1o0Wz0xqyjDvFrFAesnHYoqY3tbAVWEWE69Vjht808aFhmd8qAmSrSWfX/8+Rlh4Qb4EuYapj6D/w9Cb90OxqnLMb5kcKC2emvyMcBW990A7UX8tD+w0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=axis.com;
-Received: from DU0PR02MB9585.eurprd02.prod.outlook.com (2603:10a6:10:41d::20)
- by DBAPR02MB6039.eurprd02.prod.outlook.com (2603:10a6:10:188::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
- 2025 17:08:57 +0000
-Received: from DU0PR02MB9585.eurprd02.prod.outlook.com
- ([fe80::b1a:32b1:13cb:e576]) by DU0PR02MB9585.eurprd02.prod.outlook.com
- ([fe80::b1a:32b1:13cb:e576%2]) with mapi id 15.20.8511.026; Tue, 18 Mar 2025
- 17:08:57 +0000
-Message-ID: <591f4adc-60e3-4335-bd16-1cc4c422d52a@axis.com>
-Date: Tue, 18 Mar 2025 18:08:56 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 17/18] iio: light: vcnl4000: Switch to sparse friendly
- iio_device_claim/release_direct()
-To: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Astrid Rost <astrid.rost@axis.com>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>,
- Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20250309170633.1347476-1-jic23@kernel.org>
- <20250309170633.1347476-18-jic23@kernel.org>
-Content-Language: en-US
-From: Per-Daniel Olsson <perdaniel.olsson@axis.com>
-In-Reply-To: <20250309170633.1347476-18-jic23@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MM0P280CA0112.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:9::20) To DU0PR02MB9585.eurprd02.prod.outlook.com
- (2603:10a6:10:41d::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7449F211A10
+	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 17:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742318798; cv=none; b=AQEtbmPrw+NYtd/Ui1fFwhxIbU2ol2sd9gFU0u/Wo90Y8bVZao03d8JIflFiApwjMFT84KsOzatw9EwlyIhk9ATyphJEgNACzCgerH2Hotbq1VVnlsMoF5e6kpHM8z9SzuJYBIJ31Tdm6EWeENAeL/GykgJTWBnGPYOpmmzMMpM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742318798; c=relaxed/simple;
+	bh=jlyVgQ3QLZKfAj+By39Kc3zFGFFb1NyxKeclUYrfuss=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=eq14owdJoNRc4kYgeQqNvqNgzYCXWrXurCEme3+4U0ZBdybKGtDpllSgESosQiJX9Ca1CuT67qFv3sSMTieNWgJgKQOo1XCaetHB4Y4qviql2RVxuvh/71zgmlMZaHEXmvdKrJaR3nw+UU+qWrQXfovbhgFzXRSflOJ0Yu0G4gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=XeGVAgWQ; arc=none smtp.client-ip=17.57.155.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pereznus.es
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pereznus.es; s=sig1;
+	bh=UboAMlMhQ+H2NLTkbY/5uvVF6uX1L8blj+6IJ+FPIQE=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:From:x-icloud-hme;
+	b=XeGVAgWQflnwKfBcXgg5X8h1zpiDwDxkv8TzpNGVTnnJonwjmQwVzzhpozxrZqY6a
+	 etoMczsB1l/Wlpj8e93pQdCv3MMGM0b97Hef8xOva9iJzut4pJXJOnZjg7EENp8q7S
+	 Ra/flEvETYi4R6jr0XLY1177BUietccbhiTVfXmqBu6Cyv4ta0zoKwQWHhaR/S9Hb3
+	 OQL9GNWoUQ9wTtPI65Bl3kB9MqCHvsaKyxegxWu/QNg0x3EYEL7+aL6L3oEobC8LYZ
+	 f6OLkQtDRRnGumhmGpnfwqSJZIBuTHt+jb37f23U7OuNY6QJ/DtqH411OobbtGABPH
+	 iH8BavETr5yCA==
+Received: from [192.168.1.28] (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01080502.me.com (Postfix) with ESMTPSA id E93ED4E404E2;
+	Tue, 18 Mar 2025 17:26:30 +0000 (UTC)
+Content-Type: multipart/mixed; boundary="------------JepsJeDPf5CnPaoPN0Bw4Onc"
+Message-ID: <bf16371c-189c-4e51-91e5-129f1dcad317@pereznus.es>
+Date: Tue, 18 Mar 2025 18:26:28 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR02MB9585:EE_|DBAPR02MB6039:EE_
-X-MS-Office365-Filtering-Correlation-Id: 037abd31-4179-4fb8-5752-08dd663f920e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Vis2elI0N014aDRXVWF4ejhVVnB0NGc4K1hxaGlmV1F4MDNSWUhheGlmWWJK?=
- =?utf-8?B?SThmQmZ5NHVKR2dTWStiNkFJVjN2S0NHYjVId2RzTXlJTERtajU5UDh4Zm1P?=
- =?utf-8?B?Ny9CSkhYRHRtK2JVTXl2Y1MyVVRRWUduWWJFMFN5U0NQTTBFYWhrQXhwSWla?=
- =?utf-8?B?Y1ZTUWdoQW9ZY3E3byt1dGRJYmNIVkh1MUpzdDg0c1QzVzVBRGQ2Z096ZWth?=
- =?utf-8?B?Ty9FeDdsdllaS3RJRjVKR1FNaGtqaTZhT3JYT09lakRYTGp0RU1vL0ZKTGUw?=
- =?utf-8?B?WUlObEpCL05OV2JyOGJaRkdhdVpMbnkwQUhsTDZmOFpIZTIyRlpBU0NYSzNs?=
- =?utf-8?B?UEdQU2kxT0tBYS9DclVjWTJkemc5d09HWlpobzJTeGNnMFpyRnNTVm5Qem92?=
- =?utf-8?B?dlhBbStkUHhUc05jaW9VUXdFczZ4S3ZIeEZHSXhJN0YvR1liMGR1S1JicTdW?=
- =?utf-8?B?OGFQbys4dXJQdGtnenA5V0JydWk0aDlBQ2ZCN01yVk5TbzJhY2RwMm1mVlpr?=
- =?utf-8?B?ZkpvL1ZZMXVZOGt0UjZ5NmxjelZNOVk2UlpNZnVaTXZobWlvOTZodkt4ZWRX?=
- =?utf-8?B?M2R2RGhZUVZFMnFNN1IyQmpRaWQycWJ6NG1tNzN4WlVSV3hDYndtTHE0QlBr?=
- =?utf-8?B?bTMyVDR4ZkhlOFZHT3MxVVBtN1ZHd2ErdzFLdFl4L3JveEpKZ0JpTVdxYWpy?=
- =?utf-8?B?ZGdabzZxa3FXY0xtSDgzOHNTbUxmQS92SU1JWmJtQmd2aldrTkxrZ0dzckl1?=
- =?utf-8?B?QnQzZ2E4VDdpOFNFVUNiR3k4MjlXVXEwQjlpMVdZbi9xWm5YSFVCZWZlWFJ4?=
- =?utf-8?B?MTR6ZWpqS013VlVFenRUbEF4blZKS2RNUXN2UXMzRTZYTGhpdmQ2VStaVHEv?=
- =?utf-8?B?N3d0aURkU2JiOGIxTW81UVRBenQ2b0V4Z3lyYndIRjNQVzdaQXNIYnI4eDYy?=
- =?utf-8?B?Y01EOXk4b1lLb080QTBvckhlakJUTjd0MWpkeDJFeitBRnl3dDdHVUNqZTlj?=
- =?utf-8?B?TnFjWVJ3WVdwV2NFTFRqSFVZN2l5RTZzRWRHRGMybWVaa1VxTzY5VGFvVzRj?=
- =?utf-8?B?eWdnWTl6WnJJOUpaS2J4eUgwL3ZZenJIdEdqR25QWnR6QzJaREhHVVM5UjJ5?=
- =?utf-8?B?SGxWSk9ZUzRVWHcvQXBSMGpQYTZTdzEzT0ZMaHBZUjNjSmFOVjQ2RXBidHp3?=
- =?utf-8?B?N0dBSXZYM1lCQVJNOTY1OVlsMHlMeER3N2x5RktYSVV4RUh5OC9UVmVpcnVh?=
- =?utf-8?B?aTZHQjhqVUphR2VxWWk5OEdyWDVmMmh5RzRBTk9qQWQzNTd4WDhBSHBGeTNH?=
- =?utf-8?B?RkJQeWpXWWNjdUJGOUR1VzY1WlpyS0ErSTlaVEUyNllrbWRSRHAvVGdYMUds?=
- =?utf-8?B?dUg3QWxzUnJyb3krZDZjYTI1Y2JkNjdPd1hISldTc1VlYU9RSnBmYUwyUU5o?=
- =?utf-8?B?NG95ZU8rYmVHUlBWd1FHc1kwSnJtNUs4cEFkRFJ3ZithWTJ3cVNkblRORUI5?=
- =?utf-8?B?c0ZMbmNyTnNaVmdIRW5Ia0lCVjN5QVkrS2ZDOGRmdFN3U1VPVktJWUVCRHdT?=
- =?utf-8?B?SWdZblVVRVI2V3h3MmZiRk1DbzZ2UGFlOVd3YW9iV1RnUnN3eVNpS0svdDBK?=
- =?utf-8?B?OEo3bnAxTmhQbktmZ1E4eWlyRDJtNFlxR2tmL2Fjc0ZRYnVZUGc5eW4vck95?=
- =?utf-8?B?SzgyQ2g1RjA5NGFHV0JPdjAyOWdmN3YwNmh2dXBqSThoeENySkhJVC8vUTJl?=
- =?utf-8?B?L3QxSXVEaWF4bTJjTktvaTh3U1lwRko5VzVSaG92ZzExbi9GS2wxcEozU1A2?=
- =?utf-8?B?L0g3N3J3TEpVUVZkdEJGMG9SZDJPd1JESlIyOEQvVTJET1NxenVrUHUwblZr?=
- =?utf-8?Q?ZSbCp+kTR5DE7?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB9585.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZmF6SUdzTWRNWmdQa1NmSHBwS0J4c3lhbGkyRnRjTUdHU3ArQlVHQlZTZGNP?=
- =?utf-8?B?dXNrcTZ3RjZETU0xWFVLUEdVTjMxaFdTTDJDTGd1MFVUQjZRcDRBa0dXVUdt?=
- =?utf-8?B?UXZydzRkMmFzSHY4cGdpdTRGaXJMVFZudFZ3NlNTajhCSGkzakVoLzFxSW5a?=
- =?utf-8?B?ZThQcm9jVkhHWEZNaGMzWjc5aHFSYWd5WENNQm9SZlFGbnlETmxYdEkzd3BU?=
- =?utf-8?B?eExaWUFRVlZnL0xaY1JXUk5YYU1uWUJBdERTTlhMS2N5aThrbGdZUzRXQkkv?=
- =?utf-8?B?d21UNUlxZzhEelZaMEp6VDg2djF5NFZybVpVMjduQXNlN24ydkJhSWpTU1Nx?=
- =?utf-8?B?M1dGakZKZUxKUXJLVzQxYTJzYUJBNHFCQWIrUU1tRzlML2I2UTB0bUQzRnk1?=
- =?utf-8?B?d1VBTE13dnhVV0pYWkkwS0JoUXh6ODE0RzVCQ283R2tyRlpZaDRnZllkNXdn?=
- =?utf-8?B?SnpKNTNUM2IyakQveEQ0QzFKYnVYMFpyN3FienBNMHV5dC96aHo0YnY5bHlT?=
- =?utf-8?B?WUpKcHNYQ2VHRi9wdXBWYURMNm45QW8rREdxaDBjK0JNLzVGL2ozV29JNEZo?=
- =?utf-8?B?Sno2N1pwUFpLQmFRQWovb2FTZ0EwMTc4MFZncGFtMHljY09hUHBJQUw3aTQ1?=
- =?utf-8?B?UmdpbUlabHZrczROQzBvYlNBVkxETDdQNElYRzBEWldXQUJkV3greE9KMjRp?=
- =?utf-8?B?UnB2dkcxZW9PQk1TMERjeTJ3d2lsWm45b0FacDFjZm1nNjU4WFozSytmYlZZ?=
- =?utf-8?B?Ty9BM2VlSm5xdHNsdkJaY3hQNEI3bFgzTTBZNjIxMUJ1a0N6ODZFYWNQTk9k?=
- =?utf-8?B?NWxQUFVsRm15aFdNenJlK25EOTB1M2oxZWxCTXovNGRmaGlzN2lJUnFpTllF?=
- =?utf-8?B?ZXR5Mm9VVCtlYkdyNDJPWGZsclBraFovd0sxYzRDajdmZkpXTmhZUUxTSXRS?=
- =?utf-8?B?Wm01UnRkdlBBTitiYzYzQ1A4cDVKMGxncW90ZzhVTUdPd2IxQkhMU0xhNnhC?=
- =?utf-8?B?OVcxU1YrWFlmdW9YQ0l0K3VIV1N2T29TeG1MbWJrRTRqMmJmc2RNSWJSQkYx?=
- =?utf-8?B?Q1ZkcUxRbklWNjlnUWJtV05lWjM3bkZHazMzZENKYVNJVnc1MlArUHBLTTQ1?=
- =?utf-8?B?RWtRMUF2VXhhWFV5UXhkMXlhU2ZZKzlGUWlxZmhyTTF4d2xWZTE3STh6dHAz?=
- =?utf-8?B?ZzZhVU13RTFuamkzaVNnL1lKOFhvczZJWHEvVHNYajFyR2RyR0VrMUozUDdD?=
- =?utf-8?B?QUZVZ2xlOUJ3b2VBVzcyWXRwa2VpM1NZbWl5RXR3MlZNcVRUMVlDWXVWeXEv?=
- =?utf-8?B?K09QYzgwRW9JYTBaeHp4SWpDZ01kdkxuWGc2NnQ1c3k3eG5sWEVvRndrWmVF?=
- =?utf-8?B?YXNkV3A5OW5wMFNxTEdsVVE5KzNRZ0FSUzVSOWVXSVlhb3dQeFVOcENtanEz?=
- =?utf-8?B?aEY1STNTQ3BFRHJMOGNXaTVpdUZPc3RIaTRKQ0FoUjRtWjIwSjc5aEFIcCsx?=
- =?utf-8?B?eHNPR29FZG9xOHZKcW5JSmpkMk52NE1IN1hkRUJMaW02OVVJMktkNjliLysz?=
- =?utf-8?B?WW80TjNUaVJURmxoWW1Ba3RlaUNBTEkxRm5sMXA3YWVON0Y3d0QyWGo5dGhp?=
- =?utf-8?B?M2YzSUxRZjY1QUY1aWhGcFJjYmcrdVBjUDF5R2IyNWttTE56UE9FblowVnZH?=
- =?utf-8?B?d3JCWFlBZ0xCMDljRjBvWlo3cnVUVjNRQlhja0JFMmVqaDd2THEyZTdodU45?=
- =?utf-8?B?TnBISVdYamRrZTFGazFmUFdObWNTZEM5UUpFaXRKREpRS0N3YlRRL0JzMzk1?=
- =?utf-8?B?a1A5ZzRDTFdLUWhBRXZNZnJFdjVQU1pEUjc4WFBKQVJTdWpkMlZSdHFrdThh?=
- =?utf-8?B?NThXOEJGb2puTGJ3aCtsSi9WV2dpejhjamUyQ3dzQ1pSTnZyazR4RXZ5QUhJ?=
- =?utf-8?B?anF5dFZNM1JsNENudkFuTTJMSmN2NUJXNVVBMXNBb3FpSWFpZ3dWbnF6RFB1?=
- =?utf-8?B?REppREJ5MVh4N0N6OGlOc1FLQm9Pdm0vaVB2cEE5TG9hNzdjYm5sSUY0U0Mz?=
- =?utf-8?B?OVdRcE1hdXF0cU1lVUg4cSttallBNVFoZzVJcnRKSmw5UVk4MTlaZThLVG1C?=
- =?utf-8?Q?ZWg0=3D?=
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 037abd31-4179-4fb8-5752-08dd663f920e
-X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB9585.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 17:08:57.7389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: K0NScNADb3b54JUIK4cxYwiKHw47r6UBi/kxjr46IvKh35n5tg1XfM7pnk1vKkTx
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR02MB6039
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
+To: Krzysztof Kozlowski <krzk@kernel.org>, linux-iio@vger.kernel.org
+Cc: tduszyns@gmail.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
+ conor+dt@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+References: <20250316145514.627-1-sergio@pereznus.es>
+ <01f48f6d-55a4-4dbe-b1ae-ef8c54dcc1ff@kernel.org>
+ <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
+ <8992a79d-0859-4d7f-9b47-52e20b11260a@kernel.org>
+ <144b5c43-f8c6-44d1-bcff-83158ac29781@pereznus.es>
+ <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
+ <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
+Content-Language: es-ES, en-US, ca
+From: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>
+In-Reply-To: <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
+X-Proofpoint-GUID: QpS1lxewqjhXu5vPtNHLJUsKHRGpDBlp
+X-Proofpoint-ORIG-GUID: QpS1lxewqjhXu5vPtNHLJUsKHRGpDBlp
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-18_08,2025-03-17_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
+ phishscore=0 clxscore=1030 spamscore=0 mlxlogscore=999 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2503180127
 
-On 3/9/25 18:06, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> These new functions allow sparse to find failures to release
-> direct mode reducing chances of bugs over the claim_direct_mode()
-> functions that are deprecated.
-> 
-> Also split the enabling and disabling of thresholds into separate
-> functions given overlap is small.
-> 
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: Astrid Rost <astrid.rost@axis.com>
+This is a multi-part message in MIME format.
+--------------JepsJeDPf5CnPaoPN0Bw4Onc
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Tested-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
-Reviewed-by: Per-Daniel Olsson <perdaniel.olsson@axis.com>
 
-Best regards / P-D
+El 18/03/2025 a las 17:23, Krzysztof Kozlowski escribió:
+> On 18/03/2025 17:21, Krzysztof Kozlowski wrote:
+>> On 18/03/2025 17:06, Sergio Pérez wrote:
+>>> El 18/03/2025 a las 16:16, Krzysztof Kozlowski escribió:
+>>>> On 18/03/2025 15:16, Sergio Pérez wrote:
+>>>>> Hello,
+>>>>>
+>>>>> El 17/03/2025 a las 8:24, Krzysztof Kozlowski escribió:
+>>>>>> On 16/03/2025 15:55, Sergio Perez wrote:
+>>>>>>> Some BH1750 sensors require a hardware reset before they can be
+>>>>>>> detected on the I2C bus. This patch adds support for an optional
+>>>>>>> reset GPIO that can be specified in the device tree.
+>>>>>>>
+>>>>>>> The reset sequence pulls the GPIO low and then high before
+>>>>>>> initializing the sensor, which enables proper detection with
+>>>>>>> tools like i2cdetect.
+>>>>>>>
+>>>>>>> Update the devicetree binding documentation to include the new
+>>>>>>> reset-gpios property with examples.
+>>>>>>>
+>>>>>>> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+>>>>>> Please run scripts/checkpatch.pl and fix reported warnings. After that,
+>>>>>> run also `scripts/checkpatch.pl --strict` and (probably) fix more
+>>>>>> warnings. Some warnings can be ignored, especially from --strict run,
+>>>>>> but the code here looks like it needs a fix. Feel free to get in touch
+>>>>>> if the warning is not clear.
+>>>> You keep ignoring paragraphs. Did you read this?
+>>> I pass this check several times and every time I do any step to make
+>>> sure I am well.
+>>>
+>>> scripts/checkpatch.pl -f drivers/iio/light/bh1750.c
+>>> total: 0 errors, 0 warnings, 354 lines checked
+>>
+>> That's not how you run checkpatch. Read the submitting patches. Just
+>> like the name tells you, check the patch, you run it on the patch.
+> BTW, I wonder which guideline told you to run it on the file? Because
+> checkpatch description and submitting patches tell about running it on
+> the patches, so I wonder where did you get suggestion to run it like that?
+You're absolutely right. I misunderstood how to use checkpatch.pl and 
+was incorrectly running it on the source files instead of the patch 
+file. Thank you for pointing this out.
+
+$ scripts/checkpatch.pl --strict -f 
+0001-iio-light-bh1750-Add-hardware-reset-support-via-GPIO.patch
+total: 0 errors, 0 warnings, 0 checks, 102 lines checked
+
+0001-iio-light-bh1750-Add-hardware-reset-support-via-GPIO.patch has no 
+obvious style problems and is ready for submission.
+
+I've now run the tool correctly on my patch file and have fixed the 
+identified issues:
+- Removed trailing whitespace
+- Fixed lines exceeding 79 characters
+- Fixed the inconsistency between the description and example for 
+reset-gpios
+- Modified the existing example instead of adding a new one
+- Ensured proper line endings and formatting
+- Used proper get_maintainers.pl to include all recipients
+
+Thank you for your patience as I learn the proper kernel contribution 
+process.
+>
+> Best regards,
+> Krzysztof
+--------------JepsJeDPf5CnPaoPN0Bw4Onc
+Content-Type: text/plain; charset=UTF-8;
+ name="0001-iio-light-bh1750-Add-hardware-reset-support-via-GPIO.patch"
+Content-Disposition: attachment;
+ filename*0="0001-iio-light-bh1750-Add-hardware-reset-support-via-GPIO.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSAwYjBmOGYwZjc5ODhlY2NiNmI0ZWQ0Mjk4NGM1YmRlMDkyYjFkNWZlIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBTZXJnaW8gUGVyZXogPHNlcmdpb0BwZXJlem51cy5l
+cz4KRGF0ZTogVHVlLCAxOCBNYXIgMjAyNSAwMToxMjowNSArMDEwMApTdWJqZWN0OiBbUEFU
+Q0hdIGlpbzogbGlnaHQ6IGJoMTc1MDogQWRkIGhhcmR3YXJlIHJlc2V0IHN1cHBvcnQgdmlh
+IEdQSU8KClNvbWUgQkgxNzUwIHNlbnNvcnMgcmVxdWlyZSBhIGhhcmR3YXJlIHJlc2V0IGJl
+Zm9yZSB0aGV5IGNhbiBiZQpkZXRlY3RlZCBvbiB0aGUgSTJDIGJ1cy4gVGhpcyBwYXRjaCBh
+ZGRzIHN1cHBvcnQgZm9yIGFuIG9wdGlvbmFsCnJlc2V0IEdQSU8gdGhhdCBjYW4gYmUgc3Bl
+Y2lmaWVkIGluIHRoZSBkZXZpY2UgdHJlZS4KClRoZSByZXNldCBzZXF1ZW5jZSBwdWxscyB0
+aGUgR1BJTyBsb3cgYW5kIHRoZW4gaGlnaCBiZWZvcmUKaW5pdGlhbGl6aW5nIHRoZSBzZW5z
+b3IsIHdoaWNoIGVuYWJsZXMgcHJvcGVyIGRldGVjdGlvbiB3aXRoCnRvb2xzIGxpa2UgaTJj
+ZGV0ZWN0LgoKVXBkYXRlIHRoZSBkZXZpY2V0cmVlIGJpbmRpbmcgZG9jdW1lbnRhdGlvbiB0
+byBpbmNsdWRlIHRoZSBuZXcKcmVzZXQtZ3Bpb3MgcHJvcGVydHkgd2l0aCBleGFtcGxlcy4K
+ClNpZ25lZC1vZmYtYnk6IFNlcmdpbyBQZXJleiA8c2VyZ2lvQHBlcmV6bnVzLmVzPgotLS0K
+IC4uLi9kZXZpY2V0cmVlL2JpbmRpbmdzL2lpby9saWdodC9iaDE3NTAueWFtbCB8ICA1ICsr
+KysKIGRyaXZlcnMvaWlvL2xpZ2h0L2JoMTc1MC5jICAgICAgICAgICAgICAgICAgICB8IDIz
+ICsrKysrKysrKysrKysrKysrKysKIDIgZmlsZXMgY2hhbmdlZCwgMjggaW5zZXJ0aW9ucygr
+KQoKZGlmZiAtLWdpdCBhL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5ncy9paW8v
+bGlnaHQvYmgxNzUwLnlhbWwgYi9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3Mv
+aWlvL2xpZ2h0L2JoMTc1MC55YW1sCmluZGV4IDFhODhiM2MyNTNkNS4uZjdhOGRjZDdkMmEx
+IDEwMDY0NAotLS0gYS9Eb2N1bWVudGF0aW9uL2RldmljZXRyZWUvYmluZGluZ3MvaWlvL2xp
+Z2h0L2JoMTc1MC55YW1sCisrKyBiL0RvY3VtZW50YXRpb24vZGV2aWNldHJlZS9iaW5kaW5n
+cy9paW8vbGlnaHQvYmgxNzUwLnlhbWwKQEAgLTI0LDYgKzI0LDEwIEBAIHByb3BlcnRpZXM6
+CiAgIHJlZzoKICAgICBtYXhJdGVtczogMQoKKyAgcmVzZXQtZ3Bpb3M6CisgICAgZGVzY3Jp
+cHRpb246IEdQSU8gY29ubmVjdGVkIHRvIHRoZSBzZW5zb3IncyByZXNldCBsaW5lIChhY3Rp
+dmUgbG93KQorICAgIG1heEl0ZW1zOiAxCisKIHJlcXVpcmVkOgogICAtIGNvbXBhdGlibGUK
+ICAgLSByZWcKQEAgLTM5LDYgKzQzLDcgQEAgZXhhbXBsZXM6CiAgICAgICBsaWdodC1zZW5z
+b3JAMjMgewogICAgICAgICBjb21wYXRpYmxlID0gInJvaG0sYmgxNzUwIjsKICAgICAgICAg
+cmVnID0gPDB4MjM+OworICAgICAgICByZXNldC1ncGlvcyA9IDwmZ3BpbzIgMTcgMD47CiAg
+ICAgICB9OwogICAgIH07CgpkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vbGlnaHQvYmgxNzUw
+LmMgYi9kcml2ZXJzL2lpby9saWdodC9iaDE3NTAuYwppbmRleCA0Yjg2OWZhOWU1YjEuLmNm
+Y2NlMGM3M2FhMiAxMDA2NDQKLS0tIGEvZHJpdmVycy9paW8vbGlnaHQvYmgxNzUwLmMKKysr
+IGIvZHJpdmVycy9paW8vbGlnaHQvYmgxNzUwLmMKQEAgLTIyLDEyICsyMiwxNiBAQAogI2lu
+Y2x1ZGUgPGxpbnV4L2lpby9paW8uaD4KICNpbmNsdWRlIDxsaW51eC9paW8vc3lzZnMuaD4K
+ICNpbmNsdWRlIDxsaW51eC9tb2R1bGUuaD4KKyNpbmNsdWRlIDxsaW51eC9ncGlvL2NvbnN1
+bWVyLmg+CgogI2RlZmluZSBCSDE3NTBfUE9XRVJfRE9XTgkJMHgwMAogI2RlZmluZSBCSDE3
+NTBfT05FX1RJTUVfSF9SRVNfTU9ERQkweDIwIC8qIGF1dG8tbW9kZSBmb3IgQkgxNzIxICov
+CiAjZGVmaW5lIEJIMTc1MF9DSEFOR0VfSU5UX1RJTUVfSF9CSVQJMHg0MAogI2RlZmluZSBC
+SDE3NTBfQ0hBTkdFX0lOVF9USU1FX0xfQklUCTB4NjAKCisvKiBEZWZpbmUgdGhlIHJlc2V0
+IGRlbGF5IHRpbWUgaW4gbWljcm9zZWNvbmRzICovCisjZGVmaW5lIEJIMTc1MF9SRVNFVF9E
+RUxBWV9VUyAxMDAwMCAvKiAxMG1zICovCisKIGVudW0gewogCUJIMTcxMCwKIAlCSDE3MjEs
+CkBAIC00MCw2ICs0NCw3IEBAIHN0cnVjdCBiaDE3NTBfZGF0YSB7CiAJc3RydWN0IG11dGV4
+IGxvY2s7CiAJY29uc3Qgc3RydWN0IGJoMTc1MF9jaGlwX2luZm8gKmNoaXBfaW5mbzsKIAl1
+MTYgbXRyZWc7CisJc3RydWN0IGdwaW9fZGVzYyAqcmVzZXRfZ3BpbzsKIH07Cgogc3RydWN0
+IGJoMTc1MF9jaGlwX2luZm8gewpAQCAtMjQ4LDYgKzI1MywyNCBAQCBzdGF0aWMgaW50IGJo
+MTc1MF9wcm9iZShzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50KQogCWRhdGEtPmNsaWVudCA9
+IGNsaWVudDsKIAlkYXRhLT5jaGlwX2luZm8gPSAmYmgxNzUwX2NoaXBfaW5mb190YmxbaWQt
+PmRyaXZlcl9kYXRhXTsKCisJLyogR2V0IHJlc2V0IEdQSU8gZnJvbSBkZXZpY2UgdHJlZSAq
+LworCWRhdGEtPnJlc2V0X2dwaW8gPSBkZXZtX2dwaW9kX2dldF9vcHRpb25hbCgmY2xpZW50
+LT5kZXYsCisJCQkJInJlc2V0IiwgR1BJT0RfT1VUX0hJR0gpOworCWlmIChJU19FUlIoZGF0
+YS0+cmVzZXRfZ3BpbykpCisJCXJldHVybiBkZXZfZXJyX3Byb2JlKCZjbGllbnQtPmRldiwg
+UFRSX0VSUihkYXRhLT5yZXNldF9ncGlvKSwKKwkJCQkiRmFpbGVkIHRvIGdldCByZXNldCBH
+UElPXG4iKTsKKworCS8qIFBlcmZvcm0gaGFyZHdhcmUgcmVzZXQgaWYgR1BJTyBpcyBwcm92
+aWRlZCAqLworCWlmIChkYXRhLT5yZXNldF9ncGlvKSB7CisJCS8qIFBlcmZvcm0gcmVzZXQg
+c2VxdWVuY2U6IGxvdy1oaWdoICovCisJCWdwaW9kX3NldF92YWx1ZV9jYW5zbGVlcChkYXRh
+LT5yZXNldF9ncGlvLCAwKTsKKwkJZnNsZWVwKEJIMTc1MF9SRVNFVF9ERUxBWV9VUyk7CisJ
+CWdwaW9kX3NldF92YWx1ZV9jYW5zbGVlcChkYXRhLT5yZXNldF9ncGlvLCAxKTsKKwkJZnNs
+ZWVwKEJIMTc1MF9SRVNFVF9ERUxBWV9VUyk7CisKKwkJZGV2X2RiZygmY2xpZW50LT5kZXYs
+ICJCSDE3NTAgcmVzZXQgY29tcGxldGVkIHZpYSBHUElPXG4iKTsKKwl9CisKIAl1c2VjID0g
+ZGF0YS0+Y2hpcF9pbmZvLT5tdHJlZ190b191c2VjICogZGF0YS0+Y2hpcF9pbmZvLT5tdHJl
+Z19kZWZhdWx0OwogCXJldCA9IGJoMTc1MF9jaGFuZ2VfaW50X3RpbWUoZGF0YSwgdXNlYyk7
+CiAJaWYgKHJldCA8IDApCi0tCjIuNDMuMAoK
+
+--------------JepsJeDPf5CnPaoPN0Bw4Onc--
 

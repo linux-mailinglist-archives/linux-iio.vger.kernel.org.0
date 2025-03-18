@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17030-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17031-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823E1A6793E
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 17:26:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5420A67969
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 17:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C847189B1DC
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 16:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CCB1885E70
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79235212FB5;
-	Tue, 18 Mar 2025 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AC020FAAD;
+	Tue, 18 Mar 2025 16:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mK7kWhbr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FACBxXmG"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9F8211494;
-	Tue, 18 Mar 2025 16:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6914720E033;
+	Tue, 18 Mar 2025 16:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742314872; cv=none; b=no33t2NUigypgeIad1LJ3/Nc5vQpkNSiYnc3aczZJgwNV8NKhMLW1EhrLODsC8DpQPcElsDy8sS8ZVwI0HmSrh/oDmtuXWW0AIOFk80VXMcrFtqWN5Vii/Au0S3fkWHw/U5F4ZJKh1zNhV3VvlnfBLFpHHfzfwPor0CtKhL27xg=
+	t=1742315025; cv=none; b=E09xiFE2NPTX+L7buRMwOgt3pIzoD5Swx3RIwqZH32Wcudg0gkieZ0kJX2OqvFKUCQd3zFvzmLMN/boDvdd8uilyXDe4+/W5hFL65x7yUsM/pNhaDJF1COGLMu6fEFaTL31K+tSTVkZQQl0OX6IaBuPoi1eZIjNqaCycVToPv94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742314872; c=relaxed/simple;
-	bh=Bu9pqe3Bbm1zR6uodKxbBB2RFuhWJQoXfPrg+m14H28=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ttqpVTUpmqyHvGR7g67v2i0tG9EMSc9xizGgx27OLFgvyIGGRXGt3er0H8+nqpPlmjUMez5th2Z8JY7kz0NzNolNoSWZWamYdbmOyfKBWkCTUu6WM1wgCYgNX1zggVFV4GZueLjF+ABOYFnU5aBD65aKfOVAQ2MmmhoEFefX/Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mK7kWhbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A5CC4AF0D;
-	Tue, 18 Mar 2025 16:21:04 +0000 (UTC)
+	s=arc-20240116; t=1742315025; c=relaxed/simple;
+	bh=EKLOaay0qi1TNNq5twhyc/GBHUQCaTIC2Dib6kn6Qwc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=P9JUYEjzBzOV+fKq41kD5EHBZMwuQU2OII25J4madmGgAoJAgvVX39NNpezdDVaQrpMcNaoLcAtAeD/ZoB7+z43btjz4derjW4+r44R1ULAcU4X+Mf6QXS0zSWS30WX3OjpMT/8d2A8FWGVdhtBpZD8p7aGqrshLPFtLdMHSaCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FACBxXmG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76778C4CEE3;
+	Tue, 18 Mar 2025 16:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742314871;
-	bh=Bu9pqe3Bbm1zR6uodKxbBB2RFuhWJQoXfPrg+m14H28=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mK7kWhbrwexLd0AcZH8DK4E6tKOCujoKlSaieXZS6END2BFPwxB5x+ZX7VrWJDG3M
-	 TIATQE0hC0kQOFKTZxV3yfPUBg0qZeiAqnzkajjdFoifCB8HCbvG3BkF6yVcjh+pRZ
-	 Zawnywm+npJyXLzwASQUteCUhGbb6J6RFcP3vDwAnxjaqEsW9UtG4y+3Mu2yHoPzMt
-	 BjZrEfqt8douV0QrMak6FtBqqFVpO5dkykbbFjqQHb3HCoW3q4C5qXBC1Ir51Ry8Vp
-	 8dxSmJfgUNug2d/9hoI9gNY3VMB3uz6I/5Bz2+lkPanGWSYGLWKtWd4LpExXvxV/f1
-	 HPdyEMs8+2MAg==
-Message-ID: <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
-Date: Tue, 18 Mar 2025 17:21:02 +0100
+	s=k20201202; t=1742315024;
+	bh=EKLOaay0qi1TNNq5twhyc/GBHUQCaTIC2Dib6kn6Qwc=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=FACBxXmG5+pBh21YK3N51xqWxNk3jgOBoy+3I/zLiua9TkKuytN/8neYyTTGPKWx+
+	 /fZOOCGZ+cLDpV7CMf0ZT4n6fFpL7lc/7M0VgPHuPNsJC/PUM+VvLnCTX1f4rCBTpQ
+	 DvAVGLd6KvWNR4KNXoEhLm+fjzDc/OgaCTRVTrFp9ppXKXMEl1X1azoTYYeTQSpEaD
+	 yX6SA7xV9aGlyF5gGRfHuo5HeSk5up0XmhJSW/6omVIfRxne895RcHogG0ZOAhX8Wk
+	 O91Du95ygWc+3fQajUkiEGnhRqPtcD+XxBJJ+fahJFBRFb9Uq+pdFg4h4yVu/HQLn1
+	 /AIcbpCIMP2EA==
+Message-ID: <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
+Date: Tue, 18 Mar 2025 17:23:39 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -51,6 +51,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
+From: Krzysztof Kozlowski <krzk@kernel.org>
 To: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>,
  linux-iio@vger.kernel.org
 Cc: tduszyns@gmail.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
@@ -60,7 +61,7 @@ References: <20250316145514.627-1-sergio@pereznus.es>
  <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
  <8992a79d-0859-4d7f-9b47-52e20b11260a@kernel.org>
  <144b5c43-f8c6-44d1-bcff-83158ac29781@pereznus.es>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+ <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -105,46 +106,50 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <144b5c43-f8c6-44d1-bcff-83158ac29781@pereznus.es>
+In-Reply-To: <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 18/03/2025 17:06, Sergio Pérez wrote:
+On 18/03/2025 17:21, Krzysztof Kozlowski wrote:
+> On 18/03/2025 17:06, Sergio Pérez wrote:
+>>
+>> El 18/03/2025 a las 16:16, Krzysztof Kozlowski escribió:
+>>> On 18/03/2025 15:16, Sergio Pérez wrote:
+>>>> Hello,
+>>>>
+>>>> El 17/03/2025 a las 8:24, Krzysztof Kozlowski escribió:
+>>>>> On 16/03/2025 15:55, Sergio Perez wrote:
+>>>>>> Some BH1750 sensors require a hardware reset before they can be
+>>>>>> detected on the I2C bus. This patch adds support for an optional
+>>>>>> reset GPIO that can be specified in the device tree.
+>>>>>>
+>>>>>> The reset sequence pulls the GPIO low and then high before
+>>>>>> initializing the sensor, which enables proper detection with
+>>>>>> tools like i2cdetect.
+>>>>>>
+>>>>>> Update the devicetree binding documentation to include the new
+>>>>>> reset-gpios property with examples.
+>>>>>>
+>>>>>> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+>>>>> Please run scripts/checkpatch.pl and fix reported warnings. After that,
+>>>>> run also `scripts/checkpatch.pl --strict` and (probably) fix more
+>>>>> warnings. Some warnings can be ignored, especially from --strict run,
+>>>>> but the code here looks like it needs a fix. Feel free to get in touch
+>>>>> if the warning is not clear.
+>>> You keep ignoring paragraphs. Did you read this?
+>>
+>> I pass this check several times and every time I do any step to make 
+>> sure I am well.
+>>
+>> scripts/checkpatch.pl -f drivers/iio/light/bh1750.c
+>> total: 0 errors, 0 warnings, 354 lines checked
 > 
-> El 18/03/2025 a las 16:16, Krzysztof Kozlowski escribió:
->> On 18/03/2025 15:16, Sergio Pérez wrote:
->>> Hello,
->>>
->>> El 17/03/2025 a las 8:24, Krzysztof Kozlowski escribió:
->>>> On 16/03/2025 15:55, Sergio Perez wrote:
->>>>> Some BH1750 sensors require a hardware reset before they can be
->>>>> detected on the I2C bus. This patch adds support for an optional
->>>>> reset GPIO that can be specified in the device tree.
->>>>>
->>>>> The reset sequence pulls the GPIO low and then high before
->>>>> initializing the sensor, which enables proper detection with
->>>>> tools like i2cdetect.
->>>>>
->>>>> Update the devicetree binding documentation to include the new
->>>>> reset-gpios property with examples.
->>>>>
->>>>> Signed-off-by: Sergio Perez <sergio@pereznus.es>
->>>> Please run scripts/checkpatch.pl and fix reported warnings. After that,
->>>> run also `scripts/checkpatch.pl --strict` and (probably) fix more
->>>> warnings. Some warnings can be ignored, especially from --strict run,
->>>> but the code here looks like it needs a fix. Feel free to get in touch
->>>> if the warning is not clear.
->> You keep ignoring paragraphs. Did you read this?
 > 
-> I pass this check several times and every time I do any step to make 
-> sure I am well.
-> 
-> scripts/checkpatch.pl -f drivers/iio/light/bh1750.c
-> total: 0 errors, 0 warnings, 354 lines checked
-
-
-That's not how you run checkpatch. Read the submitting patches. Just
-like the name tells you, check the patch, you run it on the patch.
+> That's not how you run checkpatch. Read the submitting patches. Just
+> like the name tells you, check the patch, you run it on the patch.
+BTW, I wonder which guideline told you to run it on the file? Because
+checkpatch description and submitting patches tell about running it on
+the patches, so I wonder where did you get suggestion to run it like that?
 
 Best regards,
 Krzysztof

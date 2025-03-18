@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17006-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17007-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7194DA66B68
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 08:19:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8951A66BB1
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 08:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2672816E239
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 07:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4832188D13D
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 07:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1124D1DC185;
-	Tue, 18 Mar 2025 07:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344FE1CEE8D;
+	Tue, 18 Mar 2025 07:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s/CMHyeJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdtG1sbd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A2543151
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 07:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B0028F3;
+	Tue, 18 Mar 2025 07:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742282307; cv=none; b=JQJ50/RyDFK1efpP63LBJJk9cVoPa7N29a6cSVccmIs1E7XWRQC7pckyuOSxKqS/BkWeP4QUZbp0gfPWGyXvzne3jJ+yUuXSpVxLTwVw/Vdzt7/03gLiYQHmfiT9biZMIABh8MN6m3rk/dU1sGnmVHyBUKG2FnNaFFmWVPXCD4Y=
+	t=1742283067; cv=none; b=I/EHObWn4TVaq1P3enmx4/IAWmDrLWNnPF9CsBGJm1TXxq3vcEgoq+lj4cB5Agrxlv5f+83/t2e+mr4VNICtenO8XFDY069wp9n0d09tmWKVGmqy48c8vdCOmOKys/q9uSVo7GojYDxkV6fgF74MsY1w5twZVQ0gl/srVG0DxtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742282307; c=relaxed/simple;
-	bh=D6XsLmHTudHk4O15HEXb7cexntXF6+2Dhjgbj0UiBIA=;
+	s=arc-20240116; t=1742283067; c=relaxed/simple;
+	bh=5BDSuBGb/Bir2e1pVaC8YoOq6pbM/y64LJ6KAbZizNA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LCPLbIsIZCbeLwoVDB8LhmWtzI91bfM3zSUH5dC5zHW2lBewbDLQfGnz7HjqpjLN3KLhgnn+jNO60N1dp4JqrrgKq8SqcFTRa3iD/kh6PPzEuBX3svmdHWYNmtutojNIl051JUCvaf1193cSPPj+fq8J3uTENYLW4SDo5uPNwzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s/CMHyeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF085C4CEDD;
-	Tue, 18 Mar 2025 07:18:25 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=n0O38qwowzghfHbXZqveo1e+BmS/mctS2jhQ6t4W5a9L44pxeBDOJinGWD8YONv7umwwdeXgMsFBuc7qjiOjrR9eM8ew+/LCIogqZxK2cWzmbVT6vVr0llsK7p5TdyeHSvfDm/HUvXGqWLWY0LZsnqAxzUc83nHxtXMnXVpbRx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdtG1sbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1706C4CEDD;
+	Tue, 18 Mar 2025 07:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742282307;
-	bh=D6XsLmHTudHk4O15HEXb7cexntXF6+2Dhjgbj0UiBIA=;
+	s=k20201202; t=1742283066;
+	bh=5BDSuBGb/Bir2e1pVaC8YoOq6pbM/y64LJ6KAbZizNA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=s/CMHyeJvSoTqvgekhK1PQmfozH8L7/w+4DIGU8n/YEeLtR2HvlFlJIgT7+0zFbOy
-	 d1oLWr0xu4pD+sFAzi5R1N/6zwT2Pyp5JemVpPWie6rr2wPmwJC8gLf6kZIsi67tqi
-	 HL+S5+0dUfPI2WQFzuC03rhnM/jbVAy7/sHRtlHOXLOfshzgAVeAnCTWXS/3IjNkBi
-	 Tl8HZ2sxhcrz332I4kAIx+NOprhcyX2y8go19Hz1goCBJ/g2avnvRg3QtpBCcTFYeU
-	 KeZiyMOKV9x2DCjEKfD1qQ0u2BnStr92xiEDL84vebbFipUJQAMiOkowKYtzF0iN40
-	 +o0EQhhhsRjLA==
-Message-ID: <d23d7979-1dee-4c46-954a-3617d8cf5604@kernel.org>
-Date: Tue, 18 Mar 2025 08:18:23 +0100
+	b=rdtG1sbdOAKYFqB4wp70CqnsvcOYVo46tMxECwx/HGHEj2wU1cQn79+EGdcjhGj6p
+	 TIeRaOCXiZlYbMu5KzCo25PFHlK3fOu4bTTUk61VxvrzCvHNf0a79kh/0tSZXgp/Y6
+	 ERSCddNw74MfpO42l9XuOzrkbShgP6n67vVfec9C+65myNwr1wyTcBrRNJZG8ok6i6
+	 +j358u4o1VPYxfErf8EsMP0PcHAprDoj8x+D0V44EYoOxsAWwuOUEvQ2FC++7MepCP
+	 dTdJ0IOIdlSKC0OZwBeAkY442ImNwUFmq2e7+DdNMs4Ox0sTfSWucm9F0Z6+3zVVhV
+	 3MgwYk4zVrilg==
+Message-ID: <eeb66fc0-27f6-49c7-a539-2964c6a4662a@kernel.org>
+Date: Tue, 18 Mar 2025 08:31:02 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,11 +50,11 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
-To: Jonathan Cameron <jic23@kernel.org>, Sergio Perez <sergio@pereznus.es>
-Cc: linux-iio@vger.kernel.org
-References: <20250316145514.627-1-sergio@pereznus.es>
- <20250317115815.2416c741@jic23-huawei>
+Subject: Re: [PATCH v3] iio: light: bh1750: Add hardware reset support via
+ GPIO
+To: Sergio Perez <sergio@pereznus.es>, linux-iio@vger.kernel.org
+Cc: devicetree@vger.kernel.org, tduszyns@gmail.com, jic23@kernel.org
+References: <20250318005045.3189-1-sergio@pereznus.es>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -100,34 +100,57 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250317115815.2416c741@jic23-huawei>
+In-Reply-To: <20250318005045.3189-1-sergio@pereznus.es>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 17/03/2025 12:58, Jonathan Cameron wrote:
->> +  reset-gpios:
->> +    description: GPIO connected to the sensor's reset line (active low)
->> +    maxItems: 1
->>  
->>  required:
->>    - compatible
->> @@ -41,5 +48,16 @@ examples:
->>          reg = <0x23>;
->>        };
->>      };
->> +  - |
->> +    i2c {
->> +      #address-cells = <1>;
->> +      #size-cells = <0>;
->> +
->> +      light-sensor@23 {
->> +        compatible = "rohm,bh1750";
->> +        reg = <0x23>;
->> +        reset-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
-> Add the GPIO to the existing example rather than having a new one.
-... and it is weird to see you claim here is ACTIVE_HIGH but in
-description you say active low. It's possible, but unlikely. More likely
-this is just wrong, so use proper flag.
+On 18/03/2025 01:50, Sergio Perez wrote:
+> Some BH1750 sensors require a hardware reset before they can be
+> detected on the I2C bus. This patch adds support for an optional
+> reset GPIO that can be specified in the device tree.
+> 
+> The reset sequence pulls the GPIO low and then high before
+> initializing the sensor, which enables proper detection with
+> tools like i2cdetect.
+> 
+> Update the devicetree binding documentation to include the new
+> reset-gpios property with examples.
+> 
+> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+> ---
+>  .../devicetree/bindings/iio/light/bh1750.yaml |  5 +++++
+>  drivers/iio/light/bh1750.c                    | 22 +++++++++++++++++++
+
+Nothing improved.
+
+If you keep ignoring our responses, you will get a NAK. Respond inline
+to previous emails and confirm that you understand the feedback and you
+implemented it.
+
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+It seems my or other reviewer's previous comments were not fully
+addressed. Maybe the feedback got lost between the quotes, maybe you
+just forgot to apply it. Please go back to the previous discussion and
+either implement all requested changes or keep discussing them.
+
+
 
 Best regards,
 Krzysztof

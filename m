@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-17011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40941A66D5D
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 09:06:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F49A66D63
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 09:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C29D1167968
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 08:05:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5192A188675E
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Mar 2025 08:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231531EF385;
-	Tue, 18 Mar 2025 08:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005261E3DD7;
+	Tue, 18 Mar 2025 08:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YN3IQbKJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NSqdIox6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65B91EF373
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 08:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F3217A309
+	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 08:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742285124; cv=none; b=OPB1Y5i8XkDqEyk7KUrJKy8Tt61W1AUgU3bC5WRRaqVdLaRAfufDDnBZv3BeCXTfmTz130svQUdRKjO1wmGcMrsSnREqGr2/JqCmBCgdI3W79A7FLuj1B3xc3ttUxcl/x3a775JVrliDrpmUANOrwVyk32K03RstkCyc5SuRBXU=
+	t=1742285230; cv=none; b=HG6b9hnWovynTbCKLvHbjoe8aJ7+clqgJYvjFB3XJndiTVQdlpVuh+ks3HBlze4LOLf9+jbd813OP6l0FU8PI4/UacIy69n4ocXueeXBGra8E7UvVYLU+7UcP0JOVa6XzuO1jwnf9oveQfGpP4L1JfyrcUHNfPceEwMFQZ9bFJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742285124; c=relaxed/simple;
-	bh=URIyTEcpvU2zS3VPKenPGzISNUjsxtC4uLiiBh3ebFE=;
+	s=arc-20240116; t=1742285230; c=relaxed/simple;
+	bh=e0a0jLA+Tvi+LM4GqRww5aWOAIkKBLAgJBTATVkgM4g=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CjIwYbasvvjhHsKrKxWhcRbfsx7/WTAbirnCdNhIWfc9ilecvcYvxum+/nuKN7BvH4mvwIah56qyiR5ox43pT8+sBctNPaaLSV7cIz4GxcTno+VmL/EJvKfjccGEmOJoyCqlKTz/ffFR+TT5uA2BGQEIe2cmRjKMHi+1P2+xWvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YN3IQbKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E715C4CEE9
-	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 08:05:24 +0000 (UTC)
+	 Content-Type:MIME-Version; b=LB7DRMLtrWbQ2HNu0GAIyWfIgBSJXfnHcTn79zBQg/07DMfAP6994uVmR71YrPx1cbYrOENDL87LyGQIRkfJ5m2ZJ6YWU9aPs6FF17+mLx1t1k/xige7iT3IKijTWTm47itr8023rNt6T9DFvT9a/nDp7aeXeZ3tNEMmvVcAoWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NSqdIox6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 339B7C4CEE9
+	for <linux-iio@vger.kernel.org>; Tue, 18 Mar 2025 08:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742285124;
-	bh=URIyTEcpvU2zS3VPKenPGzISNUjsxtC4uLiiBh3ebFE=;
+	s=k20201202; t=1742285230;
+	bh=e0a0jLA+Tvi+LM4GqRww5aWOAIkKBLAgJBTATVkgM4g=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=YN3IQbKJqp3u85vpjZDXRp7C281oaIqBpoW90EyEUIH/fBh9rPOUcZngaHCSlnJ3X
-	 E6bUkqQDMbEP3sNQB+kJu5B4EnLOpgooqBYZ/mVmMW2hPYgsAQU6foEpZUJeEb5ehs
-	 zCo9iLKofLR0rEp63eNONvnhJPtuTh1tQEBxt3Faa3P+JlQTvkkUO8rYd1YQb6ZuF2
-	 7GiXwmTSBPIm1Hj1WxKZxq9eN1+m9BcJsx1NQEUvtt8OkDazgOoCV3KsqXoa0FlKzZ
-	 CfQ3NBEZnyKCz1XJUtz4S+XKRZUZvjtu+ZT1cVVQEc/WF/TAY6/pWDw84GB39udmuP
-	 DnA3Xd8M/wWpw==
+	b=NSqdIox6WtI0O+cvA/kLxfwJtidqBKc9Y/XGfBmuq1m5NWlxLBKfg/RVd4s50lgwq
+	 095sv8yG3WikNJmdL20IU0pU1n5+wTNzbgwlr14HGBU4UlbyANTNoziyYKRCMw9QPW
+	 ReSf1QOxUuJoNWjH22+yxvoyCL57kJ8b8rb4ItXr88UAWCNO6plHtUgcBy9Ln912GK
+	 N8cwsPH0SCGucvdzt8fdzi9UpfZjc+9cJOC5Bb/p+stLg63ayC+bjGzu4Npa55mg1E
+	 1KtaqyK61VZM8+WdlI5mHjUdefhYcrbsdKnLoaNFyy+713gntjpZxHa8xKM6o27+Dp
+	 FBwU7P+JctaZA==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 094C0C41612; Tue, 18 Mar 2025 08:05:22 +0000 (UTC)
+	id 1652AC3279F; Tue, 18 Mar 2025 08:07:08 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linux-iio@vger.kernel.org
 Subject: [Bug 219890] illuminance sensor is jittering between correct value
  and 0.03lux
-Date: Tue, 18 Mar 2025 08:05:16 +0000
+Date: Tue, 18 Mar 2025 08:06:57 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
@@ -63,7 +63,7 @@ X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219890-217253-FzlI2w7R4z@https.bugzilla.kernel.org/>
+Message-ID: <bug-219890-217253-LfDExiUjuF@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
 References: <bug-219890-217253@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,7 +79,7 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
 
---- Comment #6 from Fred (wysiwyg81@rbox.co) ---
+--- Comment #7 from Fred (wysiwyg81@rbox.co) ---
 Hello!
 woo, compiling my own kernel tool? sounds like some stunts, but challenge
 accepted :).

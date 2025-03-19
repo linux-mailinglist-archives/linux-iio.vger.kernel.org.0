@@ -1,185 +1,174 @@
-Return-Path: <linux-iio+bounces-17095-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17096-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F998A68DDE
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 14:32:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765DFA68E9F
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 15:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75BE423E50
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 13:32:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4583BEB07
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 14:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EFC2571B1;
-	Wed, 19 Mar 2025 13:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1BA316D32A;
+	Wed, 19 Mar 2025 14:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Ap5GYuAl"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Dfb4aP0f"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695CD253F1C
-	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 13:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22610487BE
+	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 14:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742391116; cv=none; b=oOK6I4xzH+iaG47EQt2liT28PpJ3x/7vvjWpZdE2MTnF7Kc9WX5uJL34Ky1rflp6BuOnOUMDB51KQRBTXJX5HPCphnNTLBswh3m2vZLpgPjJGnXG1DRmEmubMLdIdjb8vG8txIGnWK9J6PgGYfDU7T6/bj9hN+GOwW9zCzSTgfg=
+	t=1742393431; cv=none; b=pDmRu5wr6/1rwS7P3eGhMSkXLADM0Oh+GiIgETRk6Kr1DHgGBzkByujNCmSh0TTsnEGAzZ4GAlKxEFLJHrBjkgUiQJAaMdSKHSs7YnsPy90UPzN1R6nWSqhk1r/dUbZGN/aAKMWJdV1sym74LQCCLwqG5WYAGDlU68R2i4lrAhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742391116; c=relaxed/simple;
-	bh=9qiRCmD/XCESCMM/7dpS86HRNH+iD7bkRk00QdKM360=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KPSOPkoQEVZ2kfFVaTYaYRavPAkUMahKC14YiLzK1lfFrdqY2mtGdaiysakD7SVdVKUFoslDUYE68iKYkeNN+AulA2IjBRh5ryj3VszQPfWF5log7mltBaBYYnLga+aBL6vD9jLkRuH15m3MuDnqKUnEk//gIK/z0dBMeO8OZLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Ap5GYuAl; arc=none smtp.client-ip=209.85.208.53
+	s=arc-20240116; t=1742393431; c=relaxed/simple;
+	bh=RZxZQKNwj3Tru3dXf7Tqfg2p9oWqsYaFjAKfL7Wgx5s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TThzCVFd9Geah0vocdLWKd+BqLaVX4zAGBg3LD+j7NU3HOlNfvB5rXB2AYS4a3/nXFyLSG3GxZhGS9KtFMgs1vIXovLSziUtdC5ziqZXx4JCEWgM308PSoV+gO68oZyCu2zkts3YIpyYqn4cRX6DInYnKQiBRIszcFUc0g/2ma0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Dfb4aP0f; arc=none smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5e61375c108so8944054a12.1
-        for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 06:31:51 -0700 (PDT)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-2c12b7af278so585733fac.0
+        for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 07:10:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742391110; x=1742995910; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lzHbJ+a3kNpZ2LWVgT8v9kpI3XVTjp/CmEA/PKlMAZY=;
-        b=Ap5GYuAlf1HoCAibVNIeEgPFFnxujSvsDArGoO+kiHraN6k3j0FTgXLINOYaU5mHKN
-         ojVcdpb31TvNfqOCjpw/jewpYBABG8JeU8XvHjhFQUESFC2PUbUdOeLlyBTMsfRgqVeo
-         SEI785qO3wMkYj6Vf+2RZgHgLbUiBBSyzKM2JsnFZ8sE+/H+LMwHl9VPzNkkL3bBfOb0
-         UeALJDHksJxENIu0W8V0dnhkUERZUpk6dXTL2YCxFbfNbKEsvLCLnPHX/mcvYXSDTG6z
-         PCWSxX/sJrF+/COTyXhCOcgraoSMxxZNn4oHdqt9UcmPCsM7mfLgAZK2nIaH/+UEqEif
-         +AwA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742393428; x=1742998228; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lCQ7mg9qx8im0TmEXVjeKUfTXL7p1nZHg6BtajIV6Qo=;
+        b=Dfb4aP0fDZ2r26shPW+7AebkU4S1Srdo9EeDxDLauEGHN7FG+HL1/kvbnBA6K40vjn
+         i0hNO48b6cgUJt8j8uu+Xs92jateavsW+YJ/pbt6Mnd0SUgIXApeAiA0OzBknzZuhPhC
+         yueS07yzGmNUol+D0j5PGH6EScEVfNWkFWRQLtTIGdlpRevcjvP8Fn++clW76KuTdyso
+         B0cdleCNwUWyXISZCLxp8eryuC14a5Wz2tG7NJn5AIpsF8jts0BfBKrkSBQ7HsePlgPS
+         WXsJ8mFbD2f0jU6FtV/+CFEMVVPwHC39LTdFzA6iCTdmpbyfDcrE7vr8DBQfJmelVKDN
+         ccSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742391110; x=1742995910;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lzHbJ+a3kNpZ2LWVgT8v9kpI3XVTjp/CmEA/PKlMAZY=;
-        b=HIpbcrIGpDfy1QJvYSs+Q8YX+3YXH4nBM/MmgBwaRZIm3bK993mKalJv+LmzYop1Qi
-         5Dxlf3Yb7DtbZ/Qmpoqy2vc7J5cBK+xFlrxZLjBbq5JeSKr3BFRDCP2ZOZkreh8pzxDo
-         JASL9vKcLhT+ioQ46GVxAGINvGlIRsb2eQFuek0PjItqMhKa7BbyFk3XZa9oU6Pq1Nj7
-         eCPHENUglTfIPNorAiJ7TJNlJt9zVy8JZ9Kyg4Z4FFEuodIDYg+zt6oq+cgJsKDqtg0d
-         U0Z//rVPj3nV6URcucLgZ8oHIajEoOjSKo8cS6YX5A9qauFQ6bjJoQ5Scgi8mL8LO7mo
-         d9/Q==
-X-Gm-Message-State: AOJu0YxjNe6MWBlDpvOFK42o8WngTWs8JoXxzLQDoAfdtHNlR/BnVQk+
-	DGHNXlwJG5rdFNUJfd6Y/ED025ssXJHFG6iIbSv1GfebZfOzhKFpR0nZqUgmMds=
-X-Gm-Gg: ASbGnctTUGyu06E0dUhLG/97R8QFWLdDzQZKczbmwax7L45BGasvYWa+SbEpbbTCbfJ
-	0jKqhqRx488AY3fQDQk9x1AGXmg/X09bGE8VbqNvNqPlsgPSfwpPASY2Q3TH2atxgez6Z/zgrmh
-	QruORxcg6mdHaWtVYWqafcgG0+6ThMYh+hoahrvAaNOvScpzwf/irfy0vfv0otAZ4eEft5kiGXG
-	ajqVAFXHmk4Bmd7i8pS4djhfit9LkaRBASBtjzzhdoOM9P0Py3OtXnjsaZaitmXajuFHz5Gjgiu
-	uy1XPRfj7KFKBPYv0GBrNFcg3M/En5wiiAMnYh/uTiP0sK3K/iHkiZ/c9yxBPoWTMwES9MF1v9L
-	k133YGJfMh2brSHS7ayQ=
-X-Google-Smtp-Source: AGHT+IFt9KxbN3+sudW98Q6jzh3T9AtoL6/jWit3aUuDsut21tbFt7KtxucKbyyaJLaQkGlcyAWOWQ==
-X-Received: by 2002:a05:6402:3513:b0:5e5:c5f5:f82 with SMTP id 4fb4d7f45d1cf-5eb80ab52c8mr2712328a12.0.1742391106316;
-        Wed, 19 Mar 2025 06:31:46 -0700 (PDT)
-Received: from [127.0.1.1] (host-87-10-75-167.retail.telecomitalia.it. [87.10.75.167])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e816ad27c1sm9421159a12.59.2025.03.19.06.31.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 06:31:45 -0700 (PDT)
-From: Angelo Dureghello <adureghello@baylibre.com>
-X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
-Date: Wed, 19 Mar 2025 14:30:28 +0100
-Subject: [PATCH v2] iio: dac: ad3552r-hs: add debugfs reg access
+        d=1e100.net; s=20230601; t=1742393428; x=1742998228;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lCQ7mg9qx8im0TmEXVjeKUfTXL7p1nZHg6BtajIV6Qo=;
+        b=AlwPwJ4FzrToZ+C0kpP/sJXTYSGsGlX2bXJGxTX/BgLS0ZpNgKXZztCwBWY/11jO5t
+         1TRLxwTcLlTOORIw+gj4evNJLxvPOt37umA0IgWj7I3Nigd7xtfyyDASgOu6N/kF2uGJ
+         lg4KX+VzlhWsZO79TIrJjd2KrQdm2G8h3BBKvrNsxn02sRyXSVv9Mm2oAwOhWYeCEjAD
+         gPvxiYINFi2Hrf5e/Q7YoiAQYnCthv5VOKiVKKzYuulGhMxU8VFBTjlyUDfyYebxRmzh
+         BEsxec2JmFbeSi+Zqkk3PrwHZqRbDCol932YxaH4Uv/YzR+JKR0iUpvbXcXZVwJhUy+T
+         tFMw==
+X-Gm-Message-State: AOJu0Ywss5M3oA4u+suVNG+hTe+vBOo9Vsu4bBSj2+lsaHRHJdh466Sx
+	x3OiiRqMBQyUIvDKID3EprXwLNT5lUo1ATRqI5xV0F5tapXUV4qrDcDEO6dJ/mg=
+X-Gm-Gg: ASbGncufRDyzhroeLuryNO8t8XwuFRs0aVH7OvsvfEug/gP2P9dHSKtqviYtUByYUWa
+	5RV5GWCZod5V5Q9o9VLNFbvSOv6S4M/5BtFzrIHiYp6Se6dnZ5CHe0enQhyEGeRdqeUz6ALHkn3
+	AtiS0IlN2u31L0XgFL5SSPgNrQGYhvqSZhWgQfRhQxJsk7Iu2Duaqd6Wa/ybYdd86n2FNGLpIZK
+	za+Tp1eQzP6diTsR45Q0S0PYy50ATA/4DDsGp9gPaMopCJKsECVSoPhPrhoxPjEMd/ra2t42SAw
+	VDANNHD+nggdWwVGL23FLBQBvxGq33LhpW0n81UM9ep+DNQ2P/PX0fgAs9IqHA+vOwAIVkAxwnE
+	Vcux+dsbUL68DYyQA
+X-Google-Smtp-Source: AGHT+IGLAuT9bruCmg6JLGuhMlyOX5HQi279BRJMsB+YAibz/H/yD22BULxRcvK1dKErXhzR7pgh0A==
+X-Received: by 2002:a05:6871:200e:b0:2c3:13f7:2b3d with SMTP id 586e51a60fabf-2c71a1b6563mr4086867fac.13.1742393428113;
+        Wed, 19 Mar 2025 07:10:28 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72bb274e95dsm2442600a34.52.2025.03.19.07.10.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Mar 2025 07:10:27 -0700 (PDT)
+Message-ID: <a6246dea-738b-48fc-80fc-6676967157eb@baylibre.com>
+Date: Wed, 19 Mar 2025 09:10:26 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-wip-bl-ad3552r-fixes-v2-1-2656bdd6778e@baylibre.com>
-X-B4-Tracking: v=1; b=H4sIAPPG2mcC/4WNTQ6CMBCFr0Jm7Zi2WBNceQ/Coj9TmQSBtKZKS
- O9u5QIuv/fyvbdDosiU4NbsEClz4mWuoE4NuNHMD0L2lUEJpUUrO3zzinZC41utVcTAH0p4CdZ
- S5730ykJV10hHUc1+qDxyei1xO16y/KV/BrNEiS5I4a/BkFbmbs02sY10dssThlLKF3GGmo67A
- AAA
-X-Change-ID: 20250319-wip-bl-ad3552r-fixes-4fbbe9dd1d2b
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] iio: dac: ad3552r-hs: add debugfs reg access
+To: Angelo Dureghello <adureghello@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Angelo Dureghello <adureghello@baylibre.com>
-X-Mailer: b4 0.14.2
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250319-wip-bl-ad3552r-fixes-v2-1-2656bdd6778e@baylibre.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <20250319-wip-bl-ad3552r-fixes-v2-1-2656bdd6778e@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+On 3/19/25 8:30 AM, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Add debugfs register access.
+> 
 
-Add debugfs register access.
+Forgot to pick up Nuno's review tag or explain why not.
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
----
-Changes in v2:
-- set reg size setup as inline.
-- Link to v1: https://lore.kernel.org/r/20250319-wip-bl-ad3552r-fixes-v1-1-cf10d6fae52a@baylibre.com
----
- drivers/iio/dac/ad3552r-hs.c | 26 ++++++++++++++++++++++++++
- drivers/iio/dac/ad3552r.h    |  2 ++
- 2 files changed, 28 insertions(+)
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+> Changes in v2:
+> - set reg size setup as inline.
+> - Link to v1: https://lore.kernel.org/r/20250319-wip-bl-ad3552r-fixes-v1-1-cf10d6fae52a@baylibre.com
+> ---
+>  drivers/iio/dac/ad3552r-hs.c | 26 ++++++++++++++++++++++++++
+>  drivers/iio/dac/ad3552r.h    |  2 ++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+> index cd8dabb60c5548780f0fce5d1b68c494cd71321d..fdea9984547ae338a51c4671024133be82ed854f 100644
+> --- a/drivers/iio/dac/ad3552r-hs.c
+> +++ b/drivers/iio/dac/ad3552r-hs.c
+> @@ -7,6 +7,7 @@
+>   */
+>  
+>  #include <linux/bitfield.h>
+> +#include <linux/debugfs.h>
 
-diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
-index cd8dabb60c5548780f0fce5d1b68c494cd71321d..fdea9984547ae338a51c4671024133be82ed854f 100644
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <linux/bitfield.h>
-+#include <linux/debugfs.h>
- #include <linux/delay.h>
- #include <linux/gpio/consumer.h>
- #include <linux/iio/backend.h>
-@@ -464,6 +465,30 @@ static int ad3552r_hs_setup_custom_gain(struct ad3552r_hs_state *st,
- 				      gain, 1);
- }
- 
-+static int ad3552r_hs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
-+				 unsigned int writeval, unsigned int *readval)
-+{
-+	struct ad3552r_hs_state *st = iio_priv(indio_dev);
-+	int size_xfer, max_reg_addr;
-+
-+	max_reg_addr = (st->model_data->num_hw_channels == 2) ?
-+			AD3552R_REG_ADDR_MAX : AD3551R_REG_ADDR_MAX;
-+
-+	if (reg > max_reg_addr)
-+		return -EINVAL;
-+
-+	/*
-+	 * There is no 3 or 4 bytes r/w len possible in HDL, so keeping 2
-+	 * also for the 24bit area.
-+	 */
-+	size_xfer = (reg > AD3552R_SECONDARY_REGION_START) ? 2 : 1;
-+
-+	if (readval)
-+		return ad3552r_hs_reg_read(st, reg, readval, size_xfer);
-+
-+	return st->data->bus_reg_write(st->back, reg, writeval, size_xfer);
-+}
-+
- static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
- {
- 	u16 id;
-@@ -639,6 +664,7 @@ static const struct iio_chan_spec ad3552r_hs_channels[] = {
- static const struct iio_info ad3552r_hs_info = {
- 	.read_raw = &ad3552r_hs_read_raw,
- 	.write_raw = &ad3552r_hs_write_raw,
-+	.debugfs_reg_access = &ad3552r_hs_reg_access,
- };
- 
- static int ad3552r_hs_probe(struct platform_device *pdev)
-diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
-index 768fa264d39e9e6d517aeb4098382e072f153543..69ce96f132cdb353d2f140939c534586cb791aee 100644
---- a/drivers/iio/dac/ad3552r.h
-+++ b/drivers/iio/dac/ad3552r.h
-@@ -113,6 +113,8 @@
- #define AD3552R_REG_ADDR_INPUT_PAGE_MASK_24B		0x44
- #define AD3552R_REG_ADDR_SW_LDAC_24B			0x45
- #define AD3552R_REG_ADDR_CH_INPUT_24B(ch)		(0x4B - (1 - (ch)) * 3)
-+#define AD3551R_REG_ADDR_MAX				0x46
-+#define AD3552R_REG_ADDR_MAX				0x49
- 
- #define AD3552R_MAX_CH					2
- #define AD3552R_MASK_CH(ch)				BIT(ch)
+Is this header actually needed?
 
----
-base-commit: 6f9141cdd726e82d209b5fc6d6b5ea32ace339f1
-change-id: 20250319-wip-bl-ad3552r-fixes-4fbbe9dd1d2b
+>  #include <linux/delay.h>
+>  #include <linux/gpio/consumer.h>
+>  #include <linux/iio/backend.h>
+> @@ -464,6 +465,30 @@ static int ad3552r_hs_setup_custom_gain(struct ad3552r_hs_state *st,
+>  				      gain, 1);
+>  }
+>  
+> +static int ad3552r_hs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+> +				 unsigned int writeval, unsigned int *readval)
+> +{
+> +	struct ad3552r_hs_state *st = iio_priv(indio_dev);
+> +	int size_xfer, max_reg_addr;
+> +
+> +	max_reg_addr = (st->model_data->num_hw_channels == 2) ?
+> +			AD3552R_REG_ADDR_MAX : AD3551R_REG_ADDR_MAX;
 
-Best regards,
--- 
-Angelo Dureghello <adureghello@baylibre.com>
+Might as well add max reg to the model_data struct and read it directly instead
+of inferring it from other info.
+
+> +
+> +	if (reg > max_reg_addr)
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * There is no 3 or 4 bytes r/w len possible in HDL, so keeping 2
+> +	 * also for the 24bit area.
+> +	 */
+> +	size_xfer = (reg > AD3552R_SECONDARY_REGION_START) ? 2 : 1;
+
+If we are reading both bytes of a 16-bit register at the same time, we should
+only allow reading the lower of the two addresses, otherwise reading the high
+register address could return 1 byte from one register and 1 byte from another
+register.
+
+And if we can't read the 24-bit and 32-bit registers all at once, I think we
+should read them as 8-bit instead of 16-bit because the 24-bit registers are
+not 16-bit aligned.
+
+Or to keep it consistent, just allow accessing everything as 8-bit registers.
+
+> +
+> +	if (readval)
+> +		return ad3552r_hs_reg_read(st, reg, readval, size_xfer);
+> +
+> +	return st->data->bus_reg_write(st->back, reg, writeval, size_xfer);
+> +}
 
 

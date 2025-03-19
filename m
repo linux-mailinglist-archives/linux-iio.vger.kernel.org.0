@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-17112-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17113-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AEBBA69948
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:29:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F3EA699BD
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1249188B2E1
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 19:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C37886AAB
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 19:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2871120FAAB;
-	Wed, 19 Mar 2025 19:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77792214A6C;
+	Wed, 19 Mar 2025 19:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VFLg36LS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7WcTP0a"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACFD849C
-	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 19:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384E0214801
+	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 19:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742412334; cv=none; b=Lf4hYpbGRs3riAF+SXXZ/pjk5YEvNGzwCuP6hEUw4ZrSMeJWdyuYi+GhmmBIHtat1dHzDjAgBYPfmxtQo3lMKmgn0WC4qCEKTlIb4Ad0erb3wbQLv3aQgymsHSMQo5w6TZED6cgpHZxgKDuyUomDntjDjDWMAyNpRZz2qyMAwwE=
+	t=1742413739; cv=none; b=IfA+cXqzWDhYDmZchggOW3DpcEHS0QN2/8JcbLTrkti6LptnituuIPxgfOjMjjCfpoa/ma1Bey9OWGg/AXluW4tQ7b56kxLvF/DXxYqukOpuOFF00z9KIrgTJzhMY50ckvPtbIWx/IQnPlu/WVZ4Y7JGuLnFz6kqgtmayRk4dp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742412334; c=relaxed/simple;
-	bh=ng7x/FPdkBxu18UUelNDzvRzG5f6qCqB2SuFlrlL0mQ=;
+	s=arc-20240116; t=1742413739; c=relaxed/simple;
+	bh=KKOdoYBjGYBmonnGmiInNmx8edoRs7hQSNrXiKwYHN4=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=piEBt+GK9+zPkqqMP4cyvniv+3ZG8ZegNzlWmBla6a1QqBcbKHMDsOUMrx6QQBnz8EwDlig/FLmSAHHN4klJsSMVImRuu7wMuR+DwPKKkox33Jz4QZFGxeKgQVyBu4mxUQy4uoNX/PzZWjiTcZeebbCKIdaKJG5jBVUvvbMBq6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VFLg36LS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5D2B8C4CEE9
-	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 19:25:33 +0000 (UTC)
+	 Content-Type:MIME-Version; b=MskipWFmH+b2uJweuKY7NPMCgj5HxsNmJ1Vk8DyPeGUv0jqj0gavF5Glz8PgEPZTFo7LFeo9Jxyup33wG8ZvODi0d+hhDtNKvAgjavk4+ES5cx84o//ts0YuSFzuJTaZ8Ha9Sez86Oi/YQ70VUtJIXL6nEKq0T0dR/EryEmaBcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7WcTP0a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A2144C4CEE9
+	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 19:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742412333;
-	bh=ng7x/FPdkBxu18UUelNDzvRzG5f6qCqB2SuFlrlL0mQ=;
+	s=k20201202; t=1742413738;
+	bh=KKOdoYBjGYBmonnGmiInNmx8edoRs7hQSNrXiKwYHN4=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=VFLg36LSkZT20AA6bYgVUPrQIfyq8hIMM8rXb38YYJ5wIuU71K4g0QJt4MP4q1KOf
-	 xr1bpPn5u/qlOkAiNET8AXEVVgAp+KsWcwvcpTNj5LJId/iRy5ionE84aJONOXnRSm
-	 EmVEPweTGSduUps0PYDOX5mf2b04/Xj2IxLnt/d3dX6ApGc9yqi7FWA2xcjmOs7f7E
-	 zlXI3zsu980KmkBfDA5uOTWpFP/mPFz5tXKRZ1KLun4xDXADQRg3d2QrbWtFQz2KzV
-	 KQY7KSCFmx2A2/u11JyKyByUt5/4l+BzxSRlnc3or0kbt6pu313boSqSIrnCelLdYp
-	 x2uE5OFttN6hQ==
+	b=P7WcTP0a1Bg2ftFjAQTgKt3qwdZWT+s/izyHeBMtWN7SPRk77q4MYoxp+mUp7KRWh
+	 ZuIpslhecma+cVWT6b5RPlVoToMdVjDW2hlkQ9zwE2o3uHIRWUtR6lgxamZSd+gVms
+	 yuuZbvXBaCLheocZieQl8XdIh3fWDcp1LA4dJ8J0Jfv7vpIbAqqXfrSaF1dtBrbAFB
+	 BT1W/Kqj6uaXY6IO9qQ2NmxDvDAi+NvTTRid63APUTNwf4Himq8vc/GI+phlb57Q4G
+	 azLu5eqYh9ePPFRUckT6Ra0DVaUx702qTqSBGD1SLv5bYUaZLHswkAEsZNOKj1806X
+	 ynQ8R57ypl0Dw==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 48E84C4160E; Wed, 19 Mar 2025 19:25:33 +0000 (UTC)
+	id 8FC32C41612; Wed, 19 Mar 2025 19:48:58 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linux-iio@vger.kernel.org
 Subject: [Bug 219890] illuminance sensor is jittering between correct value
  and 0.03lux
-Date: Wed, 19 Mar 2025 19:25:33 +0000
+Date: Wed, 19 Mar 2025 19:48:58 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
@@ -56,14 +56,14 @@ X-Bugzilla-Component: IIO
 X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: normal
-X-Bugzilla-Who: srinivas.pandruvada@linux.intel.com
+X-Bugzilla-Who: wysiwyg81@rbox.co
 X-Bugzilla-Status: NEW
 X-Bugzilla-Resolution: 
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219890-217253-G0WGUruKe4@https.bugzilla.kernel.org/>
+Message-ID: <bug-219890-217253-OSxgYLk6S2@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
 References: <bug-219890-217253@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -79,35 +79,24 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
 
---- Comment #21 from Srinivas Pandruvada (srinivas.pandruvada@linux.intel.c=
-om) ---
-That is correct. Sometimes the data received is 0300. But not as frequent as
-you in your description. The first sample after power up, I can understand =
-as I
-have seen before. But here it is intermittent. There are no other events al=
-so
-to see if there is some random mixup.
+--- Comment #22 from Fred (wysiwyg81@rbox.co) ---
+it's big file :)
+I found this section, by searching "Sensors.DataFieldIlluminance".=20
+is it what you looking for ?
 
-I want to see if this is lower than the logical min value, then we can retu=
-rn
-as failed read.
-If you go to /sys/kernel/debug/hid/
-There will be folders. I think this sensor is under 0003:17EF:F006.000E.
 
-if you read "rdesc" file, you may see something like this:
-
-Physical(Sensors.LightAmbientLight)=20
+    Field(2)
+      Physical(Sensors.LightAmbientLight)
+      Application(Sensors.Sensor)
       Usage(1)
         Sensors.DataFieldIlluminance
       Logical Minimum(0)
-      Logical Maximum(10000)=20
-      Unit Exponent(-3)
+      Logical Maximum(-1)
+      Unit Exponent(-2)
       Report Size(32)
       Report Count(1)
-      Report Offset(208)
-      Flags( Variable Absolute )
-
-Check that.
+      Report Offset(16)
+      Flags( Variable Absolute
 
 --=20
 You may reply to this email to add a comment.

@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17110-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17111-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211D3A698C3
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:13:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72982A69906
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D75E1674CC
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 19:13:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E804839C9
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 19:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D2B211715;
-	Wed, 19 Mar 2025 19:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BB2215F46;
+	Wed, 19 Mar 2025 19:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9b+HSCl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L96GnD6e"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE541B0F1E;
-	Wed, 19 Mar 2025 19:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0A32135A5;
+	Wed, 19 Mar 2025 19:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742411584; cv=none; b=myJmdCAZvMuovjjzQHevBTztD5IA7lxn/H/gX3iqBp4lM4X6KH8zDAX6qehnaJ5Bh0x1TFKD8/VBjNLXnP4nhUj8+U2x2CzoenFgr1KaYT7KGqR+g+uDkHLrQzKkmb7OmCAfB8kZ7P9fBwoB1IknWRJcxX3gILS/IUyteAXRf/Y=
+	t=1742411765; cv=none; b=oErsD/6z1ltU/zF+lWiZSWBJZy4aPbzZmwZ18r+fPNbGL7+5sIFQER5Ame7TCt2np2l1VTmywcR+n5r4xtIuwTyzd5uJpbH8jUu63wqZxrn2ArDG1b+E/BSlI5R82JH+s06RTAYAy9OUOtXuvg8HhBEIz5XqDDsq03K779KN1mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742411584; c=relaxed/simple;
-	bh=eKeyoK7qLWcuF7MK3Oodipn/TPbsBhUk+axcbBmZaec=;
+	s=arc-20240116; t=1742411765; c=relaxed/simple;
+	bh=wBL/zEGJsN2Rlo10E5XiRwidGJbrtwC2yzRNemRG2BA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BCy4REQN2BPTa87TGSsgt4tT0bBHU1SYWLn65E0ys5Zj9Qb+RyRJ8Y8Xq9Dp0nP3QQ2gm1ELiHHh1cVJhnscdm1TXTR/Kf1fxtsvPNrcU05klVnIRBJQBiseqg2IjB542hmIcT1gpxi3AeS3aQbxhwpz9dEBhuohI1Kh13Fm8qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9b+HSCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E84FC4CEE4;
-	Wed, 19 Mar 2025 19:12:59 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=mTTWfgHBjWR4GCX8f5CQDSyOS2KWZO3swCRwASTIDmYaGMWwL6VmHngwD3nIjecpN1YwyhbJhtD4s1EfoqDQ8oNsKObgnXJwtNLFkKkkRGJ05p33Venc8eCPC2dYGwgvvTpwHK5Bo25wbM9nnKnFK5+gR/G48ngMKH3gwznXU5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L96GnD6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25886C4CEE4;
+	Wed, 19 Mar 2025 19:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742411583;
-	bh=eKeyoK7qLWcuF7MK3Oodipn/TPbsBhUk+axcbBmZaec=;
+	s=k20201202; t=1742411764;
+	bh=wBL/zEGJsN2Rlo10E5XiRwidGJbrtwC2yzRNemRG2BA=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=D9b+HSClpVQhqw1Vz1PSyMwApeh+ZMhy3ph8L0jGz6joZ+/dWsbnDrdBWRQiUMcG5
-	 ehHBT1V0AepDbIftHGucP1YCqw3INZ9jqHXnZO559UMgg50aEok5MlTd9baEGhmHWM
-	 1vq/aBg0iPixiQvUziynABl06PSaPyVxEVC00U5ETOAqTdkR35IeVUoDTJ3x96GL34
-	 VgKJYWCveXbSJLxf8F2ty2fznC9a0HwwKGwLJk0MPtv2iqx/+KihVbg3SBJn1iLgb8
-	 c6stywFNKdEOF6PWpgaKoxoUEcl1rOXaY0/n1Sjnsz1Rr0hO0iPhM+4lsMDz1M+9WM
-	 MWjTovL2TA9FA==
-Message-ID: <61d55149-1955-4d5c-84de-d8644727b87f@kernel.org>
-Date: Wed, 19 Mar 2025 20:12:57 +0100
+	b=L96GnD6e4LkLWH6fmXkxsJDhpzCH+aclsXGexh/1fTSFxQF+EyZeRDvxE0twyAU05
+	 u82nE3WC/6vSir0ya1B3aqf9xvh35qdZfSgkwqYCTc1WZf/ydjlsIqmc8cLOWRirjO
+	 egrNiknyXO90wdLhnD7N6wUKID9vCCKas2ouiwsvhjb6XC2U80iGyNS5NFBpG+HOBp
+	 Ybl+/DclZx5XCUI43ycSwtTQwYv2UTMxDyz5NAFANvbSZGWpZESw2yDqGa5UWEMMT5
+	 oQ5gDQgpM5uaCARCr5aIy0E3R0X7IBll/1PolxMbNGM6xLa6OKcRGAlBOjckvk8bwA
+	 LjqxVtiPBAWXg==
+Message-ID: <9b8b74d5-ac63-4990-acc9-dbc3bd2f89f6@kernel.org>
+Date: Wed, 19 Mar 2025 20:15:58 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
- property
+Subject: Re: [PATCH v3 2/2] iio: light: bh1750: Add hardware reset support via
+ GPIO
 To: Sergio Perez <sergio@pereznus.es>, Tomasz Duszynski <tduszyns@gmail.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250319161117.1780-1-sergio@pereznus.es>
+ <20250319161117.1780-2-sergio@pereznus.es>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,29 +104,39 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20250319161117.1780-1-sergio@pereznus.es>
+In-Reply-To: <20250319161117.1780-2-sergio@pereznus.es>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 19/03/2025 17:11, Sergio Perez wrote:
-> Some BH1750 sensors require a hardware reset via GPIO before they can
-> be properly detected on the I2C bus. Add a new reset-gpios property
-> to the binding to support this functionality.
-> 
-> The reset-gpios property allows specifying a GPIO that will be toggled
-> during driver initialization to reset the sensor.
-> 
-> Signed-off-by: Sergio Perez <sergio@pereznus.es>
-> ---
->  Documentation/devicetree/bindings/iio/light/bh1750.yaml | 5 +++++
->  1 file changed, 5 insertions(+)
-You just sent v3, while v4 was already on the lists, without improving
-and without responding to review.
+>  struct bh1750_chip_info {
+> @@ -248,6 +253,24 @@ static int bh1750_probe(struct i2c_client *client)
+>  	data->client = client;
+>  	data->chip_info = &bh1750_chip_info_tbl[id->driver_data];
+>  
+> +	/* Get reset GPIO from device tree */
+> +	data->reset_gpio = devm_gpiod_get_optional(&client->dev,
+> +									"reset", GPIOD_OUT_HIGH);
 
-NAK.
 
-You keep repeating the same mistakes: not reading and responding
-feedback and it is getting tiresome.
+Mess indentation.
+
+> +	if (IS_ERR(data->reset_gpio))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
+> +							"Failed to get reset GPIO\n");
+> +
+> +	/* Perform hardware reset if GPIO is provided */
+> +	if (data->reset_gpio) {
+> +		/* Perform reset sequence: low-high */
+> +		gpiod_set_value_cansleep(data->reset_gpio, 0);
+> +		fsleep(BH1750_RESET_DELAY_US);
+> +		gpiod_set_value_cansleep(data->reset_gpio, 1);
+
+
+So you keep device at reset state. This wasn't tested or your DTS is wrong.
+
+I expect to acknowledge/respond to each of this comments above. Next
+version, which is supposed to be v5, should fix them.
 
 Best regards,
 Krzysztof

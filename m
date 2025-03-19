@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-17130-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17131-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3329FA69C2B
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 23:38:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0347A69C32
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 23:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51693B63F4
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 22:38:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 542807AB122
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 22:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58ACC21CA18;
-	Wed, 19 Mar 2025 22:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AD421CC44;
+	Wed, 19 Mar 2025 22:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="eRaHw7mW"
+	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="Efj4LCPS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from p00-icloudmta-asmtp-us-central-1k-60-percent-2.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (p-east1-cluster1-host11-snip4-5.eps.apple.com [57.103.91.108])
+Received: from p00-icloudmta-asmtp-us-central-1k-20-percent-2.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (p-east1-cluster7-host7-snip4-4.eps.apple.com [57.103.88.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3C121B196
-	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 22:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 021BB21A43C
+	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 22:40:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.88.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742423899; cv=none; b=ljHzviPpCeAiIzTlCyQJ0Iag/628PTDyK3MkRYxU/pICNNz9iKThl+YmhIuXHG6i56acF4C21usG2sp5LCNot5MuzyDWiy/stNUZNpODz6qmTMfJ/blYls4nzcx32YOludbH1sdXUB7MTvGAnam1EQwAkmsygBYqvzsGCkNOO4Q=
+	t=1742424036; cv=none; b=U0X9TRapzb/dONhEd62a3QiLQuxM7JaZ9+vCAOSKnPotuujz+pB+CNgI+hx8h96G4XJZNMSfmN5Alz2SYIASDg8eXFdgfuDCsjHZzOMo7znKHkivllgSGCt5pFbub6Tyn3mGWlZ83O+lGAUswx+ddWZ200JLyWBwgSk4WjgrWfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742423899; c=relaxed/simple;
-	bh=8a2f3FlRvG/pzDdRtKaKlroKGdKCT2odwaou3DMDvmM=;
+	s=arc-20240116; t=1742424036; c=relaxed/simple;
+	bh=LDdW63KkXdtMGsjIdm0QO2sTUdRfEA1gvEz9HleYuDM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=PcSsuafGOEujpZmxy6a7YyeGCNCp6us2XJdleVLwKXXEm12NVmiNVtzQlM0QkdP4EOeSWFuazYfnyos8ZnKSC7mNBFM4+GZN0xIgzZVQqQvd3K5vGaLGd3PoUkj3YPl2ceNpIppZASV5D5GlW00con+yieufFO8NqC5qLK/MWyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=eRaHw7mW; arc=none smtp.client-ip=57.103.91.108
+	 In-Reply-To:Content-Type; b=RA2+WddoXUEuznuGZPPx4GAPkVhDSSqV+d+mf/p5oG7RbunzPU9fafudMns6zk1+eMfjxjJE/xJoD1fw16XN20Njhj/Mtlvgg5lSAYktfovTwHC8WlvVY9OQ1rzAaTviWp1Sso/CbOP/HyafubbIu26dcDccZTqs95efLdDD8Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=Efj4LCPS; arc=none smtp.client-ip=57.103.88.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pereznus.es
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pereznus.es; s=sig1;
-	bh=D4tLwEtvyuAMs9vaw3UQSpGv6BpebpU0va3SYfZMuQY=;
+	bh=CScgqRa+/ruu15qM/hSXzeb0IDHE4KwO5tkzzugGe8I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=eRaHw7mWCl7vStM7eB3wsmJN7N/xHsH1KjuWQkADW6RmbmF+/OdotDGZOeY43wudK
-	 NW5JjX2u1mFTEK2xevW0yNtivYLD8Pi7U43F/hjdGK8yIp9vEX9rqlhArJxEI+rJA4
-	 YgXc8TtqDD7lA14bLRdBZ7j325xIddXW69hJ8ojSlq3dkE3SWjEophLQKEewz9iatS
-	 m4vTekkDZo4/MJFo/mLmKs0946maKZG2hNJbo5KZpIDkpCwPqMi828eliExG+47Yvl
-	 OusKCDGi+Z7FbaELeflxdgcO0unBJc2zdmk9R7n/N45Socqa/C87B+HoKqKqRWMqzE
-	 VtQt+UpbRjtDA==
+	b=Efj4LCPSRFYqUA1aDsCEtZmfbUgJpDdbxVQOHkKej7DLnpXxOnT/bmTF1hjJSCoqE
+	 zQsnBVfijfeTLzYvoK2oS7B3hzQYJhZtqU3doc7yjqDl+opABsFtMkIYXpBZHRsWQc
+	 tmVR5bEwrhb45vy/P5tXN0yMMD50Z6AJd1c/e/xk7vgcrRmChc4jwr1lZcIQQcyjXP
+	 5gSpgFwYtUnuKSe/18L7C4kjDn8TeBlYJLgUuq4frq5F8zJXtiSSIFHIUIDhCyOnyU
+	 sXETByIhE/bT+/j2zkw+mdyYBJ0JPeoMpkGQMCuf6qnKpfS43irzV8m9ZiqA2YTd8x
+	 ynaEf+rfk7biQ==
 Received: from [192.168.1.28] (ci-asmtp-me-k8s.p00.prod.me.com [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-2.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (Postfix) with ESMTPSA id D72DF18000B7;
-	Wed, 19 Mar 2025 22:38:12 +0000 (UTC)
-Message-ID: <96c44905-0725-4c68-91a5-1c6cea6a7f4a@pereznus.es>
-Date: Wed, 19 Mar 2025 23:38:09 +0100
+	by p00-icloudmta-asmtp-us-central-1k-20-percent-2.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (Postfix) with ESMTPSA id 477BF1800090;
+	Wed, 19 Mar 2025 22:40:29 +0000 (UTC)
+Message-ID: <e4ffd13f-1452-4f18-8d80-f63b391f2545@pereznus.es>
+Date: Wed, 19 Mar 2025 23:40:27 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
- property
+Subject: Re: [PATCH v3 2/2] iio: light: bh1750: Add hardware reset support via
+ GPIO
 To: Krzysztof Kozlowski <krzk@kernel.org>,
  Tomasz Duszynski <tduszyns@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
@@ -61,72 +61,75 @@ To: Krzysztof Kozlowski <krzk@kernel.org>,
  <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250319161117.1780-1-sergio@pereznus.es>
- <61d55149-1955-4d5c-84de-d8644727b87f@kernel.org>
+ <20250319161117.1780-2-sergio@pereznus.es>
+ <9b8b74d5-ac63-4990-acc9-dbc3bd2f89f6@kernel.org>
 Content-Language: es-ES, en-US, ca
 From: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>
-In-Reply-To: <61d55149-1955-4d5c-84de-d8644727b87f@kernel.org>
+In-Reply-To: <9b8b74d5-ac63-4990-acc9-dbc3bd2f89f6@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: SUd8x49W4pG6fMgPf4kgXRWwy085DXog
-X-Proofpoint-ORIG-GUID: SUd8x49W4pG6fMgPf4kgXRWwy085DXog
+X-Proofpoint-GUID: 1qsE21s7QuIZJzwe5vw5cCq7G8pqWtZW
+X-Proofpoint-ORIG-GUID: 1qsE21s7QuIZJzwe5vw5cCq7G8pqWtZW
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-19_08,2025-03-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 mlxscore=0 suspectscore=0
- clxscore=1030 mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2503190152
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 adultscore=0
+ mlxlogscore=999 spamscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ clxscore=1030 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2503190152
 
 
-El 19/03/2025 a las 20:12, Krzysztof Kozlowski escribió:
+El 19/03/2025 a las 20:15, Krzysztof Kozlowski escribió:
 > On 19/03/2025 17:11, Sergio Perez wrote:
->> Some BH1750 sensors require a hardware reset via GPIO before they can
->> be properly detected on the I2C bus. Add a new reset-gpios property
->> to the binding to support this functionality.
->>
->> The reset-gpios property allows specifying a GPIO that will be toggled
->> during driver initialization to reset the sensor.
->>
->> Signed-off-by: Sergio Perez <sergio@pereznus.es>
->> ---
->>   Documentation/devicetree/bindings/iio/light/bh1750.yaml | 5 +++++
->>   1 file changed, 5 insertions(+)
-> You just sent v3, while v4 was already on the lists, without improving
-> and without responding to review.
+>>   struct bh1750_chip_info {
+>> @@ -248,6 +253,24 @@ static int bh1750_probe(struct i2c_client *client)
+>>   	data->client = client;
+>>   	data->chip_info = &bh1750_chip_info_tbl[id->driver_data];
+>>   
+>> +	/* Get reset GPIO from device tree */
+>> +	data->reset_gpio = devm_gpiod_get_optional(&client->dev,
+>> +									"reset", GPIOD_OUT_HIGH);
 >
-> NAK.
+> Mess indentation.
+Regarding indentation, I'll fix it in the next version to ensure 
+consistency with kernel style guidelines.
 >
-> You keep repeating the same mistakes: not reading and responding
-> feedback and it is getting tiresome.
-I apologize for the confusion with patch versions. You're right that I 
-sent v3
-after v4 was already on the list. I was trying to follow your exact 
-instructions from:
-"git add ...
-git commit --signed-off
-git format-patch -v3 -2
-scripts/chekpatch.pl v3*
-scripts/get_maintainers.pl --no-git-fallback v3*
-git send-email *"
+>> +	if (IS_ERR(data->reset_gpio))
+>> +		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
+>> +							"Failed to get reset GPIO\n");
+>> +
+>> +	/* Perform hardware reset if GPIO is provided */
+>> +	if (data->reset_gpio) {
+>> +		/* Perform reset sequence: low-high */
+>> +		gpiod_set_value_cansleep(data->reset_gpio, 0);
+>> +		fsleep(BH1750_RESET_DELAY_US);
+>> +		gpiod_set_value_cansleep(data->reset_gpio, 1);
+>
+> So you keep device at reset state. This wasn't tested or your DTS is wrong.
+The BH1750 reset pin (DVI) is "active low", meaning the device is in 
+reset state when the pin is at 0V. When the pin is at high level, the 
+device exits reset and operates normally.
 
-Regarding the binding I've modified for next v5 the YAML description to 
-remove "active low" to avoid confusion and modified the example to:
+According to the datasheet (can provide upon request), the reset 
+sequence should:
+1. Pull the reset pin low to enter reset state
+2. Wait (minimum 1µs, I use 10ms to be safe)
+3. Pull the reset pin high to exit reset state
+4. Leave the pin high for normal operation
 
-examples:
-   - |
-     i2c {
-       #address-cells = <1>;
-       #size-cells = <0>;
+My implementation follows this exact sequence, so the device is NOT left 
+in reset state. The initialization code:
+1. Sets the pin to 0 (device enters reset)
+2. Waits
+3. Sets the pin to 1 (device exits reset)
+4. Leaves it at 1, which is the normal operating state
 
-       light-sensor@23 {
-         compatible = "rohm,bh1750";
-         reg = <0x23>;
-         reset-gpios = <&gpio2 17 GPIO_ACTIVE_HIGH>;
-       };
-     };
-
-That is the original version and is the configuration running on my machine.
-
+I've modified the YAML description to remove "active low" to avoid 
+confusion, as the implementation is correct for this hardware.
+>
+> I expect to acknowledge/respond to each of this comments above. Next
+> version, which is supposed to be v5, should fix them.
+>
 > Best regards,
 > Krzysztof
 

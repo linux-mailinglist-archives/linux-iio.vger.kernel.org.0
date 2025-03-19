@@ -1,300 +1,250 @@
-Return-Path: <linux-iio+bounces-17108-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17109-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07413A694EC
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 17:28:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D049DA695A4
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 17:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73D919C4A84
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 16:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EC6188D4D0
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 16:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C771DF996;
-	Wed, 19 Mar 2025 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4651E7C3F;
+	Wed, 19 Mar 2025 16:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="PfJvWWpe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YoqV266z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from p00-icloudmta-asmtp-us-central-1k-60-percent-6.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (p-east1-cluster3-host12-snip4-10.eps.apple.com [57.103.91.251])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4611A316D
-	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 16:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.91.251
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1AB1E5B6E;
+	Wed, 19 Mar 2025 16:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742401629; cv=none; b=uXELtkHOvXRUyJUtK6c3RttlD+fNC6NtNtnANVYV5rHfR0y29vrkOLWxsyiaFNkMSQUXqUSRpNl8SRCBaCNTaKIsiKRG4SCfr3a5CKD7nDxpKb26wvXMeZZuihdQ3J66MXoRoXpPcq30rcpuuPyNg7K0UdYKd5cKVkr2wRw+hzM=
+	t=1742403567; cv=none; b=MS1tDrBeqG/1zCCPK7MPbwUt2n3EY/BmRPar1UF/neMcYgBqN+yGDFqsmUz3EkIHeo/HYj+R20OCmX1vS05TmfcenMnGxyHkkHfnwUrJhCOUf/DOVTunu4HySuiK8L2WsQzWiIpyit93DB27Eif+1ydkFF3MNQjrMGWhxn7G1DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742401629; c=relaxed/simple;
-	bh=R/AqNGF+n1Pr/1jORJcVIU6MI0bPeDE9FByo14rxmf0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P+ypNK8U8MYrCDBP5fUXUH4nFwz6rB3G8lOYHFEP787lVXux7qbL/NV0W5OQQVf8VXrn0cfwHr5tLjMvmsIXkQIOjht+Sb+JUu7x0Y9/X7hjPWWD88wXQOXaO3QQ9bTKPMFhf3kElGCS8fKEzGz9hQvPW7Qnr0ZOpck3kM4Qt7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=PfJvWWpe; arc=none smtp.client-ip=57.103.91.251
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pereznus.es
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pereznus.es; s=sig1;
-	bh=zuaUt4WDVbRPvE3zxuUy5lHsR+yMR2v2V90gWAZfcOQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=PfJvWWpeANC4tLpfcas09TbhS0LFGlp/mjT0TwR1vWt7B8peUejOhj6pyB5OMGeSi
-	 hVK/fIlAR60reiD14WfrLA/iTWCfJqqiJN2ygZxxYUMNjjMe0qw3MhKKzKeUB9rI5e
-	 rrezCRiCNu6BQ7jSD7GJ1sPaNqRZD0Ze3qNrqe1R/CG4Uwh0QLxMvNr6UGpGawpFpn
-	 2q+kWt8dn/1wDUJzeH7CgRO1tdcm/RpGU+FUI9KgYjM2n2nLeuf97g5ZrNhcy/TWFw
-	 RyHIwJwBtuc+IlRQqrHnk1fr1L8zNi7U+S9FXZGrhG/bEnjHU74/27hvWW/wsAXxlp
-	 b/KFniFo71O7g==
-Received: from [192.168.1.28] (ci-asmtp-me-k8s.p00.prod.me.com [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-60-percent-6.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (Postfix) with ESMTPSA id BA8C1180085D;
-	Wed, 19 Mar 2025 16:27:01 +0000 (UTC)
-Message-ID: <4474831c-a8f6-496e-8348-a10e3fb7c798@pereznus.es>
-Date: Wed, 19 Mar 2025 17:26:59 +0100
+	s=arc-20240116; t=1742403567; c=relaxed/simple;
+	bh=QKmIRilHU60ov9N6EEa6cmlu5Xga9Vf12qAWMCmpesE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fZVQpMXl4ONlkUFOyfm31H8O8yqWLRDSHI32+AJPjGpUV3El4bnOtUSz2VMPI4GNaqdJYlCubnDiir0yWDLMzbRWx2IsO+7FjL0L17ncGvv+rpZIA1SJ3hSJFEDK/MQQkxlI0FVvSANEKEprUBq7Fhw2fIQziCsXPDndzADJTYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YoqV266z; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso51504775e9.1;
+        Wed, 19 Mar 2025 09:59:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742403563; x=1743008363; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nC3dL9SkBQeRU2Gx1sHTLVo9d/ZsLBQE4BpxWA3gbaU=;
+        b=YoqV266zyQcCgBT0uNDiKUF1BIhHK2Rm8Q0A+c7LzfjCRZ7E5bmYDtrgW5T+DALkcQ
+         +9ukx9KaMBYEWxjR7AfKqoam1QiFEdBkaVM2A75K0mmfPdjo3cpA2NY9Dj1PRPwIcVyR
+         X/t3YPLca+tAB+zMOi9pQ0hJ75huBLMbLagh2qy7Z5Rm+HQnBsGtpQIoa8FKCoh6RxTi
+         j22ZIR15LhmD2wdLnODOGeW3ND/o0H63Bx+4GLwPljkpUE4rM+48pdbJS8KtFtQP4wll
+         UiD2TaaGLtp0kX51YHQayMX/8qVVOtF1rr6aXh2SuamPa60ZAuy21ylnCePx3uZHqUYi
+         p1pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742403563; x=1743008363;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nC3dL9SkBQeRU2Gx1sHTLVo9d/ZsLBQE4BpxWA3gbaU=;
+        b=g0p6fJvY+9QRMldeLPWO+GJ+tmP+CTecTJg8OLqtzoTfvszXVXznDIVqIS5EkSIvIU
+         VOAvqfUqB4biJeKN7HQGbJB7dh7DYKBZw57JrAvjQJrnx4Cw6NC9ZGICWn0ZelPoQHk6
+         R8+pb5zbHyWHKTgGfufiLkLsokazOu/lZgq8f5T/iNtS0uYQoXh0BpfLPNCqq2QbLxXE
+         geBudlEoHtPojghEWEcztYQJEt5q5jKKZixSQzMWu0Yqkb0CVOlF2Fd7hU4juYw7t0q7
+         L6SIH4Q0dGBkEvnMI7m5rTaLQLkcjbORCcaWEXCagY+aGHzE0v2c24rbvMbY26Yh0+db
+         I8Eg==
+X-Forwarded-Encrypted: i=1; AJvYcCUt4fA+REQGf84k3/Bwg7+rlEiZPIHVyyeExWtqCyqfWhEXXu+Ns3hPeH9uf/ZfHZiwDFnGMuQ0cMf8@vger.kernel.org, AJvYcCWHmKX4y33WcSl1ZitISvW2e5rKhrUQ0UMzkBq8EzFvPF9s/FBe/U7MdHD9IV7IhSk4a02w/DFwiKoy@vger.kernel.org, AJvYcCXMAX8gAjUCVUckyBwPyYgbQnPzKHUuS2krL5b4qBSj/EU3fZqH9il7P4K1DfhNbyJVbyHTpAUJMtv/@vger.kernel.org, AJvYcCXP0WDo/35z8aZk/u3SyLkmqBynjjZeWEPlP739EJ2KsKRM3dMrbLGoKhybV3DTwn4vPCrQKFPucpjkCklb@vger.kernel.org
+X-Gm-Message-State: AOJu0YweUa0a4B24dvUgwNS4l68pScYZmz6zRhC/ccmdrT/7SRDa1eZ5
+	aG2Sh9eAiE+BpOiftHXdntDUB4kj9ZDdsOIiXEAoP3S+foDYUzzmutxwKjXMKYdOuA==
+X-Gm-Gg: ASbGncv7usBN3i+FoFGJcDRMNmGlot1JVmU2+0sHM+2KxOlTTkps0Opta+LKSq5487A
+	UciHXPP8sJ0zKPdumx7e8s7GV8uDInD9xn53ZlMeIsHmfGdeWTQkB5be/HXNEAoqruHXEk2bp5r
+	wd/P+7klhJctt6FsrYMWWfDXcNS0B4TiI168eA85UFp3qVqGcTJ/kscC7tfxnKrLmvzdMeA74Pf
+	L6fFcELKYR4w+wAaD/Ig0wJfErLJOmV7grzKa7krzrAdLLIYg9TE53OMvrmav7CXJOKRgY+Hrvm
+	46QPuwgTJUPYdsvDVJjcoZokdEyNzZ1fFc+LKYvT9kjKyGTgxhBgPxRigEpu173DHg==
+X-Google-Smtp-Source: AGHT+IEZ/kUcnH1EyGgg8d1Rq3AK+KO65DxA23UU7pL/5xhziSQclVpXH0h/mFIW3GkWn8i289ly4Q==
+X-Received: by 2002:a05:600c:384d:b0:43c:fdbe:439b with SMTP id 5b1f17b1804b1-43d4378158fmr38728865e9.4.1742403562890;
+        Wed, 19 Mar 2025 09:59:22 -0700 (PDT)
+Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f47ba7sm23612295e9.16.2025.03.19.09.59.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 09:59:22 -0700 (PDT)
+Date: Wed, 19 Mar 2025 17:59:19 +0100
+From: Jorge Marques <gastmaier@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+	Jorge Marques <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 3/4] docs: iio: new docs for ad4052 driver
+Message-ID: <yfw2zhdymhta57xr6x6dphqggtlpgbs35yzudwlxghbdi4hlnj@spicau723uai>
+References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
+ <20250306-iio-driver-ad4052-v1-3-2badad30116c@analog.com>
+ <CAMknhBFiZZUtCkTjQ=AVSgwqe=wCkMnqAmaTqvW_X6fm1OKuYA@mail.gmail.com>
+ <e3p2r2fet2spkrxv7x76gunlivrp3vng22wktz4fkww5nkckt7@jpgne4uerr3c>
+ <20250310195416.6d8c64f2@jic23-huawei>
+ <c62l6jv5vgsxnbipw7jar6tikjavwybdxaurz7hkdowbamc7ic@ak2rva3ujmaa>
+ <05b83988-b7aa-453a-bef7-8e7eda77f53a@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
-To: Krzysztof Kozlowski <krzk@kernel.org>, linux-iio@vger.kernel.org
-Cc: tduszyns@gmail.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
- conor+dt@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250316145514.627-1-sergio@pereznus.es>
- <01f48f6d-55a4-4dbe-b1ae-ef8c54dcc1ff@kernel.org>
- <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
- <8992a79d-0859-4d7f-9b47-52e20b11260a@kernel.org>
- <144b5c43-f8c6-44d1-bcff-83158ac29781@pereznus.es>
- <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
- <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
- <bf16371c-189c-4e51-91e5-129f1dcad317@pereznus.es>
- <ac008fb8-7c82-4b9c-9d24-52ea38b920e5@kernel.org>
- <0507608a-91fd-4206-b921-942677c5f8d3@kernel.org>
-Content-Language: es-ES, en-US, ca
-From: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>
-In-Reply-To: <0507608a-91fd-4206-b921-942677c5f8d3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: qCxJwGjxhIgel5iamZq8_k5btd4RoIaL
-X-Proofpoint-ORIG-GUID: qCxJwGjxhIgel5iamZq8_k5btd4RoIaL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-19_06,2025-03-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 clxscore=1030
- adultscore=0 phishscore=0 bulkscore=0 spamscore=0 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2503190111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <05b83988-b7aa-453a-bef7-8e7eda77f53a@baylibre.com>
 
+On Fri, Mar 14, 2025 at 01:56:32PM -0500, David Lechner wrote:
+> On 3/14/25 1:13 PM, Jorge Marques wrote:
+> > On Mon, Mar 10, 2025 at 07:54:16PM +0000, Jonathan Cameron wrote:
+> >> On Sun, 9 Mar 2025 21:49:24 +0100
+> >> Jorge Marques <gastmaier@gmail.com> wrote:
+> >>
+> >>>>> +.. list-table:: Driver attributes
+> >>>>> +   :header-rows: 1
+> >>>>> +
+> >>>>> +   * - Attribute
+> >>>>> +     - Description
+> >>>>> +   * - ``in_voltage0_raw``
+> >>>>> +     - Raw ADC voltage value
+> >>>>> +   * - ``in_voltage0_oversampling_ratio``
+> >>>>> +     - Enable the device's burst averaging mode to over sample using
+> >>>>> +       the internal sample rate.
+> >>>>> +   * - ``in_voltage0_oversampling_ratio_available``
+> >>>>> +     - List of available oversampling values. Value 0 disable the burst
+> >>>>> +       averaging mode.
+> >>>>> +   * - ``sample_rate``
+> >>>>> +     - Device internal sample rate used in the burst averaging mode.
+> >>>>> +   * - ``sample_rate_available``
+> >>>>> +     - List of available sample rates.  
+> >>>>
+> >>>> Why not using the standard sampling_frequency[_available] attributes?  
+> >>> Because sampling_frequency is the sampling frequency for the pwm trigger
+> >>> during buffer readings.
+> >>> sample_rate is the internal device clock used during monitor and burst
+> >>> averaging modes.
+> >>
+> >> For an ABI that is very vague and the two use cases seem to be logically
+> >> quite different.
+> >>
+> >> Seems that for each trigger we have an oversampling ratio controlled number
+> >> of samples at this rate. It is unusual to be able to control oversampling
+> >> rate separately from the trigger clock, hence the lack of ABI.  If
+> >> we add something new for this it should something relating to oversampling.
+> >> oversampling_frequency perhaps.
+> >>
+> >> For monitor mode, it is tied to the sampling frequency for most devices.
+> >> But there are exceptions.  E.g. the max1363. Trick is to make it an event
+> >> ABI property and hence under events/ rather than in the root directory.
+> >>
+> >> In this case you'll have to store two values and write the appropriate
+> >> one into the register to suit a given operating mode.
+> >>
+> > 
+> > If doing buffer captures with oversampling enabled, both sampling
+> > frequencies have an impact:
+> > 
+> > e.g.,
+> > oversampling: 4
+> > sample_rate: 2MHz
+> > PWM sampling frequency: 500KHz
+> > 
+> > PWM trigger out (CNV)   |       |       |       |       |
+> > ADC conversion          ++++    ++++    ++++    ++++    ++++
+> > ADC data ready  (GP)       *       *       *       *       *
+> > 
+> > For monitor mode, it will constantly be doing conversion to check for
+> > threshold crossings, at the defined sample_rate.
+> > 
+> > I like the idea of having the device's sample_rate as
+> > conversion_frequency.
+> 
+> In addition to what makes sense for this chip, we should also consider what
+> makes sense other chips with similar features. For example, I am working on
+> ad7606c which has control for the oversampling burst frequency (frequency of
+> "+" in the diagram above). So it would make sense to have a standard attribute
+> that would work for both chips.
+> 
+> On ad4052, just because we have a single register that controls two different
+> functions doesn't mean we have to be limited to a single attribute that controls
+> that register.
+> 
 
-El 19/03/2025 a las 9:46, Krzysztof Kozlowski escribió:
-> On 18/03/2025 18:37, Krzysztof Kozlowski wrote:
->>> I've now run the tool correctly on my patch file and have fixed the
->>> identified issues:
->>> - Removed trailing whitespace
->>> - Fixed lines exceeding 79 characters
->>> - Fixed the inconsistency between the description and example for
->>> reset-gpios
->>> - Modified the existing example instead of adding a new one
->>> - Ensured proper line endings and formatting
->>> - Used proper get_maintainers.pl to include all recipients
->>>
->> Please read the guides carefully. The process is extremely simple as:
->>
->> git add ...
->> git commit --signed-off
->> git format-patch -v3 -2
->> scripts/chekpatch.pl v3*
->> scripts/get_maintainers.pl --no-git-fallback v3*
->> git send-email *
-> Please read this again. I gave you detailed instruction which you still
-> decided not to follow. The instructions are quite precise on purpose,
-> because other method leads to wrong patchset - broken that or other way.
->
-I transcribe exactly the commands I have executed:
+I looked into the ad7606c driver and summarized below to organize our
+ideas:
 
-$ git add Documentation/devicetree/bindings/iio/light/bh1750.yaml
+  PADDING OVERSAMPLING
+  --------------------
+  Delay between conversions:
 
-$ git commit --signed-off
+  OS_CLOCK(Hz) = 1 / (1+OS_PAD/16)
+  
+  OS_CLOCK: internal clock, reg
 
-$ git add drivers/iio/light/bh1750.c
+  0x08 OVERSAMPLING
+    OS_PAD[7:4]: Extends the internal oversampling period allowing
+                 evenly spaced sampling between CONVST rising edges,
+                 from 0 to 15
+    OS_RATIO[3:0]: from off(1) to 256
+    
+  Therefore, OS_CLOCK range is therefore 1Hz .. 0.516Hz
+  (1) from previous discussion, iio oversampling 1 equals off.
 
-$ git commit --signed-off
+  EXTERNAL OVERSAMPLING CLOCK
+  ---------------------------
+  Use CONVST as the external trigger for
+  each conversion
 
-$ git format-patch -v3 -2
+On AD4052 family:
 
-$ scripts/checkpatch.pl v3*
----------------------------------------------------------------
-v3-0001-dt-bindings-iio-light-bh1750-Add-reset-gpios-prop.patch
----------------------------------------------------------------
-total: 0 errors, 0 warnings, 17 lines checked
+  BURST AVERAGING MODE
+  --------------------
 
-v3-0001-dt-bindings-iio-light-bh1750-Add-reset-gpios-prop.patch has no obvious style problems and is ready for submission.
----------------------------------------------------------------
-v3-0002-iio-light-bh1750-Add-hardware-reset-support-via-G.patch
----------------------------------------------------------------
-total: 0 errors, 0 warnings, 47 lines checked
+  Delay between conversions
 
-v3-0002-iio-light-bh1750-Add-hardware-reset-support-via-G.patch has no obvious style problems and is ready for submission.
+  Total latency:
+  (AVG_WIN_LEN-1)/FS_BURST_AUTO + t_CONV
 
-$ scripts/get_maintainer.pl --no-git-fallback v3*
-Tomasz Duszynski <tduszyns@gmail.com> (maintainer:ROHM BH1750 AMBIENT 
-LIGHT SENSOR DRIVER,in file)
-Jonathan Cameron <jic23@kernel.org> (maintainer:IIO SUBSYSTEM AND DRIVERS)
-Lars-Peter Clausen <lars@metafoo.de> (reviewer:IIO SUBSYSTEM AND DRIVERS)
-Rob Herring <robh@kernel.org> (maintainer:OPEN FIRMWARE AND FLATTENED 
-DEVICE TREE BINDINGS)
-Krzysztof Kozlowski <krzk+dt@kernel.org> (maintainer:OPEN FIRMWARE AND 
-FLATTENED DEVICE TREE BINDINGS)
-Conor Dooley <conor+dt@kernel.org> (maintainer:OPEN FIRMWARE AND 
-FLATTENED DEVICE TREE BINDINGS)
-linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS)
-devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE 
-TREE BINDINGS)
-linux-kernel@vger.kernel.org (open list)
+  0x23 AVG_CONFIG
+    AVG_WIN_LEN[3:0]: Averaging ratio/number of samples
+  0x27 TIMER_CONFIG
+    FS_BURST_AUTO[7:4]: from 111Hz to 2 MHz, internal sample rate
 
-$ git_send_email v3*
-v3-0001-dt-bindings-iio-light-bh1750-Add-reset-gpios-prop.patch
-v3-0002-iio-light-bh1750-Add-hardware-reset-support-via-G.patch
-(mbox) Adding cc: Sergio Perez <sergio@pereznus.es> from line 'From: 
-Sergio Perez <sergio@pereznus.es>'
-(body) Adding cc: Sergio Perez <sergio@pereznus.es> from line 
-'Signed-off-by: Sergio Perez <sergio@pereznus.es>'
+  AVERAGING MODE
+  --------------
+  Use CONVST as the external trigger for
+  each conversion
 
-From: Sergio Perez <sergio@pereznus.es>
-To: Tomasz Duszynski <tduszyns@gmail.com>,
-         Jonathan Cameron <jic23@kernel.org>,
-         Lars-Peter Clausen <lars@metafoo.de>,
-         Rob Herring <robh@kernel.org>,
-         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-         Conor Dooley <conor+dt@kernel.org>,
-         linux-iio@vger.kernel.org,
-         devicetree@vger.kernel.org,
-         linux-kernel@vger.kernel.org
-Cc: Sergio Perez <sergio@pereznus.es>
-Subject: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios 
-property
-Date: Wed, 19 Mar 2025 17:11:16 +0100
-Message-ID: <20250319161117.1780-1-sergio@pereznus.es>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+So, we can say that
+PADDING OVERSAMPLING == BURST AVERAGING MODE, and
+EXTERNAL OVERSAMPLING CLOCK == AVERAGING MODE
 
-     The Cc list above has been expanded by additional
-     addresses found in the patch commit message. By default
-     send-email prompts before sending whenever this occurs.
-     This behavior is controlled by the sendemail.confirm
-     configuration setting.
+> So I would create the events/sampling_frequency{,_available} attributes like
+> Jonathan suggested for controlling the sampling frequency in monitor mode and
+> introduce new oversampling_burst_frequency{,_available} attributes for
+> controlling the conversion frequency when oversampling. When an attribute is
+> written, we can cache the requested value in the state struct instead of
+> writing it directly to the register on the ADC if we want the attributes to be
+> independent. Then only write the register when we enable monitor mode or when
+> we start reading samples with oversampling enabled.
+> 
+> Sure, it is more work to implement it in the driver this way, but that shouldn't
+> be an an excuse to do things in a way that isn't compatible with other ADCs.
+> 
 
-     For additional information, run 'git send-email --help'.
-     To retain the current behavior, but squelch this message,
-     run 'git config --global sendemail.confirm auto'.
+I am alright with that and will follow the suggestion of having the
+values independent through cache.
 
-Send this email? ([y]es|[n]o|[e]dit|[q]uit|[a]ll): y
-OK. Log says:
-Server: smtp.mail.me.com
-MAIL FROM:<sergio@pereznus.es>
-RCPT TO:<tduszyns@gmail.com>
-RCPT TO:<jic23@kernel.org>
-RCPT TO:<lars@metafoo.de>
-RCPT TO:<robh@kernel.org>
-RCPT TO:<krzk+dt@kernel.org>
-RCPT TO:<conor+dt@kernel.org>
-RCPT TO:<linux-iio@vger.kernel.org>
-RCPT TO:<devicetree@vger.kernel.org>
-RCPT TO:<linux-kernel@vger.kernel.org>
-RCPT TO:<sergio@pereznus.es>
-From: Sergio Perez <sergio@pereznus.es>
-To: Tomasz Duszynski <tduszyns@gmail.com>,
-         Jonathan Cameron <jic23@kernel.org>,
-         Lars-Peter Clausen <lars@metafoo.de>,
-         Rob Herring <robh@kernel.org>,
-         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-         Conor Dooley <conor+dt@kernel.org>,
-         linux-iio@vger.kernel.org,
-         devicetree@vger.kernel.org,
-         linux-kernel@vger.kernel.org
-Cc: Sergio Perez <sergio@pereznus.es>
-Subject: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios 
-property
-Date: Wed, 19 Mar 2025 17:11:16 +0100
-Message-ID: <20250319161117.1780-1-sergio@pereznus.es>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+So, two new attributes will be implemented:
 
-Result: 250
-(mbox) Adding cc: Sergio Perez <sergio@pereznus.es> from line 'From: 
-Sergio Perez <sergio@pereznus.es>'
-(body) Adding cc: Sergio Perez <sergio@pereznus.es> from line 
-'Signed-off-by: Sergio Perez <sergio@pereznus.es>'
+* oversampling_[burst_]frequency{,_available} (new ABI required)
+* events/sampling_frequency{,_available}
 
-From: Sergio Perez <sergio@pereznus.es>
-To: Tomasz Duszynski <tduszyns@gmail.com>,
-         Jonathan Cameron <jic23@kernel.org>,
-         Lars-Peter Clausen <lars@metafoo.de>,
-         Rob Herring <robh@kernel.org>,
-         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-         Conor Dooley <conor+dt@kernel.org>,
-         linux-iio@vger.kernel.org,
-         devicetree@vger.kernel.org,
-         linux-kernel@vger.kernel.org
-Cc: Sergio Perez <sergio@pereznus.es>
-Subject: [PATCH v3 2/2] iio: light: bh1750: Add hardware reset support 
-via GPIO
-Date: Wed, 19 Mar 2025 17:11:17 +0100
-Message-ID: <20250319161117.1780-2-sergio@pereznus.es>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250319161117.1780-1-sergio@pereznus.es>
-References: <20250319161117.1780-1-sergio@pereznus.es>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+And I will drop conversion_frequency (early sample_rate) attribute.
 
-Send this email? ([y]es|[n]o|[e]dit|[q]uit|[a]ll): y
-OK. Log says:
-Server: smtp.mail.me.com
-MAIL FROM:<sergio@pereznus.es>
-RCPT TO:<tduszyns@gmail.com>
-RCPT TO:<jic23@kernel.org>
-RCPT TO:<lars@metafoo.de>
-RCPT TO:<robh@kernel.org>
-RCPT TO:<krzk+dt@kernel.org>
-RCPT TO:<conor+dt@kernel.org>
-RCPT TO:<linux-iio@vger.kernel.org>
-RCPT TO:<devicetree@vger.kernel.org>
-RCPT TO:<linux-kernel@vger.kernel.org>
-RCPT TO:<sergio@pereznus.es>
-From: Sergio Perez <sergio@pereznus.es>
-To: Tomasz Duszynski <tduszyns@gmail.com>,
-         Jonathan Cameron <jic23@kernel.org>,
-         Lars-Peter Clausen <lars@metafoo.de>,
-         Rob Herring <robh@kernel.org>,
-         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-         Conor Dooley <conor+dt@kernel.org>,
-         linux-iio@vger.kernel.org,
-         devicetree@vger.kernel.org,
-         linux-kernel@vger.kernel.org
-Cc: Sergio Perez <sergio@pereznus.es>
-Subject: [PATCH v3 2/2] iio: light: bh1750: Add hardware reset support 
-via GPIO
-Date: Wed, 19 Mar 2025 17:11:17 +0100
-Message-ID: <20250319161117.1780-2-sergio@pereznus.es>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250319161117.1780-1-sergio@pereznus.es>
-References: <20250319161117.1780-1-sergio@pereznus.es>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Result: 250
-
->> (or just use my git_send_email for last two)
->> (or just use b4 for last four)
->>
->> The burden of reading the contributing guides is on you. We documented
->> all this on purpose, so we will not have to repeat this on every email.
->>
->>
->> [1]
->> https://github.com/search?q=repo%3Akrzk%2Ftools%20git_send_email&type=code
->>
->> Best regards,
->> Krzysztof
->
-> Best regards,
-> Krzysztof
 

@@ -1,250 +1,132 @@
-Return-Path: <linux-iio+bounces-17109-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17110-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D049DA695A4
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 17:59:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 211D3A698C3
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:13:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EC6188D4D0
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 16:59:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D75E1674CC
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 19:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4651E7C3F;
-	Wed, 19 Mar 2025 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D2B211715;
+	Wed, 19 Mar 2025 19:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YoqV266z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D9b+HSCl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1AB1E5B6E;
-	Wed, 19 Mar 2025 16:59:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE541B0F1E;
+	Wed, 19 Mar 2025 19:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742403567; cv=none; b=MS1tDrBeqG/1zCCPK7MPbwUt2n3EY/BmRPar1UF/neMcYgBqN+yGDFqsmUz3EkIHeo/HYj+R20OCmX1vS05TmfcenMnGxyHkkHfnwUrJhCOUf/DOVTunu4HySuiK8L2WsQzWiIpyit93DB27Eif+1ydkFF3MNQjrMGWhxn7G1DI=
+	t=1742411584; cv=none; b=myJmdCAZvMuovjjzQHevBTztD5IA7lxn/H/gX3iqBp4lM4X6KH8zDAX6qehnaJ5Bh0x1TFKD8/VBjNLXnP4nhUj8+U2x2CzoenFgr1KaYT7KGqR+g+uDkHLrQzKkmb7OmCAfB8kZ7P9fBwoB1IknWRJcxX3gILS/IUyteAXRf/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742403567; c=relaxed/simple;
-	bh=QKmIRilHU60ov9N6EEa6cmlu5Xga9Vf12qAWMCmpesE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZVQpMXl4ONlkUFOyfm31H8O8yqWLRDSHI32+AJPjGpUV3El4bnOtUSz2VMPI4GNaqdJYlCubnDiir0yWDLMzbRWx2IsO+7FjL0L17ncGvv+rpZIA1SJ3hSJFEDK/MQQkxlI0FVvSANEKEprUBq7Fhw2fIQziCsXPDndzADJTYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YoqV266z; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso51504775e9.1;
-        Wed, 19 Mar 2025 09:59:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742403563; x=1743008363; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nC3dL9SkBQeRU2Gx1sHTLVo9d/ZsLBQE4BpxWA3gbaU=;
-        b=YoqV266zyQcCgBT0uNDiKUF1BIhHK2Rm8Q0A+c7LzfjCRZ7E5bmYDtrgW5T+DALkcQ
-         +9ukx9KaMBYEWxjR7AfKqoam1QiFEdBkaVM2A75K0mmfPdjo3cpA2NY9Dj1PRPwIcVyR
-         X/t3YPLca+tAB+zMOi9pQ0hJ75huBLMbLagh2qy7Z5Rm+HQnBsGtpQIoa8FKCoh6RxTi
-         j22ZIR15LhmD2wdLnODOGeW3ND/o0H63Bx+4GLwPljkpUE4rM+48pdbJS8KtFtQP4wll
-         UiD2TaaGLtp0kX51YHQayMX/8qVVOtF1rr6aXh2SuamPa60ZAuy21ylnCePx3uZHqUYi
-         p1pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742403563; x=1743008363;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nC3dL9SkBQeRU2Gx1sHTLVo9d/ZsLBQE4BpxWA3gbaU=;
-        b=g0p6fJvY+9QRMldeLPWO+GJ+tmP+CTecTJg8OLqtzoTfvszXVXznDIVqIS5EkSIvIU
-         VOAvqfUqB4biJeKN7HQGbJB7dh7DYKBZw57JrAvjQJrnx4Cw6NC9ZGICWn0ZelPoQHk6
-         R8+pb5zbHyWHKTgGfufiLkLsokazOu/lZgq8f5T/iNtS0uYQoXh0BpfLPNCqq2QbLxXE
-         geBudlEoHtPojghEWEcztYQJEt5q5jKKZixSQzMWu0Yqkb0CVOlF2Fd7hU4juYw7t0q7
-         L6SIH4Q0dGBkEvnMI7m5rTaLQLkcjbORCcaWEXCagY+aGHzE0v2c24rbvMbY26Yh0+db
-         I8Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUt4fA+REQGf84k3/Bwg7+rlEiZPIHVyyeExWtqCyqfWhEXXu+Ns3hPeH9uf/ZfHZiwDFnGMuQ0cMf8@vger.kernel.org, AJvYcCWHmKX4y33WcSl1ZitISvW2e5rKhrUQ0UMzkBq8EzFvPF9s/FBe/U7MdHD9IV7IhSk4a02w/DFwiKoy@vger.kernel.org, AJvYcCXMAX8gAjUCVUckyBwPyYgbQnPzKHUuS2krL5b4qBSj/EU3fZqH9il7P4K1DfhNbyJVbyHTpAUJMtv/@vger.kernel.org, AJvYcCXP0WDo/35z8aZk/u3SyLkmqBynjjZeWEPlP739EJ2KsKRM3dMrbLGoKhybV3DTwn4vPCrQKFPucpjkCklb@vger.kernel.org
-X-Gm-Message-State: AOJu0YweUa0a4B24dvUgwNS4l68pScYZmz6zRhC/ccmdrT/7SRDa1eZ5
-	aG2Sh9eAiE+BpOiftHXdntDUB4kj9ZDdsOIiXEAoP3S+foDYUzzmutxwKjXMKYdOuA==
-X-Gm-Gg: ASbGncv7usBN3i+FoFGJcDRMNmGlot1JVmU2+0sHM+2KxOlTTkps0Opta+LKSq5487A
-	UciHXPP8sJ0zKPdumx7e8s7GV8uDInD9xn53ZlMeIsHmfGdeWTQkB5be/HXNEAoqruHXEk2bp5r
-	wd/P+7klhJctt6FsrYMWWfDXcNS0B4TiI168eA85UFp3qVqGcTJ/kscC7tfxnKrLmvzdMeA74Pf
-	L6fFcELKYR4w+wAaD/Ig0wJfErLJOmV7grzKa7krzrAdLLIYg9TE53OMvrmav7CXJOKRgY+Hrvm
-	46QPuwgTJUPYdsvDVJjcoZokdEyNzZ1fFc+LKYvT9kjKyGTgxhBgPxRigEpu173DHg==
-X-Google-Smtp-Source: AGHT+IEZ/kUcnH1EyGgg8d1Rq3AK+KO65DxA23UU7pL/5xhziSQclVpXH0h/mFIW3GkWn8i289ly4Q==
-X-Received: by 2002:a05:600c:384d:b0:43c:fdbe:439b with SMTP id 5b1f17b1804b1-43d4378158fmr38728865e9.4.1742403562890;
-        Wed, 19 Mar 2025 09:59:22 -0700 (PDT)
-Received: from HYB-DlYm71t3hSl.ad.analog.com ([137.71.226.91])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d43f47ba7sm23612295e9.16.2025.03.19.09.59.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Mar 2025 09:59:22 -0700 (PDT)
-Date: Wed, 19 Mar 2025 17:59:19 +0100
-From: Jorge Marques <gastmaier@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Jorge Marques <jorge.marques@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 3/4] docs: iio: new docs for ad4052 driver
-Message-ID: <yfw2zhdymhta57xr6x6dphqggtlpgbs35yzudwlxghbdi4hlnj@spicau723uai>
-References: <20250306-iio-driver-ad4052-v1-0-2badad30116c@analog.com>
- <20250306-iio-driver-ad4052-v1-3-2badad30116c@analog.com>
- <CAMknhBFiZZUtCkTjQ=AVSgwqe=wCkMnqAmaTqvW_X6fm1OKuYA@mail.gmail.com>
- <e3p2r2fet2spkrxv7x76gunlivrp3vng22wktz4fkww5nkckt7@jpgne4uerr3c>
- <20250310195416.6d8c64f2@jic23-huawei>
- <c62l6jv5vgsxnbipw7jar6tikjavwybdxaurz7hkdowbamc7ic@ak2rva3ujmaa>
- <05b83988-b7aa-453a-bef7-8e7eda77f53a@baylibre.com>
+	s=arc-20240116; t=1742411584; c=relaxed/simple;
+	bh=eKeyoK7qLWcuF7MK3Oodipn/TPbsBhUk+axcbBmZaec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=BCy4REQN2BPTa87TGSsgt4tT0bBHU1SYWLn65E0ys5Zj9Qb+RyRJ8Y8Xq9Dp0nP3QQ2gm1ELiHHh1cVJhnscdm1TXTR/Kf1fxtsvPNrcU05klVnIRBJQBiseqg2IjB542hmIcT1gpxi3AeS3aQbxhwpz9dEBhuohI1Kh13Fm8qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D9b+HSCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E84FC4CEE4;
+	Wed, 19 Mar 2025 19:12:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742411583;
+	bh=eKeyoK7qLWcuF7MK3Oodipn/TPbsBhUk+axcbBmZaec=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=D9b+HSClpVQhqw1Vz1PSyMwApeh+ZMhy3ph8L0jGz6joZ+/dWsbnDrdBWRQiUMcG5
+	 ehHBT1V0AepDbIftHGucP1YCqw3INZ9jqHXnZO559UMgg50aEok5MlTd9baEGhmHWM
+	 1vq/aBg0iPixiQvUziynABl06PSaPyVxEVC00U5ETOAqTdkR35IeVUoDTJ3x96GL34
+	 VgKJYWCveXbSJLxf8F2ty2fznC9a0HwwKGwLJk0MPtv2iqx/+KihVbg3SBJn1iLgb8
+	 c6stywFNKdEOF6PWpgaKoxoUEcl1rOXaY0/n1Sjnsz1Rr0hO0iPhM+4lsMDz1M+9WM
+	 MWjTovL2TA9FA==
+Message-ID: <61d55149-1955-4d5c-84de-d8644727b87f@kernel.org>
+Date: Wed, 19 Mar 2025 20:12:57 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <05b83988-b7aa-453a-bef7-8e7eda77f53a@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
+ property
+To: Sergio Perez <sergio@pereznus.es>, Tomasz Duszynski <tduszyns@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250319161117.1780-1-sergio@pereznus.es>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20250319161117.1780-1-sergio@pereznus.es>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 14, 2025 at 01:56:32PM -0500, David Lechner wrote:
-> On 3/14/25 1:13 PM, Jorge Marques wrote:
-> > On Mon, Mar 10, 2025 at 07:54:16PM +0000, Jonathan Cameron wrote:
-> >> On Sun, 9 Mar 2025 21:49:24 +0100
-> >> Jorge Marques <gastmaier@gmail.com> wrote:
-> >>
-> >>>>> +.. list-table:: Driver attributes
-> >>>>> +   :header-rows: 1
-> >>>>> +
-> >>>>> +   * - Attribute
-> >>>>> +     - Description
-> >>>>> +   * - ``in_voltage0_raw``
-> >>>>> +     - Raw ADC voltage value
-> >>>>> +   * - ``in_voltage0_oversampling_ratio``
-> >>>>> +     - Enable the device's burst averaging mode to over sample using
-> >>>>> +       the internal sample rate.
-> >>>>> +   * - ``in_voltage0_oversampling_ratio_available``
-> >>>>> +     - List of available oversampling values. Value 0 disable the burst
-> >>>>> +       averaging mode.
-> >>>>> +   * - ``sample_rate``
-> >>>>> +     - Device internal sample rate used in the burst averaging mode.
-> >>>>> +   * - ``sample_rate_available``
-> >>>>> +     - List of available sample rates.  
-> >>>>
-> >>>> Why not using the standard sampling_frequency[_available] attributes?  
-> >>> Because sampling_frequency is the sampling frequency for the pwm trigger
-> >>> during buffer readings.
-> >>> sample_rate is the internal device clock used during monitor and burst
-> >>> averaging modes.
-> >>
-> >> For an ABI that is very vague and the two use cases seem to be logically
-> >> quite different.
-> >>
-> >> Seems that for each trigger we have an oversampling ratio controlled number
-> >> of samples at this rate. It is unusual to be able to control oversampling
-> >> rate separately from the trigger clock, hence the lack of ABI.  If
-> >> we add something new for this it should something relating to oversampling.
-> >> oversampling_frequency perhaps.
-> >>
-> >> For monitor mode, it is tied to the sampling frequency for most devices.
-> >> But there are exceptions.  E.g. the max1363. Trick is to make it an event
-> >> ABI property and hence under events/ rather than in the root directory.
-> >>
-> >> In this case you'll have to store two values and write the appropriate
-> >> one into the register to suit a given operating mode.
-> >>
-> > 
-> > If doing buffer captures with oversampling enabled, both sampling
-> > frequencies have an impact:
-> > 
-> > e.g.,
-> > oversampling: 4
-> > sample_rate: 2MHz
-> > PWM sampling frequency: 500KHz
-> > 
-> > PWM trigger out (CNV)   |       |       |       |       |
-> > ADC conversion          ++++    ++++    ++++    ++++    ++++
-> > ADC data ready  (GP)       *       *       *       *       *
-> > 
-> > For monitor mode, it will constantly be doing conversion to check for
-> > threshold crossings, at the defined sample_rate.
-> > 
-> > I like the idea of having the device's sample_rate as
-> > conversion_frequency.
+On 19/03/2025 17:11, Sergio Perez wrote:
+> Some BH1750 sensors require a hardware reset via GPIO before they can
+> be properly detected on the I2C bus. Add a new reset-gpios property
+> to the binding to support this functionality.
 > 
-> In addition to what makes sense for this chip, we should also consider what
-> makes sense other chips with similar features. For example, I am working on
-> ad7606c which has control for the oversampling burst frequency (frequency of
-> "+" in the diagram above). So it would make sense to have a standard attribute
-> that would work for both chips.
+> The reset-gpios property allows specifying a GPIO that will be toggled
+> during driver initialization to reset the sensor.
 > 
-> On ad4052, just because we have a single register that controls two different
-> functions doesn't mean we have to be limited to a single attribute that controls
-> that register.
-> 
+> Signed-off-by: Sergio Perez <sergio@pereznus.es>
+> ---
+>  Documentation/devicetree/bindings/iio/light/bh1750.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
+You just sent v3, while v4 was already on the lists, without improving
+and without responding to review.
 
-I looked into the ad7606c driver and summarized below to organize our
-ideas:
+NAK.
 
-  PADDING OVERSAMPLING
-  --------------------
-  Delay between conversions:
+You keep repeating the same mistakes: not reading and responding
+feedback and it is getting tiresome.
 
-  OS_CLOCK(Hz) = 1 / (1+OS_PAD/16)
-  
-  OS_CLOCK: internal clock, reg
-
-  0x08 OVERSAMPLING
-    OS_PAD[7:4]: Extends the internal oversampling period allowing
-                 evenly spaced sampling between CONVST rising edges,
-                 from 0 to 15
-    OS_RATIO[3:0]: from off(1) to 256
-    
-  Therefore, OS_CLOCK range is therefore 1Hz .. 0.516Hz
-  (1) from previous discussion, iio oversampling 1 equals off.
-
-  EXTERNAL OVERSAMPLING CLOCK
-  ---------------------------
-  Use CONVST as the external trigger for
-  each conversion
-
-On AD4052 family:
-
-  BURST AVERAGING MODE
-  --------------------
-
-  Delay between conversions
-
-  Total latency:
-  (AVG_WIN_LEN-1)/FS_BURST_AUTO + t_CONV
-
-  0x23 AVG_CONFIG
-    AVG_WIN_LEN[3:0]: Averaging ratio/number of samples
-  0x27 TIMER_CONFIG
-    FS_BURST_AUTO[7:4]: from 111Hz to 2 MHz, internal sample rate
-
-  AVERAGING MODE
-  --------------
-  Use CONVST as the external trigger for
-  each conversion
-
-So, we can say that
-PADDING OVERSAMPLING == BURST AVERAGING MODE, and
-EXTERNAL OVERSAMPLING CLOCK == AVERAGING MODE
-
-> So I would create the events/sampling_frequency{,_available} attributes like
-> Jonathan suggested for controlling the sampling frequency in monitor mode and
-> introduce new oversampling_burst_frequency{,_available} attributes for
-> controlling the conversion frequency when oversampling. When an attribute is
-> written, we can cache the requested value in the state struct instead of
-> writing it directly to the register on the ADC if we want the attributes to be
-> independent. Then only write the register when we enable monitor mode or when
-> we start reading samples with oversampling enabled.
-> 
-> Sure, it is more work to implement it in the driver this way, but that shouldn't
-> be an an excuse to do things in a way that isn't compatible with other ADCs.
-> 
-
-I am alright with that and will follow the suggestion of having the
-values independent through cache.
-
-So, two new attributes will be implemented:
-
-* oversampling_[burst_]frequency{,_available} (new ABI required)
-* events/sampling_frequency{,_available}
-
-And I will drop conversion_frequency (early sample_rate) attribute.
-
+Best regards,
+Krzysztof
 

@@ -1,282 +1,192 @@
-Return-Path: <linux-iio+bounces-17089-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17090-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5DCA689B1
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 11:34:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4679A68B02
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 12:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E9503A49ED
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 10:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 367D41B62176
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 11:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3223D253F3C;
-	Wed, 19 Mar 2025 10:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF62D25DCFB;
+	Wed, 19 Mar 2025 11:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6H8MCNB"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VySlzV0L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB6533991;
-	Wed, 19 Mar 2025 10:33:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E6525D216
+	for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 11:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742380385; cv=none; b=Ip1J9bElPBL2KoC+4KOMcRbYcXlCAyQwlhLR+foy/pTp9XD+VzhvQ/qkOxBT5zLarvvSDGT7He/AeRhrxW6mktpJMzP2c/xhZHYHR5Vk1faKupZdILS1FILrCP2SLPJ6rbiKRoDa0rf+O0hJCtzM1oi2yY4AJ0OsSzKC/v9MAO0=
+	t=1742382240; cv=none; b=AewAmSNyngAXvWr/N1nKkgcHrKCzgi7HTqV1EENAPq2b3GV0ZTVH7o/9LRgezdd7pWZe4DgFJwXI8qU0XlWV0SnABlq3DyaTH0iGcbBznagVX64c/B6jsWmBJk4dzwycmtzJZQe7lB+T/YjmVRGhFdqsfvRoEacjDNa1gStr2lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742380385; c=relaxed/simple;
-	bh=KTVZmxYEY9/X4XUGplthzwW5QE4s2FoLVrK4Bg1g8Xc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DBIR47W1QUFfMKpWt8GW19n8b/wLg6jdEYh3mRZX2jiPaFwsf7OH+sUmudtUwaSWDJlnz/IRQx+nTCL3IbV8dTjRVLYn57IEacDhth7ZGZMzlIfE6K73jQGYLkxAJOUp7WeSQhxf0piHtvglvyNExLu5vhXZKI7mZxm6XfZxEL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6H8MCNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2206C4CEE9;
-	Wed, 19 Mar 2025 10:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742380385;
-	bh=KTVZmxYEY9/X4XUGplthzwW5QE4s2FoLVrK4Bg1g8Xc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q6H8MCNB9+XNx6Y7c8ikrYtqP8fzOBFPUUqnxiYkXmEAgXYLn3B+SNK3TG26SZD0Q
-	 y+WzYBNZRZ0g89sjwzNg0IAcVkA0Q+Zavbk2zRstRSRqe+WKJXpltb7PPY6aN7zClM
-	 7S1hX0QKrIGhaRA6EsZfDike8krXTSHXmazMBJiYrU3VmO7PZJx23uulj6Yq125axa
-	 vJhxK950AQa1FJHEBNKkJDITMBjjfrWOa3OJFqLy6YLQuvdOSmqeyAAc4cytF6G0pl
-	 /7kocjkf4Hkye9ybkod5C0h+Uw1Dcnnmgx+SL7WpCOaDzFc6SRf837mhbIzgXvOqGJ
-	 FdTv5bZw0HjKw==
-Message-ID: <4bc0e1ca-a523-424a-8759-59e353317fba@kernel.org>
-Date: Wed, 19 Mar 2025 11:32:18 +0100
+	s=arc-20240116; t=1742382240; c=relaxed/simple;
+	bh=NcHfcUwCLbwHe5D53KCoWcwA4xO+xpxy4KWgV7nBxOc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CHLf5UQuIe8/Ps3JjPB647cRhOUuMkXEgjtpPH6VMMXp34W/3fB8kSyXIKkPAfjGfE4McrqYZ/smZ2esOs9ALDVhkqYmkhTLKHbVM5aMQDPLisHvzM3LfI7eFoBIvRFdIHbWkuVFGguft3KKZiHz3UJRiL81HZHMSQMdRXS0dLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VySlzV0L; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-abf3d64849dso1100168766b.3
+        for <linux-iio@vger.kernel.org>; Wed, 19 Mar 2025 04:03:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742382235; x=1742987035; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2I1CmNXU0vxFsOEAZFuw8IP7FJqaRF8yVBtpLAFgrXA=;
+        b=VySlzV0L2DPmw+O1Qnx0uQxT9JajZ7IxMqAvfJr27AnYt5bw9RtGiA23HiA/tfTThU
+         kuJ+UFw567LP7fCuRzriHLULUNIzX/Ch0rFjZx1GnduolsAdwWhjbB11Rpa43MkmUN3Y
+         WU7y8wUWl25MbUfwvuaHQxKhQDE+aoZ99W9o0IDHBeGoj0rIUft4cvPU/F4BLeDcM+Sr
+         PDeGnX+Qjlfrn+Hn26mt1ika/F41a7TwOc2FQhM4bFIhiFNjByFIVoQ0m/4hCmN7KK95
+         DtGYAd6QCwXIoIhpgZv6Z8j/NLn5/wm4+FuTv2+KHwH4sb1stuRzk79PppmHqAVSquBE
+         yxxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742382235; x=1742987035;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2I1CmNXU0vxFsOEAZFuw8IP7FJqaRF8yVBtpLAFgrXA=;
+        b=ksGZPMGTuEqE7VYFuQyWKXHBYL+/Qq2gW60h3sRJ/RV+F9KusXNv3CB4BpAt2VKKdY
+         6q4dqeh7KC3/nvgwJcxIe5WkQOXmHfUjLvecx3AIEghBpl23BIRKcAY4A+REOGvNFFjA
+         nTiVgX9/6iAABKrVOe5PTwkyYCyoDAVO8j0hED0IHXBRuzU4SWnZhQTHnZHn0Ec5yMDY
+         CEuJLwKy5rywkS+70H6TKh/n3+Rgnokz262V/4pkzbPyiy7X93Gj/jp1RSAo6doaO5rT
+         M3CkHO8YpLgXmp3fR1WNn2ciQ9dA86IjI8ZqtMG4UoK0xQ1bMn0GhbyWOMAN+itmAwvd
+         V8CA==
+X-Gm-Message-State: AOJu0YzL80nwgqfgQC7+HVgQY5gkgJde3g0RccvmnVnCRsQ1RCoGmfOI
+	xIWBXBhj+yVLg2imJPdAWTlmf+/bx589Q3ZhDWgOYI0WOVSYjxtPvjpt6ZGsKKg=
+X-Gm-Gg: ASbGncu8vE1e9bc1th8xxs2S2MuRF+wBSfZTf2j2K8N/qK3fJj+O01NFJeDjZqATIhc
+	RpeujSYxvc/bZNoxqLQchs8WE40s8Q5gGcK5JVkM6kEN8Sili5aZHUVqRIhzHgZt6+s17GEFv7C
+	+kHsFhEcBvDXRAaJPyHXTM0VQuxyBd2Cmf+1dowGM3usvmca2Wxr5zigCUcotrF+9+UJHdBCboW
+	5pDO5EVUA46FnfjvDk9j/fK0sSbgrcUBnxZFA84YaCT17Flbvf5srQiX85u8yeHy0Udamt8woC8
+	CAc3hTcPcJkzyqVkKtcnEdWrjFWbnFv3YO9nVa9vcYSTfGhvHrAR3jH9wmOp5b2a49ax+YeVVya
+	vMCqajDLD0Z7r8NUV1fF5FDnDOxlbOg==
+X-Google-Smtp-Source: AGHT+IF5XKrV37A9FB390sea/EQKrs962W3+vWeOQPrhoFnDUFkHSAlBd7BcVo+cBG6QrMqMqeoB1w==
+X-Received: by 2002:a17:907:7e5e:b0:abf:6ebf:5500 with SMTP id a640c23a62f3a-ac3b7c036d0mr274465366b.16.1742382234683;
+        Wed, 19 Mar 2025 04:03:54 -0700 (PDT)
+Received: from [127.0.1.1] (host-87-10-75-167.retail.telecomitalia.it. [87.10.75.167])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac314a47783sm1001431466b.144.2025.03.19.04.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 04:03:54 -0700 (PDT)
+From: Angelo Dureghello <adureghello@baylibre.com>
+X-Google-Original-From: Angelo Dureghello <adureghello@baylibre.org>
+Date: Wed, 19 Mar 2025 12:02:32 +0100
+Subject: [PATCH] iio: dac: ad3552r-hs: add debugfs reg access
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/57] irqdomain: Cleanups and Documentation
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: tglx@linutronix.de, maz@kernel.org, linux-kernel@vger.kernel.org,
- Aaro Koskinen <aaro.koskinen@iki.fi>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>, Albert Ou
- <aou@eecs.berkeley.edu>, Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Alexandre Ghiti <alex@ghiti.fr>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Alex Deucher <alexander.deucher@amd.com>, Alex Shi <alexs@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <alsi@bang-olufsen.dk>, Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- amd-gfx@lists.freedesktop.org, Amit Kucheria <amitk@kernel.org>,
- Anatolij Gustschin <agust@denx.de>, Andi Shyti <andi.shyti@kernel.org>,
- =?UTF-8?Q?Andreas_F=C3=A4rber?= <afaerber@suse.de>,
- Andreas Kemnade <andreas@kemnade.info>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>,
- Andy Shevchenko <andy@kernel.org>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Antoine Tenart <atenart@kernel.org>,
- Anton Ivanov <anton.ivanov@cambridgegreys.com>,
- Anup Patel <anup@brainfault.org>, Arnd Bergmann <arnd@arndb.de>,
- asahi@lists.linux.dev, Bartosz Golaszewski <brgl@bgdev.pl>,
- Baruch Siach <baruch@tkos.co.il>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>,
- Bjorn Andersson <andersson@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Borislav Petkov <bp@alien8.de>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Corentin Chary <corentin.chary@gmail.com>,
- Daire McNamara <daire.mcnamara@microchip.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, Daniel Mack <daniel@zonque.org>,
- Daniel Palmer <daniel@thingy.jp>, Dave Hansen <dave.hansen@linux.intel.com>,
- David Airlie <airlied@gmail.com>, "David S. Miller" <davem@davemloft.net>,
- DENG Qingfang <dqfext@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Dongliang Mu <dzm91@hust.edu.cn>, Doug Berger <opendmb@gmail.com>,
- dri-devel@lists.freedesktop.org, Eddie James <eajames@linux.ibm.com>,
- Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Geoff Levand <geoff@infradead.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Gregory Clement <gregory.clement@bootlin.com>, Guo Ren <guoren@kernel.org>,
- Hans de Goede <hdegoede@redhat.com>,
- Haojian Zhuang <haojian.zhuang@gmail.com>,
- Haojian Zhuang <haojian.zhuang@linaro.org>, Heiko Stuebner
- <heiko@sntech.de>, Herve Codina <herve.codina@bootlin.com>,
- Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Huacai Chen <chenhuacai@kernel.org>,
- Changhuang Liang <changhuang.liang@starfivetech.com>,
- Chen-Yu Tsai <wens@csie.org>, "Chester A. Unal" <chester.a.unal@arinc9.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Chris Zankel <chris@zankel.net>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Imre Kaloz <kaloz@openwrt.org>, Ingo Molnar <mingo@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, James Morse <james.morse@arm.com>,
- Janne Grunau <j@jannau.net>, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
- Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Jianjun Wang <jianjun.wang@mediatek.com>, Jiawen Wu
- <jiawenwu@trustnetic.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Jim Quinlan <jim2101024@gmail.com>, Jingoo Han <jingoohan1@gmail.com>,
- Joel Stanley <joel@jms.id.au>, Johannes Berg <johannes@sipsolutions.net>,
- John Crispin <john@phrozen.org>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Jonas Bonn <jonas@southpole.se>, Jonathan Cameron <jic23@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Jonathan Hunter <jonathanh@nvidia.com>,
- =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
- Joyce Ooi <joyce.ooi@intel.com>,
- Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>, Keerthy
- <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>,
- Konrad Dybcio <konradybcio@kernel.org>, Krzysztof Kozlowski
- <krzk@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
- Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Linus Walleij
- <linus.walleij@linaro.org>, Linus Walleij <linusw@kernel.org>,
- linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org,
- linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-remoteproc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-rpi-kernel@lists.infradead.org,
- linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
- loongarch@lists.linux.dev, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Ludovic Desroches <ludovic.desroches@microchip.com>,
- Lukasz Luba <lukasz.luba@arm.com>, "Luke D. Jones" <luke@ljones.dev>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Marijn Suijten <marijn.suijten@somainline.org>,
- Mark Brown <broonie@kernel.org>, Mark-PK Tsai <mark-pk.tsai@mediatek.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Matthias Brugger <matthias.bgg@gmail.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Max Filippov
- <jcmvbkbc@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Mengyuan Lou <mengyuanlou@net-swift.com>, Michael Buesch <m@bues.ch>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <michal.simek@amd.com>,
- Miodrag Dinic <miodrag.dinic@mips.com>, Naveen N Rao <naveen@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Nicolas Saenz Julienne <nsaenz@kernel.org>,
- Nicholas Piggin <npiggin@gmail.com>, Nikhil Agarwal
- <nikhil.agarwal@amd.com>, Nipun Gupta <nipun.gupta@amd.com>,
- Nishanth Menon <nm@ti.com>, =?UTF-8?Q?Pali_Roh=C3=A1r?= <pali@kernel.org>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>,
- Paul Cercueil <paul@crapouillou.net>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Peter Rosin <peda@axentia.se>, Philipp Zabel <p.zabel@pengutronix.de>,
- Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>,
- platform-driver-x86@vger.kernel.org,
- Prasad Kumpatla <quic_pkumpatl@quicinc.com>, Qiang Zhao
- <qiang.zhao@nxp.com>, Qin Jian <qinjian@cqplus1.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Randy Dunlap
- <rdunlap@infradead.org>, Ray Jui <rjui@broadcom.com>,
- Rengarajan Sundararajan <Rengarajan.S@microchip.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Richard Weinberger <richard@nod.at>, Rich Felker <dalias@libc.org>,
- Rob Clark <robdclark@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
- Robert Richter <rric@kernel.org>, Rob Herring <robh@kernel.org>,
- Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Ryan Chen <ryan_chen@aspeedtech.com>, Ryder Lee <ryder.lee@mediatek.com>,
- Samuel Holland <samuel@sholland.org>, Santosh Shilimkar
- <ssantosh@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
- Scott Branden <sbranden@broadcom.com>, Scott Wood <oss@buserror.net>,
- Sean Paul <sean@poorly.run>, Sean Wang <sean.wang@kernel.org>,
- Sean Wang <sean.wang@mediatek.com>,
- Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
- Sergio Paracuellos <sergio.paracuellos@gmail.com>,
- Shawn Guo <shawnguo@kernel.org>, Shawn Lin <shawn.lin@rock-chips.com>,
- Siddharth Vadapalli <s-vadapalli@ti.com>, Simona Vetter <simona@ffwll.ch>,
- Stafford Horne <shorne@gmail.com>,
- Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
- Stephen Boyd <sboyd@kernel.org>, Sven Peter <sven@svenpeter.dev>,
- Takashi Iwai <tiwai@suse.com>, Talel Shenhar <talel@amazon.com>,
- Tero Kristo <kristo@kernel.org>,
- Thangaraj Samynathan <Thangaraj.S@microchip.com>,
- Thara Gopinath <thara.gopinath@gmail.com>,
- Thierry Reding <thierry.reding@gmail.com>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Toan Le <toan@os.amperecomputing.com>, Tony Lindgren <tony@atomide.com>,
- Tony Luck <tony.luck@intel.com>, UNGLinuxDriver@microchip.com,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
- Vignesh Raghavendra <vigneshr@ti.com>, Vineet Gupta <vgupta@kernel.org>,
- Vladimir Oltean <olteanv@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>,
- WANG Xuerui <kernel@xen0n.name>, Woojung Huh <woojung.huh@microchip.com>,
- x86@kernel.org, Yanteng Si <si.yanteng@linux.dev>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Zhang Rui <rui.zhang@intel.com>
-References: <20250319092951.37667-1-jirislaby@kernel.org>
- <CAHp75VfJPgaGyERBaSxSGap+Daeuy8kOjyjg+QkCtzxUydzHiQ@mail.gmail.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <CAHp75VfJPgaGyERBaSxSGap+Daeuy8kOjyjg+QkCtzxUydzHiQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250319-wip-bl-ad3552r-fixes-v1-1-cf10d6fae52a@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIAEek2mcC/x3LQQqAIBBA0avErBtQy4VdJVpkM9ZAWChUIN09a
+ fn4/AKZk3CGoSmQ+JIsR6zQbQPLNseVUagajDJWddrhLSf6HWfqrDUJgzycsQ/esyPSZDzU9Uz
+ 8h3qO0/t+ujBhxmYAAAA=
+X-Change-ID: 20250319-wip-bl-ad3552r-fixes-4fbbe9dd1d2b
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Angelo Dureghello <adureghello@baylibre.com>
+X-Mailer: b4 0.14.2
 
-On 19. 03. 25, 11:21, Andy Shevchenko wrote:
-> I am all to support the idea, but in some cases I would think of a bit
-> more work to be done to get rid of the of_fwnode_handle(np) in favour
-> of dev_fwnode(dev). Note, this is based on a brief look, I haven't any
-> example at hand right now.
+From: Angelo Dureghello <adureghello@baylibre.com>
 
-Aah, that's the helper I was looking for!
+Add debugfs register access.
 
-I was about to use dev->fwnode directly (see the commit log for the 
-Switch to irq_domain_create_*()), but that is not guaranteed to be 
-always properly set.
+Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+---
+ drivers/iio/dac/ad3552r-hs.c | 31 +++++++++++++++++++++++++++++++
+ drivers/iio/dac/ad3552r.h    |  2 ++
+ 2 files changed, 33 insertions(+)
 
-Will use this instead in v3.
+diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+index cd8dabb60c5548780f0fce5d1b68c494cd71321d..7bb6d8817a545f16de9432526ae28787af1a0146 100644
+--- a/drivers/iio/dac/ad3552r-hs.c
++++ b/drivers/iio/dac/ad3552r-hs.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <linux/bitfield.h>
++#include <linux/debugfs.h>
+ #include <linux/delay.h>
+ #include <linux/gpio/consumer.h>
+ #include <linux/iio/backend.h>
+@@ -56,6 +57,15 @@ struct ad3552r_hs_state {
+ 	u32 config_d;
+ };
+ 
++static int ad3552r_hs_get_reg_length(unsigned int reg)
++{
++	/*
++	 * There is no 3 or 4 bytes r/w len possible in HDL, so keeping 2
++	 * also for the 24bit area.
++	 */
++	return (reg > AD3552R_SECONDARY_REGION_START) ? 2 : 1;
++}
++
+ static int ad3552r_hs_reg_read(struct ad3552r_hs_state *st, u32 reg, u32 *val,
+ 			       size_t xfer_size)
+ {
+@@ -464,6 +474,26 @@ static int ad3552r_hs_setup_custom_gain(struct ad3552r_hs_state *st,
+ 				      gain, 1);
+ }
+ 
++static int ad3552r_hs_reg_access(struct iio_dev *indio_dev, unsigned int reg,
++				 unsigned int writeval, unsigned int *readval)
++{
++	struct ad3552r_hs_state *st = iio_priv(indio_dev);
++	int size_xfer, max_reg_addr;
++
++	max_reg_addr = (st->model_data->num_hw_channels == 2) ?
++			AD3552R_REG_ADDR_MAX : AD3551R_REG_ADDR_MAX;
++
++	if (reg > max_reg_addr)
++		return -EINVAL;
++
++	size_xfer = ad3552r_hs_get_reg_length(reg);
++
++	if (readval)
++		return ad3552r_hs_reg_read(st, reg, readval, size_xfer);
++
++	return st->data->bus_reg_write(st->back, reg, writeval, size_xfer);
++}
++
+ static int ad3552r_hs_setup(struct ad3552r_hs_state *st)
+ {
+ 	u16 id;
+@@ -639,6 +669,7 @@ static const struct iio_chan_spec ad3552r_hs_channels[] = {
+ static const struct iio_info ad3552r_hs_info = {
+ 	.read_raw = &ad3552r_hs_read_raw,
+ 	.write_raw = &ad3552r_hs_write_raw,
++	.debugfs_reg_access = &ad3552r_hs_reg_access,
+ };
+ 
+ static int ad3552r_hs_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/dac/ad3552r.h b/drivers/iio/dac/ad3552r.h
+index 768fa264d39e9e6d517aeb4098382e072f153543..69ce96f132cdb353d2f140939c534586cb791aee 100644
+--- a/drivers/iio/dac/ad3552r.h
++++ b/drivers/iio/dac/ad3552r.h
+@@ -113,6 +113,8 @@
+ #define AD3552R_REG_ADDR_INPUT_PAGE_MASK_24B		0x44
+ #define AD3552R_REG_ADDR_SW_LDAC_24B			0x45
+ #define AD3552R_REG_ADDR_CH_INPUT_24B(ch)		(0x4B - (1 - (ch)) * 3)
++#define AD3551R_REG_ADDR_MAX				0x46
++#define AD3552R_REG_ADDR_MAX				0x49
+ 
+ #define AD3552R_MAX_CH					2
+ #define AD3552R_MASK_CH(ch)				BIT(ch)
 
-thanks,
+---
+base-commit: 6f9141cdd726e82d209b5fc6d6b5ea32ace339f1
+change-id: 20250319-wip-bl-ad3552r-fixes-4fbbe9dd1d2b
+
+Best regards,
 -- 
-js
-suse labs
+Angelo Dureghello <adureghello@baylibre.com>
+
 

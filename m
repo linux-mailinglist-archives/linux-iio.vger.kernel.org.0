@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-17115-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17118-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07284A69A63
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6F9A69A65
 	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 21:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD7E7AEDFC
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:58:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9477E8A6029
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Mar 2025 20:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF02D2153C1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04F6215770;
 	Wed, 19 Mar 2025 20:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eNLXQdTu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyUnKf16"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975E620C003;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97832212FA0;
 	Wed, 19 Mar 2025 20:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742417985; cv=none; b=eDgqyeVstr5JE0Soe5E59G9F5AAiHo5FE6yxMHYQpC5TbTVBYRXC/tKNLyLNrYVNAquFLlrtOa3h+64XtbA7hLOfGbD2Y7X5m7oCoPDsubzaW1cHgRgaw1br6Z5vsvuVAL3pf+Z29++k7vMbhlfKBEjTCIIKns9zIRDTVNQq8yI=
+	t=1742417985; cv=none; b=JODHDH9uDMCDhun999pOVt36HODUbO2NIXHWBZFCoz2mZKf5GwtEkSpikjlcn0Sb6SLsN7WirWSRPQFpiFKuhavtHWLhT4cv0WXxky7NXMKZZuuUZtzF/hXlwAanuqaUFtEWgRrcmVrOQbfR0IIFS620ekRapzip/gyQ2OZ33rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742417985; c=relaxed/simple;
-	bh=CT7ZJ/uDIYrIVA8eQYfKWvBAY6EzcaAv4fqcrOVsHQw=;
+	bh=74QYptDcZNP8BaAZ/7MDrHdtgAQUOZcKjmL3HZn5Uk0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uob9lL1QNS6gpko+WclydouZKH3zYpewqTik9LYTFsgaWvvn+f/GMIVavsKQ5dM/O62xiyl6aVAW53kTL0zKlMErmXUXE8t5oo0+iP/y7cx7dpu/L0KuKWk/l62pudq8nB63i7UxwxG8Hvbfmohd9NKbFeqgznN8CDcI6JJs+gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eNLXQdTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2BB33C4CEE7;
+	 In-Reply-To:To:Cc; b=n9p4RahNgrCoIHVR4OG462iHaf5OHq2fupj7GwJ8bZVCJs7y4A5LJObiPeb+jSQzicI7UDTMnAFCnO13kQAAWHC0uTDn6VIx3InYNU4Ams9JZ6KDHT/zX/K4fnPVkwN9UpZTdBSabMMck1tg3pa9ZhhD5qHwym386Ysl7mWvoRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyUnKf16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 309F3C4AF09;
 	Wed, 19 Mar 2025 20:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1742417985;
-	bh=CT7ZJ/uDIYrIVA8eQYfKWvBAY6EzcaAv4fqcrOVsHQw=;
+	bh=74QYptDcZNP8BaAZ/7MDrHdtgAQUOZcKjmL3HZn5Uk0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=eNLXQdTuT3CO1oGsuYUNUnN3MpW4+lRMQDGQDeiOh9hV9EA8IGHeqV64aOngfnLfs
-	 rpa2dejB//oDQu/yPP/4F0pOnP0uTPHJ4+3gd+SrWIFk2shyZsbf9N8e4tw0oNTvHP
-	 QMbYhR8z8Ha9oIb7t34aghxXwO9bDuJQt43HGkhcxVlbPUHzGXMbZmZGL06w56IqFK
-	 iQmxik9Sgs+uHN4BrZAc/9nxkv0KV7CYlZxtuFoQg/9nrjYqbAtM4Rp5AJq/bX569R
-	 At1VBhKFu4cxvNB+mS3dQHz0DZ5ZFFpFQeB4OVRc2vLqvHeQQ7iveS0cC8hUmBnGkr
-	 0+W6zotV6EQMg==
+	b=iyUnKf167lC/tdyndLz8CKiRo96Tj22uXH3pB6B21RtlYbLoqwW+mQPcQCkMkCXCX
+	 mEsYK03K+XtD9u4oYYV/T+rQOElde0pzbfziBUXGrWRjaKjFbrYLL6le2U2Zd3+RO2
+	 5FIbIEng/CZgX/2pDCVrErX/GvoNn8L7z5HXy0Wb6MMjGH/jKoePaRWAKJQuNqc6j7
+	 ybUD9aqdTG82+JS5wa0zxtmGQ9sIaBibrp52Y1AVpK54STEIsqks3TsM7OaZreN1f2
+	 QwOtrm3ygx1Q2T0izQDM6vfvN5zMQ674Lk7qYmvi8dWhiWZVqm4dW1Uk1T/XMpVWML
+	 uVy2zk17ilpGw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A15DC36001;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 26FCCC36003;
 	Wed, 19 Mar 2025 20:59:45 +0000 (UTC)
 From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Wed, 19 Mar 2025 21:59:41 +0100
-Subject: [PATCH v2 02/13] iio: light: al3320a: Use unsigned int for the
- indexing
+Date: Wed, 19 Mar 2025 21:59:42 +0100
+Subject: [PATCH v2 03/13] iio: light: al3010: Remove DRV_NAME definition
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250319-al3010-iio-regmap-v2-2-1310729d0543@ixit.cz>
+Message-Id: <20250319-al3010-iio-regmap-v2-3-1310729d0543@ixit.cz>
 References: <20250319-al3010-iio-regmap-v2-0-1310729d0543@ixit.cz>
 In-Reply-To: <20250319-al3010-iio-regmap-v2-0-1310729d0543@ixit.cz>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -65,21 +64,21 @@ Cc: Svyatoslav Ryhel <clamor95@gmail.com>,
  Robert Eckelmann <longnoserob@gmail.com>, linux-iio@vger.kernel.org, 
  linux-kernel@vger.kernel.org, David Heidelberg <david@ixit.cz>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=703; i=david@ixit.cz;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1274; i=david@ixit.cz;
  h=from:subject:message-id;
- bh=ynRSZu6nJx2UyMC/JZCn2Zq/vADVq3GqxbyApWvpw90=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn2zA9h4KIyY+7mFaql0PaaN5PNdcRvG54s2agu
- Skraz0efHKJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ9swPQAKCRBgAj/E00kg
- cgB0EAC99yluiJrwzBdA3295VR1ghmmPqKqo3Kl7bxmKVdCv58MD418/Olkv3lQsF+Q5vbaktUw
- d5E6TaZG3blEcVIVU3XVzDHzE2Dss3vsVlngwO8m71fNCvPr2q4b5xo95SvHDL2i/8ihveYdgbd
- avPvXf8PlcAS2uxpsGAhPUkY9D/3qOjkyI9xZF7t9WMqgyMvAUsCZK5TIijGMGTA82Li5G3qYER
- IPTrkKnthER17g5HNdNXvYm94RWaMZ9q4xzP0zhOiTi7CfZr14s4vwoJes0k32IWfqsmvq3yxSt
- S4HaBucpBGazvYHriPStmCbKMqz+9Ey0Apq+vcNhYmAqMTNY+zgJduWt0LllHg7EQwkMdG8I9WA
- ZfxsQaQYx721hQygeRkrWSNTfVVUQXSCBlSqEoDfsYojOJMjuhE4K+oG34cpq5veQmSo9s/NlvH
- afBMNExYEqLUWWLcOh56qms9IFASDKmR/GuVooFQButX8KIcZm3DaAHBN591+3WhU5JWKpAX6gd
- bSkY+/h02Yuv7c36of7FsHw0EzZpBpedWhR4Yydn5xkdGTVHoFpP89aR+DwBhAtyzl8rNu0Zf2q
- G+d5+nJY1kPvgNQ3bC2CYkePeZ3BDhiZ/gWdps8uxwhoN8L+7ygbd6E1NqrlGZ8gM2MvfxoIO+w
- EfKmAaDyuAFsxVQ==
+ bh=rjD7NN5hHGkzdwx0H9EXzCR9U7T+XzOGq1m3plbXlAM=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBn2zA9al3AYypMpivfMaBR1hM1f2Y7pM8bS3dry
+ CzxjkJTbj2JAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCZ9swPQAKCRBgAj/E00kg
+ cpucEACjlvOHIMuHfuq5nzpaSfeMcnWUsm5WePgke94UZjrUunMzIVhjS7MpzSKu5Kq7YNSiOI9
+ n5PEZNW/bq4tAme726JfDF4A9hveQhHEOwJmj3pa81Or8SBXiA5pp2PJY2IfoYM6KN/rh7W9Rzf
+ x6XsfdXq0NI9m3X1zztyK/oK5VGYA/67UaShLtFKH6s4r/gxp+iyHvE86dO88NBtZQnTngQGXVR
+ FNC4fKZK/Plt7ImP66lhFxbqmHW3Jg4PV7dktE7Vf0+g2pz4H1tG93Uq94UzIHuh0FK94x/Fifp
+ MZjEdOowVt9bDYakZTfABwVUO3CYpgTe/DUTvp/Gt2rxr3aMDqkvUIsvLJDEIfRDBfcLLez98lA
+ EjZ8UCNdpJX6MxBoUkkuJWC0F2Df8dytkngAOzSaBYULlXO4otgwxoxvwty4jMZ+Y/MER8wEY7Y
+ iBomR+fWFX8s1eexbUj966X21OVtUj8HjNPsOy7XdVYUx502pmBrxszX1ApCoT2ONv+BD7kBa1p
+ JdtkCqMDkt8/03bAhKvh2PO0P7HLaTXBaPNWR79oG52ZbIQK4p5aj55YXy69RxMkBRoRJilcDej
+ dPR84mpC+wYUuzJ9maV7hJurJFNoR0HDuh9r4qAIq+OMhP9iu3AWijzRtkT1ccVP/5nCPaS7GNP
+ 56GijoWPvme8d3A==
 X-Developer-Key: i=david@ixit.cz; a=openpgp;
  fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
 X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
@@ -88,26 +87,44 @@ Reply-To: david@ixit.cz
 
 From: David Heidelberg <david@ixit.cz>
 
-The integer is used as array index which cannot be negative.
+The driver name should be passed directly.
 
 Signed-off-by: David Heidelberg <david@ixit.cz>
 ---
- drivers/iio/light/al3320a.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/al3010.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/light/al3320a.c b/drivers/iio/light/al3320a.c
-index 497ea3fe337775b07efdfc56c80beb1aa55e394c..bceda71517c8180dff76db311aa3591ab9846156 100644
---- a/drivers/iio/light/al3320a.c
-+++ b/drivers/iio/light/al3320a.c
-@@ -163,7 +163,7 @@ static int al3320a_write_raw(struct iio_dev *indio_dev,
- 			     int val2, long mask)
- {
- 	struct al3320a_data *data = iio_priv(indio_dev);
--	int i;
-+	unsigned int i;
+diff --git a/drivers/iio/light/al3010.c b/drivers/iio/light/al3010.c
+index 4c2fd88ab32cd73f4735b0fa3014af084037c94d..7fe91049b55e57558aef69d088d168437a6819ec 100644
+--- a/drivers/iio/light/al3010.c
++++ b/drivers/iio/light/al3010.c
+@@ -22,8 +22,6 @@
+ #include <linux/iio/iio.h>
+ #include <linux/iio/sysfs.h>
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
+-#define AL3010_DRV_NAME "al3010"
+-
+ #define AL3010_REG_SYSTEM		0x00
+ #define AL3010_REG_DATA_LOW		0x0c
+ #define AL3010_REG_CONFIG		0x10
+@@ -184,7 +182,7 @@ static int al3010_probe(struct i2c_client *client)
+ 	data->client = client;
+ 
+ 	indio_dev->info = &al3010_info;
+-	indio_dev->name = AL3010_DRV_NAME;
++	indio_dev->name = "al3010";
+ 	indio_dev->channels = al3010_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(al3010_channels);
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+@@ -224,7 +222,7 @@ MODULE_DEVICE_TABLE(of, al3010_of_match);
+ 
+ static struct i2c_driver al3010_driver = {
+ 	.driver = {
+-		.name = AL3010_DRV_NAME,
++		.name = "al3010",
+ 		.of_match_table = al3010_of_match,
+ 		.pm = pm_sleep_ptr(&al3010_pm_ops),
+ 	},
 
 -- 
 2.49.0

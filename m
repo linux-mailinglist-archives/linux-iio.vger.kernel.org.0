@@ -1,91 +1,83 @@
-Return-Path: <linux-iio+bounces-17139-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17140-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045D7A6A125
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 09:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DB6A6A12F
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 09:22:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 119CA189B382
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:21:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58907189EF24
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458C21CC58;
-	Thu, 20 Mar 2025 08:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5656D221550;
+	Thu, 20 Mar 2025 08:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NgvVMNOW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S+xe7+7e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C252135A1;
-	Thu, 20 Mar 2025 08:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258BF2147F8;
+	Thu, 20 Mar 2025 08:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742458873; cv=none; b=uwsiuXGc16EnWh4mghAclzRfh8k0gQlMAh3ew8jVTiaYyfDbkFPnRwgv3npWOiIeBGeicgvhXd0tkiXi8gdnAgzYj8KeVcObkjvEZUUppSDqqytkFWV1ba2Nfuv4TSC5UXaio0T86s3jcTyXAsHG37A3xkoPYgTnaJrr8E5B/kQ=
+	t=1742458886; cv=none; b=e8ErPHWUuOCST/AM4wOIQypEd+7tkcJJ3Ewvf5RaduqLHms+BzeEv/FmCRdXJz9koO4MoxyrGHRBny084Vwuozy/EgrAR1yT7mHD+pUyowq40/tOy72JAeEhD6aLbiLSVLuipXWsJIq0pOGwV+uNvKEsrSewGHsTPk7z7rwO350=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742458873; c=relaxed/simple;
-	bh=9RDEkfUAtOtIDvk2ej8pElhGQ26MOiuQJ/PWR+OiWEk=;
+	s=arc-20240116; t=1742458886; c=relaxed/simple;
+	bh=5c4sx8lxPu927ub7j2zSMTttb+wbAmNDHYG9xeutmh8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=saQd4jNIOnn4jq3i9oJszmGMOEEfdFoPPgcMmWl4c4IANtakaDAolV9PCpCxLEiAgUkmnvPB+gflSnGgXReiEjzUVZx9F7S9cmiAX4y7ZN604KjvwMxP+OMltTYeoybWPK/KfVnSWarLF/NhN/PW4uGFzgLUhiC/XjQKVl7Gvs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NgvVMNOW; arc=none smtp.client-ip=209.85.167.50
+	 Content-Type:Content-Disposition:In-Reply-To; b=NZQL8OxpWYOE67Fe3Geax94l7lieTrhbCxMmwOe5m8eD79lph115v9vtSI313unjvJTmHOYCSpg+5hSY+CEYU5SvUX5h51Askku1iE22KhgHs3TU9g4cFjyjk15pTUDWyh/arZMPmAIdtsbmmc9ibuQPWsGGJWgDJ0sX/tPfP1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S+xe7+7e; arc=none smtp.client-ip=209.85.167.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-543d8badc30so652221e87.0;
-        Thu, 20 Mar 2025 01:21:11 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-54996d30bfbso508326e87.2;
+        Thu, 20 Mar 2025 01:21:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742458870; x=1743063670; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1742458882; x=1743063682; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o8YCQKSCMbcpjqvqGVAud+bsNcc/Isbjy4a8q5O0R/8=;
-        b=NgvVMNOWrK2s8/dPr5JqlbGGlig+dLY4/cXervoZ+A9c7rj6/iF3shIwfFcqzbPTKL
-         H6JKgeJuiolVWweTRZV1+tMfPiMmRhjds0+860i6Iwyi3YTjM4lOa+6qRMhdcFdbJHRA
-         i7N5VjSKIZtc2epUpq2ijw+OvVBqV83Wf3hdMDH9/liAFUluukxmXvjHEkO2dXZb4MzW
-         7f92dQE0flACrneey0ToLtJ54mEj7DJ2bpB0vT0gfQD7ovE7T/ApC4zXHrGT0oulPau5
-         8x+aDLyBMyeyySyGh0wuxHeyFmbN7zrbIhrL3WuftCejxb1V2J/Xi9PBiLuFn/5js3uC
-         46Uw==
+        bh=Yh/aY3YPLr128eeDB6TiMpExF6OYM+MKvRvuZdF7Mjc=;
+        b=S+xe7+7eXTuEo0pU+j7zm6k9c5EMEvEewQpYbhlY/2o//th+25BSBOx7x3bj4TR5mA
+         qUEG4uN0ecnzz8mjA/0d3jbfy/A22QLAiIytlzfM7iNcZsWG7V+ykUlwsUR/VJPDJ3G8
+         TG9lQhp4jmSSj0ZerxjH/2NZ4dOBlyKoiWpuyLOBku0V566/LmOba6Xj7Ie8SI8VBTzC
+         OAHWmA0+N49FXgLGmw9rjutqZxH1kug4A35uewyqW5EmphVl1BWCrl0xmqWfWkCr+y1s
+         8UsQO++aKYCFpjoD6LrDvla2psfSxRvyc45rL2wBaaYEow+CTRke8fyFceyK+BpuA0q0
+         GlDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742458870; x=1743063670;
+        d=1e100.net; s=20230601; t=1742458882; x=1743063682;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o8YCQKSCMbcpjqvqGVAud+bsNcc/Isbjy4a8q5O0R/8=;
-        b=OBJwIPCMd5aUZOwQZN2NqgK3uTGcrvcnirEZ7SDwjH8iS27pZr+G9p0fMLMTnbRwPK
-         i+NCnc1EI47Yo/ssTGBWFtWLv1DUqpQOk98LaSbb8l3r/HMerQ9h6utRsxANqRxpi2sz
-         ZDPyVWkYHnilZCNrSmnahW3Efx0/dJ9mreGzMn2gXz79dmUj/HNzbQ8EkPq4nYMlRtzI
-         +N2SAKfsigXT7dkSqzCS63/f42fcCHjqXUmeTQzsoyHzHjfwoIQPlinfbRYAvoVAKRUk
-         rAG+c2yy5u32IGXX9JgZBrjc3UoZDWW5R2oIwhBKsyemgMpsi9AKaaIauftjNYKAW2jw
-         kKTw==
-X-Forwarded-Encrypted: i=1; AJvYcCW67GvEEiPeHdfOSfQ/fG4az4r0wonIoe+gVgXnZWdmH5WnRGF6uFMpwLHqR9YZt0riR/ENoZH0+Uqz@vger.kernel.org, AJvYcCWMx1rSV/7bdzlnt+swyU8J2GlN5QkoET+vW2Jyhd4ArzINSx8rilHsmynQu5jRiSLgYQ8ZbqHXgOmEVA==@vger.kernel.org, AJvYcCXUSP8NPO3keFS6O9guBcW1I1MThUmbvtHPOss+/f+GRG38meTlc7Z//8vpaPQLtNekYVdhj14f88zOx0v6Y/vQQ2E=@vger.kernel.org, AJvYcCXqTYIu7rs2DhDsHRE0YH199biAePa9mtzLL1EIvr+6y8HHi1h3TENGJehTygDVJ5XcS81PAGfbsuQv@vger.kernel.org, AJvYcCXtlsdTG2wz/sTAECrVIZOfnkSrlDHfG2Gd0wU7Aixbe46jtvEkHtRNWZtueZGcuAXReOezgQEI4/PnqYrQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSdKJlPdrNU13PmfVzXFlxjQ45QXBc5MKuDjsvbjADBJwbA0Tq
-	0l768xO6BVaUyb2SQuxD4XJcBb8R0eWFq0jDN4Fa/82gp+mBNzQh
-X-Gm-Gg: ASbGnctlh1XMufV2naLg+hJZe6FridNICFwkAr76+6LrVZ7OabB4TP9qobN2ur9zvBg
-	isTwCbl3mwb4Qv/M0/9wcAj3qUjL5l7Q0DtREpnFqbVTlpFpoa4592oIlq/9XWGONYhNo9mnI5j
-	R5+0Weimd6TRab+gt1w1iW/x+1+IQ9+NFWtV6s7/ijkrlEkwOmvmaPERRj1qya/hX3NeApu13Cu
-	n80dRJ4YZOHP04+UNaaERfHiel91ZjfpPDUjoJku/9yJCLcgp2fqhOgzN7IS0FBwkRPFsQhJrn3
-	D3vKiA96h9//2iKHlF3eDJNXTb5Ml0sF8o65//hVN2uzksSw8pY=
-X-Google-Smtp-Source: AGHT+IEtQcDT1hKcr/hyPc4GQAHaaV6Ce4tKlVEIYYQ9CJsshWPNPgEWDxvASx6328HXCmwcR69h0Q==
-X-Received: by 2002:a05:6512:ea5:b0:549:8d16:7267 with SMTP id 2adb3069b0e04-54acb1a3327mr1879960e87.10.1742458869558;
-        Thu, 20 Mar 2025 01:21:09 -0700 (PDT)
+        bh=Yh/aY3YPLr128eeDB6TiMpExF6OYM+MKvRvuZdF7Mjc=;
+        b=MJf39sJ6mxfDjMuq7THE4DN+8TCgUQ5JpozizZFlbBi71vVhFQ+qpK43HhGTLBJnZk
+         U62zz6i6vvCJxpYEiIDqt0CQl1RR4yr8dmQR0cWKnUhMPlPNYnAgOQukyevW0n5af7au
+         sE4CS/7OZ0kcEFY7Vf3gaYHFOoLTAb7KpxI79dHiG8W5lS0xzEMtvyCkXAKmsvt57h1M
+         WMnveNJBcyTM4yqytwI0ntNQEsuFVjTXif5YQejxd4i626KsRqm4344iA87gUzxmNs70
+         kqYkgRlTYPvwGW5Gi8bdP3vKOhXYOV8l+VRJMUxfhA+fNuLoLtRf2pHy7GN+Av3KH+DU
+         wkIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUnE0UgBHQB0s/YJjVhEGcxdRY2+yOIC2aiTo7wpVHHNHhtVv9ZY3ELBm3oxDvNqYMqVi1RzFGbq3oPTdVb@vger.kernel.org, AJvYcCVzSbb6jbOg7mgETqpOp9TYoEPJb4ysZcNgK1ht4qX35pTA/LzjYXMTcVSZTA1lTifdPm7OjBOPiGAcGWLedqNxROw=@vger.kernel.org, AJvYcCW44QhvdpyFa52B7GlqrJjchb1qoZhUnQK9jH4cIyQDHfSpz1u1EY/oAl0BG2F12aOniF386M/5l9Qc@vger.kernel.org, AJvYcCWhonrsFtlPCenLV51H5VCpGtH+mFmGVWXRB6Ywa0hxzoAlfVK5kEIlDCWZdEnTHaH5+hEtvm3Rq/D7@vger.kernel.org, AJvYcCXn4SjmsQI1uDQC5LWG+hvJal6JIGubNteWyquAnv26Z53Rp7sqN4xgHxOc5DcerguF9g1ZBprPQQE/oQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYYjFxBDK/tB0TvyLLIWvwflnpIH4RX2DixkY8MrQd/v5+8BWn
+	8MKk14xyzD0rBREYALCIUR06CVf7Eg4k5KExMnn7ljxUmhH3jCBJ
+X-Gm-Gg: ASbGnctXNUsFDWQWA5oZ/89bHLgA0hIWFuGWU08UGzeJ28x17kafLXAuDF0yEaoCIcB
+	Avyp/BxutOC6x/ZOldJk2KRtNSQrJ0FAPvLFCv2gdXwQ+TCvDxsdzU7UVslEcQxb0PtXsfI2OWU
+	OCrtSe0ihiWFi2dGuh9vzkaATUJdZE9DL/c3oqlbamcKPDqgRDX0IiIhgGyacCOyMIx2t9dkTzW
+	V1Njh4890ZFmuKSIbwzgubYaWODN8ca2Psba5pH3DZ01P4yfBulDzGWrRTYltRB6LABvlsdmEsD
+	L2BiB5n+SgNOwzKHcMP/SS69VlwBoy46zvRA2PFbS9mnuOD2HmU=
+X-Google-Smtp-Source: AGHT+IHeGKxlOEHY1CvTb3t+asOzrM/2sZpLzoi3Px7HFPqXXPcThNk4Cky/x2Ts6rByEpk8KRr1cA==
+X-Received: by 2002:a05:6512:304b:b0:545:5bd:bf42 with SMTP id 2adb3069b0e04-54acb21aca9mr2189060e87.36.1742458881710;
+        Thu, 20 Mar 2025 01:21:21 -0700 (PDT)
 Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba88536csm2134374e87.177.2025.03.20.01.21.05
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba885129sm2145851e87.184.2025.03.20.01.21.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 01:21:07 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:21:02 +0200
+        Thu, 20 Mar 2025 01:21:20 -0700 (PDT)
+Date: Thu, 20 Mar 2025 10:21:16 +0200
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <mazziesaccount@gmail.com>,
 	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Daniel Scally <djrscally@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
 	Chen-Yu Tsai <wens@csie.org>,
@@ -94,20 +86,18 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	David Lechner <dlechner@baylibre.com>,
 	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
 	Guillaume Stols <gstols@baylibre.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
 	Dumitru Ceclan <mitrutzceclan@gmail.com>,
 	Trevor Gamblin <tgamblin@baylibre.com>,
 	Matteo Martelli <matteomartelli3@gmail.com>,
 	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
 	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
-Subject: [PATCH v9 2/8] property: Add functions to iterate named child
-Message-ID: <fd959b10904a401d3f6fb855933be1a4750ef670.1742457420.git.mazziesaccount@gmail.com>
+Subject: [PATCH v9 3/8] iio: adc: add helpers for parsing ADC nodes
+Message-ID: <299f990caf58d77cc24200e8d75655661f16050e.1742457420.git.mazziesaccount@gmail.com>
 References: <cover.1742457420.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -116,183 +106,244 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="YRU/gfTfRaKrfWT3"
+	protocol="application/pgp-signature"; boundary="jd3Vv7o0qGxJT9tp"
 Content-Disposition: inline
 In-Reply-To: <cover.1742457420.git.mazziesaccount@gmail.com>
 
 
---YRU/gfTfRaKrfWT3
+--jd3Vv7o0qGxJT9tp
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-There are a few use-cases where child nodes with a specific name need to
-be parsed. Code like:
+There are ADC ICs which may have some of the AIN pins usable for other
+functions. These ICs may have some of the AIN pins wired so that they
+should not be used for ADC.
 
-fwnode_for_each_child_node()
-	if (fwnode_name_eq())
-		...
+(Preferred?) way for marking pins which can be used as ADC inputs is to
+add corresponding channels@N nodes in the device tree as described in
+the ADC binding yaml.
 
-can be found from a various drivers/subsystems. Adding a macro for this
-can simplify things a bit.
+Add couple of helper functions which can be used to retrieve the channel
+information from the device node.
 
-In a few cases the data from the found nodes is later added to an array,
-which is allocated based on the number of found nodes. One example of
-such use is the IIO subsystem's ADC channel nodes, where the relevant
-nodes are named as channel[@N].
-
-Add helpers for iterating and counting device's sub-nodes with certain
-name instead of open-coding this in every user.
-
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+
 ---
 Revision history:
-v8 =3D> v9:
- - Drop the fwnode_for_each_available_named_child_node() as suggested
-   by Sakari during v8 review:
-   https://lore.kernel.org/all/Z9mQPJwnKAkPHriT@kekkonen.localdomain/
+v8 =3D>
+ - No changes
 v7 =3D> v8:
- - Fix the example in fwnode_get_named_child_node_count() documentation
-   to use the fwnode_get_named_child_node_count() and not the
-   device_get_named_child_node_count()
- - Fix the rest of the new macro's indentiations
-v6 =3D> v7:
- - Improve kerneldoc
- - Inline device_get_named_child_node_count() and change it to call
-   fwnode_get_named_child_node_count() inside
- - Fix indentiation of the new macros
+ devm_iio_adc_device_alloc_chaninfo_se():
+ - Treat all negative values for the max ID as 'don't care'
+ - Return -ENOENT instead of '0' if no channels were found.
 v5 =3D> v6:
- - Add helpers to also iterate through the nodes.
+ - Adapt to changed fwnode helper names
+ - Fix spelling
 v4 =3D> v5:
- - Use given name instead of string 'channel' when counting the nodes
- - Add also fwnode_get_child_node_count_named() as suggested by Rob.
+ - Inline iio_adc_device_num_channels()
+ - Fix Indenting function parameters
+ - Combine the max channel ID checks.
 v3 =3D> v4:
- - New patch as suggested by Jonathan, see discussion in:
-https://lore.kernel.org/lkml/20250223161338.5c896280@jic23-huawei/
+ - Drop diff-channel support
+ - Drop iio_adc_device_channels_by_property()
+ - Add IIO_DEVICE namespace
+ - Move industrialio-adc.o to top of the Makefile
+ - Some styling as suggested by Andy
+ - Re-consider included headers
+v2 =3D> v3: Mostly based on review comments by Jonathan
+ - Support differential and single-ended channels
+ - Rename iio_adc_device_get_channels() as
+   iio_adc_device_channels_by_property()
+ - Improve spelling
+ - Drop support for cases where DT comes from parent device's node
+ - Decrease loop indent by reverting node name check conditions
+ - Don't set 'chan->indexed' by number of channels to keep the
+   interface consistent no matter how many channels are connected.
+ - Fix ID range check and related comment
+RFC v1 =3D> v2:
+ - New patch
 ---
- drivers/base/property.c  | 27 +++++++++++++++++++++++++++
- include/linux/property.h | 20 ++++++++++++++++++++
- 2 files changed, 47 insertions(+)
+ drivers/iio/adc/Kconfig            |  3 ++
+ drivers/iio/adc/Makefile           |  2 +
+ drivers/iio/adc/industrialio-adc.c | 82 ++++++++++++++++++++++++++++++
+ include/linux/iio/adc-helpers.h    | 27 ++++++++++
+ 4 files changed, 114 insertions(+)
+ create mode 100644 drivers/iio/adc/industrialio-adc.c
+ create mode 100644 include/linux/iio/adc-helpers.h
 
-diff --git a/drivers/base/property.c b/drivers/base/property.c
-index c1392743df9c..f42f32ff45fc 100644
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -945,6 +945,33 @@ unsigned int device_get_child_node_count(const struct =
-device *dev)
- }
- EXPORT_SYMBOL_GPL(device_get_child_node_count);
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 849c90203071..37b70a65da6f 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -6,6 +6,9 @@
 =20
-+/**
-+ * fwnode_get_named_child_node_count - number of child nodes with given na=
-me
-+ * @fwnode: Node which child nodes are counted.
-+ * @name: String to match child node name against.
+ menu "Analog to digital converters"
+=20
++config IIO_ADC_HELPER
++	tristate
++
+ config AB8500_GPADC
+ 	bool "ST-Ericsson AB8500 GPADC driver"
+ 	depends on AB8500_CORE && REGULATOR_AB8500
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index ee19afba62b7..1c410f483029 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -3,6 +3,8 @@
+ # Makefile for IIO ADC drivers
+ #
+=20
++obj-$(CONFIG_IIO_ADC_HELPER) +=3D industrialio-adc.o
++
+ # When adding new entries keep the list in alphabetical order
+ obj-$(CONFIG_AB8500_GPADC) +=3D ab8500-gpadc.o
+ obj-$(CONFIG_AD_SIGMA_DELTA) +=3D ad_sigma_delta.o
+diff --git a/drivers/iio/adc/industrialio-adc.c b/drivers/iio/adc/industria=
+lio-adc.c
+new file mode 100644
+index 000000000000..b4057230e749
+--- /dev/null
++++ b/drivers/iio/adc/industrialio-adc.c
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Helpers for parsing common ADC information from a firmware node.
 + *
-+ * Scan child nodes and count all the nodes with a specific name. Potential
-+ * 'number' -ending after the 'at sign' for scanned names is ignored.
-+ * E.g.::
-+ *   fwnode_get_named_child_node_count(fwnode, "channel");
-+ * would match all the nodes::
-+ *   channel { }, channel@0 {}, channel@0xabba {}...
-+ *
-+ * Return: the number of child nodes with a matching name for a given devi=
-ce.
++ * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
 + */
-+unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle =
-*fwnode,
-+					       const char *name)
++
++#include <linux/device.h>
++#include <linux/errno.h>
++#include <linux/export.h>
++#include <linux/module.h>
++#include <linux/property.h>
++#include <linux/types.h>
++
++#include <linux/iio/adc-helpers.h>
++#include <linux/iio/iio.h>
++
++/**
++ * devm_iio_adc_device_alloc_chaninfo_se - allocate and fill iio_chan_spec=
+ for ADC
++ *
++ * Scan the device node for single-ended ADC channel information. Channel =
+ID is
++ * expected to be found from the "reg" property. Allocate and populate the
++ * iio_chan_spec structure corresponding to channels that are found. The m=
+emory
++ * for iio_chan_spec structure will be freed upon device detach.
++ *
++ * @dev:		Pointer to the ADC device.
++ * @template:		Template iio_chan_spec from which the fields of all
++ *			found and allocated channels are initialized.
++ * @max_chan_id:	Maximum value of a channel ID. Use negative value if no
++ *			checking is required.
++ * @cs:			Location where pointer to allocated iio_chan_spec
++ *			should be stored.
++ *
++ * Return:	Number of found channels on success. Negative value to indicate
++ *		failure. Specifically, -ENOENT if no channel nodes were found.
++ */
++int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
++					  const struct iio_chan_spec *template,
++					  int max_chan_id,
++					  struct iio_chan_spec **cs)
 +{
-+	struct fwnode_handle *child;
-+	unsigned int count =3D 0;
++	struct iio_chan_spec *chan_array, *chan;
++	int num_chan, ret;
 +
-+	fwnode_for_each_named_child_node(fwnode, child, name)
-+		count++;
++	num_chan =3D iio_adc_device_num_channels(dev);
++	if (num_chan < 0)
++		return num_chan;
 +
-+	return count;
++	if (!num_chan)
++		return -ENOENT;
++
++	chan_array =3D devm_kcalloc(dev, num_chan, sizeof(*chan_array),
++				  GFP_KERNEL);
++	if (!chan_array)
++		return -ENOMEM;
++
++	chan =3D &chan_array[0];
++
++	device_for_each_named_child_node_scoped(dev, child, "channel") {
++		u32 ch;
++
++		ret =3D fwnode_property_read_u32(child, "reg", &ch);
++		if (ret)
++			return ret;
++
++		if (max_chan_id >=3D 0 && ch > max_chan_id)
++			return -ERANGE;
++
++		*chan =3D *template;
++		chan->channel =3D ch;
++		chan++;
++	}
++
++	*cs =3D chan_array;
++
++	return num_chan;
 +}
-+EXPORT_SYMBOL_GPL(fwnode_get_named_child_node_count);
++EXPORT_SYMBOL_NS_GPL(devm_iio_adc_device_alloc_chaninfo_se, "IIO_DRIVER");
 +
- bool device_dma_supported(const struct device *dev)
- {
- 	return fwnode_call_bool_op(dev_fwnode(dev), device_dma_supported);
-diff --git a/include/linux/property.h b/include/linux/property.h
-index e214ecd241eb..3e83babac0b0 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -167,6 +167,10 @@ struct fwnode_handle *fwnode_get_next_available_child_=
-node(
- 	for (child =3D fwnode_get_next_child_node(fwnode, NULL); child;	\
- 	     child =3D fwnode_get_next_child_node(fwnode, child))
-=20
-+#define fwnode_for_each_named_child_node(fwnode, child, name)		\
-+	fwnode_for_each_child_node(fwnode, child)			\
-+		if (!fwnode_name_eq(child, name)) { } else
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Matti Vaittinen <mazziesaccount@gmail.com>");
++MODULE_DESCRIPTION("IIO ADC fwnode parsing helpers");
+diff --git a/include/linux/iio/adc-helpers.h b/include/linux/iio/adc-helper=
+s.h
+new file mode 100644
+index 000000000000..56b092a2a4c4
+--- /dev/null
++++ b/include/linux/iio/adc-helpers.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
- #define fwnode_for_each_available_child_node(fwnode, child)		       \
- 	for (child =3D fwnode_get_next_available_child_node(fwnode, NULL); child;\
- 	     child =3D fwnode_get_next_available_child_node(fwnode, child))
-@@ -178,11 +182,19 @@ struct fwnode_handle *device_get_next_child_node(cons=
-t struct device *dev,
- 	for (child =3D device_get_next_child_node(dev, NULL); child;	\
- 	     child =3D device_get_next_child_node(dev, child))
-=20
-+#define device_for_each_named_child_node(dev, child, name)		\
-+	device_for_each_child_node(dev, child)				\
-+		if (!fwnode_name_eq(child, name)) { } else
++/*
++ * The industrial I/O ADC firmware property parsing helpers
++ *
++ * Copyright (c) 2025 Matti Vaittinen <mazziesaccount@gmail.com>
++ */
 +
- #define device_for_each_child_node_scoped(dev, child)			\
- 	for (struct fwnode_handle *child __free(fwnode_handle) =3D	\
- 		device_get_next_child_node(dev, NULL);			\
- 	     child; child =3D device_get_next_child_node(dev, child))
-=20
-+#define device_for_each_named_child_node_scoped(dev, child, name)	\
-+	device_for_each_child_node_scoped(dev, child)			\
-+		if (!fwnode_name_eq(child, name)) { } else
++#ifndef _INDUSTRIAL_IO_ADC_HELPERS_H_
++#define _INDUSTRIAL_IO_ADC_HELPERS_H_
 +
- struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_hand=
-le *fwnode,
- 						  const char *childname);
- struct fwnode_handle *device_get_named_child_node(const struct device *dev,
-@@ -210,6 +222,14 @@ int fwnode_irq_get_byname(const struct fwnode_handle *=
-fwnode, const char *name);
-=20
- unsigned int device_get_child_node_count(const struct device *dev);
-=20
-+unsigned int fwnode_get_named_child_node_count(const struct fwnode_handle =
-*fwnode,
-+					       const char *name);
-+static inline unsigned int device_get_named_child_node_count(const struct =
-device *dev,
-+							     const char *name)
++#include <linux/property.h>
++
++struct device;
++struct iio_chan_spec;
++
++static inline int iio_adc_device_num_channels(struct device *dev)
 +{
-+	return fwnode_get_named_child_node_count(dev_fwnode(dev), name);
++	return device_get_named_child_node_count(dev, "channel");
 +}
 +
- static inline int device_property_read_u8(const struct device *dev,
- 					  const char *propname, u8 *val)
- {
++int devm_iio_adc_device_alloc_chaninfo_se(struct device *dev,
++					  const struct iio_chan_spec *template,
++					  int max_chan_id,
++					  struct iio_chan_spec **cs);
++
++#endif /* _INDUSTRIAL_IO_ADC_HELPERS_H_ */
 --=20
 2.48.1
 
 
---YRU/gfTfRaKrfWT3
+--jd3Vv7o0qGxJT9tp
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfbz+4ACgkQeFA3/03a
-ocV5kwgAqP6S8zt8MaFdvTnQ26ACvVcKar6Gy2oM/5KkY544czu7VyYtNPYp0dHi
-PIrWhfxOMHKsPcqMHe4nHxSVVjFKdBBMq/6/kNS5AEqSiMSnP7XgPo25MtyEwwSI
-bECHybECCeTuPpaYlNSY6mKDaefr0IyZEiJbG6vlAnUd3nZ1LhGMzNAkllSsPI4f
-nQrXBfIldS49i5cjLFfkybaia7iKsOheKcafo3TniFyUFIm55dG5v5yv6Eh2Ofwf
-RfvHs6Do3ThWkOOtVY/AlxWqkSD63Hq//vXaZJ7T4GAiJNHGFI+GJ8JcKy6gfI+o
-ZUBbkH6QfVjUCMha/CCymXxh4aIvrw==
-=xACW
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfbz/wACgkQeFA3/03a
+ocX4ngf/T0NbTd3rDDggxSnvJxHt0vz0qqlflnkgBtWRvUrP1uMi0zzaf6NeglAl
+9kiKhEanC97PDw0KPr+4Xa1zpF2EjSkeH0/3Nt1xdm7lSxduKMe5zt0WAC8WkOXj
+2VJ6967Zobm5s2sZ9xr4LQDX7xZEUEG3zoEBxKSvQ6Z5F99fpDy8gh8AfjfyXgIT
+c25rOyqQK0jwmlIvEkmTFaBngHTzJY7h+M/PwBoMBwQkr8xViKJf9b+1qzPfk3Qz
+NQzVYp9CFSSgeWpVOb8R/cwSrz4zLcans+ETBZvNfrXH0gHc1w08hQp4AFZnEvMg
+Uqb0iXUyMPX/qfdd9opXWAvLRKD+lQ==
+=br7A
 -----END PGP SIGNATURE-----
 
---YRU/gfTfRaKrfWT3--
+--jd3Vv7o0qGxJT9tp--
 

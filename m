@@ -1,162 +1,120 @@
-Return-Path: <linux-iio+bounces-17145-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17146-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DACA6A146
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 09:25:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64329A6A1DA
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 09:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DA78A7BA0
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:23:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B76816C28B
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3033F21CC58;
-	Thu, 20 Mar 2025 08:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFDE21B90B;
+	Thu, 20 Mar 2025 08:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LLdw0f4b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhhMnxM/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ADE1F03F2;
-	Thu, 20 Mar 2025 08:22:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAB5215162;
+	Thu, 20 Mar 2025 08:52:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742458961; cv=none; b=l++ekHPNvFeMwYRE8ug69lwzk7N+AtaTm+MiIv5eVuzJr9vWgYGjVLnQkQuskaX2h+A1LfNA/A18QPXrS2hk9gpZvs+qa0H7qFLk4I421y6nzA8XcXY5D/CU8RmKAsMcvsMNui6d2P474DILhRW9is0n4NiofzaVIwyjD7y+Xc0=
+	t=1742460756; cv=none; b=iFUERi7Ul0MXrk2JNSkFfDEf1T+3AN94vL9VY8Wow80Jp1RbFI3hSvUL1ZsWjwgvkgAA4kVrKgq6V+ONHUWIKTHKJwL34xiU8xa6n5uQb3p4CFziAWTVlltIOVkjZpObf0NYjefvdlGAgxvlxonMUYrhfdGV6Pimo1yqIMtlYq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742458961; c=relaxed/simple;
-	bh=rfrGCEwRtZ0PL/qA4K2Cp6Uvn1b+ahhEYwkEeGG7VTw=;
+	s=arc-20240116; t=1742460756; c=relaxed/simple;
+	bh=XJynSMMBI9YAA5uARKacDRxQb8hC8mgVbQeT6x+zbTE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qMhyWB9wxllzXD9Uj43G+lffmXdbRCxsRIeKNBJ+kKJNfYZpP5nA4GAhDXJv6xscB4n0WwwZ2meaHinmrPzVI0Sqyr8V1RU7ujA3BcYZhKno9Y2mn5jjWMtVZWRS1NRG35HaXK/8pFUBDsW5LTpBd5oPvdXATMaoGXreJFXL0Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LLdw0f4b; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-30bee278c2aso18188431fa.0;
-        Thu, 20 Mar 2025 01:22:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742458957; x=1743063757; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7OoU0n4R4D1F2R5x/ShDbsQnHtEUfbe2asAvBV8tcGg=;
-        b=LLdw0f4b87mIauC5FlWQmr1NgVcsk9OBfUKgDH1h+KuDEhqe+Nig4fU6DqsFCtk1Uu
-         y/it+1VmdT+AIocW6X0pQexEoEkMRt6b1Dxa6lJHAGtPw1hL3kBoLMKKm2Xb+Lx7NJ+I
-         cLxM4HUun9DO+pztfPsI4J5lF60U5PVZ7e3zSjLFeRShny/27E0lGd0/1+iIQwWlQkAi
-         jGA7t+uwxYb5TzW5TZMbhJ8BaGdheJgP10XWzIobFWkDE8lNHkxpCrfSES2OwFd+w/LH
-         Sg6Maj0GEwfglQ980ub2MsKH3n6JHNulgcdYSLWHZnnhU74QdUC9E93ddrS1SkJRZzA9
-         hjrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742458957; x=1743063757;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7OoU0n4R4D1F2R5x/ShDbsQnHtEUfbe2asAvBV8tcGg=;
-        b=FFZhcji9uVDThbM+FAIqNdUdnEz2zHh/QqpBFhnyfTJZ1WAk6lC2On88BAFvm5+3b1
-         bfFarxu6Bh6mdC7RDyD0I07VqnqwJEg2Gxg3sRArD70EWPhc2Px4B2eYpf5mzoEa6iH6
-         Br+skExoGe8zGlAfssGORmM6WZgt8htbm5mvIio71NhSnLa5sD1PLcvb+6L/iUOEiBH6
-         YRC+rIMX5WRcNirvG66Du7k78taTC4x2JrFVIO+20o0n88ZXDILbBMewZakjnD1h9IyH
-         6q3T+v+phmwYgbpeyd9JapEOt40DN/Ge/eXquS8lNWqAJVVzqCOVEGpMnEsyNTa91x/5
-         ljrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCkFAPgU09T429h14rbCzfJ7An0ywDKn/S+ss/8dlqgCJXnYJWQfaHdYF1mtB2QwEOueXZQL/1fPDdB7ru@vger.kernel.org, AJvYcCWn0kdJEGne9vd3JtM+GOCS+3UAGEDP4sNOxmoqnMiCek4F/PtTrlHS4JSwyD+YXMuPWMysGIXJS84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXjz1/tNcVyHVa2SQUE2VM/cq6kYlUfZXD7pgkvr3seZgVMKob
-	hYWWwNvTCLO8PM3rAJgNP0hO2Hu9VZaZb/l7evtla+uMZndYUH5K
-X-Gm-Gg: ASbGnctFS9CIaz5bpo7+9mXQ2SP30RYwTDLm1w+D0SXqRzXL/BpBozberHEagA/jwt8
-	3TjGBUQjTlQxAfOcl/xSr2TroJDHiYYrlJx68thqcJmDBZfy6H1YlYFdojIVnj94nNcix4Z3+U+
-	X90KfhuelCAfVPfBIzRXK0FVerlIKnI3AIuF2/wmq1RZo3MijpRZDir1tB/YOpvB1fCnJ+nuXi6
-	Iqm8OzgXhm2zwH8x685PpxC4TAwMQeLxYtrWpzCw6+iJ2e5iPLNPPomXUM6vsl5lBSakqvj2xp6
-	YvUJj+vx4Rk6VdZ7dHsAd0cOYkW205PCGRWN7IhlLAOepvWsFMw=
-X-Google-Smtp-Source: AGHT+IH3fm8FNBWiUkBfnf6bu7MhKV8fJRkd/25D65njkHt0LY1jHS+01UXwYXkyujpdyMeJnxtVOA==
-X-Received: by 2002:a05:6512:6cf:b0:549:68a7:177c with SMTP id 2adb3069b0e04-54acfa85f7cmr829383e87.7.1742458957073;
-        Thu, 20 Mar 2025 01:22:37 -0700 (PDT)
-Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-549ba7a8373sm2208194e87.22.2025.03.20.01.22.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Mar 2025 01:22:36 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:22:32 +0200
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>, David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: [PATCH v9 8/8] MAINTAINERS: Add ROHM BD79124 ADC/GPO
-Message-ID: <77876e237f4018204282da93b791765e48f75859.1742457420.git.mazziesaccount@gmail.com>
-References: <cover.1742457420.git.mazziesaccount@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pk3queSGrTJi3jWmmXG3m629IPOck+Tt6YDlPNAArWOVJmk9c0xcnNbHCo2fa0Z1gPIeWePrMGW5TlSwFpuSbuy7fqwIH6XYKgrBx8KYVPMGN7HuoCa2UVJS92/LFl7dqi9N+0tWNq+MPUgPPpeB8fKgBlsqvVBYLdGu4tOndHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhhMnxM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23E1C4CEDD;
+	Thu, 20 Mar 2025 08:52:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742460754;
+	bh=XJynSMMBI9YAA5uARKacDRxQb8hC8mgVbQeT6x+zbTE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GhhMnxM/IVyUWNf2RcWtIS4iJKWEV8FgxdXCHlhiG8hLdnjJb1BnwUWrAuEWBRmWq
+	 EoXMOKEZhrw7nZXgZ+QT56hkgzrrZP11wusKwSvBD9ThRxvCVImz+JbuwI10ERTSwt
+	 itaNWGz9VXvDbHdxvFFvXsctGxx/EjcvcYpH/Wt4nvbosHK0UA0OFmPq05o++0h6K9
+	 34DxmGI+rTE/NhZNhuIbedrVh4I4eqWhnYlIG9S+E981TKguTzIVcVBQIgzIW9+E61
+	 s/m7nXGkN2Mi4d+jA0rFciqMhmDvMhFFF4dn8xv19tgwb1X9DNginVTyFfuok3EuoV
+	 mbAaP59rINaJw==
+Date: Thu, 20 Mar 2025 09:52:31 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Sergio =?utf-8?B?UMOpcmV6?= <sergio@pereznus.es>
+Cc: Tomasz Duszynski <tduszyns@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
+ property
+Message-ID: <20250320-shaggy-heavy-camel-9d0eed@krzk-bin>
+References: <20250319161117.1780-1-sergio@pereznus.es>
+ <61d55149-1955-4d5c-84de-d8644727b87f@kernel.org>
+ <96c44905-0725-4c68-91a5-1c6cea6a7f4a@pereznus.es>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Dq5n2oyD23PDV3jL"
-Content-Disposition: inline
-In-Reply-To: <cover.1742457420.git.mazziesaccount@gmail.com>
-
-
---Dq5n2oyD23PDV3jL
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <96c44905-0725-4c68-91a5-1c6cea6a7f4a@pereznus.es>
 
-Add undersigned as a maintainer for the ROHM BD79124 ADC/GPO driver.
+On Wed, Mar 19, 2025 at 11:38:09PM +0100, Sergio P=C3=A9rez wrote:
+>=20
+> El 19/03/2025 a las 20:12, Krzysztof Kozlowski escribi=C3=B3:
+> > On 19/03/2025 17:11, Sergio Perez wrote:
+> > > Some BH1750 sensors require a hardware reset via GPIO before they can
+> > > be properly detected on the I2C bus. Add a new reset-gpios property
+> > > to the binding to support this functionality.
+> > >=20
+> > > The reset-gpios property allows specifying a GPIO that will be toggled
+> > > during driver initialization to reset the sensor.
+> > >=20
+> > > Signed-off-by: Sergio Perez <sergio@pereznus.es>
+> > > ---
+> > >   Documentation/devicetree/bindings/iio/light/bh1750.yaml | 5 +++++
+> > >   1 file changed, 5 insertions(+)
+> > You just sent v3, while v4 was already on the lists, without improving
+> > and without responding to review.
+> >=20
+> > NAK.
+> >=20
+> > You keep repeating the same mistakes: not reading and responding
+> > feedback and it is getting tiresome.
+> I apologize for the confusion with patch versions. You're right that I se=
+nt
+> v3
+> after v4 was already on the list. I was trying to follow your exact
+> instructions from:
+> "git add ...
+> git commit --signed-off
+> git format-patch -v3 -2
+> scripts/chekpatch.pl v3*
+> scripts/get_maintainers.pl --no-git-fallback v3*
+> git send-email *"
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
----
-Revision history:
-v2 =3D>
- - No changes
-RFC v1 =3D> v2:
- - Drop MFD and pinmux drivers
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+v3 stands for version of the patch, so my instruction shuld be here
+adjusted.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 5b96fb864227..2e4416b59930 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -20547,6 +20547,11 @@ S:	Supported
- F:	drivers/power/supply/bd99954-charger.c
- F:	drivers/power/supply/bd99954-charger.h
-=20
-+ROHM BD79124 ADC / GPO IC
-+M:	Matti Vaittinen <mazziesaccount@gmail.com>
-+S:	Supported
-+F:	drivers/iio/adc/rohm-bd79124.c
-+
- ROHM BH1745 COLOUR SENSOR
- M:	Mudit Sharma <muditsharma.info@gmail.com>
- L:	linux-iio@vger.kernel.org
---=20
-2.48.1
+>=20
+> Regarding the binding I've modified for next v5 the YAML description to
+> remove "active low" to avoid confusion and modified the example to:
 
+So the signal is not active low? Are you really sure?
 
---Dq5n2oyD23PDV3jL
-Content-Type: application/pgp-signature; name="signature.asc"
+Looking at BH1750FVI there is no reset signal in the first place...
+unless you mean this is DVI, but the description should then mention it.
 
------BEGIN PGP SIGNATURE-----
+If this is DVI, then it is active low.
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfb0EgACgkQeFA3/03a
-ocUeRwgAzJUU8j+bjeTXYGaTngfwjF7zAcumZBQ4d1YBYT4dEfmDI8Y49orVH1hA
-Ttx/WeB8lsPCKJpIZOJF8A6aSInSf8X0nSBUz7cALxqgtTEs/dpMFx0nqOiCgBrr
-iW7sKz8nQDz4EYNfGzEIXyNBYdwVOGc9XpYuUdvf8c2Q3Tq0zE5BX73POJhgOBLG
-BbiCKUAaNDDTskLGxTMNsDOJjIoT4RuqDcjm4bL6iJeprKO2XXhElqhYGvqPP6in
-qJctYZXl0J2L6bULNuHdsooBm5EDHpkgHJmXRMsCPpFpCkDNWZGRl5fIi9QxIwAW
-Mc3kxl0NTXrAww4mnnUpKStbxoYEFg==
-=aDn1
------END PGP SIGNATURE-----
+Best regards,
+Krzysztof
 
---Dq5n2oyD23PDV3jL--
 

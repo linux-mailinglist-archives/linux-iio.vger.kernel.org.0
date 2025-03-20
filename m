@@ -1,166 +1,284 @@
-Return-Path: <linux-iio+bounces-17136-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17137-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886A7A6A04D
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:19:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F20A6A115
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 09:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C980E8834D7
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 07:18:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ABB67AFB83
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188311EE01F;
-	Thu, 20 Mar 2025 07:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BDFA20C480;
+	Thu, 20 Mar 2025 08:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqY8rxlz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nR0vIyLX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE2A1DD889;
-	Thu, 20 Mar 2025 07:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A0679C0;
+	Thu, 20 Mar 2025 08:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742455134; cv=none; b=fH7cpBkhLphdNgeZ6yqVkgvjxy221oxcBxkOjdjNKBM39GZqnSy+dCbfevwVlYNN7iX+8XxYY5QyEaaYymZFhj0CZh3dcS4LDRlT/3oP2nxHO7HUplczDwxKJ7NfYOd/Ura6JCCxT0aijNJ5VFnkocEKKHkF3dVJ1zbuOb7SAYk=
+	t=1742458845; cv=none; b=AJVSjp0EgzpNEvw8ozeu7K7Le6Md1Xp/1/3mMxfwcSRlzE4/yQHPyvoIEVo5AZI+sR60CA1N6BDQUkeCtgdIQPdQJQgAmDhvBQqfEdTMBG+2dn7Qw8d0KHl2xrr9n++hrbB8koLkH/hHNg02pwg8V4TYIhM9KYwGiELIGmfPcvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742455134; c=relaxed/simple;
-	bh=kxKAgq/NDsPF5TQtNFMo6zJ1/0mznWY2fOwgsNoN6Ps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R8qq0VRtFI9NYQ8VM2mWkf1ZvdkZFxLDUaRdfRB1HInmFRJN9EoEUxNZZMa48FPgjQOltll8bKNAGMIbpXyzgaIxEuVkxzs8UP4HmLK1TuI/Sw0PCmurijZoat5BsvIJ9l1tdowWEBeM1XaCe41T8UlWjP3LRFecuHoc6oVcJks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqY8rxlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F030C4CEDD;
-	Thu, 20 Mar 2025 07:18:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742455134;
-	bh=kxKAgq/NDsPF5TQtNFMo6zJ1/0mznWY2fOwgsNoN6Ps=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fqY8rxlzJz6oUqi9P/lkEIP5zOvuDoKEmloABF4AuzQnj4lPqPGh0gHU5ABr6WTSI
-	 eKM7OmGTjqkjmWKqFcye6xa/9mm1pykSptLiCNABwD4PDK5eTlbDtg9vRHf60hPokq
-	 2cIy0p3qFnm0+/JzwfU9UvEiVETbZqAjWmqpr0plBPBaR7oSPRL4moEeSrL0GrTYsV
-	 336wcIwKUAQbckJ9g7thJfkXKamJFSSbyvHFbAKbclAgxUp5HYToIbXszoR6BY1RW8
-	 13u+recotEWIiIPwoT/Io/VEcwBYjlnqg3vRdKD3PPMuI5fWsFXYu9sxZwmmIczkLC
-	 Wwtt1w649HRaA==
-Message-ID: <f4556511-3123-4131-af2f-c4044302979e@kernel.org>
-Date: Thu, 20 Mar 2025 08:18:48 +0100
+	s=arc-20240116; t=1742458845; c=relaxed/simple;
+	bh=ChysvofED6/qp4H6ckCX8CPGxxeohDJRgBl7V7bQEk8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=m9n9akBfwapWOEOwEsWiwk/ER4x5gfR+tvuPY988KDjf1WwBBByGpHAMdzCiro1ycKT7i9mPlbog0J10jPbcvITM+DG1DcFDUVVlr6tdWg7qWqFKXpFCgYtWHC2emzvp+C1sw0FbUxo1L3KyCXjNGHCOpLbmRlEbxpuusyLWzjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nR0vIyLX; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30bd11bfec6so5595931fa.0;
+        Thu, 20 Mar 2025 01:20:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742458841; x=1743063641; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qcBMPfg10XMsOOKKKa4T9Z75+9TBcciaNtXWqiNMB48=;
+        b=nR0vIyLXkcstFYYEDevlVVa+W07TW8ZT8beyauOzMqWAIfxLsRExDGzg5TSy4Vv7xe
+         dwmBpshgdOJn0vTZZN/LRN2AEGaZxVOS6KvDqPIxkFzhDnlKG4aGPEwajLKUFTSsx3uW
+         LeoIE6S/cKzX01I7VJUgPGhtDHct8dJStQPkjzkUeXXD4z/ZBD8B8rjkqz/EgiTth+Wf
+         fyYx6sJai6i0f5QiSYUnmR70+qqUXpwsgDTRvvCNw1CwglON8pvoNzj3tUUS3PY+IY59
+         Vn2gqQ+deuxnZUa/uU7DJtY7LYrbkuRDVqYoLNfKBR0P9TbU/G6NnNA7HnIWtkvFdE1V
+         GHhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742458841; x=1743063641;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qcBMPfg10XMsOOKKKa4T9Z75+9TBcciaNtXWqiNMB48=;
+        b=YYCxGwedfCFLEBlaOPOn2ZqiZxkvo67/oQG+jBF+JDfoxWWp11Wucpj2UY0QOweTpN
+         wd2NImewb5Be1WLnHhNue1oIyoxpO1r+CzVwwLodE2W+gVMAUUqJUYlkepvttMvaAw+c
+         LN/S9S+W+7VLqJSmrr+nJXfMgbCA6yDlKWxEz87VCU7A73ZIZKHkI2K2QX/cmPGI56le
+         hgG6yJs+yJG7qhw3WpHxaxcshLTdltCsPUMEHCnRzoiAeCO0dTi30bWPFzpdjE4MnXDR
+         KEQtQZ3nfFmTbI4/86QzhCYpFn8TSKhwIvRhw7dy9uw/qbJoqtJOu2Ho1d/+/NyT++7f
+         6Fbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWKN9RsAPtDuJCP8CatxvnP3yTMe3f0k5LVIpgDJVMo8xOeDkh/n8NtMLxzSRKSq5rloCCezughhqfy@vger.kernel.org, AJvYcCWQ/TVbUzzxjLBQ6EF2NoqBQsXiOT2f4IZn4bOZl41KYQ0LcyHNyCns3eMmHVPaQWH9KDyTX59BJTS2rg==@vger.kernel.org, AJvYcCWyeT0cBEysUyy1YY54z4MBoatH8bRsmwB9NBdlSBxsEZpRGM/gcy1GAfMGQCD5k1NcR/CYrjlEZgu5@vger.kernel.org, AJvYcCXHsFG2eFKvvnoDiDc93QSYNSz3y5JaH3eg8perqpaDbR1eHXIFCaPFM/7Hnj07m1CXC6HVjb30wP/p+bCzHycjWP8=@vger.kernel.org, AJvYcCXU1xPW0Jl2AR0iOzROwhpiCUVLE2W/e/waUeKLw3YunOkta7+rB3kftXkttf+Kl3v6IJbUHjbE3T5TJgIL@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjlP1QHkFA6E8bKruvh5gOJAY1jiOtZEBPLpAGoNP7QKCWKOGP
+	Zc2E1alSvGY7TSzy4LL6KiuG7tYnya2SOUl+9aY/tIxWCWVmYCar
+X-Gm-Gg: ASbGncvEXA3OrxT/uuhsyp8RebLAV7MCWxyrNPFXciV+uuRreQvcgsgzjI0hwOQZS4+
+	XehkEMJ5fXUGbrOgQDPtoD7+xbj0PoLmmFRqcFu3+7/6B5hAnvsjQGIbj+paRb563zrHwSc3bLZ
+	FPBKF4Wt4CB2YTiQSK4KccE06pD6kMjfzzaPLeSxECoLHV/fsQsdTjqjd51yUDh+ShtHzHwjg2s
+	xJQT3OpJ1y2iyGagdvxtPyIOti/GvGTW1fXhghiWrdPgERkGSXaTHWcnHDCVEbqRM77cOKyEhV/
+	+iVhvaeQnIPu+EyPeHczy1DKBER2JuNBKnl0YLAFcRQxvv5dRVk=
+X-Google-Smtp-Source: AGHT+IEB7xNRabtoDCrqpRPpYSHi1cLEIKy0GXAIlYchpxKvuhgZzcxQviLJ3YHh+2p0B1Ru98dxhA==
+X-Received: by 2002:a2e:bc0f:0:b0:304:4e03:f9d9 with SMTP id 38308e7fff4ca-30d6a44cc9fmr22997491fa.28.1742458840786;
+        Thu, 20 Mar 2025 01:20:40 -0700 (PDT)
+Received: from mva-rohm ([2a10:a5c0:800d:dd00:8fdf:935a:2c85:d703])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-30c3f1db81esm25239221fa.99.2025.03.20.01.20.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Mar 2025 01:20:39 -0700 (PDT)
+Date: Thu, 20 Mar 2025 10:20:32 +0200
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Daniel Scally <djrscally@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>, Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev
+Subject: [PATCH v9 0/8] Support ROHM BD79124 ADC
+Message-ID: <cover.1742457420.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: light: bh1750: Add hardware reset support via GPIO
-To: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>,
- linux-iio@vger.kernel.org
-Cc: tduszyns@gmail.com, jic23@kernel.org, lars@metafoo.de, robh@kernel.org,
- conor+dt@kernel.org, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20250316145514.627-1-sergio@pereznus.es>
- <01f48f6d-55a4-4dbe-b1ae-ef8c54dcc1ff@kernel.org>
- <f0536d74-5433-4086-9dfc-1ce6aeeebe00@pereznus.es>
- <8992a79d-0859-4d7f-9b47-52e20b11260a@kernel.org>
- <144b5c43-f8c6-44d1-bcff-83158ac29781@pereznus.es>
- <202b4446-0ce4-4288-8588-6edfc32125d1@kernel.org>
- <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
- <bf16371c-189c-4e51-91e5-129f1dcad317@pereznus.es>
- <ac008fb8-7c82-4b9c-9d24-52ea38b920e5@kernel.org>
- <0507608a-91fd-4206-b921-942677c5f8d3@kernel.org>
- <4474831c-a8f6-496e-8348-a10e3fb7c798@pereznus.es>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <4474831c-a8f6-496e-8348-a10e3fb7c798@pereznus.es>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="YoKLVAxRz7wFwxMC"
+Content-Disposition: inline
 
-On 19/03/2025 17:26, Sergio Pérez wrote:
-> 
-> El 19/03/2025 a las 9:46, Krzysztof Kozlowski escribió:
->> On 18/03/2025 18:37, Krzysztof Kozlowski wrote:
->>>> I've now run the tool correctly on my patch file and have fixed the
->>>> identified issues:
->>>> - Removed trailing whitespace
->>>> - Fixed lines exceeding 79 characters
->>>> - Fixed the inconsistency between the description and example for
->>>> reset-gpios
->>>> - Modified the existing example instead of adding a new one
->>>> - Ensured proper line endings and formatting
->>>> - Used proper get_maintainers.pl to include all recipients
->>>>
->>> Please read the guides carefully. The process is extremely simple as:
->>>
->>> git add ...
->>> git commit --signed-off
->>> git format-patch -v3 -2
->>> scripts/chekpatch.pl v3*
->>> scripts/get_maintainers.pl --no-git-fallback v3*
->>> git send-email *
->> Please read this again. I gave you detailed instruction which you still
->> decided not to follow. The instructions are quite precise on purpose,
->> because other method leads to wrong patchset - broken that or other way.
->>
-> I transcribe exactly the commands I have executed:
-> 
-> $ git add Documentation/devicetree/bindings/iio/light/bh1750.yaml
-> 
-> $ git commit --signed-off
-> 
-> $ git add drivers/iio/light/bh1750.c
-> 
-> $ git commit --signed-off
-> 
-> $ git format-patch -v3 -2
 
-So v3 or v4 or v5? After this email (dated 18th March), you sent v4, two
-hours later not following mentioned process.
+--YoKLVAxRz7wFwxMC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-And then yesterday you sent v3 again, why this is supposed to be v5.
+Support ROHM BD79124 ADC.
 
-Read the help of these commands, instead of copying them blindly without
-thinking. Every version is v3?
+This series adds also couple of IIO ADC helper functions for parsing the
+channel information from the device tree. There are also new helpers
+included for iterating and counting firmware child nodes with a specific
+name.
 
-Best regards,
-Krzysztof
+The rzg2l_adc and the sun20i-gpadc are converted to use the new ADC helper.
+
+There has been some discussion about how useful these ADC helpers are,
+and whether they should support also differential and single ended channel
+configurations. This version does not include support for those - with the
+benefit of reduced complexity and easier to use API.
+
+NOTE: The rzg2l_adc and the sun20i-gpadc are untested as I lack of relevant
+HW. They have been compile tested only.
+
+The ROHM BD79124 ADC itself is quite usual stuff. 12-bit, 8-channel ADC
+with threshold monitoring.
+
+Except that:
+ - each ADC input pin can be configured as a general purpose output.
+ - manually starting an ADC conversion and reading the result would
+   require the I2C _master_ to do clock stretching(!) for the duration
+   of the conversion... Let's just say this is not well supported.
+ - IC supports 'autonomous measurement mode' and storing latest results
+   to the result registers. This mode is used by the driver due to the
+   "peculiar" I2C when doing manual reads.
+
+Furthermore, the ADC uses this continuous autonomous measuring,
+and the IC keeps producing new 'out of window' IRQs if measurements are
+out of window - the driver disables the event for 1 seconds when sending
+it to user. This prevents generating storm of events
+
+Revision history:
+
+v8 =3D> v9:
+ - Drop the gianfar and the thp7312 drivers from the series to limit the
+   review noise and to simplify the merging. They can be submitted later
+   as separate changes.
+ - Drop the fwnode_for_each_available_named_child() as suggested by
+   Sakari.
+ - BD79124 driver styling and fixes
+
+v7 =3D> v8:
+  property helpers:
+    - Fix the example in fwnode_get_named_child_node_count() documentation
+      to use the fwnode_get_named_child_node_count() and not the
+      device_get_named_child_node_count()
+    - Fix the rest of the new macro's indentiations
+  adc helpers:
+    - Treat 0 ADC channels as an error in
+      devm_iio_adc_device_alloc_chaninfo_se().
+  rzg2l_adc / sun20i-gpadc:
+    - Drop zero channels check from the ADC drivers using
+      devm_iio_adc_device_alloc_chaninfo_se()
+  BD79124:
+    - Use unsigned for regmap values
+    - Commit message fine tuning
+    - Check devm_mutex_init() return value
+    - Handle 'ALL pins as ADC or GPO' cleanly in BD79124 driver
+    - BD79124 styling / typofixes
+
+v6 =3D> v7:
+ - Inline device_get_named_child_node_count()
+ - Fix kernel-doc for fwnode_get_named_child_node_count()
+ - Minor styling fixes
+ More accurate changelog in individual patches.
+
+v5 =3D> v6:
+ - Drop applied patch
+ - Add *_for_each_named_child_* iterators
+ - Add a patch converting the thp7312 driver to use the new helper
+ - Styling and minor things pointed by reviewers
+
+v4 =3D> v5: Fixes as per various review comments. Most notably:
+ - Drop the patch making the TI's ADC driver to respect device tree.
+ - Add (RFC) patch converting gianfar driver to use new name child-node
+   counting API as suggested by Andy.
+ - Add fwnode_get_child_node_count_named() as suggested by Rob.
+ - rebase to v6.14-rc5
+ More accurate changelog in individual patches.
+
+v3 =3D> v4:
+ - Drop the ADC helper support for differential channels
+ - Drop the ADC helper for getting only channel IDs by fwnode.
+ - "Promote" the function counting the number of child nodes with a
+   specific name to the property.h (As suggested by Jonathan).
+ - Add ADC helpers to a namespace.
+ - Rebase on v6.14-rc3
+ - More minor changes described in individual patches.
+
+v2 =3D> v3:
+ - Restrict BD79124 channel numbers as suggested by Conor and add
+   Conor's Reviewed-by tag.
+ - Support differential and single-ended inputs
+ - Convert couple of existing drivers to use the added ADC helpers
+ - Minor fixes based on reviews
+Link to v2:
+https://lore.kernel.org/all/cover.1738761899.git.mazziesaccount@gmail.com/
+
+RFC v1 =3D> v2:
+ - Drop MFD and pinmux.
+ - Automatically re-enable events after 1 second.
+ - Export fwnode parsing helpers for finding the ADC channels.
+
+---
+
+Matti Vaittinen (8):
+  dt-bindings: ROHM BD79124 ADC/GPO
+  property: Add functions to iterate named child
+  iio: adc: add helpers for parsing ADC nodes
+  iio: adc: rzg2l_adc: Use adc-helpers
+  iio: adc: sun20i-gpadc: Use adc-helpers
+  iio: adc: Support ROHM BD79124 ADC
+  MAINTAINERS: Add IIO ADC helpers
+  MAINTAINERS: Add ROHM BD79124 ADC/GPO
+
+ .../bindings/iio/adc/rohm,bd79124.yaml        |  114 ++
+ MAINTAINERS                                   |   12 +
+ drivers/base/property.c                       |   27 +
+ drivers/iio/adc/Kconfig                       |   17 +
+ drivers/iio/adc/Makefile                      |    3 +
+ drivers/iio/adc/industrialio-adc.c            |   82 ++
+ drivers/iio/adc/rohm-bd79124.c                | 1138 +++++++++++++++++
+ drivers/iio/adc/rzg2l_adc.c                   |   39 +-
+ drivers/iio/adc/sun20i-gpadc-iio.c            |   39 +-
+ include/linux/iio/adc-helpers.h               |   27 +
+ include/linux/property.h                      |   20 +
+ 11 files changed, 1470 insertions(+), 48 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/rohm,bd79124.=
+yaml
+ create mode 100644 drivers/iio/adc/industrialio-adc.c
+ create mode 100644 drivers/iio/adc/rohm-bd79124.c
+ create mode 100644 include/linux/iio/adc-helpers.h
+
+
+base-commit: 7eb172143d5508b4da468ed59ee857c6e5e01da6
+--=20
+2.48.1
+
+
+--YoKLVAxRz7wFwxMC
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmfbz8wACgkQeFA3/03a
+ocW2+Af/XifXJoPI6HJO09tF8ui3zqe7MXsN3HOrb+oqgxrNofGdGysmeb3+vqvE
+4nyq5fXZZe0gv0KxwCqLba9TdOvwR5drPIZAVwW/UcVY/VAF2OFTxMnO452AqAIH
+mtZG8kYI35jOwMZKODEU4hGkSgktm+KLdg0ifwLd9W5XZrQ6Je6mp31XMm8DOuMh
+lCHIpWu7LUhOeMkRHs1WQuttYiyZzhHsa65Myrj04x2Pf7eMiS00MAOMFGLqvObi
+ogV2CJD3ZqfGRQiBFbKeZltIDKnrTqetJb2F5cdEFKtmlPvyZ+jxaQhi9ilUbPaO
+SsqjcdK5qBal2wasXx6P82n/+u1gqw==
+=kDea
+-----END PGP SIGNATURE-----
+
+--YoKLVAxRz7wFwxMC--
 

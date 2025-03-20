@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-17135-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17136-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D43BA6A048
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:15:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886A7A6A04D
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 08:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB2E463776
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 07:15:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C980E8834D7
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 07:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616A61EE00B;
-	Thu, 20 Mar 2025 07:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188311EE01F;
+	Thu, 20 Mar 2025 07:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r7vbqP5F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqY8rxlz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1956F635;
-	Thu, 20 Mar 2025 07:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE2A1DD889;
+	Thu, 20 Mar 2025 07:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742454933; cv=none; b=N+o2Wp+KxjZOxUIew4novBP8lTikrhzv0aR//3P3gSpwEu2A+vTOj0QZIZXDuewAUAPrhHQQ/uParK+fceDhA6QpVWIGBH/EfNkLjw2xuZGycldf+rjsSU9zbHqQx6utc80wGzX9teQsYN/B2cIDdKrLnQQqCOEwweqxCkzq47U=
+	t=1742455134; cv=none; b=fH7cpBkhLphdNgeZ6yqVkgvjxy221oxcBxkOjdjNKBM39GZqnSy+dCbfevwVlYNN7iX+8XxYY5QyEaaYymZFhj0CZh3dcS4LDRlT/3oP2nxHO7HUplczDwxKJ7NfYOd/Ura6JCCxT0aijNJ5VFnkocEKKHkF3dVJ1zbuOb7SAYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742454933; c=relaxed/simple;
-	bh=lbc5hOmidm3Rc6XYwyh7pxPG4St2Wp1RmKFTaBkxdeo=;
+	s=arc-20240116; t=1742455134; c=relaxed/simple;
+	bh=kxKAgq/NDsPF5TQtNFMo6zJ1/0mznWY2fOwgsNoN6Ps=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hZqoO4mtaM+47H3W06KR5/jdvgdabWB7dkOaYhxgWQp8x9gmY7qavfkDQG5D9HV71RMmnE3Jm09qnMM3HYQaiHZJqLQZsE6gw6DjGKXO1altj8E5s57q7clTwUeibGE2htbBdl9aiDcUEJO6ELxWmSUFhSJDDfUv6IciLMXXA2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r7vbqP5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA338C4CEDD;
-	Thu, 20 Mar 2025 07:15:28 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=R8qq0VRtFI9NYQ8VM2mWkf1ZvdkZFxLDUaRdfRB1HInmFRJN9EoEUxNZZMa48FPgjQOltll8bKNAGMIbpXyzgaIxEuVkxzs8UP4HmLK1TuI/Sw0PCmurijZoat5BsvIJ9l1tdowWEBeM1XaCe41T8UlWjP3LRFecuHoc6oVcJks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqY8rxlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F030C4CEDD;
+	Thu, 20 Mar 2025 07:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742454932;
-	bh=lbc5hOmidm3Rc6XYwyh7pxPG4St2Wp1RmKFTaBkxdeo=;
+	s=k20201202; t=1742455134;
+	bh=kxKAgq/NDsPF5TQtNFMo6zJ1/0mznWY2fOwgsNoN6Ps=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=r7vbqP5FJ8BycLPZQXwy7ZS3WJc9HF7Lcc9ucv+JRU0Xv8pxuG5UPgokLFMFWcf2T
-	 oF92zKFbIua0nbdOdWIZcj218NWym5BG/M/J6zxxO5H0EurqBsmAJCLsqg4qX3R0vF
-	 5k1p3Jw72AUFovC2MlG4LSEpJXzufmiwnHpOj9CeZ/eQ+Rvk7E4Fb3Qjo2d9VqHWYe
-	 5l9zZWCvUYBMGFbkQvuGdE2AJhMS9VcEudBCVV8YP2jfFV2gQVngBjuV+cGfxdbTIG
-	 AiLl7XjwlLYOQYmE46Mm6oScTWedfc2w8UAgxsaWVaDv8WL8/u4HWmjjkTP67dH9bc
-	 Qq05MouV1Iqkg==
-Message-ID: <e43c534b-a1ef-46e9-a5cf-39f328ba895a@kernel.org>
-Date: Thu, 20 Mar 2025 08:15:25 +0100
+	b=fqY8rxlzJz6oUqi9P/lkEIP5zOvuDoKEmloABF4AuzQnj4lPqPGh0gHU5ABr6WTSI
+	 eKM7OmGTjqkjmWKqFcye6xa/9mm1pykSptLiCNABwD4PDK5eTlbDtg9vRHf60hPokq
+	 2cIy0p3qFnm0+/JzwfU9UvEiVETbZqAjWmqpr0plBPBaR7oSPRL4moEeSrL0GrTYsV
+	 336wcIwKUAQbckJ9g7thJfkXKamJFSSbyvHFbAKbclAgxUp5HYToIbXszoR6BY1RW8
+	 13u+recotEWIiIPwoT/Io/VEcwBYjlnqg3vRdKD3PPMuI5fWsFXYu9sxZwmmIczkLC
+	 Wwtt1w649HRaA==
+Message-ID: <f4556511-3123-4131-af2f-c4044302979e@kernel.org>
+Date: Thu, 20 Mar 2025 08:18:48 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -64,7 +64,8 @@ References: <20250316145514.627-1-sergio@pereznus.es>
  <bde38364-5c20-4030-ad7d-9ae38971b260@kernel.org>
  <bf16371c-189c-4e51-91e5-129f1dcad317@pereznus.es>
  <ac008fb8-7c82-4b9c-9d24-52ea38b920e5@kernel.org>
- <22b70f84-0918-43e7-92f5-c8bdb4a68363@pereznus.es>
+ <0507608a-91fd-4206-b921-942677c5f8d3@kernel.org>
+ <4474831c-a8f6-496e-8348-a10e3fb7c798@pereznus.es>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,32 +111,55 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <22b70f84-0918-43e7-92f5-c8bdb4a68363@pereznus.es>
+In-Reply-To: <4474831c-a8f6-496e-8348-a10e3fb7c798@pereznus.es>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 18/03/2025 20:51, Sergio Pérez wrote:
->> Please read the guides carefully. The process is extremely simple as:
+On 19/03/2025 17:26, Sergio Pérez wrote:
+> 
+> El 19/03/2025 a las 9:46, Krzysztof Kozlowski escribió:
+>> On 18/03/2025 18:37, Krzysztof Kozlowski wrote:
+>>>> I've now run the tool correctly on my patch file and have fixed the
+>>>> identified issues:
+>>>> - Removed trailing whitespace
+>>>> - Fixed lines exceeding 79 characters
+>>>> - Fixed the inconsistency between the description and example for
+>>>> reset-gpios
+>>>> - Modified the existing example instead of adding a new one
+>>>> - Ensured proper line endings and formatting
+>>>> - Used proper get_maintainers.pl to include all recipients
+>>>>
+>>> Please read the guides carefully. The process is extremely simple as:
+>>>
+>>> git add ...
+>>> git commit --signed-off
+>>> git format-patch -v3 -2
+>>> scripts/chekpatch.pl v3*
+>>> scripts/get_maintainers.pl --no-git-fallback v3*
+>>> git send-email *
+>> Please read this again. I gave you detailed instruction which you still
+>> decided not to follow. The instructions are quite precise on purpose,
+>> because other method leads to wrong patchset - broken that or other way.
 >>
->> git add ...
->> git commit --signed-off
->> git format-patch -v3 -2
->> scripts/chekpatch.pl v3*
->> scripts/get_maintainers.pl --no-git-fallback v3*
->> git send-email *
->> (or just use my git_send_email for last two)
->> (or just use b4 for last four)
->>
->> The burden of reading the contributing guides is on you. We documented
->> all this on purpose, so we will not have to repeat this on every email.
-> Thank you very much, I have followed the instructions with total 
-> precision and carefully read all the documentation. I have submitted 
-> both patches as v4 version.
-> Apologies for the inconvenience.
-No, you did not send proper v4. If you followed the process the v4 would
-be properly threaded, but it was not.
+> I transcribe exactly the commands I have executed:
+> 
+> $ git add Documentation/devicetree/bindings/iio/light/bh1750.yaml
+> 
+> $ git commit --signed-off
+> 
+> $ git add drivers/iio/light/bh1750.c
+> 
+> $ git commit --signed-off
+> 
+> $ git format-patch -v3 -2
 
-What commands EXACTLY did you use?
+So v3 or v4 or v5? After this email (dated 18th March), you sent v4, two
+hours later not following mentioned process.
+
+And then yesterday you sent v3 again, why this is supposed to be v5.
+
+Read the help of these commands, instead of copying them blindly without
+thinking. Every version is v3?
 
 Best regards,
 Krzysztof

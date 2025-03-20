@@ -1,101 +1,125 @@
-Return-Path: <linux-iio+bounces-17157-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17158-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9B8A6ACE2
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 19:10:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE7FA6AF55
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 21:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092BB7B2AF9
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 18:08:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F30A7A9E5C
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Mar 2025 20:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619DD226173;
-	Thu, 20 Mar 2025 18:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B4622A4E4;
+	Thu, 20 Mar 2025 20:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HJ5aGzBz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kpt3j7rE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCD61EB184
-	for <linux-iio@vger.kernel.org>; Thu, 20 Mar 2025 18:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC5D22A4E1
+	for <linux-iio@vger.kernel.org>; Thu, 20 Mar 2025 20:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742494138; cv=none; b=kguadmGgcS+GeBtMePoeue7LVZYJGwLetQ5iOX7kTALlYN+zybUcjP8YN94pnmy9lBKQKdQP7Jn6iXj+RoB4mO3HhPP97jArB+iV1tsFrd4xQIXetvO+1hGQGS/9ujFitwYhMrprZDFD1+RgRKTvmLMsKAsjN8Yyt2HAcXu8dUM=
+	t=1742503387; cv=none; b=ucoOC7rgIr/T+D1F95vEuZFgWKLYXVFDnvX1gSQ55Am2Dmjb1fPPWOVI6eMj6FcA2nRIXn3QYH8Guwa0kh5+0vtrTfBcuGRvtwczDiDZMEgI0nef3aSVa1Z4oFtU5zuIw0Z4I6wbIIZ2n8sMe9N1OSkT1/9Li+LOULHoL3Nmrhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742494138; c=relaxed/simple;
-	bh=gvWJzuhqE+CfWQYxq3gtCxXTcdXk08v2ZL+nX6W4y20=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mHwem+34c2StQlIFNY/QC0z73qY0Z+GczqmMJeXgea8JPHva7b2eASkwIqNdF5oHI+zJxvj+wxMSnNuMgxHp3e8DwKhYzuLSwBCYDGOJfPb/LuuJq5aFJL5iNuN0D+j5sDXQzZpYmEr9dBbsOhemtxCH4+v8Lyh+dSDTLy/Hhhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HJ5aGzBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 845DBC4CEDD
-	for <linux-iio@vger.kernel.org>; Thu, 20 Mar 2025 18:08:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742494137;
-	bh=gvWJzuhqE+CfWQYxq3gtCxXTcdXk08v2ZL+nX6W4y20=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=HJ5aGzBzZVsFloSrpomRxtkYWSUN3TatG8hLOHOt25gVEg1e17Kx7jDxdcDSXLAP5
-	 f6tCvjuP/SYeD46nxUhAFFP6XvU0QKOhiVLV+/RXxTwHZM+L3W1nfWRTfhxZsb57W3
-	 j4qgn8gNfNd8FFFApdNnRBKKeZdKuC4DjbBHjrbgTg88TQbmCq2cLwCpFdkzZSfiaF
-	 eTDDfR5VXesfzqEbjMWGHBvGOrSM7QNlffO0BplRiFbPSg5x2TMAOZ+ol6o0UCSUce
-	 kwrxYjRePwijfsMBp25kh0IHhdX1veXa0AqpuvMSdTCeC1NFogVGU6ilAuFUnP2e2F
-	 A330T48XQYzkA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 71F66C3279F; Thu, 20 Mar 2025 18:08:57 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 219890] illuminance sensor is jittering between correct value
- and 0.03lux
-Date: Thu, 20 Mar 2025 18:08:57 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: wysiwyg81@rbox.co
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-219890-217253-N2xoXrlaNv@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-219890-217253@https.bugzilla.kernel.org/>
-References: <bug-219890-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1742503387; c=relaxed/simple;
+	bh=FpuegLmU5tbQxu4BeI6waAfSkfTSY0kMV2xhhNvEvm0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uTpCf9VVPkKciJVk70im7zoxjRdtec5tHYfhGUs/GbGtdq0CMJ8GkLfDaLkjVsG4mXI0NW/StE+mQoGQvc/645XwrR0rbvbc6NjObxeus4M2p7GCFdCm6HKXAwlgNvYbmP/pY/oHdQaBoe6Bk20hwF9tec+VcB7yPctTG1/YrZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kpt3j7rE; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3fbc00143d6so745564b6e.3
+        for <linux-iio@vger.kernel.org>; Thu, 20 Mar 2025 13:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742503384; x=1743108184; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JndwPcEu40LTfcktnqoRyV1fHHjivjql1RHGUu6ZCpk=;
+        b=kpt3j7rETHSFaFIAO+I3sKZH9baiTJ5sqT8BYFy9kuZK+aH3yKsmd0DyDmcGgKTPYJ
+         KkNijPHk+4eHa5efJIqGDD2eo0DEUix7af5hcRSHd4fkJ15BA/aosl/JPemddTIAe92u
+         PKEQoIuZVt1ZOtuNb51CqAX0qehMaYl6h5QEOg5COFuI3Hf0nc1NZooTTMXwJjDFSTJN
+         DDZJ0gRa4admAOtzuTPqJ/yqhm6dIpy+jRBZECQKXHw8vlteVEY3SE3ssi+36r6Q/gTD
+         on3h96wteoecb+X5oKEYNYbHEfZ/g2w/DlPsvzFiNkXGPPry7X5vbeX27AOADvx1KQi2
+         xtVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742503384; x=1743108184;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JndwPcEu40LTfcktnqoRyV1fHHjivjql1RHGUu6ZCpk=;
+        b=by8X+V48/3dni9XQu0s2HPi/0NEgApTOGdsnuIHC2yBE7Sx1KXTasAO+BeHhDKaCIS
+         c/KUoWdCooIwc4xETTbbXmnTrGyEAWLv5q6c5HKoxaSAfNGaOFVNcWwIHFCAIvIYTI3i
+         ogwYCPnYykJ3yT0P3QhnPXBkdV/CdcOoeuRZmq9lEFk3TxGr7a89I1AegluYpg5Byfqq
+         lazUEKiHNulqBYQldE3M1bJ5NLuT8dY8UIvGgdWJFW09sR14y72LhbI0sVMpYzzBYE5T
+         d8V3/ty+sT7/uXldKOLui50usx+Kf9RtGL0LnMcdiHDfSFa28TMND9O3Ybftuh77Ulkv
+         lq8w==
+X-Forwarded-Encrypted: i=1; AJvYcCV2AO+nDzDES/G3Hi9iVeLxeQfb/QaufD1uV2R/K4T6HMD5blWL52Qe/yH2qzy0uzMnHdi5kE8PdUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTlvFMfGOiQF5bMrpgZn5l1Yw3cRQ3TTv4Q3mxNE2WOWGG+R0X
+	ELODaGLyiohJAB/THenfePgg63VSJrZ98Rd68p2dlfpxw5BlZGO0oZM/S15dWoE=
+X-Gm-Gg: ASbGncv217cpOVCuxRkTWOkqMlgK7oHhEMKm7VN5EQmIP1lxlcsx1IWLFea71uddGo9
+	v/Iup0SKI1jQtjRwleZGlvGYCu1QN8V8GL/RuE9LwzYGxkLQ5c1SY4IRuBS+TfJqff+ec0xlGYR
+	Xzj6AS5FMuCgzUenSj6gMUBVlXLHqA6h2RkdKPkY1UuyNYvNwJCe4ir/dwDBlKI4BJWffU+FooF
+	JxRj2EVbj/CoQF0HT3LHdFZNcDccYM9BF4cQeAkTVx0efFHjPMVhG4r62RbrCouO3VMvUa+CB4u
+	rc1a5Zxy6gpeNpJoUuhC5EjjgnM2EuNJdiTqIgj3ATZARakHra/ar8nzacESpv8U1ybrss5auOk
+	0pRG3Yg==
+X-Google-Smtp-Source: AGHT+IGrPQlyXSXYBY7u+saxCR6isREiortDVdrxVss20iMydrEK8XXm7gPitUstCTe1G0rs6K8I/Q==
+X-Received: by 2002:a05:6808:178d:b0:3fa:cf11:1493 with SMTP id 5614622812f47-3febf70afbfmr451429b6e.1.1742503383804;
+        Thu, 20 Mar 2025 13:43:03 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3febf6dce65sm62432b6e.14.2025.03.20.13.43.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 20 Mar 2025 13:43:02 -0700 (PDT)
+Message-ID: <4fb5329f-be34-4d98-b34e-2da4e035f44c@baylibre.com>
+Date: Thu, 20 Mar 2025 15:43:00 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] iio: adc: ad400: Set transfer bits_per_word to
+ have data in CPU endianness
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, linux-iio@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
+ corbet@lwn.net, marcelo.schmitt1@gmail.com
+References: <cover.1742394806.git.marcelo.schmitt@analog.com>
+ <930560a0d0ca7af597d4ad901422bc9ba3fc6a79.1742394806.git.marcelo.schmitt@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <930560a0d0ca7af597d4ad901422bc9ba3fc6a79.1742394806.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219890
+On 3/19/25 9:57 AM, Marcelo Schmitt wrote:
+> When SPI `bits_per_word` is not set, SPI transfers default 8-bit word size
+> and ADC data gets stored in big-endian format in memory. Because of that,
+> the IIO driver requests ADC data to be rearranged from BE to CPU
+> endianness. However, with `bits_per_word` set to the number of ADC
+> precision bits, transfers use larger word sizes that get stored in
+> 'in-memory wordsizes' and can be read in CPU endianness.
+> 
+> Use proper `bits_per_word` size for SPI transfers thus saving the driver
+> from requesting endianness conversions. With that, shifting the buffer
+> data is also no longer needed. This change has no impact on IIO device
+> functionality.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
 
---- Comment #27 from Fred (wysiwyg81@rbox.co) ---
-Hello Srinivas,
-I re-open the bug on iio-sensor-proxy and asked to have a look to last mess=
-age
-here.
-to be honest, I don't know what to do right now.=20
-I will try to search if I can find anything with iio-poll-als or
-iio-buffer-als.
+This is a breaking change. Some SPI controllers, like RPi can only do 8-bit
+transfers, so this driver would stop working on those platforms. Also, if
+anyone made software already that depended on the big-endian ordering without
+checking the scan_type attribute, it would break that software.
 
-suggestions are welcome :)
+I would leave this as-is (drop this patch) and just make it:
 
-here is the link on iio-sensor-proxy side:
-https://gitlab.freedesktop.org/hadess/iio-sensor-proxy/-/issues/407
+	.endianness = _offl ? IIO_CPU : IIO_BE,
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+in the next patch.
 

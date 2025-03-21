@@ -1,94 +1,86 @@
-Return-Path: <linux-iio+bounces-17172-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17173-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9EB4A6BC30
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Mar 2025 14:57:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592FCA6BCD5
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Mar 2025 15:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC03A3B89D0
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Mar 2025 13:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF7816CED9
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Mar 2025 14:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2B278F32;
-	Fri, 21 Mar 2025 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63651191484;
+	Fri, 21 Mar 2025 14:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ckgdUaLg"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="rBsrMy6n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB6938FB9;
-	Fri, 21 Mar 2025 13:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA58A4C85
+	for <linux-iio@vger.kernel.org>; Fri, 21 Mar 2025 14:18:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742565396; cv=none; b=AW+ROWMZ35Jjfy5v+fMf0S1ygP7jhv93wcn/QfrEInAmXKiOQMqzUwyOZfW71GOuGGj4zyP70Ylm+bMs3Qxp5X+c9dgRF9oHVCi2G1YVxhFGcP2YLgDRhxMObpSIyZkogdQEQz+BMgodOYfhDYfL3BBYN4Kh4eSGUKeuT0FYrUQ=
+	t=1742566737; cv=none; b=XDMoU6W+Y0ehmaREKtUN05sbSlYHJs36puNKCTyJtJijJEwgNXnaEP0pCu4KX98Qyu7XPUCyg8X5pYMDS7Mu20OE/HnOvPs61RvSz3mmUy6olrdjktt3QV7dRxsXm9XODXy9ForN/IVdZTPZKGnKVF5mEuam2evHNwe261GM9ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742565396; c=relaxed/simple;
-	bh=/6hOolry5YjNjLNy/ShHrZBxdxC0Ma01QDEqsiQ085w=;
+	s=arc-20240116; t=1742566737; c=relaxed/simple;
+	bh=bfFRi4z/7jSJjPvsuOLCgub6ogXLiNJvQoKAD9aoDm4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hWLPZSpFe7sNL6Y4KTdOxmsbE6FAiZF9gIy6YKDcY+xUVFvL5fxSTb9TcRVHHdotwGVIboG0Jd9yi/DihpW1RWXnWVSM4/GyaDJV7Ir+5WyLRbyqsAccurqS96WTkZxKJktkTOzjnMJWVu+v5QWeRXXFwiraSeU3H9j8BCh/rlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ckgdUaLg; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1742565395; x=1774101395;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/6hOolry5YjNjLNy/ShHrZBxdxC0Ma01QDEqsiQ085w=;
-  b=ckgdUaLgawgkJ0Owxwa1DQQ7oM6x3k/613/3+hDU0/TtGtVpQW0fkxfF
-   Tlf3fQDuxtXkQMi4hHiPWXCWqTTvqScLK3dC9m1CHRQd53xvXipOA61wo
-   hg+Q2r6Vt5lvq309DtmMoyBNghb63hxEmnkYuZHmE9EpOoXaPfE3dTWq/
-   UMsqfXc1TxwzSRRG6RZwTht07RTCN4beXVsFKnvq1iTBvqi3KVR2HdAlY
-   SaFf7xJKVnF+TELbPjqrFFElGLku9XnZUtOnBn4iSkGCbU/QcT+gNJBH1
-   r7RyqFd7C+Rk/QbRm+1LWeY8TLmGRBHiZomJLL2UWYAeyXbMpJGj0srEK
-   Q==;
-X-CSE-ConnectionGUID: 3XJD84D2ReCXDc2GTn6AMg==
-X-CSE-MsgGUID: oSsSBjdvSqqU+Z1uh7leow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11380"; a="54825447"
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; 
-   d="scan'208";a="54825447"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 06:56:35 -0700
-X-CSE-ConnectionGUID: ka4S3z+hT9WJv3VoUMY3Yw==
-X-CSE-MsgGUID: nRylWAXSRxK2srXku9UY/w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,264,1736841600"; 
-   d="scan'208";a="123386586"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Mar 2025 06:56:30 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tvcrL-00000004Wyz-0nhD;
-	Fri, 21 Mar 2025 15:56:27 +0200
-Date: Fri, 21 Mar 2025 15:56:26 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Guillaume Stols <gstols@baylibre.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Alisa-Dariana Roman <alisadariana@gmail.com>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v9 6/8] iio: adc: Support ROHM BD79124 ADC
-Message-ID: <Z91wCjTb14wCbKmj@smile.fi.intel.com>
-References: <cover.1742457420.git.mazziesaccount@gmail.com>
- <544371135e5ff5647c3cd4bce6d21e1b278ac183.1742457420.git.mazziesaccount@gmail.com>
- <Z9wVQ8vgV8kQylqG@smile.fi.intel.com>
- <ae33de64-1ba1-4bd2-a139-3f0b5986f41e@gmail.com>
- <Z91WS-DoKoIZhRNs@smile.fi.intel.com>
- <1e236993-47fc-45e9-913a-e0615787581a@gmail.com>
- <Z91mnHP9V0yRZ2js@smile.fi.intel.com>
- <ed5bc103-1ce2-46ec-9649-03b11ae591a7@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=u/X7pqcB4vvStY128BEQzQyoUPORbdAGQtvwvyqn4nWB95m/sm1y+HYEM0nT08oNIFUZGXhKqElYs051un+NHWCVazbZ39XHE95e8jKesvI+vpjtnMS3S/OnLmw6uSvQ7oA1KCjpp7OIUt0vo5Ldu0ebwFSK5gwGUYywh5z1W84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=rBsrMy6n; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3912c09be7dso1317488f8f.1
+        for <linux-iio@vger.kernel.org>; Fri, 21 Mar 2025 07:18:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742566732; x=1743171532; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uTCuNlHeDEjqfiQIo2HNGd6+ErszhZgpd1Iv8erXCzE=;
+        b=rBsrMy6nrvXBVBwFm1+CIYoJ9DiwwwCJlrGI0cVIePVp6cQP7fWIb1J5WjzAooO9hg
+         9qzrw6QK5pwQuYBKtQFGOV0YGaBziTstS1QJ3Pv782EW7fK7xMDo88r4JJyL+hAbn8mI
+         yzKOErgNvFHBVtXuV5a4y8245DioAupxs2AF9oiHm1m52kQAbRs6goqW+x7BFWAJDvVf
+         10dXpart+oYh42kZtDMOxNwGkGAVYkn/jxiRiWHtb/wjJ55duV0/7JpCBdmKoNaCYdsV
+         elIB224nxy7vimowTNMyJ6ixNIFC5n2s2I0EW6h2CCVPus2uxjS9Q7AwcPC8uF+VwIdx
+         3ANA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742566732; x=1743171532;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uTCuNlHeDEjqfiQIo2HNGd6+ErszhZgpd1Iv8erXCzE=;
+        b=Fsg1rByxYDx6ydhwJp5FCiwEosMU2llqHAZ8P+qQJBq1wvcbnHE3e3YBK8DbKKItjT
+         L8YJyKDNl4NqW+xcGNjawbbDQCb6D4gRP+VixiOXvI2Op/KT6nKt51gA4v9THKEh+g8O
+         f8nXjbzFKpXyoaG1BvE8j65NEpZJ36hUKNsIC5eieFjswSD73bkd9UPEgBo/3vHfVjve
+         YGzCuHHbYMICaCWx5s5IHNy5sy2FoN7zIxZCCjDyHxiVFWDjI0DdcIAOSGgFK0GUlGmh
+         wRGQmlO7KiHsLVJsKfkiOebJiHsudDr3/47fvLI64ZdSneuomJqqLyFGmuAA65BgZrFP
+         GW5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWvSCTktXgGrO6zCPU0WvBb6ihSRaQ0g98ki42VgMcxqnYupVEILnmq8d6vYpmZQSGaDBS7Sd99s3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvC0Ei+AFszisNohwPt+F+XQxIJJxRXNPqTRjeYKkovBfcHxbf
+	rcbUW75T1/Ul3gzsBak3YmpO85mnkoTMXxapCn2PDOhKc1hPfFYja2eOPvrjyLM=
+X-Gm-Gg: ASbGnctKLxAVRF7fuIZSpoVLGNGcMjSX2yDhc2bJAH7ClzlObtAixsCNrtiBaQ9BsNd
+	f22xGTqDPKN/v0P5TZluPwG2GI0fPvojYbhzatObZPMmDniGClYR5Pc+WM/zpIUj2JyQJE8SEed
+	4E9V2SZfIqUF3LK0KjZFXQMjWJ64yZn/t6cuOLwA2lCo+FaY+x7SjcYVp6gI+zz9hIejxJPApsJ
+	WvN74PqsYNjwwjw1zF1FKMgVZs+RJYtEw5FWrzCFtPc5yWl3NssrPTdyNbEUHEQ5nTBgjhdrnWE
+	QJ9iblClA4gMi/s3F56ZEBE+fz255K8jszHj0d6JVQyHf+T2IdWDnp8w6YG+bzgFSJhsYpHmnX3
+	eoNs=
+X-Google-Smtp-Source: AGHT+IHa7BgLygegVfy/7chkhJMYNIbp+e7r7rdlSTbhjyTD35Fk5o6wqITu97HanApN/HYlGGD+gQ==
+X-Received: by 2002:a5d:64cc:0:b0:390:f0ff:2bf8 with SMTP id ffacd0b85a97d-3997f8f6555mr3776150f8f.10.1742566731818;
+        Fri, 21 Mar 2025 07:18:51 -0700 (PDT)
+Received: from dfj (host-87-8-62-49.retail.telecomitalia.it. [87.8.62.49])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9a3c90sm2556348f8f.36.2025.03.21.07.18.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 07:18:51 -0700 (PDT)
+Date: Fri, 21 Mar 2025 15:17:33 +0100
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7380: disable offload before using SPI bus
+Message-ID: <7fcwd33q7ddeiwuga2hhsdc43zse736i6ka5i55lk2qbfdsgwc@gmgan46wcnrh>
+References: <20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-v1-1-6912ac8c0ae0@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -97,48 +89,58 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ed5bc103-1ce2-46ec-9649-03b11ae591a7@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-v1-1-6912ac8c0ae0@baylibre.com>
 
-On Fri, Mar 21, 2025 at 03:41:18PM +0200, Matti Vaittinen wrote:
-> On 21/03/2025 15:16, Andy Shevchenko wrote:
-> > On Fri, Mar 21, 2025 at 02:17:16PM +0200, Matti Vaittinen wrote:
-> > > On 21/03/2025 14:06, Andy Shevchenko wrote:
-> > > > On Fri, Mar 21, 2025 at 10:01:00AM +0200, Matti Vaittinen wrote:
-> > > > > On 20/03/2025 15:16, Andy Shevchenko wrote:
-> > > > > > On Thu, Mar 20, 2025 at 10:22:00AM +0200, Matti Vaittinen wrote:
-> > > > 
-> > > > You can get rid of all of these by simply using __le16. I do not understand why
-> > > > it's not used so far. I thought that bits are mirrored, that may explain the
-> > > > case, but now I do not see any problem to use __le16 directly.
-> > > 
-> > > This discussion is going in circles now. That was discussed in the RFC
-> > > review with Jonathan, which I did also tell to you during the v7 review:
-> > 
-> > Yes, because I think we all were confused by the bits representations,
-> > but now I see it clearly and I do not understand why should we go the way
-> > you suggested as it makes things a bit tangled in my opinion.
-> > 
-> > Jonathan, do you still think the two separate bytes are better than __le16?
-> > If so, what are the pros of this solution?
+On 20.03.2025 11:21, David Lechner wrote:
+> Move disabling of the SPI offload before attempting to use the SPI bus
+> to write a register in ad7380_offload_buffer_predisable().
 > 
-> I don't think Jonathan thought this is better. I'm not sure if you read the
-> RFC conversation.
+> This caused a crash in the spi_engine_irq() interrupt handler due to
+> being in an invalid state.
 > 
-> I told this is easier for me to understand. Jonathan merely told he can live
-> with that. For this particular driver it matters because I'm expecting to be
-> maintaining it. It's easier to maintain code which one can understand, and
-> if subsystem maintainer can live with it, then I suppose it's the pro you
-> are looking for.
+> Fixes: bbeaec81a03e ("iio: ad7380: add support for SPI offload")
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-What if the maintainer will be hit by a bus? The point is we should also think
-for unfamiliar possible maintainers and strange readers.
+Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
 
-But sure, not my call right now.
+Thanks.
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> ---
+>  drivers/iio/adc/ad7380.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+> index 4fcb49fdf56639784098f0147a9faef8dcb6b0f6..a2b41980c942e4cd1575bfe4f3846e297ad5d01d 100644
+> --- a/drivers/iio/adc/ad7380.c
+> +++ b/drivers/iio/adc/ad7380.c
+> @@ -1211,6 +1211,9 @@ static int ad7380_offload_buffer_predisable(struct iio_dev *indio_dev)
+>  	struct ad7380_state *st = iio_priv(indio_dev);
+>  	int ret;
+>  
+> +	spi_offload_trigger_disable(st->offload, st->offload_trigger);
+> +	spi_unoptimize_message(&st->offload_msg);
+> +
+>  	if (st->seq) {
+>  		ret = regmap_update_bits(st->regmap,
+>  					 AD7380_REG_ADDR_CONFIG1,
+> @@ -1222,10 +1225,6 @@ static int ad7380_offload_buffer_predisable(struct iio_dev *indio_dev)
+>  		st->seq = false;
+>  	}
+>  
+> -	spi_offload_trigger_disable(st->offload, st->offload_trigger);
+> -
+> -	spi_unoptimize_message(&st->offload_msg);
+> -
+>  	return 0;
+>  }
+>  
+> 
+> ---
+> base-commit: 9f36acefb2621d980734a5bb7d74e0e24e0af166
+> change-id: 20250320-iio-adc-ad7380-fix-spi-offload-buffer-predisable-a801dcfb9c00
+> 
+> Best regards,
+> -- 
+> David Lechner <dlechner@baylibre.com>
+> 
 

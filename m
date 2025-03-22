@@ -1,102 +1,79 @@
-Return-Path: <linux-iio+bounces-17203-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17204-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D85A6CA5E
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Mar 2025 14:39:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10653A6CA7D
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Mar 2025 15:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE9C3BD452
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Mar 2025 13:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 768703B8082
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Mar 2025 14:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0281621D001;
-	Sat, 22 Mar 2025 13:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502402288D2;
+	Sat, 22 Mar 2025 14:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iXmPJwNg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bZhZxOe8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5EA1F9F73;
-	Sat, 22 Mar 2025 13:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E187405A;
+	Sat, 22 Mar 2025 14:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742650762; cv=none; b=fyAaShkmL8Jlnee15fDycXLdmNYhXyuDrmvVvyW+sfyRb4zYv3ihp4MCQ8884aHO6O0NxrVeRAMEPEq/PJ8qNcrk5TZosPUgRI2cc0TQeCDf0CW3azpuj4Oj8/cHRaGqdc+tOgVDoJYFb+qKrYjzL1rgeG6RL+BOb3/9Td+3u0Y=
+	t=1742652842; cv=none; b=AJnKlhHl62zRaX8SZpbGwNXKcHpApm1Z66EbkoueNIC4U60djQEXyGw3MIYBCyXQSwUEQ1nt9sDwz+CGeG8sKYALxgRbh37Pd1BORmSaviAfKm3UWWb6mdhdfLFIVmFSK+6R58wmwsPpZNECM/y8eKGumpsKXUtRnNrVualxNvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742650762; c=relaxed/simple;
-	bh=XKIrgqCUqKzr2rLYyevfJSm1vWGqKfiisyvyw/yc950=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cHghjAI7QTeGg0RHhMTUHwqnoe5GayOrvQyBSiWXm0kub9kLgWZKnYW/UknlKpyKJ8z2Tk0h/QqB+0dwzMWD7b3V3qbWeyz1vqih3yv3Ellf0PmhXPhiSU/At85WeEaBqOL+anBJ5r2VtsSQ8abG4OnEW5RQV4OMASzRQAVxgmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iXmPJwNg; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-301918a4e1bso3839238a91.1;
-        Sat, 22 Mar 2025 06:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742650761; x=1743255561; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P+EUS7u6sE/lUiUTaK0rB8xpgpACxlJdevNW8AvmFBk=;
-        b=iXmPJwNg8E4VqgNGgXyFSDw+I0x1mwSOHY5cu3GJBjhRfUMz4rtKQ3mZZIJZU3mGvV
-         kb1I1/gCj+BH/VNUbAkZEibJE10GQUPDsV/pKqS8yruc+k4auJVLkxWuYc3Adv1D2o4l
-         JzUnYNnh5pCv+s/aksUuIQZFFITz1kPrE37eix8WFL/1JThWuIZXAlgfq4TqCpVOgV78
-         HyVx6Kz3nclDwdIjN0vSUAtJSnBYMDkFWVOTGT2GI08h6upx7iPDEUQX3i9kDTmPAXBI
-         Gb5KDaxngcd+HaVEDW++vAOzG4QZaD38bxN5RbsYT8WZrcoE5zaaIZRiJBirDxBiUBBV
-         OA0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742650761; x=1743255561;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P+EUS7u6sE/lUiUTaK0rB8xpgpACxlJdevNW8AvmFBk=;
-        b=OgNAimGBJavDsLh+NYattrj0a0JuHMy3vsCHPBh9KxnwGyykMmY4bkHH9szlHF+vhe
-         i7Nq3gBr4LbN6q7Mb1pJapZu5w7XgESWnBHliDOrlxhjS28wnbWpu4ClFzaGC43Mb4h6
-         mJ6zwOYYuCBRXrrH2nw/ee6CQAANC4a2rfD93FTdaGuVA0UUl7LtQcmSglSpJripVUcA
-         Yexm7IJ7lPHg8ZDI1PMAovjUc2d0B/PykQOJfvHvT92/yoe9juvLJlCTxlxMVKFiYBy5
-         gTv0zCkvWKcHhB/CmGxPQVsMOU9uwJ8Mb4sOoLEK3rHoCG1yBtKgV3D/MHorHU/7Ax6l
-         OYSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSYX7wNUgteLoXYNwnkrZFvD0+SgL/W1kVkBEpt1b/gmFdCaq2XNvn5hx8HYztLwad3han2zoJUjfyrMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHDtRnlMjEHyqnl3thWhdErBQ4AL9NiIoYWBdaT887nAhjHTbX
-	OuSAwnQ2G49ZlmdBDiGKiP6zqzyFEnTLHxOydVbq/xCsSXDAep+W
-X-Gm-Gg: ASbGncthRM5xKfBGKzfaOGtNudstpUGzXapinWi+rHb9rujm0pZURHXIfXwPXllDqKw
-	vqpLwtjM608jUpVVjRhNzKTxV8aXOFsc/vrOAhuLZsxyYJJiJdsariuxppGJwyEAYqBdrGd30Tm
-	6NZFDJyHC75c2nGz4M3TX31Oea5srUjxQsn91aO4E9icJbNrUBI4M6FLuNoOd8kz9GEFM6rmmSe
-	PDG8YNp3QAMShW4FDgabCz6qN3EHa9Eu5H1gBunm7H6hC41HcGbdefoSAuW7DrL3m4POy5ZnK+v
-	sVi0IXAOatuw6LizT/lnhBF1bFkWDj1ZT3uulMZeR8W7cBIIfXFs7A==
-X-Google-Smtp-Source: AGHT+IGAMRI8qghoQ88hiRYeDKHXI01kQCTBp3E3XmT2HIRI1dnp6VXTaODfyPRS6ZuF/s9XRLJFog==
-X-Received: by 2002:a05:6a20:d81b:b0:1f5:67c2:e3e9 with SMTP id adf61e73a8af0-1fe4342cc6emr12058393637.29.1742650760092;
-        Sat, 22 Mar 2025 06:39:20 -0700 (PDT)
-Received: from localhost ([2804:30c:b31:2d00:277c:5cbe:7f44:752b])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7390615874csm4122480b3a.143.2025.03.22.06.39.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 06:39:18 -0700 (PDT)
-Date: Sat, 22 Mar 2025 10:40:17 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+	s=arc-20240116; t=1742652842; c=relaxed/simple;
+	bh=yO/02y4E8Qq4+jqBAsG9Qhf+t4Y4BP+/g4WjBbxGnB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MLxXf3Uu/jd2jeJ365QMjXHv5zLMnacBdfQNrXIkx4Rtu/W8b4YC5Aa5PJ5oJwHdHqgePwTQdodaY7TGURzXrOs+1iqBPq8EsAwHT8AJ0vol3Cmm1n+WZd8v52k2ApJqLdJAzlJ4IEmFxJSbLBuXyxE9oS5QUNrIm2sO2vg+ICU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bZhZxOe8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1070C4CEE4;
+	Sat, 22 Mar 2025 14:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742652841;
+	bh=yO/02y4E8Qq4+jqBAsG9Qhf+t4Y4BP+/g4WjBbxGnB8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=bZhZxOe8lRHchPrE1hwpX3uo3lWcZwv42ghGXKJhheWZuq0awyWnbgDVxQigjtwFM
+	 6TXzcCcM0bI6kwPG5YW8ld3+5G42Y1D6nFQE9Ku97Uhc/EMC7TAYKAI8pWxilnhMUs
+	 qV2L/FtuW/pG70Po4X9FllPo/guTLvxOVyTGhQp1vZbfpckyPkaKeoXuoz5T/anc0Q
+	 vYShqlBqoFZ+7i7NWPae3iwbFAwMq5wNF+B1MnTfS6zF8kHtTvv4Ad5qfpKq/try4b
+	 MYQZcCtkPBHRW3C6KgVikV/0sa2kPPtbvhFdjbO/FZLSFSIKj4Q6UAuecXJj/bivC7
+	 Sw4zI07VN+SGQ==
+Date: Sat, 22 Mar 2025 14:13:50 +0000
+From: Jonathan Cameron <jic23@kernel.org>
 To: Siddharth Menon <simeddon@gmail.com>
 Cc: linux-iio@vger.kernel.org, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org,
-	gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev
+ Michael.Hennerich@analog.com, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
+ marcelo.schmitt1@gmail.com
 Subject: Re: [PATCH] iio: frequency: ad9832: devicetree probing support
-Message-ID: <Z969wZRJxMCyVuqy@debian-BULLSEYE-live-builder-AMD64>
+Message-ID: <20250322141350.3fb7d560@jic23-huawei>
+In-Reply-To: <20250322081108.202654-1-simeddon@gmail.com>
 References: <20250322081108.202654-1-simeddon@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250322081108.202654-1-simeddon@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-LGTM, one minor suggestion inline.
-With that applied,
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+On Sat, 22 Mar 2025 13:37:45 +0530
+Siddharth Menon <simeddon@gmail.com> wrote:
 
-On 03/22, Siddharth Menon wrote:
 > Introduce struct for device match of_device_id
+
+Good to say why.   Key is that it will probe from a dts
+entry without this due to the various matching fallback paths,
+but it will be matching with the less informative bit after
+the manufacturer.  So we might get a false match in future
+against some other ad9832 part.
+
+
 > 
 > Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 > Signed-off-by: Siddharth Menon <simeddon@gmail.com>
@@ -116,8 +93,12 @@ On 03/22, Siddharth Menon wrote:
 > +	{ .compatible = "adi,ad9832" },
 > +	{ .compatible = "adi,ad9835" },
 > +	{},
-I think Jonathan prefers to have a space separating the null terminator braces.
-	{ },
+No comma on a terminating entry like this.  We don't want to make it easy
+to add stuff after it!
+Also, I'm trying to standardize the formatting of these tables
+across IIO.  So I made the random choice of having a space between
+the brackets and am slowly changing drivers to that standard.
+	{ }
 
 > +};
 > +MODULE_DEVICE_TABLE(of, ad9832_of_match);
@@ -133,7 +114,5 @@ I think Jonathan prefers to have a space separating the null terminator braces.
 >  	},
 >  	.probe		= ad9832_probe,
 >  	.id_table	= ad9832_id,
-> -- 
-> 2.48.1
-> 
+
 

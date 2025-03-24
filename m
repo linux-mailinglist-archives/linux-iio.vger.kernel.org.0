@@ -1,123 +1,131 @@
-Return-Path: <linux-iio+bounces-17243-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17244-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F52EA6D9A2
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 12:58:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77985A6DA11
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9056218926AB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 11:58:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324DB1894319
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 12:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDCD25E46F;
-	Mon, 24 Mar 2025 11:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9149425E838;
+	Mon, 24 Mar 2025 12:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b="ffAA0+93"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="TPUqGKdj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from p00-icloudmta-asmtp-us-central-1k-100-percent-3.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (p-east1-cluster4-host9-snip4-10.eps.apple.com [57.103.89.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23041F4295
-	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 11:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.89.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9972625D908
+	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 12:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742817505; cv=none; b=M4JMWk+Ly5n7/80DIU1mW75psDzTqT27yIxF3Vmk38DdEkj0hcRgAKJuYxKFzFt7+MlOUA2SBWPpXbhpLf30wYwHnh+U3bQ3jfQYuTzCmTjTZPV88s0eVwTOMLgxLtETtRrNij7fw9RMEFHo50vs9XrxpONg3u9G7Kxf+hwmWr8=
+	t=1742819204; cv=none; b=NXIGvZBuoD06yipheyzi6XfdOtsbvfYNZM/hflsXgadIDBiLNcsQ19MZwgMOzyltLCR4ezfDHiUOti6mTvj4gB1NUgNPWkylo62xwdH1s6O/ldiGB+rKNYuLhxd7Ps2EYUWj7/UoBPTkuKQ53QNJDiQDrdJ2LTluAURrszmHO64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742817505; c=relaxed/simple;
-	bh=6QkqFzT4QB40LkKJxK39lWPXcsKwdkfaSqyF6gSHQ1k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XB19ZU9CiVYnBxywQChwH73DSH2So/cgcghWDk+5brSNcYWHvwnF9Q+Q4At36ye6ObFHIzMDP275ijlIRI2c0SlSXo5npmK1vU+evE7qSLlzvYNMEO6PmiDhF4GRkibX4k4klgJGbTX8ShRC2dcmYksfIXFwT2af+A4WHra8kHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es; spf=pass smtp.mailfrom=pereznus.es; dkim=pass (2048-bit key) header.d=pereznus.es header.i=@pereznus.es header.b=ffAA0+93; arc=none smtp.client-ip=57.103.89.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pereznus.es
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pereznus.es
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pereznus.es; s=sig1;
-	bh=N20daEFIEq76699cKPqoyrfhMtw+hJa1VLqQDUltJsE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=ffAA0+932tpG3paOZHMGzexahnSGDCkKv4NQul5apjlDuYLSCheAOINLNIl0aZ2dg
-	 xLYT67mJWKFBiJVis5hhQINYjQRa2npBqd4XZQmsqv4DVH9GarfHtJ39qnW56X04DF
-	 R4XfM5OY1DwSFNVHiPaIoBO3SB/AmXIqglXi76QnvO3g12OMuRro8r5NxQRvTiM5Uf
-	 pm1oTmTD5TtmjQLfJISxhZwXXXpoQdnuRHdYDEQFlmJqGDixZ/vZxzfiXkGoJ9YDdr
-	 c3h7ld5ZFAdQTsk0e6IojAmstLO0uBfmpeyJ/qVlyn15fGGe7Nz44gEM06mLZPvk8y
-	 pucqhJfTkMJ0g==
-Received: from [192.168.1.28] (ci-asmtp-me-k8s.p00.prod.me.com [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-3.p00-icloudmta-asmtp-vip.icloud-mail-production.svc.kube.us-central-1k.k8s.cloud.apple.com (Postfix) with ESMTPSA id 92657180026E;
-	Mon, 24 Mar 2025 11:58:18 +0000 (UTC)
-Message-ID: <113a789f-54e8-4d42-b260-829c194758a7@pereznus.es>
-Date: Mon, 24 Mar 2025 12:58:14 +0100
+	s=arc-20240116; t=1742819204; c=relaxed/simple;
+	bh=hzKJikXi8Sdam4B/PqIlud3Ck4EKL/r9ynDMwDVjci8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=REcJHN44fJh9gsgcc2HMiRSgnznzJ8YLBPJ41qb/ZgBR8tK2ZrUI4RqebJuLYiSFGrEnY7Gkkr3Tfipgf+9RPkHS6SZiV8qZC4mgfaK5p3JORUfxEAcBhRPytqzyl/7sUEBGbrxu65/sr5YDO+OA+N2+JclDoE3s052gqsIgnDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=TPUqGKdj; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-391342fc148so2922558f8f.2
+        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 05:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1742819200; x=1743424000; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Phk711bqqwQtp/5ohR16dSgoW1rYqnvCMt8zHzDni7g=;
+        b=TPUqGKdjygNWlcpTeLDimpy36254zyMMHrxh46im4G4Hmffkmwu1jtBrbfq7ktCC3C
+         2CpL2RLHBN+kNk9Xyyk7y/020NqVIIvk4ZrC+6UeMF/9H9fJntFsrg9+kRPd2+8MLB3u
+         Sq7nRCqLp1dlAzd2PkcdX0ID3p9QyKncuciI5lLqP0QH+GSvo7BXoZZ4em0dkmgbULvz
+         Sg11lcZzqyJZ58CE327X9vibX+God7my9kMr6tWRPvgMngDWaIm2lZlhoW9LQcPOjVnJ
+         qkrY6kNaL3ufKGDvqSx6md4W5CWuI9ClcqNLe7jcXSW1niOvufI8AKBWXVLteZrANrhg
+         lMXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742819200; x=1743424000;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Phk711bqqwQtp/5ohR16dSgoW1rYqnvCMt8zHzDni7g=;
+        b=XOA38mhb9jSvoNBoq3SFwR8ZLC8k/2liBJdn5+R9XWfhmyJCKdkyO97urPzbryycXO
+         RLkcuGSeABGrHqs6uG7NmoKEwTHvIY8BKEd8b1GegucTGDgkhsH7+0BfgFzhykAi5ZZi
+         mpHUGra0ivHXRBVPjFP/1WKOJjS3P8RDrKSS+GFdgQnHPfcOLZIwf90A/NriIeEEkWO6
+         cYDypSWoJUl9WYVGulaZdDsfPQ02k4f4KgM2uREfsxsI7Kdy6U63iH+fwBE2nNwS5sQW
+         o5tS9yGSulLBu5/LZ9vlkIb+QWnikb6aiea8AvelYjuomU9mz/GE2/i3gyFgCPp1XezI
+         jJbw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+WGkd8uNeSjPlsWqo3ZsF9G5lTzwoZt5pHcOInN4LYDjVQfJWDeXLRD/WbYsXKaYoPwEheS91w1U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzipWjuUi0qVvde4syN2ugAdrJpoj9eQB54Geko02bbE32UUMlc
+	NJQKWXD9BuZxffEKhZzhmqDjZ+dDq6nhJJ/RiOSknh/+jDpEkxL74b9Otkihcq8=
+X-Gm-Gg: ASbGncsGJqrjSbBkXg/FiKTrafaWQJxsSwRg+LIQwLbSeEPjUgEjCSRw1ouKY3syL/a
+	hgrefC79kAs0f9YK2lX1ekI0918z14Dsz8jRV5pyF8H/akfB/2+b1V7ZpoBotOdfY7YqqxeBBqK
+	Ke8BsxLyi0Opwmyojkcn/3Hc+OY63xafVQrG8y3ti+4LH+fyx7KVDvf8KCUpV+rUDN9mFg9ZykR
+	Ahzz9iI/VYDLkJ+vinUOJKrS59VKzbIgk0va0WqlRTAqRDSslzvwIaXzrkqCtofpQJQny3bNvGI
+	RQ4F1FJjwMCNJFb+gMNhdY8bch9sjn2YCwNrE1lqMrLdZbj1cEULtKGWD1fRv7/hpk4RZDCIeA=
+	=
+X-Google-Smtp-Source: AGHT+IFyAHj/IByQ5z9fmeWSfg359IdFmkN1k1RzZoQFKjZ1j9affxNGuCzLwR/XkeM9MsmBLjG4aA==
+X-Received: by 2002:a5d:5f46:0:b0:399:7918:541a with SMTP id ffacd0b85a97d-3997f8f5c13mr11994851f8f.10.1742819199656;
+        Mon, 24 Mar 2025 05:26:39 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9ef16csm10729080f8f.86.2025.03.24.05.26.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Mar 2025 05:26:39 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: prabhakar.mahadev-lad.rj@bp.renesas.com,
+	jic23@kernel.org,
+	lars@metafoo.de
+Cc: claudiu.beznea@tuxon.dev,
+	linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH v4 0/2] iio: rzg2l_adc: Cleanups for rzg2l_adc driver
+Date: Mon, 24 Mar 2025 14:26:25 +0200
+Message-ID: <20250324122627.32336-1-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/2] dt-bindings: iio: light: bh1750: Add reset-gpios
- property
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Tomasz Duszynski <tduszyns@gmail.com>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250321161609.3662-1-sergio@pereznus.es>
- <20250324-massive-dancing-sidewinder-bd51b3@krzk-bin>
-Content-Language: es-ES, en-US, ca
-From: =?UTF-8?Q?Sergio_P=C3=A9rez?= <sergio@pereznus.es>
-In-Reply-To: <20250324-massive-dancing-sidewinder-bd51b3@krzk-bin>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: OicYdhtriXqdG9qklvA12TIxea9ZpqCK
-X-Proofpoint-ORIG-GUID: OicYdhtriXqdG9qklvA12TIxea9ZpqCK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-24_04,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 spamscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 clxscore=1030 mlxscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2503240087
 
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-El 24/03/2025 a las 9:08, Krzysztof Kozlowski escribió:
-> On Fri, Mar 21, 2025 at 05:16:08PM +0100, Sergio Perez wrote:
->> +  reset-gpios:
->> +    description: GPIO connected to the DVI reset pin (active low)
->> +    maxItems: 1
->> +
->>   required:
->>     - compatible
->>     - reg
->> @@ -36,9 +40,12 @@ examples:
->>         #address-cells = <1>;
->>         #size-cells = <0>;
->>   
->> +      #include <dt-bindings/gpio/gpio.h>
-> This goes upper. Please open any other bindings to see how it is done.
->
-> With fixed placement:
->
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Thanks, I will fix the placement of include and send new version (v6).
-> ---
->
-> <form letter>
-> This is an automated instruction, just in case, because many review tags
-> are being ignored. If you know the process, you can skip it (please do
-> not feel offended by me posting it here - no bad intentions intended).
-> If you do not know the process, here is a short explanation:
->
-> Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-> versions of patchset, under or above your Signed-off-by tag, unless
-> patch changed significantly (e.g. new properties added to the DT
-> bindings). Tag is "received", when provided in a message replied to you
-> on the mailing list. Tools like b4 can help here. However, there's no
-> need to repost patches *only* to add the tags. The upstream maintainer
-> will do that for tags received on the version they apply.
->
-> https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-> </form letter>
->
-> Best regards,
-> Krzysztof
->
+Hi,
+
+Series adds some cleanups for the RZ/G2L ADC driver after the support
+for the RZ/G3S SoC.
+
+Thank you,
+Claudiu Beznea
+
+Changes in v4:
+- open the devres group in its own function and rename the
+  rzg2l_adc_probe() to rzg2l_adc_probe_helper() to have simpler code
+- collected tags
+
+Changes in v3:
+- in patch 2/2 use a devres group for all the devm resources
+  acquired in the driver's probe
+
+Changes in v2:
+- updated cover letter
+- collected tags
+- updated patch 1/2 to drop devres APIs from the point the
+  runtime PM is enabled
+
+Claudiu Beznea (2):
+  iio: adc: rzg2l_adc: Open a devres group
+  iio: adc: rzg2l: Cleanup suspend/resume path
+
+ drivers/iio/adc/rzg2l_adc.c | 67 +++++++++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 22 deletions(-)
+
+-- 
+2.43.0
+
 

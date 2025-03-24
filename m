@@ -1,237 +1,216 @@
-Return-Path: <linux-iio+bounces-17248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17249-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0161CA6DA90
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 13:58:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7030A6DC13
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 14:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14481189793E
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 12:56:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7420616B4D5
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 13:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5792620D9;
-	Mon, 24 Mar 2025 12:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8796A25DD14;
+	Mon, 24 Mar 2025 13:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b4CHAXw6"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PT6FtSzu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C6525F983
-	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 12:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2D8FC0A
+	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 13:50:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742820802; cv=none; b=ieJSzECOn/BXoRe1jg1Nyaq0QyWA9O56Ajd5E2D1waWMnu2P4cPP2k577y2vWQpmVfX8Y4A8/WldzURXOM0vOfRzLxkG8dUUVb3NdujX9Hg4DMRnTL/7Fvg0q/R8NVqU82MZrjihsu1wlgTh1+x/hLq4JMpOSleeYH0Ml3Sk0Zc=
+	t=1742824222; cv=none; b=ZgAe8ELsbFlWiuNbrEkjsE8iIf9JKwWTmEtKZ/ZoN33ecyNgEZRXf8Pgt4Kg+sG4HUy+mloc9AdQOkm1XQ5LTvsS1jOZrkIWhcpZwD2u+K2+tzT7E6hazmJ39wmfd/oQH6udDEMiRnY2us5KsMXOjsMUh8E2ELyw7DVqMOL0g34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742820802; c=relaxed/simple;
-	bh=KztbqaTR3tNBV6+5bYjxV8LYYV4Ce3mdYHKn0tcjJAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCKaNK0L86PjTXtFu7csxSvaVg5t1yzjyKEbtQzlCSPa7Br52OGXRUT8jP9U4yFLNAadwaRTt1wDYO4VSNwM/Mh3n5KnjJ8EiNuTGyZzmvTyVJ8Mi+yJe3hcAbGgti4h7vLRtpy2U/5ClYyPxysQ1hScax5iRUCRtbqg9/KPfM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b4CHAXw6; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3978ef9a778so211382f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 05:53:20 -0700 (PDT)
+	s=arc-20240116; t=1742824222; c=relaxed/simple;
+	bh=idBIRQzC41pEK3vxHCsW3jlGzyWUmPmwM/kPI+tS88M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WAnZ3K/k9yGOkHIake+Zql+eL+UdT126PORqoETU3D4m/neqEVxwflw5sVMfLyVQxEoR4IaTeMfUvgA/D5ZW4ceegkytm7Pxbji5/wLTP/1VudRTW9L/HLxywwhvZ/Y9tGFM9GMOqQ/eYhMhXM7/57pb21T6lTnYMZB28ud9BnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PT6FtSzu; arc=none smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-601a4e037a5so2223146eaf.3
+        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 06:50:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1742820799; x=1743425599; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oDq573A1DEo78oa8q5EaQH/G4SAW0wK6UJ6KkottKQQ=;
-        b=b4CHAXw6YRkSUMg8NDKncuFOO2DUu97CQSE78eI4m4DP35EhALmHLlTBMUT69eTuHl
-         goH0F4u/hHcQzvZpBQDV21ekfoJtWO3MlUFhCmhewudA0I5NNRKEbCQ3Ea9YBC0xJUs9
-         YZpw/HktFWz139PuVU6JJ7uDcPZl6qNQQGpz+xNujhmcUJhsYczU8cn8XbUVZyLjElLU
-         Lk80ICXWiX3ZsPg+bmtPN3pyq5bJITzZ8LOvmvEOZkH3XaPAj+kkfI3POlD6xJ8eTZ7X
-         wjCZpE/V5rS9xYLbGNG7y6kY7Mhd2n2/YjJsm5MI80CytwRFyccPuXxTQtxjnEYMQpxC
-         CJfA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742824218; x=1743429018; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CdxeeM9Wzx2ULG71chhuAoOD2bPZ1lIe5eeC/XTvSI0=;
+        b=PT6FtSzugs9idtT+MOVtd9b+l+JbWZoUvXNYG6mZYJkke2IfyJIgp2374Pooy2o2Ko
+         cq0tJ3PkxyZAhimIbf1N+Tkp0Nz5z8ANJhr7AfHvpYMh/NjcZ9tmcUxlG1wWY1glK+vt
+         CQAnf3pFLC2x1HjCPMJVDKzqFTq+6vSBl0yJpJAsEQgywzm8FqJm0F9Rpyj/WThX8fb9
+         fzKQb9s8jlT4BO9xGUbD4LPphn3VpGqvCjUgPdq+jNiDvdqvB+eV+IK8DusxAu6K5e31
+         cC3ZIF/t/9QCFaSn5wtQFMW0pbDEF13Sjh4BJK+QTapuFfMgDei93XBPRg/A+fhM21My
+         h7xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742820799; x=1743425599;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oDq573A1DEo78oa8q5EaQH/G4SAW0wK6UJ6KkottKQQ=;
-        b=UFm1VKNLa5jiqcVKHsx3UWTxW3n2JiHg+2WUfJ4XdM733z9Owb15bPI1L5nH6aqppj
-         0jhnUvzreSPIQPNZ9jsIugtb7kBfvs5+Jny5FhypUUy78KFg0rN4HAKBH1Uf9zw1x81+
-         B3tsynnW0hLcbnNMRtTE7x0JwJOC22r4C7g31aG2ZIeSiraiSljxHzY8sLymPftjKFQB
-         w/ZXH4WT7AVnZvUK69vAXnZJlDZE9a+hUvAXMqkavMzapCCeV611ucw8r64FxY4OaUzl
-         tgywWt5R7r4cVaL9ugQo6Ig4dU7XPbCsi9H7R6ZJ3UGkYDczJ0mMl7DKRGZDk/FOPQDo
-         FnlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfyyYCrgS0cROIqGHT4MBDt4ER7Zz+nHH4nJJlZf74ZyVNFxYqbjaJz+3qnwga5x/oHlcawv2JTCs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQ/Y4s4IM3CFUpKVoDY+Mc5J1TasC4S1tYlGeH+259wSgVVUwd
-	aYmjIOSFlps2Yjybm+Sri/Wc+TDZJMWxjkXxrii/jKNBVvPBsY33RFWgJMCINWc=
-X-Gm-Gg: ASbGncv2o+zAxsMf9QskWX1fbfmeN85oybvkMDhT6u7zjqfgvrCG9jfsVNHiXeuFz/m
-	fZSHoUbDtFuCEYxJgIZYwyoWH+cbJ/ftUu2ID/OOytMbbxYhjjIdviHXWWXnDQnwpPfkHlmGRIJ
-	slFQe00CbcIZKXzpYv1SXHUuGBd9lK/CTdqZAWFsA/BrG+UCw5dizdhaQFy5vCRmCiKkodCi8RO
-	Iiaw7mM17K6gvCEQ43dnl7KgGFb5gF8r//xgA7AiESmGd+BI48giJWp0mYFDAhnf0UjSVATpFgh
-	RzaeHfgnFHYgFlZ89fu50vBmQ9IOZgCue0kNVP+R7ks8jGE00Oq1LK6Ilw==
-X-Google-Smtp-Source: AGHT+IEyXr4XfE4jQQNiBxD85qyqtlDpxh8WZZdKdE91l17CgQn/QudC/yJi3NGWG6c+9LLhlw/Xcg==
-X-Received: by 2002:a5d:6c61:0:b0:38d:be5e:b2a7 with SMTP id ffacd0b85a97d-3997f937550mr4866832f8f.10.1742820799028;
-        Mon, 24 Mar 2025 05:53:19 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.198.86])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9efd61sm11017167f8f.91.2025.03.24.05.53.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 05:53:18 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	Anshul Dalal <anshulusr@gmail.com>,
-	Ramona Gradinariu <ramona.gradinariu@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Robert Budai <robert.budai@analog.com>,
-	Petre Rodan <petre.rodan@subdimension.ro>,
-	Andreas Klinger <ak@it-klinger.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 2/2] dt-bindings: iio: Use unevaluatedProperties for SPI devices
-Date: Mon, 24 Mar 2025 13:53:13 +0100
-Message-ID: <20250324125313.82226-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250324125313.82226-1-krzysztof.kozlowski@linaro.org>
-References: <20250324125313.82226-1-krzysztof.kozlowski@linaro.org>
+        d=1e100.net; s=20230601; t=1742824218; x=1743429018;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CdxeeM9Wzx2ULG71chhuAoOD2bPZ1lIe5eeC/XTvSI0=;
+        b=B++69hmaGhG88FIwDDPOpPZxpFf+6gDJvPOEtArPjx9O8b1V9UytqgDIaKkLpb2liW
+         Sr7c/qowvZCnF834+YArLsfU2rXvb+sXpjVEL8ga9PZgP0GHWg0ZXvawjny7+vmQi3en
+         d9RtRaMxpiSmBJpotG8sD9vFx4Hjxj+Z8M+EYmEe48TOQopqYeiMaQaTQ1d+gHNORkBW
+         JO5P4v3YXUeyRabKpb+xrKD77UA9ZX0a2RLn7CTna6u23haVFCsK0W/DQ9nNwRm9gbXv
+         +zd5dERUbfwjVmeINb9LYM32n2pLTewIRmO1/J+7XCvig/NCMlAVVusbpVQDJq7t55AK
+         fthQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEYewZZZRBV/2RKw+bqB7kJzp9Qgpzzdgo97HSC73F7d2YXhwVATVOjXtNm8cIMWJLoOinu9SkakA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwW8L58oyDCboaDxRWklQcDxAyV6CIogHlBJ84LMdd1z0/UHDQQ
+	D/LciP5ZOGBn13Wf23BNEkIDyYN0E0K2sMIImiDwPKXMqIHo0NjSu7KOijGNeys=
+X-Gm-Gg: ASbGncsXgtLOLdn+OS02I9r0jG9Zf24+zTVNPAEkk16OG+3Tu0wl2pvVpKkxIWUH+dO
+	iKDs+gvGmAk2V/GVDEYH47rQ3zbT9fT2iNxSfVZyBMh+FMJ/otjYa7v7A1EcHPF/7IWvZqUhhi/
+	14DYIZkMqm9GD7tePnrrcMcko3wgkTACYWsTa6viZfVMlqF4LUZBVDCRxKOs2dm/Nb2w9lNPJkP
+	WpVpJFzZBqzU0p/wJhLUBw27H7d6yXwJrrotj7Q7NrL1Cag9aZ0sqhCi1m940Y3Tm37/P+FLlQl
+	V132DtWbfcXwxGyksndDRt00f1Sgkti5VY3ypHQahOGPepmoyC60xnx8VDaMObMInE8/VIV4eia
+	vWkFhiw==
+X-Google-Smtp-Source: AGHT+IGUKGUnBQQj8euBvc40iv5UxLc92QmBpQeJUNQcD9g9q1Gn7KRpSWRrk0DYtdOznF3qMa6O7Q==
+X-Received: by 2002:a05:6871:530b:b0:29e:3de0:d400 with SMTP id 586e51a60fabf-2c77fdcc096mr8345834fac.0.1742824217751;
+        Mon, 24 Mar 2025 06:50:17 -0700 (PDT)
+Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2c77f0f3fbcsm2025356fac.49.2025.03.24.06.50.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Mar 2025 06:50:17 -0700 (PDT)
+Message-ID: <4854b569-5032-4b75-80a6-8c5822845dc7@baylibre.com>
+Date: Mon, 24 Mar 2025 08:50:15 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/10] iio: adc: ad7606: dynamically allocate channel
+ info
+To: Dan Carpenter <dan.carpenter@linaro.org>, oe-kbuild@lists.linux.dev,
+ Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Angelo Dureghello <adureghello@baylibre.com>,
+ Alexandru Ardelean <aardelean@baylibre.com>,
+ Beniamin Bia <beniamin.bia@analog.com>, Stefan Popa
+ <stefan.popa@analog.com>, linux-kernel@vger.kernel.org,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+References: <72d776ae-4373-4a78-ba00-fa809478b453@stanley.mountain>
+From: David Lechner <dlechner@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <72d776ae-4373-4a78-ba00-fa809478b453@stanley.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-SPI devices should use unevaluatedProperties:false instead of
-additionalProperties:false, to allow any SPI device properties listed in
-spi-peripheral-props.yaml.
+On 3/22/25 12:25 PM, Dan Carpenter wrote:
+> Hi David,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/David-Lechner/iio-adc-ad7606-check-for-NULL-before-calling-sw_mode_config/20250319-065737
+> base:   9f36acefb2621d980734a5bb7d74e0e24e0af166
+> patch link:    https://lore.kernel.org/r/20250318-iio-adc-ad7606-improvements-v2-9-4b605427774c%40baylibre.com
+> patch subject: [PATCH v2 09/10] iio: adc: ad7606: dynamically allocate channel info
+> config: arm64-randconfig-r071-20250322 (https://download.01.org/0day-ci/archive/20250322/202503222246.RafigmhQ-lkp@intel.com/config)
+> compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project c2692afc0a92cd5da140dfcdfff7818a5b8ce997)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> | Closes: https://lore.kernel.org/r/202503222246.RafigmhQ-lkp@intel.com/
+> 
+> smatch warnings:
+> drivers/iio/adc/ad7606.c:1270 ad7606_probe_channels() warn: potentially one past the end of array 'channels[i]'
+> 
+> vim +1270 drivers/iio/adc/ad7606.c
+> 
+> 87cf5705725eeb David Lechner      2025-03-18  1196  static int ad7606_probe_channels(struct iio_dev *indio_dev)
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1197  {
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1198  	struct ad7606_state *st = iio_priv(indio_dev);
+> 87cf5705725eeb David Lechner      2025-03-18  1199  	struct device *dev = indio_dev->dev.parent;
+> 87cf5705725eeb David Lechner      2025-03-18  1200  	struct iio_chan_spec *channels;
+> 87cf5705725eeb David Lechner      2025-03-18  1201  	bool slow_bus;
+> 87cf5705725eeb David Lechner      2025-03-18  1202  	int ret, i;
+> 87cf5705725eeb David Lechner      2025-03-18  1203  
+> 87cf5705725eeb David Lechner      2025-03-18  1204  	slow_bus = !st->bops->iio_backend_config;
+> 87cf5705725eeb David Lechner      2025-03-18  1205  	indio_dev->num_channels = st->chip_info->num_adc_channels;
+> 87cf5705725eeb David Lechner      2025-03-18  1206  
+> 87cf5705725eeb David Lechner      2025-03-18  1207  	/* Slow buses also get 1 more channel for soft timestamp */
+> 87cf5705725eeb David Lechner      2025-03-18  1208  	if (slow_bus)
+> 87cf5705725eeb David Lechner      2025-03-18  1209  		indio_dev->num_channels++;
+> 87cf5705725eeb David Lechner      2025-03-18  1210  
+> 87cf5705725eeb David Lechner      2025-03-18  1211  	channels = devm_kcalloc(dev, indio_dev->num_channels, sizeof(*channels),
+> 87cf5705725eeb David Lechner      2025-03-18  1212  				GFP_KERNEL);
+> 87cf5705725eeb David Lechner      2025-03-18  1213  	if (!channels)
+> f3838e934dfff2 Alexandru Ardelean 2024-09-19  1214  		return -ENOMEM;
+> f3838e934dfff2 Alexandru Ardelean 2024-09-19  1215  
+> 87cf5705725eeb David Lechner      2025-03-18  1216  	for (i = 0; i < indio_dev->num_channels; i++) {
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml      | 2 +-
- Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml      | 2 +-
- Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml      | 2 +-
- .../devicetree/bindings/iio/dac/microchip,mcp4821.yaml          | 2 +-
- Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml     | 2 +-
- Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml    | 2 +-
- .../devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml    | 2 +-
- .../devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+The fix is to change this line to:
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-index 2d2561a52683..547044b8e246 100644
---- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-@@ -217,7 +217,7 @@ required:
-   - reg
-   - spi-max-frequency
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-index 33490853497b..1aece3392b77 100644
---- a/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-@@ -144,7 +144,7 @@ required:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-index c8c434c10643..3c8e5781e42c 100644
---- a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-@@ -124,7 +124,7 @@ required:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4821.yaml b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4821.yaml
-index 0dc577c33918..26011b5639d8 100644
---- a/Documentation/devicetree/bindings/iio/dac/microchip,mcp4821.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/microchip,mcp4821.yaml
-@@ -64,7 +64,7 @@ required:
-   - reg
-   - vdd-supply
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml b/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-index 941a49c93943..188b00333dfb 100644
---- a/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-+++ b/Documentation/devicetree/bindings/iio/dac/rohm,bd79703.yaml
-@@ -43,7 +43,7 @@ required:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-index a4c273c7a67f..cf5324de4fd6 100644
---- a/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16550.yaml
-@@ -53,7 +53,7 @@ required:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
-diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-index 89977b9f01cf..412c7bcc310f 100644
---- a/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-+++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,hsc030pa.yaml
-@@ -102,7 +102,7 @@ required:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- dependentSchemas:
-   honeywell,pmin-pascal:
-diff --git a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-index 6994b30015bd..c756aa863103 100644
---- a/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-+++ b/Documentation/devicetree/bindings/iio/pressure/honeywell,mprls0025pa.yaml
-@@ -115,7 +115,7 @@ allOf:
-         honeywell,pmin-pascal: false
-         honeywell,pmax-pascal: false
- 
--additionalProperties: false
-+unevaluatedProperties: false
- 
- examples:
-   - |
--- 
-2.43.0
+							for (i = 0; i < st->chip_info->num_adc_channels; i++) {
+
+> 87cf5705725eeb David Lechner      2025-03-18  1217  		struct iio_chan_spec *chan = &channels[i];
+> 87cf5705725eeb David Lechner      2025-03-18  1218  
+> 87cf5705725eeb David Lechner      2025-03-18  1219  		chan->type = IIO_VOLTAGE;
+> 87cf5705725eeb David Lechner      2025-03-18  1220  		chan->indexed = 1;
+> 87cf5705725eeb David Lechner      2025-03-18  1221  		chan->channel = i;
+> 87cf5705725eeb David Lechner      2025-03-18  1222  		chan->scan_index = i;
+> 87cf5705725eeb David Lechner      2025-03-18  1223  		chan->scan_type.sign = 's';
+> 87cf5705725eeb David Lechner      2025-03-18  1224  		chan->scan_type.realbits = st->chip_info->bits;
+> 87cf5705725eeb David Lechner      2025-03-18  1225  		chan->scan_type.storagebits = st->chip_info->bits > 16 ? 32 : 16;
+> 87cf5705725eeb David Lechner      2025-03-18  1226  		chan->scan_type.endianness = IIO_CPU;
+> f3838e934dfff2 Alexandru Ardelean 2024-09-19  1227  
+> 87cf5705725eeb David Lechner      2025-03-18  1228  		if (indio_dev->modes & INDIO_DIRECT_MODE)
+> 87cf5705725eeb David Lechner      2025-03-18  1229  			chan->info_mask_separate |= BIT(IIO_CHAN_INFO_RAW);
+> 87cf5705725eeb David Lechner      2025-03-18  1230  
+> 87cf5705725eeb David Lechner      2025-03-18  1231  		if (st->sw_mode_en) {
+> 87cf5705725eeb David Lechner      2025-03-18  1232  			chan->info_mask_separate |= BIT(IIO_CHAN_INFO_SCALE);
+> 87cf5705725eeb David Lechner      2025-03-18  1233  			chan->info_mask_separate_available |=
+> 87cf5705725eeb David Lechner      2025-03-18  1234  				BIT(IIO_CHAN_INFO_SCALE);
+> 87cf5705725eeb David Lechner      2025-03-18  1235  
+> 87cf5705725eeb David Lechner      2025-03-18  1236  			/*
+> 87cf5705725eeb David Lechner      2025-03-18  1237  			 * All chips with software mode support oversampling,
+> 87cf5705725eeb David Lechner      2025-03-18  1238  			 * so we skip the oversampling_available check. And the
+> 87cf5705725eeb David Lechner      2025-03-18  1239  			 * shared_by_type instead of shared_by_all on slow
+> 87cf5705725eeb David Lechner      2025-03-18  1240  			 * buses is for backward compatibility.
+> 87cf5705725eeb David Lechner      2025-03-18  1241  			 */
+> 87cf5705725eeb David Lechner      2025-03-18  1242  			if (slow_bus)
+> 87cf5705725eeb David Lechner      2025-03-18  1243  				chan->info_mask_shared_by_type |=
+> 87cf5705725eeb David Lechner      2025-03-18  1244  					BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+> 87cf5705725eeb David Lechner      2025-03-18  1245  			else
+> 87cf5705725eeb David Lechner      2025-03-18  1246  				chan->info_mask_shared_by_all |=
+> 87cf5705725eeb David Lechner      2025-03-18  1247  					BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+> 87cf5705725eeb David Lechner      2025-03-18  1248  
+> 87cf5705725eeb David Lechner      2025-03-18  1249  			chan->info_mask_shared_by_all_available |=
+> 87cf5705725eeb David Lechner      2025-03-18  1250  				BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+> 87cf5705725eeb David Lechner      2025-03-18  1251  		} else {
+> 87cf5705725eeb David Lechner      2025-03-18  1252  			chan->info_mask_shared_by_type |=
+> 87cf5705725eeb David Lechner      2025-03-18  1253  				BIT(IIO_CHAN_INFO_SCALE);
+> 87cf5705725eeb David Lechner      2025-03-18  1254  
+> 87cf5705725eeb David Lechner      2025-03-18  1255  			if (st->chip_info->oversampling_avail)
+> 87cf5705725eeb David Lechner      2025-03-18  1256  				chan->info_mask_shared_by_all |=
+> 87cf5705725eeb David Lechner      2025-03-18  1257  					BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO);
+> 87cf5705725eeb David Lechner      2025-03-18  1258  		}
+> 87cf5705725eeb David Lechner      2025-03-18  1259  
+> 87cf5705725eeb David Lechner      2025-03-18  1260  		if (!slow_bus)
+> 87cf5705725eeb David Lechner      2025-03-18  1261  			chan->info_mask_shared_by_all |=
+> 87cf5705725eeb David Lechner      2025-03-18  1262  				BIT(IIO_CHAN_INFO_SAMP_FREQ);
+> 87cf5705725eeb David Lechner      2025-03-18  1263  
+> 87cf5705725eeb David Lechner      2025-03-18  1264  		ret = st->chip_info->scale_setup_cb(indio_dev, chan);
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1265  		if (ret)
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1266  			return ret;
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1267  	}
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1268  
+> 87cf5705725eeb David Lechner      2025-03-18  1269  	if (slow_bus)
+> 87cf5705725eeb David Lechner      2025-03-18 @1270  		channels[i] = (struct iio_chan_spec)IIO_CHAN_SOFT_TIMESTAMP(i);
+>                                                                 ^^^^^^^^^^^
+> i is == indio_dev->num_channels so this is out of bounds by one element.
+> 
+> 87cf5705725eeb David Lechner      2025-03-18  1271  
+> 87cf5705725eeb David Lechner      2025-03-18  1272  	indio_dev->channels = channels;
+> 87cf5705725eeb David Lechner      2025-03-18  1273  
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1274  	return 0;
+> e571c1902116a3 Alexandru Ardelean 2024-09-19  1275  }
+> 
 
 

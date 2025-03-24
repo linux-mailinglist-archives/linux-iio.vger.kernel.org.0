@@ -1,78 +1,78 @@
-Return-Path: <linux-iio+bounces-17245-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17246-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1391DA6DA14
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 13:26:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02557A6DA17
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 13:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7F153B21A8
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 12:26:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03AC216EA30
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 12:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF1F25EF89;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBED825EF9B;
 	Mon, 24 Mar 2025 12:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="NmzVO2vU"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="OTVh+lHc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D1825E81D
-	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 12:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBCC25E82A
+	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 12:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742819205; cv=none; b=L/rzLCLQMclsjuU6ZLYfSj/f+y0mHG/DLut6kk7fWvAZgaiqv0siVtyVLpC8J3SQPq4mwqNN2VWNzY14EqDr8Y2MJ6OdI/bGPma/T21H9m8IB5iLX/ErIfodfP3sGvv/pNZ6kB0l+UIciJpH5sJf1lo46Io/Ml0dViLQ2EVkKNs=
+	t=1742819205; cv=none; b=QF0XJWcDj2Z7+wGeen4qgY2aAe3TpH2RpnLyPVhe0XZ3yK1Fz7MOK3nd1044O9IQMS//48a0I/0408e7bBFQzvj5N0arPo6t+sYLk64WY3f3R3XlI5Z5DXRTNyhKDAi6j/l3KdDLPfSnSENNoC1UTDaQLHrXU2OPEPbRbT/cTWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1742819205; c=relaxed/simple;
-	bh=zr9wey0DgSZWw2ae2SBj3x677vv6HVd2wGmNFkfzeg8=;
+	bh=7H04Zj9dfcpDfaqboI+ReMx9thHZjBGdzhXtznFfaIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGFe9zPZbxzcbtSHXdtrmyb6A6saO0utNa16cRNIbW+k6MwSceA7U6Mz1xW3Tsx703uAyZdoQfGftM4HlD3e2OTOr1P/WtEg4c5yXUcHckaK4SfTyHgh48OVhc9lXFbhvlyTi6TBTJU3oTFCcc8P4ElnzZlrojLgrpS7RJOBYqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=NmzVO2vU; arc=none smtp.client-ip=209.85.221.45
+	 MIME-Version; b=g4EhQUDNXu6QXT/6UopLBiMHxlUAgQsJaKVz0E+saSGiR2Tj5yFMA/DexSjTY7pzDc6iIHBfpJ8wl8prppbXZ56ACvA7TUKT/At8vpN7qBwucUwMmlJPQR69L+w3VLDdfgYqBBqzqqf0L45qq5UhK3Ms7KXGKP8sQX8XLCvJp/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=OTVh+lHc; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3912fdddf8fso3251197f8f.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 05:26:42 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cebe06e9eso31634715e9.3
+        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 05:26:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1742819201; x=1743424001; darn=vger.kernel.org;
+        d=tuxon.dev; s=google; t=1742819202; x=1743424002; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DAOn8TrbonpHNJYP5H94LrCNELCBBbFSlDMfGma6iFc=;
-        b=NmzVO2vURINB/sFAGqhwS8AKXuENstdTUd/YgWQt65LeFFXa4BUea4EDu3gMMR8KUT
-         4ezMjFey2zIu1A1kh7pIwKUAO+kYJ26eZtExFnrhN394u4TMgQ3OISe+l9zT6llVhFtr
-         Thht0PSx1Di28Pa7zfUgxbmhVN+IAjd8ytl883XQHpQL3Kv5QVszLW99RuAXs/xQJFU0
-         lBewPK2g9aCq4Xeq9aFuXXLOhgV8nKariG8fXDT6/FbXf6VQQ+9Hs2wj0YFh3p2SaPW8
-         zPr7yT0hqXTXIQBO0fGbnq7T/ANOIo7x/v8I9HN3jkn4PhZ9mROk91iR0+MxvRjM9BmZ
-         giAQ==
+        bh=tinDb82Hg/cL/rLLrkoOUK4oALU+HSZjNBXFVyGDLBE=;
+        b=OTVh+lHcQATxUxUI5ISBqTaZPqB7EgrG82ShJMyClLMjRCBbrxxIyNZiN0YeD1cpoo
+         QgpwtvtSTO/HYDzle12auuRsE67tBHXYegO2m955cYsKc3RR12IdkShy4RlkIZsLe9Vh
+         r/7MsrCioOYWFaeHbPAqMLUDnZb/DRPTmxcX1UoRWuM7O+Qd2+cfETTEe2fAcX/4l24t
+         ydiEotGd1TnciKnOe/++cW2oTp14kMpe2/121g39x5DVfIxiRK3mFT+ZC1/00UR7j9PO
+         8Flzx/8gxTjY9zBIv72v6vcxai+McvdW0rENc5/DUtXM+3xELQSal8OlUZdyCIizoO66
+         e9Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742819201; x=1743424001;
+        d=1e100.net; s=20230601; t=1742819202; x=1743424002;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DAOn8TrbonpHNJYP5H94LrCNELCBBbFSlDMfGma6iFc=;
-        b=d0JYH8wgi3zbFHjxtP5LljRt2b4m6EtjSRk8eSlXXlJCAUa2AVv5XAOrsAvUq/pXeq
-         qduEXA0FnRfN7Zn/ckvkXk8AQv2tJxZzEoxT9Ffz2EnAo2WyLffnsnkXJNItPBo+670S
-         JOFon1+xGMYu2MxX6lVl8RgRKUWW/JFRYZMbuTsGCOM7KWbpsdO6icGhmQa7x5/vYVPS
-         pLMueJaHoApuJiEX+bR8nLPG472jSdFoeq2LMEFNgsOmLlNBCqo7Ncq4cr7AJTZeWrgJ
-         oG9h4M4tlaBU/HSGx/nUR22q2No/DWKkNF6rUkMXbR/y8avirAUdyY00WCrrx8JbnIsG
-         K5vw==
-X-Forwarded-Encrypted: i=1; AJvYcCVfeZuryAnHe3Z7ppzaC99d+VW67SPaqUdXolXGcJJWAHbO3UPfbfA1zyMtbG81Y3s7JlEEZgEzkEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2Ft5oo9pAd0oQQJ38RgD5x3E2671i+VsVkF2MUwZJChpLA92q
-	cg1O5pguO5QgweJirXv483om8YCXGi4HtFjNahtHuTSn2xGnBhGEGrzn2l/byUg=
-X-Gm-Gg: ASbGncsXWRtEn4TIBXIBMCWMVHjBiNbNL4Qfte4mHEmTqBSABPFBbiAn8Pcq6wIy/aL
-	qHrc4nTFM07opLIob4TcWLfIqB0p1OucnnqIvDEiEbjkldl/UYmiwc5OUD/oRmf7He92w8i6B+C
-	rZR7N05n8jr4YV9hLe+yPhueO2wBoL64/pJsx6WsLFX07pEi5SRcUjmKTQPejbGXZCqKx5zUI0N
-	Zff2l84q/8bzktH6jaIjM/RvznzHrns8zJqIXci1icSJ5SJurBrLg8RiSpUCauVXd9m0EaAJcnz
-	wBy0s5LG3IhC1yZ6MrxuSIm8a1nt6gzHGnZNE3jjKh4eXL9qmM4rENNktLTCKMVLDFWhUqPw3A=
-	=
-X-Google-Smtp-Source: AGHT+IGMV8QjZPQKgsN29nFO7qndrzF9UKHCNIkeRyoOoMBK8Vl+dEmqDicju8hA6KpeRdjf0jnK0w==
-X-Received: by 2002:a05:6000:188e:b0:390:dec3:2780 with SMTP id ffacd0b85a97d-3997f93c60fmr9506044f8f.24.1742819200925;
-        Mon, 24 Mar 2025 05:26:40 -0700 (PDT)
+        bh=tinDb82Hg/cL/rLLrkoOUK4oALU+HSZjNBXFVyGDLBE=;
+        b=GJ6qRRJV+GSTS+tVD2S+ErrWUfuoD9nyCI/+JMbAwzHREfJmO1YcWryfnw0wsCZQZU
+         PKCe4aFQBvyZn0/mjv7h/Uowr1d9tRtmRheYB6LaNO78ow5/epr10cCGy9onYxfM1r5C
+         VHivIbELOhSupG6znrZGNwIMCUYyfJu2hTimbb6efIjRudmaf5cpp8IndSofcBwRxFqC
+         0s/0N1+15gD0E79gqDbrOHhNdJbD8EWmyJWpoDkCczp3ApSEgEomgk+HKEaQ+jG9G0XK
+         GHa7xzJst51RVTt7vFFVtoSwWhj3YCU4dlAE6nIwtXb80Znq8NUPcb0Ko0ipT8FCfuDq
+         8WBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWXrsFjeP1umTKequBl4oy8vPiHD5d3GuGk8vkumk48CK2yPW4rI7mby0TGcQGiILWVCCc0YuNkyrc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxunzNCdeBQjbvz9yV8w85sjArgHvz4XhRNJHDopT0ta96Pvhdr
+	NNfEAzuxMNC1HvToMqU6CXTR8pMZTxFw2oFS9xtqlXpuMfsI1j+Z8Gd0rd38778=
+X-Gm-Gg: ASbGncuJ/YJr0KzgwuY5uzyL1sTzr1rchRcz5NeMbvbizLA5hW34MoAM8dUxIy3Q7Bg
+	VLk7NJ+M941luyUQZkX26yebxkxWzFxQ4oWD4H8+uXKGLLMhdxdnf8LZz+XXyiA7LLyi/UVRfvH
+	L3YBDDd40p2rOEGMcpSa0wBS9HkcYSG6T/PrX/5pYb5kKrgAHLzbpcCj9arbE0uXYwXPbOEVtY7
+	hPdPDKY9TiMbu5F1DX6bnfKu8x4nQ7dsSPhpmgwCVr1nW9IdLWCwEEoT8B1tJwdL8yd2DU98Xo9
+	2NYjAYcdgyOgpbQK7k0AwAk0dBsrTQJdXPmMxL9Id7npmT3U5J674c7U4Uzq3yLyPRwSnGnAo+s
+	RV9B9VTiz
+X-Google-Smtp-Source: AGHT+IHcSv65sB0v7RWUQm1j0qlh5lCjs9w6YcBrjLtA5IMtXqerZCXxE7wpguWt/oUrGng/6ctEjA==
+X-Received: by 2002:a05:600c:8719:b0:43d:53c:1ad6 with SMTP id 5b1f17b1804b1-43d50a4ae7dmr91654135e9.26.1742819202163;
+        Mon, 24 Mar 2025 05:26:42 -0700 (PDT)
 Received: from claudiu-X670E-Pro-RS.. ([82.78.167.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9ef16csm10729080f8f.86.2025.03.24.05.26.39
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9ef16csm10729080f8f.86.2025.03.24.05.26.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 05:26:40 -0700 (PDT)
+        Mon, 24 Mar 2025 05:26:41 -0700 (PDT)
 From: Claudiu <claudiu.beznea@tuxon.dev>
 X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
 To: prabhakar.mahadev-lad.rj@bp.renesas.com,
@@ -82,10 +82,11 @@ Cc: claudiu.beznea@tuxon.dev,
 	linux-iio@vger.kernel.org,
 	linux-renesas-soc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH v4 1/2] iio: adc: rzg2l_adc: Open a devres group
-Date: Mon, 24 Mar 2025 14:26:26 +0200
-Message-ID: <20250324122627.32336-2-claudiu.beznea.uj@bp.renesas.com>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH v4 2/2] iio: adc: rzg2l: Cleanup suspend/resume path
+Date: Mon, 24 Mar 2025 14:26:27 +0200
+Message-ID: <20250324122627.32336-3-claudiu.beznea.uj@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250324122627.32336-1-claudiu.beznea.uj@bp.renesas.com>
 References: <20250324122627.32336-1-claudiu.beznea.uj@bp.renesas.com>
@@ -99,169 +100,100 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-On all systems where the rzg2l_adc driver is used, the ADC clocks are part
-of a PM domain. The code that implements the PM domains support is in
-drivers/clk/renesas/rzg2l-cpg.c, the functions of interest for this commit
-being rzg2l_cpg_attach_dev() and rzg2l_cpg_deattach_dev(). The PM
-domains support is registered with GENPD_FLAG_PM_CLK which, according to
-the documentation, instructs genpd to use the PM clk framework while
-powering on/off attached devices.
+There is no need to manually track the runtime PM status in the driver.
+The pm_runtime_force_suspend() and pm_runtime_force_resume() functions
+already call pm_runtime_status_suspended() to check the runtime PM state.
 
-During probe, the ADC device is attached to the PM domain
-controlling the ADC clocks. Similarly, during removal, the ADC device is
-detached from the PM domain.
+Additionally, avoid calling pm_runtime_put_autosuspend() during the
+suspend/resume path, as this would decrease the usage counter of a
+potential user that had the ADC open before the suspend/resume cycle.
 
-The detachment call stack is as follows:
-
-device_driver_detach() ->
-  device_release_driver_internal() ->
-    __device_release_driver() ->
-      device_remove() ->
-        platform_remove() ->
-          dev_pm_domain_detach()
-
-During driver unbind, after the ADC device is detached from its PM domain,
-the device_unbind_cleanup() function is called, which subsequently invokes
-devres_release_all(). This function handles devres resource cleanup.
-
-If runtime PM is enabled via devm_pm_runtime_enable(), the cleanup process
-triggers the action or reset function for disabling runtime PM. This
-function is pm_runtime_disable_action(), which leads to the following call
-stack of interest when called:
-
-pm_runtime_disable_action() ->
-  pm_runtime_dont_use_autosuspend() ->
-    __pm_runtime_use_autosuspend() ->
-      update_autosuspend() ->
-        rpm_idle()
-
-The rpm_idle() function attempts to runtime resume the ADC device. However,
-at the point it is called, the ADC device is no longer part of the PM
-domain (which manages the ADC clocks). Since the rzg2l_adc runtime PM
-APIs directly modifies hardware registers, the
-rzg2l_adc_pm_runtime_resume() function is invoked without the ADC clocks
-being enabled. This is because the PM domain no longer resumes along with
-the ADC device. As a result, this leads to system aborts.
-
-Open a devres group in the driver probe and release it in the driver
-remove. This ensures the runtime PM is disabled (though the devres group)
-after the rzg2l_adc_remove() finishes its execution avoiding the described
-scenario.
-
-Fixes: 89ee8174e8c8 ("iio: adc: rzg2l_adc: Simplify the runtime PM code")
+Fixes: cb164d7c1526 ("iio: adc: rzg2l_adc: Add suspend/resume support")
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
 
 Changes in v4:
-- open the devres group in its own function and rename the rzg2l_adc_probe()
-  to rzg2l_adc_probe_helper() to have simpler code
-- @Prabhakar: for this ^^ I haven't yet collected your tag
-- @Jonathan: as there is no outcome yet from [1] I only addressed your review
-  comments on v3; please let me know how you consider this version.
-  Thank you!
-
-[1] https://lore.kernel.org/all/20250215130849.227812-1-claudiu.beznea.uj@bp.renesas.com
+- collected tags
 
 Changes in v3:
-- open a devres group in probe and release it in remove; the failure
-  path of probe() was also updated to close the devres group
-- dropped Ulf's Rb tag as the patch is different now
-- updated the patch description to match the new approach
-
-Note: a generic approach was proposed in [1] to have this in the platform
-bus itself but wasn't seen acceptable.
-
-[1] https://lore.kernel.org/all/20250215130849.227812-1-claudiu.beznea.uj@bp.renesas.com/
+- collected tags
 
 Changes in v2:
-- collected Ulf's tag
-- add a comment above pm_runtime_enable() explaining the reason
-  it shouldn't be converted to devres
-- drop devres calls that request IRQ and register IIO device
-  as proposed in the review process: Ulf, I still kept you Rb
-  tag; please let me know otherwise
+- none
 
-
- drivers/iio/adc/rzg2l_adc.c | 38 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ drivers/iio/adc/rzg2l_adc.c | 29 ++++++++---------------------
+ 1 file changed, 8 insertions(+), 21 deletions(-)
 
 diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c
-index 883c167c0670..761ba19b83a7 100644
+index 761ba19b83a7..3c96684fff68 100644
 --- a/drivers/iio/adc/rzg2l_adc.c
 +++ b/drivers/iio/adc/rzg2l_adc.c
-@@ -85,6 +85,7 @@ struct rzg2l_adc {
- 	struct reset_control *adrstn;
- 	const struct rzg2l_adc_data *data;
- 	const struct rzg2l_adc_hw_params *hw_params;
-+	void *devres_group_id;
+@@ -89,7 +89,6 @@ struct rzg2l_adc {
  	struct completion completion;
  	struct mutex lock;
  	u16 last_val[RZG2L_ADC_MAX_CHANNELS];
-@@ -424,7 +425,7 @@ static int rzg2l_adc_hw_init(struct device *dev, struct rzg2l_adc *adc)
+-	bool was_rpm_active;
+ };
+ 
+ /**
+@@ -584,14 +583,9 @@ static int rzg2l_adc_suspend(struct device *dev)
+ 	};
+ 	int ret;
+ 
+-	if (pm_runtime_suspended(dev)) {
+-		adc->was_rpm_active = false;
+-	} else {
+-		ret = pm_runtime_force_suspend(dev);
+-		if (ret)
+-			return ret;
+-		adc->was_rpm_active = true;
+-	}
++	ret = pm_runtime_force_suspend(dev);
++	if (ret)
++		return ret;
+ 
+ 	ret = reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+ 	if (ret)
+@@ -600,9 +594,7 @@ static int rzg2l_adc_suspend(struct device *dev)
+ 	return 0;
+ 
+ rpm_restore:
+-	if (adc->was_rpm_active)
+-		pm_runtime_force_resume(dev);
+-
++	pm_runtime_force_resume(dev);
  	return ret;
  }
  
--static int rzg2l_adc_probe(struct platform_device *pdev)
-+static int rzg2l_adc_probe_helper(struct platform_device *pdev, void *devres_group_id)
- {
- 	struct device *dev = &pdev->dev;
- 	struct iio_dev *indio_dev;
-@@ -438,6 +439,7 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
+@@ -620,11 +612,9 @@ static int rzg2l_adc_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
- 	adc = iio_priv(indio_dev);
- 
-+	adc->devres_group_id = devres_group_id;
- 	adc->hw_params = device_get_match_data(dev);
- 	if (!adc->hw_params || adc->hw_params->num_channels > RZG2L_ADC_MAX_CHANNELS)
- 		return -EINVAL;
-@@ -495,6 +497,39 @@ static int rzg2l_adc_probe(struct platform_device *pdev)
- 	return devm_iio_device_register(dev, indio_dev);
- }
- 
-+static int rzg2l_adc_probe(struct platform_device *pdev)
-+{
-+	struct device *dev = &pdev->dev;
-+	void *devres_group_id;
-+	int ret;
-+
-+	/*
-+	 * Open a devres group to allow using devm_pm_runtime_enable()
-+	 * w/o interfeering with dev_pm_genpd_detach() in the platform bus
-+	 * remove. Otherwise, durring repeated unbind/bind operations,
-+	 * the ADC may be runtime resumed when it is not part of its power
-+	 * domain, leading to accessing ADC registers without its clocks
-+	 * being enabled and its PM domain being turned on.
-+	 */
-+	devres_group_id = devres_open_group(dev, NULL, GFP_KERNEL);
-+	if (!devres_group_id)
-+		return -ENOMEM;
-+
-+	ret = rzg2l_adc_probe_helper(pdev, devres_group_id);
+-	if (adc->was_rpm_active) {
+-		ret = pm_runtime_force_resume(dev);
+-		if (ret)
+-			goto resets_restore;
+-	}
++	ret = pm_runtime_force_resume(dev);
 +	if (ret)
-+		devres_release_group(dev, devres_group_id);
-+
-+	return ret;
-+}
-+
-+static void rzg2l_adc_remove(struct platform_device *pdev)
-+{
-+	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
-+	struct rzg2l_adc *adc = iio_priv(indio_dev);
-+
-+	devres_release_group(&pdev->dev, adc->devres_group_id);
-+}
-+
- static const struct rzg2l_adc_hw_params rzg2l_hw_params = {
- 	.num_channels = 8,
- 	.default_adcmp = 0xe,
-@@ -614,6 +649,7 @@ static const struct dev_pm_ops rzg2l_adc_pm_ops = {
++		goto resets_restore;
  
- static struct platform_driver rzg2l_adc_driver = {
- 	.probe		= rzg2l_adc_probe,
-+	.remove		= rzg2l_adc_remove,
- 	.driver		= {
- 		.name		= DRIVER_NAME,
- 		.of_match_table = rzg2l_adc_match,
+ 	ret = rzg2l_adc_hw_init(dev, adc);
+ 	if (ret)
+@@ -633,10 +623,7 @@ static int rzg2l_adc_resume(struct device *dev)
+ 	return 0;
+ 
+ rpm_restore:
+-	if (adc->was_rpm_active) {
+-		pm_runtime_mark_last_busy(dev);
+-		pm_runtime_put_autosuspend(dev);
+-	}
++	pm_runtime_force_suspend(dev);
+ resets_restore:
+ 	reset_control_bulk_assert(ARRAY_SIZE(resets), resets);
+ 	return ret;
 -- 
 2.43.0
 

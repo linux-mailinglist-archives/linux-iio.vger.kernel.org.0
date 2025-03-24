@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-17253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DC5A6E2B6
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 19:53:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A54BA6E2BD
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 19:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86A31891B3B
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 18:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD7F63B3A02
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 18:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1679C266F02;
-	Mon, 24 Mar 2025 18:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38DB266F0B;
+	Mon, 24 Mar 2025 18:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="xb38XE9m"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="YzzueryM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813F10F1
-	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 18:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26D125EFA6
+	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 18:54:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742842402; cv=none; b=YXSYDT4Pfi7VGSXNdRBLKUpZb4ZvvMAwCzadGCYJUUe6bz5+TP3RjTihZUivnhhmhHVwmaKoEFLJLp2ldtunfboRwMKNCfwL9ZTZ23B/bP0pUFh5CNKvhzVfiLvzkCpAtb/1G/BLaDlU7JTLw5NhJEQj45ZEqD8+JUzh61gmTWE=
+	t=1742842469; cv=none; b=TFwdVNM8P+7L0/IjUg1k9ueDZsTrNpyd0L0E0kzXDFe8SouEfHMgMJwIb9npFESlk28Hh4CJx8AyM3jwuyb5EvyCnEhBxqcg12hhvDIiAs7yIh4oIe3oOJIhiQ9NJUi9MpAy3NGgcSTYZdBL405f2/SvrRjjhwFJ2bKqbfpv/fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742842402; c=relaxed/simple;
-	bh=9Et+bejBKOhYPrG+RLIDdB0IB0BGiirDMd/wt2M4F8E=;
+	s=arc-20240116; t=1742842469; c=relaxed/simple;
+	bh=bYepHZHGKJdzRa8ajrcVmkzK+TWNwXQ/53joqZg6Ssc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pwhMzIkGqSgwlUGdDfpLuehdRwIkx0vpdhX9PUAXP3ti40E5vYK/byI/EORyZUgi924KZJKoM7HnxlM4tq+/N0CaoE6/BWa/ptsh/SG8N+hsEmyXhIDIQhEmGKPFy7uvqAzTOfYrblm6O5nHNvWZ7tx180ufkXaSjWMxCSZgeb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=xb38XE9m; arc=none smtp.client-ip=209.85.210.42
+	 In-Reply-To:Content-Type; b=aYPXA5x/ydT2oPXekLYTdf6k/Yn1NciW437zsPEYdRR7GDTk2RTosbScWbG/cvH0S/odkey5QDz6/jmsy3e4tGcETc/0W6VKF1U9e5BBgc/CY0912nAoGLEC8kUmuP7HH2hnAN+WDMDlLpUrf4uKBUNCQQS8PIQUZWXVEQS2W6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=YzzueryM; arc=none smtp.client-ip=209.85.167.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-72c173211feso797663a34.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 11:53:20 -0700 (PDT)
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3f6a92f2328so2636587b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 11:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742842400; x=1743447200; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742842467; x=1743447267; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IZA6ZpsiQTf1qeWnuqFjmneHdX8zeg+LaVhzQbpBn2E=;
-        b=xb38XE9mLRztHaEIdj18E+GP0M6qhI1LxnYODqJGtvxcXfnNhuhkEo4ain0supuID2
-         yzA1xdwRPaFKvdOvWNW/yjR6S9jRzXQwC6+OXO9GTPYvYIb2aFTwGfXH9I/ZtpybGlH0
-         qlZV/Vi/64gqy3Wpdfvw2pp5uu54lcyAC5jrAEWVpKYkCcBbRSj3mRm3HTn3SOsW+uQA
-         6eFt8FRAs8ydcFZACun1CsclsQvVNO45Dn/AajS1UxoIYgy9WP3ADZ3HDD/XZDbZSgcS
-         Ju1LpoOatGdFvAiwzq7TLnsnBNA/lXMhvrTFrWABP4nTJv6Q+3cumvrOhQVZhkja5ul6
-         7s6Q==
+        bh=06LT1E1RRNMfucwpIVrPW/y7BeeDpu7TG33qT6wY/6A=;
+        b=YzzueryMFRgtaTCjzu4AQRYJG62LvLZm+8Z2RajfkODX3Z28nMmonjtXlDnz5ihGT1
+         qCK7StYu27iP5Lrvzvq1CzMfkAKyjYYO44cF/at0imjOdHZ7nUoPPlTWqxuh6aa2QUeX
+         W6Cw+/IdbjmZQPw0Jc9FzxLEk8btrnApGtrRkdkAAQ5XQGayaL3siXUE7IjTaHWFsnLk
+         XbXscwdJ8QsTnmotjX/J+tGUxNJlxvfZoAXr23fLsucnI9GP6xPMD5bgzB566uT2sfa0
+         HKs1mPLUGNXGiaFoyDQaWtyGnIY8QzjiLaV1uUjqzWiKrEUGBAch4hZjBnz+3a8vCeyY
+         CNig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742842400; x=1743447200;
+        d=1e100.net; s=20230601; t=1742842467; x=1743447267;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IZA6ZpsiQTf1qeWnuqFjmneHdX8zeg+LaVhzQbpBn2E=;
-        b=QoVlIPudrU7ndCiE2ggI+4GiLmNr2gGMnCgUw0Kxry2201pyjn4jxqA14OpjCa2bUR
-         v4167CIyojOhjZJXPlssnpvqdEmHdwl8DnhKEoW/f2oQi9jCUavosfqz4TMjhAjIO8OK
-         NR1EXTGGOg/zHbMyOW4wJedTw1f2dM8CHiqy9aaMpcN5Sz0aDebS+XdoHGcaTIwybn25
-         +qipBR1S9XyvNuU6Rciy/HmU9D49kpZPWgSs5FzAjAQhKOUaE8l10BM4aV+oF2FcP+Do
-         mvLEMM+0R70MfuhEOXOKzI3DJBUZa/jmtjeqUFmuQ1qrq1WJ4L5S9UCqVvsBAQRg/DKK
-         kxKw==
-X-Forwarded-Encrypted: i=1; AJvYcCVky1KTK0SoZK50IU2CNqHVtHVeXELjvdMR1VyaGr90ElmUKNyURmFzVjYzdCitbh9B6oN5fEG4U60=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYH+J7UB3APiJ1HWCIF/+Jubww1qF2ZAMhxJlPHQw84TT7BVqg
-	ttd4v/k3ja9YWuZeDnHrMRBRUhgaxCLahMnn/y5fm0hyMjoYEAU2kyqgzrxOKuI=
-X-Gm-Gg: ASbGncvTuHOKqgWEKq0tPTnYhU6SMES2bb2vv+hc0qc2GjK7XaQh5tgA1bU3HD9yIV5
-	QErVC0Duurtt+rACQCpdlINbTMF01O9XNYZV/4K/9bUgDsalAMvfYazMHWmrRe7Ctcqz9nCrxkx
-	RJus98bKimF+v3PQvNI16GYSkfCDX2nQxd+Uv1MHzeSGhcyCw7OkXsWNGLuTm0Jo2ldzCAjFryB
-	K7ldDtDj9FDS9M64x+JefaCe2PhSsKAUKmJQE1xQDUVTUzqanRarncUtrlFwc12nxRb5KiroMvu
-	nWPJZHYr4eiRC7wEYEudxpU7LgftDFm2UGG7/GU2BDXTMK0HqQRESQ3l8MJwhFstNnuIE8GL5JW
-	Epk86DA==
-X-Google-Smtp-Source: AGHT+IF6cN3R+AuP+yrpCG8uySpNH6oMp8tp8ZKnKYMSbTLqIU4c2Zi4NYw2RNf6jlvZs1qwrYXK/g==
-X-Received: by 2002:a05:6830:6217:b0:72b:8a8b:e032 with SMTP id 46e09a7af769-72c0ae4658fmr9534102a34.2.1742842399668;
-        Mon, 24 Mar 2025 11:53:19 -0700 (PDT)
+        bh=06LT1E1RRNMfucwpIVrPW/y7BeeDpu7TG33qT6wY/6A=;
+        b=Idhj9fzUPraKyhQfCcI7mjVEymh6Uh7JZVO5DWfBTga1uqyUs+HnTOTTha1BO6vJWD
+         Eb4up4AD7Fk8Zav12LFEmXYOxQ00aiPNgW4ygcSJSRb2ivnwPFRB4cJm9O2QXEWxwTCA
+         7ZQKOZw3iy4VaO/zR3I646nDtaD6WRM2Mrw9jzhghjxB7OiMDXjTdwRuTHnqouL2A9oD
+         CTkpItECgfzOqU63uuP/7DCgyFUNKDQXhFlBrSRkV/Y6IDNdH1FJWvRO7l/4LytB5vnZ
+         yyojCg9TPke+gKZG8Wcwr8UZ2ngBIFTrTrpn13kvkjFW0nPvn7QCoRM23JpsLKr6hl43
+         4pPw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDO8jIMp/t3DwBBPPLAdH/ddyRv8lNLcAlPM4uzU78L7heG4Mj51HiO0v4LFfnj7RpW2oZpi374Og=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB07JS57gf+QtX/S0T+NbbsCFjOXtukg0gAsDm6AzFDZcVAnIf
+	z6zrQFq8uPxg0STtZramGY9ccZrO7Ty/nsx6VyV5lVUX7Dlvby7Sx+sd6IA60NA=
+X-Gm-Gg: ASbGnctb5NBmGZ/tEdK8eVc8ItwqXhZGQLhOZBA+jbqKaIbFviV2hNVg4mRkBEqOoVn
+	IZOxUmFCRYfU2cAOQ9l6CkGzXv02WjT6n5W5VYH5ChnJqNuLLP9nugFHZz7DZFvzvdMbksJILVV
+	DLN1RuRbBIm6jQ0iid/5QvIjToLfzBi+fht3GMOvC7FIwF6fT6UUiqmV4CB9QKivoXTyAw6pxR/
+	YTMHotraT60K0TMQv6WekHN/VR/l0xhXDBKe5vh7asEuT+ol4hDhHOHACZfYBMm+3IeS1Vtmnzx
+	Ja4ZAkMQF4SPAh4wU8RgMUqqHtiL2MnfOPMPJOJlyQtMeD/hwkRK4WZnStEbh1H/KUJiNGOFnH+
+	kjht6pQ==
+X-Google-Smtp-Source: AGHT+IFyi/1W4BZWJx8USQ1sFUEuL/rB0lIMaIVBqUowj6ohQAXIoie0doJJgSvfsuYqIWjgfs5AJQ==
+X-Received: by 2002:a05:6808:9ab:b0:3fa:1d22:6d28 with SMTP id 5614622812f47-3febeeaa67fmr6698335b6e.18.1742842466714;
+        Mon, 24 Mar 2025 11:54:26 -0700 (PDT)
 Received: from [192.168.0.113] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-72c0ac6c76esm1630781a34.49.2025.03.24.11.53.18
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3febf6bd0a7sm1682759b6e.2.2025.03.24.11.54.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Mar 2025 11:53:19 -0700 (PDT)
-Message-ID: <9b565cb2-815b-4ca9-a7dc-8ca2e8eb5f72@baylibre.com>
-Date: Mon, 24 Mar 2025 13:53:18 -0500
+        Mon, 24 Mar 2025 11:54:26 -0700 (PDT)
+Message-ID: <705a307d-32dc-4edc-bb71-0e201859264f@baylibre.com>
+Date: Mon, 24 Mar 2025 13:54:25 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,7 +82,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] iio: backend: add support for decimation ratio set
+Subject: Re: [PATCH 2/5] iio: adc: adi-axi-adc: add set decimation rate
 To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -97,66 +97,143 @@ To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>,
  Matteo Martelli <matteomartelli3@gmail.com>,
  =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
  Alisa-Dariana Roman <alisadariana@gmail.com>,
- Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
- Herve Codina <herve.codina@bootlin.com>,
  Marcelo Schmitt <marcelo.schmitt@analog.com>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Ramona Alexandra Nechita <ramona.nechita@analog.com>,
  Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20250324090813.2775011-1-pop.ioan-daniel@analog.com>
- <20250324090813.2775011-2-pop.ioan-daniel@analog.com>
+ <20250324090813.2775011-3-pop.ioan-daniel@analog.com>
 From: David Lechner <dlechner@baylibre.com>
 Content-Language: en-US
-In-Reply-To: <20250324090813.2775011-2-pop.ioan-daniel@analog.com>
+In-Reply-To: <20250324090813.2775011-3-pop.ioan-daniel@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 3/24/25 4:07 AM, Pop Ioan Daniel wrote:
-> Add backend support for setting the decimation ratio used.
+> Add support for setting decimation rate.
+> 
+> Add separate compatible string for the custom AD7405 IP and implement
+> the necessary changes.
 > 
 > Signed-off-by: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
 > ---
->  drivers/iio/industrialio-backend.c | 18 ++++++++++++++++++
->  include/linux/iio/backend.h        |  3 +++
->  2 files changed, 21 insertions(+)
+>  drivers/iio/adc/adi-axi-adc.c | 43 ++++++++++++++++++++++++++++++++++-
+>  1 file changed, 42 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index 363281272035..f4db6514944a 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -417,6 +417,24 @@ int iio_backend_test_pattern_set(struct iio_backend *back,
->  }
->  EXPORT_SYMBOL_NS_GPL(iio_backend_test_pattern_set, "IIO_BACKEND");
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index 766406f45396..0ed609e294ba 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -70,6 +70,9 @@
+>  #define ADI_AXI_ADC_REG_CHAN_CTRL_3(c)		(0x0418 + (c) * 0x40)
+>  #define   ADI_AXI_ADC_CHAN_PN_SEL_MASK		GENMASK(19, 16)
 >  
-> +/**
-> + * iio_backend_set_dec_rate - set decimation ratio
+> +#define ADI_AXI_ADC_REG_CHAN_USR_CTRL_2	0x0424
 
-In [1], we decided that for a similar chip we could use "decimation rate" and
-"oversampling ratio" interchangeably. And in [2], we recently added a backend
-op for setting the oversampling ratio. Would it make sense to use that here
-as well instead of introducing a new function? If not, we'll want more of an
-explanation here on what the difference is. But from what I can tell, this
-sounds very similar to the other case where they are essentially the same thing.
-On the other hand, this is internal API and not userspace ABI, so having a
-separate name might not be so bad, especially if there is a chance we would ever
-have both at the same time.
+This is a per-channel register, so expect to have a c parameter times offset
+like the other channel registers.
 
-[1]: https://lore.kernel.org/linux-iio/20250112122047.1e1978e0@jic23-huawei/
-[2]: https://web.git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/drivers/iio/industrialio-backend.c?h=testing&id=22894e0be908791e3df011cdfac02589c2f340bd
+> +#define   ADI_AXI_ADC_DEC_RATE_MASK		GENMASK(15, 0)
 
-> + * @back: Backend device
-> + * @rate: Rate in decimal
+Usually, we try to include the register name in these as well even if the name
+does get a bit long.
+
+ADI_AXI_ADC_CHAN_USR_CTRL_2_DEC_RATE_N_MASK
+
 > +
-> + * Return:
-> + * 0 on success, negative error number on failure.
-> + */
-> +
-> +int iio_backend_set_dec_rate(struct iio_backend *back, unsigned int rate)
+>  /* IO Delays */
+>  #define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
+>  #define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
+> @@ -232,6 +235,16 @@ static int axi_adc_test_pattern_set(struct iio_backend *back,
+>  	}
+>  }
+>  
+> +static int axi_adc_set_dec_rate(struct iio_backend *back,
+> +				unsigned int rate)
+
+This needs to take a channel index parameter as well to keep it generic.
+
 > +{
-> +	if (!rate)
-> +		return -EINVAL;
+> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
 > +
-> +	return iio_backend_op_call(back, set_dec_rate, rate);
+
+Might be helpful for future users if we add a comment explaining why we are
+setting the denominator but not the numerator.
+
+> +	return regmap_update_bits(st->regmap, (ADI_AXI_ADC_REG_CHAN_USR_CTRL_2),
+> +					      ADI_AXI_ADC_DEC_RATE_MASK,
+> +					      FIELD_PREP(ADI_AXI_ADC_DEC_RATE_MASK, rate));
 > +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_set_dec_rate, "IIO_BACKEND");
 > +
+>  static int axi_adc_read_chan_status(struct adi_axi_adc_state *st, unsigned int chan,
+>  				    unsigned int *status)
+>  {
+> @@ -465,6 +478,28 @@ static const struct iio_backend_info adi_axi_adc_generic = {
+>  	.ops = &adi_axi_adc_ops,
+>  };
+>  
+> +static const struct iio_backend_ops adi_ad7405_ops = {
+> +	.enable = axi_adc_enable,
+> +	.disable = axi_adc_disable,
+> +	.data_format_set = axi_adc_data_format_set,
+> +	.chan_enable = axi_adc_chan_enable,
+> +	.chan_disable = axi_adc_chan_disable,
+> +	.request_buffer = axi_adc_request_buffer,
+> +	.free_buffer = axi_adc_free_buffer,
+> +	.data_sample_trigger = axi_adc_data_sample_trigger,
+> +	.iodelay_set = axi_adc_iodelays_set,
+> +	.test_pattern_set = axi_adc_test_pattern_set,
+> +	.set_dec_rate = axi_adc_set_dec_rate,
+> +	.chan_status = axi_adc_chan_status,
+> +	.debugfs_reg_access = iio_backend_debugfs_ptr(axi_adc_reg_access),
+> +	.debugfs_print_chan_status = iio_backend_debugfs_ptr(axi_adc_debugfs_print_chan_status),
+> +};
+
+As mentioned in my DT bindings patch reply, it looks like this register is part
+of the generic AXI ADC IP block, so we shouldn't need to add a chip-specific
+struct in this case.
+
+> +
+> +static const struct iio_backend_info axi_ad7405 = {
+> +	.name = "axi-ad7405",
+> +	.ops = &adi_ad7405_ops,
+> +};
+> +
+>  static int adi_axi_adc_probe(struct platform_device *pdev)
+>  {
+>  	struct adi_axi_adc_state *st;
+> @@ -522,7 +557,7 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+>  		return -ENODEV;
+>  	}
+>  
+> -	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
+> +	ret = devm_iio_backend_register(&pdev->dev, st->info->backend_info, st);
+
+I'm guessing you haven't rebased on the iio tree recently. This line was already
+changed in [1].
+
+[1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/drivers/iio/adc/adi-axi-adc.c?h=testing&id=7a794e3a0dc5b1df525bf72260b641d70e337784
+
+>  	if (ret)
+>  		return dev_err_probe(&pdev->dev, ret,
+>  				     "failed to register iio backend\n");
+> @@ -575,10 +610,16 @@ static const struct axi_adc_info adc_ad7606 = {
+>  	.has_child_nodes = true,
+>  };
+>  
+> +static const struct axi_adc_info adi_axi_ad7405 = {
+> +	.version = ADI_AXI_PCORE_VER(10, 0, 'a'),
+> +	.backend_info = &axi_ad7405,
+> +};
+> +
+>  /* Match table for of_platform binding */
+>  static const struct of_device_id adi_axi_adc_of_match[] = {
+>  	{ .compatible = "adi,axi-adc-10.0.a", .data = &adc_generic },
+>  	{ .compatible = "adi,axi-ad7606x", .data = &adc_ad7606 },
+> +	{ .compatible = "adi,axi-ad7405", .data = &adi_axi_ad7405},
+>  	{ /* end of list */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, adi_axi_adc_of_match);
+
 

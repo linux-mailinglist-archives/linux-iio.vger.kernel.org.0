@@ -1,161 +1,147 @@
-Return-Path: <linux-iio+bounces-17233-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17234-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB93BA6D7D4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 10:45:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F2BA6D81D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 11:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A72317A767D
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 09:44:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EDA13B1031
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Mar 2025 10:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFB625D554;
-	Mon, 24 Mar 2025 09:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079B525D55A;
+	Mon, 24 Mar 2025 10:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eAjzf/Xr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PCriW6/G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A15D1A08AF
-	for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 09:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F12224EA;
+	Mon, 24 Mar 2025 10:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742809499; cv=none; b=PT6cTCk+g6rT1SLBJdMnNAj9tT3d36BamiMupH9tOE3T+w4jLFOVV1G9ISegH7P8llXm77ciiP9dIHFgD8X3W+b5+NEe4Sd/03WCZcpO0qhiHvctBrsjRHc0wn3gwP5TWoMLj4tSi7aj59qEGzgJnI5XOn8sYgxE7gBHvCNjm7o=
+	t=1742811209; cv=none; b=WEj0qhJ5nvU4L4XLZUrNz8u3RHkT0QUXCfCnoUUM3/29VkwaB7EvfmAklE08NFBBZqfPgwHQMpc2r2rj9iZdFJwyd2XFtIkY5Eb/MFOQMoihb3V2t5DBSy7DkJO0oJs13QzVqdG4hZZL9k9WUbvz6TfoQB4n/5Dn+8fYXTUDcNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742809499; c=relaxed/simple;
-	bh=uBvvyXVbtCVfPrDMsRnbTbpvsdh50EoZp/C4cjrARJo=;
+	s=arc-20240116; t=1742811209; c=relaxed/simple;
+	bh=zMfZEepWCbGkaKDp5hr5k70cCA3t+S7pnp+IPcVwFL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EpbLjXOEri42bppCs0FQUJtivja3HLB7oqgf5vUZQsJm0x5PmkYt3hAZN/ul1507uX+aQJmvaX0Hb/2iPD0MW+hMRiZC53Nl21WkPhRYn83hjHk7VGsqJv82a9QRBFDGVPOjdrwQbvSlN7hYuRyGXVjy5woWkGm9UfqKubYWc0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eAjzf/Xr; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4393dc02b78so28166025e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Mar 2025 02:44:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1742809495; x=1743414295; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N4dZXkjM3unLUYtxmAAiTLqotnfoOThhNnCPomlhJGw=;
-        b=eAjzf/Xr/Ke3ugn50T1UKQd8bJERgGxiWI1POy8AKHw61+cyCobHzFPO1ItqY5wjvG
-         Bolh1v36txZ783zzeFoShjHwtAoIqWjzEqibCwdrxLyk6iTpWeepj/wRvQkBTIiOBnh0
-         C7BUXQh1+c5/Q67wVSAYWiGX6AH4ERrbTrPUreuN40nRJIEXX5iLLtiUS/v3GhSRhQbx
-         mBL67ljkEF7JBApqMWRZqJp2VMtfaJg7Jm6MvzdYoUVlMFZVd8C/OQUViKkWHqUAfqsg
-         7ONyC1ri18lNctQrUmCBA0/uOwzxLSWG7Rw8Mfn/+JkAVla4bvEmdFAIUS0hZXJViWHa
-         487g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742809495; x=1743414295;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N4dZXkjM3unLUYtxmAAiTLqotnfoOThhNnCPomlhJGw=;
-        b=HOsBGwFCiQFH1dMt2vSE/kwTmLNwgvqYqBm11EeDCw6lYsCdFdK1nrA0sqHSqdis6A
-         PPNopuEkKcu0qCWbPCLvpdZzpp2hQ4G42T/5wqH8hYn+tNy+CkGE26T5UQrryp3qtB3O
-         FgUNN8baHgI91+1fD3TNuhX/+JIPB5NdD6lSHY2VsAzGlO1FV2Fbm0gciOSDwrqA6eXQ
-         9ZFLBfk/5Gibg7hc9m58SOlx4h5Zr2oGu46p9w+vhhtNZPTFZqfg+QEyMZvCXzsLEjPr
-         AAwCxVegTmv3ATHl/IXI282cmaLJTWx7t3Y2hqs9vHvfWG1euZKr3RU5hMo8VhuS/BTC
-         zDQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXzeG/zET+lhM2Ftfbna7Jm80sAgBb0gdskeTqtoE+MQjSAVd/9f/GMVP4y/WUy8jxxg5J5HunAJdc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWr25KYIpQ8ZUSHTQ0D2HIHjRJG05Vug2vyeVtiLk1yICbWp9v
-	L3Gg3kOT15I/qfhW0CsN4NjwdaErVNLPlgbS/EC6iGrEqgVfzwjY0aEsti1PRs9sVS+ctl6A50e
-	u
-X-Gm-Gg: ASbGncurFPuN49/9r0WnhetcK9Ul/IiJtCPf7MD84l20uvAV/a32uPUAZJZdlShNOt2
-	EXcx3U/L3H3KcjOtiAUpLwNyXZ3uHmw5LgwSLwCH7Euxyd+8tSFeBf0/H8HUz+9f4OUhWi8yMWt
-	KZqCjLJ6UTFBSK+oHWiytcYQPeReEsb1LZ9s/n9IEoIVh4pt48DF8afWLl5E53RSzAPjhnaG4lE
-	uFsz6hioQuORxDz8YlZkoSS6S2c1U03W2WM1kSo4sZu2VlO/ZSGwlIfXOwr2GI12Ky7b/HpGr4a
-	qJ2JdN2sEbynOUyXDWnUNQSpViyY0xOcy54gQdyq+h1lBLlOpexqsWbREC14p/4KUL1GY3pkSUC
-	iQb9I4X3H5PTpz+qgPcoNgA==
-X-Google-Smtp-Source: AGHT+IF/xafnGZ8z2yT0RBDKHs4Ip1xN2eA3VEA6IdYB+ymd9PmXiJ8F7n7NmvpGnX9PbMF5ZmtBog==
-X-Received: by 2002:a05:600c:1f8b:b0:43c:f1b8:16ad with SMTP id 5b1f17b1804b1-43d50a4a938mr124865965e9.30.1742809494437;
-        Mon, 24 Mar 2025 02:44:54 -0700 (PDT)
-Received: from localhost (p200300f65f14610400000000000001b9.dip0.t-ipconnect.de. [2003:f6:5f14:6104::1b9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d4fd2798bsm117278755e9.20.2025.03.24.02.44.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Mar 2025 02:44:53 -0700 (PDT)
-Date: Mon, 24 Mar 2025 10:44:52 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?utf-8?B?U8Oh?= <noname.nuno@gmail.com>, 
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7124: Fix 3dB filter frequency reading
-Message-ID: <fgd3vr46ijt3kr6onvtulmfulgbr2jpshcyk3dr2pvz7vqs2fq@mka4q2zqmpwe>
-References: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
- <20250317190031.22c822c4@jic23-huawei>
+	 Content-Type:Content-Disposition:In-Reply-To; b=m2Oo83/USvitO6aasIPBAMy8uqgCDTQPzkU+i8wExytUlDfhJHWsriaXzIElP9imBVtNcyiFO0gFfFZybuW8hdwObkBrz6mGTkUq7sZv3kt2mVATl9Y4Lsdg5F45zZVRo+obihun3RhZY5sM0JNHzEUWqIgD6Lvd8K+gaLXDQDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PCriW6/G; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1742811208; x=1774347208;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zMfZEepWCbGkaKDp5hr5k70cCA3t+S7pnp+IPcVwFL8=;
+  b=PCriW6/GvwMXPay7jpbRLwvS8SCpUiJCEM8Ed4zpR4xqU82VqDXItLpm
+   ClPTm/hFu8g5n/CTcd5rtkLCT+YHF/QkVoMRrDlYtieyx7NyERuI5Nxe6
+   q77P3luyDrlvRovXPgl6cgCscI17TBSNVl3aC3vnZvJNZ3Lh2dQGqPTzx
+   /7d5jh1UFvOgaQlsJ/1OFIqoX8ZDF7cvWCgNWirJDVcTSIPtbmMSt4Hzq
+   eOeRs4zz3XSiylwX/VI23MigR4g40RwWS120miV0V8vqU9vSbRlmHu6Rb
+   JCeuj3JlSFdCcbeVyhIpcxkFEcwY3lZH5NK3pdJQ3SH1flqIvmqNa4rUx
+   Q==;
+X-CSE-ConnectionGUID: wEcSssmHQgqT1mQsAhzyNg==
+X-CSE-MsgGUID: e1xHhhqHRIymaW1pgzKRyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11382"; a="31609414"
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; 
+   d="scan'208";a="31609414"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 03:13:27 -0700
+X-CSE-ConnectionGUID: 0HBR9ZNAQKa9I/fEO9K2fw==
+X-CSE-MsgGUID: cZCSTdUYTjWj8TqoDDydpA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,271,1736841600"; 
+   d="scan'208";a="129078206"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Mar 2025 03:13:21 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tweo2-00000005JEL-1Ee7;
+	Mon, 24 Mar 2025 12:13:18 +0200
+Date: Mon, 24 Mar 2025 12:13:18 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Pop Ioan Daniel <pop.ioan-daniel@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guillaume Stols <gstols@baylibre.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: backend: add support for decimation ratio set
+Message-ID: <Z-EwPknex_gajz97@smile.fi.intel.com>
+References: <20250324090813.2775011-1-pop.ioan-daniel@analog.com>
+ <20250324090813.2775011-2-pop.ioan-daniel@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="3v22ezpain24ooh5"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250317190031.22c822c4@jic23-huawei>
+In-Reply-To: <20250324090813.2775011-2-pop.ioan-daniel@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+
+On Mon, Mar 24, 2025 at 11:07:56AM +0200, Pop Ioan Daniel wrote:
+> Add backend support for setting the decimation ratio used.
+
+...
+
+> +/**
+> + * iio_backend_set_dec_rate - set decimation ratio
+> + * @back: Backend device
+> + * @rate: Rate in decimal
+> +
+
+Something is missing here...
+
+> + * Return:
+> + * 0 on success, negative error number on failure.
+
+Please, double check that the style of Return section is the same as for the
+rest of the functions in this file. If there are different styles choose one
+which is simultaneously more recent and has more common sense in it (like
+Returns: vs. Return, the preferred is the latter).
+
+> + */
+
+> +
+
+Here is an uneeded blank line.
+
+> +int iio_backend_set_dec_rate(struct iio_backend *back, unsigned int rate)
+> +{
+
+> +	if (!rate)
+> +		return -EINVAL;
+
+Yeah, besides missing style comment above, the function is undescribed. You
+really need to add something meaningful in the kernel-doc and esp. explain
+corner cases like this and choices made (why we fail it, what's wrong with 0?).
+
+> +	return iio_backend_op_call(back, set_dec_rate, rate);
+> +}
+
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
---3v22ezpain24ooh5
-Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 0/3] iio: adc: ad7124: Fix 3dB filter frequency reading
-MIME-Version: 1.0
-
-Hello Jonathan,
-
-On Mon, Mar 17, 2025 at 07:00:31PM +0000, Jonathan Cameron wrote:
-> On Mon, 17 Mar 2025 12:52:46 +0100
-> Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com> wrote:
->=20
-> > Hello,
-> >=20
-> > (implicit) v1 of this patch set is available at
-> > https://lore.kernel.org/linux-iio/cover.1741801853.git.u.kleine-koenig@=
-baylibre.com
-> > .
-> >=20
-> > Changes since then:
-> >=20
-> >  - Reorder patches to have the cleanup ("Make register naming
-> >    consistent") last
-> >  - Drop write support for the filter_low_pass_3db_frequency property
-> >    which is completely broken.
-> >  - trivially rebase to todays iio/togreg
-> >=20
-> > I wonder if there is a way to remove the writable permission of the
-> > filter_low_pass_3db_frequency sysfs file instead of erroring out when a
-> > value is written. Hints welcome.
->=20
-> Unfortunately not. With a lot of hindsight that is a flaw in the way
-> we generate sysfs attributes. IIRC when hwmon added similar they
-> avoided that trap.  To retrofit it onto IIO now we'd have to have
-> some form of complex permissions query or duplicate all the masks
-> to allow r and w separately.
-
-OK, fine for me, so I didn't miss anything :-)
-
-I have another patch in my queue for ad7124. For that it would be great
-to know if you intend to apply this patch set. If yes, I continue to
-build on top of this stack.
-
-Best regards
-Uwe
-
---3v22ezpain24ooh5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfhKZEACgkQj4D7WH0S
-/k482AgAtDxGjIBVAjtQV1uMDR5ff6+//E0Oms+Gcr0oBmeTAqHQMqxtyq9NIusR
-NCswsgPRQj0tAvCrblcsJm28qN7MLErFnOZjuVGsFXeDnOomscxhjReinw4SJd6x
-Lerz7zGvIRQuCGEIIwY935k5QvCsC3sHCoj7kALXB+v8rVOz598c8zDZUZSozHsC
-RZIF3hKTqxarfiWdXYLR8U8xDtILa6ljUFeTQe8N/M+f8Pwa0gNdobDEVYr3XycY
-gnNMiKbIOQTyHXra0x9eygiw+9VMTyfQFjMTCDsoui4Vvja8SuPxZGa3MG7JOd+O
-9bqPtzhzxk7zU5dl4zbK3Jk6hiqiyQ==
-=SMP7
------END PGP SIGNATURE-----
-
---3v22ezpain24ooh5--
 

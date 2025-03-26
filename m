@@ -1,145 +1,140 @@
-Return-Path: <linux-iio+bounces-17271-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17272-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF80A71787
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 14:28:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FF6BA71E2E
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 19:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42F0817601B
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 13:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70933A40EA
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 18:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D801E8349;
-	Wed, 26 Mar 2025 13:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2D802512C8;
+	Wed, 26 Mar 2025 18:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="DkizeIwa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OGWw31t/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0981E1E0E;
-	Wed, 26 Mar 2025 13:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E960214230
+	for <linux-iio@vger.kernel.org>; Wed, 26 Mar 2025 18:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742995591; cv=none; b=Dl7fVQA3LKfNU/jsjT49p8l0Zj/BAnXJLXsMrgtolBQX1UFQxCcuM3hyfnGtLw3yIeMeGLXkE378zDzlIWtFgImHQy5NAFKxfbYvYURiUH0LiRJoV09AIlyhtMk84rX7EcPQDXh+2te70tfepM4KW0U+7AeLmOMsSEEMu6PtTb8=
+	t=1743013165; cv=none; b=upiaQJuihmijj8zVECcIMjsyb08d+vKI6+1dXJV0bjyClaMDaugI2Qn/0PeXWuyAqnWf8V+o/ZmB0GWei1TeMPRk4azbu2e7MXqYZaasBxIZl4mKRURHZD5oXh6JjMgiVjc+Sj0ff3QqpIx29CBDNFvjAkIVkviucj6wKr29dWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742995591; c=relaxed/simple;
-	bh=e4WPJLy4WLWqR1uxlbOhTXxyF9pIISMdopBY4cREdnU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fet1enHNRYvhtt/fNcKX9iSoedSn7qxZaJ1S8R37c2YWcjTfqfZmRYMsvnU15ICtuk/KRjA4F2T7z2n+9RCP1nqu5GlXrhNbvNPMdPHFPVHtRI4ldOUzNDRR9cwAOqHHslTw/PwrzBRfXeDsAmHSrO6Lf8Fm657/4/6W2BNS0aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=DkizeIwa; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QD6M06023412;
-	Wed, 26 Mar 2025 09:26:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=QIqEc
-	y1I/zozxpW/KJvAzrS1AD5Zlf7UtNIh5CGaGBw=; b=DkizeIwaQCmKpV6esP9y7
-	zFmMYgzC37ryz8D9dW8AtX4HsnLfSL2aDFgu/YByLmzeNhZ80F9tIWRsEXBf7Fz+
-	jLPV2iuKo4Q/YBsMYqQsBlTCuLwmWDa1NLZzdajJhlK80ivWKXA/vJBj9kx6nAjG
-	yiQooB/BIcJrp1+hn4eSaCCTCwD/h4wIT9HlVEPRIpwfs/OelpG9CPQNCItpwI/Q
-	ePdvzdnlFvLZ0nrCRSQSxa/oCVUyS/e4J79dr7w4PbZyfqwKOlIJGWRIV2O8fnHI
-	2vHO/BLBuBpjPpJoIMHcsIhT8HmhAfnS3OSJuMnc1VwdA898HuEe/4ndC7PuEO8D
-	w==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 45krwh768x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Mar 2025 09:26:12 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 52QDQBUF043251
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 26 Mar 2025 09:26:11 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 26 Mar 2025 09:26:11 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Wed, 26 Mar 2025 09:26:11 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 26 Mar 2025 09:26:11 -0400
-Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 52QDPwqO007595;
-	Wed, 26 Mar 2025 09:26:01 -0400
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
-To: <linux-iio@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
-        <corbet@lwn.net>, <dlechner@baylibre.com>,
-        <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v3 4/4] Documentation: iio: ad4000: Describe offload support
-Date: Wed, 26 Mar 2025 10:25:57 -0300
-Message-ID: <92b7db8eddce5b11476352405ed7695107ba7745.1742992305.git.marcelo.schmitt@analog.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1742992305.git.marcelo.schmitt@analog.com>
-References: <cover.1742992305.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1743013165; c=relaxed/simple;
+	bh=waVsq8OfA/dVAMvBaKhHOE8jvI+2LandRoptsG4CHsg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lI3aYktAJ3GgufyD6KmsgkCAZfwmCt0zSqIeDQh20Q8eeW6H1XnUO2pz5OrBFVNq1svcZ7LAPOh/4sFprkLisdhVCSHWiiocr/psGL0syY/g0gDKn2TintlF9tDxAGB8eAJ81wDb+N6F6XwjRU8Byg7j1YxB4y7QRwrYENvo0P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OGWw31t/; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-227aaa82fafso4698335ad.2
+        for <linux-iio@vger.kernel.org>; Wed, 26 Mar 2025 11:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1743013163; x=1743617963; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zl0dDVHG1AYAWwluJWzpZ4bzBhEFWYnC3QY6T2U20/E=;
+        b=OGWw31t/Wa9miwfwgn1x5qnF2JVFLxVGYkgSlJjdwurTEV3v3SZKF1rKrO0sU0w6bO
+         AkOzjVxk5sGOm7B0PQWBz6dooAizdS+1gbG4iNCZ41LivOffxF5dchB7rGyj9zTjEpSw
+         moOikou7eojkxVDagC+tOkkq+LQ0hsx+cNF1T47af+fEIRoYQSoPIAoiYLUfNQKCvqm8
+         wJIvZoYjRFaMAtpyOeywWLYZLUySnLBTmQkZuSMvUX+pq+qVka9MGyIBepze8Bcr5OLH
+         X/0/1zJUUOoIDTOs0g/2A1QyO2UqCLBpaUipa+V/jtjjbjdU1h6R61v/z1sFqRPBEIaL
+         ODiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743013163; x=1743617963;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zl0dDVHG1AYAWwluJWzpZ4bzBhEFWYnC3QY6T2U20/E=;
+        b=K3J9CB61a3ZMngSUCOH0iNmPYgt3Gf91xgFAFNEe3nnnjMUNwKNapmQ7y6COLpkRMA
+         R3QB56GSCYmCg/K88Ma26QDbYUpc4c8x16Cpm9HsXqRARLxeSt54JpXUcs3MCj8nMUI1
+         i+99cpGKmQ/WAdTt+5kg8Jme18XufZ/eqp2ZNQ/DUMUskouDxhuRK5wG/tnCV+9d9wbT
+         IUHlyTISCXdXMQ289vz//n0MviqafP/dz1aaJtSGYcguUJI7cLn/2eFdcoyiNAtRSSrs
+         y3RabtUPXNvFSuT/uOAiS/6Pm9aRkX/TZlzffX3k6bXXHRvBYrThzLJagSuvOAOEYtSX
+         mKJw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDFfOnE2G8PUtgeSJOZ28EUmhmnsuGmJL8z06ya3h3Rtj8TxNDJAQJRJ503F8cDUhYj8O1sZ5kuds=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyisVlIG3Hs++tHriWFlORoONgtfgP5S3UxzW0Ih9OF/QKy8TTS
+	y3rdDaSUyzJvgV+4IU+gzfzTWKfu2hyqVJt7Qh2QgP//mQ3j8gJ5
+X-Gm-Gg: ASbGncsjzpELIKpW72YhXlHlWSr2jvVJkcrwlJwL1X8RfaUJqLP9cZPPQ1uL5rzB+LL
+	m29LFvEcyn3z2IwDdLTbjZo8PEyPumo47GjHL0GtS2sGhNznF7nF++5JVS6FxzL59u452GtO3On
+	nbuk+dnWKKMVuKIWn+xU2hRgqy0BKIVTPQh455kkb1HsSLSJx0ZfDxxgvXJIjd/iXR1I4/6Ipg+
+	C4l3wb/P/9VsaQ9kTkkUR6Uvc0nC9D/owxEC9+upqIsY7NHmbEitq+ufSq++em0RJCjHQE7Apkz
+	771T6FW4CAzaUOE0fMNuyMPFtLk/ZTD4DUIFW1rPx3uDg5jKPMXbZDA=
+X-Google-Smtp-Source: AGHT+IEpPf1dyazPlCxCpuJkkzZkhTWs1nAJEVISEWcVG8mJ34dFOQ6Ds6HXkAou3vN7gtHhNlUW9Q==
+X-Received: by 2002:a05:6a21:6da8:b0:1f5:5807:13c7 with SMTP id adf61e73a8af0-1fea2ece24emr1088826637.17.1743013162883;
+        Wed, 26 Mar 2025 11:19:22 -0700 (PDT)
+Received: from localhost ([2804:30c:1f10:1900:2580:2d5b:b16d:c55b])
+        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-af8a2843af9sm11308966a12.38.2025.03.26.11.19.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Mar 2025 11:19:21 -0700 (PDT)
+Date: Wed, 26 Mar 2025 15:20:24 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] iio: adc: ad7124: Fix 3dB filter frequency reading
+Message-ID: <Z-RFaLU5jtOScJiu@debian-BULLSEYE-live-builder-AMD64>
+References: <20250317115247.3735016-5-u.kleine-koenig@baylibre.com>
+ <20250317115247.3735016-6-u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: MoW91kgA5apYGZGc_Wz7L-ZCjARooGXc
-X-Proofpoint-ORIG-GUID: MoW91kgA5apYGZGc_Wz7L-ZCjARooGXc
-X-Authority-Analysis: v=2.4 cv=IuAecK/g c=1 sm=1 tr=0 ts=67e40074 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=Vs1iUdzkB0EA:10 a=wI1k2SEZAAAA:8 a=gAnH3GRIAAAA:8 a=zhJGIpXlanaEhhhmQREA:9 a=6HWbV-4b7c7AdzY24d_u:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-26_06,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
- impostorscore=0 clxscore=1015 lowpriorityscore=0 priorityscore=1501
- phishscore=0 spamscore=0 adultscore=0 bulkscore=0 mlxlogscore=999
- mlxscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503260082
+In-Reply-To: <20250317115247.3735016-6-u.kleine-koenig@baylibre.com>
 
-When SPI offloading is supported, the IIO device provides different sysfs
-interfaces to allow using the adjusting the sample rate. Document SPI
-offload support for AD4000 and similar devices.
+Hello,
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
----
- Documentation/iio/ad4000.rst | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+On 03/17, Uwe Kleine-König wrote:
+> The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
+> and for sinc3 the factor is 0.272 according to the data sheets for
+> ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
 
-diff --git a/Documentation/iio/ad4000.rst b/Documentation/iio/ad4000.rst
-index 468d30dc9214..e490f9604b94 100644
---- a/Documentation/iio/ad4000.rst
-+++ b/Documentation/iio/ad4000.rst
-@@ -191,3 +191,25 @@ Typical voltage channel attributes of a differential AD4000 series device:
- +-------------------------------------------+------------------------------------------+
- | ``in_voltage0-voltage1_scale_available``  | Toggles input span compression           |
- +-------------------------------------------+------------------------------------------+
-+
-+SPI offload support
-+-------------------
-+
-+To be able to achieve the maximum sample rate, the driver can be used with the
-+`AXI SPI Engine`_ to provide SPI offload support.
-+
-+.. _AXI SPI Engine: http://analogdevicesinc.github.io/hdl/projects/pulsar_adc/index.html
-+
-+When set for SPI offload support, the IIO device will provide different
-+interfaces.
-+
-+* Either ``in_voltage0_sampling_frequency`` or
-+  ``in_voltage0-voltage1_sampling_frequency`` file is provided to allow setting
-+  the sample rate.
-+* IIO trigger device is not provided (no ``trigger`` directory).
-+* ``timestamp`` channel is not provided.
-+
-+Also, because the ADC output has a one sample latency (delay) when the device is
-+wired in "3-wire" mode and only one transfer per sample is done when using SPI
-+offloading, the first data sample in the buffer is not valid because it contains
-+the output of an earlier conversion result.
--- 
-2.47.2
+Potentially dumb question but, how do we get to these factors between ODR and
+3dB frequency?
+Looking at Table 8, Table 18, Table 28, and 
+dividing values from Output Data Rate (SPS) column by respective
+values from f3dB (Hz) column gives me 4.3478.
+If the zero latency mode SPS values are used as numerator, the result is 1.0869
+for most pairs of SPS and f3dB.
 
+> 
+> Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+> ---
+>  drivers/iio/adc/ad7124.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+> index 3ea81a98e455..7d5d84a07cae 100644
+> --- a/drivers/iio/adc/ad7124.c
+> +++ b/drivers/iio/adc/ad7124.c
+> @@ -301,9 +301,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
+>  
+>  	switch (st->channels[channel].cfg.filter_type) {
+>  	case AD7124_SINC3_FILTER:
+> -		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+> +		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
+>  	case AD7124_SINC4_FILTER:
+> -		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
+> +		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+>  	default:
+>  		return -EINVAL;
+>  	}
+> -- 
+> 2.47.1
+> 
+> 
 

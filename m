@@ -1,88 +1,79 @@
-Return-Path: <linux-iio+bounces-17266-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17267-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8313BA71729
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 14:13:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C158A71777
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 14:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB3DA7A4865
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 13:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57679176C35
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Mar 2025 13:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FE31E1E0D;
-	Wed, 26 Mar 2025 13:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C7C1E8330;
+	Wed, 26 Mar 2025 13:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S7keVYpY"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="lKiFVRlT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB8A1B0435;
-	Wed, 26 Mar 2025 13:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E5919E7E2;
+	Wed, 26 Mar 2025 13:25:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742994828; cv=none; b=UNhqBrSyANtY2MpBR/pQjcFgzMcxRsKQnhx96AWLWnrdKxO+T+GAIv9n1tofunMTXk1oD4Jtydwi+MGg45OudrN/yNRURxRMj9pVnk5VknVhgL25Ie5QC9lH5BXtieo06ofbfkMlf4fCLHgt//svzOIT/UfuX7AZoo+4v7lLRKE=
+	t=1742995507; cv=none; b=YnEUjPwMVpRHk3uGx2CP6LXB9tRRJrWcijblQWC4RBXfKklHApnjvk6/RXkPgSNWi5ULnpglYwg+mC6BhQC39ZVhagBZQeENF9dG9OyIz7PobzggyUXZKql5Pf3iVU66bQQkSyq7kAP1zAhc6wJG9dEFqDjHVC5AZru73sC40fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742994828; c=relaxed/simple;
-	bh=E+bCT//FoLXOZLmdv4Iouw925tTRa3ZfBhLAVQexUbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lx410okxSG4xuJUc0gR0oAaYb+TpnRX2St6QvT9b5tOn9NmOyea6Ng5XOC057dyyJ065IJkmUZz0JHZEQCCRsvyrAYAyRoIbbhUJGgUdK9WcC7Dycnx7LADbV5w+Q5Uf5RMt8zvKGkyikbK7+T3M5qZJwqXk/YgaMuWtUIVmfw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S7keVYpY; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-30384072398so548036a91.0;
-        Wed, 26 Mar 2025 06:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742994826; x=1743599626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3yvLsBy83apkWOi47GV7xH4xs4WujWrUpgPa9E4Thfo=;
-        b=S7keVYpY0q7SfwoMdug1q3mz+5J28ol4Ferq2fWuX0OxqsZqsDHpMRRCzXt2pHq0iZ
-         c7ALxqNG+Wne348yyV2KPk1K2NaJKVAfRBG4GCPW5/gWPSd31KdpO+KoOHS9GIu74Mbx
-         oGqGYmzqe43a0xqLZdjkMwpmpMqskePKGYivL64tZzbA746CLWJkdbcq0VClqMAp0eFH
-         wQeMci+9KYevGymXlOtYuh7UX+SeTLDasIRnpEFA++ayiCkzH1a5+tw6cuzJnto5mdOn
-         U+AFUesy6eawFeTyZULt4cRXGlUlntFWTY0TI2t0e3tKDEJrY/OpRqDEoxKggcL1tBT2
-         OEqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742994826; x=1743599626;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3yvLsBy83apkWOi47GV7xH4xs4WujWrUpgPa9E4Thfo=;
-        b=R3Bpvmb3sq6tXe1rRco+HVoRpsnjtLFsxDOR3MsY6CyEJWf7MDPb6BeSDchO3nJFKs
-         bm08ahJAfcUVYI54iDlD0v8oDMvJT4/ix9aCnOyu53UazjXrKo9eGvWt+7YIUhJddA+v
-         yD3RHAgf9IOw+PLmzTuzdx0jvPu+zCTC2MKrZ07A0hkCmv+M7G8kuRpE6ouN//tr4GhR
-         eD5OBPi1AcmxR7JgYICFSY1egi1W2KXVhl8/GGg9hlm2fuzAlmXbjPJatRFLjvNgavdc
-         jI+0kr1W5w8lcRk6rdywutnRnABK9i/f2cXRNJRM3L5Svp7vH5IVghcQKiZk/gki590U
-         y9Lw==
-X-Gm-Message-State: AOJu0Yy1qNhNWaZwHaw9hepuAxP6zkZ2VWGKX1ApPqh7O4wXUKhtpm/h
-	+uMGX2SDahKxnUuzQxs2pHkbNAEvE/S59D9mL2iGz/bBoFZy3ab6fO6X1HW9naKgyg==
-X-Gm-Gg: ASbGncujA6m+ar+JsFc9xe4wLGFxtS6i9BP/qjpdXtO4WkzYyYai85cYKZ3OWcsF+aK
-	ORSeIflrLJxUkaWkn+gXTlQa9XHCGIDsc0c63e2KSsbrQ1zRX77Cf4ntSSLcGaXD5EmRiLO8jzY
-	XWWnBNS51vsQrUeM+YsSjNDmxu4zbVwpS1UN/ZLMpVOyg5zcWg1j+NWbIpefzm9AuK6V3jeDl9o
-	oiNaS0H2pvlTT6Pq/s/IGTBzd6JboIaWNcQsyjSZzSJkvF3bcVj90nSoRoKZh7GUSt2lXa6GNf/
-	JyE/D/iecquA1/qNAZpR9lHhwDay0eVwyh66dUODmD8UaiVgSCN0qtngjtY2+YPSJb4=
-X-Google-Smtp-Source: AGHT+IEWBkKSWzApdTr0MVmRaWZeVxk7RItkZYRuhvEBSOeMT/OMOk1H16+lPFpTvmfRXpkhR+VBpw==
-X-Received: by 2002:a17:90b:554f:b0:2ee:c6c8:d89f with SMTP id 98e67ed59e1d1-3030fe94313mr38929560a91.14.1742994826172;
-        Wed, 26 Mar 2025 06:13:46 -0700 (PDT)
-Received: from fedora.am.students.amrita.edu ([175.184.253.10])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3039e60f1f9sm108696a91.47.2025.03.26.06.13.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Mar 2025 06:13:45 -0700 (PDT)
-From: Siddharth Menon <simeddon@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	Michael.Hennerich@analog.com,
-	lars@metafoo.de,
-	marcelo.schmitt1@gmail.com,
-	Siddharth Menon <simeddon@gmail.com>
-Subject: [PATCH] iio: frequency: ad9832: Update bit manipulation macros to use FIELD_PREP and GENMASK
-Date: Wed, 26 Mar 2025 18:43:03 +0530
-Message-ID: <20250326131338.21309-1-simeddon@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1742995507; c=relaxed/simple;
+	bh=Nl+10FAzfsORuUu1DCuzZNgcTfzPXOUYYQaR/dcvcHw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qvsTO0yqhlLSua52+JZrYSAcHQPEk+5vGy7SA9damo8QujJFbMjE7qUE0g7omeiZkRBpKL5nSjc/KdOwa7Ypj/lQnYhwWG57yuoDo8Vj0f3I726fyv+nb7zZNz0AYCpnbyoHa+USHmMmye3t02nVnrtavSKfp0VdJ2klAwrCGAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=lKiFVRlT; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q9Vo3V014128;
+	Wed, 26 Mar 2025 09:24:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=gWv2MyO/NWHLdJ26ZZhkCq82dNl
+	g2t2fpQcAb3y2jdI=; b=lKiFVRlTZ7ylDmYIBQ9QQnAonywvaMpibkrNBgA7BjX
+	iIMbVHKh1UF/xj0cBlxM6Rg7bbqfn4dEkjzSetpedxtmd72Db14njMGYOZDSZ+kG
+	ajV1WfieJgU/LP0hOnrYhFsMtRlx4tbZ5N2h+IJTKN+ZoBWQ9S9wu/AsRymS2zz7
+	9G9Iyqeh+7zDsiRApURpxIqQEe8ibn9nZmdMtfqsk4HlXKxqkV7ZuPVCrm0WCFtK
+	j0LZWYmW3SGFbNaxKK97WE12Vk0xL4oa1+O4kPdpDBwF5uu0Xge1IzyOpSb20Mkg
+	8NDBZxcRinO/YRhkXbALQZioaVQYkPBns1Pby/A0idA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 45mf1h0y35-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Mar 2025 09:24:35 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 52QDOY0n042990
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 26 Mar 2025 09:24:34 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 26 Mar 2025 09:24:34 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 26 Mar 2025 09:24:34 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 26 Mar 2025 09:24:34 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.9])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 52QDOJbU007524;
+	Wed, 26 Mar 2025 09:24:21 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <linux-iio@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <jic23@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
+        <corbet@lwn.net>, <dlechner@baylibre.com>,
+        <marcelo.schmitt1@gmail.com>
+Subject: [PATCH v3 0/4] iio: adc: ad4000: Add SPI offload support
+Date: Wed, 26 Mar 2025 10:24:15 -0300
+Message-ID: <cover.1742992305.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,39 +81,85 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Authority-Analysis: v=2.4 cv=B5+50PtM c=1 sm=1 tr=0 ts=67e40013 cx=c_pps a=PpDZqlmH/M8setHirZLBMw==:117 a=PpDZqlmH/M8setHirZLBMw==:17 a=Vs1iUdzkB0EA:10 a=VwQbUJbxAAAA:8 a=gAnH3GRIAAAA:8 a=yEi1-Fu5WF2DL2A3visA:9
+X-Proofpoint-ORIG-GUID: -MccmbZBhSl6WKwg86snZMKUqdphdZn_
+X-Proofpoint-GUID: -MccmbZBhSl6WKwg86snZMKUqdphdZn_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-26_06,2025-03-26_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
+ suspectscore=0 phishscore=0 mlxscore=0 impostorscore=0 spamscore=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503260082
 
-Update AD9832_PHASE and RES_MASK to use FIELD_PREP and GENMASK for
-clean bitmask generation and improved maintainability.
+This patch series extends the ad4000 driver to support SPI offloading.
+In addition to that, ad4000 IIO documentation is expanded to:
+- list PulSAR parts supported by the ad4000 driver.
+- describe some characteristics of AD4000 IIO device.
+- describe changes when SPI offload is being used.
 
-Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Siddharth Menon <simeddon@gmail.com>
----
- drivers/staging/iio/frequency/ad9832.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Change log v2 -> v3
+- Dropped patch 1 of v2 series and reverted buffer endianness and SPI transfer
+  bits_per_word configurations to the way they were in v1.
+- Removed dummy transfer in ad4000_prepare_offload_turbo_message().
+- Unified offload message preparation.
+- Removed spi->cs_hold.value to use cs_inactive to set CNV/CS high time.
+- Adjusted max sample rate for AD7983 and AD7984.
+- Dropped AD4000_TCONV_NS and made all time related constants a time_spec field.
+- Removed _offl param from _CHANNELS() macros and added a comment about that.
+- Commented IIO_BE check in ad4000_prepare_3wire_mode_message().
+- Now using predisable to balance with postenable.
+- Put spi/offload/consumer.h include right after spi/spi.h.
+- Removed unrelated brackets in info_mask_separate_available assignment
+- Added blank line after if.
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 07baa574aa46..1627b0d5de8a 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -62,7 +62,7 @@
- #define AD9832_CMD_SLEEPRESCLR	0xC
- 
- #define AD9832_FREQ		BIT(11)
--#define AD9832_PHASE(x)		(((x) & 3) << 9)
-+#define AD9832_PHASE(x)	FIELD_PREP(GENMASK(10, 9), x)
- #define AD9832_SYNC		BIT(13)
- #define AD9832_SELSRC		BIT(12)
- #define AD9832_SLEEP		BIT(13)
-@@ -70,7 +70,7 @@
- #define AD9832_CLR		BIT(11)
- #define AD9832_FREQ_BITS	32
- #define AD9832_PHASE_BITS	12
--#define RES_MASK(bits)		((1 << (bits)) - 1)
-+#define RES_MASK(bits)	GENMASK((bits) - 1, 0)
- #define AD9832_CMD_MSK	GENMASK(15, 12)
- #define AD9832_ADD_MSK	GENMASK(11, 8)
- #define AD9832_DAT_MSK	GENMASK(7, 0)
+Change log v1 -> v2
+- Fixed passing inappropriate pointer instead of ret to dev_err_probe()
+- [new patch] Set transfer bits_per_word to have data in CPU endianness
+- Set iio_dev num_channels close to where channels is set.
+- Complement offload message comment about first sample being invalid
+- Document why the first buffer sample is invalid when offloading
+- Added blank line before a 'simple return'.
+
+Link to v2: https://lore.kernel.org/linux-iio/cover.1742394806.git.marcelo.schmitt@analog.com/
+Link to v1: https://lore.kernel.org/linux-iio/cover.1741970538.git.marcelo.schmitt@analog.com/
+
+v3 was tested and worked with the following setups
+- ADAQ4003 on CoraZ7 with SPI offload support;
+- AD7687 on CoraZ7 with SPI offload support;
+- AD7687 on rpi (no SPI offload support).
+The Linux image ran on cora was built from IIO testing branch.
+The Linux image ran on rpi was built from rpi tree rpi-6.14.y branch with
+some adaptations to cope with old iio_device_claim_direct_mode() and addition
+of the following patches
+iio: adc: ad4000: Stop using iio_device_claim_direct_scoped()
+spi: add basic support for SPI offloading
+spi: offload: add support for hardware triggers
+dt-bindings: trigger-source: add generic PWM trigger source
+spi: offload-trigger: add PWM trigger driver
+spi: add offload TX/RX streaming APIs
+iio: buffer-dmaengine: split requesting DMA channel from allocating buffer
+iio: buffer-dmaengine: add devm_iio_dmaengine_buffer_setup_with_handle()
+
+Marcelo Schmitt (4):
+  iio: adc: ad4000: Add support for SPI offload
+  Documentation: iio: ad4000: Add new supported parts
+  Documentation: iio: ad4000: Add IIO Device characteristics section
+  Documentation: iio: ad4000: Describe offload support
+
+ Documentation/iio/ad4000.rst |  86 +++++++-
+ drivers/iio/adc/Kconfig      |   7 +-
+ drivers/iio/adc/ad4000.c     | 405 ++++++++++++++++++++++++++++++++---
+ 3 files changed, 463 insertions(+), 35 deletions(-)
+
+
+base-commit: af94f401e26f686f7391ce79b38a6129417c22dc
+prerequisite-patch-id: 3d517eef53a799adba5922815fe684b913e36773
 -- 
-2.49.0
+2.47.2
 
 

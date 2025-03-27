@@ -1,79 +1,69 @@
-Return-Path: <linux-iio+bounces-17291-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-17292-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3233EA736E4
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 17:35:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE2EA73713
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 17:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E095A7A6923
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 16:34:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E60DD189E3DA
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Mar 2025 16:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE1B1A5B92;
-	Thu, 27 Mar 2025 16:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375601C8FB4;
+	Thu, 27 Mar 2025 16:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="Es4wJgpW"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="0J6ljeyg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557EE1991BF
-	for <linux-iio@vger.kernel.org>; Thu, 27 Mar 2025 16:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BC21A8F63;
+	Thu, 27 Mar 2025 16:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743093307; cv=none; b=gXA+HDs9z7YkaDM4KwKb67i6HdLuGAQm9wp0EYalSOG8nqPoJyrkU1mmiCicxDzNjv3mdz4RvuetYYLAomsJZan3t6mgabeWHLc+VydUUNl1JK1xf01uss3KdElSfoGELJga8mVWxA1OlG6Q+opZW2jB1aozF0SbUNUN3++4Syo=
+	t=1743093592; cv=none; b=GaCDoas+N163fLpGlIiLvLGl7b+wPMCN2tXP9k7cLhadKk+Z9NAIBgJs5MetxfdjVS7x9Xo2u3RGdzK1jOYm59rk5iSqxiWDk9OZNTkcWFxnx2nJE7BMXCaUdWritaQ8NuyNpjSo8D2nDOIAURuZc07ZxiAf/xnINXHSByiJ49k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743093307; c=relaxed/simple;
-	bh=yrLrJ07jSyEkRNOIGSnIx6UIH6SW0uwq2gx5Xt6MpTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PfENW9nMpOILAp6Gy6hkb3T4cr/r2HkiwukZ5tjq5HbrhG0Td1q7L4i2dNKcosWL4N4SAEZZpvjMDJYTOvELLHFL4ZpaP+DcVj3Jy3bL2om65UvXXoYcwaUopU47QNq/Di5e1rqJ4sl6CAmTRgM9ZnUNuX+jEG1nr5TlD3fw3Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=Es4wJgpW; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cf0d787eeso11763685e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 27 Mar 2025 09:35:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tuxon.dev; s=google; t=1743093301; x=1743698101; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GGjDGhXvhOctDrW1nI1udXGMONQSxA0lH5by2Ntn0tg=;
-        b=Es4wJgpWTP8jzV/2d74v1syhkB6P/YbPKpMSQpi+7LHCy3AmT1Hdh+jh8vz4xdzbUp
-         2TLKwxYc81UpK8LTlzqTw5tLbjKtsxOrkbAXhZB5v31/tl+UH60puHzPQJ9SMSvpRHLG
-         TgbP+GOmJCIPLWmiPdTNy2PJnCEhAYJB3Ss+eM7HNNNePe1AzN+O6VFGCaL1wmyrPsEG
-         Ged4/X6chrEGM9B8V9FLwpuNzpyoeYwVMmJb1HLh5ahDDeR4o4ouM/6T/+xDKj4JR00r
-         Zhd7HBSIFYaNzZ5xB7DbfadSmxhwgTkKjRLE+cquz6cvQs8jsZIIESTMYDDYfFhsnyBr
-         PVqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743093301; x=1743698101;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GGjDGhXvhOctDrW1nI1udXGMONQSxA0lH5by2Ntn0tg=;
-        b=W0aXtH7uuCS/OEO6cvrINidmJTJGb0rpuNsiF3hMIb94N0Gug2AK0cvacViuf9TUET
-         e5fn5evlx18Y4l3bCrNc5zAsa55FYAq5oXcZ5zpsDEgq4zbXkuB++dysoAa5fq83vRIi
-         qv9k8clp7vu2dzvN1aHhDq9pceqT5D7jlow8wH+vc26QvuuH0AjhY25x4HvTQWG+VFmH
-         gXRCMvPq3k+cimMcYZX1+I1mnkMP8jfE4q7ECoGdoLj607dIkMYiqxDQ2e9gSYmw92XE
-         HpuYWQ5hGbGSqvOdvoo1ywfG09tQnP8wocqsGlB4fT1ZLyQCUAgEB4/ZHhlMgTWOt9Us
-         j2EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXspv8xM6awedxGxnLUuUv1jm/f/B050fTcnSRSITYtGEVHIwbvBwHSUQeZ2P2EtZPXTnFKhewFJjY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtNgw06mxcu9Zx5W8WqX/7PSMq6NFE2rkOV4JnpOjG2JS7MBz2
-	/fL5McBadXIoo8DhboXferlmyLEUmzjRih38qR1+9CFh4Xq4f1Xkv0yTsa1xFUY=
-X-Gm-Gg: ASbGnct/ncV4pZ572APxay+z6qaWxUztO14VHHACg0edAgnGylidelwu4ZAEpL90ULJ
-	wzrWA+1376kGSg7DIYrDWhN9m7UPu6y4dUH9+gJOoLzS3nE9b635I40ExILcPRbguctuO0r94kv
-	35jDwss3qjMskcFrNRtGcifthLkqIq/QZKxb0IFX99l9YLAjr6mPcaJTaziWB6Hvo8/VyRrJeJt
-	vqdYNgFAyivrKkVTzCisSEphUXmL81c4N7CwMMJdC99cQBt8enA1lxLuTDw8SN3jFNFIW9Ug8zn
-	DP4VArv7vIfaevwEer01EcVpop8dVlprp1VRpNiQEHMlYuhBhU6ApP6Fpl7Pu6ZT
-X-Google-Smtp-Source: AGHT+IGawtvFBb4fS5ToIj7CyXU2x5hbH3B/DoIrPXE5LcvhbfIugmJW/IZ0c8unwGyuVy6PG4hKmQ==
-X-Received: by 2002:a05:600c:3ba1:b0:43c:ef55:f1e8 with SMTP id 5b1f17b1804b1-43d84fb5ffdmr36069095e9.13.1743093301462;
-        Thu, 27 Mar 2025 09:35:01 -0700 (PDT)
-Received: from [192.168.50.4] ([82.78.167.103])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d7ae6a206sm39611675e9.0.2025.03.27.09.35.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Mar 2025 09:35:00 -0700 (PDT)
-Message-ID: <a66f3c88-0fe7-4e9c-83cd-1fe4bca8b14e@tuxon.dev>
-Date: Thu, 27 Mar 2025 18:34:59 +0200
+	s=arc-20240116; t=1743093592; c=relaxed/simple;
+	bh=3+yFQl9MsrLmluPFUbyma5Bg/7hcDryJ/eM8UMUsSso=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=g5mpbsuYwy/aBEovry6oTVBmbPJwtvVDhfH6aWWvgGyTSYxb8s1tqbpkCM+tTCADH0Es35YRbhhkwgrbtUa0jwvSGAicDHVWHBKxjWdG5wZvJTj1aHkTmjmjmijQPfproWbv8QKR4ZTHzQKb6MSLVfw7s99pa12uLQ57aD9gCAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=0J6ljeyg; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52RDilnT022015;
+	Thu, 27 Mar 2025 17:39:19 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	az0YCnmeyySHfJgjCSLhzolXq61fHw4p+GQsMO6NSxk=; b=0J6ljeygU3qcaI8y
+	8bWZLLYh00LdEbVFMd0OSckS8S7TmA+OfQCtQHY4HQRDzlMiisrqZG3YiV8KrS2f
+	cYKnrklharMXLL8knqJ2FQLppd50N9/I2D/kyUmOMcuKUHBMnacOvVNC+tEzjZxt
+	8N730tIwORhnQcYHGb3xlQ3k+ofQjCVXXOd/t49N8khu0laJ6WRFeZf4lAGFTkKF
+	HIJliiEMGa+BsNBhlD+iOAoXGiXoD0jV6Mt+2KLdYze/Z+bihwY/Mp+9H5NQ+2gO
+	UOa+FbHYUwhdX3senU1hGgScRih6j/CiikhlL2UU9H/lnlaIQeUCyKv3ehNzCRUf
+	35vwVA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 45j91sucg4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Mar 2025 17:39:18 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 9C88E40045;
+	Thu, 27 Mar 2025 17:38:01 +0100 (CET)
+Received: from Webmail-eu.st.com (eqndag1node4.st.com [10.75.129.133])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 55A6890429F;
+	Thu, 27 Mar 2025 17:36:02 +0100 (CET)
+Received: from SAFDAG1NODE1.st.com (10.75.90.17) by EQNDAG1NODE4.st.com
+ (10.75.129.133) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
+ 2025 17:36:02 +0100
+Received: from [10.48.86.222] (10.48.86.222) by SAFDAG1NODE1.st.com
+ (10.75.90.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 27 Mar
+ 2025 17:36:00 +0100
+Message-ID: <30d13179-66fc-4856-ac70-af051ec5fe8f@foss.st.com>
+Date: Thu, 27 Mar 2025 17:36:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -81,90 +71,217 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] iio: rzg2l_adc: Cleanups for rzg2l_adc driver
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: prabhakar.mahadev-lad.rj@bp.renesas.com, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, gregkh@linuxfoundation.org
-References: <20250324122627.32336-1-claudiu.beznea.uj@bp.renesas.com>
- <20250327153845.6ab73574@jic23-huawei>
-From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: Re: [PATCH v4 3/8] iio: trigger: stm32-lptimer: add support for
+ stm32mp25
+To: Jonathan Cameron <jic23@kernel.org>, <lee@kernel.org>
+CC: <ukleinek@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        <daniel.lezcano@linaro.org>, <tglx@linutronix.de>, <robh@kernel.org>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <devicetree@vger.kernel.org>, <wbg@kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <linux-iio@vger.kernel.org>, <linux-pwm@vger.kernel.org>,
+        <olivier.moysan@foss.st.com>
+References: <20250314171451.3497789-1-fabrice.gasnier@foss.st.com>
+ <20250314171451.3497789-4-fabrice.gasnier@foss.st.com>
+ <20250315125615.065a2e74@jic23-huawei>
 Content-Language: en-US
-In-Reply-To: <20250327153845.6ab73574@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20250315125615.065a2e74@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SAFDAG1NODE1.st.com
+ (10.75.90.17)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-27_02,2025-03-26_02,2024-11-22_01
 
-Hi, Jonathan,
-
-On 27.03.2025 17:38, Jonathan Cameron wrote:
-> On Mon, 24 Mar 2025 14:26:25 +0200
-> Claudiu <claudiu.beznea@tuxon.dev> wrote:
+On 3/15/25 13:56, Jonathan Cameron wrote:
+> On Fri, 14 Mar 2025 18:14:46 +0100
+> Fabrice Gasnier <fabrice.gasnier@foss.st.com> wrote:
 > 
->> From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+>> From: Olivier Moysan <olivier.moysan@foss.st.com>
 >>
->> Hi,
+>> Add support for STM32MP25 SoC. Use newly introduced compatible to handle
+>> this new HW variant. Add new trigger definitions that can be used by the
+>> stm32 analog-to-digital converter. Use compatible data to identify them.
 >>
->> Series adds some cleanups for the RZ/G2L ADC driver after the support
->> for the RZ/G3S SoC.
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 > 
-> This doesn't address Dmitry's comment or highlight the outstanding
-> question he had to Greg KH on v3.  
-> I appreciate you want to get this fixed but I'd rather we got
-> it 'right' first time!
-
-My bad. As there was no input on platform bus patch I though this is not
-the desired way of going forward. Sorry for that.
-
+> How do you want this to merge?   If it's going through mfd because
+> of dependencies, then
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Also, please make sure to +CC anyone who engaged with an earlier version.
+> I haven't checked if there are any dependencies so shout if I should
+> pick this up directly for next cycle.
 
-Ok, will do it.
+Hi Jonathan, Lee,
 
+There's no build dependency, but the dt-bindings that adds the
+compatible string.
+
+Perhaps Lee can pick it up along with the mfd bindings and driver ?
+
+I'm not sure what the most suitable option is.
+
+Best Regards,
+Fabrice
 > 
-> For reference of Greg if he sees this, Dmitry was expressing view that
-> the fix belongs in the bus layer not the individual drivers.
-> FWIW that feels like the right layer to me as well.
-
-To me, too.
-
-Thank you,
-Claudiu
-
-> 
-> https://lore.kernel.org/all/Z8k8lDxA53gUJa0n@google.com/#t
+> Thanks,
 > 
 > Jonathan
 > 
 > 
-> 
->>
->> Thank you,
->> Claudiu Beznea
->>
+>> ---
 >> Changes in v4:
->> - open the devres group in its own function and rename the
->>   rzg2l_adc_probe() to rzg2l_adc_probe_helper() to have simpler code
->> - collected tags
+>> - Jonathan's comment: simplify infrastructure by keeping
+>>   devm_iio_trigger_register. Don't need to cast compatible data.
+>> ---
+>>  drivers/iio/trigger/stm32-lptimer-trigger.c   | 75 ++++++++++++++-----
+>>  include/linux/iio/timer/stm32-lptim-trigger.h |  9 +++
+>>  2 files changed, 67 insertions(+), 17 deletions(-)
 >>
->> Changes in v3:
->> - in patch 2/2 use a devres group for all the devm resources
->>   acquired in the driver's probe
->>
->> Changes in v2:
->> - updated cover letter
->> - collected tags
->> - updated patch 1/2 to drop devres APIs from the point the
->>   runtime PM is enabled
->>
->> Claudiu Beznea (2):
->>   iio: adc: rzg2l_adc: Open a devres group
->>   iio: adc: rzg2l: Cleanup suspend/resume path
->>
->>  drivers/iio/adc/rzg2l_adc.c | 67 +++++++++++++++++++++++++------------
->>  1 file changed, 45 insertions(+), 22 deletions(-)
->>
+>> diff --git a/drivers/iio/trigger/stm32-lptimer-trigger.c b/drivers/iio/trigger/stm32-lptimer-trigger.c
+>> index f1e18913236a..3dcc8d2fe093 100644
+>> --- a/drivers/iio/trigger/stm32-lptimer-trigger.c
+>> +++ b/drivers/iio/trigger/stm32-lptimer-trigger.c
+>> @@ -16,16 +16,43 @@
+>>  #include <linux/platform_device.h>
+>>  #include <linux/property.h>
+>>  
+>> -/* List Low-Power Timer triggers */
+>> -static const char * const stm32_lptim_triggers[] = {
+>> -	LPTIM1_OUT,
+>> -	LPTIM2_OUT,
+>> -	LPTIM3_OUT,
+>> +/* Maximum triggers + one trailing null entry to indicate the end of array */
+>> +#define MAX_TRIGGERS 3
+>> +
+>> +struct stm32_lptim_cfg {
+>> +	const char * const (*triggers)[MAX_TRIGGERS];
+>> +	unsigned int nb_triggers;
+>> +};
+>> +
+>> +/* List Low-Power Timer triggers for H7, MP13, MP15 */
+>> +static const char * const stm32_lptim_triggers[][MAX_TRIGGERS] = {
+>> +	{ LPTIM1_OUT,},
+>> +	{ LPTIM2_OUT,},
+>> +	{ LPTIM3_OUT,},
+>> +};
+>> +
+>> +/* List Low-Power Timer triggers for STM32MP25 */
+>> +static const char * const stm32mp25_lptim_triggers[][MAX_TRIGGERS] = {
+>> +	{ LPTIM1_CH1, LPTIM1_CH2, },
+>> +	{ LPTIM2_CH1, LPTIM2_CH2, },
+>> +	{ LPTIM3_CH1,},
+>> +	{ LPTIM4_CH1,},
+>> +	{ LPTIM5_OUT,},
+>> +};
+>> +
+>> +static const struct stm32_lptim_cfg stm32mp15_lptim_cfg = {
+>> +	.triggers = stm32_lptim_triggers,
+>> +	.nb_triggers = ARRAY_SIZE(stm32_lptim_triggers),
+>> +};
+>> +
+>> +static const struct stm32_lptim_cfg stm32mp25_lptim_cfg = {
+>> +	.triggers = stm32mp25_lptim_triggers,
+>> +	.nb_triggers = ARRAY_SIZE(stm32mp25_lptim_triggers),
+>>  };
+>>  
+>>  struct stm32_lptim_trigger {
+>>  	struct device *dev;
+>> -	const char *trg;
+>> +	const char * const *triggers;
+>>  };
+>>  
+>>  static int stm32_lptim_validate_device(struct iio_trigger *trig,
+>> @@ -56,22 +83,33 @@ EXPORT_SYMBOL(is_stm32_lptim_trigger);
+>>  
+>>  static int stm32_lptim_setup_trig(struct stm32_lptim_trigger *priv)
+>>  {
+>> -	struct iio_trigger *trig;
+>> +	const char * const *cur = priv->triggers;
+>> +	int ret;
+>>  
+>> -	trig = devm_iio_trigger_alloc(priv->dev, "%s", priv->trg);
+>> -	if  (!trig)
+>> -		return -ENOMEM;
+>> +	while (cur && *cur) {
+>> +		struct iio_trigger *trig;
+>>  
+>> -	trig->dev.parent = priv->dev->parent;
+>> -	trig->ops = &stm32_lptim_trigger_ops;
+>> -	iio_trigger_set_drvdata(trig, priv);
+>> +		trig = devm_iio_trigger_alloc(priv->dev, "%s", *cur);
+>> +		if  (!trig)
+>> +			return -ENOMEM;
+>>  
+>> -	return devm_iio_trigger_register(priv->dev, trig);
+>> +		trig->dev.parent = priv->dev->parent;
+>> +		trig->ops = &stm32_lptim_trigger_ops;
+>> +		iio_trigger_set_drvdata(trig, priv);
+>> +
+>> +		ret = devm_iio_trigger_register(priv->dev, trig);
+>> +		if (ret)
+>> +			return ret;
+>> +		cur++;
+>> +	}
+>> +
+>> +	return 0;
+>>  }
+>>  
+>>  static int stm32_lptim_trigger_probe(struct platform_device *pdev)
+>>  {
+>>  	struct stm32_lptim_trigger *priv;
+>> +	struct stm32_lptim_cfg const *lptim_cfg;
+>>  	u32 index;
+>>  
+>>  	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+>> @@ -81,17 +119,20 @@ static int stm32_lptim_trigger_probe(struct platform_device *pdev)
+>>  	if (device_property_read_u32(&pdev->dev, "reg", &index))
+>>  		return -EINVAL;
+>>  
+>> -	if (index >= ARRAY_SIZE(stm32_lptim_triggers))
+>> +	lptim_cfg = device_get_match_data(&pdev->dev);
+>> +
+>> +	if (index >= lptim_cfg->nb_triggers)
+>>  		return -EINVAL;
+>>  
+>>  	priv->dev = &pdev->dev;
+>> -	priv->trg = stm32_lptim_triggers[index];
+>> +	priv->triggers = lptim_cfg->triggers[index];
+>>  
+>>  	return stm32_lptim_setup_trig(priv);
+>>  }
+>>  
+>>  static const struct of_device_id stm32_lptim_trig_of_match[] = {
+>> -	{ .compatible = "st,stm32-lptimer-trigger", },
+>> +	{ .compatible = "st,stm32-lptimer-trigger", .data = &stm32mp15_lptim_cfg },
+>> +	{ .compatible = "st,stm32mp25-lptimer-trigger", .data = &stm32mp25_lptim_cfg},
+>>  	{},
+>>  };
+>>  MODULE_DEVICE_TABLE(of, stm32_lptim_trig_of_match);
+>> diff --git a/include/linux/iio/timer/stm32-lptim-trigger.h b/include/linux/iio/timer/stm32-lptim-trigger.h
+>> index a34dcf6a6001..ce3cf0addb2e 100644
+>> --- a/include/linux/iio/timer/stm32-lptim-trigger.h
+>> +++ b/include/linux/iio/timer/stm32-lptim-trigger.h
+>> @@ -14,6 +14,15 @@
+>>  #define LPTIM1_OUT	"lptim1_out"
+>>  #define LPTIM2_OUT	"lptim2_out"
+>>  #define LPTIM3_OUT	"lptim3_out"
+>> +#define LPTIM4_OUT	"lptim4_out"
+>> +#define LPTIM5_OUT	"lptim5_out"
+>> +
+>> +#define LPTIM1_CH1	"lptim1_ch1"
+>> +#define LPTIM1_CH2	"lptim1_ch2"
+>> +#define LPTIM2_CH1	"lptim2_ch1"
+>> +#define LPTIM2_CH2	"lptim2_ch2"
+>> +#define LPTIM3_CH1	"lptim3_ch1"
+>> +#define LPTIM4_CH1	"lptim4_ch1"
+>>  
+>>  #if IS_REACHABLE(CONFIG_IIO_STM32_LPTIMER_TRIGGER)
+>>  bool is_stm32_lptim_trigger(struct iio_trigger *trig);
 > 
-
 
